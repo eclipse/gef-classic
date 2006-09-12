@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.gef.sdk"
       label="%featureName"
-      version="3.2.0.qualifier"
+      version="3.2.1.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.gef.source"
       image="eclipse_update_120.jpg">
@@ -26,5 +26,12 @@
    <includes
          id="org.eclipse.gef.source"
          version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.gef.examples.ui.pde"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

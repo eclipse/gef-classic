@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="%newWizardCategories.examples.GEFPDEPlugin"
+            parentCategory="org.eclipse.ui.Examples"
+            id="org.eclipse.gef.examples.plugin">
+      </category>
+      
+      <wizard
+            name="%newWizards.examples.logic.name"
+            icon="icons/logic.gif"
+            category="org.eclipse.ui.Examples/org.eclipse.gef.examples.plugin"
+            class="org.eclipse.gef.examples.ui.pde.internal.wizards.LogicExampleNewWizard"
+            project="true"
+            finalPerspective="org.eclipse.pde.ui.PDEPerspective"
+            id="org.eclipse.gef.examples.ui.pde.wizards.logic">
+         <description>
+            %newWizards.examples.logic.desc
+         </description>
+      </wizard>  
+      
+      <wizard
+            name="%newWizards.examples.flow.name"
+            icon="icons/view.gif"
+            category="org.eclipse.ui.Examples/org.eclipse.gef.examples.plugin"
+            class="org.eclipse.gef.examples.ui.pde.internal.wizards.FlowExampleNewWizard"
+            project="true"
+            finalPerspective="org.eclipse.pde.ui.PDEPerspective"
+            id="org.eclipse.gef.examples.ui.pde.wizards.flow">
+         <description>
+            %newWizards.examples.flow.desc
+         </description>
+      </wizard>  
+      
+      <wizard
+            name="%newWizards.examples.shapes.name"
+            icon="icons/shapes.gif"
+            category="org.eclipse.ui.Examples/org.eclipse.gef.examples.plugin"
+            class="org.eclipse.gef.examples.ui.pde.internal.wizards.ShapesExampleNewWizard"
+            project="true"
+            finalPerspective="org.eclipse.pde.ui.PDEPerspective"
+            id="org.eclipse.gef.examples.ui.pde.wizards.shapes">
+         <description>
+            %newWizards.examples.shapes.desc
+         </description>
+      </wizard>  
+      
+      <wizard
+            name="%newWizards.examples.text.name"
+            icon="icons/text.gif"
+            category="org.eclipse.ui.Examples/org.eclipse.gef.examples.plugin"
+            class="org.eclipse.gef.examples.ui.pde.internal.wizards.TextExampleNewWizard"
+            project="true"
+            finalPerspective="org.eclipse.pde.ui.PDEPerspective"
+            id="org.eclipse.gef.examples.ui.pde.wizards.text">
+         <description>
+            %newWizards.examples.text.desc
+         </description>
+      </wizard>  
+      
+   </extension>
+</plugin>

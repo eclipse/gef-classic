@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.eclipse.gef.examples.logic</name>
+	<name>org.eclipse.gef.examples.ui.pde</name>
 	<comment></comment>
 	<projects>
-		<project>org.eclipse.gef</project>
-		<project>org.eclipse.swt</project>
-		<project>org.eclipse.ui</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -29,13 +26,13 @@
 			<arguments>
 				<dictionary>
 					<key>LaunchConfigHandle</key>
-					<value>&lt;project&gt;/.externalToolBuilders/Build_Example_Zip.launch</value>
+					<value>&lt;project&gt;/.externalToolBuilders/Gather_Examples.launch</value>
 				</dictionary>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.pde.PluginNature</nature>
+		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
 </projectDescription>
