@@ -14,7 +14,10 @@ import org.eclipse.draw2d.ConnectionLayer;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayeredPane;
+import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2d.ViewportLayout;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.GuideLayer;
 import org.eclipse.gef.editparts.LayerManager;
@@ -79,7 +82,16 @@ public class NestedGraphRootEditPart extends GraphRootEditPart
 	 */
 	protected IFigure createFigure() {
 		Viewport viewport = new Viewport();
+		viewport.setLayoutManager(new ViewportLayout());
+		viewport.setContentsTracksHeight(true);
+		viewport.setContentsTracksWidth(true);
 		innerLayers = new LayeredPane();
+		//@tag bug.156915-NestedShrink.fix : the layout has to allow for shrinking minimum widths and heights.
+		innerLayers.setLayoutManager(new StackLayout(){
+			public Dimension getMinimumSize(IFigure container, int w, int h) {
+				return new Dimension(w,h);
+			}
+		});
 		createLayers(innerLayers);
 		viewport.setContents(innerLayers);
 		return viewport;
