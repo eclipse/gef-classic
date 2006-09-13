@@ -40,6 +40,8 @@ import org.eclipse.swt.widgets.Display;
  * @author irbull
  */
 public class XYScaledGraphics extends ScaledGraphics {
+	
+	public static final double MAX_TEXT_SIZE = 0.45; // MAX size, when to stop zooming text
 
 	private static class FontHeightCache {
 		Font font;
@@ -203,11 +205,12 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/** @see Graphics#drawImage(Image, int, int) */
 	public void drawImage(Image srcImage, int x, int y) {
 		org.eclipse.swt.graphics.Rectangle size = srcImage.getBounds();
+		double imageZoom = Math.min(xZoom, yZoom);
 		graphics.drawImage(srcImage, 0, 0, size.width, size.height,
 			(int)(Math.floor((x * xZoom + fractionalX))), 
 			(int)(Math.floor((y * yZoom + fractionalY))),
-			(int)(Math.floor((size.width * xZoom + fractionalX))), 
-			(int)(Math.floor((size.height * yZoom + fractionalY))));
+			(int)(Math.floor((size.width * imageZoom + fractionalX))), 
+			(int)(Math.floor((size.height * imageZoom + fractionalY))));
 	}
 
 	/** @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int) */
@@ -710,7 +713,9 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	int zoomFontHeight(int height) {
-		return (int)(yZoom * height);
+		if ( yZoom < MAX_TEXT_SIZE )
+			return (int)(yZoom * height);
+		else return height;
 	}
 
 	int zoomLineWidth(int w) {
