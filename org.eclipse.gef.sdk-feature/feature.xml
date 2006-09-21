@@ -27,11 +27,4 @@
          id="org.eclipse.gef.source"
          version="0.0.0"/>
 
-   <plugin
-         id="org.eclipse.gef.examples.ui.pde"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
 </feature>
