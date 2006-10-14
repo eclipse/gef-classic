@@ -127,7 +127,8 @@ public class GraphModelFactory extends AbstractStylingModelFactory implements IG
 		*/
 		
 		connection = new GraphModelConnection(model, data, sourceNode, destNode, false, getContentProvider().getWeight(data));
-		connection.setText(getLabelProvider().getText(data));
+		String label = getLabelProvider().getText(data) != null ? getLabelProvider().getText(data) : "";
+		connection.setText(label);
 		connection.setImage(getLabelProvider().getImage(data));
 		model.addConnection(connection.getExternalConnection(), connection);
 		styleItem(connection);
