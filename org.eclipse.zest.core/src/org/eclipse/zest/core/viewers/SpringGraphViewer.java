@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -109,7 +110,7 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 			modelFactory = new GraphModelEntityFactory( this, highlightAdjacentNodes );
 		}
 		else if (getContentProvider() instanceof IGraphEntityRelationshipContentProvider) {
-//		@tag bug.154580-Content.fix : add new factory here.
+//		@tag zest.bug.154580-Content.fix : add new factory here.
 			modelFactory = new GraphModelEntityRelationshipFactory(this, highlightAdjacentNodes);
 		}
 		
@@ -347,6 +348,13 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 	 */
 	protected GraphModel getModel() {
 		return model;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getEditPartViewer()
+	 */
+	protected EditPartViewer getEditPartViewer() {
+		return viewer;
 	}
 
 }

@@ -60,7 +60,6 @@ public class NestedGraphModelEntityFactory extends AbstractStylingModelFactory i
 		model.setConnectionStyle(connectionStyle);
 		model.setNodeStyle(nodeStyle);
 		
-		
 		// add the root element
 		// TODO this maybe should be optional...
 		NestedGraphModelNode rootNode = new NestedGraphModelNode(model, null);
@@ -175,7 +174,7 @@ public class NestedGraphModelEntityFactory extends AbstractStylingModelFactory i
 			connection = (NestedGraphModelConnection) iterator.next();
 			if ((dest != null) && dest.equals(connection.getSource().getExternalNode())) {
 				// We already have a node that goes from source to dest!
-				// @tag bug(114452)
+				// @tag zest(bug(114452))
 				return null;
 			}
 		}

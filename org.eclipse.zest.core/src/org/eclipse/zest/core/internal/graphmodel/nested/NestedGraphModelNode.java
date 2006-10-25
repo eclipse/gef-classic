@@ -404,10 +404,10 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	 * Finds all the nodes that are connected to this node or its children.
 	 * @return a list containing NestedGraphModelNodes.
 	 */
-//	@tag bug(150585-TopArcs(fix))
+//	@tag zest(bug(150585-TopArcs(fix)))
 	public List getNodesConnectedTo() {
 		List connections = getConnectionsTo();
-		//@tag bug(unreported(fix)) : there should be only one copy of each node.
+		//@tag zest(bug(unreported(fix))) : there should be only one copy of each node.
 		HashSet targets = new HashSet();
 		for (Iterator i = connections.iterator(); i.hasNext();) {
 			targets.add(((IGraphModelConnection)i.next()).getDestination());
@@ -429,7 +429,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		List sourceConnections = currentNode.getSourceConnections();
 		for (Iterator i = sourceConnections.iterator(); i.hasNext();) {
 			IGraphModelConnection c = (IGraphModelConnection) i.next();
-			//@tag bug(unreported(fix)) : it is possible for a nested node to be connected to a non nested node.
+			//@tag zest(bug(unreported(fix))) : it is possible for a nested node to be connected to a non nested node.
 			if (!(c.getDestination() instanceof NestedGraphModelNode)) continue;
 			NestedGraphModelNode target = (NestedGraphModelNode) c.getDestination();
 			if (topNode.getRelationshipBetweenNodes(target) != NestedGraphModelNode.ANCESTOR)
@@ -446,10 +446,10 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 	 * Finds all the nodes that are connected from this node or its children.
 	 * @return a list containing NestedGraphModelNodes.
 	 */
-	//@tag bug(150585-TopArcs(fix))
+	//@tag zest(bug(150585-TopArcs(fix)))
 	public List getNodesConnectedFrom() {
 		List connections = getConnectionsFrom();
-		//@tag bug(unreported(fix)) : there should only be one copy of each node in the list.
+		//@tag zest(bug(unreported(fix))) : there should only be one copy of each node in the list.
 		HashSet sources = new HashSet();
 		for (Iterator i = connections.iterator(); i.hasNext();) {
 			sources.add(((IGraphModelConnection)i.next()).getSource());
@@ -473,7 +473,7 @@ public class NestedGraphModelNode extends GraphModelNode implements NestedLayout
 		List targetConnections = currentNode.getTargetConnections();
 		for (Iterator i = targetConnections.iterator(); i.hasNext();) {
 			IGraphModelConnection c = (IGraphModelConnection) i.next();
-			//@tag bug(unreported(fix)) : it is possible for nested nodes to be connected to non nested nodes.
+			//@tag zest(bug(unreported(fix))) : it is possible for nested nodes to be connected to non nested nodes.
 			if (!(c.getSource() instanceof NestedGraphModelNode)) continue;
 			NestedGraphModelNode source = (NestedGraphModelNode) c.getSource();
 			if (topNode.getRelationshipBetweenNodes(source) != NestedGraphModelNode.ANCESTOR)

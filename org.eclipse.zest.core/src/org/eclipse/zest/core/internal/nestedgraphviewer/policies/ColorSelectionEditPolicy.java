@@ -77,7 +77,7 @@ public class ColorSelectionEditPolicy extends ResizableEditPolicy {
 	 * @see org.eclipse.gef.editpolicies.ResizableEditPolicy#createSelectionHandles()
 	 */
 	protected List createSelectionHandles() {
-		//@tag bug(152393-TopSelection(fix)) : no handles on the top-level nodes.
+		//@tag zest.bug.152393-TopSelection.fix : no handles on the top-level nodes.
 		Object model = editPart.getModel();
 		if (model instanceof NestedGraphModelNode) {
 			NestedGraphModelNode node = (NestedGraphModelNode) model;

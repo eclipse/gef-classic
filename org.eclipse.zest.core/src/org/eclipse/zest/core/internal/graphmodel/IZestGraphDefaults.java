@@ -26,6 +26,10 @@ public interface IZestGraphDefaults {
 	/**
 	 * Default connection style.
 	 */
-	public static final int CONNECTION_STYLE = ZestStyles.CONNECTIONS_STRAIGHT;
+	public static final int CONNECTION_STYLE = 
+		ZestStyles.CONNECTIONS_STRAIGHT | 
+		ZestStyles.CONNECTIONS_SOLID | 
+		ZestStyles.CONNECTIONS_VALIGN_MIDDLE |
+		ZestStyles.CONNECTIONS_HALIGN_CENTER;
 	
 }

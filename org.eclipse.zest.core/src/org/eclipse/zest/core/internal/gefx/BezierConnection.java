@@ -41,7 +41,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author Del Myers
  *
  */
-//@tag bug(152530-Bezier(fix))
+//@tag zest(bug(152530-Bezier(fix)))
 public class BezierConnection extends Bezier implements Connection, AnchorListener {
 
 	private double startAngle;
@@ -258,7 +258,7 @@ public class BezierConnection extends Bezier implements Connection, AnchorListen
 	 * dimensions.
 	 * @return the bounds
 	 */
-//	@tag bug(154176-ConnectionClip(fix)) : add children to the bounds.
+//	@tag zest(bug(154176-ConnectionClip(fix))) : add children to the bounds.
 	public Rectangle getBounds() {
 		if (bounds == null) {
 			super.getBounds();

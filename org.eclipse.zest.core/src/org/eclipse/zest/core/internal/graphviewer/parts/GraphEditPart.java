@@ -36,7 +36,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.figures.AspectRatioFreeformL
  */
 public class GraphEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
 
-	//@tag bug.156286-Zooming.fix : add a zoom manager to the edit part.
+	//@tag zest.bug.156286-Zooming.fix : add a zoom manager to the edit part.
 	ZoomManager zoomer;
 	
 	public GraphEditPart() {
@@ -150,7 +150,7 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 	 */
 	protected void register() {
 		super.register();
-		//@tag bug.156286-Scaling.fix : set a property so that this can be zoomed on.
+		//@tag zest.bug.156286-Scaling.fix : set a property so that this can be zoomed on.
 		getViewer().setProperty(ZoomManager.class.toString(), getZoomManager());
 	}
 	
@@ -159,11 +159,11 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 	 */
 	protected void unregister() {
 		super.unregister();
-//		@tag bug.156286-Scaling.fix : set a property so that this can be zoomed on.
+//		@tag zest.bug.156286-Scaling.fix : set a property so that this can be zoomed on.
 		getViewer().setProperty(ZoomManager.class.toString(), null);
 	}
 	
-	//@tag bug.156286-Scaling.fix : get the zoom manager
+	//@tag zest.bug.156286-Scaling.fix : get the zoom manager
 	public ZoomManager getZoomManager() {
 		return zoomer;
 	}

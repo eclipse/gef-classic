@@ -74,25 +74,25 @@ public class PlusMinusFigure extends Toggle {
 		}
 		g.setBackgroundColor(ColorConstants.white);
 		g.fillRectangle(r);
-//		@tag bug(151332-Colors(fix))
+//		@tag zest(bug(151332-Colors(fix)))
 		g.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.LIGHT_BLUE_CYAN));
 		g.drawRectangle(new Rectangle(r.x+1, r.y+1, r.width-1, r.height-1));
-//		@tag bug(151332-Colors(fix))
+//		@tag zest(bug(151332-Colors(fix)))
 		g.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.GREY_BLUE));
 		g.drawRectangle(r);
 		
 		int xMid = r.x + r.width / 2;
 		int yMid = r.y + r.height / 2;
-//		@tag bug(151332-Colors(fix))
+//		@tag zest(bug(151332-Colors(fix)))
 		g.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.LIGHT_BLUE_CYAN));
 		g.drawLine(r.x + 3, yMid+1, r.right() - 2, yMid+1);
-		//@tag bug(153368(fix)) : draw plus when selected.
+		//@tag zest(bug(153368(fix))) : draw plus when selected.
 		if (isSelected()) {
 			g.drawLine(xMid+1, r.y + 3, xMid+1, r.bottom() - 2);
 		}
-//		@tag bug(151332-Colors(fix))
+//		@tag zest(bug(151332-Colors(fix)))
 		g.setForegroundColor(ZestPlugin.getDefault().getColor(IZestColorConstants.DARK_BLUE));
-		//@tag bug(153368(fix)) : draw plus when selected
+		//@tag zest(bug(153368(fix))) : draw plus when selected
 		g.drawLine(r.x + 2, yMid, r.right() - 2, yMid);
 		if (isSelected()) {
 			g.drawLine(xMid, r.y + 2, xMid, r.bottom() - 2);

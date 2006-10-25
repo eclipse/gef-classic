@@ -168,6 +168,9 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 	public void setContents(Object model) {
 		this.configureGraphicalViewer();
 		super.setContents(model);
+		//@tag zest.experimental.contents : publish a property change that the model has changed. This will allow linked viewers to update.
+		setProperty(IZestViewerProperties.GRAPH_VIEWER_CONTENTS, model);
+		
 	}
 	
 	/**
@@ -177,6 +180,8 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 	 */
 	public void updateContents(Object model) {
 		super.setContents(model);
+		//@tag zest.experimental.contents : publish a property change that the model has changed. This will allow linked viewers to update.
+		setProperty(IZestViewerProperties.GRAPH_VIEWER_CONTENTS, model);
 	}
 
 	/**

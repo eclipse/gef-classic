@@ -42,7 +42,7 @@ public class NestedGraphModel extends GraphModel {
 	
 	private Rectangle mainArea;
 	
-//	@tag bug(152613-Client-Supplier(fix)) : allow the model to tell the view if clients/suppliers should be closed.
+//	@tag zest(bug(152613-Client-Supplier(fix))) : allow the model to tell the view if clients/suppliers should be closed.
 	private boolean clientClosed;
 	private boolean supplierClosed;
 	

@@ -25,7 +25,7 @@ import org.eclipse.draw2d.geometry.PointList;
  * @author Del Myers
  *
  */
-//@tag bug(154391-ArcEnds(fix)) : force the endpoints to match by using a polyline connection.
+//@tag zest(bug(154391-ArcEnds(fix))) : force the endpoints to match by using a polyline connection.
 //This will be more accurate than the regular ArcConnection, but it may be slower.
 public class PolylineArcConnection extends PolylineConnection {
 	private int depth;

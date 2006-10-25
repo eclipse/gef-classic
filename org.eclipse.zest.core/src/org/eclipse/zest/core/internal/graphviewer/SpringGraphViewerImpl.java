@@ -191,7 +191,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot()
 	 */
-	//@tag bug.156617ClearViewer.fix : create the correct default root.
+	//@tag zest.bug.156617ClearViewer.fix : create the correct default root.
 	protected void createDefaultRoot() {
 		GraphRootEditPart root = new GraphRootEditPart(this, allowMarqueeSelection, allowPanning);
 		this.setRootEditPart(root);
@@ -207,7 +207,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	 */
 	protected void configureGraphicalViewer() {
 		GraphRootEditPart root = getCastedRoot();
-		//@tag bug.156617ClearViewer.fix : just clear the children.
+		//@tag zest.bug.156617ClearViewer.fix : just clear the children.
 		getCastedRoot().clear();
 		//setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.NONE), this);
 		
@@ -317,7 +317,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
      * @see org.eclipse.mylar.zest.core.internal.graphviewer.IPanningListener#panning(int, int)
      */
     public void panning(int dx, int dy) {
-    	// @tag bug (153356) : Revist panning support for static graph
+    	// @tag zest(bug(153356)) : Revist panning support for static graph
     	//layoutAlgorithm.moveAllEntities(dx, dy);
     }
     

@@ -86,7 +86,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart
 		viewport.setContentsTracksHeight(true);
 		viewport.setContentsTracksWidth(true);
 		innerLayers = new LayeredPane();
-		//@tag bug.156915-NestedShrink.fix : the layout has to allow for shrinking minimum widths and heights.
+		//@tag zest.bug.156915-NestedShrink.fix : the layout has to allow for shrinking minimum widths and heights.
 		innerLayers.setLayoutManager(new StackLayout(){
 			public Dimension getMinimumSize(IFigure container, int w, int h) {
 				return new Dimension(w,h);
@@ -106,7 +106,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart
 	protected void createLayers(LayeredPane layeredPane) {
 		layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);
 		layeredPane.add(new LayeredPane(), PRIMARY_LAYER);
-		//@tag bug(153169-OccludedArcs(fix)) : put an animation layer under the connection layers
+		//@tag zest(bug(153169-OccludedArcs(fix))) : put an animation layer under the connection layers
 		layeredPane.add(new FeedbackLayer(), ANIMATION_LAYER);
 		layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
 		layeredPane.add(new ConnectionLayer(), CONNECTION_FEEDBACK_LAYER);
@@ -149,7 +149,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#unregisterVisuals()
 	 */
-	 //@tag bug(153466-NoNestedClientSupply(fix)) : make sure that all the visuals are deregistered before recreating the parts.
+	 //@tag zest(bug(153466-NoNestedClientSupply(fix))) : make sure that all the visuals are deregistered before recreating the parts.
 	/*protected void unregisterVisuals() {
 		List children = getFigure().getChildren();
 		//remove all the child figures for the root, which
@@ -165,7 +165,7 @@ public class NestedGraphRootEditPart extends GraphRootEditPart
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#unregisterModel()
 	 */
-	 //@tag bug(153466-NoNestedClientSupply(fix)) : make sure that all edit parts are removed before creating new ones.
+	 //@tag zest(bug(153466-NoNestedClientSupply(fix))) : make sure that all edit parts are removed before creating new ones.
 	/*protected void unregisterModel() {
 		//force revmoval of the edit parts.
 		for (Iterator i = getChildren().iterator(); i.hasNext();) {

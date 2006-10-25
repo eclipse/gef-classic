@@ -75,7 +75,7 @@ public class ResizeNodeConstraintCommand extends Command {
 			IFigure parentFigure = editPart.getFigure().getParent();
 			
 			Rectangle  parentBounds = parentFigure.getBounds().getCopy();
-			// @tag bug (152289) : Enforce bounds for resize in Nested Viewer
+			// @tag zest(bug(152289)) : Enforce bounds for resize in Nested Viewer
 			// If the new bounds are outside the parent return false
 			
 			Rectangle myBounds = newBounds.getCopy();

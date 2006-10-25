@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.viewers;
 
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.jface.viewers.StructuredViewer;
 
@@ -26,4 +27,13 @@ public abstract class AbstractZoomableViewer extends StructuredViewer {
 	 * @return a ZoomManager that zooming can be done on.
 	 */
 	protected abstract ZoomManager getZoomManager();
+	
+	public void zoomTo(int x, int y, int width, int height) {
+		Rectangle r = new Rectangle(x,y,width,height);
+		if (r.isEmpty()) {
+			getZoomManager().setZoomAsText("100%");
+		} else {
+			getZoomManager().zoomTo(r);
+		}
+	}
 }

@@ -26,7 +26,7 @@ package org.eclipse.mylar.zest.core.viewers;
  * @author Del Myers
  *
  */
-//@tag bug(152530-Bezier(fix)) : users can style bezier curves.
+//@tag zest(bug(152530-Bezier(fix))) : users can style bezier curves.
 public interface IEntityConnectionStyleBezierExtension {
 
 	/**

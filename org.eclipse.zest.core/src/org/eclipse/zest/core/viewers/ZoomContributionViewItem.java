@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.swt.widgets.CoolItem;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
@@ -39,7 +40,7 @@ import org.eclipse.ui.IWorkbenchPart;
  * @author Del Myers
  *
  */
-//@tag bug.156286-Zooming.fix : create a contribution item that can set zooming on Zest views.
+//@tag zest.bug.156286-Zooming.fix : create a contribution item that can set zooming on Zest views.
 public class ZoomContributionViewItem extends ContributionItem implements ZoomListener {
 	/**
 	 * Zooms to fit the width.
@@ -60,6 +61,8 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	private Combo combo;
 	private Menu fMenu;
 	private ZoomablePartListener partListener;
+	//@tag zest.bug.159667-ZoomDispose : cache the part service so that we can properly dispose this item.
+	private IPartService partSevice;
 	
 	private class ZoomablePartListener implements IPartListener {
 		public void partActivated(IWorkbenchPart part) {
@@ -108,7 +111,13 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	public ZoomContributionViewItem(IPartService partService, String[] initialZooms) {
 		this.zoomLevels = initialZooms;
 		this.partListener = new ZoomablePartListener();
+		this.partSevice = partService;
 		partService.addPartListener(partListener);
+		//@tag zest.bug.159647 : if we are in the ui thread initialize the part listener.
+		if (Display.getCurrent() != null) {
+			IWorkbenchPart part = partService.getActivePart();
+			partListener.partActivated(part);
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -121,7 +130,6 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 			item.setText(zoomLevels[i]);
 		}
 	}
-	
 	
 	
 	/* (non-Javadoc)
@@ -168,9 +176,10 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	}
 	
 	private void refresh(boolean rebuild) {
-		if (combo != null) {
+		//
+		if (combo != null && !combo.isDisposed()) {
 			refreshCombo(rebuild);
-		} else if (fMenu != null) {
+		} else if (fMenu != null && fMenu.isDisposed()) {
 			refreshMenu(rebuild);
 		}
 	}
@@ -237,4 +246,19 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 		refresh(false);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.action.ContributionItem#dispose()
+	 */
+	
+	public void dispose() {
+		if (combo != null) {
+			combo = null;
+		}
+		if (fMenu != null) {
+			fMenu = null;
+		}
+//		@tag zest.bug.159667-ZoomDispose : make sure that we no longer listen to the part service.
+		partSevice.removePartListener(partListener);
+		super.dispose();
+	}
 }

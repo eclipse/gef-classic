@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.mylar.zest.core.ZestException;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
@@ -85,7 +86,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	private int connectionStyle;
 	
 	
-	AbstractStructuredGraphViewer(int graphStyle) {
+	protected AbstractStructuredGraphViewer(int graphStyle) {
 		this.graphStyle = graphStyle;
 		this.connectionStyle = IZestGraphDefaults.CONNECTION_STYLE;
 		this.nodeStyle = IZestGraphDefaults.NODE_STYLE;
@@ -171,7 +172,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		List nodes = getModel().getNodes();
 		if (filtered.length == 0) {
 			//set everything to invisible.
-			//@tag bug.156528-Filters.check : should we only filter out the nodes?
+			//@tag zest.bug.156528-Filters.check : should we only filter out the nodes?
 			for (Iterator i = connections.iterator(); i.hasNext();) {
 				IGraphModelConnection c = (IGraphModelConnection) i.next();
 				c.setVisible(false);
@@ -255,6 +256,12 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @return the internal graph model.
 	 */
 	protected abstract GraphModel getModel();
+	
+	/**
+	 * Returns the underlying editpart viewer for this viewer.
+	 * @return the underlying editpart viewer for this viewer.
+	 */
+	protected abstract EditPartViewer getEditPartViewer();
 	
 
 }

@@ -61,4 +61,11 @@ public interface IGraphItem {
 	 * @return the visibility of this item.
 	 */
 	public boolean isVisible();
+	
+	/**
+	 * Gets the graph that this item is rooted on. If this item is itself a graph, then this
+	 * is returned.
+	 * @return the parent graph.
+	 */
+	public GraphModel getGraphModel();
 }

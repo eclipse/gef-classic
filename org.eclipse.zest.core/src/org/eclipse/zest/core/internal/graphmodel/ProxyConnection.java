@@ -23,8 +23,8 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
  *
  */
 
-//@tag bug(153466-NoNestedClientSupply(fix)) : will be used to create multiple visual connections.
-//@tag bug(154259-Abstraction(fix))
+//@tag zest(bug(153466-NoNestedClientSupply(fix))) : will be used to create multiple visual connections.
+//@tag zest(bug(154259-Abstraction(fix)))
 public class ProxyConnection extends GraphModelConnection {
 	private IGraphModelConnection proxy;
 

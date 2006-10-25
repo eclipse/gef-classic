@@ -634,5 +634,19 @@ public class NonNestedProxyNode extends GraphItem implements IGraphModelNode {
 		return proxy.getUnhiglightColor();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#getBorderHighlightColor()
+	 */
+	public Color getBorderHighlightColor() {
+		return proxy.getBorderHighlightColor();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#getBorderUnhiglightColor()
+	 */
+	public Color getBorderUnhiglightColor() {
+		return proxy.getBorderUnhiglightColor();
+	}
+
 	
 }

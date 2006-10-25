@@ -12,19 +12,22 @@ package org.eclipse.mylar.zest.core.internal.graphviewer.parts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.PolylineDecoration;
+import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.mylar.zest.core.ZestStyles;
+import org.eclipse.mylar.zest.core.internal.gefx.AligningBendpointLocator;
 import org.eclipse.mylar.zest.core.internal.gefx.BezierConnection;
 import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
-import org.eclipse.mylar.zest.core.internal.gefx.MidBendpointLocator;
 import org.eclipse.mylar.zest.core.internal.gefx.PolylineArcConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
@@ -34,7 +37,13 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
  * @author Chris Callendar
  */
 public class GraphConnectionEditPart extends AbstractConnectionEditPart implements PropertyChangeListener {
+	private RotatableDecoration dec;
 
+
+	/**
+	 * The constraint placed on the label for its alignment.
+	 */
+	//@tag zest.bug.160368-ConnectionAlign.fix
 	/**
 	 * 
 	 */
@@ -97,9 +106,9 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		
 		//styles should have been set by the GraphItemStyler by this point.
 		if (model.getSource() == model.getDestination()) {
-			//@tag bug(152180-SelfLoops) : create an arc connection, despite the styles that have been set.
+			//@tag zest(bug(152180-SelfLoops)) : create an arc connection, despite the styles that have been set.
 			//allow for a self-loop.
-			//@tag bug(154391-ArcEnds(fix)) :use a polyline arc connection
+			//@tag zest(bug(154391-ArcEnds(fix))) :use a polyline arc connection
 			connection = new PolylineArcConnection();
 			if (model.getCurveDepth() <= 0) {
 				//it has to have a curve.
@@ -113,7 +122,7 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		} else if (ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_BEZIER)) {
 			connection = new BezierConnection(model.getStartAngle(), model.getStartLength(), model.getEndAngle(), model.getEndLength());
 		} else {
-			connection = (PolylineConnection) super.createFigure();
+			connection = (PolylineConnection)super.createFigure();
 		} 
 		connection.setForegroundColor(getCastedModel().getLineColor());
 		if (connection instanceof Shape) {
@@ -121,12 +130,12 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 			((Shape)connection).setLineStyle(getCastedModel().getLineStyle());
 		}
 		
-	  	Locator m1 = new MidBendpointLocator(connection);
+	  	AligningBendpointLocator labelLocator = new AligningBendpointLocator(connection);
 	  	if ( getCastedModel().getText() != null ||
 	  		getCastedModel().getImage() != null ) {
 	  		Label l = new Label(getCastedModel().getText(), getCastedModel().getImage());
 	  		l.setFont(getCastedModel().getFont());
-	  		connection.add(l,m1);
+	  		connection.add(l,labelLocator);
 	  	}
 		
 		return connection;
@@ -228,7 +237,23 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		
 	}
 
-
+	protected RotatableDecoration createDecoration() {
+		RotatableDecoration dec = new PolygonDecoration();
+		if (ZestStyles.checkStyle(getCastedModel().getConnectionStyle(), ZestStyles.CONNECTIONS_OPEN)) {
+			dec = new PolylineDecoration();
+			((PolylineDecoration)dec).setFill(false);
+			((PolylineDecoration)dec).setOutline(true);
+		}
+		return dec;
+	}
+	
+	public final RotatableDecoration getDecoration() {
+		if (dec == null) {
+			dec = createDecoration();
+		}
+		return dec;
+	}
+	
 	protected void refreshVisuals() {
 		super.refreshVisuals();
 		IFigure figure = getFigure();
@@ -238,10 +263,16 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 
 			((Shape)figure).setLineStyle(getCastedModel().getLineStyle());
 		}
-		//@tag bug(154595(fix)) : change the arrow size based on the line width.
+		//@tag zest(bug(154595(fix))) : change the arrow size based on the line width.
 		boolean directed = isDirected();
-		PolygonDecoration dec = new PolygonDecoration();
-		dec.setScale((getCastedModel().getLineWidth()+2), (getCastedModel().getLineWidth()+2));
+		RotatableDecoration dec = getDecoration();
+		if (dec instanceof PolylineDecoration) {
+			((PolylineDecoration)dec).setScale(getCastedModel().getLineWidth()+2, getCastedModel().getLineWidth()+2);
+		} else if (dec instanceof PolygonDecoration) {
+			((PolygonDecoration)dec).setScale(getCastedModel().getLineWidth()+2, getCastedModel().getLineWidth()+2);
+		} else if (dec instanceof Shape) {
+			((Shape)dec).setLineWidth(getCastedModel().getLineWidth());
+		}
 		if (figure instanceof PolylineConnection) { 	
 			if (directed) {
 				((PolylineConnection)getFigure()).setTargetDecoration(dec);
@@ -264,7 +295,68 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	  			((BezierConnection)figure).setTargetDecoration( null );
 	  		}
 		}
+		refreshLineStyle();
+		refreshLabelLocation();
 
+	}
+	/**
+	 * Refresh the alignment of labels.
+	 */
+	private void refreshLabelLocation() {
+		List children = getFigure().getChildren();
+		for (Iterator i = children.iterator(); i.hasNext();) {
+			IFigure child = (IFigure) i.next();
+			int style = getCastedModel().getConnectionStyle();
+			AligningBendpointLocator labelLocator = null;
+			try {
+				Object constraint = getFigure().getLayoutManager().getConstraint(child);
+				if (constraint instanceof AligningBendpointLocator) {
+					labelLocator = (AligningBendpointLocator)constraint;
+				}
+			} catch (Exception e) {
+				return;
+			}
+			if (labelLocator == null) return;
+			if (ZestStyles.checkStyle(style, ZestStyles.CONNECTIONS_VALIGN_TOP)) {
+				labelLocator.setVerticalAlginment(AligningBendpointLocator.ABOVE);
+			} else if (ZestStyles.checkStyle(style, ZestStyles.CONNECTIONS_VALIGN_BOTTOM)) {
+				labelLocator.setVerticalAlginment(AligningBendpointLocator.BELOW);
+			} else {
+				labelLocator.setVerticalAlginment(AligningBendpointLocator.MIDDLE);
+			}
+			if (ZestStyles.checkStyle(style, ZestStyles.CONNECTIONS_HALIGN_START)) {
+				labelLocator.setHorizontalAlignment(AligningBendpointLocator.BEGINNING);
+			} else if (ZestStyles.checkStyle(style, ZestStyles.CONNECTIONS_HALIGN_END)) {
+				labelLocator.setHorizontalAlignment(AligningBendpointLocator.END);
+			} else if (ZestStyles.checkStyle(style, ZestStyles.CONNECTIONS_HALIGN_CENTER_START)) {
+				labelLocator.setHorizontalAlignment(AligningBendpointLocator.CENTER_BEGINNING);
+			} else if (ZestStyles.checkStyle(style, ZestStyles.CONNECTIONS_HALIGN_CENTER_END)) {
+				labelLocator.setHorizontalAlignment(AligningBendpointLocator.CENTER_END);
+			} else {
+				labelLocator.setHorizontalAlignment(AligningBendpointLocator.CENTER);
+			}
+		}
+	}
+
+
+	/**
+	 * Refresh the line style for dashes, dots, etc.
+	 *
+	 */
+	private void refreshLineStyle() {
+		IFigure figure = getFigure();
+		int style = getCastedModel().getLineStyle();
+		if (figure instanceof Shape) {
+			((Shape)figure).setLineStyle(style);
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
+	 */
+	protected void unregister() {
+		// TODO Auto-generated method stub
+		super.unregister();
 	}
 
 }

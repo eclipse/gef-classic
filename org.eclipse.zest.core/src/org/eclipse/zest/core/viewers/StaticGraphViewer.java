@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -246,7 +247,7 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 		viewer.removeSelectionChangedListener(listener);
 	}
 	
-	//@tag bug.156286-Zooming.fix.experimental : expose the zoom manager for new actions.
+	//@tag zest.bug.156286-Zooming.fix.experimental : expose the zoom manager for new actions.
 	protected ZoomManager getZoomManager() {
 		return ((StaticGraphRootEditPart)viewer.getRootEditPart()).getZoomManager();
 	}
@@ -256,6 +257,13 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 	 */
 	protected GraphModel getModel() {
 		return model;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getEditPartViewer()
+	 */
+	protected EditPartViewer getEditPartViewer() {
+		return viewer;
 	}
 	
 	

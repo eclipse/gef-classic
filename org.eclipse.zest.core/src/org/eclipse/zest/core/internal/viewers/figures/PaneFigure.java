@@ -35,7 +35,7 @@ import org.eclipse.mylar.zest.core.messages.ZestUIMessages;
  * @author Del Myers
  */
 
-//@tag bug(152613-Client-Supplier(fix)) : the basic panes that will contain the nested graphs.
+//@tag zest(bug(152613-Client-Supplier(fix))) : the basic panes that will contain the nested graphs.
 public class PaneFigure extends Panel {
 	private static final int ICON_SIZE = 16;
 	private Label label;
@@ -57,7 +57,7 @@ public class PaneFigure extends Panel {
 				Rectangle parentBounds = parent.getBounds();
 				if (label != null) label.setSize(parent.getSize().width, textbounds.height);
 				clientArea.setBounds(new Rectangle(parentBounds.x, parentBounds.y+textbounds.height, parent.getSize().width, parent.getSize().height-textbounds.height));
-				//@tag bug(152613-Client-Supplier(fix)) : allow the icon to have a say in the size of the figure.
+				//@tag zest(bug(152613-Client-Supplier(fix))) : allow the icon to have a say in the size of the figure.
 				if (minMax != null) {
 					Object constraint = getConstraint(minMax);
 					if (constraint instanceof Dimension) {
@@ -71,7 +71,7 @@ public class PaneFigure extends Panel {
 			/* (non-Javadoc)
 			 * @see org.eclipse.draw2d.AbstractLayout#getPreferredSize(org.eclipse.draw2d.IFigure, int, int)
 			 */
-			//@tag bug(152613-Client-Supplier(fix)) : preferred size should be set by the layout manager, as it is what is doing the layout.
+			//@tag zest(bug(152613-Client-Supplier(fix))) : preferred size should be set by the layout manager, as it is what is doing the layout.
 			public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
 				int labelHeight = 0;
 				int labelWidth = wHint;

@@ -30,8 +30,8 @@ public interface INestedGraphModelFactory {
 	 * @param connectionStyle
 	 * @return
 	 */
-	//@tag bug(153348-NestedStyle(fix)) : add node style and connection style
-	//	@tag bug(154412-ClearStatic(fix)) : made more generic so that AbstractStylingModelFactory can do some processing in this method.
+	//@tag zest(bug(153348-NestedStyle(fix))) : add node style and connection style
+	//	@tag zest(bug(154412-ClearStatic(fix))) : made more generic so that AbstractStylingModelFactory can do some processing in this method.
 	public abstract GraphModel createModelFromContentProvider(Object inputElement, int nodeStyle, int connectionStyle);
 
 	/**

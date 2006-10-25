@@ -16,7 +16,7 @@ import org.eclipse.draw2d.geometry.Translatable;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.mylar.zest.core.internal.gefx.XYScaledGraphics;
 
-//@tag bug.156286-Scaling.fix : make this implement scalable figure so that a zoom manager can be used on GraphEditParts.
+//@tag zest.bug.156286-Scaling.fix : make this implement scalable figure so that a zoom manager can be used on GraphEditParts.
 public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableFigure {
 	
 	

@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.gef.EditPart;
+import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -170,8 +171,8 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 			modelFactory = new NestedGraphModelEntityFactory(this, highlightAdjacentNodes);
 		}
 		// DebugPrint.println("Input Is: " + input);
-		//@tag bug(153348-NestedStyle(fix)) : add connection style and node style.
-		//@tag bug(154412-ClearStatic(fix)) : the factory now returns a generic GraphModel so that this method can be abstracted into AbstractStylingModelFactory.
+		//@tag zest(bug(153348-NestedStyle(fix))) : add connection style and node style.
+		//@tag zest(bug(154412-ClearStatic(fix))) : the factory now returns a generic GraphModel so that this method can be abstracted into AbstractStylingModelFactory.
 		model = (NestedGraphModel)modelFactory.createModelFromContentProvider(input, getNodeStyle(), getConnectionStyle());
 		model.setNodeStyle(getNodeStyle());
 		model.setConnectionStyle(getConnectionStyle());
@@ -359,7 +360,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 * 
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 	 */
-	// @tag bug(151889-ViewCoupling) : use a listener to update UI elements that
+	// @tag zest(bug(151889-ViewCoupling)) : use a listener to update UI elements that
 	// want to know about focus changes.
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getSource() == model) {
@@ -509,6 +510,13 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 */
 	protected GraphModel getModel() {
 		return model;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getEditPartViewer()
+	 */
+	protected EditPartViewer getEditPartViewer() {
+		return viewer;
 	}
 
 }

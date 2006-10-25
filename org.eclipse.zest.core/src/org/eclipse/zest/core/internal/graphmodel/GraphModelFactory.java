@@ -53,9 +53,9 @@ public class GraphModelFactory extends AbstractStylingModelFactory implements IG
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createModelFromContentProvider(java.lang.Object)
 	 */
-	//	@tag bug(154412-ClearStatic(fix)) : renamed to allow the parent to do some processing before the model is created.
+	//	@tag zest(bug(154412-ClearStatic(fix))) : renamed to allow the parent to do some processing before the model is created.
 	public GraphModel doCreateModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle) {
-		//@tag bug(152045-UnconnectedNodes) : This does not take care of non-connected nodes. FIXED
+		//@tag zest(bug(152045-UnconnectedNodes)) : This does not take care of non-connected nodes. FIXED
 		GraphModel model = createModel();
 		model.setConnectionStyle(connectionStyle);
 		model.setNodeStyle(nodeStyle);
@@ -64,7 +64,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory implements IG
 		
 		if ( rels != null ) {
 			// If rels returns null then just continue
-			// @tag bug (134928(fix)) : An empty graph causes an NPE
+			// @tag zest(bug(134928(fix))) : An empty graph causes an NPE
 			for ( int i = 0; i < rels.length; i++ ) {
 				createRelationship(model, rels[i], getContentProvider().getSource(rels[i]), getContentProvider().getDestination(rels[i]));
 			}
@@ -85,7 +85,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory implements IG
 	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createRelationship(ca.uvic.cs.zest.internal.graphmodel.GraphModel, java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
 	public IGraphModelConnection createRelationship( GraphModel model, Object data, Object source, Object dest  ) {
-		//@tag bug(152045-UnconnectedNodes) : FIX
+		//@tag zest(bug(152045-UnconnectedNodes)) : FIX
 		if (source == null && dest == null) {
 			//no information to create on.
 			return null;
@@ -120,7 +120,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory implements IG
 			connection = (GraphModelConnection) iterator.next();
 			if ( connection.getSource().getExternalNode().equals( dest ) ) {
 				// We already have a node that goes from source to dest!
-				// @tag bug(114452)
+				// @tag zest(bug(114452))
 				return null;
 			}
 		}

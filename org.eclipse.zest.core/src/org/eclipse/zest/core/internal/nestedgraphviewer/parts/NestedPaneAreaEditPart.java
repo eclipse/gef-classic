@@ -83,7 +83,7 @@ public class NestedPaneAreaEditPart extends AbstractGraphicalEditPart implements
 	 * @see org.eclipse.gef.editparts.SimpleRootEditPart#createEditPolicies()
 	 */
 	protected void createEditPolicies() {
-		//@tag bug(152393-TopSelection(fix)) : add an edit policy to the EditPart which will create policies that don't allow the nodes to move.
+		//@tag zest(bug(152393-TopSelection(fix))) : add an edit policy to the EditPart which will create policies that don't allow the nodes to move.
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new NestedGraphRootLayoutEditPolicy());
 	}
 	

@@ -49,7 +49,7 @@ public class StaticGraphRootEditPart extends GraphRootEditPart implements ZestRo
 	 * @param allowMarqueeSelection if marquee selection is allowed - multiple node selection
 	 * @param allowPanning if panning is allowed.  Only one of panning OR marquee selection is allowed.
 	 */
-	//@tag bug.156617ClearViewer.fix : have to configure the edit part after it is created.
+	//@tag zest.bug.156617ClearViewer.fix : have to configure the edit part after it is created.
 	public void configure(IPanningListener panningListener, boolean allowMarqueeSelection, boolean allowPanning) {
 		this.panningListener = panningListener;
 		this.allowMarqueeSelection = allowMarqueeSelection;
@@ -58,7 +58,6 @@ public class StaticGraphRootEditPart extends GraphRootEditPart implements ZestRo
 	
 	protected LayeredPane createPrintableLayers() {
 		FreeformLayeredPane layeredPane = new FreeformLayeredPane();
-		
 		layeredPane.add(new ConnectionLayer(), CONNECTION_LAYER);
 		layeredPane.add(new FreeformLayer(), PRIMARY_LAYER);
 		layeredPane.add(new ConnectionLayer(), CONNECTION_FEEDBACK_LAYER);
@@ -118,7 +117,7 @@ public class StaticGraphRootEditPart extends GraphRootEditPart implements ZestRo
 		this.modelGraphEditPart = (GraphEditPart) modelRootEditPart;
 	}
 	
-	//@tag bug.156286-Zooming : expose the graph edit part so that the zoom manager can be found.
+	//@tag zest.bug.156286-Zooming : expose the graph edit part so that the zoom manager can be found.
 	public GraphEditPart getModelRootEditPart() {
 		return modelGraphEditPart;
 	}

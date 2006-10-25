@@ -61,6 +61,17 @@ public interface IGraphModelNode extends IGraphItem, LayoutEntity {
 	 */
 	Color getBorderColor();
 	/**
+	 * Return the border highlight color;
+	 * @return the border highlight color.
+	 */
+	Color getBorderHighlightColor();
+	
+	/***
+	 * Return the border unhighlight color.
+	 * @return the border unhighlight color.
+	 */
+	Color getBorderUnhiglightColor();
+	/**
 	 * The border width in pixels.
 	 * @return the border width.
 	 */

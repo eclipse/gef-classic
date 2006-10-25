@@ -102,7 +102,72 @@ public final class ZestStyles {
 	//@tag style(edge) : use a new name... this may be useful later for algorithms.
 	public static final int CONNECTIONS_DIRECTED = 1 << 5;
 	
-		
+	/**
+	 * Style indicating that the arrow indicating the direction of the connection
+	 * should be open.
+	 */
+	//@tag style(edge)
+	public static final int CONNECTIONS_OPEN = 1 << 4;
+	
+	
+	/**
+	 * Style indicating that lables should be placed in the middle of connections.
+	 * This is the default.
+	 */
+	//@tag style.arcs
+	//@tag zest.bug.160368-ConnectionAlign.fix
+	public static final int CONNECTIONS_VALIGN_MIDDLE = 1 << 11;
+	
+	/**
+	 * Style indicating that labels should be placed above connections.
+	 */
+	//@tag style.arcs
+//	@tag zest.bug.160368-ConnectionAlign.fix
+	public static final int CONNECTIONS_VALIGN_TOP = 1 << 12;
+	
+	/**
+	 * Style indicating that labels should be placed below connections.
+	 */
+	//@tag style.arcs
+//	@tag zest.bug.160368-ConnectionAlign.fix
+	public static final int CONNECTIONS_VALIGN_BOTTOM = 1 << 13;
+	
+	/**
+	 * "Horizontal" alignment constant. Labels should be placed at the beginning
+	 * of the line. Figures will be anchored so that they have one end at the
+	 * beginning of the connection, not so that they are centered at the start
+	 * point. Which end of the figure is placed at that point will depend
+	 * on the direction of the first two points.
+	 */
+	public static final int CONNECTIONS_HALIGN_START = 1 << 14;
+	
+	/**
+	 * "Horizontal" alignment constant. Labels should be placed at the end of
+	 * the line. Figures will be anchored so that they have one end at the
+	 * beginning of the connection, not so that they are centered at the end
+	 * point. Which end of the figure is placed at that point will depend
+	 * on the direction of the last two points.
+	 */
+	public static final int CONNECTIONS_HALIGN_END = 1 << 15;
+	
+	/**
+	 * "Horizontal" alignment constant. Figures should be placed in the center
+	 * of the points on the line.
+	 */
+	public static final int CONNECTIONS_HALIGN_CENTER = 1 << 16;
+	
+	/**
+	 * "Horizontal" alignment constant. Labels should be centered between the
+	 * first two points on the connection. For connections with only two points, 
+	 * this will behave the same as CENTER.
+	 */
+	public static final int CONNECTIONS_HALIGN_CENTER_START = 1 << 17;
+	/**
+	 * "Horizontal" alignment constant. Labels should be centered between the
+	 * last two points on the connection. For connections with only two points,
+	 * this will behave the same as CENTER.
+	 */
+	public static final int CONNECTIONS_HALIGN_CENTER_END = 1 << 18;
 	/**
 	 * Style constant to indicate that connections between nodes should be curved
 	 * by default. A connection cannot by styled with any of CONNECTIONS_CURVED,
@@ -118,6 +183,34 @@ public final class ZestStyles {
 	 */
 	//@tag style(arcs)
 	public static final int CONNECTIONS_STRAIGHT = 1 << 0;
+	
+	/**
+	 * Style constant to indicate that connections should be drawn with solid 
+	 * lines (this is the default).
+	 */
+//	@tag style(arcs)
+	public static final int CONNECTIONS_SOLID = 1 << 6;
+	
+	/**
+	 * Style constant to indicate that connections should be drawn with dashed
+	 * lines.
+	 */
+//	@tag style(arcs)
+	public static final int CONNECTIONS_DASH = 1 << 7;
+	
+	/**
+	 * Style constant to indicate that connections should be drawn with
+	 * dotted lines.
+	 */
+//	@tag style(arcs)
+	public static final int CONNECTIONS_DOT = 1 << 8;
+	
+	/**
+	 * Style constant to indicate that connections should be drawn with
+	 * dash-dotted lines.
+	 */
+//	@tag style(arcs)
+	public static final int CONNECTIONS_DASH_DOT = 1 << 9;
 	
 	/**
 	 * Style constant to indicate that connections between nodes should be bezier-S
@@ -137,6 +230,7 @@ public final class ZestStyles {
 	 * @see IConnectionStyleBezierExtension
 	 * @see IConnectionEntityStyleBezierExtension
 	 */
+	//@tag style(arcs)
 	public static final int CONNECTIONS_BEZIER = 1 << 2;
 	/**
 	 * Bitwise ANDs the styleToCheck integer with the given style.  
@@ -154,10 +248,26 @@ public final class ZestStyles {
 	 * @param style the style to check.
 	 * @return true iff the given style is legal.
 	 */
-	public static boolean validateConnectionStyle(int style) {
+	public static boolean validateConnectionStyle(int styleToValidate) {
+		int style = styleToValidate;
 		int illegal = CONNECTIONS_CURVED | CONNECTIONS_STRAIGHT | CONNECTIONS_BEZIER;
 		style &= illegal;
 		int rightBit = style & (-style);
+		boolean okay = (style == rightBit);
+		if (!okay) return okay;
+		
+		illegal = CONNECTIONS_DASH_DOT | CONNECTIONS_DASH | CONNECTIONS_DOT | CONNECTIONS_SOLID;
+		style = styleToValidate;
+		style &=illegal;
+		rightBit = style & (-style);
+		okay = (style == rightBit);
+		if (!okay) return okay;
+		
+		//@tag zest.bug.160368-ConnectionAlign.fix : must check the connections to make sure that there isnt' an illegal combination of alignments. 
+		illegal = CONNECTIONS_VALIGN_BOTTOM | CONNECTIONS_VALIGN_MIDDLE | CONNECTIONS_VALIGN_TOP;
+		style = styleToValidate;
+		style &=illegal;
+		rightBit = style & (-style);
 		return (style == rightBit);
 	}
 }

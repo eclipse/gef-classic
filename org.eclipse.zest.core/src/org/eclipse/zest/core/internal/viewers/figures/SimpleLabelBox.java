@@ -23,7 +23,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author Del Myers
  *
  */
-//@tag bug(153466-NoNestedClientSupply(fix)) : create a simple label box for the nodes.
+//@tag zest(bug(153466-NoNestedClientSupply(fix))) : create a simple label box for the nodes.
 public class SimpleLabelBox extends Panel {
 	private Label label;
 	private Panel contentPane;

@@ -58,8 +58,8 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 * @author Del Myers
 	 *
 	 */
-	//@tag bug(152613-Client-Supplier(fix))
-	//@tag bug(150585-TopArcs(fix))
+	//@tag zest(bug(152613-Client-Supplier(fix)))
+	//@tag zest(bug(150585-TopArcs(fix)))
 	private class FigureKeyFrameAnimator {
 		private ArrayList figures;
 		private ArrayList startBounds;
@@ -102,7 +102,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		public void start(final int steps) {
 			Display.getCurrent().syncExec(new Runnable() {
 				public void run() {
-					//@tag bug(153169-OccludedArcs(fix)) : use the animation layer
+					//@tag zest(bug(153169-OccludedArcs(fix))) : use the animation layer
 					Layer feedBack = (Layer) getLayer(NestedGraphRootEditPart.ANIMATION_LAYER);
 					feedBack.setLayoutManager(new XYLayout());
 					//startBounds.clear();
@@ -239,17 +239,17 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	}
 	
 	public Rectangle getMainArea() {
-//		@tag bug(152613-Client-Supplier(fix)) : the drawable area is in the client panel, not the whole pane.
+//		@tag zest(bug(152613-Client-Supplier(fix))) : the drawable area is in the client panel, not the whole pane.
 		return getMainFigure().getClientPanel().getClientArea().getCopy();
 	}
 	
 	public Rectangle getClientPaneArea() {
-//		@tag bug(152613-Client-Supplier(fix)) : the drawable area is in the client panel, not the whole pane.
+//		@tag zest(bug(152613-Client-Supplier(fix))) : the drawable area is in the client panel, not the whole pane.
 		return getClientFigure().getClientPanel().getClientArea().getCopy();
 	}
 	
 	public Rectangle getSupplierPaneArea() {
-//		@tag bug(152613-Client-Supplier(fix)) : the drawable area is in the client panel, not the whole pane.
+//		@tag zest(bug(152613-Client-Supplier(fix))) : the drawable area is in the client panel, not the whole pane.
 		return getSupplierFigure().getClientPanel().getClientArea().getCopy();
 	}
 	
@@ -282,7 +282,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 			}
 
 			public void layout(IFigure container) {
-//				@tag bug(152613-Client-Supplier(fix)) : layout the panes according to thier closed/openned state.
+//				@tag zest(bug(152613-Client-Supplier(fix))) : layout the panes according to thier closed/openned state.
 				PaneFigure supply;
 				PaneFigure main;
 				PaneFigure client;
@@ -352,8 +352,8 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		//Rectangle maxBounds = getMainArea();
 		Rectangle startBounds = editPart.getAbsoluteBounds();
 		getLayer(LayerConstants.FEEDBACK_LAYER).translateToRelative(startBounds);
-		//@tag bug(153170-FilterArcs(fix))
-		//@tag bug(153169-OccludedArcs(fix)) : filter the arcs before animating.
+		//@tag zest(bug(153170-FilterArcs(fix)))
+		//@tag zest(bug(153169-OccludedArcs(fix))) : filter the arcs before animating.
 		filterConnections(editPart.getCastedModel(), true);
 
 		//hide the proxies before starting
@@ -393,7 +393,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 * @param node the node to filter against
 	 * @param filter whether or not the connections should be filtered.
 	 */
-	//@tag bug(153170-FilterArcs(fix)) : make sure that the arcs are filtered out if they should be inivisible.
+	//@tag zest(bug(153170-FilterArcs(fix))) : make sure that the arcs are filtered out if they should be inivisible.
 	public void filterConnections(NestedGraphModelNode node, boolean filter) {
 		List connections = node.getGraphModel().getConnections();
 		for (Iterator i = connections.iterator(); i.hasNext();) {
@@ -429,7 +429,7 @@ public class NestedGraphEditPart extends GraphEditPart  {
 		if (editPart == null)
 			return;
 		
-//		@tag bug(153169-OccludedArcs(fix)) : using the animation layer requires start bounds to be relative.
+//		@tag zest(bug(153169-OccludedArcs(fix))) : using the animation layer requires start bounds to be relative.
 		Rectangle maxBounds = getMainArea().getCopy();
 		editPart.getFigure().translateToRelative(maxBounds);
 		Rectangle endBounds = editPart.getAbsoluteBounds();
@@ -440,8 +440,8 @@ public class NestedGraphEditPart extends GraphEditPart  {
 	 * Draws an expanding dotted rectangle figure around the node to give the impression
 	 * of zooming in.  The dotted rectangle starts at the center of the node.
 	 */
-	//@tag bug(152613-Client-Supplier(fix)) : change this to use the FigureKeyFrameAnimator
-	//@tag bug(153169-OccludedArcs(fix)) : using FigureKeyFrameAnimator forces animation onto the animation layer
+	//@tag zest(bug(152613-Client-Supplier(fix))) : change this to use the FigureKeyFrameAnimator
+	//@tag zest(bug(153169-OccludedArcs(fix))) : using FigureKeyFrameAnimator forces animation onto the animation layer
 	private void doCollapseZoom(Rectangle startBounds, Rectangle endBounds, final int STEPS, NestedGraphNodeEditPart node) {
 		NestedFigure fig = (NestedFigure) node.getFigure();
 		FigureKeyFrameAnimator animator = new FigureKeyFrameAnimator();

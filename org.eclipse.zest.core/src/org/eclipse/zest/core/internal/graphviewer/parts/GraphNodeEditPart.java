@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -41,33 +42,11 @@ import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTrac
  */
 public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		PropertyChangeListener, NodeEditPart {
+	private Label toolTip;
 
 	protected ConnectionAnchor anchor;
-//	@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
+//	@tag zest(bug(152180-SelfLoops)) : New anchor required so that the loops aren't hidden by the node.
 	protected ConnectionAnchor loopAnchor;
-	private class LoopAnchor extends ChopboxAnchor {
-		public LoopAnchor(IFigure owner) {
-			super(owner);
-		}
-		
-		/* (non-Javadoc)
-		 * @see org.eclipse.draw2d.ChopboxAnchor#getReferencePoint()
-		 */
-		public Point getReferencePoint() {
-			//modification to getReferencePoint. Returns
-			//a point on the outside of the owners box, rather than the
-			//center. Only usefull for self-loops.
-			if (getOwner() == null)
-				return null;
-			else {
-				Point ref = getOwner().getBounds().getCenter();
-				ref.y = getOwner().getBounds().y;
-				getOwner().translateToAbsolute(ref);
-				return ref;
-			}
-		}
-	}
-
 	/**
 	 * GraphNodeEditPart constructor.
 	 */
@@ -116,6 +95,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	protected IFigure createFigure() {
 		IFigure f = createFigureForModel();
 		f.addLayoutListener(LayoutAnimator.getDefault());
+		
 		//f.setOpaque(true); // non-transparent figure
 		return f;
 	}
@@ -135,6 +115,9 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 			Dimension d = label.getSize();
 			node.setSizeInLayout(d.width, d.height);			
 			figure = label;
+			toolTip = new Label();
+			toolTip.setText(node.getText());
+			figure.setToolTip(toolTip);
 		} else {
 			// if Shapes gets extended the conditions above must be updated
 			throw new IllegalArgumentException("Unexpected model when creating a figure");
@@ -171,7 +154,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		super.performRequest(req);
 	}
 
-//	@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
+//	@tag zest(bug(152180-SelfLoops)) : New anchor required so that the loops aren't hidden by the node.
 	protected ConnectionAnchor getLoopAnchor() {
 		if (loopAnchor == null) {
 			loopAnchor = new LoopAnchor(getFigure());
@@ -179,7 +162,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		return loopAnchor;
 	}
 	
-//	@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
+//	@tag zest(bug(152180-SelfLoops)) : New anchor required so that the loops aren't hidden by the node.
 	protected ConnectionAnchor getDefaultConnectionAnchor() {
 		if (anchor == null) {
 			if (getModel() instanceof IGraphModelNode) {
@@ -309,7 +292,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
 	 */
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
-//		@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
+//		@tag zest(bug(152180-SelfLoops)) : New anchor required so that the loops aren't hidden by the node.
 		if (connection.getSource() == connection.getTarget()) {
 			return getLoopAnchor();
 		}
@@ -320,7 +303,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
 	 */
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
-//		@tag bug(152180-SelfLoops) : New anchor required so that the loops aren't hidden by the node.
+//		@tag zest(bug(152180-SelfLoops)) : New anchor required so that the loops aren't hidden by the node.
 		if (connection.getSource() == connection.getTarget()) {
 			return getLoopAnchor();
 		}

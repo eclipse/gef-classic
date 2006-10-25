@@ -32,8 +32,8 @@ import org.eclipse.mylar.zest.core.internal.viewers.figures.SimpleLabelBox;
  * @author Del Myers
  *
  */
-//@tag bug(153466-NoNestedClientSupply(fix)) : create an edit part for proxy nodes.
-//@tag bug(154256-ClientSupplySelect(fix)) : make NonNestedGraphNodeEditPart extend GraphNodeEditPart so that colors will change.
+//@tag zest(bug(153466-NoNestedClientSupply(fix))) : create an edit part for proxy nodes.
+//@tag zest(bug(154256-ClientSupplySelect(fix))) : make NonNestedGraphNodeEditPart extend GraphNodeEditPart so that colors will change.
 public class NonNestedGraphProxyNodeEditPart extends GraphNodeEditPart
 	implements NodeEditPart, PropertyChangeListener {
 	ConnectionAnchor anchor;

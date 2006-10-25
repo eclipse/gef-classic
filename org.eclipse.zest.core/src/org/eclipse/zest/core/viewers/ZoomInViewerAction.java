@@ -17,7 +17,7 @@ import org.eclipse.gef.ui.actions.ZoomInAction;
  * @author Del Myers
  *
  */
-//@tag bug.156286-Zooming.fix
+//@tag zest.bug.156286-Zooming.fix
 public class ZoomInViewerAction extends ZoomInAction {
 	public static final String ID = "zest.actions.zoomin";
 	public ZoomInViewerAction(AbstractZoomableViewer viewer) {

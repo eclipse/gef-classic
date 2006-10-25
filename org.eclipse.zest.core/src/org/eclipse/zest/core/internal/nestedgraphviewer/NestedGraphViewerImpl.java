@@ -151,8 +151,8 @@ public class NestedGraphViewerImpl extends NestedNonThreadedGraphicalViewer  {
 			return;
 		}
 		
-		//@tag bug(152393-TopSelection(fix)) : set-up the colors for selected nodes.
-		//@tag bug(151327-Styles(todo)) : this set-up should be done by the GraphItemStyler, not hard-coded.
+		//@tag zest(bug(152393-TopSelection(fix))) : set-up the colors for selected nodes.
+		//@tag zest(bug(151327-Styles(todo))) : this set-up should be done by the GraphItemStyler, not hard-coded.
 		if (previousNode != null) {
 			Color[] colors = (Color[]) nodeColorMap.get(previousNode);
 			if (colors != null) {

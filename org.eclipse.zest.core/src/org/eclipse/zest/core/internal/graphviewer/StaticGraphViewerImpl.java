@@ -252,7 +252,8 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		Dimension d = this.getCanvasSize();
 		Dimension nodeSize = findBiggestNode();
 		d.width = Math.max(0, d.width - nodeSize.width);
-		d.height = Math.max(0, d.height - nodeSize.width);
+		//@tag zest.bug.159645 : should be d.height - nodeSize.height
+		d.height = Math.max(0, d.height - nodeSize.height);
 		
 		if (d.isEmpty())
 			return;
@@ -303,7 +304,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	}
 	
 	IGraphModelConnection[] getConnectionsToLayout() {
-//		@tag bug.156528-Filters.follows : make sure not to layout filtered connections, if the style says so.
+//		@tag zest.bug.156528-Filters.follows : make sure not to layout filtered connections, if the style says so.
 		IGraphModelConnection[] entities;
 		if (ZestStyles.checkStyle(style, ZestStyles.IGNORE_INVISIBLE_LAYOUT)) {
 			LinkedList nodeList = new LinkedList();
@@ -320,7 +321,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	}
 	
 	IGraphModelNode[] getNodesToLayout(){
-//		@tag bug.156528-Filters.follows : make sure not to layout filtered nodes, if the style says so.
+//		@tag zest.bug.156528-Filters.follows : make sure not to layout filtered nodes, if the style says so.
 		IGraphModelNode[] entities;
 		if (ZestStyles.checkStyle(style, ZestStyles.IGNORE_INVISIBLE_LAYOUT)) {
 			LinkedList nodeList = new LinkedList();
@@ -351,19 +352,19 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot()
 	 */
-	//@tag bug.156617ClearViewer.fix : create the correct default root.
+	//@tag zest.bug.156617ClearViewer.fix : create the correct default root.
 	protected void createDefaultRoot() {
 		StaticGraphRootEditPart root = new StaticGraphRootEditPart();
 		this.setRootEditPart(root);
 	}
 	
-//	@tag bug.156617ClearViewer.fix : convenience.
+//	@tag zest.bug.156617ClearViewer.fix : convenience.
 	private StaticGraphRootEditPart getCastedRoot() {
 		return (StaticGraphRootEditPart)getRootEditPart();
 	}
 	
 	protected void configureGraphicalViewer() {
-		//@tag bug.156617ClearViewer.fix : just clear the children, don't create a new root.
+		//@tag zest.bug.156617ClearViewer.fix : just clear the children, don't create a new root.
 		getCastedRoot().clear();
 		getCastedRoot().configure(this, allowMarqueeSelection, allowPanning);
 		this.setEditPartFactory(new GraphEditPartFactory(getCastedRoot()));
@@ -373,7 +374,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	}
 
 	public void panning(int dx, int dy) {
-			// @tag bug (153356) : Revist panning support for static graph
+			// @tag zest(bug(153356)) : Revist panning support for static graph
 	   	//((AbstractLayoutAlgorithm)layoutAlgorithm).moveAllEntities(dx, dy);
 	}
 
@@ -503,7 +504,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			Object current = iterator.next();
 			Object currentNode = nodeMap.get(current);
 			if ( current != null ) {
-				//@tag bug(153466-NoNestedClientSupply(fix)) : use the edit part registry to avoid having back-links in the model.
+				//@tag zest(bug(153466-NoNestedClientSupply(fix))) : use the edit part registry to avoid having back-links in the model.
 				EditPart part = (EditPart) getEditPartRegistry().get(currentNode);
 				if (part != null)
 					editPartList.add(part);//((GraphModelNode)currentNode).getEditPart() );
@@ -516,7 +517,6 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			}
 		}
 		setSelection(new StructuredSelection(editPartList));
-
 	}
 	
 

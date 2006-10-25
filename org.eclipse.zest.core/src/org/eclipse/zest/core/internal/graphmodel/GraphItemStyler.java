@@ -21,6 +21,7 @@ import org.eclipse.mylar.zest.core.viewers.IConnectionStyleProvider;
 import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleBezierExtension;
 import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleProvider;
 import org.eclipse.mylar.zest.core.viewers.IEntityStyleProvider;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
@@ -69,7 +70,10 @@ public class GraphItemStyler {
 			IGraphModelConnection conn = (IGraphModelConnection) item;
 			//set defaults
 			if (conn.getGraphModel().getConnectionStyle() != ZestStyles.NONE) {
-				conn.setConnectionStyle(conn.getGraphModel().getConnectionStyle());
+				int s = conn.getGraphModel().getConnectionStyle();
+				conn.setConnectionStyle(s);
+				int swt = getLineStyleForZestStyle(s);
+				conn.setLineStyle(swt);
 			} else {
 				conn.setConnectionStyle(IZestGraphDefaults.CONNECTION_STYLE);
 			}
@@ -160,5 +164,29 @@ public class GraphItemStyler {
 		if ((c = provider.getHighlightColor(entity)) != null) node.setHighlightColor(c);
 		if ((width = provider.getBorderWidth(entity)) >= 0) node.setBorderWidth(width);
 		
+	}
+	/**
+	 * Returns the SWT line style for the given zest connection style.
+	 *
+	 */
+	public static int getLineStyleForZestStyle(int style){
+		int lineStyles = 
+			ZestStyles.CONNECTIONS_DASH_DOT |
+			ZestStyles.CONNECTIONS_DASH |
+			ZestStyles.CONNECTIONS_DOT |
+			ZestStyles.CONNECTIONS_SOLID;
+		style = style & lineStyles;
+		if (style == 0) {
+			style = ZestStyles.CONNECTIONS_SOLID;
+		}
+		switch (style) {
+			case ZestStyles.CONNECTIONS_DASH_DOT:
+				return SWT.LINE_DASHDOT;
+			case ZestStyles.CONNECTIONS_DASH:
+				return SWT.LINE_DASH;
+			case ZestStyles.CONNECTIONS_DOT:
+				return SWT.LINE_DOT;
+		}
+		return SWT.LINE_SOLID;
 	}
 }

@@ -12,8 +12,6 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import org.eclipse.draw2d.Graphics;
@@ -39,8 +37,6 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 
 	private Font font;
 
-	private ArrayList weightColors;
-	
 	
 	private IGraphModelNode sourceNode;
 	private IGraphModelNode destinationNode;
@@ -67,28 +63,28 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * This may be a hint only. Future implementations of graph viewers may
 	 * adjust the actual visual representation based on the look of the graph.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	private double startAngle;
 	/**
 	 * For bezier curves: angle between the end point and the line. This may
 	 * be a hint only. Future implementations of graph viewers may adjust the
 	 * actual visual representation based on the look of the graph.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	private double endAngle;
 	
 	/**
 	 * For bezier curves: this is a value from 0-1 as a ratio of the length of the
 	 * line between the start point, and the control point/the length of the connection.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	private double startLength;
 	
 	/**
 	 * For bezier curves: this is a value from 0-1 as a ratio of the length of the
 	 * line between the end point, and the control point/the length of the connection.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	private double endLength;
 	
 	
@@ -108,7 +104,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * @author Del Myers
 	 *
 	 */
-	//@tag bug.156528-Filters.follows : we need this support for filters.
+	//@tag zest.bug.156528-Filters.follows : we need this support for filters.
 	private class NodeVisibilityListener implements PropertyChangeListener {
 		/* (non-Javadoc)
 		 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
@@ -124,14 +120,14 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	
 	/**
 	 * LayoutConnection constructor, initializes the nodes and the connection properties.
-	 * Defaults to bidirectional and a weighting of 0.5.
+	 * Defaults to bidirectional and a weighting of 0.
 	 * @param graphModel	The graph model.
 	 * @param data			The data object for this connection.
 	 * @param source		The source node.
 	 * @param destination 	The destination node.
 	 */
 	public GraphModelConnection(GraphModel graphModel, Object data, IGraphModelNode source, IGraphModelNode destination) {
-		this(graphModel, data, source, destination, true, 0.5D);
+		this(graphModel, data, source, destination, true, 0);
 	}
 	
 	/**
@@ -153,11 +149,6 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 		this.color = plugin.getColor(IZestColorConstants.EDGE_DEFAULT);
 		this.foreground = plugin.getColor(IZestColorConstants.EDGE_DEFAULT);
 		this.highlightColor = plugin.getColor(IZestColorConstants.EDGE_HIGHLIGHT);
-		this.weightColors = new ArrayList();
-		weightColors.add(plugin.getColor(IZestColorConstants.EDGE_WEIGHT_0));
-		weightColors.add(plugin.getColor(IZestColorConstants.EDGE_WEIGHT_01));
-		weightColors.add(plugin.getColor(IZestColorConstants.EDGE_WEIGHT_02));
-		weightColors.add(plugin.getColor(IZestColorConstants.EDGE_WEIGHT_03));
 		this.lineWidth = 1;
 		this.lineStyle = Graphics.LINE_SOLID;
 		setWeightInLayout(weight);
@@ -231,7 +222,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 		if (newSource == null || newDestination == null ) {
 			throw new IllegalArgumentException("Invalid source and/or destination nodes");
 		}
-		//@tag bug(152180-SelfLoops) : commented out to allow a fix.
+		//@tag zest(bug(152180-SelfLoops)) : commented out to allow a fix.
 		/*else if ( newSource == newDestination ) {
 			throw new IllegalArgumentException("Invalid: source == destination");
 		}*/
@@ -323,9 +314,6 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 		} else {
 			this.weight = weight;
 		}
-		setLineWidth(getLineWidthFromWeight());
-		foreground = getColorFromWeight();
-		changeLineColor(foreground);
 	}
 
 	/* (non-Javadoc)
@@ -388,28 +376,8 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 		}
 	}
 	
-	/**
-	 * Allows the user to set a list of colors that will be used for a visual
-	 * determination of the weight of this edge.
-	 *
-	 */
-	public void setWeightColors(Color[] colors) {
-		this.weightColors.clear();
-		this.weightColors.addAll(Arrays.asList(colors));
-	}
-	
-	/**
-	 * Gets the line color depending on the weight.
-	 * @return the line color
-	 */
-	protected Color getColorFromWeight() {
-		Color c = (Color) weightColors.get(0);
-		int index = (int)(weight * 3);
-		if ((index >= 0) && (index < weightColors.size())) {
-			c = (Color) weightColors.get(index);
-		}
-		return c;
-	}
+
+
 
 	/**
 	 * Returns the connection line width.
@@ -431,18 +399,6 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 		}
 	}
 	
-	/**
-	 * Calculates the line width depending on the connection's weight.
-	 * The line width varies from 1 to 3.
-	 * @return the line width [1-3].
-	 */
-	protected int getLineWidthFromWeight() {
-		int width = 1;
-		if (weight >= 0) {
-			width = 1 + (int)(weight * 2);
-		}
-		return width;
-	}
 
 	/**
 	 * Returns the connection line style.
@@ -559,7 +515,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * This may be a hint only. Future implementations of graph viewers may
 	 * adjust the actual visual representation based on the look of the graph.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	public double getEndAngle() {
 		return endAngle;
 	}
@@ -573,7 +529,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * 
 	 * @param endAngle the angle to set.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	public void setEndAngle(double endAngle) {
 		this.endAngle = endAngle;
 	}
@@ -582,7 +538,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * For bezier curves: this is a value from 0-1 as a ratio of the length of the
 	 * line between the end point, and the control point/the length of the connection.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	public double getEndLength() {
 		return endLength;
 	}
@@ -593,7 +549,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * 
 	 * @param endLength the length to set.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	public void setEndLength(double endLength) {
 		this.endLength = endLength;
 	}
@@ -605,7 +561,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * be a hint only. Future implementations of graph viewers may adjust the
 	 * actual visual representation based on the look of the graph.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	public double getStartAngle() {
 		return startAngle;
 	}
@@ -617,7 +573,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * be a hint only. Future implementations of graph viewers may adjust the
 	 * actual visual representation based on the look of the graph.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	public void setStartAngle(double startAngle) {
 		this.startAngle = startAngle;
 	}
@@ -626,7 +582,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * For bezier curves: this is a value from 0-1 as a ratio of the length of the
 	 * line between the start point, and the control point/the length of the connection.
 	 */
-//	@tag bug(152530-Bezier(fix))
+//	@tag zest(bug(152530-Bezier(fix)))
 	public double getStartLength() {
 		return startLength;
 	}
@@ -636,7 +592,7 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * line between the start point, and the control point/the length of the connection.
 	 * @param startLength the length to set.
 	 */
-	//@tag bug(152530-Bezier(fix))
+	//@tag zest(bug(152530-Bezier(fix)))
 	public void setStartLength(double startLength) {
 		this.startLength = startLength;
 	}

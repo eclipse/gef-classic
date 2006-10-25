@@ -40,7 +40,7 @@ public class GraphModel extends GraphItem {
 	private List nodes;
 	protected List connections;
 	
-	//@tag bug(153466-NoNestedClientSupply(fix)) : keep proxy connections and nodes inside the model for easy access.
+	//@tag zest(bug(153466-NoNestedClientSupply(fix))) : keep proxy connections and nodes inside the model for easy access.
 	protected List proxyConnections;
 	protected List proxyNodes;
 
@@ -90,7 +90,7 @@ public class GraphModel extends GraphItem {
 	/**
 	 * @return the proxyConnections
 	 */
-	 //@tag bug(153466-NoNestedClientSupply(fix)) : make proxies available from the model
+	 //@tag zest(bug(153466-NoNestedClientSupply(fix))) : make proxies available from the model
 	public List getProxyConnections() {
 		return proxyConnections;
 	}
@@ -98,7 +98,7 @@ public class GraphModel extends GraphItem {
 	/**
 	 * @return the proxyNodes
 	 */
-	  //@tag bug(153466-NoNestedClientSupply(fix)) : make proxies available from the model
+	  //@tag zest(bug(153466-NoNestedClientSupply(fix))) : make proxies available from the model
 	public List getProxyNodes() {
 		return proxyNodes;
 	}
@@ -109,7 +109,7 @@ public class GraphModel extends GraphItem {
 	 * @return the proxy node.
 	 * 
 	 */
-	//@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
+	//@tag zest(bug(153466-NoNestedClientSupply(fix))) : proxies can only be made on the model. This ensures that they are properly monitored here.
 	public NonNestedProxyNode createProxyNode(IGraphModelNode node) {
 		NonNestedProxyNode proxy = new NonNestedProxyNode(node);
 		proxyNodes.add(proxy);
@@ -137,7 +137,7 @@ public class GraphModel extends GraphItem {
 	 * @param conn the connection to base this proxy on.
 	 * @return the proxy connection
 	 */
-	 //@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
+	 //@tag zest(bug(153466-NoNestedClientSupply(fix))) : proxies can only be made on the model. This ensures that they are properly monitored here.
 	public ProxyConnection createProxyConnection(IGraphModelNode source, IGraphModelNode target, IGraphModelConnection conn) {
 		ProxyConnection connection = new ProxyConnection(source, target, conn);
 		proxyConnections.add(connection);
@@ -150,7 +150,7 @@ public class GraphModel extends GraphItem {
 	 * on the node will be removed as well.
 	 * @param node
 	 */
-	 //@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
+	 //@tag zest(bug(153466-NoNestedClientSupply(fix))) : proxies can only be made on the model. This ensures that they are properly monitored here.
 	public void removeProxyNode(NonNestedProxyNode node) {
 		if (proxyNodes.contains(node)) {
 			proxyNodes.remove(node);
@@ -176,7 +176,7 @@ public class GraphModel extends GraphItem {
 	 * Disconnects the given connection if it exists in the model.
 	 * @param connection the connection to disconnect.
 	 */
-	 //@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
+	 //@tag zest(bug(153466-NoNestedClientSupply(fix))) : proxies can only be made on the model. This ensures that they are properly monitored here.
 	public void removeProxyConnection(ProxyConnection connection) {
 		if (proxyConnections.contains(connection)) {
 			proxyConnections.remove(connection);
@@ -188,7 +188,7 @@ public class GraphModel extends GraphItem {
 	 * Removes all proxie nodes and connections from the model.
 	 *
 	 */
-	 //@tag bug(153466-NoNestedClientSupply(fix)) : proxies can only be made on the model. This ensures that they are properly monitored here.
+	 //@tag zest(bug(153466-NoNestedClientSupply(fix))) : proxies can only be made on the model. This ensures that they are properly monitored here.
 	public void clearProxies() {
 		while (proxyNodes.size() > 0) {
 			removeProxyNode((NonNestedProxyNode)proxyNodes.get(0));
@@ -420,6 +420,13 @@ public class GraphModel extends GraphItem {
 		for ( Iterator iter = this.nodes.iterator(); iter.hasNext(); ) {
 			((IGraphModelNode) iter.next() ).firePropertyChange(property, oldValue, newValue );
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem#getGraphModel()
+	 */
+	public GraphModel getGraphModel() {
+		return this;
 	}
 	
 }

@@ -17,10 +17,13 @@ import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayeredPane;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayeredPane;
+import org.eclipse.draw2d.ScalableFigure;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPart;
 import org.eclipse.mylar.zest.core.internal.viewers.trackers.PanningTracker;
 import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTracker;
@@ -43,9 +46,11 @@ public class GraphRootEditPart extends ScalableFreeformRootEditPart implements Z
 	private boolean allowMarqueeSelection;
 	private boolean allowPanning;
 	protected GraphEditPart graphEditPart = null;
+	private ZoomManager zoomManager;
 	
 	public GraphRootEditPart() {
 		this(null, false, false);
+		this.zoomManager = new RectangleZoomManager((ScalableFigure)getScaledLayers(),(Viewport)getFigure());
 	}
 	
 	/**
@@ -127,6 +132,13 @@ public class GraphRootEditPart extends ScalableFreeformRootEditPart implements Z
 	protected void unregisterModel() {
 		clear();
 		super.unregisterModel();
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.ScalableFreeformRootEditPart#getZoomManager()
+	 */
+	public ZoomManager getZoomManager() {
+		return zoomManager;
 	}
 	
 }

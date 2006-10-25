@@ -20,14 +20,14 @@ import org.eclipse.jface.viewers.ILabelProvider;
  * @author Del Myers
  *
  */
-public abstract class AbstractStylingModelFactory {
+public abstract class AbstractStylingModelFactory  {
 	/**
 	 * 
 	 * Class to keep track of the number of connections there are between two nodes.
 	 * @author Del Myers
 	 *
 	 */
-	//@tag bug(114452-MultipleArcs) : resolution
+	//@tag zest(bug(114452-MultipleArcs)) : resolution
 	class ConnectionCounter {
 		Object source;
 		Object dest;
@@ -58,11 +58,11 @@ public abstract class AbstractStylingModelFactory {
 		this.counters = new HashMap();
 	}
 	
-//	@tag bug(154412-ClearStatic(fix)) : the styling factory needs to clear the counters if the input is new.
+//	@tag zest(bug(154412-ClearStatic(fix))) : the styling factory needs to clear the counters if the input is new.
 	public final GraphModel createModelFromContentProvider(Object input, int nodeStyle, int connectionStyle) {
 		if (input != getInput()) {
 			counters.clear();
-//			@tag bug(154412-ClearStatic(fix)) : save the input so that it can be checked to see whether or not it is new.
+//			@tag zest(bug(154412-ClearStatic(fix))) : save the input so that it can be checked to see whether or not it is new.
 			this.input = input;
 		}
 		return doCreateModelFromContentProvider(input, nodeStyle, connectionStyle);
@@ -101,7 +101,7 @@ public abstract class AbstractStylingModelFactory {
 		//@tag drawing(arcs) : check here if arcs are too close when being drawn. Adjust the constant.
 		conn.setCurveDepth(count.intValue()*(scale+conn.getLineWidth()));
 
-//		@tag bug(152530-Bezier(fix)) : set the angles, etc based on the count.
+//		@tag zest(bug(152530-Bezier(fix))) : set the angles, etc based on the count.
 		//limit the angle to 90 degrees.
 		conn.setStartAngle(90.0 - 85.0/Math.pow(count.doubleValue(), 1.0/9.0));
 		conn.setEndAngle(85.0/Math.pow(count.doubleValue(), 1.0/9.0) - 90.0);

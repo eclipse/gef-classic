@@ -89,7 +89,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 			return new SingleSelectionTracker(this);
 		}		
 		else if ( this.getCastedModel().isCurrent() ) {
-			//@tag bug(153221-Marquee-Selection(fix)) : make sure that the location is inside the scaled figure.
+			//@tag zest(bug(153221-Marquee-Selection(fix))) : make sure that the location is inside the scaled figure.
 			AspectRatioScaledFigure sfig = ((NestedFigure)getFigure()).getScaledFigure();
 			Rectangle scaledBounds = ((NestedFigure)getFigure()).getScaledFigure().getBounds().getCopy();
 			sfig.translateToAbsolute(scaledBounds);
@@ -128,7 +128,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 				label = new Label(current.getText(), current.getImage());
 				label.setFont(current.getFont());
 			}
-			//@tag bug(151332-Colors(fix))
+			//@tag zest(bug(151332-Colors(fix)))
 			//@tag bug(154256-ClientSupplySelect(fix)) : get the colors from the model
 			label.setBackgroundColor(current.getBackgroundColor());
 			label.setForegroundColor(current.getForegroundColor());
@@ -311,7 +311,7 @@ public class NestedGraphNodeEditPart extends GraphNodeEditPart implements Action
 	 * @see org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart#refreshColors()
 	 */
 	protected void refreshColors() {
-		//@tag bug(152393(fix)) : Set the label color when the foreground changes.
+		//@tag zest(bug(152393(fix))) : Set the label color when the foreground changes.
 		if (label != null) {
 			label.setForegroundColor(getCastedModel().getForegroundColor());
 			label.setBackgroundColor(getCastedModel().getBackgroundColor());

@@ -103,7 +103,7 @@ public class ZestPlugin extends AbstractUIPlugin {
 	 * @return the color, or null if no color can be found.
 	 * @see org.eclipse.mylar.zest.core.IZestColorConstants.
 	 */ 
-	 //@tag bug(151332-Colors) : resolution
+	 //@tag zest(bug(151332-Colors)) : resolution
 	public Color getColor(String key) {
 		if (colors == null) {
 			Display display = getWorkbench().getDisplay();
@@ -132,6 +132,7 @@ public class ZestPlugin extends AbstractUIPlugin {
 		colors.put(IZestColorConstants.LIGHT_GRAY, new RGB(220, 220, 220));
 		colors.put(IZestColorConstants.BLACK, new RGB(0,0,0));
 		colors.put(IZestColorConstants.RED, new RGB(255,0,0));
+		colors.put(IZestColorConstants.DARK_RED, new RGB(127,0,0));
 		colors.put(IZestColorConstants.ORANGE, new RGB(255, 196, 0));
 		colors.put(IZestColorConstants.YELLOW, new RGB(255,255,0));
 		colors.put(IZestColorConstants.GREEN, new RGB(0,255,0));
