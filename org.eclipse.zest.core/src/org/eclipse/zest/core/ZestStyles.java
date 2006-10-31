@@ -232,6 +232,22 @@ public final class ZestStyles {
 	 */
 	//@tag style(arcs)
 	public static final int CONNECTIONS_BEZIER = 1 << 2;
+	
+	/**
+	 * Style constant to indicate that the Tree Graph Viewer should be 
+	 * compressed.
+	 * @tag style(tree_graph)
+	 */
+	public static final int TREE_GRAPH_COMPRESS = 1 << 0;
+	
+	
+	/**
+	 * Style constant to indicate that  the Tree Graph Viewer should use
+	 * a default "hanging" layout instead of the bushy "Normal" tree layout.
+	 * @tag style(tree_graph)
+	 */
+	public static final int TREE_GRAPH_HANGING_LAYOUT = 1 << 1;
+	
 	/**
 	 * Bitwise ANDs the styleToCheck integer with the given style.  
 	 * @param style

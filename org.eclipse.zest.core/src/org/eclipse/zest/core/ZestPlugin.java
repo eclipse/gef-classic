@@ -12,7 +12,6 @@ package org.eclipse.mylar.zest.core;
 
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
@@ -31,7 +30,6 @@ public class ZestPlugin extends AbstractUIPlugin {
 	
 	//colors used by Zest.
 	private ColorRegistry colors;
-	private ImageRegistry images;
 	
 	/**
 	 * The constructor.
@@ -45,6 +43,11 @@ public class ZestPlugin extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		addImage(IZestImageConstants.TREE_HANGING_ICON, getImageDescriptor(IZestImageConstants.TREE_HANGING_ICON).createImage());
+		addImage(IZestImageConstants.TREE_NORMAL_ICON, getImageDescriptor(IZestImageConstants.TREE_NORMAL_ICON).createImage());
+		addImage(IZestImageConstants.TREE_HANGING_INVERSE_ICON, getImageDescriptor(IZestImageConstants.TREE_HANGING_INVERSE_ICON).createImage());
+		addImage(IZestImageConstants.TREE_NORMAL_INVERSE_ICON, getImageDescriptor(IZestImageConstants.TREE_NORMAL_INVERSE_ICON).createImage());
+
 	}
 
 	/**
@@ -71,30 +74,23 @@ public class ZestPlugin extends AbstractUIPlugin {
 	 */
 	public static ImageDescriptor getImageDescriptor(String path) {
 		return AbstractUIPlugin.imageDescriptorFromPlugin("org.eclipse.mylar.zest.core", path);
-	}
-	
+	 }
 	
 	public void addImage( String key, Image image )  {
-		createRegistry();
-		images.put(key, image);
+		super.createImageRegistry();
+		getImageRegistry().put(key, image);
 	}
 	
 	public void removeImage( String key ) {
-		createRegistry();
-		images.remove(key);
+		super.createImageRegistry();
+		getImageRegistry().remove(key);
 	}
 	
 	public Image getImage( String key ) {
-		createRegistry();
-		return images.get(key);
+		super.createImageRegistry();
+		return getImageRegistry().get(key);
 	}
 	
-	private void createRegistry() {
-		if ( images == null ) {
-			Display display = getWorkbench().getDisplay();
-			images = new ImageRegistry(display);
-		}
-	}
 	
 	/**
 	 * Gets the color registered for the given key. Keys can be found in
