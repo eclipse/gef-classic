@@ -16,6 +16,7 @@ import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutAnimator;
+import org.eclipse.draw2d.StackLayout;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.viewers.IDAGContentProvider;
@@ -26,10 +27,12 @@ import org.eclipse.swt.widgets.Composite;
 public class DagViewerImpl extends Canvas {
 
 	private FigureCanvas figureCanvas = null;
+	private IFigure regularLayer = null;
+	private IFigure connectionLayer = null;
 	private boolean treeCompression = false;
 	private boolean hangingStyle = false;
-	private IFigure contents = null;
-	PageNode selected;
+
+	private DagNode selected;
 
 	public DagViewerImpl(Composite parent, int style) {
 		super(parent, style);
@@ -60,47 +63,47 @@ public class DagViewerImpl extends Canvas {
 	}
 	
 	public IFigure getConnectionLayer() {
-		return contents;
+		return connectionLayer;
 	}
 
 	public void setContents(Object input, IDAGContentProvider contentProvider, ILabelProvider labelProvider) {
 		getFigureCanvas().setBackground(ColorConstants.white);
+		connectionLayer = new Figure();
+		regularLayer = new Figure();
+		
 		IFigure f = new Figure();
-		this.contents = f;
+		
+		StackLayout stackLayout = new StackLayout();
+		f.addLayoutListener(LayoutAnimator.getDefault());
+		f.setLayoutManager(stackLayout);
 		
 		FlowLayout flowLayout = new FlowLayout(false);
-		f.addLayoutListener(LayoutAnimator.getDefault());
 		flowLayout.setMinorAlignment(FlowLayout.ALIGN_LEFTTOP);
 		
-		f.setLayoutManager(flowLayout);
+		regularLayer.setLayoutManager(flowLayout);
+		connectionLayer.setLayoutManager(stackLayout);
+		
 		DagModelFactory factory = new DagModelFactory(this, contentProvider, labelProvider);
 		DagNode[] roots = factory.createModel(contentProvider.getElements(input));
 		for (int i = 0; i < roots.length; i++) {
-			roots[i].placeFigure(f);
+			roots[i].placeFigure(regularLayer);
 			//roots[i].setCompression(treeCompression);
 		}
+		f.add(connectionLayer);
+		f.add(regularLayer);
 		getFigureCanvas().setContents(f);
 	}
+
 	
-	void doExpandCollapse() {
-		if (selected == null)
-			return;
-		TreeBranch parent = (TreeBranch) selected.getParent();
-		if (parent.getContentsPane().getChildren().isEmpty())
-			return;			
-			
-		if (parent.isExpanded())
-			parent.collapse();
-		else
-			parent.expand();
-				
-	}
-	
-	void setSelected(PageNode node) {
+	void setSelected(DagNode dagNode) {
 		if (selected != null) {
 			selected.setSelected(false);
 		}
-		selected = node;
+		// Remove all the old connections
+		while ( connectionLayer.getChildren().size() > 0 ) {
+			connectionLayer.remove((IFigure)connectionLayer.getChildren().get(0));
+		}
+		selected = dagNode;
 		selected.setSelected(true);
 	}
 	

@@ -137,6 +137,7 @@ class HangingLayout extends BranchLayout {
 				g.drawLine(pt.x, y, pt.x, pt.y);
 				right = Math.max(right, pt.x);
 			}
+			g.setLineWidth(2);
 			g.drawLine(x, y, right, y);
 
 		} else {
@@ -153,6 +154,7 @@ class HangingLayout extends BranchLayout {
 				g.drawLine(x, pt.y, pt.x, pt.y);
 				bottom = Math.max(bottom, pt.y);
 			}
+			g.setLineWidth(2);
 			g.drawLine(x, y, x, bottom);
 		}
 	}

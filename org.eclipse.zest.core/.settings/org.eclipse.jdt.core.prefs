@@ -1,4 +1,4 @@
-#Fri Apr 21 09:34:06 PDT 2006
+#Tue Oct 31 16:38:28 PST 2006
 eclipse.preferences.version=1
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.2
@@ -78,7 +78,7 @@ org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_constructor_declar
 org.eclipse.jdt.core.formatter.alignment_for_throws_clause_in_method_declaration=16
 org.eclipse.jdt.core.formatter.blank_lines_after_imports=1
 org.eclipse.jdt.core.formatter.blank_lines_after_package=1
-org.eclipse.jdt.core.formatter.blank_lines_before_field=1
+org.eclipse.jdt.core.formatter.blank_lines_before_field=0
 org.eclipse.jdt.core.formatter.blank_lines_before_first_class_body_declaration=0
 org.eclipse.jdt.core.formatter.blank_lines_before_imports=1
 org.eclipse.jdt.core.formatter.blank_lines_before_member_type=1
@@ -111,6 +111,7 @@ org.eclipse.jdt.core.formatter.compact_else_if=true
 org.eclipse.jdt.core.formatter.continuation_indentation=2
 org.eclipse.jdt.core.formatter.continuation_indentation_for_array_initializer=2
 org.eclipse.jdt.core.formatter.format_guardian_clause_on_one_line=false
+org.eclipse.jdt.core.formatter.indent_body_declarations_compare_to_annotation_declaration_header=true
 org.eclipse.jdt.core.formatter.indent_body_declarations_compare_to_enum_constant_header=true
 org.eclipse.jdt.core.formatter.indent_body_declarations_compare_to_enum_declaration_header=true
 org.eclipse.jdt.core.formatter.indent_body_declarations_compare_to_type_header=true
@@ -129,6 +130,7 @@ org.eclipse.jdt.core.formatter.insert_new_line_before_closing_brace_in_array_ini
 org.eclipse.jdt.core.formatter.insert_new_line_before_else_in_if_statement=do not insert
 org.eclipse.jdt.core.formatter.insert_new_line_before_finally_in_try_statement=do not insert
 org.eclipse.jdt.core.formatter.insert_new_line_before_while_in_do_statement=do not insert
+org.eclipse.jdt.core.formatter.insert_new_line_in_empty_annotation_declaration=insert
 org.eclipse.jdt.core.formatter.insert_new_line_in_empty_anonymous_type_declaration=insert
 org.eclipse.jdt.core.formatter.insert_new_line_in_empty_block=insert
 org.eclipse.jdt.core.formatter.insert_new_line_in_empty_enum_constant=insert
@@ -292,7 +294,7 @@ org.eclipse.jdt.core.formatter.keep_else_statement_on_same_line=false
 org.eclipse.jdt.core.formatter.keep_empty_array_initializer_on_one_line=false
 org.eclipse.jdt.core.formatter.keep_imple_if_on_one_line=false
 org.eclipse.jdt.core.formatter.keep_then_statement_on_same_line=false
-org.eclipse.jdt.core.formatter.lineSplit=120
+org.eclipse.jdt.core.formatter.lineSplit=80
 org.eclipse.jdt.core.formatter.number_of_blank_lines_at_beginning_of_method_body=0
 org.eclipse.jdt.core.formatter.number_of_empty_lines_to_preserve=1
 org.eclipse.jdt.core.formatter.put_empty_statement_on_new_line=true
