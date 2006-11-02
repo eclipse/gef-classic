@@ -49,7 +49,7 @@ public SetActivePaletteToolAction(PaletteViewer viewer, String label, ImageDescr
  * @see org.eclipse.jface.action.IAction#run()
  */
 public void run() {
-    if (viewer != null) {
+	if (viewer != null) {
         viewer.setActiveTool(entry);
 
         // The PaletteViewerKeyHandler will not pick up key events when the
@@ -59,6 +59,7 @@ public void run() {
         EditPart part = (EditPart) viewer.getEditPartRegistry().get(entry);
         viewer.appendSelection(part);
         viewer.setFocus(part);
-    }}
+    }
+}
 
 }
