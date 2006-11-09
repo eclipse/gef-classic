@@ -12,10 +12,10 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
 
 import java.util.Iterator;
 
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
+import org.eclipse.swt.widgets.Canvas;
 
 
 /**
@@ -37,7 +37,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory impleme
 	 * @return
 	 */
 	public GraphModel createModel() {
-		return new GraphModel((FigureCanvas)viewer.getControl());
+		return new GraphModel((Canvas)viewer.getControl());
 	}
 	
 	private IGraphEntityContentProvider getContentProvider() {

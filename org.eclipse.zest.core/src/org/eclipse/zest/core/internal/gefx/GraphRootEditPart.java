@@ -50,7 +50,6 @@ public class GraphRootEditPart extends ScalableFreeformRootEditPart implements Z
 	
 	public GraphRootEditPart() {
 		this(null, false, false);
-		this.zoomManager = new RectangleZoomManager((ScalableFigure)getScaledLayers(),(Viewport)getFigure());
 	}
 	
 	/**
@@ -64,6 +63,8 @@ public class GraphRootEditPart extends ScalableFreeformRootEditPart implements Z
 		this.panningListener = panningListener;
 		this.allowMarqueeSelection = allowMarqueeSelection;
 		this.allowPanning = allowPanning;
+		//@tag zest.bug.163481-NPE.fix : moved initialization from the no-arg constructor to here.
+		this.zoomManager = new RectangleZoomManager((ScalableFigure)getScaledLayers(),(Viewport)getFigure());
 	}
 	
 	protected LayeredPane createPrintableLayers() {

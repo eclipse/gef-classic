@@ -145,16 +145,15 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 	protected void inputChanged(Object input, Object oldInput) {
 		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 		
-		//if (modelFactory == null) {
-			if (getContentProvider() instanceof IGraphContentProvider) {
-				modelFactory = new GraphModelFactory(this, highlightAdjacentNodes);
-			} else if (getContentProvider() instanceof IGraphEntityContentProvider) {
-				modelFactory = new GraphModelEntityFactory(this, highlightAdjacentNodes);
-			} else if (getContentProvider() instanceof IGraphEntityRelationshipContentProvider) {
-//				@tag bug.154580-Content.fix : add new factory here.
-				modelFactory = new GraphModelEntityRelationshipFactory(this, highlightAdjacentNodes);
-			}
-		//}
+		if (getContentProvider() instanceof IGraphContentProvider) {
+			modelFactory = new GraphModelFactory(this, highlightAdjacentNodes);
+		} else if (getContentProvider() instanceof IGraphEntityContentProvider) {
+			modelFactory = new GraphModelEntityFactory(this, highlightAdjacentNodes);
+		} else if (getContentProvider() instanceof IGraphEntityRelationshipContentProvider) {
+//			@tag bug.154580-Content.fix : add new factory here.
+			modelFactory = new GraphModelEntityRelationshipFactory(this, highlightAdjacentNodes);
+		}
+		
 
 		GraphModel newModel = modelFactory.createModelFromContentProvider(input, getNodeStyle(), getConnectionStyle());
 		// get current list of nodes before they are re-created from the
