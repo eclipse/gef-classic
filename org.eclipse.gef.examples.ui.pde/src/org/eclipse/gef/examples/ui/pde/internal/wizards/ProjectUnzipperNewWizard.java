@@ -164,9 +164,9 @@ abstract public class ProjectUnzipperNewWizard
             URL[] projectZipURLListIn, String[] nameFormatsIn) {
         super();
 
-        assert projectZipURLListIn.length > 0;
-        assert nameFormatsIn.length > 0;
-        assert projectZipURLListIn.length == nameFormatsIn.length;
+        //assert projectZipURLListIn.length > 0;
+        //assert nameFormatsIn.length > 0;
+        //assert projectZipURLListIn.length == nameFormatsIn.length;
 
         pageName = pageNameIn;
         pageTitle = pageTitleIn;
