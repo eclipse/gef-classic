@@ -54,6 +54,7 @@ public class StaticGraphRootEditPart extends GraphRootEditPart implements ZestRo
 		this.panningListener = panningListener;
 		this.allowMarqueeSelection = allowMarqueeSelection;
 		this.allowPanning = allowPanning;
+		
 	}
 	
 	protected LayeredPane createPrintableLayers() {
@@ -75,12 +76,11 @@ public class StaticGraphRootEditPart extends GraphRootEditPart implements ZestRo
 		if (allowPanning && (panningListener != null)) {
 			return new PanningTracker(this, panningListener, allowPanning);
 		} else if (!allowMarqueeSelection) {
-			return new SingleSelectionTracker(this);
+			// If we don't allow the marquee selection use our drag tracker
+			return new ViewerDragTracker(this);
 		}
 		return new MarqueeDragTracker();
 	}
-	
-	
 	/**
 	 * Sets the scale for the Static Graph Viewer
 	 * @param x
@@ -121,12 +121,5 @@ public class StaticGraphRootEditPart extends GraphRootEditPart implements ZestRo
 	public GraphEditPart getModelRootEditPart() {
 		return modelGraphEditPart;
 	}
-	
-	
-
-
-	/**
-	 * 
-	 */
 	
 }
