@@ -38,11 +38,13 @@ import org.eclipse.mylar.zest.core.internal.gefx.IPanningListener;
 import org.eclipse.mylar.zest.core.internal.gefx.ThreadedGraphicalViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
-import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphNodeEditPart;
+import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.mylar.zest.core.viewers.SpringGraphViewer;
+import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.Stoppable;
 import org.eclipse.mylar.zest.layouts.algorithms.AbstractLayoutAlgorithm;
@@ -66,7 +68,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	private AbstractLayoutAlgorithm layoutAlgorithm = null;
 	private Stoppable layoutThread = null;
 	private GraphModel model = null;
-	private IGraphModelFactory modelFactory = null;
+	private IStylingGraphModelFactory modelFactory = null;
 	
 	/** Indicates if marquee (multiple) selection of nodes is allowed. */
 	private boolean allowMarqueeSelection;
@@ -142,7 +144,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	 * Sets the model and initializes the layout algorithm.
 	 * @see org.eclipse.mylar.zest.core.internal.gefx.ThreadedGraphicalViewer#setContents(java.lang.Object)
 	 */
-	public void setContents(GraphModel model, IGraphModelFactory modelFactory) {
+	public void setContents(GraphModel model, IStylingGraphModelFactory modelFactory) {
 		super.setContents(model);
 		this.model = model;
 		this.modelFactory = modelFactory;
@@ -341,7 +343,7 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	 */
 	public void addRelationship(Object connection, Object srcNode, Object destNode) {
 		// create the new relationship
-		IGraphModelConnection newConnection = modelFactory.createRelationship(model, connection, srcNode, destNode);
+		IGraphModelConnection newConnection = modelFactory.createConnection(model, connection, srcNode, destNode);
 
 		// add it to the layout algorithm
 		layoutAlgorithm.addRelationship(newConnection);
@@ -354,11 +356,17 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 	 */
 	public void addRelationship (Object connection) {
 		if (model.getInternalConnection(connection) == null) {
+			if (modelFactory.getContentProvider() instanceof IGraphContentProvider) {
+			IGraphContentProvider content = ((IGraphContentProvider)modelFactory.getContentProvider());
+			Object source = content.getSource(connection);
+			Object dest = content.getDestination(connection);
 			// create the new relationship
-			IGraphModelConnection newConnection = modelFactory.createRelationship(model, connection);
-			
+			IGraphModelConnection newConnection = modelFactory.createConnection(model, connection, source, dest);
 			// add it to the layout algorithm
 			layoutAlgorithm.addRelationship(newConnection);
+			} else {
+				throw new UnsupportedOperationException();
+			}
 		}
 	}
 	
@@ -533,6 +541,10 @@ public class SpringGraphViewerImpl extends ThreadedGraphicalViewer implements IP
 			
 			getControl().notifyListeners(SWT.Selection, null);
 		}
+	}
+	
+	public LayoutAlgorithm getLayoutAlgorithm() {
+		return layoutAlgorithm;
 	}
 	
 }

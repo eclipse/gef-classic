@@ -18,6 +18,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPart;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -29,7 +30,6 @@ import org.eclipse.mylar.zest.core.internal.gefx.StaticGraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
-import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IZestGraphDefaults;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.GraphEditPartFactory;
@@ -53,11 +53,10 @@ import org.eclipse.ui.PlatformUI;
  */
 public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements IPanningListener {
 	
-	private static final int ANIMATION_TIME = 500;
 	private LayoutAlgorithm layoutAlgorithm = null;
 	private NoOverlapLayoutAlgorithm noOverlapAlgorithm = null;
 	private GraphModel model = null;
-	private IGraphModelFactory modelFactory = null;
+	//private IStylingGraphModelFactory modelFactory = null;
 	private boolean allowMarqueeSelection = false;
 	private boolean allowPanning = false;
 	private boolean noOverlappingNodes = false;
@@ -141,6 +140,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		this.allowPanning = ZestStyles.checkStyle(style, ZestStyles.PANNING);
 		this.allowMarqueeSelection = !allowPanning && ZestStyles.checkStyle(style, ZestStyles.MARQUEE_SELECTION);				
 		(getFigureCanvas()).setScrollBarVisibility(FigureCanvas.AUTOMATIC);
+		getFigureCanvas().setBorder(new LineBorder(2));
 		setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), false);
 	}
 	
@@ -186,14 +186,33 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		return nodeStyle;
 	}
 	
+	/*
+	private void setLayoutFromStyle(int style) {
+		boolean grid = ZestStyles.checkStyle(ZestStyles.LAYOUT_GRID, style);
+		boolean radial = ZestStyles.checkStyle(ZestStyles.LAYOUT_RADIAL, style);
+		boolean tree = ZestStyles.checkStyle(ZestStyles.LAYOUT_TREE, style);
+		if (grid) {
+			setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), false);
+		} else if (radial) {
+			setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
+		} else if (tree) {
+			setLayoutAlgorithm(new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
+		} else {
+			// default to Spring layout
+			//SpringLayoutAlgorithm layout = new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+			setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
+			//setLayoutAlgorithm(layout, false);
+		}
+	}
+	*/
 	/**
 	 * Sets the model and initializes the layout algorithm.
 	 * @see org.eclipse.mylar.zest.core.internal.gefx.ThreadedGraphicalViewer#setContents(java.lang.Object)
 	 */
-	public void setContents(GraphModel model, IGraphModelFactory modelFactory) { 
+	//@tag zest.bug.160367-Refreshing.fix : uses the IStylingGraphModelFactory now
+	public void setContents(Object model) { 
 		super.setContents( model );
-		this.model = model;
-		this.modelFactory = modelFactory;
+		this.model = (GraphModel)model;
 		applyLayout();
 	}
 	
@@ -208,9 +227,11 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		this.addRevealListener(new RevealListener() {
 			public void revealed(Control c) {
 				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-				 public void run() {
-					applyLayoutInternal();
-				 }});
+
+					public void run() {
+						applyLayoutInternal();
+					}
+				});
 			}
 		});
 	}
@@ -251,7 +272,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		try {
 			Animation.markBegin();
 			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 0, 0, d.width, d.height, false, false);
-			Animation.run(ANIMATION_TIME);
+			Animation.run(2000);
 			getLightweightSystem().getUpdateManager().performUpdate();
 			
 		} catch (InvalidLayoutConfiguration e) {
@@ -259,6 +280,18 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			e.printStackTrace();
 		}
 
+
+		//animator.animateNodes(animateableNodes);
+
+		/*
+		try {
+			SpringLayoutAlgorithm grid = new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+			grid.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 
+								0, 0, d.width, d.height, false, false);
+		} catch (InvalidLayoutConfiguration e) {
+			e.printStackTrace();
+		}
+		*/
 		// enforce no overlapping nodes
 		if (noOverlappingNodes) {
 			noOverlapAlgorithm.layout(model.getNodes());
@@ -356,37 +389,6 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	}
 
 
-	/**
-	 * Creates a new relationship between the source node and the destination node.
-	 * If either node doesn't exist then it will be created.
-	 * @param connection	The connection data object.
-	 * @param srcNode		The source node data object.
-	 * @param destNode		The destination node data object.
-	 */
-	public void addRelationship(Object connection, Object srcNode, Object destNode) {
-		// create the new relationship
-		IGraphModelConnection newConnection = modelFactory.createRelationship(model, connection, srcNode, destNode);
-
-		// add it to the layout algorithm
-		layoutAlgorithm.addRelationship(newConnection);
-		applyLayout();
-	}
-	
-	/**
-	 * Adds a new relationship given the connection.  It will use the content provider 
-	 * to determine the source and destination nodes.
-	 * @param connection	The connection data object.
-	 */
-	public void addRelationship (Object connection) {
-		if (model.getInternalConnection(connection) == null) {
-			// create the new relationship
-			IGraphModelConnection newConnection = modelFactory.createRelationship(model, connection);
-			
-			// add it to the layout algorithm
-			layoutAlgorithm.addRelationship(newConnection);
-			applyLayout();
-		}
-	}
 	
 	/**
 	 * Updates the connection with the given weight.  
@@ -405,64 +407,8 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		}
 	}
 
-	/**
-	 * Removes the given connection object from the layout algorithm and the model.
-	 * @param connection
-	 */
-	public void removeRelationship(Object connection) {
-		IGraphModelConnection relation = model.getInternalConnection(connection);
-		
-		if (relation != null) {
-			// remove the relationship from the layout algorithm
-			layoutAlgorithm.removeRelationship(relation);
-			
-			// remove the relationship from the model
-			model.removeConnection(relation);
-			applyLayout();
-		}
-	}
 
 	
-	/**
-	 * Creates a new node and adds it to the graph.  If it already exists nothing happens.
-	 * @param newNode
-	 */
-	public void addNode(Object element) {
-		if (model.getInternalNode(element) == null ) {
-			// create the new node
-			IGraphModelNode newNode = modelFactory.createNode(model, element);
-			
-			// add it to the layout algorithm
-			layoutAlgorithm.addEntity(newNode);
-			applyLayout();
-		}
-	}
-
-	/**
-	 * Removes the given element from the layout algorithm and the model.
-	 * @param element	The node element to remove.
-	 */
-	public void removeNode(Object element) {
-		IGraphModelNode node = model.getInternalNode(element);
-		
-		if (node != null) {
-			// remove the node from the layout algorithm and all the connections
-			layoutAlgorithm.removeEntity(node);
-			layoutAlgorithm.removeRelationships(node.getSourceConnections());
-			layoutAlgorithm.removeRelationships(node.getTargetConnections());
-			
-			// remove the node and it's connections from the model
-			model.removeNode(node);
-			applyLayout();
-		}
-	}
-
-	
-	/**
-	 * Sets the selection for the Static Graph Viewer.  The given "user objects" will
-	 * be selected in the viewer.
-	 * @param selection
-	 */
 	public void setSelection(List selection) {
 		if (model == null) return;
 		Iterator iterator = selection.iterator();
@@ -486,6 +432,10 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			}
 		}
 		setSelection(new StructuredSelection(editPartList));
+	}
+	
+	public LayoutAlgorithm getLayoutAlgorithm() {
+		return layoutAlgorithm;
 	}
 	
 

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel;
 
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.viewers.IGraphEntityRelationshipContentProvider;
 import org.eclipse.swt.widgets.Canvas;
@@ -21,35 +20,37 @@ import org.eclipse.swt.widgets.Canvas;
  *
  */
 //@tag bug.154580-Content.fix
-public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFactory implements IGraphModelFactory {
+//@tag bug.160367-Refreshing.fix : updated to use new AbstractStylingModelFactory
+public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFactory {
 
-	
-	private StructuredViewer viewer;
-	private boolean highlight;
-
-	public GraphModelEntityRelationshipFactory(StructuredViewer viewer, boolean highlightAdjacent) {
-		this.viewer = viewer;
-		this.highlight = highlightAdjacent;
+	public GraphModelEntityRelationshipFactory(StructuredViewer viewer) {
+		super(viewer);
 		if (!(viewer.getContentProvider() instanceof IGraphEntityRelationshipContentProvider)) {
 			throw new IllegalArgumentException("Expected IGraphEntityRelationshipContentProvider");
 		}
 	}
 	
-	protected IGraphEntityRelationshipContentProvider getContentProvider() {
-		return (IGraphEntityRelationshipContentProvider) viewer.getContentProvider();
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory#createGraphModel()
+	 */
+	public GraphModel createGraphModel() {
+		GraphModel model = new GraphModel((Canvas) getViewer().getControl());
+		doBuildGraph(model);
+		return model;
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory#doCreateModelFromContentProvider(java.lang.Object, int, int)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory#doBuildGraph(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel)
 	 */
-	protected GraphModel doCreateModelFromContentProvider(Object input, int nodeStyle, int connectionStyle) {
-		GraphModel model = createModel();
-		model.setConnectionStyle(connectionStyle);
-		model.setNodeStyle(nodeStyle);
-		Object[] nodes = getContentProvider().getElements(input);
+	protected void doBuildGraph(GraphModel model) {
+		clearGraph(model);
+		model.setConnectionStyle(getConnectionStyle());
+		model.setNodeStyle(getNodeStyle());
+		Object[] nodes = getContentProvider().getElements(getViewer().getInput());
+		nodes = filter(getViewer().getInput(), nodes);
 		createModelNodes(model, nodes);
 		createModelRelationships(model);
-		return model;
 	}
 
 	/**
@@ -59,7 +60,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 */
 	private void createModelRelationships(GraphModel model) {
 		IGraphModelNode[] modelNodes = model.getNodesArray();
-		IGraphEntityRelationshipContentProvider content = getContentProvider();
+		IGraphEntityRelationshipContentProvider content = getCastedContent();
 		for (int i = 0; i < modelNodes.length; i++) {
 			for (int j = 0; j < modelNodes.length; j++) {
 				Object[] rels = content.getRelationships(
@@ -67,19 +68,12 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 					modelNodes[j].getExternalNode()
 				);
 				for (int r = 0; r < rels.length; r++) {
-					IGraphModelConnection conn = 
-						new GraphModelConnection(
-							model,
-							rels[r],
-							modelNodes[i],
-							modelNodes[j],
-							false,
-							content.getWeight(rels[r])
-						);
-					conn.setText(getLabelProvider().getText(rels[r]));
-					conn.setImage(getLabelProvider().getImage(rels[r]));
-					model.addConnection(rels[r], conn);
-					styleItem(conn);
+					createConnection(
+						model, 
+						rels[r], 
+						modelNodes[i].getExternalNode(), 
+						modelNodes[j].getExternalNode()
+					);
 				}
 			}
 		}
@@ -92,53 +86,34 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 */
 	private void createModelNodes(GraphModel model, Object[] nodes) {
 		for (int i = 0; i < nodes.length; i++) {
-			IGraphModelNode node = createNode(model, nodes[i]);
-			model.addNode(nodes[i], node);
-			node.setHighlightAdjacentNodes(highlight);
-			styleItem(node);
+			createNode(model, nodes[i]);
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory#getLabelProvider()
-	 */
-	protected ILabelProvider getLabelProvider() {
-		return (ILabelProvider)viewer.getLabelProvider();
-	}
+	
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory#createModel()
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
 	 */
-	public GraphModel createModel() {
-		return new GraphModel((Canvas)viewer.getControl());
+	public void refresh(GraphModel graph, Object element) {
+		refresh(graph, element, false);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory#createNode(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
-	 */
-	public IGraphModelNode createNode(GraphModel model, Object data) {
-		ILabelProvider labelProvider = getLabelProvider();
-		GraphModelNode node = new GraphModelNode(
-				model, 
-				labelProvider.getText(data), 
-				labelProvider.getImage(data), 
-				data
-			);
-		return node;
-	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory#createRelationship(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel, java.lang.Object, boolean)
 	 */
-	public IGraphModelConnection createRelationship(GraphModel model, Object data) {
-		throw new UnsupportedOperationException("Operation not supported.");
+	public void refresh(GraphModel graph, Object element, boolean updateLabels) {
+		//with this kind of graph, it is just as easy and cost-effective to
+		//rebuild the whole thing.
+		refreshGraph(graph);
+	}
+	
+	private IGraphEntityRelationshipContentProvider getCastedContent() {
+		return (IGraphEntityRelationshipContentProvider) getContentProvider();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory#createRelationship(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel, java.lang.Object, java.lang.Object, java.lang.Object)
-	 */
-	public IGraphModelConnection createRelationship(GraphModel model, Object data, Object source, Object dest) {
-		throw new UnsupportedOperationException("Operation not supported.");
-	}
+
+
 
 }

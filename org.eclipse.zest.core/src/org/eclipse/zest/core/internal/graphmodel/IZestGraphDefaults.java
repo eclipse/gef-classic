@@ -21,7 +21,8 @@ public interface IZestGraphDefaults {
 	/**
 	 * Default node style.
 	 */
-	public static final int NODE_STYLE = ZestStyles.NODES_HIGHLIGHT_ADJACENT;
+	//@tag zest.bug.160367.fix :  we have to get rid of highlighting adjacent by default because there is no way of turning it off otherwise.
+	public static final int NODE_STYLE = 0; //removing highlight adjacent by default. ZestStyles.NODES_HIGHLIGHT_ADJACENT;
 	
 	/**
 	 * Default connection style.

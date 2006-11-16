@@ -388,15 +388,18 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 			borderColor = borderHighlightColor;
 			changeBackgroundColor(highlightColor);
 			// highlight the adjacent nodes
-			for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
-				IGraphModelConnection conn = (IGraphModelConnection)iter.next();
-				conn.highlight();
-				conn.getDestination().highlightAdjacent();
-			}
-			for (Iterator iter = targetConnections.iterator(); iter.hasNext();) {
-				IGraphModelConnection conn = (IGraphModelConnection)iter.next();
-				conn.highlight();
-				conn.getSource().highlightAdjacent();
+			//@tag zest.bug.160367-Refreshing.fix : it was notices as a side-effect of this bug that we were never actually checking for the highlight-adjacent style. That is now fixed.
+			if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
+				for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
+					IGraphModelConnection conn = (IGraphModelConnection)iter.next();
+					conn.highlight();
+					conn.getDestination().highlightAdjacent();
+				}
+				for (Iterator iter = targetConnections.iterator(); iter.hasNext();) {
+					IGraphModelConnection conn = (IGraphModelConnection)iter.next();
+					conn.highlight();
+					conn.getSource().highlightAdjacent();
+				}
 			}
 			highlighted = true;
 			firePropertyChange(HIGHLIGHT_PROP, Boolean.FALSE, Boolean.TRUE);

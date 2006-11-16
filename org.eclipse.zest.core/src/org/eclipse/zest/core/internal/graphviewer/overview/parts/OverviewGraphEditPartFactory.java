@@ -18,7 +18,7 @@ import org.eclipse.gef.GraphicalEditPart;
 
 /**
  * Creates the edit parts associated with the different models.
- * @author Chris Callendar
+ * @deprecated
  */
 public class OverviewGraphEditPartFactory implements EditPartFactory {
 	

@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
-import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
 import org.eclipse.swt.widgets.Canvas;
@@ -22,104 +24,145 @@ import org.eclipse.swt.widgets.Canvas;
  * 
  * @author Ian Bull
  */
-public class GraphModelEntityFactory extends AbstractStylingModelFactory implements IGraphModelFactory {
+public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 
-	private StructuredViewer viewer = null;
-	private boolean highlightAdjacentNodes = false;
 	
-	public GraphModelEntityFactory(StructuredViewer viewer, boolean highlightAdjacentNodes) {
-		this.viewer = viewer;
-		this.highlightAdjacentNodes = highlightAdjacentNodes;
+	public GraphModelEntityFactory(StructuredViewer viewer) {
+		super(viewer);
 	}
 	
-	/**
-	 * Creates a new graph model
-	 * @return
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#createGraphModel()
 	 */
-	public GraphModel createModel() {
-		return new GraphModel((Canvas)viewer.getControl());
-	}
-	
-	private IGraphEntityContentProvider getContentProvider() {
-		return (IGraphEntityContentProvider)viewer.getContentProvider();
-	}
-	
-	protected ILabelProvider getLabelProvider() {
-		return (ILabelProvider)viewer.getLabelProvider();
-	}
-	
-	
-	//	@tag bug(154412-ClearStatic(fix)) : renamed to allow the parent to do some processing before the model is created.
-	public GraphModel doCreateModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle ) {
-		GraphModel model = createModel();
-		model.setNodeStyle(nodeStyle);
-		model.setConnectionStyle(connectionStyle);
-		
-		Object entities[] = getContentProvider().getElements( inputElement );
-		if ( entities == null ) return model;
-		for ( int i = 0; i < entities.length; i++ ) {
-			Object data = entities[ i ];
-			IGraphModelNode node = new GraphModelNode(model, getLabelProvider().getText(data), getLabelProvider().getImage(data), data);
-			node.setHighlightAdjacentNodes(highlightAdjacentNodes);
-			styleItem(node);
-			model.addNode( data, node );
-		}
-		
-		for ( int i=0; i < entities.length; i++ ) {
-			Object data = entities[ i ];
-			Object[] related = getContentProvider().getConnectedTo( data );
-			if ( related != null )
-				for ( int j = 0; j < related.length; j++ ) {
-					createRelationship(model, null, data, related[j]);
-				}
-		}	
+	public GraphModel createGraphModel() {
+		GraphModel model = new GraphModel((Canvas) getViewer().getControl());
+		doBuildGraph(model);
 		return model;
 	}
-
 	
-	public IGraphModelNode createNode(GraphModel model, Object data) {
-		IGraphModelNode node = new GraphModelNode(model, getLabelProvider().getText( data ), getLabelProvider().getImage(data), data);
-		node.setHighlightAdjacentNodes(highlightAdjacentNodes);
-		styleItem(node);
-		Object[] related = getContentProvider().getConnectedTo( data );
-		for ( int i = 0; i < related.length; i++ ) {
-			createRelationship(model, null, data, related);
+	
+	public void doBuildGraph(GraphModel model) {
+		clearGraph(model);
+		model.setConnectionStyle(getConnectionStyle());
+		model.setNodeStyle(getNodeStyle());
+		Object inputElement = getViewer().getInput();
+		Object entities[] = getContentProvider().getElements( inputElement );
+		if ( entities == null ) return;
+		entities = filter(inputElement, entities);
+		for ( int i = 0; i < entities.length; i++ ) {
+			Object data = entities[ i ];
+			createNode(model, data);
 		}
-		return node;
+		for ( int i=0; i < entities.length; i++ ) {
+			Object data = entities[ i ];
+			Object[] related = ((IGraphEntityContentProvider)getContentProvider()).getConnectedTo( data );
+			if ( related != null )
+				for ( int j = 0; j < related.length; j++ ) {
+					createConnection(model, new EntityConnectionData(data, related[j]), data, related[j]);
+				}
+		}	
 	}
 
-	public IGraphModelConnection createRelationship(GraphModel model, Object data, Object source, Object dest) {
-		IGraphModelNode sourceNode = getNode(model, source );
-		IGraphModelNode destNode = getNode( model, dest );
 
-		if ( sourceNode == null || destNode == null ) return null;
-		
-		// Check if connection already exists
-		IGraphModelConnection connection;
-		for (Iterator iterator =  sourceNode.getTargetConnections().iterator(); iterator.hasNext(); ) {
-			//TODO: get connections won't work for directed graphs!
-			connection = (IGraphModelConnection) iterator.next();
-			if ((dest != null) && dest.equals(connection.getDestination().getExternalNode())) {
-				// We already have a node that goes from source to dest!
-				//@tag bug(114452)
-				return null;
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
+	 */
+	public void refresh(GraphModel graph, Object element, boolean refreshLabels) {
+		if (element == null) return;
+		IGraphModelNode node = graph.getInternalNode(element);
+		if (node == null) {
+			//check to make sure that the user didn't send us an edge.
+			IGraphModelConnection conn = graph.getInternalConnection(element);
+			if (conn != null) {
+				//refresh on the connected nodes.
+				refresh(graph, conn.getSource().getExternalNode(), refreshLabels);
+				refresh(graph, conn.getDestination().getExternalNode(), refreshLabels);
+				return;
 			}
 		}
-		// Create the connection
-		double weight = getContentProvider().getWeight( source, dest );
-		connection = new GraphModelConnection(model, data, sourceNode, destNode, false, weight);
-		styleItem(connection);
-		model.addConnection(connection.getExternalConnection(), connection);
-		return connection;
+		//can only refresh on nodes in this kind of factory.
+		if (node == null) {
+			//do nothing
+			return;
+		}
+		reconnect(graph, element, refreshLabels);
+		
+		if (refreshLabels) {
+			update(node);
+			for (Iterator it = node.getSourceConnections().iterator(); it.hasNext();) {
+				update((IGraphItem) it.next());
+			}
+			for (Iterator it = node.getTargetConnections().iterator(); it.hasNext();) {
+				update((IGraphItem) it.next());
+			}
+		}
 	}
 
-	public IGraphModelConnection createRelationship(GraphModel model, Object data) {
-		throw new UnsupportedOperationException("Use createRelationship(model, object, object, object)");
+
+	/**
+	 * @param graph
+	 * @param element
+	 * @param refreshLabels
+	 */
+	private void reconnect(GraphModel graph, Object element, boolean refreshLabels) {
+		IGraphModelNode node = graph.getInternalNode(element);
+		Object[] related = ((IGraphEntityContentProvider)getContentProvider()).getConnectedTo(element);
+		List connections = node.getSourceConnections();
+		LinkedList toAdd = new LinkedList();
+		LinkedList toDelete = new LinkedList();
+		LinkedList toKeep = new LinkedList();
+		HashSet oldExternalConnections = new HashSet();
+		HashSet newExternalConnections = new HashSet();
+		for (Iterator it = connections.iterator(); it.hasNext();) {
+			oldExternalConnections.add(((IGraphModelConnection)it.next()).getExternalConnection());
+		}
+		for (int i = 0; i < related.length; i++) {
+			newExternalConnections.add(new EntityConnectionData(element, related[i]));
+		}
+		for (Iterator it = oldExternalConnections.iterator(); it.hasNext();) {
+			Object next = it.next();
+			if (!newExternalConnections.contains(next)) {
+				toDelete.add(next);
+			} else {
+				toKeep.add(next);
+			}
+		}
+		for (Iterator it = newExternalConnections.iterator(); it.hasNext();) {
+			Object next = it.next();
+			if (!oldExternalConnections.contains(next)) {
+				toAdd.add(next);
+			}
+		}
+		for (Iterator it = toDelete.iterator(); it.hasNext();) {
+			graph.removeConnection(it.next());
+		}
+		toDelete.clear();
+		LinkedList newNodeList = new LinkedList();
+		for (Iterator it = toAdd.iterator(); it.hasNext();) {
+			EntityConnectionData data = (EntityConnectionData) it.next();
+			IGraphModelNode dest = graph.getInternalNode(data.dest);
+			if (dest == null) {
+				newNodeList.add(data.dest);
+			}
+			createConnection(graph, data, data.source, data.dest);
+		}
+		toAdd.clear();
+		if (refreshLabels) {
+			for (Iterator i = toKeep.iterator(); i.hasNext();) {
+				styleItem(graph.getInternalConnection(i.next()));
+			}
+		}
+		for (Iterator it = newNodeList.iterator(); it.hasNext();) {
+			//refresh the new nodes so that we get a fully-up-to-date graph.
+			refresh(graph, it.next());
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel, java.lang.Object, boolean)
+	 */
+	public void refresh(GraphModel graph, Object element) {
+		refresh(graph, element, false);		
 	}
 	
-	private IGraphModelNode getNode( GraphModel model, Object data ) {
-		IGraphModelNode node = model.getInternalNode( data );
-		return node;
-	}
-		
 }

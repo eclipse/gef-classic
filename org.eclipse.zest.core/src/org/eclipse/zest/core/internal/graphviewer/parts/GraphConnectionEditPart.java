@@ -195,6 +195,14 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		} else if (IGraphModelConnection.LINEWIDTH_PROP.equals(property)) {
 			if (figure instanceof Shape)
 				((Shape)figure).setLineWidth(getCastedModel().getLineWidth());
+			RotatableDecoration dec = getDecoration();
+			if (dec instanceof PolylineDecoration) {
+				((PolylineDecoration)dec).setScale(getCastedModel().getLineWidth()+2, getCastedModel().getLineWidth()+2);
+			} else if (dec instanceof PolygonDecoration) {
+				((PolygonDecoration)dec).setScale(getCastedModel().getLineWidth()+2, getCastedModel().getLineWidth()+2);
+			} else if (dec instanceof Shape) {
+				((Shape)dec).setLineWidth(getCastedModel().getLineWidth());
+			}
 		} else if (IGraphModelConnection.LINESTYLE_PROP.equals(property)) {
 			if (figure instanceof Shape)
 				((Shape)figure).setLineStyle(getCastedModel().getLineStyle());
@@ -224,6 +232,17 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 			}
 		} else if (IGraphItem.VISIBLE_PROP.equals(property)) {
 			getFigure().setVisible(((Boolean)event.getNewValue()).booleanValue());
+		} else if (IGraphModelConnection.CURVE_PROP.equals(property)) {
+			if (figure instanceof PolylineArcConnection) {
+				((PolylineArcConnection)figure).setDepth(getCastedModel().getCurveDepth());
+			} else if (figure instanceof BezierConnection) {
+				BezierConnection bezier = (BezierConnection) figure;
+				IGraphModelConnection conn = getCastedModel();
+				bezier.setStartAngle((int) Math.round(conn.getStartLength()));
+				bezier.setEndAngle((int) Math.round(conn.getEndAngle()));
+				bezier.setStartLength(conn.getStartLength());
+				bezier.setEndLength(conn.getEndLength());
+			}
 		}
 	}
 	
@@ -250,6 +269,7 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	public final RotatableDecoration getDecoration() {
 		if (dec == null) {
 			dec = createDecoration();
+			getFigure().add(dec);
 		}
 		return dec;
 	}
@@ -260,7 +280,6 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		figure.setForegroundColor(getCastedModel().getLineColor());
 		if (figure instanceof Shape) {
 			((Shape)figure).setLineWidth(getCastedModel().getLineWidth());
-
 			((Shape)figure).setLineStyle(getCastedModel().getLineStyle());
 		}
 		//@tag zest(bug(154595(fix))) : change the arrow size based on the line width.
@@ -273,20 +292,14 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		} else if (dec instanceof Shape) {
 			((Shape)dec).setLineWidth(getCastedModel().getLineWidth());
 		}
-		if (figure instanceof PolylineConnection) { 	
-			if (directed) {
-				((PolylineConnection)getFigure()).setTargetDecoration(dec);
-			}
-			else {
-				((PolylineConnection)getFigure()).setTargetDecoration( null );
-			}
-		} else if (figure instanceof PolylineArcConnection) {
+		if (figure instanceof PolylineArcConnection) {
 			if (directed) {
 				((PolylineArcConnection)getFigure()).setTargetDecoration(dec);
 			}
 			else {
 				((PolylineArcConnection)getFigure()).setTargetDecoration( null );
 			}
+			((PolylineArcConnection)figure).setDepth(getCastedModel().getCurveDepth());
 		} else if (figure instanceof BezierConnection) {
 			if (directed) {
 	  			((BezierConnection)figure).setTargetDecoration(dec);
@@ -294,6 +307,13 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	  		else {
 	  			((BezierConnection)figure).setTargetDecoration( null );
 	  		}
+		} else if (figure instanceof PolylineConnection) { 	
+			if (directed) {
+				((PolylineConnection)getFigure()).setTargetDecoration(dec);
+			}
+			else {
+				((PolylineConnection)getFigure()).setTargetDecoration( null );
+			}
 		}
 		refreshLineStyle();
 		refreshLabelLocation();

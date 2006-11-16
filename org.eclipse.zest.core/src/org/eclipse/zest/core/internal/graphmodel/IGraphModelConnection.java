@@ -40,6 +40,8 @@ public interface IGraphModelConnection extends IGraphItem, LayoutRelationship {
 	public static final String LINESTYLE_PROP = "LineStyle";
 	/** The state of whether this line is directed has changed **/
 	public static final String DIRECTED_EDGE_PROP = "DirectedEdgeStyle";
+	/** Something has changed with the curve, i.e. its depth or its bezier coordinates */
+	public static final String CURVE_PROP = "CurveChanged";
 	
 	
 	/**

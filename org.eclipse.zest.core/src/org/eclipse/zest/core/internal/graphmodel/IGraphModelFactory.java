@@ -12,6 +12,7 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
 
 /**
  * @author Ian Bull
+ * @deprecated use {@link IStylingGraphModelFactory} instead.
  */
 public interface IGraphModelFactory {
 

@@ -96,17 +96,19 @@ public class GraphOverviewer extends StructuredViewer implements DisposeListener
 	}
 
 	/**
-	 * @param viewer2
+	 * Hooks this viewer to the given structured graph viewer. This need not be called by clients,
+	 * as it is autmatically updated based on selections. 
+	 * @param zoomViewer the viewer to hook to.
 	 */
-	public void hookViewer(AbstractStructuredGraphViewer zoomViewer) {
+	protected void hookViewer(AbstractStructuredGraphViewer zoomViewer) {
 		viewer.setContents(zoomViewer.getEditPartViewer());
 		currentHookedViewer = zoomViewer;
 	}
 
 	/**
-	 * 
+	 * Unhooks the currently hooked viewer.
 	 */
-	public void unhookViewer() {
+	protected void unhookViewer() {
 		//viewer.unhookViewer();		
 	}
 

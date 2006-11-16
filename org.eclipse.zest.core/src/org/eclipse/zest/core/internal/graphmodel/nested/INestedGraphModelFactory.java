@@ -14,6 +14,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 
 /**
  * @author Ian Bull
+ * @deprecated
  */
 public interface INestedGraphModelFactory {
 

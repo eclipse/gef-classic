@@ -1,0 +1,44 @@
+/*******************************************************************************
+ * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     The Chisel Group, University of Victoria
+ *******************************************************************************/
+package org.eclipse.mylar.zest.core.internal.graphmodel;
+
+/**
+ * A simple object that is used as the "external connection" in content providers that don't
+ * ask the user to create their own external connection. 
+ * 
+ * @author Del Myers
+ */
+public final class EntityConnectionData {
+	public Object source;
+	public Object dest;
+	/**
+	 * 
+	 */
+	public EntityConnectionData(Object source, Object dest) {
+		this.source = source;
+		this.dest = dest;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj) {
+		EntityConnectionData that = (EntityConnectionData) obj;
+		return (this.source.equals(that.source) && this.dest.equals(that.dest));
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return this.source.hashCode() + this.dest.hashCode();
+	}
+}

@@ -499,7 +499,9 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	}
 	
 	public void setCurveDepth(int curveDepth) {
+		Integer oldDepth = new Integer(this.curveDepth);
 		this.curveDepth = curveDepth;
+		firePropertyChange(CURVE_PROP, oldDepth, new Integer(curveDepth));
 	}
 
 
@@ -531,7 +533,9 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 */
 //	@tag zest(bug(152530-Bezier(fix)))
 	public void setEndAngle(double endAngle) {
+		Double oldAngle = new Double(this.endAngle);
 		this.endAngle = endAngle;
+		firePropertyChange(CURVE_PROP, oldAngle, new Double(endAngle));
 	}
 
 	/**
@@ -551,7 +555,10 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 */
 //	@tag zest(bug(152530-Bezier(fix)))
 	public void setEndLength(double endLength) {
+		Double oldLength = new Double(this.endLength);
 		this.endLength = endLength;
+		firePropertyChange(CURVE_PROP, oldLength, new Double(endLength));
+		
 	}
 
 	/**
@@ -575,7 +582,10 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 */
 //	@tag zest(bug(152530-Bezier(fix)))
 	public void setStartAngle(double startAngle) {
+		Double oldAngle = new Double(this.startAngle);
 		this.startAngle = startAngle;
+		firePropertyChange(CURVE_PROP, oldAngle, new Double(startAngle));
+		
 	}
 
 	/**
@@ -594,7 +604,9 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 */
 	//@tag zest(bug(152530-Bezier(fix)))
 	public void setStartLength(double startLength) {
+		Double oldLength = new Double(this.startLength);
 		this.startLength = startLength;
+		firePropertyChange(CURVE_PROP, oldLength, new Double(startLength));
 	}
 	
 	private boolean checkVisibilityByNodes() {

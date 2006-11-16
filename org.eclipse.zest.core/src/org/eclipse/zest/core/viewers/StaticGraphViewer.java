@@ -10,10 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.viewers;
 
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.editparts.ZoomManager;
@@ -21,19 +18,15 @@ import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.StaticGraphRootEditPart;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityRelationshipFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
-import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
-import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.StaticGraphViewerImpl;
-import org.eclipse.mylar.zest.core.internal.graphviewer.ZestSelectionManager;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Widget;
 
 /**
  * This view is used to represent a static graph. Static graphs can be layed
@@ -46,9 +39,8 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 
 	StaticGraphViewerImpl viewer = null;
 
-	private IGraphModelFactory modelFactory = null;
+	private IStylingGraphModelFactory modelFactory = null;
 
-	private GraphModel model;
 
 	/**
 	 * Initializes the viewer.
@@ -142,44 +134,6 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 		}
 	}
 
-	protected void inputChanged(Object input, Object oldInput) {
-		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT);
-		
-		if (getContentProvider() instanceof IGraphContentProvider) {
-			modelFactory = new GraphModelFactory(this, highlightAdjacentNodes);
-		} else if (getContentProvider() instanceof IGraphEntityContentProvider) {
-			modelFactory = new GraphModelEntityFactory(this, highlightAdjacentNodes);
-		} else if (getContentProvider() instanceof IGraphEntityRelationshipContentProvider) {
-//			@tag bug.154580-Content.fix : add new factory here.
-			modelFactory = new GraphModelEntityRelationshipFactory(this, highlightAdjacentNodes);
-		}
-		
-
-		GraphModel newModel = modelFactory.createModelFromContentProvider(input, getNodeStyle(), getConnectionStyle());
-		// get current list of nodes before they are re-created from the
-		// factory & content provider
-		Map oldNodesMap = (model != null ? model.getNodesMap() : Collections.EMPTY_MAP);
-
-		model = newModel;
-		model.setNodeStyle(getNodeStyle());
-		model.setConnectionStyle(getConnectionStyle());
-
-		// check if any of the pre-existing nodes are still present
-		// in this case we want them to keep the same location & size
-		for (Iterator iter = oldNodesMap.keySet().iterator(); iter.hasNext();) {
-			Object data = iter.next();
-			IGraphModelNode newNode = model.getInternalNode(data);
-			if (newNode != null) {
-				IGraphModelNode oldNode = (IGraphModelNode) oldNodesMap.get(data);
-				newNode.setPreferredLocation(oldNode.getXInLayout(), oldNode.getYInLayout());
-			}
-		}
-	// set the model contents (initializes the layout algorithm)
-		viewer.setContents(model, modelFactory);
-		refresh();
-
-	}
-
 	/**
 	 * Applys the current layout to the viewer
 	 */
@@ -189,24 +143,7 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 		}
 	}
 
-	protected Widget doFindInputItem(Object element) {
-		return null;
-	}
-
-	protected Widget doFindItem(Object element) {
-		return null;
-	}
-
-	protected void doUpdateItem(Widget item, Object element, boolean fullMap) {
-
-	}
-
-	/**
-	 * Gets the currently selected elements from the widget.
-	 */
-	protected List getSelectionFromWidget() {
-		return ((ZestSelectionManager)viewer.getSelectionManager()).getSelectedModelElements();
-	}
+	
 
 
 	public void reveal(Object element) {
@@ -221,26 +158,6 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 		return viewer.getControl();
 	}
 
-	/**
-	 * Adds a new node to the graph
-	 * 
-	 * @param o
-	 *            The new node to add
-	 */
-	public void addNode(Object o) {
-		viewer.addNode(o);
-	}
-
-	/**
-	 * Removes a node from the graph.
-	 * 
-	 * @param o
-	 *            the node to remove
-	 */
-	public void removeNode(Object o) {
-		viewer.removeNode(o);
-	}
-	
 	
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		viewer.addSelectionChangedListener(listener);
@@ -254,18 +171,36 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 		return ((StaticGraphRootEditPart)viewer.getRootEditPart()).getZoomManager();
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getModel()
-	 */
-	protected GraphModel getModel() {
-		return model;
-	}
+
 
 	/* (non-Javadoc)
 	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getEditPartViewer()
 	 */
 	protected EditPartViewer getEditPartViewer() {
 		return viewer;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
+	 */
+	protected IStylingGraphModelFactory getFactory() {
+		if (modelFactory == null) {
+			if (getContentProvider() instanceof IGraphContentProvider) {
+				modelFactory = new GraphModelFactory(this);
+			} else if (getContentProvider() instanceof IGraphEntityContentProvider) {
+				modelFactory = new GraphModelEntityFactory(this);
+			} else if (getContentProvider() instanceof IGraphEntityRelationshipContentProvider) {
+				modelFactory = new GraphModelEntityRelationshipFactory(this);
+			}
+		}
+		return modelFactory;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getLayoutAlgorithm()
+	 */
+	protected LayoutAlgorithm getLayoutAlgorithm() {
+		return viewer.getLayoutAlgorithm();
 	}
 	
 	

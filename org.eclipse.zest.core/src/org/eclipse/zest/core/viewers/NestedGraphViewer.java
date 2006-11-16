@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -32,7 +31,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
-import org.eclipse.mylar.zest.core.internal.graphmodel.nested.INestedGraphModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.nested.NestedGraphModelNode;
@@ -62,9 +61,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 
 	private NestedGraphViewerImpl viewer = null;
 
-	private INestedGraphModelFactory modelFactory = null;
-
-	private NestedGraphModel model;
+	private IStylingGraphModelFactory modelFactory = null;
 
 	private List focusListeners;
 
@@ -155,7 +152,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 *      java.lang.Object)
 	 */
 	protected void inputChanged(Object input, Object oldInput) {
-		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT);
+		//boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 
 		// // TODO - NestedGraphContentProvider
 		// if (getContentProvider() instanceof INestedGraphContentProvider) {
@@ -163,17 +160,13 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 		// highlightAdjacentNodes);
 		// }
 		// else
-		if (model != null) {
-			// remove this as a listener from the old model.
-			model.removePropertyChangeListener(this);
-		}
-		if (getContentProvider() instanceof INestedGraphEntityContentProvider) {
-			modelFactory = new NestedGraphModelEntityFactory(this, highlightAdjacentNodes);
-		}
+		NestedGraphModel model = (NestedGraphModel) createModel();
+		modelFactory.setNodeStyle(getNodeStyle());
+		modelFactory.setConnectionStyle(getConnectionStyle());
 		// DebugPrint.println("Input Is: " + input);
 		//@tag zest(bug(153348-NestedStyle(fix))) : add connection style and node style.
 		//@tag zest(bug(154412-ClearStatic(fix))) : the factory now returns a generic GraphModel so that this method can be abstracted into AbstractStylingModelFactory.
-		model = (NestedGraphModel)modelFactory.createModelFromContentProvider(input, getNodeStyle(), getConnectionStyle());
+		model = (NestedGraphModel)modelFactory.createGraphModel();
 		model.setNodeStyle(getNodeStyle());
 		model.setConnectionStyle(getConnectionStyle());
 		model.addPropertyChangeListener(this);
@@ -187,27 +180,6 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 		return viewer;
 	}
 
-	// StructuredViewer implemented methods
-
-	protected Widget doFindInputItem(Object element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected Widget doFindItem(Object element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	protected void doUpdateItem(Widget item, Object element, boolean fullMap) {
-		// TODO Auto-generated method stub
-
-	}
-
-	protected void internalRefresh(Object element) {
-		// TODO Auto-generated method stub
-
-	}
 
 	public void reveal(Object element) {
 		// TODO Auto-generated method stub
@@ -248,24 +220,25 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 			return;
 		}
 
-		ArrayList editPartList = new ArrayList(list.size());
-		for (int i = 0; i < list.size(); i++) {
-			Object data = list.get(i);
-			NestedGraphModelNode node = (NestedGraphModelNode) model.getInternalNode(data);
-			EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(node);
-			if (editPart != null) {
-				// ensure that all the parents are showing their children
-				if (reveal && (node.getParent() != null)) {
-					for (NestedGraphModelNode parentNode = node.getCastedParent(); parentNode != null; parentNode = parentNode
-							.getCastedParent()) {
-						parentNode.setChildrenVisible(true);
-					}
-				}
-				editPartList.add(i, editPart);
-			}
-		}
+//		ArrayList editPartList = new ArrayList(list.size());
+//		for (int i = 0; i < list.size(); i++) {
+//			Object data = list.get(i);
+//			NestedGraphModelNode node = (NestedGraphModelNode) model.getInternalNode(data);
+//			EditPart editPart = (EditPart) viewer.getEditPartRegistry().get(node);
+//			if (editPart != null) {
+//				// ensure that all the parents are showing their children
+//				if (reveal && (node.getParent() != null)) {
+//					for (NestedGraphModelNode parentNode = node.getCastedParent(); parentNode != null; parentNode = parentNode
+//							.getCastedParent()) {
+//						parentNode.setChildrenVisible(true);
+//					}
+//				}
+//				editPartList.add(i, editPart);
+//			}
+//		}
 		settingViewerSelection = true;
-		viewer.setSelection(new StructuredSelection(editPartList));
+		//viewer.setSelection(new StructuredSelection(editPartList));
+		super.setSelectionToWidget(list, reveal);
 		settingViewerSelection = false;
 	}
 
@@ -325,6 +298,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 */
 	public void doubleClick(DoubleClickEvent event) {
 		ISelection selection = event.getSelection();
+		NestedGraphModel model = (NestedGraphModel) getModel();
 		if (!selection.isEmpty() && (selection instanceof IStructuredSelection)) {
 			List list = ((IStructuredSelection) selection).toList();
 			Object data = list.get(0);
@@ -363,6 +337,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	// @tag zest(bug(151889-ViewCoupling)) : use a listener to update UI elements that
 	// want to know about focus changes.
 	public void propertyChange(PropertyChangeEvent evt) {
+		NestedGraphModel model = (NestedGraphModel) getModel();
 		if (evt.getSource() == model) {
 			if (evt.getPropertyName().equals(GraphModel.NODE_FOCUS_PROP)) {
 				IGraphModelNode old = (IGraphModelNode) evt.getOldValue();
@@ -442,6 +417,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 * @return true iff the model can navigate forward.
 	 */
 	public boolean canGoBackward() {
+		NestedGraphModel model = (NestedGraphModel) getModel();
 		return model.hasBackNode();
 	}
 
@@ -453,6 +429,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 *            the node to focus on.
 	 */
 	public void setFocus(Object node) {
+		NestedGraphModel model = (NestedGraphModel) getModel();
 		if (node == null) {
 			viewer.setCurrentNode(model.getRootNode());
 		} else {
@@ -466,6 +443,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 * @return the current node of focus.
 	 */
 	public Object getFocus() {
+		NestedGraphModel model = (NestedGraphModel) getModel();
 		IGraphModelNode node = model.getCurrentNode();
 		if (node == model.getRootNode()) {
 			return null;
@@ -479,6 +457,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 * @return true iff the model can navigate backward.
 	 */
 	public boolean canGoForward() {
+		NestedGraphModel model = (NestedGraphModel) getModel();
 		return model.hasForwardNode();
 	}
 
@@ -487,6 +466,7 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 	 * @return true iff the current focus node has a parent.
 	 */
 	public boolean focusHasParent() {
+		NestedGraphModel model = (NestedGraphModel) getModel();
 		return model.hasParentNode();
 	}
 	
@@ -505,18 +485,29 @@ public class NestedGraphViewer extends AbstractStructuredGraphViewer implements 
 		//@tag zest.check : should we actually layout the current node?
 	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getModel()
-	 */
-	protected GraphModel getModel() {
-		return model;
-	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getEditPartViewer()
 	 */
 	protected EditPartViewer getEditPartViewer() {
 		return viewer;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
+	 */
+	protected IStylingGraphModelFactory getFactory() {
+		if (modelFactory == null) {
+			modelFactory = new NestedGraphModelEntityFactory(this);
+		}
+		return modelFactory;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getLayoutAlgorithm()
+	 */
+	protected LayoutAlgorithm getLayoutAlgorithm() {
+		return null;
 	}
 
 }

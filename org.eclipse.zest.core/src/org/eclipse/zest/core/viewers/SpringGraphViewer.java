@@ -10,27 +10,21 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.viewers;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityRelationshipFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
-import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.SpringGraphViewerImpl;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Widget;
 
 
 /**
@@ -43,8 +37,7 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 	
 	
 	private SpringGraphViewerImpl viewer = null;
-	private IGraphModelFactory modelFactory = null;
-	private GraphModel model;
+	private IStylingGraphModelFactory modelFactory = null;
 
 	/**
 	 * Initializes the viewer.  
@@ -101,20 +94,21 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 
 	protected void inputChanged(Object input, Object oldInput) {
 		viewer.stopLayoutAlgorithm();
-		
-		boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT);
+		//boolean highlightAdjacentNodes = ZestStyles.checkStyle(viewer.getStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 		if ( getContentProvider() instanceof IGraphContentProvider ) {
-			modelFactory = new GraphModelFactory( this, highlightAdjacentNodes );
+			modelFactory = new GraphModelFactory( this );
 		}
 		else if ( getContentProvider() instanceof IGraphEntityContentProvider ) {
-			modelFactory = new GraphModelEntityFactory( this, highlightAdjacentNodes );
+			modelFactory = new GraphModelEntityFactory( this );
 		}
 		else if (getContentProvider() instanceof IGraphEntityRelationshipContentProvider) {
 //		@tag zest.bug.154580-Content.fix : add new factory here.
-			modelFactory = new GraphModelEntityRelationshipFactory(this, highlightAdjacentNodes);
+			modelFactory = new GraphModelEntityRelationshipFactory(this);
 		}
-		
-		model = modelFactory.createModelFromContentProvider( input, getNodeStyle(), getConnectionStyle() );
+		GraphModel model = createModel();
+		modelFactory.setConnectionStyle(getConnectionStyle());
+		modelFactory.setNodeStyle(getNodeStyle());
+		model = modelFactory.createGraphModel();
 
 		// set the model contents (initializes the layout algorithm)
 		model.setNodeStyle(getNodeStyle());
@@ -129,10 +123,10 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 	 * @param itemToCenter
 	 */
 	public void setCenterSelection( Object itemToCenter, int x, int y ) {
-		if( model.getInternalNode( itemToCenter ) == null ) {
+		if( getModel().getInternalNode( itemToCenter ) == null ) {
 			// noop
 		} else {
-			viewer.setCenterSelection(  model.getInternalNode(itemToCenter), x, y );
+			viewer.setCenterSelection( getModel().getInternalNode(itemToCenter), x, y );
 		}
 	}
 
@@ -210,110 +204,110 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 		return viewer.getControl();
 	}
 	
-	/**
-	 * Gets the selected model elements as a List.
-	 * @return List
-	 */
-	protected List getSelectionFromWidget() {
-		Widget[] items = viewer.getSelectedModelElements();
-		ArrayList list = new ArrayList(items.length);
-		for (int i = 0; i < items.length; i++) {
-			Widget item = items[i];
-			Object e = item.getData();
-			if (e != null)
-				list.add(e);
-		}
-		return list;
-	}
-
-	protected void setSelectionToWidget(List l, boolean reveal) {
-		ArrayList widgetList = new ArrayList( l.size() );
-		for ( int i = 0; i < l.size(); i++ ) {
-			widgetList.add(i, model.getInternalNode( l.get( i )));
-		}
-		//DebugPrint.println("Highlighting: " + widgetList.size() + " starting wtih: " + l.size() );
-		viewer.setSelection(new StructuredSelection( widgetList ));
-	}
-	
-	/**
-	 * Returns the input item (in this case the GraphModel object) if the given element
-	 * equals the root element, otherwise null is returned.
-	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindInputItem(java.lang.Object)
-	 */
-	protected Widget doFindInputItem(Object element) {
-		if (equals(element, getRoot())) {
-			return model;
-		}
-		return null;
-	}
-
-	/**
-	 * Returns the node (widget) for the given element.
-	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindItem(java.lang.Object)
-	 */
-	protected Widget doFindItem(Object element) {
-		if (model != null) {
-			Object o = model.getInternalNode( element );
-			if (o instanceof Widget)
-				return (Widget)o;
-		}
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.StructuredViewer#doUpdateItem(org.eclipse.swt.widgets.Widget, java.lang.Object, boolean)
-	 */
-	protected void doUpdateItem(Widget widget, Object element, boolean fullMap) {
-		if (widget instanceof GraphItem) {
-			final GraphItem item = (GraphItem)widget;
-			if (fullMap) {
-				associate(element, item);
-			} else {
-				item.setData(element);
-				mapElement(element, item);
-			}	
-		}
-	}
-
-	/**
-	 * Refreshes the given element.  If this element is the root element
-	 * then all the nodes are refreshed, otherwise just the one element is refreshed.
-	 * @param element the element to refresh. 
-	 */
-	protected void internalRefresh(Object element) {
-		//DebugPrint.println("internalRefresh");
-		if ((element == null) || equals(element, getRoot())) {
-			internalRefreshAll();
-		} else {
-			Widget widget = findItem(element);
-			if (widget != null) {
-				updateItem(widget, element);
-			}
-		}
-	}
-	
-	/**
-	 * Refreshes all the nodes in the model.
-	 */
-	protected void internalRefreshAll() {
-		if (model != null) {
-			List nodes = model.getNodes();
-			for (Iterator iter = nodes.iterator(); iter.hasNext(); ) {
-				IGraphModelNode node = (IGraphModelNode)iter.next();
-				Object o = node.getExternalNode();
-				if (node instanceof Widget) {
-					updateItem((Widget)node, o);
-				}
-			}
-		}
-	}
-
-	/**
-	 * Centers the given element on the canvas.
-	 */
+//	/**
+//	 * Gets the selected model elements as a List.
+//	 * @return List
+//	 */
+//	protected List getSelectionFromWidget() {
+//		Widget[] items = viewer.getSelectedModelElements();
+//		ArrayList list = new ArrayList(items.length);
+//		for (int i = 0; i < items.length; i++) {
+//			Widget item = items[i];
+//			Object e = item.getData();
+//			if (e != null)
+//				list.add(e);
+//		}
+//		return list;
+//	}
+//
+//	protected void setSelectionToWidget(List l, boolean reveal) {
+//		ArrayList widgetList = new ArrayList( l.size() );
+//		for ( int i = 0; i < l.size(); i++ ) {
+//			widgetList.add(i, getModel().getInternalNode( l.get( i )));
+//		}
+//		//DebugPrint.println("Highlighting: " + widgetList.size() + " starting wtih: " + l.size() );
+//		viewer.setSelection(new StructuredSelection( widgetList ));
+//	}
+//	
+//	/**
+//	 * Returns the input item (in this case the GraphModel object) if the given element
+//	 * equals the root element, otherwise null is returned.
+//	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindInputItem(java.lang.Object)
+//	 */
+//	protected Widget doFindInputItem(Object element) {
+//		if (equals(element, getRoot())) {
+//			return getModel();
+//		}
+//		return null;
+//	}
+//
+//	/**
+//	 * Returns the node (widget) for the given element.
+//	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindItem(java.lang.Object)
+//	 */
+//	protected Widget doFindItem(Object element) {
+//		if (getModel() != null) {
+//			Object o = getModel().getInternalNode( element );
+//			if (o instanceof Widget)
+//				return (Widget)o;
+//		}
+//		return null;
+//	}
+//
+//	/* (non-Javadoc)
+//	 * @see org.eclipse.jface.viewers.StructuredViewer#doUpdateItem(org.eclipse.swt.widgets.Widget, java.lang.Object, boolean)
+//	 */
+//	protected void doUpdateItem(Widget widget, Object element, boolean fullMap) {
+//		if (widget instanceof GraphItem) {
+//			final GraphItem item = (GraphItem)widget;
+//			if (fullMap) {
+//				associate(element, item);
+//			} else {
+//				item.setData(element);
+//				mapElement(element, item);
+//			}	
+//		}
+//	}
+//
+//	/**
+//	 * Refreshes the given element.  If this element is the root element
+//	 * then all the nodes are refreshed, otherwise just the one element is refreshed.
+//	 * @param element the element to refresh. 
+//	 */
+//	protected void internalRefresh(Object element) {
+//		//DebugPrint.println("internalRefresh");
+//		if ((element == null) || equals(element, getRoot())) {
+//			internalRefreshAll();
+//		} else {
+//			Widget widget = findItem(element);
+//			if (widget != null) {
+//				updateItem(widget, element);
+//			}
+//		}
+//	}
+//	
+//	/**
+//	 * Refreshes all the nodes in the model.
+//	 */
+//	protected void internalRefreshAll() {
+//		if (model != null) {
+//			List nodes = model.getNodes();
+//			for (Iterator iter = nodes.iterator(); iter.hasNext(); ) {
+//				IGraphModelNode node = (IGraphModelNode)iter.next();
+//				Object o = node.getExternalNode();
+//				if (node instanceof Widget) {
+//					updateItem((Widget)node, o);
+//				}
+//			}
+//		}
+//	}
+//
+//	/**
+//	 * Centers the given element on the canvas.
+//	 */
 	public void reveal(Object element) {
-		if ((model != null) && (element != null)) {
-			IGraphModelNode nodeToCenter = model.getInternalNode(element);
+		if ((getModel() != null) && (element != null)) {
+			IGraphModelNode nodeToCenter = getModel().getInternalNode(element);
 			if (nodeToCenter != null) {
 				viewer.centerNodeInCanvas(nodeToCenter);
 			}
@@ -344,17 +338,24 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getModel()
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getLayoutAlgorithm()
 	 */
-	protected GraphModel getModel() {
-		return model;
+	protected LayoutAlgorithm getLayoutAlgorithm() {
+		return viewer.getLayoutAlgorithm();
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getEditPartViewer()
 	 */
 	protected EditPartViewer getEditPartViewer() {
 		return viewer;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
+	 */
+	protected IStylingGraphModelFactory getFactory() {
+		return modelFactory;
 	}
 
 }

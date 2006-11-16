@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel;
 
+import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -35,7 +36,7 @@ import org.eclipse.ui.services.IDisposable;
  */
 //@tag bug(151327-Styles) : created to help resolve this bug
 public class GraphItemStyler {
-	public static void styleItem(IGraphItem item, final ILabelProvider labelProvider) {
+	public static void styleItem(IGraphItem item, final IBaseLabelProvider labelProvider) {
 		//provided for label providers that must be disposed.
 		if (labelProvider instanceof IDisposable && item instanceof Widget) {
 			((Widget)item).addDisposeListener(new DisposeListener(){
@@ -44,7 +45,7 @@ public class GraphItemStyler {
 				}
 			});
 		}
-	
+		
 		if (item instanceof IGraphModelNode) {
 			IGraphModelNode node = (IGraphModelNode)item;
 			//set defaults.
@@ -65,23 +66,35 @@ public class GraphItemStyler {
 			if (labelProvider instanceof IFontProvider) {
 				IFontProvider fontProvider = (IFontProvider) labelProvider;
 				node.setFont(fontProvider.getFont(entity));
-			}	
+			}
+			if (labelProvider instanceof ILabelProvider) {
+				String text = ((ILabelProvider)labelProvider).getText(node.getExternalNode());
+				node.setText((text != null) ? text : "");
+				node.setImage(((ILabelProvider)labelProvider).getImage(node.getExternalNode()));
+			}
 		} else if (item instanceof IGraphModelConnection) {
 			IGraphModelConnection conn = (IGraphModelConnection) item;
+		
 			//set defaults
 			if (conn.getGraphModel().getConnectionStyle() != ZestStyles.NONE) {
 				int s = conn.getGraphModel().getConnectionStyle();
 				conn.setConnectionStyle(s);
-				int swt = getLineStyleForZestStyle(s);
-				conn.setLineStyle(swt);
 			} else {
 				conn.setConnectionStyle(IZestGraphDefaults.CONNECTION_STYLE);
+			}
+			if (labelProvider instanceof ILabelProvider) {
+				String text = ((ILabelProvider)labelProvider).getText(conn.getExternalConnection());
+				conn.setText((text != null) ? text : "");
+				conn.setImage(((ILabelProvider)labelProvider).getImage(conn.getExternalConnection()));
 			}
 			if (labelProvider instanceof IEntityConnectionStyleProvider) {
 				styleEntityConnection(conn, (IEntityConnectionStyleProvider)labelProvider);
 			} else if (labelProvider instanceof IConnectionStyleProvider) {
 				styleConnection(conn, (IConnectionStyleProvider)labelProvider);
 			}
+			int swt = getLineStyleForZestStyle(conn.getConnectionStyle());
+			conn.setLineStyle(swt);
+			
 		}
 	}
 	

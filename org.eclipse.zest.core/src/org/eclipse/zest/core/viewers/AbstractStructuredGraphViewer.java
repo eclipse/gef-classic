@@ -10,22 +10,30 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.viewers;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.mylar.zest.core.ZestException;
 import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IZestGraphDefaults;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * Abstraction of graph viewers to implement functionality used by all of them.
@@ -84,6 +92,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * are used in the constructor.
 	 */
 	private int connectionStyle;
+
+	private GraphModel model;
 	
 	
 	protected AbstractStructuredGraphViewer(int graphStyle) {
@@ -147,6 +157,13 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 */
 	public abstract void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean run);
 	
+	
+	/**
+	 * Gets the current layout algorithm.
+	 * @return the current layout algorithm.
+	 */
+	protected abstract LayoutAlgorithm getLayoutAlgorithm();
+	
 	/**
 	 * Equivalent to setLayoutAlgorithm(algorithm, false).
 	 * @param algorithm
@@ -159,8 +176,133 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @see org.eclipse.jface.viewers.StructuredViewer#internalRefresh(java.lang.Object)
 	 */
 	protected void internalRefresh(Object element) {
-		filterVisuals();
+		if (element == getInput())
+			getFactory().refreshGraph(getModel());
+		else
+			getFactory().refresh(getModel(), element);
 	}
+	
+	protected void doUpdateItem(Widget item, Object element, boolean fullMap) {
+		if (item == getModel()) {
+			getFactory().update(getModel().getNodesArray());
+			getFactory().update(getModel().getConnectionsArray());
+		} else if (item instanceof IGraphItem) {
+			getFactory().update((IGraphItem)item);
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindInputItem(java.lang.Object)
+	 */
+	protected Widget doFindInputItem(Object element) {
+		if (element == getInput()) return getModel();
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindItem(java.lang.Object)
+	 */
+	protected Widget doFindItem(Object element) {
+		Widget node = (GraphItem)getModel().getNodesMap().get(element);
+		Widget connection = (GraphItem)getModel().getConnectionMap().get(element);
+		return (node != null) ? node : connection;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.StructuredViewer#getSelectionFromWidget()
+	 */
+	protected List getSelectionFromWidget() {
+		List internalSelection = getWidgetSelection();
+		LinkedList externalSelection = new LinkedList();
+		for (Iterator i = internalSelection.iterator(); i.hasNext();) {
+			//@tag zest.todo : should there be a method on IGraphItem to get the external data?
+			IGraphItem item = (IGraphItem) i.next();
+			if (item instanceof IGraphModelNode) {
+				externalSelection.add(((IGraphModelNode)item).getExternalNode());
+			} else if (item instanceof IGraphModelConnection) {
+				externalSelection.add(((IGraphModelConnection)item).getExternalConnection());
+			} else if (item instanceof Widget) {
+				externalSelection.add(((Widget)item).getData());
+			}
+		}
+		return externalSelection;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.StructuredViewer#setSelectionToWidget(java.util.List, boolean)
+	 */
+	protected void setSelectionToWidget(List l, boolean reveal) {
+		EditPartViewer viewer = getEditPartViewer();
+		List selection = new LinkedList();
+		for (Iterator i = l.iterator(); i.hasNext();) {
+			Object obj = i.next();
+			IGraphModelNode node = getModel().getInternalNode(obj);
+			IGraphModelConnection conn = getModel().getInternalConnection(obj);
+			if (node != null) {
+				selection.add(node);
+			}
+			if (conn != null) {
+				selection.add(conn);
+			}
+		}
+		viewer.setSelection(new StructuredSelection(selection));
+	}
+	
+	/**
+	 * Gets the internal model elements that are selected.
+	 * @return
+	 */
+	protected List getWidgetSelection() {
+		List editParts = getEditPartViewer().getSelectedEditParts();
+		List modelElements = new ArrayList();
+		for (Iterator i = editParts.iterator(); i.hasNext();) {
+			EditPart part = (EditPart)i.next();
+			if (part.getModel() instanceof Widget)
+				modelElements.add(part.getModel());
+		}
+		return modelElements;
+	}
+	
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.jface.viewers.Viewer#inputChanged(java.lang.Object, java.lang.Object)
+	 */
+	protected void inputChanged(Object input, Object oldInput) {
+		IStylingGraphModelFactory factory = getFactory();
+		factory.setConnectionStyle(getConnectionStyle());
+		factory.setNodeStyle(getNodeStyle());
+		GraphModel newModel = factory.createGraphModel();
+//		 get current list of nodes before they are re-created from the
+		// factory & content provider
+		Map oldNodesMap = (model != null ? model.getNodesMap() : Collections.EMPTY_MAP);
+
+		model = newModel;
+		model.setNodeStyle(getNodeStyle());
+		model.setConnectionStyle(getConnectionStyle());
+
+		// check if any of the pre-existing nodes are still present
+		// in this case we want them to keep the same location & size
+		for (Iterator iter = oldNodesMap.keySet().iterator(); iter.hasNext();) {
+			Object data = iter.next();
+			IGraphModelNode newNode = model.getInternalNode(data);
+			if (newNode != null) {
+				IGraphModelNode oldNode = (IGraphModelNode) oldNodesMap.get(data);
+				newNode.setPreferredLocation(oldNode.getXInLayout(), oldNode.getYInLayout());
+				newNode.setSizeInLayout(oldNode.getWidthInLayout(), oldNode.getHeightInLayout());
+			}
+		}
+		getEditPartViewer().setContents(model);
+		applyLayout();
+	}
+	
+	
+	
+	/**
+	 * Returns the factory used to create the model. This must not be called before the content
+	 * provider is set.
+	 * @return
+	 */
+	protected abstract IStylingGraphModelFactory getFactory();
 	
 	protected void filterVisuals() {
 		if (getModel() == null) return;
@@ -255,13 +397,119 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * Returns the internal graph model.
 	 * @return the internal graph model.
 	 */
-	protected abstract GraphModel getModel();
+	protected final GraphModel getModel() {
+		if (model == null) createModel();
+		return model;
+	}
+	
+	protected final GraphModel createModel() {
+		this.model = getFactory().createGraphModel();
+		return model;
+	}
 	
 	/**
 	 * Returns the underlying editpart viewer for this viewer.
 	 * @return the underlying editpart viewer for this viewer.
 	 */
 	protected abstract EditPartViewer getEditPartViewer();
+	
+	
+	/**
+	 * Removes the given connection object from the layout algorithm and the model.
+	 * @param connection
+	 */
+	public void removeRelationship(Object connection) {
+		IGraphModelConnection relation = model.getInternalConnection(connection);
+		
+		if (relation != null) {
+			// remove the relationship from the layout algorithm
+			if (getLayoutAlgorithm() != null)
+				getLayoutAlgorithm().removeRelationship(relation);
+			// remove the relationship from the model
+			getModel().removeConnection(relation);
+			applyLayout();
+		}
+	}
+
+	
+	/**
+	 * Creates a new node and adds it to the graph.  If it already exists nothing happens.
+	 * @param newNode
+	 */
+	public void addNode(Object element) {
+		if (model.getInternalNode(element) == null ) {
+			// create the new node
+			IGraphModelNode newNode = getFactory().createNode(model, element);
+			
+			// add it to the layout algorithm
+			if (getLayoutAlgorithm() != null)
+				getLayoutAlgorithm().addEntity(newNode);
+			applyLayout();
+		}
+	}
+
+	/**
+	 * Removes the given element from the layout algorithm and the model.
+	 * @param element	The node element to remove.
+	 */
+	public void removeNode(Object element) {
+		IGraphModelNode node = model.getInternalNode(element);
+		
+		if (node != null) {
+			// remove the node from the layout algorithm and all the connections
+			if (getLayoutAlgorithm() != null) {
+				getLayoutAlgorithm().removeEntity(node);
+				getLayoutAlgorithm().removeRelationships(node.getSourceConnections());
+				getLayoutAlgorithm().removeRelationships(node.getTargetConnections());
+			}
+			
+			// remove the node and it's connections from the model
+			getModel().removeNode(node);
+			applyLayout();
+		}
+	}
+	
+	/**
+	 * Creates a new relationship between the source node and the destination node.
+	 * If either node doesn't exist then it will be created.
+	 * @param connection	The connection data object.
+	 * @param srcNode		The source node data object.
+	 * @param destNode		The destination node data object.
+	 */
+	public void addRelationship(Object connection, Object srcNode, Object destNode) {
+		// create the new relationship
+		IStylingGraphModelFactory modelFactory = getFactory();
+		IGraphModelConnection newConnection = modelFactory.createConnection(model, connection, srcNode, destNode);
+
+		// add it to the layout algorithm
+		if (getLayoutAlgorithm() != null)
+			getLayoutAlgorithm().addRelationship(newConnection);
+		applyLayout();
+	}
+	
+	/**
+	 * Adds a new relationship given the connection.  It will use the content provider 
+	 * to determine the source and destination nodes.
+	 * @param connection	The connection data object.
+	 */
+	public void addRelationship (Object connection) {
+		IStylingGraphModelFactory modelFactory = getFactory();
+		if (model.getInternalConnection(connection) == null) {
+			if (modelFactory.getContentProvider() instanceof IGraphContentProvider) {
+				IGraphContentProvider content = ((IGraphContentProvider)modelFactory.getContentProvider());
+				Object source = content.getSource(connection);
+				Object dest = content.getDestination(connection);
+				// create the new relationship
+				IGraphModelConnection newConnection = modelFactory.createConnection(model, connection, source, dest);
+				// add it to the layout algorithm
+				if (getLayoutAlgorithm() != null)
+					getLayoutAlgorithm().addRelationship(newConnection);
+			} else {
+				throw new UnsupportedOperationException();
+			}
+		}
+	}
+
 	
 
 }

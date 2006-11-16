@@ -10,7 +10,9 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel;
 
-import org.eclipse.jface.viewers.ILabelProvider;
+import java.util.Iterator;
+import java.util.List;
+
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.swt.widgets.Canvas;
@@ -23,133 +25,115 @@ import org.eclipse.swt.widgets.Canvas;
  * @author Ian Bull
  * @author Chris Callendar
  */
-public class GraphModelFactory extends AbstractStylingModelFactory implements IGraphModelFactory {
+public class GraphModelFactory extends AbstractStylingModelFactory {
 
 
-	private StructuredViewer viewer = null;
-	private boolean highlightAdjacentNodes = false;
-	
 		
-	public GraphModelFactory(StructuredViewer viewer, boolean highlightAdjacentNodes) {
-		this.viewer = viewer;
-		this.highlightAdjacentNodes = highlightAdjacentNodes;
+	public GraphModelFactory(StructuredViewer viewer) {
+		super(viewer);
 	}
 	
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createModel()
 	 */
-	public GraphModel createModel() {
-		return new GraphModel((Canvas)viewer.getControl());
-	}
-	
-	private IGraphContentProvider getContentProvider() {
-		return (IGraphContentProvider)viewer.getContentProvider();
-	}
-	
-	protected ILabelProvider getLabelProvider() {
-		return (ILabelProvider)viewer.getLabelProvider();
-	}
-	
-	/* (non-Javadoc)
-	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createModelFromContentProvider(java.lang.Object)
-	 */
-	//	@tag zest(bug(154412-ClearStatic(fix))) : renamed to allow the parent to do some processing before the model is created.
-	public GraphModel doCreateModelFromContentProvider( Object inputElement, int nodeStyle, int connectionStyle) {
-		//@tag zest(bug(152045-UnconnectedNodes)) : This does not take care of non-connected nodes. FIXED
-		GraphModel model = createModel();
-		model.setConnectionStyle(connectionStyle);
-		model.setNodeStyle(nodeStyle);
-		//make the model have the same styles as the viewer
-		Object rels[] = getContentProvider().getElements(inputElement);
-		
-		if ( rels != null ) {
-			// If rels returns null then just continue
-			// @tag zest(bug(134928(fix))) : An empty graph causes an NPE
-			for ( int i = 0; i < rels.length; i++ ) {
-				createRelationship(model, rels[i], getContentProvider().getSource(rels[i]), getContentProvider().getDestination(rels[i]));
-			}
-		}
-		
-		
+	public GraphModel createGraphModel() {
+		GraphModel model = new GraphModel((Canvas)getViewer().getControl());
+		doBuildGraph(model);
 		return model;
 	}
 	
 	/* (non-Javadoc)
-	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createRelationship(ca.uvic.cs.zest.internal.graphmodel.GraphModel, java.lang.Object)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory#doBuildGraph(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel)
 	 */
-	public IGraphModelConnection createRelationship(GraphModel model, Object data) {
-		return createRelationship(model, data, getContentProvider().getSource(data), getContentProvider().getDestination(data));
-	}	
-	
-	/* (non-Javadoc)
-	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createRelationship(ca.uvic.cs.zest.internal.graphmodel.GraphModel, java.lang.Object, java.lang.Object, java.lang.Object)
-	 */
-	public IGraphModelConnection createRelationship( GraphModel model, Object data, Object source, Object dest  ) {
-		//@tag zest(bug(152045-UnconnectedNodes)) : FIX
-		if (source == null && dest == null) {
-			//no information to create on.
-			return null;
-		}
-		
-		IGraphModelNode sourceNode = null;
-		IGraphModelNode destNode = null;
-		if (source != null) {
-			sourceNode = model.getInternalNode( source );
-			if ( sourceNode == null ) {
-				sourceNode = createNode(model, source );
+	protected void doBuildGraph(GraphModel model) {
+		clearGraph(model);
+		model.setConnectionStyle(getConnectionStyle());
+		model.setNodeStyle(getNodeStyle());
+		//make the model have the same styles as the viewer
+		Object rels[] = getContentProvider().getElements(getViewer().getInput());
+		rels = filter(getViewer().getInput(), rels);
+		if ( rels != null ) {
+			// If rels returns null then just continue
+			// @tag zest(bug(134928(fix))) : An empty graph causes an NPE
+			for ( int i = 0; i < rels.length; i++ ) {
+				Object source = getCastedContent().getSource(rels[i]);
+				Object dest = getCastedContent().getDestination(rels[i]);
+				if (source == null) {
+					//just create the node for the destination
+					if (dest != null) createNode(model, dest);
+					continue;
+				} else if (dest == null) {
+					//just create the node for the source
+					if (source != null) createNode(model, source);
+					continue;
+				}
+				createConnection(model, rels[i], getCastedContent().getSource(rels[i]), getCastedContent().getDestination(rels[i]));
 			}
 		}
-		if (dest != null) { 
-			destNode = model.getInternalNode( dest );
-			if ( destNode == null ) {
-				destNode = createNode(model, dest);
-			}	
-		}
 		
-		if (sourceNode == null || destNode == null) {
-			//no connection to create
-			return null;
+		
+	}
+
+	private IGraphContentProvider getCastedContent() {
+		return (IGraphContentProvider)getContentProvider();
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
+	 */
+	public void refresh(GraphModel graph, Object element) {
+		refresh(graph, element, false);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel, java.lang.Object, boolean)
+	 */
+	public void refresh(GraphModel graph, Object element, boolean updateLabels) {
+		IGraphModelConnection conn = graph.getInternalConnection(element);
+		if (conn == null) {
+			//did the user send us a node? Check all of the connections on the node.
+			IGraphModelNode node = graph.getInternalNode(element);
+			if (node != null) {
+				List connections = node.getSourceConnections();
+				for (Iterator it = connections.iterator(); it.hasNext();) {
+					IGraphModelConnection c = (IGraphModelConnection) it.next();
+					refresh(graph, c.getExternalConnection(), updateLabels);
+				}
+				connections = node.getTargetConnections();
+				for (Iterator it = connections.iterator(); it.hasNext();) {
+					IGraphModelConnection c = (IGraphModelConnection) it.next();
+					refresh(graph, c.getExternalConnection(), updateLabels);
+				}
+			}
+			return;
 		}
+		Object oldSource = conn.getSource().getExternalNode();
+		Object oldDest = conn.getDestination().getExternalNode();
+		Object newSource = getCastedContent().getSource(element);
+		Object newDest = getCastedContent().getDestination(element);
+		if (!(oldSource.equals(newSource) && oldDest.equals(newDest))) {
+			IGraphModelNode internalSource = graph.getInternalNode(newSource);
+			IGraphModelNode internalDest = graph.getInternalNode(newDest);
+			if (internalSource == null) {
+				internalSource = createNode(graph, newSource);
+			} else if (updateLabels) {
+				styleItem(internalSource);	
+			}
+			if (internalDest == null) {
+				internalDest = createNode(graph, newDest);
+			} else if (updateLabels) {
+				styleItem(internalDest);
+			}
 			
-		
-		IGraphModelConnection connection;
-		/*
-		 * Allow potentially infinite number of connections between two nodes.
-		for (Iterator iterator =  sourceNode.getTargetConnections().iterator(); iterator.hasNext(); ) {
-			//TODO: get connections won't work for directed graphs!
-			connection = (GraphModelConnection) iterator.next();
-			if ( connection.getSource().getExternalNode().equals( dest ) ) {
-				// We already have a node that goes from source to dest!
-				// @tag zest(bug(114452))
-				return null;
+			conn.disconnect();
+			conn.reconnect(internalSource, internalDest);
+			if (updateLabels) {
+				styleItem(conn);
 			}
 		}
-		*/
 		
-		connection = new GraphModelConnection(model, data, sourceNode, destNode, false, getContentProvider().getWeight(data));
-		String label = getLabelProvider().getText(data) != null ? getLabelProvider().getText(data) : "";
-		connection.setText(label);
-		connection.setImage(getLabelProvider().getImage(data));
-		model.addConnection(connection.getExternalConnection(), connection);
-		styleItem(connection);
-		return connection;
 	}
-	
-	
-	/* (non-Javadoc)
-	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createNode(ca.uvic.cs.zest.internal.graphmodel.GraphModel, java.lang.Object)
-	 */
-	public IGraphModelNode createNode( GraphModel model, Object data ) {
-		if ( model.getInternalNode( data ) == null ) {
-			ILabelProvider labelProvider = getLabelProvider();
-			IGraphModelNode node = new GraphModelNode(model, getLabelProvider().getText(data), labelProvider.getImage(data), data);
-			node.setHighlightAdjacentNodes(highlightAdjacentNodes);
-			styleItem(node);
-			model.addNode(data, node);
-			return node;
-		} else {
-			return model.getInternalNode( data );
-		}
-	}
+
+
 
 }
