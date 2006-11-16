@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.EditPart;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -54,6 +53,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements IPanningListener {
 	
+	private static final int ANIMATION_TIME = 500;
 	private LayoutAlgorithm layoutAlgorithm = null;
 	private NoOverlapLayoutAlgorithm noOverlapAlgorithm = null;
 	private GraphModel model = null;
@@ -141,7 +141,6 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		this.allowPanning = ZestStyles.checkStyle(style, ZestStyles.PANNING);
 		this.allowMarqueeSelection = !allowPanning && ZestStyles.checkStyle(style, ZestStyles.MARQUEE_SELECTION);				
 		(getFigureCanvas()).setScrollBarVisibility(FigureCanvas.AUTOMATIC);
-		getFigureCanvas().setBorder(new LineBorder(2));
 		setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), false);
 	}
 	
@@ -187,25 +186,6 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		return nodeStyle;
 	}
 	
-	/*
-	private void setLayoutFromStyle(int style) {
-		boolean grid = ZestStyles.checkStyle(ZestStyles.LAYOUT_GRID, style);
-		boolean radial = ZestStyles.checkStyle(ZestStyles.LAYOUT_RADIAL, style);
-		boolean tree = ZestStyles.checkStyle(ZestStyles.LAYOUT_TREE, style);
-		if (grid) {
-			setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), false);
-		} else if (radial) {
-			setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
-		} else if (tree) {
-			setLayoutAlgorithm(new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
-		} else {
-			// default to Spring layout
-			//SpringLayoutAlgorithm layout = new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
-			setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
-			//setLayoutAlgorithm(layout, false);
-		}
-	}
-	*/
 	/**
 	 * Sets the model and initializes the layout algorithm.
 	 * @see org.eclipse.mylar.zest.core.internal.gefx.ThreadedGraphicalViewer#setContents(java.lang.Object)
@@ -214,8 +194,6 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		super.setContents( model );
 		this.model = model;
 		this.modelFactory = modelFactory;
-		
-		
 		applyLayout();
 	}
 	
@@ -230,11 +208,9 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		this.addRevealListener(new RevealListener() {
 			public void revealed(Control c) {
 				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-
-					public void run() {
-						applyLayoutInternal();
-					}
-				});
+				 public void run() {
+					applyLayoutInternal();
+				 }});
 			}
 		});
 	}
@@ -275,7 +251,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		try {
 			Animation.markBegin();
 			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 0, 0, d.width, d.height, false, false);
-			Animation.run(2000);
+			Animation.run(ANIMATION_TIME);
 			getLightweightSystem().getUpdateManager().performUpdate();
 			
 		} catch (InvalidLayoutConfiguration e) {
@@ -283,18 +259,6 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			e.printStackTrace();
 		}
 
-
-		//animator.animateNodes(animateableNodes);
-
-		/*
-		try {
-			SpringLayoutAlgorithm grid = new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
-			grid.applyLayout(model.getNodesArray(), model.getConnectionsArray(), 
-								0, 0, d.width, d.height, false, false);
-		} catch (InvalidLayoutConfiguration e) {
-			e.printStackTrace();
-		}
-		*/
 		// enforce no overlapping nodes
 		if (noOverlappingNodes) {
 			noOverlapAlgorithm.layout(model.getNodes());
@@ -494,6 +458,11 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	}
 
 	
+	/**
+	 * Sets the selection for the Static Graph Viewer.  The given "user objects" will
+	 * be selected in the viewer.
+	 * @param selection
+	 */
 	public void setSelection(List selection) {
 		if (model == null) return;
 		Iterator iterator = selection.iterator();
