@@ -317,7 +317,7 @@ public class TreeBranch extends Figure {
 		aligment = value;
 		revalidate();
 	}
-
+	
 	/**
 	 * @param b
 	 */

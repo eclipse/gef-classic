@@ -33,6 +33,7 @@ public class DagViewerImpl extends Canvas {
 	private boolean hangingStyle = false;
 
 	private DagNode selected;
+	private DagBranch highlighted;
 
 	public DagViewerImpl(Composite parent, int style) {
 		super(parent, style);
@@ -94,6 +95,19 @@ public class DagViewerImpl extends Canvas {
 		getFigureCanvas().setContents(f);
 	}
 
+	
+	void unHighlightNode() {
+		if ( highlighted != null ) {
+			highlighted.getNode().setHighlighted(false);
+		}
+	}
+	void highlightNode(DagBranch dagBranch ) {
+		if ( highlighted != null ) {
+			highlighted.getNode().setHighlighted(false);
+		}
+		highlighted = dagBranch;
+		dagBranch.getNode().setHighlighted(true);
+	}
 	
 	void setSelected(DagNode dagNode) {
 		if (selected != null) {

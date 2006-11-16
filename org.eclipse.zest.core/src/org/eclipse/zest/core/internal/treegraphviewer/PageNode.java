@@ -26,6 +26,9 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * This was originally a Draw2D Snippet that has been modified for Zest. All bugs 
@@ -37,14 +40,16 @@ import org.eclipse.swt.graphics.Color;
 public class PageNode extends Figure {
 
 	private boolean selected;
+	private boolean highlighted;
 	static final Color gradient1 = new Color(null, 232, 232, 240);
 	static final Color gradient2 = new Color(null, 176, 184, 216);
 	static final Color corner1 = new Color(null, 200, 208, 223);
 	static final Color corner2 = new Color(null, 160, 172, 200);
 	static final Color blue = new Color(null, 152, 168, 200);
+	//static final Font font = new Font()  Look below where I create the font... do this in a registy
 	static final Color shadow = new Color(null, 202, 202, 202);
 	static final int CORNER_SIZE = 10;
-	static final Border BORDER = new CompoundBorder(new FoldedPageBorder(), new MarginBorder(4, 4, 8, 3));
+	static final Border BORDER = new CompoundBorder(new FoldedPageBorder(), new MarginBorder(0, 2,1, 10));
 
 	private PlusMinus plusMinus = new PlusMinus();
 	private TreeStyle layoutDisplay = null; 
@@ -101,6 +106,9 @@ public class PageNode extends Figure {
 
 	public PageNode(String text) {
 		this();
+		FontData[] fd = Display.getDefault().getSystemFont().getFontData();
+		fd[0].height= 9;
+		label.setFont(new Font(Display.getDefault(), fd));
 		label.setText(text);
 		
 	}
@@ -109,7 +117,11 @@ public class PageNode extends Figure {
 		this.addLayoutListener(LayoutAnimator.getDefault());
 		layoutDisplay = new TreeStyle(this);
 		setBorder(BORDER);
-		setLayoutManager(new FlowLayout(false));
+
+		FlowLayout flowLayout = new FlowLayout(false);
+		flowLayout.setMajorSpacing(0);
+		flowLayout.setMinorSpacing(0);
+		setLayoutManager(flowLayout);
 		
 		layoutDisplay.setBounds(new Rectangle(0,0,-1,-1));
 
@@ -162,12 +174,21 @@ public class PageNode extends Figure {
 		if (selected) {
 			g.setForegroundColor(ColorConstants.menuBackgroundSelected);
 			g.setBackgroundColor(ColorConstants.titleGradient);
-		} else {
+		} else if (highlighted) {
+			g.setForegroundColor(blue);
+			g.setBackgroundColor(corner1);
+		}
+		else {
 			g.setForegroundColor(gradient1);
 			g.setBackgroundColor(gradient2);
 		}
 		g.fillGradient(getBounds().getResized(-3, -3), true);
 
+	}
+	
+	public void setHighlighted(boolean value) {
+		this.highlighted = value;
+		repaint();
 	}
 
 	public void setSelected(boolean value) {

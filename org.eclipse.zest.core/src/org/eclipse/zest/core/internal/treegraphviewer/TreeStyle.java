@@ -40,11 +40,13 @@ public class TreeStyle extends Toggle {
 
 		g.setBackgroundColor(ColorConstants.black);
 		g.setForegroundColor(ColorConstants.black);
+		
 		Rectangle r = Rectangle.SINGLETON;
 		r.setBounds(getBounds()).resize(-1, -1);
 
 		// If the node is selected use the inverse icons
 		// because they look much better
+		
 		if (node.isSelected()) {
 			if (isSelected())
 				g.drawImage(ZestPlugin.getDefault().getImageRegistry().get(IZestImageConstants.TREE_HANGING_INVERSE_ICON), r.x,	r.y);
@@ -56,6 +58,8 @@ public class TreeStyle extends Toggle {
 			else
 				g.drawImage(ZestPlugin.getDefault().getImageRegistry().get(IZestImageConstants.TREE_NORMAL_ICON), r.x, r.y);
 		}
+		
+		
 
 	}
 

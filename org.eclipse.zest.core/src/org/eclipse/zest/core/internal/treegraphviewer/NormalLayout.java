@@ -129,6 +129,7 @@ void paintLines(Graphics g) {
 		List children = getSubtrees();
 		if (children.size() == 0)
 			return;
+		g.setLineWidth(2);
 		g.drawLine(left, yMid, xMid, yMid);
 		int yMin = yMid;
 		int yMax = yMid;
@@ -138,6 +139,7 @@ void paintLines(Graphics g) {
 			yMin = Math.min(yMin, y);
 			yMax = Math.max(yMax, y);
 		}
+		
 		g.drawLine(xMid, yMin, xMid, yMax);
 
 	} else {
@@ -149,6 +151,7 @@ void paintLines(Graphics g) {
 		List children = getSubtrees();
 		if (children.size() == 0)
 			return;
+		g.setLineWidth(2);
 		g.drawLine(xMid, top, xMid, yMid);
 		int xMin = xMid;
 		int xMax = xMid;

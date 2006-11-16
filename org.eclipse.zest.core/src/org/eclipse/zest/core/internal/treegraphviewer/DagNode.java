@@ -19,6 +19,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MouseEvent;
 import org.eclipse.draw2d.MouseListener;
+import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Widget;
@@ -30,7 +31,8 @@ public class DagNode extends Item {
 	private String text;
 	private DagViewerImpl viewer = null;
 	private int initialHangingStyle = 0;
-	//private boolean selected = false;
+
+	// private boolean selected = false;
 
 	public DagNode(Widget parent, int style, Object element, String text,
 			DagViewerImpl viewer, int initialHangingStyle) {
@@ -58,10 +60,10 @@ public class DagNode extends Item {
 		f.add(branch);
 	}
 
-	public void showConnectedSelected(DagRoot dagItem) {
+	public void showConnectedSelected(DagBranch dagItem) {
 		Iterator iterator = instanceNodes.iterator();
 		while (iterator.hasNext()) {
-			DagRoot item = (DagRoot) iterator.next();
+			DagBranch item = (DagBranch) iterator.next();
 			if (item != dagItem) {
 				PolylineConnection polylineConnection = new PolylineConnection();
 				IFigure a = dagItem.getNode();
@@ -77,7 +79,7 @@ public class DagNode extends Item {
 	}
 
 	public void placeFigure(IFigure f) {
-		DagRoot root = new DagRoot(text, connectedNodes, this);
+		DagBranch root = new DagBranch(text, connectedNodes, this);
 		instanceNodes.add(root);
 		f.add(root);
 
@@ -88,33 +90,22 @@ public class DagNode extends Item {
 	}
 
 	public void setSelected(boolean b) {
-		//this.selected = b;
+		// this.selected = b;
 		Iterator iterator = instanceNodes.iterator();
 		while (iterator.hasNext()) {
-			DagRoot dagRoot = (DagRoot) iterator.next();
+			DagBranch dagRoot = (DagBranch) iterator.next();
 			dagRoot.getNode().setSelected(b);
 		}
 	}
 }
 
-class DagBranch extends DagRoot {
-
-	public DagBranch(String text, List connectedNodes, DagNode dagNode) {
-		super(text, connectedNodes, dagNode);
-
-	}
-
-}
-
-class DagRoot extends TreeRoot {
+class DagBranch extends TreeRoot {
 
 	List connectedNodes = null;
-
 	DagNode correspondindDagNode = null;
-
 	boolean expanded = false;
 
-	public DagRoot(String text, List connectedNodes, DagNode dagNode) {
+	public DagBranch(String text, List connectedNodes, DagNode dagNode) {
 		super(text);
 		this.connectedNodes = connectedNodes;
 		this.correspondindDagNode = dagNode;
@@ -126,11 +117,11 @@ class DagRoot extends TreeRoot {
 
 			public void expand(TreeBranch branch) {
 				if (!expanded) {
-					for (int i = 0; i < DagRoot.this.connectedNodes.size(); i++) {
-						DagNode node = (DagNode) DagRoot.this.connectedNodes
+					for (int i = 0; i < DagBranch.this.connectedNodes.size(); i++) {
+						DagNode node = (DagNode) DagBranch.this.connectedNodes
 								.get(i);
-						node.placeFigure(DagRoot.this.getContentsPane(),
-								DagRoot.this.correspondindDagNode);
+						node.placeFigure(DagBranch.this.getContentsPane(),
+								DagBranch.this.correspondindDagNode);
 					}
 				}
 				expanded = true;
@@ -140,14 +131,40 @@ class DagRoot extends TreeRoot {
 		this.addMouseListener(new MouseListener.Stub() {
 			public void mousePressed(MouseEvent me) {
 				correspondindDagNode.getViewer().setSelected(
-						DagRoot.this.correspondindDagNode);
-				DagRoot.this.correspondindDagNode
-						.showConnectedSelected(DagRoot.this);
+						DagBranch.this.correspondindDagNode);
+				DagBranch.this.correspondindDagNode
+						.showConnectedSelected(DagBranch.this);
 			}
 
 			public void mouseDoubleClicked(MouseEvent me) {
 
 			}
+		});
+		this.addMouseMotionListener(new MouseMotionListener() {
+
+			public void mouseDragged(MouseEvent me) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void mouseEntered(MouseEvent me) {
+				correspondindDagNode.getViewer().highlightNode(DagBranch.this);
+			}
+
+			public void mouseExited(MouseEvent me) {
+				correspondindDagNode.getViewer().unHighlightNode();
+			}
+
+			public void mouseHover(MouseEvent me) {
+				// TODO Auto-generated method stub
+
+			}
+
+			public void mouseMoved(MouseEvent me) {
+				// TODO Auto-generated method stub
+
+			}
+
 		});
 
 	}
@@ -155,5 +172,6 @@ class DagRoot extends TreeRoot {
 	protected boolean hasChildren() {
 		return connectedNodes.size() > 0;
 	}
+
 
 }
