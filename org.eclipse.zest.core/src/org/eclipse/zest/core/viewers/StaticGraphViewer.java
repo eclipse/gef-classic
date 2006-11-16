@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.viewers;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -29,6 +28,7 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphviewer.StaticGraphViewerImpl;
+import org.eclipse.mylar.zest.core.internal.graphviewer.ZestSelectionManager;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -201,8 +201,11 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 
 	}
 
+	/**
+	 * Gets the currently selected elements from the widget.
+	 */
 	protected List getSelectionFromWidget() {
-		return new ArrayList(0);
+		return ((ZestSelectionManager)viewer.getSelectionManager()).getSelectedModelElements();
 	}
 
 

@@ -11,6 +11,7 @@
 package org.eclipse.mylar.zest.core.internal.graphviewer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -31,11 +32,17 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
  * 
  */
 public class ZestSelectionManager extends SelectionManager {
-
-	public ISelection getSelection() {
-		ISelection selection = super.getSelection();
+	
+	/**
+	 * Gets a list of currently selected nodes.  The selection will include the "user objects"
+	 * that have been selected.
+	 * 
+	 * @return A List of user objects that has been selected.
+	 */
+	public List getSelectedModelElements() {
 		List selections = new ArrayList(1);
-
+		ISelection selection = super.getSelection();
+		
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 		Iterator elements = structuredSelection.iterator();
 		
@@ -43,7 +50,7 @@ public class ZestSelectionManager extends SelectionManager {
 		while (elements.hasNext()) {
 			AbstractEditPart editPart = (AbstractEditPart) elements.next();
 			if (editPart.getModel() == null) {
-				return StructuredSelection.EMPTY;
+				return Collections.EMPTY_LIST;
 			}
 			if (editPart.getModel() instanceof IGraphItem) {
 				IGraphItem item = (IGraphItem) editPart.getModel();
@@ -53,12 +60,16 @@ public class ZestSelectionManager extends SelectionManager {
 				}
 			}
 		}
-
-		// If nothing is selected just return null.  what should happen on an
-		// unselection?
+		return selections;
+	}
+	
+	/**
+	 * Gets the current selection in the Zest viewer as an ISelection.
+	 */
+	public ISelection getSelection() {
+		List selections = getSelectedModelElements();
 		if ( selections.size() == 0 ) return StructuredSelection.EMPTY;
 		return new StructuredSelection( selections );
-
 	}
 
 }
