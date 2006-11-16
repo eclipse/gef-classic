@@ -25,7 +25,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 /**
  * A simple edit part that displays a rectangle representing a node.
  * @author Del Myers
- *
+ * @deprecated This class is going to be removed in future versions.
  */
 public class OverviewNodeEditPart extends AbstractGraphicalEditPart implements FigureListener, PropertyChangeListener  {
 

@@ -17,10 +17,7 @@ import java.util.List;
 import org.eclipse.draw2d.FigureListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.XYLayout;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.ConnectionEditPart;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
@@ -53,9 +50,10 @@ public class OverviewEditPart extends AbstractGraphicalEditPart implements Figur
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
 	 */
 	public void activate() {
-		GraphicalEditPart part = (GraphicalEditPart) getCastedModel().getRootEditPart().getContents();
+		GraphicalEditPart part = (GraphicalEditPart) getCastedModel().getRootEditPart();
 		IFigure parentPane = part.getFigure();
 		parentPane.addFigureListener(this);
+		//getFigure().addFigureListener(this);
 		super.activate();
 	}
 	
@@ -63,9 +61,10 @@ public class OverviewEditPart extends AbstractGraphicalEditPart implements Figur
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
 	 */
 	public void deactivate() {
-		GraphicalEditPart part = (GraphicalEditPart) getCastedModel().getRootEditPart().getContents();
+		GraphicalEditPart part = (GraphicalEditPart) getCastedModel().getRootEditPart();
 		IFigure parentPane = part.getFigure();
 		parentPane.removeFigureListener(this);
+		//getFigure().removeFigureListener(this);
 		super.deactivate();
 	}
 	
@@ -77,17 +76,18 @@ public class OverviewEditPart extends AbstractGraphicalEditPart implements Figur
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
 	protected List getModelChildren() {
-		GraphicalEditPart part = (GraphicalEditPart) getCastedModel().getRootEditPart().getContents();
-		List children = part.getChildren();
+		GraphicalEditPart part = (GraphicalEditPart) getCastedModel().getRootEditPart();
+//		List children = part.getChildren();
 		List modelChildren = new LinkedList();
-		for (Iterator i = children.iterator(); i.hasNext();) {
-			EditPart child = (EditPart) i.next();
-			if (!(child instanceof ConnectionEditPart)) {
-				if (child instanceof GraphicalEditPart) {
-					modelChildren.add(child);
-				}
-			}
-		}
+		modelChildren.add(part);
+//		for (Iterator i = children.iterator(); i.hasNext();) {
+//			EditPart child = (EditPart) i.next();
+//			if (!(child instanceof ConnectionEditPart)) {
+//				if (child instanceof GraphicalEditPart) {
+//					modelChildren.add(child);
+//				}
+//			}
+//		}
 		return modelChildren;
 	}
 	
@@ -99,10 +99,11 @@ public class OverviewEditPart extends AbstractGraphicalEditPart implements Figur
 		
 		Rectangle boundingArea = getBoundingArea();
 		ScalingContainerFigure figure = (ScalingContainerFigure) getFigure();
-		Dimension logicalSize = boundingArea.getSize();
-		if (!figure.getLogicalSize().equals(logicalSize)) {
-			figure.setLogicalSize(logicalSize.getCopy());
+		
+		if (!figure.getLogicalBounds().equals(boundingArea)) {
+			figure.setLogicalBounds(boundingArea);
 		}
+		//figure.setBounds(boundingArea);
 		
 	}
 	/**
@@ -110,8 +111,7 @@ public class OverviewEditPart extends AbstractGraphicalEditPart implements Figur
 	 */
 	private Rectangle getBoundingArea() {
 		GraphicalEditPart part = (GraphicalEditPart) getCastedModel().getRootEditPart().getContents();
-		//Dimension logicalSize = part.getFigure().getClientArea().getSize();
-		Rectangle boundingArea = null;
+ 		Rectangle boundingArea = null;
 		IFigure boundingFigure = part.getFigure();
 		for (Iterator i = boundingFigure.getChildren().iterator(); i.hasNext();) {
 			IFigure child = (IFigure) i.next();
@@ -133,18 +133,7 @@ public class OverviewEditPart extends AbstractGraphicalEditPart implements Figur
 	 * @param rect
 	 */
 	public void translateToViewer(Rectangle rect) {
-		Rectangle boundingArea = getBoundingArea();
-		//translate to the correct sizing.
 		getFigure().translateFromParent(rect);
-		GraphicalEditPart part = (GraphicalEditPart) getCastedModel().getRootEditPart().getContents();
-		IFigure boundingFigure = part.getFigure();
-		//calculate the scaling difference between the bounding size and the actual
-		//figure size.
-		double wScale = (double)boundingFigure.getSize().width/(double)boundingArea.width;
-		double hScale = (double)boundingFigure.getSize().height/(double)boundingArea.height;
-		rect.scale(wScale, hScale);
-		
-		
 	}
 
 	/* (non-Javadoc)

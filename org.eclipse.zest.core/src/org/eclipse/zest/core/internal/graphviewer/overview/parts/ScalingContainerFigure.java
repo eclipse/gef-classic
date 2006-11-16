@@ -31,13 +31,13 @@ import org.eclipse.draw2d.text.CaretInfo;
  */
 public class ScalingContainerFigure extends Figure {
 	private static final int DEFAULT_SIZE = 1000; //the "default" size used for scaling.
-	private Dimension logicalSize;
+	private Rectangle logicalBounds;
 	
 	/**
 	 * 
 	 */
 	public ScalingContainerFigure() {
-		setLogicalSize(DEFAULT_SIZE, DEFAULT_SIZE);
+		setLogicalBounds(new Rectangle(0,0,DEFAULT_SIZE, DEFAULT_SIZE));
 	}
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
@@ -120,7 +120,7 @@ public class ScalingContainerFigure extends Figure {
 		else {
 			throw new RuntimeException( t.toString() + " not supported in AspectRatioScale");
 		}
-		
+		t.performTranslate((int)(getLogicalReference().x), (int)(getLogicalReference().y));
 		//t.performScale(1/widthScale);		
 	}
 	
@@ -140,22 +140,48 @@ public class ScalingContainerFigure extends Figure {
 	 * @param size the logical size.
 	 */
 	public void setLogicalSize(Dimension size) {
-		this.logicalSize = size;
+		setLogicalBounds(new Rectangle(new Point(0,0), size));
 		invalidate();
+	}
+	
+	/**
+	 * Sets the logical size to the dimensions of the bounds, and allows for translation
+	 * based on the position of the given rectangle. The top-left corner of the rectangle
+	 * will be translated to 0,0 in this scaling container.
+	 * @param bounds
+	 */
+	public void setLogicalBounds(Rectangle bounds) {
+		this.logicalBounds = bounds.getCopy();
+		invalidate();
+	}
+	
+	/**
+	 * Returns the top-left reference point for the bounds of the figures contained within
+	 * this container.
+	 * @return the logical reference.
+	 */
+	public Point getLogicalReference() {
+		return logicalBounds.getTopLeft();
 	}
 	
 	/**
 	 * @return the logicalSize
 	 */
 	public final Dimension getLogicalSize() {
-		return logicalSize;
+		return logicalBounds.getSize();
+	}
+	
+	/**
+	 * @return the logicalBounds
+	 */
+	public Rectangle getLogicalBounds() {
+		return logicalBounds;
 	}
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
 	public void setBounds(Rectangle rect) {
-		// TODO Auto-generated method stub
 		super.setBounds(rect);
 	}
 	
@@ -176,6 +202,7 @@ public class ScalingContainerFigure extends Figure {
 				getBounds().y + getInsets().top);
 			if (isCoordinateSystem()) {
 				graphics.scale((float)getWidthScale(), (float)getHeightScale());
+				graphics.translate(getLogicalReference().getNegated());
 			}
 			if (!optimizeClip)
 				graphics.clipRect(getClientArea(new Rectangle()));
@@ -200,10 +227,11 @@ public class ScalingContainerFigure extends Figure {
 	 * @see org.eclipse.draw2d.Figure#translateToParent(org.eclipse.draw2d.geometry.Translatable)
 	 */
 	public void translateToParent(Translatable t) {
-		Dimension size = getSize();
+		Dimension size = getBounds().getSize();
 		Dimension logicalSize = getLogicalSize();
 		double widthScale = size.width/(double)logicalSize.width;
 		double heightScale = size.height/(double)logicalSize.height;
+		t.performTranslate(-getLogicalReference().x, -getLogicalReference().y);
 		
 		if ( t instanceof PrecisionRectangle ) {
 			PrecisionRectangle r = (PrecisionRectangle)t;

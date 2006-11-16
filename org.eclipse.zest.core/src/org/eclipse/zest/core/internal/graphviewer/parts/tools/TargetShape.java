@@ -49,7 +49,7 @@ public class TargetShape extends Shape {
 		graphics.drawLine(center.x, center.y+2, center.x, bottom.y);
 		graphics.drawLine(top.x, center.y, center.x-2, center.y);
 		//draw the circle target.
-//		bounds.shrink(bounds.width/8, bounds.height/8);
+		bounds.shrink(bounds.width/4, bounds.height/4);
 		bounds.width -=1;
 		bounds.height -=1;
 //		bounds.x+=1;

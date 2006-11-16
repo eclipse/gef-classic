@@ -10,18 +10,28 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphviewer.parts.tools;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.FigureListener;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.editparts.ZoomListener;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.tools.AbstractTool;
-import org.eclipse.mylar.zest.core.internal.graphviewer.overview.GraphOverviewerImpl;
+import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.MouseEvent;
 
 /**
  * A tool that is used in the graph overview viewer that allows the user to select an area
@@ -29,12 +39,14 @@ import org.eclipse.mylar.zest.core.internal.graphviewer.overview.GraphOverviewer
  * @author Del Myers
  *
  */
-public class OverviewRectangleTool extends AbstractTool implements DragTracker {
+public class OverviewRectangleTool extends AbstractTool implements DragTracker, ControlListener, ZoomListener, PropertyChangeListener, FigureListener {
 	private RectangleFigure focusFigure;
 	private int dragState;
 	private Rectangle startBounds;
 	private TargetShape target;
 	private FigureListener focusFigureListener;
+	private Rectangle referenceBounds;
+	private ZoomManager currentManager;
 	
 	private static final int OUTSIDE = 0;
 	private static final int INSIDE = 1<<1;
@@ -65,6 +77,7 @@ public class OverviewRectangleTool extends AbstractTool implements DragTracker {
 	 */
 	public OverviewRectangleTool() {
 		setUnloadWhenFinished(false);
+		referenceBounds = new Rectangle();
 		//setEditDomain(new EditDomain());
 	}
 	/* (non-Javadoc)
@@ -73,7 +86,9 @@ public class OverviewRectangleTool extends AbstractTool implements DragTracker {
 	protected boolean handleDragStarted() {
 		setState(STATE_DRAG);
 		setDragState(getRelativeCursorLocation(getStartLocation()));
-		setDragStartBounds(getFeedBackFigure().getBounds());
+		Rectangle bounds = getFeedBackFigure().getBounds().getCopy();
+		getFeedBackFigure().translateToAbsolute(bounds);
+		setDragStartBounds(bounds);
 		return true;
 	}
 	
@@ -180,6 +195,7 @@ public class OverviewRectangleTool extends AbstractTool implements DragTracker {
 				}
 			}
 		}
+		feedBack.translateToRelative(newBounds);
 		feedBack.setBounds(newBounds);
 		return true;
 	}
@@ -235,12 +251,31 @@ public class OverviewRectangleTool extends AbstractTool implements DragTracker {
 		}
 		setState(STATE_TERMINAL);
 		resetFlags();
-		if (getCurrentViewer() instanceof GraphOverviewerImpl) {
-			((GraphOverviewerImpl)getCurrentViewer()).setZoom(getFeedBackFigure().getBounds());
-		}
+		zoomTo(getFeedBackFigure().getBounds().getCopy());
+		
 		//super.handleFinished();
 	}
 	
+	/**
+	 * @param copy
+	 */
+	private void zoomTo(Rectangle rect) {
+		referenceBounds = rect.getCopy();
+		GraphicalEditPart part = (GraphicalEditPart)getCurrentViewer().getContents();
+		if (part != null) {
+			part.getFigure().translateFromParent(referenceBounds);
+			if (rect.isEmpty()) {
+				//make sure that it didn't scale to a size greater than 0.
+				referenceBounds.setSize(0,0);
+			}
+			if (this.currentManager != null)
+				this.currentManager.zoomTo(referenceBounds);
+			if (referenceBounds.isEmpty()) {
+				//reset the figure so as to not jar the user.
+				getFeedBackFigure().setBounds(rect);
+			}
+		}
+	}
 	boolean isNorth(int loc) {
 		loc = (isInside(loc)) ? loc ^ INSIDE : loc;
 		return (loc & NORTH) != 0;
@@ -268,6 +303,8 @@ public class OverviewRectangleTool extends AbstractTool implements DragTracker {
 	private int getRelativeCursorLocation(Point location) {
 		RectangleFigure feedBack = getFeedBackFigure();
 		Rectangle bounds = feedBack.getBounds();
+		location = location.getCopy();
+		feedBack.translateToRelative(location);
 		int result = OUTSIDE;
 		if (feedBack.containsPoint(location)) {
 			result |= INSIDE;
@@ -297,6 +334,8 @@ public class OverviewRectangleTool extends AbstractTool implements DragTracker {
 			focusFigure.addFigureListener(focusFigureListener);
 			focusFigure.setBounds(new Rectangle());
 			addFeedback(focusFigure);
+//			referenceBounds = focusFigure.getParent().getBounds().getCopy();
+//			focusFigure.getParent().addFigureListener(this);
 		}
 		return focusFigure;
 	}
@@ -332,6 +371,17 @@ public class OverviewRectangleTool extends AbstractTool implements DragTracker {
 			removeFeedback(target);
 			target = null;
 		}
+		if (getCurrentViewer() != null) {
+			getCurrentViewer().getControl().removeControlListener(this);
+			if (getCurrentViewer().getContents() instanceof GraphicalEditPart) {
+				((GraphicalEditPart)getCurrentViewer().getContents()).getFigure().removeFigureListener(this);
+			}
+		}
+		if (this.currentManager != null) {
+			this.currentManager.removeZoomListener(this);
+			this.currentManager.getViewport().getHorizontalRangeModel().removePropertyChangeListener(this);
+			this.currentManager.getViewport().getVerticalRangeModel().removePropertyChangeListener(this);
+		}
 		super.deactivate();
 	}
 	
@@ -339,7 +389,7 @@ public class OverviewRectangleTool extends AbstractTool implements DragTracker {
 	 * @see org.eclipse.gef.tools.AbstractTool#activate()
 	 */
 	public void activate() {
-		
+	
 		super.activate();
 	}
 	
@@ -349,5 +399,156 @@ public class OverviewRectangleTool extends AbstractTool implements DragTracker {
 	protected String getCommandName() {
 		return RequestConstants.REQ_SELECTION;
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.tools.AbstractTool#setViewer(org.eclipse.gef.EditPartViewer)
+	 */
+	public void setViewer(EditPartViewer viewer) {
+		if (getCurrentViewer() != null) {
+			getCurrentViewer().getControl().removeControlListener(this);
+			GraphicalEditPart part = (GraphicalEditPart) getCurrentViewer().getContents();
+			if (part != null) {
+				IFigure referenceFigure = part.getContentPane();
+				referenceFigure.removeFigureListener(this);
+			}
+		}
+		super.setViewer(viewer);
+				
+		if (getCurrentViewer() != null) {
+			getCurrentViewer().getControl().addControlListener(this);
+			GraphicalEditPart part = (GraphicalEditPart) getCurrentViewer().getContents();
+			if (part != null) {
+				IFigure referenceFigure = part.getContentPane();
+				referenceFigure.addFigureListener(this);
+			}
+		}
+	}
+	/* (non-Javadoc)
+	 * @see org.eclipse.swt.events.ControlListener#controlMoved(org.eclipse.swt.events.ControlEvent)
+	 */
+	public void controlMoved(ControlEvent e) {}
+	/* (non-Javadoc)
+	 * @see org.eclipse.swt.events.ControlListener#controlResized(org.eclipse.swt.events.ControlEvent)
+	 */
+	public void controlResized(ControlEvent e) {}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.tools.AbstractTool#viewerExited(org.eclipse.swt.events.MouseEvent, org.eclipse.gef.EditPartViewer)
+	 */
+	public void viewerExited(MouseEvent me, EditPartViewer viewer) {
+//		//don't want to reset the viewer to null
+//		if (viewer == getCurrentViewer()) {
+//			handleViewerExited();
+//			getCurrentInput().setInput(me);
+//		}
+		super.viewerExited(me, viewer);
+	}
+	/**
+	 * @param zoomManager
+	 */
+	public void setZoomManager(ZoomManager zoomManager) {
+		if (this.currentManager != null) {
+			this.currentManager.removeZoomListener(this);
+			this.currentManager.getViewport().getHorizontalRangeModel().removePropertyChangeListener(this);
+			this.currentManager.getViewport().getVerticalRangeModel().removePropertyChangeListener(this);
+		}
+		this.currentManager = zoomManager;
+		if (this.currentManager != null) {
+			this.currentManager.addZoomListener(this);
+			this.currentManager.getViewport().getHorizontalRangeModel().addPropertyChangeListener(this);
+			this.currentManager.getViewport().getVerticalRangeModel().addPropertyChangeListener(this);
+			//make sure that everthing is up-to-date.
+			IFigure referenceFigure = getReferenceFigure();
+			if (referenceFigure != null)
+				getCurrentViewer().flush();
+		}
+		updateViewPort();
+	}
+	
+	private IFigure getReferenceFigure() {
+		GraphicalEditPart part = getReferenceEditPart();
+		if (part != null)
+			return part.getFigure();
+		return null;
+	}
+	
+	
+	/**
+	 * @return
+	 */
+	private GraphicalEditPart getReferenceEditPart() {
+		if (getCurrentViewer() == null) return null;
+		if (getCurrentViewer().getContents() instanceof GraphicalEditPart) {
+			return (GraphicalEditPart) getCurrentViewer().getContents();
+		}
+		return null;
+	}
+	/* (non-Javadoc)
+	 * @see org.eclipse.gef.editparts.ZoomListener#zoomChanged(double)
+	 */
+	public void zoomChanged(double zoom) {
+//		Viewport viewport = this.currentManager.getViewport();
+//		if (Math.abs(1-zoom) < .1) {
+//			//set the bounds of the rectangle to zeros
+//			getFeedBackFigure().setBounds(new Rectangle());
+//		}
+//		//adjust the feedback according to the zoom.
+//		int x = viewport.getHorizontalRangeModel().getValue();
+//		int width = viewport.getHorizontalRangeModel().getExtent();
+//		int y = viewport.getVerticalRangeModel().getValue();
+//		int height = viewport.getVerticalRangeModel().getExtent();
+//		Rectangle newBounds = new Rectangle(x,y,width,height);
+//		//translate it.
+		
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+	 */
+	public void propertyChange(PropertyChangeEvent evt) {
+		updateViewPort();		
+	}
+	/**
+	 * 
+	 */
+	private void updateViewPort() {
+		if (this.currentManager == null) return;
+		if (getCurrentViewer() == null) return;
+		Viewport viewport = this.currentManager.getViewport();
+		double zoom = this.currentManager.getZoom();
+//		adjust the feedback according to the zoom.
+		int x = viewport.getHorizontalRangeModel().getValue();
+		int width = viewport.getHorizontalRangeModel().getExtent();
+		int y = viewport.getVerticalRangeModel().getValue();
+		int height = viewport.getVerticalRangeModel().getExtent();
+		if (Math.abs(1-zoom) < .1) {
+			//set the bounds of the rectangle to zeros
+			x+= width/2;
+			y+= height/2;
+			width = 0;
+			height = 0;
+		}
+		Rectangle newBounds = new Rectangle(x,y,width,height);
+		GraphicalEditPart part = (GraphicalEditPart) getCurrentViewer().getContents();
+		if (part != null) {
+			IFigure referenceFigure = part.getContentPane();
+			newBounds.scale(1/this.currentManager.getZoom());
+			referenceFigure.translateToParent(newBounds);
+			//adjust for the insets on the figure
+			//newBounds.crop(getFeedBackFigure().getInsets());
+			newBounds.shrink(1,1);//getFeedBackFigure().getLineWidth(), getFeedBackFigure().getLineWidth());
+			getFeedBackFigure().setBounds(newBounds);
+		}
+		
+	}
+	/* (non-Javadoc)
+	 * @see org.eclipse.draw2d.FigureListener#figureMoved(org.eclipse.draw2d.IFigure)
+	 */
+	public void figureMoved(IFigure source) {
+		updateViewPort();
+		
+	}
+	
 
 }

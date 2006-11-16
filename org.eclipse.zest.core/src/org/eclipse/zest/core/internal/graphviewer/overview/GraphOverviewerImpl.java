@@ -17,13 +17,15 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.RootEditPart;
+import org.eclipse.gef.Tool;
 import org.eclipse.gef.editparts.ScalableFreeformRootEditPart;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
+import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.ui.parts.DomainEventDispatcher;
 import org.eclipse.gef.ui.parts.GraphicalViewerImpl;
 import org.eclipse.mylar.zest.core.internal.gefx.IZestViewerProperties;
 import org.eclipse.mylar.zest.core.internal.graphviewer.overview.parts.OverviewEditPart;
-import org.eclipse.mylar.zest.core.internal.graphviewer.overview.parts.OverviewGraphEditPartFactory;
+import org.eclipse.mylar.zest.core.internal.graphviewer.overview.parts.OverviewImageEditPartFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.overview.parts.OverviewRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphviewer.parts.tools.OverviewRectangleTool;
 import org.eclipse.swt.graphics.Cursor;
@@ -42,12 +44,13 @@ public class GraphOverviewerImpl extends GraphicalViewerImpl implements Property
 	 * 
 	 */
 	public GraphOverviewerImpl() {
-		setEditPartFactory(new OverviewGraphEditPartFactory());
+		setEditPartFactory(new OverviewImageEditPartFactory());
 		EditDomain domain = new EditDomain();
 		//ToolEventDispatcher dispatcher = new ToolEventDispatcher(this);
 		domain.setDefaultTool(new OverviewRectangleTool());
 		domain.setActiveTool(domain.getDefaultTool());
 		DomainEventDispatcher dispatcher = new DomainEventDispatcher(domain, this);
+		setEditDomain(domain);
 		//dispatcher.setTool(new OverviewRectangleTool());
 		getLightweightSystem().setEventDispatcher(dispatcher);
 	}
@@ -65,17 +68,39 @@ public class GraphOverviewerImpl extends GraphicalViewerImpl implements Property
 	public void setContents(Object model) {
 		if (model instanceof EditPartViewer) {
 			EditPartViewer newModel = (EditPartViewer) model;
-			setZoom(new Rectangle());
 			if (this.model != model) {
 				if (this.model != null) 
 					this.model.removePropertyChangeListener(this);
 				this.model = newModel;
 				super.setContents(newModel);
 				this.model.addPropertyChangeListener(this);
+				Tool tool = getEditDomain().getActiveTool();
+				if (tool instanceof OverviewRectangleTool) {
+					tool.setViewer(this);
+					((OverviewRectangleTool)tool).setZoomManager(getZoomManager(model));
+				}
 			} 
+		} else {
+			
 		}
 	}
 	
+	/**
+	 * @param model2
+	 * @return
+	 */
+	private ZoomManager getZoomManager(Object model) {
+		if (model instanceof EditPartViewer) {
+			RootEditPart modelRoot = ((EditPartViewer)model).getRootEditPart();
+			if (modelRoot instanceof ScalableFreeformRootEditPart) {
+				return ((ScalableFreeformRootEditPart)modelRoot).getZoomManager();
+			} else if (modelRoot instanceof ScalableRootEditPart) {
+				return ((ScalableRootEditPart)modelRoot).getZoomManager();
+			}
+		}
+		return null;
+	}
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#setCursor(org.eclipse.swt.graphics.Cursor)
 	 */
@@ -120,8 +145,10 @@ public class GraphOverviewerImpl extends GraphicalViewerImpl implements Property
 	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#unhookControl()
 	 */
 	protected void unhookControl() {
-		//make sure to clear the zoom.
-		setZoom(new Rectangle());
+		Tool tool = getEditDomain().getActiveTool();
+		if (tool instanceof OverviewRectangleTool) {
+			((OverviewRectangleTool)tool).setZoomManager(null);
+		}
 		super.unhookControl();
 	}
 	
@@ -133,7 +160,7 @@ public class GraphOverviewerImpl extends GraphicalViewerImpl implements Property
 			//set the zoom to nothing.
 			//setZoom(new Rectangle());
 			//have to refresh the whole thing.
-			super.setContents(this.model);
+			//super.setContents(this.model);
 		}
 	}
 	

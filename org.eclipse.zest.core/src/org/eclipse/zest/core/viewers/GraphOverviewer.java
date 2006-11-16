@@ -60,7 +60,15 @@ public class GraphOverviewer extends StructuredViewer implements DisposeListener
 				}
 			}
 		}
-		public void partClosed(IWorkbenchPart part) {}
+		public void partClosed(IWorkbenchPart part) {
+			if (part instanceof IZoomableWorkbenchPart) {
+				AbstractZoomableViewer viewer = 
+					((IZoomableWorkbenchPart)part).getZoomableViewer();
+				if (viewer == currentHookedViewer) {
+					GraphOverviewer.this.unhookViewer();
+				}
+			}
+		}
 		
 		public void partOpened(IWorkbenchPart part) {}
 		
