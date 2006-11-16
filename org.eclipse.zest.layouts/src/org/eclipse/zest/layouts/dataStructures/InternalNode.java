@@ -14,11 +14,12 @@ import java.util.HashMap;
 
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.constraints.BasicEntityConstraint;
+import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * @author Ian Bull
  */
-public class InternalNode implements Comparable {
+public class InternalNode implements Comparable, LayoutEntity {
 	
 	private LayoutEntity entity = null;
 	private HashMap attributeMap = new HashMap();
@@ -27,6 +28,8 @@ public class InternalNode implements Comparable {
 	public InternalNode( LayoutEntity entity ) {
 		this.entity = entity;
 		this.entity.setLayoutInformation(this);
+		this.layoutWidth = entity.getWidthInLayout();
+		this.layoutHeight = entity.getHeightInLayout();
 		entity.populateLayoutConstraint(basicEntityConstraint);
 	}
 	
@@ -170,6 +173,59 @@ public class InternalNode implements Comparable {
 	 */
 	public String toString() {
 		return (entity != null ? entity.toString() : "");
+	}
+	
+	double layoutHeight;
+	double layoutWidth;
+	double layoutX;
+	double layoutY;
+	Object layoutInfo;
+
+	public double getHeightInLayout() {
+		// TODO Auto-generated method stub
+		return layoutHeight;
+	}
+
+	public Object getLayoutInformation() {
+		// TODO Auto-generated method stub
+		return this.layoutInfo;
+	}
+
+	public double getWidthInLayout() {
+		// TODO Auto-generated method stub
+		return layoutWidth;
+	}
+
+	public double getXInLayout() {
+		// TODO Auto-generated method stub
+		return layoutX;
+	}
+
+	public double getYInLayout() {
+		// TODO Auto-generated method stub
+		return layoutY;
+	}
+
+	public void populateLayoutConstraint(LayoutConstraint constraint) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setLayoutInformation(Object internalEntity) {
+		this.layoutInfo = internalEntity;
+		
+	}
+
+	public void setLocationInLayout(double x, double y) {
+		// TODO Auto-generated method stub
+		this.layoutX = x;
+		this.layoutY = y;
+		
+	}
+
+	public void setSizeInLayout(double width, double height) {
+		this.layoutWidth = width;
+		this.layoutHeight = height;	
 	}
 	
 }

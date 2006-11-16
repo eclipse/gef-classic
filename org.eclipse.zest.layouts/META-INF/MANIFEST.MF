@@ -14,5 +14,5 @@ Export-Package: org.eclipse.mylar.zest.layouts,
  org.eclipse.mylar.zest.layouts.exampleUses,
  org.eclipse.mylar.zest.layouts.progress
 Require-Bundle: org.eclipse.swt;visibility:=reexport,
- org.eclipse.jface,
- org.eclipse.core.runtime
+ org.eclipse.core.runtime,
+ org.eclipse.jface

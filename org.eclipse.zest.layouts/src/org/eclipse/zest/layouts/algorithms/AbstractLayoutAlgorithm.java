@@ -66,6 +66,8 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	private List progressListeners;
 	private Calendar lastProgressEventFired;
 	private double widthToHeightRatio;
+	protected boolean asynchronous = false;
+	protected boolean continuous = false;
 	
 	class InternalComparator implements Comparator {
 		Comparator externalComparator = null;
@@ -467,6 +469,9 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	public synchronized void applyLayout(LayoutEntity[] entitiesToLayout,
 			LayoutRelationship[] relationshipsToConsider, double x, double y, double width,
 			double height, boolean asynchronous, boolean continuous) throws InvalidLayoutConfiguration {
+		
+		this.asynchronous = asynchronous;
+		this.continuous = continuous;
 		
 		if ( !isValidConfiguration( asynchronous, continuous )) throw new InvalidLayoutConfiguration();
 		

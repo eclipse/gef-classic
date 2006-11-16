@@ -13,17 +13,21 @@ package org.eclipse.mylar.zest.layouts.dataStructures;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
+import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.constraints.BasicEdgeConstraints;
+import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * @author Ian Bull
  */
-public class InternalRelationship {
+public class InternalRelationship implements LayoutRelationship{
 	
 	private LayoutRelationship externalRelationship;
 	private InternalNode source;
 	private InternalNode destination;
+	private Object layoutInfo;
 	private List bendPoints = new LinkedList();
 	BasicEdgeConstraints basicEdgeConstraints = new BasicEdgeConstraints();
 	
@@ -68,6 +72,44 @@ public class InternalRelationship {
 	
 	public List getBendPoints() {
 		return this.bendPoints;
+	}
+
+	public void clearBendPoints() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+	
+	public LayoutEntity getDestinationInLayout() {
+		// TODO Auto-generated method stub
+		return destination;
+	}
+
+	
+	public Object getLayoutInformation() {
+		// TODO Auto-generated method stub
+		return layoutInfo;
+	}
+
+	public LayoutEntity getSourceInLayout() {
+		// TODO Auto-generated method stub
+		return source;
+	}
+
+	public void populateLayoutConstraint(LayoutConstraint constraint) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setBendPoints(LayoutBendPoint[] bendPoints) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setLayoutInformation(Object layoutInformation) {
+		this.layoutInfo = layoutInformation;
+		
 	}
 
 }
