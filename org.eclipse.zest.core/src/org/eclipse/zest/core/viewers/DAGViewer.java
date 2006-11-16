@@ -36,6 +36,7 @@ public class DAGViewer extends StructuredViewer {
 	
 	protected void inputChanged(Object input, Object oldInput) {
 		IDAGContentProvider contentProvider = (IDAGContentProvider) getContentProvider();
+		contentProvider.inputChanged(this, oldInput, input);
 		ILabelProvider labelProvider = (ILabelProvider)getLabelProvider();
 		this.viewer.setContents(input, contentProvider, labelProvider);
 	}
