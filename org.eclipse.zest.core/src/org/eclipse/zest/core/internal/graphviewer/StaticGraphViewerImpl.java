@@ -66,7 +66,6 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	private boolean hasLayoutRun = false;
 
 	
-	
 	/**
 	 * Initializes the viewer impl. 
 	 * @see ZestStyles#PANNING
@@ -215,6 +214,8 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 			}
 		});
 	}
+	
+
 	
 	private void applyLayoutInternal() {		
 		

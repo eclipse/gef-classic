@@ -38,7 +38,6 @@ import org.eclipse.swt.widgets.Control;
 public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 
 	StaticGraphViewerImpl viewer = null;
-
 	private IStylingGraphModelFactory modelFactory = null;
 
 

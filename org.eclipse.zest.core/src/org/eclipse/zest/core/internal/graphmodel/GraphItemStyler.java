@@ -23,11 +23,7 @@ import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleBezierExtension
 import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleProvider;
 import org.eclipse.mylar.zest.core.viewers.IEntityStyleProvider;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.widgets.Widget;
-import org.eclipse.ui.services.IDisposable;
 
 /**
  * Helper class used to style graph elements based on graph element stylers.
@@ -38,13 +34,13 @@ import org.eclipse.ui.services.IDisposable;
 public class GraphItemStyler {
 	public static void styleItem(IGraphItem item, final IBaseLabelProvider labelProvider) {
 		//provided for label providers that must be disposed.
-		if (labelProvider instanceof IDisposable && item instanceof Widget) {
-			((Widget)item).addDisposeListener(new DisposeListener(){
-				public void widgetDisposed(DisposeEvent e) {
-					((IDisposable)labelProvider).dispose();						
-				}
-			});
-		}
+//		if (labelProvider instanceof IDisposable && item instanceof Widget) {
+//			((Widget)item).addDisposeListener(new DisposeListener(){
+//				public void widgetDisposed(DisposeEvent e) {
+//					((IDisposable)labelProvider).dispose();						
+//				}
+//			});
+//		}
 		
 		if (item instanceof IGraphModelNode) {
 			IGraphModelNode node = (IGraphModelNode)item;

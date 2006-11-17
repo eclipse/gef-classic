@@ -312,6 +312,9 @@ public class GraphModel extends GraphItem {
 			connection.disconnect();
 			external2InternalConnectionMap.remove(connection.getExternalConnection());
 			removed = connections.remove(connection);
+			if ( connection != null && !((GraphModelConnection) connection).isDisposed() ) {
+				((GraphModelConnection)connection).dispose();
+			}
 		}
 		return removed;
 	}
@@ -370,6 +373,9 @@ public class GraphModel extends GraphItem {
 				}
 				firePropertyChange(NODE_REMOVED_PROP, null, node);
 			}
+			if ( !((GraphModelNode)node).isDisposed() )  {
+				((GraphModelNode)node).dispose();
+			}
 		}
 		return removed;
 	}
@@ -427,6 +433,25 @@ public class GraphModel extends GraphItem {
 	 */
 	public GraphModel getGraphModel() {
 		return this;
+	}
+	
+	/**
+	 * Dispose of the nodes and edges when the graph is disposed.
+	 */
+	public void dispose() {
+		for ( Iterator iter = nodes.iterator(); iter.hasNext(); ) {
+			GraphModelNode node = (GraphModelNode) iter.next();
+			if ( node != null && !node.isDisposed() ) {
+				node.dispose();
+			}
+		}
+		for ( Iterator iter = connections.iterator(); iter.hasNext(); ) {
+			GraphModelConnection connection = (GraphModelConnection) iter.next();
+			if ( connection != null && !connection.isDisposed() ) {
+				connection.dispose();
+			}
+		}
+		super.dispose();
 	}
 	
 }

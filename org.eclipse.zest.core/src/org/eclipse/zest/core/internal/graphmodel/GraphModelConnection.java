@@ -653,4 +653,5 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 		return trueVisibility;
 	}
 	
+	
 }
