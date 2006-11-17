@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.StructuredViewer;
+import org.eclipse.mylar.zest.core.viewers.EntityConnectionData;
 import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
 import org.eclipse.swt.widgets.Canvas;
 

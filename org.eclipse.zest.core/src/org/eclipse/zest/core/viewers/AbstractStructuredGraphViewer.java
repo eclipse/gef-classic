@@ -27,6 +27,8 @@ import org.eclipse.mylar.zest.core.ZestPlugin;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelConnection;
+import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelNode;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
@@ -451,6 +453,41 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		}
 		return super.getRawChildren(parent);
 	}
+	
+
+	/**
+	 * 
+	 */
+	public void reveal(Object element) {
+		Widget[] items = this.findItems(element);
+		for (int i = 0; i < items.length; i++) {
+			Widget item = items[i];
+			if ( item instanceof GraphModelNode ) {
+				GraphModelNode graphModelNode = (GraphModelNode) item;
+				graphModelNode.highlight();
+			}
+			else if ( item instanceof GraphModelConnection ) {
+				GraphModelConnection graphModelConnection = (GraphModelConnection) item;
+				graphModelConnection.highlight();
+			}
+		}
+	}
+	
+	public void unReveal(Object element) {
+		Widget[] items = this.findItems(element);
+		for (int i = 0; i < items.length; i++) {
+			Widget item = items[i];
+			if ( item instanceof GraphModelNode ) {
+				GraphModelNode graphModelNode = (GraphModelNode) item;
+				graphModelNode.unhighlight();
+			}
+			else if ( item instanceof GraphModelConnection ) {
+				GraphModelConnection graphModelConnection = (GraphModelConnection) item;
+				graphModelConnection.unhighlight();
+			}
+		}		
+	}
+
 
 	/**
 	 * Applies the viewers layouts.

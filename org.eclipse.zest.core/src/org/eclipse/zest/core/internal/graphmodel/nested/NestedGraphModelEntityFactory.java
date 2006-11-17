@@ -18,11 +18,11 @@ import java.util.Map;
 
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory;
-import org.eclipse.mylar.zest.core.internal.graphmodel.EntityConnectionData;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode;
 import org.eclipse.mylar.zest.core.messages.ZestUIMessages;
+import org.eclipse.mylar.zest.core.viewers.EntityConnectionData;
 import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
 import org.eclipse.mylar.zest.core.viewers.INestedGraphEntityContentProvider;
 import org.eclipse.swt.widgets.Canvas;

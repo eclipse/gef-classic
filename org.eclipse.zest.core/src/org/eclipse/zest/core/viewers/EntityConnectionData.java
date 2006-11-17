@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.internal.graphmodel;
+package org.eclipse.mylar.zest.core.viewers;
 
 /**
  * A simple object that is used as the "external connection" in content providers that don't
@@ -17,8 +17,8 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
  * @author Del Myers
  */
 public final class EntityConnectionData {
-	public Object source;
-	public Object dest;
+	public final Object source;
+	public final Object dest;
 	/**
 	 * 
 	 */

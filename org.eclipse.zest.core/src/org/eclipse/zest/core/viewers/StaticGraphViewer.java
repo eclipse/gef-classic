@@ -142,12 +142,7 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 		}
 	}
 
-	
 
-
-	public void reveal(Object element) {
-
-	}
 
 	protected void setSelectionToWidget(List l, boolean reveal) {
 		viewer.setSelection(l);
