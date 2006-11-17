@@ -33,14 +33,6 @@ import org.eclipse.swt.graphics.Color;
 //@tag bug(151327-Styles) : created to help resolve this bug
 public class GraphItemStyler {
 	public static void styleItem(IGraphItem item, final IBaseLabelProvider labelProvider) {
-		//provided for label providers that must be disposed.
-//		if (labelProvider instanceof IDisposable && item instanceof Widget) {
-//			((Widget)item).addDisposeListener(new DisposeListener(){
-//				public void widgetDisposed(DisposeEvent e) {
-//					((IDisposable)labelProvider).dispose();						
-//				}
-//			});
-//		}
 		
 		if (item instanceof IGraphModelNode) {
 			IGraphModelNode node = (IGraphModelNode)item;
