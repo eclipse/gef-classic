@@ -95,8 +95,6 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	protected IFigure createFigure() {
 		IFigure f = createFigureForModel();
 		f.addLayoutListener(LayoutAnimator.getDefault());
-		
-		//f.setOpaque(true); // non-transparent figure
 		return f;
 	}
 
@@ -139,17 +137,6 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 	public void performRequest(Request req) {
 		if (REQ_OPEN.equals(req.getType())) {
 			// TODO handle double-click
-//			GraphModelNode node = getCastedModel();
-//			System.out.println("\n" + node + "\nSource Connections:");
-//			for (Iterator iter = node.getSourceConnections().iterator(); iter.hasNext(); ) {
-//				GraphModelConnection conn = (GraphModelConnection)iter.next();
-//				System.out.println(conn.toString());
-//			}
-//			System.out.println("Target Connections:");
-//			for (Iterator iter = node.getTargetConnections().iterator(); iter.hasNext(); ) {
-//				GraphModelConnection conn = (GraphModelConnection)iter.next();
-//				System.out.println(conn.toString());
-//			}
 		}
 		super.performRequest(req);
 	}
@@ -195,8 +182,6 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 			refreshColors();
 			getCastedModel().highlight();
 			getCastedModel().unhighlight();
-			
-			
 		}
 		else if (IGraphModelNode.LOCATION_PROP.equals(prop) || IGraphModelNode.SIZE_PROP.equals(prop)) {
 			refreshVisuals();
@@ -205,19 +190,15 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		} else if (IGraphModelNode.TARGET_CONNECTIONS_PROP.equals(prop)) {
 			refreshTargetConnections();
 		} else if (IGraphModelNode.HIGHLIGHT_PROP.equals(prop)) {
-//			@tag unreported(EdgeHighlight) :the model will take care of all highlighting, and sending events.
-			/*if (highlight) {
-				getCastedModel().highlight();
-			} else {
-				getCastedModel().unhighlight();
-			}
-			// TODO pin highlighted node?  */
 			refreshColors();
 		} else if (IGraphModelNode.COLOR_BG_PROP.equals(prop)) {
 			refreshColors();
 		} else if (IGraphModelNode.COLOR_FG_PROP.equals(prop)) {
 			refreshColors();
-		} 
+		}
+		else if (IGraphModelNode.COLOR_BD_PROP.equals(prop)) {
+			refreshColors();
+		}
 		else if ( IGraphModelNode.BRING_TO_FRONT.equals(prop) ) {
 			IFigure figure = getFigure();
 			IFigure parent = figure.getParent();
@@ -237,12 +218,9 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		IGraphModelNode node = getCastedModel();
 		Point loc = node.getLocation();
 		Dimension size = node.getSize();
-
 		Rectangle bounds = new Rectangle(loc, size);
 		((GraphicalEditPart)getParent()).setLayoutConstraint(this, getFigure(), bounds);
-		refreshColors();
-		//figure.repaint();
-		//getFigure().revalidate();		 
+		refreshColors(); 
 	}
 
 	/**
@@ -258,9 +236,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 			GraphLabel label = (GraphLabel) figure;
 			label.setBorderColor(model.getBorderColor());
 			label.setBorderWidth(model.getBorderWidth());
-		}
-		
-		//this.getFigure().revalidate();	
+		}	
 	}
 	
 	/**
