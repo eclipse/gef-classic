@@ -24,6 +24,7 @@ public interface IZestColorConstants {
 	public static final String LIGHT_YELLOW = "org.eclipse.mylar.zest.colors.lightyellow"; //$NON-NLS-1$
 	public static final String WHITE = "org.eclipse.mylar.zest.colors.white"; //$NON-NLS-1$
 	public static final String LIGHT_GRAY = "org.eclipse.mylar.zest.colors.lightgray"; //$NON-NLS-1$
+	public static final String DISABLED = "org.eclipse.mylar.zest.colors.disabled"; //$NON-NLS-1$
 	public static final String GRAY = "org.eclipse.mylar.zest.colors.gray"; //$NON-NLS-1$
 	public static final String BLACK = "org.eclipse.mylar.zest.colors.black"; //$NON-NLS-1$
 	public static final String RED = "org.eclipse.mylar.zest.colors.red"; //$NON-NLS-1$
