@@ -123,8 +123,7 @@ public abstract class CachedLabel extends Label {
 	 * @return
 	 */
 	protected abstract Color getBackgroundTextColor();	
-	
-	
+		
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
@@ -156,6 +155,7 @@ public abstract class CachedLabel extends Label {
 			Graphics graphics2 = new SWTGraphics(gc);
 			graphics2.setBackgroundColor(getBackgroundTextColor());
 			graphics2.fillRectangle(0,0,width,height);
+			graphics2.setForegroundColor(getForegroundColor());
 			graphics2.drawText(getSubStringText(),new Point(0,0));
 			gc.dispose();
 			
@@ -184,7 +184,7 @@ public abstract class CachedLabel extends Label {
 		invalidationRequired = true;
 	}	
 	
-	private void cleanImage() {
+	protected void cleanImage() {
 		if ( cachedImage != null ) {
 			
 			ZestPlugin.getDefault().removeImage(cachedImage.toString());
