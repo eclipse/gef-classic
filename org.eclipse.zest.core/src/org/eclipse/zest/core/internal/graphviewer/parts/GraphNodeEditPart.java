@@ -240,7 +240,7 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 
 		Rectangle bounds = new Rectangle(loc, size);
 		((GraphicalEditPart)getParent()).setLayoutConstraint(this, getFigure(), bounds);
-
+		refreshColors();
 		//figure.repaint();
 		//getFigure().revalidate();		 
 	}
