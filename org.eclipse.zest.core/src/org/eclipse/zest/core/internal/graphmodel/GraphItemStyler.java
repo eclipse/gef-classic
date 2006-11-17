@@ -163,6 +163,8 @@ public class GraphItemStyler {
 		if ((c = provider.getBorderColor(entity)) != null) node.setBorderColor(c);
 		if ((c = provider.getBorderHighlightColor(entity)) != null) node.setBorderHighlightColor(c);
 		if ((c = provider.getHighlightColor(entity)) != null) node.setHighlightColor(c);
+		if ((c = provider.getBackgroundColour(entity)) != null) node.setBackgroundColor(c);
+		if ((c = provider.getForegroundColour(entity)) != null) node.setForegroundColor(c);
 		if ((width = provider.getBorderWidth(entity)) >= 0) node.setBorderWidth(width);
 		
 	}

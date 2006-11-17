@@ -92,4 +92,18 @@ public interface IEntityStyleProvider extends IDisposable {
 	 */
 	public Color getAdjacentEntityHighlightColor(Object entity);
 	
+	
+	/**
+	 * Returns the colour that this node should be coloured.  This will be ignored 
+	 * if getNodeColour returns null.  Any resources created by this class must be diposed by
+	 * this class.
+	 * @param entity The entity to be styled
+	 * @return The colour for the node
+	 * @see #dispose()
+	 */
+	public Color getBackgroundColour(Object entity);
+	
+	
+	public Color getForegroundColour(Object entity);
+	
 }
