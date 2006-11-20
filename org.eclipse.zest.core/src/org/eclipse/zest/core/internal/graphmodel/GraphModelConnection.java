@@ -36,8 +36,6 @@ import org.eclipse.swt.widgets.Display;
 public class GraphModelConnection extends GraphItem implements IGraphModelConnection, LayoutRelationship {
 
 	private Font font;
-
-	
 	private IGraphModelNode sourceNode;
 	private IGraphModelNode destinationNode;
 
@@ -53,7 +51,6 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	
 	private Object internalConnection;
 	private int connectionStyle;
-
 	private int curveDepth;
 	
 
@@ -222,10 +219,6 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 		if (newSource == null || newDestination == null ) {
 			throw new IllegalArgumentException("Invalid source and/or destination nodes");
 		}
-		//@tag zest(bug(152180-SelfLoops)) : commented out to allow a fix.
-		/*else if ( newSource == newDestination ) {
-			throw new IllegalArgumentException("Invalid: source == destination");
-		}*/
 		disconnect();
 		this.sourceNode = newSource;
 		this.destinationNode = newDestination;
@@ -375,9 +368,6 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 			firePropertyChange(LINECOLOR_PROP, old, color);
 		}
 	}
-	
-
-
 
 	/**
 	 * Returns the connection line width.
@@ -456,20 +446,16 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	 * Highlights this node.  Uses the default highlight color.
 	 */
 	public void highlight() {
-		if (this.color != highlightColor) {
-			changeLineColor(highlightColor);
-			firePropertyChange(HIGHLIGHT_PROP, null, null);
-		}
+		changeLineColor(highlightColor);
+		firePropertyChange(HIGHLIGHT_PROP, null, null);
 	}
 	
 	/**
 	 * Unhighlights this node.  Uses the default color.
 	 */
 	public void unhighlight() {
-		if (this.color != foreground) {
-			changeLineColor(foreground);
-			firePropertyChange(UNHIGHLIGHT_PROP, null, null);
-		}
+		changeLineColor(foreground);
+		firePropertyChange(UNHIGHLIGHT_PROP, null, null);
 	}
 	
 	/**
@@ -652,6 +638,4 @@ public class GraphModelConnection extends GraphItem implements IGraphModelConnec
 	public boolean isVisible() {
 		return trueVisibility;
 	}
-	
-	
 }
