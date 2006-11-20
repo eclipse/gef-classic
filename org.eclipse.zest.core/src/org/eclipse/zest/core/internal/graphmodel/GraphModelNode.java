@@ -34,12 +34,14 @@ import org.eclipse.swt.widgets.Display;
  * It also has a list of connections and anchors.
  *  
  * @author Chris Callendar
+ * @author Del Myers
+ * @author Ian Bull
  */
 public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	private int nodeStyle;
-	
-	private List sourceConnections;
-	private List targetConnections;
+ 
+	private List /*IGraphModelConnection*/ sourceConnections;
+	private List /*IGraphModelConnection*/ targetConnections;
 	
 	private boolean preferredLocation;
 	private Color foreColor;
@@ -56,16 +58,12 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	private Font font;
 
 	protected Dimension labelSize;
-	
 	protected GraphModel graphModel;
 	
 	/** The internal node. */
 	protected Object internalNode;
-
 	private boolean selected;
-
 	private boolean highlighted;
-	
 	
 	public GraphModelNode(GraphModel graphModel, Object externalNode) {
 		super(graphModel);
@@ -122,11 +120,16 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 		}
 	}
 	
-	
+	/**
+	 * A simple toString that we can use for debugging
+	 */
 	public String toString() {
 		return "GraphModelNode: " + getText();
 	}
 
+	/**
+	 * Compares two nodes.
+	 */
 	public int compareTo(Object otherNode) {
 		int rv = 0;
 		if (otherNode instanceof IGraphModelNode) {
@@ -278,21 +281,13 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 		firePropertyChange(LOCATION_PROP, oldPoint, currentLocation);
 	}
 	
+	
+	/**
+	 * Sets the layout location of this node
+	 */
 	public void setLocationInLayout(double x, double y) {
-
 		this.setLocation(x, y);
-		/*
-		if (!preferredLocation) {
-			newLayoutLocation.setLocation((int)x, (int)y);
-//			if ((x != currentLocation.x) || (y != currentLocation.y)) {
-//				currentLocation.setLocation((int)x, (int)y);
-//				//DebugPrint.println("Called Set Location: " + x + " : " + y);
-//				firePropertyChange(LOCATION_PROP, null, currentLocation);
-//			}
-		}
-		*/
 	}
-
 	
 	/**
 	 * Returns a copy of the node's size.
@@ -302,20 +297,32 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 		return size.getCopy();
 	}
 	
+	/**
+	 * Sets the size of this node
+	 */
 	public void setSizeInLayout(double width, double height) {
 		setSize(width, height);
 	}
 	
+	/**
+	 * Get the foreground colour for this node
+	 */
 	public Color getForegroundColor() {
 		return foreColor;
 	}
 	
+	/**
+	 * Set the foreground colour for this node
+	 */
 	public void setForegroundColor(Color c) {
 		Color old = foreColor;
 		this.foreColor = c;
 		firePropertyChange(COLOR_FG_PROP, old, c);
 	}
 	
+	/**
+	 * Get the background colour for this node
+	 */
 	public Color getBackgroundColor() {
 		return backColor;
 	}
@@ -362,18 +369,32 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 		
 	}
 	
+	/**
+	 * Get the highlight colour for this node
+	 */
 	public Color getHighlightColor() {
 		return highlightColor;
 	}
 	
+	/**
+	 * Set the highlight colour for this node
+	 */
 	public void setHighlightColor(Color c) {
 		this.highlightColor = c;
 	}
 	
+	/**
+	 * Get the highlight adjacent colour for this node. This is the colour
+	 * that adjacent nodes will get
+	 */
 	public Color getHighlightAdjacentColor() {
 		return highlightAdjacentColor;
 	}
 	
+	/**
+	 * Set the highlight adjacent colour for this node. This is the colour
+	 * that adjacent node will get.
+	 */
 	public void setHighlightAdjacentColor(Color c) {
 		this.highlightAdjacentColor = c;
 	}	
@@ -384,24 +405,29 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	 */
 	public void highlight() {
 		if (isHighlighted()) return;
+		boolean fireEvent = false;
+		if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
+			fireEvent = true;
+			for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
+				IGraphModelConnection conn = (IGraphModelConnection)iter.next();
+				conn.highlight();
+				conn.getDestination().highlightAdjacent();
+			}
+			for (Iterator iter = targetConnections.iterator(); iter.hasNext();) {
+				IGraphModelConnection conn = (IGraphModelConnection)iter.next();
+				conn.highlight();
+				conn.getSource().highlightAdjacent();
+			}
+		}
 		if (backColor != highlightColor) {
+			fireEvent = true;
 			borderColor = borderHighlightColor;
 			changeBackgroundColor(highlightColor);
 			// highlight the adjacent nodes
 			//@tag zest.bug.160367-Refreshing.fix : it was notices as a side-effect of this bug that we were never actually checking for the highlight-adjacent style. That is now fixed.
-			if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
-				for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
-					IGraphModelConnection conn = (IGraphModelConnection)iter.next();
-					conn.highlight();
-					conn.getDestination().highlightAdjacent();
-				}
-				for (Iterator iter = targetConnections.iterator(); iter.hasNext();) {
-					IGraphModelConnection conn = (IGraphModelConnection)iter.next();
-					conn.highlight();
-					conn.getSource().highlightAdjacent();
-				}
-			}
 			highlighted = true;
+		}
+		if (fireEvent) {
 			firePropertyChange(HIGHLIGHT_PROP, Boolean.FALSE, Boolean.TRUE);
 		}
 	}
@@ -415,9 +441,9 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	 */
 	public void unhighlight() {
 		if (!isHighlighted()) return;
-		if (unhighlightColor != backColor) {
-			changeBackgroundColor(unhighlightColor);
-			borderColor = borderUnhighlightColor;
+		boolean fireEvent = false;
+		if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
+			fireEvent = true;
 			// unhighlight the adjacent edges
 			for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
 				IGraphModelConnection conn = (IGraphModelConnection)iter.next();
@@ -429,7 +455,15 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 				conn.unhighlight();
 				conn.getSource().unhighlight();
 			}
+		}
+		if (unhighlightColor != backColor) {
+			fireEvent = true;
+			changeBackgroundColor(unhighlightColor);
+			borderColor = borderUnhighlightColor;
 			highlighted = false;
+			
+		}
+		if (fireEvent) {
 			firePropertyChange(HIGHLIGHT_PROP, Boolean.TRUE, Boolean.FALSE);
 		}
 	}
@@ -621,11 +655,4 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	public Color getBorderUnhiglightColor() {
 		return borderUnhighlightColor;
 	}
-
-	
-
-
-	
-	
-	
 }
