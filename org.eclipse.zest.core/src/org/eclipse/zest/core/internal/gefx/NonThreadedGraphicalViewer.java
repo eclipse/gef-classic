@@ -12,7 +12,6 @@ package org.eclipse.mylar.zest.core.internal.gefx;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -20,13 +19,11 @@ import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.MouseWheelZoomHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
-import org.eclipse.mylar.zest.layouts.progress.ProgressEvent;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ControlEvent;
-import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
@@ -43,7 +40,6 @@ import org.eclipse.ui.PlatformUI;
 public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewer {
 
 	private List revealListeners = null;
-	
 	
 	/**
 	 * ThreadedGraphicalViewer constructor.
@@ -79,17 +75,7 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 			}
 			
 		});
-		getControl().addControlListener(new ControlListener() {
 
-			public void controlMoved(ControlEvent e) {
-				fireControlMovedEvent( e );
-			}
-
-			public void controlResized(ControlEvent e) {
-				fireControlResizedEvent( e );
-			}
-		});
-		
 		getControl().addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 			}
@@ -102,21 +88,19 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 		setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1), MouseWheelZoomHandler.SINGLETON);		
 	}
 	
-	private List controlListeners = new LinkedList();
-	
-	public void addControlListener( ControlListener controlListener ) {
-		controlListeners.add( controlListener );
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.gef.ui.parts.ScrollingGraphicalViewer#reveal(org.eclipse.gef.EditPart)
+	 */
+	public void reveal(EditPart part) {
+		// @tag rootEditPart : Don't reveal root edit parts
+		if  (!(part instanceof GraphRootEditPart))
+			super.reveal(part);
 	}
 	
 	private class MyRunnable implements Runnable{
-
 		boolean isVisible;
-		/* (non-Javadoc)
-		 * @see java.lang.Runnable#run()
-		 */
-		public void run() {
-			 isVisible = getControl().isVisible();
-		}
+		public void run() { isVisible = getControl().isVisible();}
 	}
 	
 	/**
@@ -130,31 +114,11 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 		MyRunnable myRunnable = new MyRunnable();
 		PlatformUI.getWorkbench().getDisplay().syncExec( myRunnable);
 		
-		if ( myRunnable.isVisible ) {
+		if ( myRunnable.isVisible ) 
 			revealListener.revealed( (Composite)getControl() );
-		} else {
+		else 
 			revealListeners.add(revealListener);
-		}
 	}
-	
-	public boolean removeControlListener( ControlListener controlListener ) {
-		return controlListeners.remove( controlListener );
-	}
-	
-	protected void fireControlMovedEvent( ControlEvent e ) {
-		for ( Iterator iterator = controlListeners.iterator(); iterator.hasNext(); ) {
-			((ControlListener)iterator.next()).controlMoved( e );
-		}
-	}
-	
-	protected void fireControlResizedEvent( ControlEvent e ) {
-		for ( Iterator iterator = controlListeners.iterator(); iterator.hasNext(); ) {
-			((ControlListener)iterator.next()).controlResized( e );
-		}
-	}
-	
-	
-	
 	
 	/**
 	 * Does some initializing of the viewer.
@@ -203,20 +167,4 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 		//mainCanvas.getViewport().translateToRelative(dim);
 		return dim;
 	}
-		
-	/**
-	 *  
-	 */
-	public void progressUpdated(ProgressEvent e) {
-		//TODO: Make this use the display thread
-	}
-	
-	public void progressEnded(ProgressEvent e) {
-		// TODO Auto-generated method stub
-	}
-	
-	public void progressStarted(ProgressEvent e) {
-		// TODO Auto-generated method stub
-	}	
-
 }
