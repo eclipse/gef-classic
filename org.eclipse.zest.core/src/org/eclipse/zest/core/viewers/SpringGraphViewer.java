@@ -355,6 +355,15 @@ public class SpringGraphViewer extends AbstractStructuredGraphViewer {
 	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
 	 */
 	protected IStylingGraphModelFactory getFactory() {
+		if (modelFactory == null) {
+			if (getContentProvider() instanceof IGraphContentProvider) {
+				modelFactory = new GraphModelFactory(this);
+			} else if (getContentProvider() instanceof IGraphEntityContentProvider) {
+				modelFactory = new GraphModelEntityFactory(this);
+			} else if (getContentProvider() instanceof IGraphEntityRelationshipContentProvider) {
+				modelFactory = new GraphModelEntityRelationshipFactory(this);
+			}
+		}
 		return modelFactory;
 	}
 
