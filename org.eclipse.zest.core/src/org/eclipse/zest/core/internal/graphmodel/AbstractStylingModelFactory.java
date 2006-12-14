@@ -148,10 +148,10 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 			}
 		}
 		if (sn == null) {
-			sn = createNode(graph, element);
+			sn = createNode(graph, source);
 		}
 		if (dn == null) {
-			dn = createNode(graph, element);
+			dn = createNode(graph, dest);
 		}
 		GraphModelConnection c = new GraphModelConnection(graph, element, sn, dn);
 		styleItem(c);
