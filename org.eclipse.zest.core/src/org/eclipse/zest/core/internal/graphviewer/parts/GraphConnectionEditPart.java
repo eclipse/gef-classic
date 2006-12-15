@@ -277,6 +277,8 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	protected void refreshVisuals() {
 		super.refreshVisuals();
 		IFigure figure = getFigure();
+		//@tag zest.bug.167128-EdgeVisibility : make the figue change visibility with model.
+		figure.setVisible(getCastedModel().isVisible());
 		figure.setForegroundColor(getCastedModel().getLineColor());
 		if (figure instanceof Shape) {
 			((Shape)figure).setLineWidth(getCastedModel().getLineWidth());
