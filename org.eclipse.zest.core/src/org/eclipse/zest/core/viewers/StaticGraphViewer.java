@@ -21,12 +21,14 @@ import org.eclipse.mylar.zest.core.internal.gefx.StaticGraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelEntityRelationshipFactory;
 import org.eclipse.mylar.zest.core.internal.graphmodel.GraphModelFactory;
+import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory;
 import org.eclipse.mylar.zest.core.internal.graphviewer.StaticGraphViewerImpl;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * This view is used to represent a static graph. Static graphs can be layed
@@ -132,6 +134,24 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 					"Invalid content provider, only IGraphContentProvider, IGraphEntityContentProvider, or IGraphEntityRelationshipContentProvider are supported.");
 		}
 	}
+	
+	
+	/**
+	 * Finds the graph widget item for a given user model item.  
+	 * 
+	 * Note:  This method returns an internal interface (GraphItem).  You should be able to cast this 
+	 * to either a IGraphModelNode or IGraphModelConnection (which are also internal). These are internal
+	 * because this API is not stable.  If use this method (to access internal nodes and edges), your code may not
+	 * compile between versions.  
+	 * 
+	 * @param The user model node.
+	 * @return  An IGraphItem.  This should be either a IGraphModelNode or IGraphModelConnection
+	 */
+	public IGraphItem findGraphItem(Object element) {
+		Widget[] result = findItems(element);
+		return (result.length == 0 && result[0] instanceof IGraphItem)? null : (IGraphItem)result[0];
+	}
+	
 
 	/**
 	 * Applys the current layout to the viewer
