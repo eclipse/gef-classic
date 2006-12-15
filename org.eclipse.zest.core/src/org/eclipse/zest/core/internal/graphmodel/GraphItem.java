@@ -89,5 +89,14 @@ public abstract class GraphItem extends Item implements IGraphItem  {
 		if (old ^ visible)
 			firePropertyChange(VISIBLE_PROP, new Boolean(old), new Boolean(visible));
 	}
+	
+	/* (non-Javadoc)
+	 * @see org.eclipse.swt.widgets.Widget#dispose()
+	 */
+	public void dispose() {
+		//@tag zest.bug.167132-ListenerDispose : remove all listeners.
+		pcsDelegate = new PropertyChangeSupport(this);
+		super.dispose();
+	}
 
 }
