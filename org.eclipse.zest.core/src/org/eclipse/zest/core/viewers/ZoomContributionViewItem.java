@@ -126,8 +126,16 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	public void fill(Menu menu, int index) {
 		this.fMenu = menu;
 		for (int i = 0; i < zoomLevels.length; i++) {
-			MenuItem item = new MenuItem(fMenu, SWT.RADIO);
+			final MenuItem item = new MenuItem(fMenu, SWT.RADIO);
+			if( zoomManager.getZoomAsText().equals(zoomLevels[i])) {
+				item.setSelection(true);
+			}
 			item.setText(zoomLevels[i]);
+			item.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					doZoom(item.getText());
+				}
+			});
 		}
 	}
 	
