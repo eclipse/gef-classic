@@ -14,13 +14,18 @@ package org.eclipse.mylar.zest.core.viewers;
  * A simple object that is used as the "external connection" in content providers that don't
  * ask the user to create their own external connection. 
  * 
+ * This is used whenever users don't specify a connection
+ * 
  * @author Del Myers
  */
 public final class EntityConnectionData {
 	public final Object source;
 	public final Object dest;
+	
+	
 	/**
-	 * 
+	 * Creates a new entity connection data.  The source and dest
+	 * are users nodes.
 	 */
 	public EntityConnectionData(Object source, Object dest) {
 		this.source = source;
