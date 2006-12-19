@@ -24,4 +24,10 @@ public interface LayoutStyles {
 	 */
 	public final static int NO_LAYOUT_NODE_RESIZING = 0x01;
 	
+	/**
+	 * Some layouts may prefer to expand their bounds beyond those of the requested bounds. This
+	 * flag asks the layout not to do so.
+	 */
+	public static final int ENFORCE_BOUNDS	= 0X02;
+	
 }
