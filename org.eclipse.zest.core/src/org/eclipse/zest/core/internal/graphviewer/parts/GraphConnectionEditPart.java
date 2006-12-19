@@ -23,6 +23,9 @@ import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.PolylineDecoration;
 import org.eclipse.draw2d.RotatableDecoration;
 import org.eclipse.draw2d.Shape;
+import org.eclipse.gef.DragTracker;
+import org.eclipse.gef.EditPolicy;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.internal.gefx.AligningBendpointLocator;
@@ -31,6 +34,8 @@ import org.eclipse.mylar.zest.core.internal.gefx.GraphRootEditPart;
 import org.eclipse.mylar.zest.core.internal.gefx.PolylineArcConnection;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem;
 import org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelConnection;
+import org.eclipse.mylar.zest.core.internal.graphviewer.policies.HighlightConnectionEndpointEditPolicy;
+import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTracker;
 
 
 /**
@@ -51,6 +56,8 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 		super();
 	}
 
+	
+	
 
 	/**
 	 * Upon activation, attach to the model element as a property change listener.
@@ -94,6 +101,7 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
 	protected void createEditPolicies() {
+		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE, new HighlightConnectionEndpointEditPolicy());
 	}
 
 	/* (non-Javadoc)
@@ -139,6 +147,14 @@ public class GraphConnectionEditPart extends AbstractConnectionEditPart implemen
 	  	}
 		
 		return connection;
+	}
+	
+	/**
+	 * Gets the drag tracker for the edge.  This means only 1 edge can be selected
+	 * @tag Selection : this controls single edge selection
+	 */
+	public DragTracker getDragTracker(Request req) {
+		return new SingleSelectionTracker(this);
 	}
 	
 	/**

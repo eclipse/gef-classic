@@ -52,9 +52,8 @@ public class ZestSelectionManager extends SelectionManager {
 			if (editPart.getModel() == null) {
 				return Collections.EMPTY_LIST;
 			}
-			if (editPart.getModel() instanceof IGraphItem) {
+			else if (editPart.getModel() instanceof IGraphItem) {
 				IGraphItem item = (IGraphItem) editPart.getModel();
-
 				if (!(item instanceof GraphModel)) {
 					selections.add(item.getData());
 				}

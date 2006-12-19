@@ -138,7 +138,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		this.allowPanning = ZestStyles.checkStyle(style, ZestStyles.PANNING);
 		this.allowMarqueeSelection = !allowPanning && ZestStyles.checkStyle(style, ZestStyles.MARQUEE_SELECTION);				
 		(getFigureCanvas()).setScrollBarVisibility(FigureCanvas.AUTOMATIC);
-		setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NONE), false);
+		setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), false);
 	}
 	
 	/**

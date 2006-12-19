@@ -111,8 +111,8 @@ public class GraphEditPart extends AbstractGraphicalEditPart implements Property
 	protected void createEditPolicies() {
 		// disallows the removal of this edit part from its parent
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
-
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,  new GraphXYLayoutEditPolicy());
+		
 	}
 
 	/* (non-Javadoc)
