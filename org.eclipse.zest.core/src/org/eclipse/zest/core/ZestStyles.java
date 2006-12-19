@@ -93,6 +93,12 @@ public final class ZestStyles {
 	 */
 	//@tag style(node)
 	public static final int NODES_HIGHLIGHT_ADJACENT = 1 << 1;
+	
+	/**
+	 * Style constant indicating that node labels should be cached.
+	 * This is important under GTK+ because font drawing is slower than Windows.
+	 */
+	public static final int NODES_CACHE_LABEL = 1 << 2;
 
 	
 	

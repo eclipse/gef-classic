@@ -51,6 +51,18 @@ public interface IGraphModelNode extends IGraphItem, LayoutEntity {
 	Color getBackgroundColor();
 	
 	/**
+	 * Should the text on the labels be cached.
+	 * @return
+	 */
+	boolean cacheLabel();
+	
+	/**
+	 * Sets should the labels be cached
+	 * @param cacheLabel
+	 */
+	void setCacheLabel(boolean cacheLabel);
+	
+	/**
 	 * Returns the color that the background will return to after unhighlighting. 
 	 * @return the color that the background will return to after unhighlighting.
 	 */

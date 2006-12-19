@@ -106,7 +106,8 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		IFigure figure;
 		if (getModel() instanceof IGraphModelNode) {
 			IGraphModelNode node = getCastedModel();
-			GraphLabel label = new GraphLabel(node.getText(), node.getImage());
+			boolean cacheLabel = ((IGraphModelNode)getModel()).cacheLabel();
+			GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
 			label.setForegroundColor(node.getForegroundColor());
 			label.setBackgroundColor(node.getBackgroundColor());
 			label.setFont(node.getFont());

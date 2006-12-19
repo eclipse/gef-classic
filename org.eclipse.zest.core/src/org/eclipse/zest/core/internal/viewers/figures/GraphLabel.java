@@ -37,21 +37,24 @@ public class GraphLabel extends CachedLabel {
 
 	private boolean painting = false;
 	
-	public GraphLabel() {
-		this("");
+	public GraphLabel(boolean cacheLabel) {
+		this("", cacheLabel);
 	}
 	
-	public GraphLabel(String text) {
+	public GraphLabel(String text, boolean cacheLabel) {
+		super(cacheLabel);
 		initLabel();
 		setText(text);
 	}
 	
-	public GraphLabel(Image i) {
+	public GraphLabel(Image i, boolean cacheLabel) {
+		super(cacheLabel);
 		initLabel();
 		setIcon(i);
 	}
 	
-	public GraphLabel(String text, Image i) {
+	public GraphLabel(String text, Image i, boolean cacheLabel) {
+		super(cacheLabel);
 		initLabel();
 		setText(text);
 		setIcon(i);

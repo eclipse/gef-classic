@@ -36,9 +36,18 @@ public abstract class CachedLabel extends Label {
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
 	Image cachedImage = null;
+	boolean cacheLabel = false;
 	boolean invalidationRequired = false;
 	
 
+	/**
+	 * CachedLabel constructor.  
+	 * @param cacheLabel Should the label be cached, or should the text be re-layedout each time
+	 */
+	public CachedLabel(boolean cacheLabel) {
+		this.cacheLabel = cacheLabel;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.draw2d.Label#setIcon(org.eclipse.swt.graphics.Image)
@@ -129,6 +138,10 @@ public abstract class CachedLabel extends Label {
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
 	protected void paintFigure(Graphics graphics) {
+		if ( !cacheLabel ) {
+			super.paintFigure(graphics);
+			return;
+		}
 		
 		if (isOpaque())
 			graphics.fillRectangle(getBounds());

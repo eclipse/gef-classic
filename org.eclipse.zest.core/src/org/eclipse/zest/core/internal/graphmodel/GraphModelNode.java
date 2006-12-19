@@ -56,6 +56,7 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	private Point currentLocation;
 	private Dimension size;
 	private Font font;
+	private boolean cacheLabel;
 
 	protected Dimension labelSize;
 	protected GraphModel graphModel;
@@ -616,6 +617,7 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		this.nodeStyle = nodeStyle;
+		this.cacheLabel = ((this.nodeStyle & ZestStyles.NODES_CACHE_LABEL) > 0) ?  true :  false;
 	}
 
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
@@ -654,5 +656,13 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	 */
 	public Color getBorderUnhiglightColor() {
 		return borderUnhighlightColor;
+	}
+
+	public boolean cacheLabel() {
+		return this.cacheLabel;
+	}
+
+	public void setCacheLabel(boolean cacheLabel) {
+		this.cacheLabel = cacheLabel;
 	}
 }

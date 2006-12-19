@@ -648,5 +648,15 @@ public class NonNestedProxyNode extends GraphItem implements IGraphModelNode {
 		return proxy.getBorderUnhiglightColor();
 	}
 
+	public boolean cacheLabel() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void setCacheLabel(boolean cacheLabel) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 }
