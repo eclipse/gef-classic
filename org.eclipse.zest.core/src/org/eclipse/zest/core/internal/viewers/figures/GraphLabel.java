@@ -36,23 +36,40 @@ public class GraphLabel extends CachedLabel {
 	private int arcWidth;
 
 	private boolean painting = false;
-	
+
+	/**
+	 * Creates a GraphLabel 
+	 * @param cacheLabel Determine if the text should be cached.  This will make it faster, but the 
+	 * text is not as clear
+	 */
 	public GraphLabel(boolean cacheLabel) {
 		this("", cacheLabel);
 	}
 	
+	/**
+	 * Creates a graph label with text
+	 * @param text The text
+	 * @param cacheLabel Determine if the text should be cached.  This will make it faster, but the
+	 */
 	public GraphLabel(String text, boolean cacheLabel) {
-		super(cacheLabel);
-		initLabel();
-		setText(text);
+		this("", null, cacheLabel);
 	}
 	
+	/**
+	 * Creates the graph label with an image
+	 * @param i The Image
+	 * @param cacheLabel Determine if the text should be cached.  This will make it faster, but the
+	 */
 	public GraphLabel(Image i, boolean cacheLabel) {
-		super(cacheLabel);
-		initLabel();
-		setIcon(i);
+		this("", i, cacheLabel);
 	}
 	
+	/**
+	 * Creates a graph label with an image and text
+	 * @param text The text
+	 * @param i The Image
+	 * @param cacheLabel Determine if the text should be cached.  This will make it faster, but the
+	 */
 	public GraphLabel(String text, Image i, boolean cacheLabel) {
 		super(cacheLabel);
 		initLabel();
