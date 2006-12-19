@@ -214,7 +214,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @see org.eclipse.jface.viewers.StructuredViewer#internalRefresh(java.lang.Object)
 	 */
 	protected void internalRefresh(Object element) {
-		if (element == getInput())
+		if ( getInput() == null ) return;
+		if (element == getInput() )
 			getFactory().refreshGraph(getModel());
 		else
 			getFactory().refresh(getModel(), element);

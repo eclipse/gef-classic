@@ -109,12 +109,6 @@ public interface IStylingGraphModelFactory {
 	 */
 	public void refreshGraph(GraphModel graph);
 	
-	/**
-	 * Filters the given elements using getViewer()'s viewer filters.
-	 * @param parent the parent element, or the viewer input.
-	 * @return the filtered elements.
-	 */
-	public Object[] filter(Object parent, Object[] elements);
 	
 	/**
 	 * Returns the viewer that this factory is building the model for.

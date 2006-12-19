@@ -67,13 +67,11 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 					modelNodes[i].getExternalNode(), 
 					modelNodes[j].getExternalNode()
 				);
-				for (int r = 0; r < rels.length; r++) {
-					createConnection(
-						model, 
-						rels[r], 
-						modelNodes[i].getExternalNode(), 
-						modelNodes[j].getExternalNode()
-					);
+				if (rels != null) {
+					rels = filter(getViewer().getInput(), rels);
+					for (int r = 0; r < rels.length; r++) {
+						createConnection(model, rels[r], modelNodes[i].getExternalNode(), modelNodes[j].getExternalNode());
+					}
 				}
 			}
 		}
@@ -81,8 +79,11 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 
 	/**
 	 * Creates the model nodes for the given external nodes.
-	 * @param model the graph model.
-	 * @param nodes the external nodes.
+	 * 
+	 * @param model
+	 *            the graph model.
+	 * @param nodes
+	 *            the external nodes.
 	 */
 	private void createModelNodes(GraphModel model, Object[] nodes) {
 		for (int i = 0; i < nodes.length; i++) {

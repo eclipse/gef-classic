@@ -271,10 +271,25 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 */
 	protected abstract void doBuildGraph(GraphModel graph);
 	
+	/**
+	 * Determines if this element should be filtered or not.
+	 * @param parent
+	 * @param element
+	 * @return
+	 */
+	protected boolean filterElement(Object parent, Object element) {
+		ViewerFilter[] filters = getViewer().getFilters();
+		for (int i = 0; i < filters.length; i++) {
+			boolean selected = filters[i].select(viewer, parent, element);
+			if ( !selected ) return true;
+		}
+		return false;
+	}
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#isFiltered(java.lang.Object)
 	 */
-	public Object[] filter(Object parent, Object[] elements) {
+	protected Object[] filter(Object parent, Object[] elements) {
 		Object[] result = elements;
 		ViewerFilter[] filters = getViewer().getFilters();
 		for (int i = 0; i < filters.length; i++) {

@@ -51,13 +51,17 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 		model.setNodeStyle(getNodeStyle());
 		//make the model have the same styles as the viewer
 		Object rels[] = getContentProvider().getElements(getViewer().getInput());
-		rels = filter(getViewer().getInput(), rels);
 		if ( rels != null ) {
 			// If rels returns null then just continue
 			// @tag zest(bug(134928(fix))) : An empty graph causes an NPE
 			for ( int i = 0; i < rels.length; i++ ) {
+				// Check the filter on the source
 				Object source = getCastedContent().getSource(rels[i]);
+				source = filterElement(getViewer().getInput(),source) ? null : source;
+				
+				// Check hte filter on the dest
 				Object dest = getCastedContent().getDestination(rels[i]);
+				dest = filterElement(getViewer().getInput(),dest) ? null : dest;
 				if (source == null) {
 					//just create the node for the destination
 					if (dest != null) createNode(model, dest);
@@ -67,7 +71,10 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 					if (source != null) createNode(model, source);
 					continue;
 				}
-				createConnection(model, rels[i], getCastedContent().getSource(rels[i]), getCastedContent().getDestination(rels[i]));
+				// If any of the source, dest is null or the edge is filtered, don't create the graph.
+				if ( source != null && dest != null && !filterElement(getViewer().getInput(), rels[i])) {
+					createConnection(model, rels[i], getCastedContent().getSource(rels[i]), getCastedContent().getDestination(rels[i]));
+				}
 			}
 		}
 		

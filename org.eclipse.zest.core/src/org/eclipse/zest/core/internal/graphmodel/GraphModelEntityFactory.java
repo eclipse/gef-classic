@@ -42,24 +42,37 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 	}
 	
 	
-	public void doBuildGraph(GraphModel model) {
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory#doBuildGraph(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel)
+	 */
+	protected void doBuildGraph(GraphModel model) {
 		clearGraph(model);
 		model.setConnectionStyle(getConnectionStyle());
 		model.setNodeStyle(getNodeStyle());
 		Object inputElement = getViewer().getInput();
 		Object entities[] = getContentProvider().getElements( inputElement );
 		if ( entities == null ) return;
-		entities = filter(inputElement, entities);
 		for ( int i = 0; i < entities.length; i++ ) {
 			Object data = entities[ i ];
-			createNode(model, data);
+			if ( !filterElement(inputElement, data) )
+				createNode(model, data);
 		}
 		for ( int i=0; i < entities.length; i++ ) {
 			Object data = entities[ i ];
+			
+			// If this element is filtered, continue to the next one.
+			if ( filterElement(inputElement, data) ) continue; 
 			Object[] related = ((IGraphEntityContentProvider)getContentProvider()).getConnectedTo( data );
+			
 			if ( related != null )
 				for ( int j = 0; j < related.length; j++ ) {
-					createConnection(model, new EntityConnectionData(data, related[j]), data, related[j]);
+					// if the node this node is connected to is filtered, 
+					// don't display this edge
+					if ( filterElement(inputElement, related[j] ) ) continue;
+					EntityConnectionData connectionData = new EntityConnectionData(data, related[j]);
+					if ( filterElement(inputElement, connectionData) ) continue;
+					createConnection(model, connectionData, data, related[j]);
 				}
 		}	
 	}

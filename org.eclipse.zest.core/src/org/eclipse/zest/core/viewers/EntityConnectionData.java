@@ -36,6 +36,7 @@ public final class EntityConnectionData {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj) {
+		if ( !(obj instanceof EntityConnectionData) ) return false;
 		EntityConnectionData that = (EntityConnectionData) obj;
 		return (this.source.equals(that.source) && this.dest.equals(that.dest));
 	}
