@@ -171,6 +171,14 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 	public Control getControl() {
 		return viewer.getControl();
 	}
+	
+	/**
+	 * Gets the internal static graph.  Becareful when using this because the static graph viewer impl may change.
+	 * @return
+	 */
+	public StaticGraphViewerImpl getStaticGraph() {
+		return this.viewer;
+	}
 
 	
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {

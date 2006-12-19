@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditDomain;
@@ -52,12 +51,11 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 		
 		// create the FigureCanvas
 		createControl(parent);
-		
 		EditDomain ed = new DefaultEditDomain( null );
 		ed.addViewer( this );
 		setEditDomain( ed );
 		hookControl();
-		getFigureCanvas().setScrollBarVisibility(FigureCanvas.NEVER);
+		//getFigureCanvas().setScrollBarVisibility(FigureCanvas.NEVER);
 		
 
 		getControl().addPaintListener(new PaintListener() {
@@ -81,7 +79,6 @@ public abstract class NonThreadedGraphicalViewer extends ScrollingGraphicalViewe
 			}
 		});
 	
-		
 		((Canvas)getControl()).setBackground( ColorConstants.white );
 		
 		// Scroll-wheel Zoom

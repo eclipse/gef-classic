@@ -62,6 +62,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 	private int style = 0;
 	private int nodeStyle;
 	private int connectionStyle;
+	private Dimension preferredSize = new Dimension(-1, -1);
 
 	private boolean hasLayoutRun = false;
 
@@ -183,6 +184,16 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		return nodeStyle;
 	}
 	
+	/**
+	 * Sets the preferred size of the layout area. Size of ( -1, -1) uses the current canvas size.  
+	 * @param width
+	 * @param height
+	 */
+	public void setPreferredSize(int width, int height) {
+		
+		this.preferredSize = new Dimension(width, height);
+	}
+	
 
 	/**
 	 * Sets the model and initializes the layout algorithm.
@@ -232,6 +243,13 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		d.width = Math.max(0, d.width - nodeSize.width);
 		//@tag zest.bug.159645 : should be d.height - nodeSize.height
 		d.height = Math.max(0, d.height - nodeSize.height);
+		
+		if ( this.preferredSize.width >= 0 ) {
+			d.width = preferredSize.width;
+		}
+		if ( this.preferredSize.height >= 0 ) {
+			d.height = preferredSize.height;
+		}
 		
 		if (d.isEmpty())
 			return;
