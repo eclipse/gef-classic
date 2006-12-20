@@ -406,6 +406,7 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	 */
 	public void highlight() {
 		if (isHighlighted()) return;
+		highlighted = true;
 		boolean fireEvent = false;
 		if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
 			fireEvent = true;
@@ -426,7 +427,6 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 			changeBackgroundColor(highlightColor);
 			// highlight the adjacent nodes
 			//@tag zest.bug.160367-Refreshing.fix : it was notices as a side-effect of this bug that we were never actually checking for the highlight-adjacent style. That is now fixed.
-			highlighted = true;
 		}
 		if (fireEvent) {
 			firePropertyChange(HIGHLIGHT_PROP, Boolean.FALSE, Boolean.TRUE);
@@ -442,6 +442,7 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	 */
 	public void unhighlight() {
 		if (!isHighlighted()) return;
+		highlighted = false;
 		boolean fireEvent = false;
 		if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
 			fireEvent = true;
@@ -461,7 +462,6 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 			fireEvent = true;
 			changeBackgroundColor(unhighlightColor);
 			borderColor = borderUnhighlightColor;
-			highlighted = false;
 			
 		}
 		if (fireEvent) {
@@ -488,8 +488,8 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	 * this node is selected.
 	 * @return GraphModelNode
 	 */
-	public boolean isHighlightAdjacentNodes() {
-		return ZestStyles.checkStyle(ZestStyles.NODES_HIGHLIGHT_ADJACENT, nodeStyle);
+	public boolean isHighlightAdjacentNodes() {;
+		return ZestStyles.checkStyle(nodeStyle, ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 	}
 
 	/**
