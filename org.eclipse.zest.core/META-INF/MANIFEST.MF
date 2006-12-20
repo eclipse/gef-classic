@@ -8,7 +8,7 @@ Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.mylar.zest.layouts,
- org.eclipse.gef;visibility:=reexport
+ org.eclipse.gef
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.mylar.zest.core,
  org.eclipse.mylar.zest.core.internal.gefx;x-friends:="org.eclipse.mylar.zest.custom",

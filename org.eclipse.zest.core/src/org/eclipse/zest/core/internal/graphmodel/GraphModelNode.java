@@ -488,7 +488,7 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	 * this node is selected.
 	 * @return GraphModelNode
 	 */
-	public boolean isHighlightAdjacentNodes() {;
+	public boolean isHighlightAdjacentNodes() {
 		return ZestStyles.checkStyle(nodeStyle, ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 	}
 
