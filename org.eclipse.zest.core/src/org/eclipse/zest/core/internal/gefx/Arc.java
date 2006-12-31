@@ -87,57 +87,29 @@ public class Arc extends Shape {
 		this.length = length;
 	}
 	
-	//@tag taken : from java.awt.geom.Arc2D
 	public boolean containsPoint(int x, int y) {
-		// Normalize the coordinates compared to the ellipse
-		// having a center at 0,0 and a radius of 0.5.
 		Rectangle r = getArcBounds();
-		double ellw = r.width;
-		if (ellw <= 0.0) {
+		double boundsWidth = r.width;
+		double boundsHeight = r.height;
+		if (boundsWidth <= 0.0) {
 			return false;
 		}
-		double normx = (x - r.x) / ellw - 0.5;
-		double ellh = r.height;
-		if (ellh <= 0.0) {
+		else if (boundsHeight <= 0.0) {
 			return false;
 		}
-		double normy = (y - r.y) / ellh - 0.5;
-		double distSq = (normx * normx + normy * normy);
-		if (distSq >= 0.25) {
+		double normx = (x - r.x) / boundsWidth - 0.5;
+		double normy = (y - r.y) / boundsHeight - 0.5;
+		double distanceSquared = (normx * normx + normy * normy);
+		
+		if (distanceSquared >= 0.25) {
 			return false;
 		}
-		double angExt = Math.abs(getLength());
-		if (angExt >= 360.0) {
+		double angleExtent = Math.abs(getLength());
+		if (angleExtent >= 360.0) {
 			return true;
 		}
-		boolean inarc = containsAngle(-Math.toDegrees(Math.atan2(normy,
-				normx)));
-		return inarc;
-
-		/*// CHORD and OPEN behave the same way
-		if (inarc) {
-			if (angExt >= 180.0) {
-				return true;
-			}
-			// point must be outside the "pie triangle"
-		} else {
-			if (angExt <= 180.0) {
-				return false;
-			}
-			// point must be inside the "pie triangle"
-		}
-		// The point is inside the pie triangle iff it is on the same
-		// side of the line connecting the ends of the arc as the center.
-		double angle = Math.toRadians(-getAngleStart());
-		double x1 = Math.cos(angle);
-		double y1 = Math.sin(angle);
-		angle += Math.toRadians(-getAngleExtent());
-		double x2 = Math.cos(angle);
-		double y2 = Math.sin(angle);
-		boolean inside = (Line2D.relativeCCW(x1, y1, x2, y2, 2*normx, 2*normy) *
-				Line2D.relativeCCW(x1, y1, x2, y2, 0, 0) >= 0);
-		return inarc ? !inside : inside;
-		*/
+		boolean inArc = containsAngle(-Math.toDegrees(Math.atan2(normy,	normx)));
+		return inArc;
 	}
 	
 	public boolean containsAngle(double angle) {
@@ -156,8 +128,6 @@ public class Arc extends Shape {
 		if (angle < 0.0) {
 			angle += 360.0;
 		}
-
-
 		return (angle >= 0.0) && (angle < angExt);
 	}
 	
