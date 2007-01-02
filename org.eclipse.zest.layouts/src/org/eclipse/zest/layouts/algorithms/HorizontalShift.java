@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
 
@@ -37,6 +38,22 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 		for ( int i =0; i < entitiesToLayout.length; i++) {
 			addToRowList(entitiesToLayout[i], row);
 		}
+
+		int heightSoFar = 0;
+		
+		Collections.sort(row, new Comparator() {
+
+			public int compare(Object arg0, Object arg1) {
+				// TODO Auto-generated method stub
+				List a0 = (List) arg0;
+				List a1 = (List) arg1;
+				LayoutEntity node0 = ((InternalNode)a0.get(0)).getLayoutEntity();
+				LayoutEntity node1 = ((InternalNode)a1.get(0)).getLayoutEntity();
+				return (int) (node0.getYInLayout() - (node1.getYInLayout()));
+			}
+			
+		});
+
 		Iterator iterator = row.iterator();
 		while (iterator.hasNext() ) {
 			List currentRow = (List) iterator.next();
@@ -49,11 +66,12 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 			int i = 0;
 			int width = (int) ((boundsWidth / 2) - currentRow.size() * 75);
 			
-			
+			heightSoFar += ((InternalNode)currentRow.get(0)).getLayoutEntity().getHeightInLayout() + DELTA*8 ;
 			while(iterator2.hasNext()) {
 				InternalNode currentNode = (InternalNode) iterator2.next();
+				
 				double location = width + 10*++i;
-				currentNode.setLocation(location , currentNode.getLayoutEntity().getYInLayout());
+				currentNode.setLocation(location , heightSoFar);
 				width += currentNode.getLayoutEntity().getWidthInLayout();
 			}
 		}
@@ -67,10 +85,10 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 			List currentRow = (List) list.get(i);
 			InternalNode currentRowNode = (InternalNode) currentRow.get(0);
 			double currentRowY = currentRowNode.getLayoutEntity().getYInLayout();
-			double currentRowHeight = currentRowNode.getLayoutEntity().getHeightInLayout();
-			if ( layoutY >= (currentRowY-DELTA) && layoutY <= currentRowY + currentRowHeight + DELTA ) {
+			//double currentRowHeight = currentRowNode.getLayoutEntity().getHeightInLayout();
+			if ( layoutY >= (currentRowY-DELTA) && layoutY <= currentRowY + DELTA ) {
 				currentRow.add(node);
-				list.add(i, currentRow);
+				//list.add(i, currentRow);
 				return;
 			}
 		}
@@ -108,3 +126,4 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 		// TODO Auto-generated method stub
 	}
 }
+
