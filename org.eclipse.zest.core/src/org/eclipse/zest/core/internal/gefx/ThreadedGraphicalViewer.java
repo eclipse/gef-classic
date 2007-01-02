@@ -248,7 +248,7 @@ public abstract class ThreadedGraphicalViewer extends GraphicalViewerImpl implem
 		}
 		
 		if ( t.isAlive() ) {
-			StackTraceElement[] elements = t.getStackTrace();
+			StackTraceElement[] elements = new Exception().getStackTrace();
 			String stackTrace = "";
 			for (int i = 0; i < elements.length; i++) {
 				stackTrace += elements[i].toString() + "\n";
