@@ -121,6 +121,16 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean runLayout) {
 		viewer.setLayoutAlgorithm(algorithm, runLayout);
 	}
+	
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#setNodeStyle(int)
+	 */
+	public void setNodeStyle(int nodeStyle) {
+		super.setNodeStyle(nodeStyle);
+		this.viewer.setNodeStyle(nodeStyle);
+	}
 
 	public void setContentProvider(IContentProvider contentProvider) {
 		if (contentProvider instanceof IGraphContentProvider) {

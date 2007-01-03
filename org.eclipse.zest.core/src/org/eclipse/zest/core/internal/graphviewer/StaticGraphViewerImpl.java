@@ -233,9 +233,16 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		if ((model == null) || (model.getNodes().size() == 0)) 
 			return;
 		
+		int layoutStyle = 0;
+		
+		if ( (nodeStyle & ZestStyles.NODES_NO_LAYOUT_RESIZE) > 0 )
+			layoutStyle = LayoutStyles.NO_LAYOUT_NODE_RESIZING;
+		
 		if (layoutAlgorithm == null) {
-			layoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+			layoutAlgorithm = new TreeLayoutAlgorithm(layoutStyle);
 		}
+		
+		layoutAlgorithm.setStyle(layoutAlgorithm.getStyle() | layoutStyle );
 		
 		// calculate the size for the layout algorithm
 		Dimension d = this.getCanvasSize();
@@ -260,7 +267,7 @@ public class StaticGraphViewerImpl extends NonThreadedGraphicalViewer implements
 		if (layoutAlgorithm instanceof SpringLayoutAlgorithm) {
 			
 			try {
-				RadialLayoutAlgorithm radial = new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+				RadialLayoutAlgorithm radial = new RadialLayoutAlgorithm(layoutStyle);
 				radial.applyLayout(nodesToLayout, connectionsToLayout, 0, 0, d.width, d.height, false, false);
 			} catch (InvalidLayoutConfiguration e) {
 				e.printStackTrace();

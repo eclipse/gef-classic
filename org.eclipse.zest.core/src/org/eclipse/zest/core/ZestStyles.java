@@ -99,6 +99,12 @@ public final class ZestStyles {
 	 * This is important under GTK+ because font drawing is slower than Windows.
 	 */
 	public static final int NODES_CACHE_LABEL = 1 << 2;
+	
+	
+	/**
+	 * Style constant indiciating that nodes should not be resized on layout.
+	 */
+	public static final int NODES_NO_LAYOUT_RESIZE  = 1 << 3;
 
 	
 	
