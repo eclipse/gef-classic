@@ -88,6 +88,18 @@ public interface LayoutAlgorithm {
 	 */
 	public void stop();
 	
+	/**
+	 * Sets the style for this layout algorithm.  This will overwrite any other style set.
+	 * @param style
+	 */
+	public void setStyle(int style);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getStyle();
+	
 	public void addEntity(LayoutEntity entity);
 	
 	public void addRelationship(LayoutRelationship relationship);

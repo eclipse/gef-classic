@@ -318,6 +318,23 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	}
 	
 	/**
+	 * Sets the current layout style.  This overwrites all other layout styles.
+	 * Use getStyle to get the current style.
+	 * @param style
+	 */
+	public void setStyle(int style) {
+		this.layout_styles = style;
+	}
+	
+	/**
+	 * Gets the current layout style
+	 * @return
+	 */
+	public int getStyle() {
+		return this.layout_styles;
+	}
+	
+	/**
 	 * Moves all the entities by the given amount.  
 	 * @param dx	the amount to shift the entities in the x-direction 
 	 * @param dy	the amount to shift the entities in the y-direction
