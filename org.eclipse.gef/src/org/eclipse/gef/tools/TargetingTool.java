@@ -393,4 +393,13 @@ protected boolean updateTargetUnderMouse() {
 		return false;
 }
 
+
+/**
+ * Returns <code>null</code> or the current autoexpose helper.
+ * @return null or a helper
+ */
+protected AutoexposeHelper getAutoexposeHelper() {
+    return exposeHelper;
+}
+
 }
