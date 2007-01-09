@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -456,16 +456,18 @@ protected void navigateTo(EditPart part, KeyEvent event) {
  * of the EditPart that currently has focus.
  * @param event the key event received
  */
-protected void processSelect(KeyEvent event) {
-	EditPart part = getViewer().getFocusEditPart();
-	if ((event.stateMask & SWT.CONTROL) != 0
-	  && part.getSelected() != EditPart.SELECTED_NONE)
-		getViewer().deselect(part);
-	else
-		getViewer().appendSelection(part);
+    protected void processSelect(KeyEvent event) {
+        EditPart part = getViewer().getFocusEditPart();
+        if (part != getViewer().getContents()) {
+            if ((event.stateMask & SWT.CONTROL) != 0
+                && part.getSelected() != EditPart.SELECTED_NONE)
+                getViewer().deselect(part);
+            else
+                getViewer().appendSelection(part);
 
-	getViewer().setFocus(part);
-}
+            getViewer().setFocus(part);
+        }
+    }
 
 void scrollViewer(KeyEvent event) {
 	if (!(getViewer().getControl() instanceof FigureCanvas))
