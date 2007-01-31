@@ -4,7 +4,6 @@ Bundle-Name: Chisel Layout Package
 Bundle-SymbolicName: org.eclipse.mylar.zest.layouts
 Bundle-Version: 0.3.1
 Bundle-Vendor: Chisel, University of Victoria
-Bundle-Localization: plugin
 Export-Package: org.eclipse.mylar.zest.layouts,
  org.eclipse.mylar.zest.layouts.algorithms,
  org.eclipse.mylar.zest.layouts.algorithms.internal,
