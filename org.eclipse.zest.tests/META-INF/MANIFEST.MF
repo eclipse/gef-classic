@@ -4,7 +4,6 @@ Bundle-Name: Sample Plug-in
 Bundle-SymbolicName: org.eclipse.mylar.zest.tests; singleton:=true
 Bundle-Version: 0.3.1
 Bundle-Activator: org.eclipse.mylar.zest.tests.SamplePlugin
-Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.pde,
