@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -151,6 +151,15 @@ private void captureSourceDimensions() {
 		if (child == getSourceEditPart())
 			sourceRectangle = bounds;
 	}
+	if (sourceRectangle == null) {
+		IFigure figure = ((GraphicalEditPart)getSourceEditPart()).getFigure();
+		if (figure instanceof HandleBounds)
+			sourceRectangle = new PrecisionRectangle(
+					((HandleBounds)figure).getHandleBounds());
+		else
+			sourceRectangle = new PrecisionRectangle(figure.getBounds());
+		figure.translateToAbsolute(sourceRectangle);
+	}	
 }
 
 /**
