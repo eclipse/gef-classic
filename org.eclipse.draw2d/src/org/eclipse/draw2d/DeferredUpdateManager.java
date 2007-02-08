@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,9 +52,10 @@ private Map dirtyRegions = new HashMap();
 private GraphicsSource graphicsSource;
 private List invalidFigures = new ArrayList();
 private IFigure root;
-private boolean updateQueued = false;
+private boolean updateQueued;
 
 private boolean updating;
+private boolean validating;
 private RunnableChain afterUpdate;
 
 private static class RunnableChain {
@@ -136,19 +137,30 @@ protected Graphics getGraphics(Rectangle region) {
 }
 
 void paint(GC gc) {
-	SWTGraphics graphics = new SWTGraphics(gc);
-	if (!updating) {
-		/**
-		 * If a paint occurs not as part of an update, we should notify that the region
-		 * is being painted. Otherwise, notification already occurs in repairDamage().
+	if (!validating) {
+		SWTGraphics graphics = new SWTGraphics(gc);
+		if (!updating) {
+			/**
+			 * If a paint occurs not as part of an update, we should notify that the region
+			 * is being painted. Otherwise, notification already occurs in repairDamage().
+			 */
+			Rectangle rect = graphics.getClip(new Rectangle());
+			HashMap map = new HashMap();
+			map.put(root, rect);
+			firePainting(rect, map);
+		}
+		performValidation();
+		root.paint(graphics);
+		graphics.dispose();
+	} else {
+		/*
+		 * If figures are being validated then we can simply
+		 * add a dirty region here and update will repaint this region with other 
+		 * dirty regions when it gets to painting. We can't paint if we're not sure
+		 * that all figures are valid. 
 		 */
-		HashMap map = new HashMap();
-		Rectangle rect = graphics.getClip(new Rectangle());
-		map.put(root, rect);
-		firePainting(rect, map);
+		addDirtyRegion(root, new Rectangle(gc.getClipping()));
 	}
-	root.paint(graphics);
-	graphics.dispose();
 }
 
 /**
@@ -181,10 +193,11 @@ public synchronized void performUpdate() {
  * @see UpdateManager#performValidation()
  */
 public void performValidation() {
-	if (invalidFigures.isEmpty())
+	if (invalidFigures.isEmpty() || validating)
 		return;
 	try {
 		IFigure fig;
+		validating = true;
 		fireValidating();
 		for (int i = 0; i < invalidFigures.size(); i++) {
 			fig = (IFigure) invalidFigures.get(i);
@@ -193,6 +206,7 @@ public void performValidation() {
 		}
 	} finally {
 		invalidFigures.clear();
+		validating = false;
 	}
 }
 
