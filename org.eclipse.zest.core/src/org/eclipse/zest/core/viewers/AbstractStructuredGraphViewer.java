@@ -73,7 +73,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * The constraint adatpers
 	 */
-	private List constraintAdapters = null;
+	private List constraintAdapters = new ArrayList();
 
 	/**
 	 * A simple graph comparator that orders graph elements based on thier type
