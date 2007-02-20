@@ -68,6 +68,12 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * The main graph model
 	 */
 	private GraphModel model;
+	
+	
+	/**
+	 * The constraint adatpers
+	 */
+	private List constraintAdapters = null;
 
 	/**
 	 * A simple graph comparator that orders graph elements based on thier type
@@ -170,6 +176,22 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 */
 	public int getConnectionStyle() {
 		return connectionStyle;
+	}
+	
+	/**
+	 * Adds a new constraint adapter to the list of constraints
+	 * @param constraintAdapter
+	 */
+	public void addConstraintAdapter(ConstraintAdapter constraintAdapter ) {
+		this.constraintAdapters.add(constraintAdapter);
+	}
+	
+	/**
+	 * Gets all the constraint adapters currently on the viewer
+	 * @return
+	 */
+	public List getConstraintAdapters() {
+		return this.constraintAdapters;
 	}
 
 	/**

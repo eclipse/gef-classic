@@ -621,8 +621,7 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	}
 
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
-		// TODO Auto-generated method stub
-		
+		graphModel.invokeConstraintAdapters(this.getData(), constraint);
 	}
 
 	/* (non-Javadoc)

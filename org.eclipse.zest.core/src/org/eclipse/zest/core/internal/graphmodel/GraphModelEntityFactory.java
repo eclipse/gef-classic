@@ -47,9 +47,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory#doBuildGraph(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel)
 	 */
 	protected void doBuildGraph(GraphModel model) {
-		clearGraph(model);
-		model.setConnectionStyle(getConnectionStyle());
-		model.setNodeStyle(getNodeStyle());
+		super.doBuildGraph(model);
 		Object inputElement = getViewer().getInput();
 		Object entities[] = getContentProvider().getElements( inputElement );
 		if ( entities == null ) return;

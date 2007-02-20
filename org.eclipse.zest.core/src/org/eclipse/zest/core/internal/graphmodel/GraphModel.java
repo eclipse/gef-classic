@@ -17,6 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.mylar.zest.core.ZestStyles;
+import org.eclipse.mylar.zest.core.viewers.ConstraintAdapter;
+import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.widgets.Canvas;
 
 
@@ -51,6 +53,7 @@ public class GraphModel extends GraphItem {
 	private HashMap external2InternalConnectionMap;
 	private int connectionStyle;
 	private int nodeStyle;
+	private List constraintAdapters;
 	
 	/**
 	 * Initializes this diagram.
@@ -66,6 +69,7 @@ public class GraphModel extends GraphItem {
 		this.connections  = new ArrayList();
 		this.external2InternalNodeMap = new HashMap();
 		this.external2InternalConnectionMap = new HashMap();
+		this.constraintAdapters = new ArrayList();
 	}
 
 	/**
@@ -216,6 +220,29 @@ public class GraphModel extends GraphItem {
 		return external2InternalConnectionMap;
 	}
 	
+	
+	/**
+	 * Sets the constraint adapters on this model
+	 * @param constraintAdapters
+	 */         
+	public void setConstraintAdapters(List /*ConstraintAdapters*/ constraintAdapters) {
+		this.constraintAdapters = constraintAdapters;
+	}
+	
+	
+	/**
+	 * Invoke all the constraint adapaters for this constraints
+	 * @param object
+	 * @param constraint
+	 */
+	protected void invokeConstraintAdapters(Object object, LayoutConstraint constraint) {
+		if ( constraintAdapters == null ) return;
+		Iterator iterator = this.constraintAdapters.iterator();
+		while ( iterator.hasNext() ) {
+			ConstraintAdapter constraintAdapter = (ConstraintAdapter) iterator.next();
+			constraintAdapter.populateConstraint(object, constraint);
+		}
+	}
 
 	
 	/**

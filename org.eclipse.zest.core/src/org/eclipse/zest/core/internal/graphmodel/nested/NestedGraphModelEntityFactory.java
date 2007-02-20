@@ -60,9 +60,7 @@ public class NestedGraphModelEntityFactory extends AbstractStylingModelFactory {
 	 */
 	protected void doBuildGraph(GraphModel graph) {
 		NestedGraphModel model = (NestedGraphModel) graph;
-		clearGraph(model);
-		model.setConnectionStyle(getConnectionStyle());
-		model.setNodeStyle(getNodeStyle());
+		super.doBuildGraph(model);
 		
 		// add the root element
 		// TODO this maybe should be optional...

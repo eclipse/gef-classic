@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,6 +21,7 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer;
 
 /**
  * Base class that can be used for model factories. Offers facilities to 
@@ -32,6 +34,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	private StructuredViewer viewer;
 	private int connectionStyle;
 	private int nodeStyle;
+	private List /*ConstraintAdapater*/ constraintAdapters = new ArrayList();
 
 	/**
 	 * 
@@ -40,6 +43,9 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		this.viewer = viewer;
 		this.connectionStyle = IZestGraphDefaults.CONNECTION_STYLE;
 		this.nodeStyle = IZestGraphDefaults.NODE_STYLE;
+		if ( viewer instanceof AbstractStructuredGraphViewer ) {
+			this.constraintAdapters = ((AbstractStructuredGraphViewer)viewer).getConstraintAdapters();
+		}
 	}
 	
 	public void styleConnection(IGraphModelConnection conn) {
@@ -189,6 +195,10 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		this.nodeStyle = style;
 	}
 	
+	public List /*ConstraintAdapter*/ getConstraintAdapters() {
+		return this.constraintAdapters;
+	}
+	
 	/**
 	 * @return the nodeStyle
 	 */
@@ -251,7 +261,6 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	}
 	
 	
-	
 	/**
 	 * Convenience method for clearing all the elements in the graph.
 	 * @param graph
@@ -269,7 +278,12 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * model will be cleared before this method is called.
 	 * @param graph
 	 */
-	protected abstract void doBuildGraph(GraphModel graph);
+	protected void doBuildGraph(GraphModel model) {
+		clearGraph(model);
+		model.setConnectionStyle(getConnectionStyle());
+		model.setNodeStyle(getNodeStyle());
+		model.setConstraintAdapters(getConstraintAdapters());
+	}
 	
 	/**
 	 * Determines if this element should be filtered or not.

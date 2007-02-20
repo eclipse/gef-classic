@@ -44,9 +44,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory#doBuildGraph(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel)
 	 */
 	protected void doBuildGraph(GraphModel model) {
-		clearGraph(model);
-		model.setConnectionStyle(getConnectionStyle());
-		model.setNodeStyle(getNodeStyle());
+		super.doBuildGraph(model);
 		Object[] nodes = getContentProvider().getElements(getViewer().getInput());
 		nodes = filter(getViewer().getInput(), nodes);
 		createModelNodes(model, nodes);
