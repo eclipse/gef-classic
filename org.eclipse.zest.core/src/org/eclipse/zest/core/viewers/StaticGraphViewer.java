@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.editparts.ZoomManager;
+import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.mylar.zest.core.ZestStyles;
@@ -26,6 +27,8 @@ import org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory
 import org.eclipse.mylar.zest.core.internal.graphviewer.StaticGraphViewerImpl;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
@@ -64,6 +67,28 @@ public class StaticGraphViewer extends AbstractStructuredGraphViewer {
 		hookControl(this.viewer.getControl());
 	}
 
+	protected void hookControl(Control control) {
+		// TODO Auto-generated method stub
+		super.hookControl(control);
+		control.addMouseListener(new MouseListener() {
+
+			public void mouseDoubleClick(MouseEvent e) {
+				DoubleClickEvent doubleClickEvent = new DoubleClickEvent(StaticGraphViewer.this, getSelection());
+				fireDoubleClick(doubleClickEvent);
+			}
+
+			public void mouseDown(MouseEvent e) {
+				
+			}
+
+			public void mouseUp(MouseEvent e) {
+				
+			}
+			
+		});
+	}
+	
+	
 	/**
 	 * Gets the styles for this structuredViewer
 	 * 
