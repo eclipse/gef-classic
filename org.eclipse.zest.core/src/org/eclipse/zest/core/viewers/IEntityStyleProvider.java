@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.viewers;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.services.IDisposable;
 
@@ -105,5 +106,12 @@ public interface IEntityStyleProvider extends IDisposable {
 	
 	
 	public Color getForegroundColour(Object entity);
+	
+	/**
+	 * Returns the tooltop for this node.  If null is returned Zest will simply use the default tooltip.
+	 * @param entity
+	 * @return
+	 */
+	public IFigure getTooltip (Object entity);
 	
 }

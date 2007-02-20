@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.internal.graphmodel;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
@@ -159,6 +160,7 @@ public class GraphItemStyler {
 			if (c != null) node.setHighlightAdjacentColor(c);
 		}
 		Color c;
+		IFigure figure;
 		int width = -1;
 		if ((c = provider.getBorderColor(entity)) != null) node.setBorderColor(c);
 		if ((c = provider.getBorderHighlightColor(entity)) != null) node.setBorderHighlightColor(c);
@@ -166,6 +168,7 @@ public class GraphItemStyler {
 		if ((c = provider.getBackgroundColour(entity)) != null) node.setBackgroundColor(c);
 		if ((c = provider.getForegroundColour(entity)) != null) node.setForegroundColor(c);
 		if ((width = provider.getBorderWidth(entity)) >= 0) node.setBorderWidth(width);
+		if ((figure=provider.getTooltip(entity))!= null)node.setTooltip(figure);
 		
 	}
 	/**

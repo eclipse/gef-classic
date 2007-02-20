@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.jface.resource.JFaceResources;
@@ -654,6 +655,16 @@ public class NonNestedProxyNode extends GraphItem implements IGraphModelNode {
 	}
 
 	public void setCacheLabel(boolean cacheLabel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public IFigure getTooltip() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void setTooltip(IFigure tooltip) {
 		// TODO Auto-generated method stub
 		
 	}

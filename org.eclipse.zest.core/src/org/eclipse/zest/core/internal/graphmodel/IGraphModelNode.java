@@ -12,6 +12,7 @@ package org.eclipse.mylar.zest.core.internal.graphmodel;
 
 import java.util.List;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.mylar.zest.core.ZestStyles;
@@ -38,6 +39,7 @@ public interface IGraphModelNode extends IGraphItem, LayoutEntity {
 	public static final String SOURCE_CONNECTIONS_PROP = "GraphModelNode.SourceConn";
 	public static final String TARGET_CONNECTIONS_PROP = "GraphModelNode.TargetConn";
 	public static final String BRING_TO_FRONT = "GraphModelNode.BrintToFront";
+	public static final String TOOLTIP_PROP = "GraphModelNode.Tooltip";
 	
 	/**
 	 * Returns the node in the user's model.
@@ -280,6 +282,18 @@ public interface IGraphModelNode extends IGraphItem, LayoutEntity {
 	 * @return
 	 */
 	String getText();
+	
+	/**
+	 * Sets the tooltip on this graph node
+	 * @param tooltip
+	 */
+	void setTooltip(IFigure tooltip); 
+
+	/**
+	 * Gets the current tooltip for this node
+	 * @return
+	 */
+	IFigure getTooltip();
 	
 	/**
 	 * Adds the given connection to this graph node.

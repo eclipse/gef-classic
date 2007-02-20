@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -65,6 +66,7 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 	protected Object internalNode;
 	private boolean selected;
 	private boolean highlighted;
+	private IFigure tooltip;
 	
 	public GraphModelNode(GraphModel graphModel, Object externalNode) {
 		super(graphModel);
@@ -338,6 +340,22 @@ public class GraphModelNode extends GraphItem implements IGraphModelNode {
 		changeBackgroundColor(c);
 	}
 	
+	
+	/**
+	 * Sets the tooltip on this node
+	 */
+	public void setTooltip(IFigure tooltip) {
+		Object old = this.tooltip;
+		this.tooltip = tooltip;
+		firePropertyChange(TOOLTIP_PROP, old, tooltip);
+	}
+
+	/**
+	 * Gets the current tooltip for this node
+	 */
+	public IFigure getTooltip() {
+		return this.tooltip;
+	}
 	
 	/**
 	 * Sets the border color.

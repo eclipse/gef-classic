@@ -42,7 +42,7 @@ import org.eclipse.mylar.zest.core.internal.viewers.trackers.SingleSelectionTrac
  */
 public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		PropertyChangeListener, NodeEditPart {
-	private Label toolTip;
+	private IFigure toolTip;
 
 	protected ConnectionAnchor anchor;
 //	@tag zest(bug(152180-SelfLoops)) : New anchor required so that the loops aren't hidden by the node.
@@ -114,8 +114,13 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 			Dimension d = label.getSize();
 			node.setSizeInLayout(d.width, d.height);			
 			figure = label;
-			toolTip = new Label();
-			toolTip.setText(node.getText());
+			if ( getCastedModel().getTooltip() == null ) {
+				toolTip = new Label();
+				((Label)toolTip).setText(node.getText());
+			}
+			else {
+				toolTip= getCastedModel().getTooltip();
+			}
 			figure.setToolTip(toolTip);
 		} else {
 			// if Shapes gets extended the conditions above must be updated
@@ -199,6 +204,18 @@ public class GraphNodeEditPart extends AbstractGraphicalEditPart implements
 		}
 		else if (IGraphModelNode.COLOR_BD_PROP.equals(prop)) {
 			refreshColors();
+		}
+		else if ( IGraphModelNode.TOOLTIP_PROP.equals(prop)) {
+			IFigure tooltip = (IFigure) evt.getNewValue();
+			if ( tooltip == null ) {
+				this.toolTip = new Label();
+				((Label)this.toolTip).setText(getCastedModel().getText());
+			}
+			else {
+				this.toolTip = tooltip;
+			}
+			figure.setToolTip(tooltip);
+			refreshVisuals();
 		}
 		else if ( IGraphModelNode.BRING_TO_FRONT.equals(prop) ) {
 			IFigure figure = getFigure();
