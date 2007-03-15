@@ -342,6 +342,40 @@ public static CompoundDirectedGraph flowEditor2() {
 	return graph;
 }
 
+public static CompoundDirectedGraph ShortestPassCase(){
+	NodeList nodes = new NodeList();
+	EdgeList edges = new EdgeList();
+
+	Subgraph p = new Subgraph("parent");
+	nodes.add(p);
+	Node a = new Node("a", p);
+	nodes.add(a);
+	Node b = new Node("b", p);
+	nodes.add(b);
+	Node c = new Node("c", p);
+	nodes.add(c);
+	Node d = new Node("d", p);
+	nodes.add(d);
+	Node e = new Node("e", p);
+	nodes.add(e);
+
+	edges.add(new Edge(a, d));
+	edges.add(new Edge(a, c));
+	edges.add(new Edge(b, c));
+	edges.add(new Edge(b, d));
+	edges.add(new Edge(b, e));
+	edges.add(new Edge(c, d));
+	edges.add(new Edge(c, e));
+
+	CompoundDirectedGraph graph = new CompoundDirectedGraph();
+	graph.nodes = nodes;
+	graph.edges = edges;
+
+	new CompoundDirectedGraphLayout().visit(graph);
+	return graph;
+
+}
+
 public static CompoundDirectedGraph tangledSubgraphs() {
 	Subgraph A, B, C, D;
 	Node a1, a2, b1, b2, c1, c2, d1, d2;
