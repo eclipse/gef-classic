@@ -88,9 +88,9 @@ void createEdge(Node left, Node right) {
 	if (entries.contains(entry))
 		return;
 	entries.add(entry);
-	int separation = left.width + Math.max(
-		graph.getPadding(left).right,
-		graph.getPadding(right).left);
+	int separation = left.width
+			+ graph.getPadding(left).right
+			+ graph.getPadding(right).left;
 	prime.edges.add(new Edge(
 		getPrime(left), getPrime(right), separation, 0
 	));
