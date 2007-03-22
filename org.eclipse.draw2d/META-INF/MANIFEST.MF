@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Draw2d
+Bundle-Name: %Plugin.name
 Bundle-SymbolicName: org.eclipse.draw2d
-Bundle-Version: 3.2.2.qualifier
-Bundle-Vendor: Eclipse.org
+Bundle-Version: 3.2.100.qualifier
+Bundle-Vendor: %Plugin.providerName
 Bundle-Localization: plugin
 Import-Package: com.ibm.icu.text
 Export-Package: org.eclipse.draw2d,
