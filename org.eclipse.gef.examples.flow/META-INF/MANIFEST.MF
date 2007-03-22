@@ -1,10 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GEF Flow Editor Example
 Bundle-SymbolicName: org.eclipse.gef.examples.flow; singleton:=true
-Bundle-Version: 3.2.0.qualifier
+Bundle-Version: 3.2.100.qualifier
 Bundle-Activator: org.eclipse.gef.examples.flow.FlowPlugin
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: %Plugin.providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.core.resources;bundle-version="[3.2.0,4.0.0)",
@@ -14,3 +13,4 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.ui.ide;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.gef;bundle-version="[3.2.0,4.0.0)"
 Eclipse-LazyStart: true
+Bundle-Name: %Plugin.name

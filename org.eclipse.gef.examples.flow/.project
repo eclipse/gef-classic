@@ -2,11 +2,6 @@
 <projectDescription>
 	<name>org.eclipse.gef.examples.flow</name>
 	<comment></comment>
-	<projects>
-		<project>org.eclipse.draw2d</project>
-		<project>org.eclipse.gef</project>
-		<project>org.eclipse.swt</project>
-	</projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
