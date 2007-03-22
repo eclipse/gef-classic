@@ -395,6 +395,10 @@ public void drawOval(int x, int y, int width, int height) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#drawPath(Path)
  */
 public void drawPath(Path path) {
@@ -520,6 +524,10 @@ public void fillOval(int x, int y, int width, int height) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#fillPath(Path)
  */
 public void fillPath(Path path) {
@@ -851,6 +859,10 @@ protected void restoreState(State s) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#rotate(float)
  */
 public void rotate(float degrees) {
@@ -873,6 +885,10 @@ public void scale(double factor) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see org.eclipse.draw2d.Graphics#scale(float, float)
  */
 public void scale(float horizontal, float vertical) {
@@ -904,6 +920,10 @@ private void setAffineMatrix(float[] m) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#setAlpha(int)
  */
 public void setAlpha(int alpha) {
@@ -913,6 +933,10 @@ public void setAlpha(int alpha) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#setAntialias(int)
  */
 public void setAntialias(int value) {
@@ -947,6 +971,10 @@ public void setBackgroundPattern(Pattern pattern) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#setClip(Path)
  */
 public void setClip(Path path) {
@@ -1008,6 +1036,10 @@ private void setGraphicHints(int hints) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#setInterpolation(int)
  */
 public void setInterpolation(int interpolation) {
@@ -1069,6 +1101,10 @@ public void setLineWidth(int width) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#setTextAntialias(int)
  */
 public void setTextAntialias(int value) {
@@ -1086,6 +1122,10 @@ public void setXORMode(boolean xor) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#shear(float, float)
  */
 public void shear(float horz, float vert) {
@@ -1109,6 +1149,11 @@ public void shear(float horz, float vert) {
 }
 
 /**
+ * This method may require advanced graphics support if using a transform,
+ * in this case, a check should be made to ensure advanced graphics is
+ * supported in the user's environment before calling this method. See
+ * {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#translate(int, int)
  */
 public void translate(int dx, int dy) {
@@ -1130,6 +1175,10 @@ public void translate(int dx, int dy) {
 }
 
 /**
+ * This method requires advanced graphics support. A check should be made to
+ * ensure advanced graphics is supported in the user's environment before
+ * calling this method. See {@link GC#getAdvanced()}.
+ * 
  * @see Graphics#translate(float, float)
  */
 public void translate(float dx, float dy) {
