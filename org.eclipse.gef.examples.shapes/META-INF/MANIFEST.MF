@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GEF Shape Editor Example
+Bundle-Name: %Plugin.name
 Bundle-SymbolicName: org.eclipse.gef.examples.shapes; singleton:=true
-Bundle-Version: 3.2.0.qualifier
+Bundle-Version: 3.2.100.qualifier
 Bundle-Activator: org.eclipse.gef.examples.shapes.ShapesPlugin
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: %Plugin.providerName
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.gef;bundle-version="[3.2.0,4.0.0)",
  org.eclipse.ui;bundle-version="[3.2.0,4.0.0)",
