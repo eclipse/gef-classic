@@ -8,20 +8,24 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers;
+package org.eclipse.mylar.zest.core.widgets;
 
+import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 
 /**
- * An interface that can be added to IWorkbenchParts based on ZEST views so that zooming
- * is supported.
- * @author Del Myers
- *
+ * 
+ * This interface is used to populate layout constraints on Zest nodes.
+ * Constraint will be a instance of LayoutConstraint (look at the heirarchy for an up-to-date list).
+ * 
+ * @author Ian Bull
  */
-//@tag bug.156286-Zooming.fix : experimental
-public interface IZoomableWorkbenchPart {
+public interface ConstraintAdapter {
+	
 	/**
-	 * Returns the viewer that is zoomable.
-	 * @return the viewer that is zoomable.
+	 * 
+	 * @param object
+	 * @param constraint
 	 */
-	AbstractZoomableViewer getZoomableViewer();
+	public void populateConstraint(Object object, LayoutConstraint constraint);
+
 }

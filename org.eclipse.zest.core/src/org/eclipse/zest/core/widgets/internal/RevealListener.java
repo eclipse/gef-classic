@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,17 +8,18 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core;
+package org.eclipse.mylar.zest.core.widgets.internal;
+
+import org.eclipse.swt.widgets.Control;
 
 /**
  * 
+ * A Listener to indicate when a view has become visible.
  * @author Ian Bull
  *
  */
-public interface IZestImageConstants {
+public interface RevealListener {
+	
+	public void revealed( Control c );
 
-	public static String TREE_HANGING_ICON = "src/icons/tree_hanging.gif";
-	public static String TREE_HANGING_INVERSE_ICON = "src/icons/tree_hanging_inverse.gif";
-	public static String TREE_NORMAL_ICON = "src/icons/tree_normal.gif";
-	public static String TREE_NORMAL_INVERSE_ICON = "src/icons/tree_normal_inverse.gif";
 }
