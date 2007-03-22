@@ -573,9 +573,9 @@ public void setIconTextGap(int gap) {
 }
 
 /**
- * Sets the alignment of the entire label (icon and text). If this figure's bounds
- * are larger than the size needed to display the label, the label will be aligned
- * accordingly. Valid values are:
+ * Sets the alignment of the label (icon and text) within the figure. If this 
+ * figure's bounds are larger than the size needed to display the label, the 
+ * label will be aligned accordingly. Valid values are:
  * <UL>
  *   <LI><EM>{@link PositionConstants#CENTER}</EM>
  *   <LI>{@link PositionConstants#TOP}
@@ -611,9 +611,9 @@ public void setText(String s) {
 }
 
 /**
- * Sets the alignment of the Text relative to the icon. The text alignment must be
- * orthogonal to the text placement. For example, if the placement is EAST, then the
- * text can be aligned using TOP, CENTER, or BOTTOM. Valid values are:
+ * Sets the alignment of the text relative to the icon within the label. The text 
+ * alignment must be orthogonal to the text placement. For example, if the placement 
+ * is EAST, then the text can be aligned using TOP, CENTER, or BOTTOM. Valid values are:
  * <UL>
  *   <LI><EM>{@link PositionConstants#CENTER}</EM>
  *   <LI>{@link PositionConstants#TOP}
@@ -634,7 +634,8 @@ public void setTextAlignment(int align) {
 }
 
 /**
- * Sets the placement of text relative to the label's icon. Valid values are:
+ * Sets the placement of the text relative to the icon within the label. 
+ * Valid values are:
  * <UL>
  *   <LI><EM>{@link PositionConstants#EAST}</EM>
  *   <LI>{@link PositionConstants#NORTH}
