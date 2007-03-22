@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Graphical Editing Framework
+Bundle-Name: %Plugin.name
 Bundle-SymbolicName: org.eclipse.gef; singleton:=true
-Bundle-Version: 3.2.2.qualifier
+Bundle-Version: 3.2.100.qualifier
 Bundle-Activator: org.eclipse.gef.internal.InternalGEFPlugin
-Bundle-Vendor: Eclipse.org
+Bundle-Vendor: %Plugin.providerName
 Bundle-Localization: plugin
 Import-Package: com.ibm.icu.text
 Export-Package: org.eclipse.gef,
