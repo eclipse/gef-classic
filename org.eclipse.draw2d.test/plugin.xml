@@ -2,9 +2,9 @@
 <?eclipse version="3.0"?>
 <plugin
    id="org.eclipse.draw2d.test"
-   name="Draw2d JUnit Tests"
-   version="3.2.0"
-   provider-name="Eclipse.org"
+   name="%Plugin.name"
+   version="3.2.100"
+   provider-name="%Plugin.providerName"
    class="org.eclipse.draw2d.test.Draw2dTestPlugin">
 
    <runtime>
