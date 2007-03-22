@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,10 +24,7 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
  * This class serves as a quick starting point for clients who are new to GEF. It will
  * create an Editor containing a Split composite, with one side contianing a
  * PaletteViewer, and the other a GraphicalViewer.
- * <P>
- * <EM>IMPORTANT</EM>This class should only be used as a reference for creating your own
- * EditorPart implementation. This class will not suit everyone's needs, and may change in
- * the future. Clients may copy the implementation.
+ * 
  * @author hudsonr
  */
 public abstract class GraphicalEditorWithPalette 
