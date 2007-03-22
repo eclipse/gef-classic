@@ -2,11 +2,6 @@
 <projectDescription>
 	<name>org.eclipse.gef.examples.logic</name>
 	<comment></comment>
-	<projects>
-		<project>org.eclipse.gef</project>
-		<project>org.eclipse.swt</project>
-		<project>org.eclipse.ui</project>
-	</projects>
 	<buildSpec>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
