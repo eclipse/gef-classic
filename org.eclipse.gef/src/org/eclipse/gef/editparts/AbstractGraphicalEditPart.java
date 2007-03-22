@@ -676,7 +676,7 @@ protected void registerVisuals() {
 }
 
 /**
- * Adds the child's Figure to the {@link #getContentPane() contentPane}.
+ * Remove the child's Figure from the {@link #getContentPane() contentPane}.
  * @see AbstractEditPart#removeChildVisual(EditPart)
  */
 protected void removeChildVisual(EditPart childEditPart) {
