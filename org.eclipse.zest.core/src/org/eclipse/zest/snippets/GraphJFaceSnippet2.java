@@ -12,8 +12,6 @@ package org.eclipse.mylar.zest.snippets;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.mylar.zest.core.viewers.GraphViewer;
 import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
@@ -31,27 +29,35 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * 
  * @author Ian Bull
- *
+ * 
  */
 public class GraphJFaceSnippet2 {
 
 	static class MyContentProvider implements IGraphContentProvider {
 
 		public Object getDestination(Object rel) {
-			if ( "Rock2Paper".equals(rel)) return "Rock";
-			else if ( "Paper2Scissors".equals(rel)) return "Paper";
-			else if ( "Scissors2Rock".equals(rel)) return "Scissors";
+			if ("Rock2Paper".equals(rel)) {
+				return "Rock";
+			} else if ("Paper2Scissors".equals(rel)) {
+				return "Paper";
+			} else if ("Scissors2Rock".equals(rel)) {
+				return "Scissors";
+			}
 			return null;
 		}
 
 		public Object[] getElements(Object input) {
-			return new Object[]{"Rock2Paper", "Paper2Scissors", "Scissors2Rock"};
+			return new Object[] { "Rock2Paper", "Paper2Scissors", "Scissors2Rock" };
 		}
 
 		public Object getSource(Object rel) {
-			if ( "Rock2Paper".equals(rel)) return "Paper";
-			else if ( "Paper2Scissors".equals(rel)) return "Scissors";
-			else if ( "Scissors2Rock".equals(rel)) return "Rock";
+			if ("Rock2Paper".equals(rel)) {
+				return "Paper";
+			} else if ("Paper2Scissors".equals(rel)) {
+				return "Scissors";
+			} else if ("Scissors2Rock".equals(rel)) {
+				return "Rock";
+			}
 			return null;
 		}
 
@@ -62,15 +68,14 @@ public class GraphJFaceSnippet2 {
 
 		public void dispose() {
 			// TODO Auto-generated method stub
-			
+
 		}
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			// TODO Auto-generated method stub
-			
+
 		}
 
-		
 	}
 
 	static class MyLabelProvider implements ILabelProvider {

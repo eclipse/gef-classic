@@ -17,9 +17,9 @@ import java.util.List;
 import org.eclipse.mylar.zest.core.viewers.EntityConnectionData;
 import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
 import org.eclipse.mylar.zest.core.widgets.Graph;
+import org.eclipse.mylar.zest.core.widgets.GraphNode;
 import org.eclipse.mylar.zest.core.widgets.IGraphConnection;
 import org.eclipse.mylar.zest.core.widgets.IGraphItem;
-import org.eclipse.mylar.zest.core.widgets.IGraphNode;
 
 /**
  * 
@@ -73,7 +73,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 
 			if (related != null) {
 				for (int j = 0; j < related.length; j++) {
-					// if the node this node is connected to is filtered, 
+					// if the node this node is connected to is filtered,
 					// don't display this edge
 					if (filterElement(inputElement, related[j])) {
 						continue;
@@ -98,20 +98,20 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		if (element == null) {
 			return;
 		}
-		IGraphNode node = viewer.getGraphModelNode(element);
+		GraphNode node = viewer.getGraphModelNode(element);
 		if (node == null) {
-			//check to make sure that the user didn't send us an edge.
+			// check to make sure that the user didn't send us an edge.
 			IGraphConnection conn = viewer.getGraphModelConnection(element);
 			if (conn != null) {
-				//refresh on the connected nodes.
-				refresh(graph, conn.getSource().getExternalNode(), refreshLabels);
-				refresh(graph, conn.getDestination().getExternalNode(), refreshLabels);
+				// refresh on the connected nodes.
+				refresh(graph, conn.getSource().getData(), refreshLabels);
+				refresh(graph, conn.getDestination().getData(), refreshLabels);
 				return;
 			}
 		}
-		//can only refresh on nodes in this kind of factory.
+		// can only refresh on nodes in this kind of factory.
 		if (node == null) {
-			//do nothing
+			// do nothing
 			return;
 		}
 		reconnect(graph, element, refreshLabels);
@@ -133,7 +133,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 	 * @param refreshLabels
 	 */
 	private void reconnect(Graph graph, Object element, boolean refreshLabels) {
-		IGraphNode node = viewer.getGraphModelNode(element);
+		GraphNode node = viewer.getGraphModelNode(element);
 		Object[] related = ((IGraphEntityContentProvider) getContentProvider()).getConnectedTo(element);
 		List connections = node.getSourceConnections();
 		LinkedList toAdd = new LinkedList();
@@ -168,7 +168,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		LinkedList newNodeList = new LinkedList();
 		for (Iterator it = toAdd.iterator(); it.hasNext();) {
 			EntityConnectionData data = (EntityConnectionData) it.next();
-			IGraphNode dest = viewer.getGraphModelNode(data.dest);
+			GraphNode dest = viewer.getGraphModelNode(data.dest);
 			if (dest == null) {
 				newNodeList.add(data.dest);
 			}
@@ -181,7 +181,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 			}
 		}
 		for (Iterator it = newNodeList.iterator(); it.hasNext();) {
-			//refresh the new nodes so that we get a fully-up-to-date graph.
+			// refresh the new nodes so that we get a fully-up-to-date graph.
 			refresh(graph, it.next());
 		}
 	}

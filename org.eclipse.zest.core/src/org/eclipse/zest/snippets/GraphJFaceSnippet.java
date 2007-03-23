@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * 
  * @author Ian Bull
- *
+ * 
  */
 public class GraphJFaceSnippet {
 
@@ -68,13 +68,20 @@ public class GraphJFaceSnippet {
 	}
 
 	static class MyLabelProvider implements ILabelProvider {
+		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 
 		public Image getImage(Object element) {
+			if (element instanceof String) {
+				return image;
+			}
 			return null;
 		}
 
 		public String getText(Object element) {
-			return element.toString();
+			if (element instanceof String) {
+				return element.toString();
+			}
+			return null;
 		}
 
 		public void addListener(ILabelProviderListener listener) {

@@ -11,7 +11,7 @@ package org.eclipse.mylar.zest.core.viewers.internal;
 
 import org.eclipse.mylar.zest.core.viewers.IGraphEntityRelationshipContentProvider;
 import org.eclipse.mylar.zest.core.widgets.Graph;
-import org.eclipse.mylar.zest.core.widgets.IGraphNode;
+import org.eclipse.mylar.zest.core.widgets.GraphNode;
 
 /**
  * A factory for the IGraphEntityRelationshipContentProvider.
@@ -19,8 +19,9 @@ import org.eclipse.mylar.zest.core.widgets.IGraphNode;
  * @author Del Myers
  * 
  */
-//@tag bug.154580-Content.fix
-//@tag bug.160367-Refreshing.fix : updated to use new AbstractStylingModelFactory
+// @tag bug.154580-Content.fix
+// @tag bug.160367-Refreshing.fix : updated to use new
+// AbstractStylingModelFactory
 public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFactory {
 
 	public GraphModelEntityRelationshipFactory(AbstractStructuredGraphViewer viewer) {
@@ -61,15 +62,15 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 *            the model to create the relationship on.
 	 */
 	private void createModelRelationships(Graph model) {
-		IGraphNode[] modelNodes = getNodesArray(model);
+		GraphNode[] modelNodes = getNodesArray(model);
 		IGraphEntityRelationshipContentProvider content = getCastedContent();
 		for (int i = 0; i < modelNodes.length; i++) {
 			for (int j = 0; j < modelNodes.length; j++) {
-				Object[] rels = content.getRelationships(modelNodes[i].getExternalNode(), modelNodes[j].getExternalNode());
+				Object[] rels = content.getRelationships(modelNodes[i].getData(), modelNodes[j].getData());
 				if (rels != null) {
 					rels = filter(getViewer().getInput(), rels);
 					for (int r = 0; r < rels.length; r++) {
-						createConnection(model, rels[r], modelNodes[i].getExternalNode(), modelNodes[j].getExternalNode());
+						createConnection(model, rels[r], modelNodes[i].getData(), modelNodes[j].getData());
 					}
 				}
 			}
@@ -107,8 +108,8 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 *      java.lang.Object, boolean)
 	 */
 	public void refresh(Graph graph, Object element, boolean updateLabels) {
-		//with this kind of graph, it is just as easy and cost-effective to
-		//rebuild the whole thing.
+		// with this kind of graph, it is just as easy and cost-effective to
+		// rebuild the whole thing.
 		refreshGraph(graph);
 	}
 

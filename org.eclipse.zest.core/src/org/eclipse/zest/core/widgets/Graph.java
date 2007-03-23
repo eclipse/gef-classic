@@ -32,6 +32,7 @@ import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.widgets.internal.RevealListener;
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
@@ -58,7 +59,8 @@ public class Graph extends FigureCanvas implements IGraphItem {
 	// CLASS CONSTANTS
 	public static final int ANIMATION_TIME = 500;
 
-	// @tag CGraph.Colors : These are the colour contants for the graph, they are disposed on clean-up
+	// @tag CGraph.Colors : These are the colour contants for the graph, they
+	// are disposed on clean-up
 	public Color LIGHT_BLUE = new Color(null, 216, 228, 248);
 	public Color LIGHT_BLUE_CYAN = new Color(null, 213, 243, 255);
 	public Color GREY_BLUE = new Color(null, 139, 150, 171);
@@ -117,7 +119,8 @@ public class Graph extends FigureCanvas implements IGraphItem {
 
 		this.setViewport(new FreeformViewport());
 
-		// @tag CGraph.workaround : this allows me to handle mouse events outside of the canvas
+		// @tag CGraph.workaround : this allows me to handle mouse events
+		// outside of the canvas
 		this.getLightweightSystem().setEventDispatcher(new SWTEventDispatcher() {
 			public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
 				if (getCurrentEvent() == null) {
@@ -156,7 +159,8 @@ public class Graph extends FigureCanvas implements IGraphItem {
 			public void paintControl(PaintEvent e) {
 				if (!revealListeners.isEmpty()) {
 					// Go through the reveal list and let everyone know that the
-					// view is now available. Remove the listeners so they are only
+					// view is now available. Remove the listeners so they are
+					// only
 					// called once!
 					Iterator iterator = revealListeners.iterator();
 					while (iterator.hasNext()) {
@@ -383,9 +387,9 @@ public class Graph extends FigureCanvas implements IGraphItem {
 		return GRAPH;
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE METHODS. These are NON API
-	///////////////////////////////////////////////////////////////////////////////////
+	// /////////////////////////////////////////////////////////////////////////////////
 	class DragSupport implements MouseMotionListener, org.eclipse.draw2d.MouseListener {
 		Graph graph = null;
 		Point oldLocation = null;
@@ -401,7 +405,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 			if (selectedItems.size() > 0) {
 				Iterator iterator = selectedItems.iterator();
 				while (iterator.hasNext()) {
-					IGraphNode node = (IGraphNode) iterator.next();
+					GraphNode node = (GraphNode) iterator.next();
 					Point delta = new Point(mousePoint.x - oldLocation.x, mousePoint.y - oldLocation.y);
 					node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
 				}
@@ -445,17 +449,28 @@ public class Graph extends FigureCanvas implements IGraphItem {
 				IFigure figureUnderMouse = graph.getContents().findFigureAt(mousePoint.x, mousePoint.y);
 				oldLocation = mousePoint;
 				getRootLayer().translateFromParent(oldLocation);
-				// If the figure under the mouse is the canvas, then select nothing
+				// If the figure under the mouse is the canvas, then select
+				// nothing
 				if (figureUnderMouse == null || figureUnderMouse == graph) {
 					clearSelection();
 					if (hasSelection) {
 						fireWidgetSelectedEvent(null);
+						hasSelection = false;
 					}
 					return;
 				}
+
 				GraphItem itemUnderMouse = (GraphItem) figure2ItemMap.get(figureUnderMouse);
+				if (itemUnderMouse == null) {
+					clearSelection();
+					if (hasSelection) {
+						fireWidgetSelectedEvent(null);
+						hasSelection = false;
+					}
+					return;
+				}
 				if (selectedItems.contains(itemUnderMouse)) {
-					// We have already selected this node.  Don't change anything
+					// We have already selected this node. Don't change anything
 					return;
 				}
 
@@ -465,11 +480,11 @@ public class Graph extends FigureCanvas implements IGraphItem {
 
 				if (itemUnderMouse.getItemType() == NODE) {
 					selectedItems.add(itemUnderMouse);
-					((IGraphNode) itemUnderMouse).highlight();
+					((GraphNode) itemUnderMouse).highlight();
 					fireWidgetSelectedEvent(itemUnderMouse);
 				} else if (itemUnderMouse.getItemType() == CONNECTION) {
 				} else if (itemUnderMouse.getItemType() == GRAPH) {
-			
+
 				}
 			}
 
@@ -485,7 +500,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 		if (selectedItems.size() > 0) {
 			Iterator iterator = selectedItems.iterator();
 			while (iterator.hasNext()) {
-				IGraphNode node = (IGraphNode) iterator.next();
+				GraphNode node = (GraphNode) iterator.next();
 				node.unhighlight();
 				iterator.remove();
 			}
@@ -503,17 +518,6 @@ public class Graph extends FigureCanvas implements IGraphItem {
 			selectionListener.widgetSelected(event);
 		}
 
-	}
-
-	/**
-	 * Converts the list of GraphModelNode objects into an array an returns it.
-	 * 
-	 * @return GraphModelNode[]
-	 */
-	private IGraphNode[] getNodesArray() {
-		IGraphNode[] nodesArray = new IGraphNode[nodes.size()];
-		nodesArray = (IGraphNode[]) nodes.toArray(nodesArray);
-		return nodesArray;
 	}
 
 	/**
@@ -600,21 +604,26 @@ public class Graph extends FigureCanvas implements IGraphItem {
 		return entities;
 	}
 
-	IGraphNode[] getNodesToLayout() {
+	LayoutEntity[] getNodesToLayout() {
 		// @tag zest.bug.156528-Filters.follows : make sure not to layout
 		// filtered nodes, if the style says so.
-		IGraphNode[] entities;
+		LayoutEntity[] entities;
 		if (ZestStyles.checkStyle(style, ZestStyles.IGNORE_INVISIBLE_LAYOUT)) {
 			LinkedList nodeList = new LinkedList();
 			for (Iterator i = this.getNodes().iterator(); i.hasNext();) {
-				IGraphItem next = (IGraphItem) i.next();
+				GraphNode next = (GraphNode) i.next();
 				if (next.isVisible()) {
-					nodeList.add(next);
+					nodeList.add(next.getLayoutEntity());
 				}
 			}
-			entities = (IGraphNode[]) nodeList.toArray(new IGraphNode[] {});
+			entities = (LayoutEntity[]) nodeList.toArray(new LayoutEntity[] {});
 		} else {
-			entities = this.getNodesArray();
+			LinkedList nodeList = new LinkedList();
+			for (Iterator i = this.getNodes().iterator(); i.hasNext();) {
+				GraphNode next = (GraphNode) i.next();
+				nodeList.add(next.getLayoutEntity());
+			}
+			entities = (LayoutEntity[]) nodeList.toArray(new LayoutEntity[] {});
 		}
 		return entities;
 	}
@@ -636,7 +645,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 		this.getNodes().remove(node);
 	}
 
-	void addNode(IGraphNode node) {
+	void addNode(GraphNode node) {
 		this.getNodes().add(node);
 		IFigure figure = node.getNodeFigure();
 		nodeLayer.add(figure);
@@ -645,7 +654,8 @@ public class Graph extends FigureCanvas implements IGraphItem {
 
 	void setItemVisible(GraphItem item, boolean visible) {
 		if (visible) {
-			if (item.getItemType() == NODE && (!nodeLayer.getChildren().contains(item) || !nodeFeedbackLayer.getChildren().contains(item))) {
+			if (item.getItemType() == NODE
+					&& (!nodeLayer.getChildren().contains(item) || !nodeFeedbackLayer.getChildren().contains(item))) {
 				GraphNode graphNode = (GraphNode) item;
 				IFigure figure = graphNode.getNodeFigure();
 				if (graphNode.isHighlighted()) {
@@ -654,7 +664,8 @@ public class Graph extends FigureCanvas implements IGraphItem {
 					nodeLayer.add(figure);
 				}
 				figure2ItemMap.put(figure, item);
-			} else if (item.getItemType() == CONNECTION && (!edgeLayer.getChildren().contains(item) || !edgeFeedbackLayer.getChildren().contains(item))) {
+			} else if (item.getItemType() == CONNECTION
+					&& (!edgeLayer.getChildren().contains(item) || !edgeFeedbackLayer.getChildren().contains(item))) {
 				GraphConnection graphConnection = (GraphConnection) item;
 				IFigure figure = graphConnection.getConnectionFigure();
 				if (graphConnection.isHighlighted()) {
@@ -687,7 +698,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 		}
 	}
 
-	void changeFigure(IFigure oldValue, IFigure newFigure, IGraphNode graphItem) {
+	void changeFigure(IFigure oldValue, IFigure newFigure, GraphNode graphItem) {
 		if (nodeLayer.getChildren().contains(oldValue)) {
 			nodeLayer.remove(oldValue);
 			figure2ItemMap.remove(oldValue);
@@ -747,7 +758,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 			return;
 		}
 		IGraphConnection[] connectionsToLayout = getConnectionsToLayout();
-		IGraphNode[] nodesToLayout = getNodesToLayout();
+		LayoutEntity[] nodesToLayout = getNodesToLayout();
 
 		try {
 			Animation.markBegin();

@@ -15,10 +15,12 @@ import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.mylar.zest.core.ZestStyles;
+import org.eclipse.mylar.zest.core.widgets.internal.AligningBendpointLocator;
 import org.eclipse.mylar.zest.core.widgets.internal.PolylineArcConnection;
 import org.eclipse.mylar.zest.core.widgets.internal.RoundedChopboxAnchor;
 import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
@@ -38,8 +40,8 @@ import org.eclipse.swt.widgets.Display;
 public class GraphConnection extends GraphItem implements IGraphConnection, LayoutRelationship {
 
 	private Font font;
-	private IGraphNode sourceNode;
-	private IGraphNode destinationNode;
+	private GraphNode sourceNode;
+	private GraphNode destinationNode;
 
 	private double weight;
 	private Color color;
@@ -95,7 +97,7 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 
 	private boolean highlighted;
 
-	public GraphConnection(Graph graphModel, int style, IGraphNode source, IGraphNode destination) {
+	public GraphConnection(Graph graphModel, int style, GraphNode source, GraphNode destination) {
 		super(graphModel);
 
 		this.connectionStyle |= graphModel.getConnectionStyle();
@@ -110,12 +112,10 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 		setWeightInLayout(weight);
 		this.attributes = new HashMap();
 		this.graphModel = graphModel;
-		this.sourceNode = source;
-		this.destinationNode = destination;
 		this.curveDepth = 20;
 		this.font = Display.getDefault().getSystemFont();
-		((GraphNode) source).addSourceConnection(this);
-		((GraphNode) destination).addTargetConnection(this);
+		(source).addSourceConnection(this);
+		(destination).addTargetConnection(this);
 		connectionFigure = createFigure();
 
 		graphModel.addConnection(this);
@@ -124,8 +124,8 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 	public void dispose() {
 		super.dispose();
 		this.isDisposed = true;
-		((GraphNode) getSource()).removeSourceConnection(this);
-		((GraphNode) getDestination()).removeTargetConnection(this);
+		(getSource()).removeSourceConnection(this);
+		(getDestination()).removeTargetConnection(this);
 		graphModel.removeConnection(this);
 	}
 
@@ -165,7 +165,7 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#getSourceInLayout()
 	 */
 	public LayoutEntity getSourceInLayout() {
-		return sourceNode;
+		return sourceNode.getLayoutEntity();
 	}
 
 	/*
@@ -174,7 +174,7 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#getDestinationInLayout()
 	 */
 	public LayoutEntity getDestinationInLayout() {
-		return destinationNode;
+		return destinationNode.getLayoutEntity();
 	}
 
 	/*
@@ -370,7 +370,7 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 	 * 
 	 * @return GraphModelNode
 	 */
-	public IGraphNode getSource() {
+	public GraphNode getSource() {
 		return this.sourceNode;
 	}
 
@@ -379,7 +379,7 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 	 * 
 	 * @return GraphModelNode
 	 */
-	public IGraphNode getDestination() {
+	public GraphNode getDestination() {
 		return this.destinationNode;
 	}
 
@@ -605,6 +605,14 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 		Shape connectionShape = (Shape) connection;
 		connectionShape.setLineWidth(getLineWidth());
 		connectionShape.setLineStyle(getLineStyle());
+
+		AligningBendpointLocator labelLocator = new AligningBendpointLocator(connection);
+		if (this.getText() != null || this.getImage() != null) {
+			Label l = new Label(this.getText(), this.getImage());
+			l.setFont(this.getFont());
+			connection.add(l, labelLocator);
+		}
+
 		if (highlighted) {
 			connectionShape.setForegroundColor(getHighlightColor());
 		} else {

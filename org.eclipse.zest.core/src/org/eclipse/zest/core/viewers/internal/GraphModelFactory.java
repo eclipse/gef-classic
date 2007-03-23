@@ -14,8 +14,8 @@ import java.util.List;
 
 import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.mylar.zest.core.widgets.Graph;
+import org.eclipse.mylar.zest.core.widgets.GraphNode;
 import org.eclipse.mylar.zest.core.widgets.IGraphConnection;
-import org.eclipse.mylar.zest.core.widgets.IGraphNode;
 
 /**
  * This factory helps make models (nodes & connections).
@@ -49,7 +49,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 	 */
 	protected void doBuildGraph(Graph model) {
 		super.doBuildGraph(model);
-		//make the model have the same styles as the viewer
+		// make the model have the same styles as the viewer
 		Object rels[] = getContentProvider().getElements(getViewer().getInput());
 		if (rels != null) {
 			// If rels returns null then just continue
@@ -63,21 +63,23 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 				Object dest = getCastedContent().getDestination(rels[i]);
 				dest = filterElement(getViewer().getInput(), dest) ? null : dest;
 				if (source == null) {
-					//just create the node for the destination
+					// just create the node for the destination
 					if (dest != null) {
 						createNode(model, dest);
 					}
 					continue;
 				} else if (dest == null) {
-					//just create the node for the source
+					// just create the node for the source
 					if (source != null) {
 						createNode(model, source);
 					}
 					continue;
 				}
-				// If any of the source, dest is null or the edge is filtered, don't create the graph.
+				// If any of the source, dest is null or the edge is filtered,
+				// don't create the graph.
 				if (source != null && dest != null && !filterElement(getViewer().getInput(), rels[i])) {
-					createConnection(model, rels[i], getCastedContent().getSource(rels[i]), getCastedContent().getDestination(rels[i]));
+					createConnection(model, rels[i], getCastedContent().getSource(rels[i]), getCastedContent()
+							.getDestination(rels[i]));
 				}
 			}
 		}
@@ -107,8 +109,9 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 	public void refresh(Graph graph, Object element, boolean updateLabels) {
 		IGraphConnection conn = viewer.getGraphModelConnection(element);
 		if (conn == null) {
-			//did the user send us a node? Check all of the connections on the node.
-			IGraphNode node = viewer.getGraphModelNode(element);
+			// did the user send us a node? Check all of the connections on the
+			// node.
+			GraphNode node = viewer.getGraphModelNode(element);
 			if (node != null) {
 				List connections = node.getSourceConnections();
 				for (Iterator it = connections.iterator(); it.hasNext();) {
@@ -123,13 +126,13 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 			}
 			return;
 		}
-		Object oldSource = conn.getSource().getExternalNode();
-		Object oldDest = conn.getDestination().getExternalNode();
+		Object oldSource = conn.getSource().getData();
+		Object oldDest = conn.getDestination().getData();
 		Object newSource = getCastedContent().getSource(element);
 		Object newDest = getCastedContent().getDestination(element);
 		if (!(oldSource.equals(newSource) && oldDest.equals(newDest))) {
-			IGraphNode internalSource = viewer.getGraphModelNode(newSource);
-			IGraphNode internalDest = viewer.getGraphModelNode(newDest);
+			GraphNode internalSource = viewer.getGraphModelNode(newSource);
+			GraphNode internalDest = viewer.getGraphModelNode(newDest);
 			if (internalSource == null) {
 				internalSource = createNode(graph, newSource);
 			} else if (updateLabels) {
@@ -142,8 +145,8 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 			}
 
 			// @tag TODO: Remove these lines
-			//			conn.disconnect();
-			//			conn.reconnect(internalSource, internalDest);
+			// conn.disconnect();
+			// conn.reconnect(internalSource, internalDest);
 			if (updateLabels) {
 				styleItem(conn);
 			}

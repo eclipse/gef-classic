@@ -35,8 +35,8 @@ public abstract class GraphItem extends Item implements IGraphItem {
 	 * @see org.eclipse.swt.widgets.Widget#dispose()
 	 */
 	public void dispose() {
-		//@tag zest.bug.167132-ListenerDispose : remove all listeners.
-		//pcsDelegate = new PropertyChangeSupport(this);
+		// @tag zest.bug.167132-ListenerDispose : remove all listeners.
+		// pcsDelegate = new PropertyChangeSupport(this);
 		super.dispose();
 	}
 

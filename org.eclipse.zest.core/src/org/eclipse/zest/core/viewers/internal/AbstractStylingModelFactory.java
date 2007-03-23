@@ -21,9 +21,9 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.mylar.zest.core.widgets.Graph;
+import org.eclipse.mylar.zest.core.widgets.GraphNode;
 import org.eclipse.mylar.zest.core.widgets.IGraphConnection;
 import org.eclipse.mylar.zest.core.widgets.IGraphItem;
-import org.eclipse.mylar.zest.core.widgets.IGraphNode;
 import org.eclipse.mylar.zest.core.widgets.IZestGraphDefaults;
 
 /**
@@ -33,7 +33,8 @@ import org.eclipse.mylar.zest.core.widgets.IZestGraphDefaults;
  * @author Del Myers
  * 
  */
-//@tag zest.bug.160367-Refreshing.fix : update the factory to use the IStylingGraphModelFactory
+// @tag zest.bug.160367-Refreshing.fix : update the factory to use the
+// IStylingGraphModelFactory
 public abstract class AbstractStylingModelFactory implements IStylingGraphModelFactory {
 	private AbstractStructuredGraphViewer viewer;
 	private int connectionStyle;
@@ -53,12 +54,12 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	}
 
 	public void styleConnection(IGraphConnection conn) {
-		//recount the source and target connections on the node.
-		//this isn't a great way to do it, because it results in
-		//an n^2 algorithm. But, if anyone can figure out a better way
-		//go ahead and try it.
-		IGraphNode source = conn.getSource();
-		IGraphNode dest = conn.getDestination();
+		// recount the source and target connections on the node.
+		// this isn't a great way to do it, because it results in
+		// an n^2 algorithm. But, if anyone can figure out a better way
+		// go ahead and try it.
+		GraphNode source = conn.getSource();
+		GraphNode dest = conn.getDestination();
 		LinkedList rightList = getConnectionList(source, dest);
 
 		LinkedList leftList = null;
@@ -67,9 +68,9 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 			leftList = getConnectionList(dest, source);
 		}
 
-		//adjust the arcs going from source to destination
+		// adjust the arcs going from source to destination
 		adjustCurves(rightList);
-		//adjust the arcs going from destination to source
+		// adjust the arcs going from destination to source
 		if (leftList != null) {
 			adjustCurves(leftList);
 		}
@@ -88,17 +89,19 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 			if (conn.getSource() == conn.getDestination()) {
 				scale = 5;
 			}
-			//even if the connection isn't curved in the style, the edit part
-			//may decide that it should be curved if source and dest are equal.
-			//@tag drawing(arcs) : check here if arcs are too close when being drawn. Adjust the constant.
+			// even if the connection isn't curved in the style, the edit part
+			// may decide that it should be curved if source and dest are equal.
+			// @tag drawing(arcs) : check here if arcs are too close when being
+			// drawn. Adjust the constant.
 			int lineWidth = conn.getLineWidth();
 			conn.setCurveDepth((i + 1) * (scale + lineWidth));
 
-			//			@tag zest(bug(152530-Bezier(fix))) : set the angles, etc based on the count.
-			//limit the angle to 90 degrees.
+			// @tag zest(bug(152530-Bezier(fix))) : set the angles, etc based on
+			// the count.
+			// limit the angle to 90 degrees.
 			conn.setStartAngle(90.0 - 85.0 / Math.pow(i, 1.0 / 9.0));
 			conn.setEndAngle(85.0 / Math.pow(i, 1.0 / 9.0) - 90.0);
-			//limit the length to 1
+			// limit the length to 1
 			conn.setStartLength(.75 - .25 / (Math.sqrt(i)));
 			conn.setEndLength(.75 - .25 / (Math.sqrt(i)));
 		}
@@ -109,7 +112,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @param dest
 	 * @return
 	 */
-	private LinkedList getConnectionList(IGraphNode source, IGraphNode dest) {
+	private LinkedList getConnectionList(GraphNode source, GraphNode dest) {
 		LinkedList list = new LinkedList();
 		Iterator i = source.getSourceConnections().iterator();
 		while (i.hasNext()) {
@@ -161,8 +164,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 			return null;
 		}
 		IGraphConnection oldConnection = viewer.getGraphModelConnection(element);
-		IGraphNode sn = viewer.getGraphModelNode(source);
-		IGraphNode dn = viewer.getGraphModelNode(dest);
+		GraphNode sn = viewer.getGraphModelNode(source);
+		GraphNode dn = viewer.getGraphModelNode(dest);
 		if (oldConnection != null) {
 			if (sn != oldConnection.getSource() || dn != oldConnection.getDestination()) {
 				viewer.removeGraphModelConnection(oldConnection);
@@ -188,8 +191,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#createNode(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel,
 	 *      java.lang.Object)
 	 */
-	public IGraphNode createNode(Graph graph, Object element) {
-		IGraphNode node = viewer.addGraphModelNode(element);
+	public GraphNode createNode(Graph graph, Object element) {
+		GraphNode node = viewer.addGraphModelNode(element);
 		styleItem(node);
 		return node;
 	}
@@ -244,35 +247,35 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#refreshGraph(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel)
 	 */
 	public void refreshGraph(Graph graph) {
-		//with this kind of graph, it is just as easy and cost-effective to
-		//rebuild the whole thing.
+		// with this kind of graph, it is just as easy and cost-effective to
+		// rebuild the whole thing.
 
 		Map oldMap = viewer.getNodesMap();
 		HashMap nodesMap = new HashMap();
-		//have to copy the Map data accross so that it doesn't get overwritten
+		// have to copy the Map data accross so that it doesn't get overwritten
 		for (Iterator keys = oldMap.keySet().iterator(); keys.hasNext();) {
 			Object key = keys.next();
 			nodesMap.put(key, oldMap.get(key));
 		}
 		clearGraph(graph);
 		doBuildGraph(graph);
-		//update the positions on the new nodes to match the old ones.
-		IGraphNode[] nodes = getNodesArray(graph);
-		//save a little time, go with the smallest list as the primary list
+		// update the positions on the new nodes to match the old ones.
+		GraphNode[] nodes = getNodesArray(graph);
+		// save a little time, go with the smallest list as the primary list
 		if (nodes.length < nodesMap.keySet().size()) {
 			for (int i = 0; i < nodes.length; i++) {
-				IGraphNode oldNode = (IGraphNode) nodesMap.get(nodes[i].getExternalNode());
+				GraphNode oldNode = (GraphNode) nodesMap.get(nodes[i].getData());
 				if (oldNode != null) {
-					nodes[i].setPreferredLocation(oldNode.getXInLayout(), oldNode.getYInLayout());
+					nodes[i].setLocation(oldNode.getLocation().x, oldNode.getLocation().y);
 				}
 			}
 		} else {
 			for (Iterator i = nodesMap.keySet().iterator(); i.hasNext();) {
 				Object key = i.next();
-				IGraphNode node = viewer.getGraphModelNode(key);
+				GraphNode node = viewer.getGraphModelNode(key);
 				if (node != null) {
-					IGraphNode oldNode = (IGraphNode) nodesMap.get(key);
-					node.setPreferredLocation(oldNode.getXInLayout(), oldNode.getYInLayout());
+					GraphNode oldNode = (GraphNode) nodesMap.get(key);
+					node.setLocation(oldNode.getLocation().x, oldNode.getLocation().y);
 				}
 			}
 		}
@@ -284,7 +287,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @param graph
 	 */
 	public void clearGraph(Graph graph) {
-		IGraphNode[] nodes = getNodesArray(graph);
+		GraphNode[] nodes = getNodesArray(graph);
 		for (int i = 0; i < nodes.length; i++) {
 			viewer.removeGraphModelNode(nodes[i]);
 		}
@@ -350,9 +353,9 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * 
 	 * @return GraphModelNode[]
 	 */
-	protected IGraphNode[] getNodesArray(Graph graph) {
-		IGraphNode[] nodesArray = new IGraphNode[graph.getNodes().size()];
-		nodesArray = (IGraphNode[]) graph.getNodes().toArray(nodesArray);
+	protected GraphNode[] getNodesArray(Graph graph) {
+		GraphNode[] nodesArray = new GraphNode[graph.getNodes().size()];
+		nodesArray = (GraphNode[]) graph.getNodes().toArray(nodesArray);
 		return nodesArray;
 	}
 }

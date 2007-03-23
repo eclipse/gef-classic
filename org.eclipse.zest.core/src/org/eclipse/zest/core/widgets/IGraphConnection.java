@@ -24,12 +24,13 @@ import org.eclipse.swt.graphics.Image;
  * @author Del Myers
  * 
  */
-//@tag bug(154259-Abstraction(fix))
+// @tag bug(154259-Abstraction(fix))
 public interface IGraphConnection extends IGraphItem, LayoutRelationship {
-	//property changes for graph model connections.
+	// property changes for graph model connections.
 	/** The line color has changed for this connection * */
 	public static final String LINECOLOR_PROP = "LineColor";
-	//@tag unreported(EdgeHighlight) : fire property change when the edge highlight state changes.
+	// @tag unreported(EdgeHighlight) : fire property change when the edge
+	// highlight state changes.
 	/** The connection has been highlighted * */
 	public static final String HIGHLIGHT_PROP = "Highlight";
 	/** The connection has been unhighlighted * */
@@ -65,14 +66,14 @@ public interface IGraphConnection extends IGraphItem, LayoutRelationship {
 	 * 
 	 * @return the source node.
 	 */
-	IGraphNode getSource();
+	GraphNode getSource();
 
 	/**
 	 * Returns the destination node.
 	 * 
 	 * @return the destination node.
 	 */
-	IGraphNode getDestination();
+	GraphNode getDestination();
 
 	/**
 	 * Sets the style for this connection.
@@ -255,7 +256,8 @@ public interface IGraphConnection extends IGraphItem, LayoutRelationship {
 	 * @see SWT.LINE_DASHDOT
 	 * @see SWT.LINE_DASHDOTDOT
 	 */
-	//@tag zest(discussion) : sould this be set in the connection style instead, using custom zest styles?
+	// @tag zest(discussion) : sould this be set in the connection style
+	// instead, using custom zest styles?
 	int getLineStyle();
 
 	/**
@@ -295,7 +297,8 @@ public interface IGraphConnection extends IGraphItem, LayoutRelationship {
 	 * @see SWT.LINE_DASHDOT
 	 * @see SWT.LINE_DASHDOTDOT
 	 */
-	//@tag zest(discussion) : sould this be set in the connection style instead, using custom zest styles?
+	// @tag zest(discussion) : sould this be set in the connection style
+	// instead, using custom zest styles?
 	void setLineStyle(int style);
 
 	/**

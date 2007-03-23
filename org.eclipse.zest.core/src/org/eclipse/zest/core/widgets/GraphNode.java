@@ -24,6 +24,7 @@ import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.widgets.internal.GraphLabel;
+import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -38,7 +39,7 @@ import org.eclipse.swt.widgets.Display;
  * @author Del Myers
  * @author Ian Bull
  */
-public class GraphNode extends GraphItem implements IGraphNode {
+public class GraphNode extends GraphItem {
 	public static final int HIGHLIGHT_NONE = 0;
 	public static final int HIGHLIGHT_ON = 1;
 	public static final int HIGHLIGHT_ADJACENT = 2;
@@ -48,23 +49,22 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	private List /* IGraphModelConnection */sourceConnections;
 	private List /* IGraphModelConnection */targetConnections;
 
-	private boolean preferredLocation;
 	private Color foreColor;
 	private Color backColor;
 	private Color highlightColor;
 	private Color highlightAdjacentColor;
 	private Color borderColor;
 	private Color borderHighlightColor;
-	private Color borderUnhighlightColor;
 	private int borderWidth;
 	private Point currentLocation;
 	private Dimension size;
 	private Font font;
 	private boolean cacheLabel;
 	private boolean visible = true;
+	private LayoutEntity layoutEntity;
 
 	protected Dimension labelSize;
-	protected Graph graphModel;
+	protected Graph graph;
 
 	/** The internal node. */
 	protected Object internalNode;
@@ -91,7 +91,6 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		this.nodeStyle |= graphModel.getNodeStyle();
 		this.sourceConnections = new ArrayList();
 		this.targetConnections = new ArrayList();
-		this.preferredLocation = false;
 		this.foreColor = graphModel.DARK_BLUE;
 		this.backColor = graphModel.LIGHT_BLUE;
 		this.highlightColor = graphModel.HIGHLIGHT_COLOR;
@@ -99,14 +98,14 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		this.nodeStyle = IZestGraphDefaults.NODE_STYLE;
 		this.borderColor = ColorConstants.black;
 		this.borderHighlightColor = ColorConstants.blue;
-		this.borderUnhighlightColor = ColorConstants.black;
 		this.borderWidth = 1;
 		this.currentLocation = new PrecisionPoint(10, 10);
 		this.size = new Dimension(0, 0);
 		this.font = Display.getDefault().getSystemFont();
-		this.graphModel = graphModel;
+		this.graph = graphModel;
 		this.cacheLabel = false;
 		this.setText(text);
+		this.layoutEntity = new LayoutGraphNode();
 
 		if (font == null) {
 			font = Display.getDefault().getSystemFont();
@@ -114,17 +113,6 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		nodeFigure = createFigureForModel();
 		graphModel.addNode(this);
 
-		//		if (this.isContainer) {
-		//			AspectRatioScaledFigure aspectRatioScaledFigure = new AspectRatioScaledFigure("item");
-		//			aspectRatioScaledFigure.setSize(500000, 500000);
-		//			aspectRatioScaledFigure.setBackgroundColor(ColorConstants.gray);
-		//			RoundedRectangle roundedRectangle = new RoundedRectangle();
-		//			aspectRatioScaledFigure.setScale(0.5, 0.5);
-		//			roundedRectangle.setSize(50, 50);
-		//			roundedRectangle.setBackgroundColor(ColorConstants.green);
-		//			aspectRatioScaledFigure.add(roundedRectangle);
-		//			setCustomFigure(aspectRatioScaledFigure);
-		//		}
 	}
 
 	/**
@@ -134,6 +122,15 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		return "GraphModelNode: " + getText();
 	}
 
+	public LayoutEntity getLayoutEntity() {
+		return layoutEntity;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#dispose()
+	 */
 	public void dispose() {
 		super.dispose();
 		this.isDisposed = true;
@@ -149,34 +146,16 @@ public class GraphNode extends GraphItem implements IGraphNode {
 				connection.dispose();
 			}
 		}
-		graphModel.removeNode(this);
+		graph.removeNode(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.swt.widgets.Widget#isDisposed()
+	 */
 	public boolean isDisposed() {
 		return isDisposed;
-	}
-
-	/**
-	 * Compares two nodes.
-	 */
-	public int compareTo(Object otherNode) {
-		int rv = 0;
-		if (otherNode instanceof IGraphNode) {
-			IGraphNode node = (IGraphNode) otherNode;
-			if (this.getText() != null) {
-				rv = this.getText().compareTo(node.getText());
-			}
-		}
-		return rv;
-	}
-
-	/**
-	 * Gets the user data associated with this node.
-	 * 
-	 * @return The user data associated with this node
-	 */
-	public Object getExternalNode() {
-		return this.getData();
 	}
 
 	/**
@@ -199,45 +178,13 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		return new ArrayList(targetConnections);
 	}
 
-	void addSourceConnection(GraphConnection connection) {
-		this.sourceConnections.add(connection);
-	}
-
-	void addTargetConnection(GraphConnection connection) {
-		this.targetConnections.add(connection);
-	}
-
-	void removeSourceConnection(GraphConnection connection) {
-		this.sourceConnections.remove(connection);
-	}
-
-	void removeTargetConnection(GraphConnection connection) {
-		this.targetConnections.remove(connection);
-	}
-
-	public void setHasPreferredLocation(boolean preferredLocation) {
-		this.preferredLocation = preferredLocation;
-	}
-
-	public boolean hasPreferredLocation() {
-		return preferredLocation;
-	}
-
-	public double getXInLayout() {
-		return currentLocation.x;
-	}
-
-	public double getYInLayout() {
-		return currentLocation.y;
-	}
-
 	/**
 	 * Returns the bounds of this node. It is just the combination of the
 	 * location and the size.
 	 * 
 	 * @return Rectangle
 	 */
-	public Rectangle getBounds() {
+	Rectangle getBounds() {
 		return new Rectangle(getLocation(), getSize());
 	}
 
@@ -250,26 +197,6 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		return currentLocation;
 	}
 
-	public double getWidthInLayout() {
-		return size.width;
-	}
-
-	public double getHeightInLayout() {
-		return size.height;
-	}
-
-	public void setSelected(boolean selected) {
-		if (selected = isSelected()) {
-			return;
-		}
-		if (selected) {
-			highlight();
-		} else {
-			unhighlight();
-		}
-		this.selected = selected;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -279,21 +206,13 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		return selected;
 	}
 
-	public void setPreferredLocation(double x, double y) {
-		setLocation(x, y);
-	}
-
+	/**
+	 * Sets the current location for this node.
+	 */
 	public void setLocation(double x, double y) {
 		currentLocation.x = (int) x;
 		currentLocation.y = (int) y;
 		refreshLocation();
-	}
-
-	/**
-	 * Sets the layout location of this node
-	 */
-	public void setLocationInLayout(double x, double y) {
-		this.setLocation(x, y);
 	}
 
 	/**
@@ -303,13 +222,6 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	 */
 	public Dimension getSize() {
 		return size.getCopy();
-	}
-
-	/**
-	 * Sets the size of this node
-	 */
-	public void setSizeInLayout(double width, double height) {
-		setSize(width, height);
 	}
 
 	/**
@@ -328,15 +240,17 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	}
 
 	/**
-	 * Get the background colour for this node
+	 * Get the background colour for this node. This is the color the node will
+	 * be if it is not currently highlighted. This color is meaningless if a
+	 * custom figure has been set.
 	 */
 	public Color getBackgroundColor() {
 		return backColor;
 	}
 
 	/**
-	 * Permantly sets the background color (unhighlighted). For temporary color
-	 * changes call #changeBackgroundColor instead.
+	 * Permantly sets the background color (unhighlighted). This color has no
+	 * effect if a custom figure has been set.
 	 * 
 	 * @param c
 	 */
@@ -346,7 +260,9 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	}
 
 	/**
-	 * Sets the tooltip on this node
+	 * Sets the tooltip on this node. This tooltip will display if the mouse
+	 * hovers over the node. Setting the tooltip has no effect if a custom
+	 * figure has been set.
 	 */
 	public void setTooltip(IFigure tooltip) {
 		this.tooltip = tooltip;
@@ -354,7 +270,8 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	}
 
 	/**
-	 * Gets the current tooltip for this node
+	 * Gets the current tooltip for this node. The tooltip returned is
+	 * meaningless if a custom figure has been set.
 	 */
 	public IFigure getTooltip() {
 		return this.tooltip;
@@ -368,7 +285,6 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	 */
 	public void setBorderColor(Color c) {
 		borderColor = c;
-		borderUnhighlightColor = c;
 		updateFigureForModel(nodeFigure);
 	}
 
@@ -382,18 +298,6 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		this.borderHighlightColor = c;
 		updateFigureForModel(nodeFigure);
 	}
-
-	// /**
-	// * Changes the background color and fires a property change event.
-	// *
-	// * @param c
-	// */
-	// public void changeBackgroundColor(Color c) {
-	// Color old = backColor;
-	// backColor = c;
-	// firePropertyChange(COLOR_BG_PROP, old, c);
-	//
-	// }
 
 	/**
 	 * Get the highlight colour for this node
@@ -448,11 +352,7 @@ public class GraphNode extends GraphItem implements IGraphNode {
 			}
 		}
 		updateFigureForModel(nodeFigure);
-		graphModel.highlightNode(this);
-	}
-
-	public boolean isHighlighted() {
-		return highlighted > 0;
+		graph.highlightNode(this);
 	}
 
 	/**
@@ -465,7 +365,8 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		}
 		highlighted = HIGHLIGHT_NONE;
 		if (!highlightedAdjacently) {
-			// IF we are highlighted as an adjacent node, we don't need to deal with our connections.
+			// IF we are highlighted as an adjacent node, we don't need to deal
+			// with our connections.
 			if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
 				// unhighlight the adjacent edges
 				for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
@@ -483,7 +384,7 @@ public class GraphNode extends GraphItem implements IGraphNode {
 					}
 				}
 			}
-			graphModel.unhighlightNode(this);
+			graph.unhighlightNode(this);
 		}
 		updateFigureForModel(nodeFigure);
 
@@ -494,7 +395,7 @@ public class GraphNode extends GraphItem implements IGraphNode {
 			if (customFigure == null || customFigure.getParent() == null) {
 				return;
 			}
-			IGraphNode node = this;
+			GraphNode node = this;
 			Point loc = node.getLocation();
 			Dimension size = node.getSize();
 			Rectangle bounds = new Rectangle(loc, size);
@@ -503,18 +404,18 @@ public class GraphNode extends GraphItem implements IGraphNode {
 			if (nodeFigure == null || nodeFigure.getParent() == null) {
 				return; // node figure has not been created yet
 			}
-			IGraphNode node = this;
+			GraphNode node = this;
 			Point loc = node.getLocation();
 			Dimension size = node.getSize();
 			Rectangle bounds = new Rectangle(loc, size);
 
-			//			bounds.x = this.currentLocation.x;
-			//			bounds.y = this.currentLocation.y;
-			//			bounds.width = size.width;
-			//			bounds.height = size.height;
+			// bounds.x = this.currentLocation.x;
+			// bounds.y = this.currentLocation.y;
+			// bounds.width = size.width;
+			// bounds.height = size.height;
 			nodeFigure.getParent().setConstraint(nodeFigure, bounds);
 
-			//nodeFigure = updateFigureForModel(nodeFigure);
+			// nodeFigure = updateFigureForModel(nodeFigure);
 		}
 	}
 
@@ -571,14 +472,6 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		this.borderWidth = width;
 	}
 
-	public Object getLayoutInformation() {
-		return internalNode;
-	}
-
-	public void setLayoutInformation(Object layoutInformation) {
-		this.internalNode = layoutInformation;
-	}
-
 	public Font getFont() {
 		return font;
 	}
@@ -595,7 +488,8 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	 */
 	public void setText(String string) {
 		if (useCustomFigure) {
-			return; // We don't want to set any properties if a custom figure has been set.
+			return; // We don't want to set any properties if a custom figure
+			// has been set.
 		}
 		this.labelSize = null;
 		super.setText(string);
@@ -613,32 +507,7 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	public void setImage(Image image) {
 		this.labelSize = null;
 		super.setImage(image);
-	}
-
-	/**
-	 * Returns the extent of the text and the image with some padding.
-	 * 
-	 * @return Dimension the minimum size needed to display the text and the
-	 *         image
-	 */
-	public Dimension calculateMinimumLabelSize() {
-		if (labelSize == null) {
-			Dimension text = calculateTextExtents();
-			Dimension icon = calculateImageExtents();
-			labelSize = new Dimension(text.width + icon.width, Math.max(text.height, icon.height));
-			labelSize.expand(12, 6);
-		}
-		return labelSize;
-	}
-
-	/**
-	 * Gets the minimum size for this node. This is the minimum size of the
-	 * label (text & icon)
-	 * 
-	 * @return Dimension
-	 */
-	public Dimension calculateMinimumSize() {
-		return calculateMinimumLabelSize();
+		updateFigureForModel(nodeFigure);
 	}
 
 	/**
@@ -647,7 +516,7 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	 * @return The graph model that this node is contained in
 	 */
 	public Graph getGraphModel() {
-		return this.graphModel;
+		return this.graph;
 	}
 
 	private Dimension calculateTextExtents() {
@@ -687,10 +556,6 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		this.cacheLabel = ((this.nodeStyle & ZestStyles.NODES_CACHE_LABEL) > 0) ? true : false;
 	}
 
-	public void populateLayoutConstraint(LayoutConstraint constraint) {
-		graphModel.invokeConstraintAdapters(this.getData(), constraint);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -712,15 +577,6 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	 */
 	public Color getBorderHighlightColor() {
 		return borderHighlightColor;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#getBorderUnhiglightColor()
-	 */
-	public Color getBorderUnhiglightColor() {
-		return borderUnhighlightColor;
 	}
 
 	public boolean cacheLabel() {
@@ -745,18 +601,53 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		this.customFigure = nodeFigure;
 		this.nodeFigure = null;
 		Dimension d = this.customFigure.getSize();
-		setSizeInLayout(d.width, d.height);
+		setSize(d.width, d.height);
 
-		graphModel.changeFigure((IFigure) old, customFigure, this);
-
-	}
-
-	public void disableMouseOver() {
+		graph.changeFigure((IFigure) old, customFigure, this);
 
 	}
 
-	public void enableMouseOver() {
+	public void setVisible(boolean visible) {
+		graph.setItemVisible(this, visible);
+		this.visible = visible;
+	}
 
+	/***************************************************************************
+	 * PRIVATE MEMBERS
+	 **************************************************************************/
+
+	/**
+	 * Returns the extent of the text and the image with some padding.
+	 * 
+	 * @return Dimension the minimum size needed to display the text and the
+	 *         image
+	 */
+	Dimension calculateMinimumLabelSize() {
+		if (labelSize == null) {
+			Dimension text = calculateTextExtents();
+			Dimension icon = calculateImageExtents();
+			labelSize = new Dimension(text.width + icon.width, Math.max(text.height, icon.height));
+			labelSize.expand(12, 6);
+		}
+		return labelSize;
+	}
+
+	/**
+	 * Gets the minimum size for this node. This is the minimum size of the
+	 * label (text & icon)
+	 * 
+	 * @return Dimension
+	 */
+	Dimension calculateMinimumSize() {
+		return calculateMinimumLabelSize();
+	}
+
+	boolean isHighlighted() {
+		return highlighted > 0;
+	}
+
+	void invokeLayoutListeners(LayoutConstraint constraint) {
+		graph.invokeConstraintAdapters(this.getData(), constraint);
 	}
 
 	protected GraphLabel updateFigureForModel(GraphLabel figure) {
@@ -784,7 +675,7 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		figure.setFont(getFont());
 
 		Dimension d = figure.getSize();
-		setSizeInLayout(d.width, d.height);
+		setSize(d.width, d.height);
 
 		if (this.getTooltip() == null) {
 			toolTip = new Label();
@@ -799,7 +690,7 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	}
 
 	protected GraphLabel createFigureForModel() {
-		IGraphNode node = this;
+		GraphNode node = this;
 		boolean cacheLabel = (this).cacheLabel();
 		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
 		return updateFigureForModel(label);
@@ -809,9 +700,35 @@ public class GraphNode extends GraphItem implements IGraphNode {
 		return visible;
 	}
 
-	public void setVisible(boolean visible) {
-		graphModel.setItemVisible(this, visible);
-		this.visible = visible;
+	void addSourceConnection(GraphConnection connection) {
+		this.sourceConnections.add(connection);
+	}
+
+	void addTargetConnection(GraphConnection connection) {
+		this.targetConnections.add(connection);
+	}
+
+	void removeSourceConnection(GraphConnection connection) {
+		this.sourceConnections.remove(connection);
+	}
+
+	void removeTargetConnection(GraphConnection connection) {
+		this.targetConnections.remove(connection);
+	}
+
+	/**
+	 * Sets the node as selected.
+	 */
+	void setSelected(boolean selected) {
+		if (selected = isSelected()) {
+			return;
+		}
+		if (selected) {
+			highlight();
+		} else {
+			unhighlight();
+		}
+		this.selected = selected;
 	}
 
 	/*
@@ -821,5 +738,61 @@ public class GraphNode extends GraphItem implements IGraphNode {
 	 */
 	public int getItemType() {
 		return NODE;
+	}
+
+	class LayoutGraphNode implements LayoutEntity {
+		Object layoutInformation = null;
+
+		public double getHeightInLayout() {
+			return getSize().height;
+		}
+
+		public Object getLayoutInformation() {
+			return layoutInformation;
+		}
+
+		public double getWidthInLayout() {
+			return getSize().width;
+		}
+
+		public double getXInLayout() {
+			return getLocation().x;
+		}
+
+		public double getYInLayout() {
+			return getLocation().y;
+		}
+
+		public void populateLayoutConstraint(LayoutConstraint constraint) {
+			invokeLayoutListeners(constraint);
+		}
+
+		public void setLayoutInformation(Object internalEntity) {
+			this.layoutInformation = internalEntity;
+
+		}
+
+		public void setLocationInLayout(double x, double y) {
+			setLocation(x, y);
+		}
+
+		public void setSizeInLayout(double width, double height) {
+			setSize(width, height);
+		}
+
+		/**
+		 * Compares two nodes.
+		 */
+		public int compareTo(Object otherNode) {
+			int rv = 0;
+			if (otherNode instanceof GraphNode) {
+				GraphNode node = (GraphNode) otherNode;
+				if (getText() != null) {
+					rv = getText().compareTo(node.getText());
+				}
+			}
+			return rv;
+		}
+
 	}
 }
