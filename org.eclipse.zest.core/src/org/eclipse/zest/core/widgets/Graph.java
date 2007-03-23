@@ -33,6 +33,7 @@ import org.eclipse.mylar.zest.core.widgets.internal.RevealListener;
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
+import org.eclipse.mylar.zest.layouts.LayoutRelationship;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
@@ -579,27 +580,32 @@ public class Graph extends FigureCanvas implements IGraphItem {
 	 * 
 	 * @return GraphModelConnection[]
 	 */
-	IGraphConnection[] getConnectionsArray() {
-		IGraphConnection[] connsArray = new IGraphConnection[connections.size()];
-		connsArray = (IGraphConnection[]) connections.toArray(connsArray);
+	GraphConnection[] getConnectionsArray() {
+		GraphConnection[] connsArray = new GraphConnection[connections.size()];
+		connsArray = (GraphConnection[]) connections.toArray(connsArray);
 		return connsArray;
 	}
 
-	IGraphConnection[] getConnectionsToLayout() {
+	LayoutRelationship[] getConnectionsToLayout() {
 		// @tag zest.bug.156528-Filters.follows : make sure not to layout
 		// filtered connections, if the style says so.
-		IGraphConnection[] entities;
+		LayoutRelationship[] entities;
 		if (ZestStyles.checkStyle(style, ZestStyles.IGNORE_INVISIBLE_LAYOUT)) {
 			LinkedList nodeList = new LinkedList();
 			for (Iterator i = this.getConnections().iterator(); i.hasNext();) {
-				IGraphItem next = (IGraphItem) i.next();
+				GraphConnection next = (GraphConnection) i.next();
 				if (next.isVisible()) {
-					nodeList.add(next);
+					nodeList.add(next.getLayoutRelationship());
 				}
 			}
-			entities = (IGraphConnection[]) nodeList.toArray(new IGraphConnection[] {});
+			entities = (LayoutRelationship[]) nodeList.toArray(new LayoutRelationship[] {});
 		} else {
-			entities = this.getConnectionsArray();
+			LinkedList nodeList = new LinkedList();
+			for (Iterator i = this.getConnections().iterator(); i.hasNext();) {
+				GraphConnection next = (GraphConnection) i.next();
+				nodeList.add(next.getLayoutRelationship());
+			}
+			entities = (LayoutRelationship[]) nodeList.toArray(new LayoutRelationship[] {});
 		}
 		return entities;
 	}
@@ -757,7 +763,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 		if (d.isEmpty()) {
 			return;
 		}
-		IGraphConnection[] connectionsToLayout = getConnectionsToLayout();
+		LayoutRelationship[] connectionsToLayout = getConnectionsToLayout();
 		LayoutEntity[] nodesToLayout = getNodesToLayout();
 
 		try {

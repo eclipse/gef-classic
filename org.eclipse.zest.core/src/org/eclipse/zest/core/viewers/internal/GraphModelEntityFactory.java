@@ -17,8 +17,8 @@ import java.util.List;
 import org.eclipse.mylar.zest.core.viewers.EntityConnectionData;
 import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
 import org.eclipse.mylar.zest.core.widgets.Graph;
+import org.eclipse.mylar.zest.core.widgets.GraphConnection;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphConnection;
 import org.eclipse.mylar.zest.core.widgets.IGraphItem;
 
 /**
@@ -101,7 +101,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		GraphNode node = viewer.getGraphModelNode(element);
 		if (node == null) {
 			// check to make sure that the user didn't send us an edge.
-			IGraphConnection conn = viewer.getGraphModelConnection(element);
+			GraphConnection conn = viewer.getGraphModelConnection(element);
 			if (conn != null) {
 				// refresh on the connected nodes.
 				refresh(graph, conn.getSource().getData(), refreshLabels);
@@ -142,7 +142,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		HashSet oldExternalConnections = new HashSet();
 		HashSet newExternalConnections = new HashSet();
 		for (Iterator it = connections.iterator(); it.hasNext();) {
-			oldExternalConnections.add(((IGraphConnection) it.next()).getExternalConnection());
+			oldExternalConnections.add(((GraphConnection) it.next()).getExternalConnection());
 		}
 		for (int i = 0; i < related.length; i++) {
 			newExternalConnections.add(new EntityConnectionData(element, related[i]));

@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.mylar.zest.core.widgets;
 
-import java.util.HashMap;
-
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
@@ -37,7 +35,7 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Chris Callendar
  */
-public class GraphConnection extends GraphItem implements IGraphConnection, LayoutRelationship {
+public class GraphConnection extends GraphItem {
 
 	private Font font;
 	private GraphNode sourceNode;
@@ -49,10 +47,8 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 	private Color foreground;
 	private int lineWidth;
 	private int lineStyle;
-	private final HashMap attributes;
 	private final Graph graphModel;
 
-	private Object internalConnection;
 	private int connectionStyle;
 	private int curveDepth;
 	private boolean isDisposed = false;
@@ -96,6 +92,7 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 	private boolean visible;
 
 	private boolean highlighted;
+	private GraphLayoutConnection layoutConnection = null;
 
 	public GraphConnection(Graph graphModel, int style, GraphNode source, GraphNode destination) {
 		super(graphModel);
@@ -110,9 +107,9 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 		this.lineWidth = 1;
 		this.lineStyle = Graphics.LINE_SOLID;
 		setWeightInLayout(weight);
-		this.attributes = new HashMap();
 		this.graphModel = graphModel;
 		this.curveDepth = 20;
+		this.layoutConnection = new GraphLayoutConnection();
 		this.font = Display.getDefault().getSystemFont();
 		(source).addSourceConnection(this);
 		(destination).addTargetConnection(this);
@@ -138,6 +135,16 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 	}
 
 	/**
+	 * Gets a proxy to this connection that can be used with the Zest layout
+	 * engine
+	 * 
+	 * @return
+	 */
+	public LayoutRelationship getLayoutRelationship() {
+		return this.layoutConnection;
+	}
+
+	/**
 	 * Gets the external connection object.
 	 * 
 	 * @return Object
@@ -157,33 +164,6 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 		String dest = (destinationNode != null ? destinationNode.getText() : "null");
 		String weight = "  (weight=" + getWeightInLayout() + ")";
 		return ("GraphModelConnection: " + src + arrow + dest + weight);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#getSourceInLayout()
-	 */
-	public LayoutEntity getSourceInLayout() {
-		return sourceNode.getLayoutEntity();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#getDestinationInLayout()
-	 */
-	public LayoutEntity getDestinationInLayout() {
-		return destinationNode.getLayoutEntity();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#isBidirectionalInLayout()
-	 */
-	public boolean isBidirectionalInLayout() {
-		return !ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED);
 	}
 
 	/**
@@ -256,25 +236,6 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 		} else {
 			this.weight = weight;
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#getAttributeInLayout(java.lang.String)
-	 */
-	public Object getAttributeInLayout(String attribute) {
-		return attributes.get(attribute);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#setAttributeInLayout(java.lang.String,
-	 *      java.lang.Object)
-	 */
-	public void setAttributeInLayout(String attribute, Object value) {
-		attributes.put(attribute, value);
 	}
 
 	/**
@@ -384,24 +345,6 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 	}
 
 	/**
-	 * Gets the internal relationship object.
-	 * 
-	 * @return Object
-	 */
-	public Object getLayoutInformation() {
-		return internalConnection;
-	}
-
-	/**
-	 * Sets the internal relationship object.
-	 * 
-	 * @param layoutInformation
-	 */
-	public void setLayoutInformation(Object layoutInformation) {
-		this.internalConnection = layoutInformation;
-	}
-
-	/**
 	 * Highlights this node. Uses the default highlight color.
 	 */
 	public void highlight() {
@@ -443,14 +386,6 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 		return this.graphModel;
 	}
 
-	public void setBendPoints(LayoutBendPoint[] bendPoints) {
-
-	}
-
-	public void clearBendPoints() {
-
-	}
-
 	/**
 	 * Returns the curve depth for this connection. The return value is only
 	 * meaningful if the connection style has the ZestStyles.CONNECTIONS_CURVED
@@ -467,8 +402,8 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 		updateFigure(connectionFigure);
 	}
 
-	public void populateLayoutConstraint(LayoutConstraint constraint) {
-
+	void invokeLayoutListeners(LayoutConstraint constraint) {
+		// @tag TODO: Add layout listeners
 	}
 
 	/**
@@ -649,5 +584,48 @@ public class GraphConnection extends GraphItem implements IGraphConnection, Layo
 		connectionFigure.setTargetAnchor(targetAnchor);
 
 		return updateFigure(connectionFigure);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#isBidirectionalInLayout()
+	 */
+	private boolean isBidirectionalInLayout() {
+		return !ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED);
+	}
+
+	class GraphLayoutConnection implements LayoutRelationship {
+
+		Object layoutInformation = null;
+
+		public void clearBendPoints() {
+			// @tag TODO : add bendpoints
+		}
+
+		public LayoutEntity getDestinationInLayout() {
+			return getDestination().getLayoutEntity();
+		}
+
+		public Object getLayoutInformation() {
+			return layoutInformation;
+		}
+
+		public LayoutEntity getSourceInLayout() {
+			return getSource().getLayoutEntity();
+		}
+
+		public void populateLayoutConstraint(LayoutConstraint constraint) {
+			// @tag TODO: Add layotu constraints
+		}
+
+		public void setBendPoints(LayoutBendPoint[] bendPoints) {
+			// @tag TODO : add bendpoints
+		}
+
+		public void setLayoutInformation(Object layoutInformation) {
+			this.layoutInformation = layoutInformation;
+		}
+
 	}
 }

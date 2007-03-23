@@ -21,8 +21,8 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.mylar.zest.core.widgets.Graph;
+import org.eclipse.mylar.zest.core.widgets.GraphConnection;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphConnection;
 import org.eclipse.mylar.zest.core.widgets.IGraphItem;
 import org.eclipse.mylar.zest.core.widgets.IZestGraphDefaults;
 
@@ -53,7 +53,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		}
 	}
 
-	public void styleConnection(IGraphConnection conn) {
+	public void styleConnection(GraphConnection conn) {
 		// recount the source and target connections on the node.
 		// this isn't a great way to do it, because it results in
 		// an n^2 algorithm. But, if anyone can figure out a better way
@@ -85,7 +85,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	protected void adjustCurves(List connections) {
 		int scale = 3;
 		for (int i = 0; i < connections.size(); i++) {
-			IGraphConnection conn = (IGraphConnection) connections.get(i);
+			GraphConnection conn = (GraphConnection) connections.get(i);
 			if (conn.getSource() == conn.getDestination()) {
 				scale = 5;
 			}
@@ -116,7 +116,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		LinkedList list = new LinkedList();
 		Iterator i = source.getSourceConnections().iterator();
 		while (i.hasNext()) {
-			IGraphConnection c = (IGraphConnection) i.next();
+			GraphConnection c = (GraphConnection) i.next();
 			if (c.getDestination() == dest) {
 				list.add(c);
 			}
@@ -126,8 +126,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	public void styleItem(IGraphItem item) {
 		GraphItemStyler.styleItem(item, getLabelProvider());
-		if (item instanceof IGraphConnection) {
-			styleConnection((IGraphConnection) item);
+		if (item instanceof GraphConnection) {
+			styleConnection((GraphConnection) item);
 		}
 	}
 
@@ -159,11 +159,11 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#createConnection(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel,
 	 *      java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
-	public IGraphConnection createConnection(Graph graph, Object element, Object source, Object dest) {
+	public GraphConnection createConnection(Graph graph, Object element, Object source, Object dest) {
 		if (source == null || dest == null) {
 			return null;
 		}
-		IGraphConnection oldConnection = viewer.getGraphModelConnection(element);
+		GraphConnection oldConnection = viewer.getGraphModelConnection(element);
 		GraphNode sn = viewer.getGraphModelNode(source);
 		GraphNode dn = viewer.getGraphModelNode(dest);
 		if (oldConnection != null) {
@@ -180,7 +180,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		if (dn == null) {
 			dn = createNode(graph, dest);
 		}
-		IGraphConnection c = viewer.addGraphModelConnection(element, sn, dn);
+		GraphConnection c = viewer.addGraphModelConnection(element, sn, dn);
 		styleItem(c);
 		return c;
 	}

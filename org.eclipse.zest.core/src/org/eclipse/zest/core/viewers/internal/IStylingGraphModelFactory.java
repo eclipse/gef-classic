@@ -14,8 +14,8 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.widgets.Graph;
+import org.eclipse.mylar.zest.core.widgets.GraphConnection;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphConnection;
 import org.eclipse.mylar.zest.core.widgets.IGraphItem;
 import org.eclipse.mylar.zest.core.widgets.IZestGraphDefaults;
 
@@ -94,7 +94,7 @@ public interface IStylingGraphModelFactory {
 	 *            the user model data used for the destination node.
 	 * @return the created or retrieved connection for the given graph.
 	 */
-	public IGraphConnection createConnection(Graph graph, Object element, Object source, Object dest);
+	public GraphConnection createConnection(Graph graph, Object element, Object source, Object dest);
 
 	/**
 	 * Restyles the given graph items according to the label provider supplied

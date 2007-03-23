@@ -14,8 +14,8 @@ import java.util.List;
 
 import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.mylar.zest.core.widgets.Graph;
+import org.eclipse.mylar.zest.core.widgets.GraphConnection;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphConnection;
 
 /**
  * This factory helps make models (nodes & connections).
@@ -107,7 +107,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 	 *      java.lang.Object, boolean)
 	 */
 	public void refresh(Graph graph, Object element, boolean updateLabels) {
-		IGraphConnection conn = viewer.getGraphModelConnection(element);
+		GraphConnection conn = viewer.getGraphModelConnection(element);
 		if (conn == null) {
 			// did the user send us a node? Check all of the connections on the
 			// node.
@@ -115,12 +115,12 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 			if (node != null) {
 				List connections = node.getSourceConnections();
 				for (Iterator it = connections.iterator(); it.hasNext();) {
-					IGraphConnection c = (IGraphConnection) it.next();
+					GraphConnection c = (GraphConnection) it.next();
 					refresh(graph, c.getExternalConnection(), updateLabels);
 				}
 				connections = node.getTargetConnections();
 				for (Iterator it = connections.iterator(); it.hasNext();) {
-					IGraphConnection c = (IGraphConnection) it.next();
+					GraphConnection c = (GraphConnection) it.next();
 					refresh(graph, c.getExternalConnection(), updateLabels);
 				}
 			}

@@ -341,12 +341,12 @@ public class GraphNode extends GraphItem {
 		highlighted = HIGHLIGHT_ON;
 		if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
 			for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
-				IGraphConnection conn = (IGraphConnection) iter.next();
+				GraphConnection conn = (GraphConnection) iter.next();
 				conn.highlight();
 				conn.getDestination().highlightAdjacent();
 			}
 			for (Iterator iter = targetConnections.iterator(); iter.hasNext();) {
-				IGraphConnection conn = (IGraphConnection) iter.next();
+				GraphConnection conn = (GraphConnection) iter.next();
 				conn.highlight();
 				conn.getSource().highlightAdjacent();
 			}
@@ -370,14 +370,14 @@ public class GraphNode extends GraphItem {
 			if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
 				// unhighlight the adjacent edges
 				for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
-					IGraphConnection conn = (IGraphConnection) iter.next();
+					GraphConnection conn = (GraphConnection) iter.next();
 					conn.unhighlight();
 					if (conn.getDestination() != this) {
 						conn.getDestination().unhighlight();
 					}
 				}
 				for (Iterator iter = targetConnections.iterator(); iter.hasNext();) {
-					IGraphConnection conn = (IGraphConnection) iter.next();
+					GraphConnection conn = (GraphConnection) iter.next();
 					conn.unhighlight();
 					if (conn.getSource() != this) {
 						conn.getSource().unhighlight();

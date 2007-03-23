@@ -27,7 +27,6 @@ import org.eclipse.mylar.zest.core.widgets.ConstraintAdapter;
 import org.eclipse.mylar.zest.core.widgets.Graph;
 import org.eclipse.mylar.zest.core.widgets.GraphConnection;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphConnection;
 import org.eclipse.mylar.zest.core.widgets.IGraphItem;
 import org.eclipse.mylar.zest.core.widgets.IZestGraphDefaults;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
@@ -89,9 +88,9 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
 		public int compare(Object arg0, Object arg1) {
-			if (arg0 instanceof GraphNode && arg1 instanceof IGraphConnection) {
+			if (arg0 instanceof GraphNode && arg1 instanceof GraphConnection) {
 				return 1;
-			} else if (arg0 instanceof IGraphConnection && arg1 instanceof GraphNode) {
+			} else if (arg0 instanceof GraphConnection && arg1 instanceof GraphNode) {
 				return -1;
 			}
 			if (arg0.equals(arg1)) {
@@ -238,8 +237,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		return node;
 	}
 
-	IGraphConnection addGraphModelConnection(Object element, GraphNode source, GraphNode target) {
-		IGraphConnection connection = this.getGraphModelConnection(element);
+	GraphConnection addGraphModelConnection(Object element, GraphNode source, GraphNode target) {
+		GraphConnection connection = this.getGraphModelConnection(element);
 		if (connection == null) {
 			connection = new GraphConnection((Graph) getControl(), SWT.NONE, source, target);
 			this.connectionsMap.put(element, connection);
@@ -249,8 +248,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	}
 
-	IGraphConnection getGraphModelConnection(Object obj) {
-		return (IGraphConnection) this.connectionsMap.get(obj);
+	GraphConnection getGraphModelConnection(Object obj) {
+		return (GraphConnection) this.connectionsMap.get(obj);
 	}
 
 	GraphNode getGraphModelNode(Object obj) {
@@ -347,8 +346,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 			IGraphItem item = (IGraphItem) i.next();
 			if (item instanceof GraphNode) {
 				externalSelection.add(((GraphNode) item).getData());
-			} else if (item instanceof IGraphConnection) {
-				externalSelection.add(((IGraphConnection) item).getExternalConnection());
+			} else if (item instanceof GraphConnection) {
+				externalSelection.add(((GraphConnection) item).getExternalConnection());
 			} else if (item instanceof Widget) {
 				externalSelection.add(((Widget) item).getData());
 			}
@@ -379,7 +378,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		for (Iterator i = l.iterator(); i.hasNext();) {
 			Object obj = i.next();
 			GraphNode node = (GraphNode) nodesMap.get(obj);
-			IGraphConnection conn = (IGraphConnection) connectionsMap.get(obj);
+			GraphConnection conn = (GraphConnection) connectionsMap.get(obj);
 			if (node != null) {
 				selection.add(node);
 			}
@@ -427,7 +426,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 		iterator = connectionsMap.values().iterator();
 		while (iterator.hasNext()) {
-			IGraphConnection connection = (IGraphConnection) iterator.next();
+			GraphConnection connection = (GraphConnection) iterator.next();
 			if (!connection.isDisposed()) {
 				connection.dispose();
 			}
@@ -479,7 +478,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 			// @tag zest.bug.156528-Filters.check : should we only filter out
 			// the nodes?
 			for (Iterator i = connections.iterator(); i.hasNext();) {
-				IGraphConnection c = (IGraphConnection) i.next();
+				GraphConnection c = (GraphConnection) i.next();
 				c.setVisible(false);
 			}
 			for (Iterator i = nodes.iterator(); i.hasNext();) {
@@ -489,7 +488,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 			return;
 		}
 		for (Iterator i = connections.iterator(); i.hasNext();) {
-			IGraphConnection c = (IGraphConnection) i.next();
+			GraphConnection c = (GraphConnection) i.next();
 			if (c.getExternalConnection() != null) {
 				unfilteredElements.add(c);
 			}
@@ -537,7 +536,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 				List connections = getGraphControl().getConnections();
 				List nodes = getGraphControl().getNodes();
 				for (Iterator i = connections.iterator(); i.hasNext();) {
-					IGraphConnection c = (IGraphConnection) i.next();
+					GraphConnection c = (GraphConnection) i.next();
 					if (c.getExternalConnection() != null) {
 						children.add(c.getExternalConnection());
 					}
@@ -598,12 +597,12 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @param connection
 	 */
 	public void removeRelationship(Object connection) {
-		IGraphConnection relationship = (IGraphConnection) connectionsMap.get(connection);
+		GraphConnection relationship = (GraphConnection) connectionsMap.get(connection);
 
 		if (relationship != null) {
 			// remove the relationship from the layout algorithm
 			if (getLayoutAlgorithm() != null) {
-				getLayoutAlgorithm().removeRelationship(relationship);
+				getLayoutAlgorithm().removeRelationship(relationship.getLayoutRelationship());
 			}
 			// remove the relationship from the model
 			relationship.dispose();
@@ -620,7 +619,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	public void addNode(Object element) {
 		if (nodesMap.get(element) == null) {
 			// create the new node
-			GraphNode newNode = (GraphNode) getFactory().createNode(getGraphControl(), element);
+			GraphNode newNode = getFactory().createNode(getGraphControl(), element);
 
 			// add it to the layout algorithm
 			if (getLayoutAlgorithm() != null) {
@@ -667,12 +666,11 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	public void addRelationship(Object connection, Object srcNode, Object destNode) {
 		// create the new relationship
 		IStylingGraphModelFactory modelFactory = getFactory();
-		IGraphConnection newConnection = modelFactory
-				.createConnection(getGraphControl(), connection, srcNode, destNode);
+		GraphConnection newConnection = modelFactory.createConnection(getGraphControl(), connection, srcNode, destNode);
 
 		// add it to the layout algorithm
 		if (getLayoutAlgorithm() != null) {
-			getLayoutAlgorithm().addRelationship(newConnection);
+			getLayoutAlgorithm().addRelationship(newConnection.getLayoutRelationship());
 		}
 		applyLayout();
 	}
@@ -692,11 +690,11 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 				Object source = content.getSource(connection);
 				Object dest = content.getDestination(connection);
 				// create the new relationship
-				IGraphConnection newConnection = modelFactory.createConnection(getGraphControl(), connection, source,
+				GraphConnection newConnection = modelFactory.createConnection(getGraphControl(), connection, source,
 						dest);
 				// add it to the layout algorithm
 				if (getLayoutAlgorithm() != null) {
-					getLayoutAlgorithm().addRelationship(newConnection);
+					getLayoutAlgorithm().addRelationship(newConnection.getLayoutRelationship());
 				}
 			} else {
 				throw new UnsupportedOperationException();
@@ -710,9 +708,9 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * 
 	 * @return GraphModelConnection[]
 	 */
-	protected IGraphConnection[] getConnectionsArray(Graph graph) {
-		IGraphConnection[] connsArray = new IGraphConnection[graph.getConnections().size()];
-		connsArray = (IGraphConnection[]) graph.getConnections().toArray(connsArray);
+	protected GraphConnection[] getConnectionsArray(Graph graph) {
+		GraphConnection[] connsArray = new GraphConnection[graph.getConnections().size()];
+		connsArray = (GraphConnection[]) graph.getConnections().toArray(connsArray);
 		return connsArray;
 	}
 

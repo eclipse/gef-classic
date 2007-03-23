@@ -22,8 +22,8 @@ import org.eclipse.mylar.zest.core.viewers.IConnectionStyleProvider;
 import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleBezierExtension;
 import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleProvider;
 import org.eclipse.mylar.zest.core.viewers.IEntityStyleProvider;
+import org.eclipse.mylar.zest.core.widgets.GraphConnection;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphConnection;
 import org.eclipse.mylar.zest.core.widgets.IGraphItem;
 import org.eclipse.mylar.zest.core.widgets.IZestGraphDefaults;
 import org.eclipse.swt.SWT;
@@ -65,8 +65,8 @@ public class GraphItemStyler {
 				node.setText((text != null) ? text : "");
 				node.setImage(((ILabelProvider) labelProvider).getImage(node.getData()));
 			}
-		} else if (item instanceof IGraphConnection) {
-			IGraphConnection conn = (IGraphConnection) item;
+		} else if (item instanceof GraphConnection) {
+			GraphConnection conn = (GraphConnection) item;
 
 			// set defaults
 			if (conn.getGraphModel().getConnectionStyle() != ZestStyles.NONE) {
@@ -95,7 +95,7 @@ public class GraphItemStyler {
 	 * @param conn
 	 * @param provider
 	 */
-	private static void styleConnection(IGraphConnection conn, IConnectionStyleProvider provider) {
+	private static void styleConnection(GraphConnection conn, IConnectionStyleProvider provider) {
 		Object rel = conn.getExternalConnection();
 		Color c;
 		int style = provider.getConnectionStyle(rel);
@@ -139,7 +139,7 @@ public class GraphItemStyler {
 	 * @param conn
 	 * @param provider
 	 */
-	private static void styleEntityConnection(IGraphConnection conn, IEntityConnectionStyleProvider provider) {
+	private static void styleEntityConnection(GraphConnection conn, IEntityConnectionStyleProvider provider) {
 		Object src = conn.getSource().getData();
 		Object dest = conn.getDestination().getData();
 		Color c;
