@@ -87,14 +87,16 @@ public class GraphJFaceSnippet3 {
 		dialog.setFilterNames(new String[] { "Simple Graph Files (*.sgf)", "All Files (*.*)" });
 		dialog.setFilterExtensions(new String[] { "*.sgf", "*.*" }); //Windows wild cards
 
-		dialog.setFilterPath(System.getProperty("user.dir" + "/src/org/eclipse/mylar/zest/examples/jface/")); //Windows path
+		String directory = System.getProperty("user.dir")  + "/src/org/eclipse/mylar/zest/examples/jface/SimpleGraph.sgf"; //eclipse/mylar/zest/examples/jface/";
+		System.out.println(directory);
+		dialog.setFilterPath(directory);
+		//dialog.setFilterPath(System.getProperty("user.dir") + "src/org/eclipse/mylar/zest/examples/jface/"); //Windows path
 
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		shell.setSize(400, 400);
 		GraphViewer viewer = null;
 
 		viewer = new GraphViewer(shell, SWT.NONE);
-		viewer.setConnectionStyle(ZestStyles.CONNECTIONS_DASH_DOT);
 		viewer.setNodeStyle(ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 		viewer.setContentProvider(new SimpleGraphContentProvider());
 		viewer.setLabelProvider(new LabelProvider());

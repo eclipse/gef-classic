@@ -391,8 +391,9 @@ public class GraphNode extends GraphItem {
 					}
 				}
 			}
-			graph.unhighlightNode(this);
+			
 		}
+		graph.unhighlightNode(this);
 		updateFigureForModel(nodeFigure);
 
 	}
@@ -439,6 +440,7 @@ public class GraphNode extends GraphItem {
 		}
 		highlighted = HIGHLIGHT_ADJACENT;
 		updateFigureForModel(nodeFigure);
+		graph.highlightNode(this);
 	}
 
 	/**
