@@ -17,8 +17,8 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.Shape;
-import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.widgets.internal.AligningBendpointLocator;
+import org.eclipse.mylar.zest.core.widgets.internal.LoopAnchor;
 import org.eclipse.mylar.zest.core.widgets.internal.PolylineArcConnection;
 import org.eclipse.mylar.zest.core.widgets.internal.RoundedChopboxAnchor;
 import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
@@ -61,31 +61,28 @@ public class GraphConnection extends GraphItem {
 	 * actual visual representation based on the look of the graph.
 	 */
 	// @tag zest(bug(152530-Bezier(fix)))
-	private double startAngle;
+	// private double startAngle;
 	/**
 	 * For bezier curves: angle between the end point and the line. This may be
 	 * a hint only. Future implementations of graph viewers may adjust the
 	 * actual visual representation based on the look of the graph.
 	 */
 	// @tag zest(bug(152530-Bezier(fix)))
-	private double endAngle;
-
+	// private double endAngle;
 	/**
 	 * For bezier curves: this is a value from 0-1 as a ratio of the length of
 	 * the line between the start point, and the control point/the length of the
 	 * connection.
 	 */
 	// @tag zest(bug(152530-Bezier(fix)))
-	private double startLength;
-
+	// private double startLength;
 	/**
 	 * For bezier curves: this is a value from 0-1 as a ratio of the length of
 	 * the line between the end point, and the control point/the length of the
 	 * connection.
 	 */
 	// @tag zest(bug(152530-Bezier(fix)))
-	private double endLength;
-
+	// private double endLength;
 	/**
 	 * The state of visibility set by the user.
 	 */
@@ -106,7 +103,7 @@ public class GraphConnection extends GraphItem {
 		this.highlightColor = graphModel.DARK_BLUE;
 		this.lineWidth = 1;
 		this.lineStyle = Graphics.LINE_SOLID;
-		setWeightInLayout(weight);
+		setWeight(weight);
 		this.graphModel = graphModel;
 		this.curveDepth = 20;
 		this.layoutConnection = new GraphLayoutConnection();
@@ -226,9 +223,8 @@ public class GraphConnection extends GraphItem {
 	 * apart). A weight of 1 results in the minimum spring length being used
 	 * (closest together).
 	 * 
-	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#setWeightInLayout(double)
 	 */
-	public void setWeightInLayout(double weight) {
+	public void setWeight(double weight) {
 		if (weight < 0) {
 			this.weight = -1;
 		} else if (weight > 1) {
@@ -386,127 +382,134 @@ public class GraphConnection extends GraphItem {
 		return this.graphModel;
 	}
 
-	/**
-	 * Returns the curve depth for this connection. The return value is only
-	 * meaningful if the connection style has the ZestStyles.CONNECTIONS_CURVED
-	 * style set.
-	 * 
-	 * @return the curve depth.
-	 */
-	public int getCurveDepth() {
-		return curveDepth;
-	}
+	// /**
+	// * Returns the curve depth for this connection. The return value is only
+	// * meaningful if the connection style has the
+	// ZestStyles.CONNECTIONS_CURVED
+	// * style set.
+	// *
+	// * @return the curve depth.
+	// */
+	// public int getCurveDepth() {
+	// return curveDepth;
+	// }
 
-	public void setCurveDepth(int curveDepth) {
-		this.curveDepth = curveDepth;
-		updateFigure(connectionFigure);
-	}
+	// public void setCurveDepth(int curveDepth) {
+	// this.curveDepth = curveDepth;
+	// updateFigure(connectionFigure);
+	// }
 
-	void invokeLayoutListeners(LayoutConstraint constraint) {
-		// @tag TODO: Add layout listeners
-	}
+	// void invokeLayoutListeners(LayoutConstraint constraint) {
+	// // @tag TODO: Add layout listeners
+	// }
 
-	/**
-	 * Gets the end angle for bezier arcs.
-	 * 
-	 * For bezier curves: angle between the start point, and the line. This may
-	 * be a hint only. Future implementations of graph viewers may adjust the
-	 * actual visual representation based on the look of the graph.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	public double getEndAngle() {
-		return endAngle;
-	}
+	// /**
+	// * Gets the end angle for bezier arcs.
+	// *
+	// * For bezier curves: angle between the start point, and the line. This
+	// may
+	// * be a hint only. Future implementations of graph viewers may adjust the
+	// * actual visual representation based on the look of the graph.
+	// */
+	// // @tag zest(bug(152530-Bezier(fix)))
+	// public double getEndAngle() {
+	// return endAngle;
+	// }
 
-	/**
-	 * Sets the end angle for bezier arcs.
-	 * 
-	 * For bezier curves: angle between the start point, and the line. This may
-	 * be a hint only. Future implementations of graph viewers may adjust the
-	 * actual visual representation based on the look of the graph.
-	 * 
-	 * @param endAngle
-	 *            the angle to set.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	public void setEndAngle(double endAngle) {
-		this.endAngle = endAngle;
-		updateFigure(connectionFigure);
-	}
+	// /**
+	// * Sets the end angle for bezier arcs.
+	// *
+	// * For bezier curves: angle between the start point, and the line. This
+	// may
+	// * be a hint only. Future implementations of graph viewers may adjust the
+	// * actual visual representation based on the look of the graph.
+	// *
+	// * @param endAngle
+	// * the angle to set.
+	// */
+	// // @tag zest(bug(152530-Bezier(fix)))
+	// public void setEndAngle(double endAngle) {
+	// this.endAngle = endAngle;
+	// updateFigure(connectionFigure);
+	// }
 
-	/**
-	 * For bezier curves: this is a value from 0-1 as a ratio of the length of
-	 * the line between the end point, and the control point/the length of the
-	 * connection.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	public double getEndLength() {
-		return endLength;
-	}
+	// /**
+	// * For bezier curves: this is a value from 0-1 as a ratio of the length of
+	// * the line between the end point, and the control point/the length of the
+	// * connection.
+	// */
+	// // @tag zest(bug(152530-Bezier(fix)))
+	// public double getEndLength() {
+	// return endLength;
+	// }
 
-	/**
-	 * For bezier curves: this is a value from 0-1 as a ratio of the length of
-	 * the line between the end point, and the control point/the length of the
-	 * connection.
-	 * 
-	 * @param endLength
-	 *            the length to set.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	public void setEndLength(double endLength) {
-		this.endLength = endLength;
-		updateFigure(connectionFigure);
-	}
+	// /**
+	// * For bezier curves: this is a value from 0-1 as a ratio of the length of
+	// * the line between the end point, and the control point/the length of the
+	// * connection.
+	// *
+	// * @param endLength
+	// * the length to set.
+	// */
+	// // @tag zest(bug(152530-Bezier(fix)))
+	// public void setEndLength(double endLength) {
+	// this.endLength = endLength;
+	// updateFigure(connectionFigure);
+	// }
 
-	/**
-	 * Gets the start angle for bezier arcs.
-	 * 
-	 * For bezier curves: angle between the end point and the line. This may be
-	 * a hint only. Future implementations of graph viewers may adjust the
-	 * actual visual representation based on the look of the graph.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	public double getStartAngle() {
-		return startAngle;
-	}
+	// /**
+	// * Gets the start angle for bezier arcs.
+	// *
+	// * For bezier curves: angle between the end point and the line. This may
+	// be
+	// * a hint only. Future implementations of graph viewers may adjust the
+	// * actual visual representation based on the look of the graph.
+	// */
+	// // @tag zest(bug(152530-Bezier(fix)))
+	// public double getStartAngle() {
+	// return startAngle;
+	// }
 
-	/**
-	 * Sets the start angle for bezier arcs.
-	 * 
-	 * For bezier curves: angle between the end point and the line. This may be
-	 * a hint only. Future implementations of graph viewers may adjust the
-	 * actual visual representation based on the look of the graph.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	public void setStartAngle(double startAngle) {
-		this.startAngle = startAngle;
-		updateFigure(connectionFigure);
+	// /**
+	// * Sets the start angle for bezier arcs.
+	// *
+	// * For bezier curves: angle between the end point and the line. This may
+	// be
+	// * a hint only. Future implementations of graph viewers may adjust the
+	// * actual visual representation based on the look of the graph.
+	// */
+	// // @tag zest(bug(152530-Bezier(fix)))
+	// public void setStartAngle(double startAngle) {
+	// this.startAngle = startAngle;
+	// updateFigure(connectionFigure);
+	//
+	// }
 
-	}
+	// /**
+	// * For bezier curves: this is a value from 0-1 as a ratio of the length of
+	// * the line between the start point, and the control point/the length of
+	// the
+	// * connection.
+	// */
+	// // @tag zest(bug(152530-Bezier(fix)))
+	// public double getStartLength() {
+	// return startLength;
+	// }
 
-	/**
-	 * For bezier curves: this is a value from 0-1 as a ratio of the length of
-	 * the line between the start point, and the control point/the length of the
-	 * connection.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	public double getStartLength() {
-		return startLength;
-	}
-
-	/**
-	 * For bezier curves: this is a value from 0-1 as a ratio of the length of
-	 * the line between the start point, and the control point/the length of the
-	 * connection.
-	 * 
-	 * @param startLength
-	 *            the length to set.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	public void setStartLength(double startLength) {
-		this.startLength = startLength;
-		updateFigure(connectionFigure);
-	}
+	// /**
+	// * For bezier curves: this is a value from 0-1 as a ratio of the length of
+	// * the line between the start point, and the control point/the length of
+	// the
+	// * connection.
+	// *
+	// * @param startLength
+	// * the length to set.
+	// */
+	// // @tag zest(bug(152530-Bezier(fix)))
+	// public void setStartLength(double startLength) {
+	// this.startLength = startLength;
+	// updateFigure(connectionFigure);
+	// }
 
 	/*
 	 * (non-Javadoc)
@@ -556,12 +559,12 @@ public class GraphConnection extends GraphItem {
 
 		if (connection instanceof PolylineArcConnection) {
 			PolylineArcConnection arcConnection = (PolylineArcConnection) connection;
-			arcConnection.setDepth(getCurveDepth());
+			arcConnection.setDepth(curveDepth);
 		}
 		if ((connectionStyle & ZestStyles.CONNECTIONS_DIRECTED) > 0) {
 			PolygonDecoration decoration = new PolygonDecoration();
-			if (getLineWidth() < 1) {
-				decoration.setScale(7, 3);
+			if (getLineWidth() < 3) {
+				decoration.setScale(9, 3);
 			} else {
 				double logLineWith = getLineWidth() / 2.0;
 				decoration.setScale(7 * logLineWith, 3 * logLineWith);
@@ -573,13 +576,18 @@ public class GraphConnection extends GraphItem {
 
 	private Connection createFigure() {
 		Connection connectionFigure = null;
+		ChopboxAnchor sourceAnchor = null;
+		ChopboxAnchor targetAnchor = null;
 		if (getSource() == getDestination()) {
 			connectionFigure = new PolylineArcConnection();
+			sourceAnchor = new LoopAnchor(getSource().getNodeFigure());
+			targetAnchor = new LoopAnchor(getDestination().getNodeFigure());
 		} else {
 			connectionFigure = new PolylineConnection();
+			sourceAnchor = new RoundedChopboxAnchor(getSource().getNodeFigure(), 8);
+			targetAnchor = new RoundedChopboxAnchor(getDestination().getNodeFigure(), 8);
 		}
-		ChopboxAnchor sourceAnchor = new RoundedChopboxAnchor(getSource().getNodeFigure(), 8);
-		ChopboxAnchor targetAnchor = new RoundedChopboxAnchor(getDestination().getNodeFigure(), 8);
+
 		connectionFigure.setSourceAnchor(sourceAnchor);
 		connectionFigure.setTargetAnchor(targetAnchor);
 

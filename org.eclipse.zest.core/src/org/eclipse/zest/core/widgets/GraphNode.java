@@ -22,10 +22,10 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.widgets.internal.GraphLabel;
 import org.eclipse.mylar.zest.layouts.LayoutEntity;
 import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -78,16 +78,20 @@ public class GraphNode extends GraphItem {
 
 	public GraphNode(Graph graphModel, int style) {
 		super(graphModel);
-		initModel(graphModel, " ");
+		initModel(graphModel, " ", null);
 	}
 
 	public GraphNode(Graph graphModel, int style, String text) {
 		super(graphModel);
-		initModel(graphModel, text);
-
+		initModel(graphModel, text, null);
 	}
 
-	protected void initModel(Graph graphModel, String text) {
+	public GraphNode(Graph graphModel, int style, String text, Image image) {
+		super(graphModel);
+		initModel(graphModel, text, image);
+	}
+
+	protected void initModel(Graph graphModel, String text, Image image) {
 		this.nodeStyle |= graphModel.getNodeStyle();
 		this.sourceConnections = new ArrayList();
 		this.targetConnections = new ArrayList();
@@ -95,7 +99,7 @@ public class GraphNode extends GraphItem {
 		this.backColor = graphModel.LIGHT_BLUE;
 		this.highlightColor = graphModel.HIGHLIGHT_COLOR;
 		this.highlightAdjacentColor = ColorConstants.orange;
-		this.nodeStyle = IZestGraphDefaults.NODE_STYLE;
+		this.nodeStyle = SWT.NONE;
 		this.borderColor = ColorConstants.black;
 		this.borderHighlightColor = ColorConstants.blue;
 		this.borderWidth = 1;
@@ -106,6 +110,9 @@ public class GraphNode extends GraphItem {
 		this.cacheLabel = false;
 		this.setText(text);
 		this.layoutEntity = new LayoutGraphNode();
+		if (image != null) {
+			this.setImage(image);
+		}
 
 		if (font == null) {
 			font = Display.getDefault().getSystemFont();
@@ -507,7 +514,9 @@ public class GraphNode extends GraphItem {
 	public void setImage(Image image) {
 		this.labelSize = null;
 		super.setImage(image);
-		updateFigureForModel(nodeFigure);
+		if (nodeFigure != null) {
+			updateFigureForModel(nodeFigure);
+		}
 	}
 
 	/**
@@ -600,10 +609,14 @@ public class GraphNode extends GraphItem {
 
 		this.customFigure = nodeFigure;
 		this.nodeFigure = null;
-		Dimension d = this.customFigure.getSize();
-		setSize(d.width, d.height);
 
 		graph.changeFigure((IFigure) old, customFigure, this);
+		// customFigure.getParent().setConstraint(customFigure, new Rectangle(0,
+		// 0, -1, -1));
+		Rectangle d = this.customFigure.getBounds();
+		setSize(d.width, d.height);
+
+		// graph.changeFigure((IFigure) old, customFigure, this);
 
 	}
 

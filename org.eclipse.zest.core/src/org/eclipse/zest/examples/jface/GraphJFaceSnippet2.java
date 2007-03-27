@@ -8,15 +8,13 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.snippets;
+package org.eclipse.mylar.zest.examples.jface;
 
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.mylar.zest.core.viewers.GraphViewer;
-import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
+import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.mylar.zest.layouts.LayoutStyles;
 import org.eclipse.mylar.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.swt.SWT;
@@ -33,55 +31,61 @@ import org.eclipse.swt.widgets.Shell;
  * @author Ian Bull
  * 
  */
-public class GraphJFaceSnippet {
+public class GraphJFaceSnippet2 {
 
-	static class MyContentProvider implements IGraphEntityContentProvider {
+	static class MyContentProvider implements IGraphContentProvider {
 
-		public Object[] getConnectedTo(Object entity) {
-			if (entity.equals("First")) {
-				return new Object[] { "Second" };
-			}
-			if (entity.equals("Second")) {
-				return new Object[] { "Third" };
-			}
-			if (entity.equals("Third")) {
-				return new Object[] { "First" };
+		public Object getDestination(Object rel) {
+			if ("Rock2Paper".equals(rel)) {
+				return "Rock";
+			} else if ("Paper2Scissors".equals(rel)) {
+				return "Paper";
+			} else if ("Scissors2Rock".equals(rel)) {
+				return "Scissors";
 			}
 			return null;
 		}
 
-		public Object[] getElements(Object inputElement) {
-			return new String[] { "First", "Second", "Third" };
+		public Object[] getElements(Object input) {
+			return new Object[] { "Rock2Paper", "Paper2Scissors", "Scissors2Rock" };
 		}
 
-		public double getWeight(Object entity1, Object entity2) {
+		public Object getSource(Object rel) {
+			if ("Rock2Paper".equals(rel)) {
+				return "Paper";
+			} else if ("Paper2Scissors".equals(rel)) {
+				return "Scissors";
+			} else if ("Scissors2Rock".equals(rel)) {
+				return "Rock";
+			}
+			return null;
+		}
+
+		public double getWeight(Object connection) {
+			// TODO Auto-generated method stub
 			return 0;
 		}
 
 		public void dispose() {
+			// TODO Auto-generated method stub
 
 		}
 
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+			// TODO Auto-generated method stub
 
 		}
+
 	}
 
 	static class MyLabelProvider implements ILabelProvider {
-		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 
 		public Image getImage(Object element) {
-			if (element instanceof String) {
-				return image;
-			}
 			return null;
 		}
 
 		public String getText(Object element) {
-			if (element instanceof String) {
-				return element.toString();
-			}
-			return null;
+			return element.toString();
 		}
 
 		public void addListener(ILabelProviderListener listener) {
@@ -126,13 +130,7 @@ public class GraphJFaceSnippet {
 		viewer.setContentProvider(new MyContentProvider());
 		viewer.setLabelProvider(new MyLabelProvider());
 		viewer.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
-			public void selectionChanged(SelectionChangedEvent event) {
-				System.out.println("Selection changed: " + (event.getSelection()));
-			}
-
-		});
 		viewer.setInput(new Object());
 
 		shell.open();

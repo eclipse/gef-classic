@@ -19,7 +19,10 @@ import org.eclipse.swt.widgets.Widget;
  * 
  * @author Chris Callendar
  */
-public abstract class GraphItem extends Item implements IGraphItem {
+public abstract class GraphItem extends Item {
+
+	public static final int NODE = 1;
+	public static final int CONNECTION = 2;
 
 	/**
 	 * @param parent
@@ -39,5 +42,36 @@ public abstract class GraphItem extends Item implements IGraphItem {
 		// pcsDelegate = new PropertyChangeSupport(this);
 		super.dispose();
 	}
+
+	/**
+	 * Gets the graph item type. The item type is one of: GRAPH, NODE or
+	 * CONNECTION
+	 * 
+	 * @return
+	 */
+	public abstract int getItemType();
+
+	/**
+	 * Set the visibility of this item.
+	 * 
+	 * @param visible
+	 *            whether or not this item is visible.
+	 */
+	public abstract void setVisible(boolean visible);
+
+	/**
+	 * Get the visibility of this item.
+	 * 
+	 * @return the visibility of this item.
+	 */
+	public abstract boolean isVisible();
+
+	/**
+	 * Gets the graph that this item is rooted on. If this item is itself a
+	 * graph, then this is returned.
+	 * 
+	 * @return the parent graph.
+	 */
+	public abstract Graph getGraphModel();
 
 }

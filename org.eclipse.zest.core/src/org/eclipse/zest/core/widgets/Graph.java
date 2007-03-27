@@ -26,9 +26,9 @@ import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.SWTEventDispatcher;
 import org.eclipse.draw2d.ScalableFigure;
 import org.eclipse.draw2d.ScalableFreeformLayeredPane;
+import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.widgets.internal.RevealListener;
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
@@ -55,7 +55,7 @@ import org.eclipse.swt.widgets.Item;
  * @author Chris Callendar
  * @author Ian Bull
  */
-public class Graph extends FigureCanvas implements IGraphItem {
+public class Graph extends FigureCanvas {
 
 	// CLASS CONSTANTS
 	public static final int ANIMATION_TIME = 500;
@@ -108,7 +108,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 	 * @param style
 	 */
 	public Graph(Composite parent, int style) {
-		super(parent);
+		super(parent, style);
 		this.style = style;
 		this.setBackground(ColorConstants.white);
 
@@ -228,7 +228,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 	 * 
 	 * @param connection
 	 *            style the connection style to set
-	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
 	 */
 	public void setConnectionStyle(int connectionStyle) {
 		this.connectionStyle = connectionStyle;
@@ -238,7 +238,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 	 * Gets the default connection style.
 	 * 
 	 * @return the connection style
-	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
 	 */
 	public int getConnectionStyle() {
 		return connectionStyle;
@@ -249,7 +249,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 	 * 
 	 * @param nodeStyle
 	 *            the node style to set
-	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		this.nodeStyle = nodeStyle;
@@ -259,7 +259,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 	 * Gets the default node style.
 	 * 
 	 * @return the node style
-	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
 	 */
 	public int getNodeStyle() {
 		return nodeStyle;
@@ -279,10 +279,10 @@ public class Graph extends FigureCanvas implements IGraphItem {
 	 * 
 	 * @param l
 	 */
-	public void setSelection(IGraphItem[] nodes) {
+	public void setSelection(GraphItem[] nodes) {
 		clearSelection();
 		for (int i = 0; i < nodes.length; i++) {
-			if (nodes[i].getItemType() == NODE) {
+			if (nodes[i].getItemType() == GraphItem.NODE) {
 				selectedItems.add(nodes[i]);
 				((GraphNode) nodes[i]).highlight();
 			}
@@ -384,13 +384,10 @@ public class Graph extends FigureCanvas implements IGraphItem {
 		return this.layoutAlgorithm;
 	}
 
-	public int getItemType() {
-		return GRAPH;
-	}
-
 	// /////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE METHODS. These are NON API
 	// /////////////////////////////////////////////////////////////////////////////////
+
 	class DragSupport implements MouseMotionListener, org.eclipse.draw2d.MouseListener {
 		Graph graph = null;
 		Point oldLocation = null;
@@ -447,7 +444,24 @@ public class Graph extends FigureCanvas implements IGraphItem {
 				getRootLayer().setScale(scale);
 			} else {
 				boolean hasSelection = selectedItems.size() > 0;
-				IFigure figureUnderMouse = graph.getContents().findFigureAt(mousePoint.x, mousePoint.y);
+				IFigure figureUnderMouse = graph.getContents().findFigureAt(mousePoint.x, mousePoint.y,
+						new TreeSearch() {
+
+							public boolean accept(IFigure figure) {
+								return true;
+							}
+
+							public boolean prune(IFigure figure) {
+								IFigure parent = figure.getParent();
+								if (parent == nodeLayer || parent == nodeFeedbackLayer
+										|| parent == nodeLayer.getParent()
+										|| parent == nodeLayer.getParent().getParent()) {
+									return false;
+								}
+								return true;
+							}
+
+						});
 				oldLocation = mousePoint;
 				getRootLayer().translateFromParent(oldLocation);
 				// If the figure under the mouse is the canvas, then select
@@ -479,12 +493,11 @@ public class Graph extends FigureCanvas implements IGraphItem {
 					clearSelection();
 				}
 
-				if (itemUnderMouse.getItemType() == NODE) {
+				if (itemUnderMouse.getItemType() == GraphItem.NODE) {
 					selectedItems.add(itemUnderMouse);
 					((GraphNode) itemUnderMouse).highlight();
 					fireWidgetSelectedEvent(itemUnderMouse);
-				} else if (itemUnderMouse.getItemType() == CONNECTION) {
-				} else if (itemUnderMouse.getItemType() == GRAPH) {
+				} else if (itemUnderMouse.getItemType() == GraphItem.CONNECTION) {
 
 				}
 			}
@@ -660,7 +673,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 
 	void setItemVisible(GraphItem item, boolean visible) {
 		if (visible) {
-			if (item.getItemType() == NODE
+			if (item.getItemType() == GraphItem.NODE
 					&& (!nodeLayer.getChildren().contains(item) || !nodeFeedbackLayer.getChildren().contains(item))) {
 				GraphNode graphNode = (GraphNode) item;
 				IFigure figure = graphNode.getNodeFigure();
@@ -670,7 +683,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 					nodeLayer.add(figure);
 				}
 				figure2ItemMap.put(figure, item);
-			} else if (item.getItemType() == CONNECTION
+			} else if (item.getItemType() == GraphItem.CONNECTION
 					&& (!edgeLayer.getChildren().contains(item) || !edgeFeedbackLayer.getChildren().contains(item))) {
 				GraphConnection graphConnection = (GraphConnection) item;
 				IFigure figure = graphConnection.getConnectionFigure();
@@ -682,7 +695,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 				figure2ItemMap.put(figure, item);
 			}
 		} else {
-			if (item.getItemType() == NODE) {
+			if (item.getItemType() == GraphItem.NODE) {
 				GraphNode graphNode = (GraphNode) item;
 				IFigure figure = graphNode.getNodeFigure();
 				if (graphNode.isHighlighted()) {
@@ -691,7 +704,7 @@ public class Graph extends FigureCanvas implements IGraphItem {
 					nodeLayer.remove(figure);
 				}
 				figure2ItemMap.remove(figure);
-			} else if (item.getItemType() == CONNECTION) {
+			} else if (item.getItemType() == GraphItem.CONNECTION) {
 				GraphConnection graphConnection = (GraphConnection) item;
 				IFigure figure = graphConnection.getConnectionFigure();
 				if (graphConnection.isHighlighted()) {

@@ -29,7 +29,7 @@ public interface IEntityConnectionStyleProvider extends IDisposable {
 	 * @param src the source entity.
 	 * @param dest the destination entity.
 	 * @return the style flags for this connection.
-	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
 	 */
 	public int getConnectionStyle(Object src, Object dest);
 	

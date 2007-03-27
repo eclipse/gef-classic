@@ -19,7 +19,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.viewers.internal.AbstractStructuredGraphViewer;
 import org.eclipse.mylar.zest.core.viewers.internal.GraphModelEntityFactory;
 import org.eclipse.mylar.zest.core.viewers.internal.GraphModelEntityRelationshipFactory;
@@ -27,7 +26,8 @@ import org.eclipse.mylar.zest.core.viewers.internal.GraphModelFactory;
 import org.eclipse.mylar.zest.core.viewers.internal.IStylingGraphModelFactory;
 import org.eclipse.mylar.zest.core.viewers.internal.ZoomManager;
 import org.eclipse.mylar.zest.core.widgets.Graph;
-import org.eclipse.mylar.zest.core.widgets.IGraphItem;
+import org.eclipse.mylar.zest.core.widgets.GraphItem;
+import org.eclipse.mylar.zest.core.widgets.ZestStyles;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -174,7 +174,8 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 		} else if (contentProvider instanceof IGraphEntityRelationshipContentProvider) {
 			super.setContentProvider(contentProvider);
 		} else {
-			throw new IllegalArgumentException("Invalid content provider, only IGraphContentProvider, IGraphEntityContentProvider, or IGraphEntityRelationshipContentProvider are supported.");
+			throw new IllegalArgumentException(
+					"Invalid content provider, only IGraphContentProvider, IGraphEntityContentProvider, or IGraphEntityRelationshipContentProvider are supported.");
 		}
 	}
 
@@ -192,9 +193,9 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * @return An IGraphItem. This should be either a IGraphModelNode or
 	 *         IGraphModelConnection
 	 */
-	public IGraphItem findGraphItem(Object element) {
+	public GraphItem findGraphItem(Object element) {
 		Widget[] result = findItems(element);
-		return (result.length == 0 && result[0] instanceof IGraphItem) ? null : (IGraphItem) result[0];
+		return (result.length == 0 && result[0] instanceof GraphItem) ? null : (GraphItem) result[0];
 	}
 
 	/**
@@ -205,7 +206,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	}
 
 	protected void setSelectionToWidget(List l, boolean reveal) {
-		IGraphItem[] listOfItems = findItems(l);
+		GraphItem[] listOfItems = findItems(l);
 		graph.setSelection(listOfItems);
 	}
 
@@ -252,7 +253,8 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 		}
 	}
 
-	//@tag zest.bug.156286-Zooming.fix.experimental : expose the zoom manager for new actions.
+	// @tag zest.bug.156286-Zooming.fix.experimental : expose the zoom manager
+	// for new actions.
 	protected ZoomManager getZoomManager() {
 		if (zoomManager == null) {
 			zoomManager = new ZoomManager(getGraphControl().getRootLayer(), getGraphControl().getViewport());

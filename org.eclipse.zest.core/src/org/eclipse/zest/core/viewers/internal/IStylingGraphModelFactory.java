@@ -15,9 +15,8 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.mylar.zest.core.widgets.Graph;
 import org.eclipse.mylar.zest.core.widgets.GraphConnection;
+import org.eclipse.mylar.zest.core.widgets.GraphItem;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphItem;
-import org.eclipse.mylar.zest.core.widgets.IZestGraphDefaults;
 
 /**
  * A Graph model factory that supports the structural and visual refreshing of
@@ -103,7 +102,7 @@ public interface IStylingGraphModelFactory {
 	 * @param items
 	 *            the items to update.
 	 */
-	public void update(IGraphItem[] items);
+	public void update(GraphItem[] items);
 
 	/**
 	 * Restyles the given graph item according to the label provider supplied by
@@ -112,7 +111,7 @@ public interface IStylingGraphModelFactory {
 	 * @param item
 	 *            the item to update.
 	 */
-	public void update(IGraphItem item);
+	public void update(GraphItem item);
 
 	/**
 	 * Structurally refreshes the graph model nodes and connections associated

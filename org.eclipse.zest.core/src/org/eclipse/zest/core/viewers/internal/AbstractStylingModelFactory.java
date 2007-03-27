@@ -22,9 +22,9 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.mylar.zest.core.widgets.Graph;
 import org.eclipse.mylar.zest.core.widgets.GraphConnection;
+import org.eclipse.mylar.zest.core.widgets.GraphItem;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphItem;
-import org.eclipse.mylar.zest.core.widgets.IZestGraphDefaults;
+import org.eclipse.swt.SWT;
 
 /**
  * Base class that can be used for model factories. Offers facilities to style
@@ -46,8 +46,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 */
 	public AbstractStylingModelFactory(AbstractStructuredGraphViewer viewer) {
 		this.viewer = viewer;
-		this.connectionStyle = IZestGraphDefaults.CONNECTION_STYLE;
-		this.nodeStyle = IZestGraphDefaults.NODE_STYLE;
+		this.connectionStyle = SWT.NONE;
+		this.nodeStyle = SWT.NONE;
 		if (viewer instanceof AbstractStructuredGraphViewer) {
 			this.constraintAdapters = (viewer).getConstraintAdapters();
 		}
@@ -83,28 +83,29 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @param rightList
 	 */
 	protected void adjustCurves(List connections) {
-		int scale = 3;
-		for (int i = 0; i < connections.size(); i++) {
-			GraphConnection conn = (GraphConnection) connections.get(i);
-			if (conn.getSource() == conn.getDestination()) {
-				scale = 5;
-			}
-			// even if the connection isn't curved in the style, the edit part
-			// may decide that it should be curved if source and dest are equal.
-			// @tag drawing(arcs) : check here if arcs are too close when being
-			// drawn. Adjust the constant.
-			int lineWidth = conn.getLineWidth();
-			conn.setCurveDepth((i + 1) * (scale + lineWidth));
-
-			// @tag zest(bug(152530-Bezier(fix))) : set the angles, etc based on
-			// the count.
-			// limit the angle to 90 degrees.
-			conn.setStartAngle(90.0 - 85.0 / Math.pow(i, 1.0 / 9.0));
-			conn.setEndAngle(85.0 / Math.pow(i, 1.0 / 9.0) - 90.0);
-			// limit the length to 1
-			conn.setStartLength(.75 - .25 / (Math.sqrt(i)));
-			conn.setEndLength(.75 - .25 / (Math.sqrt(i)));
-		}
+		// @tag TODO curves : add back this code to adjust the curves
+		//		int scale = 3;
+		//		for (int i = 0; i < connections.size(); i++) {
+		//			GraphConnection conn = (GraphConnection) connections.get(i);
+		//			if (conn.getSource() == conn.getDestination()) {
+		//				scale = 5;
+		//			}
+		//			// even if the connection isn't curved in the style, the edit part
+		//			// may decide that it should be curved if source and dest are equal.
+		//			// @tag drawing(arcs) : check here if arcs are too close when being
+		//			// drawn. Adjust the constant.
+		//			int lineWidth = conn.getLineWidth();
+		//			conn.setCurveDepth((i + 1) * (scale + lineWidth));
+		//
+		//			// @tag zest(bug(152530-Bezier(fix))) : set the angles, etc based on
+		//			// the count.
+		//			// limit the angle to 90 degrees.
+		//			conn.setStartAngle(90.0 - 85.0 / Math.pow(i, 1.0 / 9.0));
+		//			conn.setEndAngle(85.0 / Math.pow(i, 1.0 / 9.0) - 90.0);
+		//			// limit the length to 1
+		//			conn.setStartLength(.75 - .25 / (Math.sqrt(i)));
+		//			conn.setEndLength(.75 - .25 / (Math.sqrt(i)));
+		//		}
 	}
 
 	/**
@@ -124,7 +125,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		return list;
 	}
 
-	public void styleItem(IGraphItem item) {
+	public void styleItem(GraphItem item) {
 		GraphItemStyler.styleItem(item, getLabelProvider());
 		if (item instanceof GraphConnection) {
 			styleConnection((GraphConnection) item);
@@ -227,7 +228,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * Default implementation simply restyles the item, regardless of the
 	 * properties.
 	 */
-	public void update(IGraphItem item) {
+	public void update(GraphItem item) {
 		styleItem(item);
 	}
 
@@ -235,7 +236,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * Default implementation simply restyles the items, regardless of the
 	 * properties.
 	 */
-	public void update(IGraphItem[] items) {
+	public void update(GraphItem[] items) {
 		for (int i = 0; i < items.length; i++) {
 			styleItem(items[i]);
 		}

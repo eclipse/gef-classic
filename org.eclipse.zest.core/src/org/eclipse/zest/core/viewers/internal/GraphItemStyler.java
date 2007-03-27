@@ -14,18 +14,13 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.mylar.zest.core.ZestController;
-import org.eclipse.mylar.zest.core.ZestException;
-import org.eclipse.mylar.zest.core.ZestStyles;
-import org.eclipse.mylar.zest.core.viewers.IConnectionStyleBezierExtension;
 import org.eclipse.mylar.zest.core.viewers.IConnectionStyleProvider;
-import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleBezierExtension;
 import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleProvider;
 import org.eclipse.mylar.zest.core.viewers.IEntityStyleProvider;
 import org.eclipse.mylar.zest.core.widgets.GraphConnection;
+import org.eclipse.mylar.zest.core.widgets.GraphItem;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphItem;
-import org.eclipse.mylar.zest.core.widgets.IZestGraphDefaults;
+import org.eclipse.mylar.zest.core.widgets.ZestStyles;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 
@@ -37,7 +32,7 @@ import org.eclipse.swt.graphics.Color;
  */
 // @tag bug(151327-Styles) : created to help resolve this bug
 public class GraphItemStyler {
-	public static void styleItem(IGraphItem item, final IBaseLabelProvider labelProvider) {
+	public static void styleItem(GraphItem item, final IBaseLabelProvider labelProvider) {
 
 		if (item instanceof GraphNode) {
 			GraphNode node = (GraphNode) item;
@@ -45,7 +40,7 @@ public class GraphItemStyler {
 			if (node.getGraphModel().getNodeStyle() != ZestStyles.NONE) {
 				node.setNodeStyle(node.getGraphModel().getNodeStyle());
 			} else {
-				node.setNodeStyle(IZestGraphDefaults.NODE_STYLE);
+				node.setNodeStyle(SWT.NONE);
 			}
 			Object entity = node.getData();
 			if (labelProvider instanceof IEntityStyleProvider) {
@@ -73,7 +68,7 @@ public class GraphItemStyler {
 				int s = conn.getGraphModel().getConnectionStyle();
 				conn.setConnectionStyle(s);
 			} else {
-				conn.setConnectionStyle(IZestGraphDefaults.CONNECTION_STYLE);
+				conn.setConnectionStyle(SWT.NONE);
 			}
 			if (labelProvider instanceof ILabelProvider) {
 				String text = ((ILabelProvider) labelProvider).getText(conn.getExternalConnection());
@@ -100,29 +95,32 @@ public class GraphItemStyler {
 		Color c;
 		int style = provider.getConnectionStyle(rel);
 		if (!ZestStyles.validateConnectionStyle(style)) {
-			ZestController.error(ZestException.ERROR_INVALID_STYLE);
+			ZestException.throwError(ZestException.ERROR_INVALID_STYLE, "", null);
 		}
 		if (style != ZestStyles.NONE) {
 			conn.setConnectionStyle(style);
 		}
 		// @tag bug(152530-Bezier(fix))
-		if (ZestStyles.checkStyle(conn.getConnectionStyle(), ZestStyles.CONNECTIONS_BEZIER)
-				&& provider instanceof IConnectionStyleBezierExtension) {
-			IConnectionStyleBezierExtension bezier = (IConnectionStyleBezierExtension) provider;
-			double d;
-			if (!Double.isNaN((d = bezier.getStartAngle(rel)))) {
-				conn.setStartAngle(d);
-			}
-			if (!Double.isNaN((d = bezier.getEndAngle(rel)))) {
-				conn.setEndAngle(d);
-			}
-			if (!Double.isNaN((d = bezier.getStartDistance(rel)))) {
-				conn.setStartLength(d);
-			}
-			if (!Double.isNaN((d = bezier.getEndDistance(rel)))) {
-				conn.setEndLength(d);
-			}
-		}
+		// @tat TODO curves bezier: Add back the bezier connection stuff
+		// if (ZestStyles.checkStyle(conn.getConnectionStyle(),
+		// ZestStyles.CONNECTIONS_BEZIER)
+		// && provider instanceof IConnectionStyleBezierExtension) {
+		// IConnectionStyleBezierExtension bezier =
+		// (IConnectionStyleBezierExtension) provider;
+		// double d;
+		// if (!Double.isNaN((d = bezier.getStartAngle(rel)))) {
+		// conn.setStartAngle(d);
+		// }
+		// if (!Double.isNaN((d = bezier.getEndAngle(rel)))) {
+		// conn.setEndAngle(d);
+		// }
+		// if (!Double.isNaN((d = bezier.getStartDistance(rel)))) {
+		// conn.setStartLength(d);
+		// }
+		// if (!Double.isNaN((d = bezier.getEndDistance(rel)))) {
+		// conn.setEndLength(d);
+		// }
+		// }
 		if ((c = provider.getHighlightColor(rel)) != null) {
 			conn.setHighlightColor(c);
 		}
@@ -145,29 +143,32 @@ public class GraphItemStyler {
 		Color c;
 		int style = provider.getConnectionStyle(src, dest);
 		if (!ZestStyles.validateConnectionStyle(style)) {
-			ZestController.error(ZestException.ERROR_INVALID_STYLE);
+			ZestException.throwError(ZestException.ERROR_INVALID_STYLE, "", null);
 		}
 		if (style != ZestStyles.NONE) {
 			conn.setConnectionStyle(style);
 		}
 		// @tag bug(152530-Bezier(fisx))
-		if (ZestStyles.checkStyle(conn.getConnectionStyle(), ZestStyles.CONNECTIONS_BEZIER)
-				&& provider instanceof IEntityConnectionStyleBezierExtension) {
-			IEntityConnectionStyleBezierExtension bezier = (IEntityConnectionStyleBezierExtension) provider;
-			double d;
-			if (!Double.isNaN((d = bezier.getStartAngle(src, dest)))) {
-				conn.setStartAngle(d);
-			}
-			if (!Double.isNaN((d = bezier.getEndAngle(src, dest)))) {
-				conn.setEndAngle(d);
-			}
-			if (!Double.isNaN((d = bezier.getStartDistance(src, dest)))) {
-				conn.setStartLength(d);
-			}
-			if (!Double.isNaN((d = bezier.getEndDistance(src, dest)))) {
-				conn.setEndLength(d);
-			}
-		}
+		// @tag TODO curved connections bezier : add back the bezier connection stuff
+		// if (ZestStyles.checkStyle(conn.getConnectionStyle(),
+		// ZestStyles.CONNECTIONS_BEZIER)
+		// && provider instanceof IEntityConnectionStyleBezierExtension) {
+		// IEntityConnectionStyleBezierExtension bezier =
+		// (IEntityConnectionStyleBezierExtension) provider;
+		// double d;
+		// if (!Double.isNaN((d = bezier.getStartAngle(src, dest)))) {
+		// conn.setStartAngle(d);
+		// }
+		// if (!Double.isNaN((d = bezier.getEndAngle(src, dest)))) {
+		// conn.setEndAngle(d);
+		// }
+		// if (!Double.isNaN((d = bezier.getStartDistance(src, dest)))) {
+		// conn.setStartLength(d);
+		// }
+		// if (!Double.isNaN((d = bezier.getEndDistance(src, dest)))) {
+		// conn.setEndLength(d);
+		// }
+		// }
 		if ((c = provider.getColor(src, dest)) != null) {
 			conn.setLineColor(c);
 		}
@@ -235,8 +236,7 @@ public class GraphItemStyler {
 	 * 
 	 */
 	public static int getLineStyleForZestStyle(int style) {
-		int lineStyles = ZestStyles.CONNECTIONS_DASH_DOT | ZestStyles.CONNECTIONS_DASH | ZestStyles.CONNECTIONS_DOT
-				| ZestStyles.CONNECTIONS_SOLID;
+		int lineStyles = ZestStyles.CONNECTIONS_DASH_DOT | ZestStyles.CONNECTIONS_DASH | ZestStyles.CONNECTIONS_DOT | ZestStyles.CONNECTIONS_SOLID;
 		style = style & lineStyles;
 		if (style == 0) {
 			style = ZestStyles.CONNECTIONS_SOLID;

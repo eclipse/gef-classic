@@ -18,17 +18,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.eclipse.mylar.zest.core.ZestController;
-import org.eclipse.mylar.zest.core.ZestException;
-import org.eclipse.mylar.zest.core.ZestStyles;
 import org.eclipse.mylar.zest.core.viewers.AbstractZoomableViewer;
 import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.mylar.zest.core.widgets.ConstraintAdapter;
 import org.eclipse.mylar.zest.core.widgets.Graph;
 import org.eclipse.mylar.zest.core.widgets.GraphConnection;
+import org.eclipse.mylar.zest.core.widgets.GraphItem;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphItem;
-import org.eclipse.mylar.zest.core.widgets.IZestGraphDefaults;
+import org.eclipse.mylar.zest.core.widgets.ZestStyles;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -110,8 +107,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	protected AbstractStructuredGraphViewer(int graphStyle) {
 		this.graphStyle = graphStyle;
-		this.connectionStyle = IZestGraphDefaults.CONNECTION_STYLE;
-		this.nodeStyle = IZestGraphDefaults.NODE_STYLE;
+		this.connectionStyle = SWT.NONE;
+		this.nodeStyle = SWT.NONE;
 
 	}
 
@@ -125,7 +122,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		if (getInput() != null) {
-			ZestController.error(ZestException.ERROR_CANNOT_SET_STYLE);
+			ZestException.throwError(ZestException.ERROR_CANNOT_SET_STYLE, "", null);
 		}
 		this.nodeStyle = nodeStyle;
 	}
@@ -140,10 +137,10 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 */
 	public void setConnectionStyle(int connectionStyle) {
 		if (getInput() != null) {
-			ZestController.error(ZestException.ERROR_CANNOT_SET_STYLE);
+			ZestException.throwError(ZestException.ERROR_CANNOT_SET_STYLE, "", null);
 		}
 		if (!ZestStyles.validateConnectionStyle(connectionStyle)) {
-			ZestController.error(ZestException.ERROR_INVALID_STYLE);
+			ZestException.throwError(ZestException.ERROR_INVALID_STYLE, "", null);
 		}
 		this.connectionStyle = connectionStyle;
 	}
@@ -304,8 +301,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		if (item == getGraphControl()) {
 			getFactory().update(getNodesArray(getGraphControl()));
 			getFactory().update(getConnectionsArray(getGraphControl()));
-		} else if (item instanceof IGraphItem) {
-			getFactory().update((IGraphItem) item);
+		} else if (item instanceof GraphItem) {
+			getFactory().update((GraphItem) item);
 		}
 	}
 
@@ -343,7 +340,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		for (Iterator i = internalSelection.iterator(); i.hasNext();) {
 			// @tag zest.todo : should there be a method on IGraphItem to get
 			// the external data?
-			IGraphItem item = (IGraphItem) i.next();
+			GraphItem item = (GraphItem) i.next();
 			if (item instanceof GraphNode) {
 				externalSelection.add(((GraphNode) item).getData());
 			} else if (item instanceof GraphConnection) {
@@ -355,15 +352,15 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		return externalSelection;
 	}
 
-	protected IGraphItem[] /* GraphItem */findItems(List l) {
+	protected GraphItem[] /* GraphItem */findItems(List l) {
 		ArrayList list = new ArrayList();
 		Iterator iterator = l.iterator();
 
 		while (iterator.hasNext()) {
-			IGraphItem w = (IGraphItem) findItem(iterator.next());
+			GraphItem w = (GraphItem) findItem(iterator.next());
 			list.add(w);
 		}
-		return (IGraphItem[]) list.toArray(new IGraphItem[list.size()]);
+		return (GraphItem[]) list.toArray(new GraphItem[list.size()]);
 	}
 
 	/*
@@ -512,12 +509,12 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		// set all the elements that did not pass the filters to invisible, and
 		// all the elements that passed to visible.
 		while (unfilteredElements.size() > 0) {
-			IGraphItem i = (IGraphItem) unfilteredElements.first();
+			GraphItem i = (GraphItem) unfilteredElements.first();
 			i.setVisible(false);
 			unfilteredElements.remove(i);
 		}
 		while (filteredElements.size() > 0) {
-			IGraphItem i = (IGraphItem) filteredElements.first();
+			GraphItem i = (GraphItem) filteredElements.first();
 			i.setVisible(true);
 			filteredElements.remove(i);
 		}

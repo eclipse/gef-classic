@@ -29,7 +29,7 @@ public interface IConnectionStyleProvider extends IDisposable {
 	 * ZestStyles for legal combinations.
 	 * @param rel the relationship represented by this connection.
 	 * @return the style flags for this connection.
-	 * @see org.eclipse.mylar.zest.core.ZestStyles
+	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
 	 */
 	public int getConnectionStyle(Object rel);
 	

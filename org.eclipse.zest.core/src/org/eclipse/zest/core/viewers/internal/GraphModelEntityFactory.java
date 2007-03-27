@@ -18,8 +18,8 @@ import org.eclipse.mylar.zest.core.viewers.EntityConnectionData;
 import org.eclipse.mylar.zest.core.viewers.IGraphEntityContentProvider;
 import org.eclipse.mylar.zest.core.widgets.Graph;
 import org.eclipse.mylar.zest.core.widgets.GraphConnection;
+import org.eclipse.mylar.zest.core.widgets.GraphItem;
 import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.IGraphItem;
 
 /**
  * 
@@ -119,10 +119,10 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		if (refreshLabels) {
 			update(node);
 			for (Iterator it = node.getSourceConnections().iterator(); it.hasNext();) {
-				update((IGraphItem) it.next());
+				update((GraphItem) it.next());
 			}
 			for (Iterator it = node.getTargetConnections().iterator(); it.hasNext();) {
-				update((IGraphItem) it.next());
+				update((GraphItem) it.next());
 			}
 		}
 	}
