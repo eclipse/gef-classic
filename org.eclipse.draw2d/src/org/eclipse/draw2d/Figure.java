@@ -1139,6 +1139,8 @@ protected void paintClientArea(Graphics graphics) {
 protected void paintFigure(Graphics graphics) {
 	if (isOpaque())
 		graphics.fillRectangle(getBounds());
+	if (getBorder() instanceof AbstractBackground)
+		((AbstractBackground) getBorder()).paintBackground(this, graphics, NO_INSETS);
 }
 
 /**
