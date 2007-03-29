@@ -289,7 +289,7 @@ Object getProperty(String key);
 
 /**
  * Returns <code>null</code>, or the ResourceManager for this Viewer. Once a viewer has
- * a Control, client's may access the viewer's resource manager. Any resources constructed
+ * a Control, clients may access the viewer's resource manager. Any resources constructed
  * using this manager, but not freed, will be freed when the viewer's control is disposed.
  * This does not mean that clients should be lazy about deallocating resources. If a
  * resource is no longer needed but the viewer is still in use, the client must deallocate
