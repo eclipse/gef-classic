@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,7 @@ public class Polyline
 {
 
 PointList points = new PointList();
-private static final int TOLERANCE = 2;
+private int tolerance = 2;
 private static final Rectangle LINEBOUNDS = Rectangle.SINGLETON;
 
 {
@@ -54,7 +54,7 @@ public void addPoint(Point pt) {
  * @see org.eclipse.draw2d.IFigure#containsPoint(int, int)
  */
 public boolean containsPoint(int x, int y) {
-	int tolerance = lineWidth / 2 + TOLERANCE;
+	int tolerance = lineWidth / 2 + this.tolerance;
 	LINEBOUNDS.setBounds(getBounds());
 	LINEBOUNDS.expand(tolerance, tolerance);
 	if (!LINEBOUNDS.contains(x, y))
@@ -66,7 +66,7 @@ public boolean containsPoint(int x, int y) {
 			return true;
 	}
 	List children = getChildren();
-	for (int i = 0; i < children.size(); i++) {
+	for (int i = 0; i< children.size(); i++) {
 		if (((IFigure)children.get(i)).containsPoint(x, y))
 			return true;
 	}
@@ -293,4 +293,12 @@ public void setStart(Point start) {
 		setPoint(start, 0);
 }
 
+/**
+  * Sets the tolerance
+  *
+  * @param tolerance the new tolerance value of the Polyline
+  */
+public void setTolerance(int tolerance) {
+       this.tolerance = tolerance;
+}
 }
