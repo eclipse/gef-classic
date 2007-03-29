@@ -15,7 +15,7 @@ import org.eclipse.draw2d.geometry.Insets;
 
 /**
  * A special border which can paint both underneath and on top of a Figure.
- * Normal borders only paint on top of a figure and it's children. A background
+ * Normal borders only paint on top of a figure and its children. A background
  * has the opportunity to paint both first, and optionally last.
  * <P>
  * WARNING: Experimental for 3.3. Clients should help validate the use cases
