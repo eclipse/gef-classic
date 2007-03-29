@@ -7,7 +7,7 @@
 -splitIndex
 -windowtitle "Eclipse Draw2d API Specification"
 -doctitle "Eclipse Draw2d API Specification"
--header "<b>Eclipse Draw2d</b><br>3.2"
+-header "<b>Eclipse Draw2d</b><br>3.3"
 -bottom "Copyright (c) IBM Corp. and others 2000, 2007.  All Rights Reserved."
 -overview ../org.eclipse.draw2d/src/overview.html
 -link http://java.sun.com/j2se/1.4.2/docs/api/
