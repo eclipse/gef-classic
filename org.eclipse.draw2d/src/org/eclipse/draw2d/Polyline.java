@@ -66,7 +66,7 @@ public boolean containsPoint(int x, int y) {
 			return true;
 	}
 	List children = getChildren();
-	for (int i = 0; i< children.size(); i++) {
+	for (int i = 0; i < children.size(); i++) {
 		if (((IFigure)children.get(i)).containsPoint(x, y))
 			return true;
 	}
@@ -276,7 +276,7 @@ public void setPoints(PointList points) {
 	erase();
 	this.points = points;
 	bounds = null;
-	firePropertyChange(Connection.PROPERTY_POINTS, null, points);
+	firePropertyChange(Connection.PROPERTY_POINTS, null, points); //$NON-NLS-1$
 	repaint();
 }
 
