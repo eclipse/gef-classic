@@ -28,8 +28,11 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.util.Assert;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.util.TransferDragSourceListener;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -91,15 +94,17 @@ private Map mapIDToEditPart = new HashMap();
 private Map mapVisualToEditPart = new HashMap();
 private Map properties;
 private Control control;
+private ResourceManager resources;
 private EditDomain domain;
 private RootEditPart rootEditPart;
 private MenuManager contextMenu;
-private org.eclipse.gef.dnd.DelegatingDragAdapter dragAdapter = 
-	new org.eclipse.gef.dnd.DelegatingDragAdapter();
+
 private DragSource dragSource;
-private org.eclipse.gef.dnd.DelegatingDropAdapter dropAdapter = 
-	new org.eclipse.gef.dnd.DelegatingDropAdapter();
+private org.eclipse.gef.dnd.DelegatingDragAdapter dragAdapter = new org.eclipse.gef.dnd.DelegatingDragAdapter();
+
 private DropTarget dropTarget;
+private org.eclipse.gef.dnd.DelegatingDropAdapter dropAdapter = new org.eclipse.gef.dnd.DelegatingDropAdapter();
+
 private KeyHandler keyHandler;
 private PropertyChangeSupport changeSupport;
 
@@ -208,6 +213,8 @@ public void deselectAll() {
  * @param e the disposeevent
  */
 protected void handleDispose(DisposeEvent e) {
+	if (resources != null)
+		resources.dispose();
 	setControl(null);
 }
 
@@ -352,6 +359,17 @@ public Object getProperty(String key) {
 	if (properties != null)
 		return properties.get(key);
 	return null;
+}
+
+/**
+ * @see org.eclipse.gef.EditPartViewer#getResourceManager()
+ */
+public ResourceManager getResourceManager() {
+	if (resources != null)
+		return resources;
+	Assert.isNotNull(getControl());
+	resources = new LocalResourceManager(JFaceResources.getResources());
+	return resources;
 }
 
 /**

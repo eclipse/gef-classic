@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.util.TransferDragSourceListener;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.jface.viewers.ISelection;
@@ -286,6 +288,27 @@ KeyHandler getKeyHandler();
 Object getProperty(String key);
 
 /**
+ * Returns <code>null</code>, or the ResourceManager for this Viewer. Once a viewer has
+ * a Control, client's may access the viewer's resource manager. Any resources constructed
+ * using this manager, but not freed, will be freed when the viewer's control is disposed.
+ * This does not mean that clients should be lazy about deallocating resources. If a
+ * resource is no longer needed but the viewer is still in use, the client must deallocate
+ * the resource.
+ * <P>
+ * Typical usage is by EditParts contained inside the viewer. EditParts which are removed
+ * from the viewer should free their resources during {@link EditPart#removeNotify()}.
+ * When the viewer is disposed, <code>removeNotify()</code> is not called, but the viewer's
+ * resource manager will be disposed anyway.
+ * <P>
+ * The viewer's default resource manager is linked to JFace's
+ * {@link JFaceResources#getResources() global shared resources}.
+ * 
+ * @return the ResourceManager associated with this viewer
+ * @since 3.3
+ */
+ResourceManager getResourceManager();
+
+/**
  * Returns the <code>RootEditPart</code>.  The RootEditPart is a special EditPart that
  * serves as the parent to the contents editpart. The <i>root</i> is never selected. The
  * root does not correspond to anything in the model.  The User does not interact with the
@@ -318,8 +341,8 @@ List getSelectedEditParts();
  * This method is inherited from {@link org.eclipse.jface.viewers.ISelectionProvider
  * ISelectionProvider}. This method should return a {@link
  * org.eclipse.jface.viewers.StructuredSelection} containing one or more of the viewer's
- * EditParts.  Whenever the user has deselected all editparts, the contents editpart
- * should be returned.
+ * EditParts. If no editparts are selected, the {@link #getContents() contents} editpart
+ * is returned.
  * 
  * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
  */
@@ -380,7 +403,7 @@ void removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener lis
  * Removes the specified drop target listener. If all listeners are removed, the
  * DropTarget that was created will be disposed.
  * @see #addDropTargetListener(TransferDropTargetListener)
- * @param listener
+ * @param listener the listener
  */
 void removeDropTargetListener(TransferDropTargetListener listener);
 
