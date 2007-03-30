@@ -54,7 +54,7 @@ public void addPoint(Point pt) {
  * @see org.eclipse.draw2d.IFigure#containsPoint(int, int)
  */
 public boolean containsPoint(int x, int y) {
-	int tolerance = lineWidth / 2 + this.tolerance;
+	int tolerance = Math.max(lineWidth / 2, this.tolerance);
 	LINEBOUNDS.setBounds(getBounds());
 	LINEBOUNDS.expand(tolerance, tolerance);
 	if (!LINEBOUNDS.contains(x, y))
@@ -276,7 +276,7 @@ public void setPoints(PointList points) {
 	erase();
 	this.points = points;
 	bounds = null;
-	firePropertyChange(Connection.PROPERTY_POINTS, null, points); //$NON-NLS-1$
+	firePropertyChange(Connection.PROPERTY_POINTS, null, points); 
 	repaint();
 }
 
