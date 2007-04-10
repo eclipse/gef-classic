@@ -15,14 +15,13 @@ import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
 /**
  * @author Ian Bull
  */
-public interface Stoppable extends Runnable {
-	
-	
+public interface Stoppable {
+
 	/**
 	 * This ends the runnable
 	 */
 	public void stop();
-	
-	public void addProgressListener( ProgressListener listener );
+
+	public void addProgressListener(ProgressListener listener);
 
 }

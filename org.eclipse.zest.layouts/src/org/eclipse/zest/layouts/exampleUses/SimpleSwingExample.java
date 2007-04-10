@@ -34,6 +34,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -42,11 +43,11 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 
 import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
@@ -73,300 +74,330 @@ import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
  *
  * A simple example of using layout algorithms with a Swing application.
  */
-public class SimpleSwingExample {	
-    private static final Color NODE_NORMAL_COLOR = new Color (225, 225, 255);
-    private static final Color NODE_SELECTED_COLOR = new Color(255, 125, 125);
-    //private static final Color NODE_ADJACENT_COLOR = new Color (255, 200, 125); 
-    private static final Color BORDER_NORMAL_COLOR = new Color(0, 0, 0);
-    private static final Color BORDER_SELECTED_COLOR = new Color (255, 0, 0);
-    //private static final Color BORDER_ADJACENT_COLOR = new Color (255, 128, 0);   
-    private static final Stroke BORDER_NORMAL_STROKE = new BasicStroke (1.0f);
-    private static final Stroke BORDER_SELECTED_STROKE = new BasicStroke (2.0f);
-    private static final Color RELATIONSHIP_NORMAL_COLOR = Color.BLUE;
-    //private static final Color RELATIONSHIP_HIGHLIGHT_COLOR = new Color (255, 200, 125); 
-    
-    public static final FadeLayoutAlgorithm FADE = new FadeLayoutAlgorithm ( LayoutStyles.NONE );
-    public static final SpringLayoutAlgorithm SPRING = new SpringLayoutAlgorithm ( LayoutStyles.NONE );
-    public static final TreeLayoutAlgorithm TREE_VERT = new TreeLayoutAlgorithm ( LayoutStyles.NONE );
-    public static final HorizontalTreeLayoutAlgorithm TREE_HORIZ = new HorizontalTreeLayoutAlgorithm ( LayoutStyles.NONE );
-    public static final RadialLayoutAlgorithm RADIAL = new RadialLayoutAlgorithm ( LayoutStyles.NONE );
-    public static final GridLayoutAlgorithm GRID = new GridLayoutAlgorithm ( LayoutStyles.NONE );
-    public static final HorizontalLayoutAlgorithm HORIZ = new HorizontalLayoutAlgorithm ( LayoutStyles.NONE );
-    public static final VerticalLayoutAlgorithm VERT = new VerticalLayoutAlgorithm ( LayoutStyles.NONE );       
-    
-    private List algorithms = new ArrayList();
-    private List algorithmNames = new ArrayList();
-    
-	
-    private static final int INITIAL_PANEL_WIDTH = 700;
+public class SimpleSwingExample {
+	private static final Color NODE_NORMAL_COLOR = new Color(225, 225, 255);
+	private static final Color NODE_SELECTED_COLOR = new Color(255, 125, 125);
+	//private static final Color NODE_ADJACENT_COLOR = new Color (255, 200, 125); 
+	private static final Color BORDER_NORMAL_COLOR = new Color(0, 0, 0);
+	private static final Color BORDER_SELECTED_COLOR = new Color(255, 0, 0);
+	//private static final Color BORDER_ADJACENT_COLOR = new Color (255, 128, 0);   
+	private static final Stroke BORDER_NORMAL_STROKE = new BasicStroke(1.0f);
+	private static final Stroke BORDER_SELECTED_STROKE = new BasicStroke(2.0f);
+	private static final Color RELATIONSHIP_NORMAL_COLOR = Color.BLUE;
+	//private static final Color RELATIONSHIP_HIGHLIGHT_COLOR = new Color (255, 200, 125); 
+
+	public static FadeLayoutAlgorithm FADE = new FadeLayoutAlgorithm(LayoutStyles.NONE);
+	public static SpringLayoutAlgorithm SPRING = new SpringLayoutAlgorithm(LayoutStyles.NONE);
+	public static TreeLayoutAlgorithm TREE_VERT = new TreeLayoutAlgorithm(LayoutStyles.NONE);
+	public static HorizontalTreeLayoutAlgorithm TREE_HORIZ = new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE);
+	public static RadialLayoutAlgorithm RADIAL = new RadialLayoutAlgorithm(LayoutStyles.NONE);
+	public static GridLayoutAlgorithm GRID = new GridLayoutAlgorithm(LayoutStyles.NONE);
+	public static HorizontalLayoutAlgorithm HORIZ = new HorizontalLayoutAlgorithm(LayoutStyles.NONE);
+	public static VerticalLayoutAlgorithm VERT = new VerticalLayoutAlgorithm(LayoutStyles.NONE);
+
+	private List algorithms = new ArrayList();
+	private List algorithmNames = new ArrayList();
+
+	private static final int INITIAL_PANEL_WIDTH = 700;
 	private static final int INITIAL_PANEL_HEIGHT = 500;
-	
+
 	private static final boolean RENDER_HIGH_QUALITY = true;
-	
+
 	private static final double INITIAL_NODE_WIDTH = 20;
 	private static final double INITIAL_NODE_HEIGHT = 20;
-    private static final int ARROW_HALF_WIDTH = 4;
-    private static final int ARROW_HALF_HEIGHT = 6;
-    private static final Shape ARROW_SHAPE = new Polygon (new int [] {-ARROW_HALF_HEIGHT, ARROW_HALF_HEIGHT, -ARROW_HALF_HEIGHT}, new int []{-ARROW_HALF_WIDTH, 0, ARROW_HALF_WIDTH}, 3);
-    private static final Stroke ARROW_BORDER_STROKE = new BasicStroke (0.5f);
-    private static final Color ARROW_HEAD_FILL_COLOR = new Color (125, 255, 125);
-    private static final Color ARROW_HEAD_BORDER_COLOR = Color.BLACK;
-	
+	private static final int ARROW_HALF_WIDTH = 4;
+	private static final int ARROW_HALF_HEIGHT = 6;
+	private static final Shape ARROW_SHAPE = new Polygon(new int[] { -ARROW_HALF_HEIGHT, ARROW_HALF_HEIGHT, -ARROW_HALF_HEIGHT }, new int[] { -ARROW_HALF_WIDTH, 0, ARROW_HALF_WIDTH }, 3);
+	private static final Stroke ARROW_BORDER_STROKE = new BasicStroke(0.5f);
+	private static final Color ARROW_HEAD_FILL_COLOR = new Color(125, 255, 125);
+	private static final Color ARROW_HEAD_BORDER_COLOR = Color.BLACK;
+
 	public static final String DEFAULT_NODE_SHAPE = "oval";
 
 	private long updateGUICount = 0;
-	
+
 	private JFrame mainFrame;
 	private JPanel mainPanel;
 	private List entities;
 	private List relationships;
 	private JToolBar toolBar;
 	private JLabel lblProgress;
-    private JToggleButton btnContinuous;
-    private JToggleButton btnAsynchronous;
-    private JButton btnStop;
-	
+	private JToggleButton btnContinuous;
+	private JToggleButton btnAsynchronous;
+	private JButton btnStop;
+
 	private LayoutAlgorithm currentLayoutAlgorithm;
-    protected String currentLayoutAlgorithmName;
-    protected SimpleNode selectedEntity;
-    protected Point mouseDownPoint;
-    protected Point selectedEntityPositionAtMouseDown;
-    private long idCount;
+	protected String currentLayoutAlgorithmName;
+	protected SimpleNode selectedEntity;
+	protected Point mouseDownPoint;
+	protected Point selectedEntityPositionAtMouseDown;
+	private long idCount;
 	protected String currentNodeShape = DEFAULT_NODE_SHAPE; // e.g., oval, rectangle
-	
-	public SimpleSwingExample () {
-        SPRING.setIterations(1000);
-        // initialize layouts
-        TREE_VERT.setComparator(new Comparator () {        
-            public int compare(Object o1, Object o2) {
-                if (o1 instanceof Comparable && o2 instanceof Comparable) {
-                    return ((Comparable)o1).compareTo(o2);
-                }
-                return 0;
-            }
-        
-        });
-        GRID.setRowPadding(20);
-        addAlgorithm (FADE, "FADE", false);
-        addAlgorithm (SPRING, "Spring", false);
-        addAlgorithm (TREE_VERT, "Tree-V", false);
-        addAlgorithm (TREE_HORIZ, "Tree-H", false);
-        addAlgorithm (RADIAL, "Radial", false);
-        addAlgorithm (GRID, "Grid", false);
-        addAlgorithm (HORIZ, "Horiz", false);
-        addAlgorithm (VERT, "Vert", false);
+
+	public SimpleSwingExample() {
+
 	}
-    
-    protected void addAlgorithm (LayoutAlgorithm algorithm, String name, boolean animate) {
-        algorithms.add(algorithm);
-        algorithmNames.add(name);
-    }
-    
-    public void start() {
-        mainFrame = new JFrame ("Simple Swing Layout Example");
-        toolBar = new JToolBar ();
-        mainFrame.getContentPane().setLayout(new BorderLayout());
-        mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
-        lblProgress = new JLabel ("Progress: ");
-        mainFrame.getContentPane().add(lblProgress, BorderLayout.SOUTH);
-        
-        
-        for (int i = 0; i < algorithms.size(); i++) {
-            final LayoutAlgorithm algorithm = (LayoutAlgorithm) algorithms.get(i);
-            final String algorithmName = (String) algorithmNames.get(i);
-            //final boolean algorithmAnimate = ((Boolean)algorithmAnimates.get(i)).booleanValue();
-            JButton algorithmButton = new JButton (algorithmName);
-            algorithmButton.addActionListener(new ActionListener () {
-                public void actionPerformed(ActionEvent e) {
-                    currentLayoutAlgorithm = algorithm; 
-                    currentLayoutAlgorithmName = algorithmName;
-                    algorithm.setEntityAspectRatio((double)mainPanel.getWidth()/(double)mainPanel.getHeight());
-                    //animate = algorithmAnimate;
-                    performLayout();
-                }
-            });
-            toolBar.add(algorithmButton);
-        }
-        createMainPanel();
-        mainFrame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                stop();
-                mainFrame.dispose();
-                
-            }
-        });
-        
-        
-        btnContinuous = new JToggleButton ("continuous", false);
-        btnAsynchronous = new JToggleButton ("asynchronous", false);
-        
-        toolBar.add(btnContinuous);
-        toolBar.add(btnAsynchronous);
-        
-        btnStop = new JButton("Stop");
-        btnStop.addActionListener(new ActionListener() {        
-            public void actionPerformed(ActionEvent e) {
-                stop();
-            }        
-        });
-        toolBar.add(btnStop);
-        
-        JButton btnCreateGraph = new JButton ("New graph");
-        btnCreateGraph.addActionListener(new ActionListener () {
-            public void actionPerformed(ActionEvent e) {
-                stop();
-                createGraph(true);
-            }
-        });
-        toolBar.add(btnCreateGraph);
-        JButton btnCreateTree = new JButton ("New tree");
-        btnCreateTree.addActionListener(new ActionListener () {
-            public void actionPerformed(ActionEvent e) {
-                stop();
-                createGraph(false);
-            }
-        });
-        toolBar.add(btnCreateTree);
-        
-        createGraph(false);
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        mainFrame.setLocation((int) (screenSize.getWidth() - INITIAL_PANEL_WIDTH)/2, (int) (screenSize.getHeight() - INITIAL_PANEL_HEIGHT)/2);
-        mainFrame.pack();
-        mainFrame.setVisible(true);
-        mainFrame.repaint();
-        
-    }
-    
-    private void stop() {
-        if (currentLayoutAlgorithm != null && currentLayoutAlgorithm.isRunning()) {
-            currentLayoutAlgorithm.stop();
-        }
-    }
-	
+	protected void addAlgorithm(LayoutAlgorithm algorithm, String name, boolean animate) {
+		algorithms.add(algorithm);
+		algorithmNames.add(name);
+	}
 
-    protected void performLayout () {
-        stop();
-	    final Cursor cursor = mainFrame.getCursor();
-	    updateGUICount = 0;
-	    placeRandomly();
-        final boolean continuous = btnContinuous.isSelected();
-        final boolean asynchronous = btnAsynchronous.isSelected();
-	    ProgressListener progressListener = new ProgressListener () {
-            public void progressUpdated(final ProgressEvent e) {
-                //if (asynchronous) {
-                    updateGUI();
-                //}
-                lblProgress.setText("Progress: " + e.getStepsCompleted() + " of " + e.getTotalNumberOfSteps() + " completed ...");
-                lblProgress.paintImmediately(0,0,lblProgress.getWidth(), lblProgress.getHeight());
-            }
+	public void start() {
+
+		mainFrame = new JFrame("Simple Swing Layout Example");
+		toolBar = new JToolBar();
+		mainFrame.getContentPane().setLayout(new BorderLayout());
+		mainFrame.getContentPane().add(toolBar, BorderLayout.NORTH);
+		lblProgress = new JLabel("Progress: ");
+		mainFrame.getContentPane().add(lblProgress, BorderLayout.SOUTH);
+
+		createMainPanel();
+		mainFrame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				stop();
+				mainFrame.dispose();
+
+			}
+		});
+
+		btnContinuous = new JToggleButton("continuous", false);
+		btnAsynchronous = new JToggleButton("asynchronous", false);
+
+		toolBar.add(btnContinuous);
+		toolBar.add(btnAsynchronous);
+
+		btnStop = new JButton("Stop");
+		btnStop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				stop();
+			}
+		});
+		toolBar.add(btnStop);
+
+		JButton btnCreateGraph = new JButton("New graph");
+		btnCreateGraph.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				stop();
+				createGraph(true);
+			}
+		});
+		toolBar.add(btnCreateGraph);
+		JButton btnCreateTree = new JButton("New tree");
+		btnCreateTree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				stop();
+				createGraph(false);
+			}
+		});
+		toolBar.add(btnCreateTree);
+
+		createGraph(false);
+
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		mainFrame.setLocation((int) (screenSize.getWidth() - INITIAL_PANEL_WIDTH) / 2, (int) (screenSize.getHeight() - INITIAL_PANEL_HEIGHT) / 2);
+		mainFrame.pack();
+		mainFrame.setVisible(true);
+		mainFrame.repaint();
+
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+
+				public void run() {
+					FADE = new FadeLayoutAlgorithm(LayoutStyles.NONE);
+					SPRING = new SpringLayoutAlgorithm(LayoutStyles.NONE);
+					TREE_VERT = new TreeLayoutAlgorithm(LayoutStyles.NONE);
+					TREE_HORIZ = new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE);
+					RADIAL = new RadialLayoutAlgorithm(LayoutStyles.NONE);
+					GRID = new GridLayoutAlgorithm(LayoutStyles.NONE);
+					HORIZ = new HorizontalLayoutAlgorithm(LayoutStyles.NONE);
+					VERT = new VerticalLayoutAlgorithm(LayoutStyles.NONE);
+
+					SPRING.setIterations(1000);
+					// initialize layouts
+					TREE_VERT.setComparator(new Comparator() {
+						public int compare(Object o1, Object o2) {
+							if (o1 instanceof Comparable && o2 instanceof Comparable) {
+								return ((Comparable) o1).compareTo(o2);
+							}
+							return 0;
+						}
+
+					});
+					GRID.setRowPadding(20);
+					addAlgorithm(FADE, "FADE", false);
+					addAlgorithm(SPRING, "Spring", false);
+					addAlgorithm(TREE_VERT, "Tree-V", false);
+					addAlgorithm(TREE_HORIZ, "Tree-H", false);
+					addAlgorithm(RADIAL, "Radial", false);
+					addAlgorithm(GRID, "Grid", false);
+					addAlgorithm(HORIZ, "Horiz", false);
+					addAlgorithm(VERT, "Vert", false);
+
+					for (int i = 0; i < algorithms.size(); i++) {
+						final LayoutAlgorithm algorithm = (LayoutAlgorithm) algorithms.get(i);
+						final String algorithmName = (String) algorithmNames.get(i);
+						//final boolean algorithmAnimate = ((Boolean)algorithmAnimates.get(i)).booleanValue();
+						JButton algorithmButton = new JButton(algorithmName);
+						algorithmButton.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								currentLayoutAlgorithm = algorithm;
+								currentLayoutAlgorithmName = algorithmName;
+								algorithm.setEntityAspectRatio((double) mainPanel.getWidth() / (double) mainPanel.getHeight());
+								//animate = algorithmAnimate;
+								performLayout();
+							}
+						});
+						toolBar.add(algorithmButton);
+					}
+				}
+			});
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InvocationTargetException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+	}
+
+	private void stop() {
+		if (currentLayoutAlgorithm != null && currentLayoutAlgorithm.isRunning()) {
+			currentLayoutAlgorithm.stop();
+		}
+	}
+
+	protected void performLayout() {
+		stop();
+		final Cursor cursor = mainFrame.getCursor();
+		updateGUICount = 0;
+		placeRandomly();
+		final boolean continuous = btnContinuous.isSelected();
+		final boolean asynchronous = btnAsynchronous.isSelected();
+		ProgressListener progressListener = new ProgressListener() {
+			public void progressUpdated(final ProgressEvent e) {
+				//if (asynchronous) {
+				updateGUI();
+				//}
+				lblProgress.setText("Progress: " + e.getStepsCompleted() + " of " + e.getTotalNumberOfSteps() + " completed ...");
+				lblProgress.paintImmediately(0, 0, lblProgress.getWidth(), lblProgress.getHeight());
+			}
 
 			public void progressStarted(ProgressEvent e) {
-                if (!asynchronous) {
-                    mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-                }
-                lblProgress.setText("Layout started ...");
-                lblProgress.paintImmediately(0,0,lblProgress.getWidth(), lblProgress.getHeight());
+				if (!asynchronous) {
+					mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				}
+				lblProgress.setText("Layout started ...");
+				lblProgress.paintImmediately(0, 0, lblProgress.getWidth(), lblProgress.getHeight());
 			}
 
 			public void progressEnded(ProgressEvent e) {
-                lblProgress.setText("Layout completed ...");
-                lblProgress.paintImmediately(0,0,lblProgress.getWidth(), lblProgress.getHeight());
-                currentLayoutAlgorithm.removeProgressListener(this);
-                if (!asynchronous) {
-                    mainFrame.setCursor(cursor);
-                }
+				lblProgress.setText("Layout completed ...");
+				lblProgress.paintImmediately(0, 0, lblProgress.getWidth(), lblProgress.getHeight());
+				currentLayoutAlgorithm.removeProgressListener(this);
+				if (!asynchronous) {
+					mainFrame.setCursor(cursor);
+				}
 			}
-        };
+		};
 
-        currentLayoutAlgorithm.addProgressListener(progressListener);
+		currentLayoutAlgorithm.addProgressListener(progressListener);
 
-        try {
-            LayoutEntity [] layoutEntities = new LayoutEntity [entities.size()];
-            entities.toArray(layoutEntities);
-            LayoutRelationship [] layoutRelationships = new LayoutRelationship [relationships.size()];
-            relationships.toArray(layoutRelationships);
-			currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0, mainPanel.getWidth(), mainPanel.getHeight(), asynchronous, continuous);
-            //if (!animate) {
-                updateGUI();
-            //}
-       		// reset
-           	currentNodeShape = DEFAULT_NODE_SHAPE;
-		} catch (InvalidLayoutConfiguration e) {
-            JOptionPane.showMessageDialog(mainFrame, "Not a valid layout configuration:\nlayout='" + currentLayoutAlgorithmName + "', continuous='" + continuous + "', asynchronous='" + asynchronous +"'");
-        } catch (StackOverflowError e) {
-            e.printStackTrace();
+		try {
+			final LayoutEntity[] layoutEntities = new LayoutEntity[entities.size()];
+			entities.toArray(layoutEntities);
+			final LayoutRelationship[] layoutRelationships = new LayoutRelationship[relationships.size()];
+			relationships.toArray(layoutRelationships);
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0, mainPanel.getWidth(), mainPanel.getHeight(), asynchronous, continuous);
+					} catch (InvalidLayoutConfiguration e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+				}
+
+			});
+			//if (!animate) {
+			updateGUI();
+			//}
+			// reset
+			currentNodeShape = DEFAULT_NODE_SHAPE;
+		} catch (StackOverflowError e) {
+			e.printStackTrace();
 		} finally {
-        }
+		}
 	}
 
-    private void createMainPanel () {
+	private void createMainPanel() {
 
-        mainPanel = new MainPanel(); // see below for class definition
+		mainPanel = new MainPanel(); // see below for class definition
 		mainPanel.setPreferredSize(new Dimension(INITIAL_PANEL_WIDTH, INITIAL_PANEL_HEIGHT));
 		mainPanel.setBackground(Color.WHITE);
 		mainPanel.setLayout(null);
 		mainFrame.getContentPane().add(new JScrollPane(mainPanel), BorderLayout.CENTER);
 
-		mainPanel.addMouseListener(new MouseAdapter () {
-            public void mousePressed(MouseEvent e) {
-                selectedEntity = null;
-                for (Iterator iter = entities.iterator(); iter.hasNext() && selectedEntity == null;) {
-                    SimpleNode entity = (SimpleNode) iter.next();
-                    double x = entity.getX();
-                    double y = entity.getY();
-                    double w = entity.getWidth();
-                    double h = entity.getHeight();
-                    Rectangle2D.Double rect = new Rectangle2D.Double (x, y, w, h);
-                    if (rect.contains(e.getX(), e.getY())) {
-                        selectedEntity = entity;
-                    }
-                }
-                if (selectedEntity != null) {
-                    mouseDownPoint = e.getPoint();
-                    selectedEntityPositionAtMouseDown = new Point ((int)selectedEntity.getX(), (int)selectedEntity.getY());
-                } else {
-                    mouseDownPoint = null;
-                    selectedEntityPositionAtMouseDown = null;
-                }
-                updateGUI();
-            }
+		mainPanel.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				selectedEntity = null;
+				for (Iterator iter = entities.iterator(); iter.hasNext() && selectedEntity == null;) {
+					SimpleNode entity = (SimpleNode) iter.next();
+					double x = entity.getX();
+					double y = entity.getY();
+					double w = entity.getWidth();
+					double h = entity.getHeight();
+					Rectangle2D.Double rect = new Rectangle2D.Double(x, y, w, h);
+					if (rect.contains(e.getX(), e.getY())) {
+						selectedEntity = entity;
+					}
+				}
+				if (selectedEntity != null) {
+					mouseDownPoint = e.getPoint();
+					selectedEntityPositionAtMouseDown = new Point((int) selectedEntity.getX(), (int) selectedEntity.getY());
+				} else {
+					mouseDownPoint = null;
+					selectedEntityPositionAtMouseDown = null;
+				}
+				updateGUI();
+			}
 
-            public void mouseReleased(MouseEvent e) {
-                selectedEntity = null;
-                mouseDownPoint = null;
-                selectedEntityPositionAtMouseDown = null;
-                updateGUI();
-            }
-        });
-		
-		mainPanel.addMouseMotionListener(new MouseMotionListener () {
-            public void mouseDragged(MouseEvent e) {
-//                if (selectedEntity != null) {
-//					//TODO: Add mouse moving
-//                    //selectedEntity.setLocationInLayout(selectedEntityPositionAtMouseDown.x + dx, selectedEntityPositionAtMouseDown.y + dy);
-//                    updateGUI();
-//                } 
-            }
+			public void mouseReleased(MouseEvent e) {
+				selectedEntity = null;
+				mouseDownPoint = null;
+				selectedEntityPositionAtMouseDown = null;
+				updateGUI();
+			}
+		});
 
-            public void mouseMoved(MouseEvent e) {
-            }
-        });
+		mainPanel.addMouseMotionListener(new MouseMotionListener() {
+			public void mouseDragged(MouseEvent e) {
+				//                if (selectedEntity != null) {
+				//					//TODO: Add mouse moving
+				//                    //selectedEntity.setLocationInLayout(selectedEntityPositionAtMouseDown.x + dx, selectedEntityPositionAtMouseDown.y + dy);
+				//                    updateGUI();
+				//                } 
+			}
+
+			public void mouseMoved(MouseEvent e) {
+			}
+		});
 	}
-    
-	
-    private void createGraph(boolean addNonTreeRels) {
-        entities = new ArrayList();
-        relationships = new ArrayList();
-        selectedEntity = null;
-        
-        createTreeGraph(2, 4, 2, 5, true, true, addNonTreeRels);
-//        createCustomGraph();
 
-        placeRandomly();
-        mainPanel.repaint();
-    }
-    
+	private void createGraph(boolean addNonTreeRels) {
+		entities = new ArrayList();
+		relationships = new ArrayList();
+		selectedEntity = null;
+
+		createTreeGraph(2, 4, 2, 5, true, true, addNonTreeRels);
+		//        createCustomGraph();
+
+		placeRandomly();
+		mainPanel.repaint();
+	}
+
 	/**
 	 * 
 	 * @param maxLevels Max number of levels wanted in tree	
@@ -374,169 +405,165 @@ public class SimpleSwingExample {
 	 * @param randomNumChildren Whether or not to pick random number of levels (from 1 to maxLevels) and 
 	 * random number of children (from 1 to maxChildren)
 	 */
-	private void createTreeGraph (int minChildren, int maxChildren, int minLevels, int maxLevels, boolean randomNumChildren, boolean randomLevels, boolean addNonTreeRels) {
-	    LayoutEntity currentParent = createSimpleNode(getNextID());
-	    entities.add(currentParent);
-	    createTreeGraphRecursive (currentParent, minChildren, maxChildren, minLevels, maxLevels, 1, randomNumChildren, randomLevels, addNonTreeRels);
+	private void createTreeGraph(int minChildren, int maxChildren, int minLevels, int maxLevels, boolean randomNumChildren, boolean randomLevels, boolean addNonTreeRels) {
+		LayoutEntity currentParent = createSimpleNode(getNextID());
+		entities.add(currentParent);
+		createTreeGraphRecursive(currentParent, minChildren, maxChildren, minLevels, maxLevels, 1, randomNumChildren, randomLevels, addNonTreeRels);
 	}
-    
-	private void createTreeGraphRecursive (LayoutEntity currentParentNode, int minChildren, int maxChildren, int minLevel, int maxLevel, int level, boolean randomNumChildren, boolean randomLevels, boolean addNonTreeRels) {
-	    if (level > maxLevel) return;
-        if (randomLevels) {
-            if (level > minLevel) {
-                double zeroToOne = Math.random();
-                if (zeroToOne < 0.75) {
-                    return;
-                }
-            }
-        }
-	    int numChildren = randomNumChildren ? Math.max (minChildren, (int) (Math.random() * maxChildren + 1)) : maxChildren;
-        for (int i = 0; i < numChildren; i++) {
-            LayoutEntity newNode = createSimpleNode(getNextID()); 
-            entities.add(newNode);
-            if (addNonTreeRels && entities.size() % 5 == 0) {
-                int index = (int) (Math.random() * entities.size());
-                LayoutRelationship rel = new SimpleRelationship ((LayoutEntity) entities.get(index), newNode, false);
-                relationships.add(rel);
-            } 
-            LayoutRelationship rel = new SimpleRelationship (currentParentNode, newNode, false);
-            relationships.add(rel);
-            createTreeGraphRecursive(newNode, minChildren, maxChildren, minLevel, maxLevel, level + 1, randomNumChildren, randomLevels, addNonTreeRels);
-        }  
+
+	private void createTreeGraphRecursive(LayoutEntity currentParentNode, int minChildren, int maxChildren, int minLevel, int maxLevel, int level, boolean randomNumChildren, boolean randomLevels, boolean addNonTreeRels) {
+		if (level > maxLevel) {
+			return;
+		}
+		if (randomLevels) {
+			if (level > minLevel) {
+				double zeroToOne = Math.random();
+				if (zeroToOne < 0.75) {
+					return;
+				}
+			}
+		}
+		int numChildren = randomNumChildren ? Math.max(minChildren, (int) (Math.random() * maxChildren + 1)) : maxChildren;
+		for (int i = 0; i < numChildren; i++) {
+			LayoutEntity newNode = createSimpleNode(getNextID());
+			entities.add(newNode);
+			if (addNonTreeRels && entities.size() % 5 == 0) {
+				int index = (int) (Math.random() * entities.size());
+				LayoutRelationship rel = new SimpleRelationship((LayoutEntity) entities.get(index), newNode, false);
+				relationships.add(rel);
+			}
+			LayoutRelationship rel = new SimpleRelationship(currentParentNode, newNode, false);
+			relationships.add(rel);
+			createTreeGraphRecursive(newNode, minChildren, maxChildren, minLevel, maxLevel, level + 1, randomNumChildren, randomLevels, addNonTreeRels);
+		}
 	}
 
 	/**
 	 * Call this from createGraph in place of createTreeGraph 
 	 * this for debugging and testing.
 	 */
-/*    private void createCustomGraph() {
-        LayoutEntity A = createSimpleNode("1");
-        LayoutEntity B = createSimpleNode("10");
-        LayoutEntity _1 = createSimpleNode("100");
-        entities.add(A);
-        entities.add(B);
-        entities.add(_1);
-        relationships.add(new SimpleRelationship (A, B, false));
-        relationships.add(new SimpleRelationship (A, _1, false));
-        relationships.add(new SimpleRelationship (_1, A, false));
-    }
-*/
-    private String getNextID () {
-	    String id = "" + idCount;
-	    idCount++;
-	    return id;
+	/*    private void createCustomGraph() {
+	 LayoutEntity A = createSimpleNode("1");
+	 LayoutEntity B = createSimpleNode("10");
+	 LayoutEntity _1 = createSimpleNode("100");
+	 entities.add(A);
+	 entities.add(B);
+	 entities.add(_1);
+	 relationships.add(new SimpleRelationship (A, B, false));
+	 relationships.add(new SimpleRelationship (A, _1, false));
+	 relationships.add(new SimpleRelationship (_1, A, false));
+	 }
+	 */
+	private String getNextID() {
+		String id = "" + idCount;
+		idCount++;
+		return id;
 	}
-	
-	/** Places nodes randomly on the screen **/
-	private void placeRandomly () {
-	    for (Iterator iter = entities.iterator(); iter.hasNext();) {
-            SimpleNode simpleNode = (SimpleNode) iter.next();
-    		double x = Math.random() * INITIAL_PANEL_WIDTH - INITIAL_NODE_WIDTH;
-    		double y = Math.random() * INITIAL_PANEL_HEIGHT - INITIAL_NODE_HEIGHT;
-			simpleNode.setLocationInLayout( x, y );
-			simpleNode.setSizeInLayout( INITIAL_NODE_WIDTH, INITIAL_NODE_HEIGHT );
-        }
-	}
-	
 
-	
+	/** Places nodes randomly on the screen **/
+	private void placeRandomly() {
+		for (Iterator iter = entities.iterator(); iter.hasNext();) {
+			SimpleNode simpleNode = (SimpleNode) iter.next();
+			double x = Math.random() * INITIAL_PANEL_WIDTH - INITIAL_NODE_WIDTH;
+			double y = Math.random() * INITIAL_PANEL_HEIGHT - INITIAL_NODE_HEIGHT;
+			simpleNode.setLocationInLayout(x, y);
+			simpleNode.setSizeInLayout(INITIAL_NODE_WIDTH, INITIAL_NODE_HEIGHT);
+		}
+	}
+
 	/**
 	 * Creates a SimpleNode
 	 * @param name
 	 * @return
 	 */
-	private SimpleNode createSimpleNode (String name) {
-		SimpleNode simpleNode = new SimpleNode (name);
+	private SimpleNode createSimpleNode(String name) {
+		SimpleNode simpleNode = new SimpleNode(name);
 		return simpleNode;
 	}
-	
-	private void updateGUI () {
+
+	private void updateGUI() {
 		updateGUICount++;
 		if (updateGUICount > 0) {
 			mainPanel.paintImmediately(0, 0, mainPanel.getWidth(), mainPanel.getHeight());
 		}
 	}
-	
-    private static Point2D.Double getEllipseIntersectionPoint (double theta, double ellipseWidth, double ellipseHeight) {
-        double nhalfw = ellipseWidth/2.0; // half elllipse width
-        double nhalfh = ellipseHeight/2.0; // half ellipse height
-        double tanTheta = Math.tan(theta);
-        
-        double a = nhalfw;
-        double b = nhalfh;
-        double x = (a*b)/Math.sqrt( Math.pow(b, 2) + Math.pow(a, 2) * Math.pow(tanTheta, 2));
-        if ((theta > Math.PI/2.0 && theta < 1.5*Math.PI) || (theta < -Math.PI/2.0 && theta > -1.5*Math.PI)) {
-            x = -x;
-        }
-        double y = tanTheta*x;
-        Point2D.Double p = new Point2D.Double(x, y);
-        return p;
-    }
-    
-    public static void main(String[] args) {
-        (new SimpleSwingExample ()).start();
-    }
-    
-    /**
-     * A JPanel that provides entity and relationship rendering
+
+	private static Point2D.Double getEllipseIntersectionPoint(double theta, double ellipseWidth, double ellipseHeight) {
+		double nhalfw = ellipseWidth / 2.0; // half elllipse width
+		double nhalfh = ellipseHeight / 2.0; // half ellipse height
+		double tanTheta = Math.tan(theta);
+
+		double a = nhalfw;
+		double b = nhalfh;
+		double x = (a * b) / Math.sqrt(Math.pow(b, 2) + Math.pow(a, 2) * Math.pow(tanTheta, 2));
+		if ((theta > Math.PI / 2.0 && theta < 1.5 * Math.PI) || (theta < -Math.PI / 2.0 && theta > -1.5 * Math.PI)) {
+			x = -x;
+		}
+		double y = tanTheta * x;
+		Point2D.Double p = new Point2D.Double(x, y);
+		return p;
+	}
+
+	public static void main(String[] args) {
+		(new SimpleSwingExample()).start();
+	}
+
+	/**
+	 * A JPanel that provides entity and relationship rendering
 	 * Instead of letting Swing paint all the JPanels for us, we will just do our own painting here
-     */
-    private class MainPanel extends JPanel {
+	 */
+	private class MainPanel extends JPanel {
 
-    	private static final long serialVersionUID = 1;
+		private static final long serialVersionUID = 1;
 
-    	protected void paintChildren(Graphics g) {
-            if (g instanceof Graphics2D && RENDER_HIGH_QUALITY) {
-				((Graphics2D)g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				((Graphics2D)g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-				((Graphics2D)g).setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-				((Graphics2D)g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON); 	
-            }
-            
-            // paint the nodes
+		protected void paintChildren(Graphics g) {
+			if (g instanceof Graphics2D && RENDER_HIGH_QUALITY) {
+				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+			}
+
+			// paint the nodes
 			for (Iterator iter = entities.iterator(); iter.hasNext();) {
-                paintEntity((SimpleNode) iter.next(), g);
-             }
-			
+				paintEntity((SimpleNode) iter.next(), g);
+			}
+
 			// paint the relationships 
 			for (Iterator iter = relationships.iterator(); iter.hasNext();) {
 				paintRelationship((LayoutRelationship) iter.next(), g);
-	        }
-        }
-    	
-    	private void paintEntity(SimpleNode entity, Graphics g) {
-            boolean isSelected = selectedEntity != null && selectedEntity.equals(entity);
-            g.setColor(isSelected ? NODE_SELECTED_COLOR : NODE_NORMAL_COLOR);
-            if (currentNodeShape.equals("rectangle")) {
-                g.fillRect((int)entity.getX(), (int)entity.getY(), (int)entity.getWidth(), (int)entity.getHeight());
-    		}		
-            else { // default 
-           		g.fillOval((int)entity.getX(), (int)entity.getY(), (int)entity.getWidth(), (int)entity.getHeight());
-            }	
-            g.setColor( isSelected ? BORDER_SELECTED_COLOR : BORDER_NORMAL_COLOR);
-            String name = entity.toString();
-            Rectangle2D nameBounds = g.getFontMetrics().getStringBounds(name, g);
-				g.drawString(name, (int) (entity.getX() + entity.getWidth()/2.0 - nameBounds.getWidth()/2.0), 
-						(int)(entity.getY() + entity.getHeight()/2.0 + nameBounds.getHeight()/2.0));//- nameBounds.getHeight() - nameBounds.getY()));
-            if (g instanceof Graphics2D) {
-                ((Graphics2D)g).setStroke(isSelected ? BORDER_SELECTED_STROKE : BORDER_NORMAL_STROKE);
-            }
-            if (currentNodeShape.equals("rectangle")) {
-            	g.drawRect((int)entity.getX(), (int)entity.getY(), (int)entity.getWidth(), (int)entity.getHeight());
-            }
-            else { // default
-                g.drawOval((int)entity.getX(), (int)entity.getY(), (int)entity.getWidth(), (int)entity.getHeight());
-            }
-    	}
+			}
+		}
 
-    	private void paintRelationship(LayoutRelationship rel, Graphics g) {
+		private void paintEntity(SimpleNode entity, Graphics g) {
+			boolean isSelected = selectedEntity != null && selectedEntity.equals(entity);
+			g.setColor(isSelected ? NODE_SELECTED_COLOR : NODE_NORMAL_COLOR);
+			if (currentNodeShape.equals("rectangle")) {
+				g.fillRect((int) entity.getX(), (int) entity.getY(), (int) entity.getWidth(), (int) entity.getHeight());
+			} else { // default 
+				g.fillOval((int) entity.getX(), (int) entity.getY(), (int) entity.getWidth(), (int) entity.getHeight());
+			}
+			g.setColor(isSelected ? BORDER_SELECTED_COLOR : BORDER_NORMAL_COLOR);
+			String name = entity.toString();
+			Rectangle2D nameBounds = g.getFontMetrics().getStringBounds(name, g);
+			g.drawString(name, (int) (entity.getX() + entity.getWidth() / 2.0 - nameBounds.getWidth() / 2.0), (int) (entity.getY() + entity.getHeight() / 2.0 + nameBounds.getHeight() / 2.0));//- nameBounds.getHeight() - nameBounds.getY()));
+			if (g instanceof Graphics2D) {
+				((Graphics2D) g).setStroke(isSelected ? BORDER_SELECTED_STROKE : BORDER_NORMAL_STROKE);
+			}
+			if (currentNodeShape.equals("rectangle")) {
+				g.drawRect((int) entity.getX(), (int) entity.getY(), (int) entity.getWidth(), (int) entity.getHeight());
+			} else { // default
+				g.drawOval((int) entity.getX(), (int) entity.getY(), (int) entity.getWidth(), (int) entity.getHeight());
+			}
+		}
+
+		private void paintRelationship(LayoutRelationship rel, Graphics g) {
 
 			SimpleNode src = (SimpleNode) rel.getSourceInLayout();
 			SimpleNode dest = (SimpleNode) rel.getDestinationInLayout();
 
 			// Add bend points if required
-			if (((SimpleRelationship) rel).getBendPoints() != null
-					&& ((SimpleRelationship) rel).getBendPoints().length > 0) {
+			if (((SimpleRelationship) rel).getBendPoints() != null && ((SimpleRelationship) rel).getBendPoints().length > 0) {
 				drawBendPoints(rel, g);
 			} else {
 				double srcX = src.getX() + src.getWidth() / 2.0;
@@ -552,37 +579,30 @@ public class SimpleSwingExample {
 				drawArrow(theta, srcX, srcY, dx, dy, g);
 			}
 		}
-    	
-    	/**
-    	 * Draw a line from the edge of the src node to the edge of the destination node 
-    	 */
-    	private void drawRelationship(SimpleNode src, SimpleNode dest, double theta,
-    			double srcX, double srcY, double destX, double destY, Graphics g) {
 
-    		double reverseTheta = theta > 0.0d ? theta - Math.PI : theta + Math.PI;
+		/**
+		 * Draw a line from the edge of the src node to the edge of the destination node 
+		 */
+		private void drawRelationship(SimpleNode src, SimpleNode dest, double theta, double srcX, double srcY, double destX, double destY, Graphics g) {
 
-    		Point2D.Double srcIntersectionP = 
-    			getEllipseIntersectionPoint(theta, src.getWidth(), 
-    					src.getHeight());
+			double reverseTheta = theta > 0.0d ? theta - Math.PI : theta + Math.PI;
 
-    		Point2D.Double destIntersectionP = 
-    			getEllipseIntersectionPoint(reverseTheta, dest.getWidth(), 
-    					dest.getHeight());
+			Point2D.Double srcIntersectionP = getEllipseIntersectionPoint(theta, src.getWidth(), src.getHeight());
 
-    		drawRelationship(srcX + srcIntersectionP.getX(), srcY + srcIntersectionP.getY(),
-					destX + destIntersectionP.getX(), destY + destIntersectionP.getY(), g);
-    	}
-		
-    	/**
-    	 * Draw a line from specified source to specified destination
-    	 */
-    	private void drawRelationship(double srcX, double srcY, double destX, double destY, Graphics g) {
-    		g.setColor(RELATIONSHIP_NORMAL_COLOR);
-			g.drawLine((int)srcX, (int)srcY, (int)destX, (int)destY);
-    	}
-		
+			Point2D.Double destIntersectionP = getEllipseIntersectionPoint(reverseTheta, dest.getWidth(), dest.getHeight());
 
-    	private void drawArrow(double theta, double srcX, double srcY, double dx, double dy, Graphics g) {
+			drawRelationship(srcX + srcIntersectionP.getX(), srcY + srcIntersectionP.getY(), destX + destIntersectionP.getX(), destY + destIntersectionP.getY(), g);
+		}
+
+		/**
+		 * Draw a line from specified source to specified destination
+		 */
+		private void drawRelationship(double srcX, double srcY, double destX, double destY, Graphics g) {
+			g.setColor(RELATIONSHIP_NORMAL_COLOR);
+			g.drawLine((int) srcX, (int) srcY, (int) destX, (int) destY);
+		}
+
+		private void drawArrow(double theta, double srcX, double srcY, double dx, double dy, Graphics g) {
 			AffineTransform tx = new AffineTransform();
 			double arrX = srcX + (dx) / 2.0;
 			double arrY = srcY + (dy) / 2.0;
@@ -596,15 +616,15 @@ public class SimpleSwingExample {
 				g.setColor(ARROW_HEAD_BORDER_COLOR);
 				((Graphics2D) g).draw(arrowTx);
 			}
-    	}
+		}
 
-    	/**
-    	 * Get the length of a line ensuring it is not too small to render
-    	 * @param start
-    	 * @param end
-    	 * @return
-    	 */
-    	private double getLength(double start, double end) {
+		/**
+		 * Get the length of a line ensuring it is not too small to render
+		 * @param start
+		 * @param end
+		 * @return
+		 */
+		private double getLength(double start, double end) {
 			double length = end - start;
 			// make sure dx is not zero or too small
 			if (length < 0.01 && length > -0.01) {
@@ -615,22 +635,19 @@ public class SimpleSwingExample {
 				}
 			}
 			return length;
-    	}
-    	
-    	/**
-    	 * Draw a line from specified source to specified destination
-    	 */
-    	private void drawCurvedRelationship(double srcX, double srcY, 
-    			double control1X, double control1Y, double control2X, double control2Y,
-    			double destX, double destY, Graphics g) {
-    		GeneralPath shape = new GeneralPath();
-    		shape.moveTo((float)srcX, (float)srcY);
-            shape.curveTo((float)control1X, (float)control1Y,
-            		(float)control2X, (float)control2Y, (float)destX, (float)destY);
-    		g.setColor(RELATIONSHIP_NORMAL_COLOR);
-    		((Graphics2D)g).draw(shape);
-    	}
-		
+		}
+
+		/**
+		 * Draw a line from specified source to specified destination
+		 */
+		private void drawCurvedRelationship(double srcX, double srcY, double control1X, double control1Y, double control2X, double control2Y, double destX, double destY, Graphics g) {
+			GeneralPath shape = new GeneralPath();
+			shape.moveTo((float) srcX, (float) srcY);
+			shape.curveTo((float) control1X, (float) control1Y, (float) control2X, (float) control2Y, (float) destX, (float) destY);
+			g.setColor(RELATIONSHIP_NORMAL_COLOR);
+			((Graphics2D) g).draw(shape);
+		}
+
 		/**
 		 * Draws a set of lines between bendpoints, returning the last bendpoint
 		 * drawn. Note that this assumes the first and last bendpoints are actually
@@ -650,47 +667,40 @@ public class SimpleSwingExample {
 			double srcY = startEntity.getY();
 
 			// Transform the bendpoints to this coordinate system
-			LayoutBendPoint[] bendPoints = ((SimpleRelationship)rel).getBendPoints(); 
+			LayoutBendPoint[] bendPoints = ((SimpleRelationship) rel).getBendPoints();
 
 			srcX = bendPoints[1].getX();
 			srcY = bendPoints[1].getY();
 			int bpNum = 2;
-			while (bpNum <  bendPoints.length-1) { // ignore first and last bendpoints (src and dest)
+			while (bpNum < bendPoints.length - 1) { // ignore first and last bendpoints (src and dest)
 				int currentBpNum = bpNum;
 				bp = bendPoints[bpNum];
 				if (bp.getIsControlPoint()) {
-					if (bendPoints[bpNum+1].getIsControlPoint()) {
-						destEntity = new SimpleNode(DUMMY_TITLE, 
-								bendPoints[bpNum+2].getX(), bendPoints[bpNum+2].getY(), 0.01, 0.01);
-						drawCurvedRelationship(srcX, srcY, 
-								bp.getX(), bp.getY(), 
-								bendPoints[bpNum+1].getX(), bendPoints[bpNum+1].getY(),
-								bendPoints[bpNum+2].getX(), bendPoints[bpNum+2].getY(), g);
+					if (bendPoints[bpNum + 1].getIsControlPoint()) {
+						destEntity = new SimpleNode(DUMMY_TITLE, bendPoints[bpNum + 2].getX(), bendPoints[bpNum + 2].getY(), 0.01, 0.01);
+						drawCurvedRelationship(srcX, srcY, bp.getX(), bp.getY(), bendPoints[bpNum + 1].getX(), bendPoints[bpNum + 1].getY(), bendPoints[bpNum + 2].getX(), bendPoints[bpNum + 2].getY(), g);
 						bpNum += 4;
-					}
-					else {
+					} else {
 						destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);
 					}
-				}
-				else {
+				} else {
 					drawRelationship(srcX, srcY, bp.getX(), bp.getY(), g);
 					bpNum++;
 					destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);
-				}	
-				startEntity = (SimpleNode) destEntity;
+				}
+				startEntity = destEntity;
 				if (currentBpNum == bendPoints.length - 2) { // last point
 					// draw an arrow in the middle of the line
 					double dx = getLength(srcX, destEntity.getX());
 					double dy = getLength(srcY, destEntity.getY());
 					double theta = Math.atan2(dy, dx);
 					drawArrow(theta, srcX, srcY, dx, dy, g);
-				}
-				else {
+				} else {
 					srcX = startEntity.getX();
 					srcY = startEntity.getY();
 				}
 			}
 
 		}
-  }
+	}
 }
