@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
+ * Canada. All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Chisel Group, University of Victoria
+ ******************************************************************************/
 package org.eclipse.mylar.zest.examples.jface;
 
 import java.io.BufferedReader;
@@ -87,7 +96,7 @@ public class GraphJFaceSnippet3 {
 		dialog.setFilterNames(new String[] { "Simple Graph Files (*.sgf)", "All Files (*.*)" });
 		dialog.setFilterExtensions(new String[] { "*.sgf", "*.*" }); //Windows wild cards
 
-		String directory = System.getProperty("user.dir")  + "/src/org/eclipse/mylar/zest/examples/jface/SimpleGraph.sgf"; //eclipse/mylar/zest/examples/jface/";
+		String directory = System.getProperty("user.dir") + "/src/org/eclipse/mylar/zest/examples/jface/SimpleGraph.sgf"; //eclipse/mylar/zest/examples/jface/";
 		System.out.println(directory);
 		dialog.setFilterPath(directory);
 		//dialog.setFilterPath(System.getProperty("user.dir") + "src/org/eclipse/mylar/zest/examples/jface/"); //Windows path

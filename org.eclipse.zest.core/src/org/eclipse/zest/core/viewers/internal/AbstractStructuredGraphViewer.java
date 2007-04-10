@@ -220,6 +220,14 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		setLayoutAlgorithm(algorithm, false);
 	}
 
+	public Object[] getNodeElements() {
+		return this.nodesMap.keySet().toArray();
+	}
+
+	public Object[] getConnectionElements() {
+		return this.connectionsMap.keySet().toArray();
+	}
+
 	HashMap getNodesMap() {
 		return this.nodesMap;
 	}
@@ -312,8 +320,9 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindInputItem(java.lang.Object)
 	 */
 	protected Widget doFindInputItem(Object element) {
-		if (element == getInput()) {
-			return getGraphControl();
+
+		if (element == getInput() && element instanceof Widget) {
+			return (Widget) element;
 		}
 		return null;
 	}
@@ -687,8 +696,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 				Object source = content.getSource(connection);
 				Object dest = content.getDestination(connection);
 				// create the new relationship
-				GraphConnection newConnection = modelFactory.createConnection(getGraphControl(), connection, source,
-						dest);
+				GraphConnection newConnection = modelFactory.createConnection(getGraphControl(), connection, source, dest);
 				// add it to the layout algorithm
 				if (getLayoutAlgorithm() != null) {
 					getLayoutAlgorithm().addRelationship(newConnection.getLayoutRelationship());

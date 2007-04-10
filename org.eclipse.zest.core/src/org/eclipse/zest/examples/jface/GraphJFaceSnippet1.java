@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.examples.jface;
 
-import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.mylar.zest.core.viewers.GraphViewer;
@@ -29,12 +28,17 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * 
+ * This snippet shows how to use the IGraphEntityContentProvider to build a graph.  
  * @author Ian Bull
  * 
  */
-public class GraphJFaceSnippet {
+public class GraphJFaceSnippet1 {
 
+	/**
+	 * The Content Provider
+	 * @author irbull
+	 *
+	 */
 	static class MyContentProvider implements IGraphEntityContentProvider {
 
 		public Object[] getConnectedTo(Object entity) {
@@ -67,7 +71,7 @@ public class GraphJFaceSnippet {
 		}
 	}
 
-	static class MyLabelProvider implements ILabelProvider {
+	static class MyLabelProvider extends LabelProvider {
 		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 
 		public Image getImage(Object element) {
@@ -82,22 +86,6 @@ public class GraphJFaceSnippet {
 				return element.toString();
 			}
 			return null;
-		}
-
-		public void addListener(ILabelProviderListener listener) {
-
-		}
-
-		public void dispose() {
-
-		}
-
-		public boolean isLabelProperty(Object element, String property) {
-			return false;
-		}
-
-		public void removeListener(ILabelProviderListener listener) {
-
 		}
 
 	}

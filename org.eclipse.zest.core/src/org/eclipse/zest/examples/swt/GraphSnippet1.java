@@ -1,13 +1,12 @@
 /*******************************************************************************
- * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
+ * Canada. All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
- *******************************************************************************/
+ * 
+ * Contributors: The Chisel Group, University of Victoria
+ ******************************************************************************/
 package org.eclipse.mylar.zest.examples.swt;
 
 import org.eclipse.mylar.zest.core.widgets.Graph;
@@ -19,8 +18,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.ScrolledForm;
 
 /**
  * This snippet creates a very simpl graph where Rock is connected to Paper
@@ -39,23 +36,15 @@ public class GraphSnippet1 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		// Create the shell
 		Display d = new Display();
 		Shell shell = new Shell(d);
+		shell.setText("GraphSnippet1");
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		FormToolkit toolkit = new FormToolkit(shell.getDisplay());
-		ScrolledForm form = toolkit.createScrolledForm(shell);
-		form.setText("Hello, Eclipse Forms");
+		Graph g = new Graph(shell, SWT.NONE);
 
-		Graph g = new Graph(form.getBody(), SWT.NONE);
-
-		// g.setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TEXT_BORDER);
-		// or myControl.setData(FormToolkit.KEY_DRAW_BORDER,
-		// FormToolkit.TREE_BORDER);
-		// toolkit.paintBordersFor(g);
-
-		form.getBody().setLayout(new FillLayout());
 		GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");
 		GraphNode n3 = new GraphNode(g, SWT.NONE, "Scissors");

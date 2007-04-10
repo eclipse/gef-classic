@@ -174,8 +174,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 		} else if (contentProvider instanceof IGraphEntityRelationshipContentProvider) {
 			super.setContentProvider(contentProvider);
 		} else {
-			throw new IllegalArgumentException(
-					"Invalid content provider, only IGraphContentProvider, IGraphEntityContentProvider, or IGraphEntityRelationshipContentProvider are supported.");
+			throw new IllegalArgumentException("Invalid content provider, only IGraphContentProvider, IGraphEntityContentProvider, or IGraphEntityRelationshipContentProvider are supported.");
 		}
 	}
 
@@ -212,6 +211,14 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	public Control getControl() {
 		return graph;
+	}
+
+	public Object[] getNodeElements() {
+		return super.getNodeElements();
+	}
+
+	public Object[] getConnectionElements() {
+		return super.getConnectionElements();
 	}
 
 	/*
