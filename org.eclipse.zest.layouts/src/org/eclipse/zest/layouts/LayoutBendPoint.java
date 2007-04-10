@@ -18,4 +18,5 @@ package org.eclipse.mylar.zest.layouts;
 public interface LayoutBendPoint {
 	public double getX();
 	public double getY();
+	public boolean getIsControlPoint();
 }

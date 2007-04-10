@@ -20,8 +20,15 @@ import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
  */
 public class BendPoint extends DisplayIndependentPoint implements LayoutBendPoint {
 	
+	private boolean isControlPoint = false; // is this a control point (for use in curves)
+
 	public BendPoint(double x, double y) {
 		super(x, y);
+	}
+
+	public BendPoint(double x, double y, boolean isControlPoint) {
+		this(x, y);
+		this.isControlPoint = isControlPoint;
 	}
 
 	public double getX() {
@@ -38,6 +45,10 @@ public class BendPoint extends DisplayIndependentPoint implements LayoutBendPoin
 
 	public void setY(double y) {
 		this.y = y;
+	}
+
+	public boolean getIsControlPoint() {
+		return isControlPoint;
 	}
 
 }

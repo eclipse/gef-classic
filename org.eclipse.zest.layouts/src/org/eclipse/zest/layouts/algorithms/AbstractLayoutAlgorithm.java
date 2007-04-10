@@ -556,7 +556,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 				
 				for (int j = 0; j < bendPoints.size(); j++) {
 					BendPoint bp = (BendPoint) bendPoints.get(j);
-					externalBendPoints[j+1] = new BendPoint(bp.x, bp.y);
+					externalBendPoints[j+1] = new BendPoint(bp.x, bp.y, bp.getIsControlPoint());
 				}
 				relationship.getLayoutRelationship().setBendPoints(
 						externalBendPoints);
@@ -729,11 +729,6 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	protected void defaultFitWithinBounds(InternalNode[] entitiesToLayout, 
 			InternalRelationship[] relationships, DisplayIndependentRectangle realBounds) {
 
-		// Set the layout bounds.
-		double borderWidth = Math.min(realBounds.width, realBounds.height)/10.0; // use 10% for the border - 5% on each side
-		DisplayIndependentRectangle screenBounds = new DisplayIndependentRectangle (
-				realBounds.x + borderWidth/2.0, realBounds.y + borderWidth/2.0, 
-				realBounds.width - borderWidth, realBounds.height - borderWidth);
 		DisplayIndependentRectangle layoutBounds; 
 
 		if (resizeEntitiesAfterLayout) { 
@@ -752,10 +747,41 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
     	// adjust node positions again, to the new coordinate system (still as a percentage)
 		convertPositionsToPercentage (entitiesToLayout, relationships, layoutBounds, true /*update node size*/); 
 		
+		DisplayIndependentRectangle screenBounds = calcScreenBounds(realBounds, layoutBounds);
+
 		// Now convert to real screen coordinates
 		convertPositionsToCoords(entitiesToLayout, relationships, screenBounds);
 	}
 	
+
+	/**
+	 * Calculate the screen bounds, maintaining the  
+	 * @param realBounds
+	 * @return
+	 */
+	private DisplayIndependentRectangle calcScreenBounds(
+			DisplayIndependentRectangle realBounds, 
+			DisplayIndependentRectangle layoutBounds) {
+		if (resizeEntitiesAfterLayout) { // OK to alter aspect ratio 
+			double borderWidth = Math.min(realBounds.width, realBounds.height)/10.0; // use 10% for the border - 5% on each side
+			return new DisplayIndependentRectangle (
+					realBounds.x + borderWidth/2.0, realBounds.y + borderWidth/2.0, 
+					realBounds.width - borderWidth, realBounds.height - borderWidth);
+		} else 	{ // retain layout aspect ratio 
+			double heightAdjustment =  realBounds.height/layoutBounds.height;
+			double widthAdjustment =  realBounds.width/layoutBounds.width;
+			double ratio = Math.min(heightAdjustment, widthAdjustment);
+			double adjustedHeight = layoutBounds.height * ratio;
+			double adjustedWidth  = layoutBounds.width * ratio;
+			double adjustedX = realBounds.x + (realBounds.width-adjustedWidth)/2.0;
+			double adjustedY = realBounds.y + (realBounds.height-adjustedHeight)/2.0;
+			double borderWidth = Math.min(adjustedWidth, adjustedHeight)/10.0; // use 10% for the border - 5% on each side
+			return new DisplayIndependentRectangle (
+				adjustedX + borderWidth/2.0, adjustedY + borderWidth/2.0, 
+				adjustedWidth- borderWidth, adjustedHeight-borderWidth);
+		}
+	}
+
 
 	/**
 	 * Find and set the node size - shift the nodes to the right and down to make 

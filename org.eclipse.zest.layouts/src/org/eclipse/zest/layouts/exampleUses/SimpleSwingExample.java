@@ -31,6 +31,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -616,6 +617,20 @@ public class SimpleSwingExample {
 			return length;
     	}
     	
+    	/**
+    	 * Draw a line from specified source to specified destination
+    	 */
+    	private void drawCurvedRelationship(double srcX, double srcY, 
+    			double control1X, double control1Y, double control2X, double control2Y,
+    			double destX, double destY, Graphics g) {
+    		GeneralPath shape = new GeneralPath();
+    		shape.moveTo((float)srcX, (float)srcY);
+            shape.curveTo((float)control1X, (float)control1Y,
+            		(float)control2X, (float)control2Y, (float)destX, (float)destY);
+    		g.setColor(RELATIONSHIP_NORMAL_COLOR);
+    		((Graphics2D)g).draw(shape);
+    	}
+		
 		/**
 		 * Draws a set of lines between bendpoints, returning the last bendpoint
 		 * drawn. Note that this assumes the first and last bendpoints are actually
@@ -639,12 +654,31 @@ public class SimpleSwingExample {
 
 			srcX = bendPoints[1].getX();
 			srcY = bendPoints[1].getY();
-			for (int i = 2; i < bendPoints.length-1; i++) { // ignore first and last bendpoints (src and dest)
-				bp = bendPoints[i];
-				destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);
-				drawRelationship(srcX, srcY, bp.getX(), bp.getY(), g);
+			int bpNum = 2;
+			while (bpNum <  bendPoints.length-1) { // ignore first and last bendpoints (src and dest)
+				int currentBpNum = bpNum;
+				bp = bendPoints[bpNum];
+				if (bp.getIsControlPoint()) {
+					if (bendPoints[bpNum+1].getIsControlPoint()) {
+						destEntity = new SimpleNode(DUMMY_TITLE, 
+								bendPoints[bpNum+2].getX(), bendPoints[bpNum+2].getY(), 0.01, 0.01);
+						drawCurvedRelationship(srcX, srcY, 
+								bp.getX(), bp.getY(), 
+								bendPoints[bpNum+1].getX(), bendPoints[bpNum+1].getY(),
+								bendPoints[bpNum+2].getX(), bendPoints[bpNum+2].getY(), g);
+						bpNum += 4;
+					}
+					else {
+						destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);
+					}
+				}
+				else {
+					drawRelationship(srcX, srcY, bp.getX(), bp.getY(), g);
+					bpNum++;
+					destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);
+				}	
 				startEntity = (SimpleNode) destEntity;
-				if (i == bendPoints.length - 2) { // last point
+				if (currentBpNum == bendPoints.length - 2) { // last point
 					// draw an arrow in the middle of the line
 					double dx = getLength(srcX, destEntity.getX());
 					double dy = getLength(srcY, destEntity.getY());
@@ -654,7 +688,7 @@ public class SimpleSwingExample {
 				else {
 					srcX = startEntity.getX();
 					srcY = startEntity.getY();
-				}	
+				}
 			}
 
 		}

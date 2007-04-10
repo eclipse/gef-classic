@@ -70,6 +70,17 @@ public class InternalRelationship implements LayoutRelationship{
 		bendPoints.add(new BendPoint(x, y));
 	}
 	
+	/**
+	 * Ensure this is called in order of source to target node position.
+	 * Specifies if the bendpoint is a curve control point
+	 * @param x
+	 * @param y
+	 * @param isControlPoint
+	 */
+	public void addBendPoint(double x, double y, boolean isControlPoint) {
+		bendPoints.add(new BendPoint(x, y, isControlPoint));
+	}
+	
 	public List getBendPoints() {
 		return this.bendPoints;
 	}
