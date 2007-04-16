@@ -5,8 +5,8 @@ Bundle-SymbolicName: org.eclipse.mylar.zest.core; singleton:=true
 Bundle-Version: 0.4.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.mylar.zest.layouts,
- org.eclipse.draw2d,
- org.eclipse.ui.forms
+ org.eclipse.ui.forms,
+ org.eclipse.draw2d
 Eclipse-LazyStart: false
 Export-Package: org.eclipse.mylar.zest.core.messages,
  org.eclipse.mylar.zest.core.viewers,

@@ -553,6 +553,7 @@ public class GraphConnection extends GraphItem {
 
 		if (highlighted) {
 			connectionShape.setForegroundColor(getHighlightColor());
+			connectionShape.setLineWidth(getLineWidth() * 2);
 		} else {
 			connectionShape.setForegroundColor(getLineColor());
 		}

@@ -74,4 +74,17 @@ public abstract class GraphItem extends Item {
 	 */
 	public abstract Graph getGraphModel();
 
+	/**
+	 * Highlights the current GraphItem.  A graph item is either a graph node or 
+	 * graph connection, and highlighting them will set the appropriate highlight
+	 * color.
+	 */
+	public abstract void highlight();
+
+	/**
+	 * Unhighlight sets the graphItem (either a graphNode or graphConnection) back
+	 * to the unhighlight figure or color.
+	 */
+	public abstract void unhighlight();
+
 }

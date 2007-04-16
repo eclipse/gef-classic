@@ -403,9 +403,15 @@ public class Graph extends FigureCanvas {
 			if (selectedItems.size() > 0) {
 				Iterator iterator = selectedItems.iterator();
 				while (iterator.hasNext()) {
-					GraphNode node = (GraphNode) iterator.next();
-					Point delta = new Point(mousePoint.x - oldLocation.x, mousePoint.y - oldLocation.y);
-					node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
+					GraphItem item = (GraphItem) iterator.next();
+					if (item.getItemType() == GraphItem.NODE) {
+						// @tag Zest.selection Zest.move : This is where the node movement is tracked
+						GraphNode node = (GraphNode) item;
+						Point delta = new Point(mousePoint.x - oldLocation.x, mousePoint.y - oldLocation.y);
+						node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
+					} else {
+						// There is no movement for connection
+					}
 				}
 			}
 			oldLocation = mousePoint;
@@ -444,24 +450,22 @@ public class Graph extends FigureCanvas {
 				getRootLayer().setScale(scale);
 			} else {
 				boolean hasSelection = selectedItems.size() > 0;
-				IFigure figureUnderMouse = graph.getContents().findFigureAt(mousePoint.x, mousePoint.y,
-						new TreeSearch() {
+				IFigure figureUnderMouse = graph.getContents().findFigureAt(mousePoint.x, mousePoint.y, new TreeSearch() {
 
-							public boolean accept(IFigure figure) {
-								return true;
-							}
+					public boolean accept(IFigure figure) {
+						return true;
+					}
 
-							public boolean prune(IFigure figure) {
-								IFigure parent = figure.getParent();
-								if (parent == nodeLayer || parent == nodeFeedbackLayer
-										|| parent == nodeLayer.getParent()
-										|| parent == nodeLayer.getParent().getParent()) {
-									return false;
-								}
-								return true;
-							}
+					public boolean prune(IFigure figure) {
+						IFigure parent = figure.getParent();
+						// @tag TODO Zest : change these to from getParent to their actual layer names
+						if (parent == nodeLayer || parent == nodeFeedbackLayer || parent == nodeLayer.getParent() || parent == nodeLayer.getParent().getParent() || parent == edgeFeedbackLayer || parent == edgeLayer) {
+							return false;
+						}
+						return true;
+					}
 
-						});
+				});
 				oldLocation = mousePoint;
 				getRootLayer().translateFromParent(oldLocation);
 				// If the figure under the mouse is the canvas, then select
@@ -494,10 +498,14 @@ public class Graph extends FigureCanvas {
 				}
 
 				if (itemUnderMouse.getItemType() == GraphItem.NODE) {
+					// @tag Zest.selection : This is where the nodes are selected
 					selectedItems.add(itemUnderMouse);
 					((GraphNode) itemUnderMouse).highlight();
 					fireWidgetSelectedEvent(itemUnderMouse);
 				} else if (itemUnderMouse.getItemType() == GraphItem.CONNECTION) {
+					selectedItems.add(itemUnderMouse);
+					((GraphConnection) itemUnderMouse).highlight();
+					fireWidgetSelectedEvent(itemUnderMouse);
 
 				}
 			}
@@ -514,8 +522,8 @@ public class Graph extends FigureCanvas {
 		if (selectedItems.size() > 0) {
 			Iterator iterator = selectedItems.iterator();
 			while (iterator.hasNext()) {
-				GraphNode node = (GraphNode) iterator.next();
-				node.unhighlight();
+				GraphItem item = (GraphItem) iterator.next();
+				item.unhighlight();
 				iterator.remove();
 			}
 		}
@@ -673,8 +681,7 @@ public class Graph extends FigureCanvas {
 
 	void setItemVisible(GraphItem item, boolean visible) {
 		if (visible) {
-			if (item.getItemType() == GraphItem.NODE
-					&& (!nodeLayer.getChildren().contains(item) || !nodeFeedbackLayer.getChildren().contains(item))) {
+			if (item.getItemType() == GraphItem.NODE && (!nodeLayer.getChildren().contains(item) || !nodeFeedbackLayer.getChildren().contains(item))) {
 				GraphNode graphNode = (GraphNode) item;
 				IFigure figure = graphNode.getNodeFigure();
 				if (graphNode.isHighlighted()) {
@@ -683,8 +690,7 @@ public class Graph extends FigureCanvas {
 					nodeLayer.add(figure);
 				}
 				figure2ItemMap.put(figure, item);
-			} else if (item.getItemType() == GraphItem.CONNECTION
-					&& (!edgeLayer.getChildren().contains(item) || !edgeFeedbackLayer.getChildren().contains(item))) {
+			} else if (item.getItemType() == GraphItem.CONNECTION && (!edgeLayer.getChildren().contains(item) || !edgeFeedbackLayer.getChildren().contains(item))) {
 				GraphConnection graphConnection = (GraphConnection) item;
 				IFigure figure = graphConnection.getConnectionFigure();
 				if (graphConnection.isHighlighted()) {
