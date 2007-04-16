@@ -493,7 +493,13 @@ public class Graph extends FigureCanvas {
 					return;
 				}
 				if (selectedItems.contains(itemUnderMouse)) {
-					// We have already selected this node. Don't change anything
+					// We have already selected this node, and CTRL is being held down, remove this selection
+					// @tag Zest.selection : This deselects when you have CTRL pressed
+					if (me.getState() == org.eclipse.draw2d.MouseEvent.CONTROL) {
+						selectedItems.remove(itemUnderMouse);
+						(itemUnderMouse).unhighlight();
+						fireWidgetSelectedEvent(itemUnderMouse);
+					}
 					return;
 				}
 
