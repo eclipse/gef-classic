@@ -468,23 +468,27 @@ public class Graph extends FigureCanvas {
 				});
 				oldLocation = mousePoint;
 				getRootLayer().translateFromParent(oldLocation);
-				// If the figure under the mouse is the canvas, then select
+				// If the figure under the mouse is the canvas, and CTRL is not being held down, then select
 				// nothing
 				if (figureUnderMouse == null || figureUnderMouse == graph) {
-					clearSelection();
-					if (hasSelection) {
-						fireWidgetSelectedEvent(null);
-						hasSelection = false;
+					if (me.getState() != org.eclipse.draw2d.MouseEvent.CONTROL) {
+						clearSelection();
+						if (hasSelection) {
+							fireWidgetSelectedEvent(null);
+							hasSelection = false;
+						}
 					}
 					return;
 				}
 
 				GraphItem itemUnderMouse = (GraphItem) figure2ItemMap.get(figureUnderMouse);
 				if (itemUnderMouse == null) {
-					clearSelection();
-					if (hasSelection) {
-						fireWidgetSelectedEvent(null);
-						hasSelection = false;
+					if (me.getState() != org.eclipse.draw2d.MouseEvent.CONTROL) {
+						clearSelection();
+						if (hasSelection) {
+							fireWidgetSelectedEvent(null);
+							hasSelection = false;
+						}
 					}
 					return;
 				}
