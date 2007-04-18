@@ -237,6 +237,11 @@ public void addNotify() {
  */
 protected void addSourceConnection(ConnectionEditPart connection, int index) {
 	primAddSourceConnection(connection, index);
+    
+    GraphicalEditPart source = (GraphicalEditPart) connection.getSource();
+    if (source != null)
+        source.getSourceConnections().remove(connection);
+        
 	connection.setSource(this);
 	if (isActive())
 		connection.activate();
@@ -258,6 +263,11 @@ protected void addSourceConnection(ConnectionEditPart connection, int index) {
  */
 protected void addTargetConnection(ConnectionEditPart connection, int index) {
 	primAddTargetConnection(connection, index);
+    
+    GraphicalEditPart target = (GraphicalEditPart) connection.getTarget();
+    if (target != null)
+    	target.getTargetConnections().remove(connection);
+    
 	connection.setTarget(this);
 	fireTargetConnectionAdded(connection, index);
 }
