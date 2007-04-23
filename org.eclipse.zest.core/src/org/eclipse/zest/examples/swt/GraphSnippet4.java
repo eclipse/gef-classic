@@ -24,8 +24,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Adds a selection listener to the nodes to tell when a selection event has
- * happened.
+ * This snippet shows how a custom figure can be used as a ToolTip for connections.
+ * Let your mouse hover over an edge to see the custom tooltip.
  * 
  * @author Ian Bull
  * 
