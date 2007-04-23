@@ -13,6 +13,7 @@ import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
@@ -88,6 +89,8 @@ public class GraphConnection extends GraphItem {
 	 */
 	private boolean visible;
 
+	private IFigure tooltip;
+	
 	private boolean highlighted;
 	private GraphLayoutConnection layoutConnection = null;
 
@@ -284,6 +287,24 @@ public class GraphConnection extends GraphItem {
 		updateFigure(connectionFigure);
 	}
 
+	/**
+	 * Sets the tooltip on this node. This tooltip will display if the mouse
+	 * hovers over the node. Setting the tooltip has no effect if a custom
+	 * figure has been set.
+	 */
+	public void setTooltip(IFigure tooltip) {
+		this.tooltip = tooltip;
+		updateFigure(connectionFigure);
+	}
+
+	/**
+	 * Gets the current tooltip for this node. The tooltip returned is
+	 * meaningless if a custom figure has been set.
+	 */
+	public IFigure getTooltip() {
+		return this.tooltip;
+	}
+	
 	/**
 	 * Returns the connection line width.
 	 * 
@@ -510,7 +531,7 @@ public class GraphConnection extends GraphItem {
 	// this.startLength = startLength;
 	// updateFigure(connectionFigure);
 	// }
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -538,10 +559,23 @@ public class GraphConnection extends GraphItem {
 	public boolean isVisible() {
 		return visible;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.swt.widgets.Item#setText(java.lang.String)
+	 */
+	public void setText(String string) {
+		super.setText(string);
+
+		if (this.connectionFigure != null) {
+			updateFigure(this.connectionFigure);
+		}
+	}
 
 	private Connection updateFigure(Connection connection) {
 		Shape connectionShape = (Shape) connection;
-		connectionShape.setLineWidth(getLineWidth());
+		
 		connectionShape.setLineStyle(getLineStyle());
 
 		AligningBendpointLocator labelLocator = new AligningBendpointLocator(connection);
@@ -556,6 +590,7 @@ public class GraphConnection extends GraphItem {
 			connectionShape.setLineWidth(getLineWidth() * 2);
 		} else {
 			connectionShape.setForegroundColor(getLineColor());
+			connectionShape.setLineWidth(getLineWidth());
 		}
 
 		if (connection instanceof PolylineArcConnection) {
@@ -572,6 +607,16 @@ public class GraphConnection extends GraphItem {
 			}
 			((PolylineConnection) connection).setTargetDecoration(decoration);
 		}
+		
+		IFigure toolTip;
+		if (this.getTooltip() == null && getText() != null && getText().length() > 0) {
+			toolTip = new Label();
+			((Label) toolTip).setText(getText());
+		} else {
+			toolTip = this.getTooltip();
+		}
+		connection.setToolTip(toolTip);
+		
 		return connection;
 	}
 

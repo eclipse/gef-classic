@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylar.zest.core.viewers;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.services.IDisposable;
 
@@ -61,4 +62,12 @@ public interface IEntityConnectionStyleProvider extends IDisposable {
 	 */
 	public int getLineWidth(Object src, Object dest);
 		
+	/**
+	 * Returns the tooltop for this node. If null is returned Zest will simply
+	 * use the default tooltip.
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	public IFigure getTooltip(Object entity);
 }

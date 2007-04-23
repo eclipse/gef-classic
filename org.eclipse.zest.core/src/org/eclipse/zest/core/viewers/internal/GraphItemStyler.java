@@ -127,6 +127,10 @@ public class GraphItemStyler {
 		if ((c = provider.getColor(rel)) != null) {
 			conn.setLineColor(c);
 		}
+		IFigure tooltip;
+		if ((tooltip = provider.getTooltip(rel)) != null) {
+			conn.setTooltip(tooltip);
+		}
 		int w = -1;
 		if ((w = provider.getLineWidth(rel)) >= 0) {
 			conn.setLineWidth(w);

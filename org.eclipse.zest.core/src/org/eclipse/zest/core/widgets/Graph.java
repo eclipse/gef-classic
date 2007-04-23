@@ -289,6 +289,14 @@ public class Graph extends FigureCanvas {
 		}
 	}
 
+	public void selectAll() {
+		clearSelection();
+		for (int i = 0; i < nodes.size(); i++) {
+			selectedItems.add(nodes.get(i));
+			((GraphNode) nodes.get(i)).highlight();
+		}
+	}
+
 	/**
 	 * Gets the list of currently selected GraphNodes
 	 * 
