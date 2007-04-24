@@ -35,8 +35,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This snippet shows how a custom figure can be used as a ToolTip for connections.
- * Let your mouse hover over an edge to see the custom tooltip.
+ * This snippet shows how you can add a paint listener to a Zest graph to paint on top of
+ * the widget.  This snippet allows you to type and it selects all the nodes that match 
+ * what you type.
  * 
  * @author Ian Bull
  * 
