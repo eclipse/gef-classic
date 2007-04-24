@@ -97,6 +97,7 @@ public class GraphSnippet4 {
 		image3.dispose();
 		
 		information2warningImage.dispose();
+		warning2error.dispose();
 
 	}
 }

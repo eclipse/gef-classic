@@ -108,7 +108,7 @@ public class Graph extends FigureCanvas {
 	 * @param style
 	 */
 	public Graph(Composite parent, int style) {
-		super(parent, style);
+		super(parent, style | SWT.DOUBLE_BUFFERED);
 		this.style = style;
 		this.setBackground(ColorConstants.white);
 
