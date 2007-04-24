@@ -40,6 +40,7 @@ import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -117,8 +118,20 @@ public class Graph extends FigureCanvas {
 		GREY_BLUE = new Color(Display.getDefault(), 139, 150, 171);
 		DARK_BLUE = new Color(Display.getDefault(), 1, 70, 122);
 		LIGHT_YELLOW = new Color(Display.getDefault(), 255, 255, 206);
-
+		
 		this.setViewport(new FreeformViewport());
+		
+		this.getVerticalBar().addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				Graph.this.redraw();
+			}
+			
+		});
+		this.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
+			public void widgetSelected(SelectionEvent e) {
+				Graph.this.redraw();
+			}
+		});
 
 		// @tag CGraph.workaround : this allows me to handle mouse events
 		// outside of the canvas
@@ -171,8 +184,9 @@ public class Graph extends FigureCanvas {
 					}
 				}
 			}
-
 		});
+		
+		
 
 	}
 
