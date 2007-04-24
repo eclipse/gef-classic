@@ -670,7 +670,7 @@ public class GraphNode extends GraphItem {
 			return figure;
 		}
 		IFigure toolTip;
-
+ 
 		figure.setText(this.getText());
 		figure.setIcon(getImage());
 
@@ -691,6 +691,7 @@ public class GraphNode extends GraphItem {
 
 		Dimension d = figure.getSize();
 		setSize(d.width, d.height);
+		
 
 		if (this.getTooltip() == null) {
 			toolTip = new Label();
@@ -701,6 +702,7 @@ public class GraphNode extends GraphItem {
 		figure.setToolTip(toolTip);
 
 		figure.addLayoutListener(LayoutAnimator.getDefault());
+		refreshLocation();
 		return figure;
 	}
 
