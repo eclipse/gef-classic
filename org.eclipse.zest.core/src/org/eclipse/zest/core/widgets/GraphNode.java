@@ -103,7 +103,7 @@ public class GraphNode extends GraphItem {
 		this.borderColor = ColorConstants.black;
 		this.borderHighlightColor = ColorConstants.blue;
 		this.borderWidth = 1;
-		this.currentLocation = new PrecisionPoint(10, 10);
+		this.currentLocation = new PrecisionPoint(0, 0);
 		this.size = new Dimension(0, 0);
 		this.font = Display.getDefault().getSystemFont();
 		this.graph = graphModel;

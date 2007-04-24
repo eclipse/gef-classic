@@ -881,6 +881,7 @@ public class Graph extends FigureCanvas {
 		rootlayer.add(nodeFeedbackLayer);
 
 		nodeLayer.addLayoutListener(LayoutAnimator.getDefault());
+		nodeFeedbackLayer.addLayoutListener(LayoutAnimator.getDefault());
 		return rootlayer;
 	}
 
