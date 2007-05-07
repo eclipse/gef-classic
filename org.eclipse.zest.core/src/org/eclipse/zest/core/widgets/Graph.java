@@ -608,7 +608,7 @@ public class Graph extends FigureCanvas {
 	 */
 	void highlightNode(GraphNode node) {
 		IFigure figure = node.getNodeFigure();
-		if (figure != null) {
+		if (figure != null && nodeLayer.getChildren().contains(figure)) {
 			nodeLayer.remove(figure);
 			figure.setBounds(node.getBounds());
 			nodeFeedbackLayer.add(figure);
@@ -622,7 +622,7 @@ public class Graph extends FigureCanvas {
 	 */
 	void unhighlightNode(GraphNode node) {
 		IFigure figure = node.getNodeFigure();
-		if (figure != null) {
+		if (figure != null && nodeFeedbackLayer.getChildren().contains(figure)) {
 			nodeFeedbackLayer.remove(figure);
 			nodeLayer.add(figure);
 		}
