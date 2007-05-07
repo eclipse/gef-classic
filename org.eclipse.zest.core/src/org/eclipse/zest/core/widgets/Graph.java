@@ -118,14 +118,14 @@ public class Graph extends FigureCanvas {
 		GREY_BLUE = new Color(Display.getDefault(), 139, 150, 171);
 		DARK_BLUE = new Color(Display.getDefault(), 1, 70, 122);
 		LIGHT_YELLOW = new Color(Display.getDefault(), 255, 255, 206);
-		
+
 		this.setViewport(new FreeformViewport());
-		
+
 		this.getVerticalBar().addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				Graph.this.redraw();
 			}
-			
+
 		});
 		this.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
@@ -185,8 +185,6 @@ public class Graph extends FigureCanvas {
 				}
 			}
 		});
-		
-		
 
 	}
 
@@ -295,10 +293,12 @@ public class Graph extends FigureCanvas {
 	 */
 	public void setSelection(GraphItem[] nodes) {
 		clearSelection();
-		for (int i = 0; i < nodes.length; i++) {
-			if (nodes[i].getItemType() == GraphItem.NODE) {
-				selectedItems.add(nodes[i]);
-				((GraphNode) nodes[i]).highlight();
+		if (nodes != null) {
+			for (int i = 0; i < nodes.length; i++) {
+				if (nodes[i].getItemType() == GraphItem.NODE) {
+					selectedItems.add(nodes[i]);
+					((GraphNode) nodes[i]).highlight();
+				}
 			}
 		}
 	}
@@ -610,6 +610,7 @@ public class Graph extends FigureCanvas {
 		IFigure figure = node.getNodeFigure();
 		if (figure != null) {
 			nodeLayer.remove(figure);
+			figure.setBounds(node.getBounds());
 			nodeFeedbackLayer.add(figure);
 		}
 	}

@@ -288,9 +288,14 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @param graph
 	 */
 	public void clearGraph(Graph graph) {
-		GraphNode[] nodes = getNodesArray(graph);
-		for (int i = 0; i < nodes.length; i++) {
-			viewer.removeGraphModelNode(nodes[i]);
+		graph.setSelection(null);
+		Object[] nodeElements = viewer.getNodeElements();
+		for (int i = 0; i < nodeElements.length; i++) {
+			viewer.removeGraphModelNode(nodeElements[i]);
+		}
+		Object[] connectionElements = viewer.getConnectionElements();
+		for (int i = 0; i < connectionElements.length; i++) {
+			viewer.removeGraphModelConnection(connectionElements[i]);
 		}
 	}
 
@@ -350,7 +355,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	}
 
 	/**
-	 * Converts the list of GraphModelNode objects into an array an returns it.
+	 * Converts the list of GraphNode objects into an array and return it.
 	 * 
 	 * @return GraphModelNode[]
 	 */
@@ -358,5 +363,16 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		GraphNode[] nodesArray = new GraphNode[graph.getNodes().size()];
 		nodesArray = (GraphNode[]) graph.getNodes().toArray(nodesArray);
 		return nodesArray;
+	}
+
+	/**
+	 * Converts the list of GraphConnections objects into an array and return it.
+	 * @param graph
+	 * @return
+	 */
+	protected GraphConnection[] getConnectionArray(Graph graph) {
+		GraphConnection[] connectionArray = new GraphConnection[graph.getConnections().size()];
+		connectionArray = (GraphConnection[]) graph.getConnections().toArray(connectionArray);
+		return connectionArray;
 	}
 }

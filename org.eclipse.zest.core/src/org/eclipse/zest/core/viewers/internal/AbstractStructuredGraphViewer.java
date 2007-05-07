@@ -272,11 +272,11 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	}
 
 	void removeGraphModelNode(Object obj) {
-		GraphNode connection = (GraphNode) nodesMap.get(obj);
-		if (connection != null) {
+		GraphNode node = (GraphNode) nodesMap.get(obj);
+		if (node != null) {
 			nodesMap.remove(obj);
-			if (!connection.isDisposed()) {
-				connection.dispose();
+			if (!node.isDisposed()) {
+				node.dispose();
 			}
 		}
 	}
@@ -416,7 +416,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		factory.setConnectionStyle(getConnectionStyle());
 		factory.setNodeStyle(getNodeStyle());
 
-		// Save the old map so we can set the size and possition of any nodes
+		// Save the old map so we can set the size and position of any nodes
 		// that are the same
 		Map oldNodesMap = nodesMap;
 		Graph graph = (Graph) getControl();
