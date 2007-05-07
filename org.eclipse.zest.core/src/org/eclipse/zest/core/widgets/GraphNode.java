@@ -104,7 +104,7 @@ public class GraphNode extends GraphItem {
 		this.borderHighlightColor = ColorConstants.blue;
 		this.borderWidth = 1;
 		this.currentLocation = new PrecisionPoint(0, 0);
-		this.size = new Dimension(0, 0);
+		this.size = new Dimension(-1, -1);
 		this.font = Display.getDefault().getSystemFont();
 		this.graph = graphModel;
 		this.cacheLabel = false;
@@ -391,7 +391,7 @@ public class GraphNode extends GraphItem {
 					}
 				}
 			}
-			
+
 		}
 		graph.unhighlightNode(this);
 		updateFigureForModel(nodeFigure);
@@ -670,7 +670,7 @@ public class GraphNode extends GraphItem {
 			return figure;
 		}
 		IFigure toolTip;
- 
+
 		figure.setText(this.getText());
 		figure.setIcon(getImage());
 
@@ -690,8 +690,10 @@ public class GraphNode extends GraphItem {
 		figure.setFont(getFont());
 
 		Dimension d = figure.getSize();
-		setSize(d.width, d.height);
-		
+		if (d.height < 0 && d.width < 0) {
+			this.size = d.getCopy();
+			//setSize(d.width, d.height);
+		}
 
 		if (this.getTooltip() == null) {
 			toolTip = new Label();

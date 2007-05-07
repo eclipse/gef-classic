@@ -86,12 +86,12 @@ public class GraphLabel extends CachedLabel {
 	public GraphLabel(String text, Image i, boolean cacheLabel) {
 		super(cacheLabel);
 		initLabel();
-		setText(text);
+		setText(" " + text + " ");
 		setIcon(i);
 	}
 
 	/**
-	 * Initializes the border color, border width, and sets the layout manager.
+	 * Initialises the border colour, border width, and sets the layout manager.
 	 * Also sets the font to be the default system font.
 	 */
 	protected void initLabel() {
@@ -180,7 +180,7 @@ public class GraphLabel extends CachedLabel {
 	 * @see org.eclipse.draw2d.Label#setText(java.lang.String)
 	 */
 	public void setText(String s) {
-		super.setText(s);
+		super.setText(" " + s + " ");
 		adjustBoundsToFit();
 	}
 

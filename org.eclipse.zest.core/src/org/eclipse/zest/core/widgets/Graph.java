@@ -413,12 +413,16 @@ public class Graph extends FigureCanvas {
 	class DragSupport implements MouseMotionListener, org.eclipse.draw2d.MouseListener {
 		Graph graph = null;
 		Point oldLocation = null;
+		boolean mouseUp = true;
 
 		DragSupport(Graph graph) {
 			this.graph = graph;
 		}
 
 		public void mouseDragged(org.eclipse.draw2d.MouseEvent me) {
+			if (mouseUp) {
+				return;
+			}
 			Point mousePoint = new Point(me.x, me.y);
 			getRootLayer().translateToRelative(mousePoint);
 			getRootLayer().translateFromParent(mousePoint);
@@ -459,6 +463,7 @@ public class Graph extends FigureCanvas {
 		}
 
 		public void mousePressed(org.eclipse.draw2d.MouseEvent me) {
+			mouseUp = false;
 			Point mousePoint = new Point(me.x, me.y);
 			getRootLayer().translateToRelative(mousePoint);
 
@@ -516,7 +521,7 @@ public class Graph extends FigureCanvas {
 				}
 				if (selectedItems.contains(itemUnderMouse)) {
 					// We have already selected this node, and CTRL is being held down, remove this selection
-					// @tag Zest.selection : This deselects when you have CTRL pressed
+					// @tag Zest.selection : This de-selects when you have CTRL pressed
 					if (me.getState() == org.eclipse.draw2d.MouseEvent.CONTROL) {
 						selectedItems.remove(itemUnderMouse);
 						(itemUnderMouse).unhighlight();
@@ -545,9 +550,8 @@ public class Graph extends FigureCanvas {
 		}
 
 		public void mouseReleased(org.eclipse.draw2d.MouseEvent me) {
-
+			mouseUp = true;
 		}
-
 	}
 
 	private void clearSelection() {
@@ -610,9 +614,11 @@ public class Graph extends FigureCanvas {
 		IFigure figure = node.getNodeFigure();
 		if (figure != null && nodeLayer.getChildren().contains(figure)) {
 			nodeLayer.remove(figure);
-			figure.setBounds(node.getBounds());
+			//figure.setBounds(node.getBounds());
 			nodeFeedbackLayer.add(figure);
+			nodeFeedbackLayer.setConstraint(figure, node.getBounds());
 		}
+		nodeFeedbackLayer.getUpdateManager().performUpdate();
 	}
 
 	/**
@@ -625,7 +631,11 @@ public class Graph extends FigureCanvas {
 		if (figure != null && nodeFeedbackLayer.getChildren().contains(figure)) {
 			nodeFeedbackLayer.remove(figure);
 			nodeLayer.add(figure);
+			nodeLayer.setConstraint(figure, node.getBounds());
+			//figure.setBounds(node.getBounds());
+
 		}
+		nodeFeedbackLayer.getUpdateManager().performUpdate();
 	}
 
 	/**

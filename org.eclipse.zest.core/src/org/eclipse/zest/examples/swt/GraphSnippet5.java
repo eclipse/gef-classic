@@ -55,9 +55,9 @@ public class GraphSnippet5 {
 		final Display d = new Display();
 		FontData fontData = d.getSystemFont().getFontData()[0];
 		fontData.height = 42;
-		
+
 		final Font font = new Font(d, fontData);
-		
+
 		Shell shell = new Shell(d);
 		shell.setText("Graph Snippet 4");
 		Image image1 = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
@@ -74,7 +74,7 @@ public class GraphSnippet5 {
 		figureListing.put(n1.getText().toLowerCase(), n1);
 		figureListing.put(n2.getText().toLowerCase(), n2);
 		figureListing.put(n3.getText().toLowerCase(), n3);
-		
+
 		new GraphConnection(g, SWT.NONE, n1, n2);
 		new GraphConnection(g, SWT.NONE, n2, n3);
 		n1.setLocation(10, 10);
@@ -85,49 +85,44 @@ public class GraphSnippet5 {
 
 			public void keyPressed(KeyEvent e) {
 				boolean complete = false;
-				if ( e.keyCode == BACKSPACE ) {
-					if ( stringBuffer.length() > 0 ) {
-						stringBuffer.deleteCharAt(stringBuffer.length()-1);
+				if (e.keyCode == BACKSPACE) {
+					if (stringBuffer.length() > 0) {
+						stringBuffer.deleteCharAt(stringBuffer.length() - 1);
 					}
-				}
-				else if ( e.keyCode == ENTER ) {
+				} else if (e.keyCode == ENTER) {
 					complete = true;
-				}
-				else if ( ( e.character >= 'a' && e.character <= 'z') ||
-						  ( e.character >= 'A' && e.character <= 'Z') ||
-						  ( e.character == '.' ) ||
-						  ( e.character >= '0' && e.character <='9') ) {
+				} else if ((e.character >= 'a' && e.character <= 'z') || (e.character >= 'A' && e.character <= 'Z') || (e.character == '.') || (e.character >= '0' && e.character <= '9')) {
 					stringBuffer.append(e.character);
 				}
 				Iterator iterator = figureListing.keySet().iterator();
 				List list = new ArrayList();
-				if ( stringBuffer.length()> 0) {
-					while(iterator.hasNext()) {
+				if (stringBuffer.length() > 0) {
+					while (iterator.hasNext()) {
 						String string = (String) iterator.next();
-						if ( string.contains(stringBuffer.toString().toLowerCase()) ) {
+						if (string.contains(stringBuffer.toString().toLowerCase())) {
 							list.add(figureListing.get(string));
 						}
 					}
 				}
 				g.setSelection((GraphItem[]) list.toArray(new GraphItem[list.size()]));
-				if ( complete && stringBuffer.length() > 0) {
+				if (complete && stringBuffer.length() > 0) {
 					stringBuffer.delete(0, stringBuffer.length());
 				}
-				
+
 				g.redraw();
 			}
-			
+
 		});
-		
+
 		g.addPaintListener(new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				e.gc.setFont(font);
-				e.gc.setClipping((Region)null);
+				e.gc.setClipping((Region) null);
 				e.gc.setForeground(ColorConstants.lightGray);
 				e.gc.drawText(stringBuffer.toString(), 50, 50, true);
 			}
 		});
-		
+
 		shell.open();
 		while (!shell.isDisposed()) {
 			while (!d.readAndDispatch()) {
