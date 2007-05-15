@@ -94,7 +94,7 @@ protected Command getAddCommand(Request req) {
  * Calculates a <i>reference</i> <code>EditPart</code> using the specified
  * <code>Request</code>. The EditPart returned is used to mark the index coming
  * <em>after</em> that EditPart. <code>null</code> is used to indicate the index that
- * comes after <em>no</em> EditPart, that is, it indicates the very first index.
+ * comes after <em>no</em> EditPart, that is, it indicates the very last index.
  * @param request the Request
  * @return <code>null</code> or a reference EditPart
  */
