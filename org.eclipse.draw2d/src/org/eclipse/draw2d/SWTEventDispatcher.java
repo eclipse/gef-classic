@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -251,7 +251,7 @@ protected AccessibilityDispatcher getAccessibilityDispatcher() {
 
 /**
  * Returns the current mouse event.
- * @return the current mouse event
+ * @return the current mouse event; can be <code>null</code>
  */
 protected MouseEvent getCurrentEvent() {
 	return currentEvent;
@@ -327,6 +327,7 @@ public boolean isCaptured() {
 }
 
 private void receive(org.eclipse.swt.events.MouseEvent me) {
+	currentEvent = null;
 	updateFigureUnderCursor(me);
 	int state = me.stateMask;
 	if (captured) {
