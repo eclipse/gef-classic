@@ -123,7 +123,7 @@ protected boolean handleDrag() {
 				viewLocation.y - getDragMoveDelta().height);
 		return true;
 	} else {
-		return super.handleDragInProgress();
+		return super.handleDrag();
 	}
 }
 
