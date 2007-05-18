@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -92,8 +92,8 @@ private Dimension calculateChildrenSize(List children, int wHint, int hHint,
 	int height = 0, width = 0;
 	for (int i = 0; i < children.size(); i++) {
 		child = (IFigure)children.get(i);
-		childSize = transposer.t(preferred ? child.getPreferredSize(wHint, hHint)
-		                                   : child.getMinimumSize(wHint, hHint));
+		childSize = transposer.t(preferred ? getChildPreferredSize(child, wHint, hHint)
+		                                   : getChildMinimumSize(child, wHint, hHint));
 		height += childSize.height;
 		width = Math.max(width, childSize.width);
 	}
@@ -182,6 +182,28 @@ protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHi
 	return transposer.t(prefSize)
 			.expand(insets.getWidth(), insets.getHeight())
 			.union(getBorderPreferredSize(container));
+}
+
+/**
+ * @param child the figure whose minimum size is to be determined
+ * @param wHint the width hint
+ * @param hHint the height hint
+ * @return the given figure's minimum size
+ * @since 3.3
+ */
+protected Dimension getChildMinimumSize(IFigure child, int wHint, int hHint) {
+	return child.getMinimumSize(wHint, hHint);
+}
+
+/**
+ * @param child the figure whose preferred size is to be determined
+ * @param wHint the width hint
+ * @param hHint the height hint
+ * @return given figure's preferred size
+ * @since 3.3
+ */
+protected Dimension getChildPreferredSize(IFigure child, int wHint, int hHint) {
+	return child.getPreferredSize(wHint, hHint);
 }
 
 /**
@@ -276,8 +298,8 @@ public void layout(IFigure parent) {
 	for (int i = 0; i < numChildren; i++) {
 		child = (IFigure)children.get(i);
 		
-		prefSizes[i] = transposer.t(child.getPreferredSize(wHint, hHint));
-		minSizes[i] = transposer.t(child.getMinimumSize(wHint, hHint));
+		prefSizes[i] = transposer.t(getChildPreferredSize(child, wHint, hHint));
+		minSizes[i] = transposer.t(getChildMinimumSize(child, wHint, hHint));
 		
 		totalHeight += prefSizes[i].height;
 		totalMinHeight += minSizes[i].height;
