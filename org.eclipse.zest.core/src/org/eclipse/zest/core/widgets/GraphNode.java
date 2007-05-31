@@ -228,6 +228,9 @@ public class GraphNode extends GraphItem {
 	 * @return Dimension
 	 */
 	public Dimension getSize() {
+		if (size.height < 0 && size.width < 0 && nodeFigure != null) {
+			return nodeFigure.getSize().getCopy();
+		}
 		return size.getCopy();
 	}
 
@@ -405,7 +408,7 @@ public class GraphNode extends GraphItem {
 			}
 			GraphNode node = this;
 			Point loc = node.getLocation();
-			Dimension size = node.getSize();
+			Dimension size = node.size;
 			Rectangle bounds = new Rectangle(loc, size);
 			customFigure.getParent().setConstraint(customFigure, bounds);
 		} else {
@@ -414,7 +417,7 @@ public class GraphNode extends GraphItem {
 			}
 			GraphNode node = this;
 			Point loc = node.getLocation();
-			Dimension size = node.getSize();
+			Dimension size = node.size;
 			Rectangle bounds = new Rectangle(loc, size);
 
 			// bounds.x = this.currentLocation.x;
