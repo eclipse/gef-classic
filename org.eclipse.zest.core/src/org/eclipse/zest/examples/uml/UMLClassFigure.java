@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.eclipse.mylar.zest.examples.uml;
+package org.eclipse.mylyn.zest.examples.uml;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;

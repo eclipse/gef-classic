@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers;
+package org.eclipse.mylyn.zest.core.viewers;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,16 +19,16 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.mylar.zest.core.viewers.internal.AbstractStructuredGraphViewer;
-import org.eclipse.mylar.zest.core.viewers.internal.GraphModelEntityFactory;
-import org.eclipse.mylar.zest.core.viewers.internal.GraphModelEntityRelationshipFactory;
-import org.eclipse.mylar.zest.core.viewers.internal.GraphModelFactory;
-import org.eclipse.mylar.zest.core.viewers.internal.IStylingGraphModelFactory;
-import org.eclipse.mylar.zest.core.viewers.internal.ZoomManager;
-import org.eclipse.mylar.zest.core.widgets.Graph;
-import org.eclipse.mylar.zest.core.widgets.GraphItem;
-import org.eclipse.mylar.zest.core.widgets.ZestStyles;
-import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylyn.zest.core.widgets.Graph;
+import org.eclipse.mylyn.zest.core.widgets.GraphItem;
+import org.eclipse.mylyn.zest.core.widgets.ZestStyles;
+import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylyn.zest.core.viewers.internal.AbstractStructuredGraphViewer;
+import org.eclipse.mylyn.zest.core.viewers.internal.GraphModelEntityFactory;
+import org.eclipse.mylyn.zest.core.viewers.internal.GraphModelEntityRelationshipFactory;
+import org.eclipse.mylyn.zest.core.viewers.internal.GraphModelFactory;
+import org.eclipse.mylyn.zest.core.viewers.internal.IStylingGraphModelFactory;
+import org.eclipse.mylyn.zest.core.viewers.internal.ZoomManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -129,7 +129,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.viewer.internal.AbstractStructuredGraphViewer#getGraphControl()
+	 * @see org.eclipse.mylyn.zest.core.viewer.internal.AbstractStructuredGraphViewer#getGraphControl()
 	 */
 	public Graph getGraphControl() {
 		return super.getGraphControl();
@@ -150,7 +150,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.viewer.internal.AbstractStructuredGraphViewer#setLayoutAlgorithm(org.eclipse.mylar.zest.layouts.LayoutAlgorithm)
+	 * @see org.eclipse.mylyn.zest.core.viewer.internal.AbstractStructuredGraphViewer#setLayoutAlgorithm(org.eclipse.mylyn.zest.layouts.LayoutAlgorithm)
 	 */
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
 		super.setLayoutAlgorithm(algorithm);
@@ -159,7 +159,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#setNodeStyle(int)
+	 * @see org.eclipse.mylyn.zest.core.viewers.AbstractStructuredGraphViewer#setNodeStyle(int)
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		super.setNodeStyle(nodeStyle);
@@ -224,7 +224,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.viewer.internal.AbstractStructuredGraphViewer#reveal(java.lang.Object)
+	 * @see org.eclipse.mylyn.zest.core.viewer.internal.AbstractStructuredGraphViewer#reveal(java.lang.Object)
 	 */
 	public void reveal(Object element) {
 		super.reveal(element);
@@ -233,7 +233,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.viewer.internal.AbstractStructuredGraphViewer#setConnectionStyle(int)
+	 * @see org.eclipse.mylyn.zest.core.viewer.internal.AbstractStructuredGraphViewer#setConnectionStyle(int)
 	 */
 	public void setConnectionStyle(int connectionStyle) {
 		super.setConnectionStyle(connectionStyle);
@@ -242,7 +242,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.viewer.internal.AbstractStructuredGraphViewer#unReveal(java.lang.Object)
+	 * @see org.eclipse.mylyn.zest.core.viewer.internal.AbstractStructuredGraphViewer#unReveal(java.lang.Object)
 	 */
 	public void unReveal(Object element) {
 		super.unReveal(element);
@@ -272,7 +272,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
+	 * @see org.eclipse.mylyn.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
 	 */
 	protected IStylingGraphModelFactory getFactory() {
 		if (modelFactory == null) {
@@ -290,7 +290,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.viewers.AbstractStructuredGraphViewer#getLayoutAlgorithm()
+	 * @see org.eclipse.mylyn.zest.core.viewers.AbstractStructuredGraphViewer#getLayoutAlgorithm()
 	 */
 	protected LayoutAlgorithm getLayoutAlgorithm() {
 		return graph.getLayoutAlgorithm();

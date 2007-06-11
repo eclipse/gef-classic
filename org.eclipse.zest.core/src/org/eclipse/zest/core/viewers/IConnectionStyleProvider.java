@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers;
+package org.eclipse.mylyn.zest.core.viewers;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.graphics.Color;
@@ -26,11 +26,11 @@ import org.eclipse.ui.services.IDisposable;
 public interface IConnectionStyleProvider extends IDisposable {
 	/**
 	 * Returns the style flags for this connection. Valid flags are those
-	 * that begin with CONNECTION in @see org.eclipse.mylar.zest.core.ZestStyles. Check
+	 * that begin with CONNECTION in @see org.eclipse.mylyn.zest.core.ZestStyles. Check
 	 * ZestStyles for legal combinations.
 	 * @param rel the relationship represented by this connection.
 	 * @return the style flags for this connection.
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see org.eclipse.mylyn.zest.core.widgets.ZestStyles
 	 */
 	public int getConnectionStyle(Object rel);
 	

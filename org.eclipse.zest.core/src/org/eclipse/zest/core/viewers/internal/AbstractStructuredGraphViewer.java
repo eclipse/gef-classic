@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers.internal;
+package org.eclipse.mylyn.zest.core.viewers.internal;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,15 +18,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.eclipse.mylar.zest.core.viewers.AbstractZoomableViewer;
-import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
-import org.eclipse.mylar.zest.core.widgets.ConstraintAdapter;
-import org.eclipse.mylar.zest.core.widgets.Graph;
-import org.eclipse.mylar.zest.core.widgets.GraphConnection;
-import org.eclipse.mylar.zest.core.widgets.GraphItem;
-import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.ZestStyles;
-import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylyn.zest.core.widgets.ConstraintAdapter;
+import org.eclipse.mylyn.zest.core.widgets.Graph;
+import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
+import org.eclipse.mylyn.zest.core.widgets.GraphItem;
+import org.eclipse.mylyn.zest.core.widgets.GraphNode;
+import org.eclipse.mylyn.zest.core.widgets.ZestStyles;
+import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylyn.zest.core.viewers.AbstractZoomableViewer;
+import org.eclipse.mylyn.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.widgets.Widget;

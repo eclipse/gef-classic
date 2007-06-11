@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.widgets;
+package org.eclipse.mylyn.zest.core.widgets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,14 +29,14 @@ import org.eclipse.draw2d.ScalableFreeformLayeredPane;
 import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.mylar.zest.core.widgets.internal.RevealListener;
-import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.LayoutEntity;
-import org.eclipse.mylar.zest.layouts.LayoutRelationship;
-import org.eclipse.mylar.zest.layouts.LayoutStyles;
-import org.eclipse.mylar.zest.layouts.algorithms.TreeLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.mylyn.zest.core.widgets.internal.RevealListener;
+import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.LayoutEntity;
+import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
+import org.eclipse.mylyn.zest.layouts.LayoutStyles;
+import org.eclipse.mylyn.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -240,7 +240,7 @@ public class Graph extends FigureCanvas {
 	 * 
 	 * @param connection
 	 *            style the connection style to set
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see org.eclipse.mylyn.zest.core.widgets.ZestStyles
 	 */
 	public void setConnectionStyle(int connectionStyle) {
 		this.connectionStyle = connectionStyle;
@@ -250,7 +250,7 @@ public class Graph extends FigureCanvas {
 	 * Gets the default connection style.
 	 * 
 	 * @return the connection style
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see org.eclipse.mylyn.zest.core.widgets.ZestStyles
 	 */
 	public int getConnectionStyle() {
 		return connectionStyle;
@@ -261,7 +261,7 @@ public class Graph extends FigureCanvas {
 	 * 
 	 * @param nodeStyle
 	 *            the node style to set
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see org.eclipse.mylyn.zest.core.widgets.ZestStyles
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		this.nodeStyle = nodeStyle;
@@ -271,7 +271,7 @@ public class Graph extends FigureCanvas {
 	 * Gets the default node style.
 	 * 
 	 * @return the node style
-	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
+	 * @see org.eclipse.mylyn.zest.core.widgets.ZestStyles
 	 */
 	public int getNodeStyle() {
 		return nodeStyle;
@@ -332,7 +332,7 @@ public class Graph extends FigureCanvas {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem#getGraphModel()
+	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IGraphItem#getGraphModel()
 	 */
 	public Graph getGraphModel() {
 		return this;

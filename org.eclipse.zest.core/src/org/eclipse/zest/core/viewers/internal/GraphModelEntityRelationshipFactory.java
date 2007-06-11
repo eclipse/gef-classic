@@ -7,11 +7,11 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers.internal;
+package org.eclipse.mylyn.zest.core.viewers.internal;
 
-import org.eclipse.mylar.zest.core.viewers.IGraphEntityRelationshipContentProvider;
-import org.eclipse.mylar.zest.core.widgets.Graph;
-import org.eclipse.mylar.zest.core.widgets.GraphNode;
+import org.eclipse.mylyn.zest.core.widgets.Graph;
+import org.eclipse.mylyn.zest.core.widgets.GraphNode;
+import org.eclipse.mylyn.zest.core.viewers.IGraphEntityRelationshipContentProvider;
 
 /**
  * A factory for the IGraphEntityRelationshipContentProvider.
@@ -34,7 +34,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory#createGraphModel()
+	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.AbstractStylingModelFactory#createGraphModel()
 	 */
 	public Graph createGraphModel(Graph model) {
 		doBuildGraph(model);
@@ -44,7 +44,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.AbstractStylingModelFactory#doBuildGraph(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel)
+	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.AbstractStylingModelFactory#doBuildGraph(org.eclipse.mylyn.zest.core.internal.graphmodel.GraphModel)
 	 */
 	protected void doBuildGraph(Graph model) {
 		super.doBuildGraph(model);
@@ -94,7 +94,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel,
+	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylyn.zest.core.internal.graphmodel.GraphModel,
 	 *      java.lang.Object)
 	 */
 	public void refresh(Graph graph, Object element) {
@@ -104,7 +104,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylar.zest.core.internal.graphmodel.GraphModel,
+	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylyn.zest.core.internal.graphmodel.GraphModel,
 	 *      java.lang.Object, boolean)
 	 */
 	public void refresh(Graph graph, Object element, boolean updateLabels) {

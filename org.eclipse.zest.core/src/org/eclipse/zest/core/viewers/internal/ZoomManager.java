@@ -6,7 +6,7 @@
  * 
  * Contributors: IBM Corporation - initial API and implementation
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers.internal;
+package org.eclipse.mylyn.zest.core.viewers.internal;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.messages;
+package org.eclipse.mylyn.zest.core.messages;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -19,12 +19,12 @@ import java.util.ResourceBundle;
 /**
  * Messages for internationalized strings pertaining to errors.
  * @author Del Myers
- * @see org.eclipse.mylar.zest.ZestException
+ * @see org.eclipse.mylyn.zest.ZestException
  *
  */
 public class ZestErrorMessages {
 	private static final String BUNDLE_NAME =
-		"org.eclipse.mylar.zest.core.messages.ZestError"; //$NON-NLS-1$
+		"org.eclipse.mylyn.zest.core.messages.ZestError"; //$NON-NLS-1$
 	private static final ResourceBundle BUNDLE =
 		ResourceBundle.getBundle(BUNDLE_NAME);
 	public static final String ERROR_INVALID_INPUT =

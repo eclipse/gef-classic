@@ -7,13 +7,13 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.examples.jface;
+package org.eclipse.mylyn.zest.examples.jface;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.mylar.zest.core.viewers.GraphViewer;
-import org.eclipse.mylar.zest.core.viewers.IGraphContentProvider;
-import org.eclipse.mylar.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.mylyn.zest.core.viewers.GraphViewer;
+import org.eclipse.mylyn.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

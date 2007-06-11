@@ -7,11 +7,11 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers;
+package org.eclipse.mylyn.zest.core.viewers;
 
 import org.eclipse.jface.action.ContributionItem;
-import org.eclipse.mylar.zest.core.viewers.internal.ZoomListener;
-import org.eclipse.mylar.zest.core.viewers.internal.ZoomManager;
+import org.eclipse.mylyn.zest.core.viewers.internal.ZoomListener;
+import org.eclipse.mylyn.zest.core.viewers.internal.ZoomManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;

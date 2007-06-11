@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.widgets.internal;
+package org.eclipse.mylyn.zest.core.widgets.internal;
 
 import java.util.List;
 

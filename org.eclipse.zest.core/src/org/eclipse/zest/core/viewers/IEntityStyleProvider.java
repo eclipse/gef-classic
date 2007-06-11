@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers;
+package org.eclipse.mylyn.zest.core.viewers;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.graphics.Color;

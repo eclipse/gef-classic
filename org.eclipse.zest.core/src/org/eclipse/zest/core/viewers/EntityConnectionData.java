@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers;
+package org.eclipse.mylyn.zest.core.viewers;
 
 /**
  * A simple object that is used as the "external connection" in content providers that don't

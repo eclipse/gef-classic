@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.widgets;
+package org.eclipse.mylyn.zest.core.widgets;
 
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
@@ -18,14 +18,14 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.Shape;
-import org.eclipse.mylar.zest.core.widgets.internal.AligningBendpointLocator;
-import org.eclipse.mylar.zest.core.widgets.internal.LoopAnchor;
-import org.eclipse.mylar.zest.core.widgets.internal.PolylineArcConnection;
-import org.eclipse.mylar.zest.core.widgets.internal.RoundedChopboxAnchor;
-import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
-import org.eclipse.mylar.zest.layouts.LayoutEntity;
-import org.eclipse.mylar.zest.layouts.LayoutRelationship;
-import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.mylyn.zest.core.widgets.internal.AligningBendpointLocator;
+import org.eclipse.mylyn.zest.core.widgets.internal.LoopAnchor;
+import org.eclipse.mylyn.zest.core.widgets.internal.PolylineArcConnection;
+import org.eclipse.mylyn.zest.core.widgets.internal.RoundedChopboxAnchor;
+import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
+import org.eclipse.mylyn.zest.layouts.LayoutEntity;
+import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
+import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
@@ -195,7 +195,7 @@ public class GraphConnection extends GraphItem {
 	 * apart). A weight of 1 results in the minimum spring length being used
 	 * (closest together).
 	 * 
-	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#getWeightInLayout()
+	 * @see org.eclipse.mylyn.zest.layouts.LayoutRelationship#getWeightInLayout()
 	 * @return the weight: {-1, [0 - 1]}.
 	 */
 	public double getWeightInLayout() {
@@ -535,7 +535,7 @@ public class GraphConnection extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.widgets.IGraphItem#getItemType()
+	 * @see org.eclipse.mylyn.zest.core.widgets.IGraphItem#getItemType()
 	 */
 	public int getItemType() {
 		return CONNECTION;
@@ -544,7 +544,7 @@ public class GraphConnection extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem#setVisible(boolean)
+	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.GraphItem#setVisible(boolean)
 	 */
 	public void setVisible(boolean visible) {
 		graphModel.setItemVisible(this, visible);
@@ -554,7 +554,7 @@ public class GraphConnection extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.widgets.IGraphItem#isVisible()
+	 * @see org.eclipse.mylyn.zest.core.widgets.IGraphItem#isVisible()
 	 */
 	public boolean isVisible() {
 		return visible;
@@ -643,7 +643,7 @@ public class GraphConnection extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#isBidirectionalInLayout()
+	 * @see org.eclipse.mylyn.zest.layouts.LayoutRelationship#isBidirectionalInLayout()
 	 */
 	private boolean isBidirectionalInLayout() {
 		return !ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED);

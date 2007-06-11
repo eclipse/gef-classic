@@ -7,7 +7,7 @@
  * Contributors: IBM Corporation - initial API and implementation Chisel Group,
  * University of Victoria - Adapted for XY Scaled Graphics
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.widgets.internal;
+package org.eclipse.mylyn.zest.core.widgets.internal;
 
 import java.util.ArrayList;
 import java.util.HashMap;

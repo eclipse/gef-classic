@@ -8,11 +8,11 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers;
+package org.eclipse.mylyn.zest.core.viewers;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.mylar.zest.core.viewers.internal.ZoomManager;
+import org.eclipse.mylyn.zest.core.viewers.internal.ZoomManager;
 
 /**
  * A simple interface that provides zooming capabilites. Not intended to be subclassed by clients.

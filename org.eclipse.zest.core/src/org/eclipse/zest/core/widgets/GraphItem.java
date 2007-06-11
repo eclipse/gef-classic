@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.widgets;
+package org.eclipse.mylyn.zest.core.widgets;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Item;

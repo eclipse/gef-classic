@@ -8,9 +8,9 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers.internal;
+package org.eclipse.mylyn.zest.core.viewers.internal;
 
-import org.eclipse.mylar.zest.core.messages.ZestErrorMessages;
+import org.eclipse.mylyn.zest.core.messages.ZestErrorMessages;
 
 /**
  * Exceptions for Zest-specific code.

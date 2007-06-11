@@ -7,20 +7,20 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.viewers.internal;
+package org.eclipse.mylyn.zest.core.viewers.internal;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
-import org.eclipse.mylar.zest.core.viewers.IConnectionStyleProvider;
-import org.eclipse.mylar.zest.core.viewers.IEntityConnectionStyleProvider;
-import org.eclipse.mylar.zest.core.viewers.IEntityStyleProvider;
-import org.eclipse.mylar.zest.core.widgets.GraphConnection;
-import org.eclipse.mylar.zest.core.widgets.GraphItem;
-import org.eclipse.mylar.zest.core.widgets.GraphNode;
-import org.eclipse.mylar.zest.core.widgets.ZestStyles;
+import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
+import org.eclipse.mylyn.zest.core.widgets.GraphItem;
+import org.eclipse.mylyn.zest.core.widgets.GraphNode;
+import org.eclipse.mylyn.zest.core.widgets.ZestStyles;
+import org.eclipse.mylyn.zest.core.viewers.IConnectionStyleProvider;
+import org.eclipse.mylyn.zest.core.viewers.IEntityConnectionStyleProvider;
+import org.eclipse.mylyn.zest.core.viewers.IEntityStyleProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 

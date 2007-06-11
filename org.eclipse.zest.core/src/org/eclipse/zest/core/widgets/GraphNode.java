@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.widgets;
+package org.eclipse.mylyn.zest.core.widgets;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,9 +22,9 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.mylar.zest.core.widgets.internal.GraphLabel;
-import org.eclipse.mylar.zest.layouts.LayoutEntity;
-import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.mylyn.zest.core.widgets.internal.GraphLabel;
+import org.eclipse.mylyn.zest.layouts.LayoutEntity;
+import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
@@ -136,7 +136,7 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#dispose()
+	 * @see org.eclipse.mylyn.zest.core.widgets.GraphItem#dispose()
 	 */
 	public void dispose() {
 		super.dispose();
@@ -207,7 +207,7 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#isSelected()
+	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IGraphModelNode#isSelected()
 	 */
 	public boolean isSelected() {
 		return selected;
@@ -573,7 +573,7 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#setSize(double,
+	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IGraphModelNode#setSize(double,
 	 *      double)
 	 */
 	public void setSize(double width, double height) {
@@ -587,7 +587,7 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#getBorderHighlightColor()
+	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IGraphModelNode#getBorderHighlightColor()
 	 */
 	public Color getBorderHighlightColor() {
 		return borderHighlightColor;
@@ -756,7 +756,7 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.widgets.IGraphItem#getItemType()
+	 * @see org.eclipse.mylyn.zest.core.widgets.IGraphItem#getItemType()
 	 */
 	public int getItemType() {
 		return NODE;

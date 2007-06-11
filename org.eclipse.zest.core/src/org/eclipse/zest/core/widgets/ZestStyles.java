@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylar.zest.core.widgets;
+package org.eclipse.mylyn.zest.core.widgets;
 
 /**
  * Style constants used in Zest.
