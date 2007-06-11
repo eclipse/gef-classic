@@ -9,7 +9,7 @@
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
 
-package org.eclipse.mylar.zest.layouts.algorithms.internal;
+package org.eclipse.mylyn.zest.layouts.algorithms.internal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,10 +17,10 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.mylar.zest.layouts.LayoutEntity;
-import org.eclipse.mylar.zest.layouts.LayoutRelationship;
-import org.eclipse.mylar.zest.layouts.algorithms.AbstractLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.exampleStructures.SimpleRelationship;
+import org.eclipse.mylyn.zest.layouts.LayoutEntity;
+import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
+import org.eclipse.mylyn.zest.layouts.algorithms.AbstractLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.exampleStructures.SimpleRelationship;
 
 
 /**

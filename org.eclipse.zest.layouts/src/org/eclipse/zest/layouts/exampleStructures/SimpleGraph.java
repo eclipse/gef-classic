@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.exampleStructures;
+package org.eclipse.mylyn.zest.layouts.exampleStructures;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,9 +16,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.mylar.zest.layouts.LayoutEntity;
-import org.eclipse.mylar.zest.layouts.LayoutGraph;
-import org.eclipse.mylar.zest.layouts.LayoutRelationship;
+import org.eclipse.mylyn.zest.layouts.LayoutEntity;
+import org.eclipse.mylyn.zest.layouts.LayoutGraph;
+import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
 
 
 /**

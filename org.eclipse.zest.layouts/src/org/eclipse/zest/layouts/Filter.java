@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts;
+package org.eclipse.mylyn.zest.layouts;
 
 /**
  * A filter is used to filter objects.  Once implemented, interested

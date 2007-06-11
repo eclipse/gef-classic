@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts;
+package org.eclipse.mylyn.zest.layouts;
 
 /**
  * Specifies a single bend point in a graph relationship.

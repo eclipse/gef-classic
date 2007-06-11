@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.exampleUses;
+package org.eclipse.mylyn.zest.layouts.exampleUses;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,24 +17,24 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.mylar.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.mylar.zest.layouts.LayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
-import org.eclipse.mylar.zest.layouts.LayoutEntity;
-import org.eclipse.mylar.zest.layouts.LayoutRelationship;
-import org.eclipse.mylar.zest.layouts.LayoutStyles;
-import org.eclipse.mylar.zest.layouts.algorithms.FadeLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.algorithms.GridLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.algorithms.RadialLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.algorithms.TreeLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.algorithms.VerticalLayoutAlgorithm;
-import org.eclipse.mylar.zest.layouts.exampleStructures.SimpleNode;
-import org.eclipse.mylar.zest.layouts.exampleStructures.SimpleRelationship;
-import org.eclipse.mylar.zest.layouts.progress.ProgressEvent;
-import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
+import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
+import org.eclipse.mylyn.zest.layouts.LayoutEntity;
+import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
+import org.eclipse.mylyn.zest.layouts.LayoutStyles;
+import org.eclipse.mylyn.zest.layouts.algorithms.FadeLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.algorithms.VerticalLayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.exampleStructures.SimpleNode;
+import org.eclipse.mylyn.zest.layouts.exampleStructures.SimpleRelationship;
+import org.eclipse.mylyn.zest.layouts.progress.ProgressEvent;
+import org.eclipse.mylyn.zest.layouts.progress.ProgressListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.events.ControlEvent;

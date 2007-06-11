@@ -8,9 +8,9 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts;
+package org.eclipse.mylyn.zest.layouts;
 
-import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * This represents a single entity, providing the layout algorithms with 

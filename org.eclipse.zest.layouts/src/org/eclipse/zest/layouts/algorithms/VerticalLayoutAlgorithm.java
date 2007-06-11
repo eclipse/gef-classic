@@ -8,9 +8,9 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.algorithms;
+package org.eclipse.mylyn.zest.layouts.algorithms;
 
-import org.eclipse.mylar.zest.layouts.LayoutStyles;
+import org.eclipse.mylyn.zest.layouts.LayoutStyles;
 
 /**
  * @version  2.0

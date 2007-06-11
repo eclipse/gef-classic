@@ -1,17 +1,17 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Chisel Layout Package
-Bundle-SymbolicName: org.eclipse.mylar.zest.layouts
-Bundle-Version: 0.4
+Bundle-SymbolicName: org.eclipse.mylyn.zest.layouts
+Bundle-Version: 0.5
 Bundle-Vendor: Chisel, University of Victoria
-Export-Package: org.eclipse.mylar.zest.layouts,
- org.eclipse.mylar.zest.layouts.algorithms,
- org.eclipse.mylar.zest.layouts.algorithms.internal,
- org.eclipse.mylar.zest.layouts.constraints,
- org.eclipse.mylar.zest.layouts.dataStructures,
- org.eclipse.mylar.zest.layouts.exampleStructures,
- org.eclipse.mylar.zest.layouts.exampleUses,
- org.eclipse.mylar.zest.layouts.progress
+Export-Package: org.eclipse.mylyn.zest.layouts,
+ org.eclipse.mylyn.zest.layouts.algorithms,
+ org.eclipse.mylyn.zest.layouts.algorithms.internal,
+ org.eclipse.mylyn.zest.layouts.constraints,
+ org.eclipse.mylyn.zest.layouts.dataStructures,
+ org.eclipse.mylyn.zest.layouts.exampleStructures,
+ org.eclipse.mylyn.zest.layouts.exampleUses,
+ org.eclipse.mylyn.zest.layouts.progress
 Require-Bundle: org.eclipse.swt;visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.jface

@@ -8,9 +8,9 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.dataStructures;
+package org.eclipse.mylyn.zest.layouts.dataStructures;
 
-import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
+import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
 
 /**
  * Implements a single bend point in a graph relationship.

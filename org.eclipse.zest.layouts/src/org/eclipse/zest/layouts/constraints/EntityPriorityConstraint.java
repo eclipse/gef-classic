@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.constraints;
+package org.eclipse.mylyn.zest.layouts.constraints;
 
 /**
  * A layout constraint that uses priorities
@@ -22,7 +22,7 @@ public class EntityPriorityConstraint implements LayoutConstraint {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint#clear()
+	 * @see org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
 	public void clear() {
 		this.priority = 1.0;

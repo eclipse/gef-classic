@@ -8,9 +8,9 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts;
+package org.eclipse.mylyn.zest.layouts;
 
-import org.eclipse.mylar.zest.layouts.progress.ProgressListener;
+import org.eclipse.mylyn.zest.layouts.progress.ProgressListener;
 
 /**
  * @author Ian Bull

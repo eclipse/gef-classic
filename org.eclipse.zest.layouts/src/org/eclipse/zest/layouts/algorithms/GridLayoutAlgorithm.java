@@ -8,13 +8,13 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.algorithms;
+package org.eclipse.mylyn.zest.layouts.algorithms;
 
 import java.util.Arrays;
 
-import org.eclipse.mylar.zest.layouts.LayoutStyles;
-import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
-import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.mylyn.zest.layouts.LayoutStyles;
+import org.eclipse.mylyn.zest.layouts.dataStructures.InternalNode;
+import org.eclipse.mylyn.zest.layouts.dataStructures.InternalRelationship;
 
 
 /**

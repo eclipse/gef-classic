@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.algorithms;
+package org.eclipse.mylyn.zest.layouts.algorithms;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,9 +16,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.mylar.zest.layouts.LayoutEntity;
-import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
-import org.eclipse.mylar.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.mylyn.zest.layouts.LayoutEntity;
+import org.eclipse.mylyn.zest.layouts.dataStructures.InternalNode;
+import org.eclipse.mylyn.zest.layouts.dataStructures.InternalRelationship;
 
 /**
  * This layout shifts overlapping nodes to the right.

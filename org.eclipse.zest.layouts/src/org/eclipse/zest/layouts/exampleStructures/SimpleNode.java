@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.exampleStructures;
+package org.eclipse.mylyn.zest.layouts.exampleStructures;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.eclipse.mylar.zest.layouts.LayoutEntity;
-import org.eclipse.mylar.zest.layouts.constraints.BasicEntityConstraint;
-import org.eclipse.mylar.zest.layouts.constraints.EntityPriorityConstraint;
-import org.eclipse.mylar.zest.layouts.constraints.LabelLayoutConstraint;
-import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.mylyn.zest.layouts.LayoutEntity;
+import org.eclipse.mylyn.zest.layouts.constraints.BasicEntityConstraint;
+import org.eclipse.mylyn.zest.layouts.constraints.EntityPriorityConstraint;
+import org.eclipse.mylyn.zest.layouts.constraints.LabelLayoutConstraint;
+import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * Rerpresents a simple node that can be used in the layout algorithms.

@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.dataStructures;
+package org.eclipse.mylyn.zest.layouts.dataStructures;
 
 /**
  * This is a dimension that isn't dependent on awt, swt, or any other library,

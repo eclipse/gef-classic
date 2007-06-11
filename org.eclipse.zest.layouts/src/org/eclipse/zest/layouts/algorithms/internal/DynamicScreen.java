@@ -8,14 +8,14 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.algorithms.internal;
+package org.eclipse.mylyn.zest.layouts.algorithms.internal;
 
 import java.util.Comparator;
 import java.util.TreeSet;
 
-import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentPoint;
-import org.eclipse.mylar.zest.layouts.dataStructures.DisplayIndependentRectangle;
-import org.eclipse.mylar.zest.layouts.dataStructures.InternalNode;
+import org.eclipse.mylyn.zest.layouts.dataStructures.DisplayIndependentPoint;
+import org.eclipse.mylyn.zest.layouts.dataStructures.DisplayIndependentRectangle;
+import org.eclipse.mylyn.zest.layouts.dataStructures.InternalNode;
 
 
 public class DynamicScreen {

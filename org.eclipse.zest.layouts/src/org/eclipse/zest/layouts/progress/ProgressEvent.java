@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.progress;
+package org.eclipse.mylyn.zest.layouts.progress;
 
 /**
  * When an algorithm wants to notify everyone it has completely part of its task, it

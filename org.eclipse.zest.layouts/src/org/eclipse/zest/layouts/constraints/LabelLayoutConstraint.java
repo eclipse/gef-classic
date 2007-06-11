@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.constraints;
+package org.eclipse.mylyn.zest.layouts.constraints;
 
 /**
  * @author Ian Bull
@@ -22,7 +22,7 @@ public class LabelLayoutConstraint implements LayoutConstraint {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint#clear()
+	 * @see org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
 	public void clear() {
 		label = null;

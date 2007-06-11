@@ -8,18 +8,18 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylar.zest.layouts.exampleStructures;
+package org.eclipse.mylyn.zest.layouts.exampleStructures;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.mylar.zest.layouts.LayoutBendPoint;
-import org.eclipse.mylar.zest.layouts.LayoutEntity;
-import org.eclipse.mylar.zest.layouts.LayoutRelationship;
-import org.eclipse.mylar.zest.layouts.constraints.BasicEdgeConstraints;
-import org.eclipse.mylar.zest.layouts.constraints.LabelLayoutConstraint;
-import org.eclipse.mylar.zest.layouts.constraints.LayoutConstraint;
-import org.eclipse.mylar.zest.layouts.dataStructures.BendPoint;
+import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
+import org.eclipse.mylyn.zest.layouts.LayoutEntity;
+import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
+import org.eclipse.mylyn.zest.layouts.constraints.BasicEdgeConstraints;
+import org.eclipse.mylyn.zest.layouts.constraints.LabelLayoutConstraint;
+import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.mylyn.zest.layouts.dataStructures.BendPoint;
 
 
 /**
