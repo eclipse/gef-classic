@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.FreeformViewport;
 import org.eclipse.draw2d.IFigure;
@@ -26,9 +27,11 @@ import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.SWTEventDispatcher;
 import org.eclipse.draw2d.ScalableFigure;
 import org.eclipse.draw2d.ScalableFreeformLayeredPane;
+import org.eclipse.draw2d.ScrollPane;
 import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.mylyn.zest.core.widgets.internal.IContainer;
 import org.eclipse.mylyn.zest.core.widgets.internal.RevealListener;
 import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
@@ -56,7 +59,7 @@ import org.eclipse.swt.widgets.Item;
  * @author Chris Callendar
  * @author Ian Bull
  */
-public class Graph extends FigureCanvas {
+public class Graph extends FigureCanvas implements IContainer {
 
 	// CLASS CONSTANTS
 	public static final int ANIMATION_TIME = 500;
@@ -146,6 +149,7 @@ public class Graph extends FigureCanvas {
 					setMouseTarget(getRoot());
 				}
 				if ((me.stateMask & SWT.BUTTON_MASK) != 0) {
+					// Sometimes getCurrentEvent() returns null
 					getMouseTarget().handleMouseDragged(getCurrentEvent());
 				} else {
 					getMouseTarget().handleMouseMoved(getCurrentEvent());
@@ -240,7 +244,7 @@ public class Graph extends FigureCanvas {
 	 * 
 	 * @param connection
 	 *            style the connection style to set
-	 * @see org.eclipse.mylyn.zest.core.widgets.ZestStyles
+	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
 	 */
 	public void setConnectionStyle(int connectionStyle) {
 		this.connectionStyle = connectionStyle;
@@ -250,7 +254,7 @@ public class Graph extends FigureCanvas {
 	 * Gets the default connection style.
 	 * 
 	 * @return the connection style
-	 * @see org.eclipse.mylyn.zest.core.widgets.ZestStyles
+	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
 	 */
 	public int getConnectionStyle() {
 		return connectionStyle;
@@ -261,7 +265,7 @@ public class Graph extends FigureCanvas {
 	 * 
 	 * @param nodeStyle
 	 *            the node style to set
-	 * @see org.eclipse.mylyn.zest.core.widgets.ZestStyles
+	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		this.nodeStyle = nodeStyle;
@@ -271,7 +275,7 @@ public class Graph extends FigureCanvas {
 	 * Gets the default node style.
 	 * 
 	 * @return the node style
-	 * @see org.eclipse.mylyn.zest.core.widgets.ZestStyles
+	 * @see org.eclipse.mylar.zest.core.widgets.ZestStyles
 	 */
 	public int getNodeStyle() {
 		return nodeStyle;
@@ -332,7 +336,7 @@ public class Graph extends FigureCanvas {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IGraphItem#getGraphModel()
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphItem#getGraphModel()
 	 */
 	public Graph getGraphModel() {
 		return this;
@@ -409,7 +413,235 @@ public class Graph extends FigureCanvas {
 	// /////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE METHODS. These are NON API
 	// /////////////////////////////////////////////////////////////////////////////////
+	class DragSupport implements MouseMotionListener, org.eclipse.draw2d.MouseListener {
+		/**
+		 * 
+		 */
+		Graph graph = null;
+		Point lastLocation = null;
 
+		DragSupport(Graph graph) {
+			this.graph = graph;
+		}
+
+		public void mouseDragged(org.eclipse.draw2d.MouseEvent me) {
+			Point mousePoint = new Point(me.x, me.y);
+			Point tempPoint = mousePoint.getCopy();
+			if (selectedItems.size() > 0) {
+				Iterator iterator = selectedItems.iterator();
+				while (iterator.hasNext()) {
+					GraphItem item = (GraphItem) iterator.next();
+					if ((item.getItemType() == GraphItem.NODE) || (item.getItemType() == GraphItem.CONTAINER)) {
+						// @tag Zest.selection Zest.move : This is where the node movement is tracked
+						Point pointCopy = mousePoint.getCopy();
+
+						Point tempLastLocation = lastLocation.getCopy();
+						item.getFigure().getParent().translateToRelative(tempLastLocation);
+						item.getFigure().getParent().translateFromParent(tempLastLocation);
+
+						item.getFigure().getParent().translateToRelative(pointCopy);
+						item.getFigure().getParent().translateFromParent(pointCopy);
+						Point delta = new Point(pointCopy.x - tempLastLocation.x, pointCopy.y - tempLastLocation.y);
+						if (item.getItemType() == GraphItem.NODE) {
+							GraphNode node = (GraphNode) item;
+							node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
+
+						} else if (item.getItemType() == GraphItem.CONTAINER) {
+							GraphContainer container = (GraphContainer) item;
+							container.setLocation(container.getLocation().x + delta.x, container.getLocation().y + delta.y);
+						}
+					} else {
+						// There is no movement for connection
+					}
+				}
+			}
+			lastLocation = tempPoint;
+			//oldLocation = mousePoint;
+		}
+
+		//		public void mouseDragged(org.eclipse.draw2d.MouseEvent me) {
+		//			PrecisionPoint mousePoint = new PrecisionPoint((double) me.x, (double) me.y);
+		//			if (me.getState() == org.eclipse.draw2d.MouseEvent.ALT) {
+		//				return;
+		//			}
+		//			//getRootLayer().translateToRelative(mousePoint);
+		//			//getRootLayer().translateFromParent(mousePoint);
+		//			if (selectedItems.size() > 0) {
+		//				Iterator iterator = selectedItems.iterator();
+		//				while (iterator.hasNext()) {
+		//					GraphItem item = (GraphItem) iterator.next();
+		//					if (item.getItemType() == GraphItem.NODE) {
+		//						// @tag Zest.selection Zest.move : This is where the node movement is tracked
+		//						GraphNode node = (GraphNode) item;
+		//
+		//						node.getParent().getContainerLayer().translateToRelative(mousePoint);
+		//						node.getParent().getContainerLayer().translateFromParent(mousePoint);
+		//
+		//						PrecisionPoint localMousePoint = new PrecisionPoint(mousePoint);
+		//						PrecisionPoint localOldPoint = new PrecisionPoint(oldLocation);
+		//
+		//						Point location = node.getLocation();
+		//
+		//						PrecisionPoint delta = new PrecisionPoint((location.x - localOldPoint.preciseX), (location.y - localOldPoint.preciseY));
+		//						node.setLocation(delta.preciseX + localMousePoint.preciseX, delta.preciseY + localMousePoint.preciseY);
+		//						//node.setLocation((int) mousePoint.preciseX, (int) mousePoint.preciseY);
+		//					} else if (item.getItemType() == GraphItem.CONTAINER) {
+		//						GraphContainer container = (GraphContainer) item;
+		//						container.getParent().getContainerLayer().translateToRelative(mousePoint);
+		//						container.getParent().getContainerLayer().translateFromParent(mousePoint);
+		//
+		//						PrecisionPoint delta = new PrecisionPoint(mousePoint.preciseX - oldLocation.preciseX, mousePoint.preciseY - oldLocation.preciseY);
+		//						container.setLocation(container.getLocation().x + delta.preciseX, container.getLocation().y + delta.preciseY);
+		//					} else {
+		//						// There is no movement for connection
+		//					}
+		//				}
+		//			}
+		//			oldLocation = mousePoint;
+		//		}
+
+		public void mouseEntered(org.eclipse.draw2d.MouseEvent me) {
+
+		}
+
+		public void mouseExited(org.eclipse.draw2d.MouseEvent me) {
+
+		}
+
+		public void mouseHover(org.eclipse.draw2d.MouseEvent me) {
+
+		}
+
+		public void mouseMoved(org.eclipse.draw2d.MouseEvent me) {
+
+		}
+
+		public void mouseDoubleClicked(org.eclipse.draw2d.MouseEvent me) {
+
+		}
+
+		public void mousePressed(org.eclipse.draw2d.MouseEvent me) {
+			Point mousePoint = new Point(me.x, me.y);
+			lastLocation = mousePoint.getCopy();
+
+			getRootLayer().translateToRelative(mousePoint);
+
+			if (me.getState() == org.eclipse.draw2d.MouseEvent.ALT) {
+				double scale = getRootLayer().getScale();
+				scale *= 1.05;
+				getRootLayer().setScale(scale);
+				Point newMousePoint = mousePoint.getCopy().scale(1.05);
+				Point delta = new Point(newMousePoint.x - mousePoint.x, newMousePoint.y - mousePoint.y);
+				Point newViewLocation = getViewport().getViewLocation().getCopy().translate(delta);
+				getViewport().setViewLocation(newViewLocation);
+				lastLocation.scale(scale);
+
+				clearSelection();
+				return;
+			} else if (me.getState() == (org.eclipse.draw2d.MouseEvent.ALT | org.eclipse.draw2d.MouseEvent.SHIFT)) {
+				double scale = getRootLayer().getScale();
+				scale /= 1.05;
+				getRootLayer().setScale(scale);
+
+				Point newMousePoint = mousePoint.getCopy().scale(1 / 1.05);
+				Point delta = new Point(newMousePoint.x - mousePoint.x, newMousePoint.y - mousePoint.y);
+				Point newViewLocation = getViewport().getViewLocation().getCopy().translate(delta);
+				getViewport().setViewLocation(newViewLocation);
+				clearSelection();
+				return;
+			} else {
+				boolean hasSelection = selectedItems.size() > 0;
+				IFigure figureUnderMouse = graph.getContents().findFigureAt(mousePoint.x, mousePoint.y, new TreeSearch() {
+
+					public boolean accept(IFigure figure) {
+						return true;
+					}
+
+					public boolean prune(IFigure figure) {
+						IFigure parent = figure.getParent();
+						// @tag TODO Zest : change these to from getParent to their actual layer names
+						if (parent == nodeLayer || parent == nodeFeedbackLayer || parent == nodeLayer.getParent() || parent == nodeLayer.getParent().getParent() || parent == edgeFeedbackLayer || parent == edgeLayer) {
+							return false;
+						}
+						GraphItem item = (GraphItem) figure2ItemMap.get(figure);
+						if (item != null && item.getItemType() == GraphItem.CONTAINER) {
+							return false;
+						} else if (figure instanceof FreeformLayer || parent instanceof FreeformLayer || figure instanceof ScrollPane || parent instanceof ScrollPane || parent instanceof ScalableFreeformLayeredPane || figure instanceof ScalableFreeformLayeredPane) {
+							return false;
+						}
+						return true;
+					}
+
+				});
+				getRootLayer().translateFromParent(mousePoint);
+				if (figureUnderMouse != null) {
+					figureUnderMouse.getParent().translateFromParent(mousePoint);
+				}
+				// If the figure under the mouse is the canvas, and CTRL is not being held down, then select
+				// nothing
+				if (figureUnderMouse == null || figureUnderMouse == graph) {
+					if (me.getState() != org.eclipse.draw2d.MouseEvent.CONTROL) {
+						clearSelection();
+						if (hasSelection) {
+							fireWidgetSelectedEvent(null);
+							hasSelection = false;
+						}
+					}
+					return;
+				}
+
+				GraphItem itemUnderMouse = (GraphItem) figure2ItemMap.get(figureUnderMouse);
+				if (itemUnderMouse == null) {
+					if (me.getState() != org.eclipse.draw2d.MouseEvent.CONTROL) {
+						clearSelection();
+						if (hasSelection) {
+							fireWidgetSelectedEvent(null);
+							hasSelection = false;
+						}
+					}
+					return;
+				}
+				if (selectedItems.contains(itemUnderMouse)) {
+					// We have already selected this node, and CTRL is being held down, remove this selection
+					// @tag Zest.selection : This deselects when you have CTRL pressed
+					if (me.getState() == org.eclipse.draw2d.MouseEvent.CONTROL) {
+						selectedItems.remove(itemUnderMouse);
+						(itemUnderMouse).unhighlight();
+						fireWidgetSelectedEvent(itemUnderMouse);
+					}
+					return;
+				}
+
+				if (me.getState() != org.eclipse.draw2d.MouseEvent.CONTROL) {
+					clearSelection();
+				}
+
+				if (itemUnderMouse.getItemType() == GraphItem.NODE) {
+					// @tag Zest.selection : This is where the nodes are selected
+					selectedItems.add(itemUnderMouse);
+					((GraphNode) itemUnderMouse).highlight();
+					fireWidgetSelectedEvent(itemUnderMouse);
+				} else if (itemUnderMouse.getItemType() == GraphItem.CONNECTION) {
+					selectedItems.add(itemUnderMouse);
+					((GraphConnection) itemUnderMouse).highlight();
+					fireWidgetSelectedEvent(itemUnderMouse);
+
+				} else if (itemUnderMouse.getItemType() == GraphItem.CONTAINER) {
+					selectedItems.add(itemUnderMouse);
+					((GraphContainer) itemUnderMouse).highlight();
+					fireWidgetSelectedEvent(itemUnderMouse);
+				}
+			}
+
+		}
+
+		public void mouseReleased(org.eclipse.draw2d.MouseEvent me) {
+
+		}
+
+	}
+
+	/*
 	class DragSupport implements MouseMotionListener, org.eclipse.draw2d.MouseListener {
 		Graph graph = null;
 		Point oldLocation = null;
@@ -435,6 +667,11 @@ public class Graph extends FigureCanvas {
 						GraphNode node = (GraphNode) item;
 						Point delta = new Point(mousePoint.x - oldLocation.x, mousePoint.y - oldLocation.y);
 						node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
+					} else if (item.getItemType() == GraphItem.CONTAINER) {
+						GraphContainer container = (GraphContainer) item;
+						Point delta = new Point(mousePoint.x - oldLocation.x, mousePoint.y - oldLocation.y);
+						container.setLocation(container.getLocation().x + delta.x, container.getLocation().y + delta.y);
+
 					} else {
 						// There is no movement for connection
 					}
@@ -544,6 +781,10 @@ public class Graph extends FigureCanvas {
 					((GraphConnection) itemUnderMouse).highlight();
 					fireWidgetSelectedEvent(itemUnderMouse);
 
+				} else if (itemUnderMouse.getItemType() == GraphItem.CONTAINER) {
+					selectedItems.add(itemUnderMouse);
+					((GraphContainer) itemUnderMouse).highlight();
+					fireWidgetSelectedEvent(itemUnderMouse);
 				}
 			}
 
@@ -553,6 +794,7 @@ public class Graph extends FigureCanvas {
 			mouseUp = true;
 		}
 	}
+	*/
 
 	private void clearSelection() {
 		if (selectedItems.size() > 0) {
@@ -622,6 +864,39 @@ public class Graph extends FigureCanvas {
 	}
 
 	/**
+	 * Moves the node onto the node feedback layer
+	 * 
+	 * @param node
+	 */
+	void highlightNode(GraphContainer node) {
+		IFigure figure = node.getNodeFigure();
+		if (figure != null && nodeLayer.getChildren().contains(figure)) {
+			nodeLayer.remove(figure);
+			//figure.setBounds(node.getBounds());
+			nodeFeedbackLayer.add(figure);
+			nodeFeedbackLayer.setConstraint(figure, node.getBounds());
+		}
+		nodeFeedbackLayer.getUpdateManager().performUpdate();
+	}
+
+	/**
+	 * Moves the node off the node feedback layer
+	 * 
+	 * @param node
+	 */
+	void unhighlightNode(GraphContainer node) {
+		IFigure figure = node.getNodeFigure();
+		if (figure != null && nodeFeedbackLayer.getChildren().contains(figure)) {
+			nodeFeedbackLayer.remove(figure);
+			nodeLayer.add(figure);
+			nodeLayer.setConstraint(figure, node.getBounds());
+			//figure.setBounds(node.getBounds());
+
+		}
+		nodeFeedbackLayer.getUpdateManager().performUpdate();
+	}
+
+	/**
 	 * Moves the node off the node feedback layer
 	 * 
 	 * @param node
@@ -650,24 +925,26 @@ public class Graph extends FigureCanvas {
 		return connsArray;
 	}
 
-	LayoutRelationship[] getConnectionsToLayout() {
+	LayoutRelationship[] getConnectionsToLayout(List nodesToLayout) {
 		// @tag zest.bug.156528-Filters.follows : make sure not to layout
 		// filtered connections, if the style says so.
 		LayoutRelationship[] entities;
 		if (ZestStyles.checkStyle(style, ZestStyles.IGNORE_INVISIBLE_LAYOUT)) {
-			LinkedList nodeList = new LinkedList();
+			LinkedList connectionList = new LinkedList();
 			for (Iterator i = this.getConnections().iterator(); i.hasNext();) {
 				GraphConnection next = (GraphConnection) i.next();
-				if (next.isVisible()) {
-					nodeList.add(next.getLayoutRelationship());
+				if (next.isVisible() && nodesToLayout.contains(next.getSource()) && nodesToLayout.contains(next.getDestination())) {
+					connectionList.add(next.getLayoutRelationship());
 				}
 			}
-			entities = (LayoutRelationship[]) nodeList.toArray(new LayoutRelationship[] {});
+			entities = (LayoutRelationship[]) connectionList.toArray(new LayoutRelationship[] {});
 		} else {
 			LinkedList nodeList = new LinkedList();
 			for (Iterator i = this.getConnections().iterator(); i.hasNext();) {
 				GraphConnection next = (GraphConnection) i.next();
-				nodeList.add(next.getLayoutRelationship());
+				if (nodesToLayout.contains(next.getSource()) && nodesToLayout.contains(next.getDestination())) {
+					nodeList.add(next.getLayoutRelationship());
+				}
 			}
 			entities = (LayoutRelationship[]) nodeList.toArray(new LayoutRelationship[] {});
 		}
@@ -700,29 +977,47 @@ public class Graph extends FigureCanvas {
 
 	void addConnection(GraphConnection connection) {
 		this.getConnections().add(connection);
-		IFigure figure = connection.getConnectionFigure();
-		edgeLayer.add(figure);
-		figure2ItemMap.put(figure, connection);
+		edgeLayer.add(connection.getFigure());
 	}
 
 	void removeConnection(GraphConnection connection) {
-		setItemVisible(connection, false);
+		addRemoveFigure(connection, false);
 		this.getConnections().remove(connection);
 	}
 
 	void removeNode(GraphNode node) {
-		setItemVisible(node, false);
+		addRemoveFigure(node, false);
 		this.getNodes().remove(node);
 	}
 
 	void addNode(GraphNode node) {
 		this.getNodes().add(node);
-		IFigure figure = node.getNodeFigure();
+		IFigure figure = node.getFigure();
 		nodeLayer.add(figure);
-		figure2ItemMap.put(figure, node);
 	}
 
-	void setItemVisible(GraphItem item, boolean visible) {
+	void addNode(GraphContainer graphContainer) {
+		this.getNodes().add(graphContainer);
+		IFigure figure = graphContainer.getFigure();
+		nodeLayer.add(figure);
+	}
+
+	void registerItem(GraphItem item) {
+		if (item.getItemType() == GraphItem.NODE) {
+			IFigure figure = item.getFigure();
+			figure2ItemMap.put(figure, item);
+		} else if (item.getItemType() == GraphItem.CONNECTION) {
+			IFigure figure = item.getFigure();
+			figure2ItemMap.put(figure, item);
+		} else if (item.getItemType() == GraphItem.CONTAINER) {
+			IFigure figure = item.getFigure();
+			figure2ItemMap.put(figure, item);
+		} else {
+			throw new RuntimeException("Unknown item type: " + item.getItemType());
+		}
+	}
+
+	void addRemoveFigure(GraphItem item, boolean visible) {
 		if (visible) {
 			if (item.getItemType() == GraphItem.NODE && (!nodeLayer.getChildren().contains(item) || !nodeFeedbackLayer.getChildren().contains(item))) {
 				GraphNode graphNode = (GraphNode) item;
@@ -730,7 +1025,11 @@ public class Graph extends FigureCanvas {
 				if (graphNode.isHighlighted()) {
 					nodeFeedbackLayer.add(figure);
 				} else {
-					nodeLayer.add(figure);
+					if (graphNode.getParent().getItemType() == GraphItem.GRAPH) {
+						nodeLayer.add(figure);
+					} else {
+						((GraphContainer) graphNode.getParent()).getFigure().add(figure);
+					}
 				}
 				figure2ItemMap.put(figure, item);
 			} else if (item.getItemType() == GraphItem.CONNECTION && (!edgeLayer.getChildren().contains(item) || !edgeFeedbackLayer.getChildren().contains(item))) {
@@ -750,7 +1049,8 @@ public class Graph extends FigureCanvas {
 				if (graphNode.isHighlighted()) {
 					nodeFeedbackLayer.remove(figure);
 				} else {
-					nodeLayer.remove(figure);
+					figure.getParent().remove(figure);
+					//nodeLayer.remove(figure);
 				}
 				figure2ItemMap.remove(figure);
 			} else if (item.getItemType() == GraphItem.CONNECTION) {
@@ -825,7 +1125,7 @@ public class Graph extends FigureCanvas {
 		if (d.isEmpty()) {
 			return;
 		}
-		LayoutRelationship[] connectionsToLayout = getConnectionsToLayout();
+		LayoutRelationship[] connectionsToLayout = getConnectionsToLayout(nodes);
 		LayoutEntity[] nodesToLayout = getNodesToLayout();
 
 		try {
@@ -894,6 +1194,19 @@ public class Graph extends FigureCanvas {
 		nodeLayer.addLayoutListener(LayoutAnimator.getDefault());
 		nodeFeedbackLayer.addLayoutListener(LayoutAnimator.getDefault());
 		return rootlayer;
+	}
+
+	public Graph getGraph() {
+		// @tag refactor : Is this method really needed
+		return this.getGraphModel();
+	}
+
+	public int getItemType() {
+		return GraphItem.GRAPH;
+	}
+
+	GraphItem getGraphItem(IFigure figure) {
+		return (GraphItem) figure2ItemMap.get(figure);
 	}
 
 }

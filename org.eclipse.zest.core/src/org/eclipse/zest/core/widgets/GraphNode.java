@@ -23,6 +23,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylyn.zest.core.widgets.internal.GraphLabel;
+import org.eclipse.mylyn.zest.core.widgets.internal.IContainer;
 import org.eclipse.mylyn.zest.layouts.LayoutEntity;
 import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.SWT;
@@ -57,7 +58,7 @@ public class GraphNode extends GraphItem {
 	private Color borderHighlightColor;
 	private int borderWidth;
 	private Point currentLocation;
-	private Dimension size;
+	protected Dimension size;
 	private Font font;
 	private boolean cacheLabel;
 	private boolean visible = true;
@@ -65,39 +66,80 @@ public class GraphNode extends GraphItem {
 
 	protected Dimension labelSize;
 	protected Graph graph;
+	protected IContainer parent;
 
 	/** The internal node. */
 	protected Object internalNode;
 	private boolean selected;
-	private int highlighted = HIGHLIGHT_NONE;
+	protected int highlighted = HIGHLIGHT_NONE;
 	private IFigure tooltip;
-	private GraphLabel nodeFigure;
+	protected IFigure nodeFigure;
+
 	private IFigure customFigure;
 	private boolean useCustomFigure = false;
 	private boolean isDisposed = false;
 
-	public GraphNode(Graph graphModel, int style) {
-		super(graphModel);
+	public GraphNode(IContainer graphModel, int style) {
+		super(graphModel.getGraph());
 		initModel(graphModel, " ", null);
+		nodeFigure = initFigure();
+
+		// This is a hack because JAVA sucks!
+		// I don't want to expose addNode so I can't put it in the
+		// IContainer interface.  
+		if (this.parent.getItemType() == GRAPH) {
+			((Graph) this.parent).addNode(this);
+		} else if (this.parent.getItemType() == CONTAINER) {
+			((GraphContainer) this.parent).addNode(this);
+		}
+		this.parent.getGraph().registerItem(this);
 	}
 
-	public GraphNode(Graph graphModel, int style, String text) {
-		super(graphModel);
+	public GraphNode(IContainer graphModel, int style, String text) {
+		super(graphModel.getGraph());
 		initModel(graphModel, text, null);
+		nodeFigure = initFigure();
+
+		// This is a hack because JAVA sucks!
+		// I don't want to expose addNode so I can't put it in the
+		// IContainer interface.  
+		if (this.parent.getItemType() == GRAPH) {
+			((Graph) this.parent).addNode(this);
+		} else if (this.parent.getItemType() == CONTAINER) {
+			((GraphContainer) this.parent).addNode(this);
+		}
+		this.parent.getGraph().registerItem(this);
 	}
 
-	public GraphNode(Graph graphModel, int style, String text, Image image) {
-		super(graphModel);
+	public GraphNode(IContainer graphModel, int style, String text, Image image) {
+		super(graphModel.getGraph());
 		initModel(graphModel, text, image);
+		nodeFigure = initFigure();
+
+		// This is a hack because JAVA sucks!
+		// I don't want to expose addNode so I can't put it in the
+		// IContainer interface.  
+		if (this.parent.getItemType() == GRAPH) {
+			((Graph) this.parent).addNode(this);
+		} else if (this.parent.getItemType() == CONTAINER) {
+			((GraphContainer) this.parent).addNode(this);
+		}
+		this.parent.getGraph().registerItem(this);
 	}
 
-	protected void initModel(Graph graphModel, String text, Image image) {
-		this.nodeStyle |= graphModel.getNodeStyle();
+	protected IFigure initFigure() {
+		nodeFigure = createFigureForModel();
+		return nodeFigure;
+	}
+
+	protected void initModel(IContainer parent, String text, Image image) {
+		this.nodeStyle |= parent.getGraph().getNodeStyle();
+		this.parent = parent;
 		this.sourceConnections = new ArrayList();
 		this.targetConnections = new ArrayList();
-		this.foreColor = graphModel.DARK_BLUE;
-		this.backColor = graphModel.LIGHT_BLUE;
-		this.highlightColor = graphModel.HIGHLIGHT_COLOR;
+		this.foreColor = parent.getGraph().DARK_BLUE;
+		this.backColor = parent.getGraph().LIGHT_BLUE;
+		this.highlightColor = parent.getGraph().HIGHLIGHT_COLOR;
 		this.highlightAdjacentColor = ColorConstants.orange;
 		this.nodeStyle = SWT.NONE;
 		this.borderColor = ColorConstants.black;
@@ -106,7 +148,7 @@ public class GraphNode extends GraphItem {
 		this.currentLocation = new PrecisionPoint(0, 0);
 		this.size = new Dimension(-1, -1);
 		this.font = Display.getDefault().getSystemFont();
-		this.graph = graphModel;
+		this.graph = parent.getGraph();
 		this.cacheLabel = false;
 		this.setText(text);
 		this.layoutEntity = new LayoutGraphNode();
@@ -117,8 +159,6 @@ public class GraphNode extends GraphItem {
 		if (font == null) {
 			font = Display.getDefault().getSystemFont();
 		}
-		nodeFigure = createFigureForModel();
-		graphModel.addNode(this);
 
 	}
 
@@ -136,7 +176,7 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.widgets.GraphItem#dispose()
+	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#dispose()
 	 */
 	public void dispose() {
 		super.dispose();
@@ -207,7 +247,7 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IGraphModelNode#isSelected()
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#isSelected()
 	 */
 	public boolean isSelected() {
 		return selected;
@@ -259,7 +299,7 @@ public class GraphNode extends GraphItem {
 	}
 
 	/**
-	 * Permantly sets the background color (unhighlighted). This color has no
+	 * Permanently sets the background color (unhighlighted). This color has no
 	 * effect if a custom figure has been set.
 	 * 
 	 * @param c
@@ -361,7 +401,7 @@ public class GraphNode extends GraphItem {
 				conn.getSource().highlightAdjacent();
 			}
 		}
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(getNodeFigure());
 		graph.highlightNode(this);
 	}
 
@@ -401,7 +441,7 @@ public class GraphNode extends GraphItem {
 
 	}
 
-	private void refreshLocation() {
+	protected void refreshLocation() {
 		if (useCustomFigure) {
 			if (customFigure == null || customFigure.getParent() == null) {
 				return;
@@ -573,7 +613,7 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IGraphModelNode#setSize(double,
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#setSize(double,
 	 *      double)
 	 */
 	public void setSize(double width, double height) {
@@ -587,7 +627,7 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IGraphModelNode#getBorderHighlightColor()
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#getBorderHighlightColor()
 	 */
 	public Color getBorderHighlightColor() {
 		return borderHighlightColor;
@@ -626,8 +666,20 @@ public class GraphNode extends GraphItem {
 	}
 
 	public void setVisible(boolean visible) {
-		graph.setItemVisible(this, visible);
+		// graph.addRemoveFigure(this, visible);
 		this.visible = visible;
+		this.getFigure().setVisible(visible);
+		List sConnections = (this).getSourceConnections();
+		List tConnections = (this).getTargetConnections();
+		for (Iterator iterator2 = sConnections.iterator(); iterator2.hasNext();) {
+			GraphConnection connection = (GraphConnection) iterator2.next();
+			connection.setVisible(visible);
+		}
+
+		for (Iterator iterator2 = tConnections.iterator(); iterator2.hasNext();) {
+			GraphConnection connection = (GraphConnection) iterator2.next();
+			connection.setVisible(visible);
+		}
 	}
 
 	/***************************************************************************
@@ -660,6 +712,10 @@ public class GraphNode extends GraphItem {
 		return calculateMinimumLabelSize();
 	}
 
+	IContainer getParent() {
+		return parent;
+	}
+
 	boolean isHighlighted() {
 		return highlighted > 0;
 	}
@@ -668,10 +724,14 @@ public class GraphNode extends GraphItem {
 		graph.invokeConstraintAdapters(this.getData(), constraint);
 	}
 
-	protected GraphLabel updateFigureForModel(GraphLabel figure) {
+	protected IFigure updateFigureForModel(IFigure currentFigure) {
 		if (useCustomFigure) {
-			return figure;
+			// Check if a custom figure is being used.  If it is
+			// then don't try and update the colours, etc...
+			return currentFigure;
 		}
+
+		GraphLabel figure = (GraphLabel) currentFigure;
 		IFigure toolTip;
 
 		figure.setText(this.getText());
@@ -711,7 +771,7 @@ public class GraphNode extends GraphItem {
 		return figure;
 	}
 
-	protected GraphLabel createFigureForModel() {
+	protected IFigure createFigureForModel() {
 		GraphNode node = this;
 		boolean cacheLabel = (this).cacheLabel();
 		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
@@ -756,7 +816,7 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.widgets.IGraphItem#getItemType()
+	 * @see org.eclipse.mylar.zest.core.widgets.IGraphItem#getItemType()
 	 */
 	public int getItemType() {
 		return NODE;
@@ -816,5 +876,9 @@ public class GraphNode extends GraphItem {
 			return rv;
 		}
 
+	}
+
+	IFigure getFigure() {
+		return this.getNodeFigure();
 	}
 }

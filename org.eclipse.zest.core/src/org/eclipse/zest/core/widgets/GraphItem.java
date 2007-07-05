@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.mylyn.zest.core.widgets;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Widget;
@@ -21,8 +22,10 @@ import org.eclipse.swt.widgets.Widget;
  */
 public abstract class GraphItem extends Item {
 
+	public static final int GRAPH = 0;
 	public static final int NODE = 1;
 	public static final int CONNECTION = 2;
+	public static final int CONTAINER = 3;
 
 	/**
 	 * @param parent
@@ -86,5 +89,7 @@ public abstract class GraphItem extends Item {
 	 * to the unhighlight figure or color.
 	 */
 	public abstract void unhighlight();
+
+	abstract IFigure getFigure();
 
 }

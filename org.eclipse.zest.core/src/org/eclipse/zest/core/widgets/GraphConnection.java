@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Display;
  * nodes and the properties of this connection (color, line width etc).
  * 
  * @author Chris Callendar
+ * @author Ian Bull
  */
 public class GraphConnection extends GraphItem {
 
@@ -55,6 +56,8 @@ public class GraphConnection extends GraphItem {
 	private boolean isDisposed = false;
 
 	private Connection connectionFigure = null;
+	private Connection sourceContainerConnectionFigure = null;
+	private Connection targetContainerConnectionFigure = null;
 
 	/**
 	 * For bezier curves: angle between the start point, and the line. This may
@@ -90,7 +93,7 @@ public class GraphConnection extends GraphItem {
 	private boolean visible;
 
 	private IFigure tooltip;
-	
+
 	private boolean highlighted;
 	private GraphLayoutConnection layoutConnection = null;
 
@@ -114,8 +117,36 @@ public class GraphConnection extends GraphItem {
 		(source).addSourceConnection(this);
 		(destination).addTargetConnection(this);
 		connectionFigure = createFigure();
-
 		graphModel.addConnection(this);
+		graphModel.getGraph().registerItem(this);
+
+		if ((source.getParent()).getItemType() == GraphItem.CONTAINER) {
+			// If the container of the source is a container, we need to draw another
+			// arc on that arc layer
+			ChopboxAnchor srcAnchor = new ChopboxAnchor(source.getFigure());
+			ChopboxAnchor destAnchor = new ChopboxAnchor(destination.getFigure());
+			PolylineConnection polylineConnection = new PolylineConnection();
+			polylineConnection.setSourceAnchor(srcAnchor);
+			polylineConnection.setTargetAnchor(destAnchor);
+			polylineConnection.setForegroundColor(this.color);
+			((GraphContainer) source.getParent()).addConnectionFigure(polylineConnection);
+			sourceContainerConnectionFigure = polylineConnection;
+			this.setVisible(false);
+		}
+		if ((destination.getParent()).getItemType() == GraphItem.CONTAINER) {
+			// If the container of the source is a container, we need to draw another
+			// arc on that arc layer
+			ChopboxAnchor srcAnchor = new ChopboxAnchor(source.getFigure());
+			ChopboxAnchor destAnchor = new ChopboxAnchor(destination.getFigure());
+			PolylineConnection polylineConnection = new PolylineConnection();
+			polylineConnection.setBackgroundColor(this.color);
+			polylineConnection.setForegroundColor(this.color);
+			polylineConnection.setSourceAnchor(srcAnchor);
+			polylineConnection.setTargetAnchor(destAnchor);
+			((GraphContainer) destination.getParent()).addConnectionFigure(polylineConnection);
+			targetContainerConnectionFigure = polylineConnection;
+			this.setVisible(false);
+		}
 	}
 
 	public void dispose() {
@@ -195,7 +226,7 @@ public class GraphConnection extends GraphItem {
 	 * apart). A weight of 1 results in the minimum spring length being used
 	 * (closest together).
 	 * 
-	 * @see org.eclipse.mylyn.zest.layouts.LayoutRelationship#getWeightInLayout()
+	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#getWeightInLayout()
 	 * @return the weight: {-1, [0 - 1]}.
 	 */
 	public double getWeightInLayout() {
@@ -304,7 +335,7 @@ public class GraphConnection extends GraphItem {
 	public IFigure getTooltip() {
 		return this.tooltip;
 	}
-	
+
 	/**
 	 * Returns the connection line width.
 	 * 
@@ -531,11 +562,11 @@ public class GraphConnection extends GraphItem {
 	// this.startLength = startLength;
 	// updateFigure(connectionFigure);
 	// }
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.widgets.IGraphItem#getItemType()
+	 * @see org.eclipse.mylar.zest.core.widgets.IGraphItem#getItemType()
 	 */
 	public int getItemType() {
 		return CONNECTION;
@@ -544,22 +575,41 @@ public class GraphConnection extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.GraphItem#setVisible(boolean)
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem#setVisible(boolean)
 	 */
 	public void setVisible(boolean visible) {
-		graphModel.setItemVisible(this, visible);
-		this.visible = visible;
+		//graphModel.addRemoveFigure(this, visible);
+		if (getSource().isVisible() && getDestination().isVisible() && visible) {
+			this.getFigure().setVisible(visible);
+			if (sourceContainerConnectionFigure != null) {
+				sourceContainerConnectionFigure.setVisible(visible);
+			}
+			if (targetContainerConnectionFigure != null) {
+				targetContainerConnectionFigure.setVisible(visible);
+			}
+			this.visible = visible;
+		} else {
+			this.getFigure().setVisible(false);
+			if (sourceContainerConnectionFigure != null) {
+				sourceContainerConnectionFigure.setVisible(false);
+			}
+			if (targetContainerConnectionFigure != null) {
+				targetContainerConnectionFigure.setVisible(false);
+			}
+			this.visible = false;
+		}
+
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.widgets.IGraphItem#isVisible()
+	 * @see org.eclipse.mylar.zest.core.widgets.IGraphItem#isVisible()
 	 */
 	public boolean isVisible() {
 		return visible;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -575,7 +625,7 @@ public class GraphConnection extends GraphItem {
 
 	private Connection updateFigure(Connection connection) {
 		Shape connectionShape = (Shape) connection;
-		
+
 		connectionShape.setLineStyle(getLineStyle());
 
 		AligningBendpointLocator labelLocator = new AligningBendpointLocator(connection);
@@ -607,7 +657,7 @@ public class GraphConnection extends GraphItem {
 			}
 			((PolylineConnection) connection).setTargetDecoration(decoration);
 		}
-		
+
 		IFigure toolTip;
 		if (this.getTooltip() == null && getText() != null && getText().length() > 0) {
 			toolTip = new Label();
@@ -616,7 +666,7 @@ public class GraphConnection extends GraphItem {
 			toolTip = this.getTooltip();
 		}
 		connection.setToolTip(toolTip);
-		
+
 		return connection;
 	}
 
@@ -643,7 +693,7 @@ public class GraphConnection extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.layouts.LayoutRelationship#isBidirectionalInLayout()
+	 * @see org.eclipse.mylar.zest.layouts.LayoutRelationship#isBidirectionalInLayout()
 	 */
 	private boolean isBidirectionalInLayout() {
 		return !ZestStyles.checkStyle(connectionStyle, ZestStyles.CONNECTIONS_DIRECTED);
@@ -681,5 +731,9 @@ public class GraphConnection extends GraphItem {
 			this.layoutInformation = layoutInformation;
 		}
 
+	}
+
+	IFigure getFigure() {
+		return this.getConnectionFigure();
 	}
 }
