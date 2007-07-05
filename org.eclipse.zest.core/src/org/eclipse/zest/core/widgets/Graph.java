@@ -860,7 +860,7 @@ public class Graph extends FigureCanvas implements IContainer {
 			nodeFeedbackLayer.add(figure);
 			nodeFeedbackLayer.setConstraint(figure, node.getBounds());
 		}
-		nodeFeedbackLayer.getUpdateManager().performUpdate();
+		//nodeFeedbackLayer.getUpdateManager().performUpdate();
 	}
 
 	/**
@@ -876,7 +876,7 @@ public class Graph extends FigureCanvas implements IContainer {
 			nodeFeedbackLayer.add(figure);
 			nodeFeedbackLayer.setConstraint(figure, node.getBounds());
 		}
-		nodeFeedbackLayer.getUpdateManager().performUpdate();
+		//nodeFeedbackLayer.getUpdateManager().performUpdate();
 	}
 
 	/**
@@ -893,7 +893,7 @@ public class Graph extends FigureCanvas implements IContainer {
 			//figure.setBounds(node.getBounds());
 
 		}
-		nodeFeedbackLayer.getUpdateManager().performUpdate();
+		//nodeFeedbackLayer.getUpdateManager().performUpdate();
 	}
 
 	/**
@@ -910,7 +910,7 @@ public class Graph extends FigureCanvas implements IContainer {
 			//figure.setBounds(node.getBounds());
 
 		}
-		nodeFeedbackLayer.getUpdateManager().performUpdate();
+		//nodeFeedbackLayer.getUpdateManager().performUpdate();
 	}
 
 	/**
