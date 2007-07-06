@@ -23,7 +23,6 @@ import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylyn.zest.layouts.LayoutEntity;
 import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
 import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.FadeLayoutAlgorithm;
 import org.eclipse.mylyn.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.mylyn.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
 import org.eclipse.mylyn.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
@@ -106,7 +105,6 @@ public class SimpleSWTExample {
 	protected static ArrayList algorithms = new ArrayList();
 	{
 		algorithms.add( new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING) );
-		algorithms.add( new FadeLayoutAlgorithm(LayoutStyles.NONE) );
 		algorithms.add( new TreeLayoutAlgorithm (LayoutStyles.NONE) );  
 		algorithms.add( new HorizontalTreeLayoutAlgorithm (LayoutStyles.NONE) );
 		algorithms.add( new RadialLayoutAlgorithm (LayoutStyles.NONE) );
@@ -261,16 +259,18 @@ public class SimpleSWTExample {
 	public void setAsynchronously() {
     	if ( asynchronously ) {
     		asynchronously = false;
-    	}
-    	else asynchronously = true;
+    	} else {
+			asynchronously = true;
+		}
     	
 	}
 	
     public void setContinuous() {
     	if ( continuous ) {
     		continuous = false;
-    	}
-    	else continuous = true;
+    	} else {
+			continuous = true;
+		}
     }
 
     IProgressMonitor progressMonitor = null;
@@ -569,8 +569,9 @@ public class SimpleSWTExample {
 	}
 	
 	private void createTreeGraphRecursive (SimpleNode currentParentNode, int maxChildren, int maxLevel, int level, boolean random) {
-	    if (level > maxLevel) 
+	    if (level > maxLevel) {
 			return;
+		}
 		
 	    int numChildren = random ? (int) (Math.random() * maxChildren + 1) : maxChildren;
         for (int child = 0; child < numChildren; child++) {
@@ -642,8 +643,9 @@ public class SimpleSWTExample {
         //shell.pack();
         shell.open();
         while (!shell.isDisposed()) {
-            if (!display.readAndDispatch())
-                display.sleep();
+            if (!display.readAndDispatch()) {
+				display.sleep();
+			}
         }
         display.dispose();
 	}
@@ -658,10 +660,11 @@ public class SimpleSWTExample {
         public void paintControl(PaintEvent e) {
         	Date date = new Date();
 			long currentTime = date.getTime();
-			if ( currentTime - lastPaint < 40 ) 
+			if ( currentTime - lastPaint < 40 ) {
 				return;
-			else
+			} else {
 				lastPaint = currentTime;
+			}
             if (Display.getDefault() == null || e.width == 0 || e.height == 0) {
                 return;
             }
@@ -702,7 +705,7 @@ public class SimpleSWTExample {
 				}
 				
 				// Add bend points if required
-				if (((SimpleRelationship)rel).getBendPoints() != null && ((SimpleRelationship)rel).getBendPoints().length > 0) {
+				if ((rel).getBendPoints() != null && (rel).getBendPoints().length > 0) {
 					src = drawBendPoints(rel, gcBuffer); // change source to last bendpoint
 				}
 				
@@ -773,7 +776,7 @@ public class SimpleSWTExample {
 		 */
 		private SimpleNode drawBendPoints(SimpleRelationship rel, GC gcBuffer) {
 			final String DUMMY_TITLE = "dummy";
-			LayoutBendPoint[] bendPoints = ((SimpleRelationship) rel).getBendPoints();
+			LayoutBendPoint[] bendPoints = (rel).getBendPoints();
 			LayoutBendPoint bp;
 			SimpleNode startEntity = (SimpleNode)rel.getSourceInLayout();
 			SimpleNode destEntity = null;

@@ -55,7 +55,6 @@ import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylyn.zest.layouts.LayoutEntity;
 import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
 import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.FadeLayoutAlgorithm;
 import org.eclipse.mylyn.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.mylyn.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
 import org.eclipse.mylyn.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
@@ -86,7 +85,6 @@ public class SimpleSwingExample {
 	private static final Color RELATIONSHIP_NORMAL_COLOR = Color.BLUE;
 	//private static final Color RELATIONSHIP_HIGHLIGHT_COLOR = new Color (255, 200, 125); 
 
-	public static FadeLayoutAlgorithm FADE = new FadeLayoutAlgorithm(LayoutStyles.NONE);
 	public static SpringLayoutAlgorithm SPRING = new SpringLayoutAlgorithm(LayoutStyles.NONE);
 	public static TreeLayoutAlgorithm TREE_VERT = new TreeLayoutAlgorithm(LayoutStyles.NONE);
 	public static HorizontalTreeLayoutAlgorithm TREE_HORIZ = new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE);
@@ -204,7 +202,6 @@ public class SimpleSwingExample {
 			SwingUtilities.invokeAndWait(new Runnable() {
 
 				public void run() {
-					FADE = new FadeLayoutAlgorithm(LayoutStyles.NONE);
 					SPRING = new SpringLayoutAlgorithm(LayoutStyles.NONE);
 					TREE_VERT = new TreeLayoutAlgorithm(LayoutStyles.NONE);
 					TREE_HORIZ = new HorizontalTreeLayoutAlgorithm(LayoutStyles.NONE);
@@ -225,7 +222,6 @@ public class SimpleSwingExample {
 
 					});
 					GRID.setRowPadding(20);
-					addAlgorithm(FADE, "FADE", false);
 					addAlgorithm(SPRING, "Spring", false);
 					addAlgorithm(TREE_VERT, "Tree-V", false);
 					addAlgorithm(TREE_HORIZ, "Tree-H", false);

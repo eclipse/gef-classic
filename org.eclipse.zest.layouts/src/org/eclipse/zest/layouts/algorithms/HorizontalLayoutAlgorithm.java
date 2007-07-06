@@ -6,7 +6,6 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- * 	   Keith Pilson - initial API and implementation
  *     Ian Bull     - updated and modified
  *******************************************************************************/
 package org.eclipse.mylyn.zest.layouts.algorithms;
@@ -41,10 +40,15 @@ public class HorizontalLayoutAlgorithm extends GridLayoutAlgorithm {
 	}
 	
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
-		if ( asynchronous && continueous ) return false;
-		else if ( asynchronous && !continueous ) return true;
-		else if ( !asynchronous && continueous ) return false;
-		else if ( !asynchronous && !continueous ) return true;
+		if ( asynchronous && continueous ) {
+			return false;
+		} else if ( asynchronous && !continueous ) {
+			return true;
+		} else if ( !asynchronous && continueous ) {
+			return false;
+		} else if ( !asynchronous && !continueous ) {
+			return true;
+		}
 		
 		return false;
 	}
