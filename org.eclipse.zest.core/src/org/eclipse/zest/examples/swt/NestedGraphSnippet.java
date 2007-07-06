@@ -29,10 +29,10 @@ public class NestedGraphSnippet {
 
 		Graph g = new Graph(shell, SWT.NONE);
 
-		GraphContainer p1 = new GraphContainer(g, SWT.NONE, "org.example.action", image1);
-		GraphContainer p2 = new GraphContainer(g, SWT.NONE, "org.example.plugin", image1);
-		GraphContainer p3 = new GraphContainer(g, SWT.NONE, "org.example.ui", image1);
-		GraphContainer p4 = new GraphContainer(g, SWT.NONE, "org.example.views", image1);
+		GraphContainer p1 = new GraphContainer(g, SWT.NONE, ".more.more.more.more\n.more.\nmore.more.more", image1);
+		GraphContainer p2 = new GraphContainer(g, SWT.NONE, "org.example.plugin.more.more.more.more", image1);
+		GraphContainer p3 = new GraphContainer(g, SWT.NONE, "org.example.ui.more.more.more.more", image1);
+		GraphContainer p4 = new GraphContainer(g, SWT.NONE, "org.example\n.views\n.more.\nmore.more.\nmore", image1);
 
 		GraphNode c1 = new GraphNode(p1, SWT.NONE, "DefaultAction.java", classImage);
 		GraphNode c2 = new GraphNode(p1, SWT.NONE, "UIAction.java", classImage);

@@ -99,7 +99,33 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	}
 
 	public ExpandGraphLabel(GraphContainer container, String text, Image image, boolean cacheLabel) {
-		this.label = new Label(text);
+		this.label = new Label(text) {
+
+			/*
+			 * This method is overwritten so that the text is not truncated.
+			 * (non-Javadoc)
+			 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
+			 */
+			protected void paintFigure(Graphics graphics) {
+				if (isOpaque()) {
+					super.paintFigure(graphics);
+				}
+				Rectangle bounds = getBounds();
+				graphics.translate(bounds.x, bounds.y);
+				if (getIcon() != null) {
+					graphics.drawImage(getIcon(), getIconLocation());
+				}
+				if (!isEnabled()) {
+					graphics.translate(1, 1);
+					graphics.setForegroundColor(ColorConstants.buttonLightest);
+					graphics.drawText(getSubStringText(), getTextLocation());
+					graphics.translate(-1, -1);
+					graphics.setForegroundColor(ColorConstants.buttonDarker);
+				}
+				graphics.drawText(getText(), getTextLocation());
+				graphics.translate(-bounds.x, -bounds.y);
+			}
+		};
 		this.setText(text);
 		this.setImage(image);
 		this.container = container;
@@ -198,12 +224,13 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 		lightenColor.dispose();
 	}
 
-	public Dimension getPreferredSize(int hint, int hint2) {
-		return this.label.getPreferredSize();
-	}
+//	public Dimension getPreferredSize(int hint, int hint2) {
+	//	return this.label.getPreferredSize();
+	//}
 
 	public void setText(String string) {
 		this.label.setText(string);
+		this.label.setPreferredSize(500, 30);
 		//adjustBoundsToFit();
 	}
 

@@ -42,7 +42,8 @@ import org.eclipse.swt.graphics.Image;
  */
 public class GraphContainer extends GraphNode implements IContainer {
 
-	private static final int ANIMATION_TIME = 1000;
+	private static final int MIN_WIDTH = 200;
+	private static final int ANIMATION_TIME = 100;
 	private static final int SUBLAYER_OFFSET = 3;
 
 	private ExpandGraphLabel expandGraphLabel;
@@ -181,8 +182,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 		expandGraphLabel.setImage(getImage());
 		int labelHeight = expandGraphLabel.getPreferredSize().height;
 		int labelWidth = expandGraphLabel.getPreferredSize().width;
-		if (labelWidth < 150) {
-			labelWidth = 150;
+		if (labelWidth < MIN_WIDTH) {
+			labelWidth = MIN_WIDTH;
 			expandGraphLabel.setPreferredSize(labelWidth, labelHeight);
 			expandGraphLabel.setSize(labelWidth + 2 * (2 + 2 + 1), labelHeight);
 		}
@@ -263,8 +264,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		int labelHeight = expandGraphLabel.getPreferredSize().height;
 		int labelWidth = expandGraphLabel.getPreferredSize().width;
-		if (labelWidth < 150) {
-			labelWidth = 150;
+		if (labelWidth < MIN_WIDTH) {
+			labelWidth = MIN_WIDTH;
 		}
 		if (labelHeight < 30) {
 			labelHeight = 30;
@@ -298,8 +299,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 		nodeFigure.getParent().revalidate();
 		int labelHeight = expandGraphLabel.getPreferredSize().height;
 		int labelWidth = expandGraphLabel.getPreferredSize().width;
-		if (labelWidth < 150) {
-			labelWidth = 150;
+		if (labelWidth < MIN_WIDTH) {
+			labelWidth = MIN_WIDTH;
 		}
 		if (labelHeight < 30) {
 			labelHeight = 30;
