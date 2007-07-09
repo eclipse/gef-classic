@@ -107,6 +107,13 @@ public final class ZestStyles {
 	public static final int NODES_FISHEYE = 1 << 3;
 
 	/**
+	 * Style to specify that the node should not show its text (only its image).
+	 * This with the NODES_FISHEYE style should help with large graphs (since the
+	 * fisheye style will show the text).
+	 */
+	public static final int NODES_HIDE_TEXT = 1 << 4;
+
+	/**
 	 * Style constant indiciating that nodes should not be resized on layout.
 	 */
 	public static final int NODES_NO_LAYOUT_RESIZE = 1 << 3;

@@ -86,7 +86,7 @@ public class GraphLabel extends CachedLabel {
 	public GraphLabel(String text, Image i, boolean cacheLabel) {
 		super(cacheLabel);
 		initLabel();
-		setText(" " + text + " ");
+		setText(text);
 		setIcon(i);
 	}
 
@@ -180,7 +180,7 @@ public class GraphLabel extends CachedLabel {
 	 * @see org.eclipse.draw2d.Label#setText(java.lang.String)
 	 */
 	public void setText(String s) {
-		super.setText(" " + s + " ");
+		super.setText(" " + s);
 		adjustBoundsToFit();
 	}
 

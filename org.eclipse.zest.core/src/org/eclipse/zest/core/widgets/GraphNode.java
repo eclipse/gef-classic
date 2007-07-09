@@ -777,7 +777,9 @@ public class GraphNode extends GraphItem {
 		GraphLabel figure = (GraphLabel) currentFigure;
 		IFigure toolTip;
 
-		figure.setText(this.getText());
+		if (!checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
+			figure.setText(this.getText());
+		}
 		figure.setIcon(getImage());
 
 		// @tag TODO: Add border and foreground colours to highlight
@@ -818,6 +820,9 @@ public class GraphNode extends GraphItem {
 		GraphNode node = this;
 		boolean cacheLabel = (this).cacheLabel();
 		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
+		if (checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
+			label.setText("");
+		}
 		return updateFigureForModel(label);
 	}
 
@@ -826,7 +831,9 @@ public class GraphNode extends GraphItem {
 		boolean cacheLabel = this.cacheLabel();
 		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
 
-		label.setText(this.getText());
+		if (!checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
+			label.setText(this.getText());
+		}
 		label.setIcon(getImage());
 
 		// @tag TODO: Add border and foreground colours to highlight
