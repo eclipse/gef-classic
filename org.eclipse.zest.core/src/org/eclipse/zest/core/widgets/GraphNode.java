@@ -17,7 +17,6 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
@@ -811,7 +810,7 @@ public class GraphNode extends GraphItem {
 		}
 		figure.setToolTip(toolTip);
 
-		figure.addLayoutListener(LayoutAnimator.getDefault());
+		//figure.addLayoutListener(LayoutAnimator.getDefault());
 		refreshLocation();
 		return figure;
 	}
