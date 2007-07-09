@@ -1095,8 +1095,10 @@ public class Graph extends FigureCanvas implements IContainer {
 		Rectangle bounds = regularFigure.getBounds().getCopy();
 		regularFigure.translateToAbsolute(bounds);
 
-		rootlayer.translateToRelative(bounds);
-		rootlayer.translateFromParent(bounds);
+		double scale = rootlayer.getScale();
+		fishEyeLayer.setScale(1 / scale);
+		fishEyeLayer.translateToRelative(bounds);
+		fishEyeLayer.translateFromParent(bounds);
 
 		fishEyeLayer.setConstraint(fishEyeFigure, bounds);
 
@@ -1118,13 +1120,17 @@ public class Graph extends FigureCanvas implements IContainer {
 		fishEyeLayer.removeAll();
 		Animation.markBegin();
 
-		rootlayer.translateToRelative(newBounds);
-		rootlayer.translateFromParent(newBounds);
+		double scale = rootlayer.getScale();
+		fishEyeLayer.setScale(1 / scale);
+
+		fishEyeLayer.translateToRelative(newBounds);
+		fishEyeLayer.translateFromParent(newBounds);
 
 		Rectangle bounds = startFigure.getBounds().getCopy();
 		startFigure.translateToAbsolute(bounds);
-		rootlayer.translateToRelative(bounds);
-		rootlayer.translateFromParent(bounds);
+		//startFigure.translateToRelative(bounds);
+		fishEyeLayer.translateToRelative(bounds);
+		fishEyeLayer.translateFromParent(bounds);
 
 		endFigure.setLocation(bounds.getLocation());
 		endFigure.setSize(bounds.getSize());
