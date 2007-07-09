@@ -31,6 +31,7 @@ import org.eclipse.draw2d.ScrollPane;
 import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylyn.zest.core.widgets.internal.IContainer;
 import org.eclipse.mylyn.zest.core.widgets.internal.RevealListener;
 import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
@@ -63,8 +64,9 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	// CLASS CONSTANTS
 	public static final int ANIMATION_TIME = 500;
+	public static final int FISHEYE_ANIMATION_TIME = 150;
 
-	// @tag CGraph.Colors : These are the colour contants for the graph, they
+	// @tag CGraph.Colors : These are the colour constants for the graph, they
 	// are disposed on clean-up
 	public Color LIGHT_BLUE = new Color(null, 216, 228, 248);
 	public Color LIGHT_BLUE_CYAN = new Color(null, 213, 243, 255);
@@ -98,6 +100,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	private ScalableFreeformLayeredPane edgeLayer = null;
 	private ScalableFreeformLayeredPane edgeFeedbackLayer = null;
 	private ScalableFreeformLayeredPane nodeFeedbackLayer = null;
+	private ScalableFreeformLayeredPane fishEyeLayer = null;
 	LayoutAlgorithm layoutAlgorithm = null;
 	private Dimension preferredSize = null;
 	int style = 0;
@@ -140,10 +143,12 @@ public class Graph extends FigureCanvas implements IContainer {
 		// outside of the canvas
 		this.getLightweightSystem().setEventDispatcher(new SWTEventDispatcher() {
 			public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
+				super.dispatchMouseMoved(me);
+
+				// If the current event is null, return
 				if (getCurrentEvent() == null) {
 					return;
 				}
-				super.dispatchMouseMoved(me);
 
 				if (getMouseTarget() == null) {
 					setMouseTarget(getRoot());
@@ -419,6 +424,8 @@ public class Graph extends FigureCanvas implements IContainer {
 		 */
 		Graph graph = null;
 		Point lastLocation = null;
+		GraphItem fisheyedItem = null;
+		IFigure fisheyedFigure = null;
 
 		DragSupport(Graph graph) {
 			this.graph = graph;
@@ -454,51 +461,26 @@ public class Graph extends FigureCanvas implements IContainer {
 						// There is no movement for connection
 					}
 				}
+				if (fisheyedFigure != null) {
+					Point pointCopy = mousePoint.getCopy();
+
+					Point tempLastLocation = lastLocation.getCopy();
+					fisheyedFigure.translateToRelative(tempLastLocation);
+					fisheyedFigure.translateFromParent(tempLastLocation);
+
+					fisheyedFigure.translateToRelative(pointCopy);
+					fisheyedFigure.translateFromParent(pointCopy);
+					Point delta = new Point(pointCopy.x - tempLastLocation.x, pointCopy.y - tempLastLocation.y);
+					Point point = new Point(fisheyedFigure.getBounds().x + delta.x, fisheyedFigure.getBounds().y + delta.y);
+					fishEyeLayer.setConstraint(fisheyedFigure, new Rectangle(point, fisheyedFigure.getSize()));
+					fishEyeLayer.getUpdateManager().performUpdate();
+					//fisheyedFigure.setBounds(new Rectangle(point2, fisheyedFigure.getSize()));
+					//fisheyedFigure.setLocation(new Point(fisheyedFigure.getBounds().x + delta.x, fisheyedFigure.getBounds().y + delta.y));
+				}
 			}
 			lastLocation = tempPoint;
 			//oldLocation = mousePoint;
 		}
-
-		//		public void mouseDragged(org.eclipse.draw2d.MouseEvent me) {
-		//			PrecisionPoint mousePoint = new PrecisionPoint((double) me.x, (double) me.y);
-		//			if (me.getState() == org.eclipse.draw2d.MouseEvent.ALT) {
-		//				return;
-		//			}
-		//			//getRootLayer().translateToRelative(mousePoint);
-		//			//getRootLayer().translateFromParent(mousePoint);
-		//			if (selectedItems.size() > 0) {
-		//				Iterator iterator = selectedItems.iterator();
-		//				while (iterator.hasNext()) {
-		//					GraphItem item = (GraphItem) iterator.next();
-		//					if (item.getItemType() == GraphItem.NODE) {
-		//						// @tag Zest.selection Zest.move : This is where the node movement is tracked
-		//						GraphNode node = (GraphNode) item;
-		//
-		//						node.getParent().getContainerLayer().translateToRelative(mousePoint);
-		//						node.getParent().getContainerLayer().translateFromParent(mousePoint);
-		//
-		//						PrecisionPoint localMousePoint = new PrecisionPoint(mousePoint);
-		//						PrecisionPoint localOldPoint = new PrecisionPoint(oldLocation);
-		//
-		//						Point location = node.getLocation();
-		//
-		//						PrecisionPoint delta = new PrecisionPoint((location.x - localOldPoint.preciseX), (location.y - localOldPoint.preciseY));
-		//						node.setLocation(delta.preciseX + localMousePoint.preciseX, delta.preciseY + localMousePoint.preciseY);
-		//						//node.setLocation((int) mousePoint.preciseX, (int) mousePoint.preciseY);
-		//					} else if (item.getItemType() == GraphItem.CONTAINER) {
-		//						GraphContainer container = (GraphContainer) item;
-		//						container.getParent().getContainerLayer().translateToRelative(mousePoint);
-		//						container.getParent().getContainerLayer().translateFromParent(mousePoint);
-		//
-		//						PrecisionPoint delta = new PrecisionPoint(mousePoint.preciseX - oldLocation.preciseX, mousePoint.preciseY - oldLocation.preciseY);
-		//						container.setLocation(container.getLocation().x + delta.preciseX, container.getLocation().y + delta.preciseY);
-		//					} else {
-		//						// There is no movement for connection
-		//					}
-		//				}
-		//			}
-		//			oldLocation = mousePoint;
-		//		}
 
 		public void mouseEntered(org.eclipse.draw2d.MouseEvent me) {
 
@@ -512,8 +494,42 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		}
 
+		/**
+		 * This tracks whenever a mouse moves. The only thing we care about is
+		 * fisheye(ing) nodes.  This means whenever the mouse moves we check if
+		 * we need to fisheye on a node or not.
+		 */
 		public void mouseMoved(org.eclipse.draw2d.MouseEvent me) {
 
+			Point mousePoint = new Point(me.x, me.y);
+			getRootLayer().translateToRelative(mousePoint);
+			IFigure figureUnderMouse = getFigureAt(mousePoint.x, mousePoint.y);
+
+			if (figureUnderMouse != null) {
+				// There is a figure under this mouse
+				GraphItem itemUnderMouse = (GraphItem) figure2ItemMap.get(figureUnderMouse);
+				if (itemUnderMouse == fisheyedItem) {
+
+				} else if (itemUnderMouse != null && itemUnderMouse.getItemType() == GraphItem.NODE) {
+					fisheyedItem = itemUnderMouse;
+					fisheyedFigure = ((GraphNode) itemUnderMouse).fishEye(true);
+					if (fisheyedFigure == null) {
+						// If there is no fisheye figure (this means that the node does not support a fish eye)
+						// then remove the fisheyed item
+						fisheyedItem = null;
+					}
+				} else if (fisheyedItem != null) {
+					((GraphNode) fisheyedItem).fishEye(false);
+					fisheyedItem = null;
+					fisheyedFigure = null;
+				}
+			} else {
+				if (fisheyedItem != null) {
+					((GraphNode) fisheyedItem).fishEye(false);
+					fisheyedItem = null;
+					fisheyedFigure = null;
+				}
+			}
 		}
 
 		public void mouseDoubleClicked(org.eclipse.draw2d.MouseEvent me) {
@@ -551,29 +567,9 @@ public class Graph extends FigureCanvas implements IContainer {
 				return;
 			} else {
 				boolean hasSelection = selectedItems.size() > 0;
-				IFigure figureUnderMouse = graph.getContents().findFigureAt(mousePoint.x, mousePoint.y, new TreeSearch() {
-
-					public boolean accept(IFigure figure) {
-						return true;
-					}
-
-					public boolean prune(IFigure figure) {
-						IFigure parent = figure.getParent();
-						// @tag TODO Zest : change these to from getParent to their actual layer names
-						if (parent == nodeLayer || parent == nodeFeedbackLayer || parent == nodeLayer.getParent() || parent == nodeLayer.getParent().getParent() || parent == edgeFeedbackLayer || parent == edgeLayer) {
-							return false;
-						}
-						GraphItem item = (GraphItem) figure2ItemMap.get(figure);
-						if (item != null && item.getItemType() == GraphItem.CONTAINER) {
-							return false;
-						} else if (figure instanceof FreeformLayer || parent instanceof FreeformLayer || figure instanceof ScrollPane || parent instanceof ScrollPane || parent instanceof ScalableFreeformLayeredPane || figure instanceof ScalableFreeformLayeredPane) {
-							return false;
-						}
-						return true;
-					}
-
-				});
+				IFigure figureUnderMouse = getFigureAt(mousePoint.x, mousePoint.y);
 				getRootLayer().translateFromParent(mousePoint);
+
 				if (figureUnderMouse != null) {
 					figureUnderMouse.getParent().translateFromParent(mousePoint);
 				}
@@ -639,162 +635,44 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		}
 
-	}
+		/*
+		 * Finds a figure at the location X, Y in the graph
+		 * 
+		 * This point should be translated to relative before calling findFigureAt
+		 */
+		private IFigure getFigureAt(int x, int y) {
+			IFigure figureUnderMouse = graph.getContents().findFigureAt(x, y, new TreeSearch() {
 
-	/*
-	class DragSupport implements MouseMotionListener, org.eclipse.draw2d.MouseListener {
-		Graph graph = null;
-		Point oldLocation = null;
-		boolean mouseUp = true;
-
-		DragSupport(Graph graph) {
-			this.graph = graph;
-		}
-
-		public void mouseDragged(org.eclipse.draw2d.MouseEvent me) {
-			if (mouseUp) {
-				return;
-			}
-			Point mousePoint = new Point(me.x, me.y);
-			getRootLayer().translateToRelative(mousePoint);
-			getRootLayer().translateFromParent(mousePoint);
-			if (selectedItems.size() > 0) {
-				Iterator iterator = selectedItems.iterator();
-				while (iterator.hasNext()) {
-					GraphItem item = (GraphItem) iterator.next();
-					if (item.getItemType() == GraphItem.NODE) {
-						// @tag Zest.selection Zest.move : This is where the node movement is tracked
-						GraphNode node = (GraphNode) item;
-						Point delta = new Point(mousePoint.x - oldLocation.x, mousePoint.y - oldLocation.y);
-						node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
-					} else if (item.getItemType() == GraphItem.CONTAINER) {
-						GraphContainer container = (GraphContainer) item;
-						Point delta = new Point(mousePoint.x - oldLocation.x, mousePoint.y - oldLocation.y);
-						container.setLocation(container.getLocation().x + delta.x, container.getLocation().y + delta.y);
-
-					} else {
-						// There is no movement for connection
-					}
+				public boolean accept(IFigure figure) {
+					return true;
 				}
-			}
-			oldLocation = mousePoint;
-		}
 
-		public void mouseEntered(org.eclipse.draw2d.MouseEvent me) {
+				public boolean prune(IFigure figure) {
+					IFigure parent = figure.getParent();
+					// @tag TODO Zest : change these to from getParent to their actual layer names
 
-		}
-
-		public void mouseExited(org.eclipse.draw2d.MouseEvent me) {
-
-		}
-
-		public void mouseHover(org.eclipse.draw2d.MouseEvent me) {
-
-		}
-
-		public void mouseMoved(org.eclipse.draw2d.MouseEvent me) {
-		}
-
-		public void mouseDoubleClicked(org.eclipse.draw2d.MouseEvent me) {
-
-		}
-
-		public void mousePressed(org.eclipse.draw2d.MouseEvent me) {
-			mouseUp = false;
-			Point mousePoint = new Point(me.x, me.y);
-			getRootLayer().translateToRelative(mousePoint);
-
-			if (me.getState() == org.eclipse.draw2d.MouseEvent.ALT) {
-				double scale = getRootLayer().getScale();
-				scale *= 2;
-				getRootLayer().setScale(scale);
-			} else if (me.getState() == (org.eclipse.draw2d.MouseEvent.ALT | org.eclipse.draw2d.MouseEvent.SHIFT)) {
-				double scale = getRootLayer().getScale();
-				scale /= 2;
-				getRootLayer().setScale(scale);
-			} else {
-				boolean hasSelection = selectedItems.size() > 0;
-				IFigure figureUnderMouse = graph.getContents().findFigureAt(mousePoint.x, mousePoint.y, new TreeSearch() {
-
-					public boolean accept(IFigure figure) {
+					if (parent == fishEyeLayer) {
+						// If it node is on the fish eye layer, don't worry about it.
 						return true;
 					}
-
-					public boolean prune(IFigure figure) {
-						IFigure parent = figure.getParent();
-						// @tag TODO Zest : change these to from getParent to their actual layer names
-						if (parent == nodeLayer || parent == nodeFeedbackLayer || parent == nodeLayer.getParent() || parent == nodeLayer.getParent().getParent() || parent == edgeFeedbackLayer || parent == edgeLayer) {
-							return false;
-						}
-						return true;
+					if (parent == nodeLayer || parent == nodeFeedbackLayer || parent == nodeLayer.getParent() || parent == nodeLayer.getParent().getParent() || parent == edgeFeedbackLayer || parent == edgeLayer) {
+						return false;
 					}
-
-				});
-				oldLocation = mousePoint;
-				getRootLayer().translateFromParent(oldLocation);
-				// If the figure under the mouse is the canvas, and CTRL is not being held down, then select
-				// nothing
-				if (figureUnderMouse == null || figureUnderMouse == graph) {
-					if (me.getState() != org.eclipse.draw2d.MouseEvent.CONTROL) {
-						clearSelection();
-						if (hasSelection) {
-							fireWidgetSelectedEvent(null);
-							hasSelection = false;
-						}
+					GraphItem item = (GraphItem) figure2ItemMap.get(figure);
+					if (item != null && item.getItemType() == GraphItem.CONTAINER) {
+						return false;
+					} else if (figure instanceof FreeformLayer || parent instanceof FreeformLayer || figure instanceof ScrollPane || parent instanceof ScrollPane || parent instanceof ScalableFreeformLayeredPane || figure instanceof ScalableFreeformLayeredPane) {
+						return false;
 					}
-					return;
+					return true;
 				}
 
-				GraphItem itemUnderMouse = (GraphItem) figure2ItemMap.get(figureUnderMouse);
-				if (itemUnderMouse == null) {
-					if (me.getState() != org.eclipse.draw2d.MouseEvent.CONTROL) {
-						clearSelection();
-						if (hasSelection) {
-							fireWidgetSelectedEvent(null);
-							hasSelection = false;
-						}
-					}
-					return;
-				}
-				if (selectedItems.contains(itemUnderMouse)) {
-					// We have already selected this node, and CTRL is being held down, remove this selection
-					// @tag Zest.selection : This de-selects when you have CTRL pressed
-					if (me.getState() == org.eclipse.draw2d.MouseEvent.CONTROL) {
-						selectedItems.remove(itemUnderMouse);
-						(itemUnderMouse).unhighlight();
-						fireWidgetSelectedEvent(itemUnderMouse);
-					}
-					return;
-				}
-
-				if (me.getState() != org.eclipse.draw2d.MouseEvent.CONTROL) {
-					clearSelection();
-				}
-
-				if (itemUnderMouse.getItemType() == GraphItem.NODE) {
-					// @tag Zest.selection : This is where the nodes are selected
-					selectedItems.add(itemUnderMouse);
-					((GraphNode) itemUnderMouse).highlight();
-					fireWidgetSelectedEvent(itemUnderMouse);
-				} else if (itemUnderMouse.getItemType() == GraphItem.CONNECTION) {
-					selectedItems.add(itemUnderMouse);
-					((GraphConnection) itemUnderMouse).highlight();
-					fireWidgetSelectedEvent(itemUnderMouse);
-
-				} else if (itemUnderMouse.getItemType() == GraphItem.CONTAINER) {
-					selectedItems.add(itemUnderMouse);
-					((GraphContainer) itemUnderMouse).highlight();
-					fireWidgetSelectedEvent(itemUnderMouse);
-				}
-			}
+			});
+			return figureUnderMouse;
 
 		}
 
-		public void mouseReleased(org.eclipse.draw2d.MouseEvent me) {
-			mouseUp = true;
-		}
 	}
-	*/
 
 	private void clearSelection() {
 		if (selectedItems.size() > 0) {
@@ -1186,14 +1064,75 @@ public class Graph extends FigureCanvas implements IContainer {
 		edgeLayer.setLayoutManager(new FreeformLayout());
 		edgeFeedbackLayer.setLayoutManager(new FreeformLayout());
 		nodeFeedbackLayer.setLayoutManager(new FreeformLayout());
+
+		fishEyeLayer = new ScalableFreeformLayeredPane();
+		fishEyeLayer.setLayoutManager(new FreeformLayout());
+
 		rootlayer.add(edgeLayer);
 		rootlayer.add(nodeLayer);
 		rootlayer.add(edgeFeedbackLayer);
 		rootlayer.add(nodeFeedbackLayer);
+		rootlayer.add(fishEyeLayer);
 
 		nodeLayer.addLayoutListener(LayoutAnimator.getDefault());
 		nodeFeedbackLayer.addLayoutListener(LayoutAnimator.getDefault());
+		fishEyeLayer.addLayoutListener(LayoutAnimator.getDefault());
 		return rootlayer;
+	}
+
+	/**
+	 * This removes the fisheye from the graph. It uses an animation to make the fisheye
+	 * shrink, and then it finally clears the fisheye layer.  This assumes that there
+	 * is ever only 1 node on the fisheye layer at any time.  
+	 * 
+	 * @param fishEyeFigure The fisheye figure
+	 * @param regularFigure The regular figure (i.e. the non fisheye version)
+	 */
+	void removeFishEye(final IFigure fishEyeFigure, final IFigure regularFigure) {
+
+		Animation.markBegin();
+
+		Rectangle bounds = regularFigure.getBounds().getCopy();
+		regularFigure.translateToAbsolute(bounds);
+
+		rootlayer.translateToRelative(bounds);
+		rootlayer.translateFromParent(bounds);
+
+		fishEyeLayer.setConstraint(fishEyeFigure, bounds);
+
+		Animation.run(FISHEYE_ANIMATION_TIME);
+		this.getRootLayer().getUpdateManager().performUpdate();
+		fishEyeLayer.removeAll();
+
+	}
+
+	/**
+	 * Add a fisheye version of the node.  This works by animating the change from the original node
+	 * to the fisheyed one, and then placing the fisheye node on the fisheye layer.
+	 * @param startFigure The original node
+	 * @param endFigure The fisheye figure
+	 * @param newBounds The final size of the fisheyed figure
+	 */
+	void fishEye(IFigure startFigure, IFigure endFigure, Rectangle newBounds) {
+
+		fishEyeLayer.removeAll();
+		Animation.markBegin();
+
+		rootlayer.translateToRelative(newBounds);
+		rootlayer.translateFromParent(newBounds);
+
+		Rectangle bounds = startFigure.getBounds().getCopy();
+		startFigure.translateToAbsolute(bounds);
+		rootlayer.translateToRelative(bounds);
+		rootlayer.translateFromParent(bounds);
+
+		endFigure.setLocation(bounds.getLocation());
+		endFigure.setSize(bounds.getSize());
+		fishEyeLayer.add(endFigure);
+		fishEyeLayer.setConstraint(endFigure, newBounds);
+
+		Animation.run(FISHEYE_ANIMATION_TIME);
+		this.getRootLayer().getUpdateManager().performUpdate();
 	}
 
 	public Graph getGraph() {

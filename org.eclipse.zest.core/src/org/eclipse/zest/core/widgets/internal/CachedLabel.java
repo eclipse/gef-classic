@@ -10,6 +10,7 @@
 package org.eclipse.mylyn.zest.core.widgets.internal;
 
 import org.eclipse.draw2d.Animation;
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.SWTGraphics;
@@ -147,7 +148,23 @@ public abstract class CachedLabel extends Label {
 	 */
 	protected void paintFigure(Graphics graphics) {
 		if (!cacheLabel) {
-			super.paintFigure(graphics);
+			if (isOpaque()) {
+				super.paintFigure(graphics);
+			}
+			Rectangle bounds = getBounds();
+			graphics.translate(bounds.x, bounds.y);
+			if (getIcon() != null) {
+				graphics.drawImage(getIcon(), getIconLocation());
+			}
+			if (!isEnabled()) {
+				graphics.translate(1, 1);
+				graphics.setForegroundColor(ColorConstants.buttonLightest);
+				graphics.drawText(getSubStringText(), getTextLocation());
+				graphics.translate(-1, -1);
+				graphics.setForegroundColor(ColorConstants.buttonDarker);
+			}
+			graphics.drawText(getText(), getTextLocation());
+			graphics.translate(-bounds.x, -bounds.y);
 			return;
 		}
 
@@ -180,7 +197,8 @@ public abstract class CachedLabel extends Label {
 			graphics2.setBackgroundColor(getBackgroundTextColor());
 			graphics2.fillRectangle(0, 0, width, height);
 			graphics2.setForegroundColor(getForegroundColor());
-			graphics2.drawText(getSubStringText(), new Point(0, 0));
+			//graphics2.drawText(getSubStringText(), new Point(0, 0));
+			graphics2.drawText(getText(), new Point(0, 0));
 			gc.dispose();
 
 		}

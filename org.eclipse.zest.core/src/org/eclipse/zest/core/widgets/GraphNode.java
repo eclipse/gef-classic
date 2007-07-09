@@ -19,6 +19,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -29,6 +30,7 @@ import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
@@ -80,7 +82,7 @@ public class GraphNode extends GraphItem {
 	private boolean isDisposed = false;
 
 	public GraphNode(IContainer graphModel, int style) {
-		super(graphModel.getGraph());
+		super(graphModel.getGraph(), style);
 		initModel(graphModel, " ", null);
 		nodeFigure = initFigure();
 
@@ -96,7 +98,7 @@ public class GraphNode extends GraphItem {
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text) {
-		super(graphModel.getGraph());
+		super(graphModel.getGraph(), style);
 		initModel(graphModel, text, null);
 		nodeFigure = initFigure();
 
@@ -109,10 +111,11 @@ public class GraphNode extends GraphItem {
 			((GraphContainer) this.parent).addNode(this);
 		}
 		this.parent.getGraph().registerItem(this);
+
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text, Image image) {
-		super(graphModel.getGraph());
+		super(graphModel.getGraph(), style);
 		initModel(graphModel, text, image);
 		nodeFigure = initFigure();
 
@@ -686,6 +689,46 @@ public class GraphNode extends GraphItem {
 	 * PRIVATE MEMBERS
 	 **************************************************************************/
 
+	private IFigure fishEyeFigure = null;
+	private Font fishEyeFont = null;
+
+	protected IFigure fishEye(boolean enable) {
+		if (!checkStyle(ZestStyles.NODES_FISHEYE)) {
+			return null;
+		}
+		if (enable) {
+			// Create the fish eye label
+			fishEyeFigure = createFishEyeFigure();
+			FontData fontData = Display.getCurrent().getSystemFont().getFontData()[0];
+			fontData.height = 12;
+			fishEyeFont = new Font(Display.getCurrent(), fontData);
+			fishEyeFigure.setFont(fishEyeFont);
+
+			// Get the current Bounds
+			Rectangle rectangle = nodeFigure.getBounds().getCopy();
+
+			// Calculate how much we have to expand the current bounds to get to the new bounds
+			Dimension newSize = fishEyeFigure.getPreferredSize();
+			Rectangle currentSize = rectangle.getCopy();
+			nodeFigure.translateToAbsolute(currentSize);
+			int expandedH = (newSize.height - currentSize.height) / 2 + 1;
+			int expandedW = (newSize.width - currentSize.width) / 2 + 1;
+			Dimension expandAmount = new Dimension(expandedW, expandedH);
+			nodeFigure.translateToAbsolute(rectangle);
+			rectangle.expand(new Insets(expandAmount.height, expandAmount.width, expandAmount.height, expandAmount.width));
+
+			//Add the fisheye
+			this.getGraphModel().fishEye(nodeFigure, fishEyeFigure, rectangle);
+			return fishEyeFigure;
+
+		} else {
+			// Remove the fisheye and dispose the font
+			this.getGraphModel().removeFishEye(fishEyeFigure, nodeFigure);
+			this.fishEyeFont.dispose();
+			return null;
+		}
+	}
+
 	/**
 	 * Returns the extent of the text and the image with some padding.
 	 * 
@@ -776,6 +819,31 @@ public class GraphNode extends GraphItem {
 		boolean cacheLabel = (this).cacheLabel();
 		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
 		return updateFigureForModel(label);
+	}
+
+	private IFigure createFishEyeFigure() {
+		GraphNode node = this;
+		boolean cacheLabel = this.cacheLabel();
+		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
+
+		label.setText(this.getText());
+		label.setIcon(getImage());
+
+		// @tag TODO: Add border and foreground colours to highlight
+		// (this.borderColor)
+		if (highlighted == HIGHLIGHT_ON) {
+			label.setForegroundColor(getForegroundColor());
+			label.setBackgroundColor(getHighlightColor());
+		} else if (highlighted == HIGHLIGHT_ADJACENT) {
+			label.setForegroundColor(getForegroundColor());
+			label.setBackgroundColor(getHighlightAdjacentColor());
+		} else {
+			label.setForegroundColor(getForegroundColor());
+			label.setBackgroundColor(getBackgroundColor());
+		}
+
+		label.setFont(getFont());
+		return label;
 	}
 
 	public boolean isVisible() {

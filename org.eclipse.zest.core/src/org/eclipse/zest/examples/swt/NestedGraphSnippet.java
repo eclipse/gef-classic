@@ -4,6 +4,7 @@ import org.eclipse.mylyn.zest.core.widgets.Graph;
 import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
 import org.eclipse.mylyn.zest.core.widgets.GraphContainer;
 import org.eclipse.mylyn.zest.core.widgets.GraphNode;
+import org.eclipse.mylyn.zest.core.widgets.ZestStyles;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -33,12 +34,13 @@ public class NestedGraphSnippet {
 		GraphContainer p2 = new GraphContainer(g, SWT.NONE, "org.example.plugin.more.more.more.more", image1);
 		GraphContainer p3 = new GraphContainer(g, SWT.NONE, "org.example.ui.more.more.more.more", image1);
 		GraphContainer p4 = new GraphContainer(g, SWT.NONE, "org.example\n.views\n.more.\nmore.more.\nmore", image1);
+		GraphNode n1 = new GraphNode(g, SWT.NONE, "non container node", classImage);
 
-		GraphNode c1 = new GraphNode(p1, SWT.NONE, "DefaultAction.java", classImage);
-		GraphNode c2 = new GraphNode(p1, SWT.NONE, "UIAction.java", classImage);
-		GraphNode c3 = new GraphNode(p1, SWT.NONE, "ToolBarAction.java", classImage);
-		GraphNode c4 = new GraphNode(p1, SWT.NONE, "DeleteAction.java", classImage);
-		GraphNode c5 = new GraphNode(p1, SWT.NONE, "CreateAction.java", classImage);
+		GraphNode c1 = new GraphNode(p1, ZestStyles.NODES_FISHEYE, "DefaultAction.java", classImage);
+		GraphNode c2 = new GraphNode(p1, ZestStyles.NODES_FISHEYE, "UIAction.java", classImage);
+		GraphNode c3 = new GraphNode(p1, ZestStyles.NODES_FISHEYE, "ToolBarAction.java", classImage);
+		GraphNode c4 = new GraphNode(p1, ZestStyles.NODES_FISHEYE, "DeleteAction.java", classImage);
+		GraphNode c5 = new GraphNode(p1, ZestStyles.NODES_FISHEYE, "CreateAction.java", classImage);
 
 		new GraphConnection(g, SWT.NONE, c1, c2);
 		new GraphConnection(g, SWT.NONE, c1, c3);

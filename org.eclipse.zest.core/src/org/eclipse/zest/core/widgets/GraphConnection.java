@@ -98,7 +98,7 @@ public class GraphConnection extends GraphItem {
 	private GraphLayoutConnection layoutConnection = null;
 
 	public GraphConnection(Graph graphModel, int style, GraphNode source, GraphNode destination) {
-		super(graphModel);
+		super(graphModel, style);
 
 		this.connectionStyle |= graphModel.getConnectionStyle();
 		this.sourceNode = source;

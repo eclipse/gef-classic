@@ -31,8 +31,8 @@ public abstract class GraphItem extends Item {
 	 * @param parent
 	 * @param style
 	 */
-	public GraphItem(Widget parent) {
-		super(parent, SWT.NO_BACKGROUND);
+	public GraphItem(Widget parent, int style) {
+		super(parent, style | SWT.NO_BACKGROUND);
 	}
 
 	/*
@@ -92,4 +92,12 @@ public abstract class GraphItem extends Item {
 
 	abstract IFigure getFigure();
 
+	/**
+	 * Checks a style to see if it is set on the given graph item
+	 * @param styleToCheck The style to check
+	 * @return
+	 */
+	protected boolean checkStyle(int styleToCheck) {
+		return ((getStyle() & styleToCheck) > 0);
+	}
 }

@@ -100,6 +100,13 @@ public final class ZestStyles {
 	public static final int NODES_CACHE_LABEL = 1 << 2;
 
 	/**
+	 * Style to specify that the node should contain a fisheye label
+	 * when the mouse moves over it.  By default the fisheye node is just the
+	 * label with larger text.
+	 */
+	public static final int NODES_FISHEYE = 1 << 3;
+
+	/**
 	 * Style constant indiciating that nodes should not be resized on layout.
 	 */
 	public static final int NODES_NO_LAYOUT_RESIZE = 1 << 3;

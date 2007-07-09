@@ -42,7 +42,7 @@ import org.eclipse.swt.graphics.Image;
  */
 public class GraphContainer extends GraphNode implements IContainer {
 
-	private static final int MIN_WIDTH = 200;
+	private static final int MIN_WIDTH = 250;
 	private static final int ANIMATION_TIME = 100;
 	private static final int SUBLAYER_OFFSET = 3;
 
@@ -221,7 +221,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		ScalableFreeformLayeredPane pane = new ScalableFreeformLayeredPane();
 		pane.addLayoutListener(LayoutAnimator.getDefault());
-		(pane).setScale(0.75);
+		(pane).setScale(0.25);
 		container = new FreeformLayer();
 		edgeLayer = new FreeformLayer();
 		pane.add(edgeLayer);
