@@ -1,1 +1,3 @@
 1184004352328	Copy compilation unit
+1184018647750	Extract constant 'CONTAINER_HEIGHT'
+1184018751859	Extract constant 'CONTAINER_SCALE'

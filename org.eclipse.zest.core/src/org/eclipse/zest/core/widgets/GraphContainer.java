@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylyn.zest.core.widgets;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -30,6 +31,12 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylyn.zest.core.widgets.internal.ExpandGraphLabel;
 import org.eclipse.mylyn.zest.core.widgets.internal.IContainer;
+import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
+import org.eclipse.mylyn.zest.layouts.LayoutEntity;
+import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
+import org.eclipse.mylyn.zest.layouts.LayoutStyles;
+import org.eclipse.mylyn.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.swt.graphics.Image;
 
 /**
@@ -42,16 +49,20 @@ import org.eclipse.swt.graphics.Image;
  */
 public class GraphContainer extends GraphNode implements IContainer {
 
+	private static final double CONTAINER_SCALE = 0.75;
+	private static final int CONTAINER_HEIGHT = 150;
 	private static final int MIN_WIDTH = 250;
 	private static final int ANIMATION_TIME = 100;
 	private static final int SUBLAYER_OFFSET = 3;
 
 	private ExpandGraphLabel expandGraphLabel;
 	private FreeformLayer container;
-	private int expandedHeight = 150;
+	private int expandedHeight = CONTAINER_HEIGHT;
 	private FreeformLayer edgeLayer;
+	private List childNodes = null;
 
 	private ScrollPane scrollPane;
+	private LayoutAlgorithm layoutAlgorithm;
 
 	/**
 	 * Creates a new GraphContainer.  A GraphContainer may contain nodes,
@@ -73,6 +84,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		super(graph, style, text, image);
 		initModel(graph, text, image);
 		close(false);
+		childNodes = new ArrayList();
 	}
 
 	/**
@@ -163,6 +175,60 @@ public class GraphContainer extends GraphNode implements IContainer {
 		return this.graph.getGraph();
 	}
 
+	/**
+	 * 
+	 */
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
+		this.layoutAlgorithm = algorithm;
+		if (applyLayout) {
+			applyLayout();
+		}
+
+	}
+
+	public void applyLayout() {
+		if ((this.getNodes().size() == 0)) {
+			return;
+		}
+
+		int layoutStyle = 0;
+
+		if (checkStyle(ZestStyles.NODES_NO_LAYOUT_RESIZE)) {
+			layoutStyle = LayoutStyles.NO_LAYOUT_NODE_RESIZING;
+		}
+
+		if (layoutAlgorithm == null) {
+			layoutAlgorithm = new TreeLayoutAlgorithm(layoutStyle);
+		}
+
+		layoutAlgorithm.setStyle(layoutAlgorithm.getStyle() | layoutStyle);
+
+		// calculate the size for the layout algorithm
+		Dimension d = this.container.getSize();
+		d.width = d.width - 10;
+		d.height = d.height - 10;
+		//if (d.height <= 0) {
+		d.height = (int) (CONTAINER_HEIGHT * (1 / CONTAINER_SCALE));
+		//}
+
+		if (d.isEmpty()) {
+			return;
+		}
+		LayoutRelationship[] connectionsToLayout = getGraph().getConnectionsToLayout(getNodes());
+		LayoutEntity[] nodesToLayout = getGraph().getNodesToLayout(getNodes());
+
+		try {
+			//Animation.markBegin();
+			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 25, 25, d.width - 50, d.height - 50, false, false);
+			//Animation.run(ANIMATION_TIME);
+			//container.getUpdateManager().performUpdate();
+
+		} catch (InvalidLayoutConfiguration e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	/***************************************************************************
 	 * NON API MEMBERS
 	 **************************************************************************/
@@ -188,7 +254,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 			expandGraphLabel.setSize(labelWidth + 2 * (2 + 2 + 1), labelHeight);
 		}
 
-		this.expandedHeight = 150;
+		this.expandedHeight = CONTAINER_HEIGHT;
 		scrollPane = new ScrollPane();
 		scrollPane.addLayoutListener(LayoutAnimator.getDefault());
 		FreeformViewport viewport = new FreeformViewport();
@@ -221,7 +287,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		ScalableFreeformLayeredPane pane = new ScalableFreeformLayeredPane();
 		pane.addLayoutListener(LayoutAnimator.getDefault());
-		(pane).setScale(0.25);
+		(pane).setScale(CONTAINER_SCALE);
 		container = new FreeformLayer();
 		edgeLayer = new FreeformLayer();
 		pane.add(edgeLayer);
@@ -240,8 +306,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 		scrollPane.getViewport().setContents(pane);
 		scrollPane.setBorder(new LineBorder());
 
-		containerFigure.setSize(labelWidth + 5 + 2 + 2 + 1, labelHeight + 150 - 5 + 2);
-		setSize(labelWidth + 5 + 2 + 2 + 1, labelHeight + 150 - 5 + 2);
+		containerFigure.setSize(labelWidth + 5 + 2 + 2 + 1, labelHeight + CONTAINER_HEIGHT - 5 + 2);
+		setSize(labelWidth + 5 + 2 + 2 + 1, labelHeight + CONTAINER_HEIGHT - 5 + 2);
 		return containerFigure;
 	}
 
@@ -319,10 +385,15 @@ public class GraphContainer extends GraphNode implements IContainer {
 	void addNode(GraphNode node) {
 		container.add(node.getNodeFigure());
 		node.setVisible(false);
+		this.childNodes.add(node);
 	}
 
 	void addNode(GraphContainer container) {
 		// Containers cannot be added to other containers (yet)
-
 	}
+
+	private List getNodes() {
+		return this.childNodes;
+	}
+
 }

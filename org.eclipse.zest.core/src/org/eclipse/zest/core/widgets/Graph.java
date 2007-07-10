@@ -829,13 +829,13 @@ public class Graph extends FigureCanvas implements IContainer {
 		return entities;
 	}
 
-	LayoutEntity[] getNodesToLayout() {
+	LayoutEntity[] getNodesToLayout(List nodes) {
 		// @tag zest.bug.156528-Filters.follows : make sure not to layout
 		// filtered nodes, if the style says so.
 		LayoutEntity[] entities;
 		if (ZestStyles.checkStyle(style, ZestStyles.IGNORE_INVISIBLE_LAYOUT)) {
 			LinkedList nodeList = new LinkedList();
-			for (Iterator i = this.getNodes().iterator(); i.hasNext();) {
+			for (Iterator i = nodes.iterator(); i.hasNext();) {
 				GraphNode next = (GraphNode) i.next();
 				if (next.isVisible()) {
 					nodeList.add(next.getLayoutEntity());
@@ -844,7 +844,7 @@ public class Graph extends FigureCanvas implements IContainer {
 			entities = (LayoutEntity[]) nodeList.toArray(new LayoutEntity[] {});
 		} else {
 			LinkedList nodeList = new LinkedList();
-			for (Iterator i = this.getNodes().iterator(); i.hasNext();) {
+			for (Iterator i = nodes.iterator(); i.hasNext();) {
 				GraphNode next = (GraphNode) i.next();
 				nodeList.add(next.getLayoutEntity());
 			}
@@ -1004,7 +1004,7 @@ public class Graph extends FigureCanvas implements IContainer {
 			return;
 		}
 		LayoutRelationship[] connectionsToLayout = getConnectionsToLayout(nodes);
-		LayoutEntity[] nodesToLayout = getNodesToLayout();
+		LayoutEntity[] nodesToLayout = getNodesToLayout(getNodes());
 
 		try {
 			Animation.markBegin();
@@ -1102,7 +1102,7 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		fishEyeLayer.setConstraint(fishEyeFigure, bounds);
 
-		Animation.run(FISHEYE_ANIMATION_TIME);
+		Animation.run(FISHEYE_ANIMATION_TIME * 2);
 		this.getRootLayer().getUpdateManager().performUpdate();
 		fishEyeLayer.removeAll();
 

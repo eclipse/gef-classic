@@ -11,6 +11,7 @@
 package org.eclipse.mylyn.zest.core.widgets.internal;
 
 import org.eclipse.mylyn.zest.core.widgets.Graph;
+import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
 
 /**
  * This interface describes all Zest components that are Containers. This is an internal interface
@@ -35,5 +36,18 @@ public interface IContainer {
 	/* public void addNode(GraphContainer container); */
 
 	public int getItemType();
+
+	/**
+	 * Re-applies the current layout algorithm
+	 */
+	public void applyLayout();
+
+	/**
+	 * Sets the LayoutAlgorithm for this container and optionally applies it.
+	 *  
+	 * @param algorithm The layout algorithm to set
+	 * @param applyLayout 
+	 */
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout);
 
 } // end of IContainer
