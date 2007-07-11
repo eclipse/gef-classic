@@ -39,8 +39,9 @@ public class NestedGraphSnippet {
 
 		GraphNode n1 = new GraphNode(g, SWT.NONE, "non container node", classImage);
 
-		GraphContainer p1 = new GraphContainer(g, SWT.NONE, "A Container with\nMultiple Lines", image1);
+		GraphContainer p1 = new GraphContainer(g, SWT.NONE, "A Container with Multiple \nLines", image1);
 		GraphContainer p2 = new GraphContainer(g, SWT.NONE, "org.example.plugin", image1);
+		p2.setText("org\nexample\nplugin that is really really really really really really long");
 		GraphContainer p3 = new GraphContainer(g, SWT.NONE, "org.example.ui", image1);
 		GraphContainer p4 = new GraphContainer(g, SWT.NONE, "org.example.action", image1);
 

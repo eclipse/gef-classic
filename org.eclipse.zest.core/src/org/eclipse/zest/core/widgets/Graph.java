@@ -449,14 +449,17 @@ public class Graph extends FigureCanvas implements IContainer {
 						item.getFigure().getParent().translateToRelative(pointCopy);
 						item.getFigure().getParent().translateFromParent(pointCopy);
 						Point delta = new Point(pointCopy.x - tempLastLocation.x, pointCopy.y - tempLastLocation.y);
-						if (item.getItemType() == GraphItem.NODE) {
+						if (item.getItemType() == GraphItem.NODE || item.getItemType() == GraphItem.CONTAINER) {
 							GraphNode node = (GraphNode) item;
 							node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
 
-						} else if (item.getItemType() == GraphItem.CONTAINER) {
+						}
+						/*
+						else if (item.getItemType() == GraphItem.CONTAINER) {
 							GraphContainer container = (GraphContainer) item;
 							container.setLocation(container.getLocation().x + delta.x, container.getLocation().y + delta.y);
 						}
+						*/
 					} else {
 						// There is no movement for connection
 					}

@@ -468,7 +468,7 @@ public class GraphNode extends GraphItem {
 			// bounds.height = size.height;
 			nodeFigure.getParent().setConstraint(nodeFigure, bounds);
 
-			// nodeFigure = updateFigureForModel(nodeFigure);
+			//nodeFigure = updateFigureForModel(nodeFigure);
 		}
 	}
 

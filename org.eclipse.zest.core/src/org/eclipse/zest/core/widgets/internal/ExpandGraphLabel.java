@@ -85,6 +85,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	private int arcWidth;
 	private Label label = null;
 	private final GraphContainer container;
+	private ToolbarLayout layout;
 
 	public ExpandGraphLabel(GraphContainer container, boolean cacheLabel) {
 		this(container, "", null, cacheLabel);
@@ -132,12 +133,13 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 		this.expander = new Expander();
 		this.arcWidth = 8;
 		this.setFont(Display.getDefault().getSystemFont());
-		ToolbarLayout layout = new ToolbarLayout(true);
+		layout = new ToolbarLayout(true);
 		layout.setSpacing(5);
 		layout.setMinorAlignment(ToolbarLayout.ALIGN_CENTER);
 		this.setLayoutManager(layout);
 		this.add(this.expander);
 		this.add(this.label);
+		//this.remove(this.label);
 	}
 
 	/**
@@ -228,15 +230,37 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	//	return this.label.getPreferredSize();
 	//}
 
+	public void setTextT(String string) {
+		this.setPreferredSize(null);
+		this.label.setText(string);
+		this.add(label);
+		//System.out.println(this.label.getPreferredSize());
+		this.layout.layout(this);
+		this.invalidate();
+		this.revalidate();
+		this.validate();
+		//this.remove(label);
+	}
+
 	public void setText(String string) {
 		this.label.setText(string);
-		this.label.setPreferredSize(500, 30);
+		//this.label.setPreferredSize(500, 30);
 		//adjustBoundsToFit();
 	}
 
 	public void setImage(Image image) {
 		this.label.setIcon(image);
 		//adjustBoundsToFit();
+	}
+
+	public void setLocation(Point p) {
+		// TODO Auto-generated method stub
+		super.setLocation(p);
+	}
+
+	public void setBounds(Rectangle rect) {
+		// TODO Auto-generated method stub
+		super.setBounds(rect);
 	}
 
 }
