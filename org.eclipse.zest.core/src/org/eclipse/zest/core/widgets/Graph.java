@@ -856,9 +856,11 @@ public class Graph extends FigureCanvas implements IContainer {
 		return entities;
 	}
 
-	void addConnection(GraphConnection connection) {
+	void addConnection(GraphConnection connection, boolean addToEdgeLayer) {
 		this.getConnections().add(connection);
-		edgeLayer.add(connection.getFigure());
+		if (addToEdgeLayer) {
+			edgeLayer.add(connection.getFigure());
+		}
 	}
 
 	void removeConnection(GraphConnection connection) {

@@ -117,7 +117,18 @@ public class GraphConnection extends GraphItem {
 		(source).addSourceConnection(this);
 		(destination).addTargetConnection(this);
 		connectionFigure = createFigure();
-		graphModel.addConnection(this);
+
+		if (source.getParent().getItemType() == GraphItem.CONTAINER && destination.getParent().getItemType() == GraphItem.CONTAINER && (source.getParent() == destination.getParent())) {
+			// If the source and the destination are in the same container (not the root graph) then 
+			// don't add the connection to the edge layer.  This way we don't get artifacts on the screen
+			// when the nodes are scrolled off the screen
+			//
+			// 196189: Edges should not draw on the edge layer if both the src and dest are in the same container
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=196189
+			graphModel.addConnection(this, false);
+		} else {
+			graphModel.addConnection(this, true);
+		}
 		graphModel.getGraph().registerItem(this);
 
 		if ((source.getParent()).getItemType() == GraphItem.CONTAINER) {
