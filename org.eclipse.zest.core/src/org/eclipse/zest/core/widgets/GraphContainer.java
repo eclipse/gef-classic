@@ -440,7 +440,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		// calculate the size for the layout algorithm
 		Dimension d = this.scalledLayer.getSize();
-		System.out.println(d);
 		d.width = d.width - 10;
 		d.height = d.height - 10;
 		//if (d.height <= 0) {
