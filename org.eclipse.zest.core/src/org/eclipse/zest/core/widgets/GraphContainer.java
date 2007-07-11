@@ -64,6 +64,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	private ScrollPane scrollPane;
 	private LayoutAlgorithm layoutAlgorithm;
 	private boolean isExpanded = false;
+	private ScalableFreeformLayeredPane scalledLayer;
 
 	/**
 	 * Creates a new GraphContainer.  A GraphContainer may contain nodes,
@@ -438,12 +439,14 @@ public class GraphContainer extends GraphNode implements IContainer {
 		layoutAlgorithm.setStyle(layoutAlgorithm.getStyle() | layoutStyle);
 
 		// calculate the size for the layout algorithm
-		Dimension d = this.container.getSize();
+		Dimension d = this.scalledLayer.getSize();
+		System.out.println(d);
 		d.width = d.width - 10;
 		d.height = d.height - 10;
 		//if (d.height <= 0) {
-		d.height = (int) (CONTAINER_HEIGHT * (1 / CONTAINER_SCALE));
+		d.height = (CONTAINER_HEIGHT);
 		//}
+		d.scale(1 / this.scalledLayer.getScale());
 
 		if (d.isEmpty()) {
 			return;
@@ -461,6 +464,22 @@ public class GraphContainer extends GraphNode implements IContainer {
 			e.printStackTrace();
 		}
 
+	}
+
+	/**
+	 * Get the scale for this container. This is the scale applied to the children contained within
+	 * @return
+	 */
+	public double getScale() {
+		return this.scalledLayer.getScale();
+	}
+
+	/**
+	 * Set the scale for this container. This is the scale applied to the children contained within.
+	 * @param scale
+	 */
+	public void setScale(double scale) {
+		this.scalledLayer.setScale(scale);
 	}
 
 	/***************************************************************************
@@ -522,13 +541,13 @@ public class GraphContainer extends GraphNode implements IContainer {
 		scrollPane.setViewport(viewport);
 		scrollPane.setScrollBarVisibility(ScrollPane.AUTOMATIC);
 
-		ScalableFreeformLayeredPane pane = new ScalableFreeformLayeredPane();
-		pane.addLayoutListener(LayoutAnimator.getDefault());
-		(pane).setScale(CONTAINER_SCALE);
+		scalledLayer = new ScalableFreeformLayeredPane();
+		scalledLayer.addLayoutListener(LayoutAnimator.getDefault());
+		scalledLayer.setScale(CONTAINER_SCALE);
 		container = new FreeformLayer();
 		edgeLayer = new FreeformLayer();
-		pane.add(edgeLayer);
-		pane.add(container);
+		scalledLayer.add(edgeLayer);
+		scalledLayer.add(container);
 
 		container.setLayoutManager(new FreeformLayout());
 		scrollPane.setSize(labelWidth, expandedHeight);
@@ -542,7 +561,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		containerFigure.add(scrollPane);
 		containerFigure.add(expandGraphLabel);
 
-		scrollPane.getViewport().setContents(pane);
+		scrollPane.getViewport().setContents(scalledLayer);
 		scrollPane.setBorder(new LineBorder());
 
 		return containerFigure;
