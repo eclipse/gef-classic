@@ -262,8 +262,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 		Rectangle newBounds = scrollPane.getBounds().getCopy();
 		newBounds.height = expandedHeight;
 
-		//this.nodeFigure.setConstraint(scrollPane, newBounds);
-		//this.nodeFigure.revalidate();
 		scrollPane.setSize(expandGraphLabel.getSize().width, expandedHeight);
 		setSize(expandGraphLabel.getSize().width, expandGraphLabel.getSize().height + expandedHeight - SUBLAYER_OFFSET);
 
@@ -275,11 +273,9 @@ public class GraphContainer extends GraphNode implements IContainer {
 		}
 
 		updateFigureForModel(nodeFigure);
-		//this.nodeFigure.getUpdateManager().performUpdate();
 
 		Rectangle containerBounds = new Rectangle(this.getLocation(), new Dimension(this.getSize().width, CONTAINER_HEIGHT + this.expandGraphLabel.getSize().height));
 		moveIntersectedNodes(containerBounds, this);
-		//moveNodesUp(containerBounds, this);
 		if (animate) {
 			Animation.run(ANIMATION_TIME);
 		}
@@ -320,7 +316,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 				continue;
 			}
 			if (bounds.intersects(nodeToCheck.getBounds())) {
-				//if (bounds.intersects(nodeToCheck.getBounds())) {
 				result.add(nodeToCheck);
 			}
 		}
@@ -383,7 +378,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		List nodesBelowHere = getNodesBelow(this.getLocation().y, graphContainer.getGraphModel().getNodes());
 		List intersectingNodes = intersectingNodes(containerBounds, nodesBelowHere, graphContainer);
-		//List intersectingNodes = intersectingNodes(left, right, nodesBelowHere, graphContainer);
 		int delta = getMaxMovement(containerBounds, intersectingNodes);
 		shiftNodesDown(intersectingNodes, delta);
 
@@ -396,7 +390,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 			while (intersectingNodeIterator.hasNext()) {
 				GraphNode node = (GraphNode) intersectingNodeIterator.next();
 				intersectingNodes = intersectingNodes(node.getBounds(), nodesBelowHere, node);
-				//intersectingNodes = intersectingNodes(left, right, nodesBelowHere, node);
 				delta = getMaxMovement(node.getBounds(), intersectingNodes);
 				if (delta > 0) {
 					shiftNodesDown(intersectingNodes, delta);
