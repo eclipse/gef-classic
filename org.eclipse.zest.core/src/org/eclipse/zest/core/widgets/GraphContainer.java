@@ -133,11 +133,119 @@ public class GraphContainer extends GraphNode implements IContainer {
 			GraphItem item = getGraph().getGraphItem(child);
 			item.setVisible(false);
 		}
+		Rectangle containerBounds = new Rectangle(this.getLocation(), new Dimension(this.getSize().width, CONTAINER_HEIGHT + this.expandGraphLabel.getSize().height));
+		moveNodesUp(containerBounds, this);
 		if (animate) {
 			Animation.run(ANIMATION_TIME);
 		}
 		this.nodeFigure.getUpdateManager().performUpdate();
 		updateFigureForModel(nodeFigure);
+	}
+
+	private void addNodeToOrderedList(List orderedNodeList, GraphNode node) {
+		Iterator orderedNodeIterator = orderedNodeList.iterator();
+		int counter = 0;
+		while (orderedNodeIterator.hasNext()) {
+			// Look through the list of nodes below and find the right spot for this
+			GraphNode nextOrderedNode = (GraphNode) orderedNodeIterator.next();
+			if (nextOrderedNode.getLocation().y + nextOrderedNode.getBounds().height > node.getLocation().y + node.getBounds().height) {
+				break;
+			}
+			counter++;
+		}
+		// Place this in the right location
+		orderedNodeList.add(counter, node);
+	}
+
+	/**
+	 * Gets all the nodes below the yValue.  The nodes are returned in order.
+	 * @param nodes
+	 * @param yValue
+	 * @return
+	 */
+	private List getOrderedNodesBelowY(List nodes, int yValue, GraphNode yValueNode) {
+		Iterator iterator = nodes.iterator();
+		LinkedList orderedNode = new LinkedList();
+		while (iterator.hasNext()) {
+			GraphNode node = (GraphNode) iterator.next();
+			if (node == yValueNode) {
+				continue;
+			}
+			if (node.getLocation().y + node.getBounds().height > yValue) {
+				// This node is below the container
+				addNodeToOrderedList(orderedNode, node);
+			}
+		}
+		// Convert this to an arrayList for faster access
+		List arrayList = new ArrayList();
+		iterator = orderedNode.iterator();
+		while (iterator.hasNext()) {
+			arrayList.add(iterator.next());
+		}
+		return arrayList;
+	}
+
+	/**
+	 * Checks if the node intersects the stripe between left and right
+	 * @param left
+	 * @param right
+	 * @param node
+	 * @return
+	 */
+	private boolean nodeInStripe(int left, int right, GraphNode node) {
+		return (node.getBounds().x < right && node.getBounds().x + node.getBounds().width > left);
+	}
+
+	/**
+	 * Move the nodes below this node up
+	 * @param containerBounds
+	 * @param graphContainer
+	 */
+	private void moveNodesUp(Rectangle containerBounds, GraphContainer graphContainer) {
+
+		// Get all nodes below this container, in order
+		List orderedNodesBelowY = getOrderedNodesBelowY(getGraph().getNodes(), containerBounds.y, graphContainer);
+		int leftSide = containerBounds.x;
+		int rightSide = containerBounds.x + containerBounds.width;
+		List nodesToConsider = new LinkedList();
+		for (int i = 0; i < orderedNodesBelowY.size(); i++) {
+			nodesToConsider.add(orderedNodesBelowY.get(i));
+		}
+
+		while (nodesToConsider.size() > 0) {
+			GraphNode node = (GraphNode) nodesToConsider.get(0);
+			if (nodeInStripe(leftSide, rightSide, node)) {
+				// If this node is in the stripe, move it up 
+				// the previous node
+				GraphNode previousNode = null;
+				int i = 0;
+				for (; i < orderedNodesBelowY.size(); i++) {
+					if (orderedNodesBelowY.get(i) == node) {
+						break;
+					}
+				}
+				int j = i - 1;
+				while (j >= 0) {
+					GraphNode pastNode = (GraphNode) orderedNodesBelowY.get(j);
+					//if (nodeInStripe(leftSide, rightSide, pastNode)) {
+					if (nodeInStripe(node.getBounds().x, node.getBounds().x + node.getBounds().width, pastNode)) {
+						previousNode = pastNode;
+						break;
+					}
+					j--;
+				}
+				if (previousNode == null) {
+					previousNode = graphContainer;
+				}
+				int previousLocation = previousNode.getBounds().y + previousNode.getBounds().height + 2;
+
+				orderedNodesBelowY.remove(i);
+				node.setLocation(node.getLocation().x, previousLocation);
+				addNodeToOrderedList(orderedNodesBelowY, node);
+
+			}
+			nodesToConsider.remove(node);
+		}
 	}
 
 	/**
@@ -171,6 +279,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		Rectangle containerBounds = new Rectangle(this.getLocation(), new Dimension(this.getSize().width, CONTAINER_HEIGHT + this.expandGraphLabel.getSize().height));
 		moveIntersectedNodes(containerBounds, this);
+		//moveNodesUp(containerBounds, this);
 		if (animate) {
 			Animation.run(ANIMATION_TIME);
 		}
@@ -189,7 +298,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		while (allNodes.hasNext()) {
 			GraphNode nextNode = (GraphNode) allNodes.next();
 			int top = nextNode.getLocation().y;
-			if (top >= y + 2) {
+			if (top > y) {
 				result.add(nextNode);
 			}
 		}
@@ -211,6 +320,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 				continue;
 			}
 			if (bounds.intersects(nodeToCheck.getBounds())) {
+				//if (bounds.intersects(nodeToCheck.getBounds())) {
 				result.add(nodeToCheck);
 			}
 		}
@@ -273,10 +383,11 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		List nodesBelowHere = getNodesBelow(this.getLocation().y, graphContainer.getGraphModel().getNodes());
 		List intersectingNodes = intersectingNodes(containerBounds, nodesBelowHere, graphContainer);
+		//List intersectingNodes = intersectingNodes(left, right, nodesBelowHere, graphContainer);
 		int delta = getMaxMovement(containerBounds, intersectingNodes);
 		shiftNodesDown(intersectingNodes, delta);
 
-		int lowestNode /*ihghest on the screen*/= findSmallestYValue(intersectingNodes);
+		int lowestNode /*highest on the screen*/= findSmallestYValue(intersectingNodes);
 		nodesBelowHere = getNodesBelow(lowestNode, nodesBelowHere);
 
 		while (nodesBelowHere.size() > 0) {
@@ -285,9 +396,12 @@ public class GraphContainer extends GraphNode implements IContainer {
 			while (intersectingNodeIterator.hasNext()) {
 				GraphNode node = (GraphNode) intersectingNodeIterator.next();
 				intersectingNodes = intersectingNodes(node.getBounds(), nodesBelowHere, node);
+				//intersectingNodes = intersectingNodes(left, right, nodesBelowHere, node);
 				delta = getMaxMovement(node.getBounds(), intersectingNodes);
-				shiftNodesDown(intersectingNodes, delta);
-				nodesMovedInLastIteration.addAll(intersectingNodes);
+				if (delta > 0) {
+					shiftNodesDown(intersectingNodes, delta);
+					nodesMovedInLastIteration.addAll(intersectingNodes);
+				}
 			}
 			lowestNode /*highest on the screen*/= findSmallestYValue(nodesMovedInLastIteration);
 			nodesBelowHere = getNodesBelow(lowestNode, nodesBelowHere);

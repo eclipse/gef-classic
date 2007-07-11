@@ -64,7 +64,7 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	// CLASS CONSTANTS
 	public static final int ANIMATION_TIME = 500;
-	public static final int FISHEYE_ANIMATION_TIME = 150;
+	public static final int FISHEYE_ANIMATION_TIME = 100;
 
 	// @tag CGraph.Colors : These are the colour constants for the graph, they
 	// are disposed on clean-up
