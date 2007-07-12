@@ -143,7 +143,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		updateFigureForModel(nodeFigure);
 	}
 
-	private void addNodeToOrderedList(List orderedNodeList, GraphNode node) {
+	private static void addNodeToOrderedList(List orderedNodeList, GraphNode node) {
 		Iterator orderedNodeIterator = orderedNodeList.iterator();
 		int counter = 0;
 		while (orderedNodeIterator.hasNext()) {
@@ -164,7 +164,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * @param yValue
 	 * @return
 	 */
-	private List getOrderedNodesBelowY(List nodes, int yValue, GraphNode yValueNode) {
+	private static List getOrderedNodesBelowY(List nodes, int yValue, GraphNode yValueNode) {
 		Iterator iterator = nodes.iterator();
 		LinkedList orderedNode = new LinkedList();
 		while (iterator.hasNext()) {
@@ -193,8 +193,32 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * @param node
 	 * @return
 	 */
-	private boolean nodeInStripe(int left, int right, GraphNode node) {
+	private static boolean nodeInStripe(int left, int right, GraphNode node) {
 		return (node.getBounds().x < right && node.getBounds().x + node.getBounds().width > left);
+	}
+
+	static void pack(Graph g) {
+		GraphNode highestNode = getHighestNode(g);
+		moveNodesUp(highestNode.getBounds(), highestNode);
+	}
+
+	/**
+	 * 
+	 * @param g
+	 * @return
+	 */
+	static GraphNode getHighestNode(Graph g) {
+		Iterator iterator = g.getNodes().iterator();
+		GraphNode lowest /* highest on the screen */= null;
+
+		while (iterator.hasNext()) {
+			GraphNode node = (GraphNode) iterator.next();
+			if (lowest == null || lowest.getBounds().y > node.getBounds().y) {
+				lowest = node;
+			}
+		}
+		return lowest;
+
 	}
 
 	/**
@@ -202,20 +226,23 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * @param containerBounds
 	 * @param graphContainer
 	 */
-	private void moveNodesUp(Rectangle containerBounds, GraphContainer graphContainer) {
+	private static void moveNodesUp(Rectangle containerBounds, GraphNode graphContainer) {
 
 		// Get all nodes below this container, in order
-		List orderedNodesBelowY = getOrderedNodesBelowY(getGraph().getNodes(), containerBounds.y, graphContainer);
+		List orderedNodesBelowY = getOrderedNodesBelowY(graphContainer.getGraphModel().getNodes(), containerBounds.y, graphContainer);
 		int leftSide = containerBounds.x;
 		int rightSide = containerBounds.x + containerBounds.width;
 		List nodesToConsider = new LinkedList();
 		for (int i = 0; i < orderedNodesBelowY.size(); i++) {
 			nodesToConsider.add(orderedNodesBelowY.get(i));
 		}
+		addNodeToOrderedList(orderedNodesBelowY, graphContainer);
 
 		while (nodesToConsider.size() > 0) {
 			GraphNode node = (GraphNode) nodesToConsider.get(0);
 			if (nodeInStripe(leftSide, rightSide, node)) {
+				leftSide = Math.min(leftSide, node.getBounds().x);
+				rightSide = Math.max(rightSide, node.getBounds().x + node.getBounds().width);
 				// If this node is in the stripe, move it up 
 				// the previous node
 				GraphNode previousNode = null;
@@ -276,31 +303,63 @@ public class GraphContainer extends GraphNode implements IContainer {
 		updateFigureForModel(nodeFigure);
 
 		Rectangle containerBounds = new Rectangle(this.getLocation(), new Dimension(this.getSize().width, CONTAINER_HEIGHT + this.expandGraphLabel.getSize().height));
-		moveIntersectedNodes(containerBounds, this);
+		//moveIntersectedNodes(containerBounds, this);
+		moveNodesDown(containerBounds, this);
+		moveNodesUp(containerBounds, this);
+		//pack(graph);
 		if (animate) {
 			Animation.run(ANIMATION_TIME);
 		}
-		this.nodeFigure.getUpdateManager().performUpdate();
+		//this.nodeFigure.getUpdateManager().performUpdate();
 
 	}
 
 	/**
-	 * Gets a list of nodes below the given node
-	 * @param node
-	 * @return
+	 * 
+	 * @param containerBounds
+	 * @param graphContainer
 	 */
-	private List getNodesBelow(int y, List nodes) {
-		Iterator allNodes = nodes.iterator();
-		LinkedList result = new LinkedList();
-		while (allNodes.hasNext()) {
-			GraphNode nextNode = (GraphNode) allNodes.next();
-			int top = nextNode.getLocation().y;
-			if (top > y) {
-				result.add(nextNode);
+	private void moveNodesDown(Rectangle containerBounds, GraphContainer graphContainer) {
+
+		// Find all nodes below here
+		List nodesBelowHere = getOrderedNodesBelowY(graph.getNodes(), containerBounds.y, graphContainer);
+		Iterator nodesBelowHereIterator = nodesBelowHere.iterator();
+		List nodesToMove = new LinkedList();
+		int left = containerBounds.x;
+		int right = containerBounds.x + containerBounds.width;
+		while (nodesBelowHereIterator.hasNext()) {
+			GraphNode node = (GraphNode) nodesBelowHereIterator.next();
+			if (nodeInStripe(left, right, node)) {
+				nodesToMove.add(node);
+				left = Math.min(left, node.getBounds().x);
+				right = Math.max(right, node.getBounds().x + node.getBounds().width);
 			}
 		}
-		return result;
+		List intersectingNodes = intersectingNodes(containerBounds, nodesToMove, graphContainer);
+		int delta = getMaxMovement(containerBounds, intersectingNodes);
+		if (delta > 0) {
+			shiftNodesDown(nodesToMove, delta);
+		}
+
 	}
+
+//	/**
+//	 * Gets a list of nodes below the given node
+//	 * @param node
+//	 * @return
+//	 */
+//	private List getNodesBelow(int y, List nodes) {
+//		Iterator allNodes = nodes.iterator();
+//		LinkedList result = new LinkedList();
+//		while (allNodes.hasNext()) {
+//			GraphNode nextNode = (GraphNode) allNodes.next();
+//			int top = nextNode.getLocation().y;
+//			if (top > y) {
+//				result.add(nextNode);
+//			}
+//		}
+//		return result;
+//	}
 
 	/**
 	 * Checks all the nodes in the list of nodesToCheck to see if they intersect with the bounds set
@@ -350,58 +409,59 @@ public class GraphContainer extends GraphNode implements IContainer {
 		Iterator iterator = nodesToShift.iterator();
 		while (iterator.hasNext()) {
 			GraphNode node = (GraphNode) iterator.next();
+
 			node.setLocation(node.getLocation().x, node.getLocation().y + amount);
 		}
 	}
 
-	/**
-	 * This finds the highest Y Value of a set of nodes.
-	 * @param nodes
-	 * @return
-	 */
-	private int findSmallestYValue(List nodes) {
-		Iterator iterator = nodes.iterator();
-		int lowestNode /*highest on the screen*/= Integer.MAX_VALUE - 100; // Subtract 100 so we don't overflow
-		while (iterator.hasNext()) {
-			GraphNode node = (GraphNode) iterator.next();
-			int y = node.getLocation().y;
-			lowestNode = Math.min(lowestNode, y);
-		}
-		return lowestNode;
-	}
+//	/**
+//	 * This finds the highest Y Value of a set of nodes.
+//	 * @param nodes
+//	 * @return
+//	 */
+//	private int findSmallestYValue(List nodes) {
+//		Iterator iterator = nodes.iterator();
+//		int lowestNode /*highest on the screen*/= Integer.MAX_VALUE - 100; // Subtract 100 so we don't overflow
+//		while (iterator.hasNext()) {
+//			GraphNode node = (GraphNode) iterator.next();
+//			int y = node.getLocation().y;
+//			lowestNode = Math.min(lowestNode, y);
+//		}
+//		return lowestNode;
+//	}
 
-	/**
-	 * Clears the nodes that the container intersects as it expands
-	 * @param containerBounds
-	 * @param graphContainer
-	 */
-	private void moveIntersectedNodes(Rectangle containerBounds, GraphNode graphContainer) {
-
-		List nodesBelowHere = getNodesBelow(this.getLocation().y, graphContainer.getGraphModel().getNodes());
-		List intersectingNodes = intersectingNodes(containerBounds, nodesBelowHere, graphContainer);
-		int delta = getMaxMovement(containerBounds, intersectingNodes);
-		shiftNodesDown(intersectingNodes, delta);
-
-		int lowestNode /*highest on the screen*/= findSmallestYValue(intersectingNodes);
-		nodesBelowHere = getNodesBelow(lowestNode, nodesBelowHere);
-
-		while (nodesBelowHere.size() > 0) {
-			Iterator intersectingNodeIterator = intersectingNodes.iterator();
-			List nodesMovedInLastIteration = new LinkedList();
-			while (intersectingNodeIterator.hasNext()) {
-				GraphNode node = (GraphNode) intersectingNodeIterator.next();
-				intersectingNodes = intersectingNodes(node.getBounds(), nodesBelowHere, node);
-				delta = getMaxMovement(node.getBounds(), intersectingNodes);
-				if (delta > 0) {
-					shiftNodesDown(intersectingNodes, delta);
-					nodesMovedInLastIteration.addAll(intersectingNodes);
-				}
-			}
-			lowestNode /*highest on the screen*/= findSmallestYValue(nodesMovedInLastIteration);
-			nodesBelowHere = getNodesBelow(lowestNode, nodesBelowHere);
-			intersectingNodes = nodesMovedInLastIteration;
-		}
-	}
+//	/**
+//	 * Clears the nodes that the container intersects as it expands
+//	 * @param containerBounds
+//	 * @param graphContainer
+//	 */
+//	private void moveIntersectedNodes(Rectangle containerBounds, GraphNode graphContainer) {
+//
+//		List nodesBelowHere = getNodesBelow(this.getLocation().y, graphContainer.getGraphModel().getNodes());
+//		List intersectingNodes = intersectingNodes(containerBounds, nodesBelowHere, graphContainer);
+//		int delta = getMaxMovement(containerBounds, intersectingNodes);
+//		shiftNodesDown(intersectingNodes, delta);
+//
+//		int lowestNode /*highest on the screen*/= findSmallestYValue(intersectingNodes);
+//		nodesBelowHere = getNodesBelow(lowestNode, nodesBelowHere);
+//
+//		while (nodesBelowHere.size() > 0) {
+//			Iterator intersectingNodeIterator = intersectingNodes.iterator();
+//			List nodesMovedInLastIteration = new LinkedList();
+//			while (intersectingNodeIterator.hasNext()) {
+//				GraphNode node = (GraphNode) intersectingNodeIterator.next();
+//				intersectingNodes = intersectingNodes(node.getBounds(), nodesBelowHere, node);
+//				delta = getMaxMovement(node.getBounds(), intersectingNodes);
+//				if (delta > 0) {
+//					shiftNodesDown(intersectingNodes, delta);
+//					nodesMovedInLastIteration.addAll(intersectingNodes);
+//				}
+//			}
+//			lowestNode /*highest on the screen*/= findSmallestYValue(nodesMovedInLastIteration);
+//			nodesBelowHere = getNodesBelow(lowestNode, nodesBelowHere);
+//			intersectingNodes = nodesMovedInLastIteration;
+//		}
+//	}
 
 	/**
 	 * Gets the graph that this container has been added to.

@@ -117,6 +117,7 @@ public class GraphConnection extends GraphItem {
 		(source).addSourceConnection(this);
 		(destination).addTargetConnection(this);
 		connectionFigure = createFigure();
+		boolean src_destSameContainer = false;
 
 		if (source.getParent().getItemType() == GraphItem.CONTAINER && destination.getParent().getItemType() == GraphItem.CONTAINER && (source.getParent() == destination.getParent())) {
 			// If the source and the destination are in the same container (not the root graph) then 
@@ -126,6 +127,7 @@ public class GraphConnection extends GraphItem {
 			// 196189: Edges should not draw on the edge layer if both the src and dest are in the same container
 			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=196189
 			graphModel.addConnection(this, false);
+			src_destSameContainer = true;
 		} else {
 			graphModel.addConnection(this, true);
 		}
@@ -144,7 +146,8 @@ public class GraphConnection extends GraphItem {
 			sourceContainerConnectionFigure = polylineConnection;
 			this.setVisible(false);
 		}
-		if ((destination.getParent()).getItemType() == GraphItem.CONTAINER) {
+
+		if ((destination.getParent()).getItemType() == GraphItem.CONTAINER && src_destSameContainer == false) {
 			// If the container of the source is a container, we need to draw another
 			// arc on that arc layer
 			ChopboxAnchor srcAnchor = new ChopboxAnchor(source.getFigure());

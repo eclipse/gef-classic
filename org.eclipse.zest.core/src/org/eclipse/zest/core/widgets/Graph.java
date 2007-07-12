@@ -503,7 +503,6 @@ public class Graph extends FigureCanvas implements IContainer {
 		 * we need to fisheye on a node or not.
 		 */
 		public void mouseMoved(org.eclipse.draw2d.MouseEvent me) {
-
 			Point mousePoint = new Point(me.x, me.y);
 			getRootLayer().translateToRelative(mousePoint);
 			IFigure figureUnderMouse = getFigureAt(mousePoint.x, mousePoint.y);
@@ -736,12 +735,8 @@ public class Graph extends FigureCanvas implements IContainer {
 	void highlightNode(GraphNode node) {
 		IFigure figure = node.getNodeFigure();
 		if (figure != null && nodeLayer.getChildren().contains(figure)) {
-			nodeLayer.remove(figure);
-			//figure.setBounds(node.getBounds());
 			nodeFeedbackLayer.add(figure);
-			nodeFeedbackLayer.setConstraint(figure, node.getBounds());
 		}
-		//nodeFeedbackLayer.getUpdateManager().performUpdate();
 	}
 
 	/**
@@ -785,13 +780,8 @@ public class Graph extends FigureCanvas implements IContainer {
 	void unhighlightNode(GraphNode node) {
 		IFigure figure = node.getNodeFigure();
 		if (figure != null && nodeFeedbackLayer.getChildren().contains(figure)) {
-			nodeFeedbackLayer.remove(figure);
 			nodeLayer.add(figure);
-			nodeLayer.setConstraint(figure, node.getBounds());
-			//figure.setBounds(node.getBounds());
-
 		}
-		//nodeFeedbackLayer.getUpdateManager().performUpdate();
 	}
 
 	/**

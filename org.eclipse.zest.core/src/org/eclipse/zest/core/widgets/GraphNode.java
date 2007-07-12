@@ -134,6 +134,8 @@ public class GraphNode extends GraphItem {
 		return nodeFigure;
 	}
 
+	static int count = 0;
+
 	protected void initModel(IContainer parent, String text, Image image) {
 		this.nodeStyle |= parent.getGraph().getNodeStyle();
 		this.parent = parent;

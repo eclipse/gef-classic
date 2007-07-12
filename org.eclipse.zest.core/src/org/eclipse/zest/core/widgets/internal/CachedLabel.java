@@ -14,6 +14,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.SWTGraphics;
+import org.eclipse.draw2d.ScaledGraphics;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
@@ -146,7 +147,14 @@ public abstract class CachedLabel extends Label {
 	 * 
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	static Rectangle tempRect = new Rectangle();
+
 	protected void paintFigure(Graphics graphics) {
+		if (graphics.getClass() == ScaledGraphics.class) {
+			if (((ScaledGraphics) graphics).getAbsoluteScale() < 0.30) {
+				return;
+			}
+		}
 		if (!cacheLabel) {
 			if (isOpaque()) {
 				super.paintFigure(graphics);

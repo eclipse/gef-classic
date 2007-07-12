@@ -205,21 +205,29 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 
 		Rectangle top = bounds.getCopy();
 		top.height /= 2;
-		graphics.setForegroundColor(lightenColor);
-		graphics.setBackgroundColor(lightenColor);
-		graphics.fillRoundRectangle(top, arcWidth, arcWidth);
-
-		top.y = top.y + top.height;
+		//graphics.setForegroundColor(lightenColor);
+		//graphics.setBackgroundColor(lightenColor);
 		graphics.setForegroundColor(getBackgroundColor());
 		graphics.setBackgroundColor(getBackgroundColor());
 		graphics.fillRoundRectangle(top, arcWidth, arcWidth);
 
+		top.y = top.y + top.height;
+		//graphics.setForegroundColor(getBackgroundColor());
+		//graphics.setBackgroundColor(getBackgroundColor());
 		graphics.setForegroundColor(lightenColor);
-		graphics.setBackgroundColor(getBackgroundColor());
+		graphics.setBackgroundColor(lightenColor);
+		graphics.fillRoundRectangle(top, arcWidth, arcWidth);
+
+		//graphics.setForegroundColor(lightenColor);
+		//graphics.setBackgroundColor(getBackgroundColor());
+		graphics.setBackgroundColor(lightenColor);
+		graphics.setForegroundColor(getBackgroundColor());
 		graphics.fillGradient(r, true);
 
 		super.paint(graphics);
 		graphics.popState();
+		graphics.setForegroundColor(lightenColor);
+		graphics.setBackgroundColor(lightenColor);
 		// paint the border
 		bounds.setSize(bounds.width - 1, bounds.height - 1);
 		graphics.drawRoundRectangle(bounds, arcWidth, arcWidth);
