@@ -26,15 +26,18 @@ public class NestedGraphSnippet {
 	public static void createContainer(Graph g) {
 		GraphContainer a = new GraphContainer(g, SWT.NONE, "SomeClass.java", classImage);
 		int r = (int) ((Math.random() * 3) + 1);
+		r = 2;
 		populateContainer(a, g, r, true);
 		for (int i = 0; i < 4; i++) {
 			GraphContainer b = new GraphContainer(g, SWT.NONE, "SomeNestedClass.java", classImage);
 			r = (int) ((Math.random() * 3) + 1);
+			r = 2;
 			populateContainer(b, g, r, false);
 			new GraphConnection(g, SWT.NONE, a, b);
 			for (int j = 0; j < 4; j++) {
 				GraphContainer c = new GraphContainer(g, SWT.NONE, "DefaultAction.java", classImage);
 				r = (int) ((Math.random() * 3) + 1);
+				r = 2;
 				populateContainer(c, g, r, true);
 				new GraphConnection(g, SWT.NONE, b, c);
 			}

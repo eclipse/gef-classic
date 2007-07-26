@@ -406,7 +406,11 @@ public class GraphNode extends GraphItem {
 			}
 		}
 		updateFigureForModel(getNodeFigure());
-		graph.highlightNode(this);
+		if (parent.getItemType() == GraphItem.CONTAINER) {
+			((GraphContainer) parent).highlightNode(this);
+		} else {
+			((Graph) parent).highlightNode(this);
+		}
 	}
 
 	/**
@@ -440,7 +444,11 @@ public class GraphNode extends GraphItem {
 			}
 
 		}
-		graph.unhighlightNode(this);
+		if (parent.getItemType() == GraphItem.CONTAINER) {
+			((GraphContainer) parent).unhighlightNode(this);
+		} else {
+			((Graph) parent).unhighlightNode(this);
+		}
 		updateFigureForModel(nodeFigure);
 
 	}
@@ -487,7 +495,11 @@ public class GraphNode extends GraphItem {
 		}
 		highlighted = HIGHLIGHT_ADJACENT;
 		updateFigureForModel(nodeFigure);
-		graph.highlightNode(this);
+		if (parent.getItemType() == GraphItem.CONTAINER) {
+			((GraphContainer) parent).highlightNode(this);
+		} else {
+			((Graph) parent).highlightNode(this);
+		}
 	}
 
 	/**
@@ -659,7 +671,7 @@ public class GraphNode extends GraphItem {
 		this.customFigure = nodeFigure;
 		this.nodeFigure = null;
 
-		graph.changeFigure((IFigure) old, customFigure, this);
+		graph.changeNodeFigure((IFigure) old, customFigure, this);
 		// customFigure.getParent().setConstraint(customFigure, new Rectangle(0,
 		// 0, -1, -1));
 		Rectangle d = this.customFigure.getBounds();

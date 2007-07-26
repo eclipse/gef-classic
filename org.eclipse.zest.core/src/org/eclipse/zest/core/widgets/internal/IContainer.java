@@ -33,7 +33,7 @@ public interface IContainer {
 	/* protected void addNode(GraphNode node); */
 
 	// All implementers must include this method
-	/* public void addNode(GraphContainer container); */
+	/* protected void addNode(GraphContainer container); */
 
 	public int getItemType();
 
@@ -49,5 +49,13 @@ public interface IContainer {
 	 * @param applyLayout 
 	 */
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout);
+
+	/* protected void highlightNode(GraphNode node); */
+
+	/* protected void highlightNode(GraphContainer container);*/
+
+	/* protected void unhighlightNode(GraphNode node); */
+
+	/* protected void unhighlightNode(GraphContainer container);*/
 
 } // end of IContainer

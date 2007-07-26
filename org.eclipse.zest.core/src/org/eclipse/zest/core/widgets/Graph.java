@@ -34,6 +34,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylyn.zest.core.widgets.internal.IContainer;
 import org.eclipse.mylyn.zest.core.widgets.internal.RevealListener;
+import org.eclipse.mylyn.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylyn.zest.layouts.LayoutEntity;
@@ -96,16 +97,13 @@ public class Graph extends FigureCanvas implements IContainer {
 	private List constraintAdapters;
 	private List revealListeners = null;
 
-	private ScalableFreeformLayeredPane nodeLayer = null;
-	private ScalableFreeformLayeredPane edgeLayer = null;
-	private ScalableFreeformLayeredPane edgeFeedbackLayer = null;
-	private ScalableFreeformLayeredPane nodeFeedbackLayer = null;
 	private ScalableFreeformLayeredPane fishEyeLayer = null;
 	LayoutAlgorithm layoutAlgorithm = null;
 	private Dimension preferredSize = null;
 	int style = 0;
 
 	private ScalableFreeformLayeredPane rootlayer;
+	private ZestRootLayer zestRootLayer;
 
 	/**
 	 * Constructor for a Graph. This widget represents the root of the graph,
@@ -657,7 +655,7 @@ public class Graph extends FigureCanvas implements IContainer {
 						// If it node is on the fish eye layer, don't worry about it.
 						return true;
 					}
-					if (parent == nodeLayer || parent == nodeFeedbackLayer || parent == nodeLayer.getParent() || parent == nodeLayer.getParent().getParent() || parent == edgeFeedbackLayer || parent == edgeLayer) {
+					if (parent == zestRootLayer || parent == zestRootLayer.getParent() || parent == zestRootLayer.getParent().getParent()) {
 						return false;
 					}
 					GraphItem item = (GraphItem) figure2ItemMap.get(figure);
@@ -709,8 +707,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	void highlightEdge(GraphConnection connection) {
 		IFigure figure = connection.getConnectionFigure();
 		if (figure != null) {
-			edgeLayer.remove(figure);
-			edgeFeedbackLayer.add(figure);
+			zestRootLayer.highlightConnection(figure);
 		}
 	}
 
@@ -722,8 +719,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	void unhighlightEdge(GraphConnection connection) {
 		IFigure figure = connection.getConnectionFigure();
 		if (figure != null) {
-			edgeFeedbackLayer.remove(figure);
-			edgeLayer.add(figure);
+			zestRootLayer.unHighlightConnection(figure);
 		}
 	}
 
@@ -734,8 +730,8 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	void highlightNode(GraphNode node) {
 		IFigure figure = node.getNodeFigure();
-		if (figure != null && nodeLayer.getChildren().contains(figure)) {
-			nodeFeedbackLayer.add(figure);
+		if (figure != null) {
+			zestRootLayer.highlightNode(figure);
 		}
 	}
 
@@ -746,13 +742,9 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	void highlightNode(GraphContainer node) {
 		IFigure figure = node.getNodeFigure();
-		if (figure != null && nodeLayer.getChildren().contains(figure)) {
-			nodeLayer.remove(figure);
-			//figure.setBounds(node.getBounds());
-			nodeFeedbackLayer.add(figure);
-			nodeFeedbackLayer.setConstraint(figure, node.getBounds());
+		if (figure != null) {
+			zestRootLayer.highlightNode(figure);
 		}
-		//nodeFeedbackLayer.getUpdateManager().performUpdate();
 	}
 
 	/**
@@ -762,14 +754,9 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	void unhighlightNode(GraphContainer node) {
 		IFigure figure = node.getNodeFigure();
-		if (figure != null && nodeFeedbackLayer.getChildren().contains(figure)) {
-			nodeFeedbackLayer.remove(figure);
-			nodeLayer.add(figure);
-			nodeLayer.setConstraint(figure, node.getBounds());
-			//figure.setBounds(node.getBounds());
-
+		if (figure != null) {
+			zestRootLayer.unHighlightNode(figure);
 		}
-		//nodeFeedbackLayer.getUpdateManager().performUpdate();
 	}
 
 	/**
@@ -779,8 +766,8 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	void unhighlightNode(GraphNode node) {
 		IFigure figure = node.getNodeFigure();
-		if (figure != null && nodeFeedbackLayer.getChildren().contains(figure)) {
-			nodeLayer.add(figure);
+		if (figure != null) {
+			zestRootLayer.unHighlightNode(figure);
 		}
 	}
 
@@ -849,30 +836,34 @@ public class Graph extends FigureCanvas implements IContainer {
 	void addConnection(GraphConnection connection, boolean addToEdgeLayer) {
 		this.getConnections().add(connection);
 		if (addToEdgeLayer) {
-			edgeLayer.add(connection.getFigure());
+			zestRootLayer.addConnection(connection.getFigure());
 		}
 	}
 
 	void removeConnection(GraphConnection connection) {
-		addRemoveFigure(connection, false);
+		IFigure figure = connection.getConnectionFigure();
+		zestRootLayer.removeConnection(figure);
 		this.getConnections().remove(connection);
+		figure2ItemMap.remove(figure);
 	}
 
 	void removeNode(GraphNode node) {
-		addRemoveFigure(node, false);
+		IFigure figure = node.getNodeFigure();
+		zestRootLayer.removeNode(figure);
 		this.getNodes().remove(node);
+		figure2ItemMap.remove(figure);
 	}
 
 	void addNode(GraphNode node) {
 		this.getNodes().add(node);
 		IFigure figure = node.getFigure();
-		nodeLayer.add(figure);
+		zestRootLayer.addNode(figure);
 	}
 
 	void addNode(GraphContainer graphContainer) {
 		this.getNodes().add(graphContainer);
 		IFigure figure = graphContainer.getFigure();
-		nodeLayer.add(figure);
+		zestRootLayer.addNode(figure);
 	}
 
 	void registerItem(GraphItem item) {
@@ -890,62 +881,19 @@ public class Graph extends FigureCanvas implements IContainer {
 		}
 	}
 
-	void addRemoveFigure(GraphItem item, boolean visible) {
-		if (visible) {
-			if (item.getItemType() == GraphItem.NODE && (!nodeLayer.getChildren().contains(item) || !nodeFeedbackLayer.getChildren().contains(item))) {
-				GraphNode graphNode = (GraphNode) item;
-				IFigure figure = graphNode.getNodeFigure();
-				if (graphNode.isHighlighted()) {
-					nodeFeedbackLayer.add(figure);
-				} else {
-					if (graphNode.getParent().getItemType() == GraphItem.GRAPH) {
-						nodeLayer.add(figure);
-					} else {
-						((GraphContainer) graphNode.getParent()).getFigure().add(figure);
-					}
-				}
-				figure2ItemMap.put(figure, item);
-			} else if (item.getItemType() == GraphItem.CONNECTION && (!edgeLayer.getChildren().contains(item) || !edgeFeedbackLayer.getChildren().contains(item))) {
-				GraphConnection graphConnection = (GraphConnection) item;
-				IFigure figure = graphConnection.getConnectionFigure();
-				if (graphConnection.isHighlighted()) {
-					edgeFeedbackLayer.add(figure);
-				} else {
-					edgeLayer.add(figure);
-				}
-				figure2ItemMap.put(figure, item);
-			}
-		} else {
-			if (item.getItemType() == GraphItem.NODE) {
-				GraphNode graphNode = (GraphNode) item;
-				IFigure figure = graphNode.getNodeFigure();
-				if (graphNode.isHighlighted()) {
-					nodeFeedbackLayer.remove(figure);
-				} else {
-					figure.getParent().remove(figure);
-					//nodeLayer.remove(figure);
-				}
-				figure2ItemMap.remove(figure);
-			} else if (item.getItemType() == GraphItem.CONNECTION) {
-				GraphConnection graphConnection = (GraphConnection) item;
-				IFigure figure = graphConnection.getConnectionFigure();
-				if (graphConnection.isHighlighted()) {
-					edgeFeedbackLayer.remove(figure);
-				} else {
-					edgeLayer.remove(figure);
-				}
-				figure2ItemMap.remove(figure);
-			}
-		}
-	}
+	/*
 
-	void changeFigure(IFigure oldValue, IFigure newFigure, GraphNode graphItem) {
-		if (nodeLayer.getChildren().contains(oldValue)) {
-			nodeLayer.remove(oldValue);
+
+	/**
+	 * Changes the figure for a particular node
+	 */
+	void changeNodeFigure(IFigure oldValue, IFigure newFigure, GraphNode graphItem) {
+		if (zestRootLayer.getChildren().contains(oldValue)) {
+			zestRootLayer.remove(oldValue);
 			figure2ItemMap.remove(oldValue);
 		}
 		figure2ItemMap.put(newFigure, graphItem);
-		nodeLayer.add(newFigure);
+		zestRootLayer.add(newFigure);
 	}
 
 	/**
@@ -1051,26 +999,17 @@ public class Graph extends FigureCanvas implements IContainer {
 	private ScalableFigure createLayers() {
 		rootlayer = new ScalableFreeformLayeredPane();
 		rootlayer.setLayoutManager(new FreeformLayout());
-		nodeLayer = new ScalableFreeformLayeredPane();
-		edgeLayer = new ScalableFreeformLayeredPane();
-		edgeFeedbackLayer = new ScalableFreeformLayeredPane();
-		nodeFeedbackLayer = new ScalableFreeformLayeredPane();
-		nodeLayer.setLayoutManager(new FreeformLayout());
-		edgeLayer.setLayoutManager(new FreeformLayout());
-		edgeFeedbackLayer.setLayoutManager(new FreeformLayout());
-		nodeFeedbackLayer.setLayoutManager(new FreeformLayout());
+		zestRootLayer = new ZestRootLayer();
+
+		zestRootLayer.setLayoutManager(new FreeformLayout());
 
 		fishEyeLayer = new ScalableFreeformLayeredPane();
 		fishEyeLayer.setLayoutManager(new FreeformLayout());
 
-		rootlayer.add(edgeLayer);
-		rootlayer.add(nodeLayer);
-		rootlayer.add(edgeFeedbackLayer);
-		rootlayer.add(nodeFeedbackLayer);
+		rootlayer.add(zestRootLayer);
 		rootlayer.add(fishEyeLayer);
 
-		nodeLayer.addLayoutListener(LayoutAnimator.getDefault());
-		nodeFeedbackLayer.addLayoutListener(LayoutAnimator.getDefault());
+		zestRootLayer.addLayoutListener(LayoutAnimator.getDefault());
 		fishEyeLayer.addLayoutListener(LayoutAnimator.getDefault());
 		return rootlayer;
 	}

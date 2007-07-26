@@ -343,6 +343,25 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	}
 
+	void highlightNode(GraphNode node) {
+
+	}
+
+	void highlightEdge(GraphConnection connection) {
+	}
+
+	void highlightNode(GraphContainer container) {
+
+	}
+
+	void unhighlightNode(GraphNode node) {
+
+	}
+
+	void unhighlightNode(GraphContainer container) {
+
+	}
+
 //	/**
 //	 * Gets a list of nodes below the given node
 //	 * @param node
