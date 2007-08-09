@@ -99,7 +99,7 @@ public class GraphSnippet5 {
 				if (stringBuffer.length() > 0) {
 					while (iterator.hasNext()) {
 						String string = (String) iterator.next();
-						if (string.contains(stringBuffer.toString().toLowerCase())) {
+						if (string.indexOf(stringBuffer.toString().toLowerCase()) >= 0) {
 							list.add(figureListing.get(string));
 						}
 					}
