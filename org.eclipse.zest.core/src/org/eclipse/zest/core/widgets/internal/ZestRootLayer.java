@@ -126,20 +126,32 @@ public class ZestRootLayer extends FreeformLayer {
 		this.repaint();
 	}
 
+	/*
+	 * Node position is at the end of the list of nodes
+	 */
 	private int getNodePosition() {
-		return numberOfConnections;
-	}
-
-	private int getConnectionPosition() {
-		return 0;
-	}
-
-	private int getHighlightNodePosition() {
-		return numberOfConnections + numberOfHighlightedConnections + numberOfNodes;
-	}
-
-	private int getHighlightConnectionPosition() {
 		return numberOfConnections + numberOfNodes;
+	}
+
+	/*
+	 * Connection position is at the end of the list of connections
+	 */
+	private int getConnectionPosition() {
+		return 0 + numberOfConnections;
+	}
+
+	/*
+	 * Highlight node position is at the end of the list of highlighted nodes
+	 */
+	private int getHighlightNodePosition() {
+		return numberOfConnections + numberOfHighlightedConnections + numberOfNodes + numberOfHighlightedNodes;
+	}
+
+	/*
+	 * Highlighted connection position is at the end of the list of highlighted connections
+	 */
+	private int getHighlightConnectionPosition() {
+		return numberOfConnections + numberOfNodes + numberOfHighlightedConnections;
 	}
 
 }
