@@ -1,21 +1,10 @@
-/*******************************************************************************
- * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License v1.0 which
- * accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors: The Chisel Group, University of Victoria
- ******************************************************************************/
 package org.eclipse.mylyn.zest.core.widgets.internal;
 
-import java.util.List;
-
-import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.TreeSearch;
+import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.ScalableFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
@@ -24,29 +13,21 @@ import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Translatable;
+import org.eclipse.draw2d.text.CaretInfo;
 
-//import org.eclipse.draw2d.text.CaretInfo;
-
-/**
- * 
- * @author irbull
- * 
- */
-public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
+//@tag zest.bug.156286-Scaling.fix : make this implement scalable figure so that a zoom manager can be used on GraphEditParts.
+public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableFigure {
 
 	private double widthScale = 1.0;
 	private double heigthScale = 1.0;
 
-	public AspectRatioScaledFigure(String debugLabel) {
+	public AspectRatioFreeformLayer(String debugLabel) {
 		widthScale = 1D;
 		heigthScale = 1D;
 		setLayoutManager(new FreeformLayout());
-		setOpaque(true);
-	}
+		setBorder(new MarginBorder(5));
 
-	public void setSize(int w, int h) {
-		super.setSize(w, h);
-
+		//setOpaque(false);
 	}
 
 	public void setScale(double wScale, double hScale) {
@@ -63,11 +44,16 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 	}
 
 	public boolean isCoordinateSystem() {
+		// TODO Auto-generated method stub
 		return true;
 	}
 
 	public double getScale() {
+		// TODO Auto-generated method stub
 		throw new RuntimeException("Operation not supported");
+		// return this.widthScale;
+
+		//throw new RuntimeException("Operation Not supported");
 	}
 
 	public void setScale(double scale) {
@@ -85,7 +71,7 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 	 */
 
 	public Rectangle getClientArea(Rectangle rect) {
-		super.getClientArea(rect);
+		//return super.getClientArea(rect);
 
 		rect.width /= widthScale;
 		rect.height /= heigthScale;
@@ -99,11 +85,6 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		return d.getExpanded(-w, -h).scale(widthScale, heigthScale).expand(w, h);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.draw2d.Figure#translateFromParent(org.eclipse.draw2d.geometry.Translatable)
-	 */
 	public void translateFromParent(Translatable t) {
 		super.translateFromParent(t);
 		//t.performScale(1/widthScale);
@@ -118,12 +99,10 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		} else if (t instanceof Rectangle) {
 			Rectangle r = (Rectangle) t;
 			r.scale(1 / widthScale, 1 / heigthScale);
-		}
-		//		else if ( t instanceof CaretInfo ) {
-		//			CaretInfo c = (CaretInfo)t;
-		//			c.performScale(1/heigthScale);
-		//		}
-		else if (t instanceof PrecisionDimension) {
+		} else if (t instanceof CaretInfo) {
+			CaretInfo c = (CaretInfo) t;
+			c.performScale(1 / heigthScale);
+		} else if (t instanceof PrecisionDimension) {
 			PrecisionDimension d = (PrecisionDimension) t;
 			d.preciseWidth *= 1 / widthScale;
 			d.preciseHeight *= 1 / heigthScale;
@@ -148,24 +127,7 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		//t.performScale(1/widthScale);		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.draw2d.Figure#findFigureAt(int, int,
-	 *      org.eclipse.draw2d.TreeSearch)
-	 */
-	public IFigure findFigureAt(int x, int y, TreeSearch search) {
-		IFigure f = super.findFigureAt(x, y, search);
-		return f;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.draw2d.Figure#translateToParent(org.eclipse.draw2d.geometry.Translatable)
-	 */
 	public void translateToParent(Translatable t) {
-
 		//t.performScale(widthScale);
 
 		if (t instanceof PrecisionRectangle) {
@@ -179,12 +141,10 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 			Rectangle r = (Rectangle) t;
 			//r.performScale(widthScale);
 			r.scale(widthScale, heigthScale);
-		}
-		//		else if ( t instanceof CaretInfo ) {
-		//			CaretInfo c = (CaretInfo)t;
-		//			c.performScale(heigthScale);
-		//		}
-		else if (t instanceof PrecisionDimension) {
+		} else if (t instanceof CaretInfo) {
+			CaretInfo c = (CaretInfo) t;
+			c.performScale(heigthScale);
+		} else if (t instanceof PrecisionDimension) {
 			PrecisionDimension d = (PrecisionDimension) t;
 			d.preciseWidth *= widthScale;
 			d.preciseHeight *= heigthScale;
@@ -207,14 +167,14 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 		}
 
 		super.translateToParent(t);
-
 	}
 
-	protected boolean useLocalCoordinates() {
-		return true;
-	}
+	//protected boolean useLocalCoordinates() {
+	//	return true;
+	//}
 
 	protected void paintClientArea(Graphics graphics) {
+
 		if (getChildren().isEmpty()) {
 			return;
 		}
@@ -233,7 +193,8 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 			g.clipRect(getBounds().getCropped(getInsets()));
 		}
 
-		g.translate((getBounds().x + getInsets().left), (getBounds().y + getInsets().top));
+		//g.translate((int)(getBounds().x + getInsets().left) , 
+		//		(int)(getBounds().y  +  getInsets().top) );
 
 		g.scale(widthScale, heigthScale);
 		//g.scale(widthScale);
@@ -246,25 +207,7 @@ public class AspectRatioScaledFigure extends Figure {// extends ScaledFigure {
 			g.dispose();
 			graphics.restoreState();
 		}
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.draw2d.Figure#paintChildren(org.eclipse.draw2d.Graphics)
-	 */
-	protected void paintChildren(Graphics graphics) {
-		IFigure child;
-		List children = getChildren();
-		Rectangle clip = Rectangle.SINGLETON;
-		for (int i = 0; i < children.size(); i++) {
-			child = (IFigure) children.get(i);
-			if (child.isVisible() && child.intersects(graphics.getClip(clip))) {
-				graphics.clipRect(child.getBounds());
-				child.paint(graphics);
-				graphics.restoreState();
-			}
-		}
 	}
 
 }

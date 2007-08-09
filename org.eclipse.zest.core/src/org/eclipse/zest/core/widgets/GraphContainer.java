@@ -24,11 +24,11 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.ScalableFreeformLayeredPane;
 import org.eclipse.draw2d.ScrollPane;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.mylyn.zest.core.widgets.internal.AspectRatioFreeformLayer;
 import org.eclipse.mylyn.zest.core.widgets.internal.ExpandGraphLabel;
 import org.eclipse.mylyn.zest.core.widgets.internal.IContainer;
 import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
@@ -49,22 +49,25 @@ import org.eclipse.swt.graphics.Image;
  */
 public class GraphContainer extends GraphNode implements IContainer {
 
-	private static final double CONTAINER_SCALE = 0.75;
-	private static final int CONTAINER_HEIGHT = 150;
+	//private static final double CONTAINER_SCALE = 0.75;
+	private static final double scaledWidth = 500;
+	private static final double scaledHeight = 400;
+	private static final int CONTAINER_HEIGHT = 200;
 	private static final int MIN_WIDTH = 250;
 	private static final int ANIMATION_TIME = 100;
 	private static final int SUBLAYER_OFFSET = 2;
 
 	private ExpandGraphLabel expandGraphLabel;
 	private FreeformLayer container;
-	private int expandedHeight = CONTAINER_HEIGHT;
 	private FreeformLayer edgeLayer;
 	private List childNodes = null;
+	private int childAreaHeight = CONTAINER_HEIGHT;
 
 	private ScrollPane scrollPane;
 	private LayoutAlgorithm layoutAlgorithm;
 	private boolean isExpanded = false;
-	private ScalableFreeformLayeredPane scalledLayer;
+	//private ScalableFreeformLayeredPane scalledLayer;
+	private AspectRatioFreeformLayer scalledLayer;
 
 	/**
 	 * Creates a new GraphContainer.  A GraphContainer may contain nodes,
@@ -127,7 +130,9 @@ public class GraphContainer extends GraphNode implements IContainer {
 		//this.nodeFigure.setConstraint(scrollPane, newBounds);
 		this.nodeFigure.revalidate();
 		scrollPane.setSize(scrollPane.getSize().width, 0);
-		setSize(expandGraphLabel.getSize().width, expandGraphLabel.getSize().height);
+		updateFigureForModel(this.container);
+		scrollPane.setVisible(false);
+		//setSize(expandGraphLabel.getSize().width, expandGraphLabel.getSize().height);
 		List children = this.container.getChildren();
 		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
 			IFigure child = (IFigure) iterator.next();
@@ -287,11 +292,10 @@ public class GraphContainer extends GraphNode implements IContainer {
 		isExpanded = true;
 
 		expandGraphLabel.setExpandedState(ExpandGraphLabel.OPEN);
-		Rectangle newBounds = scrollPane.getBounds().getCopy();
-		newBounds.height = expandedHeight;
 
-		scrollPane.setSize(expandGraphLabel.getSize().width, expandedHeight);
-		setSize(expandGraphLabel.getSize().width, expandGraphLabel.getSize().height + expandedHeight - SUBLAYER_OFFSET);
+		scrollPane.setSize(computeChildArea());
+		scrollPane.setVisible(true);
+		//setSize(expandGraphLabel.getSize().width, expandGraphLabel.getSize().height + expandedHeight - SUBLAYER_OFFSET);
 
 		List children = this.container.getChildren();
 		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
@@ -518,13 +522,17 @@ public class GraphContainer extends GraphNode implements IContainer {
 		layoutAlgorithm.setStyle(layoutAlgorithm.getStyle() | layoutStyle);
 
 		// calculate the size for the layout algorithm
-		Dimension d = this.scalledLayer.getSize();
+		//Dimension d = this.scalledLayer.getSize();
+		Dimension d = new Dimension();
+		d.width = (int) scaledWidth;
+		d.height = (int) scaledHeight;
+
 		d.width = d.width - 10;
 		d.height = d.height - 10;
 		//if (d.height <= 0) {
-		d.height = (CONTAINER_HEIGHT);
+		//d.height = (CONTAINER_HEIGHT);
 		//}
-		d.scale(1 / this.scalledLayer.getScale());
+		//d.scale(1 / this.scalledLayer.getScale());
 
 		if (d.isEmpty()) {
 			return;
@@ -568,6 +576,74 @@ public class GraphContainer extends GraphNode implements IContainer {
 		return nodeFigure;
 	}
 
+	/**
+	 * This is a small class to help represent the size of the container.  It should only be
+	 * used in the computeContainerSize method.
+	 */
+	class ContainerDimension {
+		int width;
+		int labelHeight;
+		int expandedHeight;
+	}
+
+	/**
+	 * Computes size of the scroll pane that the child nodes will be placed in.
+	 * @return
+	 */
+	private Dimension computeChildArea() {
+		ContainerDimension containerDimension = computeContainerSize();
+		Dimension dimension = new Dimension();
+		dimension.width = containerDimension.width;
+		dimension.height = containerDimension.expandedHeight - containerDimension.labelHeight + SUBLAYER_OFFSET;
+		return dimension;
+	}
+
+	/**
+	 * Computes the desired size of the container.  This method uses the 
+	 * minimum size, label size and setSize to compute the size.
+	 * @return
+	 */
+	private ContainerDimension computeContainerSize() {
+		ContainerDimension dimension = new ContainerDimension();
+		int labelHeight = expandGraphLabel.getPreferredSize().height;
+		int labelWidth = expandGraphLabel.getPreferredSize().width;
+		if (labelWidth < MIN_WIDTH) {
+			labelWidth = MIN_WIDTH;
+			expandGraphLabel.setPreferredSize(labelWidth, labelHeight);
+		}
+		if (labelHeight < 30) {
+			labelHeight = 30;
+		}
+
+		dimension.labelHeight = labelHeight;
+		dimension.width = labelWidth;
+		dimension.width = Math.max(dimension.width, this.size.width);
+		dimension.expandedHeight = dimension.labelHeight + childAreaHeight - SUBLAYER_OFFSET;
+		dimension.expandedHeight = Math.max(dimension.expandedHeight, this.size.height);
+
+		return dimension;
+	}
+
+	/*
+	private double computeChildScale() {
+		Dimension childArea = computeChildArea();
+		double widthScale = childArea.width / scaledWidth;
+		double heightScale = childArea.height / scaledHeight;
+		return Math.min(widthScale, heightScale);
+	}
+	*/
+	private double computeHeightScale() {
+		Dimension childArea = computeChildArea();
+		double heightScale = childArea.height / scaledHeight;
+		return heightScale;
+	}
+
+	private double computeWidthScale() {
+		Dimension childArea = computeChildArea();
+		double widthScale = childArea.width / scaledWidth;
+		return widthScale;
+	}
+
 	private IFigure createContainerFigure() {
 		GraphContainer node = this;
 		IFigure containerFigure = new Figure();
@@ -579,16 +655,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 		expandGraphLabel = new ExpandGraphLabel(this, node.getText(), node.getImage(), false);
 		expandGraphLabel.setText(getText());
 		expandGraphLabel.setImage(getImage());
-		int labelHeight = expandGraphLabel.getPreferredSize().height;
-		int labelWidth = expandGraphLabel.getPreferredSize().width;
-		if (labelWidth < MIN_WIDTH) {
-			labelWidth = MIN_WIDTH;
-			expandGraphLabel.setPreferredSize(labelWidth, labelHeight);
-		}
-		if (labelHeight < 30) {
-			labelHeight = 30;
-		}
-		this.expandedHeight = CONTAINER_HEIGHT;
+		ContainerDimension containerDimension = computeContainerSize();
+
 		scrollPane = new ScrollPane();
 		scrollPane.addLayoutListener(LayoutAnimator.getDefault());
 		FreeformViewport viewport = new FreeformViewport();
@@ -617,19 +685,24 @@ public class GraphContainer extends GraphNode implements IContainer {
 		*/
 
 		scrollPane.setViewport(viewport);
+		viewport.addLayoutListener(LayoutAnimator.getDefault());
 		scrollPane.setScrollBarVisibility(ScrollPane.AUTOMATIC);
 
-		scalledLayer = new ScalableFreeformLayeredPane();
+		//scalledLayer = new ScalableFreeformLayeredPane();
+		scalledLayer = new AspectRatioFreeformLayer("debug label");
 		scalledLayer.addLayoutListener(LayoutAnimator.getDefault());
-		scalledLayer.setScale(CONTAINER_SCALE);
+		//scalledLayer.setScale(computeChildScale());
+		scalledLayer.setScale(computeWidthScale(), computeHeightScale());
 		container = new FreeformLayer();
 		edgeLayer = new FreeformLayer();
+		container.addLayoutListener(LayoutAnimator.getDefault());
+		edgeLayer.addLayoutListener(LayoutAnimator.getDefault());
 		scalledLayer.add(edgeLayer);
 		scalledLayer.add(container);
 
 		container.setLayoutManager(new FreeformLayout());
-		scrollPane.setSize(labelWidth, expandedHeight);
-		scrollPane.setLocation(new Point(0, labelHeight - SUBLAYER_OFFSET));
+		scrollPane.setSize(computeChildArea());
+		scrollPane.setLocation(new Point(0, containerDimension.labelHeight - SUBLAYER_OFFSET));
 		scrollPane.setForegroundColor(ColorConstants.gray);
 
 		expandGraphLabel.setBackgroundColor(getBackgroundColor());
@@ -661,23 +734,17 @@ public class GraphContainer extends GraphNode implements IContainer {
 			expandGraphLabel.setForegroundColor(getForegroundColor());
 			expandGraphLabel.setBackgroundColor(getBackgroundColor());
 		}
-		int labelHeight = expandGraphLabel.getPreferredSize().height;
-		int labelWidth = expandGraphLabel.getPreferredSize().width;
-		if (labelWidth < MIN_WIDTH) {
-			labelWidth = MIN_WIDTH;
-			expandGraphLabel.setPreferredSize(labelWidth, labelHeight);
-		}
-		if (labelHeight < 30) {
-			labelHeight = 30;
-		}
 
-		expandGraphLabel.setSize(labelWidth, labelHeight);
+		ContainerDimension containerDimension = computeContainerSize();
+
+		expandGraphLabel.setSize(containerDimension.width, containerDimension.labelHeight);
 		if (isExpanded) {
-			setSize(expandGraphLabel.getSize().width, expandGraphLabel.getSize().height + expandedHeight - SUBLAYER_OFFSET);
+			//setSize(expandGraphLabel.getSize().width, expandGraphLabel.getSize().height + expandedHeight - SUBLAYER_OFFSET);
+			setSize(containerDimension.width, containerDimension.expandedHeight);
 		} else {
-			setSize(labelWidth, labelHeight);
+			setSize(containerDimension.width, containerDimension.labelHeight);
 		}
-		scrollPane.setLocation(new Point(expandGraphLabel.getLocation().x, expandGraphLabel.getLocation().y + labelHeight - SUBLAYER_OFFSET));
+		scrollPane.setLocation(new Point(expandGraphLabel.getLocation().x, expandGraphLabel.getLocation().y + containerDimension.labelHeight - SUBLAYER_OFFSET));
 		//scrollPane.setLocation(new Point(0, labelHeight - SUBLAYER_OFFSET));
 		//Rectangle bounds = expandGraphLabel.getBounds().getCopy();
 		//Rectangle newBounds = new Rectangle(new Point(bounds.x, bounds.y + labelHeight - SUBLAYER_OFFSET), scrollPane.getSize());
@@ -702,24 +769,25 @@ public class GraphContainer extends GraphNode implements IContainer {
 		}
 		GraphNode node = this;
 		Point loc = node.getLocation();
-		Dimension size = node.size;
+
+		ContainerDimension containerDimension = computeContainerSize();
+		Dimension size = new Dimension();
+
+		expandGraphLabel.setSize(containerDimension.width, containerDimension.labelHeight);
+		this.childAreaHeight = computeChildArea().height;
+		if (isExpanded) {
+			size.width = containerDimension.width;
+			size.height = containerDimension.expandedHeight;
+		} else {
+			size.width = containerDimension.width;
+			size.height = containerDimension.labelHeight;
+		}
 		Rectangle bounds = new Rectangle(loc, size);
 		nodeFigure.getParent().setConstraint(nodeFigure, bounds);
-		//nodeFigure.getParent().revalidate();
-		int labelHeight = expandGraphLabel.getPreferredSize().height;
-		int labelWidth = expandGraphLabel.getPreferredSize().width;
-		if (labelWidth < MIN_WIDTH) {
-			labelWidth = MIN_WIDTH;
-		}
-		if (labelHeight < 30) {
-			labelHeight = 30;
-		}
+		scrollPane.setLocation(new Point(expandGraphLabel.getLocation().x, expandGraphLabel.getLocation().y + containerDimension.labelHeight - SUBLAYER_OFFSET));
+		scrollPane.setSize(computeChildArea());
+		scalledLayer.setScale(computeWidthScale(), computeHeightScale());
 
-		//expandGraphLabel.setSize(labelWidth, labelHeight);
-		//Rectangle exapndedGraphLabelBounds = expandGraphLabel.getBounds().getCopy();
-		//Rectangle newBounds = new Rectangle(new Point(exapndedGraphLabelBounds.x, exapndedGraphLabelBounds.y + labelHeight - SUBLAYER_OFFSET), scrollPane.getSize());
-		//nodeFigure.setConstraint(scrollPane, newBounds);
-		//nodeFigure.getUpdateManager().performUpdate();
 	}
 
 	void addConnectionFigure(PolylineConnection connection) {
