@@ -19,6 +19,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 /**
@@ -111,13 +112,16 @@ public class GraphLabel extends CachedLabel {
 	 */
 	public void setFont(Font f) {
 		super.setFont(f);
-		//adjustBoundsToFit();
+		adjustBoundsToFit();
 	}
 
 	/**
 	 * Adjust the bounds to make the text fit without truncation.
 	 */
 	protected void adjustBoundsToFit() {
+		if (true) {
+			return;
+		}
 		String text = getText();
 		if ((text != null) && (text.length() > 0)) {
 			Font font = getFont();
@@ -129,7 +133,6 @@ public class GraphLabel extends CachedLabel {
 					minSize.expand(imageRect.width + 4, expandHeight);
 				}
 				minSize.expand(10 + (2 * borderWidth), 4 + (2 * borderWidth));
-
 				setBounds(new Rectangle(getLocation(), minSize));
 			}
 		}
@@ -141,7 +144,62 @@ public class GraphLabel extends CachedLabel {
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
 	public void paint(Graphics graphics) {
+		int blue = getBackgroundColor().getBlue();
+		blue = (int) (blue - (blue * 0.20));
+		blue = blue > 0 ? blue : 0;
 
+		int red = getBackgroundColor().getRed();
+		red = (int) (red - (red * 0.20));
+		red = red > 0 ? red : 0;
+
+		int green = getBackgroundColor().getGreen();
+		green = (int) (green - (green * 0.20));
+		green = green > 0 ? green : 0;
+
+		Color lightenColor = new Color(Display.getCurrent(), new RGB(red, green, blue));
+		graphics.setForegroundColor(lightenColor);
+		graphics.setBackgroundColor(getBackgroundColor());
+
+		graphics.pushState();
+
+		// fill in the background
+		Rectangle bounds = getBounds().getCopy();
+		Rectangle r = bounds.getCopy();
+		//r.x += arcWidth / 2;
+		r.y += arcWidth / 2;
+		//r.width -= arcWidth;
+		r.height -= arcWidth;
+
+		Rectangle top = bounds.getCopy();
+		top.height /= 2;
+		//graphics.setForegroundColor(lightenColor);
+		//graphics.setBackgroundColor(lightenColor);
+		graphics.setForegroundColor(getBackgroundColor());
+		graphics.setBackgroundColor(getBackgroundColor());
+		graphics.fillRoundRectangle(top, arcWidth, arcWidth);
+
+		top.y = top.y + top.height;
+		//graphics.setForegroundColor(getBackgroundColor());
+		//graphics.setBackgroundColor(getBackgroundColor());
+		graphics.setForegroundColor(lightenColor);
+		graphics.setBackgroundColor(lightenColor);
+		graphics.fillRoundRectangle(top, arcWidth, arcWidth);
+
+		//graphics.setForegroundColor(lightenColor);
+		//graphics.setBackgroundColor(getBackgroundColor());
+		graphics.setBackgroundColor(lightenColor);
+		graphics.setForegroundColor(getBackgroundColor());
+		graphics.fillGradient(r, true);
+
+		super.paint(graphics);
+		graphics.popState();
+		graphics.setForegroundColor(lightenColor);
+		graphics.setBackgroundColor(lightenColor);
+		// paint the border
+		bounds.setSize(bounds.width - 1, bounds.height - 1);
+		graphics.drawRoundRectangle(bounds, arcWidth, arcWidth);
+		lightenColor.dispose();
+		/*
 		graphics.setForegroundColor(getForegroundColor());
 		graphics.setBackgroundColor(getBackgroundColor());
 
@@ -155,6 +213,7 @@ public class GraphLabel extends CachedLabel {
 		graphics.setLineWidth(getBorderWidth());
 		bounds.setSize(bounds.width - 1, bounds.height - 1);
 		graphics.drawRoundRectangle(bounds, arcWidth, arcWidth);
+		*/
 	}
 
 	protected Color getBackgroundTextColor() {
@@ -182,12 +241,12 @@ public class GraphLabel extends CachedLabel {
 	 */
 	public void setText(String s) {
 		if (!s.equals("")) {
-			super.setText(" " + s + " ");
+			super.setText(s);
 
 		} else {
 			super.setText("");
 		}
-		//adjustBoundsToFit();
+		adjustBoundsToFit();
 	}
 
 	/*

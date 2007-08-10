@@ -86,6 +86,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	private final List nodes;
 	protected List connections;
 	private List selectedItems = null;
+	IFigure fisheyedFigure = null;
 	private List /* SelectionListener */selectionListeners = null;
 
 	/** This maps all visible nodes to their model element. */
@@ -423,7 +424,6 @@ public class Graph extends FigureCanvas implements IContainer {
 		Graph graph = null;
 		Point lastLocation = null;
 		GraphItem fisheyedItem = null;
-		IFigure fisheyedFigure = null;
 
 		DragSupport(Graph graph) {
 			this.graph = graph;
@@ -512,20 +512,20 @@ public class Graph extends FigureCanvas implements IContainer {
 
 				} else if (itemUnderMouse != null && itemUnderMouse.getItemType() == GraphItem.NODE) {
 					fisheyedItem = itemUnderMouse;
-					fisheyedFigure = ((GraphNode) itemUnderMouse).fishEye(true);
+					fisheyedFigure = ((GraphNode) itemUnderMouse).fishEye(true, true);
 					if (fisheyedFigure == null) {
 						// If there is no fisheye figure (this means that the node does not support a fish eye)
 						// then remove the fisheyed item
 						fisheyedItem = null;
 					}
 				} else if (fisheyedItem != null) {
-					((GraphNode) fisheyedItem).fishEye(false);
+					((GraphNode) fisheyedItem).fishEye(false, true);
 					fisheyedItem = null;
 					fisheyedFigure = null;
 				}
 			} else {
 				if (fisheyedItem != null) {
-					((GraphNode) fisheyedItem).fishEye(false);
+					((GraphNode) fisheyedItem).fishEye(false, true);
 					fisheyedItem = null;
 					fisheyedFigure = null;
 				}
@@ -1022,9 +1022,14 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * @param fishEyeFigure The fisheye figure
 	 * @param regularFigure The regular figure (i.e. the non fisheye version)
 	 */
-	void removeFishEye(final IFigure fishEyeFigure, final IFigure regularFigure) {
+	void removeFishEye(final IFigure fishEyeFigure, final IFigure regularFigure, boolean animate) {
 
-		Animation.markBegin();
+		if (!fishEyeLayer.getChildren().contains(fishEyeFigure)) {
+			return;
+		}
+		if (animate) {
+			Animation.markBegin();
+		}
 
 		Rectangle bounds = regularFigure.getBounds().getCopy();
 		regularFigure.translateToAbsolute(bounds);
@@ -1036,10 +1041,33 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		fishEyeLayer.setConstraint(fishEyeFigure, bounds);
 
-		Animation.run(FISHEYE_ANIMATION_TIME * 2);
+		if (animate) {
+			Animation.run(FISHEYE_ANIMATION_TIME * 2);
+		}
 		this.getRootLayer().getUpdateManager().performUpdate();
 		fishEyeLayer.removeAll();
 
+	}
+
+	/**
+	 * Replaces the old fisheye figure with a new one.
+	 * @param oldFigure
+	 * @param newFigure
+	 */
+	boolean replaceFishFigure(IFigure oldFigure, IFigure newFigure) {
+		if (this.fishEyeLayer.getChildren().contains(oldFigure)) {
+			Rectangle bounds = oldFigure.getBounds();
+			newFigure.setBounds(bounds);
+			//this.fishEyeLayer.getChildren().remove(oldFigure);
+			this.fishEyeLayer.remove(oldFigure);
+			this.fishEyeLayer.add(newFigure);
+			//this.fishEyeLayer.getChildren().add(newFigure);
+			//this.fishEyeLayer.invalidate();
+			//this.fishEyeLayer.repaint();
+			this.fisheyedFigure = newFigure;
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -1049,10 +1077,12 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * @param endFigure The fisheye figure
 	 * @param newBounds The final size of the fisheyed figure
 	 */
-	void fishEye(IFigure startFigure, IFigure endFigure, Rectangle newBounds) {
+	void fishEye(IFigure startFigure, IFigure endFigure, Rectangle newBounds, boolean animate) {
 
 		fishEyeLayer.removeAll();
-		Animation.markBegin();
+		if (animate) {
+			Animation.markBegin();
+		}
 
 		double scale = rootlayer.getScale();
 		fishEyeLayer.setScale(1 / scale);
@@ -1071,7 +1101,9 @@ public class Graph extends FigureCanvas implements IContainer {
 		fishEyeLayer.add(endFigure);
 		fishEyeLayer.setConstraint(endFigure, newBounds);
 
-		Animation.run(FISHEYE_ANIMATION_TIME);
+		if (animate) {
+			Animation.run(FISHEYE_ANIMATION_TIME);
+		}
 		this.getRootLayer().getUpdateManager().performUpdate();
 	}
 

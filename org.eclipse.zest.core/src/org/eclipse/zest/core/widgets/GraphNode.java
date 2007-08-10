@@ -183,6 +183,9 @@ public class GraphNode extends GraphItem {
 	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#dispose()
 	 */
 	public void dispose() {
+		if (isFisheyeEnabled) {
+			this.fishEye(false, false);
+		}
 		super.dispose();
 		this.isDisposed = true;
 		while (getSourceConnections().size() > 0) {
@@ -704,8 +707,15 @@ public class GraphNode extends GraphItem {
 
 	private IFigure fishEyeFigure = null;
 	private Font fishEyeFont = null;
+	private boolean isFisheyeEnabled;
 
-	protected IFigure fishEye(boolean enable) {
+	protected IFigure fishEye(boolean enable, boolean animate) {
+		if (isDisposed) {
+			// If a fisheyed figure is still left on the canvas, we could get
+			// called once more after the dispose is called.  Since we cleaned
+			// up everything on dispose, we can just return null here.
+			return null;
+		}
 		if (!checkStyle(ZestStyles.NODES_FISHEYE)) {
 			return null;
 		}
@@ -731,13 +741,20 @@ public class GraphNode extends GraphItem {
 			rectangle.expand(new Insets(expandAmount.height, expandAmount.width, expandAmount.height, expandAmount.width));
 
 			//Add the fisheye
-			this.getGraphModel().fishEye(nodeFigure, fishEyeFigure, rectangle);
+			this.getGraphModel().fishEye(nodeFigure, fishEyeFigure, rectangle, true);
+			if (fishEyeFigure != null) {
+				isFisheyeEnabled = true;
+			}
 			return fishEyeFigure;
 
 		} else {
 			// Remove the fisheye and dispose the font
-			this.getGraphModel().removeFishEye(fishEyeFigure, nodeFigure);
-			this.fishEyeFont.dispose();
+			this.getGraphModel().removeFishEye(fishEyeFigure, nodeFigure, animate);
+			if (fishEyeFont != null) {
+				this.fishEyeFont.dispose();
+				this.fishEyeFont = null;
+			}
+			isFisheyeEnabled = false;
 			return null;
 		}
 	}
@@ -811,7 +828,7 @@ public class GraphNode extends GraphItem {
 		figure.setFont(getFont());
 
 		Dimension d = figure.getSize();
-		if (d.height < 0 && d.width < 0) {
+		if (d.height > 0 && d.width > 0) {
 			this.size = d.getCopy();
 			//setSize(d.width, d.height);
 		}
@@ -826,6 +843,13 @@ public class GraphNode extends GraphItem {
 
 		//figure.addLayoutListener(LayoutAnimator.getDefault());
 		refreshLocation();
+
+		if (isFisheyeEnabled) {
+			IFigure newFisheyeFigure = createFishEyeFigure();
+			if (graph.replaceFishFigure(this.fishEyeFigure, newFisheyeFigure)) {
+				this.fishEyeFigure = newFisheyeFigure;
+			}
+		}
 		return figure;
 	}
 
