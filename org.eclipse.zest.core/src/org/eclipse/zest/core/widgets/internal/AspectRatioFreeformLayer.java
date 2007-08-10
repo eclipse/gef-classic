@@ -43,10 +43,12 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		return this.heigthScale;
 	}
 
+	/*
 	public boolean isCoordinateSystem() {
 		// TODO Auto-generated method stub
 		return true;
 	}
+	*/
 
 	public double getScale() {
 		// TODO Auto-generated method stub
@@ -75,6 +77,8 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 
 		rect.width /= widthScale;
 		rect.height /= heigthScale;
+		rect.x /= widthScale;
+		rect.y /= heigthScale;
 		return rect;
 	}
 
