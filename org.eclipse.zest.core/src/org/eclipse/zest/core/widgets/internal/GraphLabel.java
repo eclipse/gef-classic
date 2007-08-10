@@ -129,7 +129,7 @@ public class GraphLabel extends CachedLabel {
 					int expandHeight = Math.max(imageRect.height - minSize.height, 0);
 					minSize.expand(imageRect.width + 4, expandHeight);
 				}
-				minSize.expand((2 * borderWidth), (2 * borderWidth));
+				minSize.expand(10 + (2 * borderWidth), 4 + (2 * borderWidth));
 				setBounds(new Rectangle(getLocation(), minSize));
 			}
 		}
