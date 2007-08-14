@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.gef.sdk"
       label="%featureName"
-      version="3.3.0.qualifier"
+      version="3.3.1.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.gef.source"
       image="eclipse_update_120.jpg">
@@ -17,6 +17,7 @@
 
    <url>
       <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/update-site/releases/site.xml"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/update-site/releases/site.xml"/>
    </url>
 
    <includes
