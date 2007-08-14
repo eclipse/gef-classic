@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.gef"
       label="%featureName"
-      version="3.3.0.qualifier"
+      version="3.3.1.qualifier"
       provider-name="%providerName"
       image="eclipse_update_120.jpg">
 
@@ -11,7 +11,7 @@
    </description>
 
    <copyright url="http://www.eclipse.org/legal/epl-v10.html">
-      Copyright (c) 2002-2006 IBM Corporation and others.
+      Copyright (c) 2002-2007 IBM Corporation and others.
 All rights reserved.   This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v1.0
 which accompanies this distribution, and is available at
@@ -24,10 +24,14 @@ http://www.eclipse.org/legal/epl-v10.html
 
    <url>
       <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/update-site/releases/site.xml"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/update-site/releases/site.xml"/>
    </url>
 
    <requires>
-      <import plugin="org.eclipse.platform" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.ui.views" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.ui.workbench" version="3.2.0" match="compatible"/>
+      <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
    </requires>
 
    <plugin
