@@ -945,6 +945,10 @@ public class GraphNode extends GraphItem {
 			return layoutInformation;
 		}
 
+		public String toString() {
+			return getText();
+		}
+
 		public double getWidthInLayout() {
 			return getSize().width;
 		}

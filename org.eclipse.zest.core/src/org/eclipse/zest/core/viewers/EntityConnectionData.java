@@ -21,26 +21,35 @@ package org.eclipse.mylyn.zest.core.viewers;
 public final class EntityConnectionData {
 	public final Object source;
 	public final Object dest;
-	
-	
+
 	/**
 	 * Creates a new entity connection data.  The source and dest
 	 * are users nodes.
 	 */
 	public EntityConnectionData(Object source, Object dest) {
+		/*
+		if (source == null) {
+			throw new RuntimeException("Creating relationship with null source object");
+		}
+		if (dest == null) {
+			throw new RuntimeException("Creating relationship with null dest object");
+		}
+		*/
 		this.source = source;
 		this.dest = dest;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	public boolean equals(Object obj) {
-		if ( !(obj instanceof EntityConnectionData) ) return false;
+		if (!(obj instanceof EntityConnectionData)) {
+			return false;
+		}
 		EntityConnectionData that = (EntityConnectionData) obj;
 		return (this.source.equals(that.source) && this.dest.equals(that.dest));
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */
