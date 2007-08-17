@@ -224,11 +224,13 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/**
-	 * Builds the forest recusively. All entities
+	 * Builds the forest recursively. All entities
 	 * will be placed somewhere in the forest. 
 	 */
 	private void buildForestRecursively(List roots, List unplacedEntities, InternalNode [] entities, InternalRelationship [] relationships) {
-		if (unplacedEntities.size() == 0) return; // no more entities to place
+		if (unplacedEntities.size() == 0) {
+			return; // no more entities to place
+		}
 		
 		// get the first entity in the list of unplaced entities, find its root, and build this root's tree
 		InternalNode layoutEntity = (InternalNode) unplacedEntities.get(0);
@@ -257,9 +259,9 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	private InternalNode findRootObjectRecursive(InternalNode currentEntity, Set seenAlready, InternalRelationship [] relationshipsToConsider) {
 		InternalNode rootEntity = null;
 		InternalRelationship rel = findRelationship(currentEntity, AS_DESTINATION, relationshipsToConsider);
-		if (rel == null)
-		    rootEntity = currentEntity;
-		else {
+		if (rel == null) {
+			rootEntity = currentEntity;
+		} else {
 			InternalNode parentEntity = rel.getSource();
 			if (!seenAlready.contains(parentEntity)) {
 				seenAlready.add(parentEntity);
@@ -271,14 +273,17 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		return rootEntity;
 	}
 
+
+	
 	/**
 	 * Builds a tree of the passed in entity.
 	 * The entity will pass a weight value to all of its children recursively.
 	 */
 	private void buildTreeRecursively(InternalNode layoutEntity, int i, double weight, InternalNode [] entities, final InternalRelationship [] relationships) {
 		// No need to do further computation!
-		if (layoutEntity == null)
+		if (layoutEntity == null) {
 			return;
+		}
 
 		// A marked entity means that it has been added to the
 		// forest, and its weight value needs to be modified.		
@@ -437,8 +442,9 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	 */
     private void computePositions(List roots, InternalNode [] entities) {
 		// No need to do further computation!
-		if (roots.size() == 0)
+		if (roots.size() == 0) {
 			return;
+		}
 
 		int totalLeafCount = 0;
 		double maxWeight = 0;
@@ -467,7 +473,9 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	 * Computes positions recursively until the leaf nodes are reached.
 	 */
 	private void computePositionRecursively(InternalNode layoutEntity, int i, int relativePosition, double width, double height, Set seenAlready, InternalNode [] entities) {
-        if (seenAlready.contains(layoutEntity)) return;
+        if (seenAlready.contains(layoutEntity)) {
+			return;
+		}
 	    seenAlready.add(layoutEntity);
 		double level = getLevel(layoutEntity, i, entities);
 		int breadth = getNumberOfLeaves(layoutEntity, i, entities);
@@ -477,7 +485,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		double posx = absHPosition * width;
 		double posy = absVPosition * height;
         double weight = weights[i];
-		posy = posy  + height * (weight - (double)level);
+		posy = posy  + height * (weight - level);
 		layoutEntity.setInternalLocation( posx, posy );
 		
 
@@ -556,10 +564,15 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
-		if ( asynchronous && continueous ) return false;
-		else if ( asynchronous && !continueous ) return true;
-		else if ( !asynchronous && continueous ) return false;
-		else if ( !asynchronous && !continueous ) return true;
+		if ( asynchronous && continueous ) {
+			return false;
+		} else if ( asynchronous && !continueous ) {
+			return true;
+		} else if ( !asynchronous && continueous ) {
+			return false;
+		} else if ( !asynchronous && !continueous ) {
+			return true;
+		}
 		
 		return false;
 	}

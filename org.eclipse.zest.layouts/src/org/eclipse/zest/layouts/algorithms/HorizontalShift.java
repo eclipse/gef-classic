@@ -34,6 +34,7 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 
 	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
+		
 		ArrayList row = new ArrayList();
 		for ( int i =0; i < entitiesToLayout.length; i++) {
 			addToRowList(entitiesToLayout[i], row);
