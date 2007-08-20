@@ -5,8 +5,7 @@ Bundle-SymbolicName: org.eclipse.mylyn.zest.core;singleton:=true
 Bundle-Version: 0.5.0.qualifier
 Require-Bundle: org.eclipse.mylyn.zest.layouts,
  org.eclipse.ui,
- org.eclipse.draw2d;visibility:=reexport,
- org.eclipse.mylar.zest.layouts_nonepl
+ org.eclipse.draw2d;visibility:=reexport
 Eclipse-LazyStart: false
 Export-Package: org.eclipse.mylyn.zest.core.messages,
  org.eclipse.mylyn.zest.core.viewers,
