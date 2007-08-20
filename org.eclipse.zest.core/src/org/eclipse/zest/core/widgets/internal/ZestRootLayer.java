@@ -48,7 +48,7 @@ public class ZestRootLayer extends FreeformLayer {
 			throw new RuntimeException("Node not contained on the ZestRootLayer");
 		}
 		int nodePosition = this.getChildren().indexOf(nodeFigure);
-		if (nodePosition > getHighlightNodePosition()) {
+		if (nodePosition > getHighlightNodeStartPosition()) {
 			// The node is in the highlight node area
 			numberOfHighlightedNodes--;
 		} else {
@@ -60,7 +60,7 @@ public class ZestRootLayer extends FreeformLayer {
 
 	public void removeConnection(IFigure connectionFigure) {
 		int connectionPosition = this.getChildren().indexOf(connectionFigure);
-		if (connectionPosition > getHighlightConnectionPosition()) {
+		if (connectionPosition > getHighlightConnectionStartPosition()) {
 			// The connection is in the highlight connection area
 			numberOfHighlightedConnections--;
 		} else {
@@ -98,7 +98,7 @@ public class ZestRootLayer extends FreeformLayer {
 
 	public void unHighlightNode(IFigure nodeFigure) {
 		int nodePosition = this.getChildren().indexOf(nodeFigure);
-		if (nodePosition > getHighlightNodePosition() + this.numberOfHighlightedNodes) {
+		if (nodePosition > getHighlightNodePosition()) {
 			//throw new RuntimeException("Node: " + nodeFigure + " not currently Highlighted");
 			return;
 		}
@@ -113,7 +113,7 @@ public class ZestRootLayer extends FreeformLayer {
 
 	public void unHighlightConnection(IFigure connectionFigure) {
 		int connectionPosition = this.getChildren().indexOf(connectionFigure);
-		if (connectionPosition > getHighlightConnectionPosition() + this.numberOfHighlightedConnections) {
+		if (connectionPosition > getHighlightConnectionPosition()) {
 			//throw new RuntimeException("Connection: " + connectionFigure + " not currently Highlighted");
 			return;
 		}
@@ -152,6 +152,14 @@ public class ZestRootLayer extends FreeformLayer {
 	 */
 	private int getHighlightConnectionPosition() {
 		return numberOfConnections + numberOfNodes + numberOfHighlightedConnections;
+	}
+
+	private int getHighlightConnectionStartPosition() {
+		return numberOfConnections + numberOfNodes;
+	}
+
+	private int getHighlightNodeStartPosition() {
+		return numberOfConnections + numberOfHighlightedConnections + numberOfNodes;
 	}
 
 }

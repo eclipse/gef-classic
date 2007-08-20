@@ -4,12 +4,13 @@ Bundle-Name: Core Plug-in
 Bundle-SymbolicName: org.eclipse.mylyn.zest.core;singleton:=true
 Bundle-Version: 0.5.0.qualifier
 Require-Bundle: org.eclipse.mylyn.zest.layouts,
- org.eclipse.ui
+ org.eclipse.ui,
+ org.eclipse.draw2d;visibility:=reexport,
+ org.eclipse.mylar.zest.layouts_nonepl
 Eclipse-LazyStart: false
 Export-Package: org.eclipse.mylyn.zest.core.messages,
  org.eclipse.mylyn.zest.core.viewers,
  org.eclipse.mylyn.zest.core.widgets
 Import-Package: com.ibm.icu.text
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
-Bundle-ClassPath: org.eclipse.draw2d_3.2.100.200708170620.jar,
- .
+Bundle-ClassPath: .

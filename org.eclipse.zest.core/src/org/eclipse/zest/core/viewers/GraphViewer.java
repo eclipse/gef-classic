@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.Widget;
  */
 public class GraphViewer extends AbstractStructuredGraphViewer implements ISelectionProvider {
 
-	Graph graph = null;
+	protected Graph graph = null;
 	private IStylingGraphModelFactory modelFactory = null;
 	private List selectionChangedListeners = null;
 	ZoomManager zoomManager = null;

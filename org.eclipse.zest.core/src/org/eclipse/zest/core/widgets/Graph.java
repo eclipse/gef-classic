@@ -1046,6 +1046,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		}
 		this.getRootLayer().getUpdateManager().performUpdate();
 		fishEyeLayer.removeAll();
+		this.fisheyedFigure = null;
 
 	}
 
@@ -1080,6 +1081,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	void fishEye(IFigure startFigure, IFigure endFigure, Rectangle newBounds, boolean animate) {
 
 		fishEyeLayer.removeAll();
+		fisheyedFigure = null;
 		if (animate) {
 			Animation.markBegin();
 		}
