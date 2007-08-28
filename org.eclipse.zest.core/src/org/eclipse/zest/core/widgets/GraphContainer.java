@@ -30,7 +30,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylyn.zest.core.widgets.internal.AspectRatioFreeformLayer;
 import org.eclipse.mylyn.zest.core.widgets.internal.ExpandGraphLabel;
-import org.eclipse.mylyn.zest.core.widgets.internal.IContainer;
 import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylyn.zest.layouts.LayoutEntity;
@@ -50,8 +49,8 @@ import org.eclipse.swt.graphics.Image;
 public class GraphContainer extends GraphNode implements IContainer {
 
 	//private static final double CONTAINER_SCALE = 0.75;
-	private static final double scaledWidth = 1000;
-	private static final double scaledHeight = 800;
+	private static final double scaledWidth = 600;
+	private static final double scaledHeight = 400;
 	private static final int CONTAINER_HEIGHT = 200;
 	private static final int MIN_WIDTH = 250;
 	private static final int ANIMATION_TIME = 100;
@@ -75,17 +74,17 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * @param graph The graph that the container is being added to
 	 * @param style 
 	 */
-	public GraphContainer(Graph graph, int style) {
+	public GraphContainer(IContainer graph, int style) {
 		this(graph, style, "");
 
 	}
 
-	public GraphContainer(Graph graph, int style, String text) {
+	public GraphContainer(IContainer graph, int style, String text) {
 		this(graph, style, text, null);
 
 	}
 
-	public GraphContainer(Graph graph, int style, String text, Image image) {
+	public GraphContainer(IContainer graph, int style, String text, Image image) {
 		super(graph, style, text, image);
 		initModel(graph, text, image);
 		close(false);
@@ -202,7 +201,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		return (node.getBounds().x < right && node.getBounds().x + node.getBounds().width > left);
 	}
 
-	static void pack(Graph g) {
+	void pack(Graph g) {
 		GraphNode highestNode = getHighestNode(g);
 		moveNodesUp(highestNode.getBounds(), highestNode);
 	}
@@ -231,10 +230,10 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * @param containerBounds
 	 * @param graphContainer
 	 */
-	private static void moveNodesUp(Rectangle containerBounds, GraphNode graphContainer) {
+	private void moveNodesUp(Rectangle containerBounds, GraphNode graphContainer) {
 
 		// Get all nodes below this container, in order
-		List orderedNodesBelowY = getOrderedNodesBelowY(graphContainer.getGraphModel().getNodes(), containerBounds.y, graphContainer);
+		List orderedNodesBelowY = getOrderedNodesBelowY(parent.getNodes(), containerBounds.y, graphContainer);
 		int leftSide = containerBounds.x;
 		int rightSide = containerBounds.x + containerBounds.width;
 		List nodesToConsider = new LinkedList();
@@ -312,7 +311,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		moveNodesUp(containerBounds, this);
 		//pack(graph);
 		if (animate) {
-			Animation.run(ANIMATION_TIME);
+			//Animation.run(ANIMATION_TIME);
 		}
 		//this.nodeFigure.getUpdateManager().performUpdate();
 
@@ -326,7 +325,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	private void moveNodesDown(Rectangle containerBounds, GraphContainer graphContainer) {
 
 		// Find all nodes below here
-		List nodesBelowHere = getOrderedNodesBelowY(graph.getNodes(), containerBounds.y, graphContainer);
+		List nodesBelowHere = getOrderedNodesBelowY(parent.getNodes(), containerBounds.y, graphContainer);
 		Iterator nodesBelowHereIterator = nodesBelowHere.iterator();
 		List nodesToMove = new LinkedList();
 		int left = containerBounds.x;
@@ -804,7 +803,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		// Containers cannot be added to other containers (yet)
 	}
 
-	private List getNodes() {
+	public List getNodes() {
 		return this.childNodes;
 	}
 
