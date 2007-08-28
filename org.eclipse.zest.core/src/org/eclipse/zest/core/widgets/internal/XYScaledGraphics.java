@@ -718,8 +718,9 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	int zoomFontHeight(int height) {
-		if (yZoom < MAX_TEXT_SIZE) {
-			return (int) (yZoom * height);
+		double tmp = Math.min(yZoom, xZoom);
+		if (tmp < MAX_TEXT_SIZE) {
+			return (int) (tmp * height);
 		} else {
 			return height;
 		}
