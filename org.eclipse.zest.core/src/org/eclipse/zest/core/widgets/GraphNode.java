@@ -23,7 +23,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylyn.zest.core.widgets.internal.GraphLabel;
-import org.eclipse.mylyn.zest.core.widgets.internal.IContainer;
 import org.eclipse.mylyn.zest.layouts.LayoutEntity;
 import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.SWT;
