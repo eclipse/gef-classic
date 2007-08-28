@@ -24,6 +24,7 @@ import org.eclipse.draw2d.IFigure;
  */
 public class ZestRootLayer extends FreeformLayer {
 
+	public static final boolean EDGES_ON_TOP = false;
 	private int numberOfNodes = 0;
 	private int numberOfConnections = 0;
 	private int numberOfHighlightedNodes = 0;
@@ -121,7 +122,11 @@ public class ZestRootLayer extends FreeformLayer {
 		this.numberOfConnections++;
 		connectionPosition = getConnectionPosition();
 		this.getChildren().remove(connectionFigure);
-		this.getChildren().add(connectionPosition, connectionFigure);
+		if (connectionPosition > this.getChildren().size()) {
+			this.getChildren().add(connectionFigure);
+		} else {
+			this.getChildren().add(connectionPosition, connectionFigure);
+		}
 		this.invalidate();
 		this.repaint();
 	}
@@ -130,6 +135,9 @@ public class ZestRootLayer extends FreeformLayer {
 	 * Node position is at the end of the list of nodes
 	 */
 	private int getNodePosition() {
+		if (EDGES_ON_TOP) {
+			return numberOfNodes;
+		}
 		return numberOfConnections + numberOfNodes;
 	}
 
@@ -137,6 +145,9 @@ public class ZestRootLayer extends FreeformLayer {
 	 * Connection position is at the end of the list of connections
 	 */
 	private int getConnectionPosition() {
+		if (EDGES_ON_TOP) {
+			return 0 + numberOfConnections + numberOfNodes;
+		}
 		return 0 + numberOfConnections;
 	}
 
@@ -144,6 +155,9 @@ public class ZestRootLayer extends FreeformLayer {
 	 * Highlight node position is at the end of the list of highlighted nodes
 	 */
 	private int getHighlightNodePosition() {
+		if (EDGES_ON_TOP) {
+			return numberOfConnections + numberOfNodes + numberOfHighlightedNodes;
+		}
 		return numberOfConnections + numberOfHighlightedConnections + numberOfNodes + numberOfHighlightedNodes;
 	}
 
@@ -151,14 +165,24 @@ public class ZestRootLayer extends FreeformLayer {
 	 * Highlighted connection position is at the end of the list of highlighted connections
 	 */
 	private int getHighlightConnectionPosition() {
+		if (EDGES_ON_TOP) {
+			return numberOfNodes + +numberOfConnections + numberOfHighlightedNodes + numberOfHighlightedConnections;
+		}
 		return numberOfConnections + numberOfNodes + numberOfHighlightedConnections;
 	}
 
 	private int getHighlightConnectionStartPosition() {
+		if (EDGES_ON_TOP) {
+			return numberOfConnections + numberOfNodes + numberOfHighlightedNodes;
+
+		}
 		return numberOfConnections + numberOfNodes;
 	}
 
 	private int getHighlightNodeStartPosition() {
+		if (EDGES_ON_TOP) {
+			return numberOfNodes + numberOfConnections;
+		}
 		return numberOfConnections + numberOfHighlightedConnections + numberOfNodes;
 	}
 
