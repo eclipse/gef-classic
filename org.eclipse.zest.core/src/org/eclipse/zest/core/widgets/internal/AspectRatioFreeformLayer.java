@@ -1,5 +1,6 @@
 package org.eclipse.mylyn.zest.core.widgets.internal;
 
+import org.eclipse.draw2d.FreeformFigure;
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.Graphics;
@@ -16,7 +17,7 @@ import org.eclipse.draw2d.geometry.Translatable;
 import org.eclipse.draw2d.text.CaretInfo;
 
 //@tag zest.bug.156286-Scaling.fix : make this implement scalable figure so that a zoom manager can be used on GraphEditParts.
-public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableFigure {
+public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableFigure, FreeformFigure {
 
 	private double widthScale = 1.0;
 	private double heigthScale = 1.0;
@@ -28,6 +29,10 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		setBorder(new MarginBorder(5));
 
 		//setOpaque(false);
+	}
+
+	protected boolean isValidationRoot() {
+		return true;
 	}
 
 	public void setScale(double wScale, double hScale) {

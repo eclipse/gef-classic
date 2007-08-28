@@ -25,6 +25,7 @@ import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.ScrollPane;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -311,7 +312,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		moveNodesUp(containerBounds, this);
 		//pack(graph);
 		if (animate) {
-			//Animation.run(ANIMATION_TIME);
+			Animation.run(ANIMATION_TIME);
 		}
 		//this.nodeFigure.getUpdateManager().performUpdate();
 
@@ -658,7 +659,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		scrollPane = new ScrollPane();
 		scrollPane.addLayoutListener(LayoutAnimator.getDefault());
-		FreeformViewport viewport = new FreeformViewport();
+
+		Viewport viewport = new FreeformViewport();
 		/*
 		 * This is the code that helps remove the scroll bars moving when the nodes
 		 * are dragged.  

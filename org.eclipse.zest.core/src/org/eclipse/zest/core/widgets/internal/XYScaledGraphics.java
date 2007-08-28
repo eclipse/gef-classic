@@ -722,7 +722,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 		if (tmp < MAX_TEXT_SIZE) {
 			return (int) (tmp * height);
 		} else {
-			return height;
+			return (int) (height * tmp);
 		}
 	}
 
