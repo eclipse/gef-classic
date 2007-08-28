@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.mylyn.zest.layouts.dataStructures;
 
+
 /**
  * This is a rectangle that isn't dependent on awt, swt, or any other library,
  * except layout.
@@ -43,5 +44,12 @@ public class DisplayIndependentRectangle {
 	
 	public String toString() {
 		return "(" + x + ", " + y + ", " + width + ", " + height + ")";
+	}
+	
+	public boolean intersects(DisplayIndependentRectangle rect) {
+		return rect.x < x + width 
+			&& rect.y < y + height 
+			&& rect.x + rect.width > x 
+			&& rect.y + rect.height > y;
 	}
 }

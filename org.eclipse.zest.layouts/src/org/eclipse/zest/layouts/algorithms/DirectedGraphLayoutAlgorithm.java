@@ -1,7 +1,9 @@
 package org.eclipse.mylyn.zest.layouts.algorithms;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.graph.DirectedGraph;
@@ -12,38 +14,49 @@ import org.eclipse.mylyn.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.mylyn.zest.layouts.dataStructures.InternalRelationship;
 
 public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
-	
+
 	class ExtendedDirectedGraphLayout extends DirectedGraphLayout {
-		
+
 		public void visit(DirectedGraph graph) {
-			this.steps.remove(10);
-			this.steps.remove(9);
-			this.steps.remove(8);
-			this.steps.remove(2);
-			super.visit(graph);
+			Field field;
+			try {
+				field = DirectedGraphLayout.class.getDeclaredField("steps");
+				field.setAccessible(true);
+				Object object = field.get(this);
+				List steps = (List) object;
+				steps.remove(10);
+				steps.remove(9);
+				steps.remove(8);
+				steps.remove(2);
+				field.setAccessible(false);
+				steps.remove(0);
+				super.visit(graph);
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (NoSuchFieldException e) {
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}
 		}
-		
+
 	}
 
 	public DirectedGraphLayoutAlgorithm(int styles) {
 		super(styles);
 	}
 
-	
 	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 		HashMap mapping = new HashMap(entitiesToLayout.length);
-		for (int i = 0; i < entitiesToLayout.length; i++) {
-			System.out.print(entitiesToLayout[i].getLayoutEntity() + " : " );
-		}
-		System.out.println();
 		DirectedGraph graph = new DirectedGraph();
 		for (int i = 0; i < entitiesToLayout.length; i++) {
 			InternalNode internalNode = entitiesToLayout[i];
 			Node node = new Node(internalNode);
-			node.setSize(new Dimension(10,10));
+			node.setSize(new Dimension(10, 10));
 			mapping.put(internalNode, node);
 			graph.nodes.add(node);
-			
 		}
 		for (int i = 0; i < relationshipsToConsider.length; i++) {
 			InternalRelationship relationship = relationshipsToConsider[i];
@@ -53,11 +66,8 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			graph.edges.add(edge);
 		}
 		DirectedGraphLayout directedGraphLayout = new ExtendedDirectedGraphLayout();
-		//long start = System.currentTimeMillis();
 		directedGraphLayout.visit(graph);
-		//long end = System.currentTimeMillis();
-		//System.out.println("Total time: " + ( end-start));
-		
+
 		for (Iterator iterator = graph.nodes.iterator(); iterator.hasNext();) {
 			Node node = (Node) iterator.next();
 			InternalNode internalNode = (InternalNode) node.data;

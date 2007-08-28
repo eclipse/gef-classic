@@ -26,7 +26,8 @@ import org.eclipse.mylyn.zest.layouts.dataStructures.InternalRelationship;
  */
 public class HorizontalShift extends AbstractLayoutAlgorithm {
 
-	private static final double DELTA = 2;
+	private static final double DELTA = 10;
+	private static final double VSPACING = 2;
 
 	public HorizontalShift(int styles) {
 		super(styles);
@@ -67,7 +68,7 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 			int i = 0;
 			int width = (int) ((boundsWidth / 2) - currentRow.size() * 75);
 			
-			heightSoFar += ((InternalNode)currentRow.get(0)).getLayoutEntity().getHeightInLayout() + DELTA*8 ;
+			heightSoFar += ((InternalNode)currentRow.get(0)).getLayoutEntity().getHeightInLayout() + VSPACING*8 ;
 			while(iterator2.hasNext()) {
 				InternalNode currentNode = (InternalNode) iterator2.next();
 				
