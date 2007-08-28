@@ -32,7 +32,6 @@ import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.mylyn.zest.core.widgets.internal.IContainer;
 import org.eclipse.mylyn.zest.core.widgets.internal.RevealListener;
 import org.eclipse.mylyn.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
