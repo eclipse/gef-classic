@@ -96,7 +96,6 @@ public class NestedGraphSnippet {
 		shell.setSize(500, 800);
 
 		Graph g = new Graph(shell, SWT.NONE);
-		g.setNodeStyle(ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 		createContainer(g);
 
 		CompositeLayoutAlgorithm compositeLayoutAlgorithm = new CompositeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING, new LayoutAlgorithm[] { new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), new HorizontalShift(LayoutStyles.NO_LAYOUT_NODE_RESIZING) });
