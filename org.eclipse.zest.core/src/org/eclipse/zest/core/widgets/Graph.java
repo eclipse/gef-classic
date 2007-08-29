@@ -413,6 +413,43 @@ public class Graph extends FigureCanvas implements IContainer {
 		return this.layoutAlgorithm;
 	}
 
+	/**
+	 * Finds a figure at the location X, Y in the graph
+	 * 
+	 * This point should be translated to relative before calling findFigureAt
+	 */
+	public IFigure getFigureAt(int x, int y) {
+		IFigure figureUnderMouse = this.getContents().findFigureAt(x, y, new TreeSearch() {
+
+			public boolean accept(IFigure figure) {
+				return true;
+			}
+
+			public boolean prune(IFigure figure) {
+				IFigure parent = figure.getParent();
+				// @tag TODO Zest : change these to from getParent to their actual layer names
+
+				if (parent == fishEyeLayer) {
+					// If it node is on the fish eye layer, don't worry about it.
+					return true;
+				}
+				if (parent == zestRootLayer || parent == zestRootLayer.getParent() || parent == zestRootLayer.getParent().getParent()) {
+					return false;
+				}
+				GraphItem item = (GraphItem) figure2ItemMap.get(figure);
+				if (item != null && item.getItemType() == GraphItem.CONTAINER) {
+					return false;
+				} else if (figure instanceof FreeformLayer || parent instanceof FreeformLayer || figure instanceof ScrollPane || parent instanceof ScrollPane || parent instanceof ScalableFreeformLayeredPane || figure instanceof ScalableFreeformLayeredPane) {
+					return false;
+				}
+				return true;
+			}
+
+		});
+		return figureUnderMouse;
+
+	}
+
 	// /////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE METHODS. These are NON API
 	// /////////////////////////////////////////////////////////////////////////////////
@@ -637,43 +674,6 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		public void mouseReleased(org.eclipse.draw2d.MouseEvent me) {
 			isDragging = false;
-
-		}
-
-		/*
-		 * Finds a figure at the location X, Y in the graph
-		 * 
-		 * This point should be translated to relative before calling findFigureAt
-		 */
-		private IFigure getFigureAt(int x, int y) {
-			IFigure figureUnderMouse = graph.getContents().findFigureAt(x, y, new TreeSearch() {
-
-				public boolean accept(IFigure figure) {
-					return true;
-				}
-
-				public boolean prune(IFigure figure) {
-					IFigure parent = figure.getParent();
-					// @tag TODO Zest : change these to from getParent to their actual layer names
-
-					if (parent == fishEyeLayer) {
-						// If it node is on the fish eye layer, don't worry about it.
-						return true;
-					}
-					if (parent == zestRootLayer || parent == zestRootLayer.getParent() || parent == zestRootLayer.getParent().getParent()) {
-						return false;
-					}
-					GraphItem item = (GraphItem) figure2ItemMap.get(figure);
-					if (item != null && item.getItemType() == GraphItem.CONTAINER) {
-						return false;
-					} else if (figure instanceof FreeformLayer || parent instanceof FreeformLayer || figure instanceof ScrollPane || parent instanceof ScrollPane || parent instanceof ScalableFreeformLayeredPane || figure instanceof ScalableFreeformLayeredPane) {
-						return false;
-					}
-					return true;
-				}
-
-			});
-			return figureUnderMouse;
 
 		}
 
