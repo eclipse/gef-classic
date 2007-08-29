@@ -66,7 +66,7 @@ public class GraphSnippet4 {
 		shell.setSize(400, 400);
 
 		Graph g = new Graph(shell, SWT.NONE);
-		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
+		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED );
 		GraphNode n1 = new GraphNode(g, SWT.NONE, "Information", image1);
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Warning", image2);
 		GraphNode n3 = new GraphNode(g, SWT.NONE, "Error", image3);
