@@ -34,32 +34,31 @@ public final class ZestStyles {
 	 * to graph views during construction.
 	 * 
 	 */
-	public static final int NODES_HIGHLIGHT_ADJACENT = 1 << 1;
-
+	//public static final int NODES_HIGHLIGHT_ADJACENT = 1 << 1;
 	/**
 	 * Style constant indicating that node labels should be cached. This is
 	 * important under GTK+ because font drawing is slower than Windows.
 	 */
-	public static final int NODES_CACHE_LABEL = 1 << 2;
+	public static final int NODES_CACHE_LABEL = 1 << 1;
 
 	/**
 	 * Style to specify that the node should contain a fisheye label
 	 * when the mouse moves over it.  By default the fisheye node is just the
 	 * label with larger text.
 	 */
-	public static final int NODES_FISHEYE = 1 << 3;
+	public static final int NODES_FISHEYE = 1 << 2;
 
 	/**
 	 * Style to specify that the node should not show its text (only its image).
 	 * This with the NODES_FISHEYE style should help with large graphs (since the
 	 * fisheye style will show the text).
 	 */
-	public static final int NODES_HIDE_TEXT = 1 << 4;
+	public static final int NODES_HIDE_TEXT = 1 << 3;
 
 	/**
 	 * Style constant indiciating that nodes should not be resized on layout.
 	 */
-	public static final int NODES_NO_LAYOUT_RESIZE = 1 << 5;
+	public static final int NODES_NO_LAYOUT_RESIZE = 1 << 4;
 	/**
 	 * Style indicating that connections should show their direction by default.
 	 */

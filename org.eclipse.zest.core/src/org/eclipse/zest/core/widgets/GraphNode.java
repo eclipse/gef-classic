@@ -43,7 +43,8 @@ import org.eclipse.swt.widgets.Display;
 public class GraphNode extends GraphItem {
 	public static final int HIGHLIGHT_NONE = 0;
 	public static final int HIGHLIGHT_ON = 1;
-	public static final int HIGHLIGHT_ADJACENT = 2;
+	// @tag ADJACENT : Removed highlight adjacent
+	//public static final int HIGHLIGHT_ADJACENT = 2;
 
 	private int nodeStyle;
 
@@ -53,7 +54,8 @@ public class GraphNode extends GraphItem {
 	private Color foreColor;
 	private Color backColor;
 	private Color highlightColor;
-	private Color highlightAdjacentColor;
+	// @tag ADJACENT : Removed highlight adjacent
+	//private Color highlightAdjacentColor;
 	private Color borderColor;
 	private Color borderHighlightColor;
 	private int borderWidth;
@@ -143,7 +145,8 @@ public class GraphNode extends GraphItem {
 		this.foreColor = parent.getGraph().DARK_BLUE;
 		this.backColor = parent.getGraph().LIGHT_BLUE;
 		this.highlightColor = parent.getGraph().HIGHLIGHT_COLOR;
-		this.highlightAdjacentColor = ColorConstants.orange;
+		// @tag ADJACENT : Removed highlight adjacent
+		//this.highlightAdjacentColor = ColorConstants.orange;
 		this.nodeStyle = SWT.NONE;
 		this.borderColor = ColorConstants.black;
 		this.borderHighlightColor = ColorConstants.blue;
@@ -373,17 +376,23 @@ public class GraphNode extends GraphItem {
 	 * Get the highlight adjacent colour for this node. This is the colour that
 	 * adjacent nodes will get
 	 */
+	// @tag ADJACENT : Removed highlight adjacent
+	/*
 	public Color getHighlightAdjacentColor() {
 		return highlightAdjacentColor;
 	}
+	*/
 
 	/**
 	 * Set the highlight adjacent colour for this node. This is the colour that
 	 * adjacent node will get.
 	 */
+	// @tag ADJACENT : Removed highlight adjacent
+	/*
 	public void setHighlightAdjacentColor(Color c) {
 		this.highlightAdjacentColor = c;
 	}
+	*/
 
 	/**
 	 * Highlights the node changing the background color and border color. The
@@ -395,6 +404,8 @@ public class GraphNode extends GraphItem {
 			return;
 		}
 		highlighted = HIGHLIGHT_ON;
+		// @tag ADJACENT : Removed highlight adjacent
+		/*
 		if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
 			for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
 				GraphConnection conn = (GraphConnection) iter.next();
@@ -407,6 +418,7 @@ public class GraphNode extends GraphItem {
 				conn.getSource().highlightAdjacent();
 			}
 		}
+		*/
 		updateFigureForModel(getNodeFigure());
 		if (parent.getItemType() == GraphItem.CONTAINER) {
 			((GraphContainer) parent).highlightNode(this);
@@ -419,11 +431,15 @@ public class GraphNode extends GraphItem {
 	 * Restores the nodes original background color and border width.
 	 */
 	public void unhighlight() {
-		boolean highlightedAdjacently = (highlighted == HIGHLIGHT_ADJACENT);
+
+		// @tag ADJACENT : Removed highlight adjacent
+		//boolean highlightedAdjacently = (highlighted == HIGHLIGHT_ADJACENT);
 		if (highlighted == HIGHLIGHT_NONE) {
 			return;
 		}
 		highlighted = HIGHLIGHT_NONE;
+		// @tag ADJACENT : Removed highlight adjacent
+		/*
 		if (!highlightedAdjacently) {
 			// IF we are highlighted as an adjacent node, we don't need to deal
 			// with our connections.
@@ -444,8 +460,8 @@ public class GraphNode extends GraphItem {
 					}
 				}
 			}
-
 		}
+		*/
 		if (parent.getItemType() == GraphItem.CONTAINER) {
 			((GraphContainer) parent).unhighlightNode(this);
 		} else {
@@ -490,6 +506,8 @@ public class GraphNode extends GraphItem {
 	 * 
 	 * @see #setHighlightAdjacentNodes(boolean)
 	 */
+	// @tag ADJACENT : removed highlight adjacent
+	/*
 	public void highlightAdjacent() {
 		if (highlighted > 0) {
 			return;
@@ -502,6 +520,7 @@ public class GraphNode extends GraphItem {
 			((Graph) parent).highlightNode(this);
 		}
 	}
+	*/
 
 	/**
 	 * Returns if the nodes adjacent to this node will be highlighted when this
@@ -509,9 +528,12 @@ public class GraphNode extends GraphItem {
 	 * 
 	 * @return GraphModelNode
 	 */
+	// @tag ADJACENT : Removed highlight adjacent
+	/*
 	public boolean isHighlightAdjacentNodes() {
 		return ZestStyles.checkStyle(nodeStyle, ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 	}
+	*/
 
 	/**
 	 * Sets if the adjacent nodes to this one should be highlighted when this
@@ -520,6 +542,8 @@ public class GraphNode extends GraphItem {
 	 * @param highlightAdjacentNodes
 	 *            The highlightAdjacentNodes to set.
 	 */
+	// @tag ADJACENT : Removed highlight adjacent
+	/*
 	public void setHighlightAdjacentNodes(boolean highlightAdjacentNodes) {
 		if (!highlightAdjacentNodes) {
 			this.nodeStyle |= ZestStyles.NODES_HIGHLIGHT_ADJACENT;
@@ -528,6 +552,7 @@ public class GraphNode extends GraphItem {
 		}
 		this.nodeStyle |= ZestStyles.NODES_HIGHLIGHT_ADJACENT;
 	}
+	*/
 
 	public Color getBorderColor() {
 		return borderColor;
@@ -815,10 +840,15 @@ public class GraphNode extends GraphItem {
 		if (highlighted == HIGHLIGHT_ON) {
 			figure.setForegroundColor(getForegroundColor());
 			figure.setBackgroundColor(getHighlightColor());
-		} else if (highlighted == HIGHLIGHT_ADJACENT) {
+		}
+		// @tag ADJACENT : Removed highlight adjacent
+		/*
+		else if (highlighted == HIGHLIGHT_ADJACENT) {
 			figure.setForegroundColor(getForegroundColor());
 			figure.setBackgroundColor(getHighlightAdjacentColor());
-		} else {
+		}
+		*/
+		else {
 			figure.setForegroundColor(getForegroundColor());
 			figure.setBackgroundColor(getBackgroundColor());
 		}
@@ -878,10 +908,15 @@ public class GraphNode extends GraphItem {
 		if (highlighted == HIGHLIGHT_ON) {
 			label.setForegroundColor(getForegroundColor());
 			label.setBackgroundColor(getHighlightColor());
-		} else if (highlighted == HIGHLIGHT_ADJACENT) {
+		}
+		// @tag ADJACENT : Removed highlight adjacent
+		/*
+		else if (highlighted == HIGHLIGHT_ADJACENT) {
 			label.setForegroundColor(getForegroundColor());
 			label.setBackgroundColor(getHighlightAdjacentColor());
-		} else {
+		}
+		*/
+		else {
 			label.setForegroundColor(getForegroundColor());
 			label.setBackgroundColor(getBackgroundColor());
 		}

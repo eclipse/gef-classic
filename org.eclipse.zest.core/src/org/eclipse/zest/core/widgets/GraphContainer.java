@@ -728,10 +728,15 @@ public class GraphContainer extends GraphNode implements IContainer {
 		if (highlighted == HIGHLIGHT_ON) {
 			expandGraphLabel.setForegroundColor(getForegroundColor());
 			expandGraphLabel.setBackgroundColor(getHighlightColor());
-		} else if (highlighted == HIGHLIGHT_ADJACENT) {
+		}
+		// @tag ADJACENT : Removed highlight adjacent
+		/*
+		else if (highlighted == HIGHLIGHT_ADJACENT) {
 			expandGraphLabel.setForegroundColor(getForegroundColor());
 			expandGraphLabel.setBackgroundColor(getHighlightAdjacentColor());
-		} else {
+		}
+		*/
+		else {
 			expandGraphLabel.setForegroundColor(getForegroundColor());
 			expandGraphLabel.setBackgroundColor(getBackgroundColor());
 		}

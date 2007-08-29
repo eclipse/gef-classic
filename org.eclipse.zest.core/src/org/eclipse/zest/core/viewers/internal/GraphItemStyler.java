@@ -198,13 +198,18 @@ public class GraphItemStyler {
 	// @tag bug(151327-Styles) : resolution
 	private static void styleNode(GraphNode node, IEntityStyleProvider provider) {
 		Object entity = node.getData();
-		node.setHighlightAdjacentNodes(provider.highlightAdjacentEntities(entity));
+		// @tag ADJACENT : Removed highlight adjacent
+		//node.setHighlightAdjacentNodes(provider.highlightAdjacentEntities(entity));
+
+		// @tag ADJACENT : Removed highlight adjacent
+		/*
 		if (provider.highlightAdjacentEntities(entity)) {
 			Color c = provider.getAdjacentEntityHighlightColor(entity);
 			if (c != null) {
 				node.setHighlightAdjacentColor(c);
 			}
 		}
+		*/
 		Color c;
 		IFigure figure;
 		int width = -1;

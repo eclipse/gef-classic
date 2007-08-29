@@ -87,8 +87,8 @@ public interface IEntityStyleProvider extends IDisposable {
 	 * @return true iff the adjacent entities should be highlighted when this
 	 *         node is selected.
 	 */
-	public boolean highlightAdjacentEntities(Object entity);
-
+	// @tag ADJACENT : Removed highlight adjacent
+	//public boolean highlightAdjacentEntities(Object entity);
 	/**
 	 * Returns the color that adjacent entities will be drawn when this entity
 	 * is selected. Will be ignored if HighlightAdjacentEntities() returns
@@ -101,8 +101,8 @@ public interface IEntityStyleProvider extends IDisposable {
 	 * @see #highlightAdjacentEntities(Object entity)
 	 * @see #dispose()
 	 */
-	public Color getAdjacentEntityHighlightColor(Object entity);
-
+	// @tag ADJACENT : Removed highlight adjacent
+	//public Color getAdjacentEntityHighlightColor(Object entity);
 	/**
 	 * Returns the colour that this node should be coloured. This will be
 	 * ignored if getNodeColour returns null. Any resources created by this

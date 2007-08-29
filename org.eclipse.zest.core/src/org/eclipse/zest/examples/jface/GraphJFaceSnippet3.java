@@ -18,11 +18,10 @@ import java.util.StringTokenizer;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.mylyn.zest.core.widgets.ZestStyles;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.mylyn.zest.core.viewers.GraphViewer;
 import org.eclipse.mylyn.zest.core.viewers.IGraphContentProvider;
+import org.eclipse.mylyn.zest.layouts.LayoutStyles;
+import org.eclipse.mylyn.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
@@ -106,7 +105,6 @@ public class GraphJFaceSnippet3 {
 		GraphViewer viewer = null;
 
 		viewer = new GraphViewer(shell, SWT.NONE);
-		viewer.setNodeStyle(ZestStyles.NODES_HIGHLIGHT_ADJACENT);
 		viewer.setContentProvider(new SimpleGraphContentProvider());
 		viewer.setLabelProvider(new LabelProvider());
 		viewer.setLayoutAlgorithm(new RadialLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
