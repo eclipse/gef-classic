@@ -423,12 +423,16 @@ public class Graph extends FigureCanvas implements IContainer {
 		Graph graph = null;
 		Point lastLocation = null;
 		GraphItem fisheyedItem = null;
+		boolean isDragging = false;
 
 		DragSupport(Graph graph) {
 			this.graph = graph;
 		}
 
 		public void mouseDragged(org.eclipse.draw2d.MouseEvent me) {
+			if (!isDragging) {
+				return;
+			}
 			Point mousePoint = new Point(me.x, me.y);
 			Point tempPoint = mousePoint.getCopy();
 			if (selectedItems.size() > 0) {
@@ -536,6 +540,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		}
 
 		public void mousePressed(org.eclipse.draw2d.MouseEvent me) {
+			isDragging = true;
 			Point mousePoint = new Point(me.x, me.y);
 			lastLocation = mousePoint.getCopy();
 
@@ -631,6 +636,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		}
 
 		public void mouseReleased(org.eclipse.draw2d.MouseEvent me) {
+			isDragging = false;
 
 		}
 

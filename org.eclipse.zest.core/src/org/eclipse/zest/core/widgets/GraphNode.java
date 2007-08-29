@@ -469,9 +469,8 @@ public class GraphNode extends GraphItem {
 			if (nodeFigure == null || nodeFigure.getParent() == null) {
 				return; // node figure has not been created yet
 			}
-			GraphNode node = this;
-			Point loc = node.getLocation();
-			Dimension size = node.size;
+			Point loc = this.getLocation();
+			Dimension size = this.getSize();
 			Rectangle bounds = new Rectangle(loc, size);
 
 			// bounds.x = this.currentLocation.x;
@@ -826,11 +825,13 @@ public class GraphNode extends GraphItem {
 
 		figure.setFont(getFont());
 
+		/*
 		Dimension d = figure.getSize();
 		if (d.height > 0 && d.width > 0) {
 			this.size = d.getCopy();
 			//setSize(d.width, d.height);
 		}
+		*/
 
 		if (this.getTooltip() == null) {
 			toolTip = new Label();
