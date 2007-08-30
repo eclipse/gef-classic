@@ -733,6 +733,10 @@ public class GraphNode extends GraphItem {
 		}
 	}
 
+	public int getStyle() {
+		return super.getStyle() | this.getNodeStyle();
+	}
+
 	/***************************************************************************
 	 * PRIVATE MEMBERS
 	 **************************************************************************/

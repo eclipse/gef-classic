@@ -128,4 +128,6 @@ public interface IEntityStyleProvider extends IDisposable {
 
 	public IFigure getNodeFigure(Object entity);
 
+	public boolean fisheyeNode(Object entity);
+
 }

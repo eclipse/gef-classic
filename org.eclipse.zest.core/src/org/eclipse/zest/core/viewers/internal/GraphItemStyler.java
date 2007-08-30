@@ -213,6 +213,9 @@ public class GraphItemStyler {
 		Color c;
 		IFigure figure;
 		int width = -1;
+		if (provider.fisheyeNode(entity) == true) {
+			node.setNodeStyle(node.getNodeStyle() | ZestStyles.NODES_FISHEYE);
+		}
 		if ((c = provider.getBorderColor(entity)) != null) {
 			node.setBorderColor(c);
 		}
