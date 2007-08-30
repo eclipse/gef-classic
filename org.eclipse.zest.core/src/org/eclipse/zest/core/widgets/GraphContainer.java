@@ -17,7 +17,6 @@ import java.util.List;
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.FreeformViewport;
 import org.eclipse.draw2d.IFigure;
@@ -31,6 +30,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.mylyn.zest.core.widgets.internal.AspectRatioFreeformLayer;
 import org.eclipse.mylyn.zest.core.widgets.internal.ExpandGraphLabel;
+import org.eclipse.mylyn.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
 import org.eclipse.mylyn.zest.layouts.LayoutEntity;
@@ -58,11 +58,13 @@ public class GraphContainer extends GraphNode implements IContainer {
 	private static final int SUBLAYER_OFFSET = 2;
 
 	private ExpandGraphLabel expandGraphLabel;
-	private FreeformLayer container;
-	private FreeformLayer edgeLayer;
+
+	//private FreeformLayer container;
+	//private FreeformLayer edgeLayer;
 	private List childNodes = null;
 	private int childAreaHeight = CONTAINER_HEIGHT;
 
+	public ZestRootLayer zestLayer;
 	private ScrollPane scrollPane;
 	private LayoutAlgorithm layoutAlgorithm;
 	private boolean isExpanded = false;
@@ -130,10 +132,10 @@ public class GraphContainer extends GraphNode implements IContainer {
 		//this.nodeFigure.setConstraint(scrollPane, newBounds);
 		this.nodeFigure.revalidate();
 		scrollPane.setSize(scrollPane.getSize().width, 0);
-		updateFigureForModel(this.container);
+		updateFigureForModel(this.zestLayer);
 		scrollPane.setVisible(false);
 		//setSize(expandGraphLabel.getSize().width, expandGraphLabel.getSize().height);
-		List children = this.container.getChildren();
+		List children = this.zestLayer.getChildren();
 		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
 			IFigure child = (IFigure) iterator.next();
 			GraphItem item = getGraph().getGraphItem(child);
@@ -297,7 +299,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		scrollPane.setVisible(true);
 		//setSize(expandGraphLabel.getSize().width, expandGraphLabel.getSize().height + expandedHeight - SUBLAYER_OFFSET);
 
-		List children = this.container.getChildren();
+		List children = this.zestLayer.getChildren();
 		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
 			IFigure child = (IFigure) iterator.next();
 			GraphItem item = getGraph().getGraphItem(child);
@@ -694,14 +696,18 @@ public class GraphContainer extends GraphNode implements IContainer {
 		scalledLayer.addLayoutListener(LayoutAnimator.getDefault());
 		//scalledLayer.setScale(computeChildScale());
 		scalledLayer.setScale(computeWidthScale(), computeHeightScale());
-		container = new FreeformLayer();
-		edgeLayer = new FreeformLayer();
-		container.addLayoutListener(LayoutAnimator.getDefault());
-		edgeLayer.addLayoutListener(LayoutAnimator.getDefault());
-		scalledLayer.add(edgeLayer);
-		scalledLayer.add(container);
+		//container = new FreeformLayer();
+		//edgeLayer = new FreeformLayer();
+		zestLayer = new ZestRootLayer();
+		zestLayer.addLayoutListener(LayoutAnimator.getDefault());
+		//container.addLayoutListener(LayoutAnimator.getDefault());
+		//edgeLayer.addLayoutListener(LayoutAnimator.getDefault());
+		//scalledLayer.add(edgeLayer);
+		//scalledLayer.add(container);
+		scalledLayer.add(zestLayer);
 
-		container.setLayoutManager(new FreeformLayout());
+		//container.setLayoutManager(new FreeformLayout());
+		zestLayer.setLayoutManager(new FreeformLayout());
 		scrollPane.setSize(computeChildArea());
 		scrollPane.setLocation(new Point(0, containerDimension.labelHeight - SUBLAYER_OFFSET));
 		scrollPane.setForegroundColor(ColorConstants.gray);
@@ -798,10 +804,12 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	void addConnectionFigure(PolylineConnection connection) {
 		nodeFigure.add(connection);
+		//zestLayer.addConnection(connection);
 	}
 
 	void addNode(GraphNode node) {
-		container.add(node.getNodeFigure());
+		zestLayer.addNode(node.getNodeFigure());
+		//container.add(node.getNodeFigure());
 		node.setVisible(false);
 		this.childNodes.add(node);
 	}
