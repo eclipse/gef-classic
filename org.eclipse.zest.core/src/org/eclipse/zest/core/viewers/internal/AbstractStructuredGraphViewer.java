@@ -235,8 +235,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	GraphNode addGraphModelNode(Object element) {
 		GraphNode node = this.getGraphModelNode(element);
 		if (node == null) {
-			//node = new GraphNode((Graph) getControl(), SWT.NONE);
-			node = new GraphNode((Graph) getControl(), ZestStyles.NODES_FISHEYE);
+			node = new GraphNode((Graph) getControl(), SWT.NONE);
 			this.nodesMap.put(element, node);
 			node.setData(element);
 		}
@@ -455,7 +454,9 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 			if (newNode != null) {
 				GraphNode oldNode = (GraphNode) oldNodesMap.get(data);
 				newNode.setLocation(oldNode.getLocation().x, oldNode.getLocation().y);
-				newNode.setSize(oldNode.getSize().width, oldNode.getSize().height);
+				if (oldNode.isSizeFixed()) {
+					newNode.setSize(oldNode.getSize().width, oldNode.getSize().height);
+				}
 			}
 		}
 

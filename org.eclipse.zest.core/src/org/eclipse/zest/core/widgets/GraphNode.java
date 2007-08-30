@@ -215,6 +215,15 @@ public class GraphNode extends GraphItem {
 	}
 
 	/**
+	 * Determines if this node has a fixed size or if it is packed to the size of its contents.
+	 * To set a node to pack, set its size (-1, -1)  
+	 * @return
+	 */
+	public boolean isSizeFixed() {
+		return !(this.size.width < 0 && this.size.height < 0);
+	}
+
+	/**
 	 * Returns a new list of the source connections (GraphModelConnection
 	 * objects).
 	 * 
