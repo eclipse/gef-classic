@@ -29,7 +29,6 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 				steps.remove(8);
 				steps.remove(2);
 				field.setAccessible(false);
-				steps.remove(0);
 				super.visit(graph);
 			} catch (SecurityException e) {
 				e.printStackTrace();
