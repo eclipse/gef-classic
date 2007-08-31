@@ -734,7 +734,7 @@ public class GraphConnection extends GraphItem {
 		}
 
 		public void populateLayoutConstraint(LayoutConstraint constraint) {
-			// @tag TODO: Add layotu constraints
+			graphModel.invokeConstraintAdapters(GraphConnection.this, constraint);
 		}
 
 		public void setBendPoints(LayoutBendPoint[] bendPoints) {

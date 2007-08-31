@@ -225,6 +225,14 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	/**
+	 * Adds a new constraint adapter to the list of constraint adapters 
+	 * @param constraintAdapter
+	 */
+	public void addConstraintAdapter(ConstraintAdapter constraintAdapter) {
+		this.constraintAdapters.add(constraintAdapter);
+	}
+
+	/**
 	 * Sets the constraint adapters on this model
 	 * 
 	 * @param constraintAdapters

@@ -830,7 +830,7 @@ public class GraphNode extends GraphItem {
 	}
 
 	void invokeLayoutListeners(LayoutConstraint constraint) {
-		graph.invokeConstraintAdapters(this.getData(), constraint);
+		graph.invokeConstraintAdapters(this, constraint);
 	}
 
 	protected IFigure updateFigureForModel(IFigure currentFigure) {
