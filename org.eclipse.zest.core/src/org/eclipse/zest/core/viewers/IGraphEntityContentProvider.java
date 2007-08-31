@@ -11,21 +11,21 @@
 package org.eclipse.mylyn.zest.core.viewers;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+
 /**
  * 
  * @author Ian Bull
  *
  */
 public interface IGraphEntityContentProvider extends IStructuredContentProvider {
-	
+
 	public Object[] getElements(Object inputElement);
-	
+
 	/**
 	 * Gets the elements this object is connected to
 	 * @param entity
 	 * @return
 	 */
-	public Object[] getConnectedTo( Object entity );
-	
-	public double getWeight( Object entity1, Object entity2 );
+	public Object[] getConnectedTo(Object entity);
+
 }

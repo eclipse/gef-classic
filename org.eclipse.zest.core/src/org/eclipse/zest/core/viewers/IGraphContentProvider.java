@@ -19,8 +19,6 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
  */
 public interface IGraphContentProvider extends IStructuredContentProvider {
 
-	
-	
 	/**
 	 * Gets the source Object for the given relationship. Note, at least one of the source
 	 * or destination must not be null. If both are null, then nothing can be displayed in
@@ -30,8 +28,8 @@ public interface IGraphContentProvider extends IStructuredContentProvider {
 	 * @param rel the relationship.
 	 * @return the source, or null for an unconnected destination.
 	 */
-	public Object getSource( Object rel );
-	
+	public Object getSource(Object rel);
+
 	/**
 	 * Gets the target Object for the given relationship. Note, at least one of the source
 	 * or destination must not be null. If both are null, then nothing can be displayed in
@@ -41,21 +39,13 @@ public interface IGraphContentProvider extends IStructuredContentProvider {
 	 * @param rel the relationship.
 	 * @return the destination, or null for an unconnected source.
 	 */
-	public Object getDestination( Object rel );
-	
+	public Object getDestination(Object rel);
+
 	/**
 	 * Returns all the relationships in the graph for the given input.
 	 * @input the input model object.
 	 * @return all the relationships in the graph for the given input.
 	 */
 	public Object[] getElements(Object input);
-
-	/**
-	 * Gets the weight of an edge given the connection object.  The weight will be either -1 or 
-	 * a double between 0.0 and 1.0
-	 * @param connection	The connection data object.
-	 * @return double
-	 */
-	public double getWeight(Object connection);
 
 }

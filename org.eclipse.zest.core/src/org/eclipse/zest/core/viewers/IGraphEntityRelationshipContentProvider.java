@@ -20,7 +20,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
  *
  */
 //@tag bug.154580-Content.fix : new content provider that returns relationships for the given source and destination.
-public interface IGraphEntityRelationshipContentProvider  extends IStructuredContentProvider{
+public interface IGraphEntityRelationshipContentProvider extends IStructuredContentProvider {
 	/**
 	 * Gets the relationships between the given source and destination nodes.
 	 * @param source the source node.
@@ -28,12 +28,5 @@ public interface IGraphEntityRelationshipContentProvider  extends IStructuredCon
 	 * @return objects represtenting the different relationships between the nodes.
 	 */
 	public Object[] getRelationships(Object source, Object dest);
-	
-	/**
-	 * Gets the weight for the given relationship.
-	 * @param rel the relationship.
-	 * @return the weight.
-	 */
-	public int getWeight(Object rel);
-	
+
 }
