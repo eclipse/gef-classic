@@ -62,10 +62,10 @@ public class LayoutExample {
 					BasicEdgeConstraints basicEdgeConstraints = (BasicEdgeConstraints) constraint;
 					GraphConnection connection = (GraphConnection) object;
 					if (connection.getSource().getText().equals("Root")) {
-						basicEdgeConstraints.weight = 10;
+						basicEdgeConstraints.weight = 1;
 					}
 					else {
-						basicEdgeConstraints.weight = 0;
+						basicEdgeConstraints.weight = -1;
 					}
 				}
 
