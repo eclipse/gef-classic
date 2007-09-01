@@ -14,7 +14,9 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.mylyn.zest.core.widgets.Graph;
 import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
+import org.eclipse.mylyn.zest.core.widgets.GraphContainer;
 import org.eclipse.mylyn.zest.core.widgets.GraphNode;
+import org.eclipse.mylyn.zest.core.widgets.IContainer;
 import org.eclipse.mylyn.zest.core.widgets.ZestStyles;
 import org.eclipse.mylyn.zest.layouts.LayoutStyles;
 import org.eclipse.mylyn.zest.layouts.algorithms.SpringLayoutAlgorithm;
@@ -38,21 +40,16 @@ public class UMLExample {
 
 	public static IFigure createClassFigure1() {
 		Font classFont = new Font(null, "Arial", 12, SWT.BOLD);
-		Label classLabel1 = new Label("Table", new Image(Display.getDefault(), UMLClassFigure.class
-				.getResourceAsStream("class_obj.gif")));
+		Label classLabel1 = new Label("Table", new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("class_obj.gif")));
 		classLabel1.setFont(classFont);
 
 		UMLClassFigure classFigure = new UMLClassFigure(classLabel1);
-		Label attribute1 = new Label("columns: Column[]", new Image(Display.getCurrent(), UMLClassFigure.class
-				.getResourceAsStream("field_private_obj.gif")));
+		Label attribute1 = new Label("columns: Column[]", new Image(Display.getCurrent(), UMLClassFigure.class.getResourceAsStream("field_private_obj.gif")));
 
-		Label attribute2 = new Label("rows: Row[]", new Image(Display.getDefault(), UMLClassFigure.class
-				.getResourceAsStream("field_private_obj.gif")));
+		Label attribute2 = new Label("rows: Row[]", new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("field_private_obj.gif")));
 
-		Label method1 = new Label("getColumns(): Column[]", new Image(Display.getDefault(), UMLClassFigure.class
-				.getResourceAsStream("methpub_obj.gif")));
-		Label method2 = new Label("getRows(): Row[]", new Image(Display.getDefault(), UMLClassFigure.class
-				.getResourceAsStream("methpub_obj.gif")));
+		Label method1 = new Label("getColumns(): Column[]", new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("methpub_obj.gif")));
+		Label method2 = new Label("getRows(): Row[]", new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("methpub_obj.gif")));
 		classFigure.getAttributesCompartment().add(attribute1);
 		classFigure.getAttributesCompartment().add(attribute2);
 		classFigure.getMethodsCompartment().add(method1);
@@ -64,20 +61,15 @@ public class UMLExample {
 
 	public static IFigure createClassFigure2() {
 		Font classFont = new Font(null, "Arial", 12, SWT.BOLD);
-		Label classLabel2 = new Label("Column", new Image(Display.getDefault(), UMLClassFigure.class
-				.getResourceAsStream("class_obj.gif")));
+		Label classLabel2 = new Label("Column", new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("class_obj.gif")));
 		classLabel2.setFont(classFont);
 
 		UMLClassFigure classFigure = new UMLClassFigure(classLabel2);
-		Label attribute3 = new Label("columnID: int", new Image(Display.getDefault(), UMLClassFigure.class
-				.getResourceAsStream("field_private_obj.gif")));
-		Label attribute4 = new Label("items: List", new Image(Display.getDefault(), UMLClassFigure.class
-				.getResourceAsStream("field_private_obj.gif")));
+		Label attribute3 = new Label("columnID: int", new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("field_private_obj.gif")));
+		Label attribute4 = new Label("items: List", new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("field_private_obj.gif")));
 
-		Label method3 = new Label("getColumnID(): int", new Image(Display.getDefault(), UMLClassFigure.class
-				.getResourceAsStream("methpub_obj.gif")));
-		Label method4 = new Label("getItems(): List", new Image(Display.getDefault(), UMLClassFigure.class
-				.getResourceAsStream("methpub_obj.gif")));
+		Label method3 = new Label("getColumnID(): int", new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("methpub_obj.gif")));
+		Label method4 = new Label("getItems(): List", new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("methpub_obj.gif")));
 
 		classFigure.getAttributesCompartment().add(attribute3);
 		classFigure.getAttributesCompartment().add(attribute4);
@@ -86,6 +78,21 @@ public class UMLExample {
 		classFigure.setSize(-1, -1);
 
 		return classFigure;
+	}
+
+	static class UMLNode extends GraphNode {
+
+		IFigure customFigure = null;
+
+		public UMLNode(IContainer graphModel, int style, IFigure figure) {
+			super(graphModel, style);
+			this.customFigure = figure;
+		}
+
+		protected IFigure createFigureForModel() {
+			return customFigure;
+		}
+
 	}
 
 	/**
@@ -100,14 +107,17 @@ public class UMLExample {
 
 		Graph g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
-		GraphNode n1 = new GraphNode(g, SWT.NONE);
-		GraphNode n2 = new GraphNode(g, SWT.NONE);
+		GraphContainer c = new GraphContainer(g, SWT.NONE);
+		c.setText("A UML Container");
+		UMLNode n = new UMLNode(c, SWT.NONE, createClassFigure1());
 
-		n1.setCustomFigure(createClassFigure1());
-		n2.setCustomFigure(createClassFigure2());
+		GraphNode n1 = new UMLNode(g, SWT.NONE, createClassFigure1());
+		GraphNode n2 = new UMLNode(g, SWT.NONE, createClassFigure2());
 
 		new GraphConnection(g, SWT.NONE, n1, n2);
+		new GraphConnection(g, SWT.NONE, n, n1);
 
+		c.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		shell.open();

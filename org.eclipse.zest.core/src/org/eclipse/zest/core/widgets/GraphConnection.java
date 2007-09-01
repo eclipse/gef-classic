@@ -118,7 +118,7 @@ public class GraphConnection extends GraphItem {
 		this.font = Display.getDefault().getSystemFont();
 		(source).addSourceConnection(this);
 		(destination).addTargetConnection(this);
-		connectionFigure = createFigure();
+		//connectionFigure = createFigure();
 
 		if (source.getParent().getItemType() == GraphItem.CONTAINER && destination.getParent().getItemType() == GraphItem.CONTAINER && (source.getParent() == destination.getParent())) {
 			// If the source and the destination are in the same container (not the root graph) then 
@@ -131,7 +131,7 @@ public class GraphConnection extends GraphItem {
 		} else {
 			graphModel.addConnection(this, true);
 		}
-		graphModel.getGraph().registerItem(this);
+		//graphModel.getGraph().registerItem(this);
 
 		if ((source.getParent()).getItemType() == GraphItem.CONTAINER) {
 			// If the container of the source is a container, we need to draw another
@@ -176,6 +176,9 @@ public class GraphConnection extends GraphItem {
 	}
 
 	public Connection getConnectionFigure() {
+		if (connectionFigure == null) {
+			connectionFigure = createFigure();
+		}
 		return connectionFigure;
 	}
 
@@ -688,6 +691,7 @@ public class GraphConnection extends GraphItem {
 		Connection connectionFigure = null;
 		ChopboxAnchor sourceAnchor = null;
 		ChopboxAnchor targetAnchor = null;
+
 		if (getSource() == getDestination()) {
 			connectionFigure = new PolylineArcConnection();
 			sourceAnchor = new LoopAnchor(getSource().getNodeFigure());

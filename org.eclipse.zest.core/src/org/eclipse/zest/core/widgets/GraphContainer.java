@@ -67,6 +67,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	public ZestRootLayer zestLayer;
 	private ScrollPane scrollPane;
 	private LayoutAlgorithm layoutAlgorithm;
+	private List nodeQueue = null;
 	private boolean isExpanded = false;
 	//private ScalableFreeformLayeredPane scalledLayer;
 	private AspectRatioFreeformLayer scalledLayer;
@@ -92,6 +93,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		initModel(graph, text, image);
 		close(false);
 		childNodes = new ArrayList();
+		this.nodeQueue = new LinkedList();
 	}
 
 	/**
@@ -129,8 +131,9 @@ public class GraphContainer extends GraphNode implements IContainer {
 		expandGraphLabel.setExpandedState(ExpandGraphLabel.CLOSED);
 		Rectangle newBounds = scrollPane.getBounds().getCopy();
 		newBounds.height = 0;
+
 		//this.nodeFigure.setConstraint(scrollPane, newBounds);
-		this.nodeFigure.revalidate();
+		//this.nodeFigure.revalidate();
 		scrollPane.setSize(scrollPane.getSize().width, 0);
 		updateFigureForModel(this.zestLayer);
 		scrollPane.setVisible(false);
@@ -146,7 +149,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		if (animate) {
 			Animation.run(ANIMATION_TIME);
 		}
-		this.nodeFigure.getUpdateManager().performUpdate();
+		//this.nodeFigure.getUpdateManager().performUpdate();
 		updateFigureForModel(nodeFigure);
 	}
 
@@ -316,6 +319,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		if (animate) {
 			Animation.run(ANIMATION_TIME);
 		}
+		this.getFigure().getUpdateManager().performValidation();
 		//this.nodeFigure.getUpdateManager().performUpdate();
 
 	}
@@ -543,10 +547,10 @@ public class GraphContainer extends GraphNode implements IContainer {
 		LayoutEntity[] nodesToLayout = getGraph().getNodesToLayout(getNodes());
 
 		try {
-			//Animation.markBegin();
+			Animation.markBegin();
 			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 25, 25, d.width - 50, d.height - 50, false, false);
-			//Animation.run(ANIMATION_TIME);
-			//container.getUpdateManager().performUpdate();
+			Animation.run(ANIMATION_TIME);
+			getFigure().getUpdateManager().performUpdate();
 
 		} catch (InvalidLayoutConfiguration e) {
 			e.printStackTrace();
@@ -799,7 +803,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 		scrollPane.setLocation(new Point(expandGraphLabel.getLocation().x, expandGraphLabel.getLocation().y + containerDimension.labelHeight - SUBLAYER_OFFSET));
 		scrollPane.setSize(computeChildArea());
 		scalledLayer.setScale(computeWidthScale(), computeHeightScale());
-
 	}
 
 	void addConnectionFigure(PolylineConnection connection) {
@@ -808,10 +811,11 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	void addNode(GraphNode node) {
-		zestLayer.addNode(node.getNodeFigure());
+		//zestLayer.addNode(node.getNodeFigure());
 		//container.add(node.getNodeFigure());
-		node.setVisible(false);
+		nodeQueue.add(node);
 		this.childNodes.add(node);
+		//graph.registerItem(node);
 	}
 
 	void addNode(GraphContainer container) {
@@ -820,6 +824,26 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	public List getNodes() {
 		return this.childNodes;
+	}
+
+	void paint() {
+		Iterator iterator = nodeQueue.iterator();
+		while (iterator.hasNext()) {
+			GraphNode graphNode = (GraphNode) iterator.next();
+			zestLayer.addNode(graphNode.getFigure());
+
+			graphNode.setVisible(false);
+
+			graph.registerItem(graphNode);
+			iterator.remove();
+			graphNode.refreshLocation();
+		}
+		iterator = getNodes().iterator();
+
+		while (iterator.hasNext()) {
+			GraphNode node = (GraphNode) iterator.next();
+			node.paint();
+		}
 	}
 
 }

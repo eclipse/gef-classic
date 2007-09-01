@@ -237,9 +237,6 @@ public class GraphItemStyler {
 		if ((figure = provider.getTooltip(entity)) != null) {
 			node.setTooltip(figure);
 		}
-		if ((figure = provider.getNodeFigure(entity)) != null) {
-			node.setCustomFigure(figure);
-		}
 
 	}
 

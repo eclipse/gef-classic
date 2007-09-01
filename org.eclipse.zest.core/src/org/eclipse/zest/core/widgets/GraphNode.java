@@ -77,8 +77,6 @@ public class GraphNode extends GraphItem {
 	private IFigure tooltip;
 	protected IFigure nodeFigure;
 
-	private IFigure customFigure;
-	private boolean useCustomFigure = false;
 	private boolean isDisposed = false;
 
 	public GraphNode(IContainer graphModel, int style) {
@@ -94,7 +92,7 @@ public class GraphNode extends GraphItem {
 		} else if (this.parent.getItemType() == CONTAINER) {
 			((GraphContainer) this.parent).addNode(this);
 		}
-		this.parent.getGraph().registerItem(this);
+		//this.parent.getGraph().registerItem(this);
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text) {
@@ -110,7 +108,7 @@ public class GraphNode extends GraphItem {
 		} else if (this.parent.getItemType() == CONTAINER) {
 			((GraphContainer) this.parent).addNode(this);
 		}
-		this.parent.getGraph().registerItem(this);
+		//this.parent.getGraph().registerItem(this);
 
 	}
 
@@ -127,7 +125,7 @@ public class GraphNode extends GraphItem {
 		} else if (this.parent.getItemType() == CONTAINER) {
 			((GraphContainer) this.parent).addNode(this);
 		}
-		this.parent.getGraph().registerItem(this);
+		//this.parent.getGraph().registerItem(this);
 	}
 
 	protected IFigure initFigure() {
@@ -481,31 +479,20 @@ public class GraphNode extends GraphItem {
 	}
 
 	protected void refreshLocation() {
-		if (useCustomFigure) {
-			if (customFigure == null || customFigure.getParent() == null) {
-				return;
-			}
-			GraphNode node = this;
-			Point loc = node.getLocation();
-			Dimension size = node.size;
-			Rectangle bounds = new Rectangle(loc, size);
-			customFigure.getParent().setConstraint(customFigure, bounds);
-		} else {
-			if (nodeFigure == null || nodeFigure.getParent() == null) {
-				return; // node figure has not been created yet
-			}
-			Point loc = this.getLocation();
-			Dimension size = this.getSize();
-			Rectangle bounds = new Rectangle(loc, size);
-
-			// bounds.x = this.currentLocation.x;
-			// bounds.y = this.currentLocation.y;
-			// bounds.width = size.width;
-			// bounds.height = size.height;
-			nodeFigure.getParent().setConstraint(nodeFigure, bounds);
-
-			//nodeFigure = updateFigureForModel(nodeFigure);
+		if (nodeFigure == null || nodeFigure.getParent() == null) {
+			return; // node figure has not been created yet
 		}
+		Point loc = this.getLocation();
+		Dimension size = this.getSize();
+		Rectangle bounds = new Rectangle(loc, size);
+
+		// bounds.x = this.currentLocation.x;
+		// bounds.y = this.currentLocation.y;
+		// bounds.width = size.width;
+		// bounds.height = size.height;
+		nodeFigure.getParent().setConstraint(nodeFigure, bounds);
+
+		//nodeFigure = updateFigureForModel(nodeFigure);
 	}
 
 	/**
@@ -590,10 +577,6 @@ public class GraphNode extends GraphItem {
 	 * @see org.eclipse.swt.widgets.Item#setText(java.lang.String)
 	 */
 	public void setText(String string) {
-		if (useCustomFigure) {
-			return; // We don't want to set any properties if a custom figure
-			// has been set.
-		}
 		this.labelSize = null;
 		super.setText(string);
 
@@ -693,27 +676,7 @@ public class GraphNode extends GraphItem {
 	}
 
 	public IFigure getNodeFigure() {
-		if (useCustomFigure) {
-			return customFigure;
-		}
 		return this.nodeFigure;
-	}
-
-	public void setCustomFigure(IFigure nodeFigure) {
-		Object old = this.nodeFigure;
-		useCustomFigure = true;
-
-		this.customFigure = nodeFigure;
-		this.nodeFigure = null;
-
-		graph.changeNodeFigure((IFigure) old, customFigure, this);
-		// customFigure.getParent().setConstraint(customFigure, new Rectangle(0,
-		// 0, -1, -1));
-		Rectangle d = this.customFigure.getBounds();
-		setSize(d.width, d.height);
-
-		// graph.changeFigure((IFigure) old, customFigure, this);
-
 	}
 
 	public void setVisible(boolean visible) {
@@ -834,12 +797,10 @@ public class GraphNode extends GraphItem {
 	}
 
 	protected IFigure updateFigureForModel(IFigure currentFigure) {
-		if (useCustomFigure) {
-			// Check if a custom figure is being used.  If it is
-			// then don't try and update the colours, etc...
+
+		if (!(currentFigure instanceof GraphLabel)) {
 			return currentFigure;
 		}
-
 		GraphLabel figure = (GraphLabel) currentFigure;
 		IFigure toolTip;
 
@@ -1043,6 +1004,13 @@ public class GraphNode extends GraphItem {
 	}
 
 	IFigure getFigure() {
+		if (this.nodeFigure == null) {
+			initFigure();
+		}
 		return this.getNodeFigure();
+	}
+
+	void paint() {
+
 	}
 }

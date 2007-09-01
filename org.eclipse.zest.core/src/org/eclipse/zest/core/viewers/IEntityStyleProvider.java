@@ -126,8 +126,6 @@ public interface IEntityStyleProvider extends IDisposable {
 	 */
 	public IFigure getTooltip(Object entity);
 
-	public IFigure getNodeFigure(Object entity);
-
 	public boolean fisheyeNode(Object entity);
 
 }
