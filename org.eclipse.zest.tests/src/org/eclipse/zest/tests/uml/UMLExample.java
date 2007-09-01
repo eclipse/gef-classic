@@ -14,7 +14,9 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.mylyn.zest.core.widgets.Graph;
 import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
+import org.eclipse.mylyn.zest.core.widgets.GraphContainer;
 import org.eclipse.mylyn.zest.core.widgets.GraphNode;
+import org.eclipse.mylyn.zest.core.widgets.IContainer;
 import org.eclipse.mylyn.zest.core.widgets.ZestStyles;
 import org.eclipse.mylyn.zest.layouts.LayoutStyles;
 import org.eclipse.mylyn.zest.layouts.algorithms.SpringLayoutAlgorithm;
@@ -88,6 +90,21 @@ public class UMLExample {
 		return classFigure;
 	}
 
+	static class UMLNode extends GraphNode {
+
+		IFigure customFigure = null;
+
+		public UMLNode(IContainer graphModel, int style, IFigure figure) {
+			super(graphModel, style);
+			this.customFigure = figure;
+		}
+
+		protected IFigure createFigureForModel() {
+			return customFigure;
+		}
+
+	}
+
 	/**
 	 * @param args
 	 */
@@ -100,14 +117,17 @@ public class UMLExample {
 
 		Graph g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
-		GraphNode n1 = new GraphNode(g, SWT.NONE);
-		GraphNode n2 = new GraphNode(g, SWT.NONE);
+		GraphContainer c = new GraphContainer(g, SWT.NONE);
+		c.setText("A UML Container");
+		UMLNode n = new UMLNode(c, SWT.NONE, createClassFigure1());
 
-		n1.setCustomFigure(createClassFigure1());
-		n2.setCustomFigure(createClassFigure2());
+		GraphNode n1 = new UMLNode(g, SWT.NONE, createClassFigure1());
+		GraphNode n2 = new UMLNode(g, SWT.NONE, createClassFigure2());
 
 		new GraphConnection(g, SWT.NONE, n1, n2);
+		new GraphConnection(g, SWT.NONE, n, n1);
 
+		c.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		shell.open();
