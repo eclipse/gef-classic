@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -66,7 +65,6 @@ public class GraphNode extends GraphItem {
 	private boolean visible = true;
 	private LayoutEntity layoutEntity;
 
-	protected Dimension labelSize;
 	protected Graph graph;
 	protected IContainer parent;
 
@@ -581,7 +579,6 @@ public class GraphNode extends GraphItem {
 	}
 
 	public void setFont(Font font) {
-		this.labelSize = null;
 		this.font = font;
 	}
 
@@ -591,7 +588,6 @@ public class GraphNode extends GraphItem {
 	 * @see org.eclipse.swt.widgets.Item#setText(java.lang.String)
 	 */
 	public void setText(String string) {
-		this.labelSize = null;
 		if (string == null) {
 			string = "";
 		}
@@ -608,7 +604,6 @@ public class GraphNode extends GraphItem {
 	 * @see org.eclipse.swt.widgets.Item#setImage(org.eclipse.swt.graphics.Image)
 	 */
 	public void setImage(Image image) {
-		this.labelSize = null;
 		super.setImage(image);
 		if (nodeFigure != null) {
 			updateFigureForModel(nodeFigure);
@@ -622,27 +617,6 @@ public class GraphNode extends GraphItem {
 	 */
 	public Graph getGraphModel() {
 		return this.graph;
-	}
-
-	private Dimension calculateTextExtents() {
-		Dimension dim = new Dimension(0, 0);
-		String text = getText();
-		if (text != null) {
-			if (font == null) {
-				font = Display.getDefault().getSystemFont();
-			}
-			dim.setSize(FigureUtilities.getTextExtents(text + "  ", font));
-		}
-		return dim;
-	}
-
-	private Dimension calculateImageExtents() {
-		Dimension dim = new Dimension(0, 0);
-		Image image = getImage();
-		if (image != null) {
-			dim.setSize(new Dimension(image.getBounds().width + 4, image.getBounds().height));
-		}
-		return dim;
 	}
 
 	/**
@@ -773,32 +747,6 @@ public class GraphNode extends GraphItem {
 			isFisheyeEnabled = false;
 			return null;
 		}
-	}
-
-	/**
-	 * Returns the extent of the text and the image with some padding.
-	 * 
-	 * @return Dimension the minimum size needed to display the text and the
-	 *         image
-	 */
-	Dimension calculateMinimumLabelSize() {
-		if (labelSize == null) {
-			Dimension text = calculateTextExtents();
-			Dimension icon = calculateImageExtents();
-			labelSize = new Dimension(text.width + icon.width, Math.max(text.height, icon.height));
-			labelSize.expand(12, 6);
-		}
-		return labelSize;
-	}
-
-	/**
-	 * Gets the minimum size for this node. This is the minimum size of the
-	 * label (text & icon)
-	 * 
-	 * @return Dimension
-	 */
-	Dimension calculateMinimumSize() {
-		return calculateMinimumLabelSize();
 	}
 
 	IContainer getParent() {
