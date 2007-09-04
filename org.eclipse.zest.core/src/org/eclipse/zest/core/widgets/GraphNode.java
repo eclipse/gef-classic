@@ -497,14 +497,8 @@ public class GraphNode extends GraphItem {
 		if (nodeFigure == null || nodeFigure.getParent() == null) {
 			return; // node figure has not been created yet
 		}
-
-		// bounds.x = this.currentLocation.x;
-		// bounds.y = this.currentLocation.y;
-		// bounds.width = size.width;
-		// bounds.height = size.height;
+		nodeFigure.setBounds(bounds);
 		nodeFigure.getParent().setConstraint(nodeFigure, bounds);
-
-		//nodeFigure = updateFigureForModel(nodeFigure);
 	}
 
 	/**
