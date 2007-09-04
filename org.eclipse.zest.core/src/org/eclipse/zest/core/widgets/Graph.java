@@ -190,11 +190,13 @@ public class Graph extends FigureCanvas implements IContainer {
 						iterator.remove();
 					}
 				}
+				/*
 				Iterator iterator = getNodes().iterator();
 				while (iterator.hasNext()) {
 					GraphNode node = (GraphNode) iterator.next();
 					node.paint();
 				}
+				*/
 			}
 		});
 

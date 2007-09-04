@@ -973,7 +973,6 @@ public class GraphNode extends GraphItem {
 	}
 
 	void paint() {
-		updateFigureForModel(this.nodeFigure);
 
 	}
 }
