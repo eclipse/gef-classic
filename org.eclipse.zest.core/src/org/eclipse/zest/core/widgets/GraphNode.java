@@ -80,7 +80,11 @@ public class GraphNode extends GraphItem {
 	private boolean isDisposed = false;
 
 	public GraphNode(IContainer graphModel, int style) {
-		super(graphModel.getGraph(), style);
+		this(graphModel, style, null);
+	}
+
+	public GraphNode(IContainer graphModel, int style, Object data) {
+		super(graphModel.getGraph(), style, data);
 		initModel(graphModel, " ", null);
 		nodeFigure = initFigure();
 
@@ -92,10 +96,14 @@ public class GraphNode extends GraphItem {
 		} else if (this.parent.getItemType() == CONTAINER) {
 			((GraphContainer) this.parent).addNode(this);
 		}
-		//this.parent.getGraph().registerItem(this);
+		this.parent.getGraph().registerItem(this);
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text) {
+		this(graphModel, style, text, null);
+	}
+
+	public GraphNode(IContainer graphModel, int style, String text, Object data) {
 		super(graphModel.getGraph(), style);
 		initModel(graphModel, text, null);
 		nodeFigure = initFigure();
@@ -108,11 +116,15 @@ public class GraphNode extends GraphItem {
 		} else if (this.parent.getItemType() == CONTAINER) {
 			((GraphContainer) this.parent).addNode(this);
 		}
-		//this.parent.getGraph().registerItem(this);
+		this.parent.getGraph().registerItem(this);
 
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text, Image image) {
+		this(graphModel, style, text, image, null);
+	}
+
+	public GraphNode(IContainer graphModel, int style, String text, Image image, Object data) {
 		super(graphModel.getGraph(), style);
 		initModel(graphModel, text, image);
 		nodeFigure = initFigure();
@@ -125,7 +137,7 @@ public class GraphNode extends GraphItem {
 		} else if (this.parent.getItemType() == CONTAINER) {
 			((GraphContainer) this.parent).addNode(this);
 		}
-		//this.parent.getGraph().registerItem(this);
+		this.parent.getGraph().registerItem(this);
 	}
 
 	protected IFigure initFigure() {
@@ -163,6 +175,7 @@ public class GraphNode extends GraphItem {
 		if (font == null) {
 			font = Display.getDefault().getSystemFont();
 		}
+		graph.registerItem(this);
 
 	}
 
@@ -479,12 +492,13 @@ public class GraphNode extends GraphItem {
 	}
 
 	protected void refreshLocation() {
-		if (nodeFigure == null || nodeFigure.getParent() == null) {
-			return; // node figure has not been created yet
-		}
 		Point loc = this.getLocation();
 		Dimension size = this.getSize();
 		Rectangle bounds = new Rectangle(loc, size);
+
+		if (nodeFigure == null || nodeFigure.getParent() == null) {
+			return; // node figure has not been created yet
+		}
 
 		// bounds.x = this.currentLocation.x;
 		// bounds.y = this.currentLocation.y;
@@ -578,6 +592,9 @@ public class GraphNode extends GraphItem {
 	 */
 	public void setText(String string) {
 		this.labelSize = null;
+		if (string == null) {
+			string = "";
+		}
 		super.setText(string);
 
 		if (nodeFigure != null) {
@@ -796,10 +813,13 @@ public class GraphNode extends GraphItem {
 		graph.invokeConstraintAdapters(this, constraint);
 	}
 
-	protected IFigure updateFigureForModel(IFigure currentFigure) {
+	protected void updateFigureForModel(IFigure currentFigure) {
+		if (currentFigure == null) {
+			return;
+		}
 
 		if (!(currentFigure instanceof GraphLabel)) {
-			return currentFigure;
+			return;
 		}
 		GraphLabel figure = (GraphLabel) currentFigure;
 		IFigure toolTip;
@@ -854,7 +874,6 @@ public class GraphNode extends GraphItem {
 				this.fishEyeFigure = newFisheyeFigure;
 			}
 		}
-		return figure;
 	}
 
 	protected IFigure createFigureForModel() {
@@ -864,7 +883,8 @@ public class GraphNode extends GraphItem {
 		if (checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
 			label.setText("");
 		}
-		return updateFigureForModel(label);
+		updateFigureForModel(label);
+		return label;
 	}
 
 	private IFigure createFishEyeFigure() {
@@ -1011,6 +1031,7 @@ public class GraphNode extends GraphItem {
 	}
 
 	void paint() {
+		updateFigureForModel(this.nodeFigure);
 
 	}
 }

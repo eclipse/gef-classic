@@ -97,9 +97,6 @@ public class Graph extends FigureCanvas implements IContainer {
 	private List constraintAdapters;
 	private List revealListeners = null;
 
-	private List nodeQueue = null; // List of nodes not yet added to the graph
-	private List connectinoQueue = null; // List of connections not yet added to the graph
-
 	private ScalableFreeformLayeredPane fishEyeLayer = null;
 	LayoutAlgorithm layoutAlgorithm = null;
 	private Dimension preferredSize = null;
@@ -125,8 +122,6 @@ public class Graph extends FigureCanvas implements IContainer {
 		GREY_BLUE = new Color(Display.getDefault(), 139, 150, 171);
 		DARK_BLUE = new Color(Display.getDefault(), 1, 70, 122);
 		LIGHT_YELLOW = new Color(Display.getDefault(), 255, 255, 206);
-		this.nodeQueue = new LinkedList();
-		this.connectinoQueue = new LinkedList();
 
 		this.setViewport(new FreeformViewport());
 
@@ -195,27 +190,11 @@ public class Graph extends FigureCanvas implements IContainer {
 						iterator.remove();
 					}
 				}
-				Iterator iterator = nodeQueue.iterator();
-				while (iterator.hasNext()) {
-					GraphNode graphNode = (GraphNode) iterator.next();
-					zestRootLayer.addNode(graphNode.getFigure());
-					registerItem(graphNode);
-					iterator.remove();
-
-				}
-				iterator = connectinoQueue.iterator();
-				while (iterator.hasNext()) {
-					GraphConnection connection = (GraphConnection) iterator.next();
-					zestRootLayer.addConnection(connection.getFigure());
-					registerItem(connection);
-					iterator.remove();
-				}
-				iterator = getNodes().iterator();
+				Iterator iterator = getNodes().iterator();
 				while (iterator.hasNext()) {
 					GraphNode node = (GraphNode) iterator.next();
 					node.paint();
 				}
-
 			}
 		});
 
@@ -888,16 +867,9 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	void addConnection(GraphConnection connection, boolean addToEdgeLayer) {
 		this.getConnections().add(connection);
-		// Add the node to the node queue.  The actual figure will get added when the graph
-		// is painted for the first time
-		if (addToEdgeLayer) {
-			connectinoQueue.add(connection);
-		}
-		/*
 		if (addToEdgeLayer) {
 			zestRootLayer.addConnection(connection.getFigure());
 		}
-		*/
 	}
 
 	/*
@@ -929,16 +901,13 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	void addNode(GraphNode node) {
 		this.getNodes().add(node);
-		// Add the node to the node queue.  The actual figure will get added when the graph
-		// is painted for the first time
-		nodeQueue.add(node);
+		zestRootLayer.addNode(node.getFigure());
 	}
 
 	void addNode(GraphContainer graphContainer) {
 		this.getNodes().add(graphContainer);
-		// Add the node to the node queue.  The actual figure will get added when the graph
-		// is painted for the first time
-		nodeQueue.add(graphContainer);
+		zestRootLayer.addNode(graphContainer.getFigure());
+
 	}
 
 	void registerItem(GraphItem item) {

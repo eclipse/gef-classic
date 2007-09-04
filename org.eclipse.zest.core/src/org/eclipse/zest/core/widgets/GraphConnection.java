@@ -640,7 +640,10 @@ public class GraphConnection extends GraphItem {
 		}
 	}
 
-	private Connection updateFigure(Connection connection) {
+	private void updateFigure(Connection connection) {
+		if (connection == null) {
+			return;
+		}
 		Shape connectionShape = (Shape) connection;
 
 		connectionShape.setLineStyle(getLineStyle());
@@ -683,8 +686,6 @@ public class GraphConnection extends GraphItem {
 			toolTip = this.getTooltip();
 		}
 		connection.setToolTip(toolTip);
-
-		return connection;
 	}
 
 	private Connection createFigure() {
@@ -705,7 +706,8 @@ public class GraphConnection extends GraphItem {
 		connectionFigure.setSourceAnchor(sourceAnchor);
 		connectionFigure.setTargetAnchor(targetAnchor);
 
-		return updateFigure(connectionFigure);
+		updateFigure(connectionFigure);
+		return connectionFigure;
 	}
 
 	/*

@@ -67,7 +67,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 	public ZestRootLayer zestLayer;
 	private ScrollPane scrollPane;
 	private LayoutAlgorithm layoutAlgorithm;
-	private List nodeQueue = null;
 	private boolean isExpanded = false;
 	//private ScalableFreeformLayeredPane scalledLayer;
 	private AspectRatioFreeformLayer scalledLayer;
@@ -93,7 +92,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 		initModel(graph, text, image);
 		close(false);
 		childNodes = new ArrayList();
-		this.nodeQueue = new LinkedList();
 	}
 
 	/**
@@ -106,7 +104,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#getItemType()
-	 */
 	public int getItemType() {
 		return GraphItem.CONTAINER;
 	}
@@ -499,6 +496,10 @@ public class GraphContainer extends GraphNode implements IContainer {
 		return this.graph.getGraph();
 	}
 
+	public int getItemType() {
+		return CONTAINER;
+	}
+
 	/**
 	 * 
 	 */
@@ -729,8 +730,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		return containerFigure;
 	}
 
-	protected IFigure updateFigureForModel(IFigure currentFigure) {
-		IFigure figure = currentFigure;
+	protected void updateFigureForModel(IFigure currentFigure) {
 
 		expandGraphLabel.setTextT(getText());
 		expandGraphLabel.setImage(getImage());
@@ -776,7 +776,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 		figure.getUpdateManager().performValidation();
 		*/
 
-		return figure;
 	}
 
 	protected void refreshLocation() {
@@ -811,10 +810,9 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	void addNode(GraphNode node) {
-		//zestLayer.addNode(node.getNodeFigure());
-		//container.add(node.getNodeFigure());
-		nodeQueue.add(node);
+		zestLayer.addNode(node.getNodeFigure());
 		this.childNodes.add(node);
+		//container.add(node.getNodeFigure());
 		//graph.registerItem(node);
 	}
 
@@ -827,18 +825,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	void paint() {
-		Iterator iterator = nodeQueue.iterator();
-		while (iterator.hasNext()) {
-			GraphNode graphNode = (GraphNode) iterator.next();
-			zestLayer.addNode(graphNode.getFigure());
-
-			graphNode.setVisible(false);
-
-			graph.registerItem(graphNode);
-			iterator.remove();
-			graphNode.refreshLocation();
-		}
-		iterator = getNodes().iterator();
+		Iterator iterator = getNodes().iterator();
 
 		while (iterator.hasNext()) {
 			GraphNode node = (GraphNode) iterator.next();

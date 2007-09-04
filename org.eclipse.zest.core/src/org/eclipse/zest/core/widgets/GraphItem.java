@@ -32,7 +32,18 @@ public abstract class GraphItem extends Item {
 	 * @param style
 	 */
 	public GraphItem(Widget parent, int style) {
+		this(parent, style | SWT.NO_BACKGROUND, null);
+	}
+
+	/**
+	 * @param parent
+	 * @param style
+	 */
+	public GraphItem(Widget parent, int style, Object data) {
 		super(parent, style | SWT.NO_BACKGROUND);
+		if (data != null) {
+			this.setData(data);
+		}
 	}
 
 	/*
