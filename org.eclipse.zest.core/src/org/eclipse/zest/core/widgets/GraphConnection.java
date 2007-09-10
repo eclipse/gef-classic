@@ -22,7 +22,6 @@ import org.eclipse.mylyn.zest.core.widgets.internal.AligningBendpointLocator;
 import org.eclipse.mylyn.zest.core.widgets.internal.LoopAnchor;
 import org.eclipse.mylyn.zest.core.widgets.internal.PolylineArcConnection;
 import org.eclipse.mylyn.zest.core.widgets.internal.RoundedChopboxAnchor;
-import org.eclipse.mylyn.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylyn.zest.layouts.LayoutEntity;
 import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
@@ -56,6 +55,7 @@ public class GraphConnection extends GraphItem {
 	private int curveDepth;
 	private boolean isDisposed = false;
 
+	private Label connectionLabel = null;
 	private Connection connectionFigure = null;
 	private Connection sourceContainerConnectionFigure = null;
 	private Connection targetContainerConnectionFigure = null;
@@ -127,7 +127,7 @@ public class GraphConnection extends GraphItem {
 			//
 			// 196189: Edges should not draw on the edge layer if both the src and dest are in the same container
 			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=196189
-			graphModel.addConnection(this, ZestRootLayer.EDGES_ON_TOP);
+			//graphModel.addConnection(this, ZestRootLayer.EDGES_ON_TOP);
 		} else {
 			graphModel.addConnection(this, true);
 		}
@@ -648,11 +648,15 @@ public class GraphConnection extends GraphItem {
 
 		connectionShape.setLineStyle(getLineStyle());
 
-		AligningBendpointLocator labelLocator = new AligningBendpointLocator(connection);
 		if (this.getText() != null || this.getImage() != null) {
-			Label l = new Label(this.getText(), this.getImage());
-			l.setFont(this.getFont());
-			connection.add(l, labelLocator);
+			//Label l = new Label(this.getText(), this.getImage());
+			if (this.getImage() != null) {
+				this.connectionLabel.setIcon(this.getImage());
+			}
+			if (this.getText() != null) {
+				this.connectionLabel.setText(this.getText());
+			}
+			this.connectionLabel.setFont(this.getFont());
 		}
 
 		if (highlighted) {
@@ -692,6 +696,7 @@ public class GraphConnection extends GraphItem {
 		Connection connectionFigure = null;
 		ChopboxAnchor sourceAnchor = null;
 		ChopboxAnchor targetAnchor = null;
+		this.connectionLabel = new Label();
 
 		if (getSource() == getDestination()) {
 			connectionFigure = new PolylineArcConnection();
@@ -703,8 +708,11 @@ public class GraphConnection extends GraphItem {
 			targetAnchor = new RoundedChopboxAnchor(getDestination().getNodeFigure(), 8);
 		}
 
+		AligningBendpointLocator labelLocator = new AligningBendpointLocator(connectionFigure);
+
 		connectionFigure.setSourceAnchor(sourceAnchor);
 		connectionFigure.setTargetAnchor(targetAnchor);
+		connectionFigure.add(this.connectionLabel, labelLocator);
 
 		updateFigure(connectionFigure);
 		return connectionFigure;
