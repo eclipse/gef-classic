@@ -706,10 +706,6 @@ public class GraphNode extends GraphItem {
 		if (enable) {
 			// Create the fish eye label
 			fishEyeFigure = createFishEyeFigure();
-			FontData fontData = Display.getCurrent().getSystemFont().getFontData()[0];
-			fontData.height = 12;
-			fishEyeFont = new Font(Display.getCurrent(), fontData);
-			fishEyeFigure.setFont(fishEyeFont);
 
 			// Get the current Bounds
 			Rectangle rectangle = nodeFigure.getBounds().getCopy();
@@ -723,6 +719,14 @@ public class GraphNode extends GraphItem {
 			Dimension expandAmount = new Dimension(expandedW, expandedH);
 			nodeFigure.translateToAbsolute(rectangle);
 			rectangle.expand(new Insets(expandAmount.height, expandAmount.width, expandAmount.height, expandAmount.width));
+			if (expandedH <= 0 && expandedW <= 0) {
+				return null;
+			}
+
+			FontData fontData = Display.getCurrent().getSystemFont().getFontData()[0];
+			fontData.height = 12;
+			fishEyeFont = new Font(Display.getCurrent(), fontData);
+			fishEyeFigure.setFont(fishEyeFont);
 
 			//Add the fisheye
 			this.getGraphModel().fishEye(nodeFigure, fishEyeFigure, rectangle, true);
