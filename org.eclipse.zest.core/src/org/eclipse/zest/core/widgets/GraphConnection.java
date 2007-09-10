@@ -131,7 +131,7 @@ public class GraphConnection extends GraphItem {
 		} else {
 			graphModel.addConnection(this, true);
 		}
-		//graphModel.getGraph().registerItem(this);
+		graphModel.getGraph().registerItem(this);
 
 		if ((source.getParent()).getItemType() == GraphItem.CONTAINER) {
 			// If the container of the source is a container, we need to draw another
