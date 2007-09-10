@@ -17,6 +17,7 @@ import org.eclipse.mylyn.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -77,8 +78,18 @@ public class GraphJFaceSnippet5 {
 	}
 
 	static class MyLabelProvider extends LabelProvider {
+		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);	
+		
+		public MyLabelProvider() {
+			
+		}
+		
 		public String getText(Object element) {
 			return element.toString();
+		}
+		
+		public Image getImage(Object element) {
+			return image;
 		}
 	}
 
