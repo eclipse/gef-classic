@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Chisel Layout Package
 Bundle-SymbolicName: org.eclipse.mylyn.zest.layouts
-Bundle-Version: 0.5.0.qualifier
+Bundle-Version: 0.6.0.qualifier
 Bundle-Vendor: Chisel, University of Victoria
 Export-Package: org.eclipse.mylyn.zest.layouts,
  org.eclipse.mylyn.zest.layouts.algorithms,
@@ -16,3 +16,4 @@ Require-Bundle: org.eclipse.swt;visibility:=reexport,
  org.eclipse.core.runtime,
  org.eclipse.jface,
  org.eclipse.draw2d
+Bundle-RequiredExecutionEnvironment: J2SE-1.4
