@@ -734,6 +734,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		expandGraphLabel.setTextT(getText());
 		expandGraphLabel.setImage(getImage());
+		expandGraphLabel.setFont(getFont());
 
 		if (highlighted == HIGHLIGHT_ON) {
 			expandGraphLabel.setForegroundColor(getForegroundColor());
