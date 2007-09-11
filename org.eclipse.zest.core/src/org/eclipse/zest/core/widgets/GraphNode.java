@@ -497,7 +497,7 @@ public class GraphNode extends GraphItem {
 		if (nodeFigure == null || nodeFigure.getParent() == null) {
 			return; // node figure has not been created yet
 		}
-		nodeFigure.setBounds(bounds);
+		//nodeFigure.setBounds(bounds);
 		nodeFigure.getParent().setConstraint(nodeFigure, bounds);
 	}
 
@@ -574,6 +574,7 @@ public class GraphNode extends GraphItem {
 
 	public void setFont(Font font) {
 		this.font = font;
+		updateFigureForModel(nodeFigure);
 	}
 
 	/*
@@ -826,6 +827,7 @@ public class GraphNode extends GraphItem {
 		GraphNode node = this;
 		boolean cacheLabel = (this).cacheLabel();
 		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
+		label.setFont(this.font);
 		if (checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
 			label.setText("");
 		}
