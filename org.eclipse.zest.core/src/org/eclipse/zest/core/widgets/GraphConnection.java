@@ -15,13 +15,14 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.Shape;
-import org.eclipse.mylyn.zest.core.widgets.internal.AligningBendpointLocator;
 import org.eclipse.mylyn.zest.core.widgets.internal.LoopAnchor;
 import org.eclipse.mylyn.zest.core.widgets.internal.PolylineArcConnection;
 import org.eclipse.mylyn.zest.core.widgets.internal.RoundedChopboxAnchor;
+import org.eclipse.mylyn.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
 import org.eclipse.mylyn.zest.layouts.LayoutEntity;
 import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
@@ -127,7 +128,7 @@ public class GraphConnection extends GraphItem {
 			//
 			// 196189: Edges should not draw on the edge layer if both the src and dest are in the same container
 			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=196189
-			//graphModel.addConnection(this, ZestRootLayer.EDGES_ON_TOP);
+			graphModel.addConnection(this, ZestRootLayer.EDGES_ON_TOP);
 		} else {
 			graphModel.addConnection(this, true);
 		}
@@ -169,6 +170,12 @@ public class GraphConnection extends GraphItem {
 		(getSource()).removeSourceConnection(this);
 		(getDestination()).removeTargetConnection(this);
 		graphModel.removeConnection(this);
+		if (sourceContainerConnectionFigure != null) {
+			sourceContainerConnectionFigure.getParent().remove(sourceContainerConnectionFigure);
+		}
+		if (targetContainerConnectionFigure != null) {
+			targetContainerConnectionFigure.getParent().remove(targetContainerConnectionFigure);
+		}
 	}
 
 	public boolean isDisposed() {
@@ -708,7 +715,8 @@ public class GraphConnection extends GraphItem {
 			targetAnchor = new RoundedChopboxAnchor(getDestination().getNodeFigure(), 8);
 		}
 
-		AligningBendpointLocator labelLocator = new AligningBendpointLocator(connectionFigure);
+		//AligningBendpointLocator labelLocator = new AligningBendpointLocator(connectionFigure);
+		MidpointLocator labelLocator = new MidpointLocator(connectionFigure, 0);
 
 		connectionFigure.setSourceAnchor(sourceAnchor);
 		connectionFigure.setTargetAnchor(targetAnchor);
