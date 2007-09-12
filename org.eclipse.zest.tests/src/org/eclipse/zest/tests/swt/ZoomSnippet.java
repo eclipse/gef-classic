@@ -1,18 +1,27 @@
-package org.eclipse.mylyn.zest.tests.swt;
+/*******************************************************************************
+ * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
+ * Canada. All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: The Chisel Group, University of Victoria
+ ******************************************************************************/
+package org.eclipse.zest.tests.swt;
 
-import org.eclipse.mylyn.zest.core.widgets.Graph;
-import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
-import org.eclipse.mylyn.zest.core.widgets.GraphContainer;
-import org.eclipse.mylyn.zest.core.widgets.GraphItem;
-import org.eclipse.mylyn.zest.core.widgets.GraphNode;
-import org.eclipse.mylyn.zest.core.widgets.ZestStyles;
-import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.CompositeLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.algorithms.GridLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.algorithms.HorizontalShift;
-import org.eclipse.mylyn.zest.layouts.algorithms.RadialLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphConnection;
+import org.eclipse.zest.core.widgets.GraphContainer;
+import org.eclipse.zest.core.widgets.GraphItem;
+import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.CompositeLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.HorizontalShift;
+import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;

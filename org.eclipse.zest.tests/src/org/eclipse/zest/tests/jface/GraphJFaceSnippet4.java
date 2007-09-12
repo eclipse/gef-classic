@@ -1,5 +1,3 @@
-package org.eclipse.mylyn.zest.tests.jface;
-
 /*******************************************************************************
  * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
  * Canada. All rights reserved. This program and the accompanying materials are
@@ -9,6 +7,8 @@ package org.eclipse.mylyn.zest.tests.jface;
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
+package org.eclipse.zest.tests.jface;
+
 import java.util.Iterator;
 
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -16,10 +16,10 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.mylyn.zest.core.viewers.GraphViewer;
-import org.eclipse.mylyn.zest.core.viewers.IGraphContentProvider;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.zest.core.viewers.GraphViewer;
+import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;

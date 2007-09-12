@@ -7,16 +7,16 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylyn.zest.tests.swt;
+package org.eclipse.zest.tests.swt;
 
-import org.eclipse.mylyn.zest.core.widgets.ConstraintAdapter;
-import org.eclipse.mylyn.zest.core.widgets.Graph;
-import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
-import org.eclipse.mylyn.zest.core.widgets.GraphNode;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.constraints.BasicEdgeConstraints;
-import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.core.widgets.ConstraintAdapter;
+import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphConnection;
+import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.zest.layouts.constraints.BasicEdgeConstraints;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;

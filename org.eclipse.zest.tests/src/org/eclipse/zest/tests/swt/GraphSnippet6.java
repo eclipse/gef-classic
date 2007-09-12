@@ -8,14 +8,14 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.tests.swt;
+package org.eclipse.zest.tests.swt;
 
-import org.eclipse.mylyn.zest.core.widgets.Graph;
-import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
-import org.eclipse.mylyn.zest.core.widgets.GraphNode;
-import org.eclipse.mylyn.zest.core.widgets.ZestStyles;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphConnection;
+import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;

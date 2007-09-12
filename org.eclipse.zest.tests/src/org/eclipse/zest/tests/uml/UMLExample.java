@@ -8,18 +8,18 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.tests.uml;
+package org.eclipse.zest.tests.uml;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
-import org.eclipse.mylyn.zest.core.widgets.Graph;
-import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
-import org.eclipse.mylyn.zest.core.widgets.GraphContainer;
-import org.eclipse.mylyn.zest.core.widgets.GraphNode;
-import org.eclipse.mylyn.zest.core.widgets.IContainer;
-import org.eclipse.mylyn.zest.core.widgets.ZestStyles;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphConnection;
+import org.eclipse.zest.core.widgets.GraphContainer;
+import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.IContainer;
+import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;

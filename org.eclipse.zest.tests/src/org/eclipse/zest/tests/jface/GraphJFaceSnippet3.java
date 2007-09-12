@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylyn.zest.tests.jface;
+package org.eclipse.zest.tests.jface;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,10 +18,10 @@ import java.util.StringTokenizer;
 
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.mylyn.zest.core.viewers.GraphViewer;
-import org.eclipse.mylyn.zest.core.viewers.IGraphContentProvider;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.zest.core.viewers.GraphViewer;
+import org.eclipse.zest.core.viewers.IGraphContentProvider;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
@@ -95,10 +95,10 @@ public class GraphJFaceSnippet3 {
 		dialog.setFilterNames(new String[] { "Simple Graph Files (*.sgf)", "All Files (*.*)" });
 		dialog.setFilterExtensions(new String[] { "*.sgf", "*.*" }); //Windows wild cards
 
-		String directory = System.getProperty("user.dir") + "/src/org/eclipse/mylyn/zest/tests/jface/SimpleGraph.sgf"; //eclipse/mylyn/zest/examples/jface/";
+		String directory = System.getProperty("user.dir") + "/src/org/eclipse/zest/tests/jface/SimpleGraph.sgf"; //eclipse/zest/examples/jface/";
 		System.out.println(directory);
 		dialog.setFilterPath(directory);
-		//dialog.setFilterPath(System.getProperty("user.dir") + "src/org/eclipse/mylyn/zest/examples/jface/"); //Windows path
+		//dialog.setFilterPath(System.getProperty("user.dir") + "src/org/eclipse/zest/examples/jface/"); //Windows path
 
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		shell.setSize(400, 400);
