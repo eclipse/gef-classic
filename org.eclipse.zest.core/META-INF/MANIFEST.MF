@@ -1,15 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Core Plug-in
-Bundle-SymbolicName: org.eclipse.mylyn.zest.core;singleton:=true
-Bundle-Version: 0.6.0.qualifier
-Require-Bundle: org.eclipse.mylyn.zest.layouts,
+Bundle-SymbolicName: org.eclipse.zest.core;singleton:=true
+Bundle-Version: 0.7.0.qualifier
+Require-Bundle: org.eclipse.zest.layouts,
  org.eclipse.ui,
  org.eclipse.draw2d;visibility:=reexport
 Eclipse-LazyStart: false
-Export-Package: org.eclipse.mylyn.zest.core.messages,
- org.eclipse.mylyn.zest.core.viewers,
- org.eclipse.mylyn.zest.core.widgets
+Export-Package: org.eclipse.zest.core.messages,
+ org.eclipse.zest.core.viewers,
+ org.eclipse.zest.core.widgets
 Import-Package: com.ibm.icu.text
 Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Bundle-ClassPath: .

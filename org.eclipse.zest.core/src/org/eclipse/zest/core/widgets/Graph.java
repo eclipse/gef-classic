@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylyn.zest.core.widgets;
+package org.eclipse.zest.core.widgets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,15 +32,15 @@ import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.mylyn.zest.core.widgets.internal.RevealListener;
-import org.eclipse.mylyn.zest.core.widgets.internal.ZestRootLayer;
-import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.LayoutEntity;
-import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.TreeLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.core.widgets.internal.RevealListener;
+import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
+import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;

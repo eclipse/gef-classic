@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.core.messages;
+package org.eclipse.zest.core.messages;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -19,12 +19,12 @@ import java.util.ResourceBundle;
 /**
  * Messages for internationalized strings pertaining to ui elements.
  * @author Del Myers
- * @see org.eclipse.mylyn.zest.ZestException
+ * @see org.eclipse.zest.ZestException
  *
  */
 public class ZestUIMessages {
 	private static final String BUNDLE_NAME =
-		"org.eclipse.mylyn.zest.core.messages.ZestUI"; //$NON-NLS-1$
+		"org.eclipse.zest.core.messages.ZestUI"; //$NON-NLS-1$
 	private static final ResourceBundle BUNDLE =
 		ResourceBundle.getBundle(BUNDLE_NAME);
 	public static final String VIEW_NESTED_TOP_NODE =

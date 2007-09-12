@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylyn.zest.core.widgets;
+package org.eclipse.zest.core.widgets;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -28,15 +28,15 @@ import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.mylyn.zest.core.widgets.internal.AspectRatioFreeformLayer;
-import org.eclipse.mylyn.zest.core.widgets.internal.ExpandGraphLabel;
-import org.eclipse.mylyn.zest.core.widgets.internal.ZestRootLayer;
-import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.LayoutEntity;
-import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.zest.core.widgets.internal.AspectRatioFreeformLayer;
+import org.eclipse.zest.core.widgets.internal.ExpandGraphLabel;
+import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
+import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.swt.graphics.Image;
 
 /**

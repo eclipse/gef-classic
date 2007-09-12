@@ -8,15 +8,15 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.core.viewers.internal;
+package org.eclipse.zest.core.viewers.internal;
 
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
-import org.eclipse.mylyn.zest.core.widgets.Graph;
-import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
-import org.eclipse.mylyn.zest.core.widgets.GraphItem;
-import org.eclipse.mylyn.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphConnection;
+import org.eclipse.zest.core.widgets.GraphItem;
+import org.eclipse.zest.core.widgets.GraphNode;
 
 /**
  * A Graph model factory that supports the structural and visual refreshing of

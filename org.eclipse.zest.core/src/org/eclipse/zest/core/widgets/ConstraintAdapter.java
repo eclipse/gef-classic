@@ -8,9 +8,9 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.core.widgets;
+package org.eclipse.zest.core.widgets;
 
-import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * 

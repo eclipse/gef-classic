@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylyn.zest.core.widgets;
+package org.eclipse.zest.core.widgets;
 
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
@@ -19,14 +19,14 @@ import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.Shape;
-import org.eclipse.mylyn.zest.core.widgets.internal.LoopAnchor;
-import org.eclipse.mylyn.zest.core.widgets.internal.PolylineArcConnection;
-import org.eclipse.mylyn.zest.core.widgets.internal.RoundedChopboxAnchor;
-import org.eclipse.mylyn.zest.core.widgets.internal.ZestRootLayer;
-import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
-import org.eclipse.mylyn.zest.layouts.LayoutEntity;
-import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
-import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.core.widgets.internal.LoopAnchor;
+import org.eclipse.zest.core.widgets.internal.PolylineArcConnection;
+import org.eclipse.zest.core.widgets.internal.RoundedChopboxAnchor;
+import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
+import org.eclipse.zest.layouts.LayoutBendPoint;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;

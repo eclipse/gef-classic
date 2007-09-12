@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylyn.zest.core.viewers.internal;
+package org.eclipse.zest.core.viewers.internal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,10 +20,10 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.mylyn.zest.core.widgets.Graph;
-import org.eclipse.mylyn.zest.core.widgets.GraphConnection;
-import org.eclipse.mylyn.zest.core.widgets.GraphItem;
-import org.eclipse.mylyn.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphConnection;
+import org.eclipse.zest.core.widgets.GraphItem;
+import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.swt.SWT;
 
 /**
@@ -139,7 +139,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IStylingGraphModelFactory#getLabelProvider()
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#getLabelProvider()
 	 */
 	public IBaseLabelProvider getLabelProvider() {
 		return viewer.getLabelProvider();
@@ -148,7 +148,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IStylingGraphModelFactory#getContentProvider()
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#getContentProvider()
 	 */
 	public IStructuredContentProvider getContentProvider() {
 		return (IStructuredContentProvider) viewer.getContentProvider();
@@ -157,7 +157,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IStylingGraphModelFactory#createConnection(org.eclipse.mylyn.zest.core.internal.graphmodel.GraphModel,
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#createConnection(org.eclipse.zest.core.internal.graphmodel.GraphModel,
 	 *      java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
 	public GraphConnection createConnection(Graph graph, Object element, Object source, Object dest) {
@@ -189,7 +189,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IStylingGraphModelFactory#createNode(org.eclipse.mylyn.zest.core.internal.graphmodel.GraphModel,
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#createNode(org.eclipse.zest.core.internal.graphmodel.GraphModel,
 	 *      java.lang.Object)
 	 */
 	public GraphNode createNode(Graph graph, Object element) {
@@ -245,7 +245,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IStylingGraphModelFactory#refreshGraph(org.eclipse.mylyn.zest.core.internal.graphmodel.GraphModel)
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refreshGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
 	public void refreshGraph(Graph graph) {
 		// with this kind of graph, it is just as easy and cost-effective to
@@ -339,7 +339,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IStylingGraphModelFactory#isFiltered(java.lang.Object)
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#isFiltered(java.lang.Object)
 	 */
 	protected Object[] filter(Object parent, Object[] elements) {
 		Object[] result = elements;
@@ -353,7 +353,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylyn.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.mylyn.zest.core.internal.graphmodel.GraphModel,
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.zest.core.internal.graphmodel.GraphModel,
 	 *      java.lang.Object)
 	 */
 	public void refresh(Graph graph, Object element) {

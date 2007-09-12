@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.core.viewers;
+package org.eclipse.zest.core.viewers;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 

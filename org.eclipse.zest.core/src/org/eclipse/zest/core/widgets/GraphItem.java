@@ -7,7 +7,7 @@
  * 
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
-package org.eclipse.mylyn.zest.core.widgets;
+package org.eclipse.zest.core.widgets;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.SWT;

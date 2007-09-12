@@ -7,7 +7,7 @@
  * Contributors: IBM Corporation - initial API and implementation Chisel Group,
  * University of Victoria - Adapted for XY Scaled Graphics
  ******************************************************************************/
-package org.eclipse.mylyn.zest.core.widgets.internal;
+package org.eclipse.zest.core.widgets.internal;
 
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;

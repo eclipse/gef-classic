@@ -8,11 +8,11 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.core.widgets;
+package org.eclipse.zest.core.widgets;
 
 import java.util.List;
 
-import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
 
 /**
  * This interface describes all Zest components that are Containers. This is an internal interface
