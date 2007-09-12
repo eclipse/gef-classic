@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts.algorithms;
+package org.eclipse.zest.layouts.algorithms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,11 +20,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.dataStructures.DisplayIndependentRectangle;
-import org.eclipse.mylyn.zest.layouts.dataStructures.InternalNode;
-import org.eclipse.mylyn.zest.layouts.dataStructures.InternalRelationship;
-import org.eclipse.mylyn.zest.layouts.exampleStructures.SimpleRelationship;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
+import org.eclipse.zest.layouts.dataStructures.InternalNode;
+import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
 
 
 

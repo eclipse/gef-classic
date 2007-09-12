@@ -8,9 +8,9 @@
  * Contributors:
  *     Ian Bull     - updated and modified
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts.algorithms;
+package org.eclipse.zest.layouts.algorithms;
 
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.LayoutStyles;
 
 /**
  * @version 2.0

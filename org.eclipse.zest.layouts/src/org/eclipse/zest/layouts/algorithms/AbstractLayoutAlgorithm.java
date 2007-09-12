@@ -9,7 +9,7 @@
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
 
-package org.eclipse.mylyn.zest.layouts.algorithms;
+package org.eclipse.zest.layouts.algorithms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,22 +19,22 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.mylyn.zest.layouts.Filter;
-import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.LayoutEntity;
-import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.Stoppable;
-import org.eclipse.mylyn.zest.layouts.constraints.BasicEntityConstraint;
-import org.eclipse.mylyn.zest.layouts.dataStructures.BendPoint;
-import org.eclipse.mylyn.zest.layouts.dataStructures.DisplayIndependentDimension;
-import org.eclipse.mylyn.zest.layouts.dataStructures.DisplayIndependentPoint;
-import org.eclipse.mylyn.zest.layouts.dataStructures.DisplayIndependentRectangle;
-import org.eclipse.mylyn.zest.layouts.dataStructures.InternalNode;
-import org.eclipse.mylyn.zest.layouts.dataStructures.InternalRelationship;
-import org.eclipse.mylyn.zest.layouts.progress.ProgressEvent;
-import org.eclipse.mylyn.zest.layouts.progress.ProgressListener;
+import org.eclipse.zest.layouts.Filter;
+import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.Stoppable;
+import org.eclipse.zest.layouts.constraints.BasicEntityConstraint;
+import org.eclipse.zest.layouts.dataStructures.BendPoint;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentDimension;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentPoint;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
+import org.eclipse.zest.layouts.dataStructures.InternalNode;
+import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.progress.ProgressEvent;
+import org.eclipse.zest.layouts.progress.ProgressListener;
 
 /**
  * Handles common elements in all layout algorithms

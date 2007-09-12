@@ -8,11 +8,11 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts.algorithms;
+package org.eclipse.zest.layouts.algorithms;
 
-import org.eclipse.mylyn.zest.layouts.dataStructures.DisplayIndependentRectangle;
-import org.eclipse.mylyn.zest.layouts.dataStructures.InternalNode;
-import org.eclipse.mylyn.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
+import org.eclipse.zest.layouts.dataStructures.InternalNode;
+import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
 /**
  * 

@@ -8,16 +8,16 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts.dataStructures;
+package org.eclipse.zest.layouts.dataStructures;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
-import org.eclipse.mylyn.zest.layouts.LayoutEntity;
-import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
-import org.eclipse.mylyn.zest.layouts.constraints.BasicEdgeConstraints;
-import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.layouts.LayoutBendPoint;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.constraints.BasicEdgeConstraints;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * @author Ian Bull

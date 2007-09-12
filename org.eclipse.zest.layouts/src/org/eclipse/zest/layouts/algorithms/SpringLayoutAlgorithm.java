@@ -8,16 +8,16 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts.algorithms;
+package org.eclipse.zest.layouts.algorithms;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.dataStructures.DisplayIndependentRectangle;
-import org.eclipse.mylyn.zest.layouts.dataStructures.InternalNode;
-import org.eclipse.mylyn.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.dataStructures.DisplayIndependentRectangle;
+import org.eclipse.zest.layouts.dataStructures.InternalNode;
+import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
 /**
  * The SpringLayoutAlgorithm has its own data repository and relation

@@ -8,13 +8,13 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts.dataStructures;
+package org.eclipse.zest.layouts.dataStructures;
 
 import java.util.HashMap;
 
-import org.eclipse.mylyn.zest.layouts.LayoutEntity;
-import org.eclipse.mylyn.zest.layouts.constraints.BasicEntityConstraint;
-import org.eclipse.mylyn.zest.layouts.constraints.LayoutConstraint;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.constraints.BasicEntityConstraint;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * @author Ian Bull

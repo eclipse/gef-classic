@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts.exampleUses;
+package org.eclipse.zest.layouts.exampleUses;
 
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -49,23 +49,23 @@ import javax.swing.JToggleButton;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
-import org.eclipse.mylyn.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.mylyn.zest.layouts.LayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.LayoutBendPoint;
-import org.eclipse.mylyn.zest.layouts.LayoutEntity;
-import org.eclipse.mylyn.zest.layouts.LayoutRelationship;
-import org.eclipse.mylyn.zest.layouts.LayoutStyles;
-import org.eclipse.mylyn.zest.layouts.algorithms.GridLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.algorithms.RadialLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.algorithms.TreeLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.algorithms.VerticalLayoutAlgorithm;
-import org.eclipse.mylyn.zest.layouts.exampleStructures.SimpleNode;
-import org.eclipse.mylyn.zest.layouts.exampleStructures.SimpleRelationship;
-import org.eclipse.mylyn.zest.layouts.progress.ProgressEvent;
-import org.eclipse.mylyn.zest.layouts.progress.ProgressListener;
+import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutBendPoint;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.VerticalLayoutAlgorithm;
+import org.eclipse.zest.layouts.exampleStructures.SimpleNode;
+import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
+import org.eclipse.zest.layouts.progress.ProgressEvent;
+import org.eclipse.zest.layouts.progress.ProgressListener;
 
 /**
  * @author Rob Lintern

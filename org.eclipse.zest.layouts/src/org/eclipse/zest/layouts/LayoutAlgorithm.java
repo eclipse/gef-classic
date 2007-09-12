@@ -8,12 +8,12 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts;
+package org.eclipse.zest.layouts;
 
 import java.util.Comparator;
 import java.util.List;
 
-import org.eclipse.mylyn.zest.layouts.progress.ProgressListener;
+import org.eclipse.zest.layouts.progress.ProgressListener;
 
 /**
  * A simple interface used by all layouts.

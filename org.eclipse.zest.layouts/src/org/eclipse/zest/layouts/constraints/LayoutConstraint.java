@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts.constraints;
+package org.eclipse.zest.layouts.constraints;
 
 /**
  * @author Ian Bull

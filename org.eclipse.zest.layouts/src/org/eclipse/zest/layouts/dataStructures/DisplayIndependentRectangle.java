@@ -8,7 +8,7 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts.dataStructures;
+package org.eclipse.zest.layouts.dataStructures;
 
 
 /**

@@ -1,4 +1,14 @@
-package org.eclipse.mylyn.zest.layouts.algorithms;
+/*******************************************************************************
+ * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     The Chisel Group, University of Victoria
+ *******************************************************************************/
+package org.eclipse.zest.layouts.algorithms;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -10,8 +20,8 @@ import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.DirectedGraphLayout;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
-import org.eclipse.mylyn.zest.layouts.dataStructures.InternalNode;
-import org.eclipse.mylyn.zest.layouts.dataStructures.InternalRelationship;
+import org.eclipse.zest.layouts.dataStructures.InternalNode;
+import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
 public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 

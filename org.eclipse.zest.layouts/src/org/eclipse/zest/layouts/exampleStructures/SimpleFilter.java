@@ -8,9 +8,9 @@
  * Contributors:
  *     The Chisel Group, University of Victoria
  *******************************************************************************/
-package org.eclipse.mylyn.zest.layouts.exampleStructures;
+package org.eclipse.zest.layouts.exampleStructures;
 
-import org.eclipse.mylyn.zest.layouts.Filter;
+import org.eclipse.zest.layouts.Filter;
 
 /**
  * A very simple example of a filter.  This filter never filters
