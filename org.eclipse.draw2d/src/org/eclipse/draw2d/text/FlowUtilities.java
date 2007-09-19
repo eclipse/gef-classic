@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,24 +15,30 @@ import com.ibm.icu.text.BreakIterator;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.TextUtilities;
 
 /**
  * Utility class for FlowFigures.
  * @author hudsonr
  * @since 2.1
  */
-class FlowUtilities
-	extends FigureUtilities
+public class FlowUtilities 
 {
 
 interface LookAhead {
 	int getWidth();
 }
-private static int ELLIPSIS_SIZE;
+
+/**
+ * a singleton default instance
+ */
+public static FlowUtilities INSTANCE = new FlowUtilities();
+
 private static final BreakIterator INTERNAL_LINE_BREAK = BreakIterator.getLineInstance();
 private static TextLayout layout;
 
@@ -61,10 +67,21 @@ private static int findFirstDelimeter(String string) {
 	return Math.min(macNL, unixNL);
 }
 
-private static float getAverageCharWidth(TextFragmentBox fragment, Font font) {
-	if (fragment.getWidth() > 0 && fragment.length != 0)
-		return fragment.getWidth() / (float)fragment.length;
-	return getFontMetrics(font).getAverageCharWidth();
+/**
+ * Gets the average character width.
+ * 
+ * @param fragment the supplied TextFragmentBox to use for calculation.
+ *                 if the length is 0 or if the width is or below 0,
+ *                 the average character width is taken from standard 
+ *                 font metrics.
+ * @param font     the font to use in case the TextFragmentBox conditions 
+ *                 above are true.
+ * @return         the average character width
+ */
+protected float getAverageCharWidth(TextFragmentBox fragment, Font font) {
+    if (fragment.getWidth() > 0 && fragment.length != 0)
+        return fragment.getWidth() / (float)fragment.length;
+    return FigureUtilities.getFontMetrics(font).getAverageCharWidth();
 }
 
 static int getBorderAscent(InlineFlow owner) {
@@ -129,34 +146,28 @@ private static void initBidi(TextFragmentBox frag, String string, Font font) {
 	}
 }
 
-private static int measureString(TextFragmentBox frag, String string, int guess, Font font) {
-	if (frag.requiresBidi()) {
-		// The text and/or could have changed if the lookAhead was invoked.  This will
-		// happen at most once.
-		TextLayout layout = getTextLayout();
-		layout.setText(string);
-		layout.setFont(font);
-		return layout.getBounds(0, guess - 1).width;
-	} else
-		return getStringDimension(string.substring(0, guess), font).x;
+private int measureString(TextFragmentBox frag, String string, int guess, Font font) {
+    if (frag.requiresBidi()) {
+        // The text and/or could have changed if the lookAhead was invoked.  This will
+        // happen at most once.
+        return getTextLayoutBounds(string, font, 0, guess - 1).width;
+    } else
+        return getTextUtilities().getStringExtents(string.substring(0, guess), font).width;
 }
 
-static void setupFragment(TextFragmentBox frag, Font f, String s) {
-	if (frag.getWidth() == -1 || frag.isTruncated()) {
-		int width;
-		if (s.length() == 0 || frag.length == 0)
-			width = 0;
-		else if (frag.requiresBidi()) {
-			TextLayout textLayout = getTextLayout();
-			textLayout.setFont(f);
-			textLayout.setText(s);
-			width = textLayout.getBounds(0, frag.length - 1).width;
-		} else
-			width = getStringDimension(s.substring(0, frag.length), f).x;
-		if (frag.isTruncated())
-			width += ELLIPSIS_SIZE;
-		frag.setWidth(width);
-	}
+protected void setupFragment(TextFragmentBox frag, Font f, String s) {
+    if (frag.getWidth() == -1 || frag.isTruncated()) {
+        int width;
+        if (s.length() == 0 || frag.length == 0)
+            width = 0;
+        else if (frag.requiresBidi()) {
+            width = getTextLayoutBounds(s, f, 0, frag.length - 1).width;
+        } else
+            width = getTextUtilities().getStringExtents(s.substring(0, frag.length), f).width;
+        if (frag.isTruncated())
+            width += getEllipsisWidth(f);
+        frag.setWidth(width);
+    }
 }
 
 /**
@@ -172,7 +183,7 @@ static void setupFragment(TextFragmentBox frag, Font f, String s) {
  * @return the number of characters that will fit in the given space; can be 0 (eg., when
  * the first character of the given string is a newline)
  */
-public static int wrapFragmentInContext(TextFragmentBox frag, String string,
+protected int wrapFragmentInContext(TextFragmentBox frag, String string,
 		FlowContext context, LookAhead lookahead, Font font, int wrapping) {
 	frag.setTruncated(false);
 	int strLen = string.length();
@@ -245,61 +256,59 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 			continue;
 		}
 
-		if (guessSize <= availableWidth) {
-			min = guess;
-			frag.setWidth(guessSize);
-			if (guessSize == availableWidth)
-				max = guess + 1;
-		} else
-			max = guess;
-	}
-	
-	int result = min;
-	boolean continueOnLine = false;
-	if (min == strLen) {
-		//Everything fits
-		if (string.charAt(strLen - 1) == ' ') {
-			if (frag.getWidth() == -1) {
-				frag.length = result;
-				frag.setWidth(measureString(frag, string, result, font));
-			}
-			if (lookahead.getWidth() > availableWidth - frag.getWidth()) {
-				frag.length = result - 1;
-				frag.setWidth(-1);
-			} else
-				frag.length = result;
-		} else {
-			continueOnLine = !canBreakAfter(string.charAt(strLen - 1));
-			frag.length = result;
-		}
-	} else if (min == firstDelimiter) {
-		//move result past the delimiter
-		frag.length = result;
-		if (string.charAt(min) == '\r') {
-			result++;
-			if (++min < strLen && string.charAt(min) == '\n')
-				result++;
-		} else if (string.charAt(min) == '\n')
-			result++;
-	} else if (string.charAt(min) == ' '
-			|| canBreakAfter(string.charAt(min - 1))
-			|| INTERNAL_LINE_BREAK.isBoundary(min)) {
-		frag.length = min;
-		if (string.charAt(min) == ' ')
-			result++;
-		else if (string.charAt(min - 1) == ' ') {
-			frag.length--;
-			frag.setWidth(-1);
-		}
-	} else out: {
-		// In the middle of an unbreakable offset
-		result = INTERNAL_LINE_BREAK.preceding(min);
-		if (result == 0) {
-			switch (wrapping) {
-				case ParagraphTextLayout.WORD_WRAP_TRUNCATE :
-					ELLIPSIS_SIZE = FigureUtilities
-							.getStringExtents(TextFlow.ELLIPSIS, font).width;
-					int truncatedWidth = availableWidth - ELLIPSIS_SIZE;
+        if (guessSize <= availableWidth) {
+            min = guess;
+            frag.setWidth(guessSize);
+            if (guessSize == availableWidth)
+                max = guess + 1;
+        } else
+            max = guess;
+    }
+    
+    int result = min;
+    boolean continueOnLine = false;
+    if (min == strLen) {
+        //Everything fits
+        if (string.charAt(strLen - 1) == ' ') {
+            if (frag.getWidth() == -1) {
+                frag.length = result;
+                frag.setWidth(measureString(frag, string, result, font));
+            }
+            if (lookahead.getWidth() > availableWidth - frag.getWidth()) {
+                frag.length = result - 1;
+                frag.setWidth(-1);
+            } else
+                frag.length = result;
+        } else {
+            continueOnLine = !canBreakAfter(string.charAt(strLen - 1));
+            frag.length = result;
+        }
+    } else if (min == firstDelimiter) {
+        //move result past the delimiter
+        frag.length = result;
+        if (string.charAt(min) == '\r') {
+            result++;
+            if (++min < strLen && string.charAt(min) == '\n')
+                result++;
+        } else if (string.charAt(min) == '\n')
+            result++;
+    } else if (string.charAt(min) == ' '
+            || canBreakAfter(string.charAt(min - 1))
+            || INTERNAL_LINE_BREAK.isBoundary(min)) {
+        frag.length = min;
+        if (string.charAt(min) == ' ')
+            result++;
+        else if (string.charAt(min - 1) == ' ') {
+            frag.length--;
+            frag.setWidth(-1);
+        }
+    } else out: {
+        // In the middle of an unbreakable offset
+        result = INTERNAL_LINE_BREAK.preceding(min);
+        if (result == 0) {
+            switch (wrapping) {
+                case ParagraphTextLayout.WORD_WRAP_TRUNCATE :
+					int truncatedWidth = availableWidth - getEllipsisWidth(font);
 					if (truncatedWidth > 0) {
 						//$TODO this is very slow.  It should be using avgCharWidth to go faster
 						while (min > 0) {
@@ -312,24 +321,56 @@ public static int wrapFragmentInContext(TextFragmentBox frag, String string,
 					} else
 						frag.length = 0;
 					frag.setTruncated(true);
-					result = INTERNAL_LINE_BREAK.following(max - 1);
-					break out;
+                    result = INTERNAL_LINE_BREAK.following(max - 1);
+                    break out;
 
-				default:
-					result = min;
-					break;
-			}
-		}
-		frag.length = result;
-		if (string.charAt(result - 1) == ' ')
-			frag.length--;
-		frag.setWidth(-1);
-	}
-	
-	setupFragment(frag, font, string);
-	context.addToCurrentLine(frag);
-	context.setContinueOnSameLine(continueOnLine);
-	return result;
+                default:
+                    result = min;
+                    break;
+            }
+        }
+        frag.length = result;
+        if (string.charAt(result - 1) == ' ')
+            frag.length--;
+        frag.setWidth(-1);
+    }
+    
+    setupFragment(frag, font, string);
+    context.addToCurrentLine(frag);
+    context.setContinueOnSameLine(continueOnLine);
+    return result;
 }
 
+/**
+ * @see TextLayout#getBounds()
+ */
+protected Rectangle getTextLayoutBounds(String s, Font f, int start, int end) {
+    TextLayout textLayout = getTextLayout();
+    textLayout.setFont(f);
+    textLayout.setText(s);
+    return textLayout.getBounds(start, end);
+}
+
+/**
+ * Returns an instance of a <code>TextUtililities</code> class on which
+ * text calculations can be performed. Clients may override to customize.
+ * 
+ * @return the <code>TextUtililities</code> instance
+ * @since 3.4
+ */
+protected TextUtilities getTextUtilities() {
+    return TextUtilities.INSTANCE;
+}
+
+/**
+ * Gets the ellipsis width.
+ * 
+ * @param font
+ *            the font to be used in the calculation
+ * @return the width of the ellipsis
+ * @since 3.4
+ */
+private int getEllipsisWidth(Font font) {
+    return getTextUtilities().getStringExtents(TextFlow.ELLIPSIS, font).width;
+}
 }

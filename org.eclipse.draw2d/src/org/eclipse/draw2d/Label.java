@@ -115,12 +115,12 @@ private void calculateAlignment() {
 		case EAST:
 		case WEST:
 			alignOnHeight(textLocation, getTextSize(), textAlignment);
-			alignOnHeight(iconLocation, iconSize, iconAlignment);
+			alignOnHeight(iconLocation, getIconSize(), iconAlignment);
 			break;
 		case NORTH:
 		case SOUTH:
 			alignOnWidth(textLocation, getSubStringTextSize(), textAlignment);
-			alignOnWidth(iconLocation, iconSize, iconAlignment);
+			alignOnWidth(iconLocation, getIconSize(), iconAlignment);
 			break;
 	}
 }
@@ -134,16 +134,16 @@ private void calculateAlignment() {
  * @since 2.0
  */ 
 protected Dimension calculateLabelSize(Dimension txtSize) {
-	int gap = iconTextGap;
+	int gap = getIconTextGap();
 	if (getIcon() == null || getText().equals("")) //$NON-NLS-1$
 		gap = 0;
 	Dimension d = new Dimension(0, 0);
 	if (textPlacement == WEST || textPlacement == EAST) {
-		d.width = iconSize.width + gap + txtSize.width;
-		d.height = Math.max(iconSize.height, txtSize.height);
+		d.width = getIconSize().width + gap + txtSize.width;
+		d.height = Math.max(getIconSize().height, txtSize.height);
 	} else {
-		d.width = Math.max(iconSize.width, txtSize.width);
-		d.height = iconSize.height + gap + txtSize.height;
+		d.width = Math.max(getIconSize().width, txtSize.width);
+		d.height = getIconSize().height + gap + txtSize.height;
 	}
 	return d;
 }
@@ -195,7 +195,7 @@ private void calculateLocations() {
 }
 
 private void calculatePlacement() {
-	int gap = iconTextGap;
+	int gap = getIconTextGap();
 	if (icon == null || text.equals("")) //$NON-NLS-1$
 		gap = 0;
 	Insets insets = getInsets();
@@ -203,7 +203,7 @@ private void calculatePlacement() {
 	switch(textPlacement) {
 	case EAST:
 		iconLocation.x = insets.left;
-		textLocation.x = iconSize.width + gap + insets.left;	
+		textLocation.x = getIconSize().width + gap + insets.left;	
 		break;
 	case WEST:
 		textLocation.x = insets.left;
@@ -214,7 +214,7 @@ private void calculatePlacement() {
 		iconLocation.y = getTextSize().height + gap + insets.top;
 		break;
 	case SOUTH:
-		textLocation.y = iconSize.height + gap + insets.top;
+		textLocation.y = getIconSize().height + gap + insets.top;
 		iconLocation.y = insets.top;
 	}
 }
@@ -228,7 +228,7 @@ private void calculatePlacement() {
  * @since 2.0
  */
 protected Dimension calculateSubStringTextSize() {
-	return FigureUtilities.getTextExtents(getSubStringText(), getFont());
+	return getTextUtilities().getTextExtents(getSubStringText(), getFont());
 }
 
 /**
@@ -241,7 +241,7 @@ protected Dimension calculateSubStringTextSize() {
  * @since 2.0
  */
 protected Dimension calculateTextSize() {
-	return FigureUtilities.getTextExtents(getText(), getFont());
+	return getTextUtilities().getTextExtents(getText(), getFont());
 }
 
 private void clearLocations() {
@@ -277,7 +277,7 @@ public int getIconAlignment() {
  */
 public Rectangle getIconBounds() {
 	Rectangle bounds = getBounds();
-	return new Rectangle(bounds.getLocation().translate(getIconLocation()), iconSize);
+	return new Rectangle(bounds.getLocation().translate(getIconLocation()), getIconSize());
 }
 
 /**
@@ -313,8 +313,8 @@ public Dimension getMinimumSize(int w, int h) {
 		minSize.setSize(getLayoutManager().getMinimumSize(this, w, h));
 	
 	Dimension labelSize = 
-		calculateLabelSize(FigureUtilities.getTextExtents(ELLIPSIS, getFont())
-				.intersect(FigureUtilities.getTextExtents(getText(), getFont())));
+		calculateLabelSize(getTextUtilities().getTextExtents(getTruncationString(), getFont())
+				.intersect(getTextUtilities().getTextExtents(getText(), getFont())));
 	Insets insets = getInsets();
 	labelSize.expand(insets.getWidth(), insets.getHeight());
 	minSize.union(labelSize);
@@ -360,15 +360,15 @@ public String getSubStringText() {
 	
 	Dimension effectiveSize = getTextSize().getExpanded(-widthShrink, 0);
 	Font currentFont = getFont();
-	int dotsWidth = FigureUtilities.getTextWidth(ELLIPSIS, currentFont);
+	int dotsWidth = getTextUtilities().getTextExtents(getTruncationString(), currentFont).width;
 	
 	if (effectiveSize.width < dotsWidth)
 		effectiveSize.width = dotsWidth;
 	
-	int subStringLength = FigureUtilities.getLargestSubstringConfinedTo(text,
+	int subStringLength = getTextUtilities().getLargestSubstringConfinedTo(text,
 												  currentFont,
 												  effectiveSize.width - dotsWidth);
-	subStringText = new String(text.substring(0, subStringLength) + ELLIPSIS);
+	subStringText = new String(text.substring(0, subStringLength) + getTruncationString());
 	return subStringText;
 }
 
@@ -551,7 +551,7 @@ public void setIconAlignment (int align) {
  * @since 2.0
  */
 public void setIconDimension(Dimension d) {
-	if (d.equals(iconSize)) 
+	if (d.equals(getIconSize())) 
 		return;
 	iconSize = d;
 	revalidate();
@@ -652,6 +652,38 @@ public void setTextPlacement (int where) {
 	textPlacement = where;
 	revalidate();
 	repaint();
+}
+
+/**
+ * Gets the <code>TextUtilities</code> instance to be used in measurement
+ * calculations.
+ * 
+ * @return a <code>TextUtilities</code> instance
+ * @since 3.2
+ */
+public TextUtilities getTextUtilities() {
+    return TextUtilities.INSTANCE;
+}
+
+/**
+ * Gets the string that will be appended to the text when the label is
+ * truncated. By default, this returns an ellipsis.
+ * 
+ * @return the string to append to the text when truncated
+ * @since 3.4
+ */
+protected String getTruncationString() {
+    return ELLIPSIS;
+}
+
+/**
+ * Gets the icon size
+ * 
+ * @return the icon size
+ * @since 3.4
+ */
+protected Dimension getIconSize() {
+    return iconSize;
 }
 
 }

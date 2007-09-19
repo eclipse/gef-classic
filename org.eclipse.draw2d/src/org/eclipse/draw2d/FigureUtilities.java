@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -111,48 +111,6 @@ public static IFigure getRoot(IFigure figure) {
 protected static org.eclipse.swt.graphics.Point getStringDimension(String s, Font f) {
 	setFont(f);
 	return getGC().stringExtent(s);
-}
-
-/**
- * Returns the largest substring of <i>s</i> in Font <i>f</i> that can be confined to the 
- * number of pixels in <i>availableWidth<i>.
- * 
- * @param s the original string
- * @param f the font
- * @param availableWidth the available width
- * @return the largest substring that fits in the given width
- * @since 2.0
- */
-static int getLargestSubstringConfinedTo(String s, Font f, int availableWidth) {
-	FontMetrics metrics = getFontMetrics(f);
-	int min, max;
-	float avg = metrics.getAverageCharWidth();
-	min = 0;
-	max = s.length() + 1;
-
-	//The size of the current guess
-	int guess = 0,
-	    guessSize = 0;
-	while ((max - min) > 1) {
-		//Pick a new guess size
-		//	New guess is the last guess plus the missing width in pixels
-		//	divided by the average character size in pixels
-		guess = guess + (int)((availableWidth - guessSize) / avg);
-
-		if (guess >= max) guess = max - 1;
-		if (guess <= min) guess = min + 1;
-
-		//Measure the current guess
-		guessSize = getTextExtents(s.substring(0, guess), f).width;
-
-		if (guessSize < availableWidth)
-			//We did not use the available width
-			min = guess;
-		else
-			//We exceeded the available width
-			max = guess;
-	}
-	return min;
 }
 
 /**

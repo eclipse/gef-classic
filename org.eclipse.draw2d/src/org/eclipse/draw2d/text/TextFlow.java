@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,12 +12,11 @@ package org.eclipse.draw2d.text;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.TextLayout;
 
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.TextUtilities;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -95,7 +94,7 @@ boolean addLeadingWordWidth(String text, int[] width) {
 	text = text.substring(1, index + 1);
 
 	if (bidiInfo == null)
-		width[0] += FlowUtilities.getStringExtents(text, getFont()).width;
+		width[0] += getTextUtilities().getStringExtents(text, getFont()).width;
 	else {
 		TextLayout textLayout = FlowUtilities.getTextLayout();
 		textLayout.setFont(getFont());
@@ -175,8 +174,7 @@ private int findPreviousLineOffset(Point p, int[] trailing) {
 }
 
 int getAscent() {
-	FontMetrics fm = FigureUtilities.getFontMetrics(getFont());
-	return fm.getHeight() - fm.getDescent();
+    return getTextUtilities().getAscent(getFont());
 }
 
 /**
@@ -267,7 +265,7 @@ Point getPointInBox(TextFragmentBox box, int offset, int index, boolean trailing
 		if (trailing && offset < box.length)
 			offset++;
 		String substring = getText().substring(box.offset, box.offset + offset);
-		result.x = FigureUtilities.getStringExtents(substring, getFont()).width;
+		result.x = getTextUtilities().getStringExtents(substring, getFont()).width;
 	} else {
 		TextLayout layout = FlowUtilities.getTextLayout();
 		layout.setFont(getFont());
@@ -283,7 +281,7 @@ Point getPointInBox(TextFragmentBox box, int offset, int index, boolean trailing
 }
 
 int getDescent() {
-	return FigureUtilities.getFontMetrics(getFont()).getDescent();
+    return getTextUtilities().getDescent(getFont());
 }
 
 /**
@@ -485,7 +483,7 @@ protected void paintFigure(Graphics g) {
 	g.getClip(Rectangle.SINGLETON);
 	int yStart = Rectangle.SINGLETON.y;
 	int yEnd = Rectangle.SINGLETON.bottom();
-		
+	
 	for (int i = 0; i < fragments.size(); i++) {
 		frag = (TextFragmentBox)fragments.get(i);
 //		g.drawLine(frag.getX(), frag.getLineRoot().getVisibleTop(),
@@ -499,7 +497,7 @@ protected void paintFigure(Graphics g) {
 		//Break loop at first non-visible fragment
 		if (yEnd < frag.getLineRoot().getVisibleTop())
 			break;
-
+		
 		String draw = getBidiSubstring(frag, i);
 		
 		if (frag.isTruncated())
@@ -629,4 +627,25 @@ private int vDistanceBetween(TextFragmentBox box, int y) {
 	return Math.max(0, y - (box.getBaseline() + box.getLineRoot().getDescent()));
 }
 
+/**
+ * Gets the <code>FlowUtilities</code> instance to be used in measurement
+ * calculations.
+ * 
+ * @return a <code>FlowUtilities</code> instance
+ * @since 3.2
+ */
+protected FlowUtilities getFlowUtilities() {
+    return FlowUtilities.INSTANCE;
+}
+
+/**
+ * Gets the <code>TextUtilities</code> instance to be used in measurement
+ * calculations.
+ * 
+ * @return a <code>TextUtilities</code> instance
+ * @since 3.2
+ */
+protected TextUtilities getTextUtilities() {
+    return TextUtilities.INSTANCE;
+}
 }
