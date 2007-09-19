@@ -200,7 +200,7 @@ private int getBidiPrefixLength(TextFragmentBox box, int index) {
  * @return the bidi string for that fragment
  * @since 3.1
  */
-private String getBidiSubstring(TextFragmentBox box, int index) {
+protected String getBidiSubstring(TextFragmentBox box, int index) {
 	if (box.getBidiLevel() < 1)
 		return getText().substring(box.offset, box.offset + box.length);
 	
@@ -558,7 +558,7 @@ protected void paintSelection(Graphics graphics) {
 	}
 }
 
-private void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
+protected void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
 	if (bidiLevel == -1) {
 		g.drawString(draw, x, y);
 	} else {
