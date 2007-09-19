@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -228,7 +228,7 @@ protected GraphicalEditPart getEditPart() {
 	return source;
 }
 
-private CellEditorLocator getLocator() {
+protected CellEditorLocator getLocator() {
 	return locator;
 }
 
@@ -238,7 +238,7 @@ private void handleValueChanged() {
 	placeCellEditor();
 }
 
-private void hookListeners() {
+protected void hookListeners() {
 	ancestorListener = new AncestorListener.Stub() {
 		public void ancestorMoved(IFigure ancestor) {
 			placeCellEditor();
@@ -389,7 +389,6 @@ public void showFeedback() {
 
 /**
  * Unhooks listeners.  Called from {@link #bringDown()}.
- * TODO: hookListeners() and unhookListeners() should have the same visibility.
  */
 protected void unhookListeners() {
 	getEditPart().getFigure().removeAncestorListener(ancestorListener);
