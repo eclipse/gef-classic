@@ -25,7 +25,7 @@ import org.eclipse.draw2d.TextUtilities;
 /**
  * Utility class for FlowFigures.
  * @author hudsonr
- * @since 2.1
+ * @since 3.4
  */
 public class FlowUtilities 
 {
@@ -155,18 +155,28 @@ private int measureString(TextFragmentBox frag, String string, int guess, Font f
         return getTextUtilities().getStringExtents(string.substring(0, guess), font).width;
 }
 
-protected void setupFragment(TextFragmentBox frag, Font f, String s) {
-    if (frag.getWidth() == -1 || frag.isTruncated()) {
+/**
+ * Sets up the fragment width based using the font and string passed in.
+ * 
+ * @param fragment
+ *            the text fragment whose width will be set
+ * @param font
+ *            the font to be used in the calculation
+ * @param string
+ *            the string to be used in the calculation
+ */
+final protected void setupFragment(TextFragmentBox fragment, Font font, String string) {
+    if (fragment.getWidth() == -1 || fragment.isTruncated()) {
         int width;
-        if (s.length() == 0 || frag.length == 0)
+        if (string.length() == 0 || fragment.length == 0)
             width = 0;
-        else if (frag.requiresBidi()) {
-            width = getTextLayoutBounds(s, f, 0, frag.length - 1).width;
+        else if (fragment.requiresBidi()) {
+            width = getTextLayoutBounds(string, font, 0, fragment.length - 1).width;
         } else
-            width = getTextUtilities().getStringExtents(s.substring(0, frag.length), f).width;
-        if (frag.isTruncated())
-            width += getEllipsisWidth(f);
-        frag.setWidth(width);
+            width = getTextUtilities().getStringExtents(string.substring(0, fragment.length), font).width;
+        if (fragment.isTruncated())
+            width += getEllipsisWidth(font);
+        fragment.setWidth(width);
     }
 }
 
@@ -183,7 +193,7 @@ protected void setupFragment(TextFragmentBox frag, Font f, String s) {
  * @return the number of characters that will fit in the given space; can be 0 (eg., when
  * the first character of the given string is a newline)
  */
-protected int wrapFragmentInContext(TextFragmentBox frag, String string,
+final protected int wrapFragmentInContext(TextFragmentBox frag, String string,
 		FlowContext context, LookAhead lookahead, Font font, int wrapping) {
 	frag.setTruncated(false);
 	int strLen = string.length();

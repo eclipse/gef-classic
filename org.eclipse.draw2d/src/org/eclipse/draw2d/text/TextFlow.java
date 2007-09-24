@@ -632,7 +632,7 @@ private int vDistanceBetween(TextFragmentBox box, int y) {
  * calculations.
  * 
  * @return a <code>FlowUtilities</code> instance
- * @since 3.2
+ * @since 3.4
  */
 protected FlowUtilities getFlowUtilities() {
     return FlowUtilities.INSTANCE;
@@ -643,7 +643,7 @@ protected FlowUtilities getFlowUtilities() {
  * calculations.
  * 
  * @return a <code>TextUtilities</code> instance
- * @since 3.2
+ * @since 3.4
  */
 protected TextUtilities getTextUtilities() {
     return TextUtilities.INSTANCE;
