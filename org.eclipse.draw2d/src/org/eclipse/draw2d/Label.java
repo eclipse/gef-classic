@@ -659,7 +659,7 @@ public void setTextPlacement (int where) {
  * calculations.
  * 
  * @return a <code>TextUtilities</code> instance
- * @since 3.2
+ * @since 3.4
  */
 public TextUtilities getTextUtilities() {
     return TextUtilities.INSTANCE;
