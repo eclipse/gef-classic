@@ -45,6 +45,7 @@ import org.eclipse.swt.graphics.Image;
  * nodes.  Containers cannot have custom figures. 
  * 
  * @author Ian Bull
+ * 
  *
  */
 public class GraphContainer extends GraphNode implements IContainer {
