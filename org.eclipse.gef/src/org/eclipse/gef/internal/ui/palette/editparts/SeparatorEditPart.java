@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.palette.PaletteSeparator;
+import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
  * EditPart for the PaletteSeparator
@@ -45,7 +46,7 @@ protected IFigure createFigure() {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getToolTipText()
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getToolTipText()
  */
 protected String getToolTipText() {
 	return null;

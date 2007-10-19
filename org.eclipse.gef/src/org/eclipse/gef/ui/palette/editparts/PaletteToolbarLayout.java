@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.internal.ui.palette.editparts;
+package org.eclipse.gef.ui.palette.editparts;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,9 +19,11 @@ import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import org.eclipse.gef.internal.ui.palette.editparts.DrawerFigure;
+
 /**
- * A ToolbarLayout-like layout for the palette.  This layout is palette-specific and 
- * should not be used externally.  This layout only works when vertically oriented.
+ * A ToolbarLayout-like layout for the palette. This layout only works when 
+ * vertically oriented.
  * 
  * @author Pratik Shah
  */
@@ -39,6 +41,9 @@ protected boolean isChildGrowing(IFigure child) {
 	return child instanceof DrawerFigure && ((DrawerFigure)child).isExpanded();
 }
 
+/**
+ * @see org.eclipse.draw2d.ToolbarLayout#layout(org.eclipse.draw2d.IFigure)
+ */
 public void layout(IFigure parent) {
 	List children = parent.getChildren();
 	List childrenGrabbingVertical = new ArrayList();

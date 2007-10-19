@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,18 +8,22 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.internal.ui.palette.editparts;
+package org.eclipse.gef.ui.palette.editparts;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayoutAnimator;
 
+import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.DrawerFigure;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
+ * An animator for the layout of the palette.
+ * 
  * @author Randy Hudson, Pratik Shah
  */
 public class PaletteAnimator extends LayoutAnimator {
@@ -28,16 +32,26 @@ private List drawers = new ArrayList();
 private PaletteViewerPreferences prefs;
 
 /**
- * Constructor
+ * Constructor for a PaletteAnimator
+ * @param prefs The palette PaletteViewerPreferencesPreferences
  */
 public PaletteAnimator(PaletteViewerPreferences prefs) {
 	this.prefs = prefs;
 }
 
+/**
+ * Add a drawer to the palette.
+ * @param drawer the drawer.
+ */
 public void addDrawer(DrawerEditPart drawer) {
 	drawers.add(drawer.getFigure());
 }
 
+/**
+ * Collapse the provided drawer if the automatoc collapse setting is enabled. 
+ * @param openDrawer The drawer to collapse.
+ * @since 3.2
+ */
 protected void autoCollapse(DrawerFigure openDrawer) {
 	int autoCollapseMode = prefs.getAutoCollapseSetting();
 	
@@ -83,15 +97,25 @@ protected void autoCollapse(DrawerFigure openDrawer) {
 	}
 }
 
+/**
+ * @see org.eclipse.draw2d.Animator#playbackStarting(org.eclipse.draw2d.IFigure)
+ */
 public void playbackStarting(IFigure figure) {
 	if (figure instanceof DrawerFigure)
 		((DrawerFigure)figure).setAnimating(true);
 }
 
+/**
+ * Remove the drawer.
+ * @param drawer the drawer.
+ */
 public void removeDrawer(DrawerEditPart drawer) {
 	drawers.remove(drawer.getFigure());
 }
 
+/**
+ * @see org.eclipse.draw2d.Animator#init(org.eclipse.draw2d.IFigure)
+ */
 public void init(IFigure figure) {
 	if (figure instanceof DrawerFigure) {
 		DrawerFigure drawer = (DrawerFigure) figure;
@@ -102,6 +126,9 @@ public void init(IFigure figure) {
 	super.init(figure);
 }
 
+/**
+ * @see org.eclipse.draw2d.Animator#tearDown(org.eclipse.draw2d.IFigure)
+ */
 public void tearDown(IFigure figure) {
 	if (figure instanceof DrawerFigure)
 		((DrawerFigure) figure).setAnimating(false);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,8 @@ import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
+import org.eclipse.gef.ui.palette.editparts.PaletteAnimator;
+import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
  * EditPart for a PaletteDrawer
@@ -141,7 +143,7 @@ public boolean isPinnedOpen() {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#nameNeededInToolTip()
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#nameNeededInToolTip()
  */
 protected boolean nameNeededInToolTip() {
 	return false;
@@ -156,6 +158,9 @@ public boolean canBePinned() {
 	return getDrawerFigure().isPinShowing();
 }
 
+/**
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#createAccessible()
+ */
 protected AccessibleEditPart createAccessible() {
 	return new AccessibleGraphicalEditPart() {
 		public void getDescription(AccessibleEvent e) {
@@ -210,6 +215,9 @@ protected void register() {
 	getFigure().addLayoutListener(getPaletteAnimator());
 }
 
+/**
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#restoreState(org.eclipse.ui.IMemento)
+ */
 public void restoreState(IMemento memento) {
 	setExpanded(new Boolean(memento.getString(PROPERTY_EXPANSION_STATE)).booleanValue());
 	setPinnedOpen(new Boolean(memento.getString(PROPERTY_PINNED_STATE)).booleanValue());
@@ -222,6 +230,9 @@ public void restoreState(IMemento memento) {
 	super.restoreState(memento);
 }
 
+/**
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#saveState(org.eclipse.ui.IMemento)
+ */
 public void saveState(IMemento memento) {
 	memento.putString(PROPERTY_EXPANSION_STATE, new Boolean(isExpanded()).toString());
 	memento.putString(PROPERTY_PINNED_STATE, new Boolean(isPinnedOpen()).toString());
@@ -244,7 +255,7 @@ public void setExpanded(boolean expanded) {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
  */
 protected void setImageInFigure(Image image) {
 	getDrawerFigure().setTitleIcon(image);

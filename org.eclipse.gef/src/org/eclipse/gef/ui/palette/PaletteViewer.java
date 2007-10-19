@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,6 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editparts.SimpleRootEditPart;
 import org.eclipse.gef.internal.ui.palette.PaletteSelectionTool;
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
-import org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.PaletteStackEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 import org.eclipse.gef.palette.PaletteDrawer;
@@ -42,6 +41,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog;
+import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 import org.eclipse.gef.ui.parts.PaletteViewerKeyHandler;
 import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 

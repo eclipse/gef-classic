@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
+import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 public class ToolEntryEditPart
 	extends PaletteEditPart
@@ -266,7 +267,7 @@ public IFigure createFigure() {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#deactivate()
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#deactivate()
  */
 public void deactivate() {
 	customLabel.dispose();
@@ -302,7 +303,7 @@ private ToolEntry getToolEntry() {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getToolTipText()
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getToolTipText()
  */
 protected String getToolTipText() {
 	String result = null;

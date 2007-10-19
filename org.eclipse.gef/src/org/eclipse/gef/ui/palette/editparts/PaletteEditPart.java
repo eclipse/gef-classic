@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.gef.internal.ui.palette.editparts;
+package org.eclipse.gef.ui.palette.editparts;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -44,11 +44,18 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewer;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
+/**
+ * The abstract implementation of palette edit parts. All edit parts used in 
+ * the palette must extend this class.
+ */
 public abstract class PaletteEditPart
 	extends AbstractGraphicalEditPart
 	implements PropertyChangeListener
 {
 	
+/**
+ * The name of each entry in the palette, used to restore the state.
+ */	
 public static final String XML_NAME = "entry"; //$NON-NLS-1$
 private static final Border TOOLTIP_BORDER = new MarginBorder(0, 2, 1, 0);
 private static ImageCache globalImageCache;
@@ -63,6 +70,10 @@ private PropertyChangeListener childListener = new PropertyChangeListener() {
 private Image image;
 private ImageDescriptor imgDescriptor;
 
+/**
+ * Constructor for the PaletteEditPart. 
+ * @param model The model element for this edit part.
+ */
 public PaletteEditPart(PaletteEntry model) {
 	setModel(model);
 }
@@ -80,13 +91,21 @@ public void activate() {
 /**
  * returns the AccessibleEditPart for this EditPart.   This method is called lazily from
  * {@link #getAccessibleEditPart()}.
+ * @return the AccessibleEditPart.
  */
 protected AccessibleEditPart createAccessible() {
 	return null;
 }
 
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
+ */
 public void createEditPolicies() { }
 
+/**
+ * Create the tool tip for this palette edit part.
+ * @return the tool tip figure.
+ */
 protected IFigure createToolTip() {
 	String message = getToolTipText();
 	if (message == null || message.length() == 0)
@@ -122,17 +141,28 @@ public void deactivate() {
 	super.deactivate();
 }
 
-
+/**
+ * @see org.eclipse.gef.editparts.AbstractEditPart#getAccessibleEditPart()
+ */
 protected AccessibleEditPart getAccessibleEditPart() {
 	if (acc == null)
 		acc = createAccessible();
 	return acc;
 }
 
-class SingleSelectionTracker extends SelectEditPartTracker {
-	SingleSelectionTracker() {
+/**
+ * A selection tracker for the edit part. 
+ */
+public class SingleSelectionTracker extends SelectEditPartTracker {
+	/**
+	 * Constructor for a SingleSelectionTracker.
+	 */
+	public SingleSelectionTracker() {
 		super(PaletteEditPart.this);
 	}
+	/**
+	 * @see org.eclipse.gef.tools.SelectEditPartTracker#performSelection()
+	 */
 	protected void performSelection() {
 		if (hasSelectionOccurred())
 			return;
@@ -154,6 +184,7 @@ public DragTracker getDragTracker(Request request) {
  * that once an image is allocated, it is never freed until the display is disposed. 
  * However, it has the advantage that the same image in different palettes is
  * only ever created once.
+ * @return the image cache.
  */
 protected static ImageCache getImageCache() {
 	ImageCache cache = globalImageCache;
@@ -206,22 +237,42 @@ public List getModelChildren() {
 	return modelChildren;
 }
 
+/**
+ * Get the model element for this palette edit part.
+ * @return the model element.
+ */
 protected PaletteEntry getPaletteEntry() {
 	return (PaletteEntry)getModel();
 }
 
-PaletteViewer getPaletteViewer() {
+/**
+ * Get the palette viewer for this palette edit part.
+ * @return the palette viewer.
+ */
+protected PaletteViewer getPaletteViewer() {
 	return (PaletteViewer)getViewer();
 }
 
+/**
+ * Get the palette viewer preferences for this palette edit part.
+ * @return the palette viewer preferences.
+ */
 protected PaletteViewerPreferences getPreferenceSource() {
 	return ((PaletteViewer)getViewer()).getPaletteViewerPreferences();
 }
 
+/**
+ * Get the tool tip figure for this palette edit part.
+ * @return the tool tip figure.
+ */
 protected IFigure getToolTipFigure() {
 	return getFigure();
 }
 
+/**
+ * Get the tool tip text for this palette edit part.
+ * @return the tool tip text.
+ */
 protected String getToolTipText() {
 	String text = null;
 	PaletteEntry entry = (PaletteEntry)getModel();
@@ -244,6 +295,11 @@ protected String getToolTipText() {
 	return text;
 }
 
+/**
+ * Determine if the name is needed in the tool tip.
+ * @return <code>true</code> if the name is needed in the tool tip.
+ * @since 3.2
+ */
 protected boolean nameNeededInToolTip() {
 	return getPreferenceSource().getLayoutSetting() 
 			== PaletteViewerPreferences.LAYOUT_ICONS;
@@ -265,6 +321,10 @@ public void propertyChange(PropertyChangeEvent evt) {
 		refreshVisuals();
 }
 
+/**
+ * Restore the state of the palette entry. 
+ * @param memento the saved state of the palette entry.
+ */
 public void restoreState(IMemento memento) {
 	Iterator iter = getChildren().iterator();
 	IMemento[] childMementos = memento.getChildren(XML_NAME);
@@ -273,12 +333,20 @@ public void restoreState(IMemento memento) {
 		((PaletteEditPart)iter.next()).restoreState(childMementos[index++]);
 }
 
+/**
+ * Save the state of the palette entry. 
+ * @param memento the saved state of the palette entry.
+ */
 public void saveState(IMemento memento) {
 	Iterator iter = getChildren().iterator();
 	while (iter.hasNext())
 		((PaletteEditPart)iter.next()).saveState(memento.createChild(XML_NAME));
 }
 
+/**
+ * Set the image for this palette edit part.
+ * @param desc the image descriptor.
+ */
 protected void setImageDescriptor(ImageDescriptor desc) {
 	if (desc == imgDescriptor)
 		return;
@@ -286,6 +354,10 @@ protected void setImageDescriptor(ImageDescriptor desc) {
 	setImageInFigure(getImageCache().getImage(imgDescriptor));
 }
 
+/**
+ * Set the image to be used in the figure for this edit edit.
+ * @param image the image
+ */
 protected void setImageInFigure(Image image) { }
 
 private void traverseChildren(PaletteEntry parent, boolean add) {
@@ -306,6 +378,9 @@ private void traverseChildren(List children, boolean add) {
 	}
 }
 
+/**
+ * The image cache for this edit part.
+ */
 protected static class ImageCache {
 	/** Map from ImageDescriptor to Image */
 	private Map images = new HashMap(11);

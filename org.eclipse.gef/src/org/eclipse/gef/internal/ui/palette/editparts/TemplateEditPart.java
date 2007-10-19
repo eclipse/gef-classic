@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
+import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
  * @author Eric Bordeau, Pratik Shah
@@ -49,7 +50,7 @@ public TemplateEditPart(PaletteTemplateEntry entry) {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#createAccessible()
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#createAccessible()
  */
 protected AccessibleEditPart createAccessible() {
 	return new AccessibleGraphicalEditPart () {
@@ -81,7 +82,7 @@ public IFigure createFigure() {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#deactivate()
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#deactivate()
  */
 public void deactivate() {
 	((DetailedLabelFigure)getFigure()).dispose();
@@ -89,7 +90,7 @@ public void deactivate() {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
  */
 public DragTracker getDragTracker(Request request) {
 	return new SingleSelectionTracker() {
@@ -105,7 +106,7 @@ private PaletteTemplateEntry getTemplateEntry() {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#getToolTipText()
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getToolTipText()
  */
 protected String getToolTipText() {
 	String result = null;
@@ -159,7 +160,7 @@ public void saveState(IMemento memento) {
 }
 
 /**
- * @see org.eclipse.gef.internal.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
+ * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
  */
 protected void setImageInFigure(Image image) {
 	DetailedLabelFigure fig = (DetailedLabelFigure)getFigure();
