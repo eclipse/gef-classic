@@ -608,7 +608,7 @@ protected void updateTargetRequest() {
 	request.getExtendedData().clear();
 	request.setMoveDelta(moveDelta);
 	
-	if (snapToHelper != null && !getCurrentInput().isModKeyDown(MODIFIER_IGNORE_SNAP)) {
+	if (snapToHelper != null && !getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING)) {
 		PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
 		PrecisionRectangle jointRect = compoundSrcRect.getPreciseCopy();
 		baseRect.translate(moveDelta);

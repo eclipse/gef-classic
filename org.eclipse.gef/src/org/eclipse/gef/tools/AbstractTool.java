@@ -170,7 +170,7 @@ protected static final int STATE_TERMINAL = 1 << 30;
  * Key modifier for ignoring snap while dragging.  It's CTRL on Mac, and ALT on all
  * other platforms.
  */
-static final int MODIFIER_IGNORE_SNAP;
+static final int MODIFIER_NO_SNAPPING;
 
 private long accessibleBegin;
 
@@ -191,9 +191,9 @@ private int startX, startY, state;
 
 static {
 	if (SWT.getPlatform().equals("carbon"))//$NON-NLS-1$
-		MODIFIER_IGNORE_SNAP = SWT.CTRL;
+		MODIFIER_NO_SNAPPING = SWT.CTRL;
 	else
-		MODIFIER_IGNORE_SNAP = SWT.ALT;
+		MODIFIER_NO_SNAPPING = SWT.ALT;
 }
 
 boolean acceptAbort(KeyEvent e) {
