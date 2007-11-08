@@ -19,24 +19,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.EventObject;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorSite;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IKeyBindingService;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.actions.ActionFactory;
-import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
-
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.PositionConstants;
-
 import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.EditPartViewer;
@@ -47,12 +35,6 @@ import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
-import org.eclipse.gef.ui.actions.ActionRegistry;
-import org.eclipse.gef.ui.actions.GEFActionConstants;
-import org.eclipse.gef.ui.parts.ContentOutlinePage;
-import org.eclipse.gef.ui.parts.GraphicalEditor;
-import org.eclipse.gef.ui.parts.TreeViewer;
-
 import org.eclipse.gef.examples.text.actions.BooleanStyleAction;
 import org.eclipse.gef.examples.text.actions.MultiStyleAction;
 import org.eclipse.gef.examples.text.actions.StyleService;
@@ -71,6 +53,22 @@ import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.tools.TextTool;
+import org.eclipse.gef.tools.SelectionTool;
+import org.eclipse.gef.ui.actions.ActionRegistry;
+import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.parts.ContentOutlinePage;
+import org.eclipse.gef.ui.parts.GraphicalEditor;
+import org.eclipse.gef.ui.parts.TreeViewer;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IKeyBindingService;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
 /**
  * @since 3.1
@@ -84,8 +82,13 @@ class TextOutlinePage extends ContentOutlinePage {
 
 	public TextOutlinePage(EditPartViewer viewer) {
 		super(new TreeViewer());
-		getEditDomain().addViewer(getViewer());
-		getViewer().setEditPartFactory(new EditPartFactory() {
+		EditDomain domain = new DefaultEditDomain(TextEditor.this);
+		domain.setDefaultTool(new SelectionTool());
+		domain.loadDefaultTool();
+		EditPartViewer treeViewer = getViewer();
+		treeViewer.setEditDomain(domain);
+		getSelectionSynchronizer().addViewer(treeViewer);
+		treeViewer.setEditPartFactory(new EditPartFactory() {
 			public EditPart createEditPart(EditPart context, Object model) {
 				if (model instanceof Container)
 					return new ContainerTreePart(model);
