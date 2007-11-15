@@ -13,14 +13,14 @@ package org.eclipse.gef.examples.digraph1.factory;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
-import org.eclipse.gef.examples.digraph1.editpart.Digraph1NodeEditPart;
 import org.eclipse.gef.examples.digraph1.editpart.Digraph1GraphEditPart;
-import org.eclipse.gef.examples.digraph1.model.Digraph1Node;
+import org.eclipse.gef.examples.digraph1.editpart.Digraph1NodeEditPart;
 import org.eclipse.gef.examples.digraph1.model.Digraph1Graph;
+import org.eclipse.gef.examples.digraph1.model.Digraph1Node;
 
 /**
  * A factory for creating new EditParts for the directed graph.
- *
+ * 
  * @author Anthony Hunter
  */
 public class Digraph1EditPartFactory implements EditPartFactory {

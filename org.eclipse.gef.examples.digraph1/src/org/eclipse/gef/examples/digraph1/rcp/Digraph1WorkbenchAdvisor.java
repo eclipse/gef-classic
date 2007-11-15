@@ -16,7 +16,8 @@ import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 /**
- * A Workbench Advisor for the Directed Graph Example Editor as an RCP application.
+ * A Workbench Advisor for the Directed Graph Example Editor as an RCP
+ * application.
  * 
  * @author Anthony Hunter
  */

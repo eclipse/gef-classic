@@ -29,7 +29,7 @@ import org.eclipse.ui.part.ViewPart;
 public class Digraph1GraphicalView extends ViewPart {
 
 	private DefaultEditDomain editDomain;
-	
+
 	private GraphicalViewer graphicalViewer;
 
 	/*
