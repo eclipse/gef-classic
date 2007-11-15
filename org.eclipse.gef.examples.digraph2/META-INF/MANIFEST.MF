@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Bundle-Name
+Bundle-Vendor: %Bundle-Vendor
+Bundle-SymbolicName: org.eclipse.gef.examples.digraph2;singleton:=true
+Bundle-Version: 3.3.0
+Require-Bundle: org.eclipse.gef,
+ org.eclipse.core.runtime,
+ org.eclipse.core.boot,
+ org.eclipse.ui.workbench,
+ org.eclipse.core.commands,
+ org.eclipse.jface,
+ org.eclipse.ui,
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.views,
+ org.eclipse.ui.ide,
+ org.eclipse.core.resources
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+
