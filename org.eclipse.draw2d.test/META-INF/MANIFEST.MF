@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Plugin.name
+Bundle-SymbolicName: org.eclipse.draw2d.test
+Bundle-Version: 3.2.200.qualifier
+Bundle-Activator: org.eclipse.draw2d.test.Draw2dTestPlugin
+Bundle-Vendor: %Plugin.providerName
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.ui,
+ org.eclipse.draw2d,
+ org.junit
+Eclipse-LazyStart: true
