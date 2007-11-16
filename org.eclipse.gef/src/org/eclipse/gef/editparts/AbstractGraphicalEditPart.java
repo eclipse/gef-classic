@@ -122,6 +122,13 @@ protected abstract class AccessibleGraphicalEditPart
 		if (getViewer().getFocusEditPart() == AbstractGraphicalEditPart.this)
 			e.detail = ACC.STATE_FOCUSED;
 	}
+
+	/**
+	 * @see AccessibleEditPart#getRole(AccessibleControlEvent)
+	 */
+	public void getRole(AccessibleControlEvent e) {
+		e.detail = ACC.ROLE_LABEL;
+	}
 }
 
 /**
