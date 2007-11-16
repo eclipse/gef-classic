@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.gef.test"
       label="%featureName"
-      version="3.4.0.qualifier"
+      version="3.4.100.qualifier"
       provider-name="%providerName"
       image="eclipse_update_120.jpg">
 
@@ -31,13 +31,15 @@ http://www.eclipse.org/legal/epl-v10.html
          id="org.eclipse.gef.test"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.draw2d.test"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.test"
@@ -53,22 +55,9 @@ http://www.eclipse.org/legal/epl-v10.html
          fragment="true"/>
 
    <plugin
-         id="org.eclipse.test.performance"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"/>
-
-   <plugin
          id="org.eclipse.gef.test.source"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.test.performance.win32"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         fragment="true"/>
 
 </feature>
