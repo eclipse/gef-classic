@@ -31,15 +31,13 @@ http://www.eclipse.org/legal/epl-v10.html
          id="org.eclipse.gef.test"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.draw2d.test"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.test"
