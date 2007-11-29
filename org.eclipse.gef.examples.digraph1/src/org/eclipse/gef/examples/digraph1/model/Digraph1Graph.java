@@ -25,7 +25,7 @@ public class Digraph1Graph {
 	/**
 	 * A fixed number of nodes in this directed graph.
 	 */
-	private int COUNT = 5;
+	protected int COUNT = 5;
 
 	/**
 	 * The list of nodes in the graph.
@@ -36,9 +36,16 @@ public class Digraph1Graph {
 	 * Constructor for a Digraph1Graph.
 	 */
 	public Digraph1Graph() {
+		createNodes();
+	}
+
+	/**
+	 * Create the fixed number of nodes in this directed graph.
+	 */
+	protected void createNodes() {
 		for (int i = 0; i < this.COUNT; i++) {
 			Digraph1Node node = new Digraph1Node(i);
-			this.nodes.add(node);
+			getNodes().add(node);
 		}
 	}
 

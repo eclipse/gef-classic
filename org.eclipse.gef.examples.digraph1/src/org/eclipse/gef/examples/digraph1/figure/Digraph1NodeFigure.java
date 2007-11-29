@@ -49,7 +49,7 @@ public class Digraph1NodeFigure extends Figure {
 		this.rectangleFigure = new RectangleFigure();
 		this.rectangleFigure.setBackgroundColor(ColorConstants.lightBlue);
 		this.rectangleFigure.setLocation(new Point((number + 1) * 57,
-				(number + 1) * 32));
+				(number + 1) * 40));
 		this.rectangleFigure.setSize(new Dimension(55, 30));
 		add(this.rectangleFigure);
 		this.label = new Label();
