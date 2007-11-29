@@ -12,31 +12,14 @@
 package org.eclipse.gef.examples.digraph2.figure;
 
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.RectangleFigure;
-import org.eclipse.draw2d.XYLayout;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.examples.digraph1.figure.Digraph1NodeFigure;
 
 /**
  * The figure for a node in the directed graph.
  * 
  * @author Anthony Hunter
  */
-public class Digraph2NodeFigure extends Figure {
-
-	/**
-	 * Label for name of the node.
-	 */
-	private Label label;
-
-	/**
-	 * Rectangle for the node.
-	 */
-	private RectangleFigure rectangleFigure;
+public class Digraph2NodeFigure extends Digraph1NodeFigure {
 
 	/**
 	 * Constructor for a Digraph2NodeFigure.
@@ -45,46 +28,8 @@ public class Digraph2NodeFigure extends Figure {
 	 *            the node number in the directed graph.
 	 */
 	public Digraph2NodeFigure(int number) {
-		setLayoutManager(new XYLayout());
-		this.rectangleFigure = new RectangleFigure();
-		this.rectangleFigure.setBackgroundColor(ColorConstants.lightGreen);
-		this.rectangleFigure.setLocation(new Point((number + 1) * 57,
-				(number + 1) * 40));
-		this.rectangleFigure.setSize(new Dimension(55, 30));
-		add(this.rectangleFigure);
-		this.label = new Label();
-		this.label.setText("Node " + number); //$NON-NLS-1$
-		add(this.label);
+		super(number);
+		getRectangleFigure().setBackgroundColor(ColorConstants.lightGreen);
 	}
 
-	/**
-	 * Get the label in the node figure.
-	 * 
-	 * @return the label in the node figure.
-	 */
-	public Label getLabel() {
-		return this.label;
-	}
-
-	/**
-	 * Get the rectangle in the node figure.
-	 * 
-	 * @return the rectangle in the node figure.
-	 */
-	public RectangleFigure getRectangleFigure() {
-		return this.rectangleFigure;
-	}
-
-	/*
-	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
-	 */
-	@Override
-	public void paintFigure(Graphics g) {
-		Rectangle r = getBounds().getCopy();
-		setConstraint(getRectangleFigure(), new Rectangle(0, 0, r.width,
-				r.height));
-		setConstraint(getLabel(), new Rectangle(0, 0, r.width, r.height));
-		getRectangleFigure().invalidate();
-		getLabel().invalidate();
-	}
 }

@@ -21,7 +21,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.examples.digraph1.editpart.Digraph1NodeEditPart;
 import org.eclipse.gef.examples.digraph2.figure.Digraph2ConnectionAnchor;
 import org.eclipse.gef.examples.digraph2.figure.Digraph2NodeFigure;
 import org.eclipse.gef.examples.digraph2.model.Digraph2Edge;
@@ -32,20 +32,12 @@ import org.eclipse.gef.examples.digraph2.model.Digraph2Node;
  * 
  * @author Anthony Hunter
  */
-public class Digraph2NodeEditPart extends AbstractGraphicalEditPart implements
+public class Digraph2NodeEditPart extends Digraph1NodeEditPart implements
 		NodeEditPart {
 
 	private Digraph2ConnectionAnchor sourceAnchor;
 
 	private Digraph2ConnectionAnchor targetAnchor;
-
-	/*
-	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
-	 */
-	@Override
-	protected void createEditPolicies() {
-		/* not implemented */
-	}
 
 	/*
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
@@ -103,14 +95,6 @@ public class Digraph2NodeEditPart extends AbstractGraphicalEditPart implements
 	 */
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return this.targetAnchor;
-	}
-
-	/*
-	 * @see org.eclipse.gef.editparts.AbstractEditPart#isSelectable()
-	 */
-	@Override
-	public boolean isSelectable() {
-		return false;
 	}
 
 	/*

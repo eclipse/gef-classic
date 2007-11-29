@@ -11,47 +11,17 @@
 
 package org.eclipse.gef.examples.digraph2.editor;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.GraphicalViewer;
-import org.eclipse.gef.editparts.FreeformGraphicalRootEditPart;
+import org.eclipse.gef.examples.digraph1.editor.Digraph1GraphicalEditor;
 import org.eclipse.gef.examples.digraph2.factory.Digraph2EditPartFactory;
 import org.eclipse.gef.examples.digraph2.model.Digraph2Graph;
-import org.eclipse.gef.tools.AbstractTool;
-import org.eclipse.gef.ui.parts.GraphicalEditor;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IFileEditorInput;
 
 /**
  * The graphical editor for the directed graph.
  * 
  * @author Anthony Hunter
  */
-public class Digraph2GraphicalEditor extends GraphicalEditor {
-
-	/**
-	 * The default tool on the diagram that does not do anything. Otherwise the
-	 * selection tool is used and it looks like you can select nodes with the
-	 * selection tool when you actually cannot for this example.
-	 */
-	public class DoNothingTool extends AbstractTool {
-
-		/*
-		 * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
-		 */
-		@Override
-		protected String getCommandName() {
-			return null;
-		}
-	}
-
-	/**
-	 * Constructor for a Digraph2GraphicalEditor.
-	 */
-	public Digraph2GraphicalEditor() {
-		setEditDomain(new DefaultEditDomain(this));
-		getEditDomain().setActiveTool(new DoNothingTool());
-	}
+public class Digraph2GraphicalEditor extends Digraph1GraphicalEditor {
 
 	/*
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#configureGraphicalViewer()
@@ -61,16 +31,7 @@ public class Digraph2GraphicalEditor extends GraphicalEditor {
 		super.configureGraphicalViewer();
 		GraphicalViewer viewer = getGraphicalViewer();
 
-		viewer.setRootEditPart(new FreeformGraphicalRootEditPart());
 		viewer.setEditPartFactory(new Digraph2EditPartFactory());
-	}
-
-	/*
-	 * @see org.eclipse.ui.part.EditorPart#doSave(org.eclipse.core.runtime.IProgressMonitor)
-	 */
-	@Override
-	public void doSave(IProgressMonitor monitor) {
-		/* not implemented */
 	}
 
 	/*
@@ -81,14 +42,4 @@ public class Digraph2GraphicalEditor extends GraphicalEditor {
 		getGraphicalViewer().setContents(new Digraph2Graph());
 	}
 
-	/*
-	 * @see org.eclipse.ui.part.EditorPart#setInput(org.eclipse.ui.IEditorInput)
-	 */
-	@Override
-	protected void setInput(IEditorInput input) {
-		super.setInput(input);
-		if (input instanceof IFileEditorInput) {
-			setPartName(((IFileEditorInput) input).getName());
-		}
-	}
 }

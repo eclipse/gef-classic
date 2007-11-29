@@ -11,8 +11,7 @@
 
 package org.eclipse.gef.examples.digraph2.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.eclipse.gef.examples.digraph1.model.Digraph1Graph;
 
 /**
  * The graph model object which describes the list of nodes in the directed
@@ -20,39 +19,21 @@ import java.util.List;
  * 
  * @author Anthony Hunter
  */
-public class Digraph2Graph {
+public class Digraph2Graph extends Digraph1Graph {
 
-	/**
-	 * A fixed number of nodes in this directed graph.
+	/*
+	 * @see org.eclipse.gef.examples.digraph1.model.Digraph1Graph#createNodes()
 	 */
-	private int COUNT = 5;
-
-	/**
-	 * The list of nodes in the graph.
-	 */
-	private List<Digraph2Node> nodes = new ArrayList<Digraph2Node>();
-
-	/**
-	 * Constructor for a Digraph2Graph.
-	 */
-	public Digraph2Graph() {
+	@Override
+	protected void createNodes() {
 		for (int i = 0; i < this.COUNT; i++) {
 			Digraph2Node node = new Digraph2Node(i);
-			this.nodes.add(node);
+			getNodes().add(node);
 			if (i != 0) {
 				Digraph2Edge edge = new Digraph2Edge();
-				edge.setSource(this.nodes.get(i - 1));
+				edge.setSource((Digraph2Node)getNodes().get(i - 1));
 				edge.setTarget(node);
 			}
 		}
-	}
-
-	/**
-	 * Get the list of nodes.
-	 * 
-	 * @return the list of nodes.
-	 */
-	public List<Digraph2Node> getNodes() {
-		return this.nodes;
 	}
 }

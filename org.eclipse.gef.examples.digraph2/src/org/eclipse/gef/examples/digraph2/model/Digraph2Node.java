@@ -14,17 +14,14 @@ package org.eclipse.gef.examples.digraph2.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.gef.examples.digraph1.model.Digraph1Node;
+
 /**
  * The node model object which describes a node in the directed graph.
  * 
  * @author Anthony Hunter
  */
-public class Digraph2Node {
-
-	/**
-	 * The node knows what node number it is on the graph.
-	 */
-	private int number;
+public class Digraph2Node extends Digraph1Node {
 
 	/**
 	 * The list of edges that have this node as the source.
@@ -43,8 +40,7 @@ public class Digraph2Node {
 	 *            the node number.
 	 */
 	public Digraph2Node(int aNumber) {
-		super();
-		this.number = aNumber;
+		super(aNumber);
 		this.sourceEdges = new ArrayList<Digraph2Edge>();
 		this.targetEdges = new ArrayList<Digraph2Edge>();
 	}
@@ -67,15 +63,6 @@ public class Digraph2Node {
 	 */
 	public void addTargetEdge(Digraph2Edge targetEdge) {
 		this.targetEdges.add(targetEdge);
-	}
-
-	/**
-	 * Get the node number.
-	 * 
-	 * @return the node number.
-	 */
-	public int getNumber() {
-		return this.number;
 	}
 
 	/**

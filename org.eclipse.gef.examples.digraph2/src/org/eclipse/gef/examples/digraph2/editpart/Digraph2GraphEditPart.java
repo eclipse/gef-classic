@@ -11,54 +11,17 @@
 
 package org.eclipse.gef.examples.digraph2.editpart;
 
-import java.util.List;
-
 import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.FreeformLayout;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ManhattanConnectionRouter;
-import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.LayerConstants;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.examples.digraph2.model.Digraph2Graph;
-import org.eclipse.gef.examples.digraph2.model.Digraph2Node;
-import org.eclipse.gef.examples.digraph2.policy.Digraph2XYLayoutEditPolicy;
+import org.eclipse.gef.examples.digraph1.editpart.Digraph1GraphEditPart;
 
 /**
  * The edit part for the directed graph.
  * 
  * @author Anthony Hunter
  */
-public class Digraph2GraphEditPart extends AbstractGraphicalEditPart {
-
-	/*
-	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
-	 */
-	@Override
-	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new Digraph2XYLayoutEditPolicy());
-	}
-
-	/*
-	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
-	 */
-	@Override
-	protected IFigure createFigure() {
-		FreeformLayer freeformLayer = new FreeformLayer();
-		freeformLayer.setLayoutManager(new FreeformLayout());
-		return freeformLayer;
-	}
-
-	/*
-	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
-	 */
-	@Override
-	protected List<Digraph2Node> getModelChildren() {
-		List<Digraph2Node> nodes = ((Digraph2Graph) getModel()).getNodes();
-		return nodes;
-	}
+public class Digraph2GraphEditPart extends Digraph1GraphEditPart {
 
 	/*
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
