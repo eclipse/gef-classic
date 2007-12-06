@@ -14,8 +14,6 @@ package org.eclipse.gef.examples.text.edit;
 import java.util.Iterator;
 
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.actions.StyleService;
@@ -58,10 +56,6 @@ public void getTextLocation(CaretRequest search, SearchResult result) {
 		search.setType(CaretRequest.COLUMN);
 	}
 	super.getTextLocation(search, result);
-}
-
-public TextLocation getNextLocation(int movement, TextLocation current, Rectangle caret) {
-	return null;
 }
 
 public Object getStyleState(String styleID, SelectionRange range) {
