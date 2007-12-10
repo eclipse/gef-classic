@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -184,6 +184,7 @@ class OutlinePage
 		};
 		showOutlineAction.setImageDescriptor(ImageDescriptor.createFromFile(
 								LogicPlugin.class,"icons/outline.gif")); //$NON-NLS-1$
+		showOutlineAction.setToolTipText(LogicMessages.LogicEditor_outline_show_outline);
 		tbm.add(showOutlineAction);
 		showOverviewAction = new Action() {
 			public void run() {
@@ -192,6 +193,7 @@ class OutlinePage
 		};
 		showOverviewAction.setImageDescriptor(ImageDescriptor.createFromFile(
 								LogicPlugin.class,"icons/overview.gif")); //$NON-NLS-1$
+		showOverviewAction.setToolTipText(LogicMessages.LogicEditor_outline_show_overview);
 		tbm.add(showOverviewAction);
 		showPage(ID_OUTLINE);
 	}

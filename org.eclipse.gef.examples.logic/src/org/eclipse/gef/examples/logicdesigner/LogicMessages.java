@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,8 @@ public static String LocationPropertySource_Property_X_Label;
 public static String LocationPropertySource_Property_Y_Label;
 public static String LogicContainerEditPolicy_OrphanCommandLabelText;
 public static String LogicDiagram_LabelText;
+public static String LogicEditor_outline_show_outline;
+public static String LogicEditor_outline_show_overview;
 public static String LogicElementEditPolicy_OrphanCommandLabelText;
 public static String LogicPlugin_Category_ComplexParts_Label;
 public static String LogicPlugin_Category_Components_Label;
