@@ -1,8 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Core Plug-in
+Bundle-Name: %Plugin.name
 Bundle-SymbolicName: org.eclipse.zest.core;singleton:=true
-Bundle-Version: 0.7.0.qualifier
+Bundle-Vendor: %Plugin.providerName
+Bundle-Localization: plugin
+Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.zest.layouts,
  org.eclipse.ui,
  org.eclipse.draw2d;visibility:=reexport
