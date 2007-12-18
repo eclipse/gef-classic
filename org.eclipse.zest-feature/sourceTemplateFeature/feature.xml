@@ -15,25 +15,12 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://update.eclipse.org/updates/3.3"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/update-site/releases/site.xml"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/update-site/releases/site.xml"/>
    </url>
 
    <plugin
-         id="org.eclipse.gef.doc.isv"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.draw2d.doc.isv"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.gef.source"
+         id="org.eclipse.zest.source"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
