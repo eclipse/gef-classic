@@ -4,6 +4,7 @@
       label="%featureName"
       version="1.0.0.qualifier"
       provider-name="%providerName"
+      plugin="org.eclipse.zest.core"
       image="eclipse_update_120.jpg">
 
    <description>
@@ -27,16 +28,16 @@ http://www.eclipse.org/legal/epl-v10.html
       <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/update-site/releases/site.xml"/>
    </url>
 
+   <includes
+         id="org.eclipse.draw2d"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui.views" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
    </requires>
-
-   <includes
-         id="org.eclipse.draw2d"
-         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.zest.core"
