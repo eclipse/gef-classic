@@ -29,6 +29,10 @@
          version="0.0.0"/>
 
    <includes
+         id="org.eclipse.draw2d.source"
+         version="0.0.0"/>
+
+   <includes
          id="org.eclipse.gef.source"
          version="0.0.0"/>
 
