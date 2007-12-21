@@ -281,7 +281,11 @@ protected void resetFlags() {
 	super.resetFlags();
 }
 
-void resetHover() {
+/**
+ * Resets hovering to inactive.
+ * @since 3.4
+ */
+protected void resetHover() {
 	if (isHoverActive())
 		handleHoverStop();
 	setHoverActive(false);

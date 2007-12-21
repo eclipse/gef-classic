@@ -224,8 +224,9 @@ protected GraphicalEditPart getFocusEditPart() {
  * This implementation returns a list that contains the EditPart that has focus.
  * </p>
  * @return a list of navigation editparts
+ * @since 3.4
  */
-List getNavigationSiblings() {
+protected List getNavigationSiblings() {
 	EditPart focusPart = getFocusEditPart();
 	if (focusPart.getParent() != null)
 		return focusPart.getParent().getChildren();
@@ -244,9 +245,9 @@ protected GraphicalViewer getViewer() {
 
 /**
  * @return <code>true</code> if the viewer is mirrored
- * @since 3.1
+ * @since 3.4
  */
-boolean isViewerMirrored() {
+protected boolean isViewerMirrored() {
 	return (viewer.getControl().getStyle() & SWT.MIRRORED) != 0;
 }
 

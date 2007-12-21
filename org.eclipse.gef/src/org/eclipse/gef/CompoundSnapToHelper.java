@@ -37,13 +37,24 @@ public CompoundSnapToHelper(SnapToHelper delegates[]) {
 	this.delegates = delegates;
 }
 
+
+/**
+ * Gets the array of helpers.
+ * 
+ * @return the array of helpers.
+ * @since 3.4
+ */
+protected SnapToHelper[] getDelegates() {
+    return delegates;
+}
+
 /**
  * @see SnapToHelper#snapRectangle(Request, int, PrecisionRectangle, PrecisionRectangle)
  */
 public int snapRectangle(Request request, int snapOrientation, 
 		PrecisionRectangle baseRect, PrecisionRectangle result) {
-	for (int i = 0; i < delegates.length && snapOrientation != NONE; i++)
-		snapOrientation = delegates[i].snapRectangle(request, snapOrientation,
+	for (int i = 0; i < getDelegates().length && snapOrientation != NONE; i++)
+		snapOrientation = getDelegates()[i].snapRectangle(request, snapOrientation,
 				baseRect, result);
 	return snapOrientation;
 }

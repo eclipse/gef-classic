@@ -608,21 +608,36 @@ protected void updateTargetRequest() {
 	request.getExtendedData().clear();
 	request.setMoveDelta(moveDelta);
 	
-	if (snapToHelper != null && !getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING)) {
-		PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
-		PrecisionRectangle jointRect = compoundSrcRect.getPreciseCopy();
-		baseRect.translate(moveDelta);
-		jointRect.translate(moveDelta);
-		
-		PrecisionPoint preciseDelta = new PrecisionPoint(moveDelta);
-		snapToHelper.snapPoint(request,
-				PositionConstants.HORIZONTAL | PositionConstants.VERTICAL, 
-				new PrecisionRectangle[] {baseRect, jointRect}, preciseDelta);
-		request.setMoveDelta(preciseDelta);
-	}
+	snapPoint(request);
 
 	request.setLocation(getLocation());
 	request.setType(getCommandName());
+}
+
+/**
+ * This method can be overridden by clients to customize the snapping
+ * behavior.
+ * 
+ * @param request
+ *            the <code>ChangeBoundsRequest</code> from which the move
+ *            delta can be extracted and updated
+ * @since 3.4
+ */
+protected void snapPoint(ChangeBoundsRequest request) {
+    Point moveDelta = request.getMoveDelta();
+    if (snapToHelper != null
+        && !getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING)) {
+        PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
+        PrecisionRectangle jointRect = compoundSrcRect.getPreciseCopy();
+        baseRect.translate(moveDelta);
+        jointRect.translate(moveDelta);
+
+        PrecisionPoint preciseDelta = new PrecisionPoint(moveDelta);
+        snapToHelper.snapPoint(request, PositionConstants.HORIZONTAL
+            | PositionConstants.VERTICAL, new PrecisionRectangle[] {
+            baseRect, jointRect}, preciseDelta);
+        request.setMoveDelta(preciseDelta);
+    }
 }
 
 }

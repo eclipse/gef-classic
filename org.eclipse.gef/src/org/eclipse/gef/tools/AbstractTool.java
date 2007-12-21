@@ -200,7 +200,17 @@ boolean acceptAbort(KeyEvent e) {
 	return e.character == SWT.ESC;
 }
 
-boolean acceptArrowKey(KeyEvent e) {
+/**
+ * Returns true if the event corresponds to an arrow key with the
+ * appropriate modifiers and if the system is in a state where the arrow key
+ * should be accepted.
+ * 
+ * @param e
+ *            the key event
+ * @return true if the arrow key should be accepted by this tool
+ * @since 3.4
+ */
+protected boolean acceptArrowKey(KeyEvent e) {
 	int key = e.keyCode;
 	if (!(isInState(STATE_INITIAL
 	  | STATE_ACCESSIBLE_DRAG
@@ -1120,7 +1130,16 @@ protected void performViewerMouseWheel(Event event, EditPartViewer viewer) {
 		handler.handleMouseWheel(event, viewer);
 }
 
-void placeMouseInViewer(Point p) {
+/**
+ * Places the mouse in the viewer based on the point given. If the point
+ * given is outside the viewer, then the mouse is placed in the location
+ * nearest the given point but within the viewer.
+ * 
+ * @param p
+ *            the point
+ * @since 3.4
+ */
+protected void placeMouseInViewer(Point p) {
 	if (getCurrentViewer() == null)
 		return;
 	Control c = getCurrentViewer().getControl();
@@ -1511,7 +1530,13 @@ public static class Input
 		setFlag(1 << which, state);
 	}
 	
-	void setMouseLocation(int x, int y) {
+	/**
+	 * Sets the current location of the mouse
+	 * @param x x location
+	 * @param y y location
+	 * @since 3.4
+	 */
+	public void setMouseLocation(int x, int y) {
 		mouse.setLocation(x, y);
 	}
 }

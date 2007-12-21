@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -87,6 +87,8 @@ public static final String KEY_HORIZONTAL_ANCHOR = "SnapToGuides.HorizontalAttac
  */
 protected static final double THRESHOLD = 5.001;
 
+private double threshold = THRESHOLD;
+
 /**
  * The graphical editpart to which guides are relative.  This should also the parent of
  * the parts being snapped to guides.
@@ -114,8 +116,31 @@ public SnapToGuides(GraphicalEditPart container) {
 }
 
 /**
+ * Get the sensitivity of the snapping.  Corrections greater than this value will not occur.
+ * 
+ * @return the snapping threshold
+ * @since 3.4
+ */
+protected double getThreshold()
+{
+    return this.threshold;
+}
+
+/**
+ * Set the sensitivity of the snapping.
+ * 
+ * @see #getThreshold()
+ * @param newThreshold the new snapping threshold
+ * @since 3.4
+ */
+protected void setThreshold(double newThreshold)
+{
+    this.threshold = newThreshold;
+}
+
+/**
  * Returns the correction for the given near and far sides of a rectangle or {@link
- * #THRESHOLD} if no correction was found.  The near side represents the top or left side
+ * #getThreshold()} if no correction was found.  The near side represents the top or left side
  * of a rectangle being snapped.  Similar for far.  If snapping occurs, the extendedData
  * will have the guide and attachment point set.
  * 
@@ -125,7 +150,7 @@ public SnapToGuides(GraphicalEditPart container) {
  * @param extendedData the map for storing snap details
  * @param isVertical <code>true</code> if for vertical guides, <code>false</code>
  * for horizontal.
- * @return the correction amount or THRESHOLD if no correction was made
+ * @return the correction amount or getThreshold() if no correction was made
  */
 protected double getCorrectionFor(int[] guides, double near, double far, Map extendedData, 
                                   boolean isVertical) {
@@ -135,31 +160,31 @@ protected double getCorrectionFor(int[] guides, double near, double far, Map ext
 	if ((int)(near - far) % 2 == 0)
 		total -= 1.0;
 	double result = getCorrectionFor(guides, total / 2, extendedData, isVertical, 0);
-	if (result == THRESHOLD)
+	if (result == getThreshold())
 		result = getCorrectionFor(guides, near, extendedData, isVertical, -1); 
-	if (result == THRESHOLD)
+	if (result == getThreshold())
 		result = getCorrectionFor(guides, far, extendedData, isVertical, 1);
 	return result;
 }
 
 /**
- * Returns the correction for the given location or {@link #THRESHOLD} if no correction
+ * Returns the correction for the given location or {@link #getThreshold()} if no correction
  * was found. If correction occurs, the extendedData will have the guide and attachment
  * point set. The attachment point is identified by the <code>side</code> parameter.
  * <P>
- * The correction's magnitude will be less than THRESHOLD.
+ * The correction's magnitude will be less than getThreshold().
  * 
  * @param guides the location of the guides
  * @param value the location being tested
  * @param extendedData the map for storing snap details
  * @param vert <code>true</code> if for vertical guides, <code>false</code>
  * @param side the integer indicating which side is being snapped
- * @return a correction amount or THRESHOLD if no correction was made
+ * @return a correction amount or getThreshold() if no correction was made
  */
 protected double getCorrectionFor(int[] guides, double value, Map extendedData, 
                                   boolean vert, int side) {
-	double resultMag = THRESHOLD;
-	double result = THRESHOLD;
+	double resultMag = getThreshold();
+	double result = getThreshold();
 	
 	for (int i = 0; i < guides.length; i++) {
 		int offset = guides[i];
@@ -227,7 +252,7 @@ public int snapRectangle(Request request, int snapOrientation,
 	if ((snapOrientation & HORIZONTAL) != 0) {
 		double xcorrect = getCorrectionFor(getVerticalGuides(), baseRect.preciseX,
 				baseRect.preciseRight(), request.getExtendedData(), true);
-		if (xcorrect != THRESHOLD) {
+		if (xcorrect != getThreshold()) {
 			snapOrientation &= ~HORIZONTAL;
 			correction.preciseX += xcorrect;
 		}
@@ -236,7 +261,7 @@ public int snapRectangle(Request request, int snapOrientation,
 	if ((snapOrientation & VERTICAL) != 0) {
 		double ycorrect = getCorrectionFor(getHorizontalGuides(), baseRect.preciseY,
 				baseRect.preciseBottom(), request.getExtendedData(), false);
-		if (ycorrect != THRESHOLD) {
+		if (ycorrect != getThreshold()) {
 			snapOrientation &= ~VERTICAL;
 			correction.preciseY += ycorrect;
 		}
@@ -246,7 +271,7 @@ public int snapRectangle(Request request, int snapOrientation,
 	if (!snapped && (snapOrientation & WEST) != 0) {
 		double leftCorrection = getCorrectionFor(getVerticalGuides(), 
 				baseRect.preciseX, request.getExtendedData(), true, -1);
-		if (leftCorrection != THRESHOLD) {
+		if (leftCorrection != getThreshold()) {
 			snapOrientation &= ~WEST;
 			correction.preciseWidth -= leftCorrection;
 			correction.preciseX += leftCorrection;
@@ -256,7 +281,7 @@ public int snapRectangle(Request request, int snapOrientation,
 	if (!snapped && (snapOrientation & EAST) != 0) {
 		double rightCorrection = getCorrectionFor(getVerticalGuides(), 
 				baseRect.preciseRight() - 1, request.getExtendedData(), true, 1);
-		if (rightCorrection != THRESHOLD) {
+		if (rightCorrection != getThreshold()) {
 			snapped = true;
 			snapOrientation &= ~EAST;
 			correction.preciseWidth += rightCorrection;
@@ -267,7 +292,7 @@ public int snapRectangle(Request request, int snapOrientation,
 	if (!snapped && (snapOrientation & NORTH) != 0) {	
 		double topCorrection = getCorrectionFor(getHorizontalGuides(), 
 				baseRect.preciseY, request.getExtendedData(), false, -1);
-		if (topCorrection != THRESHOLD) {
+		if (topCorrection != getThreshold()) {
 			snapOrientation &= ~NORTH;
 			correction.preciseHeight -= topCorrection;
 			correction.preciseY += topCorrection;
@@ -277,7 +302,7 @@ public int snapRectangle(Request request, int snapOrientation,
 	if (!snapped && (snapOrientation & SOUTH) != 0) {
 		double bottom = getCorrectionFor(getHorizontalGuides(), 
 				baseRect.preciseBottom() - 1, request.getExtendedData(), false, 1);
-		if (bottom != THRESHOLD) {
+		if (bottom != getThreshold()) {
 			snapped = true;
 			snapOrientation &= ~SOUTH;
 			correction.preciseHeight += bottom;
