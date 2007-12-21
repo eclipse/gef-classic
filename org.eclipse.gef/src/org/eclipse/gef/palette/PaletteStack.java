@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.palette;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -24,6 +29,20 @@ import org.eclipse.jface.resource.ImageDescriptor;
 public class PaletteStack 
 	extends PaletteContainer 
 {
+    
+/**
+ * Listens to visibility changes of the children palette entries so that the
+ * active entry can be updated if the current active entry is hidden.
+ */
+private PropertyChangeListener childListener = new PropertyChangeListener() {
+    public void propertyChange(PropertyChangeEvent evt) {
+    if (evt.getPropertyName().equals(PaletteEntry.PROPERTY_VISIBLE)
+            && evt.getNewValue() == Boolean.FALSE
+            && activeEntry == evt.getSource()) {
+            checkActiveEntry();
+        }
+    }
+};
 
 /** Type identifier **/
 public static final String PALETTE_TYPE_STACK = "$PaletteStack";  //$NON-NLS-1$
@@ -74,6 +93,7 @@ public void add(int index, PaletteEntry entry) {
 public void addAll(List list) {
 	super.addAll(list);
 	checkActiveEntry();
+	updateListeners(list, true);
 }
 
 /**
@@ -86,6 +106,16 @@ private void checkActiveEntry() {
 		activeEntry = null;
 	if (activeEntry == null && getChildren().size() > 0)
 		activeEntry = (PaletteEntry)getChildren().get(0);
+	if (!activeEntry.isVisible()) {
+	    for (Iterator iterator = getChildren().iterator(); iterator.hasNext();) {
+            PaletteEntry child = (PaletteEntry) iterator.next();
+            if (child.isVisible()) {
+                activeEntry = child;
+                break;
+            }
+            activeEntry = null;
+        }
+	}
 	listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, currEntry, activeEntry);
 }
 
@@ -106,6 +136,7 @@ public PaletteEntry getActiveEntry() {
 public void remove(PaletteEntry entry) {
 	super.remove(entry);
 	checkActiveEntry();
+    updateListeners(Collections.singletonList(entry), false);
 }
 
 /**
@@ -122,5 +153,40 @@ public void setActiveEntry(PaletteEntry entry) {
 	activeEntry = entry;
 	listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, oldEntry, activeEntry);
 }
+
+public void add(PaletteEntry entry) {
+    super.add(entry);
+    updateListeners(Collections.singletonList(entry), true);
+}
+
+public void setChildren(List list) {
+    updateListeners(getChildren(), false);
+    super.setChildren(list);
+    updateListeners(getChildren(), true);
+    checkActiveEntry();
+}
+
+/**
+ * Either adds or remove the <code>childListener</code> to each palette
+ * entry in the collection.
+ * 
+ * @param entries
+ *            a collection of <code>PaletteEntries</code>
+ * @param add
+ *            true if the lister should be added; false if it should be
+ *            removed
+ */
+private void updateListeners(Collection entries, boolean add) {
+    for (Iterator iterator = entries.iterator(); iterator.hasNext();) {
+        PaletteEntry child = (PaletteEntry) iterator.next();
+        if (add) {
+            child.addPropertyChangeListener(childListener);
+        } else {
+            child.removePropertyChangeListener(childListener);
+        }
+    }
+}
+
+
 
 }

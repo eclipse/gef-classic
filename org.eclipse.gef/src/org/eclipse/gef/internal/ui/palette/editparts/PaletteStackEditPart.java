@@ -142,6 +142,8 @@ private void activeEntryChanged(Object oldValue, Object newValue) {
 		clickable.setVisible(true);
 		clickable.addChangeListener(clickableListener);
 		activeFigure = clickable;
+	} else {
+	    activeFigure = null;
 	}
 
 	if (oldValue != null) {
@@ -309,6 +311,7 @@ public void propertyChange(PropertyChangeEvent event) {
  */
 protected void refreshChildren() {
 	super.refreshChildren();
+	checkActiveEntrySync();
 	Iterator children = getChildren().iterator();
 	while (children.hasNext()) {
 		PaletteEditPart editPart = (PaletteEditPart)children.next();

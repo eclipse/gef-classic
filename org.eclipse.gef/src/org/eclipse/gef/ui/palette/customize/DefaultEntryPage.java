@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2007 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,6 @@ import org.eclipse.draw2d.FigureUtilities;
 
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteSeparator;
-import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
 /**
@@ -127,8 +126,7 @@ protected Button createHiddenCheckBox(Composite panel) {
 	hidden.setText(PaletteMessages.HIDDEN_LABEL);
 	hidden.setSelection(!entry.isVisible());
 	
-	if (getPermission() == PaletteEntry.PERMISSION_NO_MODIFICATION 
-			|| (getEntry().getParent() != null && getEntry().getParent() instanceof PaletteStack)) {
+	if (getPermission() == PaletteEntry.PERMISSION_NO_MODIFICATION) {
 		hidden.setEnabled(false);
 	} else {
 		hidden.addSelectionListener(new SelectionAdapter() {
