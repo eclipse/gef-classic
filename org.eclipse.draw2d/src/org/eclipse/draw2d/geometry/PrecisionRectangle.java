@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,18 +40,10 @@ public PrecisionRectangle() { }
  * @param rect the base rectangle
  */
 public PrecisionRectangle(Rectangle rect) {
-	if (rect instanceof PrecisionRectangle) {
-		PrecisionRectangle rectangle = (PrecisionRectangle)rect;
-		preciseX = rectangle.preciseX;
-		preciseY = rectangle.preciseY;
-		preciseWidth = rectangle.preciseWidth;
-		preciseHeight = rectangle.preciseHeight;
-	} else {
-		preciseX = rect.x;
-		preciseY = rect.y;
-		preciseWidth = rect.width;
-		preciseHeight = rect.height;
-	}
+	preciseX = rect.preciseX();
+	preciseY = rect.preciseY();
+	preciseWidth = rect.preciseWidth();
+	preciseHeight = rect.preciseHeight();
 	updateInts();
 }
 
@@ -148,14 +140,8 @@ public double preciseRight() {
  * @see org.eclipse.draw2d.geometry.Rectangle#resize(org.eclipse.draw2d.geometry.Dimension)
  */
 public Rectangle resize(Dimension sizeDelta) {
-	if (sizeDelta instanceof PrecisionDimension) {
-		PrecisionDimension pd = (PrecisionDimension)sizeDelta;
-		preciseWidth += pd.preciseWidth;
-		preciseHeight += pd.preciseHeight;
-	} else {
-		preciseWidth += sizeDelta.width;
-		preciseHeight += sizeDelta.height;
-	}
+	preciseWidth += sizeDelta.preciseWidth();
+	preciseHeight += sizeDelta.preciseHeight();
 	updateInts();
 	return this;
 }
@@ -200,14 +186,8 @@ public void setY(double value) {
  * @see org.eclipse.draw2d.geometry.Rectangle#translate(org.eclipse.draw2d.geometry.Point)
  */
 public Rectangle translate(Point p) {
-	if (p instanceof PrecisionPoint) {
-		PrecisionPoint pp = (PrecisionPoint)p;
-		preciseX += pp.preciseX;
-		preciseY += pp.preciseY;
-	} else {
-		preciseX += p.x;
-		preciseY += p.y;
-	}
+	preciseX += p.preciseX();
+	preciseY += p.preciseY();
 	updateInts();
 	return this;
 }
@@ -218,12 +198,29 @@ public Rectangle translate(Point p) {
  * @since 3.0
  * @param other the rectangle being unioned
  * @return <code>this</code> for convenience
+ * @deprecated
+ * Use {@link #union(Rectangle)} instead
  */
 public PrecisionRectangle union(PrecisionRectangle other) {
 	double newright = Math.max(preciseRight(), other.preciseRight());
 	double newbottom = Math.max(preciseBottom(), other.preciseBottom());
 	preciseX = Math.min(preciseX, other.preciseX);
 	preciseY = Math.min(preciseY, other.preciseY);
+	preciseWidth = newright - preciseX;
+	preciseHeight = newbottom - preciseY;
+	updateInts();
+	
+	return this;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#union(org.eclipse.draw2d.geometry.Rectangle)
+ */
+public Rectangle union(Rectangle other) {
+	double newright = Math.max(preciseRight(), other.preciseX() + other.preciseWidth());
+	double newbottom = Math.max(preciseBottom(), other.preciseY() + other.preciseHeight());
+	preciseX = Math.min(preciseX, other.preciseX());
+	preciseY = Math.min(preciseY, other.preciseY());
 	preciseWidth = newright - preciseX;
 	preciseHeight = newbottom - preciseY;
 	updateInts();
@@ -242,6 +239,141 @@ public void updateInts() {
 	y = (int)Math.floor(preciseY + 0.000000001);
 	width = (int)Math.floor(preciseWidth + preciseX + 0.000000001) - x;
 	height = (int)Math.floor(preciseHeight + preciseY + 0.000000001) - y;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#union(org.eclipse.draw2d.geometry.Point)
+ */
+public void union(Point p) {
+	if (p.preciseX() < preciseX) {
+		preciseWidth += (preciseX - p.preciseX());
+		preciseX = p.preciseX();
+	} else {
+		double right = preciseX + preciseWidth;
+		if (p.preciseX() > right) {
+			preciseWidth = p.preciseX() - preciseX;
+		}
+	}
+	if (p.preciseY() < preciseY) {
+		preciseHeight += (preciseY - p.preciseY());
+		preciseY = p.preciseY();
+	} else {
+		double bottom = preciseY + preciseHeight;
+		if (p.preciseY() > bottom) {
+			preciseHeight = p.preciseY() - preciseY;
+		}
+	}
+	updateInts();
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#transpose()
+ */
+public Rectangle transpose() {
+	double temp = preciseX;
+	preciseX = preciseY;
+	preciseY = temp;
+	temp = preciseWidth;
+	preciseWidth = preciseHeight;
+	preciseHeight = temp;
+	super.transpose();
+	return this;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#setLocation(org.eclipse.draw2d.geometry.Point)
+ */
+public Rectangle setLocation(Point loc) {
+	preciseX = loc.preciseX();
+	preciseY = loc.preciseY();
+	updateInts();
+	return this;
+}
+
+/**
+ * Returns the precise geometric centre of the rectangle
+ * 
+ * @return <code>PrecisionPoint</code> geometric center of the rectangle
+ * @since 3.4
+ */
+public Point getCenter() {
+	return new PrecisionPoint(preciseX + preciseWidth / 2.0, preciseY + preciseHeight / 2.0);
+}
+
+/**
+ * Shrinks the sides of this Rectangle by the horizontal and vertical values 
+ * provided as input, and returns this Rectangle for convenience. The center of 
+ * this Rectangle is kept constant.
+ *
+ * @param h  Horizontal reduction amount
+ * @param v  Vertical reduction amount
+ * @return  <code>this</code> for convenience
+ * @since 3.4
+ */
+public Rectangle shrink(double h, double v) {
+	preciseX += h; 
+	preciseWidth -= (h + h);
+	preciseY += v; 
+	preciseHeight -= (v + v);
+	updateInts();
+	return this;
+}
+
+/**
+ * Expands the horizontal and vertical sides of this Rectangle with the values 
+ * provided as input, and returns this for convenience. The location of its 
+ * center is kept constant.
+ * 
+ * @param h  Horizontal increment
+ * @param v  Vertical increment
+ * @return  <code>this</code> for convenience
+ * @since 3.4
+ */
+public Rectangle expand(double h, double v) {
+	return shrink(-h, -v);
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#shrink(int, int)
+ */
+public Rectangle shrink(int h, int v) {
+	return shrink((double)h, (double)v);
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#contains(org.eclipse.draw2d.geometry.Point)
+ */
+public boolean contains(Point p) {
+	return preciseX <= p.preciseX() && p.preciseX() <= preciseX + preciseWidth
+	&& preciseY <= p.preciseY() && p.preciseY() <= preciseY + preciseHeight;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#preciseX()
+ */
+public double preciseX() {
+	return preciseX;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#preciseY()
+ */
+public double preciseY() {
+	return preciseY;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#preciseWidth()
+ */
+public double preciseWidth() {
+	return preciseWidth;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#preciseHeight()
+ */
+public double preciseHeight() {
+	return preciseHeight;
 }
 
 }

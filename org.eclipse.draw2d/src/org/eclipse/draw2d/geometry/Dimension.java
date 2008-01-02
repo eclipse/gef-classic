@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -433,6 +433,26 @@ public Dimension union (Dimension d) {
 	width = Math.max(width, d.width);
 	height = Math.max(height, d.height);
 	return this;
+}
+
+/**
+ * Returns <code>double</code> width
+ * 
+ * @return <code>double</code> width
+ * @since 3.4
+ */
+public double preciseWidth() {
+	return width;
+}
+
+/**
+ * Returns <code>double</code> height
+ * 
+ * @return <code>double</code> height
+ * @since 3.4
+ */
+public double preciseHeight() {
+	return height;
 }
 
 }

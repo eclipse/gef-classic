@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -882,7 +882,7 @@ public Rectangle union(int x1, int y1) {
  * @param p  Point to be unioned with this Rectangle
  * @since 2.0
  */
-public final void union(Point p) {
+public void union(Point p) {
 	union(p.x, p.y);
 }
 
@@ -894,7 +894,7 @@ public final void union(Point p) {
  * @param rect  Rectangle to be unioned with this Rectangle
  * @since 2.0
  */
-public final Rectangle union(Rectangle rect) {
+public Rectangle union(Rectangle rect) {
 	if (rect == null)
 		return this;
 	return union(rect.x, rect.y, rect.width, rect.height);
@@ -919,6 +919,46 @@ public Rectangle union(int x, int y, int w, int h) {
 	this.width = right - this.x;
 	this.height = bottom - this.y;
 	return this;
+}
+
+/**
+ * Returns <code>double</code> x coordinate
+ * 
+ * @return <code>double</code> x coordinate
+ * @since 3.4
+ */
+public double preciseX() {
+	return x;
+}
+
+/**
+ * Returns <code>double</code> y coordinate
+ * 
+ * @return <code>double</code> y coordinate
+ * @since 3.4
+ */
+public double preciseY() {
+	return y;
+}
+
+/**
+ * Returns <code>double</code> width
+ * 
+ * @return <code>double</code> width
+ * @since 3.4
+ */
+public double preciseWidth() {
+	return width;
+}
+
+/**
+ * Returns <code>double</code> height
+ * 
+ * @return <code>double</code> height
+ * @since 3.4
+ */
+public double preciseHeight() {
+	return height;
 }
 
 }

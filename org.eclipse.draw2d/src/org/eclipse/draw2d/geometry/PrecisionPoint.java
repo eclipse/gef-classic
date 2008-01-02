@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,15 +33,9 @@ public PrecisionPoint() {
  * @param copy Point from which the initial values are taken
  */
 public PrecisionPoint(Point copy) {
-	if (copy instanceof PrecisionPoint) {
-		PrecisionPoint precPt = (PrecisionPoint)copy;
-		preciseX = precPt.preciseX;
-		preciseY = precPt.preciseY;
-		updateInts();
-	} else {
-		preciseX = x = copy.x;
-		preciseY = y = copy.y;
-	}
+	preciseX = copy.preciseX();
+	preciseY = copy.preciseY();
+	updateInts();
 }
 
 /**
@@ -61,9 +55,9 @@ public PrecisionPoint(int x, int y) {
  * @param y Y value
  */
 public PrecisionPoint(double x, double y) {
-	super(x, y);
 	preciseX = x;
 	preciseY = y;
+	updateInts();
 }
 
 /**
@@ -80,8 +74,7 @@ public Point getCopy() {
 public void performScale(double factor) {
 	preciseX = preciseX * factor;
 	preciseY = preciseY * factor;
-	x = (int)Math.floor(preciseX + 0.000000001);
-	y = (int)Math.floor(preciseY + 0.000000001);	
+	updateInts();
 }
 
 /**
@@ -90,23 +83,16 @@ public void performScale(double factor) {
 public void performTranslate(int dx, int dy) {
 	preciseX += dx;
 	preciseY += dy;
-	x = (int)Math.floor(preciseX + 0.000000001);
-	y = (int)Math.floor(preciseY + 0.000000001);
+	updateInts();
 }
 
 /**
  * @see org.eclipse.draw2d.geometry.Point#setLocation(Point)
  */
 public Point setLocation(Point pt) {
-	if (pt instanceof PrecisionPoint) {
-		preciseX = ((PrecisionPoint)pt).preciseX;
-		preciseY = ((PrecisionPoint)pt).preciseY;
-	} else {
-		preciseX = pt.x;
-		preciseY = pt.y;
-	}
-	x = (int)Math.floor(preciseX + 0.000000001);
-	y = (int)Math.floor(preciseY + 0.000000001);
+	preciseX = pt.preciseX();
+	preciseY = pt.preciseY();
+	updateInts();
 	return this;
 }
 
@@ -116,6 +102,20 @@ public Point setLocation(Point pt) {
 public final void updateInts() {
 	x = (int)Math.floor(preciseX + 0.000000001);
 	y = (int)Math.floor(preciseY + 0.000000001);
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Point#preciseX()
+ */
+public double preciseX() {
+	return preciseX;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Point#preciseY()
+ */
+public double preciseY() {
+	return preciseY;
 }
 
 }

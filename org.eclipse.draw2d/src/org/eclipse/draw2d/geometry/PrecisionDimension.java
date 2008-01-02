@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -47,9 +47,9 @@ public PrecisionDimension(double width, double height) {
  * @param d the reference dimension
  */
 public PrecisionDimension(Dimension d) {
-	super(d);
-	preciseHeight = d.height;
-	preciseWidth = d.width;
+	preciseHeight = d.preciseHeight();
+	preciseWidth = d.preciseWidth();
+	updateInts();
 }
 
 /**
@@ -67,6 +67,20 @@ public void performScale(double factor) {
 public final void updateInts() {
 	width = (int)Math.floor(preciseWidth + 0.000000001);
 	height = (int)Math.floor(preciseHeight + 0.000000001);	
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Dimension#preciseWidth()
+ */
+public double preciseWidth() {
+	return preciseWidth;
+}
+
+/**
+ * @see org.eclipse.draw2d.geometry.Dimension#preciseHeight()
+ */
+public double preciseHeight() {
+	return preciseHeight;
 }
 
 }

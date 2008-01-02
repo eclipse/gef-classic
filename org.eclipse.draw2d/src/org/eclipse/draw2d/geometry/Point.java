@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -393,6 +393,26 @@ public Point transpose() {
 	x = y;
 	y = temp;
 	return this;
+}
+
+/**
+ * Returns <code>double</code> x coordinate
+ * 
+ * @return <code>double</code> x coordinate
+ * @since 3.4
+ */
+public double preciseX() {
+	return x;
+}
+
+/**
+ * Returns <code>double</code> y coordinate
+ * 
+ * @return <code>double</code> y coordinate
+ * @since 3.4
+ */
+public double preciseY() {
+	return y;
 }
 
 }
