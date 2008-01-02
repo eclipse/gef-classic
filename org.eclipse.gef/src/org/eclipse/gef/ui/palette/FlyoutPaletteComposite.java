@@ -297,20 +297,6 @@ private Control getPaletteViewerControl() {
 	return result;
 }
 
-/*
- * @TODO:Pratik  handleEditorMaximized and handleEditorMinimized are never invoked
- * because currently there's no mechanism in the platform to detect these actions.
- * See Bug# 58190
- */
-private void handleEditorMaximized() {
-	if (isInState(STATE_HIDDEN))
-		setState(prefs.getPaletteState());
-}
-
-private void handleEditorMinimized() {
-	updateState(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage());
-}
-
 private void handlePerspectiveActivated(IWorkbenchPage page, 
 		IPerspectiveDescriptor perspective) {
 	updateState(page);
