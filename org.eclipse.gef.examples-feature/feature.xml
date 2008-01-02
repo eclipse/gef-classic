@@ -11,6 +11,10 @@
       %description
    </description>
 
+   <copyright>
+      %copyright
+   </copyright>
+
    <license>
       %license
    </license>
