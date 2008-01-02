@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -270,7 +270,10 @@ protected void hookControl() {
  */
 public void registerAccessibleEditPart(AccessibleEditPart acc) {
 	Assert.isNotNull(acc);
-	getEventDispatcher().putAccessible(acc);
+	DomainEventDispatcher domainEventDispatcher = getEventDispatcher();
+	if (domainEventDispatcher != null) {
+		domainEventDispatcher.putAccessible(acc);
+	}
 }
 
 /**
@@ -407,7 +410,10 @@ protected void unhookControl() {
  */
 public void unregisterAccessibleEditPart(AccessibleEditPart acc) {
 	Assert.isNotNull(acc);
-	getEventDispatcher().removeAccessible(acc);
+	DomainEventDispatcher domainEventDispatcher = getEventDispatcher();
+	if (domainEventDispatcher != null) {
+		domainEventDispatcher.removeAccessible(acc);
+	}
 }
 
 private static class MouseWheelDelegateHandler
