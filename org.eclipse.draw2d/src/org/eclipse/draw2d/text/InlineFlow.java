@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -168,7 +168,7 @@ public void postValidate() {
  * @param  border <code>null</code> or a FlowBorder
  */
 public void setBorder(Border border) {
-	if (border instanceof FlowBorder)
+	if (border == null || border instanceof FlowBorder)
 		super.setBorder(border);
 	else
 		throw new RuntimeException("Border must be an instance of FlowBorder"); //$NON-NLS-1$
