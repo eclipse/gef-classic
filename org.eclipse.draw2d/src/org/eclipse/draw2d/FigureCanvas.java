@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -127,7 +127,7 @@ public FigureCanvas(Composite parent, int style, LightweightSystem lws) {
 
 private static int checkStyle(int style) {
 	int validStyles = SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT | SWT.V_SCROLL | SWT.H_SCROLL
-			| SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED;
+			| SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.BORDER;
 	if ((style & ~validStyles) != 0)
 		throw new IllegalArgumentException("Invalid style being set on FigureCanvas"); //$NON-NLS-1$
 	return style;
