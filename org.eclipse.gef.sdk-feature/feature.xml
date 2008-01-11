@@ -25,15 +25,15 @@
    </url>
 
    <includes
+         id="org.eclipse.draw2d.sdk"
+         version="0.0.0"/>
+
+   <includes
          id="org.eclipse.gef"
          version="0.0.0"/>
 
    <includes
          id="org.eclipse.gef.source"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.draw2d.sdk"
          version="0.0.0"/>
 
    <plugin

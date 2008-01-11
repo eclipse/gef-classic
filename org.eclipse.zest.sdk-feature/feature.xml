@@ -25,15 +25,15 @@
    </url>
 
    <includes
+         id="org.eclipse.draw2d.sdk"
+         version="0.0.0"/>
+
+   <includes
          id="org.eclipse.zest"
          version="0.0.0"/>
 
    <includes
          id="org.eclipse.zest.source"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.draw2d.sdk"
          version="0.0.0"/>
 
 </feature>
