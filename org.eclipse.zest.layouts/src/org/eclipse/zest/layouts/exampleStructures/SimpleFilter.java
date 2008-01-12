@@ -11,6 +11,7 @@
 package org.eclipse.zest.layouts.exampleStructures;
 
 import org.eclipse.zest.layouts.Filter;
+import org.eclipse.zest.layouts.LayoutItem;
 
 /**
  * A very simple example of a filter.  This filter never filters
@@ -23,7 +24,7 @@ public class SimpleFilter implements Filter {
 	/**
 	 * Doesn't filter anything
 	 */
-	public boolean isObjectFiltered(Object object) {
+	public boolean isObjectFiltered(LayoutItem object) {
 		return false;
 	}
 }

@@ -306,5 +306,13 @@ public class SimpleNode implements LayoutEntity {
 	public double getYInLayout() {
 		return this.y;
 	}
+
+	public Object getGraphData() {
+		return null;
+	}
+
+	public void setGraphData(Object o) {
+	
+	}
 	
 }

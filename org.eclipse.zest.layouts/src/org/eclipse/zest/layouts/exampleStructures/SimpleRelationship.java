@@ -262,5 +262,13 @@ public class SimpleRelationship implements LayoutRelationship {
 		}
 	}
 
+	public Object getGraphData() {
+		return null;
+	}
+
+	public void setGraphData(Object o) {
+		
+	}
+
 	
 }
