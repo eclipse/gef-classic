@@ -26,5 +26,5 @@ public interface Filter {
 	/**
 	 * Returns true if the object is filtered, or false if it's not filtered.
 	 */
-	public boolean isObjectFiltered (Object object);
+	public boolean isObjectFiltered (LayoutItem object);
 }
