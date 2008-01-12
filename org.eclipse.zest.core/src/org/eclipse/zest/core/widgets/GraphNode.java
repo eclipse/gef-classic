@@ -969,6 +969,15 @@ public class GraphNode extends GraphItem {
 			return rv;
 		}
 
+		public Object getGraphData() {
+			return GraphNode.this;
+		}
+
+		public void setGraphData(Object o) {
+			// TODO Auto-generated method stub
+
+		}
+
 	}
 
 	IFigure getFigure() {
