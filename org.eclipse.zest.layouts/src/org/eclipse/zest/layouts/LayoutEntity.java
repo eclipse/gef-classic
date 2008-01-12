@@ -20,7 +20,7 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
  * @author Ian Bull
  * @author Chris Bennett
  */
-public interface LayoutEntity extends Comparable {
+public interface LayoutEntity extends Comparable, LayoutItem {
 	
 	public final static String ATTR_PREFERRED_WIDTH = "tree-preferred-width";
     public final static String ATTR_PREFERRED_HEIGHT = "tree-preferred-height";

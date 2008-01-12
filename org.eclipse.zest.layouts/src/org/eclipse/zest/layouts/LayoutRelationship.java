@@ -21,7 +21,7 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
  * @author Casey Best
  * @author Chris Callendar
  */
-public interface LayoutRelationship {
+public interface LayoutRelationship extends LayoutItem {
 	
 	
 	/**
