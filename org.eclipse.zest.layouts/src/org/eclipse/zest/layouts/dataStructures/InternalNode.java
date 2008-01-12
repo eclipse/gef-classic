@@ -227,5 +227,14 @@ public class InternalNode implements Comparable, LayoutEntity {
 		this.layoutWidth = width;
 		this.layoutHeight = height;	
 	}
+
+	public Object getGraphData() {
+		return null;
+	}
+
+	public void setGraphData(Object o) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

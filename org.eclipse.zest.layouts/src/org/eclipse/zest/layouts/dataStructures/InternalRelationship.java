@@ -44,12 +44,16 @@ public class InternalRelationship implements LayoutRelationship{
 	}
 	
 	public InternalNode getSource() {
-		if ( this.source == null ) throw new RuntimeException("Source is null");
+		if ( this.source == null ) {
+			throw new RuntimeException("Source is null");
+		}
 		return this.source;
 	}
 	
 	public InternalNode getDestination() {
-		if ( this.destination == null ) throw new RuntimeException("Dest is null");
+		if ( this.destination == null ) {
+			throw new RuntimeException("Dest is null");
+		}
 		return this.destination;
 	}
 	
@@ -120,6 +124,14 @@ public class InternalRelationship implements LayoutRelationship{
 
 	public void setLayoutInformation(Object layoutInformation) {
 		this.layoutInfo = layoutInformation;
+		
+	}
+
+	public Object getGraphData() {
+		return null;
+	}
+
+	public void setGraphData(Object o) {
 		
 	}
 
