@@ -15,10 +15,15 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.MidpointLocator;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.Shape;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.internal.LoopAnchor;
 import org.eclipse.zest.core.widgets.internal.PolylineArcConnection;
 import org.eclipse.zest.core.widgets.internal.RoundedChopboxAnchor;
@@ -27,9 +32,6 @@ import org.eclipse.zest.layouts.LayoutBendPoint;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * This is the graph connection model which stores the source and destination
@@ -458,135 +460,6 @@ public class GraphConnection extends GraphItem {
 		return this.graphModel;
 	}
 
-	// /**
-	// * Returns the curve depth for this connection. The return value is only
-	// * meaningful if the connection style has the
-	// ZestStyles.CONNECTIONS_CURVED
-	// * style set.
-	// *
-	// * @return the curve depth.
-	// */
-	// public int getCurveDepth() {
-	// return curveDepth;
-	// }
-
-	// public void setCurveDepth(int curveDepth) {
-	// this.curveDepth = curveDepth;
-	// updateFigure(connectionFigure);
-	// }
-
-	// void invokeLayoutListeners(LayoutConstraint constraint) {
-	// // @tag TODO: Add layout listeners
-	// }
-
-	// /**
-	// * Gets the end angle for bezier arcs.
-	// *
-	// * For bezier curves: angle between the start point, and the line. This
-	// may
-	// * be a hint only. Future implementations of graph viewers may adjust the
-	// * actual visual representation based on the look of the graph.
-	// */
-	// // @tag zest(bug(152530-Bezier(fix)))
-	// public double getEndAngle() {
-	// return endAngle;
-	// }
-
-	// /**
-	// * Sets the end angle for bezier arcs.
-	// *
-	// * For bezier curves: angle between the start point, and the line. This
-	// may
-	// * be a hint only. Future implementations of graph viewers may adjust the
-	// * actual visual representation based on the look of the graph.
-	// *
-	// * @param endAngle
-	// * the angle to set.
-	// */
-	// // @tag zest(bug(152530-Bezier(fix)))
-	// public void setEndAngle(double endAngle) {
-	// this.endAngle = endAngle;
-	// updateFigure(connectionFigure);
-	// }
-
-	// /**
-	// * For bezier curves: this is a value from 0-1 as a ratio of the length of
-	// * the line between the end point, and the control point/the length of the
-	// * connection.
-	// */
-	// // @tag zest(bug(152530-Bezier(fix)))
-	// public double getEndLength() {
-	// return endLength;
-	// }
-
-	// /**
-	// * For bezier curves: this is a value from 0-1 as a ratio of the length of
-	// * the line between the end point, and the control point/the length of the
-	// * connection.
-	// *
-	// * @param endLength
-	// * the length to set.
-	// */
-	// // @tag zest(bug(152530-Bezier(fix)))
-	// public void setEndLength(double endLength) {
-	// this.endLength = endLength;
-	// updateFigure(connectionFigure);
-	// }
-
-	// /**
-	// * Gets the start angle for bezier arcs.
-	// *
-	// * For bezier curves: angle between the end point and the line. This may
-	// be
-	// * a hint only. Future implementations of graph viewers may adjust the
-	// * actual visual representation based on the look of the graph.
-	// */
-	// // @tag zest(bug(152530-Bezier(fix)))
-	// public double getStartAngle() {
-	// return startAngle;
-	// }
-
-	// /**
-	// * Sets the start angle for bezier arcs.
-	// *
-	// * For bezier curves: angle between the end point and the line. This may
-	// be
-	// * a hint only. Future implementations of graph viewers may adjust the
-	// * actual visual representation based on the look of the graph.
-	// */
-	// // @tag zest(bug(152530-Bezier(fix)))
-	// public void setStartAngle(double startAngle) {
-	// this.startAngle = startAngle;
-	// updateFigure(connectionFigure);
-	//
-	// }
-
-	// /**
-	// * For bezier curves: this is a value from 0-1 as a ratio of the length of
-	// * the line between the start point, and the control point/the length of
-	// the
-	// * connection.
-	// */
-	// // @tag zest(bug(152530-Bezier(fix)))
-	// public double getStartLength() {
-	// return startLength;
-	// }
-
-	// /**
-	// * For bezier curves: this is a value from 0-1 as a ratio of the length of
-	// * the line between the start point, and the control point/the length of
-	// the
-	// * connection.
-	// *
-	// * @param startLength
-	// * the length to set.
-	// */
-	// // @tag zest(bug(152530-Bezier(fix)))
-	// public void setStartLength(double startLength) {
-	// this.startLength = startLength;
-	// updateFigure(connectionFigure);
-	// }
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -704,19 +577,28 @@ public class GraphConnection extends GraphItem {
 		ChopboxAnchor sourceAnchor = null;
 		ChopboxAnchor targetAnchor = null;
 		this.connectionLabel = new Label();
+		Locator labelLocator = null;
 
 		if (getSource() == getDestination()) {
+			// If this is a self loop, create a looped arc and put the locator at the top
+			// of the connection
 			connectionFigure = new PolylineArcConnection();
 			sourceAnchor = new LoopAnchor(getSource().getNodeFigure());
 			targetAnchor = new LoopAnchor(getDestination().getNodeFigure());
+			labelLocator = new MidpointLocator(connectionFigure, 0) {
+				protected Point getReferencePoint() {
+					Point p = Point.SINGLETON;
+					p.x = getConnection().getPoints().getPoint(getIndex()).x;
+					p.y = (int) (getConnection().getPoints().getPoint(getIndex()).y - (curveDepth * 1.5));
+					return p;
+				}
+			};
 		} else {
 			connectionFigure = new PolylineConnection();
 			sourceAnchor = new RoundedChopboxAnchor(getSource().getNodeFigure(), 8);
 			targetAnchor = new RoundedChopboxAnchor(getDestination().getNodeFigure(), 8);
+			labelLocator = new MidpointLocator(connectionFigure, 0);
 		}
-
-		//AligningBendpointLocator labelLocator = new AligningBendpointLocator(connectionFigure);
-		MidpointLocator labelLocator = new MidpointLocator(connectionFigure, 0);
 
 		connectionFigure.setSourceAnchor(sourceAnchor);
 		connectionFigure.setTargetAnchor(targetAnchor);
@@ -765,6 +647,14 @@ public class GraphConnection extends GraphItem {
 
 		public void setLayoutInformation(Object layoutInformation) {
 			this.layoutInformation = layoutInformation;
+		}
+
+		public Object getGraphData() {
+			return GraphConnection.this;
+		}
+
+		public void setGraphData(Object o) {
+
 		}
 
 	}
