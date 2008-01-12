@@ -23,6 +23,7 @@ import org.eclipse.zest.layouts.Filter;
 import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.LayoutItem;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.Stoppable;
@@ -579,12 +580,12 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Removes any objects that are currently filtered
 	 */
-	private Object[] filterUnwantedObjects(Object[] objects) {
+	private Object[] filterUnwantedObjects(LayoutItem[] objects) {
 		// first remove any entities or relationships that are filtered.
 		List unfilteredObjsList = new ArrayList();
 		if (filter != null) {
 			for (int i = 0; i < objects.length; i++) {
-				Object object = objects[i];
+				LayoutItem object = objects[i];
 				if (!filter.isObjectFiltered(object)) {
 					unfilteredObjsList.add(object);
 				}
