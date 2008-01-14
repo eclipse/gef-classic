@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.EventObject;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +47,8 @@ import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.Tool;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CommandStackListener;
+import org.eclipse.gef.commands.CommandStackEvent;
+import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editparts.LayerManager;
 
 /**
@@ -177,9 +177,10 @@ private long accessibleBegin;
 private int accessibleStep;
 private Command command;
 
-private CommandStackListener commandStackListener = new CommandStackListener() {
-	public void commandStackChanged(EventObject event) {
-		handleCommandStackChanged();
+private CommandStackEventListener commandStackListener = new CommandStackEventListener() {
+	public void stackChanged(CommandStackEvent event) {
+		if (event.isPreChangeEvent())
+			handleCommandStackChanged();
 	}
 };
 private Input current;
@@ -259,7 +260,7 @@ public void activate() {
 	getCurrentInput().verifyMouseButtons = true;
 	setState(STATE_INITIAL);
 	setFlag(FLAG_ACTIVE, true);
-	getDomain().getCommandStack().addCommandStackListener(commandStackListener);
+	getDomain().getCommandStack().addCommandStackEventListener(commandStackListener);
 }
 
 /**
@@ -375,7 +376,7 @@ public void deactivate() {
 	setState(STATE_TERMINAL);
 	operationSet = null;
 	current = null;
-	getDomain().getCommandStack().removeCommandStackListener(commandStackListener);
+	getDomain().getCommandStack().removeCommandStackEventListener(commandStackListener);
 }
 
 /**
@@ -392,12 +393,12 @@ protected void debug(String message) {
  * @param command the command to execute
  */
 protected void executeCommand(Command command) {
-	getDomain().getCommandStack().removeCommandStackListener(commandStackListener);
+	getDomain().getCommandStack().removeCommandStackEventListener(commandStackListener);
 	try {
 		getDomain().getCommandStack()
 			.execute(command);
 	} finally {
-		getDomain().getCommandStack().addCommandStackListener(commandStackListener);
+		getDomain().getCommandStack().addCommandStackEventListener(commandStackListener);
 	}
 }
 
@@ -626,7 +627,7 @@ protected boolean handleButtonUp(int button) {
  * @return <code>true</code> if the change was handled in some way
  */
 protected boolean handleCommandStackChanged() {
-	if (!isInState(STATE_INITIAL)) {
+	if (!isInState(STATE_INITIAL | STATE_INVALID)) {
 		setState(STATE_INVALID);
 		handleInvalidInput();
 		return true;
