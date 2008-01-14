@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,8 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.text;
+
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -23,7 +25,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * An inline flow figure that renders a string of text across one or more lines. A
- * TextFlow can not contain children. All <code>InlineFlow</code> figure's must be
+ * TextFlow cannot contain children. All <code>InlineFlow</code> figure's must be
  * parented by a <code>FlowFigure</code>.
  * <p>
  * WARNING: This class is not intended to be subclassed by clients.
@@ -126,6 +128,7 @@ private int findNextLineOffset(Point p, int[] trailing) {
 
 	TextFragmentBox closestBox = null;	
 	int index = 0;
+	List fragments = getFragmentsWithoutBorder();
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
 		if (box.getBaseline() - box.getLineRoot().getAscent() > p.y 
@@ -159,6 +162,7 @@ private int findPreviousLineOffset(Point p, int[] trailing) {
 
 	TextFragmentBox closestBox = null;	
 	int index = 0;
+	List fragments = getFragmentsWithoutBorder();
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		TextFragmentBox box = (TextFragmentBox)fragments.get(i);
 		if (box.getBaseline() + box.getLineRoot().getDescent() < p.y
@@ -209,7 +213,7 @@ protected String getBidiSubstring(TextFragmentBox box, int index) {
 	if (index == 0 && bidiInfo.leadingJoiner)
 		buffer.append(BidiChars.ZWJ);
 	buffer.append(getText().substring(box.offset, box.offset + box.length));
-	if (index == fragments.size() - 1 && bidiInfo.trailingJoiner)
+	if (index == getFragmentsWithoutBorder().size() - 1 && bidiInfo.trailingJoiner)
 		buffer.append(BidiChars.ZWJ);
 	return buffer.toString();
 }
@@ -232,16 +236,12 @@ public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 	if (offset == getText().length())
 		trailing = false;
 	
+	List fragments = getFragmentsWithoutBorder();
 	int i = fragments.size();
-	int stop = 0;
-	if (getBorder() instanceof FlowBorder) {
-		i--;
-		stop++;
-	}
 	TextFragmentBox box;
 	do
 		box = (TextFragmentBox)fragments.get(--i);
-	while (offset < box.offset && i > stop);
+	while (offset < box.offset && i > 0);
 	
 	// Cannot be trailing and after the last char, so go to first char in next box
 	if (trailing && box.offset + box.length <= offset) {
@@ -294,12 +294,26 @@ int getDescent() {
  */
 public int getFirstOffsetForLine(int baseline) {
 	TextFragmentBox box;
+	List fragments = getFragmentsWithoutBorder();
 	for (int i = 0; i < fragments.size(); i++) {
 		box = (TextFragmentBox)fragments.get(i);
 		if (baseline == box.getBaseline())
 			return box.offset;
 	}
 	return -1;
+}
+
+/**
+ * Returns the <code>TextFragmentBox</code> fragments contained in this TextFlow, not
+ * including the border fragments.  The returned list should not be modified.
+ * @return list of fragments without the border fragments
+ * @since 3.4
+ */
+protected List getFragmentsWithoutBorder() {
+	List fragments = getFragments();
+	if (getBorder() != null)
+		fragments = fragments.subList(1, fragments.size() - 1);
+	return fragments;
 }
 
 /**
@@ -312,6 +326,7 @@ public int getFirstOffsetForLine(int baseline) {
  */
 public int getLastOffsetForLine(int baseline) {
 	TextFragmentBox box;
+	List fragments = getFragmentsWithoutBorder();
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		box = (TextFragmentBox)fragments.get(i);
 		if (baseline == box.getBaseline())
@@ -346,6 +361,7 @@ public int getNextOffset(Point p, boolean down, int[] trailing) {
  */
 public int getNextVisibleOffset(int offset) {
 	TextFragmentBox box;
+	List fragments = getFragmentsWithoutBorder();
 	for (int i = 0; i < fragments.size(); i++) {
 		box = (TextFragmentBox)fragments.get(i);
 		if (box.offset + box.length <= offset)
@@ -425,6 +441,7 @@ public int getPreviousVisibleOffset(int offset) {
 	TextFragmentBox box;
 	if (offset == -1)
 		offset = Integer.MAX_VALUE;
+	List fragments = getFragmentsWithoutBorder();
 	for (int i = fragments.size() - 1; i >= 0; i--) {
 		box = (TextFragmentBox)fragments.get(i);
 		if (box.offset >= offset)
@@ -648,4 +665,5 @@ protected FlowUtilities getFlowUtilities() {
 protected TextUtilities getTextUtilities() {
     return TextUtilities.INSTANCE;
 }
+
 }
