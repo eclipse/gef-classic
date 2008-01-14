@@ -74,7 +74,8 @@ protected FlowFigureLayout createDefaultFlowLayout() {
 }
 
 /**
- * Returns the <code>LineBox</code> fragments contained in this InlineFlow
+ * Returns the <code>FlowBox</code> fragments contained in this InlineFlow.  The returned
+ * list should not be modified.
  * @return The fragments
  */
 public List getFragments() {
@@ -101,12 +102,6 @@ protected void paintBorder(Graphics graphics) {
 			where.y = -box.getAscentWithBorder();
 			where.height = box.getDescentWithBorder() - where.y;
 			where.y += box.getBaseline();
-			if (i == 0) {
-				where.x += fb.getLeftMargin();
-				where.width -= fb.getLeftMargin();
-			}
-			if (i == frags.size() - 1)
-				where.width -= fb.getRightMargin();
 			sides = 0;
 			if (i == 0)
 				sides = SWT.LEAD;
@@ -114,6 +109,7 @@ protected void paintBorder(Graphics graphics) {
 				sides |= SWT.TRAIL;
 			fb.paint(this, graphics, where, sides);
 		}
+		graphics.restoreState();
 	}
 	if (selectionStart != -1)
 		paintSelection(graphics);
