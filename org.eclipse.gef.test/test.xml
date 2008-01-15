@@ -9,6 +9,10 @@
 	<property name="plugin-name" value="org.eclipse.gef.test" />
 	<property name="library-file" value="${eclipse-home}/plugins/org.eclipse.test/library.xml" />
 
+	<!-- buildDir=/home/www-data/build/gef/downloads/drops/3.4.0/N200801142250 -->
+	<!-- load org.eclipse.gef.releng/builder/tests/configs/local/testing.properties -->
+	<property file="${buildDir/org.eclipse.${subprojectName2}.releng/builder/tests/configs/local/testing.properties"/>
+	
 	<!-- This target holds all initialization code that needs to be done for -->
 	<!-- all tests that are to be run. Initialization for individual tests -->
 	<!-- should be done within the body of the suite target. -->
@@ -23,8 +27,7 @@
 	<target name="suite">
 		<property name="gef-folder" value="${eclipse-home}/gef_folder" />
 		<delete dir="${gef-folder}" quiet="true" />
-		<echoproperties/>
-		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${gef-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
 			<property name="classname" value="org.eclipse.gef.test.GEFTestSuite" />
