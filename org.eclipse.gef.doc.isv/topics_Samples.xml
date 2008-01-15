@@ -4,10 +4,10 @@
 <!-- Define topics for the samples                                                 -->
 <!-- ============================================================================= -->
 <toc label="Examples">
-   <topic label="Installing the Examples" href="samples/samples.html">
-   <anchor id="draw2d" />
+   <topic label="Installing the Examples" href="samples/samples.html"/>
+   <anchor id="draw2d"/>
    <topic label="GEF Examples">
-      <topic label="Shapes Editor" href="samples/shapes.html/>
+      <topic label="Shapes Editor" href="samples/shapes.html"/>
       <topic label="Logic Editor" href="samples/logic.html"/>
       <topic label="Flow Editor" href="samples/flow.html"/>
       <topic label="Text Editor" href="samples/text.html"/>
