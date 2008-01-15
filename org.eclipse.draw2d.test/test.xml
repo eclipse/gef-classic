@@ -23,7 +23,7 @@
 	<target name="suite">
 		<property name="draw2d-folder" value="${eclipse-home}/draw2d_folder" />
 		<delete dir="${draw2d-folder}" quiet="true" />
-		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${draw2d-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
 			<property name="classname" value="org.eclipse.draw2d.test.Draw2dTestSuite" />

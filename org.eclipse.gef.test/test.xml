@@ -28,7 +28,7 @@
 	<target name="suite">
 		<property name="gef-folder" value="${eclipse-home}/gef_folder" />
 		<delete dir="${gef-folder}" quiet="true" />
-		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
+		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${gef-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
 			<property name="classname" value="org.eclipse.gef.test.GEFTestSuite" />
