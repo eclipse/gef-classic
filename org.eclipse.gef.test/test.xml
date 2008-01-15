@@ -11,7 +11,8 @@
 
 	<!-- buildDir=/home/www-data/build/gef/downloads/drops/3.4.0/N200801142250 -->
 	<!-- load org.eclipse.gef.releng/builder/tests/configs/local/testing.properties -->
-	<property file="${buildDir/org.eclipse.${subprojectName2}.releng/builder/tests/configs/local/testing.properties"/>
+	<echo message="Load ${buildDir}/org.eclipse.${subprojectName2}.releng/builder/tests/configs/local/testing.properties"/>
+	<property file="${buildDir}/org.eclipse.${subprojectName2}.releng/builder/tests/configs/local/testing.properties"/>
 	
 	<!-- This target holds all initialization code that needs to be done for -->
 	<!-- all tests that are to be run. Initialization for individual tests -->
