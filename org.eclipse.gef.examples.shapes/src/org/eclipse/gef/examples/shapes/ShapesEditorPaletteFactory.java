@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
+ * Copyright (c) 2004, 2008 Elias Volanakis and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
+import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.CreationFactory;
@@ -82,18 +83,15 @@ static PaletteRoot createPalette() {
 
 /** Create the "Tools" group. */
 private static PaletteContainer createToolsGroup(PaletteRoot palette) {
-	PaletteGroup toolGroup = new PaletteGroup("Tools");
+	PaletteToolbar toolbar = new PaletteToolbar("Tools");
 
 	// Add a selection tool to the group
 	ToolEntry tool = new PanningSelectionToolEntry();
-	toolGroup.add(tool);
+	toolbar.add(tool);
 	palette.setDefaultEntry(tool);
 	
 	// Add a marquee tool to the group
-	toolGroup.add(new MarqueeToolEntry());
-
-	// Add a (unnamed) separator to the group
-	toolGroup.add(new PaletteSeparator());
+	toolbar.add(new MarqueeToolEntry());
 
 	// Add (solid-line) connection tool 
 	tool = new ConnectionCreationToolEntry(
@@ -107,7 +105,7 @@ private static PaletteContainer createToolsGroup(PaletteRoot palette) {
 			},
 			ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_s16.gif"),
 			ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_s24.gif"));
-	toolGroup.add(tool);
+	toolbar.add(tool);
 	
 	// Add (dashed-line) connection tool
 	tool = new ConnectionCreationToolEntry(
@@ -121,9 +119,9 @@ private static PaletteContainer createToolsGroup(PaletteRoot palette) {
 			},
 			ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_d16.gif"),
 			ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_d24.gif"));
-	toolGroup.add(tool);
+	toolbar.add(tool);
 
-	return toolGroup;
+	return toolbar;
 }
 
 /** Utility class. */
