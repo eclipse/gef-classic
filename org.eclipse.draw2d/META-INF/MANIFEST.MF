@@ -15,4 +15,4 @@ Export-Package: org.eclipse.draw2d,
  org.eclipse.draw2d.text,
  org.eclipse.draw2d.widgets
 Require-Bundle: org.eclipse.swt;visibility:=reexport;bundle-version="[3.2.0,4.0.0)"
-Eclipse-LazyStart: true
+Bundle-ActivationPolicy: lazy
