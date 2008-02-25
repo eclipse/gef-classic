@@ -33,9 +33,7 @@ import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.MouseTrackListener;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
@@ -56,7 +54,6 @@ import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.TransferDropTargetListener;
@@ -66,7 +63,6 @@ import org.eclipse.ui.IPerspectiveListener;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.XMLMemento;
 import org.eclipse.ui.internal.DragCursors;
 
@@ -76,25 +72,24 @@ import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.ImageFigure;
-import org.eclipse.draw2d.ImageUtilities;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.SWTGraphics;
+import org.eclipse.draw2d.Triangle;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.dnd.TemplateTransfer;
 import org.eclipse.gef.internal.GEFMessages;
-import org.eclipse.gef.internal.Internal;
+import org.eclipse.gef.internal.InternalImages;
+import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.ui.views.palette.PaletteView;
 
 /**
@@ -124,6 +119,10 @@ private static final int MAX_PALETTE_SIZE = 500;
 
 private static final int STATE_HIDDEN = 8;
 private static final int STATE_EXPANDED = 1;
+
+private static final Dimension ARROW_SIZE = new Dimension(6, 11);
+private static final int SASH_BUTTON_WIDTH = 11;
+
 /**
  * One of the two possible initial states of the flyout palette.  This is the default one.
  * When in this state, only the flyout palette's sash is visible.
@@ -136,16 +135,12 @@ public static final int STATE_COLLAPSED = 2;
  */
 public static final int STATE_PINNED_OPEN = 4;
 
-private static final Image LEFT_ARROW = new Image(null, ImageDescriptor.createFromFile(
-		Internal.class, "icons/palette_left.gif").getImageData()); //$NON-NLS-1$
-private static final Image RIGHT_ARROW = new Image(null, ImageDescriptor.createFromFile(
-		Internal.class, "icons/palette_right.gif").getImageData()); //$NON-NLS-1$
-
 private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 private Composite paletteContainer;
 private PaletteViewer pViewer, externalViewer;
 private IMemento capturedPaletteState;
-private Control graphicalControl, sash;
+private Control graphicalControl;
+private Composite sash;
 private PaletteViewerProvider provider;
 private FlyoutPreferences prefs;
 private Point cachedBounds = new Point(0, 0);
@@ -163,6 +158,7 @@ private int paletteState = STATE_HIDDEN;
 private int paletteWidth = DEFAULT_PALETTE_SIZE;
 private int minWidth = MIN_PALETTE_SIZE;
 private int cachedSize = -1, cachedState = -1, cachedLocation = -1;
+private int cachedTitleHeight = 24; // give it a default value
 
 private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
 	public void perspectiveActivated(IWorkbenchPage page, 
@@ -278,7 +274,7 @@ private Composite createPaletteContainer() {
 	return new PaletteComposite(this, SWT.NONE);
 }
 
-private Control createSash() {
+private Composite createSash() {
 	return new Sash(this, SWT.NONE);
 }
 
@@ -368,6 +364,7 @@ public void layout(boolean changed) {
 		layoutComponentsEast(area, sashWidth, pWidth);
 	else
 		layoutComponentsWest(area, sashWidth, pWidth);
+    sash.layout();
 	setRedraw(true);
 	update();
 }
@@ -681,11 +678,10 @@ public interface FlyoutPreferences {
 }
 
 private class Sash extends Composite {
-	private Control button, title;
+	private Control button;
 	public Sash(Composite parent, int style) {
 		super(parent, style);
 		button = createFlyoutControlButton(this);
-		title = createTitle(this, false);
 		new SashDragManager();
 		
 		addMouseTrackListener(new MouseTrackAdapter() {
@@ -714,62 +710,66 @@ private class Sash extends Composite {
 			}
 		});
 	}
-	/**
-	 * @see org.eclipse.swt.widgets.Control#computeSize(int, int, boolean)
-	 */
+
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 		if (isInState(STATE_PINNED_OPEN))
-			return new Point(6, 1);
-		Point buttonSize = button.computeSize(wHint, hHint);
-		Point titleSize = title.computeSize(wHint, hHint);
-		return new Point(Math.max(buttonSize.x, titleSize.x) + 2, 
-				buttonSize.y + titleSize.y + 7);
+			return new Point(3, 3);
+		
+		// button size plus two pixels for the two lines to be drawn
+		return new Point(SASH_BUTTON_WIDTH + 2, cachedTitleHeight);
 	}
 	private void handleSashDragged(int shiftAmount) {
 		int newSize = paletteContainer.getBounds().width 
 				+ (dock == PositionConstants.EAST ? -shiftAmount : shiftAmount);
 		setPaletteWidth(newSize);
 	}
-	/**
-	 * @see org.eclipse.swt.widgets.Composite#layout(boolean)
-	 */
 	public void layout(boolean changed) {
-		if (button == null || title == null)
+		if (button == null)
 			return;
 		
 		if (isInState(STATE_PINNED_OPEN)) {
-			title.setVisible(false);
 			button.setVisible(false);
 			return;
 		}
 		
-		title.setVisible(true);
 		button.setVisible(true);
 		Rectangle area = getClientArea();
-		// 1 pixel margin all around to draw the raised border
-		area.x += 1;
-		area.y += 1;
-		area.width -= 2;
-		area.height -= 2;
-		button.setBounds(area.x, area.y, area.width, area.width);
-		// 5-pixel spacing
-		area.y += area.width + 3;
-		title.setBounds(area.x, area.y, area.width, 
-				title.computeSize(-1, -1).y);
+		button.setBounds(area.x + 1, area.y + 1, SASH_BUTTON_WIDTH,
+		    cachedTitleHeight - 1);
+
 		if (transferFocus) {
 			transferFocus = false;
 			button.setFocus();
 		}
 	}
 	private void paintSash(GC gc) {
-		Rectangle bounds = getBounds();
-		gc.setForeground(ColorConstants.buttonLightest);
-		gc.drawLine(0, 0, bounds.width, 0);
-		gc.drawLine(0, 0, 0, bounds.height);
-		gc.setForeground(ColorConstants.buttonDarker);
-		gc.drawLine(bounds.width - 1, 0, bounds.width - 1, bounds.height - 1);
-		gc.drawLine(0, bounds.height - 1, bounds.width - 1, bounds.height - 1);
-	}
+        Rectangle bounds = getBounds();
+        if (isInState(STATE_PINNED_OPEN)) {
+            gc.setBackground(PaletteColorUtil.WIDGET_BACKGROUND);
+            gc.fillRectangle(0, 0, bounds.width, bounds.height);
+
+            gc.setForeground(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+            gc.drawLine(0, 0, bounds.width, 0);
+            gc.setForeground(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+            gc.drawLine(0, bounds.height - 1, bounds.width - 1, bounds.height - 1);
+            gc.setForeground(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+            gc.drawLine(0, 0, 0, bounds.height);
+            gc.setForeground(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+            gc.drawLine(bounds.width - 1, 0, bounds.width - 1, bounds.height - 1);
+        } else {
+            gc.setForeground(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+            gc.drawLine(0, 0, 0, bounds.height);
+            gc.drawLine(bounds.width - 1, 0, bounds.width - 1, bounds.height);
+    
+            gc.setForeground(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+            gc.drawLine(1, 0, 1, bounds.height);
+    
+            gc.setForeground(FigureUtilities.mixColors(
+                PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_LIST_BACKGROUND,
+                0.85));
+            gc.drawLine(2, 0, 2, bounds.height);    
+        }
+    }
 	private void updateState() {
 		setCursor(isInState(STATE_EXPANDED | STATE_PINNED_OPEN) 
 				? SharedCursors.SIZEWE : null);
@@ -995,27 +995,30 @@ private class PaletteComposite extends Composite {
 		
 		Rectangle area = getClientArea();
 		if (title.getVisible()) {
+		    boolean buttonVisible = button.getVisible();
 			Point titleSize = title.computeSize(-1, -1);
-			Point buttonSize = button.computeSize(-1, -1);
-			int height = Math.max(titleSize.y, buttonSize.y);
-			buttonSize.x = Math.max(height, buttonSize.x);
+            Point buttonSize = buttonVisible ? button.computeSize(-1, -1)
+                : new Point(0, 0);
+			cachedTitleHeight = Math.max(titleSize.y, buttonSize.y);
+			if (buttonVisible) {
+			    buttonSize.x = Math.max(cachedTitleHeight, buttonSize.x);
+			}
 			if (dock == PositionConstants.EAST) {
 				int buttonX = area.width - buttonSize.x;
-				button.setBounds(buttonX, 0, buttonSize.x, height);
-				// leave some space between the button and the title
-				title.setBounds(0, 0, buttonX - 2, height);
+				button.setBounds(buttonX, 0, buttonSize.x, cachedTitleHeight);
+				title.setBounds(0, 0, buttonX, cachedTitleHeight);
 			} else {
-				int titleX = buttonSize.x + 2;
-				button.setBounds(0, 0, buttonSize.x, height);
-				title.setBounds(titleX, 0, area.width - titleX, height);
+				int titleX = buttonSize.x;
+				button.setBounds(0, 0, buttonSize.x, cachedTitleHeight);
+				title.setBounds(titleX, 0, area.width - titleX, cachedTitleHeight);
 			}
-			area.y += height;
-			area.height -= height;
+			area.y += cachedTitleHeight;
+			area.height -= cachedTitleHeight;
 		}
 		pCtrl.setBounds(area);
 	}
 	protected void updateState() {
-		title.setVisible(isInState(STATE_PINNED_OPEN));
+		title.setVisible(isInState(STATE_EXPANDED) || isInState(STATE_PINNED_OPEN));
 		button.setVisible(isInState(STATE_PINNED_OPEN));
 		if (transferFocus && button.getVisible()) {
 			transferFocus = false;
@@ -1025,63 +1028,11 @@ private class PaletteComposite extends Composite {
 	}
 }
 
-private class RotatedTitleLabel 
-		extends ImageFigure {
-	public RotatedTitleLabel() {
-		FlyoutPaletteComposite.this.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				if (getImage() != null && !getImage().isDisposed())
-					getImage().dispose();
-			}
-		});
-	}
-	protected void paintFigure(Graphics graphics) {
-		if (getImage() == null)
-			updateImage();
-		super.paintFigure(graphics);
-		if (hasFocus())
-			graphics.drawFocus(0, 0, bounds.width - 1, bounds.height - 1);
-	}
-	public void setFont(Font f) {
-		if (f != getLocalFont()) {
-			super.setFont(f);
-			updateImage();
-		}
-	}
-	protected void updateImage() {
-		if (getImage() != null)
-			getImage().dispose();
-		IFigure fig = new TitleLabel(false);
-		fig.setFont(getFont());
-		fig.setBackgroundColor(ColorConstants.button);
-		fig.setOpaque(true);
-		// This is a hack.  TitleLabel does not return a proper preferred size, since
-		// its getInsets() method depends on its current size.  To make it work properly,
-		// we first make the size really big.
-		fig.setSize(Integer.MAX_VALUE, Integer.MAX_VALUE);
-		Dimension imageSize = fig.getPreferredSize(-1, -1);
-		fig.setSize(imageSize);
-		Image img = new Image(null, imageSize.width, imageSize.height);
-		GC gc = new GC(img);
-		Graphics graphics = new SWTGraphics(gc);
-		fig.paint(graphics);
-		graphics.dispose();
-		gc.dispose();
-		setImage(ImageUtilities.createRotatedImage(img));
-		img.dispose();
-	}
-}
-
 private static class TitleLabel extends Label {
-	protected static final Border BORDER = new MarginBorder(0, 3, 0, 3);
+	protected static final Border BORDER = new MarginBorder(4, 3, 4, 3);
 	protected static final Border TOOL_TIP_BORDER = new MarginBorder(0, 2, 0, 2);
-	private static final int H_GAP = 4;
-	private static final int LINE_LENGTH = 20;
-	private static final int MIN_LINE_LENGTH = 6;
-	private boolean horizontal;
 	public TitleLabel(boolean isHorizontal) {
-		super(GEFMessages.Palette_Label);
-		horizontal = isHorizontal;
+		super(GEFMessages.Palette_Label, InternalImages.get(InternalImages.IMG_PALETTE));
 		setLabelAlignment(PositionConstants.LEFT);
 		setBorder(BORDER);
 		Label tooltip = new Label(getText());
@@ -1089,78 +1040,38 @@ private static class TitleLabel extends Label {
 		setToolTip(tooltip);
 		setForegroundColor(ColorConstants.listForeground);
 	}
-	public Insets getInsets() {
-		Insets insets = super.getInsets();
-		Dimension diff = getBounds().getCropped(insets).getSize()
-				.getDifference(getTextBounds().getSize());
-		if (diff.width > 0) {
-			insets = new Insets(insets);
-			int width = Math.min(LINE_LENGTH + H_GAP, diff.width / 2);
-			insets.left += width;
-			insets.right += width;
-		}
-		return insets;
-	}
 	public IFigure getToolTip() {
 		if (isTextTruncated())
 			return super.getToolTip();
 		return null;
 	}
 	protected void paintFigure(Graphics graphics) {
-		super.paintFigure(graphics);
-		org.eclipse.draw2d.geometry.Rectangle area = 
-				getBounds().getCropped(super.getInsets());
-		org.eclipse.draw2d.geometry.Rectangle textBounds = getTextBounds();
-		// We reduce the width by 1 because FigureUtilities grows it by 1 unnecessarily
-		textBounds.width--;
-
-		if (hasFocus())
-			graphics.drawFocus(bounds.getResized(-1, -1)
-					.intersect(textBounds.getExpanded(getInsets())));
 		
-		int lineWidth = Math.min((area.width - textBounds.width - H_GAP * 2) / 2, 
-				LINE_LENGTH);
-		if (lineWidth >= MIN_LINE_LENGTH) {
-			int centerY = area.height / 2;
-			graphics.setForegroundColor(ColorConstants.buttonLightest);
-			graphics.drawLine(textBounds.x - H_GAP - lineWidth, centerY - 3, 
-					textBounds.x - H_GAP, centerY - 3);
-			graphics.drawLine(textBounds.x - H_GAP - lineWidth, centerY + 2, 
-					textBounds.x - H_GAP, centerY + 2);
-			graphics.drawLine(textBounds.right() + H_GAP, centerY - 3, 
-					textBounds.right() + H_GAP + lineWidth, centerY - 3);
-			graphics.drawLine(textBounds.right() + H_GAP, centerY + 2, 
-					textBounds.right() + H_GAP + lineWidth, centerY + 2);
-			graphics.setForegroundColor(ColorConstants.buttonDarker);
-			graphics.drawLine(textBounds.x - H_GAP - lineWidth, centerY + 3, 
-					textBounds.x - H_GAP, centerY + 3);
-			graphics.drawLine(textBounds.x - H_GAP - lineWidth, centerY - 2, 
-					textBounds.x - H_GAP, centerY - 2);
-			graphics.drawLine(textBounds.right() + H_GAP, centerY - 2, 
-					textBounds.right() + H_GAP + lineWidth, centerY - 2);
-			graphics.drawLine(textBounds.right() + H_GAP, centerY + 3, 
-					textBounds.right() + H_GAP + lineWidth, centerY + 3);
-			if (horizontal) {
-				graphics.drawPoint(textBounds.x - H_GAP, centerY + 2);
-				graphics.drawPoint(textBounds.x - H_GAP, centerY - 3);
-				graphics.drawPoint(textBounds.right() + H_GAP + lineWidth, centerY - 3);
-				graphics.drawPoint(textBounds.right() + H_GAP + lineWidth, centerY + 2);
-				graphics.setForegroundColor(ColorConstants.buttonLightest);
-				graphics.drawPoint(textBounds.x - H_GAP - lineWidth, centerY - 2);
-				graphics.drawPoint(textBounds.x - H_GAP - lineWidth, centerY + 3);
-				graphics.drawPoint(textBounds.right() + H_GAP, centerY - 2);
-				graphics.drawPoint(textBounds.right() + H_GAP, centerY + 3);
-			} else {
-				graphics.drawPoint(textBounds.x - H_GAP - lineWidth, centerY + 2);
-				graphics.drawPoint(textBounds.x - H_GAP - lineWidth, centerY - 3);
-				graphics.drawPoint(textBounds.right() + H_GAP, centerY - 3);
-				graphics.drawPoint(textBounds.right() + H_GAP, centerY + 2);
-				graphics.setForegroundColor(ColorConstants.buttonLightest);
-				graphics.drawPoint(textBounds.x - H_GAP, centerY - 2);
-				graphics.drawPoint(textBounds.x - H_GAP, centerY + 3);
-				graphics.drawPoint(textBounds.right() + H_GAP + lineWidth, centerY - 2);
-				graphics.drawPoint(textBounds.right() + H_GAP + lineWidth, centerY + 3);
-			}
+		// paint the gradient
+	    graphics.pushState();
+		org.eclipse.draw2d.geometry.Rectangle r = org.eclipse.draw2d.geometry.Rectangle.SINGLETON;
+        r.setBounds(getBounds());
+        graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+        graphics.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND);
+        graphics.fillGradient(r, true);
+        
+        // draw bottom border
+        graphics.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+        graphics.drawLine(r.getBottomLeft().getTranslated(0, -1), r.getBottomRight()
+            .getTranslated(0, -1));
+
+        graphics.popState();
+
+        // paint the text and icon
+        super.paintFigure(graphics);
+
+        // paint the focus rectangle around the text
+		if (hasFocus()) {
+	        org.eclipse.draw2d.geometry.Rectangle textBounds = getTextBounds();
+	        // We reduce the width by 1 because FigureUtilities grows it by 1 unnecessarily
+	        textBounds.width--;
+	        graphics.drawFocus(bounds.getResized(-1, -1)
+					.intersect(textBounds.getExpanded(getInsets())));
 		}
 	}
 }
@@ -1177,19 +1088,19 @@ private class ButtonCanvas extends Canvas {
 		size.union(new Dimension(wHint, hHint));
 		return new org.eclipse.swt.graphics.Point(size.width, size.height);
 	}
-	private Image getButtonImage() {
-		Image arrow = null;
+	private int getArrowDirection() {
+		int direction = PositionConstants.EAST;
 		if (isInState(STATE_EXPANDED | STATE_PINNED_OPEN))
-			arrow = dock == PositionConstants.WEST ? LEFT_ARROW : RIGHT_ARROW;
+		    direction = dock == PositionConstants.WEST ? PositionConstants.WEST : PositionConstants.EAST;
 		else 
-			arrow = dock == PositionConstants.WEST ? RIGHT_ARROW : LEFT_ARROW;
+		    direction = dock == PositionConstants.WEST ? PositionConstants.EAST : PositionConstants.WEST;
 		if (isMirrored()) {
-			if (arrow == LEFT_ARROW)
-				arrow = RIGHT_ARROW;
+			if (direction == PositionConstants.WEST)
+			    direction = PositionConstants.EAST;
 			else
-				arrow = LEFT_ARROW;
+			    direction = PositionConstants.WEST;
 		}
-		return arrow;	
+		return direction;	
 	}
 	private String getButtonTooltipText() {
 		if (isInState(STATE_COLLAPSED))
@@ -1200,7 +1111,7 @@ private class ButtonCanvas extends Canvas {
 		setCursor(SharedCursors.ARROW);
 		lws = new LightweightSystem();
 		lws.setControl(this);
-		final ImageButton b = new ImageButton(getButtonImage());
+		final ArrowButton b = new ArrowButton(getArrowDirection());
 		b.setRolloverEnabled(true);
 		b.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
 		b.addActionListener(new ActionListener() {
@@ -1215,10 +1126,10 @@ private class ButtonCanvas extends Canvas {
 		listeners.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(PROPERTY_STATE)) {
-					b.setImage(getButtonImage());
+					b.setDirection(getArrowDirection());
 					setToolTipText(getButtonTooltipText());
 				} else if (evt.getPropertyName().equals(PROPERTY_DOCK_LOCATION))
-					b.setImage(getButtonImage());
+					b.setDirection(getArrowDirection());
 			}
 		});
 		lws.setContents(b);
@@ -1241,15 +1152,62 @@ private class ButtonCanvas extends Canvas {
 			}
 		});
 	}
-	private class ImageButton extends Button {
-		public ImageButton(Image img) {
-			super();
-			setContents(new ImageFigure(img));
-		}
-		public void setImage(Image img) {
-			((ImageFigure)getChildren().get(0)).setImage(img);
-		}
-	}
+	
+	private class ArrowButton
+        extends Button {
+    
+        private Triangle triangle;
+        
+        /**
+         * Creates a new instance
+         * 
+         * @param direction
+         *            the direction the arrow should face (PositionConstants.RIGHT or
+         *            PositionConstants.LEFT)
+         */
+        public ArrowButton(int direction) {
+            super();
+            setDirection(direction);
+        
+            triangle = new Triangle();
+            triangle.setOutline(true);
+            triangle.setBackgroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+            triangle.setForegroundColor(PaletteColorUtil.WIDGET_DARK_SHADOW);
+            setContents(triangle);
+        }
+        
+        public void setDirection(int direction) {
+            if (triangle != null) {
+                triangle.setDirection(direction);
+            }
+        }
+        
+        protected void layout() {
+            org.eclipse.draw2d.geometry.Rectangle clientArea = getBounds();
+        
+            triangle.setBounds(new org.eclipse.draw2d.geometry.Rectangle(clientArea
+                .getCenter().getTranslated(-ARROW_SIZE.width / 2,
+                    -ARROW_SIZE.height / 2), ARROW_SIZE));
+        }
+        
+        protected void paintFigure(Graphics graphics) {
+            super.paintFigure(graphics);
+        
+            // paint the gradient
+            graphics.pushState();
+            org.eclipse.draw2d.geometry.Rectangle r = org.eclipse.draw2d.geometry.Rectangle.SINGLETON;
+            r.setBounds(getBounds());
+            graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+            graphics.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND);
+            graphics.fillGradient(r, true);
+            graphics.popState();
+            
+            // draw bottom border
+            graphics.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+            graphics.drawLine(r.getBottomLeft().getTranslated(0, -1), r.getBottomRight()
+                .getTranslated(0, -1));
+        }
+    }
 }
 
 private class TitleCanvas extends Canvas {
@@ -1268,12 +1226,7 @@ private class TitleCanvas extends Canvas {
 		return new org.eclipse.swt.graphics.Point(size.width, size.height);
 	}
 	private void init(boolean isHorizontal) {
-		IFigure fig;
-		if (isHorizontal)
-			fig = new TitleLabel(true);
-		else
-			fig = new RotatedTitleLabel();
-		final IFigure contents = fig;
+		final IFigure contents = new TitleLabel(true);
 		contents.setRequestFocusEnabled(true);
 		contents.setFocusTraversable(true);
 		contents.addFocusListener(new FocusListener() {
@@ -1381,7 +1334,6 @@ private static class FontManager {
 	private final String fontName = getFontType();
 	private List registrants = new ArrayList();
 	private Font titleFont;
-	private boolean newFontCreated = false;
 	private final IPropertyChangeListener fontListener = new IPropertyChangeListener() {
 		public void propertyChange(org.eclipse.jface.util.PropertyChangeEvent event) {
 			if (fontName.equals(event.getProperty()))
@@ -1391,27 +1343,9 @@ private static class FontManager {
 	private FontManager() {
 	}
 	protected final Font createTitleFont() {
-		newFontCreated = false;
-		FontData[] data = JFaceResources.getFont(fontName).getFontData();
-		for (int i = 0; i < data.length; i++)
-			if ((data[i].getStyle() & SWT.BOLD) == 0) {
-				/*
-				 * @TODO:Pratik  need to test this in an environment where there are
-				 * multiple FontDatas for a font
-				 */
-				// Any problems with style settings (eg., in the case of a font that
-				// does not support bold case), will cause the font to ignore that style
-				// setting.
-				data[i].setStyle(data[i].getStyle() | SWT.BOLD);
-				newFontCreated = true;
-			}
-		if (newFontCreated)
-			return new Font(Display.getCurrent(), data);
 		return JFaceResources.getFont(fontName);
 	}
 	protected void dispose() {
-		if (newFontCreated && titleFont != null && !titleFont.isDisposed())
-			titleFont.dispose();
 		titleFont = null;
 		JFaceResources.getFontRegistry().removeListener(fontListener);
 	}

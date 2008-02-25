@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
@@ -23,6 +24,7 @@ import org.eclipse.jface.action.MenuManager;
 
 import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
+import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ButtonModel;
@@ -35,12 +37,12 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteListener;
 import org.eclipse.gef.palette.PaletteStack;
@@ -61,14 +63,15 @@ public class PaletteStackEditPart
 {
 	
 private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
+private static final Border BORDER_TOGGLE = new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR);
 
 // listen to changes of clickable tool figure
 private ChangeListener clickableListener = new ChangeListener() {
 	public void handleStateChanged(ChangeEvent event) {
 		if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
-			arrowFigure.getModel().setMouseOver(activeFigure.getModel().isMouseOver());
+			getClickableFigure().getModel().setMouseOver(activeFigure.getModel().isMouseOver());
 		else if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
-			arrowFigure.getModel().setArmed(activeFigure.getModel().isArmed());
+			getClickableFigure().getModel().setArmed(activeFigure.getModel().isArmed());
 	}
 };
 
@@ -76,9 +79,9 @@ private ChangeListener clickableListener = new ChangeListener() {
 private ChangeListener clickableArrowListener = new ChangeListener() {
 	public void handleStateChanged(ChangeEvent event) {
 		if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
-			activeFigure.getModel().setMouseOver(arrowFigure.getModel().isMouseOver());
+			activeFigure.getModel().setMouseOver(getClickableFigure().getModel().isMouseOver());
 		if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
-			activeFigure.getModel().setArmed(arrowFigure.getModel().isArmed());
+			activeFigure.getModel().setArmed(getClickableFigure().getModel().isArmed());
 	}
 };
 
@@ -93,16 +96,17 @@ private ActionListener actionListener = new ActionListener() {
 private PaletteListener paletteListener = new PaletteListener() {
 	public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
 		if (getStack().getChildren().contains(tool)) {
-			if (!arrowFigure.getModel().isSelected())
-				arrowFigure.getModel().setSelected(true);
+			if (!getClickableFigure().getModel().isSelected())
+				getClickableFigure().getModel().setSelected(true);
 			if (!getStack().getActiveEntry().equals(tool))
 				getStack().setActiveEntry(tool);
 		} else
-			arrowFigure.getModel().setSelected(false);
+			getClickableFigure().getModel().setSelected(false);
 	}	
 };
 
 private Clickable activeFigure;
+private Clickable clickableFigure;
 private RolloverArrow arrowFigure;
 private Figure contentsFigure;
 private Menu menu;
@@ -166,62 +170,70 @@ private void checkActiveEntrySync() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 public IFigure createFigure() {
-	Figure figure = new Figure() {
-		public Dimension getPreferredSize(int wHint, int hHint) {
-			if (PaletteStackEditPart.this.getChildren().isEmpty())
-				return EMPTY_DIMENSION;
-			return super.getPreferredSize(wHint, hHint);
-		}
-		
-		public void paintBorder(Graphics graphics) {
-			int layoutMode = getPreferenceSource().getLayoutSetting();
-			if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
-			  || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
-				return;
-			
-			Rectangle rect = getBounds().getCopy();
+    
+    IFigure stackFigure;
+    arrowFigure = new RolloverArrow();
 
-			graphics.translate(getLocation());
-			graphics.setBackgroundColor(ColorConstants.listForeground);
-			
-			// fill the corner arrow
-			int[] points = new int[6];
-			
-			points[0] = rect.width;
-			points[1] = rect.height - 5;
-			points[2] = rect.width;
-			points[3] = rect.height;
-			points[4] = rect.width - 5;
-			points[5] = rect.height;
-		
-			graphics.fillPolygon(points);
-			
-			graphics.translate(getLocation().getNegated());
-		}
-	};
-	figure.setLayoutManager(new BorderLayout());
-	
+    if (isToolbarItem()) {
+        // the entire stack figure is clickable on the toolbar
+        stackFigure = new Clickable() {
+            public boolean hasFocus() {
+                return false;
+            }
+            public Dimension getPreferredSize(int wHint, int hHint) {
+                if (PaletteStackEditPart.this.getChildren().isEmpty())
+                    return EMPTY_DIMENSION;
+                return super.getPreferredSize(wHint, hHint);
+            }
+        };
+        ((Clickable)stackFigure).setRolloverEnabled(true);
+        stackFigure.setBorder(BORDER_TOGGLE);
+        
+        // Set up the arrow figure.  Disable the arrow figure so clicks go to the stack figure. 
+        arrowFigure.setBackgroundColor(ColorConstants.black);
+        arrowFigure.setEnabled(false);
+        
+        clickableFigure = ((Clickable)stackFigure);        
+    } else {
+        // the stack figure is not clickable on the palette so that drag and drop still works
+        stackFigure = new Figure() {
+            public Dimension getPreferredSize(int wHint, int hHint) {
+                if (PaletteStackEditPart.this.getChildren().isEmpty())
+                    return EMPTY_DIMENSION;
+                return super.getPreferredSize(wHint, hHint);
+            }
+        };
+        
+        // Set up the arrow figure. 
+        arrowFigure.setBackgroundColor(PaletteColorUtil.WIDGET_DARK_SHADOW);
+        
+        clickableFigure = arrowFigure;        
+    }
+ 	
 	contentsFigure = new Figure();
-	
 	StackLayout stackLayout = new StackLayout();
 	// make it so the stack layout does not allow the invisible figures to contribute
 	// to its bounds
 	stackLayout.setObserveVisibility(true);
 	contentsFigure.setLayoutManager(stackLayout);
 	
-	figure.add(contentsFigure, BorderLayout.CENTER);
-	
-	arrowFigure = new RolloverArrow();
-	
-	arrowFigure.addChangeListener(clickableArrowListener);
-	
-	arrowFigure.addActionListener(actionListener);
+	stackFigure.add(contentsFigure);
+	stackFigure.add(arrowFigure);
+    
+    getClickableFigure().addChangeListener(clickableArrowListener);
+    getClickableFigure().addActionListener(actionListener);
 
-	int layoutMode = getPreferenceSource().getLayoutSetting();
-	if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
-			|| layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
-		figure.add(arrowFigure, BorderLayout.RIGHT);
-	return figure;
+    return stackFigure;
+}
+
+/**
+ * Returns the <code>Clickable</code> figure. This differs depending on
+ * whether or not this palette stack is on the palette toolbar.
+ * 
+ * @return the <code>Clickable</code> figure
+ */
+private Clickable getClickableFigure() {
+    return clickableFigure;
 }
 
 /**
@@ -230,8 +242,8 @@ public IFigure createFigure() {
 public void deactivate() {
 	if (activeFigure != null) 
 		activeFigure.removeChangeListener(clickableListener);
-	arrowFigure.removeActionListener(actionListener);
-	arrowFigure.removeChangeListener(clickableArrowListener);
+	getClickableFigure().removeActionListener(actionListener);
+	getClickableFigure().removeChangeListener(clickableArrowListener);
 	getPaletteViewer().removePaletteListener(paletteListener);
 	super.deactivate();
 }
@@ -288,7 +300,7 @@ public void openMenu() {
 			figureBounds.getBottomLeft().x, figureBounds.getBottomLeft().y);
 	
 	// remove feedback from the arrow Figure and children figures
-	arrowFigure.getModel().setMouseOver(false);
+	getClickableFigure().getModel().setMouseOver(false);
 	eraseTargetFeedback(new Request(RequestConstants.REQ_SELECTION));
 	
 	menu.setLocation(menuLocation);
@@ -324,13 +336,31 @@ protected void refreshChildren() {
  * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
  */
 protected void refreshVisuals() {
-	int layoutMode = getPreferenceSource().getLayoutSetting();
-	if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
-			|| layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
-		if (!getFigure().getChildren().contains(arrowFigure))
-			getFigure().add(arrowFigure, BorderLayout.RIGHT);
-	} else if (getFigure().getChildren().contains(arrowFigure))
-		getFigure().remove(arrowFigure);
+    int layoutMode = getLayoutSetting();
+    if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
+            || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+        getFigure().setLayoutManager(new StackLayout() {
+            public void layout(IFigure figure) {
+                Rectangle r = figure.getClientArea();
+                List children = figure.getChildren();
+                IFigure child;
+                for (int i = 0; i < children.size(); i++) {
+                    child = (IFigure)children.get(i);
+                    if (child == arrowFigure) {
+                        Rectangle.SINGLETON.setBounds(r);
+                        Rectangle.SINGLETON.width = 11;
+                        child.setBounds(Rectangle.SINGLETON);
+                    } else {
+                        child.setBounds(r);
+                    }
+                }
+            }
+        });
+    } else {
+        getFigure().setLayoutManager(new BorderLayout());
+        getFigure().setConstraint(contentsFigure, BorderLayout.CENTER);
+        getFigure().setConstraint(arrowFigure, BorderLayout.RIGHT);    
+    }
 }
 
 /**
@@ -396,35 +426,14 @@ class RolloverArrow
 {
 
 /**
- * Creates a new Clickable with a TriangleFigure as its child.
+ * Creates a new Clickable that paints a triangle figure.
  */
 RolloverArrow() {
-	super(new TriangleFigure());
+	super();
 	setRolloverEnabled(true);
-	setBorder(new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR));
+	setBorder(null);
 	setOpaque(false);
-	setStyle(Clickable.STYLE_BUTTON);
-}
-
-/**
- * Draws a checkered pattern to emulate a toggle button that is in the selected state.
- * @param graphics	The Graphics object used to paint
- */
-protected void fillCheckeredRectangle(Graphics graphics) {
-	// method taken from ToggleButton - because this figure *isn't* a toggle button,
-	// but should match the checkered look of the tool's toggle button
-	graphics.setBackgroundColor(ColorConstants.button);
-	graphics.setForegroundColor(ColorConstants.buttonLightest);
-	Rectangle rect = getClientArea(Rectangle.SINGLETON).crop(new Insets(1, 1, 0, 0));
-	graphics.fillRectangle(rect.x, rect.y, rect.width, rect.height);
-	
-	graphics.clipRect(rect);
-	graphics.translate(rect.x, rect.y);
-	int n = rect.width + rect.height;
-	for (int i = 1; i < n; i += 2) {
-		graphics.drawLine(0, i, i, 0);
-	}
-	graphics.restoreState();
+	setPreferredSize(11, -1);
 }
 
 /**
@@ -434,49 +443,21 @@ public boolean hasFocus() {
 	return false;
 }
 
-/**
- * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
- */
-protected void paintFigure(Graphics graphics) {
-	if (isSelected() && isOpaque())
-		fillCheckeredRectangle(graphics);
-	else
-		super.paintFigure(graphics);
-}
-
-}
-
-class TriangleFigure
-	extends Figure 
-{
-
-/**
- * Creates a new TriangleFigure with preferred size 7, -1
- */
-TriangleFigure() {
-	super();
-	setPreferredSize(7, -1);
-}
-
-/**
- * @see org.eclipse.draw2d.IFigure#paint(org.eclipse.draw2d.Graphics)
- */
-public void paint(Graphics graphics) {
+public void paintFigure(Graphics graphics) {
 	Rectangle rect = getBounds().getCopy();
 
 	graphics.translate(getLocation());
-	graphics.setBackgroundColor(ColorConstants.listForeground);
 	
 	// fill the arrow
 	int[] points = new int[8];
 	
-	points[0] = 1;
+	points[0] = 4;
 	points[1] = rect.height / 2;
-	points[2] = 6;
+	points[2] = 9;
 	points[3] = rect.height / 2;
-	points[4] = 3;
+	points[4] = 6;
 	points[5] = 3 + rect.height / 2;
-	points[6] = 1;
+	points[6] = 4;
 	points[7] = rect.height / 2;
 	
 	graphics.fillPolygon(points);

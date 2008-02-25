@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
@@ -62,7 +63,7 @@ static class SeparatorFigure extends Figure {
 	 * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
 	 */
 	public Dimension getPreferredSize(int wHint, int hHint) {
-		if (getBackgroundColor() == ColorConstants.button)
+		if (getBackgroundColor().equals(PaletteColorUtil.WIDGET_BACKGROUND))
 			return new Dimension(wHint, 4);
 		return new Dimension(wHint, 5);
 	}
@@ -75,12 +76,11 @@ static class SeparatorFigure extends Figure {
 	 */
 	protected void paintFigure(Graphics g) {
 		Rectangle r = getBounds().getCropped(CROP);
-		if (getBackgroundColor() == ColorConstants.listBackground) {
-			g.setForegroundColor(ColorConstants.buttonDarker);
-			g.drawLine(r.getTopLeft(), r.getTopRight());
-			g.drawLine(r.getBottomLeft(), r.getBottomRight());
+		if (getBackgroundColor().equals(PaletteColorUtil.WIDGET_LIST_BACKGROUND)) {
+			g.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+			g.drawLine(r.getLeft(), r.getRight());
 		} else {
-			g.setForegroundColor(ColorConstants.buttonDarker);
+			g.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
 			g.drawLine(r.getBottomLeft(), r.getTopLeft());
 			g.drawLine(r.getTopLeft(), r.getTopRight());
 

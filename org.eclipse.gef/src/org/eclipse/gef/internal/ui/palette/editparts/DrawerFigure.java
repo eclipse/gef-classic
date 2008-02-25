@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,12 +17,9 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.BorderLayout;
-import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ButtonModel;
 import org.eclipse.draw2d.ChangeEvent;
 import org.eclipse.draw2d.ChangeListener;
@@ -44,12 +41,13 @@ import org.eclipse.draw2d.MouseMotionListener;
 import org.eclipse.draw2d.SchemeBorder;
 import org.eclipse.draw2d.ScrollPane;
 import org.eclipse.draw2d.Toggle;
-import org.eclipse.draw2d.ToggleButton;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.internal.Internal;
+import org.eclipse.gef.internal.InternalImages;
+import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 import org.eclipse.gef.ui.palette.editparts.PaletteToolbarLayout;
@@ -61,26 +59,18 @@ public class DrawerFigure
 	extends Figure
 {
 
-/** Border constant, toolbar scheme **/
-protected static final Border BUTTON_BORDER = new ButtonBorder(
-					ButtonBorder.SCHEMES.TOOLBAR);
-
 /** Foreground color constant **/
 protected static final Color FG_COLOR = FigureUtilities.mixColors(
-		ColorConstants.buttonDarker, ColorConstants.button);
+    PaletteColorUtil.WIDGET_NORMAL_SHADOW, PaletteColorUtil.WIDGET_BACKGROUND);
 
-/*
- * @TODO:Pratik
- * This image needs to go in SharedImages or InternalImages
- */
-/** Pin image **/
-public static final Image PIN = new Image(null, ImageDescriptor.createFromFile(
-		Internal.class, "icons/pin_view.gif").getImageData()); //$NON-NLS-1$
+private static final Color PIN_HOTSPOT_COLOR = FigureUtilities.mixColors(
+    PaletteColorUtil.WIDGET_LIST_BACKGROUND,
+    PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.60);
 
 /** Scrollpane border constant **/
 protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2);
 /** Title margin border constant **/
-protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(1, 1, 1, 0);
+protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(4, 2, 2, 2);
 /** Toggle button border constant**/
 protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
 /** Tooltip border constant **/
@@ -92,10 +82,118 @@ private Label drawerLabel, tipLabel;
 
 private boolean addedScrollpane = false;
 private int layoutMode = -1;
-private ToggleButton pinFigure;
+private PinFigure pinFigure;
 private ScrollPane scrollpane;
 private boolean showPin = true, skipNextEvent;
 private EditPartTipHelper tipHelper;
+
+/**
+ * This is the figure for the pinned and unpinned button.
+ */
+private static class PinFigure extends Toggle {
+
+    private static Label tooltip = new Label(PaletteMessages.TOOLTIP_PIN_FIGURE);
+    
+    public PinFigure() {
+        super(new ImageFigure(InternalImages.get(InternalImages.IMG_UNPINNED)));
+        setRolloverEnabled(true);
+        setRequestFocusEnabled(false);
+        setToolTip(tooltip);
+        setOpaque(false);
+        
+        addChangeListener(new ChangeListener() {
+            public void handleStateChanged(ChangeEvent e) {
+                if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
+                    if (isSelected()) {
+                        ((ImageFigure) (getChildren().get(0))).setImage(InternalImages
+                            .get(InternalImages.IMG_PINNED));
+                    } else {
+                        ((ImageFigure) (getChildren().get(0))).setImage(InternalImages
+                            .get(InternalImages.IMG_UNPINNED));
+                    }
+                } 
+            }
+        });
+    }
+
+    protected void paintFigure(Graphics graphics) {
+        super.paintFigure(graphics);
+
+        ButtonModel model = getModel();
+        if (isRolloverEnabled() && model.isMouseOver()) {
+            graphics.setBackgroundColor(PIN_HOTSPOT_COLOR);
+            graphics.fillRoundRectangle(getClientArea().getCopy().shrink(1, 1), 3, 3);
+        }
+    }
+
+    public void setDrawerExpandedState(boolean expanded) {
+        setEnabled(expanded);
+        setToolTip(expanded ? tooltip : null);
+    }
+
+}
+
+/**
+ * This is the figure for the entire drawer label button.
+ */
+private class CollapseToggle
+    extends Toggle {
+
+public CollapseToggle(IFigure contents) {
+    super(contents);
+    setSelected(true);
+    setRequestFocusEnabled(true);
+    addChangeListener(new ChangeListener() {
+
+        public void handleStateChanged(ChangeEvent e) {
+            if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
+                Animation.markBegin();
+                handleExpandStateChanged();
+                Animation.run(150);
+            } else if (e.getPropertyName().equals(
+                ButtonModel.MOUSEOVER_PROPERTY)) {
+                repaint();
+            }
+        }
+    });
+}
+
+public IFigure getToolTip() {
+    return buildTooltip();
+}
+
+protected void paintFigure(Graphics g) {
+    super.paintFigure(g);
+    Rectangle r = Rectangle.SINGLETON;
+    r.setBounds(getBounds());
+
+    // draw top border of drawer figure
+    g.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
+    g.drawLine(r.getTopLeft(), r.getTopRight());
+    g.setForegroundColor(ColorConstants.white);
+    g.drawLine(r.getTopLeft().getTranslated(0, 1), r.getTopRight()
+        .getTranslated(0, 1));
+    r.crop(new Insets(2, 0, 0, 0));
+    if (isExpanded()) {
+        g.setForegroundColor(FigureUtilities.mixColors(
+            PaletteColorUtil.WIDGET_BACKGROUND,
+            PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.65));
+        g.drawLine(r.getLocation(), r.getTopRight());
+        r.crop(new Insets(1, 0, 0, 0));
+    }
+
+    // draw bottom border of drawer figure
+    if (!isExpanded()) {
+        g.setForegroundColor(ColorConstants.white);
+        g.drawLine(r.getBottomLeft().getTranslated(0, -1), r.getBottomRight()
+            .getTranslated(0, -1));
+        r.crop(new Insets(0, 0, 1, 0));
+    }
+
+    paintToggleGradient(g, r);
+
+}
+}
 
 /**
  * Constructor
@@ -128,44 +226,13 @@ public DrawerFigure(final Control control) {
 	drawerLabel = new Label();
 	drawerLabel.setLabelAlignment(Label.LEFT);
 
-	pinFigure = new ToggleButton(new ImageFigure(PIN));
-	pinFigure.setBorder(BUTTON_BORDER);
-	pinFigure.setRolloverEnabled(true);
-	pinFigure.setRequestFocusEnabled(false);
-	pinFigure.setToolTip(new Label(PaletteMessages.TOOLTIP_PIN_FIGURE));
+	pinFigure = new PinFigure();
 
 	title.add(pinFigure, BorderLayout.RIGHT);
 	title.add(drawerLabel, BorderLayout.CENTER);
 	
-	collapseToggle = new Toggle(title) {
-		/**
-		 * @see org.eclipse.draw2d.Figure#getToolTip()
-		 */
-		public IFigure getToolTip() {
-			return buildTooltip();
-		}
-		protected void paintFigure(Graphics g) {
-			super.paintFigure(g);
-			Rectangle r = Rectangle.SINGLETON;
-			r.setBounds(getBounds());
-			r.width = Math.min(50, r.width);
-			g.setForegroundColor(FG_COLOR);
-			g.fillGradient(Rectangle.SINGLETON, false);
-		}
+	collapseToggle = new CollapseToggle(title);
 
-	};
-	collapseToggle.setSelected(true);
-	collapseToggle.setBorder(TOGGLE_BUTTON_BORDER);
-	collapseToggle.setRequestFocusEnabled(true);
-	collapseToggle.addChangeListener(new ChangeListener() {
-		public void handleStateChanged(ChangeEvent e) {
-			if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
-				Animation.markBegin();
-				handleExpandStateChanged();
-				Animation.run(150);
-			}
-		}
-	});
 	/*
 	 * @TODO:Pratik
 	 * 
@@ -193,6 +260,55 @@ public DrawerFigure(final Control control) {
 	createHoverHelp(control);
 }
 
+/**
+ * Paints the background gradient on the drawer toggle figure.
+ * 
+ * @param g
+ *            the graphics object
+ * @param rect
+ *            the rectangle which the background gradient should cover
+ */
+private void paintToggleGradient(Graphics g, Rectangle rect) {
+    if (isExpanded()) {
+        g.setBackgroundColor(FigureUtilities.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
+            PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.85));
+        g.fillRectangle(rect);
+    } else if (collapseToggle.getModel().isMouseOver()) {
+        Color color1 = FigureUtilities.mixColors(
+            PaletteColorUtil.WIDGET_BACKGROUND,
+            PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.6);
+        Color color2 = FigureUtilities.mixColors(
+            PaletteColorUtil.WIDGET_BACKGROUND,
+            PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.9);
+        Color color3 = FigureUtilities.mixColors(
+            PaletteColorUtil.WIDGET_BACKGROUND,
+            PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.95);
+        Color color4 = FigureUtilities.mixColors(
+            PaletteColorUtil.WIDGET_BACKGROUND,
+            PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.9);
+
+        g.setForegroundColor(color1);
+        g.setBackgroundColor(color2);
+        g.fillGradient(rect.x, rect.y, rect.width, rect.height - 4, true);
+
+        g.setForegroundColor(color2);
+        g.setBackgroundColor(color3);
+        g.fillGradient(rect.x, rect.bottom() - 4, rect.width, 2, true);
+
+        g.setForegroundColor(color3);
+        g.setBackgroundColor(color4);
+        g.fillGradient(rect.x, rect.bottom() - 2, rect.width, 2, true);
+    } else {
+        g.setForegroundColor(FigureUtilities.mixColors(
+            PaletteColorUtil.WIDGET_BACKGROUND,
+            PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.85));
+        g.setBackgroundColor(FigureUtilities.mixColors(
+            PaletteColorUtil.WIDGET_BACKGROUND,
+            PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.45));
+        g.fillGradient(rect, true);
+    }
+}
+
 private void createHoverHelp(final Control control) {
 	if (control == null) {
 		return;
@@ -209,10 +325,8 @@ private void createHoverHelp(final Control control) {
 		protected void paintFigure(Graphics graphics) {
 			Rectangle r = Rectangle.SINGLETON;
 			r.setBounds(getBounds());
-			r.width = Math.min(50, r.width);
-			graphics.pushState();
-			graphics.setForegroundColor(FG_COLOR);
-			graphics.fillGradient(Rectangle.SINGLETON, false);
+			graphics.pushState();		
+		    paintToggleGradient(graphics, getBounds());
 			graphics.popState();
 			super.paintFigure(graphics);
 		}
@@ -272,6 +386,7 @@ private void createScrollpane() {
 	scrollpane.setLayoutManager(new OverlayScrollPaneLayout());
 	scrollpane.setContents(new Figure());
 	scrollpane.getContents().setOpaque(true);
+	scrollpane.getContents().setBackgroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
 	scrollpane.getContents().setBorder(SCROLL_PANE_BORDER);
 }
 
@@ -335,8 +450,10 @@ protected void handleExpandStateChanged() {
 			remove(scrollpane);
 	}
 	
-	if (pinFigure != null)
+	if (pinFigure != null) {
 		pinFigure.setVisible(isExpanded() && showPin);
+		pinFigure.setDrawerExpandedState(isExpanded());
+	}
 }
 
 /**

@@ -19,7 +19,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.IFigure;
@@ -32,6 +31,7 @@ import org.eclipse.gef.MouseWheelHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
 import org.eclipse.gef.editparts.ViewportMouseWheelHelper;
 import org.eclipse.gef.internal.InternalImages;
+import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
@@ -195,14 +195,15 @@ protected void refreshVisuals() {
 	setImageDescriptor(img);
 
 	getDrawerFigure().setTitle(getPaletteEntry().getLabel());
-	getDrawerFigure().setLayoutMode(getPreferenceSource().getLayoutSetting());
+	getDrawerFigure().setLayoutMode(getLayoutSetting());
 
 	boolean showPin = getPreferenceSource().getAutoCollapseSetting()
 					== PaletteViewerPreferences.COLLAPSE_AS_NEEDED;
 	getDrawerFigure().showPin(showPin);
 
 	Color background = getDrawer().getDrawerType().equals(
-		PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE) ? ColorConstants.listBackground : null;
+        PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE) ? PaletteColorUtil.WIDGET_LIST_BACKGROUND
+        : null;
 	getDrawerFigure().getScrollpane().setBackgroundColor(background);
 }
 

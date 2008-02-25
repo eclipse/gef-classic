@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,15 +27,20 @@ import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ButtonModel;
 import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.ToggleButton;
+import org.eclipse.draw2d.Toggle;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
+import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
@@ -226,14 +231,25 @@ protected AccessibleEditPart createAccessible() {
 	};
 }
 
-static final Border BORDER_TOGGLE = new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR);
+static final Border TOOLBAR_ITEM_BORDER = new ButtonBorder(
+    ButtonBorder.SCHEMES.TOOLBAR);
 static final Border COLUMNS_BORDER = new MarginBorder(2, 0, 1, 0);
+static final Border LIST_BORDER = new MarginBorder(3, 16, 2, 0);
+static final Border ICON_BORDER = new MarginBorder(3, 3, 3, 3);
+
 public IFigure createFigure() {
-	class InactiveToggleButton extends ToggleButton {
-		InactiveToggleButton(IFigure contents) {
+	class InactiveToggleButton extends Toggle {
+	
+        InactiveToggleButton(IFigure contents) {
 			super(contents);
 			setOpaque(false);
 			setEnabled(true);
+            if (isToolbarItem()
+                && !PaletteStack.PALETTE_TYPE_STACK.equals(getPaletteEntry()
+                    .getParent().getType())) {
+                setStyle(Clickable.STYLE_BUTTON | Clickable.STYLE_TOGGLE);
+                setBorder(TOOLBAR_ITEM_BORDER);
+            } 
 		}
 		public IFigure findMouseEventTargetAt(int x, int y) {
 			return null;
@@ -245,14 +261,62 @@ public IFigure createFigure() {
 			super.setEnabled(value);
 			if (isEnabled()) {
 				setRolloverEnabled(true);
-				setBorder(BORDER_TOGGLE);
+				if (getFlag(STYLE_BUTTON)) {
+				    setBorder(TOOLBAR_ITEM_BORDER);
+				}
 				setForegroundColor(null);
 			} else {
-				setBorder(null);
+                if (getFlag(STYLE_BUTTON)) {
+                    setBorder(null);
+                }
 				setRolloverEnabled(false);
 				setForegroundColor(ColorConstants.gray);
 			}
 		}
+        protected void paintFigure(Graphics graphics) {
+            super.paintFigure(graphics);
+            
+            if (!isToolbarItem() && isEnabled()) {
+                ButtonModel model = getModel();
+                if (isRolloverEnabled() && !model.isMouseOver() && !model.isSelected())
+                    return;
+        
+                if (model.isSelected()) {
+                    graphics.setBackgroundColor(PaletteColorUtil.getSelectedColor());
+                } else {
+                    graphics.setBackgroundColor(PaletteColorUtil.getHoverColor());
+                }
+                graphics.fillRoundRectangle(getSelectionRectangle(), 3, 3);
+            }
+        }
+
+        protected void paintBorder(Graphics graphics) {
+            // Overridden to draw the focus rectangle the same size as the hover
+            // and selection rectangles.
+            
+            if (getBorder() != null)
+                getBorder().paint(this, graphics, NO_INSETS);
+            if (hasFocus()) {
+                graphics.setForegroundColor(ColorConstants.black);
+                graphics.setBackgroundColor(ColorConstants.white);
+                graphics.drawFocus(getSelectionRectangle().getCropped(
+                    new Insets(0, 0, 1, 1)));
+            }
+        }
+        
+        private Rectangle getSelectionRectangle() {
+            Rectangle rect = Rectangle.SINGLETON;
+            rect.setBounds(getBounds());
+            int layoutMode = getLayoutSetting();
+            if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
+                || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+                rect.width = customLabel.getPreferredSize().width + 17;
+                rect.x += 11;
+            }
+            rect.intersect(getBounds());
+            return rect;
+        }
+        
 	}
 	
 	customLabel = new DetailedLabelFigure();
@@ -307,8 +371,7 @@ private ToolEntry getToolEntry() {
  */
 protected String getToolTipText() {
 	String result = null;
-	if (getPreferenceSource().getLayoutSetting()
-				!= PaletteViewerPreferences.LAYOUT_DETAILS) {
+	if (getLayoutSetting() != PaletteViewerPreferences.LAYOUT_DETAILS) {
 		result = super.getToolTipText();
 	}
 	return result;
@@ -336,13 +399,20 @@ protected void refreshVisuals() {
 		setImageDescriptor(entry.getLargeIcon());
 	else
 		setImageDescriptor(entry.getSmallIcon());
-	int layoutMode = getPreferenceSource().getLayoutSetting();
+	int layoutMode = getLayoutSetting();
 	customLabel.setLayoutMode(layoutMode);
-	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS
-	  || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
+	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
 		customLabel.setBorder(COLUMNS_BORDER);
-	else
-		customLabel.setBorder(null);
+	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
+        || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+        customLabel.setBorder(LIST_BORDER);
+    } else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS
+        && !isToolbarItem()) {
+        customLabel.setBorder(ICON_BORDER);
+    } else {
+	    customLabel.setBorder(null);
+	}
+
 	super.refreshVisuals();	
 }
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,56 +10,40 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.ArrowButton;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.CompoundBorder;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.RangeModel;
 import org.eclipse.draw2d.ScrollBar;
 import org.eclipse.draw2d.ScrollBarLayout;
+import org.eclipse.draw2d.Toggle;
 import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
+
+import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 
 public final class PaletteScrollBar 
 	extends ScrollBar 
 {
 
-private static final ButtonBorder BORDER =
-	new ButtonBorder(new ButtonBorder.ButtonScheme(
-		new Color[] {ColorConstants.buttonLightest},
-		new Color[] {ColorConstants.buttonDarker},
-		new Color[] {ColorConstants.buttonDarker},
-		new Color[] {ColorConstants.buttonDarker}
-	));
+private static final PointList OUTER_DOWN_TRIANGLE = new PointList(3);
+private static final PointList INNER_DOWN_TRIANGLE = new PointList(3);
+private static final PointList OUTER_UP_TRIANGLE = new PointList(3);
+private static final PointList INNER_UP_TRIANGLE = new PointList(3);
 
-private static final Border CONTRAST = new CompoundBorder(
-	new MarginBorder(1, 0, 0, 0) {
-		public void paint(IFigure figure, Graphics graphics, Insets insets) {
-			if (!((Clickable)figure).getModel().isMouseOver())
-				return;
-			Rectangle r = getPaintRectangle(figure, insets);
-			graphics.setForegroundColor(ColorConstants.button);
-			graphics.drawLine(r.x, r.y, r.right(), r.y);
-		}
-	}, BORDER
-);
-
-public static final int BUTTON_HEIGHT = 12;
+public static final int BUTTON_HEIGHT = 7;
+private static final int BUTTON_WIDTH = 76;
 private static final int SCROLL_TIME = 200;
 
 private static final Image TRANSPARENCY;
@@ -67,12 +51,30 @@ private static final Image TRANSPARENCY;
 static {
 	Display display = Display.getCurrent();
 	PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
-	RGB rgb = ColorConstants.button.getRGB();
+    RGB rgb = PaletteColorUtil.INFO_FOREGROUND.getRGB();
 	int fillColor = pData.getPixel(rgb);
 	ImageData iData = new ImageData(1, 1, 24, pData);
 	iData.setPixel(0, 0, fillColor);
-	iData.setAlpha(0, 0, 200);
+	iData.setAlpha(0, 0, 15); // 6% transparent -- 255 * 0.06
 	TRANSPARENCY = new Image(display, iData);
+	
+	// TODO: Should I use the Button width here?
+	OUTER_DOWN_TRIANGLE.addPoint(new Point(34, 2));
+	OUTER_DOWN_TRIANGLE.addPoint(new Point(38, 6));
+	OUTER_DOWN_TRIANGLE.addPoint(new Point(42, 2));
+	
+	INNER_DOWN_TRIANGLE.addPoint(new Point(35, 2));
+	INNER_DOWN_TRIANGLE.addPoint(new Point(37, 5));
+	INNER_DOWN_TRIANGLE.addPoint(new Point(41, 2));
+
+	OUTER_UP_TRIANGLE.addPoint(new Point(33, 5));
+    OUTER_UP_TRIANGLE.addPoint(new Point(38, 0));
+    OUTER_UP_TRIANGLE.addPoint(new Point(42, 5));
+
+    INNER_UP_TRIANGLE.addPoint(new Point(34, 5));
+    INNER_UP_TRIANGLE.addPoint(new Point(38, 1));
+    INNER_UP_TRIANGLE.addPoint(new Point(42, 5));
+    
 }
 
 protected Label downLabel;
@@ -88,30 +90,59 @@ public boolean containsPoint(int x, int y) {
 }
 
 protected Clickable createDefaultDownButton() {
-	return createTransparentArrowButton();
+	return createTransparentArrowButton(true);
 }
 
 protected Clickable createDefaultUpButton() {
-	return createTransparentArrowButton();
+	return createTransparentArrowButton(false);
 }
 
-private ArrowButton createTransparentArrowButton() {
-	ArrowButton button = new ArrowButton() {
+/**
+ * Creates the figure used for the scrollbar button.
+ * @param down true if the arrow should be pointing down; false, if it should be pointing up.
+ * @return a new <code>Toggle</code> figure for the scroll bar button
+ */
+private Toggle createTransparentArrowButton(final boolean down) {
+    Toggle button = new Toggle() {
 		protected void paintFigure(Graphics g) {
+            // paint background
 			if (!getModel().isMouseOver())
 				g.drawImage(TRANSPARENCY, new Rectangle(0, 0, 1, 1), getBounds());
-			else
-				super.paintFigure(g);
+			else {
+                g.setBackgroundColor(getModel().isArmed() ? PaletteColorUtil
+                    .getSelectedColor()
+                    : PaletteColorUtil.getHoverColor());
+                g.fillRectangle(getBounds());
+            }
+
+            // paint triangle
+            g.translate(getLocation());
+            PointList outerPoints = transpose(down ? OUTER_DOWN_TRIANGLE : OUTER_UP_TRIANGLE);
+            PointList innerPoints = transpose(down ? INNER_DOWN_TRIANGLE : INNER_UP_TRIANGLE);
+            g.setBackgroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+            g.fillPolygon(outerPoints);
+            g.setBackgroundColor(PaletteColorUtil.WIDGET_DARK_SHADOW);
+            g.fillPolygon(innerPoints);
+            g.translate(getLocation().getNegated());
 		}
 	};
 	button.setRolloverEnabled(true);
-	button.setBorder(BORDER);
 	return button;
 }
 
 /**
- * @see org.eclipse.draw2d.Figure#findFigureAt(int, int, TreeSearch)
+ * Transposes a list of points using the <code>transposer</code>.
+ * @param origPoints the original list of points
+ * @return a new list of transposed points
  */
+private PointList transpose(PointList origPoints) {
+    PointList transposedPoints = new PointList(origPoints.size());
+    for (int i = 0; i < origPoints.size(); i++) {
+        transposedPoints.addPoint(transposer.t(origPoints.getPoint(i)));
+    }
+    return transposedPoints;
+}
+
 public IFigure findFigureAt(int x, int y, TreeSearch search) {
 	IFigure result = super.findFigureAt(x, y, search);
 	if (result != this)
@@ -119,9 +150,6 @@ public IFigure findFigureAt(int x, int y, TreeSearch search) {
 	return null;
 }
 
-/**
- * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
- */
 public Dimension getPreferredSize(int wHint, int hHint) {
 	return new Dimension(wHint, hHint);
 }
@@ -131,17 +159,14 @@ protected void initialize() {
 	setLayoutManager(new ScrollBarLayout(transposer) {
 		protected Rectangle layoutButtons(ScrollBar scrollBar) {
 			Rectangle bounds = transposer.t(scrollBar.getClientArea());
-			Dimension buttonSize = new Dimension(bounds.width, BUTTON_HEIGHT);
+			Dimension buttonSize = new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT);
 		
-			getButtonUp().setBounds(transposer.t(
-				new Rectangle(bounds.getTopLeft(), buttonSize)));
-			Rectangle r = new Rectangle (
-				bounds.x, bounds.bottom() - buttonSize.height,
-				buttonSize.width, buttonSize.height);
+			getButtonUp().setBounds(
+                transposer.t(new Rectangle(bounds.getTop().getTranslated(
+                    -(buttonSize.width / 2), 0), buttonSize)));
+            Rectangle r = new Rectangle(bounds.getBottom().getTranslated(
+                -(buttonSize.width / 2), -buttonSize.height), buttonSize);
 			getButtonDown().setBounds(transposer.t(r));
-			if (scrollBar.getBackgroundColor() == ColorConstants.listBackground
-			  && getButtonDown().getBorder() != CONTRAST)
-			  	getButtonDown().setBorder(CONTRAST);
 			Rectangle trackBounds = bounds.getCropped(
 				new Insets(buttonSize.height, 0, buttonSize.height, 0));
 			RangeModel model = scrollBar.getRangeModel();
@@ -157,16 +182,10 @@ protected void initialize() {
 	setOpaque(false);
 }
 
-/**
- * @see org.eclipse.draw2d.ScrollBar#stepDown()
- */
 protected void stepDown() {
 	timedStep(false);
 }
 
-/**
- * @see org.eclipse.draw2d.ScrollBar#stepUp()
- */
 protected void stepUp() {
 	timedStep(true);
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,6 +39,7 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteSeparator;
+import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.tools.SelectEditPartTracker;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -301,8 +302,7 @@ protected String getToolTipText() {
  * @since 3.2
  */
 protected boolean nameNeededInToolTip() {
-	return getPreferenceSource().getLayoutSetting() 
-			== PaletteViewerPreferences.LAYOUT_ICONS;
+	return getLayoutSetting() == PaletteViewerPreferences.LAYOUT_ICONS;
 }
 
 /**
@@ -413,4 +413,30 @@ protected static class ImageCache {
 	}
 }
 
+/**
+ * Returns the current layout setting.
+ * 
+ * @return the current layout setting.
+ * @see PaletteViewerPreferences#getLayoutSetting()
+ * @since 3.4
+ */
+protected int getLayoutSetting() {
+    if (getParent() instanceof PaletteEditPart) {
+        return ((PaletteEditPart) getParent()).getLayoutSetting();
+    }
+    return getPreferenceSource().getLayoutSetting();
+}
+
+/**
+ * Returns true if this item is on the palette toolbar.
+ * 
+ * @return true if this item is on the palette toolbar; false otherwise
+ * @since 3.4
+ */
+protected boolean isToolbarItem() {
+    if (getParent() instanceof PaletteEditPart) {
+        return ((PaletteEditPart) getParent()).isToolbarItem();
+    }
+    return false;
+}
 }

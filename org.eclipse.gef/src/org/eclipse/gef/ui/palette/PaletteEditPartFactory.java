@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.gef.internal.ui.palette.editparts.SeparatorEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.SliderPaletteEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.TemplateEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.ToolbarEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteEntry;
@@ -27,6 +28,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
+import org.eclipse.gef.palette.PaletteToolbar;
 
 /**
  * Factory to create EditParts for different PaletteEntries.
@@ -63,6 +65,8 @@ public EditPart createEditPart(EditPart parentEditPart, Object model) {
 		if (PaletteGroup.PALETTE_TYPE_GROUP.equals(type)
 				|| PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(type))
 			return createGroupEditPart(parentEditPart, model);
+		if (PaletteToolbar.PALETTE_TYPE_TOOLBAR_GROUP.equals(type))
+            return createToolbarEditPart(parentEditPart, model);
 	}
 	if (model instanceof PaletteTemplateEntry)
 		return createTemplateEditPart(parentEditPart, model);
@@ -115,6 +119,17 @@ protected EditPart createEntryEditPart(EditPart parentEditPart, Object model) {
  */
 protected EditPart createGroupEditPart(EditPart parentEditPart, Object model) {
 	return new GroupEditPart((PaletteContainer)model);
+}
+
+/**
+ * Create ToolbarEditPart - edit part for PaletteToolbar
+ * 
+ * @param   parentEditPart  the parent of the new editpart to be created
+ * @param   model           the PaletteToolbar
+ * @return the newly created EditPart
+ */
+protected EditPart createToolbarEditPart(EditPart parentEditPart, Object model) {
+    return new ToolbarEditPart((PaletteToolbar)model);
 }
 
 /**
