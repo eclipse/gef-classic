@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -28,13 +27,10 @@ import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FocusEvent;
-import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.ImageFigure;
 import org.eclipse.draw2d.ImageUtilities;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.ParagraphTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
@@ -68,7 +64,7 @@ private Font cachedFont;
 public DetailedLabelFigure() {
 	image = new SelectableImageFigure();
 	image.setAlignment(PositionConstants.NORTH);
-	page = new FocusableFlowPage();
+	page = new FlowPage();
 	page.setBorder(PAGE_BORDER);
 
 	nameText = new TextFlow();
@@ -115,7 +111,7 @@ protected void dispose() {
  */
 public void handleFocusGained(FocusEvent event) {
 	super.handleFocusGained(event);
-	updateColors();
+	updateImage();
 }
 
 /**
@@ -123,7 +119,7 @@ public void handleFocusGained(FocusEvent event) {
  */
 public void handleFocusLost(FocusEvent event) {
 	super.handleFocusLost(event);
-	updateColors();
+	updateImage();
 }
 
 /**
@@ -225,24 +221,18 @@ public void setName(String str) {
  */
 public void setSelected(boolean state) {
 	selectionState = state;
-	updateColors();
+	updateImage();
 }
 
-private void updateColors() {
+private void updateImage() {
 	if (isSelected()) {
 		if (hasFocus()) {
 			image.useShadedImage();
-			setForegroundColor(ColorConstants.menuForegroundSelected);
-			setBackgroundColor(ColorConstants.menuBackgroundSelected);
 		} else {
 			image.disposeShadedImage();
-			setForegroundColor(null);
-			setBackgroundColor(ColorConstants.button);
 		}
 	} else {
 		image.disposeShadedImage();
-		setForegroundColor(null);
-		setBackgroundColor(null);
 	}
 }
 
@@ -259,36 +249,6 @@ private void updateFont(int layout) {
 		if (layout == PaletteViewerPreferences.LAYOUT_DETAILS && cachedFont != null)
 			boldFont = FONTCACHE.checkOut(cachedFont);
 		nameText.setFont(boldFont);
-	}
-}
-
-private class FocusableFlowPage extends FlowPage {
-	protected void paintFigure(Graphics g) {
-		if (isSelected()) {
-			Rectangle childBounds = null;
-			List children = getChildren();
-			for (int i = 0; i < children.size(); i++) {
-				Figure child = (Figure) children.get(i);
-				if (i == 0) {
-					childBounds = child.getBounds().getCopy();
-				} else {
-					childBounds.union(child.getBounds());
-				}
-			}
-			childBounds.expand(new Insets(2, 2, 0, 0));
-			translateToParent(childBounds);
-			childBounds.intersect(getBounds());
-			g.fillRectangle(childBounds);
-//			super.paintFigure(g);
-			if (DetailedLabelFigure.this.hasFocus()) {
-				g.setXORMode(true);
-				g.setForegroundColor(ColorConstants.menuBackgroundSelected);
-				g.setBackgroundColor(ColorConstants.white);
-				g.drawFocus(childBounds.resize(-1, -1));
-			}
-		} else {
-			super.paintFigure(g);
-		}
 	}
 }
 

@@ -17,13 +17,13 @@ import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.Border;
+import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.MarginBorder;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
+import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
@@ -37,8 +37,6 @@ public class TemplateEditPart
 {
 
 private static final String SELECTION_STATE = "selection"; //$NON-NLS-1$
-private static final Border BORDER = new MarginBorder(1, 1, 1, 2);
-private static final Border COLUMNS_BORDER = new MarginBorder(2, 1, 3, 2);
 
 /**
  * Constructor
@@ -72,13 +70,26 @@ protected AccessibleEditPart createAccessible() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 public IFigure createFigure() {
-	IFigure fig = new DetailedLabelFigure() {
-		public IFigure getToolTip() {
-			return createToolTip();
-		}
-	};
-	fig.setRequestFocusEnabled(true);
-	return fig;
+    IFigure fig = new DetailedLabelFigure() {
+
+        public IFigure getToolTip() {
+            return createToolTip();
+        }
+
+        protected void paintFigure(Graphics graphics) {
+            super.paintFigure(graphics);
+
+            if (isSelected()) {
+                graphics
+                    .setBackgroundColor(PaletteColorUtil.getSelectedColor());
+            }
+            graphics.fillRoundRectangle(ToolEntryEditPart
+                .getSelectionRectangle(getLayoutSetting(), this), 3, 3);
+        }
+
+    };
+    fig.setRequestFocusEnabled(true);
+    return fig;
 }
 
 /**
@@ -140,11 +151,17 @@ protected void refreshVisuals() {
 		setImageDescriptor(entry.getSmallIcon());
 	int layoutMode = getLayoutSetting();
 	fig.setLayoutMode(layoutMode);
-	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS
-	  || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS)
-		fig.setBorder(COLUMNS_BORDER);
-	else
-		fig.setBorder(BORDER);
+    if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
+        fig.setBorder(ToolEntryEditPart.COLUMNS_BORDER);
+    } else if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
+        || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+        fig.setBorder(ToolEntryEditPart.LIST_BORDER);
+    } else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS
+        && !isToolbarItem()) {
+        fig.setBorder(ToolEntryEditPart.ICON_BORDER);
+    } else {
+        fig.setBorder(null);
+    }
 	super.refreshVisuals();
 }
 
@@ -177,7 +194,9 @@ public void setSelected(int value) {
 		label.setSelected(true);
 	} else {
 		label.setSelected(false);
-	}		
+	}	
+	label.repaint();
+	
 }
 
 }

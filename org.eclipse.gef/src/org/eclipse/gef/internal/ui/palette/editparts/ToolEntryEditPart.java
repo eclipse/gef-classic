@@ -31,7 +31,6 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Toggle;
-import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.AccessibleEditPart;
@@ -286,35 +285,9 @@ public IFigure createFigure() {
                 } else {
                     graphics.setBackgroundColor(PaletteColorUtil.getHoverColor());
                 }
-                graphics.fillRoundRectangle(getSelectionRectangle(), 3, 3);
+                graphics.fillRoundRectangle(getSelectionRectangle(
+                    getLayoutSetting(), customLabel), 3, 3);
             }
-        }
-
-        protected void paintBorder(Graphics graphics) {
-            // Overridden to draw the focus rectangle the same size as the hover
-            // and selection rectangles.
-            
-            if (getBorder() != null)
-                getBorder().paint(this, graphics, NO_INSETS);
-            if (hasFocus()) {
-                graphics.setForegroundColor(ColorConstants.black);
-                graphics.setBackgroundColor(ColorConstants.white);
-                graphics.drawFocus(getSelectionRectangle().getCropped(
-                    new Insets(0, 0, 1, 1)));
-            }
-        }
-        
-        private Rectangle getSelectionRectangle() {
-            Rectangle rect = Rectangle.SINGLETON;
-            rect.setBounds(getBounds());
-            int layoutMode = getLayoutSetting();
-            if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
-                || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
-                rect.width = customLabel.getPreferredSize().width + 17;
-                rect.x += 11;
-            }
-            rect.intersect(getBounds());
-            return rect;
         }
         
 	}
@@ -471,4 +444,15 @@ public void showTargetFeedback(Request request) {
 	super.showTargetFeedback(request);
 }
 
+static Rectangle getSelectionRectangle(int layoutMode, DetailedLabelFigure labelFigure) {
+    Rectangle rect = Rectangle.SINGLETON;
+    rect.setBounds(labelFigure.getBounds());
+    if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
+        || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+        rect.width = labelFigure.getPreferredSize().width + 17;
+        rect.x += 11;
+    }
+    rect.intersect(labelFigure.getBounds());
+    return rect;
+}
 }
