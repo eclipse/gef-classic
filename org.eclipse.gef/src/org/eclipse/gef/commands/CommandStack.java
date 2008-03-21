@@ -44,12 +44,23 @@ public static final int POST_REDO = 16;
  */
 public static final int POST_UNDO = 32;
 
-static final int POST_MASK = POST_EXECUTE | POST_UNDO | POST_REDO;
+/**
+ * A bit-mask indicating notification after a command has done something. Currently this
+ * includes after a command has been undone, redone, or executed. This will include new
+ * events should they be introduced in the future.
+ * <P>Usage<BR/>
+ * <PRE>if ((commandStackEvent.getDetail() & CommandStack.POST_MASK) != 0) {
+ *     //Do something, like:
+ *     stopBatchingChanges();
+ * }</PRE>
+ */
+public static final int POST_MASK = new Integer(POST_EXECUTE | POST_UNDO | POST_REDO).intValue();
 
 /**
  * Constant indicating notification prior to executing a command (value is 1).
  */
 public static final int PRE_EXECUTE = 1;
+
 /**
  * Constant indicating notification prior to redoing a command (value is 2).
  */
@@ -60,7 +71,17 @@ public static final int PRE_REDO = 2;
  */
 public static final int PRE_UNDO = 4;
 
-static final int PRE_MASK = PRE_EXECUTE | PRE_UNDO | PRE_REDO;
+/**
+ * A bit-mask indicating notification before a command makes a change. Currently this
+ * includes before a command has been undone, redone, or executed. This will include new
+ * events should they be introduced in the future.
+ * <P>Usage<BR/>
+ * <PRE>if ((commandStackEvent.getDetail() & CommandStack.PRE_MASK) != 0) {
+ *     //Do something, like:
+ *     startBatchingChanges();
+ * }</PRE>
+ */
+static final int PRE_MASK = new Integer(PRE_EXECUTE | PRE_UNDO | PRE_REDO).intValue();
 
 private List eventListeners = new ArrayList();
 
