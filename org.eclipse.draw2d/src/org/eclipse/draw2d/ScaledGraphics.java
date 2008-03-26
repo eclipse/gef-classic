@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,11 +16,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Path;
+import org.eclipse.swt.graphics.PathData;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.graphics.TextStyle;
 import org.eclipse.swt.widgets.Display;
@@ -221,6 +224,77 @@ public void drawLine(int x1, int y1, int x2, int y2) {
 /** @see Graphics#drawOval(int, int, int, int) */
 public void drawOval(int x, int y, int w, int h) {
 	graphics.drawOval(zoomRect(x, y, w, h));
+}
+
+/** @see Graphics#drawPath(Path) */
+public void drawPath(Path path) {
+  Path scaledPath = createScaledPath(path);
+  graphics.drawPath(scaledPath);
+  scaledPath.dispose();
+  
+}
+
+/** @see Graphics#fillPath(Path) */
+public void fillPath(Path path) {
+  Path scaledPath = createScaledPath(path);
+  graphics.fillPath(scaledPath);
+  scaledPath.dispose();
+}
+
+/** @see Graphics#translate(float, float) */
+public void translate(float dx, float dy) {
+	graphics.translate((float)(dx*zoom + fractionalX), (float)(dy*zoom + fractionalY));
+}
+
+/** @see Graphics#setClip(Path) */
+public void setClip(Path path) {
+  Path scaledPath = createScaledPath(path);
+  graphics.setClip(scaledPath);
+  scaledPath.dispose();
+}
+
+/** @see Graphics#createScaledPath(Path) */
+private Path createScaledPath(Path path){
+  PathData p = path.getPathData();
+  for (int i = 0; i < p.points.length; i+=2){
+    p.points[i] = (float)(p.points[i] * zoom + fractionalX);
+    p.points[i+1] = (float)(p.points[i+1] * zoom + fractionalY);
+    
+  }
+  Path scaledPath = new Path(path.getDevice());
+  int index = 0;
+  for (int i = 0; i < p.types.length; i++){
+    byte type = p.types[i];
+    switch (type){
+    case SWT.PATH_MOVE_TO:
+      scaledPath.moveTo(p.points[index], p.points[index+1]);
+      index+=2;
+      break;
+      
+    case SWT.PATH_LINE_TO:
+      scaledPath.lineTo(p.points[index], p.points[index+1]);
+      index+=2;
+      break;
+      
+    case SWT.PATH_CUBIC_TO:
+      scaledPath.cubicTo(p.points[index], p.points[index+1],p.points[index+2], p.points[index+3],p.points[index+4], p.points[index+5]);
+      index+=6;
+      break;
+      
+    case SWT.PATH_QUAD_TO:
+      scaledPath.quadTo(p.points[index], p.points[index+1],p.points[index+2], p.points[index+3]);
+      index+=4;
+      break;
+      
+    case SWT.PATH_CLOSE:
+      scaledPath.close();
+      break;
+      
+    }
+  }
+  
+  return scaledPath;
+  
 }
 
 /** @see Graphics#drawPoint(int, int) */
