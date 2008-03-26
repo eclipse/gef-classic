@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.draw2d.AncestorListener;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2d.ConnectionLocator;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Polygon;
@@ -29,8 +30,7 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.handles.ConnectionEndHandle;
-import org.eclipse.gef.handles.ConnectionStartHandle;
+import org.eclipse.gef.handles.ConnectionEndpointHandle;
 import org.eclipse.gef.requests.ReconnectRequest;
 
 /**
@@ -104,8 +104,8 @@ class ConnectionFocus
  */
 protected List createSelectionHandles() {
 	List list = new ArrayList();
-	list.add(new ConnectionEndHandle((ConnectionEditPart)getHost()));
-	list.add(new ConnectionStartHandle((ConnectionEditPart)getHost()));
+	list.add(new ConnectionEndpointHandle((ConnectionEditPart)getHost(), ConnectionLocator.SOURCE));
+	list.add(new ConnectionEndpointHandle((ConnectionEditPart)getHost(), ConnectionLocator.TARGET));
  	return list;
 }
 
