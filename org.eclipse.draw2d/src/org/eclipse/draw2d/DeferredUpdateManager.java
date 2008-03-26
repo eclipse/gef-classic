@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.widgets.Display;
 
@@ -236,7 +238,11 @@ protected void queueWork() {
  * @since 3.2
  */
 protected void sendUpdateRequest() {
-    Display.getCurrent().asyncExec(new UpdateRequest());
+	Display display = Display.getCurrent();
+	if (display == null) {
+		throw new SWTException(SWT.ERROR_THREAD_INVALID_ACCESS);
+	}
+	display.asyncExec(new UpdateRequest());
 }
 
 /**
