@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.actions;
 
-import java.text.MessageFormat;
+import com.ibm.icu.text.MessageFormat;
 
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
