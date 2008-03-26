@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,6 +12,7 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PrecisionPoint;
 
 /**
  * RelativeBendpoint is a Bendpoint that calculates its location based on its distance
@@ -58,20 +59,17 @@ protected Connection getConnection() {
  * @since 2.0
  */
 public Point getLocation() {
-	Point a1 = getConnection().getSourceAnchor().getReferencePoint();
-	Point a2 = getConnection().getTargetAnchor().getReferencePoint();
+	PrecisionPoint a1 = new PrecisionPoint(getConnection().getSourceAnchor().getReferencePoint());
+	PrecisionPoint a2 = new PrecisionPoint(getConnection().getTargetAnchor().getReferencePoint());
 	
-	Point p = new Point();
-	Dimension dim1 = d1.getCopy(), dim2 = d2.getCopy();
+	getConnection().translateToRelative(a1);
+	getConnection().translateToRelative(a2);
 	
-	getConnection().translateToAbsolute(dim1);
-	getConnection().translateToAbsolute(dim2);
-	
-	p.x = (int)((a1.x + dim1.width) * (1f - weight) + weight * (a2.x + dim2.width));
-	p.y = (int)((a1.y + dim1.height) * (1f - weight) + weight * (a2.y + dim2.height));
-	getConnection().translateToRelative(p);
-	return p;
-}
+	return new PrecisionPoint((a1.preciseX() + d1.preciseWidth())
+				* (1f - weight) + weight * (a2.preciseX() + d2.preciseWidth()),
+				(a1.preciseY() + d1.preciseHeight()) * (1f - weight) + weight
+						* (a2.preciseY() + d2.preciseHeight()));
+	}
 
 /**
  * Sets the Connection this bendpoint should be associated with.
