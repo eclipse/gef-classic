@@ -7,7 +7,7 @@
 
 	<!-- sets the properties eclipse-home, and library-file -->
 	<property name="plugin-name" value="org.eclipse.gef.test" />
-	<property name="library-file" value="${eclipse-home}/plugins/org.eclipse.test/library.xml" />
+	<property name="library-file" value="${eclipse-home}/dropins/eclipse/plugins/org.eclipse.test/library.xml" />
 
 	<!-- buildDir=/home/www-data/build/gef/downloads/drops/3.4.0/N200801142250 -->
 	<!-- load org.eclipse.gef.releng/builder/tests/configs/local/testing.properties -->
