@@ -163,6 +163,44 @@ Font createFont(FontData data) {
 	return new Font(Display.getCurrent(), data);
 }
 
+private Path createScaledPath(Path path) {
+	PathData p = path.getPathData();
+	for (int i = 0; i < p.points.length; i += 2) {
+		p.points[i] = (float) (p.points[i] * zoom + fractionalX);
+		p.points[i + 1] = (float) (p.points[i + 1] * zoom + fractionalY);
+	}
+	Path scaledPath = new Path(path.getDevice());
+	int index = 0;
+	for (int i = 0; i < p.types.length; i++) {
+		byte type = p.types[i];
+		switch (type) {
+			case SWT.PATH_MOVE_TO:
+				scaledPath.moveTo(p.points[index], p.points[index + 1]);
+				index += 2;
+				break;
+			case SWT.PATH_LINE_TO:
+				scaledPath.lineTo(p.points[index], p.points[index + 1]);
+				index += 2;
+				break;
+			case SWT.PATH_CUBIC_TO:
+				scaledPath.cubicTo(p.points[index], p.points[index + 1],
+						p.points[index + 2], p.points[index + 3], p.points[index + 4],
+						p.points[index + 5]);
+				index += 6;
+				break;
+			case SWT.PATH_QUAD_TO:
+				scaledPath.quadTo(p.points[index], p.points[index + 1],
+						p.points[index + 2], p.points[index + 3]);
+				index += 4;
+				break;
+			case SWT.PATH_CLOSE:
+				scaledPath.close();
+				break;
+		}
+	}
+	return scaledPath;
+}
+
 /** @see Graphics#dispose() */
 public void dispose() {
 	//Remove all states from the stack
@@ -228,73 +266,12 @@ public void drawOval(int x, int y, int w, int h) {
 
 /** @see Graphics#drawPath(Path) */
 public void drawPath(Path path) {
-  Path scaledPath = createScaledPath(path);
-  graphics.drawPath(scaledPath);
-  scaledPath.dispose();
-  
-}
-
-/** @see Graphics#fillPath(Path) */
-public void fillPath(Path path) {
-  Path scaledPath = createScaledPath(path);
-  graphics.fillPath(scaledPath);
-  scaledPath.dispose();
-}
-
-/** @see Graphics#translate(float, float) */
-public void translate(float dx, float dy) {
-	graphics.translate((float)(dx*zoom + fractionalX), (float)(dy*zoom + fractionalY));
-}
-
-/** @see Graphics#setClip(Path) */
-public void setClip(Path path) {
-  Path scaledPath = createScaledPath(path);
-  graphics.setClip(scaledPath);
-  scaledPath.dispose();
-}
-
-/** @see Graphics#createScaledPath(Path) */
-private Path createScaledPath(Path path){
-  PathData p = path.getPathData();
-  for (int i = 0; i < p.points.length; i+=2){
-    p.points[i] = (float)(p.points[i] * zoom + fractionalX);
-    p.points[i+1] = (float)(p.points[i+1] * zoom + fractionalY);
-    
-  }
-  Path scaledPath = new Path(path.getDevice());
-  int index = 0;
-  for (int i = 0; i < p.types.length; i++){
-    byte type = p.types[i];
-    switch (type){
-    case SWT.PATH_MOVE_TO:
-      scaledPath.moveTo(p.points[index], p.points[index+1]);
-      index+=2;
-      break;
-      
-    case SWT.PATH_LINE_TO:
-      scaledPath.lineTo(p.points[index], p.points[index+1]);
-      index+=2;
-      break;
-      
-    case SWT.PATH_CUBIC_TO:
-      scaledPath.cubicTo(p.points[index], p.points[index+1],p.points[index+2], p.points[index+3],p.points[index+4], p.points[index+5]);
-      index+=6;
-      break;
-      
-    case SWT.PATH_QUAD_TO:
-      scaledPath.quadTo(p.points[index], p.points[index+1],p.points[index+2], p.points[index+3]);
-      index+=4;
-      break;
-      
-    case SWT.PATH_CLOSE:
-      scaledPath.close();
-      break;
-      
-    }
-  }
-  
-  return scaledPath;
-  
+	Path scaledPath = createScaledPath(path);
+	try {
+		graphics.drawPath(scaledPath);
+	} finally {
+		scaledPath.dispose();
+	}
 }
 
 /** @see Graphics#drawPoint(int, int) */
@@ -388,6 +365,16 @@ public void fillGradient(int x, int y, int w, int h, boolean vertical) {
 /** @see Graphics#fillOval(int, int, int, int) */
 public void fillOval(int x, int y, int w, int h) {
 	graphics.fillOval(zoomFillRect(x, y, w, h));
+}
+
+/** @see Graphics#fillPath(Path) */
+public void fillPath(Path path) {
+	Path scaledPath = createScaledPath(path);
+	try {
+		graphics.fillPath(scaledPath);
+	} finally {
+		scaledPath.dispose();
+	}
 }
 
 /**
@@ -624,6 +611,16 @@ public void setBackgroundColor(Color rgb) {
 	graphics.setBackgroundColor(rgb);
 }
 
+/** @see Graphics#setClip(Path) */
+public void setClip(Path path) {
+	Path scaledPath = createScaledPath(path);
+	try {
+		graphics.setClip(scaledPath);
+	} finally {
+		scaledPath.dispose();
+	}
+}
+
 /** @see Graphics#setClip(Rectangle) */
 public void setClip(Rectangle r) {
 	graphics.setClip(zoomClipRect(r));
@@ -718,6 +715,15 @@ public void setXORMode(boolean b) {
 public void translate(int dx, int dy) {
 	// fractionalX/Y is the fractional part left over from previous 
 	// translates that gets lost in the integer approximation.
+	double dxFloat = dx * zoom + fractionalX;
+	double dyFloat = dy * zoom + fractionalY;
+	fractionalX = dxFloat - Math.floor(dxFloat);
+	fractionalY = dyFloat - Math.floor(dyFloat);
+	graphics.translate((int)Math.floor(dxFloat), (int)Math.floor(dyFloat));
+}
+
+/** @see Graphics#translate(float, float) */
+public void translate(float dx, float dy) {
 	double dxFloat = dx * zoom + fractionalX;
 	double dyFloat = dy * zoom + fractionalY;
 	fractionalX = dxFloat - Math.floor(dxFloat);
@@ -833,10 +839,10 @@ private TextLayout zoomTextLayout(TextLayout layout) {
 			if (lastStyle != null) {
 				TextStyle zoomedStyle = new TextStyle(zoomFont(lastStyle.font),
 						lastStyle.foreground, lastStyle.background);
-                zoomedStyle.metrics = lastStyle.metrics;
-                zoomedStyle.rise = lastStyle.rise;
-                zoomedStyle.strikeout = lastStyle.strikeout;
-                zoomedStyle.underline = lastStyle.underline;
+				zoomedStyle.metrics = lastStyle.metrics;
+				zoomedStyle.rise = lastStyle.rise;
+				zoomedStyle.strikeout = lastStyle.strikeout;
+				zoomedStyle.underline = lastStyle.underline;
 				zoomed.setStyle(zoomedStyle, start, end);
 			}
 			lastStyle = style;
