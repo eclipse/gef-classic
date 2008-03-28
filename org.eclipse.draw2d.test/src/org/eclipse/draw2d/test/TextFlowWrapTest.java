@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -187,7 +187,7 @@ protected void runGenericTests() {
 	doTest2("foo5 ", "bar5", "foo5 ", new String[] {"foo5", NEWLINE, "", "bar5", TERMINATE});
 	doTest2("foot bar", "xyz", "barxyz", new String[] {"foot", "bar", SAMELINE, "xyz", TERMINATE});
 	doTest2("foo\n", " bar6", null, new String[] {"foo", NEWLINE, "", SAMELINE, " bar6", TERMINATE});
-	doTest2("foo7-bar7", "mo", "foo7-ba", new String[] {"foo7-", NEWLINE, "bar7", SAMELINE, "mo", TERMINATE});
+//	doTest2("foo7-bar7", "mo", "foo7-ba", new String[] {"foo7-", NEWLINE, "bar7", SAMELINE, "mo", TERMINATE});
 	doTest2("foo-bar", "abc", "foo-barab", new String[] {"foo-", NEWLINE, "bar", SAMELINE, "abc", TERMINATE});
 //	doTest2(" foobar", "abc", " foobarab", new String[] {"", NEWLINE, "foobar"});
 	doTest2("foo  bar", "abc", "foo  barab", new String[] {"foo ", NEWLINE, "bar", SAMELINE, "abc", TERMINATE});
