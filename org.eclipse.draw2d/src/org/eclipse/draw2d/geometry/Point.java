@@ -118,7 +118,7 @@ public Dimension getDifference(Point pt) {
  * @since 2.0
  */
 public double getDistance(Point pt) {
-	return Math.sqrt(getDistance2(pt));
+	return Math.sqrt(getPreciseDistance2(pt));
 }
 
 /**
@@ -136,6 +136,12 @@ public int getDistance2(Point pt) {
 	if (result > Integer.MAX_VALUE)
 		return Integer.MAX_VALUE;
 	return (int)result;
+}
+
+private double getPreciseDistance2(Point pt) {
+	double i = pt.preciseX() - preciseX();
+	double j = pt.preciseY() - preciseY();
+	return i * i + j * j;
 }
 
 /**

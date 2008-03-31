@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,26 +41,33 @@ public static boolean linesIntersect(int ux, int uy, int vx, int vy,
 	 * Given the segments: u-------v. s-------t. If s->t is inside the triangle u-v-s, 
 	 * then check whether the line u->u splits the line s->t.
 	 */
-	int usX = ux - sx;
-	int usY = uy - sy;
-	int vsX = vx - sx;
-	int vsY = vy - sy;
-	int stX = sx - tx;
-	int stY = sy - ty;
-	long product = cross(vsX, vsY, stX, stY) * cross(stX, stY, usX, usY);
-	if (product >= 0) {
-		int vuX = vx - ux;
-		int vuY = vy - uy;
-		int utX = ux - tx;
-		int utY = uy - ty;
-		product = cross(-usX, -usY, vuX, vuY) * cross(vuX, vuY, utX, utY);
-		boolean intersects = product <= 0;
-		return intersects;
+	/* Values are casted to long to avoid integer overflows */
+	long usX = (long) ux - sx;
+	long usY = (long) uy - sy;
+	long vsX = (long) vx - sx;
+	long vsY = (long) vy - sy;
+	long stX = (long) sx - tx;
+	long stY = (long) sy - ty;
+	if (productSign(cross(vsX, vsY, stX, stY), cross(stX, stY, usX, usY)) >= 0) {
+		long vuX = (long) vx - ux;
+		long vuY = (long) vy - uy;
+		long utX = (long) ux - tx;
+		long utY = (long) uy - ty;
+		return productSign(cross(-usX, -usY, vuX, vuY), cross(vuX, vuY, utX, utY)) <= 0;
 	}
 	return false;
 }
 
-private static long cross(int x1, int y1, int x2, int y2) {
+private static int productSign(long x, long y) {
+	if (x == 0 || y == 0) {
+		return 0;
+	} else if (x < 0 ^ y < 0) {
+		return -1;
+	}
+	return 1;
+}
+
+private static long cross(long x1, long y1, long x2, long y2) {
 	return x1 * y2 - x2 * y1;
 }
 

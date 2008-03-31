@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,8 @@ import org.eclipse.draw2d.geometry.Insets;
  * @since 2.1.2
  */
 public class Node {
+	
+Node left, right;
 
 Object workingData[] = new Object[3];
 int workingInts[] = new int[4];
@@ -293,6 +295,24 @@ Iterator iteratorNeighbors() {
 			throw new RuntimeException("Remove not supported"); //$NON-NLS-1$
 		}
 	};
+}
+
+/**
+ * Returns a reference to a node located left from this one
+ * @return <code>Node</code> on the left from this one
+ * @since 3.4
+ */
+public Node getLeft() {
+	return left;
+}
+
+/**
+ * Returns a reference to a node located right from this one
+ * @return <code>Node</code> on the right from this one
+ * @since 3.4
+ */
+public Node getRight() {
+	return right;
 }
 
 }

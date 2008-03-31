@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -61,10 +61,10 @@ public void revisit(DirectedGraph g) {
 		Node prev = null, cur;
 		for (int n = 0; n < rank.size(); n++) {
 			cur = rank.getNode(n);
-			if (cur instanceof VirtualNode)
-				((VirtualNode)cur).left = prev;
-			if (prev instanceof VirtualNode)
-				((VirtualNode)prev).right = cur;
+			cur.left = prev;
+			if (prev != null) {
+				prev.right = cur;
+			}
 			prev = cur;
 		}
 	}

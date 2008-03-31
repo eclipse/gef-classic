@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -65,6 +65,9 @@ public void revisit(DirectedGraph g) {
 			temp = vnode.y;
 			vnode.y = vnode.x;
 			vnode.x = temp;
+			temp = vnode.width;
+			vnode.width = vnode.height;
+			vnode.height = temp;
 		}
 	}
 	g.size.transpose();

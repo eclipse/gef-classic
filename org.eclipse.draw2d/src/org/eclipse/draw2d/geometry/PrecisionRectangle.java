@@ -376,4 +376,13 @@ public double preciseHeight() {
 	return preciseHeight;
 }
 
+/**
+ * @see org.eclipse.draw2d.geometry.Rectangle#setSize(org.eclipse.draw2d.geometry.Dimension)
+ */
+public Rectangle setSize(Dimension d) {
+	preciseWidth = d.preciseWidth();
+	preciseHeight = d.preciseHeight();
+	return super.setSize(d);
+}
+
 }
