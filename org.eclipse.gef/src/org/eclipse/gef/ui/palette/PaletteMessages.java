@@ -249,6 +249,11 @@ public static String PINNED;
 public static String TOOLTIP_PIN_FIGURE;
 
 /**
+ * The String "Unpin"
+ */
+public static String TOOLTIP_UNPIN_FIGURE;
+
+/**
  * The String "&Dock On"
  */
 public static String DOCK_LABEL;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,11 +22,12 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.GroupEditPart;
-import org.eclipse.gef.internal.ui.palette.editparts.PaletteStackEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.IPaletteStackEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.TemplateEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
  * KeyHandler for the {@link org.eclipse.gef.ui.palette.PaletteViewer Palette}.
@@ -73,7 +74,7 @@ private boolean acceptSetFocusOnDrawer(KeyEvent event) {
 			: event.keyCode == SWT.ARROW_LEFT;
 	return (result || event.keyCode == SWT.ARROW_UP)
 			&& (getFocusEditPart().getParent() instanceof DrawerEditPart
-			|| (getFocusEditPart().getParent() instanceof PaletteStackEditPart
+			|| (getFocusEditPart().getParent() instanceof IPaletteStackEditPart
 			&& getFocusEditPart().getParent().getParent() instanceof DrawerEditPart));
 }
 
@@ -87,10 +88,10 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion,
 		if (isCollapsedDrawer(palettePart)) {
 			navList.add(palettePart);
 			return;
-		} else if (stackPart instanceof PaletteStackEditPart
+		} else if (stackPart instanceof IPaletteStackEditPart
 				&& stackPart.getChildren().contains(palettePart)) {
 			// we only want to add the top level item to the navlist
-			if (((PaletteStack)((PaletteStackEditPart)stackPart).getModel())
+			if (((PaletteStack)((PaletteEditPart)stackPart).getModel())
 				.getActiveEntry().equals(palettePart.getModel()))
 				navList.add(palettePart);
 		} else if ((palettePart instanceof ToolEntryEditPart 
@@ -103,7 +104,7 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion,
 	List children = palettePart.getChildren();
 	for (int k = 0; k < children.size(); k++) {
 		EditPart ep = (EditPart)children.get(k);
-		if (ep instanceof PaletteStackEditPart)
+		if (ep instanceof IPaletteStackEditPart)
 			stackPart = ep;
 		buildNavigationList(ep, exclusion, navList, stackPart);
 	}
@@ -142,7 +143,7 @@ protected List getNavigationSiblings() {
 		siblingsList.add(focusPart);
 		return siblingsList;
 	}
-	if (parent instanceof GroupEditPart || parent instanceof PaletteStackEditPart) {	
+	if (parent instanceof GroupEditPart || parent instanceof IPaletteStackEditPart) {	
 		EditPart grandParent = parent.getParent();
 		buildNavigationList(grandParent, grandParent, siblingsList, grandParent);
 	} else
@@ -176,7 +177,7 @@ boolean isExpandedDrawer(EditPart part) {
  * Editpart's parent contains a context menu, false otherwise.
  */
 boolean isContextMenu(EditPart part) {
-	return part.getParent() instanceof PaletteStackEditPart;
+	return part.getParent() instanceof IPaletteStackEditPart;
 }
 
 /**
@@ -272,7 +273,7 @@ private boolean navigateToNextContainer(KeyEvent event) {
 }
 
 private void openContextMenu() {
-	((PaletteStackEditPart)getFocusEditPart().getParent()).openMenu();
+	((IPaletteStackEditPart)getFocusEditPart().getParent()).openMenu();
 }
 
 }

@@ -61,7 +61,7 @@ class MenuTimer implements Runnable {
 		if (enabled) {
 			getButtonModel().setArmed(false);
 			getButtonModel().setPressed(false);
-			((PaletteStackEditPart)getParent()).openMenu();
+			((IPaletteStackEditPart)getParent()).openMenu();
 			getViewer().getEditDomain().loadDefaultTool();
 		}
 	}
@@ -84,7 +84,7 @@ abstract class ToggleButtonTracker extends SingleSelectionTracker {
 	}
 	
 	protected boolean handleButtonDown(int button) {
-		if (getParent() instanceof PaletteStackEditPart)
+		if (getParent() instanceof IPaletteStackEditPart)
 			enableTimer();
 		
 		if (button == 2 && isInState(STATE_INITIAL))
@@ -181,13 +181,13 @@ class OtherToggleButtonTracker extends ToggleButtonTracker {
 		disableTimer();
 		
 		// win hack because button down is delayed
-		if (getParent() instanceof PaletteStackEditPart && SWT.getPlatform().equals("win32")) { //$NON-NLS-1$
+		if (getParent() instanceof IPaletteStackEditPart && SWT.getPlatform().equals("win32")) { //$NON-NLS-1$
 			Point nds = getPaletteViewer().getControl().toControl(event.display.getCursorLocation());
 			if (mouseDownLoc != null && (Math.abs(nds.x - mouseDownLoc.x) 
 					+ Math.abs(nds.y - mouseDownLoc.y)) < WIN_THRESHOLD) {
 				getButtonModel().setArmed(false);
 				getButtonModel().setPressed(false);
-				((PaletteStackEditPart)getParent()).openMenu();
+				((IPaletteStackEditPart)getParent()).openMenu();
 				getViewer().getEditDomain().loadDefaultTool();
 				event.doit = false; 
 				return false;
@@ -400,7 +400,6 @@ public void removeNotify() {
 
 public void setToolSelected(boolean value) {
 	getButtonModel().setSelected(value);
-	getFigure().setOpaque(value);
 }
 
 public void restoreState(IMemento memento) {
@@ -452,7 +451,7 @@ static Rectangle getSelectionRectangle(int layoutMode, DetailedLabelFigure label
         rect.width = labelFigure.getPreferredSize().width + 17;
         rect.x += 11;
     }
-    rect.intersect(labelFigure.getBounds());
+    rect.intersect(labelFigure.getBounds().getExpanded(-1, -1));
     return rect;
 }
 }

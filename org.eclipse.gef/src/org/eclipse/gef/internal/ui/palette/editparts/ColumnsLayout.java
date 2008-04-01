@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 
@@ -24,7 +23,7 @@ import org.eclipse.draw2d.geometry.Dimension;
  * @author Pratik Shah
  */
 public class ColumnsLayout 
-	extends FlowLayout 
+	extends PaletteContainerFlowLayout 
 {
 
 private Dimension defaultConstraint = null;
@@ -70,9 +69,12 @@ private Dimension getMinimumHints(IFigure figure, int wHint, int hHint) {
 		List children = figure.getParent().getChildren();
 		for (Iterator iter = children.iterator(); iter.hasNext();) {
 			IFigure child = (IFigure) iter.next();
-			Dimension childSize = child.getPreferredSize(cachedConstraint.width,
-				                                       cachedConstraint.height);
-			cachedConstraint.width = Math.max(cachedConstraint.width, childSize.width);
+			Dimension childSize = (child instanceof PinnablePaletteStackFigure) ? ((PinnablePaletteStackFigure) child)
+                .getHeaderPreferredSize(cachedConstraint.width,
+                    cachedConstraint.height)
+                : child.getPreferredSize(cachedConstraint.width,
+                    cachedConstraint.height);
+            cachedConstraint.width = Math.max(cachedConstraint.width, childSize.width);
 		}
 		cachedConstraint.height = hHint;
 	}

@@ -14,12 +14,13 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.GroupEditPart;
-import org.eclipse.gef.internal.ui.palette.editparts.PaletteStackEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.PinnablePaletteStackEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.SeparatorEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.SliderPaletteEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.TemplateEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.ToolbarEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.PaletteStackEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteEntry;
@@ -29,6 +30,7 @@ import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.gef.palette.PaletteToolbar;
+import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
  * Factory to create EditParts for different PaletteEntries.
@@ -95,8 +97,12 @@ protected EditPart createSeparatorEditPart(EditPart parentEditPart,	Object model
  * @param	model			the PaletteStack
  * @return the newly created EditPart
  */
-protected EditPart createStackEditPart(EditPart parentEditPart,	Object model) {
-	return new PaletteStackEditPart((PaletteStack)model);
+protected EditPart createStackEditPart(EditPart parentEditPart, Object model) {
+    if (parentEditPart instanceof PaletteEditPart
+        && ((PaletteEditPart) parentEditPart).isToolbarItem()) {
+        return new PaletteStackEditPart((PaletteStack) model);
+    }
+    return new PinnablePaletteStackEditPart((PaletteStack) model);
 }
 
 /**

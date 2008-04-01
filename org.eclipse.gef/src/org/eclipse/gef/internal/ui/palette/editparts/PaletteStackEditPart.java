@@ -42,7 +42,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
-import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteListener;
 import org.eclipse.gef.palette.PaletteStack;
@@ -53,13 +52,13 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
- * The EditPart for a PaletteStack.
+ * The EditPart for a PaletteStack to be used on the toolbar.
  * 
  * @author Whitney Sorenson
  * @since 3.0
  */
-public class PaletteStackEditPart 
-	extends PaletteEditPart
+public class PaletteStackEditPart
+	extends PaletteEditPart implements IPaletteStackEditPart
 {
 	
 private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
@@ -106,7 +105,6 @@ private PaletteListener paletteListener = new PaletteListener() {
 };
 
 private Clickable activeFigure;
-private Clickable clickableFigure;
 private RolloverArrow arrowFigure;
 private Figure contentsFigure;
 private Menu menu;
@@ -171,69 +169,48 @@ private void checkActiveEntrySync() {
  */
 public IFigure createFigure() {
     
-    IFigure stackFigure;
     arrowFigure = new RolloverArrow();
 
-    if (isToolbarItem()) {
-        // the entire stack figure is clickable on the toolbar
-        stackFigure = new Clickable() {
-            public boolean hasFocus() {
-                return false;
-            }
-            public Dimension getPreferredSize(int wHint, int hHint) {
-                if (PaletteStackEditPart.this.getChildren().isEmpty())
-                    return EMPTY_DIMENSION;
-                return super.getPreferredSize(wHint, hHint);
-            }
-        };
-        ((Clickable)stackFigure).setRolloverEnabled(true);
-        stackFigure.setBorder(BORDER_TOGGLE);
-        
-        // Set up the arrow figure.  Disable the arrow figure so clicks go to the stack figure. 
-        arrowFigure.setBackgroundColor(ColorConstants.black);
-        arrowFigure.setEnabled(false);
-        
-        clickableFigure = ((Clickable)stackFigure);        
-    } else {
-        // the stack figure is not clickable on the palette so that drag and drop still works
-        stackFigure = new Figure() {
-            public Dimension getPreferredSize(int wHint, int hHint) {
-                if (PaletteStackEditPart.this.getChildren().isEmpty())
-                    return EMPTY_DIMENSION;
-                return super.getPreferredSize(wHint, hHint);
-            }
-        };
-        
-        // Set up the arrow figure. 
-        arrowFigure.setBackgroundColor(PaletteColorUtil.WIDGET_DARK_SHADOW);
-        
-        clickableFigure = arrowFigure;        
-    }
- 	
-	contentsFigure = new Figure();
-	StackLayout stackLayout = new StackLayout();
-	// make it so the stack layout does not allow the invisible figures to contribute
-	// to its bounds
-	stackLayout.setObserveVisibility(true);
-	contentsFigure.setLayoutManager(stackLayout);
-	
-	stackFigure.add(contentsFigure);
-	stackFigure.add(arrowFigure);
+    Clickable stackFigure = new Clickable() {
+        public boolean hasFocus() {
+            return false;
+        }
+        public Dimension getPreferredSize(int wHint, int hHint) {
+            if (PaletteStackEditPart.this.getChildren().isEmpty())
+                return EMPTY_DIMENSION;
+            return super.getPreferredSize(wHint, hHint);
+        }
+    };
+    stackFigure.setRolloverEnabled(true);
+    stackFigure.setBorder(BORDER_TOGGLE);
     
-    getClickableFigure().addChangeListener(clickableArrowListener);
-    getClickableFigure().addActionListener(actionListener);
+    // Set up the arrow figure.  Disable the arrow figure so clicks go to the stack figure. 
+    arrowFigure.setBackgroundColor(ColorConstants.black);
+    arrowFigure.setEnabled(false);
+    
+    contentsFigure = new Figure();
+    StackLayout stackLayout = new StackLayout();
+    // make it so the stack layout does not allow the invisible figures to contribute
+    // to its bounds
+    stackLayout.setObserveVisibility(true);
+    contentsFigure.setLayoutManager(stackLayout);
+    
+    stackFigure.add(contentsFigure);
+    stackFigure.add(arrowFigure);
+    
+    stackFigure.addChangeListener(clickableArrowListener);
+    stackFigure.addActionListener(actionListener);
 
     return stackFigure;
 }
 
 /**
- * Returns the <code>Clickable</code> figure. This differs depending on
- * whether or not this palette stack is on the palette toolbar.
+ * Returns the <code>Clickable</code> figure. 
  * 
  * @return the <code>Clickable</code> figure
  */
 private Clickable getClickableFigure() {
-    return clickableFigure;
+    return (Clickable) getFigure();
 }
 
 /**

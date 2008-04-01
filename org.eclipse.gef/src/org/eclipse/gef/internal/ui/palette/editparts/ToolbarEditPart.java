@@ -71,7 +71,7 @@ protected int getLayoutSetting() {
     return PaletteViewerPreferences.LAYOUT_ICONS;
 }
 
-protected boolean isToolbarItem() {
+public boolean isToolbarItem() {
     return true;
 }
 

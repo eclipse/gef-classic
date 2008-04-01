@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
@@ -28,10 +29,8 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.CompoundBorder;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.ImageFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.MarginBorder;
@@ -46,9 +45,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
-import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 import org.eclipse.gef.ui.palette.editparts.PaletteToolbarLayout;
 
@@ -63,12 +60,8 @@ public class DrawerFigure
 protected static final Color FG_COLOR = FigureUtilities.mixColors(
     PaletteColorUtil.WIDGET_NORMAL_SHADOW, PaletteColorUtil.WIDGET_BACKGROUND);
 
-private static final Color PIN_HOTSPOT_COLOR = FigureUtilities.mixColors(
-    PaletteColorUtil.WIDGET_LIST_BACKGROUND,
-    PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.60);
-
 /** Scrollpane border constant **/
-protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2);
+protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2, 0, 2, 0);
 /** Title margin border constant **/
 protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(4, 2, 2, 2);
 /** Toggle button border constant**/
@@ -87,51 +80,6 @@ private ScrollPane scrollpane;
 private boolean showPin = true, skipNextEvent;
 private EditPartTipHelper tipHelper;
 
-/**
- * This is the figure for the pinned and unpinned button.
- */
-private static class PinFigure extends Toggle {
-
-    private static Label tooltip = new Label(PaletteMessages.TOOLTIP_PIN_FIGURE);
-    
-    public PinFigure() {
-        super(new ImageFigure(InternalImages.get(InternalImages.IMG_UNPINNED)));
-        setRolloverEnabled(true);
-        setRequestFocusEnabled(false);
-        setToolTip(tooltip);
-        setOpaque(false);
-        
-        addChangeListener(new ChangeListener() {
-            public void handleStateChanged(ChangeEvent e) {
-                if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
-                    if (isSelected()) {
-                        ((ImageFigure) (getChildren().get(0))).setImage(InternalImages
-                            .get(InternalImages.IMG_PINNED));
-                    } else {
-                        ((ImageFigure) (getChildren().get(0))).setImage(InternalImages
-                            .get(InternalImages.IMG_UNPINNED));
-                    }
-                } 
-            }
-        });
-    }
-
-    protected void paintFigure(Graphics graphics) {
-        super.paintFigure(graphics);
-
-        ButtonModel model = getModel();
-        if (isRolloverEnabled() && model.isMouseOver()) {
-            graphics.setBackgroundColor(PIN_HOTSPOT_COLOR);
-            graphics.fillRoundRectangle(getClientArea().getCopy().shrink(1, 1), 3, 3);
-        }
-    }
-
-    public void setDrawerExpandedState(boolean expanded) {
-        setEnabled(expanded);
-        setToolTip(expanded ? tooltip : null);
-    }
-
-}
 
 /**
  * This is the figure for the entire drawer label button.
@@ -448,11 +396,20 @@ protected void handleExpandStateChanged() {
 	} else {
 		if (scrollpane.getParent() == this)
 			remove(scrollpane);
+		
+		// collapse all pinnable palette stack children that aren't pinned
+	    for (Iterator iterator = getContentPane().getChildren().iterator(); iterator.hasNext();) {
+            Object child = iterator.next();
+            if (child instanceof PinnablePaletteStackFigure
+                && !((PinnablePaletteStackFigure) child).isPinnedOpen()) {
+                ((PinnablePaletteStackFigure) child).setExpanded(false);
+            }            
+        }
+
 	}
 	
 	if (pinFigure != null) {
 		pinFigure.setVisible(isExpanded() && showPin);
-		pinFigure.setDrawerExpandedState(isExpanded());
 	}
 }
 
@@ -509,7 +466,7 @@ public void setLayoutMode(int layoutMode) {
 	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
 		manager = new ColumnsLayout();
 	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS) {
-		FlowLayout fl = new FlowLayout();
+	    PaletteContainerFlowLayout fl = new PaletteContainerFlowLayout();
 		fl.setMinorSpacing(0);
 		fl.setMajorSpacing(0);
 		manager = fl;

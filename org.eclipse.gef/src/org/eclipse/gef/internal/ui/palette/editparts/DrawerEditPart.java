@@ -77,6 +77,8 @@ public IFigure createFigure() {
 		}
 	});
 	
+	fig.getScrollpane().getContents().addLayoutListener(getPaletteAnimator());
+	
 	return fig;
 }
 

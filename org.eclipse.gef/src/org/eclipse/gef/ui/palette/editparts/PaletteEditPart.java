@@ -39,7 +39,6 @@ import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteSeparator;
-import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.tools.SelectEditPartTracker;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 import org.eclipse.gef.ui.palette.PaletteViewer;
@@ -433,7 +432,7 @@ protected int getLayoutSetting() {
  * @return true if this item is on the palette toolbar; false otherwise
  * @since 3.4
  */
-protected boolean isToolbarItem() {
+public boolean isToolbarItem() {
     if (getParent() instanceof PaletteEditPart) {
         return ((PaletteEditPart) getParent()).isToolbarItem();
     }

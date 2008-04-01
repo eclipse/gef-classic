@@ -11,7 +11,6 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutManager;
 import org.eclipse.draw2d.ToolbarLayout;
@@ -53,7 +52,7 @@ protected void refreshVisuals() {
 	if (layout == PaletteViewerPreferences.LAYOUT_COLUMNS) {
 		manager = new ColumnsLayout();
 	} else if (layout == PaletteViewerPreferences.LAYOUT_ICONS) {
-		FlowLayout flow = new FlowLayout();
+	    PaletteContainerFlowLayout flow = new PaletteContainerFlowLayout();
 		flow.setMajorSpacing(0);
 		flow.setMinorSpacing(0);
 		manager = flow;
