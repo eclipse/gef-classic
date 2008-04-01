@@ -60,15 +60,15 @@ protected int minorAlignment = ALIGN_LEFTTOP;
 protected int minorSpacing = 5;
 /** The spacing along the major axis. */
 protected int majorSpacing = 5;
-private WorkingData data = null;
+protected WorkingData data = null;
 
 /**
  * Holds the necessary information for layout calculations.
  */
-class WorkingData {
-	int rowHeight, rowWidth, rowCount, rowX, rowY, maxWidth;
-	Rectangle bounds[], area;
-	IFigure row[];
+protected class WorkingData {
+	public int rowHeight, rowWidth, rowCount, rowX, rowY, maxWidth;
+	public Rectangle bounds[], area;
+	public IFigure row[];
 }
 
 /**
@@ -220,7 +220,7 @@ public int getMinorSpacing() {
 /**
  * Initializes the state of row data, which is internal to the layout process. 
  */
-private void initRow() {
+protected void initRow() {
 	data.rowX = 0;
 	data.rowHeight = 0;
 	data.rowWidth = 0;
@@ -233,7 +233,7 @@ private void initRow() {
  * @param parent the parent figure
  * @since 2.0 
  */
-private void initVariables(IFigure parent) {
+protected void initVariables(IFigure parent) {
 	data.row = new IFigure[parent.getChildren().size()];
 	data.bounds = new Rectangle[data.row.length];
 	data.maxWidth = data.area.width;
