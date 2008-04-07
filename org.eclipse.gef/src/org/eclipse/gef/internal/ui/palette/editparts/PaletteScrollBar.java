@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
@@ -51,14 +52,13 @@ private static final Image TRANSPARENCY;
 static {
 	Display display = Display.getCurrent();
 	PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
-    RGB rgb = PaletteColorUtil.INFO_FOREGROUND.getRGB();
+    RGB rgb = display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW).getRGB();
 	int fillColor = pData.getPixel(rgb);
 	ImageData iData = new ImageData(1, 1, 24, pData);
 	iData.setPixel(0, 0, fillColor);
-	iData.setAlpha(0, 0, 15); // 6% transparent -- 255 * 0.06
+	iData.setAlpha(0, 0, 200);
 	TRANSPARENCY = new Image(display, iData);
 	
-	// TODO: Should I use the Button width here?
 	OUTER_DOWN_TRIANGLE.addPoint(new Point(34, 2));
 	OUTER_DOWN_TRIANGLE.addPoint(new Point(38, 6));
 	OUTER_DOWN_TRIANGLE.addPoint(new Point(42, 2));

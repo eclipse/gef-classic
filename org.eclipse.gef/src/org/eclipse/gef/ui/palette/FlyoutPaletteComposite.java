@@ -839,7 +839,6 @@ private class ResizeAction extends Action {
 		rects[0] = sash.getBounds();
 		tracker.setCursor(SharedCursors.SIZEE);
 		tracker.setRectangles(rects);
-		tracker.setStippled(true);
 		if (tracker.open()) {
 			int deltaX = sash.getBounds().x - tracker.getRectangles()[0].x;
 			if (dock == PositionConstants.WEST)
@@ -994,31 +993,28 @@ private class PaletteComposite extends Composite {
 			return;
 		
 		Rectangle area = getClientArea();
-		if (title.getVisible()) {
-		    boolean buttonVisible = button.getVisible();
-			Point titleSize = title.computeSize(-1, -1);
-            Point buttonSize = buttonVisible ? button.computeSize(-1, -1)
-                : new Point(0, 0);
-			cachedTitleHeight = Math.max(titleSize.y, buttonSize.y);
-			if (buttonVisible) {
-			    buttonSize.x = Math.max(cachedTitleHeight, buttonSize.x);
-			}
-			if (dock == PositionConstants.EAST) {
-				int buttonX = area.width - buttonSize.x;
-				button.setBounds(buttonX, 0, buttonSize.x, cachedTitleHeight);
-				title.setBounds(0, 0, buttonX, cachedTitleHeight);
-			} else {
-				int titleX = buttonSize.x;
-				button.setBounds(0, 0, buttonSize.x, cachedTitleHeight);
-				title.setBounds(titleX, 0, area.width - titleX, cachedTitleHeight);
-			}
-			area.y += cachedTitleHeight;
-			area.height -= cachedTitleHeight;
+	    boolean buttonVisible = button.getVisible();
+		Point titleSize = title.computeSize(-1, -1);
+        Point buttonSize = buttonVisible ? button.computeSize(-1, -1)
+            : new Point(0, 0);
+		cachedTitleHeight = Math.max(titleSize.y, buttonSize.y);
+		if (buttonVisible) {
+		    buttonSize.x = Math.max(cachedTitleHeight, buttonSize.x);
 		}
+		if (dock == PositionConstants.EAST) {
+			int buttonX = area.width - buttonSize.x;
+			button.setBounds(buttonX, 0, buttonSize.x, cachedTitleHeight);
+			title.setBounds(0, 0, buttonX, cachedTitleHeight);
+		} else {
+			int titleX = buttonSize.x;
+			button.setBounds(0, 0, buttonSize.x, cachedTitleHeight);
+			title.setBounds(titleX, 0, area.width - titleX, cachedTitleHeight);
+		}
+		area.y += cachedTitleHeight;
+		area.height -= cachedTitleHeight;
 		pCtrl.setBounds(area);
 	}
 	protected void updateState() {
-		title.setVisible(isInState(STATE_EXPANDED) || isInState(STATE_PINNED_OPEN));
 		button.setVisible(isInState(STATE_PINNED_OPEN));
 		if (transferFocus && button.getVisible()) {
 			transferFocus = false;

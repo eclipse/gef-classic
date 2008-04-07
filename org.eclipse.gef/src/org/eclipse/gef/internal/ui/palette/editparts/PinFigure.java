@@ -13,6 +13,7 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.swt.graphics.Color;
 
+import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.ButtonModel;
 import org.eclipse.draw2d.ChangeEvent;
 import org.eclipse.draw2d.ChangeListener;
@@ -20,6 +21,7 @@ import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.ImageFigure;
 import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Toggle;
 
 import org.eclipse.gef.internal.InternalImages;
@@ -39,11 +41,15 @@ private static final Color PIN_HOTSPOT_COLOR = FigureUtilities.mixColors(
     PaletteColorUtil.WIDGET_LIST_BACKGROUND,
     PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.60);
 
+private static final Border TOOLTIP_BORDER = new MarginBorder(0, 2, 1, 0);
+
 public PinFigure() {
     super(new ImageFigure(InternalImages.get(InternalImages.IMG_UNPINNED)));
     setRolloverEnabled(true);
     setRequestFocusEnabled(false);
-    setToolTip(new Label(PaletteMessages.TOOLTIP_PIN_FIGURE));
+    Label tooltip = new Label(PaletteMessages.TOOLTIP_PIN_FIGURE);
+    tooltip.setBorder(TOOLTIP_BORDER);
+    setToolTip(tooltip);
     setOpaque(false);
 
     addChangeListener(new ChangeListener() {

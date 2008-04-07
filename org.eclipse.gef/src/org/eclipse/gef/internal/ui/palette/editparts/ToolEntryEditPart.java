@@ -289,6 +289,26 @@ public IFigure createFigure() {
                     getLayoutSetting(), customLabel), 3, 3);
             }
         }
+        protected void paintBorder(Graphics graphics) {
+            if (!isToolbarItem() && isEnabled()) {
+
+            if (getBorder() != null)
+                getBorder().paint(this, graphics, NO_INSETS);
+            if (hasFocus()) {
+                graphics.setForegroundColor(ColorConstants.black);
+                graphics.setBackgroundColor(ColorConstants.white);
+
+                Rectangle area = getSelectionRectangle(
+                    getLayoutSetting(), customLabel);
+                if (isStyle(STYLE_BUTTON))
+                    graphics.drawFocus(area.x, area.y, area.width, area.height);
+                else
+                    graphics.drawFocus(area.x, area.y, area.width - 1, area.height - 1);
+            }
+            } else {
+                super.paintBorder(graphics);
+            }
+        }
         
 	}
 	
