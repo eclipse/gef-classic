@@ -42,6 +42,7 @@ import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
+import org.eclipse.gef.ui.palette.editparts.IPinnableEditPart;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 public class ToolEntryEditPart
@@ -205,6 +206,18 @@ private DetailedLabelFigure customLabel;
 
 public ToolEntryEditPart(PaletteEntry paletteEntry) {
 	super(paletteEntry);
+}
+
+public Object getAdapter(Class key) {
+    if (key == IPinnableEditPart.class) {
+        if ((getParent() instanceof PinnablePaletteStackEditPart)
+            && ((PinnablePaletteStackEditPart) getParent()).canBePinned()
+            && ((PaletteStack) getParent().getModel()).getActiveEntry().equals(
+                getModel())) {
+            return getParent();
+        }
+    }
+    return super.getAdapter(key);
 }
 
 protected AccessibleEditPart createAccessible() {
@@ -465,11 +478,15 @@ public void showTargetFeedback(Request request) {
 
 static Rectangle getSelectionRectangle(int layoutMode, DetailedLabelFigure labelFigure) {
     Rectangle rect = Rectangle.SINGLETON;
-    rect.setBounds(labelFigure.getBounds());
+    rect.setBounds(labelFigure.getClientArea());
     if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
         || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+        rect.x -= 5;
+        rect.y -= 2;
         rect.width = labelFigure.getPreferredSize().width + 17;
-        rect.x += 11;
+        rect.height += 4;
+    } else {
+        rect.expand(2, 2);        
     }
     rect.intersect(labelFigure.getBounds().getExpanded(-1, -1));
     return rect;

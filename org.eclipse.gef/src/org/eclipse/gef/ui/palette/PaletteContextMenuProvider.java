@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,9 @@ package org.eclipse.gef.ui.palette;
 import org.eclipse.jface.action.IMenuManager;
 
 import org.eclipse.gef.ContextMenuProvider;
-import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
+import org.eclipse.gef.ui.palette.editparts.IPinnableEditPart;
 
 /**
  * Provides the context menu for a palette.
@@ -51,12 +52,14 @@ protected PaletteViewer getPaletteViewer() {
 public void buildContextMenu(IMenuManager menu) {
 	GEFActionConstants.addStandardActionGroups(menu);
 
-	Object selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
-	if (selectedPart instanceof DrawerEditPart 
-					&& ((DrawerEditPart)selectedPart).canBePinned()) {
-		menu.appendToGroup(GEFActionConstants.MB_ADDITIONS, 
-						new PinDrawerAction((DrawerEditPart)selectedPart));
-	}
+	EditPart selectedPart = (EditPart) getPaletteViewer()
+        .getSelectedEditParts().get(0);
+    IPinnableEditPart pinnablePart = (IPinnableEditPart) selectedPart
+        .getAdapter(IPinnableEditPart.class);
+    if (pinnablePart != null && pinnablePart.canBePinned()) {
+        menu.appendToGroup(GEFActionConstants.MB_ADDITIONS,
+            new PinDrawerAction(pinnablePart));
+    } 
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new LayoutAction(
 			getPaletteViewer().getPaletteViewerPreferences()));
 	menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new ChangeIconSizeAction(

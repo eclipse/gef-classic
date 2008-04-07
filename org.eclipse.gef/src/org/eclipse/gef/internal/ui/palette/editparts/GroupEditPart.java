@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
+import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutManager;
+import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
@@ -23,6 +25,12 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 public class GroupEditPart 
 	extends PaletteEditPart 
 {
+
+/** Scrollpane border constant for icon and column layout mode **/
+private static final Border SCROLL_PANE_BORDER = new MarginBorder(2, 2, 2, 2);
+
+/** Scrollpane border constant for list and details layout mode **/
+private static final Border SCROLL_PANE_LIST_BORDER = new MarginBorder(2, 0, 2, 0);
 
 private int cachedLayout = -1;
 
@@ -51,13 +59,16 @@ protected void refreshVisuals() {
 	LayoutManager manager;
 	if (layout == PaletteViewerPreferences.LAYOUT_COLUMNS) {
 		manager = new ColumnsLayout();
+        getContentPane().setBorder(SCROLL_PANE_BORDER);		
 	} else if (layout == PaletteViewerPreferences.LAYOUT_ICONS) {
 	    PaletteContainerFlowLayout flow = new PaletteContainerFlowLayout();
 		flow.setMajorSpacing(0);
 		flow.setMinorSpacing(0);
 		manager = flow;
+        getContentPane().setBorder(SCROLL_PANE_BORDER);
 	} else {
 		manager = new ToolbarLayout();
+        getContentPane().setBorder(SCROLL_PANE_LIST_BORDER);
 	}
 	getContentPane().setLayoutManager(manager);
 }

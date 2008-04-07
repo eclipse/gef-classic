@@ -35,6 +35,7 @@ import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteTemplateEntry;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
+import org.eclipse.gef.ui.palette.editparts.IPinnableEditPart;
 import org.eclipse.gef.ui.palette.editparts.PaletteAnimator;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
@@ -44,7 +45,7 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
  * @author Pratik Shah
  */
 public class DrawerEditPart 
-	extends PaletteEditPart
+	extends PaletteEditPart implements IPinnableEditPart
 {
 	
 private static final String PROPERTY_EXPANSION_STATE = "expansion"; //$NON-NLS-1$
@@ -128,18 +129,10 @@ public IFigure getContentPane() {
 	return getDrawerFigure().getContentPane();
 }
 
-/**
- * Returns the expansion state of the drawer
- * @return <code>true</code> if the drawer is expanded; false otherwise
- */
 public boolean isExpanded() {
 	return getDrawerFigure().isExpanded();
 }
 
-/**
- * Returns <code>true</code> if the drawer is pinned open.
- * @return boolean
- */
 public boolean isPinnedOpen() {
 	return getDrawerFigure().isPinnedOpen();
 }
@@ -264,10 +257,6 @@ protected void setImageInFigure(Image image) {
 	getDrawerFigure().setTitleIcon(image);
 }
 
-/**
- * Sets the drawer's pinned state to the specified value.
- * @param pinned <code>true</code> if the drawer should be pinned when opened
- */
 public void setPinnedOpen(boolean pinned) {
 	getDrawerFigure().setPinned(pinned);
 }

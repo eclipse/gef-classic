@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
 
-import org.eclipse.draw2d.AbstractHintLayout;
 import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.BorderLayout;
@@ -130,53 +129,55 @@ public void paintFigure(Graphics graphics) {
 }
 
 /**
- * Layout manager for the palette stack figure that handles the layout of the
- * <code>headerFigure</code>, <code>expandablePane</code>, and
- * <code>pinFigure</code> when in list or details layout mode.
+ * Layout manager for the palette stack header figure that handles the layout of
+ * the <code>headerFigure</code> (<code>pinFigure</code>,
+ * <code>arrowFigure</code>, and the active tool figure) when in list or
+ * details layout mode.
  */
-private class PaletteStackListLayout
-    extends AbstractHintLayout {
+private class HeaderListLayout
+    extends StackLayout {
 
 protected boolean isSensitiveVertically(IFigure container) {
     return false;
 }
 
 protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
-    Dimension headerSize = headerFigure.getPreferredSize(wHint, hHint);
-
-    if (((PinnablePaletteStackFigure) parent).isExpanded()) {
-        Dimension paneSize = expandablePane.getPreferredSize(wHint, hHint);
-        return new Dimension(Math.max(headerSize.width, paneSize.width),
-            headerSize.height + paneSize.height);
+    if (isExpanded()) {
+        Dimension pinSize = pinFigure.getSize();
+        Dimension preferredSize = super.calculatePreferredSize(parent, wHint
+            - pinSize.width, hHint);
+        preferredSize.width += pinSize.width;
+        return preferredSize;
     } else {
-        return headerSize;
+        return super.calculatePreferredSize(parent, wHint, hHint);
     }
 }
 
 public void layout(IFigure parent) {
-    Rectangle clientArea = Rectangle.SINGLETON;
-    parent.getClientArea(clientArea);
-    int wHint = clientArea.width;
-    int hHint = -1;
 
-    Rectangle rect = new Rectangle();
-    rect.setSize(headerFigure.getPreferredSize(wHint, hHint));
-    rect.setLocation(clientArea.getTopLeft());
-    headerFigure.setBounds(rect);
+    Rectangle r = parent.getClientArea();
+    List children = parent.getChildren();
+    IFigure child;
 
-    if (((PinnablePaletteStackFigure) parent).isExpanded()) {
-        rect.translate(0, rect.height);
-        rect.setSize(expandablePane.getPreferredSize(wHint, hHint));
-        expandablePane.setBounds(rect);
+    Dimension pinSize = isExpanded() ? pinFigure.getPreferredSize()
+        : EMPTY_DIMENSION;
 
-        rect.setSize(pinFigure.getPreferredSize());
-        rect.setLocation(headerFigure.getBounds().right()
-            - rect.getSize().width, headerFigure.getBounds().getCenter().y
-            - (rect.getSize().height / 2));
-        pinFigure.setBounds(rect);
-
+    for (int i = 0; i < children.size(); i++) {
+        child = (IFigure) children.get(i);
+        if (child == arrowFigure) {
+            Rectangle.SINGLETON.setBounds(r);
+            Rectangle.SINGLETON.width = 11;
+            child.setBounds(Rectangle.SINGLETON);
+        } else if (child == pinFigure) {
+            Rectangle.SINGLETON.setSize(pinSize);
+            Rectangle.SINGLETON.setLocation(r.right() - pinSize.width, r
+                .getCenter().y
+                - (pinSize.height / 2));
+            child.setBounds(Rectangle.SINGLETON);
+        } else {
+            child.setBounds(r.getResized(-pinSize.width, 0));
+        }
     }
-
 }
 }
 
@@ -193,7 +194,7 @@ protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint)
 }
 
 public void layout(IFigure parent) {
-    if (((PinnablePaletteStackFigure) parent).isExpanded()) {
+    if (isExpanded()) {
         headerFigure.setBounds(headerBoundsLayoutHint);
 
         Rectangle paneBounds = parent.getClientArea();
@@ -295,6 +296,7 @@ public PinnablePaletteStackFigure() {
     headerFigure.add(arrowFigure);
 
     pinFigure = new PinFigure();
+    pinFigure.setBorder(new MarginBorder(0, 0, 0, 2));
 
     expandablePane = new Figure();
 
@@ -336,8 +338,8 @@ protected void paintFigure(Graphics g) {
             .getTopRight().getTranslated(-1, 1));
         g.drawLine(headerBounds.getBottomLeft().getTranslated(1, 0),
             headerBounds.getTopLeft().getTranslated(1, 1));
-        g.drawLine(headerBounds.getBottomRight().getTranslated(-1, 0),
-            headerBounds.getTopRight().getTranslated(-1, 1));
+        g.drawLine(headerBounds.getBottomRight().getTranslated(-2, 0),
+            headerBounds.getTopRight().getTranslated(-2, 1));
 
         g.drawLine(pinAreaBounds.getTopLeft().getTranslated(0, 1),
             pinAreaBounds.getTopRight().getTranslated(-1, 1));
@@ -350,10 +352,10 @@ protected void paintFigure(Graphics g) {
         points.addPoint(headerBounds.getTopLeft().getTranslated(0, 2));
         points.addPoint(headerBounds.getTopLeft().getTranslated(1, 1));
         points.addPoint(headerBounds.getTopLeft().getTranslated(2, 0));
-        points.addPoint(headerBounds.getTopRight().getTranslated(-2, 0));
-        points.addPoint(headerBounds.getTopRight().getTranslated(-1, 1));
-        points.addPoint(headerBounds.getTopRight().getTranslated(0, 2));
-        points.addPoint(headerBounds.getBottomRight());
+        points.addPoint(headerBounds.getTopRight().getTranslated(-3, 0));
+        points.addPoint(headerBounds.getTopRight().getTranslated(-2, 1));
+        points.addPoint(headerBounds.getTopRight().getTranslated(-1, 2));
+        points.addPoint(headerBounds.getBottomRight().getTranslated(-1, 0));
         points.addPoint(pinAreaBounds.getTopRight().getTranslated(-1, 0));
         points.addPoint(paneBounds.getBottomRight().getTranslated(-1, -1));
         points.addPoint(paneBounds.getBottomLeft().getTranslated(0, -1));
@@ -368,9 +370,9 @@ protected void paintFigure(Graphics g) {
         g.drawPoint(pt.x, pt.y);
         pt = headerBounds.getTopLeft().getTranslated(1, 0);
         g.drawPoint(pt.x, pt.y);
-        pt = headerBounds.getTopRight().getTranslated(-1, 0);
+        pt = headerBounds.getTopRight().getTranslated(-2, 0);
         g.drawPoint(pt.x, pt.y);
-        pt = headerBounds.getTopRight().getTranslated(0, 1);
+        pt = headerBounds.getTopRight().getTranslated(-1, 1);
         g.drawPoint(pt.x, pt.y);
     } else {
 
@@ -427,6 +429,19 @@ public boolean isPinnedOpen() {
     return isExpanded() && pinFigure.getModel().isSelected();
 }
 
+/**
+ * Pins or unpins the stack. The stack can be pinned open only when it is
+ * expanded. Attempts to pin it when it is collapsed will do nothing.
+ * 
+ * @param pinned
+ *            <code>true</code> if the stack is to be pinned
+ */
+public void setPinned(boolean pinned) {
+    if (isExpanded()) {
+        pinFigure.setSelected(pinned);
+    }
+}
+
 public void setExpanded(boolean value) {
     arrowFigure.setSelected(value);
     if (!value) {
@@ -448,31 +463,13 @@ public void setLayoutMode(int newLayoutMode) {
     if (newLayoutMode == PaletteViewerPreferences.LAYOUT_LIST
         || newLayoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
 
-        headerFigure.setLayoutManager(new StackLayout() {
-
-            public void layout(IFigure figure) {
-                Rectangle r = figure.getClientArea();
-                List children = figure.getChildren();
-                IFigure child;
-                for (int i = 0; i < children.size(); i++) {
-                    child = (IFigure) children.get(i);
-                    if (child == arrowFigure) {
-                        Rectangle.SINGLETON.setBounds(r);
-                        Rectangle.SINGLETON.width = 11;
-                        child.setBounds(Rectangle.SINGLETON);
-                    } else {
-                        child.setBounds(r);
-                    }
-                }
-            }
-        });
+        headerFigure.setLayoutManager(new HeaderListLayout());
 
         expandablePane.setLayoutManager(new ToolbarLayout());
         expandablePane.setBorder(new MarginBorder(1, 0, 1, 0));
-        setLayoutManager(new PaletteStackListLayout());
+        setLayoutManager(new ToolbarLayout());
 
     } else {
-
         headerFigure.setLayoutManager(new BorderLayout());
         if (activeToolFigure != null) {
             headerFigure.setConstraint(activeToolFigure, BorderLayout.CENTER);
@@ -482,7 +479,7 @@ public void setLayoutMode(int newLayoutMode) {
         setLayoutManager(new PaletteStackIconLayout());
 
         // account for space used by pin figure
-        expandablePane.setBorder(new MarginBorder(18, 2, 2, 2));
+        expandablePane.setBorder(new MarginBorder(18, 0, 0, 0));
 
         if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
             expandablePane.setLayoutManager(new ColumnsLayout());
@@ -515,12 +512,18 @@ private void handleExpandStateChanged() {
     if (isExpanded()) {
         if (expandablePane.getParent() != this) {
             add(expandablePane);
-            add(pinFigure);
+            
+            if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
+                || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
+                headerFigure.add(pinFigure);
+            } else {
+                add(pinFigure);
+            }
         }
     } else {
         if (expandablePane.getParent() == this) {
             remove(expandablePane);
-            remove(pinFigure);
+            pinFigure.getParent().remove(pinFigure);
         }
     }
 }

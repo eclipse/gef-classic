@@ -23,11 +23,13 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.GroupEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.IPaletteStackEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.PaletteStackEditPart;
+import org.eclipse.gef.internal.ui.palette.editparts.PinnablePaletteStackEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.TemplateEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart;
+import org.eclipse.gef.palette.PaletteEntry;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
  * KeyHandler for the {@link org.eclipse.gef.ui.palette.PaletteViewer Palette}.
@@ -64,9 +66,15 @@ private boolean acceptIntoExpandedDrawer(KeyEvent event) {
 	return result && isExpandedDrawer(getFocusEditPart());
 }
 
-private boolean acceptOpenContextMenu(KeyEvent event) {
+private boolean acceptExpandStack(KeyEvent event) {
 	return event.keyCode == SWT.ARROW_DOWN && (event.stateMask & SWT.ALT) > 0
-			&& isContextMenu(getFocusEditPart());
+			&& isCollapsedStack(getFocusEditPart());
+}
+
+private boolean acceptCollapseStack(KeyEvent event) {
+    return event.keyCode == SWT.ARROW_UP
+        && (event.stateMask & SWT.ALT) > 0
+        && isExpandedStack(getFocusEditPart());
 }
 
 private boolean acceptSetFocusOnDrawer(KeyEvent event) {
@@ -88,12 +96,21 @@ private void buildNavigationList(EditPart palettePart, EditPart exclusion,
 		if (isCollapsedDrawer(palettePart)) {
 			navList.add(palettePart);
 			return;
-		} else if (stackPart instanceof IPaletteStackEditPart
-				&& stackPart.getChildren().contains(palettePart)) {
-			// we only want to add the top level item to the navlist
-			if (((PaletteStack)((PaletteEditPart)stackPart).getModel())
-				.getActiveEntry().equals(palettePart.getModel()))
-				navList.add(palettePart);
+		} else if (stackPart instanceof PaletteStackEditPart
+            && stackPart.getChildren().contains(palettePart)) {
+            // we only want to add the top level item to the navlist
+            if (((PaletteStack) stackPart.getModel()).getActiveEntry().equals(
+                palettePart.getModel()))
+                navList.add(palettePart);
+        } else if (stackPart instanceof PinnablePaletteStackEditPart
+            && stackPart.getChildren().contains(palettePart)) {
+            // we only want to add the top level item to the navlist unless
+            // the palette stack is expanded
+            if (((PinnablePaletteStackEditPart) stackPart).isExpanded()
+                || ((PaletteStack) stackPart.getModel()).getActiveEntry()
+                    .equals(palettePart.getModel())) {
+                navList.add(palettePart);
+            }
 		} else if ((palettePart instanceof ToolEntryEditPart 
 		  || palettePart instanceof DrawerEditPart
 		  || palettePart instanceof TemplateEditPart)) {
@@ -173,11 +190,25 @@ boolean isExpandedDrawer(EditPart part) {
 }
 
 /**
- * Returns <code>true</code> if the passed
- * Editpart's parent contains a context menu, false otherwise.
+ * Returns <code>true</code> if the passed focusPart is a collapsed pinnable
+ * palette stack, false otherwise.
  */
-boolean isContextMenu(EditPart part) {
-	return part.getParent() instanceof IPaletteStackEditPart;
+boolean isCollapsedStack(EditPart focusPart) {
+    EditPart parent = focusPart.getParent();
+    return parent instanceof PaletteStackEditPart
+        || (parent instanceof PinnablePaletteStackEditPart
+            && !((PinnablePaletteStackEditPart) parent).isExpanded());
+}
+
+/**
+ * Returns <code>true</code> if the passed focusPart is an expanded pinnable
+ * palette stack, false otherwise.
+ */
+boolean isExpandedStack(EditPart focusPart) {
+    EditPart parent = focusPart.getParent();
+    return parent instanceof PaletteStackEditPart
+        || (parent instanceof PinnablePaletteStackEditPart
+            && ((PinnablePaletteStackEditPart) parent).isExpanded());
 }
 
 /**
@@ -193,11 +224,15 @@ public boolean keyPressed(KeyEvent event) {
 	if (acceptCollapseDrawer(event)) {
 		collapseDrawer();
 		return true;
-	}
-	if (acceptOpenContextMenu(event)) {
-		openContextMenu();
+	}	
+	if (acceptExpandStack(event)) {
+		expandStack();
 		return true;
 	}
+    if (acceptCollapseStack(event)) {
+        collapseStack(event);
+        return true;
+    }
 	if (acceptIntoExpandedDrawer(event)) {
 		if (navigateIntoExpandedDrawer(event))
 			return true;
@@ -232,8 +267,13 @@ private boolean navigateIntoExpandedDrawer(KeyEvent event) {
 protected void navigateTo(EditPart part, KeyEvent event) {
 	if (part == null)
 		return;
-	getViewer().select(part);
-	getViewer().reveal(part);
+	if (part instanceof IPaletteStackEditPart) {
+        PaletteEntry activeEntry = ((PaletteStack) part.getModel())
+            .getActiveEntry();
+        part = (EditPart) getViewer().getEditPartRegistry().get(activeEntry);
+    }
+    getViewer().select(part);
+    getViewer().reveal(part);
 }
 
 private boolean navigateToDrawer(KeyEvent event) {
@@ -272,8 +312,12 @@ private boolean navigateToNextContainer(KeyEvent event) {
 	return false;
 }
 
-private void openContextMenu() {
+private void expandStack() {
 	((IPaletteStackEditPart)getFocusEditPart().getParent()).openMenu();
+}
+private void collapseStack(KeyEvent event) {
+    ((PinnablePaletteStackEditPart)getFocusEditPart().getParent()).setExpanded(false);
+    navigateTo(getFocusEditPart().getParent(), event);    
 }
 
 }

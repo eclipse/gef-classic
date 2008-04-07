@@ -23,6 +23,7 @@ import org.eclipse.gef.palette.PaletteListener;
 import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.editparts.IPinnableEditPart;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
@@ -35,7 +36,7 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
  */
 public class PinnablePaletteStackEditPart
     extends PaletteEditPart
-    implements IPaletteStackEditPart {
+    implements IPaletteStackEditPart, IPinnableEditPart {
 
 // listen to see if active tool is changed in the palette
 private PaletteListener paletteListener = new PaletteListener() {
@@ -200,11 +201,27 @@ protected void refreshVisuals() {
 }
 
 public void openMenu() {
-    getStackFigure().setExpanded(true);
+    setExpanded(true);
+}
+
+public void setExpanded(boolean value) {
+    getStackFigure().setExpanded(value);
 }
 
 public boolean isExpanded() {
     return getStackFigure().isExpanded();
+}
+
+public boolean canBePinned() {
+    return isExpanded();
+}
+
+public boolean isPinnedOpen() {
+    return getStackFigure().isPinnedOpen();
+}
+
+public void setPinnedOpen(boolean pinned) {
+    getStackFigure().setPinned(pinned);
 }
 
 }

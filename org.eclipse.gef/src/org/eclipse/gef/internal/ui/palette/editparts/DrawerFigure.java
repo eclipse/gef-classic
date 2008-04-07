@@ -60,8 +60,10 @@ public class DrawerFigure
 protected static final Color FG_COLOR = FigureUtilities.mixColors(
     PaletteColorUtil.WIDGET_NORMAL_SHADOW, PaletteColorUtil.WIDGET_BACKGROUND);
 
-/** Scrollpane border constant **/
-protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2, 0, 2, 0);
+/** Scrollpane border constant for icon and column layout mode **/
+protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2, 2, 2, 2);
+/** Scrollpane border constant for list and details layout mode **/
+protected static final Border SCROLL_PANE_LIST_BORDER = new MarginBorder(2, 0, 2, 0);
 /** Title margin border constant **/
 protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(4, 2, 2, 2);
 /** Toggle button border constant**/
@@ -335,7 +337,6 @@ private void createScrollpane() {
 	scrollpane.setContents(new Figure());
 	scrollpane.getContents().setOpaque(true);
 	scrollpane.getContents().setBackgroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
-	scrollpane.getContents().setBorder(SCROLL_PANE_BORDER);
 }
 
 IFigure buildTooltip() {
@@ -465,13 +466,16 @@ public void setLayoutMode(int layoutMode) {
 	LayoutManager manager;
 	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
 		manager = new ColumnsLayout();
+        getContentPane().setBorder(SCROLL_PANE_BORDER);
 	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS) {
 	    PaletteContainerFlowLayout fl = new PaletteContainerFlowLayout();
 		fl.setMinorSpacing(0);
 		fl.setMajorSpacing(0);
 		manager = fl;
+ 	    getContentPane().setBorder(SCROLL_PANE_BORDER);
 	} else {
 		manager = new ToolbarLayout();
+        getContentPane().setBorder(SCROLL_PANE_LIST_BORDER);
 	}
 	getContentPane().setLayoutManager(manager);
 }
