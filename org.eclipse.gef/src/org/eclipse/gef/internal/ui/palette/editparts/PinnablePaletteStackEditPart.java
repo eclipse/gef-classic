@@ -224,4 +224,9 @@ public void setPinnedOpen(boolean pinned) {
     getStackFigure().setPinned(pinned);
 }
 
+public PaletteEditPart getActiveEntry() {
+    return (PaletteEditPart) getViewer().getEditPartRegistry().get(
+        getStack().getActiveEntry());
+}
+
 }

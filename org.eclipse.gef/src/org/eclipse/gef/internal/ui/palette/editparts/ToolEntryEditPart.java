@@ -340,8 +340,13 @@ protected AccessibleEditPart createAccessible() {
 		}
 
 		public void getRole(AccessibleControlEvent e) {
-			//Is this correct?
-			e.detail = ACC.ROLE_PUSHBUTTON;
+            if (getParent() instanceof IPaletteStackEditPart
+                && (ToolEntryEditPart.this == ((IPaletteStackEditPart) getParent())
+                    .getActiveEntry())) {
+                e.detail = ACC.ROLE_COMBOBOX;
+            } else {
+                e.detail = ACC.ROLE_PUSHBUTTON;
+            }
 		}
 
 		public void getState(AccessibleControlEvent e) {

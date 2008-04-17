@@ -11,6 +11,8 @@
 
 package org.eclipse.gef.internal.ui.palette.editparts;
 
+import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
+
 /**
  * An interface to define the common behavior between all palette stack
  * editparts (i.e. the type on the palette toolbar and the type in a drawer or
@@ -26,4 +28,10 @@ public interface IPaletteStackEditPart {
  */
 void openMenu();
 
+/**
+ * Returns the active palette entry editpart in the stack.
+ * 
+ * @return the active part
+ */
+PaletteEditPart getActiveEntry();
 }

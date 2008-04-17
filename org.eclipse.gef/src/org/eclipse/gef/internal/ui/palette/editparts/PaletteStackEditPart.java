@@ -358,6 +358,11 @@ public void showTargetFeedback(Request request) {
 	super.showTargetFeedback(request);
 }
 
+public PaletteEditPart getActiveEntry() {
+    return (PaletteEditPart) getViewer().getEditPartRegistry().get(
+        getStack().getActiveEntry());
+}
+
 }
 
 class StackMenuListener 
