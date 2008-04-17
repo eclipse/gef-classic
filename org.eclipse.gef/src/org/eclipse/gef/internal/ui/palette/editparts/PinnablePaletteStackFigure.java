@@ -12,7 +12,6 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
 
@@ -22,6 +21,7 @@ import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.ButtonModel;
 import org.eclipse.draw2d.ChangeEvent;
 import org.eclipse.draw2d.ChangeListener;
+import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FlowLayout;
@@ -37,6 +37,7 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
+import org.eclipse.gef.internal.ui.palette.editparts.ToolEntryEditPart.ToolEntryToggle;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
@@ -70,6 +71,8 @@ private static final Color COLOR_WIDGET_BACKGROUND_NORMAL_SHADOW_80 = FigureUtil
 
 private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
 
+static final int ARROW_WIDTH = 9;
+
 /**
  * A toggle with a triangle figure.
  */
@@ -81,7 +84,7 @@ RolloverArrow() {
     setRolloverEnabled(true);
     setBorder(null);
     setOpaque(false);
-    setPreferredSize(11, -1);
+    setPreferredSize(ARROW_WIDTH, -1);
 }
 
 /**
@@ -92,39 +95,79 @@ public boolean hasFocus() {
 }
 
 public void paintFigure(Graphics graphics) {
-    Rectangle rect = getBounds().getCopy();
+    Rectangle rect = getClientArea();
+
+    ButtonModel model = getModel();
+    if (isRolloverEnabled() && model.isMouseOver()) {
+        graphics.setBackgroundColor(PaletteColorUtil.ARROW_HOVER);
+        graphics.fillRoundRectangle(rect, 3, 3);
+    }
 
     graphics.translate(getLocation());
 
     // fill the arrow
     int[] points = new int[8];
 
+    int middleY = rect.height / 2;
     if (isSelected() || layoutMode == PaletteViewerPreferences.LAYOUT_ICONS
         || layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
         // pointing down
-        points[0] = 4;
-        points[1] = rect.height / 2;
-        points[2] = 9;
-        points[3] = rect.height / 2;
-        points[4] = 6;
-        points[5] = rect.height / 2 + 3;
-        points[6] = 4;
-        points[7] = rect.height / 2;
+        int startingX = (ARROW_WIDTH - 5) / 2; // triangle width = 5
+        points[0] = startingX;
+        points[1] = middleY;
+        points[2] = startingX + 5;
+        points[3] = middleY;
+        points[4] = startingX + 2;
+        points[5] = middleY + 3;
+        points[6] = startingX;
+        points[7] = middleY;
     } else {
         // pointing to the right
-        points[0] = 5;
-        points[1] = rect.height / 2 - 2;
-        points[2] = 8;
-        points[3] = rect.height / 2 + 1;
-        points[4] = 5;
-        points[5] = rect.height / 2 + 4;
-        points[6] = 5;
-        points[7] = rect.height / 2 - 2;
+        int startingX = (ARROW_WIDTH - 3) / 2; // triangle width = 3
+        points[0] = startingX;
+        points[1] = middleY - 2;
+        points[2] = startingX + 3;
+        points[3] = middleY + 1;
+        points[4] = startingX;
+        points[5] = middleY + 4;
+        points[6] = startingX;
+        points[7] = middleY - 2;
     }
 
+    graphics.setBackgroundColor(PaletteColorUtil.WIDGET_DARK_SHADOW);
     graphics.fillPolygon(points);
 
     graphics.translate(getLocation().getNegated());
+}
+}
+
+/**
+ * Layout manager for the palette stack header figure that handles the layout of
+ * the <code>headerFigure</code> (<code>arrowFigure</code> and the active
+ * tool figure) when in icons or columns layout mode.
+ */
+private class HeaderIconLayout
+    extends StackLayout {
+
+protected boolean isSensitiveVertically(IFigure container) {
+    return false;
+}
+
+public void layout(IFigure parent) {
+
+    Rectangle r = parent.getClientArea();
+
+    activeToolFigure.setBounds(r);
+
+    // All tool figures have saved an area in its margin for the arrow figure in
+    // case that tool figure is in a stack (see the BORDER variables in
+    // ToolEntryEditPart). Calculate the arrow figure bounds by using the insets
+    // of the active tool figure.
+    r.x = r.right() - ToolEntryEditPart.ICON_HIGHLIGHT_INSETS.right - ARROW_WIDTH;
+    r.y += ToolEntryEditPart.ICON_HIGHLIGHT_INSETS.top;
+    r.width = ARROW_WIDTH;
+    r.height -= ToolEntryEditPart.ICON_HIGHLIGHT_INSETS.getHeight();
+    arrowFigure.setBounds(r);
 }
 }
 
@@ -156,28 +199,27 @@ protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint)
 public void layout(IFigure parent) {
 
     Rectangle r = parent.getClientArea();
-    List children = parent.getChildren();
-    IFigure child;
-
     Dimension pinSize = isExpanded() ? pinFigure.getPreferredSize()
         : EMPTY_DIMENSION;
 
-    for (int i = 0; i < children.size(); i++) {
-        child = (IFigure) children.get(i);
-        if (child == arrowFigure) {
-            Rectangle.SINGLETON.setBounds(r);
-            Rectangle.SINGLETON.width = 11;
-            child.setBounds(Rectangle.SINGLETON);
-        } else if (child == pinFigure) {
-            Rectangle.SINGLETON.setSize(pinSize);
-            Rectangle.SINGLETON.setLocation(r.right() - pinSize.width, r
-                .getCenter().y
-                - (pinSize.height / 2));
-            child.setBounds(Rectangle.SINGLETON);
-        } else {
-            child.setBounds(r.getResized(-pinSize.width, 0));
-        }
-    }
+    // layout the pin figure
+    Rectangle.SINGLETON.setSize(pinSize);
+    Rectangle.SINGLETON.setLocation(r.right() - pinSize.width, r.getCenter().y
+        - (pinSize.height / 2));
+    pinFigure.setBounds(Rectangle.SINGLETON);
+
+    activeToolFigure.setBounds(r.getResized(-pinSize.width, 0));
+
+    // All tool figures have saved an area in its margin for the arrow figure in
+    // case that tool figure is in a stack (see the BORDER variables in
+    // ToolEntryEditPart). Calculate the arrow figure bounds by using the insets
+    // of the active tool figure.
+    r.x += ToolEntryEditPart.LIST_HIGHLIGHT_INSETS.left;
+    r.y += ToolEntryEditPart.LIST_HIGHLIGHT_INSETS.top;
+    r.width = ARROW_WIDTH;
+    r.height -= ToolEntryEditPart.LIST_HIGHLIGHT_INSETS.getHeight();
+    arrowFigure.setBounds(r);
+
 }
 }
 
@@ -222,7 +264,11 @@ public void layout(IFigure parent) {
 private ChangeListener clickableArrowListener = new ChangeListener() {
 
     public void handleStateChanged(ChangeEvent event) {
-        if (event.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
+        Clickable clickable = (Clickable)event.getSource();
+        if (event.getPropertyName() == ButtonModel.MOUSEOVER_PROPERTY && getActiveFigure() instanceof ToolEntryToggle) {
+                ((ToolEntryToggle)getActiveFigure()).setShowHoverFeedback(clickable.getModel().isMouseOver());
+        }
+         if (event.getPropertyName() == ButtonModel.SELECTED_PROPERTY) {
 
             Animation.markBegin();
             handleExpandStateChanged();
@@ -250,22 +296,6 @@ private ChangeListener clickableArrowListener = new ChangeListener() {
                         }
                     }
                 }
-
-                // The auto-collapsing of drawers is handled in the
-                // PaletteAnimator.
-                // If a stack is expanded when there is not enough room to fit
-                // the
-                // expanded stack than other drawers should be collapsed.
-                // However,
-                // when the animation is run the first time in this method the
-                // drawer layout has not yet completed so other drawers are not
-                // collapsed. This 'second pass' of the animation will ensure
-                // that
-                // drawers get collapsed if necessary as a result of the newly
-                // expanded stack.
-                Animation.markBegin();
-                revalidate();
-                Animation.run(150);
             }
         }
     }
@@ -289,7 +319,6 @@ public PinnablePaletteStackFigure() {
     super();
 
     arrowFigure = new RolloverArrow();
-    arrowFigure.setBackgroundColor(PaletteColorUtil.WIDGET_DARK_SHADOW);
     arrowFigure.addChangeListener(clickableArrowListener);
 
     headerFigure = new Figure();
@@ -415,14 +444,14 @@ public IFigure getActiveFigure() {
 }
 
 /**
- * @return <code>true</code> if the drawer is expanded
+ * @return <code>true</code> if the palette stack is expanded
  */
 public boolean isExpanded() {
     return arrowFigure.getModel().isSelected();
 }
 
 /**
- * @return <code>true</code> if the drawer is expanded and is pinned (i.e., it
+ * @return <code>true</code> if the palette stack is expanded and is pinned (i.e., it
  *         can't be automatically collapsed)
  */
 public boolean isPinnedOpen() {
@@ -470,11 +499,10 @@ public void setLayoutMode(int newLayoutMode) {
         setLayoutManager(new ToolbarLayout());
 
     } else {
-        headerFigure.setLayoutManager(new BorderLayout());
+        headerFigure.setLayoutManager(new HeaderIconLayout());
         if (activeToolFigure != null) {
             headerFigure.setConstraint(activeToolFigure, BorderLayout.CENTER);
         }
-        headerFigure.setConstraint(arrowFigure, BorderLayout.RIGHT);
 
         setLayoutManager(new PaletteStackIconLayout());
 

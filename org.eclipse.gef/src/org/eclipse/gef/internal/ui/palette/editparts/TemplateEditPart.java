@@ -152,7 +152,7 @@ protected void refreshVisuals() {
 	int layoutMode = getLayoutSetting();
 	fig.setLayoutMode(layoutMode);
     if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
-        fig.setBorder(ToolEntryEditPart.COLUMNS_BORDER);
+        fig.setBorder(ToolEntryEditPart.ICON_BORDER);
     } else if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
         || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
         fig.setBorder(ToolEntryEditPart.LIST_BORDER);

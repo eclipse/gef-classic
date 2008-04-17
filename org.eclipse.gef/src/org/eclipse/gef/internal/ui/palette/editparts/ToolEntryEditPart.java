@@ -31,6 +31,7 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.Toggle;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.AccessibleEditPart;
@@ -201,6 +202,114 @@ class OtherToggleButtonTracker extends ToggleButtonTracker {
 	}
 }
 
+/**
+ * The figure for for a <code>ToolEntryEditPart</code>.
+ */
+class ToolEntryToggle
+    extends Toggle {
+
+private boolean showHoverFeedback = false;
+
+ToolEntryToggle(IFigure contents) {
+    super(contents);
+    setOpaque(false);
+    setEnabled(true);
+    if (isToolbarItem()
+        && !PaletteStack.PALETTE_TYPE_STACK.equals(getPaletteEntry()
+            .getParent().getType())) {
+        setStyle(Clickable.STYLE_BUTTON | Clickable.STYLE_TOGGLE);
+        setBorder(TOOLBAR_ITEM_BORDER);
+    }
+}
+public boolean containsPoint(int x, int y) {
+    Rectangle rect = getBounds().getCopy();
+    if (customLabel.getBorder() == ICON_BORDER) {
+        rect.width -= PinnablePaletteStackFigure.ARROW_WIDTH;
+    } else if (customLabel.getBorder() == LIST_BORDER) {
+        rect.width -= PinnablePaletteStackFigure.ARROW_WIDTH;
+        rect.x += PinnablePaletteStackFigure.ARROW_WIDTH;    
+    }
+    return rect.contains(x, y);
+}
+
+public IFigure findMouseEventTargetAt(int x, int y) {
+    return null;
+}
+
+public IFigure getToolTip() {
+    return createToolTip();
+}
+
+public void setEnabled(boolean value) {
+    super.setEnabled(value);
+    if (isEnabled()) {
+        setRolloverEnabled(true);
+        if (getFlag(STYLE_BUTTON)) {
+            setBorder(TOOLBAR_ITEM_BORDER);
+        }
+        setForegroundColor(null);
+    } else {
+        if (getFlag(STYLE_BUTTON)) {
+            setBorder(null);
+        }
+        setRolloverEnabled(false);
+        setForegroundColor(ColorConstants.gray);
+    }
+}
+
+protected void paintFigure(Graphics graphics) {
+    super.paintFigure(graphics);
+
+    if (!isToolbarItem() && isEnabled() && isRolloverEnabled()) {
+        ButtonModel model = getModel();
+
+        if (model.isSelected()) {
+            graphics.setBackgroundColor(PaletteColorUtil.getSelectedColor());
+            graphics.fillRoundRectangle(getSelectionRectangle(
+                getLayoutSetting(), customLabel), 3, 3);
+        } else if (model.isMouseOver() || showHoverFeedback) {
+            graphics.setBackgroundColor(PaletteColorUtil.getHoverColor());
+            graphics.fillRoundRectangle(getSelectionRectangle(
+                getLayoutSetting(), customLabel), 3, 3);
+        }
+    }
+}
+
+protected void paintBorder(Graphics graphics) {
+    if (!isToolbarItem() && isEnabled()) {
+
+        if (getBorder() != null)
+            getBorder().paint(this, graphics, NO_INSETS);
+        if (hasFocus()) {
+            graphics.setForegroundColor(ColorConstants.black);
+            graphics.setBackgroundColor(ColorConstants.white);
+
+            Rectangle area = getSelectionRectangle(getLayoutSetting(),
+                customLabel);
+            if (isStyle(STYLE_BUTTON))
+                graphics.drawFocus(area.x, area.y, area.width, area.height);
+            else
+                graphics.drawFocus(area.x, area.y, area.width - 1,
+                    area.height - 1);
+        }
+    } else {
+        super.paintBorder(graphics);
+    }
+}
+
+/**
+ * Should hover feedback be shown? Allows other palette entities to control when
+ * the hover feedback should be shown on this tool entry.
+ * 
+ * @param showHoverFeedback
+ *            true if the hover feedback is to be shown; false otherwise.
+ */
+public void setShowHoverFeedback(boolean showHoverFeedback) {
+    this.showHoverFeedback = showHoverFeedback;
+    repaint();
+}
+}
+
 private static final String ACTIVE_STATE = "active"; //$NON-NLS-1$
 private DetailedLabelFigure customLabel;
 
@@ -245,88 +354,24 @@ protected AccessibleEditPart createAccessible() {
 
 static final Border TOOLBAR_ITEM_BORDER = new ButtonBorder(
     ButtonBorder.SCHEMES.TOOLBAR);
-static final Border COLUMNS_BORDER = new MarginBorder(2, 0, 1, 0);
-static final Border LIST_BORDER = new MarginBorder(3, 16, 2, 0);
-static final Border ICON_BORDER = new MarginBorder(3, 3, 3, 3);
+
+// The following are the insets that the bounds of the label figure should be
+// cropped to paint the blue/orange select and hover feedback rectangles.
+static final Insets LIST_HIGHLIGHT_INSETS = new Insets(1, 5, 2, 0);
+static final Insets ICON_HIGHLIGHT_INSETS = new Insets(2, 1, 2, 1);
+
+// The following are the borders that go around the entire tool figure to
+// provide room to draw the arrow and outline of the palette stack figure if
+// this tool happens to appear as the active tool of a stack.
+static final Border LIST_BORDER = new MarginBorder(3,
+    PinnablePaletteStackFigure.ARROW_WIDTH + 7, 4, 0);
+static final Border ICON_BORDER = new MarginBorder(4, 4, 3, 
+   PinnablePaletteStackFigure.ARROW_WIDTH + 4);
 
 public IFigure createFigure() {
-	class InactiveToggleButton extends Toggle {
-	
-        InactiveToggleButton(IFigure contents) {
-			super(contents);
-			setOpaque(false);
-			setEnabled(true);
-            if (isToolbarItem()
-                && !PaletteStack.PALETTE_TYPE_STACK.equals(getPaletteEntry()
-                    .getParent().getType())) {
-                setStyle(Clickable.STYLE_BUTTON | Clickable.STYLE_TOGGLE);
-                setBorder(TOOLBAR_ITEM_BORDER);
-            } 
-		}
-		public IFigure findMouseEventTargetAt(int x, int y) {
-			return null;
-		}
-		public IFigure getToolTip() {
-			return createToolTip();
-		}
-		public void setEnabled(boolean value) {
-			super.setEnabled(value);
-			if (isEnabled()) {
-				setRolloverEnabled(true);
-				if (getFlag(STYLE_BUTTON)) {
-				    setBorder(TOOLBAR_ITEM_BORDER);
-				}
-				setForegroundColor(null);
-			} else {
-                if (getFlag(STYLE_BUTTON)) {
-                    setBorder(null);
-                }
-				setRolloverEnabled(false);
-				setForegroundColor(ColorConstants.gray);
-			}
-		}
-        protected void paintFigure(Graphics graphics) {
-            super.paintFigure(graphics);
-            
-            if (!isToolbarItem() && isEnabled()) {
-                ButtonModel model = getModel();
-                if (isRolloverEnabled() && !model.isMouseOver() && !model.isSelected())
-                    return;
-        
-                if (model.isSelected()) {
-                    graphics.setBackgroundColor(PaletteColorUtil.getSelectedColor());
-                } else {
-                    graphics.setBackgroundColor(PaletteColorUtil.getHoverColor());
-                }
-                graphics.fillRoundRectangle(getSelectionRectangle(
-                    getLayoutSetting(), customLabel), 3, 3);
-            }
-        }
-        protected void paintBorder(Graphics graphics) {
-            if (!isToolbarItem() && isEnabled()) {
-
-            if (getBorder() != null)
-                getBorder().paint(this, graphics, NO_INSETS);
-            if (hasFocus()) {
-                graphics.setForegroundColor(ColorConstants.black);
-                graphics.setBackgroundColor(ColorConstants.white);
-
-                Rectangle area = getSelectionRectangle(
-                    getLayoutSetting(), customLabel);
-                if (isStyle(STYLE_BUTTON))
-                    graphics.drawFocus(area.x, area.y, area.width, area.height);
-                else
-                    graphics.drawFocus(area.x, area.y, area.width - 1, area.height - 1);
-            }
-            } else {
-                super.paintBorder(graphics);
-            }
-        }
-        
-	}
 	
 	customLabel = new DetailedLabelFigure();
-	Clickable button = new InactiveToggleButton(customLabel);
+	Clickable button = new ToolEntryToggle(customLabel);
 	button.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent event) {
 			getPaletteViewer().setActiveTool(getToolEntry());
@@ -408,7 +453,7 @@ protected void refreshVisuals() {
 	int layoutMode = getLayoutSetting();
 	customLabel.setLayoutMode(layoutMode);
 	if (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
-		customLabel.setBorder(COLUMNS_BORDER);
+		customLabel.setBorder(ICON_BORDER);
 	} else if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
         || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
         customLabel.setBorder(LIST_BORDER);
@@ -478,17 +523,22 @@ public void showTargetFeedback(Request request) {
 
 static Rectangle getSelectionRectangle(int layoutMode, DetailedLabelFigure labelFigure) {
     Rectangle rect = Rectangle.SINGLETON;
-    rect.setBounds(labelFigure.getClientArea());
+    rect.setBounds(labelFigure.getBounds());
     if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
         || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
-        rect.x -= 5;
-        rect.y -= 2;
-        rect.width = labelFigure.getPreferredSize().width + 17;
-        rect.height += 4;
+        
+        rect.x += PinnablePaletteStackFigure.ARROW_WIDTH;
+        rect.width -= PinnablePaletteStackFigure.ARROW_WIDTH;
+        int newWidth = labelFigure.getPreferredSize().width + 17;
+        if (newWidth < rect.width) {
+            rect.width = newWidth;
+        }
+        rect.crop(LIST_HIGHLIGHT_INSETS);
     } else {
-        rect.expand(2, 2);        
+        rect.width -= PinnablePaletteStackFigure.ARROW_WIDTH;
+        rect.crop(ICON_HIGHLIGHT_INSETS);
     }
-    rect.intersect(labelFigure.getBounds().getExpanded(-1, -1));
     return rect;
 }
+
 }

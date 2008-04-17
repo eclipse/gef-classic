@@ -52,7 +52,7 @@ private static final Image TRANSPARENCY;
 static {
 	Display display = Display.getCurrent();
 	PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
-    RGB rgb = display.getSystemColor(SWT.COLOR_WIDGET_LIGHT_SHADOW).getRGB();
+    RGB rgb = display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW).getRGB();
 	int fillColor = pData.getPixel(rgb);
 	ImageData iData = new ImageData(1, 1, 24, pData);
 	iData.setPixel(0, 0, fillColor);
@@ -127,6 +127,7 @@ private Toggle createTransparentArrowButton(final boolean down) {
 		}
 	};
 	button.setRolloverEnabled(true);
+	button.setRequestFocusEnabled(false);
 	return button;
 }
 

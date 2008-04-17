@@ -34,9 +34,11 @@ public static final Color WIDGET_LIST_BACKGROUND = ColorConstants.listBackground
 
 public static final Color INFO_FOREGROUND = ColorConstants.tooltipForeground;
 
-private static final Color HOVER_COLOR = new Color(null, 254, 237, 205);
+public static final Color ARROW_HOVER = new Color(null, 229, 229, 219);
 
-private static final Color SELECTED_COLOR = new Color(null, 224, 233, 246);
+private static final Color HOVER_COLOR = new Color(null, 252, 228, 179);
+
+private static final Color SELECTED_COLOR = new Color(null, 207, 227, 250);
 
 private static final Color HOVER_COLOR_HICONTRAST = new Color(null, 0, 128, 0);
 
