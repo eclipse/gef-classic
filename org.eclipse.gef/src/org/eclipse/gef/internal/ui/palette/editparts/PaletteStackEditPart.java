@@ -12,7 +12,6 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
@@ -48,7 +47,6 @@ import org.eclipse.gef.palette.PaletteStack;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.ui.actions.SetActivePaletteToolAction;
 import org.eclipse.gef.ui.palette.PaletteViewer;
-import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
@@ -62,15 +60,14 @@ public class PaletteStackEditPart
 {
 	
 private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
-private static final Border BORDER_TOGGLE = new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR);
 
 // listen to changes of clickable tool figure
 private ChangeListener clickableListener = new ChangeListener() {
 	public void handleStateChanged(ChangeEvent event) {
 		if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
-			getClickableFigure().getModel().setMouseOver(activeFigure.getModel().isMouseOver());
+			arrowFigure.getModel().setMouseOver(activeFigure.getModel().isMouseOver());
 		else if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
-			getClickableFigure().getModel().setArmed(activeFigure.getModel().isArmed());
+			arrowFigure.getModel().setArmed(activeFigure.getModel().isArmed());
 	}
 };
 
@@ -78,9 +75,9 @@ private ChangeListener clickableListener = new ChangeListener() {
 private ChangeListener clickableArrowListener = new ChangeListener() {
 	public void handleStateChanged(ChangeEvent event) {
 		if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
-			activeFigure.getModel().setMouseOver(getClickableFigure().getModel().isMouseOver());
+			activeFigure.getModel().setMouseOver(arrowFigure.getModel().isMouseOver());
 		if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
-			activeFigure.getModel().setArmed(getClickableFigure().getModel().isArmed());
+			activeFigure.getModel().setArmed(arrowFigure.getModel().isArmed());
 	}
 };
 
@@ -95,12 +92,12 @@ private ActionListener actionListener = new ActionListener() {
 private PaletteListener paletteListener = new PaletteListener() {
 	public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
 		if (getStack().getChildren().contains(tool)) {
-			if (!getClickableFigure().getModel().isSelected())
-				getClickableFigure().getModel().setSelected(true);
+			if (!arrowFigure.getModel().isSelected())
+				arrowFigure.getModel().setSelected(true);
 			if (!getStack().getActiveEntry().equals(tool))
 				getStack().setActiveEntry(tool);
 		} else
-			getClickableFigure().getModel().setSelected(false);
+			arrowFigure.getModel().setSelected(false);
 	}	
 };
 
@@ -168,25 +165,15 @@ private void checkActiveEntrySync() {
  * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
  */
 public IFigure createFigure() {
-    
-    arrowFigure = new RolloverArrow();
 
-    Clickable stackFigure = new Clickable() {
-        public boolean hasFocus() {
-            return false;
-        }
+	Figure figure = new Figure() {
         public Dimension getPreferredSize(int wHint, int hHint) {
             if (PaletteStackEditPart.this.getChildren().isEmpty())
                 return EMPTY_DIMENSION;
             return super.getPreferredSize(wHint, hHint);
         }
     };
-    stackFigure.setRolloverEnabled(true);
-    stackFigure.setBorder(BORDER_TOGGLE);
-    
-    // Set up the arrow figure.  Disable the arrow figure so clicks go to the stack figure. 
-    arrowFigure.setBackgroundColor(ColorConstants.black);
-    arrowFigure.setEnabled(false);
+    figure.setLayoutManager(new BorderLayout());
     
     contentsFigure = new Figure();
     StackLayout stackLayout = new StackLayout();
@@ -194,23 +181,14 @@ public IFigure createFigure() {
     // to its bounds
     stackLayout.setObserveVisibility(true);
     contentsFigure.setLayoutManager(stackLayout);
-    
-    stackFigure.add(contentsFigure);
-    stackFigure.add(arrowFigure);
-    
-    stackFigure.addChangeListener(clickableArrowListener);
-    stackFigure.addActionListener(actionListener);
+    figure.add(contentsFigure, BorderLayout.CENTER);
 
-    return stackFigure;
-}
-
-/**
- * Returns the <code>Clickable</code> figure. 
- * 
- * @return the <code>Clickable</code> figure
- */
-private Clickable getClickableFigure() {
-    return (Clickable) getFigure();
+    arrowFigure = new RolloverArrow();
+    arrowFigure.addChangeListener(clickableArrowListener);
+    arrowFigure.addActionListener(actionListener);
+    figure.add(arrowFigure, BorderLayout.RIGHT);
+    
+    return figure;
 }
 
 /**
@@ -219,8 +197,8 @@ private Clickable getClickableFigure() {
 public void deactivate() {
 	if (activeFigure != null) 
 		activeFigure.removeChangeListener(clickableListener);
-	getClickableFigure().removeActionListener(actionListener);
-	getClickableFigure().removeChangeListener(clickableArrowListener);
+	arrowFigure.removeActionListener(actionListener);
+	arrowFigure.removeChangeListener(clickableArrowListener);
 	getPaletteViewer().removePaletteListener(paletteListener);
 	super.deactivate();
 }
@@ -277,7 +255,7 @@ public void openMenu() {
 			figureBounds.getBottomLeft().x, figureBounds.getBottomLeft().y);
 	
 	// remove feedback from the arrow Figure and children figures
-	getClickableFigure().getModel().setMouseOver(false);
+	arrowFigure.getModel().setMouseOver(false);
 	eraseTargetFeedback(new Request(RequestConstants.REQ_SELECTION));
 	
 	menu.setLocation(menuLocation);
@@ -307,37 +285,6 @@ protected void refreshChildren() {
 		if (!editPart.getFigure().equals(activeFigure))
 			editPart.getFigure().setVisible(false);
 	}
-}
-
-/**
- * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
- */
-protected void refreshVisuals() {
-    int layoutMode = getLayoutSetting();
-    if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
-            || layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
-        getFigure().setLayoutManager(new StackLayout() {
-            public void layout(IFigure figure) {
-                Rectangle r = figure.getClientArea();
-                List children = figure.getChildren();
-                IFigure child;
-                for (int i = 0; i < children.size(); i++) {
-                    child = (IFigure)children.get(i);
-                    if (child == arrowFigure) {
-                        Rectangle.SINGLETON.setBounds(r);
-                        Rectangle.SINGLETON.width = 11;
-                        child.setBounds(Rectangle.SINGLETON);
-                    } else {
-                        child.setBounds(r);
-                    }
-                }
-            }
-        });
-    } else {
-        getFigure().setLayoutManager(new BorderLayout());
-        getFigure().setConstraint(contentsFigure, BorderLayout.CENTER);
-        getFigure().setConstraint(arrowFigure, BorderLayout.RIGHT);    
-    }
 }
 
 /**
@@ -407,13 +354,16 @@ class RolloverArrow
 	extends Clickable 
 {
 
+private static final Border BORDER_TOGGLE = new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR);
+	
 /**
  * Creates a new Clickable that paints a triangle figure.
  */
 RolloverArrow() {
 	super();
 	setRolloverEnabled(true);
-	setBorder(null);
+	setBorder(BORDER_TOGGLE);
+	setBackgroundColor(ColorConstants.black);
 	setOpaque(false);
 	setPreferredSize(11, -1);
 }
@@ -426,20 +376,20 @@ public boolean hasFocus() {
 }
 
 public void paintFigure(Graphics graphics) {
-	Rectangle rect = getBounds().getCopy();
+	Rectangle rect = getClientArea();
 
 	graphics.translate(getLocation());
 	
 	// fill the arrow
 	int[] points = new int[8];
 	
-	points[0] = 4;
+	points[0] = 3;
 	points[1] = rect.height / 2;
-	points[2] = 9;
+	points[2] = 8;
 	points[3] = rect.height / 2;
-	points[4] = 6;
+	points[4] = 5;
 	points[5] = 3 + rect.height / 2;
-	points[6] = 4;
+	points[6] = 3;
 	points[7] = rect.height / 2;
 	
 	graphics.fillPolygon(points);

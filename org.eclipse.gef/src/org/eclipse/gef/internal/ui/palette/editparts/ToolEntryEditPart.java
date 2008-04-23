@@ -214,9 +214,7 @@ ToolEntryToggle(IFigure contents) {
     super(contents);
     setOpaque(false);
     setEnabled(true);
-    if (isToolbarItem()
-        && !PaletteStack.PALETTE_TYPE_STACK.equals(getPaletteEntry()
-            .getParent().getType())) {
+    if (isToolbarItem()) {
         setStyle(Clickable.STYLE_BUTTON | Clickable.STYLE_TOGGLE);
         setBorder(TOOLBAR_ITEM_BORDER);
     }
@@ -276,7 +274,7 @@ protected void paintFigure(Graphics graphics) {
 }
 
 protected void paintBorder(Graphics graphics) {
-    if (!isToolbarItem() && isEnabled()) {
+	if (isEnabled()) {
 
         if (getBorder() != null)
             getBorder().paint(this, graphics, NO_INSETS);
@@ -284,8 +282,8 @@ protected void paintBorder(Graphics graphics) {
             graphics.setForegroundColor(ColorConstants.black);
             graphics.setBackgroundColor(ColorConstants.white);
 
-            Rectangle area = getSelectionRectangle(getLayoutSetting(),
-                customLabel);
+            Rectangle area = isToolbarItem() ? getClientArea()
+            	: getSelectionRectangle(getLayoutSetting(), customLabel);
             if (isStyle(STYLE_BUTTON))
                 graphics.drawFocus(area.x, area.y, area.width, area.height);
             else
