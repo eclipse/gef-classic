@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="junits" basedir=".">
+	<property name="classname" value="org.eclipse.gef.test.GEFTestSuite" />
+
 	<!-- The property ${eclipse-home} should be passed into this script -->
 	<!-- Set a meaningful default value for when it is not. -->
 	<property name="eclipse-home" value="${basedir}\..\.." />
@@ -11,9 +13,9 @@
 
 	<!-- buildDir=/home/www-data/build/gef/downloads/drops/3.4.0/N200801142250 -->
 	<!-- load org.eclipse.gef.releng/builder/tests/configs/local/testing.properties -->
-	<echo message="Load ${buildDir}/org.eclipse.${subprojectName2}.releng/builder/tests/configs/local/testing.properties"/>
-	<property file="${buildDir}/org.eclipse.${subprojectName2}.releng/builder/tests/configs/local/testing.properties"/>
-	
+	<echo message="Load ${buildDir}/org.eclipse.${subprojectName2}.releng/builder/tests/configs/local/testing.properties" />
+	<property file="${buildDir}/org.eclipse.${subprojectName2}.releng/builder/tests/configs/local/testing.properties" />
+
 	<!-- This target holds all initialization code that needs to be done for -->
 	<!-- all tests that are to be run. Initialization for individual tests -->
 	<!-- should be done within the body of the suite target. -->
@@ -31,8 +33,8 @@
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${gef-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
-			<property name="classname" value="org.eclipse.gef.test.GEFTestSuite" />
-			<property name="vmargs" value="${Dflags}"/>
+			<property name="vmargs" value="${Dflags}" />
+			<property name="classname" value="${classname}" />
 		</ant>
 	</target>
 
@@ -40,6 +42,8 @@
 	<!-- after all of the tests have been run. You can use this target to -->
 	<!-- delete temporary files that have been created. -->
 	<target name="cleanup">
+		<mkdir dir="${results}/consolelogs" />
+		<copy failonerror="false" file="${eclipse-home}/results/${classname}.txt" tofile="${results}/consolelogs/${classname}_${platform}.metadata.log.txt" />
 	</target>
 
 	<!-- This target runs the test suite. Any actions that need to happen -->

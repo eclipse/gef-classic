@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 
 <project name="testsuite" default="junits" basedir=".">
+	<property name="classname" value="org.eclipse.draw2d.test.Draw2dTestSuite" />
+
 	<!-- The property ${eclipse-home} should be passed into this script -->
 	<!-- Set a meaningful default value for when it is not. -->
 	<property name="eclipse-home" value="${basedir}\..\.." />
@@ -26,7 +28,7 @@
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${draw2d-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
-			<property name="classname" value="org.eclipse.draw2d.test.Draw2dTestSuite" />
+			<property name="classname" value="${classname}" />
 		</ant>
 	</target>
 
@@ -34,6 +36,8 @@
 	<!-- after all of the tests have been run. You can use this target to -->
 	<!-- delete temporary files that have been created. -->
 	<target name="cleanup">
+		<mkdir dir="${results}/consolelogs" />
+		<copy failonerror="false" file="${eclipse-home}/results/${classname}.txt" tofile="${results}/consolelogs/${classname}_${platform}.metadata.log.txt" />
 	</target>
 
 	<!-- This target runs the test suite. Any actions that need to happen -->
