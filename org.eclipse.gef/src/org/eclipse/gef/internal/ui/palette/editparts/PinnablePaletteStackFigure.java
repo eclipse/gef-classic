@@ -157,7 +157,9 @@ public void layout(IFigure parent) {
 
     Rectangle r = parent.getClientArea();
 
-    activeToolFigure.setBounds(r);
+    if (activeToolFigure != null) {
+    	activeToolFigure.setBounds(r);
+    }
 
     // All tool figures have saved an area in its margin for the arrow figure in
     // case that tool figure is in a stack (see the BORDER variables in
@@ -208,7 +210,9 @@ public void layout(IFigure parent) {
         - (pinSize.height / 2));
     pinFigure.setBounds(Rectangle.SINGLETON);
 
-    activeToolFigure.setBounds(r.getResized(-pinSize.width, 0));
+    if (activeToolFigure != null) {
+    	activeToolFigure.setBounds(r.getResized(-pinSize.width, 0));
+    }
 
     // All tool figures have saved an area in its margin for the arrow figure in
     // case that tool figure is in a stack (see the BORDER variables in
