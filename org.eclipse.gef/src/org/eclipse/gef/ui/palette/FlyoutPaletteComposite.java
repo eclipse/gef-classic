@@ -72,7 +72,6 @@ import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FocusEvent;
 import org.eclipse.draw2d.FocusListener;
 import org.eclipse.draw2d.Graphics;
@@ -764,9 +763,7 @@ private class Sash extends Composite {
             gc.setForeground(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
             gc.drawLine(1, 0, 1, bounds.height);
     
-            gc.setForeground(FigureUtilities.mixColors(
-                PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_LIST_BACKGROUND,
-                0.85));
+            gc.setForeground(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
             gc.drawLine(2, 0, 2, bounds.height);    
         }
     }
