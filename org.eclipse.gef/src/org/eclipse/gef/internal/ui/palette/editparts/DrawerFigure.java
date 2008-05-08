@@ -125,9 +125,7 @@ protected void paintFigure(Graphics g) {
         .getTranslated(0, 1));
     r.crop(new Insets(2, 0, 0, 0));
     if (isExpanded()) {
-        g.setForegroundColor(FigureUtilities.mixColors(
-            PaletteColorUtil.WIDGET_BACKGROUND,
-            PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.65));
+        g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_65);
         g.drawLine(r.getLocation(), r.getTopRight());
         r.crop(new Insets(1, 0, 0, 0));
     }
@@ -220,22 +218,13 @@ public DrawerFigure(final Control control) {
  */
 private void paintToggleGradient(Graphics g, Rectangle rect) {
     if (isExpanded()) {
-        g.setBackgroundColor(FigureUtilities.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-            PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.85));
+        g.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
         g.fillRectangle(rect);
     } else if (collapseToggle.getModel().isMouseOver()) {
-        Color color1 = FigureUtilities.mixColors(
-            PaletteColorUtil.WIDGET_BACKGROUND,
-            PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.6);
-        Color color2 = FigureUtilities.mixColors(
-            PaletteColorUtil.WIDGET_BACKGROUND,
-            PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.9);
-        Color color3 = FigureUtilities.mixColors(
-            PaletteColorUtil.WIDGET_BACKGROUND,
-            PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.95);
-        Color color4 = FigureUtilities.mixColors(
-            PaletteColorUtil.WIDGET_BACKGROUND,
-            PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.9);
+        Color color1 = PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_60;
+        Color color2 = PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_90;
+        Color color3 = PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_95;
+        Color color4 = PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_90;
 
         g.setForegroundColor(color1);
         g.setBackgroundColor(color2);
@@ -249,12 +238,8 @@ private void paintToggleGradient(Graphics g, Rectangle rect) {
         g.setBackgroundColor(color4);
         g.fillGradient(rect.x, rect.bottom() - 2, rect.width, 2, true);
     } else {
-        g.setForegroundColor(FigureUtilities.mixColors(
-            PaletteColorUtil.WIDGET_BACKGROUND,
-            PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.85));
-        g.setBackgroundColor(FigureUtilities.mixColors(
-            PaletteColorUtil.WIDGET_BACKGROUND,
-            PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.45));
+        g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
+        g.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_45);
         g.fillGradient(rect, true);
     }
 }

@@ -13,8 +13,6 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.util.Iterator;
 
-import org.eclipse.swt.graphics.Color;
-
 import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.BorderLayout;
@@ -23,7 +21,6 @@ import org.eclipse.draw2d.ChangeEvent;
 import org.eclipse.draw2d.ChangeListener;
 import org.eclipse.draw2d.Clickable;
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
@@ -48,26 +45,6 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
  */
 public class PinnablePaletteStackFigure
     extends Figure {
-
-private static final Color COLOR_WIDGET_BACKGROUND_LIST_BACKGROUND_85 = FigureUtilities
-    .mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-        PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.85);
-
-private static final Color COLOR_WIDGET_BACKGROUND_LIST_BACKGROUND_40 = FigureUtilities
-    .mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-        PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.40);
-
-private static final Color COLOR_WIDGET_BACKGROUND_NORMAL_SHADOW_65 = FigureUtilities
-    .mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-        PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.65);
-
-private static final Color COLOR_WIDGET_BACKGROUND_NORMAL_SHADOW_40 = FigureUtilities
-    .mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-        PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.40);
-
-private static final Color COLOR_WIDGET_BACKGROUND_NORMAL_SHADOW_80 = FigureUtilities
-    .mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-        PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.80);
 
 private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
 
@@ -347,7 +324,7 @@ protected void paintFigure(Graphics g) {
     Rectangle paneBounds = expandablePane.getClientArea();
 
     // fill expandable pane background
-    g.setBackgroundColor(COLOR_WIDGET_BACKGROUND_LIST_BACKGROUND_40);
+    g.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_40);
     g.fillRectangle(paneBounds);
 
     if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS
@@ -358,11 +335,11 @@ protected void paintFigure(Graphics g) {
             .getBounds().y, paneBounds.width, pinHeight);
 
         // fill background colors
-        g.setForegroundColor(COLOR_WIDGET_BACKGROUND_LIST_BACKGROUND_40);
-        g.setBackgroundColor(COLOR_WIDGET_BACKGROUND_LIST_BACKGROUND_85);
+        g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_40);
+        g.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
         g.fillGradient(headerBounds, true);
 
-        g.setBackgroundColor(COLOR_WIDGET_BACKGROUND_LIST_BACKGROUND_85);
+        g.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
         g.fillRectangle(pinAreaBounds);
 
         // draw white lines
@@ -395,10 +372,10 @@ protected void paintFigure(Graphics g) {
         points.addPoint(pinAreaBounds.getTopLeft().getTranslated(0, 0));
         points.addPoint(headerBounds.getBottomLeft());
 
-        g.setForegroundColor(COLOR_WIDGET_BACKGROUND_NORMAL_SHADOW_40);
+        g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_40);
         g.drawPolygon(points);
 
-        g.setForegroundColor(COLOR_WIDGET_BACKGROUND_NORMAL_SHADOW_80);
+        g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_80);
         Point pt = headerBounds.getTopLeft().getTranslated(0, 1);
         g.drawPoint(pt.x, pt.y);
         pt = headerBounds.getTopLeft().getTranslated(1, 0);
@@ -410,18 +387,18 @@ protected void paintFigure(Graphics g) {
     } else {
 
         // fill header background
-        g.setBackgroundColor(COLOR_WIDGET_BACKGROUND_LIST_BACKGROUND_85);
+        g.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_85);
         g.fillRectangle(headerBounds);
 
         // draw top and bottom border lines of header figure
-        g.setForegroundColor(COLOR_WIDGET_BACKGROUND_NORMAL_SHADOW_65);
+        g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_65);
         g.drawLine(headerBounds.getTopLeft(), headerBounds.getTopRight());
         g.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
         g.drawLine(headerBounds.getBottomLeft().getTranslated(0, -2),
             headerBounds.getBottomRight().getTranslated(0, -2));
 
         // draw bottom border line of expandable pane
-        g.setForegroundColor(COLOR_WIDGET_BACKGROUND_NORMAL_SHADOW_65);
+        g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_65);
         g.drawLine(paneBounds.getBottomLeft().getTranslated(0, -1), paneBounds
             .getBottomRight().getTranslated(0, -1));
     }

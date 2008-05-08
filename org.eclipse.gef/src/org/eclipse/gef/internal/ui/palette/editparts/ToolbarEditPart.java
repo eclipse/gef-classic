@@ -12,7 +12,6 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
@@ -52,9 +51,7 @@ public IFigure createFigure() {
                 .getTopRight());
 
             // draw bottom border
-            graphics.setForegroundColor(FigureUtilities.mixColors(
-                PaletteColorUtil.WIDGET_BACKGROUND,
-                PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.7));
+            graphics.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_70);
             graphics.drawLine(getBounds().getBottomLeft().getTranslated(0, -1),
                 getBounds().getBottomRight().getTranslated(0, -1));
         }
