@@ -23,20 +23,15 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This snippet creates a very simpl graph where Rock is connected to Paper
- * which is connected to scissors which is connected to rock.
+ * This snippet creates a very simple graph with an Icon and Label.
  * 
- * The nodes a layed out using a SpringLayout Algorithm, and they can be moved
- * around.
+ * This snippet shows how to use directed edges and self loops.
  * 
  * @author Ian Bull
  * 
  */
 public class GraphSnippet2 {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		Display d = new Display();
 		Shell shell = new Shell(d);
@@ -67,7 +62,5 @@ public class GraphSnippet2 {
 		image1.dispose();
 		image2.dispose();
 		image3.dispose();
-
 	}
-
 }

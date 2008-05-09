@@ -20,10 +20,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This snippet creates a very simpl graph where Rock is connected to Paper
+ * This snippet creates a very simple graph where Rock is connected to Paper
  * which is connected to scissors which is connected to rock.
  * 
- * The nodes a layed out using a SpringLayout Algorithm, and they can be moved
+ * The nodes a positioned using a SpringLayout Algorithm, and they can be moved
  * around.
  * 
  * 
@@ -32,11 +32,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class GraphSnippet1 {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
-		// Create the shell
 		Display d = new Display();
 		Shell shell = new Shell(d);
 		shell.setText("GraphSnippet1");

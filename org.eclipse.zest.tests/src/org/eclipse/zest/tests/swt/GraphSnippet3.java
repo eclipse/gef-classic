@@ -33,9 +33,6 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class GraphSnippet3 {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) {
 		Display d = new Display();
 		Shell shell = new Shell(d);
@@ -47,12 +44,11 @@ public class GraphSnippet3 {
 
 		Graph g = new Graph(shell, SWT.NONE);
 		g.addSelectionListener(new SelectionAdapter() {
-
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println(((Graph) e.widget).getSelection());
 			}
-
 		});
+		
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		GraphNode n1 = new GraphNode(g, SWT.NONE, "Information", image1);
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Warning", image2);
