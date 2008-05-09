@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This snippet creates a graph with 80*3 nodes (240 nodes).  Only the icons are shown for teh nodes, but if
+ * This snippet creates a graph with 80*3 nodes (240 nodes).  Only the icons are shown for the nodes, but if
  * you mouse over the node you get the entire text.
  * 
  * @author Ian Bull

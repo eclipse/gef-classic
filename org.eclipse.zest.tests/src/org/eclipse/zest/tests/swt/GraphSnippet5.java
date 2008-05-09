@@ -59,7 +59,7 @@ public class GraphSnippet5 {
 		final Font font = new Font(d, fontData);
 
 		Shell shell = new Shell(d);
-		shell.setText("Graph Snippet 4");
+		shell.setText("Graph Snippet 5");
 		Image image1 = Display.getDefault().getSystemImage(SWT.ICON_INFORMATION);
 		Image image2 = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 		Image image3 = Display.getDefault().getSystemImage(SWT.ICON_ERROR);
@@ -118,7 +118,7 @@ public class GraphSnippet5 {
 			public void paintControl(PaintEvent e) {
 				e.gc.setFont(font);
 				e.gc.setClipping((Region) null);
-				e.gc.setForeground(ColorConstants.lightGray);
+				e.gc.setForeground(ColorConstants.black);
 				e.gc.drawText(stringBuffer.toString(), 50, 50, true);
 			}
 		});
