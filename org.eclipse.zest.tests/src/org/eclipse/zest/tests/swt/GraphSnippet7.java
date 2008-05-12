@@ -33,10 +33,9 @@ public class GraphSnippet7 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Create the shell
 		Display d = new Display();
 		Shell shell = new Shell(d);
-		shell.setText("GraphSnippet1");
+		shell.setText("GraphSnippet7");
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
@@ -53,6 +52,7 @@ public class GraphSnippet7 {
 		g.addMouseMoveListener(new MouseMoveListener() {
 
 			public void mouseMove(MouseEvent e) {
+				// Get the figure at the current mouse location 
 				Object o = g.getFigureAt(e.x, e.y);
 				if ( o != null ) {
 					System.out.println(o + " is at: (" + e.x + "," + e.y + ")");
@@ -68,5 +68,4 @@ public class GraphSnippet7 {
 			}
 		}
 	}
-
 }
