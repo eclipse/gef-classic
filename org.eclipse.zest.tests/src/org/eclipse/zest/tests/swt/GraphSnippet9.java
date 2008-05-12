@@ -19,7 +19,7 @@ import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
 
 /**
- * This snippet shows how to use the findFigureAt to get the figure under the mouse
+ * This snippet demonstrates a self loop with a label.
  * 
  * @author Ian Bull
  * 
@@ -30,10 +30,9 @@ public class GraphSnippet9 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Create the shell
 		Display display = new Display();
 		Shell shell = new Shell(display);
-		shell.setText("GraphSnippet8");
+		shell.setText("GraphSnippet9");
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
@@ -43,7 +42,6 @@ public class GraphSnippet9 {
 		GraphConnection connection = new GraphConnection(graph, SWT.NONE, a, a);
 		connection.setText("A to A");
 		a.setLocation(100, 100);
-		
 
 		shell.open();
 		while (!shell.isDisposed()) {
