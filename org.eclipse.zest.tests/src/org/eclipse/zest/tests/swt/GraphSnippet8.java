@@ -24,7 +24,8 @@ import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 /**
- * This snippet shows how to use the findFigureAt to get the figure under the mouse
+ * This snippet shows how to filter elements in the layout.  The Data on the tree
+ * connections are set to "False", meaning they won't be filtered.  
  * 
  * @author Ian Bull
  * 
@@ -35,7 +36,6 @@ public class GraphSnippet8 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// Create the shell
 		Display display = new Display();
 		Shell shell = new Shell(display);
 		shell.setText("GraphSnippet8");
@@ -86,16 +86,17 @@ public class GraphSnippet8 {
 		connection.setLineColor(ColorConstants.red);
 		connection.setLineWidth(3);
 		
-		
-		
 		TreeLayoutAlgorithm treeLayoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 		Filter filter = new Filter() {
 			public boolean isObjectFiltered(LayoutItem item) {
-	
+
+				// Get the "Connection" from the Layout Item
+				// and use this connection to get the "Graph Data"
 				Object object = item.getGraphData();
 				if  (object instanceof GraphConnection ) {
 					GraphConnection connection = (GraphConnection) object;
 					if ( connection.getData() != null && connection.getData() instanceof Boolean ) {
+						// If the data is false, don't filter, otherwise, filter.
 						return ((Boolean)connection.getData()).booleanValue();
 					}
 					return true;
