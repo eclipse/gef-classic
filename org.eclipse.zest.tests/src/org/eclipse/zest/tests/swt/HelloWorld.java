@@ -19,6 +19,12 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * Hello, World! Program
+ * 
+ * @author irbull
+ *
+ */
 public class HelloWorld {
 
 	/**
