@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -135,11 +135,14 @@ public PaletteViewer getPaletteViewer() {
 }
 
 private void handlePaletteToolChanged() {
-	ToolEntry entry = getPaletteViewer().getActiveTool();
-	if (entry != null)
-		setActiveTool(entry.createTool());
-	else
-		setActiveTool(getDefaultTool());
+	PaletteViewer paletteViewer = getPaletteViewer();
+	if (paletteViewer != null) {
+		ToolEntry entry = paletteViewer.getActiveTool();
+		if (entry != null)
+			setActiveTool(entry.createTool());
+		else
+			setActiveTool(getDefaultTool());
+	}
 }
 
 /**
@@ -183,12 +186,13 @@ public void keyUp(KeyEvent keyEvent, EditPartViewer viewer) {
  */
 public void loadDefaultTool() {
 	setActiveTool(null);
-	if (paletteRoot != null) {
+	PaletteViewer paletteViewer = getPaletteViewer();
+	if (paletteRoot != null && paletteViewer != null) {
 		if (paletteRoot.getDefaultEntry() != null) {
-			getPaletteViewer().setActiveTool(paletteRoot.getDefaultEntry());
+			paletteViewer.setActiveTool(paletteRoot.getDefaultEntry());
 			return;
 		} else
-			getPaletteViewer().setActiveTool(null);
+			paletteViewer.setActiveTool(null);
 	}
 	setActiveTool(getDefaultTool());
 }
