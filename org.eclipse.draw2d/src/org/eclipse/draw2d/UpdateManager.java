@@ -147,7 +147,7 @@ void paint(GC gc) {
 public abstract void performUpdate(Rectangle exposed);
 
 /**
- * Removes one occurence of the given UpdateListener by identity.
+ * Removes one occurrence of the given UpdateListener by identity.
  * @param listener the listener to remove
  */
 public void removeUpdateListener(UpdateListener listener) {
@@ -161,6 +161,8 @@ public void removeUpdateListener(UpdateListener listener) {
 				newListeners = new UpdateListener[newSize];
 				System.arraycopy(listeners, 0, newListeners, 0, index);
 				System.arraycopy(listeners, index + 1, newListeners, index, newSize - index);
+			} else {
+				newListeners = new UpdateListener[0];
 			}
 			listeners = newListeners;
 			return;
