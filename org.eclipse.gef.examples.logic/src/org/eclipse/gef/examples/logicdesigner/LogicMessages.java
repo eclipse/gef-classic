@@ -90,7 +90,6 @@ public static String Marquee_Stack;
 public static String MoveGuideCommand_Label;
 public static String OrGate_LabelText;
 public static String OrphanChildCommand_Label;
-public static String PaletteCustomizer_InvalidCharMessage;
 public static String PasteAction_ActionLabelText;
 public static String PrintDialog_Height;
 public static String PrintDialog_Page;
