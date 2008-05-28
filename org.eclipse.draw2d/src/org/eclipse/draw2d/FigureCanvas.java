@@ -28,6 +28,12 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * A Canvas that contains {@link Figure Figures}.
  * 
+ * <dl>
+ * <dt><b>Required Styles (when using certain constructors):</b></dt>
+ * <dd>V_SCROLL, H_SCROLL, NO_REDRAW_RESIZE</dd>
+ * <dt><b>Optional Styles:</b></dt>
+ * <dd>DOUBLE_BUFFERED, RIGHT_TO_LEFT, LEFT_TO_RIGHT, NO_BACKGROUND, BORDER</dd>
+ * </dl>
  * <p>
  * Note: Only one of the styles RIGHT_TO_LEFT, LEFT_TO_RIGHT may be specified.
  * </p>
@@ -35,6 +41,35 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class FigureCanvas
 	extends Canvas
 {
+
+private static final int ACCEPTED_STYLES =
+		SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT
+		| SWT.V_SCROLL | SWT.H_SCROLL
+		| SWT.NO_BACKGROUND
+		| SWT.NO_REDRAW_RESIZE
+		| SWT.DOUBLE_BUFFERED
+		| SWT.BORDER;
+
+/**
+ * The default styles are mixed in when certain constructors are used. This
+ * constant is a bitwise OR of the following SWT style constants:
+ * <UL>
+ *   <LI>{@link SWT#NO_REDRAW_RESIZE}</LI>
+ *   <LI>{@link SWT#NO_BACKGROUND}</LI>
+ *   <LI>{@link SWT#V_SCROLL}</LI>
+ *   <LI>{@link SWT#H_SCROLL}</LI>
+ * </UL>
+ */
+static final int DEFAULT_STYLES =
+		SWT.NO_REDRAW_RESIZE
+		| SWT.NO_BACKGROUND
+		| SWT.V_SCROLL
+		| SWT.H_SCROLL;
+
+private static final int REQUIRED_STYLES = 
+		SWT.NO_REDRAW_RESIZE
+		| SWT.V_SCROLL
+		| SWT.H_SCROLL;
 
 /** Never show scrollbar */
 public static int NEVER = 0;
@@ -81,7 +116,7 @@ private PropertyChangeListener verticalChangeListener = new PropertyChangeListen
 private final LightweightSystem lws;
 
 /**
- * Creates a new FigureCanvas with the given parent.
+ * Creates a new FigureCanvas with the given parent and the {@link #DEFAULT_STYLES}.
  * 
  * @param parent the parent
  */
@@ -90,9 +125,9 @@ public FigureCanvas(Composite parent) {
 }
 
 /**
- * Constructor
+ * Constructor which applies the default styles plus any optional styles indicated.
  * @param parent the parent composite
- * @param style look at class javadoc for valid styles
+ * @param style see the class javadoc for optional styles
  * @since 3.1
  */
 public FigureCanvas(Composite parent, int style) {
@@ -100,12 +135,42 @@ public FigureCanvas(Composite parent, int style) {
 }
 
 /**
- * Constructs a new FigureCanvas with the given parent and LightweightSystem.
+ * Constructor which uses the given styles verbatim. Certain styles must be used
+ * with this class. Refer to the class javadoc for more details.
+ * @param style see the class javadoc for <b>required</b> and optional styles
+ * @param parent the parent composite
+ * @since 3.4
+ */
+public FigureCanvas(int style, Composite parent) {
+	this(style, parent, new LightweightSystem());
+}
+
+/**
+ * Constructs a new FigureCanvas with the given parent and LightweightSystem, using
+ * the {@link #DEFAULT_STYLES}.
  * @param parent the parent
  * @param lws the LightweightSystem
  */
 public FigureCanvas(Composite parent, LightweightSystem lws) {
 	this(parent, SWT.DOUBLE_BUFFERED, lws);
+}
+
+/**
+ * Constructor taking a lightweight system and SWT style, which is used verbatim.
+ * Certain styles must be used with this class. Refer to the class javadoc for
+ * more details.
+ * @param style see the class javadoc for <b>required</b> and optional styles
+ * @param parent the parent composite
+ * @param lws the LightweightSystem
+ * @since 3.4
+ */
+public FigureCanvas(int style, Composite parent, LightweightSystem lws) {
+	super(parent, checkStyle(style));
+	getHorizontalBar().setVisible(false);
+	getVerticalBar().setVisible(false);
+	this.lws = lws;
+	lws.setControl(this);
+	hook();
 }
 
 /**
@@ -116,19 +181,13 @@ public FigureCanvas(Composite parent, LightweightSystem lws) {
  * @since 3.1
  */
 public FigureCanvas(Composite parent, int style, LightweightSystem lws) {
-	super(parent, checkStyle(style | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND
-			| SWT.V_SCROLL | SWT.H_SCROLL));
-	getHorizontalBar().setVisible(false);
-	getVerticalBar().setVisible(false);
-	this.lws = lws;
-	lws.setControl(this);
-	hook();
+	this(style | DEFAULT_STYLES, parent, lws);
 }
 
 private static int checkStyle(int style) {
-	int validStyles = SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT | SWT.V_SCROLL | SWT.H_SCROLL
-			| SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.BORDER;
-	if ((style & ~validStyles) != 0)
+	if ((style & REQUIRED_STYLES) != REQUIRED_STYLES)
+		throw new IllegalArgumentException("Required style missing on FigureCanvas"); //$NON-NLS-1$
+	if ((style & ~ACCEPTED_STYLES) != 0)
 		throw new IllegalArgumentException("Invalid style being set on FigureCanvas"); //$NON-NLS-1$
 	return style;
 }
