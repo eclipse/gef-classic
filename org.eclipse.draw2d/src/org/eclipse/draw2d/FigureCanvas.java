@@ -407,6 +407,8 @@ public void scrollToX(int hOffset) {
 	}
 	scroll(dest.x, dest.y, blit.x, blit.y, blit.width, blit.height,	true);
 	for (int i = 0; i < children.length; i++) {
+	    if (children[i].isDisposed ())
+	        continue;
 		org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
 		if (manualMove[i])
 			children[i].setBounds(bounds.x + dx, bounds.y, bounds.width, bounds.height);
@@ -452,6 +454,8 @@ public void scrollToY(int vOffset) {
 	}
 	scroll(dest.x, dest.y, blit.x, blit.y, blit.width, blit.height,	true);
 	for (int i = 0; i < children.length; i++) {
+        if (children[i].isDisposed ())
+            continue;	    
 		org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
 		if (manualMove[i])
 			children[i].setBounds(bounds.x, bounds.y + dy, bounds.width, bounds.height);
