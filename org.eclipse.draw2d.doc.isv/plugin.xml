@@ -7,4 +7,10 @@
       <toc file="topics_Reference.xml" />
    </extension>
 
+   <extension point="org.eclipse.pde.core.javadoc">
+      <javadoc path="reference/api">
+            <plugin id="org.eclipse.draw2d" /> 
+      </javadoc>
+   </extension>
+
 </plugin>
