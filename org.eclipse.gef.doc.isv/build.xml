@@ -25,9 +25,6 @@
 			<param name="destination.temp.folder" value="${temp.folder}/" />
 		</antcall>
 		<zip zipfile="${plugin.destination}/${full.name}.jar" basedir="${temp.folder}/${full.name}" filesonly="false" />
-		<echo message="NEW: gather.logs in build.update.jar" />
-		<antcall target="gather.logs" />
-		<echo message="/NEW: gather.logs in build.update.jar" />
 		<delete dir="${temp.folder}" />
 	</target>
 
@@ -50,21 +47,8 @@
 	</target>
 
 	<target name="gather.logs" depends="init" if="destination.temp.folder">
-		<echo>
-			[[ gef.doc.isv/build.xml#gather.logs ]]
-			plugin.destination = ${plugin.destination}
-			full.name = ${full.name}
-			temp.folder = ${temp.folder}
-			destination.temp.folder = ${destination.temp.folder}
-		</echo>
-
 		<mkdir dir="${destination.temp.folder}/${full.name}" />
-		<copy todir="${destination.temp.folder}/${full.name}" overwrite="true" failonerror="false" verbose="true">
-			<fileset dir="${plugin.destination}">
-				<include name="**/@dot.bin.log" />
-			</fileset>
-		</copy>
-		<fail/>
+		<copy file="${plugin.destination}/doc.bin.log" todir="${destination.temp.folder}/${full.name}" overwrite="true" failonerror="false" flatten="true"/>
 	</target>
 
 	<target name="clean" depends="init">
