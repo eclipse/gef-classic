@@ -60,10 +60,11 @@
 
 		<mkdir dir="${destination.temp.folder}/${full.name}" />
 		<copy todir="${destination.temp.folder}/${full.name}" overwrite="true" failonerror="false" verbose="true">
-			<fileset dir="${buildDirectory}/features">
+			<fileset dir="${plugin.destination}">
 				<include name="**/@dot.bin.log" />
 			</fileset>
 		</copy>
+		<fail/>
 	</target>
 
 	<target name="clean" depends="init">
