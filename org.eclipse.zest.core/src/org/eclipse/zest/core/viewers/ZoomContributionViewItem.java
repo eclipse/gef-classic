@@ -180,12 +180,15 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 				});
 			}
 		}
-		MenuItem[] items = fMenu.getItems();
 		String zoom = zoomManager.getZoomAsText();
+		MenuItem[] items = fMenu.getItems();
 		for (int i = 0; i < items.length; i++) {
-			items[i].setSelection(false);
-			if (zoom.equalsIgnoreCase(items[i].getText())) {
-				items[i].setSelection(true);
+			MenuItem item = items[i];
+			if (item.getData() == this) {
+				item.setSelection(false);
+				if (zoom.equalsIgnoreCase(item.getText())) {
+					item.setSelection(true);
+				}
 			}
 		}
 		fMenu.setEnabled(true);
