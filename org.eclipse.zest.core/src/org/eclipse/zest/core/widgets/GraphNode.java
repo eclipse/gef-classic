@@ -398,7 +398,6 @@ public class GraphNode extends GraphItem {
 		if (highlighted == HIGHLIGHT_ON) {
 			return;
 		}
-		highlighted = HIGHLIGHT_ON;
 		// @tag ADJACENT : Removed highlight adjacent
 		/*
 		if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
@@ -414,12 +413,13 @@ public class GraphNode extends GraphItem {
 			}
 		}
 		*/
-		updateFigureForModel(getNodeFigure());
 		if (parent.getItemType() == GraphItem.CONTAINER) {
 			((GraphContainer) parent).highlightNode(this);
 		} else {
 			((Graph) parent).highlightNode(this);
 		}
+		highlighted = HIGHLIGHT_ON;
+		updateFigureForModel(getNodeFigure());
 	}
 
 	/**
@@ -432,7 +432,6 @@ public class GraphNode extends GraphItem {
 		if (highlighted == HIGHLIGHT_NONE) {
 			return;
 		}
-		highlighted = HIGHLIGHT_NONE;
 		// @tag ADJACENT : Removed highlight adjacent
 		/*
 		if (!highlightedAdjacently) {
@@ -462,6 +461,7 @@ public class GraphNode extends GraphItem {
 		} else {
 			((Graph) parent).unhighlightNode(this);
 		}
+		highlighted = HIGHLIGHT_NONE;
 		updateFigureForModel(nodeFigure);
 
 	}

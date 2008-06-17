@@ -32,15 +32,6 @@ import org.eclipse.draw2d.TreeSearch;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.zest.core.widgets.internal.RevealListener;
-import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
-import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.zest.layouts.LayoutAlgorithm;
-import org.eclipse.zest.layouts.LayoutEntity;
-import org.eclipse.zest.layouts.LayoutRelationship;
-import org.eclipse.zest.layouts.LayoutStyles;
-import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
-import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -53,11 +44,21 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.zest.core.widgets.internal.RevealListener;
+import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
+import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
-/**
+/*
  * Holds the nodes and connections for the graph.
  * 
  * @author Chris Callendar
+ * 
  * @author Ian Bull
  */
 public class Graph extends FigureCanvas implements IContainer {
@@ -726,7 +727,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	void highlightEdge(GraphConnection connection) {
 		IFigure figure = connection.getConnectionFigure();
-		if (figure != null) {
+		if (figure != null && !connection.isHighlighted()) {
 			zestRootLayer.highlightConnection(figure);
 		}
 	}
@@ -738,7 +739,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	void unhighlightEdge(GraphConnection connection) {
 		IFigure figure = connection.getConnectionFigure();
-		if (figure != null) {
+		if (figure != null && connection.isHighlighted()) {
 			zestRootLayer.unHighlightConnection(figure);
 		}
 	}
@@ -750,7 +751,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	void highlightNode(GraphNode node) {
 		IFigure figure = node.getNodeFigure();
-		if (figure != null) {
+		if (figure != null && !node.isHighlighted()) {
 			zestRootLayer.highlightNode(figure);
 		}
 	}
@@ -762,7 +763,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	void highlightNode(GraphContainer node) {
 		IFigure figure = node.getNodeFigure();
-		if (figure != null) {
+		if (figure != null && !node.isHighlighted()) {
 			zestRootLayer.highlightNode(figure);
 		}
 	}
@@ -774,7 +775,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	void unhighlightNode(GraphContainer node) {
 		IFigure figure = node.getNodeFigure();
-		if (figure != null) {
+		if (figure != null && node.isHighlighted()) {
 			zestRootLayer.unHighlightNode(figure);
 		}
 	}
@@ -786,7 +787,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	void unhighlightNode(GraphNode node) {
 		IFigure figure = node.getNodeFigure();
-		if (figure != null) {
+		if (figure != null && node.isHighlighted()) {
 			zestRootLayer.unHighlightNode(figure);
 		}
 	}
