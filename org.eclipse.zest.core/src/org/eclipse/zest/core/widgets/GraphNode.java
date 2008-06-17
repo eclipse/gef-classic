@@ -21,22 +21,24 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.zest.core.widgets.internal.GraphLabel;
-import org.eclipse.zest.layouts.LayoutEntity;
-import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.zest.core.widgets.internal.GraphLabel;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
-/**
+/*
  * Simple node class which has the following properties: color, size, location,
  * and a label. It also has a list of connections and anchors.
  * 
  * @author Chris Callendar
+ * 
  * @author Del Myers
+ * 
  * @author Ian Bull
  */
 public class GraphNode extends GraphItem {
@@ -82,19 +84,7 @@ public class GraphNode extends GraphItem {
 	}
 
 	public GraphNode(IContainer graphModel, int style, Object data) {
-		super(graphModel.getGraph(), style, data);
-		initModel(graphModel, " ", null);
-		nodeFigure = initFigure();
-
-		// This is a hack because JAVA sucks!
-		// I don't want to expose addNode so I can't put it in the
-		// IContainer interface.  
-		if (this.parent.getItemType() == GRAPH) {
-			((Graph) this.parent).addNode(this);
-		} else if (this.parent.getItemType() == CONTAINER) {
-			((GraphContainer) this.parent).addNode(this);
-		}
-		this.parent.getGraph().registerItem(this);
+		this(graphModel.getGraph(), style, "" /*text*/, null /*image*/, data);
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text) {
@@ -102,20 +92,7 @@ public class GraphNode extends GraphItem {
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text, Object data) {
-		super(graphModel.getGraph(), style);
-		initModel(graphModel, text, null);
-		nodeFigure = initFigure();
-
-		// This is a hack because JAVA sucks!
-		// I don't want to expose addNode so I can't put it in the
-		// IContainer interface.  
-		if (this.parent.getItemType() == GRAPH) {
-			((Graph) this.parent).addNode(this);
-		} else if (this.parent.getItemType() == CONTAINER) {
-			((GraphContainer) this.parent).addNode(this);
-		}
-		this.parent.getGraph().registerItem(this);
-
+		this(graphModel.getGraph(), style, text, null /*image*/, data);
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text, Image image) {
@@ -123,7 +100,7 @@ public class GraphNode extends GraphItem {
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text, Image image, Object data) {
-		super(graphModel.getGraph(), style);
+		super(graphModel.getGraph(), style, data);
 		initModel(graphModel, text, image);
 		nodeFigure = initFigure();
 
