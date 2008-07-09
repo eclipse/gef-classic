@@ -77,7 +77,7 @@ operations on the model. These roles as they apply to GEF are described below:</
 	model is modified in a way that can be undone and redone by the user. In 
 	general, commands should work only on the model itself.</p>
 </blockquote>
-<p><b>View (Figures/Treeitems)</b></p>
+<p><b>View (Figures/TreeItems)</b></p>
 <blockquote>
 	<p>The view is anything visible to the user. Both Figures and TreeItems can 
 	be used as view elements.</p>
@@ -96,7 +96,7 @@ operations on the model. These roles as they apply to GEF are described below:</
 	are two types of viewers provided in GEF. A graphical viewer hosts figures 
 	while a tree viewer displays native treeitems. GEF viewers are similar to 
 	JFace viewers in that they manage an SWT Control. Viewers are also a 
-	selection provider, and the unit of selection is the EditPart</p>
+	selection provider, and the unit of selection is the EditPart.</p>
 </blockquote>
 <h2><a name="When">When can I use GEF?</a></h2>
 <p>GEF can be used anywhere that you can use an SWT Control inside a 
@@ -120,7 +120,7 @@ hierarchical data structures which are approximately parallel to each other.</p>
 <p><img src="images/mvctree.gif"/></p>
 <p>Connections are the exception to this simple tree structure. 
 Connections represent a link or association between two objects. A Draw2d 
-connection figure is used as the view. Connections man be stored in any way in 
+connection figure is used as the view. Connections may be stored in any way in 
 the model, but the editparts are managed by the source and target editpart at 
 each end. A connection editpart's figure containment is also handled specially. 
 The connection figure is added to a special layer in the diagram so that it 
@@ -214,7 +214,7 @@ a diagram. An editpart is called a <i>node</i> if it can be the source or target
 connection. The connections are created and managed in a shared way by both of 
 its <i>source</i> and <i>
 target</i> nodes. Each node in the diagram must override <code>getModelSourceConnections()</code> and <code>getModelTargetConnections()</code> to 
-return the model object representing the connection. GEF then checks to see if 
+return the model objects representing the connections. GEF then checks to see if 
 the connection editpart has already been created (by the other node at the other 
 end), and if not 
 it asks the factory to create the connection editpart. The source node is 
@@ -274,7 +274,7 @@ EditPart API is shown below.</p>
 		<td valign="top">
 		<p>The first step of editing is to decide which editparts 
 		are involved. Usually, it is some combination of the viewer's current selection and an 
-editpart calculated based on the current mouse location. The selection can be 
+editpart calculated using the current mouse location. The selection can be 
 trimmed by asking if each selected part understands a request. The part under 
 the mouse, called the <i>target</i>, is found with the viewer's help and the 
 <code>getTargetEditPart(Request)</code> method. Not all interactions have 
@@ -365,21 +365,21 @@ the entire lifecycle is important.</p>
 created by the viewer's factory, which is invoked by either the viewer or the 
 managing editpart which is typically the parent. Immediately after being 
 created, the following methods are called:</p>
-<p><code>setModel()</code> - if the constructor does not take the model as an 
-argument, it should be set immediately. Other events that followed may be based 
-on the part's model</p>
+<p><code>setModel()</code> - If the constructor does not take the model as an 
+argument, it should be set immediately. Other events that follow may be based 
+on the part's model.</p>
 <h3>2) Getting Added to the Diagram</h3>
-<p><code>setParent(...)</code> - the very first step is to tell the part its parent. 
+<p><code>setParent(...)</code> - The very first step is to tell the part its parent. 
 This gives the part a path back to its viewer, which it might need for things 
 like accessing the editpart registry.</p>
 <p><code>createFigure()</code> - Although this is a protected method, the timing of when it 
-gets is somewhat interesting. Both the parent and the model are known at the time the figure needs to be 
+gets called is somewhat interesting. Both the parent and the model are known at the time the figure needs to be 
 created.</p>
 <p><code>addNotify()</code> - Signals the completion of the child being added to the parent. 
 At this point, the child will do the following:</p>
 <ol>
 	<li>Register itself with the viewer using both its view and its model.</li>
-<li>Create any editpolicies that it needs.</li>
+	<li>Create any editpolicies that it needs.</li>
 	<li>Refresh, meaning update first its own view, and then construct any 
 	structural elements of its own such as children or connections.</li>
 </ol>
@@ -389,13 +389,10 @@ child if it is also active. The root is only active if the viewer has created
 its Control. An editpart should do the 
 following on activation:</p>
 <ol>
-	<li>
-	<p>Start listening to the model. Subclasses should <b>extend</b> this method 
-	to add any necessary listeners.</p></li>
-	<li>
-	<p>Activate all of the editpolicies.</p></li>
-	<li>
-	<p>Activate all children and outgoing connection editparts.</p></li>
+	<li>Start listening to the model. Subclasses should <b>extend</b> this method 
+	to add any necessary listeners.</li>
+	<li>Activate all of the editpolicies.</li>
+	<li>Activate all children and outgoing connection editparts.</li>
 </ol>
 <h3>3) Normal Use</h3>
 <p>At this point the editpart is in its normal editing state. It gets 
@@ -403,7 +400,7 @@ selected, shows feedback, and returns commands, etc., until it is no longer
 needed, meaning it is either removed from the diagram or the viewer is being 
 disposed.</p>
 <h3>4) Becoming Garbage</h3>
-<p><code>deactivate()</code> - the opposite of activate. Once again, subclasses 
+<p><code>deactivate()</code> - The opposite of activate. Once again, subclasses 
 should <b>extend</b> this method to remove the listeners added during activation.</p>
 <p><img src="images/important.gif" align="left"/>The remaining steps <b>only</b> occur when the editpart gets 
 removed, meaning its model was removed from the diagram. If the viewer is being disposed, then deactivation is the only thing 
@@ -412,11 +409,10 @@ commonly extended methods while the remaining methods can usually be ignored.</p
 <p><code>removeNotify()</code> - Signals that the editpart is about to incur removal. The 
 following must happen while the editpart still has access to its surroundings:</p>
 <ol>
-	<li>Make sure the editpart is not longer selected or has focus</li>
-<li>Call removeNotify on children so that they can do the same</li>
-	<li>Un-register the editpart from the viewer's registries</li>
-	<li>
-	<p>Remove self as source or target of any connections. Connections 
+	<li>Make sure the editpart is no longer selected or has focus.</li>
+	<li>Call removeNotify on children so that they can do the same.</li>
+	<li>Un-register the editpart from the viewer's registries.</li>
+	<li>Remove self as source or target of any connections. Connections 
 	don't go away unless both source and target get set to null.</li>
 </ol>
 <p><code>setParent(null)</code> - The last step of removal. The parent and 
@@ -435,21 +431,17 @@ to change between modes such as selection, creation, etc.</p>
 input to the state machine. Based on the event and current state, a tool will 
 perform certain actions. These actions could include:</p>
 <ul>
-	<li>
-	<p>asking editparts to show or hide feedback</p></li>
-	<li>
-	<p>obtaining commands from editparts</p></li>
-	<li>
-	<p>executing a command on the command stack</p></li>
-	<li>
-	<p>updating the mouse cursor</p></li>
+	<li>Asking editparts to show or hide feedback.</li>
+	<li>Obtaining commands from editparts.</li>
+	<li>Executing a command on the command stack.</li>
+	<li>Updating the mouse cursor.</li>
 </ul>
 <p>A tool is activated by setting it on the EditDomain. There is only 
 one active tool for all viewers in the domain. If a palette is being used, 
 selecting a tool in the palette will activate that tool.</p>
 <h3><a name="Tools/Selection">The Selection Tool</a></h3>
 <p>The Selection Tool is the primary tool used in GEF and is often the default 
-for an application. The selection tool is unique in its ability to delegate. Tt obtains a helper 
+for an application. The selection tool is unique in its ability to delegate. It obtains a helper 
 called a <code>DragTracker</code> from an editpart or handle below the mouse when a drag 
 occurs. A drag is defined as a mouse button being pressed, its being released, 
 and any events that occur in between. Events are forwarded to the delegate so that the drag can be handled 
@@ -467,7 +459,7 @@ viewer's selection. Trackers even handle events like double-click.</p>
 <a href="#Interactions/Selection">Selection Interaction</a>.</p>
 <h3>Palette</h3>
 <p>GEF's <code>PaletteViewer</code> provides an SWT Control allowing the user to select 
-which Tool is active. It can also be a drag source for dragging object from the 
+which Tool is active. It can also be a drag source for dragging objects from the 
 palette directly into the diagram. Use of the palette is optional, but common.</p>
 <p>The palette can be placed anywhere, including inside the editor. 
 GEF provides a Workbench View for hosting the Palette. Also, a custom Composite, 
@@ -491,15 +483,12 @@ model or the UI state. Many interactions are graphical but some are not. An
 interaction may include:</p>
 <ul>
 	<li>Invoking some Action (usually displayed on the toolbar, menubar, or 
-	popup)</li>
-	<li>Clicking on something</li>
-<li>
-<p>Clicking and dragging something</p></li>
-	<li>Hovering over something (pausing the mouse for a certain time)</li>
-	<li>
-	<p>Dropping something dragged from another source (native 
-	Drag-N-Drop)</li>
-	<li>Pressing certain keys</li>
+	popup).</li>
+	<li>Clicking on something.</li>
+	<li>Clicking and dragging something.</li>
+	<li>Hovering over something (pausing the mouse for a certain time).</li>
+	<li>Dropping something dragged from another source (native Drag-N-Drop).</li>
+	<li>Pressing certain keys.</li>
 </ul>
 <p>This section discusses the participants involved in each interaction and what 
 they do. This can include:</p>
@@ -510,8 +499,7 @@ they do. This can include:</p>
 	actions. ID's are defined on the <code>RequestConstants</code> class.</li>
 	<li>The EditPolicy roles designated to handle specific types of requests. 
 	These are just constants defined on the EditPolicy interface.</li>
-	<li>
-	<p>Any EditPolicy implementations provided in GEF for use with the 
+	<li>Any EditPolicy implementations provided in GEF for use with the 
 	interaction.</li>
 </ul>
 <h3><a name="Interactions/Selection">Selection</a></h3>
@@ -574,8 +562,8 @@ EditPolicies adding selection handles. The handles shown here on the LED and
 		policy on the children for displaying the appropriate handles. For 
 		example, an XYLayoutEditPolicy would install a ResizableEditPolicy on 
 		each child of its host editpart.</p>
-		<p>Connections may&nbsp; <code>WireEditPart</code> in the Logic Example also changes its figure's line width 
-		to help indicate selection. Handles for connections are contribute by 
+		<p>Connections may (<code>WireEditPart</code> in the Logic Example) also change its figure's line width 
+		to help indicate selection. Handles for connections are contributed by 
 		both <code>EndpointEditPolicy</code> and <code>BendpointEditPolicy</code>.</td>
 	</tr>
 	</table>
@@ -743,7 +731,7 @@ occurs, either graphical or tree-based. This edit policy corresponds to either
 the LAYOUT_ROLE or the TREE_CONTAINER_ROLE.</p>
 <p>The other type of edit 
 policy is specific to only the model, should applications wish to separate out 
-the potion that is shared between graphical and non-graphical creation. In most 
+the portion that is shared between graphical and non-graphical creation. In most 
 cases, any kind of shared logic is in the command implementations, making this 
 type of policy unnecessary.</p>
 <p>A <code>LayoutEditPolicy</code> handles the 
