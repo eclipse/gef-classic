@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -686,4 +686,14 @@ protected Dimension getIconSize() {
     return iconSize;
 }
 
+/**
+ * Returns the alignment of the entire label (icon and text). The default 
+ * label alignment is {@link PositionConstants#CENTER}.
+ * 
+ * @return the label alignment
+ * @since 3.5
+ */ 
+public int getLabelAlignment() {
+    return labelAlignment;
+}
 }
