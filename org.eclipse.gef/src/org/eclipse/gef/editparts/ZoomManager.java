@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package org.eclipse.gef.editparts;
 
 import com.ibm.icu.text.DecimalFormat;
+import com.ibm.icu.text.NumberFormat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -439,7 +440,7 @@ public void setZoomAsText(String zoomString) {
 			//Trim off the '%'
 			if (zoomString.charAt(zoomString.length() - 1) == '%')
 				zoomString = zoomString.substring(0, zoomString.length() - 1);
-			double newZoom = Double.parseDouble(zoomString) / 100;
+			double newZoom = NumberFormat.getInstance().parse(zoomString).doubleValue() /100; 
 			setZoom(newZoom / multiplier);
 		} catch (Exception e) {
 			Display.getCurrent().beep();
