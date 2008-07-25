@@ -222,7 +222,7 @@ static {
 	LINE_STYLE_MASK = 7;
 	AA_MASK = 3 << AA_SHIFT;
 	CAP_MASK = 3 << CAP_SHIFT;
-	FILL_RULE_MASK = 1 << FILL_RULE_SHIFT;
+	FILL_RULE_MASK = 1 << FILL_RULE_SHIFT; //If changed to more than 1-bit, check references!
 	INTERPOLATION_MASK = 3 << INTERPOLATION_SHIFT;
 	JOIN_MASK = 3 << JOIN_SHIFT;
 	TEXT_AA_MASK = 3 << TEXT_AA_SHIFT;
@@ -979,6 +979,12 @@ public void setBackgroundPattern(Pattern pattern) {
  */
 public void setClip(Path path) {
 	initTransform(false);
+	if (((appliedState.graphicHints ^ currentState.graphicHints) & FILL_RULE_MASK) != 0) {
+		//If there is a pending change to the fill rule, apply it first.
+		gc.setFillRule(((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) - FILL_RULE_WHOLE_NUMBER);
+		//As long as the FILL_RULE is stored in a single bit, just toggling it works.
+		appliedState.graphicHints ^= FILL_RULE_MASK;
+	}
 	gc.setClipping(path);
 	appliedState.relativeClip = currentState.relativeClip = null;
 }
