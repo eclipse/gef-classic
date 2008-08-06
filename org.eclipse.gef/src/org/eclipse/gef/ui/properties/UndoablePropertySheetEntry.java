@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.gef.commands.ForwardUndoCompoundCommand;
 /**
  * <p>
  * UndoablePropertySheetEntry provides undo support for changes made to IPropertySources
- * by the {@link org.eclipse.ui.views.properties.PropertySheetViewer}. Clients can
+ * by the PropertySheetViewer. Clients can
  * construct a {@link org.eclipse.ui.views.properties.PropertySheetPage} and use this
  * class as the root entry. All changes made to property sources displayed on that page
  * will be done using the provided command stack.
