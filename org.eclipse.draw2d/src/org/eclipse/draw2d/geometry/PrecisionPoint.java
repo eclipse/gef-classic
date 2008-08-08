@@ -118,4 +118,16 @@ public double preciseY() {
 	return preciseY;
 }
 
+/**
+ * @see org.eclipse.draw2d.geometry.Point#equals(java.lang.Object)
+ */
+public boolean equals(Object o) {
+	if (o instanceof PrecisionPoint) {
+		PrecisionPoint p = (PrecisionPoint)o;
+		return p.preciseX == preciseX && p.preciseY == preciseY;
+	}
+	return super.equals(o);
+}
+
+
 }

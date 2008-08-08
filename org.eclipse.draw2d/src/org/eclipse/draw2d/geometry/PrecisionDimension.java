@@ -83,4 +83,15 @@ public double preciseHeight() {
 	return preciseHeight;
 }
 
+/**
+ * @see org.eclipse.draw2d.geometry.Dimension#equals(java.lang.Object)
+ */
+public boolean equals(Object o) {
+	if (o instanceof PrecisionDimension) {
+		PrecisionDimension d = (PrecisionDimension)o;
+		return d.preciseWidth == preciseWidth && d.preciseHeight == preciseHeight;
+	}
+	return super.equals(o);
+}
+
 }
