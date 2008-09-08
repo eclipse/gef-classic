@@ -65,11 +65,12 @@ public Point getLocation() {
 	getConnection().translateToRelative(a1);
 	getConnection().translateToRelative(a2);
 	
-	return new PrecisionPoint((a1.preciseX() + d1.preciseWidth())
-				* (1f - weight) + weight * (a2.preciseX() + d2.preciseWidth()),
-				(a1.preciseY() + d1.preciseHeight()) * (1f - weight) + weight
-						* (a2.preciseY() + d2.preciseHeight()));
-	}
+	return new PrecisionPoint(
+			(a1.preciseX() + d1.preciseWidth()) * (1.0 - weight) + weight
+					* (a2.preciseX() + d2.preciseWidth()),
+			(a1.preciseY() + d1.preciseHeight()) * (1.0 - weight) + weight
+					* (a2.preciseY() + d2.preciseHeight()));
+}
 
 /**
  * Sets the Connection this bendpoint should be associated with.
