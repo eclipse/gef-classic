@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -96,6 +96,16 @@ public int dotProduct(Ray r) {
 }
 
 /**
+ * Calculates the dot product of this Ray with another.
+ * @param r the Ray used to perform the dot product
+ * @return The dot product as <code>long</code> to avoid possible integer overflow
+ * @since 3.4.1
+ */
+long dotProductL(Ray r) {
+	return (long) x * r.x + (long) y * r.y;
+}
+
+/**
  * @see java.lang.Object#equals(Object)
  */
 public boolean equals(Object obj) {
@@ -160,7 +170,7 @@ public boolean isHorizontal() {
  * @since 2.0
  */
 public double length() {
-	return Math.sqrt(dotProduct(this));
+	return Math.sqrt(dotProductL(this));
 }
 
 /**
