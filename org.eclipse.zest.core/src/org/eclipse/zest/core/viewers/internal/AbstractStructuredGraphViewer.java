@@ -31,13 +31,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.widgets.Widget;
 
-/**
+/*
  * Abstraction of graph viewers to implement functionality used by all of them.
  * Not intended to be implemented by clients. Use one of the provided children
  * instead.
  * 
  * @author Del Myers
- * 
  */
 public abstract class AbstractStructuredGraphViewer extends AbstractZoomableViewer {
 	/**
@@ -362,6 +361,10 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	}
 
 	protected GraphItem[] /* GraphItem */findItems(List l) {
+		if (l == null) {
+			return new GraphItem[0];
+		}
+
 		ArrayList list = new ArrayList();
 		Iterator iterator = l.iterator();
 
