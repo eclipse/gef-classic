@@ -102,7 +102,9 @@ public class GraphNode extends GraphItem {
 	public GraphNode(IContainer graphModel, int style, String text, Image image, Object data) {
 		super(graphModel.getGraph(), style, data);
 		initModel(graphModel, text, image);
-		nodeFigure = initFigure();
+		if (nodeFigure == null) {
+			initFigure();
+		}
 
 		// This is a hack because JAVA sucks!
 		// I don't want to expose addNode so I can't put it in the
@@ -115,9 +117,8 @@ public class GraphNode extends GraphItem {
 		this.parent.getGraph().registerItem(this);
 	}
 
-	protected IFigure initFigure() {
+	protected void initFigure() {
 		nodeFigure = createFigureForModel();
-		return nodeFigure;
 	}
 
 	static int count = 0;
@@ -150,7 +151,6 @@ public class GraphNode extends GraphItem {
 		if (font == null) {
 			font = Display.getDefault().getSystemFont();
 		}
-		graph.registerItem(this);
 
 	}
 

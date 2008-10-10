@@ -28,6 +28,7 @@ import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.zest.core.widgets.internal.AspectRatioFreeformLayer;
 import org.eclipse.zest.core.widgets.internal.ExpandGraphLabel;
 import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
@@ -37,16 +38,13 @@ import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
-import org.eclipse.swt.graphics.Image;
 
-/**
- * A Container than can be added to a Graph. Nodes can be added to this container.
- * The container supports collapsing and expanding and has the same properties as the
- * nodes.  Containers cannot have custom figures. 
+/*
+ * A Container than can be added to a Graph. Nodes can be added to this
+ * container. The container supports collapsing and expanding and has the same
+ * properties as the nodes. Containers cannot have custom figures.
  * 
  * @author Ian Bull
- * 
- *
  */
 public class GraphContainer extends GraphNode implements IContainer {
 
@@ -579,9 +577,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/***************************************************************************
 	 * NON API MEMBERS
 	 **************************************************************************/
-	protected IFigure initFigure() {
-		IFigure nodeFigure = createContainerFigure();
-		return nodeFigure;
+	protected void initFigure() {
+		nodeFigure = createContainerFigure();
 	}
 
 	/**
