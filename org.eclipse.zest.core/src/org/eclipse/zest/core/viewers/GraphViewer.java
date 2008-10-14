@@ -19,16 +19,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.zest.core.widgets.Graph;
-import org.eclipse.zest.core.widgets.GraphItem;
-import org.eclipse.zest.core.widgets.ZestStyles;
-import org.eclipse.zest.layouts.LayoutAlgorithm;
-import org.eclipse.zest.core.viewers.internal.AbstractStructuredGraphViewer;
-import org.eclipse.zest.core.viewers.internal.GraphModelEntityFactory;
-import org.eclipse.zest.core.viewers.internal.GraphModelEntityRelationshipFactory;
-import org.eclipse.zest.core.viewers.internal.GraphModelFactory;
-import org.eclipse.zest.core.viewers.internal.IStylingGraphModelFactory;
-import org.eclipse.zest.core.viewers.internal.ZoomManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
@@ -37,12 +27,23 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.zest.core.viewers.internal.AbstractStructuredGraphViewer;
+import org.eclipse.zest.core.viewers.internal.GraphModelEntityFactory;
+import org.eclipse.zest.core.viewers.internal.GraphModelEntityRelationshipFactory;
+import org.eclipse.zest.core.viewers.internal.GraphModelFactory;
+import org.eclipse.zest.core.viewers.internal.IStylingGraphModelFactory;
+import org.eclipse.zest.core.viewers.internal.ZoomManager;
+import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.core.widgets.GraphItem;
+import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
 
-/**
+/*
  * This view is used to represent a static graph. Static graphs can be layed
  * out, but do not continually update their layout locations.
  * 
  * @author Ian Bull
+ * 
  * @author Chris Callendar
  */
 public class GraphViewer extends AbstractStructuredGraphViewer implements ISelectionProvider {
@@ -194,7 +195,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 */
 	public GraphItem findGraphItem(Object element) {
 		Widget[] result = findItems(element);
-		return (result.length == 0 && result[0] instanceof GraphItem) ? null : (GraphItem) result[0];
+		return (result.length == 0 || !(result[0] instanceof GraphItem)) ? null : (GraphItem) result[0];
 	}
 
 	/**
