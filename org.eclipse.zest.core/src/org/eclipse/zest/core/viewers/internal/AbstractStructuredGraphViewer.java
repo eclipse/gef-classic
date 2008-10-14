@@ -18,6 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.widgets.Widget;
+import org.eclipse.zest.core.viewers.AbstractZoomableViewer;
+import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.core.widgets.ConstraintAdapter;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
@@ -25,11 +30,6 @@ import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
-import org.eclipse.zest.core.viewers.AbstractZoomableViewer;
-import org.eclipse.zest.core.viewers.IGraphContentProvider;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.widgets.Widget;
 
 /*
  * Abstraction of graph viewers to implement functionality used by all of them.
@@ -302,6 +302,10 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		} else {
 			getFactory().refresh(getGraphControl(), element);
 		}
+		// After all the items are loaded, we call update to ensure drawing.
+		// This way the damaged area does not get too big if we start
+		// adding and removing more nodes
+		getGraphControl().getLightweightSystem().getUpdateManager().performUpdate();
 	}
 
 	protected void doUpdateItem(Widget item, Object element, boolean fullMap) {
