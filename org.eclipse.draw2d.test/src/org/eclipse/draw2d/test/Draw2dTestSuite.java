@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Alexander Shatalin (Borland) - Contribution for Bug 238874
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
@@ -51,7 +52,8 @@ public Draw2dTestSuite() {
 //    addTest(new TestSuite(ColorConstantTest.class));
     addTest(new TestSuite(RayTest.class));
     addTest(new TestSuite(RelativeBendpointTest.class));
-}
+    addTest(new TestSuite(GeometryTest.class));
+    addTest(new TestSuite(ScalablePolygonShapeTest.class));}
 
 }
 
