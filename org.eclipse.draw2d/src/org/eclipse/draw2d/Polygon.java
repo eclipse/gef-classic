@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,10 +8,11 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *     Alex Selkov - Fix for Bug# 22701
+ *     Alexander Shatalin (Borland) - Contribution for Bug 238874
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.List;
+import org.eclipse.draw2d.geometry.Geometry;
 
 /**
  * Renders a {@link org.eclipse.draw2d.geometry.PointList} as a polygonal shape.
@@ -32,40 +33,11 @@ public class Polygon
 public boolean containsPoint(int x, int y) {
 	if (!getBounds().contains(x, y))
 		return false;
-
-	boolean isOdd = false;
-	int[] pointsxy = getPoints().toIntArray();
-	int n = pointsxy.length;
-	if (n > 3) { //If there are at least 2 Points (4 ints)
-		int x1, y1;
-		int x0 = pointsxy[n - 2];
-		int y0 = pointsxy[n - 1];
-
-		for (int i = 0; i < n; x0 = x1, y0 = y1) {
-			x1 = pointsxy[i++];
-			y1 = pointsxy[i++];
-			
-			if (y0 <= y && y < y1
-			  && crossProduct(x1, y1, x0, y0, x, y) > 0)
-			  	isOdd = !isOdd;
-			if (y1 <= y && y < y0
-			  && crossProduct(x0, y0, x1, y1, x, y) > 0)
-			  	isOdd = !isOdd;
-		}
-		if (isOdd)
-			return true;
-	}
-
-	List children = getChildren();
-	for (int i = 0; i < children.size(); i++)
-		if (((IFigure) children.get(i)).containsPoint(x, y))
-			return true;
-
-	return false;
+	return shapeContainsPoint(x, y) || childrenContainsPoint(x, y);
 }
 
-private int crossProduct(int ax, int ay, int bx, int by, int cx, int cy) {
-	return (ax - cx) * (by - cy) - (ay - cy) * (bx - cx);
+protected boolean shapeContainsPoint(int x, int y) {
+	return Geometry.polygonContainsPoint(points, x, y);
 }
 
 /**

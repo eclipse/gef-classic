@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Alexander Shatalin (Borland) - Contribution for Bug 238874
  *******************************************************************************/
 package org.eclipse.draw2d.geometry;
 
@@ -435,5 +436,37 @@ public void transpose() {
 		points[i + 1] = temp;
 	}
 }
+
+	/**
+	 * @param x
+	 * 		- X coordinate of the point
+	 * @param y
+	 * 		- Y coordinate of the point
+	 * 
+	 * @return true if specified point belongs to the polygon drawn using this
+	 * 	PointList
+	 * @see Geometry#polygonContainsPoint(PointList, int, int)
+	 * @since 3.5
+	 */
+	public boolean polygonContainsPoint(int x, int y) {
+		return Geometry.polygonContainsPoint(this, x, y);
+	}
+	
+	/**
+	 * @param x
+	 * 		- X coordinate of the point
+	 * @param y
+	 * 		- Y coordinate of the point
+	 * @param tolerance
+	 * 		- allowed distance between point and polyline segment
+	 * 
+	 * @return true if the least distance between specified point and polyline
+	 * 	drawn using this PointList is less then specified tolerance
+	 * @see Geometry#polylineContainsPoint(PointList, int, int, int)
+	 * @since 3.5
+	 */
+	public boolean polylineContainsPoint(int x, int y, int tolerance) {
+		return Geometry.polylineContainsPoint(this, x, y, tolerance);
+	}
 
 }
