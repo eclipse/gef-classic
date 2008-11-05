@@ -40,14 +40,18 @@ public class CaretTests extends SimpleTextTest {
 		fc.pack();
 	}
 
-	public void testOffset() {
+	public void testNothing() {
+		/* Remove when Bugzilla 88678 is fixed. */
+	}
+	
+	public void off_testOffset() {
 		offsetPoint = new Point(118, 7);
 		offset = sentence.getOffset(offsetPoint, trail, null);
 		assertEquals(offset, 23);
 		assertEquals(trail[0], 0);
 	}
 
-	public void testNextOffset() {
+	public void off_testNextOffset() {
 		offsetPoint = new Point(129, 0);
 		offset = sentence.getNextOffset(offsetPoint, true, null);
 		assertEquals(offset, 72);
@@ -59,7 +63,7 @@ public class CaretTests extends SimpleTextTest {
 		assertEquals(trail[0], 0);
 	}
 
-	public void testCaretPlacement() {
+	public void off_testCaretPlacement() {
 		offsetPoint = new Point(11, 21);
 		offset = sentence.getOffset(offsetPoint, trail, null);
 		CaretInfo info = sentence.getCaretPlacement(offset, trail[0] != 0);
