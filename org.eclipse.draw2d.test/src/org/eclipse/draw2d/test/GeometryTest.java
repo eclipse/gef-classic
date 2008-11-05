@@ -15,6 +15,7 @@ import junit.framework.TestCase;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.Geometry;
 import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -185,13 +186,13 @@ public class GeometryTest extends TestCase {
 		Geometry.polylineContainsPoint(POLYLINE, 2, 1, TOLERANCE);
 	}
 	
-	public void off_testDrawPolygons() {
+	public void testDrawPolygons() {
 		checkFilledPolygonPoints(translatePointList(RHOMB));
 		checkFilledPolygonPoints(translatePointList(CONCAVE_PENTAGON));
 		checkFilledPolygonPoints(translatePointList(CONCAVE_OCTAGON));
 	}
 	
-	public void off_testDrawPolylines() {
+	public void testDrawPolylines() {
 		checkPolylinePoints(translatePointList(RHOMB));
 		checkPolylinePoints(translatePointList(CONCAVE_PENTAGON));
 		checkPolylinePoints(translatePointList(CONCAVE_OCTAGON));
@@ -208,6 +209,7 @@ public class GeometryTest extends TestCase {
 		Display display = Display.getDefault();
 		Image image = new Image(display, IMAGE_SIZE, IMAGE_SIZE);
 		GC gc = new GC(image);
+		cleanupImage(gc);
 		gc.setBackground(ColorConstants.black);
 		gc.setForeground(ColorConstants.black);
 		gc.fillPolygon(pointlist.toIntArray());
@@ -228,6 +230,7 @@ public class GeometryTest extends TestCase {
 		Display display = Display.getDefault();
 		Image image = new Image(display, IMAGE_SIZE, IMAGE_SIZE);
 		GC gc = new GC(image);
+		cleanupImage(gc);
 		gc.setForeground(ColorConstants.black);
 		gc.drawPolyline(pointlist.toIntArray());
 		gc.dispose();
@@ -240,6 +243,14 @@ public class GeometryTest extends TestCase {
 				}
 			}
 		}
+	}
+
+	// Filling initial image with white color
+	private void cleanupImage(GC gc) {
+		gc.setBackground(ColorConstants.white);
+		gc.setForeground(ColorConstants.white);
+		gc.fillRectangle(0, 0, IMAGE_SIZE, IMAGE_SIZE);
+		gc.drawRectangle(0, 0, IMAGE_SIZE, IMAGE_SIZE);
 	}
 	
 }

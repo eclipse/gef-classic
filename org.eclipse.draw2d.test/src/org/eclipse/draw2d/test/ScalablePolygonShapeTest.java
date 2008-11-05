@@ -159,7 +159,7 @@ public class ScalablePolygonShapeTest extends TestCase {
 		checkScaledPointsNotChanged(scalablePolygon, new PointList(new int[] {3,3, 11,3, 11,11, 3,11}));
 	}
 	
-	public void off_testContainsPoints() {
+	public void testContainsPoints() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
 		scalablePolygon.setPoints(RECTANGLE_POINTS);
 		scalablePolygon.setLineWidth(1);
@@ -173,6 +173,12 @@ public class ScalablePolygonShapeTest extends TestCase {
 		int imageSize = RECTANGLE_END * 3;
 		Image image = new Image(display, imageSize, imageSize);
 		GC gc = new GC(image);
+		// Filling initial image with white color
+		gc.setBackground(ColorConstants.white);
+		gc.setForeground(ColorConstants.white);
+		gc.fillRectangle(0, 0, imageSize, imageSize);
+		gc.drawRectangle(0, 0, imageSize, imageSize);
+		
 		gc.setBackground(ColorConstants.black);
 		gc.setForeground(ColorConstants.black);
 		SWTGraphics graphics = new SWTGraphics(gc);
