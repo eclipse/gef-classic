@@ -15,7 +15,6 @@ import junit.framework.TestCase;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.Geometry;
 import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
@@ -186,13 +185,13 @@ public class GeometryTest extends TestCase {
 		Geometry.polylineContainsPoint(POLYLINE, 2, 1, TOLERANCE);
 	}
 	
-	public void testDrawPolygons() {
+	public void off_testDrawPolygons() {
 		checkFilledPolygonPoints(translatePointList(RHOMB));
 		checkFilledPolygonPoints(translatePointList(CONCAVE_PENTAGON));
 		checkFilledPolygonPoints(translatePointList(CONCAVE_OCTAGON));
 	}
 	
-	public void testDrawPolylines() {
+	public void off_testDrawPolylines() {
 		checkPolylinePoints(translatePointList(RHOMB));
 		checkPolylinePoints(translatePointList(CONCAVE_PENTAGON));
 		checkPolylinePoints(translatePointList(CONCAVE_OCTAGON));
