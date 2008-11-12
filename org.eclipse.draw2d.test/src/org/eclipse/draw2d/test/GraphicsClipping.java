@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,7 +36,7 @@ public void testSimpleClip() {
 	graphics.clipRect(rect);
 	graphics.drawPoint(0, 0);
 	rect.resize(-5, -5);
-	assertEquals(gcClipping(), rect);
+	assertEquals(rect, gcClipping());
 }
 
 private Rectangle gcClipping() {
@@ -53,10 +53,10 @@ public void testTranslatedClip() {
 	graphics.translate(9, 7);
 
 	graphics.drawPoint(0, 0);
-	assertEquals(gcClipping(), rect);
+	assertEquals(rect, gcClipping());
 	
 	rect.translate(-9, -7);
-	assertEquals(graphicsClip(), rect);
+	assertEquals(rect, graphicsClip());
 	
 	Rectangle intersect = new Rectangle(50, 50, 50, 50);
 	graphics.clipRect(intersect);
