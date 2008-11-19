@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -281,6 +281,22 @@ public void route(Connection conn) {
 }
 
 /**
+ * @return All connection paths after routing dirty paths. Some of the paths that
+ * were not dirty may change as well, as a consequence of new routings.
+ * @since 3.5
+ */
+public List getPathsAfterRouting() {
+	if (isDirty) {
+		processStaleConnections();
+		isDirty = false;
+		List all = algorithm.solve();		
+		return all;
+		
+	}
+	return null;
+} 
+
+/**
  * @see ConnectionRouter#setConstraint(Connection, Object)
  */
 public void setConstraint(Connection connection, Object constraint) {
@@ -302,5 +318,64 @@ public void setConstraint(Connection connection, Object constraint) {
 public void setSpacing(int spacing) {
 	algorithm.setSpacing(spacing);
 }
+
+/**
+ * @return true if there are connections routed by this router, false otherwise
+ * @since 3.5
+ */
+public boolean hasMoreConnections() {
+	return connectionToPaths != null && !connectionToPaths.isEmpty();
+}
+
+/**
+ * @return the container which contains connections routed by this router
+ * @since 3.5
+ */
+public IFigure getContainer() {
+	return container;
+}
+
+/**
+ * Sets the value indicating if connection invalidation should be ignored.
+ *  
+ * @param b true if invalidation should be skipped, false otherwise
+ * @since 3.5
+ */
+public void setIgnoreInvalidate(boolean b) {
+	ignoreInvalidate = b;
+}
+
+/**
+ * Returns the value indicating if connection invalidation should be ignored.
+ *  
+ * @return true if invalidation should be skipped, false otherwise
+ * @since 3.5
+ */
+public boolean shouldIgnoreInvalidate() {
+	return ignoreInvalidate;
+}
+
+/**
+ * Returns the value indicating if the router is dirty, i.e. if there are any outstanding connections
+ * that need to be routed
+ * 
+ * @return true if there are connections to be routed, false otherwise
+ * @since 3.5
+ */
+public boolean isDirty() {
+	return isDirty;
+}
+
+/**
+ * Returns true if the given connection is routed by this router, false otherwise 
+ * 
+ * @param conn Connection whose router is questioned
+ * @return true if this is the router used for conn
+ * @since 3.5
+ */
+public boolean containsConnection(Connection conn) {
+	return connectionToPaths != null && connectionToPaths.containsKey(conn);
+}
+
 
 }
