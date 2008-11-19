@@ -159,7 +159,7 @@ public class ScalablePolygonShapeTest extends TestCase {
 		checkScaledPointsNotChanged(scalablePolygon, new PointList(new int[] {3,3, 11,3, 11,11, 3,11}));
 	}
 	
-	public void off_testContainsPoints() {
+	public void testContainsPoints() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
 		scalablePolygon.setPoints(RECTANGLE_POINTS);
 		scalablePolygon.setLineWidth(1);

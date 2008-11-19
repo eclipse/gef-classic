@@ -185,13 +185,13 @@ public class GeometryTest extends TestCase {
 		Geometry.polylineContainsPoint(POLYLINE, 2, 1, TOLERANCE);
 	}
 	
-	public void off_testDrawPolygons() {
+	public void testDrawPolygons() {
 		checkFilledPolygonPoints(translatePointList(RHOMB));
 		checkFilledPolygonPoints(translatePointList(CONCAVE_PENTAGON));
 		checkFilledPolygonPoints(translatePointList(CONCAVE_OCTAGON));
 	}
 	
-	public void off_testDrawPolylines() {
+	public void testDrawPolylines() {
 		checkPolylinePoints(translatePointList(RHOMB));
 		checkPolylinePoints(translatePointList(CONCAVE_PENTAGON));
 		checkPolylinePoints(translatePointList(CONCAVE_OCTAGON));
