@@ -1,12 +1,11 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
+ * Canada. All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
@@ -15,7 +14,7 @@ import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
-/**
+/*
  * A connection that draws an arc between nodes, based on a given depth for the
  * arc. This connection is drawn as an arc, defined as the circular arc with the
  * chord (ax, ay) - (bx, by) (where a and b are the anchors) and a depth d
@@ -23,7 +22,6 @@ import org.eclipse.draw2d.geometry.PointList;
  * normal to the chord with magnitude d).
  * 
  * @author Del Myers
- * 
  */
 // @tag zest(bug(154391-ArcEnds(fix))) : force the endpoints to match by using a
 // polyline connection.
@@ -31,7 +29,8 @@ import org.eclipse.draw2d.geometry.PointList;
 // slower.
 public class PolylineArcConnection extends PolylineConnection {
 	private int depth;
-	private static final float PI = (float) 3.14;
+	private boolean inverse = false;
+	private static final float PI = (float) 3.14159;
 	private RectangleFigure center;
 
 	{
@@ -60,6 +59,7 @@ public class PolylineArcConnection extends PolylineConnection {
 	 *            the depth to set
 	 */
 	public void setDepth(int depth) {
+		this.inverse = depth < 0 ? true : false;
 		this.depth = depth;
 		updateArc(getPoints());
 	}
@@ -82,6 +82,7 @@ public class PolylineArcConnection extends PolylineConnection {
 		PointList points = new PointList();
 
 		float arcStart = 0;
+		float arcEnd = 0;
 		float arcLength = 0;
 		float cartCenterX = 0;
 		float cartCenterY = 0;
@@ -122,14 +123,14 @@ public class PolylineArcConnection extends PolylineConnection {
 			// circle back to screen coordinates.
 			float chordNormal = 0;
 
-			if (Math.abs(x1 - x2) <= .001) {
+			if (Math.abs(x1 - x2) <= .000001) {
 				// slope of 0. NaN is easier to detect than 0.
 				chordNormal = Float.NaN;
-			} else if (Math.abs(y1 - y2) <= 0.001) {
+			} else if (Math.abs(y1 - y2) <= 0.000001) {
 				// infinite slope.
 				chordNormal = Float.POSITIVE_INFINITY;
 			} else {
-				chordNormal = -(y2 - y1) / (x2 - x1);
+				chordNormal = -1 * (y2 - y1) / (x2 - x1);
 			}
 
 			float th1;
@@ -158,7 +159,7 @@ public class PolylineArcConnection extends PolylineConnection {
 
 			// calculate the length of the arc
 			arcStart = angleRadians(cartArcX1, cartArcY1);
-			float arcEnd = angleRadians(cartArcX2, cartArcY2);
+			arcEnd = angleRadians(cartArcX2, cartArcY2);
 
 			if (arcEnd < arcStart) {
 				arcEnd = arcEnd + PI + PI;
@@ -170,6 +171,9 @@ public class PolylineArcConnection extends PolylineConnection {
 			arcStart += pad;
 			arcEnd -= pad;
 			arcLength = (arcEnd) - (arcStart);
+			if (inverse) {
+				arcLength = (2 * PI - arcLength);
+			}
 		}
 		// calculate the points
 		r = Math.abs(r);
@@ -189,24 +193,24 @@ public class PolylineArcConnection extends PolylineConnection {
 			steps = 4;
 		}
 		float stepSize = arcLength / steps;
-		float step = stepSize + arcStart;
-		for (int i = 1; i < steps; i++, step += stepSize) {
-			x = (r) * (float) Math.cos(step) + cartCenterX;
-			y = (r) * (float) Math.sin(step) + cartCenterY;
-			p = new Point(Math.round(x), Math.round(-y));
-			points.addPoint(p);
+		if (inverse) {
+			float step = arcStart - stepSize;
+			for (int i = 0; i < steps; i++, step -= stepSize) {
+				x = (r) * (float) Math.cos(step) + cartCenterX;
+				y = (r) * (float) Math.sin(step) + cartCenterY;
+				p = new Point(Math.round(x), Math.round(-y));
+				points.addPoint(p);
+			}
+		} else {
+			float step = stepSize + arcStart;
+			for (int i = 1; i < steps; i++, step += stepSize) {
+				x = (r) * (float) Math.cos(step) + cartCenterX;
+				y = (r) * (float) Math.sin(step) + cartCenterY;
+				p = new Point(Math.round(x), Math.round(-y));
+				points.addPoint(p);
+			}
 		}
 		points.addPoint(end);
-		//
-		// if (start.equals(end)) {
-		// // Move the points to the top right;
-		// int xTranslation = getSourceAnchor().getOwner().getBounds().width /
-		// 2;
-		// int yTranslation = getSourceAnchor().getOwner().getBounds().height /
-		// 2;
-		// points.translate((int) (xTranslation - depth), -1 * (int)
-		// ((yTranslation + depth / 2)));
-		// }
 
 		super.setPoints(points);
 	}

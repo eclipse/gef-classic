@@ -33,11 +33,12 @@ import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
-/**
+/*
  * This is the graph connection model which stores the source and destination
  * nodes and the properties of this connection (color, line width etc).
  * 
  * @author Chris Callendar
+ * 
  * @author Ian Bull
  */
 public class GraphConnection extends GraphItem {
@@ -116,9 +117,19 @@ public class GraphConnection extends GraphItem {
 		this.lineStyle = Graphics.LINE_SOLID;
 		setWeight(weight);
 		this.graphModel = graphModel;
-		this.curveDepth = 20;
+		this.curveDepth = 0;
 		this.layoutConnection = new GraphLayoutConnection();
 		this.font = Display.getDefault().getSystemFont();
+		registerConnection(source, destination);
+	}
+
+	private void registerConnection(GraphNode source, GraphNode destination) {
+		if (source.getSourceConnections().contains(this)) {
+			source.getSourceConnections().remove(this);
+		}
+		if (destination.getTargetConnections().contains(this)) {
+			destination.getTargetConnections().remove(this);
+		}
 		(source).addSourceConnection(this);
 		(destination).addTargetConnection(this);
 		//connectionFigure = createFigure();
@@ -164,6 +175,7 @@ public class GraphConnection extends GraphItem {
 			targetContainerConnectionFigure = polylineConnection;
 			this.setVisible(false);
 		}
+
 	}
 
 	public void dispose() {
@@ -460,6 +472,30 @@ public class GraphConnection extends GraphItem {
 		return this.graphModel;
 	}
 
+	/**
+	 * Sets the curve depth of the arc.  The curve depth is defined as 
+	 * the maximum distance from any point on the chord (i.e. a vector
+	 * normal to the chord with magnitude d).
+	 * 
+	 * If 0 is set, a Polyline Connection will be used, otherwise a 
+	 * PolylineArcConnectoin will be used.  Negative depths are also supported.
+	 * @param depth The depth of the curve
+	 */
+	public void setCurveDepth(int depth) {
+		if (this.curveDepth == 0 && depth != 0 || this.curveDepth != 0 && depth == 0) {
+			// There is currently no curve, so we have to create
+			// a curved connection
+			graphModel.removeConnection(this);
+			this.curveDepth = depth;
+			this.connectionFigure = createFigure();
+			registerConnection(sourceNode, destinationNode);
+			updateFigure(this.connectionFigure);
+		} else {
+			this.curveDepth = depth;
+			updateFigure(this.connectionFigure);
+		}
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -594,7 +630,12 @@ public class GraphConnection extends GraphItem {
 				}
 			};
 		} else {
-			connectionFigure = new PolylineConnection();
+			if (curveDepth != 0) {
+				connectionFigure = new PolylineArcConnection();
+				((PolylineArcConnection) connectionFigure).setDepth(this.curveDepth);
+			} else {
+				connectionFigure = new PolylineConnection();
+			}
 			sourceAnchor = new RoundedChopboxAnchor(getSource().getNodeFigure(), 8);
 			targetAnchor = new RoundedChopboxAnchor(getDestination().getNodeFigure(), 8);
 			labelLocator = new MidpointLocator(connectionFigure, 0);
