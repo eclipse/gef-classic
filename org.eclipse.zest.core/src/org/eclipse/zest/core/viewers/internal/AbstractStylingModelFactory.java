@@ -20,18 +20,19 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.swt.SWT;
+import org.eclipse.zest.core.viewers.INestedContentProvider;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
-import org.eclipse.swt.SWT;
+import org.eclipse.zest.core.widgets.IContainer;
 
-/**
+/*
  * Base class that can be used for model factories. Offers facilities to style
  * the items that have been created by the factory.
  * 
  * @author Del Myers
- * 
  */
 // @tag zest.bug.160367-Refreshing.fix : update the factory to use the
 // IStylingGraphModelFactory
@@ -193,7 +194,26 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 *      java.lang.Object)
 	 */
 	public GraphNode createNode(Graph graph, Object element) {
-		GraphNode node = viewer.addGraphModelNode(element);
+		GraphNode node = null;
+		if (getContentProvider() instanceof INestedContentProvider) {
+			boolean isContainer = ((INestedContentProvider) getContentProvider()).hasChildren(element);
+			if (isContainer) {
+				node = viewer.addGraphModelContainer(element);
+				styleItem(node);
+				Object[] childNodes = ((INestedContentProvider) getContentProvider()).getChildren(element);
+				childNodes = filter(getViewer().getInput(), childNodes);
+				if (childNodes == null) {
+					return node;
+				}
+				for (int i = 0; i < childNodes.length; i++) {
+					GraphNode childNode = viewer.addGraphModelNode((IContainer) node, childNodes[i]);
+					styleItem(childNode);
+				}
+				((IContainer) node).applyLayout();
+				return node;
+			}
+		}
+		node = viewer.addGraphModelNode(element);
 		styleItem(node);
 		return node;
 	}

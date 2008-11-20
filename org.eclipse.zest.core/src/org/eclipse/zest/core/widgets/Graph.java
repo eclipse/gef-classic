@@ -856,14 +856,26 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	void removeConnection(GraphConnection connection) {
 		IFigure figure = connection.getConnectionFigure();
-		zestRootLayer.removeConnection(figure);
+		if (figure.getParent() != null) {
+			if (figure.getParent() instanceof ZestRootLayer) {
+				((ZestRootLayer) figure.getParent()).removeConnection(figure);
+			} else {
+				figure.getParent().remove(figure);
+			}
+		}
 		this.getConnections().remove(connection);
 		figure2ItemMap.remove(figure);
 	}
 
 	void removeNode(GraphNode node) {
 		IFigure figure = node.getNodeFigure();
-		zestRootLayer.removeNode(figure);
+		if (figure.getParent() != null) {
+			if (figure.getParent() instanceof ZestRootLayer) {
+				((ZestRootLayer) figure.getParent()).removeNode(figure);
+			} else {
+				figure.getParent().remove(figure);
+			}
+		}
 		this.getNodes().remove(node);
 		figure2ItemMap.remove(figure);
 	}

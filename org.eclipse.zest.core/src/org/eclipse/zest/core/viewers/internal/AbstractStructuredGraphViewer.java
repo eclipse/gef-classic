@@ -26,8 +26,10 @@ import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.core.widgets.ConstraintAdapter;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
+import org.eclipse.zest.core.widgets.GraphContainer;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.IContainer;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 
@@ -229,6 +231,26 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	HashMap getNodesMap() {
 		return this.nodesMap;
+	}
+
+	GraphNode addGraphModelContainer(Object element) {
+		GraphNode node = this.getGraphModelNode(element);
+		if (node == null) {
+			node = new GraphContainer((Graph) getControl(), SWT.NONE);
+			this.nodesMap.put(element, node);
+			node.setData(element);
+		}
+		return node;
+	}
+
+	GraphNode addGraphModelNode(IContainer container, Object element) {
+		GraphNode node = this.getGraphModelNode(element);
+		if (node == null) {
+			node = new GraphNode(container, SWT.NONE);
+			this.nodesMap.put(element, node);
+			node.setData(element);
+		}
+		return node;
 	}
 
 	GraphNode addGraphModelNode(Object element) {

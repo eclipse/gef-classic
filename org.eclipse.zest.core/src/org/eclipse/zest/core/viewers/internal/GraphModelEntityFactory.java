@@ -13,15 +13,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
+import org.eclipse.zest.core.viewers.EntityConnectionData;
+import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
-import org.eclipse.zest.core.viewers.EntityConnectionData;
-import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
 
-/**
+/*
  * 
  * @author Ian Bull
  */
@@ -62,6 +63,11 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 				createNode(model, data);
 			}
 		}
+
+		// We may have other entities (such as children of containers) 
+		Set keySet = ((AbstractStructuredGraphViewer) getViewer()).getNodesMap().keySet();
+		entities = keySet.toArray();
+
 		for (int i = 0; i < entities.length; i++) {
 			Object data = entities[i];
 
