@@ -318,7 +318,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		clearSelection();
 		if (nodes != null) {
 			for (int i = 0; i < nodes.length; i++) {
-				if (nodes[i] != null && nodes[i].getItemType() == GraphItem.NODE) {
+				if (nodes[i] != null && nodes[i] instanceof GraphNode) {
 					selectedItems.add(nodes[i]);
 					((GraphNode) nodes[i]).highlight();
 				}
