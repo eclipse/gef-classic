@@ -73,8 +73,6 @@ public class PolylineArcConnection extends PolylineConnection {
 		}
 		Point start = pointList.getFirstPoint();
 		Point end = pointList.getLastPoint();
-		System.out.println("Depth: " + depth + " End: " + end);
-
 		if (depth == 0) {
 			super.setPoints(pointList);
 			return;
