@@ -25,7 +25,6 @@ import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 /**
  * 
  * This snippet shows how to create a curved connection using Zest.
- * Each time the Button is clicked, the curve changes.
  * 
  * @author Ian Bull
  * 
