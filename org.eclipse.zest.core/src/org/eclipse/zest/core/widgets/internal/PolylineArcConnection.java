@@ -73,6 +73,7 @@ public class PolylineArcConnection extends PolylineConnection {
 		}
 		Point start = pointList.getFirstPoint();
 		Point end = pointList.getLastPoint();
+		System.out.println("Depth: " + depth + " End: " + end);
 
 		if (depth == 0) {
 			super.setPoints(pointList);
@@ -195,7 +196,7 @@ public class PolylineArcConnection extends PolylineConnection {
 		float stepSize = arcLength / steps;
 		if (inverse) {
 			float step = arcStart - stepSize;
-			for (int i = 0; i < steps; i++, step -= stepSize) {
+			for (int i = 1; i < steps; i++, step -= stepSize) {
 				x = (r) * (float) Math.cos(step) + cartCenterX;
 				y = (r) * (float) Math.sin(step) + cartCenterY;
 				p = new Point(Math.round(x), Math.round(-y));
