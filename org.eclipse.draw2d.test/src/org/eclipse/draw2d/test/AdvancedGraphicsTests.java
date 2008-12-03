@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004 IBM Corporation and others.
+ * Copyright (c) 2004, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Pattern;
@@ -61,8 +62,8 @@ private void assertImageEquality(int width, int height) {
 				RGB rgb2 = palette.getRGB(dst);
 				//HACK, image operations seem to differ by as much as 4
 				if (Math.abs(rgb1.red - rgb2.red) > 4
-						| Math.abs(rgb1.green - rgb2.green) > 4
-						| Math.abs(rgb1.blue - rgb2.blue) > 4)
+						|| Math.abs(rgb1.green - rgb2.green) > 4
+						|| Math.abs(rgb1.blue - rgb2.blue) > 4)
 				assertEquals("Discrepancy at coordinates <" + x +", " + y + ">",
 						rgb1,
 						rgb2);
@@ -158,7 +159,7 @@ public void testAntialias() {
 		}
 	}
 
-	g.setLineWidth(9);
+	g.setLineWidthFloat(9);
 	g.pushState();
 
 	Runnable tests[] = new Runnable[4];
@@ -232,27 +233,31 @@ public void testLineJoinCap() {
 	
 	class LineSettings implements Runnable {
 		private final int cap;
-		private final int dash;
+		private final int style;
 		private final int join;
-		LineSettings (int join, int cap, int dash) {
+		
+		LineSettings (int join, int cap, int style) {
 			this.join = join;
 			this.cap = cap;
-			this.dash = dash;
+			this.style = style;
 		}
+		
 		public void run() {
 			g.setLineCap(cap);
 			g.setLineJoin(join);
-			g.setLineStyle(dash);
+			g.setLineStyle(style);
 		}
 	}
 	
-	g.setLineWidth(9);
+	g.setLineWidthFloat(9);
 	g.pushState();
 
-	Runnable tests[] = new Runnable[3];
-	tests[0] = new LineSettings(SWT.JOIN_ROUND, SWT.CAP_ROUND, SWT.LINE_DASH);
-	tests[1] = new LineSettings(SWT.JOIN_BEVEL, SWT.CAP_FLAT, SWT.LINE_DOT);
-	tests[2] = new LineSettings(SWT.JOIN_ROUND, SWT.CAP_SQUARE, SWT.LINE_SOLID);
+	Runnable[] tests = new Runnable[] {
+		new LineSettings(SWT.JOIN_ROUND, SWT.CAP_ROUND, SWT.LINE_DASH),
+		new LineSettings(SWT.JOIN_BEVEL, SWT.CAP_FLAT, SWT.LINE_DOT),
+		new LineSettings(SWT.JOIN_ROUND, SWT.CAP_SQUARE, SWT.LINE_SOLID)
+	};
+	
 	performTestcase(new Runnable() {
 		public void run() {
 			g.drawPolyline(LINE);
@@ -264,6 +269,44 @@ public void testLineJoinCapAA() {
 	g.setAntialias(SWT.ON);
 	testLineJoinCap();
 }
+
+public void testLineAttributes() {
+	class LineSettings implements Runnable {
+		private LineAttributes attributes;
+
+		public LineSettings(LineAttributes attributes) {
+			this.attributes = attributes;
+		}
+		public void run() {
+			g.setLineAttributes(attributes);
+		}		
+	}
+	
+	float[] dash = new float[] { 2.5f, 3, 8 };
+	
+	Runnable[] tests = new Runnable[]{
+			new LineSettings(new LineAttributes(0.0f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
+			new LineSettings(new LineAttributes(1.0f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
+			new LineSettings(new LineAttributes(2.5f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
+			new LineSettings(new LineAttributes(5.0f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_DASH, null, 0, 10)),
+			new LineSettings(new LineAttributes(5.0f, SWT.CAP_FLAT, SWT.JOIN_ROUND, SWT.LINE_DASHDOTDOT, null, 0, 10)),
+			new LineSettings(new LineAttributes(4.5f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
+			new LineSettings(new LineAttributes(9.0f, SWT.CAP_FLAT, SWT.JOIN_ROUND, SWT.LINE_CUSTOM, dash, 0, 10)),
+			new LineSettings(new LineAttributes(9.5f, SWT.CAP_FLAT, SWT.JOIN_ROUND, SWT.LINE_CUSTOM, dash, 5, 10)),
+	};
+	
+	performTestcase(new Runnable() {
+		public void run() {
+			g.drawPolyline(LINE);
+		}
+	}, tests);
+}
+
+public void testLineAttributesAA() {
+	g.setAntialias(SWT.ON);
+	testLineAttributes();
+}
+
 
 //public void testPathDraw() {
 //	
