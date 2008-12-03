@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.graphics.TextLayout;
@@ -70,7 +71,7 @@ static class LazyState {
 	Color fgColor;
 	Font font;
 	int graphicHints;
-	int lineWidth;
+	LineAttributes lineAttributes;
 	Clipping relativeClip;
 }
 
@@ -158,10 +159,11 @@ static class State
 	int dx, dy;
 	
 	Pattern fgPattern;
-	int lineDash[];
 	
 	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
+		State clone = (State)super.clone();
+		clone.lineAttributes = SWTGraphics.clone(clone.lineAttributes);
+		return clone;
 	}
 	
 	/**
@@ -171,13 +173,12 @@ static class State
 	public void copyFrom(State state) {
 		bgColor = state.bgColor;
 		fgColor = state.fgColor;
-		lineWidth = state.lineWidth;
+		lineAttributes = SWTGraphics.clone(state.lineAttributes);
 		dx = state.dx;
 		dy = state.dy;
 		bgPattern = state.bgPattern;
 		fgPattern = state.fgPattern;
 		font = state.font;
-		lineDash = state.lineDash;
 		graphicHints = state.graphicHints;
 		affineMatrix = state.affineMatrix;
 		relativeClip = state.relativeClip;
@@ -192,17 +193,12 @@ static final int ADVANCED_GRAPHICS_MASK;
 static final int ADVANCED_HINTS_DEFAULTS;
 static final int ADVANCED_HINTS_MASK;
 static final int ADVANCED_SHIFT;
-static final int CAP_MASK;
-static final int CAP_SHIFT;
 static final int FILL_RULE_MASK;
 static final int FILL_RULE_SHIFT;
 static final int FILL_RULE_WHOLE_NUMBER = -1;
 static final int INTERPOLATION_MASK;
 static final int INTERPOLATION_SHIFT;
 static final int INTERPOLATION_WHOLE_NUMBER = 1;
-static final int JOIN_MASK;
-static final int JOIN_SHIFT;
-static final int LINE_STYLE_MASK;
 
 static final int TEXT_AA_MASK;
 static final int TEXT_AA_SHIFT;
@@ -211,20 +207,15 @@ static final int XOR_SHIFT;
 
 static {
 	XOR_SHIFT = 3;
-	CAP_SHIFT = 4;
-	JOIN_SHIFT = 6;
 	AA_SHIFT = 8;
 	TEXT_AA_SHIFT = 10;
 	INTERPOLATION_SHIFT = 12;
 	FILL_RULE_SHIFT = 14;
 	ADVANCED_SHIFT = 15;
 
-	LINE_STYLE_MASK = 7;
 	AA_MASK = 3 << AA_SHIFT;
-	CAP_MASK = 3 << CAP_SHIFT;
 	FILL_RULE_MASK = 1 << FILL_RULE_SHIFT; //If changed to more than 1-bit, check references!
 	INTERPOLATION_MASK = 3 << INTERPOLATION_SHIFT;
-	JOIN_MASK = 3 << JOIN_SHIFT;
 	TEXT_AA_MASK = 3 << TEXT_AA_SHIFT;
 	XOR_MASK = 1 << XOR_SHIFT;
 	ADVANCED_GRAPHICS_MASK = 1 << ADVANCED_SHIFT;
@@ -292,8 +283,23 @@ protected final void checkPaint() {
 	checkGC();
 	if (!currentState.fgColor.equals(appliedState.fgColor) && currentState.fgPattern == null)
 		gc.setForeground(appliedState.fgColor = currentState.fgColor);
-	if (appliedState.lineWidth != currentState.lineWidth)
-		gc.setLineWidth(appliedState.lineWidth = currentState.lineWidth);
+	
+	LineAttributes lineAttributes = currentState.lineAttributes;
+	if (!appliedState.lineAttributes.equals(lineAttributes)) {
+		if(getAdvanced()) {
+			gc.setLineAttributes(lineAttributes);
+		} else {
+			gc.setLineWidth((int)lineAttributes.width);
+			gc.setLineCap(lineAttributes.cap);
+			gc.setLineJoin(lineAttributes.join);
+			gc.setLineStyle(lineAttributes.style);
+			if(lineAttributes.dash != null) {
+				gc.setLineDash(convertFloatArrayToInt(lineAttributes.dash));
+			}
+		}
+		appliedState.lineAttributes = clone(lineAttributes); 
+	}
+	
 	if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null)
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
 }
@@ -603,6 +609,10 @@ public int getAntialias() {
 	return ((currentState.graphicHints & AA_MASK) >> AA_SHIFT) - AA_WHOLE_NUMBER;
 }
 
+public boolean getAdvanced() {
+	return (currentState.graphicHints & ADVANCED_GRAPHICS_MASK) != 0;
+}
+
 /**
  * @see Graphics#getBackgroundColor()
  */
@@ -660,32 +670,62 @@ public int getInterpolation() {
 }
 
 /**
+ * @since 3.5
+ */
+public void getLineAttributes(LineAttributes lineAttributes) {
+	copyLineAttributes(lineAttributes, currentState.lineAttributes);
+}
+
+/**
  * @see Graphics#getLineCap()
  */
 public int getLineCap() {
-	return (currentState.graphicHints & CAP_MASK) >> CAP_SHIFT;
+	return currentState.lineAttributes.cap;
 }
 
 /**
  * @see Graphics#getLineJoin()
  */
 public int getLineJoin() {
-	return (currentState.graphicHints & JOIN_MASK) >> JOIN_SHIFT;
+	return currentState.lineAttributes.join;
 }
 
 /**
  * @see Graphics#getLineStyle()
  */
 public int getLineStyle() {
-	return currentState.graphicHints & LINE_STYLE_MASK;
+	return currentState.lineAttributes.style;
 }
 
 /**
  * @see Graphics#getLineWidth()
  */
 public int getLineWidth() {
-	return currentState.lineWidth;
+	return (int)currentState.lineAttributes.width;
 }
+
+public float getLineWidthFloat() {
+	return currentState.lineAttributes.width;
+}
+
+public float getLineMiterLimit() {
+	return currentState.lineAttributes.miterLimit;
+}
+
+/**
+ * @since 3.5
+ */
+public float[] getLineDash() {
+	return (float[])currentState.lineAttributes.dash.clone();
+}
+
+/**
+ * @since 3.5
+ */
+public float getLineDashOffset() {
+	return currentState.lineAttributes.dashOffset; 
+}
+
 
 /**
  * @see Graphics#getTextAntialias()
@@ -708,17 +748,15 @@ protected void init() {
 	currentState.bgColor = appliedState.bgColor = gc.getBackground();
 	currentState.fgColor = appliedState.fgColor = gc.getForeground();
 	currentState.font = appliedState.font = gc.getFont();
-	currentState.lineWidth = appliedState.lineWidth = gc.getLineWidth();
+	currentState.lineAttributes = gc.getLineAttributes();
+	appliedState.lineAttributes = clone(currentState.lineAttributes);
 	currentState.graphicHints |= gc.getLineStyle();
-	currentState.graphicHints |= gc.getLineCap() << CAP_SHIFT;
-	currentState.graphicHints |= gc.getLineJoin() << JOIN_SHIFT;
 	currentState.graphicHints |= gc.getAdvanced() ? ADVANCED_GRAPHICS_MASK : 0;
 	currentState.graphicHints |= gc.getXORMode() ? XOR_MASK : 0;
 	
 	appliedState.graphicHints = currentState.graphicHints;
 	
 	currentState.relativeClip = new RectangleClipping(gc.getClipping());
-	currentState.lineDash = gc.getLineDash();
 	currentState.alpha = gc.getAlpha();
 }
 
@@ -777,21 +815,13 @@ private void reconcileHints(int applied, int hints) {
 	if (applied != hints) {
 		int changes = hints ^ applied;
 		
-		if ((changes & LINE_STYLE_MASK) != 0)
-			gc.setLineStyle(hints & LINE_STYLE_MASK);
-		
 		if ((changes & XOR_MASK) != 0)
 			gc.setXORMode((hints & XOR_MASK) != 0);
 		
 		//Check to see if there is anything remaining
-		changes &= ~(XOR_MASK | LINE_STYLE_MASK);
+		changes &= ~XOR_MASK;
 		if (changes == 0)
 			return;
-		
-		if ((changes & JOIN_MASK) != 0)
-			gc.setLineJoin((hints & JOIN_MASK) >> JOIN_SHIFT);
-		if ((changes & CAP_MASK) != 0)
-			gc.setLineCap((hints & CAP_MASK) >> CAP_SHIFT);
 		
 		if ((changes & INTERPOLATION_MASK) != 0)
 			gc.setInterpolation(((hints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT) - INTERPOLATION_WHOLE_NUMBER);
@@ -849,7 +879,7 @@ protected void restoreState(State s) {
 	setForegroundPattern(s.fgPattern);
 
 	setAlpha(s.alpha);
-	setLineWidth(s.lineWidth);
+	setLineAttributes(s.lineAttributes);
 	setFont(s.font);
 	//This method must come last because above methods will incorrectly set advanced state
 	setGraphicHints(s.graphicHints);
@@ -942,6 +972,14 @@ public void setAlpha(int alpha) {
 public void setAntialias(int value) {
 	currentState.graphicHints &= ~AA_MASK;
 	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK | (value + AA_WHOLE_NUMBER) << AA_SHIFT;
+}
+
+public void setAdvanced(boolean value) {
+	if(value) {
+		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
+	} else {
+		currentState.graphicHints &= ~ADVANCED_GRAPHICS_MASK;
+	}
 }
 
 /**
@@ -1054,56 +1092,86 @@ public void setInterpolation(int interpolation) {
 	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK | (interpolation + INTERPOLATION_WHOLE_NUMBER) << INTERPOLATION_SHIFT; 
 }
 
+public void setLineAttributes(LineAttributes lineAttributes) {
+	copyLineAttributes(currentState.lineAttributes, lineAttributes);
+}
+
 /**
  * @see Graphics#setLineCap(int)
  */
-public void setLineCap(int cap) {
-	currentState.graphicHints &= ~CAP_MASK;
-	currentState.graphicHints |= cap << CAP_SHIFT;
+public void setLineCap(int value) {
+	currentState.lineAttributes.cap = value;
 }
 
 /**
  * @see Graphics#setLineDash(int[])
  */
 public void setLineDash(int[] dashes) {
-	if (dashes != null) {
-		int copy[] = new int[dashes.length];
+	float[] fArray = null;
+	if(dashes != null) {
+		fArray = new float[dashes.length];
 		for (int i = 0; i < dashes.length; i++) {
-			int dash = dashes[i];
-			if (dash <= 0)
-				SWT.error(SWT.ERROR_INVALID_ARGUMENT);
-			copy[i] = dash;
+			fArray[i] = dashes[i];
 		}
-		currentState.lineDash = copy;
-		setLineStyle(SWT.LINE_CUSTOM);
-		gc.setLineDash(copy);
-	} else {
-		currentState.lineDash = null;
-		setLineStyle(SWT.LINE_SOLID);
 	}
+	setLineDash(fArray);
+}
+
+/**
+ * @param value
+ * @since 3.5
+ */
+public void setLineDash(float[] value) {
+    if (value != null) {
+    	// validate dash values
+    	for (int i = 0; i < value.length; i++) {
+    		if (value[i] <= 0) {
+    			SWT.error(SWT.ERROR_INVALID_ARGUMENT);
+    		}
+    	}		
+
+    	currentState.lineAttributes.dash = (float[])value.clone();
+        currentState.lineAttributes.style = SWT.LINE_CUSTOM;
+    } else {
+        currentState.lineAttributes.dash = null;
+        currentState.lineAttributes.style = SWT.LINE_SOLID;
+    }
+}
+
+/**
+ * @since 3.5
+ */
+public void setLineDashOffset(float value) {
+	currentState.lineAttributes.dashOffset = value; 
 }
 
 /**
  * @see Graphics#setLineJoin(int)
  */
-public void setLineJoin(int join) {
-	currentState.graphicHints &= ~JOIN_MASK;
-	currentState.graphicHints |= join << JOIN_SHIFT;
+public void setLineJoin(int value) {
+	currentState.lineAttributes.join = value;
 }
 
 /**
  * @see Graphics#setLineStyle(int)
  */
-public void setLineStyle(int style) {
-	currentState.graphicHints &= ~LINE_STYLE_MASK;
-	currentState.graphicHints |= style;
+public void setLineStyle(int value) {
+	currentState.lineAttributes.style = value;
 }
 
 /**
  * @see Graphics#setLineWidth(int)
  */
 public void setLineWidth(int width) {
-	currentState.lineWidth = width;
+	currentState.lineAttributes.width = width;
+}
+
+public void setLineWidthFloat(float value) {
+	currentState.lineAttributes.width = value;
+}
+
+public void setLineMiterLimit(float value) {
+	currentState.lineAttributes.miterLimit = value;
 }
 
 /**
@@ -1205,6 +1273,59 @@ private void translatePointArray(int[] points, int translateX, int translateY) {
 		points[i] += translateX;
 		points[i + 1] += translateY;
 	}
+}
+
+/**
+ * Countermeasure against LineAttributes class not having its own clone() method.
+ */
+static LineAttributes clone(LineAttributes src) {
+	float[] dashClone = null;
+	if (src.dash != null) {
+		dashClone = new float[src.dash.length];
+		System.arraycopy(src.dash, 0, dashClone, 0, dashClone.length);
+	}
+	return new LineAttributes(src.width, src.cap, src.join, src.style, dashClone, src.dashOffset, src.miterLimit); 
+}
+
+/**
+ * Countermeasure against LineAttributes class not having a copy by value function.
+ */
+static void copyLineAttributes(LineAttributes dest, LineAttributes src) {
+	if(dest != src) {
+		dest.cap = src.cap;
+		dest.join = src.join;
+		dest.miterLimit = src.miterLimit;
+		dest.style = src.style;
+		dest.width = src.width;
+		
+		if(src.dash == null) {
+			dest.dash = null;
+		} else {
+			if((dest.dash == null ) || (dest.dash.length != src.dash.length)) {
+				dest.dash = new float[src.dash.length];
+			}
+			System.arraycopy(src.dash, 0, dest.dash, 0, src.dash.length);
+		}
+	}
+}
+
+/**
+ * Utility method for use with countermeasure against passing line attributes
+ * to SWT forcing advanced graphics.
+ *  
+ * @return
+ * @since 3.2
+ */
+private static int[] convertFloatArrayToInt(float[] fArray) {
+	int[] iArray = null;
+	if(fArray != null) {
+		int arrayLen = fArray.length;
+		iArray = new int[arrayLen];
+		for(int i=0; i < arrayLen; i++) {
+			iArray[i] = (int)fArray[i];
+		}
+	}
+	return iArray;
 }
 
 }

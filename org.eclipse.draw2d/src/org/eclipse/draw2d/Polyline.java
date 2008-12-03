@@ -41,7 +41,7 @@ private static final Rectangle LINEBOUNDS = Rectangle.SINGLETON;
  * @see org.eclipse.draw2d.IFigure#containsPoint(int, int)
  */
 public boolean containsPoint(int x, int y) {
-	int tolerance = Math.max(lineWidth / 2, this.tolerance);
+	int tolerance = (int)Math.max(getLineWidthFloat() / 2.0f, this.tolerance);
 	LINEBOUNDS.setBounds(getBounds());
 	LINEBOUNDS.expand(tolerance, tolerance);
 	if (!LINEBOUNDS.contains(x, y))
@@ -64,9 +64,10 @@ protected void fillShape(Graphics g) { }
  */
 public Rectangle getBounds() {
 	if (bounds == null) {
+		int expand = (int)(getLineWidthFloat() / 2.0f);
 		bounds = getPoints()
 			.getBounds()
-			.getExpanded(lineWidth / 2, lineWidth / 2);
+			.getExpanded(expand, expand);
 	}
 	return bounds;
 }
@@ -104,12 +105,14 @@ public void removeAllPoints() {
  * @see org.eclipse.draw2d.Shape#setLineWidth(int)
  */
 public void setLineWidth(int w) {
-	if (lineWidth == w)
+	if (getLineWidthFloat() == w) {
 		return;
-	if (w < lineWidth) //The bounds will become smaller, so erase must occur first.
+	}
+	if (w < getLineWidthFloat()) { //The bounds will become smaller, so erase must occur first.
 		erase();
+	}
 	bounds = null;
-	super.setLineWidth(w);
+	super.setLineWidthFloat(w);
 }
 
 /**

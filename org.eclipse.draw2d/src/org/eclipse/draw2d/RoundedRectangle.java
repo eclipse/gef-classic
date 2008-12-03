@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,13 +38,11 @@ protected void fillShape(Graphics graphics) {
  * @see Shape#outlineShape(Graphics)
  */
 protected void outlineShape(Graphics graphics) {
-	Rectangle f = Rectangle.SINGLETON;
-	Rectangle r = getBounds();
-	f.x = r.x + lineWidth / 2;
-	f.y = r.y + lineWidth / 2;
-	f.width = r.width - lineWidth;
-	f.height = r.height - lineWidth;
-	graphics.drawRoundRectangle(f, corner.width, corner.height);
+	int lineInset = (int)Math.ceil(Math.max(1.0, getLineWidthFloat() / 2.0));
+	Rectangle r = Rectangle.SINGLETON.setBounds(getBounds());
+	r.shrink(lineInset, lineInset);
+	
+	graphics.drawRoundRectangle(r, Math.max(0, corner.width - lineInset), Math.max(0, corner.height - lineInset));
 }
 
 /**

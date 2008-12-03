@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -55,11 +55,9 @@ protected void fillShape(Graphics graphics) {
  * @see org.eclipse.draw2d.Shape#outlineShape(org.eclipse.draw2d.Graphics)
  */
 protected void outlineShape(Graphics graphics) {
-	Rectangle r = Rectangle.SINGLETON;
-	r.setBounds(getBounds());
-	r.width--;
-	r.height--;
-	r.shrink((lineWidth - 1) / 2, (lineWidth - 1) / 2);
+	int lineInset = (int)Math.ceil(Math.max(1.0, getLineWidthFloat() / 2.0));
+	Rectangle r = Rectangle.SINGLETON.setBounds(getBounds());
+	r.shrink(lineInset, lineInset);
 	graphics.drawOval(r);
 }
 

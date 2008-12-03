@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,197 +10,491 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.LineAttributes;
+
 /**
  * Provides abstract support for a variety of shapes.  
  * <p>
  * When customizing shapes, you shouldn't override paintFigure().  Override fillShape() 
  * and outlineShape() methods instead.
  */
-public abstract class Shape
-	extends Figure
-{
+public abstract class Shape extends Figure {
+	
+	/**
+	 * The width of this shape's outline.
+	 */
+	protected int lineWidth;
+	
+	/**
+	 * Private copy of lineWidth field to track changes.
+	 * We cannot compare to the float line width because rounding 
+	 * may make them seem equal when they have actually changed.
+	 * 
+	 * e.g. someone sets int line width to 5, when float line width
+	 * was already 5.4, float line width should change to 5.0, but comparing
+	 * them as ints would suggest there's no change to synchronize. 
+	 */
+	private int lastLineWidth;
+	
+	/**
+	 * The line style to be used for this shape's outline.
+	 */
+	protected int lineStyle;
 
-/** The width of this shape's outline. */
-protected int lineWidth = 1;
-/** The line style to be used for this shape's outline. */
-protected int lineStyle = Graphics.LINE_SOLID;
+	private LineAttributes lineAttributes;
+	
+	private boolean fill;
+	private boolean outline;
+	private boolean xorFill;
+	private boolean xorOutline;
+	private int antialias;
+	private int alpha;
+	
+	/**
+	 * Default constructor.
+	 * 
+	 * @since 2.0
+	 */
+	public Shape() {
+		setOpaque(false);
+		lineAttributes = new LineAttributes(0.0f);
+		fill = true;
+		outline = true;
+		xorFill = false;
+		xorOutline = false;
+		antialias = SWT.DEFAULT;
+		alpha = 255;
 
-private boolean
-	fill = true,
-	outline = true,
-	xorFill,
-	xorOutline;
-
-/**
- * Default constructor.
- * 
- * @since 2.0
- */
-public Shape() { }
-
-/**
- * Fills the interior of the shape with the background color.
- * @param graphics the graphics object
- */
-protected abstract void fillShape(Graphics graphics);
-
-/**
- * Returns the line style used to outline this shape.
- * @return the line style
- */
-public int getLineStyle() {
-	return lineStyle;
-}
-
-/**
- * Returns the line width of this shape's outline.
- * @return the line width
- */
-public int getLineWidth() {
-	return lineWidth;
-}
-
-/**
- * Returns <code>false</code> as shapes only draw themselves onto other figures, and 
- * generally dont have rectangular dimensions.
- * 
- * @see Figure#isOpaque()
- * @since 2.0
- */
-public boolean isOpaque() {
-	return false;
-}
-
-/**
- * Outlines this shape using the foreground color.
- * @param graphics the graphics object
- */
-protected abstract void outlineShape(Graphics graphics);
-
-/**
- * Paints the shape. Each shape has an outline to draw, and a region to fill within that 
- * outline. Disabled shapes must visually depict the disabled state. 
- * 
- * @see Figure#paintFigure(Graphics)
- */
-public void paintFigure(Graphics graphics) {
-	if (!isEnabled()) {
-		graphics.translate(1, 1);
-		graphics.setBackgroundColor(ColorConstants.buttonLightest);
-		graphics.setForegroundColor(ColorConstants.buttonLightest);
-		if (fill) {
-			graphics.setXORMode(xorFill);
-			fillShape(graphics);
-		}
-		if (outline) {
-			graphics.setXORMode(xorOutline);
-			graphics.setLineStyle(lineStyle);
-			graphics.setLineWidth(lineWidth);
-			outlineShape(graphics);
-		}
-		graphics.setBackgroundColor(ColorConstants.buttonDarker);
-		graphics.setForegroundColor(ColorConstants.buttonDarker);
-		graphics.translate(-1, -1);
+		// synchronize parameters
+		lineWidth = (int)lineAttributes.width;
+		lineStyle = lineAttributes.style;
+		lastLineWidth = lineWidth;
 	}
-	if (fill) {
+	
+	/**
+	 * Fills the interior of the shape with the background color.
+	 * @param graphics the graphics object
+	 */
+	protected abstract void fillShape(Graphics graphics);
+	
+	/**
+	 * Outlines this shape using the foreground color.
+	 * @param graphics the graphics object
+	 */
+	protected abstract void outlineShape(Graphics graphics);
+	
+	/**
+	 * Paints the shape. Each shape has an outline to draw, and a region to fill within that 
+	 * outline. Disabled shapes must visually depict the disabled state. 
+	 * 
+	 * @see Figure#paintFigure(Graphics)
+	 */
+	public void paintFigure(Graphics graphics) {
+		graphics.setAntialias(antialias);
+		graphics.setAlpha(alpha);
+		//graphics.rotate(rotation);
+
+		// paint background and border 
+		super.paintFigure(graphics);
+			
+		if (!isEnabled()) {
+			graphics.translate(1, 1);
+			graphics.setBackgroundColor(ColorConstants.buttonLightest);
+			graphics.setForegroundColor(ColorConstants.buttonLightest);
+			
+			if (fill) {
+				paintFill(graphics);
+			}
+			
+			if (outline) {
+				paintOutline(graphics);
+			}
+			
+			graphics.setBackgroundColor(ColorConstants.buttonDarker);
+			graphics.setForegroundColor(ColorConstants.buttonDarker);
+			graphics.translate(-1, -1);
+		}
+		
+		if (fill) {
+			paintFill(graphics);
+		}
+		
+		if (outline) {
+			paintOutline(graphics);
+		}
+	}
+	
+	private void paintOutline(Graphics graphics) {
+		// synchronize the line width and style attributes to the
+		// public fields which may have been assigned
+		// to without our knowledge
+		lineAttributes.width = getLineWidthFloat();
+		lineAttributes.style = getLineStyle();
+		
+		graphics.setXORMode(xorOutline);
+		graphics.setLineAttributes(lineAttributes);
+		outlineShape(graphics);
+	}
+	
+	private void paintFill(Graphics graphics) {
 		graphics.setXORMode(xorFill);
 		fillShape(graphics);
 	}
-	if (outline) {
-		graphics.setXORMode(xorOutline);
-		graphics.setLineStyle(lineStyle);
-		graphics.setLineWidth(lineWidth);
-		outlineShape(graphics);
+	
+	/**
+	 * Sets whether this shape should fill its region or not. It repaints this figure.
+	 *
+	 * @param b fill state
+	 * @since 2.0
+	 */
+	public void setFill(boolean b) {
+		if (fill != b) {
+			fill = b;
+			repaint();
+		}
 	}
-}
+	
+	/**
+	 * Sets whether XOR based fill should be used by the shape. It repaints this figure.
+	 *
+	 * @param b XOR fill state
+	 * @since 2.0
+	 */
+	public void setFillXOR(boolean b) {
+		if (xorFill != b) {
+			xorFill = b;
+			repaint();
+		}
+	}
+	
+	/**
+	 * Sets whether the outline should be drawn for this shape.
+	 *
+	 * @param b <code>true</code> if the shape should be outlined
+	 * @since 2.0
+	 */
+	public void setOutline(boolean b) {
+		if (outline != b) {
+			outline = b;
+			repaint();
+		}
+	}
+	
+	/**
+	 * Sets whether XOR based outline should be used for this shape.
+	 *
+	 * @param b <code>true</code> if the outline should be XOR'ed
+	 * @since 2.0
+	 */
+	public void setOutlineXOR(boolean b) {
+		if (xorOutline != b) {
+			xorOutline = b;
+			repaint();
+		}
+	}
+	
+	/**
+	 * Sets whether XOR based fill and XOR based outline should be used for this shape.
+	 *
+	 * @param b <code>true</code> if the outline and fill should be XOR'ed
+	 * @since 2.0
+	 */
+	public void setXOR(boolean b) {
+		xorOutline = xorFill = b;
+		repaint();
+	}
+	
+	/**
+	 * @since 3.5
+	 */
+	public int getAlpha() {
+		return alpha;
+	}
 
-/**
- * Sets whether this shape should fill its region or not. It repaints this figure.
- *
- * @param b fill state
- * @since 2.0
- */
-public void setFill(boolean b) {
-	if (fill == b) 
-		return;
-	fill = b;
-	repaint();
-}
+	/**
+	 * @since 3.5
+	 */
+	public int getAntialias() {
+		return antialias;
+	}
+	
+	/**
+	 * Returns line attributes used when drawing this shape.
+ 	 * @see org.eclipse.swt.graphics.LineAttributes
+ 	 * 
+	 * Performance note: creates and returns a clone.
+	 * 
+	 * @return current line attributes
+	 * @since 3.5
+	 */
+	public LineAttributes getLineAttributes() {
+		return SWTGraphics.clone(lineAttributes);
+	}
 
-/**
- * Sets whether XOR based fill should be used by the shape. It repaints this figure.
- *
- * @param b XOR fill state
- * @since 2.0
- */
-public void setFillXOR(boolean b) {
-	if (xorFill == b) 
-		return;
-	xorFill = b;
-	repaint();
-}
+	/**
+	 * Returns the line width of this shape's outline.
+	 * 
+	 * @return the line width
+	 */
+	public int getLineWidth() {
+		// synchronize lineWidth field for
+		// backwards compatibility
+		if(lineWidth != lastLineWidth) {
+			lineAttributes.width = lineWidth;
+			lastLineWidth = lineWidth;
+		}
+		
+		return (int)lineAttributes.width;
+	}
+	
+	/**
+	 * Returns the line width of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#width
+	 * 
+	 * @since 3.5
+	 */
+	public float getLineWidthFloat() {
+		// synchronize lineWidth field for
+		// backwards compatibility
+		if(lineWidth != lastLineWidth) {
+			lineAttributes.width = lineWidth;
+			lastLineWidth = lineWidth;
+		}
+		
+		return lineAttributes.width;
+	}
+	
+	/**
+	 * Returns the line join style of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#join
+	 * 
+	 * @since 3.5
+	 */
+	public int getLineJoin() {
+		return lineAttributes.join;
+	}
 
-/**
- * Sets the line width to be used to outline the shape.
- *
- * @param w the new width
- * @since 2.0
- */
-public void setLineWidth(int w) {
-	if (lineWidth == w) 
-		return;
-	lineWidth = w;
-	repaint();
-}
+	/**
+	 * Returns the line cap style of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#cap
+	 * 
+	 * @since 3.5
+	 */
+	public int getLineCap() {
+		return lineAttributes.cap;
+	}
 
-/**
- * Sets the style of line to be used by this shape.
- *
- * @param s the new line style
- * @since 2.0
- */
-public void setLineStyle(int s) {
-	if (lineStyle == s) 
-		return;
-	lineStyle = s;
-	repaint();
-}
+	/**
+	 * Returns the line style of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#style
+	 * 
+	 * @return the line style
+	 */
+	public int getLineStyle() {
+		// synchronize line style which may have been assigned
+		// to lineStyle field for backwards compatibility
+		lineAttributes.style = lineStyle;
+		
+		return lineAttributes.style;
+	}
 
-/**
- * Sets whether the outline should be drawn for this shape.
- *
- * @param b <code>true</code> if the shape should be outlined
- * @since 2.0
- */
-public void setOutline(boolean b) {
-	if (outline == b) 
-		return;
-	outline = b;
-	repaint();
-}
+	/**
+	 * Returns the line dash style of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#dash
+	 * 
+	 * @since 3.5
+	 */
+	public float[] getLineDash() {
+		return (float[])lineAttributes.dash.clone();
+	}
 
-/**
- * Sets whether XOR based outline should be used for this shape.
- *
- * @param b <code>true</code> if the outline should be XOR'ed
- * @since 2.0
- */
-public void setOutlineXOR(boolean b) {
-	if (xorOutline == b) 
-		return;
-	xorOutline = b;
-	repaint();
-}
+	/**
+	 * Returns the line dash offset of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#dashOffset
+	 * 
+	 * @since 3.5
+	 */
+	public float getLineDashOffset() {
+		return lineAttributes.dashOffset;
+	}
+	
+	/**
+	 * Returns the line dash miter limit of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#miterLimit
+	 * 
+	 * @since 3.5
+	 */
+	public float getLineMiterLimit() {
+		return lineAttributes.miterLimit;
+	}
 
-/**
- * Sets whether XOR based fill and XOR based outline should be used for this shape.
- *
- * @param b <code>true</code> if the outline and fill should be XOR'ed
- * @since 2.0
- */
-public void setXOR(boolean b) {
-	xorOutline = xorFill = b;
-	repaint();
-}
+	/**
+	 * @since 3.5
+	 */
+	public void setAlpha(int value) {
+		if(alpha != value) {
+			alpha = value;
+			repaint();
+		}
+	}
+	
+	/**
+	 * @see org.eclipse.swt.graphics.GC#setAntialias(int)
+	 * @param value
+	 * @since 3.5
+	 */
+	public void setAntialias(int value) {
+		if(antialias != value) {
+			antialias = value;
+			repaint();
+		}
+	}
 
+	/**
+	 * Sets all line attributes at once.
+	 * @see org.eclipse.swt.graphics.LineAttributes
+	 * 
+	 * @param la
+	 * @since 3.5
+	 */
+	public void setLineAttributes(LineAttributes la) {
+		if(!lineAttributes.equals(la)) {
+			SWTGraphics.copyLineAttributes(lineAttributes, la);
+			repaint();
+		}
+	}
+	
+	/**
+	 * Sets the line width to be used to outline the shape.
+	 *
+	 * @param w the new width
+	 * @since 2.0
+	 */
+	public void setLineWidth(int w) {
+		float _w = w;
+		
+		if (lineAttributes.width != _w) {
+			lineAttributes.width = _w;
+			
+			// synchronize lineWidth fields for
+			// backwards compatibility
+			lineWidth = w;
+			lastLineWidth = w;
+			
+			repaint();
+		}
+	}	
+	
+	
+	/**
+	 * Sets the line width of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#width
+	 * 
+	 * @param value
+	 * @since 3.5
+	 */
+	public void setLineWidthFloat(float value) {
+		if(lineAttributes.width != value) {
+			lineAttributes.width = value;
+			
+			// synchronize lineWidth fields for
+			// backwards compatibility
+			lineWidth = (int)value;
+			lastLineWidth = (int)value;
+
+			repaint();
+		}
+	}	
+
+	/**
+	 * Sets the line join style of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#join
+	 * 
+	 * @param join
+	 * @since 3.5
+	 */
+	public void setLineJoin(int join) {
+		if(lineAttributes.join != join) {
+			lineAttributes.join = join;
+			repaint();
+		}
+	}
+
+	/**
+	 * Sets the line cap style of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#cap
+	 * 
+	 * @param cap
+	 * @since 3.5
+	 */
+	public void setLineCap(int cap) {
+		if(lineAttributes.cap != cap) {
+			lineAttributes.cap = cap;
+			repaint();
+		}
+	}
+	
+	
+	/**
+	 * Sets the line style of this shape's outline.
+	 *@see org.eclipse.swt.graphics.LineAttributes#style
+	 *
+	 * @param style the new line style
+	 * @since 2.0
+	 */
+	public void setLineStyle(int style) {
+		if (lineAttributes.style != style) {
+			lineAttributes.style = style;
+
+			// synchronize the lineStyle field
+			// to the lineStyle we actually use
+			lineStyle = style;
+			
+			repaint();
+		}
+	}	
+
+	/**
+	 * Sets the line dash style of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#dash
+	 * 
+	 * @param dash
+	 * @since 3.5
+	 */
+	public void setLineDash(float[] dash) {
+		if(!lineAttributes.dash.equals(dash)) {
+			lineAttributes.dash = (float[])dash.clone();
+			repaint();
+		}
+	}
+
+	/**
+	 * Sets the line dash offset of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#dashOffset
+	 * 
+	 * @param dashOffset
+	 * @since 3.5
+	 */
+	public void setLineDashOffset(float dashOffset) {
+		if(lineAttributes.dashOffset != dashOffset) {
+			lineAttributes.dashOffset = dashOffset;
+			repaint();
+		}
+	}
+
+	/**
+	 * Sets the line dash miter limit of this shape's outline.
+	 * @see org.eclipse.swt.graphics.LineAttributes#miterLimit
+	 * 
+	 * @param miterLimit
+	 * @since 3.5
+	 */
+	public void setLineMiterLimit(float miterLimit) {
+		if(lineAttributes.miterLimit != miterLimit) {
+			lineAttributes.miterLimit = miterLimit;
+			repaint();
+		}
+	}
+	
 }

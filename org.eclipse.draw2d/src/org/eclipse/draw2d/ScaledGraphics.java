@@ -22,6 +22,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.PathData;
 import org.eclipse.swt.graphics.TextLayout;
@@ -75,7 +76,7 @@ protected static class State {
 	private double appliedX;
 	private double appliedY;
 	private Font font;
-	private int lineWidth;
+	private float lineWidth;
 	private double zoom; 
 
 	/**
@@ -94,6 +95,22 @@ protected static class State {
 	 * @param lineWidth the line width
 	 */
 	protected State(double zoom, double x, double y, Font font, int lineWidth) {
+		this(zoom, x, y, font, (float)lineWidth);
+	}
+	
+	/**
+	 * Constructs a new State object and initializes the properties based on the given 
+	 * values.
+	 * 
+	 * @param zoom the zoom factor
+	 * @param x the x offset
+	 * @param y the y offset
+	 * @param font the font
+	 * @param lineWidth the line width
+	 * 
+	 * @since 3.5
+	 */
+	protected State(double zoom, double x, double y, Font font, float lineWidth) {
 		this.zoom = zoom;
 		this.appliedX = x;
 		this.appliedY = y;
@@ -110,7 +127,22 @@ protected static class State {
 	 * @param lineWidth the line width
 	 */
 	protected void setValues(double zoom, double x, double y, 
-								Font font, int lineWidth) {
+			Font font, int lineWidth) {
+		setValues(zoom, x, y, font, (float)lineWidth);
+	}
+
+	/**
+	 * Sets all the properties of the state object.
+	 * @param zoom the zoom factor
+	 * @param x the x offset
+	 * @param y the y offset
+	 * @param font the font
+	 * @param lineWidth the line width
+	 * 
+	 * @since 3.5
+	 */
+	protected void setValues(double zoom, double x, double y, 
+								Font font, float lineWidth) {
 		this.zoom = zoom;
 		this.appliedX = x;
 		this.appliedY = y;
@@ -137,7 +169,7 @@ private double fractionalY;
 private Graphics graphics;
 private FontHeightCache localCache = new FontHeightCache();
 private Font localFont;
-private int localLineWidth;
+private float localLineWidth;
 private List stack = new ArrayList();
 private int stackPointer = 0;
 private FontHeightCache targetCache = new FontHeightCache();
@@ -151,7 +183,7 @@ double zoom = 1.0;
 public ScaledGraphics(Graphics g) {
 	graphics = g;
 	localFont = g.getFont();
-	localLineWidth = g.getLineWidth();
+	localLineWidth = g.getLineWidthFloat();
 }
 
 /** @see Graphics#clipRect(Rectangle) */
@@ -526,8 +558,16 @@ public int getLineStyle() {
 	return graphics.getLineStyle();
 }
 
+public float getLineMiterLimit() {
+	return graphics.getLineMiterLimit();
+}
+
 /** @see Graphics#getLineWidth() */
 public int getLineWidth() {
+	return (int)getLocalLineWidth();
+}
+
+public float getLineWidthFloat() {
 	return getLocalLineWidth();
 }
 
@@ -535,7 +575,7 @@ private Font getLocalFont() {
 	return localFont;
 }
 
-private int getLocalLineWidth() {
+private float getLocalLineWidth() {
 	return localLineWidth;
 }
 
@@ -676,8 +716,16 @@ public void setLineStyle(int style) {
 	graphics.setLineStyle(style);
 }
 
+public void setLineMiterLimit(float value) {
+	graphics.setLineMiterLimit(value);
+}
+
 /** @see Graphics#setLineWidth(int) */
 public void setLineWidth(int width) {
+	setLocalLineWidth(width);
+}
+
+public void setLineWidthFloat(float width) {
 	setLocalLineWidth(width);
 }
 
@@ -686,9 +734,9 @@ private void setLocalFont(Font f) {
 	graphics.setFont(zoomFont(f));
 }
 
-private void setLocalLineWidth(int width) {
+private void setLocalLineWidth(float width) {
 	localLineWidth = width;
-	graphics.setLineWidth(zoomLineWidth(width));
+	graphics.setLineWidthFloat(zoomLineWidth(width));
 }
 
 void setScale(double value) {
@@ -696,7 +744,7 @@ void setScale(double value) {
 		return;
 	this.zoom = value;
 	graphics.setFont(zoomFont(getLocalFont()));
-	graphics.setLineWidth(zoomLineWidth(localLineWidth));
+	graphics.setLineWidthFloat(zoomLineWidth(localLineWidth));
 }
 
 /**
@@ -761,7 +809,7 @@ int zoomFontHeight(int height) {
 	return (int)(zoom * height);
 }
 
-int zoomLineWidth(int w) {
+float zoomLineWidth(float w) {
 	return w;
 }
 
@@ -868,5 +916,9 @@ private Point zoomTextPoint(int x, int y) {
 						(int)(Math.floor((y + localCache.height - 1) * zoom 
 											- targetCache.height + 1 + fractionalY)));
 }
+
+public void setLineAttributes(LineAttributes attributes) {
+	graphics.setLineAttributes(attributes);
+}	
 
 }
