@@ -678,7 +678,6 @@ public abstract class Graphics {
 	/**
 	 * Returns the current line width.
 	 * @return the line width
-	 * @deprecated
 	 */
 	public abstract int getLineWidth();
 	
@@ -928,7 +927,6 @@ public abstract class Graphics {
 	 * Sets the line width.
 	 * 
 	 * @param width the new width
-	 * @deprecated
 	 */
 	public abstract void setLineWidth(int width);
 	
