@@ -1,4 +1,4 @@
-#Tue Nov 11 17:04:11 EST 2008
+#Wed Dec 10 16:00:46 EST 2008
 ANNOTATION_ELEMENT_TYPE_ADDED_METHOD_WITHOUT_DEFAULT_VALUE=Error
 ANNOTATION_ELEMENT_TYPE_CHANGED_TYPE_CONVERSION=Error
 ANNOTATION_ELEMENT_TYPE_REMOVED_FIELD=Error
@@ -59,6 +59,7 @@ INTERFACE_ELEMENT_TYPE_REMOVED_METHOD=Error
 INTERFACE_ELEMENT_TYPE_REMOVED_TYPE_MEMBER=Error
 INTERFACE_ELEMENT_TYPE_REMOVED_TYPE_PARAMETER=Error
 INVALID_JAVADOC_TAG=Error
+INVALID_REFERENCE_IN_SYSTEM_LIBRARIES=Error
 LEAK_EXTEND=Error
 LEAK_FIELD_DECL=Error
 LEAK_IMPLEMENT=Error
@@ -88,3 +89,5 @@ incompatible_api_component_version_include_minor_without_api_change=Disabled
 invalid_since_tag_version=Error
 malformed_since_tag=Error
 missing_since_tag=Error
+report_api_breakage_when_major_version_incremented=Disabled
+report_resolution_errors_api_component=Error

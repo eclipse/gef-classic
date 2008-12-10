@@ -21,7 +21,7 @@
             <message_arguments>
                 <message_argument value="DrawerEditPart"/>
                 <message_argument value="PaletteAnimator"/>
-                <message_argument value="removeDrawer(DrawerEditPart)"/>
+                <message_argument value="addDrawer(DrawerEditPart)"/>
             </message_arguments>
         </filter>
         <filter id="643846161">
@@ -35,15 +35,15 @@
             <message_arguments>
                 <message_argument value="DrawerEditPart"/>
                 <message_argument value="PaletteAnimator"/>
-                <message_argument value="addDrawer(DrawerEditPart)"/>
+                <message_argument value="removeDrawer(DrawerEditPart)"/>
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/org/eclipse/gef/ui/actions/CopyRetargetAction.java" type="org.eclipse.gef.ui.actions.CopyRetargetAction">
+    <resource path="src/org/eclipse/gef/ui/actions/ZoomInRetargetAction.java" type="org.eclipse.gef.ui.actions.ZoomInRetargetAction">
         <filter id="571473929">
             <message_arguments>
                 <message_argument value="RetargetAction"/>
-                <message_argument value="CopyRetargetAction"/>
+                <message_argument value="ZoomInRetargetAction"/>
             </message_arguments>
         </filter>
     </resource>
@@ -55,11 +55,11 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/org/eclipse/gef/ui/actions/ZoomInRetargetAction.java" type="org.eclipse.gef.ui.actions.ZoomInRetargetAction">
+    <resource path="src/org/eclipse/gef/ui/actions/CopyRetargetAction.java" type="org.eclipse.gef.ui.actions.CopyRetargetAction">
         <filter id="571473929">
             <message_arguments>
                 <message_argument value="RetargetAction"/>
-                <message_argument value="ZoomInRetargetAction"/>
+                <message_argument value="CopyRetargetAction"/>
             </message_arguments>
         </filter>
     </resource>
@@ -85,6 +85,20 @@
             <message_arguments>
                 <message_argument value="RetargetAction"/>
                 <message_argument value="ZoomOutRetargetAction"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/gef/ui/palette/customize/PaletteCustomizerDialog.java" type="org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog">
+        <filter id="571519004">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog"/>
+                <message_argument value="TreeViewer"/>
+            </message_arguments>
+        </filter>
+        <filter id="571519004">
+            <message_arguments>
+                <message_argument value="org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog"/>
+                <message_argument value="ActionContributionItem"/>
             </message_arguments>
         </filter>
     </resource>
