@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2008 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,23 @@ public class LineBorder
 
 private int width = 1;
 private Color color;
+private int style = Graphics.LINE_SOLID;
+
+/**
+ * Constructs a LineBorder with the specified color and of the specified width and style.
+ *
+ * @param color The color of the border.
+ * @param width The width of the border in pixels.
+ * @param style The style of the border. For the list of valid values, see 
+ * {@link org.eclipse.draw2d.Graphics}
+ * @since 3.5
+ */
+public LineBorder(Color color, int width, int style) {
+	setColor(color);
+	setWidth(width);
+	setStyle(style);
+}
+
 
 /**
  * Constructs a LineBorder with the specified color and of the specified width.
@@ -32,8 +49,7 @@ private Color color;
  * @since 2.0
  */
 public LineBorder(Color color, int width) {
-	setColor(color);
-	setWidth(width);
+	this(color, width, Graphics.LINE_SOLID);
 }
 
 /**
@@ -109,6 +125,7 @@ public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	}
 	tempRect.shrink(getWidth() / 2, getWidth() / 2);
 	graphics.setLineWidth(getWidth());
+	graphics.setLineStyle(getStyle());
 	if (getColor() != null)
 		graphics.setForegroundColor(getColor());
 	graphics.drawRectangle(tempRect);
@@ -127,7 +144,27 @@ public void setColor(Color color) {
  * @param width The line width
  */
 public void setWidth(int width) {
-	this.width = width;
+	if (width > 0) {
+		this.width = width;
+	}
+}
+
+/**
+ * Returns the line style for this border.
+ * @return The line style for this border
+ * @since 3.5
+ */
+public int getStyle() {
+	return style;
+}
+
+/**
+ * Sets the line type of this border.
+ * @param style For the list of valid values, see {@link org.eclipse.draw2d.Graphics}
+ * @since 3.5
+ */
+public void setStyle(int style) {
+	this.style = style;
 }
 
 }
