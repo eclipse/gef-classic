@@ -25,6 +25,11 @@
 	<target name="suite">
 		<property name="draw2d-folder" value="${eclipse-home}/draw2d_folder" />
 		<delete dir="${draw2d-folder}" quiet="true" />
+		<echoproperties format="text"/>
+<echo>
+swt.library.path = ${swt.library.path}
+java.library.path = ${java.library.path}
+</echo>
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${draw2d-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />

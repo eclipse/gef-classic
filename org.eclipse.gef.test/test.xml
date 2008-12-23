@@ -30,6 +30,11 @@
 	<target name="suite">
 		<property name="gef-folder" value="${eclipse-home}/gef_folder" />
 		<delete dir="${gef-folder}" quiet="true" />
+		<echoproperties format="text"/>
+<echo>
+swt.library.path = ${swt.library.path}
+java.library.path = ${java.library.path}
+</echo>
 		<ant target="ui-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="data-dir" value="${gef-folder}" />
 			<property name="plugin-name" value="${plugin-name}" />
