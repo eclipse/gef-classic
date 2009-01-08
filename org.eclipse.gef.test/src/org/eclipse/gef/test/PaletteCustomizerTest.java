@@ -124,6 +124,10 @@ protected void tearDown() throws Exception {
  *
  */
 public void testBottomSelection() {
+    boolean assertsEnabled = false; 
+    assert assertsEnabled = true;
+    assertTrue("Assertions must be enabled via JVM flag -ea or -enableassertions", assertsEnabled);
+
 	resetBottom();
 	drawerA.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
 	stackA.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
