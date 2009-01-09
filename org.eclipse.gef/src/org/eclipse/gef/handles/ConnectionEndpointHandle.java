@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 IBM Corporation and others.
+ * Copyright (c) 2008, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,8 +38,8 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 	private int endPoint;
 
 	/**
-	 * Creates a new ConnectionStartHandle, sets its owner to <code>owner</code>,
-	 * and sets its locator to a {@link ConnectionLocator}.
+	 * Creates a new ConnectionStartHandle, sets its owner to <code>owner</code>
+	 * , and sets its locator to a {@link ConnectionLocator}.
 	 * 
 	 * @param owner
 	 *            the ConnectionEditPart owner
@@ -107,6 +107,17 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 		}
 		tracker.setDefaultCursor(getCursor());
 		return tracker;
+	}
+
+	/**
+	 * Return the endpoint handle.
+	 * 
+	 * @return the endPoint handle, which is is either {@link ConnectionLocator#SOURCE}
+	 *         or {@link ConnectionLocator#TARGET}.
+	 * @since 3.5
+	 */
+	public int getEndPoint() {
+		return endPoint;
 	}
 
 }
