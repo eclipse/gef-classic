@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -69,8 +69,13 @@ public Point getLocation() {
  * @return the new object
  */
 public Object getNewObject() {
-	if (newObject == null)
+	if (newObject == null) {
+		if (getFactory() == null) {
+			throw new IllegalArgumentException(
+			"CreateRequest has unspecified CreationFactory"); //$NON-NLS-1$
+		}
 		newObject = getFactory().getNewObject();
+	}
 	return newObject;
 }
 
@@ -80,6 +85,10 @@ public Object getNewObject() {
  * @return the type of the new object
  */
 public Object getNewObjectType() {
+	if (getFactory() == null) {
+		throw new IllegalArgumentException(
+		"CreateRequest has unspecified CreationFactory"); //$NON-NLS-1$
+	}
 	return getFactory().getObjectType();
 }
 
