@@ -246,16 +246,6 @@ public void testBottomSelection() {
  *
  */
 public void testMiddleSelection() {
-    /*try
-    {
-      assert false;
-      fail("Assertions must be enabled via JVM flag -ea or -enableassertions");
-    }
-    catch (AssertionError exception)
-    {
-      // Ignore
-    }*/
-    
 	resetMiddle();
 	drawerA.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
 	
