@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -901,6 +901,15 @@ public abstract class Graphics {
 	 * @since 3.1
 	 */
 	public void setLineDash(int dash[]) {
+		throwNotImplemented();
+	}
+
+	/**
+	 * Sets the dash pattern when the custom line style is in use.
+	 * @param value the pixel pattern.
+	 * @since 3.5
+	 */
+	public void setLineDash(float[] value) {
 		throwNotImplemented();
 	}
 	
