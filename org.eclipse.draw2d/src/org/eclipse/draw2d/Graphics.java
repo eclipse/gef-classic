@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * The Graphics class allows you to draw to a surface.  The drawXxx() methods that pertain 
  * to shapes draw an outline of the shape, whereas the fillXxx() methods fill in the shape.
  * Also provides for drawing text, lines and images.
+ * 
+ * @noextend This class is not intended to be subclassed by clients.
  */
 public abstract class Graphics {
 
