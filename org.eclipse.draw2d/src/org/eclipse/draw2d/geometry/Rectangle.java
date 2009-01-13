@@ -1,12 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation
+ *     IBM Corporation - initial API and implementation 
+ *     Mariot Chauvin <mariot.chauvin@obeo.fr> - bug 260740
  *******************************************************************************/
 package org.eclipse.draw2d.geometry;
 
@@ -271,10 +272,16 @@ public Point getCenter() {
  * @since 2.0
  */
 public Rectangle getCopy() {
-	try {
-		return (Rectangle)clone();
-	} catch (CloneNotSupportedException exc) {
-		return new Rectangle(this);
+	
+	if (getClass() == Rectangle.class) {
+		/* avoid clone() call cost see bug #260740  */
+		return new Rectangle(this);   
+	} else {
+		try {
+			return (Rectangle)clone();
+		} catch (CloneNotSupportedException exc) {
+			return new Rectangle(this);
+		}
 	}
 }
 
