@@ -4,6 +4,7 @@
       label="%featureName"
       version="1.0.0.qualifier"
       provider-name="%providerName"
+      plugin="org.eclipse.zest.core"
       image="eclipse_update_120.jpg">
 
    <description>
@@ -43,13 +44,6 @@
 
    <plugin
          id="org.eclipse.zest.layouts"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.zest"
          download-size="0"
          install-size="0"
          version="0.0.0"
