@@ -197,7 +197,15 @@ private static int checkStyle(int style) {
  */
 public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean changed) {
 	// TODO not accounting for scrollbars and trim
-	Dimension size = getLightweightSystem().getRootFigure().getPreferredSize(wHint, hHint);
+	int borderSize = computeTrim(0, 0, 0, 0).x * -2;
+	if (wHint >= 0)
+		wHint = Math.max(0, wHint - borderSize);
+	if (hHint >= 0)
+		hHint = Math.max(0, hHint - borderSize);
+	Dimension size = getLightweightSystem()
+			.getRootFigure()
+			.getPreferredSize(wHint, hHint)
+			.getExpanded(borderSize, borderSize);
 	size.union(new Dimension(wHint, hHint));
 	return new org.eclipse.swt.graphics.Point(size.width, size.height);
 }
