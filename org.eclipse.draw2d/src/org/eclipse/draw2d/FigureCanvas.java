@@ -196,7 +196,8 @@ private static int checkStyle(int style) {
  * @see org.eclipse.swt.widgets.Composite#computeSize(int, int, boolean)
  */
 public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean changed) {
-	// TODO not accounting for scrollbars and trim
+	// TODO Still doesn't handle scrollbar cases, such as when a constrained width
+	//   would require a horizontal scrollbar, and therefore additional height.
 	int borderSize = computeTrim(0, 0, 0, 0).x * -2;
 	if (wHint >= 0)
 		wHint = Math.max(0, wHint - borderSize);
