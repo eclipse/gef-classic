@@ -518,7 +518,7 @@ protected void updateFigureUnderCursor(org.eclipse.swt.events.MouseEvent me) {
 	if (!captured) {
 		IFigure f = root.findFigureAt(me.x, me.y);
 		setFigureUnderCursor(f);
-		if ((Figure)cursorTarget != hoverSource)
+		if (cursorTarget != hoverSource)
 			updateHoverSource(me);
 	}
 }
