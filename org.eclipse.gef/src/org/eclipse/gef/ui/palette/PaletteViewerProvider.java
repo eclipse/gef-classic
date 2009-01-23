@@ -39,7 +39,7 @@ public PaletteViewerProvider(EditDomain graphicalViewerDomain) {
 }
 
 /**
- * This method is invoked from {@link #configurePaletteViewer(PaletteViewer)}.  It
+ * This method is invoked from {@link #createPaletteViewer(Composite)}.  It
  * configures the given viewer's settings.
  * @param	viewer	the viewer that is to be configured
  */
