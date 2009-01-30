@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -132,14 +132,41 @@ public abstract class Shape extends Figure {
 		lineAttributes.width = getLineWidthFloat();
 		lineAttributes.style = getLineStyle();
 		
-		graphics.setXORMode(xorOutline);
 		graphics.setLineAttributes(lineAttributes);
-		outlineShape(graphics);
+
+		if(xorOutline) {
+			/*
+			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on windows)
+			 * 
+			 * Also, XORMode is deprecated in SWT, so this should really be removed completely
+			 * at some point.  XORMode isn't supported on Mac OSX at all.
+			 */
+			boolean oldAdv = graphics.getAdvanced();
+			graphics.setAdvanced(false);
+			graphics.setXORMode(true);
+			outlineShape(graphics);
+			graphics.setAdvanced(oldAdv);
+		} else {
+			outlineShape(graphics);
+		}
 	}
 	
 	private void paintFill(Graphics graphics) {
-		graphics.setXORMode(xorFill);
-		fillShape(graphics);
+		if(xorFill) {
+			/*
+			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on windows)
+			 * 
+			 * Also, XORMode is deprecated in SWT, so this should really be removed completely
+			 * at some point.  XORMode isn't supported on Mac OSX at all.
+			 */
+			boolean oldAdv = graphics.getAdvanced();
+			graphics.setAdvanced(false);
+			graphics.setXORMode(true);
+			fillShape(graphics);
+			graphics.setAdvanced(oldAdv);
+		} else {
+			fillShape(graphics);
+		}
 	}
 	
 	/**

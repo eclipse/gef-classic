@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -254,8 +254,9 @@ public SWTGraphics(GC gc) {
  * {@link #checkGC()}.
  */
 protected final void checkFill() {
-	if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null)
+	if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null) {
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
+	}
 	checkGC();
 }
 
@@ -269,8 +270,9 @@ protected final void checkGC() {
 		appliedState.relativeClip = currentState.relativeClip;
 		currentState.relativeClip.setOn(gc, translateX, translateY);
 	}
+
 	if (appliedState.graphicHints != currentState.graphicHints) {
-		reconcileHints(appliedState.graphicHints, currentState.graphicHints);
+		reconcileHints(gc, appliedState.graphicHints, currentState.graphicHints);
 		appliedState.graphicHints = currentState.graphicHints;
 	}
 }
@@ -281,8 +283,9 @@ protected final void checkGC() {
  */
 protected final void checkPaint() {
 	checkGC();
-	if (!currentState.fgColor.equals(appliedState.fgColor) && currentState.fgPattern == null)
+	if (!currentState.fgColor.equals(appliedState.fgColor) && currentState.fgPattern == null) {
 		gc.setForeground(appliedState.fgColor = currentState.fgColor);
+	}
 	
 	LineAttributes lineAttributes = currentState.lineAttributes;
 	if (!appliedState.lineAttributes.equals(lineAttributes)) {
@@ -300,8 +303,9 @@ protected final void checkPaint() {
 		appliedState.lineAttributes = clone(lineAttributes); 
 	}
 	
-	if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null)
+	if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null) {
 		gc.setBackground(appliedState.bgColor = currentState.bgColor);
+	}
 }
 
 /**
@@ -313,8 +317,9 @@ private void checkSharedClipping() {
 		
 		boolean previouslyApplied = (appliedState == currentState.relativeClip);
 		currentState.relativeClip = currentState.relativeClip.getCopy();
-		if (previouslyApplied)
+		if (previouslyApplied) {
 			appliedState.relativeClip = currentState.relativeClip;
+		}
 	}
 }
 
@@ -324,17 +329,20 @@ private void checkSharedClipping() {
  */
 protected final void checkText() {
 	checkPaint();
-	if (!appliedState.font.equals(currentState.font))
+	if (!appliedState.font.equals(currentState.font)) {
 		gc.setFont(appliedState.font = currentState.font);
+	}
 }
 
 /**
  * @see Graphics#clipRect(Rectangle)
  */
 public void clipRect(Rectangle rect) {
-	if (currentState.relativeClip == null)
+	if (currentState.relativeClip == null) {
 		throw new IllegalStateException("The current clipping area does not " + //$NON-NLS-1$
 		"support intersection."); //$NON-NLS-1$
+	}
+	
 	checkSharedClipping();
 	currentState.relativeClip.intersect(rect.x, rect.y, rect.right(), rect.bottom());
 	appliedState.relativeClip = null;
@@ -344,10 +352,13 @@ public void clipRect(Rectangle rect) {
  * @see Graphics#dispose()
  */
 public void dispose() {
-	while (stackPointer > 0)
+	while (stackPointer > 0) {
 		popState();
-	if (transform != null)
+	}
+	
+	if (transform != null) {
 		transform.dispose();
+	}
 }
 
 /**
@@ -627,9 +638,10 @@ public Rectangle getClip(Rectangle rect) {
 	if (currentState.relativeClip != null) {
 		currentState.relativeClip.getBoundingBox(rect);
 		return rect;
+	} else {
+		throw new IllegalStateException(
+				"Clipping can no longer be queried due to transformations"); //$NON-NLS-1$
 	}
-	throw new IllegalStateException(
-			"Clipping can no longer be queried due to transformations"); //$NON-NLS-1$
 }
 
 /**
@@ -761,8 +773,10 @@ protected void init() {
 }
 
 private void initTransform(boolean force) {
-	if (!force && translateX == 0 && translateY == 0)
+	if (!force && translateX == 0 && translateY == 0) {
 		return;
+	}
+	
 	if (transform == null) {
 		transform = new Transform(Display.getCurrent());
 		elementsNeedUpdate = true;
@@ -786,9 +800,11 @@ public void popState() {
  * @see Graphics#pushState()
  */
 public void pushState() {
-	if (currentState.relativeClip == null)
+	if (currentState.relativeClip == null) {
 		throw new IllegalStateException("The clipping has been modified in" + //$NON-NLS-1$
 				"a way that cannot be saved and restored."); //$NON-NLS-1$
+	}
+	
 	try {
 		State s;
 		currentState.dx = translateX;
@@ -811,34 +827,38 @@ public void pushState() {
 	}
 }
 
-private void reconcileHints(int applied, int hints) {
-	if (applied != hints) {
-		int changes = hints ^ applied;
-		
-		if ((changes & XOR_MASK) != 0)
-			gc.setXORMode((hints & XOR_MASK) != 0);
-		
-		//Check to see if there is anything remaining
-		changes &= ~XOR_MASK;
-		if (changes == 0)
-			return;
-		
-		if ((changes & INTERPOLATION_MASK) != 0)
+private static void reconcileHints(GC gc, int applied, int hints) {
+	int changes = hints ^ applied;
+	
+	if ((changes & XOR_MASK) != 0) {
+		gc.setXORMode((hints & XOR_MASK) != 0);
+	}
+	
+	//Check to see if there is anything remaining
+	changes &= ~XOR_MASK;
+	if (changes != 0) {
+		if ((changes & INTERPOLATION_MASK) != 0) {
 			gc.setInterpolation(((hints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT) - INTERPOLATION_WHOLE_NUMBER);
+		}
 		
-		if ((changes & FILL_RULE_MASK) != 0)
+		if ((changes & FILL_RULE_MASK) != 0) {
 			gc.setFillRule(((hints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) - FILL_RULE_WHOLE_NUMBER);
+		}
 		
-		if ((changes & AA_MASK) != 0)
+		if ((changes & AA_MASK) != 0) {
 			gc.setAntialias(((hints & AA_MASK) >> AA_SHIFT) - AA_WHOLE_NUMBER);
-		if ((changes & TEXT_AA_MASK) != 0)
+		}
+		
+		if ((changes & TEXT_AA_MASK) != 0) {
 			gc.setTextAntialias(((hints & TEXT_AA_MASK) >> TEXT_AA_SHIFT) - AA_WHOLE_NUMBER);
+		}
 		
 		// If advanced was flagged, but none of the conditions which trigger advanced
 		// actually got applied, force advanced graphics on.
 		if ((changes & ADVANCED_GRAPHICS_MASK) != 0) {
-			if ((hints & ADVANCED_GRAPHICS_MASK) != 0 && !gc.getAdvanced())
+			if ((hints & ADVANCED_GRAPHICS_MASK) != 0 && !gc.getAdvanced()) {
 				gc.setAdvanced(true);
+			}
 		}
 	}
 }
@@ -881,6 +901,7 @@ protected void restoreState(State s) {
 	setAlpha(s.alpha);
 	setLineAttributes(s.lineAttributes);
 	setFont(s.font);
+	
 	//This method must come last because above methods will incorrectly set advanced state
 	setGraphicHints(s.graphicHints);
 
@@ -999,12 +1020,14 @@ public void setBackgroundColor(Color color) {
  */
 public void setBackgroundPattern(Pattern pattern) {
 	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
-	if (currentState.bgPattern == pattern)
+	if (currentState.bgPattern == pattern) {
 		return;
+	}
 	currentState.bgPattern = pattern;
 
-	if (pattern != null)
+	if (pattern != null) {
 		initTransform(true);
+	}
 	gc.setBackgroundPattern(pattern);
 }
 
@@ -1066,12 +1089,14 @@ public void setForegroundColor(Color color) {
  */
 public void setForegroundPattern(Pattern pattern) {
 	currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
-	if (currentState.fgPattern == pattern)
+	if (currentState.fgPattern == pattern) {
 		return;
+	}
 	currentState.fgPattern = pattern;
 
-	if (pattern != null)
+	if (pattern != null) {
 		initTransform(true);
+	}
 	gc.setForegroundPattern(pattern);
 }
 
@@ -1191,8 +1216,9 @@ public void setTextAntialias(int value) {
  */
 public void setXORMode(boolean xor) {
 	currentState.graphicHints &= ~XOR_MASK;
-	if (xor)
+	if (xor) {
 		currentState.graphicHints |= XOR_MASK;
+	}
 }
 
 /**
