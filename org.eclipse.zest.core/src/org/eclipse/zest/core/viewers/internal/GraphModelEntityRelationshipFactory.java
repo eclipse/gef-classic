@@ -10,7 +10,6 @@
 package org.eclipse.zest.core.viewers.internal;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.zest.core.viewers.IGraphEntityRelationshipContentProvider;
@@ -68,7 +67,9 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	private void createModelRelationships(Graph model) {
 		GraphNode[] modelNodes = getNodesArray(model);
 		List listOfNodes = new ArrayList();
-		Collections.addAll(listOfNodes, modelNodes);
+		for (int i = 0; i < modelNodes.length; i++) {
+			listOfNodes.add(modelNodes[i]);
+		}
 
 		for (int i = 0; i < listOfNodes.size(); i++) {
 			GraphNode node = (GraphNode) listOfNodes.get(i);
