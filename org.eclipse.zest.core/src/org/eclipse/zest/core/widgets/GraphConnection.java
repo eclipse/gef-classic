@@ -65,34 +65,6 @@ public class GraphConnection extends GraphItem {
 	private Connection targetContainerConnectionFigure = null;
 
 	/**
-	 * For bezier curves: angle between the start point, and the line. This may
-	 * be a hint only. Future implementations of graph viewers may adjust the
-	 * actual visual representation based on the look of the graph.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	// private double startAngle;
-	/**
-	 * For bezier curves: angle between the end point and the line. This may be
-	 * a hint only. Future implementations of graph viewers may adjust the
-	 * actual visual representation based on the look of the graph.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	// private double endAngle;
-	/**
-	 * For bezier curves: this is a value from 0-1 as a ratio of the length of
-	 * the line between the start point, and the control point/the length of the
-	 * connection.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	// private double startLength;
-	/**
-	 * For bezier curves: this is a value from 0-1 as a ratio of the length of
-	 * the line between the end point, and the control point/the length of the
-	 * connection.
-	 */
-	// @tag zest(bug(152530-Bezier(fix)))
-	// private double endLength;
-	/**
 	 * The state of visibility set by the user.
 	 */
 	private boolean visible;
@@ -125,55 +97,56 @@ public class GraphConnection extends GraphItem {
 
 	private void registerConnection(GraphNode source, GraphNode destination) {
 		if (source.getSourceConnections().contains(this)) {
-			source.getSourceConnections().remove(this);
+			source.removeSourceConnection(this);
 		}
 		if (destination.getTargetConnections().contains(this)) {
-			destination.getTargetConnections().remove(this);
+			destination.removeTargetConnection(this);
 		}
 		(source).addSourceConnection(this);
 		(destination).addTargetConnection(this);
-		//connectionFigure = createFigure();
 
 		if (source.getParent().getItemType() == GraphItem.CONTAINER && destination.getParent().getItemType() == GraphItem.CONTAINER && (source.getParent() == destination.getParent())) {
-			// If the source and the destination are in the same container (not the root graph) then 
-			// don't add the connection to the edge layer.  This way we don't get artifacts on the screen
-			// when the nodes are scrolled off the screen
-			//
 			// 196189: Edges should not draw on the edge layer if both the src and dest are in the same container
 			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=196189
 			graphModel.addConnection(this, ZestRootLayer.EDGES_ON_TOP);
 		} else {
 			graphModel.addConnection(this, true);
 		}
-		graphModel.getGraph().registerItem(this);
 
 		if ((source.getParent()).getItemType() == GraphItem.CONTAINER) {
 			// If the container of the source is a container, we need to draw another
 			// arc on that arc layer
-			ChopboxAnchor srcAnchor = new ChopboxAnchor(source.getFigure());
-			ChopboxAnchor destAnchor = new ChopboxAnchor(destination.getFigure());
-			PolylineConnection polylineConnection = new PolylineConnection();
-			polylineConnection.setSourceAnchor(srcAnchor);
-			polylineConnection.setTargetAnchor(destAnchor);
-			polylineConnection.setForegroundColor(this.color);
-			((GraphContainer) source.getParent()).addConnectionFigure(polylineConnection);
-			sourceContainerConnectionFigure = polylineConnection;
+			sourceContainerConnectionFigure = doCreateFigure();
+			((GraphContainer) source.getParent()).addConnectionFigure((PolylineConnection) sourceContainerConnectionFigure);
 			this.setVisible(false);
 		}
 
 		if ((destination.getParent()).getItemType() == GraphItem.CONTAINER) { //&& src_destSameContainer == false) {
 			// If the container of the source is a container, we need to draw another
 			// arc on that arc layer
-			ChopboxAnchor srcAnchor = new ChopboxAnchor(source.getFigure());
-			ChopboxAnchor destAnchor = new ChopboxAnchor(destination.getFigure());
-			PolylineConnection polylineConnection = new PolylineConnection();
-			polylineConnection.setBackgroundColor(this.color);
-			polylineConnection.setForegroundColor(this.color);
-			polylineConnection.setSourceAnchor(srcAnchor);
-			polylineConnection.setTargetAnchor(destAnchor);
-			((GraphContainer) destination.getParent()).addConnectionFigure(polylineConnection);
-			targetContainerConnectionFigure = polylineConnection;
+			targetContainerConnectionFigure = doCreateFigure();
+			((GraphContainer) destination.getParent()).addConnectionFigure((PolylineConnection) targetContainerConnectionFigure);
 			this.setVisible(false);
+		}
+		graphModel.getGraph().registerItem(this);
+	}
+
+	void removeFigure() {
+		if (connectionFigure.getParent() != null) {
+			if (connectionFigure.getParent() instanceof ZestRootLayer) {
+				((ZestRootLayer) connectionFigure.getParent()).removeConnection(connectionFigure);
+			} else {
+				connectionFigure.getParent().remove(connectionFigure);
+			}
+		}
+		connectionFigure = null;
+		if (sourceContainerConnectionFigure != null) {
+			sourceContainerConnectionFigure.getParent().remove(sourceContainerConnectionFigure);
+			sourceContainerConnectionFigure = null;
+		}
+		if (targetContainerConnectionFigure != null) {
+			targetContainerConnectionFigure.getParent().remove(targetContainerConnectionFigure);
+			targetContainerConnectionFigure = null;
 		}
 
 	}
@@ -255,6 +228,7 @@ public class GraphConnection extends GraphItem {
 	 */
 	public void setConnectionStyle(int style) {
 		this.connectionStyle = style;
+		updateFigure(this.connectionFigure);
 	}
 
 	/**
@@ -556,7 +530,25 @@ public class GraphConnection extends GraphItem {
 		}
 	}
 
+	PolylineConnection getSourceContainerConnectionFigure() {
+		return (PolylineConnection) sourceContainerConnectionFigure;
+	}
+
+	PolylineConnection getTargetContainerConnectionFigure() {
+		return (PolylineConnection) targetContainerConnectionFigure;
+	}
+
 	private void updateFigure(Connection connection) {
+		if (sourceContainerConnectionFigure != null) {
+			doUpdateFigure(sourceContainerConnectionFigure);
+		}
+		if (targetContainerConnectionFigure != null) {
+			doUpdateFigure(targetContainerConnectionFigure);
+		}
+		doUpdateFigure(connection);
+	}
+
+	private void doUpdateFigure(Connection connection) {
 		if (connection == null) {
 			return;
 		}
@@ -609,6 +601,24 @@ public class GraphConnection extends GraphItem {
 	}
 
 	private Connection createFigure() {
+		/*
+		if ((sourceNode.getParent()).getItemType() == GraphItem.CONTAINER) {
+			GraphContainer container = (GraphContainer) sourceNode.getParent();
+			sourceContainerConnectionFigure = doCreateFigure();
+			container.addConnectionFigure((PolylineConnection) sourceContainerConnectionFigure);
+		}
+		if ((destinationNode.getParent()).getItemType() == GraphItem.CONTAINER) {
+			GraphContainer container = (GraphContainer) destinationNode.getParent();
+			targetContainerConnectionFigure = doCreateFigure();
+			container.addConnectionFigure((PolylineConnection) targetContainerConnectionFigure);
+		}
+		*/
+
+		return doCreateFigure();
+
+	}
+
+	private Connection doCreateFigure() {
 		Connection connectionFigure = null;
 		ChopboxAnchor sourceAnchor = null;
 		ChopboxAnchor targetAnchor = null;
@@ -645,7 +655,7 @@ public class GraphConnection extends GraphItem {
 		connectionFigure.setTargetAnchor(targetAnchor);
 		connectionFigure.add(this.connectionLabel, labelLocator);
 
-		updateFigure(connectionFigure);
+		doUpdateFigure(connectionFigure);
 		return connectionFigure;
 	}
 

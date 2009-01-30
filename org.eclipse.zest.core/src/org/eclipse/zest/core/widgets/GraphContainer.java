@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.FreeformViewport;
 import org.eclipse.draw2d.IFigure;
@@ -30,6 +29,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.zest.core.widgets.internal.AspectRatioFreeformLayer;
+import org.eclipse.zest.core.widgets.internal.ContainerFigure;
 import org.eclipse.zest.core.widgets.internal.ExpandGraphLabel;
 import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
@@ -651,7 +651,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	private IFigure createContainerFigure() {
 		GraphContainer node = this;
-		IFigure containerFigure = new Figure();
+		IFigure containerFigure = new ContainerFigure();
 		containerFigure.setOpaque(true);
 
 		containerFigure.addLayoutListener(LayoutAnimator.getDefault());

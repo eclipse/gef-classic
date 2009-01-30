@@ -24,6 +24,7 @@ import org.eclipse.draw2d.FreeformViewport;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LayoutAnimator;
 import org.eclipse.draw2d.MouseMotionListener;
+import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.SWTEventDispatcher;
 import org.eclipse.draw2d.ScalableFigure;
 import org.eclipse.draw2d.ScalableFreeformLayeredPane;
@@ -44,6 +45,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.zest.core.widgets.internal.ContainerFigure;
 import org.eclipse.zest.core.widgets.internal.RevealListener;
 import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
@@ -449,13 +451,17 @@ public class Graph extends FigureCanvas implements IContainer {
 					// If it node is on the fish eye layer, don't worry about it.
 					return true;
 				}
+				if (parent instanceof ContainerFigure && figure instanceof PolylineConnection) {
+					return false;
+				}
 				if (parent == zestRootLayer || parent == zestRootLayer.getParent() || parent == zestRootLayer.getParent().getParent()) {
 					return false;
 				}
 				GraphItem item = (GraphItem) figure2ItemMap.get(figure);
 				if (item != null && item.getItemType() == GraphItem.CONTAINER) {
 					return false;
-				} else if (figure instanceof FreeformLayer || parent instanceof FreeformLayer || figure instanceof ScrollPane || parent instanceof ScrollPane || parent instanceof ScalableFreeformLayeredPane || figure instanceof ScalableFreeformLayeredPane) {
+				} else if (figure instanceof FreeformLayer || parent instanceof FreeformLayer || figure instanceof ScrollPane || parent instanceof ScrollPane || parent instanceof ScalableFreeformLayeredPane || figure instanceof ScalableFreeformLayeredPane || figure instanceof FreeformViewport ||
+						parent instanceof FreeformViewport) {
 					return false;
 				}
 				return true;
@@ -856,15 +862,17 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	void removeConnection(GraphConnection connection) {
 		IFigure figure = connection.getConnectionFigure();
-		if (figure.getParent() != null) {
-			if (figure.getParent() instanceof ZestRootLayer) {
-				((ZestRootLayer) figure.getParent()).removeConnection(figure);
-			} else {
-				figure.getParent().remove(figure);
-			}
-		}
+		PolylineConnection sourceContainerConnectionFigure = connection.getSourceContainerConnectionFigure();
+		PolylineConnection targetContainerConnectionFigure = connection.getTargetContainerConnectionFigure();
+		connection.removeFigure();
 		this.getConnections().remove(connection);
 		figure2ItemMap.remove(figure);
+		if (sourceContainerConnectionFigure != null) {
+			figure2ItemMap.remove(sourceContainerConnectionFigure);
+		}
+		if (targetContainerConnectionFigure != null) {
+			figure2ItemMap.remove(targetContainerConnectionFigure);
+		}
 	}
 
 	void removeNode(GraphNode node) {
@@ -932,6 +940,12 @@ public class Graph extends FigureCanvas implements IContainer {
 		} else if (item.getItemType() == GraphItem.CONNECTION) {
 			IFigure figure = item.getFigure();
 			figure2ItemMap.put(figure, item);
+			if (((GraphConnection) item).getSourceContainerConnectionFigure() != null) {
+				figure2ItemMap.put(((GraphConnection) item).getSourceContainerConnectionFigure(), item);
+			}
+			if (((GraphConnection) item).getTargetContainerConnectionFigure() != null) {
+				figure2ItemMap.put(((GraphConnection) item).getTargetContainerConnectionFigure(), item);
+			}
 		} else if (item.getItemType() == GraphItem.CONTAINER) {
 			IFigure figure = item.getFigure();
 			figure2ItemMap.put(figure, item);

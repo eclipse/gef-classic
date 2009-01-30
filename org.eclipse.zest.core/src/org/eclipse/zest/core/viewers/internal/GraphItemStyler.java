@@ -14,21 +14,21 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.zest.core.viewers.IConnectionStyleProvider;
+import org.eclipse.zest.core.viewers.IEntityConnectionStyleProvider;
+import org.eclipse.zest.core.viewers.IEntityStyleProvider;
+import org.eclipse.zest.core.viewers.ISelfStyleProvider;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
-import org.eclipse.zest.core.viewers.IConnectionStyleProvider;
-import org.eclipse.zest.core.viewers.IEntityConnectionStyleProvider;
-import org.eclipse.zest.core.viewers.IEntityStyleProvider;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 
-/**
+/*
  * Helper class used to style graph elements based on graph element stylers.
  * 
  * @author Del Myers
- * 
  */
 // @tag bug(151327-Styles) : created to help resolve this bug
 public class GraphItemStyler {
@@ -60,6 +60,9 @@ public class GraphItemStyler {
 				node.setText((text != null) ? text : "");
 				node.setImage(((ILabelProvider) labelProvider).getImage(node.getData()));
 			}
+			if (labelProvider instanceof ISelfStyleProvider) {
+				((ISelfStyleProvider) labelProvider).selfStyleNode(entity, node);
+			}
 		} else if (item instanceof GraphConnection) {
 			GraphConnection conn = (GraphConnection) item;
 
@@ -82,7 +85,9 @@ public class GraphItemStyler {
 			}
 			int swt = getLineStyleForZestStyle(conn.getConnectionStyle());
 			conn.setLineStyle(swt);
-
+			if (labelProvider instanceof ISelfStyleProvider) {
+				((ISelfStyleProvider) labelProvider).selfStyleConnection(conn.getData(), conn);
+			}
 		}
 	}
 

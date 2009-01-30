@@ -180,12 +180,16 @@ public class GraphNode extends GraphItem {
 			GraphConnection connection = (GraphConnection) getSourceConnections().get(0);
 			if (!connection.isDisposed()) {
 				connection.dispose();
+			} else {
+				removeSourceConnection(connection);
 			}
 		}
 		while (getTargetConnections().size() > 0) {
 			GraphConnection connection = (GraphConnection) getTargetConnections().get(0);
 			if (!connection.isDisposed()) {
 				connection.dispose();
+			} else {
+				removeTargetConnection(connection);
 			}
 		}
 		graph.removeNode(this);
