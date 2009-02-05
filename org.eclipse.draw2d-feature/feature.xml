@@ -23,10 +23,6 @@
       <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/update-site/releases/site.xml"/>
    </url>
 
-   <requires>
-      <import plugin="com.ibm.icu" version="3.6.0" match="compatible"/>
-   </requires>
-
    <plugin
          id="org.eclipse.draw2d"
          download-size="0"
