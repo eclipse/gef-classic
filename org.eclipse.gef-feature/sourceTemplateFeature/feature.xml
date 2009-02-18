@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.gef.source"
       label="%featureName"
-      version="3.4.1"
+      version="3.4.2"
       provider-name="%providerName"
       image="eclipse_update_120.jpg">
 
