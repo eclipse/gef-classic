@@ -58,7 +58,7 @@ public abstract class Shape extends Figure {
 	 */
 	public Shape() {
 		setOpaque(false);
-		lineAttributes = new LineAttributes(0.0f);
+		lineAttributes = new LineAttributes(1.0f);
 		fill = true;
 		outline = true;
 		xorFill = false;
