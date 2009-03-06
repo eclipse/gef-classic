@@ -333,7 +333,11 @@ public abstract class Shape extends Figure {
 	 * @since 3.5
 	 */
 	public float[] getLineDash() {
-		return (float[])lineAttributes.dash.clone();
+		if(lineAttributes.dash != null) {
+			return (float[])lineAttributes.dash.clone();
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -490,8 +494,11 @@ public abstract class Shape extends Figure {
 	 * @since 3.5
 	 */
 	public void setLineDash(float[] dash) {
-		if(!lineAttributes.dash.equals(dash)) {
+		if((dash != null) && !dash.equals(lineAttributes.dash)) {
 			lineAttributes.dash = (float[])dash.clone();
+			repaint();
+		} else if((dash == null) && (lineAttributes.dash != null)) {
+			lineAttributes.dash = null;
 			repaint();
 		}
 	}
