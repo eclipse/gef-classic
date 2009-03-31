@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
@@ -193,7 +194,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#createNode(org.eclipse.zest.core.internal.graphmodel.GraphModel,
 	 *      java.lang.Object)
 	 */
-	public GraphNode createNode(Graph graph, Object element) {
+	public GraphNode createNode(Graph graph, Object element, IFigure figure) {
 		GraphNode node = null;
 		if (getContentProvider() instanceof INestedContentProvider) {
 			boolean isContainer = ((INestedContentProvider) getContentProvider()).hasChildren(element);
@@ -213,9 +214,13 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 				return node;
 			}
 		}
-		node = viewer.addGraphModelNode(element);
+		node = viewer.addGraphModelNode(element, figure);
 		styleItem(node);
 		return node;
+	}
+
+	public GraphNode createNode(Graph graph, Object element) {
+		return this.createNode(graph, element, null);
 	}
 
 	public void setConnectionStyle(int style) {

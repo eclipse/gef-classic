@@ -49,8 +49,8 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 public class GraphContainer extends GraphNode implements IContainer {
 
 	//private static final double CONTAINER_SCALE = 0.75;
-	private static final double scaledWidth = 600;
-	private static final double scaledHeight = 400;
+	private static final double scaledWidth = 300;
+	private static final double scaledHeight = 200;
 	private static final int CONTAINER_HEIGHT = 200;
 	private static final int MIN_WIDTH = 250;
 	private static final int ANIMATION_TIME = 100;

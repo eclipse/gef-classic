@@ -18,11 +18,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.zest.core.viewers.AbstractZoomableViewer;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
+import org.eclipse.zest.core.widgets.CGraphNode;
 import org.eclipse.zest.core.widgets.ConstraintAdapter;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
@@ -253,12 +255,18 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		return node;
 	}
 
-	GraphNode addGraphModelNode(Object element) {
+	GraphNode addGraphModelNode(Object element, IFigure figure) {
 		GraphNode node = this.getGraphModelNode(element);
 		if (node == null) {
-			node = new GraphNode((Graph) getControl(), SWT.NONE);
-			this.nodesMap.put(element, node);
-			node.setData(element);
+			if (figure != null) {
+				node = new CGraphNode((Graph) getControl(), SWT.NONE, figure);
+				this.nodesMap.put(element, node);
+				node.setData(element);
+			} else {
+				node = new GraphNode((Graph) getControl(), SWT.NONE);
+				this.nodesMap.put(element, node);
+				node.setData(element);
+			}
 		}
 		return node;
 	}

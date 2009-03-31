@@ -12,10 +12,11 @@ package org.eclipse.zest.core.viewers.internal;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.zest.core.viewers.IFigureProvider;
+import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
-import org.eclipse.zest.core.viewers.IGraphContentProvider;
 
 /**
  * This factory helps make models (nodes & connections).
@@ -52,6 +53,11 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 		// make the model have the same styles as the viewer
 		Object rels[] = getContentProvider().getElements(getViewer().getInput());
 		if (rels != null) {
+			IFigureProvider figureProvider = null;
+			if (getLabelProvider() instanceof IFigureProvider) {
+				figureProvider = (IFigureProvider) getLabelProvider();
+			}
+
 			// If rels returns null then just continue
 			// @tag zest(bug(134928(fix))) : An empty graph causes an NPE
 			for (int i = 0; i < rels.length; i++) {
@@ -62,24 +68,32 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 				// Check hte filter on the dest
 				Object dest = getCastedContent().getDestination(rels[i]);
 				dest = filterElement(getViewer().getInput(), dest) ? null : dest;
+
 				if (source == null) {
 					// just create the node for the destination
 					if (dest != null) {
-						createNode(model, dest);
+						if (figureProvider != null) {
+							createNode(model, dest, figureProvider.getFigure(dest));
+						} else {
+							createNode(model, dest);
+						}
 					}
 					continue;
 				} else if (dest == null) {
 					// just create the node for the source
 					if (source != null) {
-						createNode(model, source);
+						if (figureProvider != null) {
+							createNode(model, source, figureProvider.getFigure(dest));
+						} else {
+							createNode(model, source);
+						}
 					}
 					continue;
 				}
 				// If any of the source, dest is null or the edge is filtered,
 				// don't create the graph.
 				if (source != null && dest != null && !filterElement(getViewer().getInput(), rels[i])) {
-					createConnection(model, rels[i], getCastedContent().getSource(rels[i]), getCastedContent()
-							.getDestination(rels[i]));
+					createConnection(model, rels[i], getCastedContent().getSource(rels[i]), getCastedContent().getDestination(rels[i]));
 				}
 			}
 		}

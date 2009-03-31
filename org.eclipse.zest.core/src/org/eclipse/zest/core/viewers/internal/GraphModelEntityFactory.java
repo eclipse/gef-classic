@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.zest.core.viewers.EntityConnectionData;
+import org.eclipse.zest.core.viewers.IFigureProvider;
 import org.eclipse.zest.core.viewers.IGraphEntityContentProvider;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
@@ -59,8 +60,16 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 		}
 		for (int i = 0; i < entities.length; i++) {
 			Object data = entities[i];
+			IFigureProvider figureProvider = null;
+			if (getLabelProvider() instanceof IFigureProvider) {
+				figureProvider = (IFigureProvider) getLabelProvider();
+			}
 			if (!filterElement(inputElement, data)) {
-				createNode(model, data);
+				if (figureProvider != null) {
+					createNode(model, data, figureProvider.getFigure(data));
+				} else {
+					createNode(model, data);
+				}
 			}
 		}
 
