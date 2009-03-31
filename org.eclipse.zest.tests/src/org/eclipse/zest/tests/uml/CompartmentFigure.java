@@ -16,7 +16,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Insets;
 
-class CompartmentFigure extends Figure {
+public class CompartmentFigure extends Figure {
 
 	public CompartmentFigure() {
 		ToolbarLayout layout = new ToolbarLayout();

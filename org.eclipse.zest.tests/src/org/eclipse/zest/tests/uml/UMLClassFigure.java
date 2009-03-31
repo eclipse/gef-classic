@@ -15,7 +15,7 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 
-class UMLClassFigure extends Figure {
+public class UMLClassFigure extends Figure {
 
 	private CompartmentFigure attributeFigure = new CompartmentFigure();
 	private CompartmentFigure methodFigure = new CompartmentFigure();
