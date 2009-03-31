@@ -23,6 +23,10 @@ public class CompositeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		super(styles);
 		this.algorithms = algoirthms;
 	}
+	
+	public CompositeLayoutAlgorithm( LayoutAlgorithm[] algoirthms) {
+		this(0, algoirthms);
+	}
 
 	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 
