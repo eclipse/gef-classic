@@ -78,6 +78,7 @@ public class GraphNode extends GraphItem {
 	protected IFigure nodeFigure;
 
 	private boolean isDisposed = false;
+	private boolean hasCustomTooltip;
 
 	public GraphNode(IContainer graphModel, int style) {
 		this(graphModel, style, null);
@@ -323,6 +324,7 @@ public class GraphNode extends GraphItem {
 	 * figure has been set.
 	 */
 	public void setTooltip(IFigure tooltip) {
+		hasCustomTooltip = true;
 		this.tooltip = tooltip;
 		updateFigureForModel(nodeFigure);
 	}
@@ -762,30 +764,15 @@ public class GraphNode extends GraphItem {
 		if (highlighted == HIGHLIGHT_ON) {
 			figure.setForegroundColor(getForegroundColor());
 			figure.setBackgroundColor(getHighlightColor());
-		}
-		// @tag ADJACENT : Removed highlight adjacent
-		/*
-		else if (highlighted == HIGHLIGHT_ADJACENT) {
-			figure.setForegroundColor(getForegroundColor());
-			figure.setBackgroundColor(getHighlightAdjacentColor());
-		}
-		*/
-		else {
+		} else {
 			figure.setForegroundColor(getForegroundColor());
 			figure.setBackgroundColor(getBackgroundColor());
 		}
 
 		figure.setFont(getFont());
 
-		/*
-		Dimension d = figure.getSize();
-		if (d.height > 0 && d.width > 0) {
-			this.size = d.getCopy();
-			//setSize(d.width, d.height);
-		}
-		*/
-
-		if (this.getTooltip() == null) {
+		if (this.getTooltip() == null && hasCustomTooltip == false) {
+			// if we have a custom tooltip, don't try and create our own.
 			toolTip = new Label();
 			((Label) toolTip).setText(getText());
 		} else {
@@ -793,7 +780,6 @@ public class GraphNode extends GraphItem {
 		}
 		figure.setToolTip(toolTip);
 
-		//figure.addLayoutListener(LayoutAnimator.getDefault());
 		refreshLocation();
 
 		if (isFisheyeEnabled) {
@@ -831,15 +817,7 @@ public class GraphNode extends GraphItem {
 		if (highlighted == HIGHLIGHT_ON) {
 			label.setForegroundColor(getForegroundColor());
 			label.setBackgroundColor(getHighlightColor());
-		}
-		// @tag ADJACENT : Removed highlight adjacent
-		/*
-		else if (highlighted == HIGHLIGHT_ADJACENT) {
-			label.setForegroundColor(getForegroundColor());
-			label.setBackgroundColor(getHighlightAdjacentColor());
-		}
-		*/
-		else {
+		} else {
 			label.setForegroundColor(getForegroundColor());
 			label.setBackgroundColor(getBackgroundColor());
 		}

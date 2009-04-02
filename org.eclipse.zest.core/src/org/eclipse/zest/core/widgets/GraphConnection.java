@@ -73,6 +73,7 @@ public class GraphConnection extends GraphItem {
 
 	private boolean highlighted;
 	private GraphLayoutConnection layoutConnection = null;
+	private boolean hasCustomTooltip;
 
 	public GraphConnection(Graph graphModel, int style, GraphNode source, GraphNode destination) {
 		super(graphModel, style);
@@ -336,6 +337,7 @@ public class GraphConnection extends GraphItem {
 	 * figure has been set.
 	 */
 	public void setTooltip(IFigure tooltip) {
+		hasCustomTooltip = true;
 		this.tooltip = tooltip;
 		updateFigure(connectionFigure);
 	}
@@ -591,7 +593,7 @@ public class GraphConnection extends GraphItem {
 		}
 
 		IFigure toolTip;
-		if (this.getTooltip() == null && getText() != null && getText().length() > 0) {
+		if (this.getTooltip() == null && getText() != null && getText().length() > 0 && hasCustomTooltip == false) {
 			toolTip = new Label();
 			((Label) toolTip).setText(getText());
 		} else {
