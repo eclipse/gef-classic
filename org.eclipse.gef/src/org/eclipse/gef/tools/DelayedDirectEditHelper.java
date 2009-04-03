@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -99,13 +99,16 @@ void hookControl(Control control) {
  */
 public void run() {
 	if (activeHelper == this 
-		&& part.isActive() 
-		&& viewer.getControl() != null
-		&& !viewer.getControl().isDisposed()) {			
-			viewer.getControl().removeFocusListener(focus);
-			viewer.getControl().removeMouseListener(mouse);
-			viewer.getControl().removeKeyListener(key);
-			part.performRequest(req);
+			&& part.isActive() 
+			&& viewer.getControl() != null
+			&& !viewer.getControl().isDisposed()) {			
+				part.performRequest(req);
+	}
+	if (viewer.getControl() != null
+			&& !viewer.getControl().isDisposed()) {			
+				viewer.getControl().removeFocusListener(focus);
+				viewer.getControl().removeMouseListener(mouse);
+				viewer.getControl().removeKeyListener(key);
 	}
 	activeHelper = null;
 }
