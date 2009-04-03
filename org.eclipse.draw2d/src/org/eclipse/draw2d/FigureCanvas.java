@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,8 +26,17 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * A Canvas that contains {@link Figure Figures}.
- * 
+ * A scrolling Canvas that contains {@link Figure Figures}
+ * viewed through a {@link Viewport}.  Call {@link #setContents(IFigure)}
+ * to specify the root of the tree of <tt>Figures</tt> to be viewed
+ * through the <tt>Viewport</tt>.
+ * <p>
+ * Normal procedure for using a FigureCanvas:
+ * <ol>
+ * 		<li>Create a FigureCanvas.
+ * 		<li>Create a Draw2d Figure and call {@link #setContents(IFigure)}. This Figure will be the 
+ * 			top-level Figure of the Draw2d application.
+ * </ol>
  * <dl>
  * <dt><b>Required Styles (when using certain constructors):</b></dt>
  * <dd>V_SCROLL, H_SCROLL, NO_REDRAW_RESIZE</dd>
