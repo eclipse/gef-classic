@@ -16,49 +16,54 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * An figure that draws an ellipse filling its bounds.
  */
-public class Ellipse
-	extends Shape
-{
-
-/**
- * Constructs a new Ellipse with the default values of a Shape.
- * @since 2.0
- */
-public Ellipse() { }
-
-/**
- * Returns <code>true</code> if the given point (x,y) is contained within this ellipse.
- * @param x the x coordinate
- * @param y the y coordinate
- * @return <code>true</code>if the given point is contained
- */
-public boolean containsPoint(int x, int y) {
-	if (!super.containsPoint(x, y))
-		return false;
-	Rectangle r = getBounds();
-	long ux = x - r.x - r.width / 2;
-	long uy = y - r.y - r.height / 2;
-	return ((ux * ux) << 10) / (r.width * r.width) 
-		 + ((uy * uy) << 10) / (r.height * r.height) <= 256;
-}
-
-/**
- * Fills the ellipse.
- * @see org.eclipse.draw2d.Shape#fillShape(org.eclipse.draw2d.Graphics)
- */
-protected void fillShape(Graphics graphics) {
-	graphics.fillOval(getBounds());
-}
-
-/**
- * Outlines the ellipse.
- * @see org.eclipse.draw2d.Shape#outlineShape(org.eclipse.draw2d.Graphics)
- */
-protected void outlineShape(Graphics graphics) {
-	int lineInset = (int)Math.ceil(Math.max(1.0, getLineWidthFloat() / 2.0));
-	Rectangle r = Rectangle.SINGLETON.setBounds(getBounds());
-	r.shrink(lineInset, lineInset);
-	graphics.drawOval(r);
-}
-
+public class Ellipse extends Shape {
+	/**
+	 * Constructs a new Ellipse with the default values of a Shape.
+	 * @since 2.0
+	 */
+	public Ellipse() { }
+	
+	/**
+	 * Returns <code>true</code> if the given point (x,y) is contained within this ellipse.
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return <code>true</code>if the given point is contained
+	 */
+	public boolean containsPoint(int x, int y) {
+		if (!super.containsPoint(x, y)) {
+			return false;
+		} else {
+			Rectangle r = getBounds();
+			long ux = x - r.x - r.width / 2;
+			long uy = y - r.y - r.height / 2;
+			return ((ux * ux) << 10) / (r.width * r.width) 
+				 + ((uy * uy) << 10) / (r.height * r.height) <= 256;
+		}
+	}
+	
+	/**
+	 * Fills the ellipse.
+	 * @see org.eclipse.draw2d.Shape#fillShape(org.eclipse.draw2d.Graphics)
+	 */
+	protected void fillShape(Graphics graphics) {
+		graphics.fillOval(getBounds());
+	}
+	
+	/**
+	 * Outlines the ellipse.
+	 * @see org.eclipse.draw2d.Shape#outlineShape(org.eclipse.draw2d.Graphics)
+	 */
+	protected void outlineShape(Graphics graphics) {
+	    float lineInset = Math.max(1.0f, getLineWidthFloat()) / 2.0f;
+	    int inset1 = (int)Math.floor(lineInset);
+	    int inset2 = (int)Math.ceil(lineInset);
+	
+	    Rectangle r = Rectangle.SINGLETON.setBounds(getBounds());
+	    r.x += inset1 ; 
+	    r.y += inset1; 
+	    r.width -= inset1 + inset2;
+	    r.height -= inset1 + inset2;
+		
+		graphics.drawOval(r);
+	}
 }

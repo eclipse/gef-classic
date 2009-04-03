@@ -95,8 +95,11 @@ public abstract class Shape extends Figure {
 		graphics.setAlpha(alpha);
 		//graphics.rotate(rotation);
 
+		/* see bug #267397: paintFigure was historically not called, disabling
+		 * setOpaque() behavior, and it was decided to defend the API's consistency.
+		 */
 		// paint background and border 
-		super.paintFigure(graphics);
+		// super.paintFigure(graphics);
 			
 		if (!isEnabled()) {
 			graphics.translate(1, 1);
