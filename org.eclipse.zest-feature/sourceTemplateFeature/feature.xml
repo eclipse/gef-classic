@@ -24,7 +24,13 @@
    </url>
 
    <plugin
-         id="org.eclipse.zest.source"
+         id="org.eclipse.zest.core.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.zest.layouts.source"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
