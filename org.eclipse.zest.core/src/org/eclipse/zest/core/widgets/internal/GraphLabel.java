@@ -99,7 +99,7 @@ public class GraphLabel extends CachedLabel {
 	protected void initLabel() {
 		super.setFont(Display.getDefault().getSystemFont());
 		this.borderColor = ColorConstants.black;
-		this.borderWidth = 1;
+		this.borderWidth = 0;
 		this.arcWidth = 8;
 		this.setLayoutManager(new StackLayout());
 		this.setBorder(new MarginBorder(1));
@@ -159,58 +159,47 @@ public class GraphLabel extends CachedLabel {
 
 		graphics.pushState();
 
-		// fill in the background
-		Rectangle bounds = getBounds().getCopy();
-		Rectangle r = bounds.getCopy();
-		//r.x += arcWidth / 2;
-		r.y += arcWidth / 2;
-		//r.width -= arcWidth;
-		r.height -= arcWidth;
+		// Fill a rectangle that at the end is only visible as border.
+		Rectangle rect = getBounds().getCopy();
+		graphics.setForegroundColor(borderColor);
+		graphics.setBackgroundColor(borderColor);
+		graphics.fillRoundRectangle(rect, arcWidth, arcWidth);
 
-		Rectangle top = bounds.getCopy();
-		top.height /= 2;
-		//graphics.setForegroundColor(lightenColor);
-		//graphics.setBackgroundColor(lightenColor);
+		// Top part inside the border (as fillGradient does not allow to fill a rectangle with round corners).
+		rect = getBounds().getCopy();
+		rect.height -= (2 * getBorderWidth());
+		rect.width -= (2 * getBorderWidth());
+		rect.height /= 2;
+		rect.y += getBorderWidth();
+		rect.x += getBorderWidth();
 		graphics.setForegroundColor(getBackgroundColor());
 		graphics.setBackgroundColor(getBackgroundColor());
-		graphics.fillRoundRectangle(top, arcWidth, arcWidth);
+		graphics.fillRoundRectangle(rect, arcWidth, arcWidth);
 
-		top.y = top.y + top.height;
-		//graphics.setForegroundColor(getBackgroundColor());
-		//graphics.setBackgroundColor(getBackgroundColor());
+		// Bottom part inside the border.
+		rect.y = rect.y + rect.height;
+		rect.height += 1; // Not sure why it is needed, but it is needed ;-)
 		graphics.setForegroundColor(lightenColor);
 		graphics.setBackgroundColor(lightenColor);
-		graphics.fillRoundRectangle(top, arcWidth, arcWidth);
+		graphics.fillRoundRectangle(rect, arcWidth, arcWidth);
 
-		//graphics.setForegroundColor(lightenColor);
-		//graphics.setBackgroundColor(getBackgroundColor());
+		// Now fill the middle part of top and bottom part with a gradient.
+		rect = bounds.getCopy();
+		rect.height -= (2 * borderWidth);
+		rect.width -= (2 * borderWidth);
+		rect.height -= arcWidth;
+		rect.x += borderWidth;
+		rect.y += borderWidth;
+		rect.y += (arcWidth / 2);
 		graphics.setBackgroundColor(lightenColor);
 		graphics.setForegroundColor(getBackgroundColor());
-		graphics.fillGradient(r, true);
+		graphics.fillGradient(rect, true);
 
 		super.paint(graphics);
+
 		graphics.popState();
-		graphics.setForegroundColor(lightenColor);
-		graphics.setBackgroundColor(lightenColor);
-		// paint the border
-		bounds.setSize(bounds.width - 1, bounds.height - 1);
-		graphics.drawRoundRectangle(bounds, arcWidth, arcWidth);
+
 		lightenColor.dispose();
-		/*
-		graphics.setForegroundColor(getForegroundColor());
-		graphics.setBackgroundColor(getBackgroundColor());
-
-		// fill in the background
-		Rectangle bounds = getBounds().getCopy();
-		graphics.fillRoundRectangle(bounds, arcWidth, arcWidth);
-
-		super.paint(graphics);
-		// paint the border
-		graphics.setForegroundColor(getBorderColor());
-		graphics.setLineWidth(getBorderWidth());
-		bounds.setSize(bounds.width - 1, bounds.height - 1);
-		graphics.drawRoundRectangle(bounds, arcWidth, arcWidth);
-		*/
 	}
 
 	protected Color getBackgroundTextColor() {

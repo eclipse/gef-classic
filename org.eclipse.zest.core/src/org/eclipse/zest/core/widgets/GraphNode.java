@@ -135,7 +135,7 @@ public class GraphNode extends GraphItem {
 		// @tag ADJACENT : Removed highlight adjacent
 		//this.highlightAdjacentColor = ColorConstants.orange;
 		this.nodeStyle = SWT.NONE;
-		this.borderColor = ColorConstants.black;
+		this.borderColor = ColorConstants.lightGray;
 		this.borderHighlightColor = ColorConstants.blue;
 		this.borderWidth = 1;
 		this.currentLocation = new PrecisionPoint(0, 0);
@@ -549,6 +549,7 @@ public class GraphNode extends GraphItem {
 
 	public void setBorderWidth(int width) {
 		this.borderWidth = width;
+		updateFigureForModel(nodeFigure);
 	}
 
 	public Font getFont() {
@@ -759,15 +760,17 @@ public class GraphNode extends GraphItem {
 		}
 		figure.setIcon(getImage());
 
-		// @tag TODO: Add border and foreground colours to highlight
-		// (this.borderColor)
 		if (highlighted == HIGHLIGHT_ON) {
 			figure.setForegroundColor(getForegroundColor());
 			figure.setBackgroundColor(getHighlightColor());
+			figure.setBorderColor(getBorderHighlightColor());
 		} else {
 			figure.setForegroundColor(getForegroundColor());
 			figure.setBackgroundColor(getBackgroundColor());
+			figure.setBorderColor(getBorderColor());
 		}
+
+		figure.setBorderWidth(getBorderWidth());
 
 		figure.setFont(getFont());
 
