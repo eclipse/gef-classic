@@ -159,41 +159,40 @@ public class GraphLabel extends CachedLabel {
 
 		graphics.pushState();
 
-		// Fill a rectangle that at the end is only visible as border.
-		Rectangle rect = getBounds().getCopy();
-		graphics.setForegroundColor(borderColor);
-		graphics.setBackgroundColor(borderColor);
-		graphics.fillRoundRectangle(rect, arcWidth, arcWidth);
-
 		// Top part inside the border (as fillGradient does not allow to fill a rectangle with round corners).
-		rect = getBounds().getCopy();
-		rect.height -= (2 * getBorderWidth());
-		rect.width -= (2 * getBorderWidth());
+		Rectangle rect = getBounds().getCopy();
 		rect.height /= 2;
-		rect.y += getBorderWidth();
-		rect.x += getBorderWidth();
 		graphics.setForegroundColor(getBackgroundColor());
 		graphics.setBackgroundColor(getBackgroundColor());
-		graphics.fillRoundRectangle(rect, arcWidth, arcWidth);
+		graphics.fillRoundRectangle(rect, arcWidth, arcWidth * 2);
 
 		// Bottom part inside the border.
 		rect.y = rect.y + rect.height;
 		rect.height += 1; // Not sure why it is needed, but it is needed ;-)
 		graphics.setForegroundColor(lightenColor);
 		graphics.setBackgroundColor(lightenColor);
-		graphics.fillRoundRectangle(rect, arcWidth, arcWidth);
+		graphics.fillRoundRectangle(rect, arcWidth, arcWidth * 2);
 
 		// Now fill the middle part of top and bottom part with a gradient.
 		rect = bounds.getCopy();
-		rect.height -= (2 * borderWidth);
-		rect.width -= (2 * borderWidth);
-		rect.height -= arcWidth;
-		rect.x += borderWidth;
+		rect.height -= 2;
 		rect.y += borderWidth;
 		rect.y += (arcWidth / 2);
+		rect.height -= arcWidth;
 		graphics.setBackgroundColor(lightenColor);
 		graphics.setForegroundColor(getBackgroundColor());
 		graphics.fillGradient(rect, true);
+
+		// Paint the border
+		rect = getBounds().getCopy();
+		rect.x += borderWidth / 2;
+		rect.y += borderWidth / 2;
+		rect.width -= borderWidth;
+		rect.height -= borderWidth;
+		graphics.setForegroundColor(borderColor);
+		graphics.setBackgroundColor(borderColor);
+		graphics.setLineWidth(borderWidth);
+		graphics.drawRoundRectangle(rect, arcWidth, arcWidth);
 
 		super.paint(graphics);
 
