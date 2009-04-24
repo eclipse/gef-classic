@@ -13,6 +13,7 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.MarginBorder;
+import org.eclipse.draw2d.ScaledGraphics;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -158,27 +159,32 @@ public class GraphLabel extends CachedLabel {
 		graphics.setBackgroundColor(getBackgroundColor());
 
 		graphics.pushState();
+		double scale = 1;
 
+		if (graphics instanceof ScaledGraphics) {
+			scale = ((ScaledGraphics) graphics).getAbsoluteScale();
+		}
 		// Top part inside the border (as fillGradient does not allow to fill a rectangle with round corners).
 		Rectangle rect = getBounds().getCopy();
 		rect.height /= 2;
 		graphics.setForegroundColor(getBackgroundColor());
 		graphics.setBackgroundColor(getBackgroundColor());
-		graphics.fillRoundRectangle(rect, arcWidth, arcWidth * 2);
+		graphics.fillRoundRectangle(rect, arcWidth * borderWidth, arcWidth * 2 * borderWidth);
 
 		// Bottom part inside the border.
 		rect.y = rect.y + rect.height;
 		rect.height += 1; // Not sure why it is needed, but it is needed ;-)
 		graphics.setForegroundColor(lightenColor);
 		graphics.setBackgroundColor(lightenColor);
-		graphics.fillRoundRectangle(rect, arcWidth, arcWidth * 2);
+		graphics.fillRoundRectangle(rect, arcWidth * borderWidth, arcWidth * 2 * borderWidth);
 
 		// Now fill the middle part of top and bottom part with a gradient.
 		rect = bounds.getCopy();
 		rect.height -= 2;
-		rect.y += borderWidth;
+		rect.y += borderWidth / 2;
 		rect.y += (arcWidth / 2);
 		rect.height -= arcWidth;
+		rect.height -= borderWidth;
 		graphics.setBackgroundColor(lightenColor);
 		graphics.setForegroundColor(getBackgroundColor());
 		graphics.fillGradient(rect, true);
@@ -191,7 +197,7 @@ public class GraphLabel extends CachedLabel {
 		rect.height -= borderWidth;
 		graphics.setForegroundColor(borderColor);
 		graphics.setBackgroundColor(borderColor);
-		graphics.setLineWidth(borderWidth);
+		graphics.setLineWidth((int) (borderWidth * scale));
 		graphics.drawRoundRectangle(rect, arcWidth, arcWidth);
 
 		super.paint(graphics);
