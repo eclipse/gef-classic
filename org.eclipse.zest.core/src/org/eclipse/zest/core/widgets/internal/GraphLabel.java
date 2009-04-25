@@ -121,6 +121,7 @@ public class GraphLabel extends CachedLabel {
 	 */
 	protected void adjustBoundsToFit() {
 		String text = getText();
+		int safeBorderWidth = borderWidth > 0 ? borderWidth : 1;
 		if ((text != null)) {
 			Font font = getFont();
 			if (font != null) {
@@ -130,7 +131,7 @@ public class GraphLabel extends CachedLabel {
 					int expandHeight = Math.max(imageRect.height - minSize.height, 0);
 					minSize.expand(imageRect.width + 4, expandHeight);
 				}
-				minSize.expand(10 + (2 * borderWidth), 4 + (2 * borderWidth));
+				minSize.expand(10 + (2 * safeBorderWidth), 4 + (2 * safeBorderWidth));
 				setBounds(new Rectangle(getLocation(), minSize));
 			}
 		}
