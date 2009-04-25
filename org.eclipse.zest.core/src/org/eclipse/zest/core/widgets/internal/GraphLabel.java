@@ -158,6 +158,7 @@ public class GraphLabel extends CachedLabel {
 		graphics.setForegroundColor(lightenColor);
 		graphics.setBackgroundColor(getBackgroundColor());
 
+		int safeBorderWidth = borderWidth > 0 ? borderWidth : 1;
 		graphics.pushState();
 		double scale = 1;
 
@@ -169,36 +170,38 @@ public class GraphLabel extends CachedLabel {
 		rect.height /= 2;
 		graphics.setForegroundColor(getBackgroundColor());
 		graphics.setBackgroundColor(getBackgroundColor());
-		graphics.fillRoundRectangle(rect, arcWidth * borderWidth, arcWidth * 2 * borderWidth);
+		graphics.fillRoundRectangle(rect, arcWidth * safeBorderWidth, arcWidth * 2 * safeBorderWidth);
 
 		// Bottom part inside the border.
 		rect.y = rect.y + rect.height;
 		rect.height += 1; // Not sure why it is needed, but it is needed ;-)
 		graphics.setForegroundColor(lightenColor);
 		graphics.setBackgroundColor(lightenColor);
-		graphics.fillRoundRectangle(rect, arcWidth * borderWidth, arcWidth * 2 * borderWidth);
+		graphics.fillRoundRectangle(rect, arcWidth * safeBorderWidth, arcWidth * 2 * safeBorderWidth);
 
 		// Now fill the middle part of top and bottom part with a gradient.
 		rect = bounds.getCopy();
 		rect.height -= 2;
-		rect.y += borderWidth / 2;
+		rect.y += (safeBorderWidth) / 2;
 		rect.y += (arcWidth / 2);
-		rect.height -= arcWidth;
-		rect.height -= borderWidth;
+		rect.height -= arcWidth / 2;
+		rect.height -= safeBorderWidth;
 		graphics.setBackgroundColor(lightenColor);
 		graphics.setForegroundColor(getBackgroundColor());
 		graphics.fillGradient(rect, true);
 
 		// Paint the border
-		rect = getBounds().getCopy();
-		rect.x += borderWidth / 2;
-		rect.y += borderWidth / 2;
-		rect.width -= borderWidth;
-		rect.height -= borderWidth;
-		graphics.setForegroundColor(borderColor);
-		graphics.setBackgroundColor(borderColor);
-		graphics.setLineWidth((int) (borderWidth * scale));
-		graphics.drawRoundRectangle(rect, arcWidth, arcWidth);
+		if (borderWidth > 0) {
+			rect = getBounds().getCopy();
+			rect.x += safeBorderWidth / 2;
+			rect.y += safeBorderWidth / 2;
+			rect.width -= safeBorderWidth;
+			rect.height -= safeBorderWidth;
+			graphics.setForegroundColor(borderColor);
+			graphics.setBackgroundColor(borderColor);
+			graphics.setLineWidth((int) (safeBorderWidth * scale));
+			graphics.drawRoundRectangle(rect, arcWidth, arcWidth);
+		}
 
 		super.paint(graphics);
 
