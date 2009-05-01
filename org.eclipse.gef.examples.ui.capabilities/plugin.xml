@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+
+	<extension
+       point="org.eclipse.ui.activities">
+       
+    <activity
+    	  description="%activity.gef.examples.description"
+          id="org.eclipse.gef.examples.ui.capabilities"
+          name="%activity.gef.examples">
+    </activity>
+    <activityPatternBinding
+          activityId="org.eclipse.gef.examples.ui.capabilities"
+          pattern="org\.eclipse\.gef\.examples\..*/.*">
+    </activityPatternBinding>
+  </extension>
+
+</plugin>
