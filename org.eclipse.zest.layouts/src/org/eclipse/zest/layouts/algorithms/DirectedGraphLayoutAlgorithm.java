@@ -20,6 +20,7 @@ import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.DirectedGraphLayout;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
+import org.eclipse.swt.SWT;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
@@ -80,7 +81,12 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		for (Iterator iterator = graph.nodes.iterator(); iterator.hasNext();) {
 			Node node = (Node) iterator.next();
 			InternalNode internalNode = (InternalNode) node.data;
-			internalNode.setInternalLocation(node.x, node.y);
+			// For horizontal layout transpose the x and y coordinates
+			if ((layout_styles & SWT.HORIZONTAL) == SWT.HORIZONTAL) {
+				internalNode.setInternalLocation(node.y, node.x);
+			}else {
+				internalNode.setInternalLocation(node.x, node.y);
+			}
 		}
 		updateLayoutLocations(entitiesToLayout);
 	}
