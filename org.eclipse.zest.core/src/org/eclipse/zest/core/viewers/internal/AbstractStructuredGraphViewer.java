@@ -652,7 +652,6 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 			}
 			// remove the relationship from the model
 			relationship.dispose();
-			applyLayout();
 		}
 	}
 
@@ -665,13 +664,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	public void addNode(Object element) {
 		if (nodesMap.get(element) == null) {
 			// create the new node
-			GraphNode newNode = getFactory().createNode(getGraphControl(), element);
+			getFactory().createNode(getGraphControl(), element);
 
-			// add it to the layout algorithm
-			if (getLayoutAlgorithm() != null) {
-				getLayoutAlgorithm().addEntity(newNode.getLayoutEntity());
-			}
-			applyLayout();
 		}
 	}
 
@@ -691,10 +685,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 				getLayoutAlgorithm().removeRelationships(node.getSourceConnections());
 				getLayoutAlgorithm().removeRelationships(node.getTargetConnections());
 			}
-
 			// remove the node and it's connections from the model
 			node.dispose();
-			applyLayout();
 		}
 	}
 
@@ -712,13 +704,8 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	public void addRelationship(Object connection, Object srcNode, Object destNode) {
 		// create the new relationship
 		IStylingGraphModelFactory modelFactory = getFactory();
-		GraphConnection newConnection = modelFactory.createConnection(getGraphControl(), connection, srcNode, destNode);
+		modelFactory.createConnection(getGraphControl(), connection, srcNode, destNode);
 
-		// add it to the layout algorithm
-		if (getLayoutAlgorithm() != null) {
-			getLayoutAlgorithm().addRelationship(newConnection.getLayoutRelationship());
-		}
-		applyLayout();
 	}
 
 	/**
@@ -736,11 +723,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 				Object source = content.getSource(connection);
 				Object dest = content.getDestination(connection);
 				// create the new relationship
-				GraphConnection newConnection = modelFactory.createConnection(getGraphControl(), connection, source, dest);
-				// add it to the layout algorithm
-				if (getLayoutAlgorithm() != null) {
-					getLayoutAlgorithm().addRelationship(newConnection.getLayoutRelationship());
-				}
+				modelFactory.createConnection(getGraphControl(), connection, source, dest);
 			} else {
 				throw new UnsupportedOperationException();
 			}
