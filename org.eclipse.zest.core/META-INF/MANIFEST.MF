@@ -9,8 +9,7 @@ Require-Bundle: org.eclipse.zest.layouts,
  org.eclipse.ui,
  org.eclipse.draw2d;visibility:=reexport
 Eclipse-LazyStart: false
-Export-Package: org.eclipse.zest.core.messages,
- org.eclipse.zest.core.viewers,
+Export-Package: org.eclipse.zest.core.viewers,
  org.eclipse.zest.core.widgets
 Import-Package: com.ibm.icu.text;version="[3.8.1,5.0.0)"
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

@@ -20,6 +20,7 @@ import java.util.TreeSet;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.zest.core.viewers.AbstractZoomableViewer;
@@ -125,7 +126,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		if (getInput() != null) {
-			ZestException.throwError(ZestException.ERROR_CANNOT_SET_STYLE, "", null);
+			throw new SWTError(SWT.ERROR_UNSPECIFIED);
 		}
 		this.nodeStyle = nodeStyle;
 	}
@@ -140,10 +141,10 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 */
 	public void setConnectionStyle(int connectionStyle) {
 		if (getInput() != null) {
-			ZestException.throwError(ZestException.ERROR_CANNOT_SET_STYLE, "", null);
+			throw new SWTError(SWT.ERROR_UNSPECIFIED);
 		}
 		if (!ZestStyles.validateConnectionStyle(connectionStyle)) {
-			ZestException.throwError(ZestException.ERROR_INVALID_STYLE, "", null);
+			throw new SWTError(SWT.ERROR_INVALID_ARGUMENT);
 		}
 		this.connectionStyle = connectionStyle;
 	}

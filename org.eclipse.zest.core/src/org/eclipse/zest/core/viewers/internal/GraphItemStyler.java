@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.IFontProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTError;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.zest.core.viewers.IConnectionStyleProvider;
 import org.eclipse.zest.core.viewers.IEntityConnectionStyleProvider;
@@ -100,7 +101,7 @@ public class GraphItemStyler {
 		Color c;
 		int style = provider.getConnectionStyle(rel);
 		if (!ZestStyles.validateConnectionStyle(style)) {
-			ZestException.throwError(ZestException.ERROR_INVALID_STYLE, "", null);
+			throw new SWTError(SWT.ERROR_INVALID_ARGUMENT);
 		}
 		if (style != ZestStyles.NONE) {
 			conn.setConnectionStyle(style);
@@ -152,7 +153,7 @@ public class GraphItemStyler {
 		Color c;
 		int style = provider.getConnectionStyle(src, dest);
 		if (!ZestStyles.validateConnectionStyle(style)) {
-			ZestException.throwError(ZestException.ERROR_INVALID_STYLE, "", null);
+			throw new SWTError(SWT.ERROR_INVALID_ARGUMENT);
 		}
 		if (style != ZestStyles.NONE) {
 			conn.setConnectionStyle(style);
