@@ -25,10 +25,6 @@
    </url>
 
    <includes
-         id="org.eclipse.draw2d.sdk"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.gef.sdk"
          version="0.0.0"/>
 
@@ -39,19 +35,5 @@
    <includes
          id="org.eclipse.gef.examples"
          version="0.0.0"/>
-
-   <plugin
-         id="org.eclipse.gef.doc.isv"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.draw2d.doc.isv"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
 </feature>
