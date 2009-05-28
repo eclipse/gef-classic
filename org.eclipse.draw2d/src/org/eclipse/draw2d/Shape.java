@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.LineAttributes;
 
 /**
@@ -48,8 +47,8 @@ public abstract class Shape extends Figure {
 	private boolean outline;
 	private boolean xorFill;
 	private boolean xorOutline;
-	private int antialias;
-	private int alpha;
+	private Integer antialias;
+	private Integer alpha;
 	
 	/**
 	 * Default constructor.
@@ -63,8 +62,8 @@ public abstract class Shape extends Figure {
 		outline = true;
 		xorFill = false;
 		xorOutline = false;
-		antialias = SWT.DEFAULT;
-		alpha = 255;
+		antialias = null;
+		alpha = null;
 
 		// synchronize parameters
 		lineWidth = (int)lineAttributes.width;
@@ -91,8 +90,12 @@ public abstract class Shape extends Figure {
 	 * @see Figure#paintFigure(Graphics)
 	 */
 	public void paintFigure(Graphics graphics) {
-		graphics.setAntialias(antialias);
-		graphics.setAlpha(alpha);
+		if(antialias != null) {
+			graphics.setAntialias(antialias.intValue());
+		}
+		if(alpha != null) {
+			graphics.setAlpha(alpha.intValue());
+		}
 		//graphics.rotate(rotation);
 
 		/* see bug #267397: paintFigure was historically not called, disabling
@@ -238,14 +241,14 @@ public abstract class Shape extends Figure {
 	/**
 	 * @since 3.5
 	 */
-	public int getAlpha() {
+	public Integer getAlpha() {
 		return alpha;
 	}
 
 	/**
 	 * @since 3.5
 	 */
-	public int getAntialias() {
+	public Integer getAntialias() {
 		return antialias;
 	}
 	
@@ -366,7 +369,7 @@ public abstract class Shape extends Figure {
 	/**
 	 * @since 3.5
 	 */
-	public void setAlpha(int value) {
+	public void setAlpha(Integer value) {
 		if(alpha != value) {
 			alpha = value;
 			repaint();
@@ -374,15 +377,29 @@ public abstract class Shape extends Figure {
 	}
 	
 	/**
+	 * @since 3.5
+	 */
+	public void setAlpha(int value) {
+		setAlpha(new Integer(value));
+	}
+	
+	/**
 	 * @see org.eclipse.swt.graphics.GC#setAntialias(int)
 	 * @param value
 	 * @since 3.5
 	 */
-	public void setAntialias(int value) {
+	public void setAntialias(Integer value) {
 		if(antialias != value) {
 			antialias = value;
 			repaint();
 		}
+	}
+	
+	/**
+	 * @since 3.5
+	 */
+	public void setAntialias(int value) {
+		setAntialias(new Integer(value));
 	}
 
 	/**
