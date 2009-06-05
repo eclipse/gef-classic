@@ -4,7 +4,7 @@
       label="%featureName"
       version="3.5.0.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.gef.examples.source"
+      plugin="org.eclipse.gef.examples.logic"
       image="eclipse_update_120.jpg">
 
    <description>
@@ -51,6 +51,34 @@
 
    <plugin
          id="org.eclipse.gef.examples.shapes"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.gef.examples.logic.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.gef.examples.flow.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.gef.examples.text.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.gef.examples.shapes.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
