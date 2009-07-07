@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
+import org.eclipse.zest.core.viewers.IFigureProvider;
 import org.eclipse.zest.core.viewers.INestedContentProvider;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
@@ -220,7 +221,11 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	}
 
 	public GraphNode createNode(Graph graph, Object element) {
-		return this.createNode(graph, element, null);
+		IFigure nodeFigure = null;
+		if (getLabelProvider() instanceof IFigureProvider) {
+			nodeFigure = ((IFigureProvider) getLabelProvider()).getFigure(element);
+		}
+		return this.createNode(graph, element, nodeFigure);
 	}
 
 	public void setConnectionStyle(int style) {
