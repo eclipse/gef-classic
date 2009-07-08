@@ -1304,7 +1304,7 @@ private void translatePointArray(int[] points, int translateX, int translateY) {
 /**
  * Countermeasure against LineAttributes class not having its own clone() method.
  */
-static LineAttributes clone(LineAttributes src) {
+public static LineAttributes clone(LineAttributes src) {
 	float[] dashClone = null;
 	if (src.dash != null) {
 		dashClone = new float[src.dash.length];
@@ -1316,7 +1316,7 @@ static LineAttributes clone(LineAttributes src) {
 /**
  * Countermeasure against LineAttributes class not having a copy by value function.
  */
-static void copyLineAttributes(LineAttributes dest, LineAttributes src) {
+public static void copyLineAttributes(LineAttributes dest, LineAttributes src) {
 	if(dest != src) {
 		dest.cap = src.cap;
 		dest.join = src.join;
