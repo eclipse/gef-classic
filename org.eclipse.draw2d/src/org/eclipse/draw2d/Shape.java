@@ -56,7 +56,6 @@ public abstract class Shape extends Figure {
 	 * @since 2.0
 	 */
 	public Shape() {
-		setOpaque(false);
 		lineAttributes = new LineAttributes(1.0f);
 		fill = true;
 		outline = true;
@@ -69,6 +68,8 @@ public abstract class Shape extends Figure {
 		lineWidth = (int)lineAttributes.width;
 		lineStyle = lineAttributes.style;
 		lastLineWidth = lineWidth;
+
+		setOpaque(false);
 	}
 	
 	/**
