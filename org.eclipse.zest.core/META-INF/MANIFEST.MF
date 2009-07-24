@@ -4,7 +4,7 @@ Bundle-Name: %Plugin.name
 Bundle-SymbolicName: org.eclipse.zest.core;singleton:=true
 Bundle-Vendor: %Plugin.providerName
 Bundle-Localization: plugin
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.2.0.qualifier
 Require-Bundle: org.eclipse.zest.layouts,
  org.eclipse.ui,
  org.eclipse.draw2d;visibility:=reexport
