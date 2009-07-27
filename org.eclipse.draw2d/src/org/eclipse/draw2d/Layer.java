@@ -32,9 +32,11 @@ public boolean containsPoint(int x, int y) {
 	Point pt = Point.SINGLETON;
 	pt.setLocation(x, y);
 	translateFromParent(pt);
+	x = pt.x;
+	y = pt.y;
 	for (int i = 0; i < getChildren().size(); i++) {
 		IFigure child = (IFigure)getChildren().get(i);
-		if (child.containsPoint(pt.x, pt.y))
+		if (child.containsPoint(x, y))
 			return true;
 	}
 	return false;
