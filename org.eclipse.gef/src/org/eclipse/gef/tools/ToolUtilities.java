@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -74,7 +74,15 @@ public static void filterEditPartsUnderstanding(List list, Request request) {
 	}
 }
 
-private static boolean isAncestorContainedIn(Collection c, EditPart ep) {
+/**
+ * Checks if collection contains any ancestor of editpart <code>ep</code>
+ * 
+ * @param c - collection of editparts
+ * @param ep - the editparts to check ancestors for
+ * @return <code>true</code> if collection contains any ancestor(s) of the editpart <code>ep</code>
+ * @since 3.5
+ */
+public static boolean isAncestorContainedIn(Collection c, EditPart ep) {
 	ep = ep.getParent();
 	while (ep != null) {
 		if (c.contains(ep))
