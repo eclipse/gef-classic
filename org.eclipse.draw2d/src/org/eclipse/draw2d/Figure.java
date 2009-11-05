@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,9 +18,11 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
@@ -1355,7 +1357,11 @@ public void revalidate() {
  * @see IFigure#setBackgroundColor(Color)
  */
 public void setBackgroundColor(Color bg) {
-	bgColor = bg;
+   	if (Display.getDefault().getHighContrast()) {
+   		bgColor = Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+	} else {    	
+		bgColor = bg;
+	}		
 	repaint();
 }
 
@@ -1523,7 +1529,11 @@ public void setFont(Font f) {
 public void setForegroundColor(Color fg) {
 	if (fgColor != null && fgColor.equals(fg)) 
 		return;
-	fgColor = fg;
+   	if (Display.getDefault().getHighContrast()) {
+   		fgColor = Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_FOREGROUND);
+	} else {
+		fgColor = fg;
+	}		
 	repaint();
 }
 
