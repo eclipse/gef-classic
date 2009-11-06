@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -96,7 +96,7 @@ boolean addLeadingWordWidth(String text, int[] width) {
 	text = text.substring(1, index + 1);
 
 	if (bidiInfo == null)
-		width[0] += getTextUtilities().getStringExtents(text, getFont()).width;
+		width[0] += getTextUtilities().getTextExtents(text, getFont()).width;
 	else {
 		TextLayout textLayout = FlowUtilities.getTextLayout();
 		textLayout.setFont(getFont());
@@ -265,7 +265,7 @@ Point getPointInBox(TextFragmentBox box, int offset, int index, boolean trailing
 		if (trailing && offset < box.length)
 			offset++;
 		String substring = getText().substring(box.offset, box.offset + offset);
-		result.x = getTextUtilities().getStringExtents(substring, getFont()).width;
+		result.x = getTextUtilities().getTextExtents(substring, getFont()).width;
 	} else {
 		TextLayout layout = FlowUtilities.getTextLayout();
 		layout.setFont(getFont());
@@ -577,7 +577,7 @@ protected void paintSelection(Graphics graphics) {
 
 protected void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
 	if (bidiLevel == -1) {
-		g.drawString(draw, x, y);
+		g.drawText(draw, x, y);
 	} else {
 		TextLayout tl = FlowUtilities.getTextLayout();
 		if (isMirrored())

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2007 IBM Corporation and others.
+ * Copyright (c) 2000, 2009 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -152,7 +152,7 @@ private int measureString(TextFragmentBox frag, String string, int guess, Font f
         // happen at most once.
         return getTextLayoutBounds(string, font, 0, guess - 1).width;
     } else
-        return getTextUtilities().getStringExtents(string.substring(0, guess), font).width;
+        return getTextUtilities().getTextExtents(string.substring(0, guess), font).width;
 }
 
 /**
@@ -173,7 +173,7 @@ final protected void setupFragment(TextFragmentBox fragment, Font font, String s
         else if (fragment.requiresBidi()) {
             width = getTextLayoutBounds(string, font, 0, fragment.length - 1).width;
         } else
-            width = getTextUtilities().getStringExtents(string.substring(0, fragment.length), font).width;
+            width = getTextUtilities().getTextExtents(string.substring(0, fragment.length), font).width;
         if (fragment.isTruncated())
             width += getEllipsisWidth(font);
         fragment.setWidth(width);
@@ -381,6 +381,6 @@ protected TextUtilities getTextUtilities() {
  * @since 3.4
  */
 private int getEllipsisWidth(Font font) {
-    return getTextUtilities().getStringExtents(TextFlow.ELLIPSIS, font).width;
+    return getTextUtilities().getTextExtents(TextFlow.ELLIPSIS, font).width;
 }
 }
