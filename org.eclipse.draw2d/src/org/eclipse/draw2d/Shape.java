@@ -68,8 +68,6 @@ public abstract class Shape extends Figure {
 		lineWidth = (int)lineAttributes.width;
 		lineStyle = lineAttributes.style;
 		lastLineWidth = lineWidth;
-
-		setOpaque(false);
 	}
 	
 	/**
