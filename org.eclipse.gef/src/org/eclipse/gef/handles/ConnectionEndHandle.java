@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ public final class ConnectionEndHandle
  * @param owner the ConnectionEditPart owner
  */
 public ConnectionEndHandle(ConnectionEditPart owner) {
-	super(owner, ConnectionLocator.SOURCE);
+	super(owner, ConnectionLocator.TARGET);
 }
 
 /**
@@ -39,14 +39,14 @@ public ConnectionEndHandle(ConnectionEditPart owner) {
  * @param fixed if true, handle cannot be dragged
  */
 public ConnectionEndHandle(ConnectionEditPart owner, boolean fixed) {
-	super(owner, fixed, ConnectionLocator.SOURCE);
+	super(owner, fixed, ConnectionLocator.TARGET);
 }
 
 /**
  * Creates a new ConnectionEndHandle.
  */
 public ConnectionEndHandle() { 
-	super(ConnectionLocator.SOURCE);
+	super(ConnectionLocator.TARGET);
 }
 
 }
