@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2009 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Font;
@@ -1357,11 +1358,22 @@ public void revalidate() {
  * @see IFigure#setBackgroundColor(Color)
  */
 public void setBackgroundColor(Color bg) {
-   	if (Display.getDefault().getHighContrast()) {
-   		bgColor = Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
-	} else {    	
-		bgColor = bg;
-	}		
+	// Set background color to bg unless in high contrast mode.
+	// In that case, get the color from system
+	Display display = Display.getCurrent();
+	if (display == null) {
+		display = Display.getDefault();
+	}
+	Color highContrastClr = null;
+	try 
+	{
+		if (display.getHighContrast()) {
+			highContrastClr = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+		}
+	} catch (SWTException e) {
+		highContrastClr = null;
+    }	
+	bgColor = highContrastClr == null ? bg : highContrastClr;
 	repaint();
 }
 
@@ -1527,13 +1539,24 @@ public void setFont(Font f) {
  * @see IFigure#setForegroundColor(Color)
  */
 public void setForegroundColor(Color fg) {
+	// Set foreground color to fg unless in high contrast mode.
+	// In that case, get the color from system
 	if (fgColor != null && fgColor.equals(fg)) 
 		return;
-   	if (Display.getDefault().getHighContrast()) {
-   		fgColor = Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_FOREGROUND);
-	} else {
-		fgColor = fg;
-	}		
+	Display display = Display.getCurrent();
+	if (display == null) {
+		display = Display.getDefault();
+	}
+	Color highContrastClr = null;
+	try 
+	{
+		if (display.getHighContrast()) {
+			highContrastClr = display.getSystemColor(SWT.COLOR_WIDGET_FOREGROUND);
+		}
+	} catch (SWTException e) {
+		highContrastClr = null;
+    }
+	fgColor = highContrastClr == null ? fg : highContrastClr;
 	repaint();
 }
 
