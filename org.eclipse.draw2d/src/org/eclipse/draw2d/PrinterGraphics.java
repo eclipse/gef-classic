@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,9 +14,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Display;
 
@@ -91,8 +93,35 @@ int zoomFontHeight(int height) {
 			+ 0.0000001);
 }
 
-int zoomLineWidth(int w) {
-	return (int)(w * zoom);
+/**
+ * @see org.eclipse.draw2d.ScaledGraphics#zoomLineWidth(float)
+ */
+float zoomLineWidth(float w) {
+	return (float)(w * zoom);
 }
+
+/**
+ * Overridden to translate dashes to printer specific values.
+ * 
+ * @see org.eclipse.draw2d.ScaledGraphics#setLineAttributes(org.eclipse.swt.graphics.LineAttributes)
+ */
+public void setLineAttributes(LineAttributes attributes) {
+	if (attributes.style == SWT.LINE_CUSTOM 
+			&& attributes.dash != null && attributes.dash.length > 0) {
+		float[] newDashes = new float[attributes.dash.length];
+		float printerDot = (float)(printer.getDPI().y / Display.getCurrent().getDPI().y + 0.0000001);
+		for (int i = 0; i < attributes.dash.length; i++) {
+			newDashes[i] = attributes.dash[i] * printerDot;
+		}
+		// make a copy of attributes, we dont's want it changed on figure (or display will be affected)
+		super.setLineAttributes(new LineAttributes(
+				attributes.width, attributes.cap, attributes.join, attributes.style, 
+				newDashes, attributes.dashOffset * printerDot, attributes.miterLimit));
+	} else {
+		super.setLineAttributes(attributes);
+	}
+}
+
+
 
 }
