@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ManhattanConnectionRouter;
-import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.RelativeBendpoint;
 
 import org.eclipse.gef.AccessibleEditPart;
@@ -35,7 +34,7 @@ import org.eclipse.gef.examples.logicdesigner.model.Wire;
 import org.eclipse.gef.examples.logicdesigner.model.WireBendpoint;
 
 /**
- * Implements a Connection Editpart to represnt a Wire like
+ * Implements a Connection Editpart to represent a Wire like
  * connection.
  *
  */
@@ -47,8 +46,8 @@ public class WireEditPart
 AccessibleEditPart acc;
 
 public static final Color
-	alive = new Color(Display.getDefault(),0,74,168),
-	dead  = new Color(Display.getDefault(),0,0,0);
+	alive = new Color(Display.getDefault(),30,144,255),
+	dead  = new Color(Display.getDefault(),30,30,30);
 
 public void activate(){
 	super.activate();
@@ -119,7 +118,7 @@ protected Wire getWire() {
  * @return  Figure of this.
  */
 protected IFigure getWireFigure() {
-	return (PolylineConnection) getFigure();
+	return getFigure();
 }
 
 /**
