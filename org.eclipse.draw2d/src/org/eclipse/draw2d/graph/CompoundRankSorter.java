@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -63,12 +63,10 @@ void addRowEntry(Subgraph s, int row) {
 
 protected void assignIncomingSortValues() {
 	super.assignIncomingSortValues();
-	pullTogetherSubgraphs();
 }
 
 protected void assignOutgoingSortValues() {
 	super.assignOutgoingSortValues();
-	pullTogetherSubgraphs();
 }
 
 void optimize(DirectedGraph g) {
@@ -79,41 +77,6 @@ void optimize(DirectedGraph g) {
 	graph.containment.clear();
 	new LocalOptimizer()
 		.visit(graph);
-}
-
-private void pullTogetherSubgraphs() {
-	if (true)
-		return;
-	for (int j = 0; j < rank.count(); j++) {
-		Node n = rank.getNode(j);
-		Subgraph s = n.getParent();
-		while (s != null) {
-			getRowEntry(s, currentRow).reset();
-			s = s.getParent();
-		}
-	}
-	for (int j = 0; j < rank.count(); j++) {
-		Node n = rank.getNode(j);
-		Subgraph s = n.getParent();
-		while (s != null) {
-			RowEntry entry = getRowEntry(s, currentRow);
-			entry.count++;
-			entry.contribution += n.sortValue;
-			s = s.getParent();
-		}
-	}
-	
-	double weight = 0.5;// * (1.0 - progress) * 3;
-	
-	for (int j = 0; j < rank.count(); j++) {
-		Node n = rank.getNode(j);
-		Subgraph s = n.getParent();
-		if (s != null) {
-			RowEntry entry = getRowEntry(s, currentRow);
-			n.sortValue =
-				n.sortValue * (1.0 - weight) + weight * entry.contribution / entry.count;
-		}
-	}
 }
 
 double evaluateNodeOutgoing() {
