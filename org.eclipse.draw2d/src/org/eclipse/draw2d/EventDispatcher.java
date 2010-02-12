@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -123,9 +123,11 @@ public void dispatchMouseWheelScrolled(Event event) { }
 protected abstract AccessibilityDispatcher getAccessibilityDispatcher();
 
 /**
+ * Returns the IFigure that currently has focus.
  * @return the IFigure that currently has focus
+ * @since 3.6
  */
-/*package*/ abstract IFigure getFocusOwner();
+protected abstract IFigure getFocusOwner();
 
 /**
  * @return whether events are captured by a figure
