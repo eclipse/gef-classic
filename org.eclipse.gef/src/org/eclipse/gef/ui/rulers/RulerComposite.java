@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2007 IBM Corporation and others.
+ * Copyright (c) 2003, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -105,10 +105,12 @@ public RulerComposite(Composite parent, int style) {
 	});
 }
 
-/*
- * Calculates the proper trim.  Includes scrollbars' sizes only if they're visible.
+/**
+ * Calculates the proper trim. Includes scrollbars' sizes only if they're visible.
+ * @param canvas The canvas.
+ * @since 3.6
  */
-private static Rectangle calculateEditorTrim(Canvas canvas) {
+public static Rectangle calculateEditorTrim(Canvas canvas) {
 	/*
 	 * Workaround for Bug# 87712
 	 * Calculating the trim using the clientArea.
@@ -125,7 +127,12 @@ private static Rectangle calculateEditorTrim(Canvas canvas) {
 	return result;
 }
 
-private static Rectangle calculateRulerTrim(Canvas canvas) {
+/**
+ * Calculates the proper trim for the ruler.
+ * @param canvas The canvas.
+ * @since 3.6
+ */
+public static Rectangle calculateRulerTrim(Canvas canvas) {
 	if ("carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
 		Rectangle trim = canvas.computeTrim(0, 0, 0, 0);
 		trim.width = 0 - trim.x * 2;
@@ -202,7 +209,11 @@ private void disposeRulerViewer(GraphicalViewer viewer) {
 	viewer.getControl().dispose();
 }
 
-private void doLayout() {
+/**
+ * Perform the ruler layout.
+ * @since 3.6
+ */
+public void doLayout() {
 	if (left == null && top == null) {
 		Rectangle area = getClientArea();
 		if (!editor.getBounds().equals(area))
@@ -541,4 +552,30 @@ private static class RulerViewer
 	}
 }
 
+/**
+ * Retrieve the left ruler graphical viewer.
+ * @return The left ruler graphical viewer.
+ * @since 3.6
+ */
+protected GraphicalViewer getLeft() {
+	return left;
+}
+
+/**
+ * Retrieve the top ruler graphical viewer.
+ * @return The top ruler graphical viewer.
+ * @since 3.6
+ */
+protected GraphicalViewer getTop() {
+	return top;
+}
+
+/**
+ * Retrieve the editor figure canvas.
+ * @return The editor figure canvas.
+ * @since 3.6
+ */
+protected FigureCanvas getEditor() {
+	return editor;
+}
 }
