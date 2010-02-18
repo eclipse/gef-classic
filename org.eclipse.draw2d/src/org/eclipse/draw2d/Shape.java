@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2009 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -369,7 +369,12 @@ public abstract class Shape extends Figure {
 	 * @since 3.5
 	 */
 	public void setAlpha(Integer value) {
-		if(alpha != value) {
+		if(alpha != null) {
+			if(!alpha.equals(value)) {
+				alpha = value;
+				repaint();
+			}
+		} else if(value != null) {
 			alpha = value;
 			repaint();
 		}
@@ -379,7 +384,15 @@ public abstract class Shape extends Figure {
 	 * @since 3.5
 	 */
 	public void setAlpha(int value) {
-		setAlpha(new Integer(value));
+		if(alpha != null) {
+			if(alpha.intValue() != value) {
+				alpha = new Integer(value);
+				repaint();
+			}
+		} else {
+			alpha = new Integer(value);
+			repaint();
+		}
 	}
 	
 	/**
@@ -388,7 +401,12 @@ public abstract class Shape extends Figure {
 	 * @since 3.5
 	 */
 	public void setAntialias(Integer value) {
-		if(antialias != value) {
+		if(antialias != null) {
+			if(!antialias.equals(value)) {
+				antialias = value;
+				repaint();
+			}
+		} else if(value != null) {
 			antialias = value;
 			repaint();
 		}
@@ -398,7 +416,15 @@ public abstract class Shape extends Figure {
 	 * @since 3.5
 	 */
 	public void setAntialias(int value) {
-		setAntialias(new Integer(value));
+		if(antialias != null) {
+			if(antialias.intValue() != value) {
+				antialias = new Integer(value);
+				repaint();
+			}
+		} else {
+			antialias = new Integer(value);
+			repaint();
+		}
 	}
 
 	/**
