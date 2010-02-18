@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@ package org.eclipse.gef.examples.flow.actions;
 
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.actions.ActionFactory;
 
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.EditPartViewer;
@@ -45,13 +45,13 @@ public void buildContextMenu(IMenuManager menu) {
 	GEFActionConstants.addStandardActionGroups(menu);
 	
 	IAction action;
-	action = getActionRegistry().getAction(GEFActionConstants.UNDO);
+	action = getActionRegistry().getAction(ActionFactory.UNDO.getId());
 	menu.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
 
-	action = getActionRegistry().getAction(GEFActionConstants.REDO);
+	action = getActionRegistry().getAction(ActionFactory.REDO.getId());
 	menu.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
 	
-	action = getActionRegistry().getAction(IWorkbenchActionConstants.DELETE);
+	action = getActionRegistry().getAction(ActionFactory.DELETE.getId());
 	if (action.isEnabled())
 		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,7 @@
 package org.eclipse.gef.examples.flow.actions;
 
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.EditorActionBarContributor;
 
 import org.eclipse.gef.ui.actions.ActionBarContributor;
@@ -39,8 +39,8 @@ protected void buildActions() {
  * @see EditorActionBarContributor#contributeToToolBar(IToolBarManager)
  */
 public void contributeToToolBar(IToolBarManager toolBarManager) {
-	toolBarManager.add(getAction(IWorkbenchActionConstants.UNDO));
-	toolBarManager.add(getAction(IWorkbenchActionConstants.REDO));
+	toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
+	toolBarManager.add(getAction(ActionFactory.REDO.getId()));
 }
 
 
@@ -48,8 +48,6 @@ public void contributeToToolBar(IToolBarManager toolBarManager) {
  * @see org.eclipse.gef.ui.actions.ActionBarContributor#declareGlobalActionKeys()
  */
 protected void declareGlobalActionKeys() {
-	// TODO Auto-generated method stub
-
 }
 
 }
