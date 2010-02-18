@@ -1,23 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="org.eclipse.gef" version="2">
-    <resource path="src/org/eclipse/gef/editpolicies/StrokePointList.java" type="org.eclipse.gef.editpolicies.StrokePointList">
-        <filter id="647004193">
-            <message_arguments>
-                <message_argument value="StrokePointList.strokeList(PointList, int)"/>
-                <message_argument value="Float"/>
-                <message_argument value="lineTo(float, float)"/>
-                <message_argument value="J2SE-1.4"/>
-            </message_arguments>
-        </filter>
-        <filter id="647004193">
-            <message_arguments>
-                <message_argument value="StrokePointList.strokeList(PointList, int)"/>
-                <message_argument value="Float"/>
-                <message_argument value="moveTo(float, float)"/>
-                <message_argument value="J2SE-1.4"/>
-            </message_arguments>
-        </filter>
-    </resource>
     <resource path="src/org/eclipse/gef/ui/actions/AlignmentRetargetAction.java" type="org.eclipse.gef.ui.actions.AlignmentRetargetAction">
         <filter id="571473929">
             <message_arguments>
@@ -118,35 +100,23 @@
     <resource path="src/org/eclipse/gef/ui/palette/customize/PaletteCustomizerDialog.java" type="org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog">
         <filter id="571519004">
             <message_arguments>
-                <message_argument value="org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog.createOutlineTreeViewer(Composite)"/>
-                <message_argument value="TreeViewer"/>
-            </message_arguments>
-        </filter>
-        <filter id="571519004">
-            <message_arguments>
                 <message_argument value="org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog.createOutlineContextMenu()"/>
                 <message_argument value="ActionContributionItem"/>
             </message_arguments>
         </filter>
         <filter id="571519004">
             <message_arguments>
-                <message_argument value="org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog"/>
+                <message_argument value="org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog.createOutlineTreeViewer(Composite)"/>
                 <message_argument value="TreeViewer"/>
-            </message_arguments>
-        </filter>
-        <filter id="571519004">
-            <message_arguments>
-                <message_argument value="org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog"/>
-                <message_argument value="ActionContributionItem"/>
             </message_arguments>
         </filter>
     </resource>
     <resource path="src/org/eclipse/gef/ui/palette/editparts/PaletteAnimator.java" type="org.eclipse.gef.ui.palette.editparts.PaletteAnimator">
         <filter id="643846161">
             <message_arguments>
-                <message_argument value="DrawerFigure"/>
+                <message_argument value="DrawerEditPart"/>
                 <message_argument value="PaletteAnimator"/>
-                <message_argument value="autoCollapse(DrawerFigure)"/>
+                <message_argument value="addDrawer(DrawerEditPart)"/>
             </message_arguments>
         </filter>
         <filter id="643846161">
@@ -158,9 +128,9 @@
         </filter>
         <filter id="643846161">
             <message_arguments>
-                <message_argument value="DrawerEditPart"/>
+                <message_argument value="DrawerFigure"/>
                 <message_argument value="PaletteAnimator"/>
-                <message_argument value="addDrawer(DrawerEditPart)"/>
+                <message_argument value="autoCollapse(DrawerFigure)"/>
             </message_arguments>
         </filter>
     </resource>
