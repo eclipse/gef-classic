@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,10 +7,10 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Research Group Software Construction,
+ *     RWTH Aachen University, Germany - Contribution for Bugzilla 245182
  *******************************************************************************/
 package org.eclipse.draw2d.geometry;
-
-
 
 /**
  * Represents a 2-dimensional directional Vector, or Ray. {@link java.util.Vector} is 
@@ -129,6 +129,29 @@ public Ray getAdded(Ray r) {
 }
 
 /**
+ * Creates a new Ray which is the difference of this Ray with the provided Ray.
+ * 
+ * @param q
+ *            Ray to be subtracted from this Ray
+ * @return a new Ray
+ * @since 3.6
+ */
+public Ray getSubtracted(Ray q) {
+	return new Ray(x - q.x, y - q.y);
+}
+
+/**
+ * Returns the angle between this Ray and the provided Ray.
+ * @param q Ray to calculate the angle. 
+ * @return the angle between the two Rays.
+ * @since 3.6
+ */
+public double getAngle(Ray q) {
+	double cosAlpha = dotProduct(q) / (length() * q.length());
+	return Math.acos(cosAlpha);
+}
+
+/**
  * Creates a new Ray which represents the average of this Ray with another.
  * @param r  Ray to calculate the average.
  * @return  a new Ray
@@ -146,6 +169,17 @@ public Ray getAveraged(Ray r) {
  */
 public Ray getScaled(int s) {
 	return new Ray(x * s, y * s);
+}
+
+/**
+ * Returns the orthogonal complement of this Ray, which is defined to be
+ * (-y, x).
+ * 
+ * @return the orthogonal complement of this Ray
+ * @since 3.6
+ */
+public Ray getOrthogonalComplement() {
+	return new Ray(-y, x);
 }
 
 /**
@@ -190,6 +224,14 @@ public int similarity(Ray r) {
  */
 public String toString() {
 	return "(" + x + "," + y + ")";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+}
+
+/**
+ * @return A Point representation
+ * @since 3.6
+ */
+public Point toPoint(){
+	return new Point(x,y);
 }
 
 }
