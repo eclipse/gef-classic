@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,7 @@ public class Draw2dTestSuite extends TestSuite {
 		addTest(new TestSuite(RectangleTest.class));
 		// addTest(new TestSuite(ColorConstantTest.class));
 		addTest(new TestSuite(RayTest.class));
+		addTest(new TestSuite(StraightTest.class));
 		addTest(new TestSuite(RelativeBendpointTest.class));
 		addTest(new TestSuite(GeometryTest.class));
 		addTest(new TestSuite(ScalablePolygonShapeTest.class));
