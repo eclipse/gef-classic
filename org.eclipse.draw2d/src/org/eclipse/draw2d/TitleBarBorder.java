@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Michael Houston (schmeeky@gmail.com) - Bugzilla 259088
  *******************************************************************************/
 package org.eclipse.draw2d;
 
@@ -26,18 +27,21 @@ public class TitleBarBorder
 	extends AbstractLabeledBorder
 {
 
-private static Color defaultColor = ColorConstants.menuBackgroundSelected;
+private static Color defaultBackgroundColor = ColorConstants.menuBackgroundSelected;
+private static Color defaultForegroundColor = ColorConstants.menuForegroundSelected;
 
 private int textAlignment = PositionConstants.LEFT;
 private Insets padding = new Insets(1, 3, 2, 2);
-private Color fillColor = defaultColor;
+private Color fillColor = defaultBackgroundColor;
 
 /**
  * Constructs a TitleBarBorder with its label set to the name of this class.
  * 
  * @since 2.0
  */
-public TitleBarBorder() { }
+public TitleBarBorder() {
+	setTextColor(defaultForegroundColor);
+}
 
 /**
  * Constructs a TitleBarBorder with its label set to the passed String.
@@ -46,6 +50,7 @@ public TitleBarBorder() { }
  * @since 2.0
  */
 public TitleBarBorder(String s) {
+	this();
 	setLabel(s);
 }
 
