@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.Platform;
 
 import org.eclipse.draw2d.FreeformFigure;
 import org.eclipse.draw2d.IFigure;
@@ -443,7 +444,11 @@ public void setZoomAsText(String zoomString) {
 			double newZoom = NumberFormat.getInstance().parse(zoomString).doubleValue() /100; 
 			setZoom(newZoom / multiplier);
 		} catch (Exception e) {
-			Display.getCurrent().beep();
+			// Workaround for MacOS X Cocoa Bugzilla 300837 
+			if (!("".equals(zoomString) && Platform.WS_COCOA //$NON-NLS-1$
+					.equals(Platform.getWS()))) {
+				Display.getCurrent().beep();
+			}
 		}
 	}
 }
