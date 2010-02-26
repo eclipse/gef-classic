@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.CompoundBorder;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.LabeledBorder;
 import org.eclipse.draw2d.LabeledContainer;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.MouseEvent;
@@ -50,8 +49,6 @@ static class InternalFrameBorder extends CompoundBorder {
 		);
 	}
 }
-
-private LabeledBorder labeledBorder;
 
 public InternalFrame(){
 	super(new InternalFrameBorder());
