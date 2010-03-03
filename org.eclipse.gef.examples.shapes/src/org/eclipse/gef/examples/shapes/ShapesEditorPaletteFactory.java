@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2008 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2004, 2010 Elias Volanakis and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes;
 
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -17,9 +17,7 @@ import org.eclipse.gef.palette.ConnectionCreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteDrawer;
-import org.eclipse.gef.palette.PaletteGroup;
 import org.eclipse.gef.palette.PaletteRoot;
-import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.PaletteToolbar;
 import org.eclipse.gef.palette.PanningSelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
@@ -36,13 +34,6 @@ import org.eclipse.gef.examples.shapes.model.RectangularShape;
  * @author Elias Volanakis
  */
 final class ShapesEditorPaletteFactory {
-
-/** Preference ID used to persist the palette location. */
-private static final String PALETTE_DOCK_LOCATION = "ShapesEditorPaletteFactory.Location";
-/** Preference ID used to persist the palette size. */
-private static final String PALETTE_SIZE = "ShapesEditorPaletteFactory.Size";
-/** Preference ID used to persist the flyout palette's state. */
-private static final String PALETTE_STATE = "ShapesEditorPaletteFactory.State";
 
 /** Create the "Shapes" drawer. */
 private static PaletteContainer createShapesDrawer() {
