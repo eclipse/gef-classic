@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006 IBM Corporation and others.
+ * Copyright (c) 2006, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,14 +50,6 @@ public class DragEditPartsTrackerTest  extends TestCase {
         
         
         /* (non-Javadoc)
-         * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
-         */
-        public void addChild(EditPart ep) {
-            addChild(ep, 0);
-        }
-
-        
-        /* (non-Javadoc)
          * @see org.eclipse.gef.editparts.AbstractEditPart#register()
          */
         protected void register() {
@@ -69,7 +61,6 @@ public class DragEditPartsTrackerTest  extends TestCase {
          * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
          */
         protected IFigure createFigure() {
-            // TODO Auto-generated method stub
             return new Figure();
         }
 
@@ -84,92 +75,74 @@ public class DragEditPartsTrackerTest  extends TestCase {
     private class DummyEditorPart implements org.eclipse.ui.IEditorPart {
 
 		public void addPropertyListener(IPropertyListener listener) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		public void createPartControl(Composite parent) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		public void dispose() {
-			// TODO Auto-generated method stub
 			
 		}
 
 		public IWorkbenchPartSite getSite() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		public String getTitle() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		public Image getTitleImage() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		public String getTitleToolTip() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		public void removePropertyListener(IPropertyListener listener) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		public void setFocus() {
-			// TODO Auto-generated method stub
 			
 		}
 
 		public IEditorInput getEditorInput() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		public IEditorSite getEditorSite() {
-			// TODO Auto-generated method stub
 			return null;
 		}
 
 		public void init(IEditorSite site, IEditorInput input) throws PartInitException {
-			// TODO Auto-generated method stub
 			
 		}
 
 		public void doSave(IProgressMonitor monitor) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		public void doSaveAs() {
-			// TODO Auto-generated method stub
 			
 		}
 
 		public boolean isDirty() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		public boolean isSaveAsAllowed() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		public boolean isSaveOnCloseNeeded() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		public Object getAdapter(Class adapter) {
-			// TODO Auto-generated method stub
 			return null;
 		}
     	
@@ -179,7 +152,6 @@ public class DragEditPartsTrackerTest  extends TestCase {
     	
     	public TestDragEditPartsTracker(EditPart sourceEditPart) {
 			super(sourceEditPart);
-			// TODO Auto-generated constructor stub
 		}
 
 		public List createOperationSet() {
