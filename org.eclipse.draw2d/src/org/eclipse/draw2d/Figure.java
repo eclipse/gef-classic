@@ -73,6 +73,7 @@ private LayoutManager layoutManager;
 protected int flags = FLAG_VISIBLE | FLAG_ENABLED;
 
 private IFigure parent;
+private IClippingStrategy clippingStrategy = new ClippingStrategy();
 private Cursor cursor;
 
 private PropertyChangeSupport propertyListeners;
@@ -572,6 +573,16 @@ public Rectangle getClientArea(Rectangle rect) {
  */
 public final Rectangle getClientArea() {
 	return getClientArea(new Rectangle());
+}
+
+/**
+ * Returns the IClippingStrategy used by this figure to clip its children
+ * 
+ * @return the IClipppingStrategy used to clip this figure's children.
+ * @since 3.6
+ */
+protected IClippingStrategy getClippingStrategy() {
+	return clippingStrategy;
 }
 
 /**
@@ -1080,15 +1091,18 @@ protected void paintBorder(Graphics graphics) {
  * @since 2.0
  */
 protected void paintChildren(Graphics graphics) {
-	IFigure child;
-
-	Rectangle clip = Rectangle.SINGLETON;
 	for (int i = 0; i < children.size(); i++) {
-		child = (IFigure)children.get(i);
-		if (child.isVisible() && child.intersects(graphics.getClip(clip))) {
-			graphics.clipRect(child.getBounds());
-			child.paint(graphics);
-			graphics.restoreState();
+		IFigure child = (IFigure)children.get(i);
+		if (child.isVisible()) {
+			// decide on the clipping region to use, if no child
+			Rectangle[] clipping = clippingStrategy != null ? clippingStrategy
+					.getClip(child)
+					: new Rectangle[] { child.getBounds() };
+			for (int j = 0; j < clipping.length; j++) {
+				graphics.clipRect(clipping[j]);
+				child.paint(graphics);
+				graphics.restoreState();
+			}
 		}
 	}
 }
@@ -1482,6 +1496,17 @@ public void setConstraint(IFigure child, Object constraint) {
 }
 
 /**
+ * Registers a clipping strategy to specify how clipping is performed for
+ * child figures.
+ * 
+ * @param clippingStrategy
+ * @since 3.6
+ */
+protected void setClippingStrategy(IClippingStrategy clippingStrategy) {
+	this.clippingStrategy = clippingStrategy;
+}
+
+/**
  * @see IFigure#setCursor(Cursor)
  */
 public void setCursor(Cursor cursor) {
@@ -1772,6 +1797,22 @@ public void validate() {
 	layout();
 	for (int i = 0; i < children.size(); i++)
 		((IFigure)children.get(i)).validate();
+}
+
+/**
+ * Default clipping strategy, preserving what has been done within
+ * {@link Figure#paintChildren(Graphics)} w.r.t. clipping prior to 3.6.
+ * 
+ * @since 3.6
+ */
+protected class ClippingStrategy implements IClippingStrategy {
+	public Rectangle[] getClip(IFigure childFigure) {
+		boolean optimizeClip = getBorder() == null
+				|| getBorder().isOpaque();
+		return new Rectangle[] { optimizeClip ? childFigure.getBounds()
+				: childFigure.getBounds().getIntersection(
+						getClientArea(PRIVATE_RECT)) };
+	}
 }
 
 /**
