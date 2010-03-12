@@ -67,7 +67,7 @@ public Point getOrigin(IFigure figure) {
  * coordinates for children are inforced by the layout
  * 
  * @return <code>boolean</code>
- * @since 3.2
+ * @since 3.6
  */
 public boolean isPositiveCoordinates() {
 	return (flags & FLAG__POSITIVE_COORDINATES) != 0;
@@ -80,7 +80,7 @@ public boolean isPositiveCoordinates() {
  * accordingly.
  * 
  * @param positiveCoordinates
- * @since 3.2
+ * @since 3.6
  */
 public void setPositiveCoordinates(boolean positiveCoordinates) {
 	if (positiveCoordinates != isPositiveCoordinates()) {
