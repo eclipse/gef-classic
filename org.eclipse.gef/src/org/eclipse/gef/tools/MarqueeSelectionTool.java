@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,6 +22,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -460,9 +461,15 @@ class MarqueeRectangleFigure
 		Rectangle bounds = getBounds().getCopy();
 		graphics.translate(getLocation());
 		
-		graphics.setXORMode(true);
-		graphics.setForegroundColor(ColorConstants.white);
-		graphics.setBackgroundColor(ColorConstants.black);
+	   if(Platform.WS_COCOA.equals(Platform.getWS())) {
+		   // Bugzilla 303659 setXORMode(true) broken on MAC COCOA 
+		   graphics.setForegroundColor(ColorConstants.black);
+		   graphics.setBackgroundColor(ColorConstants.black);
+	   } else {
+		   graphics.setXORMode(true);
+		   graphics.setForegroundColor(ColorConstants.white);
+		   graphics.setBackgroundColor(ColorConstants.black);
+	   }
 		
 		graphics.setLineStyle(Graphics.LINE_DOT);
 		
