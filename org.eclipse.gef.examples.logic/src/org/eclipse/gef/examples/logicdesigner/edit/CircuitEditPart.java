@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import java.util.Vector;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.IScrollableFigure;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -24,9 +25,11 @@ import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.ExposeHelper;
 import org.eclipse.gef.MouseWheelHelper;
+import org.eclipse.gef.editparts.IScrollableEditPart;
 import org.eclipse.gef.editparts.ViewportAutoexposeHelper;
 import org.eclipse.gef.editparts.ViewportExposeHelper;
 import org.eclipse.gef.editparts.ViewportMouseWheelHelper;
+import org.eclipse.gef.editpolicies.ScrollableSelectionFeedbackEditPolicy;
 
 import org.eclipse.gef.examples.logicdesigner.figures.CircuitFigure;
 import org.eclipse.gef.examples.logicdesigner.figures.FigureFactory;
@@ -36,14 +39,18 @@ import org.eclipse.gef.examples.logicdesigner.figures.FigureFactory;
  * holding other LogicEditParts.
  */
 public class CircuitEditPart
-	extends LogicContainerEditPart
+	extends LogicContainerEditPart implements IScrollableEditPart
 {
+
+private static final String SCROLLABLE_SELECTION_FEEDBACK = "SCROLLABLE_SELECTION_FEEDBACK"; //$NON-NLS-1$
 
 protected void createEditPolicies(){
 	super.createEditPolicies();
 	installEditPolicy(EditPolicy.LAYOUT_ROLE, new LogicXYLayoutEditPolicy(
 			(XYLayout)getContentPane().getLayoutManager()));
 	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ContainerHighlightEditPolicy());
+	installEditPolicy(SCROLLABLE_SELECTION_FEEDBACK,
+			new ScrollableSelectionFeedbackEditPolicy());
 }
 
 /**
@@ -93,6 +100,10 @@ protected CircuitFigure getCircuitBoardFigure() {
 
 public IFigure getContentPane() {
 	return getCircuitBoardFigure().getContentsPane();
+}
+
+public IScrollableFigure getScrollableFigure() {
+	return (IScrollableFigure)getFigure();
 }
 
 }

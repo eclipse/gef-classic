@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,8 @@ import org.eclipse.draw2d.FreeformLayout;
 import org.eclipse.draw2d.FreeformViewport;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.IScrollableFigure;
+import org.eclipse.draw2d.PuristicScrollPane;
 import org.eclipse.draw2d.ScrollPane;
 import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -29,15 +31,15 @@ import org.eclipse.gef.examples.logicdesigner.model.Circuit;
 
 public class CircuitFigure
 	extends NodeFigure
-	implements HandleBounds
+	implements HandleBounds, IScrollableFigure
 {
 
-private IFigure pane;
+private ScrollPane scrollpane;
 
 public CircuitFigure() {
 	setBorder(new CircuitBorder());
-	ScrollPane scrollpane = new ScrollPane();
-	pane = new FreeformLayer();
+	scrollpane = new PuristicScrollPane();
+	IFigure pane = new FreeformLayer();
 	pane.setLayoutManager(new FreeformLayout());
 	setLayoutManager(new StackLayout());
 	add(scrollpane);
@@ -69,7 +71,7 @@ protected void createConnectionAnchors() {
 }
 
 public IFigure getContentsPane(){
-	return pane;
+	return scrollpane.getContents();
 }
 
 protected FixedConnectionAnchor getInputConnectionAnchor(int i) {
@@ -133,5 +135,9 @@ public void validate() {
 }
 
 protected boolean useLocalCoordinates(){return true;}
+
+public ScrollPane getScrollPane() {
+	return scrollpane;
+}
 
 }
