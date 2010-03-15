@@ -71,11 +71,11 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	// @tag CGraph.Colors : These are the colour constants for the graph, they
 	// are disposed on clean-up
-	public Color LIGHT_BLUE = new Color(null, 216, 228, 248);
-	public Color LIGHT_BLUE_CYAN = new Color(null, 213, 243, 255);
-	public Color GREY_BLUE = new Color(null, 139, 150, 171);
-	public Color DARK_BLUE = new Color(null, 1, 70, 122);
-	public Color LIGHT_YELLOW = new Color(null, 255, 255, 206);
+	public Color LIGHT_BLUE = null;
+	public Color LIGHT_BLUE_CYAN = null;
+	public Color GREY_BLUE = null;
+	public Color DARK_BLUE = null;
+	public Color LIGHT_YELLOW = null;
 
 	public Color HIGHLIGHT_COLOR = ColorConstants.yellow;
 	public Color HIGHLIGHT_ADJACENT_COLOR = ColorConstants.orange;
@@ -381,11 +381,21 @@ public class Graph extends FigureCanvas implements IContainer {
 		}
 		super.dispose();
 
-		LIGHT_BLUE.dispose();
-		LIGHT_BLUE_CYAN.dispose();
-		GREY_BLUE.dispose();
-		DARK_BLUE.dispose();
-		LIGHT_YELLOW.dispose();
+		if (LIGHT_BLUE != null) {
+			LIGHT_BLUE.dispose();
+		}
+		if (LIGHT_BLUE_CYAN != null) {
+			LIGHT_BLUE_CYAN.dispose();
+		}
+		if (GREY_BLUE != null) {
+			GREY_BLUE.dispose();
+		}
+		if (DARK_BLUE != null) {
+			DARK_BLUE.dispose();
+		}
+		if (LIGHT_YELLOW != null) {
+			LIGHT_YELLOW.dispose();
+		}
 	}
 
 	/**
