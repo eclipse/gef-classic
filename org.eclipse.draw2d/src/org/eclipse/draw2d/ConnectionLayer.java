@@ -20,13 +20,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Layer designed specifically to handle the presence of connections. This is done due to
- * the necessity of having a router for the connections added.
+ * Layer designed specifically to handle the presence of connections. This is
+ * done due to the necessity of having a router for the connections added.
  */
-public class ConnectionLayer
-	extends FreeformLayer
-{
-	
+public class ConnectionLayer extends FreeformLayer {
+
 	/**
 	 * Clipping strategy for connection layer, which takes into account nested
 	 * view ports and truncates those parts of connections which reach outside.
@@ -42,57 +40,86 @@ public class ConnectionLayer
 		 * @see org.eclipse.draw2d.IClippingStrategy#getClip(org.eclipse.draw2d.IFigure)
 		 */
 		public Rectangle[] getClip(IFigure figure) {
-			Rectangle clipRect = null;
+			Rectangle[] clipRect = null;
 			if (figure instanceof Connection) {
 				// clip rect is in absolute coordinates
 				clipRect = getEdgeClippingRectangle((Connection) figure);
 			} else {
-				clipRect = getNodeClippingRectangle(figure);
+				clipRect = new Rectangle[]{getNodeClippingRectangle(figure)};
 			}
 			// translate clipping rectangle relative to the parent figure's
 			// (i.e. the connection layer's) client area
-			if (clipRect != null) {
-				figure.translateToRelative(clipRect);
+			for (int i=0; i<clipRect.length; i++) {
+				figure.translateToRelative(clipRect[i]);
 			}
-			return new Rectangle[] { clipRect };
+			return clipRect;
 		}
 
-		protected Rectangle getEdgeClippingRectangle(Connection connection) {
+		protected Rectangle[] getEdgeClippingRectangle(Connection connection) {
 			// start with clipping the connection at its bounds
 			Rectangle clipRect = getAbsoluteBoundsCopy(connection);
 
 			// in case we cannot infer source and target of the connection (e.g.
 			// if XYAnchors are used), this is all we can do
-			if (connection.getSourceAnchor() == null
-					|| connection.getSourceAnchor().getOwner() == null
-					|| connection.getTargetAnchor() == null
-					|| connection.getTargetAnchor().getOwner() == null) {
-				return clipRect;
+			ConnectionAnchor sourceAnchor = connection.getSourceAnchor();
+			ConnectionAnchor targetAnchor = connection.getTargetAnchor();
+			if (sourceAnchor == null || sourceAnchor.getOwner() == null
+					|| targetAnchor == null || targetAnchor.getOwner() == null) {
+				return new Rectangle[] { clipRect };
 			}
 
 			// clip edge at the nearest enclosing viewport of its source and
 			// target (i.e. at the scroll pane enclosing this viewport)
 			Viewport nearestEnclosingSourceTargetViewport = ViewportUtilities
-					.getNearestCommonViewport(connection.getSourceAnchor()
-							.getOwner(), connection.getTargetAnchor()
-							.getOwner());
-			if (nearestEnclosingSourceTargetViewport != null) {				
-				clipRect.intersect(getNodeClippingRectangle(nearestEnclosingSourceTargetViewport
-							.getParent()));
+					.getNearestCommonViewport(sourceAnchor.getOwner(),
+							targetAnchor.getOwner());
+			if (nearestEnclosingSourceTargetViewport != null) {
+				clipRect
+						.intersect(getNodeClippingRectangle(nearestEnclosingSourceTargetViewport
+								.getParent()));
 			}
 
-			// if source and target do not share a common viewport, this has to be further restricted
-			if (ViewportUtilities.getNearestEnclosingViewport(connection
-					.getSourceAnchor().getOwner()) != ViewportUtilities.getNearestEnclosingViewport(connection
-							.getTargetAnchor().getOwner()) ) {
-				Rectangle sourceClipRect = getNodeClippingRectangle(connection
-						.getSourceAnchor().getOwner());
-				Rectangle targetClipRect = getNodeClippingRectangle(connection
-						.getTargetAnchor().getOwner());
-				clipRect = clipRect.intersect(sourceClipRect
-						.getUnion(targetClipRect));
+			// if source and target do not share a common viewport, this
+			// probably has to
+			// be further restricted
+			Viewport nearestEnclosingSourceViewport = ViewportUtilities.getNearestEnclosingViewport(sourceAnchor
+					.getOwner());
+			Viewport nearestEnclosingTargetViewport = ViewportUtilities
+					.getNearestEnclosingViewport(targetAnchor.getOwner());
+			if (nearestEnclosingSourceViewport != nearestEnclosingTargetViewport) {
+				Rectangle sourceClipRect = getNodeClippingRectangle(sourceAnchor
+						.getOwner());
+				Rectangle targetClipRect = getNodeClippingRectangle(targetAnchor
+						.getOwner());
+				// check if either source or target anchor is not visible
+				if (!sourceClipRect.contains(sourceAnchor
+						.getLocation(sourceAnchor.getReferencePoint()))
+						|| !targetClipRect.contains(targetAnchor
+								.getLocation(targetAnchor.getReferencePoint()))) {
+					// one of source or target anchor is invisible, so we have to compute where the connection
+					// traverses the enclosing viewpoints on both sides. Everything else will not be visible.
+					Rectangle sourceClip = new Rectangle();
+					if(nearestEnclosingSourceViewport != nearestEnclosingSourceTargetViewport){
+						sourceClip = clipRect.getIntersection(getNodeClippingRectangle(nearestEnclosingSourceViewport
+							.getParent()));
+					}					
+					Rectangle targetClip = new Rectangle();
+					if(nearestEnclosingTargetViewport != nearestEnclosingSourceTargetViewport){
+						sourceClip = clipRect.getIntersection(getNodeClippingRectangle(nearestEnclosingTargetViewport
+							.getParent()));
+					}	
+					// return where the connection is visible in the target/source viewport
+					return new Rectangle[] {
+							sourceClip, targetClip};
+
+				} else {	
+					// just return what we have computed before (clipping at nearest enclosing viewport)
+					return new Rectangle[] { clipRect };
+				}
+			} else {
+				// just return what we have computed before (clipping at nearest enclosing viewport)
+				return new Rectangle[] { clipRect };
 			}
-			return clipRect;
 		}
 
 		protected Rectangle getNodeClippingRectangle(IFigure figure) {
@@ -118,94 +145,102 @@ public class ConnectionLayer
 		}
 	}
 
-int antialias = SWT.DEFAULT;
+	int antialias = SWT.DEFAULT;
 
-/**
- * The ConnectionRouter used to route all connections on this layer.
- */
-protected ConnectionRouter connectionRouter;
+	/**
+	 * The ConnectionRouter used to route all connections on this layer.
+	 */
+	protected ConnectionRouter connectionRouter;
 
-public ConnectionLayer(){
-	// replate the original clipping strategy
-	setClippingStrategy(new ClippingStrategy());
-}
-
-/**
- * Adds the given figure with the given contraint at the given index. If the figure is a
- * {@link Connection}, its {@link ConnectionRouter} is set.
- *
- * @param figure  Figure being added
- * @param constraint  Constraint of the figure being added
- * @param index  Index where the figure is to be added
- * @since 2.0 
- */
-public void add(IFigure figure, Object constraint, int index) {
-	super.add(figure, constraint, index);
-	
-	// If the connection layout manager is set, then every
-	// figure added should use this layout manager.
-	if (figure instanceof Connection && getConnectionRouter() != null)
-		((Connection)figure).setConnectionRouter(getConnectionRouter());
-}
-
-/**
- * Returns the ConnectionRouter being used by this layer.
- *
- * @return  ConnectionRouter being used by this layer
- * @since 2.0
- */
-public ConnectionRouter getConnectionRouter() {
-	return connectionRouter;
-}
-
-/**
- * @see IFigure#paint(Graphics)
- */
-public void paint(Graphics graphics) {
-	if (antialias != SWT.DEFAULT)
-		graphics.setAntialias(antialias);
-	super.paint(graphics);
-}
-
-/**
- * Removes the figure from this Layer.  If the figure is a {@link Connection}, that
- * Connection's {@link ConnectionRouter} is set to <code>null</code>.
- * 
- * @param figure The figure to remove
- */
-public void remove(IFigure figure) {
-	if (figure instanceof Connection)
-		((Connection)figure).setConnectionRouter(null);
-	super.remove(figure);
-}
-
-/**
- * Sets the ConnectionRouter for this layer. This router is set as the ConnectionRouter
- * for all the child connections of this Layer.
- *
- * @param router  The ConnectionRouter to set for this Layer
- * @since 2.0
- */
-public void setConnectionRouter(ConnectionRouter router) {
-	connectionRouter = router;
-	FigureIterator iter = new FigureIterator(this);
-	IFigure figure;
-	while (iter.hasNext()) {
-		figure = iter.nextFigure();
-		if (figure instanceof Connection)
-			((Connection)figure).setConnectionRouter(router);
+	public ConnectionLayer() {
+		// replate the original clipping strategy
+		setClippingStrategy(new ClippingStrategy());
 	}
-}
 
-/**
- * Sets whether antialiasing should be enabled for the connection layer. If this value is
- * set to something other than {@link SWT#DEFAULT}, {@link Graphics#setAntialias(int)}
- * will be called with the given value when painting this layer.
- * @param antialias the antialias setting
- * @since 3.1
- */
-public void setAntialias(int antialias) {
-	this.antialias = antialias;
-}
+	/**
+	 * Adds the given figure with the given contraint at the given index. If the
+	 * figure is a {@link Connection}, its {@link ConnectionRouter} is set.
+	 * 
+	 * @param figure
+	 *            Figure being added
+	 * @param constraint
+	 *            Constraint of the figure being added
+	 * @param index
+	 *            Index where the figure is to be added
+	 * @since 2.0
+	 */
+	public void add(IFigure figure, Object constraint, int index) {
+		super.add(figure, constraint, index);
+
+		// If the connection layout manager is set, then every
+		// figure added should use this layout manager.
+		if (figure instanceof Connection && getConnectionRouter() != null)
+			((Connection) figure).setConnectionRouter(getConnectionRouter());
+	}
+
+	/**
+	 * Returns the ConnectionRouter being used by this layer.
+	 * 
+	 * @return ConnectionRouter being used by this layer
+	 * @since 2.0
+	 */
+	public ConnectionRouter getConnectionRouter() {
+		return connectionRouter;
+	}
+
+	/**
+	 * @see IFigure#paint(Graphics)
+	 */
+	public void paint(Graphics graphics) {
+		if (antialias != SWT.DEFAULT)
+			graphics.setAntialias(antialias);
+		super.paint(graphics);
+	}
+
+	/**
+	 * Removes the figure from this Layer. If the figure is a {@link Connection}
+	 * , that Connection's {@link ConnectionRouter} is set to <code>null</code>.
+	 * 
+	 * @param figure
+	 *            The figure to remove
+	 */
+	public void remove(IFigure figure) {
+		if (figure instanceof Connection)
+			((Connection) figure).setConnectionRouter(null);
+		super.remove(figure);
+	}
+
+	/**
+	 * Sets the ConnectionRouter for this layer. This router is set as the
+	 * ConnectionRouter for all the child connections of this Layer.
+	 * 
+	 * @param router
+	 *            The ConnectionRouter to set for this Layer
+	 * @since 2.0
+	 */
+	public void setConnectionRouter(ConnectionRouter router) {
+		connectionRouter = router;
+		FigureIterator iter = new FigureIterator(this);
+		IFigure figure;
+		while (iter.hasNext()) {
+			figure = iter.nextFigure();
+			if (figure instanceof Connection)
+				((Connection) figure).setConnectionRouter(router);
+		}
+	}
+
+	/**
+	 * Sets whether antialiasing should be enabled for the connection layer. If
+	 * this value is set to something other than {@link SWT#DEFAULT},
+	 * {@link Graphics#setAntialias(int)} will be called with the given value
+	 * when painting this layer.
+	 * 
+	 * @param antialias
+	 *            the antialias setting
+	 * @since 3.1
+	 */
+	public void setAntialias(int antialias) {
+		this.antialias = antialias;
+	}
 
 }
