@@ -169,10 +169,13 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	public void setContentProvider(IContentProvider contentProvider) {
 		if (contentProvider instanceof IGraphContentProvider) {
+			modelFactory = null;
 			super.setContentProvider(contentProvider);
 		} else if (contentProvider instanceof IGraphEntityContentProvider) {
+			modelFactory = null;
 			super.setContentProvider(contentProvider);
 		} else if (contentProvider instanceof IGraphEntityRelationshipContentProvider) {
+			modelFactory = null;
 			super.setContentProvider(contentProvider);
 		} else {
 			throw new IllegalArgumentException("Invalid content provider, only IGraphContentProvider, IGraphEntityContentProvider, or IGraphEntityRelationshipContentProvider are supported.");
