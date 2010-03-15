@@ -59,6 +59,22 @@ public final class ZestStyles {
 	 * Style constant indiciating that nodes should not be resized on layout.
 	 */
 	public static final int NODES_NO_LAYOUT_RESIZE = 1 << 4;
+
+	/**
+	 * Style constant indiciating the graph should not be animated during layout
+	 * or refresh.
+	 */
+	public static final int NODES_NO_LAYOUT_ANIMATION = 1 << 8;
+
+	/**
+	 * Style constant indiciating the graph should not be animated during fisheye.
+	 */
+	public static final int NODES_NO_FISHEYE_ANIMATION = 1 << 16;
+
+	/**
+	 * Style constant indiciating the graph should not be animated.
+	 */
+	public static final int NODES_NO_ANIMATION = NODES_NO_LAYOUT_ANIMATION | NODES_NO_FISHEYE_ANIMATION;
 	/**
 	 * Style indicating that connections should show their direction by default.
 	 */

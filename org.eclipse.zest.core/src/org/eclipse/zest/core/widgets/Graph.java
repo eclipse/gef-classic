@@ -1033,9 +1033,13 @@ public class Graph extends FigureCanvas implements IContainer {
 		LayoutEntity[] nodesToLayout = getNodesToLayout(getNodes());
 
 		try {
-			Animation.markBegin();
+			if ((nodeStyle & ZestStyles.NODES_NO_LAYOUT_ANIMATION) == 0) {
+				Animation.markBegin();
+			}
 			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 0, 0, d.width, d.height, false, false);
-			Animation.run(ANIMATION_TIME);
+			if ((nodeStyle & ZestStyles.NODES_NO_LAYOUT_ANIMATION) == 0) {
+				Animation.run(ANIMATION_TIME);
+			}
 			getLightweightSystem().getUpdateManager().performUpdate();
 
 		} catch (InvalidLayoutConfiguration e) {
