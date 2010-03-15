@@ -93,7 +93,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 				// If any of the source, dest is null or the edge is filtered,
 				// don't create the graph.
 				if (source != null && dest != null && !filterElement(getViewer().getInput(), rels[i])) {
-					createConnection(model, rels[i], getCastedContent().getSource(rels[i]), getCastedContent().getDestination(rels[i]));
+					createConnection(model, rels[i], source, dest);
 				}
 			}
 		}
