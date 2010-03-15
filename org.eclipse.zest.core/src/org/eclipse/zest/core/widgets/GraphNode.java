@@ -695,6 +695,11 @@ public class GraphNode extends GraphItem {
 			// Get the current Bounds
 			Rectangle rectangle = nodeFigure.getBounds().getCopy();
 
+			FontData fontData = Display.getCurrent().getSystemFont().getFontData()[0];
+			fontData.height = 12;
+			fishEyeFont = new Font(Display.getCurrent(), fontData);
+			fishEyeFigure.setFont(fishEyeFont);
+
 			// Calculate how much we have to expand the current bounds to get to the new bounds
 			Dimension newSize = fishEyeFigure.getPreferredSize();
 			Rectangle currentSize = rectangle.getCopy();
@@ -707,11 +712,6 @@ public class GraphNode extends GraphItem {
 			if (expandedH <= 0 && expandedW <= 0) {
 				return null;
 			}
-
-			FontData fontData = Display.getCurrent().getSystemFont().getFontData()[0];
-			fontData.height = 12;
-			fishEyeFont = new Font(Display.getCurrent(), fontData);
-			fishEyeFigure.setFont(fishEyeFont);
 
 			//Add the fisheye
 			this.getGraphModel().fishEye(nodeFigure, fishEyeFigure, rectangle, true);
