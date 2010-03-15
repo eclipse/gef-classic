@@ -108,6 +108,8 @@ public class Graph extends FigureCanvas implements IContainer {
 	private ScalableFreeformLayeredPane rootlayer;
 	private ZestRootLayer zestRootLayer;
 
+	private boolean hasPendingLayoutRequest;
+
 	/**
 	 * Constructor for a Graph. This widget represents the root of the graph,
 	 * and can contain graph items such as graph nodes and graph connections.
@@ -399,21 +401,24 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	/**
-	 * Runs the layout on this graph. It uses the reveal listner to run the
+	 * Runs the layout on this graph. It uses the reveal listener to run the
 	 * layout only if the view is visible. Otherwise it will be deferred until
 	 * after the view is available.
 	 */
 	public void applyLayout() {
-		this.addRevealListener(new RevealListener() {
-			public void revealed(Control c) {
-				Display.getDefault().asyncExec(new Runnable() {
+		if (!hasPendingLayoutRequest) {
+			hasPendingLayoutRequest = true;
+			this.addRevealListener(new RevealListener() {
+				public void revealed(Control c) {
+					Display.getDefault().asyncExec(new Runnable() {
 
-					public void run() {
-						applyLayoutInternal();
-					}
-				});
-			}
-		});
+						public void run() {
+							applyLayoutInternal();
+						}
+					});
+				}
+			});
+		}
 	}
 
 	/**
@@ -997,6 +1002,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	private void applyLayoutInternal() {
+		hasPendingLayoutRequest = false;
 
 		if ((this.getNodes().size() == 0)) {
 			return;
