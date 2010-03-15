@@ -10,8 +10,6 @@
 package org.eclipse.zest.core.viewers;
 
 import org.eclipse.jface.action.ContributionItem;
-import org.eclipse.zest.core.viewers.internal.ZoomListener;
-import org.eclipse.zest.core.viewers.internal.ZoomManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
@@ -25,6 +23,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.zest.core.viewers.internal.ZoomListener;
+import org.eclipse.zest.core.viewers.internal.ZoomManager;
 
 /**
  * A contribution item that adds a combo to a toolbar or coolbar, or a list of
@@ -111,13 +111,17 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	 *      int)
 	 */
 	public void fill(ToolBar parent, int index) {
-		ToolItem item = new ToolItem(parent, SWT.DROP_DOWN);
+		ToolItem item = new ToolItem(parent, SWT.SEPARATOR, index);
 		Combo combo = createCombo(parent);
 		item.setControl(combo);
+		item.setWidth(combo.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 	}
 
 	private Combo createCombo(Composite parent) {
-		this.combo = new Combo(parent, SWT.DROP_DOWN);
+		this.combo = new Combo(parent, SWT.DROP_DOWN | SWT.READ_ONLY);
+		if (zoomLevels == null) {
+			zoomLevels = zoomManager.getZoomLevelsAsText();
+		}
 		this.combo.setItems(zoomLevels);
 		this.combo.addSelectionListener(new SelectionAdapter() {
 			/*
@@ -134,6 +138,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 				}
 			}
 		});
+		this.combo.pack();
 		return this.combo;
 	}
 
