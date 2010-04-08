@@ -161,7 +161,7 @@ private Point getLocationFromRequest(Request request) {
  * @return <code>true</code> if the host's LayoutManager is in a horizontal orientation
  */
 protected boolean isHorizontal() {
-	IFigure figure = ((GraphicalEditPart)getHost()).getContentPane();
+	IFigure figure = getLayoutContainer();
 	return ((FlowLayout)figure.getLayoutManager()).isHorizontal();
 }
 
