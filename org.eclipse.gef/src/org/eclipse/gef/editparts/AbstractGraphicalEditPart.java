@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -427,7 +427,11 @@ public Object getAdapter(Class key) {
 }
 
 /**
- * If the children's Figures should be 
+ * Implemented to delegate to {@link #getFigure()} by default. Subclasses may overwrite
+ * in case the {@link IFigure} returned by {@link #getFigure()} is a
+ * composite figure and child figures should be added to one of its children
+ * instead of the figure itself.
+ * 
  * @see GraphicalEditPart#getContentPane()
  */
 public IFigure getContentPane() {
