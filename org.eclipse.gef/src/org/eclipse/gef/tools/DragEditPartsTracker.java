@@ -267,7 +267,7 @@ protected Command getCommand() {
 			command.add(getTargetEditPart().getCommand(getTargetRequest()));
 	}
 	
-	return command;
+	return command.unwrap();
 }
 
 /**
