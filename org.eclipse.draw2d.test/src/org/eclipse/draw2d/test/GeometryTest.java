@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 IBM Corporation and others.
+ * Copyright (c) 2008, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +7,7 @@
  *
  * Contributors:
  *    Alexander Shatalin (Borland) - initial API and implementation
+ *    Alexander Nyssen (itemis) - Bugzilla #162082: testLinesIntersect()
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
@@ -183,6 +184,29 @@ public class GeometryTest extends TestCase {
 		Geometry.polylineContainsPoint(POLYLINE, 0, 0, TOLERANCE);
 		Geometry.polylineContainsPoint(POLYLINE, 1, 0, TOLERANCE);
 		Geometry.polylineContainsPoint(POLYLINE, 2, 1, TOLERANCE);
+	}
+	
+	/**
+	 * Testing {@link Geometry#linesIntersect(int, int, int, int, int, int, int, int)}.
+	 */
+	public void testLinesIntersect(){
+		// non-parallel
+		assertTrue("Line segments cross.", Geometry.linesIntersect(0,0,5,5,0,5,5,0));
+		assertTrue("Line segments share starting point", Geometry.linesIntersect(0,0,5,5,0,0,5,0));
+		assertTrue("Line segments share ending point", Geometry.linesIntersect(0,0,5,5,0,5,5,5));
+		assertTrue("First line segment contains starting point of second one.", Geometry.linesIntersect(0,0,5,5,3,3,0,5));
+		assertFalse("Line segments are non-parallel and do not cross and should thus not be regarded as intersecting.", Geometry.linesIntersect(0,0,2,2,0,1,0,2));
+		
+		// parallel
+		assertFalse("Line segments are parallel but not co-linear and should thus not be regarded as intersecting.", Geometry.linesIntersect(0,0,5,5,1,0,6,5));
+		
+		// co-linear
+		assertTrue("Line segments are co-linear, partly-overlapping.", Geometry.linesIntersect(0,0,5,5,3,3,6,6));
+		assertTrue("Line segments are co-linear, sharing ending/starting point.", Geometry.linesIntersect(0,0,5,5,5,5,6,6));
+		assertTrue("Line segments are co-linear, partly-overlapping.", Geometry.linesIntersect(3,3,6,6,0,0,5,5));
+		assertTrue("Line segments are co-linear, sharing starting/ending point.", Geometry.linesIntersect(3,3,6,6,0,0,3,3));
+		assertTrue("Line segments are co-linear, fully-overlapping.", Geometry.linesIntersect(0,0,5,5,1,1,3,3));
+		assertFalse("Line segments are co-linear but non-overlapping, and should thus not be regarded as intersecting.", Geometry.linesIntersect(0,0,5,5,10,10,20,20));	
 	}
 	
 	public void off_testDrawPolygons() {
