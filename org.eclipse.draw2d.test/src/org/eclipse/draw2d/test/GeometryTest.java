@@ -170,20 +170,20 @@ public class GeometryTest extends TestCase {
 	
 	public void testNotPolylinePoints() {
 		// Point is outside of (polyline.bounds +- tolerance) rectangle
-		Geometry.polylineContainsPoint(POLYLINE, 9, 5, TOLERANCE);
+		assertFalse(Geometry.polylineContainsPoint(POLYLINE, 9, 5, TOLERANCE));
 		// Point is inside of (polyline.bounds +- tolerance) rectangle, but quite far from segments
-		Geometry.polylineContainsPoint(POLYLINE, 1, 4, TOLERANCE);
+		assertFalse(Geometry.polylineContainsPoint(POLYLINE, 1, 4, TOLERANCE));
 	}
 	
 	public void testPolylinePoints() {
 		// point is close to horizontal segment
-		Geometry.polylineContainsPoint(POLYLINE, -1, 0, TOLERANCE);
+		assertTrue(Geometry.polylineContainsPoint(POLYLINE, -1, 0, TOLERANCE));
 		// point is close to the slopping segment
-		Geometry.polylineContainsPoint(POLYLINE, 2, 3, TOLERANCE);
+		assertTrue(Geometry.polylineContainsPoint(POLYLINE, 2, 3, TOLERANCE));
 		// point is on polyline
-		Geometry.polylineContainsPoint(POLYLINE, 0, 0, TOLERANCE);
-		Geometry.polylineContainsPoint(POLYLINE, 1, 0, TOLERANCE);
-		Geometry.polylineContainsPoint(POLYLINE, 2, 1, TOLERANCE);
+		assertTrue(Geometry.polylineContainsPoint(POLYLINE, 0, 0, TOLERANCE));
+		assertTrue(Geometry.polylineContainsPoint(POLYLINE, 1, 0, TOLERANCE));
+		assertTrue(Geometry.polylineContainsPoint(POLYLINE, 2, 1, TOLERANCE));
 	}
 	
 	/**
