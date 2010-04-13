@@ -379,14 +379,21 @@ public class ScaledGraphics
 	/**
 	 * @see Graphics#drawTextLayout(TextLayout, int, int, int, int, Color, Color)
 	 */
-	public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart,
-			int selectionEnd, Color selectionForeground, Color selectionBackground) {
+	public void drawTextLayout(TextLayout layout, int x, int y,
+			int selectionStart, int selectionEnd, Color selectionForeground,
+			Color selectionBackground) {
 		TextLayout scaled = zoomTextLayout(layout);
-		graphics.drawTextLayout(scaled,
-				(int)Math.floor(x * zoom + fractionalX),
-				(int)Math.floor(y * zoom + fractionalY),
-				selectionStart, selectionEnd, selectionBackground, selectionForeground);
-		scaled.dispose();
+		if (scaled == null) {
+			return;
+		}
+		try {
+			graphics.drawTextLayout(scaled, (int) Math.floor(x * zoom
+					+ fractionalX), (int) Math.floor(y * zoom + fractionalY),
+					selectionStart, selectionEnd, selectionBackground,
+					selectionForeground);
+		} finally {
+			scaled.dispose();
+		}
 	}
 	
 	/** @see Graphics#fillArc(int, int, int, int, int, int) */
