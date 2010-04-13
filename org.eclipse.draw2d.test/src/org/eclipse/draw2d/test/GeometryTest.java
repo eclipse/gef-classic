@@ -201,11 +201,13 @@ public class GeometryTest extends TestCase {
 		assertFalse("Line segments are parallel but not co-linear and should thus not be regarded as intersecting.", Geometry.linesIntersect(0,0,5,5,1,0,6,5));
 		
 		// co-linear
+		// TODO: decide whether co-linear line segments should be regarded as intersecting (1) in case they overlap, 
+		// (2) in case they share exactly one intersection point, or (3) not at all.
 		assertTrue("Line segments are co-linear, partly-overlapping.", Geometry.linesIntersect(0,0,5,5,3,3,6,6));
-		assertTrue("Line segments are co-linear, sharing ending/starting point.", Geometry.linesIntersect(0,0,5,5,5,5,6,6));
 		assertTrue("Line segments are co-linear, partly-overlapping.", Geometry.linesIntersect(3,3,6,6,0,0,5,5));
-		assertTrue("Line segments are co-linear, sharing starting/ending point.", Geometry.linesIntersect(3,3,6,6,0,0,3,3));
 		assertTrue("Line segments are co-linear, fully-overlapping.", Geometry.linesIntersect(0,0,5,5,1,1,3,3));
+		assertTrue("Line segments are co-linear, sharing ending/starting point.", Geometry.linesIntersect(0,0,5,5,5,5,6,6));
+		assertTrue("Line segments are co-linear, sharing starting/ending point.", Geometry.linesIntersect(3,3,6,6,0,0,3,3));
 		assertFalse("Line segments are co-linear but non-overlapping, and should thus not be regarded as intersecting.", Geometry.linesIntersect(0,0,5,5,10,10,20,20));	
 	}
 	
