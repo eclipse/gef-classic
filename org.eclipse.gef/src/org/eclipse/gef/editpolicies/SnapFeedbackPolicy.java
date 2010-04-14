@@ -66,12 +66,9 @@ static class FadeIn extends Figure {
 		super.setOpaque(true);
 	}
 	
-	/**
-	 * @see org.eclipse.draw2d.IFigure#getLocalBackgroundColor()
-	 */
-	public Color getLocalBackgroundColor() {
+	private Color createMixedColor(){
 		return FigureUtilities.mixColors(
-				super.getLocalBackgroundColor(),
+				getLocalBackgroundColor(),
 				getParent().getBackgroundColor(),
 				(double)opacity / FRAMES);
 	}
@@ -89,7 +86,9 @@ static class FadeIn extends Figure {
 			if (opacity != FRAMES - 1) {
 				Display display = Display.getCurrent();
 				PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
-				int fillColor = pData.getPixel(getLocalBackgroundColor().getRGB());
+				Color localBackgroundColor = createMixedColor();
+				int fillColor = pData.getPixel(localBackgroundColor.getRGB());
+				localBackgroundColor.dispose();
 				ImageData iData = new ImageData(1, 1, 24, pData);
 				iData.setPixel(0, 0, fillColor);
 				iData.setAlpha(0, 0, 255 * opacity / FRAMES);
