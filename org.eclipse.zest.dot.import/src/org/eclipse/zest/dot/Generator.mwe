@@ -1,0 +1,23 @@
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Fabian Steeg. All rights reserved. This program and the
+ * accompanying materials are made available under the terms of the Eclipse
+ * Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
+ *******************************************************************************/
+ -->
+<workflow>
+	<bean class="org.eclipse.emf.mwe.utils.StandaloneSetup" platformUri=".."/>
+	<component class="org.eclipse.xtext.MweReader" uri="${modelFile}">
+		<register class="org.openarchitectureware.vis.graphviz.DotStandaloneSetup"/>
+	</component>
+	<component class="org.eclipse.xpand2.Generator">
+		<metaModel class="org.eclipse.xtend.typesystem.emf.EmfRegistryMetaModel"/>
+		<fileEncoding value="UTF-8"/>
+		<expand value="org::eclipse::zest::dot::${templateName}::main FOR model"/>
+		<genPath value="${targetDir}"/>
+		<beautifier class="org.eclipse.xpand2.output.JavaBeautifier"/>
+	</component>
+</workflow>

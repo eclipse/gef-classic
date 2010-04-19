@@ -1,0 +1,222 @@
+«REM» 
+/*******************************************************************************
+ * Copyright (c) 2009 Fabian Steeg. All rights reserved. This program and the
+ * accompanying materials are made available under the terms of the Eclipse
+ * Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
+ *******************************************************************************/ 
+«ENDREM»
+«REM»
+Experimental template for animation support, interpreting DOT subgraphs as animation 
+steps. This templates duplicates lots of stuff from the standard template, but also
+does some things in a quite different way, so having a single template does not seem 
+good. TODO: It would be nice, however, to factor common things out, into a template 
+that has DEFINES used by both templates. Not sure if that is possible, at least with 
+the oAW 4.3 Xpand currently used.
+«ENDREM»
+«IMPORT dot»
+«EXTENSION dotlib»
+«EXTENSION org::openarchitectureware::util::stdlib::io»
+«EXTENSION org::openarchitectureware::util::stdlib::elementprops»
+«REM» Entry point for transformation of a dot meta-model instance to a Zest source file «ENDREM»
+«DEFINE main FOR graphvizmodel-» «EXPAND dotFile FOREACH graphs» «ENDDEFINE»
+«REM» The main file putting it all together «ENDREM»
+«DEFINE dotFile FOR graph»
+	«FILE name.toFirstUpper() + ".java"-»
+	package org.eclipse.zest.dot;
+	import org.eclipse.draw2d.Animation;
+	import org.eclipse.swt.SWT;
+	import org.eclipse.swt.events.DisposeEvent;
+	import org.eclipse.swt.events.DisposeListener;
+	import org.eclipse.swt.events.SelectionEvent;
+	import org.eclipse.swt.events.SelectionListener;
+	import org.eclipse.swt.layout.GridData;
+	import org.eclipse.swt.layout.GridLayout;
+	import org.eclipse.swt.widgets.Button;
+	import org.eclipse.swt.widgets.Composite;
+	import org.eclipse.swt.widgets.Display;
+	import org.eclipse.swt.widgets.Listener;
+	import org.eclipse.swt.widgets.Shell;
+	import org.eclipse.zest.core.widgets.Graph;
+	import org.eclipse.zest.core.widgets.GraphConnection;
+	import org.eclipse.zest.core.widgets.GraphNode;
+	import org.eclipse.zest.core.widgets.ZestStyles;
+	import org.eclipse.zest.layouts.LayoutStyles;
+	import org.eclipse.zest.layouts.algorithms.*;
+	/** Zest graph generated from Graphviz DOT graph '«name»'. */
+	public class «name.toFirstUpper()» extends Graph {
+		private static String nodeLabel = null;
+	    private static String edgeLabel = null;
+	    private static int edgeStyle = SWT.LINE_SOLID;
+	   
+	    public «name.toFirstUpper()» (final Composite parent, final int style) {
+	        super(parent, style);
+	        «IF type == graphtype::digraph» setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED); «ENDIF»
+	        «REM» Check for a node[layout=grid]-like attribute: (we do it here because we need
+	        it at the top level when setting up the graph, not when expanding the individual 
+	        statements. Perhaps a restructuring of the target file could help avoid this...) «ENDREM»
+	       setLayoutAlgorithm( «IF !stmts.exists(e|e.metaType.name.contains("attr_stmt")
+	       						&&((attr_stmt)e).attributes.a_list.toString().contains("layout"))»
+		    new TreeLayoutAlgorithm(
+	            	LayoutStyles.NO_LAYOUT_NODE_RESIZING)
+	            	«ELSE» new «((attr_stmt)(stmts.select(e|e.metaType.name.contains("attr_stmt")
+	            		&&((attr_stmt)e).attributes.a_list.toString().contains("layout")).get(0)))
+	            		.attributes.a_list.select(e|e.name=="layout").get(0).value.toFirstUpper()»LayoutAlgorithm(
+	            	LayoutStyles.NO_LAYOUT_NODE_RESIZING) «ENDIF», true);
+	    }
+	    «EXPAND stmt FOREACH stmts SEPARATOR " "»
+	    private static String global(final String global, final String name) {
+	    	return global==null?name:global;
+    	}
+    	
+    	/** @return This graph as a DOT representation, to be rendered with Graphviz. */
+	    public String toDot() { 
+	        return new DotExport(this).toDotString();
+	    }
+	    
+	    /* Support to run this graph as a Java application: */
+	    
+		public static void main(final String[] args) {
+	        final Shell shell = createShell();
+	        final «name.toFirstUpper()» g = new «name.toFirstUpper()»(shell,
+	                SWT.NONE);
+	        g.setLayoutData(new GridData(GridData.FILL_BOTH));
+	        System.out.println("Inital: \n" + g.toDot());
+	        Button b1 = new Button(shell, SWT.PUSH);
+	        b1.setText("Start");
+	        /* We start with the first listener */
+	        SelectionListener selectionListener = listenerFor(g.new AnimationRunner0(
+	                g, b1));
+	        b1.addSelectionListener(selectionListener);
+	        open(shell, g);
+	    }
+	
+	    private static Shell createShell() {
+	        final Display display = new Display();
+	        final Shell shell = new Shell(display);
+	        shell.setText(«name.toFirstUpper()».class.getSimpleName());
+	        shell.setLayout(new GridLayout(1, false));
+	        shell.setSize(300, 300);
+	        return shell;
+	    }
+	
+	    private static void open(final Shell shell, final «name.toFirstUpper()» g) {
+	        shell.open();
+	        shell.addDisposeListener(new DisposeListener() {
+	            public void widgetDisposed(final DisposeEvent e) {
+	                System.out.println("Final: \n" + g.toDot());
+	            }
+	        });
+	        while (!shell.isDisposed()) {
+	            while (!shell.getDisplay().readAndDispatch()) {
+	                shell.getDisplay().sleep();
+	            }
+	        }
+	    }
+	    
+	    private static void removeListeners(final Button b, final int type) {
+	        Listener[] listeners = b.getListeners(type);
+	        for (Listener listener : listeners) {
+	            b.removeListener(type, listener);
+	        }
+	    }
+	
+	    private static SelectionListener listenerFor(final Runnable runner) {
+	        return new SelectionListener() {
+	            public void widgetDefaultSelected(final SelectionEvent e) {}
+	            public void widgetSelected(final SelectionEvent e) {
+	                runner.run();
+	            }
+	        };
+	    }
+	}
+
+	«ENDFILE-»
+«ENDDEFINE»
+«REM» Expansion of the different DOT statement types: «ENDREM»
+«DEFINE stmt FOR stmt»«ENDDEFINE»
+«DEFINE stmt FOR attribute»
+	 «REM»«IF name=="layout"»
+		static AbstractLayoutAlgorithm layout = new 
+		«value.toFirstUpper()»LayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING); «ENDIF»
+	«ENDREM»
+«ENDDEFINE»
+«DEFINE stmt FOR attr_stmt»
+	 «IF type==dot::attributetype::node »
+		«IF attributes.a_list.exists(e|e.name=="label")»
+			static{nodeLabel = «attributes.a_list.select(e|e.name=="label").get(0).value»;}
+			 «ENDIF»
+			 «REM»«IF attributes.a_list.exists(e|e.name=="layout")»
+			«attributes.a_list.toString()»
+			static{layout = «attributes.a_list.select(e|e.name=="layout").get(0).value»;}
+			 «ENDIF»«ENDREM»
+		
+	«ELSEIF type==dot::attributetype::edge»
+		«IF attributes.a_list.exists(e|e.name=="label")»
+			static{edgeLabel = «attributes.a_list.select(e|e.name=="label").get(0).value»;} «ENDIF»
+		«IF attributes.a_list.exists(e|e.name=="style")»
+			static{edgeStyle = «EXPAND global_edge_attribute FOR attributes.a_list.select(e|e.name=="style").get(0)»;} «ENDIF»
+	«ENDIF»
+«ENDDEFINE»
+«REM» Expansion of node declarations «ENDREM»
+«DEFINE stmt FOR node_stmt» GraphNode n«name» = new GraphNode(this, SWT.NONE, 
+	«IF attributes.a_list.exists(e|e.name=="label")» «attributes.a_list.select(e|e.name=="label").value.get(0)» 
+	«ELSE»global(nodeLabel, "«name»")«ENDIF»); 
+«ENDDEFINE»
+«REM» Expansion of edges «ENDREM»
+«DEFINE stmt FOR edge_stmt_node» 
+	/* Connection from n«node_id.name» to «EXPAND edge_target FOREACH edgeRHS»: */
+	GraphConnection n«node_id.name»«EXPAND edge_target FOREACH edgeRHS» 
+		= new GraphConnection(g, SWT.NONE, n«node_id.name», 
+		«EXPAND edge_target FOREACH edgeRHS» );
+	«IF attributes.a_list.exists(e|e.name=="label")» n«node_id.name»«EXPAND edge_target FOREACH edgeRHS»
+		.setText(«attributes.a_list.select(e|e.name=="label").value.get(0)»);
+		«ELSE» n«node_id.name»«EXPAND edge_target FOREACH edgeRHS».setText(global(edgeLabel, "")); «ENDIF» 
+	n«node_id.name»«EXPAND edge_target FOREACH edgeRHS».setLineStyle(edgeStyle);
+	«IF attributes.a_list.exists(e|e.name=="style")»
+		n«node_id.name»«EXPAND edge_target FOREACH edgeRHS».setLineStyle(«EXPAND global_edge_attribute FOR attributes.a_list.select(e|e.name=="style").get(0)»); «ENDIF»
+«ENDDEFINE»
+
+«DEFINE stmt FOR subgraph»
+	«LET name.split("_").get(1) AS runner»
+	«REM»«LET getProperty("label") AS e» getProperty("label")«ENDREM»
+	 «REM»«LET e != null ? e : "Step" AS label»FIXME not working, always null«ENDREM»
+	class AnimationRunner«runner» implements Runnable {
+        private Graph g;
+        private Button b;
+
+        public AnimationRunner«runner»(final Graph g, final Button b1) {
+            this.g = g;
+            this.b = b1;
+        }
+
+        public void run() {
+            Animation.markBegin();
+			«EXPAND stmt FOREACH stmts SEPARATOR " "»	
+			g.applyLayout();
+            Animation.run();
+            /* For animations with further steps: */
+            removeListeners(b, SWT.Selection);
+            removeListeners(b, SWT.DefaultSelection);
+            
+            «IF name.contains("end")»
+	            b.setText("Done");
+	            b.setEnabled(false);
+            «ELSE»
+	            b.addSelectionListener(listenerFor(new AnimationRunner«runner.asInteger()+1»(g, b)));
+	           «REM» b.setText("«label»");«ENDREM»
+            «ENDIF»
+        }
+    }
+	«ENDLET» «REM»«ENDLET» «ENDLET»«ENDREM»
+«ENDDEFINE»
+
+«DEFINE edge_target FOR edgeRHS»«ENDDEFINE»
+«DEFINE edge_target FOR edgeRHS_node»n«node.name»«ENDDEFINE»
+«REM» Expansion of a style-attribute to a Zest line style «ENDREM»
+«DEFINE global_edge_attribute FOR a_list» 
+	«IF value.contains("dotted")&&value.contains("dashed")» SWT.LINE_DASHDOT «ELSEIF value.contains("dashed")» SWT.LINE_DASH «ELSEIF value.contains("dotted")» SWT.LINE_DOT «ENDIF»
+«ENDDEFINE»
+«REM» TODO: support for multiple target (1->2->3) and using undeclared nodes in edges «ENDREM»

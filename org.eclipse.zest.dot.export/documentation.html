@@ -1,0 +1,46 @@
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Fabian Steeg. All rights reserved. This program and the
+ * accompanying materials are made available under the terms of the Eclipse
+ * Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
+ *******************************************************************************/
+ -->
+<html>
+<p><i>General information, documentation and resources are
+available at: <a
+	href="http://wiki.eclipse.org/Graphviz_DOT_as_a_DSL_for_Zest">
+http://wiki.eclipse.org/Graphviz_DOT_as_a_DSL_for_Zest</a></i></p>
+
+<p>Requirements: Eclipse 3.5 and GEF Zest visualization (Galileo)</p>
+
+<p><b>Graphviz DOT as a DSL for Zest - M2: Graphviz export for
+Zest (<a href="http://bugs.eclipse.org/277398">Bug 277398</a>)</b></p>
+
+<p><img src="resources/docs/dot4zest-M2.png" alt="Overview"></p>
+<ul>
+	<li>A minimal sample setting up a Zest graph and exporting it to a
+	DOT file and string can be found in <a
+		href="src-test/org/eclipse/zest/DotExportSample.java">
+	src-test/org/eclipse/zest/DotExportSample.java</a>, which can be run (as
+	Java application) to see what the Zest input looks like; the result can
+	be rendered using the Graphviz 'dot' command</li>
+	<li>A sample showing all that is currently supported in the Zest
+	input can be found in <a
+		href="src-test/org/eclipse/zest/dot/test_data/SampleGraph.java">
+	src-test/org/eclipse/zest/dot/test_data/SampleGraph.java</a></li>
+	<li>See files in <a
+		href="src-test/org/eclipse/zest/dot/test_data/">
+	src-test/org/eclipse/zest/dot/test_data/</a> for usage of individual
+	supported features (e.g. edge styles)</li>
+	<li>All samples contain a main method and can be run (as Java
+	application) to see the Zest visualization</li>
+	<li>Run <i>DotExportSuite</i> in src-test (as JUnit or JUnit
+	Plug-in test) to run all tests and transform all sample Zest graphs to
+	DOT files</li>
+	<li>The generated files can be found in src-gen/ and can be
+	rendered with Graphviz DOT to see the resulting visualization</li>
+</ul>
+</html>

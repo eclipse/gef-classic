@@ -1,0 +1,76 @@
+<!--
+/*******************************************************************************
+ * Copyright (c) 2009 Fabian Steeg. All rights reserved. This program and the
+ * accompanying materials are made available under the terms of the Eclipse
+ * Public License v1.0 which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
+ *******************************************************************************/
+ -->
+<html>
+<p><i>General information, documentation and resources are
+available at: <a
+	href="http://wiki.eclipse.org/Graphviz_DOT_as_a_DSL_for_Zest">
+http://wiki.eclipse.org/Graphviz_DOT_as_a_DSL_for_Zest</a></i></p>
+
+<p>Requirements: Eclipse 3.5 and GEF Zest visualization (Galileo),
+org.eclipse.zest.import (dot4zest)</p>
+
+<p><img src="resources/docs/dependencies.png"
+	alt="Dependency Overview"></p>
+
+<p>This bundle defines New-Wizards for Zest Graphs and Zest Projects
+under a category labeled 'Visualization':</p>
+<p><img src="resources/docs/wizard-screenshots/zest-wizards.png"></p>
+
+<p>It also adds a Zest Graph view (see documentation at <a
+	href="http://wiki.eclipse.org/Graphviz_DOT_as_a_DSL_for_Zest">
+http://wiki.eclipse.org/Graphviz_DOT_as_a_DSL_for_Zest</a>):</p>
+<p><img src="resources/docs/view-selection-screenshot.png"></p>
+
+<p><b>Graphviz DOT as a DSL for Zest - M4: Zest project type
+with Graphviz support (<a href="http://bugs.eclipse.org/277400">Bug
+277400</a>)</b></p>
+
+<p>Milestone 4 adds a Zest project nature, builder, and wizard. The
+project created by the wizard contains a 'templates' folder containing a
+sample DOT file. The DOT files in the 'templates' folder are compiled to
+Zest graph subclasses by the builder, which can be launched as Java
+applications to view the Zest Graph:</p>
+<p><img
+	src="resources/docs/wizard-screenshots/project/project-wizard-result.png"></p>
+
+<p>Effectively this implements a basic Zest authoring environment
+using DOT as a DSL, as upon saving the DOT file, the same Zest
+application can be relaunched, showing the Zest graph created from the
+changed DOT file.</p>
+
+<p><b>Graphviz DOT as a DSL for Zest - M3: Zest wizard for
+Graphviz import (<a href="http://bugs.eclipse.org/277399">Bug 277399</a>)</b></p>
+
+<p>Milestone 3 adds a New-Wizard called 'Zest Graph' under a
+category labeled 'Visualization'. In the first page the container and a
+graph template are selected, the resulting Zest graph for the template
+is previewed:</p>
+<p><img
+	src="resources/docs/wizard-screenshots/graph/graph-wizard-page1.png"></p>
+
+<p>In the second page the DOT representation of the selected
+template can be customized:</p>
+<p><img
+	src="resources/docs/wizard-screenshots/graph/graph-wizard-page2.png"></p>
+
+<p>After the wizard finishes, it tries to run the generated Zest
+Graph to display the result (here customized in the second page):</p>
+<p><img
+	src="resources/docs/wizard-screenshots/graph/graph-wizard-result.png"></p>
+
+<p>To have the generated file launch immediately, setup a project
+that has all Zest bundles (including org.eclipse.zest.dot.export) on the
+classpath and create the graph in the "org.eclipse.zest.dot" package (M4
+provides a wizard for a fully configured Zest project, see above and the
+<a href="http://wiki.eclipse.org/Graphviz_DOT_as_a_DSL_for_Zest">
+dot4zest wiki page</a>).</p>
+
+</html>

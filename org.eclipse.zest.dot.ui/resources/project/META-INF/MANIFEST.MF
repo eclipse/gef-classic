@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.eclipse.zest.dot.ui.gen
+Bundle-SymbolicName: org.eclipse.zest.dot.ui.gen
+Bundle-Version: 0.0.0
+Require-Bundle: org.eclipse.zest.dot.import
+Bundle-ClassPath: .
