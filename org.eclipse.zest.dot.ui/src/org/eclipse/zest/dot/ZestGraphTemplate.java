@@ -64,7 +64,7 @@ final class ZestGraphTemplate {
         URL root = FileLocator.findEntries(bundle, new Path("resources/tests"))[0];
         File rootFolder;
         try {
-            rootFolder = new File(FileLocator.resolve(root).toURI());
+            rootFolder = new File(FileLocator.toFileURL(root).toURI());
             for (String file : rootFolder.list()) {
                 /*
                  * Custom layout not supported in interpreter (which is in the compiler), where available
@@ -90,13 +90,13 @@ final class ZestGraphTemplate {
      * "sample_graph.dot" -> "Sample Graph"
      */
     private static String formatName(final String file) {
-        String name = "";
+        StringBuilder name = new StringBuilder();
         String[] tokens = file.split("\\.")[0].split("_");
         for (String string : tokens) {
             String upper = Character.toUpperCase(string.charAt(0)) + string.substring(1).toLowerCase();
-            name += " " + upper;
+            name.append(" ").append(upper);
         }
-        return name;
+        return name.toString();
     }
 
     private ZestGraphTemplate(final String name, final String content) {

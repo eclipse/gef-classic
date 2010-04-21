@@ -80,13 +80,13 @@ public final class ZestGraphWizardPageCustomize extends WizardPage {
         inputText.addModifyListener(new ModifyListener() {
             public void modifyText(final ModifyEvent e) {
                 updateWizard();
-                updateFistPage();
+                updateFirstPage();
             }
             private void updateWizard() {
                 ZestGraphWizard wizard = (ZestGraphWizard) getWizard();
                 wizard.setDotText(inputText.getText());
             }
-            private void updateFistPage() {
+            private void updateFirstPage() {
                 ZestGraphWizardPageTemplateSelection page = getFirstPage();
                 page.validateContent();
                 page.updatePreview();
