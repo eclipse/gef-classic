@@ -7,7 +7,7 @@
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
 
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -37,7 +37,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ResourceListSelectionDialog;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.zest.core.widgets.Graph;
-import org.eclipse.zest.dot.internal.DotFileUtils;
+import org.eclipse.zest.dot.DotExport;
+import org.eclipse.zest.dot.DotImport;
+import org.eclipse.zest.internal.dot.DotFileUtils;
 
 /**
  * View showing the Zest import for a DOT input. Listens to *.dot files in the workspace and allows for image

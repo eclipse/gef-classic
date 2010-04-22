@@ -7,7 +7,7 @@
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
 
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,7 +40,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-import org.eclipse.zest.dot.internal.DotFileUtils;
+import org.eclipse.zest.internal.dot.DotFileUtils;
 
 /**
  * Create a Java project, copy some resources and setup the classpath.

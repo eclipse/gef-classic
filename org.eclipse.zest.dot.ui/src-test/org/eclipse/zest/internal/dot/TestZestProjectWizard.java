@@ -6,7 +6,7 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import java.util.List;
 
@@ -21,6 +21,8 @@ import org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageOne;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.zest.internal.dot.ZestNature;
+import org.eclipse.zest.internal.dot.ZestProjectWizard;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

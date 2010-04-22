@@ -11,10 +11,10 @@ package org.eclipse.zest;
 import junit.framework.Assert;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.zest.dot.TestDotDirStore;
-import org.eclipse.zest.dot.TestZestGraphTemplate;
-import org.eclipse.zest.dot.TestZestGraphWizard;
-import org.eclipse.zest.dot.TestZestProjectWizard;
+import org.eclipse.zest.internal.dot.TestDotDirStore;
+import org.eclipse.zest.internal.dot.TestZestGraphTemplate;
+import org.eclipse.zest.internal.dot.TestZestGraphWizard;
+import org.eclipse.zest.internal.dot.TestZestProjectWizard;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

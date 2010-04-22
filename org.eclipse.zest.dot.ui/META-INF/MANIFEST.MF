@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: org.eclipse.zest.dot.ui
 Bundle-SymbolicName: org.eclipse.zest.dot.ui;singleton:=true
 Bundle-Version: 0.8.0
-Bundle-Activator: org.eclipse.zest.dot.DotUiActivator
+Bundle-Activator: org.eclipse.zest.internal.dot.DotUiActivator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.jdt.core,

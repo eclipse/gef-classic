@@ -9,7 +9,7 @@
       </category>
       <wizard
             category="org.eclipse.zest"
-            class="org.eclipse.zest.dot.ZestGraphWizard"
+            class="org.eclipse.zest.internal.dot.ZestGraphWizard"
             icon="resources/icons/graph.gif"
             id="org.eclipse.zest.dot.ui.ZestGraphWizard"
             name="Zest Graph">
@@ -18,7 +18,7 @@
             name="Zest Project"
             icon="resources/icons/project.gif"
             category="org.eclipse.zest"
-            class="org.eclipse.zest.dot.ZestProjectWizard"
+            class="org.eclipse.zest.internal.dot.ZestProjectWizard"
             id="org.eclipse.zest.dot.ZestProjectWizard">
       </wizard>
    	</extension>
@@ -29,7 +29,7 @@
       <builder
             hasNature="true">
          <run
-               class="org.eclipse.zest.dot.ZestBuilder">
+               class="org.eclipse.zest.internal.dot.ZestBuilder">
          </run>
       </builder>
    </extension>
@@ -39,7 +39,7 @@
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
-               class="org.eclipse.zest.dot.ZestNature">
+               class="org.eclipse.zest.internal.dot.ZestNature">
          </run>
       </runtime>
       <builder
@@ -106,7 +106,7 @@
 	            name="Zest Graph"
 	            icon="resources/icons/graph.gif"
 	            category="org.eclipse.zest"
-	            class="org.eclipse.zest.dot.ZestGraphView"
+	            class="org.eclipse.zest.internal.dot.ZestGraphView"
 	            id="org.eclipse.zest.dot.ZestView">
 		</view>
 	</extension>
