@@ -9,22 +9,39 @@
 package org.eclipse.zest.dot;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 import junit.framework.Assert;
 
 import org.eclipse.zest.core.widgets.Graph;
+import org.junit.BeforeClass;
 
 /**
  * Tests for the {@link DotExport} class.
  * @author Fabian Steeg (fsteeg)
  */
 public class TestImageExport extends TestDotTemplate {
-    /* Path to the local Graphviz folder containing the dot executable file: */
-    private static final String DOT_DIR = "C:\\Program Files (x86)\\Graphviz2.20\\bin";
+    
+    private static String dotDir = null;
 
-    /* Typical locations on other OS: */
-    // private static final String DOT_DIR = "/usr/local/bin";
-    // private static final String DOT_DIR = "/opt/local/bin"; // MacPorts
+    @BeforeClass
+    public static void setup() throws IOException {
+        Properties props = new Properties();
+        InputStream stream = TestImageExport.class.getResourceAsStream("test.properties");
+        if(stream == null) {
+            Assert.fail("Could not load the test.properties file in directory of "
+                    + TestImageExport.class.getSimpleName());
+        }
+        props.load(stream);
+        /* Path to the local Graphviz folder containing the dot executable file: */
+        dotDir = props.getProperty("org.eclipse.zest.dot.bin.dir");
+        if(dotDir == null || dotDir.trim().length() == 0) {
+            Assert.fail("Graphviz DOT directory not set in test.properties file");
+        }
+        stream.close();
+    }
 
     @Override
     protected void testDotGeneration(final Graph graph) {
@@ -33,7 +50,7 @@ public class TestImageExport extends TestDotTemplate {
          * test in the test superclass:
          */
         super.testDotGeneration(graph);
-        File image = new DotExport(graph).toImage(new File(DOT_DIR), "pdf");
+        File image = new DotExport(graph).toImage(new File(dotDir), "pdf");
         Assert.assertNotNull("Image must not be null", image);
         System.out.println("Created image: " + image);
         Assert.assertTrue("Image must exist", image.exists());

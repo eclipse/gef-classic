@@ -8,8 +8,12 @@
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/%>
 <% Graph graph = (Graph) argument; %>
-<% boolean digraph = graph.getConnectionStyle()==ZestStyles.CONNECTIONS_DIRECTED;%>
-<%= digraph ? "digraph" : "graph" %> <%=new DotExport(graph).name()%>{
+<% boolean digraph = graph.getConnectionStyle()==ZestStyles.CONNECTIONS_DIRECTED; %>
+<% String simpleClassName = graph.getClass().getSimpleName(); %>
+<% /* The exact name 'Graph' is not valid for rendering with Graphviz: */ %>
+<% simpleClassName = simpleClassName.equals("Graph") ? "Zest" + simpleClassName : simpleClassName; %>
+
+<%= digraph ? "digraph" : "graph" %> <%=simpleClassName%>{
 
 	/* Global settings */
 	node[shape=box] //more like the Zest default node look
