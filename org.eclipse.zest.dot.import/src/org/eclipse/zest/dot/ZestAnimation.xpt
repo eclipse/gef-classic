@@ -17,9 +17,7 @@ that has DEFINES used by both templates. Not sure if that is possible, at least 
 the oAW 4.3 Xpand currently used.
 «ENDREM»
 «IMPORT dot»
-«EXTENSION dotlib»
-«EXTENSION org::openarchitectureware::util::stdlib::io»
-«EXTENSION org::openarchitectureware::util::stdlib::elementprops»
+
 «REM» Entry point for transformation of a dot meta-model instance to a Zest source file «ENDREM»
 «DEFINE main FOR graphvizmodel-» «EXPAND dotFile FOREACH graphs» «ENDDEFINE»
 «REM» The main file putting it all together «ENDREM»
@@ -85,7 +83,7 @@ the oAW 4.3 Xpand currently used.
 	        g.setLayoutData(new GridData(GridData.FILL_BOTH));
 	        System.out.println("Inital: \n" + g.toDot());
 	        Button b1 = new Button(shell, SWT.PUSH);
-	        b1.setText("Start");
+	        b1.setText("Step");
 	        /* We start with the first listener */
 	        SelectionListener selectionListener = listenerFor(g.new AnimationRunner0(
 	                g, b1));

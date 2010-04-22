@@ -234,4 +234,9 @@ public final class DotImport {
         return oawFile;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s of %s at %s", getClass().getSimpleName(), dotAst, dotFile);
+    }
+
 }

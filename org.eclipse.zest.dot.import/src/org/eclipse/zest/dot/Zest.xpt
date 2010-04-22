@@ -9,9 +9,7 @@
  *******************************************************************************/ 
 «ENDREM»
 «IMPORT dot»
-«EXTENSION dotlib»
-«EXTENSION org::openarchitectureware::util::stdlib::io»
-«EXTENSION org::openarchitectureware::util::stdlib::elementprops»
+
 «REM» Entry point for transformation of a dot meta-model instance to a Zest source file «ENDREM»
 «DEFINE main FOR graphvizmodel-» «EXPAND dotFile FOREACH graphs» «ENDDEFINE»
 «REM» The main file putting it all together «ENDREM»

@@ -127,7 +127,7 @@ final class DotAst {
     }
 
     /**
-     * @param eObject The object to get a attribute vlaue for
+     * @param eObject The object to get a attribute value for
      * @param name The name of the attribute
      * @return The value of the given attribute in the given object
      */
@@ -136,9 +136,17 @@ final class DotAst {
         while (graphAttributes.hasNext()) {
             EAttribute a = graphAttributes.next();
             if (a.getName().equals(name)) {
-                return eObject.eGet(a).toString();
+                Object eGet = eObject.eGet(a);
+                return eGet == null ? "" : eGet.toString();
             }
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s named '%s' with %s errors, resource: %s", getClass().getSimpleName(), graphName(),
+                errors().size(), resource);
+    }
+
 }
