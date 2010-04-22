@@ -1,7 +1,8 @@
-package org.eclipse.zest.dot;
+package org.eclipse.zest.dot.internal;
 
 import org.eclipse.zest.core.widgets.*;
 import org.eclipse.swt.SWT;
+import org.eclipse.zest.dot.*;
 
 public class DotTemplate
 {

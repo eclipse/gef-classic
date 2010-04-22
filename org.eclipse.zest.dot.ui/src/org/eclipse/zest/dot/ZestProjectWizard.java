@@ -40,6 +40,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.zest.dot.internal.DotFileUtils;
 
 /**
  * Create a Java project, copy some resources and setup the classpath.

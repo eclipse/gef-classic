@@ -9,4 +9,5 @@ Require-Bundle: org.eclipse.zest.core;bundle-version="1.0.0";visibility:=reexpor
  org.junit4;visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="3.5.0"
 Export-Package: org.eclipse.zest.dot,
+ org.eclipse.zest.dot.internal,
  org.eclipse.zest.dot.test_data

@@ -16,6 +16,7 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.dot.internal.DotTemplate;
 import org.eclipse.zest.dot.test_data.LabeledGraph;
 import org.eclipse.zest.dot.test_data.SampleGraph;
 import org.eclipse.zest.dot.test_data.SimpleDigraph;

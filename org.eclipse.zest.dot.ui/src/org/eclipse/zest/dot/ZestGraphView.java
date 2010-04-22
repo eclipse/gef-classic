@@ -37,6 +37,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ResourceListSelectionDialog;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.dot.internal.DotFileUtils;
 
 /**
  * View showing the Zest import for a DOT input. Listens to *.dot files in the workspace and allows for image
