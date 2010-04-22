@@ -19,7 +19,7 @@ final class DotDrawer {
     private DotDrawer() {/* Enforce non-instantiability */}
 
     /**
-     * Calls dot to render an image from the given DOT file, in the given format
+     * Calls dot to render an image from the given DOT file, in the given format.
      * @return The generated image file
      */
     public static File renderImage(final File dotExecutableDir, final File dotInputFile, final String format) {

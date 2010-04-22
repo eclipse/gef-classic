@@ -118,7 +118,7 @@ public final class DotFileUtils {
     }
 
     /**
-     * Recursively copies the contents of the source folder to the destination folder
+     * Recursively copies the contents of the source folder to the destination folder.
      * @param sourceRootFolder The source root folder
      * @param destinationRootFolder The destination root folder
      */
@@ -148,8 +148,9 @@ public final class DotFileUtils {
      * @param newFileName The name for the new file
      * @param sourceFile The source file to be copied into a new file in the destination folder, with the
      *            specified name
+     * @return The newly created copy of the source file
      */
-    public static void copySingleFile(final File destinationFolder, final String newFileName,
+    public static File copySingleFile(final File destinationFolder, final String newFileName,
             final File sourceFile) {
         File destinationFile = new File(destinationFolder, newFileName);
         InputStream sourceStream = null;
@@ -170,5 +171,6 @@ public final class DotFileUtils {
             close(sourceStream);
             close(destinationStream);
         }
+        return destinationFile;
     }
 }

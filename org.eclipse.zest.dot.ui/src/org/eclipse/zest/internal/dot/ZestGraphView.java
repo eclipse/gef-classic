@@ -210,7 +210,7 @@ public final class ZestGraphView extends ViewPart {
     }
 
     private void generateImageFromGraph(final boolean refresh, final String format) {
-        File image = new DotExport(graph).toImage(new File(DotDirStore.getDotDirPath()), FORMAT_PDF);
+        File image = new DotExport(graph).toImage(DotDirStore.getDotDirPath(), FORMAT_PDF);
         try {
             URL url = file.getParent().getLocationURI().toURL();
             DotFileUtils.copySingleFile(DotFileUtils.resolve(url), file.getName() + "." + format, image);
