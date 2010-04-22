@@ -4,6 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="src-gen"/>
-	<classpathentry excluding="org/eclipse/zest/dot/GraphCreatorViaJavaCompilerApi.java" kind="src" path="src-test"/>
+	<classpathentry excluding="org/eclipse/zest/dot/GraphCreatorViaJavaCompilerApi.java|org/eclipse/zest/dot/GraphCreatorViaInternalJdtCompiler.java" kind="src" path="src-test"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

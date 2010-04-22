@@ -8,10 +8,12 @@
  *******************************************************************************/
 package org.eclipse.zest.dot;
 
+import static org.eclipse.zest.dot.DotImportTestUtils.RESOURCES_TESTS;
+import static org.eclipse.zest.dot.DotImportTestUtils.importFrom;
+
 import java.io.File;
 
 import org.junit.Test;
-import static org.eclipse.zest.dot.DotImportTestUtils.*;
 
 /**
  * Tests for the {@link DotImport} class.

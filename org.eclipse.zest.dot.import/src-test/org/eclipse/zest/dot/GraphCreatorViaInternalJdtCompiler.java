@@ -33,15 +33,15 @@ import org.eclipse.zest.core.widgets.Graph;
  * Import DOT to a Zest Graph instance via the internal Eclipse JDT compiler.
  * @author Fabian Steeg (fsteeg)
  */
-@SuppressWarnings( "restriction" )
 /*
  * The downside of this solution is it uses internal API; upside is it works
  * with Java 5 (contrary to the other solution, based on the Java compiler API);
  * as I have recently learned using internal API is not allowed for projects
- * taking part in the release train, so this is not really an option either.
+ * taking part in the release train, this is not really an option either. 
+ * Currently used for Graph instance import: GraphCreatorInterpreter implementation
+ * of IGraphCreator.
  */
-// TODO currently public for usage from UI bundle; should this be public?
-public final class GraphCreatorViaInternalJdtCompiler implements IGraphCreator {
+final class GraphCreatorViaInternalJdtCompiler implements IGraphCreator {
 
     /**
      * {@inheritDoc}

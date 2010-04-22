@@ -186,27 +186,29 @@ public final class TestGraphInstanceDotImport {
     }
 
     /**
-     * EXPERIMENTAL - NOT WORKING Import instance by compiling the generated Zest graph using the Java
-     * Compiler API (downside: requires Java 6)
+     * EXPERIMENTAL - NOT WORKING Import instance by compiling the generated Zest graph using the
+     * Java Compiler API (downside: requires Java 6)
      */
     // @Test
-    public void viaJavaCompilerApi() {
-        /*
-         * Implementation using Java compiler API requires Java 6.
-         */
-        Assert.fail("Java 6 dependency deactivated");
-        // test(new GraphCreatorViaJavaCompilerApi());
-    }
+    // public void viaJavaCompilerApi() {
+    /*
+     * Implementation using Java compiler API requires Java 6.
+     */
+    // test(new GraphCreatorViaJavaCompilerApi());
+    // }
 
     /**
-     * EXPERIMENTAL - NOT WORKING Import instance by compiling the generated Zest graph using the Eclipse JDT
-     * compiler (API is internal, probably makes no sense to use this)
+     * EXPERIMENTAL - NOT WORKING Import instance by compiling the generated Zest graph using the
+     * Eclipse JDT compiler (API is internal, probably makes no sense to use this)
      */
     // @Test
-    public void viaInternalJdtCompiler() {
-        test(new GraphCreatorViaInternalJdtCompiler());
-
-    }
+    // public void viaInternalJdtCompiler() {
+    /*
+     * Implementation using the restricted internal Eclipse compiler.
+     */
+    // test(new GraphCreatorViaInternalJdtCompiler());
+    //
+    // }
 
     /**
      * Test importing a DOT graph to a Zest graph instance directly. Internally, this compiles the generated
@@ -255,9 +257,7 @@ public final class TestGraphInstanceDotImport {
         // open(shell); // blocks UI when running tests
     }
 
-    @SuppressWarnings( "unused" )
-    // optional when running the tests
-    private static void open(final Shell shell) {
+    static void open(final Shell shell) {
         shell.setText("Testing");
         shell.setLayout(new FillLayout());
         shell.setSize(200, 250);

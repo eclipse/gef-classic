@@ -12,6 +12,11 @@ import static org.eclipse.zest.dot.DotImportTestUtils.RESOURCES_TESTS;
 import static org.eclipse.zest.dot.DotImportTestUtils.importFrom;
 
 import java.io.File;
+
+import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.junit.Test;
 
 /**
