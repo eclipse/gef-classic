@@ -63,7 +63,8 @@ public final class DotExport {
     /**
      * @return A name for the given graph, that can be used as a filename and as a valid name for a DOT graph
      */
-    String name() {
+    @Override
+    public String toString() {
         String simpleClassName = graph.getClass().getSimpleName();
         /* The exact name 'Graph' is not valid for rendering with Graphviz: */
         return simpleClassName.equals("Graph") ? "Zest" + simpleClassName : simpleClassName;

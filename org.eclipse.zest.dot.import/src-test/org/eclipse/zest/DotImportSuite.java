@@ -9,13 +9,13 @@
 package org.eclipse.zest;
 
 import org.eclipse.zest.dot.DotImportTestUtils;
-import org.eclipse.zest.dot.DotTestUtils;
 import org.eclipse.zest.dot.TestAnimationDotImport;
 import org.eclipse.zest.dot.TestBasicDotImport;
 import org.eclipse.zest.dot.TestBatchDotImport;
 import org.eclipse.zest.dot.TestDotAst;
 import org.eclipse.zest.dot.TestGraphInstanceDotImport;
 import org.eclipse.zest.dot.TestLayoutDotImport;
+import org.eclipse.zest.tests.dot.DotTestUtils;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

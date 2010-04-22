@@ -8,10 +8,10 @@
  *******************************************************************************/
 package org.eclipse.zest;
 
-import org.eclipse.zest.dot.DotTestUtils;
-import org.eclipse.zest.dot.TestDotExport;
-import org.eclipse.zest.dot.TestDotTemplate;
-import org.eclipse.zest.dot.TestImageExport;
+import org.eclipse.zest.tests.dot.DotTestUtils;
+import org.eclipse.zest.tests.dot.TestDotExport;
+import org.eclipse.zest.tests.dot.TestDotTemplate;
+import org.eclipse.zest.tests.dot.TestImageExport;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;

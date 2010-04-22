@@ -6,7 +6,7 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot;
+package org.eclipse.zest.tests.dot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -15,6 +15,7 @@ import java.util.Scanner;
 import junit.framework.Assert;
 
 import org.eclipse.zest.core.widgets.Graph;
+import org.eclipse.zest.dot.DotExport;
 
 /**
  * Tests for the {@link DotExport} class.
@@ -35,7 +36,7 @@ public class TestDotExport extends TestDotTemplate {
         String dot = dotExport.toDotString();
         assertNoBlankLines(dot);
         System.out.println(dot);
-        File file = new File(OUTPUT, new DotExport(graph).name() + ".dot");
+        File file = new File(OUTPUT, new DotExport(graph).toString() + ".dot");
         dotExport.toDotFile(file);
         Assert.assertTrue("Generated file must exist!", file.exists());
         String dotRead = read(file);

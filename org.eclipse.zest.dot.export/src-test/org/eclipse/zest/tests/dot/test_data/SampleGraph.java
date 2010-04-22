@@ -6,7 +6,7 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot.test_data;
+package org.eclipse.zest.tests.dot.test_data;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -21,16 +21,17 @@ import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 /**
- * Zest graph sample input for the Zest-To-Dot transformation demonstrating node
- * and edge label support.
+ * Zest graph sample input for the Zest-To-Dot transformation. Contains
+ * everything that is currently supported by the transformation: node and edge
+ * labels, edge styles.
  */
-public class LabeledGraph extends Graph {
+public class SampleGraph extends Graph {
     /**
      * {@link Graph#Graph(Composite, int)}
      * @param parent The parent
      * @param style The style bits
      */
-    public LabeledGraph(final Composite parent, final int style) {
+    public SampleGraph(final Composite parent, final int style) {
         super(parent, style);
 
         /* Global settings: */
@@ -39,22 +40,25 @@ public class LabeledGraph extends Graph {
                 LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
         /* Nodes: */
-        GraphNode n1 = new GraphNode(this, SWT.NONE, "One");
-        GraphNode n2 = new GraphNode(this, SWT.NONE, "Two");
-        GraphNode n3 = new GraphNode(this, SWT.NONE, "3");
-        GraphNode n4 = new GraphNode(this, SWT.NONE, "4");
+        GraphNode n1 = new GraphNode(this, SWT.NONE, "Node");
+        GraphNode n2 = new GraphNode(this, SWT.NONE, "Node");
+        GraphNode n3 = new GraphNode(this, SWT.NONE, "Leaf1");
+        GraphNode n4 = new GraphNode(this, SWT.NONE, "Leaf2");
 
         /* Connection from n1 to n2: */
         GraphConnection n1n2 = new GraphConnection(this, SWT.NONE, n1, n2);
-        n1n2.setText("+1");
+        n1n2.setText("Edge");
+        n1n2.setLineStyle(SWT.LINE_DASH);
 
-        /* Connection from n1 to n3: */
-        GraphConnection n1n3 = new GraphConnection(this, SWT.NONE, n1, n3);
-        n1n3.setText("+2");
+        /* Connection from n2 to n3: */
+        GraphConnection n2n3 = new GraphConnection(this, SWT.NONE, n2, n3);
+        n2n3.setText("Edge");
+        n2n3.setLineStyle(SWT.LINE_DASH);
 
-        /* Connection from n3 to n4: */
-        new GraphConnection(this, SWT.NONE, n3, n4);
-
+        /* Connection from n2 to n4: */
+        GraphConnection n2n4 = new GraphConnection(this, SWT.NONE, n2, n4);
+        n2n4.setText("Dotted");
+        n2n4.setLineStyle(SWT.LINE_DOT);
     }
     /**
      * Displays this graph in a shell.
@@ -63,10 +67,10 @@ public class LabeledGraph extends Graph {
     public static void main(final String[] args) {
         Display d = new Display();
         Shell shell = new Shell(d);
-        shell.setText(LabeledGraph.class.getSimpleName());
+        shell.setText(SampleGraph.class.getSimpleName());
         shell.setLayout(new FillLayout());
         shell.setSize(200, 250);
-        new LabeledGraph(shell, SWT.NONE);
+        new SampleGraph(shell, SWT.NONE);
         shell.open();
         while (!shell.isDisposed()) {
             while (!d.readAndDispatch()) {
