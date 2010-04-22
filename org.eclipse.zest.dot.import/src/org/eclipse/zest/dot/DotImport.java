@@ -31,7 +31,7 @@ import org.eclipse.emf.mwe.core.monitor.NullProgressMonitor;
 import org.eclipse.emf.mwe.core.monitor.ProgressMonitor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.zest.core.widgets.Graph;
-import org.eclipse.zest.dot.internal.DotFileUtils;
+import org.eclipse.zest.internal.dot.DotFileUtils;
 
 /**
  * Transformation of DOT files or strings to Zest Graph subclasses.

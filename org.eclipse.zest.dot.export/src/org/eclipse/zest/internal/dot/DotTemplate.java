@@ -1,4 +1,4 @@
-package org.eclipse.zest.dot.internal;
+package org.eclipse.zest.internal.dot;
 
 import org.eclipse.zest.core.widgets.*;
 import org.eclipse.swt.SWT;
