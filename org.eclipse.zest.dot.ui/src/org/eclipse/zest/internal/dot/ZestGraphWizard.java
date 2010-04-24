@@ -123,7 +123,6 @@ public final class ZestGraphWizard extends Wizard implements INewWizard {
      */
     public void setDotText(final String text) {
         this.dotText = text;
-
     }
 
     /**
@@ -139,6 +138,9 @@ public final class ZestGraphWizard extends Wizard implements INewWizard {
      */
     static void launchJavaApplication(final IFile file,
             final IProgressMonitor monitor) {
+        if(file == null) {
+            throw new IllegalArgumentException("The Zest graph Java source file to run must not be null");
+        }
         monitor.setTaskName(RUNNING_FILE);
         IProject project = file.getProject();
         IJavaProject javaProject = JavaCore.create(project);

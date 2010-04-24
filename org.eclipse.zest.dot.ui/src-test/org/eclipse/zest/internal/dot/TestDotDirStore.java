@@ -13,8 +13,6 @@ import java.io.File;
 import junit.framework.Assert;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.zest.internal.dot.DotDirStore;
-import org.eclipse.zest.internal.dot.DotUiActivator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,15 +30,18 @@ public final class TestDotDirStore {
 
     @Test
     public void askForDotDir() {
-        /* Blocks UI every time, but tests asking even if clearing workspace is disabled: */
-        DotUiActivator.getDefault().getPreferenceStore().setValue(DotDirStore.DOTPATH_KEY, "");
+        /*
+         * Setting the value to the empty string here blocks UI every time, but tests asking even if clearing workspace
+         * is disabled:
+         */
+        DotUiActivator.getDefault().getPreferenceStore().setValue(DotDirStore.DOTPATH_KEY, "opt/local/bin");
         /* If not set, the DOT dir is requested: */
         check(DotDirStore.getDotDirPath());
     }
 
     @Test
     public void getDotDirFromPrefs() {
-        /* If set, the DOT dir is reurned: */
+        /* If set, the DOT dir is returned: */
         check(DotDirStore.getDotDirPath());
     }
 

@@ -132,8 +132,9 @@ public final class ZestGraphWizardPageTemplateSelection extends WizardPage {
     /**
      * Validates the page's container selection and the selected DOT template, displays errors happening
      * during parsing of the DOT representation.
+	 * @return True, if validation was successful
      */
-    void validateContent() {
+    boolean validateContent() {
         IResource container =
                 ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(getContainerName()));
         String fileName = getFileName();
@@ -158,9 +159,11 @@ public final class ZestGraphWizardPageTemplateSelection extends WizardPage {
             if (errors.size() > 0) {
                 updateStatus(errors.get(0));
             } else {
-                updateStatus(null);
+                updateStatus(null); 
+                return true;
             }
         }
+        return false;
     }
 
     /**
