@@ -110,4 +110,7 @@
 	            id="org.eclipse.zest.dot.ZestView">
 		</view>
 	</extension>
+    <extension point="org.eclipse.help.toc">
+        <toc file="Graphviz-DOT-as-a-DSL-for-Zest-toc.xml" primary="true"/>
+    </extension>
 </plugin>

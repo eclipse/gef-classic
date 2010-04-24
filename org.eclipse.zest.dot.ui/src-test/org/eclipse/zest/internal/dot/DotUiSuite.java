@@ -11,6 +11,10 @@ package org.eclipse.zest.internal.dot;
 import junit.framework.Assert;
 
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.zest.internal.dot.TestDotDirStore;
+import org.eclipse.zest.internal.dot.TestZestGraphTemplate;
+import org.eclipse.zest.internal.dot.TestZestGraphWizard;
+import org.eclipse.zest.internal.dot.TestZestProjectWizard;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -22,7 +26,7 @@ import org.junit.runners.Suite;
 @RunWith( Suite.class )
 @Suite.SuiteClasses( { /* TestExperimentalDotImport.class, //not passing and experimental */
 TestZestGraphTemplate.class, TestZestGraphWizard.class, TestZestProjectWizard.class,
-        TestDotDirStore.class } )
+        TestDotDirStore.class, TestDotExtractor.class } )
 public final class DotUiSuite {
     @Before
     public void setup() {
