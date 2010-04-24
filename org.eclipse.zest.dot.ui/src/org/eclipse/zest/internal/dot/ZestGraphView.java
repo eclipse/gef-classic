@@ -28,13 +28,20 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorDescriptor;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ResourceListSelectionDialog;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.dot.DotExport;
@@ -42,14 +49,24 @@ import org.eclipse.zest.dot.DotImport;
 import org.eclipse.zest.internal.dot.DotFileUtils;
 
 /**
- * View showing the Zest import for a DOT input. Listens to *.dot files in the workspace and allows for image
- * file export via calling a local 'dot' (location is selected in a dialog and stored in the preferences).
+ * View showing the Zest import for a DOT input. Listens to *.dot files and other files with DOT
+ * content in the workspace and allows for image file export via calling a local 'dot' (location is
+ * selected in a dialog and stored in the preferences).
  * @author Fabian Steeg (fsteeg)
  */
 public final class ZestGraphView extends ViewPart {
-	
-	public static final String ID = "org.eclipse.zest.dot.ZestView";
+    
+    public static final String ID = "org.eclipse.zest.dot.ZestView";
+    
+    private static final RGB BACKGROUND = JFaceResources.getColorRegistry().getRGB(
+            "org.eclipse.jdt.ui.JavadocView.backgroundColor");
+
     // TODO externalize
+    private static final String ADD_EXPORT_QUESTION = "Add Graph Export to WikiText Markup?";
+    private static final String ADD_EXPORT_MESSAGE = "The Zest graph currently displayed was generated "
+            + "from a DOT representation embdedd in WikiText markup (%s). Should a reference to the "
+            + "exported image file be added to the WikiText markup?";
+    
     private static final String LOAD = "Load...";
     private static final String RESET = "Ask for 'dot' app location...";
     private static final String LAYOUT = "Layout";
@@ -61,11 +78,16 @@ public final class ZestGraphView extends ViewPart {
     private static final String RESOURCES_ICONS_LAYOUT = "resources/icons/layout.gif";
 
     private static final String EXTENSION = "dot";
-    protected static final String FORMAT_PDF = "pdf";
+    private static final String FORMAT_PDF = "pdf";
+    private static final String FORMAT_PNG = "png";
 
     private Composite composite;
     private Graph graph;
     private IFile file;
+
+    private String dotString = "";
+    private boolean addReference = true;
+    private boolean listenToDotContent = true; // TODO add toggle button
 
     /** Listener that passes a visitor if a resource is changed. */
     private IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
@@ -83,30 +105,32 @@ public final class ZestGraphView extends ViewPart {
         }
     };
 
-    /** If a *.dot file is visited, we update the graph from it. */
+    /** If a *.dot file or a file with DOT content is visited, we update the graph from it. */
     private IResourceDeltaVisitor resourceVisitor = new IResourceDeltaVisitor() {
         public boolean visit(final IResourceDelta delta) {
             IResource resource = delta.getResource();
-            if (resource.getType() == IResource.FILE
-                    && EXTENSION.equalsIgnoreCase(resource.getFileExtension())) {
+            if (resource.getType() == IResource.FILE) {
                 try {
                     final IFile f = (IFile) resource;
-                    final String l = f.getLocation().toString();
+                    if (!listenToDotContent && !f.getLocation().toString().endsWith(EXTENSION)) {
+                        return true;
+                    }
                     IWorkspaceRunnable workspaceRunnable = new IWorkspaceRunnable() {
                         public void run(final IProgressMonitor monitor) throws CoreException {
-                            if (l.endsWith("." + EXTENSION)) {
-                                setGraph(f);
-                            }
+                            setGraph(f);
                         }
                     };
                     IWorkspace workspace = ResourcesPlugin.getWorkspace();
-                    workspace.run(workspaceRunnable, null);
+                    if (!workspace.isTreeLocked()) {
+                        workspace.run(workspaceRunnable, null);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
             return true;
         }
+
     };
 
     /**
@@ -117,8 +141,13 @@ public final class ZestGraphView extends ViewPart {
         composite = new Composite(parent, SWT.NULL);
         GridLayout layout = new GridLayout();
         composite.setLayout(layout);
+        composite.setBackground(new Color(composite.getDisplay(), BACKGROUND));
         if (file != null) {
-            graph = new DotImport(file).newGraphInstance(composite, SWT.NONE);
+            try {
+                updateGraph();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
         }
         addLoadButton();
         addExportButton();
@@ -146,7 +175,8 @@ public final class ZestGraphView extends ViewPart {
                 generateImageFromGraph(true, FORMAT_PDF);
             }
         };
-        exportAction.setImageDescriptor(DotUiActivator.getImageDescriptor(RESOURCES_ICONS_EXPORT_GIF));
+        exportAction.setImageDescriptor(DotUiActivator
+                .getImageDescriptor(RESOURCES_ICONS_EXPORT_GIF));
         getViewSite().getActionBars().getToolBarManager().add(exportAction);
     }
 
@@ -165,8 +195,8 @@ public final class ZestGraphView extends ViewPart {
             public void run() {
                 Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
                 IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-                ResourceListSelectionDialog dialog =
-                        new ResourceListSelectionDialog(shell, root, IResource.FILE);
+                ResourceListSelectionDialog dialog = new ResourceListSelectionDialog(shell, root,
+                        IResource.FILE);
                 if (dialog.open() == ResourceListSelectionDialog.OK) {
                     Object[] selected = dialog.getResult();
                     if (selected != null) {
@@ -182,25 +212,84 @@ public final class ZestGraphView extends ViewPart {
 
     private void setGraph(final IFile file) {
         this.file = file;
-        if (file.getFileExtension().equals(EXTENSION)) {
+        try {
             updateGraph();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
     }
 
-    private void updateGraph() {
+    private void updateGraph() throws MalformedURLException {
+        if (file == null || file.getLocationURI() == null || !file.exists()) {
+            return;
+        }
+        final String currentDot = new DotExtractor(file).getDotString();
+        if (currentDot.equals(dotString) || currentDot.equals(DotExtractor.NO_DOT)) {
+            return;
+        }
         getViewSite().getShell().getDisplay().asyncExec(new Runnable() {
             public void run() {
                 if (graph != null) {
                     graph.dispose();
                 }
                 if (composite != null) {
-                    graph = new DotImport(file).newGraphInstance(composite, SWT.NONE);
+                    dotString = currentDot;
+                    graph = new DotImport(dotString).newGraphInstance(composite, SWT.NONE);
                     setupLayout();
                     composite.layout();
                     graph.applyLayout();
                 }
+                handleWikiText(currentDot);
             }
         });
+    }
+
+    private void handleWikiText(final String dot) {
+        try {
+            IEditorDescriptor editor = IDE.getEditorDescriptor(file);
+            // TODO get ID from registry, not MarkupEditor.ID internal API or hard-coded string
+            // IEditorRegistry registry = getSite().getWorkbenchWindow().getWorkbench().getEditorRegistry();
+            if (editor.getId().equals("org.eclipse.mylyn.wikitext.ui.editor.markupEditor")) {
+                try {
+                    // Or export dot directly, or via Zest?
+                    File image = generateImageFromGraph(true, FORMAT_PNG); 
+                    File wikiFile = DotFileUtils.resolve(file.getLocationURI().toURL());
+                    String imageLinkWiki = createImageLinkMarkup(image);
+                    if (!DotFileUtils.read(wikiFile).contains(imageLinkWiki) && addReference
+                            && supported(file)) {
+                        String message = String.format(ADD_EXPORT_MESSAGE, file.getName());
+                        if (MessageDialog.openQuestion(getSite().getShell(), ADD_EXPORT_QUESTION,
+                                message)) {
+                            addReference(dot, wikiFile, imageLinkWiki);
+                        } else {
+                            addReference = false;
+                        }
+                    }
+                    refreshParent(file);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (PartInitException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private boolean supported(final IFile wikiFile) {
+        // TODO support other markup languages
+        return wikiFile.getFileExtension().endsWith("textile");
+    }
+
+    private String createImageLinkMarkup(final File image) {
+        // TODO support other markup languages
+        return String.format("\n!%s!\n", image.getName());
+    }
+
+    private void addReference(final String dot, final File wikiFile, final String imageLinkWiki) {
+        // This approach only works for textile markup, where the code is marked only at the beginning
+        String content = DotFileUtils.read(wikiFile).replace(dot, dot + "\n" + imageLinkWiki);
+        DotFileUtils.write(content, wikiFile);
     }
 
     private void setupLayout() {
@@ -208,23 +297,33 @@ public final class ZestGraphView extends ViewPart {
             GridData gd = new GridData(GridData.FILL_BOTH);
             graph.setLayout(new GridLayout());
             graph.setLayoutData(gd);
+            Color color = new Color(graph.getDisplay(), BACKGROUND);
+            graph.setBackground(color);
+            graph.getParent().setBackground(color);
         }
     }
 
-    private void generateImageFromGraph(final boolean refresh, final String format) {
-        File image = new DotExport(graph).toImage(DotDirStore.getDotDirPath(), FORMAT_PDF);
+    private File generateImageFromGraph(final boolean refresh, final String format) {
+        File image = new DotExport(graph).toImage(DotDirStore.getDotDirPath(), format);
         try {
             URL url = file.getParent().getLocationURI().toURL();
-            DotFileUtils.copySingleFile(DotFileUtils.resolve(url), file.getName() + "." + format, image);
+            File copy = DotFileUtils.copySingleFile(DotFileUtils.resolve(url), file.getName() + "."
+                    + format, image);
+            return copy;
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
         if (refresh) {
-            try {
-                file.getParent().refreshLocal(IResource.DEPTH_ONE, null);
-            } catch (CoreException e) {
-                e.printStackTrace();
-            }
+            refreshParent(file);
+        }
+        return image;
+    }
+
+    private void refreshParent(final IFile file) {
+        try {
+            file.getParent().refreshLocal(IResource.DEPTH_ONE, null);
+        } catch (CoreException e) {
+            e.printStackTrace();
         }
     }
 

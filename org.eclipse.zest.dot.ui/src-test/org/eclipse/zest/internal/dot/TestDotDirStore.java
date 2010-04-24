@@ -27,6 +27,9 @@ public final class TestDotDirStore {
         if (!Platform.isRunning()) {
             Assert.fail("Please run as JUnit Plug-in test");
         }
+        Assert.assertNotNull(
+                "TestImageExport.DOT_DIR should point to the directory containing the local Graphviz DOT executable;",
+                TestImageExport.dotBinDir());
     }
 
     @Test

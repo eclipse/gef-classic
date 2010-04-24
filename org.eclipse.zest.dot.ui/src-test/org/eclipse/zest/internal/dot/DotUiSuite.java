@@ -6,15 +6,11 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest;
+package org.eclipse.zest.internal.dot;
 
 import junit.framework.Assert;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.zest.internal.dot.TestDotDirStore;
-import org.eclipse.zest.internal.dot.TestZestGraphTemplate;
-import org.eclipse.zest.internal.dot.TestZestGraphWizard;
-import org.eclipse.zest.internal.dot.TestZestProjectWizard;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
