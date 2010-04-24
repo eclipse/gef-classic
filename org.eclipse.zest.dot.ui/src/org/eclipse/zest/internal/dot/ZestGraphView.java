@@ -47,6 +47,8 @@ import org.eclipse.zest.internal.dot.DotFileUtils;
  * @author Fabian Steeg (fsteeg)
  */
 public final class ZestGraphView extends ViewPart {
+	
+	public static final String ID = "org.eclipse.zest.dot.ZestView";
     // TODO externalize
     private static final String LOAD = "Load...";
     private static final String RESET = "Ask for 'dot' app location...";

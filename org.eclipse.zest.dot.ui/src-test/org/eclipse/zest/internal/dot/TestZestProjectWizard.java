@@ -1,8 +1,7 @@
 /*******************************************************************************
- * Copyright (c) 2009 Fabian Steeg. All rights reserved. This program and the
- * accompanying materials are made available under the terms of the Eclipse
- * Public License v1.0 which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * Copyright (c) 2009 Fabian Steeg. All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0 which accompanies this
+ * distribution, and is available at http://www.eclipse.org/legal/epl-v10.html
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
@@ -16,8 +15,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.ui.wizards.NewJavaProjectWizardPageOne;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -29,8 +26,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests for the {@link ZestProjectWizard}. Tests if the no-config usage of the
- * wizard works, ie. start the and hit finish.
+ * Tests for the {@link ZestProjectWizard}. Tests if the no-config usage of the wizard works, ie.
+ * start the and hit finish.
  * @author Fabian Steeg (fsteeg)
  */
 public final class TestZestProjectWizard {
@@ -39,7 +36,6 @@ public final class TestZestProjectWizard {
     @Before
     public void setup() {
         ProjectHelper.assertProjectDoesntExist(ProjectHelper.PROJECT_PATH);
-
     }
 
     @After
@@ -61,8 +57,7 @@ public final class TestZestProjectWizard {
         List<IPath> paths = ZestProjectWizard.pathsToGeneratedGraphs();
         for (IPath path : paths) {
             IResource generatedZestFile = project.findMember(path);
-            String shouldExist = "Zest graph created by project builder should exist: "
-                    + path;
+            String shouldExist = "Zest graph created by project builder should exist: " + path;
             Assert.assertNotNull(shouldExist, generatedZestFile);
             Assert.assertTrue(shouldExist, generatedZestFile.exists());
         }
@@ -77,10 +72,7 @@ public final class TestZestProjectWizard {
     private void testProjectNature() {
         try {
             IProjectNature nature = project.getNature(ZestNature.NATURE_ID);
-            Assert
-                    .assertNotNull(
-                            "Zest nature should be present on new Zest project",
-                            nature);
+            Assert.assertNotNull("Zest nature should be present on new Zest project", nature);
         } catch (CoreException e) {
             e.printStackTrace();
         }
@@ -90,20 +82,17 @@ public final class TestZestProjectWizard {
         ZestProjectWizard wizard = new ZestProjectWizard();
         WizardDialog dialog = createDialog(wizard);
         dialog.create();
-        setProjectName(wizard, ProjectHelper.PROJECT_NAME);
         dialog.setBlockOnOpen(false);
         dialog.open();
         wizard.performFinish();
         project = getNewProject(wizard);
     }
 
-    // TODO switch to non-internal API in the ZestProjectWizard
-    @SuppressWarnings( "restriction" )
-    private IProject getNewProject(final ZestProjectWizard wizard) {
-        IJavaElement createdElement = wizard.getCreatedElement();
+    private IProject getNewProject(ZestProjectWizard wizard) {
+        IJavaElement createdElement = wizard.getCreatedProject();
         try {
             return createdElement.getCorrespondingResource().getProject();
-        } catch (JavaModelException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -112,15 +101,8 @@ public final class TestZestProjectWizard {
     private WizardDialog createDialog(final ZestProjectWizard wizard) {
         IWorkbench workbench = PlatformUI.getWorkbench();
         wizard.init(workbench, null);
-        WizardDialog dialog = new WizardDialog(workbench
-                .getActiveWorkbenchWindow().getShell(), wizard);
+        WizardDialog dialog = new WizardDialog(workbench.getActiveWorkbenchWindow().getShell(),
+                wizard);
         return dialog;
-    }
-
-    private void setProjectName(final ZestProjectWizard wizard,
-            final String name) {
-        NewJavaProjectWizardPageOne page = (NewJavaProjectWizardPageOne) wizard
-                .getPages()[0];
-        page.setProjectName(name);
     }
 }
