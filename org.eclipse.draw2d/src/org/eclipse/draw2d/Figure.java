@@ -581,7 +581,7 @@ public final Rectangle getClientArea() {
  * @return the IClipppingStrategy used to clip this figure's children.
  * @since 3.6
  */
-protected IClippingStrategy getClippingStrategy() {
+public IClippingStrategy getClippingStrategy() {
 	return clippingStrategy;
 }
 
@@ -1502,7 +1502,7 @@ public void setConstraint(IFigure child, Object constraint) {
  * @param clippingStrategy
  * @since 3.6
  */
-protected void setClippingStrategy(IClippingStrategy clippingStrategy) {
+public void setClippingStrategy(IClippingStrategy clippingStrategy) {
 	this.clippingStrategy = clippingStrategy;
 }
 

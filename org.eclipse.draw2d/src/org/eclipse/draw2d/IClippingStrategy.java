@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * 
  * @since 3.6
  */
-interface IClippingStrategy {
+public interface IClippingStrategy {
 
 	/**
 	 * Specifies the clipping region for the given child figure. That is, all
@@ -31,8 +31,10 @@ interface IClippingStrategy {
 	 * 
 	 * @param childFigure
 	 *            The child figure, which clipping region has to be returned.
-	 * @return A set of rectangles specifying the clipping region of the figure,
-	 *         i.e. the areas in which the figure should not get clipped.
+	 * @return An array of rectangles to specify the clipping region of the
+	 *         figure, i.e. the areas in which the figure should not get
+	 *         clipped. May return an empty array in case the figure should not
+	 *         be visible at all, may not return <code>null</code>.
 	 */
 	Rectangle[] getClip(IFigure childFigure);
 }

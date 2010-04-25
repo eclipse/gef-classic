@@ -49,7 +49,7 @@ public final class ViewportUtilities {
 			return new ArrayList();
 		}
 		Viewport rootViewport = getRootViewport(figure);
-		return getViewportsPath(nearestEnclosingViewport, rootViewport);
+		return getViewportsPath(nearestEnclosingViewport, rootViewport, true);
 	}
 
 	/**
@@ -72,6 +72,33 @@ public final class ViewportUtilities {
 	 */
 	public static List getViewportsPath(final Viewport leafViewport,
 			final Viewport rootViewport) {
+		return getViewportsPath(leafViewport, rootViewport, true);
+	}
+
+	/**
+	 * Returns a list containing the provided leaf {@link Viewport} as the first
+	 * element, and all its enclosing {@link Viewport}s up to the root
+	 * {@link Viewport}. The root {@link Viewport} forms the last element of the
+	 * list, in case includeRootViewport is set to true, otherwise the viewport
+	 * directly nested below the root viewport will be the last in the list.
+	 * 
+	 * @param leafViewport
+	 *            The {@link Viewport}, whose parent hierarchy is processed.
+	 * @param rootViewport
+	 *            an ancestor of the given leafViewport, which marks the end
+	 *            point of the hierarchy to be processed.
+	 * @param includeRootViewport
+	 *            whether the provided rootViewport should be included in the
+	 *            list of returned viewports (as the last one) or not.
+	 * @return A list of {@link Viewport}s containing the leaf {@link Viewport}
+	 *         as the first element, the root {@link Viewport} as the last and
+	 *         in between all enclosing {@link Viewport}s of the leaf
+	 *         {@link Viewport} up to the root. Returns an empty list in case
+	 *         leaf or root {@link Viewport} are null or in case the root
+	 *         viewport is not an ancestor of the leaf {@link Viewport}.
+	 */
+	public static List getViewportsPath(final Viewport leafViewport,
+			final Viewport rootViewport, boolean includeRootViewport) {
 		if (leafViewport == null || rootViewport == null) {
 			return Collections.EMPTY_LIST;
 		}
@@ -88,7 +115,9 @@ public final class ViewportUtilities {
 
 		// check if root viewport is an ancestor of the given leaf viewport
 		if (currentViewport != null) {
-			nestedViewports.add(currentViewport);
+			if (includeRootViewport) {
+				nestedViewports.add(currentViewport);
+			}
 			return nestedViewports;
 		}
 		return Collections.EMPTY_LIST;
@@ -149,7 +178,6 @@ public final class ViewportUtilities {
 	 * @param figure
 	 * @return The nearest enclosing {@link Viewport} of the given figure, or
 	 *         null if none could be found.
-	 * @since 3.2
 	 */
 	public static Viewport getNearestEnclosingViewport(final IFigure figure) {
 		Viewport viewport = null;
