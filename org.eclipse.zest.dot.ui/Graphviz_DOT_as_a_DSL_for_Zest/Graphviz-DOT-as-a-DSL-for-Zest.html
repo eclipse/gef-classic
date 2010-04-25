@@ -171,16 +171,15 @@ File image = exporter.toImage("/opt/local/bin", "pdf");
 				</div>
 			</div> 
 		</p>
-		<p>The main bug for this project is 
+		<p>The main bug for this feature is 
 			<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=277380" target="doc_external">bug 277380</a>. View a 
-			<a href="https://bugs.eclipse.org/bugs/buglist.cgi?query_format=specific&amp;order=relevance+desc&amp;bug_status=__all__&amp;product=GEF&amp;content=%5Bdot4zest%5D" target="doc_external">complete list</a> of related bugs. If you have suggestions for this project you can 
-			<a href="https://bugs.eclipse.org/bugs/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fwiki.eclipse.org%2FGraphviz_DOT_as_a_DSL_for_Zest&amp;bug_severity=enhancement&amp;bug_status=NEW&amp;comment=&amp;component=Zest&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-6=X&amp;form_name=enter_bug&amp;maketemplate=Remember%20values%20as%20bookmarkable%20template&amp;op_sys=All&amp;priority=P3&amp;product=GEF&amp;rep_platform=All&amp;short_desc=%5Bdot4zest%5D%20New%20request%20summary&amp;version=unspecified" target="doc_external">file a new bug</a>. The CVS repository for this project is located at 
-			<i>cvs.dot4zest.berlios.de:/cvsroot/dot4zest</i>; 
-			<a href="http://developer.berlios.de/cvs/?group_id=10849" target="doc_external">access info</a>. You can also 
-			<a href="http://download.berlios.de/cvstarballs/dot4zest-cvsroot.tar.gz" target="doc_external">download nightly CVS snapshots</a> or check out 
-			<a href="https://www.ohloh.net/p/dot4zest" target="doc_external">project statistics on Ohloh</a>.
+			<a href="https://bugs.eclipse.org/bugs/buglist.cgi?query_format=specific&amp;order=relevance+desc&amp;bug_status=__all__&amp;product=GEF&amp;content=%5Bdot4zest%5D" target="doc_external">complete list</a> of related bugs. If you have suggestions for this feature you can 
+			<a href="https://bugs.eclipse.org/bugs/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fwiki.eclipse.org%2FGraphviz_DOT_as_a_DSL_for_Zest&amp;bug_severity=enhancement&amp;bug_status=NEW&amp;comment=&amp;component=Zest&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-6=X&amp;form_name=enter_bug&amp;maketemplate=Remember%20values%20as%20bookmarkable%20template&amp;op_sys=All&amp;priority=P3&amp;product=GEF&amp;rep_platform=All&amp;short_desc=%5Bdot4zest%5D%20New%20request%20summary&amp;version=unspecified" target="doc_external">file a new bug</a>. The code for this feature is part of the CVS repository at 
+			<i>dev.eclipse.org:/cvsroot/tools</i>. The dot4zest bundles can be found in 
+			<i>org.eclipse.gef/plugins</i>, named 
+			<i>org.eclipse.zest.dot.*</i>.
 		</p>
-		<p>To run the current work in progress code, check out the bundles from the CVS repository above in Eclipse 3.5 (Galileo) and install the Zest, JET, Xpand, Xtext and MWE 0.7.x features (which are available from the Galileo update site; you have to uncheck 'group items by category' to see the Zest features). The code now uses the TMF components from Galileo, so if you have oAW 4.3 installed, it should probably be uninstalled first. </p>
+		<p>To run the current work in progress code, check out the bundles from the CVS location above in Eclipse 3.5 (Galileo) and install the Zest, JET, Xpand, Xtext and MWE 0.7.x features (which are available from the Galileo update site; you have to uncheck 'group items by category' to see the Zest features).</p>
 		<p>You should also install the optional Xtext Antlr feature 0.7.x from the Itemis update site at 
 			<i>
 				<a href="http://download.itemis.com/updates/" target="doc_external">http://download.itemis.com/updates/</a>
@@ -193,7 +192,8 @@ File image = exporter.toImage("/opt/local/bin", "pdf");
 			<i>GenerateDot.mwe</i> in the src/ folder of that bundle. 
 		</p>
 		<p>Run the 
-			<i>*Suite.java</i> test suites of the individual bundles (in src-test/) as JUnit tests to get an impression of the current implementation state. To test the UI components, run an Eclipse application configured with org.eclipse.zest.dot.ui and required plugins. See details on usage in the milestone sections below.
+			<i>*Suite.java</i> test suites of the individual bundles (in src-test/) as JUnit tests to get an impression of the current implementation state. To test the UI components, run an Eclipse application configured with 
+			<i>org.eclipse.zest.dot.ui</i> and required plugins. See details on usage in the user documentation above.
 		</p>
 		<h3 id="Motivation">Motivation</h3>
 		<p>Graphviz is a very popular tool and its DOT language is widely used. Support for it could make using Zest very easy for many people who are familiar with DOT. </p>
