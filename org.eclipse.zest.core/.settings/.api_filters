@@ -1,5 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <component id="org.eclipse.zest.core" version="2">
+    <resource path="src/org/eclipse/zest/core/viewers/AbstractZoomableViewer.java" type="org.eclipse.zest.core.viewers.AbstractZoomableViewer">
+        <filter id="643842064">
+            <message_arguments>
+                <message_argument value="ZoomManager"/>
+                <message_argument value="AbstractZoomableViewer"/>
+                <message_argument value="getZoomManager()"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/org/eclipse/zest/core/viewers/GraphViewer.java" type="org.eclipse.zest.core.viewers.GraphViewer">
         <filter id="576720909">
             <message_arguments>
@@ -22,15 +31,6 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/org/eclipse/zest/core/widgets/GraphContainer.java" type="org.eclipse.zest.core.widgets.GraphContainer">
-        <filter id="627060751">
-            <message_arguments>
-                <message_argument value="ZestRootLayer"/>
-                <message_argument value="GraphContainer"/>
-                <message_argument value="zestLayer"/>
-            </message_arguments>
-        </filter>
-    </resource>
     <resource path="src/org/eclipse/zest/core/viewers/ZoomContributionViewItem.java" type="org.eclipse.zest.core.viewers.ZoomContributionViewItem">
         <filter id="576725006">
             <message_arguments>
@@ -39,12 +39,12 @@
             </message_arguments>
         </filter>
     </resource>
-    <resource path="src/org/eclipse/zest/core/viewers/AbstractZoomableViewer.java" type="org.eclipse.zest.core.viewers.AbstractZoomableViewer">
-        <filter id="643842064">
+    <resource path="src/org/eclipse/zest/core/widgets/GraphContainer.java" type="org.eclipse.zest.core.widgets.GraphContainer">
+        <filter id="627060751">
             <message_arguments>
-                <message_argument value="ZoomManager"/>
-                <message_argument value="AbstractZoomableViewer"/>
-                <message_argument value="getZoomManager()"/>
+                <message_argument value="ZestRootLayer"/>
+                <message_argument value="GraphContainer"/>
+                <message_argument value="zestLayer"/>
             </message_arguments>
         </filter>
     </resource>
