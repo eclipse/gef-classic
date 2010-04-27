@@ -18,7 +18,7 @@ package org.eclipse.draw2d.geometry;
  * 
  * @since 3.6
  */
-public final class Vector {
+public class Vector {
 
 	/** the X value */
 	public double x;
