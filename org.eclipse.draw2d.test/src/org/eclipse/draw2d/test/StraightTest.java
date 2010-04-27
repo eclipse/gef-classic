@@ -13,8 +13,9 @@ package org.eclipse.draw2d.test;
 
 import junit.framework.TestCase;
 
-import org.eclipse.draw2d.geometry.Ray;
+import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Straight;
+import org.eclipse.draw2d.geometry.Vector;
 
 /**
  * @author Alexander Nyssen
@@ -23,16 +24,39 @@ import org.eclipse.draw2d.geometry.Straight;
 public class StraightTest extends TestCase {
 
 	public void test_getIntersection() {
-		Ray p = new Ray(1, 1);
-		Ray a = new Ray(2, 1);
-		Ray q = new Ray(1, 4);
-		Ray b = new Ray(1, -1);
+		// test integer precision
+		Vector p = new Vector(1, 1);
+		Vector a = new Vector(2, 1);
+		Vector q = new Vector(1, 4);
+		Vector b = new Vector(1, -1);
 
-		Ray intersection = new Straight(p, a)
-				.getIntersection(new Straight(q, b));
+		Vector intersection = new Straight(p, a).getIntersection(new Straight(
+				q, b));
 
-		assertTrue(intersection.equals(new Ray(3, 2)));
+		assertTrue(intersection.equals(new Vector(3, 2)));
 
+		// test double precision
+		p = new Vector(0, 0);
+		a = new Vector(new PrecisionPoint(0, 0), new PrecisionPoint(5, 5));
+		q = new Vector(0, 5);
+		b = new Vector(new PrecisionPoint(0, 5), new PrecisionPoint(5, 0));
+
+		intersection = new Straight(p, a).getIntersection(new Straight(q, b));
+		assertTrue(intersection.equals(new Vector(2.5, 2.5)));
+
+		// check straight does not intersect itself
 		assertNull(new Straight(p, a).getIntersection(new Straight(p, a)));
+	}
+	
+	public void test_isParallelTo(){
+		Straight s1 = new Straight(new Vector(0,0), new Vector(3,3));
+		Straight s2 = new Straight(new Vector(0,4), new Vector(2, 2));
+		assertTrue(s1.isParallelTo(s2));
+	}
+	
+	public void test_equals(){
+		Straight s1 = new Straight(new Vector(0,0), new Vector(3,3));
+		Straight s2 = new Straight(new Vector(4,4), new Vector(2, 2));
+		assertTrue(s1.equals(s2));
 	}
 }

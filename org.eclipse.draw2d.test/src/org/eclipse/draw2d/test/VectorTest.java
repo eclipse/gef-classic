@@ -12,15 +12,15 @@ package org.eclipse.draw2d.test;
 
 import junit.framework.TestCase;
 
-import org.eclipse.draw2d.geometry.Ray;
+import org.eclipse.draw2d.geometry.Vector;
 
 /**
- * Ray's tests
+ * Vector's tests
  * 
  * @author aboyko
  *
  */
-public class RayTest extends TestCase {
+public class VectorTest extends TestCase {
 
 	/**
 	 * @see TestCase#setUp()
@@ -36,20 +36,25 @@ public class RayTest extends TestCase {
 		super.tearDown();
 	}
 
-	public void test_length() {
+	public void test_getLength() {
 		testLengthValues(3, 4, 5);
 		testLengthValues(0, Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
+		
+	public void test_getOrthoComplement() {
+		Vector a = new Vector(3, -5);
+		assertTrue(a.getOrthogonalComplement().equals(new Vector(5, 3)));
+	}
 
-	public void test_getScalarProduct() {
-		Ray a = new Ray(3, 2);
-		Ray b = new Ray(2, -2);
-		assertTrue(a.dotProduct(b) == 2);
+	public void test_getDotProduct() {
+		Vector a = new Vector(3, 2);
+		Vector b = new Vector(2, -2);
+		assertTrue(a.getDotProduct(b) == 2);
 	}
 	
 	private void testLengthValues(int x, int y, double expectedLength) {
-		Ray ray = new Ray(x, y);
-		assertEquals(expectedLength, ray.length(), 0);
+		Vector Vector = new Vector(x, y);
+		assertEquals(expectedLength, Vector.getLength(), 0);
 	}
 
 }

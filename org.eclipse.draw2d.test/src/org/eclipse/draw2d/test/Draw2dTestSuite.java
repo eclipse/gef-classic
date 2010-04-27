@@ -51,6 +51,7 @@ public class Draw2dTestSuite extends TestSuite {
 		addTest(new TestSuite(RectangleTest.class));
 		// addTest(new TestSuite(ColorConstantTest.class));
 		addTest(new TestSuite(RayTest.class));
+		addTest(new TestSuite(VectorTest.class));
 		addTest(new TestSuite(StraightTest.class));
 		addTest(new TestSuite(RelativeBendpointTest.class));
 		addTest(new TestSuite(GeometryTest.class));
