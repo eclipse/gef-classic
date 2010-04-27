@@ -8,20 +8,23 @@
  * Contributors:
  *     Research Group Software Construction,
  *     RWTH Aachen University, Germany - initial API and implementation
- */
+ *     
+ *******************************************************************************/
 package org.eclipse.draw2d.geometry;
 
 /**
- * Represents a straight line within a 2-dimensional space. Together with Ray,
- * this allows computations defined within Euclidean geometry.
+ * Represents a straight line within 2-dimensional Euclidean space.
  * 
  * @author Alexander Nyssen
  * @since 3.6
  */
 public class Straight {
 
-	private Ray p; // Ray indicating the position vector of the straight
-	private Ray a; // Ray representing the direction vector of this straight
+	/** position vector of this straight */
+	public Vector position;
+
+	/** direction vector of this straight */
+	public Vector direction;
 
 	/**
 	 * Constructs a new Straight with the given position and direction.
@@ -29,134 +32,125 @@ public class Straight {
 	 * @param position
 	 * @param direction
 	 */
-	public Straight(Ray position, Ray direction) {
-		this.p = position;
-		this.a = direction;
+	public Straight(Vector position, Vector direction) {
+		this.position = position;
+		this.direction = direction;
 	}
 
 	/**
 	 * Constructs a new Straight between the two given Points.
 	 * 
 	 * @param point1
+	 *            a first waypoint of the Straight to be constructed
 	 * @param point2
+	 *            a second waypoint of the Straight to be constructed
 	 */
-	public Straight(Point point1, Point point2) {
-		this(new Ray(point1), new Ray(point1, point2));
-	}
-
-	/**
-	 * Returns the position of this Straight.
-	 * 
-	 * @return A Ray indicating the position of this Straight.
-	 */
-	public Ray getPosition() {
-		return p;
-	}
-
-	/**
-	 * Returns the direction of this Straight.
-	 * 
-	 * @return A Ray indicating the position of this Straight.
-	 */
-	public Ray getDirection() {
-		return a;
+	public Straight(PrecisionPoint point1, PrecisionPoint point2) {
+		this(new Vector(point1), new Vector(point1, point2));
 	}
 
 	/**
 	 * Checks whether this Straight and the provided one have an intersection
 	 * point.
 	 * 
-	 * @param g2
-	 *            The Straight to use for calculations. It may not be equal to
-	 *            this Straight.
+	 * @param other
+	 *            The Straight to use for the calculation.
 	 * @return true if the two Straights intersect, false otherwise.
 	 */
-	public boolean intersects(Straight g2) {
+	public boolean intersects(Straight other) {
 		// check if there is an intersection point
-		return a.dotProduct(g2.getDirection().getOrthogonalComplement()) != 0;
+		return direction.getDotProduct(other.direction
+				.getOrthogonalComplement()) != 0;
 	}
 
 	/**
-	 * Computes the intersection point of this Straight and the provided one, if it exists.
+	 * Computes the intersection point of this Straight and the provided one, if
+	 * it exists.
 	 * 
-	 * @param g2
-	 *            The Straight to use for calculations. It may not be equal to
-	 *            this Straight.
-	 * @return A Ray pointing to the intersection point, if it exists, null
+	 * @param other
+	 *            The Straight to use for calculations.
+	 * @return A Vector pointing to the intersection point, if it exists, null
 	 *         if no intersection point exists (or the Straights are equal).
 	 */
-	public Ray getIntersection(Straight g2) {
-		if (!intersects(g2)) {
+	public Vector getIntersection(Straight other) {
+		if (!intersects(other)) {
 			return null;
 		}
 
-		// retrieve position and direction Rays of other straight
-		Ray q = g2.getPosition();
-		Ray b = g2.getDirection();
+		// retrieve position and direction Vectors of other straight
+		Vector q = other.position;
+		Vector b = other.direction;
 
 		// retrieve orthogonal complements needed during computation
-		Ray aOC = a.getOrthogonalComplement(); // orthogonal complement of a
-		Ray bOC = b.getOrthogonalComplement(); // orthogonal complement of b
+		Vector aOC = direction.getOrthogonalComplement(); // orthogonal
+															// complement of a
+		Vector bOC = b.getOrthogonalComplement(); // orthogonal complement of b
 
 		// compute intersection point
-		int[] intersection = new int[2];
-		intersection[0] = (q.dotProduct(bOC) * a.x - p.dotProduct(aOC) * b.x)
-				/ a.dotProduct(bOC);
-		intersection[1] = (q.dotProduct(bOC) * a.y - p.dotProduct(aOC) * b.y)
-				/ a.dotProduct(bOC);
-		return new Ray(intersection[0], intersection[1]);
+		double[] intersection = new double[2];
+		intersection[0] = (q.getDotProduct(bOC) * direction.x - position
+				.getDotProduct(aOC)
+				* b.x)
+				/ direction.getDotProduct(bOC);
+		intersection[1] = (q.getDotProduct(bOC) * direction.y - position
+				.getDotProduct(aOC)
+				* b.y)
+				/ direction.getDotProduct(bOC);
+		return new Vector(intersection[0], intersection[1]);
 	}
 
 	/**
-	 * Returns the (smallest) angle between this Ray and the provided one.
+	 * Returns the (smallest) angle between this Straight and the provided one.
 	 * 
-	 * @param g2
-	 *            The Ray to be used for calculations.
-	 * @return The angle spanned between the two Rays.
+	 * @param other
+	 *            The Straight to be used for the calculation.
+	 * @return The angle spanned between the two Straights.
 	 */
-	public double getAngle(Straight g2) {
-		return a.getAngle(g2.getDirection());
+	public double getAngle(Straight other) {
+		return direction.getAngle(other.direction);
 	}
 
 	/**
-	 * Returns the projection of the given Ray onto this Straight, which is the
-	 * point on this Straight with the minimal distance to the point, denoted by
-	 * the provided Ray.
+	 * Returns the projection of the given Vector onto this Straight, which is
+	 * the point on this Straight with the minimal distance to the point,
+	 * denoted by the provided Vector.
 	 * 
-	 * @param q
-	 *            The Ray whose projection should be determined.
-	 * @return A new Ray representing the projection of the provided Ray onto
-	 *         this Straight.
+	 * @param vector
+	 *            The Vector whose projection should be determined.
+	 * @return A new Vector representing the projection of the provided Vector
+	 *         onto this Straight.
 	 */
-	public Ray getProjection(Ray q) {
-		Ray s = getIntersection(new Straight(q, a.getOrthogonalComplement()));
+	public Vector getProjection(Vector vector) {
+		Vector s = getIntersection(new Straight(vector, direction
+				.getOrthogonalComplement()));
 		return s;
 	}
 
 	/**
-	 * Returns the distance of the provided Ray to this Straight, which is the
-	 * distance between the provided Ray and its projection onto this Straight.
+	 * Returns the distance of the provided Vector to this Straight, which is
+	 * the distance between the provided Vector and its projection onto this
+	 * Straight.
 	 * 
-	 * @param q
-	 *            The Ray whose distance is to be calculated.
-	 * @return the distance between this Straight and the provided Ray.
+	 * @param vector
+	 *            The Vector whose distance is to be calculated.
+	 * @return the distance between this Straight and the provided Vector.
 	 */
-	public double getDistance(Ray q) {
-		Ray s = getProjection(q);
-		return s.getSubtracted(q).length();
+	public double getDistance(Vector vector) {
+		Vector s = getProjection(vector);
+		return s.getSubtracted(vector).getLength();
 	}
 
 	/**
-	 * Calculates wether the point indicated by the provided Ray is a point on
-	 * this Straight.
+	 * Calculates whether the point indicated by the provided Vector is a point
+	 * on this Straight.
 	 * 
-	 * @param q
-	 *            the Ray who has to be checked.
-	 * @return true if the position indicated by the given Ray is a point of
+	 * @param vector
+	 *            the Vector who has to be checked.
+	 * @return true if the position indicated by the given Vector is a point of
 	 *         this Straight, false otherwise.
 	 */
-	public boolean contains(Ray q) {
-		return getDistance(q) == 0.0;
+	public boolean contains(Vector vector) {
+		return getDistance(vector) == 0.0;
 	}
 
 	/**
@@ -170,11 +164,30 @@ public class Straight {
 		if (!(other instanceof Straight)) {
 			return false;
 		} else {
-			Straight otherLine = (Straight) other;
-			return contains(otherLine.getPosition())
-					&& a.getOrthogonalComplement().dotProduct(
-							otherLine.getDirection()) == 0;
+			Straight otherStraight = (Straight) other;
+			return contains(otherStraight.position)
+					&& isParallelTo(otherStraight);
 		}
+	}
+
+	/**
+	 * Checks whether this Straight and the provided one are parallel to each
+	 * other.
+	 * 
+	 * @param other
+	 *            The Straight to test for parallelism.
+	 * @return true if the direction vectors of this Straight and the provided
+	 *         one are parallel, false otherwise.
+	 */
+	public boolean isParallelTo(Straight other) {
+		return direction.isParallelTo(other.direction);
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return position.hashCode() + direction.hashCode();
 	}
 
 }
