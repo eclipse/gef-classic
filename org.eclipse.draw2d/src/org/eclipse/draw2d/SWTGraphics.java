@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2009 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,9 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.graphics.Path;
+import org.eclipse.swt.graphics.PathData;
 import org.eclipse.swt.graphics.Pattern;
+import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
@@ -1051,6 +1053,36 @@ public void setClip(Path path) {
 }
 
 /**
+ * Simple implementation of clipping a Path within the context of current
+ * clipping rectangle for now (not region) <li>Note that this method wipes
+ * out the clipping rectangle area, hence if clients need to reset it call
+ * {@link #restoreState()}
+ * 
+ * @see org.eclipse.draw2d.Graphics#clipPath(org.eclipse.swt.graphics.Path)
+ */
+public void clipPath(Path path) {
+	initTransform(false);
+	if (((appliedState.graphicHints ^ currentState.graphicHints) & FILL_RULE_MASK) != 0) {
+		//If there is a pending change to the fill rule, apply it first.
+		gc.setFillRule(((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) - FILL_RULE_WHOLE_NUMBER);
+		//As long as the FILL_RULE is stored in a single bit, just toggling it works.
+		appliedState.graphicHints ^= FILL_RULE_MASK;
+	}
+	Rectangle clipping = currentState.relativeClip != null ? getClip(new Rectangle()) : new Rectangle();
+	if (!clipping.isEmpty()) {
+		Path flatPath = new Path(path.getDevice(), path, 0.01f);
+		PathData pathData = flatPath.getPathData();
+		flatPath.dispose();
+		Region region = new Region(path.getDevice());
+		loadPath(region, pathData.points, pathData.types);
+		region.intersect(new org.eclipse.swt.graphics.Rectangle(clipping.x, clipping.y, clipping.width, clipping.height));
+		gc.setClipping(region);
+		appliedState.relativeClip = currentState.relativeClip = null;
+		region.dispose();
+	}
+}
+
+/**
  * @see Graphics#setClip(Rectangle)
  */
 public void setClip(Rectangle rect) {
@@ -1356,4 +1388,40 @@ private static int[] convertFloatArrayToInt(float[] fArray) {
 	return iArray;
 }
 
+static void loadPath(Region region, float[] points, byte[] types) {
+	int start = 0, end = 0;
+	for (int i = 0; i < types.length; i++) {
+		switch (types[i]) {
+			case SWT.PATH_MOVE_TO: {
+				if (start != end) {
+					int n = 0;
+					int[] temp = new int[end - start];
+					for (int k = start; k < end; k++) {
+						temp[n++] = Math.round(points[k]);
+					}
+					region.add(temp);
+				}
+				start = end;
+				end += 2;
+				break;
+			}
+			case SWT.PATH_LINE_TO: {
+				end += 2;
+				break;
+			}
+			case SWT.PATH_CLOSE: {
+				if (start != end) {
+					int n = 0;
+					int[] temp = new int[end - start];
+					for (int k = start; k < end; k++) {
+						temp[n++] = Math.round(points[k]);
+					}
+					region.add(temp);
+				}
+				start = end;
+				break;
+			}
+		}
+	}
+}
 }

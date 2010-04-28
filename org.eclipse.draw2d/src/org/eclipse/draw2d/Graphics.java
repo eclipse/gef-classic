@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2009 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -70,6 +70,17 @@ public abstract class Graphics {
 	 * @param r the clip rectangle
 	 */
 	public abstract void clipRect(Rectangle r);
+	
+	/**
+	 * Sets the clip region to the given rectangle.  Anything outside this rectangle will not
+	 * be drawn. Takes into account current clipping area set on the graphics.
+	 * @param path the clip path
+	 * 
+	 * @since 3.6
+	 */
+	public void clipPath(Path path) {
+		throwNotImplemented();
+	}
 	
 	/**
 	 * Disposes this object, releasing any resources.

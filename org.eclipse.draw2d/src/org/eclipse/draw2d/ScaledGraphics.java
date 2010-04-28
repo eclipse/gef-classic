@@ -714,6 +714,18 @@ public class ScaledGraphics
 	}
 	
 	/**
+	 * @see org.eclipse.draw2d.Graphics#clipPath(org.eclipse.swt.graphics.Path)
+	 */
+	public void clipPath(Path path) {
+		Path scaledPath = createScaledPath(path);
+		try {
+			graphics.clipPath(scaledPath);
+		} finally {
+			scaledPath.dispose();
+		}
+	}
+	
+	/**
 	 * @see Graphics#setFillRule(int)
 	 */
 	public void setFillRule(int rule) {
