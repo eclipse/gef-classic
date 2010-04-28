@@ -157,16 +157,16 @@ public class Vector {
 	}
 
 	/**
-	 * Returns the angle between this Vector and the provided Vector.
+	 * Returns the angle (in degrees) between this Vector and the provided Vector.
 	 * 
 	 * @param other
 	 *            Vector to calculate the angle.
-	 * @return the angle between the two Vectors.
+	 * @return the angle between the two Vectors in degrees.
 	 */
 	public double getAngle(Vector other) {
 		double cosAlpha = getDotProduct(other)
 				/ (getLength() * other.getLength());
-		return Math.acos(cosAlpha);
+		return Math.toDegrees(Math.acos(cosAlpha));
 	}
 
 	/**
