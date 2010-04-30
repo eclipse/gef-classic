@@ -13,6 +13,10 @@
  *******************************************************************************/
 package org.eclipse.draw2d.geometry;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+
 /**
  * Represents a vector within 2-dimensional Euclidean space.
  * 
@@ -25,12 +29,8 @@ public class Vector {
 	/** the Y value */
 	public double y;
 
-	/**
-	 * Constructs a Vector with no direction and magnitude.
-	 * 
-	 */
-	public Vector() {
-	}
+	// internal constant used for comparisons.
+	private static final Vector NULL = new Vector(0, 0);
 
 	/**
 	 * Constructs a Vector pointed in the specified direction.
@@ -92,10 +92,9 @@ public class Vector {
 	 * @param other
 	 *            Vector being compared
 	 * @return The dissimilarity
-	 * @see #getSimilarity(Vector)
 	 */
 	public double getDissimilarity(Vector other) {
-		return Math.abs(getCrossProduct(other));
+		return preciseAbs(getCrossProduct(other));
 	}
 
 	/**
@@ -108,7 +107,7 @@ public class Vector {
 	 *         otherwise.
 	 */
 	public boolean isParallelTo(Vector other) {
-		return getDissimilarity(other) == 0.0;
+		return getDissimilarity(other) == 0;
 	}
 
 	/**
@@ -119,7 +118,8 @@ public class Vector {
 	 * @return The dot product
 	 */
 	public double getDotProduct(Vector other) {
-		return x * other.x + y * other.y;
+		return preciseAdd(preciseMultiply(x, other.x), preciseMultiply(y,
+				other.y));
 	}
 
 	/**
@@ -130,7 +130,8 @@ public class Vector {
 	 * @return The cross product.
 	 */
 	public double getCrossProduct(Vector other) {
-		return x * other.y - y * other.x;
+		return preciseSubtract(preciseMultiply(x, other.y), preciseMultiply(y,
+				other.x));
 	}
 
 	/**
@@ -141,7 +142,7 @@ public class Vector {
 	 * @return a new Vector representing the sum
 	 */
 	public Vector getAdded(Vector other) {
-		return new Vector(other.x + x, other.y + y);
+		return new Vector(preciseAdd(x, other.x), preciseAdd(y, other.y));
 	}
 
 	/**
@@ -153,19 +154,21 @@ public class Vector {
 	 * @return a new Vector representing the difference.
 	 */
 	public Vector getSubtracted(Vector other) {
-		return new Vector(x - other.x, y - other.y);
+		return new Vector(preciseSubtract(x, other.x), preciseSubtract(y,
+				other.y));
 	}
 
 	/**
-	 * Returns the angle (in degrees) between this Vector and the provided Vector.
+	 * Returns the angle (in degrees) between this Vector and the provided
+	 * Vector.
 	 * 
 	 * @param other
 	 *            Vector to calculate the angle.
 	 * @return the angle between the two Vectors in degrees.
 	 */
 	public double getAngle(Vector other) {
-		double cosAlpha = getDotProduct(other)
-				/ (getLength() * other.getLength());
+		double cosAlpha = preciseDivide(getDotProduct(other), (preciseMultiply(
+				getLength(), other.getLength())));
 		return Math.toDegrees(Math.acos(cosAlpha));
 	}
 
@@ -173,24 +176,38 @@ public class Vector {
 	 * Creates a new Vector which represents the average of this Vector with
 	 * another.
 	 * 
-	 * @param vector
+	 * @param other
 	 *            Vector to calculate the average.
 	 * @return a new Vector
 	 */
-	public Vector getAveraged(Vector vector) {
-		return new Vector((x + vector.x) / 2, (y + vector.y) / 2);
+	public Vector getAveraged(Vector other) {
+		return new Vector(preciseDivide(preciseAdd(x, other.x), 2),
+				preciseDivide(preciseAdd(y, other.y), 2));
 	}
 
 	/**
-	 * Creates a new Vector which represents this Vector scaled by the amount
-	 * provided.
+	 * Creates a new Vector which represents this Vector multiplied by the
+	 * provided scalar factor.
 	 * 
-	 * @param scale
+	 * @param factor
 	 *            Value providing the amount to scale.
 	 * @return a new Vector
 	 */
-	public Vector getScaled(double scale) {
-		return new Vector(x * scale, y * scale);
+	public Vector getMultiplied(double factor) {
+		return new Vector(preciseMultiply(x, factor),
+				preciseMultiply(y, factor));
+	}
+
+	/**
+	 * Creates a new Vector which represents this Vector divided by the provided
+	 * scalar factor.
+	 * 
+	 * @param factor
+	 *            Value providing the amount to scale.
+	 * @return a new Vector
+	 */
+	public Vector getDivided(double factor) {
+		return new Vector(preciseDivide(x, factor), preciseDivide(y, factor));
 	}
 
 	/**
@@ -200,7 +217,7 @@ public class Vector {
 	 * @return the orthogonal complement of this Vector
 	 */
 	public Vector getOrthogonalComplement() {
-		return new Vector(-y, x);
+		return new Vector(preciseNegate(y), x);
 	}
 
 	/**
@@ -223,7 +240,7 @@ public class Vector {
 	 * @see #getDissimilarity(Vector)
 	 */
 	public double getSimilarity(Vector other) {
-		return Math.abs(getDotProduct(other));
+		return preciseAbs(getDotProduct(other));
 	}
 
 	/**
@@ -236,7 +253,34 @@ public class Vector {
 	 *         otherwise
 	 */
 	public boolean isOrthogonalTo(Vector other) {
-		return getSimilarity(other) == 0.0;
+		return getSimilarity(other) == 0;
+	}
+
+	/**
+	 * Checks whether this vector has a horizontal component.
+	 * 
+	 * @return true if x != 0, false otherwise.
+	 */
+	public boolean isHorizontal() {
+		return x != 0;
+	}
+
+	/**
+	 * Checks whether this vector has a vertical component.
+	 * 
+	 * @return true if y != 0, false otherwise.
+	 */
+	public boolean isVertical() {
+		return y != 0;
+	}
+
+	/**
+	 * Checks whether this vector equals (0,0);
+	 * 
+	 * @return true if x == 0 and y == 0.
+	 */
+	public boolean isNull() {
+		return equals(NULL);
 	}
 
 	/**
@@ -272,7 +316,46 @@ public class Vector {
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return (int) (x * y) ^ (int) (x + y);
+		return (int) x + (int) y;
+	}
+
+	/*
+	 * Precise calculations on doubles are performed based on BigDecimals,
+	 * converting to 16 digits precision (and scale), so there are no undesired
+	 * rounding effects.
+	 */
+	private static final MathContext CONTEXT = MathContext.DECIMAL64;
+	private static final RoundingMode ROUNDING = CONTEXT.getRoundingMode();
+	private static final int SCALE = CONTEXT.getPrecision();
+
+	private static final double preciseAdd(double d1, double d2) {
+		return BigDecimal.valueOf(d1).add(BigDecimal.valueOf(d2), CONTEXT)
+				.setScale(SCALE, ROUNDING).doubleValue();
+	}
+
+	private static final double preciseSubtract(double d1, double d2) {
+		return BigDecimal.valueOf(d1).subtract(BigDecimal.valueOf(d2), CONTEXT)
+				.setScale(SCALE, ROUNDING).doubleValue();
+	}
+
+	private static final double preciseMultiply(double d1, double d2) {
+		return BigDecimal.valueOf(d1).multiply(BigDecimal.valueOf(d2), CONTEXT)
+				.setScale(SCALE, ROUNDING).doubleValue();
+	}
+
+	private static final double preciseDivide(double d1, double d2) {
+		return BigDecimal.valueOf(d1).divide(BigDecimal.valueOf(d2), CONTEXT)
+				.setScale(SCALE, ROUNDING).doubleValue();
+	}
+
+	private static final double preciseNegate(double d) {
+		return BigDecimal.valueOf(d).negate(CONTEXT).setScale(SCALE, ROUNDING)
+				.doubleValue();
+	}
+
+	private static final double preciseAbs(double d) {
+		return BigDecimal.valueOf(d).abs(CONTEXT).setScale(SCALE, ROUNDING)
+				.doubleValue();
 	}
 
 }

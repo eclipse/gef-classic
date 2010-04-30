@@ -33,6 +33,10 @@ public class Straight {
 	 * @param direction
 	 */
 	public Straight(Vector position, Vector direction) {
+		if (direction.isNull()) {
+			throw new IllegalArgumentException(
+					"direction has to be unequal to (0,0)"); //$NON-NLS-1$
+		}
 		this.position = position;
 		this.direction = direction;
 	}
@@ -58,7 +62,6 @@ public class Straight {
 	 * @return true if the two Straights intersect, false otherwise.
 	 */
 	public boolean intersects(Straight other) {
-		// check if there is an intersection point
 		return direction.getDotProduct(other.direction
 				.getOrthogonalComplement()) != 0;
 	}
@@ -73,30 +76,18 @@ public class Straight {
 	 *         if no intersection point exists (or the Straights are equal).
 	 */
 	public Vector getIntersection(Straight other) {
+		// first check if there is a single intersection point
 		if (!intersects(other)) {
 			return null;
 		}
-
-		// retrieve position and direction Vectors of other straight
-		Vector q = other.position;
-		Vector b = other.direction;
-
-		// retrieve orthogonal complements needed during computation
-		Vector aOC = direction.getOrthogonalComplement(); // orthogonal
-															// complement of a
-		Vector bOC = b.getOrthogonalComplement(); // orthogonal complement of b
-
-		// compute intersection point
-		double[] intersection = new double[2];
-		intersection[0] = (q.getDotProduct(bOC) * direction.x - position
-				.getDotProduct(aOC)
-				* b.x)
-				/ direction.getDotProduct(bOC);
-		intersection[1] = (q.getDotProduct(bOC) * direction.y - position
-				.getDotProduct(aOC)
-				* b.y)
-				/ direction.getDotProduct(bOC);
-		return new Vector(intersection[0], intersection[1]);
+		// calculate intersection point
+		Vector s1 = direction.getMultiplied(other.position
+				.getDotProduct(other.direction.getOrthogonalComplement()));
+		Vector s2 = other.direction.getMultiplied(position
+				.getDotProduct(direction.getOrthogonalComplement()));
+		return s1.getSubtracted(s2).getDivided(
+				direction.getDotProduct(other.direction
+						.getOrthogonalComplement()));
 	}
 
 	/**
@@ -121,9 +112,8 @@ public class Straight {
 	 *         onto this Straight.
 	 */
 	public Vector getProjection(Vector vector) {
-		Vector s = getIntersection(new Straight(vector, direction
+		return getIntersection(new Straight(vector, direction
 				.getOrthogonalComplement()));
-		return s;
 	}
 
 	/**
@@ -136,8 +126,7 @@ public class Straight {
 	 * @return the distance between this Straight and the provided Vector.
 	 */
 	public double getDistance(Vector vector) {
-		Vector s = getProjection(vector);
-		return s.getSubtracted(vector).getLength();
+		return getProjection(vector).getSubtracted(vector).getLength();
 	}
 
 	/**
@@ -150,9 +139,22 @@ public class Straight {
 	 *         this Straight, false otherwise.
 	 */
 	public boolean contains(Vector vector) {
-		return getDistance(vector) == 0.0;
+		return getDistance(vector) == 0;
 	}
 
+	/**
+	 * Checks whether this Straight and the provided one are parallel to each
+	 * other.
+	 * 
+	 * @param other
+	 *            The Straight to test for parallelism.
+	 * @return true if the direction vectors of this Straight and the provided
+	 *         one are parallel, false otherwise.
+	 */
+	public boolean isParallelTo(Straight other) {
+		return direction.isParallelTo(other.direction);
+	}
+	
 	/**
 	 * Checks whether this Straight is equal to the provided Straight. Two
 	 * Straights s1 and s2 are equal, if the position vector of s2 is a point on
@@ -168,19 +170,6 @@ public class Straight {
 			return contains(otherStraight.position)
 					&& isParallelTo(otherStraight);
 		}
-	}
-
-	/**
-	 * Checks whether this Straight and the provided one are parallel to each
-	 * other.
-	 * 
-	 * @param other
-	 *            The Straight to test for parallelism.
-	 * @return true if the direction vectors of this Straight and the provided
-	 *         one are parallel, false otherwise.
-	 */
-	public boolean isParallelTo(Straight other) {
-		return direction.isParallelTo(other.direction);
 	}
 
 	/**
