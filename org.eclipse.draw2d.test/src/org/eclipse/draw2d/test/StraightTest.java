@@ -29,34 +29,77 @@ public class StraightTest extends TestCase {
 		Vector a = new Vector(2, 1);
 		Vector q = new Vector(1, 4);
 		Vector b = new Vector(1, -1);
-
-		Vector intersection = new Straight(p, a).getIntersection(new Straight(
-				q, b));
-
+		Straight s1 = new Straight(p, a);
+		Straight s2 = new Straight(q, b);
+		Vector intersection = s1.getIntersection(s2);
 		assertTrue(intersection.equals(new Vector(3, 2)));
+		assertTrue(s1.contains(intersection));
+		assertTrue(s2.contains(intersection));
+		
+		// check straight does not intersect itself
+		assertNull(new Straight(p, a).getIntersection(new Straight(p, a)));
 
 		// test double precision
 		p = new Vector(0, 0);
 		a = new Vector(new PrecisionPoint(0, 0), new PrecisionPoint(5, 5));
 		q = new Vector(0, 5);
 		b = new Vector(new PrecisionPoint(0, 5), new PrecisionPoint(5, 0));
-
-		intersection = new Straight(p, a).getIntersection(new Straight(q, b));
+		s1 = new Straight(p, a);
+		s2 = new Straight(q, b);
+		intersection = s1.getIntersection(s2);
 		assertTrue(intersection.equals(new Vector(2.5, 2.5)));
+		assertTrue(s1.contains(intersection));
+		assertTrue(s2.contains(intersection));
 
-		// check straight does not intersect itself
-		assertNull(new Straight(p, a).getIntersection(new Straight(p, a)));
+		PrecisionPoint p1 = new PrecisionPoint(-2, 1);
+		PrecisionPoint p2 = new PrecisionPoint(1, 1);
+		PrecisionPoint p3 = new PrecisionPoint(0, 0);
+		PrecisionPoint p4 = new PrecisionPoint(0, 3);
+		s1 = new Straight(p1, p2);
+		s2 = new Straight(p3, p4);
+		intersection = s1.getIntersection(s2);
+		assertTrue(intersection.equals(new Vector(0, 1)));
+		assertTrue(s1.contains(intersection));
+		assertTrue(s2.contains(intersection));
+
+		// check four rounding effects
+		p1 = new PrecisionPoint(-50, 5);
+		p2 = new PrecisionPoint(7, 104);
+		p3 = new PrecisionPoint(0, 0);
+		p4 = new PrecisionPoint(0, 3);
+
+		s1 = new Straight(p1, p2);
+		s2 = new Straight(p3, p4);
+		assertTrue(s1.intersects(s2));
+		intersection = s1.getIntersection(s2);
+		assertNotNull(intersection);
+		assertTrue(s1.contains(intersection));
+		assertTrue(s2.contains(intersection));
 	}
-	
-	public void test_isParallelTo(){
-		Straight s1 = new Straight(new Vector(0,0), new Vector(3,3));
-		Straight s2 = new Straight(new Vector(0,4), new Vector(2, 2));
+
+	public void test_isParallelTo() {
+		Straight s1 = new Straight(new Vector(0, 0), new Vector(3, 3));
+		Straight s2 = new Straight(new Vector(0, 4), new Vector(2, 2));
 		assertTrue(s1.isParallelTo(s2));
+
+		s1 = new Straight(new Vector(0, 0), new Vector(5, 5));
+		s2 = new Straight(new Vector(0, 5), new Vector(0, 5));
+		assertFalse(s1.isParallelTo(s2));
 	}
-	
-	public void test_equals(){
-		Straight s1 = new Straight(new Vector(0,0), new Vector(3,3));
-		Straight s2 = new Straight(new Vector(4,4), new Vector(2, 2));
+
+	public void test_getAngle() {
+		Straight s1 = new Straight(new Vector(0, 0), new Vector(3, 3));
+		Straight s2 = new Straight(new Vector(0, 4), new Vector(2, 2));
+		assertTrue(s1.getAngle(s2) == 0.0);
+
+		s1 = new Straight(new Vector(0, 0), new Vector(5, 5));
+		s2 = new Straight(new Vector(0, 5), new Vector(0, 5));
+		assertTrue((float) s1.getAngle(s2) == 45.0); // rounding effects
+	}
+
+	public void test_equals() {
+		Straight s1 = new Straight(new Vector(0, 0), new Vector(3, 3));
+		Straight s2 = new Straight(new Vector(4, 4), new Vector(2, 2));
 		assertTrue(s1.equals(s2));
 	}
 }

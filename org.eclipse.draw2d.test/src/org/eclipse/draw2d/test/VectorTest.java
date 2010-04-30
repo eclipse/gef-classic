@@ -56,5 +56,4 @@ public class VectorTest extends TestCase {
 		Vector Vector = new Vector(x, y);
 		assertEquals(expectedLength, Vector.getLength(), 0);
 	}
-
 }
