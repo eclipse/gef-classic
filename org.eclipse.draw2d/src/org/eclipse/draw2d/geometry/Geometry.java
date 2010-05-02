@@ -13,76 +13,110 @@ package org.eclipse.draw2d.geometry;
 
 /**
  * A Utilities class for geometry operations.
+ * 
  * @author Pratik Shah
  * @since 3.1
  */
-public class Geometry
-{
+public class Geometry {
 
-/**
- * Determines whether the two line segments formed by the given coordinates intersect.  If
- * one of the two line segments starts or ends on the other line, then they are considered
- * to be intersecting.
- * 
- * @param ux x coordinate of starting point of line 1
- * @param uy y coordinate of starting point of line 1
- * @param vx x coordinate of ending point of line 1
- * @param vy y coordinate of endpoing point of line 1
- * @param sx x coordinate of the starting point of line 2
- * @param sy y coordinate of the starting point of line 2
- * @param tx x coordinate of the ending point of line 2
- * @param ty y coordinate of the ending point of line 2
- * @return <code>true</code> if the two line segments formed by the given coordinates 
- *         cross
- * @since 3.1
- */
-public static boolean linesIntersect(int ux, int uy, int vx, int vy, 
-		int sx, int sy, int tx, int ty) {
-	/*
-	 * Given the segments: u-------v. s-------t. If s->t is inside the triangle u-v-s, 
-	 * then check whether the line u->u splits the line s->t.
+	/**
+	 * Determines whether the two line segments p1->p2 and p3->p4, given by
+	 * p1=(x1, y1), p2=(x2,y2), p3=(x3,y3), p4=(x4,y4) intersect. Two line
+	 * segments are regarded to be intersecting in case they share at least one
+	 * common point, i.e if one of the two line segments starts or ends on the
+	 * other line segment or the line segments are collinear and overlapping,
+	 * then they are as well considered to be intersecting.
+	 * 
+	 * @param x1
+	 *            x coordinate of starting point of line segment 1
+	 * @param y1
+	 *            y coordinate of starting point of line segment 1
+	 * @param x2
+	 *            x coordinate of ending point of line segment 1
+	 * @param y2
+	 *            y coordinate of ending point of line segment 1
+	 * @param x3
+	 *            x coordinate of the starting point of line segment 2
+	 * @param y3
+	 *            y coordinate of the starting point of line segment 2
+	 * @param x4
+	 *            x coordinate of the ending point of line segment 2
+	 * @param y4
+	 *            y coordinate of the ending point of line segment 2
+	 * 
+	 * @return <code>true</code> if the two line segments formed by the given
+	 *         coordinates share at least one common point.
+	 * 
+	 * @since 3.1
 	 */
-	/* Values are casted to long to avoid integer overflows */
-	long usX = (long) ux - sx;
-	long usY = (long) uy - sy;
-	long vsX = (long) vx - sx;
-	long vsY = (long) vy - sy;
-	long stX = (long) sx - tx;
-	long stY = (long) sy - ty;
-	if (productSign(cross(vsX, vsY, stX, stY), cross(stX, stY, usX, usY)) >= 0) {
-		long vuX = (long) vx - ux;
-		long vuY = (long) vy - uy;
-		long utX = (long) ux - tx;
-		long utY = (long) uy - ty;
-		return productSign(cross(-usX, -usY, vuX, vuY), cross(vuX, vuY, utX, utY)) <= 0;
-	}
-	return false;
-}
+	public static boolean linesIntersect(int x1, int y1, int x2, int y2,
+			int x3, int y3, int x4, int y4) {
 
-private static int productSign(long x, long y) {
-	if (x == 0 || y == 0) {
-		return 0;
-	} else if (x < 0 ^ y < 0) {
-		return -1;
-	}
-	return 1;
-}
+		// calculate bounding box of segment p1->p2
+		int bb1_x = Math.min(x1, x2);
+		int bb1_y = Math.min(y1, y2);
+		int bb2_x = Math.max(x1, x2);
+		int bb2_y = Math.max(y1, y2);
 
-private static long cross(long x1, long y1, long x2, long y2) {
-	return x1 * y2 - x2 * y1;
-}
+		// calculate bounding box of segment p3->p4
+		int bb3_x = Math.min(x3, x4);
+		int bb3_y = Math.min(y3, y4);
+		int bb4_x = Math.max(x3, x4);
+		int bb4_y = Math.max(y3, y4);
+
+		// check if bounding boxes intersect
+		if (!(bb2_x >= bb3_x && bb4_x >= bb1_x && bb2_y >= bb3_y && bb4_y >= bb1_y)) {
+			// if bounding boxes do not intersect, line segments cannot
+			// intersect either
+			return false;
+		}
+
+		// If p3->p4 is inside the triangle p1-p2-p3, then check whether the
+		// line p1->p2 crosses the line p3->p4.
+		long p1p3_x = (long) x1 - x3;
+		long p1p3_y = (long) y1 - y3;
+		long p2p3_x = (long) x2 - x3;
+		long p2p3_y = (long) y2 - y3;
+		long p3p4_x = (long) x3 - x4;
+		long p3p4_y = (long) y3 - y4;
+		if (productSign(crossProduct(p2p3_x, p2p3_y, p3p4_x, p3p4_y), crossProduct(p3p4_x, p3p4_y, p1p3_x, p1p3_y)) >= 0) {
+			long p2p1_x = (long) x2 - x1;
+			long p2p1_y = (long) y2 - y1;
+			long p1p4_x = (long) x1 - x4;
+			long p1p4_y = (long) y1 - y4;
+			return productSign(crossProduct(-p1p3_x, -p1p3_y, p2p1_x, p2p1_y), crossProduct(p2p1_x, p2p1_y,
+					p1p4_x, p1p4_y)) <= 0;
+		}
+		return false;
+	}
+
+	private static int productSign(long x, long y) {
+		if (x == 0 || y == 0) {
+			return 0;
+		} else if (x < 0 ^ y < 0) {
+			return -1;
+		}
+		return 1;
+	}
+
+	private static long crossProduct(long x1, long y1, long x2, long y2) {
+		return x1 * y2 - x2 * y1;
+	}
 
 	/**
 	 * @see PointList#polylineContainsPoint(int, int, int)
 	 * @since 3.5
 	 */
-	public static boolean polylineContainsPoint(PointList points, int x, int y, int tolerance) {
+	public static boolean polylineContainsPoint(PointList points, int x, int y,
+			int tolerance) {
 		int coordinates[] = points.toIntArray();
 		/*
 		 * For each segment of PolyLine calling isSegmentPoint
 		 */
-		for (int index = 0; index < coordinates.length - 3; index  += 2) {
-			if (segmentContainsPoint(coordinates[index], coordinates[index + 1], coordinates[index + 2], coordinates[index + 3], x, y, tolerance)) {
+		for (int index = 0; index < coordinates.length - 3; index += 2) {
+			if (segmentContainsPoint(coordinates[index],
+					coordinates[index + 1], coordinates[index + 2],
+					coordinates[index + 3], x, y, tolerance)) {
 				return true;
 			}
 		}
@@ -91,9 +125,10 @@ private static long cross(long x1, long y1, long x2, long y2) {
 
 	/**
 	 * @return true if the least distance between point (px,py) and segment
-	 * 	(x1,y1) - (x2,y2) is less then specified tolerance
+	 *         (x1,y1) - (x2,y2) is less then specified tolerance
 	 */
-	private static boolean segmentContainsPoint(int x1, int y1, int x2, int y2, int px, int py, int tolerance) {
+	private static boolean segmentContainsPoint(int x1, int y1, int x2, int y2,
+			int px, int py, int tolerance) {
 		/*
 		 * Point should be located inside Rectangle(x1 -+ tolerance, y1 -+
 		 * tolerance, x2 +- tolerance, y2 +- tolerance)
@@ -167,7 +202,8 @@ private static long cross(long x1, long y1, long x2, long y2) {
 					}
 					// This point is outside the edge - simply skipping possible
 					// intersection (no parity changes)
-				} else if ((y0 <= y && y < y1 && crossProduct > 0) || (y1 <= y && y < y0 && crossProduct < 0)) {
+				} else if ((y0 <= y && y < y1 && crossProduct > 0)
+						|| (y1 <= y && y < y0 && crossProduct < 0)) {
 					// has intersection
 					isOdd = !isOdd;
 				}
@@ -176,20 +212,20 @@ private static long cross(long x1, long y1, long x2, long y2) {
 		}
 		return false;
 	}
-	
+
 	/**
-	 * @return true if segment with two ends x0, x1 contains point x 
+	 * @return true if segment with two ends x0, x1 contains point x
 	 */
 	private static boolean segmentContaintPoint(int x0, int x1, int x) {
 		return !((x < x0 && x < x1) || (x > x0 && x > x1));
 	}
-	
+
 	/**
-	 * Calculating cross product of two vectors:
-	 * 1. [ax - cx, ay - cx]
-	 * 2. [bx - cx, by - cy]
+	 * Calculating cross product of two vectors: 1. [ax - cx, ay - cx] 2. [bx -
+	 * cx, by - cy]
 	 */
-	private static int crossProduct(int ax, int ay, int bx, int by, int cx, int cy) {
+	private static int crossProduct(int ax, int ay, int bx, int by, int cx,
+			int cy) {
 		return (ax - cx) * (by - cy) - (ay - cy) * (bx - cx);
 	}
 
