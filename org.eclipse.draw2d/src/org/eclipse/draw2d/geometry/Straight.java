@@ -67,6 +67,47 @@ public class Straight {
 	}
 
 	/**
+	 * Checks whether this Straight and the provided one have an intersection
+	 * point, which is inside the specified segment between segmentStart and
+	 * segmentEnd.
+	 * 
+	 * segmentStart a Vector indicating the start point of the segment. Has to
+	 * be a point on the straight.
+	 * 
+	 * @param segmentEnd
+	 *            a Vector indicating the end point of the segment. Has to be a
+	 *            point on the straight.
+	 * @param other
+	 *            the Straight to test
+	 * @return true if the true straights intersect and the intersection point
+	 *         is contained within the specified segment, false otherwise.
+	 * @since 3.2
+	 */
+	public boolean intersectsWithinSegment(Vector segmentStart,
+			Vector segmentEnd, Straight other) {
+		// precondition: segment start and end have to be points on this
+		// straight.
+		if (!contains(segmentStart) || !contains(segmentEnd)) {
+			throw new IllegalArgumentException(
+					"segment points have to be contained"); //$NON-NLS-1$
+		}
+
+		// check if segmentStart->segmentEnd is a legal segment or a single
+		// point
+		Vector segmentDirection = segmentEnd.getSubtracted(segmentStart);
+		if (segmentDirection.isNull()) {
+			return other.contains(segmentStart);
+		}
+
+		// legal segment, check if there is an intersection within the segment
+		if (intersects(other)) {
+			Vector intersection = getIntersection(other);
+			return containsWithinSegment(segmentStart, segmentEnd, intersection);
+		}
+		return false;
+	}
+
+	/**
 	 * Computes the intersection point of this Straight and the provided one, if
 	 * it exists.
 	 * 
@@ -135,11 +176,58 @@ public class Straight {
 	 * 
 	 * @param vector
 	 *            the Vector who has to be checked.
-	 * @return true if the position indicated by the given Vector is a point of
+	 * @return true if the point indicated by the given Vector is a point of
 	 *         this Straight, false otherwise.
 	 */
 	public boolean contains(Vector vector) {
 		return getDistance(vector) == 0;
+	}
+
+	/**
+	 * Calculates whether the point indicated by the provided Vector is a point
+	 * on the straight segment between the given start and end points.
+	 * 
+	 * @param segmentStart
+	 *            a Vector indicating the start point of the segment. Has to be
+	 *            a point on the straight.
+	 * @param segmentEnd
+	 *            a Vector indicating the end point of the segment. Has to be a
+	 *            point on the straight.
+	 * @param vector
+	 *            the Vector who has to be checked.
+	 * @return true if point indicated by the given Vector is a point on this
+	 *         straight, within the specified segment, false otherwise.
+	 */
+	public boolean containsWithinSegment(Vector segmentStart,
+			Vector segmentEnd, Vector vector) {
+		// precondition: segment start and end have to be points on this
+		// straight.
+		if (!contains(segmentStart) || !contains(segmentEnd)) {
+			throw new IllegalArgumentException(
+					"segment points have to be contained"); //$NON-NLS-1$
+		}
+
+		// check if segmentStart->segmentEnd is a legal segment or a single
+		// point
+		Vector segmentDirection = segmentEnd.getSubtracted(segmentStart);
+		if (segmentDirection.isNull()) {
+			return segmentStart.equals(vector);
+		}
+
+		// legal segment
+		if (new Straight(segmentStart, segmentDirection).contains(vector)) {
+			// compute parameter a, so that vector = segmentStart + a *
+			// (segmentEnd - segmentStart).
+			double a = segmentDirection.isVertical() ? (vector.y - segmentDirection.y)
+					/ segmentDirection.y
+					: (vector.x - segmentStart.x) / segmentDirection.x;
+			// if a is between 0 and 1, intersection point lies within
+			// segment
+			if (0 <= a && a <= 1) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -154,7 +242,7 @@ public class Straight {
 	public boolean isParallelTo(Straight other) {
 		return direction.isParallelTo(other.direction);
 	}
-	
+
 	/**
 	 * Checks whether this Straight is equal to the provided Straight. Two
 	 * Straights s1 and s2 are equal, if the position vector of s2 is a point on
