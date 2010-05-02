@@ -216,14 +216,14 @@ public class Straight {
 
 		// legal segment
 		if (new Straight(segmentStart, segmentDirection).contains(vector)) {
-			// compute parameter a, so that vector = segmentStart + a *
+			// compute parameter s, so that vector = segmentStart + s *
 			// (segmentEnd - segmentStart).
-			double a = segmentDirection.isVertical() ? (vector.y - segmentDirection.y)
+			double s = segmentDirection.isVertical() ? (vector.y - segmentDirection.y)
 					/ segmentDirection.y
 					: (vector.x - segmentStart.x) / segmentDirection.x;
-			// if a is between 0 and 1, intersection point lies within
+			// if s is between 0 and 1, intersection point lies within
 			// segment
-			if (0 <= a && a <= 1) {
+			if (0 <= s && s <= 1) {
 				return true;
 			}
 		}
@@ -265,6 +265,13 @@ public class Straight {
 	 */
 	public int hashCode() {
 		return position.hashCode() + direction.hashCode();
+	}
+	
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return position.toString() + " + s * " + direction.toString(); //$NON-NLS-1$
 	}
 
 }
