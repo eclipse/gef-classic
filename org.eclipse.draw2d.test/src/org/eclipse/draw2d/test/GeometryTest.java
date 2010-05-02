@@ -190,8 +190,25 @@ public class GeometryTest extends TestCase {
 	 * Testing {@link Geometry#linesIntersect(int, int, int, int, int, int, int, int)}.
 	 */
 	public void testLinesIntersect(){
+		// line segments collapsed to single points
+		assertTrue("Starting point on segment", Geometry.linesIntersect(0, 0, 0, 0, 0, 0, 3, 3));
+		assertTrue("Starting point on segment", Geometry.linesIntersect(0, 0, 3, 3, 0, 0, 0, 0));
+		assertFalse("Single point next to starting point of segment", Geometry.linesIntersect(-1,-1,-1,-1,0,0,2,2));
+		assertFalse("Single point next to starting point of segment", Geometry.linesIntersect(0,0,2,2,-1,-1,-1,-1));
+		assertTrue("Mid point on segment", Geometry.linesIntersect(0, 0, 0, 0, 3, 3, -3, -3));
+		assertTrue("Mid point on segment", Geometry.linesIntersect(3, 3, -3, -3, 0, 0, 0, 0));
+		assertFalse("Single point next to mid point of segment", Geometry.linesIntersect(0,1,0,1,0,0,2,2));
+		assertFalse("Single point next to mid point of segment", Geometry.linesIntersect(0,0,2,2,0,1,0,1));
+		assertTrue("Ending point on segment", Geometry.linesIntersect(3, 3, 3, 3, 0, 0, 3, 3));	
+		assertTrue("Ending point on segment", Geometry.linesIntersect(0, 0, 3, 3, 3, 3, 3, 3));	
+		assertFalse("Single point next to end point of segment", Geometry.linesIntersect(3,3,3,3,0,0,2,2));
+		assertFalse("Single point next to end point of segment", Geometry.linesIntersect(0,0,2,2,3,3,3,3));
+		assertTrue("Identical points", Geometry.linesIntersect(1, 1, 1, 1, 1, 1, 1, 1));
+		assertFalse("Distinct points", Geometry.linesIntersect(1, 1, 1, 1, 2, 2, 2, 2));
+		
 		// non-parallel
-		assertTrue("Line segments cross.", Geometry.linesIntersect(0,0,5,5,0,5,5,0));
+		assertTrue("Line segments cross at (2.5, 2.5).", Geometry.linesIntersect(0,0,5,5,0,5,5,0));
+		assertTrue("Line segments cross at (0, 1).", Geometry.linesIntersect(-2, 1, 1, 1, 0, 0, 0, 3));
 		assertTrue("Line segments share starting point", Geometry.linesIntersect(0,0,5,5,0,0,5,0));
 		assertTrue("Line segments share ending point", Geometry.linesIntersect(0,0,5,5,0,5,5,5));
 		assertTrue("First line segment contains starting point of second one.", Geometry.linesIntersect(0,0,5,5,3,3,0,5));
@@ -199,16 +216,17 @@ public class GeometryTest extends TestCase {
 		
 		// parallel
 		assertFalse("Line segments are parallel but not co-linear and should thus not be regarded as intersecting.", Geometry.linesIntersect(0,0,5,5,1,0,6,5));
+		assertFalse("Line segments are parallel but not co-linear and should thus not be regarded as intersecting.", Geometry.linesIntersect(0,0,3,3,4,0,6,2));
 		
 		// co-linear
-		// TODO: decide whether co-linear line segments should be regarded as intersecting (1) in case they overlap, 
-		// (2) in case they share exactly one intersection point, or (3) not at all.
 		assertTrue("Line segments are co-linear, partly-overlapping.", Geometry.linesIntersect(0,0,5,5,3,3,6,6));
 		assertTrue("Line segments are co-linear, partly-overlapping.", Geometry.linesIntersect(3,3,6,6,0,0,5,5));
 		assertTrue("Line segments are co-linear, fully-overlapping.", Geometry.linesIntersect(0,0,5,5,1,1,3,3));
+		assertTrue("Line segments are co-linear, fully-overlapping.", Geometry.linesIntersect(1,1,5,5,-1,-1,6,6));
 		assertTrue("Line segments are co-linear, sharing ending/starting point.", Geometry.linesIntersect(0,0,5,5,5,5,6,6));
 		assertTrue("Line segments are co-linear, sharing starting/ending point.", Geometry.linesIntersect(3,3,6,6,0,0,3,3));
 		assertFalse("Line segments are co-linear but non-overlapping, and should thus not be regarded as intersecting.", Geometry.linesIntersect(0,0,5,5,10,10,20,20));	
+		assertFalse("Line segments are co-linear but non-overlapping, and should thus not be regarded as intersecting.", Geometry.linesIntersect(0,0,5,5,-10,-10,-20,-20));	
 	}
 	
 	public void off_testDrawPolygons() {
