@@ -319,15 +319,15 @@ public class Vector {
 
 	/*
 	 * Precise calculations on doubles are performed based on BigDecimals,
-	 * converting to 16 digits precision (and scale), so there are no undesired
-	 * rounding effects.
+	 * converting to 16 digits scale, so there are no undesired rounding
+	 * effects.
 	 */
 	private static final int ROUNDING = BigDecimal.ROUND_HALF_EVEN;
 	private static final int SCALE = 16;
 
 	private static final double preciseAdd(double d1, double d2) {
-		return doubleToBigDecimal(d1).add(doubleToBigDecimal(d2))
-				.setScale(SCALE, ROUNDING).doubleValue();
+		return doubleToBigDecimal(d1).add(doubleToBigDecimal(d2)).setScale(
+				SCALE, ROUNDING).doubleValue();
 	}
 
 	private static final double preciseSubtract(double d1, double d2) {
@@ -341,7 +341,8 @@ public class Vector {
 	}
 
 	private static final double preciseDivide(double d1, double d2) {
-		return doubleToBigDecimal(d1).divide(doubleToBigDecimal(d2), SCALE, ROUNDING).doubleValue();
+		return doubleToBigDecimal(d1).divide(doubleToBigDecimal(d2), SCALE,
+				ROUNDING).doubleValue();
 	}
 
 	private static final double preciseNegate(double d) {
@@ -354,9 +355,10 @@ public class Vector {
 				.doubleValue();
 	}
 
-	private static final BigDecimal doubleToBigDecimal(double d){
-		// May not use BigDecimal.valueOf due to J2SE-1.4 backwards compatibility
-		return new BigDecimal(Double.toString(d)); 
+	private static final BigDecimal doubleToBigDecimal(double d) {
+		// may not use BigDecimal.valueOf due to J2SE-1.4 backwards
+		// compatibility
+		return new BigDecimal(Double.toString(d));
 	}
-	
+
 }
