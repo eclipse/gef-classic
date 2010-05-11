@@ -900,6 +900,9 @@ public class Graph extends FigureCanvas implements IContainer {
 			}
 		}
 		this.getNodes().remove(node);
+		if (this.getSelection() != null) {
+			this.getSelection().remove(node);
+		}
 		figure2ItemMap.remove(figure);
 	}
 
