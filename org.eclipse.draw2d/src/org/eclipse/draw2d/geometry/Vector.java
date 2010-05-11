@@ -14,8 +14,6 @@
 package org.eclipse.draw2d.geometry;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 
 /**
  * Represents a vector within 2-dimensional Euclidean space.
@@ -324,38 +322,41 @@ public class Vector {
 	 * converting to 16 digits precision (and scale), so there are no undesired
 	 * rounding effects.
 	 */
-	private static final MathContext CONTEXT = MathContext.DECIMAL64;
-	private static final RoundingMode ROUNDING = CONTEXT.getRoundingMode();
-	private static final int SCALE = CONTEXT.getPrecision();
+	private static final int ROUNDING = BigDecimal.ROUND_HALF_EVEN;
+	private static final int SCALE = 16;
 
 	private static final double preciseAdd(double d1, double d2) {
-		return BigDecimal.valueOf(d1).add(BigDecimal.valueOf(d2), CONTEXT)
+		return doubleToBigDecimal(d1).add(doubleToBigDecimal(d2))
 				.setScale(SCALE, ROUNDING).doubleValue();
 	}
 
 	private static final double preciseSubtract(double d1, double d2) {
-		return BigDecimal.valueOf(d1).subtract(BigDecimal.valueOf(d2), CONTEXT)
+		return doubleToBigDecimal(d1).subtract(doubleToBigDecimal(d2))
 				.setScale(SCALE, ROUNDING).doubleValue();
 	}
 
 	private static final double preciseMultiply(double d1, double d2) {
-		return BigDecimal.valueOf(d1).multiply(BigDecimal.valueOf(d2), CONTEXT)
+		return doubleToBigDecimal(d1).multiply(doubleToBigDecimal(d2))
 				.setScale(SCALE, ROUNDING).doubleValue();
 	}
 
 	private static final double preciseDivide(double d1, double d2) {
-		return BigDecimal.valueOf(d1).divide(BigDecimal.valueOf(d2), CONTEXT)
-				.setScale(SCALE, ROUNDING).doubleValue();
+		return doubleToBigDecimal(d1).divide(doubleToBigDecimal(d2), SCALE, ROUNDING).doubleValue();
 	}
 
 	private static final double preciseNegate(double d) {
-		return BigDecimal.valueOf(d).negate(CONTEXT).setScale(SCALE, ROUNDING)
+		return doubleToBigDecimal(d).negate().setScale(SCALE, ROUNDING)
 				.doubleValue();
 	}
 
 	private static final double preciseAbs(double d) {
-		return BigDecimal.valueOf(d).abs(CONTEXT).setScale(SCALE, ROUNDING)
+		return doubleToBigDecimal(d).abs().setScale(SCALE, ROUNDING)
 				.doubleValue();
 	}
 
+	private static final BigDecimal doubleToBigDecimal(double d){
+		// May not use BigDecimal.valueOf due to J2SE-1.4 backwards compatibility
+		return new BigDecimal(Double.toString(d)); 
+	}
+	
 }
