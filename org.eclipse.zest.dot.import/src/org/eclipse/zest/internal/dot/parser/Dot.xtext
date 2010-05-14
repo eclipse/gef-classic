@@ -1,11 +1,17 @@
 /*******************************************************************************
- * Copyright (c) 2008 Michael Clay and others.
+ * Copyright (c) 2008, 2010 Michael Clay and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * Contributors:
+ *    Michael Clay - initial implementation, see bug 277380
+ *    Fabian Steeg - minor updates for Helios Xtext
  *******************************************************************************/
+grammar org.eclipse.zest.internal.dot.parser.Dot with org.eclipse.xtext.common.Terminals
+
+generate dot "http://www.eclipse.org/zest/internal/dot/parser/Dot"
+
 graphvizmodel:
 	"graphs" "{"
 		(graphs+=graph)*
@@ -21,7 +27,8 @@ edge_stmt_node : node_id=node_id (edgeRHS+=edgeRHS)+ (attributes+=attr_list)*;
 
 edge_stmt_subgraph : subgraph=subgraph  (edgeRHS=edgeRHS)+ (attributes+=attr_list)*;
 
-node_stmt  	:  name=DOT_ID (port=port)? (attributes+=attr_list)*;
+node_stmt   :  name=DOT_ID (attributes+=attr_list)*;
+//node_stmt     :  name=DOT_ID (port=port)? (attributes+=attr_list)*; // see FIXME for port
 
 attribute: name=DOT_ID "=" value=DOT_ID;
 
@@ -33,7 +40,8 @@ a_list: name=DOT_ID ("=" value=DOT_ID)? (",")?;
 
 subgraph : ( "subgraph" name=DOT_ID? )? "{" (stmts+=stmt)* "}";
 
-port : ":" name=DOT_ID ( ":" compass_pt=compass_pt )? | ":" compass_pt=compass_pt;
+//FIXME: Generated portImpl class has compilation errors with Helios Xtext
+//port : ":" name=DOT_ID ( ":" compass_pt=compass_pt )? | ":" compass_pt=compass_pt;
 
 edgeRHS: (edgeRHS_node | edgeRHS_subgraph);
 
@@ -41,30 +49,30 @@ edgeRHS_node: op=edgeop node=node_id;
 
 edgeRHS_subgraph: op=edgeop subgraph=subgraph;
 
-node_id  : name=DOT_ID (port=port)?;
+//node_id  : name=DOT_ID (port=port)?; // see FIXME for port
+node_id  : name=DOT_ID;
 
-Enum edgeop :
+enum edgeop :
  directed="->"|undirected="--";
  
-Enum graphtype :
+enum graphtype :
  graph="graph"|digraph="digraph";
  
-Enum attributetype :
+enum attributetype :
  graph="graph"|node="node"|edge="edge";
 
-Enum compass_pt: north="n" | northeast="ne" | east="e" | southeast="se" | south="s" | southwest="sw" | west="w" | northwest="nw";
+enum compass_pt: north="n" | northeast="ne" | east="e" | southeast="se" | south="s" | southwest="sw" | west="w" | northwest="nw";
 
-Native DOT_ID :
-	"(('^')?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*) |
-	('\"' ( '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\') | ~('\"') )* '\"') |
-	(('-')?('.'('0'..'9')+ | ('0'..'9')+('.' ('0'..'9')*)? ))"
-	;
-	
-	
-	
-	
-	
-	
-	
-	
-	
+terminal DOT_ID :
+    (('^')?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*) |
+    ('\"' ( '\\' ('b'|'t'|'n'|'f'|'r'|'\"'|'\''|'\\') | !('\"') )* '\"') |
+    (('-')?('.'('0'..'9')+ | ('0'..'9')+('.' ('0'..'9')*)? ));
+    
+    
+    
+    
+    
+    
+    
+    
+    

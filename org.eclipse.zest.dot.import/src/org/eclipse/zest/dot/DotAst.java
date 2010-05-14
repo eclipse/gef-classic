@@ -20,11 +20,11 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.mwe.utils.StandaloneSetup;
-import org.openarchitectureware.vis.graphviz.DotStandaloneSetup;
+import org.eclipse.zest.internal.dot.parser.DotStandaloneSetup;
 
 /**
  * Walks the AST of a DOT graph, e.g. to extract the name (used to name and later identify the generated

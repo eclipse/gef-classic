@@ -40,6 +40,11 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.xtext.ui.shared.xtextBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
@@ -48,5 +53,6 @@
 		<nature>edu.umd.cs.findbugs.plugin.eclipse.findbugsNature</nature>
 		<nature>com.atlassw.tools.eclipse.checkstyle.CheckstyleNature</nature>
 		<nature>org.eclipse.xtend.shared.ui.xtendXPandNature</nature>
+		<nature>org.eclipse.xtext.ui.shared.xtextNature</nature>
 	</natures>
 </projectDescription>

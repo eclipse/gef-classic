@@ -11,7 +11,7 @@
 <workflow>
 	<bean class="org.eclipse.emf.mwe.utils.StandaloneSetup" platformUri=".."/>
 	<component class="org.eclipse.xtext.MweReader" uri="${modelFile}">
-		<register class="org.openarchitectureware.vis.graphviz.DotStandaloneSetup"/>
+		<register class="org.eclipse.zest.internal.dot.parser.DotStandaloneSetup"/>
 	</component>
 	<component class="org.eclipse.xpand2.Generator">
 		<metaModel class="org.eclipse.xtend.typesystem.emf.EmfRegistryMetaModel"/>
