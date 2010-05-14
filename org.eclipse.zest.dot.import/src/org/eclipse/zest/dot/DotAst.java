@@ -38,7 +38,7 @@ final class DotAst {
      * @param dotFile The DOT file to parse
      */
     DotAst(final File dotFile) {
-        this.resource = loadResource(DotImport.fix(dotFile));
+        this.resource = loadResource(dotFile);
     }
 
     /**

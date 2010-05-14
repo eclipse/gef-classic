@@ -23,6 +23,7 @@ Workflow {
 	component = DirectoryCleaner { directory = "${runtimeProject}/src-gen" }
 	component = DirectoryCleaner { directory = "../org.eclipse.zest.dot.ui/src-gen" }
 	component = Generator {
+	    activator = "org.eclipse.zest.internal.dot.parser.DotParserActivator"
 		pathRtProject = runtimeProject
 		pathUiProject = "../org.eclipse.zest.dot.ui"
 		projectNameRt = projectName
@@ -41,7 +42,6 @@ Workflow {
 			// java-based API for validation 
 			fragment = validation.JavaValidatorFragment {
                 composedCheck = "org.eclipse.xtext.validation.ImportUriValidator"
-                composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
             }
 			fragment = scoping.ImportURIScopingFragment {}
 			//fragment = exporting.SimpleNamesFragment {} //FIXME causes errors

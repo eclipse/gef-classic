@@ -144,28 +144,16 @@ public final class DotImport {
      *         file
      */
     private File importDotFile(final File dotFile, final File targetDirectory) {
-        File fixedDotFile = fix(dotFile);
-        String dotLocation = fixedDotFile.getAbsolutePath();
+        String dotLocation = dotFile.getAbsolutePath();
         File oawFile = loadWorkflow();
         String oawLocation = oawFile.getAbsolutePath();
         Map<String, String> properties = setupProps(dotLocation, new Path(targetDirectory.getAbsolutePath()));
         WorkflowRunner workflowRunner = new WorkflowRunner();
         ProgressMonitor monitor = new NullProgressMonitor();
         workflowRunner.run(oawLocation, monitor, properties, new HashMap<String, String>());
-        return findResultFile(fixedDotFile, targetDirectory);
+        return findResultFile(dotFile, targetDirectory);
     }
 
-    /**
-     * Workaround for the current DOT-Parser.
-     * @param dotFile The DOT file to fix
-     * @return A file with the content of the given file, surrounded with "graphs{ graph ... }"
-     */
-    static File fix(final File dotFile) {
-        String content = DotFileUtils.read(dotFile);
-        File file = DotFileUtils.write("graphs { graph " + content + "}");
-        return file;
-    }
-    
     /**
      * @return The DOT AST parsed from the DOT source
      */

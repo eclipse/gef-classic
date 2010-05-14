@@ -11,6 +11,7 @@ package org.eclipse.zest.internal.dot;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.zest.internal.dot.parser.DotParserActivator;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -24,8 +25,12 @@ public final class DotUiActivator extends AbstractUIPlugin {
 
     private static DotUiActivator plugin;
 
+    private DotParserActivator parserActivator;
+
     /** Create a new Activator. */
-    public DotUiActivator() {}
+    public DotUiActivator() {
+      parserActivator = new DotParserActivator();
+    }
 
     /**
      * {@inheritDoc}
@@ -33,6 +38,7 @@ public final class DotUiActivator extends AbstractUIPlugin {
      */
     public void start(final BundleContext context) throws Exception {
         super.start(context);
+        parserActivator.start(context);
         plugin = this;
     }
 
@@ -43,6 +49,7 @@ public final class DotUiActivator extends AbstractUIPlugin {
     public void stop(final BundleContext context) throws Exception {
         plugin = null;
         super.stop(context);
+        parserActivator.stop(context);
     }
 
     /**
