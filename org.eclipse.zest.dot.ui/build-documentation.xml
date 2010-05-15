@@ -8,7 +8,7 @@
  * Contributors: Fabian Steeg - initial implementation; see bug 277380
  *******************************************************************************/
  -->
-<!-- dot4zest build script (currently to build documentation only) -->
+<!-- dot4zest documentation build script -->
 <project name="dot4zest" default="doc" basedir=".">
  <path id="wikitext.tasks.classpath">
     <fileset dir="Graphviz_DOT_as_a_DSL_for_Zest">

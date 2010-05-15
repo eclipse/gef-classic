@@ -7,13 +7,13 @@
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
 digraph dependencies{
-	rankdir=TD
+	//rankdir=TD
 	node[shape=box width=3]
 	edge[]
 	zest[label="org.eclipse.zest.*"]
 	graphviz[label="org.openarchitectureware.vis.graphviz"]
 	subgraph cluster_0{
-		label="dot4zest"
+		//label="dot4zest"
 		import[label="org.eclipse.zest.dot.import (M1)"]
 		export[label="org.eclipse.zest.dot.export (M2)"]
 	}

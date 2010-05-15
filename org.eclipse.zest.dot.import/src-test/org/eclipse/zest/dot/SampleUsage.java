@@ -13,7 +13,6 @@ import java.io.File;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
-import org.eclipse.zest.tests.dot.TestImageExport;
 import org.junit.Test;
 
 /**
@@ -41,14 +40,14 @@ public class SampleUsage {
         /* Export the Zest graph to DOT: */
         String dot = exporter.toDotString();
         /* Or to an image file, via a given Graph installation: */
-        File image = exporter.toImage(TestImageExport.dotBinDir(), "pdf");
+        //File image = exporter.toImage(TestImageExport.dotBinDir(), "pdf");
         //File image = exporter.toImage("/opt/local/bin", "pdf"); // set dir and uncomment
+        //System.out.println(image);
         /*****************************************************************/
         
         //TestGraphInstanceDotImport.open(shell); // sets title, layout, and size, opens the shell
         System.out.println(graph);
         System.out.println(file);
         System.out.println(dot);
-        System.out.println(image);
     }
 }

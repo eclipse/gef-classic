@@ -27,10 +27,10 @@
 		</p>
 		<h2 id="User_Documentation">User Documentation</h2>
 		<h3 id="Installation">Installation</h3>
-		<p>In Eclipse 3.5, add the update site at 
+		<p>Add the update site at 
 			<i>http://quui.de/updates</i> (Help -&gt; Install New Software... -&gt; Add...) and install the 
 			<i>dot4zest</i> feature (from the 
-			<i>Zest</i> category). Note that this is an external update site for easy access to preview releases, and not provided by the Eclipse Foundation.
+			<i>Zest</i> category). Use the latest 0.9.x version for Helios, or the latest 0.8.x version for Galileo. Note that this is an external update site for easy access to preview releases, and not provided by the Eclipse Foundation.
 		</p>
 		<h3 id="GUI">GUI</h3>
 		<p>In the UI, this feature adds two wizards ('New Zest Graph' and 'New Zest Project') under a category labeled 'Visualization':</p>
@@ -83,7 +83,12 @@
 			<i>templates/</i> folder of a Zest project, the file will both be visualized in the Zest Graph view (e.g. during editing) and compiled to a Zest graph subclass (e.g. to be used in a different application), and can be exported as a PDF with Graphviz.
 		</p>
 		<p>At the same time the view provides a simple way to visualize *.dot file output of any kind of program, e.g. to visualize and debug internal data structures, results, etc: if a program running in Eclipse outputs any *.dot file in the workspace, the view will be updated with the corresponding Zest graph.</p>
-		<p>In addition to visualizing DOT files with Zest, the Zest view also displays embedded DOT in other files, e.g. for DOT graphs 
+		<h4 id="Editing">Editing</h4>
+		<p>The Zest view can be used with the included DOT editor to visualize a DOT file:</p>
+		<p>
+			<img width="400" border="0" src="images/DotZestEditor.png"/>
+		</p>
+		<p>Additionally, the Zest view also displays embedded DOT in other files, e.g. 
 			<a href="http://fsteeg.wordpress.com/2010/01/07/visual-textual-documentation-with-dot-and-zest-in-eclipse/" target="doc_external">in source code comments</a> or 
 			<a href="http://fsteeg.wordpress.com/2010/02/07/diagrams-in-wiki-markup-with-mylyn-wikitext-dot-and-zest/" target="doc_external">in wiki markup</a>:
 		</p>
@@ -177,19 +182,18 @@ File image = exporter.toImage("/opt/local/bin", "pdf");
 			<a href="https://bugs.eclipse.org/bugs/enter_bug.cgi?bug_file_loc=http%3A%2F%2Fwiki.eclipse.org%2FGraphviz_DOT_as_a_DSL_for_Zest&amp;bug_severity=enhancement&amp;bug_status=NEW&amp;comment=&amp;component=Zest&amp;contenttypeentry=&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;data=&amp;description=&amp;flag_type-1=X&amp;flag_type-2=X&amp;flag_type-6=X&amp;form_name=enter_bug&amp;maketemplate=Remember%20values%20as%20bookmarkable%20template&amp;op_sys=All&amp;priority=P3&amp;product=GEF&amp;rep_platform=All&amp;short_desc=%5Bdot4zest%5D%20New%20request%20summary&amp;version=unspecified" target="doc_external">file a new bug</a>. The code for this feature is part of the CVS repository at 
 			<i>dev.eclipse.org:/cvsroot/tools</i>. The dot4zest bundles can be found in 
 			<i>org.eclipse.gef/plugins</i>, named 
-			<i>org.eclipse.zest.dot.*</i>.
+			<i>org.eclipse.zest.dot.*</i>. 
 		</p>
-		<p>To run the current work in progress code, check out the bundles from the CVS location above in Eclipse 3.5 (Galileo) and install the Zest, JET, Xpand, Xtext and MWE 0.7.x features (which are available from the Galileo update site; you have to uncheck 'group items by category' to see the Zest features).</p>
-		<p>You should also install the optional Xtext Antlr feature 0.7.x from the Itemis update site at 
+		<p>To run the current work in progress code (in Eclipse 3.6 Helios), install the Zest, JET, Xpand, Xtext and MWE 1.x.x features (which are available from the Helios update site under the 
+			<i>modeling</i> category). You will also have to install the Xtext Antlr feature 1.x.x from the Itemis update site at 
 			<i>
-				<a href="http://download.itemis.com/updates/" target="doc_external">http://download.itemis.com/updates/</a>
+				<a href="http://download.itemis.com/updates/milestones" target="doc_external">http://download.itemis.com/updates/milestones</a>
 			</i> (see the 
-			<a href="http://www.eclipse.org/Xtext/documentation/0_7_0/xtext.html#antlr_ip_issue" target="doc_external">Xtext documentation</a> for details on this). Finally, you need to check out the 
-			<i>org.openarchitectureware.vis.graphviz</i> bundle from the SVN at 
-			<i>
-				<a href="http://emfmodelvisualizer.googlecode.com/svn/galileo/" target="doc_external">http://emfmodelvisualizer.googlecode.com/svn/galileo/</a>
-			</i>. After the checkout, run (Run As -&gt; MWE workflow) the 
-			<i>GenerateDot.mwe</i> in the src/ folder of that bundle. 
+			<a href="http://www.eclipse.org/Xtext/documentation/0_7_0/xtext.html#antlr_ip_issue" target="doc_external">Xtext documentation</a> for details on this). 
+		</p>
+		<p>Then, check out the bundles from the CVS location above. After the checkout, run (Run As -&gt; MWE2 workflow) the 
+			<i>GenerateDot.mwe2</i> in the 
+			<i>/src/org/eclipse/zest/internal/dot/parser</i> folder of the import bundle.
 		</p>
 		<p>Run the 
 			<i>*Suite.java</i> test suites of the individual bundles (in src-test/) as JUnit tests to get an impression of the current implementation state. To test the UI components, run an Eclipse application configured with 
@@ -215,20 +219,16 @@ File image = exporter.toImage("/opt/local/bin", "pdf");
 		</p>
 		<p>
 			<div class="thumb right">
-				<div class="thumbinner" style="width:277px;">
+				<div class="thumbinner" style="width:177px;">
 					<a href="DotZestOverview.png" class="image">
-						<img class="thumbimage" width="275" align="right" border="0" src="images/DotZestOverview.png"/>
+						<img class="thumbimage" width="175" align="right" border="0" src="images/DotZestOverview.png"/>
 					</a>
-					<div class="thumbcaption">Implementing Graphviz DOT input and output for Zest using Eclipse modeling technology (solid arrows represent  components outside of dot4zest)</div>
+					<div class="thumbcaption">Implementation of Graphviz DOT input and output for Zest using Eclipse modeling technology</div>
 				</div>
 			</div>
 		</p>
 		<h4 id="DOT_to_Zest">DOT to Zest</h4>
-		<p>An Xtext grammar, parser and Xpand generators for Graphviz DOT exist in openArchitectureWare (oAW) 4.3 (the relevant bundles org.openarchitectureware.graphviz.*, are now part of the 
-			<a href="http://code.google.com/p/emfmodelvisualizer/" target="doc_external">EMF model visualizer project</a>). Based on this, dot4zest contains an Xpand generator that transforms Graphviz DOT descriptions into Java code that creates an equivalent Zest visualization. 
-		</p>
-		<p>There is also a way to define Zest animations using the DOT language (by representing animation steps as subgraphs in DOT, see user guide above). </p>
-		<p>Besides this compiler, dot4zest also interprets the parsed DOT EMF model to dynamically create Zest graphs in the Zest view (see above).</p>
+		<p>Based on an Xtext grammar, dot4zest uses an Xpand generator that transforms Graphviz DOT descriptions into Java code which creates an equivalent Zest visualization. There is also a way to define Zest animations using the DOT language (by representing animation steps as subgraphs in DOT, see user guide above). Besides this compiler, dot4zest also interprets the parsed DOT EMF model to dynamically create Zest graphs in the Zest view (see above).</p>
 		<h4 id="Zest_to_DOT">Zest to DOT</h4>
 		<p>To transform Zest graph instances to the Graphviz DOT language dot4zest uses 
 			<a href="http://wiki.eclipse.org/M2T-JET" target="doc_external">JET</a>. 
@@ -243,7 +243,7 @@ File image = exporter.toImage("/opt/local/bin", "pdf");
 			<i>simple directed graph</i>, 
 			<i>simple animation</i>), which can be edited in the wizard, with a live preview of what the Zest graph is going to look like.
 		</p>
-		<p>Extending this kind of functionality, dot4zest adds a Zest project type where the DOT files are placed in a special folder (and can be edited conveniently using the DOT editor from oAW). Using a project builder, the corresponding Zest Graph implementation classes are generated, which can be used from other parts of the project's code, similar to JET templates and generators. </p>
+		<p>Extending this kind of functionality, dot4zest adds a Zest project type where the DOT files are placed in a special folder (and can be edited conveniently using the included DOT editor). Using a project builder, the corresponding Zest Graph implementation classes are generated, which can be used from other parts of the project's code, similar to JET templates and generators. </p>
 		<p>To provide visualization of DOT graphs using Zest in a workbench, dot4zest contains a Zest graph view which views a DOT graph with Zest by interpreting the EMF model parsed from the DOT input (see user guide above).</p>
 		<h3 id="Future_Ideas">Future Ideas</h3>
 		<ul>

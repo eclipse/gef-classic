@@ -7,21 +7,21 @@
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
 digraph dependencies{
-	rankdir=TD
+	//rankdir=TD
 	node[shape=box width=3]
 	edge[]
 	zest[label="org.eclipse.zest.*"]
-	graphviz[label="org.openarchitectureware.vis.graphviz"]
+	xtext[label="Xtext, Xpand, MWE"]
 	ui[label="org.eclipse.ui, ..."]
 	subgraph cluster_0{
-		label="dot4zest"
+		//label="dot4zest"
 		import[label="org.eclipse.zest.dot.import"]
 		export[label="org.eclipse.zest.dot.export"]
 		dotui[label="org.eclipse.zest.dot.ui"]
 	}
 	zest->export[label=" requires" dir=back style=dashed]
 	export->import[label=" requires" dir=back constraint=false]
-	graphviz->import[label=" requires" dir=back style=dashed]
+	xtext->import[label=" requires" dir=back style=dashed]
 	import->dotui[label=" requires" dir=back]
 	dotui->ui[label=" requires" style=dashed]
 }
