@@ -41,6 +41,7 @@ Import-Package: org.eclipse.core.resources,
  org.apache.log4j
 Bundle-ClassPath: .
 Export-Package: org.eclipse.zest.internal.dot,
+ org.eclipse.zest.internal.dot.parser,
  org.eclipse.zest.internal.dot.parser.ui,
  org.eclipse.zest.internal.dot.parser.ui.contentassist,
  org.eclipse.zest.internal.dot.parser.ui.contentassist.antlr,
