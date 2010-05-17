@@ -71,6 +71,8 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
+import org.eclipse.draw2d.ConnectionLayer;
+import org.eclipse.draw2d.ViewportAwareConnectionLayerClippingStrategy;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.MarginBorder;
@@ -411,6 +413,10 @@ protected void configureGraphicalViewer() {
 	ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer)getGraphicalViewer();
 
 	ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
+	
+	// set clipping strategy for connection layer
+	ConnectionLayer connectionLayer = (ConnectionLayer)root.getLayer(LayerConstants.CONNECTION_LAYER);
+	connectionLayer.setClippingStrategy(new ViewportAwareConnectionLayerClippingStrategy(connectionLayer));
 
 	List zoomLevels = new ArrayList(3);
 	zoomLevels.add(ZoomManager.FIT_ALL);
