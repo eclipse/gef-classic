@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2008 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -189,6 +189,7 @@ private Cursor defaultCursor, disabledCursor;
 private EditDomain domain;
 private List operationSet;
 private int startX, startY, state;
+private boolean disposeCurrentCommand = true;
 
 static {
 	if (SWT.getPlatform().equals("carbon"))//$NON-NLS-1$
@@ -397,6 +398,10 @@ protected void executeCommand(Command command) {
 	try {
 		getDomain().getCommandStack()
 			.execute(command);
+		if (command == getCurrentCommand()) {
+			disposeCurrentCommand = false;
+		}
+		
 	} finally {
 		getDomain().getCommandStack().addCommandStackEventListener(commandStackListener);
 	}
@@ -1216,11 +1221,18 @@ protected void resetFlags() {
 }
 
 /**
- * Used to cache a command obtained from {@link #getCommand()}.
+ * Used to cache a command obtained from {@link #getCommand()}. Note that the
+ * ownership of the given command is transferred to this class -- i.e. the command
+ * will automatically be disposed when it's not needed anymore. 
  * @param c the command
  * @see #getCurrentCommand()
  */
 protected void setCurrentCommand(Command c) {
+	if (disposeCurrentCommand && command != null) {
+		command.dispose();
+	}
+	disposeCurrentCommand = true;
+	
 	command = c;
 	refreshCursor();
 }
