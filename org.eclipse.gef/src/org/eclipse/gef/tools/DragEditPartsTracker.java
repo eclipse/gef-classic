@@ -19,6 +19,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
+import org.eclipse.core.runtime.Platform;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -56,7 +58,7 @@ public class DragEditPartsTracker
 static final int MODIFIER_CLONE;
 
 static {
-	if (SWT.getPlatform().equals("carbon")) //$NON-NLS-1$
+	if (Platform.OS_MACOSX.equals(Platform.getOS()))
 		MODIFIER_CLONE = SWT.ALT;
 	else
 		MODIFIER_CLONE = SWT.CTRL;
