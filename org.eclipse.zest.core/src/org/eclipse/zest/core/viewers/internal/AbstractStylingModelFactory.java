@@ -178,11 +178,31 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 				return oldConnection;
 			}
 		}
+		IFigureProvider figureProvider = null;
+		if (getLabelProvider() instanceof IFigureProvider) {
+			figureProvider = (IFigureProvider) getLabelProvider();
+		}
 		if (sn == null) {
-			sn = createNode(graph, source);
+			IFigure figure = null;
+			if (figureProvider != null) {
+				figure = figureProvider.getFigure(source);
+			}
+			if (figure != null) {
+				sn = createNode(graph, source, figure);
+			} else {
+				sn = createNode(graph, source);
+			}
 		}
 		if (dn == null) {
-			dn = createNode(graph, dest);
+			IFigure figure = null;
+			if (figureProvider != null) {
+				figure = figureProvider.getFigure(source);
+			}
+			if (figure != null) {
+				dn = createNode(graph, dest, figure);
+			} else {
+				dn = createNode(graph, dest);
+			}
 		}
 		GraphConnection c = viewer.addGraphModelConnection(element, sn, dn);
 		styleItem(c);
