@@ -127,7 +127,7 @@ protected abstract AccessibilityDispatcher getAccessibilityDispatcher();
  * @return the IFigure that currently has focus
  * @since 3.6
  */
-protected abstract IFigure getFocusOwner();
+public abstract IFigure getFocusOwner();
 
 /**
  * @return whether events are captured by a figure

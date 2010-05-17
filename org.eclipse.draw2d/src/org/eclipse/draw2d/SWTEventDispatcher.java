@@ -298,7 +298,7 @@ protected final FocusTraverseManager getFocusTraverseManager() {
  * @see EventDispatcher#getFocusOwner()
  * @since 3.6
  */
-protected IFigure getFocusOwner() {
+public IFigure getFocusOwner() {
 	return focusOwner;
 }
 
