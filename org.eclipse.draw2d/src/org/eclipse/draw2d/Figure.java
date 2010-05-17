@@ -73,7 +73,7 @@ private LayoutManager layoutManager;
 protected int flags = FLAG_VISIBLE | FLAG_ENABLED;
 
 private IFigure parent;
-private IClippingStrategy clippingStrategy = new ClippingStrategy();
+private IClippingStrategy clippingStrategy = null;
 private Cursor cursor;
 
 private PropertyChangeSupport propertyListeners;
@@ -1090,22 +1090,37 @@ protected void paintBorder(Graphics graphics) {
  * @param graphics the graphics used to paint
  * @since 2.0
  */
-protected void paintChildren(Graphics graphics) {
-	for (int i = 0; i < children.size(); i++) {
-		IFigure child = (IFigure)children.get(i);
-		if (child.isVisible()) {
-			// decide on the clipping region to use, if no child
-			Rectangle[] clipping = clippingStrategy != null ? clippingStrategy
-					.getClip(child)
-					: new Rectangle[] { child.getBounds() };
-			for (int j = 0; j < clipping.length; j++) {
-				graphics.clipRect(clipping[j]);
-				child.paint(graphics);
-				graphics.restoreState();
+	protected void paintChildren(Graphics graphics) {
+		for (int i = 0; i < children.size(); i++) {
+			IFigure child = (IFigure) children.get(i);
+			if (child.isVisible()) {
+				// determine clipping areas for child
+				Rectangle[] clipping = null;
+				if(clippingStrategy != null){
+					clipping = clippingStrategy
+						.getClip(child);		
+				}
+				else{
+					// default clipping behavior is to clip at 
+					// client area or bounds (dependent on whether there 
+					// is an opaque border)
+					boolean optimizeClip = getBorder() == null
+					|| getBorder().isOpaque();
+					clipping = new Rectangle[] { optimizeClip ? child.getBounds()
+					: child.getBounds().getIntersection(
+							getClientArea(PRIVATE_RECT)) };
+				}
+				// child may now paint inside the clipping areas
+				for (int j = 0; j < clipping.length; j++) {
+					if (clipping[j].intersects(graphics.getClip(Rectangle.SINGLETON))) {
+						graphics.clipRect(clipping[j]);
+						child.paint(graphics);
+						graphics.restoreState();
+					}
+				}				
 			}
 		}
 	}
-}
 
 /**
  * Paints this Figure's client area. The client area is typically defined as the anything
@@ -1797,22 +1812,6 @@ public void validate() {
 	layout();
 	for (int i = 0; i < children.size(); i++)
 		((IFigure)children.get(i)).validate();
-}
-
-/**
- * Default clipping strategy, preserving what has been done within
- * {@link Figure#paintChildren(Graphics)} w.r.t. clipping prior to 3.6.
- * 
- * @since 3.6
- */
-protected class ClippingStrategy implements IClippingStrategy {
-	public Rectangle[] getClip(IFigure childFigure) {
-		boolean optimizeClip = getBorder() == null
-				|| getBorder().isOpaque();
-		return new Rectangle[] { optimizeClip ? childFigure.getBounds()
-				: childFigure.getBounds().getIntersection(
-						getClientArea(PRIVATE_RECT)) };
-	}
 }
 
 /**

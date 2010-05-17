@@ -275,6 +275,14 @@ Rectangle getClientArea();
 Rectangle getClientArea(Rectangle rect);
 
 /**
+ * Returns the IClippingStrategy used by this figure to clip its children
+ * 
+ * @return the IClipppingStrategy used to clip this figure's children.
+ * @since 3.6
+ */
+IClippingStrategy getClippingStrategy();
+
+/**
  * Returns the Cursor used when the mouse is over this IFigure.
  * @return The Cursor used when the mouse is over this IFigure
  */
@@ -725,6 +733,15 @@ void setBorder(Border b);
  * @param rect The new bounds
  */
 void setBounds(Rectangle rect);
+
+/**
+ * Registers a clipping strategy to specify how clipping is performed for
+ * child figures.
+ * 
+ * @param clippingStrategy
+ * @since 3.6
+ */
+void setClippingStrategy(IClippingStrategy clippingStrategy);
 
 /**
  * Convenience method to set the constraint of the specified child in the current
