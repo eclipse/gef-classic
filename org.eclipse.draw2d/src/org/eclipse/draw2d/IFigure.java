@@ -28,8 +28,7 @@ import org.eclipse.draw2d.geometry.Translatable;
  * A lightweight graphical object.  Figures are rendered to a {@link Graphics}  object.
  * Figures can be composed to create complex graphics.
  * 
- * <P>
- * WARNING: This interface is not intended to be implemented by clients.
+ * @noimplement This interface is not intended to be implemented by clients. Use {@link Figure}.
  */
 public interface IFigure {
 
