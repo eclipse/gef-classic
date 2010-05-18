@@ -3,13 +3,14 @@ package org.eclipse.draw2d;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Clipping strategy for connection layer, which takes into account nested
- * view ports and truncates those parts of connections which reach outside
- * and are thus not visible.
+ * Clipping strategy for connection layer, which takes into account nested view
+ * ports and truncates those parts of connections which reach outside and are
+ * thus not visible.
  * 
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
@@ -18,6 +19,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class ViewportAwareConnectionLayerClippingStrategy implements
 		IClippingStrategy {
+
+	private static final Insets PRIVATE_INSETS = new Insets(0, 0, 1, 1);
 
 	private ConnectionLayer connectionLayer = null;
 
@@ -46,8 +49,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 	}
 
 	/**
-	 * Computes clipping rectangle(s) for a given connection. Will consider
-	 * all enclosing viewports, excluding the root viewport.
+	 * Computes clipping rectangle(s) for a given connection. Will consider all
+	 * enclosing viewports, excluding the root viewport.
 	 */
 	protected Rectangle[] getEdgeClippingRectangle(Connection connection) {
 		// start with clipping the connection at its original bounds
@@ -80,7 +83,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 					.getParent()));
 		}
 
-		// if the nearest common viewport of source and target is not simultaneously
+		// if the nearest common viewport of source and target is not
+		// simultaneously
 		// the nearest enclosing viewport of source and target respectively, the
 		// connection has to be further clipped (the connection may even not be
 		// visible at all)
@@ -94,21 +98,25 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 			// itself be nested in other viewports).
 			Rectangle sourceClipRect = getAbsoluteBoundsAsCopy(sourceFigure);
 			if (nearestEnclosingSourceViewport != nearestEnclosingCommonViewport) {
-				clipAtViewports(sourceClipRect, ViewportUtilities
-						.getViewportsPath(nearestEnclosingSourceViewport,
+				clipAtViewports(sourceClipRect,
+						ViewportUtilities.getViewportsPath(
+								nearestEnclosingSourceViewport,
 								nearestEnclosingCommonViewport, false));
 			}
 			Rectangle targetClipRect = getAbsoluteBoundsAsCopy(targetFigure);
 			if (nearestEnclosingTargetViewport != nearestEnclosingCommonViewport) {
-				clipAtViewports(targetClipRect, ViewportUtilities
-						.getViewportsPath(nearestEnclosingTargetViewport,
+				clipAtViewports(targetClipRect,
+						ViewportUtilities.getViewportsPath(
+								nearestEnclosingTargetViewport,
 								nearestEnclosingCommonViewport, false));
 			}
 			PointList absolutePointsAsCopy = getAbsolutePointsAsCopy(connection);
-			boolean sourceAnchorVisible = sourceClipRect
-					.contains(absolutePointsAsCopy.getFirstPoint());
-			boolean targetAnchorVisible = targetClipRect
-					.contains(absolutePointsAsCopy.getLastPoint());
+			boolean sourceAnchorVisible = sourceClipRect.getExpanded(
+					PRIVATE_INSETS).contains(
+					absolutePointsAsCopy.getFirstPoint());
+			boolean targetAnchorVisible = targetClipRect.getExpanded(
+					PRIVATE_INSETS).contains(
+					absolutePointsAsCopy.getLastPoint());
 
 			if (!sourceAnchorVisible || !targetAnchorVisible) {
 				// one (or both) of source or target anchor is invisible
@@ -136,8 +144,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 	}
 
 	/**
-	 * Computes clipping rectangle for a given (node) figure. Will consider
-	 * all enclosing viewports, excluding the root viewport.
+	 * Computes clipping rectangle for a given (node) figure. Will consider all
+	 * enclosing viewports, excluding the root viewport.
 	 */
 	protected Rectangle getNodeClippingRectangle(IFigure figure) {
 		// start with the bounds of the edit part's figure
@@ -160,8 +168,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 			List enclosingViewportsPath) {
 		for (Iterator iterator = enclosingViewportsPath.iterator(); iterator
 				.hasNext();) {
-			clipRect.intersect(getAbsoluteViewportClientAreaAsCopy((Viewport) iterator
-					.next()));
+			Viewport viewport = (Viewport) iterator.next();
+			clipRect.intersect(getAbsoluteViewportAreaAsCopy(viewport));
 		}
 	}
 
@@ -171,8 +179,7 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 	 * viewport of primary and connection layer.
 	 */
 	protected Viewport getRootViewport() {
-		return ViewportUtilities
-				.getNearestEnclosingViewport(connectionLayer);
+		return ViewportUtilities.getNearestEnclosingViewport(connectionLayer);
 	}
 
 	/**
@@ -185,13 +192,24 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 	}
 
 	/**
+	 * Returns the area covered by the viewport in absolute coordinates.
+	 */
+	protected Rectangle getAbsoluteViewportAreaAsCopy(Viewport viewport) {
+		if (viewport.getParent().getBorder() != null
+				&& viewport.getParent().getBorder().isOpaque()) {
+			return getAbsoluteClientAreaAsCopy(viewport.getParent());
+		} else {
+			return getAbsoluteBoundsAsCopy(viewport.getParent());
+		}
+	}
+
+	/**
 	 * Returns the viewport's client area in absolute coordinates.
 	 */
-	protected Rectangle getAbsoluteViewportClientAreaAsCopy(
-			Viewport viewport) {
-		Rectangle absoluteClientArea = viewport.getClientArea();
-		viewport.translateToParent(absoluteClientArea);
-		viewport.translateToAbsolute(absoluteClientArea);
+	protected Rectangle getAbsoluteClientAreaAsCopy(IFigure figure) {
+		Rectangle absoluteClientArea = figure.getClientArea();
+		figure.translateToParent(absoluteClientArea);
+		figure.translateToAbsolute(absoluteClientArea);
 		return absoluteClientArea;
 	}
 
