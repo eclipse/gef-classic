@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2005 IBM Corporation and others.
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,8 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d;
+
+import org.eclipse.swt.SWT;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -42,7 +44,12 @@ public Rectangle getClientArea(Rectangle rect) {
  * @see Figure#getPreferredSize(int, int)
  */
 public Dimension getMinimumSize(int wHint, int hHint) {
-	Dimension d = super.getMinimumSize((int) (wHint / getScale()), (int)(hHint / getScale()));
+		Dimension d = super
+				.getMinimumSize(
+						wHint != SWT.DEFAULT ? (int) (wHint / getScale())
+								: SWT.DEFAULT,
+						hHint != SWT.DEFAULT ? (int) (hHint / getScale())
+								: SWT.DEFAULT);
 	int w = getInsets().getWidth();
 	int h = getInsets().getHeight();
 	return d.getExpanded(-w, -h)
@@ -54,7 +61,11 @@ public Dimension getMinimumSize(int wHint, int hHint) {
  * @see Figure#getPreferredSize(int, int)
  */
 public Dimension getPreferredSize(int wHint, int hHint) {
-	Dimension d = super.getPreferredSize((int) (wHint / getScale()), (int)(hHint / getScale()));
+	Dimension d = super.getPreferredSize(
+			wHint != SWT.DEFAULT ? (int) (wHint / getScale())
+					: SWT.DEFAULT,
+			hHint != SWT.DEFAULT ? (int) (hHint / getScale())
+					: SWT.DEFAULT);
 	int w = getInsets().getWidth();
 	int h = getInsets().getHeight();
 	return d.getExpanded(-w, -h)
