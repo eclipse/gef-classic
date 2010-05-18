@@ -47,7 +47,7 @@ import org.eclipse.gef.util.EditPartUtilities;
  * 
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
- *
+ * 
  * @since 3.6
  */
 public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
@@ -100,18 +100,18 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 */
 	public void activate() {
 		super.activate();
-		// register all necessary listeners
+		// register listeners to all viewports in the host figure's path;
+		// listeners
+		// to the host figure itself will be registered within showFeedback()
+		// and
+		// unregistered within hideFeedback()
 		for (Iterator iterator = ViewportUtilities.getViewportsPath(
 				getHostFigureViewport(),
 				ViewportUtilities.getRootViewport(getHostFigure())).iterator(); iterator
 				.hasNext();) {
 			Viewport viewport = (Viewport) iterator.next();
-			viewport
-					.addPropertyChangeListener(viewportViewLocationChangeListener);
-
+			viewport.addPropertyChangeListener(viewportViewLocationChangeListener);
 		}
-		getHostFigure().addLayoutListener(layoutListener);
-		getHostFigure().addFigureListener(figureListener);
 	}
 
 	/**
@@ -179,7 +179,6 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * Creates the primary layer feedback figures.
 	 */
 	protected void createNodeFeedbackFigures() {
-
 		// create ghost feedback for node children
 		for (Iterator iterator = getHost().getChildren().iterator(); iterator
 				.hasNext();) {
@@ -194,16 +193,15 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#deactivate()
 	 */
 	public void deactivate() {
-		// remove all registered listeners
-		getHostFigure().removeFigureListener(figureListener);
-		getHostFigure().removeLayoutListener(layoutListener);
+		// remove viewport listeners; listener to host figure, which were
+		// registered during showSelection() will be unregistered during
+		// hideSelection(), so they do not have to be unregistered here
 		for (Iterator iterator = ViewportUtilities.getViewportsPath(
 				getHostFigureViewport(),
 				ViewportUtilities.getRootViewport(getHostFigure())).iterator(); iterator
 				.hasNext();) {
 			Viewport viewport = (Viewport) iterator.next();
-			viewport
-					.removePropertyChangeListener(viewportViewLocationChangeListener);
+			viewport.removePropertyChangeListener(viewportViewLocationChangeListener);
 
 		}
 		super.deactivate();
@@ -252,6 +250,10 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideSelection()
 	 */
 	protected void hideSelection() {
+		// remove figure and layout listeners
+		getHostFigure().removeLayoutListener(layoutListener);
+		getHostFigure().removeFigureListener(figureListener);
+		// hide any still active feedback
 		hideFeedback();
 	}
 
@@ -298,8 +300,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		List connectionLayerChildren = getLayer(LayerConstants.CONNECTION_LAYER)
 				.getChildren();
 		for (Iterator iterator = connectionLayerChildren.iterator(); iterator
-				.hasNext()
-				&& !connectionLayerChildExceedsClientArea;) {
+				.hasNext() && !connectionLayerChildExceedsClientArea;) {
 			IFigure connectionLayerChild = (IFigure) iterator.next();
 			connectionLayerChildExceedsClientArea = (ViewportUtilities
 					.getNearestEnclosingViewport(connectionLayerChild) == ((IScrollableFigure) getHostFigure())
@@ -325,6 +326,10 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		// showing the feedback.
 		getHost().getViewer().reveal(getHost());
 		updateFeedback();
+		// register figure and layout listeners needed to update the feedback
+		// figures upon changes to the host figure.
+		getHostFigure().addLayoutListener(layoutListener);
+		getHostFigure().addFigureListener(figureListener);
 	}
 
 	/**
