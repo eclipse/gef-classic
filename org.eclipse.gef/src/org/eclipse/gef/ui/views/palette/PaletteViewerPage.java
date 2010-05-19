@@ -13,8 +13,8 @@ package org.eclipse.gef.ui.views.palette;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.part.Page;
 
 import org.eclipse.draw2d.IFigure;

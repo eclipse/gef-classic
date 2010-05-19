@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.jface.action.IAction;
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.action.IAction;
 
 import org.eclipse.gef.Disposable;
 
