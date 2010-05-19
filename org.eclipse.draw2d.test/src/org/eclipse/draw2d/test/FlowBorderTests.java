@@ -11,12 +11,11 @@
 
 package org.eclipse.draw2d.test;
 
-import org.eclipse.swt.graphics.FontMetrics;
-
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.draw2d.text.TextFragmentBox;
+import org.eclipse.swt.graphics.FontMetrics;
 
 /**
  * @since 3.1

@@ -11,14 +11,13 @@
 
 package org.eclipse.draw2d.test;
 
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.TextFlow;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * @since 3.1

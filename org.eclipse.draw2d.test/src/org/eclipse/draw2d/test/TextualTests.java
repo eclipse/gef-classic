@@ -12,12 +12,11 @@ package org.eclipse.draw2d.test;
 
 import java.util.List;
 
-import org.eclipse.swt.graphics.Font;
-
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.draw2d.text.TextFragmentBox;
+import org.eclipse.swt.graphics.Font;
 
 /**
  * @author Pratik Shah

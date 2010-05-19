@@ -13,12 +13,11 @@ package org.eclipse.draw2d.test;
 
 import junit.framework.TestCase;
 
+import org.eclipse.draw2d.SWTGraphics;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-
-import org.eclipse.draw2d.SWTGraphics;
-import org.eclipse.draw2d.geometry.Rectangle;
 
 public class GraphicsClipping extends TestCase {
 
