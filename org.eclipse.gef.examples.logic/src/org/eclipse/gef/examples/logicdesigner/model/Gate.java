@@ -10,13 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
-abstract public class Gate
-	extends SimpleOutput
-{
+abstract public class Gate extends SimpleOutput {
 
-static final long serialVersionUID = 1;
-public static String
-	TERMINAL_A = "A",  //$NON-NLS-1$
-	TERMINAL_B = "B";  //$NON-NLS-1$
+	static final long serialVersionUID = 1;
+	public static String TERMINAL_A = "A", //$NON-NLS-1$
+			TERMINAL_B = "B"; //$NON-NLS-1$
 
 }

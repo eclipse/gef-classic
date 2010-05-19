@@ -14,23 +14,21 @@ import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
-public class OrGate
-	extends Gate 
-{
+public class OrGate extends Gate {
 
-static private Image OR_ICON = createImage(OrGate.class, "icons/or16.gif");  //$NON-NLS-1$
-static final long serialVersionUID = 1;
+	static private Image OR_ICON = createImage(OrGate.class, "icons/or16.gif"); //$NON-NLS-1$
+	static final long serialVersionUID = 1;
 
-public Image getIconImage() {
-	return OR_ICON;
-}
+	public Image getIconImage() {
+		return OR_ICON;
+	}
 
-public boolean getResult() {
-	return getInput(TERMINAL_A) | getInput(TERMINAL_B);
-}
+	public boolean getResult() {
+		return getInput(TERMINAL_A) | getInput(TERMINAL_B);
+	}
 
-public String toString() {
-	return LogicMessages.OrGate_LabelText + " #" + getID();  //$NON-NLS-1$
-}
+	public String toString() {
+		return LogicMessages.OrGate_LabelText + " #" + getID(); //$NON-NLS-1$
+	}
 
 }

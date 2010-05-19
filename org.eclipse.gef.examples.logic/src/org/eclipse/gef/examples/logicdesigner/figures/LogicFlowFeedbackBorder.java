@@ -16,31 +16,32 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-public class LogicFlowFeedbackBorder 
-	extends LogicFlowBorder
-{
+public class LogicFlowFeedbackBorder extends LogicFlowBorder {
 
-public LogicFlowFeedbackBorder() {}
+	public LogicFlowFeedbackBorder() {
+	}
 
-public LogicFlowFeedbackBorder(int width) {
-	super(width);
-}
+	public LogicFlowFeedbackBorder(int width) {
+		super(width);
+	}
 
-public void paint(IFigure figure, Graphics graphics, Insets insets) {
-	graphics.setForegroundColor(ColorConstants.white);	
-	graphics.setBackgroundColor(LogicColorConstants.ghostFillColor);
-	graphics.setXORMode(true);
-	
-	Rectangle r = figure.getBounds();
-	
-	graphics.drawRectangle(r.x, r.y, r.width - 1, r.height - 1);
-//	graphics.drawLine(r.x, r.y + 1, r.right() - 1, r.y + 1);
-//	graphics.drawLine(r.x, r.bottom() - 1, r.right() - 1, r.bottom() - 1);
-//	graphics.drawLine(r.x, r.y + 1, r.x, r.bottom() - 1);
-//	graphics.drawLine(r.right() - 1, r.bottom() - 1, r.right() - 1, r.y + 1);
-	
-	tempRect.setBounds(new Rectangle(r.x, r.y, grabBarWidth, r.height));
-	
-	graphics.fillRectangle(tempRect);
-}
+	public void paint(IFigure figure, Graphics graphics, Insets insets) {
+		graphics.setForegroundColor(ColorConstants.white);
+		graphics.setBackgroundColor(LogicColorConstants.ghostFillColor);
+		graphics.setXORMode(true);
+
+		Rectangle r = figure.getBounds();
+
+		graphics.drawRectangle(r.x, r.y, r.width - 1, r.height - 1);
+		// graphics.drawLine(r.x, r.y + 1, r.right() - 1, r.y + 1);
+		// graphics.drawLine(r.x, r.bottom() - 1, r.right() - 1, r.bottom() -
+		// 1);
+		// graphics.drawLine(r.x, r.y + 1, r.x, r.bottom() - 1);
+		// graphics.drawLine(r.right() - 1, r.bottom() - 1, r.right() - 1, r.y +
+		// 1);
+
+		tempRect.setBounds(new Rectangle(r.x, r.y, grabBarWidth, r.height));
+
+		graphics.fillRectangle(tempRect);
+	}
 }

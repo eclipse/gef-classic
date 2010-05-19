@@ -23,23 +23,24 @@ import org.eclipse.gef.GraphicalEditPart;
  */
 public class LogicPasteTemplateAction extends PasteTemplateAction {
 
-/**
- * Constructor for LogicPasteTemplateAction.
- * @param editor
- */
-public LogicPasteTemplateAction(IEditorPart editor) {
-	super(editor);
-}
+	/**
+	 * Constructor for LogicPasteTemplateAction.
+	 * 
+	 * @param editor
+	 */
+	public LogicPasteTemplateAction(IEditorPart editor) {
+		super(editor);
+	}
 
-/**
- * @see PasteTemplateAction#getPasteLocation(GraphicalEditPart)
- */
-protected Point getPasteLocation(GraphicalEditPart container) {
-	Point result = new Point(10, 10);
-	IFigure fig = container.getContentPane();
-	result.translate(fig.getClientArea(Rectangle.SINGLETON).getLocation());
-	fig.translateToAbsolute(result);
-	return result;
-}
+	/**
+	 * @see PasteTemplateAction#getPasteLocation(GraphicalEditPart)
+	 */
+	protected Point getPasteLocation(GraphicalEditPart container) {
+		Point result = new Point(10, 10);
+		IFigure fig = container.getContentPane();
+		result.translate(fig.getClientArea(Rectangle.SINGLETON).getLocation());
+		fig.translateToAbsolute(result);
+		return result;
+	}
 
 }

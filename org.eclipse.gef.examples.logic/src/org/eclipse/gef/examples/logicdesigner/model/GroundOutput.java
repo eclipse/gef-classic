@@ -14,23 +14,22 @@ import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
-public class GroundOutput
-	extends SimpleOutput
-{
+public class GroundOutput extends SimpleOutput {
 
-private static Image GROUND_ICON = createImage(GroundOutput.class, "icons/ground16.gif"); //$NON-NLS-1$
-static final long serialVersionUID = 1;
+	private static Image GROUND_ICON = createImage(GroundOutput.class,
+			"icons/ground16.gif"); //$NON-NLS-1$
+	static final long serialVersionUID = 1;
 
-public Image getIconImage() {
-	return GROUND_ICON;
-}
+	public Image getIconImage() {
+		return GROUND_ICON;
+	}
 
-public boolean getResult() {
-	return false;
-}
+	public boolean getResult() {
+		return false;
+	}
 
-public String toString() {
-	return LogicMessages.GroundOutput_LabelText;
-}
+	public String toString() {
+		return LogicMessages.GroundOutput_LabelText;
+	}
 
 }

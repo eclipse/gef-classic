@@ -17,53 +17,51 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
-public class SetConstraintCommand
-	extends org.eclipse.gef.commands.Command
-{
+public class SetConstraintCommand extends org.eclipse.gef.commands.Command {
 
-private Point newPos;
-private Dimension newSize;
-private Point oldPos;
-private Dimension oldSize;
-private LogicSubpart part;
+	private Point newPos;
+	private Dimension newSize;
+	private Point oldPos;
+	private Dimension oldSize;
+	private LogicSubpart part;
 
-public void execute() {
-	oldSize = part.getSize();
-	oldPos  = part.getLocation();
-	redo();
-}
+	public void execute() {
+		oldSize = part.getSize();
+		oldPos = part.getLocation();
+		redo();
+	}
 
-public String getLabel() {
-	if (oldSize.equals(newSize))
-		return LogicMessages.SetLocationCommand_Label_Location;
-	return LogicMessages.SetLocationCommand_Label_Resize;
-}
+	public String getLabel() {
+		if (oldSize.equals(newSize))
+			return LogicMessages.SetLocationCommand_Label_Location;
+		return LogicMessages.SetLocationCommand_Label_Resize;
+	}
 
-public void redo() {
-	part.setSize(newSize);
-	part.setLocation(newPos);
-}
+	public void redo() {
+		part.setSize(newSize);
+		part.setLocation(newPos);
+	}
 
-public void setLocation(Rectangle r) {
-	setLocation(r.getLocation());
-	setSize(r.getSize());
-}
+	public void setLocation(Rectangle r) {
+		setLocation(r.getLocation());
+		setSize(r.getSize());
+	}
 
-public void setLocation(Point p) {
-	newPos = p;
-}
+	public void setLocation(Point p) {
+		newPos = p;
+	}
 
-public void setPart(LogicSubpart part) {
-	this.part = part;
-}
+	public void setPart(LogicSubpart part) {
+		this.part = part;
+	}
 
-public void setSize(Dimension p) {
-	newSize = p;
-}
+	public void setSize(Dimension p) {
+		newSize = p;
+	}
 
-public void undo() {
-	part.setSize(oldSize);
-	part.setLocation(oldPos);
-}
+	public void undo() {
+		part.setSize(oldSize);
+		part.setLocation(oldPos);
+	}
 
 }

@@ -18,24 +18,23 @@ import org.eclipse.gef.EditPolicy;
 
 import org.eclipse.gef.examples.logicdesigner.figures.LogicFlowBorder;
 
-public class LogicFlowContainerEditPart 
-	extends LogicContainerEditPart 
-{
+public class LogicFlowContainerEditPart extends LogicContainerEditPart {
 
-protected void createEditPolicies() {
-	super.createEditPolicies();
-	installEditPolicy(EditPolicy.NODE_ROLE, null);
-	installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, null);
-	installEditPolicy(EditPolicy.LAYOUT_ROLE, new LogicFlowEditPolicy());
-	installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ContainerHighlightEditPolicy());
-}
+	protected void createEditPolicies() {
+		super.createEditPolicies();
+		installEditPolicy(EditPolicy.NODE_ROLE, null);
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, null);
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LogicFlowEditPolicy());
+		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,
+				new ContainerHighlightEditPolicy());
+	}
 
-protected IFigure createFigure() {
-	Figure figure = new Figure();
-	figure.setLayoutManager(new FlowLayout());
-	figure.setBorder(new LogicFlowBorder());
-	figure.setOpaque(true);
-	return figure;
-}  
+	protected IFigure createFigure() {
+		Figure figure = new Figure();
+		figure.setLayoutManager(new FlowLayout());
+		figure.setBorder(new LogicFlowBorder());
+		figure.setOpaque(true);
+		return figure;
+	}
 
 }

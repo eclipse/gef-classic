@@ -23,47 +23,45 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 /**
  * @author Pratik Shah
  */
-public class MoveGuideCommand 
-	extends Command 
-{
+public class MoveGuideCommand extends Command {
 
-private int pDelta;
-private LogicGuide guide;
-	
-public MoveGuideCommand(LogicGuide guide, int positionDelta) {
-	super(LogicMessages.MoveGuideCommand_Label);
-	this.guide = guide;
-	pDelta = positionDelta;
-}
+	private int pDelta;
+	private LogicGuide guide;
 
-public void execute() {
-	guide.setPosition(guide.getPosition() + pDelta);
-	Iterator iter = guide.getParts().iterator();
-	while (iter.hasNext()) {
-		LogicSubpart part = (LogicSubpart)iter.next();
-		Point location = part.getLocation().getCopy();
-		if (guide.isHorizontal()) {
-			location.y += pDelta;
-		} else {
-			location.x += pDelta;
-		}
-		part.setLocation(location);
+	public MoveGuideCommand(LogicGuide guide, int positionDelta) {
+		super(LogicMessages.MoveGuideCommand_Label);
+		this.guide = guide;
+		pDelta = positionDelta;
 	}
-}
 
-public void undo() {
-	guide.setPosition(guide.getPosition() - pDelta);
-	Iterator iter = guide.getParts().iterator();
-	while (iter.hasNext()) {
-		LogicSubpart part = (LogicSubpart)iter.next();
-		Point location = part.getLocation().getCopy();
-		if (guide.isHorizontal()) {
-			location.y -= pDelta;
-		} else {
-			location.x -= pDelta;
+	public void execute() {
+		guide.setPosition(guide.getPosition() + pDelta);
+		Iterator iter = guide.getParts().iterator();
+		while (iter.hasNext()) {
+			LogicSubpart part = (LogicSubpart) iter.next();
+			Point location = part.getLocation().getCopy();
+			if (guide.isHorizontal()) {
+				location.y += pDelta;
+			} else {
+				location.x += pDelta;
+			}
+			part.setLocation(location);
 		}
-		part.setLocation(location);
 	}
-}
+
+	public void undo() {
+		guide.setPosition(guide.getPosition() - pDelta);
+		Iterator iter = guide.getParts().iterator();
+		while (iter.hasNext()) {
+			LogicSubpart part = (LogicSubpart) iter.next();
+			Point location = part.getLocation().getCopy();
+			if (guide.isHorizontal()) {
+				location.y -= pDelta;
+			} else {
+				location.x -= pDelta;
+			}
+			part.setLocation(location);
+		}
+	}
 
 }

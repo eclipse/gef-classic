@@ -14,24 +14,23 @@ import org.eclipse.jface.viewers.ICellEditorValidator;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
-public class LogicNumberCellEditorValidator
-	implements ICellEditorValidator {
+public class LogicNumberCellEditorValidator implements ICellEditorValidator {
 
-private static LogicNumberCellEditorValidator instance;
+	private static LogicNumberCellEditorValidator instance;
 
-public static LogicNumberCellEditorValidator instance() {
-	if (instance == null) 
-		instance = new LogicNumberCellEditorValidator();
-	return instance;
-}
-
-public String isValid(Object value) {
-	try {
-		new Integer((String)value);
-		return null;
-	} catch (NumberFormatException exc) {
-		return LogicMessages.CellEditorValidator_NotANumberMessage;
+	public static LogicNumberCellEditorValidator instance() {
+		if (instance == null)
+			instance = new LogicNumberCellEditorValidator();
+		return instance;
 	}
-}
+
+	public String isValid(Object value) {
+		try {
+			new Integer((String) value);
+			return null;
+		} catch (NumberFormatException exc) {
+			return LogicMessages.CellEditorValidator_NotANumberMessage;
+		}
+	}
 
 }

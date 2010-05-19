@@ -22,15 +22,16 @@ import org.eclipse.gef.examples.logicdesigner.LogicPlugin;
  */
 public class DecrementRetargetAction extends RetargetAction {
 
-/**
- * Constructor for IncrementRetargetAction.
- */
-public DecrementRetargetAction() {
-	super(IncrementDecrementAction.DECREMENT,
-		LogicMessages.IncrementDecrementAction_Decrement_ActionLabelText);
-	setToolTipText(LogicMessages.IncrementDecrementAction_Decrement_ActionToolTipText);
-	setImageDescriptor(ImageDescriptor
-		.createFromFile(LogicPlugin.class,"icons/minus.gif")); //$NON-NLS-1$
-}
+	/**
+	 * Constructor for IncrementRetargetAction.
+	 */
+	public DecrementRetargetAction() {
+		super(
+				IncrementDecrementAction.DECREMENT,
+				LogicMessages.IncrementDecrementAction_Decrement_ActionLabelText);
+		setToolTipText(LogicMessages.IncrementDecrementAction_Decrement_ActionToolTipText);
+		setImageDescriptor(ImageDescriptor.createFromFile(LogicPlugin.class,
+				"icons/minus.gif")); //$NON-NLS-1$
+	}
 
 }

@@ -27,52 +27,52 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
  */
 public class PrintModeDialog extends Dialog {
 
-private Button tile, fitPage, fitWidth, fitHeight;
+	private Button tile, fitPage, fitWidth, fitHeight;
 
-public PrintModeDialog(Shell shell) {
-	super(shell);
-}
+	public PrintModeDialog(Shell shell) {
+		super(shell);
+	}
 
-protected void cancelPressed() {
-	setReturnCode(-1);
-	close();
-}
+	protected void cancelPressed() {
+		setReturnCode(-1);
+		close();
+	}
 
-protected void configureShell(Shell newShell) {
-	newShell.setText(LogicMessages.PrintDialog_Title);
-	super.configureShell(newShell);
-}
+	protected void configureShell(Shell newShell) {
+		newShell.setText(LogicMessages.PrintDialog_Title);
+		super.configureShell(newShell);
+	}
 
-protected Control createDialogArea(Composite parent) {
-	Composite composite = (Composite)super.createDialogArea(parent);
-	
-	tile = new Button(composite, SWT.RADIO);
-	tile.setText(LogicMessages.PrintDialog_Tile);
-	tile.setSelection(true);
-	
-	fitPage = new Button(composite, SWT.RADIO);
-	fitPage.setText(LogicMessages.PrintDialog_Page);
+	protected Control createDialogArea(Composite parent) {
+		Composite composite = (Composite) super.createDialogArea(parent);
 
-	fitWidth = new Button(composite, SWT.RADIO);
-	fitWidth.setText(LogicMessages.PrintDialog_Width);
+		tile = new Button(composite, SWT.RADIO);
+		tile.setText(LogicMessages.PrintDialog_Tile);
+		tile.setSelection(true);
 
-	fitHeight = new Button(composite, SWT.RADIO);
-	fitHeight.setText(LogicMessages.PrintDialog_Height);
+		fitPage = new Button(composite, SWT.RADIO);
+		fitPage.setText(LogicMessages.PrintDialog_Page);
 
-	return composite;
-}
+		fitWidth = new Button(composite, SWT.RADIO);
+		fitWidth.setText(LogicMessages.PrintDialog_Width);
 
-protected void okPressed() {
-	int returnCode = -1;
-	if (tile.getSelection())
-		returnCode = PrintFigureOperation.TILE;
-	else if (fitPage.getSelection())
-		returnCode = PrintFigureOperation.FIT_PAGE;
-	else if (fitHeight.getSelection())
-		returnCode = PrintFigureOperation.FIT_HEIGHT;
-	else if (fitWidth.getSelection())
-		returnCode = PrintFigureOperation.FIT_WIDTH;
-	setReturnCode(returnCode);
-	close();
-}
+		fitHeight = new Button(composite, SWT.RADIO);
+		fitHeight.setText(LogicMessages.PrintDialog_Height);
+
+		return composite;
+	}
+
+	protected void okPressed() {
+		int returnCode = -1;
+		if (tile.getSelection())
+			returnCode = PrintFigureOperation.TILE;
+		else if (fitPage.getSelection())
+			returnCode = PrintFigureOperation.FIT_PAGE;
+		else if (fitHeight.getSelection())
+			returnCode = PrintFigureOperation.FIT_HEIGHT;
+		else if (fitWidth.getSelection())
+			returnCode = PrintFigureOperation.FIT_WIDTH;
+		setReturnCode(returnCode);
+		close();
+	}
 }

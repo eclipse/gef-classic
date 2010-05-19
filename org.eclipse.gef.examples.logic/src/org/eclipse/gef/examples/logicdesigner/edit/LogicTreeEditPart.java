@@ -29,87 +29,88 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 /**
  * EditPart for Logic components in the Tree.
  */
-public class LogicTreeEditPart
-	extends org.eclipse.gef.editparts.AbstractTreeEditPart
-	implements PropertyChangeListener
-{
+public class LogicTreeEditPart extends
+		org.eclipse.gef.editparts.AbstractTreeEditPart implements
+		PropertyChangeListener {
 
-/**
- * Constructor initializes this with the given model.
- *
- * @param model  Model for this.
- */
-public LogicTreeEditPart(Object model) {
-	super (model);
-}
+	/**
+	 * Constructor initializes this with the given model.
+	 * 
+	 * @param model
+	 *            Model for this.
+	 */
+	public LogicTreeEditPart(Object model) {
+		super(model);
+	}
 
-public void activate(){
-	super.activate();
-	getLogicSubpart().addPropertyChangeListener(this);
-}
+	public void activate() {
+		super.activate();
+		getLogicSubpart().addPropertyChangeListener(this);
+	}
 
-/**
- * Creates and installs pertinent EditPolicies
- * for this.
- */
-protected void createEditPolicies() {
-	EditPolicy component;
-	if (getModel() instanceof LED)
-		component = new LEDEditPolicy();
-	else
-		component = new LogicElementEditPolicy();
-	installEditPolicy(EditPolicy.COMPONENT_ROLE, component);
-	installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new LogicTreeEditPolicy());
-}
-
-public void deactivate(){
-	getLogicSubpart().removePropertyChangeListener(this);
-	super.deactivate();
-}
-
-/**
- * Returns the model of this as a LogicSubPart.
- *
- * @return Model of this.
- */
-protected LogicSubpart getLogicSubpart() {
-	return (LogicSubpart)getModel();
-}
-
-/**
- * Returns <code>null</code> as a Tree EditPart holds
- * no children under it.
- *
- * @return <code>null</code>
- */
-protected List getModelChildren() {
-	return Collections.EMPTY_LIST;
-}
-
-public void propertyChange(PropertyChangeEvent change){
-	if (change.getPropertyName().equals(LogicDiagram.CHILDREN)) {
-		if (change.getOldValue() instanceof Integer)
-			// new child
-			addChild(createChild(change.getNewValue()), ((Integer)change.getOldValue()).intValue());	
+	/**
+	 * Creates and installs pertinent EditPolicies for this.
+	 */
+	protected void createEditPolicies() {
+		EditPolicy component;
+		if (getModel() instanceof LED)
+			component = new LEDEditPolicy();
 		else
-			// remove child
-			removeChild((EditPart)getViewer().getEditPartRegistry().get(change.getOldValue()));
-	} else
-		refreshVisuals();
-}
+			component = new LogicElementEditPolicy();
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, component);
+		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE,
+				new LogicTreeEditPolicy());
+	}
 
-/**
- * Refreshes the visual properties of the TreeItem for this part.
- */
-protected void refreshVisuals(){
-	if (getWidget() instanceof Tree)
-		return;
-	Image image = getLogicSubpart().getIcon();
-	TreeItem item = (TreeItem)getWidget();
-	if (image != null)
-		image.setBackground(item.getParent().getBackground());
-	setWidgetImage(image);
-	setWidgetText(getLogicSubpart().toString());
-}
+	public void deactivate() {
+		getLogicSubpart().removePropertyChangeListener(this);
+		super.deactivate();
+	}
+
+	/**
+	 * Returns the model of this as a LogicSubPart.
+	 * 
+	 * @return Model of this.
+	 */
+	protected LogicSubpart getLogicSubpart() {
+		return (LogicSubpart) getModel();
+	}
+
+	/**
+	 * Returns <code>null</code> as a Tree EditPart holds no children under it.
+	 * 
+	 * @return <code>null</code>
+	 */
+	protected List getModelChildren() {
+		return Collections.EMPTY_LIST;
+	}
+
+	public void propertyChange(PropertyChangeEvent change) {
+		if (change.getPropertyName().equals(LogicDiagram.CHILDREN)) {
+			if (change.getOldValue() instanceof Integer)
+				// new child
+				addChild(createChild(change.getNewValue()),
+						((Integer) change.getOldValue()).intValue());
+			else
+				// remove child
+				removeChild((EditPart) getViewer().getEditPartRegistry().get(
+						change.getOldValue()));
+		} else
+			refreshVisuals();
+	}
+
+	/**
+	 * Refreshes the visual properties of the TreeItem for this part.
+	 */
+	protected void refreshVisuals() {
+		if (getWidget() instanceof Tree)
+			return;
+		Image image = getLogicSubpart().getIcon();
+		TreeItem item = (TreeItem) getWidget();
+		if (image != null)
+			image.setBackground(item.getParent().getBackground());
+		setWidgetImage(image);
+		setWidgetText(getLogicSubpart().toString());
+	}
 
 }

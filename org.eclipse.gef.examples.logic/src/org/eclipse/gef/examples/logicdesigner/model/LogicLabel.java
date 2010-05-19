@@ -18,61 +18,57 @@ import org.eclipse.draw2d.geometry.Dimension;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
-public class LogicLabel
-	extends LogicSubpart
-{
-static final long serialVersionUID = 1;
+public class LogicLabel extends LogicSubpart {
+	static final long serialVersionUID = 1;
 
-private String text = 
-	LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel; 
+	private String text = LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel;
 
-private static Image LOGIC_LABEL_ICON = createImage(LED.class, "icons/label16.gif");  //$NON-NLS-1$
+	private static Image LOGIC_LABEL_ICON = createImage(LED.class,
+			"icons/label16.gif"); //$NON-NLS-1$
 
-private static int count;
+	private static int count;
 
-public LogicLabel() {
-	super();
-	size.width = 50;
-}
+	public LogicLabel() {
+		super();
+		size.width = 50;
+	}
 
-public String getLabelContents(){
-	return text;
-}
+	public String getLabelContents() {
+		return text;
+	}
 
-public Image getIconImage() {
-	return LOGIC_LABEL_ICON;
-}
+	public Image getIconImage() {
+		return LOGIC_LABEL_ICON;
+	}
 
-protected String getNewID() {
-	return Integer.toString(count++);
-}
+	protected String getNewID() {
+		return Integer.toString(count++);
+	}
 
-public Dimension getSize(){
-	return new Dimension(size.width, -1);
-}
+	public Dimension getSize() {
+		return new Dimension(size.width, -1);
+	}
 
-private void readObject(java.io.ObjectInputStream s) throws IOException, ClassNotFoundException {
-	s.defaultReadObject();
-}
+	private void readObject(java.io.ObjectInputStream s) throws IOException,
+			ClassNotFoundException {
+		s.defaultReadObject();
+	}
 
-public void setSize(Dimension d) {
-	d.height = -1;
-	super.setSize(d);
-}
+	public void setSize(Dimension d) {
+		d.height = -1;
+		super.setSize(d);
+	}
 
-public void setLabelContents(String s){
-	text = s;
-	firePropertyChange("labelContents", null, text); //$NON-NLS-2$//$NON-NLS-1$
-}
+	public void setLabelContents(String s) {
+		text = s;
+		firePropertyChange("labelContents", null, text); //$NON-NLS-2$//$NON-NLS-1$
+	}
 
-public String toString() {
-	return LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel
-					                + " #" + getID() + " " //$NON-NLS-1$ //$NON-NLS-2$
-					                + LogicMessages.PropertyDescriptor_Label_Text  
-					                + "=" + getLabelContents(); //$NON-NLS-1$ 
-}
-
-
-
+	public String toString() {
+		return LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel
+				+ " #" + getID() + " " //$NON-NLS-1$ //$NON-NLS-2$
+				+ LogicMessages.PropertyDescriptor_Label_Text
+				+ "=" + getLabelContents(); //$NON-NLS-1$ 
+	}
 
 }

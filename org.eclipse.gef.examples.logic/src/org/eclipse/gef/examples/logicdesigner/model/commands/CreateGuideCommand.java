@@ -21,29 +21,29 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicRuler;
  */
 public class CreateGuideCommand extends Command {
 
-private LogicGuide guide;
-private LogicRuler parent;
-private int position;
+	private LogicGuide guide;
+	private LogicRuler parent;
+	private int position;
 
-public CreateGuideCommand(LogicRuler parent, int position) {
-	super(LogicMessages.CreateGuideCommand_Label);
-	this.parent = parent;
-	this.position = position;
-}
+	public CreateGuideCommand(LogicRuler parent, int position) {
+		super(LogicMessages.CreateGuideCommand_Label);
+		this.parent = parent;
+		this.position = position;
+	}
 
-public boolean canUndo() {
-	return true;
-}
+	public boolean canUndo() {
+		return true;
+	}
 
-public void execute() {
-	if (guide == null)
-		guide = new LogicGuide(!parent.isHorizontal());
-	guide.setPosition(position);
-	parent.addGuide(guide);
-}
+	public void execute() {
+		if (guide == null)
+			guide = new LogicGuide(!parent.isHorizontal());
+		guide.setPosition(position);
+		parent.addGuide(guide);
+	}
 
-public void undo() {
-	parent.removeGuide(guide);
-}
+	public void undo() {
+		parent.removeGuide(guide);
+	}
 
 }

@@ -12,26 +12,19 @@ package org.eclipse.gef.examples.logicdesigner.model.commands;
 
 import org.eclipse.gef.examples.logicdesigner.model.WireBendpoint;
 
+public class CreateBendpointCommand extends BendpointCommand {
 
+	public void execute() {
+		WireBendpoint wbp = new WireBendpoint();
+		wbp.setRelativeDimensions(getFirstRelativeDimension(),
+				getSecondRelativeDimension());
+		getWire().insertBendpoint(getIndex(), wbp);
+		super.execute();
+	}
 
-
-public class CreateBendpointCommand 
-	extends BendpointCommand 
-{
-
-public void execute() {
-	WireBendpoint wbp = new WireBendpoint();
-	wbp.setRelativeDimensions(getFirstRelativeDimension(), 
-					getSecondRelativeDimension());
-	getWire().insertBendpoint(getIndex(), wbp);
-	super.execute();
-}
-
-public void undo() {
-	super.undo();
-	getWire().removeBendpoint(getIndex());
-}
+	public void undo() {
+		super.undo();
+		getWire().removeBendpoint(getIndex());
+	}
 
 }
-
-

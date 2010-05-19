@@ -19,45 +19,43 @@ import org.eclipse.gef.EditPolicy;
 
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 
-
 /**
  * Provides support for Container EditParts.
  */
-abstract public class LogicContainerEditPart
-	extends LogicEditPart
-{
-protected AccessibleEditPart createAccessible() {
-	return new AccessibleGraphicalEditPart(){
-		public void getName(AccessibleEvent e) {
-			e.result = getLogicDiagram().toString();
-		}
-	};
-}
+abstract public class LogicContainerEditPart extends LogicEditPart {
+	protected AccessibleEditPart createAccessible() {
+		return new AccessibleGraphicalEditPart() {
+			public void getName(AccessibleEvent e) {
+				e.result = getLogicDiagram().toString();
+			}
+		};
+	}
 
-/**
- * Installs the desired EditPolicies for this.
- */
-protected void createEditPolicies() {
-	super.createEditPolicies();
-	installEditPolicy(EditPolicy.CONTAINER_ROLE, new LogicContainerEditPolicy());
-}
+	/**
+	 * Installs the desired EditPolicies for this.
+	 */
+	protected void createEditPolicies() {
+		super.createEditPolicies();
+		installEditPolicy(EditPolicy.CONTAINER_ROLE,
+				new LogicContainerEditPolicy());
+	}
 
-/**
- * Returns the model of this as a LogicDiagram.
- *
- * @return  LogicDiagram of this.
- */
-protected LogicDiagram getLogicDiagram() {
-	return (LogicDiagram)getModel();
-}
+	/**
+	 * Returns the model of this as a LogicDiagram.
+	 * 
+	 * @return LogicDiagram of this.
+	 */
+	protected LogicDiagram getLogicDiagram() {
+		return (LogicDiagram) getModel();
+	}
 
-/**
- * Returns the children of this through the model.
- *
- * @return  Children of this as a List.
- */
-protected List getModelChildren() {
-	return getLogicDiagram().getChildren();
-}
+	/**
+	 * Returns the children of this through the model.
+	 * 
+	 * @return Children of this as a List.
+	 */
+	protected List getModelChildren() {
+		return getLogicDiagram().getChildren();
+	}
 
 }

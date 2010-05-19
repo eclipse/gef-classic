@@ -12,28 +12,26 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.gef.Request;
 
-public class NativeDropRequest
-	extends Request
-{
+public class NativeDropRequest extends Request {
 
-private Object data;
+	private Object data;
 
-public static final String ID = "$Native Drop Request";//$NON-NLS-1$
+	public static final String ID = "$Native Drop Request";//$NON-NLS-1$
 
-public NativeDropRequest() {
-	super(ID);
-}
+	public NativeDropRequest() {
+		super(ID);
+	}
 
-public NativeDropRequest(Object type) {
-	super(type);
-}
+	public NativeDropRequest(Object type) {
+		super(type);
+	}
 
-public Object getData(){
-	return data;
-}
+	public Object getData() {
+		return data;
+	}
 
-public void setData(Object data){
-	this.data = data;
-}
+	public void setData(Object data) {
+		this.data = data;
+	}
 
 }

@@ -37,111 +37,110 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagramFactory;
 
-public class LogicWizardPage1 
-	extends WizardNewFileCreationPage 
-	implements SelectionListener
-{
+public class LogicWizardPage1 extends WizardNewFileCreationPage implements
+		SelectionListener {
 
-private IWorkbench	workbench;
-private static int exampleCount = 1;
-private Button model1 = null;
-private Button model2 = null;
-private int modelSelected = 1;
+	private IWorkbench workbench;
+	private static int exampleCount = 1;
+	private Button model1 = null;
+	private Button model2 = null;
+	private int modelSelected = 1;
 
-public LogicWizardPage1(IWorkbench aWorkbench, IStructuredSelection selection) {
-	super("sampleLogicPage1", selection);  //$NON-NLS-1$
-	this.setTitle(LogicMessages.CreateLogicPage1_Title);
-	this.setDescription(LogicMessages.CreateLogicPage1_Description);
-	this.setImageDescriptor(ImageDescriptor.createFromFile(getClass(),"icons/logicbanner.gif"));  //$NON-NLS-1$
-	this.workbench = aWorkbench;
-}
-
-public void createControl(Composite parent) {
-	super.createControl(parent);
-	this.setFileName("emptyModel" + exampleCount + ".logic");  //$NON-NLS-2$//$NON-NLS-1$
-	
-	Composite composite = (Composite)getControl();
-	
-	// sample section generation group
-	Group group = new Group(composite,SWT.NONE);
-	group.setLayout(new GridLayout());
-	group.setText(LogicMessages.CreateLogicPage1_ModelNames_GroupName); 
-	group.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
-	
-	// sample section generation checkboxes
-	model1 = new Button(group,SWT.RADIO);
-	model1.setText(LogicMessages.CreateLogicPage1_ModelNames_EmptyModelName);
-	model1.addSelectionListener(this);
-	model1.setSelection(true);
-
-	model2 = new Button(group,SWT.RADIO);
-	model2.setText(LogicMessages.CreateLogicPage1_ModelNames_FourBitAdderModelName);
-	model2.addSelectionListener(this);
-	
-	new Label(composite,SWT.NONE);
-
-	setPageComplete(validatePage());
-}
-
-protected InputStream getInitialContents() {
-	LogicDiagram ld = new LogicDiagram();
-	if (modelSelected == 2)
-			ld = (LogicDiagram)LogicDiagramFactory.createLargeModel();
-	ByteArrayInputStream bais = null;
-	try {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		oos.writeObject(ld);
-		oos.flush();
-		oos.close();
-		baos.close();
-		bais = new ByteArrayInputStream(baos.toByteArray());
-		bais.close();
+	public LogicWizardPage1(IWorkbench aWorkbench,
+			IStructuredSelection selection) {
+		super("sampleLogicPage1", selection); //$NON-NLS-1$
+		this.setTitle(LogicMessages.CreateLogicPage1_Title);
+		this.setDescription(LogicMessages.CreateLogicPage1_Description);
+		this.setImageDescriptor(ImageDescriptor.createFromFile(getClass(),
+				"icons/logicbanner.gif")); //$NON-NLS-1$
+		this.workbench = aWorkbench;
 	}
-	catch(Exception e) {
-		e.printStackTrace();
+
+	public void createControl(Composite parent) {
+		super.createControl(parent);
+		this.setFileName("emptyModel" + exampleCount + ".logic"); //$NON-NLS-2$//$NON-NLS-1$
+
+		Composite composite = (Composite) getControl();
+
+		// sample section generation group
+		Group group = new Group(composite, SWT.NONE);
+		group.setLayout(new GridLayout());
+		group.setText(LogicMessages.CreateLogicPage1_ModelNames_GroupName);
+		group.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
+				| GridData.HORIZONTAL_ALIGN_FILL));
+
+		// sample section generation checkboxes
+		model1 = new Button(group, SWT.RADIO);
+		model1.setText(LogicMessages.CreateLogicPage1_ModelNames_EmptyModelName);
+		model1.addSelectionListener(this);
+		model1.setSelection(true);
+
+		model2 = new Button(group, SWT.RADIO);
+		model2.setText(LogicMessages.CreateLogicPage1_ModelNames_FourBitAdderModelName);
+		model2.addSelectionListener(this);
+
+		new Label(composite, SWT.NONE);
+
+		setPageComplete(validatePage());
 	}
-	return bais;
-}
 
-public boolean finish() {
-	IFile newFile = createNewFile();
-	if (newFile == null) 
-		return false;  // ie.- creation was unsuccessful
-
-	// Since the file resource was created fine, open it for editing
-	// iff requested by the user
-	try {
-		IWorkbenchWindow dwindow = workbench.getActiveWorkbenchWindow();
-		IWorkbenchPage page = dwindow.getActivePage();
-		if (page != null)
-			IDE.openEditor(page, newFile, true);
-	} 
-	catch (org.eclipse.ui.PartInitException e) {
-		e.printStackTrace();
-		return false;
+	protected InputStream getInitialContents() {
+		LogicDiagram ld = new LogicDiagram();
+		if (modelSelected == 2)
+			ld = (LogicDiagram) LogicDiagramFactory.createLargeModel();
+		ByteArrayInputStream bais = null;
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ObjectOutputStream oos = new ObjectOutputStream(baos);
+			oos.writeObject(ld);
+			oos.flush();
+			oos.close();
+			baos.close();
+			bais = new ByteArrayInputStream(baos.toByteArray());
+			bais.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return bais;
 	}
-	exampleCount++;
-	return true;
-}
 
-/**
- * @see org.eclipse.swt.events.SelectionListener#widgetSelected(SelectionEvent)
- */
-public void widgetSelected(SelectionEvent e) {
-	if( e.getSource() == model1 ){
-		modelSelected = 1;
-		setFileName("emptyModel" + exampleCount + ".logic");  //$NON-NLS-2$//$NON-NLS-1$
-	} else {
-		modelSelected = 2;
-		setFileName("fourBitAdder" + exampleCount + ".logic");  //$NON-NLS-2$//$NON-NLS-1$
+	public boolean finish() {
+		IFile newFile = createNewFile();
+		if (newFile == null)
+			return false; // ie.- creation was unsuccessful
+
+		// Since the file resource was created fine, open it for editing
+		// iff requested by the user
+		try {
+			IWorkbenchWindow dwindow = workbench.getActiveWorkbenchWindow();
+			IWorkbenchPage page = dwindow.getActivePage();
+			if (page != null)
+				IDE.openEditor(page, newFile, true);
+		} catch (org.eclipse.ui.PartInitException e) {
+			e.printStackTrace();
+			return false;
+		}
+		exampleCount++;
+		return true;
 	}
-}
 
-/**
- * Empty method
- */
-public void widgetDefaultSelected(SelectionEvent e) {
-}
+	/**
+	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(SelectionEvent)
+	 */
+	public void widgetSelected(SelectionEvent e) {
+		if (e.getSource() == model1) {
+			modelSelected = 1;
+			setFileName("emptyModel" + exampleCount + ".logic"); //$NON-NLS-2$//$NON-NLS-1$
+		} else {
+			modelSelected = 2;
+			setFileName("fourBitAdder" + exampleCount + ".logic"); //$NON-NLS-2$//$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Empty method
+	 */
+	public void widgetDefaultSelected(SelectionEvent e) {
+	}
 
 }

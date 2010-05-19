@@ -14,35 +14,34 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-
 public class LiveOutputFeedbackFigure extends LiveOutputFigure {
 
-/**
- * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
- */
-protected void paintFigure(Graphics g) {
-	g.setXORMode(true);
-	g.setForegroundColor(ColorConstants.white);
+	/**
+	 * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
+	 */
+	protected void paintFigure(Graphics g) {
+		g.setXORMode(true);
+		g.setForegroundColor(ColorConstants.white);
 
-	g.setBackgroundColor(LogicColorConstants.ghostFillColor);
+		g.setBackgroundColor(LogicColorConstants.ghostFillColor);
 
-	Rectangle r = getBounds().getCopy();
-	
-	g.fillOval(r);
-	r.height--;
-	r.width--;
-	g.drawOval(r);
-	g.translate(r.getLocation());
+		Rectangle r = getBounds().getCopy();
 
-	// Draw the "V"
-	g.drawLine(3, 4, 5, 9);
-	g.drawLine(5, 9, 7, 4);
-	g.drawLine(5, 8, 5, 9);
-	
-	// Draw the "+"
-	g.drawLine(9, 7, 9, 11);
-	g.drawLine(7, 9, 11, 9);
-	g.drawPoint(9, 9);
-}
+		g.fillOval(r);
+		r.height--;
+		r.width--;
+		g.drawOval(r);
+		g.translate(r.getLocation());
+
+		// Draw the "V"
+		g.drawLine(3, 4, 5, 9);
+		g.drawLine(5, 9, 7, 4);
+		g.drawLine(5, 8, 5, 9);
+
+		// Draw the "+"
+		g.drawLine(9, 7, 9, 11);
+		g.drawLine(7, 9, 11, 9);
+		g.drawPoint(9, 9);
+	}
 
 }

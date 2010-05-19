@@ -18,24 +18,23 @@ import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
 
 import org.eclipse.gef.examples.logicdesigner.edit.NativeDropRequest;
 
-public class TextTransferDropTargetListener 
-	extends AbstractTransferDropTargetListener 
-{
+public class TextTransferDropTargetListener extends
+		AbstractTransferDropTargetListener {
 
-public TextTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) {
-	super(viewer, xfer);
-}
+	public TextTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) {
+		super(viewer, xfer);
+	}
 
-protected Request createTargetRequest() {
-	return new NativeDropRequest();
-}
+	protected Request createTargetRequest() {
+		return new NativeDropRequest();
+	}
 
-protected NativeDropRequest getNativeDropRequest() {
-	return (NativeDropRequest)getTargetRequest();
-}
+	protected NativeDropRequest getNativeDropRequest() {
+		return (NativeDropRequest) getTargetRequest();
+	}
 
-protected void updateTargetRequest(){
-	getNativeDropRequest().setData(getCurrentEvent().data);
-}
+	protected void updateTargetRequest() {
+		getNativeDropRequest().setData(getCurrentEvent().data);
+	}
 
 }

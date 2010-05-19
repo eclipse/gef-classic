@@ -24,73 +24,69 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.LogicPlugin;
 import org.eclipse.gef.examples.logicdesigner.model.LED;
 
-public class IncrementDecrementAction
-	extends org.eclipse.gef.ui.actions.SelectionAction
-{
+public class IncrementDecrementAction extends
+		org.eclipse.gef.ui.actions.SelectionAction {
 
-private static final String
-	INCREMENT_REQUEST = "Increment",  //$NON-NLS-1$
-	DECREMENT_REQUEST = "Decrement";  //$NON-NLS-1$
+	private static final String INCREMENT_REQUEST = "Increment", //$NON-NLS-1$
+			DECREMENT_REQUEST = "Decrement"; //$NON-NLS-1$
 
-public static final String
-	INCREMENT = "Increment",   //$NON-NLS-1$
-	DECREMENT = "Decrement";   //$NON-NLS-1$
+	public static final String INCREMENT = "Increment", //$NON-NLS-1$
+			DECREMENT = "Decrement"; //$NON-NLS-1$
 
-Request request;
+	Request request;
 
-public IncrementDecrementAction(IWorkbenchPart part, boolean increment) {
-	super(part);
-	if (increment) {
-		request = new Request(INCREMENT_REQUEST);
-		setText(LogicMessages.IncrementDecrementAction_Increment_ActionLabelText);
-		setId(INCREMENT);
-		setToolTipText(LogicMessages.IncrementDecrementAction_Increment_ActionToolTipText);
-		setImageDescriptor(
-		ImageDescriptor.createFromFile(LogicPlugin.class,"icons/plus.gif")); //$NON-NLS-1$
-	} else {
-		request = new Request(DECREMENT_REQUEST);
-		setText(LogicMessages.IncrementDecrementAction_Decrement_ActionLabelText);
-		setId(DECREMENT);
-		setToolTipText(LogicMessages.IncrementDecrementAction_Decrement_ActionToolTipText);
-		setImageDescriptor(
-			ImageDescriptor.createFromFile(LogicPlugin.class,"icons/minus.gif")); //$NON-NLS-1$
+	public IncrementDecrementAction(IWorkbenchPart part, boolean increment) {
+		super(part);
+		if (increment) {
+			request = new Request(INCREMENT_REQUEST);
+			setText(LogicMessages.IncrementDecrementAction_Increment_ActionLabelText);
+			setId(INCREMENT);
+			setToolTipText(LogicMessages.IncrementDecrementAction_Increment_ActionToolTipText);
+			setImageDescriptor(ImageDescriptor.createFromFile(
+					LogicPlugin.class, "icons/plus.gif")); //$NON-NLS-1$
+		} else {
+			request = new Request(DECREMENT_REQUEST);
+			setText(LogicMessages.IncrementDecrementAction_Decrement_ActionLabelText);
+			setId(DECREMENT);
+			setToolTipText(LogicMessages.IncrementDecrementAction_Decrement_ActionToolTipText);
+			setImageDescriptor(ImageDescriptor.createFromFile(
+					LogicPlugin.class, "icons/minus.gif")); //$NON-NLS-1$
+		}
+		setHoverImageDescriptor(getImageDescriptor());
 	}
-	setHoverImageDescriptor(getImageDescriptor());
-}
 
-protected boolean calculateEnabled() {
-	return canPerformAction();
-}
+	protected boolean calculateEnabled() {
+		return canPerformAction();
+	}
 
-private boolean canPerformAction() {
-	if (getSelectedObjects().isEmpty())
-		return false;
-	List parts = getSelectedObjects();
-	for (int i=0; i<parts.size(); i++){
-		Object o = parts.get(i);
-		if (!(o instanceof EditPart))
+	private boolean canPerformAction() {
+		if (getSelectedObjects().isEmpty())
 			return false;
-		EditPart part = (EditPart)o;
-		if (!(part.getModel() instanceof LED))
-			return false;
+		List parts = getSelectedObjects();
+		for (int i = 0; i < parts.size(); i++) {
+			Object o = parts.get(i);
+			if (!(o instanceof EditPart))
+				return false;
+			EditPart part = (EditPart) o;
+			if (!(part.getModel() instanceof LED))
+				return false;
+		}
+		return true;
 	}
-	return true;
-}
 
-private Command getCommand() {
-	List editparts = getSelectedObjects();
-	CompoundCommand cc = new CompoundCommand();
-	cc.setDebugLabel("Increment/Decrement LEDs");//$NON-NLS-1$
-	for (int i=0; i < editparts.size(); i++) {
-		EditPart part = (EditPart)editparts.get(i);
-		cc.add(part.getCommand(request));
+	private Command getCommand() {
+		List editparts = getSelectedObjects();
+		CompoundCommand cc = new CompoundCommand();
+		cc.setDebugLabel("Increment/Decrement LEDs");//$NON-NLS-1$
+		for (int i = 0; i < editparts.size(); i++) {
+			EditPart part = (EditPart) editparts.get(i);
+			cc.add(part.getCommand(request));
+		}
+		return cc;
 	}
-	return cc;
-}
 
-public void run() {
-	execute(getCommand());
-}
+	public void run() {
+		execute(getCommand());
+	}
 
 }
-

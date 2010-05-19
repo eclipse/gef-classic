@@ -12,15 +12,12 @@ package org.eclipse.gef.examples.logicdesigner.figures;
 
 import org.eclipse.draw2d.RectangleFigure;
 
-public class LogicFlowFeedbackFigure
-	extends RectangleFigure
-{
-	
-public LogicFlowFeedbackFigure() {
-	this.setFill(false);
-	this.setXOR(true);
-	setBorder(new LogicFlowFeedbackBorder());
-}
+public class LogicFlowFeedbackFigure extends RectangleFigure {
 
+	public LogicFlowFeedbackFigure() {
+		this.setFill(false);
+		this.setXOR(true);
+		setBorder(new LogicFlowFeedbackBorder());
+	}
 
 }

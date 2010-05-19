@@ -12,14 +12,12 @@ package org.eclipse.gef.examples.logicdesigner.model;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
-
-
 public class LogicFlowContainer extends LogicDiagram {
 
-static final long serialVersionUID = 1;
+	static final long serialVersionUID = 1;
 
-public String toString() {
-	return LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label;
-}
+	public String toString() {
+		return LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label;
+	}
 
 }

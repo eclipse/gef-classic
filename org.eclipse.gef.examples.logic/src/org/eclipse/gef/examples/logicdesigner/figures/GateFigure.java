@@ -12,24 +12,22 @@ package org.eclipse.gef.examples.logicdesigner.figures;
 
 import org.eclipse.gef.examples.logicdesigner.model.Gate;
 
-public class GateFigure  
-	extends OutputFigure 
-{
+public class GateFigure extends OutputFigure {
 
-public GateFigure() {
-	FixedConnectionAnchor inputConnectionAnchorA, inputConnectionAnchorB;
-	inputConnectionAnchorA = new FixedConnectionAnchor(this);
-	inputConnectionAnchorA.offsetH = 4;
-	inputConnectionAnchorB = new FixedConnectionAnchor(this);
-	inputConnectionAnchorB.offsetH =10;
-	inputConnectionAnchors.addElement(inputConnectionAnchorA);
-	inputConnectionAnchors.addElement(inputConnectionAnchorB);
-	connectionAnchors.put(Gate.TERMINAL_A, inputConnectionAnchorA);
-	connectionAnchors.put(Gate.TERMINAL_B, inputConnectionAnchorB);
-}
+	public GateFigure() {
+		FixedConnectionAnchor inputConnectionAnchorA, inputConnectionAnchorB;
+		inputConnectionAnchorA = new FixedConnectionAnchor(this);
+		inputConnectionAnchorA.offsetH = 4;
+		inputConnectionAnchorB = new FixedConnectionAnchor(this);
+		inputConnectionAnchorB.offsetH = 10;
+		inputConnectionAnchors.addElement(inputConnectionAnchorA);
+		inputConnectionAnchors.addElement(inputConnectionAnchorB);
+		connectionAnchors.put(Gate.TERMINAL_A, inputConnectionAnchorA);
+		connectionAnchors.put(Gate.TERMINAL_B, inputConnectionAnchorB);
+	}
 
-public String toString(){
-	return "GateFigure"; //$NON-NLS-1$
-}
+	public String toString() {
+		return "GateFigure"; //$NON-NLS-1$
+	}
 
 }

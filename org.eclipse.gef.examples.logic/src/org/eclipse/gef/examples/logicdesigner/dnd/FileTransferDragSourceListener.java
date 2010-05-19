@@ -18,26 +18,25 @@ import org.eclipse.gef.EditPartViewer;
 
 import org.eclipse.gef.examples.logicdesigner.edit.LogicLabelEditPart;
 
-public class FileTransferDragSourceListener
-	extends org.eclipse.gef.dnd.AbstractTransferDragSourceListener
-{
+public class FileTransferDragSourceListener extends
+		org.eclipse.gef.dnd.AbstractTransferDragSourceListener {
 
-public FileTransferDragSourceListener(EditPartViewer viewer) {
-	super(viewer, TextTransfer.getInstance());
-}
+	public FileTransferDragSourceListener(EditPartViewer viewer) {
+		super(viewer, TextTransfer.getInstance());
+	}
 
-public FileTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) {
-	super(viewer, xfer);
-}
+	public FileTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) {
+		super(viewer, xfer);
+	}
 
-public void dragSetData(DragSourceEvent event) {
-	event.data = "Some text"; //$NON-NLS-1$
-}
+	public void dragSetData(DragSourceEvent event) {
+		event.data = "Some text"; //$NON-NLS-1$
+	}
 
-public void dragStart(DragSourceEvent event) {
-	if (getViewer().getSelectedEditParts().get(0) instanceof LogicLabelEditPart)
-		return;
-	event.doit = false;
-}
+	public void dragStart(DragSourceEvent event) {
+		if (getViewer().getSelectedEditParts().get(0) instanceof LogicLabelEditPart)
+			return;
+		event.doit = false;
+	}
 
 }

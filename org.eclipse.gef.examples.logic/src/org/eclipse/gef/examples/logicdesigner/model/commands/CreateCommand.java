@@ -19,67 +19,65 @@ import org.eclipse.gef.examples.logicdesigner.model.LED;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
-public class CreateCommand
-	extends org.eclipse.gef.commands.Command
-{
+public class CreateCommand extends org.eclipse.gef.commands.Command {
 
-private LogicSubpart child;
-private Rectangle rect;
-private LogicDiagram parent;
-private int index = -1;
+	private LogicSubpart child;
+	private Rectangle rect;
+	private LogicDiagram parent;
+	private int index = -1;
 
-public CreateCommand() {
-	super(LogicMessages.CreateCommand_Label);
-}
-
-public boolean canExecute() {
-	return child != null && parent != null;
-}
-
-public void execute() {
-	if (rect != null) {
-		Insets expansion = getInsets();
-		if (!rect.isEmpty())
-			rect.expand(expansion);
-		else {
-			rect.x -= expansion.left;
-			rect.y -= expansion.top;
-		}
-		child.setLocation(rect.getLocation());
-		if (!rect.isEmpty())
-			child.setSize(rect.getSize());
+	public CreateCommand() {
+		super(LogicMessages.CreateCommand_Label);
 	}
-	redo();
-}
 
-private Insets getInsets() {
-	if (child instanceof LED || child instanceof Circuit)
-		return new Insets(2, 0, 2, 0);
-	return new Insets();
-}
+	public boolean canExecute() {
+		return child != null && parent != null;
+	}
 
-public void redo() {
-	parent.addChild(child,index);
-}
+	public void execute() {
+		if (rect != null) {
+			Insets expansion = getInsets();
+			if (!rect.isEmpty())
+				rect.expand(expansion);
+			else {
+				rect.x -= expansion.left;
+				rect.y -= expansion.top;
+			}
+			child.setLocation(rect.getLocation());
+			if (!rect.isEmpty())
+				child.setSize(rect.getSize());
+		}
+		redo();
+	}
 
-public void setChild(LogicSubpart subpart) {
-	child = subpart;
-}
+	private Insets getInsets() {
+		if (child instanceof LED || child instanceof Circuit)
+			return new Insets(2, 0, 2, 0);
+		return new Insets();
+	}
 
-public void setIndex( int index ){
-	this.index = index;
-}
+	public void redo() {
+		parent.addChild(child, index);
+	}
 
-public void setLocation (Rectangle r) {
-	rect = r;
-}
+	public void setChild(LogicSubpart subpart) {
+		child = subpart;
+	}
 
-public void setParent(LogicDiagram newParent) {
-	parent = newParent;
-}
+	public void setIndex(int index) {
+		this.index = index;
+	}
 
-public void undo() {
-	parent.removeChild(child);
-}
+	public void setLocation(Rectangle r) {
+		rect = r;
+	}
+
+	public void setParent(LogicDiagram newParent) {
+		parent = newParent;
+	}
+
+	public void undo() {
+		parent.removeChild(child);
+	}
 
 }

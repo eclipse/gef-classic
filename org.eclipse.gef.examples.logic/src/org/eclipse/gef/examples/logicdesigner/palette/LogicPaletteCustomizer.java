@@ -17,21 +17,18 @@ import org.eclipse.gef.ui.palette.PaletteCustomizer;
  * 
  * @author Pratik Shah
  */
-public class LogicPaletteCustomizer 
-	extends PaletteCustomizer 
-{
-	
-/**
- * @see org.eclipse.gef.ui.palette.PaletteCustomizer#revertToSaved()
- */
-public void revertToSaved() {
-}
+public class LogicPaletteCustomizer extends PaletteCustomizer {
 
+	/**
+	 * @see org.eclipse.gef.ui.palette.PaletteCustomizer#revertToSaved()
+	 */
+	public void revertToSaved() {
+	}
 
-/**
- * @see org.eclipse.gef.ui.palette.PaletteCustomizer#save()
- */
-public void save() {
-}
+	/**
+	 * @see org.eclipse.gef.ui.palette.PaletteCustomizer#save()
+	 */
+	public void save() {
+	}
 
 }

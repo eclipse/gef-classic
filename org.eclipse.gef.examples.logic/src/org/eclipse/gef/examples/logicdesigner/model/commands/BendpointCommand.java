@@ -17,56 +17,52 @@ import org.eclipse.gef.commands.Command;
 
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
 
-public class BendpointCommand 
-	extends Command 
-{
+public class BendpointCommand extends Command {
 
-protected int index;
-protected Point location;
-protected Wire wire;
-private Dimension d1, d2;
+	protected int index;
+	protected Point location;
+	protected Wire wire;
+	private Dimension d1, d2;
 
-protected Dimension getFirstRelativeDimension() {
-	return d1;
-}
+	protected Dimension getFirstRelativeDimension() {
+		return d1;
+	}
 
-protected Dimension getSecondRelativeDimension() {
-	return d2;
-}
+	protected Dimension getSecondRelativeDimension() {
+		return d2;
+	}
 
-protected int getIndex() {
-	return index;
-}
+	protected int getIndex() {
+		return index;
+	}
 
-protected Point getLocation() {
-	return location;
-}
+	protected Point getLocation() {
+		return location;
+	}
 
-protected Wire getWire() {
-	return wire;
-}
+	protected Wire getWire() {
+		return wire;
+	}
 
-public void redo() {
-	execute();
-}
+	public void redo() {
+		execute();
+	}
 
-public void setRelativeDimensions(Dimension dim1, Dimension dim2) {
-	d1 = dim1;
-	d2 = dim2;
-}
+	public void setRelativeDimensions(Dimension dim1, Dimension dim2) {
+		d1 = dim1;
+		d2 = dim2;
+	}
 
-public void setIndex(int i) {
-	index = i;
-}
+	public void setIndex(int i) {
+		index = i;
+	}
 
-public void setLocation(Point p) {
-	location = p;
-}
+	public void setLocation(Point p) {
+		location = p;
+	}
 
-public void setWire(Wire w) {
-	wire = w;
-}
+	public void setWire(Wire w) {
+		wire = w;
+	}
 
 }
-
-
