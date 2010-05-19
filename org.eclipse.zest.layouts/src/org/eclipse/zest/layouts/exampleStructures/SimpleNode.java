@@ -1,12 +1,11 @@
 /*******************************************************************************
  * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.exampleStructures;
 
@@ -32,15 +31,15 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
  */
 public class SimpleNode implements LayoutEntity {
 	private static Object NODE_NORMAL_COLOR;
-	private static Object NODE_SELECTED_COLOR; 
-	private static Object NODE_ADJACENT_COLOR;	
-    private static Object BORDER_NORMAL_COLOR;
+	private static Object NODE_SELECTED_COLOR;
+	private static Object NODE_ADJACENT_COLOR;
+	private static Object BORDER_NORMAL_COLOR;
 	private static Object BORDER_SELECTED_COLOR;
-	private static Object BORDER_ADJACENT_COLOR;	
+	private static Object BORDER_ADJACENT_COLOR;
 
-    private static final int BORDER_NORMAL_STROKE = 1;
+	private static final int BORDER_NORMAL_STROKE = 1;
 	private static final int BORDER_STROKE_SELECTED = 2;
-	
+
 	/**
 	 * A list of layout dependent attributes
 	 */
@@ -49,30 +48,29 @@ public class SimpleNode implements LayoutEntity {
 	protected double x, y, width, height;
 	protected Object realObject;
 	private boolean ignoreInLayout = false;
-	
+
 	private Object colour = null;
 	private Object borderColor = null;
 	private int borderWidth;
-	
+
 	private TreeSet listOfRels = null;
-	
+
 	private Object internalNode;
 
-	
 	/**
 	 * Constructs a new SimpleNode.
 	 */
 	public SimpleNode(Object realObject) {
-		this (realObject, -1, -1, 110, 110);
+		this(realObject, -1, -1, 110, 110);
 	}
-	
+
 	class UniqueCompare implements Comparator {
 		public int compare(Object o1, Object o2) {
 			// TODO this may not always be a unique comparison
-			return o1.toString().compareTo( o2.toString() );
+			return o1.toString().compareTo(o2.toString());
 		}
 	}
-	
+
 	/**
 	 * Constructs a new SimpleNode.
 	 */
@@ -84,64 +82,61 @@ public class SimpleNode implements LayoutEntity {
 		this.height = height;
 		this.attributes = new HashMap();
 		this.borderWidth = BORDER_NORMAL_STROKE;
-		listOfRels = new TreeSet( new UniqueCompare() );
-        this.colour = NODE_NORMAL_COLOR;
-        this.borderColor = BORDER_NORMAL_COLOR;
+		listOfRels = new TreeSet(new UniqueCompare());
+		this.colour = NODE_NORMAL_COLOR;
+		this.borderColor = BORDER_NORMAL_COLOR;
 	}
-    
-    public static void setNodeColors (Object nodeNormalColor, Object borderNormalColor, Object nodeSelectedColor, Object nodeAdjacentColor, Object borderSelectedColor, Object borderAdjacentColor) {
-        NODE_NORMAL_COLOR = nodeNormalColor;
-        BORDER_NORMAL_COLOR = borderNormalColor;
-        NODE_SELECTED_COLOR = nodeSelectedColor;
-        NODE_ADJACENT_COLOR = nodeAdjacentColor;
-        BORDER_SELECTED_COLOR = borderSelectedColor;
-        BORDER_ADJACENT_COLOR = borderAdjacentColor;       
-    }
-	
-	public void addRelationship( SimpleRelationship rel ) {
-		listOfRels.add( rel );
+
+	public static void setNodeColors(Object nodeNormalColor, Object borderNormalColor, Object nodeSelectedColor, Object nodeAdjacentColor, Object borderSelectedColor, Object borderAdjacentColor) {
+		NODE_NORMAL_COLOR = nodeNormalColor;
+		BORDER_NORMAL_COLOR = borderNormalColor;
+		NODE_SELECTED_COLOR = nodeSelectedColor;
+		NODE_ADJACENT_COLOR = nodeAdjacentColor;
+		BORDER_SELECTED_COLOR = borderSelectedColor;
+		BORDER_ADJACENT_COLOR = borderAdjacentColor;
 	}
-	
-	
+
+	public void addRelationship(SimpleRelationship rel) {
+		listOfRels.add(rel);
+	}
+
 	public SimpleRelationship[] getRelationships() {
 		int size = listOfRels.size();
-		return (SimpleRelationship[]) this.listOfRels.toArray( new SimpleRelationship[ size ] );
+		return (SimpleRelationship[]) this.listOfRels.toArray(new SimpleRelationship[size]);
 	}
-	
+
 	public List getRelatedEntities() {
 		int size = listOfRels.size();
-		SimpleRelationship[] a_listOfRels = (SimpleRelationship[]) this.listOfRels.toArray( new SimpleRelationship[ size ] );
-		LinkedList listOfRelatedEntities = new LinkedList(); 
+		SimpleRelationship[] a_listOfRels = (SimpleRelationship[]) this.listOfRels.toArray(new SimpleRelationship[size]);
+		LinkedList listOfRelatedEntities = new LinkedList();
 		for (int i = 0; i < a_listOfRels.length; i++) {
-			SimpleRelationship rel = a_listOfRels[ i ];
-			if ( rel.sourceEntity != this && rel.destinationEntity != this  ) {
+			SimpleRelationship rel = a_listOfRels[i];
+			if (rel.sourceEntity != this && rel.destinationEntity != this) {
 				throw new RuntimeException("Problem, we have a relationship and we are not the source or the dest");
 			}
-			if ( rel.sourceEntity != this ) {
-				listOfRelatedEntities.add( rel.sourceEntity );
+			if (rel.sourceEntity != this) {
+				listOfRelatedEntities.add(rel.sourceEntity);
 			}
-			if ( rel.destinationEntity != this ) {
-				listOfRelatedEntities.add( rel.destinationEntity );
+			if (rel.destinationEntity != this) {
+				listOfRelatedEntities.add(rel.destinationEntity);
 			}
-		
+
 		}
 		return listOfRelatedEntities;
 	}
-	
-	
-	
+
 	/**
 	 * Ignores this entity in the layout
 	 * @param ignore Should this entity be ignored
 	 */
-	public void ignoreInLayout( boolean ignore ) {
+	public void ignoreInLayout(boolean ignore) {
 		this.ignoreInLayout = ignore;
 	}
-	
+
 	public Object getRealObject() {
 		return realObject;
 	}
-	
+
 	public boolean hasPreferredLocation() {
 		return this.ignoreInLayout;
 	}
@@ -152,7 +147,7 @@ public class SimpleNode implements LayoutEntity {
 	public double getX() {
 		return x;
 	}
-	
+
 	/**
 	 * Gets the y position of this SimpleNode.
 	 */
@@ -173,92 +168,92 @@ public class SimpleNode implements LayoutEntity {
 	public double getHeight() {
 		return height;
 	}
-		
+
 	public void setSizeInLayout(double width, double height) {
 		if (!ignoreInLayout) {
 			this.width = width;
 			this.height = height;
 		}
 	}
-	
-	public void setLocation( double x, double y ) {
+
+	public void setLocation(double x, double y) {
 		this.x = x;
-		this.y = y;		
+		this.y = y;
 	}
-	
+
 	public void setLocationInLayout(double x, double y) {
 		if (!ignoreInLayout) {
 			this.x = x;
 			this.y = y;
 		}
 	}
-	
+
 	/**
 	 * An algorithm may require a place to store information.  Use this structure for that purpose.
 	 */
-	public void setAttributeInLayout (Object attribute, Object value) {
-		attributes.put (attribute, value);
+	public void setAttributeInLayout(Object attribute, Object value) {
+		attributes.put(attribute, value);
 	}
-	
+
 	/**
 	 * An algorithm may require a place to store information.  Use this structure for that purpose.
 	 */
-	public Object getAttributeInLayout (Object attribute) {
-		return attributes.get (attribute);
+	public Object getAttributeInLayout(Object attribute) {
+		return attributes.get(attribute);
 	}
 
 	public boolean equals(Object object) {
 		boolean result = false;
 		if (object instanceof SimpleNode) {
-			SimpleNode node = (SimpleNode)object;
-			result = realObject.equals (node.getRealObject());
+			SimpleNode node = (SimpleNode) object;
+			result = realObject.equals(node.getRealObject());
 		}
 		return result;
 	}
-	
+
 	public int hashCode() {
 		return realObject.hashCode();
 	}
-	
+
 	// all objects are equal
 	public int compareTo(Object arg0) {
 		return 0;
 	}
-	
+
 	public String toString() {
 		return realObject.toString();
 	}
-	
+
 	public void setSelected() {
 		this.colour = NODE_SELECTED_COLOR;
 		this.borderColor = BORDER_SELECTED_COLOR;
 		this.borderWidth = BORDER_STROKE_SELECTED;
 	}
-	
+
 	public void setUnSelected() {
 		this.colour = NODE_NORMAL_COLOR;
 		this.borderColor = BORDER_NORMAL_COLOR;
 		this.borderWidth = BORDER_NORMAL_STROKE;
 	}
-	
+
 	public void setAdjacent() {
 		this.colour = NODE_ADJACENT_COLOR;
 		this.borderColor = BORDER_ADJACENT_COLOR;
 		this.borderWidth = BORDER_STROKE_SELECTED;
 	}
-    
+
 	public Object getColor() {
 		return this.colour;
 	}
-	
+
 	public int getBorderWidth() {
 		return borderWidth;
 	}
-		
+
 	public Object getBorderColor() {
 		return borderColor;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.chisel.layouts.LayoutEntity#getInternalEntity()
 	 */
@@ -275,17 +270,15 @@ public class SimpleNode implements LayoutEntity {
 
 	/**
 	 * Populate the specified layout constraint
-	 */	
+	 */
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
-		if ( constraint instanceof LabelLayoutConstraint ) {
+		if (constraint instanceof LabelLayoutConstraint) {
 			LabelLayoutConstraint labelConstraint = (LabelLayoutConstraint) constraint;
 			labelConstraint.label = realObject.toString();
 			labelConstraint.pointSize = 18;
-		}		
-		else if ( constraint instanceof BasicEntityConstraint ) {
+		} else if (constraint instanceof BasicEntityConstraint) {
 			// noop
-		}
-		else if ( constraint instanceof EntityPriorityConstraint ) {
+		} else if (constraint instanceof EntityPriorityConstraint) {
 			EntityPriorityConstraint priorityConstraint = (EntityPriorityConstraint) constraint;
 			priorityConstraint.priority = Math.random() * 10 + 1;
 		}
@@ -312,7 +305,7 @@ public class SimpleNode implements LayoutEntity {
 	}
 
 	public void setGraphData(Object o) {
-	
+
 	}
-	
+
 }

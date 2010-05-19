@@ -1,12 +1,11 @@
 /*******************************************************************************
  * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 
 package org.eclipse.zest.layouts.algorithms.internal;
@@ -21,7 +20,6 @@ import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.algorithms.AbstractLayoutAlgorithm;
 import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
-
 
 /**
  * Checks for cycles in the given graph.
@@ -40,7 +38,7 @@ public class CycleChecker {
 	 */
 	public static boolean hasDirectedCircles(LayoutEntity[] entities, LayoutRelationship[] relationships, List cycle) {
 		if (!AbstractLayoutAlgorithm.verifyInput(entities, relationships)) {
-			throw new RuntimeException ("The endpoints of the relationships aren't contained in the entities list.");
+			throw new RuntimeException("The endpoints of the relationships aren't contained in the entities list.");
 		}
 		//Enumeration enum;
 		//Iterator iterator;
@@ -48,8 +46,8 @@ public class CycleChecker {
 		Hashtable endPoints = new Hashtable();
 
 		// Initialize the relation(transitive) vector.
-        for (int i = 0; i < relationships.length; i++) {
-            LayoutRelationship rel = relationships[i];
+		for (int i = 0; i < relationships.length; i++) {
+			LayoutRelationship rel = relationships[i];
 
 			//Add the relationship to the source endpoint
 			Object subject = rel.getSourceInLayout();

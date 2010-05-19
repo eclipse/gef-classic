@@ -1,12 +1,11 @@
 /*******************************************************************************
  * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.exampleStructures;
 
@@ -20,7 +19,6 @@ import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutGraph;
 import org.eclipse.zest.layouts.LayoutRelationship;
 
-
 /**
  * Create a very simple graph that can be used in the layout algorithms
  * 
@@ -28,52 +26,52 @@ import org.eclipse.zest.layouts.LayoutRelationship;
  * @author Chris Callendar
  */
 public class SimpleGraph implements LayoutGraph {
-	
+
 	Map objectsToNodes;
 	List relationships;
-	
+
 	public SimpleGraph() {
 		objectsToNodes = new HashMap();
 		relationships = new ArrayList();
 	}
-	
+
 	/**
 	 * Adds the node.
 	 * @param node	The node to add.
 	 */
 	public void addEntity(LayoutEntity node) {
 		if (node instanceof SimpleNode) {
-			objectsToNodes.put(((SimpleNode)node).getRealObject(), node);
+			objectsToNodes.put(((SimpleNode) node).getRealObject(), node);
 		}
 	}
-	
+
 	/**
 	 * Creates a LayoutEntity containing an object.
 	 */
 	public LayoutEntity addObjectNode(Object object) {
-	    SimpleNode simpleNode = (SimpleNode) objectsToNodes.get (object);
+		SimpleNode simpleNode = (SimpleNode) objectsToNodes.get(object);
 		if (simpleNode == null) {
 			simpleNode = new SimpleNode(object);
-			objectsToNodes.put (object, simpleNode);
+			objectsToNodes.put(object, simpleNode);
 		}
 		return simpleNode;
-		
+
 	}
-	
+
 	/**
 	 * Add a relationship between two objects.  Layout algorithms need to know
 	 * whether a relationship is one way or bi-directional.  This method assumes that 
 	 * all relationships are bi-direcional and have the same weight. 
 	 */
-	public void addObjectRelationship (Object sourceNode, Object destinationNode) {
+	public void addObjectRelationship(Object sourceNode, Object destinationNode) {
 		addObjectRelationship(sourceNode, destinationNode, true, 1);
 	}
-	
+
 	/**
 	 * Add a relationship between two objects.  Layout algorithms need to know
 	 * whether a relationship is one way or bi-directional.  
 	 */
-	public void addObjectRelationship (Object sourceObject, Object destinationObject, boolean bidirectional, int weight) {
+	public void addObjectRelationship(Object sourceObject, Object destinationObject, boolean bidirectional, int weight) {
 		addObjectNode(sourceObject);
 		addObjectNode(destinationObject);
 		SimpleNode sourceNode = (SimpleNode) objectsToNodes.get(sourceObject);
@@ -88,7 +86,7 @@ public class SimpleGraph implements LayoutGraph {
 	public void addRelationship(LayoutEntity srcNode, LayoutEntity destNode) {
 		addRelationship(srcNode, destNode, true, 1);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.layouts.LayoutEntity, ca.uvic.cs.chisel.layouts.LayoutEntity, boolean, int)
 	 */
@@ -98,7 +96,7 @@ public class SimpleGraph implements LayoutGraph {
 		SimpleRelationship rel = new SimpleRelationship(srcNode, destNode, bidirectional, weight);
 		relationships.add(rel);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.layouts.LayoutRelationship)
 	 */
@@ -112,7 +110,7 @@ public class SimpleGraph implements LayoutGraph {
 	 * must still manipulate them yourself.
 	 */
 	public List getEntities() {
-		return new ArrayList (objectsToNodes.values());
+		return new ArrayList(objectsToNodes.values());
 	}
 
 	/**
@@ -121,14 +119,14 @@ public class SimpleGraph implements LayoutGraph {
 	public List getRelationships() {
 		return relationships;
 	}
-	
+
 	/**
 	 * Checks the relationships to see if they are all bidirectional. 
 	 * @return boolean if all edges are bidirectional.
 	 */
 	public boolean isBidirectional() {
 		boolean isBidirectional = true;
-		for (Iterator iter = relationships.iterator(); iter.hasNext(); ) {
+		for (Iterator iter = relationships.iterator(); iter.hasNext();) {
 			SimpleRelationship rel = (SimpleRelationship) iter.next();
 			if (!rel.isBidirectionalInLayout()) {
 				isBidirectional = false;

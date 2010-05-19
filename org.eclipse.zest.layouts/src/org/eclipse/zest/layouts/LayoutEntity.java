@@ -1,12 +1,11 @@
 /*******************************************************************************
  * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts;
 
@@ -21,21 +20,26 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
  * @author Chris Bennett
  */
 public interface LayoutEntity extends Comparable, LayoutItem {
-	
+
 	public final static String ATTR_PREFERRED_WIDTH = "tree-preferred-width";
-    public final static String ATTR_PREFERRED_HEIGHT = "tree-preferred-height";
-	
-	public void setLocationInLayout (double x, double y);
-	public void setSizeInLayout (double width, double height);
-	
+	public final static String ATTR_PREFERRED_HEIGHT = "tree-preferred-height";
+
+	public void setLocationInLayout(double x, double y);
+
+	public void setSizeInLayout(double width, double height);
+
 	public double getXInLayout();
+
 	public double getYInLayout();
+
 	public double getWidthInLayout();
+
 	public double getHeightInLayout();
-	
+
 	public Object getLayoutInformation();
+
 	public void setLayoutInformation(Object internalEntity);
-	
+
 	/**
 	 * Classes should update the specified layout constraint if recognized
 	 * @return

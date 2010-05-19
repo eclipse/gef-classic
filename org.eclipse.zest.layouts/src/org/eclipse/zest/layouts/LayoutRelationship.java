@@ -1,18 +1,15 @@
 /*******************************************************************************
  * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts;
 
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
-
-
 
 /**
  * This represents a single relationship, providing the layout algorithms with 
@@ -22,8 +19,7 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
  * @author Chris Callendar
  */
 public interface LayoutRelationship extends LayoutItem {
-	
-	
+
 	/**
 	 * Gets the sourceEntity of this SimpleRelation whether the relation is
 	 * exchangeable or not.
@@ -38,19 +34,18 @@ public interface LayoutRelationship extends LayoutItem {
 	 */
 	public LayoutEntity getDestinationInLayout();
 
-
 	/**
 	 * Sets the internal relationship object.
 	 * @param layoutInformation
 	 */
 	public void setLayoutInformation(Object layoutInformation);
-	
+
 	/**
 	 * Returns the internal relationship object.
 	 * @return Object
 	 */
 	public Object getLayoutInformation();
-	
+
 	/**
 	 * Specify a set of bend points. The layout algorithm using this will pass
 	 * in an empty array of bendPoints, or not even call this method,

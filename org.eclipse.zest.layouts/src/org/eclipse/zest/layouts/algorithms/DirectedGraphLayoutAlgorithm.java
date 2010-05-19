@@ -1,12 +1,11 @@
 /*******************************************************************************
  * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
@@ -84,7 +83,7 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			// For horizontal layout transpose the x and y coordinates
 			if ((layout_styles & SWT.HORIZONTAL) == SWT.HORIZONTAL) {
 				internalNode.setInternalLocation(node.y, node.x);
-			}else {
+			} else {
 				internalNode.setInternalLocation(node.x, node.y);
 			}
 		}

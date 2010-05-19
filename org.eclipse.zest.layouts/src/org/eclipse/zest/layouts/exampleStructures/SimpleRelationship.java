@@ -1,12 +1,11 @@
 /*******************************************************************************
  * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.exampleStructures;
 
@@ -21,7 +20,6 @@ import org.eclipse.zest.layouts.constraints.LabelLayoutConstraint;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.zest.layouts.dataStructures.BendPoint;
 
-
 /**
  * The SimpleRelation class describes the relationship between
  * two objects: source and destination.  Each relationship
@@ -34,18 +32,18 @@ import org.eclipse.zest.layouts.dataStructures.BendPoint;
  * @author Chris Bennett
  */
 public class SimpleRelationship implements LayoutRelationship {
-	
+
 	private static int DEFAULT_REL_LINE_WIDTH = 1;
 	private static int DEFAULT_REL_LINE_WIDTH_SELECTED = DEFAULT_REL_LINE_WIDTH + 2;
 	private static Object DEFAULT_RELATIONSHIP_COLOR;
-	private static Object DEFAULT_RELATIONSHIP_HIGHLIGHT_COLOR;	
-	
+	private static Object DEFAULT_RELATIONSHIP_HIGHLIGHT_COLOR;
+
 	/** The line width for this relationship. */
-	private int lineWidth  = DEFAULT_REL_LINE_WIDTH;
-	
+	private int lineWidth = DEFAULT_REL_LINE_WIDTH;
+
 	/** The color for this relationship. */
 	private Object color = DEFAULT_RELATIONSHIP_COLOR;
-	
+
 	/**
 	 * A list of layout dependent attributes
 	 */
@@ -72,13 +70,13 @@ public class SimpleRelationship implements LayoutRelationship {
 	 * The weight given to this relation.
 	 */
 	private double weight;
-	
+
 	private Object internalRelationship;
-	
+
 	private LayoutBendPoint[] bendPoints;
-	
+
 	private String label;
-	
+
 	/**
 	 * Constructor.
 	 * @param sourceEntity The sourceEntity of this SimpleRelation.
@@ -89,9 +87,9 @@ public class SimpleRelationship implements LayoutRelationship {
 	 * </code> or <code>destinationEntity</code> is <code>null</code>.
 	 */
 	public SimpleRelationship(LayoutEntity sourceEntity, LayoutEntity destinationEntity, boolean bidirectional) {
-		this (sourceEntity, destinationEntity, bidirectional, 1);
+		this(sourceEntity, destinationEntity, bidirectional, 1);
 	}
-	
+
 	/**
 	 * Constructor.
 	 * @param sourceEntity The sourceEntity of this SimpleRelation.
@@ -149,61 +147,61 @@ public class SimpleRelationship implements LayoutRelationship {
 	/**
 	 * An algorithm may require a place to store information.  Use this structure for that purpose.
 	 */
-	public void setAttributeInLayout (String attribute, Object value) {
-		attributes.put (attribute, value);
+	public void setAttributeInLayout(String attribute, Object value) {
+		attributes.put(attribute, value);
 	}
-	
+
 	/**
 	 * An algorithm may require a place to store information.  Use this structure for that purpose.
 	 */
-	public Object getAttributeInLayout (String attribute) {
-		return attributes.get (attribute);
+	public Object getAttributeInLayout(String attribute) {
+		return attributes.get(attribute);
 	}
 
 	public String toString() {
-		String arrow = (isBidirectionalInLayout() ? " <-> " : " -> "); 
+		String arrow = (isBidirectionalInLayout() ? " <-> " : " -> ");
 		return "(" + sourceEntity + arrow + destinationEntity + ")";
 	}
-	
+
 	public int getLineWidth() {
 		return this.lineWidth;
 	}
-	
-	public void setLineWidth( int lineWidth ) {
+
+	public void setLineWidth(int lineWidth) {
 		this.lineWidth = lineWidth;
 	}
-	
+
 	public void resetLineWidth() {
 		this.lineWidth = DEFAULT_REL_LINE_WIDTH;
 	}
-	
+
 	public static void setDefaultSize(int i) {
 		DEFAULT_REL_LINE_WIDTH = i;
 		DEFAULT_REL_LINE_WIDTH_SELECTED = DEFAULT_REL_LINE_WIDTH + 2;
 	}
-	
+
 	public void setSelected() {
 		this.color = DEFAULT_RELATIONSHIP_HIGHLIGHT_COLOR;
 		this.lineWidth = DEFAULT_REL_LINE_WIDTH_SELECTED;
 	}
-	
+
 	public void setUnSelected() {
 		this.color = DEFAULT_RELATIONSHIP_COLOR;
 		this.lineWidth = DEFAULT_REL_LINE_WIDTH;
 	}
-	
+
 	public Object getColor() {
 		return color;
 	}
-	
+
 	public void setColor(Object c) {
 		this.color = c;
 	}
-	
+
 	public static void setDefaultColor(Object c) {
 		DEFAULT_RELATIONSHIP_COLOR = c;
 	}
-	
+
 	public static void setDefaultHighlightColor(Object c) {
 		DEFAULT_RELATIONSHIP_HIGHLIGHT_COLOR = c;
 	}
@@ -222,43 +220,40 @@ public class SimpleRelationship implements LayoutRelationship {
 		this.internalRelationship = layoutInformation;
 	}
 
-
 	public void setBendPoints(LayoutBendPoint[] bendPoints) {
 		this.bendPoints = bendPoints;
 	}
-	
+
 	public LayoutBendPoint[] getBendPoints() {
 		return this.bendPoints;
 	}
-	
+
 	public void clearBendPoints() {
 		this.bendPoints = new BendPoint[0];
 	}
-	
-	
+
 	public void setDestinationInLayout(LayoutEntity destination) {
 		this.destinationEntity = destination;
 	}
-	
+
 	/**
 	 * Set the label for this edge (available in the label layout constraint). 
-	 */	
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
 	/**
 	 * Populate the specified layout constraint
-	 */	
+	 */
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
-		if ( constraint instanceof LabelLayoutConstraint ) {
+		if (constraint instanceof LabelLayoutConstraint) {
 			LabelLayoutConstraint labelConstraint = (LabelLayoutConstraint) constraint;
 			labelConstraint.label = this.label;
 			labelConstraint.pointSize = 18;
-		}			
-		else if ( constraint instanceof BasicEdgeConstraints ) {
+		} else if (constraint instanceof BasicEdgeConstraints) {
 			// noop
-			
+
 		}
 	}
 
@@ -267,8 +262,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	}
 
 	public void setGraphData(Object o) {
-		
+
 	}
 
-	
 }
