@@ -11,9 +11,9 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.swt.SWT;
+
+import org.eclipse.draw2d.geometry.Dimension;
 
 /**
  * <code>GridData</code> is the layout data object associated with

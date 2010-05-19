@@ -15,12 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.AbstractLayout;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LayoutManager;
+import org.eclipse.swt.SWT;
+
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.SWT;
 
 /**
  * Lays out children into a Grid arrangement in which overall aligment and
