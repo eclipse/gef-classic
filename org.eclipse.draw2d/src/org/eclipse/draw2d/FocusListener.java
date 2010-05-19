@@ -14,33 +14,38 @@ package org.eclipse.draw2d;
  * A listener interface for receiving {@link FocusEvent FocusEvents}.
  */
 public interface FocusListener {
-	
-/**
- * Called when the listened to object has gained focus.
- * @param fe The FocusEvent object
- */
-void focusGained(FocusEvent fe);
 
-/**
- * Called when the listened to object has lost focus.
- * @param fe The FocusEvent object
- */
-void focusLost(FocusEvent fe);
+	/**
+	 * Called when the listened to object has gained focus.
+	 * 
+	 * @param fe
+	 *            The FocusEvent object
+	 */
+	void focusGained(FocusEvent fe);
 
-/**
- * An empty implementation of FocusListener for convenience.
- */
-public class Stub 
-	implements FocusListener
-{
 	/**
-	 * @see org.eclipse.draw2d.FocusListener#focusGained(FocusEvent)
+	 * Called when the listened to object has lost focus.
+	 * 
+	 * @param fe
+	 *            The FocusEvent object
 	 */
-	public void focusGained(FocusEvent fe) { }
+	void focusLost(FocusEvent fe);
+
 	/**
-	 * @see org.eclipse.draw2d.FocusListener#focusLost(FocusEvent)
+	 * An empty implementation of FocusListener for convenience.
 	 */
-	public void focusLost(FocusEvent fe) { }
-}
+	public class Stub implements FocusListener {
+		/**
+		 * @see org.eclipse.draw2d.FocusListener#focusGained(FocusEvent)
+		 */
+		public void focusGained(FocusEvent fe) {
+		}
+
+		/**
+		 * @see org.eclipse.draw2d.FocusListener#focusLost(FocusEvent)
+		 */
+		public void focusLost(FocusEvent fe) {
+		}
+	}
 
 }

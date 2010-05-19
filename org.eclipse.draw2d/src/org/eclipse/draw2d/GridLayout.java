@@ -26,18 +26,17 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * each individual member of the GridLayout. This layout is a Draw2D port of the
  * swt GridLayout.
  * 
- * <code>GridLayout</code> has a number of configuration fields, and the
- * Figures it lays out can have an associated layout data object, called
+ * <code>GridLayout</code> has a number of configuration fields, and the Figures
+ * it lays out can have an associated layout data object, called
  * <code>GridData</code> (similar to the swt GridData object). The power of
  * <code>GridLayout</code> lies in the ability to configure
  * <code>GridData</code> for each Figure in the layout.
  * <p>
  * The following code creates a container Figure managed by a
- * <code>GridLayout</code> with 2 columns, containing 3 RectangleFigure
- * shapes, the last of which has been given further layout instructions. Note
- * that it is the <code>GridLayout</code> method <code>setConstraint</code>
- * that binds the child <code>Figure</code> to its layout
- * <code>GridData</code> object.
+ * <code>GridLayout</code> with 2 columns, containing 3 RectangleFigure shapes,
+ * the last of which has been given further layout instructions. Note that it is
+ * the <code>GridLayout</code> method <code>setConstraint</code> that binds the
+ * child <code>Figure</code> to its layout <code>GridData</code> object.
  * 
  * <pre>
  * Figure container = new Figure();
@@ -62,12 +61,12 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * 
  * <p>
  * The <code>numColumns</code> field is the most important field in a
- * <code>GridLayout</code>. Widgets are laid out in columns from left to
- * right, and a new row is created when <code>numColumns</code>+ 1 figures
- * are added to the <code>Figure<code> parent container.
+ * <code>GridLayout</code>. Widgets are laid out in columns from left to right,
+ * and a new row is created when <code>numColumns</code>+ 1 figures are added to
+ * the <code>Figure<code> parent container.
  * 
  * @see GridData
- *
+ * 
  */
 public class GridLayout extends AbstractLayout {
 
@@ -184,8 +183,9 @@ public class GridLayout extends AbstractLayout {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure,
-	 *      int, int)
+	 * @see
+	 * org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.
+	 * draw2d.IFigure, int, int)
 	 */
 	protected Dimension calculatePreferredSize(IFigure container, int wHint,
 			int hHint) {
@@ -195,13 +195,13 @@ public class GridLayout extends AbstractLayout {
 			size.width = wHint;
 		if (hHint != SWT.DEFAULT)
 			size.height = hHint;
-		
+
 		/*
 		 * Adjust for the size of the border
 		 */
-		size.expand(container.getInsets().getWidth(),
-				container.getInsets().getHeight());
-		size.union(getBorderPreferredSize(container));		
+		size.expand(container.getInsets().getWidth(), container.getInsets()
+				.getHeight());
+		size.union(getBorderPreferredSize(container));
 
 		return size;
 	}
@@ -294,8 +294,8 @@ public class GridLayout extends AbstractLayout {
 			for (int i = 0; i < rowCount; i++) {
 				GridData data = getData(grid, i, j, rowCount, columnCount, true);
 				if (data != null) {
-					int hSpan = Math.max(1, Math.min(data.horizontalSpan,
-							columnCount));
+					int hSpan = Math.max(1,
+							Math.min(data.horizontalSpan, columnCount));
 					if (hSpan == 1) {
 						int w = data.cacheWidth + data.horizontalIndent;
 						widths[j] = Math.max(widths[j], w);
@@ -315,8 +315,8 @@ public class GridLayout extends AbstractLayout {
 				GridData data = getData(grid, i, j, rowCount, columnCount,
 						false);
 				if (data != null) {
-					int hSpan = Math.max(1, Math.min(data.horizontalSpan,
-							columnCount));
+					int hSpan = Math.max(1,
+							Math.min(data.horizontalSpan, columnCount));
 					if (hSpan > 1) {
 						int spanWidth = 0, spanMinWidth = 0, spanExpandCount = 0;
 						for (int k = 0; k < hSpan; k++) {
@@ -477,8 +477,8 @@ public class GridLayout extends AbstractLayout {
 						if (data.heightHint == SWT.DEFAULT) {
 							IFigure child = grid[i][j];
 							// TEMPORARY CODE
-							int hSpan = Math.max(1, Math.min(
-									data.horizontalSpan, columnCount));
+							int hSpan = Math.max(1,
+									Math.min(data.horizontalSpan, columnCount));
 							int currentWidth = 0;
 							for (int k = 0; k < hSpan; k++) {
 								currentWidth += widths[j - k];
@@ -529,8 +529,8 @@ public class GridLayout extends AbstractLayout {
 			for (int j = 0; j < columnCount; j++) {
 				GridData data = getData(grid, i, j, rowCount, columnCount, true);
 				if (data != null) {
-					int vSpan = Math.max(1, Math.min(data.verticalSpan,
-							rowCount));
+					int vSpan = Math.max(1,
+							Math.min(data.verticalSpan, rowCount));
 					if (vSpan == 1) {
 						int h = data.cacheHeight; // + data.verticalIndent;
 						heights[i] = Math.max(heights[i], h);
@@ -550,8 +550,8 @@ public class GridLayout extends AbstractLayout {
 				GridData data = getData(grid, i, j, rowCount, columnCount,
 						false);
 				if (data != null) {
-					int vSpan = Math.max(1, Math.min(data.verticalSpan,
-							rowCount));
+					int vSpan = Math.max(1,
+							Math.min(data.verticalSpan, rowCount));
 					if (vSpan > 1) {
 						int spanHeight = 0, spanMinHeight = 0, spanExpandCount = 0;
 						for (int k = 0; k < vSpan; k++) {
@@ -635,8 +635,8 @@ public class GridLayout extends AbstractLayout {
 						GridData data = getData(grid, i, j, rowCount,
 								columnCount, false);
 						if (data != null) {
-							int vSpan = Math.max(1, Math.min(data.verticalSpan,
-									rowCount));
+							int vSpan = Math.max(1,
+									Math.min(data.verticalSpan, rowCount));
 							if (vSpan > 1) {
 								if (data.heightHint != SWT.DEFAULT
 										|| !data.grabExcessVerticalSpace) {
@@ -691,8 +691,8 @@ public class GridLayout extends AbstractLayout {
 					GridData data = getData(grid, i, j, rowCount, columnCount,
 							true);
 					if (data != null) {
-						int hSpan = Math.max(1, Math.min(data.horizontalSpan,
-								columnCount));
+						int hSpan = Math.max(1,
+								Math.min(data.horizontalSpan, columnCount));
 						int vSpan = Math.max(1, data.verticalSpan);
 						int cellWidth = 0, cellHeight = 0;
 						for (int k = 0; k < hSpan; k++) {
@@ -779,7 +779,9 @@ public class GridLayout extends AbstractLayout {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure)
+	 * @see
+	 * org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure
+	 * )
 	 */
 	public Object getConstraint(IFigure child) {
 		return constraints.get(child);

@@ -15,10 +15,12 @@ package org.eclipse.draw2d;
  */
 public interface Locator {
 
-/**
- * Relocates the given IFigure.
- * @param target The figure to relocate
- */
-void relocate(IFigure target);
+	/**
+	 * Relocates the given IFigure.
+	 * 
+	 * @param target
+	 *            The figure to relocate
+	 */
+	void relocate(IFigure target);
 
 }

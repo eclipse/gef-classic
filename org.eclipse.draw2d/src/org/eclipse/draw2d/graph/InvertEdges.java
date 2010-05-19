@@ -18,16 +18,16 @@ package org.eclipse.draw2d.graph;
  */
 class InvertEdges extends GraphVisitor {
 
-/**
- * 
- * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
- */
-public void visit(DirectedGraph g) {
-	for (int i = 0; i < g.edges.size(); i++) {
-		Edge e = g.edges.getEdge(i);
-		if (e.isFeedback)
-			e.invert();
+	/**
+	 * 
+	 * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
+	 */
+	public void visit(DirectedGraph g) {
+		for (int i = 0; i < g.edges.size(); i++) {
+			Edge e = g.edges.getEdge(i);
+			if (e.isFeedback)
+				e.invert();
+		}
 	}
-}
 
 }

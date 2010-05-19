@@ -153,8 +153,8 @@ public class Straight {
 	 *         onto this Straight.
 	 */
 	public Vector getProjection(Vector vector) {
-		return getIntersection(new Straight(vector, direction
-				.getOrthogonalComplement()));
+		return getIntersection(new Straight(vector,
+				direction.getOrthogonalComplement()));
 	}
 
 	/**
@@ -266,7 +266,7 @@ public class Straight {
 	public int hashCode() {
 		return position.hashCode() + direction.hashCode();
 	}
-	
+
 	/**
 	 * @see java.lang.Object#toString()
 	 */

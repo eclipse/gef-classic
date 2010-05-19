@@ -8,7 +8,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.geometry;
 
-
 /**
  * Represents a 2-dimensional directional Vector, or Ray.
  * {@link java.util.Vector} is commonly imported, so the name Ray was chosen.

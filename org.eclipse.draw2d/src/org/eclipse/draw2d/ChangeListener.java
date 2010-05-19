@@ -10,16 +10,17 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-
 /**
  * A generic state listener
  */
 public interface ChangeListener {
 
-/**
- * Called when the listened to object's state has changed.
- * @param event the ChangeEvent
- */
-void handleStateChanged(ChangeEvent event);
+	/**
+	 * Called when the listened to object's state has changed.
+	 * 
+	 * @param event
+	 *            the ChangeEvent
+	 */
+	void handleStateChanged(ChangeEvent event);
 
 }

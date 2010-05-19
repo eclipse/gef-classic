@@ -11,47 +11,55 @@
 package org.eclipse.draw2d;
 
 /**
- * An event for property changes.  Includes the source of the event as well as the name of
- * the property that has changed.
+ * An event for property changes. Includes the source of the event as well as
+ * the name of the property that has changed.
  */
-public class ChangeEvent
-	extends java.util.EventObject
-{
+public class ChangeEvent extends java.util.EventObject {
 
-private String property;
+	private String property;
 
-/**
- * Constructs a new ChangeEvent with the given object as the source of the event.
- * @param source The source of the event
- */
-public ChangeEvent(Object source) {
-	super(source);
-}
+	/**
+	 * Constructs a new ChangeEvent with the given object as the source of the
+	 * event.
+	 * 
+	 * @param source
+	 *            The source of the event
+	 */
+	public ChangeEvent(Object source) {
+		super(source);
+	}
 
-/**
- * Constructs a new ChangeEvent with the given source object and property name.
- * @param source The source of the event
- * @param property The property name
- */
-public ChangeEvent(Object source, String property) {
-	super(source);
-	setPropertyName(property);
-}
+	/**
+	 * Constructs a new ChangeEvent with the given source object and property
+	 * name.
+	 * 
+	 * @param source
+	 *            The source of the event
+	 * @param property
+	 *            The property name
+	 */
+	public ChangeEvent(Object source, String property) {
+		super(source);
+		setPropertyName(property);
+	}
 
-/**
- * Returns the name of the property that has changed.
- * @return String the name of the property that has changed
- */
-public String getPropertyName() {
-	return property;
-}
+	/**
+	 * Returns the name of the property that has changed.
+	 * 
+	 * @return String the name of the property that has changed
+	 */
+	public String getPropertyName() {
+		return property;
+	}
 
-/**
- * Sets the name of the property that has changed.
- * @param string The property name
- */
-protected void setPropertyName(String string) {
-	property = string;
-}
+	/**
+	 * Sets the name of the property that has changed.
+	 * 
+	 * @param string
+	 *            The property name
+	 */
+	protected void setPropertyName(String string) {
+		property = string;
+	}
 
 }

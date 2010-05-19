@@ -13,39 +13,45 @@ package org.eclipse.draw2d;
 import org.eclipse.draw2d.geometry.PointList;
 
 /**
- * Locator used to place a {@link RotatableDecoration} on a {@link Connection}. The
- * decoration can be placed at the source or target end of the connection figure. The
- * default connection implementation uses a {@link DelegatingLayout} which requires
- * locators.
+ * Locator used to place a {@link RotatableDecoration} on a {@link Connection}.
+ * The decoration can be placed at the source or target end of the connection
+ * figure. The default connection implementation uses a {@link DelegatingLayout}
+ * which requires locators.
  */
 public class ArrowLocator extends ConnectionLocator {
 
-/**
- * Constructs an ArrowLocator associated with passed connection and tip location (either
- * {@link ConnectionLocator#SOURCE} or {@link ConnectionLocator#TARGET}).
- * 
- * @param connection The connection associated with the locator
- * @param location Location of the arrow decoration
- * @since 2.0
- */
-public ArrowLocator(Connection connection, int location) {
-	super(connection, location);
-}
+	/**
+	 * Constructs an ArrowLocator associated with passed connection and tip
+	 * location (either {@link ConnectionLocator#SOURCE} or
+	 * {@link ConnectionLocator#TARGET}).
+	 * 
+	 * @param connection
+	 *            The connection associated with the locator
+	 * @param location
+	 *            Location of the arrow decoration
+	 * @since 2.0
+	 */
+	public ArrowLocator(Connection connection, int location) {
+		super(connection, location);
+	}
 
-/**
- * Relocates the passed in figure (which must be a {@link RotatableDecoration}) at either
- * the start or end of the connection.
- * @param target The RotatableDecoration to relocate
- */
-public void relocate(IFigure target) {
-	PointList points = getConnection().getPoints();
-	RotatableDecoration arrow = (RotatableDecoration)target;
-	arrow.setLocation(getLocation(points));
+	/**
+	 * Relocates the passed in figure (which must be a
+	 * {@link RotatableDecoration}) at either the start or end of the
+	 * connection.
+	 * 
+	 * @param target
+	 *            The RotatableDecoration to relocate
+	 */
+	public void relocate(IFigure target) {
+		PointList points = getConnection().getPoints();
+		RotatableDecoration arrow = (RotatableDecoration) target;
+		arrow.setLocation(getLocation(points));
 
-	if (getAlignment() == SOURCE)
-		arrow.setReferencePoint(points.getPoint(1));
-	else if (getAlignment() == TARGET)
-		arrow.setReferencePoint(points.getPoint(points.size() - 2));
-}
+		if (getAlignment() == SOURCE)
+			arrow.setReferencePoint(points.getPoint(1));
+		else if (getAlignment() == TARGET)
+			arrow.setReferencePoint(points.getPoint(points.size() - 2));
+	}
 
 }

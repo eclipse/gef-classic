@@ -17,20 +17,19 @@ import java.util.List;
 
 public class MultiValueMap {
 	private HashMap map = new HashMap();
-	
+
 	public ArrayList get(Object key) {
 		Object value = map.get(key);
-		if (value == null) return null;
-		
-		if (value instanceof ArrayList) 
+		if (value == null)
+			return null;
+
+		if (value instanceof ArrayList)
 			return (ArrayList) value;
 		ArrayList v = new ArrayList(1);
 		v.add(value);
 		return v;
 	}
-	
-	
-	
+
 	public void put(Object key, Object value) {
 		Object existingValues = map.get(key);
 		if (existingValues == null) {
@@ -50,7 +49,7 @@ public class MultiValueMap {
 			map.put(key, v);
 		}
 	}
-	
+
 	public int remove(Object key, Object value) {
 		Object existingValues = map.get(key);
 		if (existingValues != null) {
@@ -69,7 +68,7 @@ public class MultiValueMap {
 		}
 		return -1;
 	}
-	
+
 	public Object removeValue(Object value) {
 		Iterator iter = map.values().iterator();
 		Object current;
@@ -79,8 +78,8 @@ public class MultiValueMap {
 				iter.remove();
 				return value;
 			} else if (current instanceof List) {
-				if (((List)current).remove(value)) {
-					if (((List)current).isEmpty())
+				if (((List) current).remove(value)) {
+					if (((List) current).isEmpty())
 						iter.remove();
 					return value;
 				}
@@ -88,7 +87,7 @@ public class MultiValueMap {
 		}
 		return null;
 	}
-	
+
 	public int size() {
 		return map.size();
 	}

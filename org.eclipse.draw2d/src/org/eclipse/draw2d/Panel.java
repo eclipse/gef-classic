@@ -11,26 +11,24 @@
 package org.eclipse.draw2d;
 
 /**
- * A General purpose Container. This figure is opaque by default, and will fill its entire
- * bounds with either the background color that is set on the figure, or the IGraphics 
- * current background color if none has been set.  Opaque figures help to optimize 
- * painting.
+ * A General purpose Container. This figure is opaque by default, and will fill
+ * its entire bounds with either the background color that is set on the figure,
+ * or the IGraphics current background color if none has been set. Opaque
+ * figures help to optimize painting.
  * <p>
- * Note that the paintFigure() method in the superclass Figure actually fills the bounds 
- * of this figure.
+ * Note that the paintFigure() method in the superclass Figure actually fills
+ * the bounds of this figure.
  */
-public class Panel
-	extends Figure
-{
+public class Panel extends Figure {
 
-/**
- * Returns <code>true</code> as this is an opaque figure.
- *
- * @return the opaque state of this figure
- * @since 2.0
- */
-public boolean isOpaque() { 
-	return true;
-}
+	/**
+	 * Returns <code>true</code> as this is an opaque figure.
+	 * 
+	 * @return the opaque state of this figure
+	 * @since 2.0
+	 */
+	public boolean isOpaque() {
+		return true;
+	}
 
 }

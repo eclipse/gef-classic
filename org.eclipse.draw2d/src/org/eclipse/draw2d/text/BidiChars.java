@@ -16,12 +16,12 @@ package org.eclipse.draw2d.text;
  */
 class BidiChars {
 
-static final char P_SEP = '\u2029';
-static final char ZWJ = '\u200d';
-static final char LRO = '\u202d';
-static final char RLO = '\u202e';
-static final char OBJ = '\ufffc';
-static final char LRE = '\u202a';
-static final char RLE = '\u202b';
+	static final char P_SEP = '\u2029';
+	static final char ZWJ = '\u200d';
+	static final char LRO = '\u202d';
+	static final char RLO = '\u202e';
+	static final char OBJ = '\ufffc';
+	static final char LRE = '\u202a';
+	static final char RLE = '\u202b';
 
 }

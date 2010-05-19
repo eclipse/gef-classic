@@ -15,115 +15,124 @@ import java.util.List;
 /**
  * The layout manager for {@link InlineFlow} figures.
  * 
- * <P>WARNING: This class is not intended to be subclassed by clients.
+ * <P>
+ * WARNING: This class is not intended to be subclassed by clients.
+ * 
  * @author hudsonr
  * @since 2.1
  */
-public class InlineFlowLayout
-	extends FlowContainerLayout
-{
+public class InlineFlowLayout extends FlowContainerLayout {
 
-/**
- * Creates a new InlineFlowLayout with the given FlowFigure.
- * @param flow The FlowFigure
- */
-public InlineFlowLayout(FlowFigure flow) {
-	super(flow);
-}
-
-/**
- * Adds the given box as a line below the current line.
- * @param box the box to add
- */
-public void addLine(CompositeBox box) {
-	endLine();
-	getContext().addLine(box);
-}
-
-/**
- * @see FlowContainerLayout#createNewLine()
- */
-protected void createNewLine() {
-	currentLine = new NestedLine((InlineFlow)getFlowFigure());
-	setupLine(currentLine);
-}
-
-/**
- * @see FlowContext#endLine()
- */
-public void endLine() {
-	flush();
-	getContext().endLine();
-}
-
-/**
- * @see FlowContainerLayout#flush()
- */
-protected void flush() {
-	if (currentLine != null && currentLine.isOccupied()) {
-		// We want to preserve the state when a linebox is being added
-		boolean sameLine = getContext().getContinueOnSameLine();
-		getContext().addToCurrentLine(currentLine);
-		((InlineFlow)getFlowFigure()).getFragments().add(currentLine);
-		currentLine = null;
-		getContext().setContinueOnSameLine(sameLine);
+	/**
+	 * Creates a new InlineFlowLayout with the given FlowFigure.
+	 * 
+	 * @param flow
+	 *            The FlowFigure
+	 */
+	public InlineFlowLayout(FlowFigure flow) {
+		super(flow);
 	}
-}
 
-/**
- * InlineFlowLayout gets this information from its context.
- * @see FlowContext#getContinueOnSameLine()
- */
-public boolean getContinueOnSameLine() {
-	return getContext().getContinueOnSameLine();
-}
+	/**
+	 * Adds the given box as a line below the current line.
+	 * 
+	 * @param box
+	 *            the box to add
+	 */
+	public void addLine(CompositeBox box) {
+		endLine();
+		getContext().addLine(box);
+	}
 
-/**
- * @see FlowContext#getWidthLookahead(FlowFigure, int[])
- */
-public void getWidthLookahead(FlowFigure child, int result[]) {
-	List children = getFlowFigure().getChildren();
-	int index = -1;
-	if (child != null)
-		index = children.indexOf(child);
-	
-	for (int i = index + 1; i < children.size(); i++)
-		if (((FlowFigure)children.get(i)).addLeadingWordRequirements(result))
-			return;
-	
-	getContext().getWidthLookahead(getFlowFigure(), result);
-}
+	/**
+	 * @see FlowContainerLayout#createNewLine()
+	 */
+	protected void createNewLine() {
+		currentLine = new NestedLine((InlineFlow) getFlowFigure());
+		setupLine(currentLine);
+	}
 
-/**
- * @see FlowContainerLayout#isCurrentLineOccupied()
- */
-public boolean isCurrentLineOccupied() {
-	return (currentLine != null && !currentLine.getFragments().isEmpty())
-		|| getContext().isCurrentLineOccupied();
-}
+	/**
+	 * @see FlowContext#endLine()
+	 */
+	public void endLine() {
+		flush();
+		getContext().endLine();
+	}
 
-/**
- * Clears out all fragments prior to the call to layoutChildren().
- */
-public void preLayout() {
-	((InlineFlow)getFlowFigure()).getFragments().clear();
-}
+	/**
+	 * @see FlowContainerLayout#flush()
+	 */
+	protected void flush() {
+		if (currentLine != null && currentLine.isOccupied()) {
+			// We want to preserve the state when a linebox is being added
+			boolean sameLine = getContext().getContinueOnSameLine();
+			getContext().addToCurrentLine(currentLine);
+			((InlineFlow) getFlowFigure()).getFragments().add(currentLine);
+			currentLine = null;
+			getContext().setContinueOnSameLine(sameLine);
+		}
+	}
 
-/**
- * InlineFlow passes this information to its context.
- * @see FlowContext#setContinueOnSameLine(boolean)
- */
-public void setContinueOnSameLine(boolean value) {
-	getContext().setContinueOnSameLine(value);
-}
+	/**
+	 * InlineFlowLayout gets this information from its context.
+	 * 
+	 * @see FlowContext#getContinueOnSameLine()
+	 */
+	public boolean getContinueOnSameLine() {
+		return getContext().getContinueOnSameLine();
+	}
 
-/**
- * Initializes the given LineBox. Called by createNewLine().
- * @param line The LineBox to initialize.
- */
-protected void setupLine(LineBox line) {
-	line.setX(0);
-	line.setRecommendedWidth(getContext().getRemainingLineWidth());
-}
+	/**
+	 * @see FlowContext#getWidthLookahead(FlowFigure, int[])
+	 */
+	public void getWidthLookahead(FlowFigure child, int result[]) {
+		List children = getFlowFigure().getChildren();
+		int index = -1;
+		if (child != null)
+			index = children.indexOf(child);
+
+		for (int i = index + 1; i < children.size(); i++)
+			if (((FlowFigure) children.get(i))
+					.addLeadingWordRequirements(result))
+				return;
+
+		getContext().getWidthLookahead(getFlowFigure(), result);
+	}
+
+	/**
+	 * @see FlowContainerLayout#isCurrentLineOccupied()
+	 */
+	public boolean isCurrentLineOccupied() {
+		return (currentLine != null && !currentLine.getFragments().isEmpty())
+				|| getContext().isCurrentLineOccupied();
+	}
+
+	/**
+	 * Clears out all fragments prior to the call to layoutChildren().
+	 */
+	public void preLayout() {
+		((InlineFlow) getFlowFigure()).getFragments().clear();
+	}
+
+	/**
+	 * InlineFlow passes this information to its context.
+	 * 
+	 * @see FlowContext#setContinueOnSameLine(boolean)
+	 */
+	public void setContinueOnSameLine(boolean value) {
+		getContext().setContinueOnSameLine(value);
+	}
+
+	/**
+	 * Initializes the given LineBox. Called by createNewLine().
+	 * 
+	 * @param line
+	 *            The LineBox to initialize.
+	 */
+	protected void setupLine(LineBox line) {
+		line.setX(0);
+		line.setRecommendedWidth(getContext().getRemainingLineWidth());
+	}
 
 }

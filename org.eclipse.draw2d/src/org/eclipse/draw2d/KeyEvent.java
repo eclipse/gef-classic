@@ -13,33 +13,38 @@ package org.eclipse.draw2d;
 /**
  * An event caused by the user interacting with the keyboard.
  */
-public class KeyEvent
-	extends InputEvent
-{
+public class KeyEvent extends InputEvent {
 
-/** 
- * The character that was pressed.
- * @see org.eclipse.swt.events.KeyEvent#character 
- */
-public char character;
+	/**
+	 * The character that was pressed.
+	 * 
+	 * @see org.eclipse.swt.events.KeyEvent#character
+	 */
+	public char character;
 
-/** 
- * The keycode.
- * @see org.eclipse.swt.events.KeyEvent#keyCode 
- */
-public int keycode;
+	/**
+	 * The keycode.
+	 * 
+	 * @see org.eclipse.swt.events.KeyEvent#keyCode
+	 */
+	public int keycode;
 
-/**
- * Constructs a new KeyEvent.
- * @param dispatcher the event dispatcher
- * @param source the source of the event
- * @param ke an SWT key event used to supply the statemask, keycode and character
- */
-public KeyEvent(EventDispatcher dispatcher, IFigure source,
-					org.eclipse.swt.events.KeyEvent ke) {
-	super(dispatcher, source, ke.stateMask);
-	character = ke.character;
-	keycode = ke.keyCode;
-}
+	/**
+	 * Constructs a new KeyEvent.
+	 * 
+	 * @param dispatcher
+	 *            the event dispatcher
+	 * @param source
+	 *            the source of the event
+	 * @param ke
+	 *            an SWT key event used to supply the statemask, keycode and
+	 *            character
+	 */
+	public KeyEvent(EventDispatcher dispatcher, IFigure source,
+			org.eclipse.swt.events.KeyEvent ke) {
+		super(dispatcher, source, ke.stateMask);
+		character = ke.character;
+		keycode = ke.keyCode;
+	}
 
 }

@@ -17,17 +17,22 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public interface GraphicsSource {
 
-/**
- * Returns a Graphics for the rectangular region requested. May return <code>null</code>.
- * @param region The rectangular region
- * @return A new Graphics object for the given region
- */
-Graphics getGraphics(Rectangle region);
+	/**
+	 * Returns a Graphics for the rectangular region requested. May return
+	 * <code>null</code>.
+	 * 
+	 * @param region
+	 *            The rectangular region
+	 * @return A new Graphics object for the given region
+	 */
+	Graphics getGraphics(Rectangle region);
 
-/**
- * Tells the GraphicsSource that you have finished using that region.
- * @param region The rectangular region that that no longer needs the Graphics
- */
-void flushGraphics(Rectangle region);
+	/**
+	 * Tells the GraphicsSource that you have finished using that region.
+	 * 
+	 * @param region
+	 *            The rectangular region that that no longer needs the Graphics
+	 */
+	void flushGraphics(Rectangle region);
 
 }

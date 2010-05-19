@@ -22,10 +22,11 @@ import java.util.List;
  * @author aboyko
  * @since 3.6
  */
-public abstract class AbstractImageFigure extends Figure implements IImageFigure {
+public abstract class AbstractImageFigure extends Figure implements
+		IImageFigure {
 
 	private List imageListeners = new ArrayList();
-	
+
 	public final void addImageChangedListener(ImageChangedListener listener) {
 		if (listener == null) {
 			throw new IllegalArgumentException();
@@ -42,7 +43,7 @@ public abstract class AbstractImageFigure extends Figure implements IImageFigure
 
 	protected final void notifyImageChanged() {
 		for (Iterator itr = imageListeners.iterator(); itr.hasNext();) {
-			((ImageChangedListener)itr.next()).imageChanged();
+			((ImageChangedListener) itr.next()).imageChanged();
 		}
 	}
 

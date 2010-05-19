@@ -17,14 +17,14 @@ import org.eclipse.swt.graphics.Image;
  * Interface for image figures
  * 
  * <P>
- * WARNING: This interface is not intended to be implemented by clients.
- * Extend {@link AbstractImageFigure} instead.
+ * WARNING: This interface is not intended to be implemented by clients. Extend
+ * {@link AbstractImageFigure} instead.
  * 
  * @noimplement
  * @since 3.6
  */
 public interface IImageFigure extends IFigure {
-	
+
 	/**
 	 * Returns the SWT Image contained by the figure
 	 * 
@@ -32,37 +32,38 @@ public interface IImageFigure extends IFigure {
 	 * @since 3.6
 	 */
 	public Image getImage();
-	
+
 	/**
-	 * Attaches <code>ImageChangedListener</code> to the figure 
+	 * Attaches <code>ImageChangedListener</code> to the figure
 	 * 
 	 * @param listener
 	 * @since 3.6
 	 */
 	public void addImageChangedListener(ImageChangedListener listener);
-	
+
 	/**
-	 * Detaches <code>ImageChangedListener</code> from the figure 
+	 * Detaches <code>ImageChangedListener</code> from the figure
 	 * 
 	 * @param listener
 	 * @since 3.6
 	 */
 	public void removeImageChangedListener(ImageChangedListener listener);
-	
+
 	/**
 	 * Listener to the image figure to track changes to the containede SWT Image
 	 * 
 	 * @since 3.6
 	 */
 	public interface ImageChangedListener {
-		
+
 		/**
-		 * Notifies about a change to SWT Image contained by the <code>IIMageFigure</code>  
+		 * Notifies about a change to SWT Image contained by the
+		 * <code>IIMageFigure</code>
 		 * 
 		 * @since 3.6
 		 */
 		public void imageChanged();
-		
+
 	}
 
 }

@@ -14,93 +14,95 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A CompositeBox suitable for containing multiple LineBox fragments.
+ * 
  * @author hudsonr
  * @since 2.1
  */
-public class BlockBox
-	extends CompositeBox
-{
+public class BlockBox extends CompositeBox {
 
-int height;
-private int y;
-BlockFlow owner;
+	int height;
+	private int y;
+	BlockFlow owner;
 
-BlockBox(BlockFlow owner) {
-	this.owner = owner;
-}
+	BlockBox(BlockFlow owner) {
+		this.owner = owner;
+	}
 
-/**
- * @see CompositeBox#add(FlowBox)
- */
-public void add(FlowBox box) {
-	width = Math.max(width, box.getWidth());
-	height = Math.max(height, box.getBaseline() + box.getDescent());
-}
+	/**
+	 * @see CompositeBox#add(FlowBox)
+	 */
+	public void add(FlowBox box) {
+		width = Math.max(width, box.getWidth());
+		height = Math.max(height, box.getBaseline() + box.getDescent());
+	}
 
-/**
- * @see FlowBox#containsPoint(int, int)
- */
-public boolean containsPoint(int x, int y) {
-	return true;
-}
+	/**
+	 * @see FlowBox#containsPoint(int, int)
+	 */
+	public boolean containsPoint(int x, int y) {
+		return true;
+	}
 
-/**
- * @see FlowBox#getAscent()
- */
-public int getAscent() {
-	return 0;
-}
+	/**
+	 * @see FlowBox#getAscent()
+	 */
+	public int getAscent() {
+		return 0;
+	}
 
-/**
- * @see FlowBox#getBaseline()
- */
-public int getBaseline() {
-	return y;
-}
+	/**
+	 * @see FlowBox#getBaseline()
+	 */
+	public int getBaseline() {
+		return y;
+	}
 
-int getBottomMargin() {
-	return owner.getBottomMargin();
-}
+	int getBottomMargin() {
+		return owner.getBottomMargin();
+	}
 
-/**
- * @see FlowBox#getDescent()
- */
-public int getDescent() {
-	return height;
-}
+	/**
+	 * @see FlowBox#getDescent()
+	 */
+	public int getDescent() {
+		return height;
+	}
 
-/**
- * @return Returns the height.
- */
-public int getHeight() {
-	return height;
-}
+	/**
+	 * @return Returns the height.
+	 */
+	public int getHeight() {
+		return height;
+	}
 
-LineRoot getLineRoot() {
-	return null;
-}
+	LineRoot getLineRoot() {
+		return null;
+	}
 
-int getTopMargin() {
-	return owner.getTopMargin();
-}
+	int getTopMargin() {
+		return owner.getTopMargin();
+	}
 
-/**
- * Sets the height.
- * @param h The height
- */
-public void setHeight(int h) {
-	height = h;
-}
+	/**
+	 * Sets the height.
+	 * 
+	 * @param h
+	 *            The height
+	 */
+	public void setHeight(int h) {
+		height = h;
+	}
 
-/**
- * @see CompositeBox#setLineTop(int)
- */
-public void setLineTop(int y) {
-	this.y = y;
-}
+	/**
+	 * @see CompositeBox#setLineTop(int)
+	 */
+	public void setLineTop(int y) {
+		this.y = y;
+	}
 
-Rectangle toRectangle() {
-	return new Rectangle(getX(), y, Math.max(getWidth(), recommendedWidth), height);
-}
+	Rectangle toRectangle() {
+		return new Rectangle(getX(), y, Math.max(getWidth(), recommendedWidth),
+				height);
+	}
 
 }

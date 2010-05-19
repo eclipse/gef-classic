@@ -13,37 +13,42 @@ package org.eclipse.draw2d;
 import java.util.Collection;
 
 /**
- * A <code>TreeSearch</code> that excludes figures contained in a {@link
- * java.util.Collection}.
+ * A <code>TreeSearch</code> that excludes figures contained in a
+ * {@link java.util.Collection}.
+ * 
  * @author hudsonr
  * @since 2.1
  */
 public class ExclusionSearch implements TreeSearch {
 
-private final Collection c;
+	private final Collection c;
 
-/**
- * Constructs an Exclusion search using the given collection.
- * @param collection the exclusion set
- */
-public ExclusionSearch(Collection collection) {
-	this.c = collection;
-}
+	/**
+	 * Constructs an Exclusion search using the given collection.
+	 * 
+	 * @param collection
+	 *            the exclusion set
+	 */
+	public ExclusionSearch(Collection collection) {
+		this.c = collection;
+	}
 
-/**
- * @see org.eclipse.draw2d.TreeSearch#accept(IFigure)
- */
-public boolean accept(IFigure figure) {
-	//Prune is called before accept, so there is no reason to check the collection again.
-	return true;
-}
+	/**
+	 * @see org.eclipse.draw2d.TreeSearch#accept(IFigure)
+	 */
+	public boolean accept(IFigure figure) {
+		// Prune is called before accept, so there is no reason to check the
+		// collection again.
+		return true;
+	}
 
-/**
- * Returns <code>true</code> if the figure is a member of the Collection.
- * @see org.eclipse.draw2d.TreeSearch#prune(IFigure)
- */
-public boolean prune(IFigure f) {
-	return c.contains(f);
-}
+	/**
+	 * Returns <code>true</code> if the figure is a member of the Collection.
+	 * 
+	 * @see org.eclipse.draw2d.TreeSearch#prune(IFigure)
+	 */
+	public boolean prune(IFigure f) {
+		return c.contains(f);
+	}
 
 }

@@ -14,11 +14,13 @@ package org.eclipse.draw2d;
  * A Listener interface for receiving {@link ActionEvent ActionEvents}.
  */
 public interface ActionListener {
-	
-/**
- * Called when the action occurs.
- * @param event The event
- */
-void actionPerformed(ActionEvent event);
+
+	/**
+	 * Called when the action occurs.
+	 * 
+	 * @param event
+	 *            The event
+	 */
+	void actionPerformed(ActionEvent event);
 
 }

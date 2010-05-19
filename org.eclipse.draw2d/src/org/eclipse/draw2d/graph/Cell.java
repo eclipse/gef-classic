@@ -13,13 +13,13 @@ package org.eclipse.draw2d.graph;
 
 public class Cell {
 
-public int index;
+	public int index;
 
-public int rank;
+	public int rank;
 
-public Cell(int rank, int index){
-	this.rank = rank;
-	this.index = index;
-}
+	public Cell(int rank, int index) {
+		this.rank = rank;
+		this.index = index;
+	}
 
 }

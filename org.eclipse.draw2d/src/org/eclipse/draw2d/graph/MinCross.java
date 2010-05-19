@@ -12,53 +12,55 @@ package org.eclipse.draw2d.graph;
 
 /**
  * Sweeps up and down the ranks rearranging them so as to reduce edge crossings.
+ * 
  * @author Randy Hudson
  * @since 2.1.2
  */
 class MinCross extends GraphVisitor {
 
-static final int MAX = 45;
+	static final int MAX = 45;
 
-private DirectedGraph g;
-private RankSorter sorter = new RankSorter();
+	private DirectedGraph g;
+	private RankSorter sorter = new RankSorter();
 
-public MinCross() { }
+	public MinCross() {
+	}
 
-/**
- * @since 3.1
- */
-public MinCross(RankSorter sorter) {
-	setRankSorter(sorter);
-}
+	/**
+	 * @since 3.1
+	 */
+	public MinCross(RankSorter sorter) {
+		setRankSorter(sorter);
+	}
 
-public void setRankSorter(RankSorter sorter) {
-	this.sorter = sorter;
-}
+	public void setRankSorter(RankSorter sorter) {
+		this.sorter = sorter;
+	}
 
-void solve() {
-	Rank rank;
-	for (int loop = 0; loop < MAX; loop++) {
-		for (int row = 1; row < g.ranks.size(); row++) {			
-			rank = g.ranks.getRank(row);
-			sorter.sortRankIncoming(g, rank, row, (double)loop / MAX);
-		}
-		if (loop == MAX - 1)
-			continue;
-		for (int row = g.ranks.size() - 2; row >= 0; row--) {
-			rank = g.ranks.getRank(row);
-			sorter.sortRankOutgoing(g, rank, row, (double)loop / MAX);
+	void solve() {
+		Rank rank;
+		for (int loop = 0; loop < MAX; loop++) {
+			for (int row = 1; row < g.ranks.size(); row++) {
+				rank = g.ranks.getRank(row);
+				sorter.sortRankIncoming(g, rank, row, (double) loop / MAX);
+			}
+			if (loop == MAX - 1)
+				continue;
+			for (int row = g.ranks.size() - 2; row >= 0; row--) {
+				rank = g.ranks.getRank(row);
+				sorter.sortRankOutgoing(g, rank, row, (double) loop / MAX);
+			}
 		}
 	}
-}
 
-/**
- *  @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
- */
-public void visit(DirectedGraph g) {
-	sorter.init(g);
-	this.g = g;
-	solve();
-	sorter.optimize(g);
-}
+	/**
+	 * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
+	 */
+	public void visit(DirectedGraph g) {
+		sorter.init(g);
+		this.g = g;
+		solve();
+		sorter.optimize(g);
+	}
 
 }

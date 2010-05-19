@@ -16,47 +16,48 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * Provides a two pixel wide constant sized border, having an etched look.
  */
-public final class SimpleEtchedBorder
-	extends SchemeBorder
-{
+public final class SimpleEtchedBorder extends SchemeBorder {
 
-/** The singleton instance of this class */
-public static final Border singleton = new SimpleEtchedBorder();
+	/** The singleton instance of this class */
+	public static final Border singleton = new SimpleEtchedBorder();
 
-/** The insets */
-protected static final Insets INSETS = new Insets(2);
+	/** The insets */
+	protected static final Insets INSETS = new Insets(2);
 
-/**
- * Constructs a default border having a two pixel wide border.
- * 
- * @since 2.0 
- */
-protected SimpleEtchedBorder() { }
+	/**
+	 * Constructs a default border having a two pixel wide border.
+	 * 
+	 * @since 2.0
+	 */
+	protected SimpleEtchedBorder() {
+	}
 
-/**
- * Returns the Insets used by this border. This is a constant value of two pixels in each 
- * direction.
- * @see Border#getInsets(IFigure)
- */
-public Insets getInsets(IFigure figure) {
-	return new Insets(INSETS);
-}
+	/**
+	 * Returns the Insets used by this border. This is a constant value of two
+	 * pixels in each direction.
+	 * 
+	 * @see Border#getInsets(IFigure)
+	 */
+	public Insets getInsets(IFigure figure) {
+		return new Insets(INSETS);
+	}
 
-/**
- * Returns the opaque state of this border. This border is opaque and takes responsibility
- * to fill the region it encloses.
- * @see Border#isOpaque()
- */
-public boolean isOpaque() {
-	return true;
-}
+	/**
+	 * Returns the opaque state of this border. This border is opaque and takes
+	 * responsibility to fill the region it encloses.
+	 * 
+	 * @see Border#isOpaque()
+	 */
+	public boolean isOpaque() {
+		return true;
+	}
 
-/**
- * @see Border#paint(IFigure, Graphics, Insets)
- */
-public void paint(IFigure figure, Graphics g, Insets insets) {
-	Rectangle rect = getPaintRectangle(figure, insets);
-	FigureUtilities.paintEtchedBorder(g, rect);
-}
+	/**
+	 * @see Border#paint(IFigure, Graphics, Insets)
+	 */
+	public void paint(IFigure figure, Graphics g, Insets insets) {
+		Rectangle rect = getPaintRectangle(figure, insets);
+		FigureUtilities.paintEtchedBorder(g, rect);
+	}
 
 }

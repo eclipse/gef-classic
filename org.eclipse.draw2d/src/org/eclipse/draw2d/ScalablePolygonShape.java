@@ -16,22 +16,23 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Renders a {@link org.eclipse.draw2d.geometry.PointList} as a polygonal shape 
- * scaled in accordance with bounds to fill whole figure.
- * This class is similar to {@link PolygonShape}, except the polygon should be 
- * scaled expanded/compressed to fit in current bounds. 
+ * Renders a {@link org.eclipse.draw2d.geometry.PointList} as a polygonal shape
+ * scaled in accordance with bounds to fill whole figure. This class is similar
+ * to {@link PolygonShape}, except the polygon should be scaled
+ * expanded/compressed to fit in current bounds.
  * 
  * @since 3.5
  */
 public class ScalablePolygonShape extends AbstractPointListShape {
-	
+
 	private static final Rectangle TEMPLATEBOUNDS = Rectangle.SINGLETON;
-	
+
 	private PointList scaledPoints;
 
 	protected boolean shapeContainsPoint(int x, int y) {
 		Point location = getLocation();
-		return Geometry.polygonContainsPoint(getScaledPoints(), x - location.x, y - location.y);
+		return Geometry.polygonContainsPoint(getScaledPoints(), x - location.x,
+				y - location.y);
 	}
 
 	protected void fillShape(Graphics graphics) {
@@ -47,12 +48,12 @@ public class ScalablePolygonShape extends AbstractPointListShape {
 		graphics.drawPolygon(getScaledPoints());
 		graphics.popState();
 	}
-	
+
 	private Rectangle getTemplateBounds() {
 		TEMPLATEBOUNDS.setLocation(0, 0);
 		TEMPLATEBOUNDS.setSize(0, 0);
 		int[] intArray = points.toIntArray();
-		for (int i = 0; i < intArray.length; ) {
+		for (int i = 0; i < intArray.length;) {
 			int x = intArray[i++];
 			if (x > TEMPLATEBOUNDS.width) {
 				TEMPLATEBOUNDS.width = x;
@@ -64,35 +65,39 @@ public class ScalablePolygonShape extends AbstractPointListShape {
 		}
 		return TEMPLATEBOUNDS;
 	}
-	
+
 	public PointList getScaledPoints() {
 		if (scaledPoints != null) {
 			return scaledPoints;
 		}
 		Rectangle pointsBounds = getTemplateBounds();
 		Rectangle actualBounds = getBounds();
-		double xScale = actualBounds.width > lineWidth ? ((double) actualBounds.width - lineWidth) / pointsBounds.width : 0;
-		double yScale = actualBounds.height > lineWidth ? ((double) actualBounds.height - lineWidth) / pointsBounds.height : 0;
+		double xScale = actualBounds.width > lineWidth ? ((double) actualBounds.width - lineWidth)
+				/ pointsBounds.width
+				: 0;
+		double yScale = actualBounds.height > lineWidth ? ((double) actualBounds.height - lineWidth)
+				/ pointsBounds.height
+				: 0;
 		double halfLineWidth = ((double) lineWidth) / 2;
 
 		int[] pointsArray = points.getCopy().toIntArray();
 		for (int i = 0; i < pointsArray.length; i = i + 2) {
 			pointsArray[i] = (int) (Math.floor(pointsArray[i] * xScale) + halfLineWidth);
-			pointsArray[i + 1] = (int) (Math.floor(pointsArray[i + 1] * yScale) + halfLineWidth);	
+			pointsArray[i + 1] = (int) (Math.floor(pointsArray[i + 1] * yScale) + halfLineWidth);
 		}
 		return scaledPoints = new PointList(pointsArray);
 	}
-	
+
 	public void addPoint(Point pt) {
 		scaledPoints = null;
 		super.addPoint(pt);
 	}
-	
+
 	public void insertPoint(Point pt, int index) {
 		scaledPoints = null;
 		super.insertPoint(pt, index);
 	}
-	
+
 	public void removeAllPoints() {
 		scaledPoints = null;
 		super.removeAllPoints();
@@ -102,32 +107,32 @@ public class ScalablePolygonShape extends AbstractPointListShape {
 		scaledPoints = null;
 		super.removePoint(index);
 	}
-	
+
 	public void setStart(Point start) {
 		scaledPoints = null;
 		super.setStart(start);
 	}
-	
+
 	public void setEnd(Point end) {
 		scaledPoints = null;
 		super.setEnd(end);
 	}
-	
+
 	public void setPoint(Point pt, int index) {
 		scaledPoints = null;
 		super.setPoint(pt, index);
 	}
-	
+
 	public void setPoints(PointList points) {
 		scaledPoints = null;
 		super.setPoints(points);
 	}
-	
+
 	public void setBounds(Rectangle rect) {
 		scaledPoints = null;
 		super.setBounds(rect);
 	}
-	
+
 	public void setLineWidth(int w) {
 		scaledPoints = null;
 		super.setLineWidth(w);

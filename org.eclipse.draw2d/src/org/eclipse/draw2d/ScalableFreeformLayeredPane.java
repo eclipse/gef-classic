@@ -17,93 +17,95 @@ import org.eclipse.draw2d.geometry.Translatable;
  * @author hudsonr
  * @since 2.1
  */
-public class ScalableFreeformLayeredPane 
-	extends FreeformLayeredPane 
-	implements ScalableFigure
-{
+public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements
+		ScalableFigure {
 
-private double scale = 1.0;
+	private double scale = 1.0;
 
-/**
- * @see org.eclipse.draw2d.Figure#getClientArea()
- */
-public Rectangle getClientArea(Rectangle rect) {
-	super.getClientArea(rect);
-	rect.width /= scale;
-	rect.height /= scale;
-	rect.x /= scale;
-	rect.y /= scale;
-	return rect;
-}
-
-/**
- * Returns the current zoom scale level.
- * @return the scale
- */
-public double getScale() {
-	return scale;
-}
-
-/**
- * @see org.eclipse.draw2d.IFigure#isCoordinateSystem()
- */
-public boolean isCoordinateSystem() {
-	return true;
-}
-
-/**
- * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
- */
-protected void paintClientArea(Graphics graphics) {
-	if (getChildren().isEmpty())
-		return;
-	if (scale == 1.0) {
-		super.paintClientArea(graphics);
-	} else {
-		ScaledGraphics g = new ScaledGraphics(graphics);
-		boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
-		if (!optimizeClip)
-			g.clipRect(getBounds().getCropped(getInsets()));
-		g.scale(scale);
-		g.pushState();
-		paintChildren(g);
-		g.dispose();
-		graphics.restoreState();
+	/**
+	 * @see org.eclipse.draw2d.Figure#getClientArea()
+	 */
+	public Rectangle getClientArea(Rectangle rect) {
+		super.getClientArea(rect);
+		rect.width /= scale;
+		rect.height /= scale;
+		rect.x /= scale;
+		rect.y /= scale;
+		return rect;
 	}
-}
 
-/**
- * Sets the zoom level
- * @param newZoom The new zoom level
- */
-public void setScale(double newZoom) {
-	if (scale == newZoom)
-		return;
-	scale = newZoom;
-	superFireMoved(); //For AncestorListener compatibility
-	getFreeformHelper().invalidate();
-	repaint();
-}
+	/**
+	 * Returns the current zoom scale level.
+	 * 
+	 * @return the scale
+	 */
+	public double getScale() {
+		return scale;
+	}
 
-/**
- * @see org.eclipse.draw2d.Figure#translateToParent(Translatable)
- */
-public void translateToParent(Translatable t) {
-	t.performScale(scale);
-}
+	/**
+	 * @see org.eclipse.draw2d.IFigure#isCoordinateSystem()
+	 */
+	public boolean isCoordinateSystem() {
+		return true;
+	}
 
-/**
- * @see org.eclipse.draw2d.Figure#translateFromParent(Translatable)
- */
-public void translateFromParent(Translatable t) {
-	t.performScale(1 / scale);
-}
+	/**
+	 * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
+	 */
+	protected void paintClientArea(Graphics graphics) {
+		if (getChildren().isEmpty())
+			return;
+		if (scale == 1.0) {
+			super.paintClientArea(graphics);
+		} else {
+			ScaledGraphics g = new ScaledGraphics(graphics);
+			boolean optimizeClip = getBorder() == null
+					|| getBorder().isOpaque();
+			if (!optimizeClip)
+				g.clipRect(getBounds().getCropped(getInsets()));
+			g.scale(scale);
+			g.pushState();
+			paintChildren(g);
+			g.dispose();
+			graphics.restoreState();
+		}
+	}
 
-/**
- * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
- */
-protected final boolean useLocalCoordinates() {
-	return false;
-}
+	/**
+	 * Sets the zoom level
+	 * 
+	 * @param newZoom
+	 *            The new zoom level
+	 */
+	public void setScale(double newZoom) {
+		if (scale == newZoom)
+			return;
+		scale = newZoom;
+		superFireMoved(); // For AncestorListener compatibility
+		getFreeformHelper().invalidate();
+		repaint();
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.Figure#translateToParent(Translatable)
+	 */
+	public void translateToParent(Translatable t) {
+		t.performScale(scale);
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.Figure#translateFromParent(Translatable)
+	 */
+	public void translateFromParent(Translatable t) {
+		t.performScale(1 / scale);
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
+	 */
+	protected final boolean useLocalCoordinates() {
+		return false;
+	}
 
 }

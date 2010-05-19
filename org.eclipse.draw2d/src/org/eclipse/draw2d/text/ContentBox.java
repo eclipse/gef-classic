@@ -18,53 +18,56 @@ package org.eclipse.draw2d.text;
  */
 public abstract class ContentBox extends FlowBox {
 
-private int bidiLevel = -1;
-private LineRoot lineRoot;
+	private int bidiLevel = -1;
+	private LineRoot lineRoot;
 
-/**
- * @see FlowBox#getBaseline()
- */
-public int getBaseline() {
-	return lineRoot.getBaseline();
-}
+	/**
+	 * @see FlowBox#getBaseline()
+	 */
+	public int getBaseline() {
+		return lineRoot.getBaseline();
+	}
 
-/**
- * @return the Bidi level of this box, if one has been set; -1 otherwise
- * @see #setBidiLevel(int)
- */
-public int getBidiLevel() {
-	return bidiLevel;
-}
+	/**
+	 * @return the Bidi level of this box, if one has been set; -1 otherwise
+	 * @see #setBidiLevel(int)
+	 */
+	public int getBidiLevel() {
+		return bidiLevel;
+	}
 
-/**
- * @see org.eclipse.draw2d.text.FlowBox#getLineRoot()
- */
-LineRoot getLineRoot() {
-	return lineRoot;
-}
+	/**
+	 * @see org.eclipse.draw2d.text.FlowBox#getLineRoot()
+	 */
+	LineRoot getLineRoot() {
+		return lineRoot;
+	}
 
-/**
- * Returns <code>true</code> if the bidi level for this box is specified, and is not the
- * default level (0).
- * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
- */
-public boolean requiresBidi() {
-	return bidiLevel > 0;
-}
+	/**
+	 * Returns <code>true</code> if the bidi level for this box is specified,
+	 * and is not the default level (0).
+	 * 
+	 * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
+	 */
+	public boolean requiresBidi() {
+		return bidiLevel > 0;
+	}
 
-/**
- * Sets the Bidi level of this fragment.  It is used to rearrange fragments as defined
- * by the Unicode Bi-directional algorithm.  Valid values are -1 (meaning no Bidi level),
- * or any non-negative integer less than 62.
- * @param newLevel the new BidiLevel
- * @see #getBidiLevel()
- */
-public void setBidiLevel(int newLevel) {
-	bidiLevel = newLevel;
-}
+	/**
+	 * Sets the Bidi level of this fragment. It is used to rearrange fragments
+	 * as defined by the Unicode Bi-directional algorithm. Valid values are -1
+	 * (meaning no Bidi level), or any non-negative integer less than 62.
+	 * 
+	 * @param newLevel
+	 *            the new BidiLevel
+	 * @see #getBidiLevel()
+	 */
+	public void setBidiLevel(int newLevel) {
+		bidiLevel = newLevel;
+	}
 
-void setLineRoot(LineRoot root) {
-	this.lineRoot = root;
-}
+	void setLineRoot(LineRoot root) {
+		this.lineRoot = root;
+	}
 
 }

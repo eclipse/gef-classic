@@ -11,27 +11,29 @@
 package org.eclipse.draw2d;
 
 /**
- * The base class for accessible objects which provides accesibilty clients with a unique
- * ID.
+ * The base class for accessible objects which provides accesibilty clients with
+ * a unique ID.
  */
 public class AccessibleBase {
 
-/**
- * Returns the id of this accessible object using {@link Object#hashCode()}.  
- * @return the id
- */
-public final int getAccessibleID() {
-	/* This assumes that the native implementation of hashCode in Object is to
-	 * return the pointer to the Object, which should be U-unique.
+	/**
+	 * Returns the id of this accessible object using {@link Object#hashCode()}.
+	 * 
+	 * @return the id
 	 */
-	int value = super.hashCode();
-	/*
-	 * Values -3, -2, and -1 are reserved by SWT's ACC class to have special meaning.
-	 * Therefore, a child cannot have this value.
-	 */
-	if (value < 0)
-		value -= 4;
-	return value;
-}
+	public final int getAccessibleID() {
+		/*
+		 * This assumes that the native implementation of hashCode in Object is
+		 * to return the pointer to the Object, which should be U-unique.
+		 */
+		int value = super.hashCode();
+		/*
+		 * Values -3, -2, and -1 are reserved by SWT's ACC class to have special
+		 * meaning. Therefore, a child cannot have this value.
+		 */
+		if (value < 0)
+			value -= 4;
+		return value;
+	}
 
 }

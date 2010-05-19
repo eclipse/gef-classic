@@ -12,50 +12,49 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.Point;
 
-
 /**
- * A transparent figure intended to be added exclusively to a {@link LayeredPane}, who has
- * the responsibilty of managing its layers. 
+ * A transparent figure intended to be added exclusively to a
+ * {@link LayeredPane}, who has the responsibilty of managing its layers.
  */
-public class Layer
-	extends Figure
-{
+public class Layer extends Figure {
 
-/**
- * Overridden to implement transparent behavior.
- * @see IFigure#containsPoint(int, int)
- * 
- */
-public boolean containsPoint(int x, int y) {
-	if (isOpaque())
-		return super.containsPoint(x, y);
-	Point pt = Point.SINGLETON;
-	pt.setLocation(x, y);
-	translateFromParent(pt);
-	x = pt.x;
-	y = pt.y;
-	for (int i = 0; i < getChildren().size(); i++) {
-		IFigure child = (IFigure)getChildren().get(i);
-		if (child.containsPoint(x, y))
-			return true;
+	/**
+	 * Overridden to implement transparent behavior.
+	 * 
+	 * @see IFigure#containsPoint(int, int)
+	 * 
+	 */
+	public boolean containsPoint(int x, int y) {
+		if (isOpaque())
+			return super.containsPoint(x, y);
+		Point pt = Point.SINGLETON;
+		pt.setLocation(x, y);
+		translateFromParent(pt);
+		x = pt.x;
+		y = pt.y;
+		for (int i = 0; i < getChildren().size(); i++) {
+			IFigure child = (IFigure) getChildren().get(i);
+			if (child.containsPoint(x, y))
+				return true;
+		}
+		return false;
 	}
-	return false;
-}
 
-/**
- * Overridden to implement transparency.
- * @see IFigure#findFigureAt(int, int, TreeSearch)
- */
-public IFigure findFigureAt(int x, int y, TreeSearch search) {
-	if (!isEnabled())
-		return null;
-	if (isOpaque())
-		return super.findFigureAt(x, y, search);
+	/**
+	 * Overridden to implement transparency.
+	 * 
+	 * @see IFigure#findFigureAt(int, int, TreeSearch)
+	 */
+	public IFigure findFigureAt(int x, int y, TreeSearch search) {
+		if (!isEnabled())
+			return null;
+		if (isOpaque())
+			return super.findFigureAt(x, y, search);
 
-	IFigure f = super.findFigureAt(x, y, search);
-	if (f == this)
-		return null;
-	return f;
-}
+		IFigure f = super.findFigureAt(x, y, search);
+		if (f == this)
+			return null;
+		return f;
+	}
 
 }

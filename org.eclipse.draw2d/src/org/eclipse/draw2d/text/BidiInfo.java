@@ -13,24 +13,27 @@ package org.eclipse.draw2d.text;
 
 /**
  * This class is for INTERNAL use only.
+ * 
  * @since 3.1
  */
 public class BidiInfo {
 
-/**
- * Odd-sized array consisting of bidi levels, interleaved with the offsets at which levels
- * change.
- */
-public int[] levelInfo;
+	/**
+	 * Odd-sized array consisting of bidi levels, interleaved with the offsets
+	 * at which levels change.
+	 */
+	public int[] levelInfo;
 
-/**
- * Indicates if the ZWJ character needs to be prepended to text being rendered.
- */
-public boolean leadingJoiner;
+	/**
+	 * Indicates if the ZWJ character needs to be prepended to text being
+	 * rendered.
+	 */
+	public boolean leadingJoiner;
 
-/**
- * Indicates if the ZRJ character needs to be appended to the text being rendered..
- */
-public boolean trailingJoiner;
+	/**
+	 * Indicates if the ZRJ character needs to be appended to the text being
+	 * rendered..
+	 */
+	public boolean trailingJoiner;
 
 }

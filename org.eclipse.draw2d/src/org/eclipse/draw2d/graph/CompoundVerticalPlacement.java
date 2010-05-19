@@ -11,25 +11,25 @@
 package org.eclipse.draw2d.graph;
 
 /**
- * calculates the height and y-coordinates for nodes and subgraphs in a compound directed
- * graph.
+ * calculates the height and y-coordinates for nodes and subgraphs in a compound
+ * directed graph.
+ * 
  * @author Randy Hudson
  * @since 2.1.2
  */
 class CompoundVerticalPlacement extends VerticalPlacement {
 
-/**
- * @see GraphVisitor#visit(DirectedGraph)
- * Extended to set subgraph values.
- */
-void visit(DirectedGraph dg) {
-	CompoundDirectedGraph g = (CompoundDirectedGraph)dg;
-	super.visit(g);
-	for (int i = 0; i < g.subgraphs.size(); i++) {
-		Subgraph s = (Subgraph)g.subgraphs.get(i);
-		s.y = s.head.y;
-		s.height = s.tail.height + s.tail.y - s.y;
+	/**
+	 * @see GraphVisitor#visit(DirectedGraph) Extended to set subgraph values.
+	 */
+	void visit(DirectedGraph dg) {
+		CompoundDirectedGraph g = (CompoundDirectedGraph) dg;
+		super.visit(g);
+		for (int i = 0; i < g.subgraphs.size(); i++) {
+			Subgraph s = (Subgraph) g.subgraphs.get(i);
+			s.y = s.head.y;
+			s.height = s.tail.height + s.tail.y - s.y;
+		}
 	}
-}
 
 }

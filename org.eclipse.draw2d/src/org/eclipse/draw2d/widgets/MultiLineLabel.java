@@ -34,157 +34,165 @@ import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.TextFlow;
 
 /**
- * A widget for displaying a multi-line string. The label will have a vertical or
- * horizontal scrollbar when needed. Unlike the platform Label, this label is focusable
- * and accessible to screen-readers.
+ * A widget for displaying a multi-line string. The label will have a vertical
+ * or horizontal scrollbar when needed. Unlike the platform Label, this label is
+ * focusable and accessible to screen-readers.
  * 
  * @author hudsonr
  */
 public final class MultiLineLabel extends FigureCanvas {
 
-private TextFlow textFlow;
-static final Border MARGIN = new MarginBorder(2);
-private Image image;
+	private TextFlow textFlow;
+	static final Border MARGIN = new MarginBorder(2);
+	private Image image;
 
-class FocusableViewport extends Viewport {
-	FocusableViewport() {
-		super(true);
-		setFocusTraversable(true);
-		setBorder(MARGIN);
-	}
-	
-	public void handleFocusGained(FocusEvent event) {
-		super.handleFocusGained(event);
-		repaint();
-	}
-
-	public void handleFocusLost(FocusEvent event) {
-		super.handleFocusLost(event);
-		repaint();
-	}
-
-	protected void paintBorder(Graphics graphics) {
-		super.paintBorder(graphics);
-		if (hasFocus()) {
-			graphics.setForegroundColor(ColorConstants.black);
-			graphics.setBackgroundColor(ColorConstants.white);
-			graphics.drawFocus(getBounds().getResized(-1, -1));
+	class FocusableViewport extends Viewport {
+		FocusableViewport() {
+			super(true);
+			setFocusTraversable(true);
+			setBorder(MARGIN);
 		}
-	}
-}
 
-/**
- * Constructs a new MultiLineLabel with the given parent.
- * @param parent the parent
- */
-public MultiLineLabel(Composite parent) {
-	super(parent);
-	setViewport(new FocusableViewport());
-	
-	FlowPage page = new FlowPage();
-	textFlow = new TextFlow();
-	page.add(textFlow);
+		public void handleFocusGained(FocusEvent event) {
+			super.handleFocusGained(event);
+			repaint();
+		}
 
-	setContents(page);
-	getViewport().setContentsTracksWidth(true);
-	addAccessibility();
-}
+		public void handleFocusLost(FocusEvent event) {
+			super.handleFocusLost(event);
+			repaint();
+		}
 
-private void addAccessibility() {
-	getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
-		public void getRole(AccessibleControlEvent e) {
-			e.detail = ACC.ROLE_LABEL;
-		}
-		public void getState(AccessibleControlEvent e) {
-			e.detail = ACC.STATE_READONLY;
-		}
-	});
-	getAccessible().addAccessibleListener(new AccessibleAdapter() {
-		public void getName(AccessibleEvent e) {
-			e.result = getText();
-		}
-	});
-	addKeyListener(new KeyAdapter() {
-		public void keyPressed(KeyEvent e) {
-			Point p = getViewport().getViewLocation();
-			int dy = getFont().getFontData()[0].getHeight();
-			int dx = dy * 3 / 2;
-			boolean mirrored = (e.widget.getStyle() & SWT.MIRRORED) != 0;
-			if (e.keyCode == SWT.ARROW_DOWN) {
-				scrollToY(p.y + dy / 2);
-				scrollToY(p.y + dy);
-				scrollToY(p.y + dy * 3 / 2);
-				scrollToY(p.y + dy * 2);
-			} else if (e.keyCode == SWT.ARROW_UP) {
-				scrollToY(p.y - dy / 2);
-				scrollToY(p.y - dy);
-				scrollToY(p.y - dy * 3 / 2);
-				scrollToY(p.y - dy * 2);
-			} else if ((!mirrored && e.keyCode == SWT.ARROW_RIGHT) 
-					|| (mirrored && e.keyCode == SWT.ARROW_LEFT)) {
-				scrollToX(p.x + dx);
-				scrollToX(p.x + dx * 2);
-				scrollToX(p.x + dx * 3);
-			} else if ((!mirrored && e.keyCode == SWT.ARROW_LEFT)
-					|| (mirrored && e.keyCode == SWT.ARROW_RIGHT)) {
-				scrollToX(p.x - dx);
-				scrollToX(p.x - dx * 2);
-				scrollToX(p.x - dx * 3);
+		protected void paintBorder(Graphics graphics) {
+			super.paintBorder(graphics);
+			if (hasFocus()) {
+				graphics.setForegroundColor(ColorConstants.black);
+				graphics.setBackgroundColor(ColorConstants.white);
+				graphics.drawFocus(getBounds().getResized(-1, -1));
 			}
 		}
-	});
-}
+	}
 
-/**
- * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
- */
-public void setEnabled(boolean enabled) {
-	super.setEnabled(enabled);
-	textFlow.setEnabled(getEnabled());
-}
+	/**
+	 * Constructs a new MultiLineLabel with the given parent.
+	 * 
+	 * @param parent
+	 *            the parent
+	 */
+	public MultiLineLabel(Composite parent) {
+		super(parent);
+		setViewport(new FocusableViewport());
 
-/**
- * @return the Image for this label, or <code>null</code> if there is none
- * @see #setImage(Image)
- */
-public Image getImage() {
-	return image;
-}
+		FlowPage page = new FlowPage();
+		textFlow = new TextFlow();
+		page.add(textFlow);
 
-/**
- * Returns the text in this label.
- * @return the text
- */
-public String getText() {
-	return textFlow.getText();
-}
+		setContents(page);
+		getViewport().setContentsTracksWidth(true);
+		addAccessibility();
+	}
 
-/**
- * @see org.eclipse.swt.widgets.Canvas#setFont(org.eclipse.swt.graphics.Font)
- */
-public void setFont(Font font) {
-	super.setFont(font);
-	textFlow.revalidate();
-}
+	private void addAccessibility() {
+		getAccessible().addAccessibleControlListener(
+				new AccessibleControlAdapter() {
+					public void getRole(AccessibleControlEvent e) {
+						e.detail = ACC.ROLE_LABEL;
+					}
 
-/**
- * @param	image	The <code>Image</code> to be used for this label.  It can be 
- * 					<code>null</code>.
- */
-public void setImage(Image image) {
-	this.image = image;
-	if (image != null)
-		setBorder(new ImageBorder(image));
-	else
-		setBorder(null);
-}
+					public void getState(AccessibleControlEvent e) {
+						e.detail = ACC.STATE_READONLY;
+					}
+				});
+		getAccessible().addAccessibleListener(new AccessibleAdapter() {
+			public void getName(AccessibleEvent e) {
+				e.result = getText();
+			}
+		});
+		addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				Point p = getViewport().getViewLocation();
+				int dy = getFont().getFontData()[0].getHeight();
+				int dx = dy * 3 / 2;
+				boolean mirrored = (e.widget.getStyle() & SWT.MIRRORED) != 0;
+				if (e.keyCode == SWT.ARROW_DOWN) {
+					scrollToY(p.y + dy / 2);
+					scrollToY(p.y + dy);
+					scrollToY(p.y + dy * 3 / 2);
+					scrollToY(p.y + dy * 2);
+				} else if (e.keyCode == SWT.ARROW_UP) {
+					scrollToY(p.y - dy / 2);
+					scrollToY(p.y - dy);
+					scrollToY(p.y - dy * 3 / 2);
+					scrollToY(p.y - dy * 2);
+				} else if ((!mirrored && e.keyCode == SWT.ARROW_RIGHT)
+						|| (mirrored && e.keyCode == SWT.ARROW_LEFT)) {
+					scrollToX(p.x + dx);
+					scrollToX(p.x + dx * 2);
+					scrollToX(p.x + dx * 3);
+				} else if ((!mirrored && e.keyCode == SWT.ARROW_LEFT)
+						|| (mirrored && e.keyCode == SWT.ARROW_RIGHT)) {
+					scrollToX(p.x - dx);
+					scrollToX(p.x - dx * 2);
+					scrollToX(p.x - dx * 3);
+				}
+			}
+		});
+	}
 
-/**
- * Sets the text for this label.
- * @param text the new text
- */
-public void setText(String text) {
-	textFlow.setText(text);
-}
+	/**
+	 * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
+	 */
+	public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		textFlow.setEnabled(getEnabled());
+	}
+
+	/**
+	 * @return the Image for this label, or <code>null</code> if there is none
+	 * @see #setImage(Image)
+	 */
+	public Image getImage() {
+		return image;
+	}
+
+	/**
+	 * Returns the text in this label.
+	 * 
+	 * @return the text
+	 */
+	public String getText() {
+		return textFlow.getText();
+	}
+
+	/**
+	 * @see org.eclipse.swt.widgets.Canvas#setFont(org.eclipse.swt.graphics.Font)
+	 */
+	public void setFont(Font font) {
+		super.setFont(font);
+		textFlow.revalidate();
+	}
+
+	/**
+	 * @param image
+	 *            The <code>Image</code> to be used for this label. It can be
+	 *            <code>null</code>.
+	 */
+	public void setImage(Image image) {
+		this.image = image;
+		if (image != null)
+			setBorder(new ImageBorder(image));
+		else
+			setBorder(null);
+	}
+
+	/**
+	 * Sets the text for this label.
+	 * 
+	 * @param text
+	 *            the new text
+	 */
+	public void setText(String text) {
+		textFlow.setText(text);
+	}
 
 }

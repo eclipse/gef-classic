@@ -15,20 +15,22 @@ import org.eclipse.draw2d.geometry.Point;
 /**
  * An IFigure that can be rotated.
  */
-public interface RotatableDecoration
-	extends IFigure
-{
+public interface RotatableDecoration extends IFigure {
 
-/**
- * Sets the location of this figure.
- * @param p The location
- */
-void setLocation(Point p);
+	/**
+	 * Sets the location of this figure.
+	 * 
+	 * @param p
+	 *            The location
+	 */
+	void setLocation(Point p);
 
-/**
- * Sets the reference point used to determine the rotation angle.
- * @param p The reference point
- */
-void setReferencePoint(Point p);
+	/**
+	 * Sets the reference point used to determine the rotation angle.
+	 * 
+	 * @param p
+	 *            The reference point
+	 */
+	void setReferencePoint(Point p);
 
 }

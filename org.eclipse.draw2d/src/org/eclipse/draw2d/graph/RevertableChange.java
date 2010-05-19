@@ -16,6 +16,7 @@ package org.eclipse.draw2d.graph;
  */
 class RevertableChange {
 
-void revert() { }
+	void revert() {
+	}
 
 }

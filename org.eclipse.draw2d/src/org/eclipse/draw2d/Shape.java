@@ -13,43 +13,43 @@ package org.eclipse.draw2d;
 import org.eclipse.swt.graphics.LineAttributes;
 
 /**
- * Provides abstract support for a variety of shapes.  
+ * Provides abstract support for a variety of shapes.
  * <p>
- * When customizing shapes, you shouldn't override paintFigure().  Override fillShape() 
- * and outlineShape() methods instead.
+ * When customizing shapes, you shouldn't override paintFigure(). Override
+ * fillShape() and outlineShape() methods instead.
  */
 public abstract class Shape extends Figure {
-	
+
 	/**
 	 * The width of this shape's outline.
 	 */
 	protected int lineWidth;
-	
+
 	/**
-	 * Private copy of lineWidth field to track changes.
-	 * We cannot compare to the float line width because rounding 
-	 * may make them seem equal when they have actually changed.
+	 * Private copy of lineWidth field to track changes. We cannot compare to
+	 * the float line width because rounding may make them seem equal when they
+	 * have actually changed.
 	 * 
-	 * e.g. someone sets int line width to 5, when float line width
-	 * was already 5.4, float line width should change to 5.0, but comparing
-	 * them as ints would suggest there's no change to synchronize. 
+	 * e.g. someone sets int line width to 5, when float line width was already
+	 * 5.4, float line width should change to 5.0, but comparing them as ints
+	 * would suggest there's no change to synchronize.
 	 */
 	private int lastLineWidth;
-	
+
 	/**
 	 * The line style to be used for this shape's outline.
 	 */
 	protected int lineStyle;
 
 	private LineAttributes lineAttributes;
-	
+
 	private boolean fill;
 	private boolean outline;
 	private boolean xorFill;
 	private boolean xorOutline;
 	private Integer antialias;
 	private Integer alpha;
-	
+
 	/**
 	 * Default constructor.
 	 * 
@@ -65,86 +65,95 @@ public abstract class Shape extends Figure {
 		alpha = null;
 
 		// synchronize parameters
-		lineWidth = (int)lineAttributes.width;
+		lineWidth = (int) lineAttributes.width;
 		lineStyle = lineAttributes.style;
 		lastLineWidth = lineWidth;
 	}
-	
+
 	/**
 	 * Fills the interior of the shape with the background color.
-	 * @param graphics the graphics object
+	 * 
+	 * @param graphics
+	 *            the graphics object
 	 */
 	protected abstract void fillShape(Graphics graphics);
-	
+
 	/**
 	 * Outlines this shape using the foreground color.
-	 * @param graphics the graphics object
+	 * 
+	 * @param graphics
+	 *            the graphics object
 	 */
 	protected abstract void outlineShape(Graphics graphics);
-	
+
 	/**
-	 * Paints the shape. Each shape has an outline to draw, and a region to fill within that 
-	 * outline. Disabled shapes must visually depict the disabled state. 
+	 * Paints the shape. Each shape has an outline to draw, and a region to fill
+	 * within that outline. Disabled shapes must visually depict the disabled
+	 * state.
 	 * 
 	 * @see Figure#paintFigure(Graphics)
 	 */
 	public void paintFigure(Graphics graphics) {
-		if(antialias != null) {
+		if (antialias != null) {
 			graphics.setAntialias(antialias.intValue());
 		}
-		if(alpha != null) {
+		if (alpha != null) {
 			graphics.setAlpha(alpha.intValue());
 		}
-		//graphics.rotate(rotation);
+		// graphics.rotate(rotation);
 
-		/* see bug #267397: paintFigure was historically not called, disabling
-		 * setOpaque() behavior, and it was decided to defend the API's consistency.
+		/*
+		 * see bug #267397: paintFigure was historically not called, disabling
+		 * setOpaque() behavior, and it was decided to defend the API's
+		 * consistency.
 		 */
-		// paint background and border 
+		// paint background and border
 		// super.paintFigure(graphics);
-			
+
 		if (!isEnabled()) {
 			graphics.translate(1, 1);
 			graphics.setBackgroundColor(ColorConstants.buttonLightest);
 			graphics.setForegroundColor(ColorConstants.buttonLightest);
-			
+
 			if (fill) {
 				paintFill(graphics);
 			}
-			
+
 			if (outline) {
 				paintOutline(graphics);
 			}
-			
+
 			graphics.setBackgroundColor(ColorConstants.buttonDarker);
 			graphics.setForegroundColor(ColorConstants.buttonDarker);
 			graphics.translate(-1, -1);
 		}
-		
+
 		if (fill) {
 			paintFill(graphics);
 		}
-		
+
 		if (outline) {
 			paintOutline(graphics);
 		}
 	}
-	
+
 	private void paintOutline(Graphics graphics) {
 		// synchronize the line width and style attributes to the
 		// public fields which may have been assigned
 		// to without our knowledge
 		lineAttributes.width = getLineWidthFloat();
 		lineAttributes.style = getLineStyle();
-		
+
 		graphics.setLineAttributes(lineAttributes);
 
-		if(xorOutline) {
+		if (xorOutline) {
 			/*
-			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on windows)
+			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on
+			 * windows)
 			 * 
-			 * Also, XORMode is deprecated in SWT, so this should really be removed completely
-			 * at some point.  XORMode isn't supported on Mac OSX at all.
+			 * Also, XORMode is deprecated in SWT, so this should really be
+			 * removed completely at some point. XORMode isn't supported on Mac
+			 * OSX at all.
 			 */
 			boolean oldAdv = graphics.getAdvanced();
 			graphics.setAdvanced(false);
@@ -155,14 +164,16 @@ public abstract class Shape extends Figure {
 			outlineShape(graphics);
 		}
 	}
-	
+
 	private void paintFill(Graphics graphics) {
-		if(xorFill) {
+		if (xorFill) {
 			/*
-			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on windows)
+			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on
+			 * windows)
 			 * 
-			 * Also, XORMode is deprecated in SWT, so this should really be removed completely
-			 * at some point.  XORMode isn't supported on Mac OSX at all.
+			 * Also, XORMode is deprecated in SWT, so this should really be
+			 * removed completely at some point. XORMode isn't supported on Mac
+			 * OSX at all.
 			 */
 			boolean oldAdv = graphics.getAdvanced();
 			graphics.setAdvanced(false);
@@ -173,11 +184,13 @@ public abstract class Shape extends Figure {
 			fillShape(graphics);
 		}
 	}
-	
+
 	/**
-	 * Sets whether this shape should fill its region or not. It repaints this figure.
-	 *
-	 * @param b fill state
+	 * Sets whether this shape should fill its region or not. It repaints this
+	 * figure.
+	 * 
+	 * @param b
+	 *            fill state
 	 * @since 2.0
 	 */
 	public void setFill(boolean b) {
@@ -186,11 +199,13 @@ public abstract class Shape extends Figure {
 			repaint();
 		}
 	}
-	
+
 	/**
-	 * Sets whether XOR based fill should be used by the shape. It repaints this figure.
-	 *
-	 * @param b XOR fill state
+	 * Sets whether XOR based fill should be used by the shape. It repaints this
+	 * figure.
+	 * 
+	 * @param b
+	 *            XOR fill state
 	 * @since 2.0
 	 */
 	public void setFillXOR(boolean b) {
@@ -199,11 +214,12 @@ public abstract class Shape extends Figure {
 			repaint();
 		}
 	}
-	
+
 	/**
 	 * Sets whether the outline should be drawn for this shape.
-	 *
-	 * @param b <code>true</code> if the shape should be outlined
+	 * 
+	 * @param b
+	 *            <code>true</code> if the shape should be outlined
 	 * @since 2.0
 	 */
 	public void setOutline(boolean b) {
@@ -212,11 +228,12 @@ public abstract class Shape extends Figure {
 			repaint();
 		}
 	}
-	
+
 	/**
 	 * Sets whether XOR based outline should be used for this shape.
-	 *
-	 * @param b <code>true</code> if the outline should be XOR'ed
+	 * 
+	 * @param b
+	 *            <code>true</code> if the outline should be XOR'ed
 	 * @since 2.0
 	 */
 	public void setOutlineXOR(boolean b) {
@@ -225,18 +242,20 @@ public abstract class Shape extends Figure {
 			repaint();
 		}
 	}
-	
+
 	/**
-	 * Sets whether XOR based fill and XOR based outline should be used for this shape.
-	 *
-	 * @param b <code>true</code> if the outline and fill should be XOR'ed
+	 * Sets whether XOR based fill and XOR based outline should be used for this
+	 * shape.
+	 * 
+	 * @param b
+	 *            <code>true</code> if the outline and fill should be XOR'ed
 	 * @since 2.0
 	 */
 	public void setXOR(boolean b) {
 		xorOutline = xorFill = b;
 		repaint();
 	}
-	
+
 	/**
 	 * @since 3.5
 	 */
@@ -250,12 +269,13 @@ public abstract class Shape extends Figure {
 	public Integer getAntialias() {
 		return antialias;
 	}
-	
+
 	/**
 	 * Returns line attributes used when drawing this shape.
- 	 * @see org.eclipse.swt.graphics.LineAttributes
- 	 * 
-	 * Performance note: creates and returns a clone.
+	 * 
+	 * @see org.eclipse.swt.graphics.LineAttributes
+	 * 
+	 *      Performance note: creates and returns a clone.
 	 * 
 	 * @return current line attributes
 	 * @since 3.5
@@ -272,16 +292,17 @@ public abstract class Shape extends Figure {
 	public int getLineWidth() {
 		// synchronize lineWidth field for
 		// backwards compatibility
-		if(lineWidth != lastLineWidth) {
+		if (lineWidth != lastLineWidth) {
 			lineAttributes.width = lineWidth;
 			lastLineWidth = lineWidth;
 		}
-		
-		return (int)lineAttributes.width;
+
+		return (int) lineAttributes.width;
 	}
-	
+
 	/**
 	 * Returns the line width of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#width
 	 * 
 	 * @since 3.5
@@ -289,16 +310,17 @@ public abstract class Shape extends Figure {
 	public float getLineWidthFloat() {
 		// synchronize lineWidth field for
 		// backwards compatibility
-		if(lineWidth != lastLineWidth) {
+		if (lineWidth != lastLineWidth) {
 			lineAttributes.width = lineWidth;
 			lastLineWidth = lineWidth;
 		}
-		
+
 		return lineAttributes.width;
 	}
-	
+
 	/**
 	 * Returns the line join style of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#join
 	 * 
 	 * @since 3.5
@@ -309,6 +331,7 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line cap style of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#cap
 	 * 
 	 * @since 3.5
@@ -319,6 +342,7 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line style of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#style
 	 * 
 	 * @return the line style
@@ -327,19 +351,20 @@ public abstract class Shape extends Figure {
 		// synchronize line style which may have been assigned
 		// to lineStyle field for backwards compatibility
 		lineAttributes.style = lineStyle;
-		
+
 		return lineAttributes.style;
 	}
 
 	/**
 	 * Returns the line dash style of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#dash
 	 * 
 	 * @since 3.5
 	 */
 	public float[] getLineDash() {
-		if(lineAttributes.dash != null) {
-			return (float[])lineAttributes.dash.clone();
+		if (lineAttributes.dash != null) {
+			return (float[]) lineAttributes.dash.clone();
 		} else {
 			return null;
 		}
@@ -347,6 +372,7 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Returns the line dash offset of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#dashOffset
 	 * 
 	 * @since 3.5
@@ -354,9 +380,10 @@ public abstract class Shape extends Figure {
 	public float getLineDashOffset() {
 		return lineAttributes.dashOffset;
 	}
-	
+
 	/**
 	 * Returns the line dash miter limit of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#miterLimit
 	 * 
 	 * @since 3.5
@@ -369,23 +396,23 @@ public abstract class Shape extends Figure {
 	 * @since 3.5
 	 */
 	public void setAlpha(Integer value) {
-		if(alpha != null) {
-			if(!alpha.equals(value)) {
+		if (alpha != null) {
+			if (!alpha.equals(value)) {
 				alpha = value;
 				repaint();
 			}
-		} else if(value != null) {
+		} else if (value != null) {
 			alpha = value;
 			repaint();
 		}
 	}
-	
+
 	/**
 	 * @since 3.5
 	 */
 	public void setAlpha(int value) {
-		if(alpha != null) {
-			if(alpha.intValue() != value) {
+		if (alpha != null) {
+			if (alpha.intValue() != value) {
 				alpha = new Integer(value);
 				repaint();
 			}
@@ -394,30 +421,30 @@ public abstract class Shape extends Figure {
 			repaint();
 		}
 	}
-	
+
 	/**
 	 * @see org.eclipse.swt.graphics.GC#setAntialias(int)
 	 * @param value
 	 * @since 3.5
 	 */
 	public void setAntialias(Integer value) {
-		if(antialias != null) {
-			if(!antialias.equals(value)) {
+		if (antialias != null) {
+			if (!antialias.equals(value)) {
 				antialias = value;
 				repaint();
 			}
-		} else if(value != null) {
+		} else if (value != null) {
 			antialias = value;
 			repaint();
 		}
 	}
-	
+
 	/**
 	 * @since 3.5
 	 */
 	public void setAntialias(int value) {
-		if(antialias != null) {
-			if(antialias.intValue() != value) {
+		if (antialias != null) {
+			if (antialias.intValue() != value) {
 				antialias = new Integer(value);
 				repaint();
 			}
@@ -429,69 +456,72 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets all line attributes at once.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes
 	 * 
 	 * @param la
 	 * @since 3.5
 	 */
 	public void setLineAttributes(LineAttributes la) {
-		if(!lineAttributes.equals(la)) {
+		if (!lineAttributes.equals(la)) {
 			SWTGraphics.copyLineAttributes(lineAttributes, la);
 			repaint();
 		}
 	}
-	
+
 	/**
 	 * Sets the line width to be used to outline the shape.
-	 *
-	 * @param w the new width
+	 * 
+	 * @param w
+	 *            the new width
 	 * @since 2.0
 	 */
 	public void setLineWidth(int w) {
 		float _w = w;
-		
+
 		if (lineAttributes.width != _w) {
 			lineAttributes.width = _w;
-			
+
 			// synchronize lineWidth fields for
 			// backwards compatibility
 			lineWidth = w;
 			lastLineWidth = w;
-			
+
 			repaint();
 		}
-	}	
-	
-	
+	}
+
 	/**
 	 * Sets the line width of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#width
 	 * 
 	 * @param value
 	 * @since 3.5
 	 */
 	public void setLineWidthFloat(float value) {
-		if(lineAttributes.width != value) {
+		if (lineAttributes.width != value) {
 			lineAttributes.width = value;
-			
+
 			// synchronize lineWidth fields for
 			// backwards compatibility
-			lineWidth = (int)value;
-			lastLineWidth = (int)value;
+			lineWidth = (int) value;
+			lastLineWidth = (int) value;
 
 			repaint();
 		}
-	}	
+	}
 
 	/**
 	 * Sets the line join style of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#join
 	 * 
 	 * @param join
 	 * @since 3.5
 	 */
 	public void setLineJoin(int join) {
-		if(lineAttributes.join != join) {
+		if (lineAttributes.join != join) {
 			lineAttributes.join = join;
 			repaint();
 		}
@@ -499,24 +529,26 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line cap style of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#cap
 	 * 
 	 * @param cap
 	 * @since 3.5
 	 */
 	public void setLineCap(int cap) {
-		if(lineAttributes.cap != cap) {
+		if (lineAttributes.cap != cap) {
 			lineAttributes.cap = cap;
 			repaint();
 		}
 	}
-	
-	
+
 	/**
 	 * Sets the line style of this shape's outline.
-	 *@see org.eclipse.swt.graphics.LineAttributes#style
-	 *
-	 * @param style the new line style
+	 * 
+	 * @see org.eclipse.swt.graphics.LineAttributes#style
+	 * 
+	 * @param style
+	 *            the new line style
 	 * @since 2.0
 	 */
 	public void setLineStyle(int style) {
@@ -526,23 +558,24 @@ public abstract class Shape extends Figure {
 			// synchronize the lineStyle field
 			// to the lineStyle we actually use
 			lineStyle = style;
-			
+
 			repaint();
 		}
-	}	
+	}
 
 	/**
 	 * Sets the line dash style of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#dash
 	 * 
 	 * @param dash
 	 * @since 3.5
 	 */
 	public void setLineDash(float[] dash) {
-		if((dash != null) && !dash.equals(lineAttributes.dash)) {
-			lineAttributes.dash = (float[])dash.clone();
+		if ((dash != null) && !dash.equals(lineAttributes.dash)) {
+			lineAttributes.dash = (float[]) dash.clone();
 			repaint();
-		} else if((dash == null) && (lineAttributes.dash != null)) {
+		} else if ((dash == null) && (lineAttributes.dash != null)) {
 			lineAttributes.dash = null;
 			repaint();
 		}
@@ -550,13 +583,14 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line dash offset of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#dashOffset
 	 * 
 	 * @param dashOffset
 	 * @since 3.5
 	 */
 	public void setLineDashOffset(float dashOffset) {
-		if(lineAttributes.dashOffset != dashOffset) {
+		if (lineAttributes.dashOffset != dashOffset) {
 			lineAttributes.dashOffset = dashOffset;
 			repaint();
 		}
@@ -564,16 +598,17 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * Sets the line dash miter limit of this shape's outline.
+	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#miterLimit
 	 * 
 	 * @param miterLimit
 	 * @since 3.5
 	 */
 	public void setLineMiterLimit(float miterLimit) {
-		if(lineAttributes.miterLimit != miterLimit) {
+		if (lineAttributes.miterLimit != miterLimit) {
 			lineAttributes.miterLimit = miterLimit;
 			repaint();
 		}
 	}
-	
+
 }

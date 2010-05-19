@@ -12,9 +12,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-
 import org.eclipse.swt.SWT;
-
 
 /**
  * Layer designed specifically to handle the presence of connections. This is

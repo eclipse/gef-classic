@@ -11,41 +11,55 @@
 package org.eclipse.draw2d;
 
 /**
- * Classes which implement this interface provide methods to respond to changes in the
- * ancestor properties of a Figure.
+ * Classes which implement this interface provide methods to respond to changes
+ * in the ancestor properties of a Figure.
  * <P>
  * Instances of this class can be added as listeners to a figure using the
  * <code>addAncestorListener</code> method and removed using the
- * <code>removeAncestoreListener</code> method.  When the parent chain of the figure being
- * observed changes or moves, the listener will be notified appropriately.
+ * <code>removeAncestoreListener</code> method. When the parent chain of the
+ * figure being observed changes or moves, the listener will be notified
+ * appropriately.
  */
 public interface AncestorListener {
 
-/**
- * Called when an ancestor has been added into the listening figure's hierarchy.
- * @param ancestor The ancestor that was added
- */
-void ancestorAdded(IFigure ancestor);
+	/**
+	 * Called when an ancestor has been added into the listening figure's
+	 * hierarchy.
+	 * 
+	 * @param ancestor
+	 *            The ancestor that was added
+	 */
+	void ancestorAdded(IFigure ancestor);
 
-/**
- * Called when an ancestor has moved to a new location.
- * @param ancestor The ancestor that has moved
- */
-void ancestorMoved(IFigure ancestor);
+	/**
+	 * Called when an ancestor has moved to a new location.
+	 * 
+	 * @param ancestor
+	 *            The ancestor that has moved
+	 */
+	void ancestorMoved(IFigure ancestor);
 
-/**
- * Called when an ancestor has been removed from the listening figure's hierarchy.
- * @param ancestor The ancestor that has been removed
- */
-void ancestorRemoved(IFigure ancestor);
+	/**
+	 * Called when an ancestor has been removed from the listening figure's
+	 * hierarchy.
+	 * 
+	 * @param ancestor
+	 *            The ancestor that has been removed
+	 */
+	void ancestorRemoved(IFigure ancestor);
 
-/**
- * An empty implementation of AncestorListener for convenience.
- */
-class Stub implements AncestorListener {
-	public void ancestorMoved(IFigure ancestor) { }
-	public void ancestorAdded(IFigure ancestor) { }
-	public void ancestorRemoved(IFigure ancestor) { }
-}
+	/**
+	 * An empty implementation of AncestorListener for convenience.
+	 */
+	class Stub implements AncestorListener {
+		public void ancestorMoved(IFigure ancestor) {
+		}
+
+		public void ancestorAdded(IFigure ancestor) {
+		}
+
+		public void ancestorRemoved(IFigure ancestor) {
+		}
+	}
 
 }

@@ -11,28 +11,28 @@
 package org.eclipse.draw2d.text;
 
 /**
- * A block layout which requires no FlowContext to perform its layout. This class is used
- * by {@link FlowPage}.
+ * A block layout which requires no FlowContext to perform its layout. This
+ * class is used by {@link FlowPage}.
  * <p>
  * WARNING: This class is not intended to be subclassed by clients.
  */
-public class PageFlowLayout
-	extends BlockFlowLayout
-{
+public class PageFlowLayout extends BlockFlowLayout {
 
-/**
- * Creates a new PageFlowLayout with the given FlowPage
- * @param page the FlowPage
- */
-public PageFlowLayout(FlowPage page) {
-	super(page);
-}
+	/**
+	 * Creates a new PageFlowLayout with the given FlowPage
+	 * 
+	 * @param page
+	 *            the FlowPage
+	 */
+	public PageFlowLayout(FlowPage page) {
+		super(page);
+	}
 
-/**
- * @see org.eclipse.draw2d.text.BlockFlowLayout#getContextWidth()
- */
-int getContextWidth() {
-	return ((FlowPage)getFlowFigure()).getPageWidth();
-}
+	/**
+	 * @see org.eclipse.draw2d.text.BlockFlowLayout#getContextWidth()
+	 */
+	int getContextWidth() {
+		return ((FlowPage) getFlowFigure()).getPageWidth();
+	}
 
 }

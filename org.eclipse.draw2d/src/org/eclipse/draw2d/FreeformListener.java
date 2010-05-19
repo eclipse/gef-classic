@@ -11,16 +11,17 @@
 package org.eclipse.draw2d;
 
 /**
- * Listens for extent changes in {@link org.eclipse.draw2d.FreeformFigure FreeformFigures}.
- * Created on :Oct 4, 2002
+ * Listens for extent changes in {@link org.eclipse.draw2d.FreeformFigure
+ * FreeformFigures}. Created on :Oct 4, 2002
+ * 
  * @author hudsonr
  * @since 2.0
  */
 public interface FreeformListener {
 
-/**
- * Called when the extent of the FreeformFigure has changed.
- */
-void notifyFreeformExtentChanged();
+	/**
+	 * Called when the extent of the FreeformFigure has changed.
+	 */
+	void notifyFreeformExtentChanged();
 
 }

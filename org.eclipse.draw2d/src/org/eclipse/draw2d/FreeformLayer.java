@@ -17,79 +17,77 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * A Layer that can extend in all 4 directions.
  */
-public class FreeformLayer
-	extends Layer
-	implements FreeformFigure
-{
+public class FreeformLayer extends Layer implements FreeformFigure {
 
-private FreeformHelper helper = new FreeformHelper(this);
+	private FreeformHelper helper = new FreeformHelper(this);
 
-/**
- * @see IFigure#add(IFigure, Object, int)
- */
-public void add(IFigure child, Object constraint, int index) {
-	super.add(child, constraint, index);
-	helper.hookChild(child);
-}
+	/**
+	 * @see IFigure#add(IFigure, Object, int)
+	 */
+	public void add(IFigure child, Object constraint, int index) {
+		super.add(child, constraint, index);
+		helper.hookChild(child);
+	}
 
-/**
- * @see FreeformFigure#addFreeformListener(FreeformListener)
- */
-public void addFreeformListener(FreeformListener listener) {
-	addListener(FreeformListener.class, listener);
-}
+	/**
+	 * @see FreeformFigure#addFreeformListener(FreeformListener)
+	 */
+	public void addFreeformListener(FreeformListener listener) {
+		addListener(FreeformListener.class, listener);
+	}
 
-/**
- * @see FreeformFigure#fireExtentChanged()
- */
-public void fireExtentChanged() {
-	Iterator iter = getListeners(FreeformListener.class);
-	while (iter.hasNext())
-		((FreeformListener)iter.next())
-			.notifyFreeformExtentChanged();
-}
+	/**
+	 * @see FreeformFigure#fireExtentChanged()
+	 */
+	public void fireExtentChanged() {
+		Iterator iter = getListeners(FreeformListener.class);
+		while (iter.hasNext())
+			((FreeformListener) iter.next()).notifyFreeformExtentChanged();
+	}
 
-/**
- * Overrides to do nothing.
- * @see Figure#fireMoved()
- */
-protected void fireMoved() { }
+	/**
+	 * Overrides to do nothing.
+	 * 
+	 * @see Figure#fireMoved()
+	 */
+	protected void fireMoved() {
+	}
 
-/**
- * @see FreeformFigure#getFreeformExtent()
- */
-public Rectangle getFreeformExtent() {
-	return helper.getFreeformExtent();
-}
+	/**
+	 * @see FreeformFigure#getFreeformExtent()
+	 */
+	public Rectangle getFreeformExtent() {
+		return helper.getFreeformExtent();
+	}
 
-/**
- * @see Figure#primTranslate(int, int)
- */
-public void primTranslate(int dx, int dy) {
-	bounds.x += dx;
-	bounds.y += dy;
-}
+	/**
+	 * @see Figure#primTranslate(int, int)
+	 */
+	public void primTranslate(int dx, int dy) {
+		bounds.x += dx;
+		bounds.y += dy;
+	}
 
-/**
- * @see IFigure#remove(IFigure)
- */
-public void remove(IFigure child) {
-	helper.unhookChild(child);
-	super.remove(child);
-}
+	/**
+	 * @see IFigure#remove(IFigure)
+	 */
+	public void remove(IFigure child) {
+		helper.unhookChild(child);
+		super.remove(child);
+	}
 
-/**
- * @see FreeformFigure#removeFreeformListener(FreeformListener)
- */
-public void removeFreeformListener(FreeformListener listener) {
-	removeListener(FreeformListener.class, listener);
-}
+	/**
+	 * @see FreeformFigure#removeFreeformListener(FreeformListener)
+	 */
+	public void removeFreeformListener(FreeformListener listener) {
+		removeListener(FreeformListener.class, listener);
+	}
 
-/**
- * @see FreeformFigure#setFreeformBounds(Rectangle)
- */
-public void setFreeformBounds(Rectangle bounds) {
-	helper.setFreeformBounds(bounds);
-}
+	/**
+	 * @see FreeformFigure#setFreeformBounds(Rectangle)
+	 */
+	public void setFreeformBounds(Rectangle bounds) {
+		helper.setFreeformBounds(bounds);
+	}
 
 }

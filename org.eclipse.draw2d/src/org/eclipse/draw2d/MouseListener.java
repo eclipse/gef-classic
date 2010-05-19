@@ -15,42 +15,53 @@ package org.eclipse.draw2d;
  */
 public interface MouseListener {
 
-/**
- * Called when a mouse button has been pressed while over the listened to object.
- * @param me The MouseEvent object
- */
-void mousePressed(MouseEvent me);
-
-/**
- * Called when a pressed mouse button has been released.
- * @param me The MouseEvent object
- */
-void mouseReleased(MouseEvent me);
-
-/**
- * Called when a mouse button has been double clicked over the listened to object.
- * @param me The MouseEvent object
- */
-void mouseDoubleClicked(MouseEvent me);
-
-/**
- * An empty implementation of MouseListener for convenience.
- */
-public class Stub
-	implements MouseListener
-{
 	/**
-	 * @see org.eclipse.draw2d.MouseListener#mousePressed(MouseEvent)
+	 * Called when a mouse button has been pressed while over the listened to
+	 * object.
+	 * 
+	 * @param me
+	 *            The MouseEvent object
 	 */
-	public void mousePressed(MouseEvent me) { }
+	void mousePressed(MouseEvent me);
+
 	/**
-	 * @see org.eclipse.draw2d.MouseListener#mouseReleased(MouseEvent)
+	 * Called when a pressed mouse button has been released.
+	 * 
+	 * @param me
+	 *            The MouseEvent object
 	 */
-	public void mouseReleased(MouseEvent me) { }
+	void mouseReleased(MouseEvent me);
+
 	/**
-	 * @see org.eclipse.draw2d.MouseListener#mouseDoubleClicked(MouseEvent)
+	 * Called when a mouse button has been double clicked over the listened to
+	 * object.
+	 * 
+	 * @param me
+	 *            The MouseEvent object
 	 */
-	public void mouseDoubleClicked(MouseEvent me) { }
-}
+	void mouseDoubleClicked(MouseEvent me);
+
+	/**
+	 * An empty implementation of MouseListener for convenience.
+	 */
+	public class Stub implements MouseListener {
+		/**
+		 * @see org.eclipse.draw2d.MouseListener#mousePressed(MouseEvent)
+		 */
+		public void mousePressed(MouseEvent me) {
+		}
+
+		/**
+		 * @see org.eclipse.draw2d.MouseListener#mouseReleased(MouseEvent)
+		 */
+		public void mouseReleased(MouseEvent me) {
+		}
+
+		/**
+		 * @see org.eclipse.draw2d.MouseListener#mouseDoubleClicked(MouseEvent)
+		 */
+		public void mouseDoubleClicked(MouseEvent me) {
+		}
+	}
 
 }

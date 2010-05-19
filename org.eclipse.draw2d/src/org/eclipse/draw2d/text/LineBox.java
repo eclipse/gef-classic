@@ -18,94 +18,94 @@ import java.util.List;
  * @author hudsonr
  * @since 2.1
  */
-public abstract class LineBox
-	extends CompositeBox
-{
+public abstract class LineBox extends CompositeBox {
 
-/**
- * The maximum ascent of all contained fragments.
- */
-int contentAscent;
+	/**
+	 * The maximum ascent of all contained fragments.
+	 */
+	int contentAscent;
 
-/**
- * The maximum descent of all contained fragments.
- */
-int contentDescent;
+	/**
+	 * The maximum descent of all contained fragments.
+	 */
+	int contentDescent;
 
-List fragments = new ArrayList();
+	List fragments = new ArrayList();
 
-/**
- * @see org.eclipse.draw2d.text.CompositeBox#add(org.eclipse.draw2d.text.FlowBox)
- */
-public void add(FlowBox child) {
-	fragments.add(child);
-	width += child.getWidth();
-	contentAscent = Math.max(contentAscent, child.getOuterAscent());
-	contentDescent = Math.max(contentDescent, child.getOuterDescent());
-}
-
-/**
- * @see org.eclipse.draw2d.text.FlowBox#getAscent()
- */
-public int getAscent() {
-	int ascent = 0;
-	for (int i = 0; i < fragments.size(); i++)
-		ascent = Math.max(ascent, ((FlowBox)fragments.get(i)).getAscent());
-	return ascent;
-}
-
-/**
- * Returns the remaining width available for line content.
- * @return the available width in pixels
- */
-int getAvailableWidth() {
-	if (recommendedWidth < 0)
-		return Integer.MAX_VALUE;
-	return recommendedWidth - getWidth();
-}
-
-int getBottomMargin() {
-	return 0;
-}
-
-/**
- * @see org.eclipse.draw2d.text.FlowBox#getDescent()
- */
-public int getDescent() {
-	int descent = 0;
-	for (int i = 0; i < fragments.size(); i++)
-		descent = Math.max(descent, ((FlowBox)fragments.get(i)).getDescent());
-	return descent;
-}
-
-/**
- * @return Returns the fragments.
- */
-List getFragments() {
-	return fragments;
-}
-
-int getTopMargin() {
-	return 0;
-}
-
-/**
- * @return <code>true</code> if this box contains any fragments
- */
-public boolean isOccupied() {
-	return !fragments.isEmpty();
-}
-
-/**
- * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
- */
-public boolean requiresBidi() {
-	for (Iterator iter = getFragments().iterator(); iter.hasNext();) {
-		FlowBox box = (FlowBox)iter.next();
-		if (box.requiresBidi())
-			return true;
+	/**
+	 * @see org.eclipse.draw2d.text.CompositeBox#add(org.eclipse.draw2d.text.FlowBox)
+	 */
+	public void add(FlowBox child) {
+		fragments.add(child);
+		width += child.getWidth();
+		contentAscent = Math.max(contentAscent, child.getOuterAscent());
+		contentDescent = Math.max(contentDescent, child.getOuterDescent());
 	}
-	return false;
-}
+
+	/**
+	 * @see org.eclipse.draw2d.text.FlowBox#getAscent()
+	 */
+	public int getAscent() {
+		int ascent = 0;
+		for (int i = 0; i < fragments.size(); i++)
+			ascent = Math.max(ascent, ((FlowBox) fragments.get(i)).getAscent());
+		return ascent;
+	}
+
+	/**
+	 * Returns the remaining width available for line content.
+	 * 
+	 * @return the available width in pixels
+	 */
+	int getAvailableWidth() {
+		if (recommendedWidth < 0)
+			return Integer.MAX_VALUE;
+		return recommendedWidth - getWidth();
+	}
+
+	int getBottomMargin() {
+		return 0;
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.text.FlowBox#getDescent()
+	 */
+	public int getDescent() {
+		int descent = 0;
+		for (int i = 0; i < fragments.size(); i++)
+			descent = Math.max(descent,
+					((FlowBox) fragments.get(i)).getDescent());
+		return descent;
+	}
+
+	/**
+	 * @return Returns the fragments.
+	 */
+	List getFragments() {
+		return fragments;
+	}
+
+	int getTopMargin() {
+		return 0;
+	}
+
+	/**
+	 * @return <code>true</code> if this box contains any fragments
+	 */
+	public boolean isOccupied() {
+		return !fragments.isEmpty();
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
+	 */
+	public boolean requiresBidi() {
+		for (Iterator iter = getFragments().iterator(); iter.hasNext();) {
+			FlowBox box = (FlowBox) iter.next();
+			if (box.requiresBidi())
+				return true;
+		}
+		return false;
+	}
 
 }

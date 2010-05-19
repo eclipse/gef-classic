@@ -12,22 +12,29 @@ package org.eclipse.draw2d.graph;
 
 /**
  * Performs some action on a Graph.
+ * 
  * @author Randy Hudson
  * @since 2.1.2
  */
 abstract class GraphVisitor {
 
-/**
- * Act on the given directed graph.
- * @param g the graph
- */
-void visit(DirectedGraph g) { }
+	/**
+	 * Act on the given directed graph.
+	 * 
+	 * @param g
+	 *            the graph
+	 */
+	void visit(DirectedGraph g) {
+	}
 
-/**
- * Called in reverse order of visit.
- * @since 3.1
- * @param g the graph to act upon
- */
-void revisit(DirectedGraph g) { }
+	/**
+	 * Called in reverse order of visit.
+	 * 
+	 * @since 3.1
+	 * @param g
+	 *            the graph to act upon
+	 */
+	void revisit(DirectedGraph g) {
+	}
 
 }

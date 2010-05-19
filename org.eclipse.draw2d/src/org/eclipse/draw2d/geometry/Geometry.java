@@ -80,13 +80,14 @@ public class Geometry {
 		long p2p3_y = (long) y2 - y3;
 		long p3p4_x = (long) x3 - x4;
 		long p3p4_y = (long) y3 - y4;
-		if (productSign(crossProduct(p2p3_x, p2p3_y, p3p4_x, p3p4_y), crossProduct(p3p4_x, p3p4_y, p1p3_x, p1p3_y)) >= 0) {
+		if (productSign(crossProduct(p2p3_x, p2p3_y, p3p4_x, p3p4_y),
+				crossProduct(p3p4_x, p3p4_y, p1p3_x, p1p3_y)) >= 0) {
 			long p2p1_x = (long) x2 - x1;
 			long p2p1_y = (long) y2 - y1;
 			long p1p4_x = (long) x1 - x4;
 			long p1p4_y = (long) y1 - y4;
-			return productSign(crossProduct(-p1p3_x, -p1p3_y, p2p1_x, p2p1_y), crossProduct(p2p1_x, p2p1_y,
-					p1p4_x, p1p4_y)) <= 0;
+			return productSign(crossProduct(-p1p3_x, -p1p3_y, p2p1_x, p2p1_y),
+					crossProduct(p2p1_x, p2p1_y, p1p4_x, p1p4_y)) <= 0;
 		}
 		return false;
 	}

@@ -16,43 +16,47 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Provides generic support for borders.
+ * 
  * @author hudsonr
  */
-public abstract class AbstractBorder
-	implements Border
-{
+public abstract class AbstractBorder implements Border {
 
-private static final Dimension EMPTY = new Dimension();
+	private static final Dimension EMPTY = new Dimension();
 
-/** A temporary Rectangle*/
-protected static Rectangle tempRect = new Rectangle();
+	/** A temporary Rectangle */
+	protected static Rectangle tempRect = new Rectangle();
 
-/**
- * Returns a temporary rectangle representing the figure's bounds cropped by the specified
- * insets.  This method exists for convenience and performance; the method does not new
- * any Objects and returns a rectangle which the caller can manipulate.
- * @since 2.0
- * @param figure  Figure for which the paintable rectangle is needed
- * @param insets The insets
- * @return The paintable region on the Figure f
- */
-protected static final Rectangle getPaintRectangle(IFigure figure, Insets insets) {
-	tempRect.setBounds(figure.getBounds());
-	return tempRect.crop(insets);
-}
+	/**
+	 * Returns a temporary rectangle representing the figure's bounds cropped by
+	 * the specified insets. This method exists for convenience and performance;
+	 * the method does not new any Objects and returns a rectangle which the
+	 * caller can manipulate.
+	 * 
+	 * @since 2.0
+	 * @param figure
+	 *            Figure for which the paintable rectangle is needed
+	 * @param insets
+	 *            The insets
+	 * @return The paintable region on the Figure f
+	 */
+	protected static final Rectangle getPaintRectangle(IFigure figure,
+			Insets insets) {
+		tempRect.setBounds(figure.getBounds());
+		return tempRect.crop(insets);
+	}
 
-/**
- * @see org.eclipse.draw2d.Border#getPreferredSize(IFigure)
- */
-public Dimension getPreferredSize(IFigure f) {
-	return EMPTY;
-}
+	/**
+	 * @see org.eclipse.draw2d.Border#getPreferredSize(IFigure)
+	 */
+	public Dimension getPreferredSize(IFigure f) {
+		return EMPTY;
+	}
 
-/**
- * @see org.eclipse.draw2d.Border#isOpaque()
- */
-public boolean isOpaque() {
-	return false;
-}
+	/**
+	 * @see org.eclipse.draw2d.Border#isOpaque()
+	 */
+	public boolean isOpaque() {
+		return false;
+	}
 
 }

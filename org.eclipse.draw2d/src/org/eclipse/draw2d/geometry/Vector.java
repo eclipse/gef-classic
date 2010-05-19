@@ -116,8 +116,8 @@ public class Vector {
 	 * @return The dot product
 	 */
 	public double getDotProduct(Vector other) {
-		return preciseAdd(preciseMultiply(x, other.x), preciseMultiply(y,
-				other.y));
+		return preciseAdd(preciseMultiply(x, other.x),
+				preciseMultiply(y, other.y));
 	}
 
 	/**
@@ -128,8 +128,8 @@ public class Vector {
 	 * @return The cross product.
 	 */
 	public double getCrossProduct(Vector other) {
-		return preciseSubtract(preciseMultiply(x, other.y), preciseMultiply(y,
-				other.x));
+		return preciseSubtract(preciseMultiply(x, other.y),
+				preciseMultiply(y, other.x));
 	}
 
 	/**
@@ -165,8 +165,8 @@ public class Vector {
 	 * @return the angle between the two Vectors in degrees.
 	 */
 	public double getAngle(Vector other) {
-		double cosAlpha = preciseDivide(getDotProduct(other), (preciseMultiply(
-				getLength(), other.getLength())));
+		double cosAlpha = preciseDivide(getDotProduct(other),
+				(preciseMultiply(getLength(), other.getLength())));
 		return Math.toDegrees(Math.acos(cosAlpha));
 	}
 
@@ -326,8 +326,8 @@ public class Vector {
 	private static final int SCALE = 16;
 
 	private static final double preciseAdd(double d1, double d2) {
-		return doubleToBigDecimal(d1).add(doubleToBigDecimal(d2)).setScale(
-				SCALE, ROUNDING).doubleValue();
+		return doubleToBigDecimal(d1).add(doubleToBigDecimal(d2))
+				.setScale(SCALE, ROUNDING).doubleValue();
 	}
 
 	private static final double preciseSubtract(double d1, double d2) {

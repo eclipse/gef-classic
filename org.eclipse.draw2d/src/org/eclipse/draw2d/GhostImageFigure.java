@@ -32,7 +32,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * 
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
- *
+ * 
  * @since 3.6
  */
 public class GhostImageFigure extends Figure {

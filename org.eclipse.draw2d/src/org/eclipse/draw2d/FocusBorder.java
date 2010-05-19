@@ -15,40 +15,40 @@ import org.eclipse.draw2d.geometry.Insets;
 /**
  * A Border that looks like the system's focus rectangle.
  */
-public class FocusBorder
-	extends AbstractBorder
-{
+public class FocusBorder extends AbstractBorder {
 
-/**
- * Constructs a new FocusBorder.
- */
-public FocusBorder() { }
+	/**
+	 * Constructs a new FocusBorder.
+	 */
+	public FocusBorder() {
+	}
 
-/**
- * @see org.eclipse.draw2d.Border#getInsets(IFigure)
- */
-public Insets getInsets(IFigure figure) {
-	return new Insets(1);
-}
+	/**
+	 * @see org.eclipse.draw2d.Border#getInsets(IFigure)
+	 */
+	public Insets getInsets(IFigure figure) {
+		return new Insets(1);
+	}
 
-/**
- * @see org.eclipse.draw2d.Border#isOpaque()
- */
-public boolean isOpaque() {
-	return true;
-}
+	/**
+	 * @see org.eclipse.draw2d.Border#isOpaque()
+	 */
+	public boolean isOpaque() {
+		return true;
+	}
 
-/**
- * Paints a focus rectangle.
- * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
- */
-public void paint(IFigure figure, Graphics graphics, Insets insets) {
-	tempRect.setBounds(getPaintRectangle(figure, insets));
-	tempRect.width--;
-	tempRect.height--;
-	graphics.setForegroundColor(ColorConstants.black);
-	graphics.setBackgroundColor(ColorConstants.white);
-	graphics.drawFocus(tempRect);
-}
+	/**
+	 * Paints a focus rectangle.
+	 * 
+	 * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
+	 */
+	public void paint(IFigure figure, Graphics graphics, Insets insets) {
+		tempRect.setBounds(getPaintRectangle(figure, insets));
+		tempRect.width--;
+		tempRect.height--;
+		graphics.setForegroundColor(ColorConstants.black);
+		graphics.setBackgroundColor(ColorConstants.white);
+		graphics.drawFocus(tempRect);
+	}
 
 }

@@ -19,29 +19,30 @@ public class RectangleFigure extends Shape {
 	/**
 	 * Creates a RectangleFigure.
 	 */
-	public RectangleFigure() { }
-	
+	public RectangleFigure() {
+	}
+
 	/**
 	 * @see Shape#fillShape(Graphics)
 	 */
 	protected void fillShape(Graphics graphics) {
 		graphics.fillRectangle(getBounds());
 	}
-	
+
 	/**
 	 * @see Shape#outlineShape(Graphics)
 	 */
 	protected void outlineShape(Graphics graphics) {
-	    float lineInset = Math.max(1.0f, getLineWidthFloat()) / 2.0f;
-	    int inset1 = (int)Math.floor(lineInset);
-	    int inset2 = (int)Math.ceil(lineInset);
+		float lineInset = Math.max(1.0f, getLineWidthFloat()) / 2.0f;
+		int inset1 = (int) Math.floor(lineInset);
+		int inset2 = (int) Math.ceil(lineInset);
 
-	    Rectangle r = Rectangle.SINGLETON.setBounds(getBounds());
-	    r.x += inset1 ; 
-	    r.y += inset1; 
-	    r.width -= inset1 + inset2;
-	    r.height -= inset1 + inset2;
-	    
-	    graphics.drawRectangle(r);
+		Rectangle r = Rectangle.SINGLETON.setBounds(getBounds());
+		r.x += inset1;
+		r.y += inset1;
+		r.width -= inset1 + inset2;
+		r.height -= inset1 + inset2;
+
+		graphics.drawRectangle(r);
 	}
 }

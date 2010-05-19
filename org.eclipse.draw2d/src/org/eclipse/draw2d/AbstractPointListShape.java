@@ -39,11 +39,11 @@ public abstract class AbstractPointListShape extends Shape {
 	 * within one of the child figures.
 	 * 
 	 * @param x
-	 * 		The X coordinate
+	 *            The X coordinate
 	 * @param y
-	 * 		The Y coordinate
+	 *            The Y coordinate
 	 * @return <code>true</code> if the point (x,y) is contained in one of the
-	 * 	child figures
+	 *         child figures
 	 */
 	protected boolean childrenContainsPoint(int x, int y) {
 		for (Iterator it = getChildren().iterator(); it.hasNext();) {
@@ -60,9 +60,9 @@ public abstract class AbstractPointListShape extends Shape {
 	 * within this figure.
 	 * 
 	 * @param x
-	 * 		The X coordinate
+	 *            The X coordinate
 	 * @param y
-	 * 		The Y coordinate
+	 *            The Y coordinate
 	 * @return <code>true</code> if the point (x,y) is contained in this figure
 	 */
 	abstract protected boolean shapeContainsPoint(int x, int y);
@@ -71,7 +71,7 @@ public abstract class AbstractPointListShape extends Shape {
 	 * Adds the passed point to this figure.
 	 * 
 	 * @param pt
-	 * 		the Point to be added to this figure
+	 *            the Point to be added to this figure
 	 */
 	public void addPoint(Point pt) {
 		erase();
@@ -97,9 +97,9 @@ public abstract class AbstractPointListShape extends Shape {
 
 	/**
 	 * Returns the points in this figure <B>by reference</B>. If the returned
-	 * list is modified, this figure must be informed by calling {@link
-	 * #setPoints(PointList)}. Failure to do so will result in layout and paint
-	 * problems.
+	 * list is modified, this figure must be informed by calling
+	 * {@link #setPoints(PointList)}. Failure to do so will result in layout and
+	 * paint problems.
 	 * 
 	 * @return this Polyline's points
 	 */
@@ -111,9 +111,9 @@ public abstract class AbstractPointListShape extends Shape {
 	 * Inserts a given point at a specified index in this figure.
 	 * 
 	 * @param pt
-	 * 		the point to be added
+	 *            the point to be added
 	 * @param index
-	 * 		the position in this figure where the point is to be added
+	 *            the position in this figure where the point is to be added
 	 */
 	public void insertPoint(Point pt, int index) {
 		erase();
@@ -133,7 +133,7 @@ public abstract class AbstractPointListShape extends Shape {
 	 * Removes a point from this figure.
 	 * 
 	 * @param index
-	 * 		the position of the point to be removed
+	 *            the position of the point to be removed
 	 */
 	public void removePoint(int index) {
 		erase();
@@ -145,7 +145,7 @@ public abstract class AbstractPointListShape extends Shape {
 	 * Sets the start point of this figure
 	 * 
 	 * @param start
-	 * 		the point that will become the first point in this figure
+	 *            the point that will become the first point in this figure
 	 */
 	public void setStart(Point start) {
 		if (points.size() == 0) {
@@ -159,7 +159,7 @@ public abstract class AbstractPointListShape extends Shape {
 	 * Sets the end point of this figure
 	 * 
 	 * @param end
-	 * 		the point that will become the last point in this figure
+	 *            the point that will become the last point in this figure
 	 */
 	public void setEnd(Point end) {
 		if (points.size() < 2) {
@@ -173,9 +173,9 @@ public abstract class AbstractPointListShape extends Shape {
 	 * Sets the points at both extremes of this figure
 	 * 
 	 * @param start
-	 * 		the point to become the first point in this figure
+	 *            the point to become the first point in this figure
 	 * @param end
-	 * 		the point to become the last point in this figure
+	 *            the point to become the last point in this figure
 	 */
 	public void setEndpoints(Point start, Point end) {
 		setStart(start);
@@ -187,9 +187,9 @@ public abstract class AbstractPointListShape extends Shape {
 	 * you're going to set multiple Points, use {@link #setPoints(PointList)}.
 	 * 
 	 * @param pt
-	 * 		the point
+	 *            the point
 	 * @param index
-	 * 		the index
+	 *            the index
 	 */
 	public void setPoint(Point pt, int index) {
 		erase();
@@ -202,7 +202,7 @@ public abstract class AbstractPointListShape extends Shape {
 	 * existing points. This figure will hold onto the given list by reference.
 	 * 
 	 * @param points
-	 * 		new set of points
+	 *            new set of points
 	 */
 	public void setPoints(PointList points) {
 		erase();
