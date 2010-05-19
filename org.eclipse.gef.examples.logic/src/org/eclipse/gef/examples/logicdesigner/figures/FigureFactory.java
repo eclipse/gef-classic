@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.figures;
 
-import org.eclipse.draw2d.RoutingAnimator;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.RoutingAnimator;
 
 import org.eclipse.gef.examples.logicdesigner.model.SimpleOutput;
 import org.eclipse.gef.examples.logicdesigner.model.Wire;

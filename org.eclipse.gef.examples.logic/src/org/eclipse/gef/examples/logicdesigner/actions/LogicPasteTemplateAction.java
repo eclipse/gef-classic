@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.actions;
 
+import org.eclipse.ui.IEditorPart;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+
 import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.ui.IEditorPart;
 
 /**
  * @author Eric Bordeau
