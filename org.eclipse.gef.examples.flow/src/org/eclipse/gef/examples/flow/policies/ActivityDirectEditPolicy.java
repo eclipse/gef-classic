@@ -11,13 +11,11 @@
 package org.eclipse.gef.examples.flow.policies;
 
 import org.eclipse.draw2d.Label;
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
-import org.eclipse.gef.requests.DirectEditRequest;
-
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.commands.RenameActivityCommand;
+import org.eclipse.gef.requests.DirectEditRequest;
 
 /**
  * EditPolicy for the direct editing of Activity names.

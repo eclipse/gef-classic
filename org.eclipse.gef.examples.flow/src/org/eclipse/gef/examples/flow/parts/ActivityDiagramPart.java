@@ -17,11 +17,9 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
-
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.commands.CommandStackListener;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
-
 import org.eclipse.gef.examples.flow.policies.ActivityContainerEditPolicy;
 import org.eclipse.gef.examples.flow.policies.StructuredActivityLayoutEditPolicy;
 

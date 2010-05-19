@@ -10,15 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.parts;
 
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Text;
-
-import org.eclipse.jface.viewers.CellEditor;
-
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Rectangle;
-
 import org.eclipse.gef.tools.CellEditorLocator;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * CellEditorLocator for Activities.

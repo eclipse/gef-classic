@@ -13,21 +13,16 @@ package org.eclipse.gef.examples.flow.parts;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.jface.viewers.TextCellEditor;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Subgraph;
-
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
-import org.eclipse.gef.requests.DirectEditRequest;
-
 import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.policies.ActivityContainerEditPolicy;
@@ -36,6 +31,8 @@ import org.eclipse.gef.examples.flow.policies.ActivityEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityNodeEditPolicy;
 import org.eclipse.gef.examples.flow.policies.StructuredActivityDirectEditPolicy;
 import org.eclipse.gef.examples.flow.policies.StructuredActivityLayoutEditPolicy;
+import org.eclipse.gef.requests.DirectEditRequest;
+import org.eclipse.jface.viewers.TextCellEditor;
 
 /**
  * @author hudsonr

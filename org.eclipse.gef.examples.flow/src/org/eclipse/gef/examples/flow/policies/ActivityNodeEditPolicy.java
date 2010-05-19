@@ -12,15 +12,14 @@ package org.eclipse.gef.examples.flow.policies;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy;
-import org.eclipse.gef.requests.CreateConnectionRequest;
-import org.eclipse.gef.requests.ReconnectRequest;
-
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.Transition;
 import org.eclipse.gef.examples.flow.model.commands.ConnectionCreateCommand;
 import org.eclipse.gef.examples.flow.model.commands.ReconnectSourceCommand;
 import org.eclipse.gef.examples.flow.model.commands.ReconnectTargetCommand;
 import org.eclipse.gef.examples.flow.parts.ActivityPart;
+import org.eclipse.gef.requests.CreateConnectionRequest;
+import org.eclipse.gef.requests.ReconnectRequest;
 
 /**
  * 

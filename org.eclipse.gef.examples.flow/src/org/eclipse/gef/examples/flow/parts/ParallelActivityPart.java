@@ -11,7 +11,6 @@
 package org.eclipse.gef.examples.flow.parts;
 
 import org.eclipse.draw2d.IFigure;
-
 import org.eclipse.gef.examples.flow.figures.ParallelActivityFigure;
 import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
 

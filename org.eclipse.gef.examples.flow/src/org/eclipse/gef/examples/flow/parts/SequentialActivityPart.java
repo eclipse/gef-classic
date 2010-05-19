@@ -17,9 +17,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
-
 import org.eclipse.gef.EditPart;
-
 import org.eclipse.gef.examples.flow.figures.SequentialActivityFigure;
 
 /**

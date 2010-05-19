@@ -13,8 +13,9 @@ package org.eclipse.gef.examples.flow;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.resource.ImageDescriptor;
-
+import org.eclipse.gef.examples.flow.model.Activity;
+import org.eclipse.gef.examples.flow.model.ParallelActivity;
+import org.eclipse.gef.examples.flow.model.SequentialActivity;
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
@@ -27,10 +28,7 @@ import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.SimpleFactory;
-
-import org.eclipse.gef.examples.flow.model.Activity;
-import org.eclipse.gef.examples.flow.model.ParallelActivity;
-import org.eclipse.gef.examples.flow.model.SequentialActivity;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * Handles the creation of the palette for the Flow Editor.

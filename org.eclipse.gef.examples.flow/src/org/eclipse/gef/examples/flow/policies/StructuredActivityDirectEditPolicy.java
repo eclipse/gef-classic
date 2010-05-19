@@ -11,14 +11,12 @@
 package org.eclipse.gef.examples.flow.policies;
 
 import org.eclipse.draw2d.Label;
-
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.DirectEditPolicy;
-import org.eclipse.gef.requests.DirectEditRequest;
-
 import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
+import org.eclipse.gef.requests.DirectEditRequest;
 
 /**
  * StructuredActivityDirectEditPolicy

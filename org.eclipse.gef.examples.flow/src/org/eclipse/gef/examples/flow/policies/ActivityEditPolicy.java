@@ -12,11 +12,10 @@ package org.eclipse.gef.examples.flow.policies;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.ComponentEditPolicy;
-import org.eclipse.gef.requests.GroupRequest;
-
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.model.commands.DeleteCommand;
+import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * @author Daniel Lee
