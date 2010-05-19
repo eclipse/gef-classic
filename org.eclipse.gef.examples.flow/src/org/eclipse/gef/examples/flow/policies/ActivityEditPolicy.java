@@ -22,15 +22,16 @@ import org.eclipse.gef.requests.GroupRequest;
  */
 public class ActivityEditPolicy extends ComponentEditPolicy {
 
-/**
- * @see ComponentEditPolicy#createDeleteCommand(org.eclipse.gef.requests.GroupRequest)
- */
-protected Command createDeleteCommand(GroupRequest deleteRequest) {
-	StructuredActivity parent = (StructuredActivity)(getHost().getParent().getModel());
-	DeleteCommand deleteCmd = new DeleteCommand();
-	deleteCmd.setParent(parent);
-	deleteCmd.setChild((Activity)(getHost().getModel()));
-	return deleteCmd;
-}
+	/**
+	 * @see ComponentEditPolicy#createDeleteCommand(org.eclipse.gef.requests.GroupRequest)
+	 */
+	protected Command createDeleteCommand(GroupRequest deleteRequest) {
+		StructuredActivity parent = (StructuredActivity) (getHost().getParent()
+				.getModel());
+		DeleteCommand deleteCmd = new DeleteCommand();
+		deleteCmd.setParent(parent);
+		deleteCmd.setChild((Activity) (getHost().getModel()));
+		return deleteCmd;
+	}
 
 }

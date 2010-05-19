@@ -24,30 +24,31 @@ import org.eclipse.gef.requests.GroupRequest;
 
 /**
  * ActivityContainerEditPolicy
+ * 
  * @author Daniel Lee
  */
 public class ActivityContainerEditPolicy extends ContainerEditPolicy {
 
-/**
- * @see ContainerEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)
- */
-protected Command getCreateCommand(CreateRequest request) {
-	return null;
-}
-
-/**
- * @see org.eclipse.gef.editpolicies.ContainerEditPolicy#getOrphanChildrenCommand(org.eclipse.gef.requests.GroupRequest)
- */
-protected Command getOrphanChildrenCommand(GroupRequest request) {
-	List parts = request.getEditParts();
-	CompoundCommand result = new CompoundCommand();
-	for (int i = 0; i < parts.size(); i++) {
-		OrphanChildCommand orphan = new OrphanChildCommand();
-		orphan.setChild((Activity)((EditPart)parts.get(i)).getModel());
-		orphan.setParent((StructuredActivity)getHost().getModel());
-		result.add(orphan);
+	/**
+	 * @see ContainerEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)
+	 */
+	protected Command getCreateCommand(CreateRequest request) {
+		return null;
 	}
-	return result.unwrap();
-}
+
+	/**
+	 * @see org.eclipse.gef.editpolicies.ContainerEditPolicy#getOrphanChildrenCommand(org.eclipse.gef.requests.GroupRequest)
+	 */
+	protected Command getOrphanChildrenCommand(GroupRequest request) {
+		List parts = request.getEditParts();
+		CompoundCommand result = new CompoundCommand();
+		for (int i = 0; i < parts.size(); i++) {
+			OrphanChildCommand orphan = new OrphanChildCommand();
+			orphan.setChild((Activity) ((EditPart) parts.get(i)).getModel());
+			orphan.setParent((StructuredActivity) getHost().getModel());
+			result.add(orphan);
+		}
+		return result.unwrap();
+	}
 
 }

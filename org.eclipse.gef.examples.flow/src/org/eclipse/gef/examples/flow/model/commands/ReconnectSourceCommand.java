@@ -18,104 +18,113 @@ import org.eclipse.gef.examples.flow.model.Transition;
 
 /**
  * Command that handles the reconnection of source Activities.
+ * 
  * @author Daniel Lee
  */
 public class ReconnectSourceCommand extends Command {
 
-/** source Activity **/
-protected Activity source;
-/** target Activity **/
-protected Activity target;
-/** transition between source and target **/
-protected Transition transition;
-/** previous source prior to command execution **/
-protected Activity oldSource;
-	
+	/** source Activity **/
+	protected Activity source;
+	/** target Activity **/
+	protected Activity target;
+	/** transition between source and target **/
+	protected Transition transition;
+	/** previous source prior to command execution **/
+	protected Activity oldSource;
 
-/**
- * @see org.eclipse.gef.commands.Command#canExecute()
- */
-public boolean canExecute() {
-	if (transition.target.equals(source))
-		return false;
-		
-	List transitions = source.getOutgoingTransitions();	
-	for (int i = 0; i < transitions.size(); i++) {
-		Transition trans = ((Transition)(transitions.get(i)));
-		if (trans.target.equals(target) && !trans.source.equals(oldSource))
+	/**
+	 * @see org.eclipse.gef.commands.Command#canExecute()
+	 */
+	public boolean canExecute() {
+		if (transition.target.equals(source))
 			return false;
-	}	
-	return true;	
-}
 
-/**
- * @see org.eclipse.gef.commands.Command#execute()
- */
-public void execute() {
-	if (source != null) {
-		oldSource.removeOutput(transition);
-		transition.source = source;
-		source.addOutput(transition);
+		List transitions = source.getOutgoingTransitions();
+		for (int i = 0; i < transitions.size(); i++) {
+			Transition trans = ((Transition) (transitions.get(i)));
+			if (trans.target.equals(target) && !trans.source.equals(oldSource))
+				return false;
+		}
+		return true;
 	}
-}
 
-/**
- * Returns the source Activity associated with this command
- * @return the source Activity
- */
-public Activity getSource() {
-	return source;
-}
+	/**
+	 * @see org.eclipse.gef.commands.Command#execute()
+	 */
+	public void execute() {
+		if (source != null) {
+			oldSource.removeOutput(transition);
+			transition.source = source;
+			source.addOutput(transition);
+		}
+	}
 
-/**
- * Returns the target Activity associated with this command
- * @return the target Activity
- */
-public Activity getTarget() {
-	return target;
-}
+	/**
+	 * Returns the source Activity associated with this command
+	 * 
+	 * @return the source Activity
+	 */
+	public Activity getSource() {
+		return source;
+	}
 
-/**
- * Returns the Transition associated with this command
- * @return the Transition
- */
-public Transition getTransition() {
-	return transition;
-}
+	/**
+	 * Returns the target Activity associated with this command
+	 * 
+	 * @return the target Activity
+	 */
+	public Activity getTarget() {
+		return target;
+	}
 
-/**
- * Sets the source Activity associated with this command
- * @param activity the source Activity
- */
-public void setSource(Activity activity) {
-	source = activity;
-}
+	/**
+	 * Returns the Transition associated with this command
+	 * 
+	 * @return the Transition
+	 */
+	public Transition getTransition() {
+		return transition;
+	}
 
-/**
- * Sets the target Activity assoicated with this command
- * @param activity the target Activity
- */
-public void setTarget(Activity activity) {
-	target = activity;
-}
+	/**
+	 * Sets the source Activity associated with this command
+	 * 
+	 * @param activity
+	 *            the source Activity
+	 */
+	public void setSource(Activity activity) {
+		source = activity;
+	}
 
-/**
- * Sets the transition associated with this 
- * @param trans the transition
- */
-public void setTransition(Transition trans) {
-	transition = trans;
-	target = trans.target;
-	oldSource = trans.source;
-}
+	/**
+	 * Sets the target Activity assoicated with this command
+	 * 
+	 * @param activity
+	 *            the target Activity
+	 */
+	public void setTarget(Activity activity) {
+		target = activity;
+	}
 
-/**
- * @see org.eclipse.gef.commands.Command#undo()
- */
-public void undo() {
-	source.removeOutput(transition);
-	transition.source = oldSource;
-	oldSource.addOutput(transition);
-}
+	/**
+	 * Sets the transition associated with this
+	 * 
+	 * @param trans
+	 *            the transition
+	 */
+	public void setTransition(Transition trans) {
+		transition = trans;
+		target = trans.target;
+		oldSource = trans.source;
+	}
+
+	/**
+	 * @see org.eclipse.gef.commands.Command#undo()
+	 */
+	public void undo() {
+		source.removeOutput(transition);
+		transition.source = oldSource;
+		oldSource.addOutput(transition);
+	}
 
 }

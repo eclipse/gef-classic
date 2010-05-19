@@ -19,17 +19,17 @@ import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
  */
 public class ParallelActivityPart extends StructuredActivityPart {
 
-protected IFigure createFigure() {
-	return new ParallelActivityFigure();
-}
+	protected IFigure createFigure() {
+		return new ParallelActivityFigure();
+	}
 
-/**
- * @see org.eclipse.gef.EditPart#setSelected(int)
- */
-public void setSelected(int value) {
-	super.setSelected(value);
-	SubgraphFigure sf = (SubgraphFigure)getFigure();
-	sf.setSelected(value != SELECTED_NONE);
-}
+	/**
+	 * @see org.eclipse.gef.EditPart#setSelected(int)
+	 */
+	public void setSelected(int value) {
+		super.setSelected(value);
+		SubgraphFigure sf = (SubgraphFigure) getFigure();
+		sf.setSelected(value != SELECTED_NONE);
+	}
 
 }

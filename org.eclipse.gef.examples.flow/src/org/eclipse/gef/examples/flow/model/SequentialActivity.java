@@ -11,15 +11,14 @@
 package org.eclipse.gef.examples.flow.model;
 
 /**
- * @author hudsonr
- * Created on Jun 30, 2003
+ * @author hudsonr Created on Jun 30, 2003
  */
 public class SequentialActivity extends StructuredActivity {
 
-private static final long serialVersionUID = -9080401150957481095L;
+	private static final long serialVersionUID = -9080401150957481095L;
 
-public SequentialActivity() {
-	super();
-}
+	public SequentialActivity() {
+		super();
+	}
 
 }

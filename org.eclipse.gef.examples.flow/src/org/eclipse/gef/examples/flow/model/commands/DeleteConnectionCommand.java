@@ -16,56 +16,63 @@ import org.eclipse.gef.examples.flow.model.Transition;
 
 /**
  * Handles the deletion of connections between Activities.
+ * 
  * @author Daniel Lee
  */
 public class DeleteConnectionCommand extends Command {
 
-private Activity source;
-private Activity target;
-private Transition transition;
+	private Activity source;
+	private Activity target;
+	private Transition transition;
 
-/**
- * @see org.eclipse.gef.commands.Command#execute()
- */
-public void execute() {
-	source.removeOutput(transition);
-	target.removeInput(transition);
-	transition.source = null;
-	transition.target = null;
-}
+	/**
+	 * @see org.eclipse.gef.commands.Command#execute()
+	 */
+	public void execute() {
+		source.removeOutput(transition);
+		target.removeInput(transition);
+		transition.source = null;
+		transition.target = null;
+	}
 
-/**
- * Sets the source activity
- * @param activity the source
- */
-public void setSource(Activity activity) {
-	source = activity;
-}
+	/**
+	 * Sets the source activity
+	 * 
+	 * @param activity
+	 *            the source
+	 */
+	public void setSource(Activity activity) {
+		source = activity;
+	}
 
-/**
- * Sets the target activity
- * @param activity the target
- */
-public void setTarget(Activity activity) {
-	target = activity;
-}
+	/**
+	 * Sets the target activity
+	 * 
+	 * @param activity
+	 *            the target
+	 */
+	public void setTarget(Activity activity) {
+		target = activity;
+	}
 
-/**
- * Sets the transition
- * @param transition the transition
- */
-public void setTransition(Transition transition) {
-	this.transition = transition;
-}
+	/**
+	 * Sets the transition
+	 * 
+	 * @param transition
+	 *            the transition
+	 */
+	public void setTransition(Transition transition) {
+		this.transition = transition;
+	}
 
-/**
- * @see org.eclipse.gef.commands.Command#undo()
- */
-public void undo() {
-	transition.source = source;
-	transition.target = target;
-	source.addOutput(transition);
-	target.addInput(transition);
-}
+	/**
+	 * @see org.eclipse.gef.commands.Command#undo()
+	 */
+	public void undo() {
+		transition.source = source;
+		transition.target = target;
+		source.addOutput(transition);
+		target.addInput(transition);
+	}
 
 }

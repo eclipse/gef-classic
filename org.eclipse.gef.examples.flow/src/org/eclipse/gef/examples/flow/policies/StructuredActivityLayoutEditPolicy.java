@@ -32,53 +32,53 @@ import org.eclipse.gef.requests.CreateRequest;
  */
 public class StructuredActivityLayoutEditPolicy extends LayoutEditPolicy {
 
-protected Command createAddCommand(EditPart child) {
-	Activity activity = (Activity)child.getModel();
-	AddCommand add = new AddCommand();
-	add.setParent((StructuredActivity)getHost().getModel());
-	add.setChild(activity);
-	return add;
-}
-
-/**
- * @see org.eclipse.gef.editpolicies.OrderedLayoutEditPolicy#createChildEditPolicy(org.eclipse.gef.EditPart)
- */
-protected EditPolicy createChildEditPolicy(EditPart child) {
-	if (child instanceof SimpleActivityPart)
-		return new SimpleActivitySelectionEditPolicy();
-	return new NonResizableEditPolicy();
-}
-
-protected Command createMoveChildCommand(EditPart child, EditPart after) {
-	return null;
-}
-
-protected Command getAddCommand(Request req) {
-	ChangeBoundsRequest request = (ChangeBoundsRequest)req;
-	List editParts = request.getEditParts();
-	CompoundCommand command = new CompoundCommand();
-	for (int i = 0; i < editParts.size(); i++) {
-		EditPart child = (EditPart) editParts.get(i);
-		command.add(createAddCommand(child));
+	protected Command createAddCommand(EditPart child) {
+		Activity activity = (Activity) child.getModel();
+		AddCommand add = new AddCommand();
+		add.setParent((StructuredActivity) getHost().getModel());
+		add.setChild(activity);
+		return add;
 	}
-	return command.unwrap();
-}
 
-/**
- * @see LayoutEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)
- */
-protected Command getCreateCommand(CreateRequest request) {
-	CreateCommand command = new CreateCommand();
-	command.setParent((StructuredActivity)getHost().getModel());
-	command.setChild((Activity)request.getNewObject());
-	return command;
-}
+	/**
+	 * @see org.eclipse.gef.editpolicies.OrderedLayoutEditPolicy#createChildEditPolicy(org.eclipse.gef.EditPart)
+	 */
+	protected EditPolicy createChildEditPolicy(EditPart child) {
+		if (child instanceof SimpleActivityPart)
+			return new SimpleActivitySelectionEditPolicy();
+		return new NonResizableEditPolicy();
+	}
 
-/**
- * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getMoveChildrenCommand(org.eclipse.gef.Request)
- */
-protected Command getMoveChildrenCommand(Request request) {
-	return null;
-}
+	protected Command createMoveChildCommand(EditPart child, EditPart after) {
+		return null;
+	}
+
+	protected Command getAddCommand(Request req) {
+		ChangeBoundsRequest request = (ChangeBoundsRequest) req;
+		List editParts = request.getEditParts();
+		CompoundCommand command = new CompoundCommand();
+		for (int i = 0; i < editParts.size(); i++) {
+			EditPart child = (EditPart) editParts.get(i);
+			command.add(createAddCommand(child));
+		}
+		return command.unwrap();
+	}
+
+	/**
+	 * @see LayoutEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)
+	 */
+	protected Command getCreateCommand(CreateRequest request) {
+		CreateCommand command = new CreateCommand();
+		command.setParent((StructuredActivity) getHost().getModel());
+		command.setChild((Activity) request.getNewObject());
+		return command;
+	}
+
+	/**
+	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getMoveChildrenCommand(org.eclipse.gef.Request)
+	 */
+	protected Command getMoveChildrenCommand(Request request) {
+		return null;
+	}
 
 }

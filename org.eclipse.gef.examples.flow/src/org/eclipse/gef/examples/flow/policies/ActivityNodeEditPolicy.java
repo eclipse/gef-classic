@@ -27,59 +27,66 @@ import org.eclipse.gef.requests.ReconnectRequest;
  */
 public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 
-/**
- * @see GraphicalNodeEditPolicy#getConnectionCompleteCommand(CreateConnectionRequest)
- */
-protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
-	ConnectionCreateCommand cmd = (ConnectionCreateCommand)request.getStartCommand();
-	cmd.setTarget(getActivity());
-	return cmd;
-}
+	/**
+	 * @see GraphicalNodeEditPolicy#getConnectionCompleteCommand(CreateConnectionRequest)
+	 */
+	protected Command getConnectionCompleteCommand(
+			CreateConnectionRequest request) {
+		ConnectionCreateCommand cmd = (ConnectionCreateCommand) request
+				.getStartCommand();
+		cmd.setTarget(getActivity());
+		return cmd;
+	}
 
-/**
- * @see GraphicalNodeEditPolicy#getConnectionCreateCommand(CreateConnectionRequest)
- */
-protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
-	ConnectionCreateCommand cmd = new ConnectionCreateCommand();
-	cmd.setSource(getActivity());
-	request.setStartCommand(cmd);
-	return cmd;
-}
+	/**
+	 * @see GraphicalNodeEditPolicy#getConnectionCreateCommand(CreateConnectionRequest)
+	 */
+	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
+		ConnectionCreateCommand cmd = new ConnectionCreateCommand();
+		cmd.setSource(getActivity());
+		request.setStartCommand(cmd);
+		return cmd;
+	}
 
-/**
- * Returns the ActivityPart on which this EditPolicy is installed
- * @return the 
- */
-protected ActivityPart getActivityPart() {
-	return (ActivityPart) getHost();
-}
+	/**
+	 * Returns the ActivityPart on which this EditPolicy is installed
+	 * 
+	 * @return the
+	 */
+	protected ActivityPart getActivityPart() {
+		return (ActivityPart) getHost();
+	}
 
-/**
- * Returns the model associated with the EditPart on which this EditPolicy is installed
- * @return the model
- */
-protected Activity getActivity() {
-	return (Activity) getHost().getModel();
-}
+	/**
+	 * Returns the model associated with the EditPart on which this EditPolicy
+	 * is installed
+	 * 
+	 * @return the model
+	 */
+	protected Activity getActivity() {
+		return (Activity) getHost().getModel();
+	}
 
-/**
- * @see GraphicalNodeEditPolicy#getReconnectSourceCommand(ReconnectRequest)
- */
-protected Command getReconnectSourceCommand(ReconnectRequest request) {
-	ReconnectSourceCommand cmd = new ReconnectSourceCommand();
-	cmd.setTransition((Transition)request.getConnectionEditPart().getModel());
-	cmd.setSource(getActivity());
-	return cmd;
-}
+	/**
+	 * @see GraphicalNodeEditPolicy#getReconnectSourceCommand(ReconnectRequest)
+	 */
+	protected Command getReconnectSourceCommand(ReconnectRequest request) {
+		ReconnectSourceCommand cmd = new ReconnectSourceCommand();
+		cmd.setTransition((Transition) request.getConnectionEditPart()
+				.getModel());
+		cmd.setSource(getActivity());
+		return cmd;
+	}
 
-/**
- * @see GraphicalNodeEditPolicy#getReconnectTargetCommand(ReconnectRequest)
- */
-protected Command getReconnectTargetCommand(ReconnectRequest request) {
-	ReconnectTargetCommand cmd = new ReconnectTargetCommand();
-	cmd.setTransition((Transition)request.getConnectionEditPart().getModel());
-	cmd.setTarget(getActivity());
-	return cmd;
-}
+	/**
+	 * @see GraphicalNodeEditPolicy#getReconnectTargetCommand(ReconnectRequest)
+	 */
+	protected Command getReconnectTargetCommand(ReconnectRequest request) {
+		ReconnectTargetCommand cmd = new ReconnectTargetCommand();
+		cmd.setTransition((Transition) request.getConnectionEditPart()
+				.getModel());
+		cmd.setTarget(getActivity());
+		return cmd;
+	}
 
 }

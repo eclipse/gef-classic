@@ -19,50 +19,56 @@ import org.eclipse.gef.examples.flow.model.StructuredActivity;
  */
 public class CreateCommand extends Command {
 
-private StructuredActivity parent;
-private Activity child;
-private int index = -1;
+	private StructuredActivity parent;
+	private Activity child;
+	private int index = -1;
 
-/**
- * @see org.eclipse.gef.commands.Command#execute()
- */
-public void execute() {
-	if (index > 0)
-		parent.addChild(child, index);
-	else
-		parent.addChild(child);
-}
+	/**
+	 * @see org.eclipse.gef.commands.Command#execute()
+	 */
+	public void execute() {
+		if (index > 0)
+			parent.addChild(child, index);
+		else
+			parent.addChild(child);
+	}
 
-/**
- * Sets the index to the passed value
- * @param i the index
- */
-public void setIndex(int i) {
-	index = i;
-}
+	/**
+	 * Sets the index to the passed value
+	 * 
+	 * @param i
+	 *            the index
+	 */
+	public void setIndex(int i) {
+		index = i;
+	}
 
-/**
- * Sets the parent ActivityDiagram
- * @param sa the parent
- */
-public void setParent(StructuredActivity sa) {
-	parent = sa;
-}
+	/**
+	 * Sets the parent ActivityDiagram
+	 * 
+	 * @param sa
+	 *            the parent
+	 */
+	public void setParent(StructuredActivity sa) {
+		parent = sa;
+	}
 
-/**
- * Sets the Activity to create
- * @param activity the Activity to create
- */
-public void setChild(Activity activity) {
-	child = activity;
-	child.setName("a " + (parent.getChildren().size() + 1));
-}
+	/**
+	 * Sets the Activity to create
+	 * 
+	 * @param activity
+	 *            the Activity to create
+	 */
+	public void setChild(Activity activity) {
+		child = activity;
+		child.setName("a " + (parent.getChildren().size() + 1));
+	}
 
-/**
- * @see org.eclipse.gef.commands.Command#undo()
- */
-public void undo() {
-	parent.removeChild(child);
-}
+	/**
+	 * @see org.eclipse.gef.commands.Command#undo()
+	 */
+	public void undo() {
+		parent.removeChild(child);
+	}
 
 }

@@ -20,72 +20,78 @@ import org.eclipse.gef.examples.flow.model.Transition;
  */
 public class AddAndAssignSourceCommand extends Command {
 
-private StructuredActivity parent;
-private Activity child;
-private Activity source;
-private Transition transition;
+	private StructuredActivity parent;
+	private Activity child;
+	private Activity source;
+	private Transition transition;
 
-/**
- * @see org.eclipse.gef.commands.Command#canExecute()
- */
-public boolean canExecute() {
-	for(int i = 0; i < source.getOutgoingTransitions().size(); i++) {
-		Activity target = ((Transition)source.getOutgoingTransitions().get(i)).target;
-		if (target.equals(child))
-			return false;
+	/**
+	 * @see org.eclipse.gef.commands.Command#canExecute()
+	 */
+	public boolean canExecute() {
+		for (int i = 0; i < source.getOutgoingTransitions().size(); i++) {
+			Activity target = ((Transition) source.getOutgoingTransitions()
+					.get(i)).target;
+			if (target.equals(child))
+				return false;
+		}
+		return true;
 	}
-	return true;
-}
 
-/**
- * @see org.eclipse.gef.commands.Command#execute()
- */
-public void execute() {
-	parent.addChild(child);
-	transition = new Transition(source, child);
-}
+	/**
+	 * @see org.eclipse.gef.commands.Command#execute()
+	 */
+	public void execute() {
+		parent.addChild(child);
+		transition = new Transition(source, child);
+	}
 
-/**
- * @see org.eclipse.gef.commands.Command#redo()
- */
-public void redo() {
-	source.addOutput(transition);
-	child.addInput(transition);
-	parent.addChild(child);
-}
+	/**
+	 * @see org.eclipse.gef.commands.Command#redo()
+	 */
+	public void redo() {
+		source.addOutput(transition);
+		child.addInput(transition);
+		parent.addChild(child);
+	}
 
+	/**
+	 * Sets the parent ActivityDiagram
+	 * 
+	 * @param sa
+	 *            the parent
+	 */
+	public void setParent(StructuredActivity sa) {
+		parent = sa;
+	}
 
-/**
- * Sets the parent ActivityDiagram
- * @param sa the parent
- */
-public void setParent(StructuredActivity sa) {
-	parent = sa;
-}
+	/**
+	 * Sets the Activity to create
+	 * 
+	 * @param activity
+	 *            the Activity to create
+	 */
+	public void setChild(Activity activity) {
+		child = activity;
+	}
 
-/**
- * Sets the Activity to create
- * @param activity the Activity to create
- */
-public void setChild(Activity activity) {
-	child = activity;
-}
+	/**
+	 * Sets the source to the passed activity
+	 * 
+	 * @param activity
+	 *            the source
+	 */
+	public void setSource(Activity activity) {
+		source = activity;
+	}
 
-/**
- * Sets the source to the passed activity
- * @param activity the source
- */
-public void setSource(Activity activity) {
-	source = activity;
-}
-
-/**
- * @see org.eclipse.gef.commands.Command#undo()
- */
-public void undo() {
-	source.removeOutput(transition);
-	child.removeInput(transition);
-	parent.removeChild(child);
-}
+	/**
+	 * @see org.eclipse.gef.commands.Command#undo()
+	 */
+	public void undo() {
+		source.removeOutput(transition);
+		child.removeInput(transition);
+		parent.removeChild(child);
+	}
 
 }

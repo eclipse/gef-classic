@@ -11,20 +11,19 @@
 package org.eclipse.gef.examples.flow.model;
 
 /**
- * @author hudsonr
- * Created on Jun 30, 2003
+ * @author hudsonr Created on Jun 30, 2003
  */
 public class Transition extends FlowElement {
 
-private static final long serialVersionUID = 4486688831285730788L;
-public Activity source, target;
+	private static final long serialVersionUID = 4486688831285730788L;
+	public Activity source, target;
 
-public Transition(Activity source, Activity target) {
-	this.source = source;
-	this.target = target;
+	public Transition(Activity source, Activity target) {
+		this.source = source;
+		this.target = target;
 
-	source.addOutput(this);
-	target.addInput(this);
-}
+		source.addOutput(this);
+		target.addInput(this);
+	}
 
 }

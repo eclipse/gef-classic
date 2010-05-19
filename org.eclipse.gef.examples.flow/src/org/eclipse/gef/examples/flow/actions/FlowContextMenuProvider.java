@@ -20,53 +20,59 @@ import org.eclipse.ui.actions.ActionFactory;
 
 /**
  * Provides a context menu for the flow editor.
+ * 
  * @author Daniel Lee
  */
 public class FlowContextMenuProvider extends ContextMenuProvider {
 
-private ActionRegistry actionRegistry;
+	private ActionRegistry actionRegistry;
 
-/**
- * Creates a new FlowContextMenuProvider assoicated with the given viewer and 
- * action registry.
- * @param viewer the viewer
- * @param registry the action registry
- */
-public FlowContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
-	super(viewer);
-	setActionRegistry(registry);
-}
+	/**
+	 * Creates a new FlowContextMenuProvider assoicated with the given viewer
+	 * and action registry.
+	 * 
+	 * @param viewer
+	 *            the viewer
+	 * @param registry
+	 *            the action registry
+	 */
+	public FlowContextMenuProvider(EditPartViewer viewer,
+			ActionRegistry registry) {
+		super(viewer);
+		setActionRegistry(registry);
+	}
 
-/**
- * @see ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
- */
-public void buildContextMenu(IMenuManager menu) {
-	GEFActionConstants.addStandardActionGroups(menu);
-	
-	IAction action;
-	action = getActionRegistry().getAction(ActionFactory.UNDO.getId());
-	menu.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
+	/**
+	 * @see ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
+	 */
+	public void buildContextMenu(IMenuManager menu) {
+		GEFActionConstants.addStandardActionGroups(menu);
 
-	action = getActionRegistry().getAction(ActionFactory.REDO.getId());
-	menu.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
-	
-	action = getActionRegistry().getAction(ActionFactory.DELETE.getId());
-	if (action.isEnabled())
-		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
+		IAction action;
+		action = getActionRegistry().getAction(ActionFactory.UNDO.getId());
+		menu.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
 
+		action = getActionRegistry().getAction(ActionFactory.REDO.getId());
+		menu.appendToGroup(GEFActionConstants.GROUP_UNDO, action);
 
-}
+		action = getActionRegistry().getAction(ActionFactory.DELETE.getId());
+		if (action.isEnabled())
+			menu.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 
-private ActionRegistry getActionRegistry() {
-	return actionRegistry;
-}
+	}
 
-/**
- * Sets the action registry
- * @param registry the action registry
- */
-public void setActionRegistry(ActionRegistry registry) {
-	actionRegistry = registry;
-}
+	private ActionRegistry getActionRegistry() {
+		return actionRegistry;
+	}
+
+	/**
+	 * Sets the action registry
+	 * 
+	 * @param registry
+	 *            the action registry
+	 */
+	public void setActionRegistry(ActionRegistry registry) {
+		actionRegistry = registry;
+	}
 
 }

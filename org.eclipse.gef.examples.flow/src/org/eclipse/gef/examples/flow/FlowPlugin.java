@@ -16,13 +16,15 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * Plugin class used by the flow editor.
  */
 public class FlowPlugin extends AbstractUIPlugin {
-	
-/**
- * Creates a new FlowPlugin with the given descriptor
- * @param descriptor the descriptor
- */
-public FlowPlugin() {
-	super();
-}
+
+	/**
+	 * Creates a new FlowPlugin with the given descriptor
+	 * 
+	 * @param descriptor
+	 *            the descriptor
+	 */
+	public FlowPlugin() {
+		super();
+	}
 
 }

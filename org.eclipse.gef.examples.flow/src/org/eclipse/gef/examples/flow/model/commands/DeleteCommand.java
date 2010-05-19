@@ -20,96 +20,101 @@ import org.eclipse.gef.examples.flow.model.Transition;
 
 /**
  * Handles the deletion of Activities.
+ * 
  * @author Daniel Lee
  */
 public class DeleteCommand extends Command {
 
-private Activity child;
-private StructuredActivity parent;
-private int index = -1;
-private List sourceConnections = new ArrayList();
-private List targetConnections = new ArrayList();
+	private Activity child;
+	private StructuredActivity parent;
+	private int index = -1;
+	private List sourceConnections = new ArrayList();
+	private List targetConnections = new ArrayList();
 
-private void deleteConnections(Activity a) {
-	if (a instanceof StructuredActivity) {
-		List children = ((StructuredActivity)a).getChildren();
-		for (int i = 0; i < children.size(); i++)
-			deleteConnections((Activity)children.get(i));
+	private void deleteConnections(Activity a) {
+		if (a instanceof StructuredActivity) {
+			List children = ((StructuredActivity) a).getChildren();
+			for (int i = 0; i < children.size(); i++)
+				deleteConnections((Activity) children.get(i));
+		}
+		sourceConnections.addAll(a.getIncomingTransitions());
+		for (int i = 0; i < sourceConnections.size(); i++) {
+			Transition t = (Transition) sourceConnections.get(i);
+			t.source.removeOutput(t);
+			a.removeInput(t);
+		}
+		targetConnections.addAll(a.getOutgoingTransitions());
+		for (int i = 0; i < targetConnections.size(); i++) {
+			Transition t = (Transition) targetConnections.get(i);
+			t.target.removeInput(t);
+			a.removeOutput(t);
+		}
 	}
-	sourceConnections.addAll(a.getIncomingTransitions());
-	for (int i = 0; i < sourceConnections.size(); i++) {
-		Transition t = (Transition)sourceConnections.get(i);
-		t.source.removeOutput(t);
-		a.removeInput(t);
+
+	/**
+	 * @see org.eclipse.gef.commands.Command#execute()
+	 */
+	public void execute() {
+		primExecute();
 	}
-	targetConnections.addAll(a.getOutgoingTransitions());
-	for (int i = 0; i < targetConnections.size(); i++) {
-		Transition t = (Transition)targetConnections.get(i);
-		t.target.removeInput(t);
-		a.removeOutput(t);
+
+	/**
+	 * Invokes the execution of this command.
+	 */
+	protected void primExecute() {
+		deleteConnections(child);
+		index = parent.getChildren().indexOf(child);
+		parent.removeChild(child);
 	}
-}
 
-/**
- * @see org.eclipse.gef.commands.Command#execute()
- */
-public void execute() {
-	primExecute();
-}
-
-/**
- * Invokes the execution of this command.
- */
-protected void primExecute() {
-	deleteConnections(child);
-	index = parent.getChildren().indexOf(child);
-	parent.removeChild(child);
-}
-
-/**
- * @see org.eclipse.gef.commands.Command#redo()
- */
-public void redo() {
-	primExecute();
-}
-
-private void restoreConnections() {
-	for (int i = 0; i < sourceConnections.size(); i++) {
-		Transition t = (Transition)sourceConnections.get(i);
-		t.target.addInput(t);
-		t.source.addOutput(t);
+	/**
+	 * @see org.eclipse.gef.commands.Command#redo()
+	 */
+	public void redo() {
+		primExecute();
 	}
-	sourceConnections.clear();
-	for (int i = 0; i < targetConnections.size(); i++) {
-		Transition t = (Transition)targetConnections.get(i);
-		t.source.addOutput(t);
-		t.target.addInput(t);
+
+	private void restoreConnections() {
+		for (int i = 0; i < sourceConnections.size(); i++) {
+			Transition t = (Transition) sourceConnections.get(i);
+			t.target.addInput(t);
+			t.source.addOutput(t);
+		}
+		sourceConnections.clear();
+		for (int i = 0; i < targetConnections.size(); i++) {
+			Transition t = (Transition) targetConnections.get(i);
+			t.source.addOutput(t);
+			t.target.addInput(t);
+		}
+		targetConnections.clear();
 	}
-	targetConnections.clear();
-}
 
-/**
- * Sets the child to the passed Activity
- * @param a the child
- */
-public void setChild (Activity a) {
-	child = a;
-}
+	/**
+	 * Sets the child to the passed Activity
+	 * 
+	 * @param a
+	 *            the child
+	 */
+	public void setChild(Activity a) {
+		child = a;
+	}
 
-/**
- * Sets the parent to the passed StructuredActivity
- * @param sa the parent
- */
-public void setParent(StructuredActivity sa) {
-	parent = sa;
-}
+	/**
+	 * Sets the parent to the passed StructuredActivity
+	 * 
+	 * @param sa
+	 *            the parent
+	 */
+	public void setParent(StructuredActivity sa) {
+		parent = sa;
+	}
 
-/**
- * @see org.eclipse.gef.commands.Command#undo()
- */
-public void undo() {
-	parent.addChild(child, index);
-	restoreConnections();
-}
+	/**
+	 * @see org.eclipse.gef.commands.Command#undo()
+	 */
+	public void undo() {
+		parent.addChild(child, index);
+		restoreConnections();
+	}
 
 }

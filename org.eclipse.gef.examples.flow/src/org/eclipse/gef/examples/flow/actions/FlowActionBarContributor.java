@@ -20,33 +20,33 @@ import org.eclipse.ui.part.EditorActionBarContributor;
 
 /**
  * Contributes actions to the Editor.
+ * 
  * @author Daniel Lee
  */
 public class FlowActionBarContributor extends ActionBarContributor {
 
-/**
- * @see org.eclipse.gef.ui.actions.ActionBarContributor#buildActions()
- */
-protected void buildActions() {
-	addRetargetAction(new UndoRetargetAction());
-	addRetargetAction(new RedoRetargetAction());
-	addRetargetAction(new DeleteRetargetAction());
+	/**
+	 * @see org.eclipse.gef.ui.actions.ActionBarContributor#buildActions()
+	 */
+	protected void buildActions() {
+		addRetargetAction(new UndoRetargetAction());
+		addRetargetAction(new RedoRetargetAction());
+		addRetargetAction(new DeleteRetargetAction());
 
-}
+	}
 
-/**
- * @see EditorActionBarContributor#contributeToToolBar(IToolBarManager)
- */
-public void contributeToToolBar(IToolBarManager toolBarManager) {
-	toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
-	toolBarManager.add(getAction(ActionFactory.REDO.getId()));
-}
+	/**
+	 * @see EditorActionBarContributor#contributeToToolBar(IToolBarManager)
+	 */
+	public void contributeToToolBar(IToolBarManager toolBarManager) {
+		toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
+		toolBarManager.add(getAction(ActionFactory.REDO.getId()));
+	}
 
-
-/**
- * @see org.eclipse.gef.ui.actions.ActionBarContributor#declareGlobalActionKeys()
- */
-protected void declareGlobalActionKeys() {
-}
+	/**
+	 * @see org.eclipse.gef.ui.actions.ActionBarContributor#declareGlobalActionKeys()
+	 */
+	protected void declareGlobalActionKeys() {
+	}
 
 }

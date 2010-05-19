@@ -20,15 +20,16 @@ import org.eclipse.swt.graphics.Image;
  */
 public class FlowImages {
 
-public static final Image GEAR;
+	public static final Image GEAR;
 
-static {
-	InputStream stream = FlowPlugin.class.getResourceAsStream("images/gear.gif");
-	GEAR = new Image(null, stream);
-	try {
-		stream.close();
-	} catch (IOException ioe) {
+	static {
+		InputStream stream = FlowPlugin.class
+				.getResourceAsStream("images/gear.gif");
+		GEAR = new Image(null, stream);
+		try {
+			stream.close();
+		} catch (IOException ioe) {
+		}
 	}
-}
 
 }

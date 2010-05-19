@@ -17,32 +17,34 @@ import org.eclipse.gef.requests.CreationFactory;
  */
 public class FlowElementFactory implements CreationFactory {
 
-private Object template;
+	private Object template;
 
-/**
- * Creates a new FlowElementFactory with the given template object
- * @param o the template
- */
-public FlowElementFactory(Object o) {
-	template = o;
-}
-
-/**
- * @see org.eclipse.gef.requests.CreationFactory#getNewObject()
- */
-public Object getNewObject() {
-	try {
-		return ((Class)template).newInstance();
-	} catch (Exception e) {
-		return null;
+	/**
+	 * Creates a new FlowElementFactory with the given template object
+	 * 
+	 * @param o
+	 *            the template
+	 */
+	public FlowElementFactory(Object o) {
+		template = o;
 	}
-}
 
-/**
- * @see org.eclipse.gef.requests.CreationFactory#getObjectType()
- */
-public Object getObjectType() {
+	/**
+	 * @see org.eclipse.gef.requests.CreationFactory#getNewObject()
+	 */
+	public Object getNewObject() {
+		try {
+			return ((Class) template).newInstance();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * @see org.eclipse.gef.requests.CreationFactory#getObjectType()
+	 */
+	public Object getObjectType() {
 		return template;
-}
+	}
 
 }

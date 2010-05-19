@@ -19,44 +19,50 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * CellEditorLocator for Activities.
+ * 
  * @author Daniel Lee
  */
 public class ActivityCellEditorLocator implements CellEditorLocator {
 	private Label label;
 
-/**
- * Creates a new ActivityCellEditorLocator for the given Label
- * @param label the Label
- */	
-public ActivityCellEditorLocator(Label label) {
-	setLabel(label);
-}
+	/**
+	 * Creates a new ActivityCellEditorLocator for the given Label
+	 * 
+	 * @param label
+	 *            the Label
+	 */
+	public ActivityCellEditorLocator(Label label) {
+		setLabel(label);
+	}
 
-/**
- * @see CellEditorLocator#relocate(org.eclipse.jface.viewers.CellEditor)
- */
-public void relocate(CellEditor celleditor) {
-	Text text = (Text)celleditor.getControl();
-	Point pref = text.computeSize(-1, -1);
-	Rectangle rect = label.getTextBounds().getCopy();
-	label.translateToAbsolute(rect);
-	text.setBounds(rect.x - 1, rect.y - 1, pref.x + 1, pref.y + 1);	
-}
+	/**
+	 * @see CellEditorLocator#relocate(org.eclipse.jface.viewers.CellEditor)
+	 */
+	public void relocate(CellEditor celleditor) {
+		Text text = (Text) celleditor.getControl();
+		Point pref = text.computeSize(-1, -1);
+		Rectangle rect = label.getTextBounds().getCopy();
+		label.translateToAbsolute(rect);
+		text.setBounds(rect.x - 1, rect.y - 1, pref.x + 1, pref.y + 1);
+	}
 
-/**
- * Returns the Label figure.
- * @return the Label
- */
-protected Label getLabel() {
-	return label;
-}
+	/**
+	 * Returns the Label figure.
+	 * 
+	 * @return the Label
+	 */
+	protected Label getLabel() {
+		return label;
+	}
 
-/**
- * Sets the label.
- * @param label The label to set
- */
-protected void setLabel(Label label) {
-	this.label = label;
-}
+	/**
+	 * Sets the label.
+	 * 
+	 * @param label
+	 *            The label to set
+	 */
+	protected void setLabel(Label label) {
+		this.label = label;
+	}
 
 }

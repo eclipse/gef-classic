@@ -14,45 +14,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A Structured activity is an activity whose execution is determined by some internal
- * structure.
+ * A Structured activity is an activity whose execution is determined by some
+ * internal structure.
+ * 
  * @author hudsonr
  */
-public class StructuredActivity
-	extends Activity
-{
+public class StructuredActivity extends Activity {
 
-static final long serialVersionUID = 1;
+	static final long serialVersionUID = 1;
 
-private static int count;
+	private static int count;
 
-protected List children = new ArrayList();
+	protected List children = new ArrayList();
 
-public StructuredActivity() {}
+	public StructuredActivity() {
+	}
 
-public void addChild(Activity child){
-	addChild(child, -1);
-}
+	public void addChild(Activity child) {
+		addChild(child, -1);
+	}
 
-public void addChild(Activity child, int index){
-	if (index >= 0)
-		children.add(index,child);
-	else
-		children.add(child);
-	fireStructureChange(CHILDREN, child);
-}
+	public void addChild(Activity child, int index) {
+		if (index >= 0)
+			children.add(index, child);
+		else
+			children.add(child);
+		fireStructureChange(CHILDREN, child);
+	}
 
-public List getChildren(){
-	return children;
-}
+	public List getChildren() {
+		return children;
+	}
 
-public String getNewID() {
-	return Integer.toString(count++);
-}
+	public String getNewID() {
+		return Integer.toString(count++);
+	}
 
-public void removeChild(FlowElement child){
-	children.remove(child);
-	fireStructureChange(CHILDREN, child);
-}
+	public void removeChild(FlowElement child) {
+		children.remove(child);
+		fireStructureChange(CHILDREN, child);
+	}
 
 }
