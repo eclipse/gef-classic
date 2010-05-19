@@ -1,12 +1,11 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
+ * Canada. All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
@@ -39,13 +38,13 @@ public class AligningBendpointLocator extends AbstractLocator {
 	 * "Vertical" alignment constant. Figures should be placed below the line.
 	 */
 	public static final int BELOW = 2;
-	
+
 	/**
 	 * "Horizontal" alignment constant. Figures should be placed in the center
 	 * of the points on the line.
 	 */
 	public static final int CENTER = 0;
-	
+
 	/**
 	 * "Horizontal" alignment constant. Figures should be placed at the beginning
 	 * of the line. Figures will be anchored so that they have one end at the
@@ -54,7 +53,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 	 * on the direction of the first two points.
 	 */
 	public static final int BEGINNING = 1;
-	
+
 	/**
 	 * "Horizontal" alignment constant. Figures should be placed at the end of
 	 * the line. Figures will be anchored so that they have one end at the
@@ -63,14 +62,14 @@ public class AligningBendpointLocator extends AbstractLocator {
 	 * on the direction of the last two points.
 	 */
 	public static final int END = 2;
-	
+
 	/**
 	 * "Horizontal" alignment constant. Figures should be centered between the
 	 * first two points on the connection. For connections with only two points, 
 	 * this will behave the same as CENTER.
 	 */
 	public static final int CENTER_BEGINNING = 3;
-	
+
 	/**
 	 * "Horizontal" alignment constant. Figures should be centered between the
 	 * last two points on the connection. For connections with only two points,
@@ -80,19 +79,20 @@ public class AligningBendpointLocator extends AbstractLocator {
 	private int horizontal;
 	private int vertical;
 	private Connection connection;
+
 	/**
 	 * @param connection
 	 */
 	public AligningBendpointLocator(Connection connection) {
 		this(connection, CENTER, MIDDLE);
 	}
-	
+
 	public AligningBendpointLocator(Connection connection, int horizontal, int vertical) {
 		this.connection = connection;
 		this.horizontal = horizontal;
 		this.vertical = vertical;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see org.eclipse.draw2d.ConnectionLocator#getReferencePoint()
 	 */
@@ -116,7 +116,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 			tempPoints = new PointList();
 			int s = points.size();
 			tempPoints.addPoint(points.getLastPoint().getCopy());
-			tempPoints.addPoint(points.getPoint(s-2).getCopy());
+			tempPoints.addPoint(points.getPoint(s - 2).getCopy());
 			p = tempPoints.getMidpoint().getCopy();
 		case CENTER:
 		default:
@@ -124,6 +124,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 		}
 		return p;
 	}
+
 	/**
 	 * Recalculates the position of the figure and returns the updated bounds.
 	 * @param target The figure to relocate
@@ -136,7 +137,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 		//target.translateToRelative(center);
 		target.setBounds(getNewBounds(prefSize, center));
 	}
-	
+
 	/**
 	 * Translates the center point depending on the horizontal and veritical
 	 * alignments based on the given bounds.
@@ -145,11 +146,11 @@ public class AligningBendpointLocator extends AbstractLocator {
 	private void calculatePosition() {
 		PointList points = getConnection().getPoints();
 		int position = 0;
-		switch(horizontal) {
+		switch (horizontal) {
 		case BEGINNING:
 			Point first = points.getFirstPoint();
 			Point next = points.getPoint(1);
-			if (first.x <= next.x) 
+			if (first.x <= next.x)
 				position |= PositionConstants.EAST;
 			else
 				position |= PositionConstants.WEST;
@@ -157,14 +158,15 @@ public class AligningBendpointLocator extends AbstractLocator {
 		case END:
 			Point last = points.getLastPoint();
 			int s = points.size();
-			Point before = points.getPoint(s-1);
-			if (last.x <= before.x) 
+			Point before = points.getPoint(s - 1);
+			if (last.x <= before.x)
 				position |= PositionConstants.EAST;
 			else
 				position |= PositionConstants.WEST;
 			break;
 		}
-		if (position == 0) position = PositionConstants.CENTER;
+		if (position == 0)
+			position = PositionConstants.CENTER;
 		switch (vertical) {
 		case ABOVE:
 			position |= PositionConstants.NORTH;
@@ -176,7 +178,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 			position |= PositionConstants.MIDDLE;
 		}
 		setRelativePosition(position);
-		
+
 	}
 
 	/**
@@ -185,7 +187,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 	public int getHorizontalAlignment() {
 		return horizontal;
 	}
-	
+
 	/**
 	 * @param horizontal the horizontal alignment to set. One of CENTER,
 	 * BEGINNING, END, CENTER_BEGINNING, or CENTER_END.
@@ -193,7 +195,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 	public void setHorizontalAlignment(int horizontal) {
 		this.horizontal = horizontal;
 	}
-	
+
 	/**
 	 * @param vertical the vertical alignment to set. One of ABOVE, MIDDLE, or
 	 * BELOW.
@@ -201,14 +203,14 @@ public class AligningBendpointLocator extends AbstractLocator {
 	public void setVerticalAlginment(int vertical) {
 		this.vertical = vertical;
 	}
-	
+
 	/**
 	 * @return the vertical alginment.
 	 */
 	public int getVerticalAlignment() {
 		return vertical;
 	}
-	
+
 	/**
 	 * @return the connection
 	 */

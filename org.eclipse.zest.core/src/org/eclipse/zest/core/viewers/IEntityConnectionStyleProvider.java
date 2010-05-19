@@ -1,12 +1,11 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
+ * Canada. All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.viewers;
 
@@ -33,7 +32,7 @@ public interface IEntityConnectionStyleProvider extends IDisposable {
 	 * @see org.eclipse.zest.core.widgets.ZestStyles
 	 */
 	public int getConnectionStyle(Object src, Object dest);
-	
+
 	/**
 	 * Returns the color for the connection. Null for default.
 	 * @param src the source entity.  Any resources created by this class must be disposed by
@@ -43,7 +42,7 @@ public interface IEntityConnectionStyleProvider extends IDisposable {
 	 * @see #dispose()
 	 */
 	public Color getColor(Object src, Object dest);
-	
+
 	/**
 	 * Returns the highlighted color for this connection. Null for default.
 	 * @param src the source entity.  Any resources created by this class must be disposed by
@@ -53,7 +52,7 @@ public interface IEntityConnectionStyleProvider extends IDisposable {
 	 * @see #dispose()
 	 */
 	public Color getHighlightColor(Object src, Object dest);
-	
+
 	/**
 	 * Returns the line width of the connection. -1 for default.
 	 * @param src the source entity.
@@ -61,7 +60,7 @@ public interface IEntityConnectionStyleProvider extends IDisposable {
 	 * @return the line width for the connection. -1 for default.
 	 */
 	public int getLineWidth(Object src, Object dest);
-		
+
 	/**
 	 * Returns the tooltop for this node. If null is returned Zest will simply
 	 * use the default tooltip.

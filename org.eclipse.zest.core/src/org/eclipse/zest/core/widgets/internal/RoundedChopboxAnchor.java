@@ -1,12 +1,11 @@
 /*******************************************************************************
  * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * All rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
@@ -24,17 +23,17 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 
 	private int arcRadius = 10;
 	private int shift = 7;
-	
+
 	public RoundedChopboxAnchor(int arcRadius) {
 		super();
 		this.arcRadius = arcRadius;
-		this.shift = arcRadius - (int)(0.707 * arcRadius);
+		this.shift = arcRadius - (int) (0.707 * arcRadius);
 	}
 
 	public RoundedChopboxAnchor(IFigure owner, int arcRadius) {
 		super(owner);
 		this.arcRadius = arcRadius;
-		this.shift = arcRadius - (int)(0.707 * arcRadius);
+		this.shift = arcRadius - (int) (0.707 * arcRadius);
 	}
 
 	/**
@@ -44,7 +43,7 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 	public Point getLocation(Point reference) {
 		Point p = super.getLocation(reference);
 		Rectangle bounds = getBox();
-		
+
 		boolean done = getTranslatedPoint(bounds.getTopLeft(), p, shift, shift);
 		if (!done)
 			done = getTranslatedPoint(bounds.getTopRight(), p, -shift, shift);
@@ -54,7 +53,7 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 			done = getTranslatedPoint(bounds.getBottomRight(), p, -shift, -shift);
 		return p;
 	}
-	
+
 	/**
 	 * Calculates the distance from the corner to the Point p.  
 	 * If it is less than the minimum then it translates it and returns the new Point.
@@ -65,7 +64,7 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 	 * @return boolean 	If the translation occured.
 	 */
 	private boolean getTranslatedPoint(Point corner, Point p, int dx, int dy) {
-		int diff = (int)corner.getDistance(p);
+		int diff = (int) corner.getDistance(p);
 		if (diff < arcRadius) {
 			Point t = corner.getTranslated(dx, dy);
 			p.setLocation(t.x, t.y);
@@ -73,6 +72,5 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 		}
 		return false;
 	}
-	
-	
+
 }

@@ -1,12 +1,11 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
+ * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
+ * Canada. All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     The Chisel Group, University of Victoria
+ * 
+ * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.viewers;
 
@@ -38,7 +37,7 @@ public interface IConnectionStyleBezierExtension {
 	 * @return the start angle or <code>Double.NaN</code> for defaults.
 	 */
 	double getStartAngle(Object rel);
-	
+
 	/**
 	 * Gets the angle between the end point, and the line between the start 
 	 * and end, which will define the position of the end control point.
@@ -48,7 +47,7 @@ public interface IConnectionStyleBezierExtension {
 	 * @return the end angle or <code>Double.NaN</code> for defaults.
 	 */
 	double getEndAngle(Object rel);
-	
+
 	/**
 	 * Gets the distance between the start point and the start control point,
 	 * as a fraction of the distance between the start point and end point.
@@ -56,7 +55,7 @@ public interface IConnectionStyleBezierExtension {
 	 * @return the start distance or <code>Double.NaN</code> for defaults.
 	 */
 	double getStartDistance(Object rel);
-	
+
 	/**
 	 * Gets the distance between the end point and the end control point,
 	 * as a fraction of the distance between the start point and end point.

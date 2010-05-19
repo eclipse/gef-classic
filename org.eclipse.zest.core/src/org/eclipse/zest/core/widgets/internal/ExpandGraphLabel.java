@@ -244,8 +244,8 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	}
 
 //	public Dimension getPreferredSize(int hint, int hint2) {
-	//	return this.label.getPreferredSize();
-	//}
+//	return this.label.getPreferredSize();
+//}
 
 	public void setTextT(String string) {
 		this.setPreferredSize(null);
