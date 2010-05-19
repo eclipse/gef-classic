@@ -16,23 +16,6 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.zest.layouts.LayoutAlgorithm;
-import org.eclipse.zest.layouts.LayoutBendPoint;
-import org.eclipse.zest.layouts.LayoutEntity;
-import org.eclipse.zest.layouts.LayoutRelationship;
-import org.eclipse.zest.layouts.LayoutStyles;
-import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
-import org.eclipse.zest.layouts.algorithms.VerticalLayoutAlgorithm;
-import org.eclipse.zest.layouts.exampleStructures.SimpleNode;
-import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
-import org.eclipse.zest.layouts.progress.ProgressEvent;
-import org.eclipse.zest.layouts.progress.ProgressListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.events.ControlEvent;
@@ -61,6 +44,23 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutBendPoint;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.HorizontalLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.VerticalLayoutAlgorithm;
+import org.eclipse.zest.layouts.exampleStructures.SimpleNode;
+import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
+import org.eclipse.zest.layouts.progress.ProgressEvent;
+import org.eclipse.zest.layouts.progress.ProgressListener;
 
 /**
  * @author Rob Lintern
