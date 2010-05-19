@@ -23,7 +23,7 @@ import org.eclipse.draw2d.geometry.PrecisionPoint;
 public class PrecisionPointTest extends TestCase {
 
 	/**
-	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=227977 
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=227977
 	 */
 	public void testEquals() {
 		PrecisionPoint p1 = new PrecisionPoint(0.1, 0.1);

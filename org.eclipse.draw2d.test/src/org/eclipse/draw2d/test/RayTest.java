@@ -18,7 +18,7 @@ import org.eclipse.draw2d.geometry.Ray;
  * Ray's tests
  * 
  * @author aboyko
- *
+ * 
  */
 public class RayTest extends TestCase {
 
@@ -46,7 +46,7 @@ public class RayTest extends TestCase {
 		Ray b = new Ray(2, -2);
 		assertTrue(a.dotProduct(b) == 2);
 	}
-	
+
 	private void testLengthValues(int x, int y, double expectedLength) {
 		Ray ray = new Ray(x, y);
 		assertEquals(expectedLength, ray.length(), 0);

@@ -22,27 +22,28 @@ import org.eclipse.draw2d.text.TextFragmentBox;
  */
 public class AbstractTextTest extends BaseTestCase {
 
-static class TestBorder extends AbstractFlowBorder {
-	private Insets insets;
-	
-	TestBorder(Insets insets) {
-		this.insets = insets;
-	}
-	
-	public Insets getInsets(IFigure figure) {
-		return insets;
-	}
-}
+	static class TestBorder extends AbstractFlowBorder {
+		private Insets insets;
 
-public Rectangle expected = new Rectangle();
+		TestBorder(Insets insets) {
+			this.insets = insets;
+		}
 
-protected void assertFragmentLocation(TextFragmentBox box) {
-	assertEquals("Fragment location error", box.getX(), expected.x);
-	assertEquals("Fragment location error", box.getBaseline() - box.getAscent(),
-			expected.y);
-	assertEquals("Fragment location error", box.getBaseline() + box.getDescent(),
-			expected.bottom());
-	assertEquals("Fragment location error", box.getWidth() + box.getX(), expected.right());
-}
+		public Insets getInsets(IFigure figure) {
+			return insets;
+		}
+	}
+
+	public Rectangle expected = new Rectangle();
+
+	protected void assertFragmentLocation(TextFragmentBox box) {
+		assertEquals("Fragment location error", box.getX(), expected.x);
+		assertEquals("Fragment location error",
+				box.getBaseline() - box.getAscent(), expected.y);
+		assertEquals("Fragment location error",
+				box.getBaseline() + box.getDescent(), expected.bottom());
+		assertEquals("Fragment location error", box.getWidth() + box.getX(),
+				expected.right());
+	}
 
 }

@@ -7,7 +7,7 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *******************************************************************************/ 
+ *******************************************************************************/
 
 package org.eclipse.draw2d.test;
 
@@ -17,18 +17,24 @@ import org.eclipse.swt.graphics.Image;
 
 public class TestImages {
 
-static final Image depth_8;
-static final Image depth_24;
+	static final Image depth_8;
+	static final Image depth_24;
 
-static {
-	InputStream is = TestImages.class.getResourceAsStream("icons/bits8.gif");
-	depth_8 = new Image(null, is);
-	try {is.close();} catch (Exception e) {}
+	static {
+		InputStream is = TestImages.class
+				.getResourceAsStream("icons/bits8.gif");
+		depth_8 = new Image(null, is);
+		try {
+			is.close();
+		} catch (Exception e) {
+		}
 
-
-	is = TestImages.class.getResourceAsStream("icons/bits24.jpg");
-	depth_24 = new Image(null, is);
-	try {is.close();} catch (Exception e) {}
-}
+		is = TestImages.class.getResourceAsStream("icons/bits24.jpg");
+		depth_24 = new Image(null, is);
+		try {
+			is.close();
+		} catch (Exception e) {
+		}
+	}
 
 }

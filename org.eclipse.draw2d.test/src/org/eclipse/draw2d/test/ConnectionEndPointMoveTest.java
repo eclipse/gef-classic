@@ -29,96 +29,101 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class ConnectionEndPointMoveTest extends TestCase implements UpdateListener {
+public class ConnectionEndPointMoveTest extends TestCase implements
+		UpdateListener {
 
-private FigureCanvas fc;
-protected IFigure contents;
-private RectangleFigure dec;
-protected Shell shell;
-private PolylineConnection conn;
-protected Display d;
-private Rectangle lastDamaged;
-private Rectangle origBounds;
-	
-/*
- * @see TestCase#setUp()
- */
-protected void setUp() throws Exception {
-	super.setUp();
-	
-	d = Display.getDefault();
-	shell = new Shell(d);
+	private FigureCanvas fc;
+	protected IFigure contents;
+	private RectangleFigure dec;
+	protected Shell shell;
+	private PolylineConnection conn;
+	protected Display d;
+	private Rectangle lastDamaged;
+	private Rectangle origBounds;
 
-	String appName = getClass().getName();
-	appName = appName.substring(appName.lastIndexOf('.')+1);
+	/*
+	 * @see TestCase#setUp()
+	 */
+	protected void setUp() throws Exception {
+		super.setUp();
 
-	shell.setText(appName);
-	shell.setLayout(new FillLayout());
+		d = Display.getDefault();
+		shell = new Shell(d);
 
-	fc = new FigureCanvas(shell);
+		String appName = getClass().getName();
+		appName = appName.substring(appName.lastIndexOf('.') + 1);
 
-	fc.setSize(200, 200);
+		shell.setText(appName);
+		shell.setLayout(new FillLayout());
 
-	contents = new Figure();
-	
-	conn = new PolylineConnection();
-	
-	dec = new RectangleFigure();
-	
-	dec.setBounds(new Rectangle(10,10,25,25));
-	
-	
-	RectangleFigure node = new RectangleFigure();
-	conn.setTargetAnchor(new ChopboxAnchor(node));
-	conn.add(dec, new ConnectionEndpointLocator(conn, true));
-	
-	conn.setStart(new Point(25, 25));
-	conn.setEnd(new Point(125, 125));
-	contents.add(conn);
-	
-	fc.setContents(contents);
-	
-	
-	shell.open();
-	contents.getUpdateManager().performUpdate();
-	while (shell.getDisplay().readAndDispatch()) {
+		fc = new FigureCanvas(shell);
+
+		fc.setSize(200, 200);
+
+		contents = new Figure();
+
+		conn = new PolylineConnection();
+
+		dec = new RectangleFigure();
+
+		dec.setBounds(new Rectangle(10, 10, 25, 25));
+
+		RectangleFigure node = new RectangleFigure();
+		conn.setTargetAnchor(new ChopboxAnchor(node));
+		conn.add(dec, new ConnectionEndpointLocator(conn, true));
+
+		conn.setStart(new Point(25, 25));
+		conn.setEnd(new Point(125, 125));
+		contents.add(conn);
+
+		fc.setContents(contents);
+
+		shell.open();
+		contents.getUpdateManager().performUpdate();
+		while (shell.getDisplay().readAndDispatch()) {
+		}
+		contents.getUpdateManager().addUpdateListener(this);
+
+		origBounds = conn.getBounds();
 	}
-	contents.getUpdateManager().addUpdateListener(this);
-	
-	origBounds = conn.getBounds();
-}
 
-/* (non-Javadoc)
- * @see org.eclipse.draw2d.UpdateListener#notifyPainting(org.eclipse.draw2d.geometry.Rectangle, java.util.Map)
- */
-public void notifyPainting(Rectangle damage, Map dirtyRegions) {
-	lastDamaged = damage;
-}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.draw2d.UpdateListener#notifyPainting(org.eclipse.draw2d.geometry
+	 * .Rectangle, java.util.Map)
+	 */
+	public void notifyPainting(Rectangle damage, Map dirtyRegions) {
+		lastDamaged = damage;
+	}
 
-/* (non-Javadoc)
- * @see org.eclipse.draw2d.UpdateListener#notifyValidating()
- */
-public void notifyValidating() {
-	// nothing
-}
-	
-public void testConnectionDecoration() {
-	
-	conn.setConstraint(dec, new MidpointLocator(conn,0));
-	conn.layout();
-			
-	contents.getUpdateManager().performUpdate();
-		
-	assertTrue(lastDamaged.contains(origBounds));
-}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.draw2d.UpdateListener#notifyValidating()
+	 */
+	public void notifyValidating() {
+		// nothing
+	}
 
-/*
- * @see TestCase#tearDown()
- */
-protected void tearDown() throws Exception {
-	super.tearDown();
-	
-	shell.dispose();
-}
+	public void testConnectionDecoration() {
+
+		conn.setConstraint(dec, new MidpointLocator(conn, 0));
+		conn.layout();
+
+		contents.getUpdateManager().performUpdate();
+
+		assertTrue(lastDamaged.contains(origBounds));
+	}
+
+	/*
+	 * @see TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		super.tearDown();
+
+		shell.dispose();
+	}
 
 }

@@ -19,39 +19,37 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 public class XYLayoutTest extends TestCase {
 
+	protected XYLayout layout;
+	protected RectangleFigure figure;
+	protected RectangleFigure contents;
 
-protected XYLayout layout;
-protected RectangleFigure figure;
-protected RectangleFigure contents;
+	/*
+	 * @see TestCase#setUp()
+	 */
+	protected void setUp() throws Exception {
+		super.setUp();
+	}
 
-/*
- * @see TestCase#setUp()
- */
-protected void setUp() throws Exception {
-	super.setUp();
-}
+	public void testPreferredSize() {
+		layout = new XYLayout();
+		contents = new RectangleFigure();
+		contents.setLayoutManager(layout);
 
+		figure = new RectangleFigure();
+		contents.add(figure, new Rectangle(0, 0, 100, -1));
+		figure.setPreferredSize(100, 150);
 
-public void testPreferredSize() {
-	layout = new XYLayout();
-	contents = new RectangleFigure();
-	contents.setLayoutManager(layout);
+		Dimension d = contents.getPreferredSize();
 
-	figure = new RectangleFigure();
-	contents.add(figure, new Rectangle(0, 0,100,-1));
-	figure.setPreferredSize(100, 150);	
+		assertEquals(100, d.width);
+		assertEquals(150, d.height);
+	}
 
-	Dimension d = contents.getPreferredSize();
-	
-	assertEquals(100, d.width);
-	assertEquals(150, d.height);
-}
-
-/*
- * @see TestCase#tearDown()
- */
-protected void tearDown() throws Exception {
-	super.tearDown();
-}
+	/*
+	 * @see TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
 
 }

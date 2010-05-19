@@ -24,26 +24,27 @@ import org.eclipse.swt.widgets.Display;
  */
 public class SimpleTextTest extends AbstractTextTest {
 
-public static final String PHRASE = "The quick brown fox jumped over the lazy dog. "; 
-public FlowPage flowpage = new FlowPage();
-public TextFlow sentence = new TextFlow(PHRASE);
-public InlineFlow inline = new InlineFlow();
-public TextFlow child1 = new TextFlow(PHRASE);
-public TextFlow child2 = new TextFlow(PHRASE);
-public Font font = Display.getDefault().getSystemFont();
+	public static final String PHRASE = "The quick brown fox jumped over the lazy dog. ";
+	public FlowPage flowpage = new FlowPage();
+	public TextFlow sentence = new TextFlow(PHRASE);
+	public InlineFlow inline = new InlineFlow();
+	public TextFlow child1 = new TextFlow(PHRASE);
+	public TextFlow child2 = new TextFlow(PHRASE);
+	public Font font = Display.getDefault().getSystemFont();
 
-protected void setUp() throws Exception {
-	flowpage.setFont(font);
-	flowpage.add(sentence);
-	flowpage.add(inline);
-	inline.add(child1);
-	inline.add(child2);
-}
+	protected void setUp() throws Exception {
+		flowpage.setFont(font);
+		flowpage.add(sentence);
+		flowpage.add(inline);
+		inline.add(child1);
+		inline.add(child2);
+	}
 
-protected void makePageWidth(String string, int extra) {
-	int width = FigureUtilities.getStringExtents(string, font).width + extra;
-	flowpage.setBounds(new Rectangle(0, 0, width, 300));
-	flowpage.validate();
-}
+	protected void makePageWidth(String string, int extra) {
+		int width = FigureUtilities.getStringExtents(string, font).width
+				+ extra;
+		flowpage.setBounds(new Rectangle(0, 0, width, 300));
+		flowpage.validate();
+	}
 
 }

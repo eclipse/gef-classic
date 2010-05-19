@@ -23,7 +23,7 @@ import org.eclipse.draw2d.geometry.PrecisionDimension;
 public class PrecisionDimensionTest extends TestCase {
 
 	/**
-	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=227977 
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=227977
 	 */
 	public void testEquals() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);

@@ -18,7 +18,7 @@ import org.eclipse.draw2d.geometry.Vector;
  * Vector's tests
  * 
  * @author aboyko
- *
+ * 
  */
 public class VectorTest extends TestCase {
 
@@ -40,7 +40,7 @@ public class VectorTest extends TestCase {
 		testLengthValues(3, 4, 5);
 		testLengthValues(0, Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
-		
+
 	public void test_getOrthoComplement() {
 		Vector a = new Vector(3, -5);
 		assertTrue(a.getOrthogonalComplement().equals(new Vector(5, 3)));
@@ -51,7 +51,7 @@ public class VectorTest extends TestCase {
 		Vector b = new Vector(2, -2);
 		assertTrue(a.getDotProduct(b) == 2);
 	}
-	
+
 	private void testLengthValues(int x, int y, double expectedLength) {
 		Vector Vector = new Vector(x, y);
 		assertEquals(expectedLength, Vector.getLength(), 0);

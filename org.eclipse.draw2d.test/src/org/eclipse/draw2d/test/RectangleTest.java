@@ -56,17 +56,17 @@ public class RectangleTest extends TestCase {
 		assertTrue(rect1.equals(testRect));
 		assertTrue(rect2.equals(testRect));
 	}
-	
+
 	public void test_sameBehavior() {
-		
-		Point p1 = new Point(0,0);
+
+		Point p1 = new Point(0, 0);
 		Point p2 = new Point(10, 10);
 		Rectangle origRect = new Rectangle();
 		origRect.setLocation(p1);
 		origRect.union(p2);
-		
+
 		Rectangle newRect = new Rectangle(p1, p2);
-		
+
 		assertTrue(origRect.equals(newRect));
 	}
 

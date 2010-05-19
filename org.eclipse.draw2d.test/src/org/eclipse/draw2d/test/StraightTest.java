@@ -35,7 +35,7 @@ public class StraightTest extends TestCase {
 		assertTrue(intersection.equals(new Vector(3, 2)));
 		assertTrue(s1.contains(intersection));
 		assertTrue(s2.contains(intersection));
-		
+
 		// check straight does not intersect itself
 		assertNull(new Straight(p, a).getIntersection(new Straight(p, a)));
 

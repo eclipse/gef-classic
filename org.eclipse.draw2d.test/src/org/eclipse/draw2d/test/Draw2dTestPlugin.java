@@ -14,6 +14,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 public class Draw2dTestPlugin extends AbstractUIPlugin {
 
-public Draw2dTestPlugin() { }
+	public Draw2dTestPlugin() {
+	}
 
 }

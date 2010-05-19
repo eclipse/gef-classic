@@ -36,9 +36,9 @@ public class LocalOptimizerTest extends TestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		
+
 		graph = new DirectedGraph();
-		
+
 		// create nodes and populate their ranks
 		a = createNode("a");
 		b = createNode("b");
@@ -52,14 +52,16 @@ public class LocalOptimizerTest extends TestCase {
 		j = createNode("j");
 		k = createNode("k");
 		l = createNode("l");
-		
-		rankNodes(new Node[] {a, b, c, d}, 0);
-		rankNodes(new Node[] {e, f, g, h}, 1);
-		rankNodes(new Node[] {i, j, k, l}, 2);
-		
-		createDirectedGraphLayoutWithSelectedStepOnly(new String[]{"org.eclipse.draw2d.graph.PopulateRanks"}).visit(graph);
+
+		rankNodes(new Node[] { a, b, c, d }, 0);
+		rankNodes(new Node[] { e, f, g, h }, 1);
+		rankNodes(new Node[] { i, j, k, l }, 2);
+
+		createDirectedGraphLayoutWithSelectedStepOnly(
+				new String[] { "org.eclipse.draw2d.graph.PopulateRanks" })
+				.visit(graph);
 	}
-	
+
 	/*
 	 * @see TestCase#tearDown()
 	 */
@@ -69,11 +71,7 @@ public class LocalOptimizerTest extends TestCase {
 
 	public void testIncomingSwapNeeded() {
 		/*
-		 * A B C D 
-		 * |\| \ | 
-		 * | X  \| 
-		 * | |\  | 
-		 * E F G H
+		 * A B C D |\| \ | | X \| | |\ | E F G H
 		 */
 		createEdge(a, e);
 		createEdge(b, f);
@@ -81,44 +79,35 @@ public class LocalOptimizerTest extends TestCase {
 		createEdge(c, h);
 		createEdge(d, h);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(new String[]{"org.eclipse.draw2d.graph.LocalOptimizer"}).visit(graph);
+		createDirectedGraphLayoutWithSelectedStepOnly(
+				new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+				.visit(graph);
 
 		checkResults(new Node[][] { new Node[] { a, b, c, d },
 				new Node[] { e, g, f, h } });
 	}
-	
+
 	public void testOutgoingSwapNeeded() {
 		/*
-		 *  A  BC D
-		 *   \ | X
-		 *    \|/ \
-		 *  E  F G H
+		 * A BC D \ | X \|/ \ E F G H
 		 */
 		createEdge(a, f);
 		createEdge(b, f);
 		createEdge(d, f);
 		createEdge(c, h);
-		
-		createDirectedGraphLayoutWithSelectedStepOnly(new String[]{"org.eclipse.draw2d.graph.LocalOptimizer"}).visit(graph);
 
-		checkResults(new Node[][] {
-				new Node[] {a, b, d, c},
-				new Node[] {e, f, g, h}});
+		createDirectedGraphLayoutWithSelectedStepOnly(
+				new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+				.visit(graph);
+
+		checkResults(new Node[][] { new Node[] { a, b, d, c },
+				new Node[] { e, f, g, h } });
 	}
 
 	public void testIncomingOffsetSwapNeeded() {
 		/*
-		 *  A  B  C  (C should swap twice to first position)
-		 *   \ \ /
-		 *    \ X
-		 *     X \
-		 *    / \ \
-		 * [-----E----] F  G  H
-		 *     \   /   / 
-		 *      \ /   /  
-		 *       X   /   
-		 *      / \ /    
-		 * I   J   K    L  (Should not swap)
+		 * A B C (C should swap twice to first position) \ \ / \ X X \ / \ \
+		 * [-----E----] F G H \ / / \ / / X / / \ / I J K L (Should not swap)
 		 */
 		createEdge(a, e);
 		createEdge(b, e).offsetTarget = 30;
@@ -128,35 +117,21 @@ public class LocalOptimizerTest extends TestCase {
 		createEdge(e, j).offsetSource = 30;
 		createEdge(f, k);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(new String[]{"org.eclipse.draw2d.graph.LocalOptimizer"}).visit(graph);
+		createDirectedGraphLayoutWithSelectedStepOnly(
+				new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+				.visit(graph);
 
-		checkResults(new Node[][] {
-				new Node[] {c, a, b, d},
-				new Node[] {e, f, g, h},
-				new Node[] {i, j, k, l}});
+		checkResults(new Node[][] { new Node[] { c, a, b, d },
+				new Node[] { e, f, g, h }, new Node[] { i, j, k, l } });
 	}
 
 	public void testBidirectionalSwapNeeded() {
 		/*
-		 *  A B C D
-		 *  \ |\    
-		 *   \| \   
-		 *  E F  G H    (F and G should swap)
-		 *      X|   
-		 *     / X    
-		 *    |  |\ 
-		 *  I J  K L
+		 * A B C D \ |\ \| \ E F G H (F and G should swap) X| / X | |\ I J K L
 		 * 
 		 * 
-		 *    A   B C D (Which causes A&B on previous rank to swap)
-		 *     \ /| 
-		 *      X |
-		 *     / \|   
-		 *  E G   F  H
-		 *    |\  \ 
-		 *    | \  \ 
-		 *  I J  K  L
-		 * 
+		 * A B C D (Which causes A&B on previous rank to swap) \ /| X | / \| E G
+		 * F H |\ \ | \ \ I J K L
 		 */
 		createEdge(a, f);
 		createEdge(b, f);
@@ -164,22 +139,24 @@ public class LocalOptimizerTest extends TestCase {
 		createEdge(f, l);
 		createEdge(g, j);
 		createEdge(g, k);
-		
-		createDirectedGraphLayoutWithSelectedStepOnly(new String[]{"org.eclipse.draw2d.graph.LocalOptimizer"}).visit(graph);
 
-		checkResults(new Node[][] {
-				new Node[] {b, a, c, d},
-				new Node[] {e, g, f, h},
-				new Node[] {i, j, k, l}});
+		createDirectedGraphLayoutWithSelectedStepOnly(
+				new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+				.visit(graph);
+
+		checkResults(new Node[][] { new Node[] { b, a, c, d },
+				new Node[] { e, g, f, h }, new Node[] { i, j, k, l } });
 	}
-	
+
 	/**
-	 * LocalOptimizer and other GraphVisitors are package private, so we cannot instantiate them directly.
-	 * Instead, we use a DirectedGraphLayout and remove all other steps from it.
+	 * LocalOptimizer and other GraphVisitors are package private, so we cannot
+	 * instantiate them directly. Instead, we use a DirectedGraphLayout and
+	 * remove all other steps from it.
 	 * 
 	 * @return A DirectedGraphLayout containing only the selected steps.
 	 */
-	private DirectedGraphLayout createDirectedGraphLayoutWithSelectedStepOnly(String[] graphVisitorClassNames) {
+	private DirectedGraphLayout createDirectedGraphLayoutWithSelectedStepOnly(
+			String[] graphVisitorClassNames) {
 		try {
 			DirectedGraphLayout layout = new DirectedGraphLayout();
 			Field stepsField = DirectedGraphLayout.class
@@ -189,8 +166,9 @@ public class LocalOptimizerTest extends TestCase {
 			ArrayList filteredSteps = new ArrayList();
 			for (int i = 0; i < steps.size(); i++) {
 				Object graphVisitor = steps.get(i);
-				for(int j=0; j<graphVisitorClassNames.length; j++){
-					if(graphVisitorClassNames[j].equals(graphVisitor.getClass().getName())){
+				for (int j = 0; j < graphVisitorClassNames.length; j++) {
+					if (graphVisitorClassNames[j].equals(graphVisitor
+							.getClass().getName())) {
 						filteredSteps.add(graphVisitor);
 					}
 				}
@@ -203,19 +181,19 @@ public class LocalOptimizerTest extends TestCase {
 			return null;
 		}
 	}
-	
+
 	private Node createNode(String label) {
 		Node node = new Node(label);
 		graph.nodes.add(node);
 		return node;
 	}
-	
+
 	private Edge createEdge(Node n1, Node n2) {
 		Edge edge = new Edge(n1, n2);
 		graph.edges.add(edge);
 		return edge;
 	}
-	
+
 	private void rankNodes(Node[] nodes, int rank) {
 		for (int i = 0; i < nodes.length; i++) {
 			Node node = nodes[i];

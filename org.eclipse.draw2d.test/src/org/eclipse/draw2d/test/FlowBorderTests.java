@@ -22,22 +22,22 @@ import org.eclipse.swt.graphics.FontMetrics;
  */
 public class FlowBorderTests extends SimpleTextTest {
 
-public void testBorderedTextFlow() {
-	sentence.setBorder(new TestBorder(new Insets(5)));
-	makePageWidth("The quick", 5);
-	expected.x = 0;
-	expected.y = 0;
-	expected.width = 5;
-	FontMetrics metrics = FigureUtilities.getFontMetrics(font);
-	expected.height = metrics.getHeight();
-	assertFragmentLocation(getTextFragment(sentence, 0));
-	expected.x= 5;
-	expected.width = FigureUtilities.getStringExtents("The quick", font).width;
-	assertFragmentLocation(getTextFragment(sentence, 1));
-}
+	public void testBorderedTextFlow() {
+		sentence.setBorder(new TestBorder(new Insets(5)));
+		makePageWidth("The quick", 5);
+		expected.x = 0;
+		expected.y = 0;
+		expected.width = 5;
+		FontMetrics metrics = FigureUtilities.getFontMetrics(font);
+		expected.height = metrics.getHeight();
+		assertFragmentLocation(getTextFragment(sentence, 0));
+		expected.x = 5;
+		expected.width = FigureUtilities.getStringExtents("The quick", font).width;
+		assertFragmentLocation(getTextFragment(sentence, 1));
+	}
 
-protected TextFragmentBox getTextFragment(TextFlow flow, int index) {
-	return (TextFragmentBox)flow.getFragments().get(index);
-}
+	protected TextFragmentBox getTextFragment(TextFlow flow, int index) {
+		return (TextFragmentBox) flow.getFragments().get(index);
+	}
 
 }
