@@ -16,19 +16,18 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.gef.examples.ui.pde.internal.GefExamplesPlugin;
 import org.eclipse.gef.examples.ui.pde.internal.l10n.Messages;
 
-public class ShapesExampleNewWizard
-    extends ProjectUnzipperNewWizard {
+public class ShapesExampleNewWizard extends ProjectUnzipperNewWizard {
 
-    /**
-     * Constructor
-     */
-    public ShapesExampleNewWizard() {
-        super(
-            "ShapesExampleNewWizard", //$NON-NLS-1$
-            Messages.ShapesExample_createProjectPage_title,
-            Messages.ShapesExample_createProjectPage_desc,
-            "org.eclipse.gef.examples.shapes", //$NON-NLS-1$  
-            FileLocator.find(GefExamplesPlugin.getDefault().getBundle(),
-                new Path("examples/shapes.zip"), null)); //$NON-NLS-1$
-    }
+	/**
+	 * Constructor
+	 */
+	public ShapesExampleNewWizard() {
+		super(
+				"ShapesExampleNewWizard", //$NON-NLS-1$
+				Messages.ShapesExample_createProjectPage_title,
+				Messages.ShapesExample_createProjectPage_desc,
+				"org.eclipse.gef.examples.shapes", //$NON-NLS-1$  
+				FileLocator.find(GefExamplesPlugin.getDefault().getBundle(),
+						new Path("examples/shapes.zip"), null)); //$NON-NLS-1$
+	}
 }

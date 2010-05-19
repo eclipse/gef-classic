@@ -15,19 +15,18 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.gef.examples.ui.pde.internal.GefExamplesPlugin;
 import org.eclipse.gef.examples.ui.pde.internal.l10n.Messages;
 
-public class FlowExampleNewWizard
-    extends ProjectUnzipperNewWizard {
+public class FlowExampleNewWizard extends ProjectUnzipperNewWizard {
 
-    /**
-     * Constructor
-     */
-    public FlowExampleNewWizard() {
-        super(
-            "FlowExampleNewWizard", //$NON-NLS-1$
-            Messages.FlowExample_createProjectPage_title,
-            Messages.FlowExample_createProjectPage_desc,
-            "org.eclipse.gef.examples.flow", //$NON-NLS-1$  
-            FileLocator.find(GefExamplesPlugin.getDefault().getBundle(),
-                new Path("examples/flow.zip"), null)); //$NON-NLS-1$
-    }
+	/**
+	 * Constructor
+	 */
+	public FlowExampleNewWizard() {
+		super(
+				"FlowExampleNewWizard", //$NON-NLS-1$
+				Messages.FlowExample_createProjectPage_title,
+				Messages.FlowExample_createProjectPage_desc,
+				"org.eclipse.gef.examples.flow", //$NON-NLS-1$  
+				FileLocator.find(GefExamplesPlugin.getDefault().getBundle(),
+						new Path("examples/flow.zip"), null)); //$NON-NLS-1$
+	}
 }

@@ -14,24 +14,24 @@ import org.eclipse.osgi.util.NLS;
 
 public final class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "org.eclipse.gef.examples.ui.pde.internal.l10n.Messages";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.gef.examples.ui.pde.internal.l10n.Messages";//$NON-NLS-1$
 
-    private Messages() {
-        // Do not instantiate
-    }
+	private Messages() {
+		// Do not instantiate
+	}
 
-    public static String LogicExample_createProjectPage_title;
-    public static String LogicExample_createProjectPage_desc;
-    public static String FlowExample_createProjectPage_title;
-    public static String FlowExample_createProjectPage_desc;
-    public static String ShapesExample_createProjectPage_title;
-    public static String ShapesExample_createProjectPage_desc;
-    public static String TextExample_createProjectPage_title;
-    public static String TextExample_createProjectPage_desc;
-    public static String monitor_creatingProject;
-    public static String monitor_unzippingProject;
+	public static String LogicExample_createProjectPage_title;
+	public static String LogicExample_createProjectPage_desc;
+	public static String FlowExample_createProjectPage_title;
+	public static String FlowExample_createProjectPage_desc;
+	public static String ShapesExample_createProjectPage_title;
+	public static String ShapesExample_createProjectPage_desc;
+	public static String TextExample_createProjectPage_title;
+	public static String TextExample_createProjectPage_desc;
+	public static String monitor_creatingProject;
+	public static String monitor_unzippingProject;
 
-    static {
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
+	static {
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+	}
 }

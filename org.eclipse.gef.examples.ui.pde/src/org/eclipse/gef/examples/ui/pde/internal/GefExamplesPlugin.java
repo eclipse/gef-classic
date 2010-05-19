@@ -9,7 +9,6 @@
  *    IBM Corporation - initial API and implementation 
  ****************************************************************************/
 
-
 package org.eclipse.gef.examples.ui.pde.internal;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -17,8 +16,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class GefExamplesPlugin
-	extends AbstractUIPlugin {
+public class GefExamplesPlugin extends AbstractUIPlugin {
 
 	/** The shared instance. */
 	private static GefExamplesPlugin fPlugin;
