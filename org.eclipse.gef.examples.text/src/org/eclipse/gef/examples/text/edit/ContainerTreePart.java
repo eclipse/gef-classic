@@ -13,10 +13,9 @@ package org.eclipse.gef.examples.text.edit;
 import java.beans.PropertyChangeEvent;
 import java.util.List;
 
-import org.eclipse.swt.widgets.TreeItem;
-
 import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.Style;
+import org.eclipse.swt.widgets.TreeItem;
 
 /**
  * @since 3.1

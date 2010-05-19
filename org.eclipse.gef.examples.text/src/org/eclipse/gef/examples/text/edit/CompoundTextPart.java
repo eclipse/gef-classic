@@ -22,7 +22,6 @@ import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
-
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.figures.CommentPage;
 import org.eclipse.gef.examples.text.model.Container;

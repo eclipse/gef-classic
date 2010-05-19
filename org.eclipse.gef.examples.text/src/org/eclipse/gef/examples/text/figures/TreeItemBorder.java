@@ -11,13 +11,12 @@
 
 package org.eclipse.gef.examples.text.figures;
 
-import org.eclipse.swt.graphics.Image;
-
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.Image;
 
 /**
  * A border class which displays an Image on the left side of a figure.

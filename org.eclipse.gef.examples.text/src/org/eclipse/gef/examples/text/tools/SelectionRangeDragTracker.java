@@ -11,20 +11,17 @@
 
 package org.eclipse.gef.examples.text.tools;
 
-import org.eclipse.swt.graphics.Cursor;
-
 import org.eclipse.draw2d.Cursors;
-
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.tools.SimpleDragTracker;
-import org.eclipse.gef.tools.ToolUtilities;
-
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.edit.TextEditPart;
 import org.eclipse.gef.examples.text.requests.CaretRequest;
 import org.eclipse.gef.examples.text.requests.SearchResult;
+import org.eclipse.gef.tools.SimpleDragTracker;
+import org.eclipse.gef.tools.ToolUtilities;
+import org.eclipse.swt.graphics.Cursor;
 
 /**
  * @since 3.1

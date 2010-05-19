@@ -16,7 +16,6 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.text.BlockFlow;
-
 import org.eclipse.gef.examples.text.figures.Images;
 import org.eclipse.gef.examples.text.figures.TreeBorder;
 

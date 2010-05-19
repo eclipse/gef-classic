@@ -11,10 +11,9 @@
 
 package org.eclipse.gef.examples.text.requests;
 
-import org.eclipse.gef.requests.SelectionRequest;
-
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.edit.TextEditPart;
+import org.eclipse.gef.requests.SelectionRequest;
 
 
 public class CaretRequest 

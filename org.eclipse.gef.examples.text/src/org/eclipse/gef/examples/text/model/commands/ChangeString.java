@@ -12,7 +12,6 @@
 package org.eclipse.gef.examples.text.model.commands;
 
 import org.eclipse.core.runtime.Assert;
-
 import org.eclipse.gef.examples.text.model.ModelLocation;
 import org.eclipse.gef.examples.text.model.TextRun;
 

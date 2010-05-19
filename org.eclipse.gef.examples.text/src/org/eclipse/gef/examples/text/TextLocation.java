@@ -12,7 +12,6 @@
 package org.eclipse.gef.examples.text;
 
 import org.eclipse.core.runtime.Assert;
-
 import org.eclipse.gef.examples.text.edit.TextEditPart;
 
 /**

@@ -11,10 +11,9 @@
 
 package org.eclipse.gef.examples.text.actions;
 
+import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-
-import org.eclipse.gef.ui.actions.ActionBarContributor;
 
 
 /**

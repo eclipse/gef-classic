@@ -12,24 +12,22 @@
 package org.eclipse.gef.examples.text.edit;
 
 import java.beans.PropertyChangeEvent;
-import com.ibm.icu.text.BreakIterator;
-
-import org.eclipse.swt.graphics.Font;
 
 import org.eclipse.core.runtime.Assert;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.SimpleTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
-
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.requests.CaretRequest;
 import org.eclipse.gef.examples.text.requests.SearchResult;
+import org.eclipse.swt.graphics.Font;
+
+import com.ibm.icu.text.BreakIterator;
 
 /**
  * @since 3.1

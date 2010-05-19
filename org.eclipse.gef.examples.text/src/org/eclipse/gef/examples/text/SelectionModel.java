@@ -17,13 +17,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.examples.text.edit.TextEditPart;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-
-import org.eclipse.gef.EditPart;
-
-import org.eclipse.gef.examples.text.edit.TextEditPart;
 
 /**
  * SelectionModel is immutable.

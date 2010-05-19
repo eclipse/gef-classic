@@ -14,11 +14,9 @@ package org.eclipse.gef.examples.text.edit;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.draw2d.text.FlowFigure;
-
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-
 import org.eclipse.gef.examples.text.model.ModelElement;
 import org.eclipse.gef.examples.text.tools.SelectionRangeDragTracker;
 

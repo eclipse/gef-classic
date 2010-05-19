@@ -11,9 +11,8 @@
 
 package org.eclipse.gef.examples.text.model;
 
-import org.eclipse.swt.SWT;
-
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.swt.SWT;
 
 /**
  * @since 3.1

@@ -16,11 +16,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
-
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.tools.ToolUtilities;
-
 import org.eclipse.gef.examples.text.edit.TextEditPart;
+import org.eclipse.gef.tools.ToolUtilities;
 
 public class SelectionRange {
 

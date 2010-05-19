@@ -14,12 +14,10 @@ package org.eclipse.gef.examples.text.edit;
 import java.util.Iterator;
 
 import org.eclipse.core.runtime.Assert;
-
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
-
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.model.Block;

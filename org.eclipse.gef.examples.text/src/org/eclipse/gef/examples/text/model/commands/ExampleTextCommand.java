@@ -12,7 +12,6 @@
 package org.eclipse.gef.examples.text.model.commands;
 
 import org.eclipse.gef.commands.Command;
-
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.TextCommand;
 import org.eclipse.gef.examples.text.edit.TextEditPart;

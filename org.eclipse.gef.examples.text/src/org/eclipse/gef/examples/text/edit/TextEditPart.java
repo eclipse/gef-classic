@@ -12,9 +12,7 @@
 package org.eclipse.gef.examples.text.edit;
 
 import org.eclipse.draw2d.text.CaretInfo;
-
 import org.eclipse.gef.GraphicalEditPart;
-
 import org.eclipse.gef.examples.text.requests.CaretRequest;
 import org.eclipse.gef.examples.text.requests.SearchResult;
 

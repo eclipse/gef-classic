@@ -14,13 +14,11 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.Display;
-
 import org.eclipse.ui.IPartService;
-
-import org.eclipse.gef.examples.text.model.Style;
 
 /**
  * @author Pratik Shah

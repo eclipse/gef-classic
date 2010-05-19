@@ -11,11 +11,10 @@
 
 package org.eclipse.gef.examples.text.actions;
 
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.core.runtime.Assert;
-
-import org.eclipse.gef.internal.InternalImages;
 
 /**
  * @since 3.1

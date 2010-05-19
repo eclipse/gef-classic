@@ -14,7 +14,6 @@ package org.eclipse.gef.examples.text.edit;
 import java.beans.PropertyChangeEvent;
 
 import org.eclipse.draw2d.text.BlockFlow;
-
 import org.eclipse.gef.examples.text.model.Style;
 
 /**

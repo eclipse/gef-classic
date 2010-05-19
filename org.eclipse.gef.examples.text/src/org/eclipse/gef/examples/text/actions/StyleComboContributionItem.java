@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.text.actions;
 
+import org.eclipse.gef.examples.text.TextEditor;
+import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -20,14 +22,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-
-import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IPartService;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
-
-import org.eclipse.gef.examples.text.TextEditor;
 
 /**
  * @author Pratik Shah
