@@ -79,8 +79,7 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 		// if the nearest common viewport is not the root viewport, we may
 		// start with clipping the connection at this viewport.
 		if (nearestEnclosingCommonViewport != getRootViewport()) {
-			clipRect.intersect(getNodeClippingRectangle(nearestEnclosingCommonViewport
-					.getParent()));
+			clipRect.intersect(getNodeClippingRectangle(nearestEnclosingCommonViewport));
 		}
 
 		// if the nearest common viewport of source and target is not
@@ -195,12 +194,7 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 	 * Returns the area covered by the viewport in absolute coordinates.
 	 */
 	protected Rectangle getAbsoluteViewportAreaAsCopy(Viewport viewport) {
-		if (viewport.getParent().getBorder() != null
-				&& viewport.getParent().getBorder().isOpaque()) {
-			return getAbsoluteClientAreaAsCopy(viewport.getParent());
-		} else {
-			return getAbsoluteBoundsAsCopy(viewport.getParent());
-		}
+		return getAbsoluteClientAreaAsCopy(viewport);
 	}
 
 	/**

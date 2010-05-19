@@ -14,14 +14,12 @@ package org.eclipse.draw2d;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.geometry.Rectangle;
-
 /**
  * A {@link ScrollPane} with transparent {@link ScrollBar}s.
  * 
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
- *
+ * 
  * @since 3.6
  */
 public class PuristicScrollPane extends ScrollPane {
@@ -43,6 +41,7 @@ public class PuristicScrollPane extends ScrollPane {
 		public PuristicScrollBar(boolean isHorizontal) {
 			super();
 			setHorizontal(isHorizontal);
+			setOpaque(false);
 		}
 
 		/**
@@ -98,6 +97,21 @@ public class PuristicScrollPane extends ScrollPane {
 			}
 			super.propertyChange(event);
 		}
+
+	}
+
+	public PuristicScrollPane() {
+		// layout to ensure, viewport gets complete client area
+		setLayoutManager(new ScrollPaneLayout() {
+			public void layout(IFigure parent) {
+				// scroll panes are layouted normally
+				super.layout(parent);
+				// viewport gets complete client area
+				ScrollPane scrollpane = (ScrollPane) parent;
+				Viewport viewport = scrollpane.getViewport();
+				viewport.setBounds(parent.getClientArea());
+			}
+		});
 	}
 
 	/**
@@ -116,29 +130,4 @@ public class PuristicScrollPane extends ScrollPane {
 		setHorizontalScrollBar(horizontalScrollBar);
 	}
 
-	/**
-	 * @see org.eclipse.draw2d.Figure#paintChildren(org.eclipse.draw2d.Graphics)
-	 */
-	protected void paintChildren(Graphics graphics) {
-		IFigure child;
-		// don't clip scroll bar area (as there is no thumb)
-		Rectangle clip = Rectangle.SINGLETON;
-		for (int i = 0; i < getChildren().size(); i++) {
-			child = (IFigure) getChildren().get(i);
-			if (child.isVisible() && child.intersects(graphics.getClip(clip))) {
-				graphics.clipRect(getBounds());
-				child.paint(graphics);
-				graphics.restoreState();
-			}
-		}
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.Figure#invalidate()
-	 */
-	public void invalidate() {
-		// ensure scroll bar area is marked dirty as well.
-		getUpdateManager().addDirtyRegion(this, this.getBounds());
-		super.invalidate();
-	}
 }
