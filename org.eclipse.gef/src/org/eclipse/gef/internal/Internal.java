@@ -10,6 +10,5 @@
  *******************************************************************************/
 package org.eclipse.gef.internal;
 
-
 public class Internal {
 }

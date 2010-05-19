@@ -13,21 +13,22 @@ package org.eclipse.gef.handles;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Identifies figures which use an alternative rectangle to place their handles. 
- * Normally, handles will appear around a GraphicalEditPart's figure's bounds.  However,
- * if that figure has an irregular shape, it may implement this interface to indicate that
- * some rectangle other than its bounding rectangle should be used to place handles.
+ * Identifies figures which use an alternative rectangle to place their handles.
+ * Normally, handles will appear around a GraphicalEditPart's figure's bounds.
+ * However, if that figure has an irregular shape, it may implement this
+ * interface to indicate that some rectangle other than its bounding rectangle
+ * should be used to place handles.
+ * 
  * @author hudsonr
  */
-public interface HandleBounds
-	extends org.eclipse.draw2d.IFigure
-{
+public interface HandleBounds extends org.eclipse.draw2d.IFigure {
 
-/**
- * Returns the Rectangle around which handles are to be placed.  The Rectangle should be
- * in the same coordinate system as the figure itself.
- * @return The rectangle used for handles
- */
-Rectangle getHandleBounds();
+	/**
+	 * Returns the Rectangle around which handles are to be placed. The
+	 * Rectangle should be in the same coordinate system as the figure itself.
+	 * 
+	 * @return The rectangle used for handles
+	 */
+	Rectangle getHandleBounds();
 
 }

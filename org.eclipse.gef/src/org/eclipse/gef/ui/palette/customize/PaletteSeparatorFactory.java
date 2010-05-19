@@ -17,34 +17,33 @@ import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.ui.palette.PaletteMessages;
 
 /**
- * Factory to create {@link org.eclipse.gef.palette.PaletteSeparator PaletteSeparators}.
+ * Factory to create {@link org.eclipse.gef.palette.PaletteSeparator
+ * PaletteSeparators}.
  * 
  * @author Pratik Shah
  */
-public class PaletteSeparatorFactory 
-	extends PaletteEntryFactory 
-{
+public class PaletteSeparatorFactory extends PaletteEntryFactory {
 
-/**
- * Constructor
- */
-public PaletteSeparatorFactory() {
-	setLabel(PaletteMessages.MODEL_TYPE_SEPARATOR);
-}
+	/**
+	 * Constructor
+	 */
+	public PaletteSeparatorFactory() {
+		setLabel(PaletteMessages.MODEL_TYPE_SEPARATOR);
+	}
 
-/**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
- */
-public PaletteEntry createNewEntry(Shell shell) {
-	PaletteSeparator separator = new PaletteSeparator();
-	return separator;
-}
+	/**
+	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
+	 */
+	public PaletteEntry createNewEntry(Shell shell) {
+		PaletteSeparator separator = new PaletteSeparator();
+		return separator;
+	}
 
-/**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
- */
-protected Object determineTypeForNewEntry(PaletteEntry selected) {
-	return PaletteSeparator.PALETTE_TYPE_SEPARATOR;
-}
+	/**
+	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
+	 */
+	protected Object determineTypeForNewEntry(PaletteEntry selected) {
+		return PaletteSeparator.PALETTE_TYPE_SEPARATOR;
+	}
 
 }

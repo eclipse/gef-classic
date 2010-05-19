@@ -13,49 +13,50 @@ package org.eclipse.gef;
 import org.eclipse.ui.IEditorPart;
 
 /**
- * A default implementation of {@link EditDomain}. An {@link IEditorPart} is required 
- * in the constructor, but it can be <code>null</code>.
+ * A default implementation of {@link EditDomain}. An {@link IEditorPart} is
+ * required in the constructor, but it can be <code>null</code>.
  * <P>
  * A {@link org.eclipse.gef.tools.SelectionTool} will be the active Tool until:
  * <UL>
- *   <LI>A {@link org.eclipse.gef.palette.PaletteRoot} is provided which contains a
- *   default entry which is a {@link org.eclipse.gef.palette.ToolEntry}. In which
- *   case that entry's tool is made the active Tool.
+ * <LI>A {@link org.eclipse.gef.palette.PaletteRoot} is provided which contains
+ * a default entry which is a {@link org.eclipse.gef.palette.ToolEntry}. In
+ * which case that entry's tool is made the active Tool.
  * </UL>
  * <P>
- * DefaultEditDomain can be configured with a 
+ * DefaultEditDomain can be configured with a
  * {@link org.eclipse.gef.ui.palette.PaletteViewer}. When provided, the
- * DefaultEditDomain will listen for PaletteEvents, and will switch the 
- * active Tool automatically in response.
+ * DefaultEditDomain will listen for PaletteEvents, and will switch the active
+ * Tool automatically in response.
  */
-public class DefaultEditDomain
-	extends EditDomain
-{
+public class DefaultEditDomain extends EditDomain {
 
-private IEditorPart editorPart;
+	private IEditorPart editorPart;
 
-/**
- * Constructs a DefaultEditDomain with the specified IEditorPart
- * @param editorPart <code>null</code> or an IEditorPart
- */	
-public DefaultEditDomain(IEditorPart editorPart) {
-	setEditorPart(editorPart);
-}
+	/**
+	 * Constructs a DefaultEditDomain with the specified IEditorPart
+	 * 
+	 * @param editorPart
+	 *            <code>null</code> or an IEditorPart
+	 */
+	public DefaultEditDomain(IEditorPart editorPart) {
+		setEditorPart(editorPart);
+	}
 
-/**
- * @return the IEditorPart for this EditDomain
- */
-public IEditorPart getEditorPart() {
-	return editorPart;
-}
+	/**
+	 * @return the IEditorPart for this EditDomain
+	 */
+	public IEditorPart getEditorPart() {
+		return editorPart;
+	}
 
-/**
- * Sets the IEditorPart for this EditDomain.
- * @param editorPart the editor
- */
-protected void setEditorPart(IEditorPart editorPart) {
-	this.editorPart = editorPart;
-}
-
+	/**
+	 * Sets the IEditorPart for this EditDomain.
+	 * 
+	 * @param editorPart
+	 *            the editor
+	 */
+	protected void setEditorPart(IEditorPart editorPart) {
+		this.editorPart = editorPart;
+	}
 
 }

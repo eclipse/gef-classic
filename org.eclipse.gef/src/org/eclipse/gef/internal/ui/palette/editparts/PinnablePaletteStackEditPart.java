@@ -28,205 +28,205 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 
 /**
  * The EditPart for a pinnable PaletteStack to be used in a drawer or group.
- * Some of this code has been take from <code>PaletteStackEditPart</code>,
- * but they are significantly different to warrant two editpart classes.
+ * Some of this code has been take from <code>PaletteStackEditPart</code>, but
+ * they are significantly different to warrant two editpart classes.
  * 
  * @author Whitney Sorenson, crevells
  * @since 3.4
  */
-public class PinnablePaletteStackEditPart
-    extends PaletteEditPart
-    implements IPaletteStackEditPart, IPinnableEditPart {
+public class PinnablePaletteStackEditPart extends PaletteEditPart implements
+		IPaletteStackEditPart, IPinnableEditPart {
 
-// listen to see if active tool is changed in the palette
-private PaletteListener paletteListener = new PaletteListener() {
+	// listen to see if active tool is changed in the palette
+	private PaletteListener paletteListener = new PaletteListener() {
 
-    public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
-        if (!getStackFigure().isPinnedOpen()
-            && getStack().getChildren().contains(tool)) {
-            if (!getStack().getActiveEntry().equals(tool)) {
-                getStack().setActiveEntry(tool);
-            }
-        }
-        if (!getStackFigure().isPinnedOpen()) {
-            getStackFigure().setExpanded(false);
-        }
-    }
-};
+		public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
+			if (!getStackFigure().isPinnedOpen()
+					&& getStack().getChildren().contains(tool)) {
+				if (!getStack().getActiveEntry().equals(tool)) {
+					getStack().setActiveEntry(tool);
+				}
+			}
+			if (!getStackFigure().isPinnedOpen()) {
+				getStackFigure().setExpanded(false);
+			}
+		}
+	};
 
-/**
- * Creates a new PaletteStackEditPart with the given PaletteStack as its model.
- * 
- * @param model
- *            the PaletteStack to associate with this EditPart.
- */
-public PinnablePaletteStackEditPart(PaletteStack model) {
-    super(model);
-}
+	/**
+	 * Creates a new PaletteStackEditPart with the given PaletteStack as its
+	 * model.
+	 * 
+	 * @param model
+	 *            the PaletteStack to associate with this EditPart.
+	 */
+	public PinnablePaletteStackEditPart(PaletteStack model) {
+		super(model);
+	}
 
-/**
- * @see org.eclipse.gef.EditPart#activate()
- */
-public void activate() {
-    // in case the model is out of sync
-    checkActiveEntrySync();
-    getPaletteViewer().addPaletteListener(paletteListener);
-    super.activate();
-}
+	/**
+	 * @see org.eclipse.gef.EditPart#activate()
+	 */
+	public void activate() {
+		// in case the model is out of sync
+		checkActiveEntrySync();
+		getPaletteViewer().addPaletteListener(paletteListener);
+		super.activate();
+	}
 
-/**
- * Called when the active entry has changed.
- * 
- * @param oldValue
- *            the old model value (can be null)
- * @param newValue
- *            the new model value (can be null)
- */
-private void activeEntryChanged(Object oldValue, Object newValue) {
-    GraphicalEditPart part = null;
-    IFigure oldFigure = null;
-    IFigure newFigure = null;
-    int index = -1;
+	/**
+	 * Called when the active entry has changed.
+	 * 
+	 * @param oldValue
+	 *            the old model value (can be null)
+	 * @param newValue
+	 *            the new model value (can be null)
+	 */
+	private void activeEntryChanged(Object oldValue, Object newValue) {
+		GraphicalEditPart part = null;
+		IFigure oldFigure = null;
+		IFigure newFigure = null;
+		int index = -1;
 
-    if (oldValue != null) {
-        part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
-            oldValue);
-        // if part is null, its no longer a child.
-        if (part != null) {
-            oldFigure = part.getFigure();
+		if (oldValue != null) {
+			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
+					oldValue);
+			// if part is null, its no longer a child.
+			if (part != null) {
+				oldFigure = part.getFigure();
 
-            // preserve the original order of the palette stack children
-            index = getModelChildren().indexOf(part.getModel());
-        }
-    }
+				// preserve the original order of the palette stack children
+				index = getModelChildren().indexOf(part.getModel());
+			}
+		}
 
-    if (newValue != null) {
-        part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
-            newValue);
-        newFigure = part.getFigure();
-    }
+		if (newValue != null) {
+			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
+					newValue);
+			newFigure = part.getFigure();
+		}
 
-    getStackFigure().activeEntryChanged(oldFigure, index, newFigure);
-}
+		getStackFigure().activeEntryChanged(oldFigure, index, newFigure);
+	}
 
-private void checkActiveEntrySync() {
-    if (getStackFigure().getActiveFigure() == null)
-        activeEntryChanged(null, getStack().getActiveEntry());
-}
+	private void checkActiveEntrySync() {
+		if (getStackFigure().getActiveFigure() == null)
+			activeEntryChanged(null, getStack().getActiveEntry());
+	}
 
-public IFigure createFigure() {
-    return new PinnablePaletteStackFigure();
-}
+	public IFigure createFigure() {
+		return new PinnablePaletteStackFigure();
+	}
 
-private PinnablePaletteStackFigure getStackFigure() {
-    return (PinnablePaletteStackFigure) getFigure();
-}
+	private PinnablePaletteStackFigure getStackFigure() {
+		return (PinnablePaletteStackFigure) getFigure();
+	}
 
-public void deactivate() {
-    getPaletteViewer().removePaletteListener(paletteListener);
-    super.deactivate();
-}
+	public void deactivate() {
+		getPaletteViewer().removePaletteListener(paletteListener);
+		super.deactivate();
+	}
 
-public void eraseTargetFeedback(Request request) {
-    Iterator children = getChildren().iterator();
+	public void eraseTargetFeedback(Request request) {
+		Iterator children = getChildren().iterator();
 
-    while (children.hasNext()) {
-        PaletteEditPart part = (PaletteEditPart) children.next();
-        part.eraseTargetFeedback(request);
-    }
-    super.eraseTargetFeedback(request);
-}
+		while (children.hasNext()) {
+			PaletteEditPart part = (PaletteEditPart) children.next();
+			part.eraseTargetFeedback(request);
+		}
+		super.eraseTargetFeedback(request);
+	}
 
-public IFigure getContentPane() {
-    // not completely accurate, but is there any other way?
-    return getStackFigure().getContentPane();
-}
+	public IFigure getContentPane() {
+		// not completely accurate, but is there any other way?
+		return getStackFigure().getContentPane();
+	}
 
-protected void removeChildVisual(EditPart childEditPart) {
-    IFigure child = ((GraphicalEditPart) childEditPart).getFigure();
-    getStackFigure().getContentPane(child).remove(child);
-}
+	protected void removeChildVisual(EditPart childEditPart) {
+		IFigure child = ((GraphicalEditPart) childEditPart).getFigure();
+		getStackFigure().getContentPane(child).remove(child);
+	}
 
-protected void addChild(EditPart childEP, int index) {
-    index = updateIndexBasedOnActiveFigure(index, childEP);
-    super.addChild(childEP, index);
-}
+	protected void addChild(EditPart childEP, int index) {
+		index = updateIndexBasedOnActiveFigure(index, childEP);
+		super.addChild(childEP, index);
+	}
 
-protected void reorderChild(EditPart childEP, int index) {
-    IFigure childFigure = ((GraphicalEditPart) childEP).getFigure();
-    if (childFigure == getStackFigure().getActiveFigure()) {
-        // no need to reorder figures if this is the active figure
-        List children = getChildren();
-        children.remove(childEP);
-        children.add(index, childEP);
-    } else {
-        removeChildVisual(childEP);
-        List children = getChildren();
-        children.remove(childEP);
-        children.add(index, childEP);
-        index = updateIndexBasedOnActiveFigure(index, childEP);
-        addChildVisual(childEP, index);
-    }
-}
+	protected void reorderChild(EditPart childEP, int index) {
+		IFigure childFigure = ((GraphicalEditPart) childEP).getFigure();
+		if (childFigure == getStackFigure().getActiveFigure()) {
+			// no need to reorder figures if this is the active figure
+			List children = getChildren();
+			children.remove(childEP);
+			children.add(index, childEP);
+		} else {
+			removeChildVisual(childEP);
+			List children = getChildren();
+			children.remove(childEP);
+			children.add(index, childEP);
+			index = updateIndexBasedOnActiveFigure(index, childEP);
+			addChildVisual(childEP, index);
+		}
+	}
 
-private int updateIndexBasedOnActiveFigure(int index, EditPart childEP) {
-    for (int i = 0; i < index; i++) {
-        Object ep = getChildren().get(i);
-        if (((GraphicalEditPart) ep).getFigure() == getStackFigure()
-            .getActiveFigure()) {
-            return index - 1;
-        }
-    }
-    return index;
-}
+	private int updateIndexBasedOnActiveFigure(int index, EditPart childEP) {
+		for (int i = 0; i < index; i++) {
+			Object ep = getChildren().get(i);
+			if (((GraphicalEditPart) ep).getFigure() == getStackFigure()
+					.getActiveFigure()) {
+				return index - 1;
+			}
+		}
+		return index;
+	}
 
-private PaletteStack getStack() {
-    return (PaletteStack) getModel();
-}
+	private PaletteStack getStack() {
+		return (PaletteStack) getModel();
+	}
 
-public void propertyChange(PropertyChangeEvent event) {
-    if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY))
-        activeEntryChanged(event.getOldValue(), event.getNewValue());
-    else
-        super.propertyChange(event);
-}
+	public void propertyChange(PropertyChangeEvent event) {
+		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY))
+			activeEntryChanged(event.getOldValue(), event.getNewValue());
+		else
+			super.propertyChange(event);
+	}
 
-protected void refreshChildren() {
-    super.refreshChildren();
-    checkActiveEntrySync();
-}
+	protected void refreshChildren() {
+		super.refreshChildren();
+		checkActiveEntrySync();
+	}
 
-protected void refreshVisuals() {
-    getStackFigure().setLayoutMode(getLayoutSetting());
-}
+	protected void refreshVisuals() {
+		getStackFigure().setLayoutMode(getLayoutSetting());
+	}
 
-public void openMenu() {
-    setExpanded(true);
-}
+	public void openMenu() {
+		setExpanded(true);
+	}
 
-public void setExpanded(boolean value) {
-    getStackFigure().setExpanded(value);
-}
+	public void setExpanded(boolean value) {
+		getStackFigure().setExpanded(value);
+	}
 
-public boolean isExpanded() {
-    return getStackFigure().isExpanded();
-}
+	public boolean isExpanded() {
+		return getStackFigure().isExpanded();
+	}
 
-public boolean canBePinned() {
-    return isExpanded();
-}
+	public boolean canBePinned() {
+		return isExpanded();
+	}
 
-public boolean isPinnedOpen() {
-    return getStackFigure().isPinnedOpen();
-}
+	public boolean isPinnedOpen() {
+		return getStackFigure().isPinnedOpen();
+	}
 
-public void setPinnedOpen(boolean pinned) {
-    getStackFigure().setPinned(pinned);
-}
+	public void setPinnedOpen(boolean pinned) {
+		getStackFigure().setPinned(pinned);
+	}
 
-public PaletteEditPart getActiveEntry() {
-    return (PaletteEditPart) getViewer().getEditPartRegistry().get(
-        getStack().getActiveEntry());
-}
+	public PaletteEditPart getActiveEntry() {
+		return (PaletteEditPart) getViewer().getEditPartRegistry().get(
+				getStack().getActiveEntry());
+	}
 
 }

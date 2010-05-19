@@ -19,31 +19,30 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
 /**
  * Selection Tool to be used in the Palette.
  */
-public class PaletteSelectionTool 
-	extends SelectionTool
-{
+public class PaletteSelectionTool extends SelectionTool {
 
-private PaletteViewer getPaletteViewer() {
-	return (PaletteViewer)getCurrentViewer();
-}
-
-private boolean handleAbort(KeyEvent e) {
-	if (e.keyCode == SWT.ESC) {
-		return (getPaletteViewer().getPaletteRoot().getDefaultEntry() != null);
+	private PaletteViewer getPaletteViewer() {
+		return (PaletteViewer) getCurrentViewer();
 	}
-	return false;
-}
 
-protected boolean handleKeyDown(KeyEvent e) {
-	if (handleAbort(e)) {
-		loadDefaultTool();
-		return true;
+	private boolean handleAbort(KeyEvent e) {
+		if (e.keyCode == SWT.ESC) {
+			return (getPaletteViewer().getPaletteRoot().getDefaultEntry() != null);
+		}
+		return false;
 	}
-	return super.handleKeyDown(e);
-}
 
-private void loadDefaultTool() {
-	getPaletteViewer().setActiveTool(getPaletteViewer().getPaletteRoot().getDefaultEntry());
-}
+	protected boolean handleKeyDown(KeyEvent e) {
+		if (handleAbort(e)) {
+			loadDefaultTool();
+			return true;
+		}
+		return super.handleKeyDown(e);
+	}
+
+	private void loadDefaultTool() {
+		getPaletteViewer().setActiveTool(
+				getPaletteViewer().getPaletteRoot().getDefaultEntry());
+	}
 
 }

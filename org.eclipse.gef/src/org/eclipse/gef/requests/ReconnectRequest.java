@@ -17,67 +17,74 @@ import org.eclipse.gef.RequestConstants;
 /**
  * A Request to reconnect a connection.
  */
-public class ReconnectRequest
-	extends LocationRequest
-	implements DropRequest, TargetRequest
-{
+public class ReconnectRequest extends LocationRequest implements DropRequest,
+		TargetRequest {
 
-private ConnectionEditPart connection;
-private EditPart target;
+	private ConnectionEditPart connection;
+	private EditPart target;
 
-/**
- * Default constructor.
- */
-public ReconnectRequest() { }
+	/**
+	 * Default constructor.
+	 */
+	public ReconnectRequest() {
+	}
 
-/**
- * Creates a ReconnectRequest with the given type.
- * @param type the type
- */
-public ReconnectRequest(Object type) {
-	setType(type);
-}
+	/**
+	 * Creates a ReconnectRequest with the given type.
+	 * 
+	 * @param type
+	 *            the type
+	 */
+	public ReconnectRequest(Object type) {
+		setType(type);
+	}
 
-/**
- * Returns the ConnectionEditPart to be reconnected.
- *
- * @return The ConnectionEditPart to be reconnected.
- */
-public ConnectionEditPart getConnectionEditPart() {
-	return connection;
-}
+	/**
+	 * Returns the ConnectionEditPart to be reconnected.
+	 * 
+	 * @return The ConnectionEditPart to be reconnected.
+	 */
+	public ConnectionEditPart getConnectionEditPart() {
+		return connection;
+	}
 
-/**
- * Returns the target edit part that the connection should be connected to.
- * @return the target edit part
- */
-public EditPart getTarget() {
-	return target;
-}
+	/**
+	 * Returns the target edit part that the connection should be connected to.
+	 * 
+	 * @return the target edit part
+	 */
+	public EditPart getTarget() {
+		return target;
+	}
 
-/**
- * Returns <code>true</code> if the start (source) anchor is the anchor being moved.
- * @return whether the start anchor is being moved
- */
-public boolean isMovingStartAnchor() {
-	return RequestConstants.REQ_RECONNECT_SOURCE.equals(getType());
-}
+	/**
+	 * Returns <code>true</code> if the start (source) anchor is the anchor
+	 * being moved.
+	 * 
+	 * @return whether the start anchor is being moved
+	 */
+	public boolean isMovingStartAnchor() {
+		return RequestConstants.REQ_RECONNECT_SOURCE.equals(getType());
+	}
 
-/**
- * Sets the ConnectionEditPart to be reconnected.
- *
- * @param conn The ConnectionEditPart.
- */
-public void setConnectionEditPart(ConnectionEditPart conn) {
-	connection = conn;
-}
+	/**
+	 * Sets the ConnectionEditPart to be reconnected.
+	 * 
+	 * @param conn
+	 *            The ConnectionEditPart.
+	 */
+	public void setConnectionEditPart(ConnectionEditPart conn) {
+		connection = conn;
+	}
 
-/**
- * Sets the target edit part that the connection should be connected to.
- * @param ep the target edit part
- */
-public void setTargetEditPart(EditPart ep) {
-	target = ep;
-}
+	/**
+	 * Sets the target edit part that the connection should be connected to.
+	 * 
+	 * @param ep
+	 *            the target edit part
+	 */
+	public void setTargetEditPart(EditPart ep) {
+		target = ep;
+	}
 
 }

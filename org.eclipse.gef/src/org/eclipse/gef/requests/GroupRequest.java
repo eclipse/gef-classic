@@ -18,53 +18,54 @@ import org.eclipse.gef.EditPart;
 /**
  * A Request from multiple EditParts.
  */
-public class GroupRequest
-	extends org.eclipse.gef.Request
-{
+public class GroupRequest extends org.eclipse.gef.Request {
 
-List parts;
+	List parts;
 
-/**
- * Creates a GroupRequest with the given type.
- *
- * @param type The type of Request.
- */
-public GroupRequest(Object type) {
-	setType(type);
-}
+	/**
+	 * Creates a GroupRequest with the given type.
+	 * 
+	 * @param type
+	 *            The type of Request.
+	 */
+	public GroupRequest(Object type) {
+		setType(type);
+	}
 
-/**
- * Default constructor.
- */
-public GroupRequest() { }
+	/**
+	 * Default constructor.
+	 */
+	public GroupRequest() {
+	}
 
-/**
- * Returns a List containing the EditParts making this Request.
- *
- * @return A List containing the EditParts making this Request.
- */
-public List getEditParts() {
-	return parts;
-}
+	/**
+	 * Returns a List containing the EditParts making this Request.
+	 * 
+	 * @return A List containing the EditParts making this Request.
+	 */
+	public List getEditParts() {
+		return parts;
+	}
 
-/**
- * Sets the EditParts making this Request to the given List.
- *
- * @param list The List of EditParts.
- */
-public void setEditParts(List list) {
-	parts = list;
-}
+	/**
+	 * Sets the EditParts making this Request to the given List.
+	 * 
+	 * @param list
+	 *            The List of EditParts.
+	 */
+	public void setEditParts(List list) {
+		parts = list;
+	}
 
-/**
- * A helper method to set the given EditPart as the requester.
- *
- * @param part The EditPart making the request.
- */
-public void setEditParts(EditPart part) {
-	parts = new ArrayList();
-	parts.add(part);
-}
-
+	/**
+	 * A helper method to set the given EditPart as the requester.
+	 * 
+	 * @param part
+	 *            The EditPart making the request.
+	 */
+	public void setEditParts(EditPart part) {
+		parts = new ArrayList();
+		parts.add(part);
+	}
 
 }

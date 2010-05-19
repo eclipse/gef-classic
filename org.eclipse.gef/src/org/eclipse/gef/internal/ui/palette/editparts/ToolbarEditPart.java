@@ -26,50 +26,50 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
  * @author crevells
  * @since 3.4
  */
-public class ToolbarEditPart
-    extends GroupEditPart {
+public class ToolbarEditPart extends GroupEditPart {
 
-/**
- * Creates a new instance.
- * 
- * @param model
- *            the <code>PaletteToolbar</code>
- */
-public ToolbarEditPart(PaletteToolbar model) {
-    super(model);
-}
+	/**
+	 * Creates a new instance.
+	 * 
+	 * @param model
+	 *            the <code>PaletteToolbar</code>
+	 */
+	public ToolbarEditPart(PaletteToolbar model) {
+		super(model);
+	}
 
-public IFigure createFigure() {
-    IFigure figure = new Figure() {
+	public IFigure createFigure() {
+		IFigure figure = new Figure() {
 
-        protected void paintFigure(Graphics graphics) {
-            super.paintFigure(graphics);
+			protected void paintFigure(Graphics graphics) {
+				super.paintFigure(graphics);
 
-            // draw top border
-            graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
-            graphics.drawLine(getBounds().getTopLeft(), getBounds()
-                .getTopRight());
+				// draw top border
+				graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+				graphics.drawLine(getBounds().getTopLeft(), getBounds()
+						.getTopRight());
 
-            // draw bottom border
-            graphics.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_70);
-            graphics.drawLine(getBounds().getBottomLeft().getTranslated(0, -1),
-                getBounds().getBottomRight().getTranslated(0, -1));
-        }
+				// draw bottom border
+				graphics.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_70);
+				graphics.drawLine(
+						getBounds().getBottomLeft().getTranslated(0, -1),
+						getBounds().getBottomRight().getTranslated(0, -1));
+			}
 
-    };
-    figure.setOpaque(true);
-    figure.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND);
-    figure.setBorder(new MarginBorder(2, 1, 1, 1));
+		};
+		figure.setOpaque(true);
+		figure.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND);
+		figure.setBorder(new MarginBorder(2, 1, 1, 1));
 
-    return figure;
-}
+		return figure;
+	}
 
-protected int getLayoutSetting() {
-    return PaletteViewerPreferences.LAYOUT_ICONS;
-}
+	protected int getLayoutSetting() {
+		return PaletteViewerPreferences.LAYOUT_ICONS;
+	}
 
-public boolean isToolbarItem() {
-    return true;
-}
+	public boolean isToolbarItem() {
+		return true;
+	}
 
 }

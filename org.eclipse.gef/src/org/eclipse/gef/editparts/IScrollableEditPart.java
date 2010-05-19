@@ -24,7 +24,7 @@ import org.eclipse.gef.editpolicies.ScrollableSelectionFeedbackEditPolicy;
  * 
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
- *
+ * 
  * @since 3.6
  */
 public interface IScrollableEditPart extends GraphicalEditPart {

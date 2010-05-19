@@ -21,43 +21,42 @@ import org.eclipse.gef.ui.palette.editparts.PaletteAnimator;
 import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 import org.eclipse.gef.ui.palette.editparts.PaletteToolbarLayout;
 
-public class SliderPaletteEditPart 
-	extends PaletteEditPart
-{
+public class SliderPaletteEditPart extends PaletteEditPart {
 
-private PaletteAnimator controller;
+	private PaletteAnimator controller;
 
-public SliderPaletteEditPart(PaletteRoot paletteRoot) {
-	super(paletteRoot);
-}
+	public SliderPaletteEditPart(PaletteRoot paletteRoot) {
+		super(paletteRoot);
+	}
 
-public IFigure createFigure() {
-	Figure figure = new Figure();
-	figure.setOpaque(true);
-	figure.setForegroundColor(ColorConstants.listForeground);
-	figure.setBackgroundColor(ColorConstants.button);
-	return figure;
-}
+	public IFigure createFigure() {
+		Figure figure = new Figure();
+		figure.setOpaque(true);
+		figure.setForegroundColor(ColorConstants.listForeground);
+		figure.setBackgroundColor(ColorConstants.button);
+		return figure;
+	}
 
-/**
- * This method overrides super's functionality to do nothing.
- * 
- * @see PaletteEditPart#refreshVisuals()
- */
-protected void refreshVisuals() {
-}
+	/**
+	 * This method overrides super's functionality to do nothing.
+	 * 
+	 * @see PaletteEditPart#refreshVisuals()
+	 */
+	protected void refreshVisuals() {
+	}
 
-/**
- * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#registerVisuals()
- */
-protected void registerVisuals() {
-	super.registerVisuals();
-	controller = new PaletteAnimator(
-		((PaletteViewer)getViewer()).getPaletteViewerPreferences());
-	getViewer().getEditPartRegistry().put(PaletteAnimator.class, controller);
-	ToolbarLayout layout = new PaletteToolbarLayout();
-	getFigure().setLayoutManager(layout);
-	getFigure().addLayoutListener(controller);
-}
+	/**
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#registerVisuals()
+	 */
+	protected void registerVisuals() {
+		super.registerVisuals();
+		controller = new PaletteAnimator(
+				((PaletteViewer) getViewer()).getPaletteViewerPreferences());
+		getViewer().getEditPartRegistry()
+				.put(PaletteAnimator.class, controller);
+		ToolbarLayout layout = new PaletteToolbarLayout();
+		getFigure().setLayoutManager(layout);
+		getFigure().addLayoutListener(controller);
+	}
 
 }

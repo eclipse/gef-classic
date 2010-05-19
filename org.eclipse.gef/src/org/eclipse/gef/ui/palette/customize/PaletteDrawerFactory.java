@@ -23,27 +23,27 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  */
 public class PaletteDrawerFactory extends PaletteContainerFactory {
 
-/**
- * Constructor
- */
-public PaletteDrawerFactory() {
-	setLabel(PaletteMessages.MODEL_TYPE_DRAWER);
-}
+	/**
+	 * Constructor
+	 */
+	public PaletteDrawerFactory() {
+		setLabel(PaletteMessages.MODEL_TYPE_DRAWER);
+	}
 
-/**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
- */
-protected PaletteEntry createNewEntry(Shell shell) {
-	PaletteEntry entry = new PaletteDrawer(PaletteMessages.NEW_DRAWER_LABEL);
-	entry.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
-	return entry;
-}
+	/**
+	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
+	 */
+	protected PaletteEntry createNewEntry(Shell shell) {
+		PaletteEntry entry = new PaletteDrawer(PaletteMessages.NEW_DRAWER_LABEL);
+		entry.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
+		return entry;
+	}
 
-/**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
- */
-protected Object determineTypeForNewEntry(PaletteEntry selected) {
-	return PaletteDrawer.PALETTE_TYPE_DRAWER;
-}
+	/**
+	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
+	 */
+	protected Object determineTypeForNewEntry(PaletteEntry selected) {
+		return PaletteDrawer.PALETTE_TYPE_DRAWER;
+	}
 
 }

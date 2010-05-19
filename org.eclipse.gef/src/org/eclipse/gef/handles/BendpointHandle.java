@@ -18,55 +18,59 @@ import org.eclipse.gef.DragTracker;
 /**
  * A handle for bendpoints on a connection.
  */
-public class BendpointHandle
-	extends ConnectionHandle
-	implements PropertyChangeListener
-{
-	
-/*
- * @TODO:Pratik  No need to implement PropertyChangeListener or override propertyChange()
- */
+public class BendpointHandle extends ConnectionHandle implements
+		PropertyChangeListener {
 
-private int index;
+	/*
+	 * @TODO:Pratik No need to implement PropertyChangeListener or override
+	 * propertyChange()
+	 */
 
-/**
- * By default, <code>null</code> is returned for the DragTracker.
- * @return returns null by default
- */
-protected DragTracker createDragTracker() {
-	return null;
+	private int index;
+
+	/**
+	 * By default, <code>null</code> is returned for the DragTracker.
+	 * 
+	 * @return returns null by default
+	 */
+	protected DragTracker createDragTracker() {
+		return null;
+	}
+
+	/**
+	 * Returns the index. This could mean different things for different
+	 * subclasses. It could be the index of the point the handle belongs to. Or
+	 * it could be the index of the handle itself. For
+	 * {@link BendpointCreationHandle}s and {@link BendpointMoveHandle}s, this
+	 * is the index of the handle itself, where these two types of handles are
+	 * indexed separately. For example, if you have one bendpoint, you will have
+	 * 2 creation handles, indexed as 0 and 1, and 1 move handle, indexed as 0.
+	 * 
+	 * @return the index
+	 */
+	public int getIndex() {
+		return index;
+	}
+
+	/**
+	 * Revalidates this handle when the connection's points change.
+	 * 
+	 * @param event
+	 *            the event that caused the points change
+	 */
+	public void propertyChange(PropertyChangeEvent event) {
+		revalidate();
+	}
+
+	/**
+	 * Sets the index.
+	 * 
+	 * @param i
+	 *            the new index
+	 * @see #getIndex()
+	 */
+	protected void setIndex(int i) {
+		index = i;
+	}
+
 }
-
-/**
- * Returns the index. This could mean different things for different subclasses. It could
- * be the index of the point the handle belongs to. Or it could be the index of the handle
- * itself. For {@link BendpointCreationHandle}s and {@link BendpointMoveHandle}s, this
- * is the index of the handle itself, where these two types of handles are indexed
- * separately. For example, if you have one bendpoint, you will have 2 creation handles,
- * indexed as 0 and 1, and 1 move handle, indexed as 0.
- * @return the index
- */
-public int getIndex() {
-	return index;
-}
-
-/**
- * Revalidates this handle when the connection's points change.
- * @param event the event that caused the points change
- */
-public void propertyChange(PropertyChangeEvent event) {
-	revalidate();
-}
-
-/**
- * Sets the index.
- * @param i the new index
- * @see #getIndex()
- */
-protected void setIndex(int i) {
-	index = i;
-}
-
-}
-
-

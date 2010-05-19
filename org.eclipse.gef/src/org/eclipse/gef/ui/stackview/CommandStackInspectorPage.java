@@ -22,59 +22,57 @@ import org.eclipse.gef.commands.CommandStack;
 
 /**
  * Internal class used for a debug view.
+ * 
  * @deprecated this class will be deleted
  */
-public class CommandStackInspectorPage
-	extends org.eclipse.ui.part.Page
-{
+public class CommandStackInspectorPage extends org.eclipse.ui.part.Page {
 
-CommandStack input;
-TreeViewer treeViewer;
+	CommandStack input;
+	TreeViewer treeViewer;
 
-/**
- * Creates a new CommandStackInspectorPage with the given CommandStack
- * @param input the CommandStack
- */
-public CommandStackInspectorPage(CommandStack input) {
-	this.input = input;
-}
+	/**
+	 * Creates a new CommandStackInspectorPage with the given CommandStack
+	 * 
+	 * @param input
+	 *            the CommandStack
+	 */
+	public CommandStackInspectorPage(CommandStack input) {
+		this.input = input;
+	}
 
-/**
- * @see org.eclipse.ui.part.Page#createControl(org.eclipse.swt.widgets.Composite)
- */
-public void createControl(Composite composite) {
-	treeViewer = new TreeViewer(composite);
-	treeViewer.setContentProvider(new TreeContentProvider(input));
-	treeViewer.setLabelProvider(new TreeLabelProvider(input));
-	treeViewer.setInput(input);
-}
+	/**
+	 * @see org.eclipse.ui.part.Page#createControl(org.eclipse.swt.widgets.Composite)
+	 */
+	public void createControl(Composite composite) {
+		treeViewer = new TreeViewer(composite);
+		treeViewer.setContentProvider(new TreeContentProvider(input));
+		treeViewer.setLabelProvider(new TreeLabelProvider(input));
+		treeViewer.setInput(input);
+	}
 
-/**
- * @see org.eclipse.ui.part.Page#getControl()
- */
-public Control getControl() {
-	return treeViewer.getControl();
-}
+	/**
+	 * @see org.eclipse.ui.part.Page#getControl()
+	 */
+	public Control getControl() {
+		return treeViewer.getControl();
+	}
 
-/**
- * @see org.eclipse.ui.part.Page#makeContributions(
- * 						org.eclipse.jface.action.IMenuManager,
- *  					org.eclipse.jface.action.IToolBarManager, 
- *  					org.eclipse.jface.action.IStatusLineManager)
- */
-public void makeContributions(
-	IMenuManager menuManager, 
-	IToolBarManager toolBarManager, 
-	IStatusLineManager statusLineManager) {
-	super.makeContributions(menuManager, toolBarManager, statusLineManager);
-	toolBarManager.add(new CommandStackViewerAction(treeViewer));
-}
+	/**
+	 * @see org.eclipse.ui.part.Page#makeContributions(org.eclipse.jface.action.IMenuManager,
+	 *      org.eclipse.jface.action.IToolBarManager,
+	 *      org.eclipse.jface.action.IStatusLineManager)
+	 */
+	public void makeContributions(IMenuManager menuManager,
+			IToolBarManager toolBarManager, IStatusLineManager statusLineManager) {
+		super.makeContributions(menuManager, toolBarManager, statusLineManager);
+		toolBarManager.add(new CommandStackViewerAction(treeViewer));
+	}
 
-/**
- * @see org.eclipse.ui.part.Page#setFocus()
- */
-public void setFocus() {
-	getControl().setFocus();
-}
+	/**
+	 * @see org.eclipse.ui.part.Page#setFocus()
+	 */
+	public void setFocus() {
+		getControl().setFocus();
+	}
 
 }

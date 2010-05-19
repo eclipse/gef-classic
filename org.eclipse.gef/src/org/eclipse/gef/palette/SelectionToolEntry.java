@@ -16,37 +16,43 @@ import org.eclipse.gef.tools.SelectionTool;
 
 /**
  * A ToolEntry for a {@link SelectionTool}.
+ * 
  * @author hudsonr
  * @since 2.1
  */
 public class SelectionToolEntry extends ToolEntry {
 
-/**
- * Creates a new SelectionToolEntry.
- */
-public SelectionToolEntry() {
-	this(null);
-}
+	/**
+	 * Creates a new SelectionToolEntry.
+	 */
+	public SelectionToolEntry() {
+		this(null);
+	}
 
-/**
- * Constructor for SelectionToolEntry.
- * @param label the label
- */
-public SelectionToolEntry(String label) {
-	this(label, null);
-}
+	/**
+	 * Constructor for SelectionToolEntry.
+	 * 
+	 * @param label
+	 *            the label
+	 */
+	public SelectionToolEntry(String label) {
+		this(label, null);
+	}
 
-/**
- * Constructor for SelectionToolEntry.
- * @param label the label
- * @param shortDesc the description
- */
-public SelectionToolEntry(String label, String shortDesc) {
-	super(label, shortDesc, SharedImages.DESC_SELECTION_TOOL_16,
-			SharedImages.DESC_SELECTION_TOOL_24, SelectionTool.class);
-	if (label == null || label.length() == 0)
-		setLabel(GEFMessages.SelectionTool_Label);
-	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
-}
+	/**
+	 * Constructor for SelectionToolEntry.
+	 * 
+	 * @param label
+	 *            the label
+	 * @param shortDesc
+	 *            the description
+	 */
+	public SelectionToolEntry(String label, String shortDesc) {
+		super(label, shortDesc, SharedImages.DESC_SELECTION_TOOL_16,
+				SharedImages.DESC_SELECTION_TOOL_24, SelectionTool.class);
+		if (label == null || label.length() == 0)
+			setLabel(GEFMessages.SelectionTool_Label);
+		setUserModificationPermission(PERMISSION_NO_MODIFICATION);
+	}
 
 }

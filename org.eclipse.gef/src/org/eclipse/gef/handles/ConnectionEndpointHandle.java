@@ -112,8 +112,9 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 	/**
 	 * Return the endpoint handle.
 	 * 
-	 * @return the endPoint handle, which is is either {@link ConnectionLocator#SOURCE}
-	 *         or {@link ConnectionLocator#TARGET}.
+	 * @return the endPoint handle, which is is either
+	 *         {@link ConnectionLocator#SOURCE} or
+	 *         {@link ConnectionLocator#TARGET}.
 	 * @since 3.5
 	 */
 	public int getEndPoint() {

@@ -17,32 +17,32 @@ import org.osgi.framework.BundleContext;
 
 public class InternalGEFPlugin extends AbstractUIPlugin {
 
-private static BundleContext context;
-private static AbstractUIPlugin singleton;
+	private static BundleContext context;
+	private static AbstractUIPlugin singleton;
 
-public InternalGEFPlugin() {
-	singleton = this;
-}
+	public InternalGEFPlugin() {
+		singleton = this;
+	}
 
-public void start(BundleContext bc) throws Exception {
-	super.start(bc);
-	context = bc;
-}
+	public void start(BundleContext bc) throws Exception {
+		super.start(bc);
+		context = bc;
+	}
 
-public static BundleContext getContext() {
-	return context;
-}
+	public static BundleContext getContext() {
+		return context;
+	}
 
-public static AbstractUIPlugin getDefault() {
-	return singleton;
-}
+	public static AbstractUIPlugin getDefault() {
+		return singleton;
+	}
 
-/**
- * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
- */
-public void stop(BundleContext context) throws Exception {
-	savePluginPreferences();
-	super.stop(context);
-}
+	/**
+	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	 */
+	public void stop(BundleContext context) throws Exception {
+		savePluginPreferences();
+		super.stop(context);
+	}
 
 }

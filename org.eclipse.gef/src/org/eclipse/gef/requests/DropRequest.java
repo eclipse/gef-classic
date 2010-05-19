@@ -15,10 +15,11 @@ package org.eclipse.gef.requests;
  */
 public interface DropRequest {
 
-/**
- * Returns the current mouse location.
- * @return the mouse location
- */
-org.eclipse.draw2d.geometry.Point getLocation();
+	/**
+	 * Returns the current mouse location.
+	 * 
+	 * @return the mouse location
+	 */
+	org.eclipse.draw2d.geometry.Point getLocation();
 
 }

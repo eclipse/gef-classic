@@ -23,15 +23,15 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
  */
 public interface IPaletteStackEditPart {
 
-/**
- * Opens/expands the palette stack. 
- */
-void openMenu();
+	/**
+	 * Opens/expands the palette stack.
+	 */
+	void openMenu();
 
-/**
- * Returns the active palette entry editpart in the stack.
- * 
- * @return the active part
- */
-PaletteEditPart getActiveEntry();
+	/**
+	 * Returns the active palette entry editpart in the stack.
+	 * 
+	 * @return the active part
+	 */
+	PaletteEditPart getActiveEntry();
 }

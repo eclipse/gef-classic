@@ -17,60 +17,66 @@ import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.LayerManager;
 
 /**
- * A <code>GraphicalEditPolicy</code> is used with a {@link GraphicalEditPart}. All
- * GraphicalEditPolicies are involved with the Figure in some way. They might use the
- * Figure to interpret Requests, or they might simply decorate the Figure with graphical
- * Feedback, such as selection handles.
+ * A <code>GraphicalEditPolicy</code> is used with a {@link GraphicalEditPart}.
+ * All GraphicalEditPolicies are involved with the Figure in some way. They
+ * might use the Figure to interpret Requests, or they might simply decorate the
+ * Figure with graphical Feedback, such as selection handles.
  * <P>
- * This class provides convenience methods for accessing the host's Figure, and for adding
- * <i>feedback</i> to the GraphicalViewer. This class does not handle any Request types
- * directly.
+ * This class provides convenience methods for accessing the host's Figure, and
+ * for adding <i>feedback</i> to the GraphicalViewer. This class does not handle
+ * any Request types directly.
  */
-public abstract class GraphicalEditPolicy
-	extends AbstractEditPolicy
-{
+public abstract class GraphicalEditPolicy extends AbstractEditPolicy {
 
-/**
- * Adds the specified <code>Figure</code> to the {@link LayerConstants#FEEDBACK_LAYER}.
- * @param figure the feedback to add
- */
-protected void addFeedback(IFigure figure) {
-	getFeedbackLayer().add(figure);
-}
+	/**
+	 * Adds the specified <code>Figure</code> to the
+	 * {@link LayerConstants#FEEDBACK_LAYER}.
+	 * 
+	 * @param figure
+	 *            the feedback to add
+	 */
+	protected void addFeedback(IFigure figure) {
+		getFeedbackLayer().add(figure);
+	}
 
-/**
- * Returns the layer used for displaying feedback.
- *  
- * @return the feedback layer
- */
-protected IFigure getFeedbackLayer() {
-	return getLayer(LayerConstants.FEEDBACK_LAYER);
-}
+	/**
+	 * Returns the layer used for displaying feedback.
+	 * 
+	 * @return the feedback layer
+	 */
+	protected IFigure getFeedbackLayer() {
+		return getLayer(LayerConstants.FEEDBACK_LAYER);
+	}
 
-/**
- * Convenience method to return the host's Figure.
- * @return The host GraphicalEditPart's Figure
- */
-protected IFigure getHostFigure() {
-	return ((GraphicalEditPart)getHost()).getFigure();
-}
+	/**
+	 * Convenience method to return the host's Figure.
+	 * 
+	 * @return The host GraphicalEditPart's Figure
+	 */
+	protected IFigure getHostFigure() {
+		return ((GraphicalEditPart) getHost()).getFigure();
+	}
 
-/**
- * Obtains the specified layer.
- * @param layer the key identifying the layer
- * @return the requested layer
- */
-protected IFigure getLayer(Object layer) {
-	return LayerManager.Helper.find(getHost()).getLayer(layer);
-}
+	/**
+	 * Obtains the specified layer.
+	 * 
+	 * @param layer
+	 *            the key identifying the layer
+	 * @return the requested layer
+	 */
+	protected IFigure getLayer(Object layer) {
+		return LayerManager.Helper.find(getHost()).getLayer(layer);
+	}
 
-/**
- * Removes the specified <code>Figure</code> from the {@link
- * LayerConstants#FEEDBACK_LAYER}.
- * @param figure the feedback to remove
- */
-protected void removeFeedback(IFigure figure) {
-	getFeedbackLayer().remove(figure);
-}
+	/**
+	 * Removes the specified <code>Figure</code> from the
+	 * {@link LayerConstants#FEEDBACK_LAYER}.
+	 * 
+	 * @param figure
+	 *            the feedback to remove
+	 */
+	protected void removeFeedback(IFigure figure) {
+		getFeedbackLayer().remove(figure);
+	}
 
 }

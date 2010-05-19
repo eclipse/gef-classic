@@ -20,44 +20,45 @@ import org.eclipse.gef.internal.Internal;
 
 /**
  * A shared collection of Cursors.
+ * 
  * @since 2.0
  */
-public class SharedCursors
-	extends Cursors
-{
+public class SharedCursors extends Cursors {
 
-/**
- * Cursor for valid connection
- */
-public static final Cursor CURSOR_PLUG;
-/**
- * Cursor for invalid connection
- */
-public static final Cursor CURSOR_PLUG_NOT;
-/**
- * Cursor for adding to a tree
- */
-public static final Cursor CURSOR_TREE_ADD;
-/**
- * Cursor for dragging in a tree
- */
-public static final Cursor CURSOR_TREE_MOVE;
+	/**
+	 * Cursor for valid connection
+	 */
+	public static final Cursor CURSOR_PLUG;
+	/**
+	 * Cursor for invalid connection
+	 */
+	public static final Cursor CURSOR_PLUG_NOT;
+	/**
+	 * Cursor for adding to a tree
+	 */
+	public static final Cursor CURSOR_TREE_ADD;
+	/**
+	 * Cursor for dragging in a tree
+	 */
+	public static final Cursor CURSOR_TREE_MOVE;
 
-static {
-	CURSOR_PLUG = createCursor("icons/plugmask.gif", //$NON-NLS-1$
-			"icons/plug.bmp"); //$NON-NLS-1$
-	CURSOR_PLUG_NOT = createCursor("icons/plugmasknot.gif", //$NON-NLS-1$
-			"icons/plugnot.bmp"); //$NON-NLS-1$
-	CURSOR_TREE_ADD = createCursor("icons/Tree_Add_Mask.gif", //$NON-NLS-1$
-			"icons/Tree_Add.gif"); //$NON-NLS-1$
-	CURSOR_TREE_MOVE = createCursor("icons/Tree_Move_Mask.gif", //$NON-NLS-1$
-			"icons/Tree_Move.gif"); //$NON-NLS-1$
-}
+	static {
+		CURSOR_PLUG = createCursor("icons/plugmask.gif", //$NON-NLS-1$
+				"icons/plug.bmp"); //$NON-NLS-1$
+		CURSOR_PLUG_NOT = createCursor("icons/plugmasknot.gif", //$NON-NLS-1$
+				"icons/plugnot.bmp"); //$NON-NLS-1$
+		CURSOR_TREE_ADD = createCursor("icons/Tree_Add_Mask.gif", //$NON-NLS-1$
+				"icons/Tree_Add.gif"); //$NON-NLS-1$
+		CURSOR_TREE_MOVE = createCursor("icons/Tree_Move_Mask.gif", //$NON-NLS-1$
+				"icons/Tree_Move.gif"); //$NON-NLS-1$
+	}
 
-private static Cursor createCursor(String sourceName, String maskName) {
-	ImageDescriptor src = ImageDescriptor.createFromFile(Internal.class, sourceName);
-	ImageDescriptor mask = ImageDescriptor.createFromFile(Internal.class, maskName);
-	return new Cursor(null, src.getImageData(), mask.getImageData(), 0, 0);
-}
+	private static Cursor createCursor(String sourceName, String maskName) {
+		ImageDescriptor src = ImageDescriptor.createFromFile(Internal.class,
+				sourceName);
+		ImageDescriptor mask = ImageDescriptor.createFromFile(Internal.class,
+				maskName);
+		return new Cursor(null, src.getImageData(), mask.getImageData(), 0, 0);
+	}
 
 }

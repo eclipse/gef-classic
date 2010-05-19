@@ -24,94 +24,98 @@ import org.eclipse.gef.commands.UnexecutableCommand;
 
 /**
  * Default implementation of RootEditPart for GraphicalViewers.
+ * 
  * @author Pratik Shah
  * @since 3.2
  */
-public class SimpleRootEditPart 
-	extends AbstractGraphicalEditPart
-	implements RootEditPart
-{
+public class SimpleRootEditPart extends AbstractGraphicalEditPart implements
+		RootEditPart {
 
-private EditPart contents;
-private EditPartViewer viewer;
+	private EditPart contents;
+	private EditPartViewer viewer;
 
-/**
- * No editpolicies are installed on a RootEditPart by default.
- * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
- */
-protected void createEditPolicies() {
-}
+	/**
+	 * No editpolicies are installed on a RootEditPart by default.
+	 * 
+	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
+	 */
+	protected void createEditPolicies() {
+	}
 
-/**
- * The default root figure is a figure with a stack layout.
- * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
- */
-protected IFigure createFigure() {
-	Figure figure = new Figure();
-	figure.setLayoutManager(new StackLayout());
-	return figure;
-}
+	/**
+	 * The default root figure is a figure with a stack layout.
+	 * 
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+	 */
+	protected IFigure createFigure() {
+		Figure figure = new Figure();
+		figure.setLayoutManager(new StackLayout());
+		return figure;
+	}
 
-/**
- * The RootEditPart should never be asked for a command. This implementation returns an
- * unexecutable command.
- * @see EditPart#getCommand(Request)
- */
-public Command getCommand(Request req) {
-	return UnexecutableCommand.INSTANCE;
-}
+	/**
+	 * The RootEditPart should never be asked for a command. This implementation
+	 * returns an unexecutable command.
+	 * 
+	 * @see EditPart#getCommand(Request)
+	 */
+	public Command getCommand(Request req) {
+		return UnexecutableCommand.INSTANCE;
+	}
 
-/**
- * @see RootEditPart#getContents()
- */
-public EditPart getContents() {
-	return contents;
-}
+	/**
+	 * @see RootEditPart#getContents()
+	 */
+	public EditPart getContents() {
+		return contents;
+	}
 
-/**
- * @see EditPart#getRoot()
- */
-public RootEditPart getRoot() {
-	return this;
-}
+	/**
+	 * @see EditPart#getRoot()
+	 */
+	public RootEditPart getRoot() {
+		return this;
+	}
 
-/**
- * @see EditPart#getViewer()
- */
-public EditPartViewer getViewer() {
-	return viewer;
-}
+	/**
+	 * @see EditPart#getViewer()
+	 */
+	public EditPartViewer getViewer() {
+		return viewer;
+	}
 
-/**
- * Overridden to do nothing, child is set using setContents(EditPart)
- * @see AbstractEditPart#refreshChildren()
- */
-protected void refreshChildren() { }
+	/**
+	 * Overridden to do nothing, child is set using setContents(EditPart)
+	 * 
+	 * @see AbstractEditPart#refreshChildren()
+	 */
+	protected void refreshChildren() {
+	}
 
-/**
- * @see RootEditPart#setContents(EditPart)
- */
-public void setContents(EditPart editpart) {
-	if (contents == editpart)
-		return;
-	if (contents != null)
-		removeChild(contents);
-	contents = editpart;
-	if (contents != null)
-		addChild(contents, 0);
-}
+	/**
+	 * @see RootEditPart#setContents(EditPart)
+	 */
+	public void setContents(EditPart editpart) {
+		if (contents == editpart)
+			return;
+		if (contents != null)
+			removeChild(contents);
+		contents = editpart;
+		if (contents != null)
+			addChild(contents, 0);
+	}
 
-/**
- * @see RootEditPart#setViewer(EditPartViewer)
- */
-public void setViewer(EditPartViewer newViewer) {
-	if (viewer == newViewer)
-		return;
-	if (viewer != null)
-		unregister();
-	viewer = newViewer;
-	if (viewer != null)
-		register();
-}
+	/**
+	 * @see RootEditPart#setViewer(EditPartViewer)
+	 */
+	public void setViewer(EditPartViewer newViewer) {
+		if (viewer == newViewer)
+			return;
+		if (viewer != null)
+			unregister();
+		viewer = newViewer;
+		if (viewer != null)
+			register();
+	}
 
 }

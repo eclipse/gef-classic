@@ -20,16 +20,16 @@ import org.eclipse.gef.internal.InternalImages;
  */
 public class ZoomInRetargetAction extends RetargetAction {
 
-/**
- * Constructor for ZoomInRetargetAction
- */
-public ZoomInRetargetAction() {
-	super(null, null);
-	setText(GEFMessages.ZoomIn_Label);
-	setId(GEFActionConstants.ZOOM_IN);
-	setToolTipText(GEFMessages.ZoomIn_Tooltip);
-	setImageDescriptor(InternalImages.DESC_ZOOM_IN);
-	setActionDefinitionId(GEFActionConstants.ZOOM_IN);
-}
+	/**
+	 * Constructor for ZoomInRetargetAction
+	 */
+	public ZoomInRetargetAction() {
+		super(null, null);
+		setText(GEFMessages.ZoomIn_Label);
+		setId(GEFActionConstants.ZOOM_IN);
+		setToolTipText(GEFMessages.ZoomIn_Tooltip);
+		setImageDescriptor(InternalImages.DESC_ZOOM_IN);
+		setActionDefinitionId(GEFActionConstants.ZOOM_IN);
+	}
 
 }

@@ -22,44 +22,46 @@ import org.eclipse.gef.tools.ResizeTracker;
 /**
  * A Handle used to resize a GraphicalEditPart.
  */
-public class ResizeHandle
-	extends SquareHandle
-{
+public class ResizeHandle extends SquareHandle {
 
-private int cursorDirection = 0;
+	private int cursorDirection = 0;
 
-/**
- * Creates a new ResizeHandle for the given GraphicalEditPart.
- * <code>direction</code> is the relative direction from the 
- * center of the owner figure.  For example, <code>SOUTH_EAST</code>
- * would place the handle in the lower-right corner of its
- * owner figure.  These direction constants can be found in
- * {@link org.eclipse.draw2d.PositionConstants}.
- * @param owner owner of the ResizeHandle
- * @param direction relative direction from the center of the owner figure
- */
-public ResizeHandle(GraphicalEditPart owner, int direction) {
-	setOwner(owner);
-	setLocator(new RelativeHandleLocator(owner.getFigure(), direction));
-	setCursor(Cursors.getDirectionalCursor(direction, owner.getFigure().isMirrored()));
-	cursorDirection = direction;
-}
+	/**
+	 * Creates a new ResizeHandle for the given GraphicalEditPart.
+	 * <code>direction</code> is the relative direction from the center of the
+	 * owner figure. For example, <code>SOUTH_EAST</code> would place the handle
+	 * in the lower-right corner of its owner figure. These direction constants
+	 * can be found in {@link org.eclipse.draw2d.PositionConstants}.
+	 * 
+	 * @param owner
+	 *            owner of the ResizeHandle
+	 * @param direction
+	 *            relative direction from the center of the owner figure
+	 */
+	public ResizeHandle(GraphicalEditPart owner, int direction) {
+		setOwner(owner);
+		setLocator(new RelativeHandleLocator(owner.getFigure(), direction));
+		setCursor(Cursors.getDirectionalCursor(direction, owner.getFigure()
+				.isMirrored()));
+		cursorDirection = direction;
+	}
 
-/**
- * Creates a new ResizeHandle for the given GraphicalEditPart.
- * 
- * @see SquareHandle#SquareHandle(GraphicalEditPart, Locator, Cursor)
- */
-public ResizeHandle(GraphicalEditPart owner, Locator loc, Cursor c) {
-	super(owner, loc, c);
-}
+	/**
+	 * Creates a new ResizeHandle for the given GraphicalEditPart.
+	 * 
+	 * @see SquareHandle#SquareHandle(GraphicalEditPart, Locator, Cursor)
+	 */
+	public ResizeHandle(GraphicalEditPart owner, Locator loc, Cursor c) {
+		super(owner, loc, c);
+	}
 
-/**
- * Returns <code>null</code> for the DragTracker.
- * @return returns <code>null</code>
- */
-protected DragTracker createDragTracker() {
-	return new ResizeTracker(getOwner(), cursorDirection);
-}
+	/**
+	 * Returns <code>null</code> for the DragTracker.
+	 * 
+	 * @return returns <code>null</code>
+	 */
+	protected DragTracker createDragTracker() {
+		return new ResizeTracker(getOwner(), cursorDirection);
+	}
 
 }

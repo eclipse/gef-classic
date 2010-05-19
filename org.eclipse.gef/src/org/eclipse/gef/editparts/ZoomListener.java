@@ -12,14 +12,17 @@ package org.eclipse.gef.editparts;
 
 /**
  * Listens to zoom level changes.
+ * 
  * @author Eric Bordeau
  */
 public interface ZoomListener {
 
-/**
- * Called whenever the ZoomManager's zoom level changes.
- * @param zoom the new zoom level.
- */
-void zoomChanged(double zoom);
+	/**
+	 * Called whenever the ZoomManager's zoom level changes.
+	 * 
+	 * @param zoom
+	 *            the new zoom level.
+	 */
+	void zoomChanged(double zoom);
 
 }

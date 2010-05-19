@@ -19,19 +19,21 @@ import org.eclipse.gef.internal.GEFMessages;
 
 /**
  * @author Eric Bordeau
- * @deprecated	Use org.eclipse.ui.actions.ActionFactory instead
+ * @deprecated Use org.eclipse.ui.actions.ActionFactory instead
  */
 public class CopyRetargetAction extends RetargetAction {
 
-/**
- * Constructs a new CopyRetargetAction with the default ID, label and image.
- */
-public CopyRetargetAction() {
-	super(ActionFactory.COPY.getId(), GEFMessages.CopyAction_Label);
-	ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-	setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
-	setDisabledImageDescriptor(sharedImages.getImageDescriptor(
-			ISharedImages.IMG_TOOL_COPY_DISABLED));
-}								
+	/**
+	 * Constructs a new CopyRetargetAction with the default ID, label and image.
+	 */
+	public CopyRetargetAction() {
+		super(ActionFactory.COPY.getId(), GEFMessages.CopyAction_Label);
+		ISharedImages sharedImages = PlatformUI.getWorkbench()
+				.getSharedImages();
+		setImageDescriptor(sharedImages
+				.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
+		setDisabledImageDescriptor(sharedImages
+				.getImageDescriptor(ISharedImages.IMG_TOOL_COPY_DISABLED));
+	}
 
 }

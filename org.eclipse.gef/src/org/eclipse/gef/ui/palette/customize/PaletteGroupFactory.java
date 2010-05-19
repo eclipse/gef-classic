@@ -21,24 +21,22 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  * 
  * @author Pratik Shah
  */
-public class PaletteGroupFactory 
-	extends PaletteContainerFactory
-{
-	
-/**
- * Constructor
- */
-public PaletteGroupFactory() {
-	setLabel(PaletteMessages.MODEL_TYPE_GROUP);
-}
+public class PaletteGroupFactory extends PaletteContainerFactory {
 
-/**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
- */
-protected PaletteEntry createNewEntry(Shell shell) {
-	PaletteGroup group = new PaletteGroup(PaletteMessages.NEW_GROUP_LABEL);
-	group.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
-	return group;
-}
+	/**
+	 * Constructor
+	 */
+	public PaletteGroupFactory() {
+		setLabel(PaletteMessages.MODEL_TYPE_GROUP);
+	}
+
+	/**
+	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
+	 */
+	protected PaletteEntry createNewEntry(Shell shell) {
+		PaletteGroup group = new PaletteGroup(PaletteMessages.NEW_GROUP_LABEL);
+		group.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
+		return group;
+	}
 
 }

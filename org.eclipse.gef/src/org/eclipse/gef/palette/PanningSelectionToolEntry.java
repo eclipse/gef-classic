@@ -14,34 +14,40 @@ import org.eclipse.gef.tools.PanningSelectionTool;
 
 /**
  * A ToolEntry for a {@link PanningSelectionTool}.
+ * 
  * @author msorens
  * @since 3.0
  */
 public class PanningSelectionToolEntry extends SelectionToolEntry {
 
-/**
- * Creates a new PanningSelectionToolEntry.
- */
-public PanningSelectionToolEntry() {
-	this(null);
-}
+	/**
+	 * Creates a new PanningSelectionToolEntry.
+	 */
+	public PanningSelectionToolEntry() {
+		this(null);
+	}
 
-/**
- * Constructor for PanningSelectionToolEntry.
- * @param label the label
- */
-public PanningSelectionToolEntry(String label) {
-	this(label, null);
-}
+	/**
+	 * Constructor for PanningSelectionToolEntry.
+	 * 
+	 * @param label
+	 *            the label
+	 */
+	public PanningSelectionToolEntry(String label) {
+		this(label, null);
+	}
 
-/**
- * Constructor for PanningSelectionToolEntry.
- * @param label the label
- * @param shortDesc the description
- */
-public PanningSelectionToolEntry(String label, String shortDesc) {
-	super(label, shortDesc);
-	setToolClass(PanningSelectionTool.class);
-}
+	/**
+	 * Constructor for PanningSelectionToolEntry.
+	 * 
+	 * @param label
+	 *            the label
+	 * @param shortDesc
+	 *            the description
+	 */
+	public PanningSelectionToolEntry(String label, String shortDesc) {
+		super(label, shortDesc);
+		setToolClass(PanningSelectionTool.class);
+	}
 
 }

@@ -34,51 +34,53 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  * @author crevells
  * @since 3.4
  */
-public class PinFigure
-    extends Toggle {
+public class PinFigure extends Toggle {
 
-private static final Color PIN_HOTSPOT_COLOR = FigureUtilities.mixColors(
-    PaletteColorUtil.WIDGET_LIST_BACKGROUND,
-    PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.60);
+	private static final Color PIN_HOTSPOT_COLOR = FigureUtilities.mixColors(
+			PaletteColorUtil.WIDGET_LIST_BACKGROUND,
+			PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.60);
 
-private static final Border TOOLTIP_BORDER = new MarginBorder(0, 2, 1, 0);
+	private static final Border TOOLTIP_BORDER = new MarginBorder(0, 2, 1, 0);
 
-public PinFigure() {
-    super(new ImageFigure(InternalImages.get(InternalImages.IMG_UNPINNED)));
-    setRolloverEnabled(true);
-    setRequestFocusEnabled(false);
-    Label tooltip = new Label(PaletteMessages.TOOLTIP_PIN_FIGURE);
-    tooltip.setBorder(TOOLTIP_BORDER);
-    setToolTip(tooltip);
-    setOpaque(false);
+	public PinFigure() {
+		super(new ImageFigure(InternalImages.get(InternalImages.IMG_UNPINNED)));
+		setRolloverEnabled(true);
+		setRequestFocusEnabled(false);
+		Label tooltip = new Label(PaletteMessages.TOOLTIP_PIN_FIGURE);
+		tooltip.setBorder(TOOLTIP_BORDER);
+		setToolTip(tooltip);
+		setOpaque(false);
 
-    addChangeListener(new ChangeListener() {
+		addChangeListener(new ChangeListener() {
 
-        public void handleStateChanged(ChangeEvent e) {
-            if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
-                if (isSelected()) {
-                    ((ImageFigure) (getChildren().get(0)))
-                        .setImage(InternalImages.get(InternalImages.IMG_PINNED));
-                    ((Label)getToolTip()).setText(PaletteMessages.TOOLTIP_UNPIN_FIGURE);
-                } else {
-                    ((ImageFigure) (getChildren().get(0)))
-                        .setImage(InternalImages
-                            .get(InternalImages.IMG_UNPINNED));
-                    ((Label)getToolTip()).setText(PaletteMessages.TOOLTIP_PIN_FIGURE);
-                }
-            }
-        }
-    });
-}
+			public void handleStateChanged(ChangeEvent e) {
+				if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
+					if (isSelected()) {
+						((ImageFigure) (getChildren().get(0)))
+								.setImage(InternalImages
+										.get(InternalImages.IMG_PINNED));
+						((Label) getToolTip())
+								.setText(PaletteMessages.TOOLTIP_UNPIN_FIGURE);
+					} else {
+						((ImageFigure) (getChildren().get(0)))
+								.setImage(InternalImages
+										.get(InternalImages.IMG_UNPINNED));
+						((Label) getToolTip())
+								.setText(PaletteMessages.TOOLTIP_PIN_FIGURE);
+					}
+				}
+			}
+		});
+	}
 
-protected void paintFigure(Graphics graphics) {
-    super.paintFigure(graphics);
+	protected void paintFigure(Graphics graphics) {
+		super.paintFigure(graphics);
 
-    ButtonModel model = getModel();
-    if (isRolloverEnabled() && model.isMouseOver()) {
-        graphics.setBackgroundColor(PIN_HOTSPOT_COLOR);
-        graphics.fillRoundRectangle(getClientArea().getCopy().shrink(1, 1), 3,
-            3);
-    }
-}
+		ButtonModel model = getModel();
+		if (isRolloverEnabled() && model.isMouseOver()) {
+			graphics.setBackgroundColor(PIN_HOTSPOT_COLOR);
+			graphics.fillRoundRectangle(getClientArea().getCopy().shrink(1, 1),
+					3, 3);
+		}
+	}
 }

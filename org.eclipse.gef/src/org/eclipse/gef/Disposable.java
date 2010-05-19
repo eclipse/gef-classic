@@ -15,9 +15,9 @@ package org.eclipse.gef;
  */
 public interface Disposable {
 
-/**
- * Performs and necessary cleanup.
- */
-void dispose();
+	/**
+	 * Performs and necessary cleanup.
+	 */
+	void dispose();
 
 }

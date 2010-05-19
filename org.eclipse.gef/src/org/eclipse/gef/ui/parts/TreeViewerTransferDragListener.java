@@ -24,57 +24,58 @@ import org.eclipse.gef.dnd.AbstractTransferDragSourceListener;
 
 class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener {
 
-private List modelSelection;
+	private List modelSelection;
 
-public TreeViewerTransferDragListener(EditPartViewer viewer) {
-	super(viewer, TreeViewerTransfer.getInstance());
-}
+	public TreeViewerTransferDragListener(EditPartViewer viewer) {
+		super(viewer, TreeViewerTransfer.getInstance());
+	}
 
-/**
- * @deprecated
- */
-public TreeViewerTransferDragListener(EditPartViewer viewer, Transfer xfer) {
-	super(viewer, xfer);
-}
+	/**
+	 * @deprecated
+	 */
+	public TreeViewerTransferDragListener(EditPartViewer viewer, Transfer xfer) {
+		super(viewer, xfer);
+	}
 
-public void dragSetData(DragSourceEvent event) {
-	event.data = getViewer().getSelectedEditParts();
-}
+	public void dragSetData(DragSourceEvent event) {
+		event.data = getViewer().getSelectedEditParts();
+	}
 
-public void dragStart(DragSourceEvent event) {
-	TreeViewerTransfer.getInstance().setViewer(getViewer());
-	List selection = getViewer().getSelectedEditParts();
-	TreeViewerTransfer.getInstance().setObject(selection);
-	saveModelSelection(selection);
-}
+	public void dragStart(DragSourceEvent event) {
+		TreeViewerTransfer.getInstance().setViewer(getViewer());
+		List selection = getViewer().getSelectedEditParts();
+		TreeViewerTransfer.getInstance().setObject(selection);
+		saveModelSelection(selection);
+	}
 
-public void dragFinished(DragSourceEvent event) {
-	TreeViewerTransfer.getInstance().setObject(null);
-	TreeViewerTransfer.getInstance().setViewer(null);
-	if (event.doit)
-		revertModelSelection();
-	else
+	public void dragFinished(DragSourceEvent event) {
+		TreeViewerTransfer.getInstance().setObject(null);
+		TreeViewerTransfer.getInstance().setViewer(null);
+		if (event.doit)
+			revertModelSelection();
+		else
+			modelSelection = null;
+	}
+
+	protected void revertModelSelection() {
+		List list = new ArrayList();
+		Object editpart;
+		for (int i = 0; i < modelSelection.size(); i++) {
+			editpart = getViewer().getEditPartRegistry().get(
+					modelSelection.get(i));
+			if (editpart != null)
+				list.add(editpart);
+		}
+		getViewer().setSelection(new StructuredSelection(list));
 		modelSelection = null;
-}
-
-protected void revertModelSelection() {
-	List list = new ArrayList();
-	Object editpart;
-	for (int i = 0; i < modelSelection.size(); i++) {
-		editpart = getViewer().getEditPartRegistry().get(modelSelection.get(i));
-		if (editpart != null)
-			list.add(editpart);
 	}
-	getViewer().setSelection(new StructuredSelection(list));
-	modelSelection = null;
-}
 
-protected void saveModelSelection(List editPartSelection) {
-	modelSelection = new ArrayList();
-	for (int i = 0; i < editPartSelection.size(); i++) {
-		EditPart editpart = (EditPart)editPartSelection.get(i);
-		modelSelection.add(editpart.getModel());
+	protected void saveModelSelection(List editPartSelection) {
+		modelSelection = new ArrayList();
+		for (int i = 0; i < editPartSelection.size(); i++) {
+			EditPart editpart = (EditPart) editPartSelection.get(i);
+			modelSelection.add(editpart.getModel());
+		}
 	}
-}
 
 }

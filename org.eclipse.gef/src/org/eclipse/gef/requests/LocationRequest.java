@@ -15,42 +15,43 @@ import org.eclipse.draw2d.geometry.Point;
 /**
  * A Request that needs to keep track of a location.
  */
-public class LocationRequest
-	extends org.eclipse.gef.Request
-{
+public class LocationRequest extends org.eclipse.gef.Request {
 
-private Point location;
+	private Point location;
 
-/**
- * Constructs a LocationRequest with no type.
- */
-public LocationRequest() { }
+	/**
+	 * Constructs a LocationRequest with no type.
+	 */
+	public LocationRequest() {
+	}
 
-/**
- * Constructs a LocationRequest with the given type.
- * @param type the type
- */
-public LocationRequest(Object type) {
-	super(type);
+	/**
+	 * Constructs a LocationRequest with the given type.
+	 * 
+	 * @param type
+	 *            the type
+	 */
+	public LocationRequest(Object type) {
+		super(type);
+	}
+
+	/**
+	 * Returns the current location.
+	 * 
+	 * @return The current location
+	 */
+	public Point getLocation() {
+		return location;
+	}
+
+	/**
+	 * Sets the current location.
+	 * 
+	 * @param p
+	 *            The current location.
+	 */
+	public void setLocation(Point p) {
+		location = p;
+	}
+
 }
-
-/**
- * Returns the current location.
- * @return The current location
- */
-public Point getLocation() {
-	return location;
-}
-
-/**
- * Sets the current location.
- *
- * @param p The current location.
- */
-public void setLocation(Point p) {
-	location = p;
-}
-
-}
-
-

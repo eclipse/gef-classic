@@ -31,109 +31,118 @@ import org.eclipse.gef.internal.GEFMessages;
  * @author Pratik Shah
  * @since 3.0
  */
-public class PaletteView
-	extends PageBookView
-{
-	
-private boolean viewInPage = true;
+public class PaletteView extends PageBookView {
 
-/**
- * The ID for this view.  This is the same as the String used to register this view
- * with the platform's extension point. 
- */
-public static final String ID = "org.eclipse.gef.ui.palette_view"; //$NON-NLS-1$
+	private boolean viewInPage = true;
 
-private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
-	public void perspectiveChanged(IWorkbenchPage page,
-			IPerspectiveDescriptor perspective, String changeId) {
+	/**
+	 * The ID for this view. This is the same as the String used to register
+	 * this view with the platform's extension point.
+	 */
+	public static final String ID = "org.eclipse.gef.ui.palette_view"; //$NON-NLS-1$
+
+	private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
+		public void perspectiveChanged(IWorkbenchPage page,
+				IPerspectiveDescriptor perspective, String changeId) {
+		}
+
+		// fix for bug 109245 and 69098 - fake a partActivated when the
+		// perpsective is switched
+		public void perspectiveActivated(IWorkbenchPage page,
+				IPerspectiveDescriptor perspective) {
+			viewInPage = page.findViewReference(ID) != null;
+			// getBootstrapPart could return null; but isImportant() can handle
+			// null
+			partActivated(getBootstrapPart());
+		}
+	};
+
+	/**
+	 * Creates a default page saying that a palette is not available.
+	 * 
+	 * @see org.eclipse.ui.part.PageBookView#createDefaultPage(org.eclipse.ui.part.PageBook)
+	 */
+	protected IPage createDefaultPage(PageBook book) {
+		MessagePage page = new MessagePage();
+		initPage(page);
+		page.createControl(book);
+		page.setMessage(GEFMessages.Palette_Not_Available);
+		return page;
 	}
-	// fix for bug 109245 and 69098 - fake a partActivated when the perpsective is switched
-	public void perspectiveActivated(IWorkbenchPage page,
-			IPerspectiveDescriptor perspective) {
-		viewInPage = page.findViewReference(ID) != null;
-		// getBootstrapPart could return null; but isImportant() can handle null
-		partActivated(getBootstrapPart());
+
+	/**
+	 * Add a perspective listener so the palette view can be updated when the
+	 * perspective is switched.
+	 * 
+	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+	 */
+	public void createPartControl(Composite parent) {
+		super.createPartControl(parent);
+		getSite().getPage().getWorkbenchWindow()
+				.addPerspectiveListener(perspectiveListener);
 	}
-};
 
-/**
- * Creates a default page saying that a palette is not available.
- * 
- * @see org.eclipse.ui.part.PageBookView#createDefaultPage(org.eclipse.ui.part.PageBook)
- */
-protected IPage createDefaultPage(PageBook book) {
-	MessagePage page = new MessagePage();
-	initPage(page);
-	page.createControl(book);
-	page.setMessage(GEFMessages.Palette_Not_Available);
-	return page;
-}
-
-/**
- * Add a perspective listener so the palette view can be updated when the perspective
- * is switched.
- * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
- */
-public void createPartControl(Composite parent) {
-	super.createPartControl(parent);
-	getSite().getPage().getWorkbenchWindow().addPerspectiveListener(perspectiveListener);
-}
-
-/**
- * Remove the perspective listener.
- * @see org.eclipse.ui.IWorkbenchPart#dispose()
- */
-public void dispose() {
-	getSite().getPage().getWorkbenchWindow().removePerspectiveListener(perspectiveListener);
-	super.dispose();
-}
-
-/**
- * @see org.eclipse.ui.part.PageBookView#doCreatePage(org.eclipse.ui.IWorkbenchPart)
- */
-protected PageRec doCreatePage(IWorkbenchPart part) {
-	// Try to get a custom palette page
-	Object obj = part.getAdapter(PalettePage.class);
-
-	if (obj != null && obj instanceof IPage) {
-		IPage page = (IPage) obj;
-		page.createControl(getPageBook());
-		initPage((IPageBookViewPage) page);
-		return new PageRec(part, page);
+	/**
+	 * Remove the perspective listener.
+	 * 
+	 * @see org.eclipse.ui.IWorkbenchPart#dispose()
+	 */
+	public void dispose() {
+		getSite().getPage().getWorkbenchWindow()
+				.removePerspectiveListener(perspectiveListener);
+		super.dispose();
 	}
-	// Use the default page by returning null
-	return null;
-}
 
-/**
- * @see	PageBookView#doDestroyPage(org.eclipse.ui.IWorkbenchPart, org.eclipse.ui.part.PageBookView.PageRec)
- */
-protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
-	rec.page.dispose();
-}
+	/**
+	 * @see org.eclipse.ui.part.PageBookView#doCreatePage(org.eclipse.ui.IWorkbenchPart)
+	 */
+	protected PageRec doCreatePage(IWorkbenchPart part) {
+		// Try to get a custom palette page
+		Object obj = part.getAdapter(PalettePage.class);
 
-/**
- * The view shows the palette associated with the active editor.
- * 
- * @see	PageBookView#getBootstrapPart()
- */
-protected IWorkbenchPart getBootstrapPart() {
-	IWorkbenchPage page = getSite().getPage();
-	if (page != null)
-		return page.getActiveEditor();
-	return null;
-}
+		if (obj != null && obj instanceof IPage) {
+			IPage page = (IPage) obj;
+			page.createControl(getPageBook());
+			initPage((IPageBookViewPage) page);
+			return new PageRec(part, page);
+		}
+		// Use the default page by returning null
+		return null;
+	}
 
-/**
- * Only editors in the same perspective as the view are important.
- * 
- * @see	PageBookView#isImportant(org.eclipse.ui.IWorkbenchPart)
- */
-protected boolean isImportant(IWorkbenchPart part) {
-	// Workaround for Bug# 69098 -- This should be removed when/if Bug# 70510 is fixed
-	// We only want a palette page to be created when this view is visible in the current
-	// perspective, i.e., when both this view and the given editor are on the same page.
-	return viewInPage && part instanceof IEditorPart;
-}
+	/**
+	 * @see PageBookView#doDestroyPage(org.eclipse.ui.IWorkbenchPart,
+	 *      org.eclipse.ui.part.PageBookView.PageRec)
+	 */
+	protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
+		rec.page.dispose();
+	}
+
+	/**
+	 * The view shows the palette associated with the active editor.
+	 * 
+	 * @see PageBookView#getBootstrapPart()
+	 */
+	protected IWorkbenchPart getBootstrapPart() {
+		IWorkbenchPage page = getSite().getPage();
+		if (page != null)
+			return page.getActiveEditor();
+		return null;
+	}
+
+	/**
+	 * Only editors in the same perspective as the view are important.
+	 * 
+	 * @see PageBookView#isImportant(org.eclipse.ui.IWorkbenchPart)
+	 */
+	protected boolean isImportant(IWorkbenchPart part) {
+		// Workaround for Bug# 69098 -- This should be removed when/if Bug#
+		// 70510 is fixed
+		// We only want a palette page to be created when this view is visible
+		// in the current
+		// perspective, i.e., when both this view and the given editor are on
+		// the same page.
+		return viewInPage && part instanceof IEditorPart;
+	}
 
 }

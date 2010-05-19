@@ -16,40 +16,40 @@ import org.eclipse.gef.Request;
 /**
  * A Request to be forwarded to another EditPart.
  */
-public class ForwardedRequest
-	extends Request
-{
+public class ForwardedRequest extends Request {
 
-private EditPart sender;
+	private EditPart sender;
 
-/**
- * Creates a ForwardRequest with the given type.
- *
- * @param type The type of Request
- */
-public ForwardedRequest(Object type) {
-	setType(type);
-}
+	/**
+	 * Creates a ForwardRequest with the given type.
+	 * 
+	 * @param type
+	 *            The type of Request
+	 */
+	public ForwardedRequest(Object type) {
+		setType(type);
+	}
 
-/**
- * Creates a ForwardRequest with the given type and
- * sets the sender.
- *
- * @param type The type of Request
- * @param sender The EditPart that forwarded this Request
- */
-public ForwardedRequest(Object type, EditPart sender) {
-	setType(type);
-	this.sender = sender;
-}
+	/**
+	 * Creates a ForwardRequest with the given type and sets the sender.
+	 * 
+	 * @param type
+	 *            The type of Request
+	 * @param sender
+	 *            The EditPart that forwarded this Request
+	 */
+	public ForwardedRequest(Object type, EditPart sender) {
+		setType(type);
+		this.sender = sender;
+	}
 
-/**
- * Returns the EditPart that forwarded this Request.
- *
- * @return The EditPart that forwarded this Request
- */
-public EditPart getSender() {
-	return sender;
-}
+	/**
+	 * Returns the EditPart that forwarded this Request.
+	 * 
+	 * @return The EditPart that forwarded this Request
+	 */
+	public EditPart getSender() {
+		return sender;
+	}
 
 }

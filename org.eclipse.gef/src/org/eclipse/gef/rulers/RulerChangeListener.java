@@ -11,72 +11,85 @@
 package org.eclipse.gef.rulers;
 
 /**
- * <code>RulerChangeListener</code>s can be added to <code>RulerProvider</code>s to
- * receive notification about changes in the ruler/guide properties.  This interface
- * provides a mechanism for the (client-side) ruler/guide model to communicate changes
- * to GEF's ruler/guide feature.
+ * <code>RulerChangeListener</code>s can be added to <code>RulerProvider</code>s
+ * to receive notification about changes in the ruler/guide properties. This
+ * interface provides a mechanism for the (client-side) ruler/guide model to
+ * communicate changes to GEF's ruler/guide feature.
  * 
- * @see	org.eclipse.gef.rulers.RulerProvider
+ * @see org.eclipse.gef.rulers.RulerProvider
  * 
  * @author Pratik Shah
  * @since 3.0
  */
 public interface RulerChangeListener {
 
-/**
- * Invoked when the ruler's unit of measurement is changed.
- * @param	newUnit		The new unit of measurement (RulerProvider.UNIT_INCES, 
- * 						UNIT_CENTIMETERS, or UNIT_PIXELS)
- */
-void notifyUnitsChanged(int newUnit);
-
-/**
- * Invoked when a guide is added to or removed from a ruler.
- * @param	guide	The guide that was added or removed
- */
-void notifyGuideReparented(Object guide);
-
-/**
- * Invoked when a guide is moved.
- * @param	guide	The guide that was moved
- */
-void notifyGuideMoved(Object guide);
-
-/**
- * Invoked when a graphical component is attached to a guide.
- * @param	part	The model representation of the graphical compoment that was attached
- * @param	guide	The guide that the part was attached to
- */
-void notifyPartAttachmentChanged(Object part, Object guide);
-
-/**
- * Stub for the RulerChangeListener interface.  Clients not intending to implement
- * all the methods in that interface can extend this class.
- * 
- * @author Pratik Shah
- * @since 3.0
- */
-public class Stub implements RulerChangeListener {
 	/**
-	 * @see RulerChangeListener#notifyUnitsChanged(int)
+	 * Invoked when the ruler's unit of measurement is changed.
+	 * 
+	 * @param newUnit
+	 *            The new unit of measurement (RulerProvider.UNIT_INCES,
+	 *            UNIT_CENTIMETERS, or UNIT_PIXELS)
 	 */
-	public void notifyUnitsChanged(int newUnit) {
-	}
+	void notifyUnitsChanged(int newUnit);
+
 	/**
-	 * @see RulerChangeListener#notifyGuideReparented(Object)
+	 * Invoked when a guide is added to or removed from a ruler.
+	 * 
+	 * @param guide
+	 *            The guide that was added or removed
 	 */
-	public void notifyGuideReparented(Object guide) {
-	}
+	void notifyGuideReparented(Object guide);
+
 	/**
-	 * @see RulerChangeListener#notifyGuideMoved(Object)
+	 * Invoked when a guide is moved.
+	 * 
+	 * @param guide
+	 *            The guide that was moved
 	 */
-	public void notifyGuideMoved(Object guide) {
-	}
+	void notifyGuideMoved(Object guide);
+
 	/**
-	 * @see RulerChangeListener#notifyPartAttachmentChanged(Object, Object)
+	 * Invoked when a graphical component is attached to a guide.
+	 * 
+	 * @param part
+	 *            The model representation of the graphical compoment that was
+	 *            attached
+	 * @param guide
+	 *            The guide that the part was attached to
 	 */
-	public void notifyPartAttachmentChanged(Object part, Object guide) {
+	void notifyPartAttachmentChanged(Object part, Object guide);
+
+	/**
+	 * Stub for the RulerChangeListener interface. Clients not intending to
+	 * implement all the methods in that interface can extend this class.
+	 * 
+	 * @author Pratik Shah
+	 * @since 3.0
+	 */
+	public class Stub implements RulerChangeListener {
+		/**
+		 * @see RulerChangeListener#notifyUnitsChanged(int)
+		 */
+		public void notifyUnitsChanged(int newUnit) {
+		}
+
+		/**
+		 * @see RulerChangeListener#notifyGuideReparented(Object)
+		 */
+		public void notifyGuideReparented(Object guide) {
+		}
+
+		/**
+		 * @see RulerChangeListener#notifyGuideMoved(Object)
+		 */
+		public void notifyGuideMoved(Object guide) {
+		}
+
+		/**
+		 * @see RulerChangeListener#notifyPartAttachmentChanged(Object, Object)
+		 */
+		public void notifyPartAttachmentChanged(Object part, Object guide) {
+		}
 	}
-}
 
 }

@@ -13,22 +13,21 @@ package org.eclipse.gef.dnd;
 import org.eclipse.swt.dnd.Transfer;
 
 /**
- * A <code>DropTragetListener</code> that handles one type of SWT {@link Transfer}. The
- * purpose of a TransferDropTargetListener is to:
+ * A <code>DropTragetListener</code> that handles one type of SWT
+ * {@link Transfer}. The purpose of a TransferDropTargetListener is to:
  * <UL>
- *   <LI>Determine enablement for a Drop operation. Enablement is often a function drop
- *   location, and/or criteria.
- *   <LI>When enabled, optionally showing feedback on the DropTarget.
- *   <LI>Performing the actualy Drop
- * </UL>
- * {@link DelegatingDropAdapter} allows these functions to be implemented separately for
- * unrelated types of Drags. DelegatingDropAdapter then combines the function of each
- * TransferDropTargetListener, while allowing them to be implemented as if they were the
- * only DragSourceListener.
+ * <LI>Determine enablement for a Drop operation. Enablement is often a function
+ * drop location, and/or criteria.
+ * <LI>When enabled, optionally showing feedback on the DropTarget.
+ * <LI>Performing the actualy Drop
+ * </UL> {@link DelegatingDropAdapter} allows these functions to be implemented
+ * separately for unrelated types of Drags. DelegatingDropAdapter then combines
+ * the function of each TransferDropTargetListener, while allowing them to be
+ * implemented as if they were the only DragSourceListener.
+ * 
  * @deprecated use org.eclipse.jface.util.TransferDropTargetListener instead
  */
-public interface TransferDropTargetListener 
-	extends org.eclipse.jface.util.TransferDropTargetListener
-{
+public interface TransferDropTargetListener extends
+		org.eclipse.jface.util.TransferDropTargetListener {
 
 }

@@ -23,56 +23,60 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.internal.GEFMessages;
 
-/** 
+/**
  * An action which selects all edit parts in the active workbench part.
  */
-public class SelectAllAction
-	extends Action
-{
+public class SelectAllAction extends Action {
 
-private IWorkbenchPart part;
+	private IWorkbenchPart part;
 
-/**
- * Constructs a <code>SelectAllAction</code> and associates it with the given
- * part.
- * @param part The workbench part associated with this SelectAllAction
- */
-public SelectAllAction(IWorkbenchPart part) {
-	this.part = part;
-	setText(GEFMessages.SelectAllAction_Label);
-	setToolTipText(GEFMessages.SelectAllAction_Tooltip);
-	setId(ActionFactory.SELECT_ALL.getId());
-}
-
-/**
- * Selects all edit parts in the active workbench part.
- */
-public void run() {
-	GraphicalViewer viewer = (GraphicalViewer)part.getAdapter(GraphicalViewer.class);
-	if (viewer != null) {
-		viewer.setSelection(new StructuredSelection(getSelectableEditParts(viewer)));
+	/**
+	 * Constructs a <code>SelectAllAction</code> and associates it with the
+	 * given part.
+	 * 
+	 * @param part
+	 *            The workbench part associated with this SelectAllAction
+	 */
+	public SelectAllAction(IWorkbenchPart part) {
+		this.part = part;
+		setText(GEFMessages.SelectAllAction_Label);
+		setToolTipText(GEFMessages.SelectAllAction_Tooltip);
+		setId(ActionFactory.SELECT_ALL.getId());
 	}
-}
 
-/**
- * Retrieves edit parts which can be selected
- * @param viewer from which the edit parts are to be retrieved
- * @return list of selectable EditParts
- * @since 3.5
- */
-private List getSelectableEditParts(GraphicalViewer viewer) {
-	List selectableChildren = new ArrayList();
-	List children = viewer.getContents().getChildren();
-	for (Iterator iter = children.iterator(); iter.hasNext();) {
-		Object child = iter.next();
-		if (child instanceof EditPart) {
-			EditPart childPart = (EditPart) child;
-			if (childPart.isSelectable() == true) {
-				selectableChildren.add(childPart);
-			}
+	/**
+	 * Selects all edit parts in the active workbench part.
+	 */
+	public void run() {
+		GraphicalViewer viewer = (GraphicalViewer) part
+				.getAdapter(GraphicalViewer.class);
+		if (viewer != null) {
+			viewer.setSelection(new StructuredSelection(
+					getSelectableEditParts(viewer)));
 		}
 	}
-	return selectableChildren;
-}
+
+	/**
+	 * Retrieves edit parts which can be selected
+	 * 
+	 * @param viewer
+	 *            from which the edit parts are to be retrieved
+	 * @return list of selectable EditParts
+	 * @since 3.5
+	 */
+	private List getSelectableEditParts(GraphicalViewer viewer) {
+		List selectableChildren = new ArrayList();
+		List children = viewer.getContents().getChildren();
+		for (Iterator iter = children.iterator(); iter.hasNext();) {
+			Object child = iter.next();
+			if (child instanceof EditPart) {
+				EditPart childPart = (EditPart) child;
+				if (childPart.isSelectable() == true) {
+					selectableChildren.add(childPart);
+				}
+			}
+		}
+		return selectableChildren;
+	}
 
 }

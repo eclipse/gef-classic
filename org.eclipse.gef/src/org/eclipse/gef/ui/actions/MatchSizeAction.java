@@ -24,129 +24,141 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
-/** 
- * An action that matches the size of all selected EditPart's Figures to the size
- * of the Primary Selection EditPart's Figure.
- */
-class MatchSizeAction
-	extends SelectionAction
-{
-
 /**
- * Constructs a <code>MatchSizeAction</code> and associates it with the given
- * part.
- * @param part The workbench part associated with this MatchSizeAction
+ * An action that matches the size of all selected EditPart's Figures to the
+ * size of the Primary Selection EditPart's Figure.
  */
-MatchSizeAction(IWorkbenchPart part) {
-	super(part);
-}
+class MatchSizeAction extends SelectionAction {
 
-/**
- * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
- */
-protected boolean calculateEnabled() {
-	Command cmd = createMatchSizeCommand(getSelectedObjects());
-	if (cmd == null)
-		return false;
-	return cmd.canExecute();
-}
+	/**
+	 * Constructs a <code>MatchSizeAction</code> and associates it with the
+	 * given part.
+	 * 
+	 * @param part
+	 *            The workbench part associated with this MatchSizeAction
+	 */
+	MatchSizeAction(IWorkbenchPart part) {
+		super(part);
+	}
 
-/**
- * Create a command to resize the selected objects.
- * @param objects The objects to be resized.
- * @return The command to resize the selected objects.
- */
-private Command createMatchSizeCommand(List objects) {
-	if (objects.isEmpty())
-		return null;
-	if (!(objects.get(0) instanceof GraphicalEditPart))
-		return null;
+	/**
+	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
+	 */
+	protected boolean calculateEnabled() {
+		Command cmd = createMatchSizeCommand(getSelectedObjects());
+		if (cmd == null)
+			return false;
+		return cmd.canExecute();
+	}
 
-	GraphicalEditPart primarySelection = getPrimarySelectionEditPart(getSelectedObjects());
+	/**
+	 * Create a command to resize the selected objects.
+	 * 
+	 * @param objects
+	 *            The objects to be resized.
+	 * @return The command to resize the selected objects.
+	 */
+	private Command createMatchSizeCommand(List objects) {
+		if (objects.isEmpty())
+			return null;
+		if (!(objects.get(0) instanceof GraphicalEditPart))
+			return null;
 
-	if (primarySelection == null) 
-		return null;
-	
-	GraphicalEditPart part = null;
-	ChangeBoundsRequest request = null;
-	PrecisionDimension preciseDimension = null;
-	PrecisionRectangle precisePartBounds = null;
-	Command cmd = null;
-	CompoundCommand command = new CompoundCommand();
-	
-	PrecisionRectangle precisePrimaryBounds = new PrecisionRectangle(primarySelection
-			.getFigure().getBounds().getCopy());
-	primarySelection.getFigure().translateToAbsolute(precisePrimaryBounds);
-	
-	for (int i = 0; i < objects.size(); i++) {
-		part = (GraphicalEditPart)objects.get(i);
-		if (!part.equals(primarySelection)) {
-			request = new ChangeBoundsRequest(RequestConstants.REQ_RESIZE);
-			
-			precisePartBounds = new PrecisionRectangle(part.getFigure().getBounds().getCopy());
-			part.getFigure().translateToAbsolute(precisePartBounds);
-			
-			preciseDimension = new PrecisionDimension();
-			preciseDimension.preciseWidth = getPreciseWidthDelta(precisePartBounds, 
-					precisePrimaryBounds);
-			preciseDimension.preciseHeight = getPreciseHeightDelta(precisePartBounds, 
-					precisePrimaryBounds);
-			preciseDimension.updateInts();
-			
-			request.setSizeDelta(preciseDimension);
-			
-			cmd = part.getCommand(request);
-			if (cmd != null) 
-				command.add(cmd);			
+		GraphicalEditPart primarySelection = getPrimarySelectionEditPart(getSelectedObjects());
+
+		if (primarySelection == null)
+			return null;
+
+		GraphicalEditPart part = null;
+		ChangeBoundsRequest request = null;
+		PrecisionDimension preciseDimension = null;
+		PrecisionRectangle precisePartBounds = null;
+		Command cmd = null;
+		CompoundCommand command = new CompoundCommand();
+
+		PrecisionRectangle precisePrimaryBounds = new PrecisionRectangle(
+				primarySelection.getFigure().getBounds().getCopy());
+		primarySelection.getFigure().translateToAbsolute(precisePrimaryBounds);
+
+		for (int i = 0; i < objects.size(); i++) {
+			part = (GraphicalEditPart) objects.get(i);
+			if (!part.equals(primarySelection)) {
+				request = new ChangeBoundsRequest(RequestConstants.REQ_RESIZE);
+
+				precisePartBounds = new PrecisionRectangle(part.getFigure()
+						.getBounds().getCopy());
+				part.getFigure().translateToAbsolute(precisePartBounds);
+
+				preciseDimension = new PrecisionDimension();
+				preciseDimension.preciseWidth = getPreciseWidthDelta(
+						precisePartBounds, precisePrimaryBounds);
+				preciseDimension.preciseHeight = getPreciseHeightDelta(
+						precisePartBounds, precisePrimaryBounds);
+				preciseDimension.updateInts();
+
+				request.setSizeDelta(preciseDimension);
+
+				cmd = part.getCommand(request);
+				if (cmd != null)
+					command.add(cmd);
+			}
 		}
+
+		return command;
 	}
-	
-	return command;
-}
 
-/**
- * Returns the height delta between the two bounds. Separated into a method so that 
- * it can be overriden to return 0 in the case of a width-only action.
- * 
- * @param precisePartBounds the precise bounds of the EditPart's Figure to be matched
- * @param precisePrimaryBounds the precise bounds of the Primary Selection EditPart's Figure
- * @return the delta between the two heights to be used in the Request.
- */
-protected double getPreciseHeightDelta(PrecisionRectangle precisePartBounds, 
-		PrecisionRectangle precisePrimaryBounds) {	
-	return precisePrimaryBounds.preciseHeight - precisePartBounds.preciseHeight;
-}
-
-private GraphicalEditPart getPrimarySelectionEditPart(List editParts) {
-	GraphicalEditPart part = null;
-	for (int i = 0; i < editParts.size(); i++) {
-		part = (GraphicalEditPart)editParts.get(i);
-		if (part.getSelected() == EditPart.SELECTED_PRIMARY)
-			return part;
+	/**
+	 * Returns the height delta between the two bounds. Separated into a method
+	 * so that it can be overriden to return 0 in the case of a width-only
+	 * action.
+	 * 
+	 * @param precisePartBounds
+	 *            the precise bounds of the EditPart's Figure to be matched
+	 * @param precisePrimaryBounds
+	 *            the precise bounds of the Primary Selection EditPart's Figure
+	 * @return the delta between the two heights to be used in the Request.
+	 */
+	protected double getPreciseHeightDelta(
+			PrecisionRectangle precisePartBounds,
+			PrecisionRectangle precisePrimaryBounds) {
+		return precisePrimaryBounds.preciseHeight
+				- precisePartBounds.preciseHeight;
 	}
-	return null;
-}
 
-/**
- * Returns the width delta between the two bounds. Separated into a method so that 
- * it can be overriden to return 0 in the case of a height-only action.
- * 
- * @param precisePartBounds the precise bounds of the EditPart's Figure to be matched
- * @param precisePrimaryBounds the precise bounds of the Primary Selection EditPart's Figure
- * @return the delta between the two widths to be used in the Request.
- */
-protected double getPreciseWidthDelta(PrecisionRectangle precisePartBounds, 
-		PrecisionRectangle precisePrimaryBounds) {
-	return precisePrimaryBounds.preciseWidth - precisePartBounds.preciseWidth;
-}
+	private GraphicalEditPart getPrimarySelectionEditPart(List editParts) {
+		GraphicalEditPart part = null;
+		for (int i = 0; i < editParts.size(); i++) {
+			part = (GraphicalEditPart) editParts.get(i);
+			if (part.getSelected() == EditPart.SELECTED_PRIMARY)
+				return part;
+		}
+		return null;
+	}
 
-/**
- * Executes this action, cycling through the selected EditParts in the Action's viewer,
- * and matching the size of the selected EditPart's Figures to that of the Primary
- * Selection's Figure.
- */
-public void run() {
-	execute(createMatchSizeCommand(getSelectedObjects()));
-}
+	/**
+	 * Returns the width delta between the two bounds. Separated into a method
+	 * so that it can be overriden to return 0 in the case of a height-only
+	 * action.
+	 * 
+	 * @param precisePartBounds
+	 *            the precise bounds of the EditPart's Figure to be matched
+	 * @param precisePrimaryBounds
+	 *            the precise bounds of the Primary Selection EditPart's Figure
+	 * @return the delta between the two widths to be used in the Request.
+	 */
+	protected double getPreciseWidthDelta(PrecisionRectangle precisePartBounds,
+			PrecisionRectangle precisePrimaryBounds) {
+		return precisePrimaryBounds.preciseWidth
+				- precisePartBounds.preciseWidth;
+	}
+
+	/**
+	 * Executes this action, cycling through the selected EditParts in the
+	 * Action's viewer, and matching the size of the selected EditPart's Figures
+	 * to that of the Primary Selection's Figure.
+	 */
+	public void run() {
+		execute(createMatchSizeCommand(getSelectedObjects()));
+	}
 
 }

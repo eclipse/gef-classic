@@ -16,42 +16,44 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 /**
  * An internal class for the command stack inspector tool.
+ * 
  * @deprecated since 3.1
  */
-public class CommandStackViewerAction 
-	extends Action 
-{
+public class CommandStackViewerAction extends Action {
 
-/** The TreeViewer associated with this CommandStackViewerAction **/
-protected TreeViewer viewer;
+	/** The TreeViewer associated with this CommandStackViewerAction **/
+	protected TreeViewer viewer;
 
-/**
- * Creates a new CommandStackViewerAction with the given TreeViewer
- * @param viewer the TreeViewer
- */
-public CommandStackViewerAction(TreeViewer viewer) {
-	super("Toggle Debug Labels", //$NON-NLS-1$
-		ImageDescriptor.createFromFile(CommandStackInspector.class,
-											"icons/stackDebug.gif"));//$NON-NLS-1$
+	/**
+	 * Creates a new CommandStackViewerAction with the given TreeViewer
+	 * 
+	 * @param viewer
+	 *            the TreeViewer
+	 */
+	public CommandStackViewerAction(TreeViewer viewer) {
+		super("Toggle Debug Labels", //$NON-NLS-1$
+				ImageDescriptor.createFromFile(CommandStackInspector.class,
+						"icons/stackDebug.gif"));//$NON-NLS-1$
 
-	this.viewer = viewer;
-	setChecked(((TreeLabelProvider)viewer.getLabelProvider()).getLabelStyle() 
-					== TreeLabelProvider.DEBUG_LABEL_STYLE);
-}
-
-/**
- * @see Action#run()
- */
-public void run() {
-	if (viewer == null)
-		return;
-	TreeLabelProvider labelProvider = (TreeLabelProvider)viewer.getLabelProvider();
-	if (!isChecked()) {
-		labelProvider.setLabelStyle(TreeLabelProvider.NORMAL_LABEL_STYLE);
-	} else {
-		labelProvider.setLabelStyle(TreeLabelProvider.DEBUG_LABEL_STYLE);
+		this.viewer = viewer;
+		setChecked(((TreeLabelProvider) viewer.getLabelProvider())
+				.getLabelStyle() == TreeLabelProvider.DEBUG_LABEL_STYLE);
 	}
-	viewer.refresh();
-}
+
+	/**
+	 * @see Action#run()
+	 */
+	public void run() {
+		if (viewer == null)
+			return;
+		TreeLabelProvider labelProvider = (TreeLabelProvider) viewer
+				.getLabelProvider();
+		if (!isChecked()) {
+			labelProvider.setLabelStyle(TreeLabelProvider.NORMAL_LABEL_STYLE);
+		} else {
+			labelProvider.setLabelStyle(TreeLabelProvider.DEBUG_LABEL_STYLE);
+		}
+		viewer.refresh();
+	}
 
 }

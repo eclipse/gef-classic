@@ -20,15 +20,15 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 /**
  * @author Pratik Shah
  */
-public class RulerContextMenuProvider 
-	extends ContextMenuProvider 
-{
-public RulerContextMenuProvider(EditPartViewer viewer) {
-	super(viewer);
-}
-public void buildContextMenu(IMenuManager menu) {
-	GEFActionConstants.addStandardActionGroups(menu);
-	menu.appendToGroup(GEFActionConstants.GROUP_ADD, new CreateGuideAction(getViewer()));
-}
+public class RulerContextMenuProvider extends ContextMenuProvider {
+	public RulerContextMenuProvider(EditPartViewer viewer) {
+		super(viewer);
+	}
+
+	public void buildContextMenu(IMenuManager menu) {
+		GEFActionConstants.addStandardActionGroups(menu);
+		menu.appendToGroup(GEFActionConstants.GROUP_ADD, new CreateGuideAction(
+				getViewer()));
+	}
 
 }

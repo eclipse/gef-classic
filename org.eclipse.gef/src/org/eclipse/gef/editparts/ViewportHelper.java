@@ -20,26 +20,26 @@ import org.eclipse.gef.GraphicalEditPart;
  */
 abstract class ViewportHelper {
 
-protected GraphicalEditPart owner;
+	protected GraphicalEditPart owner;
 
-protected ViewportHelper(GraphicalEditPart owner) {
-	this.owner = owner;
-}
+	protected ViewportHelper(GraphicalEditPart owner) {
+		this.owner = owner;
+	}
 
-protected Viewport findViewport(GraphicalEditPart part) {
-	IFigure figure = null;
-	Viewport port = null;
-	do {
-		if (figure == null)
-			figure = part.getContentPane();
-		else
-			figure = figure.getParent();
-		if (figure instanceof Viewport) {
-			port = (Viewport) figure;
-			break;
-		}
-	} while (figure != part.getFigure() && figure != null);
-	return port;
-}
+	protected Viewport findViewport(GraphicalEditPart part) {
+		IFigure figure = null;
+		Viewport port = null;
+		do {
+			if (figure == null)
+				figure = part.getContentPane();
+			else
+				figure = figure.getParent();
+			if (figure instanceof Viewport) {
+				port = (Viewport) figure;
+				break;
+			}
+		} while (figure != part.getFigure() && figure != null);
+		return port;
+	}
 
 }

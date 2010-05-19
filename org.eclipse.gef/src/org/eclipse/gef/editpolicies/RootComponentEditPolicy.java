@@ -15,20 +15,19 @@ import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.requests.GroupRequest;
 
 /**
- * The <i>root</i> component cannot be removed from its parent. This EditPolicy is
- * typically installed on the Viewer's {@link org.eclipse.gef.EditPartViewer#getContents()
- * contents}.
+ * The <i>root</i> component cannot be removed from its parent. This EditPolicy
+ * is typically installed on the Viewer's
+ * {@link org.eclipse.gef.EditPartViewer#getContents() contents}.
  */
-public class RootComponentEditPolicy
-	extends ComponentEditPolicy
-{
+public class RootComponentEditPolicy extends ComponentEditPolicy {
 
-/**
- * Overridden to prevent the host from being deleted.
- * @see org.eclipse.gef.editpolicies.ComponentEditPolicy#createDeleteCommand(GroupRequest)
- */
-protected Command createDeleteCommand(GroupRequest request) {
-	return UnexecutableCommand.INSTANCE;
-}
+	/**
+	 * Overridden to prevent the host from being deleted.
+	 * 
+	 * @see org.eclipse.gef.editpolicies.ComponentEditPolicy#createDeleteCommand(GroupRequest)
+	 */
+	protected Command createDeleteCommand(GroupRequest request) {
+		return UnexecutableCommand.INSTANCE;
+	}
 
 }

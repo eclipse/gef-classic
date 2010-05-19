@@ -17,195 +17,212 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * A Request to change the bounds of the EditPart(s).
  */
-public class ChangeBoundsRequest
-	extends GroupRequest
-	implements DropRequest
-{
+public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 
-private Point moveDelta = new Point();
-private Dimension resizeDelta = new Dimension();
-private int resizeDirection;
-private Point mouseLocation;
-private int flags = 0;
-private static final int CONSTRAINED_RESIZE = 1;
-private static final int CENTERED_RESIZE = 2;
-private static final int CONSTRAINED_MOVE = 4;
+	private Point moveDelta = new Point();
+	private Dimension resizeDelta = new Dimension();
+	private int resizeDirection;
+	private Point mouseLocation;
+	private int flags = 0;
+	private static final int CONSTRAINED_RESIZE = 1;
+	private static final int CENTERED_RESIZE = 2;
+	private static final int CONSTRAINED_MOVE = 4;
 
-/**
- * Default constructor.
- */
-public ChangeBoundsRequest() { }
+	/**
+	 * Default constructor.
+	 */
+	public ChangeBoundsRequest() {
+	}
 
-/**
- * Creates a ChangeBoundsRequest with the given type.
- *
- * @param type The type of Request.
- */
-public ChangeBoundsRequest(Object type) {
-	setType(type);
-}
+	/**
+	 * Creates a ChangeBoundsRequest with the given type.
+	 * 
+	 * @param type
+	 *            The type of Request.
+	 */
+	public ChangeBoundsRequest(Object type) {
+		setType(type);
+	}
 
-/**
- * Returns the location of the mouse pointer.
- *
- * @return The location of the mouse pointer.
- */
-public Point getLocation() {
-	return mouseLocation;
-}
+	/**
+	 * Returns the location of the mouse pointer.
+	 * 
+	 * @return The location of the mouse pointer.
+	 */
+	public Point getLocation() {
+		return mouseLocation;
+	}
 
-/** @deprecated Use {@link #getLocation() } 
- *  @return The location of the mouse pointer.
- */
-public Point getMouseLocation() {
-	return getLocation();
-}
+	/**
+	 * @deprecated Use {@link #getLocation() }
+	 * @return The location of the mouse pointer.
+	 */
+	public Point getMouseLocation() {
+		return getLocation();
+	}
 
-/**
- * Returns a Point representing the distance the EditPart has moved.
- *
- * @return A Point representing the distance the EditPart has moved.
- */
-public Point getMoveDelta() {
-	return moveDelta;
-}
+	/**
+	 * Returns a Point representing the distance the EditPart has moved.
+	 * 
+	 * @return A Point representing the distance the EditPart has moved.
+	 */
+	public Point getMoveDelta() {
+		return moveDelta;
+	}
 
-/**
- * Returns the direction the figure is being resized.  Possible values are
- * <ul>
- * 		<li>{@link org.eclipse.draw2d.PositionConstants#EAST}
- * 		<li>{@link org.eclipse.draw2d.PositionConstants#WEST}
- * 		<li>{@link org.eclipse.draw2d.PositionConstants#NORTH}
- * 		<li>{@link org.eclipse.draw2d.PositionConstants#SOUTH} 
- * 		<li>{@link org.eclipse.draw2d.PositionConstants#NORTH_EAST}
- * 		<li>{@link org.eclipse.draw2d.PositionConstants#NORTH_WEST}
- * 		<li>{@link org.eclipse.draw2d.PositionConstants#SOUTH_EAST}
- * 		<li>{@link org.eclipse.draw2d.PositionConstants#SOUTH_WEST} 
- * </ul>
- * 
- * @return the resize direction
- */
-public int getResizeDirection() {
-	return resizeDirection;
-}
+	/**
+	 * Returns the direction the figure is being resized. Possible values are
+	 * <ul>
+	 * <li>{@link org.eclipse.draw2d.PositionConstants#EAST}
+	 * <li>{@link org.eclipse.draw2d.PositionConstants#WEST}
+	 * <li>{@link org.eclipse.draw2d.PositionConstants#NORTH}
+	 * <li>{@link org.eclipse.draw2d.PositionConstants#SOUTH}
+	 * <li>{@link org.eclipse.draw2d.PositionConstants#NORTH_EAST}
+	 * <li>{@link org.eclipse.draw2d.PositionConstants#NORTH_WEST}
+	 * <li>{@link org.eclipse.draw2d.PositionConstants#SOUTH_EAST}
+	 * <li>{@link org.eclipse.draw2d.PositionConstants#SOUTH_WEST}
+	 * </ul>
+	 * 
+	 * @return the resize direction
+	 */
+	public int getResizeDirection() {
+		return resizeDirection;
+	}
 
-/**
- * Returns a Dimension representing how much the EditPart has been resized.
- *
- * @return A Dimension representing how much the EditPart has been resized.
- */
-public Dimension getSizeDelta() {
-	return resizeDelta;
-}
+	/**
+	 * Returns a Dimension representing how much the EditPart has been resized.
+	 * 
+	 * @return A Dimension representing how much the EditPart has been resized.
+	 */
+	public Dimension getSizeDelta() {
+		return resizeDelta;
+	}
 
-/**
- * Transforms a copy of the passed in rectangle to account for the move and/or resize 
- * deltas and returns this copy.
- * 
- * @param rect the rectangle to transform
- * @return a copy of the passed in rectangle representing the new bounds
- */
-public Rectangle getTransformedRectangle(Rectangle rect) {
-	return rect.getCopy()
-		.translate(moveDelta)
-		.resize(resizeDelta);
-}
+	/**
+	 * Transforms a copy of the passed in rectangle to account for the move
+	 * and/or resize deltas and returns this copy.
+	 * 
+	 * @param rect
+	 *            the rectangle to transform
+	 * @return a copy of the passed in rectangle representing the new bounds
+	 */
+	public Rectangle getTransformedRectangle(Rectangle rect) {
+		return rect.getCopy().translate(moveDelta).resize(resizeDelta);
+	}
 
-/**
- * Returns true if the request is for a centered resize.
- * @since 3.0
- * @return  <code>true</code> if centered resize
- */
-public boolean isCenteredResize() {
-	return (flags & CENTERED_RESIZE) != 0;
-}
+	/**
+	 * Returns true if the request is for a centered resize.
+	 * 
+	 * @since 3.0
+	 * @return <code>true</code> if centered resize
+	 */
+	public boolean isCenteredResize() {
+		return (flags & CENTERED_RESIZE) != 0;
+	}
 
-/**
- * Returns <code>true</code> if the request is for a constrained move 
- * @since 3.0
- * @return <code>true</code> if a constrained move
- */
-public boolean isConstrainedMove() {
-	return (flags & CONSTRAINED_MOVE) != 0;
-}
+	/**
+	 * Returns <code>true</code> if the request is for a constrained move
+	 * 
+	 * @since 3.0
+	 * @return <code>true</code> if a constrained move
+	 */
+	public boolean isConstrainedMove() {
+		return (flags & CONSTRAINED_MOVE) != 0;
+	}
 
-/**
- * Returns <code>true</code> if the request is for a constrained resize
- * @since 3.0
- * @return <code>true</code> if a constrained resize
- */
-public boolean isConstrainedResize() {
-	return (flags & CONSTRAINED_RESIZE) == CONSTRAINED_RESIZE;
-}
+	/**
+	 * Returns <code>true</code> if the request is for a constrained resize
+	 * 
+	 * @since 3.0
+	 * @return <code>true</code> if a constrained resize
+	 */
+	public boolean isConstrainedResize() {
+		return (flags & CONSTRAINED_RESIZE) == CONSTRAINED_RESIZE;
+	}
 
-/**
- * Used to set whether a centered resize is being performed. 
- * @since 3.0
- * @param value <code>true</code> if the request is for a centered resize
- */
-public void setCenteredResize(boolean value) {
-	flags = value ? (flags | CENTERED_RESIZE) : (flags & ~CENTERED_RESIZE); 
-}
+	/**
+	 * Used to set whether a centered resize is being performed.
+	 * 
+	 * @since 3.0
+	 * @param value
+	 *            <code>true</code> if the request is for a centered resize
+	 */
+	public void setCenteredResize(boolean value) {
+		flags = value ? (flags | CENTERED_RESIZE) : (flags & ~CENTERED_RESIZE);
+	}
 
-/**
- * Used to set whether a constrained move is being performed. 
- * @since 3.0
- * @param value <code>true</code> if the request is for a constrained move
- */
-public void setConstrainedMove(boolean value) {
-	flags = value ? (flags | CONSTRAINED_MOVE) : (flags & ~CONSTRAINED_MOVE);
-}
+	/**
+	 * Used to set whether a constrained move is being performed.
+	 * 
+	 * @since 3.0
+	 * @param value
+	 *            <code>true</code> if the request is for a constrained move
+	 */
+	public void setConstrainedMove(boolean value) {
+		flags = value ? (flags | CONSTRAINED_MOVE)
+				: (flags & ~CONSTRAINED_MOVE);
+	}
 
-/**
- * Used to set whether a constrained resize is being performed. 
- * @since 3.0
- * @param value <code>true</code> if the request is for a constrained resize
- */
-public void setConstrainedResize(boolean value) {
-	flags = value ? (flags | CONSTRAINED_RESIZE) : (flags & ~CONSTRAINED_RESIZE); 
-}
+	/**
+	 * Used to set whether a constrained resize is being performed.
+	 * 
+	 * @since 3.0
+	 * @param value
+	 *            <code>true</code> if the request is for a constrained resize
+	 */
+	public void setConstrainedResize(boolean value) {
+		flags = value ? (flags | CONSTRAINED_RESIZE)
+				: (flags & ~CONSTRAINED_RESIZE);
+	}
 
-/**
- * Sets the move delta.
- *
- * @param p The Point representing the move delta
- */
-public void setMoveDelta(Point p) {
-	moveDelta = p;
-}
+	/**
+	 * Sets the move delta.
+	 * 
+	 * @param p
+	 *            The Point representing the move delta
+	 */
+	public void setMoveDelta(Point p) {
+		moveDelta = p;
+	}
 
-/**
- * Sets the direction the figure is being resized.
- * @param dir the direction of the resize
- * @see #getResizeDirection()
- */
-public void setResizeDirection(int dir) {
-	resizeDirection = dir;
-}
+	/**
+	 * Sets the direction the figure is being resized.
+	 * 
+	 * @param dir
+	 *            the direction of the resize
+	 * @see #getResizeDirection()
+	 */
+	public void setResizeDirection(int dir) {
+		resizeDirection = dir;
+	}
 
-/** @deprecated Use {@link #setLocation(Point)} 
- *  @param p The location of the mouse pointer.
- */
-public void setMouseLocation(Point p) {
-	setLocation(p);
-}
+	/**
+	 * @deprecated Use {@link #setLocation(Point)}
+	 * @param p
+	 *            The location of the mouse pointer.
+	 */
+	public void setMouseLocation(Point p) {
+		setLocation(p);
+	}
 
-/**
- * Sets the location of the mouse pointer.
- *
- * @param p The location of the mouse pointer.
- */
-public void setLocation(Point p) {
-	mouseLocation = p;
-}
+	/**
+	 * Sets the location of the mouse pointer.
+	 * 
+	 * @param p
+	 *            The location of the mouse pointer.
+	 */
+	public void setLocation(Point p) {
+		mouseLocation = p;
+	}
 
-/**
- * Sets the size delta.
- *
- * @param d The Dimension representing the size delta.
- */
-public void setSizeDelta(Dimension d) {
-	resizeDelta = d;
-}
+	/**
+	 * Sets the size delta.
+	 * 
+	 * @param d
+	 *            The Dimension representing the size delta.
+	 */
+	public void setSizeDelta(Dimension d) {
+		resizeDelta = d;
+	}
 
 }

@@ -19,24 +19,27 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class AlignmentRequest extends ChangeBoundsRequest {
 
-private int alignment;
-private Rectangle alignmentRect;
+	private int alignment;
+	private Rectangle alignmentRect;
 
-/**
- * Default constructor.
- */
-public AlignmentRequest() { }
+	/**
+	 * Default constructor.
+	 */
+	public AlignmentRequest() {
+	}
 
-/**
- * Constructs a new AlignmentRequest with the new type.
- * @param type the type
- */
-public AlignmentRequest(Object type) {
-	super(type);
-}
+	/**
+	 * Constructs a new AlignmentRequest with the new type.
+	 * 
+	 * @param type
+	 *            the type
+	 */
+	public AlignmentRequest(Object type) {
+		super(type);
+	}
 
-private void doNormalAlignment(Rectangle result, Rectangle reference) {
-	switch (alignment) {
+	private void doNormalAlignment(Rectangle result, Rectangle reference) {
+		switch (alignment) {
 		case PositionConstants.LEFT:
 			result.x = reference.x;
 			break;
@@ -53,101 +56,100 @@ private void doNormalAlignment(Rectangle result, Rectangle reference) {
 			result.x = reference.x + (reference.width / 2) - (result.width / 2);
 			break;
 		case PositionConstants.MIDDLE:
-			result.y = reference.y + (reference.height / 2) - (result.height / 2);
+			result.y = reference.y + (reference.height / 2)
+					- (result.height / 2);
 			break;
+		}
 	}
-}
 
-private void doPrecisionAlignment(
-	PrecisionRectangle result,
-	PrecisionRectangle reference) {
-	switch (alignment) {
+	private void doPrecisionAlignment(PrecisionRectangle result,
+			PrecisionRectangle reference) {
+		switch (alignment) {
 		case PositionConstants.LEFT:
 			result.setX(reference.preciseX);
 			break;
 		case PositionConstants.RIGHT:
-			result.setX(
-				reference.preciseX + reference.preciseWidth - result.preciseWidth);
+			result.setX(reference.preciseX + reference.preciseWidth
+					- result.preciseWidth);
 			break;
 		case PositionConstants.TOP:
 			result.setY(reference.preciseY);
 			break;
 		case PositionConstants.BOTTOM:
-			result.setY(
-				reference.preciseY + reference.preciseHeight - result.preciseHeight);
+			result.setY(reference.preciseY + reference.preciseHeight
+					- result.preciseHeight);
 			break;
 		case PositionConstants.CENTER:
-			result.setX(
-				reference.preciseX
-					+ (reference.preciseWidth / 2)
+			result.setX(reference.preciseX + (reference.preciseWidth / 2)
 					- (result.preciseWidth / 2));
 			break;
 		case PositionConstants.MIDDLE:
-			result.setY(
-				reference.preciseY
-					+ (reference.preciseHeight / 2)
+			result.setY(reference.preciseY + (reference.preciseHeight / 2)
 					- (result.preciseHeight / 2));
 			break;
+		}
+
 	}
 
-	
-}
+	/**
+	 * Returns the alignment. Possible values are {@link PositionConstants#LEFT}
+	 * , {@link PositionConstants#RIGHT}, {@link PositionConstants#TOP} and
+	 * {@link PositionConstants#BOTTOM}.
+	 * 
+	 * @return the alignment
+	 */
+	public int getAlignment() {
+		return alignment;
+	}
 
-/**
- * Returns the alignment.  Possible values are {@link PositionConstants#LEFT},
- * {@link PositionConstants#RIGHT}, {@link PositionConstants#TOP} and 
- * {@link PositionConstants#BOTTOM}.
- * @return the alignment
- */
-public int getAlignment() {
-	return alignment;
-}
+	/**
+	 * Returns the rectangle used to align the edit part with.
+	 * 
+	 * @return the alignment rectangle
+	 */
+	public Rectangle getAlignmentRectangle() {
+		return alignmentRect;
+	}
 
-/**
- * Returns the rectangle used to align the edit part with.
- * @return the alignment rectangle
- */
-public Rectangle getAlignmentRectangle() {
-	return alignmentRect;
-}
+	/**
+	 * @see ChangeBoundsRequest#getTransformedRectangle(Rectangle)
+	 */
+	public Rectangle getTransformedRectangle(Rectangle rect) {
+		Rectangle result = rect.getCopy();
+		Rectangle reference = getAlignmentRectangle();
 
-/**
- * @see ChangeBoundsRequest#getTransformedRectangle(Rectangle)
- */
-public Rectangle getTransformedRectangle(Rectangle rect) {
-	Rectangle result = rect.getCopy();
-	Rectangle reference = getAlignmentRectangle();
+		if (result instanceof PrecisionRectangle) {
+			if (reference instanceof PrecisionRectangle)
+				doPrecisionAlignment((PrecisionRectangle) result,
+						(PrecisionRectangle) reference);
+			else
+				doPrecisionAlignment((PrecisionRectangle) result,
+						new PrecisionRectangle(reference));
+		} else
+			doNormalAlignment(result, reference);
+		return result;
+	}
 
-	if (result instanceof PrecisionRectangle) {
-		if (reference instanceof PrecisionRectangle)
-			doPrecisionAlignment(
-				(PrecisionRectangle)result,
-				(PrecisionRectangle)reference);
-		else
-			doPrecisionAlignment(
-				(PrecisionRectangle)result,
-				new PrecisionRectangle(reference));
-	} else
-		doNormalAlignment(result, reference);
-	return result;
-}
+	/**
+	 * Sets the alignment.
+	 * 
+	 * @param align
+	 *            the alignment
+	 * @see #getAlignment()
+	 */
+	public void setAlignment(int align) {
+		alignment = align;
+	}
 
-/**
- * Sets the alignment.
- * @param align the alignment
- * @see #getAlignment()
- */
-public void setAlignment(int align) {
-	alignment = align;
-}
-
-/**
- * Sets the alignment rectangle.
- * @param rect the alignment rectangle
- * @see #getAlignmentRectangle()
- */
-public void setAlignmentRectangle(Rectangle rect) {
-	alignmentRect = rect;
-}
+	/**
+	 * Sets the alignment rectangle.
+	 * 
+	 * @param rect
+	 *            the alignment rectangle
+	 * @see #getAlignmentRectangle()
+	 */
+	public void setAlignmentRectangle(Rectangle rect) {
+		alignmentRect = rect;
+	}
 
 }

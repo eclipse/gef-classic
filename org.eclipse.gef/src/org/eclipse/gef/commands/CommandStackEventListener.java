@@ -12,18 +12,22 @@
 package org.eclipse.gef.commands;
 
 /**
- * A listener interface for receiving notification before and after commands are executed,
- * undone, or redone.
+ * A listener interface for receiving notification before and after commands are
+ * executed, undone, or redone.
+ * 
  * @since 3.1
  */
 public interface CommandStackEventListener {
 
-/**
- * Sent when an event occurs on the command stack.  {@link CommandStackEvent#getDetail()}
- * can be used to identify the type of event which has occurred.
- * @since 3.1
- * @param event the event
- */
-void stackChanged(CommandStackEvent event);
+	/**
+	 * Sent when an event occurs on the command stack.
+	 * {@link CommandStackEvent#getDetail()} can be used to identify the type of
+	 * event which has occurred.
+	 * 
+	 * @since 3.1
+	 * @param event
+	 *            the event
+	 */
+	void stackChanged(CommandStackEvent event);
 
 }

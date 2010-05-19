@@ -19,19 +19,22 @@ import org.eclipse.gef.internal.GEFMessages;
 
 /**
  * @author Eric Bordeau
- * @deprecated	Use org.eclipse.ui.actions.ActionFactory instead
+ * @deprecated Use org.eclipse.ui.actions.ActionFactory instead
  */
 public class PasteRetargetAction extends RetargetAction {
 
-/**
- * Constructs a new PasteRetargetAction with the default ID, label and image.
- */
-public PasteRetargetAction() {
-	super(ActionFactory.PASTE.getId(), GEFMessages.PasteAction_Label);
-	ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-	setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
-	setDisabledImageDescriptor(sharedImages.getImageDescriptor(
-			ISharedImages.IMG_TOOL_PASTE_DISABLED));
-}
+	/**
+	 * Constructs a new PasteRetargetAction with the default ID, label and
+	 * image.
+	 */
+	public PasteRetargetAction() {
+		super(ActionFactory.PASTE.getId(), GEFMessages.PasteAction_Label);
+		ISharedImages sharedImages = PlatformUI.getWorkbench()
+				.getSharedImages();
+		setImageDescriptor(sharedImages
+				.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE));
+		setDisabledImageDescriptor(sharedImages
+				.getImageDescriptor(ISharedImages.IMG_TOOL_PASTE_DISABLED));
+	}
 
 }

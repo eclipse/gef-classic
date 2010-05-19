@@ -26,48 +26,51 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  */
 public class PaletteStackFactory extends PaletteEntryFactory {
 
-/**
- * Creates a new PaletteStackFactory with label PaletteMessages.MODEL_TYPE_STACK
- */
-public PaletteStackFactory() {
-	setLabel(PaletteMessages.MODEL_TYPE_STACK);
-}
+	/**
+	 * Creates a new PaletteStackFactory with label
+	 * PaletteMessages.MODEL_TYPE_STACK
+	 */
+	public PaletteStackFactory() {
+		setLabel(PaletteMessages.MODEL_TYPE_STACK);
+	}
 
-/**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#canCreate(org.eclipse.gef.palette.PaletteEntry)
- */
-public boolean canCreate(PaletteEntry selected) {
-	if (!(selected instanceof ToolEntry) || selected.getParent() instanceof PaletteStack)
-		return false;
-	return super.canCreate(selected);
-}
+	/**
+	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#canCreate(org.eclipse.gef.palette.PaletteEntry)
+	 */
+	public boolean canCreate(PaletteEntry selected) {
+		if (!(selected instanceof ToolEntry)
+				|| selected.getParent() instanceof PaletteStack)
+			return false;
+		return super.canCreate(selected);
+	}
 
-/**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
- */
-protected PaletteEntry createNewEntry(Shell shell) {
-	return new PaletteStack(PaletteMessages.NEW_STACK_LABEL, null, null);
-}
+	/**
+	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
+	 */
+	protected PaletteEntry createNewEntry(Shell shell) {
+		return new PaletteStack(PaletteMessages.NEW_STACK_LABEL, null, null);
+	}
 
-/**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(org.eclipse.swt.widgets.Shell, org.eclipse.gef.palette.PaletteEntry)
- */
-public PaletteEntry createNewEntry(Shell shell, PaletteEntry selected) {
-	PaletteContainer parent = determineContainerForNewEntry(selected);
-	int index = determineIndexForNewEntry(parent, selected);
-	PaletteEntry entry = createNewEntry(shell);
-	parent.remove(selected);
-	parent.add(index - 1, entry);
-	((PaletteStack)entry).add(selected);
-	entry.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
-	return entry;
-}
+	/**
+	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(org.eclipse.swt.widgets.Shell,
+	 *      org.eclipse.gef.palette.PaletteEntry)
+	 */
+	public PaletteEntry createNewEntry(Shell shell, PaletteEntry selected) {
+		PaletteContainer parent = determineContainerForNewEntry(selected);
+		int index = determineIndexForNewEntry(parent, selected);
+		PaletteEntry entry = createNewEntry(shell);
+		parent.remove(selected);
+		parent.add(index - 1, entry);
+		((PaletteStack) entry).add(selected);
+		entry.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
+		return entry;
+	}
 
-/**
- * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
- */
-protected Object determineTypeForNewEntry(PaletteEntry selected) {
-	return PaletteStack.PALETTE_TYPE_STACK;
-}
+	/**
+	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
+	 */
+	protected Object determineTypeForNewEntry(PaletteEntry selected) {
+		return PaletteStack.PALETTE_TYPE_STACK;
+	}
 
 }

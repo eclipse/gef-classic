@@ -24,98 +24,107 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 
 /**
- * A Graphical Viewer implementation which uses a {@link org.eclipse.draw2d.FigureCanvas}
- * for native scrolling.  Because the scrolling is handled natively, the root editpart
- * should not contain a {@link org.eclipse.draw2d.ScrollPane} figure.  Do not use root
- * editparts which provide scrollpane figures, such as <code>GraphicalRootEditPart</code>.
+ * A Graphical Viewer implementation which uses a
+ * {@link org.eclipse.draw2d.FigureCanvas} for native scrolling. Because the
+ * scrolling is handled natively, the root editpart should not contain a
+ * {@link org.eclipse.draw2d.ScrollPane} figure. Do not use root editparts which
+ * provide scrollpane figures, such as <code>GraphicalRootEditPart</code>.
  * <P>
- * The RootEditPart for a ScrollingGraphicalViewer may contain a Viewport.  If it does,
- * that viewport will be set as the FigureCanvas' viewport.  FigureCanvas has certain
- * requirements on the viewport figure, see {@link FigureCanvas#setViewport(Viewport)}.
+ * The RootEditPart for a ScrollingGraphicalViewer may contain a Viewport. If it
+ * does, that viewport will be set as the FigureCanvas' viewport. FigureCanvas
+ * has certain requirements on the viewport figure, see
+ * {@link FigureCanvas#setViewport(Viewport)}.
+ * 
  * @author hudsonr
  */
-public class ScrollingGraphicalViewer
-	extends GraphicalViewerImpl
-{
+public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 
-/**
- * Constructs a ScrollingGraphicalViewer;
- */
-public ScrollingGraphicalViewer() { }
-
-/**
- * @see org.eclipse.gef.EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
- */
-public final Control createControl(Composite parent) {
-	FigureCanvas canvas = new FigureCanvas(parent, getLightweightSystem());
-	setControl(canvas);
-	installRootFigure();
-	return canvas;
-}
-
-/**
- * Convenience method which types the control as a <code>FigureCanvas</code>. This method
- * returns <code>null</code> whenever the control is null.
- * @return <code>null</code> or the Control as a FigureCanvas
- */
-protected FigureCanvas getFigureCanvas() {
-	return (FigureCanvas)getControl();
-}
-
-/**
- * If the figure is a viewport, set the canvas' viewport, otherwise, set its contents.
- */
-private void installRootFigure() {
-	if (getFigureCanvas() == null)
-		return;
-	if (rootFigure instanceof Viewport)
-		getFigureCanvas().setViewport((Viewport)rootFigure);
-	else
-		getFigureCanvas().setContents(rootFigure);
-}
-
-/**
- * Extends the superclass implementation to scroll the native Canvas control after the
- * super's implementation has completed.
- * @see org.eclipse.gef.EditPartViewer#reveal(org.eclipse.gef.EditPart)
- */
-public void reveal(EditPart part) {
-	super.reveal(part);
-	Viewport port = getFigureCanvas().getViewport();
-	IFigure target = ((GraphicalEditPart)part).getFigure();
-	Rectangle exposeRegion = target.getBounds().getCopy();
-	target = target.getParent();
-	while (target != null && target != port) {
-		target.translateToParent(exposeRegion);
-		target = target.getParent();
+	/**
+	 * Constructs a ScrollingGraphicalViewer;
+	 */
+	public ScrollingGraphicalViewer() {
 	}
-	exposeRegion.expand(5, 5);
-	
-	Dimension viewportSize = port.getClientArea().getSize();
 
-	Point topLeft = exposeRegion.getTopLeft();
-	Point bottomRight = exposeRegion.getBottomRight().translate(viewportSize.getNegated());
-	Point finalLocation = new Point();
-	if (viewportSize.width < exposeRegion.width)
-		finalLocation.x = Math.min(bottomRight.x, Math.max(topLeft.x, port.getViewLocation().x));
-	else
-		finalLocation.x = Math.min(topLeft.x, Math.max(bottomRight.x, port.getViewLocation().x));
+	/**
+	 * @see org.eclipse.gef.EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
+	 */
+	public final Control createControl(Composite parent) {
+		FigureCanvas canvas = new FigureCanvas(parent, getLightweightSystem());
+		setControl(canvas);
+		installRootFigure();
+		return canvas;
+	}
 
-	if (viewportSize.height < exposeRegion.height)
-		finalLocation.y = Math.min(bottomRight.y, Math.max(topLeft.y, port.getViewLocation().y));
-	else
-		finalLocation.y = Math.min(topLeft.y, Math.max(bottomRight.y, port.getViewLocation().y));
+	/**
+	 * Convenience method which types the control as a <code>FigureCanvas</code>
+	 * . This method returns <code>null</code> whenever the control is null.
+	 * 
+	 * @return <code>null</code> or the Control as a FigureCanvas
+	 */
+	protected FigureCanvas getFigureCanvas() {
+		return (FigureCanvas) getControl();
+	}
 
-	
-	getFigureCanvas().scrollSmoothTo(finalLocation.x, finalLocation.y);	
-}
+	/**
+	 * If the figure is a viewport, set the canvas' viewport, otherwise, set its
+	 * contents.
+	 */
+	private void installRootFigure() {
+		if (getFigureCanvas() == null)
+			return;
+		if (rootFigure instanceof Viewport)
+			getFigureCanvas().setViewport((Viewport) rootFigure);
+		else
+			getFigureCanvas().setContents(rootFigure);
+	}
 
-/**
- * @see GraphicalViewerImpl#setRootFigure(IFigure)
- */
-protected void setRootFigure(IFigure figure) {
-	rootFigure = figure;
-	installRootFigure();
-}
+	/**
+	 * Extends the superclass implementation to scroll the native Canvas control
+	 * after the super's implementation has completed.
+	 * 
+	 * @see org.eclipse.gef.EditPartViewer#reveal(org.eclipse.gef.EditPart)
+	 */
+	public void reveal(EditPart part) {
+		super.reveal(part);
+		Viewport port = getFigureCanvas().getViewport();
+		IFigure target = ((GraphicalEditPart) part).getFigure();
+		Rectangle exposeRegion = target.getBounds().getCopy();
+		target = target.getParent();
+		while (target != null && target != port) {
+			target.translateToParent(exposeRegion);
+			target = target.getParent();
+		}
+		exposeRegion.expand(5, 5);
+
+		Dimension viewportSize = port.getClientArea().getSize();
+
+		Point topLeft = exposeRegion.getTopLeft();
+		Point bottomRight = exposeRegion.getBottomRight().translate(
+				viewportSize.getNegated());
+		Point finalLocation = new Point();
+		if (viewportSize.width < exposeRegion.width)
+			finalLocation.x = Math.min(bottomRight.x,
+					Math.max(topLeft.x, port.getViewLocation().x));
+		else
+			finalLocation.x = Math.min(topLeft.x,
+					Math.max(bottomRight.x, port.getViewLocation().x));
+
+		if (viewportSize.height < exposeRegion.height)
+			finalLocation.y = Math.min(bottomRight.y,
+					Math.max(topLeft.y, port.getViewLocation().y));
+		else
+			finalLocation.y = Math.min(topLeft.y,
+					Math.max(bottomRight.y, port.getViewLocation().y));
+
+		getFigureCanvas().scrollSmoothTo(finalLocation.x, finalLocation.y);
+	}
+
+	/**
+	 * @see GraphicalViewerImpl#setRootFigure(IFigure)
+	 */
+	protected void setRootFigure(IFigure figure) {
+		rootFigure = figure;
+		installRootFigure();
+	}
 
 }

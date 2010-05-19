@@ -19,30 +19,32 @@ import org.eclipse.gef.internal.InternalImages;
  */
 public class ZoomOutAction extends ZoomAction {
 
-/**
- * Constructor for ZoomOutAction.
- * @param zoomManager the zoom manager
- */
-public ZoomOutAction(ZoomManager zoomManager) {
-	super(GEFMessages.ZoomOut_Label, InternalImages.DESC_ZOOM_OUT, zoomManager);
-	setId(GEFActionConstants.ZOOM_OUT);
-	setToolTipText(GEFMessages.ZoomOut_Tooltip);
-	setActionDefinitionId(GEFActionConstants.ZOOM_OUT);
-}
+	/**
+	 * Constructor for ZoomOutAction.
+	 * 
+	 * @param zoomManager
+	 *            the zoom manager
+	 */
+	public ZoomOutAction(ZoomManager zoomManager) {
+		super(GEFMessages.ZoomOut_Label, InternalImages.DESC_ZOOM_OUT,
+				zoomManager);
+		setId(GEFActionConstants.ZOOM_OUT);
+		setToolTipText(GEFMessages.ZoomOut_Tooltip);
+		setActionDefinitionId(GEFActionConstants.ZOOM_OUT);
+	}
 
-/**
- * @see org.eclipse.jface.action.IAction#run()
- */
-public void run() {
-	zoomManager.zoomOut();
-}
+	/**
+	 * @see org.eclipse.jface.action.IAction#run()
+	 */
+	public void run() {
+		zoomManager.zoomOut();
+	}
 
-/**
- * @see org.eclipse.gef.editparts.ZoomListener#zoomChanged(double)
- */
-public void zoomChanged(double zoom) {
-	setEnabled(zoomManager.canZoomOut());
-}
-
+	/**
+	 * @see org.eclipse.gef.editparts.ZoomListener#zoomChanged(double)
+	 */
+	public void zoomChanged(double zoom) {
+		setEnabled(zoomManager.canZoomOut());
+	}
 
 }

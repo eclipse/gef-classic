@@ -29,58 +29,63 @@ import org.eclipse.gef.editparts.LayerManager;
  */
 public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 
-private GraphicalViewer viewer;
-private List selectedEditParts;
+	private GraphicalViewer viewer;
+	private List selectedEditParts;
 
-/**
- * Constructor for PrintGraphicalViewerOperation
- * @param p The Printer to print to
- * @param g The viewer containing what is to be printed
- * 			 NOTE: The GraphicalViewer to be printed must have a
- * 			 {@link org.eclipse.draw2d.Layer Layer} with the {@link
- * 			 org.eclipse.gef.LayerConstants PRINTABLE_LAYERS} key.
- */
-public PrintGraphicalViewerOperation(Printer p, GraphicalViewer g) {
-	super(p);
-	viewer = g;
-	LayerManager lm = (LayerManager)viewer.getEditPartRegistry().get(LayerManager.ID);
-	IFigure f = lm.getLayer(LayerConstants.PRINTABLE_LAYERS);
-	setPrintSource(f);
-}	
-	
-/**
- * Returns the viewer.
- * 
- * @return GraphicalViewer
- */
-public GraphicalViewer getViewer() {
-	return viewer;
-}
+	/**
+	 * Constructor for PrintGraphicalViewerOperation
+	 * 
+	 * @param p
+	 *            The Printer to print to
+	 * @param g
+	 *            The viewer containing what is to be printed NOTE: The
+	 *            GraphicalViewer to be printed must have a
+	 *            {@link org.eclipse.draw2d.Layer Layer} with the
+	 *            {@link org.eclipse.gef.LayerConstants PRINTABLE_LAYERS} key.
+	 */
+	public PrintGraphicalViewerOperation(Printer p, GraphicalViewer g) {
+		super(p);
+		viewer = g;
+		LayerManager lm = (LayerManager) viewer.getEditPartRegistry().get(
+				LayerManager.ID);
+		IFigure f = lm.getLayer(LayerConstants.PRINTABLE_LAYERS);
+		setPrintSource(f);
+	}
 
-/**
- * @see org.eclipse.draw2d.PrintOperation#preparePrintSource()
- */
-protected void preparePrintSource() {
-	super.preparePrintSource();
-	selectedEditParts = new ArrayList(viewer.getSelectedEditParts());
-	viewer.deselectAll();
-}
+	/**
+	 * Returns the viewer.
+	 * 
+	 * @return GraphicalViewer
+	 */
+	public GraphicalViewer getViewer() {
+		return viewer;
+	}
 
-/**
- * @see org.eclipse.draw2d.PrintOperation#restorePrintSource()
- */
-protected void restorePrintSource() {
-	super.restorePrintSource();
-	viewer.setSelection(new StructuredSelection(selectedEditParts));
-}
+	/**
+	 * @see org.eclipse.draw2d.PrintOperation#preparePrintSource()
+	 */
+	protected void preparePrintSource() {
+		super.preparePrintSource();
+		selectedEditParts = new ArrayList(viewer.getSelectedEditParts());
+		viewer.deselectAll();
+	}
 
-/**
- * Sets the viewer.
- * 
- * @param viewer The viewer to set
- */
-public void setViewer(GraphicalViewer viewer) {
-	this.viewer = viewer;
-}
+	/**
+	 * @see org.eclipse.draw2d.PrintOperation#restorePrintSource()
+	 */
+	protected void restorePrintSource() {
+		super.restorePrintSource();
+		viewer.setSelection(new StructuredSelection(selectedEditParts));
+	}
+
+	/**
+	 * Sets the viewer.
+	 * 
+	 * @param viewer
+	 *            The viewer to set
+	 */
+	public void setViewer(GraphicalViewer viewer) {
+		this.viewer = viewer;
+	}
 
 }

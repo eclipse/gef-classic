@@ -16,58 +16,62 @@ import org.eclipse.gef.tools.MarqueeSelectionTool;
 
 /**
  * A palette ToolEntry for a {@link org.eclipse.gef.tools.MarqueeSelectionTool}.
+ * 
  * @author hudsonr
  * @since 2.1
  */
-public class MarqueeToolEntry 
-	extends ToolEntry 
-{
-	
-/**
- * Creates a new MarqueeToolEntry that can select nodes
- */
-public MarqueeToolEntry() {
-	this(null, null);
-}
+public class MarqueeToolEntry extends ToolEntry {
 
-/**
- * Constructor for MarqueeToolEntry.
- * @param label the label
- */
-public MarqueeToolEntry(String label) {
-	this(label, null);
-}
-
-/**
- * Constructor for MarqueeToolEntry.
- * @param label the label; can be <code>null</code>
- * @param description the description (can be <code>null</code>)
- */
-public MarqueeToolEntry(String label, String description) {
-	super(label, description, SharedImages.DESC_MARQUEE_TOOL_16, 
-			SharedImages.DESC_MARQUEE_TOOL_24, MarqueeSelectionTool.class);
-	if (label == null || label.length() == 0)
-		setLabel(GEFMessages.MarqueeTool_Label);
-	setUserModificationPermission(PERMISSION_NO_MODIFICATION);
-}
-
-/**
- * @see org.eclipse.gef.palette.PaletteEntry#getDescription()
- */
-public String getDescription() {
-	String description = super.getDescription();
-	if (description != null)
-		return description;
-	
-	Object value = getToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR);
-	if (value instanceof Integer) {
-		int selectionType = ((Integer)value).intValue();
-		if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_AND_CONNECTIONS)
-			return GEFMessages.MarqueeTool_Desc;
-		if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED)
-			return GEFMessages.MarqueeTool_Connections_Desc;
+	/**
+	 * Creates a new MarqueeToolEntry that can select nodes
+	 */
+	public MarqueeToolEntry() {
+		this(null, null);
 	}
-	return GEFMessages.MarqueeTool_Nodes_Desc;
-}
+
+	/**
+	 * Constructor for MarqueeToolEntry.
+	 * 
+	 * @param label
+	 *            the label
+	 */
+	public MarqueeToolEntry(String label) {
+		this(label, null);
+	}
+
+	/**
+	 * Constructor for MarqueeToolEntry.
+	 * 
+	 * @param label
+	 *            the label; can be <code>null</code>
+	 * @param description
+	 *            the description (can be <code>null</code>)
+	 */
+	public MarqueeToolEntry(String label, String description) {
+		super(label, description, SharedImages.DESC_MARQUEE_TOOL_16,
+				SharedImages.DESC_MARQUEE_TOOL_24, MarqueeSelectionTool.class);
+		if (label == null || label.length() == 0)
+			setLabel(GEFMessages.MarqueeTool_Label);
+		setUserModificationPermission(PERMISSION_NO_MODIFICATION);
+	}
+
+	/**
+	 * @see org.eclipse.gef.palette.PaletteEntry#getDescription()
+	 */
+	public String getDescription() {
+		String description = super.getDescription();
+		if (description != null)
+			return description;
+
+		Object value = getToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR);
+		if (value instanceof Integer) {
+			int selectionType = ((Integer) value).intValue();
+			if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_AND_CONNECTIONS)
+				return GEFMessages.MarqueeTool_Desc;
+			if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED)
+				return GEFMessages.MarqueeTool_Connections_Desc;
+		}
+		return GEFMessages.MarqueeTool_Nodes_Desc;
+	}
 
 }

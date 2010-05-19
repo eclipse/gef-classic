@@ -26,7 +26,7 @@ import org.eclipse.gef.GraphicalEditPart;
  * @author Philip Ritzkopf
  * 
  * @since 3.6
- *
+ * 
  */
 public final class EditPartUtilities {
 

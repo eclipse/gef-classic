@@ -13,14 +13,17 @@ package org.eclipse.gef.tools;
 import org.eclipse.jface.viewers.CellEditor;
 
 /**
- * Constraint for placing {@link org.eclipse.jface.viewers.CellEditor CellEditors}.
+ * Constraint for placing {@link org.eclipse.jface.viewers.CellEditor
+ * CellEditors}.
  */
 public interface CellEditorLocator {
 
-/**
- * Relocates a CellEditor.
- * @param celleditor the CellEditor
- */
-void relocate(CellEditor celleditor);
+	/**
+	 * Relocates a CellEditor.
+	 * 
+	 * @param celleditor
+	 *            the CellEditor
+	 */
+	void relocate(CellEditor celleditor);
 
 }

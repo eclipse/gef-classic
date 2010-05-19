@@ -15,47 +15,51 @@ import org.eclipse.jface.resource.ImageDescriptor;
 /**
  * @author Eric Bordeau
  */
-public class PaletteTemplateEntry 
-	extends PaletteEntry
-{
+public class PaletteTemplateEntry extends PaletteEntry {
 
-private Object template;
+	private Object template;
 
-/** Type identifier **/
-public static final String PALETTE_TYPE_TEMPLATE = "$Palette Template";  //$NON-NLS-1$
+	/** Type identifier **/
+	public static final String PALETTE_TYPE_TEMPLATE = "$Palette Template"; //$NON-NLS-1$
 
-/**
- * Creates a new PaletteTemplateEntry with the given template.
- * @param label the entry's name
- * @param shortDesc the entry's description
- * @param template the template for this entry
- * @param iconSmall an ImageDescriptor for the entry's small icon
- * @param iconLarge an ImageDescriptor for the entry's large icon
- * @see PaletteEntry#PaletteEntry(String, String, ImageDescriptor, ImageDescriptor, Object)
- */
-public PaletteTemplateEntry(
-  String label,
-  String shortDesc,
-  Object template,
-  ImageDescriptor iconSmall,
-  ImageDescriptor iconLarge) {
-	super(label, shortDesc, iconSmall, iconLarge, PALETTE_TYPE_TEMPLATE);
-	setTemplate(template);
-}
+	/**
+	 * Creates a new PaletteTemplateEntry with the given template.
+	 * 
+	 * @param label
+	 *            the entry's name
+	 * @param shortDesc
+	 *            the entry's description
+	 * @param template
+	 *            the template for this entry
+	 * @param iconSmall
+	 *            an ImageDescriptor for the entry's small icon
+	 * @param iconLarge
+	 *            an ImageDescriptor for the entry's large icon
+	 * @see PaletteEntry#PaletteEntry(String, String, ImageDescriptor,
+	 *      ImageDescriptor, Object)
+	 */
+	public PaletteTemplateEntry(String label, String shortDesc,
+			Object template, ImageDescriptor iconSmall,
+			ImageDescriptor iconLarge) {
+		super(label, shortDesc, iconSmall, iconLarge, PALETTE_TYPE_TEMPLATE);
+		setTemplate(template);
+	}
 
-/**
- * @return the user-defined template object
- */
-public Object getTemplate() {
-	return template;
-}
+	/**
+	 * @return the user-defined template object
+	 */
+	public Object getTemplate() {
+		return template;
+	}
 
-/**
- * Sets the template object to the given value
- * @param template the template object
- */
-public void setTemplate(Object template) {
-	this.template = template;
-}
+	/**
+	 * Sets the template object to the given value
+	 * 
+	 * @param template
+	 *            the template object
+	 */
+	public void setTemplate(Object template) {
+		this.template = template;
+	}
 
 }

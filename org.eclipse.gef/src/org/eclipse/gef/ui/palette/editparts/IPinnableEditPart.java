@@ -20,33 +20,33 @@ package org.eclipse.gef.ui.palette.editparts;
  */
 public interface IPinnableEditPart {
 
-/**
- * Returns <code>true</code> if the palette editpart is pinned open.
- * 
- * @return boolean
- */
-public boolean isPinnedOpen();
+	/**
+	 * Returns <code>true</code> if the palette editpart is pinned open.
+	 * 
+	 * @return boolean
+	 */
+	public boolean isPinnedOpen();
 
-/**
- * @return <code>true</code> if the palette editpart can be pinned open.
- */
-public boolean canBePinned();
+	/**
+	 * @return <code>true</code> if the palette editpart can be pinned open.
+	 */
+	public boolean canBePinned();
 
-/**
- * Sets the palette editpart's pinned state to the specified value.
- * 
- * @param pinned
- *            <code>true</code> if the palette editpart should be pinned when
- *            opened
- */
-public void setPinnedOpen(boolean pinned);
+	/**
+	 * Sets the palette editpart's pinned state to the specified value.
+	 * 
+	 * @param pinned
+	 *            <code>true</code> if the palette editpart should be pinned
+	 *            when opened
+	 */
+	public void setPinnedOpen(boolean pinned);
 
-/**
- * Returns the expansion state of the palette editpart
- * 
- * @return <code>true</code> if the palette editpart is expanded; false
- *         otherwise
- */
-public boolean isExpanded();
+	/**
+	 * Returns the expansion state of the palette editpart
+	 * 
+	 * @return <code>true</code> if the palette editpart is expanded; false
+	 *         otherwise
+	 */
+	public boolean isExpanded();
 
 }

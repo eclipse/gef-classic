@@ -11,37 +11,44 @@
 package org.eclipse.gef;
 
 /**
- * A RootEditPart is the <i>root</i> of an EditPartViewer. It bridges the gap between
- * the EditPartViewer and its {@link EditPartViewer#getContents() contents}. It does not
- * correspond to anything in the model, and typically can not be interacted with by the
- * User. The Root provides a homogeneous context for the applications "real" EditParts.
+ * A RootEditPart is the <i>root</i> of an EditPartViewer. It bridges the gap
+ * between the EditPartViewer and its {@link EditPartViewer#getContents()
+ * contents}. It does not correspond to anything in the model, and typically can
+ * not be interacted with by the User. The Root provides a homogeneous context
+ * for the applications "real" EditParts.
  */
 public interface RootEditPart extends EditPart {
 
-/**
- * Returns the <i>contents</i> EditPart. A RootEditPart only has a single child, called its
- * <i>contents</i>.
- * @return the contents.
- */
-EditPart getContents();
+	/**
+	 * Returns the <i>contents</i> EditPart. A RootEditPart only has a single
+	 * child, called its <i>contents</i>.
+	 * 
+	 * @return the contents.
+	 */
+	EditPart getContents();
 
-/**
- * Returns the root's EditPartViewer.
- * @return The <code>EditPartViewer</code>
- */
-EditPartViewer getViewer();
+	/**
+	 * Returns the root's EditPartViewer.
+	 * 
+	 * @return The <code>EditPartViewer</code>
+	 */
+	EditPartViewer getViewer();
 
-/**
- * Sets the <i>contents</i> EditPart. A RootEditPart only has a single child, called its
- * <i>contents</i>.
- * @param editpart the contents
- */
-void setContents(EditPart editpart);
+	/**
+	 * Sets the <i>contents</i> EditPart. A RootEditPart only has a single
+	 * child, called its <i>contents</i>.
+	 * 
+	 * @param editpart
+	 *            the contents
+	 */
+	void setContents(EditPart editpart);
 
-/**
- * Sets the root's EditPartViewer.
- * @param viewer the EditPartViewer
- */
-void setViewer(EditPartViewer viewer);
+	/**
+	 * Sets the root's EditPartViewer.
+	 * 
+	 * @param viewer
+	 *            the EditPartViewer
+	 */
+	void setViewer(EditPartViewer viewer);
 
 }

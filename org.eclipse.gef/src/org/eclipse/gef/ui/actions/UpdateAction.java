@@ -12,13 +12,14 @@ package org.eclipse.gef.ui.actions;
 
 /**
  * Indicate the support of an update method.
+ * 
  * @author hudsonr
  */
 public interface UpdateAction {
 
-/**
- * Called to update the receiver.
- */
-void update();
+	/**
+	 * Called to update the receiver.
+	 */
+	void update();
 
 }

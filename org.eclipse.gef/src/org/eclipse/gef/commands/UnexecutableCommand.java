@@ -13,29 +13,28 @@ package org.eclipse.gef.commands;
 /**
  * A Command which can never be executed
  */
-public final class UnexecutableCommand
-	extends Command
-{
+public final class UnexecutableCommand extends Command {
 
-/**
- * The singleton instance
- */
-public static final UnexecutableCommand INSTANCE = new UnexecutableCommand();
+	/**
+	 * The singleton instance
+	 */
+	public static final UnexecutableCommand INSTANCE = new UnexecutableCommand();
 
-private UnexecutableCommand() { }
+	private UnexecutableCommand() {
+	}
 
-/**
- * @return <code>false</code>
- */
-public boolean canExecute() {
-	return false;
-}
+	/**
+	 * @return <code>false</code>
+	 */
+	public boolean canExecute() {
+		return false;
+	}
 
-/**
- * @return <code>false</code>
- */
-public boolean canUndo() {
-	return false;
-}
+	/**
+	 * @return <code>false</code>
+	 */
+	public boolean canUndo() {
+		return false;
+	}
 
 }
