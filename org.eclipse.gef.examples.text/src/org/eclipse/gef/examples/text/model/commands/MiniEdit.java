@@ -18,16 +18,16 @@ import org.eclipse.gef.examples.text.model.ModelLocation;
  */
 public abstract class MiniEdit {
 
-public abstract void apply();
+	public abstract void apply();
 
-public abstract boolean canApply();
+	public abstract boolean canApply();
 
-public abstract ModelLocation getResultingLocation();
+	public abstract ModelLocation getResultingLocation();
 
-public void reapply() {
-	apply();
-}
+	public void reapply() {
+		apply();
+	}
 
-public abstract void rollback();
+	public abstract void rollback();
 
 }

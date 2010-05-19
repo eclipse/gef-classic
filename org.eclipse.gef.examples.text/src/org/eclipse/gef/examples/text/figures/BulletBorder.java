@@ -23,16 +23,17 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class BulletBorder extends ListItemBorder {
 
-private static final String BULLET = " \u25cf ";
+	private static final String BULLET = " \u25cf ";
 
-public Insets getInsets(IFigure figure) {
-	FigureUtilities.getTextExtents(BULLET, figure.getFont(), Dimension.SINGLETON);
-	return new Insets(0, Dimension.SINGLETON.width, 0, 0);
-}
+	public Insets getInsets(IFigure figure) {
+		FigureUtilities.getTextExtents(BULLET, figure.getFont(),
+				Dimension.SINGLETON);
+		return new Insets(0, Dimension.SINGLETON.width, 0, 0);
+	}
 
-public void paintBorder(IFigure figure, Graphics graphics, Insets insets) {
-	Rectangle r = getPaintRectangle(figure, insets);
-	graphics.drawString(BULLET, r.x, r.y);
-}
+	public void paintBorder(IFigure figure, Graphics graphics, Insets insets) {
+		Rectangle r = getPaintRectangle(figure, insets);
+		graphics.drawString(BULLET, r.x, r.y);
+	}
 
 }

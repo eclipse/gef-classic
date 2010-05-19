@@ -16,21 +16,21 @@ package org.eclipse.gef.examples.text.model;
  */
 public class InlineContainer extends Container {
 
-private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1;
 
-/**
- * @param type
- * @since 3.1
- */
-public InlineContainer(int type) {
-	super(type);
-}
+	/**
+	 * @param type
+	 * @since 3.1
+	 */
+	public InlineContainer(int type) {
+		super(type);
+	}
 
-/**
- * @see org.eclipse.gef.examples.text.model.Container#newContainer()
- */
-Container newContainer() {
-	return new InlineContainer(getType());
-}
+	/**
+	 * @see org.eclipse.gef.examples.text.model.Container#newContainer()
+	 */
+	Container newContainer() {
+		return new InlineContainer(getType());
+	}
 
 }

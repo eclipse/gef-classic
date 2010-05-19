@@ -19,46 +19,48 @@ import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
  * Attempts to merge an element with the previous element which will accept it.
+ * 
  * @since 3.1
  */
 public class MergeWithPrevious extends MiniEdit {
 
-private int index;
-private Container container;
-private TextRun run;
+	private int index;
+	private Container container;
+	private TextRun run;
 
-public MergeWithPrevious(TextEditPart part) {
-	run = (TextRun)part.getModel();
-	container = run.getContainer();
-	index = container.getChildren().indexOf(run);
-}
-
-private TextRun getPreviousTextRun() {
-	ModelElement candidate = (ModelElement)container.getChildren().get(index - 1);
-	while (candidate instanceof Container) {
-		candidate = (ModelElement)((Container)candidate).getChildren().get(
-				((Container)candidate).size() - 1);
+	public MergeWithPrevious(TextEditPart part) {
+		run = (TextRun) part.getModel();
+		container = run.getContainer();
+		index = container.getChildren().indexOf(run);
 	}
-	return (TextRun)candidate;
-}
 
-public void apply() {
-	container.remove(run);
-	TextRun previous = getPreviousTextRun();
-	previous.insertText(run.getText(), previous.size());
-}
+	private TextRun getPreviousTextRun() {
+		ModelElement candidate = (ModelElement) container.getChildren().get(
+				index - 1);
+		while (candidate instanceof Container) {
+			candidate = (ModelElement) ((Container) candidate).getChildren()
+					.get(((Container) candidate).size() - 1);
+		}
+		return (TextRun) candidate;
+	}
 
-public boolean canApply() {
-	return index > 0;
-}
+	public void apply() {
+		container.remove(run);
+		TextRun previous = getPreviousTextRun();
+		previous.insertText(run.getText(), previous.size());
+	}
 
-public ModelLocation getResultingLocation() {
-	TextRun previous = getPreviousTextRun();
-	return new ModelLocation(previous, previous.size() - run.size());
-}
+	public boolean canApply() {
+		return index > 0;
+	}
 
-public void rollback() {
-	throw new RuntimeException("not implemented");
-}
+	public ModelLocation getResultingLocation() {
+		TextRun previous = getPreviousTextRun();
+		return new ModelLocation(previous, previous.size() - run.size());
+	}
+
+	public void rollback() {
+		throw new RuntimeException("not implemented");
+	}
 
 }

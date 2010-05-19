@@ -28,160 +28,168 @@ import org.eclipse.swt.graphics.Cursor;
  */
 public class SelectionRangeDragTracker extends SimpleDragTracker {
 
-private static final int STATE_START = SimpleDragTracker.MAX_STATE << 1;
+	private static final int STATE_START = SimpleDragTracker.MAX_STATE << 1;
 
-private static final int STATE_SWIPE = SimpleDragTracker.MAX_STATE << 2;
+	private static final int STATE_SWIPE = SimpleDragTracker.MAX_STATE << 2;
 
-private TextLocation beginDrag;
+	private TextLocation beginDrag;
 
-private TextLocation endDrag;
+	private TextLocation endDrag;
 
-/**
- * This flag is set to true during a double-click-swipe.
- */
-private boolean isWordSelection;
+	/**
+	 * This flag is set to true during a double-click-swipe.
+	 */
+	private boolean isWordSelection;
 
-private final TextEditPart textSource;
+	private final TextEditPart textSource;
 
-/**
- * @since 3.1
- */
-public SelectionRangeDragTracker(TextEditPart part) {
-	this.textSource = part;
-}
-
-protected Cursor calculateCursor() {
-	return Cursors.IBEAM;
-}
-
-/**
- * 
- * @since 3.1
- */
-private void doNormalSwipe() {
-	SearchResult result = getCurrentTextLocation();
-	endDrag = result.location;
-	if (endDrag != null) {
-		
-		//Previous 
-		EditPart end = endDrag.part;
-		EditPart begin = beginDrag.part;
-		boolean inverted = false;
-		if (end == begin)
-			inverted = endDrag.offset < beginDrag.offset;
-		else {
-			EditPart ancestor = ToolUtilities.findCommonAncestor(end, begin);
-			while (end.getParent() != ancestor)
-				end = end.getParent();
-			while (begin.getParent() != ancestor)
-				begin = begin.getParent();
-			inverted = ancestor.getChildren().indexOf(end) < ancestor.getChildren().indexOf(begin);
-		}
-		GraphicalTextViewer viewer = (GraphicalTextViewer)getCurrentViewer();
-		if (!inverted)
-			viewer.setSelectionRange(new SelectionRange(beginDrag, endDrag, true, result.trailing));
-		else
-			viewer.setSelectionRange(new SelectionRange(endDrag, beginDrag, false, result.trailing));
+	/**
+	 * @since 3.1
+	 */
+	public SelectionRangeDragTracker(TextEditPart part) {
+		this.textSource = part;
 	}
-}
 
-/**
- * Selects the word at the current mouse location
- * @since 3.1
- */
-private void doWordSelect() {
-	SearchResult result = new SearchResult();
-	CaretRequest locationRequest = new CaretRequest();
-	locationRequest.setType(CaretRequest.LOCATION);
-	locationRequest.setLocation(getLocation());
-	locationRequest.isForward = true;
-	getSource().getTextLocation(locationRequest, result);
-	TextLocation exact = result.location;
-	
-	CaretRequest nextWord = new CaretRequest();
-	result = new SearchResult();
-	nextWord.setType(CaretRequest.WORD_BOUNDARY);
-	nextWord.isForward = true;
-	nextWord.where = exact;
-	getSource().getTextLocation(nextWord, result);
-	TextLocation wordEnd = result.location;
-	boolean isAfter = result.trailing;
-	result = new SearchResult();
-	nextWord.where = wordEnd;
-	nextWord.isForward = false;
-	getSource().getTextLocation(nextWord, result);
-	TextLocation wordBegin = result.location;
-	if (wordBegin != null && wordEnd != null)
-		((GraphicalTextViewer)getCurrentViewer()).setSelectionRange(
-				new SelectionRange(wordBegin, wordEnd, true, isAfter));
-}
-
-/**
- * @since 3.1
- */
-private void doWordSwipe() {
-}
-
-protected String getCommandName() {
-	return "Drop Text Request";
-}
-
-private SearchResult getCurrentTextLocation() {
-	SearchResult result = new SearchResult();
-	EditPart part = getCurrentViewer().findObjectAt(getLocation());
-	if (part instanceof TextEditPart) {
-		TextEditPart textPart = (TextEditPart)part;
-		if (textPart.acceptsCaret()) {
-			CaretRequest request = new CaretRequest();
-			request.setType(CaretRequest.LOCATION);
-			request.setLocation(getLocation());
-			textPart.getTextLocation(request, result);
-		}
+	protected Cursor calculateCursor() {
+		return Cursors.IBEAM;
 	}
-	return result;
-}
 
-/**
- * 
- * @since 3.1
- */
-private TextEditPart getSource() {
-	return textSource;
-}
-
-protected boolean handleButtonDown(int button) {
-	if (button == 1) {
+	/**
+	 * 
+	 * @since 3.1
+	 */
+	private void doNormalSwipe() {
 		SearchResult result = getCurrentTextLocation();
-		beginDrag = result.location;
-		((GraphicalTextViewer)getCurrentViewer()).setSelectionRange(
-				new SelectionRange(beginDrag, beginDrag, true, result.trailing));
-		return stateTransition(STATE_INITIAL, STATE_START);
-	}
-	return super.handleButtonDown(button);
-}
+		endDrag = result.location;
+		if (endDrag != null) {
 
-protected boolean handleDoubleClick(int button) {
-	if (button == 1) {
-		doWordSelect();
-		isWordSelection = true;
-		return true;
+			// Previous
+			EditPart end = endDrag.part;
+			EditPart begin = beginDrag.part;
+			boolean inverted = false;
+			if (end == begin)
+				inverted = endDrag.offset < beginDrag.offset;
+			else {
+				EditPart ancestor = ToolUtilities
+						.findCommonAncestor(end, begin);
+				while (end.getParent() != ancestor)
+					end = end.getParent();
+				while (begin.getParent() != ancestor)
+					begin = begin.getParent();
+				inverted = ancestor.getChildren().indexOf(end) < ancestor
+						.getChildren().indexOf(begin);
+			}
+			GraphicalTextViewer viewer = (GraphicalTextViewer) getCurrentViewer();
+			if (!inverted)
+				viewer.setSelectionRange(new SelectionRange(beginDrag, endDrag,
+						true, result.trailing));
+			else
+				viewer.setSelectionRange(new SelectionRange(endDrag, beginDrag,
+						false, result.trailing));
+		}
 	}
-	return super.handleDoubleClick(button);
-}
 
-protected boolean handleDragInProgress() {
-	//$TODO during a swipe, the viewer should not be firing selection changes the whole time.
-	if (isInState(STATE_SWIPE)) {
-		if (isWordSelection)
-			doWordSwipe();
-		else
-			doNormalSwipe();
+	/**
+	 * Selects the word at the current mouse location
+	 * 
+	 * @since 3.1
+	 */
+	private void doWordSelect() {
+		SearchResult result = new SearchResult();
+		CaretRequest locationRequest = new CaretRequest();
+		locationRequest.setType(CaretRequest.LOCATION);
+		locationRequest.setLocation(getLocation());
+		locationRequest.isForward = true;
+		getSource().getTextLocation(locationRequest, result);
+		TextLocation exact = result.location;
+
+		CaretRequest nextWord = new CaretRequest();
+		result = new SearchResult();
+		nextWord.setType(CaretRequest.WORD_BOUNDARY);
+		nextWord.isForward = true;
+		nextWord.where = exact;
+		getSource().getTextLocation(nextWord, result);
+		TextLocation wordEnd = result.location;
+		boolean isAfter = result.trailing;
+		result = new SearchResult();
+		nextWord.where = wordEnd;
+		nextWord.isForward = false;
+		getSource().getTextLocation(nextWord, result);
+		TextLocation wordBegin = result.location;
+		if (wordBegin != null && wordEnd != null)
+			((GraphicalTextViewer) getCurrentViewer())
+					.setSelectionRange(new SelectionRange(wordBegin, wordEnd,
+							true, isAfter));
 	}
-	return super.handleDragInProgress();
-}
 
-protected boolean handleDragStarted() {
-	return stateTransition(STATE_START, STATE_SWIPE);
-}
+	/**
+	 * @since 3.1
+	 */
+	private void doWordSwipe() {
+	}
+
+	protected String getCommandName() {
+		return "Drop Text Request";
+	}
+
+	private SearchResult getCurrentTextLocation() {
+		SearchResult result = new SearchResult();
+		EditPart part = getCurrentViewer().findObjectAt(getLocation());
+		if (part instanceof TextEditPart) {
+			TextEditPart textPart = (TextEditPart) part;
+			if (textPart.acceptsCaret()) {
+				CaretRequest request = new CaretRequest();
+				request.setType(CaretRequest.LOCATION);
+				request.setLocation(getLocation());
+				textPart.getTextLocation(request, result);
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * 
+	 * @since 3.1
+	 */
+	private TextEditPart getSource() {
+		return textSource;
+	}
+
+	protected boolean handleButtonDown(int button) {
+		if (button == 1) {
+			SearchResult result = getCurrentTextLocation();
+			beginDrag = result.location;
+			((GraphicalTextViewer) getCurrentViewer())
+					.setSelectionRange(new SelectionRange(beginDrag, beginDrag,
+							true, result.trailing));
+			return stateTransition(STATE_INITIAL, STATE_START);
+		}
+		return super.handleButtonDown(button);
+	}
+
+	protected boolean handleDoubleClick(int button) {
+		if (button == 1) {
+			doWordSelect();
+			isWordSelection = true;
+			return true;
+		}
+		return super.handleDoubleClick(button);
+	}
+
+	protected boolean handleDragInProgress() {
+		// $TODO during a swipe, the viewer should not be firing selection
+		// changes the whole time.
+		if (isInState(STATE_SWIPE)) {
+			if (isWordSelection)
+				doWordSwipe();
+			else
+				doNormalSwipe();
+		}
+		return super.handleDragInProgress();
+	}
+
+	protected boolean handleDragStarted() {
+		return stateTransition(STATE_START, STATE_SWIPE);
+	}
 
 }

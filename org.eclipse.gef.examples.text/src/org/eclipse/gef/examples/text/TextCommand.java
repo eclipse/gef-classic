@@ -16,22 +16,27 @@ package org.eclipse.gef.examples.text;
  */
 public interface TextCommand {
 
-/**
- * Returns the viewer's selection range for the state after execution or redo.
- * @since 3.1
- * @param viewer the viewer
- * @return the range
- */
-SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer);
+	/**
+	 * Returns the viewer's selection range for the state after execution or
+	 * redo.
+	 * 
+	 * @since 3.1
+	 * @param viewer
+	 *            the viewer
+	 * @return the range
+	 */
+	SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer);
 
-SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer);
+	SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer);
 
-/**
- * Returns the viewer's selection range for the state prior to execution.
- * @since 3.1
- * @param viewer the viewer
- * @return the range
- */
-SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer);
+	/**
+	 * Returns the viewer's selection range for the state prior to execution.
+	 * 
+	 * @since 3.1
+	 * @param viewer
+	 *            the viewer
+	 * @return the range
+	 */
+	SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer);
 
 }

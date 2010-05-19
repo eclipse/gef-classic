@@ -20,24 +20,22 @@ import org.eclipse.gef.examples.text.figures.TreeItemBorder;
 /**
  * @since 3.1
  */
-public class ImportPart 
-	extends TextFlowPart 
-{
+public class ImportPart extends TextFlowPart {
 
-public ImportPart(Object model) {
-	super(model);
-}
+	public ImportPart(Object model) {
+		super(model);
+	}
 
-protected IFigure createFigure() {
-	TextFlow flow = new TextFlow();
-	BlockFlow block = new BlockFlow();
-	block.setBorder(new TreeItemBorder(Images.IMPORT));
-	block.add(flow);
-	return block;
-}
+	protected IFigure createFigure() {
+		TextFlow flow = new TextFlow();
+		BlockFlow block = new BlockFlow();
+		block.setBorder(new TreeItemBorder(Images.IMPORT));
+		block.add(flow);
+		return block;
+	}
 
-TextFlow getTextFlow() {
-	return (TextFlow)getFigure().getChildren().get(0);
-}
+	TextFlow getTextFlow() {
+		return (TextFlow) getFigure().getChildren().get(0);
+	}
 
 }

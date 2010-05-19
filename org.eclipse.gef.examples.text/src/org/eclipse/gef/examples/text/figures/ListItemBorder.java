@@ -22,11 +22,12 @@ import org.eclipse.draw2d.text.TextFlow;
  */
 public abstract class ListItemBorder extends AbstractBorder {
 
-public final void paint(IFigure figure, Graphics graphics, Insets insets) {
-	if (((TextFlow)figure.getChildren().get(0)).getText().length() > 0)
-		paintBorder(figure, graphics, insets);
-}
+	public final void paint(IFigure figure, Graphics graphics, Insets insets) {
+		if (((TextFlow) figure.getChildren().get(0)).getText().length() > 0)
+			paintBorder(figure, graphics, insets);
+	}
 
-protected abstract void paintBorder(IFigure figure, Graphics graphics, Insets insets);
+	protected abstract void paintBorder(IFigure figure, Graphics graphics,
+			Insets insets);
 
 }

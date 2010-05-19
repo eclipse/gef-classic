@@ -24,39 +24,39 @@ import org.eclipse.ui.IPartService;
  * @author Pratik Shah
  * @since 3.1
  */
-public class ChangeFontContributionItem 
-	extends StyleComboContributionItem
-{
-	
-private static final String[] FONT_NAMES;
-static {
-	Set set = new HashSet();
-	FontData[] fonts = Display.getCurrent().getFontList(null, true);
-	for (int i = 0; i < fonts.length; i++)
-		set.add(fonts[i].getName());
-	FONT_NAMES = new String[set.size()];
-	set.toArray(FONT_NAMES);
-	Arrays.sort(FONT_NAMES);
-}
+public class ChangeFontContributionItem extends StyleComboContributionItem {
 
-public ChangeFontContributionItem(IPartService service) {
-	super(service);
-}
+	private static final String[] FONT_NAMES;
+	static {
+		Set set = new HashSet();
+		FontData[] fonts = Display.getCurrent().getFontList(null, true);
+		for (int i = 0; i < fonts.length; i++)
+			set.add(fonts[i].getName());
+		FONT_NAMES = new String[set.size()];
+		set.toArray(FONT_NAMES);
+		Arrays.sort(FONT_NAMES);
+	}
 
-protected String[] getItems() {
-	return FONT_NAMES;
-}
+	public ChangeFontContributionItem(IPartService service) {
+		super(service);
+	}
 
-protected String getProperty() {
-	return Style.PROPERTY_FONT;
-}
+	protected String[] getItems() {
+		return FONT_NAMES;
+	}
 
-protected void handleWidgetSelected(SelectionEvent e) {
-	int index = findIndexOf(combo.getText());
-	if (index >= 0 && !getItems()[index].equals(styleService.getStyle(getProperty())))
-		styleService.setStyle(getProperty(), getItems()[index]);
-	else
-		refresh();
-}
+	protected String getProperty() {
+		return Style.PROPERTY_FONT;
+	}
+
+	protected void handleWidgetSelected(SelectionEvent e) {
+		int index = findIndexOf(combo.getText());
+		if (index >= 0
+				&& !getItems()[index].equals(styleService
+						.getStyle(getProperty())))
+			styleService.setStyle(getProperty(), getItems()[index]);
+		else
+			refresh();
+	}
 
 }

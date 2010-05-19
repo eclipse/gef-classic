@@ -26,39 +26,39 @@ import org.eclipse.gef.examples.text.tools.SelectionRangeDragTracker;
 public abstract class AbstractTextPart extends AbstractGraphicalEditPart
 		implements TextEditPart, PropertyChangeListener {
 
-public boolean acceptsCaret() {
-	return true;
-}
+	public boolean acceptsCaret() {
+		return true;
+	}
 
-/**
- * @see org.eclipse.gef.EditPart#activate()
- */
-public void activate() {
-	super.activate();
-	ModelElement model = (ModelElement)getModel();
-	model.addPropertyChangeListener(this);
-}
+	/**
+	 * @see org.eclipse.gef.EditPart#activate()
+	 */
+	public void activate() {
+		super.activate();
+		ModelElement model = (ModelElement) getModel();
+		model.addPropertyChangeListener(this);
+	}
 
-/**
- * @see org.eclipse.gef.EditPart#deactivate()
- */
-public void deactivate() {
-	ModelElement model = (ModelElement)getModel();
-	model.removePropertyChangeListener(this);
-	super.deactivate();
-}
+	/**
+	 * @see org.eclipse.gef.EditPart#deactivate()
+	 */
+	public void deactivate() {
+		ModelElement model = (ModelElement) getModel();
+		model.removePropertyChangeListener(this);
+		super.deactivate();
+	}
 
-public DragTracker getDragTracker(Request request) {
-	return new SelectionRangeDragTracker(this);
-}
+	public DragTracker getDragTracker(Request request) {
+		return new SelectionRangeDragTracker(this);
+	}
 
-protected TextEditPart getTextParent() {
-	return (TextEditPart)getParent();
-}
+	protected TextEditPart getTextParent() {
+		return (TextEditPart) getParent();
+	}
 
-public void setSelection(int start, int end) {
-	FlowFigure ff = (FlowFigure)getFigure();
-	ff.setSelection(start, end);
-}
+	public void setSelection(int start, int end) {
+		FlowFigure ff = (FlowFigure) getFigure();
+		ff.setSelection(start, end);
+	}
 
 }

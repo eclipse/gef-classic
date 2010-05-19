@@ -18,36 +18,36 @@ import org.eclipse.ui.IPartService;
  * @author Pratik Shah
  * @since 3.1
  */
-public class ResizeFontContributionItem 
-	extends StyleComboContributionItem
-{
+public class ResizeFontContributionItem extends StyleComboContributionItem {
 
-private static final String[] INIT_SIZES = new String[] {"8", "9", "10", "11",
-		"12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72"};
+	private static final String[] INIT_SIZES = new String[] { "8", "9", "10",
+			"11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36",
+			"48", "72" };
 
-public ResizeFontContributionItem(IPartService service) {
-	super(service);
-}
-
-protected String[] getItems() {
-	return INIT_SIZES;
-}
-
-protected String getProperty() {
-	return Style.PROPERTY_FONT_SIZE;
-}
-
-protected void handleWidgetSelected(SelectionEvent e) {
-	Integer fontSize = null;
-	try {
-		fontSize = new Integer(combo.getText());
-	} catch (NumberFormatException nfe) {
+	public ResizeFontContributionItem(IPartService service) {
+		super(service);
 	}
-	if (fontSize != null && !fontSize.equals(styleService.getStyle(getProperty())))
-		// No refresh required
-		styleService.setStyle(getProperty(), fontSize);
-	else
-		refresh();
-}
+
+	protected String[] getItems() {
+		return INIT_SIZES;
+	}
+
+	protected String getProperty() {
+		return Style.PROPERTY_FONT_SIZE;
+	}
+
+	protected void handleWidgetSelected(SelectionEvent e) {
+		Integer fontSize = null;
+		try {
+			fontSize = new Integer(combo.getText());
+		} catch (NumberFormatException nfe) {
+		}
+		if (fontSize != null
+				&& !fontSize.equals(styleService.getStyle(getProperty())))
+			// No refresh required
+			styleService.setStyle(getProperty(), fontSize);
+		else
+			refresh();
+	}
 
 }

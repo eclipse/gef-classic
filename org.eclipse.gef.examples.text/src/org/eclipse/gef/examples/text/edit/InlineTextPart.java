@@ -19,17 +19,19 @@ import org.eclipse.gef.examples.text.requests.SearchResult;
  */
 public class InlineTextPart extends CompoundTextPart {
 
-public InlineTextPart(Object model) {
-	super(model);
-}
+	public InlineTextPart(Object model) {
+		super(model);
+	}
 
-public void getTextLocation(CaretRequest search, SearchResult result) {
-	if (!search.isRecursive && (search.getType() == CaretRequest.LINE_BOUNDARY 
-			|| search.getType() == CaretRequest.ROW)) {
-		search.setReferenceTextLocation(this, search.isForward ? 0 : getLength());
-		getTextParent().getTextLocation(search, result);		
-	} else
-		super.getTextLocation(search, result);
-}
+	public void getTextLocation(CaretRequest search, SearchResult result) {
+		if (!search.isRecursive
+				&& (search.getType() == CaretRequest.LINE_BOUNDARY || search
+						.getType() == CaretRequest.ROW)) {
+			search.setReferenceTextLocation(this, search.isForward ? 0
+					: getLength());
+			getTextParent().getTextLocation(search, result);
+		} else
+			super.getTextLocation(search, result);
+	}
 
 }

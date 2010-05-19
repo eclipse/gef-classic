@@ -14,39 +14,38 @@ package org.eclipse.gef.examples.text.model.commands;
 import org.eclipse.gef.examples.text.model.ModelLocation;
 import org.eclipse.gef.examples.text.model.TextRun;
 
-
 public class RemoveText extends MiniEdit {
 
-int offset;
+	int offset;
 
-char chars[];
+	char chars[];
 
-private final TextRun run;
+	private final TextRun run;
 
-public RemoveText(TextRun run, int begin, int end) {
-	this.run = run;
-	this.offset = begin;
-	this.chars = run.getText().substring(offset, end).toCharArray();
-}
+	public RemoveText(TextRun run, int begin, int end) {
+		this.run = run;
+		this.offset = begin;
+		this.chars = run.getText().substring(offset, end).toCharArray();
+	}
 
-public void apply() {
-	run.removeRange(offset, chars.length);
-}
+	public void apply() {
+		run.removeRange(offset, chars.length);
+	}
 
-public boolean canApply() {
-	return chars != null && chars.length != 0;
-}
+	public boolean canApply() {
+		return chars != null && chars.length != 0;
+	}
 
-public ModelLocation getResultingLocation() {
-	return new ModelLocation(run, offset);
-}
+	public ModelLocation getResultingLocation() {
+		return new ModelLocation(run, offset);
+	}
 
-public void reapply() {
-	apply();
-}
+	public void reapply() {
+		apply();
+	}
 
-public void rollback() {
-	run.insertText(new String(chars), offset);
-}
+	public void rollback() {
+		run.insertText(new String(chars), offset);
+	}
 
 }

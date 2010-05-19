@@ -18,24 +18,27 @@ import org.eclipse.gef.examples.text.SelectionRange;
  */
 public interface TextStyleManager {
 
-/**
- * Returns the effective value for the requested style and range.  If the range does not
- * have a consistent value for that style, then
- * {@link org.eclipse.gef.examples.text.actions.StyleService#UNDEFINED} is returned.
- * @param styleID
- * @param range
- * @return
- * @since 3.1
- */
-Object getStyleValue(String styleID, SelectionRange range);
+	/**
+	 * Returns the effective value for the requested style and range. If the
+	 * range does not have a consistent value for that style, then
+	 * {@link org.eclipse.gef.examples.text.actions.StyleService#UNDEFINED} is
+	 * returned.
+	 * 
+	 * @param styleID
+	 * @param range
+	 * @return
+	 * @since 3.1
+	 */
+	Object getStyleValue(String styleID, SelectionRange range);
 
-/**
- * Returns the effective state for the requested style and range.
- * @param styleID
- * @param range
- * @return
- * @since 3.1
- */
-Object getStyleState(String styleID, SelectionRange range);
+	/**
+	 * Returns the effective state for the requested style and range.
+	 * 
+	 * @param styleID
+	 * @param range
+	 * @return
+	 * @since 3.1
+	 */
+	Object getStyleState(String styleID, SelectionRange range);
 
 }

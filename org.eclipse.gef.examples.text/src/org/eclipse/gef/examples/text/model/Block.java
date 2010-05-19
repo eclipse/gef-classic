@@ -16,21 +16,21 @@ package org.eclipse.gef.examples.text.model;
  */
 public class Block extends Container {
 
-private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1;
 
-/**
- * @param type
- * @since 3.1
- */
-public Block(int type) {
-	super(type);
-}
+	/**
+	 * @param type
+	 * @since 3.1
+	 */
+	public Block(int type) {
+		super(type);
+	}
 
-/**
- * @see org.eclipse.gef.examples.text.model.Container#newContainer()
- */
-Container newContainer() {
-	return new Block(getType());
-}
+	/**
+	 * @see org.eclipse.gef.examples.text.model.Container#newContainer()
+	 */
+	Container newContainer() {
+		return new Block(getType());
+	}
 
 }

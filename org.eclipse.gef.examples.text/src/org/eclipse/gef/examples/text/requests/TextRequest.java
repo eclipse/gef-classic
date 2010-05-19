@@ -20,105 +20,107 @@ import org.eclipse.gef.examples.text.SelectionRange;
  */
 public class TextRequest extends Request {
 
-public static final Object REQ_BACKSPACE = new Object();
+	public static final Object REQ_BACKSPACE = new Object();
 
-/**
- * The Request type for a break in the current line.  A line break is a newline within the
- * current paragraph or block, such as a bulleted or numbered list.  This request indicates
- * that SHIFT+ENTER was received
- */
-public static final Object REQ_BREAK = new Object();
+	/**
+	 * The Request type for a break in the current line. A line break is a
+	 * newline within the current paragraph or block, such as a bulleted or
+	 * numbered list. This request indicates that SHIFT+ENTER was received
+	 */
+	public static final Object REQ_BREAK = new Object();
 
-public static final Object REQ_DELETE = new Object();
+	public static final Object REQ_DELETE = new Object();
 
-public static final Object REQ_INDENT = new Object();
+	public static final Object REQ_INDENT = new Object();
 
-public static final Object REQ_INSERT = new Object();
+	public static final Object REQ_INSERT = new Object();
 
-public static final Object REQ_OVERWRITE = new Object();
+	public static final Object REQ_OVERWRITE = new Object();
 
-public static final Object REQ_STYLE = new Object();
+	public static final Object REQ_STYLE = new Object();
 
-/**
- * The Request type for a new page.  A "Page" may be interpreted to mean anything based
- * on the context of the current selection range.  This request indicates that CTRL+ENTER
- * was received.
- */
-public static final Object REQ_NEW_PAGE = new Object();
+	/**
+	 * The Request type for a new page. A "Page" may be interpreted to mean
+	 * anything based on the context of the current selection range. This
+	 * request indicates that CTRL+ENTER was received.
+	 */
+	public static final Object REQ_NEW_PAGE = new Object();
 
-public static final Object REQ_NEWLINE= new Object();
+	public static final Object REQ_NEWLINE = new Object();
 
-public static final Object REQ_REMOVE_RANGE = new Object();
+	public static final Object REQ_REMOVE_RANGE = new Object();
 
-public static final Object REQ_UNINDENT = new Object();
+	public static final Object REQ_UNINDENT = new Object();
 
-private AppendableCommand previous;
+	private AppendableCommand previous;
 
-private SelectionRange range;
-private String text;
-private String[] styleKeys;
-private Object[] styleValues;
+	private SelectionRange range;
+	private String text;
+	private String[] styleKeys;
+	private Object[] styleValues;
 
-/**
- * @param type
- * @since 3.1
- */
-public TextRequest(SelectionRange range, String text, AppendableCommand previous) {
-	this (REQ_INSERT, range, text, previous);
-}
+	/**
+	 * @param type
+	 * @since 3.1
+	 */
+	public TextRequest(SelectionRange range, String text,
+			AppendableCommand previous) {
+		this(REQ_INSERT, range, text, previous);
+	}
 
-public TextRequest(Object type, SelectionRange range) {
-	this(type, range, null, null);
-}
+	public TextRequest(Object type, SelectionRange range) {
+		this(type, range, null, null);
+	}
 
-public TextRequest(Object type, SelectionRange range, AppendableCommand previous) {
-	this(type, range, null, previous);
-}
+	public TextRequest(Object type, SelectionRange range,
+			AppendableCommand previous) {
+		this(type, range, null, previous);
+	}
 
-public TextRequest(Object type, SelectionRange range, String text, 
-		AppendableCommand previous) {
-	super(type == null ? REQ_INSERT : type);
-	this.text = text;
-	this.range = range;
-	this.previous = previous;
-}
+	public TextRequest(Object type, SelectionRange range, String text,
+			AppendableCommand previous) {
+		super(type == null ? REQ_INSERT : type);
+		this.text = text;
+		this.range = range;
+		this.previous = previous;
+	}
 
-public int getInsertionOffset() {
-	return range.begin.offset;
-}
+	public int getInsertionOffset() {
+		return range.begin.offset;
+	}
 
-public AppendableCommand getPreviousCommand() {
-	return previous;
-}
+	public AppendableCommand getPreviousCommand() {
+		return previous;
+	}
 
-public SelectionRange getSelectionRange() {
-	return range;
-}
+	public SelectionRange getSelectionRange() {
+		return range;
+	}
 
-/**
- * @return the keys starting with most recent
- * @since 3.1
- */
-public String[] getStyleKeys() {
-	return styleKeys;
-}
+	/**
+	 * @return the keys starting with most recent
+	 * @since 3.1
+	 */
+	public String[] getStyleKeys() {
+		return styleKeys;
+	}
 
-/**
- * 
- * @return the values starting with the most recent
- * @since 3.1
- */
-public Object[] getStyleValues() {
-	return styleValues;
-}
+	/**
+	 * 
+	 * @return the values starting with the most recent
+	 * @since 3.1
+	 */
+	public Object[] getStyleValues() {
+		return styleValues;
+	}
 
-public String getText() {
-	return text;
-}
+	public String getText() {
+		return text;
+	}
 
-public void setStyles(String keys[], Object values[]) {
-	this.styleKeys = keys;
-	this.styleValues = values;
-}
+	public void setStyles(String keys[], Object values[]) {
+		this.styleKeys = keys;
+		this.styleValues = values;
+	}
 
 }

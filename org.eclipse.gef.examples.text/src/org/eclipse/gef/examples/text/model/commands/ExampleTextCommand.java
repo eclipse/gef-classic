@@ -20,24 +20,22 @@ import org.eclipse.gef.examples.text.model.ModelElement;
 /**
  * @since 3.1
  */
-public abstract class ExampleTextCommand
-	extends Command
-	implements TextCommand
-{
+public abstract class ExampleTextCommand extends Command implements TextCommand {
 
-public ExampleTextCommand(String label) {
-	super(label);
-}
+	public ExampleTextCommand(String label) {
+		super(label);
+	}
 
-public boolean canExecutePending() {
-	return false;
-}
+	public boolean canExecutePending() {
+		return false;
+	}
 
-public void executePending() {}
+	public void executePending() {
+	}
 
-protected static TextEditPart lookupModel(GraphicalTextViewer viewer,
-		ModelElement model) {
-	return (TextEditPart)viewer.getEditPartRegistry().get(model);
-}
+	protected static TextEditPart lookupModel(GraphicalTextViewer viewer,
+			ModelElement model) {
+		return (TextEditPart) viewer.getEditPartRegistry().get(model);
+	}
 
 }

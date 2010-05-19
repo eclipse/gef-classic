@@ -16,14 +16,14 @@ package org.eclipse.gef.examples.text.actions;
  */
 public interface StyleProvider {
 
-void addStyleListener(StyleListener listener);
+	void addStyleListener(StyleListener listener);
 
-Object getStyle(String styleID);
+	Object getStyle(String styleID);
 
-Object getStyleState(String styleID);
+	Object getStyleState(String styleID);
 
-void removeStyleListener(StyleListener listener);
+	void removeStyleListener(StyleListener listener);
 
-void setStyle(String styleID, Object newValue);
+	void setStyle(String styleID, Object newValue);
 
 }

@@ -16,9 +16,11 @@ package org.eclipse.gef.examples.text.actions;
  */
 public interface StyleListener {
 
-/**
- * @param styleID can be <code>null</code>; null means all StyleIDs need to be updated
- */
-void styleChanged(String styleID);
+	/**
+	 * @param styleID
+	 *            can be <code>null</code>; null means all StyleIDs need to be
+	 *            updated
+	 */
+	void styleChanged(String styleID);
 
 }

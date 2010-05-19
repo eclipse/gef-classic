@@ -15,15 +15,16 @@ import org.eclipse.gef.examples.text.TextLocation;
 
 /**
  * Used to store results of a CaretRequest.
+ * 
  * @author Pratik Shah
  * @since 3.2
  */
-public class SearchResult
-{
-	
-public boolean trailing;
-public TextLocation location;
-public Dimension proximity = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
-public boolean bestMatchFound;
+public class SearchResult {
+
+	public boolean trailing;
+	public TextLocation location;
+	public Dimension proximity = new Dimension(Integer.MAX_VALUE,
+			Integer.MAX_VALUE);
+	public boolean bestMatchFound;
 
 }

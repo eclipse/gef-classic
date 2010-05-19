@@ -41,9 +41,9 @@ public class NewFileWizardPage extends WizardPage {
 	public NewFileWizardPage(ISelection selection) {
 		super("wizardPage");
 		setTitle("GEF WYSIWYG Text Document");
-		setDescription("This wizard creates a GEF-based WYSIWYG text document with " +
-				"a *.text. extension.  Choose a container and file name for the new" +
-				" resource.");
+		setDescription("This wizard creates a GEF-based WYSIWYG text document with "
+				+ "a *.text. extension.  Choose a container and file name for the new"
+				+ " resource.");
 		this.selection = selection;
 	}
 

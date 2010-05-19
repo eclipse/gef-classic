@@ -19,35 +19,35 @@ import org.eclipse.gef.examples.text.edit.TextEditPart;
  */
 public class TextLocation {
 
-public final int offset;
+	public final int offset;
 
-public final TextEditPart part;
+	public final TextEditPart part;
 
-/**
- * @since 3.1
- */
-public TextLocation(TextEditPart part, int offset) {
-	Assert.isNotNull(part);
-	this.offset = offset;
-	this.part = part;
-}
-
-/**
- * @see java.lang.Object#equals(java.lang.Object)
- */
-public boolean equals(Object obj) {
-	if (obj instanceof TextLocation) {
-		TextLocation other = (TextLocation)obj;
-		return other.offset == offset && other.part == part;
+	/**
+	 * @since 3.1
+	 */
+	public TextLocation(TextEditPart part, int offset) {
+		Assert.isNotNull(part);
+		this.offset = offset;
+		this.part = part;
 	}
-	return false;
-}
 
-/**
- * @see java.lang.Object#hashCode()
- */
-public int hashCode() {
-	return part.hashCode() << 11 ^ offset;
-}
+	/**
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	public boolean equals(Object obj) {
+		if (obj instanceof TextLocation) {
+			TextLocation other = (TextLocation) obj;
+			return other.offset == offset && other.part == part;
+		}
+		return false;
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return part.hashCode() << 11 ^ offset;
+	}
 
 }

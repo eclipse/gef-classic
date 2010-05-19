@@ -19,18 +19,19 @@ import org.eclipse.gef.tools.ToolUtilities;
  */
 public class TextUtilities {
 
-public static boolean isForward(TextLocation beginLoc, TextLocation endLoc) {
-	EditPart end = endLoc.part;
-	EditPart begin = beginLoc.part;
-	
-	if (end == begin)
-		return endLoc.offset >= beginLoc.offset; //Bias towards forward
-	EditPart ancestor = ToolUtilities.findCommonAncestor(end, begin);
-	while (end.getParent() != ancestor)
-		end = end.getParent();
-	while (begin.getParent() != ancestor)
-		begin = begin.getParent();
-	return ancestor.getChildren().indexOf(end) > ancestor.getChildren().indexOf(begin);
-}
+	public static boolean isForward(TextLocation beginLoc, TextLocation endLoc) {
+		EditPart end = endLoc.part;
+		EditPart begin = beginLoc.part;
+
+		if (end == begin)
+			return endLoc.offset >= beginLoc.offset; // Bias towards forward
+		EditPart ancestor = ToolUtilities.findCommonAncestor(end, begin);
+		while (end.getParent() != ancestor)
+			end = end.getParent();
+		while (begin.getParent() != ancestor)
+			begin = begin.getParent();
+		return ancestor.getChildren().indexOf(end) > ancestor.getChildren()
+				.indexOf(begin);
+	}
 
 }

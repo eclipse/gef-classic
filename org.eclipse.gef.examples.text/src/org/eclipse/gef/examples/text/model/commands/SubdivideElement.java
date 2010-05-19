@@ -16,42 +16,42 @@ import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
  * Divides a TextRun into itself and another TextRun.
+ * 
  * @since 3.1
  */
 public class SubdivideElement extends MiniEdit {
 
+	private final TextRun run;
+	private final int offset;
+	private TextRun inserted;
 
-private final TextRun run;
-private final int offset;
-private TextRun inserted;
+	public SubdivideElement(TextRun run, int offset) {
+		this.run = run;
+		this.offset = offset;
+	}
 
-public SubdivideElement(TextRun run, int offset) {
-	this.run = run;
-	this.offset = offset;	
-}
+	public void apply() {
+		inserted = run.subdivideRun(offset);
+		int index = run.getContainer().getChildren().indexOf(run);
+		run.getContainer().add(inserted, index + 1);
+	}
 
-public void apply() {
-	inserted = run.subdivideRun(offset);
-	int index = run.getContainer().getChildren().indexOf(run);
-	run.getContainer().add(inserted, index + 1);
-}
+	public boolean canApply() {
+		return true;
+	}
 
-public boolean canApply() {
-	return true;
-}
+	public void reapply() {
+		throw new RuntimeException("Need to implement");
+	}
 
-public void reapply() {
-	throw new RuntimeException("Need to implement");
-}
+	public ModelLocation getResultingLocation() {
+		return new ModelLocation(inserted, 0);
+	}
 
-public ModelLocation getResultingLocation() {
-	return new ModelLocation(inserted, 0);
-}
-
-public void rollback() {
-	inserted.getContainer().remove(inserted);
-	run.insertText(inserted.getText(), run.size());
-	inserted.setText("");
-}
+	public void rollback() {
+		inserted.getContainer().remove(inserted);
+		run.insertText(inserted.getText(), run.size());
+		inserted.setText("");
+	}
 
 }

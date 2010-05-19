@@ -20,52 +20,51 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * A border class which displays an Image on the left side of a figure.
+ * 
  * @author Pratik Shah
  */
-public class TreeItemBorder
-	extends ListItemBorder 
-{
+public class TreeItemBorder extends ListItemBorder {
 
-private static final int LEFT_SPACE = 5;
-private static final int RIGHT_SPACE = 5;
+	private static final int LEFT_SPACE = 5;
+	private static final int RIGHT_SPACE = 5;
 
-private Insets imgInsets;
-private Image image;
-private Dimension imageSize;
+	private Insets imgInsets;
+	private Image image;
+	private Dimension imageSize;
 
-public TreeItemBorder(Image image) {
-	setImage(image);
-}
+	public TreeItemBorder(Image image) {
+		setImage(image);
+	}
 
-public Insets getInsets(IFigure figure) {
-	return imgInsets;
-}
+	public Insets getInsets(IFigure figure) {
+		return imgInsets;
+	}
 
-public Image getImage() {
-	return image;
-}
+	public Image getImage() {
+		return image;
+	}
 
-public Dimension getPreferredSize(IFigure f) {
-	return imageSize;
-}
+	public Dimension getPreferredSize(IFigure f) {
+		return imageSize;
+	}
 
-public void paintBorder(IFigure figure, Graphics graphics, Insets insets) {
-	if (image == null)
-		return;
-	Rectangle rect = getPaintRectangle(figure, insets);
-	graphics.translate(rect.x, rect.y);
-	graphics.drawImage(getImage(), LEFT_SPACE, 0);
-	
-	int y = imageSize.height / 2;
-	for (int i = 0; i < LEFT_SPACE; i += 2)
-		graphics.drawPoint(i, y);
-}
+	public void paintBorder(IFigure figure, Graphics graphics, Insets insets) {
+		if (image == null)
+			return;
+		Rectangle rect = getPaintRectangle(figure, insets);
+		graphics.translate(rect.x, rect.y);
+		graphics.drawImage(getImage(), LEFT_SPACE, 0);
 
-public void setImage(Image img) {
-	image = img;
-	imageSize = new Dimension(image);
-	imgInsets = new Insets();
-	imgInsets.left = imageSize.width + LEFT_SPACE + RIGHT_SPACE;
-}
+		int y = imageSize.height / 2;
+		for (int i = 0; i < LEFT_SPACE; i += 2)
+			graphics.drawPoint(i, y);
+	}
+
+	public void setImage(Image img) {
+		image = img;
+		imageSize = new Dimension(image);
+		imgInsets = new Insets();
+		imgInsets.left = imageSize.width + LEFT_SPACE + RIGHT_SPACE;
+	}
 
 }

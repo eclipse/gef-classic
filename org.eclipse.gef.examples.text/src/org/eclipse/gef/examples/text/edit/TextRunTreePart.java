@@ -20,21 +20,21 @@ import org.eclipse.gef.examples.text.model.TextRun;
  */
 public class TextRunTreePart extends ExampleTreePart {
 
-public TextRunTreePart(Object model) {
-	setModel(model);
-}
+	public TextRunTreePart(Object model) {
+		setModel(model);
+	}
 
-public void propertyChange(PropertyChangeEvent evt) {
-	if (evt.getPropertyName().equals("text"))
-		refreshVisuals();
-}
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals("text"))
+			refreshVisuals();
+	}
 
-protected void refreshVisuals() {
-	TextRun run = (TextRun)getModel();
-	String s = run.getText();
-	if (s.length() > 50)
-		s = s.substring(0, 50) + "...";
-	setWidgetText(s);
-}
+	protected void refreshVisuals() {
+		TextRun run = (TextRun) getModel();
+		String s = run.getText();
+		if (s.length() > 50)
+			s = s.substring(0, 50) + "...";
+		setWidgetText(s);
+	}
 
 }

@@ -10,26 +10,24 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.text.actions;
 
+public class MultiStyleAction extends BooleanStyleAction {
 
-public class MultiStyleAction 
-	extends BooleanStyleAction
-{
-	
-private Object value;
+	private Object value;
 
-public MultiStyleAction(StyleService service, String styleID, String property, 
-		Object value) {
-	super(service, styleID, property);
-	this.value = value;
-}
+	public MultiStyleAction(StyleService service, String styleID,
+			String property, Object value) {
+		super(service, styleID, property);
+		this.value = value;
+	}
 
-public void run() {
-	service.setStyle(property, isChecked() ? value : new Integer(0));
-}
+	public void run() {
+		service.setStyle(property, isChecked() ? value : new Integer(0));
+	}
 
-public void refresh() {
-	setChecked(value.equals(service.getStyle(property)));
-	setEnabled(service.getStyleState(property).equals(StyleService.STATE_EDITABLE));
-}
+	public void refresh() {
+		setChecked(value.equals(service.getStyle(property)));
+		setEnabled(service.getStyleState(property).equals(
+				StyleService.STATE_EDITABLE));
+	}
 
 }

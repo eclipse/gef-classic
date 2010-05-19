@@ -22,22 +22,19 @@ import org.eclipse.gef.examples.text.figures.TreeBorder;
 /**
  * @since 3.1
  */
-public class ImportsPart 
-	extends BlockTextPart 
-{
+public class ImportsPart extends BlockTextPart {
 
-IFigure pane;
+	IFigure pane;
 
-public ImportsPart(Object model) {
-	super(model);
-}
+	public ImportsPart(Object model) {
+		super(model);
+	}
 
-protected IFigure createFigure() {
-	Figure figure = new BlockFlow();
-	figure.setBorder(new CompoundBorder(
-			new MarginBorder(5, 2, 8, 0),
-			new TreeBorder(Images.IMPORTS, "import declarations")));
-	return figure;
-}
+	protected IFigure createFigure() {
+		Figure figure = new BlockFlow();
+		figure.setBorder(new CompoundBorder(new MarginBorder(5, 2, 8, 0),
+				new TreeBorder(Images.IMPORTS, "import declarations")));
+		return figure;
+	}
 
 }

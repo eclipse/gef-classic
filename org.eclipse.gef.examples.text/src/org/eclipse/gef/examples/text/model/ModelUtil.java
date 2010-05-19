@@ -19,82 +19,81 @@ import java.util.List;
  */
 public class ModelUtil {
 
-public static List getModelSpan(ModelElement start, int startIndex, ModelElement end,
-		int endIndex) {
-	Container ancestor = start.getContainer();
-	while (!ancestor.contains(end))
-		ancestor = ancestor.getContainer();
+	public static List getModelSpan(ModelElement start, int startIndex,
+			ModelElement end, int endIndex) {
+		Container ancestor = start.getContainer();
+		while (!ancestor.contains(end))
+			ancestor = ancestor.getContainer();
 
-	List result = new ArrayList();
+		List result = new ArrayList();
 
+		List children;
 
-	List children;
-
-	Container branch = start.getContainer();
-	while (branch != ancestor) {
-		children = branch.getChildren();
-		int branchIndex = children.indexOf(start);
-		if (startIndex == 0) {
-			//We should either delete the child, or the entire branch
-			if (branchIndex != 0) {
-				result.addAll(children.subList(branchIndex, children.size()));
+		Container branch = start.getContainer();
+		while (branch != ancestor) {
+			children = branch.getChildren();
+			int branchIndex = children.indexOf(start);
+			if (startIndex == 0) {
+				// We should either delete the child, or the entire branch
+				if (branchIndex != 0) {
+					result.addAll(children.subList(branchIndex, children.size()));
+					start = branch;
+					branch = branch.getContainer();
+					startIndex = branchIndex + 1;
+				} else {
+					start = branch;
+					branch = branch.getContainer();
+					startIndex = branchIndex;
+				}
+			} else {
+				result.addAll(children.subList(branchIndex + 1, children.size()));
 				start = branch;
 				branch = branch.getContainer();
 				startIndex = branchIndex + 1;
-			} else {
-				start = branch;
-				branch = branch.getContainer();
-				startIndex = branchIndex;
 			}
-		} else {
-			result.addAll(children.subList(branchIndex + 1, children.size()));
-			start = branch;
-			branch = branch.getContainer();
-			startIndex = branchIndex + 1;
 		}
-	}
 
-	List rightSide = new ArrayList();
-	branch = end.getContainer();
+		List rightSide = new ArrayList();
+		branch = end.getContainer();
 
-	while (branch != ancestor) {
-		children = branch.getChildren();
-		//The index to the right side of end.
-		int branchIndex = children.indexOf(end) + 1;
-		if (endIndex == end.size()) {
-			//Need to either delete the child or entire branch
-			if (branchIndex < branch.size()) {
-				rightSide.addAll(0, children.subList(0, branchIndex));
+		while (branch != ancestor) {
+			children = branch.getChildren();
+			// The index to the right side of end.
+			int branchIndex = children.indexOf(end) + 1;
+			if (endIndex == end.size()) {
+				// Need to either delete the child or entire branch
+				if (branchIndex < branch.size()) {
+					rightSide.addAll(0, children.subList(0, branchIndex));
+					end = branch;
+					branch = branch.getContainer();
+					endIndex = branchIndex - 1;
+				} else {
+					end = branch;
+					branch = branch.getContainer();
+					endIndex = branchIndex;
+				}
+			} else {
+				result.addAll(children.subList(0, branchIndex - 1));
 				end = branch;
 				branch = branch.getContainer();
 				endIndex = branchIndex - 1;
-			} else {
-				end = branch;
-				branch = branch.getContainer();
-				endIndex = branchIndex;
 			}
-		} else {
-			result.addAll(children.subList(0, branchIndex - 1));
-			end = branch;
-			branch = branch.getContainer();
-			endIndex = branchIndex - 1;
 		}
-	}
-	children = ancestor.getChildren();
-	if (startIndex == 0)
-		startIndex = children.indexOf(start);
-	else
-		startIndex = children.indexOf(start) + 1;
+		children = ancestor.getChildren();
+		if (startIndex == 0)
+			startIndex = children.indexOf(start);
+		else
+			startIndex = children.indexOf(start) + 1;
 
-	if (endIndex == end.size())
-		endIndex = children.indexOf(end) + 1;
-	else
-		endIndex = children.indexOf(end);
-	if (endIndex > startIndex)
+		if (endIndex == end.size())
+			endIndex = children.indexOf(end) + 1;
+		else
+			endIndex = children.indexOf(end);
+		if (endIndex > startIndex)
 			result.addAll(ancestor.getChildren().subList(startIndex, endIndex));
-	result.addAll(rightSide);
+		result.addAll(rightSide);
 
-	return result;
-}
+		return result;
+	}
 
 }

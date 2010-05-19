@@ -20,86 +20,86 @@ import junit.framework.TestCase;
  */
 public class TestModelUtil extends TestCase {
 
-static List result;
+	static List result;
 
-public void testNestedBegin() {
-	Container doc = new Block(Container.TYPE_ROOT);
-	Container branch1 = new Block(0);
-	TextRun start = new TextRun("12345");
+	public void testNestedBegin() {
+		Container doc = new Block(Container.TYPE_ROOT);
+		Container branch1 = new Block(0);
+		TextRun start = new TextRun("12345");
 
-	doc.add(branch1);
-	branch1.add(start);
+		doc.add(branch1);
+		branch1.add(start);
 
-	TextRun end = new TextRun("ABCDE");
-	doc.add(end);
+		TextRun end = new TextRun("ABCDE");
+		doc.add(end);
 
-	for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 3; i++) {
+			result = ModelUtil.getModelSpan(start, 0, end, 5);
+			compareList(result, new Object[] { branch1, end });
+
+			result = ModelUtil.getModelSpan(start, 1, end, 5);
+			compareList(result, new Object[] { end });
+
+			result = ModelUtil.getModelSpan(start, 0, end, 3);
+			compareList(result, new Object[] { branch1 });
+
+			result = ModelUtil.getModelSpan(start, 1, end, 3);
+			assertTrue(result.isEmpty());
+			doc.add(new TextRun("bogus"), 0);
+		}
+
+		TextRun middle = new TextRun("I'm in the middle");
+		doc.add(middle, doc.getChildren().indexOf(end));
+
 		result = ModelUtil.getModelSpan(start, 0, end, 5);
-		compareList(result, new Object[] {branch1, end});
+		compareList(result, new Object[] { branch1, middle, end });
 
-		result = ModelUtil.getModelSpan(start, 1, end, 5);
-		compareList(result, new Object[] {end});
+		result = ModelUtil.getModelSpan(start, 1, end, 4);
+		compareList(result, new Object[] { middle });
 
-		result = ModelUtil.getModelSpan(start, 0, end, 3);
-		compareList(result, new Object[] {branch1});
-
-		result = ModelUtil.getModelSpan(start, 1, end, 3);
-		assertTrue(result.isEmpty());
-		doc.add(new TextRun("bogus"), 0);
 	}
 
-	TextRun middle = new TextRun("I'm in the middle");
-	doc.add(middle, doc.getChildren().indexOf(end));
+	public void testNestedEnd() {
+		Container doc = new Block(Container.TYPE_ROOT);
+		Container branch1 = new Block(0);
+		TextRun run123 = new TextRun("12345");
 
-	result = ModelUtil.getModelSpan(start, 0, end, 5);
-	compareList(result, new Object[] {branch1, middle, end});
+		branch1.add(run123);
 
-	result = ModelUtil.getModelSpan(start, 1, end, 4);
-	compareList(result, new Object[] {middle});
+		TextRun runABC = new TextRun("ABCDE");
+		doc.add(runABC);
+		doc.add(branch1);
 
-}
+		for (int i = 0; i < 3; i++) {
+			result = ModelUtil.getModelSpan(runABC, 0, run123, 5);
+			compareList(result, new Object[] { runABC, branch1 });
 
-public void testNestedEnd() {
-	Container doc = new Block(Container.TYPE_ROOT);
-	Container branch1 = new Block(0);
-	TextRun run123 = new TextRun("12345");
+			result = ModelUtil.getModelSpan(runABC, 1, run123, 5);
+			compareList(result, new Object[] { branch1 });
 
-	branch1.add(run123);
+			result = ModelUtil.getModelSpan(runABC, 0, run123, 4);
+			compareList(result, new Object[] { runABC });
 
-	TextRun runABC = new TextRun("ABCDE");
-	doc.add(runABC);
-	doc.add(branch1);
+			assertTrue(ModelUtil.getModelSpan(runABC, 1, run123, 4).isEmpty());
+			doc.add(new TextRun("bogus"), 0);
+			doc.add(new TextRun("bogus"), doc.getChildren().size());
+		}
 
-	for (int i = 0; i < 3; i++) {
+		TextRun middle = new TextRun("I'm in the middle");
+		doc.add(middle, doc.getChildren().indexOf(branch1));
+
 		result = ModelUtil.getModelSpan(runABC, 0, run123, 5);
-		compareList(result, new Object[] {runABC, branch1});
+		compareList(result, new Object[] { runABC, middle, branch1 });
 
-		result = ModelUtil.getModelSpan(runABC, 1, run123, 5);
-		compareList(result, new Object[] {branch1});
-
-		result = ModelUtil.getModelSpan(runABC, 0, run123, 4);
-		compareList(result, new Object[] {runABC});
-
-		assertTrue(ModelUtil.getModelSpan(runABC, 1, run123, 4).isEmpty());
-		doc.add(new TextRun("bogus"), 0);
-		doc.add(new TextRun("bogus"), doc.getChildren().size());
+		result = ModelUtil.getModelSpan(runABC, 1, run123, 4);
+		compareList(result, new Object[] { middle });
 	}
 
-	TextRun middle = new TextRun("I'm in the middle");
-	doc.add(middle, doc.getChildren().indexOf(branch1));
-
-	result = ModelUtil.getModelSpan(runABC, 0, run123, 5);
-	compareList(result, new Object[] {runABC, middle, branch1});
-
-	result = ModelUtil.getModelSpan(runABC, 1, run123, 4);
-	compareList(result, new Object[] {middle});
-}
-
-private void compareList(List result, Object array[]) {
-	Object compare[] = result.toArray();
-	assertEquals(array.length, compare.length);
-	for (int i = 0; i < compare.length; i++)
-		assertEquals(compare[i], array[i]);
-}
+	private void compareList(List result, Object array[]) {
+		Object compare[] = result.toArray();
+		assertEquals(array.length, compare.length);
+		for (int i = 0; i < compare.length; i++)
+			assertEquals(compare[i], array[i]);
+	}
 
 }

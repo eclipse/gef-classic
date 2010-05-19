@@ -16,40 +16,40 @@ package org.eclipse.gef.examples.text.model;
  */
 public abstract class ModelElement extends Notifier {
 
-private static final long serialVersionUID = 1;
-private Container container;
-protected int type;
+	private static final long serialVersionUID = 1;
+	private Container container;
+	protected int type;
 
-public Block getBlockContainer() {
-	Container parent = getContainer();
-	while (parent != null && !(parent instanceof Block))
-		parent = parent.getContainer();
-	return (Block)parent;
-}
+	public Block getBlockContainer() {
+		Container parent = getContainer();
+		while (parent != null && !(parent instanceof Block))
+			parent = parent.getContainer();
+		return (Block) parent;
+	}
 
-/**
- * @return Returns the container.
- */
-public Container getContainer() {
-	return container;
-}
+	/**
+	 * @return Returns the container.
+	 */
+	public Container getContainer() {
+		return container;
+	}
 
-public int getType() {
-	return type;
-}
+	public int getType() {
+		return type;
+	}
 
-/**
- * @since 3.1
- * @param container
- */
-public void setParent(Container container) {
-	this.container = container;
-}
+	/**
+	 * @since 3.1
+	 * @param container
+	 */
+	public void setParent(Container container) {
+		this.container = container;
+	}
 
-public void setType(int type) {
-	this.type = type;
-}
+	public void setType(int type) {
+		this.type = type;
+	}
 
-abstract int size();
+	abstract int size();
 
 }

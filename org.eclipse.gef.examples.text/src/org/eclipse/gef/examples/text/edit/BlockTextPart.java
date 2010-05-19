@@ -19,28 +19,26 @@ import org.eclipse.gef.examples.text.model.Style;
 /**
  * @since 3.1
  */
-public class BlockTextPart 
-	extends CompoundTextPart 
-{
+public class BlockTextPart extends CompoundTextPart {
 
-public BlockTextPart(Object model) {
-	super(model);
-}
+	public BlockTextPart(Object model) {
+		super(model);
+	}
 
-public void propertyChange(PropertyChangeEvent evt) {
-	String property = evt.getPropertyName();
-	if (Style.PROPERTY_ALIGNMENT.equals(property) 
-			|| Style.PROPERTY_ORIENTATION.equals(property))
-		refreshVisuals();
-	else
-		super.propertyChange(evt);
-}
+	public void propertyChange(PropertyChangeEvent evt) {
+		String property = evt.getPropertyName();
+		if (Style.PROPERTY_ALIGNMENT.equals(property)
+				|| Style.PROPERTY_ORIENTATION.equals(property))
+			refreshVisuals();
+		else
+			super.propertyChange(evt);
+	}
 
-protected void refreshVisuals() {
-	BlockFlow block = (BlockFlow)getFigure();
-	Style style = getContainer().getStyle();
-	block.setHorizontalAligment(style.getAlignment());
-	block.setOrientation(style.getOrientation());
-}
+	protected void refreshVisuals() {
+		BlockFlow block = (BlockFlow) getFigure();
+		Style style = getContainer().getStyle();
+		block.setHorizontalAligment(style.getAlignment());
+		block.setOrientation(style.getOrientation());
+	}
 
 }

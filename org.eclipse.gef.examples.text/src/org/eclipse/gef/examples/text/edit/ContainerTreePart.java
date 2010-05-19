@@ -22,34 +22,34 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public class ContainerTreePart extends ExampleTreePart {
 
-public ContainerTreePart(Object model) {
-	setModel(model);
-}
-
-protected List getModelChildren() {
-	return ((Container)getModel()).getChildren();
-}
-
-public void propertyChange(PropertyChangeEvent evt) {
-	if (evt.getPropertyName().equals("children"))
-		refreshChildren();
-}
-
-private Container getContainer() {
-	return (Container)getModel();
-}
-
-protected void refreshChildren() {
-	super.refreshChildren();
-	if (getWidget() instanceof TreeItem) {
-		TreeItem item = (TreeItem)getWidget();
-		item.setExpanded(true);
+	public ContainerTreePart(Object model) {
+		setModel(model);
 	}
-}
 
-protected void refreshVisuals() {
-	StringBuffer label = new StringBuffer();
-	switch (getContainer().getType()) {
+	protected List getModelChildren() {
+		return ((Container) getModel()).getChildren();
+	}
+
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals("children"))
+			refreshChildren();
+	}
+
+	private Container getContainer() {
+		return (Container) getModel();
+	}
+
+	protected void refreshChildren() {
+		super.refreshChildren();
+		if (getWidget() instanceof TreeItem) {
+			TreeItem item = (TreeItem) getWidget();
+			item.setExpanded(true);
+		}
+	}
+
+	protected void refreshVisuals() {
+		StringBuffer label = new StringBuffer();
+		switch (getContainer().getType()) {
 		case Container.TYPE_BULLETED_LIST:
 			label.append("<bullet>");
 			break;
@@ -79,8 +79,8 @@ protected void refreshVisuals() {
 		default:
 			label.append("Unknown container");
 			break;
+		}
+		setWidgetText(label.toString());
 	}
-	setWidgetText(label.toString());
-}
 
 }

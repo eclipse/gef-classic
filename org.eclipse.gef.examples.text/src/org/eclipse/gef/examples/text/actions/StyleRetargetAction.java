@@ -18,10 +18,10 @@ import org.eclipse.ui.actions.RetargetAction;
  * @since 3.1
  */
 public class StyleRetargetAction extends RetargetAction {
-	
-public StyleRetargetAction(String styleID) {
-	super(styleID, "", IAction.AS_CHECK_BOX);
-	BooleanStyleAction.configureStyleAction(this);
-}
+
+	public StyleRetargetAction(String styleID) {
+		super(styleID, "", IAction.AS_CHECK_BOX);
+		BooleanStyleAction.configureStyleAction(this);
+	}
 
 }

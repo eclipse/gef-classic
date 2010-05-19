@@ -16,13 +16,13 @@ package org.eclipse.gef.examples.text.model;
  */
 public class ModelLocation {
 
-public final ModelElement model;
+	public final ModelElement model;
 
-public final int offset;
+	public final int offset;
 
-public ModelLocation(ModelElement model, int offset) {
-	this.model = model;
-	this.offset = offset;
-}
+	public ModelLocation(ModelElement model, int offset) {
+		this.model = model;
+		this.offset = offset;
+	}
 
 }

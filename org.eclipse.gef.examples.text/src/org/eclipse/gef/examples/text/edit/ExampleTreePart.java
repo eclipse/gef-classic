@@ -19,21 +19,19 @@ import org.eclipse.gef.examples.text.model.ModelElement;
 /**
  * @since 3.1
  */
-public abstract class ExampleTreePart
-	extends AbstractTreeEditPart
-	implements PropertyChangeListener
-{
+public abstract class ExampleTreePart extends AbstractTreeEditPart implements
+		PropertyChangeListener {
 
-public void activate() {
-	super.activate();
-	ModelElement model = (ModelElement)getModel();
-	model.addPropertyChangeListener(this);
-}
+	public void activate() {
+		super.activate();
+		ModelElement model = (ModelElement) getModel();
+		model.addPropertyChangeListener(this);
+	}
 
-public void deactivate() {
-	ModelElement model = (ModelElement)getModel();
-	model.removePropertyChangeListener(this);
-	super.deactivate();
-}
+	public void deactivate() {
+		ModelElement model = (ModelElement) getModel();
+		model.removePropertyChangeListener(this);
+		super.deactivate();
+	}
 
 }

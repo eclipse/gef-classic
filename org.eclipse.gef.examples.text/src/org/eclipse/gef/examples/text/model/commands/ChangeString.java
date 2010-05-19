@@ -20,80 +20,82 @@ import org.eclipse.gef.examples.text.model.TextRun;
  */
 public class ChangeString extends MiniEdit {
 
-private String pending;
+	private String pending;
 
-private char insertedChars[];
+	private char insertedChars[];
 
-private final int offset;
+	private final int offset;
 
-private final TextRun run;
-private final boolean overwrite;
-private String overwrittenText;
+	private final TextRun run;
+	private final boolean overwrite;
+	private String overwrittenText;
 
-public ChangeString(TextRun run, String c, int offset, boolean overwrite) {
-	this.run = run;
-	this.pending = c;
-	this.offset = offset;
-	this.overwrite = overwrite;
-}
+	public ChangeString(TextRun run, String c, int offset, boolean overwrite) {
+		this.run = run;
+		this.pending = c;
+		this.offset = offset;
+		this.overwrite = overwrite;
+	}
 
-/**
- * @since 3.1
- * @param char1
- */
-public void appendText(String append) {
-	Assert.isTrue(pending == null);
-	pending = append;
-}
+	/**
+	 * @since 3.1
+	 * @param char1
+	 */
+	public void appendText(String append) {
+		Assert.isTrue(pending == null);
+		pending = append;
+	}
 
-/**
- * @see org.eclipse.gef.commands.Command#execute()
- */
-public void apply() {
-	if (overwrite)
-		overwrittenText = run.overwriteText(pending, offset);
-	else
-		run.insertText(pending, offset);
-	insertedChars = pending.toCharArray();
-	pending = null;
-}
+	/**
+	 * @see org.eclipse.gef.commands.Command#execute()
+	 */
+	public void apply() {
+		if (overwrite)
+			overwrittenText = run.overwriteText(pending, offset);
+		else
+			run.insertText(pending, offset);
+		insertedChars = pending.toCharArray();
+		pending = null;
+	}
 
-public boolean canApply() {
-	return pending != null;
-}
+	public boolean canApply() {
+		return pending != null;
+	}
 
-/**
- * re-executes the command for the additional character added above.
- */
-public void commitPending() {
-	if (overwrite)
-		overwrittenText += run.overwriteText(pending, offset + insertedChars.length);
-	else
-		run.insertText(pending, offset + insertedChars.length);
-	char old[] = insertedChars;
-	insertedChars = new char[old.length + 1];
-	System.arraycopy(old, 0, insertedChars, 0, old.length);
-	insertedChars[insertedChars.length - 1] = pending.toCharArray()[0];
-	pending = null;
-}
+	/**
+	 * re-executes the command for the additional character added above.
+	 */
+	public void commitPending() {
+		if (overwrite)
+			overwrittenText += run.overwriteText(pending, offset
+					+ insertedChars.length);
+		else
+			run.insertText(pending, offset + insertedChars.length);
+		char old[] = insertedChars;
+		insertedChars = new char[old.length + 1];
+		System.arraycopy(old, 0, insertedChars, 0, old.length);
+		insertedChars[insertedChars.length - 1] = pending.toCharArray()[0];
+		pending = null;
+	}
 
-public ModelLocation getResultingLocation() {
-	return new ModelLocation(run, offset + insertedChars.length);
-}
+	public ModelLocation getResultingLocation() {
+		return new ModelLocation(run, offset + insertedChars.length);
+	}
 
-public void reapply() {
-	if (overwrite)
-		overwrittenText = run.overwriteText(new String(insertedChars), offset);
-	else
-		run.insertText(new String(insertedChars), offset);
-}
+	public void reapply() {
+		if (overwrite)
+			overwrittenText = run.overwriteText(new String(insertedChars),
+					offset);
+		else
+			run.insertText(new String(insertedChars), offset);
+	}
 
-public void rollback() {
-	if (overwrite) {
-		run.overwriteText(overwrittenText, offset);
-		overwrittenText = null;
-	} else
-		run.removeRange(offset, insertedChars.length);
-}
+	public void rollback() {
+		if (overwrite) {
+			run.overwriteText(overwrittenText, offset);
+			overwrittenText = null;
+		} else
+			run.removeRange(offset, insertedChars.length);
+	}
 
 }

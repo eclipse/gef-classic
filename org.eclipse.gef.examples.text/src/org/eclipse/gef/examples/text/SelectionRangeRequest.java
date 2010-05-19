@@ -18,22 +18,22 @@ import org.eclipse.gef.Request;
  */
 public class SelectionRangeRequest extends Request {
 
-private final SelectionRange range;
+	private final SelectionRange range;
 
-/**
- * @since 3.1
- * @param type
- */
-public SelectionRangeRequest(Object type, SelectionRange range) {
-	super(type);
-	this.range = range;
-}
+	/**
+	 * @since 3.1
+	 * @param type
+	 */
+	public SelectionRangeRequest(Object type, SelectionRange range) {
+		super(type);
+		this.range = range;
+	}
 
-/**
- * @return Returns the range.
- */
-public SelectionRange getSelectionRange() {
-	return range;
-}
+	/**
+	 * @return Returns the range.
+	 */
+	public SelectionRange getSelectionRange() {
+		return range;
+	}
 
 }

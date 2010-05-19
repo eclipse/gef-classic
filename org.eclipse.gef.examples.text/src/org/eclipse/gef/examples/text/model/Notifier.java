@@ -18,27 +18,25 @@ import java.io.Serializable;
 /**
  * @since 3.1
  */
-public class Notifier 
-	implements Serializable 
-{
+public class Notifier implements Serializable {
 
-protected transient PropertyChangeSupport listeners;
-private static final long serialVersionUID = 1;
+	protected transient PropertyChangeSupport listeners;
+	private static final long serialVersionUID = 1;
 
-public void addPropertyChangeListener(PropertyChangeListener l) {
-	if (listeners == null)
-		listeners = new PropertyChangeSupport(this);
-	listeners.addPropertyChangeListener(l);
-}
+	public void addPropertyChangeListener(PropertyChangeListener l) {
+		if (listeners == null)
+			listeners = new PropertyChangeSupport(this);
+		listeners.addPropertyChangeListener(l);
+	}
 
-protected void firePropertyChange(String prop, Object old, Object newValue) {
-	if (listeners != null)
-		listeners.firePropertyChange(prop, old, newValue);
-}
+	protected void firePropertyChange(String prop, Object old, Object newValue) {
+		if (listeners != null)
+			listeners.firePropertyChange(prop, old, newValue);
+	}
 
-public void removePropertyChangeListener(PropertyChangeListener l) {
-	if (listeners != null)
-		listeners.removePropertyChangeListener(l);
-}
+	public void removePropertyChangeListener(PropertyChangeListener l) {
+		if (listeners != null)
+			listeners.removePropertyChangeListener(l);
+	}
 
 }
