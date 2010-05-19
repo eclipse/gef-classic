@@ -12,22 +12,22 @@ package org.eclipse.gef.examples.shapes.model;
 
 import org.eclipse.swt.graphics.Image;
 
-
 /**
  * A rectangular shape.
+ * 
  * @author Elias Volanakis
  */
 public class RectangularShape extends Shape {
-/** A 16x16 pictogram of a rectangular shape. */
-private static final Image RECTANGLE_ICON = createImage("icons/rectangle16.gif");
+	/** A 16x16 pictogram of a rectangular shape. */
+	private static final Image RECTANGLE_ICON = createImage("icons/rectangle16.gif");
 
-private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1;
 
-public Image getIcon() {
-	return RECTANGLE_ICON;
-}
+	public Image getIcon() {
+		return RECTANGLE_ICON;
+	}
 
-public String toString() {
-	return "Rectangle " + hashCode();
-}
+	public String toString() {
+		return "Rectangle " + hashCode();
+	}
 }

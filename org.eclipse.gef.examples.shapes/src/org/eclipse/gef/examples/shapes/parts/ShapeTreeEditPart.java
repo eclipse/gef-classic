@@ -23,9 +23,11 @@ import org.eclipse.gef.examples.shapes.model.Shape;
 
 /**
  * TreeEditPart used for Shape instances (more specific for EllipticalShape and
- * RectangularShape instances). This is used in the Outline View of the ShapesEditor.
- * <p>This edit part must implement the PropertyChangeListener interface, 
- * so it can be notified of property changes in the corresponding model element.
+ * RectangularShape instances). This is used in the Outline View of the
+ * ShapesEditor.
+ * <p>
+ * This edit part must implement the PropertyChangeListener interface, so it can
+ * be notified of property changes in the corresponding model element.
  * </p>
  * 
  * @author Elias Volanakis
@@ -33,64 +35,79 @@ import org.eclipse.gef.examples.shapes.model.Shape;
 class ShapeTreeEditPart extends AbstractTreeEditPart implements
 		PropertyChangeListener {
 
-/**
- * Create a new instance of this edit part using the given model element.
- * @param model a non-null Shapes instance
- */
-ShapeTreeEditPart(Shape model) {
-	super(model);
-}
-
-/**
- * Upon activation, attach to the model element as a property change listener.
- */
-public void activate() {
-	if (!isActive()) {
-		super.activate();
-		((ModelElement) getModel()).addPropertyChangeListener(this);
+	/**
+	 * Create a new instance of this edit part using the given model element.
+	 * 
+	 * @param model
+	 *            a non-null Shapes instance
+	 */
+	ShapeTreeEditPart(Shape model) {
+		super(model);
 	}
-}
 
-/* (non-Javadoc)
- * @see org.eclipse.gef.editparts.AbstractTreeEditPart#createEditPolicies()
- */
-protected void createEditPolicies() {
-	// allow removal of the associated model element
-	installEditPolicy(EditPolicy.COMPONENT_ROLE, new ShapeComponentEditPolicy());
-}
-
-/**
- * Upon deactivation, detach from the model element as a property change listener.
- */
-public void deactivate() {
-	if (isActive()) {
-		super.deactivate();
-		((ModelElement) getModel()).removePropertyChangeListener(this);
+	/**
+	 * Upon activation, attach to the model element as a property change
+	 * listener.
+	 */
+	public void activate() {
+		if (!isActive()) {
+			super.activate();
+			((ModelElement) getModel()).addPropertyChangeListener(this);
+		}
 	}
-}
 
-private Shape getCastedModel() {
-	return (Shape) getModel();
-}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.gef.editparts.AbstractTreeEditPart#createEditPolicies()
+	 */
+	protected void createEditPolicies() {
+		// allow removal of the associated model element
+		installEditPolicy(EditPolicy.COMPONENT_ROLE,
+				new ShapeComponentEditPolicy());
+	}
 
-/* (non-Javadoc)
- * @see org.eclipse.gef.editparts.AbstractTreeEditPart#getImage()
- */
-protected Image getImage() {
-	return getCastedModel().getIcon();
-}
+	/**
+	 * Upon deactivation, detach from the model element as a property change
+	 * listener.
+	 */
+	public void deactivate() {
+		if (isActive()) {
+			super.deactivate();
+			((ModelElement) getModel()).removePropertyChangeListener(this);
+		}
+	}
 
-/* (non-Javadoc)
- * @see org.eclipse.gef.editparts.AbstractTreeEditPart#getText()
- */
-protected String getText() {
-	return getCastedModel().toString();
-}
+	private Shape getCastedModel() {
+		return (Shape) getModel();
+	}
 
-/* (non-Javadoc)
- * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
- */
-public void propertyChange(PropertyChangeEvent evt) {
-	refreshVisuals(); // this will cause an invocation of getImage() and getText(), see below
-}
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.gef.editparts.AbstractTreeEditPart#getImage()
+	 */
+	protected Image getImage() {
+		return getCastedModel().getIcon();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.gef.editparts.AbstractTreeEditPart#getText()
+	 */
+	protected String getText() {
+		return getCastedModel().toString();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
+	 * PropertyChangeEvent)
+	 */
+	public void propertyChange(PropertyChangeEvent evt) {
+		refreshVisuals(); // this will cause an invocation of getImage() and
+							// getText(), see below
+	}
 }

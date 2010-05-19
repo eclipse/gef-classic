@@ -14,20 +14,21 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * An elliptical shape.
+ * 
  * @author Elias Volanakis
  */
 public class EllipticalShape extends Shape {
 
-/** A 16x16 pictogram of an elliptical shape. */
-private static final Image ELLIPSE_ICON = createImage("icons/ellipse16.gif");
+	/** A 16x16 pictogram of an elliptical shape. */
+	private static final Image ELLIPSE_ICON = createImage("icons/ellipse16.gif");
 
-private static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1;
 
-public Image getIcon() {
-	return ELLIPSE_ICON;
-}
+	public Image getIcon() {
+		return ELLIPSE_ICON;
+	}
 
-public String toString() {
-	return "Ellipse " + hashCode();
-}
+	public String toString() {
+		return "Ellipse " + hashCode();
+	}
 }

@@ -19,22 +19,27 @@ import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
 import org.eclipse.gef.examples.shapes.model.commands.ShapeDeleteCommand;
 
 /**
- * This edit policy enables the removal of a Shapes instance from its container. 
+ * This edit policy enables the removal of a Shapes instance from its container.
+ * 
  * @see ShapeEditPart#createEditPolicies()
  * @see ShapeTreeEditPart#createEditPolicies()
  * @author Elias Volanakis
  */
 class ShapeComponentEditPolicy extends ComponentEditPolicy {
 
-/* (non-Javadoc)
- * @see org.eclipse.gef.editpolicies.ComponentEditPolicy#createDeleteCommand(org.eclipse.gef.requests.GroupRequest)
- */
-protected Command createDeleteCommand(GroupRequest deleteRequest) {
-	Object parent = getHost().getParent().getModel();
-	Object child = getHost().getModel();
-	if (parent instanceof ShapesDiagram && child instanceof Shape) {
-		return new ShapeDeleteCommand((ShapesDiagram) parent, (Shape) child);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.eclipse.gef.editpolicies.ComponentEditPolicy#createDeleteCommand(
+	 * org.eclipse.gef.requests.GroupRequest)
+	 */
+	protected Command createDeleteCommand(GroupRequest deleteRequest) {
+		Object parent = getHost().getParent().getModel();
+		Object child = getHost().getModel();
+		if (parent instanceof ShapesDiagram && child instanceof Shape) {
+			return new ShapeDeleteCommand((ShapesDiagram) parent, (Shape) child);
+		}
+		return super.createDeleteCommand(deleteRequest);
 	}
-	return super.createDeleteCommand(deleteRequest);
-}
 }
