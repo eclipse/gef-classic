@@ -11,7 +11,10 @@ package org.eclipse.zest.dot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -38,10 +41,11 @@ import org.eclipse.zest.internal.dot.DotFileUtils;
  * @author Fabian Steeg (fsteeg)
  */
 public final class DotImport {
-    private static final String ZEST_TEMPLATE = "Zest";// .xpt = filename
+	private static final String ZEST_TEMPLATE = "Zest";// .xpt = filename
     private static final String ZEST_ANIMATION_TEMPLATE = "ZestAnimation";// .xpt
     static final File DEFAULT_OUTPUT_FOLDER = new File("src-gen/org/eclipse/zest/dot");
-    private static final URL WORKFLOW = DotImport.class.getResource("Generator.mwe");
+    private static final String WORKFLOW_FILE = "Generator.mwe";
+    private static final URL WORKFLOW = DotImport.class.getResource(WORKFLOW_FILE);
     static final File DEFAULT_INPUT_FOLDER = new File("resources/input");
     private File dotFile;
     private DotAst dotAst;
@@ -207,20 +211,33 @@ public final class DotImport {
     }
 
     private static File loadWorkflow() {
-        File oawFile = null;
-        try {
-            if (Platform.isRunning()) {
-                oawFile = new File(FileLocator.toFileURL(WORKFLOW).toURI());
-            } else {
-                oawFile = new File(DotFileUtils.resolve(WORKFLOW).toURI());
-            }
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return oawFile;
-    }
+		File oawFile = null;
+		try {
+			if (Platform.isRunning()) {
+				oawFile = new File(FileLocator.toFileURL(WORKFLOW).toURI());
+			} else {
+				oawFile = File.createTempFile("dot4zest-workflow", ".mwe");
+				InputStream stream = DotImport.class.getResourceAsStream(WORKFLOW_FILE);
+				copy(stream, oawFile);
+			}
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return oawFile;
+	}
+
+	private static void copy(InputStream stream, File file) throws IOException {
+		OutputStream out = new FileOutputStream(file);
+		byte[] buffer = new byte[1024];
+		int next;
+		while ((next = stream.read(buffer)) > 0) {
+			out.write(buffer, 0, next);
+		}
+		stream.close();
+		out.close();
+	}
 
     @Override
     public String toString() {
