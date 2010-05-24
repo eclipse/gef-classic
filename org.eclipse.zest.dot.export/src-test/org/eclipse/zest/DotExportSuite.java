@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009 Fabian Steeg. All rights reserved. This program and the
- * accompanying materials are made available under the terms of the Eclipse
+ * Copyright (c) 2009, 2010 Fabian Steeg. All rights reserved. This program and
+ * the accompanying materials are made available under the terms of the Eclipse
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * <p/>
@@ -18,14 +18,18 @@ import org.junit.runners.Suite;
 
 /**
  * Main test suite for the {@code org.eclipse.zest.dot.export} bundle.
+ * 
  * @author Fabian Steeg (fsteeg)
  */
-@RunWith( Suite.class )
-@Suite.SuiteClasses( { TestDotTemplate.class, TestDotExport.class, TestImageExport.class } )
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ TestDotTemplate.class, TestDotExport.class,
+		TestImageExport.class })
 public final class DotExportSuite {
-    private DotExportSuite() { /* Enforce non-instantiability */}
-    @BeforeClass
-    public static void wipe() {
-        DotTestUtils.wipeOutput(TestDotExport.OUTPUT, ".dot");
-    }
+	private DotExportSuite() { /* Enforce non-instantiability */
+	}
+
+	@BeforeClass
+	public static void wipe() {
+		DotTestUtils.wipeOutput(TestDotExport.OUTPUT, ".dot");
+	}
 }

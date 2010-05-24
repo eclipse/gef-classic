@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009 Fabian Steeg. All rights reserved. This program and the
- * accompanying materials are made available under the terms of the Eclipse
+ * Copyright (c) 2009, 2010 Fabian Steeg. All rights reserved. This program and
+ * the accompanying materials are made available under the terms of the Eclipse
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * <p/>
@@ -26,56 +26,62 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
  * labels, edge styles.
  */
 public class SampleGraph extends Graph {
-    /**
-     * {@link Graph#Graph(Composite, int)}
-     * @param parent The parent
-     * @param style The style bits
-     */
-    public SampleGraph(final Composite parent, final int style) {
-        super(parent, style);
+	/**
+	 * {@link Graph#Graph(Composite, int)}
+	 * 
+	 * @param parent
+	 *            The parent
+	 * @param style
+	 *            The style bits
+	 */
+	public SampleGraph(final Composite parent, final int style) {
+		super(parent, style);
 
-        /* Global settings: */
-        setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
-        setLayoutAlgorithm(new TreeLayoutAlgorithm(
-                LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		/* Global settings: */
+		setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
+		setLayoutAlgorithm(new TreeLayoutAlgorithm(
+				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
-        /* Nodes: */
-        GraphNode n1 = new GraphNode(this, SWT.NONE, "Node");
-        GraphNode n2 = new GraphNode(this, SWT.NONE, "Node");
-        GraphNode n3 = new GraphNode(this, SWT.NONE, "Leaf1");
-        GraphNode n4 = new GraphNode(this, SWT.NONE, "Leaf2");
+		/* Nodes: */
+		GraphNode n1 = new GraphNode(this, SWT.NONE, "Node");
+		GraphNode n2 = new GraphNode(this, SWT.NONE, "Node");
+		GraphNode n3 = new GraphNode(this, SWT.NONE, "Leaf1");
+		GraphNode n4 = new GraphNode(this, SWT.NONE, "Leaf2");
 
-        /* Connection from n1 to n2: */
-        GraphConnection n1n2 = new GraphConnection(this, SWT.NONE, n1, n2);
-        n1n2.setText("Edge");
-        n1n2.setLineStyle(SWT.LINE_DASH);
+		/* Connection from n1 to n2: */
+		GraphConnection n1n2 = new GraphConnection(this, SWT.NONE, n1, n2);
+		n1n2.setText("Edge");
+		n1n2.setLineStyle(SWT.LINE_DASH);
 
-        /* Connection from n2 to n3: */
-        GraphConnection n2n3 = new GraphConnection(this, SWT.NONE, n2, n3);
-        n2n3.setText("Edge");
-        n2n3.setLineStyle(SWT.LINE_DASH);
+		/* Connection from n2 to n3: */
+		GraphConnection n2n3 = new GraphConnection(this, SWT.NONE, n2, n3);
+		n2n3.setText("Edge");
+		n2n3.setLineStyle(SWT.LINE_DASH);
 
-        /* Connection from n2 to n4: */
-        GraphConnection n2n4 = new GraphConnection(this, SWT.NONE, n2, n4);
-        n2n4.setText("Dotted");
-        n2n4.setLineStyle(SWT.LINE_DOT);
-    }
-    /**
-     * Displays this graph in a shell.
-     * @param args Not used
-     */
-    public static void main(final String[] args) {
-        Display d = new Display();
-        Shell shell = new Shell(d);
-        shell.setText(SampleGraph.class.getSimpleName());
-        shell.setLayout(new FillLayout());
-        shell.setSize(200, 250);
-        new SampleGraph(shell, SWT.NONE);
-        shell.open();
-        while (!shell.isDisposed()) {
-            while (!d.readAndDispatch()) {
-                d.sleep();
-            }
-        }
-    }
+		/* Connection from n2 to n4: */
+		GraphConnection n2n4 = new GraphConnection(this, SWT.NONE, n2, n4);
+		n2n4.setText("Dotted");
+		n2n4.setLineStyle(SWT.LINE_DOT);
+	}
+
+	/**
+	 * Displays this graph in a shell.
+	 * 
+	 * @param args
+	 *            Not used
+	 */
+	public static void main(final String[] args) {
+		Display d = new Display();
+		Shell shell = new Shell(d);
+		shell.setText(SampleGraph.class.getSimpleName());
+		shell.setLayout(new FillLayout());
+		shell.setSize(200, 250);
+		new SampleGraph(shell, SWT.NONE);
+		shell.open();
+		while (!shell.isDisposed()) {
+			while (!d.readAndDispatch()) {
+				d.sleep();
+			}
+		}
+	}
 }

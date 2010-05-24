@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009 Fabian Steeg. All rights reserved. This program and the
- * accompanying materials are made available under the terms of the Eclipse
+ * Copyright (c) 2009, 2010 Fabian Steeg. All rights reserved. This program and
+ * the accompanying materials are made available under the terms of the Eclipse
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * <p/>
@@ -33,32 +33,34 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
  * org.eclipse.zest.dot.import bundle).
  */
 public final class DotExportSample {
-    public static void main(final String[] args) {
-        Display d = new Display();
-        Shell shell = new Shell(d);
-        /* Set up a directed Zest graph with a single connection: */
-        Graph graph = new Graph(shell, SWT.NONE);
-        graph.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
-        GraphConnection edge = new GraphConnection(graph, SWT.NONE, 
-                new GraphNode(graph, SWT.NONE, "Node 1"), 
-                new GraphNode(graph, SWT.NONE, "Node 2"));
-        edge.setText("A dotted edge");
-        edge.setLineStyle(SWT.LINE_DOT);
-        /* Export the Zest graph to a DOT string or a DOT file: */
-        DotExport dotExport = new DotExport(graph);
-        System.out.println(dotExport.toDotString());
-        dotExport.toDotFile(new File("src-gen/DirectSample.dot"));
-        /* Show the Zest graph: */
-        graph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
-                LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
-        shell.setLayout(new FillLayout());
-        shell.setSize(200, 250);
-        shell.open();
-        while (!shell.isDisposed()) {
-            while (!d.readAndDispatch()) {
-                d.sleep();
-            }
-        }
-    }
-    private DotExportSample() { /* enforce non-instantiability */}
+	public static void main(final String[] args) {
+		Display d = new Display();
+		Shell shell = new Shell(d);
+		/* Set up a directed Zest graph with a single connection: */
+		Graph graph = new Graph(shell, SWT.NONE);
+		graph.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
+		GraphConnection edge = new GraphConnection(graph, SWT.NONE,
+				new GraphNode(graph, SWT.NONE, "Node 1"), new GraphNode(graph,
+						SWT.NONE, "Node 2"));
+		edge.setText("A dotted edge");
+		edge.setLineStyle(SWT.LINE_DOT);
+		/* Export the Zest graph to a DOT string or a DOT file: */
+		DotExport dotExport = new DotExport(graph);
+		System.out.println(dotExport.toDotString());
+		dotExport.toDotFile(new File("src-gen/DirectSample.dot"));
+		/* Show the Zest graph: */
+		graph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
+				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		shell.setLayout(new FillLayout());
+		shell.setSize(200, 250);
+		shell.open();
+		while (!shell.isDisposed()) {
+			while (!d.readAndDispatch()) {
+				d.sleep();
+			}
+		}
+	}
+
+	private DotExportSample() { /* enforce non-instantiability */
+	}
 }

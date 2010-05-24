@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2009 Fabian Steeg. All rights reserved. This program and the
- * accompanying materials are made available under the terms of the Eclipse
+ * Copyright (c) 2009, 2010 Fabian Steeg. All rights reserved. This program and
+ * the accompanying materials are made available under the terms of the Eclipse
  * Public License v1.0 which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  * <p/>
@@ -23,16 +23,19 @@ import org.junit.runners.Suite;
 
 /**
  * Main test suite for the {@code org.eclipse.zest.dot.import} bundle.
+ * 
  * @author Fabian Steeg (fsteeg)
  */
-@RunWith( Suite.class )
-@Suite.SuiteClasses( { TestBasicDotImport.class, TestLayoutDotImport.class,
-        TestAnimationDotImport.class, TestGraphInstanceDotImport.class, TestBatchDotImport.class,
-        TestDotAst.class, SampleUsage.class } )
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ TestBasicDotImport.class, TestLayoutDotImport.class,
+		TestAnimationDotImport.class, TestGraphInstanceDotImport.class,
+		TestBatchDotImport.class, TestDotAst.class, SampleUsage.class })
 public final class DotImportSuite {
-    private DotImportSuite() { /* Enforce non-instantiability */}
-    @BeforeClass
-    public static void wipe() {
-        DotTestUtils.wipeOutput(DotImportTestUtils.OUTPUT, ".java");
-    }
+	private DotImportSuite() { /* Enforce non-instantiability */
+	}
+
+	@BeforeClass
+	public static void wipe() {
+		DotTestUtils.wipeOutput(DotImportTestUtils.OUTPUT, ".java");
+	}
 }
