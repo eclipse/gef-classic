@@ -696,7 +696,7 @@ public class GraphNode extends GraphItem {
 			Rectangle rectangle = nodeFigure.getBounds().getCopy();
 
 			FontData fontData = Display.getCurrent().getSystemFont().getFontData()[0];
-			fontData.height = 12;
+			fontData.setHeight(12);
 			fishEyeFont = new Font(Display.getCurrent(), fontData);
 			fishEyeFigure.setFont(fishEyeFont);
 
