@@ -1156,14 +1156,8 @@ public class Figure implements IFigure {
 				if (clippingStrategy != null) {
 					clipping = clippingStrategy.getClip(child);
 				} else {
-					// default clipping behavior is to clip at
-					// client area or bounds (dependent on whether there
-					// is an opaque border)
-					boolean optimizeClip = getBorder() == null
-							|| getBorder().isOpaque();
-					clipping = new Rectangle[] { optimizeClip ? child
-							.getBounds() : child.getBounds().getIntersection(
-							getClientArea(PRIVATE_RECT)) };
+					// default clipping behaviour is to clip at bounds
+					clipping = new Rectangle[] { child.getBounds() };
 				}
 				// child may now paint inside the clipping areas
 				for (int j = 0; j < clipping.length; j++) {
