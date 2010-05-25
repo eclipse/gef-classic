@@ -35,6 +35,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Scrollable;
 
+import org.eclipse.core.runtime.Platform;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -198,10 +200,11 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 	private boolean disposeCurrentCommand = true;
 
 	static {
-		if (SWT.getPlatform().equals("carbon"))//$NON-NLS-1$
+		if (Platform.OS_MACOSX.equals(Platform.getOS())) {
 			MODIFIER_NO_SNAPPING = SWT.CTRL;
-		else
+		} else {
 			MODIFIER_NO_SNAPPING = SWT.ALT;
+		}
 	}
 
 	boolean acceptAbort(KeyEvent e) {
