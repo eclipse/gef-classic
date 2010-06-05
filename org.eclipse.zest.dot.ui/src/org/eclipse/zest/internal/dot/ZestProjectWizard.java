@@ -142,8 +142,8 @@ public final class ZestProjectWizard extends Wizard implements
 			 * resources):
 			 */
 			DotFileUtils.copyAllFiles(resourcesDirectory(), outRoot);
-			setupProjectClasspath(javaElement, root, newProject);
 			newProject.refreshLocal(IResource.DEPTH_INFINITE, null);
+			setupProjectClasspath(javaElement, root, newProject);
 			runGeneratedZestGraphs(javaElement);
 			openDotFiles(javaElement);
 		} catch (IOException e) {
@@ -302,7 +302,7 @@ public final class ZestProjectWizard extends Wizard implements
 			 * and the Zest plugin dependencies (to get the required SWT and
 			 * Zest dependencies into the newly created project).
 			 */
-			IClasspathEntry[] newClasspath = new IClasspathEntry[classpath.length + 2];
+			IClasspathEntry[] newClasspath = new IClasspathEntry[classpath.length + 3];
 			IProject project = (IProject) newProject;
 			IFolder sourceGenFolder = project.getFolder(SRC_GEN);
 			sourceGenFolder.create(true, true, null);
@@ -311,6 +311,10 @@ public final class ZestProjectWizard extends Wizard implements
 			for (int i = 0; i < classpath.length; i++) {
 				newClasspath[i] = classpath[i];
 			}
+			IFolder templatesFolder = (IFolder) project.findMember(new Path(
+					TEMPLATES));
+			newClasspath[newClasspath.length - 3] = JavaCore
+					.newSourceEntry(templatesFolder.getFullPath());
 			newClasspath[newClasspath.length - 2] = JavaCore
 					.newSourceEntry(sourceGenFolder.getFullPath());
 			newClasspath[newClasspath.length - 1] = JavaCore
