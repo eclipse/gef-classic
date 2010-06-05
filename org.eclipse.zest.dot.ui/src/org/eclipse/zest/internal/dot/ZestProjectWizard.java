@@ -42,10 +42,12 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jdt.ui.wizards.JavaCapabilityConfigurationPage;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
@@ -124,13 +126,40 @@ public final class ZestProjectWizard extends Wizard implements
 	@Override
 	public boolean performFinish() {
 		try {
-			createSimpleJavaProject();
 			/*
 			 * We first show the graph view to see the Zest representation of
 			 * the new DOT file:
 			 */
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 					.getActivePage().showView(ZestGraphView.ID);
+			/*
+			 * Set up the runnable that calls the project creation code
+			 * asynchronously:
+			 */
+			IRunnableWithProgress runnable = new IRunnableWithProgress() {
+				public void run(final IProgressMonitor monitor) {
+					getShell().getDisplay().asyncExec(new Runnable() {
+						public void run() {
+							setupProject();
+						}
+					});
+				}
+			};
+			/* Run the runnable on the wizard container: */
+			getContainer().run(true, true, runnable);
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (PartInitException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+
+	private void setupProject() {
+		try {
+			createSimpleJavaProject();
 			IJavaElement javaElement = javaPage.getJavaProject();
 			IPath path = javaElement.getPath();
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -146,18 +175,19 @@ public final class ZestProjectWizard extends Wizard implements
 			setupProjectClasspath(javaElement, root, newProject);
 			runGeneratedZestGraphs(javaElement);
 			openDotFiles(javaElement);
+		} catch (JavaModelException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (CoreException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
-		} catch (CoreException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 		}
-		return true;
 	}
 
 	/**
