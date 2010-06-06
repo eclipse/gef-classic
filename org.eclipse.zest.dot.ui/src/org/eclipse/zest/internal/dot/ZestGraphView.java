@@ -375,7 +375,7 @@ public final class ZestGraphView extends ViewPart {
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
 	 */
 	public void setFocus() {
-		if (graph != null) {
+		if (graph != null && !graph.isDisposed()) {
 			graph.setFocus();
 		}
 	}
