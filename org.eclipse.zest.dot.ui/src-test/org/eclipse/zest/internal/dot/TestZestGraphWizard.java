@@ -47,9 +47,9 @@ public final class TestZestGraphWizard {
 	public void zestGraphCreation() {
 		/* Run the wizard and return the label of the generated graph: */
 		String graphLabel = runWizard();
-		String sourceFileName = graphLabel.replaceAll(" ", "") + ".java";
+		String sourceFileName = graphLabel.replaceAll(" ", "") + ".java"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		IPath zestGraphPath = new Path(ProjectHelper.PROJECT_PATH.toString()
-				+ "/" + sourceFileName);
+				+ "/" + sourceFileName); //$NON-NLS-1$
 		/* Assert the Zest graph file was both generated and opened: */
 		testGraphExists(zestGraphPath);
 		testGraphOpenInEditor(zestGraphPath);
@@ -61,13 +61,13 @@ public final class TestZestGraphWizard {
 				.getEditorInput();
 		IPath editorInputPath = fileInput.getFile().getProjectRelativePath();
 		Assert.assertTrue(
-				"Editor input of the active editor should be the generated file",
+				"Editor input of the active editor should be the generated file", //$NON-NLS-1$
 				zestGraphPath.toString().endsWith(editorInputPath.toString()));
 	}
 
 	private void testGraphExists(final IPath zestGraphPath) {
 		Assert.assertTrue(
-				"Generated Java file must exist: " + zestGraphPath.toFile(),
+				"Generated Java file must exist: " + zestGraphPath.toFile(), //$NON-NLS-1$
 				zestGraphPath.toFile().exists());
 	}
 

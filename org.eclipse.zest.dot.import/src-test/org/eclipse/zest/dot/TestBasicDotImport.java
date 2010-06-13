@@ -29,7 +29,7 @@ public final class TestBasicDotImport {
 	 */
 	@Test
 	public void sampleGraph() {
-		importFrom(new File(RESOURCES_INPUT + "sample_input.dot"));
+		importFrom(new File(RESOURCES_INPUT + "sample_input.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -37,7 +37,7 @@ public final class TestBasicDotImport {
 	 */
 	@Test
 	public void basicGraph() {
-		importFrom(new File(RESOURCES_TESTS + "basic_directed_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "basic_directed_graph.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -46,7 +46,7 @@ public final class TestBasicDotImport {
 	 */
 	@Test
 	public void directedGraph() {
-		importFrom(new File(RESOURCES_TESTS + "simple_digraph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "simple_digraph.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -55,7 +55,7 @@ public final class TestBasicDotImport {
 	 */
 	@Test
 	public void undirectedGraph() {
-		importFrom(new File(RESOURCES_TESTS + "simple_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "simple_graph.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -64,7 +64,7 @@ public final class TestBasicDotImport {
 	 */
 	@Test
 	public void labeledGraph() {
-		importFrom(new File(RESOURCES_TESTS + "labeled_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "labeled_graph.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -73,7 +73,7 @@ public final class TestBasicDotImport {
 	 */
 	@Test
 	public void styledGraph() {
-		importFrom(new File(RESOURCES_TESTS + "styled_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "styled_graph.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -82,7 +82,7 @@ public final class TestBasicDotImport {
 	 */
 	@Test
 	public void globalNodeGraph() {
-		importFrom(new File(RESOURCES_TESTS + "global_node_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "global_node_graph.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -91,7 +91,7 @@ public final class TestBasicDotImport {
 	 */
 	@Test
 	public void globalEdgeGraph() {
-		importFrom(new File(RESOURCES_TESTS + "global_edge_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "global_edge_graph.dot")); //$NON-NLS-1$
 	}
 
 }

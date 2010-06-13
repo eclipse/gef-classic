@@ -21,11 +21,11 @@ import org.junit.Test;
  */
 public class TestDotAst {
 	private static final DotAst DOT_AST = new DotAst(new File(
-			"resources/input/sample_input.dot"));
+			"resources/input/sample_input.dot")); //$NON-NLS-1$
 
 	@Test
 	public void parseName() {
-		Assert.assertEquals("SampleGraph", DOT_AST.graphName());
+		Assert.assertEquals("SampleGraph", DOT_AST.graphName()); //$NON-NLS-1$
 	}
 
 	@Test

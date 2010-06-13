@@ -41,9 +41,9 @@ public class TestImageExport extends TestDotTemplate {
 		if (dotDir == null) {
 			Properties props = new Properties();
 			InputStream stream = TestImageExport.class
-					.getResourceAsStream("test.properties");
+					.getResourceAsStream("test.properties"); //$NON-NLS-1$
 			if (stream == null) {
-				Assert.fail("Could not load the test.properties file in directory of "
+				Assert.fail("Could not load the test.properties file in directory of " //$NON-NLS-1$
 						+ TestImageExport.class.getSimpleName());
 			}
 			try {
@@ -52,9 +52,9 @@ public class TestImageExport extends TestDotTemplate {
 				 * Path to the local Graphviz folder containing the dot
 				 * executable file:
 				 */
-				dotDir = props.getProperty("org.eclipse.zest.dot.bin.dir");
+				dotDir = props.getProperty(DotExport.DOT_BIN_DIR_KEY);
 				if (dotDir == null || dotDir.trim().length() == 0) {
-					Assert.fail("Graphviz DOT directory not set in test.properties file");
+					Assert.fail("Graphviz DOT directory not set in test.properties file"); //$NON-NLS-1$
 				}
 				stream.close();
 			} catch (IOException e) {
@@ -72,10 +72,10 @@ public class TestImageExport extends TestDotTemplate {
 		 * test DotExport, we also run the test in the test superclass:
 		 */
 		super.testDotGeneration(graph);
-		File image = new DotExport(graph).toImage(dotDir, "pdf");
-		Assert.assertNotNull("Image must not be null", image);
-		System.out.println("Created image: " + image);
-		Assert.assertTrue("Image must exist", image.exists());
+		File image = new DotExport(graph).toImage(dotDir, "pdf"); //$NON-NLS-1$
+		Assert.assertNotNull("Image must not be null", image); //$NON-NLS-1$
+		System.out.println("Created image: " + image); //$NON-NLS-1$
+		Assert.assertTrue("Image must exist", image.exists()); //$NON-NLS-1$
 	}
 
 }

@@ -28,23 +28,23 @@ final class DotDrawer {
 	 */
 	public static File renderImage(final File dotExecutableDir,
 			final File dotInputFile, final String format) {
-		String outputFormat = "-T" + format;
-		String resultFile = dotInputFile.getName() + "." + format;
+		String outputFormat = "-T" + format; //$NON-NLS-1$
+		String resultFile = dotInputFile.getName() + "." + format; //$NON-NLS-1$
 		String dotFile = dotInputFile.getName();
 		String inputFolder = new File(dotInputFile.getParent())
 				.getAbsolutePath() + File.separator;
 		String outputFolder = inputFolder;
-		String dotExecutable = "dot" + (runningOnWindows() ? ".exe" : "");
+		String dotExecutable = "dot" + (runningOnWindows() ? ".exe" : ""); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		String[] commands = new String[] {
 				dotExecutableDir.getAbsolutePath() + File.separator
-						+ dotExecutable, outputFormat, "-o",
+						+ dotExecutable, outputFormat, "-o", //$NON-NLS-1$
 				outputFolder + resultFile, inputFolder + dotFile };
 		call(commands);
 		return new File(outputFolder, resultFile);
 	}
 
 	private static void call(final String[] commands) {
-		System.out.print("Calling: " + Arrays.asList(commands));
+		System.out.print("Calling: " + Arrays.asList(commands)); //$NON-NLS-1$
 		Runtime runtime = Runtime.getRuntime();
 		Process p = null;
 		try {
@@ -53,11 +53,12 @@ final class DotDrawer {
 		} catch (Exception x) {
 			x.printStackTrace();
 		}
-		System.out.println(", resulted in exit status: " + p.exitValue());
+		System.out
+				.println(", " + "resulted in exit status" + ": " + p.exitValue()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 	}
 
 	private static boolean runningOnWindows() {
-		return System.getProperty("os.name").toLowerCase().contains("win");
+		return System.getProperty("os.name").toLowerCase().contains("win"); //$NON-NLS-1$//$NON-NLS-2$
 	}
 
 }

@@ -35,7 +35,7 @@ public final class TestGraphInstanceDotImport {
 	public void minimalUsage() {
 		Shell shell = new Shell();
 		/* The DOT input, can be given as a String, File or IFile: */
-		DotImport dotImport = new DotImport("digraph Simple { 1;2; 1->2 }");
+		DotImport dotImport = new DotImport("digraph Simple { 1;2; 1->2 }"); //$NON-NLS-1$
 		/* Create a Zest graph instance in a parent, with a style: */
 		Graph graph = dotImport.newGraphInstance(shell, SWT.NONE);
 		// open(shell); // sets title, layout, and size, opens the shell
@@ -45,9 +45,9 @@ public final class TestGraphInstanceDotImport {
 	@Test
 	public void dotImport() {
 		Shell shell = new Shell();
-		DotImport importer = new DotImport("digraph Sample{1;2;1->2}");
+		DotImport importer = new DotImport("digraph Sample{1;2;1->2}"); //$NON-NLS-1$
 		Graph graph = importer.newGraphInstance(shell, SWT.NONE);
-		Assert.assertNotNull("Created graph must not be null", graph);
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(ZestStyles.CONNECTIONS_DIRECTED,
 				graph.getConnectionStyle());
 		// open(shell);
@@ -57,8 +57,8 @@ public final class TestGraphInstanceDotImport {
 	public void digraphType() {
 		Shell shell = new Shell();
 		Graph graph = interpreter.create(shell, SWT.NONE,
-				"digraph Sample{1;2;1->2}");
-		Assert.assertNotNull("Created graph must not be null", graph);
+				"digraph Sample{1;2;1->2}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(ZestStyles.CONNECTIONS_DIRECTED,
 				graph.getConnectionStyle());
 		// open(shell);
@@ -68,8 +68,8 @@ public final class TestGraphInstanceDotImport {
 	public void graphType() {
 		Shell shell = new Shell();
 		Graph graph = interpreter.create(shell, SWT.NONE,
-				"graph Sample{1;2;1--2}");
-		Assert.assertNotNull("Created graph must not be null", graph);
+				"graph Sample{1;2;1--2}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertNotSame(ZestStyles.CONNECTIONS_DIRECTED,
 				graph.getConnectionStyle());
 		// open(shell);
@@ -79,43 +79,43 @@ public final class TestGraphInstanceDotImport {
 	@Test
 	public void nodeDefaultLabel() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{1}");
-		Assert.assertNotNull("Created graph must not be null", graph);
-		Assert.assertEquals("1",
+				"graph Sample{1}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
+		Assert.assertEquals("1", //$NON-NLS-1$
 				((GraphNode) graph.getNodes().get(0)).getText());
 	}
 
 	@Test
 	public void nodeCount() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{1;2}");
-		Assert.assertNotNull("Created graph must not be null", graph);
+				"graph Sample{1;2}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(2, graph.getNodes().size());
 	}
 
 	@Test
 	public void edgeCount() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{1;2;1->2;2->2;1->1}");
-		Assert.assertNotNull("Created graph must not be null", graph);
+				"graph Sample{1;2;1->2;2->2;1->1}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(3, graph.getConnections().size());
 	}
 
 	@Test
 	public void nodeLabel() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{1[label=\"Node1\"];}");
-		Assert.assertNotNull("Created graph must not be null", graph);
-		Assert.assertEquals("Node1",
+				"graph Sample{1[label=\"Node1\"];}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
+		Assert.assertEquals("Node1", //$NON-NLS-1$
 				((GraphNode) graph.getNodes().get(0)).getText());
 	}
 
 	@Test
 	public void edgeLabel() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{1;2;1->2[label=\"Edge1\"]}");
-		Assert.assertNotNull("Created graph must not be null", graph);
-		Assert.assertEquals("Edge1", ((GraphConnection) graph.getConnections()
+				"graph Sample{1;2;1->2[label=\"Edge1\"]}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
+		Assert.assertEquals("Edge1", ((GraphConnection) graph.getConnections() //$NON-NLS-1$
 				.get(0)).getText());
 	}
 
@@ -123,8 +123,8 @@ public final class TestGraphInstanceDotImport {
 	public void edgeStyle() {
 		Shell parent = new Shell();
 		Graph graph = interpreter.create(parent, SWT.NONE,
-				"graph Sample{1;2;1->2[style=dashed]}");
-		Assert.assertNotNull("Created graph must not be null", graph);
+				"graph Sample{1;2;1->2[style=dashed]}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(SWT.LINE_DASH, ((GraphConnection) graph
 				.getConnections().get(0)).getLineStyle());
 		// open(parent);
@@ -134,8 +134,8 @@ public final class TestGraphInstanceDotImport {
 	public void globalEdgeStyle() {
 		Shell parent = new Shell();
 		Graph graph = interpreter.create(parent, SWT.NONE,
-				"graph Sample{edge[style=dashed];1;2;1->2}");
-		Assert.assertNotNull("Created graph must not be null", graph);
+				"graph Sample{edge[style=dashed];1;2;1->2}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(SWT.LINE_DASH, ((GraphConnection) graph
 				.getConnections().get(0)).getLineStyle());
 		// open(parent);
@@ -144,26 +144,26 @@ public final class TestGraphInstanceDotImport {
 	@Test
 	public void globalEdgeLabel() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{edge[label=\"Edge1\"];1;2;1->2}");
-		Assert.assertNotNull("Created graph must not be null", graph);
-		Assert.assertEquals("Edge1", ((GraphConnection) graph.getConnections()
+				"graph Sample{edge[label=\"Edge1\"];1;2;1->2}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
+		Assert.assertEquals("Edge1", ((GraphConnection) graph.getConnections() //$NON-NLS-1$
 				.get(0)).getText());
 	}
 
 	@Test
 	public void globalNodeLabel() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{node[label=\"Node1\"];1;}");
-		Assert.assertNotNull("Created graph must not be null", graph);
-		Assert.assertEquals("Node1",
+				"graph Sample{node[label=\"Node1\"];1;}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
+		Assert.assertEquals("Node1", //$NON-NLS-1$
 				((GraphNode) graph.getNodes().get(0)).getText());
 	}
 
 	@Test
 	public void layoutSpring() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{graph[layout=spring];1;}");
-		Assert.assertNotNull("Created graph must not be null", graph);
+				"graph Sample{graph[layout=spring];1;}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(SpringLayoutAlgorithm.class, graph
 				.getLayoutAlgorithm().getClass());
 	}
@@ -171,8 +171,8 @@ public final class TestGraphInstanceDotImport {
 	@Test
 	public void layoutGrid() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{graph[layout=grid];1;}");
-		Assert.assertNotNull("Created graph must not be null", graph);
+				"graph Sample{graph[layout=grid];1;}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(GridLayoutAlgorithm.class, graph
 				.getLayoutAlgorithm().getClass());
 	}
@@ -180,8 +180,8 @@ public final class TestGraphInstanceDotImport {
 	@Test
 	public void layoutRadial() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{graph[layout=radial];1;}");
-		Assert.assertNotNull("Created graph must not be null", graph);
+				"graph Sample{graph[layout=radial];1;}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(RadialLayoutAlgorithm.class, graph
 				.getLayoutAlgorithm().getClass());
 	}
@@ -189,8 +189,8 @@ public final class TestGraphInstanceDotImport {
 	@Test
 	public void layoutTree() {
 		Graph graph = interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{graph[layout=tree];1;}");
-		Assert.assertNotNull("Created graph must not be null", graph);
+				"graph Sample{graph[layout=tree];1;}"); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(TreeLayoutAlgorithm.class, graph
 				.getLayoutAlgorithm().getClass());
 	}
@@ -198,13 +198,13 @@ public final class TestGraphInstanceDotImport {
 	@Test(expected = IllegalArgumentException.class)
 	public void faultyLayout() {
 		interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{graph[layout=cool];1;}");
+				"graph Sample{graph[layout=cool];1;}"); //$NON-NLS-1$
 	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void faultyStyle() {
 		interpreter.create(new Shell(), SWT.NONE,
-				"graph Sample{1;2;1->2[style=\"dashed++\"]}");
+				"graph Sample{1;2;1->2[style=\"dashed++\"]}"); //$NON-NLS-1$
 	}
 
 	/**
@@ -255,48 +255,48 @@ public final class TestGraphInstanceDotImport {
 		 * with the second run.
 		 */
 		Shell shell = new Shell();
-		String dot1 = "digraph TestingGraph {1;2;3;4; 1->2;2->3;2->4}";
+		String dot1 = "digraph TestingGraph {1;2;3;4; 1->2;2->3;2->4}"; //$NON-NLS-1$
 		Graph graph = converter.create(shell, SWT.NONE, dot1);
-		Assert.assertNotNull("Created graph must exist!", graph);
+		Assert.assertNotNull("Created graph must exist!", graph); //$NON-NLS-1$
 		// open(shell); // blocks UI when running tests
 		Assert.assertEquals(4, graph.getNodes().size());
 		Assert.assertEquals(3, graph.getConnections().size());
 		System.out.println(String.format(
-				"Imported '%s' to Graph '%s' of type '%s'", dot1, graph, graph
+				"Imported '%s' to Graph '%s' of type '%s'", dot1, graph, graph //$NON-NLS-1$
 						.getClass().getSimpleName()));
 
 		/*
 		 * Check a unique name works, i.e. no existing classes on the classpath
 		 * could be used instead of the new one:
 		 */
-		String dot2 = "digraph TestingGraph" + System.currentTimeMillis()
-				+ "{1;2;3;4; 1->2;2->3;2->4}";
+		String dot2 = "digraph TestingGraph" + System.currentTimeMillis() //$NON-NLS-1$
+				+ "{1;2;3;4; 1->2;2->3;2->4}"; //$NON-NLS-1$
 		graph = converter.create(shell, SWT.NONE, dot2);
-		Assert.assertNotNull("Created graph must exist!", graph);
+		Assert.assertNotNull("Created graph must exist!", graph); //$NON-NLS-1$
 		// open(shell); // blocks UI when running tests
 		Assert.assertEquals(4, graph.getNodes().size());
 		Assert.assertEquals(3, graph.getConnections().size());
 		System.out.println(String.format(
-				"Imported '%s' to Graph '%s' of type '%s'", dot2, graph, graph
+				"Imported '%s' to Graph '%s' of type '%s'", dot2, graph, graph //$NON-NLS-1$
 						.getClass().getSimpleName()));
 
 		/*
 		 * Check if a DOT graph with the same name is changed when the generated
 		 * class is loaded:
 		 */
-		String dot3 = "digraph TestingGraph{1;2;3 1->2;2->3}";
+		String dot3 = "digraph TestingGraph{1;2;3 1->2;2->3}"; //$NON-NLS-1$
 		graph = converter.create(shell, SWT.NONE, dot3);
-		Assert.assertNotNull("Created graph must exist!", graph);
+		Assert.assertNotNull("Created graph must exist!", graph); //$NON-NLS-1$
 		Assert.assertEquals(3, graph.getNodes().size());
 		Assert.assertEquals(2, graph.getConnections().size());
 		System.out.println(String.format(
-				"Imported '%s' to Graph '%s' of type '%s'", dot3, graph, graph
+				"Imported '%s' to Graph '%s' of type '%s'", dot3, graph, graph //$NON-NLS-1$
 						.getClass().getSimpleName()));
 		// open(shell); // blocks UI when running tests
 	}
 
 	static void open(final Shell shell) {
-		shell.setText("Testing");
+		shell.setText("Testing"); //$NON-NLS-1$
 		shell.setLayout(new FillLayout());
 		shell.setSize(200, 250);
 		shell.open();

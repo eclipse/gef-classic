@@ -24,6 +24,7 @@ import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.mwe.utils.StandaloneSetup;
+import org.eclipse.zest.DotImportMessages;
 import org.eclipse.zest.internal.dot.parser.DotStandaloneSetup;
 
 /**
@@ -55,12 +56,12 @@ final class DotAst {
 		while (graphAttributes.hasNext()) {
 			EAttribute a = graphAttributes.next();
 			/* We return the name attribute of the graph: */
-			if (a.getName().equals("name")) {
+			if (a.getName().equals("name")) { //$NON-NLS-1$
 				return (String) graph.eGet(a);
 			}
 		}
-		System.err.println("Could not find name attribute in: " + graph);
-		return "";
+		System.err.println("Could not find name attribute in: " + graph); //$NON-NLS-1$
+		return ""; //$NON-NLS-1$
 	}
 
 	/**
@@ -72,7 +73,8 @@ final class DotAst {
 		Iterator<Diagnostic> i = errors.iterator();
 		while (i.hasNext()) {
 			Diagnostic next = i.next();
-			result.add(String.format("Error in line %s: %s ", next.getLine(),
+			result.add(String.format(
+					DotImportMessages.DotAst_0 + " %s: %s ", next.getLine(), //$NON-NLS-2$
 					next.getMessage()));
 		}
 		return result;
@@ -93,7 +95,7 @@ final class DotAst {
 	}
 
 	private static Resource loadResource(final File file) {
-		new StandaloneSetup().setPlatformUri("..");
+		new StandaloneSetup().setPlatformUri(".."); //$NON-NLS-1$
 		DotStandaloneSetup.doSetup();
 		ResourceSet set = new ResourceSetImpl();
 		Resource res = set.getResource(URI.createURI(file.toURI().toString()),
@@ -122,16 +124,16 @@ final class DotAst {
 				.iterator();
 		while (nodeContents.hasNext()) {
 			EObject nodeContentElement = nodeContents.next();
-			if (nodeContentElement.eClass().getName().equals("attr_list")) {
+			if (nodeContentElement.eClass().getName().equals("attr_list")) { //$NON-NLS-1$
 				Iterator<EObject> attributeContents = nodeContentElement
 						.eContents().iterator();
 				while (attributeContents.hasNext()) {
 					EObject attributeElement = attributeContents.next();
-					if (attributeElement.eClass().getName().equals("a_list")) {
-						if (getValue(attributeElement, "name").equals(
+					if (attributeElement.eClass().getName().equals("a_list")) { //$NON-NLS-1$
+						if (getValue(attributeElement, "name").equals( //$NON-NLS-1$
 								attributeName)) {
-							String label = getValue(attributeElement, "value")
-									.replaceAll("\"", "");
+							String label = getValue(attributeElement, "value") //$NON-NLS-1$
+									.replaceAll("\"", ""); //$NON-NLS-1$//$NON-NLS-2$
 							return label;
 						}
 					}
@@ -155,7 +157,7 @@ final class DotAst {
 			EAttribute a = graphAttributes.next();
 			if (a.getName().equals(name)) {
 				Object eGet = eObject.eGet(a);
-				return eGet == null ? "" : eGet.toString();
+				return eGet == null ? "" : eGet.toString(); //$NON-NLS-1$
 			}
 		}
 		return null;
@@ -163,7 +165,8 @@ final class DotAst {
 
 	@Override
 	public String toString() {
-		return String.format("%s named '%s' with %s errors, resource: %s",
+		return String.format(
+				"%s named '%s' with %s errors, resource: %s", //$NON-NLS-1$
 				getClass().getSimpleName(), graphName(), errors().size(),
 				resource);
 	}

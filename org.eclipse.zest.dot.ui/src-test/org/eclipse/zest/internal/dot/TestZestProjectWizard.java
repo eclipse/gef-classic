@@ -57,7 +57,7 @@ public final class TestZestProjectWizard {
 		List<IPath> paths = ZestProjectWizard.pathsToGeneratedGraphs();
 		for (IPath path : paths) {
 			IResource generatedZestFile = project.findMember(path);
-			String shouldExist = "Zest graph created by project builder should exist: "
+			String shouldExist = "Zest graph created by project builder should exist: " //$NON-NLS-1$
 					+ path;
 			Assert.assertNotNull(shouldExist, generatedZestFile);
 			Assert.assertTrue(shouldExist, generatedZestFile.exists());
@@ -65,7 +65,7 @@ public final class TestZestProjectWizard {
 	}
 
 	private void testProjectCreation() {
-		String shouldExist = "Created project should exist";
+		String shouldExist = "Created project should exist"; //$NON-NLS-1$
 		Assert.assertNotNull(shouldExist, project);
 		Assert.assertTrue(shouldExist, project.exists());
 	}
@@ -74,7 +74,7 @@ public final class TestZestProjectWizard {
 		try {
 			IProjectNature nature = project.getNature(ZestNature.NATURE_ID);
 			Assert.assertNotNull(
-					"Zest nature should be present on new Zest project", nature);
+					"Zest nature should be present on new Zest project", nature); //$NON-NLS-1$
 		} catch (CoreException e) {
 			e.printStackTrace();
 		}

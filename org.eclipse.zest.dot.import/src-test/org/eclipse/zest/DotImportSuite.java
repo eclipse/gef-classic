@@ -36,6 +36,6 @@ public final class DotImportSuite {
 
 	@BeforeClass
 	public static void wipe() {
-		DotTestUtils.wipeOutput(DotImportTestUtils.OUTPUT, ".java");
+		DotTestUtils.wipeOutput(DotImportTestUtils.OUTPUT, ".java"); //$NON-NLS-1$
 	}
 }

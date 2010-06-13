@@ -33,6 +33,7 @@ import org.eclipse.emf.mwe.core.WorkflowRunner;
 import org.eclipse.emf.mwe.core.monitor.NullProgressMonitor;
 import org.eclipse.emf.mwe.core.monitor.ProgressMonitor;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.zest.DotImportMessages;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.internal.dot.DotFileUtils;
 
@@ -42,14 +43,14 @@ import org.eclipse.zest.internal.dot.DotFileUtils;
  * @author Fabian Steeg (fsteeg)
  */
 public final class DotImport {
-	private static final String ZEST_TEMPLATE = "Zest";// .xpt = filename
-	private static final String ZEST_ANIMATION_TEMPLATE = "ZestAnimation";// .xpt
+	private static final String ZEST_TEMPLATE = "Zest";// .xpt = filename //$NON-NLS-1$
+	private static final String ZEST_ANIMATION_TEMPLATE = "ZestAnimation";// .xpt //$NON-NLS-1$
 	static final File DEFAULT_OUTPUT_FOLDER = new File(
-			"src-gen/org/eclipse/zest/dot");
-	private static final String WORKFLOW_FILE = "Generator.mwe";
+			"src-gen/org/eclipse/zest/dot"); //$NON-NLS-1$
+	private static final String WORKFLOW_FILE = "Generator.mwe"; //$NON-NLS-1$
 	private static final URL WORKFLOW = DotImport.class
 			.getResource(WORKFLOW_FILE);
-	static final File DEFAULT_INPUT_FOLDER = new File("resources/input");
+	static final File DEFAULT_INPUT_FOLDER = new File("resources/input"); //$NON-NLS-1$
 	private File dotFile;
 	private DotAst dotAst;
 
@@ -188,17 +189,18 @@ public final class DotImport {
 
 	private File findResultFile(final File dotFile, final File targetDirectory) {
 		String name = dotAst.graphName();
-		File resultFile = new File(targetDirectory, name + ".java");
+		File resultFile = new File(targetDirectory, name + ".java"); //$NON-NLS-1$
 		if (!resultFile.exists()) {
-			throw new IllegalStateException(resultFile + " does not exist.");
+			throw new IllegalStateException(resultFile
+					+ " " + DotImportMessages.DotImport_0 + "."); //$NON-NLS-1$//$NON-NLS-3$
 		}
-		System.out.println("Zest file: " + resultFile.getAbsolutePath());
+		System.out.println("Zest file: " + resultFile.getAbsolutePath()); //$NON-NLS-1$
 		return resultFile;
 	}
 
 	private enum Slot {
-		MODEL_FILE("modelFile"), TARGET_DIR("targetDir"), TEMPLATE_NAME(
-				"templateName");
+		MODEL_FILE("modelFile"), TARGET_DIR("targetDir"), TEMPLATE_NAME( //$NON-NLS-1$//$NON-NLS-2$
+				"templateName"); //$NON-NLS-1$
 		private String v;
 
 		Slot(final String v) {
@@ -231,7 +233,7 @@ public final class DotImport {
 			while (s.hasNextLine()) {
 				builder.append(s.nextLine());
 			}
-			return builder.toString().contains("cluster_");
+			return builder.toString().contains("cluster_"); //$NON-NLS-1$
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -244,7 +246,7 @@ public final class DotImport {
 			if (Platform.isRunning()) {
 				oawFile = new File(FileLocator.toFileURL(WORKFLOW).toURI());
 			} else {
-				oawFile = File.createTempFile("dot4zest-workflow", ".mwe");
+				oawFile = File.createTempFile("dot4zest-workflow", ".mwe"); //$NON-NLS-1$//$NON-NLS-2$
 				InputStream stream = DotImport.class
 						.getResourceAsStream(WORKFLOW_FILE);
 				copy(stream, oawFile);
@@ -270,7 +272,7 @@ public final class DotImport {
 
 	@Override
 	public String toString() {
-		return String.format("%s of %s at %s", getClass().getSimpleName(),
+		return String.format("%s of %s at %s", getClass().getSimpleName(), //$NON-NLS-1$
 				dotAst, dotFile);
 	}
 

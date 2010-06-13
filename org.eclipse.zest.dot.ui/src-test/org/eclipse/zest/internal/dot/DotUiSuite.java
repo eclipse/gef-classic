@@ -29,7 +29,7 @@ public final class DotUiSuite {
 	@Before
 	public void setup() {
 		if (!Platform.isRunning()) {
-			Assert.fail("Please run as JUnit Plug-in test");
+			Assert.fail("Please run as JUnit Plug-in test"); //$NON-NLS-1$
 		}
 	}
 }

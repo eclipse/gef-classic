@@ -46,7 +46,7 @@ final class ExperimentalDotImport {
 			final Composite parent, final int style) {
 		try {
 			URLClassLoader ucl = getUrlClassLoader(outputDirUrl);
-			Class<?> clazz = Class.forName("org.eclipse.zest.dot." + graphName,
+			Class<?> clazz = Class.forName("org.eclipse.zest.dot." + graphName, //$NON-NLS-1$
 					true, ucl);
 			for (Constructor<?> c : clazz.getConstructors()) {
 				if (c.getParameterTypes().length == 2) {

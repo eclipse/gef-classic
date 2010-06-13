@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.CoreException;
  */
 public final class ZestNature implements IProjectNature {
 
-	static final String NATURE_ID = "org.eclipse.zest.dot.ui.nature";
+	static final String NATURE_ID = "org.eclipse.zest.dot.ui.nature"; //$NON-NLS-1$
 	private IProject project;
 
 	/**

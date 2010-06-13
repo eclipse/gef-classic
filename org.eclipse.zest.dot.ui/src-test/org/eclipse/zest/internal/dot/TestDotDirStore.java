@@ -26,10 +26,10 @@ public final class TestDotDirStore {
 	@Before
 	public void setup() {
 		if (!Platform.isRunning()) {
-			Assert.fail("Please run as JUnit Plug-in test");
+			Assert.fail("Please run as JUnit Plug-in test"); //$NON-NLS-1$
 		}
 		Assert.assertNotNull(
-				"TestImageExport.DOT_DIR should point to the directory containing the local Graphviz DOT executable;",
+				"TestImageExport.DOT_DIR should point to the directory containing the local Graphviz DOT executable;", //$NON-NLS-1$
 				TestImageExport.dotBinDir());
 	}
 
@@ -52,12 +52,12 @@ public final class TestDotDirStore {
 	}
 
 	public void check(final String path) {
-		Assert.assertNotNull("Path to dot directory should not be null", path);
-		System.out.println("Dot directory: " + path);
-		Assert.assertTrue("Dot path should not be empty",
+		Assert.assertNotNull("Path to dot directory should not be null", path); //$NON-NLS-1$
+		System.out.println("Dot directory: " + path); //$NON-NLS-1$
+		Assert.assertTrue("Dot path should not be empty", //$NON-NLS-1$
 				path.trim().length() > 0);
-		Assert.assertTrue("Dot directory should exist", new File(path).exists());
-		Assert.assertTrue("Dot path should point to a directory",
+		Assert.assertTrue("Dot directory should exist", new File(path).exists()); //$NON-NLS-1$
+		Assert.assertTrue("Dot path should point to a directory", //$NON-NLS-1$
 				new File(path).isDirectory());
 	}
 }

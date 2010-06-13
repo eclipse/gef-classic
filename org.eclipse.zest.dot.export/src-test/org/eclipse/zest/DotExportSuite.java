@@ -30,6 +30,6 @@ public final class DotExportSuite {
 
 	@BeforeClass
 	public static void wipe() {
-		DotTestUtils.wipeOutput(TestDotExport.OUTPUT, ".dot");
+		DotTestUtils.wipeOutput(TestDotExport.OUTPUT, ".dot"); //$NON-NLS-1$
 	}
 }

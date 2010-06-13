@@ -38,9 +38,9 @@ public class TestDotTemplate {
 		Graph graph = new Graph(shell, SWT.NONE);
 		graph.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		GraphConnection edge = new GraphConnection(graph, SWT.NONE,
-				new GraphNode(graph, SWT.NONE, "Node 1"), new GraphNode(graph,
-						SWT.NONE, "Node 2"));
-		edge.setText("A dotted edge");
+				new GraphNode(graph, SWT.NONE, "Node 1"), new GraphNode(graph, //$NON-NLS-1$
+						SWT.NONE, "Node 2")); //$NON-NLS-1$
+		edge.setText("A dotted edge"); //$NON-NLS-1$
 		edge.setLineStyle(SWT.LINE_DOT);
 		testDotGeneration(graph);
 	}
@@ -84,13 +84,13 @@ public class TestDotTemplate {
 		 * We need to care for naming the DOT graph, as calling it 'Graph'
 		 * causes Graphviz to fail when rendering.
 		 */
-		Assert.assertFalse("DOT graph must not be named 'Graph',",
-				dot.contains("graph Graph"));
+		Assert.assertFalse("DOT graph must not be named 'Graph',", //$NON-NLS-1$
+				dot.contains("graph Graph")); //$NON-NLS-1$
 		Assert.assertTrue(
-				"DOT representation must contain simple class name of Zest input!",
+				"DOT representation must contain simple class name of Zest input!", //$NON-NLS-1$
 				dot.contains(graph.getClass().getSimpleName()));
 		Assert.assertTrue(graph.getConnectionStyle() == ZestStyles.CONNECTIONS_DIRECTED ? dot
-				.contains("digraph") : !dot.contains("digraph"));
+				.contains("digraph") : !dot.contains("digraph")); //$NON-NLS-1$ //$NON-NLS-2$
 		System.out.println(dot);
 	}
 }

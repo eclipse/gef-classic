@@ -36,7 +36,7 @@ public final class DotImportBatch {
 			File inputCandidate = new File(args[0]);
 			if (!inputCandidate.exists() || !inputCandidate.canRead()) {
 				System.err.println(String.format(
-						"Cannot read files from folder %s", inputCandidate));
+						"Cannot read files from folder %s", inputCandidate)); //$NON-NLS-1$
 			} else {
 				inputFolder = inputCandidate;
 			}
@@ -45,15 +45,15 @@ public final class DotImportBatch {
 			if (!outputCandidate.exists() || !outputCandidate.canRead()
 					|| !outputCandidate.canWrite()) {
 				System.err.println(String.format(
-						"Cannot write files to folder %s", outputCandidate));
+						"Cannot write files to folder %s", outputCandidate)); //$NON-NLS-1$
 			} else {
 				outputFolder = outputCandidate;
 			}
 		} else {
 			System.out
-					.println("Using default input and output folders (specify as first and second argument)");
+					.println("Using default input and output folders (specify as first and second argument)"); //$NON-NLS-1$
 		}
-		System.out.println(String.format("Using input %s and output %s",
+		System.out.println(String.format("Using input %s and output %s", //$NON-NLS-1$
 				inputFolder.getAbsolutePath(), outputFolder.getAbsolutePath()));
 		importDotFiles(inputFolder, outputFolder);
 	}
@@ -63,9 +63,10 @@ public final class DotImportBatch {
 		String[] inputFiles = inputFolder.list();
 		for (String inputFileName : inputFiles) {
 			File inputFile = new File(inputFolder, inputFileName);
-			if (inputFile.getName().toLowerCase().endsWith(".dot")) {
+			if (inputFile.getName().toLowerCase().endsWith(".dot")) { //$NON-NLS-1$
 				new DotImport(inputFile).newGraphSubclass(outputFolder);
-				System.out.println(String.format("Imported %s from %s into %s",
+				System.out.println(String.format(
+						"Imported %s from %s into %s", //$NON-NLS-1$
 						inputFile.getAbsolutePath(),
 						inputFolder.getAbsolutePath(),
 						outputFolder.getAbsolutePath()));

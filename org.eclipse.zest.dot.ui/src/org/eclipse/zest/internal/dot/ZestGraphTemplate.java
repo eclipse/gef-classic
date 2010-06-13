@@ -62,8 +62,8 @@ final class ZestGraphTemplate {
 
 	static {
 		/* Get the DOT testing files and use them as templates in the wizard: */
-		Bundle bundle = Platform.getBundle("org.eclipse.zest.dot.import");
-		URL root = FileLocator.findEntries(bundle, new Path("resources/tests"))[0];
+		Bundle bundle = Platform.getBundle("org.eclipse.zest.dot.import"); //$NON-NLS-1$
+		URL root = FileLocator.findEntries(bundle, new Path("resources/tests"))[0]; //$NON-NLS-1$
 		File rootFolder;
 		try {
 			rootFolder = new File(FileLocator.toFileURL(root).toURI());
@@ -74,7 +74,7 @@ final class ZestGraphTemplate {
 				 * (more robust than dynamic Class.forName instantiation of the
 				 * layout algorithm for the name).
 				 */
-				if (file.endsWith(".dot") && !file.contains("custom")) {
+				if (file.endsWith(".dot") && !file.contains("custom")) { //$NON-NLS-1$//$NON-NLS-2$
 					String name = formatName(file);
 					availableTemplates.add(new ZestGraphTemplate(name.trim(),
 							readTrimmingHeader(new File(rootFolder, file))));
@@ -94,11 +94,11 @@ final class ZestGraphTemplate {
 	 */
 	private static String formatName(final String file) {
 		StringBuilder name = new StringBuilder();
-		String[] tokens = file.split("\\.")[0].split("_");
+		String[] tokens = file.split("\\.")[0].split("_"); //$NON-NLS-1$//$NON-NLS-2$
 		for (String string : tokens) {
 			String upper = Character.toUpperCase(string.charAt(0))
 					+ string.substring(1).toLowerCase();
-			name.append(" ").append(upper);
+			name.append(" ").append(upper); //$NON-NLS-1$
 		}
 		return name.toString();
 	}
@@ -115,9 +115,9 @@ final class ZestGraphTemplate {
 			while (scanner.hasNextLine()) {
 				String nextLine = scanner.nextLine();
 				/* We trim the header, if any: */
-				if (!nextLine.trim().startsWith("/***")
-						&& !nextLine.trim().startsWith("*")) {
-					builder.append(nextLine + "\n");
+				if (!nextLine.trim().startsWith("/***") //$NON-NLS-1$
+						&& !nextLine.trim().startsWith("*")) { //$NON-NLS-1$
+					builder.append(nextLine + "\n"); //$NON-NLS-1$
 				}
 			}
 		} catch (FileNotFoundException e) {

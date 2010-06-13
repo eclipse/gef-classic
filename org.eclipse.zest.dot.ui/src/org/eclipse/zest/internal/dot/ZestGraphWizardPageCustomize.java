@@ -17,6 +17,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.zest.DotUiMessages;
 
 /**
  * This wizard page previews the Zest graph generated from the input in the
@@ -32,10 +33,10 @@ public final class ZestGraphWizardPageCustomize extends WizardPage {
 	 * Constructor for ZestGraphWizardPage.
 	 */
 	public ZestGraphWizardPageCustomize() {
-		super("wizardPage");
-		setTitle("Zest Graph Customization");
-		setDescription("Customize the DOT representation of the Zest graph to generate below. "
-				+ "To select a different template switch back to the first page.");
+		super("wizardPage"); //$NON-NLS-1$
+		setTitle(DotUiMessages.ZestGraphWizardPageCustomize_0);
+		setDescription(DotUiMessages.ZestGraphWizardPageCustomize_1
+				+ DotUiMessages.ZestGraphWizardPageCustomize_2);
 	}
 
 	/**
@@ -82,7 +83,7 @@ public final class ZestGraphWizardPageCustomize extends WizardPage {
 	private void createTemplateRow(final Composite composite) {
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		inputText = new Text(composite, SWT.BORDER | SWT.MULTI);
-		inputText.setText("");
+		inputText.setText(""); //$NON-NLS-1$
 		inputText.setLayoutData(gd);
 		inputText.addModifyListener(new ModifyListener() {
 			public void modifyText(final ModifyEvent e) {

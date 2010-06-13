@@ -40,14 +40,14 @@ public final class DotExportSample {
 		Graph graph = new Graph(shell, SWT.NONE);
 		graph.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		GraphConnection edge = new GraphConnection(graph, SWT.NONE,
-				new GraphNode(graph, SWT.NONE, "Node 1"), new GraphNode(graph,
-						SWT.NONE, "Node 2"));
-		edge.setText("A dotted edge");
+				new GraphNode(graph, SWT.NONE, "Node 1"), new GraphNode(graph, //$NON-NLS-1$
+						SWT.NONE, "Node 2")); //$NON-NLS-1$
+		edge.setText("A dotted edge"); //$NON-NLS-1$
 		edge.setLineStyle(SWT.LINE_DOT);
 		/* Export the Zest graph to a DOT string or a DOT file: */
 		DotExport dotExport = new DotExport(graph);
 		System.out.println(dotExport.toDotString());
-		dotExport.toDotFile(new File("src-gen/DirectSample.dot"));
+		dotExport.toDotFile(new File("src-gen/DirectSample.dot")); //$NON-NLS-1$
 		/* Show the Zest graph: */
 		graph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
 				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);

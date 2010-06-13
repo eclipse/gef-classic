@@ -32,7 +32,7 @@ public final class TestLayoutDotImport {
 	 */
 	@Test
 	public void treeLayout() {
-		importFrom(new File(RESOURCES_TESTS + "layout_tree_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "layout_tree_graph.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -41,7 +41,7 @@ public final class TestLayoutDotImport {
 	 */
 	@Test
 	public void springLayout() {
-		importFrom(new File(RESOURCES_TESTS + "layout_spring_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "layout_spring_graph.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -50,7 +50,7 @@ public final class TestLayoutDotImport {
 	 */
 	@Test
 	public void radialLayout() {
-		importFrom(new File(RESOURCES_TESTS + "layout_radial_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "layout_radial_graph.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -59,7 +59,7 @@ public final class TestLayoutDotImport {
 	 */
 	@Test
 	public void gridLayout() {
-		importFrom(new File(RESOURCES_TESTS + "layout_grid_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "layout_grid_graph.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -68,7 +68,7 @@ public final class TestLayoutDotImport {
 	 */
 	@Test
 	public void customLayout() {
-		importFrom(new File(RESOURCES_TESTS + "layout_custom_graph.dot"));
+		importFrom(new File(RESOURCES_TESTS + "layout_custom_graph.dot")); //$NON-NLS-1$
 	}
 
 }

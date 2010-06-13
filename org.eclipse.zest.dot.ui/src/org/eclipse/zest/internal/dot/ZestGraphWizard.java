@@ -42,6 +42,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.zest.DotUiMessages;
 import org.eclipse.zest.dot.DotImport;
 
 /**
@@ -54,19 +55,18 @@ import org.eclipse.zest.dot.DotImport;
  * @author Fabian Steeg (fsteeg)
  */
 public final class ZestGraphWizard extends Wizard implements INewWizard {
-	// TODO externalize
-	private static final String DOES_NOT_EXIST = "Container does not exist: ";
-	private static final String CREATING = "Creating ";
-	private static final String ERROR = "Error";
-	private static final String OPENING_FILE = "Opening file for editing...";
-	private static final String PLUGIN_ID = "org.eclipse.zest.dot.ui";
-	private static final String RUNNING_FILE = "Running generated file...";
+	private static final String DOES_NOT_EXIST = DotUiMessages.ZestGraphWizard_0;
+	private static final String CREATING = DotUiMessages.ZestGraphWizard_1;
+	private static final String ERROR = DotUiMessages.ZestGraphWizard_2;
+	private static final String OPENING_FILE = DotUiMessages.ZestGraphWizard_3;
+	private static final String PLUGIN_ID = "org.eclipse.zest.dot.ui"; //$NON-NLS-1$
+	private static final String RUNNING_FILE = DotUiMessages.ZestGraphWizard_4;
 	private ZestGraphWizardPageTemplateSelection templatePage;
 	private ZestGraphWizardPageCustomize customizationPage;
 	private ISelection selection;
-	private static final String DEFAULT_GRAPH_NAME = "SimpleGraph";
-	private static final String DEFAULT_DOT_GRAPH = "digraph "
-			+ DEFAULT_GRAPH_NAME + " {\n\t1; 2; \n\t1->2 \n}";
+	private static final String DEFAULT_GRAPH_NAME = "SimpleGraph"; //$NON-NLS-1$
+	private static final String DEFAULT_DOT_GRAPH = "digraph " //$NON-NLS-1$
+			+ DEFAULT_GRAPH_NAME + " {\n\t1; 2; \n\t1->2 \n}"; //$NON-NLS-1$
 	private String dotText = DEFAULT_DOT_GRAPH;
 
 	/** Create a new ZestGraphWizard. */
@@ -147,7 +147,7 @@ public final class ZestGraphWizard extends Wizard implements INewWizard {
 			final IProgressMonitor monitor) {
 		if (file == null) {
 			throw new IllegalArgumentException(
-					"The Zest graph Java source file to run must not be null");
+					DotUiMessages.ZestGraphWizard_5);
 		}
 		monitor.setTaskName(RUNNING_FILE);
 		IProject project = file.getProject();
@@ -179,11 +179,11 @@ public final class ZestGraphWizard extends Wizard implements INewWizard {
 		 * TODO there must be a cleaner way to get the fully qualified classname
 		 * for a Java source file in a Java project...
 		 */
-		if (!(location.contains("org") && location.contains(".java"))) {
+		if (!(location.contains("org") && location.contains(".java"))) { //$NON-NLS-1$//$NON-NLS-2$
 			return;
 		}
-		String className = location.substring(location.indexOf("org"),
-				location.indexOf(".java")).replaceAll("/", ".");
+		String className = location.substring(location.indexOf("org"), //$NON-NLS-1$
+				location.indexOf(".java")).replaceAll("/", "."); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		copy.setAttribute(
 				IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME,
 				className);
@@ -211,7 +211,7 @@ public final class ZestGraphWizard extends Wizard implements INewWizard {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IResource resource = root.findMember(new Path(containerName));
 		if (!resource.exists() || !(resource instanceof IContainer)) {
-			throwCoreException(DOES_NOT_EXIST + containerName);
+			throwCoreException(DOES_NOT_EXIST + ": " + containerName); //$NON-NLS-1$
 		}
 		final IContainer container = (IContainer) resource;
 		createFile(container, fileName, monitor);
@@ -222,7 +222,7 @@ public final class ZestGraphWizard extends Wizard implements INewWizard {
 
 	private void createFile(final IContainer container, final String fileName,
 			final IProgressMonitor monitor) {
-		monitor.beginTask(CREATING + fileName, 4);
+		monitor.beginTask(CREATING + " " + fileName, 4); //$NON-NLS-1$
 		getShell().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				new DotImport(templatePage.getDotText())

@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public final class DotUiActivator extends AbstractUIPlugin {
 
 	/** The plug-in ID */
-	public static final String PLUGIN_ID = "org.eclipse.zest.dot.ui";
+	public static final String PLUGIN_ID = "org.eclipse.zest.dot.ui"; //$NON-NLS-1$
 
 	private static DotUiActivator plugin;
 

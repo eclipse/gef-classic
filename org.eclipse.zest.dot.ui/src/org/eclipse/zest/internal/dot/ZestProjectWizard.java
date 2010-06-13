@@ -52,6 +52,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.zest.DotUiMessages;
 import org.osgi.framework.Bundle;
 
 /**
@@ -66,12 +67,12 @@ public final class ZestProjectWizard extends Wizard implements
 	 * sample graphs that are copied from resources/project/templates to the new
 	 * project.
 	 */
-	private static final String SAMPLE_GRAPH_JAVA = "SampleGraph.java";
-	private static final String SAMPLE_ANIMATION_JAVA = "SampleAnimation.java";
-	static final String PACKAGE = "org.eclipse.zest.dot";
-	static final String SRC_GEN = "src-gen";
-	private static final String RESOURCES = "resources/project";
-	private static final String TEMPLATES = "templates";
+	private static final String SAMPLE_GRAPH_JAVA = "SampleGraph.java"; //$NON-NLS-1$
+	private static final String SAMPLE_ANIMATION_JAVA = "SampleAnimation.java"; //$NON-NLS-1$
+	static final String PACKAGE = "org.eclipse.zest.dot"; //$NON-NLS-1$
+	static final String SRC_GEN = "src-gen"; //$NON-NLS-1$
+	private static final String RESOURCES = "resources/project"; //$NON-NLS-1$
+	private static final String TEMPLATES = "templates"; //$NON-NLS-1$
 
 	private WizardNewProjectCreationPage mainPage;
 	private JavaCapabilityConfigurationPage javaPage;
@@ -94,7 +95,7 @@ public final class ZestProjectWizard extends Wizard implements
 	 */
 	public void init(final IWorkbench workbench,
 			final IStructuredSelection currentSelection) {
-		super.setWindowTitle("New Zest Project");
+		super.setWindowTitle(DotUiMessages.ZestProjectWizard_0);
 	}
 
 	/**
@@ -105,10 +106,10 @@ public final class ZestProjectWizard extends Wizard implements
 	@Override
 	public void addPages() {
 		super.addPages();
-		mainPage = new WizardNewProjectCreationPage("ZestProjectWizard");
-		mainPage.setTitle("New Zest project");
-		mainPage.setDescription("Create a new Zest project with DOT templates");
-		mainPage.setInitialProjectName("ZestProject");
+		mainPage = new WizardNewProjectCreationPage(DotUiMessages.ZestProjectWizard_1);
+		mainPage.setTitle(DotUiMessages.ZestProjectWizard_2);
+		mainPage.setDescription(DotUiMessages.ZestProjectWizard_3);
+		mainPage.setInitialProjectName(DotUiMessages.ZestProjectWizard_4);
 		addPage(mainPage);
 		javaPage = new JavaCapabilityConfigurationPage() {
 			public void setVisible(final boolean visible) {
@@ -213,7 +214,7 @@ public final class ZestProjectWizard extends Wizard implements
 					throws CoreException, InvocationTargetException,
 					InterruptedException {
 				monitor = monitor == null ? new NullProgressMonitor() : monitor;
-				monitor.beginTask("Creating Zest project...", 3);
+				monitor.beginTask(DotUiMessages.ZestProjectWizard_5, 3);
 				IProject project = mainPage.getProjectHandle();
 				IPath locationPath = mainPage.getLocationPath();
 				IProjectDescription desc = create(project, locationPath);
@@ -246,16 +247,16 @@ public final class ZestProjectWizard extends Wizard implements
 		IJavaProject jproject = JavaCore.create(mainPage.getProjectHandle());
 		if (!jproject.equals(javaPage.getJavaProject())) {
 			IClasspathEntry[] buildPath = {
-					JavaCore.newSourceEntry(jproject.getPath().append("src")),
+					JavaCore.newSourceEntry(jproject.getPath().append("src")), //$NON-NLS-1$
 					JavaRuntime.getDefaultJREContainerEntry() };
-			IPath outputLocation = jproject.getPath().append("out");
+			IPath outputLocation = jproject.getPath().append("out"); //$NON-NLS-1$
 			javaPage.init(jproject, outputLocation, buildPath, false);
 		}
 	}
 
 	private static IPath pathTo(final String name) {
-		return new Path(ZestProjectWizard.SRC_GEN + "/"
-				+ ZestProjectWizard.PACKAGE.replaceAll("\\.", "/") + "/" + name);
+		return new Path(ZestProjectWizard.SRC_GEN + "/" //$NON-NLS-1$
+				+ ZestProjectWizard.PACKAGE.replaceAll("\\.", "/") + "/" + name); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 	}
 
 	private void runGeneratedZestGraphs(final IJavaElement javaElement)
@@ -312,11 +313,11 @@ public final class ZestProjectWizard extends Wizard implements
 				Collections.EMPTY_MAP);
 		if (resourcesFolderUrl == null) {
 			throw new IllegalStateException(String.format(
-					"Could not locate %s in bundle %s", RESOURCES, bundle));
+					DotUiMessages.ZestProjectWizard_6, RESOURCES, bundle));
 		}
 		URL fileURL = FileLocator.toFileURL(resourcesFolderUrl);
 		if (fileURL.toString().equals(resourcesFolderUrl.toString())) {
-			throw new IllegalStateException("Unknown format: " + fileURL);
+			throw new IllegalStateException(DotUiMessages.ZestProjectWizard_7 + ": " + fileURL); //$NON-NLS-2$
 		}
 		File resourcesDirectory = new File(fileURL.toURI());
 		return resourcesDirectory;
@@ -349,7 +350,7 @@ public final class ZestProjectWizard extends Wizard implements
 					.newSourceEntry(sourceGenFolder.getFullPath());
 			newClasspath[newClasspath.length - 1] = JavaCore
 					.newContainerEntry(new Path(
-							"org.eclipse.pde.core.requiredPlugins"));
+							"org.eclipse.pde.core.requiredPlugins")); //$NON-NLS-1$
 			/* Set the updated classpath: */
 			javaElement.getJavaProject().setRawClasspath(newClasspath, null);
 			/* Activate the Zest project nature: */

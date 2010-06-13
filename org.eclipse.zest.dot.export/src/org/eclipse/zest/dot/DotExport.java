@@ -23,6 +23,7 @@ import org.eclipse.zest.internal.dot.DotTemplate;
  * @author Fabian Steeg (fsteeg)
  */
 public final class DotExport {
+	public static final String DOT_BIN_DIR_KEY = "org.eclipse.zest.dot.bin.dir"; //$NON-NLS-1$
 	private Graph graph;
 
 	/**
@@ -72,8 +73,8 @@ public final class DotExport {
 	public String toString() {
 		String simpleClassName = graph.getClass().getSimpleName();
 		/* The exact name 'Graph' is not valid for rendering with Graphviz: */
-		return simpleClassName.equals("Graph") ? "Zest" + simpleClassName
-				: simpleClassName;
+		return simpleClassName.equals("Graph") ? "Zest" + simpleClassName //$NON-NLS-1$//$NON-NLS-2$
+		: simpleClassName;
 	}
 
 	private static String graphToDot(final Graph graph) {
@@ -87,8 +88,8 @@ public final class DotExport {
 		StringBuilder builder = new StringBuilder();
 		while (scanner.hasNextLine()) {
 			String line = scanner.nextLine();
-			if (!line.trim().equals("")) {
-				builder.append(line + "\n");
+			if (!line.trim().equals("")) { //$NON-NLS-1$
+				builder.append(line + "\n"); //$NON-NLS-1$
 			}
 		}
 		return builder.toString();

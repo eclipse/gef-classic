@@ -43,7 +43,7 @@ public final class DotTestUtils {
 				 * check so that no .cvsignore files etc. are deleted:
 				 */
 				if (!deletionCandidate.isHidden()
-						&& !deletionCandidate.getName().startsWith(".")) {
+						&& !deletionCandidate.getName().startsWith(".")) { //$NON-NLS-1$
 					boolean delete = deletionCandidate.delete();
 					if (delete) {
 						deleted++;
@@ -52,9 +52,9 @@ public final class DotTestUtils {
 			}
 			int dotFiles = countFilesWithSuffix(location, suffix);
 			Assert.assertEquals(
-					"Default output directory should contain no files matching the suffix before tests run;",
+					"Default output directory should contain no files matching the suffix before tests run;", //$NON-NLS-1$
 					0, dotFiles);
-			System.out.println(String.format("Deleted %s files in %s", deleted,
+			System.out.println(String.format("Deleted %s files in %s", deleted, //$NON-NLS-1$
 					location));
 		}
 	}

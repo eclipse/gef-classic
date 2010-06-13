@@ -14,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.zest.DotUiMessages;
 
 /**
  * Extracts a DOT graph substring from a string or file.
@@ -22,7 +23,7 @@ import org.eclipse.core.resources.IFile;
  */
 public final class DotExtractor {
 	/** The DOT graph returned if the input contains no DOT graph substring. */
-	public static final String NO_DOT = "graph{n1[label=\"No DOT data\"]}";
+	public static final String NO_DOT = "graph{n1[label=\"" + DotUiMessages.DotExtractor_0 + "\"]}"; //$NON-NLS-1$//$NON-NLS-3$
 	private String input = NO_DOT;
 
 	/**
@@ -58,7 +59,7 @@ public final class DotExtractor {
 	 */
 	public String getDotString() {
 		Matcher m = Pattern.compile(
-				"((?:di)?graph\\s?[^{\\s]*\\s?\\{[^\\}]+\\})").matcher(input);
+				"((?:di)?graph\\s?[^{\\s]*\\s?\\{[^\\}]+\\})").matcher(input); //$NON-NLS-1$
 		String dotString = m.find() ? m.group(1) : NO_DOT;
 		return dotString.trim();
 	}

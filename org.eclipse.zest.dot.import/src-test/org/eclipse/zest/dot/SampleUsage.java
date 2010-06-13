@@ -29,7 +29,7 @@ public class SampleUsage {
 		 ********************************************************/
 		Shell shell = new Shell();
 		/* The DOT input, can be given as a String, File or IFile: */
-		DotImport importer = new DotImport("digraph Simple { 1;2; 1->2 }");
+		DotImport importer = new DotImport("digraph Simple { 1;2; 1->2 }"); //$NON-NLS-1$
 		/* Compile the DOT input to a Zest graph subclass: */
 		File file = importer.newGraphSubclass();
 		/* Or create a Zest graph instance in a parent, with a style: */

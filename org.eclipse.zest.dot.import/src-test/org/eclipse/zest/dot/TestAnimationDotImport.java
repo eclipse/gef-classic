@@ -28,7 +28,7 @@ public final class TestAnimationDotImport {
 	@Test
 	public void simple() {
 		importFrom(new File(RESOURCES_TESTS
-				+ "experimental_animation_simple.dot"));
+				+ "experimental_animation_simple.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -38,7 +38,7 @@ public final class TestAnimationDotImport {
 	@Test
 	public void layout() {
 		importFrom(new File(RESOURCES_TESTS
-				+ "experimental_animation_layout.dot"));
+				+ "experimental_animation_layout.dot")); //$NON-NLS-1$
 	}
 
 	/**
@@ -47,7 +47,7 @@ public final class TestAnimationDotImport {
 	 */
 	@Test
 	public void full() {
-		importFrom(new File(RESOURCES_TESTS + "experimental_animation_full.dot"));
+		importFrom(new File(RESOURCES_TESTS + "experimental_animation_full.dot")); //$NON-NLS-1$
 	}
 
 }

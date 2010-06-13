@@ -21,24 +21,24 @@ public final class DotImportTestUtils {
 	private DotImportTestUtils() { /* Enforce non-instantiability */
 	}
 
-	static final String RESOURCES_INPUT = "resources/input/";
-	static final String RESOURCES_TESTS = "resources/tests/";
+	static final String RESOURCES_INPUT = "resources/input/"; //$NON-NLS-1$
+	static final String RESOURCES_TESTS = "resources/tests/"; //$NON-NLS-1$
 	public static final File OUTPUT = DotImport.DEFAULT_OUTPUT_FOLDER;
 
 	static void importFrom(final File dotFile) {
-		Assert.assertTrue("DOT input file must exist: " + dotFile,
+		Assert.assertTrue("DOT input file must exist: " + dotFile, //$NON-NLS-1$
 				dotFile.exists());
 		File zest = new DotImport(dotFile).newGraphSubclass();
-		Assert.assertNotNull("Resulting file must not be null", zest);
-		Assert.assertTrue("Resulting file must exist", zest.exists());
+		Assert.assertNotNull("Resulting file must not be null", zest); //$NON-NLS-1$
+		Assert.assertTrue("Resulting file must exist", zest.exists()); //$NON-NLS-1$
 		/*
 		 * The name of the generated file is equal to the name of the DOT graph
 		 * (part of the content of the DOT file, NOT the name of the file), plus
 		 * the ".java" extension:
 		 */
-		Assert.assertEquals(zest.getName().split("\\.")[0],
+		Assert.assertEquals(zest.getName().split("\\.")[0], //$NON-NLS-1$
 				new DotAst(dotFile).graphName());
 		System.out.println(String.format(
-				"Transformed DOT in '%s' to Zest in '%s'", dotFile, zest));
+				"Transformed DOT in '%s' to Zest in '%s'", dotFile, zest)); //$NON-NLS-1$
 	}
 }

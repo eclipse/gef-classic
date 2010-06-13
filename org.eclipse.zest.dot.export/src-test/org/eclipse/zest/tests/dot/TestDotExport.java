@@ -23,7 +23,7 @@ import org.eclipse.zest.dot.DotExport;
  * @author Fabian Steeg (fsteeg)
  */
 public class TestDotExport extends TestDotTemplate {
-	public static final File OUTPUT = new File("src-gen");
+	public static final File OUTPUT = new File("src-gen"); //$NON-NLS-1$
 
 	@Override
 	protected void testDotGeneration(final Graph graph) {
@@ -37,14 +37,14 @@ public class TestDotExport extends TestDotTemplate {
 		String dot = dotExport.toDotString();
 		assertNoBlankLines(dot);
 		System.out.println(dot);
-		File file = new File(OUTPUT, new DotExport(graph).toString() + ".dot");
+		File file = new File(OUTPUT, new DotExport(graph).toString() + ".dot"); //$NON-NLS-1$
 		dotExport.toDotFile(file);
-		Assert.assertTrue("Generated file must exist!", file.exists());
+		Assert.assertTrue("Generated file must exist!", file.exists()); //$NON-NLS-1$
 		String dotRead = read(file);
 		Assert.assertTrue(
-				"DOT file output representation must contain simple class name of Zest input!",
+				"DOT file output representation must contain simple class name of Zest input!", //$NON-NLS-1$
 				dotRead.contains(graph.getClass().getSimpleName()));
-		Assert.assertEquals("File output and String output should be equal;",
+		Assert.assertEquals("File output and String output should be equal;", //$NON-NLS-1$
 				dot, dotRead);
 
 	}
@@ -52,8 +52,8 @@ public class TestDotExport extends TestDotTemplate {
 	private void assertNoBlankLines(final String dot) {
 		Scanner scanner = new Scanner(dot);
 		while (scanner.hasNextLine()) {
-			if (scanner.nextLine().trim().equals("")) {
-				Assert.fail("Resulting DOT should contain no blank lines;");
+			if (scanner.nextLine().trim().equals("")) { //$NON-NLS-1$
+				Assert.fail("Resulting DOT should contain no blank lines;"); //$NON-NLS-1$
 			}
 		}
 	}
@@ -63,7 +63,7 @@ public class TestDotExport extends TestDotTemplate {
 			Scanner scanner = new Scanner(file);
 			StringBuilder builder = new StringBuilder();
 			while (scanner.hasNextLine()) {
-				builder.append(scanner.nextLine() + "\n");
+				builder.append(scanner.nextLine() + "\n"); //$NON-NLS-1$
 			}
 			return builder.toString();
 		} catch (FileNotFoundException e) {

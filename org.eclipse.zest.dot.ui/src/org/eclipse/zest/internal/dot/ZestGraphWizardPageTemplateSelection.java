@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
+import org.eclipse.zest.DotUiMessages;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.dot.DotImport;
 
@@ -43,23 +44,20 @@ import org.eclipse.zest.dot.DotImport;
  * @author Fabian Steeg (fsteeg)
  */
 public final class ZestGraphWizardPageTemplateSelection extends WizardPage {
-	// TODO externalize
-	private static final String WIZARD_DESCRIPTION = "This wizard creates a new Zest graph, "
-			+ "based on a template. "
-			+ "The DOT representation of the selected template can be customized on the next page.";
-	private static final String NEW_ZEST_GRAPH = "New Zest Graph";
-	private static final String EXTENSION_MUST_BE_JAVA = "File extension must be \"java\"";
-	private static final String NAME_MUST_BE_VALID = "File name must be valid";
-	private static final String NAME_MUST_BE_SPECIFIED = "File name must be specified";
-	private static final String MUST_BE_WRITABLE = "Project must be writable";
-	private static final String CONTAINER_MUST_EXIST = "File container must exist";
-	private static final String CONTAINER_MUST_BE_SPECIFIED = "File container must be specified";
-	private static final String FILE_CONTAINER = "Select new file container";
-	private static final String JAVA = "java";
-	private static final String TEMPLATE = "&Template:";
-	private static final String BROWSE = "Browse...";
-	private static final String CONTAINER = "&Container:";
-	private static final String GRAPH_MUST_NOT_EXIST = "File already exists: ";
+	private static final String WIZARD_DESCRIPTION = DotUiMessages.GraphWizardPageTemplateSelection_0;
+	private static final String NEW_ZEST_GRAPH = DotUiMessages.GraphWizardPageTemplateSelection_1;
+	private static final String EXTENSION_MUST_BE_JAVA = DotUiMessages.GraphWizardPageTemplateSelection_2;
+	private static final String NAME_MUST_BE_VALID = DotUiMessages.GraphWizardPageTemplateSelection_3;
+	private static final String NAME_MUST_BE_SPECIFIED = DotUiMessages.GraphWizardPageTemplateSelection_4;
+	private static final String MUST_BE_WRITABLE = DotUiMessages.GraphWizardPageTemplateSelection_5;
+	private static final String CONTAINER_MUST_EXIST = DotUiMessages.GraphWizardPageTemplateSelection_6;
+	private static final String CONTAINER_MUST_BE_SPECIFIED = DotUiMessages.GraphWizardPageTemplateSelection_7;
+	private static final String FILE_CONTAINER = DotUiMessages.GraphWizardPageTemplateSelection_8;
+	private static final String JAVA = "java"; //$NON-NLS-1$
+	private static final String TEMPLATE = "&Template:"; //$NON-NLS-1$
+	private static final String BROWSE = DotUiMessages.GraphWizardPageTemplateSelection_9;
+	private static final String CONTAINER = "&Container:"; //$NON-NLS-1$
+	private static final String GRAPH_MUST_NOT_EXIST = DotUiMessages.GraphWizardPageTemplateSelection_10;
 	private Text containerText;
 	private ISelection selection;
 	private Combo combo;
@@ -74,7 +72,7 @@ public final class ZestGraphWizardPageTemplateSelection extends WizardPage {
 	 * @param previewPage
 	 */
 	public ZestGraphWizardPageTemplateSelection(final ISelection selection) {
-		super("wizardPage");
+		super("wizardPage"); //$NON-NLS-1$
 		setTitle(NEW_ZEST_GRAPH);
 		setDescription(WIZARD_DESCRIPTION);
 		this.selection = selection;
@@ -155,12 +153,12 @@ public final class ZestGraphWizardPageTemplateSelection extends WizardPage {
 		} else if (!container.isAccessible()) {
 			updateStatus(MUST_BE_WRITABLE);
 		} else if (((IContainer) container).findMember(fileName) != null) {
-			updateStatus(GRAPH_MUST_NOT_EXIST + fileName);
+			updateStatus(GRAPH_MUST_NOT_EXIST + ": " + fileName); //$NON-NLS-1$
 		} else if (fileName.length() == 0) {
 			updateStatus(NAME_MUST_BE_SPECIFIED);
 		} else if (fileName.replace('\\', '/').indexOf('/', 1) > 0) {
 			updateStatus(NAME_MUST_BE_VALID);
-		} else if (fileName.contains(".")
+		} else if (fileName.contains(".") //$NON-NLS-1$
 				&& !fileName.substring(fileName.lastIndexOf('.') + 1)
 						.equalsIgnoreCase(JAVA)) {
 			updateStatus(EXTENSION_MUST_BE_JAVA);
@@ -188,7 +186,7 @@ public final class ZestGraphWizardPageTemplateSelection extends WizardPage {
 	 * @return The name of the file to create
 	 */
 	String getFileName() {
-		return new DotImport(getDotText()).getName() + "." + JAVA;
+		return new DotImport(getDotText()).getName() + "." + JAVA; //$NON-NLS-1$
 	}
 
 	/**
@@ -248,7 +246,7 @@ public final class ZestGraphWizardPageTemplateSelection extends WizardPage {
 		});
 		combo.select(0);
 		label = new Label(composite, SWT.NULL);
-		label.setText("");
+		label.setText(""); //$NON-NLS-1$
 	}
 
 	private void createContainerRow(final Composite composite) {
@@ -274,7 +272,7 @@ public final class ZestGraphWizardPageTemplateSelection extends WizardPage {
 
 	private void createPreviewRow(final Composite composite) {
 		Label label = new Label(composite, SWT.NULL);
-		label.setText("&Preview:");
+		label.setText("&Preview:"); //$NON-NLS-1$
 		previewGraph = new DotImport(getDotText()).newGraphInstance(composite,
 				SWT.BORDER);
 		setupLayout();
@@ -326,7 +324,7 @@ public final class ZestGraphWizardPageTemplateSelection extends WizardPage {
 			} else if (o instanceof IResource) {
 				containerText.setText(((IResource) o).getFullPath().toString());
 			} else {
-				containerText.setText("");
+				containerText.setText(""); //$NON-NLS-1$
 			}
 		}
 	}

@@ -39,9 +39,9 @@ public class SimpleGraph extends Graph {
 				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		/* Set the nodes: */
-		GraphNode n1 = new GraphNode(this, SWT.NONE, "1");
-		GraphNode n2 = new GraphNode(this, SWT.NONE, "2");
-		GraphNode n3 = new GraphNode(this, SWT.NONE, "3");
+		GraphNode n1 = new GraphNode(this, SWT.NONE, "1"); //$NON-NLS-1$
+		GraphNode n2 = new GraphNode(this, SWT.NONE, "2"); //$NON-NLS-1$
+		GraphNode n3 = new GraphNode(this, SWT.NONE, "3"); //$NON-NLS-1$
 
 		/* Connection from n1 to n2: */
 		new GraphConnection(this, SWT.NONE, n1, n2);

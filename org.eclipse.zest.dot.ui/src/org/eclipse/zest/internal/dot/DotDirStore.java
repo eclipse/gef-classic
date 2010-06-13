@@ -14,6 +14,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.zest.DotUiMessages;
 
 /**
  * Store and access the path to the 'dot' executable in the preference store.
@@ -28,16 +29,13 @@ final class DotDirStore {
 	private DotDirStore() {/* Enforce non-instantiability */
 	}
 
-	static final String DOTPATH_KEY = DotUiActivator.PLUGIN_ID + ".dotpath";
+	static final String DOTPATH_KEY = DotUiActivator.PLUGIN_ID + ".dotpath"; //$NON-NLS-1$
 
-	// TODO externalize
 	private enum Caption {
-		DOT_SELECT_SHORT("Where is 'dot'?"), /***/
-		DOT_SELECT_LONG(
-				"Please specify the folder that contains 'dot' (http://www.graphviz.org/)"), /***/
-		NOT_FOUND_LONG(
-				"The application 'dot' was not found in the specified directory"), /***/
-		NOT_FOUND_SHORT("Not found");
+		DOT_SELECT_SHORT(DotUiMessages.DotDirStore_0), /***/
+		DOT_SELECT_LONG(DotUiMessages.DotDirStore_1), /***/
+		NOT_FOUND_LONG(DotUiMessages.DotDirStore_2), /***/
+		NOT_FOUND_SHORT(DotUiMessages.DotDirStore_3);
 		private String s;
 
 		Caption(final String s) {
@@ -80,7 +78,7 @@ final class DotDirStore {
 	private static boolean containsDot(final File folder) {
 		String[] files = folder.list();
 		for (int i = 0; i < files.length; i++) {
-			if (files[i].equals("dot") || files[i].equals("dot.exe")) {
+			if (files[i].equals("dot") || files[i].equals("dot.exe")) { //$NON-NLS-1$//$NON-NLS-2$
 				return true;
 			}
 		}

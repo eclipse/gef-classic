@@ -24,9 +24,9 @@ import org.junit.Assert;
  */
 public final class ProjectHelper {
 
-	static final String PROJECT_NAME = "ZestTest";
+	static final String PROJECT_NAME = "ZestTest"; //$NON-NLS-1$
 	static final Path PROJECT_PATH = new Path(Platform.getLocation().toString()
-			+ "/" + PROJECT_NAME);
+			+ "/" + PROJECT_NAME); //$NON-NLS-1$
 
 	private ProjectHelper() {/* enforce non-instantiability */
 	}
@@ -37,7 +37,7 @@ public final class ProjectHelper {
 	 */
 	static void assertProjectDoesntExist(final IPath path) {
 		Assert.assertFalse(
-				"Container path must not exist before running tests: "
+				"Container path must not exist before running tests: " //$NON-NLS-1$
 						+ path.toFile(), path.toFile().exists());
 	}
 
@@ -47,7 +47,7 @@ public final class ProjectHelper {
 	 */
 	static void assertProjectExists(final IPath path) {
 		Assert.assertTrue(
-				"Container path must exist to continue running tests: "
+				"Container path must exist to continue running tests: " //$NON-NLS-1$
 						+ path.toFile(), path.toFile().exists());
 	}
 

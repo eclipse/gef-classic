@@ -25,12 +25,12 @@ public final class TestZestGraphTemplate {
 		if (Platform.isRunning()) {
 			String[] contents = ZestGraphTemplate.availableTemplateContents();
 			String[] names = ZestGraphTemplate.availableTemplateNames();
-			Assert.assertTrue("Templates must be larger than 0;",
+			Assert.assertTrue("Templates must be larger than 0;", //$NON-NLS-1$
 					names.length > 0);
 			Assert.assertEquals(contents.length, names.length);
-			System.out.println(names.length + " templates");
+			System.out.println(names.length + " templates"); //$NON-NLS-1$
 		} else {
-			Assert.fail("Please run as JUnit Plug-in test");
+			Assert.fail("Please run as JUnit Plug-in test"); //$NON-NLS-1$
 		}
 	}
 }

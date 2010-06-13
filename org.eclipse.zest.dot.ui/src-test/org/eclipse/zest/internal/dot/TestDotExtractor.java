@@ -24,18 +24,18 @@ public class TestDotExtractor {
 	/* Testing input and output values: */
 	Map<String, String> values = new HashMap<String, String>() {
 		{
-			put("/** Javadoc stuff graph name{a;b;a->b} and more */",
-					"graph name{a;b;a->b}");
-			put("/** Javadoc stuff graph long_name{a;b;a->b} and more */",
-					"graph long_name{a;b;a->b}");
-			put("/* Java block comment \n stuff digraph{a;b;a->b} and more */",
-					"digraph{a;b;a->b}");
-			put("Stuff about a graph and then graph{a;b;a->b} and more ",
-					"graph{a;b;a->b}");
-			put("Stuff about a graph and then with breaks graph{a\nb\na->b} and more ",
-					"graph{a\nb\na->b}");
-			put("Stuff about a graph and then digraph{a;b;a->b} and more ",
-					"digraph{a;b;a->b}");
+			put("/** Javadoc stuff graph name{a;b;a->b} and more */", //$NON-NLS-1$
+					"graph name{a;b;a->b}"); //$NON-NLS-1$
+			put("/** Javadoc stuff graph long_name{a;b;a->b} and more */", //$NON-NLS-1$
+					"graph long_name{a;b;a->b}"); //$NON-NLS-1$
+			put("/* Java block comment \n stuff digraph{a;b;a->b} and more */", //$NON-NLS-1$
+					"digraph{a;b;a->b}"); //$NON-NLS-1$
+			put("Stuff about a graph and then graph{a;b;a->b} and more ", //$NON-NLS-1$
+					"graph{a;b;a->b}"); //$NON-NLS-1$
+			put("Stuff about a graph and then with breaks graph{a\nb\na->b} and more ", //$NON-NLS-1$
+					"graph{a\nb\na->b}"); //$NON-NLS-1$
+			put("Stuff about a graph and then digraph{a;b;a->b} and more ", //$NON-NLS-1$
+					"digraph{a;b;a->b}"); //$NON-NLS-1$
 		}
 	};
 

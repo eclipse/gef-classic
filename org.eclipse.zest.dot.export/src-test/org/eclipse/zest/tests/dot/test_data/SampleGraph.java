@@ -43,24 +43,24 @@ public class SampleGraph extends Graph {
 				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		/* Nodes: */
-		GraphNode n1 = new GraphNode(this, SWT.NONE, "Node");
-		GraphNode n2 = new GraphNode(this, SWT.NONE, "Node");
-		GraphNode n3 = new GraphNode(this, SWT.NONE, "Leaf1");
-		GraphNode n4 = new GraphNode(this, SWT.NONE, "Leaf2");
+		GraphNode n1 = new GraphNode(this, SWT.NONE, "Node"); //$NON-NLS-1$
+		GraphNode n2 = new GraphNode(this, SWT.NONE, "Node"); //$NON-NLS-1$
+		GraphNode n3 = new GraphNode(this, SWT.NONE, "Leaf1"); //$NON-NLS-1$
+		GraphNode n4 = new GraphNode(this, SWT.NONE, "Leaf2"); //$NON-NLS-1$
 
 		/* Connection from n1 to n2: */
 		GraphConnection n1n2 = new GraphConnection(this, SWT.NONE, n1, n2);
-		n1n2.setText("Edge");
+		n1n2.setText("Edge"); //$NON-NLS-1$
 		n1n2.setLineStyle(SWT.LINE_DASH);
 
 		/* Connection from n2 to n3: */
 		GraphConnection n2n3 = new GraphConnection(this, SWT.NONE, n2, n3);
-		n2n3.setText("Edge");
+		n2n3.setText("Edge"); //$NON-NLS-1$
 		n2n3.setLineStyle(SWT.LINE_DASH);
 
 		/* Connection from n2 to n4: */
 		GraphConnection n2n4 = new GraphConnection(this, SWT.NONE, n2, n4);
-		n2n4.setText("Dotted");
+		n2n4.setText("Dotted"); //$NON-NLS-1$
 		n2n4.setLineStyle(SWT.LINE_DOT);
 	}
 

@@ -22,6 +22,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.zest.DotExportMessages;
 
 /**
  * Static helper methods for working with files.
@@ -44,7 +45,7 @@ public final class DotFileUtils {
 		 * If we don't check the protocol here, the FileLocator throws a
 		 * NullPointerException if the URL is a normal file URL.
 		 */
-		if (!url.getProtocol().equals("file")) {
+		if (!url.getProtocol().equals("file")) { //$NON-NLS-1$
 			try {
 				resolved = FileLocator.resolve(resolved);
 			} catch (IOException e) {
@@ -66,7 +67,7 @@ public final class DotFileUtils {
 	 */
 	public static File write(final String text) {
 		try {
-			return write(text, File.createTempFile("zest", ".dot"));
+			return write(text, File.createTempFile("zest", ".dot")); //$NON-NLS-1$//$NON-NLS-2$
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -103,7 +104,7 @@ public final class DotFileUtils {
 		try {
 			Scanner s = new Scanner(file);
 			while (s.hasNextLine()) {
-				builder.append(s.nextLine()).append("\n");
+				builder.append(s.nextLine()).append("\n"); //$NON-NLS-1$
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -139,7 +140,7 @@ public final class DotFileUtils {
 		for (String name : sourceRootFolder.list()) {
 			File source = new File(sourceRootFolder, name);
 			/* The resources we copy over are versioned in this bundle. */
-			if (source.getName().equals("CVS")) {
+			if (source.getName().equals("CVS")) { //$NON-NLS-1$
 				continue;
 			}
 			if (source.isDirectory()) {
@@ -147,8 +148,9 @@ public final class DotFileUtils {
 				File destinationFolder = new File(destinationRootFolder,
 						source.getName());
 				if (!destinationFolder.mkdirs() && !destinationFolder.exists()) {
-					throw new IllegalStateException("Could not create: "
-							+ destinationFolder);
+					throw new IllegalStateException(
+							DotExportMessages.DotFileUtils_0 + ": " //$NON-NLS-1$
+									+ destinationFolder);
 				}
 				copyAllFiles(source, destinationFolder);
 			} else {

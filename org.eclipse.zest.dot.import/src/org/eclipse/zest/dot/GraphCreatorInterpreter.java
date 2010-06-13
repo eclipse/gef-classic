@@ -81,8 +81,8 @@ final class GraphCreatorInterpreter implements IGraphCreator {
 		graph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
 				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		EObject eGraph = importer.getDotAst().graph();
-		String graphType = DotAst.getValue(eGraph, "type");
-		graph.setConnectionStyle(graphType.equals("digraph") ? ZestStyles.CONNECTIONS_DIRECTED
+		String graphType = DotAst.getValue(eGraph, "type"); //$NON-NLS-1$
+		graph.setConnectionStyle(graphType.equals("digraph") ? ZestStyles.CONNECTIONS_DIRECTED //$NON-NLS-1$
 				: ZestStyles.CONNECTIONS_SOLID);
 		addContent(eGraph);
 		return graph;
@@ -92,29 +92,29 @@ final class GraphCreatorInterpreter implements IGraphCreator {
 		EList<EObject> eContents = eGraph.eContents();
 		for (EObject eStatementObject : eContents) {
 			String eStatementClassName = eStatementObject.eClass().getName();
-			if (eStatementClassName.equals("attr_stmt")) {
+			if (eStatementClassName.equals("attr_stmt")) { //$NON-NLS-1$
 				createAttributes(eStatementObject);
-			} else if (eStatementClassName.equals("node_stmt")) {
+			} else if (eStatementClassName.equals("node_stmt")) { //$NON-NLS-1$
 				createNode(eStatementObject);
-			} else if (eStatementClassName.equals("edge_stmt_node")) {
+			} else if (eStatementClassName.equals("edge_stmt_node")) { //$NON-NLS-1$
 				createEdge(eStatementObject);
 			}
 		}
 	}
 
 	private void createAttributes(final EObject eStatementObject) {
-		String type = DotAst.getValue(eStatementObject, "type");
-		if (type.equals("edge")) {
+		String type = DotAst.getValue(eStatementObject, "type"); //$NON-NLS-1$
+		if (type.equals("edge")) { //$NON-NLS-1$
 			globalEdgeStyle = DotAst.getAttributeValue(eStatementObject,
-					"style");
+					"style"); //$NON-NLS-1$
 			globalEdgeLabel = DotAst.getAttributeValue(eStatementObject,
-					"label");
-		} else if (type.equals("node")) {
+					"label"); //$NON-NLS-1$
+		} else if (type.equals("node")) { //$NON-NLS-1$
 			globalNodeLabel = DotAst.getAttributeValue(eStatementObject,
-					"label");
-		} else if (type.equals("graph")) {
+					"label"); //$NON-NLS-1$
+		} else if (type.equals("graph")) { //$NON-NLS-1$
 			String graphLayout = DotAst.getAttributeValue(eStatementObject,
-					"layout");
+					"layout"); //$NON-NLS-1$
 			if (graphLayout != null) {
 				Layout layout = Layout.valueOf(Layout.class,
 						graphLayout.toUpperCase());
@@ -127,14 +127,14 @@ final class GraphCreatorInterpreter implements IGraphCreator {
 		Iterator<EObject> eEdgeContents = eStatementObject.eContents()
 				.iterator();
 		String sourceNodeId = null;
-		String labelValue = DotAst.getAttributeValue(eStatementObject, "label");
-		String styleValue = DotAst.getAttributeValue(eStatementObject, "style");
+		String labelValue = DotAst.getAttributeValue(eStatementObject, "label"); //$NON-NLS-1$
+		String styleValue = DotAst.getAttributeValue(eStatementObject, "style"); //$NON-NLS-1$
 		while (eEdgeContents.hasNext()) {
 			EObject eEdgeContentElement = eEdgeContents.next();
 			String eClassName = eEdgeContentElement.eClass().getName();
-			if (eClassName.equals("node_id")) {
-				sourceNodeId = DotAst.getValue(eEdgeContentElement, "name");
-			} else if (eClassName.equals("edgeRHS_node")) {
+			if (eClassName.equals("node_id")) { //$NON-NLS-1$
+				sourceNodeId = DotAst.getValue(eEdgeContentElement, "name"); //$NON-NLS-1$
+			} else if (eClassName.equals("edgeRHS_node")) { //$NON-NLS-1$
 				createConnectionsForRhs(sourceNodeId, eEdgeContentElement,
 						labelValue, styleValue);
 			}
@@ -148,8 +148,8 @@ final class GraphCreatorInterpreter implements IGraphCreator {
 		Iterator<EObject> eRhsContents = edgeRhsElement.eContents().iterator();
 		while (eRhsContents.hasNext()) {
 			EObject eRhsContentElement = eRhsContents.next();
-			if (eRhsContentElement.eClass().getName().equals("node_id")) {
-				targetNodeId = DotAst.getValue(eRhsContentElement, "name");
+			if (eRhsContentElement.eClass().getName().equals("node_id")) { //$NON-NLS-1$
+				targetNodeId = DotAst.getValue(eRhsContentElement, "name"); //$NON-NLS-1$
 				if (sourceNodeId != null && targetNodeId != null) {
 					GraphConnection graphConnection = new GraphConnection(
 							graph, SWT.NONE, nodes.get(sourceNodeId),
@@ -176,10 +176,10 @@ final class GraphCreatorInterpreter implements IGraphCreator {
 	}
 
 	private void createNode(final EObject eStatementObject) {
-		String nodeId = DotAst.getValue(eStatementObject, "name");
+		String nodeId = DotAst.getValue(eStatementObject, "name"); //$NON-NLS-1$
 		GraphNode node = new GraphNode(graph, SWT.NONE, nodeId);
 		node.setText(nodeId);
-		String value = DotAst.getAttributeValue(eStatementObject, "label");
+		String value = DotAst.getAttributeValue(eStatementObject, "label"); //$NON-NLS-1$
 		if (value != null) {
 			node.setText(value);
 		} else if (globalNodeLabel != null) {

@@ -40,8 +40,8 @@ import org.eclipse.zest.dot.DotImport;
  */
 public final class ZestBuilder extends IncrementalProjectBuilder {
 
-	static final String BUILDER_ID = "org.eclipse.zest.dot.ui.builder";
-	private static final String MARKER_TYPE = "org.eclipse.zest.dot.ui.problem";
+	static final String BUILDER_ID = "org.eclipse.zest.dot.ui.builder"; //$NON-NLS-1$
+	private static final String MARKER_TYPE = "org.eclipse.zest.dot.ui.problem"; //$NON-NLS-1$
 
 	private class SampleDeltaVisitor implements IResourceDeltaVisitor {
 		/**
@@ -101,7 +101,7 @@ public final class ZestBuilder extends IncrementalProjectBuilder {
 
 	private void checkDotFile(final IResource resource) {
 		if (resource instanceof IFile
-				&& resource.getFileExtension().equals("dot")) {
+				&& resource.getFileExtension().equals("dot")) { //$NON-NLS-1$
 			IFile dotFile = (IFile) resource;
 			deleteMarkers(dotFile);
 			List<String> errors = new DotImport(dotFile).getErrors();
@@ -124,7 +124,7 @@ public final class ZestBuilder extends IncrementalProjectBuilder {
 	private void importToGeneratedSourceFolder(final IFile dotFile) {
 		try {
 			IJavaProject javaProject = JavaCore.create(dotFile.getProject());
-			String sourceGenPath = "/" + javaProject.getElementName() + "/"
+			String sourceGenPath = "/" + javaProject.getElementName() + "/" //$NON-NLS-1$//$NON-NLS-2$
 					+ ZestProjectWizard.SRC_GEN;
 			IPackageFragmentRoot packageRoot = javaProject
 					.findPackageFragmentRoot(new Path(sourceGenPath));

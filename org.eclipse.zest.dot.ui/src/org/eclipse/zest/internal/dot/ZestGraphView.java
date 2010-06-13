@@ -43,6 +43,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ResourceListSelectionDialog;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.zest.DotUiMessages;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.dot.DotExport;
 import org.eclipse.zest.dot.DotImport;
@@ -57,36 +58,35 @@ import org.eclipse.zest.dot.DotImport;
  */
 public final class ZestGraphView extends ViewPart {
 
-	public static final String ID = "org.eclipse.zest.dot.ZestView";
+	public static final String ID = "org.eclipse.zest.dot.ZestView"; //$NON-NLS-1$
 
 	private static final RGB BACKGROUND = JFaceResources.getColorRegistry()
-			.getRGB("org.eclipse.jdt.ui.JavadocView.backgroundColor");
+			.getRGB("org.eclipse.jdt.ui.JavadocView.backgroundColor"); //$NON-NLS-1$
 
-	// TODO externalize
-	private static final String ADD_EXPORT_QUESTION = "Add Graph Export to WikiText Markup?";
-	private static final String ADD_EXPORT_MESSAGE = "The Zest graph currently displayed was generated "
-			+ "from a DOT representation embdedd in WikiText markup (%s). Should a reference to the "
-			+ "exported image file be added to the WikiText markup?";
+	private static final String ADD_EXPORT_QUESTION = DotUiMessages.ZestGraphView_0;
+	private static final String ADD_EXPORT_MESSAGE = DotUiMessages.ZestGraphView_1
+			+ DotUiMessages.ZestGraphView_2
+			+ DotUiMessages.ZestGraphView_3;
 
-	private static final String LOAD = "Load...";
-	private static final String RESET = "Ask for 'dot' app location...";
-	private static final String LAYOUT = "Layout";
-	private static final String EXPORT = "Export";
+	private static final String LOAD = DotUiMessages.ZestGraphView_4;
+	private static final String RESET = DotUiMessages.ZestGraphView_5;
+	private static final String LAYOUT = DotUiMessages.ZestGraphView_6;
+	private static final String EXPORT = DotUiMessages.ZestGraphView_7;
 
-	private static final String RESOURCES_ICONS_OPEN_GIF = "resources/icons/open.gif";
-	private static final String RESOURCES_ICONS_EXPORT_GIF = "resources/icons/export.gif";
-	private static final String RESOURCES_ICONS_RESET = "resources/icons/ask.gif";
-	private static final String RESOURCES_ICONS_LAYOUT = "resources/icons/layout.gif";
+	private static final String RESOURCES_ICONS_OPEN_GIF = "resources/icons/open.gif"; //$NON-NLS-1$
+	private static final String RESOURCES_ICONS_EXPORT_GIF = "resources/icons/export.gif"; //$NON-NLS-1$
+	private static final String RESOURCES_ICONS_RESET = "resources/icons/ask.gif"; //$NON-NLS-1$
+	private static final String RESOURCES_ICONS_LAYOUT = "resources/icons/layout.gif"; //$NON-NLS-1$
 
-	private static final String EXTENSION = "dot";
-	private static final String FORMAT_PDF = "pdf";
-	private static final String FORMAT_PNG = "png";
+	private static final String EXTENSION = "dot"; //$NON-NLS-1$
+	private static final String FORMAT_PDF = "pdf"; //$NON-NLS-1$
+	private static final String FORMAT_PNG = "png"; //$NON-NLS-1$
 
 	private Composite composite;
 	private Graph graph;
 	private IFile file;
 
-	private String dotString = "";
+	private String dotString = ""; //$NON-NLS-1$
 	private boolean addReference = true;
 	private boolean listenToDotContent = true; // TODO add toggle button
 
@@ -269,7 +269,7 @@ public final class ZestGraphView extends ViewPart {
 			 * ().getWorkbench().getEditorRegistry();
 			 */
 			if (editor.getId().equals(
-					"org.eclipse.mylyn.wikitext.ui.editor.markupEditor")) {
+					"org.eclipse.mylyn.wikitext.ui.editor.markupEditor")) { //$NON-NLS-1$
 				try {
 					// Or export dot directly, or via Zest?
 					File image = generateImageFromGraph(true, FORMAT_PNG);
@@ -300,12 +300,12 @@ public final class ZestGraphView extends ViewPart {
 
 	private boolean supported(final IFile wikiFile) {
 		// TODO support other markup languages
-		return wikiFile.getFileExtension().endsWith("textile");
+		return wikiFile.getFileExtension().endsWith("textile"); //$NON-NLS-1$
 	}
 
 	private String createImageLinkMarkup(final File image) {
 		// TODO support other markup languages
-		return String.format("\n!%s!\n", image.getName());
+		return String.format("\n!%s!\n", image.getName()); //$NON-NLS-1$
 	}
 
 	private void addReference(final String dot, final File wikiFile,
@@ -315,7 +315,7 @@ public final class ZestGraphView extends ViewPart {
 		 * only at the beginning
 		 */
 		String content = DotFileUtils.read(wikiFile).replace(dot,
-				dot + "\n" + imageLinkWiki);
+				dot + "\n" + imageLinkWiki); //$NON-NLS-1$
 		DotFileUtils.write(content, wikiFile);
 	}
 
@@ -337,7 +337,7 @@ public final class ZestGraphView extends ViewPart {
 		try {
 			URL url = file.getParent().getLocationURI().toURL();
 			File copy = DotFileUtils.copySingleFile(DotFileUtils.resolve(url),
-					file.getName() + "." + format, image);
+					file.getName() + "." + format, image); //$NON-NLS-1$
 			return copy;
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

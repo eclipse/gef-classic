@@ -42,11 +42,11 @@ public class StyledGraph extends Graph {
 				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		/* Nodes: */
-		GraphNode n1 = new GraphNode(this, SWT.NONE, "1");
-		GraphNode n2 = new GraphNode(this, SWT.NONE, "2");
-		GraphNode n3 = new GraphNode(this, SWT.NONE, "3");
-		GraphNode n4 = new GraphNode(this, SWT.NONE, "4");
-		GraphNode n5 = new GraphNode(this, SWT.NONE, "5");
+		GraphNode n1 = new GraphNode(this, SWT.NONE, "1"); //$NON-NLS-1$
+		GraphNode n2 = new GraphNode(this, SWT.NONE, "2"); //$NON-NLS-1$
+		GraphNode n3 = new GraphNode(this, SWT.NONE, "3"); //$NON-NLS-1$
+		GraphNode n4 = new GraphNode(this, SWT.NONE, "4"); //$NON-NLS-1$
+		GraphNode n5 = new GraphNode(this, SWT.NONE, "5"); //$NON-NLS-1$
 
 		/* Connection from n1 to n2: */
 		GraphConnection n1n2 = new GraphConnection(this, SWT.NONE, n1, n2);
