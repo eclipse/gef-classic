@@ -36,8 +36,8 @@
 
    <requires>
       <import plugin="org.eclipse.gef" version="3.6.0" match="compatible"/>
-   </requires>
-
+   </requires>   
+   <includes         id="org.eclipse.gef.examples.source"         version="0.0.0"/>
    <plugin
          id="org.eclipse.gef.examples.logic"
          download-size="0"
@@ -61,34 +61,6 @@
 
    <plugin
          id="org.eclipse.gef.examples.shapes"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.gef.examples.logic.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.gef.examples.flow.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.gef.examples.text.source"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.gef.examples.shapes.source"
          download-size="0"
          install-size="0"
          version="0.0.0"
