@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.zest.DotExportMessages;
+import org.eclipse.zest.dot.DotMessages;
 
 /**
  * Static helper methods for working with files.
@@ -149,7 +149,7 @@ public final class DotFileUtils {
 						source.getName());
 				if (!destinationFolder.mkdirs() && !destinationFolder.exists()) {
 					throw new IllegalStateException(
-							DotExportMessages.DotFileUtils_0 + ": " //$NON-NLS-1$
+							DotMessages.DotFileUtils_0 + ": " //$NON-NLS-1$
 									+ destinationFolder);
 				}
 				copyAllFiles(source, destinationFolder);

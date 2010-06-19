@@ -14,6 +14,8 @@ import static org.eclipse.zest.dot.DotImportTestUtils.importFrom;
 
 import java.io.File;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
 /**
@@ -94,4 +96,19 @@ public final class TestBasicDotImport {
 		importFrom(new File(RESOURCES_TESTS + "global_edge_graph.dot")); //$NON-NLS-1$
 	}
 
+	/**
+	 * Test error handling for invalid graph syntax (instance import).
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void faultyGraphInstance() {
+		new DotImport("graph Sample{").newGraphInstance(new Shell(), SWT.NONE);
+	}
+
+	/**
+	 * Test error handling for invalid graph syntax (subclass import).
+	 */
+	@Test(expected = IllegalArgumentException.class)
+	public void faultyGraphClass() {
+		new DotImport("graph Sample{").newGraphSubclass();
+	}
 }

@@ -33,7 +33,6 @@ import org.eclipse.emf.mwe.core.WorkflowRunner;
 import org.eclipse.emf.mwe.core.monitor.NullProgressMonitor;
 import org.eclipse.emf.mwe.core.monitor.ProgressMonitor;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.zest.DotImportMessages;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.internal.dot.DotFileUtils;
 
@@ -90,6 +89,15 @@ public final class DotImport {
 		load();
 	}
 
+	private void guardFaultyParse() {
+		List<String> errors = this.dotAst.errors();
+		if (errors.size() > 0) {
+			throw new IllegalArgumentException(String.format(
+					DotMessages.DotImport_1 + ": %s (%s)", dotFile,
+					errors.toString()));
+		}
+	}
+
 	private void load() {
 		this.dotAst = new DotAst(this.dotFile);
 	}
@@ -116,6 +124,7 @@ public final class DotImport {
 	 * @return The Zest graph instantiated from the imported DOT
 	 */
 	public Graph newGraphInstance(final Composite parent, final int style) {
+		guardFaultyParse();
 		/*
 		 * TODO switch to a string as the member holding the DOT to avoid
 		 * read-write here
@@ -168,6 +177,7 @@ public final class DotImport {
 	 *         generated from the given DOT file
 	 */
 	private File importDotFile(final File dotFile, final File targetDirectory) {
+		guardFaultyParse();
 		String dotLocation = dotFile.getAbsolutePath();
 		File oawFile = loadWorkflow();
 		String oawLocation = oawFile.getAbsolutePath();
@@ -192,7 +202,7 @@ public final class DotImport {
 		File resultFile = new File(targetDirectory, name + ".java"); //$NON-NLS-1$
 		if (!resultFile.exists()) {
 			throw new IllegalStateException(resultFile
-					+ " " + DotImportMessages.DotImport_0 + "."); //$NON-NLS-1$//$NON-NLS-3$
+					+ " " + DotMessages.DotImport_0 + "."); //$NON-NLS-1$//$NON-NLS-3$
 		}
 		System.out.println("Zest file: " + resultFile.getAbsolutePath()); //$NON-NLS-1$
 		return resultFile;

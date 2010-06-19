@@ -24,7 +24,6 @@ import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.mwe.utils.StandaloneSetup;
-import org.eclipse.zest.DotImportMessages;
 import org.eclipse.zest.internal.dot.parser.DotStandaloneSetup;
 
 /**
@@ -74,7 +73,7 @@ final class DotAst {
 		while (i.hasNext()) {
 			Diagnostic next = i.next();
 			result.add(String.format(
-					DotImportMessages.DotAst_0 + " %s: %s ", next.getLine(), //$NON-NLS-2$
+					DotMessages.DotAst_0 + " %s: %s ", next.getLine(), //$NON-NLS-2$
 					next.getMessage()));
 		}
 		return result;

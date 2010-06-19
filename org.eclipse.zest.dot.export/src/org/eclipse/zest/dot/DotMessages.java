@@ -6,18 +6,21 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest;
+package org.eclipse.zest.dot;
 
 import org.eclipse.osgi.util.NLS;
 
-public class DotExportMessages extends NLS {
+public class DotMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.zest.dot.messages"; //$NON-NLS-1$
 	public static String DotFileUtils_0;
+	public static String DotImport_0;
+	public static String DotImport_1;
+	public static String DotAst_0;
 	static {
 		// initialize resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, DotExportMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, DotMessages.class);
 	}
 
-	private DotExportMessages() {
+	private DotMessages() {
 	}
 }
