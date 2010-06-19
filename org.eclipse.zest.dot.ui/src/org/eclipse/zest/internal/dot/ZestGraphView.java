@@ -65,8 +65,7 @@ public final class ZestGraphView extends ViewPart {
 
 	private static final String ADD_EXPORT_QUESTION = DotUiMessages.ZestGraphView_0;
 	private static final String ADD_EXPORT_MESSAGE = DotUiMessages.ZestGraphView_1
-			+ DotUiMessages.ZestGraphView_2
-			+ DotUiMessages.ZestGraphView_3;
+			+ DotUiMessages.ZestGraphView_2 + DotUiMessages.ZestGraphView_3;
 
 	private static final String LOAD = DotUiMessages.ZestGraphView_4;
 	private static final String RESET = DotUiMessages.ZestGraphView_5;
@@ -248,8 +247,11 @@ public final class ZestGraphView extends ViewPart {
 				}
 				if (composite != null) {
 					dotString = currentDot;
-					graph = new DotImport(dotString).newGraphInstance(
-							composite, SWT.NONE);
+					DotImport dotImport = new DotImport(dotString);
+					if (dotImport.getErrors().size() > 0) {
+						return;
+					}
+					graph = dotImport.newGraphInstance(composite, SWT.NONE);
 					setupLayout();
 					composite.layout();
 					graph.applyLayout();
