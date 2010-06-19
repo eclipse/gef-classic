@@ -54,6 +54,14 @@ public final class TestGraphInstanceDotImport {
 	}
 
 	@Test
+	public void undeclaredNodes() {
+		Graph graph = new DotImport("digraph{1->2;1->3}").newGraphInstance(
+				new Shell(), SWT.NONE);
+		Assert.assertEquals(3, graph.getNodes().size());
+		Assert.assertEquals(2, graph.getConnections().size());
+	}
+
+	@Test
 	public void digraphType() {
 		Shell shell = new Shell();
 		Graph graph = interpreter.create(shell, SWT.NONE,

@@ -152,8 +152,8 @@ final class GraphCreatorInterpreter implements IGraphCreator {
 				targetNodeId = DotAst.getValue(eRhsContentElement, "name"); //$NON-NLS-1$
 				if (sourceNodeId != null && targetNodeId != null) {
 					GraphConnection graphConnection = new GraphConnection(
-							graph, SWT.NONE, nodes.get(sourceNodeId),
-							nodes.get(targetNodeId));
+							graph, SWT.NONE, node(sourceNodeId),
+							node(targetNodeId));
 					/* Set the optional label, if set in the DOT input: */
 					if (labelValue != null) {
 						graphConnection.setText(labelValue);
@@ -173,6 +173,13 @@ final class GraphCreatorInterpreter implements IGraphCreator {
 				}
 			}
 		}
+	}
+
+	private GraphNode node(String id) {
+		if (!nodes.containsKey(id)) {
+			nodes.put(id, new GraphNode(graph, SWT.NONE, id));
+		}
+		return nodes.get(id);
 	}
 
 	private void createNode(final EObject eStatementObject) {
