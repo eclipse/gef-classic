@@ -32,6 +32,15 @@ public final class TestAnimationDotImport {
 	}
 
 	/**
+	 * Binary tree DOT graph to be transformed to a Zest animation.
+	 */
+	@Test
+	public void binTree() {
+		importFrom(new File(RESOURCES_TESTS
+				+ "experimental_animation_bintree.dot")); //$NON-NLS-1$
+	}
+
+	/**
 	 * DOT graph to be transformed to a Zest animation with specified layout
 	 * algorithm.
 	 */
