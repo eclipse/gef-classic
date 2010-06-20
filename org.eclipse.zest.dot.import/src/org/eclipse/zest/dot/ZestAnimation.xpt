@@ -19,9 +19,9 @@ the oAW 4.3 Xpand currently used.
 «IMPORT dot»
 
 «REM» Entry point for transformation of a dot meta-model instance to a Zest source file «ENDREM»
-«DEFINE main FOR graphvizmodel-» «EXPAND dotFile FOREACH graphs» «ENDDEFINE»
+«DEFINE main FOR GraphvizModel-» «EXPAND dotFile FOREACH graphs» «ENDDEFINE»
 «REM» The main file putting it all together «ENDREM»
-«DEFINE dotFile FOR graph»
+«DEFINE dotFile FOR DotGraph»
 	«FILE name.toFirstUpper() + ".java"-»
 	package org.eclipse.zest.dot;
 	import org.eclipse.draw2d.Animation;
@@ -51,16 +51,16 @@ the oAW 4.3 Xpand currently used.
 	   
 	    public «name.toFirstUpper()» (final Composite parent, final int style) {
 	        super(parent, style);
-	        «IF type == graphtype::digraph» setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED); «ENDIF»
+	        «IF type == GraphType::digraph» setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED); «ENDIF»
 	        «REM» Check for a node[layout=grid]-like attribute: (we do it here because we need
 	        it at the top level when setting up the graph, not when expanding the individual 
 	        statements. Perhaps a restructuring of the target file could help avoid this...) «ENDREM»
 	       setLayoutAlgorithm( «IF !stmts.exists(e|e.metaType.name.contains("attr_stmt")
-	       						&&((attr_stmt)e).attributes.a_list.toString().contains("layout"))»
+	       						&&((AttrStmt)e).attributes.a_list.toString().contains("layout"))»
 		    new TreeLayoutAlgorithm(
 	            	LayoutStyles.NO_LAYOUT_NODE_RESIZING)
-	            	«ELSE» new «((attr_stmt)(stmts.select(e|e.metaType.name.contains("attr_stmt")
-	            		&&((attr_stmt)e).attributes.a_list.toString().contains("layout")).get(0)))
+	            	«ELSE» new «((AttrStmt)(stmts.select(e|e.metaType.name.contains("attr_stmt")
+	            		&&((AttrStmt)e).attributes.a_list.toString().contains("layout")).get(0)))
 	            		.attributes.a_list.select(e|e.name=="layout").get(0).value.toFirstUpper()»LayoutAlgorithm(
 	            	LayoutStyles.NO_LAYOUT_NODE_RESIZING) «ENDIF», true);
 	    }
@@ -134,15 +134,15 @@ the oAW 4.3 Xpand currently used.
 	«ENDFILE-»
 «ENDDEFINE»
 «REM» Expansion of the different DOT statement types: «ENDREM»
-«DEFINE stmt FOR stmt»«ENDDEFINE»
-«DEFINE stmt FOR attribute»
+«DEFINE stmt FOR Stmt»«ENDDEFINE»
+«DEFINE stmt FOR Attribute»
 	 «REM»«IF name=="layout"»
 		static AbstractLayoutAlgorithm layout = new 
 		«value.toFirstUpper()»LayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING); «ENDIF»
 	«ENDREM»
 «ENDDEFINE»
-«DEFINE stmt FOR attr_stmt»
-	 «IF type==dot::attributetype::node »
+«DEFINE stmt FOR AttrStmt»
+	 «IF type==dot::AttributeType::node »
 		«IF attributes.a_list.exists(e|e.name=="label")»
 			static{nodeLabel = «attributes.a_list.select(e|e.name=="label").get(0).value»;}
 			 «ENDIF»
@@ -151,7 +151,7 @@ the oAW 4.3 Xpand currently used.
 			static{layout = «attributes.a_list.select(e|e.name=="layout").get(0).value»;}
 			 «ENDIF»«ENDREM»
 		
-	«ELSEIF type==dot::attributetype::edge»
+	«ELSEIF type==dot::AttributeType::edge»
 		«IF attributes.a_list.exists(e|e.name=="label")»
 			static{edgeLabel = «attributes.a_list.select(e|e.name=="label").get(0).value»;} «ENDIF»
 		«IF attributes.a_list.exists(e|e.name=="style")»
@@ -159,12 +159,12 @@ the oAW 4.3 Xpand currently used.
 	«ENDIF»
 «ENDDEFINE»
 «REM» Expansion of node declarations «ENDREM»
-«DEFINE stmt FOR node_stmt» GraphNode n«name» = new GraphNode(this, SWT.NONE, 
+«DEFINE stmt FOR NodeStmt» GraphNode n«name» = new GraphNode(this, SWT.NONE, 
 	«IF attributes.a_list.exists(e|e.name=="label")» «attributes.a_list.select(e|e.name=="label").value.get(0)» 
 	«ELSE»global(nodeLabel, "«name»")«ENDIF»); 
 «ENDDEFINE»
 «REM» Expansion of edges «ENDREM»
-«DEFINE stmt FOR edge_stmt_node» 
+«DEFINE stmt FOR EdgeStmtNode» 
 	/* Connection from n«node_id.name» to «EXPAND edge_target FOREACH edgeRHS»: */
 	GraphConnection n«node_id.name»«EXPAND edge_target FOREACH edgeRHS» 
 		= new GraphConnection(g, SWT.NONE, n«node_id.name», 
@@ -177,7 +177,7 @@ the oAW 4.3 Xpand currently used.
 		n«node_id.name»«EXPAND edge_target FOREACH edgeRHS».setLineStyle(«EXPAND global_edge_attribute FOR attributes.a_list.select(e|e.name=="style").get(0)»); «ENDIF»
 «ENDDEFINE»
 
-«DEFINE stmt FOR subgraph»
+«DEFINE stmt FOR Subgraph»
 	«LET name.split("_").get(1) AS runner»
 	«REM»«LET getProperty("label") AS e» getProperty("label")«ENDREM»
 	 «REM»«LET e != null ? e : "Step" AS label»FIXME not working, always null«ENDREM»
@@ -211,10 +211,10 @@ the oAW 4.3 Xpand currently used.
 	«ENDLET» «REM»«ENDLET» «ENDLET»«ENDREM»
 «ENDDEFINE»
 
-«DEFINE edge_target FOR edgeRHS»«ENDDEFINE»
-«DEFINE edge_target FOR edgeRHS_node»n«node.name»«ENDDEFINE»
+«DEFINE edge_target FOR EdgeRhs»«ENDDEFINE»
+«DEFINE edge_target FOR EdgeRhsNode»n«node.name»«ENDDEFINE»
 «REM» Expansion of a style-attribute to a Zest line style «ENDREM»
-«DEFINE global_edge_attribute FOR a_list» 
+«DEFINE global_edge_attribute FOR AList» 
 	«IF value.contains("dotted")&&value.contains("dashed")» SWT.LINE_DASHDOT «ELSEIF value.contains("dashed")» SWT.LINE_DASH «ELSEIF value.contains("dotted")» SWT.LINE_DOT «ENDIF»
 «ENDDEFINE»
 «REM» TODO: support for multiple target (1->2->3) and using undeclared nodes in edges «ENDREM»

@@ -12,53 +12,53 @@ grammar org.eclipse.zest.internal.dot.parser.Dot with org.eclipse.xtext.common.T
 
 generate dot "http://www.eclipse.org/zest/internal/dot/parser/Dot"
 
-graphvizmodel: (graphs+=graph)* ;
+GraphvizModel: (graphs+=DotGraph)* ;
 
-graph: (strict?="strict")? type=graphtype (name=DOT_ID)? "{" 
-	(stmts+=stmt)* 
+DotGraph: (strict?="strict")? type=GraphType (name=DOT_ID)? "{" 
+	(stmts+=Stmt)* 
 "}";
 
-stmt: ( edge_stmt_node |  edge_stmt_subgraph |  node_stmt | attribute | attr_stmt | subgraph ) (";")?;
+Stmt: ( EdgeStmtNode |  EdgeStmtSubgraph |  NodeStmt | Attribute | AttrStmt | Subgraph ) (";")?;
 
-edge_stmt_node : node_id=node_id (edgeRHS+=edgeRHS)+ (attributes+=attr_list)*;
+EdgeStmtNode : node_id=NodeId (edgeRHS+=EdgeRhs)+ (attributes+=AttrList)*;
 
-edge_stmt_subgraph : subgraph=subgraph  (edgeRHS=edgeRHS)+ (attributes+=attr_list)*;
+EdgeStmtSubgraph : subgraph=Subgraph  (edgeRHS=EdgeRhs)+ (attributes+=AttrList)*;
 
-node_stmt   :  name=DOT_ID (attributes+=attr_list)*;
-//node_stmt     :  name=DOT_ID (port=port)? (attributes+=attr_list)*; // see FIXME for port
+NodeStmt   :  name=DOT_ID (attributes+=AttrList)*;
+//NodeStmt     :  name=DOT_ID (port=Port)? (attributes+=AttrList)*; // see FIXME for port
 
-attribute: name=DOT_ID "=" value=DOT_ID;
+Attribute: name=DOT_ID "=" value=DOT_ID;
 
-attr_stmt  	:  	type=attributetype (attributes+=attr_list)+;
+AttrStmt  	:  	type=AttributeType (attributes+=AttrList)+;
 
-attr_list : "[" (a_list+=a_list)* "]";
+AttrList : "[" (a_list+=AList)* "]";
 
-a_list: name=DOT_ID ("=" value=DOT_ID)? (",")?;
+AList: name=DOT_ID ("=" value=DOT_ID)? (",")?;
 
-subgraph : ( "subgraph" name=DOT_ID? )? "{" (stmts+=stmt)* "}";
+Subgraph : ( "subgraph" name=DOT_ID? )? "{" (stmts+=Stmt)* "}";
 
 //FIXME: Generated portImpl class has compilation errors with Helios Xtext
-//port : ":" name=DOT_ID ( ":" compass_pt=compass_pt )? | ":" compass_pt=compass_pt;
+//Port : ":" name=DOT_ID ( ":" compass_pt=CompassPt )? | ":" compass_pt=CompassPt;
 
-edgeRHS: (edgeRHS_node | edgeRHS_subgraph);
+EdgeRhs: (EdgeRhsNode | EdgeRhsSubgraph);
 
-edgeRHS_node: op=edgeop node=node_id;
+EdgeRhsNode: op=EdgeOp node=NodeId;
 
-edgeRHS_subgraph: op=edgeop subgraph=subgraph;
+EdgeRhsSubgraph: op=EdgeOp subgraph=Subgraph;
 
-//node_id  : name=DOT_ID (port=port)?; // see FIXME for port
-node_id  : name=DOT_ID;
+//NodeId  : name=DOT_ID (port=Port)?; // see FIXME for port
+NodeId  : name=DOT_ID;
 
-enum edgeop :
+enum EdgeOp :
  directed="->"|undirected="--";
  
-enum graphtype :
+enum GraphType :
  graph="graph"|digraph="digraph";
  
-enum attributetype :
+enum AttributeType :
  graph="graph"|node="node"|edge="edge";
 
-enum compass_pt: north="n" | northeast="ne" | east="e" | southeast="se" | south="s" | southwest="sw" | west="w" | northwest="nw";
+enum CompassPt: north="n" | northeast="ne" | east="e" | southeast="se" | south="s" | southwest="sw" | west="w" | northwest="nw";
 
 terminal DOT_ID :
     (('^')?('a'..'z'|'A'..'Z'|'_') ('a'..'z'|'A'..'Z'|'_'|'0'..'9')*) |
