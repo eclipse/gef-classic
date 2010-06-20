@@ -12,9 +12,11 @@ import org.eclipse.osgi.util.NLS;
 
 public class DotMessages extends NLS {
 	private static final String BUNDLE_NAME = "org.eclipse.zest.dot.messages"; //$NON-NLS-1$
+	public static String GraphCreatorInterpreter_0;
 	public static String DotFileUtils_0;
 	public static String DotImport_0;
 	public static String DotImport_1;
+	public static String DotImport_2;
 	public static String DotAst_0;
 	static {
 		// initialize resource bundle

@@ -37,7 +37,7 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.internal.dot.DotFileUtils;
 
 /**
- * Transformation of DOT files or strings to Zest Graph subclasses.
+ * Transformation of DOT files or strings to Zest Graph subclasses or instances.
  * 
  * @author Fabian Steeg (fsteeg)
  */
@@ -85,6 +85,10 @@ public final class DotImport {
 	}
 
 	private void init(final String dotString) {
+		if (dotString == null || dotString.trim().length() == 0) {
+			throw new IllegalArgumentException(DotMessages.DotImport_2 + ": "
+					+ dotString);
+		}
 		this.dotFile = DotFileUtils.write(dotString);
 		load();
 	}
@@ -129,8 +133,7 @@ public final class DotImport {
 		 * TODO switch to a string as the member holding the DOT to avoid
 		 * read-write here
 		 */
-		return new GraphCreatorInterpreter().create(parent, style,
-				DotFileUtils.read(dotFile));
+		return new GraphCreatorInterpreter().create(parent, style, dotAst);
 	}
 
 	/**

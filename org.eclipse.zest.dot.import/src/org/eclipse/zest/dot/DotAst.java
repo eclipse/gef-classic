@@ -24,15 +24,50 @@ import org.eclipse.emf.ecore.resource.Resource.Diagnostic;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.mwe.utils.StandaloneSetup;
+import org.eclipse.swt.SWT;
 import org.eclipse.zest.internal.dot.parser.DotStandaloneSetup;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.AbstractLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 /**
- * Walks the AST of a DOT graph, e.g. to extract the name (used to name and
- * later identify the generated file).
+ * Creation and access to the parsed object tree.
  * 
  * @author Fabian Steeg (fsteeg)
  */
 final class DotAst {
+
+	private static final int STYLE = LayoutStyles.NO_LAYOUT_NODE_RESIZING;
+
+	/** Edge style attributes in the DOT input and their Zest/SWT styles. */
+	enum Style {
+		DASHED(SWT.LINE_DASH), DOTTED(SWT.LINE_DOT), SOLID(SWT.LINE_SOLID), DASHDOT(
+				SWT.LINE_DASHDOT), DASHDOTDOT(SWT.LINE_DASHDOTDOT);
+		int style;
+
+		Style(final int style) {
+			this.style = style;
+		}
+	}
+
+	/**
+	 * Graph layout attributes in the DOT input and their Zest layout
+	 * algorithms.
+	 */
+	enum Layout {
+		TREE(new TreeLayoutAlgorithm(STYLE)), GRID(new GridLayoutAlgorithm(
+				STYLE)), RADIAL(new RadialLayoutAlgorithm(STYLE)), SPRING(
+				new SpringLayoutAlgorithm(STYLE));
+		AbstractLayoutAlgorithm algorithm;
+
+		Layout(final AbstractLayoutAlgorithm algorithm) {
+			this.algorithm = algorithm;
+		}
+	}
+
 	private Resource resource;
 
 	/**
@@ -93,6 +128,13 @@ final class DotAst {
 		return graph;
 	}
 
+	/**
+	 * @return The loaded resource for the given DOT input
+	 */
+	Resource resource() {
+		return resource;
+	}
+
 	private static Resource loadResource(final File file) {
 		new StandaloneSetup().setPlatformUri(".."); //$NON-NLS-1$
 		DotStandaloneSetup.doSetup();
@@ -107,59 +149,6 @@ final class DotAst {
 			}
 		}
 		return res;
-	}
-
-	/**
-	 * @param eStatementObject
-	 *            The statement object, e.g. the object corresponding to
-	 *            "node[label="hi"]"
-	 * @param attributeName
-	 *            The name of the attribute to get the value for, e.g. "label"
-	 * @return The value of the given attribute, e.g. "hi"
-	 */
-	static String getAttributeValue(final EObject eStatementObject,
-			final String attributeName) {
-		Iterator<EObject> nodeContents = eStatementObject.eContents()
-				.iterator();
-		while (nodeContents.hasNext()) {
-			EObject nodeContentElement = nodeContents.next();
-			if (nodeContentElement.eClass().getName().equals("attr_list")) { //$NON-NLS-1$
-				Iterator<EObject> attributeContents = nodeContentElement
-						.eContents().iterator();
-				while (attributeContents.hasNext()) {
-					EObject attributeElement = attributeContents.next();
-					if (attributeElement.eClass().getName().equals("a_list")) { //$NON-NLS-1$
-						if (getValue(attributeElement, "name").equals( //$NON-NLS-1$
-								attributeName)) {
-							String label = getValue(attributeElement, "value") //$NON-NLS-1$
-									.replaceAll("\"", ""); //$NON-NLS-1$//$NON-NLS-2$
-							return label;
-						}
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * @param eObject
-	 *            The object to get a attribute value for
-	 * @param name
-	 *            The name of the attribute
-	 * @return The value of the given attribute in the given object
-	 */
-	static String getValue(final EObject eObject, final String name) {
-		Iterator<EAttribute> graphAttributes = eObject.eClass()
-				.getEAllAttributes().iterator();
-		while (graphAttributes.hasNext()) {
-			EAttribute a = graphAttributes.next();
-			if (a.getName().equals(name)) {
-				Object eGet = eObject.eGet(a);
-				return eGet == null ? "" : eGet.toString(); //$NON-NLS-1$
-			}
-		}
-		return null;
 	}
 
 	@Override

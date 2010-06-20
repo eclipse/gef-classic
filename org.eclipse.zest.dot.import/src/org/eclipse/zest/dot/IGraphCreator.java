@@ -24,9 +24,9 @@ interface IGraphCreator {
 	 * @param style
 	 *            The style bits for the graph
 	 * @param dot
-	 *            The DOT string to import
+	 *            The parsed DOT AST to import
 	 * @return The new graph
 	 */
-	Graph create(Composite parent, int style, String dot);
+	Graph create(Composite parent, int style, DotAst dot);
 
 }
