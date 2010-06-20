@@ -25,6 +25,7 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
@@ -80,6 +81,8 @@ public final class ZestGraphView extends ViewPart {
 	private static final String EXTENSION = "dot"; //$NON-NLS-1$
 	private static final String FORMAT_PDF = "pdf"; //$NON-NLS-1$
 	private static final String FORMAT_PNG = "png"; //$NON-NLS-1$
+
+	private boolean dotExtraction = true; // TODO toggle
 
 	private Composite composite;
 	private Graph graph;
@@ -235,7 +238,9 @@ public final class ZestGraphView extends ViewPart {
 		if (file == null || file.getLocationURI() == null || !file.exists()) {
 			return;
 		}
-		final String currentDot = new DotExtractor(file).getDotString();
+		final String currentDot = dotExtraction ? new DotExtractor(file)
+				.getDotString() : DotFileUtils.read(DotFileUtils.resolve(file
+				.getLocationURI().toURL()));
 		if (currentDot.equals(dotString)
 				|| currentDot.equals(DotExtractor.NO_DOT)) {
 			return;
@@ -246,9 +251,17 @@ public final class ZestGraphView extends ViewPart {
 					graph.dispose();
 				}
 				if (composite != null) {
-					dotString = currentDot;
+					dotString = currentDot.trim();
 					DotImport dotImport = new DotImport(dotString);
 					if (dotImport.getErrors().size() > 0) {
+						String message = String.format(
+								"Could not import DOT: %s, DOT: %s", //$NON-NLS-1$
+								dotImport.getErrors(), dotString);
+						DotUiActivator
+								.getDefault()
+								.getLog()
+								.log(new Status(Status.ERROR,
+										DotUiActivator.PLUGIN_ID, message));
 						return;
 					}
 					graph = dotImport.newGraphInstance(composite, SWT.NONE);
@@ -367,8 +380,12 @@ public final class ZestGraphView extends ViewPart {
 		super.dispose();
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(
 				resourceChangeListener);
-		graph.dispose();
-		composite.dispose();
+		if (graph != null) {
+			graph.dispose();
+		}
+		if (composite != null) {
+			composite.dispose();
+		}
 	}
 
 	/**

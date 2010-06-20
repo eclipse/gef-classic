@@ -33,9 +33,11 @@ public class TestDotExtractor {
 			put("Stuff about a graph and then graph{a;b;a->b} and more ", //$NON-NLS-1$
 					"graph{a;b;a->b}"); //$NON-NLS-1$
 			put("Stuff about a graph and then with breaks graph{a\nb\na->b} and more ", //$NON-NLS-1$
-					"graph{a\nb\na->b}"); //$NON-NLS-1$
+			"graph{a\nb\na->b}"); //$NON-NLS-1$
 			put("Stuff about a graph and then digraph{a;b;a->b} and more ", //$NON-NLS-1$
 					"digraph{a;b;a->b}"); //$NON-NLS-1$
+			put("Stuff about a graph and then digraph{subgraph cluster_0{1->2}; 1->3} and more ", //$NON-NLS-1$
+			"digraph{subgraph cluster_0{1->2}; 1->3}"); //$NON-NLS-1$
 		}
 	};
 

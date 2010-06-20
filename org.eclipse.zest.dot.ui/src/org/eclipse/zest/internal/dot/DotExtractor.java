@@ -58,8 +58,9 @@ public final class DotExtractor {
 	 *         DOT graph
 	 */
 	public String getDotString() {
-		Matcher m = Pattern.compile(
-				"((?:di)?graph\\s?[^{\\s]*\\s?\\{[^\\}]+\\})").matcher(input); //$NON-NLS-1$
+		Matcher m = Pattern
+				.compile(
+						"((?:di)?graph\\s?[^{\\s]*\\s?\\{((subgraph[^{]*\\{[^\\}]+\\})|[^\\}])+\\})").matcher(input); //$NON-NLS-1$
 		String dotString = m.find() ? m.group(1) : NO_DOT;
 		return dotString.trim();
 	}

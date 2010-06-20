@@ -62,6 +62,18 @@ public final class TestGraphInstanceDotImport {
 	}
 
 	@Test
+	public void subgraphs() {
+		Shell shell = new Shell();
+		DotImport dotImport = new DotImport(
+				"digraph{subgraph cluster_0{1->2}; subgraph cluster_1{1->3}; 1->4}");
+		System.err.println(dotImport.getErrors());
+		Graph graph = dotImport.newGraphInstance(shell, SWT.NONE);
+		Assert.assertEquals(4 /* TODO: 4 nodes, 2 containers */, graph.getNodes()
+				.size());
+		Assert.assertEquals(3, graph.getConnections().size());
+	}
+
+	@Test
 	public void digraphType() {
 		Shell shell = new Shell();
 		Graph graph = interpreter.create(shell, SWT.NONE,
