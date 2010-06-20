@@ -181,6 +181,9 @@ public final class DotImport {
 	 */
 	private File importDotFile(final File dotFile, final File targetDirectory) {
 		guardFaultyParse();
+		if (dotAst.graphName() == null) {
+			throw new IllegalArgumentException(DotMessages.DotImport_3);
+		}
 		String dotLocation = dotFile.getAbsolutePath();
 		File oawFile = loadWorkflow();
 		String oawLocation = oawFile.getAbsolutePath();

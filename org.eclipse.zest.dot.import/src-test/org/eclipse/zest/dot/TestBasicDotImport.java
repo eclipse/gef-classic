@@ -97,6 +97,15 @@ public final class TestBasicDotImport {
 	}
 
 	/**
+	 * Test execution of File-based DOT-to-Zest transformations for a graph
+	 * using statement-like attributes (e.g. rankdir=LR)
+	 */
+	@Test
+	public void attributesGraph() {
+		importFrom(new File(RESOURCES_TESTS + "attributes_graph.dot")); //$NON-NLS-1$
+	}
+
+	/**
 	 * Test error handling for invalid graph syntax (instance import).
 	 */
 	@Test(expected = IllegalArgumentException.class)

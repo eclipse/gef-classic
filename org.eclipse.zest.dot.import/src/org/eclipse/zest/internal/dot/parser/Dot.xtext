@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * Contributors:
  *    Michael Clay - initial implementation, see bug 277380
- *    Fabian Steeg - minor updates for Helios Xtext
+ *    Fabian Steeg - updates for current Xtext and minor tweaks
  *******************************************************************************/
 grammar org.eclipse.zest.internal.dot.parser.Dot with org.eclipse.xtext.common.Terminals
 
@@ -18,7 +18,7 @@ DotGraph: (strict?="strict")? type=GraphType (name=DOT_ID)? "{"
 	(stmts+=Stmt)* 
 "}";
 
-Stmt: ( EdgeStmtNode |  EdgeStmtSubgraph |  NodeStmt | Attribute | AttrStmt | Subgraph ) (";")?;
+Stmt: ( Attribute | EdgeStmtNode |  EdgeStmtSubgraph |  NodeStmt | AttrStmt | Subgraph ) (";")?;
 
 EdgeStmtNode : node_id=NodeId (edgeRHS+=EdgeRhs)+ (attributes+=AttrList)*;
 

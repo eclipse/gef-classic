@@ -17,6 +17,7 @@ public class DotMessages extends NLS {
 	public static String DotImport_0;
 	public static String DotImport_1;
 	public static String DotImport_2;
+	public static String DotImport_3;
 	public static String DotAst_0;
 	static {
 		// initialize resource bundle
