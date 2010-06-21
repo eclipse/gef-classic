@@ -12,7 +12,7 @@
 <feature
       id="org.eclipse.gef.sdk"
       label="%featureName"
-      version="3.6.0.qualifier"
+      version="3.6.1.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.gef.source"
       image="eclipse_update_120.jpg">
