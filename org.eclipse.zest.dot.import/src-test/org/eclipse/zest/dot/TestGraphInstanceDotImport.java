@@ -18,6 +18,7 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
@@ -66,7 +67,6 @@ public final class TestGraphInstanceDotImport {
 		Shell shell = new Shell();
 		DotImport dotImport = new DotImport(
 				"digraph{subgraph cluster_0{1->2}; subgraph cluster_1{1->3}; 1->4}");
-		System.err.println(dotImport.getErrors());
 		Graph graph = dotImport.newGraphInstance(shell, SWT.NONE);
 		Assert.assertEquals(4 /* TODO: 4 nodes, 2 containers */, graph.getNodes()
 				.size());
@@ -212,6 +212,24 @@ public final class TestGraphInstanceDotImport {
 				parse("graph Sample{graph[layout=tree];1;}")); //$NON-NLS-1$
 		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
 		Assert.assertEquals(TreeLayoutAlgorithm.class, graph
+				.getLayoutAlgorithm().getClass());
+	}
+
+	@Test
+	public void layoutHorizontalTreeViaLayout() {
+		Graph graph = interpreter.create(new Shell(), SWT.NONE,
+				parse("graph Sample{graph[layout=htree];1;}")); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
+		Assert.assertEquals(HorizontalTreeLayoutAlgorithm.class, graph
+				.getLayoutAlgorithm().getClass());
+	}
+
+	@Test
+	public void layoutHorizontalTreeViaAttribute() {
+		Graph graph = interpreter.create(new Shell(), SWT.NONE,
+				parse("graph Sample{rankdir=LR;1;}")); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
+		Assert.assertEquals(HorizontalTreeLayoutAlgorithm.class, graph
 				.getLayoutAlgorithm().getClass());
 	}
 

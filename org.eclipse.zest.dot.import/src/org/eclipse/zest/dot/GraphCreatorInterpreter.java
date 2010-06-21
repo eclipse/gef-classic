@@ -27,6 +27,7 @@ import org.eclipse.zest.dot.DotAst.Style;
 import org.eclipse.zest.internal.dot.parser.dot.AList;
 import org.eclipse.zest.internal.dot.parser.dot.AttrList;
 import org.eclipse.zest.internal.dot.parser.dot.AttrStmt;
+import org.eclipse.zest.internal.dot.parser.dot.Attribute;
 import org.eclipse.zest.internal.dot.parser.dot.AttributeType;
 import org.eclipse.zest.internal.dot.parser.dot.DotGraph;
 import org.eclipse.zest.internal.dot.parser.dot.EdgeRhsNode;
@@ -37,6 +38,7 @@ import org.eclipse.zest.internal.dot.parser.dot.NodeStmt;
 import org.eclipse.zest.internal.dot.parser.dot.Stmt;
 import org.eclipse.zest.internal.dot.parser.dot.util.DotSwitch;
 import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 /**
@@ -86,6 +88,20 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> implements
 	public Object caseDotGraph(DotGraph object) {
 		createGraph(object);
 		return super.caseDotGraph(object);
+	}
+
+	@Override
+	public Object caseAttribute(Attribute object) {
+		/*
+		 * Convenience for common 'rankdir=LR' attribute: use
+		 * HorizontalTreeLayoutAlgorithm if nothing else is specified
+		 */
+		if (object.getName().equals("rankdir") //$NON-NLS-1$
+				&& object.getValue().equals("LR")) { //$NON-NLS-1$
+			graph.setLayoutAlgorithm(new HorizontalTreeLayoutAlgorithm(
+					LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		}
+		return super.caseAttribute(object);
 	}
 
 	@Override

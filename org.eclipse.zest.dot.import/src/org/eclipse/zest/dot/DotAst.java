@@ -29,6 +29,7 @@ import org.eclipse.zest.internal.dot.parser.DotStandaloneSetup;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.AbstractLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
+import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
@@ -58,8 +59,10 @@ final class DotAst {
 	 * algorithms.
 	 */
 	enum Layout {
-		TREE(new TreeLayoutAlgorithm(STYLE)), GRID(new GridLayoutAlgorithm(
-				STYLE)), RADIAL(new RadialLayoutAlgorithm(STYLE)), SPRING(
+		TREE(new TreeLayoutAlgorithm(STYLE)), HTREE(
+				new HorizontalTreeLayoutAlgorithm(STYLE)), GRID(
+				new GridLayoutAlgorithm(STYLE)), RADIAL(
+				new RadialLayoutAlgorithm(STYLE)), SPRING(
 				new SpringLayoutAlgorithm(STYLE));
 		AbstractLayoutAlgorithm algorithm;
 

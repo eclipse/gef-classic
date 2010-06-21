@@ -6,7 +6,8 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
- digraph Attributes {
+ digraph AttributesGraph {
+    1;2;3;4
     rankdir=LR
     label="Left-to-Right"
     1->2
