@@ -423,12 +423,13 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 		getDomain().getCommandStack().removeCommandStackEventListener(
 				commandStackListener);
 		try {
+			// avoid disposing the current command during execution
+			disposeCurrentCommand = false;
 			getDomain().getCommandStack().execute(command);
-			if (command == getCurrentCommand()) {
-				disposeCurrentCommand = false;
-			}
-
 		} finally {
+			if (getCurrentCommand() != null && getCurrentCommand() != command) {
+				disposeCurrentCommand = true;
+			}
 			getDomain().getCommandStack().addCommandStackEventListener(
 					commandStackListener);
 		}
@@ -1382,7 +1383,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 	 * @see #getCurrentCommand()
 	 */
 	protected void setCurrentCommand(Command c) {
-		if (disposeCurrentCommand && command != null) {
+		if (disposeCurrentCommand && command != null && c != command) {
 			command.dispose();
 		}
 		disposeCurrentCommand = true;

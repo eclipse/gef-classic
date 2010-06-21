@@ -48,7 +48,11 @@ class MatchSizeAction extends SelectionAction {
 		Command cmd = createMatchSizeCommand(getSelectedObjects());
 		if (cmd == null)
 			return false;
-		return cmd.canExecute();
+		try {
+			return cmd.canExecute();
+		} finally {
+			cmd.dispose();
+		}
 	}
 
 	/**
