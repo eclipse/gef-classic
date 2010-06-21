@@ -78,7 +78,11 @@ public class DeleteAction extends SelectionAction {
 		Command cmd = createDeleteCommand(getSelectedObjects());
 		if (cmd == null)
 			return false;
-		return cmd.canExecute();
+		try {
+			return cmd.canExecute();
+		} finally {
+			cmd.dispose();
+		}
 	}
 
 	/**
