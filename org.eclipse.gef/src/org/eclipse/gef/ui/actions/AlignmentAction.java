@@ -133,11 +133,7 @@ public final class AlignmentAction extends SelectionAction {
 		Command cmd = createAlignmentCommand();
 		if (cmd == null)
 			return false;
-		try {
-			return cmd.canExecute();
-		} finally {
-			cmd.dispose();
-		}
+		return cmd.canExecute();
 	}
 
 	private Command createAlignmentCommand() {
