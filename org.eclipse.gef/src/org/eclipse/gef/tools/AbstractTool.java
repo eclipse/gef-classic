@@ -197,7 +197,6 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 	private EditDomain domain;
 	private List operationSet;
 	private int startX, startY, state;
-	private boolean disposeCurrentCommand = true;
 
 	static {
 		if (Platform.OS_MACOSX.equals(Platform.getOS())) {
@@ -423,13 +422,8 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 		getDomain().getCommandStack().removeCommandStackEventListener(
 				commandStackListener);
 		try {
-			// avoid disposing the current command during execution
-			disposeCurrentCommand = false;
 			getDomain().getCommandStack().execute(command);
 		} finally {
-			if (getCurrentCommand() != null && getCurrentCommand() != command) {
-				disposeCurrentCommand = true;
-			}
 			getDomain().getCommandStack().addCommandStackEventListener(
 					commandStackListener);
 		}
@@ -1374,20 +1368,13 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 	}
 
 	/**
-	 * Used to cache a command obtained from {@link #getCommand()}. Note that
-	 * the ownership of the given command is transferred to this class -- i.e.
-	 * the command will automatically be disposed when it's not needed anymore.
+	 * Used to cache a command obtained from {@link #getCommand()}.
 	 * 
 	 * @param c
 	 *            the command
 	 * @see #getCurrentCommand()
 	 */
 	protected void setCurrentCommand(Command c) {
-		if (disposeCurrentCommand && command != null && c != command) {
-			command.dispose();
-		}
-		disposeCurrentCommand = true;
-
 		command = c;
 		refreshCursor();
 	}
