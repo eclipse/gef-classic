@@ -1476,5 +1476,13 @@ public class SWTGraphics extends Graphics {
 			}
 			}
 		}
+		if (start != end) {
+			int n = 0;
+			int[] temp = new int[end - start];
+			for (int k = start; k < end; k++) {
+				temp[n++] = Math.round(points[k]);
+			}
+			region.add(temp);
+		}
 	}
 }
