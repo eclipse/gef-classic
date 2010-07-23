@@ -72,6 +72,16 @@ public class PrecisionPoint extends Point {
 	 * @see org.eclipse.draw2d.geometry.Point#getCopy()
 	 */
 	public Point getCopy() {
+		return getPreciseCopy();
+	}
+
+	/**
+	 * Returns a precise copy of this.
+	 * 
+	 * @return a precise copy
+	 * @since 3.7
+	 */
+	public PrecisionPoint getPreciseCopy() {
 		return new PrecisionPoint(preciseX, preciseY);
 	}
 

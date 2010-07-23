@@ -99,4 +99,25 @@ public class PrecisionDimension extends Dimension {
 		return super.equals(o);
 	}
 
+	/**
+	 * @see org.eclipse.draw2d.geometry.Dimension#getCopy()
+	 */
+	public Dimension getCopy() {
+		return getPreciseCopy();
+	}
+
+	/**
+	 * Returns a precise copy of this.
+	 * 
+	 * @return a precise copy
+	 * @since 3.7
+	 */
+	public PrecisionDimension getPreciseCopy() {
+		PrecisionDimension result = new PrecisionDimension();
+		result.preciseWidth = preciseWidth;
+		result.preciseHeight = preciseHeight;
+		result.updateInts();
+		return result;
+	}
+
 }
