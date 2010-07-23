@@ -30,4 +30,12 @@ public class PrecisionDimensionTest extends TestCase {
 		PrecisionDimension p2 = new PrecisionDimension(0.2, 0.2);
 		assertFalse(p1.equals(p2));
 	}
+
+	/**
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=124904
+	 */
+	public void testGetCopy() {
+		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
+		assertTrue(p1.equals(p1.getCopy()));
+	}
 }
