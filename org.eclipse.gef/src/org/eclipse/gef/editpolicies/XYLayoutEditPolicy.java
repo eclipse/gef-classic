@@ -18,6 +18,7 @@ import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
+import org.eclipse.gef.Request;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 
@@ -28,11 +29,13 @@ import org.eclipse.gef.requests.CreateRequest;
  * Created on :Nov 12, 2002
  * 
  * @author hudsonr
+ * @author anyssen
  * @since 2.0
  */
 public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 
-	private static final Dimension DEFAULT_SIZE = new Dimension(-1, -1);
+	private static final Dimension PREFERRED_SIZE = new Dimension(-1, -1);
+
 	private XYLayout xyLayout;
 
 	/**
@@ -42,38 +45,39 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 * have a lower bound determined by
 	 * {@link #getMinimumSizeFor(GraphicalEditPart)}.
 	 * 
-	 * @see ConstrainedLayoutEditPolicy#getConstraintFor(ChangeBoundsRequest,
-	 *      GraphicalEditPart)
+	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#getConstraintFor(org.eclipse.gef.Request,
+	 *      org.eclipse.gef.GraphicalEditPart,
+	 *      org.eclipse.draw2d.geometry.Rectangle)
 	 */
-	protected Object getConstraintFor(ChangeBoundsRequest request,
-			GraphicalEditPart child) {
-		Rectangle rect = new PrecisionRectangle(child.getFigure().getBounds());
-		Rectangle original = rect.getCopy();
-		child.getFigure().translateToAbsolute(rect);
-		rect = request.getTransformedRectangle(rect);
-		child.getFigure().translateToRelative(rect);
-		rect.translate(getLayoutOrigin().getNegated());
-
-		if (request.getSizeDelta().width == 0
-				&& request.getSizeDelta().height == 0) {
-			Rectangle cons = getCurrentConstraintFor(child);
-			if (cons != null) // Bug 86473 allows for unintended use of this
-								// method
-				rect.setSize(cons.width, cons.height);
-		} else { // resize
-			Dimension minSize = getMinimumSizeFor(child);
-			if (rect.width < minSize.width) {
-				rect.width = minSize.width;
-				if (rect.x > (original.right() - minSize.width))
-					rect.x = original.right() - minSize.width;
-			}
-			if (rect.height < minSize.height) {
-				rect.height = minSize.height;
-				if (rect.y > (original.bottom() - minSize.height))
-					rect.y = original.bottom() - minSize.height;
+	protected Object getConstraintFor(Request request, GraphicalEditPart child,
+			Rectangle rect) {
+		if (request instanceof ChangeBoundsRequest) {
+			ChangeBoundsRequest changeBoundsRequest = (ChangeBoundsRequest) request;
+			if (changeBoundsRequest.getSizeDelta().width == 0
+					&& changeBoundsRequest.getSizeDelta().height == 0) {
+				// preserve existing size in case of move
+				Rectangle cons = getCurrentConstraintFor(child);
+				if (cons != null) // Bug 86473 allows for unintended use of
+									// this
+									// method
+					rect.setSize(cons.width, cons.height);
+			} else { // resize
+				Dimension minSize = getMinimumSizeFor(child);
+				Rectangle bounds = new PrecisionRectangle(child.getFigure()
+						.getBounds());
+				if (rect.width < minSize.width) {
+					rect.width = minSize.width;
+					if (rect.x > (bounds.right() - minSize.width))
+						rect.x = bounds.right() - minSize.width;
+				}
+				if (rect.height < minSize.height) {
+					rect.height = minSize.height;
+					if (rect.y > (bounds.bottom() - minSize.height))
+						rect.y = bounds.bottom() - minSize.height;
+				}
 			}
 		}
-		return getConstraintFor(rect);
+		return super.getConstraintFor(request, child, rect);
 	}
 
 	/**
@@ -86,7 +90,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 * @return a Rectangle
 	 */
 	public Object getConstraintFor(Point p) {
-		return new Rectangle(p, DEFAULT_SIZE);
+		return new Rectangle(p, PREFERRED_SIZE);
 	}
 
 	/**

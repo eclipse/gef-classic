@@ -17,6 +17,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.geometry.Translatable;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
@@ -36,9 +37,41 @@ import org.eclipse.gef.requests.CreateRequest;
  * handled in the superclass.
  * 
  * @author hudsonr
+ * @author anyssen
  * @since 2.0
  */
 public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
+
+	/**
+	 * Constant being used to indicate that upon creation (or during move) a
+	 * size was not specified.
+	 * 
+	 * @since 3.7
+	 */
+	protected static final Dimension UNSPECIFIED_SIZE = new Dimension();
+
+	/**
+	 * The request is now made available when creating the add command. By
+	 * default, this method invokes the old
+	 * {@link ConstrainedLayoutEditPolicy#createAddCommand(EditPart, Object)
+	 * method}.
+	 * 
+	 * @param request
+	 *            the ChangeBoundsRequest
+	 * @param child
+	 *            the EditPart of the child being added
+	 * @param constraint
+	 *            the model constraint, after being
+	 *            {@link #translateToModelConstraint(Object) translated}
+	 * @return the Command to add the child
+	 * 
+	 * @see #createAddCommand(EditPart, Object)
+	 * @since 3.7
+	 */
+	protected Command createAddCommand(ChangeBoundsRequest request,
+			EditPart child, Object constraint) {
+		return createAddCommand(child, constraint);
+	}
 
 	/**
 	 * Returns the <code>Command</code> to perform an Add with the specified
@@ -121,28 +154,14 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 		List editParts = request.getEditParts();
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Add in ConstrainedLayoutEditPolicy");//$NON-NLS-1$
-		GraphicalEditPart childPart;
-		Rectangle r;
-		Object constraint;
+		GraphicalEditPart child;
 
 		for (int i = 0; i < editParts.size(); i++) {
-			childPart = (GraphicalEditPart) editParts.get(i);
-			r = childPart.getFigure().getBounds().getCopy();
-			// convert r to absolute from childpart figure
-			childPart.getFigure().translateToAbsolute(r);
-			r = request.getTransformedRectangle(r);
-			// convert this figure to relative
-			getLayoutContainer().translateToRelative(r);
-			getLayoutContainer().translateFromParent(r);
-			r.translate(getLayoutOrigin().getNegated());
-			constraint = getConstraintFor(r);
-			/*
-			 * @TODO:Pratik Should create a new createAddCommand(...) which is
-			 * given the request so that attaching to/detaching from guides can
-			 * be taken care of.
-			 */
-			command.add(createAddCommand(childPart,
-					translateToModelConstraint(constraint)));
+			child = (GraphicalEditPart) editParts.get(i);
+			command.add(createAddCommand(
+					request,
+					child,
+					translateToModelConstraint(getConstraintFor(request, child))));
 		}
 		return command.unwrap();
 	}
@@ -154,7 +173,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @param request
 	 *            the AligmentRequest
-	 * @return the command to perform aligment
+	 * @return the command to perform alignment
 	 */
 	protected Command getAlignChildrenCommand(AlignmentRequest request) {
 		return getResizeChildrenCommand(request);
@@ -176,10 +195,17 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	}
 
 	/**
-	 * Generates a draw2d constraint object derived from the specified child
-	 * EditPart using the provided Request. The returned constraint will be
-	 * translated to the application's model later using
-	 * {@link #translateToModelConstraint(Object)}.
+	 * Generates a draw2d constraint object for the given
+	 * <code>ChangeBoundsRequest</code> and child EditPart by delegating to
+	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
+	 * 
+	 * The rectangle being passed over to
+	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)} is
+	 * calculated based on the child figure's current bounds and the
+	 * ChangeBoundsRequest's move and resize deltas. It is made layout-relative
+	 * by using
+	 * {@link #translateToLayoutRelative(Translatable)} before
+	 * calling {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
 	 * 
 	 * @param request
 	 *            the ChangeBoundsRequest
@@ -190,17 +216,45 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 */
 	protected Object getConstraintFor(ChangeBoundsRequest request,
 			GraphicalEditPart child) {
-		Rectangle rect = new PrecisionRectangle(child.getFigure().getBounds());
-		child.getFigure().translateToAbsolute(rect);
-		rect = request.getTransformedRectangle(rect);
-		child.getFigure().translateToRelative(rect);
-		rect.translate(getLayoutOrigin().getNegated());
-		return getConstraintFor(rect);
+		Rectangle locationAndSize = new PrecisionRectangle(child.getFigure()
+				.getBounds());
+		child.getFigure().translateToAbsolute(locationAndSize);
+		locationAndSize = request.getTransformedRectangle(locationAndSize);
+		translateToLayoutRelative(locationAndSize);
+		return getConstraintFor(request, child, locationAndSize);
+	}
+
+	/**
+	 * Responsible of generating a draw2d constraint for the given Rectangle,
+	 * which represents the already transformed (layout-relative) position and
+	 * size of the given Request.
+	 * 
+	 * By default, this method delegates to {@link #getConstraintFor(Point)} or
+	 * {@link #getConstraintFor(Rectangle)}, dependent on whether the size of
+	 * the rectangle is an {@link #UNSPECIFIED_SIZE} or not.
+	 * 
+	 * Subclasses may overwrite this method in case they need the request or the
+	 * edit part (which will of course not be set during creation) to calculate
+	 * a layout constraint for the request.
+	 * 
+	 * @param rectangle
+	 *            the Rectangle relative to the {@link #getLayoutOrigin() layout
+	 *            origin}
+	 * @return the constraint
+	 * @since 3.7
+	 */
+	protected Object getConstraintFor(Request request, GraphicalEditPart child,
+			Rectangle rectangle) {
+		if (UNSPECIFIED_SIZE.equals(rectangle.getSize())) {
+			return getConstraintFor(rectangle.getLocation());
+		}
+		return getConstraintFor(rectangle);
 	}
 
 	/**
 	 * Generates a draw2d constraint given a <code>Point</code>. This method is
-	 * called during creation, when only a mouse location is available.
+	 * called during creation, when only a mouse location is available, as well
+	 * as during move, in case no resizing is involved.
 	 * 
 	 * @param point
 	 *            the Point relative to the {@link #getLayoutOrigin() layout
@@ -221,40 +275,35 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	protected abstract Object getConstraintFor(Rectangle rect);
 
 	/**
-	 * Generates a draw2d constraint for the given <code>CreateRequest</code>.
-	 * If the CreateRequest has a size, {@link #getConstraintFor(Rectangle)} is
-	 * called with a Rectangle of that size and the result is returned. This is
-	 * used during size-on-drop creation. Otherwise,
-	 * {@link #getConstraintFor(Point)} is returned.
+	 * Generates a draw2d constraint for the given <code>CreateRequest</code> by
+	 * delegating to
+	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
+	 * 
+	 * If the CreateRequest has a size, is used during size-on-drop creation, a
+	 * Rectangle of the request's location and size is passed with the
+	 * delegation. Otherwise, a rectangle with the request's location and an
+	 * empty size (0,0) is passed over.
 	 * <P>
-	 * The CreateRequest's location is relative the Viewer. The location is made
-	 * layout-relative before calling one of the methods mentioned above.
+	 * The CreateRequest's location is relative to the Viewer. The location is
+	 * made layout-relative by using
+	 * {@link #translateToLayoutRelative(Translatable)} before
+	 * calling {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
 	 * 
 	 * @param request
 	 *            the CreateRequest
 	 * @return a draw2d constraint
 	 */
 	protected Object getConstraintFor(CreateRequest request) {
-		IFigure figure = getLayoutContainer();
-
-		Point where = request.getLocation().getCopy();
-		Dimension size = request.getSize();
-
-		figure.translateToRelative(where);
-		figure.translateFromParent(where);
-		where.translate(getLayoutOrigin().getNegated());
-
-		if (size == null || size.isEmpty())
-			return getConstraintFor(where);
-		else {
-			// $TODO Probably should use PrecisionRectangle at some point
-			// instead of two
-			// geometrical objects
-			size = size.getCopy();
-			figure.translateToRelative(size);
-			figure.translateFromParent(size);
-			return getConstraintFor(new Rectangle(where, size));
+		Rectangle locationAndSize = null;
+		if (request.getSize() == null || request.getSize().isEmpty()) {
+			locationAndSize = new PrecisionRectangle(request.getLocation(),
+					UNSPECIFIED_SIZE);
+		} else {
+			locationAndSize = new PrecisionRectangle(request.getLocation(),
+					request.getSize());
 		}
+		translateToLayoutRelative(locationAndSize);
+		return getConstraintFor(request, null, locationAndSize);
 	}
 
 	/**
@@ -263,22 +312,40 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * @param part
 	 *            the graphical edit part representing the object to be cloned.
 	 * @param request
-	 *            the changeboundsrequest that knows where to place the new
+	 *            the ChangeBoundsRequest that knows where to place the new
 	 *            object.
 	 * @return the bounds that will be used for the new object.
+	 * @deprecated Use
+	 *             {@link #getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}
+	 *             instead.
 	 */
 	protected Object getConstraintForClone(GraphicalEditPart part,
 			ChangeBoundsRequest request) {
-		IFigure figure = part.getFigure();
-		Rectangle bounds = new PrecisionRectangle(figure.getBounds());
+		// anyssen: The code executed herein was functionally the same
+		// as that in getConstraintFor(ChangeBoundsRequest, GraphicalEditPart),
+		// despite it was erroneously missing a call to
+		// getLayoutContainer().translateFromParent(), which is needed
+		// to translate the part's figure's bounds into a coordinate
+		// local to the client area of the layout container.
+		return getConstraintFor(request, part);
+	}
 
-		figure.translateToAbsolute(bounds);
-		bounds = request.getTransformedRectangle(bounds);
-
-		((GraphicalEditPart) getHost()).getContentPane().translateToRelative(
-				bounds);
-		bounds.translate(getLayoutOrigin().getNegated());
-		return getConstraintFor(bounds);
+	/**
+	 * Translates an translatable in absolute coordinates to be layout-relative,
+	 * i.e. relative to the {@link #getLayoutContainer()}'s origin, which is
+	 * obtained via {@link #getLayoutOrigin()}.
+	 * 
+	 * @param t
+	 *            the Translatable in absolute coordinates to be translated to
+	 *            layout-relative coordinates.
+	 * @since 3.7
+	 */
+	protected void translateToLayoutRelative(Translatable t) {
+		IFigure figure = getLayoutContainer();
+		figure.translateToRelative(t);
+		figure.translateFromParent(t);
+		Point negatedLayoutOrigin = getLayoutOrigin().getNegated();
+		t.performTranslate(negatedLayoutOrigin.x, negatedLayoutOrigin.y);
 	}
 
 	/**
@@ -301,6 +368,19 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * @return the Command
 	 */
 	protected Command getResizeChildrenCommand(ChangeBoundsRequest request) {
+		return getChangeConstraintCommand(request);
+	}
+
+	/**
+	 * Returns the <code>Command</code> for changing bounds for a group of
+	 * children.
+	 * 
+	 * @param request
+	 *            the ChangeBoundsRequest
+	 * @return the Command
+	 * @since 3.7
+	 */
+	protected Command getChangeConstraintCommand(ChangeBoundsRequest request) {
 		CompoundCommand resize = new CompoundCommand();
 		Command c;
 		GraphicalEditPart child;
@@ -346,5 +426,4 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	protected Point getLayoutOrigin() {
 		return getLayoutContainer().getClientArea().getLocation();
 	}
-
 }
