@@ -38,16 +38,50 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
+	 * 
+	 * Constructs a new PrecisionRectangle from a given Point and a Dimension
+	 * 
+	 * @param p
+	 *            The Point to specify x and y location of the
+	 *            PrecisionRectangle
+	 * @param d
+	 *            The Dimension to use for width and height of the
+	 *            PrecisionRectangle
+	 * @since 3.7
+	 */
+	public PrecisionRectangle(Point p, Dimension d) {
+		this(p.preciseX(), p.preciseY(), d.preciseWidth(), d.preciseHeight());
+	}
+
+	/**
 	 * Constructs a new PrecisionRectangle from the given integer Rectangle.
 	 * 
 	 * @param rect
 	 *            the base rectangle
 	 */
 	public PrecisionRectangle(Rectangle rect) {
-		preciseX = rect.preciseX();
-		preciseY = rect.preciseY();
-		preciseWidth = rect.preciseWidth();
-		preciseHeight = rect.preciseHeight();
+		this(rect.preciseX(), rect.preciseY(), rect.preciseWidth(), rect
+				.preciseHeight());
+	}
+
+	/**
+	 * Constructs a PrecisionRectangle with the provided values.
+	 * 
+	 * @param x
+	 *            X location
+	 * @param y
+	 *            Y location
+	 * @param width
+	 *            Width of the rectangle
+	 * @param height
+	 *            Height of the rectangle
+	 * @since 3.7
+	 */
+	public PrecisionRectangle(double x, double y, double width, double height) {
+		preciseX = x;
+		preciseY = y;
+		preciseWidth = width;
+		preciseHeight = height;
 		updateInts();
 	}
 
