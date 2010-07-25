@@ -19,7 +19,11 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class RoundedRectangle extends Shape {
 
-	/** The width and height radii applied to each corner. */
+	/**
+	 * The width and height radii applied to each corner.
+	 * 
+	 * @deprecated Use {@link #getCornerDimensions()} instead.
+	 */
 	protected Dimension corner = new Dimension(8, 8);
 
 	/**
@@ -65,5 +69,15 @@ public class RoundedRectangle extends Shape {
 	public void setCornerDimensions(Dimension d) {
 		corner.width = d.width;
 		corner.height = d.height;
+	}
+
+	/**
+	 * Returns the dimensions used for each corner.
+	 * 
+	 * @return the dimensions of the corner.
+	 * @since 3.7
+	 */
+	public Dimension getCornerDimensions() {
+		return corner.getCopy();
 	}
 }
