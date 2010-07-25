@@ -11,7 +11,6 @@
 package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
@@ -29,7 +28,6 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.SnapToGuides;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
@@ -96,9 +94,9 @@ public class LogicXYLayoutEditPolicy extends
 		return result;
 	}
 
-	protected Command createAddCommand(Request request, EditPart childEditPart,
-			Object constraint) {
-		LogicSubpart part = (LogicSubpart) childEditPart.getModel();
+	protected Command createAddCommand(ChangeBoundsRequest request,
+			EditPart child, Object constraint) {
+		LogicSubpart part = (LogicSubpart) child.getModel();
 		Rectangle rect = (Rectangle) constraint;
 
 		AddCommand add = new AddCommand();
@@ -244,32 +242,6 @@ public class LogicXYLayoutEditPolicy extends
 		return (LogicGuide) provider.getGuideAt(pos);
 	}
 
-	protected Command getAddCommand(Request generic) {
-		ChangeBoundsRequest request = (ChangeBoundsRequest) generic;
-		List editParts = request.getEditParts();
-		CompoundCommand command = new CompoundCommand();
-		command.setDebugLabel("Add in ConstrainedLayoutEditPolicy");//$NON-NLS-1$
-		GraphicalEditPart childPart;
-		Rectangle r;
-		Object constraint;
-
-		for (int i = 0; i < editParts.size(); i++) {
-			childPart = (GraphicalEditPart) editParts.get(i);
-			r = childPart.getFigure().getBounds().getCopy();
-			// convert r to absolute from childpart figure
-			childPart.getFigure().translateToAbsolute(r);
-			r = request.getTransformedRectangle(r);
-			// convert this figure to relative
-			getLayoutContainer().translateToRelative(r);
-			getLayoutContainer().translateFromParent(r);
-			r.translate(getLayoutOrigin().getNegated());
-			constraint = getConstraintFor(r);
-			command.add(createAddCommand(generic, childPart,
-					translateToModelConstraint(constraint)));
-		}
-		return command.unwrap();
-	}
-
 	/**
 	 * Override to return the <code>Command</code> to perform an
 	 * {@link RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code>
@@ -290,7 +262,7 @@ public class LogicXYLayoutEditPolicy extends
 		while (i.hasNext()) {
 			currPart = (GraphicalEditPart) i.next();
 			clone.addPart((LogicSubpart) currPart.getModel(),
-					(Rectangle) getConstraintForClone(currPart, request));
+					(Rectangle) getConstraintFor(request, currPart));
 		}
 
 		// Attach to horizontal guide, if one is given
