@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><!--
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
     Copyright (c) 2005, 2009 IBM Corporation and others.
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License v1.0
@@ -8,11 +9,10 @@
     Contributors:
         IBM Corporation - initial API and implementation
  -->
-
 <feature
       id="org.eclipse.gef"
       label="%featureName"
-      version="3.6.1.qualifier"
+      version="3.7.0.qualifier"
       provider-name="%providerName"
       image="eclipse_update_120.jpg">
 
@@ -33,16 +33,16 @@
       <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/site.xml"/>
    </url>
 
+   <includes
+         id="org.eclipse.draw2d"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui.views" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui.workbench" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
    </requires>
-
-   <includes
-         id="org.eclipse.draw2d"
-         version="0.0.0"/>
 
    <plugin
          id="org.eclipse.gef"
