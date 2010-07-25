@@ -1,3 +1,4 @@
 .checkstyle
 plugin.xml_gen
-.antlr-generator-*.jar
+*.jar
+build*.xml

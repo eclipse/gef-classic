@@ -62,7 +62,7 @@
 			<i>src-gen</i> folder of a Zest project as the container in the wizard (or select it before starting the wizard).
 		</p>
 		<h4 id="Zest_Graph_View">Zest Graph View</h4>
-		<p>The Zest Graph view listens to changes made to *.dot files in the workspace. The view draws the DOT graphs using Zest and allows for image export of the current Zest graph. When a *.dot file is added to the workspace or altered in an editor, the Zest graph view is updated with the graph created from the *.dot file. For instance, consider a file with the .dot extension, containing the following DOT graph definition: </p>
+		<p>The Zest Graph view can visualize DOT graphs in *.dot files or embedded in other files in the workspace. The view draws the DOT graphs using Zest and allows for image export of the current Zest graph. When automatic updating is enabled (see below), and a *.dot file or embedded DOT content is added to the workspace or altered in an editor, the Zest graph view is updated with the graph created from the DOT input. For instance, consider a file with the .dot extension, containing the following DOT graph definition: </p>
 		<pre>digraph s{ 
  n1[label="Node 1"]; n2[label="Node 2"]; 
  n1 -&gt; n2[style=dotted label="A dotted edge"]
@@ -72,17 +72,17 @@
 		<p>
 			<img width="200" border="0" src="images/DotZestGraphView.png"/>
 		</p>
-		<p>The view contains buttons to load a specific *.dot file, to export the current Zest graph as an image file by calling the 
-			<i>dot</i> executable, to layout the current graph, and to re-select the directory containing the 
-			<i>dot</i> executable (from left to right). When the image export button is selected, a PDF for the current graph is saved in the directory containing the input *.dot file. In this example, the export looks like this:
+		<p>The view contains buttons to toggle automatic updates, to load a specific file containing a DOT graph, and to layout the current graph. To export the current Zest graph as an image file by calling the 
+			<i>dot</i> executable, the view contains buttons to re-select the directory containing the 
+			<i>dot</i> executable, to enable export of the original DOT input, and to export as an image file (from left to right). When the image export button is selected, a PDF for the current graph is saved in the directory containing the file with the DOT input, and opened with the associated external editor, if one is available. In this example, the export looks like this:
 		</p>
 		<p>
 			<img border="0" src="images/DotZestM2Rendered.png"/>
 		</p>
-		<p>This completes the Zest-based DOT authoring environment: if the *.dot file is inside the 
-			<i>templates/</i> folder of a Zest project, the file will both be visualized in the Zest Graph view (e.g. during editing) and compiled to a Zest graph subclass (e.g. to be used in a different application), and can be exported as a PDF with Graphviz.
+		<p>This completes the Zest-based DOT authoring environment. If the *.dot file is inside the 
+			<i>templates/</i> folder of a Zest project, the file will be visualized in the Zest Graph view (e.g. during editing), compiled to a Zest graph subclass (e.g. to be used in a different application), and can be exported as a PDF with Graphviz.
 		</p>
-		<p>At the same time the view provides a simple way to visualize *.dot file output of any kind of program, e.g. to visualize and debug internal data structures, results, etc: if a program running in Eclipse outputs any *.dot file in the workspace, the view will be updated with the corresponding Zest graph.</p>
+		<p>At the same time the view provides a simple way to visualize *.dot file output of any kind of program, e.g. to visualize and debug internal data structures, results, etc: if a program running in Eclipse outputs any *.dot file in the workspace and the workspace is refreshed, the view will be updated with the corresponding Zest graph (if automatic updating is enabled, see above).</p>
 		<h4 id="Editing">Editing</h4>
 		<p>The Zest view can be used with the included DOT editor to visualize a DOT file:</p>
 		<p>
@@ -193,7 +193,7 @@ File image = exporter.toImage("/opt/local/bin", "pdf");
 		</p>
 		<p>Then, check out the bundles from the CVS location above. After the checkout, run (Run As -&gt; MWE2 workflow) the 
 			<i>GenerateDot.mwe2</i> in the 
-			<i>/src/org/eclipse/zest/internal/dot/parser</i> folder of the import bundle.
+			<i>/src/org/eclipse/zest/internal/dot/parser</i> folder of the import bundle. Make sure to set the project or workspace encoding to UTF-8.
 		</p>
 		<p>Run the 
 			<i>*Suite.java</i> test suites of the individual bundles (in src-test/) as JUnit tests to get an impression of the current implementation state. To test the UI components, run an Eclipse application configured with 
