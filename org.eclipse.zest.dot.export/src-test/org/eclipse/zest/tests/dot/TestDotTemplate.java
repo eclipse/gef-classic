@@ -17,6 +17,7 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.internal.dot.DotTemplate;
+import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
 import org.eclipse.zest.tests.dot.test_data.LabeledGraph;
 import org.eclipse.zest.tests.dot.test_data.SampleGraph;
 import org.eclipse.zest.tests.dot.test_data.SimpleDigraph;
@@ -36,12 +37,17 @@ public class TestDotTemplate {
 	@Test
 	public void zestGraph() {
 		Graph graph = new Graph(shell, SWT.NONE);
+		graph.setLayoutAlgorithm(new HorizontalTreeLayoutAlgorithm(), true);
 		graph.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		GraphConnection edge = new GraphConnection(graph, SWT.NONE,
 				new GraphNode(graph, SWT.NONE, "Node 1"), new GraphNode(graph, //$NON-NLS-1$
 						SWT.NONE, "Node 2")); //$NON-NLS-1$
 		edge.setText("A dotted edge"); //$NON-NLS-1$
 		edge.setLineStyle(SWT.LINE_DOT);
+		String dot = new DotTemplate().generate(graph);
+		Assert.assertTrue(
+				"Graph with horizontal tree layout should contain rankdir=LR",
+				dot.contains("rankdir=LR"));
 		testDotGeneration(graph);
 	}
 
