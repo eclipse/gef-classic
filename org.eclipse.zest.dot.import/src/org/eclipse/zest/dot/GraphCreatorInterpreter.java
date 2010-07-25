@@ -212,8 +212,9 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> implements
 	}
 
 	private GraphNode node(String id) {
-		if (!nodes.containsKey(id)) {
-			nodes.put(id, new GraphNode(graph, SWT.NONE, id));
+		if (!nodes.containsKey(id)) { // undeclared node, as in "graph{1->2}"
+			nodes.put(id, new GraphNode(graph, SWT.NONE,
+					globalNodeLabel != null ? globalNodeLabel : id));
 		}
 		return nodes.get(id);
 	}

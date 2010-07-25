@@ -233,6 +233,24 @@ public final class TestGraphInstanceDotImport {
 				.getLayoutAlgorithm().getClass());
 	}
 
+	@Test
+	public void globalNodeAttributeAdHocNodes() {
+		Graph graph = interpreter.create(new Shell(), SWT.NONE,
+				parse("graph{node[label=\"TEXT\"];1--2}")); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
+		Assert.assertEquals("TEXT", //$NON-NLS-1$
+				((GraphNode) graph.getNodes().get(0)).getText());
+	}
+
+	@Test
+	public void globalEdgeAttributeAdHocNodes() {
+		Graph graph = interpreter.create(new Shell(), SWT.NONE,
+				parse("graph{edge[label=\"TEXT\"];1--2}")); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
+		Assert.assertEquals("TEXT", ((GraphConnection) graph.getConnections() //$NON-NLS-1$
+				.get(0)).getText());
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void faultyLayout() {
 		interpreter.create(new Shell(), SWT.NONE,
