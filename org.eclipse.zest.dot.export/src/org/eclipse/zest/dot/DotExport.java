@@ -24,14 +24,24 @@ import org.eclipse.zest.internal.dot.DotTemplate;
  */
 public final class DotExport {
 	public static final String DOT_BIN_DIR_KEY = "org.eclipse.zest.dot.bin.dir"; //$NON-NLS-1$
-	private Graph graph;
+	private String dotString;
+	private String graphName = "Unnamed" + System.currentTimeMillis();
 
 	/**
 	 * @param graph
 	 *            The Zest graph to export to DOT
 	 */
 	public DotExport(final Graph graph) {
-		this.graph = graph;
+		this.dotString = graphToDot(graph);
+		this.graphName = graph.getClass().getSimpleName();
+	}
+
+	/**
+	 * @param dotString
+	 *            The DOT graph to export to an image
+	 */
+	public DotExport(String dotString) {
+		this.dotString = dotString;
 	}
 
 	/**
@@ -40,7 +50,7 @@ public final class DotExport {
 	 * @return The DOT representation of the given Zest graph
 	 */
 	public String toDotString() {
-		return graphToDot(graph);
+		return dotString;
 	}
 
 	/**
@@ -51,7 +61,7 @@ public final class DotExport {
 	 * @return The given file
 	 */
 	public File toDotFile(final File destination) {
-		DotFileUtils.write(graphToDot(graph), destination);
+		DotFileUtils.write(dotString, destination);
 		return destination;
 	}
 
@@ -64,17 +74,16 @@ public final class DotExport {
 	 * @return The image file exported via DOT for the given Zest graph, or null
 	 */
 	public File toImage(final String dotDir, final String format) {
-		File dotFile = DotFileUtils.write(toDotString());
+		File dotFile = DotFileUtils.write(dotString);
 		File image = DotDrawer.renderImage(new File(dotDir), dotFile, format);
 		return image;
 	}
 
 	@Override
 	public String toString() {
-		String simpleClassName = graph.getClass().getSimpleName();
 		/* The exact name 'Graph' is not valid for rendering with Graphviz: */
-		return simpleClassName.equals("Graph") ? "Zest" + simpleClassName //$NON-NLS-1$//$NON-NLS-2$
-		: simpleClassName;
+		return graphName.equals("Graph") ? "Zest" + graphName //$NON-NLS-1$//$NON-NLS-2$
+		: graphName;
 	}
 
 	private static String graphToDot(final Graph graph) {

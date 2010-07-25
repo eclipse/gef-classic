@@ -9,6 +9,8 @@
 package org.eclipse.zest.dot;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 
 /**
@@ -55,6 +57,27 @@ final class DotDrawer {
 		}
 		System.out
 				.println(", " + "resulted in exit status" + ": " + p.exitValue()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		String errors = read(p.getErrorStream());
+		String output = read(p.getInputStream());
+		if (errors.trim().length() > 0) {
+			System.err.println("Errors from dot call: " + errors);
+		}
+		if (output.trim().length() > 0) {
+			System.out.println("Output from dot call: " + output);
+		}
+	}
+
+	private static String read(InputStream s) {
+		StringBuilder builder = new StringBuilder();
+		try {
+			int current = -1;
+			while ((current = s.read()) != -1) {
+				builder.append((char) current);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return builder.toString();
 	}
 
 	private static boolean runningOnWindows() {
