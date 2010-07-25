@@ -79,18 +79,21 @@ public final class ZestGraphView extends ViewPart {
 	private static final String LAYOUT = DotUiMessages.ZestGraphView_6;
 	private static final String EXPORT = DotUiMessages.ZestGraphView_7;
 	private static final String EXPORT_MODE = DotUiMessages.ZestGraphView_8;
+	private static final String UPDATE_MODE = DotUiMessages.ZestGraphView_9;
 
 	private static final String RESOURCES_ICONS_OPEN_GIF = "resources/icons/open.gif"; //$NON-NLS-1$
 	private static final String RESOURCES_ICONS_EXPORT_GIF = "resources/icons/export.gif"; //$NON-NLS-1$
 	private static final String RESOURCES_ICONS_RESET = "resources/icons/ask.gif"; //$NON-NLS-1$
 	private static final String RESOURCES_ICONS_LAYOUT = "resources/icons/layout.gif"; //$NON-NLS-1$
 	private static final String RESOURCES_ICONS_EXPORT_MODE = "resources/icons/export-mode.gif"; //$NON-NLS-1$
+	private static final String RESOURCES_ICONS_UPDATE_MODE = "resources/icons/update-mode.gif"; //$NON-NLS-1$
 
 	private static final String EXTENSION = "dot"; //$NON-NLS-1$
 	private static final String FORMAT_PDF = "pdf"; //$NON-NLS-1$
 	private static final String FORMAT_PNG = "png"; //$NON-NLS-1$
 
 	private boolean exportFromZestGraph = true;
+	private boolean listenToDotContent = false;
 
 	private Composite composite;
 	private Graph graph;
@@ -98,7 +101,6 @@ public final class ZestGraphView extends ViewPart {
 
 	private String dotString = ""; //$NON-NLS-1$
 	private boolean addReference = true;
-	private boolean listenToDotContent = true; // TODO add toggle button
 
 	/** Listener that passes a visitor if a resource is changed. */
 	private IResourceChangeListener resourceChangeListener = new IResourceChangeListener() {
@@ -166,15 +168,38 @@ public final class ZestGraphView extends ViewPart {
 				e.printStackTrace();
 			}
 		}
+		addUpdateModeButton();
 		addLoadButton();
 		addLayoutButton();
 		addResetButton();
 		addExportModeButton();
 		addExportButton();
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(
-				resourceChangeListener,
-				IResourceChangeEvent.POST_BUILD
-						| IResourceChangeEvent.POST_CHANGE);
+	}
+
+	private void addUpdateModeButton() {
+		Action toggleUpdateModeAction = new Action(UPDATE_MODE, SWT.TOGGLE) {
+			public void run() {
+				listenToDotContent = toggle(this, listenToDotContent);
+				toggleResourceListener();
+			}
+
+			private void toggleResourceListener() {
+				IWorkspace workspace = ResourcesPlugin.getWorkspace();
+				if (listenToDotContent) {
+					workspace.addResourceChangeListener(resourceChangeListener,
+							IResourceChangeEvent.POST_BUILD
+									| IResourceChangeEvent.POST_CHANGE);
+				} else {
+					workspace
+							.removeResourceChangeListener(resourceChangeListener);
+				}
+			}
+		};
+		toggleUpdateModeAction.setId(toggleUpdateModeAction.getText());
+		toggleUpdateModeAction.setImageDescriptor(DotUiActivator
+				.getImageDescriptor(RESOURCES_ICONS_UPDATE_MODE));
+		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
+		mgr.add(toggleUpdateModeAction);
 	}
 
 	private void addExportModeButton() {
@@ -188,7 +213,6 @@ public final class ZestGraphView extends ViewPart {
 				.getImageDescriptor(RESOURCES_ICONS_EXPORT_MODE));
 		IToolBarManager mgr = getViewSite().getActionBars().getToolBarManager();
 		mgr.add(toggleRenderingAction);
-
 	}
 
 	private boolean toggle(Action action, boolean input) {

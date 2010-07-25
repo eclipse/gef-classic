@@ -44,6 +44,7 @@ public class DotUiMessages extends NLS {
 	public static String ZestGraphView_6;
 	public static String ZestGraphView_7;
 	public static String ZestGraphView_8;
+	public static String ZestGraphView_9;
 	public static String ZestGraphWizardPageCustomize_0;
 	public static String ZestGraphWizardPageCustomize_1;
 	public static String ZestGraphWizardPageCustomize_2;
