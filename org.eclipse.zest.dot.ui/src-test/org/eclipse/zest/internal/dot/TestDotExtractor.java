@@ -38,6 +38,8 @@ public class TestDotExtractor {
 					"digraph{a;b;a->b}"); //$NON-NLS-1$
 			put("Stuff about a graph and then digraph{subgraph cluster_0{1->2}; 1->3} and more ", //$NON-NLS-1$
 			"digraph{subgraph cluster_0{1->2}; 1->3}"); //$NON-NLS-1$
+			put("Stuff about a graph then graph{node[shape=record];1[label=\"{Text|Text}\"]} and more", //$NON-NLS-1$
+			"graph{node[shape=record];1[label=\"{Text|Text}\"]}"); //$NON-NLS-1$
 		}
 	};
 

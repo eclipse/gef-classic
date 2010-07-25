@@ -58,11 +58,28 @@ public final class DotExtractor {
 	 *         DOT graph
 	 */
 	public String getDotString() {
+		return trimNonDotSuffix(trimNonDotPrefix());
+	}
+
+	private String trimNonDotPrefix() {
 		Matcher m = Pattern
-				.compile(
-						"((?:di)?graph\\s?[^{\\s]*\\s?\\{((subgraph[^{]*\\{[^\\}]+\\})|[^\\}])+\\})").matcher(input); //$NON-NLS-1$
-		String dotString = m.find() ? m.group(1) : NO_DOT;
-		return dotString.trim();
+				.compile("((?:di)?graph\\s*[^{\\s]*\\s*\\{.+)", Pattern.DOTALL).matcher(input); //$NON-NLS-1$
+		String dotSubstring = m.find() ? m.group(1) : NO_DOT;
+		return dotSubstring;
+	}
+
+	private String trimNonDotSuffix(String dot) {
+		int first = dot.indexOf('{') + 1;
+		StringBuilder builder = new StringBuilder(dot.substring(0, first));
+		int count = 1; /* we count to include embedded { ... } blocks */
+		int index = first;
+		while (count > 0 && index < dot.length()) {
+			char c = dot.charAt(index);
+			builder.append(c);
+			count = (c == '{') ? count + 1 : (c == '}') ? count - 1 : count;
+			index++;
+		}
+		return builder.toString().trim();
 	}
 
 }
