@@ -27,6 +27,7 @@ import org.eclipse.gef.ui.actions.ActionBarContributor;
 import org.eclipse.gef.ui.actions.AlignmentRetargetAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.MatchHeightRetargetAction;
+import org.eclipse.gef.ui.actions.MatchSizeRetargetAction;
 import org.eclipse.gef.ui.actions.MatchWidthRetargetAction;
 import org.eclipse.gef.ui.actions.RedoRetargetAction;
 import org.eclipse.gef.ui.actions.UndoRetargetAction;
@@ -58,6 +59,7 @@ public class LogicActionBarContributor extends ActionBarContributor {
 		addRetargetAction(new ZoomInRetargetAction());
 		addRetargetAction(new ZoomOutRetargetAction());
 
+		addRetargetAction(new MatchSizeRetargetAction());
 		addRetargetAction(new MatchWidthRetargetAction());
 		addRetargetAction(new MatchHeightRetargetAction());
 
@@ -105,6 +107,7 @@ public class LogicActionBarContributor extends ActionBarContributor {
 		tbm.add(getAction(GEFActionConstants.ALIGN_BOTTOM));
 
 		tbm.add(new Separator());
+		tbm.add(getAction(GEFActionConstants.MATCH_SIZE));
 		tbm.add(getAction(GEFActionConstants.MATCH_WIDTH));
 		tbm.add(getAction(GEFActionConstants.MATCH_HEIGHT));
 
@@ -127,6 +130,7 @@ public class LogicActionBarContributor extends ActionBarContributor {
 		viewMenu.add(getAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY));
 		viewMenu.add(getAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY));
 		viewMenu.add(new Separator());
+		viewMenu.add(getAction(GEFActionConstants.MATCH_SIZE));
 		viewMenu.add(getAction(GEFActionConstants.MATCH_WIDTH));
 		viewMenu.add(getAction(GEFActionConstants.MATCH_HEIGHT));
 		menubar.insertAfter(IWorkbenchActionConstants.M_EDIT, viewMenu);

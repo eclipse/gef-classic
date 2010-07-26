@@ -104,6 +104,7 @@ import org.eclipse.gef.ui.actions.CopyTemplateAction;
 import org.eclipse.gef.ui.actions.DirectEditAction;
 import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.MatchHeightAction;
+import org.eclipse.gef.ui.actions.MatchSizeAction;
 import org.eclipse.gef.ui.actions.MatchWidthAction;
 import org.eclipse.gef.ui.actions.ToggleGridAction;
 import org.eclipse.gef.ui.actions.ToggleRulerVisibilityAction;
@@ -646,6 +647,10 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 
 		action = new CopyTemplateAction(this);
 		registry.registerAction(action);
+
+		action = new MatchSizeAction(this);
+		registry.registerAction(action);
+		getSelectionActions().add(action.getId());
 
 		action = new MatchWidthAction(this);
 		registry.registerAction(action);
