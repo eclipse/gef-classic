@@ -60,6 +60,9 @@ public class GEFMessages extends NLS {
 	public static String SelectAllAction_Label;
 	public static String SelectAllAction_Tooltip;
 
+	public static String MatchSizeAction_Label;
+	public static String MatchSizeAction_Tooltip;
+
 	public static String MatchWidthAction_Label;
 	public static String MatchWidthAction_Tooltip;
 

@@ -114,6 +114,13 @@ public final class GEFActionConstants implements IWorkbenchActionConstants {
 	public static final String GROUP_VIEW = "org.eclipse.gef.group.view"; //$NON-NLS-1$
 
 	/**
+	 * Value: <code>"org.eclipse.gef.match.size"</code>
+	 * 
+	 * @since 3.7
+	 */
+	public static final String MATCH_SIZE = "org.eclipse.gef.match.size"; //$NON-NLS-1$
+
+	/**
 	 * Value: <code>"org.eclipse.gef.match.width"</code>
 	 */
 	public static final String MATCH_WIDTH = "org.eclipse.gef.match.width"; //$NON-NLS-1$

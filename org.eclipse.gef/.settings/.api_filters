@@ -40,6 +40,14 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/org/eclipse/gef/ui/actions/MatchSizeRetargetAction.java" type="org.eclipse.gef.ui.actions.MatchSizeRetargetAction">
+        <filter id="571473929">
+            <message_arguments>
+                <message_argument value="LabelRetargetAction"/>
+                <message_argument value="MatchSizeRetargetAction"/>
+            </message_arguments>
+        </filter>
+    </resource>
     <resource path="src/org/eclipse/gef/ui/actions/MatchWidthRetargetAction.java" type="org.eclipse.gef.ui.actions.MatchWidthRetargetAction">
         <filter id="571473929">
             <message_arguments>

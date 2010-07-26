@@ -21,9 +21,11 @@ public class InternalImages {
 	public static final ImageDescriptor DESC_ZOOM_IN;
 	public static final ImageDescriptor DESC_ZOOM_OUT;
 
+	public static final ImageDescriptor DESC_MATCH_SIZE;
 	public static final ImageDescriptor DESC_MATCH_WIDTH;
 	public static final ImageDescriptor DESC_MATCH_HEIGHT;
 
+	public static final ImageDescriptor DESC_MATCH_SIZE_DIS;
 	public static final ImageDescriptor DESC_MATCH_WIDTH_DIS;
 	public static final ImageDescriptor DESC_MATCH_HEIGHT_DIS;
 
@@ -99,9 +101,11 @@ public class InternalImages {
 		DESC_ZOOM_IN = createDescriptor("icons/zoom_in.gif"); //$NON-NLS-1$
 		DESC_ZOOM_OUT = createDescriptor("icons/zoom_out.gif"); //$NON-NLS-1$
 
+		DESC_MATCH_SIZE = createDescriptor("icons/matchsize.gif"); //$NON-NLS-1$
 		DESC_MATCH_WIDTH = createDescriptor("icons/matchwidth.gif"); //$NON-NLS-1$
 		DESC_MATCH_HEIGHT = createDescriptor("icons/matchheight.gif"); //$NON-NLS-1$
 
+		DESC_MATCH_SIZE_DIS = createDescriptor("icons/matchsize_d.gif"); //$NON-NLS-1$
 		DESC_MATCH_WIDTH_DIS = createDescriptor("icons/matchwidth_d.gif"); //$NON-NLS-1$
 		DESC_MATCH_HEIGHT_DIS = createDescriptor("icons/matchheight_d.gif"); //$NON-NLS-1$
 

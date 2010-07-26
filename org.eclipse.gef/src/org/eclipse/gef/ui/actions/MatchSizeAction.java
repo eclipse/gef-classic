@@ -22,13 +22,17 @@ import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
+import org.eclipse.gef.internal.GEFMessages;
+import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 /**
  * An action that matches the size of all selected EditPart's Figures to the
  * size of the Primary Selection EditPart's Figure.
+ * 
+ * @since 3.7
  */
-class MatchSizeAction extends SelectionAction {
+public class MatchSizeAction extends SelectionAction {
 
 	/**
 	 * Constructs a <code>MatchSizeAction</code> and associates it with the
@@ -37,8 +41,13 @@ class MatchSizeAction extends SelectionAction {
 	 * @param part
 	 *            The workbench part associated with this MatchSizeAction
 	 */
-	MatchSizeAction(IWorkbenchPart part) {
+	public MatchSizeAction(IWorkbenchPart part) {
 		super(part);
+		setText(GEFMessages.MatchSizeAction_Label);
+		setImageDescriptor(InternalImages.DESC_MATCH_SIZE);
+		setDisabledImageDescriptor(InternalImages.DESC_MATCH_SIZE_DIS);
+		setToolTipText(GEFMessages.MatchSizeAction_Tooltip);
+		setId(GEFActionConstants.MATCH_SIZE);
 	}
 
 	/**
