@@ -33,6 +33,7 @@ import org.eclipse.emf.mwe.core.WorkflowRunner;
 import org.eclipse.emf.mwe.core.monitor.NullProgressMonitor;
 import org.eclipse.emf.mwe.core.monitor.ProgressMonitor;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.internal.dot.DotFileUtils;
 
@@ -89,8 +90,19 @@ public final class DotImport {
 			throw new IllegalArgumentException(DotMessages.DotImport_2 + ": "
 					+ dotString);
 		}
-		this.dotFile = DotFileUtils.write(dotString);
+		this.dotFile = DotFileUtils.write(fullDot(dotString) ? dotString
+				: wrapped(dotString));
 		load();
+	}
+
+	private String wrapped(final String dotString) {
+		return String.format("%s{%s}", dotString.contains("->") ? "digraph"
+				: "graph", dotString);
+	}
+
+	private boolean fullDot(final String dotString) {
+		return dotString.trim().startsWith("graph")
+				|| dotString.trim().startsWith("digraph");
 	}
 
 	private void guardFaultyParse() {
@@ -131,7 +143,7 @@ public final class DotImport {
 		guardFaultyParse();
 		/*
 		 * TODO switch to a string as the member holding the DOT to avoid
-		 * read-write here
+		 * read-write here, and set that string as the resulting graph's data
 		 */
 		return new GraphCreatorInterpreter().create(parent, style, dotAst);
 	}
@@ -169,6 +181,17 @@ public final class DotImport {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * @param graph
+	 *            The graph to add the imported dot into
+	 */
+	public void into(Graph graph) {
+		Shell shell = new Shell();
+		new ZestGraphImport(newGraphInstance(shell, graph.getStyle()))
+				.into(graph);
+		shell.dispose();
 	}
 
 	/**
@@ -291,5 +314,4 @@ public final class DotImport {
 		return String.format("%s of %s at %s", getClass().getSimpleName(), //$NON-NLS-1$
 				dotAst, dotFile);
 	}
-
 }

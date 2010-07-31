@@ -202,6 +202,7 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> implements
 		String nodeId = eStatementObject.getName();
 		GraphNode node = new GraphNode(graph, SWT.NONE, nodeId);
 		node.setText(nodeId);
+		node.setData(nodeId);
 		String value = getAttributeValue(eStatementObject, "label"); //$NON-NLS-1$
 		if (value != null) {
 			node.setText(value);
@@ -213,8 +214,10 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> implements
 
 	private GraphNode node(String id) {
 		if (!nodes.containsKey(id)) { // undeclared node, as in "graph{1->2}"
-			nodes.put(id, new GraphNode(graph, SWT.NONE,
-					globalNodeLabel != null ? globalNodeLabel : id));
+			GraphNode node = new GraphNode(graph, SWT.NONE,
+					globalNodeLabel != null ? globalNodeLabel : id);
+			node.setData(id);
+			nodes.put(id, node);
 		}
 		return nodes.get(id);
 	}
