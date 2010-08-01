@@ -25,19 +25,32 @@ public class SampleUsage {
 	public void sampleUsage() {
 
 		/******************************************************************
-		 * Import
-		 ********************************************************/
+		 * Graph
+		 ******************************************************************/
 		Shell shell = new Shell();
+		/* A Dot graph is a Zest graph that can be created from DOT: */
+		Dot graph = new Dot("digraph{1->2}", shell, SWT.NONE); //$NON-NLS-1$
+		/* The Dot graph can be modified using DOT snippets: */
+		graph.add("2->3; 2->4"); //$NON-NLS-1$
+		/* The snippets can contain DOT node and edge attributes: */
+		graph.add("node[label=zested]; edge[style=dashed]; 3->5; 4->6"); //$NON-NLS-1$
+		// TestGraphInstanceDotImport.open(shell);
+
+		/******************************************************************
+		 * Import
+		 ******************************************************************/
+		shell = new Shell();
 		/* The DOT input, can be given as a String, File or IFile: */
 		DotImport importer = new DotImport("digraph Simple { 1;2; 1->2 }"); //$NON-NLS-1$
 		/* Compile the DOT input to a Zest graph subclass: */
 		File file = importer.newGraphSubclass();
 		/* Or create a Zest graph instance in a parent, with a style: */
-		Graph graph = importer.newGraphInstance(shell, SWT.NONE);
+		Graph importedGraph = importer.newGraphInstance(shell, SWT.NONE);
+		// TestGraphInstanceDotImport.open(shell);
 
 		/******************************************************************
 		 * Export
-		 ********************************************************/
+		 ******************************************************************/
 		/* For some Zest graph, we create the exporter: */
 		DotExport exporter = new DotExport(graph);
 		/* Export the Zest graph to DOT: */
@@ -51,7 +64,7 @@ public class SampleUsage {
 
 		// TestGraphInstanceDotImport.open(shell); // sets title, layout, and
 		// size, opens the shell
-		System.out.println(graph);
+		System.out.println(importedGraph);
 		System.out.println(file);
 		System.out.println(dot);
 	}

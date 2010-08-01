@@ -27,10 +27,11 @@
 		</p>
 		<h2 id="User_Documentation">User Documentation</h2>
 		<h3 id="Installation">Installation</h3>
-		<p>Add the update site at 
-			<i>http://quui.de/updates</i> (Help -&gt; Install New Software... -&gt; Add...) and install the 
+		<p>Install from the marketplace (Help &gt; Eclipse Marketplace...) or add the update site at 
+			<i>http://quui.de/updates</i> (Help &gt; Install New Software... &gt; Add...) and install the 
 			<i>dot4zest</i> feature (from the 
-			<i>Zest</i> category). Use the latest 0.9.x version for Helios, or the latest 0.8.x version for Galileo. Note that this is an external update site for easy access to preview releases, and not provided by the Eclipse Foundation.
+			<i>Zest</i> category) in Eclipse 3.6 or 4.0. To install dot4zest in Eclipse 3.5, make sure you have the TMF update site at 
+			<i>http://download.eclipse.org/modeling/tmf/updates/releases</i> set up. Note that the dot4zest update site is provided externally for easy access to preview releases, and is not hosted by the Eclipse Foundation.
 		</p>
 		<h3 id="GUI">GUI</h3>
 		<p>In the UI, this feature adds two wizards ('New Zest Graph' and 'New Zest Project') under a category labeled 'Visualization':</p>
@@ -97,6 +98,17 @@
 		</p>
 		<h3 id="API">API</h3>
 		<p>Via the API, DOT can be imported to Zest graph subclasses (*.java files) or Zest graph instances, and Zest graph instances can be exported to DOT or image files.</p>
+		<h4 id="DOT_Graph">DOT Graph</h4>
+		<p>The easiest way to create a Zest graph from DOT input is to use the 
+			<i>Dot</i> class:
+		</p>
+		<pre>/* A Dot graph is a Zest graph that can be created from DOT: */
+Dot graph = new Dot("digraph{1-&gt;2}", shell, SWT.NONE);
+/* The Dot graph can be modified using DOT snippets: */
+graph.add("2-&gt;3; 2-&gt;4");
+/* The snippets can contain DOT node and edge attributes: */
+graph.add("node[label=zested]; edge[style=dashed]; 3-&gt;5; 4-&gt;6");
+</pre>
 		<h4 id="DOT_Import">DOT Import</h4>
 		<p>To import DOT to Zest, the 
 			<i>DotImport</i> class is used:
@@ -120,8 +132,8 @@ String dot = exporter.toDotString();
 File image = exporter.toImage("/opt/local/bin", "pdf");
 </pre>
 		<p>The complete sample usage is 
-			<a href="http://cvs.berlios.de/cgi-bin/viewvc.cgi/dot4zest/org.eclipse.zest.dot.import/src-test/org/eclipse/zest/dot/SampleUsage.java?revision=1.3&amp;view=markup" target="doc_external">available in the repository</a>, as well as working 
-			<a href="http://cvs.berlios.de/cgi-bin/viewvc.cgi/dot4zest/org.eclipse.zest.dot.import/resources/tests/" target="doc_external">DOT input samples</a>.
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.gef/plugins/org.eclipse.zest.dot.import/src-test/org/eclipse/zest/dot/SampleUsage.java?root=Tools_Project&amp;view=markup" target="doc_external">available in the repository</a>, as well as working 
+			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.gef/plugins/org.eclipse.zest.dot.import/resources/tests/?root=Tools_Project" target="doc_external">DOT input samples</a>.
 		</p>
 		<h3 id="Animation">Animation</h3>
 		<p>The DOT import implementation contains experimental animation support, representing animation steps as subgraphs in the DOT input (which if rendered with Graphviz results in a static description of the animation). </p>
@@ -252,12 +264,10 @@ File image = exporter.toImage("/opt/local/bin", "pdf");
 			</li>
 			<li>Add support to visualize Graphviz subgraphs as separate Zest graphs that can be accessed from the main graph</li>
 			<li>Look into possible ways of supporting Graphviz edge decorators (open or closed arrows, diamonds, etc.)</li>
-			<li>Evaluate possible integration as an actual part of the Zest API, e.g.: </li>
+			<li>Evaluate integration of the 
+				<i>Dot</i> class functionality (see API section above) as part of the standard Zest graph API
+			</li>
 		</ul>
-		<pre>
-graph.add("1-&gt;2"); // use DOT snippets to build the Zest graph
-graph.load("graph.dot"); // load an entire DOT graph into an existing Zest graph
-</pre>
 		<p>
 			<a href="http://wiki.eclipse.org/Category:SOC" title="Category:SOC" target="doc_external">Category:SOC</a>
 

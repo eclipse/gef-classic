@@ -9,6 +9,7 @@
 			<topic href="Graphviz_DOT_as_a_DSL_for_Zest/Graphviz-DOT-as-a-DSL-for-Zest.html#Editing" label="Editing"></topic>
 		</topic>
 		<topic href="Graphviz_DOT_as_a_DSL_for_Zest/Graphviz-DOT-as-a-DSL-for-Zest.html#API" label="API">
+			<topic href="Graphviz_DOT_as_a_DSL_for_Zest/Graphviz-DOT-as-a-DSL-for-Zest.html#DOT_Graph" label="DOT Graph"></topic>
 			<topic href="Graphviz_DOT_as_a_DSL_for_Zest/Graphviz-DOT-as-a-DSL-for-Zest.html#DOT_Import" label="DOT Import"></topic>
 			<topic href="Graphviz_DOT_as_a_DSL_for_Zest/Graphviz-DOT-as-a-DSL-for-Zest.html#DOT_Export" label="DOT Export"></topic>
 		</topic>
