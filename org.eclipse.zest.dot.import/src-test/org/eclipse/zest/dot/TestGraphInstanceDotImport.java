@@ -30,7 +30,7 @@ import org.junit.Test;
  * @author Fabian Steeg (fsteeg)
  */
 public final class TestGraphInstanceDotImport {
-	private final IGraphCreator interpreter = new GraphCreatorInterpreter();
+	private final GraphCreatorInterpreter interpreter = new GraphCreatorInterpreter();
 
 	@Test
 	public void minimalUsage() {
@@ -269,40 +269,13 @@ public final class TestGraphInstanceDotImport {
 	@Test
 	public void viaInterpreter() {
 		test(interpreter);
-
 	}
-
-	/**
-	 * EXPERIMENTAL - NOT WORKING Import instance by compiling the generated
-	 * Zest graph using the Java Compiler API (downside: requires Java 6)
-	 */
-	// @Test
-	// public void viaJavaCompilerApi() {
-	/*
-	 * Implementation using Java compiler API requires Java 6.
-	 */
-	// test(new GraphCreatorViaJavaCompilerApi());
-	// }
-
-	/**
-	 * EXPERIMENTAL - NOT WORKING Import instance by compiling the generated
-	 * Zest graph using the Eclipse JDT compiler (API is internal, probably
-	 * makes no sense to use this)
-	 */
-	// @Test
-	// public void viaInternalJdtCompiler() {
-	/*
-	 * Implementation using the restricted internal Eclipse compiler.
-	 */
-	// test(new GraphCreatorViaInternalJdtCompiler());
-	//
-	// }
 
 	/**
 	 * Test importing a DOT graph to a Zest graph instance directly. Internally,
 	 * this compiles the generated Zest class and loads it using Reflection.
 	 */
-	static void test(final IGraphCreator converter) {
+	static void test(final GraphCreatorInterpreter converter) {
 
 		/*
 		 * This is not really working, it only appears to be, as the generated

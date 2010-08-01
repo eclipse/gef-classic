@@ -47,39 +47,33 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
  * 
  * @author Fabian Steeg (fsteeg)
  */
-final class GraphCreatorInterpreter extends DotSwitch<Object> implements
-		IGraphCreator {
+final class GraphCreatorInterpreter extends DotSwitch<Object> {
 
 	private Map<String, GraphNode> nodes = new HashMap<String, GraphNode>();
 	private Graph graph;
 	private String globalEdgeStyle;
 	private String globalEdgeLabel;
 	private String globalNodeLabel;
-	private int style;
-	private Composite parent;
 	private String currentEdgeStyleValue;
 	private String currentEdgeLabelValue;
 	private String currentEdgeSourceNodeId;
 	private boolean gotSource;
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @see org.eclipse.zest.dot.IGraphCreator#create(org.eclipse.swt.widgets.Composite,
-	 *      int, java.lang.String)
-	 */
-	public Graph create(Composite parent, int style, DotAst dotAst) {
-		this.parent = parent;
-		this.style = style;
+	Graph create(Composite parent, int style, DotAst dotAst) {
+		return create(dotAst, new Graph(parent, style));
+	}
+
+	Graph create(DotAst dotAst, Graph graph) {
+		if (dotAst.errors().size() > 0) {
+			throw new IllegalArgumentException(String.format(
+					DotMessages.GraphCreatorInterpreter_0 + ": %s", dotAst
+							.errors().toString()));
+		}
+		this.graph = graph;
 		TreeIterator<Object> contents = EcoreUtil.getAllProperContents(
 				dotAst.resource(), false);
 		while (contents.hasNext()) {
 			doSwitch((EObject) contents.next());
-		}
-		if (graph == null) {
-			throw new IllegalStateException(String.format(
-					DotMessages.GraphCreatorInterpreter_0 + ": %s, DOT: %s",
-					dotAst.errors().toString(), dotAst));
 		}
 		return graph;
 	}
@@ -166,7 +160,6 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> implements
 	// private implementation of the cases above
 
 	private void createGraph(DotGraph object) {
-		graph = new Graph(parent, style);
 		graph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
 				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		GraphType graphType = object.getType();

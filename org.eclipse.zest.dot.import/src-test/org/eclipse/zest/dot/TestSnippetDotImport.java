@@ -27,7 +27,7 @@ import org.junit.Test;
  * @author Fabian Steeg (fsteeg)
  */
 public final class TestSnippetDotImport {
-	private final IGraphCreator interpreter = new GraphCreatorInterpreter();
+	private final GraphCreatorInterpreter interpreter = new GraphCreatorInterpreter();
 
 	@Test
 	public void sampleUsage() {
