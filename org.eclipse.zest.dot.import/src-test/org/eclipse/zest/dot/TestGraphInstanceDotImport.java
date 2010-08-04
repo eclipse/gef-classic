@@ -251,6 +251,15 @@ public final class TestGraphInstanceDotImport {
 				.get(0)).getText());
 	}
 
+	@Test
+	public void headerCommentGraph() {
+		Graph graph = interpreter.create(new Shell(), SWT.NONE,
+				parse("/*A header comment*/\ngraph{1--2}")); //$NON-NLS-1$
+		Assert.assertNotNull("Created graph must not be null", graph); //$NON-NLS-1$
+		Assert.assertEquals(2, graph.getNodes().size());
+		Assert.assertEquals(1, graph.getConnections().size());
+	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void faultyLayout() {
 		interpreter.create(new Shell(), SWT.NONE,

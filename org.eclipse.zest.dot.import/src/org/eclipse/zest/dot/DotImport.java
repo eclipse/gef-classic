@@ -90,19 +90,20 @@ public final class DotImport {
 			throw new IllegalArgumentException(DotMessages.DotImport_2 + ": "
 					+ dotString);
 		}
-		this.dotFile = DotFileUtils.write(fullDot(dotString) ? dotString
-				: wrapped(dotString));
+		loadFrom(dotString);
+		if (dotAst.errors().size() > 0) {
+			loadFrom(wrapped(dotString));
+		}
+	}
+
+	private void loadFrom(final String dotString) {
+		this.dotFile = DotFileUtils.write(dotString);
 		load();
 	}
 
 	private String wrapped(final String dotString) {
-		return String.format("%s{%s}", dotString.contains("->") ? "digraph"
-				: "graph", dotString);
-	}
-
-	private boolean fullDot(final String dotString) {
-		return dotString.trim().startsWith("graph")
-				|| dotString.trim().startsWith("digraph");
+		return String.format("%s Unnamed{%s}",
+				dotString.contains("->") ? "digraph" : "graph", dotString);
 	}
 
 	private void guardFaultyParse() {
