@@ -386,7 +386,8 @@ public final class GridData {
 			}
 		}
 
-		Dimension size = figure.getPreferredSize(widthHint, heightHint);
+		Dimension size = figure.getPreferredSize(widthHint, heightHint)
+				.getCopy();
 		if (widthHint != -1)
 			size.width = widthHint;
 		if (heightHint != -1)
