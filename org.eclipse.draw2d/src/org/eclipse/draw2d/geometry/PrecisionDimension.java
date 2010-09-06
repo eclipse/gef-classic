@@ -18,15 +18,19 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * The height in double precision.
 	 * 
-	 * @noreference Use {@link #setPreciseHeight(double)} and
-	 *              {@link #preciseHeight()} instead.
+	 * @noreference
+	 * @deprecated Use {@link #setPreciseHeight(double)} and
+	 *             {@link #preciseHeight()} instead. This field will become
+	 *             private in the future.
 	 */
 	public double preciseHeight;
 	/**
 	 * The width in double precision.
 	 * 
-	 * @noreference Use {@link #setPreciseWidth(double)} and
-	 *              {@link #preciseWidth()} instead.
+	 * @noreference
+	 * @deprecated Use {@link #setPreciseWidth(double)} and
+	 *             {@link #preciseWidth()} instead. This field will become
+	 *             private in the future.
 	 */
 	public double preciseWidth;
 

@@ -22,32 +22,38 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Double value for height
 	 * 
-	 * @noreference Use {@link #setPreciseHeight(double)} and
-	 *              {@link #preciseHeight()} instead.
+	 * @noreference
+	 * @deprecated Use {@link #setPreciseHeight(double)} and
+	 *             {@link #preciseHeight()} instead. This field will become
+	 *             private in the future.
 	 */
 	public double preciseHeight;
 
 	/**
 	 * Double value for width
 	 * 
-	 * @noreference Use {@link #setPreciseWidth(double)} and
-	 *              {@link #preciseWidth()} instead.
+	 * @noreference
+	 * @deprecated Use {@link #setPreciseWidth(double)} and
+	 *             {@link #preciseWidth()} instead. This field will become
+	 *             private in the future.
 	 */
 	public double preciseWidth;
 
 	/**
 	 * Double value for X
 	 * 
-	 * @noreference Use {@link #setPreciseX(double)} and {@link #preciseX()}
-	 *              instead.
+	 * @noreference
+	 * @deprecated Use {@link #setPreciseX(double)} and {@link #preciseX()}
+	 *             instead. This field will become private in the future.
 	 */
 	public double preciseX;
 
 	/**
 	 * Double value for Y
 	 * 
-	 * @noreference Use {@link #setPreciseX(double)} and {@link #preciseY()}
-	 *              instead.
+	 * @noreference
+	 * @deprecated Use {@link #setPreciseX(double)} and {@link #preciseY()}
+	 *             instead. This field will become private in the future.
 	 */
 	public double preciseY;
 

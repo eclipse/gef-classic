@@ -18,16 +18,18 @@ public class PrecisionPoint extends Point {
 	/**
 	 * Double value for X
 	 * 
-	 * @noreference Use {@link #setPreciseX(double)} and {@link #preciseX()}
-	 *              instead.
+	 * @noreference
+	 * @deprecated Use {@link #setPreciseX(double)} and {@link #preciseX()}
+	 *             instead. This field will become private in future versions.
 	 */
 	public double preciseX;
 
 	/**
 	 * Double value for Y
 	 * 
-	 * @noreference Use {@link #setPreciseY(double)} and {@link #preciseY()}
-	 *              instead.
+	 * @noreference
+	 * @deprecated Use {@link #setPreciseY(double)} and {@link #preciseY()}
+	 *             instead. This field will become private in future versions.
 	 */
 	public double preciseY;
 
