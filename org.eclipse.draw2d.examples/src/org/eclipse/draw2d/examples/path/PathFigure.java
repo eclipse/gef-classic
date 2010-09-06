@@ -54,7 +54,6 @@ public class PathFigure extends Polyline {
 		}
 		g.popState();
 		path.dispose();
-		
 
 	}
 
@@ -91,13 +90,13 @@ public class PathFigure extends Polyline {
 		double angle = degreesToRadians(degrees);
 		double cos = (double) Math.cos(angle), sin = (double) Math.sin(angle);
 
-		PrecisionPoint p1 = getRotatedPoint(points.getFirstPoint().x, points
-				.getFirstPoint().y, cos, sin);
-		path.moveTo((float) p1.preciseX, (float) p1.preciseY);
+		PrecisionPoint p1 = getRotatedPoint(points.getFirstPoint().x(), points
+				.getFirstPoint().y(), cos, sin);
+		path.moveTo((float) p1.preciseX(), (float) p1.preciseY());
 		for (int i = 1; i < points.size(); i++) {
-			PrecisionPoint p = getRotatedPoint(points.getPoint(i).x, points
-					.getPoint(i).y, cos, sin);
-			path.lineTo((float) p.preciseX, (float) p.preciseY);
+			PrecisionPoint p = getRotatedPoint(points.getPoint(i).x(), points
+					.getPoint(i).y(), cos, sin);
+			path.lineTo((float) p.preciseX(), (float) p.preciseY());
 		}
 		if (isClosed())
 			path.close();
@@ -113,15 +112,14 @@ public class PathFigure extends Polyline {
 		if (degrees == 0)
 			return p;
 
-		p.preciseX = p.preciseX - cx;
-		p.preciseY = p.preciseY - cy;
+		p.setPreciseX(p.preciseX() - cx);
+		p.setPreciseY(p.preciseY() - cy);
 
-		float x1 = (float) (p.preciseX * cos - p.preciseY * sin);
-		float y1 = (float) (p.preciseY * cos + p.preciseX * sin);
+		float x1 = (float) (p.preciseX() * cos - p.preciseY() * sin);
+		float y1 = (float) (p.preciseY() * cos + p.preciseX() * sin);
 
-		p.preciseX = x1 + cx;
-		p.preciseY = y1 + cy;
-		p.updateInts();
+		p.setPreciseX(x1 + cx);
+		p.setPreciseY(y1 + cy);
 		return p;
 	}
 
@@ -133,12 +131,12 @@ public class PathFigure extends Polyline {
 				double angle = degreesToRadians(degrees);
 				double cos = (double) Math.cos(angle), sin = (double) Math
 						.sin(angle);
-				PrecisionPoint p1 = getRotatedPoint(points.getFirstPoint().x,
-						points.getFirstPoint().y, cos, sin);
+				PrecisionPoint p1 = getRotatedPoint(points.getFirstPoint().x(),
+						points.getFirstPoint().y(), cos, sin);
 				bounds.setLocation(p1);
 				for (int i = 1; i < points.size(); i++) {
-					PrecisionPoint p = getRotatedPoint(points.getPoint(i).x,
-							points.getPoint(i).y, cos, sin);
+					PrecisionPoint p = getRotatedPoint(points.getPoint(i).x(),
+							points.getPoint(i).y(), cos, sin);
 					bounds.union(p);
 				}
 			}

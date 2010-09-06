@@ -27,19 +27,18 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class PathExample  {
+public class PathExample {
 
 	public static void main(String[] args) {
 		Display d = new Display();
-		final Shell shell = new Shell(d,SWT.SHELL_TRIM | SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE);
+		final Shell shell = new Shell(d, SWT.SHELL_TRIM | SWT.NO_BACKGROUND
+				| SWT.NO_REDRAW_RESIZE);
 		shell.setSize(800, 800);
 		LightweightSystem lws = new LightweightSystem(shell);
 		Figure fig = new Figure();
-		
-		
+
 		fig.setLayoutManager(new ToolbarLayout());
-		
-		
+
 		final ScrollBar bar = new ScrollBar();
 		final Label l = new Label("«Zoom»");
 
@@ -50,45 +49,42 @@ public class PathExample  {
 		bar.setMinimum(0);
 		bar.setExtent(25);
 		fig.add(bar);
-		
+
 		final ZoomFigure zoomFigure = new ZoomFigure();
 		zoomFigure.setPreferredSize(500, 800);
-		
+
 		fig.add(zoomFigure);
-		
+
 		zoomFigure.setLayoutManager(new BorderLayout());
 		zoomFigure.setScale(1);
-		
+
 		PathFigure polyline = new PathFigure();
 		float w = 50;
 		float k = 50;
-		polyline.addPoint(new Point(0+k,0+k));
-		polyline.addPoint(new Point(w+k,0+k));
-		polyline.addPoint(new Point(w+k,w+k));
-		polyline.addPoint(new Point(0+k,w+k));
+		polyline.addPoint(new Point(0 + k, 0 + k));
+		polyline.addPoint(new Point(w + k, 0 + k));
+		polyline.addPoint(new Point(w + k, w + k));
+		polyline.addPoint(new Point(0 + k, w + k));
 		polyline.setLineWidth(3);
 		polyline.setBackgroundColor(ColorConstants.red);
 		polyline.setClosed(true);
-		
-		Point c = polyline.getBounds().getCenter();
-		polyline.setRotation(c.x,c.y,45);
-		zoomFigure.add(polyline,BorderLayout.CENTER);
 
-		
+		Point c = polyline.getBounds().getCenter();
+		polyline.setRotation(c.x(), c.y(), 45);
+		zoomFigure.add(polyline, BorderLayout.CENTER);
+
 		bar.addPropertyChangeListener("value", new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
-				float z = (bar.getValue()+50) * 0.02f;
+				float z = (bar.getValue() + 50) * 0.02f;
 				zoomFigure.setScale(z);
 			}
 		});
-		
-		
-		
+
 		lws.setContents(fig);
 		shell.open();
 		while (!shell.isDisposed())
 			while (!d.readAndDispatch())
 				d.sleep();
-		
-	}	
+
+	}
 }
