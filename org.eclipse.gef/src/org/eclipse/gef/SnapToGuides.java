@@ -273,32 +273,33 @@ public class SnapToGuides extends SnapToHelper {
 
 		if ((snapOrientation & HORIZONTAL) != 0) {
 			double xcorrect = getCorrectionFor(getVerticalGuides(),
-					baseRect.preciseX, baseRect.preciseRight(),
+					baseRect.preciseX(), baseRect.preciseRight(),
 					request.getExtendedData(), true);
 			if (xcorrect != getThreshold()) {
 				snapOrientation &= ~HORIZONTAL;
-				correction.preciseX += xcorrect;
+				correction.setPreciseX(correction.preciseX() + xcorrect);
 			}
 		}
 
 		if ((snapOrientation & VERTICAL) != 0) {
 			double ycorrect = getCorrectionFor(getHorizontalGuides(),
-					baseRect.preciseY, baseRect.preciseBottom(),
+					baseRect.preciseY(), baseRect.preciseBottom(),
 					request.getExtendedData(), false);
 			if (ycorrect != getThreshold()) {
 				snapOrientation &= ~VERTICAL;
-				correction.preciseY += ycorrect;
+				correction.setPreciseY(correction.preciseY() + ycorrect);
 			}
 		}
 
 		boolean snapped = false;
 		if (!snapped && (snapOrientation & WEST) != 0) {
 			double leftCorrection = getCorrectionFor(getVerticalGuides(),
-					baseRect.preciseX, request.getExtendedData(), true, -1);
+					baseRect.preciseX(), request.getExtendedData(), true, -1);
 			if (leftCorrection != getThreshold()) {
 				snapOrientation &= ~WEST;
-				correction.preciseWidth -= leftCorrection;
-				correction.preciseX += leftCorrection;
+				correction.setPreciseWidth(correction.preciseWidth()
+						- leftCorrection);
+				correction.setPreciseX(correction.preciseX() + leftCorrection);
 			}
 		}
 
@@ -309,18 +310,20 @@ public class SnapToGuides extends SnapToHelper {
 			if (rightCorrection != getThreshold()) {
 				snapped = true;
 				snapOrientation &= ~EAST;
-				correction.preciseWidth += rightCorrection;
+				correction.setPreciseWidth(correction.preciseWidth()
+						+ rightCorrection);
 			}
 		}
 
 		snapped = false;
 		if (!snapped && (snapOrientation & NORTH) != 0) {
 			double topCorrection = getCorrectionFor(getHorizontalGuides(),
-					baseRect.preciseY, request.getExtendedData(), false, -1);
+					baseRect.preciseY(), request.getExtendedData(), false, -1);
 			if (topCorrection != getThreshold()) {
 				snapOrientation &= ~NORTH;
-				correction.preciseHeight -= topCorrection;
-				correction.preciseY += topCorrection;
+				correction.setPreciseHeight(correction.preciseHeight()
+						- topCorrection);
+				correction.setPreciseY(correction.preciseY() + topCorrection);
 			}
 		}
 
@@ -331,18 +334,18 @@ public class SnapToGuides extends SnapToHelper {
 			if (bottom != getThreshold()) {
 				snapped = true;
 				snapOrientation &= ~SOUTH;
-				correction.preciseHeight += bottom;
+				correction
+						.setPreciseHeight(correction.preciseHeight() + bottom);
 			}
 		}
 
-		correction.updateInts();
 		makeAbsolute(container.getContentPane(), correction);
-		result.preciseX += correction.preciseX;
-		result.preciseY += correction.preciseY;
-		result.preciseWidth += correction.preciseWidth;
-		result.preciseHeight += correction.preciseHeight;
-		result.updateInts();
-
+		result.setPreciseX(result.preciseX() + correction.preciseX());
+		result.setPreciseY(result.preciseY() + correction.preciseY());
+		result.setPreciseWidth(result.preciseWidth()
+				+ correction.preciseWidth());
+		result.setPreciseHeight(result.preciseHeight()
+				+ correction.preciseHeight());
 		return snapOrientation;
 	}
 

@@ -99,11 +99,10 @@ public class MatchSizeAction extends SelectionAction {
 				part.getFigure().translateToAbsolute(precisePartBounds);
 
 				preciseDimension = new PrecisionDimension();
-				preciseDimension.preciseWidth = getPreciseWidthDelta(
-						precisePartBounds, precisePrimaryBounds);
-				preciseDimension.preciseHeight = getPreciseHeightDelta(
-						precisePartBounds, precisePrimaryBounds);
-				preciseDimension.updateInts();
+				preciseDimension.setPreciseWidth(getPreciseWidthDelta(
+						precisePartBounds, precisePrimaryBounds));
+				preciseDimension.setPreciseHeight(getPreciseHeightDelta(
+						precisePartBounds, precisePrimaryBounds));
 
 				request.setSizeDelta(preciseDimension);
 
@@ -118,7 +117,7 @@ public class MatchSizeAction extends SelectionAction {
 
 	/**
 	 * Returns the height delta between the two bounds. Separated into a method
-	 * so that it can be overriden to return 0 in the case of a width-only
+	 * so that it can be overwritten to return 0 in the case of a width-only
 	 * action.
 	 * 
 	 * @param precisePartBounds
@@ -130,8 +129,8 @@ public class MatchSizeAction extends SelectionAction {
 	protected double getPreciseHeightDelta(
 			PrecisionRectangle precisePartBounds,
 			PrecisionRectangle precisePrimaryBounds) {
-		return precisePrimaryBounds.preciseHeight
-				- precisePartBounds.preciseHeight;
+		return precisePrimaryBounds.preciseHeight()
+				- precisePartBounds.preciseHeight();
 	}
 
 	private GraphicalEditPart getPrimarySelectionEditPart(List editParts) {
@@ -157,8 +156,8 @@ public class MatchSizeAction extends SelectionAction {
 	 */
 	protected double getPreciseWidthDelta(PrecisionRectangle precisePartBounds,
 			PrecisionRectangle precisePrimaryBounds) {
-		return precisePrimaryBounds.preciseWidth
-				- precisePartBounds.preciseWidth;
+		return precisePrimaryBounds.preciseWidth()
+				- precisePartBounds.preciseWidth();
 	}
 
 	/**

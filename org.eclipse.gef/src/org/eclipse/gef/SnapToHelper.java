@@ -87,15 +87,12 @@ public abstract class SnapToHelper implements PositionConstants {
 			PrecisionPoint where, PrecisionPoint result) {
 		PrecisionRectangle rect = new PrecisionRectangle();
 		PrecisionRectangle resultRect = new PrecisionRectangle();
-		rect.preciseX = where.preciseX;
-		rect.preciseY = where.preciseY;
-		rect.updateInts();
-
+		rect.setPreciseX(where.preciseX());
+		rect.setPreciseY(where.preciseY());
 		snapDirections = snapRectangle(request, snapDirections, rect,
 				resultRect);
-		result.preciseX += resultRect.preciseX;
-		result.preciseY += resultRect.preciseY;
-		result.updateInts();
+		result.setPreciseX(result.preciseX() + resultRect.preciseX());
+		result.setPreciseY(result.preciseY() + resultRect.preciseY());
 		return snapDirections;
 	}
 
@@ -130,11 +127,8 @@ public abstract class SnapToHelper implements PositionConstants {
 			PrecisionRectangle rects[], PrecisionPoint result) {
 		PrecisionRectangle resultRect = new PrecisionRectangle();
 		snapLocations = snapRectangle(request, snapLocations, rects, resultRect);
-
-		result.preciseX += resultRect.preciseX;
-		result.preciseY += resultRect.preciseY;
-		result.updateInts();
-
+		result.setPreciseX(result.preciseX() + resultRect.preciseX());
+		result.setPreciseY(result.preciseY() + resultRect.preciseY());
 		return snapLocations;
 	}
 

@@ -151,8 +151,8 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 			guide[offset] = fig;
 			addFeedback(fig);
 			fig.translateToRelative(loc);
-			position = offset % 2 == 0 ? (int) Math.round(loc.preciseX)
-					: (int) Math.round(loc.preciseY);
+			position = offset % 2 == 0 ? (int) Math.round(loc.preciseX())
+					: (int) Math.round(loc.preciseY());
 			Rectangle figBounds = getFeedbackLayer().getBounds().getCopy();
 			if ((offset % 2) == 1) {
 				figBounds.height = 1;

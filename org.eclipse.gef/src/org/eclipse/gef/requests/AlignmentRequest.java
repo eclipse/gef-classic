@@ -66,26 +66,28 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 			PrecisionRectangle reference) {
 		switch (alignment) {
 		case PositionConstants.LEFT:
-			result.setX(reference.preciseX);
+			result.setPreciseX(reference.preciseX());
 			break;
 		case PositionConstants.RIGHT:
-			result.setX(reference.preciseX + reference.preciseWidth
-					- result.preciseWidth);
+			result.setPreciseX(reference.preciseX() + reference.preciseWidth()
+					- result.preciseWidth());
 			break;
 		case PositionConstants.TOP:
-			result.setY(reference.preciseY);
+			result.setPreciseY(reference.preciseY());
 			break;
 		case PositionConstants.BOTTOM:
-			result.setY(reference.preciseY + reference.preciseHeight
-					- result.preciseHeight);
+			result.setPreciseY(reference.preciseY() + reference.preciseHeight()
+					- result.preciseHeight());
 			break;
 		case PositionConstants.CENTER:
-			result.setX(reference.preciseX + (reference.preciseWidth / 2)
-					- (result.preciseWidth / 2));
+			result.setPreciseX(reference.preciseX()
+					+ (reference.preciseWidth() / 2)
+					- (result.preciseWidth() / 2));
 			break;
 		case PositionConstants.MIDDLE:
-			result.setY(reference.preciseY + (reference.preciseHeight / 2)
-					- (result.preciseHeight / 2));
+			result.setPreciseY(reference.preciseY()
+					+ (reference.preciseHeight() / 2)
+					- (result.preciseHeight() / 2));
 			break;
 		}
 

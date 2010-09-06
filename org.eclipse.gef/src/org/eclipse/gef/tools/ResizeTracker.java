@@ -349,28 +349,29 @@ public class ResizeTracker extends SimpleDragTracker {
 			snapToHelper.snapRectangle(request, request.getResizeDirection(),
 					rect, result);
 			if (request.isCenteredResize()) {
-				if (result.preciseX != 0.0)
-					result.preciseWidth += -result.preciseX;
-				else if (result.preciseWidth != 0.0) {
-					result.preciseX = -result.preciseWidth;
-					result.preciseWidth *= 2.0;
+				if (result.preciseX() != 0.0)
+					result.setPreciseWidth(result.preciseWidth()
+							- result.preciseX());
+				else if (result.preciseWidth() != 0.0) {
+					result.setPreciseX(-result.preciseWidth());
+					result.setPreciseWidth(result.preciseWidth() * 2.0);
 				}
 
-				if (result.preciseY != 0.0)
-					result.preciseHeight += -result.preciseY;
-				else if (result.preciseHeight != 0.0) {
-					result.preciseY = -result.preciseHeight;
-					result.preciseHeight *= 2.0;
+				if (result.preciseY() != 0.0)
+					result.setPreciseHeight(result.preciseHeight()
+							- result.preciseY());
+				else if (result.preciseHeight() != 0.0) {
+					result.setPreciseY(-result.preciseHeight());
+					result.setPreciseHeight(result.preciseHeight() * 2.0);
 				}
-				result.updateInts();
 			}
 
-			PrecisionPoint preciseMove = new PrecisionPoint(result.x
-					+ moveDelta.x, result.y + moveDelta.y);
+			PrecisionPoint preciseMove = new PrecisionPoint(result.preciseX()
+					+ moveDelta.x, result.preciseY() + moveDelta.y);
 
 			PrecisionDimension preciseResize = new PrecisionDimension(
-					result.width + resizeDelta.width, result.height
-							+ resizeDelta.height);
+					result.preciseWidth() + resizeDelta.width,
+					result.preciseHeight() + resizeDelta.height);
 
 			request.setMoveDelta(preciseMove);
 			request.setSizeDelta(preciseResize);
