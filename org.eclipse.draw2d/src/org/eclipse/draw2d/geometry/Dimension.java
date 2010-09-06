@@ -16,18 +16,52 @@ package org.eclipse.draw2d.geometry;
  */
 public class Dimension implements Cloneable, java.io.Serializable, Translatable {
 
+	static final long serialVersionUID = 1;
+
 	/**
-	 * A singleton for use in short calculations. Use to avoid newing
-	 * unnecessary objects.
+	 * A singleton for use in short calculations.
 	 */
 	public static final Dimension SINGLETON = new Dimension();
 
-	/** The width. */
-	public int width;
-	/** The height. */
-	public int height;
+	/**
+	 * Creates a new Dimension representing the MAX of two provided Dimensions.
+	 * 
+	 * @param d1
+	 *            first dimension
+	 * @param d2
+	 *            second dimension
+	 * @return A new Dimension representing the Max()
+	 * @since 3.7
+	 */
+	public static Dimension max(Dimension d1, Dimension d2) {
+		return new Dimension(Math.max(d1.width(), d2.width()), Math.max(
+				d1.height(), d2.height()));
+	}
 
-	static final long serialVersionUID = 1;
+	/**
+	 * Creates a new Dimension representing the MIN of two provided Dimensions.
+	 * 
+	 * @param d1
+	 *            first dimension
+	 * @param d2
+	 *            second dimension
+	 * @return A new Dimension representing the Min()
+	 * @since 3.7
+	 */
+	public static Dimension min(Dimension d1, Dimension d2) {
+		return new Dimension(Math.min(d1.width(), d2.width()), Math.min(
+				d1.height(), d2.height()));
+	}
+
+	/**
+	 * The width.
+	 */
+	public int width;
+
+	/**
+	 * The height.
+	 */
+	public int height;
 
 	/**
 	 * Constructs a Dimension of zero width and height.
@@ -45,21 +79,8 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension(Dimension d) {
-		width = d.width;
-		height = d.height;
-	}
-
-	/**
-	 * Constructs a Dimension where the width and height are the x and y
-	 * distances of the input point from the origin.
-	 * 
-	 * @param pt
-	 *            the Point supplying the initial values
-	 * @since 2.0
-	 */
-	public Dimension(org.eclipse.swt.graphics.Point pt) {
-		width = pt.x;
-		height = pt.y;
+		width = d.width();
+		height = d.height();
 	}
 
 	/**
@@ -91,6 +112,19 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
+	 * Constructs a Dimension where the width and height are the x and y
+	 * distances of the input point from the origin.
+	 * 
+	 * @param p
+	 *            the Point supplying the initial values
+	 * @since 2.0
+	 */
+	public Dimension(org.eclipse.swt.graphics.Point p) {
+		width = p.x;
+		height = p.y;
+	}
+
+	/**
 	 * Returns <code>true</code> if the input Dimension fits into this
 	 * Dimension. A Dimension of the same size is considered to "fit".
 	 * 
@@ -100,13 +134,13 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public boolean contains(Dimension d) {
-		return width >= d.width && height >= d.height;
+		return width >= d.width() && height >= d.height();
 	}
 
 	/**
 	 * Returns <code>true</code> if this Dimension properly contains the one
-	 * specified. Proper containment is defined as containment using "<",
-	 * instead of "<=".
+	 * specified. Proper containment is defined as containment using \"<\",
+	 * instead of \"<=\".
 	 * 
 	 * @param d
 	 *            the dimension being tested
@@ -115,20 +149,83 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public boolean containsProper(Dimension d) {
-		return width > d.width && height > d.height;
+		return width > d.width() && height > d.height();
 	}
 
 	/**
-	 * Copies the width and height values of the input Dimension to this
-	 * Dimension.
+	 * Returns <code>true</code> if this Dimension's width and height are equal
+	 * to the given width and height.
 	 * 
-	 * @param d
-	 *            the dimension supplying the values
+	 * @param w
+	 *            the width
+	 * @param h
+	 *            the height
+	 * @return <code>true</code> if this dimension's width and height are equal
+	 *         to those given.
 	 * @since 2.0
 	 */
-	public void setSize(Dimension d) {
-		width = d.width;
-		height = d.height;
+	public boolean equals(int w, int h) {
+		return width == w && height == h;
+	}
+
+	/**
+	 * Returns whether the input Object is equivalent to this Dimension.
+	 * <code>true</code> if the Object is a Dimension and its width and height
+	 * are equal to this Dimension's width and height, <code>false</code>
+	 * otherwise.
+	 * 
+	 * @param o
+	 *            the Object being tested for equality
+	 * @return <code>true</code> if the given object is equal to this dimension
+	 * @since 2.0
+	 */
+	public boolean equals(Object o) {
+		if (o instanceof Dimension) {
+			Dimension d = (Dimension) o;
+			return (d.width() == width && d.height() == height);
+		}
+		return false;
+	}
+
+	/**
+	 * Expands the size of this Dimension by the specified amount.
+	 * 
+	 * @param d
+	 *            the Dimension providing the expansion width and height
+	 * @return <code>this</code> for convenience
+	 * @since 2.0
+	 */
+	public Dimension expand(Dimension d) {
+		return expand(d.width(), d.height());
+	}
+
+	/**
+	 * Expands the size of this Dimension by the specified width and height.
+	 * 
+	 * @param w
+	 *            Value by which the width should be increased
+	 * @param h
+	 *            Value by which the height should be increased
+	 * @return <code>this</code> for convenience
+	 * @since 2.0
+	 */
+	public Dimension expand(int w, int h) {
+		width += w;
+		height += h;
+		return this;
+	}
+
+	/**
+	 * Expands the size of this Dimension by the specified amound.
+	 * 
+	 * @param p
+	 *            the Point supplying the dimensional values
+	 * @return <code>this</code> for convenience
+	 * @since 2.0
+	 * @deprecated Use {@link #expand(int, int)} instead.
+	 */
+	public Dimension expand(Point p) {
+		return expand(p.x(), p.y());
 	}
 
 	/**
@@ -159,9 +256,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 *            the dimension being compared
 	 * @return a new dimension representing the difference
 	 * @since 2.0
+	 * @deprecated Use {@link #getShrinked(Dimension)} instead.
 	 */
 	public Dimension getDifference(Dimension d) {
-		return new Dimension(width - d.width, height - d.height);
+		return getShrinked(d);
 	}
 
 	/**
@@ -174,7 +272,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension getExpanded(Dimension d) {
-		return new Dimension(width + d.width, height + d.height);
+		return getCopy().expand(d);
 	}
 
 	/**
@@ -189,7 +287,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension getExpanded(int w, int h) {
-		return new Dimension(width + w, height + h);
+		return getCopy().expand(w, h);
 	}
 
 	/**
@@ -202,7 +300,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension getIntersected(Dimension d) {
-		return new Dimension(this).intersect(d);
+		return getCopy().intersect(d);
 	}
 
 	/**
@@ -212,86 +310,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension getNegated() {
-		return new Dimension(0 - width, 0 - height);
-	}
-
-	/**
-	 * Returns whether the input Object is equivalent to this Dimension.
-	 * <code>true</code> if the Object is a Dimension and its width and height
-	 * are equal to this Dimension's width and height, <code>false</code>
-	 * otherwise.
-	 * 
-	 * @param o
-	 *            the Object being tested for equality
-	 * @return <code>true</code> if the given object is equal to this dimension
-	 * @since 2.0
-	 */
-	public boolean equals(Object o) {
-		if (o instanceof Dimension) {
-			Dimension d = (Dimension) o;
-			return (d.width == width && d.height == height);
-		}
-		return false;
-	}
-
-	/**
-	 * Returns <code>true</code> if this Dimension's width and height are equal
-	 * to the given width and height.
-	 * 
-	 * @param w
-	 *            the width
-	 * @param h
-	 *            the height
-	 * @return <code>true</code> if this dimension's width and height are equal
-	 *         to those given.
-	 * @since 2.0
-	 */
-	public boolean equals(int w, int h) {
-		return width == w && height == h;
-	}
-
-	/**
-	 * Expands the size of this Dimension by the specified amount.
-	 * 
-	 * @param d
-	 *            the Dimension providing the expansion width and height
-	 * @return <code>this</code> for convenience
-	 * @since 2.0
-	 */
-	public Dimension expand(Dimension d) {
-		width += d.width;
-		height += d.height;
-		return this;
-	}
-
-	/**
-	 * Expands the size of this Dimension by the specified amound.
-	 * 
-	 * @param pt
-	 *            the Point supplying the dimensional values
-	 * @return <code>this</code> for convenience
-	 * @since 2.0
-	 */
-	public Dimension expand(Point pt) {
-		width += pt.x;
-		height += pt.y;
-		return this;
-	}
-
-	/**
-	 * Expands the size of this Dimension by the specified width and height.
-	 * 
-	 * @param w
-	 *            Value by which the width should be increased
-	 * @param h
-	 *            Value by which the height should be increased
-	 * @return <code>this</code> for convenience
-	 * @since 2.0
-	 */
-	public Dimension expand(int w, int h) {
-		width += w;
-		height += h;
-		return this;
+		return getCopy().negate();
 	}
 
 	/**
@@ -304,7 +323,35 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension getScaled(double amount) {
-		return new Dimension(this).scale(amount);
+		return getCopy().scale(amount);
+	}
+
+	/**
+	 * Creates and returns a new Dimension whose size will be reduced by the
+	 * width and height of the given Dimension.
+	 * 
+	 * @param d
+	 *            the dimension whose width and height values will be considered
+	 * @return a new dimension representing the difference
+	 * @since 3.7
+	 */
+	public Dimension getShrinked(Dimension d) {
+		return getCopy().shrink(d);
+	}
+
+	/**
+	 * Creates and returns a new Dimension whose size will be reduced by the
+	 * width and height of the given Dimension.
+	 * 
+	 * @param w
+	 *            the value by which the width is to be reduced
+	 * @param h
+	 *            the value by which the height is to be reduced
+	 * @return a new dimension representing the difference
+	 * @since 3.7
+	 */
+	public Dimension getShrinked(int w, int h) {
+		return getCopy().shrink(w, h);
 	}
 
 	/**
@@ -315,7 +362,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension getTransposed() {
-		return new Dimension(this).transpose();
+		return getCopy().transpose();
 	}
 
 	/**
@@ -329,7 +376,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension getUnioned(Dimension d) {
-		return new Dimension(this).union(d);
+		return getCopy().union(d);
 	}
 
 	/**
@@ -337,6 +384,16 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 */
 	public int hashCode() {
 		return (width * height) ^ (width + height);
+	}
+
+	/**
+	 * Returns the height of this dimension.
+	 * 
+	 * @return The current height
+	 * @since 3.7
+	 */
+	public int height() {
+		return height;
 	}
 
 	/**
@@ -349,8 +406,8 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension intersect(Dimension d) {
-		width = Math.min(d.width, width);
-		height = Math.min(d.height, height);
+		width = Math.min(d.width(), width);
+		height = Math.min(d.height(), height);
 		return this;
 	}
 
@@ -371,9 +428,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension negate() {
-		width = 0 - width;
-		height = 0 - height;
-		return this;
+		return scale(-1);
 	}
 
 	/**
@@ -387,37 +442,131 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @see org.eclipse.draw2d.geometry.Translatable#performTranslate(int, int)
 	 */
 	public void performTranslate(int dx, int dy) {
+		// FIXME: actually Dimension are not translatable. Remove this
+		// method as soon as bug #307276 is resolved.
+	}
+
+	/**
+	 * Returns <code>double</code> height
+	 * 
+	 * @return <code>double</code> height
+	 * @since 3.4
+	 */
+	public double preciseHeight() {
+		return height;
+	}
+
+	/**
+	 * Returns <code>double</code> width
+	 * 
+	 * @return <code>double</code> width
+	 * @since 3.4
+	 */
+	public double preciseWidth() {
+		return width;
 	}
 
 	/**
 	 * Scales the width and height of this Dimension by the amount supplied, and
 	 * returns this for convenience.
 	 * 
-	 * @param amount
+	 * @param factor
 	 *            value by which this Dimension's width and height are to be
 	 *            scaled
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
-	public Dimension scale(double amount) {
-		return scale(amount, amount);
+	public Dimension scale(double factor) {
+		return scale(factor, factor);
 	}
 
 	/**
 	 * Scales the width of this Dimension by <i>w</i> and scales the height of
 	 * this Dimension by <i>h</i>. Returns this for convenience.
 	 * 
-	 * @param w
+	 * @param widthFactor
 	 *            the value by which the width is to be scaled
-	 * @param h
+	 * @param heightFactor
 	 *            the value by which the height is to be scaled
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
-	public Dimension scale(double w, double h) {
-		width = (int) (Math.floor(width * w));
-		height = (int) (Math.floor(height * h));
+	public Dimension scale(double widthFactor, double heightFactor) {
+		width = (int) (Math.floor(width * widthFactor));
+		height = (int) (Math.floor(height * heightFactor));
 		return this;
+	}
+
+	/**
+	 * Sets the height of this Rectangle to the specified one.
+	 * 
+	 * @param height
+	 *            The new height
+	 * @return this for convenience
+	 * @since 3.7
+	 */
+	public Dimension setHeight(int height) {
+		this.height = height;
+		return this;
+	}
+
+	/**
+	 * Copies the width and height values of the input Dimension to this
+	 * Dimension.
+	 * 
+	 * @param d
+	 *            the dimension supplying the values
+	 * @since 2.0
+	 */
+	public void setSize(Dimension d) {
+		// TODO: This should for the sake of consistency also return this
+		// by convenience; however, this is regarded as API break so it
+		// may be done not sooner than in 4.0; if this is done, it has
+		// to be ensured that the overwritten method in PrecisionDimension
+		// is adjusted as well.
+		width = d.width();
+		height = d.height();
+	}
+
+	/**
+	 * Sets the size of this dimension to the specified width and height.
+	 * 
+	 * @param w
+	 *            The new width
+	 * @param h
+	 *            The new height
+	 * @since 3.7
+	 */
+	public Dimension setSize(int w, int h) {
+		width = w;
+		height = h;
+		return this;
+	}
+
+	/**
+	 * Sets the width of this Rectangle to the specified one.
+	 * 
+	 * @param width
+	 *            The new width
+	 * @return this for convenience
+	 * @since 3.7
+	 */
+	public Dimension setWidth(int width) {
+		this.width = width;
+		return this;
+	}
+
+	/**
+	 * Shrinks the size of this Dimension by the width and height values of the
+	 * given Dimension.
+	 * 
+	 * @param d
+	 *            The dimension whose width and height values are to be used
+	 * @return <code>this</code> for convenience
+	 * @since 3.7
+	 */
+	public Dimension shrink(Dimension d) {
+		return shrink(d.width(), d.height());
 	}
 
 	/**
@@ -432,7 +581,9 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension shrink(int w, int h) {
-		return expand(-w, -h);
+		width -= w;
+		height -= h;
+		return this;
 	}
 
 	/**
@@ -469,29 +620,19 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension union(Dimension d) {
-		width = Math.max(width, d.width);
-		height = Math.max(height, d.height);
+		width = Math.max(width, d.width());
+		height = Math.max(height, d.height());
 		return this;
 	}
 
 	/**
-	 * Returns <code>double</code> width
+	 * Returns the width of this dimension
 	 * 
-	 * @return <code>double</code> width
-	 * @since 3.4
+	 * @return the current width of this dimension
+	 * @since 3.7
 	 */
-	public double preciseWidth() {
+	public int width() {
 		return width;
-	}
-
-	/**
-	 * Returns <code>double</code> height
-	 * 
-	 * @return <code>double</code> height
-	 * @since 3.4
-	 */
-	public double preciseHeight() {
-		return height;
 	}
 
 }

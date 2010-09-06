@@ -13,8 +13,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.geometry;
 
-import java.math.BigDecimal;
-
 /**
  * Represents a vector within 2-dimensional Euclidean space.
  * 
@@ -50,8 +48,8 @@ public class Vector {
 	 *            the point
 	 */
 	public Vector(PrecisionPoint p) {
-		x = p.preciseX;
-		y = p.preciseY;
+		x = p.preciseX();
+		y = p.preciseY();
 	}
 
 	/**
@@ -64,8 +62,8 @@ public class Vector {
 	 *            End Point
 	 */
 	public Vector(PrecisionPoint start, PrecisionPoint end) {
-		x = end.preciseX - start.preciseX;
-		y = end.preciseY - start.preciseY;
+		x = end.preciseX() - start.preciseX();
+		y = end.preciseY() - start.preciseY();
 	}
 
 	/**
@@ -92,7 +90,7 @@ public class Vector {
 	 * @return The dissimilarity
 	 */
 	public double getDissimilarity(Vector other) {
-		return preciseAbs(getCrossProduct(other));
+		return PrecisionGeometry.preciseAbs(getCrossProduct(other));
 	}
 
 	/**
@@ -116,8 +114,9 @@ public class Vector {
 	 * @return The dot product
 	 */
 	public double getDotProduct(Vector other) {
-		return preciseAdd(preciseMultiply(x, other.x),
-				preciseMultiply(y, other.y));
+		return PrecisionGeometry.preciseAdd(
+				PrecisionGeometry.preciseMultiply(x, other.x),
+				PrecisionGeometry.preciseMultiply(y, other.y));
 	}
 
 	/**
@@ -128,8 +127,9 @@ public class Vector {
 	 * @return The cross product.
 	 */
 	public double getCrossProduct(Vector other) {
-		return preciseSubtract(preciseMultiply(x, other.y),
-				preciseMultiply(y, other.x));
+		return PrecisionGeometry.preciseSubtract(
+				PrecisionGeometry.preciseMultiply(x, other.y),
+				PrecisionGeometry.preciseMultiply(y, other.x));
 	}
 
 	/**
@@ -140,7 +140,8 @@ public class Vector {
 	 * @return a new Vector representing the sum
 	 */
 	public Vector getAdded(Vector other) {
-		return new Vector(preciseAdd(x, other.x), preciseAdd(y, other.y));
+		return new Vector(PrecisionGeometry.preciseAdd(x, other.x),
+				PrecisionGeometry.preciseAdd(y, other.y));
 	}
 
 	/**
@@ -152,8 +153,8 @@ public class Vector {
 	 * @return a new Vector representing the difference.
 	 */
 	public Vector getSubtracted(Vector other) {
-		return new Vector(preciseSubtract(x, other.x), preciseSubtract(y,
-				other.y));
+		return new Vector(PrecisionGeometry.preciseSubtract(x, other.x),
+				PrecisionGeometry.preciseSubtract(y, other.y));
 	}
 
 	/**
@@ -165,8 +166,10 @@ public class Vector {
 	 * @return the angle between the two Vectors in degrees.
 	 */
 	public double getAngle(Vector other) {
-		double cosAlpha = preciseDivide(getDotProduct(other),
-				(preciseMultiply(getLength(), other.getLength())));
+		double cosAlpha = PrecisionGeometry.preciseDivide(
+				getDotProduct(other),
+				(PrecisionGeometry.preciseMultiply(getLength(),
+						other.getLength())));
 		return Math.toDegrees(Math.acos(cosAlpha));
 	}
 
@@ -179,8 +182,10 @@ public class Vector {
 	 * @return a new Vector
 	 */
 	public Vector getAveraged(Vector other) {
-		return new Vector(preciseDivide(preciseAdd(x, other.x), 2),
-				preciseDivide(preciseAdd(y, other.y), 2));
+		return new Vector(PrecisionGeometry.preciseDivide(
+				PrecisionGeometry.preciseAdd(x, other.x), 2),
+				PrecisionGeometry.preciseDivide(
+						PrecisionGeometry.preciseAdd(y, other.y), 2));
 	}
 
 	/**
@@ -192,8 +197,8 @@ public class Vector {
 	 * @return a new Vector
 	 */
 	public Vector getMultiplied(double factor) {
-		return new Vector(preciseMultiply(x, factor),
-				preciseMultiply(y, factor));
+		return new Vector(PrecisionGeometry.preciseMultiply(x, factor),
+				PrecisionGeometry.preciseMultiply(y, factor));
 	}
 
 	/**
@@ -205,7 +210,8 @@ public class Vector {
 	 * @return a new Vector
 	 */
 	public Vector getDivided(double factor) {
-		return new Vector(preciseDivide(x, factor), preciseDivide(y, factor));
+		return new Vector(PrecisionGeometry.preciseDivide(x, factor),
+				PrecisionGeometry.preciseDivide(y, factor));
 	}
 
 	/**
@@ -215,7 +221,7 @@ public class Vector {
 	 * @return the orthogonal complement of this Vector
 	 */
 	public Vector getOrthogonalComplement() {
-		return new Vector(preciseNegate(y), x);
+		return new Vector(PrecisionGeometry.preciseNegate(y), x);
 	}
 
 	/**
@@ -238,7 +244,7 @@ public class Vector {
 	 * @see #getDissimilarity(Vector)
 	 */
 	public double getSimilarity(Vector other) {
-		return preciseAbs(getDotProduct(other));
+		return PrecisionGeometry.preciseAbs(getDotProduct(other));
 	}
 
 	/**
@@ -315,50 +321,6 @@ public class Vector {
 	 */
 	public int hashCode() {
 		return (int) x + (int) y;
-	}
-
-	/*
-	 * Precise calculations on doubles are performed based on BigDecimals,
-	 * converting to 16 digits scale, so there are no undesired rounding
-	 * effects.
-	 */
-	private static final int ROUNDING = BigDecimal.ROUND_HALF_EVEN;
-	private static final int SCALE = 16;
-
-	private static final double preciseAdd(double d1, double d2) {
-		return doubleToBigDecimal(d1).add(doubleToBigDecimal(d2))
-				.setScale(SCALE, ROUNDING).doubleValue();
-	}
-
-	private static final double preciseSubtract(double d1, double d2) {
-		return doubleToBigDecimal(d1).subtract(doubleToBigDecimal(d2))
-				.setScale(SCALE, ROUNDING).doubleValue();
-	}
-
-	private static final double preciseMultiply(double d1, double d2) {
-		return doubleToBigDecimal(d1).multiply(doubleToBigDecimal(d2))
-				.setScale(SCALE, ROUNDING).doubleValue();
-	}
-
-	private static final double preciseDivide(double d1, double d2) {
-		return doubleToBigDecimal(d1).divide(doubleToBigDecimal(d2), SCALE,
-				ROUNDING).doubleValue();
-	}
-
-	private static final double preciseNegate(double d) {
-		return doubleToBigDecimal(d).negate().setScale(SCALE, ROUNDING)
-				.doubleValue();
-	}
-
-	private static final double preciseAbs(double d) {
-		return doubleToBigDecimal(d).abs().setScale(SCALE, ROUNDING)
-				.doubleValue();
-	}
-
-	private static final BigDecimal doubleToBigDecimal(double d) {
-		// may not use BigDecimal.valueOf due to J2SE-1.4 backwards
-		// compatibility
-		return new BigDecimal(Double.toString(d));
 	}
 
 }

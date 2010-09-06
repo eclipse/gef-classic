@@ -20,270 +20,11 @@ import org.eclipse.draw2d.PositionConstants;
 public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	static final long serialVersionUID = 1;
-	/** A singleton for use in short calculations */
+
+	/**
+	 * A singleton for use in short calculations
+	 */
 	public static final Point SINGLETON = new Point();
-
-	/** x value */
-	public int x;
-	/** y value */
-	public int y;
-
-	/**
-	 * Constructs a Point at location (0,0).
-	 * 
-	 * @since 2.0
-	 */
-	public Point() {
-	}
-
-	/**
-	 * Constructs a Point at the same location as the given Point.
-	 * 
-	 * @param copy
-	 *            Point from which the initial values are taken.
-	 * @since 2.0
-	 */
-	public Point(Point copy) {
-		x = copy.x;
-		y = copy.y;
-	}
-
-	/**
-	 * Constructs a Point at the same location as the given SWT Point.
-	 * 
-	 * @param copy
-	 *            Point from which the initial values are taken.
-	 * @since 2.0
-	 */
-	public Point(org.eclipse.swt.graphics.Point copy) {
-		x = copy.x;
-		y = copy.y;
-	}
-
-	/**
-	 * Constructs a Point at the specified x and y locations.
-	 * 
-	 * @param x
-	 *            x value
-	 * @param y
-	 *            y value
-	 * @since 2.0
-	 */
-	public Point(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
-
-	/**
-	 * Constructs a Point at the specified x and y locations.
-	 * 
-	 * @param x
-	 *            x value
-	 * @param y
-	 *            y value
-	 * @since 2.0
-	 */
-	public Point(double x, double y) {
-		this.x = (int) x;
-		this.y = (int) y;
-	}
-
-	/**
-	 * Test for equality.
-	 * 
-	 * @param o
-	 *            Object being tested for equality
-	 * @return true if both x and y values are equal
-	 * @since 2.0
-	 */
-	public boolean equals(Object o) {
-		if (o instanceof Point) {
-			Point p = (Point) o;
-			return p.x == x && p.y == y;
-		}
-		return false;
-	}
-
-	/**
-	 * @return a copy of this Point
-	 * @since 2.0
-	 */
-	public Point getCopy() {
-		return new Point(x, y);
-	}
-
-	/**
-	 * Calculates the difference in between this Point and the one specified.
-	 * 
-	 * @param pt
-	 *            The Point being subtracted from this Point
-	 * @return A new Dimension representing the difference
-	 * @since 2.0
-	 */
-	public Dimension getDifference(Point pt) {
-		return new Dimension(this.x - pt.x, this.y - pt.y);
-	}
-
-	/**
-	 * Calculates the distance from this Point to the one specified.
-	 * 
-	 * @param pt
-	 *            The Point being compared to this
-	 * @return The distance
-	 * @since 2.0
-	 */
-	public double getDistance(Point pt) {
-		return Math.sqrt(getPreciseDistance2(pt));
-	}
-
-	/**
-	 * Calculates the distance squared between this Point and the one specified.
-	 * If the distance squared is larger than the maximum integer value, then
-	 * <code>Integer.MAX_VALUE</code> will be returned.
-	 * 
-	 * @param pt
-	 *            The reference Point
-	 * @return distance<sup>2</sup>
-	 * @since 2.0
-	 */
-	public int getDistance2(Point pt) {
-		long i = pt.x - x;
-		long j = pt.y - y;
-		long result = i * i + j * j;
-		if (result > Integer.MAX_VALUE)
-			return Integer.MAX_VALUE;
-		return (int) result;
-	}
-
-	private double getPreciseDistance2(Point pt) {
-		double i = pt.preciseX() - preciseX();
-		double j = pt.preciseY() - preciseY();
-		return i * i + j * j;
-	}
-
-	/**
-	 * Calculates the orthogonal distance to the specified point. The orthogonal
-	 * distance is the sum of the horizontal and vertical differences.
-	 * 
-	 * @param pt
-	 *            The reference Point
-	 * @return the orthoganal distance
-	 */
-	public int getDistanceOrthogonal(Point pt) {
-		return Math.abs(y - pt.y) + Math.abs(x - pt.x);
-	}
-
-	/**
-	 * Creates a Point with negated x and y values.
-	 * 
-	 * @return A new Point
-	 * @since 2.0
-	 */
-	public Point getNegated() {
-		return getCopy().negate();
-	}
-
-	/**
-	 * Calculates the relative position of the specified Point to this Point.
-	 * 
-	 * @param p
-	 *            The reference Point
-	 * @return NORTH, SOUTH, EAST, or WEST, as defined in
-	 *         {@link PositionConstants}
-	 */
-	public int getPosition(Point p) {
-		int dx = p.x - x;
-		int dy = p.y - y;
-		if (Math.abs(dx) > Math.abs(dy)) {
-			if (dx < 0)
-				return PositionConstants.WEST;
-			return PositionConstants.EAST;
-		}
-		if (dy < 0)
-			return PositionConstants.NORTH;
-		return PositionConstants.SOUTH;
-	}
-
-	/**
-	 * Creates a new Point from this Point by scaling by the specified amount.
-	 * 
-	 * @param amount
-	 *            scale factor
-	 * @return A new Point
-	 * @since 2.0
-	 */
-	public Point getScaled(double amount) {
-		return getCopy().scale(amount);
-	}
-
-	/**
-	 * Creates a new SWT {@link org.eclipse.swt.graphics.Point Point} from this
-	 * Point.
-	 * 
-	 * @return A new SWT Point
-	 * @since 2.0
-	 */
-	public org.eclipse.swt.graphics.Point getSWTPoint() {
-		return new org.eclipse.swt.graphics.Point(x, y);
-	}
-
-	/**
-	 * Creates a new Point which is translated by the values of the input
-	 * Dimension.
-	 * 
-	 * @param delta
-	 *            Dimension which provides the translation amounts.
-	 * @return A new Point
-	 * @since 2.0
-	 */
-	public Point getTranslated(Dimension delta) {
-		return getCopy().translate(delta);
-	}
-
-	/**
-	 * Creates a new Point which is translated by the specified x and y values
-	 * 
-	 * @param x
-	 *            horizontal component
-	 * @param y
-	 *            vertical component
-	 * @return A new Point
-	 * @since 2.0
-	 */
-	public Point getTranslated(int x, int y) {
-		return getCopy().translate(x, y);
-	}
-
-	/**
-	 * Creates a new Point which is translated by the values of the provided
-	 * Point.
-	 * 
-	 * @param pt
-	 *            Point which provides the translation amounts.
-	 * @return A new Point
-	 * @since 2.0
-	 */
-	public Point getTranslated(Point pt) {
-		return getCopy().translate(pt);
-	}
-
-	/**
-	 * Creates a new Point with the transposed values of this Point. Can be
-	 * useful in orientation change calculations.
-	 * 
-	 * @return A new Point
-	 * @since 2.0
-	 */
-	public Point getTransposed() {
-		return getCopy().transpose();
-	}
-
-	/**
-	 * @see java.lang.Object#hashCode()
-	 */
-	public int hashCode() {
-		return (x * y) ^ (x + y);
-	}
 
 	/**
 	 * Creates a new Point representing the MAX of two provided Points.
@@ -312,6 +53,291 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	}
 
 	/**
+	 * x value
+	 */
+	public int x;
+
+	/**
+	 * y value
+	 */
+	public int y;
+
+	/**
+	 * Constructs a Point at location (0,0).
+	 * 
+	 * @since 2.0
+	 */
+	public Point() {
+	}
+
+	/**
+	 * Constructs a Point at the specified x and y locations.
+	 * 
+	 * @param x
+	 *            x value
+	 * @param y
+	 *            y value
+	 * @since 2.0
+	 * @deprecated Use {@link PrecisionPoint} or {@link #Point(int, int)}
+	 *             instead.
+	 */
+	public Point(double x, double y) {
+		this.x = (int) x;
+		this.y = (int) y;
+	}
+
+	/**
+	 * Constructs a Point at the specified x and y locations.
+	 * 
+	 * @param x
+	 *            x value
+	 * @param y
+	 *            y value
+	 * @since 2.0
+	 */
+	public Point(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	/**
+	 * Constructs a Point at the same location as the given SWT Point.
+	 * 
+	 * @param p
+	 *            Point from which the initial values are taken.
+	 * @since 2.0
+	 */
+	public Point(org.eclipse.swt.graphics.Point p) {
+		x = p.x;
+		y = p.y;
+	}
+
+	/**
+	 * Constructs a Point at the same location as the given Point.
+	 * 
+	 * @param p
+	 *            Point from which the initial values are taken.
+	 * @since 2.0
+	 */
+	public Point(Point p) {
+		x = p.x();
+		y = p.y();
+	}
+
+	/**
+	 * Returns <code>true</code> if this Points x and y are equal to the given x
+	 * and y.
+	 * 
+	 * @param x
+	 *            the x value
+	 * @param y
+	 *            the y value
+	 * @return <code>true</code> if this point's x and y are equal to those
+	 *         given.
+	 * @since 3.7
+	 */
+	public boolean equals(int x, int y) {
+		return this.x == x && this.y == y;
+	}
+
+	/**
+	 * Test for equality.
+	 * 
+	 * @param o
+	 *            Object being tested for equality
+	 * @return true if both x and y values are equal
+	 * @since 2.0
+	 */
+	public boolean equals(Object o) {
+		if (o instanceof Point) {
+			Point p = (Point) o;
+			return p.x() == x && p.y() == y;
+		}
+		return false;
+	}
+
+	/**
+	 * @return a copy of this Point
+	 * @since 2.0
+	 */
+	public Point getCopy() {
+		return new Point(this);
+	}
+
+	/**
+	 * Calculates the difference in between this Point and the one specified.
+	 * 
+	 * @param p
+	 *            The Point being subtracted from this Point
+	 * @return A new Dimension representing the difference
+	 * @since 2.0
+	 */
+	public Dimension getDifference(Point p) {
+		return new Dimension(this.x - p.x(), this.y - p.y());
+	}
+
+	/**
+	 * Calculates the distance from this Point to the one specified.
+	 * 
+	 * @param p
+	 *            The Point being compared to this
+	 * @return The distance
+	 * @since 2.0
+	 */
+	public double getDistance(Point p) {
+		double i = p.preciseX() - preciseX();
+		double j = p.preciseY() - preciseY();
+		return Math.sqrt(i * i + j * j);
+	}
+
+	/**
+	 * Calculates the distance squared between this Point and the one specified.
+	 * If the distance squared is larger than the maximum integer value, then
+	 * <code>Integer.MAX_VALUE</code> will be returned.
+	 * 
+	 * @param p
+	 *            The reference Point
+	 * @return distance<sup>2</sup>
+	 * @since 2.0
+	 * @deprecated Use {@link #getDistance(Point)} and square the result
+	 *             instead.
+	 */
+	public int getDistance2(Point p) {
+		long i = p.x() - x;
+		long j = p.y() - y;
+		long result = i * i + j * j;
+		if (result > Integer.MAX_VALUE)
+			return Integer.MAX_VALUE;
+		return (int) result;
+	}
+
+	/**
+	 * Calculates the orthogonal distance to the specified point. The orthogonal
+	 * distance is the sum of the horizontal and vertical differences.
+	 * 
+	 * @param p
+	 *            The reference Point
+	 * @return the orthogonal distance
+	 * @deprecated May not be guaranteed by precision subclasses and should thus
+	 *             not be used any more.
+	 */
+	public int getDistanceOrthogonal(Point p) {
+		return Math.abs(y - p.y()) + Math.abs(x - p.x());
+	}
+
+	/**
+	 * Creates a Point with negated x and y values.
+	 * 
+	 * @return A new Point
+	 * @since 2.0
+	 */
+	public Point getNegated() {
+		return getCopy().negate();
+	}
+
+	/**
+	 * Calculates the relative position of the specified Point to this Point.
+	 * 
+	 * @param p
+	 *            The reference Point
+	 * @return NORTH, SOUTH, EAST, or WEST, as defined in
+	 *         {@link PositionConstants}
+	 */
+	public int getPosition(Point p) {
+		int dx = p.x() - x;
+		int dy = p.y() - y;
+		if (Math.abs(dx) > Math.abs(dy)) {
+			if (dx < 0)
+				return PositionConstants.WEST;
+			return PositionConstants.EAST;
+		}
+		if (dy < 0)
+			return PositionConstants.NORTH;
+		return PositionConstants.SOUTH;
+	}
+
+	/**
+	 * Creates a new Point from this Point by scaling by the specified amount.
+	 * 
+	 * @param factor
+	 *            scale factor
+	 * @return A new Point
+	 * @since 2.0
+	 */
+	public Point getScaled(double factor) {
+		return getCopy().scale(factor);
+	}
+
+	/**
+	 * Creates a new SWT {@link org.eclipse.swt.graphics.Point Point} from this
+	 * Point.
+	 * 
+	 * @return A new SWT Point
+	 * @since 2.0
+	 */
+	public org.eclipse.swt.graphics.Point getSWTPoint() {
+		return new org.eclipse.swt.graphics.Point(x, y);
+	}
+
+	/**
+	 * Creates a new Point which is translated by the values of the input
+	 * Dimension.
+	 * 
+	 * @param d
+	 *            Dimension which provides the translation amounts.
+	 * @return A new Point
+	 * @since 2.0
+	 */
+	public Point getTranslated(Dimension d) {
+		return getCopy().translate(d);
+	}
+
+	/**
+	 * Creates a new Point which is translated by the specified x and y values
+	 * 
+	 * @param x
+	 *            horizontal component
+	 * @param y
+	 *            vertical component
+	 * @return A new Point
+	 * @since 2.0
+	 */
+	public Point getTranslated(int x, int y) {
+		return getCopy().translate(x, y);
+	}
+
+	/**
+	 * Creates a new Point which is translated by the values of the provided
+	 * Point.
+	 * 
+	 * @param p
+	 *            Point which provides the translation amounts.
+	 * @return A new Point
+	 * @since 2.0
+	 */
+	public Point getTranslated(Point p) {
+		return getCopy().translate(p);
+	}
+
+	/**
+	 * Creates a new Point with the transposed values of this Point. Can be
+	 * useful in orientation change calculations.
+	 * 
+	 * @return A new Point
+	 * @since 2.0
+	 */
+	public Point getTransposed() {
+		return getCopy().transpose();
+	}
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		return (x * y) ^ (x + y);
+	}
+
+	/**
 	 * Negates the x and y values of this Point.
 	 * 
 	 * @return <code>this</code> for convenience
@@ -334,32 +360,50 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	}
 
 	/**
+	 * Returns <code>double</code> x coordinate
+	 * 
+	 * @return <code>double</code> x coordinate
+	 * @since 3.4
+	 */
+	public double preciseX() {
+		return x;
+	}
+
+	/**
+	 * Returns <code>double</code> y coordinate
+	 * 
+	 * @return <code>double</code> y coordinate
+	 * @since 3.4
+	 */
+	public double preciseY() {
+		return y;
+	}
+
+	/**
 	 * Scales this Point by the specified amount.
 	 * 
 	 * @return <code>this</code> for convenience
-	 * @param amount
+	 * @param factor
 	 *            scale factor
 	 * @since 2.0
 	 */
-	public Point scale(double amount) {
-		x = (int) Math.floor(x * amount);
-		y = (int) Math.floor(y * amount);
-		return this;
+	public Point scale(double factor) {
+		return scale(factor, factor);
 	}
 
 	/**
 	 * Scales this Point by the specified values.
 	 * 
-	 * @param xAmount
+	 * @param xFactor
 	 *            horizontal scale factor
-	 * @param yAmount
+	 * @param yFactor
 	 *            vertical scale factor
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
-	public Point scale(double xAmount, double yAmount) {
-		x = (int) Math.floor(x * xAmount);
-		y = (int) Math.floor(y * yAmount);
+	public Point scale(double xFactor, double yFactor) {
+		x = (int) Math.floor(x * xFactor);
+		y = (int) Math.floor(y * yFactor);
 		return this;
 	}
 
@@ -383,13 +427,39 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 * Sets the location of this Point to the specified Point.
 	 * 
 	 * @return <code>this</code> for convenience
-	 * @param pt
+	 * @param p
 	 *            the Location
 	 * @since 2.0
 	 */
-	public Point setLocation(Point pt) {
-		x = pt.x;
-		y = pt.y;
+	public Point setLocation(Point p) {
+		x = p.x();
+		y = p.y();
+		return this;
+	}
+
+	/**
+	 * Sets the x value of this Point to the given value.
+	 * 
+	 * @param x
+	 *            The new x value
+	 * @return this for convenience
+	 * @since 3.7
+	 */
+	public Point setX(int x) {
+		this.x = x;
+		return this;
+	}
+
+	/**
+	 * Sets the y value of this Point to the given value;
+	 * 
+	 * @param y
+	 *            The new y value
+	 * @return this for convenience
+	 * @since 3.7
+	 */
+	public Point setY(int y) {
+		this.y = y;
 		return this;
 	}
 
@@ -402,19 +472,6 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	}
 
 	/**
-	 * Shifts the location of this Point by the location of the input Point
-	 * along each of the axes, and returns this for convenience.
-	 * 
-	 * @param p
-	 *            Point to which the origin is being shifted.
-	 * @return <code>this</code> for convenience
-	 * @since 2.0
-	 */
-	public Point translate(Point p) {
-		return translate(p.x, p.y);
-	}
-
-	/**
 	 * Shifts this Point by the values of the Dimension along each axis, and
 	 * returns this for convenience.
 	 * 
@@ -424,7 +481,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 * @since 2.0
 	 */
 	public Point translate(Dimension d) {
-		return translate(d.width, d.height);
+		return translate(d.width(), d.height());
 	}
 
 	/**
@@ -445,6 +502,19 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	}
 
 	/**
+	 * Shifts the location of this Point by the location of the input Point
+	 * along each of the axes, and returns this for convenience.
+	 * 
+	 * @param p
+	 *            Point to which the origin is being shifted.
+	 * @return <code>this</code> for convenience
+	 * @since 2.0
+	 */
+	public Point translate(Point p) {
+		return translate(p.x(), p.y());
+	}
+
+	/**
 	 * Transposes this object. X and Y values are exchanged.
 	 * 
 	 * @return <code>this</code> for convenience
@@ -458,22 +528,22 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	}
 
 	/**
-	 * Returns <code>double</code> x coordinate
+	 * Returns the x value of this Point.
 	 * 
-	 * @return <code>double</code> x coordinate
-	 * @since 3.4
+	 * @return The current x value
+	 * @since 3.7
 	 */
-	public double preciseX() {
+	public int x() {
 		return x;
 	}
 
 	/**
-	 * Returns <code>double</code> y coordinate
+	 * Returns the y value of this Point.
 	 * 
-	 * @return <code>double</code> y coordinate
-	 * @since 3.4
+	 * @return The current y value
+	 * @since 3.7
 	 */
-	public double preciseY() {
+	public int y() {
 		return y;
 	}
 
