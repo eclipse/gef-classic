@@ -62,8 +62,8 @@ public class RelativeBendpointTest extends TestCase {
 
 		public Point getLocation(Point loc) {
 			Rectangle r = getOwner().getBounds();
-			double x = r.x + place.preciseX * r.width;
-			double y = r.y + place.preciseY * r.height;
+			double x = r.x + place.preciseX() * r.width;
+			double y = r.y + place.preciseY() * r.height;
 			Point p = new PrecisionPoint(x, y);
 			getOwner().translateToAbsolute(p);
 			return p;
