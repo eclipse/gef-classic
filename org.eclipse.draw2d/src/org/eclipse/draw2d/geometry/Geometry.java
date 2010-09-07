@@ -157,13 +157,13 @@ public class Geometry {
 		 * Calculating square distance from specified point to this segment
 		 * using formula for Dot product of two vectors.
 		 */
-		int v1x = x2 - x1;
-		int v1y = y2 - y1;
-		int v2x = px - x1;
-		int v2y = py - y1;
-		int numerator = v2x * v1y - v1x * v2y;
-		int denominator = v1x * v1x + v1y * v1y;
-		int squareDistance = (int) ((long) numerator * numerator / denominator);
+		long v1x = x2 - x1;
+		long v1y = y2 - y1;
+		long v2x = px - x1;
+		long v2y = py - y1;
+		long numerator = v2x * v1y - v1x * v2y;
+		long denominator = v1x * v1x + v1y * v1y;
+		long squareDistance = numerator * numerator / denominator;
 		return squareDistance <= tolerance * tolerance;
 	}
 
