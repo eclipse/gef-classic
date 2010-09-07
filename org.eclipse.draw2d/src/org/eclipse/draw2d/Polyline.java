@@ -140,9 +140,4 @@ public class Polyline extends AbstractPointListShape {
 	public void setTolerance(int tolerance) {
 		this.tolerance = tolerance;
 	}
-
-	public void repaint() {
-		bounds = null;
-		super.repaint();
-	}
 }
