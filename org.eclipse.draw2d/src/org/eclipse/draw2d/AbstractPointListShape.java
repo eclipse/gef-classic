@@ -74,7 +74,6 @@ public abstract class AbstractPointListShape extends Shape {
 	 *            the Point to be added to this figure
 	 */
 	public void addPoint(Point pt) {
-		erase();
 		points.addPoint(pt);
 		repaint();
 	}
@@ -116,7 +115,6 @@ public abstract class AbstractPointListShape extends Shape {
 	 *            the position in this figure where the point is to be added
 	 */
 	public void insertPoint(Point pt, int index) {
-		erase();
 		points.insertPoint(pt, index);
 		repaint();
 	}
