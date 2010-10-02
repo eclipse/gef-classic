@@ -12,9 +12,11 @@ import junit.framework.Assert;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
+import org.eclipse.zest.core.widgets.GraphContainer;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
@@ -65,12 +67,27 @@ public final class TestGraphInstanceDotImport {
 	@Test
 	public void subgraphs() {
 		Shell shell = new Shell();
-		DotImport dotImport = new DotImport(
-				"digraph{subgraph cluster_0{1->2}; subgraph cluster_1{1->3}; 1->4}");
+		DotImport dotImport = new DotImport("digraph{"
+				+ "subgraph {graph[layout=radial]; label=left; 1->2}; "
+				+ "subgraph {label=right; 1->3; 3->4; 3->5};}");
 		Graph graph = dotImport.newGraphInstance(shell, SWT.NONE);
-		Assert.assertEquals(4 /* TODO: 4 nodes, 2 containers */, graph.getNodes()
-				.size());
-		Assert.assertEquals(3, graph.getConnections().size());
+		Assert.assertEquals(4, graph.getConnections().size());
+		Assert.assertEquals("The graph should contain two nodes", 2, graph
+				.getNodes().size());
+		Assert.assertEquals("left", ((Item) graph.getNodes().get(0)).getText());
+		Assert.assertEquals("right", ((Item) graph.getNodes().get(1)).getText());
+		Assert.assertEquals("The first node should be a graph container",
+				GraphContainer.class, graph.getNodes().get(0).getClass());
+		Assert.assertEquals(2, ((GraphContainer) graph.getNodes().get(0))
+				.getNodes().size());
+		Assert.assertEquals("The second node should be a graph container",
+				GraphContainer.class, graph.getNodes().get(1).getClass());
+		Assert.assertEquals(3, ((GraphContainer) graph.getNodes().get(1))
+				.getNodes().size());
+		// TODO add GraphContainer#getLayoutAlgorithm() for test below
+		// Assert.assertEquals(RadialLayoutAlgorithm.class, ((GraphContainer)
+		// graph.getNodes().get(0)).getLayoutAlgorithm());
+		// TODO nodes between and after subgraphs, export support
 	}
 
 	@Test
@@ -340,7 +357,7 @@ public final class TestGraphInstanceDotImport {
 	static void open(final Shell shell) {
 		shell.setText("Testing"); //$NON-NLS-1$
 		shell.setLayout(new FillLayout());
-		shell.setSize(200, 250);
+		shell.setSize(600, 300);
 		shell.open();
 		while (!shell.isDisposed()) {
 			while (!shell.getDisplay().readAndDispatch()) {

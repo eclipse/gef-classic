@@ -20,7 +20,9 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
+import org.eclipse.zest.core.widgets.GraphContainer;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.IContainer;
 import org.eclipse.zest.core.widgets.ZestStyles;
 import org.eclipse.zest.dot.DotAst.Layout;
 import org.eclipse.zest.dot.DotAst.Style;
@@ -36,6 +38,7 @@ import org.eclipse.zest.internal.dot.parser.dot.GraphType;
 import org.eclipse.zest.internal.dot.parser.dot.NodeId;
 import org.eclipse.zest.internal.dot.parser.dot.NodeStmt;
 import org.eclipse.zest.internal.dot.parser.dot.Stmt;
+import org.eclipse.zest.internal.dot.parser.dot.Subgraph;
 import org.eclipse.zest.internal.dot.parser.dot.util.DotSwitch;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
@@ -57,6 +60,7 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 	private String currentEdgeStyleValue;
 	private String currentEdgeLabelValue;
 	private String currentEdgeSourceNodeId;
+	private GraphContainer currentSubgraph;
 	private boolean gotSource;
 
 	Graph create(Composite parent, int style, DotAst dotAst) {
@@ -75,6 +79,7 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 		while (contents.hasNext()) {
 			doSwitch((EObject) contents.next());
 		}
+		layoutSubgraph();
 		return graph;
 	}
 
@@ -92,8 +97,11 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 		 */
 		if (object.getName().equals("rankdir") //$NON-NLS-1$
 				&& object.getValue().equals("LR")) { //$NON-NLS-1$
-			graph.setLayoutAlgorithm(new HorizontalTreeLayoutAlgorithm(
-					LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+			HorizontalTreeLayoutAlgorithm algorithm = new HorizontalTreeLayoutAlgorithm(
+					LayoutStyles.NO_LAYOUT_NODE_RESIZING);
+			currentParentGraph().setLayoutAlgorithm(algorithm, true);
+		} else if (currentSubgraph != null && object.getName().equals("label")) {
+			currentSubgraph.setText(object.getValue());
 		}
 		return super.caseAttribute(object);
 	}
@@ -157,7 +165,36 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 		return super.caseEdgeRhsNode(object);
 	}
 
+	@Override
+	public Object caseSubgraph(Subgraph object) {
+		createSubgraph(object);
+		return super.caseSubgraph(object);
+	}
+
 	// private implementation of the cases above
+
+	private void createSubgraph(Subgraph object) {
+		layoutSubgraph();
+		currentSubgraph = new GraphContainer(graph, SWT.NONE);
+		currentSubgraph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
+				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+	}
+
+	private void layoutSubgraph() {
+		if (currentSubgraph != null) {
+			currentSubgraph.applyLayout();
+			currentSubgraph.open(false);
+			/*
+			 * TODO do this only after the end of each subgraph if possible, and
+			 * set subgraph to null to have subsequent nodes added to the parent
+			 * graph (currently subsequent nodes are in latest subgraph).
+			 */
+		}
+	}
+
+	private IContainer currentParentGraph() {
+		return currentSubgraph != null ? currentSubgraph : graph;
+	}
 
 	private void createGraph(DotGraph object) {
 		graph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
@@ -184,7 +221,7 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 			if (graphLayout != null) {
 				Layout layout = Layout.valueOf(Layout.class,
 						graphLayout.toUpperCase());
-				graph.setLayoutAlgorithm(layout.algorithm, true);
+				currentParentGraph().setLayoutAlgorithm(layout.algorithm, true);
 			}
 			break;
 		}
@@ -193,7 +230,7 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 
 	private void createNode(final NodeStmt eStatementObject) {
 		String nodeId = eStatementObject.getName();
-		GraphNode node = new GraphNode(graph, SWT.NONE, nodeId);
+		GraphNode node = new GraphNode(currentParentGraph(), SWT.NONE, nodeId);
 		node.setText(nodeId);
 		node.setData(nodeId);
 		String value = getAttributeValue(eStatementObject, "label"); //$NON-NLS-1$
@@ -207,7 +244,7 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 
 	private GraphNode node(String id) {
 		if (!nodes.containsKey(id)) { // undeclared node, as in "graph{1->2}"
-			GraphNode node = new GraphNode(graph, SWT.NONE,
+			GraphNode node = new GraphNode(currentParentGraph(), SWT.NONE,
 					globalNodeLabel != null ? globalNodeLabel : id);
 			node.setData(id);
 			nodes.put(id, node);
