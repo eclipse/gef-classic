@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.zest.dot;
 
+import static org.junit.Assert.assertEquals;
 import junit.framework.Assert;
 
 import org.eclipse.swt.SWT;
@@ -67,27 +68,53 @@ public final class TestGraphInstanceDotImport {
 	@Test
 	public void subgraphs() {
 		Shell shell = new Shell();
-		DotImport dotImport = new DotImport("digraph{"
-				+ "subgraph {graph[layout=radial]; label=left; 1->2}; "
-				+ "subgraph {label=right; 1->3; 3->4; 3->5};}");
+		DotImport dotImport = new DotImport(
+				"digraph{subgraph {1->2}; subgraph {1->3}}");
 		Graph graph = dotImport.newGraphInstance(shell, SWT.NONE);
-		Assert.assertEquals(4, graph.getConnections().size());
-		Assert.assertEquals("The graph should contain two nodes", 2, graph
-				.getNodes().size());
-		Assert.assertEquals("left", ((Item) graph.getNodes().get(0)).getText());
-		Assert.assertEquals("right", ((Item) graph.getNodes().get(1)).getText());
-		Assert.assertEquals("The first node should be a graph container",
+		assertEquals("Non-cluster subgraphs should be ignored in rendering", 3,
+				graph.getNodes().size());
+		assertEquals(2, graph.getConnections().size());
+	}
+
+	@Test
+	public void clusterSubgraphs() {
+		Shell shell = new Shell();
+		DotImport dotImport = new DotImport(
+				"digraph{subgraph cluster{1->2}; subgraph cluster{1->3}}");
+		Graph graph = dotImport.newGraphInstance(shell, SWT.NONE);
+		assertEquals(
+				"Cluster subgraphs should be rendered as graph containers", 2,
+				graph.getNodes().size());
+		assertEquals(GraphContainer.class, graph.getNodes().get(0).getClass());
+		assertEquals(GraphContainer.class, graph.getNodes().get(1).getClass());
+		assertEquals(2, graph.getConnections().size());
+	}
+
+	@Test
+	public void labeledClusterSubgraph() {
+		Shell shell = new Shell();
+		DotImport dotImport = new DotImport("digraph{"
+				+ "subgraph cluster{graph[layout=radial]; label=left; 1->2}; "
+				+ "subgraph cluster{label=right; 1->3; 3->4; 3->5};}");
+		Graph graph = dotImport.newGraphInstance(shell, SWT.NONE);
+		// open(shell);
+		assertEquals(4, graph.getConnections().size());
+		assertEquals("The graph should contain two nodes", 2, graph.getNodes()
+				.size());
+		assertEquals("left", ((Item) graph.getNodes().get(0)).getText());
+		assertEquals("right", ((Item) graph.getNodes().get(1)).getText());
+		assertEquals("The first node should be a graph container",
 				GraphContainer.class, graph.getNodes().get(0).getClass());
-		Assert.assertEquals(2, ((GraphContainer) graph.getNodes().get(0))
-				.getNodes().size());
-		Assert.assertEquals("The second node should be a graph container",
+		assertEquals(2, ((GraphContainer) graph.getNodes().get(0)).getNodes()
+				.size());
+		assertEquals("The second node should be a graph container",
 				GraphContainer.class, graph.getNodes().get(1).getClass());
-		Assert.assertEquals(3, ((GraphContainer) graph.getNodes().get(1))
-				.getNodes().size());
+		assertEquals(3, ((GraphContainer) graph.getNodes().get(1)).getNodes()
+				.size());
 		// TODO add GraphContainer#getLayoutAlgorithm() for test below
 		// Assert.assertEquals(RadialLayoutAlgorithm.class, ((GraphContainer)
 		// graph.getNodes().get(0)).getLayoutAlgorithm());
-		// TODO nodes between and after subgraphs, export support
+		// TODO nodes between and after subgraphs
 	}
 
 	@Test

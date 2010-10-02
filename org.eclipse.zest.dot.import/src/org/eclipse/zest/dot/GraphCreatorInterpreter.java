@@ -174,10 +174,16 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 	// private implementation of the cases above
 
 	private void createSubgraph(Subgraph object) {
-		layoutSubgraph();
-		currentSubgraph = new GraphContainer(graph, SWT.NONE);
-		currentSubgraph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
-				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		/*
+		 * Graphviz DOT naming convention for cluster subgraphs, see
+		 * http://www.graphviz.org/doc/info/lang.html
+		 */
+		if (object.getName() != null && object.getName().startsWith("cluster")) {
+			layoutSubgraph();
+			currentSubgraph = new GraphContainer(graph, SWT.NONE);
+			currentSubgraph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
+					LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		}
 	}
 
 	private void layoutSubgraph() {
