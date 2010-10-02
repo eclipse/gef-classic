@@ -21,8 +21,13 @@
 	
 	/* Nodes */
 	<% for(Object nodeObject : graph.getNodes()){ GraphNode node = (GraphNode) nodeObject; %> 
-	<%=node.hashCode()%>[label="<%=node.getText()%>"];<% 
-	}%>
+	<% if(!(node instanceof GraphContainer)) {%><%=node.hashCode()%>[label="<%=node.getText()%>"];<%}%>
+	<% if(node instanceof GraphContainer) {%> 
+	  <% for(Object o : ((GraphContainer) node ).getNodes()){ GraphNode n = (GraphNode) o; %> 
+        <%=n.hashCode()%>[label="<%=n.getText()%>"];
+      <% }%>
+	<% }%>
+	<% }%>
 	
 	/* Edges */
 	<% for(Object edgeObject : graph.getConnections()){ GraphConnection edge = (GraphConnection) edgeObject; %> 

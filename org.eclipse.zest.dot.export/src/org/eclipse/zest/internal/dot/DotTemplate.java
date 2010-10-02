@@ -25,15 +25,23 @@ public class DotTemplate
   protected final String TEXT_6 = " " + NL + "\t";
   protected final String TEXT_7 = "[label=\"";
   protected final String TEXT_8 = "\"];";
-  protected final String TEXT_9 = NL + "\t" + NL + "\t/* Edges */" + NL + "\t";
-  protected final String TEXT_10 = " " + NL + "\t";
-  protected final String TEXT_11 = " " + NL + "\t";
-  protected final String TEXT_12 = " ";
-  protected final String TEXT_13 = " ";
-  protected final String TEXT_14 = "[style=";
-  protected final String TEXT_15 = " label=\"";
-  protected final String TEXT_16 = "\"];" + NL + "\t";
-  protected final String TEXT_17 = NL + "}";
+  protected final String TEXT_9 = NL + "\t";
+  protected final String TEXT_10 = " " + NL + "\t  ";
+  protected final String TEXT_11 = " ";
+  protected final String TEXT_12 = NL + "        ";
+  protected final String TEXT_13 = "[label=\"";
+  protected final String TEXT_14 = "\"];";
+  protected final String TEXT_15 = NL + "\t";
+  protected final String TEXT_16 = NL + "\t";
+  protected final String TEXT_17 = NL + "\t" + NL + "\t/* Edges */" + NL + "\t";
+  protected final String TEXT_18 = " " + NL + "\t";
+  protected final String TEXT_19 = " " + NL + "\t";
+  protected final String TEXT_20 = " ";
+  protected final String TEXT_21 = " ";
+  protected final String TEXT_22 = "[style=";
+  protected final String TEXT_23 = " label=\"";
+  protected final String TEXT_24 = "\"];" + NL + "\t";
+  protected final String TEXT_25 = NL + "}";
 
   public String generate(Object argument)
   {
@@ -61,29 +69,44 @@ public class DotTemplate
     stringBuffer.append(TEXT_5);
      for(Object nodeObject : graph.getNodes()){ GraphNode node = (GraphNode) nodeObject; 
     stringBuffer.append(TEXT_6);
+     if(!(node instanceof GraphContainer)) {
     stringBuffer.append(node.hashCode());
     stringBuffer.append(TEXT_7);
     stringBuffer.append(node.getText());
     stringBuffer.append(TEXT_8);
-     
-	}
+    }
     stringBuffer.append(TEXT_9);
-     for(Object edgeObject : graph.getConnections()){ GraphConnection edge = (GraphConnection) edgeObject; 
+     if(node instanceof GraphContainer) {
     stringBuffer.append(TEXT_10);
-    boolean dashed = edge.getLineStyle() == SWT.LINE_DASH; boolean dotted = edge.getLineStyle() == SWT.LINE_DOT;
+     for(Object o : ((GraphContainer) node ).getNodes()){ GraphNode n = (GraphNode) o; 
     stringBuffer.append(TEXT_11);
-    stringBuffer.append(edge.getSource().hashCode());
     stringBuffer.append(TEXT_12);
-    stringBuffer.append( digraph ? "->" : "--" );
+    stringBuffer.append(n.hashCode());
     stringBuffer.append(TEXT_13);
-    stringBuffer.append(edge.getDestination().hashCode());
+    stringBuffer.append(n.getText());
     stringBuffer.append(TEXT_14);
-    stringBuffer.append(dashed?"dashed":dotted?"dotted":"solid");
+     }
     stringBuffer.append(TEXT_15);
-    stringBuffer.append(edge.getText());
+     }
     stringBuffer.append(TEXT_16);
      }
     stringBuffer.append(TEXT_17);
+     for(Object edgeObject : graph.getConnections()){ GraphConnection edge = (GraphConnection) edgeObject; 
+    stringBuffer.append(TEXT_18);
+    boolean dashed = edge.getLineStyle() == SWT.LINE_DASH; boolean dotted = edge.getLineStyle() == SWT.LINE_DOT;
+    stringBuffer.append(TEXT_19);
+    stringBuffer.append(edge.getSource().hashCode());
+    stringBuffer.append(TEXT_20);
+    stringBuffer.append( digraph ? "->" : "--" );
+    stringBuffer.append(TEXT_21);
+    stringBuffer.append(edge.getDestination().hashCode());
+    stringBuffer.append(TEXT_22);
+    stringBuffer.append(dashed?"dashed":dotted?"dotted":"solid");
+    stringBuffer.append(TEXT_23);
+    stringBuffer.append(edge.getText());
+    stringBuffer.append(TEXT_24);
+     }
+    stringBuffer.append(TEXT_25);
     return stringBuffer.toString();
   }
 }
