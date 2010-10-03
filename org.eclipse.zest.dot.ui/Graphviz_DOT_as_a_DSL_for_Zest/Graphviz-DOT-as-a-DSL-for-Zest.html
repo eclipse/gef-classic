@@ -135,8 +135,37 @@ File image = exporter.toImage("/opt/local/bin", "pdf");
 			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.gef/plugins/org.eclipse.zest.dot.import/src-test/org/eclipse/zest/dot/SampleUsage.java?root=Tools_Project&amp;view=markup" target="doc_external">available in the repository</a>, as well as working 
 			<a href="http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.gef/plugins/org.eclipse.zest.dot.import/resources/tests/?root=Tools_Project" target="doc_external">DOT input samples</a>.
 		</p>
+		<h3 id="Subgraphs">Subgraphs</h3>
+		<p>Cluster subgraphs imported to a Zest Graph instance (using 
+			<i>new Dot</i> or 
+			<i>DotImport#newGraphInstance</i>) are rendered as Zest graph containers, e.g.:
+		</p>
+		<pre>digraph subgraphs {
+  subgraph cluster1 { 1 -&gt; 2; 2 -&gt; 3; 2 -&gt; 4 }
+  subgraph cluster2 { a -&gt; b; a -&gt; c; a -&gt; d }
+}
+</pre>
+		<p>
+			<img width="400" border="0" src="images/DotZestSubgraphs1.png"/>
+		</p>
+		<p>Cluster subgraphs can be labeled and can define their own layouts, e.g.:</p>
+		<pre>digraph agent {
+  subgraph cluster1 { label = "the agent likes martinis"
+    S -&gt; NP; NP -&gt; the; NP -&gt; agent; S -&gt; VP; VP -&gt; likes; VP -&gt; martinis
+  }
+  subgraph cluster2 { label = "martinis"; rankdir = LR
+    martinis -&gt; pos; martinis -&gt; number; martinis -&gt; semantics; martinis -&gt; grammar
+    pos -&gt; noun; number -&gt; plural; semantics -&gt; patient; grammar -&gt; object
+  }
+}
+</pre>
+		<p>
+			<img width="400" border="0" src="images/DotZestSubgraphs2.png"/>
+		</p>
 		<h3 id="Animation">Animation</h3>
-		<p>The DOT import implementation contains experimental animation support, representing animation steps as subgraphs in the DOT input (which if rendered with Graphviz results in a static description of the animation). </p>
+		<p>Cluster subgraphs imported to a Zest Graph subclass (using 
+			<i>DotImport#newGraphSubclass</i>) trigger  experimental animation support, where animation steps are represented as subgraphs in the DOT input (which if rendered with Graphviz results in a static description of the animation).
+		</p>
 		<p>For instance, for the input below a Zest animation is created in which the single steps can be executed by clicking the button below the graph:</p>
 		<pre>digraph SampleAnimation {
  /* We can specify a Zest layout for the animation here: */
