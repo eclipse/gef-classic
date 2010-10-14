@@ -13,7 +13,10 @@ package org.eclipse.gef.editpolicies;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
@@ -23,21 +26,53 @@ import org.eclipse.gef.handles.ResizableHandleKit;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 /**
- * Provides support for selecting, positioning, and resizing an editpart.
+ * Provides support for selecting, positioning, and resizing an edit part.
  * Selection is indicated via eight square handles along the editpart's figure,
- * and a rectangular handle that outlines the editpart with a 1-pixel black
+ * and a rectangular handle that outlines the edit part with a 1-pixel black
  * line. The eight square handles will resize the current selection in the eight
  * primary directions. The rectangular handle will drag the current selection
  * using a {@link org.eclipse.gef.tools.DragEditPartsTracker}.
- * <P>
+ * <p>
  * During feedback, a rectangle filled using XOR and outlined with dashes is
  * drawn. Subclasses may tailor the feedback.
  * 
  * @author hudsonr
+ * @author msorens
+ * @author anyssen
  */
 public class ResizableEditPolicy extends NonResizableEditPolicy {
 
-	private int directions = -1;
+	private int resizeDirections = PositionConstants.NSEW;
+	private Dimension defaultMaximumSize = IFigure.MAX_DIMENSION;
+	private Dimension defaultMinimumSize = IFigure.MIN_DIMENSION;
+
+	/**
+	 * Constructs a new {@link ResizableEditPolicy}.
+	 * 
+	 * @since 3.7
+	 */
+	public ResizableEditPolicy() {
+	}
+
+	/**
+	 * Constructs a new {@link ResizableEditPolicy} with the given default
+	 * resizing constraints.
+	 * 
+	 * @param defaultMinimumSize
+	 *            default minimum size, as used by
+	 *            {@link #getMinimumSizeFor(ChangeBoundsRequest)}
+	 * @param defaultMaximumSize
+	 *            default maximum size, as used by
+	 *            {@link #getMaximumSizeFor(ChangeBoundsRequest)}.
+	 * 
+	 * @since 3.7
+	 */
+	public ResizableEditPolicy(Dimension defaultMinimumSize,
+			Dimension defaultMaximumSize) {
+		super();
+		this.defaultMinimumSize = defaultMinimumSize;
+		this.defaultMaximumSize = defaultMaximumSize;
+	}
 
 	/**
 	 * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
@@ -45,55 +80,55 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	protected List createSelectionHandles() {
 		List list = new ArrayList();
 
-		if (directions == 0)
+		if (resizeDirections == PositionConstants.NONE)
 			NonResizableHandleKit.addHandles((GraphicalEditPart) getHost(),
 					list);
-		else if (directions != -1) {
+		else if (resizeDirections != PositionConstants.NSEW) {
 			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(),
 					list);
-			if ((directions & PositionConstants.EAST) != 0)
+			if ((resizeDirections & PositionConstants.EAST) != 0)
 				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.EAST);
 			else
 				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.EAST);
-			if ((directions & PositionConstants.SOUTH_EAST) == PositionConstants.SOUTH_EAST)
+			if ((resizeDirections & PositionConstants.SOUTH_EAST) == PositionConstants.SOUTH_EAST)
 				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.SOUTH_EAST);
 			else
 				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.SOUTH_EAST);
-			if ((directions & PositionConstants.SOUTH) != 0)
+			if ((resizeDirections & PositionConstants.SOUTH) != 0)
 				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.SOUTH);
 			else
 				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.SOUTH);
-			if ((directions & PositionConstants.SOUTH_WEST) == PositionConstants.SOUTH_WEST)
+			if ((resizeDirections & PositionConstants.SOUTH_WEST) == PositionConstants.SOUTH_WEST)
 				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.SOUTH_WEST);
 			else
 				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.SOUTH_WEST);
-			if ((directions & PositionConstants.WEST) != 0)
+			if ((resizeDirections & PositionConstants.WEST) != 0)
 				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.WEST);
 			else
 				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.WEST);
-			if ((directions & PositionConstants.NORTH_WEST) == PositionConstants.NORTH_WEST)
+			if ((resizeDirections & PositionConstants.NORTH_WEST) == PositionConstants.NORTH_WEST)
 				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.NORTH_WEST);
 			else
 				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.NORTH_WEST);
-			if ((directions & PositionConstants.NORTH) != 0)
+			if ((resizeDirections & PositionConstants.NORTH) != 0)
 				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.NORTH);
 			else
 				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.NORTH);
-			if ((directions & PositionConstants.NORTH_EAST) == PositionConstants.NORTH_EAST)
+			if ((resizeDirections & PositionConstants.NORTH_EAST) == PositionConstants.NORTH_EAST)
 				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
 						list, PositionConstants.NORTH_EAST);
 			else
@@ -121,27 +156,50 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
 	 */
 	public Command getCommand(Request request) {
-		if (REQ_RESIZE.equals(request.getType()))
+		if (REQ_RESIZE.equals(request.getType())) {
+			adjustRequest((ChangeBoundsRequest) request);
 			return getResizeCommand((ChangeBoundsRequest) request);
+		}
 
 		return super.getCommand(request);
 	}
 
 	/**
-	 * Returns the current resize directions integer that depicts which handles
-	 * can be resized on this object.
+	 * Ensure size constraints (by default minimum and maximum) are respected by
+	 * the given request. May be overwritten by clients to enforce additional
+	 * constraints.
 	 * 
-	 * @return handle directions that can be resized
+	 * @param request
+	 *            The request to validate
+	 * @since 3.7
 	 */
-	public int getResizeDirections() {
-		return directions;
+	protected void adjustRequest(ChangeBoundsRequest request) {
+		// adjust request, so that minimum and maximum size constraints are
+		// respected
+		PrecisionRectangle originalConstraint = new PrecisionRectangle(
+				((GraphicalEditPart) getHost()).getFigure().getBounds());
+		getHostFigure().translateToAbsolute(originalConstraint);
+		PrecisionRectangle manipulatedConstraint = new PrecisionRectangle(
+				request.getTransformedRectangle(originalConstraint));
+		getHostFigure().translateToRelative(manipulatedConstraint);
+		// validate constraint (maximum and minimum size are regarded to be
+		// 'normalized', i.e. relative to this figure's bounds coordinates).
+		manipulatedConstraint.setSize(Dimension.max(
+				manipulatedConstraint.getSize(), getMinimumSizeFor(request)));
+		manipulatedConstraint.setSize(Dimension.min(
+				manipulatedConstraint.getSize(), getMaximumSizeFor(request)));
+		// translate back to absolute
+		getHostFigure().translateToAbsolute(manipulatedConstraint);
+		Dimension newSizeDelta = manipulatedConstraint.getSize().getShrinked(
+				originalConstraint.getSize());
+		request.setSizeDelta(newSizeDelta);
 	}
 
 	/**
 	 * Returns the command contribution for the given resize request. By
-	 * default, the request is redispatched to the host's parent as a
+	 * default, the request is re-dispatched to the host's parent as a
 	 * {@link org.eclipse.gef.RequestConstants#REQ_RESIZE_CHILDREN}. The
-	 * parent's editpolicies determine how to perform the resize based on the
+	 * parent's edit policies determine how to perform the resize based on the
 	 * layout manager in use.
 	 * 
 	 * @param request
@@ -174,17 +232,19 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 *            the direction in which resizing is allowed
 	 */
 	public void setResizeDirections(int newDirections) {
-		directions = newDirections;
+		resizeDirections = newDirections;
 	}
 
 	/**
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
 	 */
 	public void showSourceFeedback(Request request) {
-		if (REQ_RESIZE.equals(request.getType()))
+		if (REQ_RESIZE.equals(request.getType())) {
+			adjustRequest((ChangeBoundsRequest) request);
 			showChangeBoundsFeedback((ChangeBoundsRequest) request);
-		else
+		} else {
 			super.showSourceFeedback(request);
+		}
 	}
 
 	/**
@@ -196,4 +256,53 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 		return super.understandsRequest(request);
 	}
 
+	/**
+	 * Returns the directions in which resizing should be allowed
+	 * 
+	 * Valid values are bit-wise combinations of:
+	 * <UL>
+	 * <LI>{@link PositionConstants#NORTH}
+	 * <LI>{@link PositionConstants#SOUTH}
+	 * <LI>{@link PositionConstants#EAST}
+	 * <LI>{@link PositionConstants#WEST}
+	 * </UL>
+	 * or {@link PositionConstants#NONE}.
+	 * 
+	 */
+	public int getResizeDirections() {
+		return resizeDirections;
+	}
+
+	/**
+	 * Determines the <em>maximum</em> size that the host can be resized to for
+	 * a given request. It is called from
+	 * {@link #adjustRequest(ChangeBoundsRequest)} during resizing. By default,
+	 * a default value is returned. The value is interpreted to be a dimension
+	 * in the host figure's coordinate system (i.e. relative to its bounds), so
+	 * it is not affected by zooming affects.
+	 * 
+	 * @param request
+	 *            the ChangeBoundsRequest
+	 * @return the minimum size
+	 * @since 3.7
+	 */
+	protected Dimension getMaximumSizeFor(ChangeBoundsRequest request) {
+		return defaultMaximumSize;
+	}
+
+	/**
+	 * Determines the <em>minimum</em> size that the specified child can be
+	 * resized to. It is called by {@link #adjustRequest(ChangeBoundsRequest)}
+	 * during resizing. By default, a default value is returned. The value is
+	 * interpreted to be a dimension in the host figure's coordinate system
+	 * (i.e. relative to its bounds), so it is not affected by zooming effects.
+	 * 
+	 * @param request
+	 *            the ChangeBoundsRequest
+	 * @return the minimum size
+	 * @since 3.7
+	 */
+	protected Dimension getMinimumSizeFor(ChangeBoundsRequest request) {
+		return defaultMinimumSize;
+	}
 }

@@ -14,7 +14,6 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
@@ -29,7 +28,9 @@ import org.eclipse.gef.requests.CreateRequest;
  * Created on :Nov 12, 2002
  * 
  * @author hudsonr
+ * @author msorens
  * @author anyssen
+ * 
  * @since 2.0
  */
 public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
@@ -39,11 +40,8 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	private XYLayout xyLayout;
 
 	/**
-	 * Overridden to prevent sizes from becoming too small, and to prevent
-	 * preferred sizes from getting lost. If the Request is a MOVE, the existing
-	 * width and height are preserved. During RESIZE, the new width and height
-	 * have a lower bound determined by
-	 * {@link #getMinimumSizeFor(GraphicalEditPart)}.
+	 * Overridden to preserve existing width and height (as well as preferred
+	 * sizes) during MOVE requests.
 	 * 
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#getConstraintFor(org.eclipse.gef.Request,
 	 *      org.eclipse.gef.GraphicalEditPart,
@@ -52,28 +50,11 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	protected Object getConstraintFor(Request request, GraphicalEditPart child,
 			Rectangle rect) {
 		if (request instanceof ChangeBoundsRequest) {
-			ChangeBoundsRequest changeBoundsRequest = (ChangeBoundsRequest) request;
-			if (changeBoundsRequest.getSizeDelta().width == 0
-					&& changeBoundsRequest.getSizeDelta().height == 0) {
-				// preserve existing size in case of move
-				Rectangle cons = getCurrentConstraintFor(child);
-				if (cons != null) // Bug 86473 allows for unintended use of
-									// this
-									// method
-					rect.setSize(cons.width, cons.height);
-			} else { // resize
-				Dimension minSize = getMinimumSizeFor(child);
-				Rectangle bounds = new PrecisionRectangle(child.getFigure()
-						.getBounds());
-				if (rect.width < minSize.width) {
-					rect.width = minSize.width;
-					if (rect.x > (bounds.right() - minSize.width))
-						rect.x = bounds.right() - minSize.width;
-				}
-				if (rect.height < minSize.height) {
-					rect.height = minSize.height;
-					if (rect.y > (bounds.bottom() - minSize.height))
-						rect.y = bounds.bottom() - minSize.height;
+			if (((ChangeBoundsRequest) request).getSizeDelta().width == 0
+					&& ((ChangeBoundsRequest) request).getSizeDelta().height == 0) {
+				if (getCurrentConstraintFor(child) != null) {
+					// Bug 86473 allows for unintended use of this method
+					rect.setSize(getCurrentConstraintFor(child).getSize());
 				}
 			}
 		}
@@ -128,20 +109,6 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	}
 
 	/**
-	 * Determines the <em>minimum</em> size that the specified child can be
-	 * resized to. Called from
-	 * {@link #getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}. By
-	 * default, a small <code>Dimension</code> is returned.
-	 * 
-	 * @param child
-	 *            the child
-	 * @return the minumum size
-	 */
-	protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
-		return new Dimension(8, 8);
-	}
-
-	/**
 	 * @return the XYLayout layout manager set on the
 	 *         {@link LayoutEditPolicy#getLayoutContainer() container}
 	 */
@@ -162,18 +129,15 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	}
 
 	/**
-	 * Places the feedback rectangle where the User indicated.
-	 * 
-	 * @see LayoutEditPolicy#showSizeOnDropFeedback(CreateRequest)
+	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#showSizeOnDropFeedback(org.eclipse.gef.requests.CreateRequest)
 	 */
 	protected void showSizeOnDropFeedback(CreateRequest request) {
 		Point p = new Point(request.getLocation().getCopy());
-		IFigure feedback = getSizeOnDropFeedback(request);
-		feedback.translateToRelative(p);
 		Dimension size = request.getSize().getCopy();
-		feedback.translateToRelative(size);
-		feedback.setBounds(new Rectangle(p, size)
+		Rectangle feedbackBounds = new Rectangle(p, size);
+		IFigure feedback = getSizeOnDropFeedback(request);
+		feedback.translateToRelative(feedbackBounds);
+		feedback.setBounds(feedbackBounds
 				.expand(getCreationFeedbackOffset(request)));
 	}
-
 }

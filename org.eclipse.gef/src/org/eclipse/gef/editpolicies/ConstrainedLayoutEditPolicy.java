@@ -51,10 +51,10 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	protected static final Dimension UNSPECIFIED_SIZE = new Dimension();
 
 	/**
-	 * The request is now made available when creating the add command. By
-	 * default, this method invokes the old
-	 * {@link ConstrainedLayoutEditPolicy#createAddCommand(EditPart, Object)
-	 * method}.
+	 * Returns the <code>Command</code> to perform an Add with the specified
+	 * child and constraint. The constraint has been converted from a draw2d
+	 * constraint to an object suitable for the model by calling
+	 * {@link #translateToModelConstraint(Object)}.
 	 * 
 	 * @param request
 	 *            the ChangeBoundsRequest
@@ -65,7 +65,6 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 *            {@link #translateToModelConstraint(Object) translated}
 	 * @return the Command to add the child
 	 * 
-	 * @see #createAddCommand(EditPart, Object)
 	 * @since 3.7
 	 */
 	protected Command createAddCommand(ChangeBoundsRequest request,
@@ -85,6 +84,15 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 *            the model constraint, after being
 	 *            {@link #translateToModelConstraint(Object) translated}
 	 * @return the Command to add the child
+	 * @deprecated Use
+	 *             {@link #createAddCommand(ChangeBoundsRequest, EditPart, Object)}
+	 *             instead.
+	 * @nooverride Overwrite
+	 *             {@link #createAddCommand(ChangeBoundsRequest, EditPart, Object)}
+	 *             instead.
+	 * @noreference Use
+	 *              {@link #createAddCommand(ChangeBoundsRequest, EditPart, Object)}
+	 *              instead.
 	 */
 	protected Command createAddCommand(EditPart child, Object constraint) {
 		return null;
@@ -117,7 +125,9 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	/**
 	 * Returns the <code>Command</code> to change the specified child's
 	 * constraint. The constraint has been converted from a draw2d constraint to
-	 * an object suitable for the model
+	 * an object suitable for the model. Clients should overwrite
+	 * {@link #createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)}
+	 * instead.
 	 * 
 	 * @param child
 	 *            the EditPart of the child being changed
@@ -127,18 +137,34 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * @return Command
 	 * @see #createChangeConstraintCommand(ChangeBoundsRequest, EditPart,
 	 *      Object)
+	 * @deprecated Use
+	 *             {@link #createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)}
+	 *             instead.
+	 * @nooverride Overwrite
+	 *             {@link #createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)}
+	 *             instead.
+	 * @noreference Use
+	 *              {@link #createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)}
+	 *              instead.
 	 */
-	protected abstract Command createChangeConstraintCommand(EditPart child,
-			Object constraint);
+	protected Command createChangeConstraintCommand(EditPart child,
+			Object constraint) {
+		return null;
+	}
 
 	/**
-	 * A {@link ResizableEditPolicy} is used by default for children. Subclasses
-	 * may override this method to supply a different EditPolicy.
+	 * A {@link ResizableEditPolicy} is used by default for children. It is
+	 * provided with the default maximum and minimum sizes as provided by
+	 * {@link #getMaximumSizeFor(GraphicalEditPart)} and
+	 * {@link #getMinimumSizeFor(GraphicalEditPart)}. Subclasses may override
+	 * this method to supply a different EditPolicy.
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
 	 */
 	protected EditPolicy createChildEditPolicy(EditPart child) {
-		return new ResizableEditPolicy();
+		return new ResizableEditPolicy(
+				getMinimumSizeFor((GraphicalEditPart) child),
+				getMaximumSizeFor((GraphicalEditPart) child));
 	}
 
 	/**
@@ -203,9 +229,9 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)} is
 	 * calculated based on the child figure's current bounds and the
 	 * ChangeBoundsRequest's move and resize deltas. It is made layout-relative
-	 * by using
-	 * {@link #translateToLayoutRelative(Translatable)} before
-	 * calling {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
+	 * by using {@link #translateFromAbsoluteToLayoutRelative(Translatable)}
+	 * before calling
+	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
 	 * 
 	 * @param request
 	 *            the ChangeBoundsRequest
@@ -220,7 +246,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 				.getBounds());
 		child.getFigure().translateToAbsolute(locationAndSize);
 		locationAndSize = request.getTransformedRectangle(locationAndSize);
-		translateToLayoutRelative(locationAndSize);
+		translateFromAbsoluteToLayoutRelative(locationAndSize);
 		return getConstraintFor(request, child, locationAndSize);
 	}
 
@@ -286,7 +312,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * <P>
 	 * The CreateRequest's location is relative to the Viewer. The location is
 	 * made layout-relative by using
-	 * {@link #translateToLayoutRelative(Translatable)} before
+	 * {@link #translateFromAbsoluteToLayoutRelative(Translatable)} before
 	 * calling {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
 	 * 
 	 * @param request
@@ -302,7 +328,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 			locationAndSize = new PrecisionRectangle(request.getLocation(),
 					request.getSize());
 		}
-		translateToLayoutRelative(locationAndSize);
+		translateFromAbsoluteToLayoutRelative(locationAndSize);
 		return getConstraintFor(request, null, locationAndSize);
 	}
 
@@ -318,6 +344,9 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * @deprecated Use
 	 *             {@link #getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}
 	 *             instead.
+	 * @nooverride This method is not intended to be re-implemented or extended
+	 *             by clients.
+	 * @noreference This method is not intended to be referenced by clients.
 	 */
 	protected Object getConstraintForClone(GraphicalEditPart part,
 			ChangeBoundsRequest request) {
@@ -328,24 +357,6 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 		// to translate the part's figure's bounds into a coordinate
 		// local to the client area of the layout container.
 		return getConstraintFor(request, part);
-	}
-
-	/**
-	 * Translates an translatable in absolute coordinates to be layout-relative,
-	 * i.e. relative to the {@link #getLayoutContainer()}'s origin, which is
-	 * obtained via {@link #getLayoutOrigin()}.
-	 * 
-	 * @param t
-	 *            the Translatable in absolute coordinates to be translated to
-	 *            layout-relative coordinates.
-	 * @since 3.7
-	 */
-	protected void translateToLayoutRelative(Translatable t) {
-		IFigure figure = getLayoutContainer();
-		figure.translateToRelative(t);
-		figure.translateFromParent(t);
-		Point negatedLayoutOrigin = getLayoutOrigin().getNegated();
-		t.performTranslate(negatedLayoutOrigin.x, negatedLayoutOrigin.y);
 	}
 
 	/**
@@ -378,6 +389,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * @param request
 	 *            the ChangeBoundsRequest
 	 * @return the Command
+	 * 
 	 * @since 3.7
 	 */
 	protected Command getChangeConstraintCommand(ChangeBoundsRequest request) {
@@ -410,20 +422,104 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	}
 
 	/**
-	 * Returns the layout's origin relative to the
-	 * {@link LayoutEditPolicy#getLayoutContainer()}. In other words, what Point
-	 * on the parent Figure does the LayoutManager use a reference when
-	 * generating the child figure's bounds from the child's constraint.
-	 * <P>
-	 * By default, it is assumed that the layout manager positions children
-	 * relative to the client area of the layout container. Thus, when
-	 * processing Viewer-relative Points or Rectangles, the clientArea's
-	 * location (top-left corner) will be subtracted from the Point/Rectangle,
-	 * resulting in an offset from the LayoutOrigin.
+	 * Overwritten to not only adjust the size in case it violates the minimum
+	 * and maximum size constraints, but to also slightly adjust the position in
+	 * this case, which results in a better user experience during size-on-drop.
 	 * 
-	 * @return Point
+	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#adjustRequest(org.eclipse.gef.requests.CreateRequest)
 	 */
-	protected Point getLayoutOrigin() {
-		return getLayoutContainer().getClientArea().getLocation();
+	protected void adjustRequest(CreateRequest request) {
+		if (request.getSize() != null) {
+			// size-on-drop, ensure maximum and minimum size are respected
+			Dimension minSize = getMinimumSizeFor(request);
+			Dimension maxSize = getMaximumSizeFor(request);
+			Rectangle originalConstraint = new Rectangle(request.getLocation(),
+					request.getSize());
+			translateFromAbsoluteToLayoutRelative(originalConstraint);
+			Rectangle validatedConstraint = originalConstraint.getCopy();
+			// ensure minimum size
+			if (validatedConstraint.width < minSize.width) {
+				validatedConstraint.width = minSize.width;
+				if (validatedConstraint.x > (originalConstraint.right() - minSize.width)) {
+					validatedConstraint.x = originalConstraint.right()
+							- minSize.width;
+				}
+			}
+			if (validatedConstraint.height < minSize.height) {
+				validatedConstraint.height = minSize.height;
+				if (validatedConstraint.y > (originalConstraint.bottom() - minSize.height)) {
+					validatedConstraint.y = originalConstraint.bottom()
+							- minSize.height;
+				}
+			}
+			// ensure maximum size
+			if (validatedConstraint.width > maxSize.width) {
+				validatedConstraint.width = maxSize.width;
+				if (validatedConstraint.x < (originalConstraint.right() - maxSize.width)) {
+					validatedConstraint.x = originalConstraint.x
+							+ (originalConstraint.right() - maxSize.width - originalConstraint.x)
+							/ 2;
+				}
+			}
+			if (validatedConstraint.height > maxSize.height) {
+				validatedConstraint.height = maxSize.height;
+				if (validatedConstraint.y < (originalConstraint.bottom() - maxSize.height)) {
+					validatedConstraint.y = originalConstraint.y
+							+ (originalConstraint.bottom() - maxSize.height - originalConstraint.y)
+							/ 2;
+				}
+			}
+			if (!validatedConstraint.equals(originalConstraint)) {
+				translateFromLayoutRelativeToAbsolute(validatedConstraint);
+				request.setLocation(validatedConstraint.getLocation());
+				request.setSize(validatedConstraint.getSize());
+			}
+		}
+	}
+
+	/**
+	 * Determines the (default) <em>maximum</em> size for a given child during
+	 * resize. Its value is passed to the 'satellite' edit policy, created via
+	 * {@link #createChildEditPolicy(EditPart)} to serve as its default maximum
+	 * size setting. By default, a large <code>Dimension</code> is returned.
+	 * 
+	 * @param child
+	 *            the child
+	 * @return the maximum size
+	 * @since 3.7
+	 */
+	protected Dimension getMaximumSizeFor(GraphicalEditPart child) {
+		return IFigure.MAX_DIMENSION;
+	}
+
+	/**
+	 * Determines the (default) <em>minimum</em> size for a given child during
+	 * resize. Its value is passed to the 'satellite' edit policy, created via
+	 * {@link #createChildEditPolicy(EditPart)} to serve as its default minimum
+	 * size setting. By default, a small <code>Dimension</code> is returned.
+	 * 
+	 * <p>
+	 * Note: Prior to 3.7 this method was located within
+	 * {@link XYLayoutEditPolicy} and was called from
+	 * {@link XYLayoutEditPolicy#getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}
+	 * in order to post-validate any calculated constraint to guarantee a
+	 * specified minimum size. However, as not the layout edit policy but the
+	 * 'satellite' edit policy, created via
+	 * {@link #createChildEditPolicy(org.eclipse.gef.EditPart)}, is responsible
+	 * of showing change bounds feedback during resize, changes within
+	 * {@link XYLayoutEditPolicy#getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}
+	 * were never reflected by the change bounds feedback. Therefore, ensuring
+	 * size constraints during resize was changed to be the responsibility of
+	 * the 'satellite' edit policy from 3.7 on. The value returned here will be
+	 * passed to the created 'satellite' edit policy to serve as its default
+	 * minimum size for all requests.
+	 * 
+	 * @param child
+	 *            the child
+	 * @return the minimum size
+	 * @since 3.7
+	 */
+	protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
+		return IFigure.MIN_DIMENSION;
 	}
 }

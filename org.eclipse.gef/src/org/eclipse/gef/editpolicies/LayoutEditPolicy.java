@@ -18,7 +18,11 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2d.geometry.Translatable;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;
@@ -35,7 +39,7 @@ import org.eclipse.gef.requests.CreateRequest;
  * <code>GraphicalEditParts</code> with the host figure's current
  * {@link org.eclipse.draw2d.LayoutManager}.
  * <P>
- * LayoutEditPolicies are responsible for moving, resizing, reparenting, and
+ * LayoutEditPolicies are responsible for moving, resizing, re-parenting, and
  * creating children. The should provide <code>Commands</code> for all of these
  * operations. Feedback on the container can also be useful for some layouts
  * like grids.
@@ -45,6 +49,10 @@ import org.eclipse.gef.requests.CreateRequest;
  * {@link EditPolicy#PRIMARY_DRAG_ROLE}. Simple layouts will use either
  * {@link ResizableEditPolicy} or {@link NonResizableEditPolicy}, depending on
  * how the LayoutManager works, and/or attributes of the child EditPart.
+ * 
+ * @author rhudson
+ * @author msorens
+ * @author anyssen
  */
 public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 
@@ -72,6 +80,34 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 *         {@link EditPolicy#PRIMARY_DRAG_ROLE}
 	 */
 	protected abstract EditPolicy createChildEditPolicy(EditPart child);
+
+	/**
+	 * Determines the <em>maximum</em> size for CreateRequest's size on drop. It
+	 * is called from {@link #adjustRequest(CreateRequest)} during creation. By
+	 * default, a large <code>Dimension</code> is returned.
+	 * 
+	 * @param request
+	 *            the request.
+	 * @return the minimum size
+	 * @since 3.7
+	 */
+	protected Dimension getMaximumSizeFor(CreateRequest request) {
+		return IFigure.MAX_DIMENSION;
+	}
+
+	/**
+	 * Determines the <em>minimum</em> size for CreateRequest's size on drop. It
+	 * is called from {@link #adjustRequest(CreateRequest)} during creation. By
+	 * default, a small <code>Dimension</code> is returned.
+	 * 
+	 * @param request
+	 *            the request.
+	 * @return the minimum size
+	 * @since 3.7
+	 */
+	protected Dimension getMinimumSizeFor(CreateRequest request) {
+		return IFigure.MIN_DIMENSION;
+	}
 
 	/**
 	 * creates the EditPartListener for observing when children are added to the
@@ -218,8 +254,11 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 		if (REQ_CLONE.equals(request.getType()))
 			return getCloneCommand((ChangeBoundsRequest) request);
 
-		if (REQ_CREATE.equals(request.getType()))
+		// ensure minimum and maximum size are respected.
+		if (REQ_CREATE.equals(request.getType())) {
+			adjustRequest((CreateRequest) request);
 			return getCreateCommand((CreateRequest) request);
+		}
 
 		return null;
 	}
@@ -401,8 +440,9 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 
 		if (REQ_CREATE.equals(request.getType())) {
 			CreateRequest createReq = (CreateRequest) request;
-			if (createReq.getSize() != null)
+			if (createReq.getSize() != null) {
 				showSizeOnDropFeedback(createReq);
+			}
 		}
 	}
 
@@ -423,6 +463,83 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 		List children = getHost().getChildren();
 		for (int i = 0; i < children.size(); i++)
 			undecorateChild((EditPart) children.get(i));
+	}
+
+	/**
+	 * Ensures maximum and mimimum size (as returned by
+	 * {@link #getMaximumSizeFor(CreateRequest)} and
+	 * {@link #getMinimumSizeFor(CreateRequest)}) are respected.
+	 * 
+	 * @since 3.7
+	 */
+	protected void adjustRequest(CreateRequest request) {
+		// ensure create request respects minimum and maximum size constraints
+		if (request.getSize() != null) {
+			PrecisionRectangle constraint = new PrecisionRectangle(
+					request.getLocation(), request.getSize());
+			translateFromAbsoluteToLayoutRelative(constraint);
+			constraint.setSize(Dimension.max(constraint.getSize(),
+					getMinimumSizeFor(request)));
+			constraint.setSize(Dimension.min(constraint.getSize(),
+					getMaximumSizeFor(request)));
+			translateFromLayoutRelativeToAbsolute(constraint);
+			request.setSize(constraint.getSize());
+		}
+	}
+
+	/**
+	 * Returns the layout's origin relative to the
+	 * {@link LayoutEditPolicy#getLayoutContainer()}. In other words, what Point
+	 * on the parent Figure does the LayoutManager use a reference when
+	 * generating the child figure's bounds from the child's constraint.
+	 * <P>
+	 * By default, it is assumed that the layout manager positions children
+	 * relative to the client area of the layout container. Thus, when
+	 * processing Viewer-relative Points or Rectangles, the clientArea's
+	 * location (top-left corner) will be subtracted from the Point/Rectangle,
+	 * resulting in an offset from the LayoutOrigin.
+	 * 
+	 * @return Point
+	 * @since 3.7 Moved up from ConstrainedLayoutEditPolicy
+	 */
+	protected Point getLayoutOrigin() {
+		return getLayoutContainer().getClientArea().getLocation();
+	}
+
+	/**
+	 * Translates a {@link Translatable} in absolute coordinates to be
+	 * layout-relative, i.e. relative to the {@link #getLayoutContainer()}'s
+	 * origin, which is obtained via {@link #getLayoutOrigin()}.
+	 * 
+	 * @param t
+	 *            the Translatable in absolute coordinates to be translated to
+	 *            layout-relative coordinates.
+	 * @since 3.7
+	 */
+	protected void translateFromAbsoluteToLayoutRelative(Translatable t) {
+		IFigure figure = getLayoutContainer();
+		figure.translateToRelative(t);
+		figure.translateFromParent(t);
+		Point negatedLayoutOrigin = getLayoutOrigin().getNegated();
+		t.performTranslate(negatedLayoutOrigin.x, negatedLayoutOrigin.y);
+	}
+
+	/**
+	 * Translates a {@link Translatable} in layout-relative coordinates, i.e.
+	 * relative to {@link #getLayoutContainer()}'s origin which is obtained via
+	 * {@link #getLayoutOrigin()}, into absolute coordinates.
+	 * 
+	 * @param t
+	 *            the Translatable in layout-relative coordinates to be
+	 *            translated into absolute coordinates.
+	 * @since 3.7
+	 */
+	protected void translateFromLayoutRelativeToAbsolute(Translatable t) {
+		IFigure figure = getLayoutContainer();
+		Point layoutOrigin = getLayoutOrigin();
+		t.performTranslate(layoutOrigin.x, layoutOrigin.y);
+		figure.translateToParent(t);
+		figure.translateToAbsolute(t);
 	}
 
 }
