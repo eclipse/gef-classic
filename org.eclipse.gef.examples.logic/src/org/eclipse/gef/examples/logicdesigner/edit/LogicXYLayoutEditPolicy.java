@@ -17,6 +17,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.XYLayout;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -28,23 +29,34 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.SnapToGuides;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.editpolicies.ResizableEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.rulers.RulerProvider;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef.examples.logicdesigner.figures.AndGateFigure;
 import org.eclipse.gef.examples.logicdesigner.figures.CircuitFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.GroundFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LEDFigure;
 import org.eclipse.gef.examples.logicdesigner.figures.LabelFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LiveOutputFigure;
 import org.eclipse.gef.examples.logicdesigner.figures.LogicColorConstants;
 import org.eclipse.gef.examples.logicdesigner.figures.LogicFlowFeedbackFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.OrGateFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.XOrGateFigure;
+import org.eclipse.gef.examples.logicdesigner.model.AndGate;
 import org.eclipse.gef.examples.logicdesigner.model.Circuit;
+import org.eclipse.gef.examples.logicdesigner.model.GroundOutput;
 import org.eclipse.gef.examples.logicdesigner.model.LED;
+import org.eclipse.gef.examples.logicdesigner.model.LiveOutput;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
 import org.eclipse.gef.examples.logicdesigner.model.LogicGuide;
 import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
+import org.eclipse.gef.examples.logicdesigner.model.OrGate;
+import org.eclipse.gef.examples.logicdesigner.model.SimpleOutput;
+import org.eclipse.gef.examples.logicdesigner.model.XORGate;
 import org.eclipse.gef.examples.logicdesigner.model.commands.AddCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.ChangeGuideCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.CloneCommand;
@@ -191,18 +203,74 @@ public class LogicXYLayoutEditPolicy extends
 	}
 
 	protected EditPolicy createChildEditPolicy(EditPart child) {
-		if (child instanceof LEDEditPart || child instanceof OutputEditPart) {
-			ResizableEditPolicy policy = new LogicResizableEditPolicy();
-			policy.setResizeDirections(0);
-			return policy;
-		} else if (child instanceof LogicLabelEditPart) {
-			ResizableEditPolicy policy = new LogicResizableEditPolicy();
-			policy.setResizeDirections(PositionConstants.EAST
-					| PositionConstants.WEST);
-			return policy;
-		}
+		LogicResizableEditPolicy editPolicy = new LogicResizableEditPolicy();
+		editPolicy.setResizeDirections(getResizeDirections(child));
+		return editPolicy;
+	}
 
-		return new LogicResizableEditPolicy();
+	protected int getResizeDirections(EditPart child) {
+		return getResizeDirections(child.getModel().getClass());
+	}
+
+	protected int getResizeDirections(CreateRequest request) {
+		return getResizeDirections(request.getNewObject().getClass());
+	}
+
+	private int getResizeDirections(Class modelClass) {
+		if (LED.class.equals(modelClass)
+				|| SimpleOutput.class.isAssignableFrom(modelClass)) {
+			return PositionConstants.NONE;
+		} else if (LogicLabel.class.equals(modelClass)) {
+			return PositionConstants.EAST | PositionConstants.WEST;
+		} else {
+			return PositionConstants.NSEW;
+		}
+	}
+
+	protected Dimension getMaximumSizeFor(CreateRequest request) {
+		return getMaximumSizeFor(request.getNewObject().getClass());
+	}
+
+	protected Dimension getMinimumSizeFor(CreateRequest request) {
+		return getMimimumSizeFor(request.getNewObject().getClass());
+	}
+
+	protected static Dimension getMaximumSizeFor(Class modelClass) {
+		if (LED.class.equals(modelClass)) {
+			return LEDFigure.SIZE;
+		} else if (AndGate.class.equals(modelClass)) {
+			return AndGateFigure.SIZE;
+		} else if (OrGate.class.equals(modelClass)) {
+			return OrGateFigure.SIZE;
+		} else if (XORGate.class.equals(modelClass)) {
+			return XOrGateFigure.SIZE;
+		} else if (GroundOutput.class.isAssignableFrom(modelClass)) {
+			return GroundFigure.SIZE;
+		} else if (LiveOutput.class.equals(modelClass)) {
+			return LiveOutputFigure.SIZE;
+		}
+		return IFigure.MAX_DIMENSION;
+	}
+
+	protected static Dimension getMimimumSizeFor(Class modelClass) {
+		if (LogicLabel.class.equals(modelClass)) {
+			return new Dimension(IFigure.MIN_DIMENSION.width, 30);
+		} else if (Circuit.class.equals(modelClass)) {
+			return new Dimension(25, 20);
+		} else if (LED.class.equals(modelClass)) {
+			return LEDFigure.SIZE;
+		} else if (AndGate.class.equals(modelClass)) {
+			return AndGateFigure.SIZE;
+		} else if (OrGate.class.equals(modelClass)) {
+			return OrGateFigure.SIZE;
+		} else if (XORGate.class.equals(modelClass)) {
+			return XOrGateFigure.SIZE;
+		} else if (GroundOutput.class.isAssignableFrom(modelClass)) {
+			return GroundFigure.SIZE;
+		} else if (LiveOutput.class.equals(modelClass)) {
+			return LiveOutputFigure.SIZE;
+		}
+		return IFigure.MIN_DIMENSION;
 	}
 
 	/*

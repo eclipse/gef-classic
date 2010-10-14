@@ -15,7 +15,6 @@ import org.eclipse.swt.graphics.Font;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
@@ -30,7 +29,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LED;
  * @author danlee
  */
 public class LEDFigure extends NodeFigure implements HandleBounds {
-	protected static final Dimension SIZE = new Dimension(61, 47);
+	public static final Dimension SIZE = new Dimension(61, 47);
 
 	/**
 	 * Color of the shadow around the LEDFigure's display
@@ -71,20 +70,6 @@ public class LEDFigure extends NodeFigure implements HandleBounds {
 	protected static final int Y2 = 44;
 
 	protected String value;
-
-	/**
-	 * @see org.eclipse.draw2d.Figure#setBounds(Rectangle)
-	 */
-	public void setBounds(Rectangle rect) {
-		super.setBounds(rect);
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.Figure#setConstraint(IFigure, Object)
-	 */
-	public void setConstraint(IFigure child, Object constraint) {
-		super.setConstraint(child, constraint);
-	}
 
 	/**
 	 * Creates a new LEDFigure

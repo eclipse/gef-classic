@@ -24,19 +24,20 @@ public class LED extends LogicSubpart {
 
 	static final long serialVersionUID = 1;
 
+	private static final Dimension DEFAULT_SIZE = new Dimension(61, 47);
+
 	private static Image LED_ICON = createImage(LED.class,
 			"icons/ledicon16.gif"); //$NON-NLS-1$
 	private static int count;
 	public static String P_VALUE = "value"; //$NON-NLS-1$
 	protected static IPropertyDescriptor[] newDescriptors = null;
-	protected static final Dimension defaultSize = new Dimension(61, 47);
 
 	// Inputs
 	public static String TERMINAL_1_IN = "A", //$NON-NLS-1$
 			TERMINAL_2_IN = "B", //$NON-NLS-1$
 			TERMINAL_3_IN = "C", //$NON-NLS-1$
 			TERMINAL_4_IN = "D"; //$NON-NLS-1$
-			// Outputs
+	// Outputs
 	public static String TERMINAL_1_OUT = "1", //$NON-NLS-1$
 			TERMINAL_2_OUT = "2", //$NON-NLS-1$
 			TERMINAL_3_OUT = "3", //$NON-NLS-1$
@@ -58,8 +59,8 @@ public class LED extends LogicSubpart {
 	}
 
 	public LED() {
-		size.width = defaultSize.width;
-		size.height = defaultSize.height;
+		size.width = DEFAULT_SIZE.width;
+		size.height = DEFAULT_SIZE.height;
 		location.x = 20;
 		location.y = 20;
 	}
@@ -120,7 +121,7 @@ public class LED extends LogicSubpart {
 	}
 
 	public void setSize(Dimension d) {
-		super.setSize(defaultSize);
+		super.setSize(DEFAULT_SIZE);
 	}
 
 	public void setValue(int v) {

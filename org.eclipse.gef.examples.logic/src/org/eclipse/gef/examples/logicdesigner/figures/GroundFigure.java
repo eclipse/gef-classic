@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class GroundFigure extends OutputFigure {
 
-	private static final Dimension SIZE = new Dimension(15, 15);
+	public static final Dimension SIZE = new Dimension(15, 15);
 
 	/**
 	 * Constructor for GroundFigure.

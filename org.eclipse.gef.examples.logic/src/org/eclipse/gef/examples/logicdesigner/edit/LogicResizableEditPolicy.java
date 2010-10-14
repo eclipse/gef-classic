@@ -15,11 +15,13 @@ import java.util.Iterator;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
+import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 import org.eclipse.gef.examples.logicdesigner.figures.AndGateFeedbackFigure;
 import org.eclipse.gef.examples.logicdesigner.figures.CircuitFeedbackFigure;
@@ -130,6 +132,16 @@ public class LogicResizableEditPolicy extends ResizableEditPolicy {
 	 */
 	protected Rectangle getInitialFeedbackBounds() {
 		return getHostFigure().getBounds();
+	}
+
+	protected Dimension getMaximumSizeFor(ChangeBoundsRequest request) {
+		return LogicXYLayoutEditPolicy.getMaximumSizeFor(getHost().getModel()
+				.getClass());
+	}
+
+	protected Dimension getMinimumSizeFor(ChangeBoundsRequest request) {
+		return LogicXYLayoutEditPolicy.getMimimumSizeFor(getHost().getModel()
+				.getClass());
 	}
 
 }

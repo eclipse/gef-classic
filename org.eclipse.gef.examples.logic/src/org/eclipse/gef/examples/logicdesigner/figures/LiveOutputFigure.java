@@ -19,7 +19,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author danlee
  */
 public class LiveOutputFigure extends OutputFigure {
-	private static final Dimension SIZE = new Dimension(15, 15);
+	public static final Dimension SIZE = new Dimension(15, 15);
 
 	/**
 	 * Constructor for LiveOutputFigure.

@@ -19,6 +19,9 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class LogicLabel extends LogicSubpart {
+
+	private static final int DEFAULT_WIDTH = 50;
+
 	static final long serialVersionUID = 1;
 
 	private String text = LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel;
@@ -30,7 +33,7 @@ public class LogicLabel extends LogicSubpart {
 
 	public LogicLabel() {
 		super();
-		size.width = 50;
+		size.width = DEFAULT_WIDTH;
 	}
 
 	public String getLabelContents() {

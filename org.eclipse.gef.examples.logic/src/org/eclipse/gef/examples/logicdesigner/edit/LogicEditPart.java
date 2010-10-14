@@ -33,7 +33,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
 
 /**
- * Porvides support for
+ * Provides support for
  */
 abstract public class LogicEditPart extends
 		org.eclipse.gef.editparts.AbstractGraphicalEditPart implements

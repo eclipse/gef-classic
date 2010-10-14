@@ -19,7 +19,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class AndGateFigure extends GateFigure {
 
-	private static final Dimension SIZE = new Dimension(15, 17);
+	public static final Dimension SIZE = new Dimension(15, 17);
 
 	/**
 	 * Constructor for AndGateFigure.
