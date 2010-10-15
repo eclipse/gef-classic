@@ -1409,6 +1409,7 @@ public class SWTGraphics extends Graphics {
 			dest.miterLimit = src.miterLimit;
 			dest.style = src.style;
 			dest.width = src.width;
+			dest.dashOffset = src.dashOffset;
 
 			if (src.dash == null) {
 				dest.dash = null;
