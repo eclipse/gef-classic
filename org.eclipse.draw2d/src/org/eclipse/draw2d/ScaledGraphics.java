@@ -302,11 +302,11 @@ public class ScaledGraphics extends Graphics {
 	/** @see Graphics#drawImage(Image, int, int) */
 	public void drawImage(Image srcImage, int x, int y) {
 		org.eclipse.swt.graphics.Rectangle size = srcImage.getBounds();
-		graphics.drawImage(srcImage, 0, 0, size.width, size.height, (int) (Math
-				.floor((x * zoom + fractionalX))), (int) (Math
-				.floor((y * zoom + fractionalY))), (int) (Math
-				.floor((size.width * zoom + fractionalX))), (int) (Math
-				.floor((size.height * zoom + fractionalY))));
+		graphics.drawImage(srcImage, 0, 0, size.width, size.height,
+				(int) (Math.floor((x * zoom + fractionalX))),
+				(int) (Math.floor((y * zoom + fractionalY))),
+				(int) (Math.floor((size.width * zoom + fractionalX))),
+				(int) (Math.floor((size.height * zoom + fractionalY))));
 	}
 
 	/** @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int) */
@@ -323,9 +323,9 @@ public class ScaledGraphics extends Graphics {
 	/** @see Graphics#drawLine(int, int, int, int) */
 	public void drawLine(int x1, int y1, int x2, int y2) {
 		graphics.drawLine((int) (Math.floor((x1 * zoom + fractionalX))),
-				(int) (Math.floor((y1 * zoom + fractionalY))), (int) (Math
-						.floor((x2 * zoom + fractionalX))), (int) (Math
-						.floor((y2 * zoom + fractionalY))));
+				(int) (Math.floor((y1 * zoom + fractionalY))),
+				(int) (Math.floor((x2 * zoom + fractionalX))),
+				(int) (Math.floor((y2 * zoom + fractionalY))));
 	}
 
 	/** @see Graphics#drawOval(int, int, int, int) */
@@ -345,8 +345,8 @@ public class ScaledGraphics extends Graphics {
 
 	/** @see Graphics#drawPoint(int, int) */
 	public void drawPoint(int x, int y) {
-		graphics.drawPoint((int) Math.floor(x * zoom + fractionalX), (int) Math
-				.floor(y * zoom + fractionalY));
+		graphics.drawPoint((int) Math.floor(x * zoom + fractionalX),
+				(int) Math.floor(y * zoom + fractionalY));
 	}
 
 	/**
@@ -416,10 +416,10 @@ public class ScaledGraphics extends Graphics {
 			return;
 		}
 		try {
-			graphics.drawTextLayout(scaled, (int) Math.floor(x * zoom
-					+ fractionalX), (int) Math.floor(y * zoom + fractionalY),
-					selectionStart, selectionEnd, selectionBackground,
-					selectionForeground);
+			graphics.drawTextLayout(scaled,
+					(int) Math.floor(x * zoom + fractionalX),
+					(int) Math.floor(y * zoom + fractionalY), selectionStart,
+					selectionEnd, selectionBackground, selectionForeground);
 		} finally {
 			scaled.dispose();
 		}
@@ -867,8 +867,7 @@ public class ScaledGraphics extends Graphics {
 		double dyFloat = dy * zoom + fractionalY;
 		fractionalX = dxFloat - Math.floor(dxFloat);
 		fractionalY = dyFloat - Math.floor(dyFloat);
-		graphics
-				.translate((int) Math.floor(dxFloat), (int) Math.floor(dyFloat));
+		graphics.translate((int) Math.floor(dxFloat), (int) Math.floor(dyFloat));
 	}
 
 	/** @see Graphics#translate(float, float) */
@@ -877,19 +876,16 @@ public class ScaledGraphics extends Graphics {
 		double dyFloat = dy * zoom + fractionalY;
 		fractionalX = dxFloat - Math.floor(dxFloat);
 		fractionalY = dyFloat - Math.floor(dyFloat);
-		graphics
-				.translate((int) Math.floor(dxFloat), (int) Math.floor(dyFloat));
+		graphics.translate((int) Math.floor(dxFloat), (int) Math.floor(dyFloat));
 	}
 
 	private Rectangle zoomClipRect(Rectangle r) {
 		tempRECT.x = (int) (Math.floor(r.x * zoom + fractionalX));
 		tempRECT.y = (int) (Math.floor(r.y * zoom + fractionalY));
 		tempRECT.width = (int) (Math
-				.ceil(((r.x + r.width) * zoom + fractionalX)))
-				- tempRECT.x;
+				.ceil(((r.x + r.width) * zoom + fractionalX))) - tempRECT.x;
 		tempRECT.height = (int) (Math
-				.ceil(((r.y + r.height) * zoom + fractionalY)))
-				- tempRECT.y;
+				.ceil(((r.y + r.height) * zoom + fractionalY))) - tempRECT.y;
 		return tempRECT;
 	}
 
