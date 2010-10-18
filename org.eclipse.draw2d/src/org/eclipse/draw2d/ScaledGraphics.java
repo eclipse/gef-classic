@@ -915,7 +915,7 @@ public class ScaledGraphics extends Graphics {
 	}
 
 	float zoomLineWidth(float w) {
-		return w;
+		return (float) (w * zoom);
 	}
 
 	private int[] zoomPointList(int[] points) {
