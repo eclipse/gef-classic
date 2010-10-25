@@ -111,6 +111,7 @@ public class NonResizableHandleKit {
 	 *            the handles' GraphicalEditPart
 	 * @param handles
 	 *            the List to add the handles to
+	 * @deprecated
 	 */
 	public static void addHandles(GraphicalEditPart part, List handles) {
 		addMoveHandle(part, handles);
@@ -128,6 +129,7 @@ public class NonResizableHandleKit {
 	 *            the handles' DragTracker
 	 * @param cursor
 	 *            the handles' Cursor
+	 * @deprecated
 	 */
 	public static void addHandles(GraphicalEditPart part, List handles,
 			DragTracker tracker, Cursor cursor) {

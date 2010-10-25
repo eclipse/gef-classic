@@ -73,9 +73,24 @@ public class ResizableHandleKit {
 	 *            the owner GraphicalEditPart of the handles
 	 * @param handles
 	 *            the List to add the handles to
+	 * @deprecated
 	 */
 	public static void addHandles(GraphicalEditPart part, List handles) {
 		addMoveHandle(part, handles);
+		addCornerAndSideHandles(part, handles);
+	}
+
+	/**
+	 * Fills the given List with handles at each corner and side of a figure.
+	 * 
+	 * @param part
+	 *            the handles' GraphicalEditPart
+	 * @param handles
+	 *            the List to add the four corner handles to
+	 * @since 3.7
+	 */
+	public static void addCornerAndSideHandles(GraphicalEditPart part,
+			List handles) {
 		handles.add(createHandle(part, PositionConstants.EAST));
 		handles.add(createHandle(part, PositionConstants.SOUTH_EAST));
 		handles.add(createHandle(part, PositionConstants.SOUTH));
@@ -87,10 +102,39 @@ public class ResizableHandleKit {
 	}
 
 	/**
+	 * Fills the given List with handles at each corner and side of a figure.
+	 * 
+	 * @param part
+	 *            the handles' GraphicalEditPart
+	 * @param handles
+	 *            the List to add the four corner handles to
+	 * @param tracker
+	 *            the handles' DragTracker
+	 * @param cursor
+	 *            the handles' Cursor
+	 * @since 3.7
+	 */
+	public static void addCornerAndSideHandles(GraphicalEditPart part,
+			List handles, DragTracker tracker, Cursor cursor) {
+		handles.add(createHandle(part, PositionConstants.EAST, tracker, cursor));
+		handles.add(createHandle(part, PositionConstants.SOUTH_EAST, tracker,
+				cursor));
+		handles.add(createHandle(part, PositionConstants.SOUTH, tracker, cursor));
+		handles.add(createHandle(part, PositionConstants.SOUTH_WEST, tracker,
+				cursor));
+		handles.add(createHandle(part, PositionConstants.WEST, tracker, cursor));
+		handles.add(createHandle(part, PositionConstants.NORTH_WEST, tracker,
+				cursor));
+		handles.add(createHandle(part, PositionConstants.NORTH, tracker, cursor));
+		handles.add(createHandle(part, PositionConstants.NORTH_EAST, tracker,
+				cursor));
+	}
+
+	/**
 	 * Fills the given List with move borders at each side of a figure.
 	 * 
 	 * @param f
-	 *            the GraphicalEditPart thatis the owner of the handles
+	 *            the GraphicalEditPart that is the owner of the handles
 	 * @param handles
 	 *            the List to add the handles to
 	 */

@@ -21,9 +21,9 @@ import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.handles.NonResizableHandleKit;
 import org.eclipse.gef.handles.ResizableHandleKit;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.tools.ResizeTracker;
 
 /**
  * Provides support for selecting, positioning, and resizing an edit part.
@@ -78,66 +78,48 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
 	protected List createSelectionHandles() {
+		if (resizeDirections == PositionConstants.NONE) {
+			// non resizable, so delegate to super implementation
+			return super.createSelectionHandles();
+		}
+
+		// resizable in at least one direction
 		List list = new ArrayList();
-
-		if (resizeDirections == PositionConstants.NONE)
-			NonResizableHandleKit.addHandles((GraphicalEditPart) getHost(),
-					list);
-		else if (resizeDirections != PositionConstants.NSEW) {
-			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(),
-					list);
-			if ((resizeDirections & PositionConstants.EAST) != 0)
-				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.EAST);
-			else
-				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.EAST);
-			if ((resizeDirections & PositionConstants.SOUTH_EAST) == PositionConstants.SOUTH_EAST)
-				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.SOUTH_EAST);
-			else
-				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.SOUTH_EAST);
-			if ((resizeDirections & PositionConstants.SOUTH) != 0)
-				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.SOUTH);
-			else
-				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.SOUTH);
-			if ((resizeDirections & PositionConstants.SOUTH_WEST) == PositionConstants.SOUTH_WEST)
-				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.SOUTH_WEST);
-			else
-				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.SOUTH_WEST);
-			if ((resizeDirections & PositionConstants.WEST) != 0)
-				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.WEST);
-			else
-				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.WEST);
-			if ((resizeDirections & PositionConstants.NORTH_WEST) == PositionConstants.NORTH_WEST)
-				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.NORTH_WEST);
-			else
-				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.NORTH_WEST);
-			if ((resizeDirections & PositionConstants.NORTH) != 0)
-				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.NORTH);
-			else
-				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.NORTH);
-			if ((resizeDirections & PositionConstants.NORTH_EAST) == PositionConstants.NORTH_EAST)
-				ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.NORTH_EAST);
-			else
-				NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-						list, PositionConstants.NORTH_EAST);
-		} else
-			ResizableHandleKit.addHandles((GraphicalEditPart) getHost(), list);
-
+		createMoveHandle(list);
+		createResizeHandle(list, PositionConstants.NORTH);
+		createResizeHandle(list, PositionConstants.EAST);
+		createResizeHandle(list, PositionConstants.SOUTH);
+		createResizeHandle(list, PositionConstants.WEST);
+		createResizeHandle(list, PositionConstants.SOUTH_EAST);
+		createResizeHandle(list, PositionConstants.SOUTH_WEST);
+		createResizeHandle(list, PositionConstants.NORTH_WEST);
+		createResizeHandle(list, PositionConstants.NORTH_EAST);
 		return list;
+	}
+
+	/**
+	 * Creates a 'resize' handle, which uses a {@link ResizeTracker} in case
+	 * resizing is allowed in the respective direction, otherwise returns a drag
+	 * handle by delegating to
+	 * {@link NonResizableEditPolicy#createDragHandle(List, int)}.
+	 * 
+	 * @param handles
+	 *            The list of handles to add the resize handle to
+	 * @param direction
+	 *            A position constant indicating the direction to create the
+	 *            handle for
+	 * @since 3.7
+	 */
+	protected void createResizeHandle(List handles, int direction) {
+		if ((resizeDirections & direction) == direction) {
+			// display 'resize' handle to allow resizing (resize tracker)
+			ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
+					handles, direction);
+		} else {
+			// display 'resize' handle to allow dragging or indicate selection
+			// only
+			createDragHandle(handles, direction);
+		}
 	}
 
 	/**

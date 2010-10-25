@@ -19,6 +19,7 @@ import org.eclipse.draw2d.FocusBorder;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Locator;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -32,8 +33,10 @@ import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.AbstractHandle;
 import org.eclipse.gef.handles.HandleBounds;
 import org.eclipse.gef.handles.NonResizableHandleKit;
+import org.eclipse.gef.handles.ResizableHandleKit;
 import org.eclipse.gef.requests.AlignmentRequest;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.tools.DragEditPartsTracker;
 import org.eclipse.gef.tools.SelectEditPartTracker;
 
 /**
@@ -76,14 +79,60 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	protected List createSelectionHandles() {
 		List list = new ArrayList();
-		if (isDragAllowed())
-			NonResizableHandleKit.addHandles((GraphicalEditPart) getHost(),
-					list);
-		else
-			NonResizableHandleKit.addHandles((GraphicalEditPart) getHost(),
-					list, new SelectEditPartTracker(getHost()),
-					SharedCursors.ARROW);
+		createMoveHandle(list);
+		createDragHandle(list, PositionConstants.NORTH_EAST);
+		createDragHandle(list, PositionConstants.NORTH_WEST);
+		createDragHandle(list, PositionConstants.SOUTH_EAST);
+		createDragHandle(list, PositionConstants.SOUTH_WEST);
 		return list;
+	}
+
+	/**
+	 * Creates a 'resize'/'drag' handle, which uses a
+	 * {@link DragEditPartsTracker} in case {@link #isDragAllowed()} returns
+	 * true, and a {@link SelectEditPartTracker} otherwise.
+	 * 
+	 * @param handles
+	 *            The list of handles to add the resize handle to
+	 * @param direction
+	 *            A position constant indicating the direction to create the
+	 *            handle for
+	 * @since 3.7
+	 */
+	protected void createDragHandle(List handles, int direction) {
+		if (isDragAllowed()) {
+			// display 'resize' handles to allow dragging (drag tracker)
+			NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
+					handles, direction);
+		} else {
+			// display 'resize' handles to indicate selection only (selection
+			// tracker)
+			NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
+					handles, direction, new SelectEditPartTracker(getHost()),
+					SharedCursors.ARROW);
+		}
+	}
+
+	/**
+	 * Creates a 'move' handle, which uses a {@link DragEditPartsTracker} in
+	 * case {@link #isDragAllowed()} returns true, and a
+	 * {@link SelectEditPartTracker} otherwise.
+	 * 
+	 * @param handles
+	 *            The list of handles to add the move handle to.
+	 * @since 3.7
+	 */
+	protected void createMoveHandle(List handles) {
+		if (isDragAllowed()) {
+			// display 'move' handle to allow dragging
+			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(),
+					handles);
+		} else {
+			// display 'move' handle only to indicate selection
+			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(),
+					handles, new SelectEditPartTracker(getHost()),
+					SharedCursors.ARROW);
+		}
 	}
 
 	/**
