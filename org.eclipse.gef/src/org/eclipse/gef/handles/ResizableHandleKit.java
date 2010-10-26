@@ -161,9 +161,7 @@ public class ResizableHandleKit {
 	}
 
 	static Handle createHandle(GraphicalEditPart owner, int direction) {
-		ResizeHandle handle = new ResizeHandle(owner, direction);
-		// handle.setDragTracker(new ResizeTracker(direction));
-		return handle;
+		return new ResizeHandle(owner, direction);
 	}
 
 	static Handle createHandle(GraphicalEditPart owner, int direction,
