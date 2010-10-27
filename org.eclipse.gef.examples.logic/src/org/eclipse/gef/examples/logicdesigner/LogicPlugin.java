@@ -215,16 +215,46 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 
 		PaletteStack marqueeStack = new PaletteStack(
 				LogicMessages.Marquee_Stack, "", null); //$NON-NLS-1$
+
+		// NODES CONTAINED (default)
 		marqueeStack.add(new MarqueeToolEntry());
+
+		// NODES TOUCHED
 		MarqueeToolEntry marquee = new MarqueeToolEntry();
+		marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
+				new Integer(MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED));
+		marqueeStack.add(marquee);
+
+		// NODES CONTAINED AND RELATED CONNECTIONS
+
+		marquee = new MarqueeToolEntry();
+		marquee.setToolProperty(
+				MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
+				new Integer(
+						MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS));
+		marqueeStack.add(marquee);
+
+		// NODES TOUCHED AND RELATED CONNECTIONS
+		marquee = new MarqueeToolEntry();
+		marquee.setToolProperty(
+				MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
+				new Integer(
+						MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS));
+		marqueeStack.add(marquee);
+
+		// CONNECTIONS CONTAINED
+		marquee = new MarqueeToolEntry();
+		marquee.setToolProperty(
+				MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
+				new Integer(MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED));
+		marqueeStack.add(marquee);
+
+		// CONNECTIONS TOUCHED
+		marquee = new MarqueeToolEntry();
 		marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
 				new Integer(MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED));
 		marqueeStack.add(marquee);
-		marquee = new MarqueeToolEntry();
-		marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
-				new Integer(MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED
-						| MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED));
-		marqueeStack.add(marquee);
+
 		marqueeStack
 				.setUserModificationPermission(PaletteEntry.PERMISSION_NO_MODIFICATION);
 		entries.add(marqueeStack);
