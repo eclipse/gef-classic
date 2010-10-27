@@ -190,7 +190,7 @@ public interface EditPart extends IAdaptable {
 	 * EditPart. In addition, EditPolicies probably rely on this method to build
 	 * Commands that operate on the model.
 	 * 
-	 * @return the primary model object
+	 * @return <code>null</code> or the primary model object
 	 */
 	Object getModel();
 
@@ -198,16 +198,16 @@ public interface EditPart extends IAdaptable {
 	 * Returns the parent <code>EditPart</code>. This method should only be
 	 * called internally or by helpers such as EditPolicies.
 	 * 
-	 * @return the parent
+	 * @return <code>null</code> or the parent {@link EditPart}
 	 */
 	EditPart getParent();
 
 	/**
 	 * Returns the {@link RootEditPart}. This method should only be called
-	 * internally or by helpers such as edit policies. The Root can be used to
-	 * get the Viewer.
+	 * internally or by helpers such as edit policies. The root can be used to
+	 * get the viewer.
 	 * 
-	 * @return the <code>RootEditPart</code>
+	 * @return <code>null</code> or the {@link RootEditPart}
 	 */
 	RootEditPart getRoot();
 
@@ -242,7 +242,7 @@ public interface EditPart extends IAdaptable {
 	 * Convenience method for returning the <code>EditPartViewer</code> for this
 	 * part.
 	 * 
-	 * @return the EditPartViewer
+	 * @return the {@link EditPartViewer} or <code>null</code>
 	 */
 	EditPartViewer getViewer();
 

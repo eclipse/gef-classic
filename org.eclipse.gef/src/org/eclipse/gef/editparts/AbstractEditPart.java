@@ -584,6 +584,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * @see org.eclipse.gef.EditPart#getRoot()
 	 */
 	public RootEditPart getRoot() {
+		if (getParent() == null) {
+			return null;
+		}
 		return getParent().getRoot();
 	}
 
@@ -636,7 +639,11 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * @see org.eclipse.gef.EditPart#getViewer()
 	 */
 	public EditPartViewer getViewer() {
-		return getRoot().getViewer();
+		RootEditPart root = getRoot();
+		if (root == null) {
+			return null;
+		}
+		return root.getViewer();
 	}
 
 	/**
