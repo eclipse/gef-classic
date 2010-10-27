@@ -187,7 +187,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 			for (Iterator itr = node.getSourceConnections().iterator(); itr
 					.hasNext();) {
 				ConnectionEditPart sourceConn = (ConnectionEditPart) itr.next();
-				if (sourceConn.getSelected() == EditPart.SELECTED_NONE
+				if ((sourceConn.getSelected() == EditPart.SELECTED_NONE || getSelectionMode() != TOGGLE_MODE)
 						&& (newSelections.contains(sourceConn.getTarget()) || currentNodes
 								.contains(sourceConn.getTarget())))
 					connections.add(sourceConn);
@@ -195,7 +195,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 			for (Iterator itr = node.getTargetConnections().iterator(); itr
 					.hasNext();) {
 				ConnectionEditPart targetConn = (ConnectionEditPart) itr.next();
-				if (targetConn.getSelected() == EditPart.SELECTED_NONE
+				if ((targetConn.getSelected() == EditPart.SELECTED_NONE || getSelectionMode() != TOGGLE_MODE)
 						&& (newSelections.contains(targetConn.getSource()) || currentNodes
 								.contains(targetConn.getSource())))
 					connections.add(targetConn);
