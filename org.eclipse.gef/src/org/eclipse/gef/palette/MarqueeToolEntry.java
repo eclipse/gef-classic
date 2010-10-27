@@ -66,12 +66,27 @@ public class MarqueeToolEntry extends ToolEntry {
 		Object value = getToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR);
 		if (value instanceof Integer) {
 			int selectionType = ((Integer) value).intValue();
-			if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_AND_CONNECTIONS)
-				return GEFMessages.MarqueeTool_Desc;
-			if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED)
-				return GEFMessages.MarqueeTool_Connections_Desc;
+			if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED) {
+				return GEFMessages.MarqueeTool_Connections_Touched_Desc;
+			}
+			if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED) {
+				return GEFMessages.MarqueeTool_Connections_Contained_Desc;
+			}
+			if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED) {
+				return GEFMessages.MarqueeTool_Nodes_Touched_Desc;
+			}
+			if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED) {
+				return GEFMessages.MarqueeTool_Nodes_Contained_Desc;
+			}
+			if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS) {
+				return GEFMessages.MarqueeTool_Nodes_Touched_And_Related_Connections_Desc;
+			}
+			if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS) {
+				return GEFMessages.MarqueeTool_Nodes_Contained_And_Related_Connections_Desc;
+			}
 		}
-		return GEFMessages.MarqueeTool_Nodes_Desc;
+		// BEHAVIOR_NODES_CONTAINED is default behavior
+		return GEFMessages.MarqueeTool_Nodes_Contained_Desc;
 	}
 
 }

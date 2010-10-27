@@ -26,10 +26,10 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.StructuredSelection;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.ConnectionEditPart;
@@ -49,8 +49,16 @@ import org.eclipse.gef.SharedCursors;
  * is pressed at the beginning of the drag, the enclosed items will have their
  * selection state inverted.
  * <P>
- * By default, only editparts whose figure's are on the primary layer will be
+ * By default, only edit parts whose figure's are on the primary layer will be
  * considered within the enclosed rectangle.
+ * 
+ * @author ebordeau
+ * @author dlee
+ * @author rhudson
+ * @author delee
+ * @author msorens
+ * @author pshah
+ * @author anyssen
  */
 public class MarqueeSelectionTool extends AbstractTool {
 
@@ -62,27 +70,62 @@ public class MarqueeSelectionTool extends AbstractTool {
 	public static final Object PROPERTY_MARQUEE_BEHAVIOR = "marqueeBehavior"; //$NON-NLS-1$
 
 	/**
-	 * This behaviour selects nodes completely encompassed by the marquee
+	 * This behavior selects nodes completely encompassed by the marquee
 	 * rectangle. This is the default behaviour for this tool.
 	 * 
 	 * @since 3.1
 	 */
 	public static final int BEHAVIOR_NODES_CONTAINED = new Integer(1)
 			.intValue();
+
 	/**
-	 * This behaviour selects connections that intersect the marquee rectangle.
+	 * This behavior selects nodes completely encompassed by the marquee
+	 * rectangle, and all connections between those nodes.
+	 * 
+	 * @since 3.7
+	 */
+	public static final int BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS = new Integer(
+			3).intValue();
+
+	/**
+	 * This behavior selects nodes completely encompassed by the marquee
+	 * rectangle, and all connections between those nodes.
+	 * 
+	 * @since 3.1
+	 * @deprecated use {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS}
+	 *             instead.
+	 */
+	public static final int BEHAVIOR_NODES_AND_CONNECTIONS = BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS;
+
+	/**
+	 * This behavior selects nodes that intersect the marquee rectangle.
+	 * 
+	 * @since 3.7
+	 */
+	public static final int BEHAVIOR_NODES_TOUCHED = new Integer(4).intValue();
+
+	/**
+	 * This behavior selects nodes that intersect the marquee rectangle.
+	 * 
+	 * @since 3.7
+	 */
+	public static final int BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS = new Integer(
+			5).intValue();
+
+	/**
+	 * This behavior selects connections that intersect the marquee rectangle.
 	 * 
 	 * @since 3.1
 	 */
 	public static final int BEHAVIOR_CONNECTIONS_TOUCHED = new Integer(2)
 			.intValue();
+
 	/**
-	 * This behaviour selects nodes completely encompassed by the marquee
-	 * rectangle, and all connections between those nodes.
+	 * This behavior selects connections that intersect the marquee rectangle.
 	 * 
-	 * @since 3.1
+	 * @since 3.7
 	 */
-	public static final int BEHAVIOR_NODES_AND_CONNECTIONS = new Integer(3)
+	public static final int BEHAVIOR_CONNECTIONS_CONTAINED = new Integer(6)
 			.intValue();
 
 	static final int DEFAULT_MODE = 0;
@@ -121,7 +164,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 		super.applyProperty(key, value);
 	}
 
-	private void calculateConnections(Collection newSelections,
+	private void calculateRelatedConnections(Collection newSelections,
 			Collection deselections) {
 		// determine the currently selected nodes minus the ones that are to be
 		// deselected
@@ -180,10 +223,30 @@ public class MarqueeSelectionTool extends AbstractTool {
 		deselections.addAll(connections);
 	}
 
-	private void calculateNewSelection(Collection newSelections,
-			Collection deselections) {
-		Rectangle marqueeRect = getMarqueeSelectionRectangle();
-		for (Iterator itr = getAllChildren().iterator(); itr.hasNext();) {
+	/**
+	 * Responsible of calculating the new selection based on the marquee
+	 * selection rectangle in the current viewer ({@link #getCurrentViewer()}.
+	 * The editPartsToSelect and editPartsToDeselect lists have to be populated
+	 * to describe the selection 'delta' compared to the current viewer's
+	 * selection.
+	 * 
+	 * @param marqueeSelectionRectangle
+	 *            A rectangle in absolute coordinates, indicating the current
+	 *            marquee selection area.
+	 * @param editPartsToSelect
+	 *            Called with an empty collection. Has to be populated with
+	 *            EditParts currently not selected in the viewer, which should
+	 *            get selected in the new selection
+	 * @param editPartsToDeselect
+	 *            Called with an empty collection. Has to be populated with
+	 *            EditParts currently selected in the viewer, which should get
+	 *            deselected in the new selection
+	 * @since 3.7
+	 */
+	protected void calculateSelectionDelta(Rectangle marqueeSelectionRectangle,
+			Collection editPartsToSelect, Collection editPartsToDeselect) {
+		for (Iterator itr = getAllChildren(getCurrentViewer().getRootEditPart())
+				.iterator(); itr.hasNext();) {
 			GraphicalEditPart child = (GraphicalEditPart) itr.next();
 			IFigure figure = child.getFigure();
 			if (!child.isSelectable()
@@ -194,27 +257,47 @@ public class MarqueeSelectionTool extends AbstractTool {
 			Rectangle r = figure.getBounds().getCopy();
 			figure.translateToAbsolute(r);
 			boolean included = false;
+
 			if (child instanceof ConnectionEditPart
-					&& marqueeRect.intersects(r)) {
+					&& marqueeSelectionRectangle.intersects(r)) {
+				// children will contain ConnectionEditParts only in case
+				// behavior is BEHAVIOR_CONNECTIONS_TOUCHED or
+				// BEHAVIOR_CONNECTIONS_CONTAINED
 				Rectangle relMarqueeRect = Rectangle.SINGLETON;
 				figure.translateToRelative(relMarqueeRect
-						.setBounds(marqueeRect));
-				included = ((PolylineConnection) figure).getPoints()
-						.intersects(relMarqueeRect);
-			} else
-				included = marqueeRect.contains(r);
+						.setBounds(marqueeSelectionRectangle));
+				if (marqueeBehavior == BEHAVIOR_CONNECTIONS_TOUCHED) {
+					included = ((Connection) figure).getPoints().intersects(
+							relMarqueeRect);
+				} else if (marqueeBehavior == BEHAVIOR_CONNECTIONS_CONTAINED) {
+					included = relMarqueeRect.contains(((Connection) figure)
+							.getPoints().getBounds());
+				}
+			} else {
+				// otherwise children will only be 'node' edit parts
+				if (marqueeBehavior == BEHAVIOR_NODES_TOUCHED
+						|| marqueeBehavior == BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS) {
+					included = marqueeSelectionRectangle.intersects(r);
+				} else if (marqueeBehavior == BEHAVIOR_NODES_CONTAINED
+						|| marqueeBehavior == BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS) {
+					included = marqueeSelectionRectangle.contains(r);
+				}
+			}
 
 			if (included) {
 				if (child.getSelected() == EditPart.SELECTED_NONE
 						|| getSelectionMode() != TOGGLE_MODE)
-					newSelections.add(child);
+					editPartsToSelect.add(child);
 				else
-					deselections.add(child);
+					editPartsToDeselect.add(child);
 			}
 		}
 
-		if (marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS)
-			calculateConnections(newSelections, deselections);
+		// calculate related connections
+		if (marqueeBehavior == BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS
+				|| marqueeBehavior == BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS) {
+			calculateRelatedConnections(editPartsToSelect, editPartsToDeselect);
+		}
 	}
 
 	private Request createTargetRequest() {
@@ -251,9 +334,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 		}
 	}
 
-	private Set getAllChildren() {
+	private Set getAllChildren(EditPart editPart) {
 		if (allChildren.isEmpty())
-			getAllChildren(getCurrentViewer().getRootEditPart(), allChildren);
+			getAllChildren(editPart, allChildren);
 		return allChildren;
 	}
 
@@ -262,9 +345,12 @@ public class MarqueeSelectionTool extends AbstractTool {
 		for (int i = 0; i < children.size(); i++) {
 			GraphicalEditPart child = (GraphicalEditPart) children.get(i);
 			if (marqueeBehavior == BEHAVIOR_NODES_CONTAINED
-					|| marqueeBehavior == BEHAVIOR_NODES_AND_CONNECTIONS)
+					|| marqueeBehavior == BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS
+					|| marqueeBehavior == BEHAVIOR_NODES_TOUCHED
+					|| marqueeBehavior == BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS)
 				allChildren.add(child);
-			if (marqueeBehavior == BEHAVIOR_CONNECTIONS_TOUCHED) {
+			if (marqueeBehavior == BEHAVIOR_CONNECTIONS_TOUCHED
+					|| marqueeBehavior == BEHAVIOR_CONNECTIONS_CONTAINED) {
 				allChildren.addAll(child.getSourceConnections());
 				allChildren.addAll(child.getTargetConnections());
 			}
@@ -349,8 +435,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 		if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
 			showMarqueeFeedback();
 			eraseTargetFeedback();
-			calculateNewSelection(selectedEditParts = new ArrayList(),
-					new ArrayList());
+			calculateSelectionDelta(getMarqueeSelectionRectangle(),
+					selectedEditParts = new ArrayList(), new ArrayList());
 			showTargetFeedback();
 		}
 		return true;
@@ -422,7 +508,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 	private void performMarqueeSelect() {
 		EditPartViewer viewer = getCurrentViewer();
 		Collection newSelections = new LinkedHashSet(), deselections = new HashSet();
-		calculateNewSelection(newSelections, deselections);
+		calculateSelectionDelta(getMarqueeSelectionRectangle(), newSelections,
+				deselections);
 		if (getSelectionMode() != DEFAULT_MODE) {
 			newSelections.addAll(viewer.getSelectedEditParts());
 			newSelections.removeAll(deselections);
@@ -436,14 +523,20 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * 
 	 * @param type
 	 *            {@link #BEHAVIOR_CONNECTIONS_TOUCHED} or
+	 *            {@link #BEHAVIOR_CONNECTIONS_CONTAINED}
+	 *            {@link #BEHAVIOR_NODES_TOUCHED} or
 	 *            {@link #BEHAVIOR_NODES_CONTAINED} or
-	 *            {@link #BEHAVIOR_NODES_AND_CONNECTIONS}
+	 *            {@link #BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS} or
+	 *            {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS}
 	 * @since 3.1
 	 */
 	public void setMarqueeBehavior(int type) {
 		if (type != BEHAVIOR_CONNECTIONS_TOUCHED
+				&& type != BEHAVIOR_CONNECTIONS_CONTAINED
+				&& type != BEHAVIOR_NODES_TOUCHED
+				&& type != BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS
 				&& type != BEHAVIOR_NODES_CONTAINED
-				&& type != BEHAVIOR_NODES_AND_CONNECTIONS)
+				&& type != BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS)
 			throw new IllegalArgumentException(
 					"Invalid marquee behaviour specified."); //$NON-NLS-1$
 		marqueeBehavior = type;

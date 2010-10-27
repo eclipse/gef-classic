@@ -71,9 +71,12 @@ public class GEFMessages extends NLS {
 
 	public static String SelectionTool_Label;
 	public static String MarqueeTool_Label;
-	public static String MarqueeTool_Desc;
-	public static String MarqueeTool_Nodes_Desc;
-	public static String MarqueeTool_Connections_Desc;
+	public static String MarqueeTool_Connections_Touched_Desc;
+	public static String MarqueeTool_Connections_Contained_Desc;
+	public static String MarqueeTool_Nodes_Touched_Desc;
+	public static String MarqueeTool_Nodes_Contained_Desc;
+	public static String MarqueeTool_Nodes_Touched_And_Related_Connections_Desc;
+	public static String MarqueeTool_Nodes_Contained_And_Related_Connections_Desc;
 	public static String UndoAction_Label;
 	public static String UndoAction_Tooltip;
 
