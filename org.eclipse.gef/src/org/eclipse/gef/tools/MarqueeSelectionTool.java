@@ -215,8 +215,15 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 */
 	public static final Object PROPERTY_MARQUEE_BEHAVIOR = "marqueeBehavior"; //$NON-NLS-1$
 
+	/**
+	 * Constant defining the default marquee selection behavior.
+	 * 
+	 * @since 3.7
+	 */
+	public static final int DEFAULT_MARQUEE_BEHAVIOR = BEHAVIOR_NODES_CONTAINED;
+
 	private Set allChildren = new HashSet();
-	private int marqueeBehavior = BEHAVIOR_NODES_CONTAINED;
+	private int marqueeBehavior = DEFAULT_MARQUEE_BEHAVIOR;
 	private Figure marqueeRectangleFigure;
 	private int mode;
 

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.palette;
 
+import org.eclipse.jface.resource.ImageDescriptor;
+
 import org.eclipse.gef.SharedImages;
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.tools.MarqueeSelectionTool;
@@ -17,7 +19,10 @@ import org.eclipse.gef.tools.MarqueeSelectionTool;
 /**
  * A palette ToolEntry for a {@link org.eclipse.gef.tools.MarqueeSelectionTool}.
  * 
- * @author hudsonr
+ * @author rhudson
+ * @author pshah
+ * @author anyssen
+ * 
  * @since 2.1
  */
 public class MarqueeToolEntry extends ToolEntry {
@@ -48,8 +53,7 @@ public class MarqueeToolEntry extends ToolEntry {
 	 *            the description (can be <code>null</code>)
 	 */
 	public MarqueeToolEntry(String label, String description) {
-		super(label, description, SharedImages.DESC_MARQUEE_TOOL_16,
-				SharedImages.DESC_MARQUEE_TOOL_24, MarqueeSelectionTool.class);
+		super(label, description, null, null, MarqueeSelectionTool.class);
 		if (label == null || label.length() == 0)
 			setLabel(GEFMessages.MarqueeTool_Label);
 		setUserModificationPermission(PERMISSION_NO_MODIFICATION);
@@ -63,30 +67,78 @@ public class MarqueeToolEntry extends ToolEntry {
 		if (description != null)
 			return description;
 
-		Object value = getToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR);
-		if (value instanceof Integer) {
-			int selectionType = ((Integer) value).intValue();
-			if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED) {
-				return GEFMessages.MarqueeTool_Connections_Touched_Desc;
-			}
-			if (selectionType == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED) {
-				return GEFMessages.MarqueeTool_Connections_Contained_Desc;
-			}
-			if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED) {
-				return GEFMessages.MarqueeTool_Nodes_Touched_Desc;
-			}
-			if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED) {
-				return GEFMessages.MarqueeTool_Nodes_Contained_Desc;
-			}
-			if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS) {
-				return GEFMessages.MarqueeTool_Nodes_Touched_And_Related_Connections_Desc;
-			}
-			if (selectionType == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS) {
-				return GEFMessages.MarqueeTool_Nodes_Contained_And_Related_Connections_Desc;
-			}
+		int marqueeBehavior = getMarqueeBehavior();
+		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED) {
+			return GEFMessages.MarqueeTool_Connections_Touched_Desc;
 		}
-		// BEHAVIOR_NODES_CONTAINED is default behavior
-		return GEFMessages.MarqueeTool_Nodes_Contained_Desc;
+		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED) {
+			return GEFMessages.MarqueeTool_Connections_Contained_Desc;
+		}
+		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED) {
+			return GEFMessages.MarqueeTool_Nodes_Touched_Desc;
+		}
+		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED) {
+			return GEFMessages.MarqueeTool_Nodes_Contained_Desc;
+		}
+		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS) {
+			return GEFMessages.MarqueeTool_Nodes_Touched_And_Related_Connections_Desc;
+		}
+		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS) {
+			return GEFMessages.MarqueeTool_Nodes_Contained_And_Related_Connections_Desc;
+		}
+		throw new IllegalArgumentException("Unknown marquee behavior"); //$NON-NLS-1$
+	}
+
+	/**
+	 * @see org.eclipse.gef.palette.PaletteEntry#getLargeIcon()
+	 */
+	public ImageDescriptor getLargeIcon() {
+		ImageDescriptor imageDescriptor = super.getLargeIcon();
+		if (imageDescriptor != null) {
+			return imageDescriptor;
+		}
+		// infer icon from behavior mode
+		int marqueeBehavior = getMarqueeBehavior();
+		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED
+				|| marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED) {
+			return SharedImages.DESC_MARQUEE_TOOL_CONNECTIONS_24;
+		} else if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED
+				|| marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED) {
+			return SharedImages.DESC_MARQUEE_TOOL_NODES_24;
+		} else {
+			return SharedImages.DESC_MARQUEE_TOOL_24;
+		}
+	}
+
+	private int getMarqueeBehavior() {
+		// retrieve marquee behavior from tool property
+		Object value = getToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR);
+		if (value != null && value instanceof Integer) {
+			return ((Integer) value).intValue();
+		}
+		// return default behavior
+		return MarqueeSelectionTool.DEFAULT_MARQUEE_BEHAVIOR;
+	}
+
+	/**
+	 * @see org.eclipse.gef.palette.PaletteEntry#getSmallIcon()
+	 */
+	public ImageDescriptor getSmallIcon() {
+		ImageDescriptor imageDescriptor = super.getSmallIcon();
+		if (imageDescriptor != null) {
+			return imageDescriptor;
+		}
+		// infer icon from marquee behavior
+		int marqueeBehavior = getMarqueeBehavior();
+		if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED
+				|| marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED) {
+			return SharedImages.DESC_MARQUEE_TOOL_CONNECTIONS_16;
+		} else if (marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED
+				|| marqueeBehavior == MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED) {
+			return SharedImages.DESC_MARQUEE_TOOL_NODES_16;
+		} else {
+			return SharedImages.DESC_MARQUEE_TOOL_16;
+		}
 	}
 
 }
