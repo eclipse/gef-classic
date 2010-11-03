@@ -233,8 +233,12 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#understandsRequest(org.eclipse.gef.Request)
 	 */
 	public boolean understandsRequest(Request request) {
-		if (REQ_RESIZE.equals(request.getType()))
-			return true;
+		if (REQ_RESIZE.equals(request.getType())) {
+			// check all resize directions of the request are supported
+			int resizeDirections = ((ChangeBoundsRequest) request)
+					.getResizeDirection();
+			return (resizeDirections & getResizeDirections()) == resizeDirections;
+		}
 		return super.understandsRequest(request);
 	}
 
