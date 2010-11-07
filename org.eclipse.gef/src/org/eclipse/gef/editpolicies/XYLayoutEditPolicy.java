@@ -56,6 +56,10 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 					// Bug 86473 allows for unintended use of this method
 					rect.setSize(getCurrentConstraintFor(child).getSize());
 				}
+			} else {
+				// for backwards compatibility, ensure minimum size is respected
+				rect.setSize(Dimension.max(getMinimumSizeFor(child),
+						rect.getSize()));
 			}
 		}
 		return super.getConstraintFor(request, child, rect);
@@ -140,4 +144,24 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 		feedback.setBounds(feedbackBounds
 				.expand(getCreationFeedbackOffset(request)));
 	}
+
+	/**
+	 * Determines the <em>minimum</em> size that the specified child can be
+	 * resized to. Called from
+	 * {@link #getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}. By
+	 * default, a small <code>Dimension</code> is returned.
+	 * 
+	 * @param child
+	 *            the child
+	 * @return the minimum size
+	 * 
+	 * @deprecated Clients should no longer extend this method. Instead, the
+	 *             resize tracker, constructed by the 'satellite' primary drag
+	 *             edit policy should be parameterized with max and min size
+	 *             constraints.
+	 */
+	protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
+		return new Dimension(8, 8);
+	}
+
 }

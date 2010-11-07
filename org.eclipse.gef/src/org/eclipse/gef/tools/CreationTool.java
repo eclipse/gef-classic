@@ -12,13 +12,16 @@ package org.eclipse.gef.tools;
 
 import org.eclipse.swt.graphics.Cursor;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.SnapToHelper;
@@ -299,26 +302,84 @@ public class CreationTool extends TargetingTool {
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
 	protected void updateTargetRequest() {
-		CreateRequest req = getCreateRequest();
+		CreateRequest createRequest = getCreateRequest();
 		if (isInState(STATE_DRAG_IN_PROGRESS)) {
 			Point loq = getStartLocation();
 			Rectangle bounds = new Rectangle(loq, loq);
 			bounds.union(loq.getTranslated(getDragMoveDelta()));
-			req.setSize(bounds.getSize());
-			req.setLocation(bounds.getLocation());
-			req.getExtendedData().clear();
-			if (!getCurrentInput().isAltKeyDown() && helper != null) {
+			createRequest.setSize(bounds.getSize());
+			createRequest.setLocation(bounds.getLocation());
+			createRequest.getExtendedData().clear();
+			createRequest.setSnapToEnabled(!getCurrentInput().isModKeyDown(
+					MODIFIER_NO_SNAPPING));
+			if (helper != null && createRequest.isSnapToEnabled()) {
 				PrecisionRectangle baseRect = new PrecisionRectangle(bounds);
 				PrecisionRectangle result = baseRect.getPreciseCopy();
-				helper.snapRectangle(req, PositionConstants.NSEW, baseRect,
-						result);
-				req.setLocation(result.getLocation());
-				req.setSize(result.getSize());
+				helper.snapRectangle(createRequest, PositionConstants.NSEW,
+						baseRect, result);
+				createRequest.setLocation(result.getLocation());
+				createRequest.setSize(result.getSize());
 			}
+			enforceConstraintsForSizeOnDropCreate(createRequest);
 		} else {
-			req.setSize(null);
-			req.setLocation(getLocation());
+			createRequest.setSize(null);
+			createRequest.setLocation(getLocation());
+			createRequest.setSnapToEnabled(false);
 		}
+	}
+
+	/**
+	 * Ensures size constraints (by default minimum and maximum) are respected
+	 * by the given request. May be overwritten by clients to enforce additional
+	 * constraints.
+	 * 
+	 * @since 3.7
+	 */
+	protected void enforceConstraintsForSizeOnDropCreate(CreateRequest request) {
+		CreateRequest createRequest = (CreateRequest) getTargetRequest();
+		if (createRequest.getSize() != null) {
+			// ensure create request respects minimum and maximum size
+			// constraints
+			PrecisionRectangle constraint = new PrecisionRectangle(
+					createRequest.getLocation(), createRequest.getSize());
+			((GraphicalEditPart) getTargetEditPart()).getContentPane()
+					.translateToRelative(constraint);
+			constraint.setSize(Dimension.max(constraint.getSize(),
+					getMinimumSizeFor(createRequest)));
+			constraint.setSize(Dimension.min(constraint.getSize(),
+					getMaximumSizeFor(createRequest)));
+			((GraphicalEditPart) getTargetEditPart()).getContentPane()
+					.translateToRelative(constraint);
+			createRequest.setSize(constraint.getSize());
+		}
+	}
+
+	/**
+	 * Determines the <em>maximum</em> size for CreateRequest's size on drop. It
+	 * is called from {@link #enforceConstraintsForSizeOnDropCreate(CreateRequest)}
+	 * during creation. By default, a large <code>Dimension</code> is returned.
+	 * 
+	 * @param request
+	 *            the request.
+	 * @return the minimum size
+	 * @since 3.7
+	 */
+	protected Dimension getMaximumSizeFor(CreateRequest request) {
+		return IFigure.MAX_DIMENSION;
+	}
+
+	/**
+	 * Determines the <em>minimum</em> size for CreateRequest's size on drop. It
+	 * is called from {@link #enforceConstraintsForSizeOnDropCreate(CreateRequest)}
+	 * during creation. By default, a small <code>Dimension</code> is returned.
+	 * 
+	 * @param request
+	 *            the request.
+	 * @return the minimum size
+	 * @since 3.7
+	 */
+	protected Dimension getMinimumSizeFor(CreateRequest request) {
+		return IFigure.MIN_DIMENSION;
 	}
 
 }

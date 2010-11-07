@@ -25,6 +25,8 @@ public class CreateRequest extends org.eclipse.gef.Request implements
 
 	private Dimension size;
 	private Point location;
+	private int flags = 0;
+	private static final int SNAP_TO = 1;
 
 	private CreationFactory creationFactory;
 
@@ -102,6 +104,17 @@ public class CreateRequest extends org.eclipse.gef.Request implements
 	}
 
 	/**
+	 * Returns <code>true</code> if snap-to is enabled
+	 * 
+	 * @since 3.7
+	 * @return <code>true</code> if the request is for a creation with snap-to
+	 *         enabled
+	 */
+	public boolean isSnapToEnabled() {
+		return (flags & SNAP_TO) != 0;
+	}
+
+	/**
 	 * Sets the factory to be used when creating the new object.
 	 * 
 	 * @param factory
@@ -131,4 +144,15 @@ public class CreateRequest extends org.eclipse.gef.Request implements
 		this.size = size;
 	}
 
+	/**
+	 * Used to set whether snap-to is being performed.
+	 * 
+	 * @since 3.7
+	 * @param value
+	 *            <code>true</code> if the request is for a creation with
+	 *            snap-to enabled
+	 */
+	public void setSnapToEnabled(boolean value) {
+		flags = value ? (flags | SNAP_TO) : (flags & ~SNAP_TO);
+	}
 }

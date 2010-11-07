@@ -27,6 +27,7 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 	private static final int CONSTRAINED_RESIZE = 1;
 	private static final int CENTERED_RESIZE = 2;
 	private static final int CONSTRAINED_MOVE = 4;
+	private static final int SNAP_TO = 16;
 
 	/**
 	 * Default constructor.
@@ -141,6 +142,17 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 	}
 
 	/**
+	 * Returns <code>true</code> if snap-to is enabled
+	 * 
+	 * @since 3.7
+	 * @return <code>true</code> if the request is for a creation with snap-to
+	 *         enabled
+	 */
+	public boolean isSnapToEnabled() {
+		return (flags & SNAP_TO) != 0;
+	}
+
+	/**
 	 * Used to set whether a centered resize is being performed.
 	 * 
 	 * @since 3.0
@@ -176,6 +188,25 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 	}
 
 	/**
+	 * Sets the location of the mouse pointer.
+	 * 
+	 * @param p
+	 *            The location of the mouse pointer.
+	 */
+	public void setLocation(Point p) {
+		mouseLocation = p;
+	}
+
+	/**
+	 * @deprecated Use {@link #setLocation(Point)}
+	 * @param p
+	 *            The location of the mouse pointer.
+	 */
+	public void setMouseLocation(Point p) {
+		setLocation(p);
+	}
+
+	/**
 	 * Sets the move delta.
 	 * 
 	 * @param p
@@ -197,25 +228,6 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 	}
 
 	/**
-	 * @deprecated Use {@link #setLocation(Point)}
-	 * @param p
-	 *            The location of the mouse pointer.
-	 */
-	public void setMouseLocation(Point p) {
-		setLocation(p);
-	}
-
-	/**
-	 * Sets the location of the mouse pointer.
-	 * 
-	 * @param p
-	 *            The location of the mouse pointer.
-	 */
-	public void setLocation(Point p) {
-		mouseLocation = p;
-	}
-
-	/**
 	 * Sets the size delta.
 	 * 
 	 * @param d
@@ -223,6 +235,18 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 	 */
 	public void setSizeDelta(Dimension d) {
 		resizeDelta = d;
+	}
+
+	/**
+	 * Used to set whether snap-to is being performed.
+	 * 
+	 * @since 3.7
+	 * @param value
+	 *            <code>true</code> if the request is for a creation with
+	 *            snap-to enabled
+	 */
+	public void setSnapToEnabled(boolean value) {
+		flags = value ? (flags | SNAP_TO) : (flags & ~SNAP_TO);
 	}
 
 }

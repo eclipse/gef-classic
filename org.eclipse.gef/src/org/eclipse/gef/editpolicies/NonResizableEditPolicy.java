@@ -37,6 +37,7 @@ import org.eclipse.gef.handles.ResizableHandleKit;
 import org.eclipse.gef.requests.AlignmentRequest;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.tools.DragEditPartsTracker;
+import org.eclipse.gef.tools.ResizeTracker;
 import org.eclipse.gef.tools.SelectEditPartTracker;
 
 /**
@@ -103,14 +104,35 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 		if (isDragAllowed()) {
 			// display 'resize' handles to allow dragging (drag tracker)
 			NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-					handles, direction);
+					handles, direction, createDragTracker(),
+					SharedCursors.SIZEALL);
 		} else {
 			// display 'resize' handles to indicate selection only (selection
 			// tracker)
 			NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-					handles, direction, new SelectEditPartTracker(getHost()),
+					handles, direction, createSelectTracker(),
 					SharedCursors.ARROW);
 		}
+	}
+
+	/**
+	 * Factory method to create a selection tracker for the given direction.
+	 * 
+	 * @return a new {@link ResizeTracker}
+	 * @since 3.7
+	 */
+	protected SelectEditPartTracker createSelectTracker() {
+		return new SelectEditPartTracker(getHost());
+	}
+
+	/**
+	 * Factory method to create a drag tracker for the given direction.
+	 * 
+	 * @return a new {@link ResizeTracker}
+	 * @since 3.7
+	 */
+	protected DragEditPartsTracker createDragTracker() {
+		return new DragEditPartsTracker(getHost());
 	}
 
 	/**

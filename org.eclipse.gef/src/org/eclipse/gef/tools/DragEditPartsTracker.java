@@ -641,6 +641,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		request.getExtendedData().clear();
 		request.setMoveDelta(moveDelta);
 
+		request.setSnapToEnabled(!getCurrentInput().isModKeyDown(
+				MODIFIER_NO_SNAPPING));
 		snapPoint(request);
 
 		request.setLocation(getLocation());
@@ -658,8 +660,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	protected void snapPoint(ChangeBoundsRequest request) {
 		Point moveDelta = request.getMoveDelta();
-		if (snapToHelper != null
-				&& !getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING)) {
+		if (snapToHelper != null && request.isSnapToEnabled()) {
 			PrecisionRectangle baseRect = sourceRectangle.getPreciseCopy();
 			PrecisionRectangle jointRect = compoundSrcRect.getPreciseCopy();
 			baseRect.translate(moveDelta);

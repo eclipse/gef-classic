@@ -18,10 +18,8 @@ import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.Shape;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Translatable;
 
 import org.eclipse.gef.EditPart;
@@ -80,34 +78,6 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 *         {@link EditPolicy#PRIMARY_DRAG_ROLE}
 	 */
 	protected abstract EditPolicy createChildEditPolicy(EditPart child);
-
-	/**
-	 * Determines the <em>maximum</em> size for CreateRequest's size on drop. It
-	 * is called from {@link #adjustRequest(CreateRequest)} during creation. By
-	 * default, a large <code>Dimension</code> is returned.
-	 * 
-	 * @param request
-	 *            the request.
-	 * @return the minimum size
-	 * @since 3.7
-	 */
-	protected Dimension getMaximumSizeFor(CreateRequest request) {
-		return IFigure.MAX_DIMENSION;
-	}
-
-	/**
-	 * Determines the <em>minimum</em> size for CreateRequest's size on drop. It
-	 * is called from {@link #adjustRequest(CreateRequest)} during creation. By
-	 * default, a small <code>Dimension</code> is returned.
-	 * 
-	 * @param request
-	 *            the request.
-	 * @return the minimum size
-	 * @since 3.7
-	 */
-	protected Dimension getMinimumSizeFor(CreateRequest request) {
-		return IFigure.MIN_DIMENSION;
-	}
 
 	/**
 	 * creates the EditPartListener for observing when children are added to the
@@ -254,11 +224,8 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 		if (REQ_CLONE.equals(request.getType()))
 			return getCloneCommand((ChangeBoundsRequest) request);
 
-		// ensure minimum and maximum size are respected.
-		if (REQ_CREATE.equals(request.getType())) {
-			adjustRequest((CreateRequest) request);
+		if (REQ_CREATE.equals(request.getType()))
 			return getCreateCommand((CreateRequest) request);
-		}
 
 		return null;
 	}
@@ -463,28 +430,6 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 		List children = getHost().getChildren();
 		for (int i = 0; i < children.size(); i++)
 			undecorateChild((EditPart) children.get(i));
-	}
-
-	/**
-	 * Ensures maximum and mimimum size (as returned by
-	 * {@link #getMaximumSizeFor(CreateRequest)} and
-	 * {@link #getMinimumSizeFor(CreateRequest)}) are respected.
-	 * 
-	 * @since 3.7
-	 */
-	protected void adjustRequest(CreateRequest request) {
-		// ensure create request respects minimum and maximum size constraints
-		if (request.getSize() != null) {
-			PrecisionRectangle constraint = new PrecisionRectangle(
-					request.getLocation(), request.getSize());
-			translateFromAbsoluteToLayoutRelative(constraint);
-			constraint.setSize(Dimension.max(constraint.getSize(),
-					getMinimumSizeFor(request)));
-			constraint.setSize(Dimension.min(constraint.getSize(),
-					getMaximumSizeFor(request)));
-			translateFromLayoutRelativeToAbsolute(constraint);
-			request.setSize(constraint.getSize());
-		}
 	}
 
 	/**

@@ -12,7 +12,6 @@ package org.eclipse.gef.editpolicies;
 
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
@@ -153,18 +152,13 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	}
 
 	/**
-	 * A {@link ResizableEditPolicy} is used by default for children. It is
-	 * provided with the default maximum and minimum sizes as provided by
-	 * {@link #getMaximumSizeFor(GraphicalEditPart)} and
-	 * {@link #getMinimumSizeFor(GraphicalEditPart)}. Subclasses may override
-	 * this method to supply a different EditPolicy.
+	 * A {@link ResizableEditPolicy} is used by default for children. Subclasses
+	 * may override this method to supply a different EditPolicy.
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
 	 */
 	protected EditPolicy createChildEditPolicy(EditPart child) {
-		return new ResizableEditPolicy(
-				getMinimumSizeFor((GraphicalEditPart) child),
-				getMaximumSizeFor((GraphicalEditPart) child));
+		return new ResizableEditPolicy();
 	}
 
 	/**
@@ -419,107 +413,5 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 		// By default, move and resize are treated the same for constrained
 		// layouts.
 		return getResizeChildrenCommand((ChangeBoundsRequest) request);
-	}
-
-	/**
-	 * Overwritten to not only adjust the size in case it violates the minimum
-	 * and maximum size constraints, but to also slightly adjust the position in
-	 * this case, which results in a better user experience during size-on-drop.
-	 * 
-	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#adjustRequest(org.eclipse.gef.requests.CreateRequest)
-	 */
-	protected void adjustRequest(CreateRequest request) {
-		if (request.getSize() != null) {
-			// size-on-drop, ensure maximum and minimum size are respected
-			Dimension minSize = getMinimumSizeFor(request);
-			Dimension maxSize = getMaximumSizeFor(request);
-			Rectangle originalConstraint = new Rectangle(request.getLocation(),
-					request.getSize());
-			translateFromAbsoluteToLayoutRelative(originalConstraint);
-			Rectangle validatedConstraint = originalConstraint.getCopy();
-			// ensure minimum size
-			if (validatedConstraint.width < minSize.width) {
-				validatedConstraint.width = minSize.width;
-				if (validatedConstraint.x > (originalConstraint.right() - minSize.width)) {
-					validatedConstraint.x = originalConstraint.right()
-							- minSize.width;
-				}
-			}
-			if (validatedConstraint.height < minSize.height) {
-				validatedConstraint.height = minSize.height;
-				if (validatedConstraint.y > (originalConstraint.bottom() - minSize.height)) {
-					validatedConstraint.y = originalConstraint.bottom()
-							- minSize.height;
-				}
-			}
-			// ensure maximum size
-			if (validatedConstraint.width > maxSize.width) {
-				validatedConstraint.width = maxSize.width;
-				if (validatedConstraint.x < (originalConstraint.right() - maxSize.width)) {
-					validatedConstraint.x = originalConstraint.x
-							+ (originalConstraint.right() - maxSize.width - originalConstraint.x)
-							/ 2;
-				}
-			}
-			if (validatedConstraint.height > maxSize.height) {
-				validatedConstraint.height = maxSize.height;
-				if (validatedConstraint.y < (originalConstraint.bottom() - maxSize.height)) {
-					validatedConstraint.y = originalConstraint.y
-							+ (originalConstraint.bottom() - maxSize.height - originalConstraint.y)
-							/ 2;
-				}
-			}
-			if (!validatedConstraint.equals(originalConstraint)) {
-				translateFromLayoutRelativeToAbsolute(validatedConstraint);
-				request.setLocation(validatedConstraint.getLocation());
-				request.setSize(validatedConstraint.getSize());
-			}
-		}
-	}
-
-	/**
-	 * Determines the (default) <em>maximum</em> size for a given child during
-	 * resize. Its value is passed to the 'satellite' edit policy, created via
-	 * {@link #createChildEditPolicy(EditPart)} to serve as its default maximum
-	 * size setting. By default, a large <code>Dimension</code> is returned.
-	 * 
-	 * @param child
-	 *            the child
-	 * @return the maximum size
-	 * @since 3.7
-	 */
-	protected Dimension getMaximumSizeFor(GraphicalEditPart child) {
-		return IFigure.MAX_DIMENSION;
-	}
-
-	/**
-	 * Determines the (default) <em>minimum</em> size for a given child during
-	 * resize. Its value is passed to the 'satellite' edit policy, created via
-	 * {@link #createChildEditPolicy(EditPart)} to serve as its default minimum
-	 * size setting. By default, a small <code>Dimension</code> is returned.
-	 * 
-	 * <p>
-	 * Note: Prior to 3.7 this method was located within
-	 * {@link XYLayoutEditPolicy} and was called from
-	 * {@link XYLayoutEditPolicy#getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}
-	 * in order to post-validate any calculated constraint to guarantee a
-	 * specified minimum size. However, as not the layout edit policy but the
-	 * 'satellite' edit policy, created via
-	 * {@link #createChildEditPolicy(org.eclipse.gef.EditPart)}, is responsible
-	 * of showing change bounds feedback during resize, changes within
-	 * {@link XYLayoutEditPolicy#getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}
-	 * were never reflected by the change bounds feedback. Therefore, ensuring
-	 * size constraints during resize was changed to be the responsibility of
-	 * the 'satellite' edit policy from 3.7 on. The value returned here will be
-	 * passed to the created 'satellite' edit policy to serve as its default
-	 * minimum size for all requests.
-	 * 
-	 * @param child
-	 *            the child
-	 * @return the minimum size
-	 * @since 3.7
-	 */
-	protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
-		return IFigure.MIN_DIMENSION;
 	}
 }

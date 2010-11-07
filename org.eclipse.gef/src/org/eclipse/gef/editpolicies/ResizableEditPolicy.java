@@ -13,10 +13,8 @@ package org.eclipse.gef.editpolicies;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
@@ -43,8 +41,6 @@ import org.eclipse.gef.tools.ResizeTracker;
 public class ResizableEditPolicy extends NonResizableEditPolicy {
 
 	private int resizeDirections = PositionConstants.NSEW;
-	private Dimension defaultMaximumSize = IFigure.MAX_DIMENSION;
-	private Dimension defaultMinimumSize = IFigure.MIN_DIMENSION;
 
 	/**
 	 * Constructs a new {@link ResizableEditPolicy}.
@@ -52,26 +48,6 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * @since 3.7
 	 */
 	public ResizableEditPolicy() {
-	}
-
-	/**
-	 * Constructs a new {@link ResizableEditPolicy} with the given default
-	 * resizing constraints.
-	 * 
-	 * @param defaultMinimumSize
-	 *            default minimum size, as used by
-	 *            {@link #getMinimumSizeFor(ChangeBoundsRequest)}
-	 * @param defaultMaximumSize
-	 *            default maximum size, as used by
-	 *            {@link #getMaximumSizeFor(ChangeBoundsRequest)}.
-	 * 
-	 * @since 3.7
-	 */
-	public ResizableEditPolicy(Dimension defaultMinimumSize,
-			Dimension defaultMaximumSize) {
-		super();
-		this.defaultMinimumSize = defaultMinimumSize;
-		this.defaultMaximumSize = defaultMaximumSize;
 	}
 
 	/**
@@ -112,14 +88,27 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 */
 	protected void createResizeHandle(List handles, int direction) {
 		if ((resizeDirections & direction) == direction) {
-			// display 'resize' handle to allow resizing (resize tracker)
 			ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-					handles, direction);
+					handles, direction, createResizeTracker(direction), Cursors
+							.getDirectionalCursor(direction, getHostFigure()
+									.isMirrored()));
 		} else {
 			// display 'resize' handle to allow dragging or indicate selection
 			// only
 			createDragHandle(handles, direction);
 		}
+	}
+
+	/**
+	 * Factory method to create a resize tracker for the given direction.
+	 * 
+	 * @param direction
+	 *            the resize direction for the {@link ResizeTracker}.
+	 * @return a new {@link ResizeTracker}
+	 * @since 3.7
+	 */
+	protected ResizeTracker createResizeTracker(int direction) {
+		return new ResizeTracker((GraphicalEditPart) getHost(), direction);
 	}
 
 	/**
@@ -139,42 +128,9 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 */
 	public Command getCommand(Request request) {
 		if (REQ_RESIZE.equals(request.getType())) {
-			adjustRequest((ChangeBoundsRequest) request);
 			return getResizeCommand((ChangeBoundsRequest) request);
 		}
-
 		return super.getCommand(request);
-	}
-
-	/**
-	 * Ensure size constraints (by default minimum and maximum) are respected by
-	 * the given request. May be overwritten by clients to enforce additional
-	 * constraints.
-	 * 
-	 * @param request
-	 *            The request to validate
-	 * @since 3.7
-	 */
-	protected void adjustRequest(ChangeBoundsRequest request) {
-		// adjust request, so that minimum and maximum size constraints are
-		// respected
-		PrecisionRectangle originalConstraint = new PrecisionRectangle(
-				((GraphicalEditPart) getHost()).getFigure().getBounds());
-		getHostFigure().translateToAbsolute(originalConstraint);
-		PrecisionRectangle manipulatedConstraint = new PrecisionRectangle(
-				request.getTransformedRectangle(originalConstraint));
-		getHostFigure().translateToRelative(manipulatedConstraint);
-		// validate constraint (maximum and minimum size are regarded to be
-		// 'normalized', i.e. relative to this figure's bounds coordinates).
-		manipulatedConstraint.setSize(Dimension.max(
-				manipulatedConstraint.getSize(), getMinimumSizeFor(request)));
-		manipulatedConstraint.setSize(Dimension.min(
-				manipulatedConstraint.getSize(), getMaximumSizeFor(request)));
-		// translate back to absolute
-		getHostFigure().translateToAbsolute(manipulatedConstraint);
-		Dimension newSizeDelta = manipulatedConstraint.getSize().getShrinked(
-				originalConstraint.getSize());
-		request.setSizeDelta(newSizeDelta);
 	}
 
 	/**
@@ -222,7 +178,6 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 */
 	public void showSourceFeedback(Request request) {
 		if (REQ_RESIZE.equals(request.getType())) {
-			adjustRequest((ChangeBoundsRequest) request);
 			showChangeBoundsFeedback((ChangeBoundsRequest) request);
 		} else {
 			super.showSourceFeedback(request);
@@ -257,38 +212,5 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 */
 	public int getResizeDirections() {
 		return resizeDirections;
-	}
-
-	/**
-	 * Determines the <em>maximum</em> size that the host can be resized to for
-	 * a given request. It is called from
-	 * {@link #adjustRequest(ChangeBoundsRequest)} during resizing. By default,
-	 * a default value is returned. The value is interpreted to be a dimension
-	 * in the host figure's coordinate system (i.e. relative to its bounds), so
-	 * it is not affected by zooming affects.
-	 * 
-	 * @param request
-	 *            the ChangeBoundsRequest
-	 * @return the minimum size
-	 * @since 3.7
-	 */
-	protected Dimension getMaximumSizeFor(ChangeBoundsRequest request) {
-		return defaultMaximumSize;
-	}
-
-	/**
-	 * Determines the <em>minimum</em> size that the specified child can be
-	 * resized to. It is called by {@link #adjustRequest(ChangeBoundsRequest)}
-	 * during resizing. By default, a default value is returned. The value is
-	 * interpreted to be a dimension in the host figure's coordinate system
-	 * (i.e. relative to its bounds), so it is not affected by zooming effects.
-	 * 
-	 * @param request
-	 *            the ChangeBoundsRequest
-	 * @return the minimum size
-	 * @since 3.7
-	 */
-	protected Dimension getMinimumSizeFor(ChangeBoundsRequest request) {
-		return defaultMinimumSize;
 	}
 }
