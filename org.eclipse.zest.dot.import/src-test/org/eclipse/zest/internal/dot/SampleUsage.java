@@ -28,7 +28,7 @@ public class SampleUsage {
 		/* The DOT input can be given as a String, File or IFile: */
 		DotGraph graph = new DotGraph("digraph{1->2}", shell, SWT.NONE);
 		/* The Dot graph can be modified using DOT snippets: */
-		graph.add("2->3; 2->4");
+		graph.add("2->3").add("2->4");
 		/* The snippets can contain DOT node and edge attributes: */
 		graph.add("node[label=zested]; edge[style=dashed]; 3->5; 4->6");
 		/* Export to a DOT string: */

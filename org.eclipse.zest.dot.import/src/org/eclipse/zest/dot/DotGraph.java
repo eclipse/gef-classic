@@ -22,17 +22,7 @@ import org.eclipse.zest.internal.dot.GraphCreatorInterpreter;
  * 
  * @author Fabian Steeg (fsteeg)
  */
-public class DotGraph extends Graph {
-
-	/**
-	 * @param parent
-	 *            The parent for the graph
-	 * @param style
-	 *            The style bits
-	 */
-	public DotGraph(Composite parent, int style) {
-		super(parent, style);
-	}
+public final class DotGraph extends Graph {
 
 	/**
 	 * @param dot
@@ -77,11 +67,23 @@ public class DotGraph extends Graph {
 	}
 
 	/**
+	 * @param parent
+	 *            The parent for the graph
+	 * @param style
+	 *            The style bits
+	 */
+	public DotGraph(Composite parent, int style) {
+		super(parent, style);
+	}
+
+	/**
 	 * @param dot
 	 *            The DOT snippet (e.g. "1->2") to add to this graph
+	 * @return A graph equivalent to this graph, including the given DOT snippet
 	 */
-	public void add(String dot) {
+	public DotGraph add(String dot) {
 		new DotImport(dot).into(this);
+		return this;
 	}
 
 	/**
