@@ -15,13 +15,12 @@ import java.util.Iterator;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editpolicies.ResizableEditPolicy;
-import org.eclipse.gef.requests.ChangeBoundsRequest;
+import org.eclipse.gef.tools.ResizeTracker;
 
 import org.eclipse.gef.examples.logicdesigner.figures.AndGateFeedbackFigure;
 import org.eclipse.gef.examples.logicdesigner.figures.CircuitFeedbackFigure;
@@ -42,6 +41,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
 import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
 import org.eclipse.gef.examples.logicdesigner.model.OrGate;
 import org.eclipse.gef.examples.logicdesigner.model.XORGate;
+import org.eclipse.gef.examples.logicdesigner.tools.LogicResizeTracker;
 
 /**
  * 
@@ -134,14 +134,10 @@ public class LogicResizableEditPolicy extends ResizableEditPolicy {
 		return getHostFigure().getBounds();
 	}
 
-	protected Dimension getMaximumSizeFor(ChangeBoundsRequest request) {
-		return LogicXYLayoutEditPolicy.getMaximumSizeFor(getHost().getModel()
-				.getClass());
+	/**
+	 * Overwritten to ensure size constraints are respected.
+	 */
+	protected ResizeTracker createResizeTracker(int direction) {
+		return new LogicResizeTracker((GraphicalEditPart) getHost(), direction);
 	}
-
-	protected Dimension getMinimumSizeFor(ChangeBoundsRequest request) {
-		return LogicXYLayoutEditPolicy.getMimimumSizeFor(getHost().getModel()
-				.getClass());
-	}
-
 }

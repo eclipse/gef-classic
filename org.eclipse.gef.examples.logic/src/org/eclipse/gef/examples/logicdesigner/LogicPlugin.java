@@ -15,6 +15,9 @@ import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Dimension;
+
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
@@ -30,6 +33,12 @@ import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.SimpleFactory;
 import org.eclipse.gef.tools.MarqueeSelectionTool;
 
+import org.eclipse.gef.examples.logicdesigner.figures.AndGateFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.GroundFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LEDFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LiveOutputFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.OrGateFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.XOrGateFigure;
 import org.eclipse.gef.examples.logicdesigner.model.AndGate;
 import org.eclipse.gef.examples.logicdesigner.model.Circuit;
 import org.eclipse.gef.examples.logicdesigner.model.GroundOutput;
@@ -40,10 +49,49 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
 import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
 import org.eclipse.gef.examples.logicdesigner.model.OrGate;
 import org.eclipse.gef.examples.logicdesigner.model.XORGate;
+import org.eclipse.gef.examples.logicdesigner.tools.LogicCreationTool;
 
 public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 
 	private static LogicPlugin singleton;
+
+	public static Dimension getMaximumSizeFor(Class modelClass) {
+		if (LED.class.equals(modelClass)) {
+			return LEDFigure.SIZE;
+		} else if (AndGate.class.equals(modelClass)) {
+			return AndGateFigure.SIZE;
+		} else if (OrGate.class.equals(modelClass)) {
+			return OrGateFigure.SIZE;
+		} else if (XORGate.class.equals(modelClass)) {
+			return XOrGateFigure.SIZE;
+		} else if (GroundOutput.class.isAssignableFrom(modelClass)) {
+			return GroundFigure.SIZE;
+		} else if (LiveOutput.class.equals(modelClass)) {
+			return LiveOutputFigure.SIZE;
+		}
+		return IFigure.MAX_DIMENSION;
+	}
+
+	public static Dimension getMinimumSizeFor(Class modelClass) {
+		if (LogicLabel.class.equals(modelClass)) {
+			return new Dimension(IFigure.MIN_DIMENSION.width, 30);
+		} else if (Circuit.class.equals(modelClass)) {
+			return new Dimension(25, 20);
+		} else if (LED.class.equals(modelClass)) {
+			return LEDFigure.SIZE;
+		} else if (AndGate.class.equals(modelClass)) {
+			return AndGateFigure.SIZE;
+		} else if (OrGate.class.equals(modelClass)) {
+			return OrGateFigure.SIZE;
+		} else if (XORGate.class.equals(modelClass)) {
+			return XOrGateFigure.SIZE;
+		} else if (GroundOutput.class.isAssignableFrom(modelClass)) {
+			return GroundFigure.SIZE;
+		} else if (LiveOutput.class.equals(modelClass)) {
+			return LiveOutputFigure.SIZE;
+		}
+		return IFigure.MIN_DIMENSION;
+	}
 
 	static private List createCategories(PaletteRoot root) {
 		List categories = new ArrayList();
@@ -107,6 +155,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 				ImageDescriptor.createFromFile(Circuit.class,
 						"icons/logicflow24.gif")//$NON-NLS-1$
 		);
+		combined.setToolClass(LogicCreationTool.class);
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(
@@ -117,6 +166,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 				ImageDescriptor.createFromFile(Circuit.class,
 						"icons/circuit24.gif")//$NON-NLS-1$
 		);
+		combined.setToolClass(LogicCreationTool.class);
 		entries.add(combined);
 
 		entries.add(new PaletteSeparator());
@@ -130,6 +180,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 				ImageDescriptor.createFromFile(Circuit.class,
 						"icons/label24.gif")//$NON-NLS-1$
 		);
+		combined.setToolClass(LogicCreationTool.class);
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(
@@ -140,6 +191,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 				ImageDescriptor.createFromFile(Circuit.class,
 						"icons/ledicon24.gif")//$NON-NLS-1$
 		);
+		combined.setToolClass(LogicCreationTool.class);
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(
@@ -149,6 +201,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 				ImageDescriptor.createFromFile(Circuit.class, "icons/or16.gif"),//$NON-NLS-1$
 				ImageDescriptor.createFromFile(Circuit.class, "icons/or24.gif")//$NON-NLS-1$
 		);
+		combined.setToolClass(LogicCreationTool.class);
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(
@@ -159,6 +212,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 				ImageDescriptor
 						.createFromFile(Circuit.class, "icons/xor24.gif")//$NON-NLS-1$
 		);
+		combined.setToolClass(LogicCreationTool.class);
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(
@@ -169,6 +223,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 				ImageDescriptor
 						.createFromFile(Circuit.class, "icons/and24.gif")//$NON-NLS-1$
 		);
+		combined.setToolClass(LogicCreationTool.class);
 		entries.add(combined);
 
 		PaletteStack liveGroundStack = new PaletteStack(
@@ -184,6 +239,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 				ImageDescriptor.createFromFile(Circuit.class,
 						"icons/live24.gif")//$NON-NLS-1$
 		);
+		combined.setToolClass(LogicCreationTool.class);
 		liveGroundStack.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(
@@ -195,6 +251,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 				ImageDescriptor.createFromFile(Circuit.class,
 						"icons/ground24.gif")//$NON-NLS-1$
 		);
+		combined.setToolClass(LogicCreationTool.class);
 		liveGroundStack.add(combined);
 
 		entries.add(liveGroundStack);
