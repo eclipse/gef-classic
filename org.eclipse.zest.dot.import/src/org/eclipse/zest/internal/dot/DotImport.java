@@ -7,7 +7,7 @@
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
 
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,7 +35,6 @@ import org.eclipse.emf.mwe.core.monitor.ProgressMonitor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
-import org.eclipse.zest.internal.dot.DotFileUtils;
 
 /**
  * Transformation of DOT files or strings to Zest Graph subclasses or instances.
@@ -46,7 +45,7 @@ public final class DotImport {
 	private static final String ZEST_TEMPLATE = "Zest";// .xpt = filename //$NON-NLS-1$
 	private static final String ZEST_ANIMATION_TEMPLATE = "ZestAnimation";// .xpt //$NON-NLS-1$
 	static final File DEFAULT_OUTPUT_FOLDER = new File(
-			"src-gen/org/eclipse/zest/dot"); //$NON-NLS-1$
+			"src-gen/org/eclipse/zest/internal/dot"); //$NON-NLS-1$
 	private static final String WORKFLOW_FILE = "Generator.mwe"; //$NON-NLS-1$
 	private static final URL WORKFLOW = DotImport.class
 			.getResource(WORKFLOW_FILE);
@@ -102,15 +101,15 @@ public final class DotImport {
 	}
 
 	private String wrapped(final String dotString) {
-		return String.format("%s Unnamed{%s}",
-				dotString.contains("->") ? "digraph" : "graph", dotString);
+		return String.format("%s Unnamed{%s}", //$NON-NLS-1$
+				dotString.contains("->") ? "digraph" : "graph", dotString); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 	}
 
 	private void guardFaultyParse() {
 		List<String> errors = this.dotAst.errors();
 		if (errors.size() > 0) {
 			throw new IllegalArgumentException(String.format(
-					DotMessages.DotImport_1 + ": %s (%s)", dotFile,
+					DotMessages.DotImport_1 + ": %s (%s)", dotFile, //$NON-NLS-1$
 					errors.toString()));
 		}
 	}
@@ -223,7 +222,7 @@ public final class DotImport {
 	/**
 	 * @return The DOT AST parsed from the DOT source
 	 */
-	DotAst getDotAst() {
+	public DotAst getDotAst() {
 		return this.dotAst;
 	}
 
@@ -232,7 +231,7 @@ public final class DotImport {
 		File resultFile = new File(targetDirectory, name + ".java"); //$NON-NLS-1$
 		if (!resultFile.exists()) {
 			throw new IllegalStateException(resultFile
-					+ " " + DotMessages.DotImport_0 + "."); //$NON-NLS-1$//$NON-NLS-3$
+					+ " " + DotMessages.DotImport_0 + "."); //$NON-NLS-1$//$NON-NLS-2$
 		}
 		System.out.println("Zest file: " + resultFile.getAbsolutePath()); //$NON-NLS-1$
 		return resultFile;

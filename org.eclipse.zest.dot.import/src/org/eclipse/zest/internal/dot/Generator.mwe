@@ -16,7 +16,7 @@
 	<component class="org.eclipse.xpand2.Generator">
 		<metaModel class="org.eclipse.xtend.typesystem.emf.EmfRegistryMetaModel"/>
 		<fileEncoding value="UTF-8"/>
-		<expand value="org::eclipse::zest::dot::${templateName}::main FOR model"/>
+		<expand value="org::eclipse::zest::internal::dot::${templateName}::main FOR model"/>
 		<genPath value="${targetDir}"/>
 		<beautifier class="org.eclipse.xpand2.output.JavaBeautifier"/>
 	</component>

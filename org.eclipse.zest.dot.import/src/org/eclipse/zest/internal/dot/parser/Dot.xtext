@@ -12,9 +12,9 @@ grammar org.eclipse.zest.internal.dot.parser.Dot with org.eclipse.xtext.common.T
 
 generate dot "http://www.eclipse.org/zest/internal/dot/parser/Dot"
 
-GraphvizModel: (graphs+=DotGraph)* ;
+GraphvizModel: (graphs+=MainGraph)* ;
 
-DotGraph: (strict?="strict")? type=GraphType (name=DOT_ID)? "{" 
+MainGraph: (strict?="strict")? type=GraphType (name=DOT_ID)? "{" 
 	(stmts+=Stmt)* 
 "}";
 

@@ -8,28 +8,28 @@
  *******************************************************************************/
 package org.eclipse.zest.internal.dot;
 
+import java.io.File;
+
 import junit.framework.Assert;
 
-import org.eclipse.core.runtime.Platform;
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
+import org.junit.Test;
 
 /**
- * Main test suite for the {@code org.eclipse.zest.dot.ui} bundle.
+ * Tests for the {@link DotAst} class.
  * 
  * @author Fabian Steeg (fsteeg)
  */
-@RunWith(Suite.class)
-@Suite.SuiteClasses({ /* TestExperimentalDotImport.class, //not passing and experimental */
-TestZestGraphTemplate.class, TestZestGraphWizard.class,
-		TestZestProjectWizard.class, TestDotDirStore.class,
-		TestDotExtractor.class, TestZestGraphView.class })
-public final class DotUiSuite {
-	@Before
-	public void setup() {
-		if (!Platform.isRunning()) {
-			Assert.fail("Please run as JUnit Plug-in test"); //$NON-NLS-1$
-		}
+public class TestDotAst {
+	private static final DotAst DOT_AST = new DotAst(new File(
+			"resources/input/sample_input.dot")); //$NON-NLS-1$
+
+	@Test
+	public void parseName() {
+		Assert.assertEquals("SampleGraph", DOT_AST.graphName()); //$NON-NLS-1$
+	}
+
+	@Test
+	public void parseErrors() {
+		Assert.assertEquals(0, DOT_AST.errors().size());
 	}
 }

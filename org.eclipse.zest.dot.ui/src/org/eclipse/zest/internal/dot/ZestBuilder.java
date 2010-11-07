@@ -27,7 +27,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.zest.dot.DotImport;
 
 /**
  * Zest project builder. Imports the DOT files in a dedicated folder

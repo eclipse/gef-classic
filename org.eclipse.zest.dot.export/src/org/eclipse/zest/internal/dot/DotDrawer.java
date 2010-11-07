@@ -6,7 +6,7 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,26 +16,25 @@ import java.util.Arrays;
 /**
  * Class for drawing dot graphs by calling the dot executable.
  * 
- * @author fsteeg
+ * @author Fabian Steeg (fsteeg)
  */
 final class DotDrawer {
 	private DotDrawer() {/* Enforce non-instantiability */
 	}
 
-	/**
-	 * Calls dot to render an image from the given DOT file, in the given
-	 * format.
-	 * 
-	 * @return The generated image file
-	 */
-	public static File renderImage(final File dotExecutableDir,
-			final File dotInputFile, final String format) {
+	static File renderImage(final File dotExecutableDir,
+			final File dotInputFile, final String format,
+			final String imageResultFile) {
 		String outputFormat = "-T" + format; //$NON-NLS-1$
-		String resultFile = dotInputFile.getName() + "." + format; //$NON-NLS-1$
+		String resultFile = imageResultFile == null ? dotInputFile.getName()
+				+ "." + format : imageResultFile; //$NON-NLS-1$
 		String dotFile = dotInputFile.getName();
 		String inputFolder = new File(dotInputFile.getParent())
 				.getAbsolutePath() + File.separator;
-		String outputFolder = inputFolder;
+		String outputFolder = imageResultFile == null ? inputFolder : new File(
+				new File(imageResultFile).getAbsolutePath()).getParentFile()
+				.getAbsolutePath()
+				+ File.separator;
 		String dotExecutable = "dot" + (runningOnWindows() ? ".exe" : ""); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 		String[] commands = new String[] {
 				dotExecutableDir.getAbsolutePath() + File.separator

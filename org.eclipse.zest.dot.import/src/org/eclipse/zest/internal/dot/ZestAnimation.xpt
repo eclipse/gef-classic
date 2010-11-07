@@ -21,9 +21,9 @@ the oAW 4.3 Xpand currently used.
 «REM» Entry point for transformation of a dot meta-model instance to a Zest source file «ENDREM»
 «DEFINE main FOR GraphvizModel-» «EXPAND dotFile FOREACH graphs» «ENDDEFINE»
 «REM» The main file putting it all together «ENDREM»
-«DEFINE dotFile FOR DotGraph»
+«DEFINE dotFile FOR MainGraph»
 	«FILE name.toFirstUpper() + ".java"-»
-	package org.eclipse.zest.dot;
+	package org.eclipse.zest.internal.dot;
 	import org.eclipse.draw2d.Animation;
 	import org.eclipse.swt.SWT;
 	import org.eclipse.swt.events.DisposeEvent;
@@ -43,6 +43,7 @@ the oAW 4.3 Xpand currently used.
 	import org.eclipse.zest.core.widgets.ZestStyles;
 	import org.eclipse.zest.layouts.LayoutStyles;
 	import org.eclipse.zest.layouts.algorithms.*;
+	import org.eclipse.zest.internal.dot.DotExport;
 	/** Zest graph generated from Graphviz DOT graph '«name»'. */
 	public class «name.toFirstUpper()» extends Graph {
 		private static String nodeLabel = null;

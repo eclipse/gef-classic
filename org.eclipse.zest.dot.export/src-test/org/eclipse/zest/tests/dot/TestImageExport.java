@@ -16,7 +16,7 @@ import java.util.Properties;
 import junit.framework.Assert;
 
 import org.eclipse.zest.core.widgets.Graph;
-import org.eclipse.zest.dot.DotExport;
+import org.eclipse.zest.internal.dot.DotExport;
 import org.junit.BeforeClass;
 
 /**
@@ -72,7 +72,7 @@ public class TestImageExport extends TestDotTemplate {
 		 * test DotExport, we also run the test in the test superclass:
 		 */
 		super.testDotGeneration(graph);
-		File image = new DotExport(graph).toImage(dotDir, "pdf"); //$NON-NLS-1$
+		File image = new DotExport(graph).toImage(dotDir, null);
 		Assert.assertNotNull("Image must not be null", image); //$NON-NLS-1$
 		System.out.println("Created image: " + image); //$NON-NLS-1$
 		Assert.assertTrue("Image must exist", image.exists()); //$NON-NLS-1$

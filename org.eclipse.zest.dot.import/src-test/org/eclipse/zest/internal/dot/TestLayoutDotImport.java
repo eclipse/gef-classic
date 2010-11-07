@@ -6,13 +6,14 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
-import static org.eclipse.zest.dot.DotImportTestUtils.RESOURCES_TESTS;
-import static org.eclipse.zest.dot.DotImportTestUtils.importFrom;
+import static org.eclipse.zest.internal.dot.DotImportTestUtils.RESOURCES_TESTS;
+import static org.eclipse.zest.internal.dot.DotImportTestUtils.importFrom;
 
 import java.io.File;
 
+import org.eclipse.zest.internal.dot.DotImport;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;

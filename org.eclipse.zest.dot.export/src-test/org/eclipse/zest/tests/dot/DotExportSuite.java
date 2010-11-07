@@ -6,30 +6,26 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot;
+package org.eclipse.zest.tests.dot;
 
-import java.io.File;
-
-import junit.framework.Assert;
-
-import org.junit.Test;
+import org.junit.BeforeClass;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 /**
- * Tests for the {@link DotAst} class.
+ * Main test suite for the {@code org.eclipse.zest.dot.export} bundle.
  * 
  * @author Fabian Steeg (fsteeg)
  */
-public class TestDotAst {
-	private static final DotAst DOT_AST = new DotAst(new File(
-			"resources/input/sample_input.dot")); //$NON-NLS-1$
-
-	@Test
-	public void parseName() {
-		Assert.assertEquals("SampleGraph", DOT_AST.graphName()); //$NON-NLS-1$
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ TestDotTemplate.class, TestDotExport.class,
+		TestImageExport.class })
+public final class DotExportSuite {
+	private DotExportSuite() { /* Enforce non-instantiability */
 	}
 
-	@Test
-	public void parseErrors() {
-		Assert.assertEquals(0, DOT_AST.errors().size());
+	@BeforeClass
+	public static void wipe() {
+		DotTestUtils.wipeOutput(TestDotExport.OUTPUT, ".dot"); //$NON-NLS-1$
 	}
 }

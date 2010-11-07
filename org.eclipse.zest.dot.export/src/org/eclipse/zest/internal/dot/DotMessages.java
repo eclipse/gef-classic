@@ -6,12 +6,12 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import org.eclipse.osgi.util.NLS;
 
 public class DotMessages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.zest.dot.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.zest.internal.dot.messages"; //$NON-NLS-1$
 	public static String GraphCreatorInterpreter_0;
 	public static String DotFileUtils_0;
 	public static String DotImport_0;

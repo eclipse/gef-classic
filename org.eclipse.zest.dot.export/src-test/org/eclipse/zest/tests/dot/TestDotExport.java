@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphContainer;
 import org.eclipse.zest.core.widgets.GraphNode;
-import org.eclipse.zest.dot.DotExport;
+import org.eclipse.zest.internal.dot.DotExport;
 import org.junit.Test;
 
 /**
@@ -59,15 +59,15 @@ public class TestDotExport extends TestDotTemplate {
 		Graph graph = new Graph(new Shell(), SWT.NONE);
 		GraphContainer container = new GraphContainer(graph, SWT.NONE);
 		GraphNode node = new GraphNode(container, SWT.NONE);
-		String nodeLabel = "Node in container";
-		String containerLabel = "Container label";
+		String nodeLabel = "Node in container"; //$NON-NLS-1$
+		String containerLabel = "Container label"; //$NON-NLS-1$
 		node.setText(nodeLabel);
 		container.setText(containerLabel);
 		String dot = new DotExport(graph).toDotString();
 		Assert.assertTrue(
-				"While not supported, containers should be ignored instead of being rendered as additional nodes",
+				"While not supported, containers should be ignored instead of being rendered as additional nodes", //$NON-NLS-1$
 				!dot.contains(containerLabel));
-		Assert.assertTrue("Nodes in containers should be rendered",
+		Assert.assertTrue("Nodes in containers should be rendered", //$NON-NLS-1$
 				dot.contains(nodeLabel));
 	}
 

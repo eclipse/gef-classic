@@ -6,7 +6,7 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import junit.framework.Assert;
 
@@ -17,6 +17,8 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.ZestStyles;
+import org.eclipse.zest.internal.dot.DotImport;
+import org.eclipse.zest.internal.dot.GraphCreatorInterpreter;
 import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.junit.Test;

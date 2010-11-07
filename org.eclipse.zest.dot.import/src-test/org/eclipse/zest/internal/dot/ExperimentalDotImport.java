@@ -7,7 +7,7 @@
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
 
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

@@ -7,7 +7,7 @@
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
 
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -24,17 +24,17 @@ import org.eclipse.zest.core.widgets.GraphContainer;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.IContainer;
 import org.eclipse.zest.core.widgets.ZestStyles;
-import org.eclipse.zest.dot.DotAst.Layout;
-import org.eclipse.zest.dot.DotAst.Style;
+import org.eclipse.zest.internal.dot.DotAst.Layout;
+import org.eclipse.zest.internal.dot.DotAst.Style;
 import org.eclipse.zest.internal.dot.parser.dot.AList;
 import org.eclipse.zest.internal.dot.parser.dot.AttrList;
 import org.eclipse.zest.internal.dot.parser.dot.AttrStmt;
 import org.eclipse.zest.internal.dot.parser.dot.Attribute;
 import org.eclipse.zest.internal.dot.parser.dot.AttributeType;
-import org.eclipse.zest.internal.dot.parser.dot.DotGraph;
 import org.eclipse.zest.internal.dot.parser.dot.EdgeRhsNode;
 import org.eclipse.zest.internal.dot.parser.dot.EdgeStmtNode;
 import org.eclipse.zest.internal.dot.parser.dot.GraphType;
+import org.eclipse.zest.internal.dot.parser.dot.MainGraph;
 import org.eclipse.zest.internal.dot.parser.dot.NodeId;
 import org.eclipse.zest.internal.dot.parser.dot.NodeStmt;
 import org.eclipse.zest.internal.dot.parser.dot.Stmt;
@@ -50,7 +50,7 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
  * 
  * @author Fabian Steeg (fsteeg)
  */
-final class GraphCreatorInterpreter extends DotSwitch<Object> {
+public final class GraphCreatorInterpreter extends DotSwitch<Object> {
 
 	private Map<String, GraphNode> nodes = new HashMap<String, GraphNode>();
 	private Graph graph;
@@ -67,10 +67,10 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 		return create(dotAst, new Graph(parent, style));
 	}
 
-	Graph create(DotAst dotAst, Graph graph) {
+	public Graph create(DotAst dotAst, Graph graph) {
 		if (dotAst.errors().size() > 0) {
 			throw new IllegalArgumentException(String.format(
-					DotMessages.GraphCreatorInterpreter_0 + ": %s", dotAst
+					DotMessages.GraphCreatorInterpreter_0 + ": %s", dotAst //$NON-NLS-1$
 							.errors().toString()));
 		}
 		this.graph = graph;
@@ -84,9 +84,9 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 	}
 
 	@Override
-	public Object caseDotGraph(DotGraph object) {
+	public Object caseMainGraph(MainGraph object) {
 		createGraph(object);
-		return super.caseDotGraph(object);
+		return super.caseMainGraph(object);
 	}
 
 	@Override
@@ -100,7 +100,7 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 			HorizontalTreeLayoutAlgorithm algorithm = new HorizontalTreeLayoutAlgorithm(
 					LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 			currentParentGraph().setLayoutAlgorithm(algorithm, true);
-		} else if (currentSubgraph != null && object.getName().equals("label")) {
+		} else if (currentSubgraph != null && object.getName().equals("label")) { //$NON-NLS-1$
 			currentSubgraph.setText(object.getValue());
 		}
 		return super.caseAttribute(object);
@@ -144,11 +144,11 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 				}
 				/* Set the optional style, if set in the DOT input: */
 				if (currentEdgeStyleValue != null) {
-					Style v = Style.valueOf(Style.class,
+					Style v = Enum.valueOf(Style.class,
 							currentEdgeStyleValue.toUpperCase());
 					graphConnection.setLineStyle(v.style);
 				} else if (globalEdgeStyle != null) {
-					Style v = Style.valueOf(Style.class,
+					Style v = Enum.valueOf(Style.class,
 							globalEdgeStyle.toUpperCase());
 					graphConnection.setLineStyle(v.style);
 				}
@@ -178,7 +178,7 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 		 * Graphviz DOT naming convention for cluster subgraphs, see
 		 * http://www.graphviz.org/doc/info/lang.html
 		 */
-		if (object.getName() != null && object.getName().startsWith("cluster")) {
+		if (object.getName() != null && object.getName().startsWith("cluster")) { //$NON-NLS-1$
 			layoutSubgraph();
 			currentSubgraph = new GraphContainer(graph, SWT.NONE);
 			currentSubgraph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
@@ -202,7 +202,7 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 		return currentSubgraph != null ? currentSubgraph : graph;
 	}
 
-	private void createGraph(DotGraph object) {
+	private void createGraph(MainGraph object) {
 		graph.setLayoutAlgorithm(new TreeLayoutAlgorithm(
 				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		GraphType graphType = object.getType();
@@ -225,7 +225,7 @@ final class GraphCreatorInterpreter extends DotSwitch<Object> {
 		case GRAPH: {
 			String graphLayout = getAttributeValue(attrStmt, "layout"); //$NON-NLS-1$
 			if (graphLayout != null) {
-				Layout layout = Layout.valueOf(Layout.class,
+				Layout layout = Enum.valueOf(Layout.class,
 						graphLayout.toUpperCase());
 				currentParentGraph().setLayoutAlgorithm(layout.algorithm, true);
 			}

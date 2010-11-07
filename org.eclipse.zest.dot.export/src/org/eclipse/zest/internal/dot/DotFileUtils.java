@@ -22,7 +22,6 @@ import java.net.URL;
 import java.util.Scanner;
 
 import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.zest.dot.DotMessages;
 
 /**
  * Static helper methods for working with files.

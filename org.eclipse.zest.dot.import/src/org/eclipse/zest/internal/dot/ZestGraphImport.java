@@ -6,7 +6,7 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
@@ -18,7 +18,7 @@ import org.eclipse.zest.core.widgets.GraphNode;
  * 
  * @author Fabian Steeg (fsteeg)
  */
-class ZestGraphImport {
+final class ZestGraphImport {
 	private Graph graphFromDot;
 
 	/**

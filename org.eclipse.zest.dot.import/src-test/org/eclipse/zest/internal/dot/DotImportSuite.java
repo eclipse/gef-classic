@@ -6,30 +6,29 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest;
+package org.eclipse.zest.internal.dot;
 
 import org.eclipse.zest.tests.dot.DotTestUtils;
-import org.eclipse.zest.tests.dot.TestDotExport;
-import org.eclipse.zest.tests.dot.TestDotTemplate;
-import org.eclipse.zest.tests.dot.TestImageExport;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 /**
- * Main test suite for the {@code org.eclipse.zest.dot.export} bundle.
+ * Main test suite for the {@code org.eclipse.zest.dot.import} bundle.
  * 
  * @author Fabian Steeg (fsteeg)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ TestDotTemplate.class, TestDotExport.class,
-		TestImageExport.class })
-public final class DotExportSuite {
-	private DotExportSuite() { /* Enforce non-instantiability */
+@Suite.SuiteClasses({ TestBasicDotImport.class, TestLayoutDotImport.class,
+		TestAnimationDotImport.class, TestGraphInstanceDotImport.class,
+		TestSnippetDotImport.class, TestDot.class, TestBatchDotImport.class,
+		TestDotAst.class, SampleUsage.class })
+public final class DotImportSuite {
+	private DotImportSuite() { /* Enforce non-instantiability */
 	}
 
 	@BeforeClass
 	public static void wipe() {
-		DotTestUtils.wipeOutput(TestDotExport.OUTPUT, ".dot"); //$NON-NLS-1$
+		DotTestUtils.wipeOutput(DotImportTestUtils.OUTPUT, ".java"); //$NON-NLS-1$
 	}
 }

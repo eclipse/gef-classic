@@ -6,8 +6,9 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
+import org.eclipse.zest.internal.dot.DotImport;
 import org.junit.Test;
 
 /**

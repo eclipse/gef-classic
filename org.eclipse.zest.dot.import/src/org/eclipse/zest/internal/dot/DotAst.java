@@ -6,7 +6,7 @@
  * <p/>
  * Contributors: Fabian Steeg - initial API and implementation; see bug 277380
  *******************************************************************************/
-package org.eclipse.zest.dot;
+package org.eclipse.zest.internal.dot;
 
 import java.io.File;
 import java.io.IOException;
@@ -111,7 +111,7 @@ final class DotAst {
 		while (i.hasNext()) {
 			Diagnostic next = i.next();
 			result.add(String.format(
-					DotMessages.DotAst_0 + " %s: %s ", next.getLine(), //$NON-NLS-2$
+					DotMessages.DotAst_0 + " %s: %s ", next.getLine(), //$NON-NLS-1$
 					next.getMessage()));
 		}
 		return result;

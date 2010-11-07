@@ -43,7 +43,6 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.zest.DotUiMessages;
-import org.eclipse.zest.dot.DotImport;
 
 /**
  * This is a Zest Graph new wizard. Its role is to create a new Zest Graph

@@ -35,7 +35,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ContainerSelectionDialog;
 import org.eclipse.zest.DotUiMessages;
 import org.eclipse.zest.core.widgets.Graph;
-import org.eclipse.zest.dot.DotImport;
 
 /**
  * This wizard page allows setting the container for the new Zest graph and the

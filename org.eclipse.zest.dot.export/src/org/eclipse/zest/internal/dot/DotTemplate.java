@@ -2,7 +2,6 @@ package org.eclipse.zest.internal.dot;
 
 import org.eclipse.zest.core.widgets.*;
 import org.eclipse.swt.SWT;
-import org.eclipse.zest.dot.*;
 import org.eclipse.zest.layouts.algorithms.HorizontalTreeLayoutAlgorithm;
 
 public class DotTemplate

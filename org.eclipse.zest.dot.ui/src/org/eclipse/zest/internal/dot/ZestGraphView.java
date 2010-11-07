@@ -41,6 +41,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorRegistry;
@@ -52,8 +53,6 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.zest.DotUiMessages;
 import org.eclipse.zest.core.widgets.Graph;
-import org.eclipse.zest.dot.DotExport;
-import org.eclipse.zest.dot.DotImport;
 
 /**
  * View showing the Zest import for a DOT input. Listens to *.dot files and
@@ -328,10 +327,18 @@ public final class ZestGraphView extends ViewPart {
 				|| currentDot.equals(DotExtractor.NO_DOT)) {
 			return;
 		}
-		dotString = currentDot;
-		getViewSite().getShell().getDisplay().asyncExec(new Runnable() {
+		setGraph(currentDot, true);
+	}
+
+	Graph getGraph() {
+		return graph;
+	}
+
+	void setGraph(final String dot, boolean async) {
+		dotString = dot;
+		Runnable runnable = new Runnable() {
 			public void run() {
-				updateZestGraph(currentDot);
+				updateZestGraph(dot);
 			}
 
 			private void updateZestGraph(final String currentDot) {
@@ -358,7 +365,13 @@ public final class ZestGraphView extends ViewPart {
 				}
 				handleWikiText(currentDot);
 			}
-		});
+		};
+		Display display = getViewSite().getShell().getDisplay();
+		if (async) {
+			display.asyncExec(runnable);
+		} else {
+			display.syncExec(runnable);
+		}
 	}
 
 	private boolean dotExtraction() {
@@ -369,6 +382,9 @@ public final class ZestGraphView extends ViewPart {
 	}
 
 	private void handleWikiText(final String dot) {
+		if (file == null) {
+			return;
+		}
 		try {
 			IEditorDescriptor editor = IDE.getEditorDescriptor(file);
 			/*
@@ -442,7 +458,7 @@ public final class ZestGraphView extends ViewPart {
 			final String format) {
 		DotExport dotExport = exportFromZestGraph ? new DotExport(graph)
 				: new DotExport(dotString);
-		File image = dotExport.toImage(DotDirStore.getDotDirPath(), format);
+		File image = dotExport.toImage(DotDirStore.getDotDirPath(), null);
 		try {
 			URL url = file.getParent().getLocationURI().toURL();
 			File copy = DotFileUtils.copySingleFile(DotFileUtils.resolve(url),

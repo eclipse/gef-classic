@@ -13,8 +13,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
-import org.eclipse.zest.dot.DotExport;
-import org.eclipse.zest.dot.DotImport;
+import org.eclipse.zest.internal.dot.DotExport;
+import org.eclipse.zest.internal.dot.DotImport;
 
 /**
  * Overall API sample usage.
@@ -52,7 +52,7 @@ public class SampleApiUsage {
 		String dot = exporter.toDotString();
 		System.out.println(dot);
 		/* Or to an image file, via a given Graphviz installation (TODO set): */
-		File image = exporter.toImage("/opt/local/bin", "pdf");
+		File image = exporter.toImage("/opt/local/bin", null);
 		System.out.println(image);
 
 		/*****************************************************************/

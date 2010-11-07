@@ -37,8 +37,8 @@ Workflow {
 			fragment = resourceFactory.ResourceFactoryFragment { fileExtensions = file.extensions }
 			// the following fragments use the Antlr Generator fragment which 
 			// can be installed via update manager from http://download.itemis.com/updates/
-			fragment = de.itemis.xtext.antlr.XtextAntlrUiGeneratorFragment { options = { backtrack=true } }
-            fragment = de.itemis.xtext.antlr.XtextAntlrGeneratorFragment { options = { backtrack=true } }
+			fragment = parser.antlr.XtextAntlrUiGeneratorFragment { options = { backtrack=true } }
+            fragment = parser.antlr.XtextAntlrGeneratorFragment { options = { backtrack=true } }
 			// java-based API for validation 
 			fragment = validation.JavaValidatorFragment {
                 composedCheck = "org.eclipse.xtext.validation.ImportUriValidator"
