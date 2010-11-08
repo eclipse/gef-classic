@@ -154,7 +154,9 @@ public class SelectionTool extends TargetingTool {
 	protected EditPartViewer.Conditional getTargetingConditional() {
 		return new EditPartViewer.Conditional() {
 			public boolean evaluate(EditPart editpart) {
-				return editpart.isSelectable();
+				EditPart targetEditPart = editpart
+						.getTargetEditPart(getTargetRequest());
+				return targetEditPart != null && targetEditPart.isSelectable();
 			}
 		};
 	}
