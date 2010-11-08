@@ -39,7 +39,7 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
  * 
  * @author Fabian Steeg (fsteeg)
  */
-final class DotAst {
+public final class DotAst {
 
 	private static final int STYLE = LayoutStyles.NO_LAYOUT_NODE_RESIZING;
 
@@ -77,7 +77,7 @@ final class DotAst {
 	 * @param dotFile
 	 *            The DOT file to parse
 	 */
-	DotAst(final File dotFile) {
+	public DotAst(final File dotFile) {
 		this.resource = loadResource(dotFile);
 	}
 
@@ -86,7 +86,7 @@ final class DotAst {
 	 *            The DOT file to parse
 	 * @return The name of the DOT graph described in the given file
 	 */
-	String graphName() {
+	public String graphName() {
 		EObject graph = graph();
 		Iterator<EAttribute> graphAttributes = graph.eClass()
 				.getEAllAttributes().iterator();
@@ -104,7 +104,7 @@ final class DotAst {
 	/**
 	 * @return The errors reported by the parser when parsing the given file
 	 */
-	List<String> errors() {
+	public List<String> errors() {
 		List<String> result = new ArrayList<String>();
 		EList<Diagnostic> errors = resource.getErrors();
 		Iterator<Diagnostic> i = errors.iterator();

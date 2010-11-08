@@ -175,6 +175,50 @@ public final class ZestGraphView extends ViewPart {
 		addExportButton();
 	}
 
+	public Graph getGraph() {
+		return graph;
+	}
+
+	public void setGraph(final String dot, boolean async) {
+		dotString = dot;
+		Runnable runnable = new Runnable() {
+			public void run() {
+				updateZestGraph(dot);
+			}
+
+			private void updateZestGraph(final String currentDot) {
+				if (graph != null) {
+					graph.dispose();
+				}
+				if (composite != null) {
+					DotImport dotImport = new DotImport(dotString);
+					if (dotImport.getErrors().size() > 0) {
+						String message = String.format(
+								"Could not import DOT: %s, DOT: %s", //$NON-NLS-1$
+								dotImport.getErrors(), dotString);
+						DotUiActivator
+								.getDefault()
+								.getLog()
+								.log(new Status(Status.ERROR,
+										DotUiActivator.PLUGIN_ID, message));
+						return;
+					}
+					graph = dotImport.newGraphInstance(composite, SWT.NONE);
+					setupLayout();
+					composite.layout();
+					graph.applyLayout();
+				}
+				handleWikiText(currentDot);
+			}
+		};
+		Display display = getViewSite().getShell().getDisplay();
+		if (async) {
+			display.asyncExec(runnable);
+		} else {
+			display.syncExec(runnable);
+		}
+	}
+
 	private void addUpdateModeButton() {
 		Action toggleUpdateModeAction = new Action(UPDATE_MODE, SWT.TOGGLE) {
 			public void run() {
@@ -328,50 +372,6 @@ public final class ZestGraphView extends ViewPart {
 			return;
 		}
 		setGraph(currentDot, true);
-	}
-
-	Graph getGraph() {
-		return graph;
-	}
-
-	void setGraph(final String dot, boolean async) {
-		dotString = dot;
-		Runnable runnable = new Runnable() {
-			public void run() {
-				updateZestGraph(dot);
-			}
-
-			private void updateZestGraph(final String currentDot) {
-				if (graph != null) {
-					graph.dispose();
-				}
-				if (composite != null) {
-					DotImport dotImport = new DotImport(dotString);
-					if (dotImport.getErrors().size() > 0) {
-						String message = String.format(
-								"Could not import DOT: %s, DOT: %s", //$NON-NLS-1$
-								dotImport.getErrors(), dotString);
-						DotUiActivator
-								.getDefault()
-								.getLog()
-								.log(new Status(Status.ERROR,
-										DotUiActivator.PLUGIN_ID, message));
-						return;
-					}
-					graph = dotImport.newGraphInstance(composite, SWT.NONE);
-					setupLayout();
-					composite.layout();
-					graph.applyLayout();
-				}
-				handleWikiText(currentDot);
-			}
-		};
-		Display display = getViewSite().getShell().getDisplay();
-		if (async) {
-			display.asyncExec(runnable);
-		} else {
-			display.syncExec(runnable);
-		}
 	}
 
 	private boolean dotExtraction() {

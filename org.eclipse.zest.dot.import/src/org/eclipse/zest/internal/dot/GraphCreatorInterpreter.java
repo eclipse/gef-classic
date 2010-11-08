@@ -63,7 +63,7 @@ public final class GraphCreatorInterpreter extends DotSwitch<Object> {
 	private GraphContainer currentSubgraph;
 	private boolean gotSource;
 
-	Graph create(Composite parent, int style, DotAst dotAst) {
+	public Graph create(Composite parent, int style, DotAst dotAst) {
 		return create(dotAst, new Graph(parent, style));
 	}
 

@@ -24,12 +24,13 @@ import org.eclipse.zest.DotUiMessages;
  * 
  * @author Fabian Steeg (fsteeg)
  */
-final class DotDirStore {
+public final class DotDirStore {
 
 	private DotDirStore() {/* Enforce non-instantiability */
 	}
 
-	static final String DOTPATH_KEY = DotUiActivator.PLUGIN_ID + ".dotpath"; //$NON-NLS-1$
+	public static final String DOTPATH_KEY = DotUiActivator.PLUGIN_ID
+			+ ".dotpath"; //$NON-NLS-1$
 
 	private enum Caption {
 		DOT_SELECT_SHORT(DotUiMessages.DotDirStore_0), /***/
@@ -44,7 +45,7 @@ final class DotDirStore {
 	}
 
 	/** @return The path to the folder containing the local 'dot' executable */
-	static String getDotDirPath() {
+	public static String getDotDirPath() {
 		if (dotPathFromPreferences().length() == 0) {
 			setDotDirPath(); // set the preferences
 		}
@@ -52,7 +53,7 @@ final class DotDirStore {
 	}
 
 	/** Sets the path to the local 'dot' executable based on user selection. */
-	static void setDotDirPath() {
+	public static void setDotDirPath() {
 		IWorkbenchWindow parent = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 		DirectoryDialog dialog = new DirectoryDialog(parent.getShell());
