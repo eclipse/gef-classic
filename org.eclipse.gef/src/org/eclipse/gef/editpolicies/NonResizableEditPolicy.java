@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FocusBorder;
 import org.eclipse.draw2d.Graphics;
@@ -148,12 +149,11 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 		if (isDragAllowed()) {
 			// display 'move' handle to allow dragging
 			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(),
-					handles);
+					handles, createDragTracker(), Cursors.SIZEALL);
 		} else {
 			// display 'move' handle only to indicate selection
 			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(),
-					handles, new SelectEditPartTracker(getHost()),
-					SharedCursors.ARROW);
+					handles, createSelectTracker(), SharedCursors.ARROW);
 		}
 	}
 
