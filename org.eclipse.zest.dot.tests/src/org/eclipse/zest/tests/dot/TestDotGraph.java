@@ -8,6 +8,7 @@
  *******************************************************************************/
 package org.eclipse.zest.tests.dot;
 
+import static org.junit.Assert.assertEquals;
 import junit.framework.Assert;
 
 import org.eclipse.swt.SWT;
@@ -22,7 +23,7 @@ import org.junit.Test;
  * 
  * @author Fabian Steeg (fsteeg)
  */
-public final class TestDot {
+public final class TestDotGraph {
 
 	@Test
 	public void sampleUsage() {
@@ -34,6 +35,14 @@ public final class TestDot {
 		graph.add("edge[style=dashed]; 3->5; 4->6"); //$NON-NLS-1$
 		assertNodesEdgesCount(6, 5, graph);
 		// open(shell);
+	}
+
+	@Test
+	public void graphAttributesToDataMapping() {
+		String dotInput = "digraph{ graph[key1=graph_value1 key2=graph_value2]; 1->2 }";
+		DotGraph graph = new DotGraph(dotInput, new Shell(), SWT.NONE);
+		assertEquals("graph_value1", graph.getGraph().getData("key1"));
+		assertEquals("graph_value2", graph.getGraph().getData("key2"));
 	}
 
 	private void assertNodesEdgesCount(int n, int e, Graph graph) {

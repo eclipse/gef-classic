@@ -223,6 +223,9 @@ public final class GraphCreatorInterpreter extends DotSwitch<Object> {
 			break;
 		}
 		case GRAPH: {
+			for (AList a : attrStmt.getAttributes().get(0).getA_list()) {
+				graph.setData(a.getName(), a.getValue());
+			}
 			String graphLayout = getAttributeValue(attrStmt, "layout"); //$NON-NLS-1$
 			if (graphLayout != null) {
 				Layout layout = Enum.valueOf(Layout.class,
