@@ -180,6 +180,14 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 	 */
 	static final int MODIFIER_NO_SNAPPING;
 
+	static {
+		if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+			MODIFIER_NO_SNAPPING = SWT.CTRL;
+		} else {
+			MODIFIER_NO_SNAPPING = SWT.ALT;
+		}
+	}
+
 	private long accessibleBegin;
 
 	private int accessibleStep;
@@ -197,14 +205,6 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 	private EditDomain domain;
 	private List operationSet;
 	private int startX, startY, state;
-
-	static {
-		if (Platform.OS_MACOSX.equals(Platform.getOS())) {
-			MODIFIER_NO_SNAPPING = SWT.CTRL;
-		} else {
-			MODIFIER_NO_SNAPPING = SWT.ALT;
-		}
-	}
 
 	boolean acceptAbort(KeyEvent e) {
 		return e.character == SWT.ESC;

@@ -62,6 +62,11 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 			MODIFIER_CLONE = SWT.CTRL;
 	}
 
+	/**
+	 * Key modifier for constrained move. It's SHIFT on all platforms.
+	 */
+	static final int MODIFIER_CONSTRAINED_MOVE = SWT.SHIFT;
+
 	private static final int FLAG_SOURCE_FEEDBACK = SelectEditPartTracker.MAX_FLAG << 1;
 	/** Max flag */
 	protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
@@ -607,9 +612,13 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		request.setEditParts(getOperationSet());
 		Dimension delta = getDragMoveDelta();
 
+		request.setConstrainedMove(getCurrentInput().isModKeyDown(
+				MODIFIER_CONSTRAINED_MOVE));
+		request.setSnapToEnabled(!getCurrentInput().isModKeyDown(
+				MODIFIER_NO_SNAPPING));
+
 		// constrains the move to dx=0, dy=0, or dx=dy if shift is depressed
-		if (getCurrentInput().isShiftKeyDown()) {
-			request.setConstrainedMove(true);
+		if (request.isConstrainedMove()) {
 			float ratio = 0;
 
 			if (delta.width != 0)
@@ -634,15 +643,11 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 				else
 					delta.width = 0;
 			}
-		} else
-			request.setConstrainedMove(false);
+		}
 
 		Point moveDelta = new Point(delta.width, delta.height);
 		request.getExtendedData().clear();
 		request.setMoveDelta(moveDelta);
-
-		request.setSnapToEnabled(!getCurrentInput().isModKeyDown(
-				MODIFIER_NO_SNAPPING));
 		snapPoint(request);
 
 		request.setLocation(getLocation());

@@ -43,6 +43,16 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  */
 public class ResizeTracker extends SimpleDragTracker {
 
+	/**
+	 * Key modifier for centered resizing. It's ALT on all platforms.
+	 */
+	static final int MODIFIER_CENTERED_RESIZE = SWT.ALT;
+
+	/**
+	 * Key modifier for constrained resizing. It's SHIFT on all platforms.
+	 */
+	static final int MODIFIER_CONSTRAINED_RESIZE = SWT.SHIFT;
+
 	private static int FLAG_TARGET_FEEDBACK = SimpleDragTracker.MAX_FLAG << 1;
 
 	/**
@@ -277,7 +287,14 @@ public class ResizeTracker extends SimpleDragTracker {
 		Point moveDelta = new Point(0, 0);
 		Dimension resizeDelta = new Dimension(0, 0);
 
-		if (getCurrentInput().isShiftKeyDown() && owner != null) {
+		request.setConstrainedResize(getCurrentInput().isModKeyDown(
+				MODIFIER_CONSTRAINED_RESIZE));
+		request.setCenteredResize(getCurrentInput().isModKeyDown(
+				MODIFIER_CENTERED_RESIZE));
+		request.setSnapToEnabled(!getCurrentInput().isModKeyDown(
+				MODIFIER_NO_SNAPPING));
+
+		if (request.isConstrainedResize() && owner != null) {
 			request.setConstrainedResize(true);
 
 			int origHeight = owner.getFigure().getBounds().height;
@@ -308,10 +325,7 @@ public class ResizeTracker extends SimpleDragTracker {
 				else
 					d.height = -(int) (d.width * ratio);
 			}
-		} else
-			request.setConstrainedResize(false);
-
-		request.setCenteredResize(getCurrentInput().isModKeyDown(SWT.MOD1));
+		}
 
 		if ((getResizeDirection() & PositionConstants.NORTH) != 0) {
 			if (request.isCenteredResize()) {
@@ -346,8 +360,6 @@ public class ResizeTracker extends SimpleDragTracker {
 		request.setSizeDelta(resizeDelta);
 		request.setLocation(location);
 		request.setEditParts(getOperationSet());
-		request.setSnapToEnabled(!getCurrentInput().isModKeyDown(
-				MODIFIER_NO_SNAPPING));
 		request.getExtendedData().clear();
 		request.setResizeDirection(getResizeDirection());
 
