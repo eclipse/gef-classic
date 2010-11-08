@@ -412,7 +412,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 *            The request to validate
 	 * @since 3.7
 	 */
-	public void enforceConstraintsForResize(
+	protected void enforceConstraintsForResize(
 			ChangeBoundsRequest changeBoundsRequest) {
 		// adjust request, so that minimum and maximum size constraints are
 		// respected
