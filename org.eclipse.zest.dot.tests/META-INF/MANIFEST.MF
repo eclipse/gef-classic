@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: DOT for Zest Tests
 Bundle-SymbolicName: org.eclipse.zest.dot.tests
-Bundle-Version: 0.9.1.qualifier
+Bundle-Version: 0.10.0.qualifier
 Bundle-Activator: org.eclipse.zest.tests.dot.DotUiTestsActivator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

@@ -11,11 +11,11 @@ digraph dependencies{
 	node[shape=box width=3]
 	edge[]
 	zest[label="org.eclipse.zest.*"]
-	xtext[label="Xtext, Xpand, MWE"]
+	xtext[label="Xtext, MWE"]
 	ui[label="org.eclipse.ui, ..."]
 	subgraph cluster_0{
 		//label="dot4zest"
-		import[label="org.eclipse.zest.dot.import"]
+		import[label="org.eclipse.zest.dot.core"]
 		export[label="org.eclipse.zest.dot.export"]
 		dotui[label="org.eclipse.zest.dot.ui"]
 	}

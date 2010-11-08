@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.eclipse.zest.dot.core
 Bundle-SymbolicName: org.eclipse.zest.dot.core;singleton:=true
-Bundle-Version: 0.9.1.qualifier
+Bundle-Version: 0.10.0.qualifier
 Require-Bundle: org.eclipse.zest.dot.export;visibility:=reexport,
  org.eclipse.core.resources;visibility:=reexport,
  org.eclipse.core.runtime;visibility:=reexport,
@@ -32,3 +32,4 @@ Export-Package: org.eclipse.zest.dot,
  org.eclipse.zest.internal.dot.parser.services,
  org.eclipse.zest.internal.dot.parser.validation
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Import-Package: org.apache.log4j

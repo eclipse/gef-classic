@@ -10,8 +10,8 @@ digraph Overview {
     node[shape=box width="1.2" height="0.6"]
     dotlang[label="DOT\nlanguage"]
     dotmm[label="DOT\nmeta model"]
-    zest[label="Zest"]
-    dotmm -> dotlang [label="Xtext" dir="back"]
-    dotmm -> zest [label="Xpand"]
-    zest -> dotlang[label=" JET" dir="back" constraint="false"]    
+    zest[label="Zest\nobject model"]
+    dotmm -> dotlang [label=" Xtext " dir="back"]
+    dotmm -> zest [label=" EMF "]
+    zest -> dotlang[label="  JET" dir="back" constraint="false"]    
 }
