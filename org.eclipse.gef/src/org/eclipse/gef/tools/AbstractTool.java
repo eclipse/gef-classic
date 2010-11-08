@@ -1086,8 +1086,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 		getCurrentInput().setInput(me);
 		getCurrentInput().setMouseButton(me.button, true);
 
-		startX = me.x;
-		startY = me.y;
+		setStartLocation(new Point(me.x, me.y));
 
 		handleButtonDown(me.button);
 	}
