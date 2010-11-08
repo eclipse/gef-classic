@@ -13,7 +13,6 @@ import static org.eclipse.zest.internal.dot.DotImportTestUtils.importFrom;
 
 import java.io.File;
 
-import org.eclipse.zest.internal.dot.DotImport;
 import org.eclipse.zest.layouts.algorithms.GridLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.RadialLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
@@ -61,15 +60,6 @@ public final class TestLayoutDotImport {
 	@Test
 	public void gridLayout() {
 		importFrom(new File(RESOURCES_TESTS + "layout_grid_graph.dot")); //$NON-NLS-1$
-	}
-
-	/**
-	 * Test execution of File-based DOT-to-Zest transformations for a graph
-	 * using a {@link CustomLayoutAlgorithm}.
-	 */
-	@Test
-	public void customLayout() {
-		importFrom(new File(RESOURCES_TESTS + "layout_custom_graph.dot")); //$NON-NLS-1$
 	}
 
 }

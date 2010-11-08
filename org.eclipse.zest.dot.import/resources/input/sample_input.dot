@@ -35,8 +35,5 @@ digraph SampleGraph {
 	1->2[label="style=dashed" style=dashed]
 	2->3[label="style=dotted" style=dotted]
 	3->4
-	/* Zest supports dashed-dotted style, so we map to that using both (this 
-	   is not supported by Graphviz, which renders the line solid). */
-	3->5[label="dotted+dashed" style="dotted dashed"]
 	/*-------------------------------------------------------------------------*/
 }

@@ -16,7 +16,6 @@ import java.io.File;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.zest.internal.dot.DotImport;
 import org.junit.Test;
 
 /**
@@ -119,6 +118,6 @@ public final class TestBasicDotImport {
 	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void faultyGraphClass() {
-		new DotImport("graph Sample{").newGraphSubclass();
+		new DotImport("graph Sample{").newGraphInstance(new Shell(), SWT.NONE);
 	}
 }

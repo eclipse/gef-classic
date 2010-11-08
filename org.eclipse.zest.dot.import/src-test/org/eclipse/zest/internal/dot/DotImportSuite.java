@@ -8,8 +8,6 @@
  *******************************************************************************/
 package org.eclipse.zest.internal.dot;
 
-import org.eclipse.zest.tests.dot.DotTestUtils;
-import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -21,14 +19,9 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ TestBasicDotImport.class, TestLayoutDotImport.class,
 		TestAnimationDotImport.class, TestGraphInstanceDotImport.class,
-		TestSnippetDotImport.class, TestDot.class, TestBatchDotImport.class,
-		TestDotAst.class, SampleUsage.class })
+		TestSnippetDotImport.class, TestDot.class, TestDotAst.class,
+		SampleUsage.class })
 public final class DotImportSuite {
 	private DotImportSuite() { /* Enforce non-instantiability */
-	}
-
-	@BeforeClass
-	public static void wipe() {
-		DotTestUtils.wipeOutput(DotImportTestUtils.OUTPUT, ".java"); //$NON-NLS-1$
 	}
 }

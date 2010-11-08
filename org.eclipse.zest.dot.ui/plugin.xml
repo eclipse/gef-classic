@@ -1,101 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-    <extension
-         point="org.eclipse.ui.newWizards">
-      <category
-            id="org.eclipse.zest"
-            name="Visualization">
-      </category>
-      <wizard
-            category="org.eclipse.zest"
-            class="org.eclipse.zest.internal.dot.ZestGraphWizard"
-            icon="resources/icons/graph.gif"
-            id="org.eclipse.zest.dot.ui.ZestGraphWizard"
-            name="Zest Graph">
-      </wizard>
-      <wizard
-            name="Zest Project"
-            icon="resources/icons/project.gif"
-            category="org.eclipse.zest"
-            class="org.eclipse.zest.internal.dot.ZestProjectWizard"
-            id="org.eclipse.zest.dot.ZestProjectWizard">
-      </wizard>
-   	</extension>
-   	<extension
-         id="org.eclipse.zest.dot.ui.builder"
-         name="Zest Project Builder"
-         point="org.eclipse.core.resources.builders">
-      <builder
-            hasNature="true">
-         <run
-               class="org.eclipse.zest.internal.dot.ZestBuilder">
-         </run>
-      </builder>
-   </extension>
-   <extension
-         id="org.eclipse.zest.dot.ui.nature"
-         name="Zest Project Nature"
-         point="org.eclipse.core.resources.natures">
-      <runtime>
-         <run
-               class="org.eclipse.zest.internal.dot.ZestNature">
-         </run>
-      </runtime>
-      <builder
-            id="org.eclipse.zest.dot.ui.builder">
-      </builder>
-   </extension>
-   <extension
-         point="org.eclipse.ui.decorators">
-      <decorator
-            lightweight="true"
-            location="BOTTOM_RIGHT"
-            adaptable="true"
-            label="Zest Project Decorator"
-            icon="resources/icons/small.gif"
-            state="true"
-            id="org.eclipse.zest.dot.ui.decorator">
-         <enablement>
-         <and>
-	        <objectState name="projectNature" value="org.eclipse.zest.dot.ui.nature"> </objectState>
-	        <or>
-	         	<objectState name="name" value="templates"> </objectState>
-		        <objectClass name="org.eclipse.core.resources.IProject"> </objectClass>
-         	</or>
-         </and>
-         </enablement>
-      </decorator>
-   </extension>
-   <extension
-         id="org.eclipse.zest.dot.ui.problem"
-         name="Zest Import Problem"
-         point="org.eclipse.core.resources.markers">
-      <super
-            type="org.eclipse.core.resources.problemmarker">
-      </super>
-      <persistent
-            value="true">
-      </persistent>
-   </extension>
-   <!-- We dont want to pollute every project, and I'm not sure we need this at all:
-   <extension
-         point="org.eclipse.ui.popupMenus">
-      <objectContribution
-            adaptable="true"
-            objectClass="org.eclipse.core.resources.IProject"
-            nameFilter="*"
-            id="org.eclipse.zest.dot.ui.contribution">
-         <action
-               label="Add/Remove Zest Nature"
-               class="org.eclipse.zest.dot.ToggleNatureAction"
-               menubarPath="additions"
-               enablesFor="+"
-               id="org.eclipse.zest.dot.ui.toggleNatureAction">
-         </action>
-      </objectContribution>
-   </extension>
-   -->
+   
+   <!-- Graph view -->
    <extension
          point="org.eclipse.ui.views">
          <category
@@ -110,6 +17,8 @@
 	            id="org.eclipse.zest.dot.ZestView">
 		</view>
 	</extension>
+	
+	<!-- Help contents -->
     <extension point="org.eclipse.help.toc">
         <toc file="Graphviz-DOT-as-a-DSL-for-Zest-toc.xml" primary="true"/>
     </extension>
