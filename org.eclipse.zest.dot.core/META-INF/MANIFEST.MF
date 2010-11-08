@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.eclipse.zest.dot.import
+Bundle-Name: org.eclipse.zest.dot.core
 Bundle-SymbolicName: org.eclipse.zest.dot.core;singleton:=true
 Bundle-Version: 0.9.1.qualifier
 Require-Bundle: org.eclipse.zest.dot.export;visibility:=reexport,
