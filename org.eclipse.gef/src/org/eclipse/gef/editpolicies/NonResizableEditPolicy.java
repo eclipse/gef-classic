@@ -104,35 +104,35 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	protected void createDragHandle(List handles, int direction) {
 		if (isDragAllowed()) {
 			// display 'resize' handles to allow dragging (drag tracker)
-			NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-					handles, direction, createDragTracker(),
-					SharedCursors.SIZEALL);
+			NonResizableHandleKit
+					.addHandle((GraphicalEditPart) getHost(), handles,
+							direction, getDragTracker(), SharedCursors.SIZEALL);
 		} else {
 			// display 'resize' handles to indicate selection only (selection
 			// tracker)
-			NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-					handles, direction, createSelectTracker(),
-					SharedCursors.ARROW);
+			NonResizableHandleKit
+					.addHandle((GraphicalEditPart) getHost(), handles,
+							direction, getSelectTracker(), SharedCursors.ARROW);
 		}
 	}
 
 	/**
-	 * Factory method to create a selection tracker for the given direction.
+	 * Returns a selection tracker to use by a selection handle.
 	 * 
 	 * @return a new {@link ResizeTracker}
 	 * @since 3.7
 	 */
-	protected SelectEditPartTracker createSelectTracker() {
+	protected SelectEditPartTracker getSelectTracker() {
 		return new SelectEditPartTracker(getHost());
 	}
 
 	/**
-	 * Factory method to create a drag tracker for the given direction.
+	 * Returns a drag tracker to use by a resize handle.
 	 * 
 	 * @return a new {@link ResizeTracker}
 	 * @since 3.7
 	 */
-	protected DragEditPartsTracker createDragTracker() {
+	protected DragEditPartsTracker getDragTracker() {
 		return new DragEditPartsTracker(getHost());
 	}
 
@@ -149,11 +149,11 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 		if (isDragAllowed()) {
 			// display 'move' handle to allow dragging
 			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(),
-					handles, createDragTracker(), Cursors.SIZEALL);
+					handles, getDragTracker(), Cursors.SIZEALL);
 		} else {
 			// display 'move' handle only to indicate selection
 			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(),
-					handles, createSelectTracker(), SharedCursors.ARROW);
+					handles, getSelectTracker(), SharedCursors.ARROW);
 		}
 	}
 

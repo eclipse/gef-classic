@@ -89,7 +89,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	protected void createResizeHandle(List handles, int direction) {
 		if ((resizeDirections & direction) == direction) {
 			ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-					handles, direction, createResizeTracker(direction), Cursors
+					handles, direction, getResizeTracker(direction), Cursors
 							.getDirectionalCursor(direction, getHostFigure()
 									.isMirrored()));
 		} else {
@@ -100,14 +100,15 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	}
 
 	/**
-	 * Factory method to create a resize tracker for the given direction.
+	 * Returns a resize tracker for the given direction to be used by a resize
+	 * handle.
 	 * 
 	 * @param direction
 	 *            the resize direction for the {@link ResizeTracker}.
 	 * @return a new {@link ResizeTracker}
 	 * @since 3.7
 	 */
-	protected ResizeTracker createResizeTracker(int direction) {
+	protected ResizeTracker getResizeTracker(int direction) {
 		return new ResizeTracker((GraphicalEditPart) getHost(), direction);
 	}
 
