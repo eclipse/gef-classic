@@ -797,6 +797,13 @@ public class ScaledGraphics extends Graphics {
 	}
 
 	/**
+	 * @see org.eclipse.draw2d.Graphics#setLineDash(float[])
+	 */
+	public void setLineDash(float[] dash) {
+		graphics.setLineDash(dash);
+	}
+
+	/**
 	 * @see Graphics#setLineJoin(int)
 	 */
 	public void setLineJoin(int join) {
