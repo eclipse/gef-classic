@@ -641,7 +641,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * {@link #refresh()}, and may also be called in response to notification
 	 * from the model.
 	 * <P>
-	 * The update is performed by comparing the exising source
+	 * The update is performed by comparing the existing source
 	 * ConnectionEditParts with the set of model source connections returned
 	 * from {@link #getModelSourceConnections()}. EditParts whose model no
 	 * longer exists are {@link #removeSourceConnection(ConnectionEditPart)
@@ -656,23 +656,26 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 		ConnectionEditPart editPart;
 		Object model;
 
-		Map modelToEditPart = new HashMap();
-		List editParts = getSourceConnections();
-
-		for (i = 0; i < editParts.size(); i++) {
-			editPart = (ConnectionEditPart) editParts.get(i);
-			modelToEditPart.put(editPart.getModel(), editPart);
+		List sourceConnections = getSourceConnections();
+		int size = sourceConnections.size();
+		Map modelToEditPart = Collections.EMPTY_MAP;
+		if (size > 0) {
+			modelToEditPart = new HashMap(size);
+			for (i = 0; i < size; i++) {
+				editPart = (ConnectionEditPart) sourceConnections.get(i);
+				modelToEditPart.put(editPart.getModel(), editPart);
+			}
 		}
 
 		List modelObjects = getModelSourceConnections();
-		if (modelObjects == null)
-			modelObjects = new ArrayList();
-
+		if (modelObjects == null) {
+			modelObjects = Collections.EMPTY_LIST;
+		}
 		for (i = 0; i < modelObjects.size(); i++) {
 			model = modelObjects.get(i);
 
-			if (i < editParts.size()
-					&& ((EditPart) editParts.get(i)).getModel() == model)
+			if (i < sourceConnections.size()
+					&& ((EditPart) sourceConnections.get(i)).getModel() == model)
 				continue;
 
 			editPart = (ConnectionEditPart) modelToEditPart.get(model);
@@ -685,11 +688,14 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 		}
 
 		// Remove the remaining EditParts
-		List trash = new ArrayList();
-		for (; i < editParts.size(); i++)
-			trash.add(editParts.get(i));
-		for (i = 0; i < trash.size(); i++)
-			removeSourceConnection((ConnectionEditPart) trash.get(i));
+		size = sourceConnections.size();
+		if (i < size) {
+			List trash = new ArrayList(size - i);
+			for (; i < size; i++)
+				trash.add(sourceConnections.get(i));
+			for (i = 0; i < trash.size(); i++)
+				removeSourceConnection((ConnectionEditPart) trash.get(i));
+		}
 	}
 
 	/**
@@ -698,7 +704,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * {@link #refresh()}, and may also be called in response to notification
 	 * from the model.
 	 * <P>
-	 * The update is performed by comparing the exising source
+	 * The update is performed by comparing the existing source
 	 * ConnectionEditParts with the set of model source connections returned
 	 * from {@link #getModelTargetConnections()}. EditParts whose model no
 	 * longer exists are {@link #removeTargetConnection(ConnectionEditPart)
@@ -713,26 +719,29 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 		ConnectionEditPart editPart;
 		Object model;
 
-		Map mapModelToEditPart = new HashMap();
-		List connections = getTargetConnections();
-
-		for (i = 0; i < connections.size(); i++) {
-			editPart = (ConnectionEditPart) connections.get(i);
-			mapModelToEditPart.put(editPart.getModel(), editPart);
+		List targetConnections = getTargetConnections();
+		int size = targetConnections.size();
+		Map modelToEditPart = Collections.EMPTY_MAP;
+		if (size > 0) {
+			modelToEditPart = new HashMap(size);
+			for (i = 0; i < size; i++) {
+				editPart = (ConnectionEditPart) targetConnections.get(i);
+				modelToEditPart.put(editPart.getModel(), editPart);
+			}
 		}
 
 		List modelObjects = getModelTargetConnections();
-		if (modelObjects == null)
-			modelObjects = new ArrayList();
-
+		if (modelObjects == null) {
+			modelObjects = Collections.EMPTY_LIST;
+		}
 		for (i = 0; i < modelObjects.size(); i++) {
 			model = modelObjects.get(i);
 
-			if (i < connections.size()
-					&& ((EditPart) connections.get(i)).getModel() == model)
+			if (i < targetConnections.size()
+					&& ((EditPart) targetConnections.get(i)).getModel() == model)
 				continue;
 
-			editPart = (ConnectionEditPart) mapModelToEditPart.get(model);
+			editPart = (ConnectionEditPart) modelToEditPart.get(model);
 			if (editPart != null)
 				reorderTargetConnection(editPart, i);
 			else {
@@ -741,12 +750,15 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 			}
 		}
 
-		// Remove the remaining Connection EditParts
-		List trash = new ArrayList();
-		for (; i < connections.size(); i++)
-			trash.add(connections.get(i));
-		for (i = 0; i < trash.size(); i++)
-			removeTargetConnection((ConnectionEditPart) trash.get(i));
+		// Remove the remaining EditParts
+		size = targetConnections.size();
+		if (i < size) {
+			List trash = new ArrayList(size - i);
+			for (; i < size; i++)
+				trash.add(targetConnections.get(i));
+			for (i = 0; i < trash.size(); i++)
+				removeTargetConnection((ConnectionEditPart) trash.get(i));
+		}
 	}
 
 	/**

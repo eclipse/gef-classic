@@ -740,16 +740,18 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 		EditPart editPart;
 		Object model;
 
-		Map modelToEditPart = new HashMap();
 		List children = getChildren();
-
-		for (i = 0; i < children.size(); i++) {
-			editPart = (EditPart) children.get(i);
-			modelToEditPart.put(editPart.getModel(), editPart);
+		int size = children.size();
+		Map modelToEditPart = Collections.EMPTY_MAP;
+		if (size > 0) {
+			modelToEditPart = new HashMap(size);
+			for (i = 0; i < size; i++) {
+				editPart = (EditPart) children.get(i);
+				modelToEditPart.put(editPart.getModel(), editPart);
+			}
 		}
 
 		List modelObjects = getModelChildren();
-
 		for (i = 0; i < modelObjects.size(); i++) {
 			model = modelObjects.get(i);
 
@@ -758,25 +760,30 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 					&& ((EditPart) children.get(i)).getModel() == model)
 				continue;
 
-			// Look to see if the EditPart is already around but in the wrong
-			// location
+			// Look to see if the EditPart is already around but in the
+			// wrong location
 			editPart = (EditPart) modelToEditPart.get(model);
 
 			if (editPart != null)
 				reorderChild(editPart, i);
 			else {
-				// An editpart for this model doesn't exist yet. Create and
+				// An EditPart for this model doesn't exist yet. Create and
 				// insert one.
 				editPart = createChild(model);
 				addChild(editPart, i);
 			}
 		}
-		List trash = new ArrayList();
-		for (; i < children.size(); i++)
-			trash.add(children.get(i));
-		for (i = 0; i < trash.size(); i++) {
-			EditPart ep = (EditPart) trash.get(i);
-			removeChild(ep);
+
+		// remove the remaining EditParts
+		size = children.size();
+		if (i < size) {
+			List trash = new ArrayList(size - i);
+			for (; i < size; i++)
+				trash.add(children.get(i));
+			for (i = 0; i < trash.size(); i++) {
+				EditPart ep = (EditPart) trash.get(i);
+				removeChild(ep);
+			}
 		}
 	}
 
