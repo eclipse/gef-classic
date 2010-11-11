@@ -733,7 +733,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * times as possible. Consider also calling {@link #removeChild(EditPart)}
 	 * and {@link #addChild(EditPart, int)} which run in constant time.
 	 * <P>
-	 * The update is performed by comparing the exising EditParts with the set
+	 * The update is performed by comparing the existing EditParts with the set
 	 * of model children returned from {@link #getModelChildren()}. EditParts
 	 * whose models no longer exist are {@link #removeChild(EditPart) removed}.
 	 * New models have their EditParts {@link #createChild(Object) created}.
