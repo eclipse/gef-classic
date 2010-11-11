@@ -137,7 +137,7 @@ public class LogicResizableEditPolicy extends ResizableEditPolicy {
 	/**
 	 * Overwritten to ensure size constraints are respected.
 	 */
-	protected ResizeTracker createResizeTracker(int direction) {
+	protected ResizeTracker getResizeTracker(int direction) {
 		return new LogicResizeTracker((GraphicalEditPart) getHost(), direction);
 	}
 }
