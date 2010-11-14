@@ -17,6 +17,7 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.requests.CreationFactory;
+import org.eclipse.gef.requests.SimpleFactory;
 
 /**
  * Performs a native Drop using the {@link TemplateTransfer}. The Drop is
@@ -74,9 +75,11 @@ public class TemplateTransferDropTargetListener extends
 	 * @return a Factory
 	 */
 	protected CreationFactory getFactory(Object template) {
-		if (template instanceof CreationFactory)
+		if (template instanceof CreationFactory) {
 			return ((CreationFactory) template);
-		else
+		} else if (template instanceof Class) {
+			return new SimpleFactory((Class) template);
+		} else
 			return null;
 	}
 
