@@ -895,8 +895,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * Updates the height integer field using the value of preciseHeight.
 	 */
 	private final void updateHeightInt() {
-		height = PrecisionGeometry.doubleToInteger(preciseHeight + preciseY())
-				- y;
+		height = PrecisionGeometry.doubleToInteger(preciseHeight);
 	}
 
 	/**
@@ -923,9 +922,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * Updates the preciseHeight double field using the value of height.
 	 */
 	private final void updatePreciseHeightDouble() {
-		if (height != PrecisionGeometry.doubleToInteger(preciseY()
-				+ preciseHeight)
-				- y) {
+		if (height != PrecisionGeometry.doubleToInteger(preciseHeight)) {
 			preciseHeight = height;
 		}
 	}
@@ -934,9 +931,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * Updates the preciseWidth double field using the value of width.
 	 */
 	private final void updatePreciseWidthDouble() {
-		if (width != PrecisionGeometry.doubleToInteger(preciseX()
-				+ preciseWidth)
-				- x) {
+		if (width != PrecisionGeometry.doubleToInteger(preciseWidth)) {
 			preciseWidth = width;
 		}
 	}
@@ -963,8 +958,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * Updates the width integer field using the value of preciseWidth.
 	 */
 	private final void updateWidthInt() {
-		width = PrecisionGeometry.doubleToInteger(preciseWidth + preciseX())
-				- x;
+		width = PrecisionGeometry.doubleToInteger(preciseWidth);
 	}
 
 	/**
