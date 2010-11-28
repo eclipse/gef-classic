@@ -426,4 +426,30 @@ public class FigureUtilities {
 		return false;
 	}
 
+	/**
+	 * Determines whether the given figure is showing and not (completely)
+	 * clipped.
+	 * 
+	 * @param figure
+	 *            The figure to test
+	 * @return <code>true</code> if the given figure is showing and not
+	 *         completely clipped, <code>false</code> otherwise.
+	 * @since 3.7
+	 */
+	public static boolean isNotFullyClipped(IFigure figure) {
+		if (figure == null || !figure.isShowing()) {
+			return false;
+		}
+		// check if figure is clipped
+		// TODO: IClippingStrategy has to be taken into consideration as well.
+		Rectangle figBounds = figure.getBounds().getCopy();
+		IFigure walker = figure.getParent();
+		while (!figBounds.isEmpty() && walker != null) {
+			walker.translateToParent(figBounds);
+			figBounds.intersect(walker.getBounds());
+			walker = walker.getParent();
+		}
+		return !figBounds.isEmpty();
+	}
+
 }
