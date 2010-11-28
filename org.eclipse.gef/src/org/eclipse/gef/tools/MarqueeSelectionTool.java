@@ -27,6 +27,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -467,7 +468,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
 	protected boolean handleButtonDown(int button) {
-		if (!isGraphicalViewer())
+		if (!isCurrentViewerGraphical())
 			return true;
 		if (button != 1) {
 			setState(STATE_INVALID);
@@ -548,21 +549,6 @@ public class MarqueeSelectionTool extends AbstractTool {
 		return false;
 	}
 
-	private boolean isFigureVisible(IFigure fig) {
-		Rectangle figBounds = fig.getBounds().getCopy();
-		IFigure walker = fig.getParent();
-		while (!figBounds.isEmpty() && walker != null) {
-			walker.translateToParent(figBounds);
-			figBounds.intersect(walker.getBounds());
-			walker = walker.getParent();
-		}
-		return !figBounds.isEmpty();
-	}
-
-	private boolean isGraphicalViewer() {
-		return getCurrentViewer() instanceof GraphicalViewer;
-	}
-
 	/**
 	 * Decides whether the given edit part may potentially be included in the
 	 * current marquee selection.
@@ -574,10 +560,13 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * @since 3.7
 	 */
 	protected boolean isMarqueeSelectable(GraphicalEditPart editPart) {
-		return editPart.isSelectable()
-				&& editPart.getTargetEditPart(MARQUEE_REQUEST) == editPart
-				&& isFigureVisible(editPart.getFigure())
-				&& editPart.getFigure().isShowing();
+		// IMPORTANT: MarqueeSelectionTool is not a TargetingTool, thus the
+		// pre-selection does not depend on hit-testing. Therefore, the visible
+		// state of the edit part's figure has to be taken into consideration as
+		// well.
+		return editPart.getTargetEditPart(MARQUEE_REQUEST) == editPart
+				&& editPart.isSelectable()
+				&& FigureUtilities.isNotFullyClipped(editPart.getFigure());
 	}
 
 	/**
@@ -713,7 +702,11 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * @see org.eclipse.gef.tools.AbstractTool#isViewerImportant(org.eclipse.gef.EditPartViewer)
 	 */
 	protected boolean isViewerImportant(EditPartViewer viewer) {
-		return viewer instanceof GraphicalViewer;
+		return isCurrentViewerGraphical();
+	}
+
+	private boolean isCurrentViewerGraphical() {
+		return getCurrentViewer() instanceof GraphicalViewer;
 	}
 
 	/**
