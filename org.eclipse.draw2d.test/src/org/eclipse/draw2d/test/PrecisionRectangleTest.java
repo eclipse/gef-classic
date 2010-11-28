@@ -52,4 +52,15 @@ public class PrecisionRectangleTest extends TestCase {
 
 		assertTrue(!prect.equals(copy));
 	}
+
+	public void testScale() {
+		PrecisionRectangle rect = new PrecisionRectangle(-9.486614173228347,
+				-34.431496062992125, 41.99055118110236, 25.92755905511811);
+		rect.performScale(26.458333333333332);
+		rect.performScale(1.0 / 26.458333333333332);
+		assertEquals(-9.486614173228347, rect.preciseX(), 0);
+		assertEquals(-34.431496062992125, rect.preciseY(), 0);
+		assertEquals(41.99055118110236, rect.preciseWidth(), 0);
+		assertEquals(25.92755905511811, rect.preciseHeight(), 0);
+	}
 }
