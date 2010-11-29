@@ -558,6 +558,17 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
+	 * A GraphicalEditPart is considered selectable, if it is active and its
+	 * figure is showing.
+	 * 
+	 * @see org.eclipse.gef.editparts.AbstractEditPart#isSelectable()
+	 */
+	public boolean isSelectable() {
+		return super.isSelectable() && getFigure() != null
+				&& getFigure().isShowing();
+	}
+
+	/**
 	 * Adds the specified source <code>ConnectionEditPart</code> at an index.
 	 * This method is used to update the {@link #sourceConnections} List. This
 	 * method is called from

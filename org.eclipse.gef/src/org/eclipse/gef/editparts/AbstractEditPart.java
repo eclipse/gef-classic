@@ -33,6 +33,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 
 /**
  * The baseline implementation for the {@link EditPart} interface.
@@ -696,12 +697,12 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Reserved for future use
+	 * By default, an EditPart is selectable, if it is active.
 	 * 
-	 * @return boolean
+	 * @see org.eclipse.gef.EditPart#isSelectable()
 	 */
 	public boolean isSelectable() {
-		return true;
+		return isActive();
 	}
 
 	/**
@@ -984,9 +985,27 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
+	 * Called by {@link EditPartViewer} to indicate that the {@link EditPart}
+	 * has gained or lost keyboard focus. Focus is considered to be part of the
+	 * selected state. Therefore, only selectable {@link EditPart}s are able to
+	 * obtain focus, and the method may thus only be called with a value of
+	 * <code>true</code> in case the receiver is selectable, i.e.
+	 * {@link #isSelectable()} returns <code>true</code>.
+	 * 
+	 * The method should rarely be overridden. Instead, EditPolicies that are
+	 * selection-aware listen for notifications about the change of focus via
+	 * {@link EditPartListener#selectedStateChanged(EditPart)}.
+	 * 
 	 * @see EditPart#setFocus(boolean)
+	 * @see EditPartListener#selectedStateChanged(EditPart)
+	 * @see SelectionEditPolicy
 	 */
 	public void setFocus(boolean value) {
+		// only selectable edit parts may obtain focus
+		Assert.isLegal(
+				isSelectable() || !value,
+				"An EditPart has to be selectable (isSelectable() == true) in order to obtain focus."); //$NON-NLS-1$
+
 		if (hasFocus() == value)
 			return;
 		setFlag(FLAG_FOCUS, value);
@@ -1017,17 +1036,35 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * sets the selected state for this EditPart. This method should rarely be
-	 * overridden. Instead, EditPolicies that are selection-aware will listen
-	 * for notification of this property changing.
+	 * Sets the selected state for this EditPart, which may be one of:
+	 * <ul>
+	 * <li>{@link EditPart#SELECTED_PRIMARY}</li>
+	 * <li>{@link EditPart#SELECTED}</li>
+	 * <li>{@link EditPart#SELECTED_NONE}</li>.
+	 * </ul>
 	 * 
-	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy
-	 * @see EditPartListener#selectedStateChanged(EditPart)
+	 * As only selectable {@link EditPart}s may get selected, the method may
+	 * only be called with a selected value of {@link EditPart#SELECTED} or
+	 * {@link EditPart#SELECTED_PRIMARY} in case the receiver is selectable,
+	 * i.e. {@link #isSelectable()} returns <code>true</code>.
+	 * 
+	 * The method should rarely be overridden. Instead, EditPolicies that are
+	 * selection-aware listen for notifications about the change of selection
+	 * state via {@link EditPartListener#selectedStateChanged(EditPart)}.
+	 * 
 	 * @see EditPart#setSelected(int)
+	 * @see EditPartListener#selectedStateChanged(EditPart)
+	 * @see SelectionEditPolicy
+	 * 
 	 * @param value
 	 *            the selected value
 	 */
 	public void setSelected(int value) {
+		// only selectable edit parts may get selected.
+		Assert.isLegal(
+				isSelectable() || value == SELECTED_NONE,
+				"An EditPart has to be selectable (isSelectable() == true) in order to get selected."); //$NON-NLS-1$
+
 		if (selected == value)
 			return;
 		selected = value;
