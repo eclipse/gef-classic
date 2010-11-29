@@ -36,10 +36,12 @@ import org.eclipse.gef.KeyHandler;
  * Unrecognized keystrokes are sent to the super's implementation. This class
  * will process key events containing the following:
  * <UL>
- * <LI>Arrow Keys (UP, DOWN, LEFT, RIGHT) with optional SHIFT and CONTROL
- * modifiers
- * <LI>Arrow Keys (UP, DOWN) same as above, but with ALT modifier.
- * <LI>'\'Backslash and '/' Slash keys with optional SHIFT and CONTROL modifiers
+ * <LI>Arrow Keys (UP, DOWN, LEFT, RIGHT) with optional SHIFT and CTRL modifiers
+ * to navigate between siblings.
+ * <LI>Arrow Keys (UP, DOWN) same as above, but with ALT modifier to navigate
+ * into or out of a container.
+ * <LI>'\'Backslash and '/' Slash keys with optional SHIFT and CTRL modifiers to
+ * traverse connections.
  * </UL>
  * <P>
  * All processed key events will do nothing other than change the selection
@@ -144,6 +146,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 			ConnectionEditPart current, boolean forward) {
 		List connections = new ArrayList(node.getSourceConnections());
 		connections.addAll(node.getTargetConnections());
+		connections = getValidNavigationTargets(connections);
 		if (connections.isEmpty())
 			return null;
 		if (forward)
@@ -155,6 +158,17 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		counter %= connections.size();
 		return (ConnectionEditPart) connections.get(counter
 				% connections.size());
+	}
+
+	private List getValidNavigationTargets(List candidateEditParts) {
+		List validNavigationTargetEditParts = new ArrayList();
+		for (int i = 0; i < candidateEditParts.size(); i++) {
+			EditPart candidate = (EditPart) candidateEditParts.get(i);
+			if (isValidNavigationTarget(candidate)) {
+				validNavigationTargetEditParts.add(candidate);
+			}
+		}
+		return validNavigationTargetEditParts;
 	}
 
 	/**
@@ -181,10 +195,10 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		Point pCurrent;
 		int distance = Integer.MAX_VALUE;
 
-		Iterator iter = siblings.iterator();
+		Iterator iter = getValidNavigationTargets(siblings).iterator();
 		while (iter.hasNext()) {
 			epCurrent = (GraphicalEditPart) iter.next();
-			if (epCurrent == exclude || !epCurrent.isSelectable())
+			if (epCurrent == exclude)
 				continue;
 			figure = epCurrent.getFigure();
 			pCurrent = getNavigationPoint(figure);
@@ -274,7 +288,10 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
 	 */
 	public boolean keyPressed(KeyEvent event) {
-		if (event.character == ' ') {
+		// if CTRL + SPACE is pressed, event.character == ' ' does not hold;
+		// therefore using the keyCode to decide whether SPACE was pressed (with
+		// or without modifiers).
+		if (event.keyCode == 32) {
 			processSelect(event);
 			return true;
 		} else if (acceptIntoContainer(event)) {
@@ -363,13 +380,17 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		navigateTo(next, event);
 	}
 
+	private boolean isValidNavigationTarget(EditPart editPart) {
+		return editPart.isSelectable();
+	}
+
 	/**
 	 * This method traverses to the closest child of the currently focused
 	 * EditPart, if it has one.
 	 */
 	void navigateIntoContainer(KeyEvent event) {
 		GraphicalEditPart focus = getFocusEditPart();
-		List childList = focus.getChildren();
+		List childList = getValidNavigationTargets(focus.getChildren());
 		Point tl = focus.getContentPane().getBounds().getTopLeft();
 
 		int minimum = Integer.MAX_VALUE;
@@ -377,15 +398,13 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		GraphicalEditPart closestPart = null;
 
 		for (int i = 0; i < childList.size(); i++) {
-			GraphicalEditPart ged = (GraphicalEditPart) childList.get(i);
-			if (!ged.isSelectable())
-				continue;
-			Rectangle childBounds = ged.getFigure().getBounds();
+			GraphicalEditPart child = (GraphicalEditPart) childList.get(i);
 
+			Rectangle childBounds = child.getFigure().getBounds();
 			current = (childBounds.x - tl.x) + (childBounds.y - tl.y);
 			if (current < minimum) {
 				minimum = current;
-				closestPart = ged;
+				closestPart = child;
 			}
 		}
 		if (closestPart != null)
@@ -443,10 +462,18 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 */
 	void navigateOut(KeyEvent event) {
 		if (getFocusEditPart() == null
-				|| getFocusEditPart() == getViewer().getContents()
-				|| getFocusEditPart().getParent() == getViewer().getContents())
+				|| getFocusEditPart() == getViewer().getContents())
 			return;
-		navigateTo(getFocusEditPart().getParent(), event);
+
+		EditPart editPart = getFocusEditPart().getParent();
+		while (editPart != null && editPart != getViewer().getContents()
+				&& !isValidNavigationTarget(editPart)) {
+			editPart = editPart.getParent();
+		}
+
+		if (editPart != null && isValidNavigationTarget(editPart)) {
+			navigateTo(editPart, event);
+		}
 	}
 
 	/**
@@ -494,7 +521,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	protected void processSelect(KeyEvent event) {
 		EditPart part = getViewer().getFocusEditPart();
 		if (part != getViewer().getContents()) {
-			if ((event.stateMask & SWT.CONTROL) != 0
+			if ((event.stateMask & SWT.CTRL) != 0
 					&& part.getSelected() != EditPart.SELECTED_NONE)
 				getViewer().deselect(part);
 			else
