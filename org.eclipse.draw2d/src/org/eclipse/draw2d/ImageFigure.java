@@ -97,7 +97,7 @@ public class ImageFigure extends AbstractImageFigure {
 			return;
 
 		int x, y;
-		Rectangle area = getClientArea();
+		Rectangle area = getBounds().getShrinked(getInsets());
 		switch (alignment & PositionConstants.NORTH_SOUTH) {
 		case PositionConstants.NORTH:
 			y = area.y;
