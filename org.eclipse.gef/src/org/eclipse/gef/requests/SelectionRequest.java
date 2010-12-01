@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.requests;
 
+import org.eclipse.swt.SWT;
+
 import org.eclipse.draw2d.MouseEvent;
 
 /**
@@ -32,12 +34,22 @@ public class SelectionRequest extends LocationRequest {
 	}
 
 	/**
+	 * Returns the statemask for this request.
+	 * 
+	 * @return the statemask
+	 * @since 3.7
+	 */
+	public int getModifiers() {
+		return statemask;
+	}
+
+	/**
 	 * Returns <code>true</code> if the ALT key is currently pressed.
 	 * 
 	 * @return whether the ALT key is pressed
 	 */
 	public boolean isAltKeyPressed() {
-		return ((statemask & MouseEvent.ALT) != 0);
+		return ((statemask & SWT.ALT) != 0);
 	}
 
 	/**
@@ -50,12 +62,22 @@ public class SelectionRequest extends LocationRequest {
 	}
 
 	/**
+	 * Returns <code>true</code> if the COMMAND key is currently pressed.
+	 * 
+	 * @return whether the COMMAND key is pressed
+	 * @since 3.7
+	 */
+	public boolean isCommandKeyPressed() {
+		return ((statemask & SWT.COMMAND) != 0);
+	}
+
+	/**
 	 * Returns <code>true</code> if the CTRL key is currently pressed.
 	 * 
 	 * @return whether the CTRL key is pressed
 	 */
 	public boolean isControlKeyPressed() {
-		return ((statemask & MouseEvent.CONTROL) != 0);
+		return ((statemask & SWT.CTRL) != 0);
 	}
 
 	/**
@@ -82,7 +104,7 @@ public class SelectionRequest extends LocationRequest {
 	 * @return whether the SHIFT key is pressed
 	 */
 	public boolean isShiftKeyPressed() {
-		return ((statemask & MouseEvent.SHIFT) != 0);
+		return ((statemask & SWT.SHIFT) != 0);
 	}
 
 	/**
