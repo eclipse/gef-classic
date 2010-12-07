@@ -1303,10 +1303,25 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 			p.y = rect.y + rect.height - 1;
 		else if (p.y < rect.y)
 			p.y = rect.y;
-		org.eclipse.swt.graphics.Point swt = new org.eclipse.swt.graphics.Point(
+
+		// The accessible drag mechanism depends on obtaining a mouse move
+		// event as a side-effect of 'placing the mouse in the viewer' here.
+		// As this is not dispatched on all platforms (see bug #242481
+		// concerning MacOSX Cocoa), use Display#post(Event) with a dummy mouse
+		// move event instead of calling Display#setCursorLocation(Point), so
+		// that the behavior is consistent on all platforms. Fall back to
+		// Display#setCursorLocation(Point) only in case Display#post(Event)
+		// fails.
+		org.eclipse.swt.graphics.Point mouseCursorLocation = new org.eclipse.swt.graphics.Point(
 				p.x, p.y);
-		swt = c.toDisplay(swt);
-		c.getDisplay().setCursorLocation(swt);
+		mouseCursorLocation = c.toDisplay(mouseCursorLocation);
+		Event event = new Event();
+		event.type = SWT.MouseMove;
+		event.x = mouseCursorLocation.x;
+		event.y = mouseCursorLocation.y;
+		if (!c.getDisplay().post(event)) {
+			c.getDisplay().setCursorLocation(mouseCursorLocation);
+		}
 	}
 
 	/**
