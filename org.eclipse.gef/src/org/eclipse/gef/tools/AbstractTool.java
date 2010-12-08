@@ -1305,24 +1305,15 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport
 		else if (p.y < rect.y)
 			p.y = rect.y;
 
-		// The accessible drag mechanism depends on obtaining a mouse move
-		// event as a side-effect of 'placing the mouse in the viewer' here.
-		// As this is not dispatched on all platforms (see bug #242481
-		// concerning MacOSX Cocoa), use Display#post(Event) with a dummy mouse
-		// move event instead of calling Display#setCursorLocation(Point), so
-		// that the behavior is consistent on all platforms. Fall back to
-		// Display#setCursorLocation(Point) only in case Display#post(Event)
-		// fails.
-		org.eclipse.swt.graphics.Point mouseCursorLocation = new org.eclipse.swt.graphics.Point(
+		// place the mouse cursor at the calculated position within the viewer
+		org.eclipse.swt.graphics.Point cursorLocation = new org.eclipse.swt.graphics.Point(
 				p.x, p.y);
-		mouseCursorLocation = c.toDisplay(mouseCursorLocation);
-		Event event = new Event();
-		event.type = SWT.MouseMove;
-		event.x = mouseCursorLocation.x;
-		event.y = mouseCursorLocation.y;
-		if (!c.getDisplay().post(event)) {
-			c.getDisplay().setCursorLocation(mouseCursorLocation);
-		}
+		cursorLocation = c.toDisplay(cursorLocation);
+		// calling Display#setCursorLocation(Point) will cause an SWT.MouseMove
+		// event to be dispatched as a result, so that mouseMove(MouseEvent,
+		// EditPartViewer) will be triggered as a result, which will react to
+		// the movement by delegating to handleMove() or handleDragInProgress().
+		c.getDisplay().setCursorLocation(cursorLocation);
 	}
 
 	/**
