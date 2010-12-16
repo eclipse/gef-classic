@@ -12,8 +12,6 @@ package org.eclipse.gef.requests;
 
 import org.eclipse.swt.SWT;
 
-import org.eclipse.draw2d.MouseEvent;
-
 /**
  * A request to select an edit part.
  */
@@ -58,7 +56,7 @@ public class SelectionRequest extends LocationRequest {
 	 * @return whether any mouse button is pressed
 	 */
 	public boolean isAnyMouseButtonPressed() {
-		return ((statemask & MouseEvent.ANY_BUTTON) != 0);
+		return ((statemask & SWT.BUTTON_MASK) != 0);
 	}
 
 	/**
@@ -86,7 +84,7 @@ public class SelectionRequest extends LocationRequest {
 	 * @return whether the left mouse button is pressed
 	 */
 	public boolean isLeftMouseButtonPressed() {
-		return ((statemask & MouseEvent.BUTTON1) != 0);
+		return ((statemask & SWT.BUTTON1) != 0);
 	}
 
 	/**
@@ -95,7 +93,7 @@ public class SelectionRequest extends LocationRequest {
 	 * @return whether the right mouse button is pressed
 	 */
 	public boolean isRightMouseButtonPressed() {
-		return ((statemask & MouseEvent.BUTTON3) != 0);
+		return ((statemask & SWT.BUTTON3) != 0);
 	}
 
 	/**
