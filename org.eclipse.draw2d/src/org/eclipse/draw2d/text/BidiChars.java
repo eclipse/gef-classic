@@ -16,12 +16,33 @@ package org.eclipse.draw2d.text;
  */
 class BidiChars {
 
+	/**
+	 * paragraph separator character
+	 */
 	static final char P_SEP = '\u2029';
+	/**
+	 * zero-width joiner character
+	 */
 	static final char ZWJ = '\u200d';
+	/**
+	 * left-to-right overwrite character
+	 */
 	static final char LRO = '\u202d';
+	/**
+	 * right-to-left overwrite character
+	 */
 	static final char RLO = '\u202e';
+	/**
+	 * object replacement character
+	 */
 	static final char OBJ = '\ufffc';
+	/**
+	 * left-to-right embedding character
+	 */
 	static final char LRE = '\u202a';
+	/**
+	 * right-to-left embedding character
+	 */
 	static final char RLE = '\u202b';
 
 }
