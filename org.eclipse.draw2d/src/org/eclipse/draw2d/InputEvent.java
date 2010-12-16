@@ -21,25 +21,43 @@ public abstract class InputEvent extends java.util.EventObject {
 
 	private boolean consumed = false;
 
-	/** @see SWT#ALT */
+	/**
+	 * @deprecated Use {@link SWT#ALT} instead.
+	 */
 	public static final int ALT = SWT.ALT;
-	/** @see SWT#CONTROL */
+	/**
+	 * @deprecated Use {@link SWT#CONTROL} instead.
+	 */
 	public static final int CONTROL = SWT.CONTROL;
-	/** @see SWT#SHIFT */
+	/**
+	 * @deprecated Use {@link SWT#SHIFT} instead.
+	 */
 	public static final int SHIFT = SWT.SHIFT;
-	/** @see SWT#BUTTON1 */
+	/**
+	 * @deprecated Use {@link SWT#BUTTON1} instead.
+	 */
 	public static final int BUTTON1 = SWT.BUTTON1;
-	/** @see SWT#BUTTON2 */
+	/**
+	 * @deprecated Use {@link SWT#BUTTON2} instead.
+	 */
 	public static final int BUTTON2 = SWT.BUTTON2;
-	/** @see SWT#BUTTON3 */
+	/**
+	 * @deprecated Use {@link SWT#BUTTON3} instead.
+	 */
 	public static final int BUTTON3 = SWT.BUTTON3;
-	/** @see SWT#BUTTON4 */
+	/**
+	 * @deprecated Use {@link SWT#BUTTON4} instead.
+	 */
 	public static final int BUTTON4 = SWT.BUTTON4;
-	/** @see SWT#BUTTON5 */
+	/**
+	 * @deprecated Use {@link SWT#BUTTON5} instead.
+	 */
 	public static final int BUTTON5 = SWT.BUTTON5;
 	/**
 	 * A bitwise OR'ing of {@link #BUTTON1}, {@link #BUTTON2}, {@link #BUTTON3},
 	 * {@link #BUTTON4} and {@link #BUTTON5}
+	 * 
+	 * @deprecated Use {@link SWT#BUTTON_MASK} instead.
 	 */
 	public static final int ANY_BUTTON = SWT.BUTTON_MASK;
 
@@ -51,7 +69,10 @@ public abstract class InputEvent extends java.util.EventObject {
 	 * @param source
 	 *            the source of the event
 	 * @param state
-	 *            the state
+	 *            the state of the keyboard modifier and mouse button mask.
+	 * 
+	 * @see org.eclipse.swt.SWT#MODIFIER_MASK
+	 * @see org.eclipse.swt.SWT#BUTTON_MASK
 	 */
 	public InputEvent(EventDispatcher dispatcher, IFigure source, int state) {
 		super(source);
@@ -67,10 +88,11 @@ public abstract class InputEvent extends java.util.EventObject {
 	}
 
 	/**
-	 * Returns the event statemask, which is a bitwise OR'ing of any of the
-	 * following: {@link #ALT}, {@link #CONTROL}, {@link #SHIFT},
-	 * {@link #BUTTON1}, {@link #BUTTON2}, {@link #BUTTON3}, {@link #BUTTON4}
-	 * and {@link #BUTTON5}.
+	 * Returns the event state mask, which is a bitwise OR'ing of the keyboard
+	 * modifier and the mouse button mask.
+	 * 
+	 * @see org.eclipse.swt.SWT#MODIFIER_MASK
+	 * @see org.eclipse.swt.SWT#BUTTON_MASK
 	 * 
 	 * @return the state
 	 */
