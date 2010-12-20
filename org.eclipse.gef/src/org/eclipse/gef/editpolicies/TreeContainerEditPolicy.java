@@ -38,8 +38,6 @@ import org.eclipse.gef.requests.DropRequest;
  */
 public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 
-	private static TreeItem[] oldSelection;
-
 	/**
 	 * Returns a Command for adding the children to the container.
 	 * 
@@ -70,7 +68,6 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 
 	private void eraseDropFeedback(Request req) {
 		getTree().setInsertMark(null, true);
-		restoreSelection();
 	}
 
 	/**
@@ -176,41 +173,9 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 		return tempRect.contains(new Point(pt.x, pt.y));
 	}
 
-	private void restoreSelection() {
-		if (oldSelection != null) {
-			try {
-				getTree().setSelection(oldSelection);
-			} finally {
-				oldSelection = null;
-			}
-		}
-	}
-
 	private void showDropFeedback(DropRequest request) {
 		Widget hostWidget = ((TreeEditPart) getHost()).getWidget();
 		Tree tree = getTree();
-
-		if (oldSelection == null) {
-			oldSelection = tree.getSelection();
-			TreeItem newSelection[];
-			if (hostWidget instanceof Tree) {
-				newSelection = new TreeItem[0];
-			} else {
-				/*
-				 * if parent item is out of the visible bounds, do not select
-				 * it, as the selection causes the viewer to scroll which
-				 * changes the insert location.
-				 */
-				TreeItem item = (TreeItem) hostWidget;
-				if (item.getBounds().y < 0) {
-					oldSelection = null;
-					newSelection = new TreeItem[0];
-				} else {
-					newSelection = new TreeItem[] { item };
-				}
-			}
-			tree.setSelection(newSelection);
-		}
 
 		org.eclipse.draw2d.geometry.Point pt = request.getLocation();
 		TreeItem item = findTreeItemAt(pt);
