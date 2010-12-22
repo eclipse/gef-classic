@@ -429,7 +429,7 @@ public class GridLayoutExample extends AbstractExample {
 		horizAlign.setItems(alignValues);
 		horizAlign.select(0);
 		_data = new org.eclipse.swt.layout.GridData();
-		_data.widthHint = 60;
+		_data.widthHint = 110;
 		horizAlign.setLayoutData(_data);
 
 		horizAlign.addSelectionListener(new SelectionAdapter() {
@@ -449,7 +449,7 @@ public class GridLayoutExample extends AbstractExample {
 		vertAlign.setItems(alignValues);
 		vertAlign.select(0);
 		_data = new org.eclipse.swt.layout.GridData();
-		_data.widthHint = 60;
+		_data.widthHint = 110;
 		vertAlign.setLayoutData(_data);
 
 		vertAlign.addSelectionListener(new SelectionAdapter() {
