@@ -164,6 +164,9 @@ public final class ViewportUtilities {
 	 *         is no nearest enclosing {@link Viewport}.
 	 */
 	public static Viewport getNearestViewport(final IFigure figure) {
+		if (figure == null) {
+			return null;
+		}
 		if (figure instanceof Viewport) {
 			return (Viewport) figure;
 		} else {
@@ -180,6 +183,9 @@ public final class ViewportUtilities {
 	 *         null if none could be found.
 	 */
 	public static Viewport getNearestEnclosingViewport(final IFigure figure) {
+		if (figure == null) {
+			return null;
+		}
 		Viewport viewport = null;
 		IFigure currentFigure = figure;
 		while (currentFigure.getParent() != null) {
