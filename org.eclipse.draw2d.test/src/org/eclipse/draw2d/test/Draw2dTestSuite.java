@@ -42,6 +42,7 @@ public class Draw2dTestSuite extends TestSuite {
 		addTest(new TestSuite(ImageUtilitiesTest.class));
 		addTest(new TestSuite(LookAheadTest.class));
 		addTest(new TestSuite(TextualTests.class));
+		addTest(new TestSuite(PointTests.class));
 		addTest(new TestSuite(PointListTests.class));
 		addTest(new TestSuite(PrecisionDimensionTest.class));
 		addTest(new TestSuite(PrecisionPointTest.class));
