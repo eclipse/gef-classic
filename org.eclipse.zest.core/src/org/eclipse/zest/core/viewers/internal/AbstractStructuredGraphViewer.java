@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
+ * Copyright 2005, 2011 CHISEL Group, University of Victoria, Victoria, BC,
  * Canada. All rights reserved. This program and the accompanying materials are
  * made available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
@@ -21,7 +21,6 @@ import java.util.TreeSet;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
-import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.zest.core.viewers.AbstractZoomableViewer;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
@@ -309,14 +308,6 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 				node.dispose();
 			}
 		}
-	}
-
-	protected void handleDispose(DisposeEvent event) {
-
-		if (getControl() != null && !getControl().isDisposed()) {
-			getControl().dispose();
-		}
-		super.handleDispose(event);
 	}
 
 	/*
