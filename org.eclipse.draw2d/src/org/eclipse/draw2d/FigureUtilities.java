@@ -366,17 +366,18 @@ public class FigureUtilities {
 	}
 
 	/**
-	 * Returns the figure which is the ancestor of both figures, or
-	 * <code>null</code>. A figure is an ancestor if it is the parent of another
-	 * figure, or if it is the ancestor of that figure's parent. If one figure
-	 * contains the other, <code>null</code> is returned.
+	 * Returns the figure which is the nearest common ancestor of both figures,
+	 * or <code>null</code> if there is no common ancestor. A figure is an
+	 * ancestor if it is the parent of another figure, or if it is the ancestor
+	 * of that figure's parent. If one figure is the ancestor of the other, it
+	 * is returned as the common ancestor.
 	 * 
 	 * @since 3.1
 	 * @param l
 	 *            left
 	 * @param r
 	 *            right
-	 * @return the common ancestor
+	 * @return the common ancestor, if it exists, or <code>null</code>.
 	 */
 	public static IFigure findCommonAncestor(IFigure l, IFigure r) {
 		if (l == r)
@@ -394,16 +395,11 @@ public class FigureUtilities {
 		if (left.isEmpty() || right.isEmpty())
 			return null;
 
-		int il = left.size() - 1;
-		int ir = right.size() - 1;
-		do {
-			if (left.get(il) != right.get(ir))
-				break;
-			il--;
-			ir--;
-		} while (il >= 0 && ir >= 0);
-
-		return (IFigure) left.get(il + 1);
+		for (int i = 0; i < left.size(); i++) {
+			if (right.contains(left.get(i)))
+				return (IFigure) left.get(i);
+		}
+		return null;
 	}
 
 	/**
