@@ -20,28 +20,28 @@ import org.eclipse.draw2d.text.TextFlow;
  * A Figure with a bent corner and an embedded TextFlow within a FlowPage that
  * contains text.
  */
-public class StickyNoteFigure extends BentCornerFigure {
+public class LabelFigure extends BentCornerFigure {
 
 	/** The inner TextFlow **/
 	private TextFlow textFlow;
 
 	/**
-	 * Creates a new StickyNoteFigure with a default MarginBorder size of
+	 * Creates a new LabelFigure with a default MarginBorder size of
 	 * DEFAULT_CORNER_SIZE - 3 and a FlowPage containing a TextFlow with the
 	 * style WORD_WRAP_SOFT.
 	 */
-	public StickyNoteFigure() {
+	public LabelFigure() {
 		this(BentCornerFigure.DEFAULT_CORNER_SIZE - 3);
 	}
 
 	/**
-	 * Creates a new StickyNoteFigure with a MarginBorder that is the given size
-	 * and a FlowPage containing a TextFlow with the style WORD_WRAP_SOFT.
+	 * Creates a new LabelFigure with a MarginBorder that is the given size and
+	 * a FlowPage containing a TextFlow with the style WORD_WRAP_SOFT.
 	 * 
 	 * @param borderSize
 	 *            the size of the MarginBorder
 	 */
-	public StickyNoteFigure(int borderSize) {
+	public LabelFigure(int borderSize) {
 		setBorder(new MarginBorder(borderSize));
 		FlowPage flowPage = new FlowPage();
 

@@ -30,7 +30,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.tools.CellEditorLocator;
 import org.eclipse.gef.tools.DirectEditManager;
 
-import org.eclipse.gef.examples.logicdesigner.figures.StickyNoteFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LabelFigure;
 
 public class LogicLabelEditManager extends DirectEditManager {
 
@@ -87,7 +87,7 @@ public class LogicLabelEditManager extends DirectEditManager {
 
 	protected void initCellEditor() {
 		// update text
-		StickyNoteFigure stickyNote = (StickyNoteFigure) getEditPart()
+		LabelFigure stickyNote = (LabelFigure) getEditPart()
 				.getFigure();
 		getCellEditor().setValue(stickyNote.getText());
 		// update font

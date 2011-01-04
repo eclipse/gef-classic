@@ -18,13 +18,13 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.tools.CellEditorLocator;
 
-import org.eclipse.gef.examples.logicdesigner.figures.StickyNoteFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LabelFigure;
 
 final public class LabelCellEditorLocator implements CellEditorLocator {
 
-	private StickyNoteFigure stickyNote;
+	private LabelFigure stickyNote;
 
-	public LabelCellEditorLocator(StickyNoteFigure stickyNote) {
+	public LabelCellEditorLocator(LabelFigure stickyNote) {
 		setLabel(stickyNote);
 	}
 
@@ -42,7 +42,7 @@ final public class LabelCellEditorLocator implements CellEditorLocator {
 	/**
 	 * Returns the stickyNote figure.
 	 */
-	protected StickyNoteFigure getLabel() {
+	protected LabelFigure getLabel() {
 		return stickyNote;
 	}
 
@@ -52,7 +52,7 @@ final public class LabelCellEditorLocator implements CellEditorLocator {
 	 * @param stickyNote
 	 *            The stickyNote to set
 	 */
-	protected void setLabel(StickyNoteFigure stickyNote) {
+	protected void setLabel(LabelFigure stickyNote) {
 		this.stickyNote = stickyNote;
 	}
 

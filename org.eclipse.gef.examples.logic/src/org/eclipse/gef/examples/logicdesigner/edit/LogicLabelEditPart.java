@@ -23,7 +23,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
-import org.eclipse.gef.examples.logicdesigner.figures.StickyNoteFigure;
+import org.eclipse.gef.examples.logicdesigner.figures.LabelFigure;
 import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
 
 public class LogicLabelEditPart extends LogicEditPart {
@@ -49,7 +49,7 @@ public class LogicLabelEditPart extends LogicEditPart {
 	}
 
 	protected IFigure createFigure() {
-		StickyNoteFigure label = new StickyNoteFigure();
+		LabelFigure label = new LabelFigure();
 		return label;
 	}
 
@@ -59,7 +59,7 @@ public class LogicLabelEditPart extends LogicEditPart {
 
 	private void performDirectEdit() {
 		new LogicLabelEditManager(this, new LabelCellEditorLocator(
-				(StickyNoteFigure) getFigure())).show();
+				(LabelFigure) getFigure())).show();
 	}
 
 	public void performRequest(Request request) {
@@ -75,7 +75,7 @@ public class LogicLabelEditPart extends LogicEditPart {
 	}
 
 	protected void refreshVisuals() {
-		((StickyNoteFigure) getFigure()).setText(getLogicLabel()
+		((LabelFigure) getFigure()).setText(getLogicLabel()
 				.getLabelContents());
 		super.refreshVisuals();
 	}
