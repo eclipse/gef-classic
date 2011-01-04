@@ -15,7 +15,6 @@ import java.util.List;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.geometry.Transposer;
 
 /**
  * Arranges figures in a single row or column. Orientation can be set to produce
@@ -25,65 +24,63 @@ import org.eclipse.draw2d.geometry.Transposer;
  * child's preferred size is smaller than the row's or column's minor dimension,
  * the layout can be configured to stretch the child.
  */
-public class ToolbarLayout extends AbstractHintLayout {
+public class ToolbarLayout extends OrderedLayout {
 
-	/** Space in pixels between Figures **/
-	protected int spacing;
-	/** Sets whether children should "stretch" with their container **/
-	protected boolean matchWidth;
-	/** Orientation of layout **/
-	protected boolean horizontal = false;
-	/** Alignment of layout **/
-	protected int minorAlignment;
-
-	/** Constant for center alignment **/
-	public static final int ALIGN_CENTER = 0;
-	/** Constant for top-left alignment **/
-	public static final int ALIGN_TOPLEFT = 1;
-	/** Constant for bottom-right alignment **/
-	public static final int ALIGN_BOTTOMRIGHT = 2;
-
-	/** Constant for horizontal alignment **/
+	/**
+	 * Constant for horizontal alignment
+	 * 
+	 * @deprecated Unused.
+	 */
 	public static final boolean HORIZONTAL = true;
-	/** Constant for vertical alignment **/
+
+	/**
+	 * Constant for vertical alignment
+	 * 
+	 * @deprecated Unused.
+	 * */
 	public static final boolean VERTICAL = false;
 
-	/** Transposer object used in layout calculations **/
-	protected Transposer transposer;
-	{
-		transposer = new Transposer();
-		transposer.setEnabled(horizontal);
-	}
+	/**
+	 * Sets whether children should "stretch" with their container
+	 * 
+	 * @deprecated Use {@link OrderedLayout#setStretchMinorAxis(boolean)} and
+	 *             {@link OrderedLayout#isStretchMinorAxis()} instead.
+	 * */
+	protected boolean matchWidth;
+
+	/**
+	 * Space in pixels between Figures
+	 * 
+	 * @deprecated Use {@link #getSpacing()} and {@link #setSpacing(int)}
+	 *             instead.
+	 */
+	protected int spacing;
 
 	/**
 	 * Constructs a vertically oriented ToolbarLayout with child spacing of 0
-	 * pixels, matchWidth <code>true</code>, and {@link #ALIGN_TOPLEFT}
-	 * alignment.
+	 * pixels, {@link #setStretchMinorAxis(boolean)} <code>true</code>, and
+	 * {@link #ALIGN_TOPLEFT} minor alignment.
 	 * 
 	 * @since 2.0
 	 */
 	public ToolbarLayout() {
-		spacing = 0;
-		matchWidth = true;
-		minorAlignment = ALIGN_TOPLEFT;
-		horizontal = false;
+		setStretchMinorAxis(true);
+		setSpacing(0);
 	}
 
 	/**
 	 * Constructs a ToolbarLayout with a specified orientation. Default values
-	 * are: child spacing 0 pixels, matchWidth <code>false</code>, and
-	 * {@link #ALIGN_TOPLEFT} alignment.
+	 * are: child spacing 0 pixels, {@link #setStretchMinorAxis(boolean)}
+	 * <code>false</code>, and {@link #ALIGN_TOPLEFT} alignment.
 	 * 
 	 * @param isHorizontal
 	 *            whether the children are oriented horizontally
 	 * @since 2.0
 	 */
 	public ToolbarLayout(boolean isHorizontal) {
-		horizontal = isHorizontal;
-		transposer.setEnabled(horizontal);
-		spacing = 0;
-		matchWidth = false;
-		minorAlignment = ALIGN_TOPLEFT;
+		setHorizontal(isHorizontal);
+		setStretchMinorAxis(false);
+		setSpacing(0);
 	}
 
 	private Dimension calculateChildrenSize(List children, int wHint,
@@ -229,13 +226,12 @@ public class ToolbarLayout extends AbstractHintLayout {
 	}
 
 	/**
-	 * Returns the minor aligment of the layout. Minor minor axis is the axis
-	 * perpindicular to the overall orientation set in the contructor.
+	 * Returns {@link PositionConstants#VERTICAL} by default.
 	 * 
-	 * @return the minor aligment
+	 * @see org.eclipse.draw2d.OrderedLayout#getDefaultOrientation()
 	 */
-	public int getMinorAlignment() {
-		return minorAlignment;
+	protected int getDefaultOrientation() {
+		return PositionConstants.VERTICAL;
 	}
 
 	/**
@@ -250,31 +246,20 @@ public class ToolbarLayout extends AbstractHintLayout {
 	 * default value is false.
 	 * 
 	 * @return <code>true</code> if stretch minor axis is enabled
+	 * @deprecated Use {@link #isStretchMinorAxis()} instead.
 	 */
 	public boolean getStretchMinorAxis() {
+		return isStretchMinorAxis();
+	}
+
+	/**
+	 * Overwritten to guarantee backwards compatibility with {@link #matchWidth}
+	 * field.
+	 * 
+	 * @see org.eclipse.draw2d.OrderedLayout#isStretchMinorAxis()
+	 */
+	public boolean isStretchMinorAxis() {
 		return matchWidth;
-	}
-
-	/**
-	 * @return whether the orientation of the layout is horizontal
-	 * @since 2.0
-	 */
-	public boolean isHorizontal() {
-		return horizontal;
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
-	 */
-	protected boolean isSensitiveHorizontally(IFigure parent) {
-		return !isHorizontal();
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically(IFigure)
-	 */
-	protected boolean isSensitiveVertically(IFigure parent) {
-		return isHorizontal();
 	}
 
 	/**
@@ -365,13 +350,13 @@ public class ToolbarLayout extends AbstractHintLayout {
 
 			int width = Math.min(prefWidth,
 					transposer.t(child.getMaximumSize()).width);
-			if (matchWidth)
+			if (isStretchMinorAxis())
 				width = transposer.t(child.getMaximumSize()).width;
 			width = Math.max(minWidth, Math.min(clientArea.width, width));
 			newBounds.width = width;
 
 			int adjust = clientArea.width - width;
-			switch (minorAlignment) {
+			switch (getMinorAlignment()) {
 			case ALIGN_TOPLEFT:
 				adjust = 0;
 				break;
@@ -392,16 +377,16 @@ public class ToolbarLayout extends AbstractHintLayout {
 	}
 
 	/**
-	 * Sets the alignment of the children contained in the layout. Possible
-	 * values are {@link #ALIGN_CENTER}, {@link #ALIGN_BOTTOMRIGHT} and
-	 * {@link #ALIGN_TOPLEFT}.
+	 * Sets children's width (if vertically oriented) or height (if horizontally
+	 * oriented) to stretch with their container.
 	 * 
-	 * @param align
-	 *            the minor alignment
+	 * @deprecated use {@link #setStretchMinorAxis(boolean)}
+	 * @param match
+	 *            whether to stretch children
 	 * @since 2.0
 	 */
-	public void setMinorAlignment(int align) {
-		minorAlignment = align;
+	public void setMatchWidth(boolean match) {
+		matchWidth = match;
 	}
 
 	/**
@@ -416,44 +401,26 @@ public class ToolbarLayout extends AbstractHintLayout {
 	}
 
 	/**
-	 * Sets children's width (if vertically oriented) or height (if horizontally
-	 * oriented) to stretch with their container.
+	 * Overwritten to guarantee backwards compatibility with {@link #matchWidth}
+	 * field.
 	 * 
-	 * @deprecated use {@link #setStretchMinorAxis(boolean)}
-	 * @param match
-	 *            whether to stretch children
-	 * @since 2.0
+	 * @see org.eclipse.draw2d.OrderedLayout#setStretchMinorAxis(boolean)
 	 */
-	public void setMatchWidth(boolean match) {
-		matchWidth = match;
+	public void setStretchMinorAxis(boolean value) {
+		matchWidth = value;
 	}
 
 	/**
-	 * Causes children that are smaller in the dimension of the minor axis to be
-	 * stretched to fill the minor axis. The minor axis is the opposite of the
-	 * orientation.
-	 * 
-	 * @param stretch
-	 *            whether to stretch children
-	 * @since 2.0
-	 */
-	public void setStretchMinorAxis(boolean stretch) {
-		matchWidth = stretch;
-	}
-
-	/**
-	 * Sets the orientation of the children in the ToolbarLayout.
+	 * Sets the orientation of the layout
 	 * 
 	 * @param flag
 	 *            whether the orientation should be vertical
 	 * @since 2.0
+	 * @deprecated Use {@link #setHorizontal(boolean)} with argument
+	 *             <code>false</code> instead.
 	 */
 	public void setVertical(boolean flag) {
-		if (horizontal != flag)
-			return;
-		invalidate();
-		horizontal = !flag;
-		transposer.setEnabled(horizontal);
+		setHorizontal(!flag);
 	}
 
 }

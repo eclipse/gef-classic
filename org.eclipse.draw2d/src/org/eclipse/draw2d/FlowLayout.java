@@ -15,60 +15,71 @@ import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.geometry.Transposer;
 
 /**
  * Lays out children in rows or columns, wrapping when the current row/column is
  * filled. The aligment and spacing of rows in the parent can be configured. The
  * aligment and spacing of children within a row can be configured.
  */
-public class FlowLayout extends AbstractHintLayout {
-
-	/** Constant to specify components to be aligned in the center */
-	public static final int ALIGN_CENTER = 0;
-	/** Constant to specify components to be aligned on the left/top */
-	public static final int ALIGN_LEFTTOP = 1;
-	/** Constant to specify components to be aligned on the right/bottom */
-	public static final int ALIGN_RIGHTBOTTOM = 2;
-
-	/** Constant to specify components should be layed out horizontally */
-	public static final boolean HORIZONTAL = true;
-	/** Constant to specify components should be layed out vertically */
-	public static final boolean VERTICAL = false;
-
-	/** The horizontal property. */
-	protected boolean horizontal = true;
-	/**
-	 * The property that determines whether leftover space at the end of a
-	 * row/column should be filled by the last item in that row/column.
-	 */
-	protected boolean fill = false;
-
-	/** The transposer used in converting horizontal layout to vertical. */
-	protected Transposer transposer;
-	{
-		transposer = new Transposer();
-		transposer.setEnabled(!horizontal);
-	}
-
-	/** The alignment along the major axis. */
-	protected int majorAlignment = ALIGN_LEFTTOP;
-	/** The alignment along the minor axis. */
-	protected int minorAlignment = ALIGN_LEFTTOP;
-	/** The spacing along the minor axis. */
-	protected int minorSpacing = 5;
-	/** The spacing along the major axis. */
-	protected int majorSpacing = 5;
-	protected WorkingData data = null;
+public class FlowLayout extends OrderedLayout {
 
 	/**
 	 * Holds the necessary information for layout calculations.
 	 */
 	protected class WorkingData {
-		public int rowHeight, rowWidth, rowCount, rowX, rowY, maxWidth;
 		public Rectangle bounds[], area;
 		public IFigure row[];
+		public int rowHeight, rowWidth, rowCount, rowX, rowY, maxWidth;
 	}
+
+	/**
+	 * Constant to specify components to be aligned on the left/top
+	 * 
+	 * @deprecated Use {@link OrderedLayout#ALIGN_TOPLEFT} instead.
+	 */
+	public static final int ALIGN_LEFTTOP = ALIGN_TOPLEFT;
+
+	/**
+	 * Constant to specify components to be aligned on the right/bottom
+	 * 
+	 * @deprecated Use {@link OrderedLayout#ALIGN_BOTTOMRIGHT} instead.
+	 */
+	public static final int ALIGN_RIGHTBOTTOM = ALIGN_BOTTOMRIGHT;
+
+	protected WorkingData data = null;
+
+	/**
+	 * The property that determines whether leftover space at the end of a
+	 * row/column should be filled by the last item in that row/column.
+	 * 
+	 * @deprecated Use {@link OrderedLayout#setStretchMinorAxis(boolean)} and
+	 *             {@link OrderedLayout#isStretchMinorAxis()} instead.
+	 */
+	protected boolean fill;
+
+	/**
+	 * The alignment along the major axis.
+	 * 
+	 * @deprecated Use {@link #getMajorAlignment()} and
+	 *             {@link #setMajorAlignment(int)} instead.
+	 */
+	protected int majorAlignment = ALIGN_TOPLEFT;
+
+	/**
+	 * The spacing along the major axis.
+	 * 
+	 * @deprecated Use {@link #getMajorSpacing()} and
+	 *             {@link #setMajorSpacing(int)} instead.
+	 */
+	protected int majorSpacing = 5;
+
+	/**
+	 * The spacing along the minor axis.
+	 * 
+	 * @deprecated Use {@link #getMinorSpacing()} and
+	 *             {@link #setMinorSpacing(int)} instead.
+	 */
+	protected int minorSpacing = 5;
 
 	/**
 	 * Constructs a FlowLayout with horizontal orientation.
@@ -76,6 +87,7 @@ public class FlowLayout extends AbstractHintLayout {
 	 * @since 2.0
 	 */
 	public FlowLayout() {
+		setStretchMinorAxis(false);
 	}
 
 	/**
@@ -87,6 +99,7 @@ public class FlowLayout extends AbstractHintLayout {
 	 */
 	public FlowLayout(boolean isHorizontal) {
 		setHorizontal(isHorizontal);
+		setStretchMinorAxis(false);
 	}
 
 	/**
@@ -176,6 +189,15 @@ public class FlowLayout extends AbstractHintLayout {
 	}
 
 	/**
+	 * Returns {@link PositionConstants#HORIZONTAL} by default.
+	 * 
+	 * @see org.eclipse.draw2d.OrderedLayout#getDefaultOrientation()
+	 */
+	protected int getDefaultOrientation() {
+		return PositionConstants.HORIZONTAL;
+	}
+
+	/**
 	 * Returns the alignment used for an entire row/column.
 	 * <P>
 	 * Possible values are :
@@ -200,23 +222,6 @@ public class FlowLayout extends AbstractHintLayout {
 	 */
 	public int getMajorSpacing() {
 		return majorSpacing;
-	}
-
-	/**
-	 * Returns the alignment used for children within a row/column.
-	 * <P>
-	 * Possible values are :
-	 * <ul>
-	 * <li>{@link #ALIGN_CENTER}
-	 * <li>{@link #ALIGN_LEFTTOP}
-	 * <li>{@link #ALIGN_RIGHTBOTTOM}
-	 * </ul>
-	 * 
-	 * @return the minor alignment
-	 * @since 2.0
-	 */
-	public int getMinorAlignment() {
-		return minorAlignment;
 	}
 
 	/**
@@ -254,27 +259,13 @@ public class FlowLayout extends AbstractHintLayout {
 	}
 
 	/**
-	 * Returns <code>true</code> if the orientation of the layout is horizontal.
+	 * Overwritten to guarantee backwards compatibility with {@link #fill}
+	 * field.
 	 * 
-	 * @return <code>true</code> if the orientation of the layout is horizontal
-	 * @since 2.0
+	 * @see org.eclipse.draw2d.OrderedLayout#isStretchMinorAxis()
 	 */
-	public boolean isHorizontal() {
-		return horizontal;
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
-	 */
-	protected boolean isSensitiveHorizontally(IFigure parent) {
-		return isHorizontal();
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically(IFigure)
-	 */
-	protected boolean isSensitiveVertically(IFigure parent) {
-		return !isHorizontal();
+	public boolean isStretchMinorAxis() {
+		return fill;
 	}
 
 	/**
@@ -335,35 +326,35 @@ public class FlowLayout extends AbstractHintLayout {
 	protected void layoutRow(IFigure parent) {
 		int majorAdjustment = 0;
 		int minorAdjustment = 0;
-		int correctMajorAlignment = majorAlignment;
-		int correctMinorAlignment = minorAlignment;
+		int correctMajorAlignment = getMajorAlignment();
+		int correctMinorAlignment = getMinorAlignment();
 
 		majorAdjustment = data.area.width - data.rowWidth + getMinorSpacing();
 
 		switch (correctMajorAlignment) {
-		case ALIGN_LEFTTOP:
+		case ALIGN_TOPLEFT:
 			majorAdjustment = 0;
 			break;
 		case ALIGN_CENTER:
 			majorAdjustment /= 2;
 			break;
-		case ALIGN_RIGHTBOTTOM:
+		case ALIGN_BOTTOMRIGHT:
 			break;
 		}
 
 		for (int j = 0; j < data.rowCount; j++) {
-			if (fill) {
+			if (isStretchMinorAxis()) {
 				data.bounds[j].height = data.rowHeight;
 			} else {
 				minorAdjustment = data.rowHeight - data.bounds[j].height;
 				switch (correctMinorAlignment) {
-				case ALIGN_LEFTTOP:
+				case ALIGN_TOPLEFT:
 					minorAdjustment = 0;
 					break;
 				case ALIGN_CENTER:
 					minorAdjustment /= 2;
 					break;
-				case ALIGN_RIGHTBOTTOM:
+				case ALIGN_BOTTOMRIGHT:
 					break;
 				}
 				data.bounds[j].y += minorAdjustment;
@@ -392,34 +383,6 @@ public class FlowLayout extends AbstractHintLayout {
 		parent.getClientArea(Rectangle.SINGLETON);
 		bounds.translate(Rectangle.SINGLETON.x, Rectangle.SINGLETON.y);
 		child.setBounds(bounds);
-	}
-
-	/**
-	 * Sets flag based on layout orientation. If in horizontal orientation, all
-	 * figures will have the same height. If in vertical orientation, all
-	 * figures will have the same width.
-	 * 
-	 * @param value
-	 *            fill state desired
-	 * @since 2.0
-	 */
-	public void setStretchMinorAxis(boolean value) {
-		fill = value;
-	}
-
-	/**
-	 * Sets the orientation of the layout.
-	 * 
-	 * @param flag
-	 *            <code>true</code> if this layout should be horizontal
-	 * @since 2.0
-	 */
-	public void setHorizontal(boolean flag) {
-		if (horizontal == flag)
-			return;
-		invalidate();
-		horizontal = flag;
-		transposer.setEnabled(!horizontal);
 	}
 
 	/**
@@ -453,24 +416,6 @@ public class FlowLayout extends AbstractHintLayout {
 	}
 
 	/**
-	 * Sets the alignment to be used within a row/column.
-	 * <P>
-	 * Possible values are :
-	 * <ul>
-	 * <li>{@link #ALIGN_CENTER}
-	 * <li>{@link #ALIGN_LEFTTOP}
-	 * <li>{@link #ALIGN_RIGHTBOTTOM}
-	 * </ul>
-	 * 
-	 * @param align
-	 *            the minor alignment
-	 * @since 2.0
-	 */
-	public void setMinorAlignment(int align) {
-		minorAlignment = align;
-	}
-
-	/**
 	 * Sets the spacing to be used between children within a row/column.
 	 * 
 	 * @param n
@@ -479,6 +424,16 @@ public class FlowLayout extends AbstractHintLayout {
 	 */
 	public void setMinorSpacing(int n) {
 		minorSpacing = n;
+	}
+
+	/**
+	 * Overwritten to guarantee backwards compatibility with {@link #fill}
+	 * field.
+	 * 
+	 * @see org.eclipse.draw2d.OrderedLayout#setStretchMinorAxis(boolean)
+	 */
+	public void setStretchMinorAxis(boolean value) {
+		fill = value;
 	}
 
 }
