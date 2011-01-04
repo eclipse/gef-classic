@@ -12,8 +12,6 @@ package org.eclipse.gef.editpolicies;
 
 import java.util.List;
 
-import org.eclipse.draw2d.FlowLayout;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Polyline;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -64,7 +62,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 			return -1;
 
 		Transposer transposer = new Transposer();
-		transposer.setEnabled(!isHorizontal());
+		transposer.setEnabled(!isLayoutHorizontal());
 
 		Point p = transposer.t(getLocationFromRequest(request));
 
@@ -166,10 +164,10 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	/**
 	 * @return <code>true</code> if the host's LayoutManager is in a horizontal
 	 *         orientation
+	 * @deprecated Use {@link #isLayoutHorizontal()} instead.
 	 */
 	protected boolean isHorizontal() {
-		IFigure figure = getLayoutContainer();
-		return ((FlowLayout) figure.getLayoutManager()).isHorizontal();
+		return isLayoutHorizontal();
 	}
 
 	/**
@@ -182,7 +180,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 			return;
 		Polyline fb = getLineFeedback();
 		Transposer transposer = new Transposer();
-		transposer.setEnabled(!isHorizontal());
+		transposer.setEnabled(!isLayoutHorizontal());
 
 		boolean before = true;
 		int epIndex = getFeedbackIndexFor(request);
@@ -215,7 +213,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 		if (before) {
 			/*
 			 * Want the line to be halfway between the end of the previous and
-			 * the beginning of this one. If at the begining of a line, then
+			 * the beginning of this one. If at the beginning of a line, then
 			 * start halfway between the left edge of the parent and the
 			 * beginning of the box, but no more than 5 pixels (it would be too
 			 * far and be confusing otherwise).

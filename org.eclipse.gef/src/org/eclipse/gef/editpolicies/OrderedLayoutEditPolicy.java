@@ -12,6 +12,9 @@ package org.eclipse.gef.editpolicies;
 
 import java.util.List;
 
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.OrderedLayout;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -129,6 +132,19 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 			command.add(createMoveChildCommand(child, insertionReference));
 		}
 		return command.unwrap();
+	}
+
+	/**
+	 * Returns whether the layout container's layout manager has a horizontal
+	 * orientation or not.
+	 * 
+	 * @return <code>true</code> if the layout container's layout manager has a
+	 *         horizontal orientation, <code>false</code> otherwise
+	 * @since 3.7
+	 */
+	protected boolean isLayoutHorizontal() {
+		IFigure figure = getLayoutContainer();
+		return ((OrderedLayout) figure.getLayoutManager()).isHorizontal();
 	}
 
 }
