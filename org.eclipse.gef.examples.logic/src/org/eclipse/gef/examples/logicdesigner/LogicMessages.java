@@ -102,6 +102,9 @@ public class LogicMessages extends NLS {
 	public static String PropertyDescriptor_LogicDiagram_ShortestPath;
 	public static String PropertyDescriptor_LogicSubPart_Location;
 	public static String PropertyDescriptor_LogicSubPart_Size;
+	public static String PropertyDescriptor_LogicFlowContainer_SingleColumnLayout;
+	public static String PropertyDescriptor_LogicFlowContainer_MultiRowLayout;
+	public static String PropertyDescriptor_LogicFlowContainer_Layout;
 	public static String ReorderPartCommand_Label;
 	public static String SetLocationCommand_Label_Location;
 	public static String SetLocationCommand_Label_Resize;
