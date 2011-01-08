@@ -95,9 +95,11 @@ public class CommandStack {
 	 * 	startBatchingChanges();
 	 * }
 	 * </PRE>
+	 * 
+	 * @since 3.7 Had package visibility before.
 	 */
-	static final int PRE_MASK = new Integer(PRE_EXECUTE | PRE_UNDO | PRE_REDO)
-			.intValue();
+	public static final int PRE_MASK = new Integer(PRE_EXECUTE | PRE_UNDO
+			| PRE_REDO).intValue();
 
 	private List eventListeners = new ArrayList();
 
