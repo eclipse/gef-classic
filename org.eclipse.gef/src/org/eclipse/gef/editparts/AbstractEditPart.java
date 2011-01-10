@@ -697,12 +697,12 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * By default, an EditPart is selectable, if it is active.
+	 * By default, an EditPart is regarded to be selectable.
 	 * 
 	 * @see org.eclipse.gef.EditPart#isSelectable()
 	 */
 	public boolean isSelectable() {
-		return isActive();
+		return true;
 	}
 
 	/**
