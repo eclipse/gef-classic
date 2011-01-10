@@ -142,7 +142,8 @@ public class TreeViewer extends AbstractEditPartViewer {
 
 		Tree tree = (Tree) getControl();
 		Rectangle area = tree.getClientArea();
-		if (pt.x < 0 || pt.y < 0 || pt.x >= area.width || pt.y >= area.height)
+		if (pt.x < area.x || pt.y < area.y || pt.x >= area.x + area.width
+				|| pt.y >= area.y + area.height)
 			return null;
 
 		EditPart result = null;
