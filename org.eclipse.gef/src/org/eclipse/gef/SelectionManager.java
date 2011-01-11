@@ -95,8 +95,25 @@ public class SelectionManager {
 
 		selection.remove(editpart);
 		if (!selection.isEmpty()) {
-			EditPart primary = (EditPart) selection.get(selection.size() - 1);
-			primary.setSelected(EditPart.SELECTED_PRIMARY);
+			// IMPORTANT: it may (temporarily) happen that the selection list
+			// contains edit parts, which are not selectable (any more) when
+			// this method gets called. Consider e.g. that the selectable state
+			// of an edit part may bound to its activation state (by overwriting
+			// isSelectable()); in this case, when deleting a selected edit part
+			// and its primary selected child simultaneously, the parent edit
+			// part may have already become non selectable, while not having
+			// been deselected yet (because deselection is performed within
+			// removeNotify() after deactivation), when the child edit part gets
+			// deselected. Therefore, we do not simply choose the last edit part
+			// in the list as the new primary selection, but reverse-search the
+			// list for the first that is (still) selectable.
+			for (int i = selection.size() - 1; i >= 0; i--) {
+				EditPart primaryCandidate = (EditPart) selection.get(i);
+				if (primaryCandidate.isSelectable()) {
+					primaryCandidate.setSelected(EditPart.SELECTED_PRIMARY);
+					break;
+				}
+			}
 		}
 		fireSelectionChanged();
 	}
