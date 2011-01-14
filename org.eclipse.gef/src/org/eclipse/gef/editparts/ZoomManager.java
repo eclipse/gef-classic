@@ -21,7 +21,6 @@ import java.util.List;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.core.runtime.Platform;
 
 import org.eclipse.draw2d.FreeformFigure;
 import org.eclipse.draw2d.IFigure;
@@ -495,11 +494,7 @@ public class ZoomManager {
 						.doubleValue() / 100;
 				setZoom(newZoom / multiplier);
 			} catch (Exception e) {
-				// Workaround for MacOS X Cocoa Bugzilla 300837
-				if (!("".equals(zoomString) && Platform.WS_COCOA //$NON-NLS-1$
-						.equals(Platform.getWS()))) {
-					Display.getCurrent().beep();
-				}
+				Display.getCurrent().beep();
 			}
 		}
 	}
