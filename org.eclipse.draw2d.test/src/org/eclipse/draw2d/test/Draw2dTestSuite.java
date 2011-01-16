@@ -58,5 +58,6 @@ public class Draw2dTestSuite extends TestSuite {
 		addTest(new TestSuite(GeometryTest.class));
 		addTest(new TestSuite(ScalablePolygonShapeTest.class));
 		addTest(new TestSuite(LayerTest.class));
+		addTest(new TestSuite(ShapeTest.class));
 	}
 }
