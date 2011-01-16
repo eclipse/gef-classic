@@ -22,6 +22,9 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * The width of this shape's outline.
+	 * 
+	 * @deprecated Use {@link #setLineWidth(int)} or
+	 *             {@link #setLineWidthFloat(float)} instead.
 	 */
 	protected int lineWidth;
 
@@ -38,8 +41,15 @@ public abstract class Shape extends Figure {
 
 	/**
 	 * The line style to be used for this shape's outline.
+	 * 
+	 * @deprecated Use {@link #setLineStyle(int)} instead.
 	 */
 	protected int lineStyle;
+
+	/**
+	 * Private copy of lineStyle field to track changes.
+	 */
+	private int lastLineStyle;
 
 	private LineAttributes lineAttributes;
 
@@ -68,6 +78,7 @@ public abstract class Shape extends Figure {
 		lineWidth = (int) lineAttributes.width;
 		lineStyle = lineAttributes.style;
 		lastLineWidth = lineWidth;
+		lastLineStyle = lineStyle;
 	}
 
 	/**
@@ -350,7 +361,10 @@ public abstract class Shape extends Figure {
 	public int getLineStyle() {
 		// synchronize line style which may have been assigned
 		// to lineStyle field for backwards compatibility
-		lineAttributes.style = lineStyle;
+		if (lineStyle != lastLineStyle) {
+			lineAttributes.style = lineStyle;
+			lastLineStyle = lineStyle;
+		}
 
 		return lineAttributes.style;
 	}
@@ -558,6 +572,7 @@ public abstract class Shape extends Figure {
 			// synchronize the lineStyle field
 			// to the lineStyle we actually use
 			lineStyle = style;
+			lastLineStyle = style;
 
 			repaint();
 		}
