@@ -9,7 +9,7 @@
         IBM Corporation - initial API and implementation
  -->
 
-<project name="org.eclipse.draw2d.doc.isv" default="build.jars" basedir=".">
+<project name="org.eclipse.draw2d.doc.isv" default="build.jars" basedir=".">		<property name="p2.build.repo" value="file:${buildDirectory}/buildRepo"/>
 
 	<path id="path_bootclasspath">
 		<fileset dir="${java.home}/lib">
@@ -18,8 +18,7 @@
 	</path>
 	<property name="bootclasspath" refid="path_bootclasspath" />
 
-	<target name="init">
-		<property name="plugin" value="org.eclipse.draw2d.doc.isv" />
+	<target name="init">		<property name="plugin" value="org.eclipse.draw2d.doc.isv" />
 		<property name="version.suffix" value="3.2.0" />
 		<property name="full.name" value="${plugin}_${version.suffix}" />
 		<property name="temp.folder" value="${basedir}/temp.folder" />
