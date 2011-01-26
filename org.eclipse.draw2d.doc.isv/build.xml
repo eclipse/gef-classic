@@ -36,7 +36,7 @@
 		</antcall>
 		<zip zipfile="${plugin.destination}/${full.name}.jar" basedir="${temp.folder}/${full.name}" filesonly="false" />
 		<delete dir="${temp.folder}" />
-	</target>
+	</target>		<target name="publish.bin.parts" depends="init" if="destination.temp.folder">		<ant antfile="buildDoc.xml" />		<mkdir dir="${destination.temp.folder}/${full.name}" />		<copy todir="${destination.temp.folder}/${full.name}">			<fileset dir="${basedir}" includes="about.html,*.properties,*.xml,META-INF/**,book.css,reference/**,guide/**," excludes="build.properties,build*.xml" />		</copy>		<eclipse.versionReplacer path="${destination.temp.folder}/${full.name}" version="${version.suffix}" />	</target>
 
 	<target name="gather.bin.parts" depends="init" if="destination.temp.folder">
 		<ant antfile="buildDoc.xml" />
