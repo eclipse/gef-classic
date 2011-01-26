@@ -10,7 +10,7 @@
  -->
 
 <project name="org.eclipse.draw2d.doc.isv" default="build.jars" basedir=".">		<property name="p2.build.repo" value="file:${buildDirectory}/buildRepo"/>
-
+	<condition property="p2.publish.parts" value="true">	  <istrue value="${p2.gathering}"/>	</condition>		
 	<path id="path_bootclasspath">
 		<fileset dir="${java.home}/lib">
 			<include name="*.jar" />
