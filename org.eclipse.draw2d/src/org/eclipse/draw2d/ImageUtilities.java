@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontMetrics;
@@ -33,8 +32,7 @@ public class ImageUtilities {
 	 * Returns a new Image with the given String rotated left (by 90 degrees).
 	 * The String will be rendered using the provided colors and fonts. The
 	 * client is responsible for disposing the returned Image. Strings cannot
-	 * contain newline or tab characters. This method MUST be invoked from the
-	 * user-interface (Display) thread.
+	 * contain newline or tab characters.
 	 * 
 	 * @param string
 	 *            the String to be rendered
@@ -48,9 +46,7 @@ public class ImageUtilities {
 	 */
 	public static Image createRotatedImageOfString(String string, Font font,
 			Color foreground, Color background) {
-		Display display = Display.getCurrent();
-		if (display == null)
-			SWT.error(SWT.ERROR_THREAD_INVALID_ACCESS);
+		Display display = Display.getDefault();
 
 		FontMetrics metrics = FigureUtilities.getFontMetrics(font);
 		Dimension strSize = FigureUtilities.getStringExtents(string, font);
@@ -69,17 +65,14 @@ public class ImageUtilities {
 
 	/**
 	 * Returns a new Image that is the given Image rotated left by 90 degrees.
-	 * The client is responsible for disposing the returned Image. This method
-	 * MUST be invoked from the user-interface (Display) thread.
+	 * The client is responsible for disposing the returned Image.
 	 * 
 	 * @param srcImage
 	 *            the Image that is to be rotated left
 	 * @return the rotated Image (the client is responsible for disposing it)
 	 */
 	public static Image createRotatedImage(Image srcImage) {
-		Display display = Display.getCurrent();
-		if (display == null)
-			SWT.error(SWT.ERROR_THREAD_INVALID_ACCESS);
+		Display display = Display.getDefault();
 
 		ImageData srcData = srcImage.getImageData();
 		ImageData destData;
