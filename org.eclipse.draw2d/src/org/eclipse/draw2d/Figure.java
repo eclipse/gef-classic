@@ -1456,6 +1456,8 @@ public class Figure implements IFigure {
 	public void setBackgroundColor(Color bg) {
 		// Set background color to bg unless in high contrast mode.
 		// In that case, get the color from system
+		if (bgColor != null && bgColor.equals(bg))
+			return;
 		Display display = Display.getCurrent();
 		if (display == null) {
 			display = Display.getDefault();
