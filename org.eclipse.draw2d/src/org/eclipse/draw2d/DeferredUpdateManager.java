@@ -205,7 +205,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * @see UpdateManager#performValidation()
 	 */
-	public void performValidation() {
+	public synchronized void performValidation() {
 		if (invalidFigures.isEmpty() || validating)
 			return;
 		try {
