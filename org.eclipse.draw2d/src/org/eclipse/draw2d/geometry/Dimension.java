@@ -16,7 +16,7 @@ package org.eclipse.draw2d.geometry;
  */
 public class Dimension implements Cloneable, java.io.Serializable, Translatable {
 
-	static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * A singleton for use in short calculations.

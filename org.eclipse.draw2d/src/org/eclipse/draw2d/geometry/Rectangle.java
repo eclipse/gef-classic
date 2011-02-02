@@ -20,7 +20,7 @@ import org.eclipse.draw2d.PositionConstants;
  */
 public class Rectangle implements Cloneable, java.io.Serializable, Translatable {
 
-	static final long serialVersionUID = 1;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * A singleton for use in short calculations. Use to avoid newing

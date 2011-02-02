@@ -15,6 +15,8 @@ package org.eclipse.draw2d.geometry;
  */
 public class PrecisionPoint extends Point {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Double value for X
 	 * 

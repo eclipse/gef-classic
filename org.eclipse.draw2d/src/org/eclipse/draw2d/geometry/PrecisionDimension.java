@@ -15,6 +15,8 @@ package org.eclipse.draw2d.geometry;
  */
 public class PrecisionDimension extends Dimension {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * The height in double precision.
 	 * 

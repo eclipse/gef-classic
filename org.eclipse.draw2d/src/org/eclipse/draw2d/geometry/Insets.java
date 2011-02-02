@@ -15,6 +15,8 @@ package org.eclipse.draw2d.geometry;
  */
 public class Insets implements Cloneable, java.io.Serializable {
 
+	private static final long serialVersionUID = 1L;
+
 	/** distance from left */
 	public int left;
 	/** distance from top */
@@ -23,8 +25,6 @@ public class Insets implements Cloneable, java.io.Serializable {
 	public int bottom;
 	/** distance from right */
 	public int right;
-
-	static final long serialVersionUID = 1;
 
 	/**
 	 * Constructs an Insets with all zeroes.

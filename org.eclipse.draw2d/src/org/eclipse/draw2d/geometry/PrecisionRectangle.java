@@ -19,6 +19,8 @@ package org.eclipse.draw2d.geometry;
  */
 public final class PrecisionRectangle extends Rectangle {
 
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * Double value for height
 	 * 
