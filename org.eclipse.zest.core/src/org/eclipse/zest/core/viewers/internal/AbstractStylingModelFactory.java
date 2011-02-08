@@ -196,7 +196,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		if (dn == null) {
 			IFigure figure = null;
 			if (figureProvider != null) {
-				figure = figureProvider.getFigure(source);
+				figure = figureProvider.getFigure(dest);
 			}
 			if (figure != null) {
 				dn = createNode(graph, dest, figure);

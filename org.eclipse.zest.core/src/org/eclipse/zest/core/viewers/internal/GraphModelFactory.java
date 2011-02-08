@@ -65,7 +65,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 				Object source = getCastedContent().getSource(rels[i]);
 				source = filterElement(getViewer().getInput(), source) ? null : source;
 
-				// Check hte filter on the dest
+				// Check the filter on the dest
 				Object dest = getCastedContent().getDestination(rels[i]);
 				dest = filterElement(getViewer().getInput(), dest) ? null : dest;
 
@@ -83,7 +83,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 					// just create the node for the source
 					if (source != null) {
 						if (figureProvider != null) {
-							createNode(model, source, figureProvider.getFigure(dest));
+							createNode(model, source, figureProvider.getFigure(source));
 						} else {
 							createNode(model, source);
 						}
