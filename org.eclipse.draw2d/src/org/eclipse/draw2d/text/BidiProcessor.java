@@ -29,13 +29,6 @@ import org.eclipse.swt.graphics.TextLayout;
  */
 public final class BidiProcessor {
 
-	/*
-	 * Workaround for MacOSX Carbon. AWT DLL cannot start properly on carbon.
-	 * Waiting for bug 82104
-	 */
-	private static final boolean isMacOSXCarbon = SWT.getPlatform().equals(
-			"carbon");//$NON-NLS-1$
-
 	/**
 	 * A helper class to hold information about contributions made to this
 	 * processor.
@@ -202,7 +195,7 @@ public final class BidiProcessor {
 	 */
 	public void process() {
 		try {
-			if (bidiText.length() == 0 || isMacOSXCarbon)
+			if (bidiText.length() == 0)
 				return;
 			char[] chars = new char[bidiText.length()];
 			bidiText.getChars(0, bidiText.length(), chars, 0);
