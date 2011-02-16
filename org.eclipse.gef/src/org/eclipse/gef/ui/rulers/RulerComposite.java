@@ -139,6 +139,8 @@ public class RulerComposite extends Composite {
 	 * @since 3.6
 	 */
 	public static Rectangle calculateRulerTrim(Canvas canvas) {
+		// IMPORTANT: As stated in bug #314750, this is a Mac Carbon related
+		// workaround that is not needed on Cocoa.
 		if ("carbon".equals(SWT.getPlatform())) { //$NON-NLS-1$
 			Rectangle trim = canvas.computeTrim(0, 0, 0, 0);
 			trim.width = 0 - trim.x * 2;
