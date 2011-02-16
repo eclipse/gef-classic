@@ -253,7 +253,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 	public DragTracker getDragTracker(Request req) {
 		/*
 		 * The root will only be asked for a drag tracker if for some reason the
-		 * contents editpart says it is neither selector nor opaque.
+		 * contents EditPart is not selectable or has a non-opaque figure.
 		 */
 		return new MarqueeDragTracker();
 	}
