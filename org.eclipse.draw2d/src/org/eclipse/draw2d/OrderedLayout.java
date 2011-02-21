@@ -105,20 +105,6 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
-	 */
-	protected boolean isSensitiveHorizontally(IFigure parent) {
-		return !isHorizontal();
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically(IFigure)
-	 */
-	protected boolean isSensitiveVertically(IFigure parent) {
-		return isHorizontal();
-	}
-
-	/**
 	 * Returns whether figures should obtain the same height/width in the minor
 	 * axis.
 	 * 

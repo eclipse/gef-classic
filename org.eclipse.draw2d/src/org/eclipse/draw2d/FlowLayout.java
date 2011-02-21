@@ -259,6 +259,20 @@ public class FlowLayout extends OrderedLayout {
 	}
 
 	/**
+	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
+	 */
+	protected boolean isSensitiveHorizontally(IFigure parent) {
+		return isHorizontal();
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically(IFigure)
+	 */
+	protected boolean isSensitiveVertically(IFigure parent) {
+		return !isHorizontal();
+	}
+
+	/**
 	 * Overwritten to guarantee backwards compatibility with {@link #fill}
 	 * field.
 	 * 
@@ -289,7 +303,6 @@ public class FlowLayout extends OrderedLayout {
 
 		initVariables(parent);
 		initRow();
-		int i = 0;
 		while (iterator.hasNext()) {
 			IFigure f = (IFigure) iterator.next();
 			Dimension pref = transposer.t(getChildSize(f, wHint, hHint));
@@ -308,7 +321,6 @@ public class FlowLayout extends OrderedLayout {
 			data.row[data.rowCount] = f;
 			data.bounds[data.rowCount] = r;
 			data.rowCount++;
-			i++;
 		}
 		if (data.rowCount != 0)
 			layoutRow(parent);

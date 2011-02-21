@@ -242,6 +242,20 @@ public class ToolbarLayout extends OrderedLayout {
 	}
 
 	/**
+	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
+	 */
+	protected boolean isSensitiveHorizontally(IFigure parent) {
+		return !isHorizontal();
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically(IFigure)
+	 */
+	protected boolean isSensitiveVertically(IFigure parent) {
+		return isHorizontal();
+	}
+
+	/**
 	 * Returns <code>true</code> if stretch minor axis has been enabled. The
 	 * default value is false.
 	 * 
