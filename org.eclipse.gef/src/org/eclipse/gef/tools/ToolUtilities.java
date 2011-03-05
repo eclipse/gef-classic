@@ -17,7 +17,6 @@ import java.util.List;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 
 /**
@@ -37,8 +36,7 @@ public class ToolUtilities {
 		List selectedParts = viewer.getSelectedEditParts();
 		List result = new ArrayList();
 		for (int i = 0; i < selectedParts.size(); i++) {
-			GraphicalEditPart editpart = (GraphicalEditPart) selectedParts
-					.get(i);
+			EditPart editpart = (EditPart) selectedParts.get(i);
 			if (!isAncestorContainedIn(selectedParts, editpart))
 				result.add(editpart);
 		}
@@ -56,8 +54,7 @@ public class ToolUtilities {
 	public static List getSelectionWithoutDependants(List selectedParts) {
 		List result = new ArrayList();
 		for (int i = 0; i < selectedParts.size(); i++) {
-			GraphicalEditPart editpart = (GraphicalEditPart) selectedParts
-					.get(i);
+			EditPart editpart = (EditPart) selectedParts.get(i);
 			if (!isAncestorContainedIn(selectedParts, editpart))
 				result.add(editpart);
 		}
