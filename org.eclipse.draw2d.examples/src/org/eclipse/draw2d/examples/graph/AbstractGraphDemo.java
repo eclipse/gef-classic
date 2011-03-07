@@ -24,6 +24,7 @@ import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.Edge;
@@ -34,7 +35,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -45,12 +45,14 @@ import org.eclipse.swt.widgets.Shell;
  */
 public abstract class AbstractGraphDemo {
 
-	/** Indicates whether the prime graph should be built */
-	protected static boolean buildPrime = false;
+	// /** Indicates whether the prime graph should be built */
+	// protected static boolean buildPrime = false;
 	/** Contents of the demo */
 	protected IFigure contents;
 	/** Name of graph test method to run */
 	protected static String graphMethod;
+	/** direction to use for the graph */
+	protected static int graphDirection = PositionConstants.SOUTH;
 	/** Demo shell */
 	protected Shell shell;
 
@@ -238,20 +240,46 @@ public abstract class AbstractGraphDemo {
 			}
 		});
 
-		final org.eclipse.swt.widgets.Label seedLabel = new org.eclipse.swt.widgets.Label(
-				composite, SWT.NONE);
-		seedLabel.setText("Build Prime Graph");
-		final Button primeGraphButton = new Button(composite, SWT.CHECK);
+		// final org.eclipse.swt.widgets.Label seedLabel = new
+		// org.eclipse.swt.widgets.Label(
+		// composite, SWT.NONE);
+		// seedLabel.setText("Build Prime Graph");
+		// final Button primeGraphButton = new Button(composite, SWT.CHECK);
+		//
+		// primeGraphButton.addSelectionListener(new SelectionListener() {
+		// public void widgetSelected(SelectionEvent e) {
+		// buildPrime = !buildPrime;
+		// getFigureCanvas().setContents(getContents());
+		// }
+		//
+		// public void widgetDefaultSelected(SelectionEvent e) {
+		// }
+		// });
 
-		primeGraphButton.addSelectionListener(new SelectionListener() {
+		final org.eclipse.swt.widgets.Label directionLabel = new org.eclipse.swt.widgets.Label(
+				composite, SWT.NONE);
+		directionLabel.setText("Graph Direction");
+		final Combo directionCombo = new Combo(composite, SWT.DEFAULT);
+		directionCombo.setItems(new String[] { "SOUTH", "EAST" });
+		directionCombo.addSelectionListener(new SelectionListener() {
+
 			public void widgetSelected(SelectionEvent e) {
-				buildPrime = !buildPrime;
+				int index = directionCombo.getSelectionIndex();
+				switch (index) {
+				case 0:
+					graphDirection = PositionConstants.SOUTH;
+					break;
+				case 1:
+					graphDirection = PositionConstants.EAST;
+					break;
+				}
 				getFigureCanvas().setContents(getContents());
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
+		directionCombo.select(0);
 	}
 
 	/**
