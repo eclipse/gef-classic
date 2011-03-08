@@ -25,8 +25,8 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.EditorPart;
-import org.eclipse.ui.views.properties.PropertySheetPage;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
@@ -47,7 +47,7 @@ import org.eclipse.gef.ui.actions.SaveAction;
 import org.eclipse.gef.ui.actions.SelectAllAction;
 import org.eclipse.gef.ui.actions.UndoAction;
 import org.eclipse.gef.ui.actions.UpdateAction;
-import org.eclipse.gef.ui.properties.UndoablePropertySheetEntry;
+import org.eclipse.gef.ui.properties.UndoablePropertySheetPage;
 
 /**
  * This class serves as a quick starting point for clients who are new to GEF.
@@ -225,9 +225,9 @@ public abstract class GraphicalEditor extends EditorPart implements
 	 */
 	public Object getAdapter(Class type) {
 		if (type == org.eclipse.ui.views.properties.IPropertySheetPage.class) {
-			PropertySheetPage page = new PropertySheetPage();
-			page.setRootEntry(new UndoablePropertySheetEntry(getCommandStack()));
-			return page;
+			return new UndoablePropertySheetPage(getCommandStack(),
+					getActionRegistry().getAction(ActionFactory.UNDO.getId()),
+					getActionRegistry().getAction(ActionFactory.REDO.getId()));
 		}
 		if (type == GraphicalViewer.class)
 			return getGraphicalViewer();
