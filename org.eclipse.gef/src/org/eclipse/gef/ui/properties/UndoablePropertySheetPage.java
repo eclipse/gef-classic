@@ -22,8 +22,9 @@ import org.eclipse.gef.commands.CommandStackEventListener;
 
 /**
  * PropertySheetPage extension that allows to perform undo/redo of property
- * value changes, as well while the editor is not active.
+ * value changes also in case the editor is not active.
  * 
+ * @author anyssen
  * @since 3.7
  */
 public class UndoablePropertySheetPage extends PropertySheetPage {
