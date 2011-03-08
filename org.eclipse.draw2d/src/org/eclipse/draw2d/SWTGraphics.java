@@ -86,6 +86,7 @@ public class SWTGraphics extends Graphics {
 	}
 
 	static class RectangleClipping implements Clipping {
+
 		private float top, left, bottom, right;
 
 		RectangleClipping(float left, float top, float right, float bottom) {
@@ -127,11 +128,10 @@ public class SWTGraphics extends Graphics {
 			this.right = Math.min(this.right, right);
 			this.top = Math.max(this.top, top);
 			this.bottom = Math.min(this.bottom, bottom);
-			if (right < left || bottom < top) {
-				// width and height of -1 to avoid ceiling function from
-				// re-adding a pixel.
-				this.right = left - 1;
-				this.bottom = top - 1;
+			// use left/top -1 to ensure ceiling function doesn't add a pixel
+			if (this.right < this.left || this.bottom < this.top) {
+				this.right = this.left - 1;
+				this.bottom = this.top - 1;
 			}
 		}
 
