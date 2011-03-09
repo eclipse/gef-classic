@@ -33,24 +33,36 @@ import org.eclipse.gef.commands.ForwardUndoCompoundCommand;
  * UndoablePropertySheetEntry, you should set the IPropertySourceProvider on
  * that root entry, rather than the PropertySheetPage.
  */
-public final class UndoablePropertySheetEntry extends PropertySheetEntry {
+public class UndoablePropertySheetEntry extends PropertySheetEntry {
 
 	private CommandStackListener commandStackListener;
 
-	private CommandStack stack;
+	private CommandStack commandStack;
 
+	/**
+	 * Constructs a non-root, i.e. child entry, which may obtain the command
+	 * stack from its parent.
+	 * 
+	 * @since 3.1
+	 */
 	private UndoablePropertySheetEntry() {
 	}
 
 	/**
 	 * Constructs the root entry using the given command stack.
 	 * 
-	 * @param stack
-	 *            the command stack
+	 * @param commandStack
+	 *            the command stack to use
 	 * @since 3.1
 	 */
-	public UndoablePropertySheetEntry(CommandStack stack) {
-		setCommandStack(stack);
+	public UndoablePropertySheetEntry(CommandStack commandStack) {
+		this.commandStack = commandStack;
+		this.commandStackListener = new CommandStackListener() {
+			public void commandStackChanged(EventObject e) {
+				refreshFromRoot();
+			}
+		};
+		this.commandStack.addCommandStackListener(commandStackListener);
 	}
 
 	/**
@@ -64,16 +76,23 @@ public final class UndoablePropertySheetEntry extends PropertySheetEntry {
 	 * @see org.eclipse.ui.views.properties.IPropertySheetEntry#dispose()
 	 */
 	public void dispose() {
-		if (stack != null)
-			stack.removeCommandStackListener(commandStackListener);
+		if (commandStack != null)
+			commandStack.removeCommandStackListener(commandStackListener);
 		super.dispose();
 	}
 
-	CommandStack getCommandStack() {
+	/**
+	 * Returns the {@link CommandStack} that is used by this entry. It is
+	 * obtained from the parent in case the entry is not a root entry.
+	 * 
+	 * @return the {@link CommandStack} to be used.
+	 * @since 3.7
+	 */
+	protected CommandStack getCommandStack() {
 		// only the root has, and is listening too, the command stack
 		if (getParent() != null)
 			return ((UndoablePropertySheetEntry) getParent()).getCommandStack();
-		return stack;
+		return commandStack;
 	}
 
 	/**
@@ -105,16 +124,6 @@ public final class UndoablePropertySheetEntry extends PropertySheetEntry {
 		}
 	}
 
-	void setCommandStack(CommandStack stack) {
-		this.stack = stack;
-		commandStackListener = new CommandStackListener() {
-			public void commandStackChanged(EventObject e) {
-				refreshFromRoot();
-			}
-		};
-		stack.addCommandStackListener(commandStackListener);
-	}
-
 	/**
 	 * @see PropertySheetEntry#valueChanged(PropertySheetEntry)
 	 */
@@ -123,7 +132,8 @@ public final class UndoablePropertySheetEntry extends PropertySheetEntry {
 				new ForwardUndoCompoundCommand());
 	}
 
-	void valueChanged(UndoablePropertySheetEntry child, CompoundCommand command) {
+	private void valueChanged(UndoablePropertySheetEntry child,
+			CompoundCommand command) {
 		CompoundCommand cc = new CompoundCommand();
 		command.add(cc);
 
@@ -141,7 +151,7 @@ public final class UndoablePropertySheetEntry extends PropertySheetEntry {
 					command);
 		else {
 			// I am the root entry
-			stack.execute(command);
+			commandStack.execute(command);
 		}
 	}
 }
