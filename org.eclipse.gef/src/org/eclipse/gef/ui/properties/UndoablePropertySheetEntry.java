@@ -81,8 +81,6 @@ public final class UndoablePropertySheetEntry extends PropertySheetEntry {
 	 */
 	public void resetPropertyValue() {
 		CompoundCommand cc = new CompoundCommand();
-		ResetValueCommand restoreCmd;
-
 		if (getParent() == null)
 			// root does not have a default value
 			return;
@@ -93,10 +91,10 @@ public final class UndoablePropertySheetEntry extends PropertySheetEntry {
 		for (int i = 0; i < objects.length; i++) {
 			IPropertySource source = getPropertySource(objects[i]);
 			if (source.isPropertySet(getDescriptor().getId())) {
-				// source.resetPropertyValue(getDescriptor()getId());
-				restoreCmd = new ResetValueCommand();
-				restoreCmd.setTarget(source);
-				restoreCmd.setPropertyId(getDescriptor().getId());
+				SetPropertyValueCommand restoreCmd = new SetPropertyValueCommand(
+						getDescriptor().getDisplayName(), source,
+						getDescriptor().getId(),
+						SetPropertyValueCommand.DEFAULT_VALUE);
 				cc.add(restoreCmd);
 				change = true;
 			}
@@ -129,12 +127,11 @@ public final class UndoablePropertySheetEntry extends PropertySheetEntry {
 		CompoundCommand cc = new CompoundCommand();
 		command.add(cc);
 
-		SetValueCommand setCommand;
+		SetPropertyValueCommand setCommand;
 		for (int i = 0; i < getValues().length; i++) {
-			setCommand = new SetValueCommand(child.getDisplayName());
-			setCommand.setTarget(getPropertySource(getValues()[i]));
-			setCommand.setPropertyId(child.getDescriptor().getId());
-			setCommand.setPropertyValue(child.getValues()[i]);
+			setCommand = new SetPropertyValueCommand(child.getDisplayName(),
+					getPropertySource(getValues()[i]), child.getDescriptor()
+							.getId(), child.getValues()[i]);
 			cc.add(setCommand);
 		}
 

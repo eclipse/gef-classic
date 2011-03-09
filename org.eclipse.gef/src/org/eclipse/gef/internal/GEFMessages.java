@@ -55,7 +55,6 @@ public class GEFMessages extends NLS {
 	public static String SaveAction_Label;
 	public static String SaveAction_Tooltip;
 	public static String SetPropertyValueCommand_Label;
-	public static String RestoreDefaultValueCommand_Label;
 
 	public static String SelectAllAction_Label;
 	public static String SelectAllAction_Tooltip;
