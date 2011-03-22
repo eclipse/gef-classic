@@ -26,6 +26,29 @@ public class MouseEvent extends InputEvent {
 	public int button;
 
 	/**
+	 * Constructs a new MouseEvent.
+	 * 
+	 * @param dispatcher
+	 *            the event dispatcher
+	 * @param source
+	 *            the source of the event
+	 * @param me
+	 *            an SWT mouse event used to supply the state mask, button and
+	 *            position
+	 * @since 3.7
+	 */
+	public MouseEvent(EventDispatcher dispatcher, IFigure source,
+			org.eclipse.swt.events.MouseEvent me) {
+		super(dispatcher, source, me.stateMask);
+		this.button = me.button;
+		Point pt = Point.SINGLETON;
+		pt.setLocation(me.x, me.y);
+		source.translateToRelative(pt);
+		this.x = pt.x;
+		this.y = pt.y;
+	}
+
+	/**
 	 * Constructor for MouseEvent.
 	 * 
 	 * @param x
@@ -35,6 +58,9 @@ public class MouseEvent extends InputEvent {
 	 * @param button
 	 * @param stateMask
 	 * @since 3.6
+	 * @deprecated Use
+	 *             {@link #MouseEvent(EventDispatcher, IFigure, org.eclipse.swt.events.MouseEvent)}
+	 *             instead.
 	 */
 	public MouseEvent(int x, int y, EventDispatcher dispatcher, IFigure f,
 			int button, int stateMask) {

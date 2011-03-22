@@ -226,8 +226,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 		setHoverSource(null, me);
 		if (mouseTarget != null) {
-			currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget,
-					me.button, me.stateMask);
+			currentEvent = new MouseEvent(this, mouseTarget, me);
 			mouseTarget.handleMouseExited(currentEvent);
 			releaseCapture();
 			mouseTarget = null;
@@ -366,28 +365,23 @@ public class SWTEventDispatcher extends EventDispatcher {
 	private void receive(org.eclipse.swt.events.MouseEvent me) {
 		currentEvent = null;
 		updateFigureUnderCursor(me);
-		int state = me.stateMask;
 		if (captured) {
 			if (mouseTarget != null)
-				currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget,
-						me.button, state);
+				currentEvent = new MouseEvent(this, mouseTarget, me);
 		} else {
 			IFigure f = root.findMouseEventTargetAt(me.x, me.y);
 			if (f == mouseTarget) {
 				if (mouseTarget != null)
-					currentEvent = new MouseEvent(me.x, me.y, this,
-							mouseTarget, me.button, state);
+					currentEvent = new MouseEvent(this, mouseTarget, me);
 				return;
 			}
 			if (mouseTarget != null) {
-				currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget,
-						me.button, state);
+				currentEvent = new MouseEvent(this, mouseTarget, me);
 				mouseTarget.handleMouseExited(currentEvent);
 			}
 			setMouseTarget(f);
 			if (mouseTarget != null) {
-				currentEvent = new MouseEvent(me.x, me.y, this, mouseTarget,
-						me.button, state);
+				currentEvent = new MouseEvent(this, mouseTarget, me);
 				mouseTarget.handleMouseEntered(currentEvent);
 			}
 		}
