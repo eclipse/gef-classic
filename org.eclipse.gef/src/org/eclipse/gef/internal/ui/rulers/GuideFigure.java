@@ -92,7 +92,7 @@ public class GuideFigure extends Figure {
 			clientArea.width = 8;
 
 			graphics.fillRectangle(clientArea
-					.getCropped(new Insets(2, 2, 2, 1)));
+					.getShrinked(new Insets(2, 2, 2, 1)));
 
 			graphics.setForegroundColor(ColorConstants.buttonLightest);
 			graphics.drawLine(clientArea.x, clientArea.y + 1, clientArea.x,
@@ -148,7 +148,7 @@ public class GuideFigure extends Figure {
 			clientArea.height = 8;
 
 			graphics.fillRectangle(clientArea
-					.getCropped(new Insets(2, 2, 1, 2)));
+					.getShrinked(new Insets(2, 2, 1, 2)));
 
 			graphics.setForegroundColor(ColorConstants.buttonLightest);
 			graphics.drawLine(clientArea.x + 1, clientArea.y, clientArea.x + 7,
