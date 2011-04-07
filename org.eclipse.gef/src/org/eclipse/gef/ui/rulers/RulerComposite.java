@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -550,11 +551,25 @@ public class RulerComposite extends Composite {
 		}
 
 		/**
-		 * @see org.eclipse.gef.EditPartViewer#setContents(org.eclipse.gef.EditPart)
+		 * 
+		 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#handleFocusGained(org.eclipse.swt.events.FocusEvent)
 		 */
-		public void setContents(EditPart editpart) {
-			super.setContents(editpart);
-			setFocus(getContents());
+		protected void handleFocusGained(FocusEvent fe) {
+			if (focusPart == null) {
+				setFocus(getContents());
+			}
+			super.handleFocusGained(fe);
+		}
+
+		/**
+		 * 
+		 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#handleFocusLost(org.eclipse.swt.events.FocusEvent)
+		 */
+		protected void handleFocusLost(FocusEvent fe) {
+			super.handleFocusLost(fe);
+			if (focusPart == getContents()) {
+				focusPart = null;
+			}
 		}
 
 		/**
