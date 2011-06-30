@@ -218,7 +218,7 @@ public class Straight {
 		if (new Straight(segmentStart, segmentDirection).contains(vector)) {
 			// compute parameter s, so that vector = segmentStart + s *
 			// (segmentEnd - segmentStart).
-			double s = segmentDirection.isVertical() ? (vector.y - segmentDirection.y)
+			double s = segmentDirection.isVertical() ? (vector.y - segmentStart.y)
 					/ segmentDirection.y
 					: (vector.x - segmentStart.x) / segmentDirection.x;
 			// if s is between 0 and 1, intersection point lies within
