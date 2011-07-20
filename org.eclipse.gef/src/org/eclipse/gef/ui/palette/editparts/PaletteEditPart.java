@@ -310,6 +310,17 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart
 		return text;
 	}
 
+	// /**
+	// * Overwritten because palette edit parts are not bound to the constraint
+	// * that their figure has to be visible (they may get selected while being
+	// * stacked).
+	// *
+	// * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#isSelectable()
+	// */
+	// public boolean isSelectable() {
+	// return true;
+	// }
+
 	/**
 	 * Determine if the name is needed in the tool tip.
 	 * 
@@ -451,6 +462,17 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart
 			return ((PaletteEditPart) getParent()).getLayoutSetting();
 		}
 		return getPreferenceSource().getLayoutSetting();
+	}
+
+	/**
+	 * Overwritten to ensure palette entries are always selectable, even if
+	 * their figure is not showing).
+	 * 
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#isSelectable()
+	 */
+	public boolean isSelectable() {
+		// bug #349124
+		return true;
 	}
 
 	/**
