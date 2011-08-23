@@ -150,10 +150,15 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 			CreateConnectionRequest request);
 
 	/**
-	 * Returns the Command that represents the first half of creating a
-	 * connection. This Command will be passed to the target node EditPart. The
-	 * target node may do anything necessary to create a Command that represents
-	 * the entire creation.
+	 * Returns the command that represents the first half of creating a
+	 * connection. In case the first half of the connection creation was
+	 * successful (i.e. the returned start command is executable), the target
+	 * edit part is then responsible of creating a Command that represents the
+	 * entire creation. In case the target edit part needs to refer to the start
+	 * command to achieve this, the start command may be registered on the
+	 * passed in create request (see
+	 * {@link CreateConnectionRequest#setStartCommand(Command)}) before
+	 * returning it here.
 	 * 
 	 * @param request
 	 *            the CreateConnectionRequest
