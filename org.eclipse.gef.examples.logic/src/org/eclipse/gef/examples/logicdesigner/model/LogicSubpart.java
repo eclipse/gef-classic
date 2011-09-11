@@ -109,8 +109,12 @@ abstract public class LogicSubpart extends LogicElement {
 	}
 
 	protected boolean getInput(String terminal) {
+		if (inputs.isEmpty()) {
+			return false;
+		}
 		Wire w = (Wire) inputs.get(terminal);
 		return (w == null) ? false : w.getValue();
+
 	}
 
 	public Point getLocation() {
