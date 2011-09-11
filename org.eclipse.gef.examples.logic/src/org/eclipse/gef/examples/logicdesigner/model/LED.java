@@ -43,6 +43,8 @@ public class LED extends LogicSubpart {
 			TERMINAL_3_OUT = "3", //$NON-NLS-1$
 			TERMINAL_4_OUT = "4"; //$NON-NLS-1$
 
+	protected static String[] IN_TERMINALS = new String[] { TERMINAL_1_IN,
+			TERMINAL_2_IN, TERMINAL_3_IN, TERMINAL_4_IN };
 	protected boolean bits[] = new boolean[4];
 
 	static {
@@ -106,10 +108,6 @@ public class LED extends LogicSubpart {
 		return val;
 	}
 
-	protected boolean hasInput() {
-		return !inputs.isEmpty();
-	}
-
 	/**
 	 * Nulls out any changes to this's size as it is fixed.
 	 */
@@ -145,12 +143,16 @@ public class LED extends LogicSubpart {
 	}
 
 	public void update() {
-		if (hasInput()) {
-			bits = new boolean[4];
-			bits[0] = getInput(TERMINAL_1_IN);
-			bits[1] = getInput(TERMINAL_2_IN);
-			bits[2] = getInput(TERMINAL_3_IN);
-			bits[3] = getInput(TERMINAL_4_IN);
+		boolean changed = false;
+		boolean[] oldBits = new boolean[bits.length];
+		for (int i = 0; i < oldBits.length; i++) {
+			oldBits[i] = bits[i];
+			bits[i] = getInput(IN_TERMINALS[i]);
+			if (bits[i] != oldBits[i]) {
+				changed = true;
+			}
+		}
+		if (changed) {
 			firePropertyChange(P_VALUE, null, null);
 		}
 
