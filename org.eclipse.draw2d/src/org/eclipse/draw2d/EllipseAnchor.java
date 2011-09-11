@@ -65,4 +65,33 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 		return r.getCenter().translate((int) (r.width * dx / Math.sqrt(1 + k)),
 				(int) (r.height * dy / Math.sqrt(1 + 1 / k)));
 	}
+
+	/**
+	 * Returns <code>true</code> if the other anchor is an EllipseAnchor with
+	 * the same owner.
+	 * 
+	 * @param o
+	 *            the other anchor
+	 * @return <code>true</code> if equal
+	 */
+	public boolean equals(Object o) {
+		if (o instanceof EllipseAnchor) {
+			EllipseAnchor other = (EllipseAnchor) o;
+			return other.getOwner() == getOwner();
+		}
+		return false;
+	}
+
+	/**
+	 * The owning figure's hashcode is used since equality is approximately
+	 * based on the owner.
+	 * 
+	 * @return the hash code.
+	 */
+	public int hashCode() {
+		if (getOwner() != null)
+			return getOwner().hashCode();
+		else
+			return super.hashCode();
+	}
 }
