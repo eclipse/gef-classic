@@ -13,6 +13,7 @@ package org.eclipse.gef.internal;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IAdapterFactory;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import org.eclipse.gef.editparts.AbstractEditPart;
@@ -22,11 +23,20 @@ public class PropertySourceAdapterFactory implements IAdapterFactory {
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		AbstractEditPart part = (AbstractEditPart) adaptableObject;
 		Object model = part.getModel();
-		if (model instanceof IPropertySource)
+		// check if model is already of the desired adapter type
+		if (adapterType.isInstance(model)) {
 			return model;
-		if (model instanceof IAdaptable)
-			return ((IAdaptable) model).getAdapter(adapterType);
-		return null;
+		}
+		// check if model is adaptable and does provide an adapter of the
+		// desired type
+		if (model instanceof IAdaptable) {
+			Object adapter = ((IAdaptable) model).getAdapter(adapterType);
+			if (adapter != null) {
+				return adapter;
+			}
+		}
+		// fall back to platform's adapter manager
+		return Platform.getAdapterManager().getAdapter(model, adapterType);
 	}
 
 	public Class[] getAdapterList() {
