@@ -74,19 +74,23 @@ public class ObstructionExample extends AbstractExample {
 					offset.setWidth(0);
 					offset.setHeight(0);
 					if (event.button == 3) {
-						getParent().remove(oFigure);
+						if (oFigure != null) {
+							getParent().remove(oFigure);
+							router.removePath(path);
+							paths.remove(path);
+						}
+
 						getParent().remove(thisFigure);
 
 						if (isSource) {
 							sourceList.remove(loc);
-							targetList.remove(oFigure.loc);
-							router.removePath(path);
-							paths.remove(path);
+							if (oFigure != null) {
+								targetList.remove(oFigure.loc);
+							}
 						} else {
+							// targets always have an oFigure
 							sourceList.remove(oFigure.loc);
 							targetList.remove(loc);
-							router.removePath(path);
-							paths.remove(path);
 						}
 
 					}
@@ -102,15 +106,18 @@ public class ObstructionExample extends AbstractExample {
 					if (isSource) {
 						index = sourceList.indexOf(loc);
 
-						router.removePath(path);
-						paths.remove(path);
 						sourceList.remove(loc);
 						loc = new Point(rect.x() + 10, rect.y() + 10);
 						sourceList.add(index, loc);
-						path = new Path(loc, (Point) targetList.get(index));
-						router.addPath(path);
-						paths.add(path);
-						oFigure.path = path;
+
+						if (targetList.size() > index) {
+							router.removePath(path);
+							paths.remove(path);
+							path = new Path(loc, (Point) targetList.get(index));
+							router.addPath(path);
+							paths.add(path);
+							oFigure.path = path;
+						}
 					} else {
 						index = targetList.indexOf(loc);
 
@@ -199,8 +206,6 @@ public class ObstructionExample extends AbstractExample {
 			router = new ShortestPathRouter();
 
 			addMouseListener(new MouseListener.Stub() {
-				private Point pressPoint;
-				private boolean firstPointCreated = false;
 				private EllipseDragFigure figure;
 				private Point pPoint;
 
@@ -225,7 +230,8 @@ public class ObstructionExample extends AbstractExample {
 
 						}
 					} else if (event.button == 3) {
-						if (firstPointCreated) {
+						if (sourceList.size() > targetList.size()) {
+							// source already there, create target
 							targetList.add(event.getLocation());
 							EllipseDragFigure eFigure = new EllipseDragFigure(
 									event.getLocation(), false);
@@ -233,21 +239,20 @@ public class ObstructionExample extends AbstractExample {
 									.x() - 10, event.getLocation().y() - 10,
 									20, 20));
 							add(eFigure);
-							firstPointCreated = false;
 							figure.addOtherFigure(eFigure);
 							eFigure.addOtherFigure(figure);
-							Path path = new Path(pressPoint,
+							Path path = new Path(
+									(Point) sourceList
+											.get(targetList.size() - 1),
 									event.getLocation());
 							router.addPath(path);
 							paths.add(path);
 							eFigure.path = path;
 							figure.path = path;
 							figure = null;
-							pressPoint = null;
 							path = null;
 						} else {
 							sourceList.add(event.getLocation());
-							pressPoint = event.getLocation();
 							EllipseDragFigure eFigure = new EllipseDragFigure(
 									event.getLocation(), true);
 							eFigure.setBounds(new Rectangle(event.getLocation()
@@ -255,7 +260,6 @@ public class ObstructionExample extends AbstractExample {
 									20, 20));
 							add(eFigure);
 							figure = eFigure;
-							firstPointCreated = true;
 						}
 					} else
 						showSegs = !showSegs;
