@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2011 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,13 +50,14 @@ public class ImageUtilities {
 
 		FontMetrics metrics = FigureUtilities.getFontMetrics(font);
 		Dimension strSize = FigureUtilities.getStringExtents(string, font);
-		Image srcImage = new Image(display, strSize.width, metrics.getAscent());
+		Image srcImage = new Image(display, strSize.width, metrics.getAscent()
+				+ metrics.getDescent() + metrics.getLeading());
 		GC gc = new GC(srcImage);
 		gc.setFont(font);
 		gc.setForeground(foreground);
 		gc.setBackground(background);
 		gc.fillRectangle(srcImage.getBounds());
-		gc.drawString(string, 0, 0 - metrics.getLeading());
+		gc.drawString(string, 0, 0);
 		Image result = createRotatedImage(srcImage);
 		gc.dispose();
 		srcImage.dispose();
