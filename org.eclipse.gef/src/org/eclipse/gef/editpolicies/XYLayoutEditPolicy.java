@@ -143,6 +143,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 		feedback.translateToRelative(feedbackBounds);
 		feedback.setBounds(feedbackBounds
 				.expand(getCreationFeedbackOffset(request)));
+		feedback.validate();
 	}
 
 	/**

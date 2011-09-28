@@ -789,8 +789,10 @@ public class MarqueeSelectionTool extends AbstractTool {
 
 	private void showMarqueeFeedback() {
 		Rectangle rect = getCurrentMarqueeSelectionRectangle().getCopy();
-		getMarqueeFeedbackFigure().translateToRelative(rect);
-		getMarqueeFeedbackFigure().setBounds(rect);
+		IFigure marqueeFeedbackFigure = getMarqueeFeedbackFigure();
+		marqueeFeedbackFigure.translateToRelative(rect);
+		marqueeFeedbackFigure.setBounds(rect);
+		marqueeFeedbackFigure.validate();
 	}
 
 	private void showTargetFeedback() {
