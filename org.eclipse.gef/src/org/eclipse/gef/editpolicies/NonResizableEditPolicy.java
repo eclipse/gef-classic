@@ -72,6 +72,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 		r.setLineStyle(Graphics.LINE_DOT);
 		r.setForegroundColor(ColorConstants.white);
 		r.setBounds(getInitialFeedbackBounds());
+		r.validate();
 		addFeedback(r);
 		return r;
 	}
@@ -336,6 +337,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 		feedback.translateToRelative(rect);
 		feedback.setBounds(rect);
+		feedback.validate();
 	}
 
 	/**

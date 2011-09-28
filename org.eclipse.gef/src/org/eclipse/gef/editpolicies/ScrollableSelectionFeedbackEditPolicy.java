@@ -129,6 +129,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		getFeedbackLayer().translateToRelative(feedbackFigureAbsoluteBounds);
 		getFeedbackLayer().translateFromParent(feedbackFigureAbsoluteBounds);
 		feedbackFigure.setBounds(feedbackFigureAbsoluteBounds);
+		feedbackFigure.validate();
 		addFeedback(feedbackFigure);
 		feedbackFigures.add(feedbackFigure);
 	}

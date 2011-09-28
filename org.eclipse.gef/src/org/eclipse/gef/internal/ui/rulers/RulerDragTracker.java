@@ -171,6 +171,7 @@ public class RulerDragTracker extends SimpleDragTracker {
 		guideline.setBounds(bounds);
 		guide.setVisible(isCreationValid() && !isDelete());
 		guideline.setVisible(isCreationValid() && !isDelete());
+		guideline.validate();
 	}
 
 }

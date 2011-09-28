@@ -213,6 +213,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 					getHost(), getDummyGuideFigure(), new Integer(
 							getGuideEditPart().getZoomedPosition()));
 			getDummyGuideFigure().setBounds(getHostFigure().getBounds());
+			getDummyGuideFigure().validate();
 			// add the invisible placeholder line figure to the primary viewer
 			getGuideEditPart().getGuideLayer().add(getDummyLineFigure(), 0);
 			getGuideEditPart().getGuideLayer().setConstraint(
@@ -220,6 +221,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 					new Boolean(getGuideEditPart().isHorizontal()));
 			getDummyLineFigure().setBounds(
 					getGuideEditPart().getGuideLineFigure().getBounds());
+			getDummyLineFigure().validate();
 			// move the guide being dragged to the last index so that it's drawn
 			// on
 			// top of other guides
