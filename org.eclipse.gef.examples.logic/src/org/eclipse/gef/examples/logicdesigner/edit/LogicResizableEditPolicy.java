@@ -57,6 +57,7 @@ public class LogicResizableEditPolicy extends ResizableEditPolicy {
 		IFigure figure = createFigure((GraphicalEditPart) getHost(), null);
 
 		figure.setBounds(getInitialFeedbackBounds());
+		figure.validate();
 		addFeedback(figure);
 		return figure;
 	}
