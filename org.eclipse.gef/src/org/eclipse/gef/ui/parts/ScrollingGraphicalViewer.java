@@ -49,10 +49,9 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 	 * @see org.eclipse.gef.EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	public final Control createControl(Composite parent) {
-		FigureCanvas canvas = new FigureCanvas(parent, getLightweightSystem());
-		setControl(canvas);
-		installRootFigure();
-		return canvas;
+		setControl(new FigureCanvas(parent, getLightweightSystem()));
+		hookRootFigure();
+		return getControl();
 	}
 
 	/**
@@ -63,19 +62,6 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 	 */
 	protected FigureCanvas getFigureCanvas() {
 		return (FigureCanvas) getControl();
-	}
-
-	/**
-	 * If the figure is a viewport, set the canvas' viewport, otherwise, set its
-	 * contents.
-	 */
-	private void installRootFigure() {
-		if (getFigureCanvas() == null)
-			return;
-		if (rootFigure instanceof Viewport)
-			getFigureCanvas().setViewport((Viewport) rootFigure);
-		else
-			getFigureCanvas().setContents(rootFigure);
 	}
 
 	/**
@@ -120,11 +106,16 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 	}
 
 	/**
-	 * @see GraphicalViewerImpl#setRootFigure(IFigure)
+	 * If the figure is a viewport, set the canvas' viewport, otherwise, set its
+	 * contents.
 	 */
-	protected void setRootFigure(IFigure figure) {
-		rootFigure = figure;
-		installRootFigure();
+	protected void hookRootFigure() {
+		if (getFigureCanvas() == null)
+			return;
+		if (rootFigure instanceof Viewport)
+			getFigureCanvas().setViewport((Viewport) rootFigure);
+		else
+			getFigureCanvas().setContents(rootFigure);
 	}
 
 }

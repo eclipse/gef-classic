@@ -412,9 +412,19 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 	 * 
 	 * @param figure
 	 *            the root figure
+	 * @deprecated This method should no longer be used.
 	 */
 	protected void setRootFigure(IFigure figure) {
 		rootFigure = figure;
+		hookRootFigure();
+	}
+
+	/**
+	 * Hook the root figure into this viewer's {@link LightweightSystem}.
+	 * 
+	 * @since 3.8
+	 */
+	protected void hookRootFigure() {
 		getLightweightSystem().setContents(rootFigure);
 	}
 
