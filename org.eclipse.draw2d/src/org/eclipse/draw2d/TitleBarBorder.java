@@ -13,6 +13,7 @@ package org.eclipse.draw2d;
 
 import org.eclipse.swt.graphics.Color;
 
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -87,6 +88,15 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 	 */
 	protected Insets getPadding() {
 		return padding;
+	}
+
+	/**
+	 * Overwritten to handle padding appropriately.
+	 * 
+	 * @see org.eclipse.draw2d.AbstractLabeledBorder#getPreferredSize(org.eclipse.draw2d.IFigure)
+	 */
+	public Dimension getPreferredSize(IFigure fig) {
+		return super.getPreferredSize(fig).getExpanded(padding.getWidth(), 0);
 	}
 
 	/**
