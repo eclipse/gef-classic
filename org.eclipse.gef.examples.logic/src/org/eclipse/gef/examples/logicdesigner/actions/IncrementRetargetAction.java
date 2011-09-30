@@ -24,9 +24,6 @@ public class IncrementRetargetAction extends RetargetAction {
 
 	/**
 	 * Constructor for IncrementRetargetAction.
-	 * 
-	 * @param actionID
-	 * @param label
 	 */
 	public IncrementRetargetAction() {
 		super(
