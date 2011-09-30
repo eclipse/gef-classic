@@ -106,6 +106,7 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 import org.eclipse.gef.ui.actions.MatchHeightAction;
 import org.eclipse.gef.ui.actions.MatchSizeAction;
 import org.eclipse.gef.ui.actions.MatchWidthAction;
+import org.eclipse.gef.ui.actions.PasteTemplateAction;
 import org.eclipse.gef.ui.actions.ToggleGridAction;
 import org.eclipse.gef.ui.actions.ToggleRulerVisibilityAction;
 import org.eclipse.gef.ui.actions.ToggleSnapToGeometryAction;
@@ -121,7 +122,6 @@ import org.eclipse.gef.ui.parts.TreeViewer;
 import org.eclipse.gef.ui.rulers.RulerComposite;
 
 import org.eclipse.gef.examples.logicdesigner.actions.IncrementDecrementAction;
-import org.eclipse.gef.examples.logicdesigner.actions.LogicPasteTemplateAction;
 import org.eclipse.gef.examples.logicdesigner.dnd.TextTransferDropTargetListener;
 import org.eclipse.gef.examples.logicdesigner.edit.GraphicalPartFactory;
 import org.eclipse.gef.examples.logicdesigner.edit.TreePartFactory;
@@ -660,7 +660,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		registry.registerAction(action);
 		getSelectionActions().add(action.getId());
 
-		action = new LogicPasteTemplateAction(this);
+		action = new PasteTemplateAction(this);
 		registry.registerAction(action);
 		getSelectionActions().add(action.getId());
 
