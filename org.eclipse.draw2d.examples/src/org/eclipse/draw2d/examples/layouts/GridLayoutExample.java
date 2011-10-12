@@ -196,13 +196,15 @@ public class GridLayoutExample extends AbstractExample {
 		columnsGroup.setLayoutData(_data);
 		Text numColumns = new Text(columnsGroup, SWT.BORDER);
 		numColumns.setText("2");
-		numColumns.addListener(SWT.DefaultSelection, new Listener() {
+		Listener numColumnsListener = new Listener() {
 			public void handleEvent(Event e) {
 				gridLayout.numColumns = getEventValue(e, "numColumns")
 						.intValue();
 				updateView();
 			}
-		});
+		};
+		numColumns.addListener(SWT.DefaultSelection, numColumnsListener);
+		numColumns.addListener(SWT.FocusOut, numColumnsListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 15;
 		numColumns.setLayoutData(_data);
@@ -393,7 +395,7 @@ public class GridLayoutExample extends AbstractExample {
 		// widthHint --------------------------------------
 		widthHint = new Text(gridDataGroup, SWT.BORDER);
 		widthHint.setText("-1");
-		widthHint.addListener(SWT.DefaultSelection, new Listener() {
+		Listener gridDataListener = new Listener() {
 			public void handleEvent(Event e) {
 				if (selectedShape == null)
 					return;
@@ -401,7 +403,9 @@ public class GridLayoutExample extends AbstractExample {
 				d.widthHint = getEventValue(e, "widthHint").intValue();
 				updateView();
 			}
-		});
+		};
+		widthHint.addListener(SWT.DefaultSelection, gridDataListener);
+		widthHint.addListener(SWT.FocusOut, gridDataListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 35;
 		widthHint.setLayoutData(_data);
@@ -410,7 +414,7 @@ public class GridLayoutExample extends AbstractExample {
 		// heightHint ------------------------------------
 		heightHint = new Text(gridDataGroup, SWT.BORDER);
 		heightHint.setText("-1");
-		heightHint.addListener(SWT.DefaultSelection, new Listener() {
+		Listener heightHintListener = new Listener() {
 			public void handleEvent(Event e) {
 				if (selectedShape == null)
 					return;
@@ -418,7 +422,9 @@ public class GridLayoutExample extends AbstractExample {
 				d.heightHint = getEventValue(e, "heightHint").intValue();
 				updateView();
 			}
-		});
+		};
+		heightHint.addListener(SWT.DefaultSelection, heightHintListener);
+		heightHint.addListener(SWT.FocusOut, heightHintListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 35;
 		heightHint.setLayoutData(_data);
@@ -467,7 +473,7 @@ public class GridLayoutExample extends AbstractExample {
 		// horizontalIndent ------------------------------------
 		horizIndent = new Text(gridDataGroup, SWT.BORDER);
 		horizIndent.setText("0");
-		horizIndent.addListener(SWT.DefaultSelection, new Listener() {
+		Listener horizontalIndentListener = new Listener() {
 			public void handleEvent(Event e) {
 				if (selectedShape == null)
 					return;
@@ -476,7 +482,9 @@ public class GridLayoutExample extends AbstractExample {
 						.intValue();
 				updateView();
 			}
-		});
+		};
+		horizIndent.addListener(SWT.DefaultSelection, horizontalIndentListener);
+		horizIndent.addListener(SWT.FocusOut, horizontalIndentListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 35;
 		horizIndent.setLayoutData(_data);
@@ -485,7 +493,7 @@ public class GridLayoutExample extends AbstractExample {
 		// horizontalSpan ------------------------------------
 		horizSpan = new Text(gridDataGroup, SWT.BORDER);
 		horizSpan.setText("1");
-		horizSpan.addListener(SWT.DefaultSelection, new Listener() {
+		Listener horizontalSpanListener = new Listener() {
 			public void handleEvent(Event e) {
 				if (selectedShape == null)
 					return;
@@ -494,7 +502,9 @@ public class GridLayoutExample extends AbstractExample {
 						.intValue();
 				updateView();
 			}
-		});
+		};
+		horizSpan.addListener(SWT.DefaultSelection, horizontalSpanListener);
+		horizSpan.addListener(SWT.FocusOut, horizontalSpanListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 35;
 		horizSpan.setLayoutData(_data);
@@ -503,7 +513,7 @@ public class GridLayoutExample extends AbstractExample {
 		// verticalSpan ------------------------------------
 		vertSpan = new Text(gridDataGroup, SWT.BORDER);
 		vertSpan.setText("1");
-		vertSpan.addListener(SWT.DefaultSelection, new Listener() {
+		Listener verticalSpanListener = new Listener() {
 			public void handleEvent(Event e) {
 				if (selectedShape == null)
 					return;
@@ -511,7 +521,9 @@ public class GridLayoutExample extends AbstractExample {
 				d.verticalSpan = getEventValue(e, "verticalSpan").intValue();
 				updateView();
 			}
-		});
+		};
+		vertSpan.addListener(SWT.DefaultSelection, verticalSpanListener);
+		vertSpan.addListener(SWT.FocusOut, verticalSpanListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 35;
 		vertSpan.setLayoutData(_data);
