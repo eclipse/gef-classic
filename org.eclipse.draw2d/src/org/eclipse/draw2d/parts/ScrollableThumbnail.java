@@ -108,22 +108,19 @@ public final class ScrollableThumbnail extends Thumbnail {
 	}
 
 	private class SelectorFigure extends Figure {
-		{
-			Display display = Display.getCurrent();
+
+		private Rectangle iBounds;
+
+		private ImageData iData;
+
+		public SelectorFigure() {
 			PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
 			RGB rgb = ColorConstants.menuBackgroundSelected.getRGB();
 			int fillColor = pData.getPixel(rgb);
-			ImageData iData = new ImageData(1, 1, 24, pData);
+			iData = new ImageData(1, 1, 24, pData);
 			iData.setPixel(0, 0, fillColor);
 			iData.setAlpha(0, 0, 55);
-			image = new Image(display, iData);
-		}
-		private Rectangle iBounds = new Rectangle(0, 0, 1, 1);
-
-		private Image image;
-
-		protected void dispose() {
-			image.dispose();
+			iBounds = new Rectangle(0, 0, 1, 1);
 		}
 
 		public void paintFigure(Graphics g) {
@@ -142,12 +139,14 @@ public final class ScrollableThumbnail extends Thumbnail {
 
 			bounds.height--;
 			bounds.width--;
+
+			Image image = new Image(Display.getCurrent(), iData);
 			g.drawImage(image, iBounds, bounds);
+			image.dispose();
 
 			g.setForegroundColor(ColorConstants.menuBackgroundSelected);
 			g.drawRectangle(bounds);
 		}
-
 	}
 
 	private FigureListener figureListener = new FigureListener() {
@@ -185,9 +184,8 @@ public final class ScrollableThumbnail extends Thumbnail {
 		}
 	};
 
-	private SelectorFigure selector;
-
 	private ScrollSynchronizer syncher;
+	private IFigure selector;
 	private Viewport viewport;
 
 	/**
@@ -214,11 +212,8 @@ public final class ScrollableThumbnail extends Thumbnail {
 	 * @see Thumbnail#deactivate()
 	 */
 	public void deactivate() {
-		viewport.removePropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION,
-				propListener);
-		viewport.removeFigureListener(figureListener);
-		remove(selector);
-		selector.dispose();
+		unhookViewport();
+		unhookSelector();
 		super.deactivate();
 	}
 
@@ -232,13 +227,23 @@ public final class ScrollableThumbnail extends Thumbnail {
 				/ viewport.getContents().getBounds().height;
 	}
 
-	private void initialize() {
-		selector = new SelectorFigure();
+	private void hookSelector() {
 		selector.addMouseListener(syncher = new ScrollSynchronizer());
 		selector.addMouseMotionListener(syncher);
-		selector.setFocusTraversable(true);
 		selector.addKeyListener(keyListener);
 		add(selector);
+	}
+
+	private void hookViewport() {
+		viewport.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION,
+				propListener);
+		viewport.addFigureListener(figureListener);
+	}
+
+	private void initialize() {
+		selector = new SelectorFigure();
+		selector.setFocusTraversable(true);
+		hookSelector();
 		ClickScrollerAndDragTransferrer transferrer = new ClickScrollerAndDragTransferrer();
 		addMouseListener(transferrer);
 		addMouseMotionListener(transferrer);
@@ -280,10 +285,21 @@ public final class ScrollableThumbnail extends Thumbnail {
 	 *            The Viewport
 	 */
 	public void setViewport(Viewport port) {
-		port.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION,
-				propListener);
-		port.addFigureListener(figureListener);
 		viewport = port;
+		hookViewport();
+	}
+
+	private void unhookSelector() {
+		selector.removeKeyListener(keyListener);
+		selector.removeMouseMotionListener(syncher);
+		selector.removeMouseListener(syncher);
+		remove(selector);
+	}
+
+	private void unhookViewport() {
+		viewport.removePropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION,
+				propListener);
+		viewport.removeFigureListener(figureListener);
 	}
 
 }
