@@ -15,6 +15,8 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
 
+import org.eclipse.core.runtime.Platform;
+
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -44,9 +46,18 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 public class ResizeTracker extends SimpleDragTracker {
 
 	/**
-	 * Key modifier for centered resizing. It's ALT on all platforms.
+	 * Key modifier for centered resizing. It's ALT on the Mac and MOD1 on all
+	 * other platforms.
 	 */
-	static final int MODIFIER_CENTERED_RESIZE = SWT.ALT;
+	static int MODIFIER_CENTERED_RESIZE;
+
+	static {
+		if (Platform.OS_MACOSX.equals(Platform.getOS())) {
+			MODIFIER_CENTERED_RESIZE = SWT.ALT;
+		} else {
+			MODIFIER_CENTERED_RESIZE = SWT.MOD1;
+		}
+	}
 
 	/**
 	 * Key modifier for constrained resizing. It's SHIFT on all platforms.
