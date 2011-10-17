@@ -284,13 +284,13 @@ public class Thumbnail extends Figure implements UpdateListener {
 		 */
 		public void stop() {
 			isRunning = false;
-			if (thumbnailGC != null) {
-				thumbnailGC.dispose();
-				thumbnailGC = null;
-			}
 			if (thumbnailGraphics != null) {
 				thumbnailGraphics.dispose();
 				thumbnailGraphics = null;
+			}
+			if (thumbnailGC != null) {
+				thumbnailGC.dispose();
+				thumbnailGC = null;
 			}
 			// Don't dispose of the thumbnail image since it is needed to paint
 			// the
