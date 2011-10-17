@@ -804,6 +804,13 @@ public class ScaledGraphics extends Graphics {
 	}
 
 	/**
+	 * @see org.eclipse.draw2d.Graphics#setLineDashOffset(float)
+	 */
+	public void setLineDashOffset(float value) {
+		graphics.setLineDashOffset(value);
+	}
+
+	/**
 	 * @see Graphics#setLineJoin(int)
 	 */
 	public void setLineJoin(int join) {

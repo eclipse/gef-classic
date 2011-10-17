@@ -1125,6 +1125,16 @@ public abstract class Graphics {
 	}
 
 	/**
+	 * Sets the line dash offset.
+	 * 
+	 * @param value
+	 * @since 3.8
+	 */
+	public void setLineDashOffset(float value) {
+		throwNotImplemented();
+	}
+
+	/**
 	 * Sets the line join style to the argument, which must be one of the
 	 * constants <code>SWT.JOIN_MITER</code>, <code>SWT.JOIN_ROUND</code>, or
 	 * <code>SWT.JOIN_BEVEL</code>.
