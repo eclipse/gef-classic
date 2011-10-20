@@ -7,8 +7,7 @@
  * 
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     Research Group Software Construction,
- *     RWTH Aachen University, Germany - Contribution for Bugzilla 245182
+ *     Alexander Ny§en (Research Group Software Construction, RWTH Aachen University) - Contribution for Bugzilla 245182
  *
  *******************************************************************************/
 package org.eclipse.draw2d.geometry;
