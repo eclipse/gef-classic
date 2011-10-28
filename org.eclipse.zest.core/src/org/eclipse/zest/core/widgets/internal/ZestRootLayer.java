@@ -100,7 +100,7 @@ public class ZestRootLayer extends FreeformLayer {
 
 	public void unHighlightNode(IFigure nodeFigure) {
 		int nodePosition = this.getChildren().indexOf(nodeFigure);
-		if (nodePosition > getHighlightNodePosition()) {
+		if (nodePosition < 0 || nodePosition > getHighlightNodePosition()) {
 			//throw new RuntimeException("Node: " + nodeFigure + " not currently Highlighted");
 			return;
 		}
@@ -115,7 +115,7 @@ public class ZestRootLayer extends FreeformLayer {
 
 	public void unHighlightConnection(IFigure connectionFigure) {
 		int connectionPosition = this.getChildren().indexOf(connectionFigure);
-		if (connectionPosition > getHighlightConnectionPosition()) {
+		if (connectionPosition < 0 || connectionPosition > getHighlightConnectionPosition()) {
 			//throw new RuntimeException("Connection: " + connectionFigure + " not currently Highlighted");
 			return;
 		}
