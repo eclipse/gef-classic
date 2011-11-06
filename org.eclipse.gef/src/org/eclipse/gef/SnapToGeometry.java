@@ -264,7 +264,7 @@ public class SnapToGeometry extends SnapToHelper {
 	}
 
 	/**
-	 * Returns the correction value between ± {@link #getThreshold()}, or the
+	 * Returns the correction value between +/- {@link #getThreshold()}, or the
 	 * #getThreshold () if no corrections were found.
 	 * 
 	 * @param entries
