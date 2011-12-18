@@ -95,7 +95,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 					ISelectionChangedListener listener = (ISelectionChangedListener) iterator.next();
 					listener.selectionChanged(event);
 				}
-
+				firePostSelectionChanged(event);
 			}
 
 		});
