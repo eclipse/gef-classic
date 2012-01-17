@@ -1,32 +1,60 @@
-<project name="Draw2d Doc Isv Build" default="all"  basedir="." >
+<project name="Draw2d Doc Isv Build" default="all" basedir=".">
 
-<property name="install" value="${basedir}/../../" />
+	<property name="install" value="${basedir}/../../" />
 
-<target name="all">
-	<antcall target="generateJavadoc" />	
-</target>
+	<target name="all">
+		<antcall target="generateJavadoc" />
+	</target>
 
-<target name="generateJavadoc" if="JAVADOC14_HOME">
-	<condition property="optionsFile" value="draw2dOptions">
-	      <os family="unix" />
-    </condition>
-    <condition property="optionsFile" value="draw2dOptions.txt">
-	      <os family="windows" />
-    </condition>
+	<target name="generateJavadoc">
+		<echo message="Cleaning reference/api..." />
+		<delete dir="reference/api" />
+		<mkdir dir="reference/api" />
+		<echo message="Done." />
 
-	<replace file="${basedir}/${optionsFile}" token="@version@" value="3.2.0"/>
-	<replace file="${basedir}/${optionsFile}" token="@stamp@" value="${buildid}" />
-	<replace file="${basedir}/${optionsFile}" token="@rt@" value="${rt}" />
+		<echo message="Determining path to javadoc executable, using home dir ${java.home}..." />
+		<available file="${java.home}/../bin/javadoc.exe" property="javadoc" value="${java.home}/../bin/javadoc.exe" />
+		<available file="${java.home}/../bin/javadoc" property="javadoc" value="${java.home}/../bin/javadoc" />
+		<available file="${java.home}/bin/javadoc" property="javadoc" value="${java.home}/bin/javadoc" />
+		<echo message="Done: ${javadoc}" />
 
-		
-	<!--scrub isv plugin directories of any preexisting api doc content-->
-	<delete dir="${install}/plugins/org.eclipse.draw2d.doc.isv/reference/api"/>
-	<mkdir dir="${install}/plugins/org.eclipse.draw2d.doc.isv/reference/api"/>
+		<echo message="Determining args list delimiter..." />
+		<condition property="args.list.delimiter" value=":">
+			<or>
+				<os family="unix" />
+				<os family="mac" />
+			</or>
+		</condition>
+		<condition property="args.list.delimiter" value=";">
+			<os family="windows" />
+		</condition>
+		<echo message="Done: ${args.list.delimiter}" />
 
-	<exec dir="." executable="${JAVADOC14_HOME}/javadoc" output="doc.bin.log">
-		<arg line="@${basedir}/${optionsFile} -J-Xmx180m" />
-	</exec>
-</target>
+		<echo message="Determining context libs for javadoc generation ..." />
+		<path id="api.context.libs">
+			<fileset dir="api-context-libs">
+				<include name="*.jar" />
+			</fileset>
+		</path>
+		<pathconvert property="api.context.libs.classpath" pathsep=":">
+			<path refid="api.context.libs" />
+		</pathconvert>
+		<echo message="Done: ${api.context.libs.classpath}" />
+
+		<property name="tmp.options.file" value="javadocOptions.tmp.txt" />
+		<echo message="Preparing temporary options file ${tmp.options.file}" />
+		<copy file="javadocOptions.txt" tofile="${tmp.options.file}" overwrite="true" />
+		<replaceregexp file="${basedir}/${tmp.options.file}" flags="g" match="(\r\n?|\n);" replace="${args.list.delimiter}" />
+		<replace file="${basedir}/${tmp.options.file}" token="@context@" value="${api.context.libs.classpath}" />
+		<replace file="${basedir}/${tmp.options.file}" token="@rt@" value="${bootclasspath}" />
+		<echo message="Done." />
+
+		<echo message="Generating javadoc..." />
+		<exec dir="." executable="${javadoc}" output="doc.bin.log">
+			<arg line="@${basedir}/${tmp.options.file} -J-Xmx1000M" />
+		</exec>
+		<echo message="Done." />
+	</target>
 
 </project>
 

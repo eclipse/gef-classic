@@ -1,0 +1,20 @@
+-charset "iso-8859-1"
+-sourcepath "../org.eclipse.draw2d/src"
+-d reference/api
+-classpath ${bootclasspath}:/Users/nyssen/Workspaces/GEF/org.eclipse.draw2d.doc.isv/api-context-libs/org.eclipse.swt.cocoa.macosx.x86_64.jar:/Users/nyssen/Workspaces/GEF/org.eclipse.draw2d.doc.isv/api-context-libs/org.eclipse.swt.jar
+-use
+-breakiterator
+-splitIndex
+-windowtitle "Eclipse Draw2d API Specification"
+-doctitle "Eclipse Draw2d API Specification"
+-header "<b>Eclipse Draw2d</b><br>3.8
+-bottom "Copyright (c) IBM Corp. and others 2000, 2011.  All Rights Reserved."
+-link http://java.sun.com/j2se/1.4.2/docs/api
+-link http://help.eclipse.org/indigo/topic/org.eclipse.platform.doc.isv/reference/api/
+
+org.eclipse.draw2d
+org.eclipse.draw2d.geometry
+org.eclipse.draw2d.graph
+org.eclipse.draw2d.parts
+org.eclipse.draw2d.text
+org.eclipse.draw2d.widgets
