@@ -31,7 +31,7 @@
 
    <url>
       <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/"/>
-      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/site.xml"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/"/>
    </url>
 
    <includes
