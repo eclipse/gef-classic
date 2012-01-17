@@ -12,7 +12,7 @@
 <feature
       id="org.eclipse.gef.test"
       label="%featureName"
-      version="3.7.0.qualifier"
+      version="3.8.0.qualifier"
       provider-name="%providerName"
       image="eclipse_update_120.jpg">
 
@@ -29,7 +29,7 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/site.xml"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/"/>
       <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/site.xml"/>
    </url>
 
