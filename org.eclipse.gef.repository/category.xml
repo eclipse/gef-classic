@@ -27,7 +27,7 @@
    <feature url="features/org.eclipse.gef.source_3.8.0.qualifier.jar" id="org.eclipse.gef.source" version="3.8.0.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.zest_1.3.0.qualifier.jar" id="org.eclipse.zest" version="1.3.0.qualifier">
+   <feature url="features/org.eclipse.zest_1.4.0.qualifier.jar" id="org.eclipse.zest" version="1.3.0.qualifier">
       <category name="GEF"/>
    </feature>
    <feature url="features/org.eclipse.zest.sdk_1.4.0.qualifier.jar" id="org.eclipse.zest.sdk" version="1.4.0.qualifier">
