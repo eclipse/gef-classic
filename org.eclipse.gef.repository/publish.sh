@@ -4,7 +4,7 @@ jobName="gef-nightly-tycho"
 
 # Script may take 4 command line parameters:
 # $1: Hudson build id: <id>
-# $2: Build type: n(ightly), m(ilestone), r(elease)
+# $2: Build type: n(ightly), m(aintenance), s(table), r(elease)
 # $3: Whether to merge the site with an existing one: (y)es, (n)o
 # $4: Whether to generate udpate-site and SDK drop files: (y)es, (n)o
 # 
@@ -118,37 +118,9 @@ if [ "$merge" = y -o "$dropFiles" = y ];
                 cd ..
 fi
 
-# Prepare local update site (merge if required)
-if [ "$merge" = y ];
-        then
-        echo "Merging existing site into local one."
-        ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.metadata.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
-        ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.metadata.repository.mirrorApplication -source file:$localUpdateSite -destination file:update-site
-        ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.artifact.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
-        ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.artifact.repository.mirrorApplication -source file:$localUpdateSite -destination file:update-site
-        echo "Merged $localUpdateSite and $remoteUpdateSite into local directory update-site."
-else
-        echo "Skipping merge operation."
-        cp -R $localUpdateSite/* update-site/
-        echo "Copied $localUpdateSite to local directory update-site."
-fi
-
-# Backup then clean remote update site
-echo "Creating backup of remote update site."
-if [ -d "$remoteUpdateSite" ];
-        then
-                if [ -d BACKUP ];
-                        then
-                                rm -fr BACKUP
-                fi
-                mkdir BACKUP
-                cp -R $remoteUpdateSite/* BACKUP/
-                rm -fr $remoteUpdateSite
-fi
-
-echo "Publishing contents of local update-site directory to remote update site $remoteUpdateSite"
-mkdir -p $remoteUpdateSite
-cp -R update-site/* $remoteUpdateSite/
+# Prepare local update site (merging is performed later, if required)
+cp -R $localUpdateSite/* update-site/
+echo "Copied $localUpdateSite to local directory update-site."
 
 # Generate drop files
 if [ "$dropFiles" = y ];
@@ -216,7 +188,8 @@ if [ "$dropFiles" = y ];
                 echo "Created GEF-zest-sdk-$version.zip"
                 
                 cd ..
-                mv update-site GEF-Update-$version
+                mkdir GEF-Update-$version
+                cp -R update-site/* GEF-Update-$version
                 zip -r $localDropDir/GEF-Update-$version.zip GEF-Update-$version
                 md5sum $localDropDir/GEF-Update-$version.zip > $localDropDir/GEF-Update-$version.zip.md5
                 echo "Created GEF-Update-Site-$version.zip"
@@ -230,3 +203,28 @@ if [ "$dropFiles" = y ];
                 mkdir -p $remoteDropDir
                 cp -R $localDropDir/* $remoteDropDir/
 fi
+
+if [ "$merge" = y ];
+        then
+        echo "Merging existing site into local one."
+        ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.metadata.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
+        ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.artifact.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
+        echo "Merged $remoteUpdateSite into local directory update-site."
+fi 
+        
+# Backup then clean remote update site
+echo "Creating backup of remote update site."
+if [ -d "$remoteUpdateSite" ];
+        then
+                if [ -d BACKUP ];
+                        then
+                                rm -fr BACKUP
+                fi
+                mkdir BACKUP
+                cp -R $remoteUpdateSite/* BACKUP/
+                rm -fr $remoteUpdateSite
+fi
+
+echo "Publishing contents of local update-site directory to remote update site $remoteUpdateSite"
+mkdir -p $remoteUpdateSite
+cp -R update-site/* $remoteUpdateSite/
