@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.6"?>
 
-<target name="JUNO_4_2" sequenceNumber="3">
+<target name="JUNO_4_2" sequenceNumber="6">
 <locations>
+<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
+<unit id="org.eclipse.sdk.ide" version="4.2.0.I20120118-2200"/>
+<repository location="http://download.eclipse.org/eclipse/updates/4.2-I-builds"/>
+</location>
 <location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
 <unit id="org.eclipse.test.feature.group" version="3.5.0.v20110503-7R7aBjBgLiK0Dt4O6IWDE5202816"/>
 <repository location="http://download.eclipse.org/eclipse/updates/3.8-I-builds"/>
-</location>
-<location includeAllPlatforms="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="4.2.0.I20120105-2100"/>
-<repository location="http://download.eclipse.org/eclipse/updates/4.2-I-builds"/>
 </location>
 </locations>
 </target>
