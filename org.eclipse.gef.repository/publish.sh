@@ -59,15 +59,15 @@ echo "Reverse lookup yielded build id: $buildId"
 # Select the build type
 if [ -z "$buildType" ];
 then
-        echo -n "Please select which type of build you want to publish to [i(nterim), m(ilestone), r(elease)]: "
+        echo -n "Please select which type of build you want to publish to [i(ntegration), m(aintenance), s(table), r(elease)]: "
         read buildType
 fi
 echo "Publishing as $buildType build"
 
-# Determine remote update site we want to promote to
+# Determine remote update site we want to promote to (integration and maintenance are published on interim site, stable builds on milestone site, release builds on releases site)
 case $buildType in
-        i|I) remoteSite=interim ;;
-        m|M) remoteSite=milestones ;;
+        i|I|m|M) remoteSite=interim ;;
+        s|S) remoteSite=milestones ;;
         r|R) remoteSite=releases ;;
         *) exit 0 ;;
 esac
