@@ -7,19 +7,25 @@ jobName="gef-nightly-tycho"
 # $2: Build type: n(ightly), m(aintenance), s(table), r(elease)
 # $3: Whether to merge the site with an existing one: (y)es, (n)o
 # $4: Whether to generate udpate-site and SDK drop files: (y)es, (n)o
+# $5: An optional label to append to the version string when creating drop files, e.g. M5 or RC1
 # 
-if [ $# -eq 4 ];
+if [ $# -eq 4 -o $# -eq 5 ];
         then
                 buildId=$1
                 buildType=$2
                 merge=$3
                 dropFiles=$4
+                if [ -n "$5" ];
+                then
+                        dropFilesLabel=$5
+                fi
         else
                 if [ $# -ne 0 ];
                 then
                         exit 1
                 fi
 fi
+
 
 if [ -z "$buildId" ];
 then
@@ -54,7 +60,7 @@ do
                         buildId=${i##*/}
         fi
 done
-echo "Reverse lookup yielded build id: $buildId"
+echo "Reverse lookup of build id yielded: $buildId"
 
 # Select the build type
 if [ -z "$buildType" ];
@@ -101,6 +107,12 @@ if [ "$dropFiles" != y -a "$dropFiles" != n ];
 fi
 echo "Generating update-site and SDK drop files: $dropFiles"
 
+if [ -z "$dropFilesLabel" ];
+        then
+                echo -n "Please enter a drop files label to append to the version (e.g. M5, RC1) or leave empty to skip this [<empty>]:"
+                read dropFilesLabel
+fi
+
 # Prepare a temp directory
 tmpDir="$jobName-publish-tmp"
 rm -fr $tmpDir
@@ -136,6 +148,12 @@ if [ "$dropFiles" = y ];
                 echo "Creating drop files in local directory $localDropDir"
                 mkdir -p $localDropDir
                 cd drops
+                
+                # Append drop file suffix if one is specified                
+                if [ -n "$dropFilesLabel" ];
+                        then
+                                version=$version$dropFilesLabel
+                fi
                 
                 # GEF ALL
                 zip -r $dropDir/GEF-ALL-$version.zip eclipse
