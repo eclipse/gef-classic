@@ -6,5 +6,4 @@ Bundle-Version: 3.8.0.qualifier
 Bundle-Vendor: %Plugin.providerName
 Bundle-Localization: plugin
 Eclipse-LazyStart: true
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
 Require-Bundle: org.eclipse.swt;bundle-version="[3.2.0,4.0.0)"
