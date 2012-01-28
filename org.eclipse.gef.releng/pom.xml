@@ -306,7 +306,6 @@
 		<module>../org.eclipse.gef.examples.source-feature</module>
 		<module>../org.eclipse.gef.examples-feature</module>
 		<module>../org.eclipse.gef.sdk-feature</module>
-		<module>../org.eclipse.zest</module>
 		<module>../org.eclipse.zest.core</module>
 		<module>../org.eclipse.zest.layouts</module>
 		<module>../org.eclipse.zest.tests</module>
