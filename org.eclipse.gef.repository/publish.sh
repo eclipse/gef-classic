@@ -107,7 +107,7 @@ if [ "$dropFiles" != y -a "$dropFiles" != n ];
 fi
 echo "Generating update-site and SDK drop files: $dropFiles"
 
-if [ -z "$dropFilesLabel" ];
+if [ -z "$dropFilesLabel" -a "$dropFiles" = y ];
         then
                 echo -n "Please enter a drop files label to append to the version (e.g. M5, RC1) or leave empty to skip this [<empty>]:"
                 read dropFilesLabel
@@ -205,12 +205,12 @@ if [ "$dropFiles" = y ];
                 md5sum $dropDir/GEF-zest-sdk-$version.zip > $dropDir/GEF-zest-sdk-$version.zip.md5
                 echo "Created GEF-zest-sdk-$version.zip"
                 
-                cd ..
-                mkdir GEF-Update-$version
-                cp -R update-site/* GEF-Update-$version
-                zip -r $localDropDir/GEF-Update-$version.zip GEF-Update-$version
-                md5sum $localDropDir/GEF-Update-$version.zip > $localDropDir/GEF-Update-$version.zip.md5
+                cd update-site
+
+                zip -r ../$localDropDir/GEF-Update-$version.zip features plugins artifacts.jar content.jar
+                md5sum ../$localDropDir/GEF-Update-$version.zip > ../$localDropDir/GEF-Update-$version.zip.md5
                 echo "Created GEF-Update-Site-$version.zip"
+                cd ..
 
                 #generating build.cfg file to be referenced from downloads web page
                 echo "hudson.job.name=$jobName" > $localDropDir/build.cfg
