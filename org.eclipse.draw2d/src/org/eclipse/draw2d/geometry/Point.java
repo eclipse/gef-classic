@@ -269,6 +269,21 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	}
 
 	/**
+	 * Creates a new Point from this Point by scaling by the specified x and y
+	 * factors.
+	 * 
+	 * @param xFactor
+	 *            x scale factor
+	 * @param yFactor
+	 *            y scale factor
+	 * @return A new Point
+	 * @since 3.8
+	 */
+	public Point getScaled(double xFactor, double yFactor) {
+		return getCopy().scale(xFactor, yFactor);
+	}
+
+	/**
 	 * Creates a new SWT {@link org.eclipse.swt.graphics.Point Point} from this
 	 * Point.
 	 * 
@@ -290,6 +305,20 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 */
 	public Point getTranslated(Dimension d) {
 		return getCopy().translate(d);
+	}
+
+	/**
+	 * Creates a new Point which is translated by the specified x and y values
+	 * 
+	 * @param x
+	 *            horizontal component
+	 * @param y
+	 *            vertical component
+	 * @return A new Point
+	 * @since 3.8
+	 */
+	public Point getTranslated(double x, double y) {
+		return getCopy().translate(x, y);
 	}
 
 	/**
@@ -468,7 +497,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 * @since 2.0
 	 */
 	public String toString() {
-		return "Point(" + x + ", " + y + ")";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+		return "Point(" + preciseX() + ", " + preciseY() + ")";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 	}
 
 	/**
@@ -482,6 +511,21 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 */
 	public Point translate(Dimension d) {
 		return translate(d.width(), d.height());
+	}
+
+	/**
+	 * Shifts this Point by the values supplied along each axes, and returns
+	 * this for convenience.
+	 * 
+	 * @param x
+	 *            Amount by which point is shifted along X axis.
+	 * @param y
+	 *            Amount by which point is shifted along Y axis.
+	 * @return <code>this</code> for convenience
+	 * @since 3.8
+	 */
+	public Point translate(double x, double y) {
+		return translate((int) x, (int) y);
 	}
 
 	/**

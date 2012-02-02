@@ -100,6 +100,13 @@ public class PrecisionDimension extends Dimension {
 	}
 
 	/**
+	 * @see org.eclipse.draw2d.geometry.Dimension#expand(double, double)
+	 */
+	public Dimension expand(double w, double h) {
+		return expandPrecise(w, h);
+	}
+
+	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#expand(int, int)
 	 */
 	public Dimension expand(int w, int h) {
@@ -281,6 +288,13 @@ public class PrecisionDimension extends Dimension {
 	 * @see org.eclipse.draw2d.geometry.Dimension#shrink(int, int)
 	 */
 	public Dimension shrink(int w, int h) {
+		return shrinkPrecise(w, h);
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.geometry.Dimension#shrink(double, double)
+	 */
+	public Dimension shrink(double w, double h) {
 		return shrinkPrecise(w, h);
 	}
 

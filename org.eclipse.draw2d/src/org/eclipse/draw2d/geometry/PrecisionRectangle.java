@@ -111,6 +111,13 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
+	 * @see org.eclipse.draw2d.geometry.Rectangle#contains(double, double)
+	 */
+	public boolean contains(double x, double y) {
+		return containsPrecise(x, y);
+	}
+
+	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#contains(int, int)
 	 */
 	public boolean contains(int x, int y) {
@@ -176,10 +183,9 @@ public final class PrecisionRectangle extends Rectangle {
 	 *            Vertical increment
 	 * @return <code>this</code> for convenience
 	 * @since 3.4
-	 * @deprecated Use {@link #expandPrecise(double, double)} instead.
 	 */
 	public Rectangle expand(double h, double v) {
-		return shrink(-h, -v);
+		return expandPrecise(h, v);
 	}
 
 	/**
@@ -391,6 +397,13 @@ public final class PrecisionRectangle extends Rectangle {
 	 */
 	public Rectangle resize(Dimension d) {
 		return resizePrecise(d.preciseWidth(), d.preciseHeight());
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.geometry.Rectangle#resize(double, double)
+	 */
+	public Rectangle resize(double w, double h) {
+		return resizePrecise(w, h);
 	}
 
 	/**
@@ -691,8 +704,6 @@ public final class PrecisionRectangle extends Rectangle {
 	 *            Vertical reduction amount
 	 * @return <code>this</code> for convenience
 	 * @since 3.4
-	 * @deprecated Use {@link #shrink(int, int)} or
-	 *             {@link #shrinkPrecise(double, double)} instead.
 	 */
 	public Rectangle shrink(double h, double v) {
 		return shrinkPrecise(h, v);
@@ -749,6 +760,13 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
+	 * @see org.eclipse.draw2d.geometry.Rectangle#translate(double, double)
+	 */
+	public Rectangle translate(double dx, double dy) {
+		return translatePrecise(dx, dy);
+	}
+
+	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#translate(int, int)
 	 */
 	public Rectangle translate(int dx, int dy) {
@@ -793,10 +811,32 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
+	 * @see org.eclipse.draw2d.geometry.Rectangle#union(double, double)
+	 */
+	public Rectangle union(double x, double y) {
+		return unionPrecise(x, y);
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.geometry.Rectangle#union(double, double, double,
+	 *      double)
+	 */
+	public Rectangle union(double x, double y, double w, double h) {
+		return unionPrecise(x, y, w, h);
+	}
+
+	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#union(int, int)
 	 */
 	public Rectangle union(int x, int y) {
 		return unionPrecise(x, y);
+	}
+
+	/**
+	 * @see org.eclipse.draw2d.geometry.Rectangle#union(int, int, int, int)
+	 */
+	public Rectangle union(int x, int y, int w, int h) {
+		return unionPrecise(x, y, w, h);
 	}
 
 	/**

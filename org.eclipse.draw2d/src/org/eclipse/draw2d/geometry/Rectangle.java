@@ -148,6 +148,22 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @param y
 	 *            Y value
 	 * @return true if the coordinates are within this Rectangle
+	 * @since 3.8
+	 */
+	public boolean contains(double x, double y) {
+		return contains((int) x, (int) y);
+	}
+
+	/**
+	 * Returns whether the given coordinates are within the boundaries of this
+	 * Rectangle. The boundaries are inclusive of the top and left edges, but
+	 * exclusive of the bottom and right edges.
+	 * 
+	 * @param x
+	 *            X value
+	 * @param y
+	 *            Y value
+	 * @return true if the coordinates are within this Rectangle
 	 * @since 2.0
 	 */
 	public boolean contains(int x, int y) {
@@ -236,6 +252,22 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 					&& (height == r.height());
 		}
 		return false;
+	}
+
+	/**
+	 * Expands the horizontal and vertical sides of this Rectangle with the
+	 * values provided as input, and returns this for convenience. The location
+	 * of its center is kept constant.
+	 * 
+	 * @param h
+	 *            Horizontal increment
+	 * @param v
+	 *            Vertical increment
+	 * @return <code>this</code> for convenience
+	 * @since 3.8
+	 */
+	public Rectangle expand(double h, double v) {
+		return expand((int) h, (int) v);
 	}
 
 	/**
@@ -346,6 +378,22 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 */
 	public Rectangle getCropped(Insets insets) {
 		return getShrinked(insets);
+	}
+
+	/**
+	 * Returns a new incremented Rectangle, where the sides are expanded by the
+	 * horizontal and vertical values provided. The center of the Rectangle is
+	 * maintained constant.
+	 * 
+	 * @param h
+	 *            Horizontal increment
+	 * @param v
+	 *            Vertical increment
+	 * @return A new expanded Rectangle
+	 * @since 3.8
+	 */
+	public Rectangle getExpanded(double h, double v) {
+		return getCopy().expand(h, v);
 	}
 
 	/**
@@ -469,6 +517,21 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @param h
 	 *            Amount by which height is to be resized
 	 * @return a new rectangle with its width and height modified
+	 * @since 3.8
+	 */
+	public Rectangle getResized(double w, double h) {
+		return getCopy().resize(w, h);
+	}
+
+	/**
+	 * Returns a new Rectangle which is equivalent to this Rectangle with its
+	 * dimensions modified by the passed width <i>w</i> and height <i>h</i>.
+	 * 
+	 * @param w
+	 *            Amount by which width is to be resized
+	 * @param h
+	 *            Amount by which height is to be resized
+	 * @return a new rectangle with its width and height modified
 	 */
 	public Rectangle getResized(int w, int h) {
 		return getCopy().resize(w, h);
@@ -483,6 +546,22 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 */
 	public Point getRight() {
 		return new Point(right(), y + height / 2);
+	}
+
+	/**
+	 * Returns a new Rectangle, where the sides are shrinked by the horizontal
+	 * and vertical values supplied. The center of this Rectangle is kept
+	 * constant.
+	 * 
+	 * @param h
+	 *            Horizontal reduction amount
+	 * @param v
+	 *            Vertical reduction amount
+	 * @return <code>this</code> for convenience
+	 * @since 3.8
+	 */
+	public Rectangle getShrinked(double h, double v) {
+		return getCopy().shrink(h, v);
 	}
 
 	/**
@@ -554,6 +633,21 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 */
 	public Point getTopRight() {
 		return new Point(x + width, y);
+	}
+
+	/**
+	 * Returns a new Rectangle which is shifted along each axis by the passed
+	 * values.
+	 * 
+	 * @param dx
+	 *            Displacement along X axis
+	 * @param dy
+	 *            Displacement along Y axis
+	 * @return The new translated rectangle
+	 * @since 3.8
+	 */
+	public Rectangle getTranslated(double dx, double dy) {
+		return getCopy().translate(dx, dy);
 	}
 
 	/**
@@ -756,6 +850,22 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 		width += d.width();
 		height += d.height();
 		return this;
+	}
+
+	/**
+	 * Resizes this Rectangle by the values supplied as input and returns this
+	 * for convenience. This Rectangle's width will become this.width + dw. This
+	 * Rectangle's height will become this.height + dh.
+	 * 
+	 * @param w
+	 *            Amount by which width is to be resized
+	 * @param h
+	 *            Amount by which height is to be resized
+	 * @return <code>this</code> for convenience
+	 * @since 3.8
+	 */
+	public Rectangle resize(double w, double h) {
+		return resize((int) w, (int) h);
 	}
 
 	/**
@@ -984,6 +1094,22 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
+	 * Shrinks the sides of this Rectangle by the horizontal and vertical values
+	 * provided as input, and returns this Rectangle for convenience. The center
+	 * of this Rectangle is kept constant.
+	 * 
+	 * @param h
+	 *            Horizontal reduction amount
+	 * @param v
+	 *            Vertical reduction amount
+	 * @return <code>this</code> for convenience
+	 * @since 3.8
+	 */
+	public Rectangle shrink(double h, double v) {
+		return shrink((int) h, (int) v);
+	}
+
+	/**
 	 * Shrinks this rectangle by the amount specified in <code>insets</code>.
 	 * 
 	 * @param insets
@@ -1028,8 +1154,8 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public String toString() {
-		return "Rectangle(" + x + ", " + y + ", " + //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
-				width + ", " + height + ")";//$NON-NLS-2$//$NON-NLS-1$
+		return "Rectangle(" + preciseX() + ", " + preciseY() + ", " + //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+				preciseWidth() + ", " + preciseHeight() + ")";//$NON-NLS-2$//$NON-NLS-1$
 	}
 
 	/**
@@ -1044,6 +1170,21 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 		return rect.x() <= x + width && rect.y() <= y + height
 				&& rect.x() + rect.width() >= x
 				&& rect.y() + rect.height() >= y;
+	}
+
+	/**
+	 * Moves this Rectangle horizontally by dx and vertically by dy, then
+	 * returns this Rectangle for convenience.
+	 * 
+	 * @param dx
+	 *            Shift along X axis
+	 * @param dy
+	 *            Shift along Y axis
+	 * @return <code>this</code> for convenience
+	 * @since 3.8
+	 */
+	public Rectangle translate(double dx, double dy) {
+		return translate((int) dx, (int) dy);
 	}
 
 	/**
@@ -1112,6 +1253,40 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 		width = Math.max(width, d.width);
 		height = Math.max(height, d.height);
 		return this;
+	}
+
+	/**
+	 * Updates this Rectangle's bounds to the minimum size which can hold both
+	 * this Rectangle and the coordinate (x,y).
+	 * 
+	 * @return <code>this</code> for convenience
+	 * @param x
+	 *            X coordinate
+	 * @param y
+	 *            Y coordinate
+	 * @since 3.8
+	 */
+	public Rectangle union(double x, double y) {
+		return union((int) x, (int) y);
+	}
+
+	/**
+	 * Updates this Rectangle's dimensions to the minimum size which can hold
+	 * both this Rectangle and the rectangle (x, y, w, h).
+	 * 
+	 * @param x
+	 *            X coordinate of desired union.
+	 * @param y
+	 *            Y coordinate of desired union.
+	 * @param w
+	 *            Width of desired union.
+	 * @param h
+	 *            Height of desired union.
+	 * @return <code>this</code> for convenience
+	 * @since 3.8
+	 */
+	public Rectangle union(double x, double y, double w, double h) {
+		return union((int) x, (int) y, (int) w, (int) h);
 	}
 
 	/**

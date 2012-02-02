@@ -207,6 +207,20 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @param h
 	 *            Value by which the height should be increased
 	 * @return <code>this</code> for convenience
+	 * @since 3.8
+	 */
+	public Dimension expand(double w, double h) {
+		return expand((int) w, (int) h);
+	}
+
+	/**
+	 * Expands the size of this Dimension by the specified width and height.
+	 * 
+	 * @param w
+	 *            Value by which the width should be increased
+	 * @param h
+	 *            Value by which the height should be increased
+	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
 	public Dimension expand(int w, int h) {
@@ -284,6 +298,21 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @param h
 	 *            value by which the height of this is to be expanded
 	 * @return a new Dimension expanded by the given values
+	 * @since 3.8
+	 */
+	public Dimension getExpanded(double w, double h) {
+		return getCopy().expand(w, h);
+	}
+
+	/**
+	 * Creates and returns a new Dimension representing the sum of this
+	 * Dimension and the one specified.
+	 * 
+	 * @param w
+	 *            value by which the width of this is to be expanded
+	 * @param h
+	 *            value by which the height of this is to be expanded
+	 * @return a new Dimension expanded by the given values
 	 * @since 2.0
 	 */
 	public Dimension getExpanded(int w, int h) {
@@ -337,6 +366,21 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 */
 	public Dimension getShrinked(Dimension d) {
 		return getCopy().shrink(d);
+	}
+
+	/**
+	 * Creates and returns a new Dimension whose size will be reduced by the
+	 * width and height of the given Dimension.
+	 * 
+	 * @param w
+	 *            the value by which the width is to be reduced
+	 * @param h
+	 *            the value by which the height is to be reduced
+	 * @return a new dimension representing the difference
+	 * @since 3.8
+	 */
+	public Dimension getShrinked(double w, double h) {
+		return getCopy().shrink(w, h);
 	}
 
 	/**
@@ -578,6 +622,21 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @param h
 	 *            the value by which the height is to be reduced
 	 * @return <code>this</code> for convenience
+	 * @since 3.8
+	 */
+	public Dimension shrink(double w, double h) {
+		return shrink((int) w, (int) h);
+	}
+
+	/**
+	 * Reduces the width of this Dimension by <i>w</i>, and reduces the height
+	 * of this Dimension by <i>h</i>. Returns this for convenience.
+	 * 
+	 * @param w
+	 *            the value by which the width is to be reduced
+	 * @param h
+	 *            the value by which the height is to be reduced
+	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
 	public Dimension shrink(int w, int h) {
@@ -592,8 +651,8 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 
 	public String toString() {
 		return "Dimension(" + //$NON-NLS-1$
-				width + ", " + //$NON-NLS-1$
-				height + ")"; //$NON-NLS-1$
+				preciseWidth() + ", " + //$NON-NLS-1$
+				preciseHeight() + ")"; //$NON-NLS-1$
 	}
 
 	/**

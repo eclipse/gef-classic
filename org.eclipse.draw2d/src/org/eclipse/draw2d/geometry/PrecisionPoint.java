@@ -254,6 +254,13 @@ public class PrecisionPoint extends Point {
 	}
 
 	/**
+	 * @see org.eclipse.draw2d.geometry.Point#translate(double, double)
+	 */
+	public Point translate(double dx, double dy) {
+		return translatePrecise(dx, dy);
+	}
+
+	/**
 	 * @see org.eclipse.draw2d.geometry.Point#translate(org.eclipse.draw2d.geometry.Point)
 	 */
 	public Point translate(Point p) {
