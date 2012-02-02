@@ -30,4 +30,12 @@ public class PrecisionPointTest extends TestCase {
 		PrecisionPoint p2 = new PrecisionPoint(0.2, 0.2);
 		assertFalse(p1.equals(p2));
 	}
+
+	public void testTranslate() {
+		PrecisionPoint p1 = new PrecisionPoint(0.1, 0.1);
+		PrecisionPoint p2 = new PrecisionPoint(0.2, 0.2);
+		assertTrue(p2.equals(p1.getTranslated(0.1, 0.1)));
+		assertTrue(p2.equals(p1.getTranslated(p1)));
+
+	}
 }

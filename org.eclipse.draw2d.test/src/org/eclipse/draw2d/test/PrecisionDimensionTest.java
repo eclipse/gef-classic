@@ -38,4 +38,18 @@ public class PrecisionDimensionTest extends TestCase {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
 		assertTrue(p1.equals(p1.getCopy()));
 	}
+
+	public void testExpand() {
+		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
+		PrecisionDimension p2 = new PrecisionDimension(0.2, 0.2);
+		assertTrue(p2.equals(p1.getExpanded(0.1, 0.1)));
+		assertTrue(p2.equals(p1.getExpanded(p1)));
+	}
+
+	public void testShrink() {
+		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
+		PrecisionDimension p2 = new PrecisionDimension(0.2, 0.2);
+		assertTrue(p1.equals(p2.getShrinked(0.1, 0.1)));
+		assertTrue(p1.equals(p2.getShrinked(p1)));
+	}
 }

@@ -49,6 +49,9 @@ public class PointTests extends TestCase {
 		Point p1 = new Point(3, 6);
 		p1.translate(new Dimension(4711, 567));
 		assertTrue(p1.equals(4714, 573));
+
+		p1.translate(0.4, 0.7);
+		assertTrue(p1.equals(4714, 573));
 	}
 
 	public void testSetX() {

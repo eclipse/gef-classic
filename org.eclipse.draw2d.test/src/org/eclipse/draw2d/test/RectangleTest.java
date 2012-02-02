@@ -13,6 +13,7 @@ package org.eclipse.draw2d.test;
 
 import junit.framework.TestCase;
 
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -70,4 +71,27 @@ public class RectangleTest extends TestCase {
 		assertTrue(origRect.equals(newRect));
 	}
 
+	public void testGetExpanded() {
+		Rectangle r = new Rectangle(1, 1, 3, 5);
+		assertEquals(new Dimension(9, 9), r.getExpanded(3, 2).getSize());
+		assertEquals(new Dimension(9, 9), r.getExpanded(3.4, 2.7).getSize());
+	}
+
+	public void testGetShrinked() {
+		Rectangle r = new Rectangle(1, 1, 6, 7);
+		assertEquals(new Dimension(2, 3), r.getShrinked(2, 2).getSize());
+		assertEquals(new Dimension(2, 3), r.getShrinked(2.4, 2.7).getSize());
+	}
+
+	public void testGetTranslated() {
+		Rectangle r = new Rectangle(1, 1, 6, 7);
+		assertEquals(new Point(5, 5), r.getTranslated(4, 4).getLocation());
+		assertEquals(new Point(5, 5), r.getTranslated(4.4, 4.8).getLocation());
+	}
+
+	public void testContains() {
+		Rectangle r = new Rectangle(1, 1, 6, 7);
+		assertTrue(r.contains(6, 7));
+		assertTrue(r.contains(6.9, 7.9));
+	}
 }
