@@ -22,13 +22,13 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Lays out children into a Grid arrangement in which overall aligment and
- * spacing can be configured, as well as specfic layout requirements for the
+ * spacing can be configured, as well as specific layout requirements for the
  * each individual member of the GridLayout. This layout is a Draw2D port of the
  * swt GridLayout.
  * 
  * <code>GridLayout</code> has a number of configuration fields, and the Figures
  * it lays out can have an associated layout data object, called
- * <code>GridData</code> (similar to the swt GridData object). The power of
+ * <code>GridData</code> (similar to the SWT GridData object). The power of
  * <code>GridLayout</code> lies in the ability to configure
  * <code>GridData</code> for each Figure in the layout.
  * <p>
@@ -68,7 +68,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @see GridData
  * 
  */
-public class GridLayout extends AbstractLayout {
+public class GridLayout extends AbstractHintLayout {
 
 	/**
 	 * numColumns specifies the number of cell columns in the layout.
@@ -190,7 +190,7 @@ public class GridLayout extends AbstractLayout {
 	protected Dimension calculatePreferredSize(IFigure container, int wHint,
 			int hHint) {
 		Dimension size = layout(container, false, 0, 0, wHint, hHint, /* flushCache */
-		true);
+				true);
 		if (wHint != SWT.DEFAULT)
 			size.width = wHint;
 		if (hHint != SWT.DEFAULT)
@@ -215,7 +215,7 @@ public class GridLayout extends AbstractLayout {
 		// initChildren( container);
 		Rectangle rect = container.getClientArea();
 		layout(container, true, rect.x, rect.y, rect.width, rect.height, /* flushCache */
-		true);
+				true);
 
 	}
 
