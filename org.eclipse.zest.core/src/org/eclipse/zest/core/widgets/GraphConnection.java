@@ -23,6 +23,7 @@ import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.LineAttributes;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.zest.core.widgets.internal.LoopAnchor;
 import org.eclipse.zest.core.widgets.internal.PolylineArcConnection;
@@ -53,6 +54,7 @@ public class GraphConnection extends GraphItem {
 	private Color foreground;
 	private int lineWidth;
 	private int lineStyle;
+	private LineAttributes lineAttributes;
 	private final Graph graphModel;
 
 	private int connectionStyle;
@@ -461,6 +463,8 @@ public class GraphConnection extends GraphItem {
 		if (this.curveDepth == 0 && depth != 0 || this.curveDepth != 0 && depth == 0) {
 			// There is currently no curve, so we have to create
 			// a curved connection
+			this.lineAttributes = ((PolylineConnection) connectionFigure)
+					.getLineAttributes();
 			graphModel.removeConnection(this);
 			this.curveDepth = depth;
 			this.connectionFigure = createFigure();
@@ -557,6 +561,9 @@ public class GraphConnection extends GraphItem {
 		Shape connectionShape = (Shape) connection;
 
 		connectionShape.setLineStyle(getLineStyle());
+		if (lineAttributes != null) {
+			connectionShape.setLineAttributes(lineAttributes);
+		}
 
 		if (this.getText() != null || this.getImage() != null) {
 			//Label l = new Label(this.getText(), this.getImage());
