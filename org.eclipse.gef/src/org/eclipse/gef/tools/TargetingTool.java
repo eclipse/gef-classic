@@ -420,9 +420,11 @@ public abstract class TargetingTool extends AbstractTool {
 	 */
 	protected boolean updateTargetUnderMouse() {
 		if (!isTargetLocked()) {
-			EditPart editPart = getCurrentViewer()
-					.findObjectAtExcluding(getLocation(), getExclusionSet(),
-							getTargetingConditional());
+			EditPart editPart = null;
+			if (getCurrentViewer() != null)
+				editPart = getCurrentViewer().findObjectAtExcluding(
+						getLocation(), getExclusionSet(),
+						getTargetingConditional());
 			if (editPart != null)
 				editPart = editPart.getTargetEditPart(getTargetRequest());
 			boolean changed = getTargetEditPart() != editPart;
