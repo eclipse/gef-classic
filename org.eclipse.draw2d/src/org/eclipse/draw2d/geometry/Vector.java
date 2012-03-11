@@ -169,6 +169,12 @@ public class Vector {
 				getDotProduct(other),
 				(PrecisionGeometry.preciseMultiply(getLength(),
 						other.getLength())));
+		// compensate rounding effects that may occur
+		if (cosAlpha > 1) {
+			cosAlpha = 1;
+		} else if (cosAlpha < -1) {
+			cosAlpha = -1;
+		}
 		return Math.toDegrees(Math.acos(cosAlpha));
 	}
 

@@ -52,6 +52,12 @@ public class VectorTest extends TestCase {
 		assertTrue(a.getDotProduct(b) == 2);
 	}
 
+	public void test_getAngle() {
+		Vector a = new Vector(24.03809869102058, -6.868028197434448);
+		Vector b = new Vector(-24.038098691020593, 6.868028197434448);
+		assertTrue(a.getAngle(b) == 180.0);
+	}
+
 	private void testLengthValues(int x, int y, double expectedLength) {
 		Vector Vector = new Vector(x, y);
 		assertEquals(expectedLength, Vector.getLength(), 0);
