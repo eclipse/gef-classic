@@ -269,8 +269,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	}
 
 	/**
-	 * @see org.eclipse.gef.editpolicies.AbstractEditPolicy#setHost(org.eclipse.gef
-	 *      .EditPart)
+	 * @see org.eclipse.gef.editpolicies.AbstractEditPolicy#setHost(EditPart)
 	 */
 	public void setHost(EditPart host) {
 		Assert.isLegal(host instanceof IScrollableEditPart);
