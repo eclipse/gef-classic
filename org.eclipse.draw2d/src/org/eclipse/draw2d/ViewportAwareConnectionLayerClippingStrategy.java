@@ -105,14 +105,14 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 			// compute if source and target anchor are visible
 			// within the nearest common enclosing viewport (which may
 			// itself be nested in other viewports).
-			Rectangle sourceClipRect = getAbsoluteBoundsAsCopy(sourceFigure);
+			Rectangle sourceClipRect = clipRect.getCopy();
 			if (nearestEnclosingSourceViewport != nearestEnclosingCommonViewport) {
 				clipAtViewports(sourceClipRect,
 						ViewportUtilities.getViewportsPath(
 								nearestEnclosingSourceViewport,
 								nearestEnclosingCommonViewport, false));
 			}
-			Rectangle targetClipRect = getAbsoluteBoundsAsCopy(targetFigure);
+			Rectangle targetClipRect = clipRect.getCopy();
 			if (nearestEnclosingTargetViewport != nearestEnclosingCommonViewport) {
 				clipAtViewports(targetClipRect,
 						ViewportUtilities.getViewportsPath(
