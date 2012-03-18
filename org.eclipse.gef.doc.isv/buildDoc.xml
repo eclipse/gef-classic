@@ -34,7 +34,6 @@
 		<path id="api.context.libs">
 			<fileset dir="api-context-libs">
 				<include name="*.jar" />
-				<exclude name="org.eclipse.draw2d.jar"/>
 			</fileset>
 		</path>
 		<pathconvert property="api.context.libs.classpath" pathsep=":">
