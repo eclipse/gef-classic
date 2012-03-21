@@ -156,7 +156,7 @@ if [ "$dropFiles" = y ];
                 fi
                 
                 # GEF ALL
-                zip -r $dropDir/GEF-ALL-$version.zip eclipse
+                zip -r $dropDir/GEF-ALL-$version.zip eclipse/features/* eclipse/plugins/*
                 md5sum $dropDir/GEF-ALL-$version.zip > $dropDir/GEF-ALL-$version.zip.md5
                 echo "Created GEF-ALL-$version.zip"
                 
