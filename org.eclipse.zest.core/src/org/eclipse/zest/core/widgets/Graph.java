@@ -34,6 +34,8 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -209,7 +211,11 @@ public class Graph extends FigureCanvas implements IContainer {
 				 */
 			}
 		});
-
+		this.addDisposeListener(new DisposeListener() {
+			public void widgetDisposed(DisposeEvent e) {
+				release();
+			}
+		});
 	}
 
 	/**
@@ -374,35 +380,8 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * Dispose of the nodes and edges when the graph is disposed.
 	 */
 	public void dispose() {
-		while (nodes.size() > 0) {
-			GraphNode node = (GraphNode) nodes.get(0);
-			if (node != null) {
-				node.dispose();
-			}
-		}
-		while (connections.size() > 0) {
-			GraphConnection connection = (GraphConnection) connections.get(0);
-			if (connection != null) {
-				connection.dispose();
-			}
-		}
+		release();
 		super.dispose();
-
-		if (LIGHT_BLUE != null) {
-			LIGHT_BLUE.dispose();
-		}
-		if (LIGHT_BLUE_CYAN != null) {
-			LIGHT_BLUE_CYAN.dispose();
-		}
-		if (GREY_BLUE != null) {
-			GREY_BLUE.dispose();
-		}
-		if (DARK_BLUE != null) {
-			DARK_BLUE.dispose();
-		}
-		if (LIGHT_YELLOW != null) {
-			LIGHT_YELLOW.dispose();
-		}
 	}
 
 	/**
@@ -778,6 +757,37 @@ public class Graph extends FigureCanvas implements IContainer {
 		super.notifyListeners(eventType, event);
 		if (eventType == SWT.Selection && event != null) {
 			notifySelectionListeners(new SelectionEvent(event));
+		}
+	}
+
+	private void release() {
+		while (nodes.size() > 0) {
+			GraphNode node = (GraphNode) nodes.get(0);
+			if (node != null) {
+				node.dispose();
+			}
+		}
+		while (connections.size() > 0) {
+			GraphConnection connection = (GraphConnection) connections.get(0);
+			if (connection != null) {
+				connection.dispose();
+			}
+		}
+
+		if (LIGHT_BLUE != null) {
+			LIGHT_BLUE.dispose();
+		}
+		if (LIGHT_BLUE_CYAN != null) {
+			LIGHT_BLUE_CYAN.dispose();
+		}
+		if (GREY_BLUE != null) {
+			GREY_BLUE.dispose();
+		}
+		if (DARK_BLUE != null) {
+			DARK_BLUE.dispose();
+		}
+		if (LIGHT_YELLOW != null) {
+			LIGHT_YELLOW.dispose();
 		}
 	}
 
