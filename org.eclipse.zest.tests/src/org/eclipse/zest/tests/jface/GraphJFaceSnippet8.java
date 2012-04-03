@@ -8,10 +8,14 @@
  *******************************************************************************/
 package org.eclipse.zest.tests.jface;
 
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
@@ -79,7 +83,22 @@ public class GraphJFaceSnippet8 {
 			PolylineConnection pc = (PolylineConnection) connection
 					.getConnectionFigure();
 			pc.setLineDash(new float[] { 4 });
+			pc.setTargetDecoration(createDecoration(ColorConstants.white));
+			pc.setSourceDecoration(createDecoration(ColorConstants.green));
 		}
+
+		private PolygonDecoration createDecoration(final Color color) {
+			PolygonDecoration decoration = new PolygonDecoration() {
+				protected void fillShape(Graphics g) {
+					g.setBackgroundColor(color);
+					super.fillShape(g);
+				}
+			};
+			decoration.setScale(10, 5);
+			decoration.setBackgroundColor(color);
+			return decoration;
+		}
+
 
 		public void selfStyleNode(Object element, GraphNode node) {
 		}
