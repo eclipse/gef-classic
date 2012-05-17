@@ -639,6 +639,7 @@ public class GraphConnection extends GraphItem {
 					Point p = Point.SINGLETON;
 					p.x = getConnection().getPoints().getPoint(getIndex()).x;
 					p.y = (int) (getConnection().getPoints().getPoint(getIndex()).y - (curveDepth * 1.5));
+					getConnection().translateToAbsolute(p);
 					return p;
 				}
 			};
