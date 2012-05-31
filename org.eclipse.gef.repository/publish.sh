@@ -176,7 +176,7 @@ if [ "$dropFiles" = y ];
                 
                 # GEF examples
                 zip -r $dropDir/GEF-examples-$version.zip eclipse/features/org.eclipse.gef.examples_* eclipse/features/org.eclipse.gef.examples.source_* \
-                                                     eclipse/plugins/org.eclipse.examples.*
+                                                     eclipse/plugins/org.eclipse.gef.examples.*
                 md5sum $dropDir/GEF-examples-$version.zip > $dropDir/GEF-examples-$version.zip.md5
                 echo "Created GEF-examples-$version.zip"
                 
