@@ -40,6 +40,11 @@
 			<path refid="api.context.libs" />
 		</pathconvert>
 		<echo message="Done: ${api.context.libs.classpath}" />
+		
+		<echo message="Preparing offline link target" />
+		<property name="linkoffline-target" value="linkoffline-target"/>
+		<unzip src="${linkoffline-target}/org.eclipse.platform.doc.isv.jar" dest="${linkoffline-target}/org.eclipse.platform.doc.isv/" />	
+		<echo message="Done: ${linkoffline-target} contains unzipped offline link target." />
 
 		<property name="tmp.options.file" value="javadocOptions.tmp.txt" />
 		<echo message="Preparing temporary options file ${tmp.options.file}" />
@@ -47,6 +52,7 @@
 		<replaceregexp file="${basedir}/${tmp.options.file}" flags="g" match="(\r\n?|\n);" replace="${args.list.delimiter}" />
 		<replace file="${basedir}/${tmp.options.file}" token="@context@" value="${api.context.libs.classpath}" />
 		<replace file="${basedir}/${tmp.options.file}" token="@rt@" value="${bootclasspath}" />
+		<replace file="${basedir}/${tmp.options.file}" token="@linkoffline-target@" value="${linkoffline-target}" />
 		<echo message="Done." />
 
 		<echo message="Generating javadoc..." />

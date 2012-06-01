@@ -19,10 +19,24 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>prepare-api-context-libs</id>
 						<phase>generate-sources</phase>
 						<configuration>
 							<outputDirectory>api-context-libs</outputDirectory>
 							<stripVersion>true</stripVersion>
+							<excludeArtifactIds>org.eclipse.platform.doc.isv</excludeArtifactIds>
+						</configuration>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>prepare-linkoffline-target</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<outputDirectory>linkoffline-target</outputDirectory>
+							<stripVersion>true</stripVersion>
+							<includeArtifactIds>org.eclipse.platform.doc.isv</includeArtifactIds>
 						</configuration>
 						<goals>
 							<goal>copy-dependencies</goal>
