@@ -128,7 +128,13 @@ if [ "$merge" = y -o "$dropFiles" = y ];
                 cd eclipse
                 chmod 700 eclipse
                 cd ..
+				if [ ! -d "eclipse" ];
+					then
+						echo "Failed to download an Eclipse SDK, being needed for provisioning."
+						exit 1
+				fi
 fi
+
 
 # Prepare local update site (merging is performed later, if required)
 cp -R $localUpdateSite/* update-site/
@@ -228,7 +234,7 @@ if [ "$merge" = y ];
         ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.metadata.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
         ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.artifact.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
         echo "Merged $remoteUpdateSite into local directory update-site."
-fi 
+fi
         
 # Backup then clean remote update site
 echo "Creating backup of remote update site."
