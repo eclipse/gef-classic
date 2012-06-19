@@ -77,7 +77,8 @@ case $buildType in
         r|R) remoteSite=releases ;;
         *) exit 0 ;;
 esac
-remoteUpdateSite="/home/data/httpd/download.eclipse.org/tools/gef/updates/$remoteSite"
+remoteUpdateSiteBase="tools/gef/updates/$remoteSite"
+remoteUpdateSite="/home/data/httpd/download.eclipse.org/$remoteUpdateSiteBase"
 echo "Publishing to remote update-site: $remoteUpdateSite"
 
 if [ -d "$remoteUpdateSite" ];
@@ -119,22 +120,24 @@ rm -fr $tmpDir
 mkdir -p $tmpDir/update-site
 cd $tmpDir
 
-# Download Eclipse SDK, which is needed to merge update site or prepare drop files
-if [ "$merge" = y -o "$dropFiles" = y ];
+# Download and prepare Eclipse SDK, which is needed to merge update site and postprocess repository 
+echo "Downloading eclipse to $PWD"
+cp /home/data/httpd/download.eclipse.org/eclipse/downloads/drops/R-3.7.2-201202080800/eclipse-SDK-3.7.2-linux-gtk-x86_64.tar.gz .
+tar -xvzf eclipse-SDK-3.7.2-linux-gtk-x86_64.tar.gz
+cd eclipse
+chmod 700 eclipse
+cd ..
+if [ ! -d "eclipse" ];
         then
-                echo "Downloading eclipse to $PWD"
-                cp /home/data/httpd/download.eclipse.org/eclipse/downloads/drops/R-3.7.2-201202080800/eclipse-SDK-3.7.2-linux-gtk-x86_64.tar.gz .
-                tar -xvzf eclipse-SDK-3.7.2-linux-gtk-x86_64.tar.gz
-                cd eclipse
-                chmod 700 eclipse
-                cd ..
-				if [ ! -d "eclipse" ];
-					then
-						echo "Failed to download an Eclipse SDK, being needed for provisioning."
-						exit 1
-				fi
+                echo "Failed to download an Eclipse SDK, being needed for provisioning."
+                exit
 fi
-
+# Prepare Eclipse SDK to provide WTP releng tools (used to postprocess repository, i.e set p2.mirrorsURL property)
+echo "Installing WTP Releng tools"
+./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/webtools/releng/repository/ -installIUs org.eclipse.wtp.releng.tools.feature.feature.group
+# Clean up
+echo "Cleaning up"
+rm eclipse-SDK-3.7.2-linux-gtk-x86_64.tar.gz
 
 # Prepare local update site (merging is performed later, if required)
 cp -R $localUpdateSite/* update-site/
@@ -231,10 +234,14 @@ fi
 if [ "$merge" = y ];
         then
         echo "Merging existing site into local one."
-        ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.metadata.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
-        ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.artifact.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
+        ./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.equinox.p2.metadata.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
+        ./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.equinox.p2.artifact.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
         echo "Merged $remoteUpdateSite into local directory update-site."
 fi
+
+# Ensure p2.mirrorURLs property is used in update site
+echo "Setting p2.mirrorsURL to http://www.eclipse.org/downloads/download.php?format=xml&file=/$remoteUpdateSiteBase"
+./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.wtp.releng.tools.addRepoProperties -vmargs -DartifactRepoDirectory=$PWD/update-site -Dp2MirrorsURL="http://www.eclipse.org/downloads/download.php?format=xml&file=/$remoteUpdateSiteBase"
 
 # Create p2.index file
 if [ ! -e "update-site/p2.index" ];
@@ -261,3 +268,8 @@ fi
 echo "Publishing contents of local update-site directory to remote update site $remoteUpdateSite"
 mkdir -p $remoteUpdateSite
 cp -R update-site/* $remoteUpdateSite/
+
+# Clean up
+echo "Cleaning up"
+rm -fr eclipse
+rm -fr update-site
