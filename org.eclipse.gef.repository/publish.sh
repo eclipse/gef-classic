@@ -39,7 +39,7 @@ then
                 echo -n "$i, "
         done
         echo "lastStable, lastSuccessful"
-        echo -n "Please enter the id/label of the Hudson job you want to promote:"
+        echo -n "Please enter the id/label of the Hudson build you want to promote:"
         read buildId
 fi
 if [ -z "$buildId" ];
