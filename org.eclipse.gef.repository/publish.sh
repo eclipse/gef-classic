@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Script may take 4-5 command line parameters:
+# Script may take 5-6 command line parameters:
 # $1: Hudson job name: <name>
 # $2: Hudson build id: <id>
 # $3: Build type: n(ightly), m(aintenance), s(table), r(elease)
