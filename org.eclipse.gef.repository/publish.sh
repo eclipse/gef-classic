@@ -1,23 +1,23 @@
 #!/bin/sh
 
-jobName="gef-nightly-tycho"
-
-# Script may take 4 command line parameters:
-# $1: Hudson build id: <id>
-# $2: Build type: n(ightly), m(aintenance), s(table), r(elease)
-# $3: Whether to merge the site with an existing one: (y)es, (n)o
-# $4: Whether to generate udpate-site and SDK drop files: (y)es, (n)o
-# $5: An optional label to append to the version string when creating drop files, e.g. M5 or RC1
+# Script may take 4-5 command line parameters:
+# $1: Hudson job name: <name>
+# $2: Hudson build id: <id>
+# $3: Build type: n(ightly), m(aintenance), s(table), r(elease)
+# $4: Whether to merge the site with an existing one: (y)es, (n)o
+# $5: Whether to generate udpate-site and SDK drop files: (y)es, (n)o
+# $6: An optional label to append to the version string when creating drop files, e.g. M5 or RC1
 # 
-if [ $# -eq 4 -o $# -eq 5 ];
+if [ $# -eq 5 -o $# -eq 6 ];
         then
-                buildId=$1
-                buildType=$2
-                merge=$3
-                dropFiles=$4
-                if [ -n "$5" ];
+                jobName=$1
+                buildId=$2
+                buildType=$3
+                merge=$4
+                dropFiles=$5
+                if [ -n "$6" ];
                 then
-                        dropFilesLabel=$5
+                        dropFilesLabel=$6
                 fi
         else
                 if [ $# -ne 0 ];
@@ -26,6 +26,11 @@ if [ $# -eq 4 -o $# -eq 5 ];
                 fi
 fi
 
+if [ -z "$jobName" ];
+then
+        echo -n "Please enter the name of the Hudson job you want to promote:"
+        read jobName
+fi
 
 if [ -z "$buildId" ];
 then
