@@ -33,7 +33,7 @@ public class SliderPaletteEditPart extends PaletteEditPart {
 		Figure figure = new Figure();
 		figure.setOpaque(true);
 		figure.setForegroundColor(ColorConstants.listForeground);
-		figure.setBackgroundColor(ColorConstants.button);
+		figure.setBackgroundColor(ColorConstants.listBackground);
 		return figure;
 	}
 
