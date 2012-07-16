@@ -189,6 +189,16 @@ public class GridLayout extends AbstractHintLayout {
 	 */
 	protected Dimension calculatePreferredSize(IFigure container, int wHint,
 			int hHint) {
+		// Remove the size of the border from the wHint and hHint in case a size
+		// different to the preferred size is used
+		int borderWidth = container.getInsets().getWidth();
+		int borderHeight = container.getInsets().getHeight();
+
+		if (wHint != SWT.DEFAULT)
+			wHint -= borderWidth;
+		if (hHint != SWT.DEFAULT)
+			hHint -= borderHeight;
+
 		Dimension size = layout(container, false, 0, 0, wHint, hHint, /* flushCache */
 				true);
 		if (wHint != SWT.DEFAULT)
@@ -196,11 +206,11 @@ public class GridLayout extends AbstractHintLayout {
 		if (hHint != SWT.DEFAULT)
 			size.height = hHint;
 
-		/*
-		 * Adjust for the size of the border
-		 */
-		size.expand(container.getInsets().getWidth(), container.getInsets()
-				.getHeight());
+		// Add the size of the border again before returning the calculated size
+		size.expand(borderWidth, borderHeight);
+
+		// the border preferred size might enlarge the size (in most cases it
+		// should be empty)
 		size.union(getBorderPreferredSize(container));
 
 		return size;
