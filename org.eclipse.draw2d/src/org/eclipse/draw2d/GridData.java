@@ -375,14 +375,18 @@ public final class GridData {
 	}
 
 	Dimension computeSize(IFigure figure, boolean flushCache) {
-		if (cacheWidth != -1 && cacheHeight != -1) {
-			return new Dimension(cacheWidth, cacheHeight);
-		}
-		for (int i = 0; i < cacheIndex + 1; i++) {
-			if (cache[i][0] == widthHint && cache[i][1] == heightHint) {
-				cacheWidth = cache[i][2];
-				cacheHeight = cache[i][3];
+		if (flushCache) {
+			flushCache();
+		} else {
+			if (cacheWidth != -1 && cacheHeight != -1) {
 				return new Dimension(cacheWidth, cacheHeight);
+			}
+			for (int i = 0; i < cacheIndex + 1; i++) {
+				if (cache[i][0] == widthHint && cache[i][1] == heightHint) {
+					cacheWidth = cache[i][2];
+					cacheHeight = cache[i][3];
+					return new Dimension(cacheWidth, cacheHeight);
+				}
 			}
 		}
 
