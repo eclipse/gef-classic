@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.gef.test.source"
       label="GEF Tests Sources"
-      version="3.8.0.qualifier"
+      version="3.8.1.qualifier"
       provider-name="Eclipse.org">
 
    <description>
@@ -17,12 +17,12 @@
       %license
    </license>
 
-  <url>
+   <url>
       <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/"/>
       <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/"/>
    </url>
-   
-    <plugin
+
+   <plugin
          id="org.eclipse.gef.test.source"
          download-size="0"
          install-size="0"
