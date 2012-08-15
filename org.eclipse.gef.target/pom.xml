@@ -149,6 +149,6 @@
 			</build>
 		</profile>
 	</profiles>
-	<version>3.8.0-SNAPSHOT</version>
+	<version>3.8.1-SNAPSHOT</version>
 	<groupId>org.eclipse.gef</groupId>
 </project>

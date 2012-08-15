@@ -72,4 +72,5 @@
 			</build>
 		</profile>
 	</profiles>
+	<groupId>org.eclipse.gef</groupId>
 </project>
