@@ -138,7 +138,7 @@
 								<artifact>
 									<groupId>org.eclipse.gef</groupId>
 									<artifactId>org.eclipse.gef.target</artifactId>
-									<version>3.8.0-SNAPSHOT</version>
+									<version>3.8.1-SNAPSHOT</version>
 									<classifier>JUNO_4_2</classifier>
 								</artifact>
 							</target>
@@ -188,7 +188,7 @@
 								<artifact>
 									<groupId>org.eclipse.gef</groupId>
 									<artifactId>org.eclipse.gef.target</artifactId>
-									<version>3.8.0-SNAPSHOT</version>
+									<version>3.8.1-SNAPSHOT</version>
 									<classifier>JUNO_3_8</classifier>
 								</artifact>
 							</target>
@@ -238,7 +238,7 @@
 								<artifact>
 									<groupId>org.eclipse.gef</groupId>
 									<artifactId>org.eclipse.gef.target</artifactId>
-									<version>3.8.0-SNAPSHOT</version>
+									<version>3.8.1-SNAPSHOT</version>
 									<classifier>INDIGO_3_7_1</classifier>
 								</artifact>
 							</target>
