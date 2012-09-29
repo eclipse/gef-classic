@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde version="3.8"?>
 
-<target name="KEPLER_4_3" sequenceNumber="32">
+<target name="KEPLER_4_3" sequenceNumber="33">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="4.3.0.I20120814-0800"/>
+<unit id="org.eclipse.sdk.ide" version="4.3.0.I20120925-0800"/>
 <repository location="http://download.eclipse.org/eclipse/updates/4.3-I-builds"/>
 </location>
 </locations>
