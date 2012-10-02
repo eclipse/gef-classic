@@ -204,7 +204,14 @@ public abstract class DirectEditManager {
 		return ce;
 	}
 
-	private IFigure getCellEditorFrame() {
+	/**
+	 * Returns the IFigure, which is used to 'embed' the cell editor control.
+	 * 
+	 * @return An {@link IFigure} to be used as frame around the cell editor
+	 *         control.
+	 * @since 3.9
+	 */
+	protected IFigure getCellEditorFrame() {
 		if (cellEditorFrame != null)
 			return cellEditorFrame;
 		cellEditorFrame = new Figure();
@@ -275,13 +282,13 @@ public abstract class DirectEditManager {
 				// shadow to move twice
 				Display.getCurrent().asyncExec(new Runnable() {
 					public void run() {
-						placeBorder();
+						placeCellEditorFrame();
 					}
 				});
 			}
 
 			public void controlResized(ControlEvent e) {
-				placeBorder();
+				placeCellEditorFrame();
 			}
 		};
 		control.addControlListener(controlListener);
@@ -325,7 +332,7 @@ public abstract class DirectEditManager {
 		return dirty;
 	}
 
-	private void placeBorder() {
+	private void placeCellEditorFrame() {
 		if (showingFeedback) {
 			IFigure shadow = getCellEditorFrame();
 			Rectangle rect = new Rectangle(getCellEditor().getControl()
@@ -409,7 +416,7 @@ public abstract class DirectEditManager {
 		LayerManager.Helper.find(getEditPart())
 				.getLayer(LayerConstants.FEEDBACK_LAYER)
 				.add(getCellEditorFrame());
-		placeBorder();
+		placeCellEditorFrame();
 	}
 
 	/**
@@ -444,7 +451,7 @@ public abstract class DirectEditManager {
 		controlListener = null;
 	}
 
-	private static class DirectEditBorder extends AbstractBorder {
+	protected static class DirectEditBorder extends AbstractBorder {
 		private static final Insets insets = new Insets(1, 2, 2, 2);
 
 		public Insets getInsets(IFigure figure) {
