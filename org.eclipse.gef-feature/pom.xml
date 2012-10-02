@@ -11,6 +11,6 @@
 	</parent>
 	<groupId>org.eclipse.gef.features</groupId>
 	<artifactId>org.eclipse.gef</artifactId>
-	<version>3.8.1-SNAPSHOT</version>
+	<version>3.8.2-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 </project>
