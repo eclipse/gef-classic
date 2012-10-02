@@ -451,6 +451,11 @@ public abstract class DirectEditManager {
 		controlListener = null;
 	}
 
+	/**
+	 * The border used to 'frame' the cell editor.
+	 * 
+	 * @since 3.9
+	 */
 	protected static class DirectEditBorder extends AbstractBorder {
 		private static final Insets insets = new Insets(1, 2, 2, 2);
 
