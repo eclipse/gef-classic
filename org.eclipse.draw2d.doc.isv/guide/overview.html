@@ -13,13 +13,14 @@
 
 <h1>Draw2d Overview</h1>
 <p>
-<img src="images/system.gif" align="right"/>Draw2d is a lightweight toolkit of 
-graphical components called <b><i>figures</i></b>. Lightweight means that a 
+Draw2d is a lightweight toolkit of graphical components called <b><i>figures</i></b>. Lightweight means that a 
 figure is simply a java object, with no corresponding resource in the operating 
 system. Figures can be composed via a parent-child relationship. Every figure 
 has a rectangular <b><i>bounds</i></b> inside which it, and its children, paint. 
 A layout manager can be used to place children based on their index and/or 
-constraint.</p>
+constraint.
+</p>
+<img src="images/system.gif" align="center"/>
 <p>
 A <code>LightweightSystem</code> associates a figure composition with an SWT 
 Canvas. The lightweight system hooks listeners for most SWT events, and forwards 
@@ -34,21 +35,5 @@ occurs, followed by a repaint of only the region which was updated.</p>
 Any type of diagram, document, or drawing can be easily constructed and 
 efficiently updated by combining the provided figure and layout implementations 
 along with the use of custom figures or layouts when needed.</p>
-<p>
-Additional topics:</p>
-<ul>
-	<li><a href="painting.html">Painting</a> - details of the paint process and 
-	how nesting affects painting</li>
-	<li><a href="layout.html">Layout</a> - preferred size, layout, validating 
-	figures</li>
-	<li>
-	<a href="hittest.html">Hit Testing</a> - finding figures, correcting 
-	coordinates, modifying the space occupied by a figure</li>
-	<li><a href="connections.html">Connections and Routing</a> - connections, 
-	anchors, decorations, and routing </li>
-	<li>
-	<a href="coordinates.html">Coordinate Systems</a> - absolute and relative 
-	coordinates, working with absolute coordinates</li>
-</ul>
 </body>
 </html>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+<!-- ============================================================================= -->
+<!-- Define topics for the main guide                                              -->
+<!-- ============================================================================= -->
+
+<toc link_to="../org.eclipse.gef.doc.isv/topics_Guide.xml#draw2d" label="none">
+	<topic label="Zest" href="guide/guide.html">
+		<topic label="Overview" href="guide/overview.html"/>
+	</topic>
+</toc>

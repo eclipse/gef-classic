@@ -310,8 +310,9 @@
 		<module>../org.eclipse.zest.core</module>
 		<module>../org.eclipse.zest.layouts</module>
 		<module>../org.eclipse.zest.tests</module>
-		<module>../org.eclipse.zest.source-feature</module>
+		<module>../org.eclipse.zest.doc.isv</module>
 		<module>../org.eclipse.zest-feature</module>
+		<module>../org.eclipse.zest.source-feature</module>
 		<module>../org.eclipse.zest.sdk-feature</module>
 		<module>../org.eclipse.gef.all-feature</module>
 		<module>../org.eclipse.gef.repository</module>

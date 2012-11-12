@@ -14,7 +14,9 @@
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
 <toc label="bogus" href="bogus" >
-	<topic label="GEF Framework" href="reference/api/overview-summary.html">
+	<anchor id="draw2d" />
+	<anchor id="zest" />
+	<topic label="GEF (MVC)" href="reference/api/overview-summary.html">
 		<topic label="org.eclipse.gef" href="reference/api/org/eclipse/gef/package-summary.html" />
 		<topic label="org.eclipse.gef.commands" href="reference/api/org/eclipse/gef/commands/package-summary.html" />
 		<topic label="org.eclipse.gef.dnd" href="reference/api/org/eclipse/gef/dnd/package-summary.html" />
@@ -35,5 +37,4 @@
 		<topic label="org.eclipse.gef.ui.views.palette" href="reference/api/org/eclipse/gef/ui/views/palette/package-summary.html" />
 		<topic label="org.eclipse.gef.util" href="reference/api/org/eclipse/gef/util/package-summary.html" />
 	</topic>
-	<anchor id="draw2d" />
 </toc>

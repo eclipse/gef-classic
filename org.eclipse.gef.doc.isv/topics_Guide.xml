@@ -5,7 +5,8 @@
 <!-- ============================================================================= -->
 <toc label="Architectural Overview">
 	<anchor id="draw2d" />
-	<topic label="GEF" href="guide/guide.html">
+	<anchor id="zest" />
+	<topic label="GEF (MVC)" href="guide/guide.html">
 		<topic label="Overview" href="guide/guide.html#Overview"/>
 		<topic label="When and Where to Use GEF" href="guide/guide.html#When"/>
 		<topic label="EditParts" href="guide/guide.html#EditParts"/>
