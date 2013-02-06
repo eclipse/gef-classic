@@ -1,23 +1,25 @@
 #!/bin/sh
 
-# Script may take 5-6 command line parameters:
+# Script may take 6-7 command line parameters:
 # $1: Hudson job name: <name>
 # $2: Hudson build id: <id>
 # $3: Build type: n(ightly), m(aintenance), s(table), r(elease)
-# $4: Whether to merge the site with an existing one: (y)es, (n)o
-# $5: Whether to generate udpate-site and SDK drop files: (y)es, (n)o
-# $6: An optional label to append to the version string when creating drop files, e.g. M5 or RC1
+# $4: Whether to promote to an update-site: (y)es, (n)o
+# $5: Whether to merge the site with an existing one: (y)es, (n)o
+# $6: Whether to generate udpate-site and SDK drop files: (y)es, (n)o
+# $7: An optional label to append to the version string when creating drop files, e.g. M5 or RC1
 # 
-if [ $# -eq 5 -o $# -eq 6 ];
+if [ $# -eq 6 -o $# -eq 7 ];
         then
                 jobName=$1
                 buildId=$2
                 buildType=$3
-                merge=$4
-                dropFiles=$5
-                if [ -n "$6" ];
+                site=$4
+                merge=$5
+                dropFiles=$6
+                if [ -n "$7" ];
                 then
-                        dropFilesLabel=$6
+                        dropFilesLabel=$8
                 fi
         else
                 if [ $# -ne 0 ];
@@ -75,18 +77,33 @@ then
 fi
 echo "Publishing as $buildType build"
 
-# Determine remote update site we want to promote to (integration and maintenance are published on interim site, stable builds on milestone site, release builds on releases site)
-case $buildType in
-        i|I|m|M) remoteSite=interim ;;
-        s|S) remoteSite=milestones ;;
-        r|R) remoteSite=releases ;;
-        *) exit 0 ;;
-esac
-remoteUpdateSiteBase="tools/gef/updates/$remoteSite"
-remoteUpdateSite="/home/data/httpd/download.eclipse.org/$remoteUpdateSiteBase"
-echo "Publishing to remote update-site: $remoteUpdateSite"
+# check if we are going to promote to an update-site
+if [ -z "$site" ];
+        then
+                echo -n "Do you want to promote to an remote update site? [(y)es, (n)o]:"
+                read site
+fi
+if [ "$site" != y -a "$site" != n ];
+        then
+                exit 0
+fi
+echo "Promoting to remote update site: $site"
 
-if [ -d "$remoteUpdateSite" ];
+if [ "$site" = y ];
+        then
+
+  # Determine remote update site we want to promote to (integration and maintenance are published on interim site, stable builds on milestone site, release builds on releases site)
+  case $buildType in
+        i|I|m|M) remoteSite=interim;;
+        s|S) remoteSite=milestones;;
+        r|R) remoteSite=releases;;
+        *) exit 0 ;;
+  esac
+  remoteUpdateSiteBase="tools/gef/updates/$remoteSite"
+  remoteUpdateSite="/home/data/httpd/download.eclipse.org/$remoteUpdateSiteBase"
+  echo "Publishing to remote update-site: $remoteUpdateSite"
+
+  if [ -d "$remoteUpdateSite" ];
         then
                 if [ -z "$merge" ];
                 then
@@ -99,9 +116,11 @@ if [ -d "$remoteUpdateSite" ];
                 fi
         else
                 merge=n
+  fi
+  echo "Merging with existing site: $merge"
 fi
-echo "Merging with existing site: $merge"
 
+# check if we are going to create drop files
 if [ -z "$dropFiles" ];
         then
                 echo -n "Do you want to create update-site and SDK drop files? [(y)es, (n)o]:"
@@ -236,30 +255,32 @@ if [ "$dropFiles" = y ];
                 cp -R $localDropDir/* $remoteDropDir/
 fi
 
-if [ "$merge" = y ];
+if [ "$site" = y ];
+        then
+  if [ "$merge" = y ];
         then
         echo "Merging existing site into local one."
         ./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.equinox.p2.metadata.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
         ./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.equinox.p2.artifact.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
         echo "Merged $remoteUpdateSite into local directory update-site."
-fi
+  fi
 
-# Ensure p2.mirrorURLs property is used in update site
-echo "Setting p2.mirrorsURL to http://www.eclipse.org/downloads/download.php?format=xml&file=/$remoteUpdateSiteBase"
+  # Ensure p2.mirrorURLs property is used in update site
+  echo "Setting p2.mirrorsURL to http://www.eclipse.org/downloads/download.php?format=xml&file=/$remoteUpdateSiteBase"
 ./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.wtp.releng.tools.addRepoProperties -vmargs -DartifactRepoDirectory=$PWD/update-site -Dp2MirrorsURL="http://www.eclipse.org/downloads/download.php?format=xml&file=/$remoteUpdateSiteBase"
 
-# Create p2.index file
-if [ ! -e "update-site/p2.index" ];
-	then
-		echo "Creating p2.index file"
-		echo "version = 1" > update-site/p2.index
-		echo "metadata.repository.factory.order = content.xml,\!" >> update-site/p2.index
-		echo "artifact.repository.factory.order = artifacts.xml,\!" >> update-site/p2.index
-fi
-        
-# Backup then clean remote update site
-echo "Creating backup of remote update site."
-if [ -d "$remoteUpdateSite" ];
+  # Create p2.index file
+  if [ ! -e "update-site/p2.index" ];
+        then
+                echo "Creating p2.index file."
+                echo "version = 1" > update-site/p2.index
+                echo "metadata.repository.factory.order = content.xml,\!" >> update-site/p2.index
+                echo "artifact.repository.factory.order = artifacts.xml,\!" >> update-site/p2.index
+  fi
+
+  # Backup then clean remote update site
+  echo "Creating backup of remote update site."
+  if [ -d "$remoteUpdateSite" ];
         then
                 if [ -d BACKUP ];
                         then
@@ -268,11 +289,13 @@ if [ -d "$remoteUpdateSite" ];
                 mkdir BACKUP
                 cp -R $remoteUpdateSite/* BACKUP/
                 rm -fr $remoteUpdateSite
+  fi
+
+  echo "Publishing contents of local update-site directory to remote update site $remoteUpdateSite"
+  mkdir -p $remoteUpdateSite
+  cp -R update-site/* $remoteUpdateSite/
 fi
 
-echo "Publishing contents of local update-site directory to remote update site $remoteUpdateSite"
-mkdir -p $remoteUpdateSite
-cp -R update-site/* $remoteUpdateSite/
 
 # Clean up
 echo "Cleaning up"
