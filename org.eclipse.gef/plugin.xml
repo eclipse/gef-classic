@@ -67,9 +67,14 @@
 
 	<extension point="org.eclipse.ui.bindings">
 		<key
-			sequence="M1++"
+			sequence="M1+="
 			commandId="org.eclipse.gef.zoom_in"
 			schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"/>
+  		<key
+        	commandId="org.eclipse.gef.zoom_in"
+        	locale="de"
+        	schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+        	sequence="M1++"/>
 		<key
 			sequence="M1+-"
 			commandId="org.eclipse.gef.zoom_out"
