@@ -49,7 +49,7 @@ if [ -z "$buildId" ];
                 exit 0
 fi
 
-# Determine the local update site we want to publish to
+# Determine the build we want to publish
 if [ "$buildId" = "lastStable" -o "$buildId" = "lastSuccessful" ];
         then
                 jobDir=$(readlink -f /shared/jobs/$jobName/$buildId)
@@ -238,6 +238,7 @@ if [ "$dropFiles" = y ];
                 md5sum $dropDir/GEF-zest-sdk-$version.zip > $dropDir/GEF-zest-sdk-$version.zip.md5
                 echo "Created GEF-zest-sdk-$version.zip"
                 
+                cd ..
                 cd update-site
 
                 zip -r ../$localDropDir/GEF-Update-$version.zip features plugins artifacts.jar content.jar
