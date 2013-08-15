@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.gef.test.source"
       label="GEF Tests Sources"
-      version="3.9.0.qualifier"
+      version="3.10.0.qualifier"
       provider-name="Eclipse.org">
 
    <description>
