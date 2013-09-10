@@ -278,8 +278,8 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>maven.eclipse.org</id>
-			<url>http://maven.eclipse.org/nexus/content/groups/public/</url>
+			<id>CBI</id>
+			<url>https://repo.eclipse.org/content/repositories/cbi-snapshots/</url>
 		</pluginRepository>
 	</pluginRepositories>
 
