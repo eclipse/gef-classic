@@ -279,7 +279,7 @@
 	<pluginRepositories>
 		<pluginRepository>
 			<id>CBI</id>
-			<url>https://repo.eclipse.org/content/repositories/cbi-snapshots/</url>
+			<url>https://repo.eclipse.org/content/repositories/cbi-releases/</url>
 		</pluginRepository>
 	</pluginRepositories>
 
