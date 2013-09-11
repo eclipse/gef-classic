@@ -9,6 +9,7 @@
 		<version>3.9.0-SNAPSHOT</version>
 		<relativePath>../org.eclipse.gef.releng/pom.xml</relativePath>
 	</parent>
+	<groupId>org.eclipse.gef</groupId>
 	<artifactId>org.eclipse.gef.repository</artifactId>
 	<version>3.10.0-SNAPSHOT</version>
 	<packaging>eclipse-repository</packaging>
@@ -17,60 +18,4 @@
 		<signer-version>1.0.5</signer-version>
 		<signer-input-directory>/home/data/httpd/download-staging.priv/tools/gef</signer-input-directory>
 	</properties>
-
-	<profiles>
-		<profile>
-			<id>hudson.eclipse.org</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.dash.maven</groupId>
-						<artifactId>eclipse-signing-maven-plugin</artifactId>
-						<version>${signer-version}</version>
-						<executions>
-							<execution>
-								<id>pack</id>
-								<configuration>
-									<inputFile>${project.build.directory}/org.eclipse.gef.repository.zip</inputFile>
-								</configuration>
-								<phase>package</phase>
-								<goals>
-									<goal>pack</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>sign</id>
-								<configuration>
-									<inputFile>${project.build.directory}/org.eclipse.gef.repository.zip</inputFile>
-									<signerInputDirectory>${signer-input-directory}</signerInputDirectory>
-								</configuration>
-								<phase>package</phase>
-								<goals>
-									<goal>sign</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>repack</id>
-								<configuration>
-									<inputFile>${project.build.directory}/signed/site_assembly.zip</inputFile>
-								</configuration>
-								<phase>package</phase>
-								<goals>
-									<goal>pack</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>fixCheckSums</id>
-								<phase>package</phase>
-								<goals>
-									<goal>fixCheckSums</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
-	<groupId>org.eclipse.gef</groupId>
 </project>
