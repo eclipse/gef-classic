@@ -1,7 +1,7 @@
 -charset "iso-8859-1"
 -sourcepath "../org.eclipse.draw2d/src"
 -d reference/api
--classpath @rt@:@context@
+-classpath @rt@@args.list.delimiter@@context@
 -use
 -breakiterator
 -splitIndex
