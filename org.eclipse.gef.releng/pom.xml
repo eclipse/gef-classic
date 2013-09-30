@@ -10,7 +10,7 @@
 
 	<!-- this is the parent POM from which all modules inherit common settings -->
 	<properties>
-		<tycho-version>0.17.0</tycho-version>
+		<tycho-version>0.18.1</tycho-version>
 		<cbi-plugins.version>1.0.4</cbi-plugins.version>
 		<antrun-version>1.6</antrun-version>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
