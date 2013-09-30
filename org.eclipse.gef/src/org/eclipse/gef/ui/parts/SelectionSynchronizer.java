@@ -28,7 +28,7 @@ import org.eclipse.gef.EditPartViewer;
  * class performs selection synchronization by taking the selection from one
  * viewer, and mapping it to the selection in another viewer. The mapping is
  * performed by matching the models of the selected EditParts from one viewer to
- * the EditParts with the same models in another. The can be customized by
+ * the EditParts with the same models in another. It can be customized by
  * overriding the {@link #convert(EditPartViewer, EditPart)} method.
  * 
  * @author hudsonr
@@ -135,7 +135,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 		Iterator iter = ((IStructuredSelection) selection).iterator();
 		while (iter.hasNext()) {
 			EditPart part = convert(viewer, (EditPart) iter.next());
-			if (part != null)
+			if (part != null && part.isSelectable())
 				result.add(part);
 		}
 		viewer.setSelection(new StructuredSelection(result));
