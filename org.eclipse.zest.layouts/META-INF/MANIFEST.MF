@@ -14,7 +14,7 @@ Export-Package: org.eclipse.zest.layouts,
  org.eclipse.zest.layouts.exampleUses,
  org.eclipse.zest.layouts.progress
 Require-Bundle: org.eclipse.swt;visibility:=reexport,
- org.eclipse.core.runtime,
+ org.eclipse.core.runtime;visibility:=reexport,
  org.eclipse.jface,
  org.eclipse.draw2d
 Bundle-RequiredExecutionEnvironment: J2SE-1.4

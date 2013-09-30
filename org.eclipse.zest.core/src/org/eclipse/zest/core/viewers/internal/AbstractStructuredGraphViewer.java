@@ -64,12 +64,12 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	private HashMap connectionsMap = new HashMap();
 
 	/**
-	 * The constraint adatpers
+	 * The constraint adapters
 	 */
 	private List constraintAdapters = new ArrayList();
 
 	/**
-	 * A simple graph comparator that orders graph elements based on thier type
+	 * A simple graph comparator that orders graph elements based on their type
 	 * (connection or node), and their unique object identification.
 	 */
 	private class SimpleGraphComparator implements Comparator {
