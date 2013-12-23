@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<?pde version="3.8"?><target name="LUNA_4_4" sequenceNumber="0">
+<?pde version="3.8"?><target name="LUNA_4_4" sequenceNumber="1">
 <locations>
 <location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="4.4.0.I20130807-2000"/>
+<unit id="org.eclipse.sdk.ide" version="4.4.0.I20131212-1600"/>
 <repository location="http://download.eclipse.org/releases/luna"/>
 </location>
 </locations>
