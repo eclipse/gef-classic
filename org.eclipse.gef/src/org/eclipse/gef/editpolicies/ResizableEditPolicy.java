@@ -148,7 +148,10 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	protected Command getResizeCommand(ChangeBoundsRequest request) {
 		ChangeBoundsRequest req = new ChangeBoundsRequest(REQ_RESIZE_CHILDREN);
 		req.setEditParts(getHost());
-
+		req.setCenteredResize(request.isCenteredResize());
+		req.setConstrainedMove(request.isConstrainedMove());
+		req.setConstrainedResize(request.isConstrainedResize());
+		req.setSnapToEnabled(request.isSnapToEnabled());
 		req.setMoveDelta(request.getMoveDelta());
 		req.setSizeDelta(request.getSizeDelta());
 		req.setLocation(request.getLocation());
