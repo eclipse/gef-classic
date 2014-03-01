@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<feature url="features/org.eclipse.draw2d_3.10.0.qualifier.jar" id="org.eclipse.draw2d" version="3.10.0.qualifier">
+	<feature url="features/org.eclipse.draw2d_3.9.2.qualifier.jar" id="org.eclipse.draw2d" version="3.9.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.draw2d.sdk_3.10.0.qualifier.jar" id="org.eclipse.draw2d.sdk" version="3.10.0.qualifier">
+   <feature url="features/org.eclipse.draw2d.sdk_3.9.2.qualifier.jar" id="org.eclipse.draw2d.sdk" version="3.9.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.draw2d.source_3.10.0.qualifier.jar" id="org.eclipse.draw2d.source" version="3.10.0.qualifier">
+   <feature url="features/org.eclipse.draw2d.source_3.9.2.qualifier.jar" id="org.eclipse.draw2d.source" version="3.9.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.gef_3.10.0.qualifier.jar" id="org.eclipse.gef" version="3.10.0.qualifier">
+   <feature url="features/org.eclipse.gef_3.9.2.qualifier.jar" id="org.eclipse.gef" version="3.9.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.gef.all_3.10.0.qualifier.jar" id="org.eclipse.gef.all" version="3.10.0.qualifier">
+   <feature url="features/org.eclipse.gef.all_3.9.2.qualifier.jar" id="org.eclipse.gef.all" version="3.9.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.gef.examples_3.10.0.qualifier.jar" id="org.eclipse.gef.examples" version="3.10.0.qualifier">
+   <feature url="features/org.eclipse.gef.examples_3.9.2.qualifier.jar" id="org.eclipse.gef.examples" version="3.9.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.gef.examples.source_3.10.0.qualifier.jar" id="org.eclipse.gef.examples.source" version="3.10.0.qualifier">
+   <feature url="features/org.eclipse.gef.examples.source_3.9.2.qualifier.jar" id="org.eclipse.gef.examples.source" version="3.9.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.gef.sdk_3.10.0.qualifier.jar" id="org.eclipse.gef.sdk" version="3.10.0.qualifier">
+   <feature url="features/org.eclipse.gef.sdk_3.9.2.qualifier.jar" id="org.eclipse.gef.sdk" version="3.9.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.gef.source_3.10.0.qualifier.jar" id="org.eclipse.gef.source" version="3.10.0.qualifier">
+   <feature url="features/org.eclipse.gef.source_3.9.2.qualifier.jar" id="org.eclipse.gef.source" version="3.9.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.zest_1.6.0.qualifier.jar" id="org.eclipse.zest" version="1.6.0.qualifier">
+   <feature url="features/org.eclipse.zest_1.5.2.qualifier.jar" id="org.eclipse.zest" version="1.5.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.zest.sdk_1.6.0.qualifier.jar" id="org.eclipse.zest.sdk" version="1.6.0.qualifier">
+   <feature url="features/org.eclipse.zest.sdk_1.5.2.qualifier.jar" id="org.eclipse.zest.sdk" version="1.5.2.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.zest.source_1.6.0.qualifier.jar" id="org.eclipse.zest.source" version="1.6.0.qualifier">
+   <feature url="features/org.eclipse.zest.source_1.5.2.qualifier.jar" id="org.eclipse.zest.source" version="1.5.2.qualifier">
       <category name="GEF"/>
    </feature>
    <category-def name="GEF" label="GEF (Graphical Editing Framework)">
