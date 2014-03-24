@@ -358,7 +358,7 @@ public class FigureUtilities {
 	 * @since 2.0
 	 */
 	protected static void setFont(Font f) {
-		if (appliedFont == f || f.equals(appliedFont))
+		if (appliedFont == f || (f != null && f.equals(appliedFont)))
 			return;
 		getGC().setFont(f);
 		appliedFont = f;
