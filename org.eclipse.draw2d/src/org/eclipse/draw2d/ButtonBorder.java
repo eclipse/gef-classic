@@ -12,7 +12,6 @@ package org.eclipse.draw2d;
 
 import org.eclipse.swt.graphics.Color;
 
-import org.eclipse.draw2d.ButtonBorder.ButtonScheme;
 import org.eclipse.draw2d.geometry.Insets;
 
 /**
