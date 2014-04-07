@@ -56,7 +56,8 @@
 										<echo
 											message="Replacing @build@ token within about.mappings with build id" />
 										<replace file="about.mappings">
-											<replacefilter token="@build@" value="${unqualifiedVersion}.${buildQualifier}" />
+											<replacefilter token="@build@"
+												value="${unqualifiedVersion}.${buildQualifier}" />
 										</replace>
 									</then>
 								</if>
@@ -66,7 +67,8 @@
 										<echo
 											message="Replacing @build@ token within javadocOptions.txt with build id" />
 										<replace file="javadocOptions.txt">
-											<replacefilter token="@build@" value="${unqualifiedVersion}.${buildQualifier}" />
+											<replacefilter token="@build@"
+												value="${unqualifiedVersion}.${buildQualifier}" />
 										</replace>
 									</then>
 								</if>
@@ -89,7 +91,8 @@
 										<echo
 											message="Replacing back build id within about.mappings with @build@ token" />
 										<replace file="about.mappings">
-											<replacefilter token="${unqualifiedVersion}.${buildQualifier}" value="@build@" />
+											<replacefilter token="${unqualifiedVersion}.${buildQualifier}"
+												value="@build@" />
 										</replace>
 									</then>
 								</if>
@@ -99,7 +102,8 @@
 										<echo
 											message="Replacing back build id within javadocOptions.txt with @build@ token" />
 										<replace file="javadocOptions.txt">
-											<replacefilter token="${unqualifiedVersion}.${buildQualifier}" value="@build@" />
+											<replacefilter token="${unqualifiedVersion}.${buildQualifier}"
+												value="@build@" />
 										</replace>
 									</then>
 								</if>
@@ -229,6 +233,14 @@
 			<id>hudson.eclipse.org</id>
 			<build>
 				<plugins>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-compiler-plugin</artifactId>
+						<version>${tycho-version}</version>
+						<configuration>
+							<useJDK>BREE</useJDK>
+						</configuration>
+					</plugin>
 					<plugin>
 						<groupId>org.eclipse.cbi.maven.plugins</groupId>
 						<artifactId>eclipse-jarsigner-plugin</artifactId>
