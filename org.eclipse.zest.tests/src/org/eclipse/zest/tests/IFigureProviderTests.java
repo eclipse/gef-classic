@@ -77,9 +77,12 @@ public class IFigureProviderTests extends TestCase {
 					.getText());
 		}
 		String string = buffer.toString();
-		assertTrue("Label 1 should be in figure labels", string.contains("1"));
-		assertTrue("Label 2 should be in figure labels", string.contains("2"));
-		assertTrue("Label 3 should be in figure labels", string.contains("3"));
+		assertTrue("Label 1 should be in figure labels",
+				string.indexOf("1") >= 0);
+		assertTrue("Label 2 should be in figure labels",
+				string.indexOf("2") >= 0);
+		assertTrue("Label 3 should be in figure labels",
+				string.indexOf("3") >= 0);
 	}
 
 	private class DestinationContentProvider implements IGraphContentProvider {
