@@ -3,7 +3,9 @@
       id="org.eclipse.gef.test.source"
       label="GEF Tests Sources"
       version="3.9.100.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="Eclipse.org"
+      license-feature="org.eclipse.license"
+      license-feature-version="1.0.1">
 
    <description>
       %description
