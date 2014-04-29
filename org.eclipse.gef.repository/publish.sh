@@ -3,7 +3,7 @@
 # Script may take 6-7 command line parameters:
 # $1: Hudson job name: <name>
 # $2: Hudson build id: <id>
-# $3: Build type: n(ightly), m(aintenance), s(table), r(elease)
+# $3: Build type: i(ntegration), m(aintenance), s(table), r(elease)
 # $4: Whether to promote to an update-site: (y)es, (n)o
 # $5: Whether to merge the site with an existing one: (y)es, (n)o
 # $6: Whether to generate udpate-site and SDK drop files: (y)es, (n)o
