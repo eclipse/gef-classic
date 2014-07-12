@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>org.eclipse.gef</groupId>
 	<artifactId>org.eclipse.gef.repository</artifactId>
-	<version>3.9.2-SNAPSHOT</version>
+	<version>3.9.200-SNAPSHOT</version>
 	<packaging>eclipse-repository</packaging>
 
 	<properties>
