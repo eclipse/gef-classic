@@ -30,9 +30,19 @@
 				</dictionary>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.emf.cdo.releng.version.VersionBuilder</name>
+			<arguments>
+				<dictionary>
+					<key>release.path</key>
+					<value>/org.eclipse.gef.releng/release.xml</value>
+				</dictionary>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.eclipse.emf.cdo.releng.version.VersionNature</nature>
 	</natures>
 </projectDescription>

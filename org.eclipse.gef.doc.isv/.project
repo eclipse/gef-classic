@@ -7,7 +7,17 @@
 		<project>org.eclipse.gef</project>
 	</projects>
 	<buildSpec>
+		<buildCommand>
+			<name>org.eclipse.emf.cdo.releng.version.VersionBuilder</name>
+			<arguments>
+				<dictionary>
+					<key>release.path</key>
+					<value>/org.eclipse.gef.releng/release.xml</value>
+				</dictionary>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>org.eclipse.emf.cdo.releng.version.VersionNature</nature>
 	</natures>
 </projectDescription>
