@@ -12,7 +12,7 @@
 <feature
       id="org.eclipse.draw2d.sdk"
       label="%featureName"
-	  version="3.9.100.qualifier"
+      version="3.9.200.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.draw2d"
       image="eclipse_update_120.jpg"

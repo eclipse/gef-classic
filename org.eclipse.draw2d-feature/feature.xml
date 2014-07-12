@@ -9,10 +9,10 @@
     Contributors:
         IBM Corporation - initial API and implementation
  -->
-	<feature
+<feature
       id="org.eclipse.draw2d"
       label="%featureName"
-      version="3.9.100.qualifier"
+      version="3.9.200.qualifier"
       provider-name="%providerName"
       image="eclipse_update_120.jpg"
       license-feature="org.eclipse.license"
