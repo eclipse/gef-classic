@@ -11,6 +11,6 @@
 	</parent>
 	<groupId>org.eclipse.zest.features</groupId>
 	<artifactId>org.eclipse.zest.source</artifactId>
-	<version>1.5.100-SNAPSHOT</version>
+	<version>1.5.200-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 </project>
