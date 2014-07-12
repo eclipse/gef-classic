@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<release>
+	<feature name="org.eclipse.draw2d" version="3.9.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<plugin name="org.eclipse.draw2d" version="3.9.100"/>
+	</feature>
+	<feature name="org.eclipse.draw2d.sdk" version="3.9.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<feature name="org.eclipse.draw2d" version="3.9.100"/>
+		<feature name="org.eclipse.draw2d.source" version="3.9.100"/>
+		<plugin name="org.eclipse.draw2d.doc.isv" version="3.9.100"/>
+	</feature>
+	<feature name="org.eclipse.draw2d.source" version="3.9.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<plugin name="org.eclipse.draw2d.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	</feature>
+	<feature name="org.eclipse.gef" version="3.9.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<feature name="org.eclipse.draw2d" version="3.9.100"/>
+		<plugin name="org.eclipse.gef" version="3.9.100"/>
+	</feature>
+	<feature name="org.eclipse.gef.all" version="3.9.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<feature name="org.eclipse.gef.sdk" version="3.9.100"/>
+		<feature name="org.eclipse.zest.sdk" version="1.5.100"/>
+		<feature name="org.eclipse.gef.examples" version="3.9.100"/>
+	</feature>
+	<feature name="org.eclipse.gef.examples" version="3.9.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<feature name="org.eclipse.gef.examples.source" version="3.9.100"/>
+		<plugin name="org.eclipse.gef.examples.logic" version="3.8.1"/>
+		<plugin name="org.eclipse.gef.examples.flow" version="3.8.1"/>
+		<plugin name="org.eclipse.gef.examples.text" version="3.8.1"/>
+		<plugin name="org.eclipse.gef.examples.shapes" version="3.8.1"/>
+	</feature>
+	<feature name="org.eclipse.gef.examples.source" version="3.9.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<plugin name="org.eclipse.gef.examples.logic.source" version="0.0.0"/> <!-- UNRESOLVED -->
+		<plugin name="org.eclipse.gef.examples.flow.source" version="0.0.0"/> <!-- UNRESOLVED -->
+		<plugin name="org.eclipse.gef.examples.text.source" version="0.0.0"/> <!-- UNRESOLVED -->
+		<plugin name="org.eclipse.gef.examples.shapes.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	</feature>
+	<feature name="org.eclipse.gef.sdk" version="3.9.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<feature name="org.eclipse.draw2d.sdk" version="3.9.100"/>
+		<feature name="org.eclipse.gef" version="3.9.100"/>
+		<feature name="org.eclipse.gef.source" version="3.9.100"/>
+		<plugin name="org.eclipse.gef.examples.ui.pde" version="3.8.1"/>
+		<plugin name="org.eclipse.gef.doc.isv" version="3.9.100"/>
+	</feature>
+	<feature name="org.eclipse.gef.source" version="3.9.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<plugin name="org.eclipse.gef.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	</feature>
+	<feature name="org.eclipse.license" version="1.0.1"/>
+	<feature name="org.eclipse.zest" version="1.5.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<feature name="org.eclipse.draw2d" version="3.9.100"/>
+		<plugin name="org.eclipse.zest.core" version="1.5.100"/>
+		<plugin name="org.eclipse.zest.layouts" version="1.1.100"/>
+	</feature>
+	<feature name="org.eclipse.zest.sdk" version="1.5.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<feature name="org.eclipse.draw2d.sdk" version="3.9.100"/>
+		<feature name="org.eclipse.zest" version="1.5.100"/>
+		<feature name="org.eclipse.zest.source" version="1.5.100"/>
+		<plugin name="org.eclipse.zest.doc.isv" version="1.5.100"/>
+	</feature>
+	<feature name="org.eclipse.zest.source" version="1.5.100">
+		<feature name="org.eclipse.license" version="1.0.1" license="true"/>
+		<plugin name="org.eclipse.zest.core.source" version="0.0.0"/> <!-- UNRESOLVED -->
+		<plugin name="org.eclipse.zest.layouts.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	</feature>
+	<plugin name="org.eclipse.draw2d" version="3.9.100"/>
+	<plugin name="org.eclipse.draw2d.doc.isv" version="3.9.100"/>
+	<plugin name="org.eclipse.draw2d.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	<plugin name="org.eclipse.gef" version="3.9.100"/>
+	<plugin name="org.eclipse.gef.doc.isv" version="3.9.100"/>
+	<plugin name="org.eclipse.gef.examples.flow" version="3.8.1"/>
+	<plugin name="org.eclipse.gef.examples.flow.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	<plugin name="org.eclipse.gef.examples.logic" version="3.8.1"/>
+	<plugin name="org.eclipse.gef.examples.logic.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	<plugin name="org.eclipse.gef.examples.shapes" version="3.8.1"/>
+	<plugin name="org.eclipse.gef.examples.shapes.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	<plugin name="org.eclipse.gef.examples.text" version="3.8.1"/>
+	<plugin name="org.eclipse.gef.examples.text.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	<plugin name="org.eclipse.gef.examples.ui.pde" version="3.8.1"/>
+	<plugin name="org.eclipse.gef.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	<plugin name="org.eclipse.zest.core" version="1.5.100"/>
+	<plugin name="org.eclipse.zest.core.source" version="0.0.0"/> <!-- UNRESOLVED -->
+	<plugin name="org.eclipse.zest.doc.isv" version="1.5.100"/>
+	<plugin name="org.eclipse.zest.layouts" version="1.1.100"/>
+	<plugin name="org.eclipse.zest.layouts.source" version="0.0.0"/> <!-- UNRESOLVED -->
+</release>
