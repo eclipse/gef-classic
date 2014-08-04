@@ -32,6 +32,7 @@ public class ToolTipHelper extends PopUpHelper {
 
 	private Timer timer;
 	private IFigure currentTipSource;
+	private int hideDelay = 5000;
 
 	/**
 	 * Constructs a ToolTipHelper to be associated with Control <i>c</i>.
@@ -71,6 +72,18 @@ public class ToolTipHelper extends PopUpHelper {
 	}
 
 	/**
+	 * Sets the tooltip hide delay, which is the amount in ms, after which the
+	 * tooltip will disappear again.
+	 * 
+	 * @param hideDelay
+	 *            The delay after which the tooltip is hidden again, in ms.
+	 * @since 3.10
+	 */
+	public void setHideDelay(int hideDelay) {
+		this.hideDelay = hideDelay;
+	}
+
+	/**
 	 * Sets the LightWeightSystem's contents to the passed tooltip, and displays
 	 * the tip. The tip will be displayed only if the tip source is different
 	 * than the previously viewed tip source. (i.e. The cursor has moved off of
@@ -106,11 +119,10 @@ public class ToolTipHelper extends PopUpHelper {
 					Display.getDefault().asyncExec(new Runnable() {
 						public void run() {
 							hide();
-							timer.cancel();
 						}
 					});
 				}
-			}, 5000);
+			}, hideDelay);
 		}
 	}
 
@@ -121,10 +133,16 @@ public class ToolTipHelper extends PopUpHelper {
 	 */
 	public void dispose() {
 		if (isShowing()) {
-			timer.cancel();
 			hide();
 		}
 		getShell().dispose();
+	}
+
+	protected void hide() {
+		if (timer != null) {
+			timer.cancel();
+		}
+		super.hide();
 	}
 
 	/**
@@ -136,9 +154,6 @@ public class ToolTipHelper extends PopUpHelper {
 			public void mouseEnter(org.eclipse.swt.events.MouseEvent e) {
 				hide();
 				currentTipSource = null;
-				if (timer != null) {
-					timer.cancel();
-				}
 			}
 		});
 	}
@@ -166,14 +181,12 @@ public class ToolTipHelper extends PopUpHelper {
 		if (figureUnderMouse == null) {
 			if (isShowing()) {
 				hide();
-				timer.cancel();
 			}
 		}
 		// Makes tooltip appear without a hover event if a tip is currently
 		// being displayed
 		if (isShowing() && figureUnderMouse != currentTipSource) {
 			hide();
-			timer.cancel();
 			displayToolTipNear(figureUnderMouse, tip, eventX, eventY);
 		} else if (!isShowing() && figureUnderMouse != currentTipSource)
 			currentTipSource = null;
