@@ -110,7 +110,7 @@ public class BorderLayout extends AbstractHintLayout {
 	/**
 	 * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
 	 */
-	protected Dimension calculatePreferredSize(IFigure container, int wHint,
+	protected Dimension calculatePreferredSize(IFigure figure, int wHint,
 			int hHint) {
 		int minWHint = 0, minHHint = 0;
 		if (wHint < 0)
@@ -119,7 +119,7 @@ public class BorderLayout extends AbstractHintLayout {
 		if (hHint < 0)
 			minHHint = -1;
 
-		Insets border = container.getInsets();
+		Insets border = figure.getInsets();
 		wHint = Math.max(minWHint, wHint - border.getWidth());
 		hHint = Math.max(minHHint, hHint - border.getHeight());
 		Dimension prefSize = new Dimension();
@@ -167,6 +167,7 @@ public class BorderLayout extends AbstractHintLayout {
 		prefSize.width = Math.max(prefSize.width, middleRowWidth)
 				+ border.getWidth() + ((columns - 1) * hGap);
 
+		prefSize.union(getBorderPreferredSize(figure));
 		return prefSize;
 	}
 
