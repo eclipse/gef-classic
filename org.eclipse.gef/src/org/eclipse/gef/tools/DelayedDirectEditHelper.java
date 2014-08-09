@@ -59,7 +59,8 @@ class DelayedDirectEditHelper implements Runnable {
 		else {
 			hookControl(viewer.getControl());
 			activeHelper = this;
-			Display.getCurrent().timerExec(400, this);
+			Display display = Display.getCurrent();
+			display.timerExec(display.getDoubleClickTime(), this);
 		}
 	}
 
