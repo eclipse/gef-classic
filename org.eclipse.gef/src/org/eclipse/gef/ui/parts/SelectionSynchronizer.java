@@ -103,12 +103,24 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 		}
 	}
 
-	private void syncSelection(EditPartViewer source, ISelection selection) {
+	/**
+	 * Synchronizes the given selection to all registered viewers except the one
+	 * serving as selectionSource, by delegating to
+	 * {@link #applySelection(EditPartViewer, ISelection)}.
+	 * 
+	 * @param selectionSource
+	 *            The viewer from which the selection originated.
+	 * @param selection
+	 *            The selection to apply to the other viewers.
+	 * @since 3.10
+	 */
+	protected void syncSelection(EditPartViewer selectionSource,
+			ISelection selection) {
 		isDispatching = true;
 		for (int i = 0; i < viewers.size(); i++) {
-			if (viewers.get(i) != source) {
+			if (viewers.get(i) != selectionSource) {
 				EditPartViewer viewer = (EditPartViewer) viewers.get(i);
-				setViewerSelection(viewer, selection);
+				applySelection(viewer, selection);
 			}
 		}
 		isDispatching = false;
@@ -130,7 +142,23 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 		}
 	}
 
-	private void setViewerSelection(EditPartViewer viewer, ISelection selection) {
+	/**
+	 * Applies the given EditPart selection from another viewer to the given
+	 * viewer. It will first compute a new selection of {@link EditPart}s for
+	 * the given viewer by searching those that control the same model elements
+	 * as the {@link EditPart}s in the given selection (via
+	 * {@link #convert(EditPartViewer, EditPart)}), apply this new selection to
+	 * the given viewer, and reveal the last part in the new selection.
+	 * 
+	 * @param viewer
+	 *            The viewer to apply the given selection to.
+	 * @param selection
+	 *            The selection to apply, which has to be an
+	 *            {@link IStructuredSelection} of {@link EditPart}s of another
+	 *            viewer.
+	 * @since 3.10
+	 */
+	protected void applySelection(EditPartViewer viewer, ISelection selection) {
 		ArrayList result = new ArrayList();
 		Iterator iter = ((IStructuredSelection) selection).iterator();
 		while (iter.hasNext()) {
