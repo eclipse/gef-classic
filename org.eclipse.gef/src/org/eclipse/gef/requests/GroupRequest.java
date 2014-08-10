@@ -64,7 +64,7 @@ public class GroupRequest extends org.eclipse.gef.Request {
 	 *            The EditPart making the request.
 	 */
 	public void setEditParts(EditPart part) {
-		parts = new ArrayList();
+		parts = new ArrayList(1);
 		parts.add(part);
 	}
 
