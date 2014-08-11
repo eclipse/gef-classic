@@ -147,7 +147,10 @@ public class DeferredUpdateManager extends UpdateManager {
 		return graphicsSource.getGraphics(region);
 	}
 
-	void paint(GC gc) {
+	/**
+	 * @since 3.10
+	 */
+	protected void paint(GC gc) {
 		if (!validating) {
 			SWTGraphics graphics = new SWTGraphics(gc);
 			if (!updating) {

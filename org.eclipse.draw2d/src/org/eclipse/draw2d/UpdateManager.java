@@ -157,7 +157,18 @@ public abstract class UpdateManager {
 	 */
 	public abstract void performUpdate();
 
-	void paint(GC gc) {
+	/**
+	 * Invoked by the {@link LightweightSystem} (
+	 * {@link LightweightSystem#paint(GC)}) to have the update manger paint its
+	 * contents. Delegates to {@link #performUpdate(Rectangle)} with the passed
+	 * in gc's clipping region ({@link GC#getClipping()}) by default. Subclasses
+	 * may override if they need to access the {@link GC} for updating.
+	 * 
+	 * @param gc
+	 *            The {@link GC} to be used for updating
+	 * @since 3.10
+	 */
+	protected void paint(GC gc) {
 		performUpdate(new Rectangle(gc.getClipping()));
 	}
 
