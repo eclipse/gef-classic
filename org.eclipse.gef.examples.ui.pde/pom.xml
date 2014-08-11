@@ -11,6 +11,6 @@
 	</parent>
 	<groupId>org.eclipse.gef.plugins</groupId>
 	<artifactId>org.eclipse.gef.examples.ui.pde</artifactId>
-	<version>3.8.1-SNAPSHOT</version>
+	<version>3.8.101-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 </project>

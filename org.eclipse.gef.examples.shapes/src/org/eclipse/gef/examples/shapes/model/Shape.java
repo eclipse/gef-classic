@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
 import java.io.IOException;
@@ -247,10 +247,10 @@ public abstract class Shape extends ModelElement {
 		}
 		if (conn.getSource() == this) {
 			sourceConnections.remove(conn);
-			firePropertyChange(SOURCE_CONNECTIONS_PROP, null, conn);
+			firePropertyChange(SOURCE_CONNECTIONS_PROP, conn, null);
 		} else if (conn.getTarget() == this) {
 			targetConnections.remove(conn);
-			firePropertyChange(TARGET_CONNECTIONS_PROP, null, conn);
+			firePropertyChange(TARGET_CONNECTIONS_PROP, conn, null);
 		}
 	}
 
