@@ -24,7 +24,7 @@
    <feature url="features/org.eclipse.gef.sdk_3.10.0.qualifier.jar" id="org.eclipse.gef.sdk" version="3.10.0.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.gef.source_3.9.200.qualifier.jar" id="org.eclipse.gef.source" version="3.9.200.qualifier">
+   <feature url="features/org.eclipse.gef.source_3.10.0.qualifier.jar" id="org.eclipse.gef.source" version="3.10.0.qualifier">
       <category name="GEF"/>
    </feature>
    <feature url="features/org.eclipse.zest_1.6.0.qualifier.jar" id="org.eclipse.zest" version="1.6.0.qualifier">
@@ -33,7 +33,7 @@
    <feature url="features/org.eclipse.zest.sdk_1.6.0.qualifier.jar" id="org.eclipse.zest.sdk" version="1.6.0.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.zest.source_1.5.200.qualifier.jar" id="org.eclipse.zest.source" version="1.5.200.qualifier">
+   <feature url="features/org.eclipse.zest.source_1.6.0.qualifier.jar" id="org.eclipse.zest.source" version="1.6.0.qualifier">
       <category name="GEF"/>
    </feature>
    <category-def name="GEF" label="GEF (Graphical Editing Framework)">
