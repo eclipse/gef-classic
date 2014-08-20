@@ -96,6 +96,18 @@ public class LED extends LogicSubpart {
 	}
 
 	public int getValue() {
+		if (!inputs.isEmpty()) {
+			boolean[] inputs = new boolean[4];
+			inputs[0] = getInput(TERMINAL_1_IN);
+			inputs[1] = getInput(TERMINAL_2_IN);
+			inputs[2] = getInput(TERMINAL_3_IN);
+			inputs[3] = getInput(TERMINAL_4_IN);
+			return getValue(inputs);
+		}
+		return getValue(bits);
+	}
+
+	private int getValue(boolean[] bits) {
 		int val = 0;
 		if (bits[0])
 			val += 1;
@@ -123,6 +135,10 @@ public class LED extends LogicSubpart {
 	}
 
 	public void setValue(int v) {
+		if (!inputs.isEmpty()) {
+			// ignore if we have inputs
+			return;
+		}
 		int val = v % 16;
 		bits = new boolean[4]; // Shorthand to set all bits to false
 		if (val >= 8)
@@ -132,8 +148,8 @@ public class LED extends LogicSubpart {
 		if (val % 4 > 1)
 			bits[1] = true;
 		bits[0] = val % 2 == 1;
-		update();
 		firePropertyChange(P_VALUE, null, null);
+		update();
 	}
 
 	public String toString() {
@@ -143,23 +159,22 @@ public class LED extends LogicSubpart {
 	}
 
 	public void update() {
-		boolean changed = false;
-		boolean[] oldBits = new boolean[bits.length];
-		for (int i = 0; i < oldBits.length; i++) {
-			oldBits[i] = bits[i];
-			bits[i] = getInput(IN_TERMINALS[i]);
-			if (bits[i] != oldBits[i]) {
-				changed = true;
-			}
-		}
-		if (changed) {
-			firePropertyChange(P_VALUE, null, null);
+		boolean[] outputBits = new boolean[4];
+		if (!inputs.isEmpty()) {
+			outputBits[0] = getInput(TERMINAL_1_IN);
+			outputBits[1] = getInput(TERMINAL_2_IN);
+			outputBits[2] = getInput(TERMINAL_3_IN);
+			outputBits[3] = getInput(TERMINAL_4_IN);
+		} else {
+			outputBits = this.bits;
 		}
 
-		setOutput(TERMINAL_1_OUT, bits[0]);
-		setOutput(TERMINAL_2_OUT, bits[1]);
-		setOutput(TERMINAL_3_OUT, bits[2]);
-		setOutput(TERMINAL_4_OUT, bits[3]);
+		firePropertyChange(P_VALUE, null, null);
+
+		setOutput(TERMINAL_1_OUT, outputBits[0]);
+		setOutput(TERMINAL_2_OUT, outputBits[1]);
+		setOutput(TERMINAL_3_OUT, outputBits[2]);
+		setOutput(TERMINAL_4_OUT, outputBits[3]);
 	}
 
 }
