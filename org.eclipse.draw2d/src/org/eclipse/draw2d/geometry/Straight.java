@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Alexander Nyßen (Research Group Software Contruction, RWTH Aachen University) - initial API and implementation
+ *    Alexander Ny√üen (Research Group Software Contruction, RWTH Aachen University) - initial API and implementation
  *     
  *******************************************************************************/
 package org.eclipse.draw2d.geometry;

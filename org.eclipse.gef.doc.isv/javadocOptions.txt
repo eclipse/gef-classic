@@ -1,4 +1,5 @@
--charset "iso-8859-1"
+-encoding "UTF-8"
+-charset "UTF-8"
 -sourcepath "../org.eclipse.gef/src"
 -d reference/api
 -classpath @rt@@args.list.delimiter@@context@

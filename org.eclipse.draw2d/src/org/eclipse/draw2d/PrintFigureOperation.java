@@ -7,7 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     Sven Müller - Added tiling support
+ *     Sven MÃ¼ller - Added tiling support
  *******************************************************************************/
 package org.eclipse.draw2d;
 
@@ -23,7 +23,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * 
  * @author Dan Lee
  * @author Eric Bordeau
- * @author Sven Müller
+ * @author Sven MÃ¼ller
  */
 public class PrintFigureOperation extends PrintOperation {
 
