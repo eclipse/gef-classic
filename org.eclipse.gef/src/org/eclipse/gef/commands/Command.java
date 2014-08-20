@@ -39,6 +39,15 @@ public abstract class Command {
 	}
 
 	/**
+	 * @return <code>true</code> if the command can be redone. This method
+	 *         should only be called after <code>undo()</code> has been called.
+	 * @since 3.10
+	 */
+	public boolean canRedo() {
+		return canExecute();
+	}
+
+	/**
 	 * @return <code>true</code> if the command can be executed
 	 */
 	public boolean canExecute() {
@@ -90,7 +99,7 @@ public abstract class Command {
 	}
 
 	/**
-	 * executes the Command. This method should not be called if the Command is
+	 * Executes the Command. This method should not be called if the Command is
 	 * not executable.
 	 */
 	public void execute() {

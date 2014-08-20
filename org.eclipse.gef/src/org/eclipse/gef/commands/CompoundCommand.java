@@ -60,6 +60,24 @@ public class CompoundCommand extends Command {
 	}
 
 	/**
+	 * @see org.eclipse.gef.commands.Command#canRedo()
+	 * 
+	 * @since 3.10
+	 */
+	public boolean canRedo() {
+		if (commandList.size() == 0)
+			return false;
+		for (int i = 0; i < commandList.size(); i++) {
+			Command cmd = (Command) commandList.get(i);
+			if (cmd == null)
+				return false;
+			if (!cmd.canRedo())
+				return false;
+		}
+		return true;
+	}
+
+	/**
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
 	public boolean canExecute() {

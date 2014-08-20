@@ -153,7 +153,9 @@ public class CommandStack {
 	 * @return <code>true</code> if it is appropriate to call {@link #redo()}.
 	 */
 	public boolean canRedo() {
-		return !redoable.isEmpty();
+		if (redoable.size() == 0)
+			return false;
+		return ((Command) redoable.peek()).canRedo();
 	}
 
 	/**
@@ -162,7 +164,7 @@ public class CommandStack {
 	public boolean canUndo() {
 		if (undoable.size() == 0)
 			return false;
-		return ((Command) undoable.lastElement()).canUndo();
+		return ((Command) undoable.peek()).canUndo();
 	}
 
 	/**
@@ -388,6 +390,8 @@ public class CommandStack {
 	 * should only be called when {@link #canUndo()} returns <code>true</code>.
 	 */
 	public void undo() {
+		if (!canUndo())
+			return;
 		// Assert.isTrue(canUndo());
 		Command command = (Command) undoable.pop();
 		notifyListeners(command, PRE_UNDO);
