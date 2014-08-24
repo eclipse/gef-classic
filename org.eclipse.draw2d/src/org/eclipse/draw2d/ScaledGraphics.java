@@ -419,7 +419,7 @@ public class ScaledGraphics extends Graphics {
 			graphics.drawTextLayout(scaled,
 					(int) Math.floor(x * zoom + fractionalX),
 					(int) Math.floor(y * zoom + fractionalY), selectionStart,
-					selectionEnd, selectionBackground, selectionForeground);
+					selectionEnd, selectionForeground, selectionBackground);
 		} finally {
 			scaled.dispose();
 		}

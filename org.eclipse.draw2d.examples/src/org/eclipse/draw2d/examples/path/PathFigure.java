@@ -70,7 +70,8 @@ public class PathFigure extends Polyline {
 		textStyle.underlineColor = ColorConstants.blue;
 		textLayout.setStyle(textStyle, 1, 2);
 		Point p = getRotatedPoint(getBounds().x, getBounds().y - 20, cos, sin);
-		g.drawTextLayout(textLayout, p.x, p.y);
+		g.drawTextLayout(textLayout, p.x, p.y, 0, 1, ColorConstants.white,
+				ColorConstants.yellow);
 
 		g.popState();
 		path.dispose();
