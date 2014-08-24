@@ -19,7 +19,12 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Translatable;
 
 public class ZoomFigure extends Figure implements ScalableFigure {
+
+	public static final int NATIVE_SCALING = 0;
+	public static final int EMULATED_SCALING = 1;
+
 	private double scale = 1.0;
+	private int scaleMethod = EMULATED_SCALING;
 
 	/*
 	 * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
@@ -27,10 +32,13 @@ public class ZoomFigure extends Figure implements ScalableFigure {
 	protected void paintClientArea(Graphics graphics) {
 		if (getChildren().isEmpty())
 			return;
-		if (scale == 1.0) {
+		if (scale == 1.0 && scaleMethod != EMULATED_SCALING) {
 			super.paintClientArea(graphics);
 		} else {
-			ScaledGraphics g = new ScaledGraphics(graphics);
+			Graphics g = graphics;
+			if (EMULATED_SCALING == scaleMethod) {
+				g = new ScaledGraphics(graphics);
+			}
 			boolean optimizeClip = getBorder() == null
 					|| getBorder().isOpaque();
 			if (!optimizeClip)
@@ -40,10 +48,13 @@ public class ZoomFigure extends Figure implements ScalableFigure {
 			g.scale(scale);
 			g.pushState();
 			paintChildren(g);
-			g.dispose();
+			if (EMULATED_SCALING == scaleMethod) {
+				g.dispose();
+			} else {
+				g.popState();
+			}
 			graphics.restoreState();
 		}
-
 	}
 
 	/*
@@ -104,6 +115,10 @@ public class ZoomFigure extends Figure implements ScalableFigure {
 	 */
 	protected boolean useLocalCoordinates() {
 		return true;
+	}
+
+	public void setScaleMethod(int scaleMethod) {
+		this.scaleMethod = scaleMethod;
 	}
 
 }

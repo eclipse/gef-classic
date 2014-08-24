@@ -10,14 +10,18 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.path;
 
+import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Polyline;
+import org.eclipse.draw2d.ScaledGraphics;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Path;
+import org.eclipse.swt.graphics.TextLayout;
+import org.eclipse.swt.graphics.TextStyle;
 import org.eclipse.swt.widgets.Display;
 
 public class PathFigure extends Polyline {
@@ -50,8 +54,24 @@ public class PathFigure extends Polyline {
 			g.fillPath(path);
 		else {
 			g.drawPath(path);
-
 		}
+		g.rotate(degrees);
+		g.setForegroundColor(ColorConstants.black);
+
+		double angle = degreesToRadians(degrees);
+		double cos = (double) Math.cos(angle), sin = (double) Math.sin(angle);
+
+		TextLayout textLayout = new TextLayout(Display.getDefault());
+		textLayout.setFont(g.getFont());
+		textLayout.setText("zoom"
+				+ (g instanceof ScaledGraphics ? "[e]" : "[n]"));
+		TextStyle textStyle = new TextStyle();
+		textStyle.underline = true;
+		textStyle.underlineColor = ColorConstants.blue;
+		textLayout.setStyle(textStyle, 1, 2);
+		Point p = getRotatedPoint(getBounds().x, getBounds().y - 20, cos, sin);
+		g.drawTextLayout(textLayout, p.x, p.y);
+
 		g.popState();
 		path.dispose();
 

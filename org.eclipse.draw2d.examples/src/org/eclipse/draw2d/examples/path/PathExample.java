@@ -24,6 +24,11 @@ import org.eclipse.draw2d.ScrollBar;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -34,13 +39,18 @@ public class PathExample {
 		final Shell shell = new Shell(d, SWT.SHELL_TRIM | SWT.NO_BACKGROUND
 				| SWT.NO_REDRAW_RESIZE);
 		shell.setSize(800, 800);
-		LightweightSystem lws = new LightweightSystem(shell);
-		Figure fig = new Figure();
+		shell.setLayout(new org.eclipse.swt.layout.GridLayout(1, false));
+
+		Canvas canvas = new Canvas(shell, SWT.NONE);
+		canvas.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,
+				true));
+		LightweightSystem lws = new LightweightSystem(canvas);
+		final Figure fig = new Figure();
 
 		fig.setLayoutManager(new ToolbarLayout());
 
 		final ScrollBar bar = new ScrollBar();
-		final Label l = new Label("«Zoom»");
+		final Label l = new Label("<Zoom>");
 
 		l.setBorder(new SchemeBorder(ButtonBorder.SCHEMES.BUTTON_SCROLLBAR));
 		bar.setThumb(l);
@@ -58,8 +68,27 @@ public class PathExample {
 		zoomFigure.setLayoutManager(new BorderLayout());
 		zoomFigure.setScale(1);
 
+		final Button zoomMethodButton = new Button(shell, SWT.CHECK);
+		zoomMethodButton.setSelection(true);
+		zoomMethodButton.setText("EMULATED_SCALING");
+
+		zoomMethodButton.addSelectionListener(new SelectionListener() {
+
+			public void widgetSelected(SelectionEvent e) {
+				if (zoomMethodButton.getSelection()) {
+					zoomFigure.setScaleMethod(ZoomFigure.EMULATED_SCALING);
+				} else {
+					zoomFigure.setScaleMethod(ZoomFigure.NATIVE_SCALING);
+				}
+				zoomFigure.revalidate();
+			}
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+			}
+		});
+
 		PathFigure polyline = new PathFigure();
-		float w = 50;
+		float w = 70;
 		float k = 50;
 		polyline.addPoint(new Point(0 + k, 0 + k));
 		polyline.addPoint(new Point(w + k, 0 + k));
