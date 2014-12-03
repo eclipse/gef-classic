@@ -70,14 +70,30 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	 * @see GraphicalEditor#createPartControl(Composite)
 	 */
 	public void createPartControl(Composite parent) {
-		splitter = new FlyoutPaletteComposite(parent, SWT.NONE, getSite()
-				.getPage(), getPaletteViewerProvider(), getPalettePreferences());
+		splitter = createPaletteComposite(parent);
 		super.createPartControl(splitter);
 		splitter.setGraphicalControl(getGraphicalControl());
 		if (page != null) {
 			splitter.setExternalViewer(page.getPaletteViewer());
 			page = null;
 		}
+	}
+
+	/**
+	 * Creates a new {@link FlyoutPaletteComposite} to be used by this
+	 * {@link GraphicalEditorWithFlyoutPalette}
+	 * 
+	 * @param parent
+	 *            The {@link Composite}, which should serve as the container for
+	 *            the to be created {@link FlyoutPaletteComposite}.
+	 * @return The {@link FlyoutPaletteComposite} used by this
+	 *         {@link GraphicalEditorWithFlyoutPalette}.
+	 * @since 3.10
+	 */
+	protected FlyoutPaletteComposite createPaletteComposite(Composite parent) {
+		return new FlyoutPaletteComposite(parent, SWT.NONE,
+				getSite().getPage(), getPaletteViewerProvider(),
+				getPalettePreferences());
 	}
 
 	/**
