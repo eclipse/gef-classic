@@ -11,6 +11,7 @@
 
 package org.eclipse.gef;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -21,6 +22,8 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+
+import org.eclipse.gef.ui.parts.AbstractEditPartViewer;
 
 /**
  * Manages a viewer's selection model. Selection management includes
@@ -68,8 +71,13 @@ public class SelectionManager {
 	 * @since 3.2
 	 */
 	public void appendSelection(EditPart editpart) {
-		if (editpart != getFocus())
+		if (editpart != getFocus()) {
+			// Fix for 458416: adjust the focus through the viewer only (to give
+			// AbstractEditPartViewer a change to update its focusPart field).
+			// AbstractEditPartViewer#setFocus() should call back setFocus(null)
+			// here, so both focus part values should stay in sync.
 			viewer.setFocus(null);
+		}
 		if (!selection.isEmpty()) {
 			EditPart primary = (EditPart) selection.get(selection.size() - 1);
 			primary.setSelected(EditPart.SELECTED);
@@ -125,7 +133,11 @@ public class SelectionManager {
 	 */
 	public void deselectAll() {
 		EditPart part;
-		setFocus(null);
+		// Fix for 458416: adjust the focus through the viewer only (to give
+		// AbstractEditPartViewer a change to update its focusPart field).
+		// AbstractEditPartViewer#setFocus() should call back setFocus(null)
+		// here, so both focus part values should stay in sync.
+		viewer.setFocus(null);
 		for (int i = 0; i < selection.size(); i++) {
 			part = (EditPart) selection.get(i);
 			part.setSelected(EditPart.SELECTED_NONE);
@@ -232,6 +244,25 @@ public class SelectionManager {
 	 * @since 3.2
 	 */
 	public void setFocus(EditPart part) {
+		// Fix for 458416: AbstractEditPartViewer provides a protected,
+		// deprecated focusPart field, which might get out of sync with the
+		// focusPart here, if this method is called directly (and not though the
+		// EditPartViewer#setFocus() delegation). We need to make sure it stays
+		// synchronized even in this case, so we update the field value
+		// accordingly
+		if (viewer instanceof AbstractEditPartViewer) {
+			try {
+				Field focusPartField = AbstractEditPartViewer.class
+						.getDeclaredField("focusPart"); //$NON-NLS-1$
+				focusPartField.setAccessible(true);
+				if (focusPartField.get(viewer) != part) {
+					focusPartField.set(viewer, part);
+				}
+			} catch (Exception e) {
+				throw new IllegalStateException(
+						"Workaround for bug #458416 became ineffective"); //$NON-NLS-1$
+			}
+		}
 		if (focusPart == part)
 			return;
 		if (focusPart != null)
@@ -256,7 +287,11 @@ public class SelectionManager {
 		// Convert to HashSet to optimize performance.
 		Collection hashset = new HashSet(orderedSelection);
 
-		setFocus(null);
+		// Fix for 458416: adjust the focus through the viewer only (to give
+		// AbstractEditPartViewer a change to update its focusPart field).
+		// AbstractEditPartViewer#setFocus() should call back setFocus(null)
+		// here, so both focus part values should stay in sync.
+		viewer.setFocus(null);
 		for (int i = 0; i < selection.size(); i++) {
 			EditPart part = (EditPart) selection.get(i);
 			if (!hashset.contains(part))

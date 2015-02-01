@@ -692,8 +692,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#setFocus(EditPart)
 	 */
 	public void setFocus(EditPart part) {
-		getSelectionManager().setFocus(part);
 		focusPart = part;
+		getSelectionManager().setFocus(part);
 	}
 
 	/**

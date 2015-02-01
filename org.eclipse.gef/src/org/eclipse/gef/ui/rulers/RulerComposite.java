@@ -568,7 +568,7 @@ public class RulerComposite extends Composite {
 		protected void handleFocusLost(FocusEvent fe) {
 			super.handleFocusLost(fe);
 			if (focusPart == getContents()) {
-				focusPart = null;
+				setFocus(null);
 			}
 		}
 
