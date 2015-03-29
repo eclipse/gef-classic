@@ -6,7 +6,7 @@
 <repository location="http://download.eclipse.org/cbi/updates/license"/>
 </location>
 <location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-<unit id="org.eclipse.sdk.ide" version="0.0.0"/>
+<unit id="org.eclipse.sdk.ide" version="4.5.0.I20150320-0800"/>
 <repository location="http://download.eclipse.org/releases/mars"/>
 </location>
 </locations>
