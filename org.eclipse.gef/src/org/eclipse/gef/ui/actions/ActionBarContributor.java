@@ -153,7 +153,8 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 		IActionBars bars = getActionBars();
 		for (int i = 0; i < globalActionKeys.size(); i++) {
 			String id = (String) globalActionKeys.get(i);
-			bars.setGlobalActionHandler(id, registry.getAction(id));
+			IAction handler = registry != null ? registry.getAction(id) : null;
+			bars.setGlobalActionHandler(id, handler);
 		}
 	}
 
