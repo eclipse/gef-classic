@@ -394,8 +394,6 @@
 		<module>../org.eclipse.gef.examples.ui.pde</module>
 		<module>../org.eclipse.gef.source-feature</module>
 		<module>../org.eclipse.gef-feature</module>
-		<module>../org.eclipse.gef.test.source-feature</module>
-		<module>../org.eclipse.gef.test-feature</module>
 		<module>../org.eclipse.gef.examples.source-feature</module>
 		<module>../org.eclipse.gef.examples-feature</module>
 		<module>../org.eclipse.gef.sdk-feature</module>
