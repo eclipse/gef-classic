@@ -49,7 +49,7 @@ if [ -z "$buildId" ];
                 exit 0
 fi
 
-# Determine the build we want to publish
+# Determine the build we want to publish 
 if [ "$buildId" = "lastStable" -o "$buildId" = "lastSuccessful" ];
         then
                 jobDir=$(readlink -f /shared/jobs/$jobName/$buildId)
@@ -72,7 +72,7 @@ echo "Reverse lookup of build id yielded: $buildId"
 # Select the build type
 if [ -z "$buildType" ];
 then
-        echo -n "Please select which type of build you want to publish to [i(ntegration), m(aintenance), s(table), r(elease)]: "
+        echo -n "Please select which type of build you want to publish to [i(ntegration), s(table), r(elease)]: "
         read buildType
 fi
 echo "Publishing as $buildType build"
@@ -92,9 +92,9 @@ echo "Promoting to remote update site: $site"
 if [ "$site" = y ];
         then
 
-  # Determine remote update site we want to promote to (integration and maintenance are published on interim site, stable builds on milestone site, release builds on releases site)
+  # Determine remote update site we want to promote to (integration builds are published on interim site, stable builds on milestone site, release builds on releases site)
   case $buildType in
-        i|I|m|M) remoteSite=interim;;
+        i|I) remoteSite=interim;;
         s|S) remoteSite=milestones;;
         r|R) remoteSite=releases;;
         *) exit 0 ;;
@@ -123,14 +123,14 @@ fi
 # check if we are going to create drop files
 if [ -z "$dropFiles" ];
         then
-                echo -n "Do you want to create update-site and SDK drop files? [(y)es, (n)o]:"
+                echo -n "Do you want to create drop files? [(y)es, (n)o]:"
                 read dropFiles
 fi
 if [ "$dropFiles" != y -a "$dropFiles" != n ];
         then
                 exit 0
 fi
-echo "Generating update-site and SDK drop files: $dropFiles"
+echo "Generating drop files: $dropFiles"
 
 if [ -z "$dropFilesLabel" -a "$dropFiles" = y ];
         then
@@ -146,8 +146,8 @@ cd $tmpDir
 
 # Download and prepare Eclipse SDK, which is needed to merge update site and postprocess repository 
 echo "Downloading eclipse to $PWD"
-cp /home/data/httpd/download.eclipse.org/eclipse/downloads/drops4/R-4.2.2-201302041200/eclipse-SDK-4.2.2-linux-gtk-x86_64.tar.gz .
-tar -xvzf eclipse-SDK-4.2.2-linux-gtk-x86_64.tar.gz
+cp /home/data/httpd/download.eclipse.org/eclipse/downloads/drops4/R-4.4.2-201502041700/eclipse-SDK-4.4.2-linux-gtk-x86_64.tar.gz .
+tar -xvzf eclipse-SDK-4.4.2-linux-gtk-x86_64.tar.gz
 cd eclipse
 chmod 700 eclipse
 cd ..
@@ -161,7 +161,7 @@ echo "Installing WTP Releng tools"
 ./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.equinox.p2.director -repository http://download.eclipse.org/webtools/releng/repository/ -installIUs org.eclipse.wtp.releng.tools.feature.feature.group
 # Clean up
 echo "Cleaning up"
-rm eclipse-SDK-4.2.2-linux-gtk-x86_64.tar.gz
+rm eclipse-SDK-4.4.2-linux-gtk-x86_64.tar.gz
 
 # Prepare local update site (merging is performed later, if required)
 cp -R $localUpdateSite/* update-site/
@@ -237,8 +237,8 @@ if [ "$dropFiles" = y ];
                                                           eclipse/plugins/org.eclipse.zest.core_* eclipse/plugins/org.eclipse.zest.core.source_* eclipse/plugins/org.eclipse.zest.layouts_* eclipse/plugins/org.eclipse.zest.layouts.source_*
                 md5sum $dropDir/GEF-zest-sdk-$version.zip > $dropDir/GEF-zest-sdk-$version.zip.md5
                 echo "Created GEF-zest-sdk-$version.zip"
-                
-                cd ..
+               
+		cd .. 
                 cd update-site
 
                 zip -r ../$localDropDir/GEF-Update-$version.zip features plugins artifacts.jar content.jar
