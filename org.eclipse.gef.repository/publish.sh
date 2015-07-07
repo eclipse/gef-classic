@@ -36,7 +36,7 @@ fi
 
 if [ -z "$buildId" ];
 then
-        for i in $( find /shared/jobs/$jobName/builds -type l | sed 's!.*/!!' | sort)
+        for i in $( find ~/.hudson/jobs/$jobName/builds -type l | sed 's!.*/!!' | sort)
         do
                 echo -n "$i, "
         done
@@ -52,15 +52,15 @@ fi
 # Determine the build we want to publish 
 if [ "$buildId" = "lastStable" -o "$buildId" = "lastSuccessful" ];
         then
-                jobDir=$(readlink -f /shared/jobs/$jobName/$buildId)
+                jobDir=$(readlink -f ~/.hudson/jobs/$jobName/$buildId)
         else
-                jobDir=$(readlink -f /shared/jobs/$jobName/builds/$buildId)
+                jobDir=$(readlink -f ~/.hudson/jobs/$jobName/builds/$buildId)
 fi
 localUpdateSite=$jobDir/archive/update-site
 echo "Using local update-site: $localUpdateSite"
 
 # Reverse lookup the build id (in case lastSuccessful or lastStable was used)
-for i in $(find /shared/jobs/$jobName/builds/ -type l)
+for i in $(find ~/.hudson/jobs/$jobName/builds/ -type l)
 do
         if [ "$(readlink -f $i)" =  "$jobDir" ];
                 then
@@ -249,7 +249,7 @@ if [ "$dropFiles" = y ];
                 #generating build.cfg file to be referenced from downloads web page
                 echo "hudson.job.name=$jobName" > $localDropDir/build.cfg
                 echo "hudson.job.id=$buildId (${jobDir##*/})" >> $localDropDir/build.cfg
-                echo "hudson.job.url=https://hudson.eclipse.org/hudson/job/$jobName/$buildId" >> $localDropDir/build.cfg
+                echo "hudson.job.url=https://hudson.eclipse.org/gef/job/$jobName/$buildId" >> $localDropDir/build.cfg
 
                 remoteDropDir=/home/data/httpd/download.eclipse.org/tools/gef/downloads/drops/$dropDir
                 mkdir -p $remoteDropDir
