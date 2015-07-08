@@ -33,7 +33,7 @@
    <feature url="features/org.eclipse.zest.sdk_1.6.100.qualifier.jar" id="org.eclipse.zest.sdk" version="1.6.100.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.zest.source_1.6.1.qualifier.jar" id="org.eclipse.zest.source" version="1.6.1.qualifier">
+   <feature url="features/org.eclipse.zest.source_1.6.100.qualifier.jar" id="org.eclipse.zest.source" version="1.6.100.qualifier">
       <category name="GEF"/>
    </feature>
    <category-def name="GEF" label="GEF (Graphical Editing Framework)">
