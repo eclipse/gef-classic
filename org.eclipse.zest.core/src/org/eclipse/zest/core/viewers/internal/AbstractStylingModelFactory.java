@@ -30,7 +30,7 @@ import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.IContainer;
 
-/*
+/**
  * Base class that can be used for model factories. Offers facilities to style
  * the items that have been created by the factory.
  * 
@@ -38,7 +38,8 @@ import org.eclipse.zest.core.widgets.IContainer;
  */
 // @tag zest.bug.160367-Refreshing.fix : update the factory to use the
 // IStylingGraphModelFactory
-public abstract class AbstractStylingModelFactory implements IStylingGraphModelFactory {
+public abstract class AbstractStylingModelFactory implements
+		IStylingGraphModelFactory {
 	private AbstractStructuredGraphViewer viewer;
 	private int connectionStyle;
 	private int nodeStyle;
@@ -71,7 +72,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 			leftList = getConnectionList(dest, source);
 		}
 
-		int size = (leftList != null) ? leftList.size() + rightList.size() : rightList.size();
+		int size = (leftList != null) ? leftList.size() + rightList.size()
+				: rightList.size();
 		// adjust the arcs going from source to destination
 		adjustCurves(rightList, size);
 		// adjust the arcs going from destination to source
@@ -85,12 +87,13 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * the bezier curves based on the number of curves in the list.
 	 * 
 	 * @param connections
-	 *  @param size
-+	 *            total number of arcs - may be bigger then connections.size
+	 * @param size
+	 *            + * total number of arcs - may be bigger then connections.size
 	 */
 	protected void adjustCurves(List connections, int size) {
 		/*
-		 * The connections should be curved if source and dest are equal, or there are multiple arcs between two nodes
+		 * The connections should be curved if source and dest are equal, or
+		 * there are multiple arcs between two nodes
 		 */
 		for (int i = 0; i < connections.size(); i++) {
 			GraphConnection conn = (GraphConnection) connections.get(i);
@@ -135,7 +138,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#getLabelProvider()
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
+	 * getLabelProvider()
 	 */
 	public IBaseLabelProvider getLabelProvider() {
 		return viewer.getLabelProvider();
@@ -144,7 +148,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#getContentProvider()
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
+	 * getContentProvider()
 	 */
 	public IStructuredContentProvider getContentProvider() {
 		return (IStructuredContentProvider) viewer.getContentProvider();
@@ -153,10 +158,12 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#createConnection(org.eclipse.zest.core.internal.graphmodel.GraphModel,
-	 *      java.lang.Object, java.lang.Object, java.lang.Object)
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
+	 * createConnection(org.eclipse.zest.core.internal.graphmodel.GraphModel,
+	 * java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
-	public GraphConnection createConnection(Graph graph, Object element, Object source, Object dest) {
+	public GraphConnection createConnection(Graph graph, Object element,
+			Object source, Object dest) {
 		if (source == null || dest == null) {
 			return null;
 		}
@@ -164,7 +171,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		GraphNode sn = viewer.getGraphModelNode(source);
 		GraphNode dn = viewer.getGraphModelNode(dest);
 		if (oldConnection != null) {
-			if (sn != oldConnection.getSource() || dn != oldConnection.getDestination()) {
+			if (sn != oldConnection.getSource()
+					|| dn != oldConnection.getDestination()) {
 				viewer.removeGraphModelConnection(oldConnection);
 			} else {
 				styleItem(oldConnection);
@@ -205,23 +213,27 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#createNode(org.eclipse.zest.core.internal.graphmodel.GraphModel,
-	 *      java.lang.Object)
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
+	 * createNode(org.eclipse.zest.core.internal.graphmodel.GraphModel,
+	 * java.lang.Object)
 	 */
 	public GraphNode createNode(Graph graph, Object element, IFigure figure) {
 		GraphNode node = null;
 		if (getContentProvider() instanceof INestedContentProvider) {
-			boolean isContainer = ((INestedContentProvider) getContentProvider()).hasChildren(element);
+			boolean isContainer = ((INestedContentProvider) getContentProvider())
+					.hasChildren(element);
 			if (isContainer) {
 				node = viewer.addGraphModelContainer(element);
 				styleItem(node);
-				Object[] childNodes = ((INestedContentProvider) getContentProvider()).getChildren(element);
+				Object[] childNodes = ((INestedContentProvider) getContentProvider())
+						.getChildren(element);
 				childNodes = filter(getViewer().getInput(), childNodes);
 				if (childNodes == null) {
 					return node;
 				}
 				for (int i = 0; i < childNodes.length; i++) {
-					GraphNode childNode = viewer.addGraphModelNode((IContainer) node, childNodes[i]);
+					GraphNode childNode = viewer.addGraphModelNode(
+							(IContainer) node, childNodes[i]);
 					styleItem(childNode);
 				}
 				((IContainer) node).applyLayout();
@@ -236,7 +248,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	public GraphNode createNode(Graph graph, Object element) {
 		IFigure nodeFigure = null;
 		if (getLabelProvider() instanceof IFigureProvider) {
-			nodeFigure = ((IFigureProvider) getLabelProvider()).getFigure(element);
+			nodeFigure = ((IFigureProvider) getLabelProvider())
+					.getFigure(element);
 		}
 		return this.createNode(graph, element, nodeFigure);
 	}
@@ -288,7 +301,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refreshGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
+	 * refreshGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
 	public void refreshGraph(Graph graph) {
 		// with this kind of graph, it is just as easy and cost-effective to
@@ -308,11 +322,14 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		// save a little time, go with the smallest list as the primary list
 		if (nodes.length < nodesMap.keySet().size()) {
 			for (int i = 0; i < nodes.length; i++) {
-				GraphNode oldNode = (GraphNode) nodesMap.get(nodes[i].getData());
+				GraphNode oldNode = (GraphNode) nodesMap
+						.get(nodes[i].getData());
 				if (oldNode != null) {
-					nodes[i].setLocation(oldNode.getLocation().x, oldNode.getLocation().y);
+					nodes[i].setLocation(oldNode.getLocation().x,
+							oldNode.getLocation().y);
 					if (oldNode.isSizeFixed()) {
-						nodes[i].setSize(oldNode.getSize().width, oldNode.getSize().height);
+						nodes[i].setSize(oldNode.getSize().width,
+								oldNode.getSize().height);
 					}
 				}
 			}
@@ -322,9 +339,11 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 				GraphNode node = viewer.getGraphModelNode(key);
 				if (node != null) {
 					GraphNode oldNode = (GraphNode) nodesMap.get(key);
-					node.setLocation(oldNode.getLocation().x, oldNode.getLocation().y);
+					node.setLocation(oldNode.getLocation().x,
+							oldNode.getLocation().y);
 					if (oldNode.isSizeFixed()) {
-						node.setSize(oldNode.getSize().width, oldNode.getSize().height);
+						node.setSize(oldNode.getSize().width,
+								oldNode.getSize().height);
 					}
 				}
 			}
@@ -382,7 +401,8 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#isFiltered(java.lang.Object)
+	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
+	 * isFiltered(java.lang.Object)
 	 */
 	protected Object[] filter(Object parent, Object[] elements) {
 		Object[] result = elements;
@@ -396,8 +416,9 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.zest.core.internal.graphmodel.GraphModel,
-	 *      java.lang.Object)
+	 * @see
+	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh
+	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
 	 */
 	public void refresh(Graph graph, Object element) {
 		refresh(graph, element, false);
@@ -415,13 +436,17 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	}
 
 	/**
-	 * Converts the list of GraphConnections objects into an array and return it.
+	 * Converts the list of GraphConnections objects into an array and return
+	 * it.
+	 * 
 	 * @param graph
 	 * @return
 	 */
 	protected GraphConnection[] getConnectionArray(Graph graph) {
-		GraphConnection[] connectionArray = new GraphConnection[graph.getConnections().size()];
-		connectionArray = (GraphConnection[]) graph.getConnections().toArray(connectionArray);
+		GraphConnection[] connectionArray = new GraphConnection[graph
+				.getConnections().size()];
+		connectionArray = (GraphConnection[]) graph.getConnections().toArray(
+				connectionArray);
 		return connectionArray;
 	}
 }

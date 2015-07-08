@@ -37,12 +37,11 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.layouts.LayoutAlgorithm;
 
-/*
+/**
  * This view is used to represent a static graph. Static graphs can be layed
  * out, but do not continually update their layout locations.
  * 
  * @author Ian Bull
- * 
  * @author Chris Callendar
  */
 public class GraphViewer extends AbstractStructuredGraphViewer implements
