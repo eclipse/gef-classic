@@ -31,7 +31,7 @@ import org.eclipse.zest.core.widgets.internal.GraphLabel;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
-/*
+/**
  * Simple node class which has the following properties: color, size, location,
  * and a label. It also has a list of connections and anchors.
  * 
@@ -45,7 +45,7 @@ public class GraphNode extends GraphItem {
 	public static final int HIGHLIGHT_NONE = 0;
 	public static final int HIGHLIGHT_ON = 1;
 	// @tag ADJACENT : Removed highlight adjacent
-	//public static final int HIGHLIGHT_ADJACENT = 2;
+	// public static final int HIGHLIGHT_ADJACENT = 2;
 
 	private int nodeStyle;
 
@@ -56,7 +56,7 @@ public class GraphNode extends GraphItem {
 	private Color backColor;
 	private Color highlightColor;
 	// @tag ADJACENT : Removed highlight adjacent
-	//private Color highlightAdjacentColor;
+	// private Color highlightAdjacentColor;
 	private Color borderColor;
 	private Color borderHighlightColor;
 	private int borderWidth;
@@ -85,7 +85,7 @@ public class GraphNode extends GraphItem {
 	}
 
 	public GraphNode(IContainer graphModel, int style, Object data) {
-		this(graphModel.getGraph(), style, "" /*text*/, null /*image*/, data);
+		this(graphModel.getGraph(), style, "" /* text */, null /* image */, data);
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text) {
@@ -93,14 +93,15 @@ public class GraphNode extends GraphItem {
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text, Object data) {
-		this(graphModel.getGraph(), style, text, null /*image*/, data);
+		this(graphModel.getGraph(), style, text, null /* image */, data);
 	}
 
 	public GraphNode(IContainer graphModel, int style, String text, Image image) {
 		this(graphModel, style, text, image, null);
 	}
 
-	public GraphNode(IContainer graphModel, int style, String text, Image image, Object data) {
+	public GraphNode(IContainer graphModel, int style, String text,
+			Image image, Object data) {
 		super(graphModel.getGraph(), style, data);
 		initModel(graphModel, text, image);
 		if (nodeFigure == null) {
@@ -109,7 +110,7 @@ public class GraphNode extends GraphItem {
 
 		// This is a hack because JAVA sucks!
 		// I don't want to expose addNode so I can't put it in the
-		// IContainer interface.  
+		// IContainer interface.
 		if (this.parent.getItemType() == GRAPH) {
 			((Graph) this.parent).addNode(this);
 		} else if (this.parent.getItemType() == CONTAINER) {
@@ -133,7 +134,7 @@ public class GraphNode extends GraphItem {
 		this.backColor = parent.getGraph().LIGHT_BLUE;
 		this.highlightColor = parent.getGraph().HIGHLIGHT_COLOR;
 		// @tag ADJACENT : Removed highlight adjacent
-		//this.highlightAdjacentColor = ColorConstants.orange;
+		// this.highlightAdjacentColor = ColorConstants.orange;
 		this.nodeStyle = SWT.NONE;
 		this.borderColor = ColorConstants.lightGray;
 		this.borderHighlightColor = ColorConstants.blue;
@@ -178,7 +179,8 @@ public class GraphNode extends GraphItem {
 		super.dispose();
 		this.isDisposed = true;
 		while (getSourceConnections().size() > 0) {
-			GraphConnection connection = (GraphConnection) getSourceConnections().get(0);
+			GraphConnection connection = (GraphConnection) getSourceConnections()
+					.get(0);
 			if (!connection.isDisposed()) {
 				connection.dispose();
 			} else {
@@ -186,7 +188,8 @@ public class GraphNode extends GraphItem {
 			}
 		}
 		while (getTargetConnections().size() > 0) {
-			GraphConnection connection = (GraphConnection) getTargetConnections().get(0);
+			GraphConnection connection = (GraphConnection) getTargetConnections()
+					.get(0);
 			if (!connection.isDisposed()) {
 				connection.dispose();
 			} else {
@@ -206,8 +209,9 @@ public class GraphNode extends GraphItem {
 	}
 
 	/**
-	 * Determines if this node has a fixed size or if it is packed to the size of its contents.
-	 * To set a node to pack, set its size (-1, -1)  
+	 * Determines if this node has a fixed size or if it is packed to the size
+	 * of its contents. To set a node to pack, set its size (-1, -1)
+	 * 
 	 * @return
 	 */
 	public boolean isSizeFixed() {
@@ -256,7 +260,9 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#isSelected()
+	 * @see
+	 * org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#isSelected
+	 * ()
 	 */
 	public boolean isSelected() {
 		return selected;
@@ -379,10 +385,9 @@ public class GraphNode extends GraphItem {
 	 */
 	// @tag ADJACENT : Removed highlight adjacent
 	/*
-	public Color getHighlightAdjacentColor() {
-		return highlightAdjacentColor;
-	}
-	*/
+	 * public Color getHighlightAdjacentColor() { return highlightAdjacentColor;
+	 * }
+	 */
 
 	/**
 	 * Set the highlight adjacent colour for this node. This is the colour that
@@ -390,10 +395,9 @@ public class GraphNode extends GraphItem {
 	 */
 	// @tag ADJACENT : Removed highlight adjacent
 	/*
-	public void setHighlightAdjacentColor(Color c) {
-		this.highlightAdjacentColor = c;
-	}
-	*/
+	 * public void setHighlightAdjacentColor(Color c) {
+	 * this.highlightAdjacentColor = c; }
+	 */
 
 	/**
 	 * Highlights the node changing the background color and border color. The
@@ -406,19 +410,15 @@ public class GraphNode extends GraphItem {
 		}
 		// @tag ADJACENT : Removed highlight adjacent
 		/*
-		if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
-			for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
-				GraphConnection conn = (GraphConnection) iter.next();
-				conn.highlight();
-				conn.getDestination().highlightAdjacent();
-			}
-			for (Iterator iter = targetConnections.iterator(); iter.hasNext();) {
-				GraphConnection conn = (GraphConnection) iter.next();
-				conn.highlight();
-				conn.getSource().highlightAdjacent();
-			}
-		}
-		*/
+		 * if (ZestStyles.checkStyle(getNodeStyle(),
+		 * ZestStyles.NODES_HIGHLIGHT_ADJACENT)) { for (Iterator iter =
+		 * sourceConnections.iterator(); iter.hasNext();) { GraphConnection conn
+		 * = (GraphConnection) iter.next(); conn.highlight();
+		 * conn.getDestination().highlightAdjacent(); } for (Iterator iter =
+		 * targetConnections.iterator(); iter.hasNext();) { GraphConnection conn
+		 * = (GraphConnection) iter.next(); conn.highlight();
+		 * conn.getSource().highlightAdjacent(); } }
+		 */
 		if (parent.getItemType() == GraphItem.CONTAINER) {
 			((GraphContainer) parent).highlightNode(this);
 		} else {
@@ -434,34 +434,24 @@ public class GraphNode extends GraphItem {
 	public void unhighlight() {
 
 		// @tag ADJACENT : Removed highlight adjacent
-		//boolean highlightedAdjacently = (highlighted == HIGHLIGHT_ADJACENT);
+		// boolean highlightedAdjacently = (highlighted == HIGHLIGHT_ADJACENT);
 		if (highlighted == HIGHLIGHT_NONE) {
 			return;
 		}
 		// @tag ADJACENT : Removed highlight adjacent
 		/*
-		if (!highlightedAdjacently) {
-			// IF we are highlighted as an adjacent node, we don't need to deal
-			// with our connections.
-			if (ZestStyles.checkStyle(getNodeStyle(), ZestStyles.NODES_HIGHLIGHT_ADJACENT)) {
-				// unhighlight the adjacent edges
-				for (Iterator iter = sourceConnections.iterator(); iter.hasNext();) {
-					GraphConnection conn = (GraphConnection) iter.next();
-					conn.unhighlight();
-					if (conn.getDestination() != this) {
-						conn.getDestination().unhighlight();
-					}
-				}
-				for (Iterator iter = targetConnections.iterator(); iter.hasNext();) {
-					GraphConnection conn = (GraphConnection) iter.next();
-					conn.unhighlight();
-					if (conn.getSource() != this) {
-						conn.getSource().unhighlight();
-					}
-				}
-			}
-		}
-		*/
+		 * if (!highlightedAdjacently) { // IF we are highlighted as an adjacent
+		 * node, we don't need to deal // with our connections. if
+		 * (ZestStyles.checkStyle(getNodeStyle(),
+		 * ZestStyles.NODES_HIGHLIGHT_ADJACENT)) { // unhighlight the adjacent
+		 * edges for (Iterator iter = sourceConnections.iterator();
+		 * iter.hasNext();) { GraphConnection conn = (GraphConnection)
+		 * iter.next(); conn.unhighlight(); if (conn.getDestination() != this) {
+		 * conn.getDestination().unhighlight(); } } for (Iterator iter =
+		 * targetConnections.iterator(); iter.hasNext();) { GraphConnection conn
+		 * = (GraphConnection) iter.next(); conn.unhighlight(); if
+		 * (conn.getSource() != this) { conn.getSource().unhighlight(); } } } }
+		 */
 		if (parent.getItemType() == GraphItem.CONTAINER) {
 			((GraphContainer) parent).unhighlightNode(this);
 		} else {
@@ -480,7 +470,7 @@ public class GraphNode extends GraphItem {
 		if (nodeFigure == null || nodeFigure.getParent() == null) {
 			return; // node figure has not been created yet
 		}
-		//nodeFigure.setBounds(bounds);
+		// nodeFigure.setBounds(bounds);
 		nodeFigure.getParent().setConstraint(nodeFigure, bounds);
 	}
 
@@ -493,19 +483,12 @@ public class GraphNode extends GraphItem {
 	 */
 	// @tag ADJACENT : removed highlight adjacent
 	/*
-	public void highlightAdjacent() {
-		if (highlighted > 0) {
-			return;
-		}
-		highlighted = HIGHLIGHT_ADJACENT;
-		updateFigureForModel(nodeFigure);
-		if (parent.getItemType() == GraphItem.CONTAINER) {
-			((GraphContainer) parent).highlightNode(this);
-		} else {
-			((Graph) parent).highlightNode(this);
-		}
-	}
-	*/
+	 * public void highlightAdjacent() { if (highlighted > 0) { return; }
+	 * highlighted = HIGHLIGHT_ADJACENT; updateFigureForModel(nodeFigure); if
+	 * (parent.getItemType() == GraphItem.CONTAINER) { ((GraphContainer)
+	 * parent).highlightNode(this); } else { ((Graph)
+	 * parent).highlightNode(this); } }
+	 */
 
 	/**
 	 * Returns if the nodes adjacent to this node will be highlighted when this
@@ -515,10 +498,9 @@ public class GraphNode extends GraphItem {
 	 */
 	// @tag ADJACENT : Removed highlight adjacent
 	/*
-	public boolean isHighlightAdjacentNodes() {
-		return ZestStyles.checkStyle(nodeStyle, ZestStyles.NODES_HIGHLIGHT_ADJACENT);
-	}
-	*/
+	 * public boolean isHighlightAdjacentNodes() { return
+	 * ZestStyles.checkStyle(nodeStyle, ZestStyles.NODES_HIGHLIGHT_ADJACENT); }
+	 */
 
 	/**
 	 * Sets if the adjacent nodes to this one should be highlighted when this
@@ -529,15 +511,12 @@ public class GraphNode extends GraphItem {
 	 */
 	// @tag ADJACENT : Removed highlight adjacent
 	/*
-	public void setHighlightAdjacentNodes(boolean highlightAdjacentNodes) {
-		if (!highlightAdjacentNodes) {
-			this.nodeStyle |= ZestStyles.NODES_HIGHLIGHT_ADJACENT;
-			this.nodeStyle ^= ZestStyles.NODES_HIGHLIGHT_ADJACENT;
-			return;
-		}
-		this.nodeStyle |= ZestStyles.NODES_HIGHLIGHT_ADJACENT;
-	}
-	*/
+	 * public void setHighlightAdjacentNodes(boolean highlightAdjacentNodes) {
+	 * if (!highlightAdjacentNodes) { this.nodeStyle |=
+	 * ZestStyles.NODES_HIGHLIGHT_ADJACENT; this.nodeStyle ^=
+	 * ZestStyles.NODES_HIGHLIGHT_ADJACENT; return; } this.nodeStyle |=
+	 * ZestStyles.NODES_HIGHLIGHT_ADJACENT; }
+	 */
 
 	public Color getBorderColor() {
 		return borderColor;
@@ -580,7 +559,8 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.swt.widgets.Item#setImage(org.eclipse.swt.graphics.Image)
+	 * @see
+	 * org.eclipse.swt.widgets.Item#setImage(org.eclipse.swt.graphics.Image)
 	 */
 	public void setImage(Image image) {
 		super.setImage(image);
@@ -611,14 +591,16 @@ public class GraphNode extends GraphItem {
 	 */
 	public void setNodeStyle(int nodeStyle) {
 		this.nodeStyle = nodeStyle;
-		this.cacheLabel = ((this.nodeStyle & ZestStyles.NODES_CACHE_LABEL) > 0) ? true : false;
+		this.cacheLabel = ((this.nodeStyle & ZestStyles.NODES_CACHE_LABEL) > 0) ? true
+				: false;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#setSize(double,
-	 *      double)
+	 * @see
+	 * org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#setSize
+	 * (double, double)
 	 */
 	public void setSize(double width, double height) {
 		if ((width != size.width) || (height != size.height)) {
@@ -631,7 +613,8 @@ public class GraphNode extends GraphItem {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#getBorderHighlightColor()
+	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#
+	 * getBorderHighlightColor()
 	 */
 	public Color getBorderHighlightColor() {
 		return borderHighlightColor;
@@ -681,7 +664,7 @@ public class GraphNode extends GraphItem {
 	protected IFigure fishEye(boolean enable, boolean animate) {
 		if (isDisposed) {
 			// If a fisheyed figure is still left on the canvas, we could get
-			// called once more after the dispose is called.  Since we cleaned
+			// called once more after the dispose is called. Since we cleaned
 			// up everything on dispose, we can just return null here.
 			return null;
 		}
@@ -695,12 +678,14 @@ public class GraphNode extends GraphItem {
 			// Get the current Bounds
 			Rectangle rectangle = nodeFigure.getBounds().getCopy();
 
-			FontData fontData = Display.getCurrent().getSystemFont().getFontData()[0];
+			FontData fontData = Display.getCurrent().getSystemFont()
+					.getFontData()[0];
 			fontData.setHeight(12);
 			fishEyeFont = new Font(Display.getCurrent(), fontData);
 			fishEyeFigure.setFont(fishEyeFont);
 
-			// Calculate how much we have to expand the current bounds to get to the new bounds
+			// Calculate how much we have to expand the current bounds to get to
+			// the new bounds
 			Dimension newSize = fishEyeFigure.getPreferredSize();
 			Rectangle currentSize = rectangle.getCopy();
 			nodeFigure.translateToAbsolute(currentSize);
@@ -708,13 +693,16 @@ public class GraphNode extends GraphItem {
 			int expandedW = (newSize.width - currentSize.width) / 2 + 1;
 			Dimension expandAmount = new Dimension(expandedW, expandedH);
 			nodeFigure.translateToAbsolute(rectangle);
-			rectangle.expand(new Insets(expandAmount.height, expandAmount.width, expandAmount.height, expandAmount.width));
+			rectangle
+					.expand(new Insets(expandAmount.height, expandAmount.width,
+							expandAmount.height, expandAmount.width));
 			if (expandedH <= 0 && expandedW <= 0) {
 				return null;
 			}
 
-			//Add the fisheye
-			this.getGraphModel().fishEye(nodeFigure, fishEyeFigure, rectangle, true);
+			// Add the fisheye
+			this.getGraphModel().fishEye(nodeFigure, fishEyeFigure, rectangle,
+					true);
 			if (fishEyeFigure != null) {
 				isFisheyeEnabled = true;
 			}
@@ -722,7 +710,8 @@ public class GraphNode extends GraphItem {
 
 		} else {
 			// Remove the fisheye and dispose the font
-			this.getGraphModel().removeFishEye(fishEyeFigure, nodeFigure, animate);
+			this.getGraphModel().removeFishEye(fishEyeFigure, nodeFigure,
+					animate);
 			if (fishEyeFont != null) {
 				this.fishEyeFont.dispose();
 				this.fishEyeFont = null;
@@ -796,7 +785,8 @@ public class GraphNode extends GraphItem {
 	protected IFigure createFigureForModel() {
 		GraphNode node = this;
 		boolean cacheLabel = (this).cacheLabel();
-		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
+		GraphLabel label = new GraphLabel(node.getText(), node.getImage(),
+				cacheLabel);
 		label.setFont(this.font);
 		if (checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
 			label.setText("");
@@ -808,7 +798,8 @@ public class GraphNode extends GraphItem {
 	private IFigure createFishEyeFigure() {
 		GraphNode node = this;
 		boolean cacheLabel = this.cacheLabel();
-		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
+		GraphLabel label = new GraphLabel(node.getText(), node.getImage(),
+				cacheLabel);
 
 		if (!checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
 			label.setText(this.getText());

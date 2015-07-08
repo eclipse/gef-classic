@@ -58,7 +58,7 @@ import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
-/*
+/**
  * Holds the nodes and connections for the graph.
  * 
  * @author Chris Callendar

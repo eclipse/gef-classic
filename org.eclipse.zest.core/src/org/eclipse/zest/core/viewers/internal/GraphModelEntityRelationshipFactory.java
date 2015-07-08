@@ -17,7 +17,7 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphContainer;
 import org.eclipse.zest.core.widgets.GraphNode;
 
-/*
+/**
  * A factory for the IGraphEntityRelationshipContentProvider.
  * 
  * @author Del Myers
@@ -25,19 +25,24 @@ import org.eclipse.zest.core.widgets.GraphNode;
 // @tag bug.154580-Content.fix
 // @tag bug.160367-Refreshing.fix : updated to use new
 // AbstractStylingModelFactory
-public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFactory {
+public class GraphModelEntityRelationshipFactory extends
+		AbstractStylingModelFactory {
 
-	public GraphModelEntityRelationshipFactory(AbstractStructuredGraphViewer viewer) {
+	public GraphModelEntityRelationshipFactory(
+			AbstractStructuredGraphViewer viewer) {
 		super(viewer);
 		if (!(viewer.getContentProvider() instanceof IGraphEntityRelationshipContentProvider)) {
-			throw new IllegalArgumentException("Expected IGraphEntityRelationshipContentProvider");
+			throw new IllegalArgumentException(
+					"Expected IGraphEntityRelationshipContentProvider");
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory#createGraphModel()
+	 * @see
+	 * org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
+	 * #createGraphModel()
 	 */
 	public Graph createGraphModel(Graph model) {
 		doBuildGraph(model);
@@ -47,11 +52,14 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory#doBuildGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
+	 * @see
+	 * org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
+	 * #doBuildGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
 	protected void doBuildGraph(Graph model) {
 		super.doBuildGraph(model);
-		Object[] nodes = getContentProvider().getElements(getViewer().getInput());
+		Object[] nodes = getContentProvider().getElements(
+				getViewer().getInput());
 		nodes = filter(getViewer().getInput(), nodes);
 		createModelNodes(model, nodes);
 		createModelRelationships(model);
@@ -78,16 +86,20 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 				listOfNodes.addAll(childNodes);
 			}
 		}
-		modelNodes = (GraphNode[]) listOfNodes.toArray(new GraphNode[listOfNodes.size()]);
+		modelNodes = (GraphNode[]) listOfNodes
+				.toArray(new GraphNode[listOfNodes.size()]);
 
 		IGraphEntityRelationshipContentProvider content = getCastedContent();
 		for (int i = 0; i < modelNodes.length; i++) {
 			for (int j = 0; j < modelNodes.length; j++) {
-				Object[] rels = content.getRelationships(modelNodes[i].getData(), modelNodes[j].getData());
+				Object[] rels = content.getRelationships(
+						modelNodes[i].getData(), modelNodes[j].getData());
 				if (rels != null) {
 					rels = filter(getViewer().getInput(), rels);
 					for (int r = 0; r < rels.length; r++) {
-						createConnection(model, rels[r], modelNodes[i].getData(), modelNodes[j].getData());
+						createConnection(model, rels[r],
+								modelNodes[i].getData(),
+								modelNodes[j].getData());
 					}
 				}
 			}
@@ -111,8 +123,9 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.zest.core.internal.graphmodel.GraphModel,
-	 *      java.lang.Object)
+	 * @see
+	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh
+	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
 	 */
 	public void refresh(Graph graph, Object element) {
 		refresh(graph, element, false);
@@ -121,8 +134,10 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.zest.core.internal.graphmodel.GraphModel,
-	 *      java.lang.Object, boolean)
+	 * @see
+	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh
+	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object,
+	 * boolean)
 	 */
 	public void refresh(Graph graph, Object element, boolean updateLabels) {
 		// with this kind of graph, it is just as easy and cost-effective to

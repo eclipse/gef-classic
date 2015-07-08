@@ -14,7 +14,7 @@ import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 
-/*
+/**
  * A connection that draws an arc between nodes, based on a given depth for the
  * arc. This connection is drawn as an arc, defined as the circular arc with the
  * chord (ax, ay) - (bx, by) (where a and b are the anchors) and a depth d
@@ -41,7 +41,9 @@ public class PolylineArcConnection extends PolylineConnection {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Polyline#setPoints(org.eclipse.draw2d.geometry.PointList)
+	 * @see
+	 * org.eclipse.draw2d.Polyline#setPoints(org.eclipse.draw2d.geometry.PointList
+	 * )
 	 */
 	public void setPoints(PointList points) {
 		updateArc(points);
@@ -111,7 +113,8 @@ public class PolylineArcConnection extends PolylineConnection {
 			// the center of the chord
 			float cartChordX = (x2 + x1) / 2;
 			float cartChordY = (y2 + y1) / 2;
-			float chordLength = (float) Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+			float chordLength = (float) Math.sqrt((x1 - x2) * (x1 - x2)
+					+ (y1 - y2) * (y1 - y2));
 			if (Math.abs(depth) >= chordLength / 2) {
 				depth = (chordLength / 3) * (depth / Math.abs(depth));
 			}
@@ -134,7 +137,8 @@ public class PolylineArcConnection extends PolylineConnection {
 
 			float th1;
 			if (Float.isNaN(chordNormal)) {
-				cartCenterX = (y1 > y2) ? (cartChordX - r + (depth)) : (cartChordX + r - (depth));
+				cartCenterX = (y1 > y2) ? (cartChordX - r + (depth))
+						: (cartChordX + r - (depth));
 				cartCenterY = cartChordY;
 				th1 = PI / 2;
 			} else if (Float.isInfinite(chordNormal)) {
@@ -144,9 +148,11 @@ public class PolylineArcConnection extends PolylineConnection {
 			} else {
 				// assume that the center of the chord is on the origin.
 				th1 = (float) Math.atan(chordNormal);
-				cartCenterX = (r - (depth)) * (float) Math.sin(th1) + cartChordX;// cartChordX+r
+				cartCenterX = (r - (depth)) * (float) Math.sin(th1)
+						+ cartChordX;// cartChordX+r
 				// -depth;
-				cartCenterY = (r - (depth)) * (float) Math.cos(th1) + cartChordY;// cartChordY+r-depth;
+				cartCenterY = (r - (depth)) * (float) Math.cos(th1)
+						+ cartChordY;// cartChordY+r-depth;
 
 			}
 			// figure out the new angles
