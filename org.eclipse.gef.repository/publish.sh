@@ -6,55 +6,52 @@
 # $3: Build type: i(nterim), s(table), r(elease)
 # $4: Whether to promote to an update-site: (y)es, (n)o
 # $5: Whether to merge the site with an existing one: (y)es, (n)o
-# $6: Whether to generate udpate-site and SDK drop files: (y)es, (n)o
-# $7: An optional label to append to the version string when creating drop files, e.g. M5 or RC1
+# $6: Whether to generate drop files: (y)es, (n)o
+# $7: The release label used to label the drop files and (nested) update site, e.g. 3.10.0 or 3.10.1M4
 # 
-if [ $# -eq 6 -o $# -eq 7 ];
-        then
-                jobName=$1
-                buildId=$2
-                buildType=$3
-                site=$4
-                merge=$5
-                dropFiles=$6
-                if [ -n "$7" ];
-                then
-                        dropFilesLabel=$8
-                fi
-        else
-                if [ $# -ne 0 ];
-                then
-                        exit 1
-                fi
+if [ $# -eq 7 ];
+then
+    jobName=$1
+    buildId=$2
+    buildType=$3
+    site=$4
+    merge=$5
+    dropFiles=$6
+    releaseLabel=$7
+else
+    if [ $# -ne 0 ];
+    then
+        exit 1
+    fi
 fi
 
 if [ -z "$jobName" ];
 then
-        echo -n "Please enter the name of the Hudson job you want to promote:"
-        read jobName
+    echo -n "Please enter the name of the Hudson job you want to promote:"
+    read jobName
 fi
 
 if [ -z "$buildId" ];
 then
-        for i in $( find ~/.hudson/jobs/$jobName/builds -type l | sed 's!.*/!!' | sort)
-        do
-                echo -n "$i, "
-        done
-        echo "lastStable, lastSuccessful"
-        echo -n "Please enter the id/label of the Hudson build you want to promote:"
-        read buildId
+    for i in $( find ~/.hudson/jobs/$jobName/builds -type l | sed 's!.*/!!' | sort)
+    do
+        echo -n "$i, "
+    done
+    echo "lastStable, lastSuccessful"
+    echo -n "Please enter the id/label of the Hudson build you want to promote:"
+    read buildId
 fi
 if [ -z "$buildId" ];
-        then
-                exit 0
+then
+    exit 0
 fi
 
 # Determine the build we want to publish 
 if [ "$buildId" = "lastStable" -o "$buildId" = "lastSuccessful" ];
-        then
-                jobDir=$(readlink -f ~/.hudson/jobs/$jobName/$buildId)
-        else
-                jobDir=$(readlink -f ~/.hudson/jobs/$jobName/builds/$buildId)
+then
+    jobDir=$(readlink -f ~/.hudson/jobs/$jobName/$buildId)
+else
+    jobDir=$(readlink -f ~/.hudson/jobs/$jobName/builds/$buildId)
 fi
 localUpdateSite=$jobDir/archive/update-site
 echo "Using local update-site: $localUpdateSite"
@@ -62,80 +59,79 @@ echo "Using local update-site: $localUpdateSite"
 # Reverse lookup the build id (in case lastSuccessful or lastStable was used)
 for i in $(find ~/.hudson/jobs/$jobName/builds/ -type l)
 do
-        if [ "$(readlink -f $i)" =  "$jobDir" ];
-                then
-                        buildId=${i##*/}
-        fi
+	if [ "$(readlink -f $i)" =  "$jobDir" ];
+    then
+        buildId=${i##*/}
+	fi
 done
 echo "Reverse lookup of build id yielded: $buildId"
 
 # Select the build type
 if [ -z "$buildType" ];
 then
-        echo -n "Please select which type of build you want to publish to [i(nterim), s(table), r(elease)]: "
-        read buildType
+    echo -n "Please select which type of build you want to publish to [i(nterim), s(table), r(elease)]: "
+    read buildType
 fi
 echo "Publishing as $buildType build"
 
 # check if we are going to promote to an update-site
 if [ -z "$site" ];
-        then
-                echo -n "Do you want to promote to an remote update site? [(y)es, (n)o]:"
-                read site
+then
+    echo -n "Do you want to promote to an remote update site? [(y)es, (n)o]:"
+    read site
 fi
 if [ "$site" != y -a "$site" != n ];
-        then
-                exit 0
+then
+    exit 0
 fi
 echo "Promoting to remote update site: $site"
 
 if [ "$site" = y ];
-        then
-
-  # Determine remote update site we want to promote to (integration builds are published on interim site, stable builds on milestone site, release builds on releases site)
-  case $buildType in
+then
+	# Determine remote update site we want to promote to (integration builds are published on interim site, stable builds on milestone site, release builds on releases site)
+	case $buildType in
         i|I) remoteSite=interim;;
         s|S) remoteSite=milestones;;
         r|R) remoteSite=releases;;
         *) exit 0 ;;
-  esac
-  remoteUpdateSiteBase="tools/gef/updates/$remoteSite"
-  remoteUpdateSite="/home/data/httpd/download.eclipse.org/$remoteUpdateSiteBase"
-  echo "Publishing to remote update-site: $remoteUpdateSite"
+	esac
+	remoteUpdateSiteBase="tools/gef/updates/$remoteSite"
+	remoteUpdateSite="/home/data/httpd/download.eclipse.org/$remoteUpdateSiteBase"
+	echo "Publishing to remote update-site: $remoteUpdateSite"
 
-  if [ -d "$remoteUpdateSite" ];
+  	if [ -d "$remoteUpdateSite" ];
+	then
+        if [ -z "$merge" ];
         then
-                if [ -z "$merge" ];
-                then
-                        echo -n "Do you want to merge with the existing update-site? [(y)es, (n)o]:"
-                        read merge
-                fi
-                if [ "$merge" != y -a "$merge" != n ];
-                        then
-                        exit 0
-                fi
-        else
-                merge=n
-  fi
-  echo "Merging with existing site: $merge"
+            echo -n "Do you want to merge with the existing update-site? [(y)es, (n)o]:"
+            read merge
+        fi
+        if [ "$merge" != y -a "$merge" != n ];
+            then
+            exit 0
+        fi
+	else
+        merge=n
+  	fi
+  	echo "Merging with existing site: $merge"
 fi
 
 # check if we are going to create drop files
 if [ -z "$dropFiles" ];
-        then
-                echo -n "Do you want to create drop files? [(y)es, (n)o]:"
-                read dropFiles
+then
+    echo -n "Do you want to create drop files? [(y)es, (n)o]:"
+    read dropFiles
 fi
 if [ "$dropFiles" != y -a "$dropFiles" != n ];
-        then
-                exit 0
+then
+    exit 0
 fi
 echo "Generating drop files: $dropFiles"
 
-if [ -z "$dropFilesLabel" -a "$dropFiles" = y ];
-        then
-                echo -n "Please enter a drop files label to append to the version (e.g. M5, RC1) or leave empty to skip this [<empty>]:"
-                read dropFilesLabel
+if [ -z "$releaseLabel" ];
+then
+    echo -n "Please enter release label (e.g. 3.10.0, 3.10.1M2):"
+    read releaseLabel
 fi
 
 # Prepare a temp directory
@@ -152,9 +148,9 @@ cd eclipse
 chmod 700 eclipse
 cd ..
 if [ ! -d "eclipse" ];
-        then
-                echo "Failed to download an Eclipse SDK, being needed for provisioning."
-                exit
+then
+    echo "Failed to download an Eclipse SDK, being needed for provisioning."
+    exit
 fi
 # Prepare Eclipse SDK to provide WTP releng tools (used to postprocess repository, i.e set p2.mirrorsURL property)
 echo "Installing WTP Releng tools"
@@ -169,134 +165,186 @@ echo "Copied $localUpdateSite to local directory update-site."
 
 # Generate drop files
 if [ "$dropFiles" = y ];
-        then
-                echo "Converting update site to runnable form"
-                ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.repository.repo2runnable -source file:update-site -destination file:drops/eclipse
-                qualifiedVersion=$(find drops/eclipse/features/ -maxdepth 1 | grep "org.eclipse.gef.all")
-                qualifiedVersion=${qualifiedVersion#*_}
-                qualifier=${qualifiedVersion##*.}
-                version=${qualifiedVersion%.*}
-                dropDir="$version/$(echo $buildType | tr '[:lower:]' '[:upper:]')$qualifier"
-                localDropDir=drops/$dropDir
-                echo "Creating drop files in local directory $localDropDir"
-                mkdir -p $localDropDir
-                cd drops
-                
-                # Append drop file suffix if one is specified                
-                if [ -n "$dropFilesLabel" ];
-                        then
-                                version=$version$dropFilesLabel
-                fi
-                
-                # GEF ALL
-                zip -r $dropDir/GEF-ALL-$version.zip eclipse/features/* eclipse/plugins/*
-                md5sum $dropDir/GEF-ALL-$version.zip > $dropDir/GEF-ALL-$version.zip.md5
-                echo "Created GEF-ALL-$version.zip"
-                
-                # GEF SDK
-                zip -r $dropDir/GEF-SDK-$version.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.sdk_* eclipse/features/org.eclipse.draw2d.source_*\
-                                                     eclipse/features/org.eclipse.gef_* eclipse/features/org.eclipse.gef.sdk_* eclipse/features/org.eclipse.gef.source_*\
-                                                     eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d.doc.isv_* eclipse/plugins/org.eclipse.draw2d.source_*\
-                                                     eclipse/plugins/org.eclipse.gef_* eclipse/plugins/org.eclipse.gef.doc.isv_* eclipse/plugins/org.eclipse.gef.examples.ui.pde_* eclipse/plugins/org.eclipse.gef.source_*
-                md5sum $dropDir/GEF-SDK-$version.zip > $dropDir/GEF-SDK-$version.zip.md5
-                echo "Created GEF-SDK-$version.zip"
-                
-                # GEF runtime
-                zip -r $dropDir/GEF-runtime-$version.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.gef_* \
-                                                     eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.gef_*
-                md5sum $dropDir/GEF-runtime-$version.zip > $dropDir/GEF-runtime-$version.zip.md5
-                echo "Created GEF-runtime-$version.zip"
-                
-                # GEF examples
-                zip -r $dropDir/GEF-examples-$version.zip eclipse/features/org.eclipse.gef.examples_* eclipse/features/org.eclipse.gef.examples.source_* \
-                                                     eclipse/plugins/org.eclipse.gef.examples.*
-                md5sum $dropDir/GEF-examples-$version.zip > $dropDir/GEF-examples-$version.zip.md5
-                echo "Created GEF-examples-$version.zip"
-                
-                 # Draw2d runtime
-                zip -r $dropDir/GEF-draw2d-$version.zip eclipse/features/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d_*
-                md5sum $dropDir/GEF-draw2d-$version.zip > $dropDir/GEF-draw2d-$version.zip.md5
-                echo "Created GEF-draw2d-$version.zip"
-                
-                # Draw2d SDK
-                zip -r $dropDir/GEF-draw2d-sdk-$version.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.source_* eclipse/features/org.eclipse.draw2d.sdk_*\
-                                                     eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d.doc.isv_* eclipse/plugins/org.eclipse.draw2d.source_*
-                md5sum $dropDir/GEF-draw2d-sdk-$version.zip > $dropDir/GEF-draw2d-sdk-$version.zip.md5
-                echo "Created GEF-draw2d-sdk-$version.zip"
-                
-                # Zest runtime
-                zip -r $dropDir/GEF-zest-$version.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.zest_*\
-                                                     eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.zest.core_* eclipse/plugins/org.eclipse.zest.layouts_*
-                md5sum $dropDir/GEF-zest-$version.zip > $dropDir/GEF-zest-$version.zip.md5
-                echo "Created GEF-zest-$version.zip"
-                
-                # Zest SDK
-                zip -r $dropDir/GEF-zest-sdk-$version.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.source_* eclipse/features/org.eclipse.draw2d.sdk_*\
-                										  eclipse/features/org.eclipse.zest_* eclipse/features/org.eclipse.zest.source_* eclipse/features/org.eclipse.zest.sdk_*\
-                                                          eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d.doc.isv_* eclipse/plugins/org.eclipse.draw2d.source_*\
-                                                          eclipse/plugins/org.eclipse.zest.core_* eclipse/plugins/org.eclipse.zest.core.source_* eclipse/plugins/org.eclipse.zest.layouts_* eclipse/plugins/org.eclipse.zest.layouts.source_*
-                md5sum $dropDir/GEF-zest-sdk-$version.zip > $dropDir/GEF-zest-sdk-$version.zip.md5
-                echo "Created GEF-zest-sdk-$version.zip"
-               
-		cd .. 
-                cd update-site
+	then
+    echo "Converting update site to runnable form"
+    ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.repository.repo2runnable -source file:update-site -destination file:drops/eclipse
+    qualifiedVersion=$(find drops/eclipse/features/ -maxdepth 1 | grep "org.eclipse.gef.all")
+    qualifiedVersion=${qualifiedVersion#*_}
+    qualifier=${qualifiedVersion##*.}
+    dropDir="${releaseLabel}/$(echo $buildType | tr '[:lower:]' '[:upper:]')$qualifier"
+    localDropDir=drops/$dropDir
+    echo "Creating drop files in local directory $localDropDir"
+    mkdir -p $localDropDir
+    cd drops
+    
+    # GEF ALL
+    zip -r $dropDir/GEF-ALL-${releaseLabel}.zip eclipse/features/* eclipse/plugins/*
+    md5sum $dropDir/GEF-ALL-${releaseLabel}.zip > $dropDir/GEF-ALL-${releaseLabel}.zip.md5
+    echo "Created GEF-ALL-${releaseLabel}.zip"
+    
+    # GEF SDK
+    zip -r $dropDir/GEF-SDK-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.sdk_* eclipse/features/org.eclipse.draw2d.source_*\
+                                         eclipse/features/org.eclipse.gef_* eclipse/features/org.eclipse.gef.sdk_* eclipse/features/org.eclipse.gef.source_*\
+                                         eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d.doc.isv_* eclipse/plugins/org.eclipse.draw2d.source_*\
+                                         eclipse/plugins/org.eclipse.gef_* eclipse/plugins/org.eclipse.gef.doc.isv_* eclipse/plugins/org.eclipse.gef.examples.ui.pde_* eclipse/plugins/org.eclipse.gef.source_*
+    md5sum $dropDir/GEF-SDK-${releaseLabel}.zip > $dropDir/GEF-SDK-${releaseLabel}.zip.md5
+    echo "Created GEF-SDK-${releaseLabel}.zip"
+    
+    # GEF runtime
+    zip -r $dropDir/GEF-runtime-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.gef_* \
+                                         eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.gef_*
+    md5sum $dropDir/GEF-runtime-${releaseLabel}.zip > $dropDir/GEF-runtime-${releaseLabel}.zip.md5
+    echo "Created GEF-runtime-${releaseLabel}.zip"
+    
+    # GEF examples
+    zip -r $dropDir/GEF-examples-${releaseLabel}.zip eclipse/features/org.eclipse.gef.examples_* eclipse/features/org.eclipse.gef.examples.source_* \
+                                         eclipse/plugins/org.eclipse.gef.examples.*
+    md5sum $dropDir/GEF-examples-${releaseLabel}.zip > $dropDir/GEF-examples-${releaseLabel}.zip.md5
+    echo "Created GEF-examples-${releaseLabel}.zip"
+    
+     # Draw2d runtime
+    zip -r $dropDir/GEF-draw2d-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d_*
+    md5sum $dropDir/GEF-draw2d-${releaseLabel}.zip > $dropDir/GEF-draw2d-${releaseLabel}.zip.md5
+    echo "Created GEF-draw2d-${releaseLabel}.zip"
+    
+    # Draw2d SDK
+    zip -r $dropDir/GEF-draw2d-sdk-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.source_* eclipse/features/org.eclipse.draw2d.sdk_*\
+                                         eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d.doc.isv_* eclipse/plugins/org.eclipse.draw2d.source_*
+    md5sum $dropDir/GEF-draw2d-sdk-${releaseLabel}.zip > $dropDir/GEF-draw2d-sdk-${releaseLabel}.zip.md5
+    echo "Created GEF-draw2d-sdk-${releaseLabel}.zip"
+    
+    # Zest runtime
+    zip -r $dropDir/GEF-zest-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.zest_*\
+                                         eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.zest.core_* eclipse/plugins/org.eclipse.zest.layouts_*
+    md5sum $dropDir/GEF-zest-${releaseLabel}.zip > $dropDir/GEF-zest-${releaseLabel}.zip.md5
+    echo "Created GEF-zest-${releaseLabel}.zip"
+    
+    # Zest SDK
+    zip -r $dropDir/GEF-zest-sdk-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.source_* eclipse/features/org.eclipse.draw2d.sdk_*\
+    										  eclipse/features/org.eclipse.zest_* eclipse/features/org.eclipse.zest.source_* eclipse/features/org.eclipse.zest.sdk_*\
+                                              eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d.doc.isv_* eclipse/plugins/org.eclipse.draw2d.source_*\
+                                              eclipse/plugins/org.eclipse.zest.core_* eclipse/plugins/org.eclipse.zest.core.source_* eclipse/plugins/org.eclipse.zest.layouts_* eclipse/plugins/org.eclipse.zest.layouts.source_*
+    md5sum $dropDir/GEF-zest-sdk-${releaseLabel}.zip > $dropDir/GEF-zest-sdk-${releaseLabel}.zip.md5
+    echo "Created GEF-zest-sdk-${releaseLabel}.zip"
+   
+	cd .. 
+    cd update-site
 
-                zip -r ../$localDropDir/GEF-Update-$version.zip features plugins artifacts.jar content.jar
-                md5sum ../$localDropDir/GEF-Update-$version.zip > ../$localDropDir/GEF-Update-$version.zip.md5
-                echo "Created GEF-Update-Site-$version.zip"
-                cd ..
+    zip -r ../$localDropDir/GEF-Update-${releaseLabel}.zip features plugins artifacts.jar content.jar
+    md5sum ../$localDropDir/GEF-Update-${releaseLabel}.zip > ../$localDropDir/GEF-Update-${releaseLabel}.zip.md5
+    echo "Created GEF-Update-Site-${releaseLabel}.zip"
+    cd ..
 
-                #generating build.cfg file to be referenced from downloads web page
-                echo "hudson.job.name=$jobName" > $localDropDir/build.cfg
-                echo "hudson.job.id=$buildId (${jobDir##*/})" >> $localDropDir/build.cfg
-                echo "hudson.job.url=https://hudson.eclipse.org/gef/job/$jobName/$buildId" >> $localDropDir/build.cfg
+    #generating build.cfg file to be referenced from downloads web page
+    echo "hudson.job.name=$jobName" > $localDropDir/build.cfg
+    echo "hudson.job.id=$buildId (${jobDir##*/})" >> $localDropDir/build.cfg
+    echo "hudson.job.url=https://hudson.eclipse.org/gef/job/$jobName/$buildId" >> $localDropDir/build.cfg
 
-                remoteDropDir=/home/data/httpd/download.eclipse.org/tools/gef/downloads/drops/$dropDir
-                mkdir -p $remoteDropDir
-                cp -R $localDropDir/* $remoteDropDir/
+    remoteDropDir=/home/data/httpd/download.eclipse.org/tools/gef/downloads/drops/$dropDir
+    mkdir -p $remoteDropDir
+    cp -R $localDropDir/* $remoteDropDir/
 fi
 
 if [ "$site" = y ];
-        then
-  if [ "$merge" = y ];
-        then
-        echo "Merging existing site into local one."
-        ./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.equinox.p2.metadata.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
-        ./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.equinox.p2.artifact.repository.mirrorApplication -source file:$remoteUpdateSite -destination file:update-site
-        echo "Merged $remoteUpdateSite into local directory update-site."
+	then
+	updateSiteLabel=${releaseLabel}_${jobName}_${buildId}
+	# Prepare composite local update site (transfer into composite if needed)
+	if [ "$merge" = y ];
+		then
+		# check if the remote site is a composite update site
+		echo "Merging existing site into local one."
+		if [ -e "$remoteUpdateSite/compositeArtifacts.xml" ];
+			then
+			cp -R $remoteUpdateSite/* update-site/
+		else
+			mkdir -p update-site/pre_${updateSiteLabel}
+			cp -R $remoteUpdateSite/* update-site/pre_${updateSiteLabel}/
+		fi
+	else 
+		echo "Skipping merge operation."    
+	fi
+	# move local update site below composite one
+	mkdir -p update-site/${updateSiteLabel}
+	cp -R $localUpdateSite/* update-site/${updateSiteLabel}/
+    	
+	cd update-site
+	children=$(find . -maxdepth 1 -type d -print | wc -l)
+	children=$(($children-1))
+	    		 	
+	timestamp=$(date +%s000)
+
+content="
+<?xml version='1.0' encoding='UTF-8'?>
+<?compositeMetadataRepository version='1.0.0'?>
+<repository name='GEF ${remoteSite}' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
+<properties size='1'>
+<property name='p2.timestamp' value='${timestamp}'/>
+</properties>
+<children size='${children}'>
+$(
+for file in *; do
+  if [ -d $file ]; then
+printf "<child location='${file}'/>"
   fi
+done
+)
+</children>
+</repository>
+"
+	echo $content > compositeContent.xml
 
-  # Ensure p2.mirrorURLs property is used in update site
-  echo "Setting p2.mirrorsURL to http://www.eclipse.org/downloads/download.php?format=xml&file=/$remoteUpdateSiteBase"
-./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.wtp.releng.tools.addRepoProperties -vmargs -DartifactRepoDirectory=$PWD/update-site -Dp2MirrorsURL="http://www.eclipse.org/downloads/download.php?format=xml&file=/$remoteUpdateSiteBase"
-
-  # Create p2.index file
-  if [ ! -e "update-site/p2.index" ];
-        then
-                echo "Creating p2.index file."
-                echo "version = 1" > update-site/p2.index
-                echo "metadata.repository.factory.order = content.xml,\!" >> update-site/p2.index
-                echo "artifact.repository.factory.order = artifacts.xml,\!" >> update-site/p2.index
+artifact="
+<?xml version='1.0' encoding='UTF-8'?>
+<?compositeArtifactRepository version='1.0.0'?>
+<repository name='GEF ${remoteSite}' type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1.0.0'>
+<properties size='1'>
+<property name='p2.timestamp' value='${timestamp}'/>
+</properties>
+<children size='${children}'>
+$(
+for file in *; do
+  if [ -d $file ]; then
+printf "<child location='${file}'/>"
   fi
+done
+)
+</children>
+</repository>
+"
+	echo $artifact > compositeArtifacts.xml
 
-  # Backup then clean remote update site
-  echo "Creating backup of remote update site."
-  if [ -d "$remoteUpdateSite" ];
+	cd ..
+
+	# Ensure p2.mirrorURLs property is used in update site
+	echo "Updating p2.mirrorURLs property."
+	./eclipse/eclipse -nosplash --launcher.suppressErrors -clean -debug -application org.eclipse.wtp.releng.tools.addRepoProperties -vmargs -DartifactRepoDirectory=$PWD/update-site/${updateSiteLabel} -Dp2MirrorsURL="http://www.eclipse.org/downloads/download.php?format=xml&file=/$remoteUpdateSiteBase/${updateSiteLabel}"
+	
+	# Create p2.index file
+	if [ ! -e "update-site/p2.index" ];
         then
-                if [ -d BACKUP ];
-                        then
-                                rm -fr BACKUP
-                fi
-                mkdir BACKUP
-                cp -R $remoteUpdateSite/* BACKUP/
-                rm -fr $remoteUpdateSite
-  fi
+        echo "Creating p2.index file."
+        echo "version = 1" > update-site/p2.index
+        echo "metadata.repository.factory.order = content.xml,\!" >> update-site/p2.index
+        echo "artifact.repository.factory.order = artifacts.xml,\!" >> update-site/p2.index
+	fi
 
-  echo "Publishing contents of local update-site directory to remote update site $remoteUpdateSite"
-  mkdir -p $remoteUpdateSite
-  cp -R update-site/* $remoteUpdateSite/
+	# Backup then clean remote update site
+	echo "Creating backup of remote update site."
+	if [ -d "$remoteUpdateSite" ];
+		then
+        if [ -d BACKUP ];
+        then
+            rm -fr BACKUP
+        fi
+        mkdir BACKUP
+        cp -R $remoteUpdateSite/* BACKUP/
+        rm -fr $remoteUpdateSite
+  	fi
+
+	echo "Publishing contents of local update-site directory to remote update site $remoteUpdateSite"
+	mkdir -p $remoteUpdateSite
+	cp -R update-site/* $remoteUpdateSite/
 fi
-
 
 # Clean up
 echo "Cleaning up"
