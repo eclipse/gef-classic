@@ -95,7 +95,7 @@ then
 fi
 if [ "$site" != y -a "$site" != n ];
 then
-	echo "site has to be 'y'(es) or 'n'(o)."
+	echo "Parameter site has to be 'y'(es) or 'n'(o) but was: $site"
     exit 0
 fi
 
@@ -108,7 +108,9 @@ then
         i|I) remoteSite=interim;;
         s|S) remoteSite=milestones;;
         r|R) remoteSite=releases;;
-        *) exit 0 ;;
+        *) 
+        echo "Parameter buildType has to be 'i'(nterim), 's'(table), or 'r'(elease), but was: $buildType"
+        exit 0 ;;
 	esac
 	remoteUpdateSiteBase="tools/gef/updates/$remoteSite"
 	remoteUpdateSite="/home/data/httpd/download.eclipse.org/$remoteUpdateSiteBase"
