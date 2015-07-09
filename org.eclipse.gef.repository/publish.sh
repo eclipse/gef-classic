@@ -7,9 +7,10 @@
 # $4: Whether to promote to an update-site: (y)es, (n)o
 # $5: Whether to merge the site with an existing one: (y)es, (n)o
 # $6: Whether to generate drop files: (y)es, (n)o
-# $7: The release label used to label the drop files and (nested) update site, e.g. 3.10.0 or 3.10.1M4
-# 
-if [ $# -eq 7 ];
+# $7: The release label used to label the drop files and (nested) update site, e.g. 3.10.0 or 3.10.1
+# $8: An optional release label suffix to be appended to drop files and (nested) update site name, e.g. M1, RC1 
+
+if [ $# -eq 7 -o $# -eq 8  ];
 then
     jobName=$1
     buildId=$2
@@ -18,6 +19,10 @@ then
     merge=$5
     dropFiles=$6
     releaseLabel=$7
+    if [ -n "$8" ];
+    then
+        releaseLabelSuffix=$8
+    fi
 else
     if [ $# -ne 0 ];
     then
@@ -247,7 +252,7 @@ fi
 
 if [ "$site" = y ];
 	then
-	updateSiteLabel=${releaseLabel}_${jobName}_${buildId}
+	updateSiteLabel=${releaseLabel}${releaseLabelSuffix}_${jobName}_${buildId}
 	# Prepare composite local update site (transfer into composite if needed)
 	if [ "$merge" = y ];
 		then
