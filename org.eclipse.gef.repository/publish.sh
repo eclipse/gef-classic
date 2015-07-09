@@ -95,8 +95,10 @@ then
 fi
 if [ "$site" != y -a "$site" != n ];
 then
+	echo "site has to be 'y'(es) or 'n'(o)."
     exit 0
 fi
+
 echo "Promoting to remote update site: $site"
 
 if [ "$site" = y ];
