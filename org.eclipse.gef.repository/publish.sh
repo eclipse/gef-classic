@@ -13,15 +13,23 @@
 if [ $# -eq 7 -o $# -eq 8  ];
 then
     jobName=$1
+    echo "jobName: $jobName"
     buildId=$2
+    echo "buildId: $buildId"
     buildType=$3
+    echo "buildType: $buildType"
     site=$4
+    echo "site: $site"
     merge=$5
+    echo "merge: $merge"
     dropFiles=$6
+    echo "dropFiles: $dropFiles"
     releaseLabel=$7
+    echo "releaseLabel: $releaseLabel"
     if [ -n "$8" ];
     then
         releaseLabelSuffix=$8
+        echo "releaseLabelSuffix: $releaseLabelSuffix"
     fi
 else
     if [ $# -ne 0 ];
