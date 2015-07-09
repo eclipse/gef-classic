@@ -265,6 +265,7 @@ fi
 
 if [ "$site" = y ];
 	then
+	mkdir -p update-site
 	updateSiteLabel=${releaseLabel}${releaseLabelSuffix}_${jobName}_${buildId}
 	# Prepare composite local update site (transfer into composite if needed)
 	if [ "$merge" = y ];
