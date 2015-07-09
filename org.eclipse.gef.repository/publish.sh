@@ -154,7 +154,6 @@ fi
 # Prepare a temp directory
 tmpDir="$jobName-publish-tmp"
 rm -fr $tmpDir
-mkdir -p $tmpDir/update-site
 cd $tmpDir
 
 # Download and prepare Eclipse SDK, which is needed to merge update site and postprocess repository 
@@ -176,15 +175,11 @@ echo "Installing WTP Releng tools"
 echo "Cleaning up"
 rm eclipse-SDK-4.4.2-linux-gtk-x86_64.tar.gz
 
-# Prepare local update site (merging is performed later, if required)
-cp -R $localUpdateSite/* update-site/
-echo "Copied $localUpdateSite to local directory update-site."
-
 # Generate drop files
 if [ "$dropFiles" = y ];
 	then
     echo "Converting update site to runnable form"
-    ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.repository.repo2runnable -source file:update-site -destination file:drops/eclipse
+    ./eclipse/eclipse -nosplash -consoleLog -application org.eclipse.equinox.p2.repository.repo2runnable -source file:$localUpdateSite -destination file:drops/eclipse
     qualifiedVersion=$(find drops/eclipse/features/ -maxdepth 1 | grep "org.eclipse.gef.all")
     qualifiedVersion=${qualifiedVersion#*_}
     qualifier=${qualifiedVersion##*.}
@@ -245,12 +240,18 @@ if [ "$dropFiles" = y ];
     echo "Created GEF-zest-sdk-${releaseLabel}.zip"
    
 	cd .. 
+	
+	# Prepare local update site (for drop files)
+	mkdir -p update-site
+	cp -R $localUpdateSite/* update-site/
+	echo "Copied $localUpdateSite to local directory update-site."
     cd update-site
-
     zip -r ../$localDropDir/GEF-Update-${releaseLabel}.zip features plugins artifacts.jar content.jar
     md5sum ../$localDropDir/GEF-Update-${releaseLabel}.zip > ../$localDropDir/GEF-Update-${releaseLabel}.zip.md5
-    echo "Created GEF-Update-Site-${releaseLabel}.zip"
-    cd ..
+    echo "Created GEF-Update-Site-${releaseLabel}.zip"  
+    cd .. 
+    # Cleanup local update site (for drop files generation)
+	rm -fr update-site
 
     #generating build.cfg file to be referenced from downloads web page
     echo "hudson.job.name=$jobName" > $localDropDir/build.cfg
