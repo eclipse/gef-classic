@@ -324,8 +324,8 @@ done
         then
         echo "Creating p2.index file."
         echo "version = 1" > update-site/p2.index
-        echo "metadata.repository.factory.order = content.xml,\!" >> update-site/p2.index
-        echo "artifact.repository.factory.order = artifacts.xml,\!" >> update-site/p2.index
+        echo "metadata.repository.factory.order=compositeContent.xml,\!" >> update-site/p2.index
+    	echo "artifact.repository.factory.order=compositeArtifacts.xml,\!" >> update-site/p2.index
 	fi
 
 	# Backup then clean remote update site
