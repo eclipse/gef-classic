@@ -228,7 +228,8 @@ public class RulerComposite extends Composite {
 	public void doLayout() {
 		if (left == null && top == null) {
 			Rectangle area = getClientArea();
-			if (!editor.getBounds().equals(area))
+			if (editor != null && !editor.isDisposed()
+					&& !editor.getBounds().equals(area))
 				editor.setBounds(area);
 			return;
 		}
