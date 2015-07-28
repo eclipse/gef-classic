@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Mike Marchand - fix for bug #472848
  *******************************************************************************/
 package org.eclipse.draw2d;
 
@@ -454,7 +455,9 @@ public class Figure implements IFigure {
 				if (fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
 					fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x,
 							PRIVATE_POINT.y);
-					return fig;
+					if (fig != null) {
+						return fig;
+					}
 				}
 			}
 		}
