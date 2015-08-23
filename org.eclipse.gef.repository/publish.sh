@@ -196,9 +196,9 @@ if [ "$dropFiles" = y ];
     mkdir -p $localDropDir
     
     cd update-site
-    zip -r ../$localDropDir/GEF-Update-${releaseLabel}.zip features plugins artifacts.jar content.jar
-    md5sum ../$localDropDir/GEF-Update-${releaseLabel}.zip > ../$localDropDir/GEF-Update-${releaseLabel}.zip.md5
-    echo "Created GEF-Update-Site-${releaseLabel}.zip"  
+    zip -r ../$localDropDir/GEF-Update-${releaseLabel}${releaseLabelSuffix}.zip features plugins artifacts.jar content.jar
+    md5sum ../$localDropDir/GEF-Update-${releaseLabel}${releaseLabelSuffix}.zip > ../$localDropDir/GEF-Update-${releaseLabel}${releaseLabelSuffix}.zip.md5
+    echo "Created GEF-Update-Site-${releaseLabel}${releaseLabelSuffix}.zip"  
     cd .. 
 
     # Cleanup local update site (for drop files generation)
@@ -214,54 +214,54 @@ if [ "$dropFiles" = y ];
     cd drops
     
     # GEF ALL
-    zip -r $dropDir/GEF-ALL-${releaseLabel}.zip eclipse/features/* eclipse/plugins/*
-    md5sum $dropDir/GEF-ALL-${releaseLabel}.zip > $dropDir/GEF-ALL-${releaseLabel}.zip.md5
-    echo "Created GEF-ALL-${releaseLabel}.zip"
+    zip -r $dropDir/GEF-ALL-${releaseLabel}${releaseLabelSuffix}.zip eclipse/features/* eclipse/plugins/*
+    md5sum $dropDir/GEF-ALL-${releaseLabel}${releaseLabelSuffix}.zip > $dropDir/GEF-ALL-${releaseLabel}${releaseLabelSuffix}.zip.md5
+    echo "Created GEF-ALL-${releaseLabel}${releaseLabelSuffix}.zip"
     
     # GEF SDK
-    zip -r $dropDir/GEF-SDK-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.sdk_* eclipse/features/org.eclipse.draw2d.source_*\
+    zip -r $dropDir/GEF-SDK-${releaseLabel}${releaseLabelSuffix}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.sdk_* eclipse/features/org.eclipse.draw2d.source_*\
                                          eclipse/features/org.eclipse.gef_* eclipse/features/org.eclipse.gef.sdk_* eclipse/features/org.eclipse.gef.source_*\
                                          eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d.doc.isv_* eclipse/plugins/org.eclipse.draw2d.source_*\
                                          eclipse/plugins/org.eclipse.gef_* eclipse/plugins/org.eclipse.gef.doc.isv_* eclipse/plugins/org.eclipse.gef.examples.ui.pde_* eclipse/plugins/org.eclipse.gef.source_*
-    md5sum $dropDir/GEF-SDK-${releaseLabel}.zip > $dropDir/GEF-SDK-${releaseLabel}.zip.md5
-    echo "Created GEF-SDK-${releaseLabel}.zip"
+    md5sum $dropDir/GEF-SDK-${releaseLabel}${releaseLabelSuffix}.zip > $dropDir/GEF-SDK-${releaseLabel}${releaseLabelSuffix}.zip.md5
+    echo "Created GEF-SDK-${releaseLabel}${releaseLabelSuffix}.zip"
     
     # GEF runtime
-    zip -r $dropDir/GEF-runtime-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.gef_* \
+    zip -r $dropDir/GEF-runtime-${releaseLabel}${releaseLabelSuffix}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.gef_* \
                                          eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.gef_*
-    md5sum $dropDir/GEF-runtime-${releaseLabel}.zip > $dropDir/GEF-runtime-${releaseLabel}.zip.md5
-    echo "Created GEF-runtime-${releaseLabel}.zip"
+    md5sum $dropDir/GEF-runtime-${releaseLabel}${releaseLabelSuffix}.zip > $dropDir/GEF-runtime-${releaseLabel}${releaseLabelSuffix}.zip.md5
+    echo "Created GEF-runtime-${releaseLabel}${releaseLabelSuffix}.zip"
     
     # GEF examples
-    zip -r $dropDir/GEF-examples-${releaseLabel}.zip eclipse/features/org.eclipse.gef.examples_* eclipse/features/org.eclipse.gef.examples.source_* \
+    zip -r $dropDir/GEF-examples-${releaseLabel}${releaseLabelSuffix}.zip eclipse/features/org.eclipse.gef.examples_* eclipse/features/org.eclipse.gef.examples.source_* \
                                          eclipse/plugins/org.eclipse.gef.examples.*
-    md5sum $dropDir/GEF-examples-${releaseLabel}.zip > $dropDir/GEF-examples-${releaseLabel}.zip.md5
-    echo "Created GEF-examples-${releaseLabel}.zip"
+    md5sum $dropDir/GEF-examples-${releaseLabel}${releaseLabelSuffix}.zip > $dropDir/GEF-examples-${releaseLabel}${releaseLabelSuffix}.zip.md5
+    echo "Created GEF-examples-${releaseLabel}${releaseLabelSuffix}.zip"
     
      # Draw2d runtime
-    zip -r $dropDir/GEF-draw2d-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d_*
-    md5sum $dropDir/GEF-draw2d-${releaseLabel}.zip > $dropDir/GEF-draw2d-${releaseLabel}.zip.md5
-    echo "Created GEF-draw2d-${releaseLabel}.zip"
+    zip -r $dropDir/GEF-draw2d-${releaseLabel}${releaseLabelSuffix}.zip eclipse/features/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d_*
+    md5sum $dropDir/GEF-draw2d-${releaseLabel}${releaseLabelSuffix}.zip > $dropDir/GEF-draw2d-${releaseLabel}${releaseLabelSuffix}.zip.md5
+    echo "Created GEF-draw2d-${releaseLabel}${releaseLabelSuffix}.zip"
     
     # Draw2d SDK
-    zip -r $dropDir/GEF-draw2d-sdk-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.source_* eclipse/features/org.eclipse.draw2d.sdk_*\
+    zip -r $dropDir/GEF-draw2d-sdk-${releaseLabel}${releaseLabelSuffix}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.source_* eclipse/features/org.eclipse.draw2d.sdk_*\
                                          eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d.doc.isv_* eclipse/plugins/org.eclipse.draw2d.source_*
-    md5sum $dropDir/GEF-draw2d-sdk-${releaseLabel}.zip > $dropDir/GEF-draw2d-sdk-${releaseLabel}.zip.md5
-    echo "Created GEF-draw2d-sdk-${releaseLabel}.zip"
+    md5sum $dropDir/GEF-draw2d-sdk-${releaseLabel}${releaseLabelSuffix}.zip > $dropDir/GEF-draw2d-sdk-${releaseLabel}${releaseLabelSuffix}.zip.md5
+    echo "Created GEF-draw2d-sdk-${releaseLabel}${releaseLabelSuffix}.zip"
     
     # Zest runtime
-    zip -r $dropDir/GEF-zest-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.zest_*\
+    zip -r $dropDir/GEF-zest-${releaseLabel}${releaseLabelSuffix}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.zest_*\
                                          eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.zest.core_* eclipse/plugins/org.eclipse.zest.layouts_*
-    md5sum $dropDir/GEF-zest-${releaseLabel}.zip > $dropDir/GEF-zest-${releaseLabel}.zip.md5
-    echo "Created GEF-zest-${releaseLabel}.zip"
+    md5sum $dropDir/GEF-zest-${releaseLabel}${releaseLabelSuffix}.zip > $dropDir/GEF-zest-${releaseLabel}${releaseLabelSuffix}.zip.md5
+    echo "Created GEF-zest-${releaseLabel}${releaseLabelSuffix}.zip"
     
     # Zest SDK
-    zip -r $dropDir/GEF-zest-sdk-${releaseLabel}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.source_* eclipse/features/org.eclipse.draw2d.sdk_*\
+    zip -r $dropDir/GEF-zest-sdk-${releaseLabel}${releaseLabelSuffix}.zip eclipse/features/org.eclipse.draw2d_* eclipse/features/org.eclipse.draw2d.source_* eclipse/features/org.eclipse.draw2d.sdk_*\
     										  eclipse/features/org.eclipse.zest_* eclipse/features/org.eclipse.zest.source_* eclipse/features/org.eclipse.zest.sdk_*\
                                               eclipse/plugins/org.eclipse.draw2d_* eclipse/plugins/org.eclipse.draw2d.doc.isv_* eclipse/plugins/org.eclipse.draw2d.source_*\
                                               eclipse/plugins/org.eclipse.zest.core_* eclipse/plugins/org.eclipse.zest.core.source_* eclipse/plugins/org.eclipse.zest.layouts_* eclipse/plugins/org.eclipse.zest.layouts.source_*
-    md5sum $dropDir/GEF-zest-sdk-${releaseLabel}.zip > $dropDir/GEF-zest-sdk-${releaseLabel}.zip.md5
-    echo "Created GEF-zest-sdk-${releaseLabel}.zip"
+    md5sum $dropDir/GEF-zest-sdk-${releaseLabel}${releaseLabelSuffix}.zip > $dropDir/GEF-zest-sdk-${releaseLabel}${releaseLabelSuffix}.zip.md5
+    echo "Created GEF-zest-sdk-${releaseLabel}${releaseLabelSuffix}.zip"
    
 	cd ..
 
