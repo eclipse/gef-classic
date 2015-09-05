@@ -396,13 +396,13 @@
 	<modules>
 		<module>../org.eclipse.gef.target</module>
 		<module>../org.eclipse.draw2d</module>
-		<module>../org.eclipse.draw2d.test</module>
+		<module>../org.eclipse.draw2d.tests</module>
 		<module>../org.eclipse.draw2d.doc.isv</module>
 		<module>../org.eclipse.draw2d-feature</module>
 		<module>../org.eclipse.draw2d.source-feature</module>
 		<module>../org.eclipse.draw2d.sdk-feature</module>
 		<module>../org.eclipse.gef</module>
-		<module>../org.eclipse.gef.test</module>
+		<module>../org.eclipse.gef.tests</module>
 		<module>../org.eclipse.gef.doc.isv</module>
 		<module>../org.eclipse.gef.examples.flow</module>
 		<module>../org.eclipse.gef.examples.logic</module>
