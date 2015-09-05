@@ -14,8 +14,7 @@
       label="%featureName"
       version="1.7.0.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.zest.source"
-      image="eclipse_update_120.jpg"
+      plugin="org.eclipse.zest.core"
       license-feature="org.eclipse.license"
       license-feature-version="1.0.1">
 
