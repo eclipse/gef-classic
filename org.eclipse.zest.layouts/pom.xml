@@ -11,6 +11,6 @@
 	</parent>
 	<groupId>org.eclipse.zest.plugins</groupId>
 	<artifactId>org.eclipse.zest.layouts</artifactId>
-	<version>1.1.200-SNAPSHOT</version>
+	<version>1.1.300-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 </project>
