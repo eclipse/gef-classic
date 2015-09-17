@@ -34,6 +34,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * Figure.
  * 
  * @author Eric Bordeau
+ * @author Alexander Nyßen (anyssen)
  */
 public class Thumbnail extends Figure implements UpdateListener {
 
@@ -42,12 +43,13 @@ public class Thumbnail extends Figure implements UpdateListener {
 	 * several tiles and updating each tile individually.
 	 */
 	class ThumbnailUpdater implements Runnable {
-		static final int MAX_BUFFER_SIZE = 256;
+		private static final int MIN_TILE_SIZE = 256;
+		private static final int MAX_NUMBER_OF_TILES = 16;
 		private int currentHTile, currentVTile;
 		private int hTiles, vTiles;
 		private Dimension tileSize;
 		private Dimension sourceSize; // the source size that was used for the
-									  // tileSize computation
+										// tileSize computation
 		private boolean isActive = true;
 
 		private boolean isRunning = false;
@@ -117,18 +119,27 @@ public class Thumbnail extends Figure implements UpdateListener {
 		 * tile size and current tile index.
 		 */
 		public void resetTileValues() {
-			// keep track of source size that matches the computed tile size
+			// Keep track of source size that matches the computed tile size.
 			sourceSize = getSourceRectangle().getSize();
 
-			hTiles = (int) Math.ceil((float) sourceSize.width
-					/ (float) MAX_BUFFER_SIZE);
-			vTiles = (int) Math.ceil((float) sourceSize.height
-					/ (float) MAX_BUFFER_SIZE);
-
+			// Compute number of horizontal and vertical tiles and the size of
+			// each tile (while the last tile in horizontal and vertical
+			// direction may be smaller); ensure that all tiles except those on
+			// the bottom and right border will have at least a size of
+			// MIN_TILE_SIZE size and that at most MAX_NUMBER_OF_TILES tiles
+			// will be created.
+			hTiles = Math.min(
+					(int) Math.ceil((float) sourceSize.width
+							/ (float) MIN_TILE_SIZE), MAX_NUMBER_OF_TILES);
+			vTiles = Math.min(
+					(int) Math.ceil((float) sourceSize.height
+							/ (float) MIN_TILE_SIZE), MAX_NUMBER_OF_TILES);
 			tileSize = new Dimension((int) Math.ceil((float) sourceSize.width
 					/ (float) hTiles),
 					(int) Math.ceil((float) sourceSize.height / (float) vTiles));
 
+			// Reset the current indices so that the next update will start with
+			// the first tile in horizontal and vertical direction
 			currentHTile = 0;
 			currentVTile = 0;
 		}
@@ -169,12 +180,12 @@ public class Thumbnail extends Figure implements UpdateListener {
 			Rectangle rect = new Rectangle(0, 0, sx2 - sx1, sy2 - sy1);
 			tileGraphics.fillRectangle(rect);
 
-			// let the source figure paint into the tile image
+			// Let the source figure paint into the tile image.
 			// IMPORTANT (fix for bug #309912): we do not let the source figure
 			// paint directly into the thumbnail image, because we cannot ensure
 			// that it paints completely inside the current tile area (it may
 			// set its own clip inside paint(Graphics) and overwrite areas of
-			// tile that have already been rendered. By providing an own tile
+			// tiles that have already been rendered. By providing an own tile
 			// image and copying from it into the thumbnail image, we are safe.
 			org.eclipse.draw2d.geometry.Point p = getSourceRectangle()
 					.getLocation();
@@ -184,7 +195,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 			sourceFigure.paint(tileGraphics);
 			tileGraphics.popState();
 
-			// copy the painted tile image into the thumbnail image
+			// Copy the painted tile image into the thumbnail image.
 			thumbnailGC.drawImage(tileImage, 0, 0, sx2 - sx1, sy2 - sy1, sx1,
 					sy1, sx2 - sx1, sy2 - sy1);
 
