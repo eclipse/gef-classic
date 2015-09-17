@@ -41,7 +41,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * representing the viewable area and can be dragged around to scroll the source
  * figure.
  */
-public final class ScrollableThumbnail extends Thumbnail {
+public class ScrollableThumbnail extends Thumbnail {
 
 	private class ClickScrollerAndDragTransferrer extends
 			MouseMotionListener.Stub implements MouseListener {
