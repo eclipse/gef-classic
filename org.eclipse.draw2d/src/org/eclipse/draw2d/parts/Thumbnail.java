@@ -178,7 +178,8 @@ public class Thumbnail extends Figure implements UpdateListener {
 			// image and copying from it into the thumbnail image, we are safe.
 			org.eclipse.draw2d.geometry.Point p = getSourceRectangle()
 					.getLocation();
-			tileGraphics.translate(-p.x - sx1, -p.y - sy1);
+			tileGraphics.translate(-p.x * getScaleX() - sx1, -p.y * getScaleY()
+					- sy1);
 			tileGraphics.scale(getScaleX());
 			sourceFigure.paint(tileGraphics);
 			tileGraphics.popState();
