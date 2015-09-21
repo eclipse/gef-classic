@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
+ *     Requel Wermelinger (reguel.wermelinger@ivyteam.ch) - Fix for bug #462235  
  *******************************************************************************/
 
 package org.eclipse.gef.internal;
@@ -23,6 +24,10 @@ public class PropertySourceAdapterFactory implements IAdapterFactory {
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 		AbstractEditPart part = (AbstractEditPart) adaptableObject;
 		Object model = part.getModel();
+		// model can be null
+		if (model == null) {
+			return null;
+		}
 		// check if model is already of the desired adapter type
 		if (adapterType.isInstance(model)) {
 			return model;
