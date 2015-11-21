@@ -10,13 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.properties;
 
-import java.util.EventObject;
-
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.PropertySheetEntry;
 
 import org.eclipse.gef.commands.CommandStack;
-import org.eclipse.gef.commands.CommandStackListener;
+import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.commands.CompoundCommand;
 import org.eclipse.gef.commands.ForwardUndoCompoundCommand;
 
@@ -35,7 +33,7 @@ import org.eclipse.gef.commands.ForwardUndoCompoundCommand;
  */
 public class UndoablePropertySheetEntry extends PropertySheetEntry {
 
-	private CommandStackListener commandStackListener;
+	private CommandStackEventListener commandStackListener;
 
 	private CommandStack commandStack;
 
@@ -57,12 +55,15 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	 */
 	public UndoablePropertySheetEntry(CommandStack commandStack) {
 		this.commandStack = commandStack;
-		this.commandStackListener = new CommandStackListener() {
-			public void commandStackChanged(EventObject e) {
-				refreshFromRoot();
+		this.commandStackListener = new CommandStackEventListener() {
+			public void stackChanged(
+					org.eclipse.gef.commands.CommandStackEvent event) {
+				if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
+					refreshFromRoot();
+				}
 			}
 		};
-		this.commandStack.addCommandStackListener(commandStackListener);
+		this.commandStack.addCommandStackEventListener(commandStackListener);
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	 */
 	public void dispose() {
 		if (commandStack != null)
-			commandStack.removeCommandStackListener(commandStackListener);
+			commandStack.removeCommandStackEventListener(commandStackListener);
 		super.dispose();
 	}
 

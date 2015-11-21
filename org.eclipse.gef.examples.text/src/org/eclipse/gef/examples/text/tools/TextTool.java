@@ -12,7 +12,6 @@
 package org.eclipse.gef.examples.text.tools;
 
 import java.util.ArrayList;
-import java.util.EventObject;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +28,8 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CommandStackListener;
+import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.examples.text.AppendableCommand;
 import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
@@ -67,10 +67,13 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	private static final int MODE_DEL = 3;
 	private static final int MODE_TYPE = 1;
 	private static final String KEY_OVERWRITE = "gef.texttool.overwrite"; //$NON-NLS-1$
-	private CommandStackListener commandListener = new CommandStackListener() {
-		public void commandStackChanged(EventObject event) {
-			fireStyleChanges();
-			discardCaretLocation();
+	private CommandStackEventListener commandListener = new CommandStackEventListener() {
+		public void stackChanged(
+				org.eclipse.gef.commands.CommandStackEvent event) {
+			if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
+				fireStyleChanges();
+				discardCaretLocation();
+			}
 		}
 	};
 	private StyleListener listener;
@@ -773,7 +776,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			if (caretRefresh != null)
 				getUpdateManager().performUpdate();
 			currentViewer.getEditDomain().getCommandStack()
-					.removeCommandStackListener(commandListener);
+					.removeCommandStackEventListener(commandListener);
 			currentViewer.removeSelectionChangedListener(selectionListener);
 			UpdateManager manager = getUpdateManager();
 			if (manager != null)
@@ -789,7 +792,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		if (viewer != null) {
 			isMirrored = (viewer.getControl().getStyle() & SWT.MIRRORED) != 0;
 			viewer.getEditDomain().getCommandStack()
-					.addCommandStackListener(commandListener);
+					.addCommandStackEventListener(commandListener);
 			viewer.addSelectionChangedListener(selectionListener);
 			UpdateManager manager = getUpdateManager();
 			if (manager != null)

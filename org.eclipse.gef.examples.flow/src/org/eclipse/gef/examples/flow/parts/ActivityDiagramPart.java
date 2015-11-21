@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.parts;
 
-import java.util.EventObject;
 import java.util.Map;
 
 import org.eclipse.draw2d.Figure;
@@ -18,7 +17,8 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.commands.CommandStackListener;
+import org.eclipse.gef.commands.CommandStack;
+import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityContainerEditPolicy;
 import org.eclipse.gef.examples.flow.policies.StructuredActivityLayoutEditPolicy;
@@ -28,14 +28,18 @@ import org.eclipse.gef.examples.flow.policies.StructuredActivityLayoutEditPolicy
  */
 public class ActivityDiagramPart extends StructuredActivityPart {
 
-	CommandStackListener stackListener = new CommandStackListener() {
-		public void commandStackChanged(EventObject event) {
-			if (!GraphAnimation.captureLayout(getFigure()))
-				return;
-			while (GraphAnimation.step())
-				getFigure().getUpdateManager().performUpdate();
-			GraphAnimation.end();
-		}
+	CommandStackEventListener stackListener = new CommandStackEventListener() {
+
+		public void stackChanged(
+				org.eclipse.gef.commands.CommandStackEvent event) {
+			if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
+				if (!GraphAnimation.captureLayout(getFigure()))
+					return;
+				while (GraphAnimation.step())
+					getFigure().getUpdateManager().performUpdate();
+				GraphAnimation.end();
+			}
+		};
 	};
 
 	protected void applyOwnResults(CompoundDirectedGraph graph, Map map) {
@@ -47,7 +51,7 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 	public void activate() {
 		super.activate();
 		getViewer().getEditDomain().getCommandStack()
-				.addCommandStackListener(stackListener);
+				.addCommandStackEventListener(stackListener);
 	}
 
 	/**
@@ -98,7 +102,7 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 	 */
 	public void deactivate() {
 		getViewer().getEditDomain().getCommandStack()
-				.removeCommandStackListener(stackListener);
+				.removeCommandStackEventListener(stackListener);
 		super.deactivate();
 	}
 

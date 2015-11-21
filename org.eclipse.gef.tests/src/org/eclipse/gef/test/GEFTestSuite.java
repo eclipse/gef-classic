@@ -31,6 +31,7 @@ public class GEFTestSuite extends TestSuite {
 		addTest(new TestSuite(PaletteCustomizerTest.class));
 		addTest(new TestSuite(ToolUtilitiesTest.class));
 		addTest(new TestSuite(DragEditPartsTrackerTest.class));
+		addTest(new TestSuite(CommandStackTest.class));
 	}
 
 }

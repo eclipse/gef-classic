@@ -15,6 +15,9 @@ import java.util.EventObject;
 /**
  * A CommandStackListener is notified whenever the {@link CommandStack}'s state
  * has changed.
+ * 
+ * @deprecated Use {@link CommandStackEventListener} instead and filter for
+ *             post-events using {@link CommandStack#POST_MASK}.
  */
 public interface CommandStackListener {
 

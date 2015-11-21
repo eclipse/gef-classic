@@ -19,7 +19,7 @@ import java.util.Stack;
  * An implementation of a command stack. A stack manages the executing, undoing,
  * and redoing of {@link Command Commands}. Executed commands are pushed onto a
  * a stack for undoing later. Commands which are undone are pushed onto a redo
- * stack. Whenever a new command is executed, the Redo stack is flushed.
+ * stack. Whenever a new command is executed, the redo stack is flushed.
  * <P>
  * A CommandStack contains a dirty property. This property can be used to
  * determine when persisting changes is required. The stack is dirty whenever
@@ -32,26 +32,37 @@ import java.util.Stack;
 public class CommandStack {
 
 	/**
-	 * Constant indicating notification after a command has been executed (value
-	 * is 8).
+	 * Constant indicating notification after a command has been executed.
 	 */
 	public static final int POST_EXECUTE = 8;
 	/**
-	 * Constant indicating notification after a command has been redone (value
-	 * is 16).
+	 * Constant indicating notification after a command has been redone.
 	 */
 	public static final int POST_REDO = 16;
 	/**
-	 * Constant indicating notification after a command has been undone (value
-	 * is 32).
+	 * Constant indicating notification after a command has been undone.
 	 */
 	public static final int POST_UNDO = 32;
 
 	/**
-	 * A bit-mask indicating notification after a command has done something.
-	 * Currently this includes after a command has been undone, redone, or
-	 * executed. This will include new events should they be introduced in the
-	 * future.
+	 * Constant indicating notification after flushing the stack.
+	 * 
+	 * @since 3.11
+	 */
+	public static final int POST_FLUSH = 256;
+
+	/**
+	 * Constant indicating notification after marking the save location of the
+	 * stack.
+	 * 
+	 * @since 3.11
+	 */
+	public static final int POST_MARK_SAVE = 512;
+
+	/**
+	 * A bit-mask indicating notification after the command stack has changed.
+	 * This includes after a command has been undone, redone, or executed, as
+	 * well as after it has been flushed or the save location has been marked.
 	 * <P>
 	 * Usage<BR/>
 	 * 
@@ -63,29 +74,42 @@ public class CommandStack {
 	 * </PRE>
 	 */
 	public static final int POST_MASK = new Integer(POST_EXECUTE | POST_UNDO
-			| POST_REDO).intValue();
+			| POST_REDO | POST_FLUSH | POST_MARK_SAVE).intValue();
 
 	/**
-	 * Constant indicating notification prior to executing a command (value is
-	 * 1).
+	 * Constant indicating notification prior to executing a command.
 	 */
 	public static final int PRE_EXECUTE = 1;
 
 	/**
-	 * Constant indicating notification prior to redoing a command (value is 2).
+	 * Constant indicating notification prior to redoing a command.
 	 */
 	public static final int PRE_REDO = 2;
 
 	/**
-	 * Constant indicating notification prior to undoing a command (value is 4).
+	 * Constant indicating notification prior to undoing a command.
 	 */
 	public static final int PRE_UNDO = 4;
 
 	/**
-	 * A bit-mask indicating notification before a command makes a change.
-	 * Currently this includes before a command has been undone, redone, or
-	 * executed. This will include new events should they be introduced in the
-	 * future.
+	 * Constant indicating notification prior to flushing the stack.
+	 * 
+	 * @since 3.11
+	 */
+	public static final int PRE_FLUSH = 64;
+
+	/**
+	 * Constant indicating notification prior to marking the save location of
+	 * the stack.
+	 * 
+	 * @since 3.11
+	 */
+	public static final int PRE_MARK_SAVE = 128;
+
+	/**
+	 * A bit-mask indicating notification before the command stack is changed.
+	 * This includes before a command has been undone, redone, or executed, and
+	 * before the stack is being flushed or the save location is marked.
 	 * <P>
 	 * Usage<BR/>
 	 * 
@@ -99,7 +123,7 @@ public class CommandStack {
 	 * @since 3.7 Had package visibility before.
 	 */
 	public static final int PRE_MASK = new Integer(PRE_EXECUTE | PRE_UNDO
-			| PRE_REDO).intValue();
+			| PRE_REDO | PRE_FLUSH | PRE_MARK_SAVE).intValue();
 
 	private List eventListeners = new ArrayList();
 
@@ -144,6 +168,9 @@ public class CommandStack {
 	 * 
 	 * @param listener
 	 *            the listener
+	 * @deprecated Use
+	 *             {@link #addCommandStackEventListener(CommandStackEventListener)}
+	 *             instead.
 	 */
 	public void addCommandStackListener(CommandStackListener listener) {
 		listeners.add(listener);
@@ -221,10 +248,12 @@ public class CommandStack {
 	 * method might be called when performing "revert to saved".
 	 */
 	public void flush() {
+		notifyListeners(null, PRE_FLUSH);
 		flushRedo();
 		flushUndo();
 		saveLocation = 0;
 		notifyListeners();
+		notifyListeners(null, POST_FLUSH);
 	}
 
 	private void flushRedo() {
@@ -298,14 +327,16 @@ public class CommandStack {
 	 * this checkpoint.
 	 */
 	public void markSaveLocation() {
+		notifyListeners(null, PRE_MARK_SAVE);
 		saveLocation = undoable.size();
 		notifyListeners();
+		notifyListeners(null, POST_MARK_SAVE);
 	}
 
 	/**
 	 * Sends notification to all {@link CommandStackListener}s.
 	 * 
-	 * @deprecated
+	 * @deprecated Use {@link #notifyListeners(Command, int)} instead.
 	 */
 	protected void notifyListeners() {
 		EventObject event = new EventObject(this);
@@ -367,6 +398,7 @@ public class CommandStack {
 	 * 
 	 * @param listener
 	 *            the listener
+	 * @deprecated Use {@link CommandStackEventListener} instead.
 	 */
 	public void removeCommandStackListener(CommandStackListener listener) {
 		listeners.remove(listener);
