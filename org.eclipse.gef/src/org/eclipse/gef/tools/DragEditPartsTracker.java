@@ -124,6 +124,48 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
+	 * Returns the bounds of the {@link #getSourceEditPart() source edit part's}
+	 * figure in absolute coordinates. In case the source figure implements
+	 * {@link HandleBounds} the {@link HandleBounds#getHandleBounds() handle
+	 * bounds} are returned in absolute coordinates, other wise the
+	 * {@link IFigure#getBounds() figure bounds}.
+	 * 
+	 * @return The bounds of the source figure in absolute coordinates.
+	 * 
+	 * @since 3.11
+	 */
+	protected PrecisionRectangle getSourceBounds() {
+		return this.sourceRectangle;
+	}
+
+	/**
+	 * Returns the unioned bounds of the {@link #getOperationSet() operation set
+	 * edit parts'} figures in absolute coordinates. In case the figures
+	 * implement {@link HandleBounds} their
+	 * {@link HandleBounds#getHandleBounds() handle bounds} will be used,
+	 * otherwise their {@link IFigure#getBounds() figure bounds}.
+	 * 
+	 * @return The unioned bounds of the operation set figures in absolute
+	 *         coordinates.
+	 * @since 3.11
+	 */
+	protected PrecisionRectangle getOperationSetBounds() {
+		return this.compoundSrcRect;
+	}
+
+	/**
+	 * Returns the {@link SnapToHelper} used by this
+	 * {@link DragEditPartsTracker}.
+	 * 
+	 * @return The {@link SnapToHelper} used by this
+	 *         {@link DragEditPartsTracker}.
+	 * @since 3.11
+	 */
+	protected SnapToHelper getSnapToHelper() {
+		return snapToHelper;
+	}
+
+	/**
 	 * Erases feedback and calls {@link #performDrag()}. Sets the state to
 	 * terminal.
 	 * 
