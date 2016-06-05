@@ -196,9 +196,9 @@ if [ "$dropFiles" = y ];
     mkdir -p $localDropDir
     
     cd update-site
-    zip -r ../$localDropDir/GEF-Update-${releaseLabel}${releaseLabelSuffix}.zip features plugins artifacts.jar content.jar
-    md5sum ../$localDropDir/GEF-Update-${releaseLabel}${releaseLabelSuffix}.zip > ../$localDropDir/GEF-Update-${releaseLabel}${releaseLabelSuffix}.zip.md5
-    echo "Created GEF-Update-Site-${releaseLabel}${releaseLabelSuffix}.zip"  
+    zip -r ../$localDropDir/GEF3-Update-${releaseLabel}${releaseLabelSuffix}.zip features plugins artifacts.jar content.jar
+    md5sum ../$localDropDir/GEF3-Update-${releaseLabel}${releaseLabelSuffix}.zip > ../$localDropDir/GEF3-Update-${releaseLabel}${releaseLabelSuffix}.zip.md5
+    echo "Created GEF3-Update-Site-${releaseLabel}${releaseLabelSuffix}.zip"  
     cd .. 
 
     # Cleanup local update site (for drop files generation)
@@ -209,7 +209,7 @@ if [ "$dropFiles" = y ];
     echo "hudson.job.id=$buildId (${jobDir##*/})" >> $localDropDir/build.cfg
     echo "hudson.job.url=https://hudson.eclipse.org/gef/job/$jobName/$buildId" >> $localDropDir/build.cfg
 
-    remoteDropDir=/home/data/httpd/download.eclipse.org/tools/gef/downloads/drops/$dropDir
+    remoteDropDir=/home/data/httpd/download.eclipse.org/tools/gef/gef3/downloads/drops/$dropDir
     mkdir -p $remoteDropDir
     cp -R $localDropDir/* $remoteDropDir/
 fi
