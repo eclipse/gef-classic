@@ -20,8 +20,8 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/"/>
-      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/releases/"/>
+      <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/legacy/releases/"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/legacy/releases/"/>
    </url>
 
    <plugin

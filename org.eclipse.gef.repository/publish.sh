@@ -3,7 +3,7 @@
 # Script may take 6-7 command line parameters:
 # $1: Hudson job name: <name>
 # $2: Hudson build id: <id>
-# $3: Build type: i(nterim), s(table), r(elease)
+# $3: Build type: i(ntegration), s(table), r(elease)
 # $4: Whether to promote to an update-site: (y)es, (n)o
 # $5: Whether to merge the site with an existing one: (y)es, (n)o
 # $6: Whether to generate drop files: (y)es, (n)o
@@ -103,14 +103,14 @@ if [ "$site" = y ];
 then
 	# Determine remote update site we want to promote to
 	case $buildType in
-		i|I) remoteSite=interim;;
+		i|I) remoteSite=integration;;
 		s|S) remoteSite=milestones;;
 		r|R) remoteSite=releases;;
 		*) 
-		echo "Parameter buildType has to be 'i'(nterim), 's'(table), or 'r'(elease), but was: $buildType"
+		echo "Parameter buildType has to be 'i'(ntegration), 's'(table), or 'r'(elease), but was: $buildType"
 		exit 1 ;;
 	esac
-	remoteUpdateSiteBase="tools/gef/updates/$remoteSite"
+	remoteUpdateSiteBase="tools/gef/updates/legacy/$remoteSite"
 	remoteUpdateSite="/home/data/httpd/download.eclipse.org/$remoteUpdateSiteBase"
 	echo "Publishing to remote update-site: $remoteUpdateSite"
 
@@ -245,7 +245,7 @@ then
 content="
 <?xml version='1.0' encoding='UTF-8'?>
 <?compositeMetadataRepository version='1.0.0'?>
-<repository name='GEF ${remoteSite}' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
+<repository name='GEF 3.x ${remoteSite}' type='org.eclipse.equinox.internal.p2.metadata.repository.CompositeMetadataRepository' version='1.0.0'>
 <properties size='1'>
 <property name='p2.timestamp' value='${timestamp}'/>
 </properties>
@@ -265,7 +265,7 @@ done
 artifact="
 <?xml version='1.0' encoding='UTF-8'?>
 <?compositeArtifactRepository version='1.0.0'?>
-<repository name='GEF ${remoteSite}' type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1.0.0'>
+<repository name='GEF 3.x ${remoteSite}' type='org.eclipse.equinox.internal.p2.artifact.repository.CompositeArtifactRepository' version='1.0.0'>
 <properties size='1'>
 <property name='p2.timestamp' value='${timestamp}'/>
 </properties>
