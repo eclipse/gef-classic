@@ -11,7 +11,7 @@
 	<!-- this is the parent POM from which all modules inherit common settings -->
 	<properties>
 		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
-		<tycho.version>0.21.0</tycho.version>
+		<tycho.version>0.25.0</tycho.version>
 		<cbi-plugins.version>1.0.4</cbi-plugins.version>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/gef/org.eclipse.gef.git</tycho.scmUrl>
