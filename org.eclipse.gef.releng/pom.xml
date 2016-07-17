@@ -14,7 +14,7 @@
 		<tycho.version>0.25.0</tycho.version>
 		<cbi-plugins.version>1.0.4</cbi-plugins.version>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-		<tycho.scmUrl>scm:git:git://git.eclipse.org/gitroot/gef/org.eclipse.gef.git</tycho.scmUrl>
+		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-legacy.git</tycho.scmUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
