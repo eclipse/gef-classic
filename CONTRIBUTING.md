@@ -1,6 +1,6 @@
 # Contributing to the Eclipse Graphical Editing Framework (GEF)
 
-This guide provides all necessary information to enable [contributors and committers](https://www.eclipse.org/projects/dev_process/#2_3_1_Contributors_and_Committers) to contribute to the Eclipse Graphical Editing Framework (GEF) project. [Users](https://www.eclipse.org/projects/dev_process/#2_3_2_Users), who want to use the end-user tools, as well as [adopters](https://www.eclipse.org/projects/dev_process/#2_3_3_Adopters), who want to develop applications against GEF, should rather consult our [README](https://github.com/eclipse/gef-legacy#eclipse-graphical-editing-framework-gef).
+This guide provides all necessary information to enable [contributors and committers](https://www.eclipse.org/projects/dev_process/#2_3_1_Contributors_and_Committers) to contribute to the Eclipse Graphical Editing Framework (GEF) project's legacy components. [Adopters](https://www.eclipse.org/projects/dev_process/#2_3_3_Adopters), who want to develop applications against GEF-Legacy, should rather consult our [README](https://github.com/eclipse/gef-legacy#eclipse-graphical-editing-framework-gef).
 
 ## Set up a development environment
 
