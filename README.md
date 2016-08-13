@@ -13,4 +13,4 @@ Subscription is open to everybody, and as it is the primary communication channe
 This project uses the [Eclipse Bugzilla](https://bugs.eclipse.org/bugs) to track all its issues. Be sure to [search for existing issues](https://bugs.eclipse.org/bugs/buglist.cgi?product=GEF) before you [create a new issue](https://bugs.eclipse.org/bugs/enter_bug.cgi?product=GEF).
 
 ### How to Contribute?
-If you want to contribute to our project, the [contributor guide](https://wiki.eclipse.org/GEF/Contributor_Guide) provides all necessary information.
+If you want to contribute to our project, the [contributor guide](https://github.com/eclipse/gef-legacy/blob/master/CONTRIBUTING.md#contributing-to-the-eclipse-graphical-editing-framework-gef) provides all necessary information.
