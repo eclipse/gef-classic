@@ -66,6 +66,36 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-source-feature-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>source-feature</id>
+						<phase>package</phase>
+						<goals>
+							<goal>source-feature</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<!-- This is needed for source feature generation, as outlined in bug 
+					#398250 -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution>
+						<id>attach-p2-metadata</id>
+						<phase>package</phase>
+						<goals>
+							<goal>p2-metadata</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<version>${maven-antrun-plugin.version}</version>
@@ -451,7 +481,6 @@
 		<module>../org.eclipse.draw2d.tests</module>
 		<module>../org.eclipse.draw2d.doc.isv</module>
 		<module>../org.eclipse.draw2d-feature</module>
-		<module>../org.eclipse.draw2d.source-feature</module>
 		<module>../org.eclipse.draw2d.sdk-feature</module>
 		<module>../org.eclipse.gef</module>
 		<module>../org.eclipse.gef.tests</module>
@@ -462,9 +491,7 @@
 		<module>../org.eclipse.gef.examples.text</module>
 		<module>../org.eclipse.gef.examples.ui.capabilities</module>
 		<module>../org.eclipse.gef.examples.ui.pde</module>
-		<module>../org.eclipse.gef.source-feature</module>
 		<module>../org.eclipse.gef-feature</module>
-		<module>../org.eclipse.gef.examples.source-feature</module>
 		<module>../org.eclipse.gef.examples-feature</module>
 		<module>../org.eclipse.gef.sdk-feature</module>
 		<module>../org.eclipse.zest.core</module>
@@ -472,7 +499,6 @@
 		<module>../org.eclipse.zest.tests</module>
 		<module>../org.eclipse.zest.doc.isv</module>
 		<module>../org.eclipse.zest-feature</module>
-		<module>../org.eclipse.zest.source-feature</module>
 		<module>../org.eclipse.zest.sdk-feature</module>
 		<module>../org.eclipse.gef.all-feature</module>
 		<module>../org.eclipse.gef.repository</module>

@@ -35,10 +35,6 @@
       <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/legacy/releases/"/>
    </url>
 
-   <includes
-         id="org.eclipse.gef.examples.source"
-         version="0.0.0"/>
-
    <requires>
       <import plugin="org.eclipse.gef" version="3.6.0" match="compatible"/>
    </requires>
