@@ -48,7 +48,7 @@ Only minor changes have been applied to the Zest 1.x production component, which
 
 Zest reference documentation is now provided in terms of a org.eclipse.zest.doc.isv plug-in, which contributes the API reference and an initial developer guide (an extract of the old Zest 1.x wiki page) to the GEF developer guide (formerly known as GEF and Draw2d Plug-in Developer Guide). See Bug [#394137](https://bugs.eclipse.org/bugs/show_bug.cgi?id=394137) for details.
 
-# [GEF 3.8.0 (Juno)](https://projects.eclipse.org/projects/tools.gef/releases/3.8.0-juno)
+# [GEF 3.8.0 (Juno)](https://projects.eclipse.org/projects/tools.gef/releases/3.8.0-9)
 
 ## General
 
@@ -176,7 +176,7 @@ The logic example was enhanced to demonstrate use of the new action. See Bug [#1
 
 UndoablePropertySheetEntry was refactored and opened for subclassing (see Bug [#91257](https://bugs.eclipse.org/bugs/show_bug.cgi?id=91257)). An UndoablePropertySheetPage was introduced, which uses the UndoablePropertySheetEntry as its root entry and additionally supports the undo/redo of changes in case the associated editor is currently inactive (because the property view is active) by delegating to the editor's undo and redo actions (see Bug [#287684](https://bugs.eclipse.org/bugs/show_bug.cgi?id=287684)). SetValueCommand and ResetValueCommand were refactored into a single SetPropertyValueCommand, which was exposed as well (see Bug [#130721](https://bugs.eclipse.org/bugs/show_bug.cgi?id=130721)).
 
-# [GEF 3.6.0 (Helios)](https://projects.eclipse.org/projects/tools.gef/releases/3.6.0-helios)
+# [GEF 3.6.0 (Helios)](https://projects.eclipse.org/projects/tools.gef/releases/3.6.0-10)
 
 ## Draw2d
 
@@ -214,7 +214,7 @@ GEF now offers a special SelectionEditPolicy to render the hidden contents of a 
 
 ![scrollable selection feedback](https://wiki.eclipse.org/images/8/8b/ScrollableSelectionFeedback.png)
 
-# [GEF 3.5.0 (Galileo)](https://projects.eclipse.org/projects/tools.gef/releases/3.5.0-galileo)
+# [GEF 3.5.0 (Galileo)](https://projects.eclipse.org/projects/tools.gef/releases/3.5.0-9)
 
 ## Draw 2D
 
