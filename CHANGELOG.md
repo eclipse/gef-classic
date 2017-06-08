@@ -18,7 +18,7 @@ Only minor changes have been applied to the Draw2d 3.x production component, whi
 
 ### Tooltip Delay (3.10.0 M1)
 
-TooltipHelper now allows clients to set the tooltip delay (see Bug [#323656](https://bugs.eclipse.org/bugs/show_bug.cgi?id=332351)).
+TooltipHelper now allows clients to set the tooltip delay (see Bug [#323656](https://bugs.eclipse.org/bugs/show_bug.cgi?id=323656)).
 
 ## GEF (MVC) 3.10.0
 
