@@ -184,15 +184,15 @@ UndoablePropertySheetEntry was refactored and opened for subclassing (see Bug [#
 
 Draw2d now provides a puristic scrollbar as alternative to the classic scrollbar.
 
-<img src="https://wiki.eclipse.org/images/7/7f/Scrollbar.png" />
+<img src=".changelog/3.6/Scrollbars.png" />
 
-<img src="https://wiki.eclipse.org/images/5/59/PuristicScrollbar.jpg" />
+<img src=".changelog/3.6/PuristicScrollbars.png" />
 
 ### Ghost Image Figure
 
 Semi-transparent ghost image figures now be easily created for arbitrary Draw2d figures, e.g. to render feedback.
 
-<img src="https://wiki.eclipse.org/images/4/49/GhostImageFigure.png" />
+<img src=".changelog/3.6/GhostFigure.png" />
 
 ### Clipping Strategy
 
@@ -200,11 +200,11 @@ Draw2d figures can now be parameterized with a clipping strategy (IClippingStrat
 
 As this default clipping behavior leads to quite poor results in case connections are drawn from nested viewports ...
 
-<img src="https://wiki.eclipse.org/images/d/d4/DefaultClippingStrategy.jpg" />
+<img src=".changelog/3.6/DefaultClippingStrategy.png" />
 
 ... a clipping strategy implementation (ViewportAwareConnectionLayerClippingStrategy) to deal with this is now available, being the default clipping strategy of the logic editor's ConnectionLayer.
 
-<img src="https://wiki.eclipse.org/images/b/b6/ViewportAwareClippingStrategy.jpg" />
+<img src=".changelog/3.6/ViewportAwareConnectionLayerClippingStrategy.png" />
 
 ## GEF
 
