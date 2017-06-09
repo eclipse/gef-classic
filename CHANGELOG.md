@@ -224,11 +224,11 @@ LineBorder now provides getter and setter methods for line style, and a new cons
 
 ### Support the new SWT Line Attribute and fractional line widths
 
-![SWT line styles](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.5/linestyle.png)
+<img src=".changelog/3.5/linestyle.png" />
 
 ### Graphics now implements getAdvanced()
 
-![Anti-aliasing & Alpha](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.5/advanced.png)
+<img src=".changelog/3.5/advanced.png" />
 
 ## Zest
 
@@ -236,13 +236,13 @@ LineBorder now provides getter and setter methods for line style, and a new cons
 
 Zest now supports curved connections between nodes. This can be set by calling setDepth(int) on a GraphConnection.
 
-![curved connections](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.5/curved.png)
+<img src=".changelog/3.5/curved.png" />
 
 ### Nested Content Provider
 
 Zest now supports nested graphs through the use of a content provider. A snippet showing this is available here.
 
-![nested content](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.5/nested.png)
+<img src=".changelog/3.5/nested.png" />
 
 # [GEF 3.0.0](https://projects.eclipse.org/projects/tools.gef/releases/3.0.0)
 
@@ -250,27 +250,27 @@ Zest now supports nested graphs through the use of a content provider. A snippet
 
 GEF viewers can now display accessible rulers along their top and left edges. A ruler can display pixels, centimeters or inches. Guides can be created on the ruler by clicking on an empty spot on the ruler or via its context menu. Parts in the graphical editor can be dragged and attached to the guides. They can also be attached when resizing. Alternatively, snapping can be disabled by holding down the Alt key while dragging. Feedback is shown in the form of a red line when a part is being attached to a guide.
 
-![attach to guide feedback](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/rulers-guides.gif)
+<img src=".changelog/3.0/rulers-guides.gif" />
 
 Parts that are attached to a guide will then move with the guide.
 
-![rules, guides, ghost feedback](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/guide-drag.gif)
+<img src=".changelog/3.0/guide-drag.gif" />
 
 A mechanism is available to show or hide rulers.
 
-![ruler options, menu](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/rulers-menu.jpg)
+<img src=".changelog/3.0/rulers-menu.jpg" />
 
 ## Grid
 
 GEF now provides a grid. Parts can be snapped to a grid during creation, moving or resizing. It is also possible to have connection bendpoints snap to it. (Note that snapping during creation and snapping of connection bendpoints, although possible, have not been implemented in the logic example.) Alternatively, snapping can be disabled by holding down the Alt key while dragging. Grid snapping and visibility are two distinct properties, and it is possible to enable one without the other. Like the rulers, the grid can be turned off, if so desired.
 
-![background grid](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/grid.gif)
+<img src=".changelog/3.0/grid.gif" />
 
 ## Snap to Geometry
 
 The Snap to Geometry feature allows you to quickly align parts being dragged to other parts in the diagram. Edges of parts being resized can be snapped as well. A blue feedback line shows what the part is snapping to. In the screenshot below, the circuit being dragged is aligning to the vertical center of the topmost circuit, and the bottom of the other two circuits.
 
-![snap to geometry](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/geometry.gif)
+<img src=".changelog/3.0/geometry.gif" />
 
 As with the other snapping features, it can be disabled by holding down Alt while dragging, or can be permanently turned off.
 
@@ -282,7 +282,7 @@ Holding down the Shift key while moving a part will restrict that part's movemen
 
 Holding down the Ctrl key while resizing will cause a resize to happen in the opposite direction of the drag as well, such that the center of the part being resized will not change after the resize is done. 
 
-![centered resize](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/centered-resize.gif)
+<img src=".changelog/3.0/centered-resize.gif" />
 
 ## Cloning
 
@@ -296,11 +296,11 @@ GEF 3.0 introduces the Palette View. This allows users to customize the size and
 
 For clients that require the palette to be always visible, and to provide further customizability to the end-user, the fly-out palette is also being introduced. The palette flies out over the top of the editor when the user hovers over it (or clicks on it), and auto-hides when not in use.
 
-![minimized/hidden palette](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/flyout-hidden.gif)
+<img src=".changelog/3.0/flyout-hidden.gif" />
 
 The user can also pin it open, if so desired.
 
-![opened/shown palette](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/flyout-context-menu.gif)
+<img src=".changelog/3.0/flyout-context-menu.gif" />
 
 It can be resized, docked on either size of the editor, and is completely accessible. The fly-out is only visible when the palette view is not. It automatically comes up when the palette view is closed (or when the user switches to a perspective in which the view is not open), and disappears when the palette view is opened. The palette state (selection, drawer expansion, etc.) is maintained when switching from the view to the fly-out and vice-versa.
 
@@ -308,17 +308,17 @@ It can be resized, docked on either size of the editor, and is completely access
 
 It is now possible to create stacks of entries on the palette. The active entry in the stack is the one visible on the top. A drop-down menu allows changing the active entry. When the palette is in any layout other than list, the drop-down can only be accessed via Alt+Down.
 
-![palette stacks](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/palette-stack.gif)
+<img src=".changelog/3.0/palette-stack.gif" />
 
 ## Shortest Path Connection Routing
 
 An automatic connection routing technique, that employs the shortest path algorithm to find paths around obstacles, is now available in GEF.
 
-![shortest path connection routing](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/shortestPaths.gif)
+<img src=".changelog/3.0/shortestPaths.gif" />
 
 This feature can be activated in the logic example by deselecting everything in the diagram and then changing the connection router via the property sheet.
 
-![connection router property](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/propertySheet.gif)
+<img src=".changelog/3.0/propertySheet.gif" />
 
 ## Panning
 
@@ -328,4 +328,4 @@ With the PanningSelectionTool, it is possible to pan by moving the mouse while h
 
 New actions are available that can, with more than one part selected, resize all selected parts to have the same height or width as that of the primary selection (the part that was last selected).
 
-![match size of figures](https://www.github.com/eclipse/gef-legacy/blob/master/.changelog/3.0/matchSize.jpg)
+<img src=".changelog/3.0/matchSize.jpg" />
