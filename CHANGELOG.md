@@ -184,15 +184,15 @@ UndoablePropertySheetEntry was refactored and opened for subclassing (see Bug [#
 
 Draw2d now provides a puristic scrollbar as alternative to the classic scrollbar.
 
-![classic scrollbar](https://wiki.eclipse.org/images/7/7f/Scrollbar.png)
+<img src="https://wiki.eclipse.org/images/7/7f/Scrollbar.png" />
 
-![puristic scrollbar](https://wiki.eclipse.org/images/5/59/PuristicScrollbar.jpg)
+<img src="https://wiki.eclipse.org/images/5/59/PuristicScrollbar.jpg" />
 
 ### Ghost Image Figure
 
 Semi-transparent ghost image figures now be easily created for arbitrary Draw2d figures, e.g. to render feedback.
 
-![ghost image figure](https://wiki.eclipse.org/images/4/49/GhostImageFigure.png)
+<img src="https://wiki.eclipse.org/images/4/49/GhostImageFigure.png" />
 
 ### Clipping Strategy
 
@@ -200,11 +200,11 @@ Draw2d figures can now be parameterized with a clipping strategy (IClippingStrat
 
 As this default clipping behavior leads to quite poor results in case connections are drawn from nested viewports ...
 
-![default clipping strategy](https://wiki.eclipse.org/images/d/d4/DefaultClippingStrategy.jpg)
+<img src="https://wiki.eclipse.org/images/d/d4/DefaultClippingStrategy.jpg" />
 
 ... a clipping strategy implementation (ViewportAwareConnectionLayerClippingStrategy) to deal with this is now available, being the default clipping strategy of the logic editor's ConnectionLayer.
 
-![viewport-aware clipping strategy](https://wiki.eclipse.org/images/b/b6/ViewportAwareClippingStrategy.jpg)
+<img src="https://wiki.eclipse.org/images/b/b6/ViewportAwareClippingStrategy.jpg" />
 
 ## GEF
 
@@ -212,7 +212,7 @@ As this default clipping behavior leads to quite poor results in case connection
 
 GEF now offers a special SelectionEditPolicy to render the hidden contents of a viewport by means of semi-transparent ghost images for the nested children and related connections. That is, in case the ScrollableFeedbackSelectionPolicy is registered at a host edit part, the hidden contents can now be easily made visible by a primary selection of the host figure.
 
-![scrollable selection feedback](https://wiki.eclipse.org/images/8/8b/ScrollableSelectionFeedback.png)
+<img src="https://wiki.eclipse.org/images/8/8b/ScrollableSelectionFeedback.png" />
 
 # [GEF 3.5.0 (Galileo)](https://projects.eclipse.org/projects/tools.gef/releases/3.5.0-9)
 
