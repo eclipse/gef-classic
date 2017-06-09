@@ -4,7 +4,7 @@ Annual release providing minor revisions of the GEF-Legacy components Draw2d 3.x
 
 See [GEF@github.com CHANGELOG](https://github.com/eclipse/gef/blob/master/CHANGELOG.md#gef-400-neon) for details about GEF4.
 
-# [GEF 3.10.1 (Mars SR1)](https://projects.eclipse.org/projects/tools.gef/releases/3.10.1-mars-sr1)
+# [GEF 3.10.1 (Mars.1)](https://projects.eclipse.org/projects/tools.gef/releases/3.10.1-mars.1)
 
 ## General
 
