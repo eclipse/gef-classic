@@ -1,4 +1,4 @@
-#Eclipse Graphical Editing Framework (GEF)
+# Eclipse Graphical Editing Framework (GEF)
 
 This repository contains the code base of the [Eclipse Graphical Editing Framework (GEF)](http://www.eclipse.org/gef/) project's legacy components [Draw2d 3.x](https://www.eclipse.org/gef/draw2d/index.php), [GEF (MVC) 3.x](https://www.eclipse.org/gef/gef_mvc/index.php), and [Zest 1.x](https://www.eclipse.org/gef/zest/index.php), which are still maintained but will not be developed further. The code base of the current GEF production components is located in the [eclipse/gef](https://github.com/eclipse/gef) repository instead.
 
