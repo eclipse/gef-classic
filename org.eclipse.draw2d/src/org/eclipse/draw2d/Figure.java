@@ -455,9 +455,7 @@ public class Figure implements IFigure {
 				if (fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
 					fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x,
 							PRIVATE_POINT.y);
-					if (fig != null) {
-						return fig;
-					}
+					return fig;
 				}
 			}
 		}
