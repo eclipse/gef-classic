@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -14,53 +14,60 @@ import org.eclipse.gef.EditPartViewer;
 import org.eclipse.gef.dnd.SimpleObjectTransfer;
 
 /**
- * Used to move EditParts around in a single viewer.  
+ * Used to move EditParts around in a single viewer.
  */
-class TreeViewerTransfer extends SimpleObjectTransfer {
+final class TreeViewerTransfer extends SimpleObjectTransfer {
 
-private static final TreeViewerTransfer INSTANCE = new TreeViewerTransfer();
-private static final String TYPE_NAME = "Local Transfer"//$NON-NLS-1$
-	+ System.currentTimeMillis()
-	+ ":" + INSTANCE.hashCode();//$NON-NLS-1$
-private static final int TYPEID = registerType(TYPE_NAME);
+	private static final TreeViewerTransfer INSTANCE = new TreeViewerTransfer();
+	private static final String TYPE_NAME = "Local Transfer"//$NON-NLS-1$
+			+ System.currentTimeMillis() + ":" + INSTANCE.hashCode();//$NON-NLS-1$
+	private static final int TYPEID = registerType(TYPE_NAME);
 
-private static EditPartViewer viewer;
+	private static EditPartViewer viewer;
 
-/**
- * Returns the singleton instance.
- * @return The singleton instance */
-public static TreeViewerTransfer getInstance() {
-	return INSTANCE;
-}
+	/**
+	 * Returns the singleton instance.
+	 * 
+	 * @return The singleton instance
+	 */
+	public static TreeViewerTransfer getInstance() {
+		return INSTANCE;
+	}
 
-private TreeViewerTransfer() { }
+	private TreeViewerTransfer() {
+	}
 
-/**
- * @see Transfer#getTypeIds()
- */
-protected int[] getTypeIds() {
-	return new int[] {TYPEID};
-}
+	/**
+	 * @see org.eclipse.swt.dnd.Transfer#getTypeIds()
+	 */
+	protected int[] getTypeIds() {
+		return new int[] { TYPEID };
+	}
 
-/**
- * @see Transfer#getTypeNames()
- */
-protected String[] getTypeNames() {
-	return new String[] {TYPE_NAME};
-}
+	/**
+	 * @see org.eclipse.swt.dnd.Transfer#getTypeNames()
+	 */
+	protected String[] getTypeNames() {
+		return new String[] { TYPE_NAME };
+	}
 
-/**
- * Returns the viewer where the drag started.
- * @return The viewer where the drag started */
-public EditPartViewer getViewer() {
-	return viewer;
-}
+	/**
+	 * Returns the viewer where the drag started.
+	 * 
+	 * @return The viewer where the drag started
+	 */
+	public EditPartViewer getViewer() {
+		return viewer;
+	}
 
-/**
- * Sets the viewer where the drag started.
- * @param epv The viewer */
-public void setViewer(EditPartViewer epv) {
-	viewer = epv;
-}
+	/**
+	 * Sets the viewer where the drag started.
+	 * 
+	 * @param epv
+	 *            The viewer
+	 */
+	public void setViewer(EditPartViewer epv) {
+		viewer = epv;
+	}
 
 }

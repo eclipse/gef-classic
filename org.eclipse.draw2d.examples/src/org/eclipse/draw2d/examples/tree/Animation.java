@@ -1,39 +1,63 @@
+/*******************************************************************************
+ * Copyright (c) 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.draw2d.examples.tree;
 
 import java.util.*;
 
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2d.geometry.*;
 
 /**
  * @author hudsonr
  * Created on Apr 28, 2003
  */
 public class Animation {
-	
-static final long DURATION = 200;
+
+static final long DURATION = 210;
 
 static long current;
 static double progress;
 static long start = -1;
 static long finish;
+static Viewport viewport;
+static IFigure trackMe;
+static IFigure showMe;
+static Point trackLocation;
 
 static boolean PLAYBACK;
-static boolean IN_PROGRESS;
 static boolean RECORDING;
 
 static Map initialStates;
 static Map finalStates;
 
 static void end() {
-	IN_PROGRESS = false;
+	Iterator iter = initialStates.keySet().iterator();
+	while (iter.hasNext())
+		((IFigure)iter.next()).revalidate();
 	initialStates = null;
 	finalStates = null;
 	PLAYBACK = false;
+	trackMe = null;
+	showMe = null;
+	viewport = null;
 }
 
-static void mark() {
-	IN_PROGRESS = true;
+static void mark(IFigure figure) {
+	trackMe = figure;
+	trackLocation = trackMe.getBounds().getLocation();
+	while (!(figure instanceof Viewport))
+		figure = figure.getParent();
+	viewport = (Viewport)figure;
+
 	initialStates = new HashMap();
 	finalStates = new HashMap();
 	start = System.currentTimeMillis();
@@ -43,9 +67,9 @@ static void mark() {
 
 static void captureLayout(IFigure root) {
 	RECORDING = true;
-	while (root.getParent()!= null) {
+	while (root.getParent()!= null)
 		root = root.getParent();
-	}
+
 	root.validate();
 	Iterator iter = initialStates.keySet().iterator();
 	while (iter.hasNext())
@@ -76,7 +100,7 @@ static boolean playbackState(IFigure container) {
 			(int)Math.round(progress * rect2.height + (1-progress) * rect1.height)
 		));
 //		child.invalidate();
-	};
+	}
 	return true;
 }
 
@@ -112,9 +136,18 @@ static void swap() {
 static boolean step() {
 	current = System.currentTimeMillis() + 30;
 	progress = (double)(current - start)/(finish - start);
+	progress = Math.min(progress, 0.999);
 	Iterator iter = initialStates.keySet().iterator();
+	
 	while (iter.hasNext())
 		((IFigure)iter.next()).revalidate();
+	viewport.validate();
+	
+	Point loc = viewport.getViewLocation();
+	loc.translate(trackMe.getBounds().getLocation().getDifference(trackLocation));
+	viewport.setViewLocation(loc);
+	trackLocation = trackMe.getBounds().getLocation();
+	
 	return current < finish;
 }
 

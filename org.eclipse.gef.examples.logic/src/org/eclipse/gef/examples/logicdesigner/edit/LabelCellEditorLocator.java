@@ -1,53 +1,59 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.gef.tools.CellEditorLocator;
-import org.eclipse.jface.viewers.CellEditor;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Text;
 
-final public class LabelCellEditorLocator
-	implements CellEditorLocator
-{
+import org.eclipse.jface.viewers.CellEditor;
 
-private Label label;
+import org.eclipse.draw2d.geometry.Rectangle;
 
-public LabelCellEditorLocator(Label label) {
-	setLabel(label);
-}
+import org.eclipse.gef.tools.CellEditorLocator;
 
-public void relocate(CellEditor celleditor) {
-	Text text = (Text)celleditor.getControl();
-	Point pref = text.computeSize(-1, -1);
-	Rectangle rect = label.getTextBounds().getCopy();
-	label.translateToAbsolute(rect);
-	text.setBounds(rect.x-4, rect.y-1, pref.x+1, pref.y+1);	
-}
+import org.eclipse.gef.examples.logicdesigner.figures.LabelFigure;
 
-/**
- * Returns the Label figure.
- */
-protected Label getLabel() {
-	return label;
-}
+final public class LabelCellEditorLocator implements CellEditorLocator {
 
-/**
- * Sets the label.
- * @param label The label to set
- */
-protected void setLabel(Label label) {
-	this.label = label;
-}
+	private LabelFigure stickyNote;
+
+	public LabelCellEditorLocator(LabelFigure stickyNote) {
+		setLabel(stickyNote);
+	}
+
+	public void relocate(CellEditor celleditor) {
+		Text text = (Text) celleditor.getControl();
+		Rectangle rect = stickyNote.getClientArea();
+		stickyNote.translateToAbsolute(rect);
+		org.eclipse.swt.graphics.Rectangle trim = text.computeTrim(0, 0, 0, 0);
+		rect.translate(trim.x, trim.y);
+		rect.width += trim.width;
+		rect.height += trim.height;
+		text.setBounds(rect.x, rect.y, rect.width, rect.height);
+	}
+
+	/**
+	 * Returns the stickyNote figure.
+	 */
+	protected LabelFigure getLabel() {
+		return stickyNote;
+	}
+
+	/**
+	 * Sets the Sticky note figure.
+	 * 
+	 * @param stickyNote
+	 *            The stickyNote to set
+	 */
+	protected void setLabel(LabelFigure stickyNote) {
+		this.stickyNote = stickyNote;
+	}
 
 }

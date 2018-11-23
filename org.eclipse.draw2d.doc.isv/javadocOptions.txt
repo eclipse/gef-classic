@@ -1,0 +1,21 @@
+-encoding "UTF-8"
+-charset "UTF-8"
+-sourcepath "../org.eclipse.draw2d/src"
+-d reference/api
+-classpath @rt@@args.list.delimiter@@context@
+-use
+-breakiterator
+-splitIndex
+-windowtitle "Draw2d API Specification"
+-doctitle "Draw2d API Specification"
+-header "<b>Draw2d</b><br>@build@"
+-bottom "Copyright (c) IBM Corp. and others 2000, 2011.  All Rights Reserved."
+-link http://docs.oracle.com/javase/1.4.2/docs/api/
+-linkoffline PLUGINS_ROOT/org.eclipse.platform.doc.isv/reference/api @linkoffline-target@/org.eclipse.platform.doc.isv/reference/api
+
+org.eclipse.draw2d
+org.eclipse.draw2d.geometry
+org.eclipse.draw2d.graph
+org.eclipse.draw2d.parts
+org.eclipse.draw2d.text
+org.eclipse.draw2d.widgets

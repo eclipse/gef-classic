@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="%Editor-Name"
+            icon="icons/digraph.gif"
+            extensions="digraph2"
+            class="org.eclipse.gef.examples.digraph2.editor.Digraph2GraphicalEditor"
+            id="org.eclipse.gef.examples.digraph2">
+      </editor>
+   </extension>
+</plugin>

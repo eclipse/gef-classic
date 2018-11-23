@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -13,112 +13,116 @@ package org.eclipse.gef.ui.actions;
 import java.util.Collections;
 import java.util.List;
 
-import org.eclipse.jface.viewers.*;
-import org.eclipse.ui.IEditorPart;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
  * Superclass for an action needing the current selection.
  */
-public abstract class SelectionAction
-	extends EditorPartAction
-{
-private ISelectionProvider provider;
+public abstract class SelectionAction extends WorkbenchPartAction {
+	private ISelectionProvider provider;
 
-/*
- * The current selection.
- */
-private ISelection selection;
+	/*
+	 * The current selection.
+	 */
+	private ISelection selection;
 
-/**
- * Creates a <code>SelectionAction</code> and associates it with the given editor.
- * @deprecated use IWorkbenchPart constructor, SelectionAction will be changed to inherit
- * from WorkbenchPartAction in next release
- * @param editor The editor that this action is associated with.
- */
-public SelectionAction(IEditorPart editor) {
-	this((IWorkbenchPart)editor);
-}
+	/**
+	 * Creates a <code>SelectionAction</code> and associates it with the given
+	 * editor.
+	 * 
+	 * @param part
+	 *            The workbench part associated with this action
+	 * @param style
+	 *            the style for this action
+	 */
+	public SelectionAction(IWorkbenchPart part, int style) {
+		super(part, style);
+	}
 
-/**
- * Creates a <code>SelectionAction</code> and associates it with the given workbench part.
- * @param part the workbench part
- */
-public SelectionAction(IWorkbenchPart part) {
-	super(part);
-}
+	/**
+	 * Creates a <code>SelectionAction</code> and associates it with the given
+	 * workbench part.
+	 * 
+	 * @param part
+	 *            the workbench part
+	 */
+	public SelectionAction(IWorkbenchPart part) {
+		super(part);
+	}
 
-/**
- * @see org.eclipse.gef.Disposable#dispose()
- */
-public void dispose() {
-	this.selection = StructuredSelection.EMPTY;
-	super.dispose();
-}
+	/**
+	 * @see org.eclipse.gef.Disposable#dispose()
+	 */
+	public void dispose() {
+		this.selection = StructuredSelection.EMPTY;
+		super.dispose();
+	}
 
-/**
- * Returns a <code>List</code> containing the currently
- * selected objects.
- * 
- * @return A List containing the currently selected objects.
- */
-protected List getSelectedObjects() {
-	if (!(getSelection() instanceof IStructuredSelection))
-		return Collections.EMPTY_LIST;
-	return ((IStructuredSelection)getSelection()).toList();
-}
+	/**
+	 * Returns a <code>List</code> containing the currently selected objects.
+	 * 
+	 * @return A List containing the currently selected objects.
+	 */
+	protected List getSelectedObjects() {
+		if (!(getSelection() instanceof IStructuredSelection))
+			return Collections.EMPTY_LIST;
+		return ((IStructuredSelection) getSelection()).toList();
+	}
 
-/**
- * Gets the current selection.
- * 
- * @return The current selection.
- */
-protected ISelection getSelection() {
-	return selection;
-}
+	/**
+	 * Gets the current selection.
+	 * 
+	 * @return The current selection.
+	 */
+	protected ISelection getSelection() {
+		return selection;
+	}
 
-/**
- * Called when the selection is changed.
- */
-protected void handleSelectionChanged() {
-	refresh();
-}
+	/**
+	 * Called when the selection is changed.
+	 */
+	protected void handleSelectionChanged() {
+		refresh();
+	}
 
-/**
- * Sets the current selection and calls on subclasses 
- * to handle the selectionChanged event.
- *
- * @param selection The new selection.
- */
-protected void setSelection(ISelection selection) {
-	this.selection = selection;
-	handleSelectionChanged();
-}
+	/**
+	 * Sets the current selection and calls on subclasses to handle the
+	 * selectionChanged event.
+	 * 
+	 * @param selection
+	 *            The new selection.
+	 */
+	protected void setSelection(ISelection selection) {
+		this.selection = selection;
+		handleSelectionChanged();
+	}
 
-/**
- * May be used to provide an alternative selection source other than the workbench's
- * selection service. Use of this method is optional. The default value is
- * <code>null</code>, in which case the selection is obtained using the partsite's
- * selection service.
- * @param provider <code>null</code> or a selection provider
- */
-public void setSelectionProvider(ISelectionProvider provider) {
-	this.provider = provider;
-}
+	/**
+	 * May be used to provide an alternative selection source other than the
+	 * workbench's selection service. Use of this method is optional. The
+	 * default value is <code>null</code>, in which case the selection is
+	 * obtained using the partsite's selection service.
+	 * 
+	 * @param provider
+	 *            <code>null</code> or a selection provider
+	 */
+	public void setSelectionProvider(ISelectionProvider provider) {
+		this.provider = provider;
+	}
 
-/**
- * @see org.eclipse.gef.ui.actions.EditorPartAction#update()
- */
-public void update() {
-	if (provider != null)
-		setSelection(provider.getSelection());
-	else
-		setSelection(
-			getWorkbenchPart()
-				.getSite()
-				.getWorkbenchWindow()
-				.getSelectionService()
-				.getSelection());
-}
+	/**
+	 * @see org.eclipse.gef.ui.actions.EditorPartAction#update()
+	 */
+	public void update() {
+		if (provider != null)
+			setSelection(provider.getSelection());
+		else
+			setSelection(getWorkbenchPart().getSite().getWorkbenchWindow()
+					.getSelectionService().getSelection());
+	}
 
 }

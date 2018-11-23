@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?><!--
+    Copyright (c) 2005, 2006 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<plugin>
+
+     <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            default="true"
+            name="GEF Flow Example"
+            extensions="flow"
+            icon="view.gif"
+            class="org.eclipse.gef.examples.flow.ui.FlowEditor"
+            contributorClass="org.eclipse.gef.examples.flow.actions.FlowActionBarContributor"
+            id="GEF Flow Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="GEF (Graphical Editing Framework)"
+            parentCategory="org.eclipse.ui.Examples"
+            id="org.eclipse.gef.examples">
+      </category>
+      <wizard
+            name="Flow Diagram"
+            icon="view.gif"
+            category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
+            class="org.eclipse.gef.examples.flow.ui.FlowCreationWizard"
+            id="org.eclipse.gef.examples.flow.wizard.new.file">
+         <selection
+               class="org.eclipse.core.resources.IResource">
+         </selection>
+      </wizard>
+   </extension>
+
+</plugin>

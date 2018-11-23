@@ -1,55 +1,62 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.ToolbarLayout;
+
 import org.eclipse.gef.palette.PaletteRoot;
 import org.eclipse.gef.ui.palette.PaletteViewer;
+import org.eclipse.gef.ui.palette.editparts.PaletteAnimator;
+import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
+import org.eclipse.gef.ui.palette.editparts.PaletteToolbarLayout;
 
-public class SliderPaletteEditPart 
-	extends PaletteEditPart
-{
+public class SliderPaletteEditPart extends PaletteEditPart {
 
-private DrawerAnimationController controller;
+	private PaletteAnimator controller;
 
-public SliderPaletteEditPart(PaletteRoot paletteRoot) {
-	super(paletteRoot);
-}
+	public SliderPaletteEditPart(PaletteRoot paletteRoot) {
+		super(paletteRoot);
+	}
 
-public IFigure createFigure() {
-	Figure figure = new Figure();
-	figure.setOpaque(true);
-	figure.setForegroundColor(ColorConstants.listForeground);
-	figure.setBackgroundColor(ColorConstants.button);
-	return figure;
-}
+	public IFigure createFigure() {
+		Figure figure = new Figure();
+		figure.setOpaque(true);
+		figure.setForegroundColor(ColorConstants.listForeground);
+		figure.setBackgroundColor(ColorConstants.listBackground);
+		return figure;
+	}
 
-/**
- * This method overrides super's functionality to do nothing.
- * 
- * @see org.eclipse.gef.ui.palette.PaletteEditPart#refreshVisuals()
- */
-protected void refreshVisuals() {
-}
+	/**
+	 * This method overrides super's functionality to do nothing.
+	 * 
+	 * @see PaletteEditPart#refreshVisuals()
+	 */
+	protected void refreshVisuals() {
+	}
 
-/**
- * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#registerVisuals()
- */
-protected void registerVisuals() {
-	super.registerVisuals();
-	controller = new DrawerAnimationController(
-		((PaletteViewer)getViewer()).getPaletteViewerPreferences());
-	getViewer().getEditPartRegistry().put(DrawerAnimationController.class, controller);
-	ToolbarLayout layout = new PaletteToolbarLayout(controller);
-	getFigure().setLayoutManager(layout);
-}
+	/**
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#registerVisuals()
+	 */
+	protected void registerVisuals() {
+		super.registerVisuals();
+		controller = new PaletteAnimator(
+				((PaletteViewer) getViewer()).getPaletteViewerPreferences());
+		getViewer().getEditPartRegistry()
+				.put(PaletteAnimator.class, controller);
+		ToolbarLayout layout = new PaletteToolbarLayout();
+		getFigure().setLayoutManager(layout);
+		getFigure().addLayoutListener(controller);
+	}
 
 }

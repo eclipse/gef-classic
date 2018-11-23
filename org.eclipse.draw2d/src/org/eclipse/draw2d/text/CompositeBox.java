@@ -1,103 +1,65 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.util.*;
-
 /**
- * A FlowBox that can contain other BlockInfos. The contained BlockInfos are called
- * <i>fragments</i>.
+ * A FlowBox that can contain other FlowBoxes. The contained FlowBoxes are
+ * called <i>fragments</i>.
+ * 
  * @author hudsonr
- * @since 2.1 */
-public abstract class CompositeBox
-	extends FlowBox
-{
-
-/**
- * The contained fragments.
+ * @since 2.1
  */
-protected List fragments = new ArrayList();
-int recommendedWidth;
+public abstract class CompositeBox extends FlowBox {
 
-/**
- * Adds the specified FlowBox. Updates the width, height, and ascent properties.
- * @param block the FlowBox being added */
-public void add(FlowBox block) {
-	fragments.add(block);
-	unionInfo(block);
-}
+	int recommendedWidth = -1;
 
-/**
- * Removes all owned fragments and invalidates this CompositeBox.
- */
-public void clear() {
-	fragments.clear();
-	resetInfo();
-}
+	/**
+	 * Adds the given box and updates properties of this composite box.
+	 * 
+	 * @param box
+	 *            the child being added
+	 */
+	public abstract void add(FlowBox box);
 
-/**
- * Overridden to ensure that the CompositeBox is valid.
- * @see FlowBox#getBounds() */
-//public Rectangle getBounds() {
-//	validate();
-//	return this;
-//}
+	abstract int getBottomMargin();
 
-/** * @return the List of fragments */
-public List getFragments() {
-	return fragments;
-}
+	/**
+	 * Returns the recommended width for this CompositeBox.
+	 * 
+	 * @return the recommended width
+	 */
+	public int getRecommendedWidth() {
+		return recommendedWidth;
+	}
 
-/**
- * Returns the recommended width for this CompositeBox.
- * @return the recommended width
- */
-public int getRecommendedWidth() {
-	return recommendedWidth;
-}
+	abstract int getTopMargin();
 
-//public int getInnerTop() {
-//	validate();
-//	return y;
-//}
+	/**
+	 * Sets the recommended width for this CompositeBox.
+	 * 
+	 * @param w
+	 *            the width
+	 */
+	public void setRecommendedWidth(int w) {
+		recommendedWidth = w;
+	}
 
-/** * @see org.eclipse.draw2d.geometry.Rectangle#isEmpty() */
-public boolean isOccupied() {
-	return !fragments.isEmpty();
-}
-
-/**
- * resets fields before unioning the data from the fragments.
- */
-protected void resetInfo() {
-	width = height = 0;
-}
-
-/**
- * Sets the recommended width for this CompositeBox.
- * @param w the width */
-public void setRecommendedWidth(int w) {
-	recommendedWidth = w;
-}
-
-/**
- * unions the fragment's width, height, and ascent into this composite.
- * @param box the fragment */
-protected void unionInfo(FlowBox box) {
-	int right = Math.max(x + width, box.x + box.width);
-	int bottom = Math.max(y + height, box.y + box.height);
-	x = Math.min(x, box.x);
-	y = Math.min(y, box.y);
-	width = right - x;
-	height = bottom - y;
-}
+	/**
+	 * Positions the box vertically by setting the y coordinate for the top of
+	 * the content of the line. For internal use only.
+	 * 
+	 * @param top
+	 *            the y coordinate
+	 * @since 3.1
+	 */
+	public abstract void setLineTop(int top);
 
 }

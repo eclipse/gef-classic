@@ -1,10 +1,10 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2003 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials 
- * are made available under the terms of the Common Public License v1.0
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/cpl-v10.html
- * 
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -14,38 +14,95 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A CompositeBox suitable for containing multiple LineBox fragments.
+ * 
  * @author hudsonr
- * @since 2.1 */
-public class BlockBox
-	extends CompositeBox
-{
-
-/**
- * @see org.eclipse.draw2d.text.CompositeBox#add(FlowBox)
+ * @since 2.1
  */
-public void add(FlowBox box) {
-	unionInfo(box);
-}
+public class BlockBox extends CompositeBox {
 
-Rectangle toRectangle() {
-	return new Rectangle(x, y, Math.max(width, recommendedWidth), height);
-}
+	int height;
+	private int y;
+	BlockFlow owner;
 
-/**
- * Sets the height.
- * @param h The height
- */
-public void setHeight(int h) {
-	height = h;
-}
+	BlockBox(BlockFlow owner) {
+		this.owner = owner;
+	}
 
-/**
- * Unions the dimensions of this with the dimensions of the passed FlowBox.
- * @param box The FlowBox to union this with
- */
-protected void unionInfo(FlowBox box) {
-	width = Math.max(width, box.width);
-	height = Math.max(height, box.y + box.height);
-}
+	/**
+	 * @see CompositeBox#add(FlowBox)
+	 */
+	public void add(FlowBox box) {
+		width = Math.max(width, box.getWidth());
+		height = Math.max(height, box.getBaseline() + box.getDescent());
+	}
+
+	/**
+	 * @see FlowBox#containsPoint(int, int)
+	 */
+	public boolean containsPoint(int x, int y) {
+		return true;
+	}
+
+	/**
+	 * @see FlowBox#getAscent()
+	 */
+	public int getAscent() {
+		return 0;
+	}
+
+	/**
+	 * @see FlowBox#getBaseline()
+	 */
+	public int getBaseline() {
+		return y;
+	}
+
+	int getBottomMargin() {
+		return owner.getBottomMargin();
+	}
+
+	/**
+	 * @see FlowBox#getDescent()
+	 */
+	public int getDescent() {
+		return height;
+	}
+
+	/**
+	 * @return Returns the height.
+	 */
+	public int getHeight() {
+		return height;
+	}
+
+	LineRoot getLineRoot() {
+		return null;
+	}
+
+	int getTopMargin() {
+		return owner.getTopMargin();
+	}
+
+	/**
+	 * Sets the height.
+	 * 
+	 * @param h
+	 *            The height
+	 */
+	public void setHeight(int h) {
+		height = h;
+	}
+
+	/**
+	 * @see CompositeBox#setLineTop(int)
+	 */
+	public void setLineTop(int y) {
+		this.y = y;
+	}
+
+	Rectangle toRectangle() {
+		return new Rectangle(getX(), y, Math.max(getWidth(), recommendedWidth),
+				height);
+	}
 
 }

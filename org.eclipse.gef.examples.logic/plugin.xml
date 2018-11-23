@@ -1,29 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<plugin
-   id="org.eclipse.gef.examples.logic"
-   name="Logic GEF Example"
-   version="2.1.1"
-   provider-name="Eclipse.org"
-   class="org.eclipse.gef.examples.logicdesigner.LogicPlugin">
+<?eclipse version="3.0"?>
+<plugin>
 
-   <runtime>
-      <library name="logic.jar"/>
-   </runtime>
-   <requires>
-      <import plugin="org.eclipse.gef" version="2.1.1"/>
-      <import plugin="org.eclipse.core.resources"/>
-   </requires>
-
-
-   <extension
+     <extension
          point="org.eclipse.ui.editors">
       <editor
-            name="%Logic_example_graphical_editor_name"
             default="true"
-            icon="logic.gif"
+            name="%Logic_example_graphical_editor_name"
             extensions="logic"
-            contributorClass="org.eclipse.gef.examples.logicdesigner.actions.LogicActionBarContributor"
+            icon="logic.gif"
             class="org.eclipse.gef.examples.logicdesigner.LogicEditor"
+            contributorClass="org.eclipse.gef.examples.logicdesigner.actions.LogicActionBarContributor"
             id="Logic Graphical Editor">
       </editor>
    </extension>
@@ -35,7 +22,6 @@
             id="org.eclipse.gef.examples">
       </category>
       <wizard
-            availableAsShortcut="true"
             name="%Logic_example_wizard_name"
             icon="logic.gif"
             category="org.eclipse.ui.Examples/org.eclipse.gef.examples"
@@ -48,6 +34,21 @@
                class="org.eclipse.core.resources.IResource">
          </selection>
       </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.logic"
+            id="org.eclipse.gef.examples.logic">
+         <action
+               label="Print"
+               class="org.eclipse.gef.examples.logicdesigner.actions.LogicPrintAction"
+               menubarPath="additions"
+               enablesFor="1"
+               id="org.eclipse.gef.examples.logic.print">
+         </action>
+      </objectContribution>
    </extension>
 
 </plugin>

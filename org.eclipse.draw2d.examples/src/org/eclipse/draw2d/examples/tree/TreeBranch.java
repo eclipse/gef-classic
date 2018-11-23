@@ -1,9 +1,28 @@
+/*******************************************************************************
+ * Copyright (c) 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.draw2d.examples.tree;
 
 import java.util.List;
 
-import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Layer;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
@@ -100,16 +119,29 @@ public void animationReset(Rectangle bounds) {
 public void collapse() {
 	if (!expanded)
 		return;
-	setExpanded(false);
+
 	IFigure root = this;
-	while (root.getParent() != null)
+	Viewport port = null;
+	Point viewportStart = null;
+	while (root.getParent() != null) {
+		if (root instanceof Viewport)
+			port = ((Viewport)root);
 		root = root.getParent();
+	}
+	viewportStart = port.getViewLocation();
+	Point nodeStart = node.getBounds().getLocation();
+	setExpanded(false);
 	root.validate();
+	
 	setExpanded(true);
 	animationReset(getNodeBounds());
-	Animation.mark();
+	Animation.mark(getNode());
 	Animation.captureLayout(getRoot());
 	Animation.swap();
+	Animation.trackLocation = nodeStart;
+
+	root.validate();
+	port.setViewLocation(viewportStart);
 	while(Animation.step())
 		getUpdateManager().performUpdate();
 	Animation.end();
@@ -130,8 +162,9 @@ public void expand() {
 	setExpanded(true);
 	animationReset(getNodeBounds());
 	
-	Animation.mark();
+	Animation.mark(getNode());
 	Animation.captureLayout(getRoot());
+
 	while(Animation.step())
 		getUpdateManager().performUpdate();
 	Animation.end();

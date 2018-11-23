@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+     <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            description="%Application-Name"
+            name="%Application-Name"
+            application="org.eclipse.gef.examples.digraph1">
+         <property
+               name="appName"
+               value="%Application-Name"/>
+         <property
+               name="windowImages"
+               value="icons/digraph.gif"/>
+      </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            name="%Editor-Name"
+            icon="icons/digraph.gif"
+            extensions="digraph1"
+            class="org.eclipse.gef.examples.digraph1.editor.Digraph1GraphicalEditor"
+            id="org.eclipse.gef.examples.digraph1">
+      </editor>
+   </extension>
+   <extension
+         id="org.eclipse.gef.examples.digraph1"
+         name="%Application-Name"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run class="org.eclipse.gef.examples.digraph1.rcp.Digraph1Application"/>
+      </application>
+   </extension>
+   <extension
+         id="org.eclipse.gef.examples.digraph1"
+         name="%Perspective-Name"
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            icon="icons/digraph.gif"
+            class="org.eclipse.gef.examples.digraph1.rcp.Digraph1Perspective"
+            fixed="true"
+            name="%Perspective-Name"
+            id="org.eclipse.gef.examples.digraph1"/>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="org.eclipse.gef.examples.digraph1.view.Digraph1GraphicalView"
+            icon="icons/digraph.gif"
+            id="org.eclipse.gef.examples.digraph1.view.Digraph1View"
+            name="%View-Name">
+      </view>
+   </extension>
+</plugin>

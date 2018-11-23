@@ -3,12 +3,6 @@
 	<name>org.eclipse.gef</name>
 	<comment></comment>
 	<projects>
-		<project>org.eclipse.core.boot</project>
-		<project>org.eclipse.core.resources</project>
-		<project>org.eclipse.core.runtime</project>
-		<project>org.eclipse.draw2d</project>
-		<project>org.eclipse.swt</project>
-		<project>org.eclipse.ui</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -16,9 +10,25 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.ManifestBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.SchemaBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+		<buildCommand>
+			<name>org.eclipse.pde.api.tools.apiAnalysisBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
-		<nature>org.eclipse.team.cvs.core.cvsnature</nature>
+		<nature>org.eclipse.pde.PluginNature</nature>
+		<nature>org.eclipse.pde.api.tools.apiAnalysisNature</nature>
 	</natures>
 </projectDescription>
