@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.draw2d.Cursors;
-import org.eclipse.draw2d.Locator;
+import org.eclipse.draw2dl.Cursors;
+import org.eclipse.draw2dl.Locator;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;

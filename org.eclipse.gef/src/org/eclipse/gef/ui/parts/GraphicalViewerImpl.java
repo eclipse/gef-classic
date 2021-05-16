@@ -34,10 +34,10 @@ import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 
-import org.eclipse.draw2d.ExclusionSearch;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LightweightSystem;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.ExclusionSearch;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.LightweightSystem;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.EditDomain;
@@ -55,7 +55,7 @@ import org.eclipse.gef.editparts.LayerManager;
 import org.eclipse.gef.editparts.ScalableRootEditPart;
 
 /**
- * An EditPartViewer implementation based on {@link org.eclipse.draw2d.IFigure
+ * An EditPartViewer implementation based on {@link IFigure
  * Figures}.
  * 
  * @author hudsonr
@@ -137,7 +137,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 	}
 
 	/**
-	 * @see GraphicalViewer#findHandleAt(org.eclipse.draw2d.geometry.Point)
+	 * @see GraphicalViewer#findHandleAt(Point)
 	 */
 	public Handle findHandleAt(Point p) {
 		LayerManager layermanager = (LayerManager) getEditPartRegistry().get(

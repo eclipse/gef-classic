@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LayeredPane;
-import org.eclipse.draw2d.ScalableFigure;
-import org.eclipse.draw2d.ScalableFreeformLayeredPane;
-import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2dl.FreeformLayer;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.LayeredPane;
+import org.eclipse.draw2dl.ScalableFigure;
+import org.eclipse.draw2dl.ScalableFreeformLayeredPane;
+import org.eclipse.draw2dl.Viewport;
 
 /**
  * Adds Zoom support to the standard FreeformGraphicalRootEditPart. This root is

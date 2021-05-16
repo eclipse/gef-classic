@@ -12,14 +12,15 @@ package org.eclipse.gef.internal.ui.rulers;
 
 import java.beans.PropertyChangeEvent;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.RangeModel;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.RangeModel;
+import org.eclipse.draw2dl.Viewport;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.EditPart;
@@ -169,7 +170,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		}
 
 		/**
-		 * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
+		 * @see IFigure#getPreferredSize(int, int)
 		 */
 		public Dimension getPreferredSize(int wHint, int hHint) {
 			if (this.getContents() == null)
@@ -190,13 +191,13 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		 * Since the RangeModel is shared with that of the editor's, a
 		 * RulerViewport should not adjust it.
 		 * 
-		 * @see org.eclipse.draw2d.Viewport#readjustScrollBars()
+		 * @see Viewport#readjustScrollBars()
 		 */
 		protected void readjustScrollBars() {
 		}
 
 		/**
-		 * @see org.eclipse.draw2d.Figure#paintBorder(org.eclipse.draw2d.Graphics)
+		 * @see Figure#paintBorder(Graphics)
 		 */
 		protected void paintBorder(Graphics graphics) {
 			super.paintBorder(graphics);
@@ -230,7 +231,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		}
 
 		/**
-		 * @see org.eclipse.draw2d.Viewport#setContents(org.eclipse.draw2d.IFigure)
+		 * @see Viewport#setContents(IFigure)
 		 */
 		public void setContents(IFigure figure) {
 			super.setContents(figure);
@@ -242,7 +243,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		/**
 		 * RulerViewport uses local coordinates.
 		 * 
-		 * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
+		 * @see Figure#useLocalCoordinates()
 		 */
 		protected boolean useLocalCoordinates() {
 			return true;

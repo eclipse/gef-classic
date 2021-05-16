@@ -14,10 +14,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.FreeformFigure;
+import org.eclipse.draw2dl.FreeformLayer;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * This is a layer where the guide lines are displayed. The figures in this
@@ -54,7 +55,7 @@ public class GuideLayer extends FreeformLayer {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.FreeformFigure#getFreeformExtent()
+	 * @see FreeformFigure#getFreeformExtent()
 	 */
 	public Rectangle getFreeformExtent() {
 		/*
@@ -97,7 +98,7 @@ public class GuideLayer extends FreeformLayer {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
+	 * @see IFigure#getPreferredSize(int, int)
 	 */
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		Rectangle extents = getFreeformExtent();
@@ -105,7 +106,7 @@ public class GuideLayer extends FreeformLayer {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.IFigure#remove(org.eclipse.draw2d.IFigure)
+	 * @see IFigure#remove(IFigure)
 	 */
 	public void remove(IFigure child) {
 		getConstraints().remove(child);
@@ -113,7 +114,7 @@ public class GuideLayer extends FreeformLayer {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.IFigure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
+	 * @see IFigure#setBounds(Rectangle)
 	 */
 	public void setBounds(Rectangle rect) {
 		super.setBounds(rect);
@@ -140,7 +141,7 @@ public class GuideLayer extends FreeformLayer {
 	 * The constraint is expected to be a Boolean indicating whether the given
 	 * guide line figure is horizontal or not.
 	 * 
-	 * @see org.eclipse.draw2d.IFigure#setConstraint(org.eclipse.draw2d.IFigure,
+	 * @see IFigure#setConstraint(IFigure,
 	 *      java.lang.Object)
 	 */
 	public void setConstraint(IFigure child, Object constraint) {

@@ -13,14 +13,9 @@ package org.eclipse.gef.editparts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.FreeformLayeredPane;
-import org.eclipse.draw2d.FreeformViewport;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LayeredPane;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.*;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.DragTracker;
@@ -32,7 +27,7 @@ import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 /**
- * A graphical root that uses {@link org.eclipse.draw2d.FreeformFigure
+ * A graphical root that uses {@link FreeformFigure
  * FreeformFigures} as the layers in the diagram. The
  * {@link EditPartViewer#setContents(EditPart) contents} editpart must provide a
  * FreeformFigure as its figure. Freeform figures are special because they can
@@ -49,7 +44,7 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  * <EM>IMPORTANT:</EM>The freeform root uses a <code>FreeformViewport</code> as
  * its primary figure. This class must be used with the
  * {@link org.eclipse.gef.ui.parts.ScrollingGraphicalViewer}. The viewport gets
- * installed into that viewer's {@link org.eclipse.draw2d.FigureCanvas}, which
+ * installed into that viewer's {@link FigureCanvas}, which
  * provides native scrollbars for scrolling the viewport.
  * <P>
  * This root serves as the diagram's

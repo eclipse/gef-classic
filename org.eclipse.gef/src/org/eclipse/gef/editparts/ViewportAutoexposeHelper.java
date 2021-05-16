@@ -11,11 +11,11 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.PositionConstants;
+import org.eclipse.draw2dl.Viewport;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.GraphicalEditPart;
@@ -77,7 +77,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements
 	 * Returns <code>true</code> if the given point is inside the viewport, but
 	 * near its edge.
 	 * 
-	 * @see org.eclipse.gef.AutoexposeHelper#detect(org.eclipse.draw2d.geometry.Point)
+	 * @see org.eclipse.gef.AutoexposeHelper#detect(Point)
 	 */
 	public boolean detect(Point where) {
 		lastStepTime = 0;
@@ -97,7 +97,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements
 	 * todo: investigate if we should allow auto expose when the pointer is
 	 * outside the viewport
 	 * 
-	 * @see org.eclipse.gef.AutoexposeHelper#step(org.eclipse.draw2d.geometry.Point)
+	 * @see org.eclipse.gef.AutoexposeHelper#step(Point)
 	 */
 	public boolean step(Point where) {
 		Viewport port = findViewport(owner);

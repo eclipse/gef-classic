@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.XYAnchor;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.Connection;
+import org.eclipse.draw2dl.ConnectionAnchor;
+import org.eclipse.draw2dl.XYAnchor;
+import org.eclipse.draw2dl.geometry.Point;
 
 /**
  * Helps display connection feedback during drags of the connection ends. This

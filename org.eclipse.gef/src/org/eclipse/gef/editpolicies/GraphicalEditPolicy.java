@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.IFigure;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;

@@ -9,10 +9,10 @@
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import org.eclipse.draw2d.ChopboxAnchor;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ChopboxAnchor;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * A slight modification to the ChopboxAnchor class to account for the rounded corners.

@@ -13,15 +13,15 @@ package org.eclipse.gef.internal.ui.rulers;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.ImageUtilities;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.geometry.Transposer;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.ImageUtilities;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
+import org.eclipse.draw2dl.geometry.Transposer;
 
 import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;

@@ -12,7 +12,7 @@ package org.eclipse.gef;
 
 import java.util.Map;
 
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.gef.rulers.RulerProvider;

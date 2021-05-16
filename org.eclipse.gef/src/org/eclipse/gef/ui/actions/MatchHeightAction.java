@@ -12,7 +12,7 @@ package org.eclipse.gef.ui.actions;
 
 import org.eclipse.ui.IWorkbenchPart;
 
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.InternalImages;

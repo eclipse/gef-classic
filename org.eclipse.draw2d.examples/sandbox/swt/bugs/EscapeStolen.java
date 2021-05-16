@@ -25,8 +25,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.draw2d.Button;
-import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2dl.Button;
+import org.eclipse.draw2dl.FigureCanvas;
 
 public class EscapeStolen {
 

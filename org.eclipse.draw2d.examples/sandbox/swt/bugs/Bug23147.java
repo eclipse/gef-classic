@@ -13,11 +13,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FlowLayout;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LightweightSystem;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.FlowLayout;
+import org.eclipse.draw2dl.Label;
+import org.eclipse.draw2dl.LightweightSystem;
 
 public class Bug23147 {
 

@@ -20,7 +20,7 @@ import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.EditPart;

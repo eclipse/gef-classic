@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
+import org.eclipse.draw2dl.PopUpHelper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
@@ -24,10 +25,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Dimension;
 
-class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
+class EditPartTipHelper extends PopUpHelper {
 
 	private static EditPartTipHelper currentHelper;
 	private ShellListener shellListener;
@@ -96,7 +97,7 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.PopUpHelper#hide()
+	 * @see PopUpHelper#hide()
 	 */
 	protected void hide() {
 		super.hide();

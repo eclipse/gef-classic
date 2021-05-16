@@ -13,14 +13,14 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 import org.eclipse.swt.custom.ViewForm;
 import org.eclipse.swt.graphics.Color;
 
-import org.eclipse.draw2d.AbstractBorder;
-import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.AbstractBorder;
+import org.eclipse.draw2dl.ButtonModel;
+import org.eclipse.draw2dl.Clickable;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 class DropShadowButtonBorder extends AbstractBorder {
 

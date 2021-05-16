@@ -21,8 +21,9 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.Platform;
 
-import org.eclipse.draw2d.EventListenerList;
+import org.eclipse.draw2dl.EventListenerList;
 
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
@@ -45,7 +46,7 @@ import org.eclipse.gef.editpolicies.SelectionEditPolicy;
  * <P>
  * This class assumes no visual representation. Subclasses
  * {@link AbstractGraphicalEditPart} and {@link AbstractTreeEditPart} add
- * support for {@link org.eclipse.draw2d.IFigure Figures} and
+ * support for {@link IFigure Figures} and
  * {@link org.eclipse.swt.widgets.TreeItem TreeItems} respectively.
  * <P>
  * AbstractEditPart provides support for children. All AbstractEditPart's can

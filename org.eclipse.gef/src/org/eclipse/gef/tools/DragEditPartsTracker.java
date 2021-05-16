@@ -15,18 +15,19 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2dl.ConnectionLayer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.core.runtime.Platform;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PrecisionPoint;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.PositionConstants;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.PrecisionPoint;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.EditPart;
@@ -348,7 +349,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * Returns a list of all the edit parts in the
 	 * {@link AbstractTool#getOperationSet() operation set}, plus the
-	 * {@link org.eclipse.draw2d.ConnectionLayer}.
+	 * {@link ConnectionLayer}.
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#getExclusionSet()
 	 */

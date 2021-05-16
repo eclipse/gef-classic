@@ -10,13 +10,15 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
+import org.eclipse.draw2dl.geometry.Point;
+
 import java.util.List;
 
 /**
  * This class provides keyboard accessibility support for <i>Anchors</i>.
  * Anchors are simply locations (relative to the Viewer's Control) on the
  * GraphicalEditPart's figure indicated by
- * {@link org.eclipse.draw2d.geometry.Point Points}. Anchors are used when
+ * {@link Point Points}. Anchors are used when
  * creating or manipulating connections graphically. <I>Accessible</I> Anchors
  * are the locations that should be used during keyboard connection
  * manipulation.

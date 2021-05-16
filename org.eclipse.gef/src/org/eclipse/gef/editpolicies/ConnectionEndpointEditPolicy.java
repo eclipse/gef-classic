@@ -15,15 +15,15 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.AncestorListener;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.ConnectionLocator;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Polygon;
-import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2dl.AncestorListener;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Connection;
+import org.eclipse.draw2dl.ConnectionAnchor;
+import org.eclipse.draw2dl.ConnectionLocator;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Polygon;
+import org.eclipse.draw2dl.geometry.PointList;
 
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.GraphicalEditPart;

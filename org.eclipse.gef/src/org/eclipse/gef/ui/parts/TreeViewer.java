@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import org.eclipse.jface.viewers.StructuredSelection;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;

@@ -11,7 +11,7 @@
  */
 package org.eclipse.gef.editparts;
 
-import org.eclipse.draw2d.IScrollableFigure;
+import org.eclipse.draw2dl.IScrollableFigure;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.editpolicies.ScrollableSelectionFeedbackEditPolicy;

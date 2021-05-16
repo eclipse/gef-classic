@@ -23,7 +23,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.TreeViewer;
 
-import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2dl.ColorConstants;
 
 import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.palette.PaletteContainer;

@@ -13,12 +13,14 @@ package org.eclipse.gef.print;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.draw2dl.Layer;
+import org.eclipse.draw2dl.PrintOperation;
 import org.eclipse.swt.printing.Printer;
 
 import org.eclipse.jface.viewers.StructuredSelection;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PrintFigureOperation;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.PrintFigureOperation;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
@@ -40,7 +42,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 	 * @param g
 	 *            The viewer containing what is to be printed NOTE: The
 	 *            GraphicalViewer to be printed must have a
-	 *            {@link org.eclipse.draw2d.Layer Layer} with the
+	 *            {@link Layer Layer} with the
 	 *            {@link org.eclipse.gef.LayerConstants PRINTABLE_LAYERS} key.
 	 */
 	public PrintGraphicalViewerOperation(Printer p, GraphicalViewer g) {
@@ -62,7 +64,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.PrintOperation#preparePrintSource()
+	 * @see PrintOperation#preparePrintSource()
 	 */
 	protected void preparePrintSource() {
 		super.preparePrintSource();
@@ -71,7 +73,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.PrintOperation#restorePrintSource()
+	 * @see PrintOperation#restorePrintSource()
 	 */
 	protected void restorePrintSource() {
 		super.restorePrintSource();

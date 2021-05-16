@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.rulers;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.geometry.PointList;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * @author Pratik Shah

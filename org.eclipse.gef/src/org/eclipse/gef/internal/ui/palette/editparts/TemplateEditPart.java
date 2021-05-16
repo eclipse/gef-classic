@@ -17,8 +17,8 @@ import org.eclipse.swt.graphics.Image;
 
 import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.DragTracker;

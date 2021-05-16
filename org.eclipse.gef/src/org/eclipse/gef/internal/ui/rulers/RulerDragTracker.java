@@ -14,9 +14,9 @@ import java.util.Iterator;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.commands.Command;

@@ -26,7 +26,7 @@ import org.eclipse.jface.util.TransferDragSourceListener;
 import org.eclipse.jface.util.TransferDropTargetListener;
 import org.eclipse.jface.viewers.ISelection;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.geometry.Point;
 
 /**
  * An adapter on an SWT {@link org.eclipse.swt.widgets.Control} that manages the

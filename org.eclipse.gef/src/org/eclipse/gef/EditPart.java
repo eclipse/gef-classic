@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.gef.commands.Command;
 
 /**
@@ -21,7 +22,7 @@ import org.eclipse.gef.commands.Command;
  * an EditPart ties the application's model to a visual representation.
  * EditParts are responsible for making changes to the model. EditParts
  * typically control a single model object or a coupled set of object. Visual
- * representations include {@link org.eclipse.draw2d.IFigure Figures} and
+ * representations include {@link IFigure Figures} and
  * {@link org.eclipse.swt.widgets.TreeItem TreeItems}. Model objects are often
  * composed of other objects that the User will interact with. Similarly,
  * EditParts can be composed of or have references to other EditParts.

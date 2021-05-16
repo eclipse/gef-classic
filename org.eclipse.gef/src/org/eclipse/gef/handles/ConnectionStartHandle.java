@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.draw2d.ConnectionLocator;
+import org.eclipse.draw2dl.ConnectionLocator;
 
+import org.eclipse.draw2dl.Connection;
 import org.eclipse.gef.ConnectionEditPart;
 
 /**
- * A handle used at the start of the {@link org.eclipse.draw2d.Connection}. This
+ * A handle used at the start of the {@link Connection}. This
  * is treated differently than the end of the Connection.
  * 
  * @deprecated use {@link ConnectionEndpointHandle}

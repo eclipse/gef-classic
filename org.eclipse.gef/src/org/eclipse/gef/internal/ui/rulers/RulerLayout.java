@@ -12,10 +12,12 @@ package org.eclipse.gef.internal.ui.rulers;
 
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.XYLayout;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.AbstractLayout;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.XYLayout;
+import org.eclipse.draw2dl.LayoutManager;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * A custom layout manager for rulers. It is not meant to be used externally or
@@ -28,7 +30,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class RulerLayout extends XYLayout {
 
 	/**
-	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure,
+	 * @see AbstractLayout#calculatePreferredSize(IFigure,
 	 *      int, int)
 	 */
 	protected Dimension calculatePreferredSize(IFigure container, int wHint,
@@ -37,14 +39,14 @@ public class RulerLayout extends XYLayout {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.AbstractLayout#getConstraint(org.eclipse.draw2d.IFigure)
+	 * @see AbstractLayout#getConstraint(IFigure)
 	 */
 	public Object getConstraint(IFigure child) {
 		return constraints.get(child);
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.LayoutManager#layout(org.eclipse.draw2d.IFigure)
+	 * @see LayoutManager#layout(IFigure)
 	 */
 	public void layout(IFigure container) {
 		List children = container.getChildren();

@@ -25,12 +25,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.text.FlowPage;
-import org.eclipse.draw2d.text.TextFlow;
+import org.eclipse.draw2dl.Border;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.MarginBorder;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.text.FlowPage;
+import org.eclipse.draw2dl.text.TextFlow;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.DragTracker;

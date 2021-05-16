@@ -9,21 +9,17 @@
  ******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import org.eclipse.draw2d.FreeformFigure;
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.FreeformLayout;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.ScalableFigure;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.PrecisionDimension;
-import org.eclipse.draw2d.geometry.PrecisionPoint;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.geometry.Translatable;
-import org.eclipse.draw2d.text.CaretInfo;
+import org.eclipse.draw2dl.FreeformFigure;
+import org.eclipse.draw2dl.*;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.PointList;
+import org.eclipse.draw2dl.geometry.PrecisionDimension;
+import org.eclipse.draw2dl.geometry.PrecisionPoint;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.Rectangle;
+import org.eclipse.draw2dl.geometry.Translatable;
+import org.eclipse.draw2dl.text.CaretInfo;
 
 // @tag zest.bug.156286-Scaling.fix : make this implement scalable figure so
 // that a zoom manager can be used on GraphEditParts.
@@ -84,7 +80,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.Figure#getClientArea()
+	 * @see Figure#getClientArea()
 	 */
 
 	public Rectangle getClientArea(Rectangle rect) {

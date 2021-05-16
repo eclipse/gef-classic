@@ -17,9 +17,9 @@ import java.util.List;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbenchPart;
 
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.PositionConstants;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;

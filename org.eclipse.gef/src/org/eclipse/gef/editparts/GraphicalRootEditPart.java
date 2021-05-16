@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Layer;
-import org.eclipse.draw2d.LayeredPane;
-import org.eclipse.draw2d.ScrollPane;
-import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2dl.ConnectionLayer;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Layer;
+import org.eclipse.draw2dl.LayeredPane;
+import org.eclipse.draw2dl.ScrollPane;
+import org.eclipse.draw2dl.StackLayout;
+import org.eclipse.draw2dl.Viewport;
+import org.eclipse.draw2dl.geometry.Dimension;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditPart;

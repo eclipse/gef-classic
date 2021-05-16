@@ -12,7 +12,7 @@ package org.eclipse.gef;
 
 import org.eclipse.core.runtime.Assert;
 
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
 
 /**
  * Combines multiple SnapToHelpers into one compound helper. The compound helper

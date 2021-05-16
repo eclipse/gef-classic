@@ -13,17 +13,17 @@ package org.eclipse.gef.editpolicies;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Cursors;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.FocusBorder;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Locator;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.RectangleFigure;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Cursors;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.FocusBorder;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Locator;
+import org.eclipse.draw2dl.PositionConstants;
+import org.eclipse.draw2dl.RectangleFigure;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;

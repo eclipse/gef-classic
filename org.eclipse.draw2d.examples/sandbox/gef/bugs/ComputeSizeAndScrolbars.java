@@ -10,13 +10,13 @@
  *******************************************************************************/
 package gef.bugs;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.examples.AbstractExample;
-import org.eclipse.draw2d.text.FlowPage;
-import org.eclipse.draw2d.text.SimpleTextLayout;
-import org.eclipse.draw2d.text.TextFlow;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.FigureCanvas;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.examples.AbstractExample;
+import org.eclipse.draw2dl.text.FlowPage;
+import org.eclipse.draw2dl.text.SimpleTextLayout;
+import org.eclipse.draw2dl.text.TextFlow;
 
 /**
  * Problem scenario - computeSize does not include vertical scrollbar
@@ -24,7 +24,7 @@ import org.eclipse.draw2d.text.TextFlow;
 public class ComputeSizeAndScrolbars extends AbstractExample {
 
 /**
- * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
+ * @see AbstractExample#getContents()
  */
 protected IFigure getContents() {
 	FlowPage page = new FlowPage();

@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Sash;
 
-import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2dl.ColorConstants;
 
 class Splitter extends Composite {
 

@@ -13,7 +13,7 @@ package org.eclipse.gef.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2dl.Connection;
 
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.Request;

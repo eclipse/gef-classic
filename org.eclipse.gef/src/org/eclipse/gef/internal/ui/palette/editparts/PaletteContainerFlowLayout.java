@@ -12,10 +12,11 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.util.List;
 
-import org.eclipse.draw2d.FlowLayout;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.AbstractLayout;
+import org.eclipse.draw2dl.FlowLayout;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * Extends <code>FlowLayout</code> to allow the pane of a pinnable stack in icon
@@ -48,7 +49,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	 * Overridden to include the size of the expanded pane of an expanded
 	 * pinnable palette stack.
 	 * 
-	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(IFigure,
+	 * @see AbstractLayout#calculatePreferredSize(IFigure,
 	 *      int, int)
 	 */
 	protected Dimension calculatePreferredSize(IFigure container, int wHint,

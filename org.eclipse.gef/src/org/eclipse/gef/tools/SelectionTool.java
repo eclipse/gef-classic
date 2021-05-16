@@ -20,7 +20,7 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.AccessibleHandleProvider;
 import org.eclipse.gef.DragTracker;

@@ -70,22 +70,22 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.XMLMemento;
 
-import org.eclipse.draw2d.ActionEvent;
-import org.eclipse.draw2d.ActionListener;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.Button;
-import org.eclipse.draw2d.ButtonBorder;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FocusEvent;
-import org.eclipse.draw2d.FocusListener;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LightweightSystem;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.Triangle;
-import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2dl.ActionEvent;
+import org.eclipse.draw2dl.ActionListener;
+import org.eclipse.draw2dl.Border;
+import org.eclipse.draw2dl.Button;
+import org.eclipse.draw2dl.ButtonBorder;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.FocusEvent;
+import org.eclipse.draw2dl.FocusListener;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Label;
+import org.eclipse.draw2dl.LightweightSystem;
+import org.eclipse.draw2dl.MarginBorder;
+import org.eclipse.draw2dl.PositionConstants;
+import org.eclipse.draw2dl.Triangle;
+import org.eclipse.draw2dl.geometry.Dimension;
 
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.SharedCursors;
@@ -1144,7 +1144,7 @@ public class FlyoutPaletteComposite extends Composite {
 
 			// paint the gradient
 			graphics.pushState();
-			org.eclipse.draw2d.geometry.Rectangle r = org.eclipse.draw2d.geometry.Rectangle.SINGLETON;
+			org.eclipse.draw2dl.geometry.Rectangle r = org.eclipse.draw2dl.geometry.Rectangle.SINGLETON;
 			r.setBounds(getBounds());
 			graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
 			graphics.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND);
@@ -1162,7 +1162,7 @@ public class FlyoutPaletteComposite extends Composite {
 
 			// paint the focus rectangle around the text
 			if (hasFocus()) {
-				org.eclipse.draw2d.geometry.Rectangle textBounds = getTextBounds();
+				org.eclipse.draw2dl.geometry.Rectangle textBounds = getTextBounds();
 				// We reduce the width by 1 because FigureUtilities grows it by
 				// 1 unnecessarily
 				textBounds.width--;
@@ -1290,9 +1290,9 @@ public class FlyoutPaletteComposite extends Composite {
 			}
 
 			protected void layout() {
-				org.eclipse.draw2d.geometry.Rectangle clientArea = getBounds();
+				org.eclipse.draw2dl.geometry.Rectangle clientArea = getBounds();
 
-				triangle.setBounds(new org.eclipse.draw2d.geometry.Rectangle(
+				triangle.setBounds(new org.eclipse.draw2dl.geometry.Rectangle(
 						clientArea.getCenter().getTranslated(
 								-ARROW_SIZE.width / 2, -ARROW_SIZE.height / 2),
 						ARROW_SIZE));
@@ -1303,7 +1303,7 @@ public class FlyoutPaletteComposite extends Composite {
 
 				// paint the gradient
 				graphics.pushState();
-				org.eclipse.draw2d.geometry.Rectangle r = org.eclipse.draw2d.geometry.Rectangle.SINGLETON;
+				org.eclipse.draw2dl.geometry.Rectangle r = org.eclipse.draw2dl.geometry.Rectangle.SINGLETON;
 				r.setBounds(getBounds());
 				graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
 				graphics.setBackgroundColor(PaletteColorUtil.WIDGET_BACKGROUND);

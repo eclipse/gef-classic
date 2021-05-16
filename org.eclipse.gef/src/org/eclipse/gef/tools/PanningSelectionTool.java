@@ -14,8 +14,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.FigureCanvas;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.SharedCursors;
 

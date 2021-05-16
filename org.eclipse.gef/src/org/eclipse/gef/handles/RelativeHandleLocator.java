@@ -10,11 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.RelativeLocator;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
- * Similar to {@link org.eclipse.draw2d.RelativeLocator}, but adds support for
+ * Similar to {@link RelativeLocator}, but adds support for
  * the {@link org.eclipse.gef.handles.HandleBounds} interface. If the reference
  * figure implements <code>HandleBounds</code>, then
  * {@link HandleBounds#getHandleBounds()} will be used as the reference box. If
@@ -22,7 +23,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * 
  * @author hudsonr
  */
-public class RelativeHandleLocator extends org.eclipse.draw2d.RelativeLocator {
+public class RelativeHandleLocator extends RelativeLocator {
 
 	/**
 	 * Constructs a new locator using the given reference figure and location.
@@ -40,7 +41,7 @@ public class RelativeHandleLocator extends org.eclipse.draw2d.RelativeLocator {
 	 * Overridden to check for reference figures implementing the
 	 * <code>HandleBounds</code> interface.
 	 * 
-	 * @see org.eclipse.draw2d.RelativeLocator#getReferenceBox()
+	 * @see RelativeLocator#getReferenceBox()
 	 */
 	protected Rectangle getReferenceBox() {
 		IFigure f = getReferenceFigure();

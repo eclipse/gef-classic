@@ -17,7 +17,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.part.Page;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.IFigure;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;

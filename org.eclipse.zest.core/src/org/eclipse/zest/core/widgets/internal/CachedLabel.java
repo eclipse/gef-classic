@@ -9,14 +9,14 @@
  ******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import org.eclipse.draw2d.Animation;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.SWTGraphics;
-import org.eclipse.draw2d.ScaledGraphics;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.Animation;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.Label;
+import org.eclipse.draw2dl.SWTGraphics;
+import org.eclipse.draw2dl.ScaledGraphics;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;

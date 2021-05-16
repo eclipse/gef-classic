@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.draw2d.Cursors;
-import org.eclipse.draw2d.LineBorder;
-import org.eclipse.draw2d.Locator;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.Cursors;
+import org.eclipse.draw2dl.LineBorder;
+import org.eclipse.draw2dl.Locator;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;

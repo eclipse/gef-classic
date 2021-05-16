@@ -10,14 +10,15 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.draw2d.ConnectionAnchor;
+import org.eclipse.draw2dl.ConnectionAnchor;
+import org.eclipse.draw2dl.Connection;
 
 /**
  * A specialized <code>GraphicalEditPart</code> that supports both <i>target</i>
  * and <i>source</i> <code>ConnectionEditParts</code>. This <em>optional</em>
  * interface is used by the default {@link ConnectionEditPart} implementation
  * and supporting classes to obtain the correct {@link ConnectionAnchor
- * ConnectionAnchors} for the {@link org.eclipse.draw2d.Connection} Figure. This
+ * ConnectionAnchors} for the {@link Connection} Figure. This
  * interface offers a single access point for obtaining ConnectionAnchors at
  * different times. The classes which rely on this interface are:
  * <UL>

@@ -12,11 +12,11 @@ package org.eclipse.gef.handles;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.AncestorListener;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Locator;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.AncestorListener;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Locator;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;
@@ -83,20 +83,20 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.AncestorListener#ancestorMoved(org.eclipse.draw2d.IFigure)
+	 * @see AncestorListener#ancestorMoved(IFigure)
 	 */
 	public void ancestorMoved(IFigure ancestor) {
 		revalidate();
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.AncestorListener#ancestorAdded(org.eclipse.draw2d.IFigure)
+	 * @see AncestorListener#ancestorAdded(IFigure)
 	 */
 	public void ancestorAdded(IFigure ancestor) {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.AncestorListener#ancestorRemoved(org.eclipse.draw2d.IFigure)
+	 * @see AncestorListener#ancestorRemoved(IFigure)
 	 */
 	public void ancestorRemoved(IFigure ancestor) {
 	}
@@ -171,7 +171,7 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.IFigure#removeNotify()
+	 * @see IFigure#removeNotify()
 	 */
 	public void removeNotify() {
 		getOwnerFigure().removeAncestorListener(this);
@@ -224,7 +224,7 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	/**
 	 * Extends validate() to place the handle using its locator.
 	 * 
-	 * @see org.eclipse.draw2d.IFigure#validate()
+	 * @see IFigure#validate()
 	 */
 	public void validate() {
 		if (isValid())

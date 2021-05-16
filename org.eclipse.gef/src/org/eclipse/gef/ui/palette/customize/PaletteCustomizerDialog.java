@@ -73,8 +73,8 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.PageBook;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.widgets.MultiLineLabel;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.widgets.MultiLineLabel;
 
 import org.eclipse.gef.internal.Internal;
 import org.eclipse.gef.internal.ui.palette.ToolbarDropdownContributionItem;

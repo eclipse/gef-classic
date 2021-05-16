@@ -17,20 +17,20 @@ import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.RangeModel;
-import org.eclipse.draw2d.ScrollBar;
-import org.eclipse.draw2d.ScrollBarLayout;
-import org.eclipse.draw2d.Toggle;
-import org.eclipse.draw2d.TreeSearch;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.Clickable;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Label;
+import org.eclipse.draw2dl.RangeModel;
+import org.eclipse.draw2dl.ScrollBar;
+import org.eclipse.draw2dl.ScrollBarLayout;
+import org.eclipse.draw2dl.Toggle;
+import org.eclipse.draw2dl.TreeSearch;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.PointList;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 

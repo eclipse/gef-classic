@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LayoutManager;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.draw2dl.Border;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.LayoutManager;
+import org.eclipse.draw2dl.MarginBorder;
+import org.eclipse.draw2dl.ToolbarLayout;
 
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteContainer;

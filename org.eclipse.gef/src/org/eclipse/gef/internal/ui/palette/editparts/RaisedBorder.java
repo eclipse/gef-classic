@@ -10,12 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.*;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * @author Pratik Shah
@@ -25,7 +22,7 @@ public class RaisedBorder extends MarginBorder {
 	private static final Insets DEFAULT_INSETS = new Insets(1, 1, 1, 1);
 
 	/**
-	 * @see org.eclipse.draw2d.Border#getInsets(IFigure)
+	 * @see Border#getInsets(IFigure)
 	 */
 	public Insets getInsets(IFigure figure) {
 		return insets;
@@ -48,7 +45,7 @@ public class RaisedBorder extends MarginBorder {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
+	 * @see Border#paint(IFigure, Graphics, Insets)
 	 */
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		g.setLineStyle(Graphics.LINE_SOLID);

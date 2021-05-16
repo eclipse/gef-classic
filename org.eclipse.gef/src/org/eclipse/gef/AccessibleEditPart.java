@@ -13,7 +13,7 @@ package org.eclipse.gef;
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
-import org.eclipse.draw2d.AccessibleBase;
+import org.eclipse.draw2dl.AccessibleBase;
 
 /**
  * This class provides Accessibility support for

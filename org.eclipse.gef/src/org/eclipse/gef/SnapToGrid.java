@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
 
 /**
  * A helper used to perform snapping to a grid, which is specified on the

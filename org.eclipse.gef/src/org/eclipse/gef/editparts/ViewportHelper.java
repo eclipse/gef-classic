@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Viewport;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Viewport;
 
 import org.eclipse.gef.GraphicalEditPart;
 

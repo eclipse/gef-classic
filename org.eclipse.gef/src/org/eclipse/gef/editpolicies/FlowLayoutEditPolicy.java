@@ -12,10 +12,11 @@ package org.eclipse.gef.editpolicies;
 
 import java.util.List;
 
-import org.eclipse.draw2d.Polyline;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.geometry.Transposer;
+import org.eclipse.draw2dl.FlowLayout;
+import org.eclipse.draw2dl.Polyline;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
+import org.eclipse.draw2dl.geometry.Transposer;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
@@ -24,7 +25,7 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.requests.DropRequest;
 
 /**
- * An EditPolicy for use with {@link org.eclipse.draw2d.FlowLayout}. This
+ * An EditPolicy for use with {@link FlowLayout}. This
  * EditPolicy knows how to map an <x,y> coordinate on the layout container to
  * the appropriate index for the operation being performed. It also shows target
  * feedback consisting of an insertion line at the appropriate location.

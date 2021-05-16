@@ -10,14 +10,14 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.ScrollBar;
-import org.eclipse.draw2d.ScrollPane;
-import org.eclipse.draw2d.ScrollPaneLayout;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.ScrollBar;
+import org.eclipse.draw2dl.ScrollPane;
+import org.eclipse.draw2dl.ScrollPaneLayout;
+import org.eclipse.draw2dl.Viewport;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 public class OverlayScrollPaneLayout extends ScrollPaneLayout {
 

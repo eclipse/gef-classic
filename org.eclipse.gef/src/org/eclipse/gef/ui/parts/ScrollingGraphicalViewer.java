@@ -10,24 +10,25 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.parts;
 
+import org.eclipse.draw2dl.ScrollPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.FigureCanvas;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Viewport;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 
 /**
  * A Graphical Viewer implementation which uses a
- * {@link org.eclipse.draw2d.FigureCanvas} for native scrolling. Because the
+ * {@link FigureCanvas} for native scrolling. Because the
  * scrolling is handled natively, the root editpart should not contain a
- * {@link org.eclipse.draw2d.ScrollPane} figure. Do not use root editparts which
+ * {@link ScrollPane} figure. Do not use root editparts which
  * provide scrollpane figures, such as <code>GraphicalRootEditPart</code>.
  * <P>
  * The RootEditPart for a ScrollingGraphicalViewer may contain a Viewport. If it

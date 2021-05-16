@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.requests;
 
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.PositionConstants;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * A request to align multiple objects.

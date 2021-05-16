@@ -10,9 +10,10 @@
  *******************************************************************************/
 package org.eclipse.gef.requests;
 
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.PositionConstants;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * A Request to change the bounds of the EditPart(s).
@@ -74,14 +75,14 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 	/**
 	 * Returns the direction the figure is being resized. Possible values are
 	 * <ul>
-	 * <li>{@link org.eclipse.draw2d.PositionConstants#EAST}
-	 * <li>{@link org.eclipse.draw2d.PositionConstants#WEST}
-	 * <li>{@link org.eclipse.draw2d.PositionConstants#NORTH}
-	 * <li>{@link org.eclipse.draw2d.PositionConstants#SOUTH}
-	 * <li>{@link org.eclipse.draw2d.PositionConstants#NORTH_EAST}
-	 * <li>{@link org.eclipse.draw2d.PositionConstants#NORTH_WEST}
-	 * <li>{@link org.eclipse.draw2d.PositionConstants#SOUTH_EAST}
-	 * <li>{@link org.eclipse.draw2d.PositionConstants#SOUTH_WEST}
+	 * <li>{@link PositionConstants#EAST}
+	 * <li>{@link PositionConstants#WEST}
+	 * <li>{@link PositionConstants#NORTH}
+	 * <li>{@link PositionConstants#SOUTH}
+	 * <li>{@link PositionConstants#NORTH_EAST}
+	 * <li>{@link PositionConstants#NORTH_WEST}
+	 * <li>{@link PositionConstants#SOUTH_EAST}
+	 * <li>{@link PositionConstants#SOUTH_WEST}
 	 * </ul>
 	 * 
 	 * @return the resize direction

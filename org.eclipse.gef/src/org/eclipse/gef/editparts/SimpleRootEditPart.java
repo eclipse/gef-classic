@@ -11,9 +11,9 @@
 
 package org.eclipse.gef.editparts;
 
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.StackLayout;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.StackLayout;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;

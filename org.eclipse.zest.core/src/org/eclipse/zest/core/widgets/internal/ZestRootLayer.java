@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.FreeformLayer;
+import org.eclipse.draw2dl.IFigure;
 
 /**
  * The root figure for Zest.  The figure is broken up into four segments, 

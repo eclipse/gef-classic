@@ -24,15 +24,15 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellEditorListener;
 
-import org.eclipse.draw2d.AbstractBorder;
-import org.eclipse.draw2d.AncestorListener;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.AbstractBorder;
+import org.eclipse.draw2dl.AncestorListener;
+import org.eclipse.draw2dl.Border;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;

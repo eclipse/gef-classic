@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.IFigure;
 
 import org.eclipse.gef.EditPart;
 
 /**
  * Responsible for locating <i>layers</i> in a <code>GraphicalViewer</code>.
- * Layers are just transparent {@link org.eclipse.draw2d.Figure figures}.
+ * Layers are just transparent {@link Figure figures}.
  * <P>
  * Typically, the <code>RootEditPart</code> will register() itself as the
  * LayerManager for the GraphicalViewer. All other EditParts/EditPolicies

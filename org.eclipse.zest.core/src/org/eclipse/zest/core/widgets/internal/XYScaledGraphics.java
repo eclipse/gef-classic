@@ -16,12 +16,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.ScaledGraphics;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.ScaledGraphics;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.PointList;
+import org.eclipse.draw2dl.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
@@ -623,7 +623,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.Graphics#setInterpolation(int)
+	 * @see Graphics#setInterpolation(int)
 	 */
 	public void setInterpolation(int interpolation) {
 		graphics.setInterpolation(interpolation);

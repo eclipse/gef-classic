@@ -14,8 +14,8 @@ package org.eclipse.gef.internal.ui.palette;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.FigureUtilities;
 
 /**
  * A class to keep miscellaneous palette color utilities.

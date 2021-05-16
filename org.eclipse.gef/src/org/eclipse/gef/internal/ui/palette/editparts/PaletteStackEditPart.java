@@ -21,22 +21,22 @@ import org.eclipse.swt.widgets.Menu;
 
 import org.eclipse.jface.action.MenuManager;
 
-import org.eclipse.draw2d.ActionEvent;
-import org.eclipse.draw2d.ActionListener;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.BorderLayout;
-import org.eclipse.draw2d.ButtonBorder;
-import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.ChangeEvent;
-import org.eclipse.draw2d.ChangeListener;
-import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ActionEvent;
+import org.eclipse.draw2dl.ActionListener;
+import org.eclipse.draw2dl.Border;
+import org.eclipse.draw2dl.BorderLayout;
+import org.eclipse.draw2dl.ButtonBorder;
+import org.eclipse.draw2dl.ButtonModel;
+import org.eclipse.draw2dl.ChangeEvent;
+import org.eclipse.draw2dl.ChangeListener;
+import org.eclipse.draw2dl.Clickable;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.StackLayout;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;

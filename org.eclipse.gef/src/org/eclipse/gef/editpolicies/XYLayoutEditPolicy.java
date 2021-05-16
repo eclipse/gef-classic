@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.XYLayout;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.XYLayout;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
@@ -23,7 +23,7 @@ import org.eclipse.gef.requests.CreateRequest;
 
 /**
  * An EditPolicy for use with <code>Figures</code> in {@link XYLayout}. The
- * constraint for XYLayout is a {@link org.eclipse.draw2d.geometry.Rectangle}.
+ * constraint for XYLayout is a {@link Rectangle}.
  * 
  * Created on :Nov 12, 2002
  * 
@@ -45,7 +45,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#getConstraintFor(org.eclipse.gef.Request,
 	 *      org.eclipse.gef.GraphicalEditPart,
-	 *      org.eclipse.draw2d.geometry.Rectangle)
+	 *      Rectangle)
 	 */
 	protected Object getConstraintFor(Request request, GraphicalEditPart child,
 			Rectangle rect) {

@@ -19,11 +19,11 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.FocusEvent;
-import org.eclipse.draw2d.FocusListener;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.RangeModel;
-import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2dl.FocusEvent;
+import org.eclipse.draw2dl.FocusListener;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.RangeModel;
+import org.eclipse.draw2dl.geometry.Insets;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.ExposeHelper;

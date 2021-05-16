@@ -15,14 +15,14 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.FreeformFigure;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.ScalableFigure;
-import org.eclipse.draw2d.ScalableFreeformLayeredPane;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.FreeformFigure;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.ScalableFigure;
+import org.eclipse.draw2dl.ScalableFreeformLayeredPane;
+import org.eclipse.draw2dl.Viewport;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
 /**

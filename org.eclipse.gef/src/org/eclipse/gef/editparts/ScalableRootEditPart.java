@@ -13,17 +13,12 @@ package org.eclipse.gef.editparts;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Layer;
-import org.eclipse.draw2d.LayeredPane;
-import org.eclipse.draw2d.ScalableFigure;
-import org.eclipse.draw2d.ScalableLayeredPane;
-import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.*;
+import org.eclipse.draw2dl.StackLayout;
+import org.eclipse.draw2dl.Viewport;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.DragTracker;
@@ -33,17 +28,17 @@ import org.eclipse.gef.SnapToGrid;
 import org.eclipse.gef.tools.MarqueeDragTracker;
 
 /**
- * A graphical root composed of regular {@link org.eclipse.draw2d.Layer Layers}.
- * The layers are added to {@link org.eclipse.draw2d.LayeredPane} or
- * {@link org.eclipse.draw2d.ScalableLayeredPane}. All layers are positioned by
- * {@link org.eclipse.draw2d.StackLayout}s, which means that the diagrams
+ * A graphical root composed of regular {@link Layer Layers}.
+ * The layers are added to {@link LayeredPane} or
+ * {@link ScalableLayeredPane}. All layers are positioned by
+ * {@link StackLayout}s, which means that the diagrams
  * preferred size is the union of the preferred size of each layer, and all
  * layers will be positioned to fill the entire diagram.
  * <P>
  * <EM>IMPORTANT</EM>ScalableRootEditPart uses a <code>Viewport</code> as its
  * primary figure. It must be used with a
  * {@link org.eclipse.gef.ui.parts.ScrollingGraphicalViewer}. The viewport gets
- * installed into that viewer's {@link org.eclipse.draw2d.FigureCanvas}, which
+ * installed into that viewer's {@link FigureCanvas}, which
  * provides native scrollbars for scrolling the viewport.
  * <P>
  * The layer structure (top-to-bottom) for this root is:
@@ -108,7 +103,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 		}
 
 		/**
-		 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
+		 * @see Figure#getPreferredSize(int, int)
 		 */
 		public Dimension getPreferredSize(int wHint, int hHint) {
 			Rectangle rect = new Rectangle();

@@ -8,7 +8,7 @@
  ******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2dl.Figure;
 
 /**
  * A figure used as the root of a container.

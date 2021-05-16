@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2dl.PositionConstants;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;

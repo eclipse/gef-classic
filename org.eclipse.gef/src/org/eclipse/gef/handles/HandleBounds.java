@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * Identifies figures which use an alternative rectangle to place their handles.
@@ -21,7 +22,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * 
  * @author hudsonr
  */
-public interface HandleBounds extends org.eclipse.draw2d.IFigure {
+public interface HandleBounds extends IFigure {
 
 	/**
 	 * Returns the Rectangle around which handles are to be placed. The

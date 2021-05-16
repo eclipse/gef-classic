@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.ConnectionLayer;
-import org.eclipse.draw2d.ConnectionRouter;
-import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.Connection;
+import org.eclipse.draw2dl.ConnectionAnchor;
+import org.eclipse.draw2dl.ConnectionLayer;
+import org.eclipse.draw2dl.ConnectionRouter;
+import org.eclipse.draw2dl.PolylineConnection;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.LayerConstants;

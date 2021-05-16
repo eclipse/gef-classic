@@ -37,9 +37,9 @@ import org.eclipse.swt.widgets.Scrollable;
 
 import org.eclipse.core.runtime.Platform;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditDomain;

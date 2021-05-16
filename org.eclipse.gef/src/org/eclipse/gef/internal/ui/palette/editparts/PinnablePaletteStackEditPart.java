@@ -14,7 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.IFigure;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;

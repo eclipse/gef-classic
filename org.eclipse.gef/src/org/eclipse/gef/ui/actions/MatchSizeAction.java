@@ -14,8 +14,8 @@ import java.util.List;
 
 import org.eclipse.ui.IWorkbenchPart;
 
-import org.eclipse.draw2d.geometry.PrecisionDimension;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.PrecisionDimension;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;

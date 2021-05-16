@@ -17,13 +17,13 @@ import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.core.runtime.Platform;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PrecisionDimension;
-import org.eclipse.draw2d.geometry.PrecisionPoint;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.PositionConstants;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.PrecisionDimension;
+import org.eclipse.draw2dl.geometry.PrecisionPoint;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;

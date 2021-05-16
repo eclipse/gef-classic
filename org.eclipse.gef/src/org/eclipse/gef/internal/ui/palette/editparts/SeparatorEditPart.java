@@ -10,13 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.palette.PaletteSeparator;
@@ -60,7 +60,7 @@ public class SeparatorEditPart extends PaletteEditPart {
 	 */
 	static class SeparatorFigure extends Figure {
 		/**
-		 * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
+		 * @see IFigure#getPreferredSize(int, int)
 		 */
 		public Dimension getPreferredSize(int wHint, int hHint) {
 			if (getBackgroundColor().equals(PaletteColorUtil.WIDGET_BACKGROUND))
@@ -72,7 +72,7 @@ public class SeparatorEditPart extends PaletteEditPart {
 
 		/**
 		 * 
-		 * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
+		 * @see Figure#paintFigure(Graphics)
 		 */
 		protected void paintFigure(Graphics g) {
 			Rectangle r = getBounds().getCropped(CROP);

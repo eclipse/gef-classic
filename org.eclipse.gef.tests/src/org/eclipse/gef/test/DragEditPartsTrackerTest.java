@@ -16,8 +16,8 @@ import java.util.List;
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.gef.DefaultEditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;

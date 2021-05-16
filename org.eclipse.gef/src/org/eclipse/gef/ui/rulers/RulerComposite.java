@@ -14,6 +14,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
+import org.eclipse.draw2dl.*;
+import org.eclipse.draw2dl.geometry.Point;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -30,16 +32,8 @@ import org.eclipse.swt.widgets.Listener;
 
 import org.eclipse.core.runtime.Assert;
 
-import org.eclipse.draw2d.AbstractBorder;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.DefaultRangeModel;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.RangeModel;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2dl.FigureCanvas;
+import org.eclipse.draw2dl.geometry.Insets;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.EditDomain;
@@ -456,15 +450,15 @@ public class RulerComposite extends Composite {
 		}
 
 		/**
-		 * @see org.eclipse.draw2d.Border#getInsets(org.eclipse.draw2d.IFigure)
+		 * @see Border#getInsets(IFigure)
 		 */
 		public Insets getInsets(IFigure figure) {
 			return horizontal ? H_INSETS : V_INSETS;
 		}
 
 		/**
-		 * @see org.eclipse.draw2d.Border#paint(org.eclipse.draw2d.IFigure,
-		 *      org.eclipse.draw2d.Graphics, org.eclipse.draw2d.geometry.Insets)
+		 * @see Border#paint(IFigure,
+		 *      Graphics, Insets)
 		 */
 		public void paint(IFigure figure, Graphics graphics, Insets insets) {
 			graphics.setForegroundColor(ColorConstants.buttonDarker);
@@ -474,7 +468,7 @@ public class RulerComposite extends Composite {
 						figure.getBounds()
 								.getBottomLeft()
 								.translate(
-										new org.eclipse.draw2d.geometry.Point(
+										new Point(
 												0, -4)));
 			} else {
 				graphics.drawLine(
@@ -482,7 +476,7 @@ public class RulerComposite extends Composite {
 						figure.getBounds()
 								.getTopRight()
 								.translate(
-										new org.eclipse.draw2d.geometry.Point(
+										new Point(
 												-4, 0)));
 			}
 		}
@@ -514,9 +508,9 @@ public class RulerComposite extends Composite {
 		}
 
 		/**
-		 * @see org.eclipse.gef.GraphicalViewer#findHandleAt(org.eclipse.draw2d.geometry.Point)
+		 * @see org.eclipse.gef.GraphicalViewer#findHandleAt(Point)
 		 */
-		public Handle findHandleAt(org.eclipse.draw2d.geometry.Point p) {
+		public Handle findHandleAt(Point p) {
 			final GraphicalEditPart gep = (GraphicalEditPart) findObjectAtExcluding(
 					p, new ArrayList());
 			if (gep == null || !(gep instanceof GuideEditPart))
@@ -526,7 +520,7 @@ public class RulerComposite extends Composite {
 					return ((GuideEditPart) gep).getDragTracker(null);
 				}
 
-				public org.eclipse.draw2d.geometry.Point getAccessibleLocation() {
+				public Point getAccessibleLocation() {
 					return null;
 				}
 			};

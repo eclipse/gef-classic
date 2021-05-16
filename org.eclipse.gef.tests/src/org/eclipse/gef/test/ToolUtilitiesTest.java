@@ -13,8 +13,8 @@ package org.eclipse.gef.test;
 
 import junit.framework.TestCase;
 
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.tools.ToolUtilities;

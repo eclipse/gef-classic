@@ -13,9 +13,9 @@ package org.eclipse.gef.editparts;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
 
-import org.eclipse.draw2d.RangeModel;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.RangeModel;
+import org.eclipse.draw2dl.Viewport;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.MouseWheelHelper;

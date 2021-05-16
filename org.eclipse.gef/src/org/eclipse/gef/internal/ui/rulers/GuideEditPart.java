@@ -17,12 +17,12 @@ import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Cursors;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Cursors;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.AccessibleHandleProvider;

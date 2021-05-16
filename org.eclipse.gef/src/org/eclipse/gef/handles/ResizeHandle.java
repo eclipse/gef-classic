@@ -10,10 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
+import org.eclipse.draw2dl.PositionConstants;
 import org.eclipse.swt.graphics.Cursor;
 
-import org.eclipse.draw2d.Cursors;
-import org.eclipse.draw2d.Locator;
+import org.eclipse.draw2dl.Cursors;
+import org.eclipse.draw2dl.Locator;
 
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.GraphicalEditPart;
@@ -31,7 +32,7 @@ public class ResizeHandle extends SquareHandle {
 	 * <code>direction</code> is the relative direction from the center of the
 	 * owner figure. For example, <code>SOUTH_EAST</code> would place the handle
 	 * in the lower-right corner of its owner figure. These direction constants
-	 * can be found in {@link org.eclipse.draw2d.PositionConstants}.
+	 * can be found in {@link PositionConstants}.
 	 * 
 	 * @param owner
 	 *            owner of the ResizeHandle

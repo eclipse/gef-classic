@@ -10,19 +10,16 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.*;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.SnapToGrid;
 
 /**
  * This is a layer that displays the grid. The default grid color is
- * {@link org.eclipse.draw2d.ColorConstants#lightGray light gray}. To change the
+ * {@link ColorConstants#lightGray light gray}. To change the
  * grid color, set the foreground color for this layer.
  * 
  * @author Pratik Shah
@@ -57,14 +54,14 @@ public class GridLayer extends FreeformLayer {
 	 * Overridden to indicate no preferred size. The grid layer should not
 	 * affect the size of the layered pane in which it is placed.
 	 * 
-	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
+	 * @see Figure#getPreferredSize(int, int)
 	 */
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		return new Dimension();
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
+	 * @see Figure#paintFigure(Graphics)
 	 */
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);

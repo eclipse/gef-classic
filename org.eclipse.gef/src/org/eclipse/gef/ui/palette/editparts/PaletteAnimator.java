@@ -14,8 +14,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LayoutAnimator;
+import org.eclipse.draw2dl.Animator;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.LayoutAnimator;
 
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerEditPart;
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerFigure;
@@ -107,7 +108,7 @@ public class PaletteAnimator extends LayoutAnimator {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.Animator#playbackStarting(org.eclipse.draw2d.IFigure)
+	 * @see Animator#playbackStarting(IFigure)
 	 */
 	public void playbackStarting(IFigure figure) {
 		if (figure instanceof DrawerFigure)
@@ -125,7 +126,7 @@ public class PaletteAnimator extends LayoutAnimator {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.Animator#init(org.eclipse.draw2d.IFigure)
+	 * @see Animator#init(IFigure)
 	 */
 	public void init(IFigure figure) {
 		if (figure instanceof DrawerFigure) {
@@ -138,7 +139,7 @@ public class PaletteAnimator extends LayoutAnimator {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.Animator#tearDown(org.eclipse.draw2d.IFigure)
+	 * @see Animator#tearDown(IFigure)
 	 */
 	public void tearDown(IFigure figure) {
 		if (figure instanceof DrawerFigure)

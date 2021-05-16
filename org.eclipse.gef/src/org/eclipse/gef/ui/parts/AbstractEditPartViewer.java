@@ -41,7 +41,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.EditDomain;

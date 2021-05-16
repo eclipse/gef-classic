@@ -14,8 +14,8 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.printing.Printer;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.PrinterGraphics;
-import org.eclipse.draw2d.SWTGraphics;
+import org.eclipse.draw2dl.PrinterGraphics;
+import org.eclipse.draw2dl.SWTGraphics;
 
 public class Bug81467 {
 

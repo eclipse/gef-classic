@@ -12,15 +12,16 @@ package org.eclipse.gef.editpolicies;
 
 import java.util.List;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.RectangleFigure;
-import org.eclipse.draw2d.Shape;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Translatable;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.RectangleFigure;
+import org.eclipse.draw2dl.Shape;
+import org.eclipse.draw2dl.LayoutManager;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Translatable;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartListener;
@@ -35,7 +36,7 @@ import org.eclipse.gef.requests.CreateRequest;
 /**
  * Provides support for interacting with children
  * <code>GraphicalEditParts</code> with the host figure's current
- * {@link org.eclipse.draw2d.LayoutManager}.
+ * {@link LayoutManager}.
  * <P>
  * LayoutEditPolicies are responsible for moving, resizing, re-parenting, and
  * creating children. The should provide <code>Commands</code> for all of these

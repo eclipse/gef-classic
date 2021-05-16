@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.requests;
 
+import org.eclipse.draw2dl.geometry.Point;
+
 /**
  * A request that requires a location in order to drop an item.
  */
@@ -20,6 +22,6 @@ public interface DropRequest {
 	 * 
 	 * @return the mouse location
 	 */
-	org.eclipse.draw2d.geometry.Point getLocation();
+	Point getLocation();
 
 }

@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Locator;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Locator;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * A Locator used to place {@link MoveHandle}s. By default, a MoveHandle's

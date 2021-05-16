@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.zest.core.viewers;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.IFigure;
 
 /**
  * Allows a user to create a figure for an element in 

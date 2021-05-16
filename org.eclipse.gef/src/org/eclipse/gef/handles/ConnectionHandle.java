@@ -13,12 +13,11 @@ package org.eclipse.gef.handles;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2dl.*;
 
 /**
  * The base implementation for handles used with editparts whose figure is a
- * {@link org.eclipse.draw2d.Connection}. This class adds an additional listener
+ * {@link Connection}. This class adds an additional listener
  * to the owner's connection figure to receive notification whenever the owner's
  * connection's points are changed. Changing the points of a connection does not
  * fire "figure moved", it only fires "points" property as changing.
@@ -51,8 +50,8 @@ public abstract class ConnectionHandle extends SquareHandle implements
 	}
 
 	/**
-	 * Adds this as a {@link org.eclipse.draw2d.FigureListener} to the owner's
-	 * {@link org.eclipse.draw2d.Figure}.
+	 * Adds this as a {@link FigureListener} to the owner's
+	 * {@link Figure}.
 	 */
 	public void addNotify() {
 		super.addNotify();
@@ -90,7 +89,7 @@ public abstract class ConnectionHandle extends SquareHandle implements
 	/**
 	 * Extended to remove a listener.
 	 * 
-	 * @see org.eclipse.draw2d.IFigure#removeNotify()
+	 * @see IFigure#removeNotify()
 	 */
 	public void removeNotify() {
 		getConnection().removePropertyChangeListener(

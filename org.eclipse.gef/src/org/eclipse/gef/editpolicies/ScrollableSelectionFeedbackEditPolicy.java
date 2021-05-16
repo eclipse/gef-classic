@@ -20,17 +20,17 @@ import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
 
-import org.eclipse.draw2d.FigureListener;
-import org.eclipse.draw2d.GhostImageFigure;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.IScrollableFigure;
-import org.eclipse.draw2d.LayoutListener;
-import org.eclipse.draw2d.ScrollPane;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.ViewportUtilities;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.FigureListener;
+import org.eclipse.draw2dl.GhostImageFigure;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.IScrollableFigure;
+import org.eclipse.draw2dl.LayoutListener;
+import org.eclipse.draw2dl.ScrollPane;
+import org.eclipse.draw2dl.Viewport;
+import org.eclipse.draw2dl.ViewportUtilities;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;

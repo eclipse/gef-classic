@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.FigureCanvas;
+import org.eclipse.draw2dl.IFigure;
 
 import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;

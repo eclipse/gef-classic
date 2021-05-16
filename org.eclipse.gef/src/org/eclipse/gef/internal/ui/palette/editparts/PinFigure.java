@@ -13,16 +13,16 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.swt.graphics.Color;
 
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.ChangeEvent;
-import org.eclipse.draw2d.ChangeListener;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.ImageFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.Toggle;
+import org.eclipse.draw2dl.Border;
+import org.eclipse.draw2dl.ButtonModel;
+import org.eclipse.draw2dl.ChangeEvent;
+import org.eclipse.draw2dl.ChangeListener;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.ImageFigure;
+import org.eclipse.draw2dl.Label;
+import org.eclipse.draw2dl.MarginBorder;
+import org.eclipse.draw2dl.Toggle;
 
 import org.eclipse.gef.internal.InternalImages;
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;

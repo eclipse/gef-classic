@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.IFigure;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.DragTracker;

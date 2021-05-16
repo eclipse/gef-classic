@@ -16,12 +16,12 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.FigureCanvas;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.ToolbarLayout;
+import org.eclipse.draw2dl.geometry.Dimension;
 
 public class BenchmarkTextPackage {
 

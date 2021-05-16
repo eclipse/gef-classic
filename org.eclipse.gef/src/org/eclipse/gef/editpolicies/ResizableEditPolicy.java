@@ -13,8 +13,8 @@ package org.eclipse.gef.editpolicies;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.Cursors;
-import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2dl.Cursors;
+import org.eclipse.draw2dl.PositionConstants;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;

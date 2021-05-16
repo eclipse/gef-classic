@@ -10,11 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.PrecisionPoint;
-import org.eclipse.draw2d.geometry.PrecisionRectangle;
-import org.eclipse.draw2d.geometry.Translatable;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.PositionConstants;
+import org.eclipse.draw2dl.geometry.PrecisionPoint;
+import org.eclipse.draw2dl.geometry.PrecisionRectangle;
+import org.eclipse.draw2dl.geometry.Translatable;
 
 /**
  * A helper used temporarily by Tools for snapping certain mouse interactions.

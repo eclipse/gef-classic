@@ -13,13 +13,13 @@ package org.eclipse.gef.editparts;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.ChopboxAnchor;
-import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.ConnectionAnchor;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.XYAnchor;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.ChopboxAnchor;
+import org.eclipse.draw2dl.Connection;
+import org.eclipse.draw2dl.ConnectionAnchor;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.PolylineConnection;
+import org.eclipse.draw2dl.XYAnchor;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.AccessibleAnchorProvider;
 import org.eclipse.gef.ConnectionEditPart;

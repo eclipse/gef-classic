@@ -9,20 +9,20 @@
  ******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import org.eclipse.draw2d.ActionEvent;
-import org.eclipse.draw2d.ActionListener;
-import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.FreeformLayout;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.draw2d.Triangle;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ActionEvent;
+import org.eclipse.draw2dl.ActionListener;
+import org.eclipse.draw2dl.Clickable;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.FreeformLayout;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.Label;
+import org.eclipse.draw2dl.ToolbarLayout;
+import org.eclipse.draw2dl.Triangle;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;

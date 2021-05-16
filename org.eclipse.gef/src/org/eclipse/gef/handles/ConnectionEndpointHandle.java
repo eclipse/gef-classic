@@ -12,8 +12,9 @@ package org.eclipse.gef.handles;
 
 import org.eclipse.core.runtime.Assert;
 
-import org.eclipse.draw2d.ConnectionLocator;
+import org.eclipse.draw2dl.ConnectionLocator;
 
+import org.eclipse.draw2dl.Connection;
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.DragTracker;
 import org.eclipse.gef.RequestConstants;
@@ -21,7 +22,7 @@ import org.eclipse.gef.tools.ConnectionEndpointTracker;
 
 /**
  * A handle used at the start or end of the
- * {@link org.eclipse.draw2d.Connection}. A ConnectionEndpointHandle may be
+ * {@link Connection}. A ConnectionEndpointHandle may be
  * extended rather than using the final {@link ConnectionStartHandle} or
  * {@link ConnectionEndHandle}
  * 

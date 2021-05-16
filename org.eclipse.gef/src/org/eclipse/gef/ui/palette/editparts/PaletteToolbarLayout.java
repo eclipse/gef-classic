@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.ToolbarLayout;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.internal.ui.palette.editparts.DrawerFigure;
 
@@ -42,7 +42,7 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.ToolbarLayout#layout(org.eclipse.draw2d.IFigure)
+	 * @see ToolbarLayout#layout(IFigure)
 	 */
 	public void layout(IFigure parent) {
 		List children = parent.getChildren();

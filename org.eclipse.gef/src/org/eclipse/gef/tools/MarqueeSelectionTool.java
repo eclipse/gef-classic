@@ -23,13 +23,13 @@ import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.jface.viewers.StructuredSelection;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Connection;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
@@ -85,7 +85,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 		private boolean schedulePaint = true;
 
 		/**
-		 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
+		 * @see Figure#paintFigure(Graphics)
 		 */
 		protected void paintFigure(Graphics graphics) {
 			Rectangle bounds = getBounds().getCopy();

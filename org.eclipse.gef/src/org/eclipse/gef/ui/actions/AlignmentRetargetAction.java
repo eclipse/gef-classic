@@ -12,7 +12,7 @@ package org.eclipse.gef.ui.actions;
 
 import org.eclipse.ui.actions.LabelRetargetAction;
 
-import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2dl.PositionConstants;
 
 import org.eclipse.gef.internal.GEFMessages;
 import org.eclipse.gef.internal.InternalImages;

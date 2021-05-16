@@ -15,13 +15,13 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.AbsoluteBendpoint;
-import org.eclipse.draw2d.AutomaticRouter;
-import org.eclipse.draw2d.Bendpoint;
-import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.AbsoluteBendpoint;
+import org.eclipse.draw2dl.AutomaticRouter;
+import org.eclipse.draw2dl.Bendpoint;
+import org.eclipse.draw2dl.Connection;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.PointList;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.EditPart;
@@ -35,7 +35,7 @@ import org.eclipse.gef.requests.BendpointRequest;
  * Used to add bendpoint handles on a {@link ConnectionEditPart}.
  * <P>
  * BendpointEditPolicy will automatically observe the
- * {@link org.eclipse.draw2d.Connection} figure. If the number of bends in the
+ * {@link Connection} figure. If the number of bends in the
  * <code>Connection</code> changes, the handles will be updated.
  */
 public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy

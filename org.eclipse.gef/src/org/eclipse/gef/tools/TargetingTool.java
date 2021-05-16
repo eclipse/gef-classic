@@ -15,7 +15,7 @@ import java.util.Collections;
 
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.EditPart;

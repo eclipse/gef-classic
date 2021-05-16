@@ -18,32 +18,32 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.Animation;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.BorderLayout;
-import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.ChangeEvent;
-import org.eclipse.draw2d.ChangeListener;
-import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.CompoundBorder;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LayoutManager;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.MouseEvent;
-import org.eclipse.draw2d.MouseListener;
-import org.eclipse.draw2d.MouseMotionListener;
-import org.eclipse.draw2d.SchemeBorder;
-import org.eclipse.draw2d.ScrollPane;
-import org.eclipse.draw2d.Toggle;
-import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.Animation;
+import org.eclipse.draw2dl.Border;
+import org.eclipse.draw2dl.BorderLayout;
+import org.eclipse.draw2dl.ButtonModel;
+import org.eclipse.draw2dl.ChangeEvent;
+import org.eclipse.draw2dl.ChangeListener;
+import org.eclipse.draw2dl.Clickable;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.CompoundBorder;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Label;
+import org.eclipse.draw2dl.LayoutManager;
+import org.eclipse.draw2dl.MarginBorder;
+import org.eclipse.draw2dl.MouseEvent;
+import org.eclipse.draw2dl.MouseListener;
+import org.eclipse.draw2dl.MouseMotionListener;
+import org.eclipse.draw2dl.SchemeBorder;
+import org.eclipse.draw2dl.ScrollPane;
+import org.eclipse.draw2dl.Toggle;
+import org.eclipse.draw2dl.ToolbarLayout;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
 import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
@@ -256,7 +256,7 @@ public class DrawerFigure extends Figure {
 		// truncated, it will display it as a tooltip.
 		tipLabel = new Label() {
 			/**
-			 * @see org.eclipse.draw2d.Figure#getToolTip()
+			 * @see Figure#getToolTip()
 			 */
 			public IFigure getToolTip() {
 				return buildTooltip();

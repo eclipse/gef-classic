@@ -12,7 +12,7 @@ package org.eclipse.gef;
 
 import java.util.Collection;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.geometry.Point;
 
 /**
  * A helper returned from a {@link org.eclipse.gef.GraphicalEditPart}. Certain

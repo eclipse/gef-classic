@@ -22,10 +22,10 @@ import org.eclipse.swt.accessibility.AccessibleControlEvent;
 
 import org.eclipse.core.runtime.IAdaptable;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LayoutManager;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.LayoutManager;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.AccessibleAnchorProvider;
 import org.eclipse.gef.AccessibleEditPart;

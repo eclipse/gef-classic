@@ -24,11 +24,11 @@ import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Event;
 
-import org.eclipse.draw2d.EventDispatcher;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.InputEvent;
-import org.eclipse.draw2d.SWTEventDispatcher;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.EventDispatcher;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.InputEvent;
+import org.eclipse.draw2dl.SWTEventDispatcher;
+import org.eclipse.draw2dl.geometry.Point;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.EditDomain;
@@ -253,7 +253,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.SWTEventDispatcher#dispatchKeyTraversed(org.eclipse.swt.events.TraverseEvent)
+	 * @see SWTEventDispatcher#dispatchKeyTraversed(org.eclipse.swt.events.TraverseEvent)
 	 */
 	public void dispatchKeyTraversed(TraverseEvent e) {
 		if (!editorCaptured) {
@@ -414,7 +414,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * Forwards the event to the EditDomain.
 	 * 
-	 * @see org.eclipse.draw2d.EventDispatcher#dispatchMouseWheelScrolled(org.eclipse.swt.widgets.Event)
+	 * @see EventDispatcher#dispatchMouseWheelScrolled(org.eclipse.swt.widgets.Event)
 	 */
 	public void dispatchMouseWheelScrolled(Event evt) {
 		if (!editorCaptured)
@@ -436,7 +436,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * Lazily creates and returns the accessibility dispatcher.
 	 * 
-	 * @see org.eclipse.draw2d.EventDispatcher#getAccessibilityDispatcher()
+	 * @see EventDispatcher#getAccessibilityDispatcher()
 	 */
 	protected AccessibilityDispatcher getAccessibilityDispatcher() {
 		if (accessibilityDispatcher == null)

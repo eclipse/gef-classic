@@ -9,9 +9,9 @@
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import org.eclipse.draw2d.ChopboxAnchor;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.ChopboxAnchor;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Point;
 
 public class LoopAnchor extends ChopboxAnchor {
 	public LoopAnchor(IFigure owner) {

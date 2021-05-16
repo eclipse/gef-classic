@@ -13,8 +13,10 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2dl.AbstractHintLayout;
+import org.eclipse.draw2dl.FlowLayout;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Dimension;
 
 /**
  * Special FlowLayout to display the palette in the columns view.
@@ -38,7 +40,7 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.FlowLayout#getChildSize(IFigure, int, int)
+	 * @see FlowLayout#getChildSize(IFigure, int, int)
 	 */
 	protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
 		if (!(child instanceof SeparatorEditPart.SeparatorFigure)) {
@@ -84,7 +86,7 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.AbstractHintLayout#invalidate()
+	 * @see AbstractHintLayout#invalidate()
 	 */
 	public void invalidate() {
 		super.invalidate();

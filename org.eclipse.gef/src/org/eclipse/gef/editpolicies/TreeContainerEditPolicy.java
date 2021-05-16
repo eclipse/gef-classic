@@ -87,7 +87,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	 * @return the index of the TreeItem
 	 */
 	protected final int findIndexOfTreeItemAt(
-			org.eclipse.draw2d.geometry.Point pt) {
+			org.eclipse.draw2dl.geometry.Point pt) {
 		int index = -1;
 		TreeItem item = findTreeItemAt(pt);
 		if (item != null) {
@@ -100,13 +100,13 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Calculates the <code>TreeItem</code> at a specified
-	 * {@link org.eclipse.draw2d.geometry.Point}.
+	 * {@link org.eclipse.draw2dl.geometry.Point}.
 	 * 
 	 * @param pt
 	 *            the draw2d Point
 	 * @return <code>null</code> or the TreeItem
 	 */
-	protected final TreeItem findTreeItemAt(org.eclipse.draw2d.geometry.Point pt) {
+	protected final TreeItem findTreeItemAt(org.eclipse.draw2dl.geometry.Point pt) {
 		return getTree().getItem(new Point(pt.x, pt.y));
 	}
 
@@ -167,7 +167,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	}
 
 	private boolean isInUpperHalf(Rectangle rect,
-			org.eclipse.draw2d.geometry.Point pt) {
+			org.eclipse.draw2dl.geometry.Point pt) {
 		Rectangle tempRect = new Rectangle(rect.x, rect.y, rect.width,
 				rect.height / 2);
 		return tempRect.contains(new Point(pt.x, pt.y));
@@ -177,7 +177,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 		Widget hostWidget = ((TreeEditPart) getHost()).getWidget();
 		Tree tree = getTree();
 
-		org.eclipse.draw2d.geometry.Point pt = request.getLocation();
+		org.eclipse.draw2dl.geometry.Point pt = request.getLocation();
 		TreeItem item = findTreeItemAt(pt);
 		if (item == null) {
 			if (hostWidget == tree) {

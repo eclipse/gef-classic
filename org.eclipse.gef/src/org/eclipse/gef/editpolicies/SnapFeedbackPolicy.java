@@ -16,13 +16,13 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.PaletteData;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.PrecisionPoint;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.PrecisionPoint;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
@@ -72,7 +72,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 		}
 
 		/**
-		 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
+		 * @see Figure#paintFigure(Graphics)
 		 */
 		protected void paintFigure(Graphics graphics) {
 			if (opacity != FRAMES) {
@@ -110,7 +110,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 		}
 
 		/**
-		 * @see org.eclipse.draw2d.Figure#removeNotify()
+		 * @see Figure#removeNotify()
 		 */
 		public void removeNotify() {
 			if (image != null) {

@@ -12,15 +12,15 @@ package org.eclipse.gef.handles;
 
 import org.eclipse.swt.graphics.Color;
 
-import org.eclipse.draw2d.AbstractBorder;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.AbstractBorder;
+import org.eclipse.draw2dl.Border;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.PointList;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * A {@link Border} with a triangle in each corner.
@@ -45,14 +45,14 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	/**
 	 * Returns <code>true</code>.
 	 * 
-	 * @see org.eclipse.draw2d.Border#isOpaque()
+	 * @see Border#isOpaque()
 	 */
 	public boolean isOpaque() {
 		return true;
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.Border#getInsets(org.eclipse.draw2d.IFigure)
+	 * @see Border#getInsets(IFigure)
 	 */
 	public Insets getInsets(IFigure figure) {
 		return new Insets(1);

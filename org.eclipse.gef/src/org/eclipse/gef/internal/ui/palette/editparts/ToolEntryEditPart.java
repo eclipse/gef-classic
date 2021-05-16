@@ -20,19 +20,19 @@ import org.eclipse.swt.graphics.Point;
 
 import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.ActionEvent;
-import org.eclipse.draw2d.ActionListener;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.ButtonBorder;
-import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.Toggle;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ActionEvent;
+import org.eclipse.draw2dl.ActionListener;
+import org.eclipse.draw2dl.Border;
+import org.eclipse.draw2dl.ButtonBorder;
+import org.eclipse.draw2dl.ButtonModel;
+import org.eclipse.draw2dl.Clickable;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.MarginBorder;
+import org.eclipse.draw2dl.Toggle;
+import org.eclipse.draw2dl.geometry.Insets;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.DragTracker;
@@ -100,7 +100,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		}
 
 		protected boolean handleDrag() {
-			org.eclipse.draw2d.geometry.Point point = getLocation().getCopy();
+			org.eclipse.draw2dl.geometry.Point point = getLocation().getCopy();
 			getFigure().translateToRelative(point);
 			if (!getFigure().containsPoint(point)) {
 				getButtonModel().setArmed(false);

@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.geometry.Point;
 
 /**
  * An interface used by the {@link org.eclipse.gef.tools.SelectionTool} to

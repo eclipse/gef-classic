@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.gef.handles;
 
-import org.eclipse.draw2d.Locator;
-import org.eclipse.draw2d.MidpointLocator;
-import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2dl.Locator;
+import org.eclipse.draw2dl.MidpointLocator;
+import org.eclipse.draw2dl.geometry.Dimension;
 
 import org.eclipse.gef.ConnectionEditPart;
 import org.eclipse.gef.DragTracker;

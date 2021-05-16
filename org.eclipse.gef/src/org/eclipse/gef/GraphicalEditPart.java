@@ -12,12 +12,13 @@ package org.eclipse.gef;
 
 import java.util.List;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.LayoutManager;
 
 /**
  * A Specialization of {@link EditPart} for use with {@link GraphicalViewer
  * GraphicalViewers}. The <i>visual part</i> of a GraphicalEditPart is a
- * {@link org.eclipse.draw2d.IFigure Figure}.
+ * {@link IFigure Figure}.
  * <p>
  * IMPORTANT: This interface is not intended to be implemented by clients.
  * Clients should inherit from
@@ -86,7 +87,7 @@ public interface GraphicalEditPart extends EditPart {
 	 * Sets the specified constraint for a child's Figure on the
 	 * {@link #getContentPane() content pane} figure for this GraphicalEditPart.
 	 * The constraint will be applied to the content pane's
-	 * {@link org.eclipse.draw2d.LayoutManager}. <code>revalidate()</code> is
+	 * {@link LayoutManager}. <code>revalidate()</code> is
 	 * called on the content pane, which will cause it to layout during the next
 	 * update.
 	 * 
@@ -97,7 +98,7 @@ public interface GraphicalEditPart extends EditPart {
 	 *            the Figure whose constraint is being set
 	 * @param constraint
 	 *            the constraint for the draw2d
-	 *            {@link org.eclipse.draw2d.LayoutManager}
+	 *            {@link LayoutManager}
 	 */
 	void setLayoutConstraint(EditPart child, IFigure figure, Object constraint);
 

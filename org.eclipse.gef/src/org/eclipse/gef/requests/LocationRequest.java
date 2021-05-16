@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.requests;
 
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.geometry.Point;
 
 /**
  * A Request that needs to keep track of a location.
