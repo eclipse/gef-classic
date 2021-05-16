@@ -13,6 +13,7 @@
 		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
 		<tycho.version>2.0.0</tycho.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 	</properties>
 
 	<build>
@@ -92,9 +93,8 @@
 		<module>../org.eclipse.draw2dl-feature</module>
 		<module>../org.eclipse.draw2dl.sdk-feature</module>
 		<module>../org.eclipse.gef3</module>
-<!--
 		<module>../org.eclipse.gef3.tests</module>
-		<module>../org.eclipse.gef3.doc.isv</module>
+<!--		<module>../org.eclipse.gef3.doc.isv</module>-->
 		<module>../org.eclipse.gef3.examples.flow</module>
 		<module>../org.eclipse.gef3.examples.logic</module>
 		<module>../org.eclipse.gef3.examples.shapes</module>
@@ -107,11 +107,10 @@
 		<module>../org.eclipse.zest.core</module>
 		<module>../org.eclipse.zest.layouts</module>
 		<module>../org.eclipse.zest.tests</module>
-		<module>../org.eclipse.zest.doc.isv</module>
+<!--		<module>../org.eclipse.zest.doc.isv</module>-->
 		<module>../org.eclipse.zest-feature</module>
 		<module>../org.eclipse.zest.sdk-feature</module>
 		<module>../org.eclipse.gef3.all-feature</module>
--->
 		<!--<module>../org.eclipse.gef3.repository</module>-->
 	</modules>
 

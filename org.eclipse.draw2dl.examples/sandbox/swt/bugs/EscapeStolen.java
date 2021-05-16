@@ -48,7 +48,7 @@ public static void main(String[] args) {
 	Shell dialog = new Shell(shell);
 	dialog.setLayout(new GridLayout());
 	final FigureCanvas canvas = new FigureCanvas(dialog);
-	canvas.setContents(new Button("draw2d"));
+	canvas.setContents(new Button("draw2dl"));
 
 	canvas.addFocusListener(new FocusListener() {
 

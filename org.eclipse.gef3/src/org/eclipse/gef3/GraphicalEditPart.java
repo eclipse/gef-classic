@@ -98,7 +98,7 @@ public interface GraphicalEditPart extends EditPart {
 	 * @param figure
 	 *            the Figure whose constraint is being set
 	 * @param constraint
-	 *            the constraint for the draw2d
+	 *            the constraint for the draw2dl
 	 *            {@link LayoutManager}
 	 */
 	void setLayoutConstraint(EditPart child, IFigure figure, Object constraint);

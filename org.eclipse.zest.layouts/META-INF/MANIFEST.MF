@@ -16,5 +16,5 @@ Export-Package: org.eclipse.zest.layouts,
 Require-Bundle: org.eclipse.swt;bundle-version="[3.4.0,4.0.0)";visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="[3.3.0,4.0.0)";visibility:=reexport,
  org.eclipse.jface,
- org.eclipse.draw2d
+ org.eclipse.draw2dl
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

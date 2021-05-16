@@ -7,7 +7,7 @@
  *
  * Contributors:
  *     IBM Corporation - initial API and implementation
- *     Asim Ullah - Ported for use in draw2d (c.f Bugzilla 71684). [Sep 10, 2004]
+ *     Asim Ullah - Ported for use in draw2dl (c.f Bugzilla 71684). [Sep 10, 2004]
  *******************************************************************************/
 package org.eclipse.draw2dl;
 

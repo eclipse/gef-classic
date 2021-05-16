@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * A baseclass for draw2d examples.
+ * A baseclass for draw2dl examples.
  * @author hudsonr
  */
 public abstract class AbstractExample {

@@ -19,7 +19,7 @@ import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * Adapts non-flow figures for use within a parent hierarchy requiring flow
- * figures. Normal draw2d figures can be added as children. If a normal
+ * figures. Normal draw2dl figures can be added as children. If a normal
  * LayoutManager is set, the children will be positioned by that layout manager.
  * The size of this figure within the flow will be determined by its preferred
  * size.

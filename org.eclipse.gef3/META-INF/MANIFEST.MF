@@ -7,7 +7,7 @@ Bundle-Activator: org.eclipse.gef3.internal.InternalGEFPlugin
 Bundle-Vendor: %Plugin.providerName
 Bundle-Localization: plugin
 Import-Package: com.ibm.icu.text;version="3.8.1"
-Export-Package: org.eclipse.gef,
+Export-Package: org.eclipse.gef3,
  org.eclipse.gef3.commands,
  org.eclipse.gef3.dnd,
  org.eclipse.gef3.editparts,

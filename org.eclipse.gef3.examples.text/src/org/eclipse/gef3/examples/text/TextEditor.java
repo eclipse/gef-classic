@@ -330,7 +330,7 @@ public class TextEditor extends GraphicalEditor {
 			doc.add(preface);
 			Container imports = new Block(Container.TYPE_IMPORT_DECLARATIONS);
 			doc.add(imports);
-			imports.add(new TextRun("org.eclipse.draw2d", TextRun.TYPE_IMPORT));
+			imports.add(new TextRun("org.eclipse.draw2dl", TextRun.TYPE_IMPORT));
 			imports.add(new TextRun("org.eclipse.gef", TextRun.TYPE_IMPORT));
 			// for (int i = 0; i < 400; i++) {
 			Container block = new Block(Container.TYPE_COMMENT);

@@ -21,7 +21,7 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Control;
 
 /**
- * The SWTEventDispatcher provides draw2d with the ability to dispatch SWT
+ * The SWTEventDispatcher provides draw2dl with the ability to dispatch SWT
  * Events. The {@link LightweightSystem} adds SWT event
  * listeners on its Canvas. When the Canvas receives an SWT event, it calls the
  * appropriate dispatcher method in SWTEventDispatcher.

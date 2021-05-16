@@ -38,7 +38,7 @@ import org.eclipse.gef3.tools.MarqueeDragTracker;
  * <P>
  * <EM>IMPORTANT:</EM> The contents editpart that is added to a freeform root
  * should have a <code>FreeformFigure</code> (such as FreeformLayer) as its
- * Figure. The primary layer is <EM>not</EM> using a draw2d LayoutManager, and
+ * Figure. The primary layer is <EM>not</EM> using a draw2dl LayoutManager, and
  * will not size the contents' figure properly unless it is a freeform figure.
  * <P>
  * <EM>IMPORTANT:</EM>The freeform root uses a <code>FreeformViewport</code> as

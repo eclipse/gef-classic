@@ -16,7 +16,7 @@ import org.eclipse.draw2dl.geometry.Rectangle;
 import org.eclipse.draw2dl.*;
 
 /**
- * The scrollpane example shows how draw2d uses getPreferredSize() to determine when
+ * The scrollpane example shows how draw2dl uses getPreferredSize() to determine when
  * scrollbars should be displayed.  One window shows a view of a fixed-sized figure.  The
  * other shows a FlowLayout that wraps from left-to-right, and then top-to-bottom.
  * @author hudsonr

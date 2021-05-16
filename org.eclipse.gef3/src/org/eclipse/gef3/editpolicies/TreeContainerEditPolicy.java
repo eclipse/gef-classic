@@ -103,7 +103,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	 * {@link org.eclipse.draw2dl.geometry.Point}.
 	 * 
 	 * @param pt
-	 *            the draw2d Point
+	 *            the draw2dl Point
 	 * @return <code>null</code> or the TreeItem
 	 */
 	protected final TreeItem findTreeItemAt(org.eclipse.draw2dl.geometry.Point pt) {

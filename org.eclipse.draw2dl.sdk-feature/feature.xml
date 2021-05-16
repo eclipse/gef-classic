@@ -14,7 +14,7 @@
       label="%featureName"
       version="3.10.200.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.draw2d">
+      plugin="org.eclipse.draw2dl">
 
    <description>
       %description
@@ -34,7 +34,13 @@
    </url>
 
    <includes
-         id="org.eclipse.draw2d"
+         id="org.eclipse.draw2dl"
+         version="0.0.0"/>
+
+   <!-- Legacy features commented -->
+<!--
+   <includes
+         id="org.eclipse.draw2dl.source"
          version="0.0.0"/>
 
    <plugin
@@ -43,5 +49,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
+-->
 
 </feature>

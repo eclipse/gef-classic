@@ -51,7 +51,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 
 	/**
 	 * Returns the <code>Command</code> to perform an Add with the specified
-	 * child and constraint. The constraint has been converted from a draw2d
+	 * child and constraint. The constraint has been converted from a draw2dl
 	 * constraint to an object suitable for the model by calling
 	 * {@link #translateToModelConstraint(Object)}.
 	 * 
@@ -73,7 +73,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 
 	/**
 	 * Returns the <code>Command</code> to perform an Add with the specified
-	 * child and constraint. The constraint has been converted from a draw2d
+	 * child and constraint. The constraint has been converted from a draw2dl
 	 * constraint to an object suitable for the model by calling
 	 * {@link #translateToModelConstraint(Object)}.
 	 * 
@@ -123,7 +123,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 
 	/**
 	 * Returns the <code>Command</code> to change the specified child's
-	 * constraint. The constraint has been converted from a draw2d constraint to
+	 * constraint. The constraint has been converted from a draw2dl constraint to
 	 * an object suitable for the model. Clients should overwrite
 	 * {@link #createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)}
 	 * instead.
@@ -215,7 +215,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	}
 
 	/**
-	 * Generates a draw2d constraint object for the given
+	 * Generates a draw2dl constraint object for the given
 	 * <code>ChangeBoundsRequest</code> and child EditPart by delegating to
 	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
 	 * 
@@ -232,7 +232,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * @param child
 	 *            the child EditPart for which the constraint should be
 	 *            generated
-	 * @return the draw2d constraint
+	 * @return the draw2dl constraint
 	 */
 	protected Object getConstraintFor(ChangeBoundsRequest request,
 			GraphicalEditPart child) {
@@ -245,7 +245,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	}
 
 	/**
-	 * Responsible of generating a draw2d constraint for the given Rectangle,
+	 * Responsible of generating a draw2dl constraint for the given Rectangle,
 	 * which represents the already transformed (layout-relative) position and
 	 * size of the given Request.
 	 * 
@@ -272,7 +272,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	}
 
 	/**
-	 * Generates a draw2d constraint given a <code>Point</code>. This method is
+	 * Generates a draw2dl constraint given a <code>Point</code>. This method is
 	 * called during creation, when only a mouse location is available, as well
 	 * as during move, in case no resizing is involved.
 	 * 
@@ -284,7 +284,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	protected abstract Object getConstraintFor(Point point);
 
 	/**
-	 * Generates a draw2d constraint given a <code>Rectangle</code>. This method
+	 * Generates a draw2dl constraint given a <code>Rectangle</code>. This method
 	 * is called during most operations.
 	 * 
 	 * @param rect
@@ -295,7 +295,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	protected abstract Object getConstraintFor(Rectangle rect);
 
 	/**
-	 * Generates a draw2d constraint for the given <code>CreateRequest</code> by
+	 * Generates a draw2dl constraint for the given <code>CreateRequest</code> by
 	 * delegating to
 	 * {@link #getConstraintFor(Request, GraphicalEditPart, Rectangle)}.
 	 * 
@@ -311,7 +311,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @param request
 	 *            the CreateRequest
-	 * @return a draw2d constraint
+	 * @return a draw2dl constraint
 	 */
 	protected Object getConstraintFor(CreateRequest request) {
 		Rectangle locationAndSize = null;
@@ -358,7 +358,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * stored in the model.
 	 * 
 	 * @param figureConstraint
-	 *            the draw2d constraint
+	 *            the draw2dl constraint
 	 * @return the model constraint
 	 */
 	protected Object translateToModelConstraint(Object figureConstraint) {

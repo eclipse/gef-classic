@@ -18,7 +18,7 @@ import org.eclipse.draw2dl.geometry.Insets;
 import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
- * Implementation of draw2d's printing capabilities.
+ * Implementation of draw2dl's printing capabilities.
  * 
  * @author Dan Lee
  * @author Eric Bordeau

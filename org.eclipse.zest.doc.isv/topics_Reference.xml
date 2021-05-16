@@ -15,7 +15,7 @@
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
 
-<toc link_to="../org.eclipse.gef3.doc.isv/topics_Reference.xml#draw2d" label="none">
+<toc link_to="../org.eclipse.gef3.doc.isv/topics_Reference.xml#draw2dl" label="none">
 	<topic label="Zest" href="reference/api/overview-summary.html">
 		<topic label="org.eclipse.zest" href="reference/api/org/eclipse/zest/package-summary.html" />
 		<topic label="org.eclipse.zest.core.viewers" href="reference/api/org/eclipse/zest/core/viewers/package-summary.html" />
