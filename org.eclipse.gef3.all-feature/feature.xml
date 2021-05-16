@@ -14,7 +14,7 @@
       label="%featureName"
       version="3.11.100.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.gef">
+      plugin="org.eclipse.gef3">
 
    <description>
       %description

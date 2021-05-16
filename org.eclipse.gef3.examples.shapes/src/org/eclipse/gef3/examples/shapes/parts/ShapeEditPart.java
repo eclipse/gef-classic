@@ -237,7 +237,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.gef3.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef
+	 * org.eclipse.gef3.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef3
 	 * .ConnectionEditPart)
 	 */
 	public ConnectionAnchor getSourceConnectionAnchor(
@@ -249,7 +249,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.gef3.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef
+	 * org.eclipse.gef3.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef3
 	 * .Request)
 	 */
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
@@ -260,7 +260,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.gef3.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef
+	 * org.eclipse.gef3.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef3
 	 * .ConnectionEditPart)
 	 */
 	public ConnectionAnchor getTargetConnectionAnchor(
@@ -272,7 +272,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.gef3.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef
+	 * org.eclipse.gef3.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef3
 	 * .Request)
 	 */
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {

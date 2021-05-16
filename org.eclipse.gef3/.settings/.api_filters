@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<component id="org.eclipse.gef" version="2">
+<component id="org.eclipse.gef3" version="2">
     <resource path="src/org/eclipse/gef/ui/actions/AlignmentRetargetAction.java" type="org.eclipse.gef3.ui.actions.AlignmentRetargetAction">
         <filter id="571473929">
             <message_arguments>
