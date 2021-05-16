@@ -1,7 +1,9 @@
 # GEF3
 
 Based on gef-legacy (https://github.com/eclipse/gef-legacy).
+
 Adopted and adapted by DBeaver team. Fully supports Legacy GEF3 API.
+
 Uses Java8 language level.
 
 # Eclipse Graphical Editing Framework (GEF)
