@@ -18,7 +18,7 @@
 	<anchor id="draw2d" />
 	<anchor id="zest" />
 	<topic label="GEF (MVC)" href="reference/api/overview-summary.html">
-		<topic label="org.eclipse.gef" href="reference/api/org/eclipse/gef/package-summary.html" />
+		<topic label="org.eclipse.gef3" href="reference/api/org/eclipse/gef/package-summary.html" />
 		<topic label="org.eclipse.gef3.commands" href="reference/api/org/eclipse/gef/commands/package-summary.html" />
 		<topic label="org.eclipse.gef3.dnd" href="reference/api/org/eclipse/gef/dnd/package-summary.html" />
 		<topic label="org.eclipse.gef3.editparts" href="reference/api/org/eclipse/gef/editparts/package-summary.html" />

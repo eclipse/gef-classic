@@ -39,24 +39,24 @@ Having set up the Eclipse IDE, next is to [fork the repository](https://help.git
 	* Choose to import all projects and press *Finish* to conclude.
 
 ### Set Target Platform
-A target definition file is provided by the `org.eclipse.gef.target` project. To specify the target platform, simply open the respective target definition (e.g. *NEON.target*) within the *Target Editor*, let it fully resolve (i.e. wait until the *Resolving Target Definition* background task has finished and the installable units are listed under the respective *Locations*), then choose to *Set as Target Platform*).
+A target definition file is provided by the `org.eclipse.gef3.target` project. To specify the target platform, simply open the respective target definition (e.g. *NEON.target*) within the *Target Editor*, let it fully resolve (i.e. wait until the *Resolving Target Definition* background task has finished and the installable units are listed under the respective *Locations*), then choose to *Set as Target Platform*).
 
 In case the target editor does not properly resolve the target definition, an invalid target cache may be the cause. In such cases, opening the target definition file with a text editor and incrementing the sequence number manually, will invalidate the cache when reopening it with the target editor again. After the cache has been invalidated, the sequence number can be restored.
 
 ### Define API Baseline
 All production code bundles (i.e. excluding doc and test bundles) are configured to have PDE API tooling enabled. It is used to ensure compliance of sources to the specified execution environments, as well as to ensure proper semantic versioning. As PDE API tooling requires the definition of an API baseline you will see errors after having checked out the code ('An API baseline has not been set for the current workspace.').
 
-API-baselines are provided by the `org.eclipse.gef.baseline` project. You may define them by going to *Preferences -> Plug-in Development -> API Baselines*, then choose to select "Add Baseline..." and point to the `plugins` sub-folder of an API baseline located in the baselines project (note that the dialog browses the file system instead of the workspace, so you will have to point into the respective folder in your local Git repository).
+API-baselines are provided by the `org.eclipse.gef3.baseline` project. You may define them by going to *Preferences -> Plug-in Development -> API Baselines*, then choose to select "Add Baseline..." and point to the `plugins` sub-folder of an API baseline located in the baselines project (note that the dialog browses the file system instead of the workspace, so you will have to point into the respective folder in your local Git repository).
 
 ## Create and test a contribution
 Having properly set up your development environment you can start working on the necessary changes. Please ensure to execute the *all* test-suite that exists for each bundle that was changed to be safe against regressions. In case your change is not trivial, it is recommended to add respective tests to demonstrate that the fix is adequate. You can either call the *AllTests* suite contained in the test bundles of all GEF components, or run a headless Maven build locally (which will also execute the tests).
 
 ## Run a headless build
-GEF uses a Maven/Tycho-based build infrastructure. With the [Eclipse Maven Integration](http://eclipse.org/m2e/), a headless build can also be executed in the local workspace. Make sure you have checked out all projects of the respective git repository. Then easily run the build by right-clicking the `pom.xml` file located within the `org.eclipse.gef.releng` project, and selecting 'Run As -> Maven build...'.
+GEF uses a Maven/Tycho-based build infrastructure. With the [Eclipse Maven Integration](http://eclipse.org/m2e/), a headless build can also be executed in the local workspace. Make sure you have checked out all projects of the respective git repository. Then easily run the build by right-clicking the `pom.xml` file located within the `org.eclipse.gef3.releng` project, and selecting 'Run As -> Maven build...'.
 
 In the configuration wizard you have to specify the goals ("clean verify") and the target profile (e.g. "NEON.target") for the build. Note that without setting the target profile the build will not run successfully. The build needs to be executed with a Java 8 VM, so if you have installed multiple JVMs, you should check the settings in the *JRE* tab.
 
-As a result of the build, an update-site will be created in the `target` sub-folder of the `org.eclipse.gef.repository` project.
+As a result of the build, an update-site will be created in the `target` sub-folder of the `org.eclipse.gef3.repository` project.
 
 ## Deliver a Contribution
 Before any contribution can be accepted by the project, you need to electronically sign the [Eclipse Foundation Contributor License Agreement (CLA)](http://www.eclipse.org/legal/CLA.php). Further, your changes should be comprised to a single commit (squash if necessary) and the commit needs to be properly [signed off](https://wiki.eclipse.org/Development_Resources/Contributing_via_Git#Signing_off_on_a_commit) to mark its CLA-compliance.
@@ -76,7 +76,7 @@ Example:
 	
 	- Extract the definitions of the sample dot graphs into a separate DotSampleGraphs.xtend file (utilize the xtend multi-line string functionality).
 	- Reuse these sample graph definitions within the DotParser and DotInterpreter test cases.
-	- Modify the org.eclipse.gef.dot.tests plugin to be able to handle the Xtend generated files (.classpath, .gitignore, .project, build.properties, pom.xml).
+	- Modify the org.eclipse.gef3.dot.tests plugin to be able to handle the Xtend generated files (.classpath, .gitignore, .project, build.properties, pom.xml).
 	- Implement additional DotParser test cases.
 
 	Signed-off-by: Tamas Miklossy <miklossy@itemis.de>

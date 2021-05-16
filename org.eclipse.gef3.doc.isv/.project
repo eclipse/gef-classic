@@ -3,8 +3,8 @@
 	<name>org.eclipse.gef3.doc.isv</name>
 	<comment></comment>
 	<projects>
-		<project>org.eclipse.draw2d</project>
-		<project>org.eclipse.gef</project>
+		<project>org.eclipse.draw2dl</project>
+		<project>org.eclipse.gef3</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

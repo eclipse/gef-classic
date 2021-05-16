@@ -17,7 +17,7 @@
 
 <toc link_to="../org.eclipse.gef3.doc.isv/topics_Reference.xml#draw2d" label="none">
 	<topic label="Draw2d" href="reference/api/overview-summary.html">
-		<topic label="org.eclipse.draw2d" href="reference/api/org/eclipse/draw2d/package-summary.html" />
+		<topic label="org.eclipse.draw2dl" href="reference/api/org/eclipse/draw2d/package-summary.html" />
 		<topic label="org.eclipse.draw2dl.geometry" href="reference/api/org/eclipse/draw2d/geometry/package-summary.html" />
 		<topic label="org.eclipse.draw2dl.graph" href="reference/api/org/eclipse/draw2d/graph/package-summary.html" />
 		<topic label="org.eclipse.draw2dl.parts" href="reference/api/org/eclipse/draw2d/parts/package-summary.html" />

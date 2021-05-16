@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<feature url="features/org.eclipse.draw2d_3.10.200.qualifier.jar" id="org.eclipse.draw2d" version="3.10.200.qualifier">
+	<feature url="features/org.eclipse.draw2d_3.10.200.qualifier.jar" id="org.eclipse.draw2dl" version="3.10.200.qualifier">
       <category name="GEF"/>
    </feature>
    <feature url="features/org.eclipse.draw2dl.sdk_3.10.200.qualifier.jar" id="org.eclipse.draw2dl.sdk" version="3.10.200.qualifier">
@@ -9,7 +9,7 @@
    <feature url="features/org.eclipse.draw2dl.source_3.10.200.qualifier.jar" id="org.eclipse.draw2dl.source" version="3.10.200.qualifier">
       <category name="GEF"/>
    </feature>
-   <feature url="features/org.eclipse.gef_3.11.100.qualifier.jar" id="org.eclipse.gef" version="3.11.100.qualifier">
+   <feature url="features/org.eclipse.gef_3.11.100.qualifier.jar" id="org.eclipse.gef3" version="3.11.100.qualifier">
       <category name="GEF"/>
    </feature>
    <feature url="features/org.eclipse.gef3.all_3.11.100.qualifier.jar" id="org.eclipse.gef3.all" version="3.11.100.qualifier">

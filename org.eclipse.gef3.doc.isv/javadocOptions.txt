@@ -1,6 +1,6 @@
 -encoding "UTF-8"
 -charset "UTF-8"
--sourcepath "../org.eclipse.gef/src"
+-sourcepath "../org.eclipse.gef3/src"
 -d reference/api
 -classpath @rt@@args.list.delimiter@@context@
 -use
@@ -14,7 +14,7 @@
 -linkoffline PLUGINS_ROOT/org.eclipse.platform.doc.isv/reference/api/ @linkoffline-target@/org.eclipse.platform.doc.isv/reference/api/
 -linkoffline PLUGINS_ROOT/org.eclipse.draw2dl.doc.isv/reference/api/ ../org.eclipse.draw2dl.doc.isv/reference/api/
 
-org.eclipse.gef
+org.eclipse.gef3
 org.eclipse.gef3.commands
 org.eclipse.gef3.dnd
 org.eclipse.gef3.editparts

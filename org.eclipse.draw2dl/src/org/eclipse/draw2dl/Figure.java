@@ -39,12 +39,12 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 
 	private static final Rectangle PRIVATE_RECT = new Rectangle();
 	private static final Point PRIVATE_POINT = new Point();
-	private static final int FLAG_VALID = new Integer(1).intValue(),
-			FLAG_OPAQUE = new Integer(1 << 1).intValue(),
-			FLAG_VISIBLE = new Integer(1 << 2).intValue(),
-			FLAG_FOCUSABLE = new Integer(1 << 3).intValue(),
-			FLAG_ENABLED = new Integer(1 << 4).intValue(),
-			FLAG_FOCUS_TRAVERSABLE = new Integer(1 << 5).intValue();
+	private static final int FLAG_VALID = 1,
+			FLAG_OPAQUE = 1 << 1,
+			FLAG_VISIBLE = 1 << 2,
+			FLAG_FOCUSABLE = 1 << 3,
+			FLAG_ENABLED = 1 << 4,
+			FLAG_FOCUS_TRAVERSABLE = 1 << 5;
 
 	static final int FLAG_REALIZED = 1 << 31;
 
@@ -77,7 +77,7 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 	private PropertyChangeSupport propertyListeners;
 	private org.eclipse.draw2dl.EventListenerList eventListeners = new EventListenerList();
 
-	private List children = Collections.EMPTY_LIST;
+	private List<IFigure> children = Collections.emptyList();
 
 	/**
 	 * This Figure's preferred size.
@@ -135,7 +135,7 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 	 */
 	public void add(org.eclipse.draw2dl.IFigure figure, Object constraint, int index) {
 		if (children == Collections.EMPTY_LIST)
-			children = new ArrayList(2);
+			children = new ArrayList<>(2);
 		if (index < -1 || index > children.size())
 			throw new IndexOutOfBoundsException("Index does not exist"); //$NON-NLS-1$
 
@@ -275,8 +275,9 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 			throw new RuntimeException(
 					"addNotify() should not be called multiple times"); //$NON-NLS-1$
 		setFlag(FLAG_REALIZED, true);
-		for (int i = 0; i < children.size(); i++)
-			((org.eclipse.draw2dl.IFigure) children.get(i)).addNotify();
+		for (IFigure child : children) {
+			child.addNotify();
+		}
 	}
 
 	/**
@@ -352,7 +353,7 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 		org.eclipse.draw2dl.IFigure fig;
 		for (int i = children.size(); i > 0;) {
 			i--;
-			fig = (org.eclipse.draw2dl.IFigure) children.get(i);
+			fig = children.get(i);
 			if (fig.isVisible()) {
 				fig = fig.findFigureAt(x, y, search);
 				if (fig != null)
@@ -450,7 +451,7 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 		org.eclipse.draw2dl.IFigure fig;
 		for (int i = children.size(); i > 0;) {
 			i--;
-			fig = (org.eclipse.draw2dl.IFigure) children.get(i);
+			fig = children.get(i);
 			if (fig.isVisible() && fig.isEnabled()) {
 				if (fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
 					fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x,
@@ -605,7 +606,7 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 	/**
 	 * @see org.eclipse.draw2dl.IFigure#getChildren()
 	 */
-	public List getChildren() {
+	public List<IFigure> getChildren() {
 		return children;
 	}
 
@@ -987,8 +988,7 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 	 */
 	public void invalidateTree() {
 		invalidate();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) iter.next();
+		for (IFigure child : children) {
 			child.invalidateTree();
 		}
 	}
@@ -1151,22 +1151,20 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 	 * @since 2.0
 	 */
 	protected void paintChildren(org.eclipse.draw2dl.Graphics graphics) {
-		for (int i = 0; i < children.size(); i++) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) children.get(i);
+		for (IFigure child : children) {
 			if (child.isVisible()) {
 				// determine clipping areas for child
-				Rectangle[] clipping = null;
+				Rectangle[] clipping;
 				if (clippingStrategy != null) {
 					clipping = clippingStrategy.getClip(child);
 				} else {
 					// default clipping behaviour is to clip at bounds
-					clipping = new Rectangle[] { child.getBounds() };
+					clipping = new Rectangle[]{child.getBounds()};
 				}
 				// child may now paint inside the clipping areas
-				for (int j = 0; j < clipping.length; j++) {
-					if (clipping[j].intersects(graphics
-							.getClip(Rectangle.SINGLETON))) {
-						graphics.clipRect(clipping[j]);
+				for (Rectangle rectangle : clipping) {
+					if (rectangle.intersects(graphics.getClip(Rectangle.SINGLETON))) {
+						graphics.clipRect(rectangle);
 						child.paint(graphics);
 						graphics.restoreState();
 					}
@@ -1250,8 +1248,9 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 			fireCoordinateSystemChanged();
 			return;
 		}
-		for (int i = 0; i < children.size(); i++)
-			((org.eclipse.draw2dl.IFigure) children.get(i)).translate(dx, dy);
+		for (IFigure child : children) {
+			child.translate(dx, dy);
+		}
 	}
 
 	/**
@@ -1285,9 +1284,9 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 	 * @since 2.0
 	 */
 	public void removeAll() {
-		List list = new ArrayList(getChildren());
-		for (int i = 0; i < list.size(); i++) {
-			remove((org.eclipse.draw2dl.IFigure) list.get(i));
+		List<IFigure> list = new ArrayList<>(getChildren());
+		for (IFigure iFigure : list) {
+			remove(iFigure);
 		}
 	}
 
@@ -1382,8 +1381,9 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 	 * Called prior to this figure's removal from its parent
 	 */
 	public void removeNotify() {
-		for (int i = 0; i < children.size(); i++)
-			((org.eclipse.draw2dl.IFigure) children.get(i)).removeNotify();
+		for (IFigure child : children) {
+			child.removeNotify();
+		}
 		if (internalGetEventDispatcher() != null)
 			internalGetEventDispatcher().requestRemoveFocus(this);
 		setFlag(FLAG_REALIZED, false);
@@ -1897,8 +1897,9 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 			return;
 		setValid(true);
 		layout();
-		for (int i = 0; i < children.size(); i++)
-			((org.eclipse.draw2dl.IFigure) children.get(i)).validate();
+		for (IFigure child : children) {
+			child.validate();
+		}
 	}
 
 	/**

@@ -332,7 +332,7 @@ public interface IFigure {
 	 * 
 	 * @return An unmodifiable list of children by reference
 	 */
-	List getChildren();
+	List<IFigure> getChildren();
 
 	/**
 	 * Returns the rectangular area within this Figure's bounds in which
