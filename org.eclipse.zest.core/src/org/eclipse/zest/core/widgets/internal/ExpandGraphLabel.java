@@ -80,7 +80,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.draw2d.ActionListener#actionPerformed(org.eclipse.draw2d.ActionEvent)
+	 * @see org.eclipse.draw2dl.ActionListener#actionPerformed(org.eclipse.draw2dl.ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent event) {
 		if (state == OPEN) {
@@ -114,7 +114,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 			/*
 			 * This method is overwritten so that the text is not truncated.
 			 * (non-Javadoc)
-			 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
+			 * @see org.eclipse.draw2dl.Label#paintFigure(org.eclipse.draw2dl.Graphics)
 			 */
 			protected void paintFigure(Graphics graphics) {
 				if (isOpaque()) {
@@ -182,7 +182,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
+	 * @see org.eclipse.draw2dl.Label#paintFigure(org.eclipse.draw2dl.Graphics)
 	 */
 	public void paint(Graphics graphics) {
 

@@ -4,7 +4,7 @@
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
 
-<toc link_to="../org.eclipse.gef.doc.isv/topics_Guide.xml#draw2d" label="none">
+<toc link_to="../org.eclipse.gef3.doc.isv/topics_Guide.xml#draw2d" label="none">
 	<topic label="Zest" href="guide/guide.html">
 		<topic label="Overview" href="guide/overview.html"/>
 	</topic>

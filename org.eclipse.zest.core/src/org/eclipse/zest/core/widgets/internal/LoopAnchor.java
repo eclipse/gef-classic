@@ -19,7 +19,7 @@ public class LoopAnchor extends ChopboxAnchor {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.draw2d.ChopboxAnchor#getReferencePoint()
+	 * @see org.eclipse.draw2dl.ChopboxAnchor#getReferencePoint()
 	 */
 	public Point getReferencePoint() {
 		//modification to getReferencePoint. Returns

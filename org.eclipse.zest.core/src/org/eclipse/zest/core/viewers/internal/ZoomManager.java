@@ -29,9 +29,9 @@ import org.eclipse.swt.widgets.Display;
  * Manage the primary zoom function in a graphical viewer. This class is used by
  * the zoom contribution items, including:
  * <UL>
- * <LI>{@link org.eclipse.gef.ui.actions.ZoomInAction}
- * <LI>{@link org.eclipse.gef.ui.actions.ZoomOutAction}
- * <LI> and {@link org.eclipse.gef.ui.actions.ZoomComboContributionItem}
+ * <LI>{@link org.eclipse.gef3.ui.actions.ZoomInAction}
+ * <LI>{@link org.eclipse.gef3.ui.actions.ZoomOutAction}
+ * <LI> and {@link org.eclipse.gef3.ui.actions.ZoomComboContributionItem}
  * </UL>
  * <P>
  * A ZoomManager controls how zoom in and zoom out are performed. It also

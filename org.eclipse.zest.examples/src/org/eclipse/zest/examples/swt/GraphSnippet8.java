@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.swt;
 
-import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2dl.ColorConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;

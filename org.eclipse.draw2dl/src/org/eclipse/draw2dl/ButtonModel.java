@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
-//import org.eclipse.draw2d.internal.Timer;
+//import org.eclipse.draw2dl.internal.Timer;
 
 /**
  * A model for buttons containing several properties, including enabled,

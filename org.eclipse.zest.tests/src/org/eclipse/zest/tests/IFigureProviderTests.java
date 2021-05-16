@@ -10,10 +10,10 @@ package org.eclipse.zest.tests;
 
 import junit.framework.TestCase;
 
-import org.eclipse.draw2d.BorderLayout;
-import org.eclipse.draw2d.Ellipse;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
+import org.eclipse.draw2dl.BorderLayout;
+import org.eclipse.draw2dl.Ellipse;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Label;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;

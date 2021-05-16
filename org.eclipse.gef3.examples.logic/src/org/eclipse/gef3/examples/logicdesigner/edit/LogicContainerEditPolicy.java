@@ -1,0 +1,47 @@
+/*******************************************************************************
+ * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.gef3.examples.logicdesigner.edit;
+
+import java.util.List;
+
+import org.eclipse.gef3.EditPart;
+import org.eclipse.gef3.commands.Command;
+import org.eclipse.gef3.commands.CompoundCommand;
+import org.eclipse.gef3.editpolicies.ContainerEditPolicy;
+import org.eclipse.gef3.requests.CreateRequest;
+import org.eclipse.gef3.requests.GroupRequest;
+
+import org.eclipse.gef3.examples.logicdesigner.LogicMessages;
+import org.eclipse.gef3.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef3.examples.logicdesigner.model.LogicSubpart;
+import org.eclipse.gef3.examples.logicdesigner.model.commands.OrphanChildCommand;
+
+public class LogicContainerEditPolicy extends ContainerEditPolicy {
+
+	protected Command getCreateCommand(CreateRequest request) {
+		return null;
+	}
+
+	public Command getOrphanChildrenCommand(GroupRequest request) {
+		List parts = request.getEditParts();
+		CompoundCommand result = new CompoundCommand(
+				LogicMessages.LogicContainerEditPolicy_OrphanCommandLabelText);
+		for (int i = 0; i < parts.size(); i++) {
+			OrphanChildCommand orphan = new OrphanChildCommand();
+			orphan.setChild((LogicSubpart) ((EditPart) parts.get(i)).getModel());
+			orphan.setParent((LogicDiagram) getHost().getModel());
+			orphan.setLabel(LogicMessages.LogicElementEditPolicy_OrphanCommandLabelText);
+			result.add(orphan);
+		}
+		return result.unwrap();
+	}
+
+}

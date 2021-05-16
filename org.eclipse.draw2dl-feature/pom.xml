@@ -5,11 +5,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.eclipse.gef</groupId>
-		<artifactId>org.eclipse.gef.releng</artifactId>
+		<artifactId>org.eclipse.gef3.releng</artifactId>
 		<version>3.11.100-SNAPSHOT</version>
-		<relativePath>../org.eclipse.gef.releng/pom.xml</relativePath>
+		<relativePath>../org.eclipse.gef3.releng/pom.xml</relativePath>
 	</parent>
-	<groupId>org.eclipse.draw2d.features</groupId>
+	<groupId>org.eclipse.draw2dl.features</groupId>
 	<artifactId>org.eclipse.draw2dl</artifactId>
 	<version>3.10.200-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>

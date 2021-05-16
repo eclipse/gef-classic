@@ -221,7 +221,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.gef.editparts.ZoomListener#zoomChanged(double)
+	 * @see org.eclipse.gef3.editparts.ZoomListener#zoomChanged(double)
 	 */
 	public void zoomChanged(double z) {
 		refresh(false);

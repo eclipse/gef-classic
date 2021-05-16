@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.uml;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LineBorder;
-import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.Label;
+import org.eclipse.draw2dl.LineBorder;
+import org.eclipse.draw2dl.ToolbarLayout;
 
 public class UMLClassFigure extends Figure {
 

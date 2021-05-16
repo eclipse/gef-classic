@@ -110,7 +110,7 @@ public class GraphLabel extends CachedLabel {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Figure#setFont(org.eclipse.swt.graphics.Font)
+	 * @see org.eclipse.draw2dl.Figure#setFont(org.eclipse.swt.graphics.Font)
 	 */
 	public void setFont(Font f) {
 		super.setFont(f);
@@ -141,7 +141,7 @@ public class GraphLabel extends CachedLabel {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
+	 * @see org.eclipse.draw2dl.Label#paintFigure(org.eclipse.draw2dl.Graphics)
 	 */
 	public void paint(Graphics graphics) {
 		int blue = getBackgroundColor().getBlue();
@@ -233,7 +233,7 @@ public class GraphLabel extends CachedLabel {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#setText(java.lang.String)
+	 * @see org.eclipse.draw2dl.Label#setText(java.lang.String)
 	 */
 	public void setText(String s) {
 		if (!s.equals("")) {
@@ -248,7 +248,7 @@ public class GraphLabel extends CachedLabel {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#setIcon(org.eclipse.swt.graphics.Image)
+	 * @see org.eclipse.draw2dl.Label#setIcon(org.eclipse.swt.graphics.Image)
 	 */
 	public void setIcon(Image image) {
 		super.setIcon(image);

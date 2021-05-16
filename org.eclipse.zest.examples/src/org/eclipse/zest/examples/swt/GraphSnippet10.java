@@ -42,7 +42,7 @@ public class GraphSnippet10 {
 		final Graph g = new Graph(shell, SWT.NONE);
 
 		GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
-		n.setBorderColor(org.eclipse.draw2d.ColorConstants.yellow);
+		n.setBorderColor(org.eclipse.draw2dl.ColorConstants.yellow);
 		n.setBorderWidth(3);
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");
 		GraphNode n3 = new GraphNode(g, SWT.NONE, "Scissors");

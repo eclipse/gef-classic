@@ -94,7 +94,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.draw2d.ConnectionLocator#getReferencePoint()
+	 * @see org.eclipse.draw2dl.ConnectionLocator#getReferencePoint()
 	 */
 	protected Point getReferencePoint() {
 		PointList points = getConnection().getPoints();

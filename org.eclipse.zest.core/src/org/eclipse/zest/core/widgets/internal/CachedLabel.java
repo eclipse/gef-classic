@@ -34,7 +34,7 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
+	 * @see org.eclipse.draw2dl.Label#paintFigure(org.eclipse.draw2dl.Graphics)
 	 */
 	Image cachedImage = null;
 	boolean cacheLabel = false;
@@ -54,7 +54,7 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#setIcon(org.eclipse.swt.graphics.Image)
+	 * @see org.eclipse.draw2dl.Label#setIcon(org.eclipse.swt.graphics.Image)
 	 */
 	public void setIcon(Image image) {
 		updateInvalidation();
@@ -64,7 +64,7 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Figure#setForegroundColor(org.eclipse.swt.graphics.Color)
+	 * @see org.eclipse.draw2dl.Figure#setForegroundColor(org.eclipse.swt.graphics.Color)
 	 */
 	public void setForegroundColor(Color fg) {
 		updateInvalidation();
@@ -74,7 +74,7 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Figure#setBackgroundColor(org.eclipse.swt.graphics.Color)
+	 * @see org.eclipse.draw2dl.Figure#setBackgroundColor(org.eclipse.swt.graphics.Color)
 	 */
 	public void setBackgroundColor(Color bg) {
 		updateInvalidation();
@@ -84,7 +84,7 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Figure#setFont(org.eclipse.swt.graphics.Font)
+	 * @see org.eclipse.draw2dl.Figure#setFont(org.eclipse.swt.graphics.Font)
 	 */
 	public void setFont(Font f) {
 		updateInvalidation();
@@ -94,7 +94,7 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#setText(java.lang.String)
+	 * @see org.eclipse.draw2dl.Label#setText(java.lang.String)
 	 */
 	public void setText(String s) {
 		updateInvalidation();
@@ -104,7 +104,7 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Figure#setSize(int, int)
+	 * @see org.eclipse.draw2dl.Figure#setSize(int, int)
 	 */
 	public void setSize(int w, int h) {
 		updateInvalidation();
@@ -118,7 +118,7 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
+	 * @see org.eclipse.draw2dl.Figure#setBounds(org.eclipse.draw2dl.geometry.Rectangle)
 	 */
 	public void setBounds(Rectangle rect) {
 		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height);
@@ -145,7 +145,7 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
+	 * @see org.eclipse.draw2dl.Label#paintFigure(org.eclipse.draw2dl.Graphics)
 	 */
 	static Rectangle tempRect = new Rectangle();
 

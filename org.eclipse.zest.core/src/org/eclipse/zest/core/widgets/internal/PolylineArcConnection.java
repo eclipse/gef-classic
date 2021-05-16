@@ -42,7 +42,7 @@ public class PolylineArcConnection extends PolylineConnection {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.draw2d.Polyline#setPoints(org.eclipse.draw2d.geometry.PointList
+	 * org.eclipse.draw2dl.Polyline#setPoints(org.eclipse.draw2dl.geometry.PointList
 	 * )
 	 */
 	public void setPoints(PointList points) {

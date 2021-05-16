@@ -5,9 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.eclipse.gef</groupId>
-		<artifactId>org.eclipse.gef.releng</artifactId>
+		<artifactId>org.eclipse.gef3.releng</artifactId>
 		<version>3.11.100-SNAPSHOT</version>
-		<relativePath>../org.eclipse.gef.releng/pom.xml</relativePath>
+		<relativePath>../org.eclipse.gef3.releng/pom.xml</relativePath>
 	</parent>
 	<groupId>org.eclipse.zest.plugins</groupId>
 	<artifactId>org.eclipse.zest.tests</artifactId>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+
+     <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            default="true"
+            name="%Logic_example_graphical_editor_name"
+            extensions="logic"
+            icon="logic.gif"
+            class="org.eclipse.gef3.examples.logicdesigner.LogicEditor"
+            contributorClass="org.eclipse.gef3.examples.logicdesigner.actions.LogicActionBarContributor"
+            id="Logic Graphical Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="%GEF_example_wizard_category_name"
+            parentCategory="org.eclipse.ui.Examples"
+            id="org.eclipse.gef3.examples">
+      </category>
+      <wizard
+            name="%Logic_example_wizard_name"
+            icon="logic.gif"
+            category="org.eclipse.ui.Examples/org.eclipse.gef3.examples"
+            class="org.eclipse.gef3.examples.logicdesigner.LogicCreationWizard"
+            id="org.eclipse.gef3.examples.logic.wizard.new.file">
+         <description>
+            %Logic_example_wizard_description
+         </description>
+         <selection
+               class="org.eclipse.core.resources.IResource">
+         </selection>
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            objectClass="org.eclipse.core.resources.IFile"
+            nameFilter="*.logic"
+            id="org.eclipse.gef3.examples.logic">
+         <action
+               label="Print"
+               class="org.eclipse.gef3.examples.logicdesigner.actions.LogicPrintAction"
+               menubarPath="additions"
+               enablesFor="1"
+               id="org.eclipse.gef3.examples.logic.print">
+         </action>
+      </objectContribution>
+   </extension>
+
+</plugin>

@@ -34,7 +34,7 @@
    </url>
 
    <includes
-         id="org.eclipse.draw2d.sdk"
+         id="org.eclipse.draw2dl.sdk"
          version="0.0.0"/>
 
    <includes

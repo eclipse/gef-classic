@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<feature url="features/org.eclipse.draw2d_3.10.200.qualifier.jar" id="org.eclipse.draw2d" version="3.10.200.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.draw2dl.sdk_3.10.200.qualifier.jar" id="org.eclipse.draw2dl.sdk" version="3.10.200.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.draw2dl.source_3.10.200.qualifier.jar" id="org.eclipse.draw2dl.source" version="3.10.200.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.gef_3.11.100.qualifier.jar" id="org.eclipse.gef" version="3.11.100.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.gef3.all_3.11.100.qualifier.jar" id="org.eclipse.gef3.all" version="3.11.100.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.gef3.examples_3.11.100.qualifier.jar" id="org.eclipse.gef3.examples" version="3.11.100.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.gef3.examples.source_3.11.100.qualifier.jar" id="org.eclipse.gef3.examples.source" version="3.11.100.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.gef3.sdk_3.11.100.qualifier.jar" id="org.eclipse.gef3.sdk" version="3.11.100.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.gef3.source_3.11.100.qualifier.jar" id="org.eclipse.gef3.source" version="3.11.100.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.zest_1.7.100.qualifier.jar" id="org.eclipse.zest" version="1.7.100.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.zest.sdk_1.7.100.qualifier.jar" id="org.eclipse.zest.sdk" version="1.7.100.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <feature url="features/org.eclipse.zest.source_1.7.100.qualifier.jar" id="org.eclipse.zest.source" version="1.7.100.qualifier">
+      <category name="GEF"/>
+   </feature>
+   <category-def name="GEF" label="GEF (Graphical Editing Framework)">
+      <description>
+         Draw2d, GEF (MVC), and Zest runtime, SDK, examples, and sources
+      </description>
+   </category-def>
+</site>

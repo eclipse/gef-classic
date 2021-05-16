@@ -22,7 +22,7 @@ import org.eclipse.draw2dl.geometry.Rectangle;
  * intended to have a layout mananger or children.
  * <P>
  * Note that it is the client's responsibility to dispose the given image. There
- * is no "free" resource management in draw2d.
+ * is no "free" resource management in draw2dl.
  * 
  * @author Pratik Shah
  */
