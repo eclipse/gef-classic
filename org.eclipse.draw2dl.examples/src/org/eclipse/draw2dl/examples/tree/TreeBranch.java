@@ -90,7 +90,7 @@ public TreeBranch(org.eclipse.draw2dl.IFigure title, int style) {
  * @param bounds where to set
  */
 public void animationReset(org.eclipse.draw2dl.geometry.Rectangle bounds) {
-	List subtrees = contents.getChildren();
+	List<IFigure> subtrees = contents.getChildren();
 	contents.setBounds(bounds);
 
 	//Make the center of this node match the center of the given bounds

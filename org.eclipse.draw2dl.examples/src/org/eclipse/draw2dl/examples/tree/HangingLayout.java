@@ -31,7 +31,7 @@ class HangingLayout extends BranchLayout {
 
 	void calculateDepth() {
 		depth = 0;
-		List subtrees = branch.contents.getChildren();
+		List<IFigure> subtrees = branch.contents.getChildren();
 		for (int i = 0; i < subtrees.size(); i++)
 			depth += ((TreeBranch) subtrees.get(i)).getDepth();
 		depth++;
@@ -41,7 +41,7 @@ class HangingLayout extends BranchLayout {
 		super.setRowHeights(heights, offset);
 		offset++;
 		if (branch.isExpanded()) {
-			List subtrees = branch.contents.getChildren();
+			List<IFigure> subtrees = branch.contents.getChildren();
 			TreeBranch subtree;
 
 			for (int i = 0; i < subtrees.size(); i++) {
@@ -128,7 +128,7 @@ class HangingLayout extends BranchLayout {
 			org.eclipse.draw2dl.IFigure contents = branch.getContentsPane();
 			int x = node.getBounds().right();
 			int y = node.getBounds().y() + gap;
-			List children = contents.getChildren();
+			List<IFigure> children = contents.getChildren();
 			if (children.size() == 0)
 				return;
 			int right = x;
@@ -145,7 +145,7 @@ class HangingLayout extends BranchLayout {
 			IFigure contents = branch.getContentsPane();
 			int x = node.getBounds().x() + gap;
 			int y = node.getBounds().bottom();
-			List children = contents.getChildren();
+			List<IFigure> children = contents.getChildren();
 			if (children.size() == 0)
 				return;
 			int bottom = y;
@@ -178,7 +178,7 @@ class HangingLayout extends BranchLayout {
 		if (!branch.isExpanded())
 			return;
 
-		List subtrees = branch.contents.getChildren();
+		List<IFigure> subtrees = branch.contents.getChildren();
 		TreeBranch subtree;
 
 		int leftSide = getGap();

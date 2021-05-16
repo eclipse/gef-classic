@@ -118,7 +118,7 @@ public class GridLayout extends AbstractHintLayout {
 	public int verticalSpacing = 5;
 
 	/** The layout contraints */
-	protected Map constraints = new HashMap();
+	protected Map<IFigure, Object> constraints = new HashMap<>();
 
 	/**
 	 * Default Constructor
@@ -172,9 +172,8 @@ public class GridLayout extends AbstractHintLayout {
 	}
 
 	void initChildren(org.eclipse.draw2dl.IFigure container) {
-		List children = container.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) children.get(i);
+		List<IFigure> children = container.getChildren();
+		for (IFigure child : children) {
 			if (child.getLayoutManager() == null)
 				child.setLayoutManager(this);
 		}
@@ -233,13 +232,12 @@ public class GridLayout extends AbstractHintLayout {
                      int height, boolean flushCache) {
 		if (numColumns < 1)
 			return new Dimension(marginWidth * 2, marginHeight * 2);
-		List children = container.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) children.get(i);
+		List<IFigure> children = container.getChildren();
+		for (IFigure child : children) {
 
-			org.eclipse.draw2dl.GridData data = (org.eclipse.draw2dl.GridData) getConstraint(child);
+			GridData data = (GridData) getConstraint(child);
 			if (data == null)
-				setConstraint(child, data = new org.eclipse.draw2dl.GridData());
+				setConstraint(child, data = new GridData());
 			if (flushCache)
 				data.flushCache();
 			data.computeSize(child, flushCache);
@@ -248,20 +246,19 @@ public class GridLayout extends AbstractHintLayout {
 		/* Build the grid */
 		int row = 0, column = 0, rowCount = 0, columnCount = numColumns;
 		org.eclipse.draw2dl.IFigure[][] grid = new org.eclipse.draw2dl.IFigure[4][columnCount];
-		for (int i = 0; i < children.size(); i++) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) children.get(i);
-			org.eclipse.draw2dl.GridData data = (org.eclipse.draw2dl.GridData) getConstraint(child);
+		for (IFigure child : children) {
+			GridData data = (GridData) getConstraint(child);
 			int hSpan = Math.max(1, Math.min(data.horizontalSpan, columnCount));
 			int vSpan = Math.max(1, data.verticalSpan);
 			while (true) {
 				int lastRow = row + vSpan;
 				if (lastRow >= grid.length) {
-					org.eclipse.draw2dl.IFigure[][] newGrid = new org.eclipse.draw2dl.IFigure[lastRow + 4][columnCount];
+					IFigure[][] newGrid = new IFigure[lastRow + 4][columnCount];
 					System.arraycopy(grid, 0, newGrid, 0, grid.length);
 					grid = newGrid;
 				}
 				if (grid[row] == null) {
-					grid[row] = new org.eclipse.draw2dl.IFigure[columnCount];
+					grid[row] = new IFigure[columnCount];
 				}
 				while (column < columnCount && grid[row][column] != null) {
 					column++;
@@ -283,7 +280,7 @@ public class GridLayout extends AbstractHintLayout {
 			}
 			for (int j = 0; j < vSpan; j++) {
 				if (grid[row + j] == null) {
-					grid[row + j] = new org.eclipse.draw2dl.IFigure[columnCount];
+					grid[row + j] = new IFigure[columnCount];
 				}
 				for (int k = 0; k < hSpan; k++) {
 					grid[row + j][column + k] = child;

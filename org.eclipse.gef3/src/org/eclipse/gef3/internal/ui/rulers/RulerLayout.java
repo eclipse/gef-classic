@@ -49,20 +49,19 @@ public class RulerLayout extends XYLayout {
 	 * @see LayoutManager#layout(IFigure)
 	 */
 	public void layout(IFigure container) {
-		List children = container.getChildren();
+		List<IFigure> children = container.getChildren();
 		Rectangle rulerSize = container.getClientArea();
-		for (int i = 0; i < children.size(); i++) {
-			IFigure child = (IFigure) children.get(i);
+		for (IFigure child : children) {
 			Dimension childSize = child.getPreferredSize();
-			int position = ((Integer) getConstraint(child)).intValue();
+			int position = (Integer) getConstraint(child);
 			if (((RulerFigure) container).isHorizontal()) {
 				childSize.height = rulerSize.height - 1;
 				Rectangle.SINGLETON.setLocation(position
-						- (childSize.width / 2), rulerSize.y);
+					- (childSize.width / 2), rulerSize.y);
 			} else {
 				childSize.width = rulerSize.width - 1;
 				Rectangle.SINGLETON.setLocation(rulerSize.x, position
-						- (childSize.height / 2));
+					- (childSize.height / 2));
 			}
 			Rectangle.SINGLETON.setSize(childSize);
 			child.setBounds(Rectangle.SINGLETON);

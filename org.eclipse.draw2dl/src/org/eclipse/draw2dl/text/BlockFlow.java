@@ -86,7 +86,7 @@ public class BlockFlow extends org.eclipse.draw2dl.text.FlowFigure {
 			org.eclipse.draw2dl.text.FlowBorder border = (org.eclipse.draw2dl.text.FlowBorder) getBorder();
 			return border.getBottomMargin();
 		}
-		List children = getChildren();
+		List<IFigure> children = getChildren();
 		int childIndex = children.size() - 1;
 		if (childIndex >= 0 && children.get(childIndex) instanceof BlockFlow) {
 			margin = Math.max(margin,
@@ -175,7 +175,7 @@ public class BlockFlow extends org.eclipse.draw2dl.text.FlowFigure {
 			org.eclipse.draw2dl.text.FlowBorder border = (org.eclipse.draw2dl.text.FlowBorder) getBorder();
 			return border.getTopMargin();
 		}
-		List children = getChildren();
+		List<IFigure> children = getChildren();
 		if (children.size() > 0 && children.get(0) instanceof BlockFlow) {
 			margin = Math.max(margin,
 					((BlockFlow) children.get(0)).getTopMargin());

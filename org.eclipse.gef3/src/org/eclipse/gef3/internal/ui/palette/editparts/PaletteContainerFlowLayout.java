@@ -58,13 +58,13 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 		Dimension prefSize = super.calculatePreferredSize(container, wHint,
 				hHint);
 
-		List children = container.getChildren();
+		List<IFigure> children = container.getChildren();
 		IFigure child;
 
 		// Build the sizes for each row, and update prefSize accordingly
 		Dimension expandedPaneSize = null;
 		for (int i = 0; i < children.size(); i++) {
-			child = (IFigure) children.get(i);
+			child = children.get(i);
 
 			if (child instanceof PinnablePaletteStackFigure
 					&& ((PinnablePaletteStackFigure) child).isExpanded()) {

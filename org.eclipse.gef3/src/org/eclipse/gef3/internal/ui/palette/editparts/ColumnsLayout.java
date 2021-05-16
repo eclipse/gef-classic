@@ -69,9 +69,9 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 	private Dimension getMinimumHints(IFigure figure, int wHint, int hHint) {
 		if (cachedConstraint == null) {
 			cachedConstraint = defaultConstraint.getCopy();
-			List children = figure.getParent().getChildren();
-			for (Iterator iter = children.iterator(); iter.hasNext();) {
-				IFigure child = (IFigure) iter.next();
+			List<IFigure> children = figure.getParent().getChildren();
+			for (Iterator<IFigure> iter = children.iterator(); iter.hasNext();) {
+				IFigure child = iter.next();
 				Dimension childSize = (child instanceof PinnablePaletteStackFigure) ? ((PinnablePaletteStackFigure) child)
 						.getHeaderPreferredSize(cachedConstraint.width,
 								cachedConstraint.height) : child

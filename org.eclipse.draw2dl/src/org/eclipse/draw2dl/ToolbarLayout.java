@@ -130,7 +130,7 @@ public class ToolbarLayout extends org.eclipse.draw2dl.OrderedLayout {
 				wHint = Math.max(0, wHint - insets.getWidth());
 		}
 
-		List children = container.getChildren();
+		List<IFigure> children = container.getChildren();
 		Dimension minSize = calculateChildrenSize(children, wHint, hHint, false);
 		// Do a second pass, if necessary
 		if (wHint >= 0 && minSize.width > wHint) {
@@ -179,7 +179,7 @@ public class ToolbarLayout extends org.eclipse.draw2dl.OrderedLayout {
 				wHint = Math.max(0, wHint - insets.getWidth());
 		}
 
-		List children = container.getChildren();
+		List<IFigure> children = container.getChildren();
 		Dimension prefSize = calculateChildrenSize(children, wHint, hHint, true);
 		// Do a second pass, if necessary
 		if (wHint >= 0 && prefSize.width > wHint) {
@@ -280,7 +280,7 @@ public class ToolbarLayout extends org.eclipse.draw2dl.OrderedLayout {
 	 * @see LayoutManager#layout(org.eclipse.draw2dl.IFigure)
 	 */
 	public void layout(org.eclipse.draw2dl.IFigure parent) {
-		List children = parent.getChildren();
+		List<IFigure> children = parent.getChildren();
 		int numChildren = children.size();
 		Rectangle clientArea = transposer.t(parent.getClientArea());
 		int x = clientArea.x;
@@ -320,7 +320,7 @@ public class ToolbarLayout extends org.eclipse.draw2dl.OrderedLayout {
 		int prefMinSumHeight = 0;
 
 		for (int i = 0; i < numChildren; i++) {
-			child = (org.eclipse.draw2dl.IFigure) children.get(i);
+			child = children.get(i);
 
 			prefSizes[i] = transposer.t(getChildPreferredSize(child, wHint,
 					hHint));
@@ -357,7 +357,7 @@ public class ToolbarLayout extends org.eclipse.draw2dl.OrderedLayout {
 			int minWidth = minSizes[i].width;
 			Rectangle newBounds = new Rectangle(x, y, prefWidth, prefHeight);
 
-			child = (IFigure) children.get(i);
+			child = children.get(i);
 			if (prefMinSumHeight != 0)
 				amntShrinkCurrentHeight = (prefHeight - minHeight)
 						* amntShrinkHeight / (prefMinSumHeight);

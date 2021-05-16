@@ -505,8 +505,8 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	}
 
 	public void saveState(IMemento memento) {
-		memento.putString(ACTIVE_STATE, new Boolean(getPaletteViewer()
-				.getActiveTool() == getToolEntry()).toString());
+		memento.putString(ACTIVE_STATE, Boolean.toString(getPaletteViewer()
+			.getActiveTool() == getToolEntry()));
 		super.saveState(memento);
 	}
 

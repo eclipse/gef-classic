@@ -134,7 +134,7 @@ public class FlowLayout extends org.eclipse.draw2dl.OrderedLayout {
 		// The preferred dimension that is to be calculated and returned
 		Dimension prefSize = new Dimension();
 
-		List children = container.getChildren();
+		List<IFigure> children = container.getChildren();
 		int width = 0;
 		int height = 0;
 		org.eclipse.draw2dl.IFigure child;
@@ -142,7 +142,7 @@ public class FlowLayout extends org.eclipse.draw2dl.OrderedLayout {
 
 		// Build the sizes for each row, and update prefSize accordingly
 		for (int i = 0; i < children.size(); i++) {
-			child = (org.eclipse.draw2dl.IFigure) children.get(i);
+			child = children.get(i);
 			childSize = transposer.t(getChildSize(child, wHint, hHint));
 			if (i == 0) {
 				width = childSize.width;
@@ -290,7 +290,7 @@ public class FlowLayout extends org.eclipse.draw2dl.OrderedLayout {
 		Rectangle relativeArea = parent.getClientArea();
 		data.area = transposer.t(relativeArea);
 
-		Iterator iterator = parent.getChildren().iterator();
+		Iterator<IFigure> iterator = parent.getChildren().iterator();
 		int dx;
 
 		// Calculate the hints to be passed to children
@@ -304,7 +304,7 @@ public class FlowLayout extends org.eclipse.draw2dl.OrderedLayout {
 		initVariables(parent);
 		initRow();
 		while (iterator.hasNext()) {
-			org.eclipse.draw2dl.IFigure f = (org.eclipse.draw2dl.IFigure) iterator.next();
+			org.eclipse.draw2dl.IFigure f = iterator.next();
 			Dimension pref = transposer.t(getChildSize(f, wHint, hHint));
 			Rectangle r = new Rectangle(0, 0, pref.width, pref.height);
 
@@ -336,8 +336,8 @@ public class FlowLayout extends org.eclipse.draw2dl.OrderedLayout {
 	 * @since 2.0
 	 */
 	protected void layoutRow(org.eclipse.draw2dl.IFigure parent) {
-		int majorAdjustment = 0;
-		int minorAdjustment = 0;
+		int majorAdjustment;
+		int minorAdjustment;
 		int correctMajorAlignment = getMajorAlignment();
 		int correctMinorAlignment = getMinorAlignment();
 

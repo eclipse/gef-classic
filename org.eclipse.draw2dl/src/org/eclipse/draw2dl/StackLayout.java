@@ -36,10 +36,8 @@ public class StackLayout extends org.eclipse.draw2dl.AbstractHintLayout {
 		if (hHint > -1)
 			hHint = Math.max(0, hHint - figure.getInsets().getHeight());
 		Dimension d = new Dimension();
-		List children = figure.getChildren();
-		org.eclipse.draw2dl.IFigure child;
-		for (int i = 0; i < children.size(); i++) {
-			child = (org.eclipse.draw2dl.IFigure) children.get(i);
+		List<IFigure> children = figure.getChildren();
+		for (IFigure child : children) {
 			if (!isObservingVisibility() || child.isVisible())
 				d.union(child.getMinimumSize(wHint, hHint));
 		}
@@ -64,10 +62,8 @@ public class StackLayout extends org.eclipse.draw2dl.AbstractHintLayout {
 		if (hHint > -1)
 			hHint = Math.max(0, hHint - figure.getInsets().getHeight());
 		Dimension d = new Dimension();
-		List children = figure.getChildren();
-		org.eclipse.draw2dl.IFigure child;
-		for (int i = 0; i < children.size(); i++) {
-			child = (org.eclipse.draw2dl.IFigure) children.get(i);
+		List<IFigure> children = figure.getChildren();
+		for (IFigure child : children) {
 			if (!isObservingVisibility() || child.isVisible())
 				d.union(child.getPreferredSize(wHint, hHint));
 		}
@@ -82,10 +78,8 @@ public class StackLayout extends org.eclipse.draw2dl.AbstractHintLayout {
 	 */
 	public void layout(org.eclipse.draw2dl.IFigure figure) {
 		Rectangle r = figure.getClientArea();
-		List children = figure.getChildren();
-		org.eclipse.draw2dl.IFigure child;
-		for (int i = 0; i < children.size(); i++) {
-			child = (IFigure) children.get(i);
+		List<IFigure> children = figure.getChildren();
+		for (IFigure child : children) {
 			child.setBounds(r);
 		}
 	}

@@ -35,11 +35,10 @@ class FreeformHelper implements FreeformListener {
 		if (freeformExtent != null)
 			return freeformExtent;
 		Rectangle r;
-		List children = host.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) children.get(i);
-			if (child instanceof org.eclipse.draw2dl.FreeformFigure)
-				r = ((org.eclipse.draw2dl.FreeformFigure) child).getFreeformExtent();
+		List<IFigure> children = host.getChildren();
+		for (IFigure child : children) {
+			if (child instanceof FreeformFigure)
+				r = ((FreeformFigure) child).getFreeformExtent();
 			else
 				r = child.getBounds();
 			if (freeformExtent == null)
@@ -87,11 +86,10 @@ class FreeformHelper implements FreeformListener {
 		host.setBounds(bounds);
 		bounds = bounds.getCopy();
 		host.translateFromParent(bounds);
-		List children = host.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) children.get(i);
-			if (child instanceof org.eclipse.draw2dl.FreeformFigure)
-				((org.eclipse.draw2dl.FreeformFigure) child).setFreeformBounds(bounds);
+		List<IFigure> children = host.getChildren();
+		for (IFigure child : children) {
+			if (child instanceof FreeformFigure)
+				((FreeformFigure) child).setFreeformBounds(bounds);
 		}
 	}
 

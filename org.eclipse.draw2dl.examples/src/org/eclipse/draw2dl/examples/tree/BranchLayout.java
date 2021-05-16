@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.draw2dl.AbstractLayout;
 import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.draw2dl.geometry.Transposer;
 
 /**
@@ -65,7 +66,7 @@ public int[] getPreferredRowHeights() {
 	return preferredRowHeights;
 }
 
-List getSubtrees() {
+List<IFigure> getSubtrees() {
 	return branch.getContentsPane().getChildren();
 }
 

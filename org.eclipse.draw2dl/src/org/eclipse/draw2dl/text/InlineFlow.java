@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.swt.SWT;
 
 import org.eclipse.draw2dl.Border;
@@ -46,9 +47,8 @@ public class InlineFlow extends org.eclipse.draw2dl.text.FlowFigure {
 	 * @see org.eclipse.draw2dl.text.FlowFigure#addLeadingWordRequirements(int[])
 	 */
 	public boolean addLeadingWordRequirements(int[] width) {
-		Iterator iter = getChildren().iterator();
-		while (iter.hasNext()) {
-			if (((org.eclipse.draw2dl.text.FlowFigure) iter.next()).addLeadingWordRequirements(width))
+		for (IFigure iFigure : getChildren()) {
+			if (((FlowFigure) iFigure).addLeadingWordRequirements(width))
 				return true;
 		}
 		return false;

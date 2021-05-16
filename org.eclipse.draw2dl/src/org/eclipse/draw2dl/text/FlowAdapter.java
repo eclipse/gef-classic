@@ -83,8 +83,9 @@ public class FlowAdapter extends org.eclipse.draw2dl.text.FlowFigure {
 		setBounds(new Rectangle(box.getX(), box.getBaseline() - box.ascent,
 				box.width, box.ascent));
 		super.layout();
-		for (Iterator itr = getChildren().iterator(); itr.hasNext();)
-			((IFigure) itr.next()).validate();
+		for (IFigure child : getChildren()) {
+			child.validate();
+		}
 	}
 
 	/**

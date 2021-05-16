@@ -36,11 +36,11 @@ private int pointOfContact;
  */
 protected org.eclipse.draw2dl.geometry.Dimension calculatePreferredSize(org.eclipse.draw2dl.IFigure container, int wHint, int hHint) {
 	container.validate();
-	List children = container.getChildren();
+	List<IFigure> children = container.getChildren();
 	org.eclipse.draw2dl.geometry.Rectangle result =
 		new Rectangle().setLocation(container.getClientArea().getLocation());
 	for (int i = 0; i < children.size(); i++)
-		result.union(((org.eclipse.draw2dl.IFigure)children.get(i)).getBounds());
+		result.union(children.get(i).getBounds());
 	result.resize(container.getInsets().getWidth(), container.getInsets().getHeight());
 	return result.getSize();
 }
@@ -85,7 +85,7 @@ public void layout(org.eclipse.draw2dl.IFigure container) {
 	TreeRoot root = ((TreeBranch)container.getParent()).getRoot();
 	Transposer transposer = root.getTransposer();
 	int gap = root.getMinorSpacing();
-	List subtrees = container.getChildren();
+	List<IFigure> subtrees = container.getChildren();
 	TreeBranch subtree;
 	int previousSubtreeDepth = 0;
 	int rightContour[] = null;

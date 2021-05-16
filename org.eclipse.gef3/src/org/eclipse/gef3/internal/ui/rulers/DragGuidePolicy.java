@@ -210,22 +210,21 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 			// add the placeholder guide figure to the ruler
 			getHostFigure().getParent().add(getDummyGuideFigure(), 0);
 			((GraphicalEditPart) getHost().getParent()).setLayoutConstraint(
-					getHost(), getDummyGuideFigure(), new Integer(
-							getGuideEditPart().getZoomedPosition()));
+					getHost(), getDummyGuideFigure(), getGuideEditPart().getZoomedPosition());
 			getDummyGuideFigure().setBounds(getHostFigure().getBounds());
 			getDummyGuideFigure().validate();
 			// add the invisible placeholder line figure to the primary viewer
 			getGuideEditPart().getGuideLayer().add(getDummyLineFigure(), 0);
 			getGuideEditPart().getGuideLayer().setConstraint(
 					getDummyLineFigure(),
-					new Boolean(getGuideEditPart().isHorizontal()));
+					getGuideEditPart().isHorizontal());
 			getDummyLineFigure().setBounds(
 					getGuideEditPart().getGuideLineFigure().getBounds());
 			getDummyLineFigure().validate();
 			// move the guide being dragged to the last index so that it's drawn
 			// on
 			// top of other guides
-			List children = getHostFigure().getParent().getChildren();
+			List<IFigure> children = getHostFigure().getParent().getChildren();
 			children.remove(getHostFigure());
 			children.add(getHostFigure());
 		}

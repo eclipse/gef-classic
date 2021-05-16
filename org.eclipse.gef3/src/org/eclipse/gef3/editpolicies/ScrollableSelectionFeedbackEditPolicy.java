@@ -297,7 +297,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 						.getScrollPane().getViewport()));
 		// check if there is a connection exceeding the client area
 		boolean connectionLayerChildExceedsClientArea = false;
-		List connectionLayerChildren = getLayer(LayerConstants.CONNECTION_LAYER)
+		List<IFigure> connectionLayerChildren = getLayer(LayerConstants.CONNECTION_LAYER)
 				.getChildren();
 		for (Iterator iterator = connectionLayerChildren.iterator(); iterator
 				.hasNext() && !connectionLayerChildExceedsClientArea;) {

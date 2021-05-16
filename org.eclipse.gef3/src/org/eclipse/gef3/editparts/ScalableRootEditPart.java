@@ -108,7 +108,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 		public Dimension getPreferredSize(int wHint, int hHint) {
 			Rectangle rect = new Rectangle();
 			for (int i = 0; i < getChildren().size(); i++)
-				rect.union(((IFigure) getChildren().get(i)).getBounds());
+				rect.union(getChildren().get(i).getBounds());
 			return rect.getSize();
 		}
 

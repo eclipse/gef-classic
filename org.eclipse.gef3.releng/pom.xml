@@ -111,7 +111,7 @@
 		<module>../org.eclipse.zest-feature</module>
 		<module>../org.eclipse.zest.sdk-feature</module>
 		<module>../org.eclipse.gef3.all-feature</module>
-		<!--<module>../org.eclipse.gef3.repository</module>-->
+		<module>../org.eclipse.gef3.repository</module>
 	</modules>
 
 </project>

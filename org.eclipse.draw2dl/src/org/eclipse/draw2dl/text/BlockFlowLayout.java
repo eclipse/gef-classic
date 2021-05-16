@@ -12,6 +12,7 @@ package org.eclipse.draw2dl.text;
 
 import java.util.List;
 
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.swt.SWT;
 
 import org.eclipse.draw2dl.Figure;
@@ -144,9 +145,8 @@ public class BlockFlowLayout extends org.eclipse.draw2dl.text.FlowContainerLayou
 
 		if (blockInvalid) {
 			blockInvalid = false;
-			List v = getFlowFigure().getChildren();
-			for (int i = 0; i < v.size(); i++)
-				((org.eclipse.draw2dl.text.FlowFigure) v.get(i)).postValidate();
+			List<IFigure> v = getFlowFigure().getChildren();
+			for (IFigure child : v) ((FlowFigure) child).postValidate();
 		}
 	}
 
@@ -196,7 +196,7 @@ public class BlockFlowLayout extends org.eclipse.draw2dl.text.FlowContainerLayou
 	 * @see FlowContext#getWidthLookahead(org.eclipse.draw2dl.text.FlowFigure, int[])
 	 */
 	public void getWidthLookahead(org.eclipse.draw2dl.text.FlowFigure child, int result[]) {
-		List children = getFlowFigure().getChildren();
+		List<IFigure> children = getFlowFigure().getChildren();
 		int index = -1;
 		if (child != null)
 			index = children.indexOf(child);

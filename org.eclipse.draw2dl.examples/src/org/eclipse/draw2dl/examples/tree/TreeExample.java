@@ -82,7 +82,7 @@ void doDeleteChild() {
 	if (contents.getChildren().isEmpty())
 		return;
 	contents.remove(
-		(org.eclipse.draw2dl.IFigure)contents.getChildren().get(contents.getChildren().size() - 1));
+		contents.getChildren().get(contents.getChildren().size() - 1));
 }
 
 void doExpandCollapse() {

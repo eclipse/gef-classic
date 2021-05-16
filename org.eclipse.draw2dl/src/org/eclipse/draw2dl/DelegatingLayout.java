@@ -25,7 +25,7 @@ import org.eclipse.draw2dl.geometry.Dimension;
  */
 public class DelegatingLayout extends AbstractLayout {
 
-	private Map constraints = new HashMap();
+	private Map<IFigure, Object> constraints = new HashMap<>();
 
 	/**
 	 * Calculates the preferred size of the given Figure. For the
@@ -43,10 +43,9 @@ public class DelegatingLayout extends AbstractLayout {
 	 */
 	protected Dimension calculatePreferredSize(org.eclipse.draw2dl.IFigure parent, int wHint,
                                                int hHint) {
-		List children = parent.getChildren();
+		List<IFigure> children = parent.getChildren();
 		Dimension d = new Dimension();
-		for (int i = 0; i < children.size(); i++) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) children.get(i);
+		for (IFigure child : children) {
 			d.union(child.getPreferredSize());
 		}
 		return d;
@@ -67,10 +66,9 @@ public class DelegatingLayout extends AbstractLayout {
 	 *            the figure whose children should be layed out
 	 */
 	public void layout(org.eclipse.draw2dl.IFigure parent) {
-		List children = parent.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) children.get(i);
-			org.eclipse.draw2dl.Locator locator = (Locator) constraints.get(child);
+		List<IFigure> children = parent.getChildren();
+		for (IFigure child : children) {
+			Locator locator = (Locator) constraints.get(child);
 			if (locator != null) {
 				locator.relocate(child);
 			}

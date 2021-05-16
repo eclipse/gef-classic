@@ -377,7 +377,7 @@ public class Clickable extends org.eclipse.draw2dl.Figure {
 	protected void setContents(org.eclipse.draw2dl.IFigure contents) {
 		setLayoutManager(new StackLayout());
 		if (getChildren().size() > 0)
-			remove((IFigure) getChildren().get(0));
+			remove(getChildren().get(0));
 		add(contents);
 	}
 

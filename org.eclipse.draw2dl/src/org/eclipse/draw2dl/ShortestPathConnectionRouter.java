@@ -103,7 +103,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	private void hookAll() {
 		figuresToBounds = new HashMap();
 		for (int i = 0; i < container.getChildren().size(); i++)
-			addChild((org.eclipse.draw2dl.IFigure) container.getChildren().get(i));
+			addChild(container.getChildren().get(i));
 		container.addLayoutListener(listener);
 	}
 

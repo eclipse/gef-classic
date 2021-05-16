@@ -43,16 +43,14 @@ public class XYLayout extends org.eclipse.draw2dl.AbstractLayout {
 	 */
 	protected Dimension calculatePreferredSize(org.eclipse.draw2dl.IFigure f, int wHint, int hHint) {
 		Rectangle rect = new Rectangle();
-		ListIterator children = f.getChildren().listIterator();
-		while (children.hasNext()) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) children.next();
+		for (IFigure child : f.getChildren()) {
 			Rectangle r = (Rectangle) constraints.get(child);
 			if (r == null)
 				continue;
 
 			if (r.width == -1 || r.height == -1) {
 				Dimension preferredSize = child.getPreferredSize(r.width,
-						r.height);
+					r.height);
 				r = r.getCopy();
 				if (r.width == -1)
 					r.width = preferredSize.width;

@@ -1405,7 +1405,7 @@ public class FlyoutPaletteComposite extends Composite {
 		}
 
 		public void setFont(Font font) {
-			((IFigure) lws.getRootFigure().getChildren().get(0)).setFont(font);
+			lws.getRootFigure().getChildren().get(0).setFont(font);
 			if (isVisible()) {
 				/*
 				 * If this canvas is in the sash, we want the

@@ -105,9 +105,8 @@ public class FlowPage extends org.eclipse.draw2dl.text.BlockFlow {
 		Rectangle r = getBlockBox().toRectangle();
 		pageSize.width = r.width;
 		pageSize.height = r.height;
-		List v = getChildren();
-		for (int i = 0; i < v.size(); i++)
-			((org.eclipse.draw2dl.text.FlowFigure) v.get(i)).postValidate();
+		List<IFigure> v = getChildren();
+		for (IFigure iFigure : v) ((FlowFigure) iFigure).postValidate();
 	}
 
 	/**

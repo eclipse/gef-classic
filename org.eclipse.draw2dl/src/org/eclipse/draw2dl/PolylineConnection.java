@@ -94,7 +94,7 @@ public class PolylineConnection extends Polyline implements org.eclipse.draw2dl.
 		if (bounds == null) {
 			super.getBounds();
 			for (int i = 0; i < getChildren().size(); i++) {
-				org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) getChildren().get(i);
+				org.eclipse.draw2dl.IFigure child = getChildren().get(i);
 				bounds.union(child.getBounds());
 			}
 		}

@@ -137,9 +137,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 		scrollPane.setVisible(false);
 		// setSize(expandGraphLabel.getSize().width,
 		// expandGraphLabel.getSize().height);
-		List children = this.zestLayer.getChildren();
-		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
-			IFigure child = (IFigure) iterator.next();
+		List<IFigure> children = this.zestLayer.getChildren();
+		for (IFigure child : children) {
 			GraphItem item = getGraph().getGraphItem(child);
 			item.setVisible(false);
 		}
@@ -318,9 +317,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 		// expandGraphLabel.getSize().height + expandedHeight -
 		// SUBLAYER_OFFSET);
 
-		List children = this.zestLayer.getChildren();
-		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
-			IFigure child = (IFigure) iterator.next();
+		List<IFigure> children = this.zestLayer.getChildren();
+		for (IFigure child : children) {
 			GraphItem item = getGraph().getGraphItem(child);
 			item.setVisible(true);
 		}

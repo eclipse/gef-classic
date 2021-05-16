@@ -92,8 +92,9 @@ public abstract class FlowFigure extends Figure {
 	 * @since 3.1
 	 */
 	protected void contributeBidi(org.eclipse.draw2dl.text.BidiProcessor proc) {
-		for (Iterator iter = getChildren().iterator(); iter.hasNext();)
-			((FlowFigure) iter.next()).contributeBidi(proc);
+		for (IFigure iFigure : getChildren()) {
+			((FlowFigure) iFigure).contributeBidi(proc);
+		}
 	}
 
 	/**

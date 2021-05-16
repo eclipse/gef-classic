@@ -59,11 +59,9 @@ public class LayoutAnimator extends org.eclipse.draw2dl.Animator implements org.
 	 * @since 3.2
 	 */
 	protected Object getCurrentState(org.eclipse.draw2dl.IFigure container) {
-		Map locations = new HashMap();
-		List children = container.getChildren();
-		org.eclipse.draw2dl.IFigure child;
-		for (int i = 0; i < children.size(); i++) {
-			child = (org.eclipse.draw2dl.IFigure) children.get(i);
+		Map<IFigure, Rectangle> locations = new HashMap<>();
+		List<IFigure> children = container.getChildren();
+		for (IFigure child : children) {
 			locations.put(child, child.getBounds().getCopy());
 		}
 		return locations;
@@ -110,15 +108,14 @@ public class LayoutAnimator extends org.eclipse.draw2dl.Animator implements org.
 		Map ending = (Map) org.eclipse.draw2dl.Animation.getFinalState(this, container);
 		if (initial == null)
 			return false;
-		List children = container.getChildren();
+		List<IFigure> children = container.getChildren();
 
 		float progress = org.eclipse.draw2dl.Animation.getProgress();
 		float ssergorp = 1 - progress;
 
 		Rectangle rect1, rect2;
 
-		for (int i = 0; i < children.size(); i++) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) children.get(i);
+		for (IFigure child : children) {
 			rect1 = (Rectangle) initial.get(child);
 			rect2 = (Rectangle) ending.get(child);
 
@@ -126,10 +123,10 @@ public class LayoutAnimator extends org.eclipse.draw2dl.Animator implements org.
 			if (rect1 == null)
 				continue;
 			child.setBounds(new Rectangle(Math.round(progress * rect2.x
-					+ ssergorp * rect1.x), Math.round(progress * rect2.y
-					+ ssergorp * rect1.y), Math.round(progress * rect2.width
-					+ ssergorp * rect1.width), Math.round(progress
-					* rect2.height + ssergorp * rect1.height)));
+				+ ssergorp * rect1.x), Math.round(progress * rect2.y
+				+ ssergorp * rect1.y), Math.round(progress * rect2.width
+				+ ssergorp * rect1.width), Math.round(progress
+				* rect2.height + ssergorp * rect1.height)));
 		}
 		return true;
 	}

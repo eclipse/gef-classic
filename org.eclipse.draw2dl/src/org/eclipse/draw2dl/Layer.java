@@ -33,7 +33,7 @@ public class Layer extends Figure {
 		x = pt.x;
 		y = pt.y;
 		for (int i = 0; i < getChildren().size(); i++) {
-			org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure) getChildren().get(i);
+			org.eclipse.draw2dl.IFigure child = getChildren().get(i);
 			if (child.containsPoint(x, y))
 				return true;
 		}

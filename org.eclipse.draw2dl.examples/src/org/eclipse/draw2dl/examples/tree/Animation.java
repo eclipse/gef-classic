@@ -15,6 +15,7 @@ import java.util.*;
 import org.eclipse.draw2dl.IFigure;
 import org.eclipse.draw2dl.Viewport;
 import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 
 /**
  * @author hudsonr
@@ -87,7 +88,7 @@ static boolean playbackState(org.eclipse.draw2dl.IFigure container) {
 		return false;
 	}
 	List target = (List)finalStates.get(container);
-	List children = container.getChildren();
+	List<IFigure> children = container.getChildren();
 	org.eclipse.draw2dl.geometry.Rectangle rect1, rect2;
 	for (int i = 0; i < children.size(); i++) {
 		org.eclipse.draw2dl.IFigure child = (org.eclipse.draw2dl.IFigure)children.get(i);
@@ -105,26 +106,24 @@ static boolean playbackState(org.eclipse.draw2dl.IFigure container) {
 }
 
 static void recordFinalStates(org.eclipse.draw2dl.IFigure container) {
-	List list = new ArrayList();
+	List<Rectangle> list = new ArrayList<>();
 	finalStates.put(container, list);
-	List children = container.getChildren();
+	List<IFigure> children = container.getChildren();
 	list.clear();
-	for (int i=0; i<children.size();i++)
-		list.add(((org.eclipse.draw2dl.IFigure)children.get(i)).getBounds().getCopy());
+	for (IFigure child : children) list.add(child.getBounds().getCopy());
 }
 
 static void recordInitialState(org.eclipse.draw2dl.IFigure container) {
 	if (!RECORDING)
 		return;
-	List list = (List)initialStates.get(container);
+	List<Rectangle> list = (List)initialStates.get(container);
 	if (list != null)
 		return;
 //		System.out.println("Error recording initial state");
-	initialStates.put(container, list = new ArrayList());
-	List children = container.getChildren();
+	initialStates.put(container, list = new ArrayList<>());
+	List<IFigure> children = container.getChildren();
 	list.clear();
-	for (int i=0; i<children.size();i++)
-		list.add(((org.eclipse.draw2dl.IFigure)children.get(i)).getBounds().getCopy());
+	for (IFigure child : children) list.add(child.getBounds().getCopy());
 }
 
 static void swap() {
@@ -138,7 +137,7 @@ static boolean step() {
 	progress = (double)(current - start)/(finish - start);
 	progress = Math.min(progress, 0.999);
 	Iterator iter = initialStates.keySet().iterator();
-	
+
 	while (iter.hasNext())
 		((IFigure)iter.next()).revalidate();
 	viewport.validate();

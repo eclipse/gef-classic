@@ -605,6 +605,7 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 
 	/**
 	 * @see org.eclipse.draw2dl.IFigure#getChildren()
+	 * @return
 	 */
 	public List<IFigure> getChildren() {
 		return children;
@@ -2002,7 +2003,7 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 	 * Iterates over a Figure's children.
 	 */
 	public static class FigureIterator {
-		private List list;
+		private List<IFigure> list;
 		private int index;
 
 		/**
@@ -2022,7 +2023,7 @@ public class Figure implements org.eclipse.draw2dl.IFigure {
 		 * @return The next Figure
 		 */
 		public org.eclipse.draw2dl.IFigure nextFigure() {
-			return (org.eclipse.draw2dl.IFigure) list.get(--index);
+			return list.get(--index);
 		}
 
 		/**

@@ -46,8 +46,7 @@ public abstract class AbstractPointListShape extends Shape {
 	 *         child figures
 	 */
 	protected boolean childrenContainsPoint(int x, int y) {
-		for (Iterator it = getChildren().iterator(); it.hasNext();) {
-			org.eclipse.draw2dl.IFigure nextChild = (IFigure) it.next();
+		for (IFigure nextChild : getChildren()) {
 			if (nextChild.containsPoint(x, y)) {
 				return true;
 			}

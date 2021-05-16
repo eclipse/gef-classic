@@ -46,10 +46,8 @@ public class FreeformLayout extends org.eclipse.draw2dl.XYLayout {
 		if (origin == null) {
 			origin = new Point();
 			if (isPositiveCoordinates()) {
-				ListIterator children = figure.getChildren().listIterator();
-				while (children.hasNext()) {
-					org.eclipse.draw2dl.IFigure f = (IFigure) children.next();
-					Rectangle constraint = (Rectangle) getConstraint(f);
+				for (IFigure child : figure.getChildren()) {
+					Rectangle constraint = (Rectangle) getConstraint(child);
 					if (constraint != null) {
 						origin.x = Math.min(origin.x, constraint.x);
 						origin.y = Math.min(origin.y, constraint.y);

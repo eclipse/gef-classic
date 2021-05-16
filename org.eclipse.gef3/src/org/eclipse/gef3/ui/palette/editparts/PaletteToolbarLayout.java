@@ -45,7 +45,7 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 	 * @see ToolbarLayout#layout(IFigure)
 	 */
 	public void layout(IFigure parent) {
-		List children = parent.getChildren();
+		List<IFigure> children = parent.getChildren();
 		List childrenGrabbingVertical = new ArrayList();
 		int numChildren = children.size();
 		Rectangle clientArea = parent.getClientArea();
@@ -68,7 +68,7 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 		 * figures can be stretched/shrunk.
 		 */
 		for (int i = 0; i < numChildren; i++) {
-			IFigure child = (IFigure) children.get(i);
+			IFigure child = children.get(i);
 
 			prefSizes[i] = child.getPreferredSize(wHint, hHint);
 			minSizes[i] = child.getMinimumSize(wHint, hHint);

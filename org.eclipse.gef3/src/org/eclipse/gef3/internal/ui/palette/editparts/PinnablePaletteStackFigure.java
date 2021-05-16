@@ -270,19 +270,17 @@ public class PinnablePaletteStackFigure extends Figure {
 				if (isExpanded()) {
 					boolean collapseOtherStacks = (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS || layoutMode == PaletteViewerPreferences.LAYOUT_ICONS);
 
-					for (Iterator iterator = getParent().getChildren()
-							.iterator(); iterator.hasNext();) {
-						Object childFigure = iterator.next();
+					for (IFigure childFigure : getParent().getChildren()) {
 						if (childFigure instanceof PinnablePaletteStackFigure
-								&& childFigure != PinnablePaletteStackFigure.this) {
+							&& childFigure != PinnablePaletteStackFigure.this) {
 
 							if (collapseOtherStacks
-									|| (((PinnablePaletteStackFigure) childFigure)
-											.isExpanded() && !((PinnablePaletteStackFigure) childFigure)
-											.isPinnedOpen())) {
+								|| (((PinnablePaletteStackFigure) childFigure)
+								.isExpanded() && !((PinnablePaletteStackFigure) childFigure)
+								.isPinnedOpen())) {
 
 								((PinnablePaletteStackFigure) childFigure)
-										.setExpanded(false);
+									.setExpanded(false);
 							}
 						}
 					}
