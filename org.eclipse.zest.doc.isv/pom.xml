@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.eclipse.gef3</groupId>
 		<artifactId>org.eclipse.gef3.releng</artifactId>
-		<version>3.11.100-SNAPSHOT</version>
+		<version>3.12.100-SNAPSHOT</version>
 		<relativePath>../org.eclipse.gef3.releng/pom.xml</relativePath>
 	</parent>
 	<groupId>org.eclipse.zest.plugins</groupId>
