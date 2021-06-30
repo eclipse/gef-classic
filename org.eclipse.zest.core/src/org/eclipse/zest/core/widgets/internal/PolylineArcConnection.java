@@ -9,10 +9,10 @@
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.RectangleFigure;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2dl.PolylineConnection;
+import org.eclipse.draw2dl.RectangleFigure;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.PointList;
 
 /**
  * A connection that draws an arc between nodes, based on a given depth for the
@@ -42,7 +42,7 @@ public class PolylineArcConnection extends PolylineConnection {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.draw2d.Polyline#setPoints(org.eclipse.draw2d.geometry.PointList
+	 * org.eclipse.draw2dl.Polyline#setPoints(org.eclipse.draw2dl.geometry.PointList
 	 * )
 	 */
 	public void setPoints(PointList points) {

@@ -15,23 +15,23 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.FreeformFigure;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.ScalableFigure;
-import org.eclipse.draw2d.ScalableFreeformLayeredPane;
-import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.FreeformFigure;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.ScalableFigure;
+import org.eclipse.draw2dl.ScalableFreeformLayeredPane;
+import org.eclipse.draw2dl.Viewport;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 import org.eclipse.swt.widgets.Display;
 
 /**
  * Manage the primary zoom function in a graphical viewer. This class is used by
  * the zoom contribution items, including:
  * <UL>
- * <LI>{@link org.eclipse.gef.ui.actions.ZoomInAction}
- * <LI>{@link org.eclipse.gef.ui.actions.ZoomOutAction}
- * <LI> and {@link org.eclipse.gef.ui.actions.ZoomComboContributionItem}
+ * <LI>{@link org.eclipse.gef3.ui.actions.ZoomInAction}
+ * <LI>{@link org.eclipse.gef3.ui.actions.ZoomOutAction}
+ * <LI> and {@link org.eclipse.gef3.ui.actions.ZoomComboContributionItem}
  * </UL>
  * <P>
  * A ZoomManager controls how zoom in and zoom out are performed. It also

@@ -1,0 +1,56 @@
+/*******************************************************************************
+ * Copyright (c) 2005 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.draw2dl.examples;
+
+import org.eclipse.draw2dl.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+
+/**
+ * A factory for figures.
+ * Created on :Sep 26, 2002
+ * @author hudsonr
+ * @since 2.0
+ */
+public class ExampleUtil {
+
+static final Font FONT_LARGE = new Font(null, "Arial", 16, SWT.BOLD);
+
+public static org.eclipse.draw2dl.IFigure createFlowLayoutPanel(){
+	org.eclipse.draw2dl.Figure f = new org.eclipse.draw2dl.Figure();
+
+	f.setBorder(new org.eclipse.draw2dl.GroupBoxBorder("FlowLayout"));
+	f.setLayoutManager(new FlowLayout());
+
+	for (int i=0; i<5; i++)
+		f.add(new org.eclipse.draw2dl.Label("Label " + i, ExampleImages.GEORGE));
+
+//	Label l = new Label("A really wide label is here");
+//	l.setBorder(new LineBorder());
+//	l.setFont(FONT_LARGE);
+//	f.add(l);
+
+	for (int i=6; i<10; i++)
+		f.add(new Label("Label " + i, ExampleImages.GEORGE));
+	
+	return f;
+}
+
+public static IFigure createToolbarLayout(){
+	org.eclipse.draw2dl.Figure f = new Figure();
+	f.setBorder(new GroupBoxBorder("Toolbar"));
+	f.setLayoutManager(new ToolbarLayout());
+	f.add(createFlowLayoutPanel());
+	f.add(createFlowLayoutPanel());
+	return f;
+}
+
+}

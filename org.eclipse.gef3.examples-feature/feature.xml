@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Copyright (c) 2005, 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+<feature
+      id="org.eclipse.gef3.examples"
+      label="%featureName"
+      version="3.12.100.qualifier"
+      provider-name="%providerName"
+      plugin="org.eclipse.gef3.examples.logic">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license>
+      %license
+   </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/legacy/releases/"/>
+      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/legacy/releases/"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.gef3" version="3.6.0" match="compatible"/>
+   </requires>
+
+   <plugin
+         id="org.eclipse.gef3.examples.logic"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.gef3.examples.flow"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.gef3.examples.text"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.gef3.examples.shapes"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

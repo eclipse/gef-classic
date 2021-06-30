@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.uml;
 
-import org.eclipse.draw2d.AbstractBorder;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2dl.AbstractBorder;
+import org.eclipse.draw2dl.Figure;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.ToolbarLayout;
+import org.eclipse.draw2dl.geometry.Insets;
 
 public class CompartmentFigure extends Figure {
 

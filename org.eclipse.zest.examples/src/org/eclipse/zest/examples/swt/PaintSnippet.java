@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.swt;
 
-import org.eclipse.draw2d.SWTGraphics;
+import org.eclipse.draw2dl.SWTGraphics;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;

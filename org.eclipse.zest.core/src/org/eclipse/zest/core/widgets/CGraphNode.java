@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 

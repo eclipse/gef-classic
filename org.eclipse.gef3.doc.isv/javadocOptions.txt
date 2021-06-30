@@ -1,0 +1,35 @@
+-encoding "UTF-8"
+-charset "UTF-8"
+-sourcepath "../org.eclipse.gef3/src"
+-d reference/api
+-classpath @rt@@args.list.delimiter@@context@
+-use
+-breakiterator
+-splitIndex
+-windowtitle "GEF (MVC) API Specification"
+-doctitle "GEF (MVC) API Specification"
+-header "<b>GEF (MVC)</b><br>@build@"
+-bottom "Copyright (c) IBM Corp. and others 2000, 2011.  All Rights Reserved."
+-link http://docs.oracle.com/javase/1.4.2/docs/api/
+-linkoffline PLUGINS_ROOT/org.eclipse.platform.doc.isv/reference/api/ @linkoffline-target@/org.eclipse.platform.doc.isv/reference/api/
+-linkoffline PLUGINS_ROOT/org.eclipse.draw2dl.doc.isv/reference/api/ ../org.eclipse.draw2dl.doc.isv/reference/api/
+
+org.eclipse.gef3
+org.eclipse.gef3.commands
+org.eclipse.gef3.dnd
+org.eclipse.gef3.editparts
+org.eclipse.gef3.editpolicies
+org.eclipse.gef3.handles
+org.eclipse.gef3.palette
+org.eclipse.gef3.print
+org.eclipse.gef3.requests
+org.eclipse.gef3.rulers
+org.eclipse.gef3.tools
+org.eclipse.gef3.ui.actions
+org.eclipse.gef3.ui.palette
+org.eclipse.gef3.ui.palette.customize
+org.eclipse.gef3.ui.parts
+org.eclipse.gef3.ui.properties
+org.eclipse.gef3.ui.rulers
+org.eclipse.gef3.ui.views.palette
+org.eclipse.gef3.util

@@ -9,18 +9,18 @@
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
-import org.eclipse.draw2d.ChopboxAnchor;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.Locator;
-import org.eclipse.draw2d.MidpointLocator;
-import org.eclipse.draw2d.PolygonDecoration;
-import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.Shape;
-import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2dl.ChopboxAnchor;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.Connection;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Label;
+import org.eclipse.draw2dl.Locator;
+import org.eclipse.draw2dl.MidpointLocator;
+import org.eclipse.draw2dl.PolygonDecoration;
+import org.eclipse.draw2dl.PolylineConnection;
+import org.eclipse.draw2dl.Shape;
+import org.eclipse.draw2dl.geometry.Point;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;

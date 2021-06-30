@@ -10,8 +10,8 @@
 package org.eclipse.zest.examples.jface;
 
 
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.Label;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;

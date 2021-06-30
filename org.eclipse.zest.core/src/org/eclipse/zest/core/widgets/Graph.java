@@ -15,24 +15,17 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.draw2d.Animation;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.FreeformLayout;
-import org.eclipse.draw2d.FreeformViewport;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LayoutAnimator;
-import org.eclipse.draw2d.MouseMotionListener;
-import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.SWTEventDispatcher;
-import org.eclipse.draw2d.ScalableFigure;
-import org.eclipse.draw2d.ScalableFreeformLayeredPane;
-import org.eclipse.draw2d.ScrollPane;
-import org.eclipse.draw2d.TreeSearch;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.*;
+import org.eclipse.draw2dl.FigureCanvas;
+import org.eclipse.draw2dl.FreeformLayout;
+import org.eclipse.draw2dl.FreeformViewport;
+import org.eclipse.draw2dl.LayoutAnimator;
+import org.eclipse.draw2dl.SWTEventDispatcher;
+import org.eclipse.draw2dl.ScalableFreeformLayeredPane;
+import org.eclipse.draw2dl.TreeSearch;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.Rectangle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -490,7 +483,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	// PRIVATE METHODS. These are NON API
 	// /////////////////////////////////////////////////////////////////////////////////
 	class DragSupport implements MouseMotionListener,
-			org.eclipse.draw2d.MouseListener {
+        MouseListener {
 		/**
 		 * 
 		 */
@@ -503,7 +496,7 @@ public class Graph extends FigureCanvas implements IContainer {
 			this.graph = graph;
 		}
 
-		public void mouseDragged(org.eclipse.draw2d.MouseEvent me) {
+		public void mouseDragged(MouseEvent me) {
 			if (!isDragging) {
 				return;
 			}
@@ -576,15 +569,15 @@ public class Graph extends FigureCanvas implements IContainer {
 			// oldLocation = mousePoint;
 		}
 
-		public void mouseEntered(org.eclipse.draw2d.MouseEvent me) {
+		public void mouseEntered(MouseEvent me) {
 
 		}
 
-		public void mouseExited(org.eclipse.draw2d.MouseEvent me) {
+		public void mouseExited(MouseEvent me) {
 
 		}
 
-		public void mouseHover(org.eclipse.draw2d.MouseEvent me) {
+		public void mouseHover(MouseEvent me) {
 
 		}
 
@@ -593,7 +586,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		 * fisheye(ing) nodes. This means whenever the mouse moves we check if
 		 * we need to fisheye on a node or not.
 		 */
-		public void mouseMoved(org.eclipse.draw2d.MouseEvent me) {
+		public void mouseMoved(MouseEvent me) {
 			Point mousePoint = new Point(me.x, me.y);
 			getRootLayer().translateToRelative(mousePoint);
 			IFigure figureUnderMouse = getFigureAt(mousePoint.x, mousePoint.y);
@@ -629,11 +622,11 @@ public class Graph extends FigureCanvas implements IContainer {
 			}
 		}
 
-		public void mouseDoubleClicked(org.eclipse.draw2d.MouseEvent me) {
+		public void mouseDoubleClicked(MouseEvent me) {
 
 		}
 
-		public void mousePressed(org.eclipse.draw2d.MouseEvent me) {
+		public void mousePressed(MouseEvent me) {
 			isDragging = true;
 			Point mousePoint = new Point(me.x, me.y);
 			lastLocation = mousePoint.getCopy();
@@ -740,7 +733,7 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		}
 
-		public void mouseReleased(org.eclipse.draw2d.MouseEvent me) {
+		public void mouseReleased(MouseEvent me) {
 			isDragging = false;
 
 		}

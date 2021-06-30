@@ -14,11 +14,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.DirectedGraphLayout;
-import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.Node;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.graph.DirectedGraph;
+import org.eclipse.draw2dl.graph.DirectedGraphLayout;
+import org.eclipse.draw2dl.graph.Edge;
+import org.eclipse.draw2dl.graph.Node;
 import org.eclipse.swt.SWT;
 import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;

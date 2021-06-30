@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %Plugin.name
+Bundle-SymbolicName: org.eclipse.gef3.examples.text; singleton:=true
+Bundle-Version: 3.12.100.qualifier
+Bundle-Vendor: %Plugin.providerName
+Bundle-Localization: plugin
+Import-Package: com.ibm.icu.text
+Export-Package: org.eclipse.gef3.examples.text,
+ org.eclipse.gef3.examples.text.actions,
+ org.eclipse.gef3.examples.text.edit,
+ org.eclipse.gef3.examples.text.figures,
+ org.eclipse.gef3.examples.text.model,
+ org.eclipse.gef3.examples.text.model.commands,
+ org.eclipse.gef3.examples.text.requests,
+ org.eclipse.gef3.examples.text.tools
+Require-Bundle: org.eclipse.gef3,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.workbench,
+ org.eclipse.jface,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.views,
+ org.junit,
+ org.eclipse.core.resources
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+

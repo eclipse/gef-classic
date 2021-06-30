@@ -1,6 +1,6 @@
 package org.eclipse.zest.examples.swt;
 
-import org.eclipse.draw2d.Animation;
+import org.eclipse.draw2dl.Animation;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;

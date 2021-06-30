@@ -9,14 +9,15 @@
  ******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.ScaledGraphics;
-import org.eclipse.draw2d.StackLayout;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.ColorConstants;
+import org.eclipse.draw2dl.FigureUtilities;
+import org.eclipse.draw2dl.Graphics;
+import org.eclipse.draw2dl.MarginBorder;
+import org.eclipse.draw2dl.ScaledGraphics;
+import org.eclipse.draw2dl.StackLayout;
+import org.eclipse.draw2dl.Label;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -109,7 +110,7 @@ public class GraphLabel extends CachedLabel {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Figure#setFont(org.eclipse.swt.graphics.Font)
+	 * @see org.eclipse.draw2dl.Figure#setFont(org.eclipse.swt.graphics.Font)
 	 */
 	public void setFont(Font f) {
 		super.setFont(f);
@@ -140,7 +141,7 @@ public class GraphLabel extends CachedLabel {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
+	 * @see org.eclipse.draw2dl.Label#paintFigure(org.eclipse.draw2dl.Graphics)
 	 */
 	public void paint(Graphics graphics) {
 		int blue = getBackgroundColor().getBlue();
@@ -221,7 +222,7 @@ public class GraphLabel extends CachedLabel {
 	 * occur because the icon or text locations are cleared *after* they were
 	 * calculated.
 	 * 
-	 * @see org.eclipse.draw2d.Label#invalidate()
+	 * @see Label#invalidate()
 	 */
 	public void invalidate() {
 		if (!painting) {
@@ -232,7 +233,7 @@ public class GraphLabel extends CachedLabel {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#setText(java.lang.String)
+	 * @see org.eclipse.draw2dl.Label#setText(java.lang.String)
 	 */
 	public void setText(String s) {
 		if (!s.equals("")) {
@@ -247,7 +248,7 @@ public class GraphLabel extends CachedLabel {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Label#setIcon(org.eclipse.swt.graphics.Image)
+	 * @see org.eclipse.draw2dl.Label#setIcon(org.eclipse.swt.graphics.Image)
 	 */
 	public void setIcon(Image image) {
 		super.setIcon(image);

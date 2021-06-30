@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.zest.core.viewers;
 
-import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.draw2dl.geometry.Rectangle;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.zest.core.viewers.internal.ZoomManager;
 

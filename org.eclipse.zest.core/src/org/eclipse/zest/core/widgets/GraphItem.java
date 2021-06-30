@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.swt.widgets.Widget;

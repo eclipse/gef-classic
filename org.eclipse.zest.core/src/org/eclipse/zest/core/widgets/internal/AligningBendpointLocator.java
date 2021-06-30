@@ -9,13 +9,13 @@
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
-import org.eclipse.draw2d.AbstractLocator;
-import org.eclipse.draw2d.Connection;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2dl.AbstractLocator;
+import org.eclipse.draw2dl.Connection;
+import org.eclipse.draw2dl.IFigure;
+import org.eclipse.draw2dl.PositionConstants;
+import org.eclipse.draw2dl.geometry.Dimension;
+import org.eclipse.draw2dl.geometry.Point;
+import org.eclipse.draw2dl.geometry.PointList;
 
 /**
  * A locator that finds the middle of a connection based on the bendpoints.
@@ -94,7 +94,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.eclipse.draw2d.ConnectionLocator#getReferencePoint()
+	 * @see org.eclipse.draw2dl.ConnectionLocator#getReferencePoint()
 	 */
 	protected Point getReferencePoint() {
 		PointList points = getConnection().getPoints();

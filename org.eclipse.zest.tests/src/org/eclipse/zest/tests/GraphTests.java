@@ -10,7 +10,7 @@ package org.eclipse.zest.tests;
 
 import junit.framework.TestCase;
 
-import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2dl.Figure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;

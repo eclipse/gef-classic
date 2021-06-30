@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.zest.core.viewers;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.services.IDisposable;
 

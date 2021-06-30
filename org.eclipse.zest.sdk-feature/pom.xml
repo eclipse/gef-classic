@@ -4,10 +4,10 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.eclipse.gef</groupId>
-		<artifactId>org.eclipse.gef.releng</artifactId>
-		<version>3.11.100-SNAPSHOT</version>
-		<relativePath>../org.eclipse.gef.releng/pom.xml</relativePath>
+		<groupId>org.eclipse.gef3</groupId>
+		<artifactId>org.eclipse.gef3.releng</artifactId>
+		<version>3.12.100-SNAPSHOT</version>
+		<relativePath>../org.eclipse.gef3.releng/pom.xml</relativePath>
 	</parent>
 	<groupId>org.eclipse.zest.features</groupId>
 	<artifactId>org.eclipse.zest.sdk</artifactId>

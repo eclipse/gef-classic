@@ -1,3 +1,11 @@
+# GEF3
+
+Based on gef-legacy (https://github.com/eclipse/gef-legacy).
+
+Adopted and adapted by DBeaver team. Fully supports Legacy GEF3 API.
+
+Uses Java8 language level.
+
 # Eclipse Graphical Editing Framework (GEF)
 
 This repository contains the code base of the [Eclipse Graphical Editing Framework (GEF)](http://www.eclipse.org/gef/) project's legacy components [Draw2d 3.x](https://www.eclipse.org/gef/draw2d/index.php), [GEF (MVC) 3.x](https://www.eclipse.org/gef/gef_mvc/index.php), and [Zest 1.x](https://www.eclipse.org/gef/zest/index.php), which are still maintained but will not be developed further. The code base of the current GEF production components is located in the [eclipse/gef](https://github.com/eclipse/gef) repository instead.
@@ -27,9 +35,9 @@ Having accomplished that, you might want to browse our [developer documentation]
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 	<unit id="org.eclipse.zest.sdk.feature.group" version="0.0.0"/>
-	<unit id="org.eclipse.draw2d.sdk.feature.group" version="0.0.0"/>
-	<unit id="org.eclipse.gef.sdk.feature.group" version="0.0.0"/>
-	<unit id="org.eclipse.gef.examples.feature.group" version="0.0.0"/>
+	<unit id="org.eclipse.draw2dl.sdk.feature.group" version="0.0.0"/>
+	<unit id="org.eclipse.gef3.sdk.feature.group" version="0.0.0"/>
+	<unit id="org.eclipse.gef3.examples.feature.group" version="0.0.0"/>
 	<repository location="http://download.eclipse.org/tools/gef/updates/legacy/integration/"/>
 	</location>
 	</locations>
@@ -52,7 +60,7 @@ The undeployed Draw2d and Zest examples have to be checked out in source before.
 3. Select *master* branch, press *Next >*.
 4. Confirm the local directory or change it as needed, press *Next >*.
 5. Ensure *Import existing Eclipse projects* is checked, then select *Working Tree* and press *Next >*.
-5. Select `org.eclipse.draw2d.examples` and `org.eclipse.zest.examples`, press *Finish*.
+5. Select `org.eclipse.draw2dl.examples` and `org.eclipse.zest.examples`, press *Finish*.
 6. Select an arbitrary example class, e.g. `org.eclipse.zest.examples.jface.GraphJFaceSnippet1`, in the *Package Explorer* view and select *Run As -> Java Application* from the context menu.
 
 ## How to proceed from here?

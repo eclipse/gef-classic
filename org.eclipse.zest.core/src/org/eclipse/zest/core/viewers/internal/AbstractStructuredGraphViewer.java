@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTError;
 import org.eclipse.swt.widgets.Widget;
