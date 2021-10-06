@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,25 +10,22 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.palette.customize;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Image;
-
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.gef.internal.InternalImages;
+import org.eclipse.gef.palette.PaletteContainer;
+import org.eclipse.gef.palette.PaletteEntry;
+import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 
-import org.eclipse.draw2d.ColorConstants;
-
-import org.eclipse.gef.internal.InternalImages;
-import org.eclipse.gef.palette.PaletteContainer;
-import org.eclipse.gef.palette.PaletteEntry;
-import org.eclipse.gef.palette.PaletteSeparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * This class is the ILabelProvider for the
@@ -71,7 +68,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	public Color getForeground(Object element) {
 		PaletteEntry entry = (PaletteEntry) element;
 		if (!entry.isVisible() || !entry.getParent().isVisible()) {
-			return ColorConstants.gray;
+			return ColorConstants.lineForeground;
 		}
 		return null;
 	}

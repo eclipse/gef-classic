@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<!--
+    Copyright (c) 2005, 2022 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+
+    Contributors:
+        IBM Corporation - initial API and implementation
+        Georgii Gvinepadze - georgii.gvinepadze@dbeaver.com
+        Serge Rider - serge@dbeaver.com
+ -->
+
+<plugin>
+	<extension point="org.eclipse.ui.themes">
+
+		<themeElementCategory label="%themeElementCategory.org.eclipse.draw2d.label" id="org.eclipse.draw2d">
+			<description>%themeElementCategory.org.eclipse.draw2d.description</description>
+		</themeElementCategory>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.button.lightest.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.button.lightest"
+				value="COLOR_WIDGET_HIGHLIGHT_SHADOW">
+			<description>%colorDefinition.org.eclipse.draw2d.color.button.lightest.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.button.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.button"
+				value="COLOR_WIDGET_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.button.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.button.darker.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.button.darker"
+				value="COLOR_WIDGET_NORMAL_SHADOW">
+			<description>%colorDefinition.org.eclipse.draw2d.color.button.darker.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.button.darkest.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.button.darkest"
+				value="COLOR_WIDGET_DARK_SHADOW">
+			<description>%colorDefinition.org.eclipse.draw2d.color.button.darkest.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.list.background.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.list.background"
+				value="COLOR_WIDGET_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.list.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.list.foreground.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.list.foreground"
+				value="COLOR_LIST_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.list.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.line.foreground.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.line.foreground"
+				value="COLOR_LIST_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.line.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.menu.background.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.menu.background"
+				value="COLOR_WIDGET_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.menu.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.menu.foreground.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.menu.foreground"
+				value="COLOR_WIDGET_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.menu.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.menu.background.selected.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.menu.background.selected"
+				value="COLOR_LIST_SELECTION">
+			<description>%colorDefinition.org.eclipse.draw2d.color.menu.background.selected.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.menu.foreground.selected.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.menu.foreground.selected"
+				value="COLOR_LIST_SELECTION_TEXT">
+			<description>%colorDefinition.org.eclipse.draw2d.color.menu.foreground.selected.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.title.background.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.title.background"
+				value="COLOR_TITLE_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.title.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.title.gradient.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.title.gradient"
+				value="COLOR_TITLE_BACKGROUND_GRADIENT">
+			<description>%colorDefinition.org.eclipse.draw2d.color.title.gradient.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.title.foreground.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.title.foreground"
+				value="COLOR_TITLE_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.title.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.title.inactive.foreground.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.title.inactive.foreground"
+				value="COLOR_TITLE_INACTIVE_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.title.inactive.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.title.inactive.background.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.title.inactive.background"
+				value="COLOR_TITLE_INACTIVE_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.title.inactive.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.title.inactive.gradient.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.title.inactive.gradient"
+				value="COLOR_TITLE_INACTIVE_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.title.inactive.gradient.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.tooltip.foreground.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.tooltip.foreground"
+				value="COLOR_INFO_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.tooltip.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.tooltip.background.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.tooltip.background"
+				value="COLOR_INFO_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.draw2d.color.tooltip.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.list.hover.background.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.list.hover.background"
+				value="COLOR_WIDGET_NORMAL_SHADOW">
+			<description>%colorDefinition.org.eclipse.draw2d.color.list.hover.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.draw2d.color.list.selected.background.label"
+				categoryId="org.eclipse.draw2d"
+				id="org.eclipse.draw2d.color.list.selected.background"
+				value="COLOR_WIDGET_DARK_SHADOW">
+			<description>%colorDefinition.org.eclipse.draw2d.color.list.selected.background.description</description>
+		</colorDefinition>
+
+	</extension>
+</plugin>

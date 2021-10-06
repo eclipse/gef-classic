@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,44 +10,20 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import java.util.Iterator;
-import java.util.List;
-
+import org.eclipse.draw2d.*;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
+import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
+import org.eclipse.gef.ui.palette.editparts.PaletteToolbarLayout;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.Animation;
-import org.eclipse.draw2d.Border;
-import org.eclipse.draw2d.BorderLayout;
-import org.eclipse.draw2d.ButtonModel;
-import org.eclipse.draw2d.ChangeEvent;
-import org.eclipse.draw2d.ChangeListener;
-import org.eclipse.draw2d.Clickable;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.CompoundBorder;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.LayoutManager;
-import org.eclipse.draw2d.MarginBorder;
-import org.eclipse.draw2d.MouseEvent;
-import org.eclipse.draw2d.MouseListener;
-import org.eclipse.draw2d.MouseMotionListener;
-import org.eclipse.draw2d.SchemeBorder;
-import org.eclipse.draw2d.ScrollPane;
-import org.eclipse.draw2d.Toggle;
-import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Insets;
-import org.eclipse.draw2d.geometry.Rectangle;
-
-import org.eclipse.gef.internal.ui.palette.PaletteColorUtil;
-import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
-import org.eclipse.gef.ui.palette.editparts.PaletteToolbarLayout;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Pratik Shah
@@ -114,7 +90,7 @@ public class DrawerFigure extends Figure {
 			// draw top border of drawer figure
 			g.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
 			g.drawLine(r.getTopLeft(), r.getTopRight());
-			g.setForegroundColor(ColorConstants.white);
+			g.setForegroundColor(ColorConstants.listBackground);
 			g.drawLine(r.getTopLeft().getTranslated(0, 1), r.getTopRight().getTranslated(0, 1));
 			r.crop(new Insets(2, 0, 0, 0));
 			if (isExpanded()) {
@@ -125,7 +101,7 @@ public class DrawerFigure extends Figure {
 
 			// draw bottom border of drawer figure
 			if (!isExpanded()) {
-				g.setForegroundColor(ColorConstants.white);
+				g.setForegroundColor(ColorConstants.listBackground);
 				g.drawLine(r.getBottomLeft().getTranslated(0, -1), r.getBottomRight().getTranslated(0, -1));
 				r.crop(new Insets(0, 0, 1, 0));
 			}

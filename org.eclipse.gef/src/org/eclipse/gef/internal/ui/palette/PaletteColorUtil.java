@@ -37,9 +37,9 @@ public class PaletteColorUtil {
 
 	public static final Color ARROW_HOVER = new Color(null, 229, 229, 219);
 
-	private static final Color HOVER_COLOR = new Color(null, 252, 228, 179);
+	private static final Color HOVER_COLOR = ColorConstants.listHoverBackgroundColor;
 
-	private static final Color SELECTED_COLOR = new Color(null, 207, 227, 250);
+	private static final Color SELECTED_COLOR = ColorConstants.listSelectedBackgroundColor;
 
 	private static final Color HOVER_COLOR_HICONTRAST = new Color(null, 0, 128, 0);
 

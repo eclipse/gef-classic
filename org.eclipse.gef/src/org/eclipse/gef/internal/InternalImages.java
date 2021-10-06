@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.internal;
 
-import org.eclipse.swt.graphics.Image;
-
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class InternalImages {
 
@@ -82,6 +84,8 @@ public class InternalImages {
 	 * Can be used to access the cached pinned image by using {@link #get(String)}.
 	 */
 	public static final String IMG_PALETTE = "icons/palette_view.gif";//$NON-NLS-1$
+
+	private static final Map<String, Image> overloadedImages = new HashMap<>();
 
 	static {
 		DESC_BOLD = createDescriptor("icons/style_bold.gif"); //$NON-NLS-1$
@@ -161,7 +165,17 @@ public class InternalImages {
 	 * @return the image or null if it has not been cached in the registry
 	 */
 	public static Image get(String imageName) {
+		Image image = overloadedImages.get(imageName);
+		if (image != null) {
+			return image;
+		}
 		return InternalGEFPlugin.getDefault().getImageRegistry().get(imageName);
+	}
+
+	public static void set(String imageName, Image image) {
+		synchronized (overloadedImages) {
+			overloadedImages.put(imageName, image);
+		}
 	}
 
 }
