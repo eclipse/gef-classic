@@ -55,6 +55,10 @@ public interface ColorProvider {
 
 	Color getTooltipBackground();
 
+	Color getListHoverBackgroundColor();
+
+	Color getListSelectedBackgroundColor();
+
 	class SystemColorFactory {
 		static ColorProvider colorProvider = new ColorProviderLegacy();
 

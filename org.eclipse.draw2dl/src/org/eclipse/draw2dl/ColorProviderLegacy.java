@@ -114,6 +114,16 @@ public class ColorProviderLegacy implements ColorProvider {
 		return getColor(SWT.COLOR_INFO_BACKGROUND);
 	}
 
+	@Override
+	public Color getListHoverBackgroundColor() {
+		return new Color(null, 252, 228, 179);
+	}
+
+	@Override
+	public Color getListSelectedBackgroundColor() {
+		return new Color(null, 207, 227, 250);
+	}
+
 	protected static Color getColor(final int which) {
 		Display display = Display.getCurrent();
 		if (display != null)

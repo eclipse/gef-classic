@@ -97,6 +97,10 @@ public interface ColorConstants {
 	 */
 	Color tooltipBackground = ColorProvider.SystemColorFactory.colorProvider.getTooltipBackground();
 
+	Color listHoverBackgroundColor = ColorProvider.SystemColorFactory.colorProvider.getListHoverBackgroundColor();
+
+	Color listSelectedBackgroundColor = ColorProvider.SystemColorFactory.colorProvider.getListSelectedBackgroundColor();
+
 	/*
 	 * Misc. colors
 	 */

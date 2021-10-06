@@ -72,7 +72,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	public Color getForeground(Object element) {
 		PaletteEntry entry = (PaletteEntry) element;
 		if (!entry.isVisible() || !entry.getParent().isVisible()) {
-			return ColorConstants.gray;
+			return ColorConstants.lineForeground;
 		}
 		return null;
 	}
