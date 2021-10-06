@@ -47,7 +47,7 @@ public class GridLayer extends FreeformLayer {
 	 */
 	public GridLayer() {
 		super();
-		setForegroundColor(ColorConstants.lightGray);
+		setForegroundColor(ColorConstants.lineForeground);
 	}
 
 	/**
