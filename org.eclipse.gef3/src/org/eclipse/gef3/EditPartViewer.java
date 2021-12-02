@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.draw2dl.IFigure;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -301,7 +302,7 @@ public interface EditPartViewer extends
 	 * 
 	 * @return the registry map
 	 */
-	Map getEditPartRegistry();
+	Map<Object,Object> getEditPartRegistry();
 
 	/**
 	 * Returns the <i>focus</i> <code>EditPart</code>. Focus refers to keyboard
@@ -423,7 +424,7 @@ public interface EditPartViewer extends
 	 * 
 	 * @return the visual part map
 	 */
-	Map getVisualPartMap();
+	Map<IFigure, EditPart> getVisualPartMap();
 
 	/**
 	 * Used for accessibility purposes.

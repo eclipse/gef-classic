@@ -348,7 +348,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	private Collection calculateSecondaryMarqueeSelectedEditParts(
 			Collection directlyMarqueeSelectedEditParts) {
 
-		Collection editPartsToProcess = new HashSet();
+		Collection<EditPart> editPartsToProcess = new HashSet<>();
 		for (Iterator iterator = directlyMarqueeSelectedEditParts.iterator(); iterator
 				.hasNext();) {
 			GraphicalEditPart marqueeSelectedEditPart = (GraphicalEditPart) iterator

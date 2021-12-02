@@ -144,7 +144,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 */
 	ConnectionEditPart findConnection(GraphicalEditPart node,
 			ConnectionEditPart current, boolean forward) {
-		List connections = new ArrayList(node.getSourceConnections());
+		List<ConnectionEditPart> connections = new ArrayList<>(node.getSourceConnections());
 		connections.addAll(node.getTargetConnections());
 		connections = getValidNavigationTargets(connections);
 		if (connections.isEmpty())

@@ -13,10 +13,7 @@ package org.eclipse.gef3.editpolicies;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import org.eclipse.core.runtime.Assert;
 
@@ -152,15 +149,11 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * Creates the connection layer feedback figures.
 	 */
 	protected void createConnectionFeedbackFigures() {
-		HashSet transitiveNestedConnections = EditPartUtilities
+		Set<ConnectionEditPart> transitiveNestedConnections = EditPartUtilities
 				.getAllNestedConnectionEditParts((GraphicalEditPart) getHost());
 
-		for (Iterator iterator = transitiveNestedConnections.iterator(); iterator
-				.hasNext();) {
-			Object connection = iterator.next();
-			if (connection instanceof ConnectionEditPart) {
-				createConnectionFeedbackFigure((ConnectionEditPart) connection);
-			}
+		for (ConnectionEditPart connection : transitiveNestedConnections) {
+			createConnectionFeedbackFigure(connection);
 
 		}
 	}

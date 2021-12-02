@@ -144,7 +144,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 				LayerManager.ID);
 		if (layermanager == null)
 			return null;
-		List list = new ArrayList(3);
+		List<IFigure> list = new ArrayList<>(3);
 		list.add(layermanager.getLayer(LayerConstants.PRIMARY_LAYER));
 		list.add(layermanager.getLayer(LayerConstants.CONNECTION_LAYER));
 		list.add(layermanager.getLayer(LayerConstants.FEEDBACK_LAYER));
@@ -169,7 +169,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 			public boolean accept(IFigure figure) {
 				EditPart editpart = null;
 				while (editpart == null && figure != null) {
-					editpart = (EditPart) getVisualPartMap().get(figure);
+					editpart = getVisualPartMap().get(figure);
 					figure = figure.getParent();
 				}
 				return editpart != null
@@ -180,7 +180,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 				pt.x, pt.y, new ConditionalTreeSearch(exclude));
 		EditPart part = null;
 		while (part == null && figure != null) {
-			part = (EditPart) getVisualPartMap().get(figure);
+			part = getVisualPartMap().get(figure);
 			figure = figure.getParent();
 		}
 		if (part == null)
