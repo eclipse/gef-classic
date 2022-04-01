@@ -11,7 +11,7 @@
 	<!-- this is the parent POM from which all modules inherit common settings -->
 	<properties>
 		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
-		<tycho.version>0.25.0</tycho.version>
+		<tycho.version>2.7.0</tycho.version>
 		<cbi-plugins.version>1.0.4</cbi-plugins.version>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-legacy.git</tycho.scmUrl>
@@ -35,6 +35,7 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-packaging-plugin</artifactId>
@@ -184,7 +185,7 @@
 
 	<profiles>
 		<profile>
-			<id>NEON.target</id>
+			<id>2022-03</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
@@ -198,29 +199,14 @@
 							<!-- consider pack.gz bundles -->
 							<includePackedArtifacts>true</includePackedArtifacts>
 							<!-- add target file content to target platform -->
-							<target>
-								<artifact>
-									<groupId>org.eclipse.gef</groupId>
-									<artifactId>org.eclipse.gef.target</artifactId>
-									<version>3.11.100-SNAPSHOT</version>
-									<classifier>NEON</classifier>
-								</artifact>
-							</target>
+						    <target>
+								<file>../target-platform/2022-03.target</file>
+							  </target>
 							<environments>
 								<environment>
 									<os>linux</os>
 									<ws>gtk</ws>
-									<arch>x86</arch>
-								</environment>
-								<environment>
-									<os>linux</os>
-									<ws>gtk</ws>
 									<arch>x86_64</arch>
-								</environment>
-								<environment>
-									<os>win32</os>
-									<ws>win32</ws>
-									<arch>x86</arch>
 								</environment>
 								<environment>
 									<os>win32</os>
@@ -237,161 +223,7 @@
 					</plugin>
 				</plugins>
 			</build>
-		</profile>
-		<profile>
-			<id>MARS.target</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<version>${tycho.version}</version>
-						<configuration>
-							<!-- consider pack.gz bundles -->
-							<includePackedArtifacts>true</includePackedArtifacts>
-							<!-- add target file content to target platform -->
-							<target>
-								<artifact>
-									<groupId>org.eclipse.gef</groupId>
-									<artifactId>org.eclipse.gef.target</artifactId>
-									<version>3.11.100-SNAPSHOT</version>
-									<classifier>MARS</classifier>
-								</artifact>
-							</target>
-							<environments>
-								<environment>
-									<os>linux</os>
-									<ws>gtk</ws>
-									<arch>x86</arch>
-								</environment>
-								<environment>
-									<os>linux</os>
-									<ws>gtk</ws>
-									<arch>x86_64</arch>
-								</environment>
-								<environment>
-									<os>win32</os>
-									<ws>win32</ws>
-									<arch>x86</arch>
-								</environment>
-								<environment>
-									<os>win32</os>
-									<ws>win32</ws>
-									<arch>x86_64</arch>
-								</environment>
-								<environment>
-									<os>macosx</os>
-									<ws>cocoa</ws>
-									<arch>x86_64</arch>
-								</environment>
-							</environments>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>LUNA_4_4.target</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<version>${tycho.version}</version>
-						<configuration>
-							<!-- consider pack.gz bundles -->
-							<includePackedArtifacts>true</includePackedArtifacts>
-							<!-- add target file content to target platform -->
-							<target>
-								<artifact>
-									<groupId>org.eclipse.gef</groupId>
-									<artifactId>org.eclipse.gef.target</artifactId>
-									<version>3.11.100-SNAPSHOT</version>
-									<classifier>LUNA_4_4</classifier>
-								</artifact>
-							</target>
-							<environments>
-								<environment>
-									<os>linux</os>
-									<ws>gtk</ws>
-									<arch>x86</arch>
-								</environment>
-								<environment>
-									<os>linux</os>
-									<ws>gtk</ws>
-									<arch>x86_64</arch>
-								</environment>
-								<environment>
-									<os>win32</os>
-									<ws>win32</ws>
-									<arch>x86</arch>
-								</environment>
-								<environment>
-									<os>win32</os>
-									<ws>win32</ws>
-									<arch>x86_64</arch>
-								</environment>
-								<environment>
-									<os>macosx</os>
-									<ws>cocoa</ws>
-									<arch>x86_64</arch>
-								</environment>
-							</environments>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>KEPLER_4_3.target</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>target-platform-configuration</artifactId>
-						<version>${tycho.version}</version>
-						<configuration>
-							<!-- add target file content to target platform -->
-							<target>
-								<artifact>
-									<groupId>org.eclipse.gef</groupId>
-									<artifactId>org.eclipse.gef.target</artifactId>
-									<version>3.11.100-SNAPSHOT</version>
-									<classifier>KEPLER_4_3</classifier>
-								</artifact>
-							</target>
-							<environments>
-								<environment>
-									<os>linux</os>
-									<ws>gtk</ws>
-									<arch>x86</arch>
-								</environment>
-								<environment>
-									<os>linux</os>
-									<ws>gtk</ws>
-									<arch>x86_64</arch>
-								</environment>
-								<environment>
-									<os>win32</os>
-									<ws>win32</ws>
-									<arch>x86</arch>
-								</environment>
-								<environment>
-									<os>win32</os>
-									<ws>win32</ws>
-									<arch>x86_64</arch>
-								</environment>
-								<environment>
-									<os>macosx</os>
-									<ws>cocoa</ws>
-									<arch>x86_64</arch>
-								</environment>
-							</environments>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
+		</profile>	
 		<profile>
 			<id>hudson.eclipse.org</id>
 			<build>
@@ -476,32 +308,42 @@
 	</pluginRepositories>
 
 	<modules>
-		<module>../org.eclipse.gef.target</module>
-		<module>../org.eclipse.draw2d</module>
-		<module>../org.eclipse.draw2d.tests</module>
-		<module>../org.eclipse.draw2d.doc.isv</module>
-		<module>../org.eclipse.draw2d-feature</module>
-		<module>../org.eclipse.draw2d.sdk-feature</module>
-		<module>../org.eclipse.gef</module>
-		<module>../org.eclipse.gef.tests</module>
-		<module>../org.eclipse.gef.doc.isv</module>
-		<module>../org.eclipse.gef.examples.flow</module>
-		<module>../org.eclipse.gef.examples.logic</module>
-		<module>../org.eclipse.gef.examples.shapes</module>
-		<module>../org.eclipse.gef.examples.text</module>
-		<module>../org.eclipse.gef.examples.ui.capabilities</module>
-		<module>../org.eclipse.gef.examples.ui.pde</module>
-		<module>../org.eclipse.gef-feature</module>
-		<module>../org.eclipse.gef.examples-feature</module>
-		<module>../org.eclipse.gef.sdk-feature</module>
-		<module>../org.eclipse.zest.core</module>
-		<module>../org.eclipse.zest.layouts</module>
-		<module>../org.eclipse.zest.tests</module>
-		<module>../org.eclipse.zest.doc.isv</module>
-		<module>../org.eclipse.zest-feature</module>
-		<module>../org.eclipse.zest.sdk-feature</module>
-		<module>../org.eclipse.gef.all-feature</module>
-		<module>../org.eclipse.gef.repository</module>
+		<!--plug-ins-->
+		<module>org.eclipse.draw2d</module>
+		<module>org.eclipse.draw2d.doc.isv</module>
+		<module>org.eclipse.gef</module>
+		<!--tests-->
+		<module>org.eclipse.gef.doc.isv</module>
+		<module>org.eclipse.zest.core</module>
+		<module>org.eclipse.zest.layouts</module>
+		<module>org.eclipse.zest.doc.isv</module>
+		
+		<module>org.eclipse.draw2d.tests</module>
+		<module>org.eclipse.zest.tests</module>
+		<module>org.eclipse.gef.tests</module>
+		
+		<!--examples-->
+		
+		<module>org.eclipse.gef.examples.flow</module>
+		<module>org.eclipse.gef.examples.logic</module>
+		<module>org.eclipse.gef.examples.shapes</module>
+		<module>org.eclipse.gef.examples.text</module>
+		<module>org.eclipse.gef.examples.ui.capabilities</module>
+		<module>org.eclipse.gef.examples.ui.pde</module>
+		
+	
+	<!--features-->
+		<module>org.eclipse.gef-feature</module>
+		<module>org.eclipse.draw2d-feature</module>
+		<module>org.eclipse.gef.examples-feature</module>
+		<module>org.eclipse.gef.sdk-feature</module>
+		<module>org.eclipse.zest-feature</module>
+		<module>org.eclipse.zest.sdk-feature</module>
+		<module>org.eclipse.gef.repository</module>
+		<module>org.eclipse.draw2d.sdk-feature</module>
+<!--
+		-->
+
 	</modules>
 
 </project>
