@@ -26,4 +26,4 @@ jobs:
     - name: Run build
       uses: GabrielBB/xvfb-action@v1
       with:
-       run: mvn clean verify -Pbuild-individual-bundles
+       run: mvn clean verify
