@@ -10,7 +10,7 @@
         IBM Corporation - initial API and implementation
  -->
 <feature
-      id="org.eclipse.gef"
+      id="org.eclipse.gef-feature"
       label="%featureName"
       version="3.11.100.qualifier"
       provider-name="%providerName"
@@ -36,7 +36,7 @@
    </url>
 
    <includes
-         id="org.eclipse.draw2d"
+         id="org.eclipse.draw2d-feature"
          version="0.0.0"/>
 
    <requires>

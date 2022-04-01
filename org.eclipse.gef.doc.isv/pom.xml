@@ -7,7 +7,6 @@
 		<groupId>org.eclipse.gef</groupId>
 		<artifactId>org.eclipse.gef.releng</artifactId>
 		<version>3.11.100-SNAPSHOT</version>
-		<relativePath>../org.eclipse.gef.releng/pom.xml</relativePath>
 	</parent>
 	<groupId>org.eclipse.gef.plugins</groupId>
 	<artifactId>org.eclipse.gef.doc.isv</artifactId>

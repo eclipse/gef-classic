@@ -10,7 +10,7 @@
         IBM Corporation - initial API and implementation
  -->
 <feature
-      id="org.eclipse.draw2d"
+      id="org.eclipse.draw2d-feature"
       label="%featureName"
       version="3.10.200.qualifier"
       provider-name="%providerName"

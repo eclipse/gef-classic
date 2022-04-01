@@ -36,7 +36,7 @@
    </url>
 
    <includes
-         id="org.eclipse.draw2d"
+         id="org.eclipse.draw2d-feature"
          version="0.0.0"/>
 
    <requires>

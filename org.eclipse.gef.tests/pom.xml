@@ -7,7 +7,6 @@
 		<groupId>org.eclipse.gef</groupId>
 		<artifactId>org.eclipse.gef.releng</artifactId>
 		<version>3.11.100-SNAPSHOT</version>
-		<relativePath>../org.eclipse.gef.releng/pom.xml</relativePath>
 	</parent>
 	<groupId>org.eclipse.gef.plugins</groupId>
 	<artifactId>org.eclipse.gef.tests</artifactId>
@@ -33,7 +32,8 @@
 				</os>
 			</activation>
 			<properties>
-				<test.vmargs>-Xmx512m -XX:MaxPermSize=256m</test.vmargs>
+				<test.vmargs>-Xmx512m</test.vmargs>
+
 			</properties>
 		</profile>
 	</profiles>
