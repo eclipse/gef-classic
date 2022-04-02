@@ -3,16 +3,17 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
 Bundle-Vendor: %Bundle-Vendor
 Bundle-SymbolicName: org.eclipse.gef.examples.digraph1;singleton:=true
-Bundle-Version: 1.0.100
+Bundle-Version: 1.1.100
 Require-Bundle: org.eclipse.gef;bundle-version="[3.3.0,4.0.0)";visibility:=reexport,
  org.eclipse.core.runtime;bundle-version="[3.3.0,4.0.0)";visibility:=reexport,
  org.eclipse.ui;bundle-version="[3.3.0,4.0.0)";visibility:=reexport,
  org.eclipse.ui.ide;bundle-version="[3.3.0,4.0.0)";visibility:=reexport,
  org.eclipse.core.resources;bundle-version="[3.3.0,4.0.0)";visibility:=reexport
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.eclipse.gef.examples.digraph1.editor,
  org.eclipse.gef.examples.digraph1.editpart,
  org.eclipse.gef.examples.digraph1.figure,
  org.eclipse.gef.examples.digraph1.model,
  org.eclipse.gef.examples.digraph1.policy
+Automatic-Module-Name: org.eclipse.gef.examples.digraph1
