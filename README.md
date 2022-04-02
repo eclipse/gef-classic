@@ -1,21 +1,24 @@
-# Eclipse Graphical Editing Framework (GEF)
+# Eclipse Graphical Editing Framework (GEF) Classic
 
-This repository contains the code base of the [Eclipse Graphical Editing Framework (GEF)](http://www.eclipse.org/gef/) project's classiic components [Draw2d 3.x](https://www.eclipse.org/gef/draw2d/index.php), [GEF (MVC) 3.x](https://www.eclipse.org/gef/gef_mvc/index.php), and [Zest 1.x](https://www.eclipse.org/gef/zest/index.php).
+This repository contains the code base of the [Eclipse Graphical Editing Framework (GEF)](http://www.eclipse.org/gef/) project's classic components: 
+ - [GEF (MVC) 3.x](https://www.eclipse.org/gef/gef_mvc/index.php)
+ - [Draw2d 3.x](https://www.eclipse.org/gef/draw2d/index.php) 
+ - [Zest 1.x](https://www.eclipse.org/gef/zest/index.php)
+ 
 The code base of the GEF components implemented in JavaFX is located in the [eclipse/gef](https://github.com/eclipse/gef) repository instead.
 
 ## Getting started with the framework components ([adopters](https://www.eclipse.org/projects/dev_process/#2_3_3_Adopters))
-In order to develop graphical applications with GEF-Legacy, you should first set up a proper development environment. The following sections shortly lay out how to set up an Eclipse IDE for this purpose. They conclude with running our deployed and undeployed examples to confirm everything is set up properly. 
+In order to develop graphical applications with GEF Classic, you should first set up a proper development environment. The following sections shortly lay out how to set up an Eclipse IDE for this purpose. They conclude with running our deployed and undeployed examples to confirm everything is set up properly. 
 
-Having accomplished that, you might want to browse our [developer documentation](https://github.com/eclipse/gef-legacy/wiki#developer-documentation) to learn about the framework components in detail. At any time, if you get stuck, feel free to [contact us](https://projects.eclipse.org/projects/tools.gef/contact).
+Having accomplished that, you might want to browse our [developer documentation](https://github.com/eclipse/gef-classic/wiki#developer-documentation) to learn about the framework components in detail. At any time, if you get stuck, feel free to [contact us](https://projects.eclipse.org/projects/tools.gef/contact).
 
 ### Set up an Eclipse IDE
-1. Install a recent [Java SE Development Kit 11] as a prerequisite.
-
+1. Install a recent **Java SE Development Kit 11** as a prerequisite.
 2. Download an '[Eclipse IDE for Eclipse Committers ](http://www.eclipse.org/downloads/packages)' package and start it, pointing to an empty workspace folder. 
 
-### Set up a Target Definition containing GEF-Legacy (development snapshot)
-1. Go to *File -> New -> Project...* and select to create a *General/Project*. Name it `gef-legacy-integration.target` or as you like, the project is to contain only a target definition.
-2. Go to *File -> New -> Other...* then choose *Plug-in Development/Target Definition* and create a new empty (*Nothing: Start with an empty target definition*) target definition file named `gef-legacy-integration.target` within the newly created project.
+### Set up a Target Definition containing GEF Classic (development snapshot)
+1. Go to *File -> New -> Project...* and select to create a *General/Project*. Name it `gef-classic-integration.target` or as you like, the project is to contain only a target definition.
+2. Go to *File -> New -> Other...* then choose *Plug-in Development/Target Definition* and create a new empty (*Nothing: Start with an empty target definition*) target definition file named `gef-classic-integration.target` within the newly created project.
 3. Close the *Target Editor* that has automatically opened, open the target file with the *Text Editor* using the *Open With* context menu, then paste the following contents:
 	
 	```
@@ -23,8 +26,8 @@ Having accomplished that, you might want to browse our [developer documentation]
 	<?pde version="3.8"?><target name="gef-integration" sequenceNumber="1">
 	<locations>
 	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-	<unit id="org.eclipse.sdk.ide" version="4.6.0.I20160606-1100"/>
-	<repository location="http://download.eclipse.org/releases/neon"/>
+	<unit id="org.eclipse.sdk.ide" version="0.0.0"/>
+	<repository location="https://download.eclipse.org/releases/latest"/>
 	</location>
 	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
 	<unit id="org.eclipse.zest.sdk.feature.group" version="0.0.0"/>
@@ -36,7 +39,7 @@ Having accomplished that, you might want to browse our [developer documentation]
 	</locations>
 	</target>
 	```
-4. Now open the `gef-legacy-integration.target` file with the *Target Editor* again, using the *Open With* context menu, let if fully resolve, then click *Set as Target Platform* (link in the upper right corner of the editor).
+4. Now open the `gef-classic-integration.target` file with the *Target Editor* again, using the *Open With* context menu, let if fully resolve, then click *Set as Target Platform* (link in the upper right corner of the editor).
 
 ### Run the examples
 As the deployed 'Flow', 'Logic', 'Shapes', and 'WYSIWYG Document' GEF (MVC) examples are contained in the target definition, we only need to start a new Eclipse Runtime to run them: 
