@@ -6,11 +6,11 @@
 	<parent>
 		<groupId>org.eclipse.gef</groupId>
 		<artifactId>org.eclipse.gef.releng</artifactId>
-		<version>3.11.100-SNAPSHOT</version>
+		<version>3.12.100-SNAPSHOT</version>
 	</parent>
 	<groupId>org.eclipse.zest.plugins</groupId>
 	<artifactId>org.eclipse.zest.tests</artifactId>
-	<version>1.7.100-SNAPSHOT</version>
+	<version>1.8.100-SNAPSHOT</version>
 	<packaging>eclipse-test-plugin</packaging>
 	<profiles>
 		<profile>
