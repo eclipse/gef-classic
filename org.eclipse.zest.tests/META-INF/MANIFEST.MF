@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Graphical Editing Framework Zest Tests
 Bundle-SymbolicName: org.eclipse.zest.tests;singleton:=true
-Bundle-Version: 1.7.100.qualifier
+Bundle-Version: 1.8.100.qualifier
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.pde,
@@ -15,5 +15,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.zest.layouts,
  org.junit
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.4
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Automatic-Module-Name: org.eclipse.zest.tests
 
