@@ -16,6 +16,7 @@
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-legacy.git</tycho.scmUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<comparator.repo>https://download.eclipse.org/releases/latest</comparator.repo> <!-- for now take the latest simultanouse release as baseline for version checks -->
 	</properties>
 
 	<build>
@@ -179,6 +180,25 @@
 						<version>20020829</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho.extras</groupId>
+				<artifactId>tycho-p2-extras-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<executions>
+					<execution> 
+						<id>compare-version-with-baseline</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>compare-version-with-baselines</goal>
+						</goals>
+						<configuration>
+							<baselines>
+								<baseline>${comparator.repo}</baseline> <!-- Previous release) -->
+							</baselines>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
