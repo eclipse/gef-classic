@@ -17,29 +17,11 @@ Having accomplished that, you might want to browse our [developer documentation]
 2. Download an '[Eclipse IDE for Eclipse Committers ](http://www.eclipse.org/downloads/packages)' package and start it, pointing to an empty workspace folder. 
 
 ### Set up a Target Definition containing GEF Classic (development snapshot)
-1. Go to *File -> New -> Project...* and select to create a *General/Project*. Name it `gef-classic-integration.target` or as you like, the project is to contain only a target definition.
-2. Go to *File -> New -> Other...* then choose *Plug-in Development/Target Definition* and create a new empty (*Nothing: Start with an empty target definition*) target definition file named `gef-classic-integration.target` within the newly created project.
-3. Close the *Target Editor* that has automatically opened, open the target file with the *Text Editor* using the *Open With* context menu, then paste the following contents:
-	
-	```
-	<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-	<?pde version="3.8"?><target name="gef-integration" sequenceNumber="1">
-	<locations>
-	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-	<unit id="org.eclipse.sdk.ide" version="0.0.0"/>
-	<repository location="https://download.eclipse.org/releases/latest"/>
-	</location>
-	<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-	<unit id="org.eclipse.zest.sdk.feature.group" version="0.0.0"/>
-	<unit id="org.eclipse.draw2d.sdk.feature.group" version="0.0.0"/>
-	<unit id="org.eclipse.gef.sdk.feature.group" version="0.0.0"/>
-	<unit id="org.eclipse.gef.examples.feature.group" version="0.0.0"/>
-	<repository location="http://download.eclipse.org/tools/gef/updates/legacy/integration/"/>
-	</location>
-	</locations>
-	</target>
-	```
-4. Now open the `gef-classic-integration.target` file with the *Target Editor* again, using the *Open With* context menu, let if fully resolve, then click *Set as Target Platform* (link in the upper right corner of the editor).
+
+1. Import of the target-platform project from the Git repository
+2. Open the 2022-03.target file with the *Target Editor* again, using the *Open With* context menu, let if fully resolve, then click *Set as Target Platform* (link in the upper right corner of the editor).
+
+You can also create a new target file using https://github.com/eclipse/gef-classic/blob/master/target-platform/2022-03.target as template.olve, then click *Set as Target Platform* (link in the upper right corner of the editor).
 
 ### Run the examples
 As the deployed 'Flow', 'Logic', 'Shapes', and 'WYSIWYG Document' GEF (MVC) examples are contained in the target definition, we only need to start a new Eclipse Runtime to run them: 
