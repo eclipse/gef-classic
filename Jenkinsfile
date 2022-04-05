@@ -36,7 +36,7 @@ pipeline {
                     sh '''
                         ssh -o BatchMode=yes genie.projectname@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/gef-classic/latest
                         ssh -o BatchMode=yes genie.projectname@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/gef-classic/latest
-                        scp -o BatchMode=yes -r repository/target/repository/* genie.projectname@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/gef-classic/latest
+                        scp -o BatchMode=yes -r org.eclipse.gef.repository/target/repository/* genie.projectname@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/gef-classic/latest
                     '''
                     }
                 }
