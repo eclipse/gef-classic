@@ -22,12 +22,24 @@ pipeline {
 					-Dproject.build.sourceEncoding=UTF-8 
 				'''
 			
-			}
+			}            
 			post {
 				always {
 					archiveArtifacts artifacts: '.*log,org.eclipse.gef.repository/target/repository/*', allowEmptyArchive: true
 				}
 			}
+
 		}
+        stage('Deploy') {
+            steps {
+                sshagent ( ['projects-storage.eclipse.org-bot-ssh']) {
+                    sh '''
+                        ssh -o BatchMode=yes genie.projectname@projects-storage.eclipse.org rm -rf /home/data/httpd/download.eclipse.org/gef-classic/latest
+                        ssh -o BatchMode=yes genie.projectname@projects-storage.eclipse.org mkdir -p /home/data/httpd/download.eclipse.org/gef-classic/latest
+                        scp -o BatchMode=yes -r repository/target/repository/* genie.projectname@projects-storage.eclipse.org:/home/data/httpd/download.eclipse.org/gef-classic/latest
+                    '''
+                    }
+                }
+        }
 	}
 }
