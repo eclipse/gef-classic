@@ -34,10 +34,15 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * Figure.
  * 
  * @author Eric Bordeau
- * @author Alexander Ny√üen (anyssen)
+ * @author Alexander Nyﬂen (anyssen)
  */
 public class Thumbnail extends Figure implements UpdateListener {
-
+	
+	// Bug on Mac - images are cached
+	// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=543796
+	// This affects macOS 10.14 and greater but we'll patch it for all macOS versions
+	private static final boolean isMac = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$
+	
 	/**
 	 * This updates the Thumbnail by breaking the thumbnail {@link Image} into
 	 * several tiles and updating each tile individually.
@@ -174,6 +179,11 @@ public class Thumbnail extends Figure implements UpdateListener {
 			int h = getCurrentHTile();
 			int sx1 = h * tileSize.width;
 			int sx2 = Math.min((h + 1) * tileSize.width, sourceSize.width);
+			
+			// Mac fix - create new Tile Graphics instances
+			if(isMac) {
+				createTileGraphics();
+			}
 
 			tileGraphics.pushState();
 			// clear the background (by filling with the background color)
@@ -279,9 +289,35 @@ public class Thumbnail extends Figure implements UpdateListener {
 				resetTileImage();
 			}
 
+			createTileGraphics();
+
+			setScales(targetSize.width / (float) sourceSize.width,
+					targetSize.height / (float) sourceSize.height);
+
+			Display.getCurrent().asyncExec(this);
+		}
+		
+		/**
+		 * Create new GC, SWTGraphics, and ScaledGraphics instances
+		 */
+		private void createTileGraphics() {
+			// For the Mac fixe we have to create a new GC instance to flush the previous tile image...
+			if(tileGC != null && !tileGC.isDisposed()) {
+				tileGC.dispose();
+			}
 			tileGC = new GC(tileImage,
 					sourceFigure.isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.NONE);
+
+			// ...and this means we need a new SWTGraphics instance
+			if(tileGCGraphics != null) {
+				tileGCGraphics.dispose();
+			}
 			tileGCGraphics = new SWTGraphics(tileGC);
+			
+			// ...and a new ScaledGraphics instance
+			if(tileGraphics != null) {
+				tileGraphics.dispose();
+			}
 			tileGraphics = new ScaledGraphics(tileGCGraphics);
 
 			Color color = sourceFigure.getForegroundColor();
@@ -291,11 +327,6 @@ public class Thumbnail extends Figure implements UpdateListener {
 			if (color != null)
 				tileGraphics.setBackgroundColor(color);
 			tileGraphics.setFont(sourceFigure.getFont());
-
-			setScales(targetSize.width / (float) sourceSize.width,
-					targetSize.height / (float) sourceSize.height);
-
-			Display.getCurrent().asyncExec(this);
 		}
 
 		private void resetThumbnailImage() {
