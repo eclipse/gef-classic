@@ -14,7 +14,7 @@
 <!-- Define the top level topics                                                   -->
 <!-- ============================================================================= -->
 
-<toc label="GEF-Legacy Developer Guide">
+<toc label="GEF Classic Developer Guide">
 	<topic label="Programmer&apos;s Guide" href="guide.html">
 		<link toc="topics_Guide.xml" />
 	</topic>
