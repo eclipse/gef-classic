@@ -12,7 +12,7 @@
 	<properties>
 		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
 		<tycho.version>2.7.0</tycho.version>
-		<cbi-plugins.version>1.0.4</cbi-plugins.version>
+		<cbi-plugins.version>1.3.2</cbi-plugins.version>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-legacy.git</tycho.scmUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -308,9 +308,7 @@
 				  <executions>
 					<execution>
 					  <id>p2-metadata</id>
-					  <goals>
-						<goal>p2-metadata</goal>
-					  </goals>
+					  <goals>https://ci.eclipse.org/gef/job/gef-classic-latest/12/console
 					  <phase>verify</phase>
 					</execution>
 				  </executions>
