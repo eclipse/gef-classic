@@ -19,7 +19,8 @@ pipeline {
 				mvn clean verify -Dmaven.repo.local=$WORKSPACE/.m2/repository \
 					-DapiBaselineTargetDirectory=${WORKSPACE} \
 					-Dgpg.passphrase="${KEYRING_PASSPHRASE}" \
-					-Dproject.build.sourceEncoding=UTF-8 
+					-Dproject.build.sourceEncoding=UTF-8 \
+					-Peclipse-sign
 				'''
 			
 			}            
