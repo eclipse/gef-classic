@@ -308,7 +308,9 @@
 				  <executions>
 					<execution>
 					  <id>p2-metadata</id>
-					  <goals>https://ci.eclipse.org/gef/job/gef-classic-latest/12/console
+					  <goals>
+						<goal>p2-metadata</goal>
+					  </goals>
 					  <phase>verify</phase>
 					</execution>
 				  </executions>
