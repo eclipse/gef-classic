@@ -34,7 +34,7 @@ Having accomplished that, you might want to browse our [developer documentation]
 	<unit id="org.eclipse.draw2d.sdk.feature.group" version="0.0.0"/>
 	<unit id="org.eclipse.gef.sdk.feature.group" version="0.0.0"/>
 	<unit id="org.eclipse.gef.examples.feature.group" version="0.0.0"/>
-	<repository location="http://download.eclipse.org/tools/gef/updates/legacy/integration/"/>
+	<repository location="http://download.eclipse.org/tools/gef/classic/latest"/>
 	</location>
 	</locations>
 	</target>
@@ -52,7 +52,7 @@ The undeployed Draw2d and Zest examples have to be checked out in source before.
 
 1. Go to *File -> Import...*, then select *Git/Projects from Git*, press *Next >*.
 2. Select *Clone URI*, press *Next >*.
-3. Paste `https://github.com/eclipse/gef-legacy.git` to the *URI* field , press *Next >*.
+3. Paste `https://github.com/eclipse/gef-classic.git` to the *URI* field , press *Next >*.
 3. Select *master* branch, press *Next >*.
 4. Confirm the local directory or change it as needed, press *Next >*.
 5. Ensure *Import existing Eclipse projects* is checked, then select *Working Tree* and press *Next >*.
@@ -64,4 +64,4 @@ The first thing you will probably want to consult is the developer documentation
 
 All further project information (forum, mailing list, issue tracker, update-site locations, release plans) can be retrieved from the project meta-data at [projects.eclipse.org](https://projects.eclipse.org/projects/tools.gef).
 
-If you want to contribute, please consult the [contributor guide](https://github.com/eclipse/gef-legacy/blob/master/CONTRIBUTING.md#contributing-to-the-eclipse-graphical-editing-framework-gef).
+If you want to contribute, please consult the [contributor guide](https://github.com/eclipse/gef-classic/blob/master/CONTRIBUTING.md#contributing-to-the-eclipse-graphical-editing-framework-gef).
