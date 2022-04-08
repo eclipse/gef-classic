@@ -2,7 +2,7 @@
 version: 2
 updates:
   - package-ecosystem: maven
-    directory: eclipse-platform-parent
+    directory: "/"
     schedule:
       interval: daily
     commit-message:
