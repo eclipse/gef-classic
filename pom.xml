@@ -347,13 +347,14 @@
 		<module>org.eclipse.gef.tests</module>
 		
 		<!--examples-->
-		
+		<module>org.eclipse.draw2d.examples</module>
 		<module>org.eclipse.gef.examples.flow</module>
 		<module>org.eclipse.gef.examples.logic</module>
 		<module>org.eclipse.gef.examples.shapes</module>
 		<module>org.eclipse.gef.examples.text</module>
 		<module>org.eclipse.gef.examples.ui.capabilities</module>
 		<module>org.eclipse.gef.examples.ui.pde</module>
+		<module>org.eclipse.zest.examples</module>
 		
 	
 	<!--features-->
