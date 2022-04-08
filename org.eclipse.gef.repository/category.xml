@@ -15,6 +15,15 @@
    <feature id="org.eclipse.draw2d-feature">
       <category name="GEF"/>
    </feature>
+   <feature id="org.eclipse.gef.sdk">
+      <category name="GEF"/>
+   </feature>
+   <bundle id="org.eclipse.zest.examples">
+      <category name="GEF"/>
+   </bundle>
+   <bundle id="org.eclipse.draw2d.examples">
+      <category name="GEF"/>
+   </bundle>
    <category-def name="GEF" label="GEF (Graphical Editing Framework) Classic">
       <description>
          Draw2d, GEF (MVC), and Zest runtime, SDK, examples, and sources
