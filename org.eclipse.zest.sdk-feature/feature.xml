@@ -43,4 +43,10 @@
          id="org.eclipse.zest"
          version="0.0.0"/>
 
+   <plugin
+         id="org.eclipse.zest.doc.isv"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
 </feature>
