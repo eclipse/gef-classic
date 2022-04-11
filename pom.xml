@@ -59,28 +59,29 @@
 				<artifactId>tycho-source-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<executions>
-					<execution>
-						<id>plugin-source</id>
-						<goals>
-							<goal>plugin-source</goal>
-						</goals>
-					</execution>
+				  <execution>
+					<id>plugin-source</id>
+					<goals>
+					  <goal>plugin-source</goal>
+					</goals>
+				  </execution>
+				  <execution>
+					<id>feature-source</id>
+					<goals>
+					  <goal>feature-source</goal>
+					</goals>
+					<configuration>
+					  <excludes>
+						<!-- provide plug-ins not containing any source code -->
+						<plugin id="org.eclipse.draw2d.doc.isv" />
+						<plugin id="org.eclipse.gef.doc.isv" />
+						<plugin id="org.eclipse.zest.doc.isv" />
+						<!-- also possible to exclude feature-->
+					  </excludes>
+					</configuration>
+				  </execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.eclipse.tycho.extras</groupId>
-				<artifactId>tycho-source-feature-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<executions>
-					<execution>
-						<id>source-feature</id>
-						<phase>package</phase>
-						<goals>
-							<goal>source-feature</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+			  </plugin>
 			<plugin>
 				<!-- This is needed for source feature generation, as outlined in bug 
 					#398250 -->
@@ -334,13 +335,16 @@
 	<modules>
 		<!--plug-ins-->
 		<module>org.eclipse.draw2d</module>
-		<module>org.eclipse.draw2d.doc.isv</module>
 		<module>org.eclipse.gef</module>
-		<!--tests-->
-		<module>org.eclipse.gef.doc.isv</module>
 		<module>org.eclipse.zest.core</module>
 		<module>org.eclipse.zest.layouts</module>
+		
+		<!--docs-->
 		<module>org.eclipse.zest.doc.isv</module>
+		<module>org.eclipse.draw2d.doc.isv</module>
+		<module>org.eclipse.gef.doc.isv</module>
+
+		<!--tests-->
 		
 		<module>org.eclipse.draw2d.tests</module>
 		<module>org.eclipse.zest.tests</module>
