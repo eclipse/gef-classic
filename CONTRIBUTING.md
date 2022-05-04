@@ -57,7 +57,7 @@ In the configuration wizard you have to specify the goals ("clean verify"). The 
 As a result of the build, an update-site will be created in the `target` sub-folder of the `org.eclipse.gef.repository` project.
 
 ## Deliver a Contribution
-Before any contribution can be accepted by the project, you need to electronically sign the [Eclipse Foundation Contributor License Agreement (CLA)](http://www.eclipse.org/legal/CLA.php). Further, your changes should be comprised to a single commit (squash if necessary) and the commit needs to be properly [signed off](https://wiki.eclipse.org/Development_Resources/Contributing_via_Git#Signing_off_on_a_commit) to mark its CLA-compliance.
+Before any contribution can be accepted by the project, you need to electronically sign the [Eclipse Contributor Agreement (ELA)](https://www.eclipse.org/legal/ECA.php). Further, your changes should be comprised to a single commit (squash if necessary) and the commit needs to be properly [signed off](https://wiki.eclipse.org/Development_Resources/Contributing_via_Git#Signing_off_on_a_commit) to mark its CLA-compliance.
 
 The commit message should follow the following structure: 
 
