@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.eclipse.gef.examples_3.12.100.qualifier.jar" id="org.eclipse.gef.examples" version="3.12.100.qualifier">
-      <category name="gef"/>
-   </feature>
    <feature id="org.eclipse.gef-feature">
       <category name="gef"/>
    </feature>
@@ -16,6 +13,9 @@
       <category name="zest"/>
    </feature>
    <feature id="org.eclipse.gef.sdk-feature">
+      <category name="gef"/>
+   </feature>
+   <feature id="org.eclipse.gef.examples">
       <category name="gef"/>
    </feature>
    <bundle id="org.eclipse.zest.examples">
