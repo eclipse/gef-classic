@@ -31,8 +31,8 @@
    </license>
 
    <url>
-      <update label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/legacy/releases/"/>
-      <discovery label="%updateSiteName" url="http://download.eclipse.org/tools/gef/updates/legacy/releases/"/>
+      <update label="%updateSiteName" url="https://download.eclipse.org/tools/gef/classic/releases/latest"/>
+      <discovery label="%updateSiteName" url="https://download.eclipse.org/tools/gef/classic/releases/latest"/>
    </url>
 
    <requires>
