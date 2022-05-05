@@ -10,9 +10,9 @@
         IBM Corporation - initial API and implementation
  -->
 <feature
-      id="org.eclipse.zest.sdk"
+      id="org.eclipse.zest.sdk-feature"
       label="%featureName"
-      version="1.8.100.qualifier"
+      version="3.13.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.zest.core"
       license-feature="org.eclipse.license"
@@ -36,11 +36,11 @@
    </url>
 
    <includes
-         id="org.eclipse.draw2d.sdk"
+         id="org.eclipse.zest-feature"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.zest"
+         id="org.eclipse.draw2d-feature"
          version="0.0.0"/>
 
    <plugin
