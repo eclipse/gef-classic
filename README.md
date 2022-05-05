@@ -11,7 +11,8 @@ The code base of the GEF components implemented in JavaFX is located in the [ecl
 
 Update Sites (p2 repositories) are available at:
 
-http://download.eclipse.org/tools/gef/classic/latest: latest version build from master
+http://download.eclipse.org/tools/gef/classic/releases/latest latest release of GEF Classic
+http://download.eclipse.org/tools/gef/classic/latest latest version build from master
 
 
 ## Getting started with the framework components ([adopters](https://www.eclipse.org/projects/dev_process/#2_3_3_Adopters))
