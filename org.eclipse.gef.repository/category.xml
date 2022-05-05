@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <feature url="features/org.eclipse.gef.examples_3.12.100.qualifier.jar" id="org.eclipse.gef.examples" version="3.12.100.qualifier">
-      <category name="GEF"/>
-   </feature>
-   <feature url="features/org.eclipse.zest.sdk_1.8.100.qualifier.jar" id="org.eclipse.zest.sdk" version="1.8.100.qualifier">
-      <category name="GEF"/>
-   </feature>
-   <feature id="org.eclipse.zest">
-      <category name="GEF"/>
+      <category name="gef"/>
    </feature>
    <feature id="org.eclipse.gef-feature">
-      <category name="GEF"/>
+      <category name="gef"/>
    </feature>
    <feature id="org.eclipse.draw2d-feature">
-      <category name="GEF"/>
+      <category name="draw2d"/>
    </feature>
-   <feature id="org.eclipse.gef.sdk">
-      <category name="GEF"/>
+   <feature id="org.eclipse.zest-feature">
+      <category name="zest"/>
+   </feature>
+   <feature id="org.eclipse.zest.sdk-feature">
+      <category name="zest"/>
+   </feature>
+   <feature id="org.eclipse.gef.sdk-feature">
+      <category name="gef"/>
    </feature>
    <bundle id="org.eclipse.zest.examples">
-      <category name="GEF"/>
+      <category name="zest"/>
    </bundle>
    <bundle id="org.eclipse.draw2d.examples">
-      <category name="GEF"/>
+      <category name="draw2d"/>
    </bundle>
    <category-def name="GEF" label="GEF (Graphical Editing Framework) Classic">
       <description>
          Draw2d, GEF (MVC), and Zest runtime, SDK, examples, and sources
       </description>
+   </category-def>
+   <category-def name="gef" label="GEF Features">
+      <category name="GEF"/>
+   </category-def>
+   <category-def name="zest" label="Zest Features">
+      <category name="GEF"/>
+   </category-def>
+   <category-def name="draw2d" label="Draw2D Features">
+      <category name="GEF"/>
    </category-def>
 </site>

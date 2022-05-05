@@ -10,9 +10,9 @@
         IBM Corporation - initial API and implementation
  -->
 <feature
-      id="org.eclipse.draw2d.sdk"
+      id="org.eclipse.draw2d.sdk-feature"
       label="%featureName"
-      version="3.11.100.qualifier"
+      version="3.13.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.draw2d"
       license-feature="org.eclipse.license"

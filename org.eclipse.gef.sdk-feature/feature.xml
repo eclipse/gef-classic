@@ -10,9 +10,9 @@
         IBM Corporation - initial API and implementation
  -->
 <feature
-      id="org.eclipse.gef.sdk"
+      id="org.eclipse.gef.sdk-feature"
       label="%featureName"
-      version="3.12.100.qualifier"
+      version="3.13.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.gef"
       license-feature="org.eclipse.license"
@@ -40,7 +40,7 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.draw2d.sdk"
+         id="org.eclipse.draw2d-feature"
          version="0.0.0"/>
 
    <plugin

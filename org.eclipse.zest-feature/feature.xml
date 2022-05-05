@@ -10,9 +10,9 @@
         IBM Corporation - initial API and implementation
  -->
 <feature
-      id="org.eclipse.zest"
+      id="org.eclipse.zest-feature"
       label="%featureName"
-      version="1.8.100.qualifier"
+      version="3.13.0.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.zest.core"
       license-feature="org.eclipse.license"
