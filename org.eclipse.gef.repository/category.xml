@@ -3,10 +3,19 @@
    <feature id="org.eclipse.gef-feature">
       <category name="gef"/>
    </feature>
+   <feature id="org.eclipse.gef-feature.source">
+      <category name="gef"/>
+   </feature>
    <feature id="org.eclipse.draw2d-feature">
       <category name="draw2d"/>
    </feature>
+   <feature id="org.eclipse.draw2d-feature.source">
+      <category name="draw2d"/>
+   </feature>
    <feature id="org.eclipse.zest-feature">
+      <category name="zest"/>
+   </feature>
+   <feature id="org.eclipse.zest-feature.source">
       <category name="zest"/>
    </feature>
    <feature id="org.eclipse.zest.sdk-feature">
@@ -18,10 +27,19 @@
    <feature id="org.eclipse.gef.examples">
       <category name="gef"/>
    </feature>
+   <feature id="org.eclipse.gef.examples.source">
+      <category name="gef"/>
+   </feature>
    <bundle id="org.eclipse.zest.examples">
       <category name="zest"/>
    </bundle>
+   <bundle id="org.eclipse.zest.examples.source">
+      <category name="zest"/>
+   </bundle>
    <bundle id="org.eclipse.draw2d.examples">
+      <category name="draw2d"/>
+   </bundle>
+   <bundle id="org.eclipse.draw2d.examples.source">
       <category name="draw2d"/>
    </bundle>
    <category-def name="GEF" label="GEF (Graphical Editing Framework) Classic">
