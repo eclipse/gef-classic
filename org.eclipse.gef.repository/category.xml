@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature id="org.eclipse.gef-feature">
+   <feature id="org.eclipse.gef">
       <category name="gef"/>
    </feature>
-   <feature id="org.eclipse.gef-feature.source">
+   <feature id="org.eclipse.gef.source">
       <category name="gef"/>
    </feature>
-   <feature id="org.eclipse.draw2d-feature">
+   <feature id="org.eclipse.draw2d">
       <category name="draw2d"/>
    </feature>
-   <feature id="org.eclipse.draw2d-feature.source">
+   <feature id="org.eclipse.draw2d.source">
       <category name="draw2d"/>
    </feature>
-   <feature id="org.eclipse.zest-feature">
+   <feature id="org.eclipse.zest">
       <category name="zest"/>
    </feature>
-   <feature id="org.eclipse.zest-feature.source">
+   <feature id="org.eclipse.zest.source">
       <category name="zest"/>
    </feature>
-   <feature id="org.eclipse.zest.sdk-feature">
+   <feature id="org.eclipse.zest.sdk">
       <category name="zest"/>
    </feature>
-   <feature id="org.eclipse.gef.sdk-feature">
+   <feature id="org.eclipse.gef.sdk">
       <category name="gef"/>
    </feature>
    <feature id="org.eclipse.gef.examples">
@@ -29,6 +29,9 @@
    </feature>
    <feature id="org.eclipse.gef.examples.source">
       <category name="gef"/>
+   </feature>
+   <feature id="org.eclipse.draw2d.sdk">
+      <category name="draw2d"/>
    </feature>
    <bundle id="org.eclipse.zest.examples">
       <category name="zest"/>
