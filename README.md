@@ -14,6 +14,9 @@ Update Sites (p2 repositories) are available at:
 https://download.eclipse.org/tools/gef/classic/releases/latest latest release of GEF Classic
 https://download.eclipse.org/tools/gef/classic/latest latest version build from master
 
+Other update sites are:
+
+https://download.eclipse.org/tools/gef/classic/releases/3.14.0 3.14 release
 
 ## Getting started with the framework components ([adopters](https://www.eclipse.org/projects/dev_process/#2_3_3_Adopters))
 In order to develop graphical applications with GEF Classic, you should first set up a proper development environment. The following sections shortly lay out how to set up an Eclipse IDE for this purpose. They conclude with running our deployed and undeployed examples to confirm everything is set up properly. 
