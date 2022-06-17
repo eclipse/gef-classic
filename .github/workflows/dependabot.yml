@@ -1,17 +1,11 @@
-# https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 version: 2
 updates:
-  - package-ecosystem: maven
-    directory: eclipse-platform-parent
-    schedule:
-      interval: daily
-    commit-message:
-      prefix: fix
-      prefix-development: chore
-      include: scope
-    labels:
-      - dependencies
-  - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: daily
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
