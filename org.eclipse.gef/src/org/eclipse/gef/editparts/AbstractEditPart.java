@@ -51,8 +51,8 @@ import org.eclipse.gef.editpolicies.SelectionEditPolicy;
  * AbstractEditPart provides support for children. All AbstractEditPart's can
  * potentially be containers for other EditParts.
  */
-public abstract class AbstractEditPart implements EditPart, RequestConstants,
-		IAdaptable {
+public abstract class AbstractEditPart
+		implements EditPart, RequestConstants, IAdaptable {
 
 	/**
 	 * This flag is set during {@link #activate()}, and reset on
@@ -81,7 +81,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	/**
 	 * The List of children EditParts
 	 */
-	protected List children;
+	protected List<EditPart> children;
 
 	/**
 	 * call getEventListeners(Class) instead.
@@ -155,9 +155,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 		activateEditPolicies();
 
-		List c = getChildren();
-		for (int i = 0; i < c.size(); i++)
-			((EditPart) c.get(i)).activate();
+		getChildren().forEach(EditPart::activate);
 
 		fireActivated();
 	}
@@ -204,7 +202,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 		if (index == -1)
 			index = getChildren().size();
 		if (children == null)
-			children = new ArrayList(2);
+			children = new ArrayList<>(2);
 
 		children.add(index, child);
 		child.setParent(this);
@@ -247,9 +245,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	public void addNotify() {
 		register();
 		createEditPolicies();
-		List children = getChildren();
-		for (int i = 0; i < children.size(); i++)
-			((EditPart) children.get(i)).addNotify();
+		getChildren().forEach(EditPart::addNotify);
 		refresh();
 	}
 
@@ -288,9 +284,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * @see #activate()
 	 */
 	public void deactivate() {
-		List c = getChildren();
-		for (int i = 0; i < c.size(); i++)
-			((EditPart) c.get(i)).deactivate();
+		getChildren().forEach(EditPart::deactivate);
 
 		deactivateEditPolicies();
 
@@ -467,9 +461,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	/**
 	 * @see org.eclipse.gef.EditPart#getChildren()
 	 */
-	public List getChildren() {
+	public List<EditPart> getChildren() {
 		if (children == null)
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		return children;
 	}
 
@@ -748,13 +742,13 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 		EditPart editPart;
 		Object model;
 
-		List children = getChildren();
+		List<EditPart> children = getChildren();
 		int size = children.size();
 		Map modelToEditPart = Collections.EMPTY_MAP;
 		if (size > 0) {
 			modelToEditPart = new HashMap(size);
 			for (i = 0; i < size; i++) {
-				editPart = (EditPart) children.get(i);
+				editPart = children.get(i);
 				modelToEditPart.put(editPart.getModel(), editPart);
 			}
 		}
@@ -764,8 +758,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 			model = modelObjects.get(i);
 
 			// Do a quick check to see if editPart[i] == model[i]
-			if (i < children.size()
-					&& ((EditPart) children.get(i)).getModel() == model)
+			if (i < children.size() && children.get(i).getModel() == model)
 				continue;
 
 			// Look to see if the EditPart is already around but in the
@@ -785,13 +778,10 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 		// remove the remaining EditParts
 		size = children.size();
 		if (i < size) {
-			List trash = new ArrayList(size - i);
+			List<EditPart> trash = new ArrayList<>(size - i);
 			for (; i < size; i++)
 				trash.add(children.get(i));
-			for (i = 0; i < trash.size(); i++) {
-				EditPart ep = (EditPart) trash.get(i);
-				removeChild(ep);
-			}
+			trash.forEach(this::removeChild);
 		}
 	}
 
@@ -943,9 +933,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 		if (hasFocus())
 			getViewer().setFocus(null);
 
-		List children = getChildren();
-		for (int i = 0; i < children.size(); i++)
-			((EditPart) children.get(i)).removeNotify();
+		getChildren().forEach(EditPart::removeNotify);
 		unregister();
 	}
 
@@ -960,9 +948,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 */
 	protected void reorderChild(EditPart editpart, int index) {
 		removeChildVisual(editpart);
-		List children = getChildren();
-		children.remove(editpart);
-		children.add(index, editpart);
+		getChildren().remove(editpart);
+		getChildren().add(index, editpart);
 		addChildVisual(editpart, index);
 	}
 
@@ -1002,8 +989,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 */
 	public void setFocus(boolean value) {
 		// only selectable edit parts may obtain focus
-		Assert.isLegal(
-				isSelectable() || !value,
+		Assert.isLegal(isSelectable() || !value,
 				"An EditPart has to be selectable (isSelectable() == true) in order to obtain focus."); //$NON-NLS-1$
 
 		if (hasFocus() == value)
@@ -1057,8 +1043,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 */
 	public void setSelected(int value) {
 		// only selectable edit parts may get selected.
-		Assert.isLegal(
-				isSelectable() || value == SELECTED_NONE,
+		Assert.isLegal(isSelectable() || value == SELECTED_NONE,
 				"An EditPart has to be selectable (isSelectable() == true) in order to get selected."); //$NON-NLS-1$
 
 		if (selected == value)

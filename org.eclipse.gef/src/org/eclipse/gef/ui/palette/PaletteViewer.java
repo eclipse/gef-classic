@@ -13,7 +13,6 @@ package org.eclipse.gef.ui.palette;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.events.DisposeEvent;
@@ -65,11 +64,11 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 				refreshAllEditParts(root);
 			} else if (property
 					.equals(PaletteViewerPreferences.PREFERENCE_LAYOUT)
-					|| property
-							.equals(PaletteViewerPreferences.PREFERENCE_AUTO_COLLAPSE)
-					|| property
-							.equals(DefaultPaletteViewerPreferences
-									.convertLayoutToPreferenceName(getPaletteViewerPreferences()
+					|| property.equals(
+							PaletteViewerPreferences.PREFERENCE_AUTO_COLLAPSE)
+					|| property.equals(DefaultPaletteViewerPreferences
+							.convertLayoutToPreferenceName(
+									getPaletteViewerPreferences()
 											.getLayoutSetting()))) {
 				refreshAllEditParts(root);
 			}
@@ -77,11 +76,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 
 		private void refreshAllEditParts(EditPart part) {
 			part.refresh();
-			List children = part.getChildren();
-			for (Iterator iter = children.iterator(); iter.hasNext();) {
-				EditPart child = (EditPart) iter.next();
-				refreshAllEditParts(child);
-			}
+			part.getChildren().forEach(this::refreshAllEditParts);
 		}
 	}
 
@@ -194,8 +189,8 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 */
 	public PaletteCustomizerDialog getCustomizerDialog() {
 		if (customizerDialog == null) {
-			customizerDialog = new PaletteCustomizerDialog(getControl()
-					.getShell(), getCustomizer(), getPaletteRoot());
+			customizerDialog = new PaletteCustomizerDialog(
+					getControl().getShell(), getCustomizer(), getPaletteRoot());
 		}
 		return customizerDialog;
 	}
@@ -267,8 +262,8 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 		canvas.getViewport().setContentsTracksWidth(true);
 		canvas.getViewport().setContentsTracksHeight(!globalScrollbar);
 		canvas.setHorizontalScrollBarVisibility(FigureCanvas.NEVER);
-		canvas.setVerticalScrollBarVisibility(globalScrollbar ? FigureCanvas.ALWAYS
-				: FigureCanvas.AUTOMATIC);
+		canvas.setVerticalScrollBarVisibility(
+				globalScrollbar ? FigureCanvas.ALWAYS : FigureCanvas.AUTOMATIC);
 		if (prefs != null)
 			prefs.addPropertyChangeListener(prefListener);
 		updateFont();
@@ -328,8 +323,8 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 */
 	public boolean restoreState(IMemento memento) {
 		try {
-			PaletteEditPart part = (PaletteEditPart) getEditPartRegistry().get(
-					getPaletteRoot());
+			PaletteEditPart part = (PaletteEditPart) getEditPartRegistry()
+					.get(getPaletteRoot());
 			if (part != null)
 				part.restoreState(memento);
 		} catch (RuntimeException re) {
@@ -370,8 +365,8 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 */
 	public void saveState(IMemento memento) {
 		// Bug# 69026 - The PaletteRoot can be null initially for VEP
-		PaletteEditPart base = (PaletteEditPart) getEditPartRegistry().get(
-				getPaletteRoot());
+		PaletteEditPart base = (PaletteEditPart) getEditPartRegistry()
+				.get(getPaletteRoot());
 		if (base != null)
 			base.saveState(memento);
 	}
@@ -420,8 +415,8 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 			return;
 		paletteRoot = root;
 		if (paletteRoot != null) {
-			EditPart palette = getEditPartFactory().createEditPart(
-					getRootEditPart(), root);
+			EditPart palette = getEditPartFactory()
+					.createEditPart(getRootEditPart(), root);
 			getRootEditPart().setContents(palette);
 		}
 	}
@@ -464,8 +459,8 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 		if (getControl() == null || getControl().isDisposed())
 			return;
 
-		font = new Font(Display.getCurrent(), getPaletteViewerPreferences()
-				.getFontData());
+		font = new Font(Display.getCurrent(),
+				getPaletteViewerPreferences().getFontData());
 		getControl().setFont(font);
 		getFigureCanvas().getViewport().invalidateTree();
 		getFigureCanvas().getViewport().revalidate();

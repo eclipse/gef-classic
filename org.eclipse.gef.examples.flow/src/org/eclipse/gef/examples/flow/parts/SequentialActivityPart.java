@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.parts;
 
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.IFigure;
@@ -38,12 +37,10 @@ public class SequentialActivityPart extends StructuredActivityPart {
 	 */
 	public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map map) {
 		super.contributeEdgesToGraph(graph, map);
-		Node node, prev = null;
-		EditPart a;
-		List members = getChildren();
-		for (int n = 0; n < members.size(); n++) {
-			a = (EditPart) members.get(n);
-			node = (Node) map.get(a);
+		Node prev = null;
+
+		for (EditPart a : getChildren()) {
+			Node node = (Node) map.get(a);
 			if (prev != null) {
 				Edge e = new Edge(prev, node);
 				e.weight = 50;

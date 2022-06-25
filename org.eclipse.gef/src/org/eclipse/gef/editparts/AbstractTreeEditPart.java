@@ -33,8 +33,8 @@ import org.eclipse.gef.TreeEditPart;
  * <em>subclassing</em> this class. Callers of public API should refer to the
  * interface's documentation.
  */
-public abstract class AbstractTreeEditPart extends AbstractEditPart implements
-		TreeEditPart {
+public abstract class AbstractTreeEditPart extends AbstractEditPart
+		implements TreeEditPart {
 
 	/**
 	 * Either a Tree or TreeItem
@@ -60,9 +60,8 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements
 	}
 
 	/**
-	 * Implemented to assign the child its
-	 * {@link TreeEditPart#setWidget(Widget) widget}. Subclasses should not call
-	 * or override this method.
+	 * Implemented to assign the child its {@link TreeEditPart#setWidget(Widget)
+	 * widget}. Subclasses should not call or override this method.
 	 * 
 	 * @see AbstractEditPart#addChildVisual(EditPart, int)
 	 */
@@ -84,7 +83,8 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements
 	 *         not disposed
 	 */
 	protected final boolean checkTreeItem() {
-		return !(widget == null || widget.isDisposed() || widget instanceof Tree);
+		return !(widget == null || widget.isDisposed()
+				|| widget instanceof Tree);
 	}
 
 	/**
@@ -173,7 +173,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements
 	 * @see org.eclipse.gef.TreeEditPart#setWidget(Widget)
 	 */
 	public void setWidget(Widget widget) {
-		List children = getChildren();
+		List<EditPart> children = getChildren();
 		if (widget != null) {
 			widget.setData(this);
 			if (widget instanceof TreeItem) {
@@ -197,7 +197,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements
 			if (widget instanceof TreeItem)
 				((TreeItem) widget).setExpanded(expanded);
 		} else {
-			Iterator iter = getChildren().iterator();
+			Iterator<EditPart> iter = getChildren().iterator();
 			while (iter.hasNext())
 				((TreeEditPart) iter.next()).setWidget(null);
 		}
