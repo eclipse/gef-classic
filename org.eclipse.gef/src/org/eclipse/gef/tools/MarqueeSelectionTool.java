@@ -25,6 +25,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
@@ -39,7 +40,6 @@ import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
-import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.util.EditPartUtilities;
 
 /**
@@ -78,7 +78,7 @@ import org.eclipse.gef.util.EditPartUtilities;
  */
 public class MarqueeSelectionTool extends AbstractTool {
 
-	class MarqueeRectangleFigure extends Figure {
+	private static class MarqueeRectangleFigure extends Figure {
 
 		private static final int DELAY = 110; // animation delay in millisecond
 		private int offset = 0;
@@ -87,6 +87,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 		/**
 		 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 		 */
+		@Override
 		protected void paintFigure(Graphics graphics) {
 			Rectangle bounds = getBounds().getCopy();
 			graphics.translate(getLocation());
@@ -140,16 +141,14 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * 
 	 * @since 3.7
 	 */
-	public static final int BEHAVIOR_CONNECTIONS_CONTAINED = new Integer(6)
-			.intValue();
+	public static final int BEHAVIOR_CONNECTIONS_CONTAINED = 6;
 
 	/**
 	 * This behavior selects connections that intersect the marquee rectangle.
 	 * 
 	 * @since 3.1
 	 */
-	public static final int BEHAVIOR_CONNECTIONS_TOUCHED = new Integer(2)
-			.intValue();
+	public static final int BEHAVIOR_CONNECTIONS_TOUCHED = 2;
 
 	/**
 	 * This behavior selects nodes completely encompassed by the marquee
@@ -157,8 +156,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * 
 	 * @since 3.1
 	 */
-	public static final int BEHAVIOR_NODES_CONTAINED = new Integer(1)
-			.intValue();
+	public static final int BEHAVIOR_NODES_CONTAINED = 1;
 
 	/**
 	 * This behavior selects nodes completely encompassed by the marquee
@@ -166,23 +164,21 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * 
 	 * @since 3.7
 	 */
-	public static final int BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS = new Integer(
-			3).intValue();
+	public static final int BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS = 3;
 
 	/**
 	 * This behavior selects nodes that intersect the marquee rectangle.
 	 * 
 	 * @since 3.7
 	 */
-	public static final int BEHAVIOR_NODES_TOUCHED = new Integer(4).intValue();
+	public static final int BEHAVIOR_NODES_TOUCHED = 4;
 
 	/**
 	 * This behavior selects nodes that intersect the marquee rectangle.
 	 * 
 	 * @since 3.7
 	 */
-	public static final int BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS = new Integer(
-			5).intValue();
+	public static final int BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS = 5;
 
 	/**
 	 * This behavior selects nodes completely encompassed by the marquee
@@ -217,7 +213,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 
 	private Set allChildren = new HashSet();
 	private int marqueeBehavior = DEFAULT_MARQUEE_BEHAVIOR;
-	private Figure marqueeRectangleFigure;
+	private IFigure marqueeRectangleFigure;
 	private int mode;
 
 	private Collection selectedEditParts;
@@ -229,7 +225,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * {@link #BEHAVIOR_NODES_CONTAINED}.
 	 */
 	public MarqueeSelectionTool() {
-		setDefaultCursor(SharedCursors.CROSS);
+		setDefaultCursor(Cursors.CROSS);
 		setUnloadWhenFinished(false);
 	}
 
@@ -237,6 +233,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * @see org.eclipse.gef.tools.AbstractTool#applyProperty(java.lang.Object,
 	 *      java.lang.Object)
 	 */
+	@Override
 	protected void applyProperty(Object key, Object value) {
 		if (PROPERTY_MARQUEE_BEHAVIOR.equals(key)) {
 			if (value instanceof Integer)
@@ -277,7 +274,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 		marqueeSelectedEditParts
 				.addAll(calculatePrimaryMarqueeSelectedEditParts());
 		marqueeSelectedEditParts
-				.addAll(calculateSecondaryMarqueeSelectedEditParts(marqueeSelectedEditParts));
+				.addAll(calculateSecondaryMarqueeSelectedEditParts(
+						marqueeSelectedEditParts));
 		return marqueeSelectedEditParts;
 	}
 
@@ -300,17 +298,16 @@ public class MarqueeSelectionTool extends AbstractTool {
 		if (marqueeBehavior != BEHAVIOR_CONNECTIONS_CONTAINED
 				&& marqueeBehavior != BEHAVIOR_CONNECTIONS_TOUCHED) {
 			// process nodes
-			editPartsToProcess.addAll(EditPartUtilities
-					.getAllChildren((GraphicalEditPart) getCurrentViewer()
-							.getRootEditPart()));
+			editPartsToProcess.addAll(EditPartUtilities.getAllChildren(
+					(GraphicalEditPart) getCurrentViewer().getRootEditPart()));
 		}
 
 		if (marqueeBehavior != BEHAVIOR_NODES_CONTAINED
 				&& marqueeBehavior != BEHAVIOR_NODES_TOUCHED) {
 			// process connections
 			editPartsToProcess
-					.addAll(EditPartUtilities
-							.getAllNestedConnectionEditParts((GraphicalEditPart) getCurrentViewer()
+					.addAll(EditPartUtilities.getAllNestedConnectionEditParts(
+							(GraphicalEditPart) getCurrentViewer()
 									.getRootEditPart()));
 		}
 
@@ -349,14 +346,14 @@ public class MarqueeSelectionTool extends AbstractTool {
 			Collection directlyMarqueeSelectedEditParts) {
 
 		Collection editPartsToProcess = new HashSet();
-		for (Iterator iterator = directlyMarqueeSelectedEditParts.iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = directlyMarqueeSelectedEditParts
+				.iterator(); iterator.hasNext();) {
 			GraphicalEditPart marqueeSelectedEditPart = (GraphicalEditPart) iterator
 					.next();
-			editPartsToProcess.addAll(marqueeSelectedEditPart
-					.getSourceConnections());
-			editPartsToProcess.addAll(marqueeSelectedEditPart
-					.getTargetConnections());
+			editPartsToProcess
+					.addAll(marqueeSelectedEditPart.getSourceConnections());
+			editPartsToProcess
+					.addAll(marqueeSelectedEditPart.getTargetConnections());
 		}
 
 		// process all edit parts and decide, whether they are indirectly
@@ -380,6 +377,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * Erases feedback if necessary and puts the tool into the terminal state.
 	 */
+	@Override
 	public void deactivate() {
 		if (isInState(STATE_DRAG_IN_PROGRESS)) {
 			eraseMarqueeFeedback();
@@ -438,16 +436,28 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "Marquee Tool: " + marqueeBehavior;//$NON-NLS-1$
 	}
 
 	private IFigure getMarqueeFeedbackFigure() {
 		if (marqueeRectangleFigure == null) {
-			marqueeRectangleFigure = new MarqueeRectangleFigure();
+			marqueeRectangleFigure = createMarqueeRectangleFigure();
 			addFeedback(marqueeRectangleFigure);
 		}
 		return marqueeRectangleFigure;
+	}
+
+	/**
+	 * create a new marquee rectangle feedback figure
+	 * 
+	 * Sub classes my provide their own feedback rectangle
+	 * 
+	 * @since 3.13
+	 */
+	protected IFigure createMarqueeRectangleFigure() {
+		return new MarqueeRectangleFigure();
 	}
 
 	private Request getTargetRequest() {
@@ -459,6 +469,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
+	@Override
 	protected boolean handleButtonDown(int button) {
 		if (!isCurrentViewerGraphical())
 			return true;
@@ -480,6 +491,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 			eraseTargetFeedback();
@@ -493,6 +505,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
 	 */
+	@Override
 	protected boolean handleDragInProgress() {
 		if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
 			showMarqueeFeedback();
@@ -506,6 +519,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleFocusLost()
 	 */
+	@Override
 	protected boolean handleFocusLost() {
 		if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
 			handleFinished();
@@ -520,6 +534,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * 
 	 * @return <code>true</code>
 	 */
+	@Override
 	protected boolean handleInvalidInput() {
 		eraseTargetFeedback();
 		eraseMarqueeFeedback();
@@ -533,6 +548,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * 
 	 * @see AbstractTool#handleKeyDown(KeyEvent)
 	 */
+	@Override
 	protected boolean handleKeyDown(KeyEvent e) {
 		if (super.handleKeyDown(e))
 			return true;
@@ -575,7 +591,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 *         <code>false</code> otherwise.
 	 * @since 3.7
 	 */
-	private boolean isPrimaryMarqueeSelectedEditPart(GraphicalEditPart editPart) {
+	private boolean isPrimaryMarqueeSelectedEditPart(
+			GraphicalEditPart editPart) {
 		// figure bounds are used to determine if edit part is included in
 		// selection
 		IFigure figure = editPart.getFigure();
@@ -598,9 +615,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 						included = ((Connection) figure).getPoints()
 								.intersects(relMarqueeRect);
 					} else if (marqueeBehavior == BEHAVIOR_CONNECTIONS_CONTAINED) {
-						included = relMarqueeRect
-								.contains(((Connection) figure).getPoints()
-										.getBounds());
+						included = relMarqueeRect.contains(
+								((Connection) figure).getPoints().getBounds());
 					}
 				}
 			}
@@ -639,7 +655,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 			Collection directlyMarqueeSelectedEditParts, EditPart editPart) {
 		boolean included = false;
 		if (editPart instanceof ConnectionEditPart
-				&& (marqueeBehavior == BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS || marqueeBehavior == BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS)) {
+				&& (marqueeBehavior == BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS
+						|| marqueeBehavior == BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS)) {
 			// connections are included, if related nodes are included
 			ConnectionEditPart connection = (ConnectionEditPart) editPart;
 			GraphicalEditPart source = (GraphicalEditPart) connection
@@ -671,16 +688,23 @@ public class MarqueeSelectionTool extends AbstractTool {
 					// marquee selection, i.e. select it, if one of
 					// source or target will become selected in the new viewer
 					// selection
-					included = ((source.getSelected() == EditPart.SELECTED_NONE && sourceIncludedInMarqueeSelection) || (source
-							.getSelected() != EditPart.SELECTED_NONE && !sourceIncludedInMarqueeSelection))
-							&& ((target.getSelected() == EditPart.SELECTED_NONE && targetIncludedInMarqueeSelection) || (target
-									.getSelected() != EditPart.SELECTED_NONE && !targetIncludedInMarqueeSelection));
+					included = ((source.getSelected() == EditPart.SELECTED_NONE
+							&& sourceIncludedInMarqueeSelection)
+							|| (source.getSelected() != EditPart.SELECTED_NONE
+									&& !sourceIncludedInMarqueeSelection))
+							&& ((target.getSelected() == EditPart.SELECTED_NONE
+									&& targetIncludedInMarqueeSelection)
+									|| (target
+											.getSelected() != EditPart.SELECTED_NONE
+											&& !targetIncludedInMarqueeSelection));
 				} else {
 					// connection is currently selected, include it in marquee
 					// selection, i.e. deselect it, if one of source or target
 					// will become deselected in the new viewer selection
-					included = (source.getSelected() != EditPart.SELECTED_NONE && sourceIncludedInMarqueeSelection)
-							|| (target.getSelected() != EditPart.SELECTED_NONE && targetIncludedInMarqueeSelection);
+					included = (source.getSelected() != EditPart.SELECTED_NONE
+							&& sourceIncludedInMarqueeSelection)
+							|| (target.getSelected() != EditPart.SELECTED_NONE
+									&& targetIncludedInMarqueeSelection);
 				}
 			}
 		}
@@ -693,6 +717,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#isViewerImportant(org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	protected boolean isViewerImportant(EditPartViewer viewer) {
 		return isCurrentViewerGraphical();
 	}
@@ -777,14 +802,15 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * @see org.eclipse.gef.Tool#setViewer(org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void setViewer(EditPartViewer viewer) {
 		if (viewer == getCurrentViewer())
 			return;
 		super.setViewer(viewer);
 		if (viewer instanceof GraphicalViewer)
-			setDefaultCursor(SharedCursors.CROSS);
+			setDefaultCursor(Cursors.CROSS);
 		else
-			setDefaultCursor(SharedCursors.NO);
+			setDefaultCursor(Cursors.NO);
 	}
 
 	private void showMarqueeFeedback() {
