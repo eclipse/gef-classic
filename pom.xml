@@ -16,7 +16,7 @@
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-legacy.git</tycho.scmUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<comparator.repo>https://download.eclipse.org/releases/latest</comparator.repo> <!-- for now take the latest simultanouse release as baseline for version checks -->
+		<comparator.repo>https://download.eclipse.org/tools/gef/classic/releases/3.14.0</comparator.repo>
 	</properties>
 
 	<build>
