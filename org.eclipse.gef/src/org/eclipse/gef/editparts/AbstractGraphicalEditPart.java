@@ -71,8 +71,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * 
 	 * @since 2.0
 	 */
-	protected abstract class AccessibleGraphicalEditPart extends
-			AccessibleEditPart {
+	protected abstract class AccessibleGraphicalEditPart
+			extends AccessibleEditPart {
 		/**
 		 * @see AccessibleEditPart#getChildCount(AccessibleControlEvent)
 		 */
@@ -84,15 +84,15 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 		 * @see AccessibleEditPart#getChildren(AccessibleControlEvent)
 		 */
 		public void getChildren(AccessibleControlEvent e) {
-			List list = AbstractGraphicalEditPart.this.getChildren();
-			Object children[] = new Object[list.size()];
+			List<EditPart> list = AbstractGraphicalEditPart.this.getChildren();
+			Integer[] children = new Integer[list.size()];
 			for (int i = 0; i < list.size(); i++) {
-				EditPart part = (EditPart) list.get(i);
-				AccessibleEditPart access = (AccessibleEditPart) part
+				EditPart part = list.get(i);
+				AccessibleEditPart access = part
 						.getAdapter(AccessibleEditPart.class);
 				if (access == null)
 					return; // fail if any children aren't accessible.
-				children[i] = new Integer(access.getAccessibleID());
+				children[i] = Integer.valueOf(access.getAccessibleID());
 			}
 			e.children = children;
 		}
@@ -119,7 +119,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 			e.detail = ACC.STATE_SELECTABLE | ACC.STATE_FOCUSABLE;
 			if (getSelected() != EditPart.SELECTED_NONE)
 				e.detail |= ACC.STATE_SELECTED;
-			if (getViewer().getFocusEditPart() == AbstractGraphicalEditPart.this)
+			if (getViewer()
+					.getFocusEditPart() == AbstractGraphicalEditPart.this)
 				e.detail |= ACC.STATE_FOCUSED;
 		}
 
@@ -138,8 +139,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * 
 	 * @since 2.0
 	 */
-	protected class DefaultAccessibleAnchorProvider implements
-			AccessibleAnchorProvider {
+	protected class DefaultAccessibleAnchorProvider
+			implements AccessibleAnchorProvider {
 		private List getDefaultLocations() {
 			List list = new ArrayList();
 			Rectangle r = getFigure().getBounds();
@@ -250,7 +251,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * @param index
 	 *            Index where it is being added
 	 */
-	protected void addSourceConnection(ConnectionEditPart connection, int index) {
+	protected void addSourceConnection(ConnectionEditPart connection,
+			int index) {
 		primAddSourceConnection(connection, index);
 
 		GraphicalEditPart source = (GraphicalEditPart) connection.getSource();
@@ -281,7 +283,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * @param index
 	 *            Index where it is being added
 	 */
-	protected void addTargetConnection(ConnectionEditPart connection, int index) {
+	protected void addTargetConnection(ConnectionEditPart connection,
+			int index) {
 		primAddTargetConnection(connection, index);
 
 		GraphicalEditPart target = (GraphicalEditPart) connection.getTarget();
@@ -686,7 +689,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 			model = modelObjects.get(i);
 
 			if (i < sourceConnections.size()
-					&& ((EditPart) sourceConnections.get(i)).getModel() == model)
+					&& ((EditPart) sourceConnections.get(i))
+							.getModel() == model)
 				continue;
 
 			editPart = (ConnectionEditPart) modelToEditPart.get(model);
@@ -749,7 +753,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 			model = modelObjects.get(i);
 
 			if (i < targetConnections.size()
-					&& ((EditPart) targetConnections.get(i)).getModel() == model)
+					&& ((EditPart) targetConnections.get(i))
+							.getModel() == model)
 				continue;
 
 			editPart = (ConnectionEditPart) modelToEditPart.get(model);
@@ -833,8 +838,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 *            Connection being removed
 	 */
 	protected void removeSourceConnection(ConnectionEditPart connection) {
-		fireRemovingSourceConnection(connection, getSourceConnections()
-				.indexOf(connection));
+		fireRemovingSourceConnection(connection,
+				getSourceConnections().indexOf(connection));
 		if (connection.getSource() == this) {
 			connection.deactivate();
 			connection.setSource(null);
@@ -852,8 +857,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 *            Connection being removed
 	 */
 	protected void removeTargetConnection(ConnectionEditPart connection) {
-		fireRemovingTargetConnection(connection, getTargetConnections()
-				.indexOf(connection));
+		fireRemovingTargetConnection(connection,
+				getTargetConnections().indexOf(connection));
 		if (connection.getTarget() == this)
 			connection.setTarget(null);
 		primRemoveTargetConnection(connection);

@@ -28,7 +28,8 @@ import org.eclipse.gef.commands.UnexecutableCommand;
 import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
-class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener {
+class TreeViewerTransferDropListener
+		extends AbstractTransferDropTargetListener {
 
 	public TreeViewerTransferDropListener(EditPartViewer viewer) {
 		super(viewer, TreeViewerTransfer.getInstance());
@@ -38,8 +39,8 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 	protected Request createTargetRequest() {
 		ChangeBoundsRequest request = new ChangeBoundsRequest(
 				RequestConstants.REQ_MOVE);
-		request.setEditParts((List) TreeViewerTransfer.getInstance()
-				.getObject());
+		request.setEditParts(
+				(List) TreeViewerTransfer.getInstance().getObject());
 		return request;
 	}
 
@@ -102,7 +103,7 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 	protected List includeChildren(List list) {
 		List result = new ArrayList();
 		for (int i = 0; i < list.size(); i++) {
-			List children = ((EditPart) list.get(i)).getChildren();
+			List<EditPart> children = ((EditPart) list.get(i)).getChildren();
 			result.addAll(children);
 			result.addAll(includeChildren(children));
 		}

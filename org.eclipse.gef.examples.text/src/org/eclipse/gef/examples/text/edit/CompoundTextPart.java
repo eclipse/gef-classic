@@ -22,6 +22,7 @@ import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.figures.CommentPage;
 import org.eclipse.gef.examples.text.model.Container;
@@ -38,7 +39,8 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 	}
 
 	public boolean acceptsCaret() {
-		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
+		for (Iterator<EditPart> iter = getChildren().iterator(); iter
+				.hasNext();) {
 			TextEditPart part = (TextEditPart) iter.next();
 			if (part.acceptsCaret())
 				return true;
@@ -152,8 +154,8 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 	}
 
 	protected void searchForward(CaretRequest search, SearchResult result) {
-		int childIndex = search.isRecursive ? 0 : getChildren().indexOf(
-				search.where.part) + 1;
+		int childIndex = search.isRecursive ? 0
+				: getChildren().indexOf(search.where.part) + 1;
 		int childCount = getChildren().size();
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
@@ -203,8 +205,8 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		int childCount = getChildren().size();
 		search.setRecursive(true);
 		while (childIndex < childCount) {
-			TextEditPart newPart = (TextEditPart) getChildren().get(
-					childIndex++);
+			TextEditPart newPart = (TextEditPart) getChildren()
+					.get(childIndex++);
 			newPart.getTextLocation(search, result);
 			if (result.location != null)
 				return;

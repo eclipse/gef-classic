@@ -65,12 +65,13 @@ public class SelectionRange {
 	 * @param end
 	 * @param forward
 	 */
-	public SelectionRange(TextLocation begin, TextLocation end, boolean forward) {
+	public SelectionRange(TextLocation begin, TextLocation end,
+			boolean forward) {
 		this(begin, end, forward, true);
 	}
 
-	public SelectionRange(TextLocation begin, TextLocation end,
-			boolean forward, boolean trailing) {
+	public SelectionRange(TextLocation begin, TextLocation end, boolean forward,
+			boolean trailing) {
 		Assert.isNotNull(begin);
 		Assert.isNotNull(end);
 		this.begin = begin;
@@ -83,7 +84,8 @@ public class SelectionRange {
 		this(new TextLocation(part, offset));
 	}
 
-	public SelectionRange(TextEditPart begin, int bo, TextEditPart end, int eo) {
+	public SelectionRange(TextEditPart begin, int bo, TextEditPart end,
+			int eo) {
 		this(new TextLocation(begin, bo), new TextLocation(end, eo));
 	}
 
@@ -92,8 +94,7 @@ public class SelectionRange {
 			result.add(part);
 		else
 			for (int i = 0; i < part.getChildren().size(); i++)
-				depthFirstTraversal((EditPart) part.getChildren().get(i),
-						result);
+				depthFirstTraversal(part.getChildren().get(i), result);
 	}
 
 	public boolean equals(Object obj) {
@@ -105,28 +106,29 @@ public class SelectionRange {
 		return false;
 	}
 
-	private List findLeavesBetweenInclusive(EditPart left, EditPart right) {
+	private List<EditPart> findLeavesBetweenInclusive(EditPart left,
+			EditPart right) {
 		if (left == right)
 			return Collections.singletonList(left);
 		EditPart commonAncestor = ToolUtilities.findCommonAncestor(left, right);
 
 		EditPart nextLeft = left.getParent();
-		List children;
+		List<EditPart> children;
 
-		ArrayList result = new ArrayList();
+		ArrayList<EditPart> result = new ArrayList<>();
 
 		if (nextLeft == commonAncestor)
 			result.add(left);
 		while (nextLeft != commonAncestor) {
 			children = nextLeft.getChildren();
 			for (int i = children.indexOf(left); i < children.size(); i++)
-				depthFirstTraversal((EditPart) children.get(i), result);
+				depthFirstTraversal(children.get(i), result);
 
 			left = nextLeft;
 			nextLeft = nextLeft.getParent();
 		}
 
-		ArrayList rightSide = new ArrayList();
+		ArrayList<EditPart> rightSide = new ArrayList<>();
 		EditPart nextRight = right.getParent();
 		if (nextRight == commonAncestor)
 			rightSide.add(right);
@@ -134,7 +136,7 @@ public class SelectionRange {
 			children = nextRight.getChildren();
 			int end = children.indexOf(right);
 			for (int i = 0; i <= end; i++)
-				depthFirstTraversal((EditPart) children.get(i), rightSide);
+				depthFirstTraversal(children.get(i), rightSide);
 
 			right = nextRight;
 			nextRight = nextRight.getParent();
@@ -144,21 +146,22 @@ public class SelectionRange {
 		int start = children.indexOf(left) + 1;
 		int end = children.indexOf(right);
 		for (int i = start; i < end; i++)
-			depthFirstTraversal((EditPart) children.get(i), result);
+			depthFirstTraversal(children.get(i), result);
 
 		result.addAll(rightSide);
 		return result;
 	}
 
-	private List findNodesBetweenInclusive(EditPart left, EditPart right) {
+	private List<EditPart> findNodesBetweenInclusive(EditPart left,
+			EditPart right) {
 		if (left == right)
 			return Collections.singletonList(left);
 		EditPart commonAncestor = ToolUtilities.findCommonAncestor(left, right);
 
 		EditPart nextLeft = left.getParent();
-		List children;
+		List<EditPart> children;
 
-		ArrayList result = new ArrayList();
+		ArrayList<EditPart> result = new ArrayList<>();
 
 		// if (nextLeft == commonAncestor)
 		result.add(left);
@@ -171,7 +174,7 @@ public class SelectionRange {
 			nextLeft = nextLeft.getParent();
 		}
 
-		ArrayList rightSide = new ArrayList();
+		ArrayList<EditPart> rightSide = new ArrayList<>();
 		EditPart nextRight = right.getParent();
 		rightSide.add(right);
 		while (nextRight != commonAncestor) {
@@ -195,7 +198,8 @@ public class SelectionRange {
 
 	public List getLeafParts() {
 		if (leafParts == null) {
-			List list = findLeavesBetweenInclusive(begin.part, end.part);
+			List<EditPart> list = findLeavesBetweenInclusive(begin.part,
+					end.part);
 			leafParts = Collections.unmodifiableList(list);
 		}
 		return leafParts;
@@ -207,7 +211,8 @@ public class SelectionRange {
 	 */
 	public List getSelectedParts() {
 		if (selectedParts == null) {
-			List list = findNodesBetweenInclusive(begin.part, end.part);
+			List<EditPart> list = findNodesBetweenInclusive(begin.part,
+					end.part);
 			selectedParts = Collections.unmodifiableList(list);
 		}
 		return selectedParts;

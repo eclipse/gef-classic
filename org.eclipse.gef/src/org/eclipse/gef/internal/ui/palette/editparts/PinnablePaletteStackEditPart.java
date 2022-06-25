@@ -12,7 +12,6 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 
@@ -34,8 +33,8 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
  * @author Whitney Sorenson, crevells
  * @since 3.4
  */
-public class PinnablePaletteStackEditPart extends PaletteEditPart implements
-		IPaletteStackEditPart, IPinnableEditPart {
+public class PinnablePaletteStackEditPart extends PaletteEditPart
+		implements IPaletteStackEditPart, IPinnableEditPart {
 
 	// listen to see if active tool is changed in the palette
 	private PaletteListener paletteListener = new PaletteListener() {
@@ -89,8 +88,8 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 		int index = -1;
 
 		if (oldValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
-					oldValue);
+			part = (GraphicalEditPart) getViewer().getEditPartRegistry()
+					.get(oldValue);
 			// if part is null, its no longer a child.
 			if (part != null) {
 				oldFigure = part.getFigure();
@@ -101,8 +100,8 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 		}
 
 		if (newValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
-					newValue);
+			part = (GraphicalEditPart) getViewer().getEditPartRegistry()
+					.get(newValue);
 			newFigure = part.getFigure();
 		}
 
@@ -128,7 +127,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 	}
 
 	public void eraseTargetFeedback(Request request) {
-		Iterator children = getChildren().iterator();
+		Iterator<EditPart> children = getChildren().iterator();
 
 		while (children.hasNext()) {
 			PaletteEditPart part = (PaletteEditPart) children.next();
@@ -156,14 +155,12 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 		IFigure childFigure = ((GraphicalEditPart) childEP).getFigure();
 		if (childFigure == getStackFigure().getActiveFigure()) {
 			// no need to reorder figures if this is the active figure
-			List children = getChildren();
-			children.remove(childEP);
-			children.add(index, childEP);
+			getChildren().remove(childEP);
+			getChildren().add(index, childEP);
 		} else {
 			removeChildVisual(childEP);
-			List children = getChildren();
-			children.remove(childEP);
-			children.add(index, childEP);
+			getChildren().remove(childEP);
+			getChildren().add(index, childEP);
 			index = updateIndexBasedOnActiveFigure(index, childEP);
 			addChildVisual(childEP, index);
 		}
@@ -171,7 +168,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 
 	private int updateIndexBasedOnActiveFigure(int index, EditPart childEP) {
 		for (int i = 0; i < index; i++) {
-			Object ep = getChildren().get(i);
+			EditPart ep = getChildren().get(i);
 			if (((GraphicalEditPart) ep).getFigure() == getStackFigure()
 					.getActiveFigure()) {
 				return index - 1;
@@ -225,8 +222,8 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 	}
 
 	public PaletteEditPart getActiveEntry() {
-		return (PaletteEditPart) getViewer().getEditPartRegistry().get(
-				getStack().getActiveEntry());
+		return (PaletteEditPart) getViewer().getEditPartRegistry()
+				.get(getStack().getActiveEntry());
 	}
 
 }
