@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
-
-import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.OrderedLayout;
@@ -87,10 +85,8 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 */
 	protected Command getAddCommand(Request req) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) req;
-		List editParts = request.getEditParts();
 		CompoundCommand command = new CompoundCommand();
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart child = (EditPart) editParts.get(i);
+		for (EditPart child : request.getEditParts()) {
 			command.add(createAddCommand(child, getInsertionReference(request)));
 		}
 		return command.unwrap();
@@ -118,11 +114,9 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 */
 	protected Command getMoveChildrenCommand(Request request) {
 		CompoundCommand command = new CompoundCommand();
-		List editParts = ((ChangeBoundsRequest) request).getEditParts();
 
 		EditPart insertionReference = getInsertionReference(request);
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart child = (EditPart) editParts.get(i);
+		for (EditPart child : ((ChangeBoundsRequest) request).getEditParts()) {
 			command.add(createMoveChildCommand(child, insertionReference));
 		}
 		return command.unwrap();

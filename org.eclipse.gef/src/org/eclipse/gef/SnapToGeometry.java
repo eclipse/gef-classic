@@ -339,9 +339,9 @@ public class SnapToGeometry extends SnapToHelper {
 		boolean isClone = request.getType().equals(RequestConstants.REQ_CLONE);
 		if (rows == null || cols == null || isClone != cachedCloneBool) {
 			cachedCloneBool = isClone;
-			List exclusionSet = Collections.EMPTY_LIST;
-			if (!isClone && request instanceof GroupRequest)
-				exclusionSet = ((GroupRequest) request).getEditParts();
+			List<? extends EditPart> exclusionSet = Collections.emptyList();
+			if (!isClone && request instanceof GroupRequest groupReq)
+				exclusionSet = groupReq.getEditParts();
 			populateRowsAndCols(generateSnapPartsList(exclusionSet));
 		}
 

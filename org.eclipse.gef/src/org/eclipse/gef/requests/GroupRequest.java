@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.gef.EditPart;
  */
 public class GroupRequest extends org.eclipse.gef.Request {
 
-	List parts;
+	List<EditPart> parts;
 
 	/**
 	 * Creates a GroupRequest with the given type.
@@ -28,7 +28,7 @@ public class GroupRequest extends org.eclipse.gef.Request {
 	 * @param type The type of Request.
 	 */
 	public GroupRequest(Object type) {
-		setType(type);
+		super(type);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class GroupRequest extends org.eclipse.gef.Request {
 	 * 
 	 * @return A List containing the EditParts making this Request.
 	 */
-	public List getEditParts() {
+	public List<? extends EditPart> getEditParts() {
 		return parts;
 	}
 
@@ -51,7 +51,7 @@ public class GroupRequest extends org.eclipse.gef.Request {
 	 * 
 	 * @param list The List of EditParts.
 	 */
-	public void setEditParts(List list) {
+	public void setEditParts(List<EditPart> list) {
 		parts = list;
 	}
 
@@ -61,7 +61,7 @@ public class GroupRequest extends org.eclipse.gef.Request {
 	 * @param part The EditPart making the request.
 	 */
 	public void setEditParts(EditPart part) {
-		parts = new ArrayList(1);
+		parts = new ArrayList<>(1);
 		parts.add(part);
 	}
 

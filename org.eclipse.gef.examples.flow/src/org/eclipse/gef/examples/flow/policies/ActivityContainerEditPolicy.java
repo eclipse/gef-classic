@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.policies;
 
-import java.util.List;
-
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
@@ -42,11 +40,10 @@ public class ActivityContainerEditPolicy extends ContainerEditPolicy {
 	 */
 	@Override
 	protected Command getOrphanChildrenCommand(GroupRequest request) {
-		List parts = request.getEditParts();
 		CompoundCommand result = new CompoundCommand();
-		for (int i = 0; i < parts.size(); i++) {
+		for (EditPart currPart : request.getEditParts()) {
 			OrphanChildCommand orphan = new OrphanChildCommand();
-			orphan.setChild((Activity) ((EditPart) parts.get(i)).getModel());
+			orphan.setChild((Activity) currPart.getModel());
 			orphan.setParent((StructuredActivity) getHost().getModel());
 			result.add(orphan);
 		}

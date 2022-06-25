@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2022 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,11 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
-import java.util.Iterator;
-
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
@@ -46,12 +43,9 @@ public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayout
 		EditPart after = getInsertionReference(request);
 		int index = getHost().getChildren().indexOf(after);
 
-		Iterator i = request.getEditParts().iterator();
-		GraphicalEditPart currPart = null;
-
-		while (i.hasNext()) {
-			currPart = (GraphicalEditPart) i.next();
-			clone.addPart((LogicSubpart) currPart.getModel(), index++);
+		for (EditPart currPart : request.getEditParts()) {
+			clone.addPart((LogicSubpart) currPart.getModel(), index);
+			index++;
 		}
 
 		return clone;

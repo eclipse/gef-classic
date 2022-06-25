@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -245,7 +245,7 @@ public class SnapToGuides extends SnapToHelper {
 	 */
 	public int snapRectangle(Request request, int snapOrientation, PrecisionRectangle baseRect,
 			PrecisionRectangle result) {
-		if (request instanceof GroupRequest && ((GroupRequest) request).getEditParts().size() > 1)
+		if (request instanceof GroupRequest groupReq && groupReq.getEditParts().size() > 1)
 			return snapOrientation;
 
 		baseRect = baseRect.getPreciseCopy();

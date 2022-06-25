@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2022 IBM Corporation and others.
+ * Copyright (c) 2001, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
-
-import java.util.Iterator;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
@@ -28,6 +26,7 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.SnapToGuides;
 import org.eclipse.gef.commands.Command;
+import org.eclipse.gef.editpolicies.XYLayoutEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 import org.eclipse.gef.requests.CreateRequest;
 import org.eclipse.gef.rulers.RulerProvider;
@@ -51,7 +50,7 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.CloneCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.CreateCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.SetConstraintCommand;
 
-public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayoutEditPolicy {
+public class LogicXYLayoutEditPolicy extends XYLayoutEditPolicy {
 
 	public LogicXYLayoutEditPolicy(XYLayout layout) {
 		super();
@@ -189,7 +188,7 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 		return getResizeDirections(child.getModel().getClass());
 	}
 
-	private int getResizeDirections(Class modelClass) {
+	private static int getResizeDirections(Class modelClass) {
 		if (LED.class.equals(modelClass) || SimpleOutput.class.isAssignableFrom(modelClass)) {
 			return PositionConstants.NONE;
 		} else if (LogicLabel.class.equals(modelClass)) {
@@ -248,12 +247,9 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 
 		clone.setParent((LogicDiagram) getHost().getModel());
 
-		Iterator i = request.getEditParts().iterator();
-		GraphicalEditPart currPart = null;
-
-		while (i.hasNext()) {
-			currPart = (GraphicalEditPart) i.next();
-			clone.addPart((LogicSubpart) currPart.getModel(), (Rectangle) getConstraintFor(request, currPart));
+		for (EditPart currPart : request.getEditParts()) {
+			clone.addPart((LogicSubpart) currPart.getModel(),
+					(Rectangle) getConstraintFor(request, (GraphicalEditPart) currPart));
 		}
 
 		// Attach to horizontal guide, if one is given

@@ -34,11 +34,11 @@ public class ActivitySourceEditPolicy extends ContainerEditPolicy {
 	@Override
 	protected Command getAddCommand(GroupRequest request) {
 		CompoundCommand cmd = new CompoundCommand();
-		for (int i = 0; i < request.getEditParts().size(); i++) {
+		for (EditPart child : request.getEditParts()) {
 			AddAndAssignSourceCommand add = new AddAndAssignSourceCommand();
 			add.setParent((StructuredActivity) getHost().getParent().getModel());
 			add.setSource((Activity) getHost().getModel());
-			add.setChild(((Activity) ((EditPart) request.getEditParts().get(i)).getModel()));
+			add.setChild(((Activity) child.getModel()));
 			cmd.add(add);
 		}
 		return cmd;

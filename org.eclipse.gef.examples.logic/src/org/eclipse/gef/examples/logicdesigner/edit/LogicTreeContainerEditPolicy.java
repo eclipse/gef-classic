@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2022 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,11 +52,9 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 	protected Command getAddCommand(ChangeBoundsRequest request) {
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Add in LogicTreeContainerEditPolicy");//$NON-NLS-1$
-		List editparts = request.getEditParts();
 		int index = findIndexOfTreeItemAt(request.getLocation());
 
-		for (int i = 0; i < editparts.size(); i++) {
-			EditPart child = (EditPart) editparts.get(i);
+		for (EditPart child : request.getEditParts()) {
 			if (isAncestor(child, getHost()))
 				command.add(UnexecutableCommand.INSTANCE);
 			else {
@@ -79,12 +77,10 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 	@Override
 	protected Command getMoveChildrenCommand(ChangeBoundsRequest request) {
 		CompoundCommand command = new CompoundCommand();
-		List editparts = request.getEditParts();
 		List<? extends EditPart> children = getHost().getChildren();
 		int newIndex = findIndexOfTreeItemAt(request.getLocation());
 
-		for (int i = 0; i < editparts.size(); i++) {
-			EditPart child = (EditPart) editparts.get(i);
+		for (EditPart child : request.getEditParts()) {
 			int tempIndex = newIndex;
 			int oldIndex = children.indexOf(child);
 			if (oldIndex == tempIndex || oldIndex + 1 == tempIndex) {

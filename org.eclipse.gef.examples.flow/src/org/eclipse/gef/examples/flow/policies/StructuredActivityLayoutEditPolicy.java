@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.policies;
 
-import java.util.List;
-
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.Request;
@@ -53,10 +51,8 @@ public class StructuredActivityLayoutEditPolicy extends LayoutEditPolicy {
 	@Override
 	protected Command getAddCommand(Request req) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) req;
-		List editParts = request.getEditParts();
 		CompoundCommand command = new CompoundCommand();
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart child = (EditPart) editParts.get(i);
+		for (EditPart child : request.getEditParts()) {
 			command.add(createAddCommand(child));
 		}
 		return command.unwrap();

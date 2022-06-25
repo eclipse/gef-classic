@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
-
-import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
@@ -143,6 +141,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
 	 */
+	@Override
 	protected EditPolicy createChildEditPolicy(EditPart child) {
 		return new ResizableEditPolicy();
 	}
@@ -155,16 +154,16 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request)
 	 */
+	@Override
 	protected Command getAddCommand(Request generic) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) generic;
-		List editParts = request.getEditParts();
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Add in ConstrainedLayoutEditPolicy");//$NON-NLS-1$
-		GraphicalEditPart child;
 
-		for (int i = 0; i < editParts.size(); i++) {
-			child = (GraphicalEditPart) editParts.get(i);
-			command.add(createAddCommand(request, child, translateToModelConstraint(getConstraintFor(request, child))));
+		for (EditPart child : request.getEditParts()) {
+			GraphicalEditPart gChild = (GraphicalEditPart) child;
+			command.add(
+					createAddCommand(request, child, translateToModelConstraint(getConstraintFor(request, gChild))));
 		}
 		return command.unwrap();
 	}
@@ -350,15 +349,11 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 */
 	protected Command getChangeConstraintCommand(ChangeBoundsRequest request) {
 		CompoundCommand resize = new CompoundCommand();
-		Command c;
-		GraphicalEditPart child;
-		List children = request.getEditParts();
 
-		for (int i = 0; i < children.size(); i++) {
-			child = (GraphicalEditPart) children.get(i);
-			c = createChangeConstraintCommand(request, child,
-					translateToModelConstraint(getConstraintFor(request, child)));
-			resize.add(c);
+		for (EditPart child : request.getEditParts()) {
+			GraphicalEditPart gChild = (GraphicalEditPart) child;
+			resize.add(createChangeConstraintCommand(request, child,
+					translateToModelConstraint(getConstraintFor(request, gChild))));
 		}
 		return resize.unwrap();
 	}
