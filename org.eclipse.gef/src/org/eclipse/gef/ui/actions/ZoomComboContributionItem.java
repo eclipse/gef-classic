@@ -38,8 +38,8 @@ import org.eclipse.gef.editparts.ZoomManager;
  * 
  * @author Eric Bordeau
  */
-public class ZoomComboContributionItem extends ContributionItem implements
-		ZoomListener {
+public class ZoomComboContributionItem extends ContributionItem
+		implements ZoomListener {
 
 	private boolean forceSetText;
 	private Combo combo;
@@ -67,7 +67,8 @@ public class ZoomComboContributionItem extends ContributionItem implements
 	 * @param initString
 	 *            the initial string displayed in the combo
 	 */
-	public ZoomComboContributionItem(IPartService partService, String initString) {
+	public ZoomComboContributionItem(IPartService partService,
+			String initString) {
 		this(partService, new String[] { initString });
 	}
 
@@ -269,8 +270,8 @@ public class ZoomComboContributionItem extends ContributionItem implements
 	private void handleWidgetDefaultSelected(SelectionEvent event) {
 		if (zoomManager != null) {
 			if (combo.getSelectionIndex() >= 0)
-				zoomManager.setZoomAsText(combo.getItem(combo
-						.getSelectionIndex()));
+				zoomManager.setZoomAsText(
+						combo.getItem(combo.getSelectionIndex()));
 			else
 				zoomManager.setZoomAsText(combo.getText());
 		}

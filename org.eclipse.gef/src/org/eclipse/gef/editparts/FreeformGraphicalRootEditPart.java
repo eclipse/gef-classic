@@ -82,8 +82,8 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  * </table>
  * 
  */
-public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
-		LayerConstants, LayerManager {
+public class FreeformGraphicalRootEditPart extends SimpleRootEditPart
+		implements LayerConstants, LayerManager {
 
 	private LayeredPane innerLayers;
 	private LayeredPane printableLayers;
@@ -151,9 +151,10 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
-	public Object getAdapter(Class adapter) {
+	@Override
+	public <T> T getAdapter(final Class<T> adapter) {
 		if (adapter == AutoexposeHelper.class)
-			return new ViewportAutoexposeHelper(this);
+			return adapter.cast(new ViewportAutoexposeHelper(this));
 		return super.getAdapter(adapter);
 	}
 
@@ -230,14 +231,14 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	protected void refreshGridLayer() {
 		boolean visible = false;
 		GridLayer grid = (GridLayer) getLayer(GRID_LAYER);
-		Boolean val = (Boolean) getViewer().getProperty(
-				SnapToGrid.PROPERTY_GRID_VISIBLE);
+		Boolean val = (Boolean) getViewer()
+				.getProperty(SnapToGrid.PROPERTY_GRID_VISIBLE);
 		if (val != null)
 			visible = val.booleanValue();
-		grid.setOrigin((Point) getViewer().getProperty(
-				SnapToGrid.PROPERTY_GRID_ORIGIN));
-		grid.setSpacing((Dimension) getViewer().getProperty(
-				SnapToGrid.PROPERTY_GRID_SPACING));
+		grid.setOrigin((Point) getViewer()
+				.getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
+		grid.setSpacing((Dimension) getViewer()
+				.getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
 		grid.setVisible(visible);
 	}
 

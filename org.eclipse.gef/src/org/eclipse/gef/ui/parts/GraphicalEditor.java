@@ -59,8 +59,8 @@ import org.eclipse.gef.ui.properties.UndoablePropertySheetPage;
  * 
  * @author hudsonr
  */
-public abstract class GraphicalEditor extends EditorPart implements
-		CommandStackListener, ISelectionListener {
+public abstract class GraphicalEditor extends EditorPart
+		implements CommandStackListener, ISelectionListener {
 
 	private static class ActionIDList extends ArrayList {
 		public boolean add(Object o) {
@@ -69,7 +69,8 @@ public abstract class GraphicalEditor extends EditorPart implements
 					IAction action = (IAction) o;
 					o = action.getId();
 					throw new IllegalArgumentException(
-							"Action IDs should be added to lists, not the action: " + action); //$NON-NLS-1$
+							"Action IDs should be added to lists, not the action: " //$NON-NLS-1$
+									+ action);
 				} catch (IllegalArgumentException exc) {
 					exc.printStackTrace();
 				}
@@ -109,8 +110,8 @@ public abstract class GraphicalEditor extends EditorPart implements
 	 * extend or override this method as needed.
 	 */
 	protected void configureGraphicalViewer() {
-		getGraphicalViewer().getControl().setBackground(
-				ColorConstants.listBackground);
+		getGraphicalViewer().getControl()
+				.setBackground(ColorConstants.listBackground);
 	}
 
 	/**
@@ -223,23 +224,25 @@ public abstract class GraphicalEditor extends EditorPart implements
 	 * 
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
-	public Object getAdapter(Class type) {
+	@Override
+	public <T> T getAdapter(final Class<T> type) {
 		if (type == org.eclipse.ui.views.properties.IPropertySheetPage.class) {
-			return new UndoablePropertySheetPage(getCommandStack(),
+			return type.cast(new UndoablePropertySheetPage(getCommandStack(),
 					getActionRegistry().getAction(ActionFactory.UNDO.getId()),
-					getActionRegistry().getAction(ActionFactory.REDO.getId()));
+					getActionRegistry().getAction(ActionFactory.REDO.getId())));
 		}
 		if (type == GraphicalViewer.class)
-			return getGraphicalViewer();
+			return type.cast(getGraphicalViewer());
 		if (type == CommandStack.class)
-			return getCommandStack();
+			return type.cast(getCommandStack());
 		if (type == ActionRegistry.class)
-			return getActionRegistry();
+			return type.cast(getActionRegistry());
 		if (type == EditPart.class && getGraphicalViewer() != null)
-			return getGraphicalViewer().getRootEditPart();
+			return type.cast(getGraphicalViewer().getRootEditPart());
 		if (type == IFigure.class && getGraphicalViewer() != null)
-			return ((GraphicalEditPart) getGraphicalViewer().getRootEditPart())
-					.getFigure();
+			return type.cast(
+					((GraphicalEditPart) getGraphicalViewer().getRootEditPart())
+							.getFigure());
 		return super.getAdapter(type);
 	}
 

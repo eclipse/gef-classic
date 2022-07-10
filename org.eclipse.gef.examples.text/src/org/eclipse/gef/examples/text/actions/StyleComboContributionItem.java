@@ -47,8 +47,7 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 		public void partActivated(IWorkbenchPartReference partRef) {
 			IWorkbenchPart part = partRef.getPart(false);
 			if (part instanceof TextEditor)
-				setStyleService((StyleService) part
-						.getAdapter(StyleService.class));
+				setStyleService(part.getAdapter(StyleService.class));
 		}
 
 		public void partBroughtToTop(IWorkbenchPartReference partRef) {
@@ -165,8 +164,8 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 		if (styleService == null)
 			enablement = false;
 		else {
-			if (!styleService.getStyleState(getProperty()).equals(
-					StyleService.STATE_EDITABLE))
+			if (!styleService.getStyleState(getProperty())
+					.equals(StyleService.STATE_EDITABLE))
 				// we want the combo disabled, but still want to update the
 				// value
 				enablement = false;

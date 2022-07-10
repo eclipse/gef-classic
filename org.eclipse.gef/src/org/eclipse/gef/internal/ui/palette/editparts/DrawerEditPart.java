@@ -44,8 +44,8 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
  * 
  * @author Pratik Shah
  */
-public class DrawerEditPart extends PaletteEditPart implements
-		IPinnableEditPart {
+public class DrawerEditPart extends PaletteEditPart
+		implements IPinnableEditPart {
 
 	private static final String PROPERTY_EXPANSION_STATE = "expansion"; //$NON-NLS-1$
 	private static final String PROPERTY_PINNED_STATE = "pinned"; //$NON-NLS-1$
@@ -87,22 +87,23 @@ public class DrawerEditPart extends PaletteEditPart implements
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
 	 */
-	public Object getAdapter(Class key) {
+	@Override
+	public <T> T getAdapter(final Class<T> key) {
 		if (key == ExposeHelper.class) {
 			ViewportExposeHelper helper = new ViewportExposeHelper(this);
 			helper.setMinimumFrameCount(6);
 			helper.setMargin(new Insets(PaletteScrollBar.BUTTON_HEIGHT, 0,
 					PaletteScrollBar.BUTTON_HEIGHT, 0));
-			return helper;
+			return key.cast(helper);
 		}
 		if (key == MouseWheelHelper.class)
-			return new ViewportMouseWheelHelper(this);
+			return key.cast(new ViewportMouseWheelHelper(this));
 		return super.getAdapter(key);
 	}
 
 	private PaletteAnimator getPaletteAnimator() {
-		return (PaletteAnimator) getViewer().getEditPartRegistry().get(
-				PaletteAnimator.class);
+		return (PaletteAnimator) getViewer().getEditPartRegistry()
+				.get(PaletteAnimator.class);
 	}
 
 	/**
@@ -196,12 +197,14 @@ public class DrawerEditPart extends PaletteEditPart implements
 		getDrawerFigure().setTitle(getPaletteEntry().getLabel());
 		getDrawerFigure().setLayoutMode(getLayoutSetting());
 
-		boolean showPin = getPreferenceSource().getAutoCollapseSetting() == PaletteViewerPreferences.COLLAPSE_AS_NEEDED;
+		boolean showPin = getPreferenceSource()
+				.getAutoCollapseSetting() == PaletteViewerPreferences.COLLAPSE_AS_NEEDED;
 		getDrawerFigure().showPin(showPin);
 
-		Color background = getDrawer().getDrawerType().equals(
-				PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE) ? PaletteColorUtil.WIDGET_LIST_BACKGROUND
-				: null;
+		Color background = getDrawer().getDrawerType()
+				.equals(PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE)
+						? PaletteColorUtil.WIDGET_LIST_BACKGROUND
+						: null;
 		getDrawerFigure().getScrollpane().setBackgroundColor(background);
 	}
 
@@ -224,14 +227,14 @@ public class DrawerEditPart extends PaletteEditPart implements
 				.booleanValue());
 		RangeModel rModel = getDrawerFigure().getScrollpane().getViewport()
 				.getVerticalRangeModel();
-		rModel.setMinimum(memento.getInteger(RangeModel.PROPERTY_MINIMUM)
-				.intValue());
-		rModel.setMaximum(memento.getInteger(RangeModel.PROPERTY_MAXIMUM)
-				.intValue());
-		rModel.setExtent(memento.getInteger(RangeModel.PROPERTY_EXTENT)
-				.intValue());
-		rModel.setValue(memento.getInteger(RangeModel.PROPERTY_VALUE)
-				.intValue());
+		rModel.setMinimum(
+				memento.getInteger(RangeModel.PROPERTY_MINIMUM).intValue());
+		rModel.setMaximum(
+				memento.getInteger(RangeModel.PROPERTY_MAXIMUM).intValue());
+		rModel.setExtent(
+				memento.getInteger(RangeModel.PROPERTY_EXTENT).intValue());
+		rModel.setValue(
+				memento.getInteger(RangeModel.PROPERTY_VALUE).intValue());
 		super.restoreState(memento);
 	}
 

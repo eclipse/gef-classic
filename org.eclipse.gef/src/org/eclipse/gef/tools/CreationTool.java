@@ -168,8 +168,7 @@ public class CreationTool extends TargetingTool {
 			lockTargetEditPart(getTargetEditPart());
 			// Snap only when size on drop is employed
 			if (getTargetEditPart() != null)
-				helper = getTargetEditPart().getAdapter(
-						SnapToHelper.class);
+				helper = getTargetEditPart().getAdapter(SnapToHelper.class);
 		}
 		return true;
 	}
@@ -183,7 +182,8 @@ public class CreationTool extends TargetingTool {
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
 	protected boolean handleButtonUp(int button) {
-		if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
+		if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS,
+				STATE_TERMINAL)) {
 			eraseTargetFeedback();
 			unlockTargetEditPart();
 			performCreation(button);
@@ -311,8 +311,8 @@ public class CreationTool extends TargetingTool {
 			createRequest.setSize(bounds.getSize());
 			createRequest.setLocation(bounds.getLocation());
 			createRequest.getExtendedData().clear();
-			createRequest.setSnapToEnabled(!getCurrentInput().isModKeyDown(
-					MODIFIER_NO_SNAPPING));
+			createRequest.setSnapToEnabled(
+					!getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING));
 			if (helper != null && createRequest.isSnapToEnabled()) {
 				PrecisionRectangle baseRect = new PrecisionRectangle(bounds);
 				PrecisionRectangle result = baseRect.getPreciseCopy();
@@ -336,7 +336,8 @@ public class CreationTool extends TargetingTool {
 	 * 
 	 * @since 3.7
 	 */
-	protected void enforceConstraintsForSizeOnDropCreate(CreateRequest request) {
+	protected void enforceConstraintsForSizeOnDropCreate(
+			CreateRequest request) {
 		CreateRequest createRequest = (CreateRequest) getTargetRequest();
 		if (createRequest.getSize() != null) {
 			// ensure create request respects minimum and maximum size

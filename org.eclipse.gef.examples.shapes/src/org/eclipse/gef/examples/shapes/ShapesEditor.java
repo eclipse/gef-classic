@@ -7,7 +7,7 @@
  *
  * Contributors:
  * Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes;
 
 import java.io.ByteArrayInputStream;
@@ -144,8 +144,8 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 				// CombinatedTemplateCreationEntries
 				// from the palette into the editor
 				// @see ShapesEditor#createTransferDropTargetListener()
-				viewer.addDragSourceListener(new TemplateTransferDragSourceListener(
-						viewer));
+				viewer.addDragSourceListener(
+						new TemplateTransferDragSourceListener(viewer));
 			}
 		};
 	}
@@ -168,9 +168,8 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.ui.ISaveablePart#doSave(org.eclipse.core.runtime.IProgressMonitor
-	 * )
+	 * @see org.eclipse.ui.ISaveablePart#doSave(org.eclipse.core.runtime.
+	 * IProgressMonitor )
 	 */
 	public void doSave(IProgressMonitor monitor) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -220,13 +219,14 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 				new ProgressMonitorDialog(shell).run(false, // don't fork
 						false, // not cancelable
 						new WorkspaceModifyOperation() { // run this operation
-							public void execute(final IProgressMonitor monitor) {
+							public void execute(
+									final IProgressMonitor monitor) {
 								try {
 									ByteArrayOutputStream out = new ByteArrayOutputStream();
 									createOutputStream(out);
 									file.create(
-											new ByteArrayInputStream(out
-													.toByteArray()), // contents
+											new ByteArrayInputStream(
+													out.toByteArray()), // contents
 											true, // keep saving, even if IFile
 													// is out of sync with the
 													// Workspace
@@ -250,9 +250,10 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		}
 	}
 
-	public Object getAdapter(Class type) {
+	@Override
+	public <T> T getAdapter(final Class<T> type) {
 		if (type == IContentOutlinePage.class)
-			return new ShapesOutlinePage(new TreeViewer());
+			return type.cast(new ShapesOutlinePage(new TreeViewer()));
 		return super.getAdapter(type);
 	}
 
@@ -343,9 +344,8 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.Composite
-		 * )
+		 * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.
+		 * Composite )
 		 */
 		public void createControl(Composite parent) {
 			// create outline viewer page

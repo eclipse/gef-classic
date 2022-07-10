@@ -35,9 +35,10 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 		installEditPolicy("Text Editing", new BlockEditPolicy());
 	}
 
-	public Object getAdapter(Class key) {
+	@Override
+	public <T> T getAdapter(final Class<T> key) {
 		if (key == TextStyleManager.class)
-			return this;
+			return key.cast(this);
 		return super.getAdapter(key);
 	}
 
@@ -87,8 +88,8 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 				TextRun run = (TextRun) ((TextEditPart) iter.next()).getModel();
 				if (fontName == null)
 					fontName = run.getContainer().getStyle().getFontFamily();
-				else if (!fontName.equals(run.getContainer().getStyle()
-						.getFontFamily()))
+				else if (!fontName
+						.equals(run.getContainer().getStyle().getFontFamily()))
 					return StyleService.UNDEFINED;
 			}
 			return fontName;

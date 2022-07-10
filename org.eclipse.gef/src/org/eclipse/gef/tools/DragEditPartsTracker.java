@@ -107,8 +107,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	private boolean acceptSHIFT(KeyEvent e) {
 		return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG
-				| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
-				&& e.keyCode == SWT.SHIFT;
+				| STATE_ACCESSIBLE_DRAG_IN_PROGRESS) && e.keyCode == SWT.SHIFT;
 	}
 
 	/**
@@ -227,8 +226,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		if (getCurrentViewer() != null) {
 			List list = ToolUtilities
 					.getSelectionWithoutDependants(getCurrentViewer());
-			ToolUtilities
-					.filterEditPartsUnderstanding(list, getTargetRequest());
+			ToolUtilities.filterEditPartsUnderstanding(list,
+					getTargetRequest());
 			return list;
 		}
 
@@ -363,8 +362,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 			LayerManager layerManager = (LayerManager) getCurrentViewer()
 					.getEditPartRegistry().get(LayerManager.ID);
 			if (layerManager != null) {
-				exclusionSet.add(layerManager
-						.getLayer(LayerConstants.CONNECTION_LAYER));
+				exclusionSet.add(
+						layerManager.getLayer(LayerConstants.CONNECTION_LAYER));
 			}
 		}
 		return exclusionSet;
@@ -451,11 +450,12 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 				setStartLocation(getLocation());
 			switch (e.keyCode) {
 			case SWT.ARROW_DOWN:
-				placeMouseInViewer(getLocation().getTranslated(0, accGetStep()));
+				placeMouseInViewer(
+						getLocation().getTranslated(0, accGetStep()));
 				break;
 			case SWT.ARROW_UP:
-				placeMouseInViewer(getLocation()
-						.getTranslated(0, -accGetStep()));
+				placeMouseInViewer(
+						getLocation().getTranslated(0, -accGetStep()));
 				break;
 			case SWT.ARROW_RIGHT:
 				int stepping = accGetStep();
@@ -549,8 +549,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		PrecisionPoint newStart = (PrecisionPoint) sourceRelativeStartPoint
 				.getCopy();
 		figure.translateToAbsolute(newStart);
-		Point delta = new Point(newStart.x - getStartLocation().x, newStart.y
-				- getStartLocation().y);
+		Point delta = new Point(newStart.x - getStartLocation().x,
+				newStart.y - getStartLocation().y);
 		setStartLocation(newStart);
 		// sourceRectangle and compoundSrcRect need to be updated as well when
 		// auto-scrolling
@@ -599,8 +599,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		super.setTargetEditPart(editpart);
 		snapToHelper = null;
 		if (getTargetEditPart() != null && getOperationSet().size() > 0)
-			snapToHelper = getTargetEditPart().getAdapter(
-					SnapToHelper.class);
+			snapToHelper = getTargetEditPart().getAdapter(SnapToHelper.class);
 	}
 
 	/**
@@ -634,9 +633,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 			}
 		}
 
-		if (check
-				&& isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG
-						| STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+		if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG
+				| STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 			captureSourceDimensions();
 	}
 
@@ -654,10 +652,10 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		request.setEditParts(getOperationSet());
 		Dimension delta = getDragMoveDelta();
 
-		request.setConstrainedMove(getCurrentInput().isModKeyDown(
-				MODIFIER_CONSTRAINED_MOVE));
-		request.setSnapToEnabled(!getCurrentInput().isModKeyDown(
-				MODIFIER_NO_SNAPPING));
+		request.setConstrainedMove(
+				getCurrentInput().isModKeyDown(MODIFIER_CONSTRAINED_MOVE));
+		request.setSnapToEnabled(
+				!getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING));
 
 		// constrains the move to dx=0, dy=0, or dx=dy if shift is depressed
 		if (request.isConstrainedMove()) {
@@ -714,9 +712,10 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 			jointRect.translate(moveDelta);
 
 			PrecisionPoint preciseDelta = new PrecisionPoint(moveDelta);
-			snapToHelper.snapPoint(request, PositionConstants.HORIZONTAL
-					| PositionConstants.VERTICAL, new PrecisionRectangle[] {
-					baseRect, jointRect }, preciseDelta);
+			snapToHelper.snapPoint(request,
+					PositionConstants.HORIZONTAL | PositionConstants.VERTICAL,
+					new PrecisionRectangle[] { baseRect, jointRect },
+					preciseDelta);
 			request.setMoveDelta(preciseDelta);
 		}
 	}

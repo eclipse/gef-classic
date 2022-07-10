@@ -13,8 +13,6 @@ package org.eclipse.gef.test;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
@@ -29,6 +27,8 @@ import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PartInitException;
+
+import junit.framework.TestCase;
 
 public class DragEditPartsTrackerTest extends TestCase {
 	/**
@@ -45,8 +45,8 @@ public class DragEditPartsTrackerTest extends TestCase {
 		super.tearDown();
 	}
 
-	private static class TestGraphicalEditPart extends
-			AbstractGraphicalEditPart {
+	private static class TestGraphicalEditPart
+			extends AbstractGraphicalEditPart {
 
 		/*
 		 * (non-Javadoc)
@@ -148,7 +148,8 @@ public class DragEditPartsTrackerTest extends TestCase {
 			return false;
 		}
 
-		public Object getAdapter(Class adapter) {
+		@Override
+		public <T> T getAdapter(final Class<T> adapter) {
 			return null;
 		}
 

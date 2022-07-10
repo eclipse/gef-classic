@@ -160,13 +160,13 @@ public class TextEditor extends GraphicalEditor {
 
 		action = new MultiStyleAction(styleService,
 				TextActionConstants.BLOCK_ALIGN_CENTER,
-				Style.PROPERTY_ALIGNMENT, Integer.valueOf(PositionConstants.CENTER));
+				Style.PROPERTY_ALIGNMENT,
+				Integer.valueOf(PositionConstants.CENTER));
 		registry.registerAction(action);
 
 		action = new MultiStyleAction(styleService,
-				TextActionConstants.BLOCK_ALIGN_RIGHT,
-				Style.PROPERTY_ALIGNMENT, Integer.valueOf(
-						PositionConstants.ALWAYS_RIGHT));
+				TextActionConstants.BLOCK_ALIGN_RIGHT, Style.PROPERTY_ALIGNMENT,
+				Integer.valueOf(PositionConstants.ALWAYS_RIGHT));
 		registry.registerAction(action);
 
 		action = new MultiStyleAction(styleService,
@@ -192,11 +192,12 @@ public class TextEditor extends GraphicalEditor {
 		initializeGraphicalViewer();
 	}
 
-	public Object getAdapter(Class type) {
+	@Override
+	public <T> T getAdapter(final Class<T> type) {
 		if (type == IContentOutlinePage.class)
-			return createOutlinePage();
+			return type.cast(createOutlinePage());
 		if (type == StyleService.class)
-			return styleService;
+			return type.cast(styleService);
 		return super.getAdapter(type);
 	}
 
@@ -272,8 +273,8 @@ public class TextEditor extends GraphicalEditor {
 	public void init(IEditorSite site, IEditorInput input)
 			throws PartInitException {
 		setEditDomain(new DefaultEditDomain(this));
-		getCommandStack().addCommandStackEventListener(
-				new CommandStackEventListener() {
+		getCommandStack()
+				.addCommandStackEventListener(new CommandStackEventListener() {
 					public void stackChanged(CommandStackEvent event) {
 						TextCommand command = (TextCommand) event.getCommand();
 						if (command != null) {
@@ -281,10 +282,12 @@ public class TextEditor extends GraphicalEditor {
 							if (event.getDetail() == CommandStack.POST_EXECUTE)
 								textViewer.setSelectionRange(command
 										.getExecuteSelectionRange(textViewer));
-							else if (event.getDetail() == CommandStack.POST_REDO)
+							else if (event
+									.getDetail() == CommandStack.POST_REDO)
 								textViewer.setSelectionRange(command
 										.getRedoSelectionRange(textViewer));
-							else if (event.getDetail() == CommandStack.POST_UNDO)
+							else if (event
+									.getDetail() == CommandStack.POST_UNDO)
 								textViewer.setSelectionRange(command
 										.getUndoSelectionRange(textViewer));
 						}
@@ -293,8 +296,8 @@ public class TextEditor extends GraphicalEditor {
 
 		super.init(site, input);
 
-		site.getKeyBindingService().setScopes(
-				new String[] { GEFActionConstants.CONTEXT_TEXT });
+		site.getKeyBindingService()
+				.setScopes(new String[] { GEFActionConstants.CONTEXT_TEXT });
 		site.getActionBars().setGlobalActionHandler(ActionFactory.UNDO.getId(),
 				getActionRegistry().getAction(ActionFactory.UNDO.getId()));
 		site.getActionBars().setGlobalActionHandler(ActionFactory.REDO.getId(),
@@ -347,11 +350,10 @@ public class TextEditor extends GraphicalEditor {
 			Container code = new Block(Container.TYPE_PARAGRAPH);
 			code.getStyle().setFontFamily("Courier New");
 			doc.add(code);
-			code.add(new TextRun(
-					"public void countToANumber(int limit) {\n"
-							+ "    for (int i = 0; i < limit; i++)\n"
-							+ "        System.out.println(\"Counting: \" + i); //$NON-NLS-1$\n\n"
-							+ "}", TextRun.TYPE_CODE));
+			code.add(new TextRun("public void countToANumber(int limit) {\n"
+					+ "    for (int i = 0; i < limit; i++)\n"
+					+ "        System.out.println(\"Counting: \" + i); //$NON-NLS-1$\n\n"
+					+ "}", TextRun.TYPE_CODE));
 			// }
 		}
 

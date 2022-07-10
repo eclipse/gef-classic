@@ -64,14 +64,14 @@ public class PaletteContextMenuProvider extends ContextMenuProvider {
 		menu.appendToGroup(GEFActionConstants.GROUP_VIEW, new LayoutAction(
 				getPaletteViewer().getPaletteViewerPreferences()));
 		menu.appendToGroup(GEFActionConstants.GROUP_VIEW,
-				new ChangeIconSizeAction(getPaletteViewer()
-						.getPaletteViewerPreferences()));
+				new ChangeIconSizeAction(
+						getPaletteViewer().getPaletteViewerPreferences()));
 		if (getPaletteViewer().getCustomizer() != null) {
 			menu.appendToGroup(GEFActionConstants.GROUP_REST,
 					new CustomizeAction(getPaletteViewer()));
 		}
-		menu.appendToGroup(GEFActionConstants.GROUP_REST, new SettingsAction(
-				getPaletteViewer()));
+		menu.appendToGroup(GEFActionConstants.GROUP_REST,
+				new SettingsAction(getPaletteViewer()));
 	}
 
 }

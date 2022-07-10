@@ -60,8 +60,8 @@ import org.eclipse.gef.editparts.ScalableRootEditPart;
  * 
  * @author hudsonr
  */
-public class GraphicalViewerImpl extends AbstractEditPartViewer implements
-		GraphicalViewer {
+public class GraphicalViewerImpl extends AbstractEditPartViewer
+		implements GraphicalViewer {
 
 	private final LightweightSystem lws = createLightweightSystem();
 	IFigure rootFigure;
@@ -140,8 +140,8 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 	 * @see GraphicalViewer#findHandleAt(org.eclipse.draw2d.geometry.Point)
 	 */
 	public Handle findHandleAt(Point p) {
-		LayerManager layermanager = (LayerManager) getEditPartRegistry().get(
-				LayerManager.ID);
+		LayerManager layermanager = (LayerManager) getEditPartRegistry()
+				.get(LayerManager.ID);
 		if (layermanager == null)
 			return null;
 		List list = new ArrayList(3);
@@ -176,8 +176,8 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 						&& (condition == null || condition.evaluate(editpart));
 			}
 		}
-		IFigure figure = getLightweightSystem().getRootFigure().findFigureAt(
-				pt.x, pt.y, new ConditionalTreeSearch(exclude));
+		IFigure figure = getLightweightSystem().getRootFigure()
+				.findFigureAt(pt.x, pt.y, new ConditionalTreeSearch(exclude));
 		EditPart part = null;
 		while (part == null && figure != null) {
 			part = (EditPart) getVisualPartMap().get(figure);
@@ -308,14 +308,12 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 			return;
 		EditPart current = part.getParent();
 		while (current != null) {
-			ExposeHelper helper = current
-					.getAdapter(ExposeHelper.class);
+			ExposeHelper helper = current.getAdapter(ExposeHelper.class);
 			if (helper != null)
 				helper.exposeDescendant(part);
 			current = current.getParent();
 		}
-		AccessibleEditPart acc = part
-				.getAdapter(AccessibleEditPart.class);
+		AccessibleEditPart acc = part.getAdapter(AccessibleEditPart.class);
 		if (acc != null)
 			getControl().getAccessible().setFocus(acc.getAccessibleID());
 	}
@@ -457,7 +455,8 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 		}
 	}
 
-	private static class MouseWheelDelegateHandler implements MouseWheelHandler {
+	private static class MouseWheelDelegateHandler
+			implements MouseWheelHandler {
 		private static final MouseWheelHandler SINGLETON = new MouseWheelDelegateHandler();
 
 		private MouseWheelDelegateHandler() {

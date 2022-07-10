@@ -35,8 +35,8 @@ import org.eclipse.gef.requests.ReconnectRequest;
 /**
  * A DragTracker that moves the endpoint of a connection to another location.
  */
-public class ConnectionEndpointTracker extends TargetingTool implements
-		DragTracker {
+public class ConnectionEndpointTracker extends TargetingTool
+		implements DragTracker {
 
 	private static final int FLAG_SOURCE_FEEBBACK = TargetingTool.MAX_FLAG << 1;
 	/** The max flag */
@@ -220,15 +220,15 @@ public class ConnectionEndpointTracker extends TargetingTool implements
 				// When the drag first starts, set the focus Part to be one end
 				// of the connection
 				if (isTarget()) {
-					getCurrentViewer().setFocus(
-							getConnectionEditPart().getTarget());
-					getCurrentViewer().reveal(
-							getConnectionEditPart().getTarget());
+					getCurrentViewer()
+							.setFocus(getConnectionEditPart().getTarget());
+					getCurrentViewer()
+							.reveal(getConnectionEditPart().getTarget());
 				} else {
-					getCurrentViewer().setFocus(
-							getConnectionEditPart().getSource());
-					getCurrentViewer().reveal(
-							getConnectionEditPart().getSource());
+					getCurrentViewer()
+							.setFocus(getConnectionEditPart().getSource());
+					getCurrentViewer()
+							.reveal(getConnectionEditPart().getSource());
 				}
 			}
 			int direction = 0;
@@ -265,7 +265,8 @@ public class ConnectionEndpointTracker extends TargetingTool implements
 			e.stateMask |= SWT.CONTROL;
 			if (getCurrentViewer().getKeyHandler().keyPressed(e)) {
 				// Do not try to connect to the same connection being dragged.
-				if (getCurrentViewer().getFocusEditPart() != getConnectionEditPart())
+				if (getCurrentViewer()
+						.getFocusEditPart() != getConnectionEditPart())
 					navigateNextAnchor(0);
 				return true;
 			}
@@ -281,8 +282,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements
 	boolean navigateNextAnchor(int direction) {
 		EditPart focus = getCurrentViewer().getFocusEditPart();
 		AccessibleAnchorProvider provider;
-		provider = focus
-				.getAdapter(AccessibleAnchorProvider.class);
+		provider = focus.getAdapter(AccessibleAnchorProvider.class);
 		if (provider == null)
 			return false;
 

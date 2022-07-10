@@ -60,9 +60,8 @@ public class PrintAction extends WorkbenchPartAction {
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	public void run() {
-		GraphicalViewer viewer;
-		viewer = getWorkbenchPart().getAdapter(
-				GraphicalViewer.class);
+		GraphicalViewer viewer = getWorkbenchPart()
+				.getAdapter(GraphicalViewer.class);
 
 		PrintDialog dialog = new PrintDialog(viewer.getControl().getShell(),
 				SWT.NULL);

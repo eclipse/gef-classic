@@ -18,6 +18,7 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.AccessibleAnchorProvider;
 import org.eclipse.gef.AccessibleEditPart;
@@ -58,23 +59,24 @@ public class OutputEditPart extends LogicEditPart {
 		return figure;
 	}
 
-	public Object getAdapter(Class key) {
+	@Override
+	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleAnchorProvider.class)
-			return new DefaultAccessibleAnchorProvider() {
-				public List getSourceAnchorLocations() {
-					List list = new ArrayList();
+			return key.cast(new DefaultAccessibleAnchorProvider() {
+				public List<Point> getSourceAnchorLocations() {
+					List<Point> list = new ArrayList<>();
 					Vector sourceAnchors = getNodeFigure()
 							.getSourceConnectionAnchors();
 					for (int i = 0; i < sourceAnchors.size(); i++) {
 						ConnectionAnchor anchor = (ConnectionAnchor) sourceAnchors
 								.get(i);
-						list.add(anchor.getReferencePoint()
-								.getTranslated(0, -3));
+						list.add(anchor.getReferencePoint().getTranslated(0,
+								-3));
 					}
 					return list;
 				}
 
-			};
+			});
 		return super.getAdapter(key);
 	}
 

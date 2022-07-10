@@ -34,8 +34,9 @@ import org.eclipse.gef.tools.SelectEditPartTracker;
 /**
  * The base implementation for {@link org.eclipse.gef.ConnectionEditPart}.
  */
-public abstract class AbstractConnectionEditPart extends
-		AbstractGraphicalEditPart implements ConnectionEditPart, LayerConstants {
+public abstract class AbstractConnectionEditPart
+		extends AbstractGraphicalEditPart
+		implements ConnectionEditPart, LayerConstants {
 
 	private static final ConnectionAnchor DEFAULT_SOURCE_ANCHOR = new XYAnchor(
 			new Point(10, 10));
@@ -50,8 +51,8 @@ public abstract class AbstractConnectionEditPart extends
 	 * @author hudsonr
 	 * @since 2.0
 	 */
-	protected final class DefaultAccessibleAnchorProvider implements
-			AccessibleAnchorProvider {
+	protected final class DefaultAccessibleAnchorProvider
+			implements AccessibleAnchorProvider {
 		/**
 		 * This class is internal, but is made protected so that JavaDoc will
 		 * see it.
@@ -132,9 +133,10 @@ public abstract class AbstractConnectionEditPart extends
 	 *            the adapter Class
 	 * @return the adapter
 	 */
-	public Object getAdapter(Class adapter) {
+	@Override
+	public <T> T getAdapter(final Class<T> adapter) {
 		if (adapter == AccessibleAnchorProvider.class)
-			return new DefaultAccessibleAnchorProvider();
+			return adapter.cast(new DefaultAccessibleAnchorProvider());
 		return super.getAdapter(adapter);
 	}
 
