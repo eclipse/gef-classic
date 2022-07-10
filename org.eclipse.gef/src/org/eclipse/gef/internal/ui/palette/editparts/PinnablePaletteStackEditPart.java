@@ -127,7 +127,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart
 	}
 
 	public void eraseTargetFeedback(Request request) {
-		Iterator<EditPart> children = getChildren().iterator();
+		Iterator<GraphicalEditPart> children = getChildren().iterator();
 
 		while (children.hasNext()) {
 			PaletteEditPart part = (PaletteEditPart) children.next();
@@ -156,11 +156,11 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart
 		if (childFigure == getStackFigure().getActiveFigure()) {
 			// no need to reorder figures if this is the active figure
 			getChildren().remove(childEP);
-			getChildren().add(index, childEP);
+			getChildren().add(index, (GraphicalEditPart) childEP);
 		} else {
 			removeChildVisual(childEP);
 			getChildren().remove(childEP);
-			getChildren().add(index, childEP);
+			getChildren().add(index, (GraphicalEditPart) childEP);
 			index = updateIndexBasedOnActiveFigure(index, childEP);
 			addChildVisual(childEP, index);
 		}

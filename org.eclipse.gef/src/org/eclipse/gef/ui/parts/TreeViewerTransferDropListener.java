@@ -103,7 +103,8 @@ class TreeViewerTransferDropListener
 	protected List includeChildren(List list) {
 		List result = new ArrayList();
 		for (int i = 0; i < list.size(); i++) {
-			List<EditPart> children = ((EditPart) list.get(i)).getChildren();
+			List<? extends EditPart> children = ((EditPart) list.get(i))
+					.getChildren();
 			result.addAll(children);
 			result.addAll(includeChildren(children));
 		}

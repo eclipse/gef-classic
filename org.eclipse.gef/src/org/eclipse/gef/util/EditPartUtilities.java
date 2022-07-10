@@ -12,7 +12,6 @@
 package org.eclipse.gef.util;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -45,16 +44,13 @@ public final class EditPartUtilities {
 	 * 
 	 * @return the transitive child edit part set
 	 */
-	public static LinkedHashSet getAllChildren(
+	public static LinkedHashSet<GraphicalEditPart> getAllChildren(
 			GraphicalEditPart parentEditPart) {
-		LinkedHashSet transitiveChildren = new LinkedHashSet();
-		List<EditPart> children = parentEditPart.getChildren();
+		LinkedHashSet<GraphicalEditPart> transitiveChildren = new LinkedHashSet<>();
+		List<GraphicalEditPart> children = parentEditPart.getChildren();
 		transitiveChildren.addAll(children);
-		for (Iterator<EditPart> iterator = children.iterator(); iterator
-				.hasNext();) {
-			GraphicalEditPart child = (GraphicalEditPart) iterator.next();
-			transitiveChildren.addAll(getAllChildren(child));
-		}
+		children.forEach(
+				child -> transitiveChildren.addAll(getAllChildren(child)));
 		return transitiveChildren;
 	}
 
@@ -69,13 +65,10 @@ public final class EditPartUtilities {
 	public static HashSet getAllNestedConnectionEditParts(
 			GraphicalEditPart graphicalEditPart) {
 		HashSet transitiveConnections = new HashSet();
-		HashSet transitiveChildren = getAllChildren(graphicalEditPart);
-		for (Iterator iterator = transitiveChildren.iterator(); iterator
-				.hasNext();) {
-			GraphicalEditPart child = (GraphicalEditPart) iterator.next();
+		getAllChildren(graphicalEditPart).forEach(child -> {
 			transitiveConnections.addAll(child.getSourceConnections());
 			transitiveConnections.addAll(child.getTargetConnections());
-		}
+		});
 		return transitiveConnections;
 	}
 

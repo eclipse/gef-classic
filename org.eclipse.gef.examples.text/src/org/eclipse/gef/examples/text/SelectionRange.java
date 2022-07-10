@@ -113,7 +113,7 @@ public class SelectionRange {
 		EditPart commonAncestor = ToolUtilities.findCommonAncestor(left, right);
 
 		EditPart nextLeft = left.getParent();
-		List<EditPart> children;
+		List<? extends EditPart> children;
 
 		ArrayList<EditPart> result = new ArrayList<>();
 
@@ -159,7 +159,7 @@ public class SelectionRange {
 		EditPart commonAncestor = ToolUtilities.findCommonAncestor(left, right);
 
 		EditPart nextLeft = left.getParent();
-		List<EditPart> children;
+		List<? extends EditPart> children;
 
 		ArrayList<EditPart> result = new ArrayList<>();
 

@@ -38,7 +38,6 @@ import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -218,7 +217,7 @@ public class PaletteStackEditPart extends PaletteEditPart
 	 * @see org.eclipse.gef.EditPart#eraseTargetFeedback(org.eclipse.gef.Request)
 	 */
 	public void eraseTargetFeedback(Request request) {
-		Iterator<EditPart> children = getChildren().iterator();
+		Iterator<GraphicalEditPart> children = getChildren().iterator();
 
 		while (children.hasNext()) {
 			PaletteEditPart part = (PaletteEditPart) children.next();
@@ -244,7 +243,7 @@ public class PaletteStackEditPart extends PaletteEditPart
 	public void openMenu() {
 		MenuManager menuManager = new MenuManager();
 
-		Iterator<EditPart> children = getChildren().iterator();
+		Iterator<GraphicalEditPart> children = getChildren().iterator();
 		PaletteEditPart part = null;
 		PaletteEntry entry = null;
 		while (children.hasNext()) {
@@ -309,7 +308,7 @@ public class PaletteStackEditPart extends PaletteEditPart
 		if (menu != null && !menu.isDisposed() && menu.isVisible())
 			return;
 
-		Iterator<EditPart> children = getChildren().iterator();
+		Iterator<GraphicalEditPart> children = getChildren().iterator();
 		while (children.hasNext()) {
 			PaletteEditPart part = (PaletteEditPart) children.next();
 			part.showTargetFeedback(request);

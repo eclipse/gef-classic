@@ -84,7 +84,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 		 * @see AccessibleEditPart#getChildren(AccessibleControlEvent)
 		 */
 		public void getChildren(AccessibleControlEvent e) {
-			List<EditPart> list = AbstractGraphicalEditPart.this.getChildren();
+			List<? extends GraphicalEditPart> list = AbstractGraphicalEditPart.this
+					.getChildren();
 			Integer[] children = new Integer[list.size()];
 			for (int i = 0; i < list.size(); i++) {
 				EditPart part = list.get(i);
@@ -484,6 +485,11 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 */
 	public DragTracker getDragTracker(Request request) {
 		return new org.eclipse.gef.tools.DragEditPartsTracker(this);
+	}
+
+	@Override
+	public List<GraphicalEditPart> getChildren() {
+		return (List<GraphicalEditPart>) super.getChildren();
 	}
 
 	/**

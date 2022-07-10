@@ -305,7 +305,8 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 		while (current != null) {
 			if (current instanceof DrawerEditPart
 					|| current instanceof GroupEditPart) {
-				List<EditPart> siblings = current.getParent().getChildren();
+				List<? extends EditPart> siblings = current.getParent()
+						.getChildren();
 				int index = siblings.indexOf(current);
 				if (index != -1 && siblings.size() > index + 1) {
 					EditPart part = siblings.get(index + 1);

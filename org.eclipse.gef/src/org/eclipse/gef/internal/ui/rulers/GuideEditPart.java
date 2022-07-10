@@ -253,7 +253,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 			// is selected, determine which part is to be selected next.
 			int thisPos = getRulerProvider().getGuidePosition(getModel());
 			if (getSelected() != SELECTED_NONE || hasFocus()) {
-				List<EditPart> siblings = getParent().getChildren();
+				List<? extends EditPart> siblings = getParent().getChildren();
 				int minDistance = -1;
 				for (int i = 0; i < siblings.size(); i++) {
 					GuideEditPart guide = (GuideEditPart) siblings.get(i);

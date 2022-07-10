@@ -35,6 +35,9 @@ public interface GraphicalEditPart extends EditPart {
 	 */
 	void addNodeListener(NodeListener listener);
 
+	@Override
+	List<GraphicalEditPart> getChildren();
+
 	/**
 	 * Returns the primary Figure representing this GraphicalEditPart. The
 	 * parent will add this Figure to its <i>content pane</i>. The Figure may be

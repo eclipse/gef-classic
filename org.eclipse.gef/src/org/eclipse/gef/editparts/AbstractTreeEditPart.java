@@ -173,7 +173,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart
 	 * @see org.eclipse.gef.TreeEditPart#setWidget(Widget)
 	 */
 	public void setWidget(Widget widget) {
-		List<EditPart> children = getChildren();
+		List<? extends EditPart> children = getChildren();
 		if (widget != null) {
 			widget.setData(this);
 			if (widget instanceof TreeItem) {
@@ -197,7 +197,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart
 			if (widget instanceof TreeItem)
 				((TreeItem) widget).setExpanded(expanded);
 		} else {
-			Iterator<EditPart> iter = getChildren().iterator();
+			Iterator<? extends EditPart> iter = getChildren().iterator();
 			while (iter.hasNext())
 				((TreeEditPart) iter.next()).setWidget(null);
 		}

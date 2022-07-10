@@ -461,7 +461,7 @@ public abstract class AbstractEditPart
 	/**
 	 * @see org.eclipse.gef.EditPart#getChildren()
 	 */
-	public List<EditPart> getChildren() {
+	public List<? extends EditPart> getChildren() {
 		if (children == null)
 			return Collections.emptyList();
 		return children;
@@ -742,7 +742,7 @@ public abstract class AbstractEditPart
 		EditPart editPart;
 		Object model;
 
-		List<EditPart> children = getChildren();
+		List<? extends EditPart> children = getChildren();
 		int size = children.size();
 		Map modelToEditPart = Collections.EMPTY_MAP;
 		if (size > 0) {
@@ -949,12 +949,12 @@ public abstract class AbstractEditPart
 	protected void reorderChild(EditPart editpart, int index) {
 		removeChildVisual(editpart);
 		getChildren().remove(editpart);
-		getChildren().add(index, editpart);
+		children.add(index, editpart);
 		addChildVisual(editpart, index);
 	}
 
 	/**
-	 * Sets the value of the specified flag. Flag values are decalared as static
+	 * Sets the value of the specified flag. Flag values are declared as static
 	 * constants. Subclasses may define additional constants above
 	 * {@link #MAX_FLAG}.
 	 * 

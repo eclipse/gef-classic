@@ -34,7 +34,7 @@ import org.eclipse.draw2d.text.TextFlow;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.palette.PaletteContainer;
@@ -354,7 +354,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart
 	 *            the saved state of the palette entry.
 	 */
 	public void restoreState(IMemento memento) {
-		Iterator<EditPart> iter = getChildren().iterator();
+		Iterator<GraphicalEditPart> iter = getChildren().iterator();
 		IMemento[] childMementos = memento.getChildren(XML_NAME);
 		int index = 0;
 		while (iter.hasNext())
@@ -369,7 +369,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart
 	 *            the saved state of the palette entry.
 	 */
 	public void saveState(IMemento memento) {
-		Iterator<EditPart> iter = getChildren().iterator();
+		Iterator<GraphicalEditPart> iter = getChildren().iterator();
 		while (iter.hasNext())
 			((PaletteEditPart) iter.next())
 					.saveState(memento.createChild(XML_NAME));

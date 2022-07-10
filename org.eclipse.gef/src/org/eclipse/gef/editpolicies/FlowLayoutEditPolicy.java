@@ -57,7 +57,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	 * @return the index for the insertion reference
 	 */
 	protected int getFeedbackIndexFor(Request request) {
-		List<EditPart> children = getHost().getChildren();
+		List<? extends EditPart> children = getHost().getChildren();
 		if (children.isEmpty())
 			return -1;
 
@@ -119,7 +119,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	 * @see OrderedLayoutEditPolicy#getInsertionReference(Request)
 	 */
 	protected EditPart getInsertionReference(Request request) {
-		List<EditPart> children = getHost().getChildren();
+		List<? extends EditPart> children = getHost().getChildren();
 
 		if (request.getType().equals(RequestConstants.REQ_CREATE)) {
 			int i = getFeedbackIndexFor(request);

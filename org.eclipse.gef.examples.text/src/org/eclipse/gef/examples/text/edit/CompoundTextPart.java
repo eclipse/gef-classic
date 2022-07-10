@@ -22,7 +22,7 @@ import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.CaretInfo;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
-import org.eclipse.gef.EditPart;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.figures.CommentPage;
 import org.eclipse.gef.examples.text.model.Container;
@@ -39,7 +39,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 	}
 
 	public boolean acceptsCaret() {
-		for (Iterator<EditPart> iter = getChildren().iterator(); iter
+		for (Iterator<GraphicalEditPart> iter = getChildren().iterator(); iter
 				.hasNext();) {
 			TextEditPart part = (TextEditPart) iter.next();
 			if (part.acceptsCaret())

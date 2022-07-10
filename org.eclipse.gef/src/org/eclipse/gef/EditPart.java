@@ -151,7 +151,7 @@ public interface EditPart extends IAdaptable {
 	 * 
 	 * @return a <code>List</code> of children
 	 */
-	List<EditPart> getChildren();
+	List<? extends EditPart> getChildren();
 
 	/**
 	 * Returns the {@link Command} to perform the specified Request or
