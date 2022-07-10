@@ -90,8 +90,8 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	 * @return <code>true</code> if this focus lost event was processed
 	 */
 	protected boolean handleFocusLost() {
-		if (isInState(STATE_CONNECTION_STARTED
-				| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
+		if (isInState(
+				STATE_CONNECTION_STARTED | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			eraseSourceFeedback();
 			eraseTargetFeedback();
 			setState(STATE_INVALID);
@@ -200,8 +200,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	boolean navigateNextAnchor(int direction) {
 		EditPart focus = getCurrentViewer().getFocusEditPart();
 		AccessibleAnchorProvider provider;
-		provider = focus
-				.getAdapter(AccessibleAnchorProvider.class);
+		provider = focus.getAdapter(AccessibleAnchorProvider.class);
 		if (provider == null)
 			return false;
 

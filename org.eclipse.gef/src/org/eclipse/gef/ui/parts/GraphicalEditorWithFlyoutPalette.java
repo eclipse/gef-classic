@@ -91,21 +91,21 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	 * @since 3.10
 	 */
 	protected FlyoutPaletteComposite createPaletteComposite(Composite parent) {
-		return new FlyoutPaletteComposite(parent, SWT.NONE,
-				getSite().getPage(), getPaletteViewerProvider(),
-				getPalettePreferences());
+		return new FlyoutPaletteComposite(parent, SWT.NONE, getSite().getPage(),
+				getPaletteViewerProvider(), getPalettePreferences());
 	}
 
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
-	public Object getAdapter(Class type) {
+	@Override
+	public <T> T getAdapter(final Class<T> type) {
 		if (type == PalettePage.class) {
 			if (splitter == null) {
 				page = createPalettePage();
-				return page;
+				return type.cast(page);
 			}
-			return createPalettePage();
+			return type.cast(createPalettePage());
 		}
 		return super.getAdapter(type);
 	}
@@ -125,8 +125,8 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	 *         preferences
 	 */
 	protected FlyoutPreferences getPalettePreferences() {
-		return FlyoutPaletteComposite.createFlyoutPreferences(InternalGEFPlugin
-				.getDefault().getPluginPreferences());
+		return FlyoutPaletteComposite.createFlyoutPreferences(
+				InternalGEFPlugin.getDefault().getPluginPreferences());
 	}
 
 	/**

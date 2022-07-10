@@ -280,14 +280,14 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		setTextInputMode(MODE_BS);
 		SelectionRange range = getSelectionRange();
 		if (range.isEmpty()) {
-			if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE,
-					range, pendingCommand)))
+			if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range,
+					pendingCommand)))
 				return true;
 			doSelect(CaretRequest.COLUMN, false, false, null);
 			return false;
 		} else
-			return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE,
-					range));
+			return handleTextEdit(
+					new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
 	}
 
 	private boolean doDelete() {
@@ -301,8 +301,8 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			doSelect(CaretRequest.COLUMN, true, false, null);
 			return false;
 		} else
-			return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE,
-					range));
+			return handleTextEdit(
+					new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
 	}
 
 	/**
@@ -395,8 +395,9 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		} else {
 			TextLocation caretLocation = getCaretLocation();
 			if (loc == null)
-				search.setLocation(new Point(xCaptured ? caretXLoc
-						: getCaretBounds().x, getCaretInfo().getBaseline()));
+				search.setLocation(
+						new Point(xCaptured ? caretXLoc : getCaretBounds().x,
+								getCaretInfo().getBaseline()));
 			search.where = caretLocation;
 			caretLocation.part.getTextLocation(search, result);
 			// isForward = range.isForward;
@@ -545,8 +546,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		EditPart target = getTextTarget(req);
 		if (target == null)
 			return StyleService.UNDEFINED;
-		TextStyleManager manager = (TextStyleManager) target
-				.getAdapter(TextStyleManager.class);
+		TextStyleManager manager = target.getAdapter(TextStyleManager.class);
 		if (isState)
 			return manager.getStyleState(styleID, getSelectionRange());
 		return manager.getStyleValue(styleID, getSelectionRange());
@@ -567,8 +567,8 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		SelectionRange range = getSelectionRange();
 		if (range == null)
 			return null;
-		EditPart target, candidate = ToolUtilities.findCommonAncestor(
-				range.begin.part, range.end.part);
+		EditPart target, candidate = ToolUtilities
+				.findCommonAncestor(range.begin.part, range.end.part);
 
 		do {
 			target = candidate.getTargetEditPart(request);
@@ -608,7 +608,8 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	}
 
 	protected void handleKeyTraversed(TraverseEvent event) {
-		if ((event.detail == SWT.TRAVERSE_TAB_PREVIOUS || event.detail == SWT.TRAVERSE_TAB_NEXT)
+		if ((event.detail == SWT.TRAVERSE_TAB_PREVIOUS
+				|| event.detail == SWT.TRAVERSE_TAB_NEXT)
 				&& (event.stateMask & SWT.CTRL) == 0)
 			event.doit = false;
 	}
@@ -781,8 +782,8 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			UpdateManager manager = getUpdateManager();
 			if (manager != null)
 				manager.removeUpdateListener(updateListener);
-			currentViewer.setProperty(KEY_OVERWRITE, overwrite ? Boolean.TRUE
-					: Boolean.FALSE);
+			currentViewer.setProperty(KEY_OVERWRITE,
+					overwrite ? Boolean.TRUE : Boolean.FALSE);
 			if (styleService != null)
 				styleService.setStyleProvider(null);
 			setTextInputMode(0);

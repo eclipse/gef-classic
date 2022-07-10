@@ -91,8 +91,8 @@ public class ToolEntryEditPart extends PaletteEditPart {
 				performConditionalSelection();
 			super.handleButtonDown(button);
 			if (button == 1) {
-				getFigure().internalGetEventDispatcher().requestRemoveFocus(
-						getFigure());
+				getFigure().internalGetEventDispatcher()
+						.requestRemoveFocus(getFigure());
 				getButtonModel().setArmed(true);
 				getButtonModel().setPressed(true);
 			}
@@ -185,11 +185,10 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			// win hack because button down is delayed
 			if (getParent() instanceof IPaletteStackEditPart
 					&& SWT.getPlatform().equals("win32")) { //$NON-NLS-1$
-				Point nds = getPaletteViewer().getControl().toControl(
-						event.display.getCursorLocation());
-				if (mouseDownLoc != null
-						&& (Math.abs(nds.x - mouseDownLoc.x) + Math.abs(nds.y
-								- mouseDownLoc.y)) < WIN_THRESHOLD) {
+				Point nds = getPaletteViewer().getControl()
+						.toControl(event.display.getCursorLocation());
+				if (mouseDownLoc != null && (Math.abs(nds.x - mouseDownLoc.x)
+						+ Math.abs(nds.y - mouseDownLoc.y)) < WIN_THRESHOLD) {
 					getButtonModel().setArmed(false);
 					getButtonModel().setPressed(false);
 					((IPaletteStackEditPart) getParent()).openMenu();
@@ -265,17 +264,15 @@ public class ToolEntryEditPart extends PaletteEditPart {
 				ButtonModel model = getModel();
 
 				if (model.isSelected()) {
-					graphics.setBackgroundColor(PaletteColorUtil
-							.getSelectedColor());
-					graphics.fillRoundRectangle(
-							getSelectionRectangle(getLayoutSetting(),
-									customLabel), 3, 3);
+					graphics.setBackgroundColor(
+							PaletteColorUtil.getSelectedColor());
+					graphics.fillRoundRectangle(getSelectionRectangle(
+							getLayoutSetting(), customLabel), 3, 3);
 				} else if (model.isMouseOver() || showHoverFeedback) {
-					graphics.setBackgroundColor(PaletteColorUtil
-							.getHoverColor());
-					graphics.fillRoundRectangle(
-							getSelectionRectangle(getLayoutSetting(),
-									customLabel), 3, 3);
+					graphics.setBackgroundColor(
+							PaletteColorUtil.getHoverColor());
+					graphics.fillRoundRectangle(getSelectionRectangle(
+							getLayoutSetting(), customLabel), 3, 3);
 				}
 			}
 		}
@@ -325,14 +322,15 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		super(paletteEntry);
 	}
 
-	public Object getAdapter(Class key) {
+	@Override
+	public <T> T getAdapter(final Class<T> key) {
 		if (key == IPinnableEditPart.class) {
 			if ((getParent() instanceof PinnablePaletteStackEditPart)
 					&& ((PinnablePaletteStackEditPart) getParent())
 							.canBePinned()
 					&& ((PaletteStack) getParent().getModel()).getActiveEntry()
 							.equals(getModel())) {
-				return getParent();
+				return key.cast(getParent());
 			}
 		}
 		return super.getAdapter(key);
@@ -504,8 +502,10 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	}
 
 	public void saveState(IMemento memento) {
-		memento.putString(ACTIVE_STATE, Boolean.valueOf(getPaletteViewer()
-				.getActiveTool() == getToolEntry()).toString());
+		memento.putString(ACTIVE_STATE,
+				Boolean.valueOf(
+						getPaletteViewer().getActiveTool() == getToolEntry())
+						.toString());
 		super.saveState(memento);
 	}
 
@@ -523,8 +523,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	 */
 	public void setSelected(int value) {
 		super.setSelected(value);
-		if (value == SELECTED_PRIMARY
-				&& getPaletteViewer().getControl() != null
+		if (value == SELECTED_PRIMARY && getPaletteViewer().getControl() != null
 				&& !getPaletteViewer().getControl().isDisposed()
 				&& getPaletteViewer().getControl().isFocusControl())
 			getFigure().requestFocus();

@@ -64,11 +64,12 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
 	 */
-	public Object getAdapter(Class key) {
+	@Override
+	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleHandleProvider.class)
-			return new AccessibleHandleProvider() {
-				public List getAccessibleHandleLocations() {
-					List result = new ArrayList();
+			return key.cast(new AccessibleHandleProvider() {
+				public List<Point> getAccessibleHandleLocations() {
+					List<Point> result = new ArrayList<>();
 					if (handles != null) {
 						for (int i = 0; i < handles.size(); i++) {
 							Point p = ((Handle) handles.get(i))
@@ -79,7 +80,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy
 					}
 					return result;
 				}
-			};
+			});
 		return null;
 	}
 

@@ -174,10 +174,9 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 					"org.eclipse.gef.examples.logic.outline.contextmenu", //$NON-NLS-1$
 					provider, getSite().getSelectionProvider());
 			getViewer().setKeyHandler(getCommonKeyHandler());
-			getViewer()
-					.addDropTargetListener(
-							(TransferDropTargetListener) new TemplateTransferDropTargetListener(
-									getViewer()));
+			getViewer().addDropTargetListener(
+					(TransferDropTargetListener) new TemplateTransferDropTargetListener(
+							getViewer()));
 			IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
 			showOutlineAction = new Action() {
 				public void run() {
@@ -186,8 +185,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			};
 			showOutlineAction.setImageDescriptor(ImageDescriptor
 					.createFromFile(LogicPlugin.class, "icons/outline.gif")); //$NON-NLS-1$
-			showOutlineAction
-					.setToolTipText(LogicMessages.LogicEditor_outline_show_outline);
+			showOutlineAction.setToolTipText(
+					LogicMessages.LogicEditor_outline_show_outline);
 			tbm.add(showOutlineAction);
 			showOverviewAction = new Action() {
 				public void run() {
@@ -196,8 +195,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			};
 			showOverviewAction.setImageDescriptor(ImageDescriptor
 					.createFromFile(LogicPlugin.class, "icons/overview.gif")); //$NON-NLS-1$
-			showOverviewAction
-					.setToolTipText(LogicMessages.LogicEditor_outline_show_overview);
+			showOverviewAction.setToolTipText(
+					LogicMessages.LogicEditor_outline_show_overview);
 			tbm.add(showOverviewAction);
 			showPage(ID_OUTLINE);
 		}
@@ -223,10 +222,11 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			outlinePage = null;
 		}
 
-		public Object getAdapter(Class type) {
+		@Override
+		public <T> T getAdapter(final Class<T> type) {
 			if (type == ZoomManager.class)
-				return getGraphicalViewer().getProperty(
-						ZoomManager.class.toString());
+				return type.cast(getGraphicalViewer()
+						.getProperty(ZoomManager.class.toString()));
 			return null;
 		}
 
@@ -247,10 +247,11 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			RootEditPart rep = getGraphicalViewer().getRootEditPart();
 			if (rep instanceof ScalableFreeformRootEditPart) {
 				ScalableFreeformRootEditPart root = (ScalableFreeformRootEditPart) rep;
-				thumbnail = new ScrollableThumbnail((Viewport) root.getFigure());
+				thumbnail = new ScrollableThumbnail(
+						(Viewport) root.getFigure());
 				thumbnail.setBorder(new MarginBorder(3));
-				thumbnail.setSource(root
-						.getLayer(LayerConstants.PRINTABLE_LAYERS));
+				thumbnail.setSource(
+						root.getLayer(LayerConstants.PRINTABLE_LAYERS));
 				lws.setContents(thumbnail);
 				disposeListener = new DisposeListener() {
 					public void widgetDisposed(DisposeEvent e) {
@@ -303,8 +304,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 	// 1) An open, saved file gets deleted -> close the editor
 	// 2) An open file gets renamed or moved -> change the editor's input
 	// accordingly
-	class ResourceTracker implements IResourceChangeListener,
-			IResourceDeltaVisitor {
+	class ResourceTracker
+			implements IResourceChangeListener, IResourceDeltaVisitor {
 		public void resourceChanged(IResourceChangeEvent event) {
 			IResourceDelta delta = event.getDelta();
 			try {
@@ -316,9 +317,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		}
 
 		public boolean visit(IResourceDelta delta) {
-			if (delta == null
-					|| !delta.getResource().equals(
-							((IFileEditorInput) getEditorInput()).getFile()))
+			if (delta == null || !delta.getResource()
+					.equals(((IFileEditorInput) getEditorInput()).getFile()))
 				return true;
 
 			if (delta.getKind() == IResourceDelta.REMOVED) {
@@ -415,8 +415,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 	protected static final int DEFAULT_PALETTE_SIZE = 130;
 
 	static {
-		LogicPlugin.getDefault().getPreferenceStore()
-				.setDefault(PALETTE_SIZE, DEFAULT_PALETTE_SIZE);
+		LogicPlugin.getDefault().getPreferenceStore().setDefault(PALETTE_SIZE,
+				DEFAULT_PALETTE_SIZE);
 	}
 
 	public LogicEditor() {
@@ -441,8 +441,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		// set clipping strategy for connection layer
 		ConnectionLayer connectionLayer = (ConnectionLayer) root
 				.getLayer(LayerConstants.CONNECTION_LAYER);
-		connectionLayer
-				.setClippingStrategy(new ViewportAwareConnectionLayerClippingStrategy(
+		connectionLayer.setClippingStrategy(
+				new ViewportAwareConnectionLayerClippingStrategy(
 						connectionLayer));
 
 		List zoomLevels = new ArrayList(3);
@@ -503,8 +503,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		return new CustomPalettePage(getPaletteViewerProvider()) {
 			public void init(IPageSite pageSite) {
 				super.init(pageSite);
-				IAction copy = getActionRegistry().getAction(
-						ActionFactory.COPY.getId());
+				IAction copy = getActionRegistry()
+						.getAction(ActionFactory.COPY.getId());
 				pageSite.getActionBars().setGlobalActionHandler(
 						ActionFactory.COPY.getId(), copy);
 			}
@@ -518,8 +518,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			protected void configurePaletteViewer(PaletteViewer viewer) {
 				super.configurePaletteViewer(viewer);
 				viewer.setCustomizer(new LogicPaletteCustomizer());
-				viewer.addDragSourceListener(new TemplateTransferDragSourceListener(
-						viewer));
+				viewer.addDragSourceListener(
+						new TemplateTransferDragSourceListener(viewer));
 			}
 
 			protected void hookPaletteViewer(PaletteViewer viewer) {
@@ -530,8 +530,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 				if (menuListener == null)
 					menuListener = new IMenuListener() {
 						public void menuAboutToShow(IMenuManager manager) {
-							manager.appendToGroup(
-									GEFActionConstants.GROUP_COPY, copy);
+							manager.appendToGroup(GEFActionConstants.GROUP_COPY,
+									copy);
 						}
 					};
 				viewer.getContextMenu().addMenuListener(menuListener);
@@ -568,14 +568,15 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		performSaveAs();
 	}
 
-	public Object getAdapter(Class type) {
+	@Override
+	public <T> T getAdapter(final Class<T> type) {
 		if (type == IContentOutlinePage.class) {
 			outlinePage = new OutlinePage(new TreeViewer());
-			return outlinePage;
+			return type.cast(outlinePage);
 		}
 		if (type == ZoomManager.class)
-			return getGraphicalViewer().getProperty(
-					ZoomManager.class.toString());
+			return type.cast(getGraphicalViewer()
+					.getProperty(ZoomManager.class.toString()));
 
 		return super.getAdapter(type);
 	}
@@ -591,10 +592,9 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 	protected KeyHandler getCommonKeyHandler() {
 		if (sharedKeyHandler == null) {
 			sharedKeyHandler = new KeyHandler();
-			sharedKeyHandler.put(
-					KeyStroke.getPressed(SWT.F2, 0),
-					getActionRegistry().getAction(
-							GEFActionConstants.DIRECT_EDIT));
+			sharedKeyHandler.put(KeyStroke.getPressed(SWT.F2, 0),
+					getActionRegistry()
+							.getAction(GEFActionConstants.DIRECT_EDIT));
 		}
 		return sharedKeyHandler;
 	}
@@ -617,10 +617,10 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		IAction copy = null;
 		if (event.type == SWT.Deactivate)
 			copy = getActionRegistry().getAction(ActionFactory.COPY.getId());
-		if (getEditorSite().getActionBars().getGlobalActionHandler(
-				ActionFactory.COPY.getId()) != copy) {
-			getEditorSite().getActionBars().setGlobalActionHandler(
-					ActionFactory.COPY.getId(), copy);
+		if (getEditorSite().getActionBars()
+				.getGlobalActionHandler(ActionFactory.COPY.getId()) != copy) {
+			getEditorSite().getActionBars()
+					.setGlobalActionHandler(ActionFactory.COPY.getId(), copy);
 			getEditorSite().getActionBars().updateActionBars();
 		}
 	}
@@ -629,15 +629,12 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		super.initializeGraphicalViewer();
 		getGraphicalViewer().setContents(getLogicDiagram());
 
-		getGraphicalViewer()
-				.addDropTargetListener(
-						(TransferDropTargetListener) new TemplateTransferDropTargetListener(
-								getGraphicalViewer()));
-		getGraphicalViewer()
-				.addDropTargetListener(
-						(TransferDropTargetListener) new TextTransferDropTargetListener(
-								getGraphicalViewer(), TextTransfer
-										.getInstance()));
+		getGraphicalViewer().addDropTargetListener(
+				(TransferDropTargetListener) new TemplateTransferDropTargetListener(
+						getGraphicalViewer()));
+		getGraphicalViewer().addDropTargetListener(
+				(TransferDropTargetListener) new TextTransferDropTargetListener(
+						getGraphicalViewer(), TextTransfer.getInstance()));
 	}
 
 	protected void createActions() {
@@ -710,15 +707,14 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.eclipse
-	 * .swt.widgets.Composite)
+	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.
+	 * eclipse .swt.widgets.Composite)
 	 */
 	protected void createGraphicalViewer(Composite parent) {
 		rulerComp = new RulerComposite(parent, SWT.NONE);
 		super.createGraphicalViewer(rulerComp);
-		rulerComp
-				.setGraphicalViewer((ScrollingGraphicalViewer) getGraphicalViewer());
+		rulerComp.setGraphicalViewer(
+				(ScrollingGraphicalViewer) getGraphicalViewer());
 	}
 
 	protected FigureCanvas getEditor() {
@@ -743,8 +739,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		if (ruler != null) {
 			provider = new LogicRulerProvider(ruler);
 		}
-		getGraphicalViewer().setProperty(
-				RulerProvider.PROPERTY_HORIZONTAL_RULER, provider);
+		getGraphicalViewer()
+				.setProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER, provider);
 		getGraphicalViewer().setProperty(
 				RulerProvider.PROPERTY_RULER_VISIBILITY,
 				Boolean.valueOf(getLogicDiagram().getRulerVisibility()));
@@ -761,8 +757,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 				Boolean.valueOf(getLogicDiagram().isGridEnabled()));
 
 		// Zoom
-		ZoomManager manager = (ZoomManager) getGraphicalViewer().getProperty(
-				ZoomManager.class.toString());
+		ZoomManager manager = (ZoomManager) getGraphicalViewer()
+				.getProperty(ZoomManager.class.toString());
 		if (manager != null)
 			manager.setZoom(getLogicDiagram().getZoom());
 		// Scroll-wheel Zoom
@@ -773,8 +769,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 	}
 
 	protected boolean performSaveAs() {
-		SaveAsDialog dialog = new SaveAsDialog(getSite().getWorkbenchWindow()
-				.getShell());
+		SaveAsDialog dialog = new SaveAsDialog(
+				getSite().getWorkbenchWindow().getShell());
 		dialog.setOriginalFile(((IFileEditorInput) getEditorInput()).getFile());
 		dialog.open();
 		IPath path = dialog.getResult();
@@ -792,8 +788,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 					try {
 						ByteArrayOutputStream out = new ByteArrayOutputStream();
 						writeToOutputStream(out);
-						file.create(
-								new ByteArrayInputStream(out.toByteArray()),
+						file.create(new ByteArrayInputStream(out.toByteArray()),
 								true, monitor);
 						out.close();
 					} catch (Exception e) {
@@ -802,8 +797,9 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 				}
 			};
 			try {
-				new ProgressMonitorDialog(getSite().getWorkbenchWindow()
-						.getShell()).run(false, true, op);
+				new ProgressMonitorDialog(
+						getSite().getWorkbenchWindow().getShell()).run(false,
+								true, op);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -819,18 +815,16 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 	}
 
 	protected void saveProperties() {
-		getLogicDiagram().setRulerVisibility(
-				((Boolean) getGraphicalViewer().getProperty(
-						RulerProvider.PROPERTY_RULER_VISIBILITY))
+		getLogicDiagram().setRulerVisibility(((Boolean) getGraphicalViewer()
+				.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY))
 						.booleanValue());
-		getLogicDiagram().setGridEnabled(
-				((Boolean) getGraphicalViewer().getProperty(
-						SnapToGrid.PROPERTY_GRID_ENABLED)).booleanValue());
-		getLogicDiagram().setSnapToGeometry(
-				((Boolean) getGraphicalViewer().getProperty(
-						SnapToGeometry.PROPERTY_SNAP_ENABLED)).booleanValue());
-		ZoomManager manager = (ZoomManager) getGraphicalViewer().getProperty(
-				ZoomManager.class.toString());
+		getLogicDiagram().setGridEnabled(((Boolean) getGraphicalViewer()
+				.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED)).booleanValue());
+		getLogicDiagram().setSnapToGeometry(((Boolean) getGraphicalViewer()
+				.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED))
+						.booleanValue());
+		ZoomManager manager = (ZoomManager) getGraphicalViewer()
+				.getProperty(ZoomManager.class.toString());
 		if (manager != null)
 			getLogicDiagram().setZoom(manager.getZoom());
 	}

@@ -416,8 +416,7 @@ public class SelectionTool extends TargetingTool {
 		getCurrentViewer().reveal(focus);
 
 		AccessibleHandleProvider provider;
-		provider = focus
-				.getAdapter(AccessibleHandleProvider.class);
+		provider = focus.getAdapter(AccessibleHandleProvider.class);
 		if (provider == null
 				|| provider.getAccessibleHandleLocations().isEmpty())
 			return false;
@@ -439,8 +438,8 @@ public class SelectionTool extends TargetingTool {
 		}
 
 		Point loc = (Point) locations.get(handleIndex);
-		Point current = new Point(getCurrentViewer().getControl().toControl(
-				Display.getCurrent().getCursorLocation()));
+		Point current = new Point(getCurrentViewer().getControl()
+				.toControl(Display.getCurrent().getCursorLocation()));
 
 		if (current.equals(loc)) {
 			// The cursor is already at the location that it is to be moved to.
@@ -471,7 +470,8 @@ public class SelectionTool extends TargetingTool {
 	 */
 	protected boolean handleViewerExited() {
 		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS
-				| STATE_TRAVERSE_HANDLE | STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
+				| STATE_TRAVERSE_HANDLE | STATE_DRAG
+				| STATE_DRAG_IN_PROGRESS)) {
 			if (getDragTracker() != null)
 				setDragTracker(null);
 			setState(STATE_INITIAL);

@@ -458,9 +458,10 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * 
 	 * @see IAdaptable#getAdapter(java.lang.Class)
 	 */
-	public Object getAdapter(Class key) {
+	@Override
+	public <T> T getAdapter(final Class<T> key) {
 		if (AccessibleEditPart.class == key)
-			return getAccessibleEditPart();
+			return key.cast(getAccessibleEditPart());
 		return Platform.getAdapterManager().getAdapter(this, key);
 	}
 

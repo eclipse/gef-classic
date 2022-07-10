@@ -23,8 +23,8 @@ import org.eclipse.gef.commands.CommandStack;
  * obtained using the part's site. Anything can potentially be obtained using
  * {@link org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)}.
  */
-public abstract class WorkbenchPartAction extends Action implements Disposable,
-		UpdateAction {
+public abstract class WorkbenchPartAction extends Action
+		implements Disposable, UpdateAction {
 
 	private IWorkbenchPart workbenchPart;
 	private boolean lazyEnablement = true;

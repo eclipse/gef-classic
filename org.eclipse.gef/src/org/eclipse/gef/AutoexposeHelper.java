@@ -19,9 +19,9 @@ import org.eclipse.draw2d.geometry.Point;
  * <code>DragTrackers</code> tools and native drop listeners will make use of
  * autoexpose helpers to reveal any potential drop areas that are currently not
  * visible to the user. An example of this is scrolling a container to reveal
- * unexposed area. Another example is a bunch of stacked containers in a
- * "tab folder" arrangement, whever hovering over a tab should switch which
- * container is on top.
+ * unexposed area. Another example is a bunch of stacked containers in a "tab
+ * folder" arrangement, whever hovering over a tab should switch which container
+ * is on top.
  * <P>
  * Autoexpose helpers are obtained from editparts that are target of whatever
  * operation is being performed. If the target provides no helper, its parent
@@ -95,8 +95,7 @@ public interface AutoexposeHelper {
 		public AutoexposeHelper result;
 
 		public boolean evaluate(EditPart editpart) {
-			result = editpart
-					.getAdapter(AutoexposeHelper.class);
+			result = editpart.getAdapter(AutoexposeHelper.class);
 			if (result != null && result.detect(where))
 				return true;
 			result = null;

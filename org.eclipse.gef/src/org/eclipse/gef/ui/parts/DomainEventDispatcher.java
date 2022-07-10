@@ -64,8 +64,8 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	 * 
 	 * @author hudsonr
 	 */
-	protected class EditPartAccessibilityDispatcher extends
-			AccessibilityDispatcher {
+	protected class EditPartAccessibilityDispatcher
+			extends AccessibilityDispatcher {
 		private AccessibleEditPart get(int childID) {
 			if (childID == ACC.CHILDID_SELF || childID == ACC.CHILDID_NONE)
 				if (getViewer().getContents() != null)
@@ -73,7 +73,8 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 							.getAdapter(AccessibleEditPart.class);
 				else
 					return null;
-			return (AccessibleEditPart) accessibles.get(Integer.valueOf(childID));
+			return (AccessibleEditPart) accessibles
+					.get(Integer.valueOf(childID));
 		}
 
 		/**
@@ -86,8 +87,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 			EditPart part = getViewer().findObjectAt(new Point(p.x, p.y));
 			if (part == null)
 				return;
-			AccessibleEditPart acc = part
-					.getAdapter(AccessibleEditPart.class);
+			AccessibleEditPart acc = part.getAdapter(AccessibleEditPart.class);
 			if (acc != null)
 				e.childID = acc.getAccessibleID();
 		}
@@ -132,8 +132,8 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		 * @see AccessibleControlListener#getFocus(AccessibleControlEvent)
 		 */
 		public void getFocus(AccessibleControlEvent e) {
-			AccessibleEditPart acc = getViewer()
-					.getFocusEditPart().getAdapter(AccessibleEditPart.class);
+			AccessibleEditPart acc = getViewer().getFocusEditPart()
+					.getAdapter(AccessibleEditPart.class);
 			if (acc != null)
 				e.childID = acc.getAccessibleID();
 		}
@@ -281,7 +281,8 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent)
 	 */
-	public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me) {
+	public void dispatchMouseDoubleClicked(
+			org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseDoubleClicked(me);
 			if (draw2dBusy())

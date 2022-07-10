@@ -149,17 +149,18 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 		return accPart;
 	}
 
-	public Object getAdapter(Class key) {
+	@Override
+	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleHandleProvider.class) {
-			return new AccessibleHandleProvider() {
-				public List getAccessibleHandleLocations() {
-					List result = new ArrayList();
+			return key.cast(new AccessibleHandleProvider() {
+				public List<Point> getAccessibleHandleLocations() {
+					List<Point> result = new ArrayList<>();
 					Point pt = getFigure().getBounds().getCenter();
 					getFigure().translateToAbsolute(pt);
 					result.add(pt);
 					return result;
 				}
-			};
+			});
 		}
 		return super.getAdapter(key);
 	}

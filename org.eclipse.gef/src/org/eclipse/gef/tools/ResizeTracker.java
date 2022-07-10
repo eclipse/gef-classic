@@ -113,8 +113,8 @@ public class ResizeTracker extends SimpleDragTracker {
 		super.activate();
 		if (owner != null) {
 			if (getTargetEditPart() != null)
-				snapToHelper = getTargetEditPart().getAdapter(
-						SnapToHelper.class);
+				snapToHelper = getTargetEditPart()
+						.getAdapter(SnapToHelper.class);
 
 			IFigure figure = owner.getFigure();
 			if (figure instanceof HandleBounds)
@@ -298,12 +298,12 @@ public class ResizeTracker extends SimpleDragTracker {
 		Point moveDelta = new Point(0, 0);
 		Dimension resizeDelta = new Dimension(0, 0);
 
-		request.setConstrainedResize(getCurrentInput().isModKeyDown(
-				MODIFIER_CONSTRAINED_RESIZE));
-		request.setCenteredResize(getCurrentInput().isModKeyDown(
-				MODIFIER_CENTERED_RESIZE));
-		request.setSnapToEnabled(!getCurrentInput().isModKeyDown(
-				MODIFIER_NO_SNAPPING));
+		request.setConstrainedResize(
+				getCurrentInput().isModKeyDown(MODIFIER_CONSTRAINED_RESIZE));
+		request.setCenteredResize(
+				getCurrentInput().isModKeyDown(MODIFIER_CENTERED_RESIZE));
+		request.setSnapToEnabled(
+				!getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING));
 
 		if (request.isConstrainedResize() && owner != null) {
 			request.setConstrainedResize(true);
@@ -384,24 +384,25 @@ public class ResizeTracker extends SimpleDragTracker {
 					rect, result);
 			if (request.isCenteredResize()) {
 				if (result.preciseX() != 0.0)
-					result.setPreciseWidth(result.preciseWidth()
-							- result.preciseX());
+					result.setPreciseWidth(
+							result.preciseWidth() - result.preciseX());
 				else if (result.preciseWidth() != 0.0) {
 					result.setPreciseX(-result.preciseWidth());
 					result.setPreciseWidth(result.preciseWidth() * 2.0);
 				}
 
 				if (result.preciseY() != 0.0)
-					result.setPreciseHeight(result.preciseHeight()
-							- result.preciseY());
+					result.setPreciseHeight(
+							result.preciseHeight() - result.preciseY());
 				else if (result.preciseHeight() != 0.0) {
 					result.setPreciseY(-result.preciseHeight());
 					result.setPreciseHeight(result.preciseHeight() * 2.0);
 				}
 			}
 
-			PrecisionPoint preciseMove = new PrecisionPoint(result.preciseX()
-					+ moveDelta.x, result.preciseY() + moveDelta.y);
+			PrecisionPoint preciseMove = new PrecisionPoint(
+					result.preciseX() + moveDelta.x,
+					result.preciseY() + moveDelta.y);
 
 			PrecisionDimension preciseResize = new PrecisionDimension(
 					result.preciseWidth() + resizeDelta.width,
@@ -437,12 +438,12 @@ public class ResizeTracker extends SimpleDragTracker {
 			owner.getFigure().translateToRelative(manipulatedConstraint);
 			// validate constraint (maximum and minimum size are regarded to be
 			// 'normalized', i.e. relative to this figure's bounds coordinates).
-			manipulatedConstraint.setSize(Dimension.max(
-					manipulatedConstraint.getSize(),
-					getMinimumSizeFor(changeBoundsRequest)));
-			manipulatedConstraint.setSize(Dimension.min(
-					manipulatedConstraint.getSize(),
-					getMaximumSizeFor(changeBoundsRequest)));
+			manipulatedConstraint
+					.setSize(Dimension.max(manipulatedConstraint.getSize(),
+							getMinimumSizeFor(changeBoundsRequest)));
+			manipulatedConstraint
+					.setSize(Dimension.min(manipulatedConstraint.getSize(),
+							getMaximumSizeFor(changeBoundsRequest)));
 			// translate back to absolute
 			owner.getFigure().translateToAbsolute(manipulatedConstraint);
 			Dimension newSizeDelta = manipulatedConstraint.getSize()

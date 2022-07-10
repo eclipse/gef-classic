@@ -70,11 +70,14 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 	/**
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
-	public Object getAdapter(Class adapter) {
+	@Override
+	public <T> T getAdapter(final Class<T> adapter) {
 		if (adapter == AutoexposeHelper.class) {
 			if (((RulerEditPart) getContents()).isHorizontal())
-				return new ViewportAutoexposeHelper(this, HORIZONTAL_THRESHOLD);
-			return new ViewportAutoexposeHelper(this, VERTICAL_THRESHOLD);
+				return adapter.cast(new ViewportAutoexposeHelper(this,
+						HORIZONTAL_THRESHOLD));
+			return adapter.cast(
+					new ViewportAutoexposeHelper(this, VERTICAL_THRESHOLD));
 		}
 		return super.getAdapter(adapter);
 	}
@@ -159,7 +162,8 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 					contentBounds.x = 0;
 					contentBounds.height = rModel.getMaximum()
 							- rModel.getMinimum();
-					contentBounds.width = this.getContents().getPreferredSize().width;
+					contentBounds.width = this.getContents()
+							.getPreferredSize().width;
 				}
 				if (!this.getContents().getBounds().equals(contentBounds)) {
 					this.getContents().setBounds(contentBounds);
@@ -182,8 +186,8 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 				RangeModel rModel = getVerticalRangeModel();
 				pSize.height = rModel.getMaximum() - rModel.getMinimum();
 			}
-			return pSize
-					.expand(getInsets().getWidth(), getInsets().getHeight());
+			return pSize.expand(getInsets().getWidth(),
+					getInsets().getHeight());
 		}
 
 		/**
