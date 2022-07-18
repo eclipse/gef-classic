@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import com.ibm.icu.text.DecimalFormat;
-import com.ibm.icu.text.NumberFormat;
-
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;

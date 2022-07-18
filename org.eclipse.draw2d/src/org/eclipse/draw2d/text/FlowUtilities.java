@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import com.ibm.icu.text.BreakIterator;
+import java.text.BreakIterator;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;

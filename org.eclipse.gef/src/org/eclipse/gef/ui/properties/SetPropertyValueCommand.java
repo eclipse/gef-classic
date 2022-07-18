@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.gef.ui.properties;
 
-import com.ibm.icu.text.MessageFormat;
+import java.text.MessageFormat;
 
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.eclipse.ui.views.properties.IPropertySource2;
