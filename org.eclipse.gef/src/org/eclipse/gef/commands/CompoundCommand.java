@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,11 +28,11 @@ import java.util.List;
  */
 public class CompoundCommand extends Command {
 
-	private List commandList = new ArrayList();
+	private final List<Command> commandList = new ArrayList<>();
 
 	/**
 	 * Constructs an empty CompoundCommand
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public CompoundCommand() {
@@ -40,7 +40,7 @@ public class CompoundCommand extends Command {
 
 	/**
 	 * Constructs an empty CompoundCommand with the specified label.
-	 * 
+	 *
 	 * @param label the label for the Command
 	 */
 	public CompoundCommand(String label) {
@@ -49,28 +49,32 @@ public class CompoundCommand extends Command {
 
 	/**
 	 * Adds the specified command if it is not <code>null</code>.
-	 * 
+	 *
 	 * @param command <code>null</code> or a Command
 	 */
 	public void add(Command command) {
-		if (command != null)
+		if (command != null) {
 			commandList.add(command);
+		}
 	}
 
 	/**
 	 * @see org.eclipse.gef.commands.Command#canRedo()
-	 * 
+	 *
 	 * @since 3.10
 	 */
+	@Override
 	public boolean canRedo() {
-		if (commandList.size() == 0)
+		if (commandList.isEmpty()) {
 			return false;
-		for (int i = 0; i < commandList.size(); i++) {
-			Command cmd = (Command) commandList.get(i);
-			if (cmd == null)
+		}
+		for (Command cmd : commandList) {
+			if (cmd == null) {
 				return false;
-			if (!cmd.canRedo())
+			}
+			if (!cmd.canRedo()) {
 				return false;
+			}
 		}
 		return true;
 	}
@@ -78,15 +82,18 @@ public class CompoundCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
+	@Override
 	public boolean canExecute() {
-		if (commandList.size() == 0)
+		if (commandList.isEmpty()) {
 			return false;
-		for (int i = 0; i < commandList.size(); i++) {
-			Command cmd = (Command) commandList.get(i);
-			if (cmd == null)
+		}
+		for (Command cmd : commandList) {
+			if (cmd == null) {
 				return false;
-			if (!cmd.canExecute())
+			}
+			if (!cmd.canExecute()) {
 				return false;
+			}
 		}
 		return true;
 	}
@@ -94,45 +101,46 @@ public class CompoundCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#canUndo()
 	 */
+	@Override
 	public boolean canUndo() {
-		if (commandList.size() == 0)
+		if (commandList.isEmpty()) {
 			return false;
-		for (int i = 0; i < commandList.size(); i++) {
-			Command cmd = (Command) commandList.get(i);
-			if (cmd == null)
+		}
+		for (Command cmd : commandList) {
+			if (cmd == null) {
 				return false;
-			if (!cmd.canUndo())
+			}
+			if (!cmd.canUndo()) {
 				return false;
+			}
 		}
 		return true;
 	}
 
 	/**
 	 * Disposes all contained Commands.
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#dispose()
 	 */
+	@Override
 	public void dispose() {
-		for (int i = 0; i < commandList.size(); i++)
-			((Command) getCommands().get(i)).dispose();
+		commandList.forEach(Command::dispose);
 	}
 
 	/**
 	 * Execute the command.For a compound command this means executing all of the
 	 * commands that it contains.
 	 */
+	@Override
 	public void execute() {
-		for (int i = 0; i < commandList.size(); i++) {
-			Command cmd = (Command) commandList.get(i);
-			cmd.execute();
-		}
+		commandList.forEach(Command::execute);
 	}
 
 	/**
 	 * This is useful when implementing
 	 * {@link org.eclipse.jface.viewers.ITreeContentProvider#getChildren(Object)} to
 	 * display the Command's nested structure.
-	 * 
+	 *
 	 * @return returns the Commands as an array of Objects.
 	 */
 	public Object[] getChildren() {
@@ -142,21 +150,23 @@ public class CompoundCommand extends Command {
 	/**
 	 * @return the List of contained Commands
 	 */
-	public List getCommands() {
+	public List<? extends Command> getCommands() {
 		return commandList;
 	}
 
 	/**
 	 * @see org.eclipse.gef.commands.Command#getLabel()
 	 */
+	@Override
 	public String getLabel() {
 		String label = super.getLabel();
-		if (label == null)
-			if (commandList.isEmpty())
-				return null;
-		if (label != null)
+		if (label == null && commandList.isEmpty()) {
+			return null;
+		}
+		if (label != null) {
 			return label;
-		return ((Command) commandList.get(0)).getLabel();
+		}
+		return commandList.get(0).getLabel();
 	}
 
 	/**
@@ -169,9 +179,9 @@ public class CompoundCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
+	@Override
 	public void redo() {
-		for (int i = 0; i < commandList.size(); i++)
-			((Command) commandList.get(i)).redo();
+		commandList.forEach(Command::redo);
 	}
 
 	/**
@@ -184,26 +194,25 @@ public class CompoundCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
-		for (int i = commandList.size() - 1; i >= 0; i--)
-			((Command) commandList.get(i)).undo();
+		for (int i = commandList.size() - 1; i >= 0; i--) {
+			commandList.get(i).undo();
+		}
 	}
 
 	/**
 	 * Returns the simplest form of this Command that is equivalent. This is useful
 	 * for removing unnecessary nesting of Commands.
-	 * 
+	 *
 	 * @return the simplest form of this Command that is equivalent
 	 */
 	public Command unwrap() {
-		switch (commandList.size()) {
-		case 0:
-			return UnexecutableCommand.INSTANCE;
-		case 1:
-			return (Command) commandList.get(0);
-		default:
-			return this;
-		}
+		return switch (commandList.size()) {
+		case 0 -> UnexecutableCommand.INSTANCE;
+		case 1 -> commandList.get(0);
+		default -> this;
+		};
 	}
 
 }
