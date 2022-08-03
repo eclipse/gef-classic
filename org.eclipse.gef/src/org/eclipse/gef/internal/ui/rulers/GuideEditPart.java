@@ -27,7 +27,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.AccessibleHandleProvider;
 import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
@@ -133,8 +132,8 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 			accPart = new AccessibleGraphicalEditPart() {
 				public void getDescription(AccessibleEvent e) {
 					if (getRulerProvider() != null)
-						getRulerProvider().getAccGuideDescription(e,
-								getModel());
+						getRulerProvider()
+								.getAccGuideDescription(e, getModel());
 				}
 
 				public void getName(AccessibleEvent e) {
@@ -253,14 +252,15 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 			// is selected, determine which part is to be selected next.
 			int thisPos = getRulerProvider().getGuidePosition(getModel());
 			if (getSelected() != SELECTED_NONE || hasFocus()) {
-				List<EditPart> siblings = getParent().getChildren();
+				List siblings = getParent().getChildren();
 				int minDistance = -1;
 				for (int i = 0; i < siblings.size(); i++) {
 					GuideEditPart guide = (GuideEditPart) siblings.get(i);
 					if (guide == this)
 						continue;
-					int posDiff = Math.abs(thisPos - getRulerProvider()
-							.getGuidePosition(guide.getModel()));
+					int posDiff = Math.abs(thisPos
+							- getRulerProvider().getGuidePosition(
+									guide.getModel()));
 					if (minDistance == -1 || posDiff < minDistance) {
 						minDistance = posDiff;
 						nextSelection = guide;

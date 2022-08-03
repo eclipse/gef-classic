@@ -62,8 +62,9 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 
 	private boolean acceptIntoExpandedDrawer(KeyEvent event) {
 		boolean result = event.keyCode == SWT.ARROW_DOWN;
-		result = result || (isViewerMirrored() ? event.keyCode == SWT.ARROW_LEFT
-				: event.keyCode == SWT.ARROW_RIGHT);
+		result = result
+				|| (isViewerMirrored() ? event.keyCode == SWT.ARROW_LEFT
+						: event.keyCode == SWT.ARROW_RIGHT);
 		return result && isExpandedDrawer(getFocusEditPart());
 	}
 
@@ -81,12 +82,10 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	private boolean acceptSetFocusOnDrawer(KeyEvent event) {
 		boolean result = isViewerMirrored() ? event.keyCode == SWT.ARROW_RIGHT
 				: event.keyCode == SWT.ARROW_LEFT;
-		return (result || event.keyCode == SWT.ARROW_UP) && (getFocusEditPart()
-				.getParent() instanceof DrawerEditPart
-				|| (getFocusEditPart()
-						.getParent() instanceof IPaletteStackEditPart
-						&& getFocusEditPart().getParent()
-								.getParent() instanceof DrawerEditPart));
+		return (result || event.keyCode == SWT.ARROW_UP)
+				&& (getFocusEditPart().getParent() instanceof DrawerEditPart || (getFocusEditPart()
+						.getParent() instanceof IPaletteStackEditPart && getFocusEditPart()
+						.getParent().getParent() instanceof DrawerEditPart));
 	}
 
 	private boolean acceptNextContainer(KeyEvent event) {
@@ -116,8 +115,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 					navList.add(palettePart);
 				}
 			} else if ((palettePart instanceof ToolEntryEditPart
-					|| palettePart instanceof DrawerEditPart
-					|| palettePart instanceof TemplateEditPart)) {
+					|| palettePart instanceof DrawerEditPart || palettePart instanceof TemplateEditPart)) {
 				navList.add(palettePart);
 			}
 		}
@@ -203,9 +201,8 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	boolean isCollapsedStack(EditPart focusPart) {
 		EditPart parent = focusPart.getParent();
 		return parent instanceof PaletteStackEditPart
-				|| (parent instanceof PinnablePaletteStackEditPart
-						&& !((PinnablePaletteStackEditPart) parent)
-								.isExpanded());
+				|| (parent instanceof PinnablePaletteStackEditPart && !((PinnablePaletteStackEditPart) parent)
+						.isExpanded());
 	}
 
 	/**
@@ -215,9 +212,8 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	boolean isExpandedStack(EditPart focusPart) {
 		EditPart parent = focusPart.getParent();
 		return parent instanceof PaletteStackEditPart
-				|| (parent instanceof PinnablePaletteStackEditPart
-						&& ((PinnablePaletteStackEditPart) parent)
-								.isExpanded());
+				|| (parent instanceof PinnablePaletteStackEditPart && ((PinnablePaletteStackEditPart) parent)
+						.isExpanded());
 	}
 
 	/**
@@ -305,13 +301,13 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 		while (current != null) {
 			if (current instanceof DrawerEditPart
 					|| current instanceof GroupEditPart) {
-				List<EditPart> siblings = current.getParent().getChildren();
+				List siblings = current.getParent().getChildren();
 				int index = siblings.indexOf(current);
 				if (index != -1 && siblings.size() > index + 1) {
-					EditPart part = siblings.get(index + 1);
+					EditPart part = (EditPart) siblings.get(index + 1);
 					if (part instanceof GroupEditPart
-							&& !part.getChildren().isEmpty()) {
-						EditPart child = part.getChildren().get(0);
+							&& part.getChildren().size() > 0) {
+						EditPart child = (EditPart) part.getChildren().get(0);
 						navigateTo(child, event);
 					} else
 						navigateTo(part, event);

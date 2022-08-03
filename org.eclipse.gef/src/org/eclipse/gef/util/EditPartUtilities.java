@@ -45,13 +45,11 @@ public final class EditPartUtilities {
 	 * 
 	 * @return the transitive child edit part set
 	 */
-	public static LinkedHashSet getAllChildren(
-			GraphicalEditPart parentEditPart) {
+	public static LinkedHashSet getAllChildren(GraphicalEditPart parentEditPart) {
 		LinkedHashSet transitiveChildren = new LinkedHashSet();
-		List<EditPart> children = parentEditPart.getChildren();
+		List children = parentEditPart.getChildren();
 		transitiveChildren.addAll(children);
-		for (Iterator<EditPart> iterator = children.iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
 			GraphicalEditPart child = (GraphicalEditPart) iterator.next();
 			transitiveChildren.addAll(getAllChildren(child));
 		}
@@ -92,7 +90,9 @@ public final class EditPartUtilities {
 	public static HashSet getNestedConnectionEditParts(
 			GraphicalEditPart graphicalEditPart) {
 		HashSet edges = new HashSet();
-		for (EditPart child : graphicalEditPart.getChildren()) {
+		List children = graphicalEditPart.getChildren();
+		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
+			Object child = iterator.next();
 			if (child instanceof GraphicalEditPart) {
 				GraphicalEditPart childEditPart = (GraphicalEditPart) child;
 				edges.addAll(childEditPart.getSourceConnections());

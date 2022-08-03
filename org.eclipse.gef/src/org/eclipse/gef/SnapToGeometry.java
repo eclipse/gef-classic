@@ -211,12 +211,12 @@ public class SnapToGeometry extends SnapToHelper {
 	 */
 	protected List generateSnapPartsList(List exclusions) {
 		// Don't snap to any figure that is being dragged
-		List<EditPart> children = new ArrayList<>(container.getChildren());
+		List children = new ArrayList(container.getChildren());
 		children.removeAll(exclusions);
 
 		// Don't snap to hidden figures
-		List<EditPart> hiddenChildren = new ArrayList<>();
-		for (Iterator<EditPart> iter = children.iterator(); iter.hasNext();) {
+		List hiddenChildren = new ArrayList();
+		for (Iterator iter = children.iterator(); iter.hasNext();) {
 			GraphicalEditPart child = (GraphicalEditPart) iter.next();
 			if (!child.getFigure().isVisible())
 				hiddenChildren.add(child);
@@ -254,8 +254,8 @@ public class SnapToGeometry extends SnapToHelper {
 		// populateRowsAndCols() does by using int precision).
 		if ((int) (near - far) % 2 != 0)
 			total -= 1.0;
-		double result = getCorrectionFor(entries, extendedData, vert, total / 2,
-				0);
+		double result = getCorrectionFor(entries, extendedData, vert,
+				total / 2, 0);
 		if (result == getThreshold())
 			result = getCorrectionFor(entries, extendedData, vert, near, -1);
 		if (result == getThreshold())
@@ -406,8 +406,8 @@ public class SnapToGeometry extends SnapToHelper {
 					baseRect.preciseRight() - 1, 1);
 			if (rightCorrection != getThreshold()) {
 				snapOrientation &= ~EAST;
-				correction.setPreciseWidth(
-						correction.preciseWidth() + rightCorrection);
+				correction.setPreciseWidth(correction.preciseWidth()
+						+ rightCorrection);
 			}
 		}
 
@@ -416,8 +416,8 @@ public class SnapToGeometry extends SnapToHelper {
 					request.getExtendedData(), true, baseRect.preciseX(), -1);
 			if (leftCorrection != getThreshold()) {
 				snapOrientation &= ~WEST;
-				correction.setPreciseWidth(
-						correction.preciseWidth() - leftCorrection);
+				correction.setPreciseWidth(correction.preciseWidth()
+						- leftCorrection);
 				correction.setPreciseX(correction.preciseX() + leftCorrection);
 			}
 		}
@@ -437,8 +437,8 @@ public class SnapToGeometry extends SnapToHelper {
 					request.getExtendedData(), false, baseRect.preciseY(), -1);
 			if (topCorrection != getThreshold()) {
 				snapOrientation &= ~NORTH;
-				correction.setPreciseHeight(
-						correction.preciseHeight() - topCorrection);
+				correction.setPreciseHeight(correction.preciseHeight()
+						- topCorrection);
 				correction.setPreciseY(correction.preciseY() + topCorrection);
 			}
 		}
@@ -446,10 +446,10 @@ public class SnapToGeometry extends SnapToHelper {
 		makeAbsolute(container.getContentPane(), correction);
 		result.setPreciseX(result.preciseX() + correction.preciseX());
 		result.setPreciseY(result.preciseY() + correction.preciseY());
-		result.setPreciseWidth(
-				result.preciseWidth() + correction.preciseWidth());
-		result.setPreciseHeight(
-				result.preciseHeight() + correction.preciseHeight());
+		result.setPreciseWidth(result.preciseWidth()
+				+ correction.preciseWidth());
+		result.setPreciseHeight(result.preciseHeight()
+				+ correction.preciseHeight());
 		return snapOrientation;
 	}
 

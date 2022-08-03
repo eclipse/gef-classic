@@ -63,8 +63,8 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 				LogicSubpart childModel = (LogicSubpart) child.getModel();
 				command.add(createCreateCommand(childModel,
 						new Rectangle(new org.eclipse.draw2d.geometry.Point(),
-								childModel.getSize()),
-						index, "Reparent LogicSubpart"));//$NON-NLS-1$
+								childModel.getSize()), index,
+						"Reparent LogicSubpart"));//$NON-NLS-1$
 			}
 		}
 		return command;
@@ -79,7 +79,7 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 	protected Command getMoveChildrenCommand(ChangeBoundsRequest request) {
 		CompoundCommand command = new CompoundCommand();
 		List editparts = request.getEditParts();
-		List<EditPart> children = getHost().getChildren();
+		List children = getHost().getChildren();
 		int newIndex = findIndexOfTreeItemAt(request.getLocation());
 
 		for (int i = 0; i < editparts.size(); i++) {
