@@ -38,7 +38,6 @@ import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -56,8 +55,8 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
  * @author Whitney Sorenson
  * @since 3.0
  */
-public class PaletteStackEditPart extends PaletteEditPart
-		implements IPaletteStackEditPart {
+public class PaletteStackEditPart extends PaletteEditPart implements
+		IPaletteStackEditPart {
 
 	private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
 
@@ -65,11 +64,11 @@ public class PaletteStackEditPart extends PaletteEditPart
 	private ChangeListener clickableListener = new ChangeListener() {
 		public void handleStateChanged(ChangeEvent event) {
 			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
-				arrowFigure.getModel()
-						.setMouseOver(activeFigure.getModel().isMouseOver());
+				arrowFigure.getModel().setMouseOver(
+						activeFigure.getModel().isMouseOver());
 			else if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
-				arrowFigure.getModel()
-						.setArmed(activeFigure.getModel().isArmed());
+				arrowFigure.getModel().setArmed(
+						activeFigure.getModel().isArmed());
 		}
 	};
 
@@ -77,11 +76,11 @@ public class PaletteStackEditPart extends PaletteEditPart
 	private ChangeListener clickableArrowListener = new ChangeListener() {
 		public void handleStateChanged(ChangeEvent event) {
 			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
-				activeFigure.getModel()
-						.setMouseOver(arrowFigure.getModel().isMouseOver());
+				activeFigure.getModel().setMouseOver(
+						arrowFigure.getModel().isMouseOver());
 			if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
-				activeFigure.getModel()
-						.setArmed(arrowFigure.getModel().isArmed());
+				activeFigure.getModel().setArmed(
+						arrowFigure.getModel().isArmed());
 		}
 	};
 
@@ -144,8 +143,8 @@ public class PaletteStackEditPart extends PaletteEditPart
 		Clickable clickable = null;
 
 		if (newValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry()
-					.get(newValue);
+			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
+					newValue);
 			clickable = (Clickable) part.getFigure();
 			clickable.setVisible(true);
 			clickable.addChangeListener(clickableListener);
@@ -155,8 +154,8 @@ public class PaletteStackEditPart extends PaletteEditPart
 		}
 
 		if (oldValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry()
-					.get(oldValue);
+			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
+					oldValue);
 			// if part is null, its no longer a child.
 			if (part != null) {
 				clickable = (Clickable) part.getFigure();
@@ -218,7 +217,7 @@ public class PaletteStackEditPart extends PaletteEditPart
 	 * @see org.eclipse.gef.EditPart#eraseTargetFeedback(org.eclipse.gef.Request)
 	 */
 	public void eraseTargetFeedback(Request request) {
-		Iterator<EditPart> children = getChildren().iterator();
+		Iterator children = getChildren().iterator();
 
 		while (children.hasNext()) {
 			PaletteEditPart part = (PaletteEditPart) children.next();
@@ -244,17 +243,18 @@ public class PaletteStackEditPart extends PaletteEditPart
 	public void openMenu() {
 		MenuManager menuManager = new MenuManager();
 
-		Iterator<EditPart> children = getChildren().iterator();
+		Iterator children = getChildren().iterator();
 		PaletteEditPart part = null;
 		PaletteEntry entry = null;
 		while (children.hasNext()) {
 			part = (PaletteEditPart) children.next();
 			entry = (PaletteEntry) part.getModel();
 
-			menuManager.add(new SetActivePaletteToolAction(getPaletteViewer(),
-					entry.getLabel(), entry.getSmallIcon(),
-					getStack().getActiveEntry().equals(entry),
-					(ToolEntry) entry));
+			menuManager
+					.add(new SetActivePaletteToolAction(getPaletteViewer(),
+							entry.getLabel(), entry.getSmallIcon(), getStack()
+									.getActiveEntry().equals(entry),
+							(ToolEntry) entry));
 		}
 
 		menu = menuManager.createContextMenu(getPaletteViewer().getControl());
@@ -271,8 +271,8 @@ public class PaletteStackEditPart extends PaletteEditPart
 		eraseTargetFeedback(new Request(RequestConstants.REQ_SELECTION));
 
 		menu.setLocation(menuLocation);
-		menu.addMenuListener(new StackMenuListener(menu,
-				getViewer().getControl().getDisplay()));
+		menu.addMenuListener(new StackMenuListener(menu, getViewer()
+				.getControl().getDisplay()));
 		menu.setVisible(true);
 	}
 
@@ -309,7 +309,7 @@ public class PaletteStackEditPart extends PaletteEditPart
 		if (menu != null && !menu.isDisposed() && menu.isVisible())
 			return;
 
-		Iterator<EditPart> children = getChildren().iterator();
+		Iterator children = getChildren().iterator();
 		while (children.hasNext()) {
 			PaletteEditPart part = (PaletteEditPart) children.next();
 			part.showTargetFeedback(request);
@@ -319,8 +319,8 @@ public class PaletteStackEditPart extends PaletteEditPart
 	}
 
 	public PaletteEditPart getActiveEntry() {
-		return (PaletteEditPart) getViewer().getEditPartRegistry()
-				.get(getStack().getActiveEntry());
+		return (PaletteEditPart) getViewer().getEditPartRegistry().get(
+				getStack().getActiveEntry());
 	}
 
 }

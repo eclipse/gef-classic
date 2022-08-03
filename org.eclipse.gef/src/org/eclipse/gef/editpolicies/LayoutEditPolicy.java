@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
+import java.util.List;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.Graphics;
@@ -132,7 +134,9 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * Decorates all existing children. This method is called on activation.
 	 */
 	protected void decorateChildren() {
-		getHost().getChildren().forEach(this::decorateChild);
+		List children = getHost().getChildren();
+		for (int i = 0; i < children.size(); i++)
+			decorateChild((EditPart) children.get(i));
 	}
 
 	/**
@@ -423,7 +427,9 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * Removes all decorations added by {@link #decorateChildren()}.
 	 */
 	protected void undecorateChildren() {
-		getHost().getChildren().forEach(this::undecorateChild);
+		List children = getHost().getChildren();
+		for (int i = 0; i < children.size(); i++)
+			undecorateChild((EditPart) children.get(i));
 	}
 
 	/**

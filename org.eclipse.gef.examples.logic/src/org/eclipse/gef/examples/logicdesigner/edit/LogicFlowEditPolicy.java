@@ -28,8 +28,8 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.CloneCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.CreateCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.ReorderPartCommand;
 
-public class LogicFlowEditPolicy
-		extends org.eclipse.gef.editpolicies.FlowLayoutEditPolicy {
+public class LogicFlowEditPolicy extends
+		org.eclipse.gef.editpolicies.FlowLayoutEditPolicy {
 
 	/**
 	 * Override to return the <code>Command</code> to perform an

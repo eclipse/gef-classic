@@ -124,11 +124,9 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 
 	boolean acceptScroll(KeyEvent event) {
 		return ((event.stateMask & SWT.CTRL) != 0
-				&& (event.stateMask & SWT.SHIFT) != 0
-				&& (event.keyCode == SWT.ARROW_DOWN
-						|| event.keyCode == SWT.ARROW_LEFT
-						|| event.keyCode == SWT.ARROW_RIGHT
-						|| event.keyCode == SWT.ARROW_UP));
+				&& (event.stateMask & SWT.SHIFT) != 0 && (event.keyCode == SWT.ARROW_DOWN
+				|| event.keyCode == SWT.ARROW_LEFT
+				|| event.keyCode == SWT.ARROW_RIGHT || event.keyCode == SWT.ARROW_UP));
 	}
 
 	/**
@@ -158,8 +156,8 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		while (counter < 0)
 			counter += connections.size();
 		counter %= connections.size();
-		return (ConnectionEditPart) connections
-				.get(counter % connections.size());
+		return (ConnectionEditPart) connections.get(counter
+				% connections.size());
 	}
 
 	private List getValidNavigationTargets(List candidateEditParts) {
@@ -366,8 +364,9 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		GraphicalEditPart node = getCachedNode();
 		if (focus instanceof ConnectionEditPart) {
 			current = (ConnectionEditPart) focus;
-			if (node == null || (node != current.getSource()
-					&& node != current.getTarget())) {
+			if (node == null
+					|| (node != current.getSource() && node != current
+							.getTarget())) {
 				node = (GraphicalEditPart) current.getSource();
 				counter = 0;
 			}

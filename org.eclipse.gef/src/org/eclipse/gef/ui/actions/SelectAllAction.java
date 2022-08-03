@@ -11,6 +11,7 @@
 package org.eclipse.gef.ui.actions;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
@@ -50,8 +51,8 @@ public class SelectAllAction extends Action {
 		GraphicalViewer viewer = (GraphicalViewer) part
 				.getAdapter(GraphicalViewer.class);
 		if (viewer != null) {
-			viewer.setSelection(
-					new StructuredSelection(getSelectableEditParts(viewer)));
+			viewer.setSelection(new StructuredSelection(
+					getSelectableEditParts(viewer)));
 		}
 	}
 
@@ -64,10 +65,15 @@ public class SelectAllAction extends Action {
 	 * @since 3.5
 	 */
 	private List getSelectableEditParts(GraphicalViewer viewer) {
-		List<EditPart> selectableChildren = new ArrayList<>();
-		for (EditPart childPart : viewer.getContents().getChildren()) {
-			if (childPart.isSelectable()) {
-				selectableChildren.add(childPart);
+		List selectableChildren = new ArrayList();
+		List children = viewer.getContents().getChildren();
+		for (Iterator iter = children.iterator(); iter.hasNext();) {
+			Object child = iter.next();
+			if (child instanceof EditPart) {
+				EditPart childPart = (EditPart) child;
+				if (childPart.isSelectable() == true) {
+					selectableChildren.add(childPart);
+				}
 			}
 		}
 		return selectableChildren;

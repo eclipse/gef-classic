@@ -51,8 +51,8 @@ import org.eclipse.gef.editpolicies.SelectionEditPolicy;
  * AbstractEditPart provides support for children. All AbstractEditPart's can
  * potentially be containers for other EditParts.
  */
-public abstract class AbstractEditPart
-		implements EditPart, RequestConstants, IAdaptable {
+public abstract class AbstractEditPart implements EditPart, RequestConstants,
+		IAdaptable {
 
 	/**
 	 * This flag is set during {@link #activate()}, and reset on
@@ -81,7 +81,7 @@ public abstract class AbstractEditPart
 	/**
 	 * The List of children EditParts
 	 */
-	protected List<EditPart> children;
+	protected List children;
 
 	/**
 	 * call getEventListeners(Class) instead.
@@ -155,7 +155,9 @@ public abstract class AbstractEditPart
 
 		activateEditPolicies();
 
-		getChildren().forEach(EditPart::activate);
+		List c = getChildren();
+		for (int i = 0; i < c.size(); i++)
+			((EditPart) c.get(i)).activate();
 
 		fireActivated();
 	}
@@ -202,7 +204,7 @@ public abstract class AbstractEditPart
 		if (index == -1)
 			index = getChildren().size();
 		if (children == null)
-			children = new ArrayList<>(2);
+			children = new ArrayList(2);
 
 		children.add(index, child);
 		child.setParent(this);
@@ -245,7 +247,9 @@ public abstract class AbstractEditPart
 	public void addNotify() {
 		register();
 		createEditPolicies();
-		getChildren().forEach(EditPart::addNotify);
+		List children = getChildren();
+		for (int i = 0; i < children.size(); i++)
+			((EditPart) children.get(i)).addNotify();
 		refresh();
 	}
 
@@ -284,7 +288,9 @@ public abstract class AbstractEditPart
 	 * @see #activate()
 	 */
 	public void deactivate() {
-		getChildren().forEach(EditPart::deactivate);
+		List c = getChildren();
+		for (int i = 0; i < c.size(); i++)
+			((EditPart) c.get(i)).deactivate();
 
 		deactivateEditPolicies();
 
@@ -461,9 +467,9 @@ public abstract class AbstractEditPart
 	/**
 	 * @see org.eclipse.gef.EditPart#getChildren()
 	 */
-	public List<EditPart> getChildren() {
+	public List getChildren() {
 		if (children == null)
-			return Collections.emptyList();
+			return Collections.EMPTY_LIST;
 		return children;
 	}
 
@@ -742,13 +748,13 @@ public abstract class AbstractEditPart
 		EditPart editPart;
 		Object model;
 
-		List<EditPart> children = getChildren();
+		List children = getChildren();
 		int size = children.size();
 		Map modelToEditPart = Collections.EMPTY_MAP;
 		if (size > 0) {
 			modelToEditPart = new HashMap(size);
 			for (i = 0; i < size; i++) {
-				editPart = children.get(i);
+				editPart = (EditPart) children.get(i);
 				modelToEditPart.put(editPart.getModel(), editPart);
 			}
 		}
@@ -758,7 +764,8 @@ public abstract class AbstractEditPart
 			model = modelObjects.get(i);
 
 			// Do a quick check to see if editPart[i] == model[i]
-			if (i < children.size() && children.get(i).getModel() == model)
+			if (i < children.size()
+					&& ((EditPart) children.get(i)).getModel() == model)
 				continue;
 
 			// Look to see if the EditPart is already around but in the
@@ -778,10 +785,13 @@ public abstract class AbstractEditPart
 		// remove the remaining EditParts
 		size = children.size();
 		if (i < size) {
-			List<EditPart> trash = new ArrayList<>(size - i);
+			List trash = new ArrayList(size - i);
 			for (; i < size; i++)
 				trash.add(children.get(i));
-			trash.forEach(this::removeChild);
+			for (i = 0; i < trash.size(); i++) {
+				EditPart ep = (EditPart) trash.get(i);
+				removeChild(ep);
+			}
 		}
 	}
 
@@ -933,7 +943,9 @@ public abstract class AbstractEditPart
 		if (hasFocus())
 			getViewer().setFocus(null);
 
-		getChildren().forEach(EditPart::removeNotify);
+		List children = getChildren();
+		for (int i = 0; i < children.size(); i++)
+			((EditPart) children.get(i)).removeNotify();
 		unregister();
 	}
 
@@ -948,8 +960,9 @@ public abstract class AbstractEditPart
 	 */
 	protected void reorderChild(EditPart editpart, int index) {
 		removeChildVisual(editpart);
-		getChildren().remove(editpart);
-		getChildren().add(index, editpart);
+		List children = getChildren();
+		children.remove(editpart);
+		children.add(index, editpart);
 		addChildVisual(editpart, index);
 	}
 
@@ -989,7 +1002,8 @@ public abstract class AbstractEditPart
 	 */
 	public void setFocus(boolean value) {
 		// only selectable edit parts may obtain focus
-		Assert.isLegal(isSelectable() || !value,
+		Assert.isLegal(
+				isSelectable() || !value,
 				"An EditPart has to be selectable (isSelectable() == true) in order to obtain focus."); //$NON-NLS-1$
 
 		if (hasFocus() == value)
@@ -1043,7 +1057,8 @@ public abstract class AbstractEditPart
 	 */
 	public void setSelected(int value) {
 		// only selectable edit parts may get selected.
-		Assert.isLegal(isSelectable() || value == SELECTED_NONE,
+		Assert.isLegal(
+				isSelectable() || value == SELECTED_NONE,
 				"An EditPart has to be selectable (isSelectable() == true) in order to get selected."); //$NON-NLS-1$
 
 		if (selected == value)

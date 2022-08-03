@@ -151,7 +151,7 @@ public interface EditPart extends IAdaptable {
 	 * 
 	 * @return a <code>List</code> of children
 	 */
-	List<EditPart> getChildren();
+	List getChildren();
 
 	/**
 	 * Returns the {@link Command} to perform the specified Request or
@@ -217,9 +217,9 @@ public interface EditPart extends IAdaptable {
 	 * 
 	 * @return one of:
 	 *         <UL>
-	 *         <LI>{@link #SELECTED}
-	 *         <LI>{@link #SELECTED_NONE}
-	 *         <LI>{@link #SELECTED_PRIMARY}
+	 *         <LI> {@link #SELECTED}
+	 *         <LI> {@link #SELECTED_NONE}
+	 *         <LI> {@link #SELECTED_PRIMARY}
 	 *         </UL>
 	 */
 	int getSelected();

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
+import java.util.Iterator;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.RectangleFigure;
@@ -77,8 +79,10 @@ public class LogicResizableEditPolicy extends ResizableEditPolicy {
 
 		child.setBounds(childBounds);
 
-		part.getChildren()
-				.forEach(ep -> createFigure((GraphicalEditPart) ep, child));
+		Iterator i = part.getChildren().iterator();
+
+		while (i.hasNext())
+			createFigure((GraphicalEditPart) i.next(), child);
 
 		return child;
 	}
