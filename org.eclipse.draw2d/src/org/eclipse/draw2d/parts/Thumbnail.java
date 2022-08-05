@@ -17,6 +17,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.internal.DPIUtil;
 import org.eclipse.swt.widgets.Display;
 
 import org.eclipse.draw2d.Figure;
@@ -37,6 +38,13 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * @author Alexander Nyßen (anyssen)
  */
 public class Thumbnail extends Figure implements UpdateListener {
+
+	// Bug on Mac - images are cached
+	// See https://github.com/archimatetool/archi/issues/401
+	// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=543796
+	// This affects macOS 10.14 and greater but we'll patch it for all macOS
+	// versions
+	private static final boolean useMacFix = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$
 
 	/**
 	 * This updates the Thumbnail by breaking the thumbnail {@link Image} into
@@ -195,9 +203,24 @@ public class Thumbnail extends Figure implements UpdateListener {
 			sourceFigure.paint(tileGraphics);
 			tileGraphics.popState();
 
-			// Copy the painted tile image into the thumbnail image.
-			thumbnailGC.drawImage(tileImage, 0, 0, sx2 - sx1, sy2 - sy1, sx1,
-					sy1, sx2 - sx1, sy2 - sy1);
+			if (useMacFix) {
+				// Don't re-use the same tileImage, so copy it
+				Image tileImageCopy = new Image(tileImage.getDevice(),
+						new DPIUtil.AutoScaleImageDataProvider(
+								tileImage.getDevice(),
+								tileImage.getImageData(DPIUtil.getDeviceZoom()),
+								DPIUtil.getDeviceZoom()));
+
+				// Copy the painted tile image into the thumbnail image.
+				thumbnailGC.drawImage(tileImageCopy, 0, 0, sx2 - sx1, sy2 - sy1,
+						sx1, sy1, sx2 - sx1, sy2 - sy1);
+
+				tileImageCopy.dispose();
+			} else {
+				// Copy the painted tile image into the thumbnail image.
+				thumbnailGC.drawImage(tileImage, 0, 0, sx2 - sx1, sy2 - sy1,
+						sx1, sy1, sx2 - sx1, sy2 - sy1);
+			}
 
 			if (getCurrentHTile() < (hTiles - 1))
 				setCurrentHTile(getCurrentHTile() + 1);
