@@ -132,18 +132,6 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		this.setViewport(new FreeformViewport());
 
-		this.getVerticalBar().addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				Graph.this.redraw();
-			}
-
-		});
-		this.getHorizontalBar().addSelectionListener(new SelectionAdapter() {
-			public void widgetSelected(SelectionEvent e) {
-				Graph.this.redraw();
-			}
-		});
-
 		// @tag CGraph.workaround : this allows me to handle mouse events
 		// outside of the canvas
 		this.getLightweightSystem().setEventDispatcher(
