@@ -14,13 +14,13 @@ package org.eclipse.draw2d.test;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.DirectedGraphLayout;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Rank;
+
+import junit.framework.TestCase;
 
 /**
  * Tests the swapping of adjacent nodes in a directed graph. since 3.0
@@ -57,8 +57,7 @@ public class LocalOptimizerTest extends TestCase {
 		rankNodes(new Node[] { e, f, g, h }, 1);
 		rankNodes(new Node[] { i, j, k, l }, 2);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(
-				new String[] { "org.eclipse.draw2d.graph.PopulateRanks" })
+		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.PopulateRanks" })
 				.visit(graph);
 	}
 
@@ -79,12 +78,10 @@ public class LocalOptimizerTest extends TestCase {
 		createEdge(c, h);
 		createEdge(d, h);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(
-				new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
 				.visit(graph);
 
-		checkResults(new Node[][] { new Node[] { a, b, c, d },
-				new Node[] { e, g, f, h } });
+		checkResults(new Node[][] { new Node[] { a, b, c, d }, new Node[] { e, g, f, h } });
 	}
 
 	public void testOutgoingSwapNeeded() {
@@ -96,12 +93,10 @@ public class LocalOptimizerTest extends TestCase {
 		createEdge(d, f);
 		createEdge(c, h);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(
-				new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
 				.visit(graph);
 
-		checkResults(new Node[][] { new Node[] { a, b, d, c },
-				new Node[] { e, f, g, h } });
+		checkResults(new Node[][] { new Node[] { a, b, d, c }, new Node[] { e, f, g, h } });
 	}
 
 	public void testIncomingOffsetSwapNeeded() {
@@ -117,12 +112,10 @@ public class LocalOptimizerTest extends TestCase {
 		createEdge(e, j).offsetSource = 30;
 		createEdge(f, k);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(
-				new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
 				.visit(graph);
 
-		checkResults(new Node[][] { new Node[] { c, a, b, d },
-				new Node[] { e, f, g, h }, new Node[] { i, j, k, l } });
+		checkResults(new Node[][] { new Node[] { c, a, b, d }, new Node[] { e, f, g, h }, new Node[] { i, j, k, l } });
 	}
 
 	public void testBidirectionalSwapNeeded() {
@@ -130,8 +123,8 @@ public class LocalOptimizerTest extends TestCase {
 		 * A B C D \ |\ \| \ E F G H (F and G should swap) X| / X | |\ I J K L
 		 * 
 		 * 
-		 * A B C D (Which causes A&B on previous rank to swap) \ /| X | / \| E G
-		 * F H |\ \ | \ \ I J K L
+		 * A B C D (Which causes A&B on previous rank to swap) \ /| X | / \| E G F H |\
+		 * \ | \ \ I J K L
 		 */
 		createEdge(a, f);
 		createEdge(b, f);
@@ -140,35 +133,30 @@ public class LocalOptimizerTest extends TestCase {
 		createEdge(g, j);
 		createEdge(g, k);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(
-				new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
 				.visit(graph);
 
-		checkResults(new Node[][] { new Node[] { b, a, c, d },
-				new Node[] { e, g, f, h }, new Node[] { i, j, k, l } });
+		checkResults(new Node[][] { new Node[] { b, a, c, d }, new Node[] { e, g, f, h }, new Node[] { i, j, k, l } });
 	}
 
 	/**
 	 * LocalOptimizer and other GraphVisitors are package private, so we cannot
-	 * instantiate them directly. Instead, we use a DirectedGraphLayout and
-	 * remove all other steps from it.
+	 * instantiate them directly. Instead, we use a DirectedGraphLayout and remove
+	 * all other steps from it.
 	 * 
 	 * @return A DirectedGraphLayout containing only the selected steps.
 	 */
-	private DirectedGraphLayout createDirectedGraphLayoutWithSelectedStepOnly(
-			String[] graphVisitorClassNames) {
+	private DirectedGraphLayout createDirectedGraphLayoutWithSelectedStepOnly(String[] graphVisitorClassNames) {
 		try {
 			DirectedGraphLayout layout = new DirectedGraphLayout();
-			Field stepsField = DirectedGraphLayout.class
-					.getDeclaredField("steps");
+			Field stepsField = DirectedGraphLayout.class.getDeclaredField("steps");
 			stepsField.setAccessible(true);
 			ArrayList steps = (ArrayList) stepsField.get(layout);
 			ArrayList filteredSteps = new ArrayList();
 			for (int i = 0; i < steps.size(); i++) {
 				Object graphVisitor = steps.get(i);
 				for (int j = 0; j < graphVisitorClassNames.length; j++) {
-					if (graphVisitorClassNames[j].equals(graphVisitor
-							.getClass().getName())) {
+					if (graphVisitorClassNames[j].equals(graphVisitor.getClass().getName())) {
 						filteredSteps.add(graphVisitor);
 					}
 				}
@@ -219,8 +207,7 @@ public class LocalOptimizerTest extends TestCase {
 			assertEquals(rank.size(), row.length);
 			for (int n = 0; n < row.length; n++) {
 				Node node = row[n];
-				assertEquals("Unexpected node encountered at:" + r + "," + n,
-						node, rank.getNode(n));
+				assertEquals("Unexpected node encountered at:" + r + "," + n, node, rank.getNode(n));
 			}
 		}
 	}

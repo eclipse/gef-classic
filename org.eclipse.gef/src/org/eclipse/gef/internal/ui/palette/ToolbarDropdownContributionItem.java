@@ -55,15 +55,14 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	private IAction action;
 
 	/**
-	 * The widget created for this item; <code>null</code> before creation and
-	 * after disposal.
+	 * The widget created for this item; <code>null</code> before creation and after
+	 * disposal.
 	 */
 	private Widget widget = null;
 
 	/**
-	 * Nested class handles notification from SWT widget and from Action, to
-	 * avoid polluting ToolbarDropdownContributionItem with public listener
-	 * methods.
+	 * Nested class handles notification from SWT widget and from Action, to avoid
+	 * polluting ToolbarDropdownContributionItem with public listener methods.
 	 */
 	private class ActionListener implements Listener, IPropertyChangeListener {
 		public void handleEvent(Event event) {
@@ -134,8 +133,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 		Image getMissingImage() {
 			if (missingImage == null) {
-				missingImage = getImage(ImageDescriptor
-						.getMissingImageDescriptor());
+				missingImage = getImage(ImageDescriptor.getMissingImageDescriptor());
 			}
 			return missingImage;
 		}
@@ -150,11 +148,10 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	}
 
 	/**
-	 * Creates a new contribution item from the given action. The id of the
-	 * action is used as the id of the item.
+	 * Creates a new contribution item from the given action. The id of the action
+	 * is used as the id of the item.
 	 * 
-	 * @param action
-	 *            the action
+	 * @param action the action
 	 */
 	public ToolbarDropdownContributionItem(IAction action) {
 		super(action.getId());
@@ -162,8 +159,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	}
 
 	/**
-	 * Handles a property change event on the action (forwarded by nested
-	 * listener).
+	 * Handles a property change event on the action (forwarded by nested listener).
 	 */
 	private void actionPropertyChange(final PropertyChangeEvent e) {
 		// This code should be removed. Avoid using free asyncExec
@@ -184,8 +180,8 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	}
 
 	/**
-	 * Checks whether the given menu item belongs to a context menu (the one
-	 * that pops up if the user presses the right mouse button).
+	 * Checks whether the given menu item belongs to a context menu (the one that
+	 * pops up if the user presses the right mouse button).
 	 */
 	private static boolean belongsToContextMenu(MenuItem item) {
 		Menu menu = item.getParent();
@@ -209,9 +205,9 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 	/**
 	 * The <code>ToolbarDropdownContributionItem</code> implementation of this
-	 * <code>IContributionItem</code> method creates a SWT Button for the
-	 * action. If the action's checked property has been set, a toggle button is
-	 * created and primed to the value of the checked property.
+	 * <code>IContributionItem</code> method creates a SWT Button for the action. If
+	 * the action's checked property has been set, a toggle button is created and
+	 * primed to the value of the checked property.
 	 */
 	public void fill(Composite parent) {
 		if (widget == null && parent != null) {
@@ -239,10 +235,10 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 	/**
 	 * The <code>ToolbarDropdownContributionItem</code> implementation of this
-	 * <code>IContributionItem</code> method creates a SWT MenuItem for the
-	 * action. If the action's checked property has been set, a toggle button is
-	 * created and primed to the value of the checked property. If the action's
-	 * menu creator property has been set, a cascading submenu is created.
+	 * <code>IContributionItem</code> method creates a SWT MenuItem for the action.
+	 * If the action's checked property has been set, a toggle button is created and
+	 * primed to the value of the checked property. If the action's menu creator
+	 * property has been set, a cascading submenu is created.
 	 */
 	public void fill(Menu parent, int index) {
 		if (widget == null && parent != null) {
@@ -285,10 +281,10 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 	/**
 	 * The <code>ToolbarDropdownContributionItem</code> implementation of this
-	 * <code>IContributionItem</code> method creates a SWT ToolItem for the
-	 * action. If the action's checked property has been set, a toggle button is
-	 * created and primed to the value of the checked property. If the action's
-	 * menu creator property has been set, a drop-down tool item is created.
+	 * <code>IContributionItem</code> method creates a SWT ToolItem for the action.
+	 * If the action's checked property has been set, a toggle button is created and
+	 * primed to the value of the checked property. If the action's menu creator
+	 * property has been set, a drop-down tool item is created.
 	 */
 	public void fill(ToolBar parent, int index) {
 		if (widget == null && parent != null) {
@@ -331,9 +327,9 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	/**
 	 * Returns the image cache. The cache is global, and is shared by all action
 	 * contribution items. This has the disadvantage that once an image is
-	 * allocated, it is never freed until the display is disposed. However, it
-	 * has the advantage that the same image in different contribution managers
-	 * is only ever created once.
+	 * allocated, it is never freed until the display is disposed. However, it has
+	 * the advantage that the same image in different contribution managers is only
+	 * ever created once.
 	 */
 	private ImageCache getImageCache() {
 		ImageCache cache = globalImageCache;
@@ -359,11 +355,10 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 */
 	private void handleWidgetArm(Event e) {
 		/*
-		 * String description= null; if (fAction instanceof Action) //
-		 * getDescription should go into IAction description=
-		 * ((Action)fAction).getDescription(); if (description != null)
-		 * ApplicationWindow.showDescription(e.widget, description); else
-		 * ApplicationWindow.resetDescription(e.widget);
+		 * String description= null; if (fAction instanceof Action) // getDescription
+		 * should go into IAction description= ((Action)fAction).getDescription(); if
+		 * (description != null) ApplicationWindow.showDescription(e.widget,
+		 * description); else ApplicationWindow.resetDescription(e.widget);
 		 */
 	}
 
@@ -414,9 +409,8 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 			} else if ((style & SWT.DROP_DOWN) != 0) {
 				/*
-				 * Added by Pratik Shah Do this regardless of whether the down
-				 * arrow button on the side was clicked, or the main button
-				 * itself
+				 * Added by Pratik Shah Do this regardless of whether the down arrow button on
+				 * the side was clicked, or the main button itself
 				 */
 				if (action.getStyle() == IAction.AS_DROP_DOWN_MENU) {
 					IMenuCreator mc = action.getMenuCreator();
@@ -433,8 +427,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 					if (m != null) {
 						// position the menu below the drop down item
 						Rectangle b = ti.getBounds();
-						Point p = ti.getParent().toDisplay(
-								new Point(b.x, b.y + b.height));
+						Point p = ti.getParent().toDisplay(new Point(b.x, b.y + b.height));
 						m.setLocation(p.x, p.y); // waiting for SWT 0.42
 						m.setVisible(true);
 						return; // we don't fire the action
@@ -467,17 +460,16 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	}
 
 	/**
-	 * The action item implementation of this <code>IContributionItem</code>
-	 * method returns <code>true</code> for menu items and <code>false</code>
-	 * for everything else.
+	 * The action item implementation of this <code>IContributionItem</code> method
+	 * returns <code>true</code> for menu items and <code>false</code> for
+	 * everything else.
 	 */
 	public boolean isDynamic() {
 		if (widget instanceof MenuItem) {
 			// Optimization. Only recreate the item is the check style has
 			// changed.
 			boolean itemIsCheck = (widget.getStyle() & SWT.CHECK) != 0;
-			boolean actionIsCheck = getAction() != null
-					&& getAction().getStyle() == IAction.AS_CHECK_BOX;
+			boolean actionIsCheck = getAction() != null && getAction().getStyle() == IAction.AS_CHECK_BOX;
 			return itemIsCheck != actionIsCheck;
 		}
 		return false;
@@ -498,8 +490,8 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	}
 
 	/**
-	 * The action item implementation of this <code>IContributionItem</code>
-	 * method calls <code>update(null)</code>.
+	 * The action item implementation of this <code>IContributionItem</code> method
+	 * calls <code>update(null)</code>.
 	 */
 	public final void update() {
 		update(null);
@@ -508,27 +500,20 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	/**
 	 * Synchronizes the UI with the given property.
 	 * 
-	 * @param propertyName
-	 *            the name of the property, or <code>null</code> meaning all
-	 *            applicable properties
+	 * @param propertyName the name of the property, or <code>null</code> meaning
+	 *                     all applicable properties
 	 */
 	public void update(String propertyName) {
 		if (widget != null) {
 
 			// determine what to do
-			boolean textChanged = propertyName == null
-					|| propertyName.equals(Action.TEXT);
-			boolean imageChanged = propertyName == null
-					|| propertyName.equals(Action.IMAGE);
-			boolean tooltipTextChanged = propertyName == null
-					|| propertyName.equals(Action.TOOL_TIP_TEXT);
-			boolean enableStateChanged = propertyName == null
-					|| propertyName.equals(Action.ENABLED)
-					|| propertyName
-							.equals(IContributionManagerOverrides.P_ENABLED);
+			boolean textChanged = propertyName == null || propertyName.equals(Action.TEXT);
+			boolean imageChanged = propertyName == null || propertyName.equals(Action.IMAGE);
+			boolean tooltipTextChanged = propertyName == null || propertyName.equals(Action.TOOL_TIP_TEXT);
+			boolean enableStateChanged = propertyName == null || propertyName.equals(Action.ENABLED)
+					|| propertyName.equals(IContributionManagerOverrides.P_ENABLED);
 			boolean checkChanged = (action.getStyle() == IAction.AS_CHECK_BOX)
-					&& (propertyName == null || propertyName
-							.equals(Action.CHECKED));
+					&& (propertyName == null || propertyName.equals(Action.CHECKED));
 
 			if (widget instanceof ToolItem) {
 				ToolItem ti = (ToolItem) widget;
@@ -539,8 +524,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 					ti.setToolTipText(action.getToolTipText());
 
 				if (enableStateChanged) {
-					boolean shouldBeEnabled = action.isEnabled()
-							&& isEnabledAllowed();
+					boolean shouldBeEnabled = action.isEnabled() && isEnabledAllowed();
 					if (ti.getEnabled() != shouldBeEnabled)
 						ti.setEnabled(shouldBeEnabled);
 				}
@@ -583,8 +567,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 								accText = overrides.getAcceleratorText(this);
 								acc = overrides.getAccelerator(this);
 							}
-							if ((accText == null)
-									&& (label.length() + 1 < text.length()))
+							if ((accText == null) && (label.length() + 1 < text.length()))
 								accText = text.substring(label.length() + 1);
 							if (acc == null)
 								acc = Integer.valueOf(action.getAccelerator());
@@ -601,8 +584,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 					updateImages(false);
 				}
 				if (enableStateChanged) {
-					boolean shouldBeEnabled = action.isEnabled()
-							&& isEnabledAllowed();
+					boolean shouldBeEnabled = action.isEnabled() && isEnabledAllowed();
 					if (mi.getEnabled() != shouldBeEnabled)
 						mi.setEnabled(shouldBeEnabled);
 				}
@@ -632,8 +614,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 					button.setToolTipText(action.getToolTipText());
 
 				if (enableStateChanged) {
-					boolean shouldBeEnabled = action.isEnabled()
-							&& isEnabledAllowed();
+					boolean shouldBeEnabled = action.isEnabled() && isEnabledAllowed();
 					if (button.getEnabled() != shouldBeEnabled)
 						button.setEnabled(shouldBeEnabled);
 				}
@@ -651,10 +632,9 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	/**
 	 * Updates the images for this action.
 	 * 
-	 * @param forceImage
-	 *            <code>true</code> if some form of image is compulsory, and
-	 *            <code>false</code> if it is acceptable for this item to have
-	 *            no image
+	 * @param forceImage <code>true</code> if some form of image is compulsory, and
+	 *                   <code>false</code> if it is acceptable for this item to
+	 *                   have no image
 	 * @return <code>true</code> if there are images for this action,
 	 *         <code>false</code> if not
 	 */
@@ -665,8 +645,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 		if (widget instanceof ToolItem) {
 			Image image = cache.getImage(action.getImageDescriptor());
 			Image hoverImage = cache.getImage(action.getHoverImageDescriptor());
-			Image disabledImage = cache.getImage(action
-					.getDisabledImageDescriptor());
+			Image disabledImage = cache.getImage(action.getDisabledImageDescriptor());
 
 			// If there is no regular image, but there is a hover image,
 			// convert the hover image to gray and use it as the regular image.

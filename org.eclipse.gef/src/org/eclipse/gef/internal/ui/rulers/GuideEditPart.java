@@ -91,8 +91,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,
-				new GuideSelectionPolicy());
+		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new GuideSelectionPolicy());
 		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new DragGuidePolicy());
 	}
 
@@ -104,8 +103,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	protected IFigure createFigure() {
 		guideLineFig = createGuideLineFigure();
 		getGuideLayer().add(getGuideLineFigure());
-		getGuideLayer().setConstraint(getGuideLineFigure(),
-				Boolean.valueOf(isHorizontal()));
+		getGuideLayer().setConstraint(getGuideLineFigure(), Boolean.valueOf(isHorizontal()));
 		return new GuideFigure(isHorizontal());
 	}
 
@@ -132,8 +130,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 			accPart = new AccessibleGraphicalEditPart() {
 				public void getDescription(AccessibleEvent e) {
 					if (getRulerProvider() != null)
-						getRulerProvider()
-								.getAccGuideDescription(e, getModel());
+						getRulerProvider().getAccGuideDescription(e, getModel());
 				}
 
 				public void getName(AccessibleEvent e) {
@@ -175,8 +172,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org
 	 * .eclipse.gef.Request)
 	 */
 	public DragTracker getDragTracker(Request request) {
@@ -259,9 +255,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 					GuideEditPart guide = (GuideEditPart) siblings.get(i);
 					if (guide == this)
 						continue;
-					int posDiff = Math.abs(thisPos
-							- getRulerProvider().getGuidePosition(
-									guide.getModel()));
+					int posDiff = Math.abs(thisPos - getRulerProvider().getGuidePosition(guide.getModel()));
 					if (minDistance == -1 || posDiff < minDistance) {
 						minDistance = posDiff;
 						nextSelection = guide;
@@ -281,10 +275,8 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	}
 
 	public void updateLocationOfFigures(int position) {
-		getRulerEditPart().setLayoutConstraint(this, getFigure(),
-				Integer.valueOf(position));
-		Point guideFeedbackLocation = getGuideLineFigure().getBounds()
-				.getLocation();
+		getRulerEditPart().setLayoutConstraint(this, getFigure(), Integer.valueOf(position));
+		Point guideFeedbackLocation = getGuideLineFigure().getBounds().getLocation();
 		if (isHorizontal()) {
 			guideFeedbackLocation.y = position;
 		} else {

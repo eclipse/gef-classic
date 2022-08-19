@@ -55,10 +55,10 @@ public class SnapToGuides extends SnapToHelper {
 	public static final String KEY_HORIZONTAL_GUIDE = "SnapToGuides.HorizontalGuide"; //$NON-NLS-1$
 
 	/**
-	 * The key used to identify the vertical anchor point. This key is used with
-	 * the request's extended data map to store an Integer. If the
-	 * VERTICAL_GUIDE has been set, then this integer is a number identifying
-	 * which side of the dragged object is being snapped to that guide.
+	 * The key used to identify the vertical anchor point. This key is used with the
+	 * request's extended data map to store an Integer. If the VERTICAL_GUIDE has
+	 * been set, then this integer is a number identifying which side of the dragged
+	 * object is being snapped to that guide.
 	 * <UL>
 	 * <LI><code>-1</code> indicates the left side should be attached.
 	 * <LI><code> 0</code> indicates the center should be attached.
@@ -68,10 +68,10 @@ public class SnapToGuides extends SnapToHelper {
 	public static final String KEY_VERTICAL_ANCHOR = "SnapToGuides.VerticalAttachment"; //$NON-NLS-1$
 
 	/**
-	 * The key used to identify the horizontal anchor point. This key is used
-	 * with the request's extended data map to store an Integer. If the
-	 * HORIZONTAL_GUIDE has been set, then this integer is a number identifying
-	 * which side of the dragged object is being snapped to that guide.
+	 * The key used to identify the horizontal anchor point. This key is used with
+	 * the request's extended data map to store an Integer. If the HORIZONTAL_GUIDE
+	 * has been set, then this integer is a number identifying which side of the
+	 * dragged object is being snapped to that guide.
 	 * <UL>
 	 * <LI><code>-1</code> indicates the top side should be attached.
 	 * <LI><code> 0</code> indicates the middle should be attached.
@@ -101,8 +101,8 @@ public class SnapToGuides extends SnapToHelper {
 	protected int[] verticalGuides;
 
 	/**
-	 * The locations of the horizontal guides in the container's coordinates.
-	 * Use {@link #getHorizontalGuides()}.
+	 * The locations of the horizontal guides in the container's coordinates. Use
+	 * {@link #getHorizontalGuides()}.
 	 */
 	protected int[] horizontalGuides;
 
@@ -110,16 +110,15 @@ public class SnapToGuides extends SnapToHelper {
 	 * Constructs a new snap-to-guides helper using the given container as the
 	 * basis.
 	 * 
-	 * @param container
-	 *            the container editpart
+	 * @param container the container editpart
 	 */
 	public SnapToGuides(GraphicalEditPart container) {
 		this.container = container;
 	}
 
 	/**
-	 * Get the sensitivity of the snapping. Corrections greater than this value
-	 * will not occur.
+	 * Get the sensitivity of the snapping. Corrections greater than this value will
+	 * not occur.
 	 * 
 	 * @return the snapping threshold
 	 * @since 3.4
@@ -132,8 +131,7 @@ public class SnapToGuides extends SnapToHelper {
 	 * Set the sensitivity of the snapping.
 	 * 
 	 * @see #getThreshold()
-	 * @param newThreshold
-	 *            the new snapping threshold
+	 * @param newThreshold the new snapping threshold
 	 * @since 3.4
 	 */
 	protected void setThreshold(double newThreshold) {
@@ -142,64 +140,51 @@ public class SnapToGuides extends SnapToHelper {
 
 	/**
 	 * Returns the correction for the given near and far sides of a rectangle or
-	 * {@link #getThreshold()} if no correction was found. The near side
-	 * represents the top or left side of a rectangle being snapped. Similar for
-	 * far. If snapping occurs, the extendedData will have the guide and
-	 * attachment point set.
+	 * {@link #getThreshold()} if no correction was found. The near side represents
+	 * the top or left side of a rectangle being snapped. Similar for far. If
+	 * snapping occurs, the extendedData will have the guide and attachment point
+	 * set.
 	 * 
-	 * @param guides
-	 *            the location of the guides
-	 * @param near
-	 *            the top or left location
-	 * @param far
-	 *            the bottom or right location
-	 * @param extendedData
-	 *            the map for storing snap details
-	 * @param isVertical
-	 *            <code>true</code> if for vertical guides, <code>false</code>
-	 *            for horizontal.
+	 * @param guides       the location of the guides
+	 * @param near         the top or left location
+	 * @param far          the bottom or right location
+	 * @param extendedData the map for storing snap details
+	 * @param isVertical   <code>true</code> if for vertical guides,
+	 *                     <code>false</code> for horizontal.
 	 * @return the correction amount or getThreshold() if no correction was made
 	 */
-	protected double getCorrectionFor(int[] guides, double near, double far,
-			Map extendedData, boolean isVertical) {
+	protected double getCorrectionFor(int[] guides, double near, double far, Map extendedData, boolean isVertical) {
 		far -= 1.0;
 		double total = near + far;
 		// If the width is even, there is no middle pixel so favor the left -
 		// most pixel.
 		if ((int) (near - far) % 2 == 0)
 			total -= 1.0;
-		double result = getCorrectionFor(guides, total / 2, extendedData,
-				isVertical, 0);
+		double result = getCorrectionFor(guides, total / 2, extendedData, isVertical, 0);
 		if (result == getThreshold())
-			result = getCorrectionFor(guides, near, extendedData, isVertical,
-					-1);
+			result = getCorrectionFor(guides, near, extendedData, isVertical, -1);
 		if (result == getThreshold())
 			result = getCorrectionFor(guides, far, extendedData, isVertical, 1);
 		return result;
 	}
 
 	/**
-	 * Returns the correction for the given location or {@link #getThreshold()}
-	 * if no correction was found. If correction occurs, the extendedData will
-	 * have the guide and attachment point set. The attachment point is
-	 * identified by the <code>side</code> parameter.
+	 * Returns the correction for the given location or {@link #getThreshold()} if
+	 * no correction was found. If correction occurs, the extendedData will have the
+	 * guide and attachment point set. The attachment point is identified by the
+	 * <code>side</code> parameter.
 	 * <P>
 	 * The correction's magnitude will be less than getThreshold().
 	 * 
-	 * @param guides
-	 *            the location of the guides
-	 * @param value
-	 *            the location being tested
-	 * @param extendedData
-	 *            the map for storing snap details
-	 * @param vert
-	 *            <code>true</code> if for vertical guides, <code>false</code>
-	 * @param side
-	 *            the integer indicating which side is being snapped
+	 * @param guides       the location of the guides
+	 * @param value        the location being tested
+	 * @param extendedData the map for storing snap details
+	 * @param vert         <code>true</code> if for vertical guides,
+	 *                     <code>false</code>
+	 * @param side         the integer indicating which side is being snapped
 	 * @return a correction amount or getThreshold() if no correction was made
 	 */
-	protected double getCorrectionFor(int[] guides, double value,
-			Map extendedData, boolean vert, int side) {
+	protected double getCorrectionFor(int[] guides, double value, Map extendedData, boolean vert, int side) {
 		double resultMag = getThreshold();
 		double result = getThreshold();
 
@@ -209,10 +194,8 @@ public class SnapToGuides extends SnapToHelper {
 
 			magnitude = Math.abs(value - offset);
 			if (magnitude < resultMag) {
-				extendedData.put(vert ? KEY_VERTICAL_GUIDE
-						: KEY_HORIZONTAL_GUIDE, Integer.valueOf(guides[i]));
-				extendedData.put(vert ? KEY_VERTICAL_ANCHOR
-						: KEY_HORIZONTAL_ANCHOR, Integer.valueOf(side));
+				extendedData.put(vert ? KEY_VERTICAL_GUIDE : KEY_HORIZONTAL_GUIDE, Integer.valueOf(guides[i]));
+				extendedData.put(vert ? KEY_VERTICAL_ANCHOR : KEY_HORIZONTAL_ANCHOR, Integer.valueOf(side));
 				resultMag = magnitude;
 				result = offset - value;
 			}
@@ -221,8 +204,8 @@ public class SnapToGuides extends SnapToHelper {
 	}
 
 	/**
-	 * Returns the horizontal guides in the coordinates of the container's
-	 * contents pane.
+	 * Returns the horizontal guides in the coordinates of the container's contents
+	 * pane.
 	 * 
 	 * @return the horizontal guides
 	 */
@@ -239,8 +222,8 @@ public class SnapToGuides extends SnapToHelper {
 	}
 
 	/**
-	 * Returns the vertical guides in the coordinates of the container's
-	 * contents pane.
+	 * Returns the vertical guides in the coordinates of the container's contents
+	 * pane.
 	 * 
 	 * @return the vertical guides
 	 */
@@ -260,10 +243,9 @@ public class SnapToGuides extends SnapToHelper {
 	 * @see SnapToHelper#snapRectangle(Request, int, PrecisionRectangle,
 	 *      PrecisionRectangle)
 	 */
-	public int snapRectangle(Request request, int snapOrientation,
-			PrecisionRectangle baseRect, PrecisionRectangle result) {
-		if (request instanceof GroupRequest
-				&& ((GroupRequest) request).getEditParts().size() > 1)
+	public int snapRectangle(Request request, int snapOrientation, PrecisionRectangle baseRect,
+			PrecisionRectangle result) {
+		if (request instanceof GroupRequest && ((GroupRequest) request).getEditParts().size() > 1)
 			return snapOrientation;
 
 		baseRect = baseRect.getPreciseCopy();
@@ -272,8 +254,7 @@ public class SnapToGuides extends SnapToHelper {
 		makeRelative(container.getContentPane(), correction);
 
 		if ((snapOrientation & HORIZONTAL) != 0) {
-			double xcorrect = getCorrectionFor(getVerticalGuides(),
-					baseRect.preciseX(), baseRect.preciseRight(),
+			double xcorrect = getCorrectionFor(getVerticalGuides(), baseRect.preciseX(), baseRect.preciseRight(),
 					request.getExtendedData(), true);
 			if (xcorrect != getThreshold()) {
 				snapOrientation &= ~HORIZONTAL;
@@ -282,8 +263,7 @@ public class SnapToGuides extends SnapToHelper {
 		}
 
 		if ((snapOrientation & VERTICAL) != 0) {
-			double ycorrect = getCorrectionFor(getHorizontalGuides(),
-					baseRect.preciseY(), baseRect.preciseBottom(),
+			double ycorrect = getCorrectionFor(getHorizontalGuides(), baseRect.preciseY(), baseRect.preciseBottom(),
 					request.getExtendedData(), false);
 			if (ycorrect != getThreshold()) {
 				snapOrientation &= ~VERTICAL;
@@ -293,59 +273,51 @@ public class SnapToGuides extends SnapToHelper {
 
 		boolean snapped = false;
 		if (!snapped && (snapOrientation & WEST) != 0) {
-			double leftCorrection = getCorrectionFor(getVerticalGuides(),
-					baseRect.preciseX(), request.getExtendedData(), true, -1);
+			double leftCorrection = getCorrectionFor(getVerticalGuides(), baseRect.preciseX(),
+					request.getExtendedData(), true, -1);
 			if (leftCorrection != getThreshold()) {
 				snapOrientation &= ~WEST;
-				correction.setPreciseWidth(correction.preciseWidth()
-						- leftCorrection);
+				correction.setPreciseWidth(correction.preciseWidth() - leftCorrection);
 				correction.setPreciseX(correction.preciseX() + leftCorrection);
 			}
 		}
 
 		if (!snapped && (snapOrientation & EAST) != 0) {
-			double rightCorrection = getCorrectionFor(getVerticalGuides(),
-					baseRect.preciseRight() - 1, request.getExtendedData(),
-					true, 1);
+			double rightCorrection = getCorrectionFor(getVerticalGuides(), baseRect.preciseRight() - 1,
+					request.getExtendedData(), true, 1);
 			if (rightCorrection != getThreshold()) {
 				snapped = true;
 				snapOrientation &= ~EAST;
-				correction.setPreciseWidth(correction.preciseWidth()
-						+ rightCorrection);
+				correction.setPreciseWidth(correction.preciseWidth() + rightCorrection);
 			}
 		}
 
 		snapped = false;
 		if (!snapped && (snapOrientation & NORTH) != 0) {
-			double topCorrection = getCorrectionFor(getHorizontalGuides(),
-					baseRect.preciseY(), request.getExtendedData(), false, -1);
+			double topCorrection = getCorrectionFor(getHorizontalGuides(), baseRect.preciseY(),
+					request.getExtendedData(), false, -1);
 			if (topCorrection != getThreshold()) {
 				snapOrientation &= ~NORTH;
-				correction.setPreciseHeight(correction.preciseHeight()
-						- topCorrection);
+				correction.setPreciseHeight(correction.preciseHeight() - topCorrection);
 				correction.setPreciseY(correction.preciseY() + topCorrection);
 			}
 		}
 
 		if (!snapped && (snapOrientation & SOUTH) != 0) {
-			double bottom = getCorrectionFor(getHorizontalGuides(),
-					baseRect.preciseBottom() - 1, request.getExtendedData(),
-					false, 1);
+			double bottom = getCorrectionFor(getHorizontalGuides(), baseRect.preciseBottom() - 1,
+					request.getExtendedData(), false, 1);
 			if (bottom != getThreshold()) {
 				snapped = true;
 				snapOrientation &= ~SOUTH;
-				correction
-						.setPreciseHeight(correction.preciseHeight() + bottom);
+				correction.setPreciseHeight(correction.preciseHeight() + bottom);
 			}
 		}
 
 		makeAbsolute(container.getContentPane(), correction);
 		result.setPreciseX(result.preciseX() + correction.preciseX());
 		result.setPreciseY(result.preciseY() + correction.preciseY());
-		result.setPreciseWidth(result.preciseWidth()
-				+ correction.preciseWidth());
-		result.setPreciseHeight(result.preciseHeight()
-				+ correction.preciseHeight());
+		result.setPreciseWidth(result.preciseWidth() + correction.preciseWidth());
+		result.setPreciseHeight(result.preciseHeight() + correction.preciseHeight());
 		return snapOrientation;
 	}
 

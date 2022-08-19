@@ -17,8 +17,7 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class LogicFlowContainer extends LogicDiagram {
 
-	private class LayoutLabelProvider extends
-			org.eclipse.jface.viewers.LabelProvider {
+	private class LayoutLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 
 		public LayoutLabelProvider() {
 			super();
@@ -36,10 +35,11 @@ public class LogicFlowContainer extends LogicDiagram {
 		}
 	}
 
-	public static String ID_LAYOUT = "layout"; //$NON-NLS-1$
+	public static final String ID_LAYOUT = "layout"; //$NON-NLS-1$
 
-	public static Integer LAYOUT_MULTI_ROW = Integer.valueOf(0);
-	public static Integer LAYOUT_SINGLE_ROW = Integer.valueOf(1);
+	public static final Integer LAYOUT_MULTI_ROW = Integer.valueOf(0);
+	public static final Integer LAYOUT_SINGLE_ROW = Integer.valueOf(1);
+
 	static final long serialVersionUID = 1;
 
 	protected Integer layout = LAYOUT_MULTI_ROW;
@@ -52,22 +52,19 @@ public class LogicFlowContainer extends LogicDiagram {
 	}
 
 	/**
-	 * Returns <code>null</code> for this model. Returns normal descriptors for
-	 * all subclasses.
+	 * Returns <code>null</code> for this model. Returns normal descriptors for all
+	 * subclasses.
 	 * 
 	 * @return Array of property descriptors.
 	 */
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		if (getClass().equals(LogicFlowContainer.class)) {
-			ComboBoxPropertyDescriptor cbd = new ComboBoxPropertyDescriptor(
-					ID_LAYOUT,
+			ComboBoxPropertyDescriptor cbd = new ComboBoxPropertyDescriptor(ID_LAYOUT,
 					LogicMessages.PropertyDescriptor_LogicFlowContainer_Layout,
-					new String[] {
-							LogicMessages.PropertyDescriptor_LogicFlowContainer_MultiRowLayout,
+					new String[] { LogicMessages.PropertyDescriptor_LogicFlowContainer_MultiRowLayout,
 							LogicMessages.PropertyDescriptor_LogicFlowContainer_SingleColumnLayout });
 			cbd.setLabelProvider(new LayoutLabelProvider());
-			return new IPropertyDescriptor[] { cbd, descriptors[0],
-					descriptors[1] };
+			return new IPropertyDescriptor[] { cbd, descriptors[0], descriptors[1] };
 		}
 		return super.getPropertyDescriptors();
 	}

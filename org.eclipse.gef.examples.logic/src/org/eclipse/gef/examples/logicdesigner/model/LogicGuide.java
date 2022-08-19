@@ -59,9 +59,8 @@ public class LogicGuide implements Serializable {
 	/**
 	 * Constructor
 	 * 
-	 * @param isHorizontal
-	 *            <code>true</code> if the guide is horizontal (i.e., placed on
-	 *            a vertical ruler)
+	 * @param isHorizontal <code>true</code> if the guide is horizontal (i.e.,
+	 *                     placed on a vertical ruler)
 	 */
 	public LogicGuide(boolean isHorizontal) {
 		setHorizontal(isHorizontal);
@@ -78,22 +77,20 @@ public class LogicGuide implements Serializable {
 	 * @TODO:Pratik use PositionConstants here
 	 */
 	/**
-	 * Attaches the given part along the given edge to this guide. The
-	 * LogicSubpart is also updated to reflect this attachment.
+	 * Attaches the given part along the given edge to this guide. The LogicSubpart
+	 * is also updated to reflect this attachment.
 	 * 
-	 * @param part
-	 *            The part that is to be attached to this guide; if the part is
-	 *            already attached, its alignment is updated
-	 * @param alignment
-	 *            -1 is left or top; 0, center; 1, right or bottom
+	 * @param part      The part that is to be attached to this guide; if the part
+	 *                  is already attached, its alignment is updated
+	 * @param alignment -1 is left or top; 0, center; 1, right or bottom
 	 */
 	public void attachPart(LogicSubpart part, int alignment) {
 		if (getMap().containsKey(part) && getAlignment(part) == alignment)
 			return;
 
 		getMap().put(part, Integer.valueOf(alignment));
-		LogicGuide parent = isHorizontal() ? part.getHorizontalGuide() : part
-				.getVerticalGuide();
+		LogicGuide parent = isHorizontal() ? part.getHorizontalGuide() : part.getVerticalGuide();
+
 		if (parent != null && parent != this) {
 			parent.detachPart(part);
 		}
@@ -106,11 +103,10 @@ public class LogicGuide implements Serializable {
 	}
 
 	/**
-	 * Detaches the given part from this guide. The LogicSubpart is also updated
-	 * to reflect this change.
+	 * Detaches the given part from this guide. The LogicSubpart is also updated to
+	 * reflect this change.
 	 * 
-	 * @param part
-	 *            the part that is to be detached from this guide
+	 * @param part the part that is to be detached from this guide
 	 */
 	public void detachPart(LogicSubpart part) {
 		if (getMap().containsKey(part)) {
@@ -125,17 +121,16 @@ public class LogicGuide implements Serializable {
 	}
 
 	/**
-	 * This methods returns the edge along which the given part is attached to
-	 * this guide. This information is used by
+	 * This methods returns the edge along which the given part is attached to this
+	 * guide. This information is used by
 	 * {@link org.eclipse.gef.examples.logicdesigner.edit.LogicXYLayoutEditPolicy
-	 * LogicXYLayoutEditPolicy} to determine whether to attach or detach a part
-	 * from a guide during resize operations.
+	 * LogicXYLayoutEditPolicy} to determine whether to attach or detach a part from
+	 * a guide during resize operations.
 	 * 
-	 * @param part
-	 *            The part whose alignment has to be found
-	 * @return an int representing the edge along which the given part is
-	 *         attached to this guide; 1 is bottom or right; 0, center; -1, top
-	 *         or left; -2 if the part is not attached to this guide
+	 * @param part The part whose alignment has to be found
+	 * @return an int representing the edge along which the given part is attached
+	 *         to this guide; 1 is bottom or right; 0, center; -1, top or left; -2
+	 *         if the part is not attached to this guide
 	 * @see org.eclipse.gef.examples.logicdesigner.edit.LogicXYLayoutEditPolicy#createChangeConstraintCommand(ChangeBoundsRequest,
 	 *      EditPart, Object)
 	 */
@@ -146,9 +141,8 @@ public class LogicGuide implements Serializable {
 	}
 
 	/**
-	 * @return The Map containing all the parts attached to this guide, and
-	 *         their alignments; the keys are LogicSubparts and values are
-	 *         Integers
+	 * @return The Map containing all the parts attached to this guide, and their
+	 *         alignments; the keys are LogicSubparts and values are Integers
 	 */
 	public Map getMap() {
 		if (map == null) {
@@ -190,9 +184,8 @@ public class LogicGuide implements Serializable {
 	/**
 	 * Sets the orientation of the guide
 	 * 
-	 * @param isHorizontal
-	 *            <code>true</code> if this guide is to be placed on a vertical
-	 *            ruler
+	 * @param isHorizontal <code>true</code> if this guide is to be placed on a
+	 *                     vertical ruler
 	 */
 	public void setHorizontal(boolean isHorizontal) {
 		horizontal = isHorizontal;
@@ -201,15 +194,13 @@ public class LogicGuide implements Serializable {
 	/**
 	 * Sets the location of the guide
 	 * 
-	 * @param offset
-	 *            The location of the guide (in pixels)
+	 * @param offset The location of the guide (in pixels)
 	 */
 	public void setPosition(int offset) {
 		if (position != offset) {
 			int oldValue = position;
 			position = offset;
-			listeners.firePropertyChange(PROPERTY_POSITION, Integer.valueOf(
-					oldValue), Integer.valueOf(position));
+			listeners.firePropertyChange(PROPERTY_POSITION, Integer.valueOf(oldValue), Integer.valueOf(position));
 		}
 	}
 

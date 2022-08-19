@@ -44,11 +44,10 @@ public class BorderLayout extends AbstractHintLayout {
 	private int vGap = 0, hGap = 0;
 
 	/**
-	 * @see org.eclipse.draw2d.AbstractHintLayout#calculateMinimumSize(IFigure,
-	 *      int, int)
+	 * @see org.eclipse.draw2d.AbstractHintLayout#calculateMinimumSize(IFigure, int,
+	 *      int)
 	 */
-	protected Dimension calculateMinimumSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
 		int minWHint = 0, minHHint = 0;
 		if (wHint < 0) {
 			minWHint = -1;
@@ -99,10 +98,8 @@ public class BorderLayout extends AbstractHintLayout {
 
 		rows += columns > 0 ? 1 : 0;
 		// Add spacing, insets, and the size of the middle row
-		minSize.height += middleRowHeight + border.getHeight()
-				+ ((rows - 1) * vGap);
-		minSize.width = Math.max(minSize.width, middleRowWidth)
-				+ border.getWidth() + ((columns - 1) * hGap);
+		minSize.height += middleRowHeight + border.getHeight() + ((rows - 1) * vGap);
+		minSize.width = Math.max(minSize.width, middleRowWidth) + border.getWidth() + ((columns - 1) * hGap);
 
 		return minSize;
 	}
@@ -110,8 +107,7 @@ public class BorderLayout extends AbstractHintLayout {
 	/**
 	 * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
 	 */
-	protected Dimension calculatePreferredSize(IFigure figure, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint) {
 		int minWHint = 0, minHHint = 0;
 		if (wHint < 0)
 			minWHint = -1;
@@ -162,10 +158,8 @@ public class BorderLayout extends AbstractHintLayout {
 
 		rows += columns > 0 ? 1 : 0;
 		// Add spacing, insets, and the size of the middle row
-		prefSize.height += middleRowHeight + border.getHeight()
-				+ ((rows - 1) * vGap);
-		prefSize.width = Math.max(prefSize.width, middleRowWidth)
-				+ border.getWidth() + ((columns - 1) * hGap);
+		prefSize.height += middleRowHeight + border.getHeight() + ((rows - 1) * vGap);
+		prefSize.width = Math.max(prefSize.width, middleRowWidth) + border.getWidth() + ((columns - 1) * hGap);
 
 		prefSize.union(getBorderPreferredSize(figure));
 		return prefSize;
@@ -252,19 +246,18 @@ public class BorderLayout extends AbstractHintLayout {
 	 * </UL>
 	 * 
 	 * <p>
-	 * Ensure that the given Figure is indeed a child of the Figure on which
-	 * this layout has been set. Proper behaviour cannot be guaranteed if that
-	 * is not the case. Also ensure that every child has a valid constraint.
+	 * Ensure that the given Figure is indeed a child of the Figure on which this
+	 * layout has been set. Proper behaviour cannot be guaranteed if that is not the
+	 * case. Also ensure that every child has a valid constraint.
 	 * </p>
 	 * <p>
-	 * Passing a <code>null</code> constraint will invoke
-	 * {@link #remove(IFigure)}.
+	 * Passing a <code>null</code> constraint will invoke {@link #remove(IFigure)}.
 	 * </p>
 	 * <p>
 	 * If the given child was assigned another constraint earlier, it will be
-	 * re-assigned to the new constraint. If there is another child with the
-	 * given constraint, it will be over-ridden so that the given child now has
-	 * that constraint.
+	 * re-assigned to the new constraint. If there is another child with the given
+	 * constraint, it will be over-ridden so that the given child now has that
+	 * constraint.
 	 * </p>
 	 * 
 	 * @see org.eclipse.draw2d.AbstractLayout#setConstraint(IFigure, Object)
@@ -298,11 +291,9 @@ public class BorderLayout extends AbstractHintLayout {
 	}
 
 	/**
-	 * Sets the horizontal spacing to be used between the children. Default is
-	 * 0.
+	 * Sets the horizontal spacing to be used between the children. Default is 0.
 	 * 
-	 * @param gap
-	 *            The horizonal spacing
+	 * @param gap The horizonal spacing
 	 */
 	public void setHorizontalSpacing(int gap) {
 		hGap = gap;
@@ -311,8 +302,7 @@ public class BorderLayout extends AbstractHintLayout {
 	/**
 	 * Sets the vertical spacing ot be used between the children. Default is 0.
 	 * 
-	 * @param gap
-	 *            The vertical spacing
+	 * @param gap The vertical spacing
 	 */
 	public void setVerticalSpacing(int gap) {
 		vGap = gap;

@@ -51,10 +51,10 @@ public class DimensionPropertySource implements IPropertySource {
 
 	public Object getPropertyValue(String propName) {
 		if (ID_HEIGHT.equals(propName)) {
-			return new String(Integer.valueOf(dimension.height).toString());
+			return Integer.toString(dimension.height);
 		}
 		if (ID_WIDTH.equals(propName)) {
-			return new String(Integer.valueOf(dimension.width).toString());
+			return Integer.toString(dimension.width);
 		}
 		return null;
 	}
@@ -65,12 +65,10 @@ public class DimensionPropertySource implements IPropertySource {
 
 	public void setPropertyValue(String propName, Object value) {
 		if (ID_HEIGHT.equals(propName)) {
-			Integer newInt = Integer.valueOf((String) value);
-			dimension.height = newInt.intValue();
+			dimension.height = Integer.parseInt((String) value);
 		}
 		if (ID_WIDTH.equals(propName)) {
-			Integer newInt = Integer.valueOf((String) value);
-			dimension.width = newInt.intValue();
+			dimension.width = Integer.parseInt((String) value);
 		}
 	}
 

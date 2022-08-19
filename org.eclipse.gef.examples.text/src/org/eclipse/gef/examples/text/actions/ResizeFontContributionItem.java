@@ -20,9 +20,8 @@ import org.eclipse.ui.IPartService;
  */
 public class ResizeFontContributionItem extends StyleComboContributionItem {
 
-	private static final String[] INIT_SIZES = new String[] { "8", "9", "10",
-			"11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36",
-			"48", "72" };
+	private static final String[] INIT_SIZES = new String[] { "8", "9", "10", "11", "12", "14", "16", "18", "20", "22",
+			"24", "26", "28", "36", "48", "72" };
 
 	public ResizeFontContributionItem(IPartService service) {
 		super(service);
@@ -39,11 +38,10 @@ public class ResizeFontContributionItem extends StyleComboContributionItem {
 	protected void handleWidgetSelected(SelectionEvent e) {
 		Integer fontSize = null;
 		try {
-			fontSize = Integer.valueOf(combo.getText());
+			fontSize = Integer.parseInt(combo.getText());
 		} catch (NumberFormatException nfe) {
 		}
-		if (fontSize != null
-				&& !fontSize.equals(styleService.getStyle(getProperty())))
+		if (fontSize != null && !fontSize.equals(styleService.getStyle(getProperty())))
 			// No refresh required
 			styleService.setStyle(getProperty(), fontSize);
 		else

@@ -30,8 +30,7 @@ public class DirectedGraphDemo extends AbstractGraphDemo {
 	/**
 	 * Builds the graph, creates Draw2d figures for all graph components.
 	 * 
-	 * @param graph
-	 *            the graph to build
+	 * @param graph the graph to build
 	 * @return the Figure representing the graph
 	 */
 	public static Figure buildGraph(DirectedGraph graph) {
@@ -118,8 +117,7 @@ public class DirectedGraphDemo extends AbstractGraphDemo {
 	/**
 	 * Runs this demo
 	 * 
-	 * @param args
-	 *            command line args
+	 * @param args command line args
 	 */
 	public static void main(String[] args) {
 		new DirectedGraphDemo().run();
@@ -148,10 +146,8 @@ public class DirectedGraphDemo extends AbstractGraphDemo {
 	protected IFigure getContents() {
 		DirectedGraph graph = null;
 		try {
-			graph = (DirectedGraph) (GraphTests.class
-					.getMethod(graphMethod, new Class[] { int.class })
-					.invoke(null,
-							new Object[] { Integer.valueOf(graphDirection) }));
+			graph = (DirectedGraph) (GraphTests.class.getMethod(graphMethod, int.class).invoke(null,
+					Integer.valueOf(graphDirection)));
 		} catch (Exception e) {
 			System.out.println("Could not build graph");
 			e.printStackTrace();

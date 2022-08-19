@@ -51,10 +51,10 @@ public class LocationPropertySource implements IPropertySource {
 
 	public Object getPropertyValue(Object propName) {
 		if (ID_XPOS.equals(propName)) {
-			return new String(Integer.valueOf(point.x).toString());
+			return Integer.toString(point.x);
 		}
 		if (ID_YPOS.equals(propName)) {
-			return new String(Integer.valueOf(point.y).toString());
+			return Integer.toString(point.y);
 		}
 		return null;
 	}
@@ -68,12 +68,10 @@ public class LocationPropertySource implements IPropertySource {
 
 	public void setPropertyValue(Object propName, Object value) {
 		if (ID_XPOS.equals(propName)) {
-			Integer newInt = Integer.valueOf((String) value);
-			point.x = newInt.intValue();
+			point.x = Integer.parseInt((String) value);
 		}
 		if (ID_YPOS.equals(propName)) {
-			Integer newInt = Integer.valueOf((String) value);
-			point.y = newInt.intValue();
+			point.y = Integer.parseInt((String) value);
 		}
 	}
 

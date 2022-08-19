@@ -27,16 +27,14 @@ public class Connection extends ModelElement {
 	 * 
 	 * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies()
 	 */
-	public static final Integer SOLID_CONNECTION = Integer.valueOf(
-			Graphics.LINE_SOLID);
+	public static final Integer SOLID_CONNECTION = Integer.valueOf(Graphics.LINE_SOLID);
 	/**
 	 * Used for indicating that a Connection with dashed line style should be
 	 * created.
 	 * 
 	 * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies()
 	 */
-	public static final Integer DASHED_CONNECTION = Integer.valueOf(
-			Graphics.LINE_DASH);
+	public static final Integer DASHED_CONNECTION = Integer.valueOf(Graphics.LINE_DASH);
 	/** Property ID to use when the line style of this connection is modified. */
 	public static final String LINESTYLE_PROP = "LineStyle";
 	private static final IPropertyDescriptor[] descriptors = new IPropertyDescriptor[1];
@@ -54,19 +52,17 @@ public class Connection extends ModelElement {
 	private Shape target;
 
 	static {
-		descriptors[0] = new ComboBoxPropertyDescriptor(LINESTYLE_PROP,
-				LINESTYLE_PROP, new String[] { SOLID_STR, DASHED_STR });
+		descriptors[0] = new ComboBoxPropertyDescriptor(LINESTYLE_PROP, LINESTYLE_PROP,
+				new String[] { SOLID_STR, DASHED_STR });
 	}
 
 	/**
 	 * Create a (solid) connection between two distinct shapes.
 	 * 
-	 * @param source
-	 *            a source endpoint for this connection (non null)
-	 * @param target
-	 *            a target endpoint for this connection (non null)
-	 * @throws IllegalArgumentException
-	 *             if any of the parameters are null or source == target
+	 * @param source a source endpoint for this connection (non null)
+	 * @param target a target endpoint for this connection (non null)
+	 * @throws IllegalArgumentException if any of the parameters are null or source
+	 *                                  == target
 	 * @see #setLineStyle(int)
 	 */
 	public Connection(Shape source, Shape target) {
@@ -137,8 +133,8 @@ public class Connection extends ModelElement {
 	}
 
 	/**
-	 * Reconnect this connection. The connection will reconnect with the shapes
-	 * it was previously attached to.
+	 * Reconnect this connection. The connection will reconnect with the shapes it
+	 * was previously attached to.
 	 */
 	public void reconnect() {
 		if (!isConnected) {
@@ -150,15 +146,13 @@ public class Connection extends ModelElement {
 
 	/**
 	 * Reconnect to a different source and/or target shape. The connection will
-	 * disconnect from its current attachments and reconnect to the new source
-	 * and target.
+	 * disconnect from its current attachments and reconnect to the new source and
+	 * target.
 	 * 
-	 * @param newSource
-	 *            a new source endpoint for this connection (non null)
-	 * @param newTarget
-	 *            a new target endpoint for this connection (non null)
-	 * @throws IllegalArgumentException
-	 *             if any of the paramers are null or newSource == newTarget
+	 * @param newSource a new source endpoint for this connection (non null)
+	 * @param newTarget a new target endpoint for this connection (non null)
+	 * @throws IllegalArgumentException if any of the paramers are null or newSource
+	 *                                  == newTarget
 	 */
 	public void reconnect(Shape newSource, Shape newTarget) {
 		if (newSource == null || newTarget == null || newSource == newTarget) {
@@ -173,13 +167,12 @@ public class Connection extends ModelElement {
 	/**
 	 * Set the line drawing style of this connection.
 	 * 
-	 * @param lineStyle
-	 *            one of following values: Graphics.LINE_DASH or
-	 *            Graphics.LINE_SOLID
+	 * @param lineStyle one of following values: Graphics.LINE_DASH or
+	 *                  Graphics.LINE_SOLID
 	 * @see Graphics#LINE_DASH
 	 * @see Graphics#LINE_SOLID
-	 * @throws IllegalArgumentException
-	 *             if lineStyle does not have one of the above values
+	 * @throws IllegalArgumentException if lineStyle does not have one of the above
+	 *                                  values
 	 */
 	public void setLineStyle(int lineStyle) {
 		if (lineStyle != Graphics.LINE_DASH && lineStyle != Graphics.LINE_SOLID) {
@@ -197,8 +190,7 @@ public class Connection extends ModelElement {
 	 */
 	public void setPropertyValue(Object id, Object value) {
 		if (id.equals(LINESTYLE_PROP))
-			setLineStyle(Integer.valueOf(1).equals(value) ? Graphics.LINE_DASH
-					: Graphics.LINE_SOLID);
+			setLineStyle(Integer.valueOf(1).equals(value) ? Graphics.LINE_DASH : Graphics.LINE_SOLID);
 		else
 			super.setPropertyValue(id, value);
 	}

@@ -58,8 +58,7 @@ public class PaletteSettingsDialog extends Dialog {
 	protected HashMap settings = new HashMap();
 
 	/**
-	 * HashMap keys used for caching the various settings displayed in this
-	 * dialog.
+	 * HashMap keys used for caching the various settings displayed in this dialog.
 	 */
 	protected static final String CACHE_LAYOUT = "layout setting", //$NON-NLS-1$
 			CACHE_COLUMNS_ICON_SIZE = "columns - use large icons", //$NON-NLS-1$
@@ -71,53 +70,45 @@ public class PaletteSettingsDialog extends Dialog {
 
 	/**
 	 * The unique IDs for the various widgets. These IDs can be used to retrieve
-	 * these widgets from the internal map (using {@link #getWidget(int)}), or
-	 * to identify widgets in {@link #buttonPressed(int)}.
+	 * these widgets from the internal map (using {@link #getWidget(int)}), or to
+	 * identify widgets in {@link #buttonPressed(int)}.
 	 */
 	protected static final int LAYOUT_COLUMNS_VIEW_ID = IDialogConstants.CLIENT_ID + 1,
-			LAYOUT_LIST_VIEW_ID = IDialogConstants.CLIENT_ID + 2,
-			LAYOUT_ICONS_VIEW_ID = IDialogConstants.CLIENT_ID + 3,
+			LAYOUT_LIST_VIEW_ID = IDialogConstants.CLIENT_ID + 2, LAYOUT_ICONS_VIEW_ID = IDialogConstants.CLIENT_ID + 3,
 			LAYOUT_COLUMNS_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 4,
 			LAYOUT_LIST_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 5,
 			LAYOUT_ICONS_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 6,
 			LAYOUT_DETAILS_ICON_SIZE_ID = IDialogConstants.CLIENT_ID + 7,
-			COLLAPSE_NEVER_ID = IDialogConstants.CLIENT_ID + 8,
-			COLLAPSE_ALWAYS_ID = IDialogConstants.CLIENT_ID + 9,
-			COLLAPSE_NEEDED_ID = IDialogConstants.CLIENT_ID + 10,
-			APPLY_ID = IDialogConstants.CLIENT_ID + 11,
-			LAYOUT_DETAILS_VIEW_ID = IDialogConstants.CLIENT_ID + 12,
-			FONT_CHANGE_ID = IDialogConstants.CLIENT_ID + 13,
+			COLLAPSE_NEVER_ID = IDialogConstants.CLIENT_ID + 8, COLLAPSE_ALWAYS_ID = IDialogConstants.CLIENT_ID + 9,
+			COLLAPSE_NEEDED_ID = IDialogConstants.CLIENT_ID + 10, APPLY_ID = IDialogConstants.CLIENT_ID + 11,
+			LAYOUT_DETAILS_VIEW_ID = IDialogConstants.CLIENT_ID + 12, FONT_CHANGE_ID = IDialogConstants.CLIENT_ID + 13,
 			DEFAULT_FONT_ID = IDialogConstants.CLIENT_ID + 14;
 
 	/**
-	 * Sub - classes that need to create their own unique IDs should do so by
-	 * adding to this ID.
+	 * Sub - classes that need to create their own unique IDs should do so by adding
+	 * to this ID.
 	 */
 	protected static final int CLIENT_ID = 16;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param parentShell
-	 *            The parent shell, or <code>null</code> to create a top - level
-	 *            shell
-	 * @param prefs
-	 *            The PaletteViewerPreferences object that can provide access to
-	 *            and allow modification of the palette's settings. It cannot be
-	 *            <code>null</code>.
+	 * @param parentShell The parent shell, or <code>null</code> to create a top -
+	 *                    level shell
+	 * @param prefs       The PaletteViewerPreferences object that can provide
+	 *                    access to and allow modification of the palette's
+	 *                    settings. It cannot be <code>null</code>.
 	 */
-	public PaletteSettingsDialog(Shell parentShell,
-			PaletteViewerPreferences prefs) {
+	public PaletteSettingsDialog(Shell parentShell, PaletteViewerPreferences prefs) {
 		super(parentShell);
 		this.prefs = prefs;
 		setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
 	}
 
 	/**
-	 * This method will be invoked whenever any <code>Button</code> created
-	 * using {@link #createButton(Composite, int, String, int, ImageDescriptor)}
-	 * or {@link Dialog#createButton(Composite, int, String, boolean)} is
-	 * selected.
+	 * This method will be invoked whenever any <code>Button</code> created using
+	 * {@link #createButton(Composite, int, String, int, ImageDescriptor)} or
+	 * {@link Dialog#createButton(Composite, int, String, boolean)} is selected.
 	 * 
 	 * @see Dialog#buttonPressed(int)
 	 */
@@ -156,32 +147,22 @@ public class PaletteSettingsDialog extends Dialog {
 	}
 
 	/**
-	 * This method saves the various settings in this dialog, so that they can
-	 * be restored later on if "Cancel" is pressed.
+	 * This method saves the various settings in this dialog, so that they can be
+	 * restored later on if "Cancel" is pressed.
 	 * 
 	 * @see #restoreSettings()
 	 */
 	protected void cacheSettings() {
 		settings.put(CACHE_LAYOUT, Integer.valueOf(prefs.getLayoutSetting()));
-		settings.put(CACHE_COLLAPSE,
-				Integer.valueOf(prefs.getAutoCollapseSetting()));
+		settings.put(CACHE_COLLAPSE, Integer.valueOf(prefs.getAutoCollapseSetting()));
 		settings.put(CACHE_FONT, prefs.getFontData());
-		settings.put(
-				CACHE_DETAILS_ICON_SIZE,
-				Boolean.valueOf(prefs
-						.useLargeIcons(PaletteViewerPreferences.LAYOUT_DETAILS)));
-		settings.put(
-				CACHE_ICONS_ICON_SIZE,
-				Boolean.valueOf(prefs
-						.useLargeIcons(PaletteViewerPreferences.LAYOUT_ICONS)));
-		settings.put(
-				CACHE_COLUMNS_ICON_SIZE,
-				Boolean.valueOf(prefs
-						.useLargeIcons(PaletteViewerPreferences.LAYOUT_COLUMNS)));
-		settings.put(
-				CACHE_LIST_ICON_SIZE,
-				Boolean.valueOf(prefs
-						.useLargeIcons(PaletteViewerPreferences.LAYOUT_LIST)));
+		settings.put(CACHE_DETAILS_ICON_SIZE,
+				Boolean.valueOf(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_DETAILS)));
+		settings.put(CACHE_ICONS_ICON_SIZE,
+				Boolean.valueOf(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_ICONS)));
+		settings.put(CACHE_COLUMNS_ICON_SIZE,
+				Boolean.valueOf(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_COLUMNS)));
+		settings.put(CACHE_LIST_ICON_SIZE, Boolean.valueOf(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_LIST)));
 	}
 
 	/**
@@ -211,32 +192,26 @@ public class PaletteSettingsDialog extends Dialog {
 
 	/**
 	 * This method should not be used to create buttons for the button bar. Use
-	 * {@link Dialog#createButton(Composite, int, String, boolean)} for that.
-	 * This method can be used to create any other button in the dialog. The
-	 * parent <code>Composite</code> must have a GridLayout. These buttons will
-	 * be available through {@link #getButton(int)} and {@link #getWidget(int)}.
-	 * Ensure that the various buttons created by this method are given unique
-	 * IDs. Pass in a null image descriptor if you don't want the button to have
-	 * an icon. This method will take care of disposing the images that it
-	 * creates. {@link #buttonPressed(int)} will be called when any of the
-	 * buttons created by this method are clicked (selected).
+	 * {@link Dialog#createButton(Composite, int, String, boolean)} for that. This
+	 * method can be used to create any other button in the dialog. The parent
+	 * <code>Composite</code> must have a GridLayout. These buttons will be
+	 * available through {@link #getButton(int)} and {@link #getWidget(int)}. Ensure
+	 * that the various buttons created by this method are given unique IDs. Pass in
+	 * a null image descriptor if you don't want the button to have an icon. This
+	 * method will take care of disposing the images that it creates.
+	 * {@link #buttonPressed(int)} will be called when any of the buttons created by
+	 * this method are clicked (selected).
 	 * 
-	 * @param parent
-	 *            The composite in which the button is to be created
-	 * @param id
-	 *            The button's unique ID
-	 * @param label
-	 *            The button's text
-	 * @param stylebits
-	 *            The style bits for creating the button (eg.,
-	 *            <code>SWT.PUSH</code) or <code>SWT.CHECK</code>)
-	 * @param descriptor
-	 *            The ImageDescriptor from which the image/icon for this button
-	 *            should be created
+	 * @param parent     The composite in which the button is to be created
+	 * @param id         The button's unique ID
+	 * @param label      The button's text
+	 * @param stylebits  The style bits for creating the button (eg.,
+	 *                   <code>SWT.PUSH</code) or <code>SWT.CHECK</code>)
+	 * @param descriptor The ImageDescriptor from which the image/icon for this
+	 *                   button should be created
 	 * @return The newly created button for convenience
 	 */
-	protected Button createButton(Composite parent, int id, String label,
-			int stylebits, ImageDescriptor descriptor) {
+	protected Button createButton(Composite parent, int id, String label, int stylebits, ImageDescriptor descriptor) {
 		Button button = new Button(parent, stylebits);
 		button.setText(label);
 		button.setFont(parent.getFont());
@@ -252,8 +227,7 @@ public class PaletteSettingsDialog extends Dialog {
 		widgets.put(Integer.valueOf(id), button);
 
 		if (descriptor != null) {
-			button.setImage(new Image(parent.getDisplay(), descriptor
-					.getImageData()));
+			button.setImage(new Image(parent.getDisplay(), descriptor.getImageData()));
 			button.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
 					Image img = ((Button) e.getSource()).getImage();
@@ -269,11 +243,10 @@ public class PaletteSettingsDialog extends Dialog {
 
 	/**
 	 * Creates and initializes (i.e., loads the current value from the
-	 * PaletteViewerPreferences) the part of the dialog where the options to
-	 * close drawers will be displayed.
+	 * PaletteViewerPreferences) the part of the dialog where the options to close
+	 * drawers will be displayed.
 	 * 
-	 * @param container
-	 *            The parent composite
+	 * @param container The parent composite
 	 * @return The newly created Control which has the drawer collapse options
 	 */
 	protected Control createDrawerCollapseOptions(Composite container) {
@@ -288,16 +261,13 @@ public class PaletteSettingsDialog extends Dialog {
 		GridData data = new GridData();
 		label.setLayoutData(data);
 
-		Button b = createButton(composite, COLLAPSE_ALWAYS_ID,
-				PaletteMessages.COLLAPSE_ALWAYS_LABEL, SWT.RADIO, null);
+		Button b = createButton(composite, COLLAPSE_ALWAYS_ID, PaletteMessages.COLLAPSE_ALWAYS_LABEL, SWT.RADIO, null);
 		((GridData) b.getLayoutData()).horizontalIndent = 5;
 
-		b = createButton(composite, COLLAPSE_NEEDED_ID,
-				PaletteMessages.COLLAPSE_AS_NEEDED_LABEL, SWT.RADIO, null);
+		b = createButton(composite, COLLAPSE_NEEDED_ID, PaletteMessages.COLLAPSE_AS_NEEDED_LABEL, SWT.RADIO, null);
 		((GridData) b.getLayoutData()).horizontalIndent = 5;
 
-		b = createButton(composite, COLLAPSE_NEVER_ID,
-				PaletteMessages.COLLAPSE_NEVER_LABEL, SWT.RADIO, null);
+		b = createButton(composite, COLLAPSE_NEVER_ID, PaletteMessages.COLLAPSE_NEVER_LABEL, SWT.RADIO, null);
 		((GridData) b.getLayoutData()).horizontalIndent = 5;
 
 		// Load auto - collapse settings
@@ -322,16 +292,14 @@ public class PaletteSettingsDialog extends Dialog {
 	 * Creates and initializes (i.e. loads the current settings from
 	 * PaletteViewerPreferences) the options for details layout.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
 	protected Control createDetailsOptions(Composite parent) {
-		Control contents = createOptionsPage(parent,
-				PaletteMessages.SETTINGS_OPTIONS_DETAILS,
+		Control contents = createOptionsPage(parent, PaletteMessages.SETTINGS_OPTIONS_DETAILS,
 				LAYOUT_DETAILS_ICON_SIZE_ID);
-		getButton(LAYOUT_DETAILS_ICON_SIZE_ID).setSelection(
-				prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_DETAILS));
+		getButton(LAYOUT_DETAILS_ICON_SIZE_ID)
+				.setSelection(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_DETAILS));
 		return contents;
 	}
 
@@ -356,8 +324,7 @@ public class PaletteSettingsDialog extends Dialog {
 		label.setLayoutData(data);
 
 		child = createLayoutSettings(composite);
-		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.FILL_VERTICAL);
+		data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.FILL_VERTICAL);
 		data.horizontalSpan = 2;
 		data.horizontalIndent = 5;
 		child.setLayoutData(data);
@@ -387,16 +354,14 @@ public class PaletteSettingsDialog extends Dialog {
 	 * Creates and initializes (i.e. loads the current settings from
 	 * PaletteViewerPreferences) the options for columns layout.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
 	protected Control createColumnsOptions(Composite parent) {
-		Composite contents = (Composite) createOptionsPage(parent,
-				PaletteMessages.SETTINGS_OPTIONS_COLUMNS,
+		Composite contents = (Composite) createOptionsPage(parent, PaletteMessages.SETTINGS_OPTIONS_COLUMNS,
 				LAYOUT_COLUMNS_ICON_SIZE_ID);
-		getButton(LAYOUT_COLUMNS_ICON_SIZE_ID).setSelection(
-				prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_COLUMNS));
+		getButton(LAYOUT_COLUMNS_ICON_SIZE_ID)
+				.setSelection(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_COLUMNS));
 
 		// final Button button = createButton(contents, -1,
 		// PaletteMessages.SETTINGS_LAYOUT_COLUMNS_OVERRIDE_WIDTH, SWT.CHECK,
@@ -446,8 +411,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * PaletteViewerPreferences) the part of the dialog that displays the font
 	 * settings.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
 	protected Control createFontSettings(Composite parent) {
@@ -463,11 +427,9 @@ public class PaletteSettingsDialog extends Dialog {
 		fontName.setLayoutData(data);
 		updateFontName();
 
-		createButton(container, FONT_CHANGE_ID,
-				PaletteMessages.SETTINGS_FONT_CHANGE, SWT.PUSH, null);
+		createButton(container, FONT_CHANGE_ID, PaletteMessages.SETTINGS_FONT_CHANGE, SWT.PUSH, null);
 
-		createButton(container, DEFAULT_FONT_ID,
-				PaletteMessages.SETTINGS_DEFAULT_FONT, SWT.PUSH, null);
+		createButton(container, DEFAULT_FONT_ID, PaletteMessages.SETTINGS_DEFAULT_FONT, SWT.PUSH, null);
 
 		return container;
 	}
@@ -476,16 +438,13 @@ public class PaletteSettingsDialog extends Dialog {
 	 * Creates and initializes (i.e. loads the current settings from
 	 * PaletteViewerPreferences) the options for icons layout.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
 	protected Control createIconsOnlyOptions(Composite parent) {
-		Control contents = createOptionsPage(parent,
-				PaletteMessages.SETTINGS_OPTIONS_ICONS_ONLY,
+		Control contents = createOptionsPage(parent, PaletteMessages.SETTINGS_OPTIONS_ICONS_ONLY,
 				LAYOUT_ICONS_ICON_SIZE_ID);
-		getButton(LAYOUT_ICONS_ICON_SIZE_ID).setSelection(
-				prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_ICONS));
+		getButton(LAYOUT_ICONS_ICON_SIZE_ID).setSelection(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_ICONS));
 		return contents;
 	}
 
@@ -493,8 +452,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * Creates the part of the dialog that displays the various options for the
 	 * selected layout.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
 	protected Control createLayoutOptions(Composite parent) {
@@ -516,27 +474,23 @@ public class PaletteSettingsDialog extends Dialog {
 		for (int i = 0; i < modes.length; i++) {
 			switch (modes[i]) {
 			case PaletteViewerPreferences.LAYOUT_COLUMNS:
-				b = createButton(composite, LAYOUT_COLUMNS_VIEW_ID,
-						PaletteMessages.SETTINGS_COLUMNS_VIEW_LABEL, SWT.RADIO,
-						null);
+				b = createButton(composite, LAYOUT_COLUMNS_VIEW_ID, PaletteMessages.SETTINGS_COLUMNS_VIEW_LABEL,
+						SWT.RADIO, null);
 				((GridData) b.getLayoutData()).horizontalIndent = 5;
 				break;
 			case PaletteViewerPreferences.LAYOUT_LIST:
-				b = createButton(composite, LAYOUT_LIST_VIEW_ID,
-						PaletteMessages.SETTINGS_LIST_VIEW_LABEL, SWT.RADIO,
+				b = createButton(composite, LAYOUT_LIST_VIEW_ID, PaletteMessages.SETTINGS_LIST_VIEW_LABEL, SWT.RADIO,
 						null);
 				((GridData) b.getLayoutData()).horizontalIndent = 5;
 				break;
 			case PaletteViewerPreferences.LAYOUT_ICONS:
-				b = createButton(composite, LAYOUT_ICONS_VIEW_ID,
-						PaletteMessages.SETTINGS_ICONS_VIEW_LABEL, SWT.RADIO,
+				b = createButton(composite, LAYOUT_ICONS_VIEW_ID, PaletteMessages.SETTINGS_ICONS_VIEW_LABEL, SWT.RADIO,
 						null);
 				((GridData) b.getLayoutData()).horizontalIndent = 5;
 				break;
 			case PaletteViewerPreferences.LAYOUT_DETAILS:
-				b = createButton(composite, LAYOUT_DETAILS_VIEW_ID,
-						PaletteMessages.SETTINGS_DETAILS_VIEW_LABEL, SWT.RADIO,
-						null);
+				b = createButton(composite, LAYOUT_DETAILS_VIEW_ID, PaletteMessages.SETTINGS_DETAILS_VIEW_LABEL,
+						SWT.RADIO, null);
 				((GridData) b.getLayoutData()).horizontalIndent = 5;
 				break;
 			}
@@ -565,11 +519,10 @@ public class PaletteSettingsDialog extends Dialog {
 	}
 
 	/**
-	 * Creates the part of the dialog that displays the lists the available
-	 * layout modes.
+	 * Creates the part of the dialog that displays the lists the available layout
+	 * modes.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
 	protected Control createLayoutSettings(Composite parent) {
@@ -602,54 +555,44 @@ public class PaletteSettingsDialog extends Dialog {
 	 * Creates and initializes (i.e. loads the current settings from
 	 * PaletteViewerPreferences) the options for list layout.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
 	protected Control createListOptions(Composite parent) {
-		Control composite = createOptionsPage(parent,
-				PaletteMessages.SETTINGS_OPTIONS_LIST, LAYOUT_LIST_ICON_SIZE_ID);
-		getButton(LAYOUT_LIST_ICON_SIZE_ID).setSelection(
-				prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_LIST));
+		Control composite = createOptionsPage(parent, PaletteMessages.SETTINGS_OPTIONS_LIST, LAYOUT_LIST_ICON_SIZE_ID);
+		getButton(LAYOUT_LIST_ICON_SIZE_ID).setSelection(prefs.useLargeIcons(PaletteViewerPreferences.LAYOUT_LIST));
 		return composite;
 	}
 
 	/**
 	 * This helper method is a result of code-factoring. It creates a Group
-	 * displaying the given title and creates a "Use Large Icons" checkbox with
-	 * the given buttonId in it. This method is used to create the options for
-	 * the different layout modes.
+	 * displaying the given title and creates a "Use Large Icons" checkbox with the
+	 * given buttonId in it. This method is used to create the options for the
+	 * different layout modes.
 	 * 
-	 * @param parent
-	 *            the parent composite
-	 * @param title
-	 *            The title for the group to be created.
-	 * @param buttonId
-	 *            The ID for the "Use Large Icons" checkbox to be created in the
-	 *            group.
+	 * @param parent   the parent composite
+	 * @param title    The title for the group to be created.
+	 * @param buttonId The ID for the "Use Large Icons" checkbox to be created in
+	 *                 the group.
 	 * @return the newly created Group
 	 */
-	protected Control createOptionsPage(Composite parent, String title,
-			int buttonId) {
+	protected Control createOptionsPage(Composite parent, String title, int buttonId) {
 		Group contents = new Group(parent, SWT.NONE);
 		contents.setFont(parent.getFont());
 		GridLayout layout = new GridLayout(1, false);
 		contents.setLayout(layout);
-		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.VERTICAL_ALIGN_FILL);
+		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL);
 		data.heightHint = 0;
 		contents.setLayoutData(data);
 		contents.setText(title);
 
-		createButton(contents, buttonId,
-				PaletteMessages.SETTINGS_USE_LARGE_ICONS_LABEL, SWT.CHECK, null);
+		createButton(contents, buttonId, PaletteMessages.SETTINGS_USE_LARGE_ICONS_LABEL, SWT.CHECK, null);
 
 		return contents;
 	}
 
 	/**
-	 * Returns the Button with the given id; or <code>null</code> if none was
-	 * found.
+	 * Returns the Button with the given id; or <code>null</code> if none was found.
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#getButton(int)
 	 */
@@ -664,11 +607,10 @@ public class PaletteSettingsDialog extends Dialog {
 	}
 
 	/**
-	 * The <code>Widget</code>s that were created with a unique ID and added to
-	 * this class' internal map can be retrieved through this method.
+	 * The <code>Widget</code>s that were created with a unique ID and added to this
+	 * class' internal map can be retrieved through this method.
 	 * 
-	 * @param id
-	 *            The unique ID of the Widget that you wish to retrieve
+	 * @param id The unique ID of the Widget that you wish to retrieve
 	 * @return The Widget, if one with the given id exists. <code>null</code>
 	 *         otherwise.
 	 */
@@ -686,8 +628,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * changes the setting in the
 	 * {@link org.eclipse.gef.ui.palette.PaletteViewerPreferences} object.
 	 * 
-	 * @param newSetting
-	 *            The flag for the new setting
+	 * @param newSetting The flag for the new setting
 	 */
 	protected void handleAutoCollapseSettingChanged(int newSetting) {
 		prefs.setAutoCollapseSetting(newSetting);
@@ -718,8 +659,8 @@ public class PaletteSettingsDialog extends Dialog {
 
 	/**
 	 * This method is invoked when the user selects the "Restore Default" font
-	 * button. It changes the font, in case it was different, to the default
-	 * one, which is the Workbench Dialog font.
+	 * button. It changes the font, in case it was different, to the default one,
+	 * which is the Workbench Dialog font.
 	 */
 	protected void handleDefaultFontRequested() {
 		prefs.setFontData(JFaceResources.getDialogFont().getFontData()[0]);
@@ -730,20 +671,18 @@ public class PaletteSettingsDialog extends Dialog {
 	 * This method is invoked when the "Use Large Icons" checkbox is
 	 * selected/deselected for the currently active layout mode.
 	 * 
-	 * @param selection
-	 *            indicates whether large icons are to be used or not.
+	 * @param selection indicates whether large icons are to be used or not.
 	 */
 	protected void handleIconSizeChanged(boolean selection) {
 		prefs.setCurrentUseLargeIcons(selection);
 	}
 
 	/**
-	 * This method is called when any one of the "Layout" radio buttons is
-	 * clicked. It changes the setting in the
+	 * This method is called when any one of the "Layout" radio buttons is clicked.
+	 * It changes the setting in the
 	 * {@link org.eclipse.gef.ui.palette.PaletteViewerPreferences} object.
 	 * 
-	 * @param newSetting
-	 *            The flag for the new setting
+	 * @param newSetting The flag for the new setting
 	 */
 	protected void handleLayoutSettingChanged(int newSetting) {
 		prefs.setLayoutSetting(newSetting);
@@ -766,37 +705,32 @@ public class PaletteSettingsDialog extends Dialog {
 	}
 
 	/**
-	 * Restores the cached settings, thus undoing any changes made since the
-	 * last caching of settings.
+	 * Restores the cached settings, thus undoing any changes made since the last
+	 * caching of settings.
 	 * 
 	 * @see #cacheSettings()
 	 */
 	protected void restoreSettings() {
 		prefs.setFontData((FontData) settings.get(CACHE_FONT));
-		prefs.setAutoCollapseSetting(((Integer) settings.get(CACHE_COLLAPSE))
-				.intValue());
-		prefs.setLayoutSetting(((Integer) settings.get(CACHE_LAYOUT))
-				.intValue());
+		prefs.setAutoCollapseSetting(((Integer) settings.get(CACHE_COLLAPSE)).intValue());
+		prefs.setLayoutSetting(((Integer) settings.get(CACHE_LAYOUT)).intValue());
 		prefs.setUseLargeIcons(PaletteViewerPreferences.LAYOUT_DETAILS,
-				((Boolean) settings.get(CACHE_DETAILS_ICON_SIZE))
-						.booleanValue());
+				((Boolean) settings.get(CACHE_DETAILS_ICON_SIZE)).booleanValue());
 		prefs.setUseLargeIcons(PaletteViewerPreferences.LAYOUT_ICONS,
 				((Boolean) settings.get(CACHE_ICONS_ICON_SIZE)).booleanValue());
 		prefs.setUseLargeIcons(PaletteViewerPreferences.LAYOUT_LIST,
 				((Boolean) settings.get(CACHE_LIST_ICON_SIZE)).booleanValue());
 		prefs.setUseLargeIcons(PaletteViewerPreferences.LAYOUT_COLUMNS,
-				((Boolean) settings.get(CACHE_COLUMNS_ICON_SIZE))
-						.booleanValue());
+				((Boolean) settings.get(CACHE_COLUMNS_ICON_SIZE)).booleanValue());
 	}
 
 	/**
-	 * This helper method is mainly a result of code-factoring. It shows the
-	 * given page (which should be one of the controls showing the layout
-	 * options) in the PageBook and grows the dialog if necessary.
+	 * This helper method is mainly a result of code-factoring. It shows the given
+	 * page (which should be one of the controls showing the layout options) in the
+	 * PageBook and grows the dialog if necessary.
 	 * 
-	 * @param page
-	 *            One of the controls showing the layout options that already
-	 *            belongs to the PageBook book.
+	 * @param page One of the controls showing the layout options that already
+	 *             belongs to the PageBook book.
 	 */
 	protected void showLayoutOptionsPage(Control page) {
 		// Show the page and grow the shell (if necessary) so that the page is
@@ -820,8 +754,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 */
 	protected void updateFontName() {
 		String name;
-		if (prefs.getFontData().equals(
-				(JFaceResources.getDialogFont().getFontData()[0]))) {
+		if (prefs.getFontData().equals((JFaceResources.getDialogFont().getFontData()[0]))) {
 			name = PaletteMessages.SETTINGS_WORKBENCH_FONT_LABEL;
 		} else {
 			name = StringConverter.asString(prefs.getFontData());

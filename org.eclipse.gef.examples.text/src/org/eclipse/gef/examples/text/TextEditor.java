@@ -113,19 +113,16 @@ public class TextEditor extends GraphicalEditor {
 	 */
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
-		doc.getStyle().setParentStyle(
-				new CanvasStyle(getGraphicalViewer().getControl()));
+		doc.getStyle().setParentStyle(new CanvasStyle(getGraphicalViewer().getControl()));
 
 		getEditDomain().setDefaultTool(new TextTool(styleService));
 		getEditDomain().loadDefaultTool();
 
 		getGraphicalViewer().setRootEditPart(new ScalableRootEditPart());
-		((FigureCanvas) getGraphicalViewer().getControl()).getViewport()
-				.setContentsTracksWidth(true);
+		((FigureCanvas) getGraphicalViewer().getControl()).getViewport().setContentsTracksWidth(true);
 
 		// Scroll-wheel Zoom
-		getGraphicalViewer().setProperty(
-				MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
+		getGraphicalViewer().setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
 				MouseWheelZoomHandler.SINGLETON);
 	}
 
@@ -138,44 +135,35 @@ public class TextEditor extends GraphicalEditor {
 		ActionRegistry registry = getActionRegistry();
 		IAction action;
 
-		action = new BooleanStyleAction(styleService,
-				TextActionConstants.STYLE_BOLD, Style.PROPERTY_BOLD);
+		action = new BooleanStyleAction(styleService, TextActionConstants.STYLE_BOLD, Style.PROPERTY_BOLD);
 		registry.registerAction(action);
 		service.registerAction(action);
 
-		action = new BooleanStyleAction(styleService,
-				TextActionConstants.STYLE_ITALIC, Style.PROPERTY_ITALIC);
+		action = new BooleanStyleAction(styleService, TextActionConstants.STYLE_ITALIC, Style.PROPERTY_ITALIC);
 		registry.registerAction(action);
 		service.registerAction(action);
 
-		action = new BooleanStyleAction(styleService,
-				TextActionConstants.STYLE_UNDERLINE, Style.PROPERTY_UNDERLINE);
+		action = new BooleanStyleAction(styleService, TextActionConstants.STYLE_UNDERLINE, Style.PROPERTY_UNDERLINE);
 		registry.registerAction(action);
 		service.registerAction(action);
 
-		action = new MultiStyleAction(styleService,
-				TextActionConstants.BLOCK_ALIGN_LEFT, Style.PROPERTY_ALIGNMENT,
+		action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_ALIGN_LEFT, Style.PROPERTY_ALIGNMENT,
 				Integer.valueOf(PositionConstants.ALWAYS_LEFT));
 		registry.registerAction(action);
 
-		action = new MultiStyleAction(styleService,
-				TextActionConstants.BLOCK_ALIGN_CENTER,
-				Style.PROPERTY_ALIGNMENT,
+		action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_ALIGN_CENTER, Style.PROPERTY_ALIGNMENT,
 				Integer.valueOf(PositionConstants.CENTER));
 		registry.registerAction(action);
 
-		action = new MultiStyleAction(styleService,
-				TextActionConstants.BLOCK_ALIGN_RIGHT, Style.PROPERTY_ALIGNMENT,
+		action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_ALIGN_RIGHT, Style.PROPERTY_ALIGNMENT,
 				Integer.valueOf(PositionConstants.ALWAYS_RIGHT));
 		registry.registerAction(action);
 
-		action = new MultiStyleAction(styleService,
-				TextActionConstants.BLOCK_LTR, Style.PROPERTY_ORIENTATION,
+		action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_LTR, Style.PROPERTY_ORIENTATION,
 				Integer.valueOf(SWT.LEFT_TO_RIGHT));
 		registry.registerAction(action);
 
-		action = new MultiStyleAction(styleService,
-				TextActionConstants.BLOCK_RTL, Style.PROPERTY_ORIENTATION,
+		action = new MultiStyleAction(styleService, TextActionConstants.BLOCK_RTL, Style.PROPERTY_ORIENTATION,
 				Integer.valueOf(SWT.RIGHT_TO_LEFT));
 		registry.registerAction(action);
 	}
@@ -251,9 +239,7 @@ public class TextEditor extends GraphicalEditor {
 			objStream.writeObject(doc);
 			objStream.close();
 			IFile file = ((IFileEditorInput) getEditorInput()).getFile();
-			file.setContents(
-					new ByteArrayInputStream(outputStream.toByteArray()), true,
-					false, monitor);
+			file.setContents(new ByteArrayInputStream(outputStream.toByteArray()), true, false, monitor);
 			outputStream.close();
 			getCommandStack().markSaveLocation();
 		} catch (Exception e) {
@@ -270,34 +256,26 @@ public class TextEditor extends GraphicalEditor {
 	/**
 	 * @see GraphicalEditor#init(IEditorSite, IEditorInput)
 	 */
-	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setEditDomain(new DefaultEditDomain(this));
-		getCommandStack()
-				.addCommandStackEventListener(new CommandStackEventListener() {
-					public void stackChanged(CommandStackEvent event) {
-						TextCommand command = (TextCommand) event.getCommand();
-						if (command != null) {
-							GraphicalTextViewer textViewer = (GraphicalTextViewer) getGraphicalViewer();
-							if (event.getDetail() == CommandStack.POST_EXECUTE)
-								textViewer.setSelectionRange(command
-										.getExecuteSelectionRange(textViewer));
-							else if (event
-									.getDetail() == CommandStack.POST_REDO)
-								textViewer.setSelectionRange(command
-										.getRedoSelectionRange(textViewer));
-							else if (event
-									.getDetail() == CommandStack.POST_UNDO)
-								textViewer.setSelectionRange(command
-										.getUndoSelectionRange(textViewer));
-						}
-					}
-				});
+		getCommandStack().addCommandStackEventListener(new CommandStackEventListener() {
+			public void stackChanged(CommandStackEvent event) {
+				TextCommand command = (TextCommand) event.getCommand();
+				if (command != null) {
+					GraphicalTextViewer textViewer = (GraphicalTextViewer) getGraphicalViewer();
+					if (event.getDetail() == CommandStack.POST_EXECUTE)
+						textViewer.setSelectionRange(command.getExecuteSelectionRange(textViewer));
+					else if (event.getDetail() == CommandStack.POST_REDO)
+						textViewer.setSelectionRange(command.getRedoSelectionRange(textViewer));
+					else if (event.getDetail() == CommandStack.POST_UNDO)
+						textViewer.setSelectionRange(command.getUndoSelectionRange(textViewer));
+				}
+			}
+		});
 
 		super.init(site, input);
 
-		site.getKeyBindingService()
-				.setScopes(new String[] { GEFActionConstants.CONTEXT_TEXT });
+		site.getKeyBindingService().setScopes(new String[] { GEFActionConstants.CONTEXT_TEXT });
 		site.getActionBars().setGlobalActionHandler(ActionFactory.UNDO.getId(),
 				getActionRegistry().getAction(ActionFactory.UNDO.getId()));
 		site.getActionBars().setGlobalActionHandler(ActionFactory.REDO.getId(),
@@ -337,8 +315,8 @@ public class TextEditor extends GraphicalEditor {
 			imports.add(new TextRun("org.eclipse.gef", TextRun.TYPE_IMPORT));
 			// for (int i = 0; i < 400; i++) {
 			Container block = new Block(Container.TYPE_COMMENT);
-			block.add(new TextRun(
-					"Copyright (c) 2005 IBM Corporation and others. All rights reserved. This program and "
+			block.add(
+					new TextRun("Copyright (c) 2005 IBM Corporation and others. All rights reserved. This program and "
 							+ "the accompanying materials are made available under the terms of the Eclipse Public "
 							+ "License v1.0 which accompanies this distribution, and is available at "
 							+ "http://www.eclipse.org/legal/epl-v10.html (\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329)\r\n"
@@ -350,10 +328,10 @@ public class TextEditor extends GraphicalEditor {
 			Container code = new Block(Container.TYPE_PARAGRAPH);
 			code.getStyle().setFontFamily("Courier New");
 			doc.add(code);
-			code.add(new TextRun("public void countToANumber(int limit) {\n"
-					+ "    for (int i = 0; i < limit; i++)\n"
-					+ "        System.out.println(\"Counting: \" + i); //$NON-NLS-1$\n\n"
-					+ "}", TextRun.TYPE_CODE));
+			code.add(new TextRun(
+					"public void countToANumber(int limit) {\n" + "    for (int i = 0; i < limit; i++)\n"
+							+ "        System.out.println(\"Counting: \" + i); //$NON-NLS-1$\n\n" + "}",
+					TextRun.TYPE_CODE));
 			// }
 		}
 
