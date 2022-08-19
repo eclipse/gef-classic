@@ -57,15 +57,11 @@ class Vertex extends Point {
 	private int origX, origY;
 
 	/**
-	 * Creates a new Vertex with the given x, y position and on the given
-	 * obstacle.
+	 * Creates a new Vertex with the given x, y position and on the given obstacle.
 	 * 
-	 * @param x
-	 *            x point
-	 * @param y
-	 *            y point
-	 * @param obs
-	 *            obstacle - can be null
+	 * @param x   x point
+	 * @param y   y point
+	 * @param obs obstacle - can be null
 	 */
 	Vertex(int x, int y, Obstacle obs) {
 		super(x, y);
@@ -75,28 +71,22 @@ class Vertex extends Point {
 	}
 
 	/**
-	 * Creates a new Vertex with the given point position and on the given
-	 * obstacle.
+	 * Creates a new Vertex with the given point position and on the given obstacle.
 	 * 
-	 * @param p
-	 *            the point
-	 * @param obs
-	 *            obstacle - can be null
+	 * @param p   the point
+	 * @param obs obstacle - can be null
 	 */
 	Vertex(Point p, Obstacle obs) {
 		this(p.x, p.y, obs);
 	}
 
 	/**
-	 * Adds a path to this vertex, calculates angle between two segments and
-	 * caches it.
+	 * Adds a path to this vertex, calculates angle between two segments and caches
+	 * it.
 	 * 
-	 * @param path
-	 *            the path
-	 * @param start
-	 *            the segment to this vertex
-	 * @param end
-	 *            the segment away from this vertex
+	 * @param path  the path
+	 * @param start the segment to this vertex
+	 * @param end   the segment away from this vertex
 	 */
 	void addPath(Path path, Segment start, Segment end) {
 		if (paths == null) {
@@ -105,15 +95,14 @@ class Vertex extends Point {
 		}
 		if (!paths.contains(path))
 			paths.add(path);
-		cachedCosines.put(path, new Double(start.cosine(end)));
+		cachedCosines.put(path, Double.valueOf(start.cosine(end)));
 	}
 
 	/**
-	 * Creates a point that represents this vertex offset by the given amount
-	 * times the offset.
+	 * Creates a point that represents this vertex offset by the given amount times
+	 * the offset.
 	 * 
-	 * @param modifier
-	 *            the offset
+	 * @param modifier the offset
 	 * @return a Point that has been bent around this vertex
 	 */
 	Point bend(int modifier) {
@@ -151,11 +140,10 @@ class Vertex extends Point {
 	}
 
 	/**
-	 * Returns a Rectangle that represents the region around this vertex that
-	 * paths will be traveling in.
+	 * Returns a Rectangle that represents the region around this vertex that paths
+	 * will be traveling in.
 	 * 
-	 * @param extraOffset
-	 *            a buffer to add to the region.
+	 * @param extraOffset a buffer to add to the region.
 	 * @return the rectangle
 	 */
 	Rectangle getDeformedRectangle(int extraOffset) {

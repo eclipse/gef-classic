@@ -26,8 +26,8 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * Instructions for using SpringLayoutAlgorithm: <br>
  * 1. Instantiate a SpringLayout object; <br>
  * 2. Populate the data repository using {@link #add add(...)}; <br>
- * 3. Populate the relation repository using
- * {@link #addRelation addRelation(...)}; <br>
+ * 3. Populate the relation repository using {@link #addRelation
+ * addRelation(...)}; <br>
  * 4. Execute {@link #compute compute()}; <br>
  * 5. Execute {@link #fitWithinBounds fitWithinBounds(...)}; <br>
  * 6. Query the computed results(node size and node position).
@@ -97,8 +97,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	private static long maxTimeMS = MAX_SPRING_TIME;
 
 	/**
-	 * The variable can be customized to set whether or not the spring layout
-	 * nodes are positioned randomly before beginning iterations.
+	 * The variable can be customized to set whether or not the spring layout nodes
+	 * are positioned randomly before beginning iterations.
 	 */
 	private static boolean sprRandom = DEFAULT_SPRING_RANDOM;
 
@@ -128,8 +128,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	private static double sprLength = DEFAULT_SPRING_LENGTH;
 
 	/**
-	 * The variable can be customized to set the spring layout
-	 * gravitation-control.
+	 * The variable can be customized to set the spring layout gravitation-control.
 	 */
 	private static double sprGravitation = DEFAULT_SPRING_GRAVITATION;
 
@@ -140,8 +139,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	private double largestMovement = 0;
 
 	/**
-	 * Maps a src and dest object to the number of relations between them. Key
-	 * is src.toString() + dest.toString(), value is an Integer
+	 * Maps a src and dest object to the number of relations between them. Key is
+	 * src.toString() + dest.toString(), value is an Integer
 	 */
 	private Map srcDestToNumRelsMap;
 
@@ -201,16 +200,15 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Sets the spring layout move-control.
 	 * 
-	 * @param move
-	 *            The move-control value.
+	 * @param move The move-control value.
 	 */
 	public void setSpringMove(double move) {
 		sprMove = move;
 	}
 
 	/**
-	 * Returns the move-control value of this SpringLayoutAlgorithm in
-	 * double presion.
+	 * Returns the move-control value of this SpringLayoutAlgorithm in double
+	 * presion.
 	 * 
 	 * @return The move-control value.
 	 */
@@ -221,16 +219,15 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Sets the spring layout strain-control.
 	 * 
-	 * @param strain
-	 *            The strain-control value.
+	 * @param strain The strain-control value.
 	 */
 	public void setSpringStrain(double strain) {
 		sprStrain = strain;
 	}
 
 	/**
-	 * Returns the strain-control value of this SpringLayoutAlgorithm in
-	 * double presion.
+	 * Returns the strain-control value of this SpringLayoutAlgorithm in double
+	 * presion.
 	 * 
 	 * @return The strain-control value.
 	 */
@@ -241,8 +238,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Sets the spring layout length-control.
 	 * 
-	 * @param length
-	 *            The length-control value.
+	 * @param length The length-control value.
 	 */
 	public void setSpringLength(double length) {
 		sprLength = length;
@@ -267,8 +263,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	}
 
 	/**
-	 * Returns the length-control value of this SpringLayoutAlgorithm in
-	 * double presion.
+	 * Returns the length-control value of this SpringLayoutAlgorithm in double
+	 * presion.
 	 * 
 	 * @return The length-control value.
 	 */
@@ -279,16 +275,15 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Sets the spring layout gravitation-control.
 	 * 
-	 * @param gravitation
-	 *            The gravitation-control value.
+	 * @param gravitation The gravitation-control value.
 	 */
 	public void setSpringGravitation(double gravitation) {
 		sprGravitation = gravitation;
 	}
 
 	/**
-	 * Returns the gravitation-control value of this SpringLayoutAlgorithm
-	 * in double presion.
+	 * Returns the gravitation-control value of this SpringLayoutAlgorithm in double
+	 * presion.
 	 * 
 	 * @return The gravitation-control value.
 	 */
@@ -299,8 +294,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Sets the number of iterations to be used.
 	 * 
-	 * @param gravitation
-	 *            The number of iterations.
+	 * @param gravitation The number of iterations.
 	 */
 	public void setIterations(int iterations) {
 		sprIterations = iterations;
@@ -316,26 +310,25 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	}
 
 	/**
-	 * Sets whether or not this SpringLayoutAlgorithm will layout the
-	 * nodes randomly before beginning iterations.
+	 * Sets whether or not this SpringLayoutAlgorithm will layout the nodes randomly
+	 * before beginning iterations.
 	 * 
-	 * @param random
-	 *            The random placement value.
+	 * @param random The random placement value.
 	 */
 	public void setRandom(boolean random) {
 		sprRandom = random;
 	}
 
 	/**
-	 * Returns whether or not this SpringLayoutAlgorithm will layout the
-	 * nodes randomly before beginning iterations.
+	 * Returns whether or not this SpringLayoutAlgorithm will layout the nodes
+	 * randomly before beginning iterations.
 	 */
 	public boolean getRandom() {
 		return sprRandom;
 	}
 
 	public void setWeight(String relType, double weight) {
-		relTypeToWeightMap.put(relType, new Double(weight));
+		relTypeToWeightMap.put(relType, Double.valueOf(weight));
 	}
 
 	public double getWeight(String relType) {
@@ -373,11 +366,13 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	private long startTime = 0;
 
-	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double x, double y, double width, double height) {
 		// TODO: Filter out any non-wanted entities and relationships
 		// super.applyLayout(entitiesToLayout, relationshipsToConsider, x, y,
 		// width, height);
-		//InternalNode[] a_entitiesToLayout = (InternalNode[]) entitiesToLayout.toArray(new InternalNode[entitiesToLayout.size()]);
+		// InternalNode[] a_entitiesToLayout = (InternalNode[])
+		// entitiesToLayout.toArray(new InternalNode[entitiesToLayout.size()]);
 		bounds = new DisplayIndependentRectangle(x, y, width, height);
 		tempLocationsX = new double[entitiesToLayout.length];
 		tempLocationsY = new double[entitiesToLayout.length];
@@ -398,17 +393,16 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		startTime = date.getTime();
 	}
 
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationshipsToConsider) {
 		reset(entitiesToLayout);
 	}
 
 	/**
 	 * Adds a simple relation between two nodes to the relation repository.
 	 * 
-	 * @param layoutRelationship
-	 *            The simple relation to be added
-	 * @throws java.lang.NullPointerExcetption
-	 *             If <code>sr</code> is null
+	 * @param layoutRelationship The simple relation to be added
+	 * @throws java.lang.NullPointerExcetption If <code>sr</code> is null
 	 * @see SimpleRelation
 	 */
 	private void addRelation(InternalRelationship layoutRelationship) {
@@ -426,11 +420,11 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 				Double avgWeight = (Double) srcDestToRelsAvgWeightMap.get(key);
 				if (count == null) {
 					count = new Integer(1);
-					avgWeight = new Double(weight);
+					avgWeight = Double.valueOf(weight);
 				} else {
 					int newCount = count.intValue() + 1;
 					double newAverage = (avgWeight.doubleValue() * count.doubleValue() + weight) / newCount;
-					avgWeight = new Double(newAverage);
+					avgWeight = Double.valueOf(newAverage);
 					count = new Integer(newCount);
 				}
 				srcDestToNumRelsMap.put(key, count);
@@ -465,7 +459,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	}
 
 	// TODO: This is a complete Clone! (and not in a good way)
-	protected DisplayIndependentRectangle getLayoutBoundsTemp(InternalNode[] entitiesToLayout, boolean includeNodeSize) {
+	protected DisplayIndependentRectangle getLayoutBoundsTemp(InternalNode[] entitiesToLayout,
+			boolean includeNodeSize) {
 		double rightSide = Double.MIN_VALUE;
 		double bottomSide = Double.MIN_VALUE;
 		double leftSide = Double.MAX_VALUE;
@@ -483,7 +478,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		return new DisplayIndependentRectangle(leftSide, topSide, rightSide - leftSide, bottomSide - topSide);
 	}
 
-	protected void convertNodePositionsBack(int i, InternalNode entityToConvert, double px, double py, double screenWidth, double screenHeight, DisplayIndependentRectangle layoutBounds) {
+	protected void convertNodePositionsBack(int i, InternalNode entityToConvert, double px, double py,
+			double screenWidth, double screenHeight, DisplayIndependentRectangle layoutBounds) {
 
 		// If the node selected is outside the screen, map it to the boarder
 		if (px > screenWidth)
@@ -501,7 +497,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 		tempLocationsX[i] = x;
 		tempLocationsY[i] = y;
-		//setTempLocation(entityToConvert, new DisplayIndependentPoint(x, y));
+		// setTempLocation(entityToConvert, new DisplayIndependentPoint(x, y));
 
 		if (entityToConvert.getInternalX() < 0) {
 			// System.out.println("We have nodes less than 0 here!");
@@ -512,20 +508,22 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	private void checkPreferredLocation(InternalNode[] entitiesToLayout, DisplayIndependentRectangle realBounds) {
 		// use 10% for the border - 5% on each side
 		double borderWidth = Math.min(realBounds.width, realBounds.height) / 10.0;
-		DisplayIndependentRectangle screenBounds = new DisplayIndependentRectangle(realBounds.x + borderWidth / 2.0, realBounds.y + borderWidth / 2.0, realBounds.width - borderWidth, realBounds.height - borderWidth);
+		DisplayIndependentRectangle screenBounds = new DisplayIndependentRectangle(realBounds.x + borderWidth / 2.0,
+				realBounds.y + borderWidth / 2.0, realBounds.width - borderWidth, realBounds.height - borderWidth);
 
 		DisplayIndependentRectangle layoutBounds = getLayoutBoundsTemp(entitiesToLayout, false);
 		for (int i = 0; i < entitiesToLayout.length; i++) {
 			InternalNode layoutEntity = entitiesToLayout[i];
 			if (layoutEntity.hasPreferredLocation()) {
-				convertNodePositionsBack(i, layoutEntity, layoutEntity.getPreferredX(), layoutEntity.getPreferredY(), screenBounds.width, screenBounds.height, layoutBounds);
+				convertNodePositionsBack(i, layoutEntity, layoutEntity.getPreferredX(), layoutEntity.getPreferredY(),
+						screenBounds.width, screenBounds.height, layoutBounds);
 			}
 		}
 	}
 
 	/**
-	 * Scales the current iteration counter based on how long the algorithm has
-	 * been running for. You can set the MaxTime in maxTimeMS!
+	 * Scales the current iteration counter based on how long the algorithm has been
+	 * running for. You can set the MaxTime in maxTimeMS!
 	 */
 	private void setSprIterationsBasedOnTime() {
 		if (maxTimeMS <= 0)
@@ -556,7 +554,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		return sprIterations;
 	}
 
-	protected void computeOneIteration(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+	protected void computeOneIteration(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double x, double y, double width, double height) {
 		if (bounds == null)
 			bounds = new DisplayIndependentRectangle(x, y, width, height);
 		checkPreferredLocation(entitiesToLayout, bounds);
@@ -604,8 +603,8 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	// /////////////////////////////////////////////////////////////////
 
 	/**
-	 * Computes the force for each node in this SpringLayoutAlgorithm. The
-	 * computed force will be stored in the data repository
+	 * Computes the force for each node in this SpringLayoutAlgorithm. The computed
+	 * force will be stored in the data repository
 	 */
 	protected void computeForces(InternalNode[] entitiesToLayout) {
 
@@ -653,7 +652,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 					} else {
 						// nodes are repelled from each other
-						//double f = Math.min(100, sprGravitation / (distance*distance));
+						// double f = Math.min(100, sprGravitation / (distance*distance));
 						double f = sprGravitation / (distance_sq);
 						fx = fx + (f * dx / distance);
 						fy = fy + (f * dy / distance);
@@ -668,9 +667,9 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			}
 
 			/*
-			 * //make sure forces aren't too big if (fx > 0 ) fx = Math.min(fx,
-			 * 10*sprMove); else fx = Math.max(fx, -10*sprMove); if (fy > 0) fy =
-			 * Math.min(fy, 10*sprMove); else fy = Math.max(fy, -10*sprMove);
+			 * //make sure forces aren't too big if (fx > 0 ) fx = Math.min(fx, 10*sprMove);
+			 * else fx = Math.max(fx, -10*sprMove); if (fy > 0) fy = Math.min(fy,
+			 * 10*sprMove); else fy = Math.max(fy, -10*sprMove);
 			 */
 			forcesX[i] = fx;
 			forcesY[i] = fy;
@@ -683,9 +682,9 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	}
 
 	/**
-	 * Computes the position for each node in this SpringLayoutAlgorithm.
-	 * The computed position will be stored in the data repository. position =
-	 * position + sprMove * force
+	 * Computes the position for each node in this SpringLayoutAlgorithm. The
+	 * computed position will be stored in the data repository. position = position
+	 * + sprMove * force
 	 */
 	protected void computePositions(InternalNode[] entitiesToLayout) {
 		for (int i = 0; i < entitiesToLayout.length; i++) {
@@ -722,9 +721,9 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	}
 
 	/**
-	 * Converts the position for each node in this SpringLayoutAlgorithm
-	 * to unit coordinates in double precision. The computed positions will be
-	 * still stored in the data repository.
+	 * Converts the position for each node in this SpringLayoutAlgorithm to unit
+	 * coordinates in double precision. The computed positions will be still stored
+	 * in the data repository.
 	 */
 	protected void convertToUnitCoordinates(InternalNode[] entitiesToLayout) {
 		double minX = Double.MAX_VALUE;
@@ -757,14 +756,12 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	}
 
 	/**
-	 * Examines the number of specified relation between the <code>src</code>
-	 * and the <code>dest</code> that exist in this
-	 * SpringLayoutAlgorithm's relation repository.
+	 * Examines the number of specified relation between the <code>src</code> and
+	 * the <code>dest</code> that exist in this SpringLayoutAlgorithm's relation
+	 * repository.
 	 * 
-	 * @param src
-	 *            The source part of the relaton to be examined.
-	 * @param dest
-	 *            The destination part of the relation to be examined.
+	 * @param src  The source part of the relaton to be examined.
+	 * @param dest The destination part of the relation to be examined.
 	 * @return The number of relations between src and dest.
 	 */
 	private int numRelations(Object src, Object dest) {
