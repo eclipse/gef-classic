@@ -39,12 +39,13 @@ public class Figure implements IFigure {
 
 	private static final Rectangle PRIVATE_RECT = new Rectangle();
 	private static final Point PRIVATE_POINT = new Point();
-	private static final int FLAG_VALID = Integer.valueOf(1).intValue(),
-			FLAG_OPAQUE = Integer.valueOf(1 << 1).intValue(),
-			FLAG_VISIBLE = Integer.valueOf(1 << 2).intValue(),
-			FLAG_FOCUSABLE = Integer.valueOf(1 << 3).intValue(),
-			FLAG_ENABLED = Integer.valueOf(1 << 4).intValue(),
-			FLAG_FOCUS_TRAVERSABLE = Integer.valueOf(1 << 5).intValue();
+
+	private static final int FLAG_VALID = 1;
+	private static final int FLAG_OPAQUE = 1 << 1;
+	private static final int FLAG_VISIBLE = 1 << 2;
+	private static final int FLAG_FOCUSABLE = 1 << 3;
+	private static final int FLAG_ENABLED = 1 << 4;
+	private static final int FLAG_FOCUS_TRAVERSABLE = 1 << 5;
 
 	static final int FLAG_REALIZED = 1 << 31;
 
@@ -142,8 +143,7 @@ public class Figure implements IFigure {
 		// Check for Cycle in hierarchy
 		for (IFigure f = this; f != null; f = f.getParent())
 			if (figure == f)
-				throw new IllegalArgumentException(
-						"Figure being added introduces cycle"); //$NON-NLS-1$
+				throw new IllegalArgumentException("Figure being added introduces cycle"); //$NON-NLS-1$
 
 		// Detach the child from previous parent
 		if (figure.getParent() != null)
@@ -226,8 +226,7 @@ public class Figure implements IFigure {
 	 * Appends the given layout listener to the list of layout listeners.
 	 * 
 	 * @since 3.1
-	 * @param listener
-	 *            the listener being added
+	 * @param listener the listener being added
 	 */
 	public void addLayoutListener(LayoutListener listener) {
 		if (layoutManager instanceof LayoutNotifier) {
@@ -241,10 +240,8 @@ public class Figure implements IFigure {
 	 * Adds a listener of type <i>clazz</i> to this Figure's list of event
 	 * listeners.
 	 * 
-	 * @param clazz
-	 *            The listener type
-	 * @param listener
-	 *            The listener
+	 * @param clazz    The listener type
+	 * @param listener The listener
 	 */
 	protected void addListener(Class clazz, Object listener) {
 		eventListeners.addListener(clazz, listener);
@@ -265,15 +262,14 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Called after the receiver's parent has been set and it has been added to
-	 * its parent.
+	 * Called after the receiver's parent has been set and it has been added to its
+	 * parent.
 	 * 
 	 * @since 2.0
 	 */
 	public void addNotify() {
 		if (getFlag(FLAG_REALIZED))
-			throw new RuntimeException(
-					"addNotify() should not be called multiple times"); //$NON-NLS-1$
+			throw new RuntimeException("addNotify() should not be called multiple times"); //$NON-NLS-1$
 		setFlag(FLAG_REALIZED, true);
 		for (int i = 0; i < children.size(); i++)
 			((IFigure) children.get(i)).addNotify();
@@ -282,8 +278,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#addPropertyChangeListener(String, PropertyChangeListener)
 	 */
-	public void addPropertyChangeListener(String property,
-			PropertyChangeListener listener) {
+	public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
 		if (propertyListeners == null)
 			propertyListeners = new PropertyChangeSupport(this);
 		propertyListeners.addPropertyChangeListener(property, listener);
@@ -299,8 +294,7 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * This method is final. Override {@link #containsPoint(int, int)} if
-	 * needed.
+	 * This method is final. Override {@link #containsPoint(int, int)} if needed.
 	 * 
 	 * @see IFigure#containsPoint(Point)
 	 * @since 2.0
@@ -329,16 +323,13 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Returns a descendant of this Figure such that the Figure returned
-	 * contains the point (x, y), and is accepted by the given TreeSearch.
-	 * Returns <code>null</code> if none found.
+	 * Returns a descendant of this Figure such that the Figure returned contains
+	 * the point (x, y), and is accepted by the given TreeSearch. Returns
+	 * <code>null</code> if none found.
 	 * 
-	 * @param x
-	 *            The X coordinate
-	 * @param y
-	 *            The Y coordinate
-	 * @param search
-	 *            the TreeSearch
+	 * @param x      The X coordinate
+	 * @param y      The Y coordinate
+	 * @param search the TreeSearch
 	 * @return The descendant Figure at (x,y)
 	 */
 	protected IFigure findDescendantAtExcluding(int x, int y, TreeSearch search) {
@@ -402,19 +393,16 @@ public class Figure implements IFigure {
 
 	/**
 	 * Returns the deepest descendant for which {@link #isMouseEventTarget()}
-	 * returns <code>true</code> or <code>null</code> if none found. The
-	 * Parameters <i>x</i> and <i>y</i> are absolute locations. Any Graphics
-	 * transformations applied by this Figure to its children during
+	 * returns <code>true</code> or <code>null</code> if none found. The Parameters
+	 * <i>x</i> and <i>y</i> are absolute locations. Any Graphics transformations
+	 * applied by this Figure to its children during
 	 * {@link #paintChildren(Graphics)} (thus causing the children to appear
-	 * transformed to the user) should be applied inversely to the points
-	 * <i>x</i> and <i>y</i> when called on the children.
+	 * transformed to the user) should be applied inversely to the points <i>x</i>
+	 * and <i>y</i> when called on the children.
 	 * 
-	 * @param x
-	 *            The X coordinate
-	 * @param y
-	 *            The Y coordinate
-	 * @return The deepest descendant for which isMouseEventTarget() returns
-	 *         true
+	 * @param x The X coordinate
+	 * @param y The Y coordinate
+	 * @return The deepest descendant for which isMouseEventTarget() returns true
 	 */
 	public IFigure findMouseEventTargetAt(int x, int y) {
 		if (!containsPoint(x, y))
@@ -433,12 +421,9 @@ public class Figure implements IFigure {
 	 * descendant or <code>null</code> if none found.
 	 * 
 	 * @see #findMouseEventTargetAt(int, int)
-	 * @param x
-	 *            The X coordinate
-	 * @param y
-	 *            The Y coordinate
-	 * @return The deepest descendant for which isMouseEventTarget() returns
-	 *         true
+	 * @param x The X coordinate
+	 * @param y The Y coordinate
+	 * @return The deepest descendant for which isMouseEventTarget() returns true
 	 */
 	protected IFigure findMouseEventTargetInDescendantsAt(int x, int y) {
 		PRIVATE_POINT.setLocation(x, y);
@@ -453,8 +438,7 @@ public class Figure implements IFigure {
 			fig = (IFigure) children.get(i);
 			if (fig.isVisible() && fig.isEnabled()) {
 				if (fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
-					fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x,
-							PRIVATE_POINT.y);
+					fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x, PRIVATE_POINT.y);
 					if (fig != null) {
 						return fig;
 					}
@@ -466,19 +450,17 @@ public class Figure implements IFigure {
 
 	/**
 	 * Notifies to all {@link CoordinateListener}s that this figure's local
-	 * coordinate system has changed in a way which affects the absolute bounds
-	 * of figures contained within.
+	 * coordinate system has changed in a way which affects the absolute bounds of
+	 * figures contained within.
 	 * 
 	 * @since 3.1
 	 */
 	protected void fireCoordinateSystemChanged() {
 		if (!eventListeners.containsListener(CoordinateListener.class))
 			return;
-		Iterator figureListeners = eventListeners
-				.getListeners(CoordinateListener.class);
+		Iterator figureListeners = eventListeners.getListeners(CoordinateListener.class);
 		while (figureListeners.hasNext())
-			((CoordinateListener) figureListeners.next())
-					.coordinateSystemChanged(this);
+			((CoordinateListener) figureListeners.next()).coordinateSystemChanged(this);
 	}
 
 	/**
@@ -490,18 +472,17 @@ public class Figure implements IFigure {
 	protected void fireFigureMoved() {
 		if (!eventListeners.containsListener(FigureListener.class))
 			return;
-		Iterator figureListeners = eventListeners
-				.getListeners(FigureListener.class);
+		Iterator figureListeners = eventListeners.getListeners(FigureListener.class);
 		while (figureListeners.hasNext())
 			((FigureListener) figureListeners.next()).figureMoved(this);
 	}
 
 	/**
-	 * Fires both figuremoved and coordinate system changed. This method exists
-	 * for compatibility. Some listeners which used to listen for figureMoved
-	 * now listen for coordinates changed. So to be sure that those new
-	 * listeners are notified, any client code which used called this method
-	 * will also result in notification of coordinate changes.
+	 * Fires both figuremoved and coordinate system changed. This method exists for
+	 * compatibility. Some listeners which used to listen for figureMoved now listen
+	 * for coordinates changed. So to be sure that those new listeners are notified,
+	 * any client code which used called this method will also result in
+	 * notification of coordinate changes.
 	 * 
 	 * @since 2.0
 	 * @deprecated call fireFigureMoved() or fireCoordinateSystemChanged() as
@@ -513,56 +494,43 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners}
-	 * listening to this Figure that the boolean property with id
-	 * <i>property</i> has changed.
+	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners} listening
+	 * to this Figure that the boolean property with id <i>property</i> has changed.
 	 * 
-	 * @param property
-	 *            The id of the property that changed
-	 * @param old
-	 *            The old value of the changed property
-	 * @param current
-	 *            The current value of the changed property
+	 * @param property The id of the property that changed
+	 * @param old      The old value of the changed property
+	 * @param current  The current value of the changed property
 	 * @since 2.0
 	 */
-	protected void firePropertyChange(String property, boolean old,
-			boolean current) {
+	protected void firePropertyChange(String property, boolean old, boolean current) {
 		if (propertyListeners == null)
 			return;
 		propertyListeners.firePropertyChange(property, old, current);
 	}
 
 	/**
-	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners}
-	 * listening to this figure that the Object property with id <i>property</i>
-	 * has changed.
+	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners} listening
+	 * to this figure that the Object property with id <i>property</i> has changed.
 	 * 
-	 * @param property
-	 *            The id of the property that changed
-	 * @param old
-	 *            The old value of the changed property
-	 * @param current
-	 *            The current value of the changed property
+	 * @param property The id of the property that changed
+	 * @param old      The old value of the changed property
+	 * @param current  The current value of the changed property
 	 * @since 2.0
 	 */
-	protected void firePropertyChange(String property, Object old,
-			Object current) {
+	protected void firePropertyChange(String property, Object old, Object current) {
 		if (propertyListeners == null)
 			return;
 		propertyListeners.firePropertyChange(property, old, current);
 	}
 
 	/**
-	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners}
-	 * listening to this figure that the integer property with id
-	 * <code>property</code> has changed.
+	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners} listening
+	 * to this figure that the integer property with id <code>property</code> has
+	 * changed.
 	 * 
-	 * @param property
-	 *            The id of the property that changed
-	 * @param old
-	 *            The old value of the changed property
-	 * @param current
-	 *            The current value of the changed property
+	 * @param property The id of the property that changed
+	 * @param old      The old value of the changed property
+	 * @param current  The current value of the changed property
 	 * @since 2.0
 	 */
 	protected void firePropertyChange(String property, int old, int current) {
@@ -572,9 +540,9 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Returns this Figure's background color. If this Figure's background color
-	 * is <code>null</code> and its parent is not <code>null</code>, the
-	 * background color is inherited from the parent.
+	 * Returns this Figure's background color. If this Figure's background color is
+	 * <code>null</code> and its parent is not <code>null</code>, the background
+	 * color is inherited from the parent.
 	 * 
 	 * @see IFigure#getBackgroundColor()
 	 */
@@ -592,9 +560,9 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Returns the smallest rectangle completely enclosing the figure.
-	 * Implementors may return the Rectangle by reference. For this reason,
-	 * callers of this method must not modify the returned Rectangle.
+	 * Returns the smallest rectangle completely enclosing the figure. Implementors
+	 * may return the Rectangle by reference. For this reason, callers of this
+	 * method must not modify the returned Rectangle.
 	 * 
 	 * @return The bounds of this Figure
 	 */
@@ -649,8 +617,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns the value of the given flag.
 	 * 
-	 * @param flag
-	 *            The flag to get
+	 * @param flag The flag to get
 	 * @return The value of the given flag
 	 */
 	protected boolean getFlag(int flag) {
@@ -679,8 +646,8 @@ public class Figure implements IFigure {
 
 	/**
 	 * Returns the border's Insets if the border is set. Otherwise returns
-	 * NO_INSETS, an instance of Insets with all 0s. Returns Insets by
-	 * reference. DO NOT Modify returned value. Cannot return null.
+	 * NO_INSETS, an instance of Insets with all 0s. Returns Insets by reference. DO
+	 * NOT Modify returned value. Cannot return null.
 	 * 
 	 * @return This Figure's Insets
 	 */
@@ -701,11 +668,10 @@ public class Figure implements IFigure {
 
 	/**
 	 * Returns an Iterator over the listeners of type <i>clazz</i> that are
-	 * listening to this Figure. If there are no listeners of type <i>clazz</i>,
-	 * an empty iterator is returned.
+	 * listening to this Figure. If there are no listeners of type <i>clazz</i>, an
+	 * empty iterator is returned.
 	 * 
-	 * @param clazz
-	 *            The type of listeners to get
+	 * @param clazz The type of listeners to get
 	 * @return An Iterator over the requested listeners
 	 * @since 2.0
 	 */
@@ -716,8 +682,8 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Returns <code>null</code> or the local background Color of this Figure.
-	 * Does not inherit this Color from the parent.
+	 * Returns <code>null</code> or the local background Color of this Figure. Does
+	 * not inherit this Color from the parent.
 	 * 
 	 * @return bgColor <code>null</code> or the local background Color
 	 */
@@ -726,8 +692,8 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Returns <code>null</code> or the local font setting for this figure. Does
-	 * not return values inherited from the parent figure.
+	 * Returns <code>null</code> or the local font setting for this figure. Does not
+	 * return values inherited from the parent figure.
 	 * 
 	 * @return <code>null</code> or the local font
 	 * @since 3.1
@@ -737,8 +703,8 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Returns <code>null</code> or the local foreground Color of this Figure.
-	 * Does not inherit this Color from the parent.
+	 * Returns <code>null</code> or the local foreground Color of this Figure. Does
+	 * not inherit this Color from the parent.
 	 * 
 	 * @return fgColor <code>null</code> or the local foreground Color
 	 */
@@ -807,8 +773,7 @@ public class Figure implements IFigure {
 		if (prefSize != null)
 			return prefSize;
 		if (getLayoutManager() != null) {
-			Dimension d = getLayoutManager().getPreferredSize(this, wHint,
-					hHint);
+			Dimension d = getLayoutManager().getPreferredSize(this, wHint, hHint);
 			if (d != null)
 				return d;
 		}
@@ -1023,8 +988,8 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected boolean isMouseEventTarget() {
-		return (eventListeners.containsListener(MouseListener.class) || eventListeners
-				.containsListener(MouseMotionListener.class));
+		return (eventListeners.containsListener(MouseListener.class)
+				|| eventListeners.containsListener(MouseMotionListener.class));
 	}
 
 	/**
@@ -1099,8 +1064,7 @@ public class Figure implements IFigure {
 	/**
 	 * Paints this Figure and its children.
 	 * 
-	 * @param graphics
-	 *            The Graphics object used for painting
+	 * @param graphics The Graphics object used for painting
 	 * @see #paintFigure(Graphics)
 	 * @see #paintClientArea(Graphics)
 	 * @see #paintBorder(Graphics)
@@ -1127,8 +1091,7 @@ public class Figure implements IFigure {
 	/**
 	 * Paints the border associated with this Figure, if one exists.
 	 * 
-	 * @param graphics
-	 *            The Graphics used to paint
+	 * @param graphics The Graphics used to paint
 	 * @see Border#paint(IFigure, Graphics, Insets)
 	 * @since 2.0
 	 */
@@ -1138,16 +1101,14 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Paints this Figure's children. The caller must save the state of the
-	 * graphics prior to calling this method, such that
-	 * <code>graphics.restoreState()</code> may be called safely, and doing so
-	 * will return the graphics to its original state when the method was
-	 * entered.
+	 * Paints this Figure's children. The caller must save the state of the graphics
+	 * prior to calling this method, such that <code>graphics.restoreState()</code>
+	 * may be called safely, and doing so will return the graphics to its original
+	 * state when the method was entered.
 	 * <P>
 	 * This method must leave the Graphics in its original state upon return.
 	 * 
-	 * @param graphics
-	 *            the graphics used to paint
+	 * @param graphics the graphics used to paint
 	 * @since 2.0
 	 */
 	protected void paintChildren(Graphics graphics) {
@@ -1164,8 +1125,7 @@ public class Figure implements IFigure {
 				}
 				// child may now paint inside the clipping areas
 				for (int j = 0; j < clipping.length; j++) {
-					if (clipping[j].intersects(graphics
-							.getClip(Rectangle.SINGLETON))) {
+					if (clipping[j].intersects(graphics.getClip(Rectangle.SINGLETON))) {
 						graphics.clipRect(clipping[j]);
 						child.paint(graphics);
 						graphics.restoreState();
@@ -1176,13 +1136,12 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Paints this Figure's client area. The client area is typically defined as
-	 * the anything inside the Figure's {@link Border} or {@link Insets}, and by
-	 * default includes the children of this Figure. On return, this method must
-	 * leave the given Graphics in its initial state.
+	 * Paints this Figure's client area. The client area is typically defined as the
+	 * anything inside the Figure's {@link Border} or {@link Insets}, and by default
+	 * includes the children of this Figure. On return, this method must leave the
+	 * given Graphics in its initial state.
 	 * 
-	 * @param graphics
-	 *            The Graphics used to paint
+	 * @param graphics The Graphics used to paint
 	 * @since 2.0
 	 */
 	protected void paintClientArea(Graphics graphics) {
@@ -1192,8 +1151,7 @@ public class Figure implements IFigure {
 		boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 
 		if (useLocalCoordinates()) {
-			graphics.translate(getBounds().x + getInsets().left, getBounds().y
-					+ getInsets().top);
+			graphics.translate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
 			if (!optimizeClip)
 				graphics.clipRect(getClientArea(PRIVATE_RECT));
 			graphics.pushState();
@@ -1214,32 +1172,28 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Paints this Figure's primary representation, or background. Changes made
-	 * to the graphics to the graphics current state will not affect the
-	 * subsequent calls to {@link #paintClientArea(Graphics)} and
+	 * Paints this Figure's primary representation, or background. Changes made to
+	 * the graphics to the graphics current state will not affect the subsequent
+	 * calls to {@link #paintClientArea(Graphics)} and
 	 * {@link #paintBorder(Graphics)}. Furthermore, it is safe to call
-	 * <code>graphics.restoreState()</code> within this method, and doing so
-	 * will restore the graphics to its original state upon entry.
+	 * <code>graphics.restoreState()</code> within this method, and doing so will
+	 * restore the graphics to its original state upon entry.
 	 * 
-	 * @param graphics
-	 *            The Graphics used to paint
+	 * @param graphics The Graphics used to paint
 	 * @since 2.0
 	 */
 	protected void paintFigure(Graphics graphics) {
 		if (isOpaque())
 			graphics.fillRectangle(getBounds());
 		if (getBorder() instanceof AbstractBackground)
-			((AbstractBackground) getBorder()).paintBackground(this, graphics,
-					NO_INSETS);
+			((AbstractBackground) getBorder()).paintBackground(this, graphics, NO_INSETS);
 	}
 
 	/**
 	 * Translates this Figure's bounds, without firing a move.
 	 * 
-	 * @param dx
-	 *            The amount to translate horizontally
-	 * @param dy
-	 *            The amount to translate vertically
+	 * @param dx The amount to translate horizontally
+	 * @param dy The amount to translate vertically
 	 * @see #translate(int, int)
 	 * @since 2.0
 	 */
@@ -1255,12 +1209,11 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Removes the given child Figure from this Figure's hierarchy and
-	 * revalidates this Figure. The child Figure's {@link #removeNotify()}
-	 * method is also called.
+	 * Removes the given child Figure from this Figure's hierarchy and revalidates
+	 * this Figure. The child Figure's {@link #removeNotify()} method is also
+	 * called.
 	 * 
-	 * @param figure
-	 *            The Figure to remove
+	 * @param figure The Figure to remove
 	 */
 	public void remove(IFigure figure) {
 		if ((figure.getParent() != this))
@@ -1336,8 +1289,7 @@ public class Figure implements IFigure {
 	 * Removes the first occurence of the given listener.
 	 * 
 	 * @since 3.1
-	 * @param listener
-	 *            the listener being removed
+	 * @param listener the listener being removed
 	 */
 	public void removeLayoutListener(LayoutListener listener) {
 		if (layoutManager instanceof LayoutNotifier) {
@@ -1352,10 +1304,8 @@ public class Figure implements IFigure {
 	 * Removes <i>listener</i> of type <i>clazz</i> from this Figure's list of
 	 * listeners.
 	 * 
-	 * @param clazz
-	 *            The type of listener
-	 * @param listener
-	 *            The listener to remove
+	 * @param clazz    The type of listener
+	 * @param listener The listener to remove
 	 * @since 2.0
 	 */
 	protected void removeListener(Class clazz, Object listener) {
@@ -1401,8 +1351,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#removePropertyChangeListener(String, PropertyChangeListener)
 	 */
-	public void removePropertyChangeListener(String property,
-			PropertyChangeListener listener) {
+	public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
 		if (propertyListeners == null)
 			return;
 		propertyListeners.removePropertyChangeListener(property, listener);
@@ -1468,8 +1417,7 @@ public class Figure implements IFigure {
 		Color highContrastClr = null;
 		try {
 			if (display.getHighContrast()) {
-				highContrastClr = display
-						.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
+				highContrastClr = display.getSystemColor(SWT.COLOR_WIDGET_BACKGROUND);
 			}
 		} catch (SWTException e) {
 			highContrastClr = null;
@@ -1491,21 +1439,19 @@ public class Figure implements IFigure {
 	 * Sets the bounds of this Figure to the Rectangle <i>rect</i>. Note that
 	 * <i>rect</i> is compared to the Figure's current bounds to determine what
 	 * needs to be repainted and/or exposed and if validation is required. Since
-	 * {@link #getBounds()} may return the current bounds by reference, it is
-	 * not safe to modify that Rectangle and then call setBounds() after making
-	 * modifications. The figure would assume that the bounds are unchanged, and
-	 * no layout or paint would occur. For proper behavior, always use a copy.
+	 * {@link #getBounds()} may return the current bounds by reference, it is not
+	 * safe to modify that Rectangle and then call setBounds() after making
+	 * modifications. The figure would assume that the bounds are unchanged, and no
+	 * layout or paint would occur. For proper behavior, always use a copy.
 	 * 
-	 * @param rect
-	 *            The new bounds
+	 * @param rect The new bounds
 	 * @since 2.0
 	 */
 	public void setBounds(Rectangle rect) {
 		int x = bounds.x, y = bounds.y;
 
-		boolean resize = (rect.width != bounds.width)
-				|| (rect.height != bounds.height), translate = (rect.x != x)
-				|| (rect.y != y);
+		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
+				translate = (rect.x != x) || (rect.y != y);
 
 		if ((resize || translate) && isVisible())
 			erase();
@@ -1527,11 +1473,10 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Sets the direction of any {@link Orientable} children. Allowable values
-	 * for <code>dir</code> are found in {@link PositionConstants}.
+	 * Sets the direction of any {@link Orientable} children. Allowable values for
+	 * <code>dir</code> are found in {@link PositionConstants}.
 	 * 
-	 * @param direction
-	 *            The direction
+	 * @param direction The direction
 	 * @see Orientable#setDirection(int)
 	 * @since 2.0
 	 */
@@ -1548,8 +1493,7 @@ public class Figure implements IFigure {
 	/**
 	 * Sets all childrens' enabled property to <i>value</i>.
 	 * 
-	 * @param value
-	 *            The enable value
+	 * @param value The enable value
 	 * @see #setEnabled(boolean)
 	 * @since 2.0
 	 */
@@ -1560,11 +1504,10 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Sets the orientation of any {@link Orientable} children. Allowable values
-	 * for <i>orientation</i> are found in {@link PositionConstants}.
+	 * Sets the orientation of any {@link Orientable} children. Allowable values for
+	 * <i>orientation</i> are found in {@link PositionConstants}.
 	 * 
-	 * @param orientation
-	 *            The Orientation
+	 * @param orientation The Orientation
 	 * @see Orientable#setOrientation(int)
 	 * @since 2.0
 	 */
@@ -1591,8 +1534,8 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Registers a clipping strategy to specify how clipping is performed for
-	 * child figures.
+	 * Registers a clipping strategy to specify how clipping is performed for child
+	 * figures.
 	 * 
 	 * @param clippingStrategy
 	 * @since 3.6
@@ -1625,10 +1568,8 @@ public class Figure implements IFigure {
 	/**
 	 * Sets the given flag to the given value.
 	 * 
-	 * @param flag
-	 *            The flag to set
-	 * @param value
-	 *            The value
+	 * @param flag  The flag to set
+	 * @param value The value
 	 * @since 2.0
 	 */
 	protected final void setFlag(int flag, boolean value) {
@@ -1673,8 +1614,7 @@ public class Figure implements IFigure {
 		Color highContrastClr = null;
 		try {
 			if (display.getHighContrast()) {
-				highContrastClr = display
-						.getSystemColor(SWT.COLOR_WIDGET_FOREGROUND);
+				highContrastClr = display.getSystemColor(SWT.COLOR_WIDGET_FOREGROUND);
 			}
 		} catch (SWTException e) {
 			highContrastClr = null;
@@ -1757,10 +1697,8 @@ public class Figure implements IFigure {
 	/**
 	 * Sets the preferred size of this figure.
 	 * 
-	 * @param w
-	 *            The new preferred width
-	 * @param h
-	 *            The new preferred height
+	 * @param w The new preferred width
+	 * @param h The new preferred height
 	 * @see #setPreferredSize(Dimension)
 	 * @since 2.0
 	 */
@@ -1806,11 +1744,10 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Sets this figure to be valid if <i>value</i> is <code>true</code> and
-	 * invalid otherwise.
+	 * Sets this figure to be valid if <i>value</i> is <code>true</code> and invalid
+	 * otherwise.
 	 * 
-	 * @param value
-	 *            The valid value
+	 * @param value The valid value
 	 * @since 2.0
 	 */
 	public void setValid(boolean value) {
@@ -1845,8 +1782,7 @@ public class Figure implements IFigure {
 	 */
 	public void translateFromParent(Translatable t) {
 		if (useLocalCoordinates())
-			t.performTranslate(-getBounds().x - getInsets().left,
-					-getBounds().y - getInsets().top);
+			t.performTranslate(-getBounds().x - getInsets().left, -getBounds().y - getInsets().top);
 	}
 
 	/**
@@ -1864,8 +1800,7 @@ public class Figure implements IFigure {
 	 */
 	public void translateToParent(Translatable t) {
 		if (useLocalCoordinates())
-			t.performTranslate(getBounds().x + getInsets().left, getBounds().y
-					+ getInsets().top);
+			t.performTranslate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
 	}
 
 	/**
@@ -1879,8 +1814,8 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Returns <code>true</code> if this Figure uses local coordinates. This
-	 * means its children are placed relative to this Figure's top-left corner.
+	 * Returns <code>true</code> if this Figure uses local coordinates. This means
+	 * its children are placed relative to this Figure's top-left corner.
 	 * 
 	 * @return <code>true</code> if this Figure uses local coordinates
 	 * @since 2.0
@@ -1954,8 +1889,7 @@ public class Figure implements IFigure {
 			return null;
 		}
 
-		public Dimension getPreferredSize(IFigure container, int wHint,
-				int hHint) {
+		public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
 			if (realLayout != null)
 				return realLayout.getPreferredSize(container, wHint, hHint);
 			return null;
@@ -1972,8 +1906,7 @@ public class Figure implements IFigure {
 		public void layout(IFigure container) {
 			boolean consumed = false;
 			for (int i = 0; i < listeners.size(); i++)
-				consumed |= ((LayoutListener) listeners.get(i))
-						.layout(container);
+				consumed |= ((LayoutListener) listeners.get(i)).layout(container);
 
 			if (realLayout != null && !consumed)
 				realLayout.layout(container);
@@ -1990,8 +1923,7 @@ public class Figure implements IFigure {
 
 		public void setConstraint(IFigure child, Object constraint) {
 			for (int i = 0; i < listeners.size(); i++)
-				((LayoutListener) listeners.get(i)).setConstraint(child,
-						constraint);
+				((LayoutListener) listeners.get(i)).setConstraint(child, constraint);
 			if (realLayout != null)
 				realLayout.setConstraint(child, constraint);
 		}
@@ -2007,8 +1939,7 @@ public class Figure implements IFigure {
 		/**
 		 * Constructs a new FigureIterator for the given Figure.
 		 * 
-		 * @param figure
-		 *            The Figure whose children to iterate over
+		 * @param figure The Figure whose children to iterate over
 		 */
 		public FigureIterator(IFigure figure) {
 			list = figure.getChildren();

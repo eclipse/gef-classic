@@ -34,8 +34,7 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 	/**
 	 * Builds the graph, creates Draw2d figures for all graph components.
 	 * 
-	 * @param graph
-	 *            the graph to build
+	 * @param graph the graph to build
 	 * @return the Figure representing the graph
 	 */
 	public static Figure buildGraph(CompoundDirectedGraph graph) {
@@ -119,8 +118,7 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 	/**
 	 * Run this demo
 	 * 
-	 * @param args
-	 *            command line args
+	 * @param args command line args
 	 */
 	public static void main(String[] args) {
 		new CompoundGraphDemo().run();
@@ -132,10 +130,8 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 	protected IFigure getContents() {
 		CompoundDirectedGraph graph = null;
 		try {
-			graph = (CompoundDirectedGraph) (CompoundGraphTests.class
-					.getMethod(graphMethod, new Class[] { int.class })
-					.invoke(null,
-							new Object[] { Integer.valueOf(graphDirection) }));
+			graph = (CompoundDirectedGraph) (CompoundGraphTests.class.getMethod(graphMethod, int.class).invoke(null,
+					Integer.valueOf(graphDirection)));
 		} catch (Exception e) {
 			System.out.println("Could not build graph");
 		}
@@ -152,8 +148,7 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 
 		int nameIndex = 0;
 		for (int i = 0; i < methods.length; i++) {
-			if (methods[i].getReturnType()
-					.equals(CompoundDirectedGraph.class)) {
+			if (methods[i].getReturnType().equals(CompoundDirectedGraph.class)) {
 				methodNames[nameIndex] = methods[i].getName();
 				nameIndex++;
 			}

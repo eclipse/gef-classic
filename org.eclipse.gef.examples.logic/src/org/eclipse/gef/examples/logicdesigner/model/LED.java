@@ -26,8 +26,7 @@ public class LED extends LogicSubpart {
 
 	private static final Dimension DEFAULT_SIZE = new Dimension(61, 47);
 
-	private static Image LED_ICON = createImage(LED.class,
-			"icons/ledicon16.gif"); //$NON-NLS-1$
+	private static Image LED_ICON = createImage(LED.class, "icons/ledicon16.gif"); //$NON-NLS-1$
 	private static int count;
 	public static String P_VALUE = "value"; //$NON-NLS-1$
 	protected static IPropertyDescriptor[] newDescriptors = null;
@@ -43,13 +42,12 @@ public class LED extends LogicSubpart {
 			TERMINAL_3_OUT = "3", //$NON-NLS-1$
 			TERMINAL_4_OUT = "4"; //$NON-NLS-1$
 
-	protected static String[] IN_TERMINALS = new String[] { TERMINAL_1_IN,
-			TERMINAL_2_IN, TERMINAL_3_IN, TERMINAL_4_IN };
+	protected static String[] IN_TERMINALS = new String[] { TERMINAL_1_IN, TERMINAL_2_IN, TERMINAL_3_IN,
+			TERMINAL_4_IN };
 	protected boolean bits[] = new boolean[4];
 
 	static {
-		PropertyDescriptor pValueProp = new TextPropertyDescriptor(P_VALUE,
-				LogicMessages.PropertyDescriptor_LED_Value);
+		PropertyDescriptor pValueProp = new TextPropertyDescriptor(P_VALUE, LogicMessages.PropertyDescriptor_LED_Value);
 		pValueProp.setValidator(LogicNumberCellEditorValidator.instance());
 		if (descriptors != null) {
 			newDescriptors = new IPropertyDescriptor[descriptors.length + 1];
@@ -81,10 +79,9 @@ public class LED extends LogicSubpart {
 
 	public Object getPropertyValue(Object propName) {
 		if (P_VALUE.equals(propName))
-			return Integer.valueOf(getValue()).toString();
+			return Integer.toString(getValue());
 		if (ID_SIZE.equals(propName)) {
-			return new String(
-					"(" + getSize().width + "," + getSize().height + ")");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+			return new String("(" + getSize().width + "," + getSize().height + ")");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 		}
 		return super.getPropertyValue(propName);
 	}

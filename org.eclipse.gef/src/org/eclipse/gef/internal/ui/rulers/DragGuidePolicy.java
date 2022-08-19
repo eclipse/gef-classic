@@ -46,12 +46,11 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 	}
 
 	/*
-	 * Fix for Bug# 65885 If you undo guide creation while dragging that guide,
-	 * it was leaving behind drag feedback. This was because by the time
+	 * Fix for Bug# 65885 If you undo guide creation while dragging that guide, it
+	 * was leaving behind drag feedback. This was because by the time
 	 * eraseSourceFeedback() was being called, the guide edit part had been
-	 * deactivated (and hence eraseSourceFeedback is never called on this
-	 * policy). So we make sure that this policy cleans up when it is
-	 * deactivated.
+	 * deactivated (and hence eraseSourceFeedback is never called on this policy).
+	 * So we make sure that this policy cleans up when it is deactivated.
 	 */
 	public void deactivate() {
 		removeFeedback();
@@ -72,8 +71,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 	}
 
 	public void eraseSourceFeedback(Request request) {
-		getGuideEditPart().updateLocationOfFigures(
-				getGuideEditPart().getZoomedPosition());
+		getGuideEditPart().updateLocationOfFigures(getGuideEditPart().getZoomedPosition());
 		getHostFigure().setVisible(true);
 		getGuideEditPart().getGuideLineFigure().setVisible(true);
 		removeFeedback();
@@ -85,11 +83,8 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 
 	private List getAttachedEditParts() {
 		if (attachedEditParts == null)
-			attachedEditParts = getGuideEditPart().getRulerProvider()
-					.getAttachedEditParts(
-							getHost().getModel(),
-							((RulerEditPart) getHost().getParent())
-									.getDiagramViewer());
+			attachedEditParts = getGuideEditPart().getRulerProvider().getAttachedEditParts(getHost().getModel(),
+					((RulerEditPart) getHost().getParent()).getDiagramViewer());
 		return attachedEditParts;
 	}
 
@@ -97,8 +92,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 		Command cmd;
 		final ChangeBoundsRequest req = (ChangeBoundsRequest) request;
 		if (isDeleteRequest(req)) {
-			cmd = getGuideEditPart().getRulerProvider().getDeleteGuideCommand(
-					getHost().getModel());
+			cmd = getGuideEditPart().getRulerProvider().getDeleteGuideCommand(getHost().getModel());
 		} else {
 			int pDelta;
 			if (getGuideEditPart().isHorizontal()) {
@@ -111,8 +105,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 				if (zoomManager != null) {
 					pDelta = (int) Math.round(pDelta / zoomManager.getZoom());
 				}
-				cmd = getGuideEditPart().getRulerProvider()
-						.getMoveGuideCommand(getHost().getModel(), pDelta);
+				cmd = getGuideEditPart().getRulerProvider().getMoveGuideCommand(getHost().getModel(), pDelta);
 			} else {
 				cmd = UnexecutableCommand.INSTANCE;
 			}
@@ -142,14 +135,12 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 		int pos, max, min;
 		if (getGuideEditPart().isHorizontal()) {
 			pos = req.getLocation().x;
-			Rectangle zone = getHostFigure().getBounds().getExpanded(
-					GuideEditPart.DELETE_THRESHOLD, 0);
+			Rectangle zone = getHostFigure().getBounds().getExpanded(GuideEditPart.DELETE_THRESHOLD, 0);
 			min = zone.x;
 			max = min + zone.width;
 		} else {
 			pos = req.getLocation().y;
-			Rectangle zone = getHostFigure().getBounds().getExpanded(0,
-					GuideEditPart.DELETE_THRESHOLD);
+			Rectangle zone = getHostFigure().getBounds().getExpanded(0, GuideEditPart.DELETE_THRESHOLD);
 			min = zone.y;
 			max = min + zone.height;
 		}
@@ -163,13 +154,11 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 		if (zoomManager != null) {
 			position = (int) Math.round(position / zoomManager.getZoom());
 		}
-		Iterator guides = getGuideEditPart().getRulerProvider().getGuides()
-				.iterator();
+		Iterator guides = getGuideEditPart().getRulerProvider().getGuides().iterator();
 		while (guides.hasNext()) {
 			Object guide = guides.next();
 			if (guide != getGuideEditPart().getModel()) {
-				int guidePos = getGuideEditPart().getRulerProvider()
-						.getGuidePosition(guide);
+				int guidePos = getGuideEditPart().getRulerProvider().getGuidePosition(guide);
 				if (Math.abs(guidePos - position) < GuideEditPart.MIN_DISTANCE_BW_GUIDES) {
 					result = false;
 					break;
@@ -209,18 +198,15 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 			dragInProgress = true;
 			// add the placeholder guide figure to the ruler
 			getHostFigure().getParent().add(getDummyGuideFigure(), 0);
-			((GraphicalEditPart) getHost().getParent()).setLayoutConstraint(
-					getHost(), getDummyGuideFigure(), Integer.valueOf(
-							getGuideEditPart().getZoomedPosition()));
+			((GraphicalEditPart) getHost().getParent()).setLayoutConstraint(getHost(), getDummyGuideFigure(),
+					Integer.valueOf(getGuideEditPart().getZoomedPosition()));
 			getDummyGuideFigure().setBounds(getHostFigure().getBounds());
 			getDummyGuideFigure().validate();
 			// add the invisible placeholder line figure to the primary viewer
 			getGuideEditPart().getGuideLayer().add(getDummyLineFigure(), 0);
-			getGuideEditPart().getGuideLayer().setConstraint(
-					getDummyLineFigure(),
+			getGuideEditPart().getGuideLayer().setConstraint(getDummyLineFigure(),
 					Boolean.valueOf(getGuideEditPart().isHorizontal()));
-			getDummyLineFigure().setBounds(
-					getGuideEditPart().getGuideLineFigure().getBounds());
+			getDummyLineFigure().setBounds(getGuideEditPart().getGuideLineFigure().getBounds());
 			getDummyLineFigure().validate();
 			// move the guide being dragged to the last index so that it's drawn
 			// on
@@ -238,11 +224,9 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 		} else {
 			int newPosition;
 			if (getGuideEditPart().isHorizontal()) {
-				newPosition = getGuideEditPart().getZoomedPosition()
-						+ req.getMoveDelta().y;
+				newPosition = getGuideEditPart().getZoomedPosition() + req.getMoveDelta().y;
 			} else {
-				newPosition = getGuideEditPart().getZoomedPosition()
-						+ req.getMoveDelta().x;
+				newPosition = getGuideEditPart().getZoomedPosition() + req.getMoveDelta().x;
 			}
 			getHostFigure().setVisible(true);
 			getGuideEditPart().getGuideLineFigure().setVisible(true);
@@ -252,8 +236,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 				showAttachedPartsFeedback(req);
 			} else {
 				getGuideEditPart().setCurrentCursor(SharedCursors.NO);
-				getGuideEditPart().updateLocationOfFigures(
-						getGuideEditPart().getZoomedPosition());
+				getGuideEditPart().updateLocationOfFigures(getGuideEditPart().getZoomedPosition());
 				eraseAttachedPartsFeedback(request);
 			}
 		}

@@ -64,25 +64,22 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	 * 
 	 * @author hudsonr
 	 */
-	protected class EditPartAccessibilityDispatcher
-			extends AccessibilityDispatcher {
+	protected class EditPartAccessibilityDispatcher extends AccessibilityDispatcher {
 		private AccessibleEditPart get(int childID) {
-			if (childID == ACC.CHILDID_SELF || childID == ACC.CHILDID_NONE)
+			if (childID == ACC.CHILDID_SELF || childID == ACC.CHILDID_NONE) {
 				if (getViewer().getContents() != null)
-					return getViewer().getContents()
-							.getAdapter(AccessibleEditPart.class);
-				else
-					return null;
-			return (AccessibleEditPart) accessibles
-					.get(Integer.valueOf(childID));
+					return getViewer().getContents().getAdapter(AccessibleEditPart.class);
+
+				return null;
+			}
+			return (AccessibleEditPart) accessibles.get(Integer.valueOf(childID));
 		}
 
 		/**
 		 * @see AccessibleControlListener#getChildAtPoint(AccessibleControlEvent)
 		 */
 		public void getChildAtPoint(AccessibleControlEvent e) {
-			org.eclipse.swt.graphics.Point p = new org.eclipse.swt.graphics.Point(
-					e.x, e.y);
+			org.eclipse.swt.graphics.Point p = new org.eclipse.swt.graphics.Point(e.x, e.y);
 			p = getViewer().getControl().toControl(p);
 			EditPart part = getViewer().findObjectAt(new Point(p.x, p.y));
 			if (part == null)
@@ -132,8 +129,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		 * @see AccessibleControlListener#getFocus(AccessibleControlEvent)
 		 */
 		public void getFocus(AccessibleControlEvent e) {
-			AccessibleEditPart acc = getViewer().getFocusEditPart()
-					.getAdapter(AccessibleEditPart.class);
+			AccessibleEditPart acc = getViewer().getFocusEditPart().getAdapter(AccessibleEditPart.class);
 			if (acc != null)
 				e.childID = acc.getAccessibleID();
 		}
@@ -211,10 +207,8 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * Constructs the dispatcher for the given domain and viewer.
 	 * 
-	 * @param d
-	 *            the domain
-	 * @param v
-	 *            the viewer
+	 * @param d the domain
+	 * @param v the viewer
 	 */
 	public DomainEventDispatcher(EditDomain d, EditPartViewer v) {
 		domain = d;
@@ -281,8 +275,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent)
 	 */
-	public void dispatchMouseDoubleClicked(
-			org.eclipse.swt.events.MouseEvent me) {
+	public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseDoubleClicked(me);
 			if (draw2dBusy())
@@ -386,13 +379,10 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * Dispatches a drag finished event.
 	 * 
-	 * @param event
-	 *            the event
-	 * @param viewer
-	 *            the viewer on which the event occured.
+	 * @param event  the event
+	 * @param viewer the viewer on which the event occured.
 	 */
-	public void dispatchNativeDragFinished(DragSourceEvent event,
-			AbstractEditPartViewer viewer) {
+	public void dispatchNativeDragFinished(DragSourceEvent event, AbstractEditPartViewer viewer) {
 		// $TODO delete the viewer parameter from the method
 		domain.nativeDragFinished(event, viewer);
 	}
@@ -400,13 +390,10 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * Dispatches a drag started event.
 	 * 
-	 * @param event
-	 *            the event
-	 * @param viewer
-	 *            the viewer
+	 * @param event  the event
+	 * @param viewer the viewer
 	 */
-	public void dispatchNativeDragStarted(DragSourceEvent event,
-			AbstractEditPartViewer viewer) {
+	public void dispatchNativeDragStarted(DragSourceEvent event, AbstractEditPartViewer viewer) {
 		// $TODO delete the viewer parameter from the method
 		setRouteEventsToEditor(false);
 		domain.nativeDragStarted(event, viewer);
@@ -490,9 +477,8 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * Sets whether events should go directly to the edit domain.
 	 * 
-	 * @param value
-	 *            <code>true</code> if all events should go directly to the edit
-	 *            domain
+	 * @param value <code>true</code> if all events should go directly to the edit
+	 *              domain
 	 */
 	public void setRouteEventsToEditor(boolean value) {
 		editorCaptured = value;
@@ -501,8 +487,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * Sets the override cursor.
 	 * 
-	 * @param newCursor
-	 *            the cursor
+	 * @param newCursor the cursor
 	 */
 	public void setOverrideCursor(Cursor newCursor) {
 		if (overrideCursor == newCursor)

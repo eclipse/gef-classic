@@ -51,8 +51,7 @@ public class RulerDragTracker extends SimpleDragTracker {
 
 	protected Command getCommand() {
 		if (isCreationValid() && !isDelete())
-			return source.getRulerProvider().getCreateGuideCommand(
-					getCurrentPosition());
+			return source.getRulerProvider().getCreateGuideCommand(getCurrentPosition());
 		else
 			return UnexecutableCommand.INSTANCE;
 	}
@@ -63,8 +62,8 @@ public class RulerDragTracker extends SimpleDragTracker {
 
 	protected int getCurrentPositionZoomed() {
 		/*
-		 * @TODO:Pratik you should cache this, current position, isDelete
-		 * boolean and isCreationValid boolean
+		 * @TODO:Pratik you should cache this, current position, isDelete boolean and
+		 * isCreationValid boolean
 		 */
 		Point pt = getLocation();
 		source.getFigure().translateToRelative(pt);
@@ -89,8 +88,7 @@ public class RulerDragTracker extends SimpleDragTracker {
 		if (isDelete())
 			return super.getDefaultCursor();
 		else if (isCreationValid())
-			return source.isHorizontal() ? SharedCursors.SIZEE
-					: SharedCursors.SIZEN;
+			return source.isHorizontal() ? SharedCursors.SIZEE : SharedCursors.SIZEN;
 		else
 			return SharedCursors.NO;
 	}
@@ -115,8 +113,7 @@ public class RulerDragTracker extends SimpleDragTracker {
 		int position = getCurrentPosition();
 		Iterator guides = source.getRulerProvider().getGuides().iterator();
 		while (guides.hasNext()) {
-			int guidePos = source.getRulerProvider().getGuidePosition(
-					guides.next());
+			int guidePos = source.getRulerProvider().getGuidePosition(guides.next());
 			if (Math.abs(guidePos - position) < GuideEditPart.MIN_DISTANCE_BW_GUIDES) {
 				return false;
 			}
@@ -128,14 +125,12 @@ public class RulerDragTracker extends SimpleDragTracker {
 		int pos, max, min;
 		if (!source.isHorizontal()) {
 			pos = getLocation().x;
-			Rectangle zone = guide.getBounds().getExpanded(
-					GuideEditPart.DELETE_THRESHOLD, 0);
+			Rectangle zone = guide.getBounds().getExpanded(GuideEditPart.DELETE_THRESHOLD, 0);
 			min = zone.x;
 			max = min + zone.width;
 		} else {
 			pos = getLocation().y;
-			Rectangle zone = guide.getBounds().getExpanded(0,
-					GuideEditPart.DELETE_THRESHOLD);
+			Rectangle zone = guide.getBounds().getExpanded(0, GuideEditPart.DELETE_THRESHOLD);
 			min = zone.y;
 			max = min + zone.height;
 		}
@@ -154,8 +149,7 @@ public class RulerDragTracker extends SimpleDragTracker {
 		if (guideline.getParent() == null) {
 			source.getGuideLayer().add(guideline);
 		}
-		source.setLayoutConstraint(null, guide, Integer.valueOf(
-				getCurrentPositionZoomed()));
+		source.setLayoutConstraint(null, guide, Integer.valueOf(getCurrentPositionZoomed()));
 		Rectangle bounds = Rectangle.SINGLETON;
 		if (source.isHorizontal()) {
 			bounds.x = getCurrentPositionZoomed();

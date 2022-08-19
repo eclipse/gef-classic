@@ -60,9 +60,9 @@ public class CommandStack {
 	public static final int POST_MARK_SAVE = 512;
 
 	/**
-	 * A bit-mask indicating notification after the command stack has changed.
-	 * This includes after a command has been undone, redone, or executed, as
-	 * well as after it has been flushed or the save location has been marked.
+	 * A bit-mask indicating notification after the command stack has changed. This
+	 * includes after a command has been undone, redone, or executed, as well as
+	 * after it has been flushed or the save location has been marked.
 	 * <P>
 	 * Usage<BR/>
 	 * 
@@ -73,8 +73,7 @@ public class CommandStack {
 	 * }
 	 * </PRE>
 	 */
-	public static final int POST_MASK = Integer.valueOf(POST_EXECUTE | POST_UNDO
-			| POST_REDO | POST_FLUSH | POST_MARK_SAVE).intValue();
+	public static final int POST_MASK = POST_EXECUTE | POST_UNDO | POST_REDO | POST_FLUSH | POST_MARK_SAVE;
 
 	/**
 	 * Constant indicating notification prior to executing a command.
@@ -99,17 +98,17 @@ public class CommandStack {
 	public static final int PRE_FLUSH = 64;
 
 	/**
-	 * Constant indicating notification prior to marking the save location of
-	 * the stack.
+	 * Constant indicating notification prior to marking the save location of the
+	 * stack.
 	 * 
 	 * @since 3.11
 	 */
 	public static final int PRE_MARK_SAVE = 128;
 
 	/**
-	 * A bit-mask indicating notification before the command stack is changed.
-	 * This includes before a command has been undone, redone, or executed, and
-	 * before the stack is being flushed or the save location is marked.
+	 * A bit-mask indicating notification before the command stack is changed. This
+	 * includes before a command has been undone, redone, or executed, and before
+	 * the stack is being flushed or the save location is marked.
 	 * <P>
 	 * Usage<BR/>
 	 * 
@@ -122,8 +121,7 @@ public class CommandStack {
 	 * 
 	 * @since 3.7 Had package visibility before.
 	 */
-	public static final int PRE_MASK = Integer.valueOf(PRE_EXECUTE | PRE_UNDO
-			| PRE_REDO | PRE_FLUSH | PRE_MARK_SAVE).intValue();
+	public static final int PRE_MASK = PRE_EXECUTE | PRE_UNDO | PRE_REDO | PRE_FLUSH | PRE_MARK_SAVE;
 
 	private List eventListeners = new ArrayList();
 
@@ -151,23 +149,21 @@ public class CommandStack {
 	}
 
 	/**
-	 * Appends the listener to the list of command stack listeners. Multiple
-	 * adds result in multiple notifications.
+	 * Appends the listener to the list of command stack listeners. Multiple adds
+	 * result in multiple notifications.
 	 * 
 	 * @since 3.1
-	 * @param listener
-	 *            the event listener
+	 * @param listener the event listener
 	 */
 	public void addCommandStackEventListener(CommandStackEventListener listener) {
 		eventListeners.add(listener);
 	}
 
 	/**
-	 * Appends the listener to the list of command stack listeners. Multiple
-	 * adds will result in multiple notifications.
+	 * Appends the listener to the list of command stack listeners. Multiple adds
+	 * will result in multiple notifications.
 	 * 
-	 * @param listener
-	 *            the listener
+	 * @param listener the listener
 	 * @deprecated Use
 	 *             {@link #addCommandStackEventListener(CommandStackEventListener)}
 	 *             instead.
@@ -195,8 +191,8 @@ public class CommandStack {
 	}
 
 	/**
-	 * This will <code>dispose()</code> all the commands in both the undo and
-	 * redo stack. Both stacks will be empty afterwards.
+	 * This will <code>dispose()</code> all the commands in both the undo and redo
+	 * stack. Both stacks will be empty afterwards.
 	 */
 	public void dispose() {
 		flushUndo();
@@ -204,19 +200,17 @@ public class CommandStack {
 	}
 
 	/**
-	 * Executes the specified Command if possible. Prior to executing the
-	 * command, a CommandStackEvent for {@link #PRE_EXECUTE} will be fired to
-	 * event listeners. Similarly, after attempting to execute the command, an
-	 * event for {@link #POST_EXECUTE} will be fired. If the execution of the
-	 * command completely normally, stack listeners will receive
-	 * {@link CommandStackListener#commandStackChanged(EventObject)
-	 * stackChanged} notification.
+	 * Executes the specified Command if possible. Prior to executing the command, a
+	 * CommandStackEvent for {@link #PRE_EXECUTE} will be fired to event listeners.
+	 * Similarly, after attempting to execute the command, an event for
+	 * {@link #POST_EXECUTE} will be fired. If the execution of the command
+	 * completely normally, stack listeners will receive
+	 * {@link CommandStackListener#commandStackChanged(EventObject) stackChanged}
+	 * notification.
 	 * <P>
-	 * If the command is <code>null</code> or cannot be executed, nothing
-	 * happens.
+	 * If the command is <code>null</code> or cannot be executed, nothing happens.
 	 * 
-	 * @param command
-	 *            the Command to execute
+	 * @param command the Command to execute
 	 * @see CommandStackEventListener
 	 */
 	public void execute(Command command) {
@@ -244,8 +238,8 @@ public class CommandStack {
 	}
 
 	/**
-	 * Flushes the entire stack and resets the save location to zero. This
-	 * method might be called when performing "revert to saved".
+	 * Flushes the entire stack and resets the save location to zero. This method
+	 * might be called when performing "revert to saved".
 	 */
 	public void flush() {
 		notifyListeners(null, PRE_FLUSH);
@@ -278,9 +272,9 @@ public class CommandStack {
 	}
 
 	/**
-	 * Peeks at the top of the <i>redo</i> stack. This is useful for describing
-	 * to the User what will be redone. The returned <code>Command</code> has a
-	 * label describing it.
+	 * Peeks at the top of the <i>redo</i> stack. This is useful for describing to
+	 * the User what will be redone. The returned <code>Command</code> has a label
+	 * describing it.
 	 * 
 	 * @return the top of the <i>redo</i> stack, which may be <code>null</code>
 	 */
@@ -289,9 +283,9 @@ public class CommandStack {
 	}
 
 	/**
-	 * Peeks at the top of the <i>undo</i> stack. This is useful for describing
-	 * to the User what will be undone. The returned <code>Command</code> has a
-	 * label describing it.
+	 * Peeks at the top of the <i>undo</i> stack. This is useful for describing to
+	 * the User what will be undone. The returned <code>Command</code> has a label
+	 * describing it.
 	 * 
 	 * @return the top of the <i>undo</i> stack, which may be <code>null</code>
 	 */
@@ -312,8 +306,8 @@ public class CommandStack {
 
 	/**
 	 * Returns true if the stack is dirty. The stack is dirty whenever the last
-	 * executed or redone command is different than the command that was at the
-	 * top of the undo stack when {@link #markSaveLocation()} was last called.
+	 * executed or redone command is different than the command that was at the top
+	 * of the undo stack when {@link #markSaveLocation()} was last called.
 	 * 
 	 * @return <code>true</code> if the stack is dirty
 	 */
@@ -322,9 +316,9 @@ public class CommandStack {
 	}
 
 	/**
-	 * Marks the last executed or redone Command as the point at which the
-	 * changes were saved. Calculation of {@link #isDirty()} will be based on
-	 * this checkpoint.
+	 * Marks the last executed or redone Command as the point at which the changes
+	 * were saved. Calculation of {@link #isDirty()} will be based on this
+	 * checkpoint.
 	 */
 	public void markSaveLocation() {
 		notifyListeners(null, PRE_MARK_SAVE);
@@ -341,31 +335,27 @@ public class CommandStack {
 	protected void notifyListeners() {
 		EventObject event = new EventObject(this);
 		for (int i = 0; i < listeners.size(); i++)
-			((CommandStackListener) listeners.get(i))
-					.commandStackChanged(event);
+			((CommandStackListener) listeners.get(i)).commandStackChanged(event);
 	}
 
 	/**
-	 * Notifies command stack event listeners that the command stack has changed
-	 * to the specified state.
+	 * Notifies command stack event listeners that the command stack has changed to
+	 * the specified state.
 	 * 
-	 * @param command
-	 *            the command
-	 * @param state
-	 *            the current stack state
+	 * @param command the command
+	 * @param state   the current stack state
 	 * @since 3.2
 	 */
 	protected void notifyListeners(Command command, int state) {
 		CommandStackEvent event = new CommandStackEvent(this, command, state);
 		for (int i = 0; i < eventListeners.size(); i++)
-			((CommandStackEventListener) eventListeners.get(i))
-					.stackChanged(event);
+			((CommandStackEventListener) eventListeners.get(i)).stackChanged(event);
 	}
 
 	/**
 	 * Calls redo on the Command at the top of the <i>redo</i> stack, and pushes
-	 * that Command onto the <i>undo</i> stack. This method should only be
-	 * called when {@link #canUndo()} returns <code>true</code>.
+	 * that Command onto the <i>undo</i> stack. This method should only be called
+	 * when {@link #canUndo()} returns <code>true</code>.
 	 */
 	public void redo() {
 		// Assert.isTrue(canRedo())
@@ -385,19 +375,16 @@ public class CommandStack {
 	/**
 	 * Removes the first occurrence of the specified listener.
 	 * 
-	 * @param listener
-	 *            the listener
+	 * @param listener the listener
 	 */
-	public void removeCommandStackEventListener(
-			CommandStackEventListener listener) {
+	public void removeCommandStackEventListener(CommandStackEventListener listener) {
 		eventListeners.remove(listener);
 	}
 
 	/**
 	 * Removes the first occurrence of the specified listener.
 	 * 
-	 * @param listener
-	 *            the listener
+	 * @param listener the listener
 	 * @deprecated Use {@link CommandStackEventListener} instead.
 	 */
 	public void removeCommandStackListener(CommandStackListener listener) {
@@ -409,17 +396,16 @@ public class CommandStack {
 	 * operations that the User can undo. <code>-1</code> is used to indicate no
 	 * limit.
 	 * 
-	 * @param undoLimit
-	 *            the undo limit
+	 * @param undoLimit the undo limit
 	 */
 	public void setUndoLimit(int undoLimit) {
 		this.undoLimit = undoLimit;
 	}
 
 	/**
-	 * Undoes the most recently executed (or redone) Command. The Command is
-	 * popped from the undo stack to and pushed onto the redo stack. This method
-	 * should only be called when {@link #canUndo()} returns <code>true</code>.
+	 * Undoes the most recently executed (or redone) Command. The Command is popped
+	 * from the undo stack to and pushed onto the redo stack. This method should
+	 * only be called when {@link #canUndo()} returns <code>true</code>.
 	 */
 	public void undo() {
 		if (!canUndo())

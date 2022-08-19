@@ -29,13 +29,13 @@ public abstract class Shape extends Figure {
 	protected int lineWidth;
 
 	/**
-	 * Private copy of lineWidth field to track changes. We cannot compare to
-	 * the float line width because rounding may make them seem equal when they
-	 * have actually changed.
+	 * Private copy of lineWidth field to track changes. We cannot compare to the
+	 * float line width because rounding may make them seem equal when they have
+	 * actually changed.
 	 * 
-	 * e.g. someone sets int line width to 5, when float line width was already
-	 * 5.4, float line width should change to 5.0, but comparing them as ints
-	 * would suggest there's no change to synchronize.
+	 * e.g. someone sets int line width to 5, when float line width was already 5.4,
+	 * float line width should change to 5.0, but comparing them as ints would
+	 * suggest there's no change to synchronize.
 	 */
 	private int lastLineWidth;
 
@@ -84,23 +84,20 @@ public abstract class Shape extends Figure {
 	/**
 	 * Fills the interior of the shape with the background color.
 	 * 
-	 * @param graphics
-	 *            the graphics object
+	 * @param graphics the graphics object
 	 */
 	protected abstract void fillShape(Graphics graphics);
 
 	/**
 	 * Outlines this shape using the foreground color.
 	 * 
-	 * @param graphics
-	 *            the graphics object
+	 * @param graphics the graphics object
 	 */
 	protected abstract void outlineShape(Graphics graphics);
 
 	/**
 	 * Paints the shape. Each shape has an outline to draw, and a region to fill
-	 * within that outline. Disabled shapes must visually depict the disabled
-	 * state.
+	 * within that outline. Disabled shapes must visually depict the disabled state.
 	 * 
 	 * @see Figure#paintFigure(Graphics)
 	 */
@@ -115,8 +112,7 @@ public abstract class Shape extends Figure {
 
 		/*
 		 * see bug #267397: paintFigure was historically not called, disabling
-		 * setOpaque() behavior, and it was decided to defend the API's
-		 * consistency.
+		 * setOpaque() behavior, and it was decided to defend the API's consistency.
 		 */
 		// paint background and border
 		// super.paintFigure(graphics);
@@ -159,12 +155,10 @@ public abstract class Shape extends Figure {
 
 		if (xorOutline) {
 			/*
-			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on
-			 * windows)
+			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on windows)
 			 * 
-			 * Also, XORMode is deprecated in SWT, so this should really be
-			 * removed completely at some point. XORMode isn't supported on Mac
-			 * OSX at all.
+			 * Also, XORMode is deprecated in SWT, so this should really be removed
+			 * completely at some point. XORMode isn't supported on Mac OSX at all.
 			 */
 			boolean oldAdv = graphics.getAdvanced();
 			graphics.setAdvanced(false);
@@ -179,12 +173,10 @@ public abstract class Shape extends Figure {
 	private void paintFill(Graphics graphics) {
 		if (xorFill) {
 			/*
-			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on
-			 * windows)
+			 * XORMode is a non-advanced only feature (GDI, not in GDI+ on windows)
 			 * 
-			 * Also, XORMode is deprecated in SWT, so this should really be
-			 * removed completely at some point. XORMode isn't supported on Mac
-			 * OSX at all.
+			 * Also, XORMode is deprecated in SWT, so this should really be removed
+			 * completely at some point. XORMode isn't supported on Mac OSX at all.
 			 */
 			boolean oldAdv = graphics.getAdvanced();
 			graphics.setAdvanced(false);
@@ -200,8 +192,7 @@ public abstract class Shape extends Figure {
 	 * Sets whether this shape should fill its region or not. It repaints this
 	 * figure.
 	 * 
-	 * @param b
-	 *            fill state
+	 * @param b fill state
 	 * @since 2.0
 	 */
 	public void setFill(boolean b) {
@@ -215,8 +206,7 @@ public abstract class Shape extends Figure {
 	 * Sets whether XOR based fill should be used by the shape. It repaints this
 	 * figure.
 	 * 
-	 * @param b
-	 *            XOR fill state
+	 * @param b XOR fill state
 	 * @since 2.0
 	 */
 	public void setFillXOR(boolean b) {
@@ -229,8 +219,7 @@ public abstract class Shape extends Figure {
 	/**
 	 * Sets whether the outline should be drawn for this shape.
 	 * 
-	 * @param b
-	 *            <code>true</code> if the shape should be outlined
+	 * @param b <code>true</code> if the shape should be outlined
 	 * @since 2.0
 	 */
 	public void setOutline(boolean b) {
@@ -243,8 +232,7 @@ public abstract class Shape extends Figure {
 	/**
 	 * Sets whether XOR based outline should be used for this shape.
 	 * 
-	 * @param b
-	 *            <code>true</code> if the outline should be XOR'ed
+	 * @param b <code>true</code> if the outline should be XOR'ed
 	 * @since 2.0
 	 */
 	public void setOutlineXOR(boolean b) {
@@ -258,8 +246,7 @@ public abstract class Shape extends Figure {
 	 * Sets whether XOR based fill and XOR based outline should be used for this
 	 * shape.
 	 * 
-	 * @param b
-	 *            <code>true</code> if the outline and fill should be XOR'ed
+	 * @param b <code>true</code> if the outline and fill should be XOR'ed
 	 * @since 2.0
 	 */
 	public void setXOR(boolean b) {
@@ -486,8 +473,7 @@ public abstract class Shape extends Figure {
 	/**
 	 * Sets the line width to be used to outline the shape.
 	 * 
-	 * @param w
-	 *            the new width
+	 * @param w the new width
 	 * @since 2.0
 	 */
 	public void setLineWidth(int w) {
@@ -561,8 +547,7 @@ public abstract class Shape extends Figure {
 	 * 
 	 * @see org.eclipse.swt.graphics.LineAttributes#style
 	 * 
-	 * @param style
-	 *            the new line style
+	 * @param style the new line style
 	 * @since 2.0
 	 */
 	public void setLineStyle(int style) {

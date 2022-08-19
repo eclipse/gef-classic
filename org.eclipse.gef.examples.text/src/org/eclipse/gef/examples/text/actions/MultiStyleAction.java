@@ -14,8 +14,7 @@ public class MultiStyleAction extends BooleanStyleAction {
 
 	private Object value;
 
-	public MultiStyleAction(StyleService service, String styleID,
-			String property, Object value) {
+	public MultiStyleAction(StyleService service, String styleID, String property, Object value) {
 		super(service, styleID, property);
 		this.value = value;
 	}
@@ -26,8 +25,7 @@ public class MultiStyleAction extends BooleanStyleAction {
 
 	public void refresh() {
 		setChecked(value.equals(service.getStyle(property)));
-		setEnabled(service.getStyleState(property).equals(
-				StyleService.STATE_EDITABLE));
+		setEnabled(service.getStyleState(property).equals(StyleService.STATE_EDITABLE));
 	}
 
 }

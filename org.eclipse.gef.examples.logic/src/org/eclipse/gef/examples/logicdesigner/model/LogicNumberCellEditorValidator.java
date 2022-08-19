@@ -26,7 +26,7 @@ public class LogicNumberCellEditorValidator implements ICellEditorValidator {
 
 	public String isValid(Object value) {
 		try {
-			Integer.valueOf((String) value);
+			Integer.parseInt((String) value);
 			return null;
 		} catch (NumberFormatException exc) {
 			return LogicMessages.CellEditorValidator_NotANumberMessage;

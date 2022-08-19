@@ -419,13 +419,13 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 				Integer count = (Integer) srcDestToNumRelsMap.get(key);
 				Double avgWeight = (Double) srcDestToRelsAvgWeightMap.get(key);
 				if (count == null) {
-					count = new Integer(1);
+					count = Integer.valueOf(1);
 					avgWeight = Double.valueOf(weight);
 				} else {
 					int newCount = count.intValue() + 1;
 					double newAverage = (avgWeight.doubleValue() * count.doubleValue() + weight) / newCount;
 					avgWeight = Double.valueOf(newAverage);
-					count = new Integer(newCount);
+					count = Integer.valueOf(newCount);
 				}
 				srcDestToNumRelsMap.put(key, count);
 				srcDestToRelsAvgWeightMap.put(key, avgWeight);

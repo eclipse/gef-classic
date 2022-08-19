@@ -46,8 +46,8 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 public class ResizeTracker extends SimpleDragTracker {
 
 	/**
-	 * Key modifier for centered resizing. It's ALT on the Mac and MOD1 on all
-	 * other platforms.
+	 * Key modifier for centered resizing. It's ALT on the Mac and MOD1 on all other
+	 * platforms.
 	 */
 	static int MODIFIER_CENTERED_RESIZE;
 
@@ -69,8 +69,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * The maximum flag used by this class.
 	 */
-	protected static final int MAX_FLAG = Integer.valueOf(FLAG_TARGET_FEEDBACK)
-			.intValue();
+	protected static final int MAX_FLAG = FLAG_TARGET_FEEDBACK;
 
 	private int direction;
 	private GraphicalEditPart owner;
@@ -83,8 +82,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * {@link PositionConstants#NORTH_EAST}, etc.
 	 * 
 	 * @deprecated use ResizeTracker(GraphicalEditPart, int) instead
-	 * @param direction
-	 *            the direction
+	 * @param direction the direction
 	 */
 	public ResizeTracker(int direction) {
 		this(null, direction);
@@ -95,10 +93,8 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * direction is specified using {@link PositionConstants#NORTH},
 	 * {@link PositionConstants#NORTH_EAST}, etc.
 	 * 
-	 * @param owner
-	 *            of the resize handle which returned this tracker
-	 * @param direction
-	 *            the direction
+	 * @param owner     of the resize handle which returned this tracker
+	 * @param direction the direction
 	 */
 	public ResizeTracker(GraphicalEditPart owner, int direction) {
 		this.owner = owner;
@@ -113,13 +109,11 @@ public class ResizeTracker extends SimpleDragTracker {
 		super.activate();
 		if (owner != null) {
 			if (getTargetEditPart() != null)
-				snapToHelper = getTargetEditPart()
-						.getAdapter(SnapToHelper.class);
+				snapToHelper = getTargetEditPart().getAdapter(SnapToHelper.class);
 
 			IFigure figure = owner.getFigure();
 			if (figure instanceof HandleBounds)
-				sourceRect = new PrecisionRectangle(
-						((HandleBounds) figure).getHandleBounds());
+				sourceRect = new PrecisionRectangle(((HandleBounds) figure).getHandleBounds());
 			else
 				sourceRect = new PrecisionRectangle(figure.getBounds());
 			figure.translateToAbsolute(sourceRect);
@@ -168,8 +162,8 @@ public class ResizeTracker extends SimpleDragTracker {
 	}
 
 	/**
-	 * This method is invoked when the resize operation is complete. It notifies
-	 * the {@link #getTargetEditPart() target} to erase target feedback.
+	 * This method is invoked when the resize operation is complete. It notifies the
+	 * {@link #getTargetEditPart() target} to erase target feedback.
 	 */
 	protected void eraseTargetFeedback() {
 		if (!getFlag(FLAG_TARGET_FEEDBACK))
@@ -205,8 +199,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * @see org.eclipse.gef.tools.AbstractTool#getDefaultCursor()
 	 */
 	protected Cursor getDefaultCursor() {
-		return SharedCursors.getDirectionalCursor(direction,
-				getTargetEditPart().getFigure().isMirrored());
+		return SharedCursors.getDirectionalCursor(direction, getTargetEditPart().getFigure().isMirrored());
 	}
 
 	/**
@@ -226,8 +219,8 @@ public class ResizeTracker extends SimpleDragTracker {
 	}
 
 	/**
-	 * Returns the direction of the resize (NORTH, EAST, NORTH_EAST, etc.).
-	 * These constants are from {@link PositionConstants}.
+	 * Returns the direction of the resize (NORTH, EAST, NORTH_EAST, etc.). These
+	 * constants are from {@link PositionConstants}.
 	 * 
 	 * @return the resize direction.
 	 */
@@ -239,8 +232,8 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * The TargetEditPart is the parent of the EditPart being resized.
 	 * 
 	 * @return The target EditPart; may be <code>null</code> in 2.1 applications
-	 *         that use the now deprecated
-	 *         {@link ResizeTracker#ResizeTracker(int) constructor}.
+	 *         that use the now deprecated {@link ResizeTracker#ResizeTracker(int)
+	 *         constructor}.
 	 */
 	protected GraphicalEditPart getTargetEditPart() {
 		if (owner != null)
@@ -298,12 +291,9 @@ public class ResizeTracker extends SimpleDragTracker {
 		Point moveDelta = new Point(0, 0);
 		Dimension resizeDelta = new Dimension(0, 0);
 
-		request.setConstrainedResize(
-				getCurrentInput().isModKeyDown(MODIFIER_CONSTRAINED_RESIZE));
-		request.setCenteredResize(
-				getCurrentInput().isModKeyDown(MODIFIER_CENTERED_RESIZE));
-		request.setSnapToEnabled(
-				!getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING));
+		request.setConstrainedResize(getCurrentInput().isModKeyDown(MODIFIER_CONSTRAINED_RESIZE));
+		request.setCenteredResize(getCurrentInput().isModKeyDown(MODIFIER_CENTERED_RESIZE));
+		request.setSnapToEnabled(!getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING));
 
 		if (request.isConstrainedResize() && owner != null) {
 			request.setConstrainedResize(true);
@@ -380,32 +370,27 @@ public class ResizeTracker extends SimpleDragTracker {
 			rect.resize(resizeDelta);
 			PrecisionRectangle result = new PrecisionRectangle();
 
-			snapToHelper.snapRectangle(request, request.getResizeDirection(),
-					rect, result);
+			snapToHelper.snapRectangle(request, request.getResizeDirection(), rect, result);
 			if (request.isCenteredResize()) {
 				if (result.preciseX() != 0.0)
-					result.setPreciseWidth(
-							result.preciseWidth() - result.preciseX());
+					result.setPreciseWidth(result.preciseWidth() - result.preciseX());
 				else if (result.preciseWidth() != 0.0) {
 					result.setPreciseX(-result.preciseWidth());
 					result.setPreciseWidth(result.preciseWidth() * 2.0);
 				}
 
 				if (result.preciseY() != 0.0)
-					result.setPreciseHeight(
-							result.preciseHeight() - result.preciseY());
+					result.setPreciseHeight(result.preciseHeight() - result.preciseY());
 				else if (result.preciseHeight() != 0.0) {
 					result.setPreciseY(-result.preciseHeight());
 					result.setPreciseHeight(result.preciseHeight() * 2.0);
 				}
 			}
 
-			PrecisionPoint preciseMove = new PrecisionPoint(
-					result.preciseX() + moveDelta.x,
+			PrecisionPoint preciseMove = new PrecisionPoint(result.preciseX() + moveDelta.x,
 					result.preciseY() + moveDelta.y);
 
-			PrecisionDimension preciseResize = new PrecisionDimension(
-					result.preciseWidth() + resizeDelta.width,
+			PrecisionDimension preciseResize = new PrecisionDimension(result.preciseWidth() + resizeDelta.width,
 					result.preciseHeight() + resizeDelta.height);
 
 			request.setMoveDelta(preciseMove);
@@ -416,50 +401,42 @@ public class ResizeTracker extends SimpleDragTracker {
 	}
 
 	/**
-	 * Ensures size constraints (by default minimum and maximum) are respected
-	 * by the given request. May be overwritten by clients to enforce additional
+	 * Ensures size constraints (by default minimum and maximum) are respected by
+	 * the given request. May be overwritten by clients to enforce additional
 	 * constraints.
 	 * 
-	 * @param changeBoundsRequest
-	 *            The request to validate
+	 * @param changeBoundsRequest The request to validate
 	 * @since 3.7
 	 */
-	protected void enforceConstraintsForResize(
-			ChangeBoundsRequest changeBoundsRequest) {
+	protected void enforceConstraintsForResize(ChangeBoundsRequest changeBoundsRequest) {
 		// adjust request, so that minimum and maximum size constraints are
 		// respected
 		if (owner != null) {
-			PrecisionRectangle originalConstraint = new PrecisionRectangle(
-					owner.getFigure().getBounds());
+			PrecisionRectangle originalConstraint = new PrecisionRectangle(owner.getFigure().getBounds());
 			owner.getFigure().translateToAbsolute(originalConstraint);
 			PrecisionRectangle manipulatedConstraint = new PrecisionRectangle(
-					changeBoundsRequest
-							.getTransformedRectangle(originalConstraint));
+					changeBoundsRequest.getTransformedRectangle(originalConstraint));
 			owner.getFigure().translateToRelative(manipulatedConstraint);
 			// validate constraint (maximum and minimum size are regarded to be
 			// 'normalized', i.e. relative to this figure's bounds coordinates).
 			manipulatedConstraint
-					.setSize(Dimension.max(manipulatedConstraint.getSize(),
-							getMinimumSizeFor(changeBoundsRequest)));
+					.setSize(Dimension.max(manipulatedConstraint.getSize(), getMinimumSizeFor(changeBoundsRequest)));
 			manipulatedConstraint
-					.setSize(Dimension.min(manipulatedConstraint.getSize(),
-							getMaximumSizeFor(changeBoundsRequest)));
+					.setSize(Dimension.min(manipulatedConstraint.getSize(), getMaximumSizeFor(changeBoundsRequest)));
 			// translate back to absolute
 			owner.getFigure().translateToAbsolute(manipulatedConstraint);
-			Dimension newSizeDelta = manipulatedConstraint.getSize()
-					.getShrinked(originalConstraint.getSize());
+			Dimension newSizeDelta = manipulatedConstraint.getSize().getShrinked(originalConstraint.getSize());
 			changeBoundsRequest.setSizeDelta(newSizeDelta);
 		}
 	}
 
 	/**
-	 * Determines the <em>maximum</em> size that the host can be resized to for
-	 * a given request. By default, a default value is returned. The value is
-	 * interpreted to be a dimension in the host figure's coordinate system
-	 * (i.e. relative to its bounds), so it is not affected by zooming affects.
+	 * Determines the <em>maximum</em> size that the host can be resized to for a
+	 * given request. By default, a default value is returned. The value is
+	 * interpreted to be a dimension in the host figure's coordinate system (i.e.
+	 * relative to its bounds), so it is not affected by zooming affects.
 	 * 
-	 * @param request
-	 *            the ChangeBoundsRequest
+	 * @param request the ChangeBoundsRequest
 	 * @return the minimum size
 	 * @since 3.7
 	 */
@@ -468,13 +445,12 @@ public class ResizeTracker extends SimpleDragTracker {
 	}
 
 	/**
-	 * Determines the <em>minimum</em> size that the specified child can be
-	 * resized to.By default, a default value is returned. The value is
-	 * interpreted to be a dimension in the host figure's coordinate system
-	 * (i.e. relative to its bounds), so it is not affected by zooming effects.
+	 * Determines the <em>minimum</em> size that the specified child can be resized
+	 * to.By default, a default value is returned. The value is interpreted to be a
+	 * dimension in the host figure's coordinate system (i.e. relative to its
+	 * bounds), so it is not affected by zooming effects.
 	 * 
-	 * @param request
-	 *            the ChangeBoundsRequest
+	 * @param request the ChangeBoundsRequest
 	 * @return the minimum size
 	 * @since 3.7
 	 */

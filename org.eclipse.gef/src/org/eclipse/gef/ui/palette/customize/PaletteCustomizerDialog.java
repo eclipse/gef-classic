@@ -101,20 +101,19 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  * @see org.eclipse.gef.palette.PaletteEntry
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer
  */
-public class PaletteCustomizerDialog extends Dialog implements
-		EntryPageContainer {
+public class PaletteCustomizerDialog extends Dialog implements EntryPageContainer {
 
 	/**
-	 * The unique ID for the Apply Button. It can be used to retrieve that
-	 * widget from the internal map (using {@link #getWidget(int)} or
+	 * The unique ID for the Apply Button. It can be used to retrieve that widget
+	 * from the internal map (using {@link #getWidget(int)} or
 	 * {@link #getButton(int)}), or to identify that widget in
 	 * {@link #buttonPressed(int)}.
 	 */
 	protected static final int APPLY_ID = IDialogConstants.CLIENT_ID + 1;
 
 	/**
-	 * Sub-classes that need to create their own unique IDs should do so by
-	 * adding to this ID.
+	 * Sub-classes that need to create their own unique IDs should do so by adding
+	 * to this ID.
 	 */
 	protected static final int CLIENT_ID = 16;
 
@@ -160,15 +159,11 @@ public class PaletteCustomizerDialog extends Dialog implements
 	/**
 	 * Constructs a new customizer dialog.
 	 * 
-	 * @param shell
-	 *            the parent Shell
-	 * @param customizer
-	 *            the customizer
-	 * @param root
-	 *            the palette root
+	 * @param shell      the parent Shell
+	 * @param customizer the customizer
+	 * @param root       the palette root
 	 */
-	public PaletteCustomizerDialog(Shell shell, PaletteCustomizer customizer,
-			PaletteRoot root) {
+	public PaletteCustomizerDialog(Shell shell, PaletteCustomizer customizer, PaletteRoot root) {
 		super(shell);
 		this.customizer = customizer;
 		this.root = root;
@@ -176,10 +171,9 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * This method will be invoked whenever any <code>Button</code> created
-	 * using {@link #createButton(Composite, int, String, int, ImageDescriptor)}
-	 * or {@link Dialog#createButton(Composite, int, String, boolean)} is
-	 * selected.
+	 * This method will be invoked whenever any <code>Button</code> created using
+	 * {@link #createButton(Composite, int, String, int, ImageDescriptor)} or
+	 * {@link Dialog#createButton(Composite, int, String, boolean)} is selected.
 	 * 
 	 * @see Dialog#buttonPressed(int)
 	 */
@@ -194,8 +188,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 	/**
 	 * This method should be invoked by EntryPages when an error that they had
 	 * earlier reported (using {@link #showProblem(String)}) is fixed. This will
-	 * hide the error message, enable the OK and Apply buttons and re-allow
-	 * changing selection in the outline tree.
+	 * hide the error message, enable the OK and Apply buttons and re-allow changing
+	 * selection in the outline tree.
 	 * 
 	 * @see org.eclipse.gef.ui.palette.customize.EntryPageContainer#clearProblem()
 	 * @see #showProblem(String)
@@ -269,32 +263,26 @@ public class PaletteCustomizerDialog extends Dialog implements
 
 	/**
 	 * This method should not be used to create buttons for the button bar. Use
-	 * {@link Dialog#createButton(Composite, int, String, boolean)} for that.
-	 * This method can be used to create any other button in the dialog. The
-	 * parent <code>Composite</code> must have a GridLayout. These buttons will
-	 * be available through {@link #getButton(int)} and {@link #getWidget(int)}.
-	 * Ensure that the various buttons created by this method are given unique
-	 * IDs. Pass in a <code>null</code> image descriptor if you don't want the
-	 * button to have an icon. This method will take care of disposing the
-	 * images that it creates. {@link #buttonPressed(int)} will be called when
-	 * any of the buttons created by this method are clicked (selected).
+	 * {@link Dialog#createButton(Composite, int, String, boolean)} for that. This
+	 * method can be used to create any other button in the dialog. The parent
+	 * <code>Composite</code> must have a GridLayout. These buttons will be
+	 * available through {@link #getButton(int)} and {@link #getWidget(int)}. Ensure
+	 * that the various buttons created by this method are given unique IDs. Pass in
+	 * a <code>null</code> image descriptor if you don't want the button to have an
+	 * icon. This method will take care of disposing the images that it creates.
+	 * {@link #buttonPressed(int)} will be called when any of the buttons created by
+	 * this method are clicked (selected).
 	 * 
-	 * @param parent
-	 *            The composite in which the button is to be created
-	 * @param id
-	 *            The button's unique ID
-	 * @param label
-	 *            The button's text
-	 * @param stylebits
-	 *            The style bits for creating the button (eg.,
-	 *            <code>SWT.PUSH</code> or <code>SWT.CHECK</code>)
-	 * @param descriptor
-	 *            The ImageDescriptor from which the image/icon for this button
-	 *            should be created
+	 * @param parent     The composite in which the button is to be created
+	 * @param id         The button's unique ID
+	 * @param label      The button's text
+	 * @param stylebits  The style bits for creating the button (eg.,
+	 *                   <code>SWT.PUSH</code> or <code>SWT.CHECK</code>)
+	 * @param descriptor The ImageDescriptor from which the image/icon for this
+	 *                   button should be created
 	 * @return The newly created button for convenience
 	 */
-	protected Button createButton(Composite parent, int id, String label,
-			int stylebits, ImageDescriptor descriptor) {
+	protected Button createButton(Composite parent, int id, String label, int stylebits, ImageDescriptor descriptor) {
 		Button button = new Button(parent, stylebits);
 		button.setText(label);
 		button.setFont(parent.getFont());
@@ -310,8 +298,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 		widgets.put(Integer.valueOf(id), button);
 
 		if (descriptor != null) {
-			button.setImage(new Image(parent.getDisplay(), descriptor
-					.getImageData()));
+			button.setImage(new Image(parent.getDisplay(), descriptor.getImageData()));
 			button.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
 					Image img = ((Button) e.getSource()).getImage();
@@ -344,8 +331,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 	 * 
 	 * <p>
 	 * It is recommended that this method not be overridden. Override one of the
-	 * methods that this method calls in order to customize the appearance of
-	 * the dialog.
+	 * methods that this method calls in order to customize the appearance of the
+	 * dialog.
 	 * </p>
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(Composite)
@@ -408,8 +395,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 	 * </UL>
 	 * </p>
 	 * 
-	 * @param container
-	 *            The Composite within which the outline has to be created
+	 * @param container The Composite within which the outline has to be created
 	 * @return The newly created Control that has the outline
 	 */
 	protected Control createOutline(Composite container) {
@@ -458,9 +444,9 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * Uses a <code>MenuManager</code> to create the context menu for the
-	 * outline. The <code>IActions</code> used to create the context menu are
-	 * those created in {@link #createOutlineActions()}.
+	 * Uses a <code>MenuManager</code> to create the context menu for the outline.
+	 * The <code>IActions</code> used to create the context menu are those created
+	 * in {@link #createOutlineActions()}.
 	 * 
 	 * @return The newly created Menu
 	 */
@@ -498,11 +484,10 @@ public class PaletteCustomizerDialog extends Dialog implements
 
 	/**
 	 * Uses a ToolBarManager to create the ToolBar in the outline part of the
-	 * dialog. The Actions used in the ToolBarManager are those that are created
-	 * in {@link #createOutlineActions()}.
+	 * dialog. The Actions used in the ToolBarManager are those that are created in
+	 * {@link #createOutlineActions()}.
 	 * 
-	 * @param parent
-	 *            The Composite to which the ToolBar is to be added
+	 * @param parent The Composite to which the ToolBar is to be added
 	 * @return The newly created ToolBar
 	 */
 	protected Control createOutlineToolBar(Composite parent) {
@@ -536,15 +521,11 @@ public class PaletteCustomizerDialog extends Dialog implements
 				gc.setForeground(ColorConstants.buttonDarker);
 				gc.drawLine(area.x, area.y, area.x + area.width - 2, area.y);
 				gc.drawLine(area.x, area.y, area.x, area.y + area.height - 1);
-				gc.drawLine(area.x + area.width - 2, area.y, area.x
-						+ area.width - 2, area.y + area.height - 1);
+				gc.drawLine(area.x + area.width - 2, area.y, area.x + area.width - 2, area.y + area.height - 1);
 				gc.setForeground(ColorConstants.buttonLightest);
-				gc.drawLine(area.x + 1, area.y + 1, area.x + area.width - 3,
-						area.y + 1);
-				gc.drawLine(area.x + area.width - 1, area.y + 1, area.x
-						+ area.width - 1, area.y + area.height - 1);
-				gc.drawLine(area.x + 1, area.y + 1, area.x + 1, area.y
-						+ area.height - 1);
+				gc.drawLine(area.x + 1, area.y + 1, area.x + area.width - 3, area.y + 1);
+				gc.drawLine(area.x + area.width - 1, area.y + 1, area.x + area.width - 1, area.y + area.height - 1);
+				gc.drawLine(area.x + 1, area.y + 1, area.x + 1, area.y + area.height - 1);
 			}
 		});
 
@@ -552,8 +533,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 		ToolBarManager tbMgr = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL);
 		List actions = getOutlineActions();
 		for (int i = 0; i < actions.size(); i++) {
-			tbMgr.add(new ToolbarDropdownContributionItem(((IAction) actions
-					.get(i))));
+			tbMgr.add(new ToolbarDropdownContributionItem(((IAction) actions.get(i))));
 		}
 		tbMgr.createControl(composite);
 		tbMgr.getControl().setFont(composite.getFont());
@@ -572,15 +552,13 @@ public class PaletteCustomizerDialog extends Dialog implements
 	/**
 	 * Creates the TreeViewer that is the outline of the model.
 	 * 
-	 * @param composite
-	 *            The Composite to which the ToolBar is to be added
+	 * @param composite The Composite to which the ToolBar is to be added
 	 * @return The newly created TreeViewer
 	 */
 	protected TreeViewer createOutlineTreeViewer(Composite composite) {
 		Tree treeForViewer = new Tree(composite, SWT.BORDER);
 		treeForViewer.setFont(composite.getFont());
-		GridData data = new GridData(GridData.FILL_VERTICAL
-				| GridData.HORIZONTAL_ALIGN_FILL);
+		GridData data = new GridData(GridData.FILL_VERTICAL | GridData.HORIZONTAL_ALIGN_FILL);
 		data.widthHint = 185;
 		// Make the tree this tall even when there is nothing in it. This will
 		// keep the
@@ -609,8 +587,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * Creates the part of the dialog where the properties of the element
-	 * selected in the outline will be displayed.
+	 * Creates the part of the dialog where the properties of the element selected
+	 * in the outline will be displayed.
 	 * 
 	 * <p>
 	 * The properties panel contains the following:
@@ -620,8 +598,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 	 * The rest of the panel is constructed in this method.
 	 * </p>
 	 * 
-	 * @param container
-	 *            The Composite to which this part is to be added
+	 * @param container The Composite to which this part is to be added
 	 * @return The properties panel
 	 */
 	protected Control createPropertiesPanel(Composite container) {
@@ -638,8 +615,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 
 		propertiesPanelContainer = new PageBook(composite, SWT.NONE);
 		propertiesPanelContainer.setFont(composite.getFont());
-		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.FILL_VERTICAL);
+		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.FILL_VERTICAL);
 		data.horizontalSpan = 2;
 		propertiesPanelContainer.setLayoutData(data);
 		propertiesPanelContainer.addListener(SWT.Resize, new Listener() {
@@ -654,20 +630,18 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * Creates the title for the properties panel. It is a PageBook that can
-	 * switch between showing the regular title (the selected entry's label and
-	 * icon) and an error message if an error has occured.
+	 * Creates the title for the properties panel. It is a PageBook that can switch
+	 * between showing the regular title (the selected entry's label and icon) and
+	 * an error message if an error has occured.
 	 * 
-	 * @param parent
-	 *            The parent composite
+	 * @param parent The parent composite
 	 * @return The newly created PageBook title
 	 */
 	protected PageBook createPropertiesPanelTitle(Composite parent) {
 		GridLayout layout;
 		PageBook book = new PageBook(parent, SWT.NONE);
 		book.setFont(parent.getFont());
-		book.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-				| GridData.VERTICAL_ALIGN_FILL));
+		book.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_FILL));
 
 		titlePage = new Composite(book, SWT.NONE);
 		titlePage.setFont(book.getFont());
@@ -677,8 +651,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 		layout.marginHeight = 0;
 		layout.verticalSpacing = 0;
 		titlePage.setLayout(layout);
-		title = createSectionTitle(titlePage,
-				PaletteMessages.NO_SELECTION_TITLE);
+		title = createSectionTitle(titlePage, PaletteMessages.NO_SELECTION_TITLE);
 
 		errorPage = new Composite(book, SWT.NONE);
 		errorPage.setFont(book.getFont());
@@ -694,8 +667,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 				return new Point(bounds.width, bounds.height);
 			}
 		};
-		intermediary.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-				| GridData.VERTICAL_ALIGN_FILL));
+		intermediary.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_FILL));
 		StackLayout stackLayout = new StackLayout();
 		intermediary.setLayout(stackLayout);
 		errorTitle = new MultiLineLabel(intermediary);
@@ -713,29 +685,23 @@ public class PaletteCustomizerDialog extends Dialog implements
 	 * A convenient method to create CLabel titles (like the ones used in the
 	 * Preferences dialog in the Eclipse workbench) throughout the dialog.
 	 * 
-	 * @param composite
-	 *            The composite in which the title is to be created (it must
-	 *            have a GridLayout with two columns).
-	 * @param text
-	 *            The title to be displayed
+	 * @param composite The composite in which the title is to be created (it must
+	 *                  have a GridLayout with two columns).
+	 * @param text      The title to be displayed
 	 * @return The newly created CLabel for convenience
 	 */
 	protected CLabel createSectionTitle(Composite composite, String text) {
 		CLabel cTitle = new CLabel(composite, SWT.LEFT);
-		Color background = JFaceColors.getBannerBackground(composite
-				.getDisplay());
-		Color foreground = JFaceColors.getBannerForeground(composite
-				.getDisplay());
+		Color background = JFaceColors.getBannerBackground(composite.getDisplay());
+		Color foreground = JFaceColors.getBannerForeground(composite.getDisplay());
 		JFaceColors.setColors(cTitle, foreground, background);
 		cTitle.setFont(JFaceResources.getBannerFont());
 		cTitle.setText(text);
-		cTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
-				| GridData.VERTICAL_ALIGN_FILL));
+		cTitle.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_FILL));
 
 		if (titleImage == null) {
-			titleImage = new Image(composite.getDisplay(), ImageDescriptor
-					.createFromFile(Internal.class,
-							"icons/customizer_dialog_title.gif").getImageData()); //$NON-NLS-1$
+			titleImage = new Image(composite.getDisplay(),
+					ImageDescriptor.createFromFile(Internal.class, "icons/customizer_dialog_title.gif").getImageData()); //$NON-NLS-1$
 			composite.addDisposeListener(new DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
 					titleImage.dispose();
@@ -747,8 +713,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 		Label imageLabel = new Label(composite, SWT.LEFT);
 		imageLabel.setBackground(background);
 		imageLabel.setImage(titleImage);
-		imageLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL
-				| GridData.VERTICAL_ALIGN_FILL));
+		imageLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.VERTICAL_ALIGN_FILL));
 
 		Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
@@ -759,8 +724,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * Returns the Button with the given id; or <code>null</code> if none was
-	 * found.
+	 * Returns the Button with the given id; or <code>null</code> if none was found.
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#getButton(int)
 	 */
@@ -775,23 +739,21 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * @return The customizer that is responsible for handling the various tasks
-	 *         and updating the model.
+	 * @return The customizer that is responsible for handling the various tasks and
+	 *         updating the model.
 	 */
 	protected PaletteCustomizer getCustomizer() {
 		return customizer;
 	}
 
 	/**
-	 * Returns the <code>EntryPage</code> for the given
-	 * <code>PaletteEntry</code>. The <code>EntryPage</code> is retrieved from
-	 * the customizer. If the given entry is <code>null</code>,
-	 * <code>null</code> will be returned. If the customizer returns
-	 * <code>null</code> for the valid entry, a default page will be created and
-	 * returned.
+	 * Returns the <code>EntryPage</code> for the given <code>PaletteEntry</code>.
+	 * The <code>EntryPage</code> is retrieved from the customizer. If the given
+	 * entry is <code>null</code>, <code>null</code> will be returned. If the
+	 * customizer returns <code>null</code> for the valid entry, a default page will
+	 * be created and returned.
 	 * 
-	 * @param entry
-	 *            The PaletteEntry whose properties need to be displayed
+	 * @param entry The PaletteEntry whose properties need to be displayed
 	 * @return The EntryPage with the properties of the given PaletteEntry
 	 */
 	protected EntryPage getEntryPage(PaletteEntry entry) {
@@ -863,11 +825,10 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * The <code>Widget</code>s that were created with a unique ID and added to
-	 * this class' internal map can be retrieved through this method.
+	 * The <code>Widget</code>s that were created with a unique ID and added to this
+	 * class' internal map can be retrieved through this method.
 	 * 
-	 * @param id
-	 *            The unique ID of the Widget that you wish to retrieve
+	 * @param id The unique ID of the Widget that you wish to retrieve
 	 * @return The Widget, if one with the given id exists; <code>null</code>
 	 *         otherwise
 	 */
@@ -883,13 +844,13 @@ public class PaletteCustomizerDialog extends Dialog implements
 	/**
 	 * This method is invoked when the Apply button is pressed
 	 * <p>
-	 * IMPORTANT: It is recommended that you not override this method. Closing
-	 * the dialog with the 'X' at the top right of the window, or by hitting
-	 * 'Esc' or any other way, corresponds to a "Cancel." That will, however,
-	 * not result in this method being invoked. To handle such cases, saving or
-	 * rejecting the changes is handled in {@link #close()}. Override
-	 * {@link #save()} and {@link #revertToSaved()} to add to what needs to be
-	 * done when saving or cancelling.
+	 * IMPORTANT: It is recommended that you not override this method. Closing the
+	 * dialog with the 'X' at the top right of the window, or by hitting 'Esc' or
+	 * any other way, corresponds to a "Cancel." That will, however, not result in
+	 * this method being invoked. To handle such cases, saving or rejecting the
+	 * changes is handled in {@link #close()}. Override {@link #save()} and
+	 * {@link #revertToSaved()} to add to what needs to be done when saving or
+	 * cancelling.
 	 * </p>
 	 */
 	protected final void handleApplyPressed() {
@@ -906,9 +867,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * This method is called when the "Move Down" action is run (either through
-	 * the context menu or the toolbar). It moves the selected palette entry
-	 * down.
+	 * This method is called when the "Move Down" action is run (either through the
+	 * context menu or the toolbar). It moves the selected palette entry down.
 	 */
 	protected void handleMoveDown() {
 		PaletteEntry entry = getSelectedPaletteEntry();
@@ -918,8 +878,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * This method is called when the "Move Up" action is run (either through
-	 * the context menu or the toolbar). It moves the selected entry up.
+	 * This method is called when the "Move Up" action is run (either through the
+	 * context menu or the toolbar). It moves the selected entry up.
 	 */
 	protected void handleMoveUp() {
 		PaletteEntry entry = getSelectedPaletteEntry();
@@ -940,13 +900,9 @@ public class PaletteCustomizerDialog extends Dialog implements
 		}
 
 		if (errorMessage != null) {
-			MessageDialog dialog = new MessageDialog(getShell(),
-					PaletteMessages.ERROR,
-					null,
-					PaletteMessages.ABORT_PAGE_FLIPPING_MESSAGE
-							+ "\n" + errorMessage, //$NON-NLS-1$
-					MessageDialog.ERROR,
-					new String[] { IDialogConstants.OK_LABEL }, 0);
+			MessageDialog dialog = new MessageDialog(getShell(), PaletteMessages.ERROR, null,
+					PaletteMessages.ABORT_PAGE_FLIPPING_MESSAGE + "\n" + errorMessage, //$NON-NLS-1$
+					MessageDialog.ERROR, new String[] { IDialogConstants.OK_LABEL }, 0);
 			dialog.open();
 			treeviewer.addPostSelectionChangedListener(pageFlippingPreventer);
 		} else {
@@ -956,16 +912,16 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * This method is invoked when the changes made since the last save need to
-	 * be cancelled.
+	 * This method is invoked when the changes made since the last save need to be
+	 * cancelled.
 	 */
 	protected void revertToSaved() {
 		getCustomizer().revertToSaved();
 	}
 
 	/**
-	 * This method is invoked when the changes made since the last save need to
-	 * be saved.
+	 * This method is invoked when the changes made since the last save need to be
+	 * saved.
 	 */
 	protected void save() {
 		if (activePage != null) {
@@ -975,14 +931,13 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * This methods sets the active entry. Based on the selection, this method
-	 * will appropriately enable or disable the ToolBar items, will change the
-	 * CLabel heading of the propreties panel, and will show the properties of
-	 * the selected item in the properties panel.
+	 * This methods sets the active entry. Based on the selection, this method will
+	 * appropriately enable or disable the ToolBar items, will change the CLabel
+	 * heading of the propreties panel, and will show the properties of the selected
+	 * item in the properties panel.
 	 * 
-	 * @param entry
-	 *            The new active entry, i.e., the new selected entry (it can be
-	 *            <code>null</code>)
+	 * @param entry The new active entry, i.e., the new selected entry (it can be
+	 *              <code>null</code>)
 	 */
 	protected void setActiveEntry(PaletteEntry entry) {
 		if (activeEntry != null) {
@@ -1012,8 +967,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 					public void apply() {
 					}
 
-					public void createControl(Composite parent,
-							PaletteEntry entry) {
+					public void createControl(Composite parent, PaletteEntry entry) {
 						text = new Text(parent, SWT.READ_ONLY);
 						text.setFont(parent.getFont());
 						text.setText(PaletteMessages.NO_SELECTION_MADE);
@@ -1023,8 +977,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 						return text;
 					}
 
-					public void setPageContainer(
-							EntryPageContainer pageContainer) {
+					public void setPageContainer(EntryPageContainer pageContainer) {
 					}
 				};
 				noSelectionPage.createControl(propertiesPanelContainer, null);
@@ -1038,8 +991,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 	 * properties of the item selected in the Outline. If the given EntryPage is
 	 * null, nothing will be shown.
 	 * 
-	 * @param page
-	 *            The EntryPage to be shown
+	 * @param page The EntryPage to be shown
 	 */
 	protected void setActiveEntryPage(EntryPage page) {
 		// Have the currently displayed page save its changes
@@ -1058,15 +1010,13 @@ public class PaletteCustomizerDialog extends Dialog implements
 			propertiesPanelContainer.showPage(page.getControl());
 
 			/*
-			 * Fix for bug #34748 There's no need to resize the Shell if
-			 * initializeBounds() hasn't been called yet. It will automatically
-			 * resize the Shell so that everything fits in the Dialog. After
-			 * that, we can resize the Shell whenever there's an entry page that
-			 * cannot fit in the dialog.
+			 * Fix for bug #34748 There's no need to resize the Shell if initializeBounds()
+			 * hasn't been called yet. It will automatically resize the Shell so that
+			 * everything fits in the Dialog. After that, we can resize the Shell whenever
+			 * there's an entry page that cannot fit in the dialog.
 			 */
 			if (!isSetup) {
-				Point newSize = getShell().computeSize(SWT.DEFAULT,
-						SWT.DEFAULT, true);
+				Point newSize = getShell().computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 				int x = newSize.x - oldSize.x;
 				x = (x < 0) ? 0 : x;
 				int y = newSize.y - oldSize.y;
@@ -1086,22 +1036,21 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * Sets the given PaletteEntry as the one to be selected when the dialog
-	 * opens. It is discarded when the dialog is closed.
+	 * Sets the given PaletteEntry as the one to be selected when the dialog opens.
+	 * It is discarded when the dialog is closed.
 	 * 
-	 * @param entry
-	 *            The PaletteEntry that should be selected when the dialog is
-	 *            opened
+	 * @param entry The PaletteEntry that should be selected when the dialog is
+	 *              opened
 	 */
 	public void setDefaultSelection(PaletteEntry entry) {
 		initialSelection = entry;
 	}
 
 	/**
-	 * This method should be invoked by EntryPages when there is an error. It
-	 * will show the given error in the title of the properties panel. OK and
-	 * Apply buttons will be disabled. Selecting some other entry in the outline
-	 * tree will not be allowed until the error is fixed.
+	 * This method should be invoked by EntryPages when there is an error. It will
+	 * show the given error in the title of the properties panel. OK and Apply
+	 * buttons will be disabled. Selecting some other entry in the outline tree will
+	 * not be allowed until the error is fixed.
 	 * 
 	 * @see org.eclipse.gef.ui.palette.customize.EntryPageContainer#showProblem(String)
 	 */
@@ -1115,14 +1064,13 @@ public class PaletteCustomizerDialog extends Dialog implements
 	}
 
 	/**
-	 * Updates the actions created in {@link #createOutlineActions()}, enabling
-	 * or disabling them as necessary.
+	 * Updates the actions created in {@link #createOutlineActions()}, enabling or
+	 * disabling them as necessary.
 	 */
 	protected void updateActions() {
 		List actions = getOutlineActions();
 		for (Iterator iter = actions.iterator(); iter.hasNext();) {
-			PaletteCustomizationAction action = (PaletteCustomizationAction) iter
-					.next();
+			PaletteCustomizationAction action = (PaletteCustomizationAction) iter.next();
 			action.update();
 		}
 	}
@@ -1134,12 +1082,9 @@ public class PaletteCustomizerDialog extends Dialog implements
 		public DeleteAction() {
 			setEnabled(false);
 			setText(PaletteMessages.DELETE_LABEL);
-			ISharedImages sharedImages = PlatformUI.getWorkbench()
-					.getSharedImages();
-			setImageDescriptor(sharedImages
-					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-			setDisabledImageDescriptor(sharedImages
-					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
+			ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+			setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+			setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 		}
 
 		public void run() {
@@ -1163,10 +1108,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 		public MoveDownAction() {
 			setEnabled(false);
 			setText(PaletteMessages.MOVE_DOWN_LABEL);
-			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class,
-					"icons/next_nav.gif"));//$NON-NLS-1$
-			setDisabledImageDescriptor(ImageDescriptor.createFromFile(
-					Internal.class, "icons/move_down_disabled.gif"));//$NON-NLS-1$
+			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/next_nav.gif"));//$NON-NLS-1$
+			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/move_down_disabled.gif"));//$NON-NLS-1$
 		}
 
 		public void run() {
@@ -1190,10 +1133,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 		public MoveUpAction() {
 			setEnabled(false);
 			setText(PaletteMessages.MOVE_UP_LABEL);
-			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class,
-					"icons/prev_nav.gif"));//$NON-NLS-1$
-			setDisabledImageDescriptor(ImageDescriptor.createFromFile(
-					Internal.class, "icons/move_up_disabled.gif")); //$NON-NLS-1$
+			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/prev_nav.gif"));//$NON-NLS-1$
+			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/move_up_disabled.gif")); //$NON-NLS-1$
 		}
 
 		public void run() {
@@ -1213,8 +1154,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 	/*
 	 * New Action
 	 */
-	private class NewAction extends PaletteCustomizationAction implements
-			IMenuCreator {
+	private class NewAction extends PaletteCustomizationAction implements IMenuCreator {
 		private List factories;
 		private MenuManager menuMgr;
 
@@ -1227,10 +1167,8 @@ public class PaletteCustomizerDialog extends Dialog implements
 			}
 
 			setText(PaletteMessages.NEW_LABEL);
-			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class,
-					"icons/add.gif")); //$NON-NLS-1$
-			setDisabledImageDescriptor(ImageDescriptor.createFromFile(
-					Internal.class, "icons/add-disabled.gif")); //$NON-NLS-1$
+			setImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/add.gif")); //$NON-NLS-1$
+			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/add-disabled.gif")); //$NON-NLS-1$
 		}
 
 		private void addActionToMenu(Menu parent, IAction action) {
@@ -1260,8 +1198,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 		public Menu getMenu(Menu parent) {
 			Menu menu = new Menu(parent);
 			for (Iterator iter = factories.iterator(); iter.hasNext();) {
-				FactoryWrapperAction action = (FactoryWrapperAction) iter
-						.next();
+				FactoryWrapperAction action = (FactoryWrapperAction) iter.next();
 				if (action.isEnabled()) {
 					addActionToMenu(menu, action);
 				}
@@ -1281,8 +1218,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 			}
 			// Enable or disable the FactoryWrapperActions
 			for (Iterator iter = factories.iterator(); iter.hasNext();) {
-				FactoryWrapperAction action = (FactoryWrapperAction) iter
-						.next();
+				FactoryWrapperAction action = (FactoryWrapperAction) iter.next();
 				action.setEnabled(action.canCreate(entry));
 				enabled = enabled || action.isEnabled();
 			}
@@ -1294,8 +1230,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 		protected void updateMenuManager(MenuManager manager) {
 			manager.removeAll();
 			for (Iterator iter = factories.iterator(); iter.hasNext();) {
-				FactoryWrapperAction action = (FactoryWrapperAction) iter
-						.next();
+				FactoryWrapperAction action = (FactoryWrapperAction) iter.next();
 				if (action.isEnabled()) {
 					manager.add(action);
 				}
@@ -1306,8 +1241,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 			List newList = new ArrayList();
 			if (list != null) {
 				for (Iterator iter = list.iterator(); iter.hasNext();) {
-					PaletteEntryFactory element = (PaletteEntryFactory) iter
-							.next();
+					PaletteEntryFactory element = (PaletteEntryFactory) iter.next();
 					newList.add(new FactoryWrapperAction(element));
 				}
 			}
@@ -1337,8 +1271,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 			PaletteEntry selected = getSelectedPaletteEntry();
 			if (selected == null)
 				selected = getPaletteRoot();
-			PaletteEntry newEntry = factory
-					.createNewEntry(getShell(), selected);
+			PaletteEntry newEntry = factory.createNewEntry(getShell(), selected);
 			treeviewer.setSelection(new StructuredSelection(newEntry), true);
 			updateActions();
 		}

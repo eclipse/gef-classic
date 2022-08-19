@@ -27,12 +27,11 @@ public class LogicDiagram extends LogicSubpart {
 	static final long serialVersionUID = 1;
 
 	public static String ID_ROUTER = "router"; //$NON-NLS-1$
-	public static Integer ROUTER_MANUAL = Integer.valueOf(0);
-	public static Integer ROUTER_MANHATTAN = Integer.valueOf(1);
-	public static Integer ROUTER_SHORTEST_PATH = Integer.valueOf(2);
+	public static Integer ROUTER_MANUAL = 0;
+	public static Integer ROUTER_MANHATTAN = 1;
+	public static Integer ROUTER_SHORTEST_PATH = 2;
 	private static int count;
-	private static Image LOGIC_ICON = createImage(LogicDiagram.class,
-			"icons/circuit16.gif"); //$NON-NLS-1$
+	private static Image LOGIC_ICON = createImage(LogicDiagram.class, "icons/circuit16.gif"); //$NON-NLS-1$
 
 	protected List children = new ArrayList();
 	protected LogicRuler leftRuler, topRuler;
@@ -90,18 +89,16 @@ public class LogicDiagram extends LogicSubpart {
 	}
 
 	/**
-	 * Returns <code>null</code> for this model. Returns normal descriptors for
-	 * all subclasses.
+	 * Returns <code>null</code> for this model. Returns normal descriptors for all
+	 * subclasses.
 	 * 
 	 * @return Array of property descriptors.
 	 */
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		if (getClass().equals(LogicDiagram.class)) {
-			ComboBoxPropertyDescriptor cbd = new ComboBoxPropertyDescriptor(
-					ID_ROUTER,
+			ComboBoxPropertyDescriptor cbd = new ComboBoxPropertyDescriptor(ID_ROUTER,
 					LogicMessages.PropertyDescriptor_LogicDiagram_ConnectionRouter,
-					new String[] {
-							LogicMessages.PropertyDescriptor_LogicDiagram_Manual,
+					new String[] { LogicMessages.PropertyDescriptor_LogicDiagram_Manual,
 							LogicMessages.PropertyDescriptor_LogicDiagram_Manhattan,
 							LogicMessages.PropertyDescriptor_LogicDiagram_ShortestPath });
 			cbd.setLabelProvider(new ConnectionRouterLabelProvider());
@@ -141,8 +138,7 @@ public class LogicDiagram extends LogicSubpart {
 		return snapToGeometry;
 	}
 
-	private void readObject(java.io.ObjectInputStream s) throws IOException,
-			ClassNotFoundException {
+	private void readObject(java.io.ObjectInputStream s) throws IOException, ClassNotFoundException {
 		s.defaultReadObject();
 	}
 
@@ -184,8 +180,7 @@ public class LogicDiagram extends LogicSubpart {
 		return LogicMessages.LogicDiagram_LabelText;
 	}
 
-	private class ConnectionRouterLabelProvider extends
-			org.eclipse.jface.viewers.LabelProvider {
+	private class ConnectionRouterLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 
 		public ConnectionRouterLabelProvider() {
 			super();

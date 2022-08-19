@@ -67,9 +67,8 @@ public class CloneCommand extends Command {
 		indices.put(part, Integer.valueOf(index));
 	}
 
-	protected void clonePart(LogicSubpart oldPart, LogicDiagram newParent,
-			Rectangle newBounds, List newConnections, Map connectionPartMap,
-			int index) {
+	protected void clonePart(LogicSubpart oldPart, LogicDiagram newParent, Rectangle newBounds, List newConnections,
+			Map connectionPartMap, int index) {
 		LogicSubpart newPart = null;
 
 		if (oldPart instanceof AndGate) {
@@ -80,14 +79,12 @@ public class CloneCommand extends Command {
 			newPart = new GroundOutput();
 		} else if (oldPart instanceof LED) {
 			newPart = new LED();
-			newPart.setPropertyValue(LED.P_VALUE,
-					oldPart.getPropertyValue(LED.P_VALUE));
+			newPart.setPropertyValue(LED.P_VALUE, oldPart.getPropertyValue(LED.P_VALUE));
 		} else if (oldPart instanceof LiveOutput) {
 			newPart = new LiveOutput();
 		} else if (oldPart instanceof LogicLabel) {
 			newPart = new LogicLabel();
-			((LogicLabel) newPart).setLabelContents(((LogicLabel) oldPart)
-					.getLabelContents());
+			((LogicLabel) newPart).setLabelContents(((LogicLabel) oldPart).getLabelContents());
 		} else if (oldPart instanceof OrGate) {
 			newPart = new OrGate();
 		} else if (oldPart instanceof LogicFlowContainer) {
@@ -100,8 +97,7 @@ public class CloneCommand extends Command {
 			Iterator i = ((LogicDiagram) oldPart).getChildren().iterator();
 			while (i.hasNext()) {
 				// for children they will not need new bounds
-				clonePart((LogicSubpart) i.next(), (LogicDiagram) newPart,
-						null, newConnections, connectionPartMap, -1);
+				clonePart((LogicSubpart) i.next(), (LogicDiagram) newPart, null, newConnections, connectionPartMap, -1);
 			}
 		}
 
@@ -121,8 +117,7 @@ public class CloneCommand extends Command {
 			while (b.hasNext()) {
 				WireBendpoint bendPoint = (WireBendpoint) b.next();
 				WireBendpoint newBendPoint = new WireBendpoint();
-				newBendPoint.setRelativeDimensions(
-						bendPoint.getFirstRelativeDimension(),
+				newBendPoint.setRelativeDimensions(bendPoint.getFirstRelativeDimension(),
 						bendPoint.getSecondRelativeDimension());
 				newBendPoint.setWeight(bendPoint.getWeight());
 				newBendPoints.add(newBendPoint);
@@ -166,15 +161,12 @@ public class CloneCommand extends Command {
 		while (i.hasNext()) {
 			part = (LogicSubpart) i.next();
 			if (bounds != null && bounds.containsKey(part)) {
-				clonePart(part, parent, (Rectangle) bounds.get(part),
-						newConnections, connectionPartMap, -1);
+				clonePart(part, parent, (Rectangle) bounds.get(part), newConnections, connectionPartMap, -1);
 			} else if (indices != null && indices.containsKey(part)) {
-				clonePart(part, parent, null, newConnections,
-						connectionPartMap,
+				clonePart(part, parent, null, newConnections, connectionPartMap,
 						((Integer) indices.get(part)).intValue());
 			} else {
-				clonePart(part, parent, null, newConnections,
-						connectionPartMap, -1);
+				clonePart(part, parent, null, newConnections, connectionPartMap, -1);
 			}
 		}
 
@@ -193,15 +185,13 @@ public class CloneCommand extends Command {
 		}
 
 		if (hGuide != null) {
-			hGuideCommand = new ChangeGuideCommand(
-					(LogicSubpart) connectionPartMap.get(parts.get(0)), true);
+			hGuideCommand = new ChangeGuideCommand((LogicSubpart) connectionPartMap.get(parts.get(0)), true);
 			hGuideCommand.setNewGuide(hGuide, hAlignment);
 			hGuideCommand.execute();
 		}
 
 		if (vGuide != null) {
-			vGuideCommand = new ChangeGuideCommand(
-					(LogicSubpart) connectionPartMap.get(parts.get(0)), false);
+			vGuideCommand = new ChangeGuideCommand((LogicSubpart) connectionPartMap.get(parts.get(0)), false);
 			vGuideCommand.setNewGuide(vGuide, vAlignment);
 			vGuideCommand.execute();
 		}
