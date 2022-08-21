@@ -105,7 +105,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 		guideLineFig = createGuideLineFigure();
 		getGuideLayer().add(getGuideLineFigure());
 		getGuideLayer().setConstraint(getGuideLineFigure(),
-				new Boolean(isHorizontal()));
+				Boolean.valueOf(isHorizontal()));
 		return new GuideFigure(isHorizontal());
 	}
 

@@ -63,7 +63,7 @@ public class ToggleRulerVisibilityAction extends Action {
 	 */
 	public void run() {
 		diagramViewer.setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY,
-				new Boolean(!isChecked()));
+				Boolean.valueOf(!isChecked()));
 	}
 
 }
