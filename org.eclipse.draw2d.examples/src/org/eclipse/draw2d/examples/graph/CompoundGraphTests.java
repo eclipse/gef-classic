@@ -29,7 +29,7 @@ public class CompoundGraphTests {
 
 	public static CompoundDirectedGraph aaaapull(int direction) {
 		Subgraph s1, s2;
-		Node a, b, e, j, m, n, y;
+		Node a, b, e, j, m;
 		Node r, t;
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
@@ -224,7 +224,9 @@ public class CompoundGraphTests {
 		edges.add(new Edge(s8b, s8e));
 		edges.add(new Edge(s8c, s8e));
 
-		Node inner1, inner2, inner3, inner4, inner5, inner6, inner7, inner8, inner9, inner10, inner11, inner12, inner13, inner14, inner15, inner16;
+		Node inner1, inner2, inner3, inner4, inner5, inner6, inner7, inner8,
+				inner9, inner10, inner11, inner12, inner13, inner14, inner15,
+				inner16;
 
 		nodes.add(inner1 = new Node("buckyball", s1));
 		nodes.add(inner2 = new Node("d", s1));
