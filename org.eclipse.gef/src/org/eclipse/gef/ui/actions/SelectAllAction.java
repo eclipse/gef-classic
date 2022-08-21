@@ -48,7 +48,7 @@ public class SelectAllAction extends Action {
 	 * Selects all edit parts in the active workbench part.
 	 */
 	public void run() {
-		GraphicalViewer viewer = (GraphicalViewer) part
+		GraphicalViewer viewer = part
 				.getAdapter(GraphicalViewer.class);
 		if (viewer != null) {
 			viewer.setSelection(new StructuredSelection(

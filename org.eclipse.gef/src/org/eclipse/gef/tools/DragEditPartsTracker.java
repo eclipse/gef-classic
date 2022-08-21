@@ -599,7 +599,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		super.setTargetEditPart(editpart);
 		snapToHelper = null;
 		if (getTargetEditPart() != null && getOperationSet().size() > 0)
-			snapToHelper = (SnapToHelper) getTargetEditPart().getAdapter(
+			snapToHelper = getTargetEditPart().getAdapter(
 					SnapToHelper.class);
 	}
 

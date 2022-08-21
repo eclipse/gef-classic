@@ -200,7 +200,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	boolean navigateNextAnchor(int direction) {
 		EditPart focus = getCurrentViewer().getFocusEditPart();
 		AccessibleAnchorProvider provider;
-		provider = (AccessibleAnchorProvider) focus
+		provider = focus
 				.getAdapter(AccessibleAnchorProvider.class);
 		if (provider == null)
 			return false;

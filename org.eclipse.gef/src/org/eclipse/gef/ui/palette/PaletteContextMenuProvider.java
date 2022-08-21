@@ -55,7 +55,7 @@ public class PaletteContextMenuProvider extends ContextMenuProvider {
 
 		EditPart selectedPart = (EditPart) getPaletteViewer()
 				.getSelectedEditParts().get(0);
-		IPinnableEditPart pinnablePart = (IPinnableEditPart) selectedPart
+		IPinnableEditPart pinnablePart = selectedPart
 				.getAdapter(IPinnableEditPart.class);
 		if (pinnablePart != null && pinnablePart.canBePinned()) {
 			menu.appendToGroup(GEFActionConstants.MB_ADDITIONS,
