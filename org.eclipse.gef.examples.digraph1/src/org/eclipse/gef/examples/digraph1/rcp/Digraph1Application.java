@@ -24,9 +24,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class Digraph1Application implements IApplication {
 
-	/*
-	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
-	 */
+	@Override
 	public Object start(IApplicationContext context) throws Exception {
 		Display display = PlatformUI.createDisplay();
 		try {
@@ -41,19 +39,15 @@ public class Digraph1Application implements IApplication {
 		}
 	}
 
-	/*
-	 * @see org.eclipse.equinox.app.IApplication#stop()
-	 */
+	@Override
 	public void stop() {
 		final IWorkbench workbench = PlatformUI.getWorkbench();
 		if (workbench == null)
 			return;
 		final Display display = workbench.getDisplay();
-		display.syncExec(new Runnable() {
-			public void run() {
-				if (!display.isDisposed())
-					workbench.close();
-			}
+		display.syncExec(() -> {
+			if (!display.isDisposed())
+				workbench.close();
 		});
 	}
 

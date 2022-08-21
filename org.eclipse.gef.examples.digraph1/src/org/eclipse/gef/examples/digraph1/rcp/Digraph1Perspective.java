@@ -21,9 +21,7 @@ import org.eclipse.ui.IPerspectiveFactory;
  */
 public class Digraph1Perspective implements IPerspectiveFactory {
 
-	/*
-	 * @see org.eclipse.ui.IPerspectiveFactory#createInitialLayout(org.eclipse.ui.IPageLayout)
-	 */
+	@Override
 	public void createInitialLayout(IPageLayout layout) {
 		/* default layout, no views */
 	}
