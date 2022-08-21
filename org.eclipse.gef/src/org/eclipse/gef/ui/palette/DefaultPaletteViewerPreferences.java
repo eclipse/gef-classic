@@ -239,7 +239,7 @@ public class DefaultPaletteViewerPreferences implements
 		} else if (property.equals(PREFERENCE_FONT)) {
 			firePropertyChanged(property, getFontData());
 		} else {
-			firePropertyChanged(property, new Boolean(
+			firePropertyChanged(property, Boolean.valueOf(
 					useLargeIcons(convertPreferenceNameToLayout(property))));
 		}
 	}

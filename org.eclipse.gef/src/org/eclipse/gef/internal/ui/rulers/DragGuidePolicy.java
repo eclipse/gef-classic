@@ -218,7 +218,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 			getGuideEditPart().getGuideLayer().add(getDummyLineFigure(), 0);
 			getGuideEditPart().getGuideLayer().setConstraint(
 					getDummyLineFigure(),
-					new Boolean(getGuideEditPart().isHorizontal()));
+					Boolean.valueOf(getGuideEditPart().isHorizontal()));
 			getDummyLineFigure().setBounds(
 					getGuideEditPart().getGuideLineFigure().getBounds());
 			getDummyLineFigure().validate();

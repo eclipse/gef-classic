@@ -168,19 +168,19 @@ public class PaletteSettingsDialog extends Dialog {
 		settings.put(CACHE_FONT, prefs.getFontData());
 		settings.put(
 				CACHE_DETAILS_ICON_SIZE,
-				new Boolean(prefs
+				Boolean.valueOf(prefs
 						.useLargeIcons(PaletteViewerPreferences.LAYOUT_DETAILS)));
 		settings.put(
 				CACHE_ICONS_ICON_SIZE,
-				new Boolean(prefs
+				Boolean.valueOf(prefs
 						.useLargeIcons(PaletteViewerPreferences.LAYOUT_ICONS)));
 		settings.put(
 				CACHE_COLUMNS_ICON_SIZE,
-				new Boolean(prefs
+				Boolean.valueOf(prefs
 						.useLargeIcons(PaletteViewerPreferences.LAYOUT_COLUMNS)));
 		settings.put(
 				CACHE_LIST_ICON_SIZE,
-				new Boolean(prefs
+				Boolean.valueOf(prefs
 						.useLargeIcons(PaletteViewerPreferences.LAYOUT_LIST)));
 	}
 

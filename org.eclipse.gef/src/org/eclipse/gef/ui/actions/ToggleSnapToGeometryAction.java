@@ -61,7 +61,7 @@ public class ToggleSnapToGeometryAction extends Action {
 	 */
 	public void run() {
 		diagramViewer.setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED,
-				new Boolean(!isChecked()));
+				Boolean.valueOf(!isChecked()));
 	}
 
 }

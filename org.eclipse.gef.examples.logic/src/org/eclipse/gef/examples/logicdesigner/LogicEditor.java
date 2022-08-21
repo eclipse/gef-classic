@@ -747,18 +747,18 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 				RulerProvider.PROPERTY_HORIZONTAL_RULER, provider);
 		getGraphicalViewer().setProperty(
 				RulerProvider.PROPERTY_RULER_VISIBILITY,
-				new Boolean(getLogicDiagram().getRulerVisibility()));
+				Boolean.valueOf(getLogicDiagram().getRulerVisibility()));
 
 		// Snap to Geometry property
 		getGraphicalViewer().setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED,
-				new Boolean(getLogicDiagram().isSnapToGeometryEnabled()));
+				Boolean.valueOf(getLogicDiagram().isSnapToGeometryEnabled()));
 
 		// Grid properties
 		getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_ENABLED,
-				new Boolean(getLogicDiagram().isGridEnabled()));
+				Boolean.valueOf(getLogicDiagram().isGridEnabled()));
 		// We keep grid visibility and enablement in sync
 		getGraphicalViewer().setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE,
-				new Boolean(getLogicDiagram().isGridEnabled()));
+				Boolean.valueOf(getLogicDiagram().isGridEnabled()));
 
 		// Zoom
 		ZoomManager manager = (ZoomManager) getGraphicalViewer().getProperty(

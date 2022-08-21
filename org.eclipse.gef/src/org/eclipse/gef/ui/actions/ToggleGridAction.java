@@ -63,9 +63,9 @@ public class ToggleGridAction extends Action {
 	public void run() {
 		boolean val = !isChecked();
 		diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE,
-				new Boolean(val));
+				Boolean.valueOf(val));
 		diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED,
-				new Boolean(val));
+				Boolean.valueOf(val));
 	}
 
 }

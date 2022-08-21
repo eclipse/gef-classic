@@ -257,7 +257,7 @@ class Splitter extends Composite {
 		for (int i = 0; i < controls.length; i++) {
 			Control ctrl = controls[i];
 			if (ctrl == c) {
-				ctrl.setData(MAINTAIN_SIZE, new Boolean(true));
+				ctrl.setData(MAINTAIN_SIZE, Boolean.valueOf(true));
 				break;
 			}
 		}
