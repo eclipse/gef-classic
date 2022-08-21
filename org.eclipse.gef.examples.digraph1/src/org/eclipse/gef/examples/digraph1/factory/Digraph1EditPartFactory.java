@@ -25,10 +25,7 @@ import org.eclipse.gef.examples.digraph1.model.Digraph1Node;
  */
 public class Digraph1EditPartFactory implements EditPartFactory {
 
-	/*
-	 * @see org.eclipse.gef.EditPartFactory#createEditPart(org.eclipse.gef.EditPart,
-	 *      java.lang.Object)
-	 */
+	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
 		EditPart editPart = null;
 		if (model instanceof Digraph1Graph) {
