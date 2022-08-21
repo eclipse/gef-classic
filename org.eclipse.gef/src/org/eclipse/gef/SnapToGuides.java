@@ -210,9 +210,9 @@ public class SnapToGuides extends SnapToHelper {
 			magnitude = Math.abs(value - offset);
 			if (magnitude < resultMag) {
 				extendedData.put(vert ? KEY_VERTICAL_GUIDE
-						: KEY_HORIZONTAL_GUIDE, new Integer(guides[i]));
+						: KEY_HORIZONTAL_GUIDE, Integer.valueOf(guides[i]));
 				extendedData.put(vert ? KEY_VERTICAL_ANCHOR
-						: KEY_HORIZONTAL_ANCHOR, new Integer(side));
+						: KEY_HORIZONTAL_ANCHOR, Integer.valueOf(side));
 				resultMag = magnitude;
 				result = offset - value;
 			}

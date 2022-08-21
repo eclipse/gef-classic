@@ -92,7 +92,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 						.getAdapter(AccessibleEditPart.class);
 				if (access == null)
 					return; // fail if any children aren't accessible.
-				children[i] = new Integer(access.getAccessibleID());
+				children[i] = Integer.valueOf(access.getAccessibleID());
 			}
 			e.children = children;
 		}

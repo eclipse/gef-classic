@@ -81,7 +81,7 @@ public class LED extends LogicSubpart {
 
 	public Object getPropertyValue(Object propName) {
 		if (P_VALUE.equals(propName))
-			return new Integer(getValue()).toString();
+			return Integer.valueOf(getValue()).toString();
 		if (ID_SIZE.equals(propName)) {
 			return new String(
 					"(" + getSize().width + "," + getSize().height + ")");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$

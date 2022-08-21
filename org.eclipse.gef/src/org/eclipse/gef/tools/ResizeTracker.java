@@ -69,7 +69,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * The maximum flag used by this class.
 	 */
-	protected static final int MAX_FLAG = new Integer(FLAG_TARGET_FEEDBACK)
+	protected static final int MAX_FLAG = Integer.valueOf(FLAG_TARGET_FEEDBACK)
 			.intValue();
 
 	private int direction;

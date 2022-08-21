@@ -91,7 +91,7 @@ public class LogicGuide implements Serializable {
 		if (getMap().containsKey(part) && getAlignment(part) == alignment)
 			return;
 
-		getMap().put(part, new Integer(alignment));
+		getMap().put(part, Integer.valueOf(alignment));
 		LogicGuide parent = isHorizontal() ? part.getHorizontalGuide() : part
 				.getVerticalGuide();
 		if (parent != null && parent != this) {
@@ -208,8 +208,8 @@ public class LogicGuide implements Serializable {
 		if (position != offset) {
 			int oldValue = position;
 			position = offset;
-			listeners.firePropertyChange(PROPERTY_POSITION, new Integer(
-					oldValue), new Integer(position));
+			listeners.firePropertyChange(PROPERTY_POSITION, Integer.valueOf(
+					oldValue), Integer.valueOf(position));
 		}
 	}
 

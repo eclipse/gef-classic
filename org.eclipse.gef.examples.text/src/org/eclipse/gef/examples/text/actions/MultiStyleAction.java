@@ -21,7 +21,7 @@ public class MultiStyleAction extends BooleanStyleAction {
 	}
 
 	public void run() {
-		service.setStyle(property, isChecked() ? value : new Integer(0));
+		service.setStyle(property, isChecked() ? value : Integer.valueOf(0));
 	}
 
 	public void refresh() {

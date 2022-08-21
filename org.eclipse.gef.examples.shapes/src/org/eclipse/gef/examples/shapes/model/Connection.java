@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
@@ -27,7 +27,7 @@ public class Connection extends ModelElement {
 	 * 
 	 * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies()
 	 */
-	public static final Integer SOLID_CONNECTION = new Integer(
+	public static final Integer SOLID_CONNECTION = Integer.valueOf(
 			Graphics.LINE_SOLID);
 	/**
 	 * Used for indicating that a Connection with dashed line style should be
@@ -35,7 +35,7 @@ public class Connection extends ModelElement {
 	 * 
 	 * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies()
 	 */
-	public static final Integer DASHED_CONNECTION = new Integer(
+	public static final Integer DASHED_CONNECTION = Integer.valueOf(
 			Graphics.LINE_DASH);
 	/** Property ID to use when the line style of this connection is modified. */
 	public static final String LINESTYLE_PROP = "LineStyle";
@@ -111,9 +111,9 @@ public class Connection extends ModelElement {
 		if (id.equals(LINESTYLE_PROP)) {
 			if (getLineStyle() == Graphics.LINE_DASH)
 				// Dashed is the second value in the combo dropdown
-				return new Integer(1);
+				return Integer.valueOf(1);
 			// Solid is the first value in the combo dropdown
-			return new Integer(0);
+			return Integer.valueOf(0);
 		}
 		return super.getPropertyValue(id);
 	}
@@ -186,7 +186,7 @@ public class Connection extends ModelElement {
 			throw new IllegalArgumentException();
 		}
 		this.lineStyle = lineStyle;
-		firePropertyChange(LINESTYLE_PROP, null, new Integer(this.lineStyle));
+		firePropertyChange(LINESTYLE_PROP, null, Integer.valueOf(this.lineStyle));
 	}
 
 	/**
@@ -197,7 +197,7 @@ public class Connection extends ModelElement {
 	 */
 	public void setPropertyValue(Object id, Object value) {
 		if (id.equals(LINESTYLE_PROP))
-			setLineStyle(new Integer(1).equals(value) ? Graphics.LINE_DASH
+			setLineStyle(Integer.valueOf(1).equals(value) ? Graphics.LINE_DASH
 					: Graphics.LINE_SOLID);
 		else
 			super.setPropertyValue(id, value);

@@ -148,9 +148,10 @@ public class DirectedGraphDemo extends AbstractGraphDemo {
 	protected IFigure getContents() {
 		DirectedGraph graph = null;
 		try {
-			graph = (DirectedGraph) (GraphTests.class.getMethod(graphMethod,
-					new Class[] { int.class }).invoke(null,
-					new Object[] { new Integer(graphDirection) }));
+			graph = (DirectedGraph) (GraphTests.class
+					.getMethod(graphMethod, new Class[] { int.class })
+					.invoke(null,
+							new Object[] { Integer.valueOf(graphDirection) }));
 		} catch (Exception e) {
 			System.out.println("Could not build graph");
 			e.printStackTrace();

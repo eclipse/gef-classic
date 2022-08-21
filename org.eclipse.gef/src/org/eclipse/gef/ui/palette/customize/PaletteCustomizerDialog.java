@@ -301,13 +301,13 @@ public class PaletteCustomizerDialog extends Dialog implements
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		button.setLayoutData(data);
 
-		button.setData(new Integer(id));
+		button.setData(Integer.valueOf(id));
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				buttonPressed(((Integer) event.widget.getData()).intValue());
 			}
 		});
-		widgets.put(new Integer(id), button);
+		widgets.put(Integer.valueOf(id), button);
 
 		if (descriptor != null) {
 			button.setImage(new Image(parent.getDisplay(), descriptor
@@ -872,7 +872,7 @@ public class PaletteCustomizerDialog extends Dialog implements
 	 *         otherwise
 	 */
 	protected Widget getWidget(int id) {
-		Widget widget = (Widget) widgets.get(new Integer(id));
+		Widget widget = (Widget) widgets.get(Integer.valueOf(id));
 		if (widget == null) {
 			widget = super.getButton(id);
 		}

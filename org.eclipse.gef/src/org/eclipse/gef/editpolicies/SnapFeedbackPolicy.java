@@ -66,9 +66,9 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 		}
 
 		private Color createMixedColor() {
-			return FigureUtilities
-					.mixColors(getLocalBackgroundColor(), getParent()
-							.getBackgroundColor(), (double) opacity / FRAMES);
+			return FigureUtilities.mixColors(getLocalBackgroundColor(),
+					getParent().getBackgroundColor(),
+					(double) opacity / FRAMES);
 		}
 
 		/**
@@ -85,8 +85,8 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 					Display display = Display.getCurrent();
 					PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
 					Color localBackgroundColor = createMixedColor();
-					int fillColor = pData.getPixel(localBackgroundColor
-							.getRGB());
+					int fillColor = pData
+							.getPixel(localBackgroundColor.getRGB());
 					localBackgroundColor.dispose();
 					ImageData iData = new ImageData(1, 1, 24, pData);
 					iData.setPixel(0, 0, fillColor);
@@ -190,28 +190,28 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 				|| req.getType().equals(REQ_CREATE)) {
 
 			Integer value;
-			value = (Integer) req.getExtendedData().get(
-					SnapToGeometry.KEY_WEST_ANCHOR);
+			value = (Integer) req.getExtendedData()
+					.get(SnapToGeometry.KEY_WEST_ANCHOR);
 			highlightGuide(value, ColorConstants.blue, 0);
 
-			value = (Integer) req.getExtendedData().get(
-					SnapToGeometry.KEY_NORTH_ANCHOR);
+			value = (Integer) req.getExtendedData()
+					.get(SnapToGeometry.KEY_NORTH_ANCHOR);
 			highlightGuide(value, ColorConstants.blue, 1);
 
-			value = (Integer) req.getExtendedData().get(
-					SnapToGeometry.KEY_EAST_ANCHOR);
+			value = (Integer) req.getExtendedData()
+					.get(SnapToGeometry.KEY_EAST_ANCHOR);
 			highlightGuide(value, ColorConstants.blue, 2);
 
-			value = (Integer) req.getExtendedData().get(
-					SnapToGeometry.KEY_SOUTH_ANCHOR);
+			value = (Integer) req.getExtendedData()
+					.get(SnapToGeometry.KEY_SOUTH_ANCHOR);
 			highlightGuide(value, ColorConstants.blue, 3);
 
-			value = (Integer) req.getExtendedData().get(
-					SnapToGuides.KEY_VERTICAL_GUIDE);
+			value = (Integer) req.getExtendedData()
+					.get(SnapToGuides.KEY_VERTICAL_GUIDE);
 			highlightGuide(value, ColorConstants.red, 4);
 
-			value = (Integer) req.getExtendedData().get(
-					SnapToGuides.KEY_HORIZONTAL_GUIDE);
+			value = (Integer) req.getExtendedData()
+					.get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 			highlightGuide(value, ColorConstants.red, 5);
 		}
 	}

@@ -210,7 +210,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 			// add the placeholder guide figure to the ruler
 			getHostFigure().getParent().add(getDummyGuideFigure(), 0);
 			((GraphicalEditPart) getHost().getParent()).setLayoutConstraint(
-					getHost(), getDummyGuideFigure(), new Integer(
+					getHost(), getDummyGuideFigure(), Integer.valueOf(
 							getGuideEditPart().getZoomedPosition()));
 			getDummyGuideFigure().setBounds(getHostFigure().getBounds());
 			getDummyGuideFigure().validate();

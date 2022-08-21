@@ -73,7 +73,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 							.getAdapter(AccessibleEditPart.class);
 				else
 					return null;
-			return (AccessibleEditPart) accessibles.get(new Integer(childID));
+			return (AccessibleEditPart) accessibles.get(Integer.valueOf(childID));
 		}
 
 		/**
@@ -458,11 +458,11 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	}
 
 	void putAccessible(AccessibleEditPart acc) {
-		accessibles.put(new Integer(acc.getAccessibleID()), acc);
+		accessibles.put(Integer.valueOf(acc.getAccessibleID()), acc);
 	}
 
 	void removeAccessible(AccessibleEditPart acc) {
-		accessibles.remove(new Integer(acc.getAccessibleID()));
+		accessibles.remove(Integer.valueOf(acc.getAccessibleID()));
 	}
 
 	/**

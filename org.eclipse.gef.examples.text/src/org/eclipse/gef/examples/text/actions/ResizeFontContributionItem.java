@@ -39,7 +39,7 @@ public class ResizeFontContributionItem extends StyleComboContributionItem {
 	protected void handleWidgetSelected(SelectionEvent e) {
 		Integer fontSize = null;
 		try {
-			fontSize = new Integer(combo.getText());
+			fontSize = Integer.valueOf(combo.getText());
 		} catch (NumberFormatException nfe) {
 		}
 		if (fontSize != null

@@ -27,9 +27,9 @@ public class LogicDiagram extends LogicSubpart {
 	static final long serialVersionUID = 1;
 
 	public static String ID_ROUTER = "router"; //$NON-NLS-1$
-	public static Integer ROUTER_MANUAL = new Integer(0);
-	public static Integer ROUTER_MANHATTAN = new Integer(1);
-	public static Integer ROUTER_SHORTEST_PATH = new Integer(2);
+	public static Integer ROUTER_MANUAL = Integer.valueOf(0);
+	public static Integer ROUTER_MANHATTAN = Integer.valueOf(1);
+	public static Integer ROUTER_SHORTEST_PATH = Integer.valueOf(2);
 	private static int count;
 	private static Image LOGIC_ICON = createImage(LogicDiagram.class,
 			"icons/circuit16.gif"); //$NON-NLS-1$
@@ -59,7 +59,7 @@ public class LogicDiagram extends LogicSubpart {
 			children.add(index, child);
 		else
 			children.add(child);
-		fireChildAdded(CHILDREN, child, new Integer(index));
+		fireChildAdded(CHILDREN, child, Integer.valueOf(index));
 	}
 
 	protected void createRulers() {
