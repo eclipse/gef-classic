@@ -87,7 +87,7 @@ public class ZoomComboContributionItem extends ContributionItem implements
 		Assert.isNotNull(partService);
 		partService.addPartListener(partListener = new IPartListener() {
 			public void partActivated(IWorkbenchPart part) {
-				setZoomManager((ZoomManager) part.getAdapter(ZoomManager.class));
+				setZoomManager(part.getAdapter(ZoomManager.class));
 			}
 
 			public void partBroughtToTop(IWorkbenchPart p) {

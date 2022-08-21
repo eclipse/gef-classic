@@ -378,7 +378,7 @@ public abstract class Shape extends Figure {
 	 */
 	public float[] getLineDash() {
 		if (lineAttributes.dash != null) {
-			return (float[]) lineAttributes.dash.clone();
+			return lineAttributes.dash.clone();
 		} else {
 			return null;
 		}
@@ -588,7 +588,7 @@ public abstract class Shape extends Figure {
 	 */
 	public void setLineDash(float[] dash) {
 		if ((dash != null) && !dash.equals(lineAttributes.dash)) {
-			lineAttributes.dash = (float[]) dash.clone();
+			lineAttributes.dash = dash.clone();
 			repaint();
 		} else if ((dash == null) && (lineAttributes.dash != null)) {
 			lineAttributes.dash = null;

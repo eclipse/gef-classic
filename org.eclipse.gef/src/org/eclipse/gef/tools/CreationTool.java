@@ -168,7 +168,7 @@ public class CreationTool extends TargetingTool {
 			lockTargetEditPart(getTargetEditPart());
 			// Snap only when size on drop is employed
 			if (getTargetEditPart() != null)
-				helper = (SnapToHelper) getTargetEditPart().getAdapter(
+				helper = getTargetEditPart().getAdapter(
 						SnapToHelper.class);
 		}
 		return true;

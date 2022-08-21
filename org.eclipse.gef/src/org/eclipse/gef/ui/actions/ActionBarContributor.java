@@ -148,7 +148,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 * @see org.eclipse.ui.IEditorActionBarContributor#setActiveEditor(IEditorPart)
 	 */
 	public void setActiveEditor(IEditorPart editor) {
-		ActionRegistry registry = (ActionRegistry) editor
+		ActionRegistry registry = editor
 				.getAdapter(ActionRegistry.class);
 		IActionBars bars = getActionBars();
 		for (int i = 0; i < globalActionKeys.size(); i++) {

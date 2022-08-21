@@ -416,7 +416,7 @@ public class SelectionTool extends TargetingTool {
 		getCurrentViewer().reveal(focus);
 
 		AccessibleHandleProvider provider;
-		provider = (AccessibleHandleProvider) focus
+		provider = focus
 				.getAdapter(AccessibleHandleProvider.class);
 		if (provider == null
 				|| provider.getAccessibleHandleLocations().isEmpty())

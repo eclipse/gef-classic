@@ -308,13 +308,13 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 			return;
 		EditPart current = part.getParent();
 		while (current != null) {
-			ExposeHelper helper = (ExposeHelper) current
+			ExposeHelper helper = current
 					.getAdapter(ExposeHelper.class);
 			if (helper != null)
 				helper.exposeDescendant(part);
 			current = current.getParent();
 		}
-		AccessibleEditPart acc = (AccessibleEditPart) part
+		AccessibleEditPart acc = part
 				.getAdapter(AccessibleEditPart.class);
 		if (acc != null)
 			getControl().getAccessible().setFocus(acc.getAccessibleID());
@@ -472,7 +472,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements
 		public void handleMouseWheel(Event event, EditPartViewer viewer) {
 			EditPart part = viewer.getFocusEditPart();
 			do {
-				MouseWheelHelper helper = (MouseWheelHelper) part
+				MouseWheelHelper helper = part
 						.getAdapter(MouseWheelHelper.class);
 				if (helper != null)
 					helper.handleMouseWheelScrolled(event);

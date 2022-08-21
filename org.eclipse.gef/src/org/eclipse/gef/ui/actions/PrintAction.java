@@ -61,7 +61,7 @@ public class PrintAction extends WorkbenchPartAction {
 	 */
 	public void run() {
 		GraphicalViewer viewer;
-		viewer = (GraphicalViewer) getWorkbenchPart().getAdapter(
+		viewer = getWorkbenchPart().getAdapter(
 				GraphicalViewer.class);
 
 		PrintDialog dialog = new PrintDialog(viewer.getControl().getShell(),

@@ -88,7 +88,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 			Object children[] = new Object[list.size()];
 			for (int i = 0; i < list.size(); i++) {
 				EditPart part = (EditPart) list.get(i);
-				AccessibleEditPart access = (AccessibleEditPart) part
+				AccessibleEditPart access = part
 						.getAdapter(AccessibleEditPart.class);
 				if (access == null)
 					return; // fail if any children aren't accessible.
@@ -173,7 +173,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 				if (!(policy instanceof IAdaptable))
 					continue;
 				IAdaptable adaptable = (IAdaptable) policy;
-				AccessibleHandleProvider adapter = (AccessibleHandleProvider) adaptable
+				AccessibleHandleProvider adapter = adaptable
 						.getAdapter(AccessibleHandleProvider.class);
 				if (adapter != null)
 					locations.addAll(adapter.getAccessibleHandleLocations());

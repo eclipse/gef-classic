@@ -95,7 +95,7 @@ public interface AutoexposeHelper {
 		public AutoexposeHelper result;
 
 		public boolean evaluate(EditPart editpart) {
-			result = (AutoexposeHelper) editpart
+			result = editpart
 					.getAdapter(AutoexposeHelper.class);
 			if (result != null && result.detect(where))
 				return true;

@@ -759,7 +759,7 @@ public class SWTGraphics extends Graphics {
 	 * @since 3.5
 	 */
 	public float[] getLineDash() {
-		return (float[]) currentState.lineAttributes.dash.clone();
+		return currentState.lineAttributes.dash.clone();
 	}
 
 	/**
@@ -1235,7 +1235,7 @@ public class SWTGraphics extends Graphics {
 				}
 			}
 
-			currentState.lineAttributes.dash = (float[]) value.clone();
+			currentState.lineAttributes.dash = value.clone();
 			currentState.lineAttributes.style = SWT.LINE_CUSTOM;
 		} else {
 			currentState.lineAttributes.dash = null;

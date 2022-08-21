@@ -91,7 +91,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable,
 	 * @return the command stack
 	 */
 	protected CommandStack getCommandStack() {
-		return (CommandStack) getWorkbenchPart().getAdapter(CommandStack.class);
+		return getWorkbenchPart().getAdapter(CommandStack.class);
 	}
 
 	/**
