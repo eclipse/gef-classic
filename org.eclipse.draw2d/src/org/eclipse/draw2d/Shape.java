@@ -427,11 +427,11 @@ public abstract class Shape extends Figure {
 	public void setAlpha(int value) {
 		if (alpha != null) {
 			if (alpha.intValue() != value) {
-				alpha = new Integer(value);
+				alpha = Integer.valueOf(value);
 				repaint();
 			}
 		} else {
-			alpha = new Integer(value);
+			alpha = Integer.valueOf(value);
 			repaint();
 		}
 	}
@@ -459,11 +459,11 @@ public abstract class Shape extends Figure {
 	public void setAntialias(int value) {
 		if (antialias != null) {
 			if (antialias.intValue() != value) {
-				antialias = new Integer(value);
+				antialias = Integer.valueOf(value);
 				repaint();
 			}
 		} else {
-			antialias = new Integer(value);
+			antialias = Integer.valueOf(value);
 			repaint();
 		}
 	}

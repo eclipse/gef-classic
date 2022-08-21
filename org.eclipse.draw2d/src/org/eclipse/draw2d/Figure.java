@@ -39,12 +39,12 @@ public class Figure implements IFigure {
 
 	private static final Rectangle PRIVATE_RECT = new Rectangle();
 	private static final Point PRIVATE_POINT = new Point();
-	private static final int FLAG_VALID = new Integer(1).intValue(),
-			FLAG_OPAQUE = new Integer(1 << 1).intValue(),
-			FLAG_VISIBLE = new Integer(1 << 2).intValue(),
-			FLAG_FOCUSABLE = new Integer(1 << 3).intValue(),
-			FLAG_ENABLED = new Integer(1 << 4).intValue(),
-			FLAG_FOCUS_TRAVERSABLE = new Integer(1 << 5).intValue();
+	private static final int FLAG_VALID = Integer.valueOf(1).intValue(),
+			FLAG_OPAQUE = Integer.valueOf(1 << 1).intValue(),
+			FLAG_VISIBLE = Integer.valueOf(1 << 2).intValue(),
+			FLAG_FOCUSABLE = Integer.valueOf(1 << 3).intValue(),
+			FLAG_ENABLED = Integer.valueOf(1 << 4).intValue(),
+			FLAG_FOCUS_TRAVERSABLE = Integer.valueOf(1 << 5).intValue();
 
 	static final int FLAG_REALIZED = 1 << 31;
 

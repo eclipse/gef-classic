@@ -64,7 +64,7 @@ public class CloneCommand extends Command {
 		if (indices == null) {
 			indices = new HashMap();
 		}
-		indices.put(part, new Integer(index));
+		indices.put(part, Integer.valueOf(index));
 	}
 
 	protected void clonePart(LogicSubpart oldPart, LogicDiagram newParent,

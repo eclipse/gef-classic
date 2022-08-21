@@ -201,11 +201,11 @@ public class LocalOptimizerTest extends TestCase {
 				// node.rank = rank;
 				Field rankField = Node.class.getDeclaredField("rank");
 				rankField.setAccessible(true);
-				rankField.set(node, new Integer(rank));
+				rankField.set(node, Integer.valueOf(rank));
 				// node.index = i;
 				Field indexField = Node.class.getDeclaredField("index");
 				indexField.setAccessible(true);
-				indexField.set(node, new Integer(i));
+				indexField.set(node, Integer.valueOf(i));
 			} catch (Exception e) {
 				fail(e.getMessage());
 			}

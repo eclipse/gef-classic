@@ -279,7 +279,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		// NODES TOUCHED
 		MarqueeToolEntry marquee = new MarqueeToolEntry();
 		marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
-				new Integer(MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED));
+				Integer.valueOf(MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED));
 		marqueeStack.add(marquee);
 
 		// NODES CONTAINED AND RELATED CONNECTIONS
@@ -287,7 +287,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		marquee = new MarqueeToolEntry();
 		marquee.setToolProperty(
 				MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
-				new Integer(
+				Integer.valueOf(
 						MarqueeSelectionTool.BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS));
 		marqueeStack.add(marquee);
 
@@ -295,7 +295,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		marquee = new MarqueeToolEntry();
 		marquee.setToolProperty(
 				MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
-				new Integer(
+				Integer.valueOf(
 						MarqueeSelectionTool.BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS));
 		marqueeStack.add(marquee);
 
@@ -303,13 +303,13 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		marquee = new MarqueeToolEntry();
 		marquee.setToolProperty(
 				MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
-				new Integer(MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED));
+				Integer.valueOf(MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_CONTAINED));
 		marqueeStack.add(marquee);
 
 		// CONNECTIONS TOUCHED
 		marquee = new MarqueeToolEntry();
 		marquee.setToolProperty(MarqueeSelectionTool.PROPERTY_MARQUEE_BEHAVIOR,
-				new Integer(MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED));
+				Integer.valueOf(MarqueeSelectionTool.BEHAVIOR_CONNECTIONS_TOUCHED));
 		marqueeStack.add(marquee);
 
 		marqueeStack

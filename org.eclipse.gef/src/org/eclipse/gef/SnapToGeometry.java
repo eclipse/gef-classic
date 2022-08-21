@@ -299,21 +299,21 @@ public class SnapToGeometry extends SnapToHelper {
 				if (magnitude < resultMag) {
 					resultMag = magnitude;
 					result = entry.location - value;
-					extendedData.put(property, new Integer(entry.location));
+					extendedData.put(property, Integer.valueOf(entry.location));
 				}
 			} else if (entry.type == 0 && side == 0) {
 				magnitude = Math.abs(value - entry.location);
 				if (magnitude < resultMag) {
 					resultMag = magnitude;
 					result = entry.location - value;
-					extendedData.put(property, new Integer(entry.location));
+					extendedData.put(property, Integer.valueOf(entry.location));
 				}
 			} else if (entry.type == 1 && side != 0) {
 				magnitude = Math.abs(value - entry.location);
 				if (magnitude < resultMag) {
 					resultMag = magnitude;
 					result = entry.location - value;
-					extendedData.put(property, new Integer(entry.location));
+					extendedData.put(property, Integer.valueOf(entry.location));
 				}
 			}
 		}

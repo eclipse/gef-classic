@@ -155,28 +155,28 @@ public class TextEditor extends GraphicalEditor {
 
 		action = new MultiStyleAction(styleService,
 				TextActionConstants.BLOCK_ALIGN_LEFT, Style.PROPERTY_ALIGNMENT,
-				new Integer(PositionConstants.ALWAYS_LEFT));
+				Integer.valueOf(PositionConstants.ALWAYS_LEFT));
 		registry.registerAction(action);
 
 		action = new MultiStyleAction(styleService,
 				TextActionConstants.BLOCK_ALIGN_CENTER,
-				Style.PROPERTY_ALIGNMENT, new Integer(PositionConstants.CENTER));
+				Style.PROPERTY_ALIGNMENT, Integer.valueOf(PositionConstants.CENTER));
 		registry.registerAction(action);
 
 		action = new MultiStyleAction(styleService,
 				TextActionConstants.BLOCK_ALIGN_RIGHT,
-				Style.PROPERTY_ALIGNMENT, new Integer(
+				Style.PROPERTY_ALIGNMENT, Integer.valueOf(
 						PositionConstants.ALWAYS_RIGHT));
 		registry.registerAction(action);
 
 		action = new MultiStyleAction(styleService,
 				TextActionConstants.BLOCK_LTR, Style.PROPERTY_ORIENTATION,
-				new Integer(SWT.LEFT_TO_RIGHT));
+				Integer.valueOf(SWT.LEFT_TO_RIGHT));
 		registry.registerAction(action);
 
 		action = new MultiStyleAction(styleService,
 				TextActionConstants.BLOCK_RTL, Style.PROPERTY_ORIENTATION,
-				new Integer(SWT.RIGHT_TO_LEFT));
+				Integer.valueOf(SWT.RIGHT_TO_LEFT));
 		registry.registerAction(action);
 	}
 

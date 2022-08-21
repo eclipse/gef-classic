@@ -587,7 +587,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 									&& (label.length() + 1 < text.length()))
 								accText = text.substring(label.length() + 1);
 							if (acc == null)
-								acc = new Integer(action.getAccelerator());
+								acc = Integer.valueOf(action.getAccelerator());
 							if (acc.intValue() >= 0)
 								mi.setAccelerator(acc.intValue());
 							if (accText == null)

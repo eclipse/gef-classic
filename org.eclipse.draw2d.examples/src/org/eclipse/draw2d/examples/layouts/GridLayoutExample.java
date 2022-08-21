@@ -162,7 +162,7 @@ public class GridLayoutExample extends AbstractExample {
 		} catch (NumberFormatException ex) {
 			System.out.println("Error: Invalid Number entered for " + id);
 		}
-		return new Integer(val);
+		return Integer.valueOf(val);
 	}
 
 	protected Integer getEventValue(SelectionEvent e, String id) {
@@ -174,7 +174,7 @@ public class GridLayoutExample extends AbstractExample {
 		} catch (NumberFormatException ex) {
 			System.out.println("Error: Invalid Number entered for " + id);
 		}
-		return new Integer(val);
+		return Integer.valueOf(val);
 	}
 
 	protected void updateView() {

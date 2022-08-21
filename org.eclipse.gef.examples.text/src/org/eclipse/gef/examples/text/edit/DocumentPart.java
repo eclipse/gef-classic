@@ -79,7 +79,7 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 						.getFontHeight())
 					return StyleService.UNDEFINED;
 			}
-			return new Integer(fontHeight);
+			return Integer.valueOf(fontHeight);
 		} else if (styleID.equals(Style.PROPERTY_FONT)) {
 			String fontName = null;
 			for (Iterator iter = range.getLeafParts().iterator(); iter
@@ -119,7 +119,7 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 				if (!style.isSet(styleID) || style.getAlignment() != alignment)
 					return StyleService.UNDEFINED;
 			}
-			return new Integer(alignment);
+			return Integer.valueOf(alignment);
 		} else if (Style.PROPERTY_ORIENTATION.equals(styleID)) {
 			int orientation = 0;
 			for (Iterator iter = range.getLeafParts().iterator(); iter
@@ -132,7 +132,7 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 						|| style.getOrientation() != orientation)
 					return StyleService.UNDEFINED;
 			}
-			return new Integer(orientation);
+			return Integer.valueOf(orientation);
 		}
 		return StyleService.UNDEFINED;
 	}

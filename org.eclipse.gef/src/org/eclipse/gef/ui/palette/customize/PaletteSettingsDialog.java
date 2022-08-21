@@ -162,9 +162,9 @@ public class PaletteSettingsDialog extends Dialog {
 	 * @see #restoreSettings()
 	 */
 	protected void cacheSettings() {
-		settings.put(CACHE_LAYOUT, new Integer(prefs.getLayoutSetting()));
+		settings.put(CACHE_LAYOUT, Integer.valueOf(prefs.getLayoutSetting()));
 		settings.put(CACHE_COLLAPSE,
-				new Integer(prefs.getAutoCollapseSetting()));
+				Integer.valueOf(prefs.getAutoCollapseSetting()));
 		settings.put(CACHE_FONT, prefs.getFontData());
 		settings.put(
 				CACHE_DETAILS_ICON_SIZE,
@@ -243,13 +243,13 @@ public class PaletteSettingsDialog extends Dialog {
 		GridData data = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		button.setLayoutData(data);
 
-		button.setData(new Integer(id));
+		button.setData(Integer.valueOf(id));
 		button.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 				buttonPressed(((Integer) event.widget.getData()).intValue());
 			}
 		});
-		widgets.put(new Integer(id), button);
+		widgets.put(Integer.valueOf(id), button);
 
 		if (descriptor != null) {
 			button.setImage(new Image(parent.getDisplay(), descriptor
@@ -673,7 +673,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 *         otherwise.
 	 */
 	protected Widget getWidget(int id) {
-		Widget widget = (Widget) widgets.get(new Integer(id));
+		Widget widget = (Widget) widgets.get(Integer.valueOf(id));
 		if (widget == null) {
 			widget = super.getButton(id);
 		}

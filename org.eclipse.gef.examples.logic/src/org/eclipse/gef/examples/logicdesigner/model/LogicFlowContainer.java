@@ -38,8 +38,8 @@ public class LogicFlowContainer extends LogicDiagram {
 
 	public static String ID_LAYOUT = "layout"; //$NON-NLS-1$
 
-	public static Integer LAYOUT_MULTI_ROW = new Integer(0);
-	public static Integer LAYOUT_SINGLE_ROW = new Integer(1);
+	public static Integer LAYOUT_MULTI_ROW = Integer.valueOf(0);
+	public static Integer LAYOUT_SINGLE_ROW = Integer.valueOf(1);
 	static final long serialVersionUID = 1;
 
 	protected Integer layout = LAYOUT_MULTI_ROW;
