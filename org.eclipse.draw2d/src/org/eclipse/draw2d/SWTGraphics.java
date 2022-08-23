@@ -335,7 +335,10 @@ public class SWTGraphics extends Graphics {
 			sharedClipping = false;
 
 			boolean previouslyApplied = (appliedState == currentState.relativeClip);
-			currentState.relativeClip = currentState.relativeClip.getCopy();
+			// Fix: currentState.relativeClip can be null and lead to NPE
+			if (currentState.relativeClip != null) {
+				currentState.relativeClip = currentState.relativeClip.getCopy();
+			}
 			if (previouslyApplied) {
 				appliedState.relativeClip = currentState.relativeClip;
 			}
