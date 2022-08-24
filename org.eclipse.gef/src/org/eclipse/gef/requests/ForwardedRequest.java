@@ -23,8 +23,7 @@ public class ForwardedRequest extends Request {
 	/**
 	 * Creates a ForwardRequest with the given type.
 	 * 
-	 * @param type
-	 *            The type of Request
+	 * @param type The type of Request
 	 */
 	public ForwardedRequest(Object type) {
 		setType(type);
@@ -33,10 +32,8 @@ public class ForwardedRequest extends Request {
 	/**
 	 * Creates a ForwardRequest with the given type and sets the sender.
 	 * 
-	 * @param type
-	 *            The type of Request
-	 * @param sender
-	 *            The EditPart that forwarded this Request
+	 * @param type   The type of Request
+	 * @param sender The EditPart that forwarded this Request
 	 */
 	public ForwardedRequest(Object type, EditPart sender) {
 		setType(type);

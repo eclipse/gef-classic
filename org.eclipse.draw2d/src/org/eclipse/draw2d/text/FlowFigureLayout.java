@@ -38,8 +38,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 	/**
 	 * Constructs a new FlowFigureLayout with the given FlowFigure.
 	 * 
-	 * @param flowfigure
-	 *            the FlowFigure
+	 * @param flowfigure the FlowFigure
 	 */
 	protected FlowFigureLayout(FlowFigure flowfigure) {
 		this.flowFigure = flowfigure;
@@ -131,8 +130,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 	/**
 	 * Sets the context for this layout manager.
 	 * 
-	 * @param flowContext
-	 *            the context of this layout
+	 * @param flowContext the context of this layout
 	 */
 	public void setFlowContext(FlowContext flowContext) {
 		context = flowContext;

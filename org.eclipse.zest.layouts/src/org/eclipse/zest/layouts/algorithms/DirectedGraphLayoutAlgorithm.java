@@ -57,7 +57,8 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		super(styles);
 	}
 
-	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
+	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 		HashMap mapping = new HashMap(entitiesToLayout.length);
 		DirectedGraph graph = new DirectedGraph();
 		for (int i = 0; i < entitiesToLayout.length; i++) {
@@ -105,12 +106,14 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		return true;
 	}
 
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationshipsToConsider) {
 		// TODO Auto-generated method stub
 
 	}
 
-	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double x, double y, double width, double height) {
 		// TODO Auto-generated method stub
 
 	}

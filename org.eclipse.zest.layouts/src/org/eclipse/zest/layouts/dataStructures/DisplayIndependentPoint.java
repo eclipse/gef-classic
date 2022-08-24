@@ -42,11 +42,13 @@ public class DisplayIndependentPoint {
 
 	/**
 	 * Create a new point based on the current point but in a new coordinate system
+	 * 
 	 * @param currentBounds
 	 * @param targetBounds
 	 * @return
 	 */
-	public DisplayIndependentPoint convert(DisplayIndependentRectangle currentBounds, DisplayIndependentRectangle targetBounds) {
+	public DisplayIndependentPoint convert(DisplayIndependentRectangle currentBounds,
+			DisplayIndependentRectangle targetBounds) {
 		double currentWidth = currentBounds.width;
 		double currentHeight = currentBounds.height;
 
@@ -56,8 +58,9 @@ public class DisplayIndependentPoint {
 	}
 
 	/**
-	 * Converts this point based on the current x, y values to a percentage  
-	 * of the specified coordinate system
+	 * Converts this point based on the current x, y values to a percentage of the
+	 * specified coordinate system
+	 * 
 	 * @param bounds
 	 * @return
 	 */
@@ -68,10 +71,11 @@ public class DisplayIndependentPoint {
 	}
 
 	/**
-	 * Converts this point based on the current x, y values from a percentage  
-	 * of the specified coordinate system
+	 * Converts this point based on the current x, y values from a percentage of the
+	 * specified coordinate system
+	 * 
 	 * @param bounds
-	 * @return 
+	 * @return
 	 */
 	public DisplayIndependentPoint convertFromPercent(DisplayIndependentRectangle bounds) {
 		double newX = bounds.x + x * bounds.width;

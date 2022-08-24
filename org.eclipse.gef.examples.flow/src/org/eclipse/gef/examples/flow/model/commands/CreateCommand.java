@@ -36,8 +36,7 @@ public class CreateCommand extends Command {
 	/**
 	 * Sets the index to the passed value
 	 * 
-	 * @param i
-	 *            the index
+	 * @param i the index
 	 */
 	public void setIndex(int i) {
 		index = i;
@@ -46,8 +45,7 @@ public class CreateCommand extends Command {
 	/**
 	 * Sets the parent ActivityDiagram
 	 * 
-	 * @param sa
-	 *            the parent
+	 * @param sa the parent
 	 */
 	public void setParent(StructuredActivity sa) {
 		parent = sa;
@@ -56,8 +54,7 @@ public class CreateCommand extends Command {
 	/**
 	 * Sets the Activity to create
 	 * 
-	 * @param activity
-	 *            the Activity to create
+	 * @param activity the Activity to create
 	 */
 	public void setChild(Activity activity) {
 		child = activity;

@@ -31,8 +31,8 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 
 	/**
 	 * Constructs a new helper on the given base figure and starts listening to
-	 * figure and property changes on the base figure's parent chain. When no
-	 * longer needed, the helper should be disposed.
+	 * figure and property changes on the base figure's parent chain. When no longer
+	 * needed, the helper should be disposed.
 	 * 
 	 * @since 2.1
 	 * @param baseFigure
@@ -45,8 +45,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	/**
 	 * Appends a new listener to the list of listeners.
 	 * 
-	 * @param listener
-	 *            the listener
+	 * @param listener the listener
 	 */
 	public void addAncestorListener(AncestorListener listener) {
 		if (listeners == null) {
@@ -62,15 +61,12 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	}
 
 	/**
-	 * Hooks up internal listeners used for maintaining the proper figure
-	 * listeners.
+	 * Hooks up internal listeners used for maintaining the proper figure listeners.
 	 * 
-	 * @param rootFigure
-	 *            the root figure
+	 * @param rootFigure the root figure
 	 */
 	protected void addAncestors(IFigure rootFigure) {
-		for (IFigure ancestor = rootFigure; ancestor != null; ancestor = ancestor
-				.getParent()) {
+		for (IFigure ancestor = rootFigure; ancestor != null; ancestor = ancestor.getParent()) {
 			ancestor.addFigureListener(this);
 			ancestor.addPropertyChangeListener("parent", this); //$NON-NLS-1$
 		}
@@ -94,8 +90,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	/**
 	 * Fires notification to the listener list
 	 * 
-	 * @param ancestor
-	 *            the figure which moved
+	 * @param ancestor the figure which moved
 	 */
 	protected void fireAncestorMoved(IFigure ancestor) {
 		if (listeners == null)
@@ -107,8 +102,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	/**
 	 * Fires notification to the listener list
 	 * 
-	 * @param ancestor
-	 *            the figure which moved
+	 * @param ancestor the figure which moved
 	 */
 	protected void fireAncestorAdded(IFigure ancestor) {
 		if (listeners == null)
@@ -120,8 +114,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	/**
 	 * Fires notification to the listener list
 	 * 
-	 * @param ancestor
-	 *            the figure which moved
+	 * @param ancestor the figure which moved
 	 */
 	protected void fireAncestorRemoved(IFigure ancestor) {
 		if (listeners == null)
@@ -160,8 +153,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	/**
 	 * Removes the first occurence of the given listener
 	 * 
-	 * @param listener
-	 *            the listener to remove
+	 * @param listener the listener to remove
 	 */
 	public void removeAncestorListener(AncestorListener listener) {
 		if (listeners == null)
@@ -173,8 +165,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 				if (newSize != 0) {
 					newListeners = new AncestorListener[newSize];
 					System.arraycopy(listeners, 0, newListeners, 0, index);
-					System.arraycopy(listeners, index + 1, newListeners, index,
-							newSize - index);
+					System.arraycopy(listeners, index + 1, newListeners, index, newSize - index);
 				}
 				listeners = newListeners;
 				return;
@@ -187,8 +178,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	 * @param rootFigure
 	 */
 	protected void removeAncestors(IFigure rootFigure) {
-		for (IFigure ancestor = rootFigure; ancestor != null; ancestor = ancestor
-				.getParent()) {
+		for (IFigure ancestor = rootFigure; ancestor != null; ancestor = ancestor.getParent()) {
 			ancestor.removeFigureListener(this);
 			ancestor.removePropertyChangeListener("parent", this); //$NON-NLS-1$
 		}

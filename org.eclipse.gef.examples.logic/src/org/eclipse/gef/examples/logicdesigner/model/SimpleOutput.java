@@ -25,8 +25,7 @@ abstract public class SimpleOutput extends LogicSubpart {
 
 	public Object getPropertyValue(Object propName) {
 		if (ID_SIZE.equals(propName)) {
-			return new String(
-					"(" + getSize().width + "," + getSize().height + ")");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+			return new String("(" + getSize().width + "," + getSize().height + ")");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 		}
 		return super.getPropertyValue(propName);
 	}
@@ -42,8 +41,7 @@ abstract public class SimpleOutput extends LogicSubpart {
 	}
 
 	/**
-	 * Nulls out any changes to this and its subclasses as they are of fixed
-	 * size.
+	 * Nulls out any changes to this and its subclasses as they are of fixed size.
 	 */
 	public void setPropertyValue(Object id, Object value) {
 		if (ID_SIZE.equals(id))

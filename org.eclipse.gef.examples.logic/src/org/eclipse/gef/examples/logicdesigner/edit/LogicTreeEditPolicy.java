@@ -28,8 +28,7 @@ public class LogicTreeEditPolicy extends AbstractEditPolicy {
 	protected Command getMoveCommand(ChangeBoundsRequest req) {
 		EditPart parent = getHost().getParent();
 		if (parent != null) {
-			ChangeBoundsRequest request = new ChangeBoundsRequest(
-					REQ_MOVE_CHILDREN);
+			ChangeBoundsRequest request = new ChangeBoundsRequest(REQ_MOVE_CHILDREN);
 			request.setEditParts(getHost());
 			request.setLocation(req.getLocation());
 			return parent.getCommand(request);

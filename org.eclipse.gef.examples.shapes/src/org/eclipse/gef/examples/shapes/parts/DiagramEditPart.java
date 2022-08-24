@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
 import java.beans.PropertyChangeEvent;
@@ -56,12 +56,10 @@ import org.eclipse.gef.examples.shapes.model.commands.ShapeSetConstraintCommand;
  * 
  * @author Elias Volanakis
  */
-class DiagramEditPart extends AbstractGraphicalEditPart implements
-		PropertyChangeListener {
+class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
 
 	/**
-	 * Upon activation, attach to the model element as a property change
-	 * listener.
+	 * Upon activation, attach to the model element as a property change listener.
 	 */
 	public void activate() {
 		if (!isActive()) {
@@ -77,13 +75,11 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements
 	 */
 	protected void createEditPolicies() {
 		// disallows the removal of this edit part from its parent
-		installEditPolicy(EditPolicy.COMPONENT_ROLE,
-				new RootComponentEditPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 		// handles constraint changes (e.g. moving and/or resizing) of model
 		// elements
 		// and creation of new model elements
-		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new ShapesXYLayoutEditPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new ShapesXYLayoutEditPolicy());
 	}
 
 	/*
@@ -130,16 +126,14 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
 	 */
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		// these properties are fired when Shapes are added into or removed from
 		// the ShapeDiagram instance and must cause a call of refreshChildren()
 		// to update the diagram's contents.
-		if (ShapesDiagram.CHILD_ADDED_PROP.equals(prop)
-				|| ShapesDiagram.CHILD_REMOVED_PROP.equals(prop)) {
+		if (ShapesDiagram.CHILD_ADDED_PROP.equals(prop) || ShapesDiagram.CHILD_REMOVED_PROP.equals(prop)) {
 			refreshChildren();
 		}
 	}
@@ -158,27 +152,22 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements
 		 * @see ConstrainedLayoutEditPolicy#createChangeConstraintCommand(
 		 * ChangeBoundsRequest, EditPart, Object)
 		 */
-		protected Command createChangeConstraintCommand(
-				ChangeBoundsRequest request, EditPart child, Object constraint) {
-			if (child instanceof ShapeEditPart
-					&& constraint instanceof Rectangle) {
+		protected Command createChangeConstraintCommand(ChangeBoundsRequest request, EditPart child,
+				Object constraint) {
+			if (child instanceof ShapeEditPart && constraint instanceof Rectangle) {
 				// return a command that can move and/or resize a Shape
-				return new ShapeSetConstraintCommand((Shape) child.getModel(),
-						request, (Rectangle) constraint);
+				return new ShapeSetConstraintCommand((Shape) child.getModel(), request, (Rectangle) constraint);
 			}
-			return super.createChangeConstraintCommand(request, child,
-					constraint);
+			return super.createChangeConstraintCommand(request, child, constraint);
 		}
 
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * ConstrainedLayoutEditPolicy#createChangeConstraintCommand(EditPart,
+		 * @see ConstrainedLayoutEditPolicy#createChangeConstraintCommand(EditPart,
 		 * Object)
 		 */
-		protected Command createChangeConstraintCommand(EditPart child,
-				Object constraint) {
+		protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
 			// not used in this example
 			return null;
 		}
@@ -190,11 +179,9 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements
 		 */
 		protected Command getCreateCommand(CreateRequest request) {
 			Object childClass = request.getNewObjectType();
-			if (childClass == EllipticalShape.class
-					|| childClass == RectangularShape.class) {
+			if (childClass == EllipticalShape.class || childClass == RectangularShape.class) {
 				// return a command that can add a Shape to a ShapesDiagram
-				return new ShapeCreateCommand((Shape) request.getNewObject(),
-						(ShapesDiagram) getHost().getModel(),
+				return new ShapeCreateCommand((Shape) request.getNewObject(), (ShapesDiagram) getHost().getModel(),
 						(Rectangle) getConstraintFor(request));
 			}
 			return null;

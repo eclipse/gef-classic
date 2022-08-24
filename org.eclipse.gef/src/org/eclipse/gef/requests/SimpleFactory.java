@@ -24,8 +24,7 @@ public class SimpleFactory implements CreationFactory {
 	/**
 	 * Creates a SimpleFactory.
 	 * 
-	 * @param aClass
-	 *            The class to be instantiated using this factory.
+	 * @param aClass The class to be instantiated using this factory.
 	 */
 	public SimpleFactory(Class aClass) {
 		type = aClass;

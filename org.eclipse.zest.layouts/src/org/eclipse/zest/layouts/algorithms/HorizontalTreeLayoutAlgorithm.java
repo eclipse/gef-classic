@@ -14,11 +14,13 @@ import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
 /**
- * A simple algorithm to arrange graph nodes in a layered horizontal tree-like layout. 
+ * A simple algorithm to arrange graph nodes in a layered horizontal tree-like
+ * layout.
+ * 
  * @see TreeLayoutAlgorithm
  * 
- * @version  1.0
- * @author   Rob Lintern
+ * @version 1.0
+ * @author Rob Lintern
  */
 public class HorizontalTreeLayoutAlgorithm extends TreeLayoutAlgorithm {
 
@@ -36,12 +38,14 @@ public class HorizontalTreeLayoutAlgorithm extends TreeLayoutAlgorithm {
 		super(styles);
 	}
 
-	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double x, double y, double width, double height) {
 		// NOTE: width and height are swtiched here when calling super method
 		super.preLayoutAlgorithm(entitiesToLayout, relationshipsToConsider, x, y, height, width);
 	}
 
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationshipsToConsider) {
 		// swap x->y and width->height
 		for (int i = 0; i < entitiesToLayout.length; i++) {
 			InternalNode entity = entitiesToLayout[i];

@@ -16,8 +16,7 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class LiveOutput extends SimpleOutput {
 
-	private static Image LIVE_ICON = createImage(LiveOutput.class,
-			"icons/live16.gif"); //$NON-NLS-1$
+	private static Image LIVE_ICON = createImage(LiveOutput.class, "icons/live16.gif"); //$NON-NLS-1$
 	static final long serialVersionUID = 1;
 
 	public Image getIconImage() {

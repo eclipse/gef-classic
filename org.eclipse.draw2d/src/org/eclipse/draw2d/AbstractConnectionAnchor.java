@@ -17,8 +17,7 @@ import org.eclipse.draw2d.geometry.Point;
  * 
  * @author hudsonr
  */
-public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase
-		implements AncestorListener {
+public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase implements AncestorListener {
 
 	private IFigure owner;
 
@@ -34,20 +33,18 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase
 	 * Constructs an AbstractConnectionAnchor with the owner supplied as input.
 	 * 
 	 * @since 2.0
-	 * @param owner
-	 *            Owner of this anchor
+	 * @param owner Owner of this anchor
 	 */
 	public AbstractConnectionAnchor(IFigure owner) {
 		setOwner(owner);
 	}
 
 	/**
-	 * Adds the given listener to the listeners to be notified of anchor
-	 * location changes.
+	 * Adds the given listener to the listeners to be notified of anchor location
+	 * changes.
 	 * 
 	 * @since 2.0
-	 * @param listener
-	 *            Listener to be added
+	 * @param listener Listener to be added
 	 * @see #removeAnchorListener(AnchorListener)
 	 */
 	public void addAnchorListener(AnchorListener listener) {
@@ -62,8 +59,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase
 	 * Notifies all the listeners of this anchor's location change.
 	 * 
 	 * @since 2.0
-	 * @param figure
-	 *            Anchor-owning Figure which has moved
+	 * @param figure Anchor-owning Figure which has moved
 	 * @see org.eclipse.draw2d.AncestorListener#ancestorMoved(IFigure)
 	 */
 	public void ancestorMoved(IFigure figure) {
@@ -95,8 +91,8 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase
 
 	/**
 	 * Returns the point which is used as the reference by this
-	 * AbstractConnectionAnchor. It is generally dependent on the Figure which
-	 * is the owner of this AbstractConnectionAnchor.
+	 * AbstractConnectionAnchor. It is generally dependent on the Figure which is
+	 * the owner of this AbstractConnectionAnchor.
 	 * 
 	 * @since 2.0
 	 * @return The reference point of this anchor
@@ -117,8 +113,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase
 	 * removed, then this anchor removes itself from its owner.
 	 * 
 	 * @since 2.0
-	 * @param listener
-	 *            Listener to be removed from this anchors listeners list
+	 * @param listener Listener to be removed from this anchors listeners list
 	 * @see #addAnchorListener(AnchorListener)
 	 */
 	public void removeAnchorListener(AnchorListener listener) {
@@ -128,12 +123,10 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase
 	}
 
 	/**
-	 * Sets the owner of this anchor, on whom this anchors location is
-	 * dependent.
+	 * Sets the owner of this anchor, on whom this anchors location is dependent.
 	 * 
 	 * @since 2.0
-	 * @param owner
-	 *            Owner of this anchor
+	 * @param owner Owner of this anchor
 	 */
 	public void setOwner(IFigure owner) {
 		this.owner = owner;

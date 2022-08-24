@@ -43,9 +43,8 @@ public abstract class CachedLabel extends Label {
 	/**
 	 * CachedLabel constructor.
 	 * 
-	 * @param cacheLabel
-	 *            Should the label be cached, or should the text be re-layedout
-	 *            each time
+	 * @param cacheLabel Should the label be cached, or should the text be
+	 *                   re-layedout each time
 	 */
 	public CachedLabel(boolean cacheLabel) {
 		this.cacheLabel = cacheLabel;
@@ -64,7 +63,8 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Figure#setForegroundColor(org.eclipse.swt.graphics.Color)
+	 * @see
+	 * org.eclipse.draw2d.Figure#setForegroundColor(org.eclipse.swt.graphics.Color)
 	 */
 	public void setForegroundColor(Color fg) {
 		updateInvalidation();
@@ -74,7 +74,8 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Figure#setBackgroundColor(org.eclipse.swt.graphics.Color)
+	 * @see
+	 * org.eclipse.draw2d.Figure#setBackgroundColor(org.eclipse.swt.graphics.Color)
 	 */
 	public void setBackgroundColor(Color bg) {
 		updateInvalidation();
@@ -118,7 +119,8 @@ public abstract class CachedLabel extends Label {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
+	 * @see
+	 * org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
 	public void setBounds(Rectangle rect) {
 		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height);
@@ -134,9 +136,9 @@ public abstract class CachedLabel extends Label {
 	}
 
 	/**
-	 * Override this method to return the background colour for the text Note:
-	 * Text must have a background color since it is being stored in an image
-	 * (You can set it to white if you want)
+	 * Override this method to return the background colour for the text Note: Text
+	 * must have a background color since it is being stored in an image (You can
+	 * set it to white if you want)
 	 * 
 	 * @return
 	 */
@@ -197,7 +199,7 @@ public abstract class CachedLabel extends Label {
 			cachedImage = new Image(Display.getCurrent(), width, height);
 
 			// @tag TODO : Dispose of the image properly
-			//ZestPlugin.getDefault().addImage(cachedImage.toString(), cachedImage);
+			// ZestPlugin.getDefault().addImage(cachedImage.toString(), cachedImage);
 
 			GC gc = new GC(cachedImage);
 
@@ -205,7 +207,7 @@ public abstract class CachedLabel extends Label {
 			graphics2.setBackgroundColor(getBackgroundTextColor());
 			graphics2.fillRectangle(0, 0, width, height);
 			graphics2.setForegroundColor(getForegroundColor());
-			//graphics2.drawText(getSubStringText(), new Point(0, 0));
+			// graphics2.drawText(getSubStringText(), new Point(0, 0));
 			graphics2.drawText(getText(), new Point(0, 0));
 			gc.dispose();
 
@@ -239,7 +241,7 @@ public abstract class CachedLabel extends Label {
 	protected void cleanImage() {
 		if (cachedImage != null) {
 
-			//ZestPlugin.getDefault().removeImage(cachedImage.toString());
+			// ZestPlugin.getDefault().removeImage(cachedImage.toString());
 			cachedImage.dispose();
 			cachedImage = null;
 		}

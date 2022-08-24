@@ -62,8 +62,7 @@ public final class TemplateTransfer extends SimpleObjectTransfer {
 	/**
 	 * Sets the <i>template</i> Object.
 	 * 
-	 * @param template
-	 *            the template
+	 * @param template the template
 	 */
 	public void setTemplate(Object template) {
 		setObject(template);

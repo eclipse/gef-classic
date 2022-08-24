@@ -65,13 +65,10 @@ public class OutputEditPart extends LogicEditPart {
 			return key.cast(new DefaultAccessibleAnchorProvider() {
 				public List<Point> getSourceAnchorLocations() {
 					List<Point> list = new ArrayList<>();
-					Vector sourceAnchors = getNodeFigure()
-							.getSourceConnectionAnchors();
+					Vector sourceAnchors = getNodeFigure().getSourceConnectionAnchors();
 					for (int i = 0; i < sourceAnchors.size(); i++) {
-						ConnectionAnchor anchor = (ConnectionAnchor) sourceAnchors
-								.get(i);
-						list.add(anchor.getReferencePoint().getTranslated(0,
-								-3));
+						ConnectionAnchor anchor = (ConnectionAnchor) sourceAnchors.get(i);
+						list.add(anchor.getReferencePoint().getTranslated(0, -3));
 					}
 					return list;
 				}

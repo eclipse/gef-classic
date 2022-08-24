@@ -20,16 +20,14 @@ public interface RotatableDecoration extends IFigure {
 	/**
 	 * Sets the location of this figure.
 	 * 
-	 * @param p
-	 *            The location
+	 * @param p The location
 	 */
 	void setLocation(Point p);
 
 	/**
 	 * Sets the reference point used to determine the rotation angle.
 	 * 
-	 * @param p
-	 *            The reference point
+	 * @param p The reference point
 	 */
 	void setReferencePoint(Point p);
 

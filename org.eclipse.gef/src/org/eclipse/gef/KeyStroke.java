@@ -21,14 +21,11 @@ import org.eclipse.swt.events.KeyEvent;
 public class KeyStroke {
 
 	/**
-	 * Constructs a KeyStroke that will match the given
-	 * {@link KeyEvent#character} and {@link KeyEvent#stateMask} during a press
-	 * event.
+	 * Constructs a KeyStroke that will match the given {@link KeyEvent#character}
+	 * and {@link KeyEvent#stateMask} during a press event.
 	 * 
-	 * @param character
-	 *            the character to match
-	 * @param stateMask
-	 *            the stateMask to match
+	 * @param character the character to match
+	 * @param stateMask the stateMask to match
 	 * @return a new KeyStroke
 	 */
 	public static KeyStroke getPressed(char character, int stateMask) {
@@ -36,13 +33,11 @@ public class KeyStroke {
 	}
 
 	/**
-	 * Constructs a KeyStroke that will match the given {@link KeyEvent#keyCode}
-	 * and {@link KeyEvent#stateMask} during a press event.
+	 * Constructs a KeyStroke that will match the given {@link KeyEvent#keyCode} and
+	 * {@link KeyEvent#stateMask} during a press event.
 	 * 
-	 * @param keyCode
-	 *            the keyCode to match
-	 * @param stateMask
-	 *            the stateMask to match
+	 * @param keyCode   the keyCode to match
+	 * @param stateMask the stateMask to match
 	 * @return a new KeyStroke
 	 */
 	public static KeyStroke getPressed(int keyCode, int stateMask) {
@@ -50,32 +45,25 @@ public class KeyStroke {
 	}
 
 	/**
-	 * Constructs a KeyStroke that will match the given
-	 * {@link KeyEvent#character}, {@link KeyEvent#keyCode}, and
-	 * {@link KeyEvent#stateMask} during a press event.
+	 * Constructs a KeyStroke that will match the given {@link KeyEvent#character},
+	 * {@link KeyEvent#keyCode}, and {@link KeyEvent#stateMask} during a press
+	 * event.
 	 * 
-	 * @param character
-	 *            the character to match
-	 * @param keyCode
-	 *            the keyCode to match
-	 * @param stateMask
-	 *            the stateMask to match
+	 * @param character the character to match
+	 * @param keyCode   the keyCode to match
+	 * @param stateMask the stateMask to match
 	 * @return a new KeyStroke
 	 */
-	public static KeyStroke getPressed(char character, int keyCode,
-			int stateMask) {
+	public static KeyStroke getPressed(char character, int keyCode, int stateMask) {
 		return new KeyStroke(character, keyCode, stateMask, true);
 	}
 
 	/**
-	 * Constructs a KeyStroke that will match the given
-	 * {@link KeyEvent#character} and {@link KeyEvent#stateMask} during a
-	 * release event.
+	 * Constructs a KeyStroke that will match the given {@link KeyEvent#character}
+	 * and {@link KeyEvent#stateMask} during a release event.
 	 * 
-	 * @param character
-	 *            the character to match
-	 * @param stateMask
-	 *            the stateMask to match
+	 * @param character the character to match
+	 * @param stateMask the stateMask to match
 	 * @return a new KeyStroke
 	 */
 	public static KeyStroke getReleased(char character, int stateMask) {
@@ -83,13 +71,11 @@ public class KeyStroke {
 	}
 
 	/**
-	 * Constructs a KeyStroke that will match the given {@link KeyEvent#keyCode}
-	 * and {@link KeyEvent#stateMask} during a release event.
+	 * Constructs a KeyStroke that will match the given {@link KeyEvent#keyCode} and
+	 * {@link KeyEvent#stateMask} during a release event.
 	 * 
-	 * @param keyCode
-	 *            the keyCode to match
-	 * @param stateMask
-	 *            the stateMask to match
+	 * @param keyCode   the keyCode to match
+	 * @param stateMask the stateMask to match
 	 * @return a new KeyStroke
 	 */
 	public static KeyStroke getReleased(int keyCode, int stateMask) {
@@ -97,20 +83,16 @@ public class KeyStroke {
 	}
 
 	/**
-	 * Constructs a KeyStroke that will match the given
-	 * {@link KeyEvent#character}, {@link KeyEvent#keyCode}, and
-	 * {@link KeyEvent#stateMask} during a release event.
+	 * Constructs a KeyStroke that will match the given {@link KeyEvent#character},
+	 * {@link KeyEvent#keyCode}, and {@link KeyEvent#stateMask} during a release
+	 * event.
 	 * 
-	 * @param character
-	 *            the character to match
-	 * @param keyCode
-	 *            the keyCode to match
-	 * @param stateMask
-	 *            the stateMask to match
+	 * @param character the character to match
+	 * @param keyCode   the keyCode to match
+	 * @param stateMask the stateMask to match
 	 * @return a new KeyStroke
 	 */
-	public static KeyStroke getReleased(char character, int keyCode,
-			int stateMask) {
+	public static KeyStroke getReleased(char character, int keyCode, int stateMask) {
 		return new KeyStroke(character, keyCode, stateMask, false);
 	}
 
@@ -122,10 +104,8 @@ public class KeyStroke {
 	/**
 	 * Creates a KeyStroke for the specified KeyEvent and pressed value.
 	 * 
-	 * @param event
-	 *            The KeyEvent
-	 * @param pressed
-	 *            true if the KeyStroke is for a press event
+	 * @param event   The KeyEvent
+	 * @param pressed true if the KeyStroke is for a press event
 	 */
 	KeyStroke(KeyEvent event, boolean pressed) {
 		onPressed = pressed;
@@ -155,14 +135,12 @@ public class KeyStroke {
 
 	/**
 	 * @return true iff the Object is an equivalent KeyStroke
-	 * @param obj
-	 *            the Object being compared
+	 * @param obj the Object being compared
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof KeyStroke) {
 			KeyStroke stroke = (KeyStroke) obj;
-			return stroke.character == character && stroke.keyCode == keyCode
-					&& stroke.onPressed == onPressed
+			return stroke.character == character && stroke.keyCode == keyCode && stroke.onPressed == onPressed
 					&& stroke.stateMask == stateMask;
 		}
 		return false;

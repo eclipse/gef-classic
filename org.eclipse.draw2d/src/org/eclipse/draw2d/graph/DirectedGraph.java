@@ -29,8 +29,8 @@ public class DirectedGraph {
 
 	/**
 	 * The default padding to be used for nodes which don't specify any padding.
-	 * Padding is the amount of empty space to be left around a node. The
-	 * default value is undefined.
+	 * Padding is the amount of empty space to be left around a node. The default
+	 * value is undefined.
 	 */
 	private Insets defaultPadding = new Insets(16);
 
@@ -45,8 +45,7 @@ public class DirectedGraph {
 	public NodeList nodes = new NodeList();
 
 	/**
-	 * For internal use only. The list of rows which makeup the final graph
-	 * layout.
+	 * For internal use only. The list of rows which makeup the final graph layout.
 	 * 
 	 * @deprecated
 	 */
@@ -81,8 +80,8 @@ public class DirectedGraph {
 	}
 
 	/**
-	 * Sets the outer margin for the entire graph. The margin is the space in
-	 * which nodes should not be placed.
+	 * Sets the outer margin for the entire graph. The margin is the space in which
+	 * nodes should not be placed.
 	 * 
 	 * @return the graph's margin
 	 * @since 3.2
@@ -92,12 +91,11 @@ public class DirectedGraph {
 	}
 
 	/**
-	 * Returns the effective padding for the given node. If the node has a
-	 * specified padding, it will be used, otherwise, the graph's defaultPadding
-	 * is returned. The returned value must not be modified.
+	 * Returns the effective padding for the given node. If the node has a specified
+	 * padding, it will be used, otherwise, the graph's defaultPadding is returned.
+	 * The returned value must not be modified.
 	 * 
-	 * @param node
-	 *            the node
+	 * @param node the node
 	 * @return the effective padding for that node
 	 */
 	public Insets getPadding(Node node) {
@@ -139,8 +137,7 @@ public class DirectedGraph {
 	/**
 	 * Removes the given edge from the graph.
 	 * 
-	 * @param edge
-	 *            the edge to be removed
+	 * @param edge the edge to be removed
 	 */
 	public void removeEdge(Edge edge) {
 		edges.remove(edge);
@@ -154,8 +151,7 @@ public class DirectedGraph {
 	/**
 	 * Removes the given node from the graph. Does not remove the node's edges.
 	 * 
-	 * @param node
-	 *            the node to remove
+	 * @param node the node to remove
 	 */
 	public void removeNode(Node node) {
 		nodes.remove(node);
@@ -165,12 +161,11 @@ public class DirectedGraph {
 
 	/**
 	 * Sets the default padding for all nodes in the graph. Padding is the empty
-	 * space left around the <em>outside</em> of each node. The default padding
-	 * is used for all nodes which do not specify a specific amount of padding
-	 * (i.e., their padding is <code>null</code>).
+	 * space left around the <em>outside</em> of each node. The default padding is
+	 * used for all nodes which do not specify a specific amount of padding (i.e.,
+	 * their padding is <code>null</code>).
 	 * 
-	 * @param insets
-	 *            the padding
+	 * @param insets the padding
 	 */
 	public void setDefaultPadding(Insets insets) {
 		defaultPadding = insets;
@@ -178,8 +173,7 @@ public class DirectedGraph {
 
 	/**
 	 * Sets the layout direction for the graph. Edges will be layed out in the
-	 * specified direction (unless the graph contains cycles). Supported values
-	 * are:
+	 * specified direction (unless the graph contains cycles). Supported values are:
 	 * <UL>
 	 * <LI>{@link org.eclipse.draw2d.PositionConstants#EAST}
 	 * <LI>{@link org.eclipse.draw2d.PositionConstants#SOUTH}
@@ -187,8 +181,7 @@ public class DirectedGraph {
 	 * <P>
 	 * The default direction is south.
 	 * 
-	 * @param direction
-	 *            the layout direction
+	 * @param direction the layout direction
 	 * @since 3.2
 	 */
 	public void setDirection(int direction) {
@@ -203,8 +196,7 @@ public class DirectedGraph {
 	/**
 	 * Sets the graphs margin.
 	 * 
-	 * @param insets
-	 *            the graph's margin
+	 * @param insets the graph's margin
 	 * @since 3.2
 	 */
 	public void setMargin(Insets insets) {

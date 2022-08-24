@@ -71,8 +71,7 @@ public class Style extends Notifier {
 	}
 
 	public boolean isAlignedLeft() {
-		return alignment == PositionConstants.LEFT
-				|| (parentStyle != null && parentStyle.isAlignedLeft());
+		return alignment == PositionConstants.LEFT || (parentStyle != null && parentStyle.isAlignedLeft());
 	}
 
 	public boolean isBold() {
@@ -108,19 +107,15 @@ public class Style extends Notifier {
 	public void setAlignment(int value) {
 		if (alignment == value)
 			return;
-		if (value != PositionConstants.ALWAYS_RIGHT
-				&& value != PositionConstants.CENTER
-				&& value != PositionConstants.RIGHT
-				&& value != PositionConstants.NONE
-				&& value != PositionConstants.LEFT
-				&& value != PositionConstants.ALWAYS_LEFT)
+		if (value != PositionConstants.ALWAYS_RIGHT && value != PositionConstants.CENTER
+				&& value != PositionConstants.RIGHT && value != PositionConstants.NONE
+				&& value != PositionConstants.LEFT && value != PositionConstants.ALWAYS_LEFT)
 			throw new IllegalArgumentException(
 					"Alignment must be LEFT, CENTER, RIGHT, ALWAYS_LEFT, ALWAYS_RIGHT or NONE."); //$NON-NLS-1$
 		int oldValue = alignment;
 		alignment = value;
 		if (listeners != null)
-			listeners.firePropertyChange(PROPERTY_ALIGNMENT, oldValue,
-					alignment);
+			listeners.firePropertyChange(PROPERTY_ALIGNMENT, oldValue, alignment);
 	}
 
 	public void setBold(boolean value) {
@@ -140,8 +135,7 @@ public class Style extends Notifier {
 	public void setFontHeight(int fontHeight) {
 		this.fontHeight = fontHeight;
 		if (listeners != null)
-			listeners.firePropertyChange(PROPERTY_FONT_SIZE, fontHeight,
-					fontHeight);
+			listeners.firePropertyChange(PROPERTY_FONT_SIZE, fontHeight, fontHeight);
 	}
 
 	public void setItalic(boolean value) {
@@ -155,15 +149,12 @@ public class Style extends Notifier {
 	public void setOrientation(int value) {
 		if (orientation == value)
 			return;
-		if (value != SWT.RIGHT_TO_LEFT && value != SWT.LEFT_TO_RIGHT
-				&& value != SWT.NONE)
-			throw new IllegalArgumentException(
-					"Orientation must LTR, RTL or NONE.");
+		if (value != SWT.RIGHT_TO_LEFT && value != SWT.LEFT_TO_RIGHT && value != SWT.NONE)
+			throw new IllegalArgumentException("Orientation must LTR, RTL or NONE.");
 		int oldValue = orientation;
 		orientation = value;
 		if (listeners != null)
-			listeners.firePropertyChange(PROPERTY_ORIENTATION, oldValue,
-					orientation);
+			listeners.firePropertyChange(PROPERTY_ORIENTATION, oldValue, orientation);
 	}
 
 	public void setParentStyle(Style style) {

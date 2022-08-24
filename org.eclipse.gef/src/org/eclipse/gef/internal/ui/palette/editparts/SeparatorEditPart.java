@@ -32,8 +32,8 @@ public class SeparatorEditPart extends PaletteEditPart {
 	/**
 	 * Constructor
 	 * 
-	 * @param separator
-	 *            The PaletteSeparator for which this EditPart is being created
+	 * @param separator The PaletteSeparator for which this EditPart is being
+	 *                  created
 	 */
 	public SeparatorEditPart(PaletteSeparator separator) {
 		super(separator);
@@ -76,8 +76,7 @@ public class SeparatorEditPart extends PaletteEditPart {
 		 */
 		protected void paintFigure(Graphics g) {
 			Rectangle r = getBounds().getCropped(CROP);
-			if (getBackgroundColor().equals(
-					PaletteColorUtil.WIDGET_LIST_BACKGROUND)) {
+			if (getBackgroundColor().equals(PaletteColorUtil.WIDGET_LIST_BACKGROUND)) {
 				g.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
 				g.drawLine(r.getLeft(), r.getRight());
 			} else {

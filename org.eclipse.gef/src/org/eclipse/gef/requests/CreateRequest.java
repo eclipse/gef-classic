@@ -18,8 +18,7 @@ import org.eclipse.gef.RequestConstants;
 /**
  * A Request to create a new object.
  */
-public class CreateRequest extends org.eclipse.gef.Request implements
-		DropRequest {
+public class CreateRequest extends org.eclipse.gef.Request implements DropRequest {
 
 	private Object newObject;
 
@@ -40,8 +39,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements
 	/**
 	 * Creates a CreateRequest with the given type.
 	 * 
-	 * @param type
-	 *            The type of request.
+	 * @param type The type of request.
 	 */
 	public CreateRequest(Object type) {
 		setType(type);
@@ -73,8 +71,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements
 	public Object getNewObject() {
 		if (newObject == null) {
 			if (getFactory() == null) {
-				throw new IllegalArgumentException(
-						"CreateRequest has unspecified CreationFactory"); //$NON-NLS-1$
+				throw new IllegalArgumentException("CreateRequest has unspecified CreationFactory"); //$NON-NLS-1$
 			}
 			newObject = getFactory().getNewObject();
 		}
@@ -88,8 +85,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements
 	 */
 	public Object getNewObjectType() {
 		if (getFactory() == null) {
-			throw new IllegalArgumentException(
-					"CreateRequest has unspecified CreationFactory"); //$NON-NLS-1$
+			throw new IllegalArgumentException("CreateRequest has unspecified CreationFactory"); //$NON-NLS-1$
 		}
 		return getFactory().getObjectType();
 	}
@@ -117,8 +113,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements
 	/**
 	 * Sets the factory to be used when creating the new object.
 	 * 
-	 * @param factory
-	 *            the factory
+	 * @param factory the factory
 	 */
 	public void setFactory(CreationFactory factory) {
 		creationFactory = factory;
@@ -127,8 +122,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements
 	/**
 	 * Sets the location where the new object will be placed.
 	 * 
-	 * @param location
-	 *            the location
+	 * @param location the location
 	 */
 	public void setLocation(Point location) {
 		this.location = location;
@@ -137,8 +131,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements
 	/**
 	 * Sets the size of the new object.
 	 * 
-	 * @param size
-	 *            the size
+	 * @param size the size
 	 */
 	public void setSize(Dimension size) {
 		this.size = size;
@@ -148,9 +141,8 @@ public class CreateRequest extends org.eclipse.gef.Request implements
 	 * Used to set whether snap-to is being performed.
 	 * 
 	 * @since 3.7
-	 * @param value
-	 *            <code>true</code> if the request is for a creation with
-	 *            snap-to enabled
+	 * @param value <code>true</code> if the request is for a creation with snap-to
+	 *              enabled
 	 */
 	public void setSnapToEnabled(boolean value) {
 		flags = value ? (flags | SNAP_TO) : (flags & ~SNAP_TO);

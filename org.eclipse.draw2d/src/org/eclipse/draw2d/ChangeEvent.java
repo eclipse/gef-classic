@@ -22,21 +22,17 @@ public class ChangeEvent extends java.util.EventObject {
 	 * Constructs a new ChangeEvent with the given object as the source of the
 	 * event.
 	 * 
-	 * @param source
-	 *            The source of the event
+	 * @param source The source of the event
 	 */
 	public ChangeEvent(Object source) {
 		super(source);
 	}
 
 	/**
-	 * Constructs a new ChangeEvent with the given source object and property
-	 * name.
+	 * Constructs a new ChangeEvent with the given source object and property name.
 	 * 
-	 * @param source
-	 *            The source of the event
-	 * @param property
-	 *            The property name
+	 * @param source   The source of the event
+	 * @param property The property name
 	 */
 	public ChangeEvent(Object source, String property) {
 		super(source);
@@ -55,8 +51,7 @@ public class ChangeEvent extends java.util.EventObject {
 	/**
 	 * Sets the name of the property that has changed.
 	 * 
-	 * @param string
-	 *            The property name
+	 * @param string The property name
 	 */
 	protected void setPropertyName(String string) {
 		property = string;

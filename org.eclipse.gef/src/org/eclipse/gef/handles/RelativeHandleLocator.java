@@ -27,10 +27,8 @@ public class RelativeHandleLocator extends org.eclipse.draw2d.RelativeLocator {
 	/**
 	 * Constructs a new locator using the given reference figure and location.
 	 * 
-	 * @param reference
-	 *            the reference figure
-	 * @param location
-	 *            one of NORTH, NORTH_EAST, etc.
+	 * @param reference the reference figure
+	 * @param location  one of NORTH, NORTH_EAST, etc.
 	 */
 	public RelativeHandleLocator(IFigure reference, int location) {
 		super(reference, location);

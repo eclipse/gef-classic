@@ -26,8 +26,7 @@ public interface ConnectionRouter {
 	/**
 	 * Returns the constraint for the Connection.
 	 * 
-	 * @param connection
-	 *            The connection
+	 * @param connection The connection
 	 * @return The constraint
 	 */
 	Object getConstraint(Connection connection);
@@ -35,40 +34,35 @@ public interface ConnectionRouter {
 	/**
 	 * Invalidates the given Connection.
 	 * 
-	 * @param connection
-	 *            The connection to be invalidated
+	 * @param connection The connection to be invalidated
 	 */
 	void invalidate(Connection connection);
 
 	/**
 	 * Routes the Connection.
 	 * 
-	 * @param connection
-	 *            The Connection to route
+	 * @param connection The Connection to route
 	 */
 	void route(Connection connection);
 
 	/**
 	 * Removes the Connection from this router.
 	 * 
-	 * @param connection
-	 *            The Connection to remove
+	 * @param connection The Connection to remove
 	 */
 	void remove(Connection connection);
 
 	/**
 	 * Maps the given constraint to the given Connection.
 	 * 
-	 * @param connection
-	 *            The Connection
-	 * @param constraint
-	 *            The constraint
+	 * @param connection The Connection
+	 * @param constraint The constraint
 	 */
 	void setConstraint(Connection connection, Object constraint);
 
 	/**
-	 * Routes Connections directly from the source anchor to the target anchor
-	 * with no bendpoints in between.
+	 * Routes Connections directly from the source anchor to the target anchor with
+	 * no bendpoints in between.
 	 */
 	class NullConnectionRouter extends AbstractRouter {
 
@@ -79,11 +73,9 @@ public interface ConnectionRouter {
 		}
 
 		/**
-		 * Routes the given Connection directly between the source and target
-		 * anchors.
+		 * Routes the given Connection directly between the source and target anchors.
 		 * 
-		 * @param conn
-		 *            the connection to be routed
+		 * @param conn the connection to be routed
 		 */
 		public void route(Connection conn) {
 			PointList points = conn.getPoints();

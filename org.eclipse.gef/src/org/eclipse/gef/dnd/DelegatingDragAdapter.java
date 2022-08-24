@@ -37,15 +37,13 @@ import org.eclipse.swt.dnd.TransferData;
  * {@link Transfer#isSupportedType(TransferData)}) the dataType on the
  * <code>DragSourceEvent</code>.
  */
-public class DelegatingDragAdapter extends
-		org.eclipse.jface.util.DelegatingDragAdapter {
+public class DelegatingDragAdapter extends org.eclipse.jface.util.DelegatingDragAdapter {
 
 	/**
 	 * Adds the given TransferDragSourceListener. The set of Transfer types is
 	 * updated to reflect the change.
 	 * 
-	 * @param listener
-	 *            the new listener
+	 * @param listener the new listener
 	 * @deprecated
 	 */
 	public void addDragSourceListener(TransferDragSourceListener listener) {
@@ -53,8 +51,7 @@ public class DelegatingDragAdapter extends
 	}
 
 	/**
-	 * Combines the <code>Transfer</code>s from every
-	 * TransferDragSourceListener.
+	 * Combines the <code>Transfer</code>s from every TransferDragSourceListener.
 	 * 
 	 * @return the combined <code>Transfer</code>s
 	 * @deprecated call getTransfers() instead.
@@ -67,8 +64,7 @@ public class DelegatingDragAdapter extends
 	 * Adds the given TransferDragSourceListener. The set of Transfer types is
 	 * updated to reflect the change.
 	 * 
-	 * @param listener
-	 *            the listener being removed
+	 * @param listener the listener being removed
 	 * @deprecated
 	 */
 	public void removeDragSourceListener(TransferDragSourceListener listener) {

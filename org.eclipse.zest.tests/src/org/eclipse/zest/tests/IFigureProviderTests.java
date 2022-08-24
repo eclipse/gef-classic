@@ -71,18 +71,13 @@ public class IFigureProviderTests extends TestCase {
 		viewer.setInput(new Object());
 		StringBuffer buffer = new StringBuffer();
 		for (int i = 0; i < viewer.getGraphControl().getNodes().size(); i++) {
-			CGraphNode n = (CGraphNode) viewer.getGraphControl().getNodes()
-					.get(i);
-			buffer.append(((Label) n.getNodeFigure().getChildren().get(0))
-					.getText());
+			CGraphNode n = (CGraphNode) viewer.getGraphControl().getNodes().get(i);
+			buffer.append(((Label) n.getNodeFigure().getChildren().get(0)).getText());
 		}
 		String string = buffer.toString();
-		assertTrue("Label 1 should be in figure labels",
-				string.indexOf("1") >= 0);
-		assertTrue("Label 2 should be in figure labels",
-				string.indexOf("2") >= 0);
-		assertTrue("Label 3 should be in figure labels",
-				string.indexOf("3") >= 0);
+		assertTrue("Label 1 should be in figure labels", string.indexOf("1") >= 0);
+		assertTrue("Label 2 should be in figure labels", string.indexOf("2") >= 0);
+		assertTrue("Label 3 should be in figure labels", string.indexOf("3") >= 0);
 	}
 
 	private class DestinationContentProvider implements IGraphContentProvider {
@@ -175,8 +170,7 @@ public class IFigureProviderTests extends TestCase {
 
 	}
 
-	private class CustomLabelProvider extends LabelProvider implements
-			IFigureProvider {
+	private class CustomLabelProvider extends LabelProvider implements IFigureProvider {
 		public String getText(Object node) {
 			return node.toString();
 		}

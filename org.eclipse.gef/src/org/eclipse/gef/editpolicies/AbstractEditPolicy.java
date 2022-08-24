@@ -24,8 +24,7 @@ import org.eclipse.gef.commands.Command;
  * proper usage of the public API, see the documentation for the interface
  * itself: {@link EditPolicy}.
  */
-public abstract class AbstractEditPolicy implements EditPolicy,
-		RequestConstants {
+public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants {
 
 	private EditPart host;
 
@@ -49,8 +48,7 @@ public abstract class AbstractEditPolicy implements EditPolicy,
 	 * This method will log the message to GEF's trace/debug system if the
 	 * corrseponding flag for FEEDBACK is set to true.
 	 * 
-	 * @param message
-	 *            the String to log
+	 * @param message the String to log
 	 * @deprecated in 3.1 This method will be removed in future releases.
 	 */
 	protected final void debugFeedback(String message) {
@@ -73,8 +71,8 @@ public abstract class AbstractEditPolicy implements EditPolicy,
 	}
 
 	/**
-	 * Returns <code>null</code> by default. <code>null</code> is used to
-	 * indicate that the EditPolicy does not contribute to the specified
+	 * Returns <code>null</code> by default. <code>null</code> is used to indicate
+	 * that the EditPolicy does not contribute to the specified
 	 * <code>Request</code>.
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
@@ -91,8 +89,8 @@ public abstract class AbstractEditPolicy implements EditPolicy,
 	}
 
 	/**
-	 * Returns <code>null</code> by default. <code>null</code> indicates that
-	 * this policy is unable to determine the target for the specified
+	 * Returns <code>null</code> by default. <code>null</code> indicates that this
+	 * policy is unable to determine the target for the specified
 	 * <code>Request</code>.
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)

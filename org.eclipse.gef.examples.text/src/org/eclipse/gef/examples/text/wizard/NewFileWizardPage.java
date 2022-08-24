@@ -52,8 +52,7 @@ public class NewFileWizardPage extends WizardPage {
 		super("wizardPage");
 		setTitle("GEF WYSIWYG Text Document");
 		setDescription("This wizard creates a GEF-based WYSIWYG text document with "
-				+ "a *.text. extension.  Choose a container and file name for the new"
-				+ " resource.");
+				+ "a *.text. extension.  Choose a container and file name for the new" + " resource.");
 		this.selection = selection;
 	}
 
@@ -105,8 +104,7 @@ public class NewFileWizardPage extends WizardPage {
 	 * Tests if the current workbench selection is a suitable container to use.
 	 */
 	private void initialize() {
-		if (selection != null && selection.isEmpty() == false
-				&& selection instanceof IStructuredSelection) {
+		if (selection != null && selection.isEmpty() == false && selection instanceof IStructuredSelection) {
 			IStructuredSelection ssel = (IStructuredSelection) selection;
 			if (ssel.size() > 1)
 				return;
@@ -124,13 +122,12 @@ public class NewFileWizardPage extends WizardPage {
 	}
 
 	/**
-	 * Uses the standard container selection dialog to choose the new value for
-	 * the container field.
+	 * Uses the standard container selection dialog to choose the new value for the
+	 * container field.
 	 */
 	private void handleBrowse() {
-		ContainerSelectionDialog dialog = new ContainerSelectionDialog(
-				getShell(), ResourcesPlugin.getWorkspace().getRoot(), false,
-				"Select new file container");
+		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(),
+				ResourcesPlugin.getWorkspace().getRoot(), false, "Select new file container");
 		if (dialog.open() == ContainerSelectionDialog.OK) {
 			Object[] result = dialog.getResult();
 			if (result.length == 1) {
@@ -143,16 +140,14 @@ public class NewFileWizardPage extends WizardPage {
 	 * Ensures that both text fields are set.
 	 */
 	private void dialogChanged() {
-		IResource container = ResourcesPlugin.getWorkspace().getRoot()
-				.findMember(new Path(getContainerName()));
+		IResource container = ResourcesPlugin.getWorkspace().getRoot().findMember(new Path(getContainerName()));
 		String fileName = getFileName();
 
 		if (getContainerName().length() == 0) {
 			updateStatus("File container must be specified");
 			return;
 		}
-		if (container == null
-				|| (container.getType() & (IResource.PROJECT | IResource.FOLDER)) == 0) {
+		if (container == null || (container.getType() & (IResource.PROJECT | IResource.FOLDER)) == 0) {
 			updateStatus("File container must exist");
 			return;
 		}

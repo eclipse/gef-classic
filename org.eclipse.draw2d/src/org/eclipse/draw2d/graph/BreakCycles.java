@@ -212,15 +212,13 @@ class BreakCycles extends GraphVisitor {
 
 	private void sortedInsert(List list, Node node) {
 		int insert = 0;
-		while (insert < list.size()
-				&& ((Node) list.get(insert)).sortValue > node.sortValue)
+		while (insert < list.size() && ((Node) list.get(insert)).sortValue > node.sortValue)
 			insert++;
 		list.add(insert, node);
 	}
 
 	/*
-	 * Called after removal of n. Updates the degree values of n's incoming
-	 * nodes.
+	 * Called after removal of n. Updates the degree values of n's incoming nodes.
 	 */
 	private void updateIncoming(Node n) {
 		for (int i = 0; i < n.incoming.size(); i++) {
@@ -233,8 +231,7 @@ class BreakCycles extends GraphVisitor {
 	}
 
 	/*
-	 * Called after removal of n. Updates the degree values of n's outgoing
-	 * nodes.
+	 * Called after removal of n. Updates the degree values of n's outgoing nodes.
 	 */
 	private void updateOutgoing(Node n) {
 		for (int i = 0; i < n.outgoing.size(); i++) {

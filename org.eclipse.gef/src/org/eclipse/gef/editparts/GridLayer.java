@@ -40,8 +40,8 @@ public class GridLayer extends FreeformLayer {
 	protected int gridY = SnapToGrid.DEFAULT_GRID_SIZE;
 
 	/**
-	 * Field indicating what the grid origin is. This is used simply to
-	 * determine the offset from 0,0.
+	 * Field indicating what the grid origin is. This is used simply to determine
+	 * the offset from 0,0.
 	 */
 	protected Point origin = new Point();
 
@@ -54,8 +54,8 @@ public class GridLayer extends FreeformLayer {
 	}
 
 	/**
-	 * Overridden to indicate no preferred size. The grid layer should not
-	 * affect the size of the layered pane in which it is placed.
+	 * Overridden to indicate no preferred size. The grid layer should not affect
+	 * the size of the layered pane in which it is placed.
 	 * 
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
@@ -72,13 +72,12 @@ public class GridLayer extends FreeformLayer {
 	}
 
 	/**
-	 * Paints the grid. Sub-classes can override to customize the grid's look.
-	 * If this layer is being used with SnapToGrid, this method will only be
-	 * invoked when the {@link SnapToGrid#PROPERTY_GRID_VISIBLE visibility}
-	 * property is set to true.
+	 * Paints the grid. Sub-classes can override to customize the grid's look. If
+	 * this layer is being used with SnapToGrid, this method will only be invoked
+	 * when the {@link SnapToGrid#PROPERTY_GRID_VISIBLE visibility} property is set
+	 * to true.
 	 * 
-	 * @param g
-	 *            The Graphics object to be used to do the painting
+	 * @param g The Graphics object to be used to do the painting
 	 * @see FigureUtilities#paintGrid(Graphics, IFigure, Point, int, int)
 	 */
 	protected void paintGrid(Graphics g) {
@@ -86,11 +85,10 @@ public class GridLayer extends FreeformLayer {
 	}
 
 	/**
-	 * Sets the origin of the grid. The origin is used only to determine the
-	 * offset from 0,0.
+	 * Sets the origin of the grid. The origin is used only to determine the offset
+	 * from 0,0.
 	 * 
-	 * @param p
-	 *            the origin
+	 * @param p the origin
 	 */
 	public void setOrigin(Point p) {
 		if (p == null)
@@ -107,14 +105,12 @@ public class GridLayer extends FreeformLayer {
 	 * spacing. A negative spacing will cause no grid lines to be drawn for that
 	 * dimension.
 	 * 
-	 * @param spacing
-	 *            A Dimension representing the horizontal (width) and vertical
-	 *            (height) gaps
+	 * @param spacing A Dimension representing the horizontal (width) and vertical
+	 *                (height) gaps
 	 */
 	public void setSpacing(Dimension spacing) {
 		if (spacing == null)
-			spacing = new Dimension(SnapToGrid.DEFAULT_GRID_SIZE,
-					SnapToGrid.DEFAULT_GRID_SIZE);
+			spacing = new Dimension(SnapToGrid.DEFAULT_GRID_SIZE, SnapToGrid.DEFAULT_GRID_SIZE);
 		if (!spacing.equals(gridX, gridY)) {
 			gridX = spacing.width != 0 ? spacing.width : gridX;
 			gridY = spacing.height != 0 ? spacing.height : gridY;

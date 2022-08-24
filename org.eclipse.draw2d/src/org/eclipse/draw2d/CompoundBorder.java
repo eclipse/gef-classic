@@ -35,10 +35,8 @@ public class CompoundBorder extends AbstractBorder {
 	/**
 	 * Constructs a CompoundBorder with the two borders specified as input.
 	 * 
-	 * @param outer
-	 *            Border which is drawn on the outside
-	 * @param inner
-	 *            Border which is drawn inside the outer border
+	 * @param outer Border which is drawn on the outside
+	 * @param inner Border which is drawn inside the outer border
 	 * 
 	 * @since 2.0
 	 */
@@ -58,11 +56,10 @@ public class CompoundBorder extends AbstractBorder {
 	}
 
 	/**
-	 * Returns the total insets required to hold both the inner and outer
-	 * borders of this CompoundBorder.
+	 * Returns the total insets required to hold both the inner and outer borders of
+	 * this CompoundBorder.
 	 * 
-	 * @param figure
-	 *            Figure for which this is the border
+	 * @param figure Figure for which this is the border
 	 * @return The total insets for this border
 	 * @since 2.0
 	 */
@@ -101,16 +98,15 @@ public class CompoundBorder extends AbstractBorder {
 	}
 
 	/**
-	 * Returns <code>true</code> if this border is opaque. Return value is
-	 * dependent on the opaque state of both the borders it contains. Both
-	 * borders have to be opaque for this border to be opaque. In the absence of
-	 * any of the borders, this border is not opaque.
+	 * Returns <code>true</code> if this border is opaque. Return value is dependent
+	 * on the opaque state of both the borders it contains. Both borders have to be
+	 * opaque for this border to be opaque. In the absence of any of the borders,
+	 * this border is not opaque.
 	 * 
 	 * @return <code>true</code> if this border is opaque
 	 */
 	public boolean isOpaque() {
-		return ((inner != null) ? inner.isOpaque() : false)
-				&& ((outer != null) ? outer.isOpaque() : false);
+		return ((inner != null) ? inner.isOpaque() : false) && ((outer != null) ? outer.isOpaque() : false);
 	}
 
 	/**

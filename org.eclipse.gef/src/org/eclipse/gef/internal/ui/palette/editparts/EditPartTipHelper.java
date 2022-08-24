@@ -33,8 +33,7 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 	private ShellListener shellListener;
 
 	private static void setHelper(EditPartTipHelper helper) {
-		if (currentHelper != null && currentHelper != helper
-				&& currentHelper.isShowing())
+		if (currentHelper != null && currentHelper != helper && currentHelper.isShowing())
 			currentHelper.hide();
 		currentHelper = helper;
 	}
@@ -45,16 +44,13 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 
 	/**
 	 * Sets the LightWeightSystem object's contents to the passed tooltip, and
-	 * displays the tip at the coordianates specified by tipPosX and tipPosY.
-	 * The given coordinates will be adjusted if the tip cannot be completely
-	 * visible on the screen.
+	 * displays the tip at the coordianates specified by tipPosX and tipPosY. The
+	 * given coordinates will be adjusted if the tip cannot be completely visible on
+	 * the screen.
 	 * 
-	 * @param tip
-	 *            The tool tip to be displayed.
-	 * @param tipPosX
-	 *            X coordiante of tooltip to be displayed
-	 * @param tipPosY
-	 *            Y coordinate of tooltip to be displayed
+	 * @param tip     The tool tip to be displayed.
+	 * @param tipPosX X coordiante of tooltip to be displayed
+	 * @param tipPosY Y coordinate of tooltip to be displayed
 	 */
 	public void displayToolTipAt(IFigure tip, int tipPosX, int tipPosY) {
 		if (tip != null) {
@@ -65,10 +61,9 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 			Dimension tipSize = tip.getPreferredSize();
 			getShell();
 			tipSize = tipSize.getExpanded(getShellTrimSize());
-			org.eclipse.swt.graphics.Rectangle area = control.getDisplay()
-					.getClientArea();
-			org.eclipse.swt.graphics.Point end = new org.eclipse.swt.graphics.Point(
-					tipPosX + tipSize.width, tipPosY + tipSize.height);
+			org.eclipse.swt.graphics.Rectangle area = control.getDisplay().getClientArea();
+			org.eclipse.swt.graphics.Point end = new org.eclipse.swt.graphics.Point(tipPosX + tipSize.width,
+					tipPosY + tipSize.height);
 			if (!area.contains(end)) {
 				shiftX = end.x - (area.x + area.width);
 				shiftY = end.y - (area.y + area.height);
@@ -106,8 +101,8 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 	protected void hookShellListeners() {
 
 		/*
-		 * If the cursor leaves the tip window, hide the tooltip and dispose of
-		 * its shell
+		 * If the cursor leaves the tip window, hide the tooltip and dispose of its
+		 * shell
 		 */
 		getShell().addMouseTrackListener(new MouseTrackAdapter() {
 			public void mouseExit(MouseEvent e) {
@@ -116,10 +111,9 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 			}
 		});
 		/*
-		 * If the mouseExit listener does not get called, dispose of the shell
-		 * if the cursor is no longer in the tooltip. This occurs in the rare
-		 * case that a mouseEnter is not received on the tooltip when it
-		 * appears.
+		 * If the mouseExit listener does not get called, dispose of the shell if the
+		 * cursor is no longer in the tooltip. This occurs in the rare case that a
+		 * mouseEnter is not received on the tooltip when it appears.
 		 */
 		getShell().addMouseMoveListener(new MouseMoveListener() {
 			public void mouseMove(MouseEvent e) {
@@ -139,11 +133,8 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 				public void shellDeactivated(ShellEvent event) {
 					Display.getCurrent().asyncExec(new Runnable() {
 						public void run() {
-							Shell active = Display.getCurrent()
-									.getActiveShell();
-							if (getShell() == active
-									|| control.getShell() == active
-									|| getShell().isDisposed())
+							Shell active = Display.getCurrent().getActiveShell();
+							if (getShell() == active || control.getShell() == active || getShell().isDisposed())
 								return;
 							if (isShowing())
 								getShell().setCapture(false);
@@ -157,9 +148,9 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 		}
 
 		/*
-		 * Workaround for GTK Bug - Control.setCapture(boolean) not implemented:
-		 * If the cursor is not over the shell when it is first painted, hide
-		 * the tooltip and dispose of the shell.
+		 * Workaround for GTK Bug - Control.setCapture(boolean) not implemented: If the
+		 * cursor is not over the shell when it is first painted, hide the tooltip and
+		 * dispose of the shell.
 		 */
 		if (SWT.getPlatform().equals("gtk")) { //$NON-NLS-1$
 			getShell().addPaintListener(new PaintListener() {

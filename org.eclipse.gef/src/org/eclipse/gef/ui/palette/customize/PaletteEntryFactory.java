@@ -53,16 +53,14 @@ public abstract class PaletteEntryFactory {
 	private ImageDescriptor imageDescriptor;
 
 	/**
-	 * This method is called when a new palette entry of the type supported by
-	 * this <code>PaletteEntryFactory</code> is to be created.
+	 * This method is called when a new palette entry of the type supported by this
+	 * <code>PaletteEntryFactory</code> is to be created.
 	 * 
-	 * @param shell
-	 *            The <code>Shell</code> of the
-	 *            <code>PaletteCustomizerDialog</code>
-	 * @param selected
-	 *            The <code>PaletteEntry</code> that was selected in the outline
-	 *            when this action was launched. Will never be <code>null</code>
-	 *            .
+	 * @param shell    The <code>Shell</code> of the
+	 *                 <code>PaletteCustomizerDialog</code>
+	 * @param selected The <code>PaletteEntry</code> that was selected in the
+	 *                 outline when this action was launched. Will never be
+	 *                 <code>null</code> .
 	 * @return PaletteEntry The newly created <code>PaletteEntry</code>
 	 */
 	public PaletteEntry createNewEntry(Shell shell, PaletteEntry selected) {
@@ -76,10 +74,9 @@ public abstract class PaletteEntryFactory {
 	/**
 	 * Create the PaletteEntry
 	 * 
-	 * @param shell
-	 *            The <code>Shell</code> of the
-	 *            <code>PaletteCustomizerDialog</code>; it can be used to create
-	 *            another warning or information dialog.
+	 * @param shell The <code>Shell</code> of the
+	 *              <code>PaletteCustomizerDialog</code>; it can be used to create
+	 *              another warning or information dialog.
 	 * @return The newly created entry
 	 */
 	protected abstract PaletteEntry createNewEntry(Shell shell);
@@ -93,9 +90,8 @@ public abstract class PaletteEntryFactory {
 	 * <code>PaletteContainer</code>s with the following user permission:
 	 * <code>PERMISSION_FULL_MODIFICATION</code>
 	 * 
-	 * @param selected
-	 *            The selected <code>PaletteEntry</code> (Will never be
-	 *            <code>null</code>)
+	 * @param selected The selected <code>PaletteEntry</code> (Will never be
+	 *                 <code>null</code>)
 	 * @return <code>true</code> if, given the current selection, this
 	 *         <code>PaletteEntryFactory</code> can create a new
 	 *         <code>PaletteEntry</code>
@@ -115,34 +111,31 @@ public abstract class PaletteEntryFactory {
 	}
 
 	/**
-	 * Given the current selection, this method determines the parent for the
-	 * new entry to be created.
-	 * 
-	 * <p>
-	 * Sub-classes may override this method.
-	 * </p>
-	 * 
-	 * @param selected
-	 *            The selected entry
-	 * @return The parent of the new entry to be created
-	 */
-	protected PaletteContainer determineContainerForNewEntry(
-			PaletteEntry selected) {
-		if (selected instanceof PaletteContainer)
-			return (PaletteContainer) selected;
-		return selected.getParent();
-	}
-
-	/**
-	 * Given the current selection, this method determines the type of the new
+	 * Given the current selection, this method determines the parent for the new
 	 * entry to be created.
 	 * 
 	 * <p>
 	 * Sub-classes may override this method.
 	 * </p>
 	 * 
-	 * @param selected
-	 *            The selected entry
+	 * @param selected The selected entry
+	 * @return The parent of the new entry to be created
+	 */
+	protected PaletteContainer determineContainerForNewEntry(PaletteEntry selected) {
+		if (selected instanceof PaletteContainer)
+			return (PaletteContainer) selected;
+		return selected.getParent();
+	}
+
+	/**
+	 * Given the current selection, this method determines the type of the new entry
+	 * to be created.
+	 * 
+	 * <p>
+	 * Sub-classes may override this method.
+	 * </p>
+	 * 
+	 * @param selected The selected entry
 	 * @return The type of the new entry to be created
 	 */
 	protected Object determineTypeForNewEntry(PaletteEntry selected) {
@@ -157,21 +150,18 @@ public abstract class PaletteEntryFactory {
 	 * Sub-classes may override this method.
 	 * </p>
 	 * 
-	 * @param c
-	 *            The parent container
-	 * @param selected
-	 *            The selected entry
+	 * @param c        The parent container
+	 * @param selected The selected entry
 	 * @return the index at which the new entry should be added in the given
 	 *         container (-1 indicates add at the end)
 	 */
-	protected int determineIndexForNewEntry(PaletteContainer c,
-			PaletteEntry selected) {
+	protected int determineIndexForNewEntry(PaletteContainer c, PaletteEntry selected) {
 		return c.getChildren().indexOf(selected) + 1;
 	}
 
 	/**
-	 * @return <code>ImageDescriptor</code> used to create the image to
-	 *         represent this factory
+	 * @return <code>ImageDescriptor</code> used to create the image to represent
+	 *         this factory
 	 */
 	public ImageDescriptor getImageDescriptor() {
 		return imageDescriptor;
@@ -185,11 +175,10 @@ public abstract class PaletteEntryFactory {
 	}
 
 	/**
-	 * Sets the <code>ImageDescriptor</code> used to create the image to
-	 * represent this factory
+	 * Sets the <code>ImageDescriptor</code> used to create the image to represent
+	 * this factory
 	 * 
-	 * @param imgDesc
-	 *            The new ImageDescriptor
+	 * @param imgDesc The new ImageDescriptor
 	 */
 	public void setImageDescriptor(ImageDescriptor imgDesc) {
 		imageDescriptor = imgDesc;
@@ -199,8 +188,7 @@ public abstract class PaletteEntryFactory {
 	 * Sets this factory's name. It will be used to list this factory in the
 	 * toolbar, context menu, etc.
 	 * 
-	 * @param newLabel
-	 *            The new name for this factory
+	 * @param newLabel The new name for this factory
 	 */
 	public void setLabel(String newLabel) {
 		label = newLabel;

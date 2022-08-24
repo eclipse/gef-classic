@@ -17,10 +17,9 @@ import org.eclipse.swt.graphics.Color;
  */
 public class SimpleRaisedBorder extends SchemeBorder {
 
-	private static final Scheme DOUBLE = new Scheme(new Color[] {
-			ColorConstants.buttonLightest, ColorConstants.button },
-			new Color[] { ColorConstants.buttonDarkest,
-					ColorConstants.buttonDarker });
+	private static final Scheme DOUBLE = new Scheme(
+			new Color[] { ColorConstants.buttonLightest, ColorConstants.button },
+			new Color[] { ColorConstants.buttonDarkest, ColorConstants.buttonDarker });
 
 	/**
 	 * Constructs a SimpleRaisedBorder with the predefined
@@ -35,11 +34,10 @@ public class SimpleRaisedBorder extends SchemeBorder {
 	/**
 	 * Constructs a SimpleRaisedBorder with the width of all sides provided as
 	 * input. If width == 2, this SimpleRaisedBorder will use the local DOUBLE
-	 * Scheme, otherwise it will use the
-	 * {@link SchemeBorder.SCHEMES#BUTTON_RAISED} Scheme.
+	 * Scheme, otherwise it will use the {@link SchemeBorder.SCHEMES#BUTTON_RAISED}
+	 * Scheme.
 	 * 
-	 * @param width
-	 *            the width of all the sides of the border
+	 * @param width the width of all the sides of the border
 	 * @since 2.0
 	 */
 	public SimpleRaisedBorder(int width) {

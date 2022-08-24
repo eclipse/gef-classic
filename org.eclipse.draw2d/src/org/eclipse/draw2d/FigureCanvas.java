@@ -48,10 +48,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class FigureCanvas extends Canvas {
 
-	private static final int ACCEPTED_STYLES = SWT.RIGHT_TO_LEFT
-			| SWT.LEFT_TO_RIGHT | SWT.V_SCROLL | SWT.H_SCROLL
-			| SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED
-			| SWT.BORDER;
+	private static final int ACCEPTED_STYLES = SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT | SWT.V_SCROLL | SWT.H_SCROLL
+			| SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE | SWT.DOUBLE_BUFFERED | SWT.BORDER;
 
 	/**
 	 * The default styles are mixed in when certain constructors are used. This
@@ -63,11 +61,9 @@ public class FigureCanvas extends Canvas {
 	 * <LI>{@link SWT#H_SCROLL}</LI>
 	 * </UL>
 	 */
-	static final int DEFAULT_STYLES = SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND
-			| SWT.V_SCROLL | SWT.H_SCROLL;
+	static final int DEFAULT_STYLES = SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND | SWT.V_SCROLL | SWT.H_SCROLL;
 
-	private static final int REQUIRED_STYLES = SWT.NO_REDRAW_RESIZE
-			| SWT.V_SCROLL | SWT.H_SCROLL;
+	private static final int REQUIRED_STYLES = SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL;
 
 	/** Never show scrollbar */
 	public static int NEVER = 0;
@@ -87,10 +83,8 @@ public class FigureCanvas extends Canvas {
 		public void propertyChange(PropertyChangeEvent event) {
 			RangeModel model = getViewport().getHorizontalRangeModel();
 			hBarOffset = Math.max(0, -model.getMinimum());
-			getHorizontalBar().setValues(model.getValue() + hBarOffset,
-					model.getMinimum() + hBarOffset,
-					model.getMaximum() + hBarOffset, model.getExtent(),
-					Math.max(1, model.getExtent() / 20),
+			getHorizontalBar().setValues(model.getValue() + hBarOffset, model.getMinimum() + hBarOffset,
+					model.getMaximum() + hBarOffset, model.getExtent(), Math.max(1, model.getExtent() / 20),
 					Math.max(1, model.getExtent() * 3 / 4));
 		}
 	};
@@ -99,10 +93,8 @@ public class FigureCanvas extends Canvas {
 		public void propertyChange(PropertyChangeEvent event) {
 			RangeModel model = getViewport().getVerticalRangeModel();
 			vBarOffset = Math.max(0, -model.getMinimum());
-			getVerticalBar().setValues(model.getValue() + vBarOffset,
-					model.getMinimum() + vBarOffset,
-					model.getMaximum() + vBarOffset, model.getExtent(),
-					Math.max(1, model.getExtent() / 20),
+			getVerticalBar().setValues(model.getValue() + vBarOffset, model.getMinimum() + vBarOffset,
+					model.getMaximum() + vBarOffset, model.getExtent(), Math.max(1, model.getExtent() / 20),
 					Math.max(1, model.getExtent() * 3 / 4));
 		}
 	};
@@ -113,8 +105,7 @@ public class FigureCanvas extends Canvas {
 	 * Creates a new FigureCanvas with the given parent and the
 	 * {@link #DEFAULT_STYLES}.
 	 * 
-	 * @param parent
-	 *            the parent
+	 * @param parent the parent
 	 */
 	public FigureCanvas(Composite parent) {
 		this(parent, SWT.DOUBLE_BUFFERED, new LightweightSystem());
@@ -124,10 +115,8 @@ public class FigureCanvas extends Canvas {
 	 * Constructor which applies the default styles plus any optional styles
 	 * indicated.
 	 * 
-	 * @param parent
-	 *            the parent composite
-	 * @param style
-	 *            see the class javadoc for optional styles
+	 * @param parent the parent composite
+	 * @param style  see the class javadoc for optional styles
 	 * @since 3.1
 	 */
 	public FigureCanvas(Composite parent, int style) {
@@ -135,13 +124,11 @@ public class FigureCanvas extends Canvas {
 	}
 
 	/**
-	 * Constructor which uses the given styles verbatim. Certain styles must be
-	 * used with this class. Refer to the class javadoc for more details.
+	 * Constructor which uses the given styles verbatim. Certain styles must be used
+	 * with this class. Refer to the class javadoc for more details.
 	 * 
-	 * @param style
-	 *            see the class javadoc for <b>required</b> and optional styles
-	 * @param parent
-	 *            the parent composite
+	 * @param style  see the class javadoc for <b>required</b> and optional styles
+	 * @param parent the parent composite
 	 * @since 3.4
 	 */
 	public FigureCanvas(int style, Composite parent) {
@@ -149,13 +136,11 @@ public class FigureCanvas extends Canvas {
 	}
 
 	/**
-	 * Constructs a new FigureCanvas with the given parent and
-	 * LightweightSystem, using the {@link #DEFAULT_STYLES}.
+	 * Constructs a new FigureCanvas with the given parent and LightweightSystem,
+	 * using the {@link #DEFAULT_STYLES}.
 	 * 
-	 * @param parent
-	 *            the parent
-	 * @param lws
-	 *            the LightweightSystem
+	 * @param parent the parent
+	 * @param lws    the LightweightSystem
 	 */
 	public FigureCanvas(Composite parent, LightweightSystem lws) {
 		this(parent, SWT.DOUBLE_BUFFERED, lws);
@@ -166,12 +151,9 @@ public class FigureCanvas extends Canvas {
 	 * verbatim. Certain styles must be used with this class. Refer to the class
 	 * javadoc for more details.
 	 * 
-	 * @param style
-	 *            see the class javadoc for <b>required</b> and optional styles
-	 * @param parent
-	 *            the parent composite
-	 * @param lws
-	 *            the LightweightSystem
+	 * @param style  see the class javadoc for <b>required</b> and optional styles
+	 * @param parent the parent composite
+	 * @param lws    the LightweightSystem
 	 * @since 3.4
 	 */
 	public FigureCanvas(int style, Composite parent, LightweightSystem lws) {
@@ -186,12 +168,9 @@ public class FigureCanvas extends Canvas {
 	/**
 	 * Constructor
 	 * 
-	 * @param parent
-	 *            the parent composite
-	 * @param style
-	 *            look at class javadoc for valid styles
-	 * @param lws
-	 *            the lightweight system
+	 * @param parent the parent composite
+	 * @param style  look at class javadoc for valid styles
+	 * @param lws    the lightweight system
 	 * @since 3.1
 	 */
 	public FigureCanvas(Composite parent, int style, LightweightSystem lws) {
@@ -200,19 +179,16 @@ public class FigureCanvas extends Canvas {
 
 	private static int checkStyle(int style) {
 		if ((style & REQUIRED_STYLES) != REQUIRED_STYLES)
-			throw new IllegalArgumentException(
-					"Required style missing on FigureCanvas"); //$NON-NLS-1$
+			throw new IllegalArgumentException("Required style missing on FigureCanvas"); //$NON-NLS-1$
 		if ((style & ~ACCEPTED_STYLES) != 0)
-			throw new IllegalArgumentException(
-					"Invalid style being set on FigureCanvas"); //$NON-NLS-1$
+			throw new IllegalArgumentException("Invalid style being set on FigureCanvas"); //$NON-NLS-1$
 		return style;
 	}
 
 	/**
 	 * @see org.eclipse.swt.widgets.Composite#computeSize(int, int, boolean)
 	 */
-	public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint,
-			boolean changed) {
+	public org.eclipse.swt.graphics.Point computeSize(int wHint, int hHint, boolean changed) {
 		// TODO Still doesn't handle scrollbar cases, such as when a constrained
 		// width
 		// would require a horizontal scrollbar, and therefore additional
@@ -222,9 +198,8 @@ public class FigureCanvas extends Canvas {
 			wHint = Math.max(0, wHint - borderSize);
 		if (hHint >= 0)
 			hHint = Math.max(0, hHint - borderSize);
-		Dimension size = getLightweightSystem().getRootFigure()
-				.getPreferredSize(wHint, hHint)
-				.getExpanded(borderSize, borderSize);
+		Dimension size = getLightweightSystem().getRootFigure().getPreferredSize(wHint, hHint).getExpanded(borderSize,
+				borderSize);
 		size.union(new Dimension(wHint, hHint));
 		return new org.eclipse.swt.graphics.Point(size.width, size.height);
 	}
@@ -281,17 +256,15 @@ public class FigureCanvas extends Canvas {
 	 * Adds listeners for scrolling.
 	 */
 	private void hook() {
-		getLightweightSystem().getUpdateManager().addUpdateListener(
-				new UpdateListener() {
-					public void notifyPainting(Rectangle damage,
-							java.util.Map dirtyRegions) {
-					}
+		getLightweightSystem().getUpdateManager().addUpdateListener(new UpdateListener() {
+			public void notifyPainting(Rectangle damage, java.util.Map dirtyRegions) {
+			}
 
-					public void notifyValidating() {
-						if (!isDisposed())
-							layoutViewport();
-					}
-				});
+			public void notifyValidating() {
+				if (!isDisposed())
+					layoutViewport();
+			}
+		});
 
 		getHorizontalBar().addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
@@ -307,26 +280,20 @@ public class FigureCanvas extends Canvas {
 	}
 
 	private void hookViewport() {
-		getViewport().getHorizontalRangeModel().addPropertyChangeListener(
-				horizontalChangeListener);
-		getViewport().getVerticalRangeModel().addPropertyChangeListener(
-				verticalChangeListener);
+		getViewport().getHorizontalRangeModel().addPropertyChangeListener(horizontalChangeListener);
+		getViewport().getVerticalRangeModel().addPropertyChangeListener(verticalChangeListener);
 	}
 
 	private void unhookViewport() {
-		getViewport().getHorizontalRangeModel().removePropertyChangeListener(
-				horizontalChangeListener);
-		getViewport().getVerticalRangeModel().removePropertyChangeListener(
-				verticalChangeListener);
+		getViewport().getHorizontalRangeModel().removePropertyChangeListener(horizontalChangeListener);
+		getViewport().getVerticalRangeModel().removePropertyChangeListener(verticalChangeListener);
 	}
 
 	private void layoutViewport() {
 		ScrollPaneSolver.Result result;
-		result = ScrollPaneSolver.solve(
-				new Rectangle(getBounds()).setLocation(0, 0), getViewport(),
-				getHorizontalScrollBarVisibility(),
-				getVerticalScrollBarVisibility(),
-				computeTrim(0, 0, 0, 0).width, computeTrim(0, 0, 0, 0).height);
+		result = ScrollPaneSolver.solve(new Rectangle(getBounds()).setLocation(0, 0), getViewport(),
+				getHorizontalScrollBarVisibility(), getVerticalScrollBarVisibility(), computeTrim(0, 0, 0, 0).width,
+				computeTrim(0, 0, 0, 0).height);
 		getLightweightSystem().setIgnoreResize(true);
 		try {
 			if (getHorizontalBar().getVisible() != result.showH)
@@ -344,10 +311,8 @@ public class FigureCanvas extends Canvas {
 	/**
 	 * Scrolls in an animated way to the new x and y location.
 	 * 
-	 * @param x
-	 *            the x coordinate to scroll to
-	 * @param y
-	 *            the y coordinate to scroll to
+	 * @param x the x coordinate to scroll to
+	 * @param y the y coordinate to scroll to
 	 */
 	public void scrollSmoothTo(int x, int y) {
 		// Ensure newHOffset and newVOffset are within the appropriate ranges
@@ -385,15 +350,13 @@ public class FigureCanvas extends Canvas {
 	}
 
 	/**
-	 * Scrolls the contents to the new x and y location. If this scroll
-	 * operation only consists of a vertical or horizontal scroll, a call will
-	 * be made to {@link #scrollToY(int)} or {@link #scrollToX(int)},
-	 * respectively, to increase performance.
+	 * Scrolls the contents to the new x and y location. If this scroll operation
+	 * only consists of a vertical or horizontal scroll, a call will be made to
+	 * {@link #scrollToY(int)} or {@link #scrollToX(int)}, respectively, to increase
+	 * performance.
 	 * 
-	 * @param x
-	 *            the x coordinate to scroll to
-	 * @param y
-	 *            the y coordinate to scroll to
+	 * @param x the x coordinate to scroll to
+	 * @param y the y coordinate to scroll to
 	 */
 	public void scrollTo(int x, int y) {
 		x = verifyScrollBarOffset(getViewport().getHorizontalRangeModel(), x);
@@ -410,19 +373,16 @@ public class FigureCanvas extends Canvas {
 	 * Scrolls the contents horizontally so that they are offset by
 	 * <code>hOffset</code>.
 	 * 
-	 * @param hOffset
-	 *            the new horizontal offset
+	 * @param hOffset the new horizontal offset
 	 */
 	public void scrollToX(int hOffset) {
-		hOffset = verifyScrollBarOffset(
-				getViewport().getHorizontalRangeModel(), hOffset);
+		hOffset = verifyScrollBarOffset(getViewport().getHorizontalRangeModel(), hOffset);
 		int hOffsetOld = getViewport().getViewLocation().x;
 		if (hOffset == hOffsetOld)
 			return;
 		int dx = -hOffset + hOffsetOld;
 
-		Rectangle clientArea = getViewport().getBounds().getCropped(
-				getViewport().getInsets());
+		Rectangle clientArea = getViewport().getBounds().getCropped(getViewport().getInsets());
 		Rectangle blit = clientArea.getResized(-Math.abs(dx), 0);
 		Rectangle expose = clientArea.getCopy();
 		Point dest = clientArea.getTopLeft();
@@ -439,10 +399,8 @@ public class FigureCanvas extends Canvas {
 		boolean[] manualMove = new boolean[children.length];
 		for (int i = 0; i < children.length; i++) {
 			org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
-			manualMove[i] = blit.width <= 0 || bounds.x > blit.x + blit.width
-					|| bounds.y > blit.y + blit.height
-					|| bounds.x + bounds.width < blit.x
-					|| bounds.y + bounds.height < blit.y;
+			manualMove[i] = blit.width <= 0 || bounds.x > blit.x + blit.width || bounds.y > blit.y + blit.height
+					|| bounds.x + bounds.width < blit.x || bounds.y + bounds.height < blit.y;
 		}
 		scroll(dest.x, dest.y, blit.x, blit.y, blit.width, blit.height, true);
 		for (int i = 0; i < children.length; i++) {
@@ -450,8 +408,7 @@ public class FigureCanvas extends Canvas {
 				continue;
 			org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
 			if (manualMove[i])
-				children[i].setBounds(bounds.x + dx, bounds.y, bounds.width,
-						bounds.height);
+				children[i].setBounds(bounds.x + dx, bounds.y, bounds.width, bounds.height);
 		}
 
 		getViewport().setIgnoreScroll(true);
@@ -464,19 +421,16 @@ public class FigureCanvas extends Canvas {
 	 * Scrolls the contents vertically so that they are offset by
 	 * <code>vOffset</code>.
 	 * 
-	 * @param vOffset
-	 *            the new vertical offset
+	 * @param vOffset the new vertical offset
 	 */
 	public void scrollToY(int vOffset) {
-		vOffset = verifyScrollBarOffset(getViewport().getVerticalRangeModel(),
-				vOffset);
+		vOffset = verifyScrollBarOffset(getViewport().getVerticalRangeModel(), vOffset);
 		int vOffsetOld = getViewport().getViewLocation().y;
 		if (vOffset == vOffsetOld)
 			return;
 		int dy = -vOffset + vOffsetOld;
 
-		Rectangle clientArea = getViewport().getBounds().getCropped(
-				getViewport().getInsets());
+		Rectangle clientArea = getViewport().getBounds().getCropped(getViewport().getInsets());
 		Rectangle blit = clientArea.getResized(0, -Math.abs(dy));
 		Rectangle expose = clientArea.getCopy();
 		Point dest = clientArea.getTopLeft();
@@ -493,10 +447,8 @@ public class FigureCanvas extends Canvas {
 		boolean[] manualMove = new boolean[children.length];
 		for (int i = 0; i < children.length; i++) {
 			org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
-			manualMove[i] = blit.height <= 0 || bounds.x > blit.x + blit.width
-					|| bounds.y > blit.y + blit.height
-					|| bounds.x + bounds.width < blit.x
-					|| bounds.y + bounds.height < blit.y;
+			manualMove[i] = blit.height <= 0 || bounds.x > blit.x + blit.width || bounds.y > blit.y + blit.height
+					|| bounds.x + bounds.width < blit.x || bounds.y + bounds.height < blit.y;
 		}
 		scroll(dest.x, dest.y, blit.x, blit.y, blit.width, blit.height, true);
 		for (int i = 0; i < children.length; i++) {
@@ -504,8 +456,7 @@ public class FigureCanvas extends Canvas {
 				continue;
 			org.eclipse.swt.graphics.Rectangle bounds = children[i].getBounds();
 			if (manualMove[i])
-				children[i].setBounds(bounds.x, bounds.y + dy, bounds.width,
-						bounds.height);
+				children[i].setBounds(bounds.x, bounds.y + dy, bounds.width, bounds.height);
 		}
 
 		getViewport().setIgnoreScroll(true);
@@ -517,8 +468,7 @@ public class FigureCanvas extends Canvas {
 	/**
 	 * Sets the given border on the LightweightSystem's root figure.
 	 * 
-	 * @param border
-	 *            The new border
+	 * @param border The new border
 	 */
 	public void setBorder(Border border) {
 		getLightweightSystem().getRootFigure().setBorder(border);
@@ -527,8 +477,7 @@ public class FigureCanvas extends Canvas {
 	/**
 	 * Sets the contents of the {@link Viewport}.
 	 * 
-	 * @param figure
-	 *            the new contents
+	 * @param figure the new contents
 	 */
 	public void setContents(IFigure figure) {
 		getViewport().setContents(figure);
@@ -546,8 +495,7 @@ public class FigureCanvas extends Canvas {
 	 * Sets the horizontal scrollbar visibility. Possible values are
 	 * {@link #AUTOMATIC}, {@link #ALWAYS}, and {@link #NEVER}.
 	 * 
-	 * @param v
-	 *            the new visibility
+	 * @param v the new visibility
 	 */
 	public void setHorizontalScrollBarVisibility(int v) {
 		hBarVisibility = v;
@@ -558,8 +506,7 @@ public class FigureCanvas extends Canvas {
 	 * value. Possible values are {@link #AUTOMATIC}, {@link #ALWAYS}, and
 	 * {@link #NEVER}.
 	 * 
-	 * @param both
-	 *            the new visibility
+	 * @param both the new visibility
 	 */
 	public void setScrollBarVisibility(int both) {
 		setHorizontalScrollBarVisibility(both);
@@ -570,19 +517,17 @@ public class FigureCanvas extends Canvas {
 	 * Sets the vertical scrollbar visibility. Possible values are
 	 * {@link #AUTOMATIC}, {@link #ALWAYS}, and {@link #NEVER}.
 	 * 
-	 * @param v
-	 *            the new visibility
+	 * @param v the new visibility
 	 */
 	public void setVerticalScrollBarVisibility(int v) {
 		vBarVisibility = v;
 	}
 
 	/**
-	 * Sets the Viewport. The given Viewport must use "fake" scrolling. That is,
-	 * it must be constructed using <code>new Viewport(true)</code>.
+	 * Sets the Viewport. The given Viewport must use "fake" scrolling. That is, it
+	 * must be constructed using <code>new Viewport(true)</code>.
 	 * 
-	 * @param vp
-	 *            the new viewport
+	 * @param vp the new viewport
 	 */
 	public void setViewport(Viewport vp) {
 		if (viewport != null)

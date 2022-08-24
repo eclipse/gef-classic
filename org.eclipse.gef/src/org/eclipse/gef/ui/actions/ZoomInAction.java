@@ -22,12 +22,10 @@ public class ZoomInAction extends ZoomAction {
 	/**
 	 * Constructor for ZoomInAction.
 	 * 
-	 * @param zoomManager
-	 *            the zoom manager
+	 * @param zoomManager the zoom manager
 	 */
 	public ZoomInAction(ZoomManager zoomManager) {
-		super(GEFMessages.ZoomIn_Label, InternalImages.DESC_ZOOM_IN,
-				zoomManager);
+		super(GEFMessages.ZoomIn_Label, InternalImages.DESC_ZOOM_IN, zoomManager);
 		setToolTipText(GEFMessages.ZoomIn_Tooltip);
 		setId(GEFActionConstants.ZOOM_IN);
 		setActionDefinitionId(GEFActionConstants.ZOOM_IN);

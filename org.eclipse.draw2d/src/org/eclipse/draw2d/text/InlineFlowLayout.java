@@ -26,8 +26,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	/**
 	 * Creates a new InlineFlowLayout with the given FlowFigure.
 	 * 
-	 * @param flow
-	 *            The FlowFigure
+	 * @param flow The FlowFigure
 	 */
 	public InlineFlowLayout(FlowFigure flow) {
 		super(flow);
@@ -36,8 +35,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	/**
 	 * Adds the given box as a line below the current line.
 	 * 
-	 * @param box
-	 *            the box to add
+	 * @param box the box to add
 	 */
 	public void addLine(CompositeBox box) {
 		endLine();
@@ -93,8 +91,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 			index = children.indexOf(child);
 
 		for (int i = index + 1; i < children.size(); i++)
-			if (((FlowFigure) children.get(i))
-					.addLeadingWordRequirements(result))
+			if (((FlowFigure) children.get(i)).addLeadingWordRequirements(result))
 				return;
 
 		getContext().getWidthLookahead(getFlowFigure(), result);
@@ -104,8 +101,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	 * @see FlowContainerLayout#isCurrentLineOccupied()
 	 */
 	public boolean isCurrentLineOccupied() {
-		return (currentLine != null && !currentLine.getFragments().isEmpty())
-				|| getContext().isCurrentLineOccupied();
+		return (currentLine != null && !currentLine.getFragments().isEmpty()) || getContext().isCurrentLineOccupied();
 	}
 
 	/**
@@ -127,8 +123,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	/**
 	 * Initializes the given LineBox. Called by createNewLine().
 	 * 
-	 * @param line
-	 *            The LineBox to initialize.
+	 * @param line The LineBox to initialize.
 	 */
 	protected void setupLine(LineBox line) {
 		line.setX(0);

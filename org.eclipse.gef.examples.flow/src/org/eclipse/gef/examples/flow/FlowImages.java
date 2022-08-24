@@ -23,8 +23,7 @@ public class FlowImages {
 	public static final Image GEAR;
 
 	static {
-		InputStream stream = FlowPlugin.class
-				.getResourceAsStream("images/gear.gif");
+		InputStream stream = FlowPlugin.class.getResourceAsStream("images/gear.gif");
 		GEAR = new Image(null, stream);
 		try {
 			stream.close();

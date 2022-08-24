@@ -43,8 +43,7 @@ public class AddCommand extends Command {
 	/**
 	 * Sets the child to the passed Activity
 	 * 
-	 * @param subpart
-	 *            the child
+	 * @param subpart the child
 	 */
 	public void setChild(Activity newChild) {
 		child = newChild;
@@ -53,8 +52,7 @@ public class AddCommand extends Command {
 	/**
 	 * Sets the parent to the passed StructuredActiivty
 	 * 
-	 * @param newParent
-	 *            the parent
+	 * @param newParent the parent
 	 */
 	public void setParent(StructuredActivity newParent) {
 		parent = newParent;

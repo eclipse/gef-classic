@@ -48,8 +48,7 @@ public class ActivityContainerHighlightEditPolicy extends GraphicalEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(org.eclipse.gef.Request)
 	 */
 	public EditPart getTargetEditPart(Request request) {
-		return request.getType().equals(RequestConstants.REQ_SELECTION_HOVER) ? getHost()
-				: null;
+		return request.getType().equals(RequestConstants.REQ_SELECTION_HOVER) ? getHost() : null;
 	}
 
 	private void setContainerBackground(Color c) {
@@ -70,8 +69,7 @@ public class ActivityContainerHighlightEditPolicy extends GraphicalEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(org.eclipse.gef.Request)
 	 */
 	public void showTargetFeedback(Request request) {
-		if (request.getType().equals(RequestConstants.REQ_CREATE)
-				|| request.getType().equals(RequestConstants.REQ_ADD))
+		if (request.getType().equals(RequestConstants.REQ_CREATE) || request.getType().equals(RequestConstants.REQ_ADD))
 			showHighlight();
 	}
 

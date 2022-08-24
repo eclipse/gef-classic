@@ -110,8 +110,7 @@ public class GEFMessages extends NLS {
 	public static String Create_Guide_Tooltip;
 
 	static {
-		NLS.initializeMessages(
-				"org.eclipse.gef.internal.messages", GEFMessages.class); //$NON-NLS-1$
+		NLS.initializeMessages("org.eclipse.gef.internal.messages", GEFMessages.class); //$NON-NLS-1$
 	}
 
 }

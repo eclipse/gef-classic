@@ -74,14 +74,13 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	 */
 	protected void createEditPolicies() {
 		/*
-		 * @TODO:Pratik the right way of creating guides and figuring out the
-		 * target edit part is by installing an edit policy with container role.
-		 * talk to randy about how this should work. would isMove() in
-		 * GuideEditPart's drag tracker still have to return true all the time?
+		 * @TODO:Pratik the right way of creating guides and figuring out the target
+		 * edit part is by installing an edit policy with container role. talk to randy
+		 * about how this should work. would isMove() in GuideEditPart's drag tracker
+		 * still have to return true all the time?
 		 */
 		// installEditPolicy(EditPolicy.CONTAINER_ROLE, );
-		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,
-				new RulerSelectionPolicy());
+		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new RulerSelectionPolicy());
 	}
 
 	/*
@@ -90,8 +89,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
 	protected IFigure createFigure() {
-		RulerFigure ruler = new RulerFigure(isHorizontal(), getRulerProvider()
-				.getUnit());
+		RulerFigure ruler = new RulerFigure(isHorizontal(), getRulerProvider().getUnit());
 		if (ruler.getUnit() == RulerProvider.UNIT_PIXELS)
 			ruler.setInterval(100, 2);
 		return ruler;
@@ -113,8 +111,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 		if (accPart == null)
 			accPart = new AccessibleGraphicalEditPart() {
 				public void getName(AccessibleEvent e) {
-					e.result = isHorizontal() ? GEFMessages.Ruler_Horizontal_Label
-							: GEFMessages.Ruler_Vertical_Label;
+					e.result = isHorizontal() ? GEFMessages.Ruler_Horizontal_Label : GEFMessages.Ruler_Vertical_Label;
 				}
 
 				public void getDescription(AccessibleEvent e) {
@@ -136,21 +133,18 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org
+	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org
 	 * .eclipse.gef.Request)
 	 */
 	public DragTracker getDragTracker(Request request) {
-		if (request.getType().equals(REQ_SELECTION)
-				&& ((SelectionRequest) request).getLastButtonPressed() != 1) {
+		if (request.getType().equals(REQ_SELECTION) && ((SelectionRequest) request).getLastButtonPressed() != 1) {
 			return null;
 		}
 		return new RulerDragTracker(this);
 	}
 
 	public IFigure getGuideLayer() {
-		LayerManager lm = (LayerManager) diagramViewer.getEditPartRegistry()
-				.get(LayerManager.ID);
+		LayerManager lm = (LayerManager) diagramViewer.getEditPartRegistry().get(LayerManager.ID);
 		if (lm != null)
 			return lm.getLayer(LayerConstants.GUIDE_LAYER);
 		return null;
@@ -187,14 +181,12 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	}
 
 	public ZoomManager getZoomManager() {
-		return (ZoomManager) diagramViewer.getProperty(ZoomManager.class
-				.toString());
+		return (ZoomManager) diagramViewer.getProperty(ZoomManager.class.toString());
 	}
 
 	public void handleGuideReparented(Object guide) {
 		refreshChildren();
-		EditPart guidePart = (EditPart) getViewer().getEditPartRegistry().get(
-				guide);
+		EditPart guidePart = (EditPart) getViewer().getEditPartRegistry().get(guide);
 		if (guidePart != null) {
 			getViewer().select(guidePart);
 		}
@@ -215,16 +207,14 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	public void setParent(EditPart parent) {
 		super.setParent(parent);
 		if (getParent() != null && diagramViewer == null) {
-			diagramViewer = (GraphicalViewer) getViewer().getProperty(
-					GraphicalViewer.class.toString());
+			diagramViewer = (GraphicalViewer) getViewer().getProperty(GraphicalViewer.class.toString());
 			RulerProvider hProvider = (RulerProvider) diagramViewer
 					.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER);
 			if (hProvider != null && hProvider.getRuler() == getModel()) {
 				rulerProvider = hProvider;
 				horizontal = true;
 			} else {
-				rulerProvider = (RulerProvider) diagramViewer
-						.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER);
+				rulerProvider = (RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER);
 			}
 		}
 	}

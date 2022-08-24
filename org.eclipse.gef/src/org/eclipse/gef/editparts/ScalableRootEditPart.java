@@ -99,8 +99,7 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  * @author Eric Bordeau
  * @since 2.1.1
  */
-public class ScalableRootEditPart extends SimpleRootEditPart implements
-		LayerConstants, LayerManager {
+public class ScalableRootEditPart extends SimpleRootEditPart implements LayerConstants, LayerManager {
 
 	class FeedbackLayer extends Layer {
 		FeedbackLayer() {
@@ -125,8 +124,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 	private PropertyChangeListener gridListener = new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
 			String property = evt.getPropertyName();
-			if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN)
-					|| property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
+			if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN) || property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
 					|| property.equals(SnapToGrid.PROPERTY_GRID_VISIBLE))
 				refreshGridLayer();
 		}
@@ -138,21 +136,18 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 	 * Constructor for ScalableFreeformRootEditPart
 	 */
 	public ScalableRootEditPart() {
-		zoomManager = createZoomManager(
-				(ScalableLayeredPane) getScaledLayers(),
-				((Viewport) getFigure()));
+		zoomManager = createZoomManager((ScalableLayeredPane) getScaledLayers(), ((Viewport) getFigure()));
 	}
 
 	/**
 	 * Responsible of creating a {@link ZoomManager} to be used by this
 	 * {@link ScalableRootEditPart}.
 	 * 
-	 * @return A new {@link ZoomManager} bound to the given
-	 *         {@link ScalableFigure} and {@link Viewport}.
+	 * @return A new {@link ZoomManager} bound to the given {@link ScalableFigure}
+	 *         and {@link Viewport}.
 	 * @since 3.10
 	 */
-	protected ZoomManager createZoomManager(ScalableFigure scalableFigure,
-			Viewport viewport) {
+	protected ZoomManager createZoomManager(ScalableFigure scalableFigure, Viewport viewport) {
 		return new ZoomManager(scalableFigure, viewport);
 	}
 
@@ -172,9 +167,9 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 	/**
 	 * Creates a {@link GridLayer grid}. Sub-classes can override this method to
 	 * customize the appearance of the grid. The grid layer should be the first
-	 * layer (i.e., beneath the primary layer) if it is not to cover up parts on
-	 * the primary layer. In that case, the primary layer should be transparent
-	 * so that the grid is visible.
+	 * layer (i.e., beneath the primary layer) if it is not to cover up parts on the
+	 * primary layer. In that case, the primary layer should be transparent so that
+	 * the grid is visible.
 	 * 
 	 * @return the newly created GridLayer
 	 */
@@ -185,8 +180,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 	/**
 	 * Creates the top-most set of layers on the given layered pane
 	 * 
-	 * @param layeredPane
-	 *            the parent for the created layers
+	 * @param layeredPane the parent for the created layers
 	 */
 	protected void createLayers(LayeredPane layeredPane) {
 		layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);
@@ -222,8 +216,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 	/**
 	 * Creates a scalable layered pane and the layers that should be scaled.
 	 * 
-	 * @return a new <code>ScalableLayeredPane</code> containing the scalable
-	 *         layers
+	 * @return a new <code>ScalableLayeredPane</code> containing the scalable layers
 	 */
 	protected ScalableLayeredPane createScaledLayers() {
 		ScalableLayeredPane layers = new ScalableLayeredPane();
@@ -292,8 +285,8 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 	}
 
 	/**
-	 * The root editpart does not have a real model. The LayerManager ID is
-	 * returned so that this editpart gets registered using that key.
+	 * The root editpart does not have a real model. The LayerManager ID is returned
+	 * so that this editpart gets registered using that key.
 	 * 
 	 * @see org.eclipse.gef.EditPart#getModel()
 	 */
@@ -302,8 +295,8 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 	}
 
 	/**
-	 * Returns the LayeredPane that should be used during printing. This layer
-	 * will be identified using {@link LayerConstants#PRINTABLE_LAYERS}.
+	 * Returns the LayeredPane that should be used during printing. This layer will
+	 * be identified using {@link LayerConstants#PRINTABLE_LAYERS}.
 	 * 
 	 * @return the layered pane containing all printable content
 	 */
@@ -340,20 +333,17 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements
 	 * {@link SnapToGrid#PROPERTY_GRID_SPACING}, and
 	 * {@link SnapToGrid#PROPERTY_GRID_ORIGIN}.
 	 * <p>
-	 * This method is invoked initially when the GridLayer is created, and when
-	 * any of the above-mentioned properties are changed on the viewer.
+	 * This method is invoked initially when the GridLayer is created, and when any
+	 * of the above-mentioned properties are changed on the viewer.
 	 */
 	protected void refreshGridLayer() {
 		boolean visible = false;
 		GridLayer grid = (GridLayer) getLayer(GRID_LAYER);
-		Boolean val = (Boolean) getViewer().getProperty(
-				SnapToGrid.PROPERTY_GRID_VISIBLE);
+		Boolean val = (Boolean) getViewer().getProperty(SnapToGrid.PROPERTY_GRID_VISIBLE);
 		if (val != null)
 			visible = val.booleanValue();
-		grid.setOrigin((Point) getViewer().getProperty(
-				SnapToGrid.PROPERTY_GRID_ORIGIN));
-		grid.setSpacing((Dimension) getViewer().getProperty(
-				SnapToGrid.PROPERTY_GRID_SPACING));
+		grid.setOrigin((Point) getViewer().getProperty(SnapToGrid.PROPERTY_GRID_ORIGIN));
+		grid.setSpacing((Dimension) getViewer().getProperty(SnapToGrid.PROPERTY_GRID_SPACING));
 		grid.setVisible(visible);
 	}
 

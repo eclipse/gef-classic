@@ -23,14 +23,13 @@ import org.eclipse.gef.internal.InternalImages;
 public class AlignmentRetargetAction extends LabelRetargetAction {
 
 	/**
-	 * Constructs a new AlignmentRetargetAction with the default ID, label and
-	 * image based on the given alignment constant. Possible values are
+	 * Constructs a new AlignmentRetargetAction with the default ID, label and image
+	 * based on the given alignment constant. Possible values are
 	 * {@link PositionConstants#BOTTOM}, {@link PositionConstants#CENTER},
 	 * {@link PositionConstants#LEFT}, {@link PositionConstants#MIDDLE},
 	 * {@link PositionConstants#RIGHT}, and {@link PositionConstants#TOP}.
 	 * 
-	 * @param align
-	 *            the alignment.
+	 * @param align the alignment.
 	 */
 	public AlignmentRetargetAction(int align) {
 		super(null, null);

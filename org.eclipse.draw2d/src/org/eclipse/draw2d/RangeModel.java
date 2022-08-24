@@ -32,13 +32,12 @@ public interface RangeModel {
 	String PROPERTY_MAXIMUM = "maximum"; //$NON-NLS-1$
 
 	/**
-	 * Registers listener as a PropertyChangeListener of this RangeModel.
-	 * Listeners will be notified of changes to {@link #PROPERTY_VALUE value},
+	 * Registers listener as a PropertyChangeListener of this RangeModel. Listeners
+	 * will be notified of changes to {@link #PROPERTY_VALUE value},
 	 * {@link #PROPERTY_EXTENT extent}, {@link #PROPERTY_MINIMUM minimum} and
 	 * {@link #PROPERTY_MAXIMUM maximum} properties.
 	 * 
-	 * @param listener
-	 *            The listener to add
+	 * @param listener The listener to add
 	 */
 	void addPropertyChangeListener(PropertyChangeListener listener);
 
@@ -81,52 +80,44 @@ public interface RangeModel {
 	 * Removes the given listener from this RangeModel's list of
 	 * PropertyChangeListeners.
 	 * 
-	 * @param listener
-	 *            The listener to remove
+	 * @param listener The listener to remove
 	 */
 	void removePropertyChangeListener(PropertyChangeListener listener);
 
 	/**
 	 * Sets min, extent, and max all at once.
 	 * 
-	 * @param min
-	 *            the new mininum
-	 * @param extent
-	 *            the new extent
-	 * @param max
-	 *            the new maximum
+	 * @param min    the new mininum
+	 * @param extent the new extent
+	 * @param max    the new maximum
 	 */
 	void setAll(int min, int extent, int max);
 
 	/**
 	 * Sets the extent.
 	 * 
-	 * @param extent
-	 *            The extent
+	 * @param extent The extent
 	 */
 	void setExtent(int extent);
 
 	/**
 	 * Sets the maximum value of the range.
 	 * 
-	 * @param max
-	 *            The maximum value
+	 * @param max The maximum value
 	 */
 	void setMaximum(int max);
 
 	/**
 	 * Sets the minimum value of the range.
 	 * 
-	 * @param min
-	 *            The minimum value
+	 * @param min The minimum value
 	 */
 	void setMinimum(int min);
 
 	/**
 	 * Sets the current value.
 	 * 
-	 * @param value
-	 *            The current value
+	 * @param value The current value
 	 */
 	void setValue(int value);
 

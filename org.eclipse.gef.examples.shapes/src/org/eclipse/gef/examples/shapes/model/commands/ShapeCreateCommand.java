@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.draw2d.geometry.Dimension;
@@ -36,19 +36,14 @@ public class ShapeCreateCommand extends Command {
 	/**
 	 * Create a command that will add a new Shape to a ShapesDiagram.
 	 * 
-	 * @param newShape
-	 *            the new Shape that is to be added
-	 * @param parent
-	 *            the ShapesDiagram that will hold the new element
-	 * @param bounds
-	 *            the bounds of the new shape; the size can be (-1, -1) if not
-	 *            known
-	 * @throws IllegalArgumentException
-	 *             if any parameter is null, or the request does not provide a
-	 *             new Shape instance
+	 * @param newShape the new Shape that is to be added
+	 * @param parent   the ShapesDiagram that will hold the new element
+	 * @param bounds   the bounds of the new shape; the size can be (-1, -1) if not
+	 *                 known
+	 * @throws IllegalArgumentException if any parameter is null, or the request
+	 *                                  does not provide a new Shape instance
 	 */
-	public ShapeCreateCommand(Shape newShape, ShapesDiagram parent,
-			Rectangle bounds) {
+	public ShapeCreateCommand(Shape newShape, ShapesDiagram parent, Rectangle bounds) {
 		this.newShape = newShape;
 		this.parent = parent;
 		this.bounds = bounds;

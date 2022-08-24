@@ -18,8 +18,8 @@ import org.eclipse.draw2d.geometry.PointList;
 public interface Connection extends IFigure {
 
 	/**
-	 * The connection router property. Used to signify that the ConnectionRouter
-	 * has changed.
+	 * The connection router property. Used to signify that the ConnectionRouter has
+	 * changed.
 	 */
 	String PROPERTY_CONNECTION_ROUTER = "connectionRouter"; //$NON-NLS-1$
 	/**
@@ -29,8 +29,8 @@ public interface Connection extends IFigure {
 	String PROPERTY_POINTS = "points"; //$NON-NLS-1$
 
 	/**
-	 * Returns the ConnectionRouter used to route this Connection. Does not
-	 * return null.
+	 * Returns the ConnectionRouter used to route this Connection. Does not return
+	 * null.
 	 * 
 	 * @return The ConnectionRouter for this Connection
 	 */
@@ -39,8 +39,7 @@ public interface Connection extends IFigure {
 	/**
 	 * Sets the ConnectionRouter for this Connection.
 	 * 
-	 * @param router
-	 *            The ConnectionRouter to set for this Connection
+	 * @param router The ConnectionRouter to set for this Connection
 	 */
 	void setConnectionRouter(ConnectionRouter router);
 
@@ -68,8 +67,7 @@ public interface Connection extends IFigure {
 	/**
 	 * Sets the routing constraint used by the router.
 	 * 
-	 * @param cons
-	 *            The routing constraint
+	 * @param cons The routing constraint
 	 */
 	void setRoutingConstraint(Object cons);
 
@@ -77,8 +75,7 @@ public interface Connection extends IFigure {
 	 * Sets the ConnectionAnchor to be used at the <i>source</i> end of this
 	 * Connection.
 	 * 
-	 * @param anchor
-	 *            The source anchor
+	 * @param anchor The source anchor
 	 */
 	void setSourceAnchor(ConnectionAnchor anchor);
 
@@ -86,8 +83,7 @@ public interface Connection extends IFigure {
 	 * Sets the ConnectionAnchor to be used at the <i>target</i> end of this
 	 * Connection.
 	 * 
-	 * @param anchor
-	 *            The target anchor
+	 * @param anchor The target anchor
 	 */
 	void setTargetAnchor(ConnectionAnchor anchor);
 
@@ -102,8 +98,7 @@ public interface Connection extends IFigure {
 	/**
 	 * Sets the PointList containing the Points that make up this Connection.
 	 * 
-	 * @param list
-	 *            The points for this Connection
+	 * @param list The points for this Connection
 	 */
 	void setPoints(PointList list);
 

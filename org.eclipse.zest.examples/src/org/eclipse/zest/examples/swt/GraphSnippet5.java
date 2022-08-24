@@ -35,9 +35,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This snippet shows how you can add a paint listener to a Zest graph to paint on top of
- * the widget.  This snippet allows you to type and it selects all the nodes that match 
- * what you type.
+ * This snippet shows how you can add a paint listener to a Zest graph to paint
+ * on top of the widget. This snippet allows you to type and it selects all the
+ * nodes that match what you type.
  * 
  * @author Ian Bull
  * 
@@ -91,7 +91,8 @@ public class GraphSnippet5 {
 					}
 				} else if (e.keyCode == ENTER) {
 					complete = true;
-				} else if ((e.character >= 'a' && e.character <= 'z') || (e.character >= 'A' && e.character <= 'Z') || (e.character == '.') || (e.character >= '0' && e.character <= '9')) {
+				} else if ((e.character >= 'a' && e.character <= 'z') || (e.character >= 'A' && e.character <= 'Z')
+						|| (e.character == '.') || (e.character >= '0' && e.character <= '9')) {
 					stringBuffer.append(e.character);
 				}
 				Iterator iterator = figureListing.keySet().iterator();

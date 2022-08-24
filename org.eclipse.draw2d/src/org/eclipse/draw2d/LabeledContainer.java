@@ -30,8 +30,7 @@ public class LabeledContainer extends Figure {
 	/**
 	 * Constructs a labeled container with the border given as input.
 	 * 
-	 * @param border
-	 *            the border
+	 * @param border the border
 	 * @since 2.0
 	 */
 	public LabeledContainer(Border border) {
@@ -75,8 +74,7 @@ public class LabeledContainer extends Figure {
 	/**
 	 * Sets the title of the container.
 	 * 
-	 * @param s
-	 *            the new title text
+	 * @param s the new title text
 	 * @since 2.0
 	 */
 	public void setLabel(String s) {
@@ -88,8 +86,7 @@ public class LabeledContainer extends Figure {
 	/**
 	 * Sets the font to be used for the container title.
 	 * 
-	 * @param f
-	 *            the new font
+	 * @param f the new font
 	 * @since 2.0
 	 */
 	public void setLabelFont(Font f) {

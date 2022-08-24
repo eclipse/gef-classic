@@ -23,18 +23,14 @@ import org.eclipse.gef.internal.GEFMessages;
 public class DeleteRetargetAction extends RetargetAction {
 
 	/**
-	 * Constructs a new DeleteRetargetAction with the default ID, label and
-	 * image.
+	 * Constructs a new DeleteRetargetAction with the default ID, label and image.
 	 */
 	public DeleteRetargetAction() {
 		super(ActionFactory.DELETE.getId(), GEFMessages.DeleteAction_Label);
 		setToolTipText(GEFMessages.DeleteAction_Tooltip);
-		ISharedImages sharedImages = PlatformUI.getWorkbench()
-				.getSharedImages();
-		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-		setDisabledImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+		setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 	}
 
 }

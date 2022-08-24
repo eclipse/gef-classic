@@ -38,7 +38,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		setLayoutManager(new FreeformLayout());
 		setBorder(new MarginBorder(5));
 
-		//setOpaque(false);
+		// setOpaque(false);
 	}
 
 	protected boolean isValidationRoot() {
@@ -59,28 +59,26 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 	}
 
 	/*
-	public boolean isCoordinateSystem() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-	*/
+	 * public boolean isCoordinateSystem() { // TODO Auto-generated method stub
+	 * return true; }
+	 */
 
 	public double getScale() {
 		// TODO Auto-generated method stub
 		throw new RuntimeException("Operation not supported");
 		// return this.widthScale;
 
-		//throw new RuntimeException("Operation Not supported");
+		// throw new RuntimeException("Operation Not supported");
 	}
 
 	public void setScale(double scale) {
-		//super.setScale( scale );
+		// super.setScale( scale );
 		this.widthScale = scale;
 		this.heigthScale = scale;
 		revalidate();
 		repaint();
-		//System.out.println("Operation not supported");
-		//throw new RuntimeException("Operation not supported");
+		// System.out.println("Operation not supported");
+		// throw new RuntimeException("Operation not supported");
 	}
 
 	/**
@@ -88,7 +86,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 	 */
 
 	public Rectangle getClientArea(Rectangle rect) {
-		//return super.getClientArea(rect);
+		// return super.getClientArea(rect);
 
 		rect.width /= widthScale;
 		rect.height /= heigthScale;
@@ -106,7 +104,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 
 	public void translateFromParent(Translatable t) {
 		super.translateFromParent(t);
-		//t.performScale(1/widthScale);
+		// t.performScale(1/widthScale);
 
 		if (t instanceof PrecisionRectangle) {
 			PrecisionRectangle r = (PrecisionRectangle) t;
@@ -140,11 +138,11 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 			throw new RuntimeException(t.toString() + " not supported in AspectRatioScale");
 		}
 
-		//t.performScale(1/widthScale);		
+		// t.performScale(1/widthScale);
 	}
 
 	public void translateToParent(Translatable t) {
-		//t.performScale(widthScale);
+		// t.performScale(widthScale);
 
 		if (t instanceof PrecisionRectangle) {
 			PrecisionRectangle r = (PrecisionRectangle) t;
@@ -154,7 +152,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 			r.setPreciseHeight(r.preciseHeight() * heigthScale);
 		} else if (t instanceof Rectangle) {
 			Rectangle r = (Rectangle) t;
-			//r.performScale(widthScale);
+			// r.performScale(widthScale);
 			r.scale(widthScale, heigthScale);
 		} else if (t instanceof CaretInfo) {
 			CaretInfo c = (CaretInfo) t;
@@ -182,9 +180,9 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		super.translateToParent(t);
 	}
 
-	//protected boolean useLocalCoordinates() {
-	//	return true;
-	//}
+	// protected boolean useLocalCoordinates() {
+	// return true;
+	// }
 
 	protected void paintClientArea(Graphics graphics) {
 
@@ -206,13 +204,13 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 			g.clipRect(getBounds().getShrinked(getInsets()));
 		}
 
-		//g.translate((int)(getBounds().x + getInsets().left) , 
-		//		(int)(getBounds().y  +  getInsets().top) );
+		// g.translate((int)(getBounds().x + getInsets().left) ,
+		// (int)(getBounds().y + getInsets().top) );
 
 		g.scale(widthScale, heigthScale);
-		//g.scale(widthScale);
+		// g.scale(widthScale);
 
-		//g.scale(widthScale);
+		// g.scale(widthScale);
 		g.pushState();
 		paintChildren(g);
 		g.popState();

@@ -33,8 +33,7 @@ public class NonResizableHandle extends MoveHandle {
 	 * Creates a NonResizableHandle for the given <code>GraphicalEditPart</code>
 	 * using a default {@link Locator}.
 	 * 
-	 * @param owner
-	 *            The GraphicalEditPart to be moved by this handle.
+	 * @param owner The GraphicalEditPart to be moved by this handle.
 	 */
 	public NonResizableHandle(GraphicalEditPart owner) {
 		this(owner, new MoveHandleLocator(owner.getFigure()));
@@ -44,10 +43,8 @@ public class NonResizableHandle extends MoveHandle {
 	 * Creates a NonResizableHandle for the given <code>GraphicalEditPart</code>
 	 * using the given <code>Locator</code>.
 	 * 
-	 * @param owner
-	 *            The GraphicalEditPart to be moved by this handle.
-	 * @param loc
-	 *            The Locator used to place the handle.
+	 * @param owner The GraphicalEditPart to be moved by this handle.
+	 * @param loc   The Locator used to place the handle.
 	 */
 	public NonResizableHandle(GraphicalEditPart owner, Locator loc) {
 		super(owner, loc);

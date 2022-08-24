@@ -40,8 +40,8 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  * @deprecated this class will be deleted, use ScrollingGraphicalViewer with
  *             ScalableRootEditPart instead
  */
-public class GraphicalRootEditPart extends AbstractGraphicalEditPart implements
-		RootEditPart, LayerConstants, LayerManager {
+public class GraphicalRootEditPart extends AbstractGraphicalEditPart
+		implements RootEditPart, LayerConstants, LayerManager {
 
 	/**
 	 * The contents

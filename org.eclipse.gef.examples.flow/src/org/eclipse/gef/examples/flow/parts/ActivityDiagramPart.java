@@ -30,8 +30,7 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 
 	CommandStackEventListener stackListener = new CommandStackEventListener() {
 
-		public void stackChanged(
-				org.eclipse.gef.commands.CommandStackEvent event) {
+		public void stackChanged(org.eclipse.gef.commands.CommandStackEvent event) {
 			if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
 				if (!GraphAnimation.captureLayout(getFigure()))
 					return;
@@ -50,8 +49,7 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 	 */
 	public void activate() {
 		super.activate();
-		getViewer().getEditDomain().getCommandStack()
-				.addCommandStackEventListener(stackListener);
+		getViewer().getEditDomain().getCommandStack().addCommandStackEventListener(stackListener);
 	}
 
 	/**
@@ -61,12 +59,9 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 		installEditPolicy(EditPolicy.NODE_ROLE, null);
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, null);
 		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, null);
-		installEditPolicy(EditPolicy.COMPONENT_ROLE,
-				new RootComponentEditPolicy());
-		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new StructuredActivityLayoutEditPolicy());
-		installEditPolicy(EditPolicy.CONTAINER_ROLE,
-				new ActivityContainerEditPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new StructuredActivityLayoutEditPolicy());
+		installEditPolicy(EditPolicy.CONTAINER_ROLE, new ActivityContainerEditPolicy());
 	}
 
 	protected IFigure createFigure() {
@@ -74,9 +69,8 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 			public void setBounds(Rectangle rect) {
 				int x = bounds.x, y = bounds.y;
 
-				boolean resize = (rect.width != bounds.width)
-						|| (rect.height != bounds.height), translate = (rect.x != x)
-						|| (rect.y != y);
+				boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
+						translate = (rect.x != x) || (rect.y != y);
 
 				if (isVisible() && (resize || translate))
 					erase();
@@ -101,8 +95,7 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 	 * @see org.eclipse.gef.examples.flow.parts.ActivityPart#deactivate()
 	 */
 	public void deactivate() {
-		getViewer().getEditDomain().getCommandStack()
-				.removeCommandStackEventListener(stackListener);
+		getViewer().getEditDomain().getCommandStack().removeCommandStackEventListener(stackListener);
 		super.deactivate();
 	}
 

@@ -42,12 +42,8 @@ public class ScalableLayeredPane extends LayeredPane implements ScalableFigure {
 	 * @see Figure#getPreferredSize(int, int)
 	 */
 	public Dimension getMinimumSize(int wHint, int hHint) {
-		Dimension d = super
-				.getMinimumSize(
-						wHint != SWT.DEFAULT ? (int) (wHint / getScale())
-								: SWT.DEFAULT,
-						hHint != SWT.DEFAULT ? (int) (hHint / getScale())
-								: SWT.DEFAULT);
+		Dimension d = super.getMinimumSize(wHint != SWT.DEFAULT ? (int) (wHint / getScale()) : SWT.DEFAULT,
+				hHint != SWT.DEFAULT ? (int) (hHint / getScale()) : SWT.DEFAULT);
 		int w = getInsets().getWidth();
 		int h = getInsets().getHeight();
 		return d.getExpanded(-w, -h).scale(scale).expand(w, h);
@@ -57,12 +53,8 @@ public class ScalableLayeredPane extends LayeredPane implements ScalableFigure {
 	 * @see Figure#getPreferredSize(int, int)
 	 */
 	public Dimension getPreferredSize(int wHint, int hHint) {
-		Dimension d = super
-				.getPreferredSize(
-						wHint != SWT.DEFAULT ? (int) (wHint / getScale())
-								: SWT.DEFAULT,
-						hHint != SWT.DEFAULT ? (int) (hHint / getScale())
-								: SWT.DEFAULT);
+		Dimension d = super.getPreferredSize(wHint != SWT.DEFAULT ? (int) (wHint / getScale()) : SWT.DEFAULT,
+				hHint != SWT.DEFAULT ? (int) (hHint / getScale()) : SWT.DEFAULT);
 		int w = getInsets().getWidth();
 		int h = getInsets().getHeight();
 		return d.getExpanded(-w, -h).scale(scale).expand(w, h);
@@ -94,8 +86,7 @@ public class ScalableLayeredPane extends LayeredPane implements ScalableFigure {
 			super.paintClientArea(graphics);
 		} else {
 			ScaledGraphics g = new ScaledGraphics(graphics);
-			boolean optimizeClip = getBorder() == null
-					|| getBorder().isOpaque();
+			boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 			if (!optimizeClip)
 				g.clipRect(getBounds().getCropped(getInsets()));
 			g.scale(scale);
@@ -109,8 +100,7 @@ public class ScalableLayeredPane extends LayeredPane implements ScalableFigure {
 	/**
 	 * Sets the zoom level
 	 * 
-	 * @param newZoom
-	 *            The new zoom level
+	 * @param newZoom The new zoom level
 	 */
 	public void setScale(double newZoom) {
 		if (scale == newZoom)

@@ -23,16 +23,14 @@ import org.eclipse.gef.commands.CompoundCommand;
  * 
  * @deprecated this class will be deleted
  */
-public class TreeContentProvider implements
-		org.eclipse.jface.viewers.ITreeContentProvider, CommandStackListener {
+public class TreeContentProvider implements org.eclipse.jface.viewers.ITreeContentProvider, CommandStackListener {
 
 	Viewer viewer;
 
 	/**
 	 * Creates a new TreeContentProvider with the given CommandStack
 	 * 
-	 * @param stack
-	 *            The CommandStack
+	 * @param stack The CommandStack
 	 */
 	public TreeContentProvider(CommandStack stack) {
 		stack.addCommandStackListener(this);
@@ -89,8 +87,8 @@ public class TreeContentProvider implements
 	}
 
 	/**
-	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer,
-	 *      Object, Object)
+	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer, Object,
+	 *      Object)
 	 */
 	public void inputChanged(Viewer v, Object o, Object n) {
 		viewer = v;

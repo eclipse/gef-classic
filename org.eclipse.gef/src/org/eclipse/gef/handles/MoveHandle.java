@@ -36,21 +36,18 @@ public class MoveHandle extends AbstractHandle {
 	 * Creates a MoveHandle for the given <code>GraphicalEditPart</code> using a
 	 * default {@link Locator}.
 	 * 
-	 * @param owner
-	 *            The GraphicalEditPart to be moved by this handle.
+	 * @param owner The GraphicalEditPart to be moved by this handle.
 	 */
 	public MoveHandle(GraphicalEditPart owner) {
 		this(owner, new MoveHandleLocator(owner.getFigure()));
 	}
 
 	/**
-	 * Creates a MoveHandle for the given <code>GraphicalEditPart</code> using
-	 * the given <code>Locator</code>.
+	 * Creates a MoveHandle for the given <code>GraphicalEditPart</code> using the
+	 * given <code>Locator</code>.
 	 * 
-	 * @param owner
-	 *            The GraphicalEditPart to be moved by this handle.
-	 * @param loc
-	 *            The Locator used to place the handle.
+	 * @param owner The GraphicalEditPart to be moved by this handle.
+	 * @param loc   The Locator used to place the handle.
 	 */
 	public MoveHandle(GraphicalEditPart owner, Locator loc) {
 		super(owner, loc);
@@ -69,21 +66,16 @@ public class MoveHandle extends AbstractHandle {
 	}
 
 	/**
-	 * Returns <code>true</code> if the point (x,y) is contained within this
-	 * handle.
+	 * Returns <code>true</code> if the point (x,y) is contained within this handle.
 	 * 
-	 * @param x
-	 *            The x coordinate.
-	 * @param y
-	 *            The y coordinate.
-	 * @return <code>true</code> if the point (x,y) is contained within this
-	 *         handle.
+	 * @param x The x coordinate.
+	 * @param y The y coordinate.
+	 * @return <code>true</code> if the point (x,y) is contained within this handle.
 	 */
 	public boolean containsPoint(int x, int y) {
 		if (!super.containsPoint(x, y))
 			return false;
-		return !Rectangle.SINGLETON.setBounds(getBounds())
-				.shrink(INNER_PAD, INNER_PAD).contains(x, y);
+		return !Rectangle.SINGLETON.setBounds(getBounds()).shrink(INNER_PAD, INNER_PAD).contains(x, y);
 	}
 
 	/**
@@ -92,8 +84,7 @@ public class MoveHandle extends AbstractHandle {
 	 * @see org.eclipse.gef.Handle#getAccessibleLocation()
 	 */
 	public Point getAccessibleLocation() {
-		Point p = getBounds().getTopRight().translate(-1,
-				getBounds().height / 4);
+		Point p = getBounds().getTopRight().translate(-1, getBounds().height / 4);
 		translateToAbsolute(p);
 		return p;
 	}

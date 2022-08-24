@@ -63,15 +63,13 @@ public class PathFigure extends Polyline {
 
 		TextLayout textLayout = new TextLayout(Display.getDefault());
 		textLayout.setFont(g.getFont());
-		textLayout.setText("zoom"
-				+ (g instanceof ScaledGraphics ? "[e]" : "[n]"));
+		textLayout.setText("zoom" + (g instanceof ScaledGraphics ? "[e]" : "[n]"));
 		TextStyle textStyle = new TextStyle();
 		textStyle.underline = true;
 		textStyle.underlineColor = ColorConstants.blue;
 		textLayout.setStyle(textStyle, 1, 2);
 		Point p = getRotatedPoint(getBounds().x, getBounds().y - 20, cos, sin);
-		g.drawTextLayout(textLayout, p.x, p.y, 0, 1, ColorConstants.white,
-				ColorConstants.yellow);
+		g.drawTextLayout(textLayout, p.x, p.y, 0, 1, ColorConstants.white, ColorConstants.yellow);
 
 		g.popState();
 		path.dispose();
@@ -111,12 +109,10 @@ public class PathFigure extends Polyline {
 		double angle = degreesToRadians(degrees);
 		double cos = (double) Math.cos(angle), sin = (double) Math.sin(angle);
 
-		PrecisionPoint p1 = getRotatedPoint(points.getFirstPoint().x(), points
-				.getFirstPoint().y(), cos, sin);
+		PrecisionPoint p1 = getRotatedPoint(points.getFirstPoint().x(), points.getFirstPoint().y(), cos, sin);
 		path.moveTo((float) p1.preciseX(), (float) p1.preciseY());
 		for (int i = 1; i < points.size(); i++) {
-			PrecisionPoint p = getRotatedPoint(points.getPoint(i).x(), points
-					.getPoint(i).y(), cos, sin);
+			PrecisionPoint p = getRotatedPoint(points.getPoint(i).x(), points.getPoint(i).y(), cos, sin);
 			path.lineTo((float) p.preciseX(), (float) p.preciseY());
 		}
 		if (isClosed())
@@ -126,8 +122,7 @@ public class PathFigure extends Polyline {
 
 	}
 
-	public PrecisionPoint getRotatedPoint(float x, float y, double cos,
-			double sin) {
+	public PrecisionPoint getRotatedPoint(float x, float y, double cos, double sin) {
 
 		PrecisionPoint p = new PrecisionPoint(x, y);
 		if (degrees == 0)
@@ -150,14 +145,11 @@ public class PathFigure extends Polyline {
 			if (getPoints().size() > 0) {
 				PointList points = getPoints();
 				double angle = degreesToRadians(degrees);
-				double cos = (double) Math.cos(angle), sin = (double) Math
-						.sin(angle);
-				PrecisionPoint p1 = getRotatedPoint(points.getFirstPoint().x(),
-						points.getFirstPoint().y(), cos, sin);
+				double cos = (double) Math.cos(angle), sin = (double) Math.sin(angle);
+				PrecisionPoint p1 = getRotatedPoint(points.getFirstPoint().x(), points.getFirstPoint().y(), cos, sin);
 				bounds.setLocation(p1);
 				for (int i = 1; i < points.size(); i++) {
-					PrecisionPoint p = getRotatedPoint(points.getPoint(i).x(),
-							points.getPoint(i).y(), cos, sin);
+					PrecisionPoint p = getRotatedPoint(points.getPoint(i).x(), points.getPoint(i).y(), cos, sin);
 					bounds.union(p);
 				}
 			}

@@ -17,13 +17,11 @@ import org.eclipse.gef.examples.logicdesigner.model.SimpleOutput;
 public class OutputFigure extends NodeFigure {
 
 	public OutputFigure() {
-		FixedConnectionAnchor outputConnectionAnchor = new FixedConnectionAnchor(
-				this);
+		FixedConnectionAnchor outputConnectionAnchor = new FixedConnectionAnchor(this);
 		outputConnectionAnchor.topDown = false;
 		outputConnectionAnchor.offsetH = 7;
 		outputConnectionAnchors.addElement(outputConnectionAnchor);
-		connectionAnchors
-				.put(SimpleOutput.TERMINAL_OUT, outputConnectionAnchor);
+		connectionAnchors.put(SimpleOutput.TERMINAL_OUT, outputConnectionAnchor);
 		setLayoutManager(new StackLayout());
 	}
 

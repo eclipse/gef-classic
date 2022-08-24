@@ -31,8 +31,7 @@ public class Digraph1WorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	/**
 	 * Constructor for Digraph1WorkbenchWindowAdvisor.
 	 * 
-	 * @param configurer
-	 *            the workbench window configurer.
+	 * @param configurer the workbench window configurer.
 	 */
 	public Digraph1WorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
@@ -45,13 +44,11 @@ public class Digraph1WorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 	public void postWindowCreate() {
 		try {
 			/**
-			 * Open a digraph editor on a file. The file does not exist, but
-			 * since our editor does not read or write any data we are ok.
+			 * Open a digraph editor on a file. The file does not exist, but since our
+			 * editor does not read or write any data we are ok.
 			 */
-			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(
-					new Path("/project/file.digraph1")); //$NON-NLS-1$
-			getWindowConfigurer().getWindow().getActivePage().openEditor(
-					new FileInPlaceEditorInput(file),
+			IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path("/project/file.digraph1")); //$NON-NLS-1$
+			getWindowConfigurer().getWindow().getActivePage().openEditor(new FileInPlaceEditorInput(file),
 					"org.eclipse.gef.examples.digraph1"); //$NON-NLS-1$
 		} catch (PartInitException e) {
 			e.printStackTrace();

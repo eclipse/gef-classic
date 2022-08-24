@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Control;
 /**
  * 
  * A Listener to indicate when a view has become visible.
+ * 
  * @author Ian Bull
  *
  */

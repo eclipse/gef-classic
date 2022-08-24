@@ -48,8 +48,7 @@ public class GraphSnippet12 {
 		person.setLayoutManager(new FreeformLayout());
 		IFigure head = null;
 		if (headImage != null) {
-			headImage = new Image(headImage.getDevice(), headImage
-					.getImageData().scaledTo(40, 50));
+			headImage = new Image(headImage.getDevice(), headImage.getImageData().scaledTo(40, 50));
 			head = new ImageFigure(headImage);
 		} else
 			head = new Ellipse();
@@ -120,10 +119,8 @@ public class GraphSnippet12 {
 					Object o = iter.next();
 					if (o instanceof CGraphNode) {
 						if (!g.getSelection().contains(o)) {
-							((CGraphNode) o).getFigure().setBackgroundColor(
-									ColorConstants.black);
-							((CGraphNode) o).getFigure().setForegroundColor(
-									ColorConstants.black);
+							((CGraphNode) o).getFigure().setBackgroundColor(ColorConstants.black);
+							((CGraphNode) o).getFigure().setForegroundColor(ColorConstants.black);
 						}
 					}
 				}
@@ -150,8 +147,7 @@ public class GraphSnippet12 {
 		new GraphConnection(g, SWT.NONE, n2, n5);
 		new GraphConnection(g, SWT.NONE, n3, n5);
 		new GraphConnection(g, SWT.NONE, n4, n5);
-		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(
-				LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 		shell.open();
 		while (!shell.isDisposed()) {

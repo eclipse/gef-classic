@@ -30,8 +30,7 @@ public class SimpleTextLayout extends TextLayout {
 	/**
 	 * Creates a new SimpleTextLayout with the given TextFlow
 	 * 
-	 * @param flow
-	 *            the TextFlow
+	 * @param flow the TextFlow
 	 */
 	public SimpleTextLayout(TextFlow flow) {
 		super(flow);
@@ -56,8 +55,7 @@ public class SimpleTextLayout extends TextLayout {
 			fragment.length = result - offset;
 			fragment.offset = offset;
 			fragment.setWidth(-1);
-			flowUtilities.setupFragment(fragment, font,
-					text.substring(offset, result));
+			flowUtilities.setupFragment(fragment, font, text.substring(offset, result));
 			getContext().addToCurrentLine(fragment);
 			getContext().endLine();
 			offset = result + delimeterLength;

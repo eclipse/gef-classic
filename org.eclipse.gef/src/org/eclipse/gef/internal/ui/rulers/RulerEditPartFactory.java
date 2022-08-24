@@ -29,8 +29,7 @@ public class RulerEditPartFactory implements EditPartFactory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.EditPartFactory#createEditPart(org.eclipse.gef.EditPart,
+	 * @see org.eclipse.gef.EditPartFactory#createEditPart(org.eclipse.gef.EditPart,
 	 * java.lang.Object)
 	 */
 	public EditPart createEditPart(EditPart parentEditPart, Object model) {
@@ -55,8 +54,7 @@ public class RulerEditPartFactory implements EditPartFactory {
 
 	protected Object getHorizontalRuler() {
 		Object ruler = null;
-		RulerProvider provider = (RulerProvider) diagramViewer
-				.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER);
+		RulerProvider provider = (RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER);
 		if (provider != null) {
 			ruler = provider.getRuler();
 		}
@@ -65,8 +63,7 @@ public class RulerEditPartFactory implements EditPartFactory {
 
 	protected Object getVerticalRuler() {
 		Object ruler = null;
-		RulerProvider provider = (RulerProvider) diagramViewer
-				.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER);
+		RulerProvider provider = (RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER);
 		if (provider != null) {
 			ruler = provider.getRuler();
 		}
@@ -76,8 +73,7 @@ public class RulerEditPartFactory implements EditPartFactory {
 	protected boolean isRuler(Object model) {
 		boolean result = false;
 		if (model != null) {
-			result = model == getHorizontalRuler()
-					|| model == getVerticalRuler();
+			result = model == getHorizontalRuler() || model == getVerticalRuler();
 		}
 		return result;
 	}

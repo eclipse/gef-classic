@@ -31,9 +31,8 @@ public class PaletteViewerProvider {
 	/**
 	 * Constructor
 	 * 
-	 * @param graphicalViewerDomain
-	 *            The EditDomain with which each newly created PaletteViewer
-	 *            will be registered
+	 * @param graphicalViewerDomain The EditDomain with which each newly created
+	 *                              PaletteViewer will be registered
 	 */
 	public PaletteViewerProvider(EditDomain graphicalViewerDomain) {
 		Assert.isNotNull(graphicalViewerDomain);
@@ -44,8 +43,7 @@ public class PaletteViewerProvider {
 	 * This method is invoked from {@link #createPaletteViewer(Composite)}. It
 	 * configures the given viewer's settings.
 	 * 
-	 * @param viewer
-	 *            the viewer that is to be configured
+	 * @param viewer the viewer that is to be configured
 	 */
 	protected void configurePaletteViewer(PaletteViewer viewer) {
 		viewer.setContextMenu(new PaletteContextMenuProvider(viewer));
@@ -54,8 +52,7 @@ public class PaletteViewerProvider {
 	/**
 	 * Creates a PaletteViewer on the given Composite
 	 * 
-	 * @param parent
-	 *            the control for the PaletteViewer
+	 * @param parent the control for the PaletteViewer
 	 * @return the newly created PaletteViewer
 	 */
 	public PaletteViewer createPaletteViewer(Composite parent) {
@@ -67,20 +64,18 @@ public class PaletteViewerProvider {
 	}
 
 	/**
-	 * @return the EditDomain provided during creation of this
-	 *         PaletteViewerProvider
+	 * @return the EditDomain provided during creation of this PaletteViewerProvider
 	 */
 	public final EditDomain getEditDomain() {
 		return graphicalViewerEditDomain;
 	}
 
 	/**
-	 * This method is invoked from {@link #createPaletteViewer(Composite)}. It
-	 * is a step in the process of setting up the PaletteViewer after it has
-	 * been created.
+	 * This method is invoked from {@link #createPaletteViewer(Composite)}. It is a
+	 * step in the process of setting up the PaletteViewer after it has been
+	 * created.
 	 * 
-	 * @param viewer
-	 *            the viewer that is to be configured
+	 * @param viewer the viewer that is to be configured
 	 */
 	protected void hookPaletteViewer(PaletteViewer viewer) {
 		getEditDomain().setPaletteViewer(viewer);

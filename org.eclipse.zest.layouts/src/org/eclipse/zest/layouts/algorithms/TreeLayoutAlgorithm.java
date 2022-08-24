@@ -26,13 +26,13 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
 
 /**
- * The TreeLayoutAlgorithm class implements a simple algorithm to
- * arrange graph nodes in a layered vertical tree-like layout. 
+ * The TreeLayoutAlgorithm class implements a simple algorithm to arrange graph
+ * nodes in a layered vertical tree-like layout.
  * 
  * This is by no means an efficiently coded algorithm.
  *
- * @version  2.0
- * @author   Casey Best and Rob Lintern (version 1.0 by Jingwei Wu)
+ * @version 2.0
+ * @author Casey Best and Rob Lintern (version 1.0 by Jingwei Wu)
  */
 public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
@@ -59,7 +59,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	private boolean[] markedArr;
 
 	/////////////////////////////////////////////////////////////////////////
-	/////                        Constructors                           /////
+	///// Constructors /////
 	/////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -78,7 +78,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/////////////////////////////////////////////////////////////////////////
-	/////                        Public Methods                         /////
+	///// Public Methods /////
 	/////////////////////////////////////////////////////////////////////////
 
 	public void setLayoutArea(double x, double y, double width, double height) {
@@ -95,21 +95,30 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/**
-	 * Executes this TreeLayoutAlgorithm layout algorithm by referencing the
-	 * data stored in the repository system. Once done, the result
-	 * will be saved to the data repository.
+	 * Executes this TreeLayoutAlgorithm layout algorithm by referencing the data
+	 * stored in the repository system. Once done, the result will be saved to the
+	 * data repository.
 	 * 
-	 * @param entitiesToLayout Apply the algorithm to these entities
-	 * @param relationshipsToConsider Only consider these relationships when applying the algorithm.
-	 * @param boundsX The left side of the bounds in which the layout can place the entities.
-	 * @param boundsY The top side of the bounds in which the layout can place the entities.
-	 * @param boundsWidth The width of the bounds in which the layout can place the entities.
-	 * @param boundsHeight The height of the bounds in which the layout can place the entities.
-	 * @throws RuntimeException Thrown if entitiesToLayout doesn't contain all of the endpoints for each relationship in relationshipsToConsider
+	 * @param entitiesToLayout        Apply the algorithm to these entities
+	 * @param relationshipsToConsider Only consider these relationships when
+	 *                                applying the algorithm.
+	 * @param boundsX                 The left side of the bounds in which the
+	 *                                layout can place the entities.
+	 * @param boundsY                 The top side of the bounds in which the layout
+	 *                                can place the entities.
+	 * @param boundsWidth             The width of the bounds in which the layout
+	 *                                can place the entities.
+	 * @param boundsHeight            The height of the bounds in which the layout
+	 *                                can place the entities.
+	 * @throws RuntimeException Thrown if entitiesToLayout doesn't contain all of
+	 *                          the endpoints for each relationship in
+	 *                          relationshipsToConsider
 	 */
-	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double x, double y, double width, double height) {
 		// Filter unwanted entities and relationships
-		//super.applyLayout (entitiesToLayout, relationshipsToConsider, boundsX, boundsY, boundsWidth, boundsHeight);
+		// super.applyLayout (entitiesToLayout, relationshipsToConsider, boundsX,
+		// boundsY, boundsWidth, boundsHeight);
 
 		parentLists = new List[entitiesToLayout.length];
 		childrenLists = new List[entitiesToLayout.length];
@@ -130,13 +139,14 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	}
 
-	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
+	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 
 		if (entitiesToLayout.length > 0) {
 			int totalProgress = 4;
 			fireProgressEvent(1, totalProgress);
 
-			//List roots = new ArrayList();
+			// List roots = new ArrayList();
 			treeRoots = new ArrayList();
 			buildForest(treeRoots, entitiesToLayout, relationshipsToConsider);
 			fireProgressEvent(2, totalProgress);
@@ -147,7 +157,8 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		}
 	}
 
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationshipsToConsider) {
 		updateLayoutLocations(entitiesToLayout);
 		fireProgressEvent(4, 4);
 	}
@@ -162,12 +173,14 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	/**
 	 * Finds all the relationships in which the node <code>obj<code>
 	 * plays the specified <code>role</code>.
+	 * 
 	 * @param entity The node that concerns the relations to be found.
-	 * @param role The role played by the <code>obj</code>. Its type
-	 * must be of <code>ACTOR_ROLE</code> or <code>ACTEE_ROLE</code>.
+	 * @param role   The role played by the <code>obj</code>. Its type must be of
+	 *               <code>ACTOR_ROLE</code> or <code>ACTEE_ROLE</code>.
 	 * @see SimpleRelationship
 	 */
-	private Collection findRelationships(Object entity, boolean objectAsSource, InternalRelationship[] relationshipsToConsider) {
+	private Collection findRelationships(Object entity, boolean objectAsSource,
+			InternalRelationship[] relationshipsToConsider) {
 		Collection foundRels = new ArrayList();
 		for (int i = 0; i < relationshipsToConsider.length; i++) {
 			InternalRelationship rel = relationshipsToConsider[i];
@@ -181,17 +194,19 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/**
-	 * Finds the relation that has the lowest index in the relation
-	 * repository in which the node <code>obj<code> plays the specified
+	 * Finds the relation that has the lowest index in the relation repository in
+	 * which the node <code>obj<code> plays the specified
 	 * <code>role</code>.
-	 * @param obj The node that concerns the relations to be found.
-	 * @param role The role played by the <code>obj</code>. Its type must
-	 * be of <code>ACTOR_ROLE</code> or <code>ACTEE_ROLE</code>.
+	 * 
+	 * @param obj  The node that concerns the relations to be found.
+	 * @param role The role played by the <code>obj</code>. Its type must be of
+	 *             <code>ACTOR_ROLE</code> or <code>ACTEE_ROLE</code>.
 	 * @see SimpleRelationship
 	 * @see SimpleRelationship#ACTOR_ROLE
 	 * @see SimpleRelationship#ACTEE_ROLE
 	 */
-	private InternalRelationship findRelationship(Object entity, boolean objectAsSource, InternalRelationship[] relationshipsToConsider) {
+	private InternalRelationship findRelationship(Object entity, boolean objectAsSource,
+			InternalRelationship[] relationshipsToConsider) {
 		InternalRelationship relationship = null;
 		for (int i = 0; i < relationshipsToConsider.length && relationship == null; i++) {
 			InternalRelationship possibleRel = relationshipsToConsider[i];
@@ -205,12 +220,12 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/////////////////////////////////////////////////////////////////////////
-	/////                        Private Methods                        /////
+	///// Private Methods /////
 	/////////////////////////////////////////////////////////////////////////
 
 	/**
-	 * Builds the tree forest that is used to calculate positions
-	 * for each node in this TreeLayoutAlgorithm.
+	 * Builds the tree forest that is used to calculate positions for each node in
+	 * this TreeLayoutAlgorithm.
 	 */
 	private void buildForest(List roots, InternalNode[] entities, InternalRelationship[] relationships) {
 		List unplacedEntities = new ArrayList(Arrays.asList(entities));
@@ -218,15 +233,17 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/**
-	 * Builds the forest recursively. All entities
-	 * will be placed somewhere in the forest. 
+	 * Builds the forest recursively. All entities will be placed somewhere in the
+	 * forest.
 	 */
-	private void buildForestRecursively(List roots, List unplacedEntities, InternalNode[] entities, InternalRelationship[] relationships) {
+	private void buildForestRecursively(List roots, List unplacedEntities, InternalNode[] entities,
+			InternalRelationship[] relationships) {
 		if (unplacedEntities.size() == 0) {
 			return; // no more entities to place
 		}
 
-		// get the first entity in the list of unplaced entities, find its root, and build this root's tree
+		// get the first entity in the list of unplaced entities, find its root, and
+		// build this root's tree
 		InternalNode layoutEntity = (InternalNode) unplacedEntities.get(0);
 		InternalNode rootEntity = findRootObjectRecursive(layoutEntity, new HashSet(), relationships);
 		int rootEntityIndex = indexOfInternalNode(entities, rootEntity);
@@ -247,10 +264,11 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/**
-	 * Finds the root node that can be treated as the root of a tree.
-	 * The found root node should be one of the unmarked nodes.
+	 * Finds the root node that can be treated as the root of a tree. The found root
+	 * node should be one of the unmarked nodes.
 	 */
-	private InternalNode findRootObjectRecursive(InternalNode currentEntity, Set seenAlready, InternalRelationship[] relationshipsToConsider) {
+	private InternalNode findRootObjectRecursive(InternalNode currentEntity, Set seenAlready,
+			InternalRelationship[] relationshipsToConsider) {
 		InternalNode rootEntity = null;
 		InternalRelationship rel = findRelationship(currentEntity, AS_DESTINATION, relationshipsToConsider);
 		if (rel == null) {
@@ -268,20 +286,21 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/**
-	 * Builds a tree of the passed in entity.
-	 * The entity will pass a weight value to all of its children recursively.
+	 * Builds a tree of the passed in entity. The entity will pass a weight value to
+	 * all of its children recursively.
 	 */
-	private void buildTreeRecursively(InternalNode layoutEntity, int i, double weight, InternalNode[] entities, final InternalRelationship[] relationships) {
+	private void buildTreeRecursively(InternalNode layoutEntity, int i, double weight, InternalNode[] entities,
+			final InternalRelationship[] relationships) {
 		// No need to do further computation!
 		if (layoutEntity == null) {
 			return;
 		}
 
 		// A marked entity means that it has been added to the
-		// forest, and its weight value needs to be modified.		
+		// forest, and its weight value needs to be modified.
 		if (markedArr[i]) {
 			modifyWeightRecursively(layoutEntity, i, weight, new HashSet(), entities, relationships);
-			return; //No need to do further computation.
+			return; // No need to do further computation.
 		}
 
 		// Mark this entity, set its weight value and create a new tree node.
@@ -300,7 +319,8 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		if (comparator != null) {
 			Collections.sort(children, comparator);
 		} else {
-			// sort the children by level, then by number of descendents, then by number of children
+			// sort the children by level, then by number of descendents, then by number of
+			// children
 			// TODO: SLOW
 			Collections.sort(children, new Comparator() {
 				public int compare(Object o1, Object o2) {
@@ -325,7 +345,8 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 					} else {
 						return level2 - level1;
 					}
-					//return getNumChildren(node2, relationships) - getNumChildren(node1, relationships);
+					// return getNumChildren(node2, relationships) - getNumChildren(node1,
+					// relationships);
 				}
 			});
 		}
@@ -353,11 +374,13 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		return findRelationships(layoutEntity, AS_SOURCE, relationships).size();
 	}
 
-	private void getNumDescendentsAndLevel(InternalNode layoutEntity, InternalRelationship[] relationships, int[] numDescendentsAndLevel) {
+	private void getNumDescendentsAndLevel(InternalNode layoutEntity, InternalRelationship[] relationships,
+			int[] numDescendentsAndLevel) {
 		getNumDescendentsAndLevelRecursive(layoutEntity, relationships, new HashSet(), numDescendentsAndLevel, 0);
 	}
 
-	private void getNumDescendentsAndLevelRecursive(InternalNode layoutEntity, InternalRelationship[] relationships, Set seenAlready, int[] numDescendentsAndLevel, int currentLevel) {
+	private void getNumDescendentsAndLevelRecursive(InternalNode layoutEntity, InternalRelationship[] relationships,
+			Set seenAlready, int[] numDescendentsAndLevel, int currentLevel) {
 		if (seenAlready.contains(layoutEntity)) {
 			return;
 		}
@@ -368,7 +391,8 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			InternalRelationship layoutRel = (InternalRelationship) iter.next();
 			InternalNode childEntity = layoutRel.getDestination();
 			numDescendentsAndLevel[NUM_DESCENDENTS_INDEX]++;
-			getNumDescendentsAndLevelRecursive(childEntity, relationships, seenAlready, numDescendentsAndLevel, currentLevel + 1);
+			getNumDescendentsAndLevelRecursive(childEntity, relationships, seenAlready, numDescendentsAndLevel,
+					currentLevel + 1);
 
 		}
 	}
@@ -376,14 +400,15 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	/**
 	 * Modifies the weight value of the marked node recursively.
 	 */
-	private void modifyWeightRecursively(InternalNode layoutEntity, int i, double weight, Set descendentsSeenSoFar, InternalNode[] entities, InternalRelationship[] relationships) {
+	private void modifyWeightRecursively(InternalNode layoutEntity, int i, double weight, Set descendentsSeenSoFar,
+			InternalNode[] entities, InternalRelationship[] relationships) {
 		// No need to do further computation!
 		if (layoutEntity == null) {
 			return;
 		}
 
 		if (descendentsSeenSoFar.contains(layoutEntity)) {
-			return; //No need to do further computation.
+			return; // No need to do further computation.
 		}
 
 		descendentsSeenSoFar.add(layoutEntity);
@@ -399,14 +424,16 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			InternalRelationship tmpRel = (InternalRelationship) iter.next();
 			InternalNode tmpEntity = tmpRel.getDestination();
 			int tmpEntityIndex = indexOfInternalNode(entities, tmpEntity);
-			modifyWeightRecursively(tmpEntity, tmpEntityIndex, weight + 1, descendentsSeenSoFar, entities, relationships);
+			modifyWeightRecursively(tmpEntity, tmpEntityIndex, weight + 1, descendentsSeenSoFar, entities,
+					relationships);
 		}
 	}
 
 	/**
 	 * Gets the maxium weight of a tree in the forest of this TreeLayoutAlgorithm.
 	 */
-	private double getMaxiumWeightRecursive(InternalNode layoutEntity, int i, Set seenAlready, InternalNode[] entities) {
+	private double getMaxiumWeightRecursive(InternalNode layoutEntity, int i, Set seenAlready,
+			InternalNode[] entities) {
 		double result = 0;
 		if (seenAlready.contains(layoutEntity)) {
 			return result;
@@ -416,19 +443,20 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		if (children.isEmpty()) {
 			result = weights[i];
 		} else {
-			//TODO: SLOW
+			// TODO: SLOW
 			for (Iterator iter = children.iterator(); iter.hasNext();) {
 				InternalNode childEntity = (InternalNode) iter.next();
 				int childEntityIndex = indexOfInternalNode(entities, childEntity);
-				result = Math.max(result, getMaxiumWeightRecursive(childEntity, childEntityIndex, seenAlready, entities));
+				result = Math.max(result,
+						getMaxiumWeightRecursive(childEntity, childEntityIndex, seenAlready, entities));
 			}
 		}
 		return result;
 	}
 
 	/**
-	 * Computes positions for each node in this TreeLayoutAlgorithm by
-	 * referencing the forest that holds those nodes.
+	 * Computes positions for each node in this TreeLayoutAlgorithm by referencing
+	 * the forest that holds those nodes.
 	 */
 	private void computePositions(List roots, InternalNode[] entities) {
 		// No need to do further computation!
@@ -442,7 +470,8 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			InternalNode rootEntity = (InternalNode) roots.get(i);
 			int rootEntityIndex = indexOfInternalNode(entities, rootEntity);
 			totalLeafCount = totalLeafCount + getNumberOfLeaves(rootEntity, rootEntityIndex, entities);
-			maxWeight = Math.max(maxWeight, getMaxiumWeightRecursive(rootEntity, rootEntityIndex, new HashSet(), entities) + 1.0);
+			maxWeight = Math.max(maxWeight,
+					getMaxiumWeightRecursive(rootEntity, rootEntityIndex, new HashSet(), entities) + 1.0);
 		}
 
 		double width = 1.0 / totalLeafCount;
@@ -450,11 +479,12 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 		int leafCountSoFar = 0;
 
-		//TODO: SLOW!
+		// TODO: SLOW!
 		for (int i = 0; i < roots.size(); i++) {
 			InternalNode rootEntity = (InternalNode) roots.get(i);
 			int rootEntityIndex = indexOfInternalNode(entities, rootEntity);
-			computePositionRecursively(rootEntity, rootEntityIndex, leafCountSoFar, width, height, new HashSet(), entities);
+			computePositionRecursively(rootEntity, rootEntityIndex, leafCountSoFar, width, height, new HashSet(),
+					entities);
 			leafCountSoFar = leafCountSoFar + getNumberOfLeaves(rootEntity, rootEntityIndex, entities);
 		}
 	}
@@ -462,7 +492,8 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	/**
 	 * Computes positions recursively until the leaf nodes are reached.
 	 */
-	private void computePositionRecursively(InternalNode layoutEntity, int i, int relativePosition, double width, double height, Set seenAlready, InternalNode[] entities) {
+	private void computePositionRecursively(InternalNode layoutEntity, int i, int relativePosition, double width,
+			double height, Set seenAlready, InternalNode[] entities) {
 		if (seenAlready.contains(layoutEntity)) {
 			return;
 		}
@@ -480,11 +511,12 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 		int relativeCount = 0;
 		List children = childrenLists[i];
-		//TODO: Slow
+		// TODO: Slow
 		for (Iterator iter = children.iterator(); iter.hasNext();) {
 			InternalNode childEntity = (InternalNode) iter.next();
 			int childEntityIndex = indexOfInternalNode(entities, childEntity);
-			computePositionRecursively(childEntity, childEntityIndex, relativePosition + relativeCount, width, height, seenAlready, entities);
+			computePositionRecursively(childEntity, childEntityIndex, relativePosition + relativeCount, width, height,
+					seenAlready, entities);
 			relativeCount = relativeCount + getNumberOfLeaves(childEntity, childEntityIndex, entities);
 		}
 	}
@@ -499,7 +531,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		if (children.size() == 0) {
 			numLeaves = 1;
 		} else {
-			//TODO: SLOW!
+			// TODO: SLOW!
 			for (Iterator iter = children.iterator(); iter.hasNext();) {
 				InternalNode childEntity = (InternalNode) iter.next();
 				if (!seen.contains(childEntity)) {
@@ -535,8 +567,8 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/**
-	 * Note: Use this as little as possible!
-	 * TODO limit the use of this method 
+	 * Note: Use this as little as possible! TODO limit the use of this method
+	 * 
 	 * @param nodes
 	 * @param nodeToFind
 	 * @return

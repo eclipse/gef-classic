@@ -42,10 +42,9 @@ public class FocusTraverseManager {
 	/**
 	 * Returns the IFigure that will receive focus upon a 'tab' traverse event.
 	 * 
-	 * @param root
-	 *            the {@link LightweightSystem LightweightSystem's} root figure
-	 * @param prevFocus
-	 *            the IFigure who currently owns focus
+	 * @param root      the {@link LightweightSystem LightweightSystem's} root
+	 *                  figure
+	 * @param prevFocus the IFigure who currently owns focus
 	 * @return the next focusable figure
 	 */
 	public IFigure getNextFocusableFigure(IFigure root, IFigure prevFocus) {
@@ -53,8 +52,8 @@ public class FocusTraverseManager {
 		IFigure nextFocus = prevFocus;
 
 		/*
-		 * If no Figure currently has focus, apply focus to root's first
-		 * focusable child.
+		 * If no Figure currently has focus, apply focus to root's first focusable
+		 * child.
 		 */
 		if (prevFocus == null) {
 			if (root.getChildren().size() != 0) {
@@ -70,13 +69,13 @@ public class FocusTraverseManager {
 			IFigure parent = nextFocus.getParent();
 
 			/*
-			 * Figure traversal is implemented using the pre-order left to right
-			 * tree traversal algorithm.
+			 * Figure traversal is implemented using the pre-order left to right tree
+			 * traversal algorithm.
 			 * 
-			 * If the focused sibling has children, traverse to its leftmost
-			 * child. If the focused sibling has no children, traverse to the
-			 * sibling to its right. If there is no sibling to the right, go up
-			 * the tree until a node with un-traversed siblings is found.
+			 * If the focused sibling has children, traverse to its leftmost child. If the
+			 * focused sibling has no children, traverse to the sibling to its right. If
+			 * there is no sibling to the right, go up the tree until a node with
+			 * un-traversed siblings is found.
 			 */
 			List siblings = parent.getChildren();
 
@@ -99,8 +98,7 @@ public class FocusTraverseManager {
 						int parentSiblingCount = gp.getChildren().size();
 						int parentIndex = gp.getChildren().indexOf(p);
 						if (parentIndex < parentSiblingCount - 1) {
-							nextFocus = ((IFigure) p.getParent().getChildren()
-									.get(parentIndex + 1));
+							nextFocus = ((IFigure) p.getParent().getChildren().get(parentIndex + 1));
 							siblingPos = parentIndex + 1;
 							untraversedSiblingFound = true;
 							if (isFocusEligible(nextFocus))
@@ -122,10 +120,9 @@ public class FocusTraverseManager {
 	 * Returns the IFigure that will receive focus upon a 'shift-tab' traverse
 	 * event.
 	 * 
-	 * @param root
-	 *            The {@link LightweightSystem LightweightSystem's} root figure
-	 * @param prevFocus
-	 *            The IFigure who currently owns focus
+	 * @param root      The {@link LightweightSystem LightweightSystem's} root
+	 *                  figure
+	 * @param prevFocus The IFigure who currently owns focus
 	 * @return the previous focusable figure
 	 */
 	public IFigure getPreviousFocusableFigure(IFigure root, IFigure prevFocus) {
@@ -147,16 +144,15 @@ public class FocusTraverseManager {
 			int siblingPos = siblings.indexOf(nextFocus);
 
 			/*
-			 * Figure traversal is implemented using the post-order right to
-			 * left tree traversal algorithm.
+			 * Figure traversal is implemented using the post-order right to left tree
+			 * traversal algorithm.
 			 * 
-			 * Find the rightmost child. If this child is focusable, return it
-			 * If not focusable, traverse to its sibling and repeat. If there is
-			 * no sibling, traverse its parent.
+			 * Find the rightmost child. If this child is focusable, return it If not
+			 * focusable, traverse to its sibling and repeat. If there is no sibling,
+			 * traverse its parent.
 			 */
 			if (siblingPos != 0) {
-				IFigure child = findDeepestRightmostChildOf((IFigure) siblings
-						.get(siblingPos - 1));
+				IFigure child = findDeepestRightmostChildOf((IFigure) siblings.get(siblingPos - 1));
 				if (isFocusEligible(child)) {
 					found = true;
 					nextFocus = child;
@@ -188,8 +184,7 @@ public class FocusTraverseManager {
 	/**
 	 * Sets the currently focused figure.
 	 * 
-	 * @param fig
-	 *            the figure to get focus
+	 * @param fig the figure to get focus
 	 */
 	public void setCurrentFocusOwner(IFigure fig) {
 		currentFocusOwner = fig;

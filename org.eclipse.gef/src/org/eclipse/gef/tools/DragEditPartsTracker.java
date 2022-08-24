@@ -50,8 +50,7 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
-	 * Key modifier for cloning. It's ALT on Mac, and CTRL on all other
-	 * platforms.
+	 * Key modifier for cloning. It's ALT on Mac, and CTRL on all other platforms.
 	 */
 	static final int MODIFIER_CLONE;
 
@@ -79,8 +78,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * Constructs a new DragEditPartsTracker with the given source edit part.
 	 * 
-	 * @param sourceEditPart
-	 *            the source edit part
+	 * @param sourceEditPart the source edit part
 	 */
 	public DragEditPartsTracker(EditPart sourceEditPart) {
 		super(sourceEditPart);
@@ -90,24 +88,22 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Returns true if the control key was the key in the key event and the tool
-	 * is in an acceptable state for this event.
+	 * Returns true if the control key was the key in the key event and the tool is
+	 * in an acceptable state for this event.
 	 * 
-	 * @param e
-	 *            the key event
+	 * @param e the key event
 	 * @return true if the key was control and can be accepted.
 	 */
 	private boolean acceptClone(KeyEvent e) {
 		int key = e.keyCode;
-		if (!(isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG
-				| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)))
+		if (!(isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)))
 			return false;
 		return (key == MODIFIER_CLONE);
 	}
 
 	private boolean acceptSHIFT(KeyEvent e) {
-		return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG
-				| STATE_ACCESSIBLE_DRAG_IN_PROGRESS) && e.keyCode == SWT.SHIFT;
+		return isInState(STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
+				&& e.keyCode == SWT.SHIFT;
 	}
 
 	/**
@@ -125,8 +121,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * Returns the bounds of the {@link #getSourceEditPart() source edit part's}
 	 * figure in absolute coordinates. In case the source figure implements
-	 * {@link HandleBounds} the {@link HandleBounds#getHandleBounds() handle
-	 * bounds} are returned in absolute coordinates, other wise the
+	 * {@link HandleBounds} the {@link HandleBounds#getHandleBounds() handle bounds}
+	 * are returned in absolute coordinates, other wise the
 	 * {@link IFigure#getBounds() figure bounds}.
 	 * 
 	 * @return The bounds of the source figure in absolute coordinates.
@@ -139,10 +135,10 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Returns the unioned bounds of the {@link #getOperationSet() operation set
-	 * edit parts'} figures in absolute coordinates. In case the figures
-	 * implement {@link HandleBounds} their
-	 * {@link HandleBounds#getHandleBounds() handle bounds} will be used,
-	 * otherwise their {@link IFigure#getBounds() figure bounds}.
+	 * edit parts'} figures in absolute coordinates. In case the figures implement
+	 * {@link HandleBounds} their {@link HandleBounds#getHandleBounds() handle
+	 * bounds} will be used, otherwise their {@link IFigure#getBounds() figure
+	 * bounds}.
 	 * 
 	 * @return The unioned bounds of the operation set figures in absolute
 	 *         coordinates.
@@ -153,11 +149,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Returns the {@link SnapToHelper} used by this
-	 * {@link DragEditPartsTracker}.
+	 * Returns the {@link SnapToHelper} used by this {@link DragEditPartsTracker}.
 	 * 
-	 * @return The {@link SnapToHelper} used by this
-	 *         {@link DragEditPartsTracker}.
+	 * @return The {@link SnapToHelper} used by this {@link DragEditPartsTracker}.
 	 * @since 3.11
 	 */
 	protected SnapToHelper getSnapToHelper() {
@@ -165,8 +159,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Erases feedback and calls {@link #performDrag()}. Sets the state to
-	 * terminal.
+	 * Erases feedback and calls {@link #performDrag()}. Sets the state to terminal.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#commitDrag()
 	 */
@@ -178,9 +171,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Captures the bounds of the source being dragged, and the unioned bounds
-	 * of all figures being dragged. These bounds are used for snapping by the
-	 * snap strategies in <code>updateTargetRequest()</code>.
+	 * Captures the bounds of the source being dragged, and the unioned bounds of
+	 * all figures being dragged. These bounds are used for snapping by the snap
+	 * strategies in <code>updateTargetRequest()</code>.
 	 */
 	private void captureSourceDimensions() {
 		List editparts = getOperationSet();
@@ -189,8 +182,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 			IFigure figure = child.getFigure();
 			PrecisionRectangle bounds = null;
 			if (figure instanceof HandleBounds)
-				bounds = new PrecisionRectangle(
-						((HandleBounds) figure).getHandleBounds());
+				bounds = new PrecisionRectangle(((HandleBounds) figure).getHandleBounds());
 			else
 				bounds = new PrecisionRectangle(figure.getBounds());
 			figure.translateToAbsolute(bounds);
@@ -203,11 +195,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 				sourceRectangle = bounds;
 		}
 		if (sourceRectangle == null) {
-			IFigure figure = ((GraphicalEditPart) getSourceEditPart())
-					.getFigure();
+			IFigure figure = ((GraphicalEditPart) getSourceEditPart()).getFigure();
 			if (figure instanceof HandleBounds)
-				sourceRectangle = new PrecisionRectangle(
-						((HandleBounds) figure).getHandleBounds());
+				sourceRectangle = new PrecisionRectangle(((HandleBounds) figure).getHandleBounds());
 			else
 				sourceRectangle = new PrecisionRectangle(figure.getBounds());
 			figure.translateToAbsolute(sourceRectangle);
@@ -224,10 +214,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	protected List createOperationSet() {
 		if (getCurrentViewer() != null) {
-			List list = ToolUtilities
-					.getSelectionWithoutDependants(getCurrentViewer());
-			ToolUtilities.filterEditPartsUnderstanding(list,
-					getTargetRequest());
+			List list = ToolUtilities.getSelectionWithoutDependants(getCurrentViewer());
+			ToolUtilities.filterEditPartsUnderstanding(list, getTargetRequest());
 			return list;
 		}
 
@@ -236,8 +224,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 
 	/**
 	 * Creates a {@link ChangeBoundsRequest}. By default, the type is
-	 * {@link RequestConstants#REQ_MOVE}. Later on when the edit parts are asked
-	 * to contribute to the overall command, the request type will be either
+	 * {@link RequestConstants#REQ_MOVE}. Later on when the edit parts are asked to
+	 * contribute to the overall command, the request type will be either
 	 * {@link RequestConstants#REQ_MOVE} or {@link RequestConstants#REQ_ORPHAN},
 	 * depending on the result of {@link #isMove()}.
 	 * 
@@ -251,8 +239,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Erases source feedback and sets the autoexpose helper to
-	 * <code>null</code>.
+	 * Erases source feedback and sets the autoexpose helper to <code>null</code>.
 	 * 
 	 * @see org.eclipse.gef.Tool#deactivate()
 	 */
@@ -267,8 +254,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Asks the edit parts in the {@link AbstractTool#getOperationSet()
-	 * operation set} to erase their source feedback.
+	 * Asks the edit parts in the {@link AbstractTool#getOperationSet() operation
+	 * set} to erase their source feedback.
 	 */
 	protected void eraseSourceFeedback() {
 		if (!getFlag(FLAG_SOURCE_FEEDBACK))
@@ -282,9 +269,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Asks each edit part in the {@link AbstractTool#getOperationSet()
-	 * operation set} to contribute to a {@link CompoundCommand} after first
-	 * setting the request type to either {@link RequestConstants#REQ_MOVE} or
+	 * Asks each edit part in the {@link AbstractTool#getOperationSet() operation
+	 * set} to contribute to a {@link CompoundCommand} after first setting the
+	 * request type to either {@link RequestConstants#REQ_MOVE} or
 	 * {@link RequestConstants#REQ_ORPHAN}, depending on the result of
 	 * {@link #isMove()}.
 	 * 
@@ -359,11 +346,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 				GraphicalEditPart editpart = (GraphicalEditPart) set.get(i);
 				exclusionSet.add(editpart.getFigure());
 			}
-			LayerManager layerManager = (LayerManager) getCurrentViewer()
-					.getEditPartRegistry().get(LayerManager.ID);
+			LayerManager layerManager = (LayerManager) getCurrentViewer().getEditPartRegistry().get(LayerManager.ID);
 			if (layerManager != null) {
-				exclusionSet.add(
-						layerManager.getLayer(LayerConstants.CONNECTION_LAYER));
+				exclusionSet.add(layerManager.getLayer(LayerConstants.CONNECTION_LAYER));
 			}
 		}
 		return exclusionSet;
@@ -396,8 +381,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Updates the target request and mouse target, asks to show feedback, and
-	 * sets the current command.
+	 * Updates the target request and mouse target, asks to show feedback, and sets
+	 * the current command.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
 	 */
@@ -445,17 +430,14 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		setAutoexposeHelper(null);
 		if (acceptArrowKey(e)) {
 			accStepIncrement();
-			if (stateTransition(STATE_INITIAL,
-					STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+			if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 				setStartLocation(getLocation());
 			switch (e.keyCode) {
 			case SWT.ARROW_DOWN:
-				placeMouseInViewer(
-						getLocation().getTranslated(0, accGetStep()));
+				placeMouseInViewer(getLocation().getTranslated(0, accGetStep()));
 				break;
 			case SWT.ARROW_UP:
-				placeMouseInViewer(
-						getLocation().getTranslated(0, -accGetStep()));
+				placeMouseInViewer(getLocation().getTranslated(0, -accGetStep()));
 				break;
 			case SWT.ARROW_RIGHT:
 				int stepping = accGetStep();
@@ -484,8 +466,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Interprets and processes clone deactivation, constrained move
-	 * deactivation, and accessibility navigation reset.
+	 * Interprets and processes clone deactivation, constrained move deactivation,
+	 * and accessibility navigation reset.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyUp(org.eclipse.swt.events.KeyEvent)
 	 */
@@ -514,17 +496,16 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Returns <code>true</code> if the source edit part is being moved within
-	 * its parent. If the source edit part is being moved to another parent,
-	 * this returns <code>false</code>.
+	 * Returns <code>true</code> if the source edit part is being moved within its
+	 * parent. If the source edit part is being moved to another parent, this
+	 * returns <code>false</code>.
 	 * 
 	 * @return <code>true</code> if the source edit part is not being reparented
 	 */
 	protected boolean isMove() {
 		EditPart part = getSourceEditPart();
 		while (part != getTargetEditPart() && part != null) {
-			if (part.getParent() == getTargetEditPart()
-					&& part.getSelected() != EditPart.SELECTED_NONE)
+			if (part.getParent() == getTargetEditPart() && part.getSelected() != EditPart.SELECTED_NONE)
 				return true;
 			part = part.getParent();
 		}
@@ -546,11 +527,9 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		if (sourceRelativeStartPoint == null)
 			return;
 		IFigure figure = ((GraphicalEditPart) getSourceEditPart()).getFigure();
-		PrecisionPoint newStart = (PrecisionPoint) sourceRelativeStartPoint
-				.getCopy();
+		PrecisionPoint newStart = (PrecisionPoint) sourceRelativeStartPoint.getCopy();
 		figure.translateToAbsolute(newStart);
-		Point delta = new Point(newStart.x - getStartLocation().x,
-				newStart.y - getStartLocation().y);
+		Point delta = new Point(newStart.x - getStartLocation().x, newStart.y - getStartLocation().y);
 		setStartLocation(newStart);
 		// sourceRectangle and compoundSrcRect need to be updated as well when
 		// auto-scrolling
@@ -565,10 +544,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 */
 	protected void setAutoexposeHelper(AutoexposeHelper helper) {
 		super.setAutoexposeHelper(helper);
-		if (helper != null && sourceRelativeStartPoint == null
-				&& isInDragInProgress()) {
-			IFigure figure = ((GraphicalEditPart) getSourceEditPart())
-					.getFigure();
+		if (helper != null && sourceRelativeStartPoint == null && isInDragInProgress()) {
+			IFigure figure = ((GraphicalEditPart) getSourceEditPart()).getFigure();
 			sourceRelativeStartPoint = new PrecisionPoint(getStartLocation());
 			figure.translateToRelative(sourceRelativeStartPoint);
 		}
@@ -577,8 +554,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * Enables cloning if the value is true.
 	 * 
-	 * @param cloneActive
-	 *            <code>true</code> if cloning should be active
+	 * @param cloneActive <code>true</code> if cloning should be active
 	 */
 	protected void setCloneActive(boolean cloneActive) {
 		if (this.cloneActive == cloneActive)
@@ -603,8 +579,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * Asks the edit parts in the {@link AbstractTool#getOperationSet()
-	 * operation set} to show source feedback.
+	 * Asks the edit parts in the {@link AbstractTool#getOperationSet() operation
+	 * set} to show source feedback.
 	 */
 	protected void showSourceFeedback() {
 		List editParts = getOperationSet();
@@ -625,24 +601,21 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		boolean check = isInState(STATE_INITIAL);
 		super.setState(state);
 
-		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_DRAG_IN_PROGRESS
-				| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
+		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_DRAG_IN_PROGRESS | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			if (getCurrentInput().isModKeyDown(MODIFIER_CLONE)) {
 				setCloneActive(true);
 				handleDragInProgress();
 			}
 		}
 
-		if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG
-				| STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+		if (check && isInState(STATE_DRAG | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 			captureSourceDimensions();
 	}
 
 	/**
-	 * Calls {@link #repairStartLocation()} in case auto scroll is being
-	 * performed. Updates the request with the current
-	 * {@link AbstractTool#getOperationSet() operation set}, move delta,
-	 * location and type.
+	 * Calls {@link #repairStartLocation()} in case auto scroll is being performed.
+	 * Updates the request with the current {@link AbstractTool#getOperationSet()
+	 * operation set}, move delta, location and type.
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
@@ -652,10 +625,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 		request.setEditParts(getOperationSet());
 		Dimension delta = getDragMoveDelta();
 
-		request.setConstrainedMove(
-				getCurrentInput().isModKeyDown(MODIFIER_CONSTRAINED_MOVE));
-		request.setSnapToEnabled(
-				!getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING));
+		request.setConstrainedMove(getCurrentInput().isModKeyDown(MODIFIER_CONSTRAINED_MOVE));
+		request.setSnapToEnabled(!getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING));
 
 		// constrains the move to dx=0, dy=0, or dx=dy if shift is depressed
 		if (request.isConstrainedMove()) {
@@ -695,12 +666,10 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	}
 
 	/**
-	 * This method can be overridden by clients to customize the snapping
-	 * behavior.
+	 * This method can be overridden by clients to customize the snapping behavior.
 	 * 
-	 * @param request
-	 *            the <code>ChangeBoundsRequest</code> from which the move delta
-	 *            can be extracted and updated
+	 * @param request the <code>ChangeBoundsRequest</code> from which the move delta
+	 *                can be extracted and updated
 	 * @since 3.4
 	 */
 	protected void snapPoint(ChangeBoundsRequest request) {
@@ -712,10 +681,8 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 			jointRect.translate(moveDelta);
 
 			PrecisionPoint preciseDelta = new PrecisionPoint(moveDelta);
-			snapToHelper.snapPoint(request,
-					PositionConstants.HORIZONTAL | PositionConstants.VERTICAL,
-					new PrecisionRectangle[] { baseRect, jointRect },
-					preciseDelta);
+			snapToHelper.snapPoint(request, PositionConstants.HORIZONTAL | PositionConstants.VERTICAL,
+					new PrecisionRectangle[] { baseRect, jointRect }, preciseDelta);
 			request.setMoveDelta(preciseDelta);
 		}
 	}

@@ -35,8 +35,7 @@ class GraphUtilities {
 	/**
 	 * Returns <code>true</code> if the given graph contains at least one cycle.
 	 * 
-	 * @param graph
-	 *            the graph to test
+	 * @param graph the graph to test
 	 * @return whether the graph is cyclic
 	 */
 	public static boolean isCyclic(DirectedGraph graph) {
@@ -48,8 +47,7 @@ class GraphUtilities {
 	 * remaining (acyclic) or there are no leaf nodes but the list is not empty
 	 * (cyclic), then returns the result.
 	 * 
-	 * @param nodes
-	 *            the list of nodes to test
+	 * @param nodes the list of nodes to test
 	 * @return whether the graph is cyclic
 	 */
 	public static boolean isCyclic(NodeList nodes) {
@@ -80,8 +78,7 @@ class GraphUtilities {
 	/**
 	 * Counts the number of edge crossings in a DirectedGraph
 	 * 
-	 * @param graph
-	 *            the graph whose crossed edges are counted
+	 * @param graph the graph whose crossed edges are counted
 	 * @return the number of edge crossings in the graph
 	 */
 	public static int numberOfCrossingsInGraph(DirectedGraph graph) {
@@ -96,8 +93,7 @@ class GraphUtilities {
 	/**
 	 * Counts the number of edge crossings in a Rank
 	 * 
-	 * @param rank
-	 *            the rank whose crossed edges are counted
+	 * @param rank the rank whose crossed edges are counted
 	 * @return the number of edge crossings in the rank
 	 */
 	public static int numberOfCrossingsInRank(Rank rank) {
@@ -112,8 +108,7 @@ class GraphUtilities {
 				for (int k = 0; k < currentOutgoing.size(); k++) {
 					Edge currentEdge = currentOutgoing.getEdge(k);
 					for (int l = 0; l < nextOutgoing.size(); l++) {
-						if (nextOutgoing.getEdge(l).getIndexForRank(
-								currentNode.rank + 1) < currentEdge
+						if (nextOutgoing.getEdge(l).getIndexForRank(currentNode.rank + 1) < currentEdge
 								.getIndexForRank(currentNode.rank + 1))
 							crossings++;
 					}
@@ -134,13 +129,11 @@ class GraphUtilities {
 	}
 
 	/**
-	 * Returns <code>true</code> if adding an edge between the 2 given nodes
-	 * will introduce a cycle in the containing graph.
+	 * Returns <code>true</code> if adding an edge between the 2 given nodes will
+	 * introduce a cycle in the containing graph.
 	 * 
-	 * @param source
-	 *            the potential source node
-	 * @param target
-	 *            the potential target node
+	 * @param source the potential source node
+	 * @param target the potential target node
 	 * @return whether an edge between the 2 given nodes will introduce a cycle
 	 */
 	public static boolean willCauseCycle(Node source, Node target) {
@@ -157,8 +150,7 @@ class GraphUtilities {
 		}
 		while (right.getParent() != common)
 			right = right.getParent();
-		return (left.rowOrder != -1 && right.rowOrder != -1)
-				&& left.rowOrder != right.rowOrder;
+		return (left.rowOrder != -1 && right.rowOrder != -1) && left.rowOrder != right.rowOrder;
 	}
 
 }

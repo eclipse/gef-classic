@@ -133,8 +133,7 @@ class RankSorter {
 		return (l + r) / 2.0;
 	}
 
-	public void sortRankIncoming(DirectedGraph g, Rank rank, int row,
-			double progress) {
+	public void sortRankIncoming(DirectedGraph g, Rank rank, int row, double progress) {
 		this.currentRow = row;
 		this.rank = rank;
 		this.progress = progress;
@@ -192,8 +191,7 @@ class RankSorter {
 		return true;
 	}
 
-	public void sortRankOutgoing(DirectedGraph g, Rank rank, int row,
-			double progress) {
+	public void sortRankOutgoing(DirectedGraph g, Rank rank, int row, double progress) {
 		this.currentRow = row;
 		this.rank = rank;
 		this.progress = progress;

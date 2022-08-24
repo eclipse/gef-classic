@@ -21,8 +21,7 @@ public class PageFlowLayout extends BlockFlowLayout {
 	/**
 	 * Creates a new PageFlowLayout with the given FlowPage
 	 * 
-	 * @param page
-	 *            the FlowPage
+	 * @param page the FlowPage
 	 */
 	public PageFlowLayout(FlowPage page) {
 		super(page);

@@ -74,8 +74,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * Creates a new GraphContainer. A GraphContainer may contain nodes, and has
 	 * many of the same properties as a graph node.
 	 * 
-	 * @param graph
-	 *            The graph that the container is being added to
+	 * @param graph The graph that the container is being added to
 	 * @param style
 	 */
 	public GraphContainer(IContainer graph, int style) {
@@ -99,15 +98,14 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * Custom figures cannot be set on a GraphContainer.
 	 */
 	public void setCustomFigure(IFigure nodeFigure) {
-		throw new RuntimeException(
-				"Operation not supported:  Containers cannot have custom figures");
+		throw new RuntimeException("Operation not supported:  Containers cannot have custom figures");
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#getItemType() public
-	 * int getItemType() { return GraphItem.CONTAINER; }
+	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#getItemType() public int
+	 * getItemType() { return GraphItem.CONTAINER; }
 	 * 
 	 * /** Gets the figure for this container.
 	 */
@@ -144,8 +142,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 			item.setVisible(false);
 		}
 		Rectangle containerBounds = new Rectangle(this.getLocation(),
-				new Dimension(this.getSize().width, CONTAINER_HEIGHT
-						+ this.expandGraphLabel.getSize().height));
+				new Dimension(this.getSize().width, CONTAINER_HEIGHT + this.expandGraphLabel.getSize().height));
 		moveNodesUp(containerBounds, this);
 		if (animate) {
 			Animation.run(ANIMATION_TIME);
@@ -154,16 +151,14 @@ public class GraphContainer extends GraphNode implements IContainer {
 		updateFigureForModel(nodeFigure);
 	}
 
-	private static void addNodeToOrderedList(List orderedNodeList,
-			GraphNode node) {
+	private static void addNodeToOrderedList(List orderedNodeList, GraphNode node) {
 		Iterator orderedNodeIterator = orderedNodeList.iterator();
 		int counter = 0;
 		while (orderedNodeIterator.hasNext()) {
 			// Look through the list of nodes below and find the right spot for
 			// this
 			GraphNode nextOrderedNode = (GraphNode) orderedNodeIterator.next();
-			if (nextOrderedNode.getLocation().y
-					+ nextOrderedNode.getBounds().height > node.getLocation().y
+			if (nextOrderedNode.getLocation().y + nextOrderedNode.getBounds().height > node.getLocation().y
 					+ node.getBounds().height) {
 				break;
 			}
@@ -180,8 +175,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * @param yValue
 	 * @return
 	 */
-	private static List getOrderedNodesBelowY(List nodes, int yValue,
-			GraphNode yValueNode) {
+	private static List getOrderedNodesBelowY(List nodes, int yValue, GraphNode yValueNode) {
 		Iterator iterator = nodes.iterator();
 		LinkedList orderedNode = new LinkedList();
 		while (iterator.hasNext()) {
@@ -212,8 +206,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * @return
 	 */
 	private static boolean nodeInStripe(int left, int right, GraphNode node) {
-		return (node.getBounds().x < right && node.getBounds().x
-				+ node.getBounds().width > left);
+		return (node.getBounds().x < right && node.getBounds().x + node.getBounds().width > left);
 	}
 
 	void pack(Graph g) {
@@ -228,7 +221,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 */
 	static GraphNode getHighestNode(Graph g) {
 		Iterator iterator = g.getNodes().iterator();
-		GraphNode lowest /* highest on the screen */= null;
+		GraphNode lowest /* highest on the screen */ = null;
 
 		while (iterator.hasNext()) {
 			GraphNode node = (GraphNode) iterator.next();
@@ -249,8 +242,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	private void moveNodesUp(Rectangle containerBounds, GraphNode graphContainer) {
 
 		// Get all nodes below this container, in order
-		List orderedNodesBelowY = getOrderedNodesBelowY(parent.getNodes(),
-				containerBounds.y, graphContainer);
+		List orderedNodesBelowY = getOrderedNodesBelowY(parent.getNodes(), containerBounds.y, graphContainer);
 		int leftSide = containerBounds.x;
 		int rightSide = containerBounds.x + containerBounds.width;
 		List nodesToConsider = new LinkedList();
@@ -263,8 +255,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 			GraphNode node = (GraphNode) nodesToConsider.get(0);
 			if (nodeInStripe(leftSide, rightSide, node)) {
 				leftSide = Math.min(leftSide, node.getBounds().x);
-				rightSide = Math.max(rightSide,
-						node.getBounds().x + node.getBounds().width);
+				rightSide = Math.max(rightSide, node.getBounds().x + node.getBounds().width);
 				// If this node is in the stripe, move it up
 				// the previous node
 				GraphNode previousNode = null;
@@ -278,8 +269,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 				while (j >= 0) {
 					GraphNode pastNode = (GraphNode) orderedNodesBelowY.get(j);
 					// if (nodeInStripe(leftSide, rightSide, pastNode)) {
-					if (nodeInStripe(node.getBounds().x, node.getBounds().x
-							+ node.getBounds().width, pastNode)) {
+					if (nodeInStripe(node.getBounds().x, node.getBounds().x + node.getBounds().width, pastNode)) {
 						previousNode = pastNode;
 						break;
 					}
@@ -288,8 +278,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 				if (previousNode == null) {
 					previousNode = graphContainer;
 				}
-				int previousLocation = previousNode.getBounds().y
-						+ previousNode.getBounds().height + 2;
+				int previousLocation = previousNode.getBounds().y + previousNode.getBounds().height + 2;
 
 				orderedNodesBelowY.remove(i);
 				node.setLocation(node.getLocation().x, previousLocation);
@@ -301,8 +290,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * Open the container. This opens the graph container to show the nodes
-	 * within and update the twistie
+	 * Open the container. This opens the graph container to show the nodes within
+	 * and update the twistie
 	 */
 	public void open(boolean animate) {
 		if (animate) {
@@ -328,8 +317,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		updateFigureForModel(nodeFigure);
 
 		Rectangle containerBounds = new Rectangle(this.getLocation(),
-				new Dimension(this.getSize().width, CONTAINER_HEIGHT
-						+ this.expandGraphLabel.getSize().height));
+				new Dimension(this.getSize().width, CONTAINER_HEIGHT + this.expandGraphLabel.getSize().height));
 		// moveIntersectedNodes(containerBounds, this);
 		moveNodesDown(containerBounds, this);
 		moveNodesUp(containerBounds, this);
@@ -347,12 +335,10 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * @param containerBounds
 	 * @param graphContainer
 	 */
-	private void moveNodesDown(Rectangle containerBounds,
-			GraphContainer graphContainer) {
+	private void moveNodesDown(Rectangle containerBounds, GraphContainer graphContainer) {
 
 		// Find all nodes below here
-		List nodesBelowHere = getOrderedNodesBelowY(parent.getNodes(),
-				containerBounds.y, graphContainer);
+		List nodesBelowHere = getOrderedNodesBelowY(parent.getNodes(), containerBounds.y, graphContainer);
 		Iterator nodesBelowHereIterator = nodesBelowHere.iterator();
 		List nodesToMove = new LinkedList();
 		int left = containerBounds.x;
@@ -362,12 +348,10 @@ public class GraphContainer extends GraphNode implements IContainer {
 			if (nodeInStripe(left, right, node)) {
 				nodesToMove.add(node);
 				left = Math.min(left, node.getBounds().x);
-				right = Math.max(right, node.getBounds().x
-						+ node.getBounds().width);
+				right = Math.max(right, node.getBounds().x + node.getBounds().width);
 			}
 		}
-		List intersectingNodes = intersectingNodes(containerBounds,
-				nodesToMove, graphContainer);
+		List intersectingNodes = intersectingNodes(containerBounds, nodesToMove, graphContainer);
 		int delta = getMaxMovement(containerBounds, intersectingNodes);
 		if (delta > 0) {
 			shiftNodesDown(nodesToMove, delta);
@@ -420,8 +404,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * @param nodesToCheck
 	 * @return
 	 */
-	private List intersectingNodes(Rectangle bounds, List nodesToCheck,
-			GraphNode node) {
+	private List intersectingNodes(Rectangle bounds, List nodesToCheck, GraphNode node) {
 		List result = new LinkedList();
 		Iterator nodes = nodesToCheck.iterator();
 		while (nodes.hasNext()) {
@@ -437,8 +420,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * Gets the max distance the intersecting nodes need to be shifted to make
-	 * room for the expanding node
+	 * Gets the max distance the intersecting nodes need to be shifted to make room
+	 * for the expanding node
 	 * 
 	 * @param bounds
 	 * @param nodesToMove
@@ -467,8 +450,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		while (iterator.hasNext()) {
 			GraphNode node = (GraphNode) iterator.next();
 
-			node.setLocation(node.getLocation().x, node.getLocation().y
-					+ amount);
+			node.setLocation(node.getLocation().x, node.getLocation().y + amount);
 		}
 	}
 
@@ -542,8 +524,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/**
 	 * 
 	 */
-	public void setLayoutAlgorithm(LayoutAlgorithm algorithm,
-			boolean applyLayout) {
+	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
 		this.layoutAlgorithm = algorithm;
 		if (applyLayout) {
 			applyLayout();
@@ -584,14 +565,13 @@ public class GraphContainer extends GraphNode implements IContainer {
 		if (d.isEmpty()) {
 			return;
 		}
-		LayoutRelationship[] connectionsToLayout = getGraph()
-				.getConnectionsToLayout(getNodes());
+		LayoutRelationship[] connectionsToLayout = getGraph().getConnectionsToLayout(getNodes());
 		LayoutEntity[] nodesToLayout = getGraph().getNodesToLayout(getNodes());
 
 		try {
 			Animation.markBegin();
-			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 25,
-					25, d.width - 50, d.height - 50, false, false);
+			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 25, 25, d.width - 50, d.height - 50, false,
+					false);
 			Animation.run(ANIMATION_TIME);
 			getFigure().getUpdateManager().performUpdate();
 
@@ -602,8 +582,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * Get the scale for this container. This is the scale applied to the
-	 * children contained within
+	 * Get the scale for this container. This is the scale applied to the children
+	 * contained within
 	 * 
 	 * @return
 	 */
@@ -612,8 +592,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * Set the scale for this container. This is the scale applied to the
-	 * children contained within.
+	 * Set the scale for this container. This is the scale applied to the children
+	 * contained within.
 	 * 
 	 * @param scale
 	 */
@@ -629,8 +609,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * This is a small class to help represent the size of the container. It
-	 * should only be used in the computeContainerSize method.
+	 * This is a small class to help represent the size of the container. It should
+	 * only be used in the computeContainerSize method.
 	 */
 	class ContainerDimension {
 		int width;
@@ -647,8 +627,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		ContainerDimension containerDimension = computeContainerSize();
 		Dimension dimension = new Dimension();
 		dimension.width = containerDimension.width;
-		dimension.height = containerDimension.expandedHeight
-				- containerDimension.labelHeight + SUBLAYER_OFFSET;
+		dimension.height = containerDimension.expandedHeight - containerDimension.labelHeight + SUBLAYER_OFFSET;
 		return dimension;
 	}
 
@@ -673,19 +652,17 @@ public class GraphContainer extends GraphNode implements IContainer {
 		dimension.labelHeight = labelHeight;
 		dimension.width = labelWidth;
 		dimension.width = Math.max(dimension.width, this.size.width);
-		dimension.expandedHeight = dimension.labelHeight + childAreaHeight
-				- SUBLAYER_OFFSET;
-		dimension.expandedHeight = Math.max(dimension.expandedHeight,
-				this.size.height);
+		dimension.expandedHeight = dimension.labelHeight + childAreaHeight - SUBLAYER_OFFSET;
+		dimension.expandedHeight = Math.max(dimension.expandedHeight, this.size.height);
 
 		return dimension;
 	}
 
 	/*
 	 * private double computeChildScale() { Dimension childArea =
-	 * computeChildArea(); double widthScale = childArea.width / scaledWidth;
-	 * double heightScale = childArea.height / scaledHeight; return
-	 * Math.min(widthScale, heightScale); }
+	 * computeChildArea(); double widthScale = childArea.width / scaledWidth; double
+	 * heightScale = childArea.height / scaledHeight; return Math.min(widthScale,
+	 * heightScale); }
 	 */
 	private double computeHeightScale() {
 		Dimension childArea = computeChildArea();
@@ -707,8 +684,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		containerFigure.addLayoutListener(LayoutAnimator.getDefault());
 
 		containerFigure.setLayoutManager(new FreeformLayout());
-		expandGraphLabel = new ExpandGraphLabel(this, node.getText(),
-				node.getImage(), false);
+		expandGraphLabel = new ExpandGraphLabel(this, node.getText(), node.getImage(), false);
 		expandGraphLabel.setText(getText());
 		expandGraphLabel.setImage(getImage());
 		ContainerDimension containerDimension = computeContainerSize();
@@ -718,18 +694,17 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		Viewport viewport = new FreeformViewport();
 		/*
-		 * This is the code that helps remove the scroll bars moving when the
-		 * nodes are dragged.
+		 * This is the code that helps remove the scroll bars moving when the nodes are
+		 * dragged.
 		 * 
-		 * viewport.setHorizontalRangeModel(new DefaultRangeModel() { public
-		 * void setAll(int min, int ext, int max) { System.out.println("Max: " +
-		 * max + " : current Max:  " + getMaximum()); if (max < getMaximum()) {
-		 * max = getMaximum(); } super.setAll(min, ext, max); }
+		 * viewport.setHorizontalRangeModel(new DefaultRangeModel() { public void
+		 * setAll(int min, int ext, int max) { System.out.println("Max: " + max +
+		 * " : current Max:  " + getMaximum()); if (max < getMaximum()) { max =
+		 * getMaximum(); } super.setAll(min, ext, max); }
 		 * 
-		 * public void setMaximum(int maximum) { // TODO Auto-generated method
-		 * stub System.out.println("Max: " + maximum + " : current Max:  " +
-		 * getMaximum()); if (maximum < getMaximum()) { return; }
-		 * super.setMaximum(maximum); } });
+		 * public void setMaximum(int maximum) { // TODO Auto-generated method stub
+		 * System.out.println("Max: " + maximum + " : current Max:  " + getMaximum());
+		 * if (maximum < getMaximum()) { return; } super.setMaximum(maximum); } });
 		 */
 
 		scrollPane.setViewport(viewport);
@@ -754,8 +729,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		// container.setLayoutManager(new FreeformLayout());
 		zestLayer.setLayoutManager(new FreeformLayout());
 		scrollPane.setSize(computeChildArea());
-		scrollPane.setLocation(new Point(0, containerDimension.labelHeight
-				- SUBLAYER_OFFSET));
+		scrollPane.setLocation(new Point(0, containerDimension.labelHeight - SUBLAYER_OFFSET));
 		scrollPane.setForegroundColor(ColorConstants.gray);
 
 		expandGraphLabel.setBackgroundColor(getBackgroundColor());
@@ -794,8 +768,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		ContainerDimension containerDimension = computeContainerSize();
 
-		expandGraphLabel.setSize(containerDimension.width,
-				containerDimension.labelHeight);
+		expandGraphLabel.setSize(containerDimension.width, containerDimension.labelHeight);
 		if (isExpanded) {
 			// setSize(expandGraphLabel.getSize().width,
 			// expandGraphLabel.getSize().height + expandedHeight -
@@ -805,18 +778,17 @@ public class GraphContainer extends GraphNode implements IContainer {
 			setSize(containerDimension.width, containerDimension.labelHeight);
 		}
 		scrollPane.setLocation(new Point(expandGraphLabel.getLocation().x,
-				expandGraphLabel.getLocation().y
-						+ containerDimension.labelHeight - SUBLAYER_OFFSET));
+				expandGraphLabel.getLocation().y + containerDimension.labelHeight - SUBLAYER_OFFSET));
 		// scrollPane.setLocation(new Point(0, labelHeight - SUBLAYER_OFFSET));
 		// Rectangle bounds = expandGraphLabel.getBounds().getCopy();
 		// Rectangle newBounds = new Rectangle(new Point(bounds.x, bounds.y +
 		// labelHeight - SUBLAYER_OFFSET), scrollPane.getSize());
 		// figure.setConstraint(scrollPane, newBounds);
 		/*
-		 * size.width = labelWidth; if (scrollPane.getSize().height > 0) {
-		 * size.height = labelHeight + scrollPane.getSize().height -
-		 * SUBLAYER_OFFSET; } else { size.height = labelHeight; }
-		 * refreshLocation(); figure.getUpdateManager().performValidation();
+		 * size.width = labelWidth; if (scrollPane.getSize().height > 0) { size.height =
+		 * labelHeight + scrollPane.getSize().height - SUBLAYER_OFFSET; } else {
+		 * size.height = labelHeight; } refreshLocation();
+		 * figure.getUpdateManager().performValidation();
 		 */
 
 	}
@@ -831,8 +803,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		ContainerDimension containerDimension = computeContainerSize();
 		Dimension size = new Dimension();
 
-		expandGraphLabel.setSize(containerDimension.width,
-				containerDimension.labelHeight);
+		expandGraphLabel.setSize(containerDimension.width, containerDimension.labelHeight);
 		this.childAreaHeight = computeChildArea().height;
 		if (isExpanded) {
 			size.width = containerDimension.width;
@@ -844,8 +815,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		Rectangle bounds = new Rectangle(loc, size);
 		nodeFigure.getParent().setConstraint(nodeFigure, bounds);
 		scrollPane.setLocation(new Point(expandGraphLabel.getLocation().x,
-				expandGraphLabel.getLocation().y
-						+ containerDimension.labelHeight - SUBLAYER_OFFSET));
+				expandGraphLabel.getLocation().y + containerDimension.labelHeight - SUBLAYER_OFFSET));
 		scrollPane.setSize(computeChildArea());
 		scalledLayer.setScale(computeWidthScale(), computeHeightScale());
 	}

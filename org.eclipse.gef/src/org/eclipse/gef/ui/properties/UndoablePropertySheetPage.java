@@ -37,25 +37,20 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 	/**
 	 * Constructs a new {@link UndoablePropertySheetPage}.
 	 * 
-	 * @param commandStack
-	 *            The {@link CommandStack} shared with the editor.
-	 * @param undoAction
-	 *            The global action handler to be registered for undo
-	 *            operations.
-	 * @param redoAction
-	 *            The global action handler to be registered for redo
-	 *            operations.
+	 * @param commandStack The {@link CommandStack} shared with the editor.
+	 * @param undoAction   The global action handler to be registered for undo
+	 *                     operations.
+	 * @param redoAction   The global action handler to be registered for redo
+	 *                     operations.
 	 */
-	public UndoablePropertySheetPage(final CommandStack commandStack,
-			IAction undoAction, IAction redoAction) {
+	public UndoablePropertySheetPage(final CommandStack commandStack, IAction undoAction, IAction redoAction) {
 		this.undoHandler = undoAction;
 		this.redoHandler = redoAction;
 		this.commandStack = commandStack;
 		this.commandStackEventListener = new CommandStackEventListener() {
 
 			public void stackChanged(CommandStackEvent event) {
-				if (event.getDetail() == CommandStack.PRE_UNDO
-						|| event.getDetail() == CommandStack.PRE_REDO) {
+				if (event.getDetail() == CommandStack.PRE_UNDO || event.getDetail() == CommandStack.PRE_REDO) {
 					// ensure the property sheet entry looses its current edit
 					// state, otherwise it may revert the undo/redo operation
 					// within valueChanged when the editor is activated again.
@@ -74,8 +69,7 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 	 */
 	public void dispose() {
 		if (commandStack != null)
-			commandStack
-					.removeCommandStackEventListener(commandStackEventListener);
+			commandStack.removeCommandStackEventListener(commandStackEventListener);
 		super.dispose();
 	}
 
@@ -87,10 +81,8 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 	public void setActionBars(IActionBars actionBars) {
 		super.setActionBars(actionBars);
 		// register global action handlers for undo and redo
-		actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(),
-				undoHandler);
-		actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(),
-				redoHandler);
+		actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(), undoHandler);
+		actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(), redoHandler);
 
 	}
 }

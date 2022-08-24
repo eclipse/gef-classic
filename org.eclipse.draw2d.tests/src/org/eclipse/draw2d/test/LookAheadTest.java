@@ -49,8 +49,8 @@ public class LookAheadTest extends BaseTestCase {
 	}
 
 	void assertLookaheadMatchesString(int[] width, String expected) {
-		assertEquals("Lookahead width did not match expected string:\""
-				+ expected + "\"", getWidth(expected), width[0]);
+		assertEquals("Lookahead width did not match expected string:\"" + expected + "\"", getWidth(expected),
+				width[0]);
 	}
 
 	private int getWidth(String s) {
@@ -102,35 +102,29 @@ public class LookAheadTest extends BaseTestCase {
 	}
 
 	public void testContextLookaheadPrecedingInline() {
-		assertEquals("Context lookahead into inline flow failed",
-				getFollow(p1text1), getWidth("brown"));
+		assertEquals("Context lookahead into inline flow failed", getFollow(p1text1), getWidth("brown"));
 	}
 
 	public void testContextLookaheadFromNested() {
-		assertEquals("Context lookahead from nested inline textflow failed",
-				getFollow(p1text2), getWidth("jumped"));
+		assertEquals("Context lookahead from nested inline textflow failed", getFollow(p1text2), getWidth("jumped"));
 	}
 
 	public void testContextLookaheadAtEndOfBlock() {
-		assertTrue("Last figure in a block should have no lookahead",
-				getFollow(p1text3) == 0);
+		assertTrue("Last figure in a block should have no lookahead", getFollow(p1text3) == 0);
 	}
 
 	public void testContextLookaheadPastEmptyString() {
-		assertEquals("Context lookahead over empty TextFlow failed",
-				getFollow(p2text1), getWidth("lo"));
+		assertEquals("Context lookahead over empty TextFlow failed", getFollow(p2text1), getWidth("lo"));
 	}
 
 	public void testContextChineseCharLookahead() {
 		p1text2.setText("\u7325abcdef");
-		assertTrue("Chinese characters should have no lookahead",
-				getFollow(p1text1) == 0);
+		assertTrue("Chinese characters should have no lookahead", getFollow(p1text1) == 0);
 	}
 
 	public void testContextHyphenLookahead() {
 		p1text2.setText("-abc");
-		assertEquals("Context lookahead should be hyphen character",
-				getFollow(p1text1), getWidth("-"));
+		assertEquals("Context lookahead should be hyphen character", getFollow(p1text1), getWidth("-"));
 	}
 
 	public void testSingleLetter() {
@@ -141,62 +135,52 @@ public class LookAheadTest extends BaseTestCase {
 
 	public void testSingleSpace() {
 		simpleText.setText(" ");
-		assertTrue("Line break should have been found",
-				simpleText.addLeadingWordRequirements(width));
+		assertTrue("Line break should have been found", simpleText.addLeadingWordRequirements(width));
 		assertTrue("test21 failed", width[0] == 0);
 
 		simpleText.setText("\u7325");
 		width[0] = 0;
-		assertTrue("test22 failed",
-				simpleText.addLeadingWordRequirements(width));
+		assertTrue("test22 failed", simpleText.addLeadingWordRequirements(width));
 		assertTrue("test23 failed", width[0] == 0);
 
 		simpleText.setText("-");
 		width[0] = 0;
-		assertTrue("test24 failed",
-				simpleText.addLeadingWordRequirements(width));
+		assertTrue("test24 failed", simpleText.addLeadingWordRequirements(width));
 		assertTrue("test25 failed", width[0] == getWidth("-"));
 
 		simpleText.setText("ombudsman");
 		width[0] = 0;
-		assertTrue("test26 failed",
-				!simpleText.addLeadingWordRequirements(width));
+		assertTrue("test26 failed", !simpleText.addLeadingWordRequirements(width));
 		assertTrue("test27 failed", width[0] == getWidth("ombudsman"));
 
 		simpleText.setText("space bar");
 		width[0] = 0;
-		assertTrue("test28 failed",
-				simpleText.addLeadingWordRequirements(width));
+		assertTrue("test28 failed", simpleText.addLeadingWordRequirements(width));
 		assertTrue("test29 failed", width[0] == getWidth("space"));
 
 		simpleText.setText("endsInSpace ");
 		width[0] = 0;
-		assertTrue("test30 failed",
-				simpleText.addLeadingWordRequirements(width));
+		assertTrue("test30 failed", simpleText.addLeadingWordRequirements(width));
 		assertTrue("test31 failed", width[0] == getWidth("endsInSpace"));
 
 		simpleText.setText("endsInHyphen-");
 		width[0] = 0;
-		assertTrue("test32 failed",
-				simpleText.addLeadingWordRequirements(width));
+		assertTrue("test32 failed", simpleText.addLeadingWordRequirements(width));
 		assertTrue("test33 failed", width[0] == getWidth("endsInHyphen-"));
 
 		simpleText.setText("co-operate");
 		width[0] = 0;
-		assertTrue("test34 failed",
-				simpleText.addLeadingWordRequirements(width));
+		assertTrue("test34 failed", simpleText.addLeadingWordRequirements(width));
 		assertTrue("test35 failed", width[0] == getWidth("co-"));
 
 		simpleText.setText("ab\u7325");
 		width[0] = 0;
-		assertTrue("test36 failed",
-				simpleText.addLeadingWordRequirements(width));
+		assertTrue("test36 failed", simpleText.addLeadingWordRequirements(width));
 		assertTrue("test37 failed", width[0] == getWidth("ab"));
 
 		simpleText.setText("hey, man.");
 		width[0] = 0;
-		assertTrue("test38 failed",
-				simpleText.addLeadingWordRequirements(width));
+		assertTrue("test38 failed", simpleText.addLeadingWordRequirements(width));
 		assertTrue("test39 failed", width[0] == getWidth("hey,"));
 	}
 

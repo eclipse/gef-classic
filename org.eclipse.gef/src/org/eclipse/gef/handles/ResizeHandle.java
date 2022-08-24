@@ -28,21 +28,18 @@ public class ResizeHandle extends SquareHandle {
 
 	/**
 	 * Creates a new ResizeHandle for the given GraphicalEditPart.
-	 * <code>direction</code> is the relative direction from the center of the
-	 * owner figure. For example, <code>SOUTH_EAST</code> would place the handle
-	 * in the lower-right corner of its owner figure. These direction constants
-	 * can be found in {@link org.eclipse.draw2d.PositionConstants}.
+	 * <code>direction</code> is the relative direction from the center of the owner
+	 * figure. For example, <code>SOUTH_EAST</code> would place the handle in the
+	 * lower-right corner of its owner figure. These direction constants can be
+	 * found in {@link org.eclipse.draw2d.PositionConstants}.
 	 * 
-	 * @param owner
-	 *            owner of the ResizeHandle
-	 * @param direction
-	 *            relative direction from the center of the owner figure
+	 * @param owner     owner of the ResizeHandle
+	 * @param direction relative direction from the center of the owner figure
 	 */
 	public ResizeHandle(GraphicalEditPart owner, int direction) {
 		setOwner(owner);
 		setLocator(new RelativeHandleLocator(owner.getFigure(), direction));
-		setCursor(Cursors.getDirectionalCursor(direction, owner.getFigure()
-				.isMirrored()));
+		setCursor(Cursors.getDirectionalCursor(direction, owner.getFigure().isMirrored()));
 		cursorDirection = direction;
 	}
 

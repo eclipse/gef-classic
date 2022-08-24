@@ -21,8 +21,7 @@ public abstract class TextLayout extends FlowFigureLayout {
 	/**
 	 * Creates a new TextLayout with the given TextFlow
 	 * 
-	 * @param flow
-	 *            The TextFlow
+	 * @param flow The TextFlow
 	 */
 	public TextLayout(TextFlow flow) {
 		super(flow);
@@ -31,10 +30,8 @@ public abstract class TextLayout extends FlowFigureLayout {
 	/**
 	 * Reuses an existing <code>TextFragmentBox</code>, or creates a new one.
 	 * 
-	 * @param i
-	 *            the index
-	 * @param fragments
-	 *            the original list of fragments
+	 * @param i         the index
+	 * @param fragments the original list of fragments
 	 * @return a TextFragmentBox
 	 */
 	protected TextFragmentBox getFragment(int i, List fragments) {

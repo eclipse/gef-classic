@@ -35,24 +35,20 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 
 	/**
 	 * Calculates the minimum size using the given width and height hints. This
-	 * method is called from {@link #getMinimumSize(IFigure, int, int)} whenever
-	 * the cached minimum size has been flushed.
+	 * method is called from {@link #getMinimumSize(IFigure, int, int)} whenever the
+	 * cached minimum size has been flushed.
 	 * <P>
 	 * By default, this method just calls
-	 * {@link #getPreferredSize(IFigure, int, int)}, meaning minimum and
-	 * preferres sizes will be the same unless this method is overridden.
+	 * {@link #getPreferredSize(IFigure, int, int)}, meaning minimum and preferres
+	 * sizes will be the same unless this method is overridden.
 	 * 
-	 * @param container
-	 *            the Figure on which this layout is installed
-	 * @param wHint
-	 *            the width hint
-	 * @param hHint
-	 *            the height hint
+	 * @param container the Figure on which this layout is installed
+	 * @param wHint     the width hint
+	 * @param hHint     the height hint
 	 * 
 	 * @return the layout's minimum size
 	 */
-	protected Dimension calculateMinimumSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
 		return getPreferredSize(container, wHint, hHint);
 	}
 
@@ -60,10 +56,8 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	 * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(IFigure, int, int)
 	 */
 	public Dimension getMinimumSize(IFigure container, int w, int h) {
-		boolean flush = cachedMinimumHint.width != w
-				&& isSensitiveHorizontally(container);
-		flush |= cachedMinimumHint.height != h
-				&& isSensitiveVertically(container);
+		boolean flush = cachedMinimumHint.width != w && isSensitiveHorizontally(container);
+		flush |= cachedMinimumHint.height != h && isSensitiveVertically(container);
 		if (flush) {
 			minimumSize = null;
 			cachedMinimumHint.width = w;
@@ -78,10 +72,8 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	 * @see org.eclipse.draw2d.LayoutManager#getPreferredSize(IFigure, int, int)
 	 */
 	public final Dimension getPreferredSize(IFigure container, int w, int h) {
-		boolean flush = cachedPreferredHint.width != w
-				&& isSensitiveHorizontally(container);
-		flush |= cachedPreferredHint.height != h
-				&& isSensitiveVertically(container);
+		boolean flush = cachedPreferredHint.width != w && isSensitiveHorizontally(container);
+		flush |= cachedPreferredHint.height != h && isSensitiveVertically(container);
 		if (flush) {
 			preferredSize = null;
 			cachedPreferredHint.width = w;
@@ -101,11 +93,10 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	}
 
 	/**
-	 * Returns whether this layout manager is sensitive to changes in the
-	 * horizontal hint. By default, this method returns <code>true</code>.
+	 * Returns whether this layout manager is sensitive to changes in the horizontal
+	 * hint. By default, this method returns <code>true</code>.
 	 * 
-	 * @param container
-	 *            the layout's container
+	 * @param container the layout's container
 	 * @return <code>true</code> if this layout is sensite to horizontal hint
 	 *         changes
 	 */
@@ -114,13 +105,11 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	}
 
 	/**
-	 * Returns whether this layout manager is sensitive to changes in the
-	 * vertical hint. By default, this method returns <code>true</code>.
+	 * Returns whether this layout manager is sensitive to changes in the vertical
+	 * hint. By default, this method returns <code>true</code>.
 	 * 
-	 * @param container
-	 *            the layout's container
-	 * @return <code>true</code> if this layout is sensite to vertical hint
-	 *         changes
+	 * @param container the layout's container
+	 * @return <code>true</code> if this layout is sensite to vertical hint changes
 	 */
 	protected boolean isSensitiveVertically(IFigure container) {
 		return true;

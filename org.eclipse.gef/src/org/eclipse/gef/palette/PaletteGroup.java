@@ -27,8 +27,7 @@ public class PaletteGroup extends PaletteContainer {
 	/**
 	 * Creates a new PaletteGroup with the given label
 	 * 
-	 * @param label
-	 *            the label
+	 * @param label the label
 	 */
 	public PaletteGroup(String label) {
 		super(label, null, null, PALETTE_TYPE_GROUP);
@@ -39,10 +38,8 @@ public class PaletteGroup extends PaletteContainer {
 	 * Creates a new PaletteGroup with the given label and list of
 	 * {@link PaletteEntry Palette Entries}.
 	 * 
-	 * @param label
-	 *            the label
-	 * @param children
-	 *            the list of PaletteEntry children
+	 * @param label    the label
+	 * @param children the list of PaletteEntry children
 	 */
 	public PaletteGroup(String label, List children) {
 		this(label);

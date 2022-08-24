@@ -24,8 +24,7 @@ public interface CommandStackListener {
 	/**
 	 * Called when the {@link CommandStack}'s state has changed.
 	 * 
-	 * @param event
-	 *            the event
+	 * @param event the event
 	 */
 	void commandStackChanged(EventObject event);
 

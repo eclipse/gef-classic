@@ -28,14 +28,11 @@ public class UndoRetargetAction extends LabelRetargetAction {
 	 * Constructs a new UndoRetargetAction with the default ID, label and image.
 	 */
 	public UndoRetargetAction() {
-		super(ActionFactory.UNDO.getId(), MessageFormat.format(
-				GEFMessages.UndoAction_Label, new Object[] { "" }).trim()); //$NON-NLS-1$
-		ISharedImages sharedImages = PlatformUI.getWorkbench()
-				.getSharedImages();
-		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_UNDO));
-		setDisabledImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_UNDO_DISABLED));
+		super(ActionFactory.UNDO.getId(),
+				MessageFormat.format(GEFMessages.UndoAction_Label, new Object[] { "" }).trim()); //$NON-NLS-1$
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_UNDO));
+		setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_UNDO_DISABLED));
 	}
 
 }

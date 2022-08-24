@@ -26,20 +26,17 @@ public class GeometryTest extends TestCase {
 	/*
 	 * For Geometry.polygonContainsPoint tests
 	 */
-	private static final PointList RHOMB = new PointList(new int[] { 0, 2, 2,
-			0, 4, 2, 2, 4 });
+	private static final PointList RHOMB = new PointList(new int[] { 0, 2, 2, 0, 4, 2, 2, 4 });
 
-	private static final PointList CONCAVE_PENTAGON = new PointList(new int[] {
-			0, 0, 0, 8, 4, 4, 8, 8, 8, 0 });
+	private static final PointList CONCAVE_PENTAGON = new PointList(new int[] { 0, 0, 0, 8, 4, 4, 8, 8, 8, 0 });
 
-	private static final PointList CONCAVE_OCTAGON = new PointList(new int[] {
-			0, 0, 0, 4, 2, 4, 2, 2, 4, 2, 4, 4, 6, 4, 6, 0 });
+	private static final PointList CONCAVE_OCTAGON = new PointList(
+			new int[] { 0, 0, 0, 4, 2, 4, 2, 2, 4, 2, 4, 4, 6, 4, 6, 0 });
 
 	/*
 	 * For Geometry.polylineContainsPoint tests
 	 */
-	private static final PointList POLYLINE = new PointList(new int[] { 0, 0,
-			1, 0, 6, 5 });
+	private static final PointList POLYLINE = new PointList(new int[] { 0, 0, 1, 0, 6, 5 });
 
 	private static final int TOLERANCE = 2;
 
@@ -55,16 +52,13 @@ public class GeometryTest extends TestCase {
 	private static final int IMAGE_SIZE = 8 + POINT_LIST_SHIFT * 2;
 
 	/**
-	 * Testing points inside/outside the rhomb located in top half. Excluding
-	 * points of RHOMB border - separate test present for it
+	 * Testing points inside/outside the rhomb located in top half. Excluding points
+	 * of RHOMB border - separate test present for it
 	 */
 	public void testTopRhombHalfPoints() {
-		assertFalse("This point is outside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 0, 1));
-		assertTrue("This point is inside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 2, 1));
-		assertFalse("This point is outside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 4, 1));
+		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 1));
+		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 2, 1));
+		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 4, 1));
 	}
 
 	/**
@@ -72,12 +66,9 @@ public class GeometryTest extends TestCase {
 	 * points of RHOMB border - separate test present for it
 	 */
 	public void testBottomRhombHalfPoints() {
-		assertFalse("This point is outside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 0, 3));
-		assertTrue("This point is inside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 2, 3));
-		assertFalse("This point is outside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 4, 3));
+		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 3));
+		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 2, 3));
+		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 4, 3));
 	}
 
 	/**
@@ -85,12 +76,9 @@ public class GeometryTest extends TestCase {
 	 * points of RHOMB border - separate test present for it
 	 */
 	public void testRhombEquatorPoints() {
-		assertFalse("This point is outside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, -1, 2));
-		assertTrue("This point is inside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 2, 2));
-		assertFalse("This point is outside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 5, 2));
+		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, -1, 2));
+		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 2, 2));
+		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 5, 2));
 	}
 
 	/**
@@ -98,125 +86,88 @@ public class GeometryTest extends TestCase {
 	 * Excluding points of RHOMB border - separate test present for it
 	 */
 	public void testTopRhombTangentPoints() {
-		assertFalse("This point is outside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 0, 0));
-		assertFalse("This point is outside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 4, 0));
+		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 0));
+		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 4, 0));
 	}
 
 	/**
-	 * Testing points outside the rhomb located on bottom horizontal tangent
-	 * line. Excluding points of RHOMB border - separate test present for it
+	 * Testing points outside the rhomb located on bottom horizontal tangent line.
+	 * Excluding points of RHOMB border - separate test present for it
 	 */
 	public void testBottomRhombTangentPoints() {
-		assertFalse("This point is outside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 0, 4));
-		assertFalse("This point is outside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 4, 4));
+		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 4));
+		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 4, 4));
 	}
 
 	/**
 	 * Testing points of RHOMB border - all vertexes + one point on the edge
 	 */
 	public void testRhombBorderPoints() {
-		assertTrue("This point is inside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 0, 2));
-		assertTrue("This point is inside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 0, 2));
-		assertTrue("This point is inside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 2, 4));
-		assertTrue("This point is inside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 2, 2));
-		assertTrue("This point is inside the rhomb",
-				Geometry.polygonContainsPoint(RHOMB, 1, 1));
+		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 2));
+		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 2));
+		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 2, 4));
+		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 2, 2));
+		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 1, 1));
 	}
 
 	/**
 	 * Testing points inside/outside the pentagon located on equator of concave.
-	 * Excluding points of CONCAVE_PENTAGON border - separate test present for
-	 * it
+	 * Excluding points of CONCAVE_PENTAGON border - separate test present for it
 	 */
 	public void testConcavePentagonEquatorPoints() {
-		assertFalse("This point is outside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, -1, 6));
-		assertTrue("This point is inside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 1, 6));
-		assertFalse("This point is outside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 4, 6));
-		assertTrue("This point is inside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 7, 6));
-		assertFalse("This point is outside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 9, 6));
+		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, -1, 6));
+		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 1, 6));
+		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 4, 6));
+		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 7, 6));
+		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 9, 6));
 	}
 
 	/**
-	 * Testing points outside the pentagon located on top concave tangent.
-	 * Excluding points of CONCAVE_PENTAGON border - separate test present for
-	 * it
+	 * Testing points outside the pentagon located on top concave tangent. Excluding
+	 * points of CONCAVE_PENTAGON border - separate test present for it
 	 */
 	public void testTopConcavePentagonTangentPoints() {
-		assertFalse("This point is outside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, -1, 8));
-		assertFalse("This point is outside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 4, 8));
-		assertFalse("This point is outside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 9, 8));
+		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, -1, 8));
+		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 4, 8));
+		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 9, 8));
 	}
 
 	/**
-	 * Testing points inside/outside the pentagon located on bottom concave
-	 * tangent. Excluding points of CONCAVE_PENTAGON border - separate test
-	 * present for it
+	 * Testing points inside/outside the pentagon located on bottom concave tangent.
+	 * Excluding points of CONCAVE_PENTAGON border - separate test present for it
 	 */
 	public void testBottomConcavePentagonTangentPoints() {
-		assertFalse("This point is outside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, -1, 4));
-		assertTrue("This point is inside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 1, 4));
-		assertTrue("This point is inside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 5, 4));
-		assertFalse("This point is outside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 9, 4));
+		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, -1, 4));
+		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 1, 4));
+		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 5, 4));
+		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 9, 4));
 	}
 
 	/**
-	 * Testing points of CONCAVE_PENTAGON border - all vertexes + points on
-	 * concave edges
+	 * Testing points of CONCAVE_PENTAGON border - all vertexes + points on concave
+	 * edges
 	 */
 	public void testConcavePentagonBorderPoints() {
-		assertTrue("This point is inside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 0, 8));
-		assertTrue("This point is inside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 2, 6));
-		assertTrue("This point is inside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 4, 4));
-		assertTrue("This point is inside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 6, 6));
-		assertTrue("This point is inside the pentagon",
-				Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 8, 8));
+		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 0, 8));
+		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 2, 6));
+		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 4, 4));
+		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 6, 6));
+		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 8, 8));
 	}
 
 	/**
-	 * Testing points located of the horizontal line containing one of the
-	 * "concave" edges
+	 * Testing points located of the horizontal line containing one of the "concave"
+	 * edges
 	 */
 	public void testConcaveOctagonBottomTangentPoints() {
-		assertFalse("This point is outside the octagon",
-				Geometry.polygonContainsPoint(CONCAVE_OCTAGON, -1, 2));
-		assertTrue("This point is inside the octagon",
-				Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 0, 2));
-		assertTrue("This point is inside the octagon",
-				Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 1, 2));
-		assertTrue("This point is inside the octagon",
-				Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 2, 2));
-		assertTrue("This point is inside the octagon",
-				Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 3, 2));
-		assertTrue("This point is inside the octagon",
-				Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 4, 2));
-		assertTrue("This point is inside the octagon",
-				Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 5, 2));
-		assertFalse("This point is outside the octagon",
-				Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 7, 2));
+		assertFalse("This point is outside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, -1, 2));
+		assertTrue("This point is inside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 0, 2));
+		assertTrue("This point is inside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 1, 2));
+		assertTrue("This point is inside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 2, 2));
+		assertTrue("This point is inside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 3, 2));
+		assertTrue("This point is inside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 4, 2));
+		assertTrue("This point is inside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 5, 2));
+		assertFalse("This point is outside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 7, 2));
 	}
 
 	public void testNotPolylinePoints() {
@@ -244,78 +195,52 @@ public class GeometryTest extends TestCase {
 	 */
 	public void testLinesIntersect() {
 		// line segments collapsed to single points
-		assertTrue("Starting point on segment",
-				Geometry.linesIntersect(0, 0, 0, 0, 0, 0, 3, 3));
-		assertTrue("Starting point on segment",
-				Geometry.linesIntersect(0, 0, 3, 3, 0, 0, 0, 0));
+		assertTrue("Starting point on segment", Geometry.linesIntersect(0, 0, 0, 0, 0, 0, 3, 3));
+		assertTrue("Starting point on segment", Geometry.linesIntersect(0, 0, 3, 3, 0, 0, 0, 0));
 		assertFalse("Single point next to starting point of segment",
 				Geometry.linesIntersect(-1, -1, -1, -1, 0, 0, 2, 2));
 		assertFalse("Single point next to starting point of segment",
 				Geometry.linesIntersect(0, 0, 2, 2, -1, -1, -1, -1));
-		assertTrue("Mid point on segment",
-				Geometry.linesIntersect(0, 0, 0, 0, 3, 3, -3, -3));
-		assertTrue("Mid point on segment",
-				Geometry.linesIntersect(3, 3, -3, -3, 0, 0, 0, 0));
-		assertFalse("Single point next to mid point of segment",
-				Geometry.linesIntersect(0, 1, 0, 1, 0, 0, 2, 2));
-		assertFalse("Single point next to mid point of segment",
-				Geometry.linesIntersect(0, 0, 2, 2, 0, 1, 0, 1));
-		assertTrue("Ending point on segment",
-				Geometry.linesIntersect(3, 3, 3, 3, 0, 0, 3, 3));
-		assertTrue("Ending point on segment",
-				Geometry.linesIntersect(0, 0, 3, 3, 3, 3, 3, 3));
-		assertFalse("Single point next to end point of segment",
-				Geometry.linesIntersect(3, 3, 3, 3, 0, 0, 2, 2));
-		assertFalse("Single point next to end point of segment",
-				Geometry.linesIntersect(0, 0, 2, 2, 3, 3, 3, 3));
-		assertTrue("Identical points",
-				Geometry.linesIntersect(1, 1, 1, 1, 1, 1, 1, 1));
-		assertFalse("Distinct points",
-				Geometry.linesIntersect(1, 1, 1, 1, 2, 2, 2, 2));
+		assertTrue("Mid point on segment", Geometry.linesIntersect(0, 0, 0, 0, 3, 3, -3, -3));
+		assertTrue("Mid point on segment", Geometry.linesIntersect(3, 3, -3, -3, 0, 0, 0, 0));
+		assertFalse("Single point next to mid point of segment", Geometry.linesIntersect(0, 1, 0, 1, 0, 0, 2, 2));
+		assertFalse("Single point next to mid point of segment", Geometry.linesIntersect(0, 0, 2, 2, 0, 1, 0, 1));
+		assertTrue("Ending point on segment", Geometry.linesIntersect(3, 3, 3, 3, 0, 0, 3, 3));
+		assertTrue("Ending point on segment", Geometry.linesIntersect(0, 0, 3, 3, 3, 3, 3, 3));
+		assertFalse("Single point next to end point of segment", Geometry.linesIntersect(3, 3, 3, 3, 0, 0, 2, 2));
+		assertFalse("Single point next to end point of segment", Geometry.linesIntersect(0, 0, 2, 2, 3, 3, 3, 3));
+		assertTrue("Identical points", Geometry.linesIntersect(1, 1, 1, 1, 1, 1, 1, 1));
+		assertFalse("Distinct points", Geometry.linesIntersect(1, 1, 1, 1, 2, 2, 2, 2));
 
 		// non-parallel
-		assertTrue("Line segments cross at (2.5, 2.5).",
-				Geometry.linesIntersect(0, 0, 5, 5, 0, 5, 5, 0));
-		assertTrue("Line segments cross at (0, 1).",
-				Geometry.linesIntersect(-2, 1, 1, 1, 0, 0, 0, 3));
-		assertTrue("Line segments share starting point",
-				Geometry.linesIntersect(0, 0, 5, 5, 0, 0, 5, 0));
-		assertTrue("Line segments share ending point",
-				Geometry.linesIntersect(0, 0, 5, 5, 0, 5, 5, 5));
+		assertTrue("Line segments cross at (2.5, 2.5).", Geometry.linesIntersect(0, 0, 5, 5, 0, 5, 5, 0));
+		assertTrue("Line segments cross at (0, 1).", Geometry.linesIntersect(-2, 1, 1, 1, 0, 0, 0, 3));
+		assertTrue("Line segments share starting point", Geometry.linesIntersect(0, 0, 5, 5, 0, 0, 5, 0));
+		assertTrue("Line segments share ending point", Geometry.linesIntersect(0, 0, 5, 5, 0, 5, 5, 5));
 		assertTrue("First line segment contains starting point of second one.",
 				Geometry.linesIntersect(0, 0, 5, 5, 3, 3, 0, 5));
-		assertFalse(
-				"Line segments are non-parallel and do not cross and should thus not be regarded as intersecting.",
+		assertFalse("Line segments are non-parallel and do not cross and should thus not be regarded as intersecting.",
 				Geometry.linesIntersect(0, 0, 2, 2, 0, 1, 0, 2));
 
 		// parallel
-		assertFalse(
-				"Line segments are parallel but not co-linear and should thus not be regarded as intersecting.",
+		assertFalse("Line segments are parallel but not co-linear and should thus not be regarded as intersecting.",
 				Geometry.linesIntersect(0, 0, 5, 5, 1, 0, 6, 5));
-		assertFalse(
-				"Line segments are parallel but not co-linear and should thus not be regarded as intersecting.",
+		assertFalse("Line segments are parallel but not co-linear and should thus not be regarded as intersecting.",
 				Geometry.linesIntersect(0, 0, 3, 3, 4, 0, 6, 2));
 
 		// co-linear
-		assertTrue("Line segments are co-linear, partly-overlapping.",
-				Geometry.linesIntersect(0, 0, 5, 5, 3, 3, 6, 6));
-		assertTrue("Line segments are co-linear, partly-overlapping.",
-				Geometry.linesIntersect(3, 3, 6, 6, 0, 0, 5, 5));
-		assertTrue("Line segments are co-linear, fully-overlapping.",
-				Geometry.linesIntersect(0, 0, 5, 5, 1, 1, 3, 3));
+		assertTrue("Line segments are co-linear, partly-overlapping.", Geometry.linesIntersect(0, 0, 5, 5, 3, 3, 6, 6));
+		assertTrue("Line segments are co-linear, partly-overlapping.", Geometry.linesIntersect(3, 3, 6, 6, 0, 0, 5, 5));
+		assertTrue("Line segments are co-linear, fully-overlapping.", Geometry.linesIntersect(0, 0, 5, 5, 1, 1, 3, 3));
 		assertTrue("Line segments are co-linear, fully-overlapping.",
 				Geometry.linesIntersect(1, 1, 5, 5, -1, -1, 6, 6));
-		assertTrue(
-				"Line segments are co-linear, sharing ending/starting point.",
+		assertTrue("Line segments are co-linear, sharing ending/starting point.",
 				Geometry.linesIntersect(0, 0, 5, 5, 5, 5, 6, 6));
-		assertTrue(
-				"Line segments are co-linear, sharing starting/ending point.",
+		assertTrue("Line segments are co-linear, sharing starting/ending point.",
 				Geometry.linesIntersect(3, 3, 6, 6, 0, 0, 3, 3));
-		assertFalse(
-				"Line segments are co-linear but non-overlapping, and should thus not be regarded as intersecting.",
+		assertFalse("Line segments are co-linear but non-overlapping, and should thus not be regarded as intersecting.",
 				Geometry.linesIntersect(0, 0, 5, 5, 10, 10, 20, 20));
-		assertFalse(
-				"Line segments are co-linear but non-overlapping, and should thus not be regarded as intersecting.",
+		assertFalse("Line segments are co-linear but non-overlapping, and should thus not be regarded as intersecting.",
 				Geometry.linesIntersect(0, 0, 5, 5, -10, -10, -20, -20));
 	}
 
@@ -352,10 +277,7 @@ public class GeometryTest extends TestCase {
 		for (int x = 0; x < IMAGE_SIZE; x++) {
 			for (int y = 0; y < IMAGE_SIZE; y++) {
 				boolean isPolygonPoint = imageData.getPixel(x, y) == 0;
-				assertTrue(
-						"Point (" + x + "," + y + ") is"
-								+ (isPolygonPoint ? " " : " not ")
-								+ "a point of polygon",
+				assertTrue("Point (" + x + "," + y + ") is" + (isPolygonPoint ? " " : " not ") + "a point of polygon",
 						Geometry.polygonContainsPoint(pointlist, x, y) == isPolygonPoint);
 			}
 		}
@@ -373,10 +295,8 @@ public class GeometryTest extends TestCase {
 		for (int x = 0; x < IMAGE_SIZE; x++) {
 			for (int y = 0; y < IMAGE_SIZE; y++) {
 				if (imageData.getPixel(x, y) == 0) {
-					assertTrue("Point (" + x + "," + y
-							+ ") is a point of polyline",
-							Geometry.polylineContainsPoint(pointlist, x, y,
-									TOLERANCE));
+					assertTrue("Point (" + x + "," + y + ") is a point of polyline",
+							Geometry.polylineContainsPoint(pointlist, x, y, TOLERANCE));
 				}
 			}
 		}

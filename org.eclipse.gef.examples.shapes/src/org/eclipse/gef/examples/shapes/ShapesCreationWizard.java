@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes;
 
 import java.io.ByteArrayInputStream;
@@ -81,10 +81,8 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 		/**
 		 * Create a new wizard page instance.
 		 * 
-		 * @param workbench
-		 *            the current workbench
-		 * @param selection
-		 *            the current object selection
+		 * @param workbench the current workbench
+		 * @param selection the current object selection
 		 * @see ShapesCreationWizard#init(IWorkbench, IStructuredSelection)
 		 */
 		CreationPage(IWorkbench workbench, IStructuredSelection selection) {
@@ -97,8 +95,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * org.eclipse.ui.dialogs.WizardNewFileCreationPage#createControl(org
+		 * @see org.eclipse.ui.dialogs.WizardNewFileCreationPage#createControl(org
 		 * .eclipse.swt.widgets.Composite)
 		 */
 		public void createControl(Composite parent) {
@@ -123,8 +120,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 			fileCount++;
 
 			// open newly created file in the editor
-			IWorkbenchPage page = workbench.getActiveWorkbenchWindow()
-					.getActivePage();
+			IWorkbenchPage page = workbench.getActiveWorkbenchWindow().getActivePage();
 			if (newFile != null && page != null) {
 				try {
 					IDE.openEditor(page, newFile, true);
@@ -139,8 +135,7 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * org.eclipse.ui.dialogs.WizardNewFileCreationPage#getInitialContents()
+		 * @see org.eclipse.ui.dialogs.WizardNewFileCreationPage#getInitialContents()
 		 */
 		protected InputStream getInitialContents() {
 			ByteArrayInputStream bais = null;
@@ -162,12 +157,10 @@ public class ShapesCreationWizard extends Wizard implements INewWizard {
 		 * Return true, if the file name entered in this page is valid.
 		 */
 		private boolean validateFilename() {
-			if (getFileName() != null
-					&& getFileName().endsWith(DEFAULT_EXTENSION)) {
+			if (getFileName() != null && getFileName().endsWith(DEFAULT_EXTENSION)) {
 				return true;
 			}
-			setErrorMessage("The 'file' name must end with "
-					+ DEFAULT_EXTENSION);
+			setErrorMessage("The 'file' name must end with " + DEFAULT_EXTENSION);
 			return false;
 		}
 

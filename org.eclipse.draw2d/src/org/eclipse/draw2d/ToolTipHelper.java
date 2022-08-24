@@ -37,8 +37,7 @@ public class ToolTipHelper extends PopUpHelper {
 	/**
 	 * Constructs a ToolTipHelper to be associated with Control <i>c</i>.
 	 * 
-	 * @param c
-	 *            the control
+	 * @param c the control
 	 * @since 2.0
 	 */
 	public ToolTipHelper(org.eclipse.swt.widgets.Control c) {
@@ -48,25 +47,22 @@ public class ToolTipHelper extends PopUpHelper {
 	}
 
 	/*
-	 * Calculates the location where the tooltip will be painted. Returns this
-	 * as a Point. Tooltip will be painted directly below the cursor if
-	 * possible, otherwise it will be painted directly above cursor.
+	 * Calculates the location where the tooltip will be painted. Returns this as a
+	 * Point. Tooltip will be painted directly below the cursor if possible,
+	 * otherwise it will be painted directly above cursor.
 	 */
 	private Point computeWindowLocation(IFigure tip, int eventX, int eventY) {
-		org.eclipse.swt.graphics.Rectangle clientArea = control.getDisplay()
-				.getClientArea();
+		org.eclipse.swt.graphics.Rectangle clientArea = control.getDisplay().getClientArea();
 		Point preferredLocation = new Point(eventX, eventY + 26);
 
-		Dimension tipSize = getLightweightSystem().getRootFigure()
-				.getPreferredSize().getExpanded(getShellTrimSize());
+		Dimension tipSize = getLightweightSystem().getRootFigure().getPreferredSize().getExpanded(getShellTrimSize());
 
 		// Adjust location if tip is going to fall outside display
 		if (preferredLocation.y + tipSize.height > clientArea.height)
 			preferredLocation.y = eventY - tipSize.height;
 
 		if (preferredLocation.x + tipSize.width > clientArea.width)
-			preferredLocation.x -= (preferredLocation.x + tipSize.width)
-					- clientArea.width;
+			preferredLocation.x -= (preferredLocation.x + tipSize.width) - clientArea.width;
 
 		return preferredLocation;
 	}
@@ -75,8 +71,7 @@ public class ToolTipHelper extends PopUpHelper {
 	 * Sets the tooltip hide delay, which is the amount in ms, after which the
 	 * tooltip will disappear again.
 	 * 
-	 * @param hideDelay
-	 *            The delay after which the tooltip is hidden again, in ms.
+	 * @param hideDelay The delay after which the tooltip is hidden again, in ms.
 	 * @since 3.10
 	 */
 	public void setHideDelay(int hideDelay) {
@@ -84,33 +79,27 @@ public class ToolTipHelper extends PopUpHelper {
 	}
 
 	/**
-	 * Sets the LightWeightSystem's contents to the passed tooltip, and displays
-	 * the tip. The tip will be displayed only if the tip source is different
-	 * than the previously viewed tip source. (i.e. The cursor has moved off of
-	 * the previous tooltip source figure.)
+	 * Sets the LightWeightSystem's contents to the passed tooltip, and displays the
+	 * tip. The tip will be displayed only if the tip source is different than the
+	 * previously viewed tip source. (i.e. The cursor has moved off of the previous
+	 * tooltip source figure.)
 	 * <p>
-	 * The tooltip will be painted directly below the cursor if possible,
-	 * otherwise it will be painted directly above cursor.
+	 * The tooltip will be painted directly below the cursor if possible, otherwise
+	 * it will be painted directly above cursor.
 	 * 
-	 * @param hoverSource
-	 *            the figure over which the hover event was fired
-	 * @param tip
-	 *            the tooltip to be displayed
-	 * @param eventX
-	 *            the x coordinate of the hover event
-	 * @param eventY
-	 *            the y coordinate of the hover event
+	 * @param hoverSource the figure over which the hover event was fired
+	 * @param tip         the tooltip to be displayed
+	 * @param eventX      the x coordinate of the hover event
+	 * @param eventY      the y coordinate of the hover event
 	 * @since 2.0
 	 */
-	public void displayToolTipNear(IFigure hoverSource, IFigure tip,
-			int eventX, int eventY) {
+	public void displayToolTipNear(IFigure hoverSource, IFigure tip, int eventX, int eventY) {
 		if (tip != null && hoverSource != currentTipSource) {
 			getLightweightSystem().setContents(tip);
 			Point displayPoint = computeWindowLocation(tip, eventX, eventY);
-			Dimension shellSize = getLightweightSystem().getRootFigure()
-					.getPreferredSize().getExpanded(getShellTrimSize());
-			setShellBounds(displayPoint.x, displayPoint.y, shellSize.width,
-					shellSize.height);
+			Dimension shellSize = getLightweightSystem().getRootFigure().getPreferredSize()
+					.getExpanded(getShellTrimSize());
+			setShellBounds(displayPoint.x, displayPoint.y, shellSize.width, shellSize.height);
 			show();
 			currentTipSource = hoverSource;
 			timer = new Timer(true);
@@ -162,21 +151,16 @@ public class ToolTipHelper extends PopUpHelper {
 	 * Displays the hover source's tooltip if a tooltip of another source is
 	 * currently being displayed.
 	 * 
-	 * @param figureUnderMouse
-	 *            the figure over which the cursor was when called
-	 * @param tip
-	 *            the tooltip to be displayed
-	 * @param eventX
-	 *            the x coordinate of the cursor
-	 * @param eventY
-	 *            the y coordinate of the cursor
+	 * @param figureUnderMouse the figure over which the cursor was when called
+	 * @param tip              the tooltip to be displayed
+	 * @param eventX           the x coordinate of the cursor
+	 * @param eventY           the y coordinate of the cursor
 	 * @since 2.0
 	 */
-	public void updateToolTip(IFigure figureUnderMouse, IFigure tip,
-			int eventX, int eventY) {
+	public void updateToolTip(IFigure figureUnderMouse, IFigure tip, int eventX, int eventY) {
 		/*
-		 * If the cursor is not on any Figures, it has been moved off of the
-		 * control. Hide the tool tip.
+		 * If the cursor is not on any Figures, it has been moved off of the control.
+		 * Hide the tool tip.
 		 */
 		if (figureUnderMouse == null) {
 			if (isShowing()) {

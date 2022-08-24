@@ -35,15 +35,12 @@ public class LogicContainerTreeEditPart extends LogicTreeEditPart {
 	 */
 	protected void createEditPolicies() {
 		super.createEditPolicies();
-		installEditPolicy(EditPolicy.CONTAINER_ROLE,
-				new LogicContainerEditPolicy());
-		installEditPolicy(EditPolicy.TREE_CONTAINER_ROLE,
-				new LogicTreeContainerEditPolicy());
+		installEditPolicy(EditPolicy.CONTAINER_ROLE, new LogicContainerEditPolicy());
+		installEditPolicy(EditPolicy.TREE_CONTAINER_ROLE, new LogicTreeContainerEditPolicy());
 		// If this editpart is the contents of the viewer, then it is not
 		// deletable!
 		if (getParent() instanceof RootEditPart)
-			installEditPolicy(EditPolicy.COMPONENT_ROLE,
-					new RootComponentEditPolicy());
+			installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 	}
 
 	/**

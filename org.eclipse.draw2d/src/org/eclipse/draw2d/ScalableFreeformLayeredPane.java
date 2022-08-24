@@ -17,8 +17,7 @@ import org.eclipse.draw2d.geometry.Translatable;
  * @author hudsonr
  * @since 2.1
  */
-public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements
-		ScalableFigure {
+public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements ScalableFigure {
 
 	private double scale = 1.0;
 
@@ -60,8 +59,7 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements
 			super.paintClientArea(graphics);
 		} else {
 			ScaledGraphics g = new ScaledGraphics(graphics);
-			boolean optimizeClip = getBorder() == null
-					|| getBorder().isOpaque();
+			boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 			if (!optimizeClip)
 				g.clipRect(getBounds().getCropped(getInsets()));
 			g.scale(scale);
@@ -75,8 +73,7 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements
 	/**
 	 * Sets the zoom level
 	 * 
-	 * @param newZoom
-	 *            The new zoom level
+	 * @param newZoom The new zoom level
 	 */
 	public void setScale(double newZoom) {
 		if (scale == newZoom)

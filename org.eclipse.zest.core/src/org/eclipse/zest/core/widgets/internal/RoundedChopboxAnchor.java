@@ -15,7 +15,8 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * A slight modification to the ChopboxAnchor class to account for the rounded corners.
+ * A slight modification to the ChopboxAnchor class to account for the rounded
+ * corners.
  * 
  * @author Chris Callendar
  */
@@ -38,6 +39,7 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 
 	/**
 	 * Modifies the point slightly for the rounded corners.
+	 * 
 	 * @return Point
 	 */
 	public Point getLocation(Point reference) {
@@ -55,13 +57,14 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 	}
 
 	/**
-	 * Calculates the distance from the corner to the Point p.  
-	 * If it is less than the minimum then it translates it and returns the new Point.
-	 * @param corner	The corner Point.
-	 * @param p			The point to translate if close to the corner.
-	 * @param dx		The amount to translate in the x direcion.
-	 * @param dy		The amount to translate in the y direcion.
-	 * @return boolean 	If the translation occured.
+	 * Calculates the distance from the corner to the Point p. If it is less than
+	 * the minimum then it translates it and returns the new Point.
+	 * 
+	 * @param corner The corner Point.
+	 * @param p      The point to translate if close to the corner.
+	 * @param dx     The amount to translate in the x direcion.
+	 * @param dy     The amount to translate in the y direcion.
+	 * @return boolean If the translation occured.
 	 */
 	private boolean getTranslatedPoint(Point corner, Point p, int dx, int dy) {
 		int diff = (int) corner.getDistance(p);

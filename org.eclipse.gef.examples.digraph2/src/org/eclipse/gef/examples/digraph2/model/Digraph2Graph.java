@@ -31,7 +31,7 @@ public class Digraph2Graph extends Digraph1Graph {
 			getNodes().add(node);
 			if (i != 0) {
 				Digraph2Edge edge = new Digraph2Edge();
-				edge.setSource((Digraph2Node)getNodes().get(i - 1));
+				edge.setSource((Digraph2Node) getNodes().get(i - 1));
 				edge.setTarget(node);
 			}
 		}

@@ -33,9 +33,8 @@ public class ToggleGridAction extends Action {
 	/**
 	 * Constructor
 	 * 
-	 * @param diagramViewer
-	 *            the GraphicalViewer whose grid enablement and visibility
-	 *            properties are to be toggled
+	 * @param diagramViewer the GraphicalViewer whose grid enablement and visibility
+	 *                      properties are to be toggled
 	 */
 	public ToggleGridAction(GraphicalViewer diagramViewer) {
 		super(GEFMessages.ToggleGrid_Label, AS_CHECK_BOX);
@@ -50,8 +49,7 @@ public class ToggleGridAction extends Action {
 	 * @see org.eclipse.jface.action.IAction#isChecked()
 	 */
 	public boolean isChecked() {
-		Boolean val = (Boolean) diagramViewer
-				.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
+		Boolean val = (Boolean) diagramViewer.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
 		if (val != null)
 			return val.booleanValue();
 		return false;
@@ -62,10 +60,8 @@ public class ToggleGridAction extends Action {
 	 */
 	public void run() {
 		boolean val = !isChecked();
-		diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE,
-				Boolean.valueOf(val));
-		diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED,
-				Boolean.valueOf(val));
+		diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, Boolean.valueOf(val));
+		diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_ENABLED, Boolean.valueOf(val));
 	}
 
 }

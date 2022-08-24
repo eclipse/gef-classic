@@ -38,23 +38,19 @@ public class ScrollPaneLayout extends AbstractHintLayout {
 	}
 
 	/**
-	 * Calculates and returns the preferred size of the container based on the
-	 * given hints. If the given ScrollPane's (<i>container</i>) horizontal and
-	 * vertical scroll bar visibility is not {@link ScrollPane#NEVER}, then
-	 * space for those bars is always deducted from the hints (whether or not we
-	 * actually need the scroll bars).
+	 * Calculates and returns the preferred size of the container based on the given
+	 * hints. If the given ScrollPane's (<i>container</i>) horizontal and vertical
+	 * scroll bar visibility is not {@link ScrollPane#NEVER}, then space for those
+	 * bars is always deducted from the hints (whether or not we actually need the
+	 * scroll bars).
 	 * 
-	 * @param container
-	 *            the ScrollPane whose preferred size needs to be calculated
-	 * @param wHint
-	 *            the width hint
-	 * @param hHint
-	 *            the height hint
+	 * @param container the ScrollPane whose preferred size needs to be calculated
+	 * @param wHint     the width hint
+	 * @param hHint     the height hint
 	 * @return the preferred size of the given container
 	 * @since 2.0
 	 */
-	protected Dimension calculatePreferredSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		ScrollPane scrollpane = (ScrollPane) container;
 		ScrollBar hBar = scrollpane.getHorizontalScrollBar();
 		ScrollBar vBar = scrollpane.getVerticalScrollBar();
@@ -73,8 +69,7 @@ public class ScrollPaneLayout extends AbstractHintLayout {
 		if (hHint > -1)
 			hHint = Math.max(0, hHint - reservedHeight);
 
-		return scrollpane.getViewport().getPreferredSize(wHint, hHint)
-				.getExpanded(reservedWidth, reservedHeight);
+		return scrollpane.getViewport().getPreferredSize(wHint, hHint).getExpanded(reservedWidth, reservedHeight);
 	}
 
 	/**
@@ -83,23 +78,18 @@ public class ScrollPaneLayout extends AbstractHintLayout {
 	public void layout(IFigure parent) {
 		ScrollPane scrollpane = (ScrollPane) parent;
 		Viewport viewport = scrollpane.getViewport();
-		ScrollBar hBar = scrollpane.getHorizontalScrollBar(), vBar = scrollpane
-				.getVerticalScrollBar();
+		ScrollBar hBar = scrollpane.getHorizontalScrollBar(), vBar = scrollpane.getVerticalScrollBar();
 
-		ScrollPaneSolver.Result result = ScrollPaneSolver.solve(
-				parent.getClientArea(), viewport,
-				scrollpane.getHorizontalScrollBarVisibility(),
-				scrollpane.getVerticalScrollBarVisibility(),
+		ScrollPaneSolver.Result result = ScrollPaneSolver.solve(parent.getClientArea(), viewport,
+				scrollpane.getHorizontalScrollBarVisibility(), scrollpane.getVerticalScrollBarVisibility(),
 				vBar.getPreferredSize().width, hBar.getPreferredSize().height);
 
 		if (result.showV) {
-			vBar.setBounds(new Rectangle(result.viewportArea.right(),
-					result.viewportArea.y, result.insets.right,
+			vBar.setBounds(new Rectangle(result.viewportArea.right(), result.viewportArea.y, result.insets.right,
 					result.viewportArea.height));
 		}
 		if (result.showH) {
-			hBar.setBounds(new Rectangle(result.viewportArea.x,
-					result.viewportArea.bottom(), result.viewportArea.width,
+			hBar.setBounds(new Rectangle(result.viewportArea.x, result.viewportArea.bottom(), result.viewportArea.width,
 					result.insets.bottom));
 		}
 		vBar.setVisible(result.showV);

@@ -43,8 +43,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	/**
 	 * Adds a viewer to the set of synchronized viewers
 	 * 
-	 * @param viewer
-	 *            the viewer
+	 * @param viewer the viewer
 	 */
 	public void addViewer(EditPartViewer viewer) {
 		viewer.addSelectionChangedListener(this);
@@ -52,14 +51,12 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	}
 
 	/**
-	 * Maps the given editpart from one viewer to an editpart in another viewer.
-	 * It returns <code>null</code> if there is no corresponding part. This
-	 * method can be overridden to provide custom mapping.
+	 * Maps the given editpart from one viewer to an editpart in another viewer. It
+	 * returns <code>null</code> if there is no corresponding part. This method can
+	 * be overridden to provide custom mapping.
 	 * 
-	 * @param viewer
-	 *            the viewer being mapped to
-	 * @param part
-	 *            a part from another viewer
+	 * @param viewer the viewer being mapped to
+	 * @param part   a part from another viewer
 	 * @return <code>null</code> or a corresponding editpart
 	 */
 	protected EditPart convert(EditPartViewer viewer, EditPart part) {
@@ -74,8 +71,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	/**
 	 * Removes the viewer from the set of synchronized viewers
 	 * 
-	 * @param viewer
-	 *            the viewer to remove
+	 * @param viewer the viewer to remove
 	 */
 	public void removeViewer(EditPartViewer viewer) {
 		viewer.removeSelectionChangedListener(this);
@@ -88,8 +84,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 * Receives notification from one viewer, and maps selection to all other
 	 * members.
 	 * 
-	 * @param event
-	 *            the selection event
+	 * @param event the selection event
 	 */
 	public void selectionChanged(SelectionChangedEvent event) {
 		if (isDispatching)
@@ -108,14 +103,11 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 * serving as selectionSource, by delegating to
 	 * {@link #applySelection(EditPartViewer, ISelection)}.
 	 * 
-	 * @param selectionSource
-	 *            The viewer from which the selection originated.
-	 * @param selection
-	 *            The selection to apply to the other viewers.
+	 * @param selectionSource The viewer from which the selection originated.
+	 * @param selection       The selection to apply to the other viewers.
 	 * @since 3.10
 	 */
-	protected void syncSelection(EditPartViewer selectionSource,
-			ISelection selection) {
+	protected void syncSelection(EditPartViewer selectionSource, ISelection selection) {
 		isDispatching = true;
 		for (int i = 0; i < viewers.size(); i++) {
 			if (viewers.get(i) != selectionSource) {
@@ -130,8 +122,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 * Enables or disabled synchronization between viewers.
 	 * 
 	 * @since 3.1
-	 * @param value
-	 *            <code>true</code> if synchronization should occur
+	 * @param value <code>true</code> if synchronization should occur
 	 */
 	public void setEnabled(boolean value) {
 		if (!value)
@@ -143,19 +134,17 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	}
 
 	/**
-	 * Applies the given EditPart selection from another viewer to the given
-	 * viewer. It will first compute a new selection of {@link EditPart}s for
-	 * the given viewer by searching those that control the same model elements
-	 * as the {@link EditPart}s in the given selection (via
-	 * {@link #convert(EditPartViewer, EditPart)}), apply this new selection to
-	 * the given viewer, and reveal the last part in the new selection.
+	 * Applies the given EditPart selection from another viewer to the given viewer.
+	 * It will first compute a new selection of {@link EditPart}s for the given
+	 * viewer by searching those that control the same model elements as the
+	 * {@link EditPart}s in the given selection (via
+	 * {@link #convert(EditPartViewer, EditPart)}), apply this new selection to the
+	 * given viewer, and reveal the last part in the new selection.
 	 * 
-	 * @param viewer
-	 *            The viewer to apply the given selection to.
-	 * @param selection
-	 *            The selection to apply, which has to be an
-	 *            {@link IStructuredSelection} of {@link EditPart}s of another
-	 *            viewer.
+	 * @param viewer    The viewer to apply the given selection to.
+	 * @param selection The selection to apply, which has to be an
+	 *                  {@link IStructuredSelection} of {@link EditPart}s of another
+	 *                  viewer.
 	 * @since 3.10
 	 */
 	protected void applySelection(EditPartViewer viewer, ISelection selection) {

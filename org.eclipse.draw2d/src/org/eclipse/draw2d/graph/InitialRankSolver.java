@@ -99,8 +99,7 @@ class InitialRankSolver extends GraphVisitor {
 			graph.nodes.add(graph.forestRoot);
 			for (int i = 0; i < forest.size(); i++) {
 				tree = (NodeList) forest.get(i);
-				graph.edges.add(new Edge(graph.forestRoot, tree.getNode(0), 0,
-						0));
+				graph.edges.add(new Edge(graph.forestRoot, tree.getNode(0), 0, 0));
 			}
 		}
 	}

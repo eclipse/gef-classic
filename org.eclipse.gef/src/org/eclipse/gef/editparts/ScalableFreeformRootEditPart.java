@@ -87,20 +87,18 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 	 * Constructor for ScalableFreeformRootEditPart
 	 */
 	public ScalableFreeformRootEditPart() {
-		zoomManager = createZoomManager((ScalableFigure) getScaledLayers(),
-				((Viewport) getFigure()));
+		zoomManager = createZoomManager((ScalableFigure) getScaledLayers(), ((Viewport) getFigure()));
 	}
 
 	/**
 	 * Responsible of creating a {@link ZoomManager} to be used by this
 	 * {@link ScalableRootEditPart}.
 	 * 
-	 * @return A new {@link ZoomManager} bound to the given
-	 *         {@link ScalableFigure} and {@link Viewport}.
+	 * @return A new {@link ZoomManager} bound to the given {@link ScalableFigure}
+	 *         and {@link Viewport}.
 	 * @since 3.10
 	 */
-	protected ZoomManager createZoomManager(ScalableFigure scalableFigure,
-			Viewport viewport) {
+	protected ZoomManager createZoomManager(ScalableFigure scalableFigure, Viewport viewport) {
 		return new ZoomManager(scalableFigure, viewport);
 	}
 

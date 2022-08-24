@@ -72,8 +72,7 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 					if (left != null) {
 						Edge e = new Edge(graphLeft, getPrime(left), 0, 0);
 						prime.edges.add(e);
-						e.delta = graph.getPadding(n).left
-								+ graph.getMargin().left;
+						e.delta = graph.getPadding(n).left + graph.getMargin().left;
 					}
 
 				} else {
@@ -94,10 +93,8 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 		if (entries.contains(entry))
 			return;
 		entries.add(entry);
-		int separation = left.width + graph.getPadding(left).right
-				+ graph.getPadding(right).left;
-		prime.edges
-				.add(new Edge(getPrime(left), getPrime(right), separation, 0));
+		int separation = left.width + graph.getPadding(left).right + graph.getPadding(right).left;
+		prime.edges.add(new Edge(getPrime(left), getPrime(right), separation, 0));
 	}
 
 	Node addSeparatorsLeft(Node n, Subgraph graph) {

@@ -31,15 +31,12 @@ public class LayeredPane extends Layer {
 
 	/**
 	 * Adds the given layer figure, identifiable with the given key, at the
-	 * specified index. While adding the layer, it informs the surrounding
-	 * layers of the addition.
+	 * specified index. While adding the layer, it informs the surrounding layers of
+	 * the addition.
 	 * 
-	 * @param figure
-	 *            the layer
-	 * @param layerKey
-	 *            the layer's key
-	 * @param index
-	 *            the index where the layer should be added
+	 * @param figure   the layer
+	 * @param layerKey the layer's key
+	 * @param index    the index where the layer should be added
 	 * @since 2.0
 	 */
 	public void add(IFigure figure, Object layerKey, int index) {
@@ -50,15 +47,12 @@ public class LayeredPane extends Layer {
 	}
 
 	/**
-	 * Adds the given layer, identifiable with the given key, under the
-	 * <i>after</i> layer provided in the input.
+	 * Adds the given layer, identifiable with the given key, under the <i>after</i>
+	 * layer provided in the input.
 	 * 
-	 * @param layer
-	 *            the layer
-	 * @param key
-	 *            the layer's key
-	 * @param after
-	 *            the layer under which the input layer should be added
+	 * @param layer the layer
+	 * @param key   the layer's key
+	 * @param after the layer under which the input layer should be added
 	 * @since 2.0
 	 */
 	public void addLayerAfter(Layer layer, Object key, Object after) {
@@ -70,12 +64,9 @@ public class LayeredPane extends Layer {
 	 * Adds the given layer, identifiable with the given key, above the
 	 * <i>before</i> layer provided in the input.
 	 * 
-	 * @param layer
-	 *            the layer
-	 * @param key
-	 *            the layer's key
-	 * @param before
-	 *            the layer above which the input layer should be added
+	 * @param layer  the layer
+	 * @param key    the layer's key
+	 * @param before the layer above which the input layer should be added
 	 * @since 2.0
 	 */
 	public void addLayerBefore(Layer layer, Object key, Object before) {
@@ -86,8 +77,7 @@ public class LayeredPane extends Layer {
 	/**
 	 * Returns the layer identified by the key given in the input.
 	 * 
-	 * @param key
-	 *            the key to identify the desired layer
+	 * @param key the key to identify the desired layer
 	 * @return the desired layer
 	 * @since 2.0
 	 */
@@ -101,8 +91,7 @@ public class LayeredPane extends Layer {
 	/**
 	 * Returns the layer at the specified index in this pane.
 	 * 
-	 * @param index
-	 *            the index of the desired layer
+	 * @param index the index of the desired layer
 	 * @return the desired layer
 	 * @since 2.0
 	 */
@@ -123,8 +112,7 @@ public class LayeredPane extends Layer {
 	/**
 	 * Removes the layer identified by the given key from this layered pane.
 	 * 
-	 * @param key
-	 *            the key of the layer to be removed
+	 * @param key the key of the layer to be removed
 	 * @since 2.0
 	 */
 	public void removeLayer(Object key) {
@@ -135,8 +123,7 @@ public class LayeredPane extends Layer {
 	 * Removes the given layer from this layered pane.
 	 * 
 	 * @deprecated call {@link IFigure#remove(IFigure)} instead
-	 * @param layer
-	 *            the layer to be removed
+	 * @param layer the layer to be removed
 	 * @since 2.0
 	 */
 	public void removeLayer(IFigure layer) {
@@ -148,8 +135,7 @@ public class LayeredPane extends Layer {
 	 * layered pane. It collapses the layers, occupying the space vacated by the
 	 * removed layer.
 	 * 
-	 * @param index
-	 *            the index of the layer to be removed
+	 * @param index the index of the layer to be removed
 	 * @since 2.0
 	 */
 	protected void removeLayer(int index) {

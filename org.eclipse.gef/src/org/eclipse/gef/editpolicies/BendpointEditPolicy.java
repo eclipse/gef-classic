@@ -38,8 +38,7 @@ import org.eclipse.gef.requests.BendpointRequest;
  * {@link org.eclipse.draw2d.Connection} figure. If the number of bends in the
  * <code>Connection</code> changes, the handles will be updated.
  */
-public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
-		implements PropertyChangeListener {
+public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy implements PropertyChangeListener {
 
 	private static final List NULL_CONSTRAINT = new ArrayList();
 
@@ -57,8 +56,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	 */
 	public void activate() {
 		super.activate();
-		getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS,
-				this);
+		getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
 	}
 
 	private List createHandlesForAutomaticBendpoints() {
@@ -97,8 +95,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 				// Go to the next user bendpoint
 				bendPointIndex++;
 				if (bendPointIndex < bendPoints.size())
-					currBendPoint = ((Bendpoint) bendPoints.get(bendPointIndex))
-							.getLocation();
+					currBendPoint = ((Bendpoint) bendPoints.get(bendPointIndex)).getLocation();
 			}
 		}
 
@@ -108,10 +105,10 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	/**
 	 * Creates selection handles for the bendpoints. Explicit (user-defined)
 	 * bendpoints will have {@link BendpointMoveHandle}s on them with a single
-	 * {@link BendpointCreationHandle} between 2 consecutive explicit
-	 * bendpoints. If implicit bendpoints (such as those created by the
-	 * {@link AutomaticRouter}) are used, one {@link BendpointCreationHandle} is
-	 * placed in the middle of the Connection.
+	 * {@link BendpointCreationHandle} between 2 consecutive explicit bendpoints. If
+	 * implicit bendpoints (such as those created by the {@link AutomaticRouter})
+	 * are used, one {@link BendpointCreationHandle} is placed in the middle of the
+	 * Connection.
 	 * 
 	 * @see SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
@@ -125,24 +122,22 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	}
 
 	/**
-	 * <code>deactivate()</code> is extended to remove the property change
-	 * listener on the <code>Connection</code> figure.
+	 * <code>deactivate()</code> is extended to remove the property change listener
+	 * on the <code>Connection</code> figure.
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
 	public void deactivate() {
-		getConnection().removePropertyChangeListener(
-				Connection.PROPERTY_POINTS, this);
+		getConnection().removePropertyChangeListener(Connection.PROPERTY_POINTS, this);
 		super.deactivate();
 	}
 
 	/**
 	 * Erases all bendpoint feedback. Since the original <code>Connection</code>
-	 * figure is used for feedback, we just restore the original constraint that
-	 * was saved before feedback started to show.
+	 * figure is used for feedback, we just restore the original constraint that was
+	 * saved before feedback started to show.
 	 * 
-	 * @param request
-	 *            the BendpointRequest
+	 * @param request the BendpointRequest
 	 */
 	protected void eraseConnectionFeedback(BendpointRequest request) {
 		restoreOriginalConstraint();
@@ -153,14 +148,12 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request)
 	 */
 	public void eraseSourceFeedback(Request request) {
-		if (REQ_MOVE_BENDPOINT.equals(request.getType())
-				|| REQ_CREATE_BENDPOINT.equals(request.getType()))
+		if (REQ_MOVE_BENDPOINT.equals(request.getType()) || REQ_CREATE_BENDPOINT.equals(request.getType()))
 			eraseConnectionFeedback((BendpointRequest) request);
 	}
 
 	/**
-	 * Factors the Request into either a MOVE, a DELETE, or a CREATE of a
-	 * bendpoint.
+	 * Factors the Request into either a MOVE, a DELETE, or a CREATE of a bendpoint.
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
@@ -176,8 +169,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	}
 
 	/**
-	 * Convenience method for obtaining the host's <code>Connection</code>
-	 * figure.
+	 * Convenience method for obtaining the host's <code>Connection</code> figure.
 	 * 
 	 * @return the Connection figure
 	 */
@@ -188,28 +180,23 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	/**
 	 * Implement this method to return a Command that will create a bendpoint.
 	 * 
-	 * @param request
-	 *            the BendpointRequest
+	 * @param request the BendpointRequest
 	 * @return a Command to create a bendpoint
 	 */
-	protected abstract Command getCreateBendpointCommand(
-			BendpointRequest request);
+	protected abstract Command getCreateBendpointCommand(BendpointRequest request);
 
 	/**
 	 * Implement this method to return a Command that will delete a bendpoint.
 	 * 
-	 * @param request
-	 *            the BendpointRequest
+	 * @param request the BendpointRequest
 	 * @return a Command to delete a bendpoint
 	 */
-	protected abstract Command getDeleteBendpointCommand(
-			BendpointRequest request);
+	protected abstract Command getDeleteBendpointCommand(BendpointRequest request);
 
 	/**
 	 * Implement this method to return a Command that will move a bendpoint.
 	 * 
-	 * @param request
-	 *            the BendpointRequest
+	 * @param request the BendpointRequest
 	 * @return a Command to move a bendpoint
 	 */
 	protected abstract Command getMoveBendpointCommand(BendpointRequest request);
@@ -217,8 +204,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	private boolean isAutomaticallyBending() {
 		List constraint = (List) getConnection().getRoutingConstraint();
 		PointList points = getConnection().getPoints();
-		return ((points.size() > 2) && (constraint == null || constraint
-				.isEmpty()));
+		return ((points.size() > 2) && (constraint == null || constraint.isEmpty()));
 	}
 
 	private boolean lineContainsPoint(Point p1, Point p2, Point p) {
@@ -279,8 +265,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 
 	/**
 	 * Since the original figure is used for feedback, this method saves the
-	 * original constraint, so that is can be restored when the feedback is
-	 * erased.
+	 * original constraint, so that is can be restored when the feedback is erased.
 	 */
 	protected void saveOriginalConstraint() {
 		originalConstraint = (List) getConnection().getRoutingConstraint();
@@ -293,16 +278,14 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 		PointList points = getConnection().getPoints();
 		int bpIndex = -1;
 		List bendPoints = (List) getConnection().getRoutingConstraint();
-		Point bp = ((Bendpoint) bendPoints.get(request.getIndex()))
-				.getLocation();
+		Point bp = ((Bendpoint) bendPoints.get(request.getIndex())).getLocation();
 
 		int smallestDistance = -1;
 
 		// points include the bend points as well as start and end, which we may
 		// leave out when searching for the bend point index
 		for (int i = 1; i < points.size() - 1; i++) {
-			if (smallestDistance == -1
-					|| points.getPoint(i).getDistance2(bp) < smallestDistance) {
+			if (smallestDistance == -1 || points.getPoint(i).getDistance2(bp) < smallestDistance) {
 				bpIndex = i;
 				smallestDistance = points.getPoint(i).getDistance2(bp);
 				if (smallestDistance == 0)
@@ -317,12 +300,11 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	}
 
 	/**
-	 * Shows feedback when a bendpoint is being created. The original figure is
-	 * used for feedback and the original constraint is saved, so that it can be
-	 * restored when feedback is erased.
+	 * Shows feedback when a bendpoint is being created. The original figure is used
+	 * for feedback and the original constraint is saved, so that it can be restored
+	 * when feedback is erased.
 	 * 
-	 * @param request
-	 *            the BendpointRequest
+	 * @param request the BendpointRequest
 	 */
 	protected void showCreateBendpointFeedback(BendpointRequest request) {
 		Point p = new Point(request.getLocation());
@@ -341,13 +323,12 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	}
 
 	/**
-	 * Shows feedback when a bendpoint is being deleted. This method is only
-	 * called once when the bendpoint is first deleted, not every mouse move.
-	 * The original figure is used for feedback and the original constraint is
-	 * saved, so that it can be restored when feedback is erased.
+	 * Shows feedback when a bendpoint is being deleted. This method is only called
+	 * once when the bendpoint is first deleted, not every mouse move. The original
+	 * figure is used for feedback and the original constraint is saved, so that it
+	 * can be restored when feedback is erased.
 	 * 
-	 * @param request
-	 *            the BendpointRequest
+	 * @param request the BendpointRequest
 	 */
 	protected void showDeleteBendpointFeedback(BendpointRequest request) {
 		if (originalConstraint == null) {
@@ -362,11 +343,10 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	 * Shows feedback when a bendpoint is being moved. Also checks to see if the
 	 * bendpoint should be deleted and then calls
 	 * {@link #showDeleteBendpointFeedback(BendpointRequest)} if needed. The
-	 * original figure is used for feedback and the original constraint is
-	 * saved, so that it can be restored when feedback is erased.
+	 * original figure is used for feedback and the original constraint is saved, so
+	 * that it can be restored when feedback is erased.
 	 * 
-	 * @param request
-	 *            the BendpointRequest
+	 * @param request the BendpointRequest
 	 */
 	protected void showMoveBendpointFeedback(BendpointRequest request) {
 		Point p = new Point(request.getLocation());
@@ -395,13 +375,12 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy
 	}
 
 	/**
-	 * Shows feedback when appropriate. Calls a different method depending on
-	 * the request type.
+	 * Shows feedback when appropriate. Calls a different method depending on the
+	 * request type.
 	 * 
 	 * @see #showCreateBendpointFeedback(BendpointRequest)
 	 * @see #showMoveBendpointFeedback(BendpointRequest)
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 */
 	public void showSourceFeedback(Request request) {
 		if (REQ_MOVE_BENDPOINT.equals(request.getType()))

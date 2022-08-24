@@ -34,8 +34,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	/**
 	 * Creates a new <code>CornerTriangleBorder</code>.
 	 * 
-	 * @param isPrimary
-	 *            Determines this border's color.
+	 * @param isPrimary Determines this border's color.
 	 */
 	public CornerTriangleBorder(boolean isPrimary) {
 		super();
@@ -62,12 +61,9 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	 * Paints the border. If this is a border for the primary selection, it's
 	 * painted black. Otherwise, it's painted white.
 	 * 
-	 * @param figure
-	 *            The <code>IFigure</code> this border will be painted on
-	 * @param graphics
-	 *            The <code>Graphics</code>.
-	 * @param insets
-	 *            The <code>Insets</code>.
+	 * @param figure   The <code>IFigure</code> this border will be painted on
+	 * @param graphics The <code>Graphics</code>.
+	 * @param insets   The <code>Insets</code>.
 	 */
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		// Don't paint the center of the figure.
@@ -120,10 +116,8 @@ public final class CornerTriangleBorder extends AbstractBorder {
 		// Bottom right corner
 		pList = new PointList();
 		pList.addPoint(rect.getBottomRight());
-		pList.addPoint(new Point(((rect.x + rect.width) - edgeSize),
-				(rect.y + rect.height)));
-		pList.addPoint(new Point((rect.x + rect.width),
-				(rect.y + rect.height - edgeSize)));
+		pList.addPoint(new Point(((rect.x + rect.width) - edgeSize), (rect.y + rect.height)));
+		pList.addPoint(new Point((rect.x + rect.width), (rect.y + rect.height - edgeSize)));
 
 		graphics.setBackgroundColor(getFillColor());
 		graphics.fillPolygon(pList);
@@ -132,8 +126,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	}
 
 	/**
-	 * Returns the outline color based on what is returned by
-	 * {@link #isPrimary()}.
+	 * Returns the outline color based on what is returned by {@link #isPrimary()}.
 	 * 
 	 * @return The outline color.
 	 */
@@ -161,12 +154,10 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	}
 
 	/**
-	 * Sets this border as primary if <code>isPrimary</code> is
-	 * <code>true</code>.
+	 * Sets this border as primary if <code>isPrimary</code> is <code>true</code>.
 	 * 
-	 * @param isPrimary
-	 *            True if this border is for the primary object in the
-	 *            selection.
+	 * @param isPrimary True if this border is for the primary object in the
+	 *                  selection.
 	 */
 	public void setPrimary(boolean isPrimary) {
 		this.isPrimary = isPrimary;

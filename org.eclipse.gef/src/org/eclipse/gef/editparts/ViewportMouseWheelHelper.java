@@ -27,8 +27,7 @@ import org.eclipse.gef.MouseWheelHelper;
  * @author Pratik Shah
  * @since 3.1
  */
-public class ViewportMouseWheelHelper extends ViewportHelper implements
-		MouseWheelHelper {
+public class ViewportMouseWheelHelper extends ViewportHelper implements MouseWheelHelper {
 
 	private static final int LINE_HEIGHT = 12;
 
@@ -37,8 +36,7 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements
 	/**
 	 * Constructor
 	 * 
-	 * @param part
-	 *            the EditPArt that has to be scrolled
+	 * @param part the EditPArt that has to be scrolled
 	 */
 	public ViewportMouseWheelHelper(GraphicalEditPart part) {
 		this(part, -1, -1);
@@ -48,26 +46,22 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements
 	 * 
 	 * Constructor
 	 * 
-	 * @param part
-	 *            the EditPart that has to be scrolled
-	 * @param lineHeight
-	 *            the new line height
-	 * @param pageHeight
-	 *            the new page height
+	 * @param part       the EditPart that has to be scrolled
+	 * @param lineHeight the new line height
+	 * @param pageHeight the new page height
 	 * @see #setLineHeight(int)
 	 * @see #setPageHeight(int)
 	 */
-	public ViewportMouseWheelHelper(GraphicalEditPart part, int lineHeight,
-			int pageHeight) {
+	public ViewportMouseWheelHelper(GraphicalEditPart part, int lineHeight, int pageHeight) {
 		super(part);
 		setLineHeight(lineHeight);
 		setPageHeight(pageHeight);
 	}
 
 	/**
-	 * Finds the viewport of the given EditPart and scrolls it as requested. If
-	 * it can't be scrolled then leaves doit to be true so that the given
-	 * EditPart's ancestors might have a chance to scroll.
+	 * Finds the viewport of the given EditPart and scrolls it as requested. If it
+	 * can't be scrolled then leaves doit to be true so that the given EditPart's
+	 * ancestors might have a chance to scroll.
 	 * 
 	 * @see org.eclipse.gef.MouseWheelHelper#handleMouseWheelScrolled(org.eclipse.swt.widgets.Event)
 	 */
@@ -81,9 +75,7 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements
 			int scrollHeight = lineHeight;
 			if (event.detail == SWT.SCROLL_PAGE)
 				scrollHeight = pageHeight > lineHeight ? pageHeight
-						: Math.max(
-								lineHeight,
-								viewport.getClientArea(Rectangle.SINGLETON).height - 26);
+						: Math.max(lineHeight, viewport.getClientArea(Rectangle.SINGLETON).height - 26);
 			scrollHeight *= event.count;
 			viewport.setVerticalLocation(currentPos - scrollHeight);
 			if (rModel.getValue() != currentPos)
@@ -92,12 +84,11 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements
 	}
 
 	/**
-	 * Sets the height (in pixels) that will be scrolled when
-	 * {@link SWT#SCROLL_LINE line scrolling} is requested. If the line height
-	 * is set to 0 or less, or not set at all, a default height will be used.
+	 * Sets the height (in pixels) that will be scrolled when {@link SWT#SCROLL_LINE
+	 * line scrolling} is requested. If the line height is set to 0 or less, or not
+	 * set at all, a default height will be used.
 	 * 
-	 * @param height
-	 *            the new line height
+	 * @param height the new line height
 	 */
 	public void setLineHeight(int height) {
 		if (height > 0)
@@ -107,15 +98,14 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements
 	}
 
 	/**
-	 * Sets the height (in pixels) that will be scrolled when
-	 * {@link SWT#SCROLL_PAGE page scrolling} is requested. A page height that
-	 * is less than the line height will not be respected. If the page height is
-	 * set to -1, or one is not set at all, the default height will be used. The
-	 * default height is calculated based on the given EditPart's figure's
-	 * viewport's size. It will not be less than the line height.
+	 * Sets the height (in pixels) that will be scrolled when {@link SWT#SCROLL_PAGE
+	 * page scrolling} is requested. A page height that is less than the line height
+	 * will not be respected. If the page height is set to -1, or one is not set at
+	 * all, the default height will be used. The default height is calculated based
+	 * on the given EditPart's figure's viewport's size. It will not be less than
+	 * the line height.
 	 * 
-	 * @param height
-	 *            the new page height
+	 * @param height the new page height
 	 */
 	public void setPageHeight(int height) {
 		pageHeight = height;

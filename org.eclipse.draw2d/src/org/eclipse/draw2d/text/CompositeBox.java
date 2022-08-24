@@ -24,8 +24,7 @@ public abstract class CompositeBox extends FlowBox {
 	/**
 	 * Adds the given box and updates properties of this composite box.
 	 * 
-	 * @param box
-	 *            the child being added
+	 * @param box the child being added
 	 */
 	public abstract void add(FlowBox box);
 
@@ -45,19 +44,17 @@ public abstract class CompositeBox extends FlowBox {
 	/**
 	 * Sets the recommended width for this CompositeBox.
 	 * 
-	 * @param w
-	 *            the width
+	 * @param w the width
 	 */
 	public void setRecommendedWidth(int w) {
 		recommendedWidth = w;
 	}
 
 	/**
-	 * Positions the box vertically by setting the y coordinate for the top of
-	 * the content of the line. For internal use only.
+	 * Positions the box vertically by setting the y coordinate for the top of the
+	 * content of the line. For internal use only.
 	 * 
-	 * @param top
-	 *            the y coordinate
+	 * @param top the y coordinate
 	 * @since 3.1
 	 */
 	public abstract void setLineTop(int top);

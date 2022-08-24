@@ -16,8 +16,7 @@ import org.eclipse.gef.requests.GroupRequest;
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
 import org.eclipse.gef.examples.logicdesigner.model.commands.ConnectionCommand;
 
-public class WireEditPolicy extends
-		org.eclipse.gef.editpolicies.ConnectionEditPolicy {
+public class WireEditPolicy extends org.eclipse.gef.editpolicies.ConnectionEditPolicy {
 
 	protected Command getDeleteCommand(GroupRequest request) {
 		ConnectionCommand c = new ConnectionCommand();

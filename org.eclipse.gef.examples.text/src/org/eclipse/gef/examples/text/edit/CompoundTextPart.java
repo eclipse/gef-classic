@@ -110,14 +110,12 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 				searchLineEnd(search, result);
 			else
 				searchLineBegin(search, result);
-		} else if (search.getType() == CaretRequest.ROW
-				|| search.getType() == CaretRequest.LOCATION) {
+		} else if (search.getType() == CaretRequest.ROW || search.getType() == CaretRequest.LOCATION) {
 			if (search.isForward)
 				searchLineBelow(search, result);
 			else
 				searchLineAbove(search, result);
-		} else if (search.getType() == CaretRequest.COLUMN
-				|| search.getType() == CaretRequest.WORD_BOUNDARY) {
+		} else if (search.getType() == CaretRequest.COLUMN || search.getType() == CaretRequest.WORD_BOUNDARY) {
 			if (search.isForward)
 				searchForward(search, result);
 			else
@@ -132,8 +130,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 	}
 
 	protected void searchBackward(CaretRequest search, SearchResult result) {
-		int childIndex = search.isRecursive ? getChildren().size() - 1
-				: getChildren().indexOf(search.where.part) - 1;
+		int childIndex = search.isRecursive ? getChildren().size() - 1 : getChildren().indexOf(search.where.part) - 1;
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
 		while (childIndex >= 0) {
@@ -152,8 +149,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 	}
 
 	protected void searchForward(CaretRequest search, SearchResult result) {
-		int childIndex = search.isRecursive ? 0 : getChildren().indexOf(
-				search.where.part) + 1;
+		int childIndex = search.isRecursive ? 0 : getChildren().indexOf(search.where.part) + 1;
 		int childCount = getChildren().size();
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
@@ -203,8 +199,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		int childCount = getChildren().size();
 		search.setRecursive(true);
 		while (childIndex < childCount) {
-			TextEditPart newPart = (TextEditPart) getChildren().get(
-					childIndex++);
+			TextEditPart newPart = (TextEditPart) getChildren().get(childIndex++);
 			newPart.getTextLocation(search, result);
 			if (result.location != null)
 				return;

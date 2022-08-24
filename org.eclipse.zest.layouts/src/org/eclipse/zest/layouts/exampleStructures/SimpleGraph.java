@@ -37,7 +37,8 @@ public class SimpleGraph implements LayoutGraph {
 
 	/**
 	 * Adds the node.
-	 * @param node	The node to add.
+	 * 
+	 * @param node The node to add.
 	 */
 	public void addEntity(LayoutEntity node) {
 		if (node instanceof SimpleNode) {
@@ -59,36 +60,44 @@ public class SimpleGraph implements LayoutGraph {
 	}
 
 	/**
-	 * Add a relationship between two objects.  Layout algorithms need to know
-	 * whether a relationship is one way or bi-directional.  This method assumes that 
-	 * all relationships are bi-direcional and have the same weight. 
+	 * Add a relationship between two objects. Layout algorithms need to know
+	 * whether a relationship is one way or bi-directional. This method assumes that
+	 * all relationships are bi-direcional and have the same weight.
 	 */
 	public void addObjectRelationship(Object sourceNode, Object destinationNode) {
 		addObjectRelationship(sourceNode, destinationNode, true, 1);
 	}
 
 	/**
-	 * Add a relationship between two objects.  Layout algorithms need to know
-	 * whether a relationship is one way or bi-directional.  
+	 * Add a relationship between two objects. Layout algorithms need to know
+	 * whether a relationship is one way or bi-directional.
 	 */
-	public void addObjectRelationship(Object sourceObject, Object destinationObject, boolean bidirectional, int weight) {
+	public void addObjectRelationship(Object sourceObject, Object destinationObject, boolean bidirectional,
+			int weight) {
 		addObjectNode(sourceObject);
 		addObjectNode(destinationObject);
 		SimpleNode sourceNode = (SimpleNode) objectsToNodes.get(sourceObject);
 		SimpleNode destinationNode = (SimpleNode) objectsToNodes.get(destinationObject);
-		SimpleRelationship simpleRelationship = new SimpleRelationship(sourceNode, destinationNode, bidirectional, weight);
+		SimpleRelationship simpleRelationship = new SimpleRelationship(sourceNode, destinationNode, bidirectional,
+				weight);
 		relationships.add(simpleRelationship);
 	}
 
-	/* (non-Javadoc)
-	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.layouts.LayoutEntity, ca.uvic.cs.chisel.layouts.LayoutEntity)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.
+	 * layouts.LayoutEntity, ca.uvic.cs.chisel.layouts.LayoutEntity)
 	 */
 	public void addRelationship(LayoutEntity srcNode, LayoutEntity destNode) {
 		addRelationship(srcNode, destNode, true, 1);
 	}
 
-	/* (non-Javadoc)
-	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.layouts.LayoutEntity, ca.uvic.cs.chisel.layouts.LayoutEntity, boolean, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.
+	 * layouts.LayoutEntity, ca.uvic.cs.chisel.layouts.LayoutEntity, boolean, int)
 	 */
 	public void addRelationship(LayoutEntity srcNode, LayoutEntity destNode, boolean bidirectional, int weight) {
 		addEntity(srcNode);
@@ -97,31 +106,36 @@ public class SimpleGraph implements LayoutGraph {
 		relationships.add(rel);
 	}
 
-	/* (non-Javadoc)
-	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.layouts.LayoutRelationship)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.
+	 * layouts.LayoutRelationship)
 	 */
 	public void addRelationship(LayoutRelationship relationship) {
 		relationships.add(relationship);
 	}
 
 	/**
-	 * Returns a list of SimpleNodes that represent the objects added to this graph using addNode.  Note that
-	 * any manipulation to this graph was done on the SimpleNodes, not the real objects.  You
-	 * must still manipulate them yourself.
+	 * Returns a list of SimpleNodes that represent the objects added to this graph
+	 * using addNode. Note that any manipulation to this graph was done on the
+	 * SimpleNodes, not the real objects. You must still manipulate them yourself.
 	 */
 	public List getEntities() {
 		return new ArrayList(objectsToNodes.values());
 	}
 
 	/**
-	 * Returns a list of SimpleRelationships that represent the objects added to this graph using addRelationship.
+	 * Returns a list of SimpleRelationships that represent the objects added to
+	 * this graph using addRelationship.
 	 */
 	public List getRelationships() {
 		return relationships;
 	}
 
 	/**
-	 * Checks the relationships to see if they are all bidirectional. 
+	 * Checks the relationships to see if they are all bidirectional.
+	 * 
 	 * @return boolean if all edges are bidirectional.
 	 */
 	public boolean isBidirectional() {

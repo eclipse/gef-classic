@@ -32,8 +32,7 @@ public class ConvertElementCommand extends ExampleTextCommand {
 	/**
 	 * @since 3.1
 	 */
-	public ConvertElementCommand(TextRun text, int begin, int end,
-			ModelElement converted, ModelLocation caret) {
+	public ConvertElementCommand(TextRun text, int begin, int end, ModelElement converted, ModelLocation caret) {
 		super("bogus");
 		this.text = text;
 		this.offset = begin;
@@ -54,8 +53,7 @@ public class ConvertElementCommand extends ExampleTextCommand {
 	}
 
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
-		return new SelectionRange(lookupModel(viewer, caret.model),
-				caret.offset);
+		return new SelectionRange(lookupModel(viewer, caret.model), caret.offset);
 	}
 
 	public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {

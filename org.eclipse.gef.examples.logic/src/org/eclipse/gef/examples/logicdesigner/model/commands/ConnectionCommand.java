@@ -42,8 +42,7 @@ public class ConnectionCommand extends Command {
 			while (i.hasNext()) {
 				Wire conn = (Wire) i.next();
 				if (targetTerminal != null && conn.getTargetTerminal() != null)
-					if (conn.getTargetTerminal().equals(targetTerminal)
-							&& conn.getTarget().equals(target))
+					if (conn.getTargetTerminal().equals(targetTerminal) && conn.getTarget().equals(target))
 						return false;
 			}
 		}

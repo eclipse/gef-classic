@@ -41,8 +41,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Returns a Command for adding the children to the container.
 	 * 
-	 * @param request
-	 *            the Request to add.
+	 * @param request the Request to add.
 	 * @return Command <code>null</code> or a Command to perform the add
 	 */
 	protected abstract Command getAddCommand(ChangeBoundsRequest request);
@@ -50,8 +49,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Returns a Command for creating the object inside the container.
 	 * 
-	 * @param request
-	 *            the CreateRequest
+	 * @param request the CreateRequest
 	 * @return Command <code>null</code> or a Command to perform the create
 	 */
 	protected abstract Command getCreateCommand(CreateRequest request);
@@ -59,12 +57,10 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Returns a Command for moving the children within the container.
 	 * 
-	 * @param request
-	 *            the Request to move
+	 * @param request the Request to move
 	 * @return Command <code>null</code> or a Command to perform the move
 	 */
-	protected abstract Command getMoveChildrenCommand(
-			ChangeBoundsRequest request);
+	protected abstract Command getMoveChildrenCommand(ChangeBoundsRequest request);
 
 	private void eraseDropFeedback(Request req) {
 		getTree().setInsertMark(null, true);
@@ -74,20 +70,17 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
 	 */
 	public void eraseTargetFeedback(Request req) {
-		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_ADD)
-				|| req.getType().equals(REQ_CREATE))
+		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_ADD) || req.getType().equals(REQ_CREATE))
 			eraseDropFeedback(req);
 	}
 
 	/**
 	 * Calculates the index of the TreeItem at given point.
 	 * 
-	 * @param pt
-	 *            the Point in the Viewer
+	 * @param pt the Point in the Viewer
 	 * @return the index of the TreeItem
 	 */
-	protected final int findIndexOfTreeItemAt(
-			org.eclipse.draw2d.geometry.Point pt) {
+	protected final int findIndexOfTreeItemAt(org.eclipse.draw2d.geometry.Point pt) {
 		int index = -1;
 		TreeItem item = findTreeItemAt(pt);
 		if (item != null) {
@@ -102,8 +95,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	 * Calculates the <code>TreeItem</code> at a specified
 	 * {@link org.eclipse.draw2d.geometry.Point}.
 	 * 
-	 * @param pt
-	 *            the draw2d Point
+	 * @param pt the draw2d Point
 	 * @return <code>null</code> or the TreeItem
 	 */
 	protected final TreeItem findTreeItemAt(org.eclipse.draw2d.geometry.Point pt) {
@@ -125,14 +117,13 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	}
 
 	/**
-	 * Returns the host EditPart when appropriate. Targeting is done by checking
-	 * if the mouse is clearly over the host's TreeItem.
+	 * Returns the host EditPart when appropriate. Targeting is done by checking if
+	 * the mouse is clearly over the host's TreeItem.
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
 	public EditPart getTargetEditPart(Request req) {
-		if (req.getType().equals(REQ_ADD) || req.getType().equals(REQ_MOVE)
-				|| req.getType().equals(REQ_CREATE)) {
+		if (req.getType().equals(REQ_ADD) || req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_CREATE)) {
 			DropRequest drop = (DropRequest) req;
 			Point where = new Point(drop.getLocation().x, drop.getLocation().y);
 			Widget widget = ((TreeEditPart) getHost()).getWidget();
@@ -141,9 +132,8 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 			TreeItem treeitem = (TreeItem) widget;
 			Rectangle bounds = treeitem.getBounds();
 			int fudge = bounds.height / 5;
-			Rectangle inner = new Rectangle(bounds.x, bounds.y + fudge,
-					bounds.width, bounds.height
-							- (treeitem.getExpanded() ? 0 : fudge * 2));
+			Rectangle inner = new Rectangle(bounds.x, bounds.y + fudge, bounds.width,
+					bounds.height - (treeitem.getExpanded() ? 0 : fudge * 2));
 			// Point is either outside the Treeitem, or inside the inner Rect.
 			if (!bounds.contains(where) || inner.contains(where))
 				return getHost();
@@ -166,10 +156,8 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 		}
 	}
 
-	private boolean isInUpperHalf(Rectangle rect,
-			org.eclipse.draw2d.geometry.Point pt) {
-		Rectangle tempRect = new Rectangle(rect.x, rect.y, rect.width,
-				rect.height / 2);
+	private boolean isInUpperHalf(Rectangle rect, org.eclipse.draw2d.geometry.Point pt) {
+		Rectangle tempRect = new Rectangle(rect.x, rect.y, rect.width, rect.height / 2);
 		return tempRect.contains(new Point(pt.x, pt.y));
 	}
 
@@ -195,8 +183,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
 	 */
 	public void showTargetFeedback(Request req) {
-		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_ADD)
-				|| req.getType().equals(REQ_CREATE))
+		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_ADD) || req.getType().equals(REQ_CREATE))
 			showDropFeedback((DropRequest) req);
 	}
 

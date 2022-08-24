@@ -19,8 +19,7 @@ import org.eclipse.gef.examples.text.model.ModelElement;
 /**
  * @since 3.1
  */
-public abstract class ExampleTreePart extends AbstractTreeEditPart implements
-		PropertyChangeListener {
+public abstract class ExampleTreePart extends AbstractTreeEditPart implements PropertyChangeListener {
 
 	public void activate() {
 		super.activate();

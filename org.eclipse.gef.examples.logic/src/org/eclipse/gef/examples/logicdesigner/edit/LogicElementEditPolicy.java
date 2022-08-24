@@ -17,8 +17,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 import org.eclipse.gef.examples.logicdesigner.model.commands.DeleteCommand;
 
-public class LogicElementEditPolicy extends
-		org.eclipse.gef.editpolicies.ComponentEditPolicy {
+public class LogicElementEditPolicy extends org.eclipse.gef.editpolicies.ComponentEditPolicy {
 
 	protected Command createDeleteCommand(GroupRequest request) {
 		Object parent = getHost().getParent().getModel();

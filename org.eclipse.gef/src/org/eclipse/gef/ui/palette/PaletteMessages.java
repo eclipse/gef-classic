@@ -22,7 +22,7 @@ public class PaletteMessages extends NLS {
 	 */
 	public static String CUSTOMIZE_DIALOG_TITLE;
 	/**
-	 * The String "Drawer options:  "
+	 * The String "Drawer options: "
 	 */
 	public static String COLLAPSE_OPTIONS_TITLE;
 	/**
@@ -90,11 +90,11 @@ public class PaletteMessages extends NLS {
 	 */
 	public static String NO_SELECTION_TITLE;
 	/**
-	 * The String "Na&me:  "
+	 * The String "Na&me: "
 	 */
 	public static String NAME_LABEL;
 	/**
-	 * The String "Des&cription:  "
+	 * The String "Des&cription: "
 	 */
 	public static String DESCRIPTION_LABEL;
 	/**
@@ -182,11 +182,11 @@ public class PaletteMessages extends NLS {
 	 */
 	public static String SETTINGS_FONT_CHANGE;
 	/**
-	 * The String "Font:  "
+	 * The String "Font: "
 	 */
 	public static String SETTINGS_FONT_CURRENT;
 	/**
-	 * The String "Layout:  "
+	 * The String "Layout: "
 	 */
 	public static String SETTINGS_LAYOUT_TITLE;
 	/**
@@ -218,7 +218,7 @@ public class PaletteMessages extends NLS {
 	 */
 	public static String SETTINGS_LAYOUT_COLUMNS_OVERRIDE_WIDTH;
 	/**
-	 * The String "Colu&mn width (in pixels):  "
+	 * The String "Colu&mn width (in pixels): "
 	 */
 	public static String SETTINGS_LAYOUT_COLUMNS_WIDTH;
 	/**
@@ -293,8 +293,7 @@ public class PaletteMessages extends NLS {
 	public static String ACC_DESC_PALETTE_TITLE;
 
 	static {
-		NLS.initializeMessages(
-				"org.eclipse.gef.ui.palette.messages", PaletteMessages.class); //$NON-NLS-1$
+		NLS.initializeMessages("org.eclipse.gef.ui.palette.messages", PaletteMessages.class); //$NON-NLS-1$
 	}
 
 }

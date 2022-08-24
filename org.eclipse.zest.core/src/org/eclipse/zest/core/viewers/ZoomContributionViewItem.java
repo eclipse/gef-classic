@@ -64,12 +64,11 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 
 	/**
 	 * Creates a new contribution item that will work on the given part
-	 * service.initialZooms will be used to populate the combo or the menu.
-	 * Valid values for initialZooms are percentage numbers (e.g., "100%"), or
-	 * FIT_WIDTH, FIT_HEIGHT, FIT_ALL.
+	 * service.initialZooms will be used to populate the combo or the menu. Valid
+	 * values for initialZooms are percentage numbers (e.g., "100%"), or FIT_WIDTH,
+	 * FIT_HEIGHT, FIT_ALL.
 	 * 
-	 * @param partService
-	 *            service used to see whether the view is zoomable.
+	 * @param partService service used to see whether the view is zoomable.
 	 */
 	public ZoomContributionViewItem(IZoomableWorkbenchPart part) {
 		zoomManager = part.getZoomableViewer().getZoomManager();
@@ -78,8 +77,9 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.Menu,
-	 *      int)
+	 * @see
+	 * org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.Menu,
+	 * int)
 	 */
 	public void fill(Menu menu, int index) {
 		if (this.fMenu == null || this.fMenu != menu) {
@@ -95,8 +95,8 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.CoolBar,
-	 *      int)
+	 * @see org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.
+	 * CoolBar, int)
 	 */
 	public void fill(CoolBar parent, int index) {
 		CoolItem item = new CoolItem(parent, SWT.DROP_DOWN);
@@ -107,8 +107,8 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.ToolBar,
-	 *      int)
+	 * @see org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.
+	 * ToolBar, int)
 	 */
 	public void fill(ToolBar parent, int index) {
 		ToolItem item = new ToolItem(parent, SWT.SEPARATOR, index);
@@ -127,7 +127,9 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 			/*
 			 * (non-Javadoc)
 			 * 
-			 * @see org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events.SelectionEvent)
+			 * @see
+			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
+			 * .SelectionEvent)
 			 */
 			public void widgetSelected(SelectionEvent e) {
 				int selection = combo.getSelectionIndex();
@@ -240,7 +242,8 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 		if (fMenu != null) {
 			fMenu = null;
 		}
-		//		@tag zest.bug.159667-ZoomDispose : make sure that we no longer listen to the part service.
+		// @tag zest.bug.159667-ZoomDispose : make sure that we no longer listen to the
+		// part service.
 		super.dispose();
 	}
 }

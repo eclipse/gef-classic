@@ -52,8 +52,7 @@ class NodeCluster extends NodeList {
 			NodeCluster newNeighbors[] = new NodeCluster[newSize];
 			CollapsedEdges newLinks[] = new CollapsedEdges[newSize];
 
-			System.arraycopy(leftNeighbors, 0, newNeighbors, 0,
-					leftNeighbors.length);
+			System.arraycopy(leftNeighbors, 0, newNeighbors, 0, leftNeighbors.length);
 			System.arraycopy(leftLinks, 0, newLinks, 0, leftLinks.length);
 
 			leftNeighbors = newNeighbors;
@@ -70,8 +69,7 @@ class NodeCluster extends NodeList {
 			NodeCluster newNeighbors[] = new NodeCluster[newSize];
 			CollapsedEdges newLinks[] = new CollapsedEdges[newSize];
 
-			System.arraycopy(rightNeighbors, 0, newNeighbors, 0,
-					rightNeighbors.length);
+			System.arraycopy(rightNeighbors, 0, newNeighbors, 0, rightNeighbors.length);
 			System.arraycopy(rightLinks, 0, newLinks, 0, rightLinks.length);
 
 			rightNeighbors = newNeighbors;

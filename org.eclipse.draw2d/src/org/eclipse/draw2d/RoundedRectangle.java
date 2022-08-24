@@ -53,8 +53,7 @@ public class RoundedRectangle extends Shape {
 		r.width -= inset1 + inset2;
 		r.height -= inset1 + inset2;
 
-		graphics.drawRoundRectangle(r,
-				Math.max(0, corner.width - (int) lineInset),
+		graphics.drawRoundRectangle(r, Math.max(0, corner.width - (int) lineInset),
 				Math.max(0, corner.height - (int) lineInset));
 	}
 
@@ -62,8 +61,7 @@ public class RoundedRectangle extends Shape {
 	 * Sets the dimensions of each corner. This will form the radii of the arcs
 	 * which form the corners.
 	 * 
-	 * @param d
-	 *            the dimensions of the corner
+	 * @param d the dimensions of the corner
 	 * @since 2.0
 	 */
 	public void setCornerDimensions(Dimension d) {

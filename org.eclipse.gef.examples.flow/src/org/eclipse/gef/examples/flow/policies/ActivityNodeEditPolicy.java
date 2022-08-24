@@ -30,10 +30,8 @@ public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 	/**
 	 * @see GraphicalNodeEditPolicy#getConnectionCompleteCommand(CreateConnectionRequest)
 	 */
-	protected Command getConnectionCompleteCommand(
-			CreateConnectionRequest request) {
-		ConnectionCreateCommand cmd = (ConnectionCreateCommand) request
-				.getStartCommand();
+	protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
+		ConnectionCreateCommand cmd = (ConnectionCreateCommand) request.getStartCommand();
 		cmd.setTarget(getActivity());
 		return cmd;
 	}
@@ -58,8 +56,8 @@ public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 	}
 
 	/**
-	 * Returns the model associated with the EditPart on which this EditPolicy
-	 * is installed
+	 * Returns the model associated with the EditPart on which this EditPolicy is
+	 * installed
 	 * 
 	 * @return the model
 	 */
@@ -72,8 +70,7 @@ public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	protected Command getReconnectSourceCommand(ReconnectRequest request) {
 		ReconnectSourceCommand cmd = new ReconnectSourceCommand();
-		cmd.setTransition((Transition) request.getConnectionEditPart()
-				.getModel());
+		cmd.setTransition((Transition) request.getConnectionEditPart().getModel());
 		cmd.setSource(getActivity());
 		return cmd;
 	}
@@ -83,8 +80,7 @@ public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 	 */
 	protected Command getReconnectTargetCommand(ReconnectRequest request) {
 		ReconnectTargetCommand cmd = new ReconnectTargetCommand();
-		cmd.setTransition((Transition) request.getConnectionEditPart()
-				.getModel());
+		cmd.setTransition((Transition) request.getConnectionEditPart().getModel());
 		cmd.setTarget(getActivity());
 		return cmd;
 	}

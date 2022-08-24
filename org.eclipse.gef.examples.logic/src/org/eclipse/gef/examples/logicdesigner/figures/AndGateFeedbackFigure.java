@@ -58,8 +58,7 @@ public class AndGateFeedbackFigure extends AndGateFigure {
 		r.height--;
 
 		g.drawArc(r, 180, 180);
-		g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2,
-				r.bottom() + 2);
+		g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2, r.bottom() + 2);
 
 		g.drawPoint(r.x + r.width / 2, r.bottom());
 	}

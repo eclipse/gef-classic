@@ -34,15 +34,13 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
  * @author Whitney Sorenson, crevells
  * @since 3.4
  */
-public class PinnablePaletteStackEditPart extends PaletteEditPart implements
-		IPaletteStackEditPart, IPinnableEditPart {
+public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPaletteStackEditPart, IPinnableEditPart {
 
 	// listen to see if active tool is changed in the palette
 	private PaletteListener paletteListener = new PaletteListener() {
 
 		public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
-			if (!getStackFigure().isPinnedOpen()
-					&& getStack().getChildren().contains(tool)) {
+			if (!getStackFigure().isPinnedOpen() && getStack().getChildren().contains(tool)) {
 				if (!getStack().getActiveEntry().equals(tool)) {
 					getStack().setActiveEntry(tool);
 				}
@@ -54,11 +52,9 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 	};
 
 	/**
-	 * Creates a new PaletteStackEditPart with the given PaletteStack as its
-	 * model.
+	 * Creates a new PaletteStackEditPart with the given PaletteStack as its model.
 	 * 
-	 * @param model
-	 *            the PaletteStack to associate with this EditPart.
+	 * @param model the PaletteStack to associate with this EditPart.
 	 */
 	public PinnablePaletteStackEditPart(PaletteStack model) {
 		super(model);
@@ -77,10 +73,8 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 	/**
 	 * Called when the active entry has changed.
 	 * 
-	 * @param oldValue
-	 *            the old model value (can be null)
-	 * @param newValue
-	 *            the new model value (can be null)
+	 * @param oldValue the old model value (can be null)
+	 * @param newValue the new model value (can be null)
 	 */
 	private void activeEntryChanged(Object oldValue, Object newValue) {
 		GraphicalEditPart part = null;
@@ -89,8 +83,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 		int index = -1;
 
 		if (oldValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
-					oldValue);
+			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(oldValue);
 			// if part is null, its no longer a child.
 			if (part != null) {
 				oldFigure = part.getFigure();
@@ -101,8 +94,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 		}
 
 		if (newValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
-					newValue);
+			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(newValue);
 			newFigure = part.getFigure();
 		}
 
@@ -172,8 +164,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 	private int updateIndexBasedOnActiveFigure(int index, EditPart childEP) {
 		for (int i = 0; i < index; i++) {
 			Object ep = getChildren().get(i);
-			if (((GraphicalEditPart) ep).getFigure() == getStackFigure()
-					.getActiveFigure()) {
+			if (((GraphicalEditPart) ep).getFigure() == getStackFigure().getActiveFigure()) {
 				return index - 1;
 			}
 		}
@@ -225,8 +216,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements
 	}
 
 	public PaletteEditPart getActiveEntry() {
-		return (PaletteEditPart) getViewer().getEditPartRegistry().get(
-				getStack().getActiveEntry());
+		return (PaletteEditPart) getViewer().getEditPartRegistry().get(getStack().getActiveEntry());
 	}
 
 }

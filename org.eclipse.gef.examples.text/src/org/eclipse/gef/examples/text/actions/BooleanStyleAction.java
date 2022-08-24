@@ -30,8 +30,7 @@ public class BooleanStyleAction extends Action {
 		}
 	};
 
-	public BooleanStyleAction(StyleService service, String styleID,
-			String property) {
+	public BooleanStyleAction(StyleService service, String styleID, String property) {
 		setStyleService(service);
 		setId(styleID);
 		this.property = property;
@@ -89,8 +88,7 @@ public class BooleanStyleAction extends Action {
 
 	public void refresh() {
 		setChecked(service.getStyle(property).equals(Boolean.TRUE));
-		setEnabled(service.getStyleState(property).equals(
-				StyleService.STATE_EDITABLE));
+		setEnabled(service.getStyleState(property).equals(StyleService.STATE_EDITABLE));
 	}
 
 }

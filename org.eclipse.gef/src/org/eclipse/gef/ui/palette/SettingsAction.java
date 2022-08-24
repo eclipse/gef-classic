@@ -27,8 +27,7 @@ public class SettingsAction extends Action {
 	/**
 	 * Constructor
 	 * 
-	 * @param palette
-	 *            The Palette which has to be customized when this action is run
+	 * @param palette The Palette which has to be customized when this action is run
 	 */
 	public SettingsAction(PaletteViewer palette) {
 		super();
@@ -42,8 +41,8 @@ public class SettingsAction extends Action {
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	public void run() {
-		Dialog settings = new PaletteSettingsDialog(paletteViewer.getControl()
-				.getShell(), paletteViewer.getPaletteViewerPreferences());
+		Dialog settings = new PaletteSettingsDialog(paletteViewer.getControl().getShell(),
+				paletteViewer.getPaletteViewerPreferences());
 		settings.open();
 	}
 

@@ -55,8 +55,8 @@ public class Clipboard {
 	 * 
 	 * @deprecated As of 3.1, the GEF Clipboard synchronizes with the system
 	 *             clipboard. Multiple instances of this class should not be
-	 *             created. Use {@link #getDefault()}. This method will be
-	 *             removed in future releases.
+	 *             created. Use {@link #getDefault()}. This method will be removed
+	 *             in future releases.
 	 */
 	public Clipboard() {
 	}
@@ -67,24 +67,21 @@ public class Clipboard {
 	 * @return contents of the clipboard
 	 */
 	public Object getContents() {
-		org.eclipse.swt.dnd.Clipboard cb = new org.eclipse.swt.dnd.Clipboard(
-				null);
+		org.eclipse.swt.dnd.Clipboard cb = new org.eclipse.swt.dnd.Clipboard(null);
 		Object contents = cb.getContents(TRANSFER);
 		cb.dispose();
 		return contents;
 	}
 
 	/**
-	 * Sets the contents of the clipboard. This will erase the previous contents
-	 * of this as well as the system clipboard. The provided contents will not
-	 * be garbage-collected until some other contents are set using this method.
+	 * Sets the contents of the clipboard. This will erase the previous contents of
+	 * this as well as the system clipboard. The provided contents will not be
+	 * garbage-collected until some other contents are set using this method.
 	 * 
-	 * @param contents
-	 *            the new contents
+	 * @param contents the new contents
 	 */
 	public void setContents(Object contents) {
-		org.eclipse.swt.dnd.Clipboard cb = new org.eclipse.swt.dnd.Clipboard(
-				null);
+		org.eclipse.swt.dnd.Clipboard cb = new org.eclipse.swt.dnd.Clipboard(null);
 		cb.setContents(new Object[] { contents }, new Transfer[] { TRANSFER });
 		cb.dispose();
 	}

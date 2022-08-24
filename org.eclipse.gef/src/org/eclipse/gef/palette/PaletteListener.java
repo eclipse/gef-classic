@@ -22,10 +22,8 @@ public interface PaletteListener extends EventListener {
 	/**
 	 * A new tool was activated in the palette.
 	 * 
-	 * @param palette
-	 *            the source of the change
-	 * @param tool
-	 *            the new tool that was activated
+	 * @param palette the source of the change
+	 * @param tool    the new tool that was activated
 	 */
 	void activeToolChanged(PaletteViewer palette, ToolEntry tool);
 

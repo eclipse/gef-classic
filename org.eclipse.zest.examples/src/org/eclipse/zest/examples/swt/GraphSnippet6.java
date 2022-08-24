@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This snippet creates a graph with 80*3 nodes (240 nodes).  Only the icons are shown for the nodes, but if
- * you mouse over the node you get the entire text.
+ * This snippet creates a graph with 80*3 nodes (240 nodes). Only the icons are
+ * shown for the nodes, but if you mouse over the node you get the entire text.
  * 
  * @author Ian Bull
  * 
@@ -47,7 +47,8 @@ public class GraphSnippet6 {
 		Graph g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		for (int i = 0; i < 80; i++) {
-			GraphNode n1 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, "Information", image1);
+			GraphNode n1 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, "Information",
+					image1);
 			GraphNode n2 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, "Warning", image2);
 			GraphNode n3 = new GraphNode(g, ZestStyles.NODES_HIDE_TEXT | ZestStyles.NODES_FISHEYE, "Error", image3);
 			new GraphConnection(g, SWT.NONE, n1, n2);

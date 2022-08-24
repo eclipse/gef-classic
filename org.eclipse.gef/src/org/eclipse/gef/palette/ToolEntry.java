@@ -32,17 +32,12 @@ public abstract class ToolEntry extends PaletteEntry {
 	/**
 	 * Creates a new ToolEntry. Any parameter can be <code>null</code>.
 	 * 
-	 * @param label
-	 *            the entry's name
-	 * @param shortDesc
-	 *            the entry's description
-	 * @param iconSmall
-	 *            the entry's small icon
-	 * @param iconLarge
-	 *            the entry's large icon
+	 * @param label     the entry's name
+	 * @param shortDesc the entry's description
+	 * @param iconSmall the entry's small icon
+	 * @param iconLarge the entry's large icon
 	 */
-	public ToolEntry(String label, String shortDesc, ImageDescriptor iconSmall,
-			ImageDescriptor iconLarge) {
+	public ToolEntry(String label, String shortDesc, ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
 		this(label, shortDesc, iconSmall, iconLarge, null);
 	}
 
@@ -50,30 +45,24 @@ public abstract class ToolEntry extends PaletteEntry {
 	 * Constructor to create a new ToolEntry. Any parameter can be
 	 * <code>null</code>.
 	 * 
-	 * @param label
-	 *            the entry's name
-	 * @param description
-	 *            the entry's description
-	 * @param iconSmall
-	 *            the entry's small icon
-	 * @param iconLarge
-	 *            the entry's large icon
-	 * @param tool
-	 *            the type of tool that this entry uses
+	 * @param label       the entry's name
+	 * @param description the entry's description
+	 * @param iconSmall   the entry's small icon
+	 * @param iconLarge   the entry's large icon
+	 * @param tool        the type of tool that this entry uses
 	 * @since 3.1
 	 */
-	public ToolEntry(String label, String description,
-			ImageDescriptor iconSmall, ImageDescriptor iconLarge, Class tool) {
+	public ToolEntry(String label, String description, ImageDescriptor iconSmall, ImageDescriptor iconLarge,
+			Class tool) {
 		super(label, description, iconSmall, iconLarge, PALETTE_TYPE_TOOL);
 		setToolClass(tool);
 	}
 
 	/**
-	 * Creates the tool of the type specified by {@link #setToolClass(Class)}
-	 * for this ToolEntry. The tool is also configured with the properties set
-	 * in {@link #setToolProperty(Object, Object)}. Sub-classes overriding this
-	 * method should ensure that their tools are also configured with those
-	 * properties.
+	 * Creates the tool of the type specified by {@link #setToolClass(Class)} for
+	 * this ToolEntry. The tool is also configured with the properties set in
+	 * {@link #setToolProperty(Object, Object)}. Sub-classes overriding this method
+	 * should ensure that their tools are also configured with those properties.
 	 * 
 	 * @return the tool for this entry
 	 */
@@ -103,8 +92,7 @@ public abstract class ToolEntry extends PaletteEntry {
 	/**
 	 * Returns the property value for the specified property key.
 	 * 
-	 * @param key
-	 *            the property key
+	 * @param key the property key
 	 * @return the value for the requested property
 	 * @since 3.1
 	 */
@@ -115,13 +103,12 @@ public abstract class ToolEntry extends PaletteEntry {
 	}
 
 	/**
-	 * Sets the type of tool to be created. This provides clients with a method
-	 * of specifying a different type of tool to be created without having to
-	 * sub-class. The provided class should have a default constructor for this
-	 * to work successfully.
+	 * Sets the type of tool to be created. This provides clients with a method of
+	 * specifying a different type of tool to be created without having to
+	 * sub-class. The provided class should have a default constructor for this to
+	 * work successfully.
 	 * 
-	 * @param toolClass
-	 *            the type of tool to be created by this entry
+	 * @param toolClass the type of tool to be created by this entry
 	 * @since 3.1
 	 */
 	public void setToolClass(Class toolClass) {
@@ -131,13 +118,11 @@ public abstract class ToolEntry extends PaletteEntry {
 	}
 
 	/**
-	 * Clients can use this method to configure the associated tool without
-	 * having to sub-class.
+	 * Clients can use this method to configure the associated tool without having
+	 * to sub-class.
 	 * 
-	 * @param key
-	 *            the property name
-	 * @param value
-	 *            a value of type associated with the given property
+	 * @param key   the property name
+	 * @param value a value of type associated with the given property
 	 * @since 3.1
 	 * @see Tool#setProperties(Map)
 	 */

@@ -10,7 +10,8 @@
 package org.eclipse.zest.layouts.progress;
 
 /**
- * Listens for ProgressEvents which are thrown by layout algorithms at frequent intervals.
+ * Listens for ProgressEvents which are thrown by layout algorithms at frequent
+ * intervals.
  * 
  * @author Ian Bull
  * @author Casey Best

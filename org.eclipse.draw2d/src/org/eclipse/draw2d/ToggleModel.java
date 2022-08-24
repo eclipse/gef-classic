@@ -17,8 +17,8 @@ public class ToggleModel extends ButtonModel {
 
 	/**
 	 * Notifies any ActionListeners on this ButtonModel that an action has been
-	 * performed. Sets this ButtonModel's selection to be the opposite of what
-	 * it was.
+	 * performed. Sets this ButtonModel's selection to be the opposite of what it
+	 * was.
 	 * 
 	 * @since 2.0
 	 */

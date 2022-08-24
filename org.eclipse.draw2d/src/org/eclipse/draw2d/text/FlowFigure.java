@@ -43,8 +43,7 @@ public abstract class FlowFigure extends Figure {
 	}
 
 	/**
-	 * If the child is a <code>FlowFigure</code>, its FlowContext is passed to
-	 * it.
+	 * If the child is a <code>FlowFigure</code>, its FlowContext is passed to it.
 	 * 
 	 * @see org.eclipse.draw2d.IFigure#add(IFigure, Object, int)
 	 */
@@ -53,8 +52,7 @@ public abstract class FlowFigure extends Figure {
 		// If this layout manager is a FlowContext, then the child *must* be a
 		// FlowFigure
 		if (getLayoutManager() instanceof FlowContext)
-			((FlowFigure) child)
-					.setFlowContext((FlowContext) getLayoutManager());
+			((FlowFigure) child).setFlowContext((FlowContext) getLayoutManager());
 		revalidateBidi(this);
 	}
 
@@ -62,13 +60,11 @@ public abstract class FlowFigure extends Figure {
 	 * Calculates the width of text before the next line-break is encountered.
 	 * <p>
 	 * Default implementation treats each FlowFigure as a line-break. It adds no
-	 * width and returns <code>true</code>. Sub-classes should override as
-	 * needed.
+	 * width and returns <code>true</code>. Sub-classes should override as needed.
 	 * 
-	 * @param width
-	 *            the width before the next line-break (if one's found; all the
-	 *            width, otherwise) will be added on to the first int in the
-	 *            given array
+	 * @param width the width before the next line-break (if one's found; all the
+	 *              width, otherwise) will be added on to the first int in the given
+	 *              array
 	 * @return boolean indicating whether or not a line-break was found
 	 * @since 3.1
 	 */
@@ -78,16 +74,15 @@ public abstract class FlowFigure extends Figure {
 
 	/**
 	 * FlowFigures can contribute text for their block to the given
-	 * {@link BidiProcessor}, which will process the contributions to determine
-	 * Bidi levels and shaping requirements.
+	 * {@link BidiProcessor}, which will process the contributions to determine Bidi
+	 * levels and shaping requirements.
 	 * <p>
 	 * This method is invoked as part of validating Bidi.
 	 * <p>
 	 * Sub-classes that cache the BidiInfo and/or the bidi level in ContentBoxes
 	 * should clear the cached values when this method is invoked.
 	 * 
-	 * @param proc
-	 *            the BidiProcessor to which contributions should be made
+	 * @param proc the BidiProcessor to which contributions should be made
 	 * @see BidiProcessor#add(FlowFigure, String)
 	 * @since 3.1
 	 */
@@ -104,8 +99,8 @@ public abstract class FlowFigure extends Figure {
 	protected abstract FlowFigureLayout createDefaultFlowLayout();
 
 	/**
-	 * Called after validate has occurred. This is used to update the bounds of
-	 * the FlowFigure to encompass its new flow boxed created during validate.
+	 * Called after validate has occurred. This is used to update the bounds of the
+	 * FlowFigure to encompass its new flow boxed created during validate.
 	 */
 	public abstract void postValidate();
 
@@ -120,9 +115,9 @@ public abstract class FlowFigure extends Figure {
 	}
 
 	/**
-	 * This method should be invoked whenever a change that can potentially
-	 * affect the Bidi evaluation is made (eg., adding or removing children,
-	 * changing text, etc.).
+	 * This method should be invoked whenever a change that can potentially affect
+	 * the Bidi evaluation is made (eg., adding or removing children, changing text,
+	 * etc.).
 	 * <p>
 	 * The default implementation delegates the revalidation task to the parent.
 	 * Only {@link BlockFlow#revalidateBidi(IFigure) blocks} perform the actual
@@ -131,8 +126,7 @@ public abstract class FlowFigure extends Figure {
 	 * The given IFigure is the one that triggered the revalidation. This can be
 	 * used to optimize bidi evaluation.
 	 * 
-	 * @param origin
-	 *            the figure that was revalidated
+	 * @param origin the figure that was revalidated
 	 * @since 3.1
 	 */
 	protected void revalidateBidi(IFigure origin) {
@@ -146,17 +140,16 @@ public abstract class FlowFigure extends Figure {
 	 * text associated with it, this method is called back to indicate the bidi
 	 * properties for that text within its block.
 	 * 
-	 * @param info
-	 *            the BidiInfo for this figure
+	 * @param info the BidiInfo for this figure
 	 * @since 3.1
 	 */
 	public void setBidiInfo(BidiInfo info) {
 	}
 
 	/**
-	 * FlowFigures override setBounds() to prevent translation of children.
-	 * "bounds" is a derived property for FlowFigures, calculated from the
-	 * fragments that make up the FlowFigure.
+	 * FlowFigures override setBounds() to prevent translation of children. "bounds"
+	 * is a derived property for FlowFigures, calculated from the fragments that
+	 * make up the FlowFigure.
 	 * 
 	 * @see Figure#setBounds(Rectangle)
 	 */
@@ -178,23 +171,20 @@ public abstract class FlowFigure extends Figure {
 	/**
 	 * Sets the flow context.
 	 * 
-	 * @param flowContext
-	 *            the flow context for this flow figure
+	 * @param flowContext the flow context for this flow figure
 	 */
 	public void setFlowContext(FlowContext flowContext) {
 		((FlowFigureLayout) getLayoutManager()).setFlowContext(flowContext);
 	}
 
 	/**
-	 * Sets the selection or a range of selection. A start value of -1 is used
-	 * to indicate no selection. A start value >=0 indicates show selection. A
-	 * start and end value can be used to represent a range of offsets which
-	 * should render selection.
+	 * Sets the selection or a range of selection. A start value of -1 is used to
+	 * indicate no selection. A start value >=0 indicates show selection. A start
+	 * and end value can be used to represent a range of offsets which should render
+	 * selection.
 	 * 
-	 * @param start
-	 *            the start offset
-	 * @param end
-	 *            the end offset
+	 * @param start the start offset
+	 * @param end   the end offset
 	 * @since 3.1
 	 */
 	public void setSelection(int start, int end) {

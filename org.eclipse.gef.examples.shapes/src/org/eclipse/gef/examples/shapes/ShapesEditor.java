@@ -85,11 +85,10 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	/**
 	 * Configure the graphical viewer before it receives contents.
 	 * <p>
-	 * This is the place to choose an appropriate RootEditPart and
-	 * EditPartFactory for your editor. The RootEditPart determines the behavior
-	 * of the editor's "work-area". For example, GEF includes zoomable and
-	 * scrollable root edit parts. The EditPartFactory maps model elements to
-	 * edit parts (controllers).
+	 * This is the place to choose an appropriate RootEditPart and EditPartFactory
+	 * for your editor. The RootEditPart determines the behavior of the editor's
+	 * "work-area". For example, GEF includes zoomable and scrollable root edit
+	 * parts. The EditPartFactory maps model elements to edit parts (controllers).
 	 * </p>
 	 * 
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#configureGraphicalViewer()
@@ -103,8 +102,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		viewer.setKeyHandler(new GraphicalViewerKeyHandler(viewer));
 
 		// configure the context menu provider
-		ContextMenuProvider cmProvider = new ShapesEditorContextMenuProvider(
-				viewer, getActionRegistry());
+		ContextMenuProvider cmProvider = new ShapesEditorContextMenuProvider(viewer, getActionRegistry());
 		viewer.setContextMenu(cmProvider);
 		getSite().registerContextMenu(cmProvider, viewer);
 	}
@@ -112,8 +110,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util
+	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util
 	 * .EventObject)
 	 */
 	public void commandStackChanged(EventObject event) {
@@ -144,8 +141,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 				// CombinatedTemplateCreationEntries
 				// from the palette into the editor
 				// @see ShapesEditor#createTransferDropTargetListener()
-				viewer.addDragSourceListener(
-						new TemplateTransferDragSourceListener(viewer));
+				viewer.addDragSourceListener(new TemplateTransferDragSourceListener(viewer));
 			}
 		};
 	}
@@ -213,20 +209,16 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		IPath path = dialog.getResult();
 		if (path != null) {
 			// try to save the editor's contents under a different file name
-			final IFile file = ResourcesPlugin.getWorkspace().getRoot()
-					.getFile(path);
+			final IFile file = ResourcesPlugin.getWorkspace().getRoot().getFile(path);
 			try {
 				new ProgressMonitorDialog(shell).run(false, // don't fork
 						false, // not cancelable
 						new WorkspaceModifyOperation() { // run this operation
-							public void execute(
-									final IProgressMonitor monitor) {
+							public void execute(final IProgressMonitor monitor) {
 								try {
 									ByteArrayOutputStream out = new ByteArrayOutputStream();
 									createOutputStream(out);
-									file.create(
-											new ByteArrayInputStream(
-													out.toByteArray()), // contents
+									file.create(new ByteArrayInputStream(out.toByteArray()), // contents
 											true, // keep saving, even if IFile
 													// is out of sync with the
 													// Workspace
@@ -264,8 +256,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getPaletteRoot
+	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getPaletteRoot
 	 * ()
 	 */
 	protected PaletteRoot getPaletteRoot() {
@@ -332,10 +323,8 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		/**
 		 * Create a new outline page for the shapes editor.
 		 * 
-		 * @param viewer
-		 *            a viewer (TreeViewer instance) used for this outline page
-		 * @throws IllegalArgumentException
-		 *             if editor is null
+		 * @param viewer a viewer (TreeViewer instance) used for this outline page
+		 * @throws IllegalArgumentException if editor is null
 		 */
 		public ShapesOutlinePage(EditPartViewer viewer) {
 			super(viewer);
@@ -354,12 +343,10 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 			getViewer().setEditDomain(getEditDomain());
 			getViewer().setEditPartFactory(new ShapesTreeEditPartFactory());
 			// configure & add context menu to viewer
-			ContextMenuProvider cmProvider = new ShapesEditorContextMenuProvider(
-					getViewer(), getActionRegistry());
+			ContextMenuProvider cmProvider = new ShapesEditorContextMenuProvider(getViewer(), getActionRegistry());
 			getViewer().setContextMenu(cmProvider);
-			getSite().registerContextMenu(
-					"org.eclipse.gef.examples.shapes.outline.contextmenu",
-					cmProvider, getSite().getSelectionProvider());
+			getSite().registerContextMenu("org.eclipse.gef.examples.shapes.outline.contextmenu", cmProvider,
+					getSite().getSelectionProvider());
 			// hook outline viewer
 			getSelectionSynchronizer().addViewer(getViewer());
 			// initialize outline viewer with model

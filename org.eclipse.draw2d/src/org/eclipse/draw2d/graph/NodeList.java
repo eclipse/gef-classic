@@ -29,8 +29,7 @@ public class NodeList extends ArrayList {
 	/**
 	 * Constructs a NodeList with the elements from the specified list.
 	 * 
-	 * @param list
-	 *            the list whose elements are to be added to this list
+	 * @param list the list whose elements are to be added to this list
 	 */
 	public NodeList(NodeList list) {
 		super(list);
@@ -63,8 +62,7 @@ public class NodeList extends ArrayList {
 	/**
 	 * Returns the Node at the given index.
 	 * 
-	 * @param index
-	 *            the index
+	 * @param index the index
 	 * @return the node at a given index
 	 */
 	public Node getNode(int index) {

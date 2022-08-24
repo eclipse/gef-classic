@@ -15,100 +15,99 @@ import org.eclipse.draw2d.geometry.Transposer;
 
 /**
  * 
- * @author hudsonr
- * Created on Apr 23, 2003
+ * @author hudsonr Created on Apr 23, 2003
  */
 public class TreeRoot extends TreeBranch {
 
-private int major = 10;
-private int minor = 10;
-private Transposer transposer = new Transposer();
-private boolean compression;
+	private int major = 10;
+	private int minor = 10;
+	private Transposer transposer = new Transposer();
+	private boolean compression;
 
-/**
- * @param title
- */
-public TreeRoot(IFigure title) {
-	super(title);
-}
+	/**
+	 * @param title
+	 */
+	public TreeRoot(IFigure title) {
+		super(title);
+	}
 
-/**
- * @param title
- * @param style
- */
-public TreeRoot(IFigure title, int style) {
-	super(title, style);
-}
+	/**
+	 * @param title
+	 * @param style
+	 */
+	public TreeRoot(IFigure title, int style) {
+		super(title, style);
+	}
 
-public int getMajorSpacing() {
-	return major;
-}
+	public int getMajorSpacing() {
+		return major;
+	}
 
-/**
- * @return
- */
-public int getMinorSpacing() {
-	return minor;
-}
+	/**
+	 * @return
+	 */
+	public int getMinorSpacing() {
+		return minor;
+	}
 
-public TreeRoot getRoot() {
-	return this;
-}
+	public TreeRoot getRoot() {
+		return this;
+	}
 
-public Transposer getTransposer() {
-	return transposer;
-}
+	public Transposer getTransposer() {
+		return transposer;
+	}
 
-public boolean isHorizontal() {
-	return !transposer.isEnabled();
-}
+	public boolean isHorizontal() {
+		return !transposer.isEnabled();
+	}
 
-/**
- * sets the space (in pixels) between this branch's node and its subtrees.
- */
-public void setMajorSpacing(int value) {
-	this.major = value;
-	invalidateTree();
-	revalidate();
-}
+	/**
+	 * sets the space (in pixels) between this branch's node and its subtrees.
+	 */
+	public void setMajorSpacing(int value) {
+		this.major = value;
+		invalidateTree();
+		revalidate();
+	}
 
-public void setHorizontal(boolean value) {
-	transposer.setEnabled(!value);
-	invalidateTree();
-	revalidate();
-}
+	public void setHorizontal(boolean value) {
+		transposer.setEnabled(!value);
+		invalidateTree();
+		revalidate();
+	}
 
-/**
- * @param i
- */
-public void setMinorSpacing(int i) {
-	minor = i;
-	invalidateTree();
-	revalidate();
-}
+	/**
+	 * @param i
+	 */
+	public void setMinorSpacing(int i) {
+		minor = i;
+		invalidateTree();
+		revalidate();
+	}
 
-/**
- * @see org.eclipse.draw2d.Figure#validate()
- */
-public void validate() {
-	if (isValid())
-		return;
-	setRowHeights(getPreferredRowHeights(), 0);
-	super.validate();
-}
+	/**
+	 * @see org.eclipse.draw2d.Figure#validate()
+	 */
+	public void validate() {
+		if (isValid())
+			return;
+		setRowHeights(getPreferredRowHeights(), 0);
+		super.validate();
+	}
 
-/**
- * @return
- */
-public boolean isCompressed() {
-	return compression;
-}
+	/**
+	 * @return
+	 */
+	public boolean isCompressed() {
+		return compression;
+	}
 
-/**
- * @param b
- */
-public void setCompression(boolean b) {
-	compression = b;
-}
+	/**
+	 * @param b
+	 */
+	public void setCompression(boolean b) {
+		compression = b;
+	}
 
 }

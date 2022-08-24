@@ -25,9 +25,8 @@ public class ChangeIconSizeAction extends Action {
 	/**
 	 * Constructor
 	 * 
-	 * @param prefs
-	 *            The <code>PaletteViewerPreferences</code> object that this
-	 *            action is manipulating
+	 * @param prefs The <code>PaletteViewerPreferences</code> object that this
+	 *              action is manipulating
 	 */
 	public ChangeIconSizeAction(PaletteViewerPreferences prefs) {
 		super(PaletteMessages.SETTINGS_USE_LARGE_ICONS_LABEL_CAPS);

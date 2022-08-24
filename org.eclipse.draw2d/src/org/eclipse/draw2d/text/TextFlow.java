@@ -53,8 +53,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * Constructs a new TextFlow with the specified String.
 	 * 
-	 * @param s
-	 *            the string
+	 * @param s the string
 	 */
 	public TextFlow(String s) {
 		text = s;
@@ -73,12 +72,10 @@ public class TextFlow extends InlineFlow {
 	 * Calculates the width taken up by the given text before a line-break is
 	 * encountered.
 	 * 
-	 * @param text
-	 *            the text in which the break is to be found
-	 * @param width
-	 *            the width before the next line-break (if one's found; the
-	 *            width of all the given text, otherwise) will be added on to
-	 *            the first int in the given array
+	 * @param text  the text in which the break is to be found
+	 * @param width the width before the next line-break (if one's found; the width
+	 *              of all the given text, otherwise) will be added on to the first
+	 *              int in the given array
 	 * @return <code>true</code> if a line-break was found
 	 * @since 3.1
 	 */
@@ -140,11 +137,9 @@ public class TextFlow extends InlineFlow {
 		List fragments = getFragmentsWithoutBorder();
 		for (int i = fragments.size() - 1; i >= 0; i--) {
 			TextFragmentBox box = (TextFragmentBox) fragments.get(i);
-			if (box.getBaseline() - box.getLineRoot().getAscent() > p.y
-					&& (closestBox == null
-							|| box.getBaseline() < closestBox.getBaseline() || (box
-							.getBaseline() == closestBox.getBaseline() && hDistanceBetween(
-							box, p.x) < hDistanceBetween(closestBox, p.x)))) {
+			if (box.getBaseline() - box.getLineRoot().getAscent() > p.y && (closestBox == null
+					|| box.getBaseline() < closestBox.getBaseline() || (box.getBaseline() == closestBox.getBaseline()
+							&& hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x)))) {
 				closestBox = box;
 				index = i;
 			}
@@ -152,8 +147,7 @@ public class TextFlow extends InlineFlow {
 		return findOffset(p, trailing, closestBox, index);
 	}
 
-	private int findOffset(Point p, int[] trailing, TextFragmentBox box,
-			int boxIndex) {
+	private int findOffset(Point p, int[] trailing, TextFragmentBox box, int boxIndex) {
 		if (box == null)
 			return -1;
 		TextLayout layout = FlowUtilities.getTextLayout();
@@ -162,8 +156,7 @@ public class TextFlow extends InlineFlow {
 		int x = p.x - box.getX();
 		if (isMirrored())
 			x = box.getWidth() - x;
-		int layoutOffset = layout
-				.getOffset(x, p.y - box.getTextTop(), trailing);
+		int layoutOffset = layout.getOffset(x, p.y - box.getTextTop(), trailing);
 		return box.offset + layoutOffset - getBidiPrefixLength(box, boxIndex);
 	}
 
@@ -176,11 +169,9 @@ public class TextFlow extends InlineFlow {
 		List fragments = getFragmentsWithoutBorder();
 		for (int i = fragments.size() - 1; i >= 0; i--) {
 			TextFragmentBox box = (TextFragmentBox) fragments.get(i);
-			if (box.getBaseline() + box.getLineRoot().getDescent() < p.y
-					&& (closestBox == null
-							|| box.getBaseline() > closestBox.getBaseline() || (box
-							.getBaseline() == closestBox.getBaseline() && hDistanceBetween(
-							box, p.x) < hDistanceBetween(closestBox, p.x)))) {
+			if (box.getBaseline() + box.getLineRoot().getDescent() < p.y && (closestBox == null
+					|| box.getBaseline() > closestBox.getBaseline() || (box.getBaseline() == closestBox.getBaseline()
+							&& hDistanceBetween(box, p.x) < hDistanceBetween(closestBox, p.x)))) {
 				closestBox = box;
 				index = i;
 			}
@@ -211,10 +202,8 @@ public class TextFlow extends InlineFlow {
 	}
 
 	/**
-	 * @param box
-	 *            which fragment
-	 * @param index
-	 *            the fragment index
+	 * @param box   which fragment
+	 * @param index the fragment index
 	 * @return the bidi string for that fragment
 	 * @since 3.1
 	 */
@@ -227,24 +216,21 @@ public class TextFlow extends InlineFlow {
 		if (index == 0 && bidiInfo.leadingJoiner)
 			buffer.append(BidiChars.ZWJ);
 		buffer.append(getText().substring(box.offset, box.offset + box.length));
-		if (index == getFragmentsWithoutBorder().size() - 1
-				&& bidiInfo.trailingJoiner)
+		if (index == getFragmentsWithoutBorder().size() - 1 && bidiInfo.trailingJoiner)
 			buffer.append(BidiChars.ZWJ);
 		return buffer.toString();
 	}
 
 	/**
-	 * Returns the CaretInfo in absolute coordinates. The offset must be between
-	 * 0 and the length of the String being displayed.
+	 * Returns the CaretInfo in absolute coordinates. The offset must be between 0
+	 * and the length of the String being displayed.
 	 * 
 	 * @since 3.1
-	 * @param offset
-	 *            the location in this figure's text
-	 * @param trailing
-	 *            true if the caret is being placed after the offset
-	 * @exception IllegalArgumentException
-	 *                If the offset is not between <code>0</code> and the length
-	 *                of the string inclusively
+	 * @param offset   the location in this figure's text
+	 * @param trailing true if the caret is being placed after the offset
+	 * @exception IllegalArgumentException If the offset is not between
+	 *                                     <code>0</code> and the length of the
+	 *                                     string inclusively
 	 * @return the caret bounds relative to this figure
 	 */
 	public CaretInfo getCaretPlacement(int offset, boolean trailing) {
@@ -271,23 +257,20 @@ public class TextFlow extends InlineFlow {
 		}
 
 		Point where = getPointInBox(box, offset, i, trailing);
-		CaretInfo info = new CaretInfo(where.x, where.y, box.getAscent(),
-				box.getDescent(), box.getLineRoot().getAscent(), box
-						.getLineRoot().getDescent());
+		CaretInfo info = new CaretInfo(where.x, where.y, box.getAscent(), box.getDescent(),
+				box.getLineRoot().getAscent(), box.getLineRoot().getDescent());
 		translateToAbsolute(info);
 		return info;
 	}
 
-	Point getPointInBox(TextFragmentBox box, int offset, int index,
-			boolean trailing) {
+	Point getPointInBox(TextFragmentBox box, int offset, int index, boolean trailing) {
 		offset -= box.offset;
 		offset = Math.min(box.length, offset);
 		Point result = new Point(0, box.getTextTop());
 		if (bidiInfo == null) {
 			if (trailing && offset < box.length)
 				offset++;
-			String substring = getText().substring(box.offset,
-					box.offset + offset);
+			String substring = getText().substring(box.offset, box.offset + offset);
 			result.x = getTextUtilities().getTextExtents(substring, getFont()).width;
 		} else {
 			TextLayout layout = FlowUtilities.getTextLayout();
@@ -309,13 +292,12 @@ public class TextFlow extends InlineFlow {
 
 	/**
 	 * Returns the minimum character offset which is on the given baseline
-	 * y-coordinate. The y location should be relative to this figure. The
-	 * return value will be between 0 and N-1. If no fragment is located on the
-	 * baseline, <code>-1</code> is returned.
+	 * y-coordinate. The y location should be relative to this figure. The return
+	 * value will be between 0 and N-1. If no fragment is located on the baseline,
+	 * <code>-1</code> is returned.
 	 * 
 	 * @since 3.1
-	 * @param baseline
-	 *            the relative baseline coordinate
+	 * @param baseline the relative baseline coordinate
 	 * @return -1 or the lowest offset for the line
 	 */
 	public int getFirstOffsetForLine(int baseline) {
@@ -331,8 +313,8 @@ public class TextFlow extends InlineFlow {
 
 	/**
 	 * Returns the <code>TextFragmentBox</code> fragments contained in this
-	 * TextFlow, not including the border fragments. The returned list should
-	 * not be modified.
+	 * TextFlow, not including the border fragments. The returned list should not be
+	 * modified.
 	 * 
 	 * @return list of fragments without the border fragments
 	 * @since 3.4
@@ -346,13 +328,12 @@ public class TextFlow extends InlineFlow {
 
 	/**
 	 * Returns the maximum offset for a character which is on the given baseline
-	 * y-coordinate. The y location should be relative to this figure. The
-	 * return value will be between 0 and N-1. If no fragment is located on the
-	 * baseline, <code>-1</code> is returned.
+	 * y-coordinate. The y location should be relative to this figure. The return
+	 * value will be between 0 and N-1. If no fragment is located on the baseline,
+	 * <code>-1</code> is returned.
 	 * 
 	 * @since 3.1
-	 * @param baseline
-	 *            the relative baseline coordinate
+	 * @param baseline the relative baseline coordinate
 	 * @return -1 or the highest offset at the given baseline
 	 */
 	public int getLastOffsetForLine(int baseline) {
@@ -367,34 +348,29 @@ public class TextFlow extends InlineFlow {
 	}
 
 	/**
-	 * Returns the offset nearest the given point either up or down one line. If
-	 * no offset is found, -1 is returned. <code>trailing[0]</code> will be set
-	 * to 1 if the reference point is closer to the trailing edge of the offset
-	 * than it is to the leading edge.
+	 * Returns the offset nearest the given point either up or down one line. If no
+	 * offset is found, -1 is returned. <code>trailing[0]</code> will be set to 1 if
+	 * the reference point is closer to the trailing edge of the offset than it is
+	 * to the leading edge.
 	 * 
 	 * @since 3.1
-	 * @param p
-	 *            a reference point
-	 * @param down
-	 *            <code>true</code> if the search is down
-	 * @param trailing
-	 *            an int array
+	 * @param p        a reference point
+	 * @param down     <code>true</code> if the search is down
+	 * @param trailing an int array
 	 * @return the next offset or <code>-1</code>
 	 */
 	public int getNextOffset(Point p, boolean down, int[] trailing) {
-		return down ? findNextLineOffset(p, trailing) : findPreviousLineOffset(
-				p, trailing);
+		return down ? findNextLineOffset(p, trailing) : findPreviousLineOffset(p, trailing);
 	}
 
 	/**
-	 * Returns the next offset which is visible in at least one fragment or -1
-	 * if there is not one. A visible offset means that the character or the one
-	 * preceding it is displayed, which implies that a caret can be positioned
-	 * at such an offset. This is useful for advancing a caret past characters
-	 * which resulted in a line wrap.
+	 * Returns the next offset which is visible in at least one fragment or -1 if
+	 * there is not one. A visible offset means that the character or the one
+	 * preceding it is displayed, which implies that a caret can be positioned at
+	 * such an offset. This is useful for advancing a caret past characters which
+	 * resulted in a line wrap.
 	 * 
-	 * @param offset
-	 *            the reference offset
+	 * @param offset the reference offset
 	 * @return the next offset which is visible
 	 * @since 3.1
 	 */
@@ -412,37 +388,34 @@ public class TextFlow extends InlineFlow {
 
 	/**
 	 * Returns the offset of the character directly below or nearest the given
-	 * location. The point must be relative to this figure. The return value
-	 * will be between 0 and N-1. If the proximity argument is not
-	 * <code>null</code>, the result may also be <code>-1</code> if no offset
-	 * was found within the proximity.
+	 * location. The point must be relative to this figure. The return value will be
+	 * between 0 and N-1. If the proximity argument is not <code>null</code>, the
+	 * result may also be <code>-1</code> if no offset was found within the
+	 * proximity.
 	 * <P>
-	 * For a typical character, the trailing argument will be filled in to
-	 * indicate whether the point is closer to the leading edge (0) or the
-	 * trailing edge (1). When the point is over a cluster composed of multiple
-	 * characters, the trailing argument will be filled with the position of the
-	 * character in the cluster that is closest to the point.
+	 * For a typical character, the trailing argument will be filled in to indicate
+	 * whether the point is closer to the leading edge (0) or the trailing edge (1).
+	 * When the point is over a cluster composed of multiple characters, the
+	 * trailing argument will be filled with the position of the character in the
+	 * cluster that is closest to the point.
 	 * <P>
-	 * If the proximity argument is not <code>null</code>, then the location may
-	 * be no further than the proximity given. Passing <code>null</code> is
-	 * equivalent to passing <code>new
+	 * If the proximity argument is not <code>null</code>, then the location may be
+	 * no further than the proximity given. Passing <code>null</code> is equivalent
+	 * to passing <code>new
 	 * Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE)</code>. The
 	 * <code>width</code> field of the proximity will contain the horizontal
-	 * distance, <code>height</code> will contain vertical. Vertical proximity
-	 * is more important than horizontal. The returned offset is the lowest
-	 * index with minimum vertical proximity not exceeding the given limit, with
-	 * horizontal proximity not exceeding the given limit. If an offset that is
-	 * within the proximity is found, then the given <code>Dimension</code> will
-	 * be updated to reflect the new proximity.
+	 * distance, <code>height</code> will contain vertical. Vertical proximity is
+	 * more important than horizontal. The returned offset is the lowest index with
+	 * minimum vertical proximity not exceeding the given limit, with horizontal
+	 * proximity not exceeding the given limit. If an offset that is within the
+	 * proximity is found, then the given <code>Dimension</code> will be updated to
+	 * reflect the new proximity.
 	 * 
 	 * 
 	 * @since 3.1
-	 * @param p
-	 *            the point relative to this figure
-	 * @param trailing
-	 *            the trailing buffer
-	 * @param proximity
-	 *            restricts and records the distance of the returned offset
+	 * @param p         the point relative to this figure
+	 * @param trailing  the trailing buffer
+	 * @param proximity restricts and records the distance of the returned offset
 	 * @return the nearest offset in this figure's text
 	 */
 	public int getOffset(Point p, int trailing[], Dimension proximity) {
@@ -475,11 +448,10 @@ public class TextFlow extends InlineFlow {
 	}
 
 	/**
-	 * Returns the previous offset which is visible in at least one fragment or
-	 * -1 if there is not one. See {@link #getNextVisibleOffset(int)} for more.
+	 * Returns the previous offset which is visible in at least one fragment or -1
+	 * if there is not one. See {@link #getNextVisibleOffset(int)} for more.
 	 * 
-	 * @param offset
-	 *            a reference offset
+	 * @param offset a reference offset
 	 * @return -1 or the previous offset which is visible
 	 * @since 3.1
 	 */
@@ -577,15 +549,12 @@ public class TextFlow extends InlineFlow {
 			if (!isEnabled()) {
 				Color fgColor = g.getForegroundColor();
 				g.setForegroundColor(ColorConstants.buttonLightest);
-				paintText(g, draw, frag.getX() + 1, frag.getBaseline()
-						- getAscent() + 1, frag.getBidiLevel());
+				paintText(g, draw, frag.getX() + 1, frag.getBaseline() - getAscent() + 1, frag.getBidiLevel());
 				g.setForegroundColor(ColorConstants.buttonDarker);
-				paintText(g, draw, frag.getX(), frag.getBaseline()
-						- getAscent(), frag.getBidiLevel());
+				paintText(g, draw, frag.getX(), frag.getBaseline() - getAscent(), frag.getBidiLevel());
 				g.setForegroundColor(fgColor);
 			} else {
-				paintText(g, draw, frag.getX(), frag.getBaseline()
-						- getAscent(), frag.getBidiLevel());
+				paintText(g, draw, frag.getX(), frag.getBaseline() - getAscent(), frag.getBidiLevel());
 			}
 		}
 	}
@@ -607,18 +576,13 @@ public class TextFlow extends InlineFlow {
 				continue;
 			if (frag.offset > selectionEnd)
 				return;
-			if (selectionStart <= frag.offset
-					&& selectionEnd >= frag.offset + frag.length) {
+			if (selectionStart <= frag.offset && selectionEnd >= frag.offset + frag.length) {
 				int y = frag.getLineRoot().getVisibleTop();
 				int height = frag.getLineRoot().getVisibleBottom() - y;
 				graphics.fillRectangle(frag.getX(), y, frag.getWidth(), height);
-			} else if (selectionEnd > frag.offset
-					&& selectionStart < frag.offset + frag.length) {
-				Point p1 = getPointInBox(frag,
-						Math.max(frag.offset, selectionStart), i, false);
-				Point p2 = getPointInBox(frag,
-						Math.min(frag.offset + frag.length, selectionEnd) - 1,
-						i, true);
+			} else if (selectionEnd > frag.offset && selectionStart < frag.offset + frag.length) {
+				Point p1 = getPointInBox(frag, Math.max(frag.offset, selectionStart), i, false);
+				Point p2 = getPointInBox(frag, Math.min(frag.offset + frag.length, selectionEnd) - 1, i, true);
 				Rectangle rect = new Rectangle(p1, p2);
 				rect.width--;
 				rect.y = frag.getLineRoot().getVisibleTop();
@@ -628,8 +592,7 @@ public class TextFlow extends InlineFlow {
 		}
 	}
 
-	protected void paintText(Graphics g, String draw, int x, int y,
-			int bidiLevel) {
+	protected void paintText(Graphics g, String draw, int x, int y, int bidiLevel) {
 		if (bidiLevel == -1) {
 			g.drawText(draw, x, y);
 		} else {
@@ -650,13 +613,11 @@ public class TextFlow extends InlineFlow {
 	}
 
 	/**
-	 * Sets the extent of selection. The selection range is inclusive. For
-	 * example, the range [0, 0] indicates that the first character is selected.
+	 * Sets the extent of selection. The selection range is inclusive. For example,
+	 * the range [0, 0] indicates that the first character is selected.
 	 * 
-	 * @param start
-	 *            the start offset
-	 * @param end
-	 *            the end offset
+	 * @param start the start offset
+	 * @param end   the end offset
 	 * @since 3.1
 	 */
 	public void setSelection(int start, int end) {
@@ -678,8 +639,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * Sets the text being displayed. The string may not be <code>null</code>.
 	 * 
-	 * @param s
-	 *            The new text
+	 * @param s The new text
 	 */
 	public void setText(String s) {
 		if (s != null && !s.equals(text)) {
@@ -700,8 +660,7 @@ public class TextFlow extends InlineFlow {
 		int top = box.getBaseline() - box.getLineRoot().getAscent();
 		if (y < top)
 			return top - y;
-		return Math.max(0, y
-				- (box.getBaseline() + box.getLineRoot().getDescent()));
+		return Math.max(0, y - (box.getBaseline() + box.getLineRoot().getDescent()));
 	}
 
 	/**

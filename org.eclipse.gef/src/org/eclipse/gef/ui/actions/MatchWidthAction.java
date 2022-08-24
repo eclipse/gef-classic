@@ -24,11 +24,10 @@ import org.eclipse.gef.internal.InternalImages;
 public class MatchWidthAction extends MatchSizeAction {
 
 	/**
-	 * Constructs a <code>MatchWidthAction</code> and associates it with the
-	 * given part.
+	 * Constructs a <code>MatchWidthAction</code> and associates it with the given
+	 * part.
 	 * 
-	 * @param part
-	 *            The workbench part associated with this MatchWidthAction
+	 * @param part The workbench part associated with this MatchWidthAction
 	 */
 	public MatchWidthAction(IWorkbenchPart part) {
 		super(part);
@@ -42,14 +41,13 @@ public class MatchWidthAction extends MatchSizeAction {
 	/**
 	 * Returns 0 to make this action affect only the width delta.
 	 * 
-	 * @param precisePartBounds
-	 *            the precise bounds of the EditPart's Figure to be matched
-	 * @param precisePrimaryBounds
-	 *            the precise bounds of the Primary Selection EditPart's Figure
+	 * @param precisePartBounds    the precise bounds of the EditPart's Figure to be
+	 *                             matched
+	 * @param precisePrimaryBounds the precise bounds of the Primary Selection
+	 *                             EditPart's Figure
 	 * @return 0.
 	 */
-	protected double getPreciseHeightDelta(
-			PrecisionRectangle precisePartBounds,
+	protected double getPreciseHeightDelta(PrecisionRectangle precisePartBounds,
 			PrecisionRectangle precisePrimaryBounds) {
 		return 0;
 	}

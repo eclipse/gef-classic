@@ -39,9 +39,8 @@ public final class EditPartUtilities {
 	 * Returns the transitive child edit part set of the given parent
 	 * <code>GraphicalEditPart</code>.
 	 * 
-	 * @param parentEditPart
-	 *            the parent graphical edit part for which to retrieve the
-	 *            transitive child edit part set.
+	 * @param parentEditPart the parent graphical edit part for which to retrieve
+	 *                       the transitive child edit part set.
 	 * 
 	 * @return the transitive child edit part set
 	 */
@@ -59,17 +58,14 @@ public final class EditPartUtilities {
 	/**
 	 * Returns the transitive nested connection edit parts.
 	 * 
-	 * @param graphicalEditPart
-	 *            the graphical edit part
+	 * @param graphicalEditPart the graphical edit part
 	 * 
 	 * @return the transitive nested connection edit parts
 	 */
-	public static HashSet getAllNestedConnectionEditParts(
-			GraphicalEditPart graphicalEditPart) {
+	public static HashSet getAllNestedConnectionEditParts(GraphicalEditPart graphicalEditPart) {
 		HashSet transitiveConnections = new HashSet();
 		HashSet transitiveChildren = getAllChildren(graphicalEditPart);
-		for (Iterator iterator = transitiveChildren.iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = transitiveChildren.iterator(); iterator.hasNext();) {
 			GraphicalEditPart child = (GraphicalEditPart) iterator.next();
 			transitiveConnections.addAll(child.getSourceConnections());
 			transitiveConnections.addAll(child.getTargetConnections());
@@ -78,17 +74,15 @@ public final class EditPartUtilities {
 	}
 
 	/**
-	 * Returns the set of <code>ConnectionEditPart</code>s that are linked to
-	 * the child edit parts of the given <code>GraphicalEditPart</code>.
+	 * Returns the set of <code>ConnectionEditPart</code>s that are linked to the
+	 * child edit parts of the given <code>GraphicalEditPart</code>.
 	 * 
-	 * @param graphicalEditPart
-	 *            the graphical edit part
+	 * @param graphicalEditPart the graphical edit part
 	 * 
 	 * @return the set of child <code>ConnectionEditPart</code>s for the given
 	 *         <code>GraphicalEditPart</code>
 	 */
-	public static HashSet getNestedConnectionEditParts(
-			GraphicalEditPart graphicalEditPart) {
+	public static HashSet getNestedConnectionEditParts(GraphicalEditPart graphicalEditPart) {
 		HashSet edges = new HashSet();
 		List children = graphicalEditPart.getChildren();
 		for (Iterator iterator = children.iterator(); iterator.hasNext();) {

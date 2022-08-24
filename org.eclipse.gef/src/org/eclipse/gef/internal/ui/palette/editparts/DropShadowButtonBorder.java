@@ -34,8 +34,7 @@ class DropShadowButtonBorder extends AbstractBorder {
 	 * Returns the space used by the border for the figure provided as input. In
 	 * this border all sides always have equal width.
 	 * 
-	 * @param figure
-	 *            Figure for which this is the border.
+	 * @param figure Figure for which this is the border.
 	 * @return Insets for this border.
 	 */
 	public Insets getInsets(IFigure figure) {

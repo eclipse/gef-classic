@@ -35,8 +35,7 @@ public class PaletteStack extends PaletteContainer {
 	 */
 	private PropertyChangeListener childListener = new PropertyChangeListener() {
 		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals(PaletteEntry.PROPERTY_VISIBLE)
-					&& evt.getNewValue() == Boolean.FALSE
+			if (evt.getPropertyName().equals(PaletteEntry.PROPERTY_VISIBLE) && evt.getNewValue() == Boolean.FALSE
 					&& activeEntry == evt.getSource()) {
 				checkActiveEntry();
 			}
@@ -52,16 +51,13 @@ public class PaletteStack extends PaletteContainer {
 	private PaletteEntry activeEntry;
 
 	/**
-	 * Creates a new PaletteStack with the given name, description, and icon.
-	 * These will be shown only in the customize menu. Any of the given
-	 * parameter can be <code>null</code>.
+	 * Creates a new PaletteStack with the given name, description, and icon. These
+	 * will be shown only in the customize menu. Any of the given parameter can be
+	 * <code>null</code>.
 	 * 
-	 * @param name
-	 *            the stack's name
-	 * @param desc
-	 *            the stack's description
-	 * @param icon
-	 *            an ImageDescriptor for the stack's small icon
+	 * @param name the stack's name
+	 * @param desc the stack's description
+	 * @param icon an ImageDescriptor for the stack's small icon
 	 * @see PaletteContainer#PaletteContainer(String, String, ImageDescriptor,
 	 *      Object)
 	 */
@@ -74,8 +70,7 @@ public class PaletteStack extends PaletteContainer {
 	 * Returns true if this type can be a child of this container Only accepts
 	 * ToolEntry's.
 	 * 
-	 * @param type
-	 *            the type being requested
+	 * @param type the type being requested
 	 * @return true if this can be a child of this container
 	 */
 	public boolean acceptsType(Object type) {
@@ -103,8 +98,8 @@ public class PaletteStack extends PaletteContainer {
 	}
 
 	/**
-	 * Checks to make sure the active entry is up-to-date and sets it to the
-	 * first child if it is <code>null</code>.
+	 * Checks to make sure the active entry is up-to-date and sets it to the first
+	 * child if it is <code>null</code>.
 	 */
 	private void checkActiveEntry() {
 		PaletteEntry currEntry = activeEntry;
@@ -113,8 +108,7 @@ public class PaletteStack extends PaletteContainer {
 		if (activeEntry == null && getChildren().size() > 0)
 			activeEntry = (PaletteEntry) getChildren().get(0);
 		if (activeEntry != null && !activeEntry.isVisible()) {
-			for (Iterator iterator = getChildren().iterator(); iterator
-					.hasNext();) {
+			for (Iterator iterator = getChildren().iterator(); iterator.hasNext();) {
 				PaletteEntry child = (PaletteEntry) iterator.next();
 				if (child.isVisible()) {
 					activeEntry = child;
@@ -123,13 +117,12 @@ public class PaletteStack extends PaletteContainer {
 				activeEntry = null;
 			}
 		}
-		listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, currEntry,
-				activeEntry);
+		listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, currEntry, activeEntry);
 	}
 
 	/**
-	 * Returns the PaletteEntry referring to the active entry that should be
-	 * shown in the palette.
+	 * Returns the PaletteEntry referring to the active entry that should be shown
+	 * in the palette.
 	 * 
 	 * @return active entry to be shown in the palette.
 	 */
@@ -148,20 +141,17 @@ public class PaletteStack extends PaletteContainer {
 	}
 
 	/**
-	 * Sets the "active" child entry to the given PaletteEntry. This entry will
-	 * be shown on the palette and will be checked in the menu.
+	 * Sets the "active" child entry to the given PaletteEntry. This entry will be
+	 * shown on the palette and will be checked in the menu.
 	 * 
-	 * @param entry
-	 *            the entry to show on the palette.
+	 * @param entry the entry to show on the palette.
 	 */
 	public void setActiveEntry(PaletteEntry entry) {
 		PaletteEntry oldEntry = activeEntry;
-		if (activeEntry != null
-				&& (activeEntry.equals(entry) || !getChildren().contains(entry)))
+		if (activeEntry != null && (activeEntry.equals(entry) || !getChildren().contains(entry)))
 			return;
 		activeEntry = entry;
-		listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, oldEntry,
-				activeEntry);
+		listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, oldEntry, activeEntry);
 	}
 
 	public void add(PaletteEntry entry) {
@@ -177,14 +167,12 @@ public class PaletteStack extends PaletteContainer {
 	}
 
 	/**
-	 * Either adds or remove the <code>childListener</code> to each palette
-	 * entry in the collection.
+	 * Either adds or remove the <code>childListener</code> to each palette entry in
+	 * the collection.
 	 * 
-	 * @param entries
-	 *            a collection of <code>PaletteEntries</code>
-	 * @param add
-	 *            true if the lister should be added; false if it should be
-	 *            removed
+	 * @param entries a collection of <code>PaletteEntries</code>
+	 * @param add     true if the lister should be added; false if it should be
+	 *                removed
 	 */
 	private void updateListeners(Collection entries, boolean add) {
 		for (Iterator iterator = entries.iterator(); iterator.hasNext();) {

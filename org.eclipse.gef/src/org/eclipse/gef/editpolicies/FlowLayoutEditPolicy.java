@@ -52,8 +52,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	}
 
 	/**
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 * @return the index for the insertion reference
 	 */
 	protected int getFeedbackIndexFor(Request request) {
@@ -71,16 +70,13 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 		int candidate = -1;
 		for (int i = 0; i < children.size(); i++) {
 			EditPart child = (EditPart) children.get(i);
-			Rectangle rect = transposer
-					.t(getAbsoluteBounds(((GraphicalEditPart) child)));
+			Rectangle rect = transposer.t(getAbsoluteBounds(((GraphicalEditPart) child)));
 			if (rect.y > rowBottom) {
 				/*
-				 * We are in a new row, so if we don't have a candidate but yet
-				 * are within the previous row, then the current entry becomes
-				 * the candidate. This is because we know we must be to the
-				 * right of center of the last Figure in the previous row, so
-				 * this Figure (which is at the start of a new row) is the
-				 * candidate.
+				 * We are in a new row, so if we don't have a candidate but yet are within the
+				 * previous row, then the current entry becomes the candidate. This is because
+				 * we know we must be to the right of center of the last Figure in the previous
+				 * row, so this Figure (which is at the start of a new row) is the candidate.
 				 */
 				if (p.y <= rowBottom) {
 					if (candidate == -1)
@@ -93,8 +89,8 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 			rowBottom = Math.max(rowBottom, rect.bottom());
 			if (candidate == -1) {
 				/*
-				 * See if we have a possible candidate. It is a candidate if the
-				 * cursor is left of the center of this candidate.
+				 * See if we have a possible candidate. It is a candidate if the cursor is left
+				 * of the center of this candidate.
 				 */
 				if (p.x <= rect.x + (rect.width / 2))
 					candidate = i;
@@ -104,9 +100,8 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 				// include the mouse Y.
 				if (p.y <= rowBottom) {
 					/*
-					 * Now we have determined that the cursor.Y is above the
-					 * bottom of the current row of figures. Stop now, to
-					 * prevent the next row from being searched
+					 * Now we have determined that the cursor.Y is above the bottom of the current
+					 * row of figures. Stop now, to prevent the next row from being searched
 					 */
 					break;
 				}
@@ -198,31 +193,27 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 				before = true;
 			else {
 				/*
-				 * We are not to the left of this Figure, so the emphasis line
-				 * needs to be to the right of the previous Figure, which must
-				 * be on the previous row.
+				 * We are not to the left of this Figure, so the emphasis line needs to be to
+				 * the right of the previous Figure, which must be on the previous row.
 				 */
 				before = false;
 				epIndex--;
 				editPart = (EditPart) getHost().getChildren().get(epIndex);
-				r = transposer
-						.t(getAbsoluteBounds((GraphicalEditPart) editPart));
+				r = transposer.t(getAbsoluteBounds((GraphicalEditPart) editPart));
 			}
 		}
 		int x = Integer.MIN_VALUE;
 		if (before) {
 			/*
-			 * Want the line to be halfway between the end of the previous and
-			 * the beginning of this one. If at the beginning of a line, then
-			 * start halfway between the left edge of the parent and the
-			 * beginning of the box, but no more than 5 pixels (it would be too
-			 * far and be confusing otherwise).
+			 * Want the line to be halfway between the end of the previous and the beginning
+			 * of this one. If at the beginning of a line, then start halfway between the
+			 * left edge of the parent and the beginning of the box, but no more than 5
+			 * pixels (it would be too far and be confusing otherwise).
 			 */
 			if (epIndex > 0) {
 				// Need to determine if a line break.
 				Rectangle boxPrev = transposer
-						.t(getAbsoluteBounds((GraphicalEditPart) getHost()
-								.getChildren().get(epIndex - 1)));
+						.t(getAbsoluteBounds((GraphicalEditPart) getHost().getChildren().get(epIndex - 1)));
 				int prevRight = boxPrev.right();
 				if (prevRight < r.x) {
 					// Not a line break
@@ -233,20 +224,18 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 			}
 			if (x == Integer.MIN_VALUE) {
 				// It is a line break.
-				Rectangle parentBox = transposer
-						.t(getAbsoluteBounds((GraphicalEditPart) getHost()));
+				Rectangle parentBox = transposer.t(getAbsoluteBounds((GraphicalEditPart) getHost()));
 				x = r.x - 5;
 				if (x < parentBox.x)
 					x = parentBox.x + (r.x - parentBox.x) / 2;
 			}
 		} else {
 			/*
-			 * We only have before==false if we are at the end of a line, so go
-			 * halfway between the right edge and the right edge of the parent,
-			 * but no more than 5 pixels.
+			 * We only have before==false if we are at the end of a line, so go halfway
+			 * between the right edge and the right edge of the parent, but no more than 5
+			 * pixels.
 			 */
-			Rectangle parentBox = transposer
-					.t(getAbsoluteBounds((GraphicalEditPart) getHost()));
+			Rectangle parentBox = transposer.t(getAbsoluteBounds((GraphicalEditPart) getHost()));
 			int rRight = r.x + r.width;
 			int pRight = parentBox.x + parentBox.width;
 			x = rRight + 5;

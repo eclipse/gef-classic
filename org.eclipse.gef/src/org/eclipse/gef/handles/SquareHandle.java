@@ -44,28 +44,23 @@ public abstract class SquareHandle extends AbstractHandle {
 	}
 
 	/**
-	 * Creates a SquareHandle for the given <code>GraphicalEditPart</code> with
-	 * the given <code>Locator</code>.
+	 * Creates a SquareHandle for the given <code>GraphicalEditPart</code> with the
+	 * given <code>Locator</code>.
 	 * 
-	 * @param owner
-	 *            the owner
-	 * @param loc
-	 *            the locator
+	 * @param owner the owner
+	 * @param loc   the locator
 	 */
 	public SquareHandle(GraphicalEditPart owner, Locator loc) {
 		super(owner, loc);
 	}
 
 	/**
-	 * Creates a SquareHandle for the given <code>GraphicalEditPart</code> with
-	 * the given <code>Cursor</code> using the given <code>Locator</code>.
+	 * Creates a SquareHandle for the given <code>GraphicalEditPart</code> with the
+	 * given <code>Cursor</code> using the given <code>Locator</code>.
 	 * 
-	 * @param owner
-	 *            The editpart which provided this handle
-	 * @param loc
-	 *            The locator to position the handle
-	 * @param c
-	 *            The cursor to display when the mouse is over the handle
+	 * @param owner The editpart which provided this handle
+	 * @param loc   The locator to position the handle
+	 * @param c     The cursor to display when the mouse is over the handle
 	 */
 	public SquareHandle(GraphicalEditPart owner, Locator loc, Cursor c) {
 		super(owner, loc, c);
@@ -106,11 +101,10 @@ public abstract class SquareHandle extends AbstractHandle {
 	}
 
 	/**
-	 * Draws the handle with fill color and outline color dependent on the
-	 * primary selection status of the owner editpart.
+	 * Draws the handle with fill color and outline color dependent on the primary
+	 * selection status of the owner editpart.
 	 * 
-	 * @param g
-	 *            The graphics used to paint the figure.
+	 * @param g The graphics used to paint the figure.
 	 */
 	public void paintFigure(Graphics g) {
 		Rectangle r = getBounds();

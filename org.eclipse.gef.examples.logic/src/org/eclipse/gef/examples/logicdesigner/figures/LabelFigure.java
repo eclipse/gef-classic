@@ -27,19 +27,18 @@ public class LabelFigure extends BentCornerFigure {
 
 	/**
 	 * Creates a new LabelFigure with a default MarginBorder size of
-	 * DEFAULT_CORNER_SIZE - 3 and a FlowPage containing a TextFlow with the
-	 * style WORD_WRAP_SOFT.
+	 * DEFAULT_CORNER_SIZE - 3 and a FlowPage containing a TextFlow with the style
+	 * WORD_WRAP_SOFT.
 	 */
 	public LabelFigure() {
 		this(BentCornerFigure.DEFAULT_CORNER_SIZE - 3);
 	}
 
 	/**
-	 * Creates a new LabelFigure with a MarginBorder that is the given size and
-	 * a FlowPage containing a TextFlow with the style WORD_WRAP_SOFT.
+	 * Creates a new LabelFigure with a MarginBorder that is the given size and a
+	 * FlowPage containing a TextFlow with the style WORD_WRAP_SOFT.
 	 * 
-	 * @param borderSize
-	 *            the size of the MarginBorder
+	 * @param borderSize the size of the MarginBorder
 	 */
 	public LabelFigure(int borderSize) {
 		setBorder(new MarginBorder(borderSize));
@@ -47,8 +46,7 @@ public class LabelFigure extends BentCornerFigure {
 
 		textFlow = new TextFlow();
 
-		textFlow.setLayoutManager(new ParagraphTextLayout(textFlow,
-				ParagraphTextLayout.WORD_WRAP_SOFT));
+		textFlow.setLayoutManager(new ParagraphTextLayout(textFlow, ParagraphTextLayout.WORD_WRAP_SOFT));
 
 		flowPage.add(textFlow);
 
@@ -68,8 +66,7 @@ public class LabelFigure extends BentCornerFigure {
 	/**
 	 * Sets the text of the TextFlow to the given value.
 	 * 
-	 * @param newText
-	 *            the new text value.
+	 * @param newText the new text value.
 	 */
 	public void setText(String newText) {
 		textFlow.setText(newText);

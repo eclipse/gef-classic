@@ -26,8 +26,7 @@ public class Digraph1Node {
 	/**
 	 * Constructor for a Digraph1Node.
 	 * 
-	 * @param aNumber
-	 *            the node number.
+	 * @param aNumber the node number.
 	 */
 	public Digraph1Node(int aNumber) {
 		super();

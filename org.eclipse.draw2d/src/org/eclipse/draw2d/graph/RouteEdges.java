@@ -26,16 +26,13 @@ class RouteEdges extends GraphVisitor {
 	public void revisit(DirectedGraph g) {
 		for (int i = 0; i < g.edges.size(); i++) {
 			Edge edge = (Edge) g.edges.get(i);
-			edge.start = new Point(edge.getSourceOffset() + edge.source.x,
-					edge.source.y + edge.source.height);
+			edge.start = new Point(edge.getSourceOffset() + edge.source.x, edge.source.y + edge.source.height);
 			if (edge.source instanceof SubgraphBoundary) {
 				SubgraphBoundary boundary = (SubgraphBoundary) edge.source;
 				if (boundary.getParent().head == boundary)
-					edge.start.y = boundary.getParent().y
-							+ boundary.getParent().insets.top;
+					edge.start.y = boundary.getParent().y + boundary.getParent().insets.top;
 			}
-			edge.end = new Point(edge.getTargetOffset() + edge.target.x,
-					edge.target.y);
+			edge.end = new Point(edge.getTargetOffset() + edge.target.x, edge.target.y);
 
 			if (edge.vNodes != null)
 				routeLongEdge(edge, g);
@@ -59,8 +56,7 @@ class RouteEdges extends GraphVisitor {
 			Node neighbor;
 			if (node.left != null) {
 				neighbor = node.left;
-				o = new Rectangle(neighbor.x, neighbor.y, neighbor.width,
-						neighbor.height);
+				o = new Rectangle(neighbor.x, neighbor.y, neighbor.width, neighbor.height);
 				padding = g.getPadding(neighbor);
 				o.width += padding.right + padding.left;
 				o.width += (edge.getPadding() * 2);
@@ -70,8 +66,7 @@ class RouteEdges extends GraphVisitor {
 			}
 			if (node.right != null) {
 				neighbor = node.right;
-				o = new Rectangle(neighbor.x, neighbor.y, neighbor.width,
-						neighbor.height);
+				o = new Rectangle(neighbor.x, neighbor.y, neighbor.width, neighbor.height);
 				padding = g.getPadding(neighbor);
 				o.width += padding.right + padding.left;
 				o.width += (edge.getPadding() * 2);

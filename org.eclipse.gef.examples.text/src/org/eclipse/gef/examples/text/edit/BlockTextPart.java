@@ -27,8 +27,7 @@ public class BlockTextPart extends CompoundTextPart {
 
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
-		if (Style.PROPERTY_ALIGNMENT.equals(property)
-				|| Style.PROPERTY_ORIENTATION.equals(property))
+		if (Style.PROPERTY_ALIGNMENT.equals(property) || Style.PROPERTY_ORIENTATION.equals(property))
 			refreshVisuals();
 		else
 			super.propertyChange(evt);

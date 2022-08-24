@@ -111,10 +111,8 @@ public class GraphAnimation {
 			for (int i = 0; i < list1.size(); i++) {
 				list1.getPoint(pt2, i);
 				list2.getPoint(pt1, i);
-				pt1.x = (int) Math.round(pt1.x * progress + (1 - progress)
-						* pt2.x);
-				pt1.y = (int) Math.round(pt1.y * progress + (1 - progress)
-						* pt2.y);
+				pt1.x = (int) Math.round(pt1.x * progress + (1 - progress) * pt2.x);
+				pt1.y = (int) Math.round(pt1.y * progress + (1 - progress) * pt2.y);
 				points.addPoint(pt1);
 			}
 			conn.setPoints(points);
@@ -134,12 +132,10 @@ public class GraphAnimation {
 			rect2 = (Rectangle) finalStates.get(child);
 			if (rect2 == null)
 				continue;
-			child.setBounds(new Rectangle((int) Math.round(progress * rect2.x
-					+ (1 - progress) * rect1.x), (int) Math.round(progress
-					* rect2.y + (1 - progress) * rect1.y), (int) Math
-					.round(progress * rect2.width + (1 - progress)
-							* rect1.width), (int) Math.round(progress
-					* rect2.height + (1 - progress) * rect1.height)));
+			child.setBounds(new Rectangle((int) Math.round(progress * rect2.x + (1 - progress) * rect1.x),
+					(int) Math.round(progress * rect2.y + (1 - progress) * rect1.y),
+					(int) Math.round(progress * rect2.width + (1 - progress) * rect1.width),
+					(int) Math.round(progress * rect2.height + (1 - progress) * rect1.height)));
 			// child.invalidate();
 		}
 		return true;
@@ -180,10 +176,8 @@ public class GraphAnimation {
 					points1.getPoint(p, i1);
 					points1.getPoint(q, i1 + 1);
 
-					p.x = (int) (((q.x * (current2 - current1) + p.x
-							* (prev1 - current2)) / (prev1 - current1)));
-					p.y = (int) (((q.y * (current2 - current1) + p.y
-							* (prev1 - current2)) / (prev1 - current1)));
+					p.x = (int) (((q.x * (current2 - current1) + p.x * (prev1 - current2)) / (prev1 - current1)));
+					p.y = (int) (((q.y * (current2 - current1) + p.y * (prev1 - current2)) / (prev1 - current1)));
 
 					points1.insertPoint(p, i1 + 1);
 
@@ -198,10 +192,8 @@ public class GraphAnimation {
 					points2.getPoint(p, i2);
 					points2.getPoint(q, i2 + 1);
 
-					p.x = (int) (((q.x * (current1 - current2) + p.x
-							* (prev2 - current1)) / (prev2 - current2)));
-					p.y = (int) (((q.y * (current1 - current2) + p.y
-							* (prev2 - current1)) / (prev2 - current2)));
+					p.x = (int) (((q.x * (current1 - current2) + p.x * (prev2 - current1)) / (prev2 - current2)));
+					p.y = (int) (((q.y * (current1 - current2) + p.y * (prev2 - current1)) / (prev2 - current2)));
 
 					points2.insertPoint(p, i2 + 1);
 
@@ -233,10 +225,8 @@ public class GraphAnimation {
 		if (!RECORDING)
 			return;
 		PointList points = connection.getPoints().getCopy();
-		if (points.size() == 2
-				&& points.getPoint(0).equals(Point.SINGLETON.setLocation(0, 0))
-				&& points.getPoint(1).equals(
-						Point.SINGLETON.setLocation(100, 100)))
+		if (points.size() == 2 && points.getPoint(0).equals(Point.SINGLETON.setLocation(0, 0))
+				&& points.getPoint(1).equals(Point.SINGLETON.setLocation(100, 100)))
 			initialStates.put(connection, null);
 		else
 			initialStates.put(connection, points);

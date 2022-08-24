@@ -23,8 +23,8 @@ public class AccessibleBase {
 	 */
 	public final int getAccessibleID() {
 		/*
-		 * This assumes that the native implementation of hashCode in Object is
-		 * to return the pointer to the Object, which should be U-unique.
+		 * This assumes that the native implementation of hashCode in Object is to
+		 * return the pointer to the Object, which should be U-unique.
 		 */
 		int value = super.hashCode();
 		/*

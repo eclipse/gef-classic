@@ -29,10 +29,9 @@ import java.util.List;
 public interface AccessibleHandleProvider {
 
 	/**
-	 * Returns a list of Points in <B>absolute</B> coordinates where
-	 * {@link Handle Handles} are located. {@link Tool Tools} that work with
-	 * Handles should use these locations when operating in accesible keyboard
-	 * modes.
+	 * Returns a list of Points in <B>absolute</B> coordinates where {@link Handle
+	 * Handles} are located. {@link Tool Tools} that work with Handles should use
+	 * these locations when operating in accesible keyboard modes.
 	 * 
 	 * @return A list of absolute locations (Points relative to the Viewer's
 	 *         Control); cannot be <code>null</code>

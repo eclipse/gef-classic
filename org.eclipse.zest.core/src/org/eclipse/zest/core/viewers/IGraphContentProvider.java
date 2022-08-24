@@ -12,29 +12,33 @@ package org.eclipse.zest.core.viewers;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 
 /**
- * A graph content provider. 
+ * A graph content provider.
  * 
  * @author Ian Bull
  */
 public interface IGraphContentProvider extends IStructuredContentProvider {
 
 	/**
-	 * Gets the source Object for the given relationship. Note, at least one of the source
-	 * or destination must not be null. If both are null, then nothing can be displayed in
-	 * the graph (a relationship cannot exist without nodes to be connected to). However,
-	 * if one of getSource() or getDestination() returns null, then the resulting graph will
-	 * contain an unconnected node for the non-null object returned from the other method.
+	 * Gets the source Object for the given relationship. Note, at least one of the
+	 * source or destination must not be null. If both are null, then nothing can be
+	 * displayed in the graph (a relationship cannot exist without nodes to be
+	 * connected to). However, if one of getSource() or getDestination() returns
+	 * null, then the resulting graph will contain an unconnected node for the
+	 * non-null object returned from the other method.
+	 * 
 	 * @param rel the relationship.
 	 * @return the source, or null for an unconnected destination.
 	 */
 	public Object getSource(Object rel);
 
 	/**
-	 * Gets the target Object for the given relationship. Note, at least one of the source
-	 * or destination must not be null. If both are null, then nothing can be displayed in
-	 * the graph (a relationship cannot exist without nodes to be connected to). However,
-	 * if one of getSource() or getDestination() returns null, then the resulting graph will
-	 * contain an unconnected node for the non-null object returned from the other method.
+	 * Gets the target Object for the given relationship. Note, at least one of the
+	 * source or destination must not be null. If both are null, then nothing can be
+	 * displayed in the graph (a relationship cannot exist without nodes to be
+	 * connected to). However, if one of getSource() or getDestination() returns
+	 * null, then the resulting graph will contain an unconnected node for the
+	 * non-null object returned from the other method.
+	 * 
 	 * @param rel the relationship.
 	 * @return the destination, or null for an unconnected source.
 	 */
@@ -42,6 +46,7 @@ public interface IGraphContentProvider extends IStructuredContentProvider {
 
 	/**
 	 * Returns all the relationships in the graph for the given input.
+	 * 
 	 * @input the input model object.
 	 * @return all the relationships in the graph for the given input.
 	 */

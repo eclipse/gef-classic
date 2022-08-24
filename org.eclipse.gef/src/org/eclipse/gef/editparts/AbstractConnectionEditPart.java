@@ -34,28 +34,23 @@ import org.eclipse.gef.tools.SelectEditPartTracker;
 /**
  * The base implementation for {@link org.eclipse.gef.ConnectionEditPart}.
  */
-public abstract class AbstractConnectionEditPart
-		extends AbstractGraphicalEditPart
+public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPart
 		implements ConnectionEditPart, LayerConstants {
 
-	private static final ConnectionAnchor DEFAULT_SOURCE_ANCHOR = new XYAnchor(
-			new Point(10, 10));
-	private static final ConnectionAnchor DEFAULT_TARGET_ANCHOR = new XYAnchor(
-			new Point(100, 100));
+	private static final ConnectionAnchor DEFAULT_SOURCE_ANCHOR = new XYAnchor(new Point(10, 10));
+	private static final ConnectionAnchor DEFAULT_TARGET_ANCHOR = new XYAnchor(new Point(100, 100));
 
 	/**
 	 * Provides accessibility support for when connections are also themselves
-	 * nodes. If a connection is the source or target of another connection,
-	 * then its midpoint is used as the accessible anchor location.
+	 * nodes. If a connection is the source or target of another connection, then
+	 * its midpoint is used as the accessible anchor location.
 	 * 
 	 * @author hudsonr
 	 * @since 2.0
 	 */
-	protected final class DefaultAccessibleAnchorProvider
-			implements AccessibleAnchorProvider {
+	protected final class DefaultAccessibleAnchorProvider implements AccessibleAnchorProvider {
 		/**
-		 * This class is internal, but is made protected so that JavaDoc will
-		 * see it.
+		 * This class is internal, but is made protected so that JavaDoc will see it.
 		 */
 		DefaultAccessibleAnchorProvider() {
 		}
@@ -111,9 +106,8 @@ public abstract class AbstractConnectionEditPart
 	}
 
 	/**
-	 * Deactivates the Figure representing this, by removing it from the
-	 * connection layer, and resetting the source and target connections to
-	 * <code>null</code>.
+	 * Deactivates the Figure representing this, by removing it from the connection
+	 * layer, and resetting the source and target connections to <code>null</code>.
 	 */
 	protected void deactivateFigure() {
 		getLayer(CONNECTION_LAYER).remove(getFigure());
@@ -122,15 +116,14 @@ public abstract class AbstractConnectionEditPart
 	}
 
 	/**
-	 * <code>AbstractConnectionEditPart</code> extends getAdapter() to overrides
-	 * the {@link AccessibleAnchorProvider} adapter returned by the superclass.
-	 * When treating a connection as a node for other connections, it makes
-	 * sense to target its midpoint, and not the edge of its bounds.
+	 * <code>AbstractConnectionEditPart</code> extends getAdapter() to overrides the
+	 * {@link AccessibleAnchorProvider} adapter returned by the superclass. When
+	 * treating a connection as a node for other connections, it makes sense to
+	 * target its midpoint, and not the edge of its bounds.
 	 * 
 	 * @see AbstractConnectionEditPart.DefaultAccessibleAnchorProvider
 	 * @see AbstractGraphicalEditPart#getAdapter(Class)
-	 * @param adapter
-	 *            the adapter Class
+	 * @param adapter the adapter Class
 	 * @return the adapter
 	 */
 	@Override
@@ -172,13 +165,13 @@ public abstract class AbstractConnectionEditPart
 	}
 
 	/**
-	 * Returns the <code>ConnectionAnchor</code> for the <i>source</i> end of
-	 * the connection. If the source is an instance of {@link NodeEditPart},
-	 * that interface will be used to determine the proper ConnectionAnchor. If
-	 * the source is not an instance of <code>NodeEditPart</code>, this method
-	 * should be overridden to return the correct ConnectionAnchor. Failure to
-	 * do this will cause a default anchor to be used so that the connection
-	 * figure will be made visible to the developer.
+	 * Returns the <code>ConnectionAnchor</code> for the <i>source</i> end of the
+	 * connection. If the source is an instance of {@link NodeEditPart}, that
+	 * interface will be used to determine the proper ConnectionAnchor. If the
+	 * source is not an instance of <code>NodeEditPart</code>, this method should be
+	 * overridden to return the correct ConnectionAnchor. Failure to do this will
+	 * cause a default anchor to be used so that the connection figure will be made
+	 * visible to the developer.
 	 * 
 	 * @return ConnectionAnchor for the source end of the Connection
 	 */
@@ -195,13 +188,13 @@ public abstract class AbstractConnectionEditPart
 	}
 
 	/**
-	 * Returns the <code>ConnectionAnchor</code> for the <i>target</i> end of
-	 * the connection. If the target is an instance of {@link NodeEditPart},
-	 * that interface will be used to determine the proper ConnectionAnchor. If
-	 * the target is not an instance of <code>NodeEditPart</code>, this method
-	 * should be overridden to return the correct ConnectionAnchor. Failure to
-	 * do this will cause a default anchor to be used so that the connection
-	 * figure will be made visible to the developer.
+	 * Returns the <code>ConnectionAnchor</code> for the <i>target</i> end of the
+	 * connection. If the target is an instance of {@link NodeEditPart}, that
+	 * interface will be used to determine the proper ConnectionAnchor. If the
+	 * target is not an instance of <code>NodeEditPart</code>, this method should be
+	 * overridden to return the correct ConnectionAnchor. Failure to do this will
+	 * cause a default anchor to be used so that the connection figure will be made
+	 * visible to the developer.
 	 * 
 	 * @return ConnectionAnchor for the target end of the Connection
 	 */
@@ -245,8 +238,8 @@ public abstract class AbstractConnectionEditPart
 	}
 
 	/**
-	 * Extended here to remove the ConnectionEditPart's connection figure from
-	 * the connection layer.
+	 * Extended here to remove the ConnectionEditPart's connection figure from the
+	 * connection layer.
 	 * 
 	 * @see org.eclipse.gef.EditPart#removeNotify()
 	 */
@@ -273,8 +266,7 @@ public abstract class AbstractConnectionEditPart
 	/**
 	 * Sets the source EditPart of this connection.
 	 * 
-	 * @param editPart
-	 *            EditPart which is the source.
+	 * @param editPart EditPart which is the source.
 	 */
 	public void setSource(EditPart editPart) {
 		if (sourceEditPart == editPart)
@@ -291,8 +283,7 @@ public abstract class AbstractConnectionEditPart
 	/**
 	 * Sets the target EditPart of this connection.
 	 * 
-	 * @param editPart
-	 *            EditPart which is the target.
+	 * @param editPart EditPart which is the target.
 	 */
 	public void setTarget(EditPart editPart) {
 		if (targetEditPart == editPart)

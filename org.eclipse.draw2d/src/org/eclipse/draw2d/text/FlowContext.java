@@ -22,8 +22,7 @@ public interface FlowContext {
 	/**
 	 * Adds the given box into the current line.
 	 * 
-	 * @param box
-	 *            the FlowBox to add
+	 * @param box the FlowBox to add
 	 */
 	void addToCurrentLine(FlowBox box);
 
@@ -31,8 +30,7 @@ public interface FlowContext {
 	 * Adds an entire line into the context. If there is a previous line, it is
 	 * ended.
 	 * 
-	 * @param box
-	 *            the line being added
+	 * @param box the line being added
 	 * @since 3.1
 	 */
 	void addLine(CompositeBox box);
@@ -54,8 +52,8 @@ public interface FlowContext {
 
 	/**
 	 * This method is used to convey layout state to different FlowFigures. This
-	 * state is cleared when a fragment is added to the current line and once
-	 * the layout is complete.
+	 * state is cleared when a fragment is added to the current line and once the
+	 * layout is complete.
 	 * 
 	 * @return <code>true</code> if the next fragment should be placed on the
 	 *         current line
@@ -65,16 +63,14 @@ public interface FlowContext {
 	boolean getContinueOnSameLine();
 
 	/**
-	 * This method looks ahead for line-breaks. When laying out, this method can
-	 * be used to determine the next line-break across multiple figures.
+	 * This method looks ahead for line-breaks. When laying out, this method can be
+	 * used to determine the next line-break across multiple figures.
 	 * 
-	 * @param child
-	 *            the search will occur starting from the figure after the given
-	 *            child
-	 * @param width
-	 *            the width before the next line-break (if one's found; all the
-	 *            width, otherwise) will be added on to the first int in the
-	 *            given array
+	 * @param child the search will occur starting from the figure after the given
+	 *              child
+	 * @param width the width before the next line-break (if one's found; all the
+	 *              width, otherwise) will be added on to the first int in the given
+	 *              array
 	 * @since 3.1
 	 */
 	void getWidthLookahead(FlowFigure child, int width[]);
@@ -86,13 +82,11 @@ public interface FlowContext {
 
 	/**
 	 * This method is used to convey layout state to different FlowFigures. This
-	 * state is cleared when a fragment is added and once the layout is
-	 * complete.
+	 * state is cleared when a fragment is added and once the layout is complete.
 	 * 
-	 * @param value
-	 *            <code>true</code> indicates that the first fragment of the
-	 *            next TextFlow should be laid out on the current line, and not
-	 *            a new one
+	 * @param value <code>true</code> indicates that the first fragment of the next
+	 *              TextFlow should be laid out on the current line, and not a new
+	 *              one
 	 * @since 3.1
 	 * @see #getContinueOnSameLine()
 	 */

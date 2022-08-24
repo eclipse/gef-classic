@@ -18,24 +18,20 @@ public class ActionEvent extends java.util.EventObject {
 	private String actionName;
 
 	/**
-	 * Constructs a new ActionEvent with <i>source</i> as the source of the
-	 * event.
+	 * Constructs a new ActionEvent with <i>source</i> as the source of the event.
 	 * 
-	 * @param source
-	 *            The source of the event
+	 * @param source The source of the event
 	 */
 	public ActionEvent(Object source) {
 		super(source);
 	}
 
 	/**
-	 * Constructs a new ActionEvent with <i>source</i> as the source of the
-	 * event and <i>name</i> as the name of the action that was performed.
+	 * Constructs a new ActionEvent with <i>source</i> as the source of the event
+	 * and <i>name</i> as the name of the action that was performed.
 	 * 
-	 * @param source
-	 *            The source of the event
-	 * @param name
-	 *            The name of the action
+	 * @param source The source of the event
+	 * @param name   The name of the action
 	 */
 	public ActionEvent(Object source, String name) {
 		super(source);

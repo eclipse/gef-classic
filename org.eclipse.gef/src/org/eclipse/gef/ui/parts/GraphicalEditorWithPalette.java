@@ -42,8 +42,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 	/**
 	 * Creates the palette on the given composite.
 	 * 
-	 * @param parent
-	 *            the composite
+	 * @param parent the composite
 	 */
 	protected void createPaletteViewer(Composite parent) {
 		PaletteViewer viewer = new PaletteViewer();
@@ -65,8 +64,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 		splitter.setFixedSize(getInitialPaletteSize());
 		splitter.addFixedSizeChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
-				handlePaletteResized(((Splitter) evt.getSource())
-						.getFixedSize());
+				handlePaletteResized(((Splitter) evt.getSource()).getFixedSize());
 			}
 		});
 	}
@@ -101,15 +99,14 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 	/**
 	 * Called whenever the user resizes the palette.
 	 * 
-	 * @param newSize
-	 *            the new size in pixels
+	 * @param newSize the new size in pixels
 	 */
 	protected void handlePaletteResized(int newSize) {
 	}
 
 	/**
-	 * Called when the palette viewer is set. By default, the EditDomain is
-	 * given the palette viewer.
+	 * Called when the palette viewer is set. By default, the EditDomain is given
+	 * the palette viewer.
 	 */
 	protected void hookPaletteViewer() {
 		getEditDomain().setPaletteViewer(paletteViewer);
@@ -124,8 +121,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 	/**
 	 * Sets the palette viewer
 	 * 
-	 * @param paletteViewer
-	 *            the palette viewer
+	 * @param paletteViewer the palette viewer
 	 */
 	protected void setPaletteViewer(PaletteViewer paletteViewer) {
 		this.paletteViewer = paletteViewer;

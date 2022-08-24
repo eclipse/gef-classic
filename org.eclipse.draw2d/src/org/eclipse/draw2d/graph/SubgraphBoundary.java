@@ -43,12 +43,9 @@ class SubgraphBoundary extends Node {
 	/**
 	 * Constructs a new boundary.
 	 * 
-	 * @param s
-	 *            the subgraph
-	 * @param p
-	 *            the padding
-	 * @param side
-	 *            which side
+	 * @param s    the subgraph
+	 * @param p    the padding
+	 * @param side which side
 	 */
 	public SubgraphBoundary(Subgraph s, Insets p, int side) {
 		super(null, s);

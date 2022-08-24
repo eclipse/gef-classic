@@ -45,8 +45,7 @@ public class OrGateFeedbackFigure extends OrGateFigure {
 		g.drawPoint(r.x, r.y + 4);
 
 		g.drawArc(r, 180, 180);
-		g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2,
-				r.bottom() + 2);
+		g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2, r.bottom() + 2);
 		g.drawPoint(r.x + r.width / 2, r.bottom());
 
 		// draw gate

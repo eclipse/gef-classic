@@ -25,8 +25,7 @@ public interface RoutingListener {
 	/**
 	 * Called when the connection has been invalidated.
 	 * 
-	 * @param connection
-	 *            the connection
+	 * @param connection the connection
 	 * @since 3.2
 	 */
 	void invalidate(Connection connection);
@@ -34,8 +33,7 @@ public interface RoutingListener {
 	/**
 	 * Called after normal routing has completed.
 	 * 
-	 * @param connection
-	 *            the routed connection
+	 * @param connection the routed connection
 	 * @since 3.2
 	 */
 	void postRoute(Connection connection);
@@ -43,8 +41,7 @@ public interface RoutingListener {
 	/**
 	 * Called when a connection has been removed from its router.
 	 * 
-	 * @param connection
-	 *            the connection
+	 * @param connection the connection
 	 * @since 3.2
 	 */
 	void remove(Connection connection);
@@ -54,21 +51,17 @@ public interface RoutingListener {
 	 * returning <code>true</code>. If intercepted, the connection's
 	 * <code>ConnectionRouter</code> will not perform routing.
 	 * 
-	 * @param connection
-	 *            the connection being routed
+	 * @param connection the connection being routed
 	 * @return <code>true</code> if routing has been performed by the listener
 	 * @since 3.2
 	 */
 	boolean route(Connection connection);
 
 	/**
-	 * Called when the connection's routing constraint has been set or
-	 * initialized.
+	 * Called when the connection's routing constraint has been set or initialized.
 	 * 
-	 * @param connection
-	 *            the connection
-	 * @param constraint
-	 *            the new constraint
+	 * @param connection the connection
+	 * @param constraint the new constraint
 	 * @since 3.2
 	 */
 	void setConstraint(Connection connection, Object constraint);

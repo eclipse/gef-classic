@@ -34,8 +34,7 @@ public class Digraph1GraphEditPart extends AbstractGraphicalEditPart {
 	 */
 	@Override
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new Digraph1XYLayoutEditPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new Digraph1XYLayoutEditPolicy());
 	}
 
 	/*

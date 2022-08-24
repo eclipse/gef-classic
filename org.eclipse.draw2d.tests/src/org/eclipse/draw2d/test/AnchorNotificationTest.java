@@ -25,11 +25,11 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * Tests the notification of anchors and connection figures.
  * 
  * <pre>
- * @Contents figure
- *   @LocalCoordinates
- *      @connection
- *      @endpoint1 
- *    @LocalCoordinates
+ * &#64;Contents figure
+ *   &#64;LocalCoordinates
+ *      &#64;connection
+ *      &#64;endpoint1 
+ *    &#64;LocalCoordinates
  *      @endpoint2
  * </pre>
  * 

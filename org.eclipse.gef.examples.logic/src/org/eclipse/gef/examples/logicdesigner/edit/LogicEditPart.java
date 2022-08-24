@@ -35,9 +35,8 @@ import org.eclipse.gef.examples.logicdesigner.model.Wire;
 /**
  * Provides support for
  */
-abstract public class LogicEditPart extends
-		org.eclipse.gef.editparts.AbstractGraphicalEditPart implements
-		NodeEditPart, PropertyChangeListener {
+abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGraphicalEditPart
+		implements NodeEditPart, PropertyChangeListener {
 
 	private AccessibleEditPart acc;
 
@@ -49,17 +48,15 @@ abstract public class LogicEditPart extends
 	}
 
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.COMPONENT_ROLE,
-				new LogicElementEditPolicy());
-		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
-				new LogicNodeEditPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LogicElementEditPolicy());
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new LogicNodeEditPolicy());
 	}
 
 	abstract protected AccessibleEditPart createAccessible();
 
 	/**
-	 * Makes the EditPart insensible to changes in the model by removing itself
-	 * from the model's list of listeners.
+	 * Makes the EditPart insensible to changes in the model by removing itself from
+	 * the model's list of listeners.
 	 */
 	public void deactivate() {
 		if (!isActive())
@@ -115,15 +112,14 @@ abstract public class LogicEditPart extends
 	 * 
 	 * @return ConnectionAnchor.
 	 */
-	public ConnectionAnchor getSourceConnectionAnchor(
-			ConnectionEditPart connEditPart) {
+	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connEditPart) {
 		Wire wire = (Wire) connEditPart.getModel();
 		return getNodeFigure().getConnectionAnchor(wire.getSourceTerminal());
 	}
 
 	/**
-	 * Returns the connection anchor of a source connection which is at the
-	 * given point.
+	 * Returns the connection anchor of a source connection which is at the given
+	 * point.
 	 * 
 	 * @return ConnectionAnchor.
 	 */
@@ -137,15 +133,14 @@ abstract public class LogicEditPart extends
 	 * 
 	 * @return ConnectionAnchor.
 	 */
-	public ConnectionAnchor getTargetConnectionAnchor(
-			ConnectionEditPart connEditPart) {
+	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connEditPart) {
 		Wire wire = (Wire) connEditPart.getModel();
 		return getNodeFigure().getConnectionAnchor(wire.getTargetTerminal());
 	}
 
 	/**
-	 * Returns the connection anchor of a terget connection which is at the
-	 * given point.
+	 * Returns the connection anchor of a terget connection which is at the given
+	 * point.
 	 * 
 	 * @return ConnectionAnchor.
 	 */
@@ -165,29 +160,25 @@ abstract public class LogicEditPart extends
 
 	/**
 	 * Handles changes in properties of this. It is activated through the
-	 * PropertyChangeListener. It updates children, source and target
-	 * connections, and the visuals of this based on the property changed.
+	 * PropertyChangeListener. It updates children, source and target connections,
+	 * and the visuals of this based on the property changed.
 	 * 
-	 * @param evt
-	 *            Event which details the property change.
+	 * @param evt Event which details the property change.
 	 */
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (LogicSubpart.CHILDREN.equals(prop)) {
 			if (evt.getOldValue() instanceof Integer)
 				// new child
-				addChild(createChild(evt.getNewValue()),
-						((Integer) evt.getOldValue()).intValue());
+				addChild(createChild(evt.getNewValue()), ((Integer) evt.getOldValue()).intValue());
 			else
 				// remove child
-				removeChild((EditPart) getViewer().getEditPartRegistry().get(
-						evt.getOldValue()));
+				removeChild((EditPart) getViewer().getEditPartRegistry().get(evt.getOldValue()));
 		} else if (LogicSubpart.INPUTS.equals(prop))
 			refreshTargetConnections();
 		else if (LogicSubpart.OUTPUTS.equals(prop))
 			refreshSourceConnections();
-		else if (prop.equals(LogicSubpart.ID_SIZE)
-				|| prop.equals(LogicSubpart.ID_LOCATION))
+		else if (prop.equals(LogicSubpart.ID_SIZE) || prop.equals(LogicSubpart.ID_LOCATION))
 			refreshVisuals();
 	}
 
@@ -199,8 +190,7 @@ abstract public class LogicEditPart extends
 		Dimension size = getLogicSubpart().getSize();
 		Rectangle r = new Rectangle(loc, size);
 
-		((GraphicalEditPart) getParent()).setLayoutConstraint(this,
-				getFigure(), r);
+		((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), r);
 	}
 
 }

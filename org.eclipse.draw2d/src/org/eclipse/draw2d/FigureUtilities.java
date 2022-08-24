@@ -35,22 +35,19 @@ public class FigureUtilities {
 	/**
 	 * Returns a new Color the same as the passed color in a darker hue.
 	 * 
-	 * @param color
-	 *            the color to darken
+	 * @param color the color to darken
 	 * @return the darkened color
 	 * @since 2.0
 	 */
 	public static Color darker(Color color) {
 		return new Color(null, (int) (color.getRed() * RGB_VALUE_MULTIPLIER),
-				(int) (color.getGreen() * RGB_VALUE_MULTIPLIER),
-				(int) (color.getBlue() * RGB_VALUE_MULTIPLIER));
+				(int) (color.getGreen() * RGB_VALUE_MULTIPLIER), (int) (color.getBlue() * RGB_VALUE_MULTIPLIER));
 	}
 
 	/**
 	 * Returns the FontMetrics associated with the passed Font.
 	 * 
-	 * @param f
-	 *            the font
+	 * @param f the font
 	 * @return the FontMetrics for the given font
 	 * @see GC#getFontMetrics()
 	 * @since 2.0
@@ -78,18 +75,15 @@ public class FigureUtilities {
 	}
 
 	/**
-	 * Returns the dimensions of the String <i>s</i> using the font <i>f</i>.
-	 * Tab expansion and carriage return processing are performed.
+	 * Returns the dimensions of the String <i>s</i> using the font <i>f</i>. Tab
+	 * expansion and carriage return processing are performed.
 	 * 
-	 * @param s
-	 *            the string
-	 * @param f
-	 *            the font
+	 * @param s the string
+	 * @param f the font
 	 * @return the text's dimensions
 	 * @see GC#textExtent(String)
 	 */
-	protected static org.eclipse.swt.graphics.Point getTextDimension(String s,
-			Font f) {
+	protected static org.eclipse.swt.graphics.Point getTextDimension(String s, Font f) {
 		setFont(f);
 		return getGC().textExtent(s);
 	}
@@ -98,8 +92,7 @@ public class FigureUtilities {
 	 * Returns the highest ancestor for the given figure
 	 * 
 	 * @since 3.0
-	 * @param figure
-	 *            a figure
+	 * @param figure a figure
 	 * @return the root ancestor
 	 */
 	public static IFigure getRoot(IFigure figure) {
@@ -109,18 +102,15 @@ public class FigureUtilities {
 	}
 
 	/**
-	 * Returns the dimensions of the String <i>s</i> using the font <i>f</i>. No
-	 * tab expansion or carriage return processing will be performed.
+	 * Returns the dimensions of the String <i>s</i> using the font <i>f</i>. No tab
+	 * expansion or carriage return processing will be performed.
 	 * 
-	 * @param s
-	 *            the string
-	 * @param f
-	 *            the font
+	 * @param s the string
+	 * @param f the font
 	 * @return the string's dimensions
 	 * @see GC#stringExtent(java.lang.String)
 	 */
-	protected static org.eclipse.swt.graphics.Point getStringDimension(
-			String s, Font f) {
+	protected static org.eclipse.swt.graphics.Point getStringDimension(String s, Font f) {
 		setFont(f);
 		return getGC().stringExtent(s);
 	}
@@ -129,10 +119,8 @@ public class FigureUtilities {
 	 * Returns the Dimensions of the given text, converting newlines and tabs
 	 * appropriately.
 	 * 
-	 * @param text
-	 *            the text
-	 * @param f
-	 *            the font
+	 * @param text the text
+	 * @param f    the font
 	 * @return the dimensions of the given text
 	 * @since 2.0
 	 */
@@ -143,10 +131,8 @@ public class FigureUtilities {
 	/**
 	 * Returns the Dimensions of <i>s</i> in Font <i>f</i>.
 	 * 
-	 * @param s
-	 *            the string
-	 * @param f
-	 *            the font
+	 * @param s the string
+	 * @param f the font
 	 * @return the dimensions of the given string
 	 * @since 2.0
 	 */
@@ -158,12 +144,9 @@ public class FigureUtilities {
 	 * Returns the Dimensions of the given text, converting newlines and tabs
 	 * appropriately.
 	 * 
-	 * @param s
-	 *            the string
-	 * @param f
-	 *            the font
-	 * @param result
-	 *            the Dimension that will contain the result of this calculation
+	 * @param s      the string
+	 * @param f      the font
+	 * @param result the Dimension that will contain the result of this calculation
 	 * @since 2.0
 	 */
 	public static void getTextExtents(String s, Font f, Dimension result) {
@@ -175,10 +158,8 @@ public class FigureUtilities {
 	/**
 	 * Returns the width of <i>s</i> in Font <i>f</i>.
 	 * 
-	 * @param s
-	 *            the string
-	 * @param f
-	 *            the font
+	 * @param s the string
+	 * @param f the font
 	 * @return the width
 	 * @since 2.0
 	 */
@@ -189,25 +170,22 @@ public class FigureUtilities {
 	/**
 	 * Returns a Color the same as the passed color in a lighter hue.
 	 * 
-	 * @param rgb
-	 *            the color
+	 * @param rgb the color
 	 * @return the lighter color
 	 * @since 2.0
 	 */
 	public static Color lighter(Color rgb) {
 		int r = rgb.getRed(), g = rgb.getGreen(), b = rgb.getBlue();
 
-		return new Color(null, Math.max(2,
-				Math.min((int) (r / RGB_VALUE_MULTIPLIER), 255)), Math.max(2,
-				Math.min((int) (g / RGB_VALUE_MULTIPLIER), 255)), Math.max(2,
-				Math.min((int) (b / RGB_VALUE_MULTIPLIER), 255)));
+		return new Color(null, Math.max(2, Math.min((int) (r / RGB_VALUE_MULTIPLIER), 255)),
+				Math.max(2, Math.min((int) (g / RGB_VALUE_MULTIPLIER), 255)),
+				Math.max(2, Math.min((int) (b / RGB_VALUE_MULTIPLIER), 255)));
 	}
 
 	/**
 	 * Produces a ghosting effect on the shape <i>s</i>.
 	 * 
-	 * @param s
-	 *            the shape
+	 * @param s the shape
 	 * @return the ghosted shape
 	 * @since 2.0
 	 */
@@ -221,35 +199,28 @@ public class FigureUtilities {
 	/**
 	 * Mixes the passed Colors and returns the resulting Color.
 	 * 
-	 * @param c1
-	 *            the first color
-	 * @param c2
-	 *            the second color
-	 * @param weight
-	 *            the first color's weight from 0-1
+	 * @param c1     the first color
+	 * @param c2     the second color
+	 * @param weight the first color's weight from 0-1
 	 * @return the new color
 	 * @since 2.0
 	 */
 	public static Color mixColors(Color c1, Color c2, double weight) {
-		return new Color(null, (int) (c1.getRed() * weight + c2.getRed()
-				* (1 - weight)), (int) (c1.getGreen() * weight + c2.getGreen()
-				* (1 - weight)), (int) (c1.getBlue() * weight + c2.getBlue()
-				* (1 - weight)));
+		return new Color(null, (int) (c1.getRed() * weight + c2.getRed() * (1 - weight)),
+				(int) (c1.getGreen() * weight + c2.getGreen() * (1 - weight)),
+				(int) (c1.getBlue() * weight + c2.getBlue() * (1 - weight)));
 	}
 
 	/**
 	 * Mixes the passed Colors and returns the resulting Color.
 	 * 
-	 * @param c1
-	 *            the first color
-	 * @param c2
-	 *            the second color
+	 * @param c1 the first color
+	 * @param c2 the second color
 	 * @return the new color
 	 * @since 2.0
 	 */
 	public static Color mixColors(Color c1, Color c2) {
-		return new Color(null, (c1.getRed() + c2.getRed()) / 2,
-				(c1.getGreen() + c2.getGreen()) / 2,
+		return new Color(null, (c1.getRed() + c2.getRed()) / 2, (c1.getGreen() + c2.getGreen()) / 2,
 				(c1.getBlue() + c2.getBlue()) / 2);
 	}
 
@@ -257,18 +228,13 @@ public class FigureUtilities {
 	 * Paints a border with an etching effect, having a shadow of Color
 	 * <i>shadow</i> and highlight of Color <i>highlight</i>.
 	 * 
-	 * @param g
-	 *            the graphics object
-	 * @param r
-	 *            the bounds of the border
-	 * @param shadow
-	 *            the shadow color
-	 * @param highlight
-	 *            the highlight color
+	 * @param g         the graphics object
+	 * @param r         the bounds of the border
+	 * @param shadow    the shadow color
+	 * @param highlight the highlight color
 	 * @since 2.0
 	 */
-	public static void paintEtchedBorder(Graphics g, Rectangle r, Color shadow,
-			Color highlight) {
+	public static void paintEtchedBorder(Graphics g, Rectangle r, Color shadow, Color highlight) {
 		int x = r.x, y = r.y, w = r.width, h = r.height;
 
 		g.setLineStyle(Graphics.LINE_SOLID);
@@ -288,26 +254,20 @@ public class FigureUtilities {
 	}
 
 	/**
-	 * Helper method to paint a grid. Painting is optimized as it is restricted
-	 * to the Graphics' clip.
+	 * Helper method to paint a grid. Painting is optimized as it is restricted to
+	 * the Graphics' clip.
 	 * 
-	 * @param g
-	 *            The Graphics object to be used for painting
-	 * @param f
-	 *            The figure in which the grid is to be painted
-	 * @param origin
-	 *            Any point where the grid lines are expected to intersect
-	 * @param distanceX
-	 *            Distance between vertical grid lines; if 0 or less, vertical
-	 *            grid lines will not be drawn
-	 * @param distanceY
-	 *            Distance between horizontal grid lines; if 0 or less,
-	 *            horizontal grid lines will not be drawn
+	 * @param g         The Graphics object to be used for painting
+	 * @param f         The figure in which the grid is to be painted
+	 * @param origin    Any point where the grid lines are expected to intersect
+	 * @param distanceX Distance between vertical grid lines; if 0 or less, vertical
+	 *                  grid lines will not be drawn
+	 * @param distanceY Distance between horizontal grid lines; if 0 or less,
+	 *                  horizontal grid lines will not be drawn
 	 * 
 	 * @since 3.0
 	 */
-	public static void paintGrid(Graphics g, IFigure f,
-			org.eclipse.draw2d.geometry.Point origin, int distanceX,
+	public static void paintGrid(Graphics g, IFigure f, org.eclipse.draw2d.geometry.Point origin, int distanceX,
 			int distanceY) {
 		Rectangle clip = g.getClip(Rectangle.SINGLETON);
 
@@ -335,14 +295,12 @@ public class FigureUtilities {
 	}
 
 	/**
-	 * Paints a border with an etching effect, having a shadow of a darker
-	 * version of g's background color, and a highlight a lighter version of g's
-	 * background color.
+	 * Paints a border with an etching effect, having a shadow of a darker version
+	 * of g's background color, and a highlight a lighter version of g's background
+	 * color.
 	 * 
-	 * @param g
-	 *            the graphics object
-	 * @param r
-	 *            the bounds of the border
+	 * @param g the graphics object
+	 * @param r the bounds of the border
 	 * @since 2.0
 	 */
 	public static void paintEtchedBorder(Graphics g, Rectangle r) {
@@ -353,8 +311,7 @@ public class FigureUtilities {
 	/**
 	 * Sets Font to passed value.
 	 * 
-	 * @param f
-	 *            the new font
+	 * @param f the new font
 	 * @since 2.0
 	 */
 	protected static void setFont(Font f) {
@@ -366,17 +323,15 @@ public class FigureUtilities {
 	}
 
 	/**
-	 * Returns the figure which is the nearest common ancestor of both figures,
-	 * or <code>null</code> if there is no common ancestor. A figure is an
-	 * ancestor if it is the parent of another figure, or if it is the ancestor
-	 * of that figure's parent. If one figure is the ancestor of the other, it
-	 * is returned as the common ancestor.
+	 * Returns the figure which is the nearest common ancestor of both figures, or
+	 * <code>null</code> if there is no common ancestor. A figure is an ancestor if
+	 * it is the parent of another figure, or if it is the ancestor of that figure's
+	 * parent. If one figure is the ancestor of the other, it is returned as the
+	 * common ancestor.
 	 * 
 	 * @since 3.1
-	 * @param l
-	 *            left
-	 * @param r
-	 *            right
+	 * @param l left
+	 * @param r right
 	 * @return the common ancestor, if it exists, or <code>null</code>.
 	 */
 	public static IFigure findCommonAncestor(IFigure l, IFigure r) {
@@ -403,13 +358,11 @@ public class FigureUtilities {
 	}
 
 	/**
-	 * Returns <code>true</code> if the ancestor contains the descendant, or is
-	 * the ancestor of the descendant's parent.
+	 * Returns <code>true</code> if the ancestor contains the descendant, or is the
+	 * ancestor of the descendant's parent.
 	 * 
-	 * @param ancestor
-	 *            the ancestor
-	 * @param descendant
-	 *            the descendant
+	 * @param ancestor   the ancestor
+	 * @param descendant the descendant
 	 * @return <code>true</code> if ancestor
 	 * @since 3.2
 	 */
@@ -423,13 +376,11 @@ public class FigureUtilities {
 	}
 
 	/**
-	 * Determines whether the given figure is showing and not (completely)
-	 * clipped.
+	 * Determines whether the given figure is showing and not (completely) clipped.
 	 * 
-	 * @param figure
-	 *            The figure to test
-	 * @return <code>true</code> if the given figure is showing and not
-	 *         completely clipped, <code>false</code> otherwise.
+	 * @param figure The figure to test
+	 * @return <code>true</code> if the given figure is showing and not completely
+	 *         clipped, <code>false</code> otherwise.
 	 * @since 3.7
 	 */
 	public static boolean isNotFullyClipped(IFigure figure) {

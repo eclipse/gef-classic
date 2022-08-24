@@ -51,8 +51,8 @@ public class Edge {
 	public Object data;
 
 	/**
-	 * The minimum rank separation between the source and target nodes. The
-	 * default value is 1.
+	 * The minimum rank separation between the source and target nodes. The default
+	 * value is 1.
 	 * 
 	 * @deprecated use accessors instead
 	 */
@@ -74,8 +74,8 @@ public class Edge {
 	public boolean isFeedback = false;
 
 	/**
-	 * The edge's attachment point at the <em>source</em> node. The default
-	 * value is -1, which indicates that the edge should use the node's default
+	 * The edge's attachment point at the <em>source</em> node. The default value is
+	 * -1, which indicates that the edge should use the node's default
 	 * {@link Node#getOffsetOutgoing() outgoing} attachment point.
 	 * 
 	 * @deprecated use accessors instead
@@ -83,8 +83,8 @@ public class Edge {
 	public int offsetSource = -1;
 
 	/**
-	 * The edge's attachment point at the <em>target</em> node. The default
-	 * value is -1, which indicates that the edge should use the node's default
+	 * The edge's attachment point at the <em>target</em> node. The default value is
+	 * -1, which indicates that the edge should use the node's default
 	 * {@link Node#getOffsetIncoming() incoming} attachment point.
 	 * 
 	 * @deprecated use accessors instead
@@ -92,8 +92,8 @@ public class Edge {
 	public int offsetTarget = -1;
 
 	/**
-	 * The minimum amount of space to leave on both the left and right sides of
-	 * the edge.
+	 * The minimum amount of space to leave on both the left and right sides of the
+	 * edge.
 	 * 
 	 * @deprecated use accessors instead
 	 */
@@ -120,16 +120,16 @@ public class Edge {
 	boolean tree;
 
 	/**
-	 * The virtual nodes used to bend edges which go across one or more ranks.
-	 * Each virtual node is just a regular node which occupies some small amount
-	 * of space on a row. It's width is equivalent to the edge's width. Clients
-	 * can use each virtual node's location (x, y, width, and height) as the way
-	 * to position an edge which spans multiple rows.
+	 * The virtual nodes used to bend edges which go across one or more ranks. Each
+	 * virtual node is just a regular node which occupies some small amount of space
+	 * on a row. It's width is equivalent to the edge's width. Clients can use each
+	 * virtual node's location (x, y, width, and height) as the way to position an
+	 * edge which spans multiple rows.
 	 */
 	public NodeList vNodes;
 	/**
-	 * A hint indicating how straight and short the edge should be relative to
-	 * other edges in the graph. The default value is <code>1</code>.
+	 * A hint indicating how straight and short the edge should be relative to other
+	 * edges in the graph. The default value is <code>1</code>.
 	 */
 	public int weight = 1;
 
@@ -142,10 +142,8 @@ public class Edge {
 	 * Constructs a new edge with the given source and target nodes. All other
 	 * fields will have their default values.
 	 * 
-	 * @param source
-	 *            the source Node
-	 * @param target
-	 *            the target Node
+	 * @param source the source Node
+	 * @param target the target Node
 	 */
 	public Edge(Node source, Node target) {
 		this(null, source, target);
@@ -154,14 +152,10 @@ public class Edge {
 	/**
 	 * Constructs a new edge with the given source, target, delta, and weight.
 	 * 
-	 * @param source
-	 *            the source Node
-	 * @param target
-	 *            the target Node
-	 * @param delta
-	 *            the minimum edge span
-	 * @param weight
-	 *            the weight hint
+	 * @param source the source Node
+	 * @param target the target Node
+	 * @param delta  the minimum edge span
+	 * @param weight the weight hint
 	 */
 	public Edge(Node source, Node target, int delta, int weight) {
 		this(source, target);
@@ -170,15 +164,11 @@ public class Edge {
 	}
 
 	/**
-	 * Constructs a new edge with the given data object, source, and target
-	 * node.
+	 * Constructs a new edge with the given data object, source, and target node.
 	 * 
-	 * @param data
-	 *            an arbitrary data object
-	 * @param source
-	 *            the source node
-	 * @param target
-	 *            the target node
+	 * @param data   an arbitrary data object
+	 * @param source the source node
+	 * @param target the target node
 	 */
 	public Edge(Object data, Node source, Node target) {
 		this.data = data;
@@ -204,8 +194,7 @@ public class Edge {
 	 * {@link VirtualNode}) on this edge at the given rank. If this edge doesn't
 	 * have a node at the given rank, -1 is returned.
 	 * 
-	 * @param rank
-	 *            the rank
+	 * @param rank the rank
 	 * @return the edges index at the given rank
 	 */
 	int getIndexForRank(int rank) {
@@ -219,8 +208,8 @@ public class Edge {
 	}
 
 	/**
-	 * For internal use only. Returns the target node's row minus the source
-	 * node's row.
+	 * For internal use only. Returns the target node's row minus the source node's
+	 * row.
 	 * 
 	 * @return the distance from the source to target ranks
 	 */
@@ -317,9 +306,8 @@ public class Edge {
 
 	/**
 	 * Returns <code>true</code> if the edge was a feedback edge. The layout
-	 * algorithm may invert one or more edges to remove all cycles from the
-	 * input. The set of edges that are inverted are referred to as the
-	 * "feedback" set.
+	 * algorithm may invert one or more edges to remove all cycles from the input.
+	 * The set of edges that are inverted are referred to as the "feedback" set.
 	 * 
 	 * @return <code>true</code> if the edge is feedback
 	 * @since 3.2
@@ -329,11 +317,9 @@ public class Edge {
 	}
 
 	/**
-	 * For internal use only. Returns the node opposite the given node on this
-	 * edge.
+	 * For internal use only. Returns the node opposite the given node on this edge.
 	 * 
-	 * @param end
-	 *            one end
+	 * @param end one end
 	 * @return the other end
 	 */
 	public Node opposite(Node end) {
@@ -345,8 +331,7 @@ public class Edge {
 	/**
 	 * Sets the delta value.
 	 * 
-	 * @param delta
-	 *            the new delta value
+	 * @param delta the new delta value
 	 * @since 3.2
 	 */
 	public void setDelta(int delta) {
@@ -356,8 +341,7 @@ public class Edge {
 	/**
 	 * Sets the padding for this edge.
 	 * 
-	 * @param padding
-	 *            the padding
+	 * @param padding the padding
 	 * @since 3.2
 	 */
 	public void setPadding(int padding) {
@@ -371,12 +355,11 @@ public class Edge {
 	}
 
 	/**
-	 * Sets the source node and adds this edge to the new source's outgoing
-	 * edges. If the source node is previously set, removes this edge from the
-	 * old source's outgoing edges.
+	 * Sets the source node and adds this edge to the new source's outgoing edges.
+	 * If the source node is previously set, removes this edge from the old source's
+	 * outgoing edges.
 	 * 
-	 * @param node
-	 *            the new source
+	 * @param node the new source
 	 * @since 3.2
 	 */
 	public void setSource(Node node) {
@@ -394,12 +377,11 @@ public class Edge {
 	}
 
 	/**
-	 * Sets the target node and adds this edge to the new target's incoming
-	 * edges. If the target node is previously set, removes this edge from the
-	 * old target's incoming edges.
+	 * Sets the target node and adds this edge to the new target's incoming edges.
+	 * If the target node is previously set, removes this edge from the old target's
+	 * incoming edges.
 	 * 
-	 * @param node
-	 *            the new target
+	 * @param node the new target
 	 * @since 3.2
 	 */
 	public void setTarget(Node node) {
@@ -419,8 +401,7 @@ public class Edge {
 	/**
 	 * Sets the width of the edge.
 	 * 
-	 * @param width
-	 *            the new width
+	 * @param width the new width
 	 * @since 3.2
 	 */
 	public void setWidth(int width) {

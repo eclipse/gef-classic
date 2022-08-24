@@ -33,14 +33,12 @@ public class FanRouter extends AutomaticRouter {
 	}
 
 	/**
-	 * Modifies a given PointList that collides with some other PointList. The
-	 * given <i>index</i> indicates that this it the i<sup>th</sup> PointList in
-	 * a group of colliding points.
+	 * Modifies a given PointList that collides with some other PointList. The given
+	 * <i>index</i> indicates that this it the i<sup>th</sup> PointList in a group
+	 * of colliding points.
 	 * 
-	 * @param points
-	 *            the colliding points
-	 * @param index
-	 *            the index
+	 * @param points the colliding points
+	 * @param index  the index
 	 */
 	protected void handleCollision(PointList points, int index) {
 		Point start = points.getFirstPoint();
@@ -52,8 +50,7 @@ public class FanRouter extends AutomaticRouter {
 		Point midPoint = new Point((end.x + start.x) / 2, (end.y + start.y) / 2);
 		int position = end.getPosition(start);
 		Ray ray;
-		if (position == PositionConstants.SOUTH
-				|| position == PositionConstants.EAST)
+		if (position == PositionConstants.SOUTH || position == PositionConstants.EAST)
 			ray = new Ray(start, end);
 		else
 			ray = new Ray(end, start);
@@ -65,9 +62,8 @@ public class FanRouter extends AutomaticRouter {
 		Point bendPoint;
 
 		if (index % 2 == 0) {
-			bendPoint = new Point(
-					midPoint.x + (index / 2) * (-1 * ySeparation), midPoint.y
-							+ (index / 2) * xSeparation);
+			bendPoint = new Point(midPoint.x + (index / 2) * (-1 * ySeparation),
+					midPoint.y + (index / 2) * xSeparation);
 		} else {
 			bendPoint = new Point(midPoint.x + (index / 2) * ySeparation,
 					midPoint.y + (index / 2) * (-1 * xSeparation));
@@ -79,8 +75,7 @@ public class FanRouter extends AutomaticRouter {
 	/**
 	 * Sets the colliding {@link Connection Connection's} separation in pixels.
 	 * 
-	 * @param value
-	 *            the separation
+	 * @param value the separation
 	 * @since 2.0
 	 */
 	public void setSeparation(int value) {

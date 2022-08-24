@@ -31,8 +31,7 @@ public class CustomizeAction extends Action {
 	/**
 	 * Constructor
 	 * 
-	 * @param palette
-	 *            the palette which has to be customized when this action is run
+	 * @param palette the palette which has to be customized when this action is run
 	 */
 	public CustomizeAction(PaletteViewer palette) {
 		super();
@@ -49,8 +48,7 @@ public class CustomizeAction extends Action {
 		PaletteCustomizerDialog dialog = paletteViewer.getCustomizerDialog();
 		List list = paletteViewer.getSelectedEditParts();
 		if (!list.isEmpty()) {
-			PaletteEntry selection = (PaletteEntry) ((EditPart) list.get(0))
-					.getModel();
+			PaletteEntry selection = (PaletteEntry) ((EditPart) list.get(0)).getModel();
 			if (!(selection instanceof PaletteRoot)) {
 				dialog.setDefaultSelection(selection);
 			}

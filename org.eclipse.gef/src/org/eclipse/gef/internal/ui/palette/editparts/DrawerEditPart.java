@@ -44,8 +44,7 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
  * 
  * @author Pratik Shah
  */
-public class DrawerEditPart extends PaletteEditPart
-		implements IPinnableEditPart {
+public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart {
 
 	private static final String PROPERTY_EXPANSION_STATE = "expansion"; //$NON-NLS-1$
 	private static final String PROPERTY_PINNED_STATE = "pinned"; //$NON-NLS-1$
@@ -53,8 +52,7 @@ public class DrawerEditPart extends PaletteEditPart
 	/**
 	 * Constructor
 	 * 
-	 * @param drawer
-	 *            The PaletteDrawer that this EditPart is representing
+	 * @param drawer The PaletteDrawer that this EditPart is representing
 	 */
 	public DrawerEditPart(PaletteDrawer drawer) {
 		super(drawer);
@@ -78,8 +76,7 @@ public class DrawerEditPart extends PaletteEditPart
 			}
 		});
 
-		fig.getScrollpane().getContents()
-				.addLayoutListener(getPaletteAnimator());
+		fig.getScrollpane().getContents().addLayoutListener(getPaletteAnimator());
 
 		return fig;
 	}
@@ -92,8 +89,7 @@ public class DrawerEditPart extends PaletteEditPart
 		if (key == ExposeHelper.class) {
 			ViewportExposeHelper helper = new ViewportExposeHelper(this);
 			helper.setMinimumFrameCount(6);
-			helper.setMargin(new Insets(PaletteScrollBar.BUTTON_HEIGHT, 0,
-					PaletteScrollBar.BUTTON_HEIGHT, 0));
+			helper.setMargin(new Insets(PaletteScrollBar.BUTTON_HEIGHT, 0, PaletteScrollBar.BUTTON_HEIGHT, 0));
 			return key.cast(helper);
 		}
 		if (key == MouseWheelHelper.class)
@@ -102,8 +98,7 @@ public class DrawerEditPart extends PaletteEditPart
 	}
 
 	private PaletteAnimator getPaletteAnimator() {
-		return (PaletteAnimator) getViewer().getEditPartRegistry()
-				.get(PaletteAnimator.class);
+		return (PaletteAnimator) getViewer().getEditPartRegistry().get(PaletteAnimator.class);
 	}
 
 	/**
@@ -149,9 +144,8 @@ public class DrawerEditPart extends PaletteEditPart
 
 	/**
 	 * @return <code>true</code> if the DrawerFigure can be pinned open. This is
-	 *         only true when the drawer is expanded and the auto-collapse
-	 *         strategy is
-	 *         <code>PaletteViewerPreferences.COLLAPSE_AS_NEEDED</code>.
+	 *         only true when the drawer is expanded and the auto-collapse strategy
+	 *         is <code>PaletteViewerPreferences.COLLAPSE_AS_NEEDED</code>.
 	 */
 	public boolean canBePinned() {
 		return getDrawerFigure().isPinShowing();
@@ -176,8 +170,7 @@ public class DrawerEditPart extends PaletteEditPart
 
 			public void getState(AccessibleControlEvent e) {
 				super.getState(e);
-				e.detail |= isExpanded() ? ACC.STATE_EXPANDED
-						: ACC.STATE_COLLAPSED;
+				e.detail |= isExpanded() ? ACC.STATE_EXPANDED : ACC.STATE_COLLAPSED;
 			}
 		};
 	}
@@ -197,14 +190,12 @@ public class DrawerEditPart extends PaletteEditPart
 		getDrawerFigure().setTitle(getPaletteEntry().getLabel());
 		getDrawerFigure().setLayoutMode(getLayoutSetting());
 
-		boolean showPin = getPreferenceSource()
-				.getAutoCollapseSetting() == PaletteViewerPreferences.COLLAPSE_AS_NEEDED;
+		boolean showPin = getPreferenceSource().getAutoCollapseSetting() == PaletteViewerPreferences.COLLAPSE_AS_NEEDED;
 		getDrawerFigure().showPin(showPin);
 
-		Color background = getDrawer().getDrawerType()
-				.equals(PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE)
-						? PaletteColorUtil.WIDGET_LIST_BACKGROUND
-						: null;
+		Color background = getDrawer().getDrawerType().equals(PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE)
+				? PaletteColorUtil.WIDGET_LIST_BACKGROUND
+				: null;
 		getDrawerFigure().getScrollpane().setBackgroundColor(background);
 	}
 
@@ -221,20 +212,13 @@ public class DrawerEditPart extends PaletteEditPart
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#restoreState(org.eclipse.ui.IMemento)
 	 */
 	public void restoreState(IMemento memento) {
-		setExpanded(Boolean.valueOf(memento.getString(PROPERTY_EXPANSION_STATE))
-				.booleanValue());
-		setPinnedOpen(Boolean.valueOf(memento.getString(PROPERTY_PINNED_STATE))
-				.booleanValue());
-		RangeModel rModel = getDrawerFigure().getScrollpane().getViewport()
-				.getVerticalRangeModel();
-		rModel.setMinimum(
-				memento.getInteger(RangeModel.PROPERTY_MINIMUM).intValue());
-		rModel.setMaximum(
-				memento.getInteger(RangeModel.PROPERTY_MAXIMUM).intValue());
-		rModel.setExtent(
-				memento.getInteger(RangeModel.PROPERTY_EXTENT).intValue());
-		rModel.setValue(
-				memento.getInteger(RangeModel.PROPERTY_VALUE).intValue());
+		setExpanded(Boolean.valueOf(memento.getString(PROPERTY_EXPANSION_STATE)).booleanValue());
+		setPinnedOpen(Boolean.valueOf(memento.getString(PROPERTY_PINNED_STATE)).booleanValue());
+		RangeModel rModel = getDrawerFigure().getScrollpane().getViewport().getVerticalRangeModel();
+		rModel.setMinimum(memento.getInteger(RangeModel.PROPERTY_MINIMUM).intValue());
+		rModel.setMaximum(memento.getInteger(RangeModel.PROPERTY_MAXIMUM).intValue());
+		rModel.setExtent(memento.getInteger(RangeModel.PROPERTY_EXTENT).intValue());
+		rModel.setValue(memento.getInteger(RangeModel.PROPERTY_VALUE).intValue());
 		super.restoreState(memento);
 	}
 
@@ -242,12 +226,9 @@ public class DrawerEditPart extends PaletteEditPart
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#saveState(org.eclipse.ui.IMemento)
 	 */
 	public void saveState(IMemento memento) {
-		memento.putString(PROPERTY_EXPANSION_STATE,
-				Boolean.valueOf(isExpanded()).toString());
-		memento.putString(PROPERTY_PINNED_STATE,
-				Boolean.valueOf(isPinnedOpen()).toString());
-		RangeModel rModel = getDrawerFigure().getScrollpane().getViewport()
-				.getVerticalRangeModel();
+		memento.putString(PROPERTY_EXPANSION_STATE, Boolean.valueOf(isExpanded()).toString());
+		memento.putString(PROPERTY_PINNED_STATE, Boolean.valueOf(isPinnedOpen()).toString());
+		RangeModel rModel = getDrawerFigure().getScrollpane().getViewport().getVerticalRangeModel();
 		memento.putInteger(RangeModel.PROPERTY_MINIMUM, rModel.getMinimum());
 		memento.putInteger(RangeModel.PROPERTY_MAXIMUM, rModel.getMaximum());
 		memento.putInteger(RangeModel.PROPERTY_EXTENT, rModel.getExtent());
@@ -258,8 +239,7 @@ public class DrawerEditPart extends PaletteEditPart
 	/**
 	 * Sets the expansion state of the DrawerFigure
 	 * 
-	 * @param expanded
-	 *            <code>true</code> if the drawer is expanded; false otherwise.
+	 * @param expanded <code>true</code> if the drawer is expanded; false otherwise.
 	 */
 	public void setExpanded(boolean expanded) {
 		getDrawerFigure().setExpanded(expanded);

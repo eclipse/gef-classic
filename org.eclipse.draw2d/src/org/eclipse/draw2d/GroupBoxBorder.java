@@ -31,8 +31,7 @@ public class GroupBoxBorder extends AbstractLabeledBorder {
 	/**
 	 * Constructs a GroupBoxBorder with label s.
 	 * 
-	 * @param s
-	 *            the label
+	 * @param s the label
 	 * @since 2.0
 	 */
 	public GroupBoxBorder(String s) {
@@ -42,10 +41,9 @@ public class GroupBoxBorder extends AbstractLabeledBorder {
 	/**
 	 * Calculates and returns the Insets for this GroupBoxBorder.
 	 * 
-	 * @param figure
-	 *            IFigure on which the calculations should be made. Generally
-	 *            this is the IFigure of which this GroupBoxBorder is
-	 *            surrounding.
+	 * @param figure IFigure on which the calculations should be made. Generally
+	 *               this is the IFigure of which this GroupBoxBorder is
+	 *               surrounding.
 	 * @return the Insets for this GroupBoxBorder.
 	 * @since 2.0
 	 */
@@ -71,8 +69,7 @@ public class GroupBoxBorder extends AbstractLabeledBorder {
 		if (r.isEmpty())
 			return;
 
-		Rectangle textLoc = new Rectangle(r.getTopLeft(),
-				getTextExtents(figure));
+		Rectangle textLoc = new Rectangle(r.getTopLeft(), getTextExtents(figure));
 		r.crop(new Insets(getTextExtents(figure).height / 2));
 		FigureUtilities.paintEtchedBorder(g, r);
 

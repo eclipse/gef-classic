@@ -62,19 +62,14 @@ public class PaletteCustomizerTest extends TestCase {
 
 	private void resetBottom() {
 		reset();
-		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null,
-				null, null));
+		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null, null, null));
 		stackA = new PaletteStack("Stack", null, null);
-		stackA.add(new CombinedTemplateCreationEntry("STA", null, null, null,
-				null, null));
-		stackA.add(selection = new CombinedTemplateCreationEntry("Selection",
-				null, null, null, null, null));
-		selection
-				.setUserModificationPermission(PaletteEntry.PERMISSION_LIMITED_MODIFICATION);
+		stackA.add(new CombinedTemplateCreationEntry("STA", null, null, null, null, null));
+		stackA.add(selection = new CombinedTemplateCreationEntry("Selection", null, null, null, null, null));
+		selection.setUserModificationPermission(PaletteEntry.PERMISSION_LIMITED_MODIFICATION);
 		stackB = new PaletteStack("Stack2", null, null);
 		stackB.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
-		stackB.add(new CombinedTemplateCreationEntry("STB", null, null, null,
-				null, null));
+		stackB.add(new CombinedTemplateCreationEntry("STB", null, null, null, null, null));
 		drawerA.add(stackA);
 		drawerA.add(stackB);
 		root.add(drawerA);
@@ -83,30 +78,22 @@ public class PaletteCustomizerTest extends TestCase {
 
 	private void resetMiddle() {
 		reset();
-		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null,
-				null, null));
-		drawerA.add(selection = new CombinedTemplateCreationEntry("Selection",
-				null, null, null, null, null));
-		drawerA.add(new CombinedTemplateCreationEntry("TB", null, null, null,
-				null, null));
+		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null, null, null));
+		drawerA.add(selection = new CombinedTemplateCreationEntry("Selection", null, null, null, null, null));
+		drawerA.add(new CombinedTemplateCreationEntry("TB", null, null, null, null, null));
 		root.add(drawerA);
 		root.add(drawerB);
 	}
 
 	private void resetTop() {
 		reset();
-		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null,
-				null, null));
-		drawerA.add(new CombinedTemplateCreationEntry("TB", null, null, null,
-				null, null));
+		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null, null, null));
+		drawerA.add(new CombinedTemplateCreationEntry("TB", null, null, null, null, null));
 		selection = new PaletteStack("Stack", null, null);
-		((PaletteStack) selection).add(new CombinedTemplateCreationEntry("STA",
-				null, null, null, null, null));
-		selection
-				.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
+		((PaletteStack) selection).add(new CombinedTemplateCreationEntry("STA", null, null, null, null, null));
+		selection.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
 		drawerB.add(selection);
-		drawerB.add(new CombinedTemplateCreationEntry("BTB", null, null, null,
-				null, null));
+		drawerB.add(new CombinedTemplateCreationEntry("BTB", null, null, null, null, null));
 		root.add(drawerA);
 		root.add(drawerB);
 		root.add(drawerC);
@@ -128,8 +115,8 @@ public class PaletteCustomizerTest extends TestCase {
 
 	/**
 	 * 
-	 * 1-Root 2-Drawer A 3-Tool 4-Stack A 5-Tool 6-Selection (Limited
-	 * Permissions) 8-Stack B (Full Permissions) 9-Tool 10-Drawer B
+	 * 1-Root 2-Drawer A 3-Tool 4-Stack A 5-Tool 6-Selection (Limited Permissions)
+	 * 8-Stack B (Full Permissions) 9-Tool 10-Drawer B
 	 * 
 	 */
 	public void testBottomSelection() {

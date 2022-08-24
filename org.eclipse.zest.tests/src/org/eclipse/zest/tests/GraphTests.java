@@ -40,8 +40,7 @@ public class GraphTests extends TestCase {
 	protected void setUp() throws Exception {
 		shell = new Shell();
 		graph = new Graph(shell, STYLE);
-		nodes = new GraphNode[] { new GraphNode(graph, STYLE),
-				new GraphNode(graph, STYLE) };
+		nodes = new GraphNode[] { new GraphNode(graph, STYLE), new GraphNode(graph, STYLE) };
 		connection = new GraphConnection(graph, STYLE, nodes[0], nodes[1]);
 	}
 

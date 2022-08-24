@@ -24,8 +24,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public interface HandleBounds extends org.eclipse.draw2d.IFigure {
 
 	/**
-	 * Returns the Rectangle around which handles are to be placed. The
-	 * Rectangle should be in the same coordinate system as the figure itself.
+	 * Returns the Rectangle around which handles are to be placed. The Rectangle
+	 * should be in the same coordinate system as the figure itself.
 	 * 
 	 * @return The rectangle used for handles
 	 */

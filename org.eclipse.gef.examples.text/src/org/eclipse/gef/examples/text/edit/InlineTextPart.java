@@ -25,10 +25,8 @@ public class InlineTextPart extends CompoundTextPart {
 
 	public void getTextLocation(CaretRequest search, SearchResult result) {
 		if (!search.isRecursive
-				&& (search.getType() == CaretRequest.LINE_BOUNDARY || search
-						.getType() == CaretRequest.ROW)) {
-			search.setReferenceTextLocation(this, search.isForward ? 0
-					: getLength());
+				&& (search.getType() == CaretRequest.LINE_BOUNDARY || search.getType() == CaretRequest.ROW)) {
+			search.setReferenceTextLocation(this, search.isForward ? 0 : getLength());
 			getTextParent().getTextLocation(search, result);
 		} else
 			super.getTextLocation(search, result);

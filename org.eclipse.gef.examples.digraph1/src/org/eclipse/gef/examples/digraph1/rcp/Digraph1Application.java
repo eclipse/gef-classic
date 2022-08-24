@@ -28,8 +28,7 @@ public class Digraph1Application implements IApplication {
 	public Object start(IApplicationContext context) throws Exception {
 		Display display = PlatformUI.createDisplay();
 		try {
-			int returnCode = PlatformUI.createAndRunWorkbench(display,
-					new Digraph1WorkbenchAdvisor());
+			int returnCode = PlatformUI.createAndRunWorkbench(display, new Digraph1WorkbenchAdvisor());
 			if (returnCode == PlatformUI.RETURN_RESTART) {
 				return IApplication.EXIT_RESTART;
 			}

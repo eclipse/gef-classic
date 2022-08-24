@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
 
 import java.util.Iterator;
@@ -41,12 +41,9 @@ public class ShapeDeleteCommand extends Command {
 	/**
 	 * Create a command that will remove the shape from its parent.
 	 * 
-	 * @param parent
-	 *            the ShapesDiagram containing the child
-	 * @param child
-	 *            the Shape to remove
-	 * @throws IllegalArgumentException
-	 *             if any parameter is null
+	 * @param parent the ShapesDiagram containing the child
+	 * @param child  the Shape to remove
+	 * @throws IllegalArgumentException if any parameter is null
 	 */
 	public ShapeDeleteCommand(ShapesDiagram parent, Shape child) {
 		if (parent == null || child == null) {
@@ -60,8 +57,7 @@ public class ShapeDeleteCommand extends Command {
 	/**
 	 * Reconnects a List of Connections with their previous endpoints.
 	 * 
-	 * @param connections
-	 *            a non-null List of connections
+	 * @param connections a non-null List of connections
 	 */
 	private void addConnections(List connections) {
 		for (Iterator iter = connections.iterator(); iter.hasNext();) {
@@ -108,8 +104,7 @@ public class ShapeDeleteCommand extends Command {
 	/**
 	 * Disconnects a List of Connections from their endpoints.
 	 * 
-	 * @param connections
-	 *            a non-null List of connections
+	 * @param connections a non-null List of connections
 	 */
 	private void removeConnections(List connections) {
 		for (Iterator iter = connections.iterator(); iter.hasNext();) {

@@ -53,14 +53,11 @@ public class CaretExample extends AbstractExample {
 		page.setHorizontalAligment(PositionConstants.CENTER);
 
 		final TextFlow text = new TextFlow();
-		text.setText(
-				"A TextFlow can be queried for an offset for a given Point relative "
-						+ "to it. The returned offset will be between 0 and N, where N is the length "
-						+ "of the figure's text.\n"
-						+ "<Chinese>\u6700\u65B0\u6D88\u606F</Chinese>.\n"
-						+ "<Japanese>\u65e5\u672c\u8a9e\u306e\u30da\u30fc\u30b8\u3092\u691c\u7d22"
-						+ "</Japanese>.\n" + "<Hebrew>דפיםֱ מֱ- ישרֱֹאןץֱֹ"
-						+ "</Hebrew>\n" + "<Arabic>نصً ثُ سٍَبُس</Arabic>");
+		text.setText("A TextFlow can be queried for an offset for a given Point relative "
+				+ "to it. The returned offset will be between 0 and N, where N is the length "
+				+ "of the figure's text.\n" + "<Chinese>\u6700\u65B0\u6D88\u606F</Chinese>.\n"
+				+ "<Japanese>\u65e5\u672c\u8a9e\u306e\u30da\u30fc\u30b8\u3092\u691c\u7d22" + "</Japanese>.\n"
+				+ "<Hebrew>דפיםֱ מֱ- ישרֱֹאןץֱֹ" + "</Hebrew>\n" + "<Arabic>نصً ثُ سٍَبُس</Arabic>");
 
 		text.setBorder(new TestBorder());
 		text.setFont(new Font(null, "Tahoma", 20, 0));
@@ -87,7 +84,8 @@ public class CaretExample extends AbstractExample {
 	// }
 
 	protected void hookShell() {
-		getFigureCanvas().addKeyListener(new KeyAdapter() {});
+		getFigureCanvas().addKeyListener(new KeyAdapter() {
+		});
 		Group panel = new Group(shell, 0);
 		panel.setLayout(new GridLayout());
 		panel.setText("Hit info");

@@ -24,17 +24,18 @@ import org.eclipse.gef.requests.CreateRequest;
 public class Digraph1XYLayoutEditPolicy extends XYLayoutEditPolicy {
 
 	/*
-	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.EditPart,
-	 *      java.lang.Object)
+	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#
+	 * createChangeConstraintCommand(org.eclipse.gef.EditPart, java.lang.Object)
 	 */
 	@Override
-	protected Command createChangeConstraintCommand(EditPart child,
-			Object constraint) {
+	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
 		return null;
 	}
 
 	/*
-	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)
+	 * @see
+	 * org.eclipse.gef.editpolicies.LayoutEditPolicy#getCreateCommand(org.eclipse.
+	 * gef.requests.CreateRequest)
 	 */
 	@Override
 	protected Command getCreateCommand(CreateRequest request) {

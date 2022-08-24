@@ -39,12 +39,9 @@ public class GuidePlaceHolder extends GuideFigure {
 			graphics.fillPolygon(list);
 			graphics.drawPolygon(list);
 			graphics.setForegroundColor(ColorConstants.buttonLightest);
-			graphics.drawLine(clientArea.x - 1, clientArea.y, clientArea.x - 1,
-					clientArea.y + 6);
-			graphics.drawLine(clientArea.x, clientArea.y - 1, clientArea.x + 3,
-					clientArea.y - 1);
-			graphics.drawLine(clientArea.x, clientArea.y + 7, clientArea.x + 3,
-					clientArea.y + 7);
+			graphics.drawLine(clientArea.x - 1, clientArea.y, clientArea.x - 1, clientArea.y + 6);
+			graphics.drawLine(clientArea.x, clientArea.y - 1, clientArea.x + 3, clientArea.y - 1);
+			graphics.drawLine(clientArea.x, clientArea.y + 7, clientArea.x + 3, clientArea.y + 7);
 		} else {
 			Rectangle clientArea = getClientArea();
 			clientArea.y = clientArea.getBottomLeft().y - 7;
@@ -57,12 +54,9 @@ public class GuidePlaceHolder extends GuideFigure {
 			graphics.fillPolygon(list);
 			graphics.drawPolygon(list);
 			graphics.setForegroundColor(ColorConstants.buttonLightest);
-			graphics.drawLine(clientArea.x, clientArea.y - 1, clientArea.x + 6,
-					clientArea.y - 1);
-			graphics.drawLine(clientArea.x - 1, clientArea.y, clientArea.x - 1,
-					clientArea.y + 3);
-			graphics.drawLine(clientArea.x + 7, clientArea.y, clientArea.x + 7,
-					clientArea.y + 3);
+			graphics.drawLine(clientArea.x, clientArea.y - 1, clientArea.x + 6, clientArea.y - 1);
+			graphics.drawLine(clientArea.x - 1, clientArea.y, clientArea.x - 1, clientArea.y + 3);
+			graphics.drawLine(clientArea.x + 7, clientArea.y, clientArea.x + 7, clientArea.y + 3);
 		}
 	}
 

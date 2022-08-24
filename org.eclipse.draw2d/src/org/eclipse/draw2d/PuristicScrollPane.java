@@ -35,8 +35,7 @@ public class PuristicScrollPane extends ScrollPane {
 		/**
 		 * Instantiates a new transparent scroll bar.
 		 * 
-		 * @param isHorizontal
-		 *            whether this scroll bar is used as a horizontal one.
+		 * @param isHorizontal whether this scroll bar is used as a horizontal one.
 		 */
 		public PuristicScrollBar(boolean isHorizontal) {
 			super();
@@ -86,13 +85,11 @@ public class PuristicScrollPane extends ScrollPane {
 		}
 
 		/**
-		 * @see PropertyChangeListener#propertyChange(java.beans.
-		 *      PropertyChangeEvent )
+		 * @see PropertyChangeListener#propertyChange(java.beans. PropertyChangeEvent )
 		 */
 		public void propertyChange(PropertyChangeEvent event) {
 			if (event.getSource() instanceof RangeModel) {
-				getButtonDown().setVisible(
-						getValue() != getMaximum() - getExtent());
+				getButtonDown().setVisible(getValue() != getMaximum() - getExtent());
 				getButtonUp().setVisible(getValue() != getMinimum());
 			}
 			super.propertyChange(event);

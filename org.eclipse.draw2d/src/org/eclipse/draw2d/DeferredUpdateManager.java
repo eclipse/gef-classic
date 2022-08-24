@@ -82,8 +82,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Constructs a new DererredUpdateManager with the given GraphicsSource.
 	 * 
-	 * @param gs
-	 *            the graphics source
+	 * @param gs the graphics source
 	 */
 	public DeferredUpdateManager(GraphicsSource gs) {
 		setGraphicsSource(gs);
@@ -91,22 +90,16 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Adds a dirty region (defined by the rectangle <i>x, y, w, h</i>) to the
-	 * update queue. If the figure isn't visible or either the width or height
-	 * are 0, the method returns without queueing the dirty region.
+	 * update queue. If the figure isn't visible or either the width or height are
+	 * 0, the method returns without queueing the dirty region.
 	 * 
-	 * @param figure
-	 *            the figure that contains the dirty region
-	 * @param x
-	 *            the x coordinate of the dirty region
-	 * @param y
-	 *            the y coordinate of the dirty region
-	 * @param w
-	 *            the width of the dirty region
-	 * @param h
-	 *            the height of the dirty region
+	 * @param figure the figure that contains the dirty region
+	 * @param x      the x coordinate of the dirty region
+	 * @param y      the y coordinate of the dirty region
+	 * @param w      the width of the dirty region
+	 * @param h      the height of the dirty region
 	 */
-	public synchronized void addDirtyRegion(IFigure figure, int x, int y,
-			int w, int h) {
+	public synchronized void addDirtyRegion(IFigure figure, int x, int y, int w, int h) {
 		if (w == 0 || h == 0 || !figure.isShowing())
 			return;
 
@@ -121,11 +114,10 @@ public class DeferredUpdateManager extends UpdateManager {
 	}
 
 	/**
-	 * Adds the given figure to the update queue. Invalid figures will be
-	 * validated before the damaged regions are repainted.
+	 * Adds the given figure to the update queue. Invalid figures will be validated
+	 * before the damaged regions are repainted.
 	 * 
-	 * @param f
-	 *            the invalid figure
+	 * @param f the invalid figure
 	 */
 	public synchronized void addInvalidFigure(IFigure f) {
 		if (invalidFigures.contains(f))
@@ -137,8 +129,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Returns a Graphics object for the given region.
 	 * 
-	 * @param region
-	 *            the region to be repainted
+	 * @param region the region to be repainted
 	 * @return the Graphics object
 	 */
 	protected Graphics getGraphics(Rectangle region) {
@@ -155,9 +146,8 @@ public class DeferredUpdateManager extends UpdateManager {
 			SWTGraphics graphics = new SWTGraphics(gc);
 			if (!updating) {
 				/**
-				 * If a paint occurs not as part of an update, we should notify
-				 * that the region is being painted. Otherwise, notification
-				 * already occurs in repairDamage().
+				 * If a paint occurs not as part of an update, we should notify that the region
+				 * is being painted. Otherwise, notification already occurs in repairDamage().
 				 */
 				Rectangle rect = graphics.getClip(new Rectangle());
 				HashMap map = new HashMap();
@@ -169,10 +159,9 @@ public class DeferredUpdateManager extends UpdateManager {
 			graphics.dispose();
 		} else {
 			/*
-			 * If figures are being validated then we can simply add a dirty
-			 * region here and update will repaint this region with other dirty
-			 * regions when it gets to painting. We can't paint if we're not
-			 * sure that all figures are valid.
+			 * If figures are being validated then we can simply add a dirty region here and
+			 * update will repaint this region with other dirty regions when it gets to
+			 * painting. We can't paint if we're not sure that all figures are valid.
 			 */
 			addDirtyRegion(root, new Rectangle(gc.getClipping()));
 		}
@@ -230,8 +219,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * Adds the given exposed region to the update queue and then performs the
 	 * update.
 	 * 
-	 * @param exposed
-	 *            the exposed region
+	 * @param exposed the exposed region
 	 */
 	public synchronized void performUpdate(Rectangle exposed) {
 		addDirtyRegion(root, exposed);
@@ -239,8 +227,8 @@ public class DeferredUpdateManager extends UpdateManager {
 	}
 
 	/**
-	 * Posts an {@link UpdateRequest} using {@link Display#asyncExec(Runnable)}.
-	 * If work has already been queued, a new request is not needed.
+	 * Posts an {@link UpdateRequest} using {@link Display#asyncExec(Runnable)}. If
+	 * work has already been queued, a new request is not needed.
 	 */
 	protected void queueWork() {
 		if (!updateQueued) {
@@ -250,8 +238,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	}
 
 	/**
-	 * Fires the <code>UpdateRequest</code> to the current display
-	 * asynchronously.
+	 * Fires the <code>UpdateRequest</code> to the current display asynchronously.
 	 * 
 	 * @since 3.2
 	 */
@@ -266,8 +253,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Releases the graphics object, which causes the GraphicsSource to flush.
 	 * 
-	 * @param graphics
-	 *            the graphics object
+	 * @param graphics the graphics object
 	 */
 	protected void releaseGraphics(Graphics graphics) {
 		graphics.dispose();
@@ -276,8 +262,8 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Repaints the dirty regions on the update queue and calls
-	 * {@link UpdateManager#firePainting(Rectangle, Map)}, unless there are no
-	 * dirty regions.
+	 * {@link UpdateManager#firePainting(Rectangle, Map)}, unless there are no dirty
+	 * regions.
 	 */
 	protected void repairDamage() {
 		Iterator keys = dirtyRegions.keySet().iterator();
@@ -323,8 +309,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * Adds the given runnable and queues an update if an update is not under
 	 * progress.
 	 * 
-	 * @param runnable
-	 *            the runnable
+	 * @param runnable the runnable
 	 */
 	public synchronized void runWithUpdate(Runnable runnable) {
 		afterUpdate = new RunnableChain(runnable, afterUpdate);
@@ -335,8 +320,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Sets the graphics source.
 	 * 
-	 * @param gs
-	 *            the graphics source
+	 * @param gs the graphics source
 	 */
 	public void setGraphicsSource(GraphicsSource gs) {
 		graphicsSource = gs;
@@ -345,8 +329,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Sets the root figure.
 	 * 
-	 * @param figure
-	 *            the root figure
+	 * @param figure the root figure
 	 */
 	public void setRoot(IFigure figure) {
 		root = figure;
@@ -354,8 +337,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Validates all invalid figures on the update queue and calls
-	 * {@link UpdateManager#fireValidating()} unless there are no invalid
-	 * figures.
+	 * {@link UpdateManager#fireValidating()} unless there are no invalid figures.
 	 */
 	protected void validateFigures() {
 		performValidation();

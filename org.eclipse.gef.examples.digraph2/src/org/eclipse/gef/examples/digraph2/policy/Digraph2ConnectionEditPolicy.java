@@ -23,7 +23,8 @@ import org.eclipse.gef.requests.GroupRequest;
 public class Digraph2ConnectionEditPolicy extends ConnectionEditPolicy {
 
 	/*
-	 * @see org.eclipse.gef.editpolicies.ConnectionEditPolicy#getDeleteCommand(org.eclipse.gef.requests.GroupRequest)
+	 * @see org.eclipse.gef.editpolicies.ConnectionEditPolicy#getDeleteCommand(org.
+	 * eclipse.gef.requests.GroupRequest)
 	 */
 	@Override
 	protected Command getDeleteCommand(GroupRequest request) {

@@ -28,16 +28,13 @@ public class FlowContextMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;
 
 	/**
-	 * Creates a new FlowContextMenuProvider assoicated with the given viewer
-	 * and action registry.
+	 * Creates a new FlowContextMenuProvider assoicated with the given viewer and
+	 * action registry.
 	 * 
-	 * @param viewer
-	 *            the viewer
-	 * @param registry
-	 *            the action registry
+	 * @param viewer   the viewer
+	 * @param registry the action registry
 	 */
-	public FlowContextMenuProvider(EditPartViewer viewer,
-			ActionRegistry registry) {
+	public FlowContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
 		super(viewer);
 		setActionRegistry(registry);
 	}
@@ -68,8 +65,7 @@ public class FlowContextMenuProvider extends ContextMenuProvider {
 	/**
 	 * Sets the action registry
 	 * 
-	 * @param registry
-	 *            the action registry
+	 * @param registry the action registry
 	 */
 	public void setActionRegistry(ActionRegistry registry) {
 		actionRegistry = registry;

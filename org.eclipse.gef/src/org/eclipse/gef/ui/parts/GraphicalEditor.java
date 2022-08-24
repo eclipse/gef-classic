@@ -59,8 +59,7 @@ import org.eclipse.gef.ui.properties.UndoablePropertySheetPage;
  * 
  * @author hudsonr
  */
-public abstract class GraphicalEditor extends EditorPart
-		implements CommandStackListener, ISelectionListener {
+public abstract class GraphicalEditor extends EditorPart implements CommandStackListener, ISelectionListener {
 
 	private static class ActionIDList extends ArrayList {
 		public boolean add(Object o) {
@@ -68,9 +67,8 @@ public abstract class GraphicalEditor extends EditorPart
 				try {
 					IAction action = (IAction) o;
 					o = action.getId();
-					throw new IllegalArgumentException(
-							"Action IDs should be added to lists, not the action: " //$NON-NLS-1$
-									+ action);
+					throw new IllegalArgumentException("Action IDs should be added to lists, not the action: " //$NON-NLS-1$
+							+ action);
 				} catch (IllegalArgumentException exc) {
 					exc.printStackTrace();
 				}
@@ -94,11 +92,10 @@ public abstract class GraphicalEditor extends EditorPart
 	}
 
 	/**
-	 * When the command stack changes, the actions interested in the command
-	 * stack are updated.
+	 * When the command stack changes, the actions interested in the command stack
+	 * are updated.
 	 * 
-	 * @param event
-	 *            the change event
+	 * @param event the change event
 	 */
 	public void commandStackChanged(EventObject event) {
 		updateActions(stackActions);
@@ -110,13 +107,12 @@ public abstract class GraphicalEditor extends EditorPart
 	 * extend or override this method as needed.
 	 */
 	protected void configureGraphicalViewer() {
-		getGraphicalViewer().getControl()
-				.setBackground(ColorConstants.listBackground);
+		getGraphicalViewer().getControl().setBackground(ColorConstants.listBackground);
 	}
 
 	/**
-	 * Creates actions for this editor. Subclasses should override this method
-	 * to create and register actions with the {@link ActionRegistry}.
+	 * Creates actions for this editor. Subclasses should override this method to
+	 * create and register actions with the {@link ActionRegistry}.
 	 */
 	protected void createActions() {
 		ActionRegistry registry = getActionRegistry();
@@ -147,8 +143,7 @@ public abstract class GraphicalEditor extends EditorPart
 	/**
 	 * Creates the GraphicalViewer on the specified <code>Composite</code>.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 */
 	protected void createGraphicalViewer(Composite parent) {
 		GraphicalViewer viewer = new ScrollingGraphicalViewer();
@@ -165,8 +160,7 @@ public abstract class GraphicalEditor extends EditorPart
 	 * WARNING: This method may or may not be called by the workbench prior to
 	 * {@link #dispose()}.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 */
 	public void createPartControl(Composite parent) {
 		createGraphicalViewer(parent);
@@ -177,8 +171,7 @@ public abstract class GraphicalEditor extends EditorPart
 	 */
 	public void dispose() {
 		getCommandStack().removeCommandStackListener(this);
-		getSite().getWorkbenchWindow().getSelectionService()
-				.removeSelectionListener(this);
+		getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this);
 		getEditDomain().setActiveTool(null);
 		getActionRegistry().dispose();
 		super.dispose();
@@ -186,8 +179,7 @@ public abstract class GraphicalEditor extends EditorPart
 
 	/**
 	 * Does nothing be default. This method should be overridden if
-	 * {@link #isSaveAsAllowed()} has been overridden to return
-	 * <code>true</code>.
+	 * {@link #isSaveAsAllowed()} has been overridden to return <code>true</code>.
 	 * 
 	 * @see org.eclipse.ui.ISaveablePart#doSaveAs()
 	 */
@@ -218,9 +210,9 @@ public abstract class GraphicalEditor extends EditorPart
 	 * Returns the adapter for the specified key.
 	 * 
 	 * <P>
-	 * <EM>IMPORTANT</EM> certain requests, such as the property sheet, may be
-	 * made before or after {@link #createPartControl(Composite)} is called. The
-	 * order is unspecified by the Workbench.
+	 * <EM>IMPORTANT</EM> certain requests, such as the property sheet, may be made
+	 * before or after {@link #createPartControl(Composite)} is called. The order is
+	 * unspecified by the Workbench.
 	 * 
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
@@ -240,9 +232,7 @@ public abstract class GraphicalEditor extends EditorPart
 		if (type == EditPart.class && getGraphicalViewer() != null)
 			return type.cast(getGraphicalViewer().getRootEditPart());
 		if (type == IFigure.class && getGraphicalViewer() != null)
-			return type.cast(
-					((GraphicalEditPart) getGraphicalViewer().getRootEditPart())
-							.getFigure());
+			return type.cast(((GraphicalEditPart) getGraphicalViewer().getRootEditPart()).getFigure());
 		return super.getAdapter(type);
 	}
 
@@ -274,10 +264,10 @@ public abstract class GraphicalEditor extends EditorPart
 	}
 
 	/**
-	 * Returns the list of {@link IAction IActions} dependant on property
-	 * changes in the Editor. These actions should implement the
-	 * {@link UpdateAction} interface so that they can be updated in response to
-	 * property changes. An example is the "Save" action.
+	 * Returns the list of {@link IAction IActions} dependant on property changes in
+	 * the Editor. These actions should implement the {@link UpdateAction} interface
+	 * so that they can be updated in response to property changes. An example is
+	 * the "Save" action.
 	 * 
 	 * @return the list of property-dependant actions
 	 */
@@ -286,9 +276,9 @@ public abstract class GraphicalEditor extends EditorPart
 	}
 
 	/**
-	 * Returns the list of <em>IDs</em> of Actions that are dependant on changes
-	 * in the workbench's {@link ISelectionService}. The associated Actions can
-	 * be found in the action registry. Such actions should implement the
+	 * Returns the list of <em>IDs</em> of Actions that are dependant on changes in
+	 * the workbench's {@link ISelectionService}. The associated Actions can be
+	 * found in the action registry. Such actions should implement the
 	 * {@link UpdateAction} interface so that they can be updated in response to
 	 * selection changes.
 	 * 
@@ -314,9 +304,9 @@ public abstract class GraphicalEditor extends EditorPart
 	/**
 	 * Returns the list of <em>IDs</em> of Actions that are dependant on the
 	 * CommmandStack's state. The associated Actions can be found in the action
-	 * registry. These actions should implement the {@link UpdateAction}
-	 * interface so that they can be updated in response to command stack
-	 * changes. An example is the "undo" action.
+	 * registry. These actions should implement the {@link UpdateAction} interface
+	 * so that they can be updated in response to command stack changes. An example
+	 * is the "undo" action.
 	 * 
 	 * @return the list of stack-dependant action IDs
 	 */
@@ -325,9 +315,9 @@ public abstract class GraphicalEditor extends EditorPart
 	}
 
 	/**
-	 * Hooks the GraphicalViewer to the rest of the Editor. By default, the
-	 * viewer is added to the SelectionSynchronizer, which can be used to keep 2
-	 * or more EditPartViewers in sync. The viewer is also registered as the
+	 * Hooks the GraphicalViewer to the rest of the Editor. By default, the viewer
+	 * is added to the SelectionSynchronizer, which can be used to keep 2 or more
+	 * EditPartViewers in sync. The viewer is also registered as the
 	 * ISelectionProvider for the Editor's PartSite.
 	 */
 	protected void hookGraphicalViewer() {
@@ -343,13 +333,11 @@ public abstract class GraphicalEditor extends EditorPart
 	 * 
 	 * @see org.eclipse.ui.IEditorPart#init(IEditorSite, IEditorInput)
 	 */
-	public void init(IEditorSite site, IEditorInput input)
-			throws PartInitException {
+	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
 		getCommandStack().addCommandStackListener(this);
-		getSite().getWorkbenchWindow().getSelectionService()
-				.addSelectionListener(this);
+		getSite().getWorkbenchWindow().getSelectionService().addSelectionListener(this);
 		initializeActionRegistry();
 	}
 
@@ -407,8 +395,7 @@ public abstract class GraphicalEditor extends EditorPart
 	/**
 	 * Sets the ActionRegistry for this EditorPart.
 	 * 
-	 * @param registry
-	 *            the registry
+	 * @param registry the registry
 	 */
 	protected void setActionRegistry(ActionRegistry registry) {
 		actionRegistry = registry;
@@ -417,8 +404,7 @@ public abstract class GraphicalEditor extends EditorPart
 	/**
 	 * Sets the EditDomain for this EditorPart.
 	 * 
-	 * @param ed
-	 *            the domain
+	 * @param ed the domain
 	 */
 	protected void setEditDomain(DefaultEditDomain ed) {
 		this.editDomain = ed;
@@ -434,8 +420,7 @@ public abstract class GraphicalEditor extends EditorPart
 	/**
 	 * Sets the graphicalViewer for this EditorPart.
 	 * 
-	 * @param viewer
-	 *            the graphical viewer
+	 * @param viewer the graphical viewer
 	 */
 	protected void setGraphicalViewer(GraphicalViewer viewer) {
 		getEditDomain().addViewer(viewer);
@@ -443,14 +428,13 @@ public abstract class GraphicalEditor extends EditorPart
 	}
 
 	/**
-	 * A convenience method for updating a set of actions defined by the given
-	 * List of action IDs. The actions are found by looking up the ID in the
-	 * {@link #getActionRegistry() action registry}. If the corresponding action
-	 * is an {@link UpdateAction}, it will have its <code>update()</code> method
+	 * A convenience method for updating a set of actions defined by the given List
+	 * of action IDs. The actions are found by looking up the ID in the
+	 * {@link #getActionRegistry() action registry}. If the corresponding action is
+	 * an {@link UpdateAction}, it will have its <code>update()</code> method
 	 * called.
 	 * 
-	 * @param actionIds
-	 *            the list of IDs to update
+	 * @param actionIds the list of IDs to update
 	 */
 	protected void updateActions(List actionIds) {
 		ActionRegistry registry = getActionRegistry();

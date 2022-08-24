@@ -52,10 +52,10 @@ public class BlockFlow extends FlowFigure {
 	}
 
 	/**
-	 * BlockFlows contribute a paragraph separator so as to keep the Bidi state
-	 * of the text on either side of this block from affecting each other. Since
-	 * each block is like a different paragraph, it does not contribute any
-	 * actual text to its containing block.
+	 * BlockFlows contribute a paragraph separator so as to keep the Bidi state of
+	 * the text on either side of this block from affecting each other. Since each
+	 * block is like a different paragraph, it does not contribute any actual text
+	 * to its containing block.
 	 * 
 	 * @see org.eclipse.draw2d.text.FlowFigure#contributeBidi(org.eclipse.draw2d.text.BidiProcessor)
 	 */
@@ -92,8 +92,7 @@ public class BlockFlow extends FlowFigure {
 		List children = getChildren();
 		int childIndex = children.size() - 1;
 		if (childIndex >= 0 && children.get(childIndex) instanceof BlockFlow) {
-			margin = Math.max(margin,
-					((BlockFlow) children.get(childIndex)).getBottomMargin());
+			margin = Math.max(margin, ((BlockFlow) children.get(childIndex)).getBottomMargin());
 		}
 		return margin;
 	}
@@ -146,10 +145,10 @@ public class BlockFlow extends FlowFigure {
 	}
 
 	/**
-	 * Returns this block's Bidi orientation. If none was set on this block, it
-	 * will inherit the one from its containing block. If there is no containing
-	 * block, it will return the default orientation (SWT.RIGHT_TO_LEFT if
-	 * mirrored; SWT.LEFT_TO_RIGHT otherwise).
+	 * Returns this block's Bidi orientation. If none was set on this block, it will
+	 * inherit the one from its containing block. If there is no containing block,
+	 * it will return the default orientation (SWT.RIGHT_TO_LEFT if mirrored;
+	 * SWT.LEFT_TO_RIGHT otherwise).
 	 * 
 	 * @return SWT.RIGHT_TO_LEFT or SWT.LEFT_TO_RIGHT
 	 * @see #setOrientation(int)
@@ -180,8 +179,7 @@ public class BlockFlow extends FlowFigure {
 		}
 		List children = getChildren();
 		if (children.size() > 0 && children.get(0) instanceof BlockFlow) {
-			margin = Math.max(margin,
-					((BlockFlow) children.get(0)).getTopMargin());
+			margin = Math.max(margin, ((BlockFlow) children.get(0)).getTopMargin());
 		}
 		return margin;
 	}
@@ -192,10 +190,8 @@ public class BlockFlow extends FlowFigure {
 	public void paintBorder(Graphics graphics) {
 		if (getBorder() instanceof FlowBorder) {
 			Rectangle where = getBlockBox().toRectangle();
-			where.crop(new Insets(getTopMargin(), getLeftMargin(),
-					getBottomMargin(), getRightMargin()));
-			((FlowBorder) getBorder()).paint(this, graphics, where, SWT.LEAD
-					| SWT.TRAIL);
+			where.crop(new Insets(getTopMargin(), getLeftMargin(), getBottomMargin(), getRightMargin()));
+			((FlowBorder) getBorder()).paint(this, graphics, where, SWT.LEAD | SWT.TRAIL);
 		} else
 			super.paintBorder(graphics);
 		if (selectionStart != -1) {
@@ -211,8 +207,7 @@ public class BlockFlow extends FlowFigure {
 	 */
 	public void postValidate() {
 		Rectangle newBounds = getBlockBox().toRectangle();
-		newBounds.crop(new Insets(getTopMargin(), getLeftMargin(),
-				getBottomMargin(), getRightMargin()));
+		newBounds.crop(new Insets(getTopMargin(), getLeftMargin(), getBottomMargin(), getRightMargin()));
 		setBounds(newBounds);
 	}
 
@@ -241,8 +236,8 @@ public class BlockFlow extends FlowFigure {
 	/**
 	 * Sets the horitontal aligment of the block. Valid values are:
 	 * <UL>
-	 * <LI>{@link PositionConstants#NONE NONE} - (default) Alignment is
-	 * inherited from parent. If a parent is not found then LEFT is used.</LI>
+	 * <LI>{@link PositionConstants#NONE NONE} - (default) Alignment is inherited
+	 * from parent. If a parent is not found then LEFT is used.</LI>
 	 * <LI>{@link PositionConstants#LEFT} - Alignment is with leading edge</LI>
 	 * <LI>{@link PositionConstants#RIGHT} - Alignment is with trailing edge</LI>
 	 * <LI>{@link PositionConstants#CENTER}</LI>
@@ -252,14 +247,12 @@ public class BlockFlow extends FlowFigure {
 	 * orientation</LI>
 	 * </UL>
 	 * 
-	 * @param value
-	 *            the aligment
+	 * @param value the aligment
 	 * @see #getHorizontalAligment()
 	 */
 	public void setHorizontalAligment(int value) {
-		value &= PositionConstants.LEFT | PositionConstants.CENTER
-				| PositionConstants.RIGHT | PositionConstants.ALWAYS_LEFT
-				| PositionConstants.ALWAYS_RIGHT;
+		value &= PositionConstants.LEFT | PositionConstants.CENTER | PositionConstants.RIGHT
+				| PositionConstants.ALWAYS_LEFT | PositionConstants.ALWAYS_RIGHT;
 		if (value == alignment)
 			return;
 		alignment = value;
@@ -273,11 +266,10 @@ public class BlockFlow extends FlowFigure {
 	 * <LI>{@link SWT#RIGHT_TO_LEFT}
 	 * <LI>{@link SWT#NONE} (default)
 	 * </UL>
-	 * <code>NONE</code> is used to indicate that orientation should be
-	 * inherited from the encompassing block.
+	 * <code>NONE</code> is used to indicate that orientation should be inherited
+	 * from the encompassing block.
 	 * 
-	 * @param orientation
-	 *            LTR, RTL or NONE
+	 * @param orientation LTR, RTL or NONE
 	 * @see #getOrientation()
 	 * @since 3.1
 	 */
@@ -297,8 +289,7 @@ public class BlockFlow extends FlowFigure {
 	}
 
 	/**
-	 * Re-evaluate the Bidi state of all the fragments if it has been
-	 * invalidated.
+	 * Re-evaluate the Bidi state of all the fragments if it has been invalidated.
 	 * 
 	 * @see org.eclipse.draw2d.IFigure#validate()
 	 */

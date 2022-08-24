@@ -13,8 +13,9 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 
 /**
  * A content provider that is node-relationship centric. Call-backs return model
- * nodes to the user, and ask for relationships. Both nodes and relationships are
- * represented by the user's model.
+ * nodes to the user, and ask for relationships. Both nodes and relationships
+ * are represented by the user's model.
+ * 
  * @author Del Myers
  *
  */
@@ -22,8 +23,9 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 public interface IGraphEntityRelationshipContentProvider extends IStructuredContentProvider {
 	/**
 	 * Gets the relationships between the given source and destination nodes.
+	 * 
 	 * @param source the source node.
-	 * @param dest the destination node.
+	 * @param dest   the destination node.
 	 * @return objects represtenting the different relationships between the nodes.
 	 */
 	public Object[] getRelationships(Object source, Object dest);

@@ -28,14 +28,11 @@ public class RedoRetargetAction extends LabelRetargetAction {
 	 * Constructs a new RedoRetargetAction with the default ID, label and image.
 	 */
 	public RedoRetargetAction() {
-		super(ActionFactory.REDO.getId(), MessageFormat.format(
-				GEFMessages.RedoAction_Label, new Object[] { "" }).trim()); //$NON-NLS-1$
-		ISharedImages sharedImages = PlatformUI.getWorkbench()
-				.getSharedImages();
-		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_REDO));
-		setDisabledImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_REDO_DISABLED));
+		super(ActionFactory.REDO.getId(),
+				MessageFormat.format(GEFMessages.RedoAction_Label, new Object[] { "" }).trim()); //$NON-NLS-1$
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_REDO));
+		setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_REDO_DISABLED));
 	}
 
 }

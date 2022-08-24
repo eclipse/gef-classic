@@ -102,7 +102,8 @@ public class GraphJFaceSnippet4 {
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			public void selectionChanged(SelectionChangedEvent event) {
-				System.out.println("Selection Changed: " + selectionToString((StructuredSelection) event.getSelection()));
+				System.out
+						.println("Selection Changed: " + selectionToString((StructuredSelection) event.getSelection()));
 			}
 
 			private String selectionToString(StructuredSelection selection) {

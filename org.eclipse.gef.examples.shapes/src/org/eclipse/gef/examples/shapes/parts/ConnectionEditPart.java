@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
 import java.beans.PropertyChangeEvent;
@@ -37,12 +37,10 @@ import org.eclipse.gef.examples.shapes.model.commands.ConnectionDeleteCommand;
  * 
  * @author Elias Volanakis
  */
-class ConnectionEditPart extends AbstractConnectionEditPart implements
-		PropertyChangeListener {
+class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyChangeListener {
 
 	/**
-	 * Upon activation, attach to the model element as a property change
-	 * listener.
+	 * Upon activation, attach to the model element as a property change listener.
 	 */
 	public void activate() {
 		if (!isActive()) {
@@ -59,15 +57,13 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements
 	protected void createEditPolicies() {
 		// Selection handle edit policy.
 		// Makes the connection show a feedback, when selected by the user.
-		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE,
-				new ConnectionEndpointEditPolicy());
+		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE, new ConnectionEndpointEditPolicy());
 		// Allows the removal of the connection model element
-		installEditPolicy(EditPolicy.CONNECTION_ROLE,
-				new ConnectionEditPolicy() {
-					protected Command getDeleteCommand(GroupRequest request) {
-						return new ConnectionDeleteCommand(getCastedModel());
-					}
-				});
+		installEditPolicy(EditPolicy.CONNECTION_ROLE, new ConnectionEditPolicy() {
+			protected Command getDeleteCommand(GroupRequest request) {
+				return new ConnectionDeleteCommand(getCastedModel());
+			}
+		});
 	}
 
 	/*
@@ -76,8 +72,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
 	protected IFigure createFigure() {
-		PolylineConnection connection = (PolylineConnection) super
-				.createFigure();
+		PolylineConnection connection = (PolylineConnection) super.createFigure();
 		connection.setTargetDecoration(new PolygonDecoration()); // arrow at
 																	// target
 																	// endpoint
@@ -111,8 +106,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements
 	public void propertyChange(PropertyChangeEvent event) {
 		String property = event.getPropertyName();
 		if (Connection.LINESTYLE_PROP.equals(property)) {
-			((PolylineConnection) getFigure()).setLineStyle(getCastedModel()
-					.getLineStyle());
+			((PolylineConnection) getFigure()).setLineStyle(getCastedModel().getLineStyle());
 		}
 	}
 

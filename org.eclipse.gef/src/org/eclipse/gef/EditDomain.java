@@ -44,8 +44,8 @@ public class EditDomain {
 	private CommandStack commandStack = new CommandStack();
 
 	/**
-	 * Listens to the PaletteViewer for changes in selection, and sets the
-	 * Domain's Tool accordingly.
+	 * Listens to the PaletteViewer for changes in selection, and sets the Domain's
+	 * Tool accordingly.
 	 */
 	private PaletteListener paletteListener = new PaletteListener() {
 		public void activeToolChanged(PaletteViewer viewer, ToolEntry tool) {
@@ -61,12 +61,11 @@ public class EditDomain {
 	}
 
 	/**
-	 * Adds an EditPartViewer into the EditDomain. A viewer is most likely
-	 * placed in a {@link org.eclipse.ui.IWorkbenchPart WorkbenchPart} of some
-	 * form, such as the IEditorPart or an IViewPart.
+	 * Adds an EditPartViewer into the EditDomain. A viewer is most likely placed in
+	 * a {@link org.eclipse.ui.IWorkbenchPart WorkbenchPart} of some form, such as
+	 * the IEditorPart or an IViewPart.
 	 * 
-	 * @param viewer
-	 *            The EditPartViewer
+	 * @param viewer The EditPartViewer
 	 */
 	public void addViewer(EditPartViewer viewer) {
 		viewer.setEditDomain(this);
@@ -77,10 +76,8 @@ public class EditDomain {
 	/**
 	 * Called when one of the EditDomain's Viewers receives keyboard focus.
 	 * 
-	 * @param event
-	 *            The SWT focus event
-	 * @param viewer
-	 *            the Viewer that received the event.
+	 * @param event  The SWT focus event
+	 * @param viewer the Viewer that received the event.
 	 */
 	public void focusGained(FocusEvent event, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -91,10 +88,8 @@ public class EditDomain {
 	/**
 	 * Called when one of the EditDomain's Viewers is losing keyboard focus.
 	 * 
-	 * @param event
-	 *            The SWT focus event
-	 * @param viewer
-	 *            the Viewer that received the event.
+	 * @param event  The SWT focus event
+	 * @param viewer the Viewer that received the event.
 	 */
 	public void focusLost(FocusEvent event, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -112,8 +107,8 @@ public class EditDomain {
 	}
 
 	/**
-	 * Returns the CommandStack. Command stacks could potentially be shared
-	 * across domains depending on the application.
+	 * Returns the CommandStack. Command stacks could potentially be shared across
+	 * domains depending on the application.
 	 * 
 	 * @return The command stack
 	 */
@@ -158,10 +153,8 @@ public class EditDomain {
 	/**
 	 * Called when a key is <B>pressed</B> on a Viewer.
 	 * 
-	 * @param keyEvent
-	 *            The SWT key event
-	 * @param viewer
-	 *            The source of the event.
+	 * @param keyEvent The SWT key event
+	 * @param viewer   The source of the event.
 	 */
 	public void keyDown(KeyEvent keyEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -172,10 +165,8 @@ public class EditDomain {
 	/**
 	 * Called when a traversal occurs on a viewer.
 	 * 
-	 * @param traverseEvent
-	 *            the SWT traverse event
-	 * @param viewer
-	 *            the source of the event
+	 * @param traverseEvent the SWT traverse event
+	 * @param viewer        the source of the event
 	 * @since 3.1
 	 */
 	public void keyTraversed(TraverseEvent traverseEvent, EditPartViewer viewer) {
@@ -187,10 +178,8 @@ public class EditDomain {
 	/**
 	 * Called when a key is <B>released</b> on a Viewer.
 	 * 
-	 * @param keyEvent
-	 *            The SWT key event
-	 * @param viewer
-	 *            the source of the event.
+	 * @param keyEvent The SWT key event
+	 * @param viewer   the source of the event.
 	 */
 	public void keyUp(KeyEvent keyEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -199,10 +188,9 @@ public class EditDomain {
 	}
 
 	/**
-	 * Loads the default Tool. If a palette has been provided and that palette
-	 * has a default, then that tool is loaded. If not, the EditDomain's default
-	 * tool is loaded. By default, this is the
-	 * {@link org.eclipse.gef.tools.SelectionTool}.
+	 * Loads the default Tool. If a palette has been provided and that palette has a
+	 * default, then that tool is loaded. If not, the EditDomain's default tool is
+	 * loaded. By default, this is the {@link org.eclipse.gef.tools.SelectionTool}.
 	 */
 	public void loadDefaultTool() {
 		setActiveTool(null);
@@ -220,10 +208,8 @@ public class EditDomain {
 	/**
 	 * Called when the mouse button has been double-clicked on a Viewer.
 	 * 
-	 * @param mouseEvent
-	 *            The SWT mouse event
-	 * @param viewer
-	 *            The source of the event.
+	 * @param mouseEvent The SWT mouse event
+	 * @param viewer     The source of the event.
 	 */
 	public void mouseDoubleClick(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -234,10 +220,8 @@ public class EditDomain {
 	/**
 	 * Called when the mouse button has been pressed on a Viewer.
 	 * 
-	 * @param mouseEvent
-	 *            The SWT mouse event
-	 * @param viewer
-	 *            The source of the event.
+	 * @param mouseEvent The SWT mouse event
+	 * @param viewer     The source of the event.
 	 */
 	public void mouseDown(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -248,10 +232,8 @@ public class EditDomain {
 	/**
 	 * Called when the mouse has been dragged within a Viewer.
 	 * 
-	 * @param mouseEvent
-	 *            The SWT mouse event
-	 * @param viewer
-	 *            The source of the event.
+	 * @param mouseEvent The SWT mouse event
+	 * @param viewer     The source of the event.
 	 */
 	public void mouseDrag(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -262,10 +244,8 @@ public class EditDomain {
 	/**
 	 * Called when the mouse has hovered on a Viewer.
 	 * 
-	 * @param mouseEvent
-	 *            The SWT mouse event
-	 * @param viewer
-	 *            The source of the event.
+	 * @param mouseEvent The SWT mouse event
+	 * @param viewer     The source of the event.
 	 */
 	public void mouseHover(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -276,10 +256,8 @@ public class EditDomain {
 	/**
 	 * Called when the mouse has been moved on a Viewer.
 	 * 
-	 * @param mouseEvent
-	 *            The SWT mouse event
-	 * @param viewer
-	 *            The viewer that the mouse event is over.
+	 * @param mouseEvent The SWT mouse event
+	 * @param viewer     The viewer that the mouse event is over.
 	 */
 	public void mouseMove(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -290,10 +268,8 @@ public class EditDomain {
 	/**
 	 * Called when the mouse button has been released on a Viewer.
 	 * 
-	 * @param mouseEvent
-	 *            The SWT mouse event
-	 * @param viewer
-	 *            The source of the event.
+	 * @param mouseEvent The SWT mouse event
+	 * @param viewer     The source of the event.
 	 */
 	public void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -302,13 +278,10 @@ public class EditDomain {
 	}
 
 	/**
-	 * Called by the DomainEventDispatcher when the mouse wheel has been
-	 * scrolled.
+	 * Called by the DomainEventDispatcher when the mouse wheel has been scrolled.
 	 * 
-	 * @param event
-	 *            The SWT event
-	 * @param viewer
-	 *            The source of the event
+	 * @param event  The SWT event
+	 * @param viewer The source of the event
 	 */
 	public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -319,10 +292,8 @@ public class EditDomain {
 	/**
 	 * Called when a native drag has finished on a Viewer.
 	 * 
-	 * @param event
-	 *            The DragSourceEvent
-	 * @param viewer
-	 *            The viewer where the drag finished
+	 * @param event  The DragSourceEvent
+	 * @param viewer The viewer where the drag finished
 	 */
 	public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -333,10 +304,8 @@ public class EditDomain {
 	/**
 	 * Called when a native drag has started on a Viewer.
 	 * 
-	 * @param event
-	 *            The DragSourceEvent
-	 * @param viewer
-	 *            The viewer where the drag started
+	 * @param event  The DragSourceEvent
+	 * @param viewer The viewer where the drag started
 	 */
 	public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -346,11 +315,10 @@ public class EditDomain {
 
 	/**
 	 * Removes a previously added viewer from the EditDomain. A Viewer that is
-	 * removed from the EditDomain will no longer forward input to the domain
-	 * and its active Tool.
+	 * removed from the EditDomain will no longer forward input to the domain and
+	 * its active Tool.
 	 * 
-	 * @param viewer
-	 *            the Viewer being removed
+	 * @param viewer the Viewer being removed
 	 */
 	public void removeViewer(EditPartViewer viewer) {
 		if (viewers.remove(viewer))
@@ -360,8 +328,7 @@ public class EditDomain {
 	/**
 	 * Sets the <code>CommandStack</code>.
 	 * 
-	 * @param stack
-	 *            the CommandStack
+	 * @param stack the CommandStack
 	 */
 	public void setCommandStack(CommandStack stack) {
 		commandStack = stack;
@@ -371,8 +338,7 @@ public class EditDomain {
 	 * Sets the default Tool, which is used if the Palette does not provide a
 	 * default
 	 * 
-	 * @param tool
-	 *            <code>null</code> or a Tool
+	 * @param tool <code>null</code> or a Tool
 	 */
 	public void setDefaultTool(Tool tool) {
 		defaultTool = tool;
@@ -380,17 +346,15 @@ public class EditDomain {
 
 	/**
 	 * Sets the PalatteRoot for this EditDomain. If the EditDomain already knows
-	 * about a PaletteViewer, this root will be set into the palette viewer
-	 * also. Loads the default Tool after the root has been set.
+	 * about a PaletteViewer, this root will be set into the palette viewer also.
+	 * Loads the default Tool after the root has been set.
 	 * <p>
 	 * It is recommended that the palette root not be set multiple times. Some
-	 * components (such as the PaletteCustomizerDialog for the PaletteViewer)
-	 * might still hold on to the old root. If the input has changed or needs to
-	 * be refreshed, just remove all the children from the root and add the new
-	 * ones.
+	 * components (such as the PaletteCustomizerDialog for the PaletteViewer) might
+	 * still hold on to the old root. If the input has changed or needs to be
+	 * refreshed, just remove all the children from the root and add the new ones.
 	 * 
-	 * @param root
-	 *            the palette's root
+	 * @param root the palette's root
 	 */
 	public void setPaletteRoot(PaletteRoot root) {
 		if (paletteRoot == root)
@@ -405,8 +369,7 @@ public class EditDomain {
 	/**
 	 * Sets the <code>PaletteViewer</code> for this EditDomain
 	 * 
-	 * @param palette
-	 *            the PaletteViewer
+	 * @param palette the PaletteViewer
 	 */
 	public void setPaletteViewer(PaletteViewer palette) {
 		if (palette == paletteViewer)
@@ -424,11 +387,10 @@ public class EditDomain {
 	}
 
 	/**
-	 * Sets the active Tool for this EditDomain. If a current Tool is active, it
-	 * is deactivated. The new Tool is told its EditDomain, and is activated.
+	 * Sets the active Tool for this EditDomain. If a current Tool is active, it is
+	 * deactivated. The new Tool is told its EditDomain, and is activated.
 	 * 
-	 * @param tool
-	 *            the Tool
+	 * @param tool the Tool
 	 */
 	public void setActiveTool(Tool tool) {
 		if (activeTool != null)
@@ -443,10 +405,8 @@ public class EditDomain {
 	/**
 	 * Called when the mouse enters a Viewer.
 	 * 
-	 * @param mouseEvent
-	 *            the SWT mouse event
-	 * @param viewer
-	 *            the Viewer being entered
+	 * @param mouseEvent the SWT mouse event
+	 * @param viewer     the Viewer being entered
 	 */
 	public void viewerEntered(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();
@@ -457,10 +417,8 @@ public class EditDomain {
 	/**
 	 * Called when the mouse exits a Viewer.
 	 * 
-	 * @param mouseEvent
-	 *            the SWT mouse event
-	 * @param viewer
-	 *            the Viewer being exited
+	 * @param mouseEvent the SWT mouse event
+	 * @param viewer     the Viewer being exited
 	 */
 	public void viewerExited(MouseEvent mouseEvent, EditPartViewer viewer) {
 		Tool tool = getActiveTool();

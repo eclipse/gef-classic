@@ -11,7 +11,7 @@ package org.eclipse.zest.layouts;
 
 /**
  * Super interface for both Layout Entities and Layout Relationships
- *  
+ * 
  * @author Ian Bull
  *
  */

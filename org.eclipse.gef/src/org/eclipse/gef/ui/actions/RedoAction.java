@@ -27,22 +27,19 @@ import org.eclipse.gef.internal.GEFMessages;
 public class RedoAction extends StackAction {
 
 	/**
-	 * Creates a <code>RedoAction</code> and associates it with the given
-	 * workbech part.
+	 * Creates a <code>RedoAction</code> and associates it with the given workbech
+	 * part.
 	 * 
-	 * @param part
-	 *            The workbench part this action is associated with.
+	 * @param part The workbench part this action is associated with.
 	 */
 	public RedoAction(IWorkbenchPart part) {
 		super(part);
 	}
 
 	/**
-	 * Creates a <code>RedoAction</code> and associates it with the given
-	 * editor.
+	 * Creates a <code>RedoAction</code> and associates it with the given editor.
 	 * 
-	 * @param editor
-	 *            The editor this action is associated with.
+	 * @param editor The editor this action is associated with.
 	 */
 	public RedoAction(IEditorPart editor) {
 		super(editor);
@@ -60,19 +57,14 @@ public class RedoAction extends StackAction {
 	 */
 	protected void init() {
 		super.init();
-		setToolTipText(MessageFormat.format(GEFMessages.RedoAction_Tooltip,
-				new Object[] { "" }).trim()); //$NON-NLS-1$
-		setText(MessageFormat.format(GEFMessages.RedoAction_Label,
-				new Object[] { "" }).trim() //$NON-NLS-1$
+		setToolTipText(MessageFormat.format(GEFMessages.RedoAction_Tooltip, new Object[] { "" }).trim()); //$NON-NLS-1$
+		setText(MessageFormat.format(GEFMessages.RedoAction_Label, new Object[] { "" }).trim() //$NON-NLS-1$
 		);
 		setId(ActionFactory.REDO.getId());
 
-		ISharedImages sharedImages = PlatformUI.getWorkbench()
-				.getSharedImages();
-		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_REDO));
-		setDisabledImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_REDO_DISABLED));
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_REDO));
+		setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_REDO_DISABLED));
 	}
 
 	/**
@@ -80,10 +72,10 @@ public class RedoAction extends StackAction {
 	 */
 	protected void refresh() {
 		Command redoCmd = getCommandStack().getRedoCommand();
-		setToolTipText(MessageFormat.format(GEFMessages.RedoAction_Tooltip,
-				new Object[] { getLabelForCommand(redoCmd) }).trim());
-		setText(MessageFormat.format(GEFMessages.RedoAction_Label,
-				new Object[] { getLabelForCommand(redoCmd) }).trim());
+		setToolTipText(MessageFormat
+				.format(GEFMessages.RedoAction_Tooltip, new Object[] { getLabelForCommand(redoCmd) }).trim());
+		setText(MessageFormat.format(GEFMessages.RedoAction_Label, new Object[] { getLabelForCommand(redoCmd) })
+				.trim());
 		super.refresh();
 	}
 

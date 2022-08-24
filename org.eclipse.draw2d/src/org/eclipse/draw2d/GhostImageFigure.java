@@ -43,36 +43,29 @@ public class GhostImageFigure extends Figure {
 	/**
 	 * The single constructor.
 	 * 
-	 * @param source
-	 *            The original figure that will be used to render the ghost
-	 *            image.
-	 * @param alpha
-	 *            The desired transparency value, to be forwarded to
-	 *            {@link Graphics#setAlpha(int)}.
-	 * @param transparency
-	 *            The RBG value of the color that is to be regarded as
-	 *            transparent. May be <code>null</code>.
+	 * @param source       The original figure that will be used to render the ghost
+	 *                     image.
+	 * @param alpha        The desired transparency value, to be forwarded to
+	 *                     {@link Graphics#setAlpha(int)}.
+	 * @param transparency The RBG value of the color that is to be regarded as
+	 *                     transparent. May be <code>null</code>.
 	 */
 	public GhostImageFigure(final IFigure source, int alpha, RGB transparency) {
 		this.alpha = alpha;
 
-		Rectangle sourceFigureRelativePrecisionBounds = new PrecisionRectangle(
-				source.getBounds().getCopy());
+		Rectangle sourceFigureRelativePrecisionBounds = new PrecisionRectangle(source.getBounds().getCopy());
 
-		Image offscreenImage = new Image(Display.getCurrent(),
-				sourceFigureRelativePrecisionBounds.width,
+		Image offscreenImage = new Image(Display.getCurrent(), sourceFigureRelativePrecisionBounds.width,
 				sourceFigureRelativePrecisionBounds.height);
 
 		GC gc = new GC(offscreenImage);
 		SWTGraphics swtGraphics = new SWTGraphics(gc);
-		swtGraphics.translate(-sourceFigureRelativePrecisionBounds.x,
-				-sourceFigureRelativePrecisionBounds.y);
+		swtGraphics.translate(-sourceFigureRelativePrecisionBounds.x, -sourceFigureRelativePrecisionBounds.y);
 		source.paint(swtGraphics);
 
 		ghostImageData = offscreenImage.getImageData();
 		if (transparency != null) {
-			ghostImageData.transparentPixel = ghostImageData.palette
-					.getPixel(transparency);
+			ghostImageData.transparentPixel = ghostImageData.palette.getPixel(transparency);
 		}
 
 		offscreenImage.dispose();
@@ -87,9 +80,8 @@ public class GhostImageFigure extends Figure {
 		Image feedbackImage = new Image(Display.getCurrent(), ghostImageData);
 		graphics.setAlpha(alpha);
 		graphics.setClip(getBounds().getCopy());
-		graphics.drawImage(feedbackImage, 0, 0, ghostImageData.width,
-				ghostImageData.height, getBounds().x, getBounds().y,
-				getBounds().width, getBounds().height);
+		graphics.drawImage(feedbackImage, 0, 0, ghostImageData.width, ghostImageData.height, getBounds().x,
+				getBounds().y, getBounds().width, getBounds().height);
 		feedbackImage.dispose();
 	}
 }

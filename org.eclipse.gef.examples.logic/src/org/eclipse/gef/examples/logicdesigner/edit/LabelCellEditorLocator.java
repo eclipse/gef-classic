@@ -49,8 +49,7 @@ final public class LabelCellEditorLocator implements CellEditorLocator {
 	/**
 	 * Sets the Sticky note figure.
 	 * 
-	 * @param stickyNote
-	 *            The stickyNote to set
+	 * @param stickyNote The stickyNote to set
 	 */
 	protected void setLabel(LabelFigure stickyNote) {
 		this.stickyNote = stickyNote;

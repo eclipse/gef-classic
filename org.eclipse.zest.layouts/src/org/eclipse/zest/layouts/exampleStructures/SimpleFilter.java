@@ -13,8 +13,7 @@ import org.eclipse.zest.layouts.Filter;
 import org.eclipse.zest.layouts.LayoutItem;
 
 /**
- * A very simple example of a filter.  This filter never filters
- * any object.
+ * A very simple example of a filter. This filter never filters any object.
  * 
  * @author Casey Best
  */

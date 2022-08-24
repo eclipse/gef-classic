@@ -87,7 +87,8 @@ public class SimpleNode implements LayoutEntity {
 		this.borderColor = BORDER_NORMAL_COLOR;
 	}
 
-	public static void setNodeColors(Object nodeNormalColor, Object borderNormalColor, Object nodeSelectedColor, Object nodeAdjacentColor, Object borderSelectedColor, Object borderAdjacentColor) {
+	public static void setNodeColors(Object nodeNormalColor, Object borderNormalColor, Object nodeSelectedColor,
+			Object nodeAdjacentColor, Object borderSelectedColor, Object borderAdjacentColor) {
 		NODE_NORMAL_COLOR = nodeNormalColor;
 		BORDER_NORMAL_COLOR = borderNormalColor;
 		NODE_SELECTED_COLOR = nodeSelectedColor;
@@ -107,7 +108,8 @@ public class SimpleNode implements LayoutEntity {
 
 	public List getRelatedEntities() {
 		int size = listOfRels.size();
-		SimpleRelationship[] a_listOfRels = (SimpleRelationship[]) this.listOfRels.toArray(new SimpleRelationship[size]);
+		SimpleRelationship[] a_listOfRels = (SimpleRelationship[]) this.listOfRels
+				.toArray(new SimpleRelationship[size]);
 		LinkedList listOfRelatedEntities = new LinkedList();
 		for (int i = 0; i < a_listOfRels.length; i++) {
 			SimpleRelationship rel = a_listOfRels[i];
@@ -127,6 +129,7 @@ public class SimpleNode implements LayoutEntity {
 
 	/**
 	 * Ignores this entity in the layout
+	 * 
 	 * @param ignore Should this entity be ignored
 	 */
 	public void ignoreInLayout(boolean ignore) {
@@ -189,14 +192,16 @@ public class SimpleNode implements LayoutEntity {
 	}
 
 	/**
-	 * An algorithm may require a place to store information.  Use this structure for that purpose.
+	 * An algorithm may require a place to store information. Use this structure for
+	 * that purpose.
 	 */
 	public void setAttributeInLayout(Object attribute, Object value) {
 		attributes.put(attribute, value);
 	}
 
 	/**
-	 * An algorithm may require a place to store information.  Use this structure for that purpose.
+	 * An algorithm may require a place to store information. Use this structure for
+	 * that purpose.
 	 */
 	public Object getAttributeInLayout(Object attribute) {
 		return attributes.get(attribute);
@@ -254,15 +259,20 @@ public class SimpleNode implements LayoutEntity {
 		return borderColor;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ca.uvic.cs.chisel.layouts.LayoutEntity#getInternalEntity()
 	 */
 	public Object getLayoutInformation() {
 		return internalNode;
 	}
 
-	/* (non-Javadoc)
-	 * @see ca.uvic.cs.chisel.layouts.LayoutEntity#setInternalEntity(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ca.uvic.cs.chisel.layouts.LayoutEntity#setInternalEntity(java.lang.Object)
 	 */
 	public void setLayoutInformation(Object internalEntity) {
 		this.internalNode = internalEntity;

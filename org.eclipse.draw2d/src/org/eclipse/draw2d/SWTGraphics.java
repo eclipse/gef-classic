@@ -49,11 +49,10 @@ public class SWTGraphics extends Graphics {
 	 */
 	interface Clipping {
 		/**
-		 * Sets the clip's bounding rectangle into the provided argument and
-		 * returns it for convenince.
+		 * Sets the clip's bounding rectangle into the provided argument and returns it
+		 * for convenince.
 		 * 
-		 * @param rect
-		 *            the rect
+		 * @param rect the rect
 		 * @return the given rect
 		 * @since 3.1
 		 */
@@ -122,8 +121,7 @@ public class SWTGraphics extends Graphics {
 			return new RectangleClipping(left, top, right, bottom);
 		}
 
-		public void intersect(int left, int top, final int right,
-				final int bottom) {
+		public void intersect(int left, int top, final int right, final int bottom) {
 			this.left = Math.max(this.left, left);
 			this.right = Math.min(this.right, right);
 			this.top = Math.max(this.top, top);
@@ -145,9 +143,8 @@ public class SWTGraphics extends Graphics {
 		public void setOn(GC gc, int translateX, int translateY) {
 			int xInt = (int) Math.floor(left);
 			int yInt = (int) Math.floor(top);
-			gc.setClipping(xInt + translateX, yInt + translateY,
-					(int) Math.ceil(right) - xInt, (int) Math.ceil(bottom)
-							- yInt);
+			gc.setClipping(xInt + translateX, yInt + translateY, (int) Math.ceil(right) - xInt,
+					(int) Math.ceil(bottom) - yInt);
 		}
 
 		public void translate(float dx, float dy) {
@@ -178,8 +175,7 @@ public class SWTGraphics extends Graphics {
 		/**
 		 * Copies all state information from the given State to this State
 		 * 
-		 * @param state
-		 *            The State to copy from
+		 * @param state The State to copy from
 		 */
 		public void copyFrom(State state) {
 			bgColor = state.bgColor;
@@ -255,8 +251,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * Constructs a new SWTGraphics that draws to the Canvas using the given GC.
 	 * 
-	 * @param gc
-	 *            the GC
+	 * @param gc the GC
 	 */
 	public SWTGraphics(GC gc) {
 		this.gc = gc;
@@ -264,21 +259,20 @@ public class SWTGraphics extends Graphics {
 	}
 
 	/**
-	 * If the background color has changed, this change will be pushed to the
-	 * GC. Also calls {@link #checkGC()}.
+	 * If the background color has changed, this change will be pushed to the GC.
+	 * Also calls {@link #checkGC()}.
 	 */
 	protected final void checkFill() {
-		if (!currentState.bgColor.equals(appliedState.bgColor)
-				&& currentState.bgPattern == null) {
+		if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null) {
 			gc.setBackground(appliedState.bgColor = currentState.bgColor);
 		}
 		checkGC();
 	}
 
 	/**
-	 * If the rendering hints or the clip region has changed, these changes will
-	 * be pushed to the GC. Rendering hints include anti-alias, xor, join, cap,
-	 * line style, fill rule, interpolation, and other settings.
+	 * If the rendering hints or the clip region has changed, these changes will be
+	 * pushed to the GC. Rendering hints include anti-alias, xor, join, cap, line
+	 * style, fill rule, interpolation, and other settings.
 	 */
 	protected final void checkGC() {
 		if (appliedState.relativeClip != currentState.relativeClip) {
@@ -287,21 +281,18 @@ public class SWTGraphics extends Graphics {
 		}
 
 		if (appliedState.graphicHints != currentState.graphicHints) {
-			reconcileHints(gc, appliedState.graphicHints,
-					currentState.graphicHints);
+			reconcileHints(gc, appliedState.graphicHints, currentState.graphicHints);
 			appliedState.graphicHints = currentState.graphicHints;
 		}
 	}
 
 	/**
-	 * If the line width, line style, foreground or background colors have
-	 * changed, these changes will be pushed to the GC. Also calls
-	 * {@link #checkGC()}.
+	 * If the line width, line style, foreground or background colors have changed,
+	 * these changes will be pushed to the GC. Also calls {@link #checkGC()}.
 	 */
 	protected final void checkPaint() {
 		checkGC();
-		if (!currentState.fgColor.equals(appliedState.fgColor)
-				&& currentState.fgPattern == null) {
+		if (!currentState.fgColor.equals(appliedState.fgColor) && currentState.fgPattern == null) {
 			gc.setForeground(appliedState.fgColor = currentState.fgColor);
 		}
 
@@ -321,8 +312,7 @@ public class SWTGraphics extends Graphics {
 			appliedState.lineAttributes = clone(lineAttributes);
 		}
 
-		if (!currentState.bgColor.equals(appliedState.bgColor)
-				&& currentState.bgPattern == null) {
+		if (!currentState.bgColor.equals(appliedState.bgColor) && currentState.bgPattern == null) {
 			gc.setBackground(appliedState.bgColor = currentState.bgColor);
 		}
 	}
@@ -361,14 +351,12 @@ public class SWTGraphics extends Graphics {
 	 */
 	public void clipRect(Rectangle rect) {
 		if (currentState.relativeClip == null) {
-			throw new IllegalStateException(
-					"The current clipping area does not " + //$NON-NLS-1$
-							"support intersection."); //$NON-NLS-1$
+			throw new IllegalStateException("The current clipping area does not " + //$NON-NLS-1$
+					"support intersection."); //$NON-NLS-1$
 		}
 
 		checkSharedClipping();
-		currentState.relativeClip.intersect(rect.x, rect.y, rect.right(),
-				rect.bottom());
+		currentState.relativeClip.intersect(rect.x, rect.y, rect.right(), rect.bottom());
 		appliedState.relativeClip = null;
 	}
 
@@ -388,11 +376,9 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawArc(int, int, int, int, int, int)
 	 */
-	public void drawArc(int x, int y, int width, int height, int offset,
-			int length) {
+	public void drawArc(int x, int y, int width, int height, int offset, int length) {
 		checkPaint();
-		gc.drawArc(x + translateX, y + translateY, width, height, offset,
-				length);
+		gc.drawArc(x + translateX, y + translateY, width, height, offset, length);
 	}
 
 	/**
@@ -414,11 +400,9 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int)
 	 */
-	public void drawImage(Image srcImage, int x1, int y1, int w1, int h1,
-			int x2, int y2, int w2, int h2) {
+	public void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2) {
 		checkGC();
-		gc.drawImage(srcImage, x1, y1, w1, h1, x2 + translateX,
-				y2 + translateY, w2, h2);
+		gc.drawImage(srcImage, x1, y1, w1, h1, x2 + translateX, y2 + translateY, w2, h2);
 	}
 
 	/**
@@ -426,8 +410,7 @@ public class SWTGraphics extends Graphics {
 	 */
 	public void drawLine(int x1, int y1, int x2, int y2) {
 		checkPaint();
-		gc.drawLine(x1 + translateX, y1 + translateY, x2 + translateX, y2
-				+ translateY);
+		gc.drawLine(x1 + translateX, y1 + translateY, x2 + translateX, y2 + translateY);
 	}
 
 	/**
@@ -512,8 +495,7 @@ public class SWTGraphics extends Graphics {
 	 */
 	public void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 		checkPaint();
-		gc.drawRoundRectangle(r.x + translateX, r.y + translateY, r.width,
-				r.height, arcWidth, arcHeight);
+		gc.drawRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, arcWidth, arcHeight);
 	}
 
 	/**
@@ -533,27 +515,23 @@ public class SWTGraphics extends Graphics {
 	}
 
 	/**
-	 * @see Graphics#drawTextLayout(TextLayout, int, int, int, int, Color,
-	 *      Color)
+	 * @see Graphics#drawTextLayout(TextLayout, int, int, int, int, Color, Color)
 	 */
-	public void drawTextLayout(TextLayout layout, int x, int y,
-			int selectionStart, int selectionEnd, Color selectionForeground,
-			Color selectionBackground) {
+	public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart, int selectionEnd,
+			Color selectionForeground, Color selectionBackground) {
 		// $TODO probably just call checkPaint since Font and BG color don't
 		// apply
 		checkText();
-		layout.draw(gc, x + translateX, y + translateY, selectionStart,
-				selectionEnd, selectionForeground, selectionBackground);
+		layout.draw(gc, x + translateX, y + translateY, selectionStart, selectionEnd, selectionForeground,
+				selectionBackground);
 	}
 
 	/**
 	 * @see Graphics#fillArc(int, int, int, int, int, int)
 	 */
-	public void fillArc(int x, int y, int width, int height, int offset,
-			int length) {
+	public void fillArc(int x, int y, int width, int height, int offset, int length) {
 		checkFill();
-		gc.fillArc(x + translateX, y + translateY, width, height, offset,
-				length);
+		gc.fillArc(x + translateX, y + translateY, width, height, offset, length);
 	}
 
 	/**
@@ -618,8 +596,7 @@ public class SWTGraphics extends Graphics {
 	 */
 	public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 		checkFill();
-		gc.fillRoundRectangle(r.x + translateX, r.y + translateY, r.width,
-				r.height, arcWidth, arcHeight);
+		gc.fillRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, arcWidth, arcHeight);
 	}
 
 	/**
@@ -649,8 +626,7 @@ public class SWTGraphics extends Graphics {
 	 * @see Graphics#getAntialias()
 	 */
 	public int getAntialias() {
-		return ((currentState.graphicHints & AA_MASK) >> AA_SHIFT)
-				- AA_WHOLE_NUMBER;
+		return ((currentState.graphicHints & AA_MASK) >> AA_SHIFT) - AA_WHOLE_NUMBER;
 	}
 
 	public boolean getAdvanced() {
@@ -672,8 +648,7 @@ public class SWTGraphics extends Graphics {
 			currentState.relativeClip.getBoundingBox(rect);
 			return rect;
 		} else {
-			throw new IllegalStateException(
-					"Clipping can no longer be queried due to transformations"); //$NON-NLS-1$
+			throw new IllegalStateException("Clipping can no longer be queried due to transformations"); //$NON-NLS-1$
 		}
 	}
 
@@ -681,8 +656,7 @@ public class SWTGraphics extends Graphics {
 	 * @see Graphics#getFillRule()
 	 */
 	public int getFillRule() {
-		return ((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT)
-				- FILL_RULE_WHOLE_NUMBER;
+		return ((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) - FILL_RULE_WHOLE_NUMBER;
 	}
 
 	/**
@@ -711,8 +685,7 @@ public class SWTGraphics extends Graphics {
 	 * @see Graphics#getInterpolation()
 	 */
 	public int getInterpolation() {
-		return ((currentState.graphicHints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT)
-				- INTERPOLATION_WHOLE_NUMBER;
+		return ((currentState.graphicHints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT) - INTERPOLATION_WHOLE_NUMBER;
 	}
 
 	/**
@@ -776,8 +749,7 @@ public class SWTGraphics extends Graphics {
 	 * @see Graphics#getTextAntialias()
 	 */
 	public int getTextAntialias() {
-		return ((currentState.graphicHints & TEXT_AA_MASK) >> TEXT_AA_SHIFT)
-				- AA_WHOLE_NUMBER;
+		return ((currentState.graphicHints & TEXT_AA_MASK) >> TEXT_AA_SHIFT) - AA_WHOLE_NUMBER;
 	}
 
 	/**
@@ -797,8 +769,7 @@ public class SWTGraphics extends Graphics {
 		currentState.lineAttributes = gc.getLineAttributes();
 		appliedState.lineAttributes = clone(currentState.lineAttributes);
 		currentState.graphicHints |= gc.getLineStyle();
-		currentState.graphicHints |= gc.getAdvanced() ? ADVANCED_GRAPHICS_MASK
-				: 0;
+		currentState.graphicHints |= gc.getAdvanced() ? ADVANCED_GRAPHICS_MASK : 0;
 		currentState.graphicHints |= gc.getXORMode() ? XOR_MASK : 0;
 
 		appliedState.graphicHints = currentState.graphicHints;
@@ -836,9 +807,8 @@ public class SWTGraphics extends Graphics {
 	 */
 	public void pushState() {
 		if (currentState.relativeClip == null) {
-			throw new IllegalStateException(
-					"The clipping has been modified in" + //$NON-NLS-1$
-							"a way that cannot be saved and restored."); //$NON-NLS-1$
+			throw new IllegalStateException("The clipping has been modified in" + //$NON-NLS-1$
+					"a way that cannot be saved and restored."); //$NON-NLS-1$
 		}
 
 		try {
@@ -874,23 +844,19 @@ public class SWTGraphics extends Graphics {
 		changes &= ~XOR_MASK;
 		if (changes != 0) {
 			if ((changes & INTERPOLATION_MASK) != 0) {
-				gc.setInterpolation(((hints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT)
-						- INTERPOLATION_WHOLE_NUMBER);
+				gc.setInterpolation(((hints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT) - INTERPOLATION_WHOLE_NUMBER);
 			}
 
 			if ((changes & FILL_RULE_MASK) != 0) {
-				gc.setFillRule(((hints & FILL_RULE_MASK) >> FILL_RULE_SHIFT)
-						- FILL_RULE_WHOLE_NUMBER);
+				gc.setFillRule(((hints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) - FILL_RULE_WHOLE_NUMBER);
 			}
 
 			if ((changes & AA_MASK) != 0) {
-				gc.setAntialias(((hints & AA_MASK) >> AA_SHIFT)
-						- AA_WHOLE_NUMBER);
+				gc.setAntialias(((hints & AA_MASK) >> AA_SHIFT) - AA_WHOLE_NUMBER);
 			}
 
 			if ((changes & TEXT_AA_MASK) != 0) {
-				gc.setTextAntialias(((hints & TEXT_AA_MASK) >> TEXT_AA_SHIFT)
-						- AA_WHOLE_NUMBER);
+				gc.setTextAntialias(((hints & TEXT_AA_MASK) >> TEXT_AA_SHIFT) - AA_WHOLE_NUMBER);
 			}
 
 			// If advanced was flagged, but none of the conditions which trigger
@@ -915,13 +881,12 @@ public class SWTGraphics extends Graphics {
 	 * Sets all State information to that of the given State, called by
 	 * restoreState()
 	 * 
-	 * @param s
-	 *            the State
+	 * @param s the State
 	 */
 	protected void restoreState(State s) {
 		/*
-		 * We must set the transformation matrix first since it affects things
-		 * like clipping regions and patterns.
+		 * We must set the transformation matrix first since it affects things like
+		 * clipping regions and patterns.
 		 */
 		setAffineMatrix(s.affineMatrix);
 		currentState.relativeClip = s.relativeClip;
@@ -1037,8 +1002,7 @@ public class SWTGraphics extends Graphics {
 	 */
 	public void setAntialias(int value) {
 		currentState.graphicHints &= ~AA_MASK;
-		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK
-				| (value + AA_WHOLE_NUMBER) << AA_SHIFT;
+		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK | (value + AA_WHOLE_NUMBER) << AA_SHIFT;
 	}
 
 	public void setAdvanced(boolean value) {
@@ -1088,8 +1052,7 @@ public class SWTGraphics extends Graphics {
 		initTransform(false);
 		if (((appliedState.graphicHints ^ currentState.graphicHints) & FILL_RULE_MASK) != 0) {
 			// If there is a pending change to the fill rule, apply it first.
-			gc.setFillRule(((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT)
-					- FILL_RULE_WHOLE_NUMBER);
+			gc.setFillRule(((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) - FILL_RULE_WHOLE_NUMBER);
 			// As long as the FILL_RULE is stored in a single bit, just toggling
 			// it works.
 			appliedState.graphicHints ^= FILL_RULE_MASK;
@@ -1100,9 +1063,9 @@ public class SWTGraphics extends Graphics {
 
 	/**
 	 * Simple implementation of clipping a Path within the context of current
-	 * clipping rectangle for now (not region) <li>Note that this method wipes
-	 * out the clipping rectangle area, hence if clients need to reset it call
-	 * {@link #restoreState()}
+	 * clipping rectangle for now (not region)
+	 * <li>Note that this method wipes out the clipping rectangle area, hence if
+	 * clients need to reset it call {@link #restoreState()}
 	 * 
 	 * @see org.eclipse.draw2d.Graphics#clipPath(org.eclipse.swt.graphics.Path)
 	 */
@@ -1110,22 +1073,20 @@ public class SWTGraphics extends Graphics {
 		initTransform(false);
 		if (((appliedState.graphicHints ^ currentState.graphicHints) & FILL_RULE_MASK) != 0) {
 			// If there is a pending change to the fill rule, apply it first.
-			gc.setFillRule(((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT)
-					- FILL_RULE_WHOLE_NUMBER);
+			gc.setFillRule(((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) - FILL_RULE_WHOLE_NUMBER);
 			// As long as the FILL_RULE is stored in a single bit, just toggling
 			// it works.
 			appliedState.graphicHints ^= FILL_RULE_MASK;
 		}
-		Rectangle clipping = currentState.relativeClip != null ? getClip(new Rectangle())
-				: new Rectangle();
+		Rectangle clipping = currentState.relativeClip != null ? getClip(new Rectangle()) : new Rectangle();
 		if (!clipping.isEmpty()) {
 			Path flatPath = new Path(path.getDevice(), path, 0.01f);
 			PathData pathData = flatPath.getPathData();
 			flatPath.dispose();
 			Region region = new Region(path.getDevice());
 			loadPath(region, pathData.points, pathData.types);
-			region.intersect(new org.eclipse.swt.graphics.Rectangle(clipping.x,
-					clipping.y, clipping.width, clipping.height));
+			region.intersect(
+					new org.eclipse.swt.graphics.Rectangle(clipping.x, clipping.y, clipping.width, clipping.height));
 			gc.setClipping(region);
 			appliedState.relativeClip = currentState.relativeClip = null;
 			region.dispose();
@@ -1291,8 +1252,7 @@ public class SWTGraphics extends Graphics {
 	 */
 	public void setTextAntialias(int value) {
 		currentState.graphicHints &= ~TEXT_AA_MASK;
-		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK
-				| (value + AA_WHOLE_NUMBER) << TEXT_AA_SHIFT;
+		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK | (value + AA_WHOLE_NUMBER) << TEXT_AA_SHIFT;
 	}
 
 	/**
@@ -1318,9 +1278,8 @@ public class SWTGraphics extends Graphics {
 		initTransform(true);
 		float matrix[] = new float[6];
 		transform.getElements(matrix);
-		transform.setElements(matrix[0] + matrix[2] * vert, matrix[1]
-				+ matrix[3] * vert, matrix[0] * horz + matrix[2], matrix[1]
-				* horz + matrix[3], matrix[4], matrix[5]);
+		transform.setElements(matrix[0] + matrix[2] * vert, matrix[1] + matrix[3] * vert, matrix[0] * horz + matrix[2],
+				matrix[1] * horz + matrix[3], matrix[4], matrix[5]);
 
 		gc.setTransform(transform);
 		elementsNeedUpdate = true;
@@ -1329,9 +1288,9 @@ public class SWTGraphics extends Graphics {
 	}
 
 	/**
-	 * This method may require advanced graphics support if using a transform,
-	 * in this case, a check should be made to ensure advanced graphics is
-	 * supported in the user's environment before calling this method. See
+	 * This method may require advanced graphics support if using a transform, in
+	 * this case, a check should be made to ensure advanced graphics is supported in
+	 * the user's environment before calling this method. See
 	 * {@link GC#getAdvanced()}.
 	 * 
 	 * @see Graphics#translate(int, int)
@@ -1372,8 +1331,7 @@ public class SWTGraphics extends Graphics {
 			currentState.relativeClip.translate(-dx, -dy);
 	}
 
-	private void translatePointArray(int[] points, int translateX,
-			int translateY) {
+	private void translatePointArray(int[] points, int translateX, int translateY) {
 		if (translateX == 0 && translateY == 0)
 			return;
 		for (int i = 0; (i + 1) < points.length; i += 2) {
@@ -1394,8 +1352,7 @@ public class SWTGraphics extends Graphics {
 			dashClone = new float[src.dash.length];
 			System.arraycopy(src.dash, 0, dashClone, 0, dashClone.length);
 		}
-		return new LineAttributes(src.width, src.cap, src.join, src.style,
-				dashClone, src.dashOffset, src.miterLimit);
+		return new LineAttributes(src.width, src.cap, src.join, src.style, dashClone, src.dashOffset, src.miterLimit);
 	}
 
 	/**
@@ -1404,8 +1361,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @since 3.6
 	 */
-	public static void copyLineAttributes(LineAttributes dest,
-			LineAttributes src) {
+	public static void copyLineAttributes(LineAttributes dest, LineAttributes src) {
 		if (dest != src) {
 			dest.cap = src.cap;
 			dest.join = src.join;
@@ -1417,8 +1373,7 @@ public class SWTGraphics extends Graphics {
 			if (src.dash == null) {
 				dest.dash = null;
 			} else {
-				if ((dest.dash == null)
-						|| (dest.dash.length != src.dash.length)) {
+				if ((dest.dash == null) || (dest.dash.length != src.dash.length)) {
 					dest.dash = new float[src.dash.length];
 				}
 				System.arraycopy(src.dash, 0, dest.dash, 0, src.dash.length);
@@ -1427,8 +1382,8 @@ public class SWTGraphics extends Graphics {
 	}
 
 	/**
-	 * Utility method for use with countermeasure against passing line
-	 * attributes to SWT forcing advanced graphics.
+	 * Utility method for use with countermeasure against passing line attributes to
+	 * SWT forcing advanced graphics.
 	 * 
 	 * @return
 	 * @since 3.2

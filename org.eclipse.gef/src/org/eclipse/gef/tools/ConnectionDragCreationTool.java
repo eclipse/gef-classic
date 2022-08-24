@@ -19,8 +19,7 @@ import org.eclipse.gef.requests.CreationFactory;
  * {@link org.eclipse.gef.NodeEditPart} might return this drag tracker if the
  * mouse is located over an appropriate anchor.
  */
-public class ConnectionDragCreationTool extends AbstractConnectionCreationTool
-		implements org.eclipse.gef.DragTracker {
+public class ConnectionDragCreationTool extends AbstractConnectionCreationTool implements org.eclipse.gef.DragTracker {
 
 	/**
 	 * Default constructor.
@@ -31,16 +30,14 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool
 	/**
 	 * Constructs a new ConnectionDragCreationTool with the given factory.
 	 * 
-	 * @param factory
-	 *            the creation factory
+	 * @param factory the creation factory
 	 */
 	public ConnectionDragCreationTool(CreationFactory factory) {
 		setFactory(factory);
 	}
 
 	/**
-	 * Calls super and sets the current state to {@link AbstractTool#STATE_DRAG}
-	 * .
+	 * Calls super and sets the current state to {@link AbstractTool#STATE_DRAG} .
 	 * 
 	 * @see AbstractConnectionCreationTool#handleButtonDown(int)
 	 */
@@ -51,11 +48,10 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool
 	}
 
 	/**
-	 * If the connection has started, the button up event attempts to complete
-	 * the connection.
+	 * If the connection has started, the button up event attempts to complete the
+	 * connection.
 	 * 
-	 * @param button
-	 *            the button that was released
+	 * @param button the button that was released
 	 * @return <code>true</code> if this button up event was processed
 	 */
 	protected boolean handleButtonUp(int button) {
@@ -76,8 +72,8 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool
 	}
 
 	/**
-	 * Overridden so that nothing happens when this tool is used as a tracker.
-	 * If it is the primary tool, then this method behaves normally.
+	 * Overridden so that nothing happens when this tool is used as a tracker. If it
+	 * is the primary tool, then this method behaves normally.
 	 * 
 	 * @see AbstractTool#handleFinished()
 	 */

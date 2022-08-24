@@ -26,8 +26,8 @@ public class LogicLabelEditPolicy extends LogicElementEditPolicy {
 	}
 
 	protected Command getDropTextCommand(NativeDropRequest request) {
-		LogicLabelCommand command = new LogicLabelCommand(
-				(LogicLabel) getHost().getModel(), (String) request.getData());
+		LogicLabelCommand command = new LogicLabelCommand((LogicLabel) getHost().getModel(),
+				(String) request.getData());
 		return command;
 	}
 

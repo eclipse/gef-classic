@@ -92,8 +92,7 @@ public class DeleteCommand extends Command {
 	/**
 	 * Sets the child to the passed Activity
 	 * 
-	 * @param a
-	 *            the child
+	 * @param a the child
 	 */
 	public void setChild(Activity a) {
 		child = a;
@@ -102,8 +101,7 @@ public class DeleteCommand extends Command {
 	/**
 	 * Sets the parent to the passed StructuredActivity
 	 * 
-	 * @param sa
-	 *            the parent
+	 * @param sa the parent
 	 */
 	public void setParent(StructuredActivity sa) {
 		parent = sa;

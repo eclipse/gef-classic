@@ -39,8 +39,7 @@ public class TemplateEditPart extends PaletteEditPart {
 	/**
 	 * Constructor
 	 * 
-	 * @param entry
-	 *            The model entry
+	 * @param entry The model entry
 	 */
 	public TemplateEditPart(PaletteTemplateEntry entry) {
 		super(entry);
@@ -79,11 +78,9 @@ public class TemplateEditPart extends PaletteEditPart {
 				super.paintFigure(graphics);
 
 				if (isSelected()) {
-					graphics.setBackgroundColor(PaletteColorUtil
-							.getSelectedColor());
+					graphics.setBackgroundColor(PaletteColorUtil.getSelectedColor());
 				}
-				graphics.fillRoundRectangle(ToolEntryEditPart
-						.getSelectionRectangle(getLayoutSetting(), this), 3, 3);
+				graphics.fillRoundRectangle(ToolEntryEditPart.getSelectionRectangle(getLayoutSetting(), this), 3, 3);
 			}
 
 		};
@@ -156,8 +153,7 @@ public class TemplateEditPart extends PaletteEditPart {
 		} else if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
 				|| layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
 			fig.setBorder(ToolEntryEditPart.LIST_BORDER);
-		} else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS
-				&& !isToolbarItem()) {
+		} else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS && !isToolbarItem()) {
 			fig.setBorder(ToolEntryEditPart.ICON_BORDER);
 		} else {
 			fig.setBorder(null);

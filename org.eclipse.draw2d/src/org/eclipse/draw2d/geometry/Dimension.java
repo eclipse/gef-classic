@@ -26,31 +26,25 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * Creates a new Dimension representing the MAX of two provided Dimensions.
 	 * 
-	 * @param d1
-	 *            first dimension
-	 * @param d2
-	 *            second dimension
+	 * @param d1 first dimension
+	 * @param d2 second dimension
 	 * @return A new Dimension representing the Max()
 	 * @since 3.7
 	 */
 	public static Dimension max(Dimension d1, Dimension d2) {
-		return new Dimension(Math.max(d1.width(), d2.width()), Math.max(
-				d1.height(), d2.height()));
+		return new Dimension(Math.max(d1.width(), d2.width()), Math.max(d1.height(), d2.height()));
 	}
 
 	/**
 	 * Creates a new Dimension representing the MIN of two provided Dimensions.
 	 * 
-	 * @param d1
-	 *            first dimension
-	 * @param d2
-	 *            second dimension
+	 * @param d1 first dimension
+	 * @param d2 second dimension
 	 * @return A new Dimension representing the Min()
 	 * @since 3.7
 	 */
 	public static Dimension min(Dimension d1, Dimension d2) {
-		return new Dimension(Math.min(d1.width(), d2.width()), Math.min(
-				d1.height(), d2.height()));
+		return new Dimension(Math.min(d1.width(), d2.width()), Math.min(d1.height(), d2.height()));
 	}
 
 	/**
@@ -74,8 +68,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * Constructs a Dimension with the width and height of the passed Dimension.
 	 * 
-	 * @param d
-	 *            the Dimension supplying the initial values
+	 * @param d the Dimension supplying the initial values
 	 * @since 2.0
 	 */
 	public Dimension(Dimension d) {
@@ -86,10 +79,8 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * Constructs a Dimension with the supplied width and height values.
 	 * 
-	 * @param w
-	 *            the width
-	 * @param h
-	 *            the height
+	 * @param w the width
+	 * @param h the height
 	 * @since 2.0
 	 */
 	public Dimension(int w, int h) {
@@ -101,8 +92,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * Constructs a Dimension with the width and height of the Image supplied as
 	 * input.
 	 * 
-	 * @param image
-	 *            the image supplying the dimensions
+	 * @param image the image supplying the dimensions
 	 * @since 2.0
 	 */
 	public Dimension(org.eclipse.swt.graphics.Image image) {
@@ -112,11 +102,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Constructs a Dimension where the width and height are the x and y
-	 * distances of the input point from the origin.
+	 * Constructs a Dimension where the width and height are the x and y distances
+	 * of the input point from the origin.
 	 * 
-	 * @param p
-	 *            the Point supplying the initial values
+	 * @param p the Point supplying the initial values
 	 * @since 2.0
 	 */
 	public Dimension(org.eclipse.swt.graphics.Point p) {
@@ -125,11 +114,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Returns <code>true</code> if the input Dimension fits into this
-	 * Dimension. A Dimension of the same size is considered to "fit".
+	 * Returns <code>true</code> if the input Dimension fits into this Dimension. A
+	 * Dimension of the same size is considered to "fit".
 	 * 
-	 * @param d
-	 *            the dimension being tested
+	 * @param d the dimension being tested
 	 * @return <code>true</code> if this Dimension contains <i>d</i>
 	 * @since 2.0
 	 */
@@ -139,11 +127,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 
 	/**
 	 * Returns <code>true</code> if this Dimension properly contains the one
-	 * specified. Proper containment is defined as containment using \"<\",
-	 * instead of \"<=\".
+	 * specified. Proper containment is defined as containment using \"<\", instead
+	 * of \"<=\".
 	 * 
-	 * @param d
-	 *            the dimension being tested
+	 * @param d the dimension being tested
 	 * @return <code>true</code> if this Dimension properly contains the one
 	 *         specified
 	 * @since 2.0
@@ -153,15 +140,13 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Returns <code>true</code> if this Dimension's width and height are equal
-	 * to the given width and height.
+	 * Returns <code>true</code> if this Dimension's width and height are equal to
+	 * the given width and height.
 	 * 
-	 * @param w
-	 *            the width
-	 * @param h
-	 *            the height
-	 * @return <code>true</code> if this dimension's width and height are equal
-	 *         to those given.
+	 * @param w the width
+	 * @param h the height
+	 * @return <code>true</code> if this dimension's width and height are equal to
+	 *         those given.
 	 * @since 2.0
 	 */
 	public boolean equals(int w, int h) {
@@ -170,12 +155,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 
 	/**
 	 * Returns whether the input Object is equivalent to this Dimension.
-	 * <code>true</code> if the Object is a Dimension and its width and height
-	 * are equal to this Dimension's width and height, <code>false</code>
-	 * otherwise.
+	 * <code>true</code> if the Object is a Dimension and its width and height are
+	 * equal to this Dimension's width and height, <code>false</code> otherwise.
 	 * 
-	 * @param o
-	 *            the Object being tested for equality
+	 * @param o the Object being tested for equality
 	 * @return <code>true</code> if the given object is equal to this dimension
 	 * @since 2.0
 	 */
@@ -190,8 +173,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * Expands the size of this Dimension by the specified amount.
 	 * 
-	 * @param d
-	 *            the Dimension providing the expansion width and height
+	 * @param d the Dimension providing the expansion width and height
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
@@ -202,10 +184,8 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * Expands the size of this Dimension by the specified width and height.
 	 * 
-	 * @param w
-	 *            Value by which the width should be increased
-	 * @param h
-	 *            Value by which the height should be increased
+	 * @param w Value by which the width should be increased
+	 * @param h Value by which the height should be increased
 	 * @return <code>this</code> for convenience
 	 * @since 3.8
 	 */
@@ -216,10 +196,8 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * Expands the size of this Dimension by the specified width and height.
 	 * 
-	 * @param w
-	 *            Value by which the width should be increased
-	 * @param h
-	 *            Value by which the height should be increased
+	 * @param w Value by which the width should be increased
+	 * @param h Value by which the height should be increased
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
@@ -232,8 +210,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * Expands the size of this Dimension by the specified amound.
 	 * 
-	 * @param p
-	 *            the Point supplying the dimensional values
+	 * @param p the Point supplying the dimensional values
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 * @deprecated Use {@link #expand(int, int)} instead.
@@ -263,11 +240,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Creates and returns a new Dimension representing the difference between
-	 * this Dimension and the one specified.
+	 * Creates and returns a new Dimension representing the difference between this
+	 * Dimension and the one specified.
 	 * 
-	 * @param d
-	 *            the dimension being compared
+	 * @param d the dimension being compared
 	 * @return a new dimension representing the difference
 	 * @since 2.0
 	 * @deprecated Use {@link #getShrinked(Dimension)} instead.
@@ -277,11 +253,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Creates and returns a Dimension representing the sum of this Dimension
-	 * and the one specified.
+	 * Creates and returns a Dimension representing the sum of this Dimension and
+	 * the one specified.
 	 * 
-	 * @param d
-	 *            the dimension providing the expansion width and height
+	 * @param d the dimension providing the expansion width and height
 	 * @return a new dimension expanded by <i>d</i>
 	 * @since 2.0
 	 */
@@ -290,13 +265,11 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Creates and returns a new Dimension representing the sum of this
-	 * Dimension and the one specified.
+	 * Creates and returns a new Dimension representing the sum of this Dimension
+	 * and the one specified.
 	 * 
-	 * @param w
-	 *            value by which the width of this is to be expanded
-	 * @param h
-	 *            value by which the height of this is to be expanded
+	 * @param w value by which the width of this is to be expanded
+	 * @param h value by which the height of this is to be expanded
 	 * @return a new Dimension expanded by the given values
 	 * @since 3.8
 	 */
@@ -305,13 +278,11 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Creates and returns a new Dimension representing the sum of this
-	 * Dimension and the one specified.
+	 * Creates and returns a new Dimension representing the sum of this Dimension
+	 * and the one specified.
 	 * 
-	 * @param w
-	 *            value by which the width of this is to be expanded
-	 * @param h
-	 *            value by which the height of this is to be expanded
+	 * @param w value by which the width of this is to be expanded
+	 * @param h value by which the height of this is to be expanded
 	 * @return a new Dimension expanded by the given values
 	 * @since 2.0
 	 */
@@ -323,8 +294,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * Creates and returns a new Dimension representing the intersection of this
 	 * Dimension and the one specified.
 	 * 
-	 * @param d
-	 *            the Dimension to intersect with
+	 * @param d the Dimension to intersect with
 	 * @return A new Dimension representing the intersection
 	 * @since 2.0
 	 */
@@ -346,8 +316,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * Creates a new Dimension with its width and height scaled by the specified
 	 * value.
 	 * 
-	 * @param amount
-	 *            Value by which the width and height are scaled
+	 * @param amount Value by which the width and height are scaled
 	 * @return a new dimension with the scale applied
 	 * @since 2.0
 	 */
@@ -356,11 +325,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Creates and returns a new Dimension whose size will be reduced by the
-	 * width and height of the given Dimension.
+	 * Creates and returns a new Dimension whose size will be reduced by the width
+	 * and height of the given Dimension.
 	 * 
-	 * @param d
-	 *            the dimension whose width and height values will be considered
+	 * @param d the dimension whose width and height values will be considered
 	 * @return a new dimension representing the difference
 	 * @since 3.7
 	 */
@@ -369,13 +337,11 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Creates and returns a new Dimension whose size will be reduced by the
-	 * width and height of the given Dimension.
+	 * Creates and returns a new Dimension whose size will be reduced by the width
+	 * and height of the given Dimension.
 	 * 
-	 * @param w
-	 *            the value by which the width is to be reduced
-	 * @param h
-	 *            the value by which the height is to be reduced
+	 * @param w the value by which the width is to be reduced
+	 * @param h the value by which the height is to be reduced
 	 * @return a new dimension representing the difference
 	 * @since 3.8
 	 */
@@ -384,13 +350,11 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Creates and returns a new Dimension whose size will be reduced by the
-	 * width and height of the given Dimension.
+	 * Creates and returns a new Dimension whose size will be reduced by the width
+	 * and height of the given Dimension.
 	 * 
-	 * @param w
-	 *            the value by which the width is to be reduced
-	 * @param h
-	 *            the value by which the height is to be reduced
+	 * @param w the value by which the width is to be reduced
+	 * @param h the value by which the height is to be reduced
 	 * @return a new dimension representing the difference
 	 * @since 3.7
 	 */
@@ -410,12 +374,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Creates a new Dimension representing the union of this Dimension with the
-	 * one specified. Union is defined as the max() of the values from each
-	 * Dimension.
+	 * Creates a new Dimension representing the union of this Dimension with the one
+	 * specified. Union is defined as the max() of the values from each Dimension.
 	 * 
-	 * @param d
-	 *            the Dimension to be unioned
+	 * @param d the Dimension to be unioned
 	 * @return a new Dimension
 	 * @since 2.0
 	 */
@@ -444,8 +406,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * This Dimension is intersected with the one specified. Intersection is
 	 * performed by taking the min() of the values from each dimension.
 	 * 
-	 * @param d
-	 *            the Dimension used to perform the min()
+	 * @param d the Dimension used to perform the min()
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
@@ -514,9 +475,8 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * Scales the width and height of this Dimension by the amount supplied, and
 	 * returns this for convenience.
 	 * 
-	 * @param factor
-	 *            value by which this Dimension's width and height are to be
-	 *            scaled
+	 * @param factor value by which this Dimension's width and height are to be
+	 *               scaled
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
@@ -525,13 +485,11 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Scales the width of this Dimension by <i>w</i> and scales the height of
-	 * this Dimension by <i>h</i>. Returns this for convenience.
+	 * Scales the width of this Dimension by <i>w</i> and scales the height of this
+	 * Dimension by <i>h</i>. Returns this for convenience.
 	 * 
-	 * @param widthFactor
-	 *            the value by which the width is to be scaled
-	 * @param heightFactor
-	 *            the value by which the height is to be scaled
+	 * @param widthFactor  the value by which the width is to be scaled
+	 * @param heightFactor the value by which the height is to be scaled
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
@@ -544,8 +502,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * Sets the height of this Rectangle to the specified one.
 	 * 
-	 * @param height
-	 *            The new height
+	 * @param height The new height
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -555,11 +512,9 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Copies the width and height values of the input Dimension to this
-	 * Dimension.
+	 * Copies the width and height values of the input Dimension to this Dimension.
 	 * 
-	 * @param d
-	 *            the dimension supplying the values
+	 * @param d the dimension supplying the values
 	 * @since 2.0
 	 */
 	public void setSize(Dimension d) {
@@ -575,10 +530,8 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * Sets the size of this dimension to the specified width and height.
 	 * 
-	 * @param w
-	 *            The new width
-	 * @param h
-	 *            The new height
+	 * @param w The new width
+	 * @param h The new height
 	 * @since 3.7
 	 */
 	public Dimension setSize(int w, int h) {
@@ -590,8 +543,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * Sets the width of this Rectangle to the specified one.
 	 * 
-	 * @param width
-	 *            The new width
+	 * @param width The new width
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -604,8 +556,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * Shrinks the size of this Dimension by the width and height values of the
 	 * given Dimension.
 	 * 
-	 * @param d
-	 *            The dimension whose width and height values are to be used
+	 * @param d The dimension whose width and height values are to be used
 	 * @return <code>this</code> for convenience
 	 * @since 3.7
 	 */
@@ -614,13 +565,11 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Reduces the width of this Dimension by <i>w</i>, and reduces the height
-	 * of this Dimension by <i>h</i>. Returns this for convenience.
+	 * Reduces the width of this Dimension by <i>w</i>, and reduces the height of
+	 * this Dimension by <i>h</i>. Returns this for convenience.
 	 * 
-	 * @param w
-	 *            the value by which the width is to be reduced
-	 * @param h
-	 *            the value by which the height is to be reduced
+	 * @param w the value by which the width is to be reduced
+	 * @param h the value by which the height is to be reduced
 	 * @return <code>this</code> for convenience
 	 * @since 3.8
 	 */
@@ -629,13 +578,11 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Reduces the width of this Dimension by <i>w</i>, and reduces the height
-	 * of this Dimension by <i>h</i>. Returns this for convenience.
+	 * Reduces the width of this Dimension by <i>w</i>, and reduces the height of
+	 * this Dimension by <i>h</i>. Returns this for convenience.
 	 * 
-	 * @param w
-	 *            the value by which the width is to be reduced
-	 * @param h
-	 *            the value by which the height is to be reduced
+	 * @param w the value by which the width is to be reduced
+	 * @param h the value by which the height is to be reduced
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
@@ -670,11 +617,10 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Sets the width of this Dimension to the greater of this Dimension's width
-	 * and <i>d</i>.width. Likewise for this Dimension's height.
+	 * Sets the width of this Dimension to the greater of this Dimension's width and
+	 * <i>d</i>.width. Likewise for this Dimension's height.
 	 * 
-	 * @param d
-	 *            the Dimension to union with this Dimension
+	 * @param d the Dimension to union with this Dimension
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */

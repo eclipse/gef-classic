@@ -29,8 +29,7 @@ import org.eclipse.gef.Handle;
  * an {@link AncestorListener} to the owner's figure, and will automatically
  * revalidate this handle whenever the owner's figure moves.
  */
-public abstract class AbstractHandle extends Figure implements Handle,
-		AncestorListener {
+public abstract class AbstractHandle extends Figure implements Handle, AncestorListener {
 
 	private GraphicalEditPart editpart;
 	private DragTracker dragTracker;
@@ -43,13 +42,11 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	}
 
 	/**
-	 * Creates a handle for the given <code>GraphicalEditPart</code> using the
-	 * given <code>Locator</code>.
+	 * Creates a handle for the given <code>GraphicalEditPart</code> using the given
+	 * <code>Locator</code>.
 	 * 
-	 * @param owner
-	 *            The editpart which provided this handle
-	 * @param loc
-	 *            The locator to position the handle
+	 * @param owner The editpart which provided this handle
+	 * @param loc   The locator to position the handle
 	 */
 	public AbstractHandle(GraphicalEditPart owner, Locator loc) {
 		setOwner(owner);
@@ -57,15 +54,12 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	}
 
 	/**
-	 * Creates a handle for the given <code>GraphicalEditPart</code> using the
-	 * given <code>Locator</code> and <code>Cursor</code>.
+	 * Creates a handle for the given <code>GraphicalEditPart</code> using the given
+	 * <code>Locator</code> and <code>Cursor</code>.
 	 * 
-	 * @param owner
-	 *            The editpart which provided this handle
-	 * @param loc
-	 *            The locator to position the handle
-	 * @param c
-	 *            The cursor to display when the mouse is over the handle
+	 * @param owner The editpart which provided this handle
+	 * @param loc   The locator to position the handle
+	 * @param c     The cursor to display when the mouse is over the handle
 	 */
 	public AbstractHandle(GraphicalEditPart owner, Locator loc, Cursor c) {
 		this(owner, loc);
@@ -120,8 +114,8 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	}
 
 	/**
-	 * Returns the cursor. The cursor is displayed whenever the mouse is over
-	 * the handle.
+	 * Returns the cursor. The cursor is displayed whenever the mouse is over the
+	 * handle.
 	 * 
 	 * @deprecated use getCursor()
 	 * @return the cursor
@@ -131,8 +125,8 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	}
 
 	/**
-	 * Returns the drag tracker to use when the user clicks on this handle. If
-	 * the drag tracker has not been set, it will be lazily created by calling
+	 * Returns the drag tracker to use when the user clicks on this handle. If the
+	 * drag tracker has not been set, it will be lazily created by calling
 	 * {@link #createDragTracker()}.
 	 * 
 	 * @return the drag tracker
@@ -181,10 +175,8 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	/**
 	 * Sets the Cursor for the handle.
 	 * 
-	 * @param c
-	 *            the cursor
-	 * @throws Exception
-	 *             a bogus excpetion declaration
+	 * @param c the cursor
+	 * @throws Exception a bogus excpetion declaration
 	 * @deprecated use setCursor()
 	 */
 	public void setDragCursor(Cursor c) throws Exception {
@@ -194,8 +186,7 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	/**
 	 * Sets the drag tracker for this handle.
 	 * 
-	 * @param t
-	 *            the drag tracker
+	 * @param t the drag tracker
 	 */
 	public void setDragTracker(DragTracker t) {
 		dragTracker = t;
@@ -204,8 +195,7 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	/**
 	 * Sets the locator which position this handle.
 	 * 
-	 * @param locator
-	 *            the new locator
+	 * @param locator the new locator
 	 */
 	protected void setLocator(Locator locator) {
 		this.locator = locator;
@@ -214,8 +204,7 @@ public abstract class AbstractHandle extends Figure implements Handle,
 	/**
 	 * Sets the owner editpart associated with this handle.
 	 * 
-	 * @param editpart
-	 *            the owner
+	 * @param editpart the owner
 	 */
 	protected void setOwner(GraphicalEditPart editpart) {
 		this.editpart = editpart;

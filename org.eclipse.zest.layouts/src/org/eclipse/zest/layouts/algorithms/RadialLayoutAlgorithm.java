@@ -19,8 +19,8 @@ import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
 /**
- * This layout will take the given entities, apply a tree layout to them, and then display the 
- * tree in a circular fashion with the roots in the center.
+ * This layout will take the given entities, apply a tree layout to them, and
+ * then display the tree in a circular fashion with the roots in the center.
  * 
  * @author Casey Best
  * @auhtor Rob Lintern
@@ -39,7 +39,8 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 		this(LayoutStyles.NONE);
 	}
 
-	//TODO: This is a really strange pattern.  It extends tree layout and it contains a tree layout ? 
+	// TODO: This is a really strange pattern. It extends tree layout and it
+	// contains a tree layout ?
 	public RadialLayoutAlgorithm(int styles) {
 		super(styles);
 		treeLayout = new TreeLayoutAlgorithm(styles);
@@ -66,13 +67,15 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 
 	DisplayIndependentRectangle layoutBounds = null;
 
-	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double x, double y, double width, double height) {
 		// TODO Auto-generated method stub
 		layoutBounds = new DisplayIndependentRectangle(x, y, width, height);
 		super.preLayoutAlgorithm(entitiesToLayout, relationshipsToConsider, x, y, width, height);
 	}
 
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationshipsToConsider) {
 		roots = treeLayout.getRoots();
 		computeRadialPositions(entitiesToLayout, layoutBounds);
 
@@ -83,8 +86,8 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	}
 
 	/**
-	 * Set the range the radial layout will use when applyLayout is called.
-	 * Both values must be in radians.
+	 * Set the range the radial layout will use when applyLayout is called. Both
+	 * values must be in radians.
 	 */
 	public void setRangeToLayout(double startDegree, double endDegree) {
 		this.startDegree = startDegree;
@@ -92,11 +95,12 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	}
 
 	/**
-	 * Take the tree and make it round.  This is done by determining the location of each entity in terms
-	 * of its percentage in the tree layout.  Then apply that percentage to the radius and distance from
-	 * the center.
+	 * Take the tree and make it round. This is done by determining the location of
+	 * each entity in terms of its percentage in the tree layout. Then apply that
+	 * percentage to the radius and distance from the center.
 	 */
-	protected void computeRadialPositions(InternalNode[] entities, DisplayIndependentRectangle bounds2) { //TODO TODO TODO
+	protected void computeRadialPositions(InternalNode[] entities, DisplayIndependentRectangle bounds2) { // TODO TODO
+																											// TODO
 		DisplayIndependentRectangle bounds = new DisplayIndependentRectangle(getLayoutBounds(entities, true));
 		bounds.height = bounds2.height;
 		bounds.y = bounds2.y;
@@ -113,18 +117,24 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	}
 
 	/**
-	 * Find the bounds in which the nodes are located.  Using the bounds against the real bounds
-	 * of the screen, the nodes can proportionally be placed within the real bounds.
-	 * The bounds can be determined either including the size of the nodes or not.  If the size
-	 * is not included, the bounds will only be guaranteed to include the center of each node.
+	 * Find the bounds in which the nodes are located. Using the bounds against the
+	 * real bounds of the screen, the nodes can proportionally be placed within the
+	 * real bounds. The bounds can be determined either including the size of the
+	 * nodes or not. If the size is not included, the bounds will only be guaranteed
+	 * to include the center of each node.
 	 */
 	protected DisplayIndependentRectangle getLayoutBounds(InternalNode[] entitiesToLayout, boolean includeNodeSize) {
 		DisplayIndependentRectangle layoutBounds = super.getLayoutBounds(entitiesToLayout, includeNodeSize);
-		DisplayIndependentPoint centerPoint = (roots != null) ? determineCenterPoint(roots) : new DisplayIndependentPoint(layoutBounds.x + layoutBounds.width / 2, layoutBounds.y + layoutBounds.height / 2);
-		//	The center entity is determined in applyLayout
-		double maxDistanceX = Math.max(Math.abs(layoutBounds.x + layoutBounds.width - centerPoint.x), Math.abs(centerPoint.x - layoutBounds.x));
-		double maxDistanceY = Math.max(Math.abs(layoutBounds.y + layoutBounds.height - centerPoint.y), Math.abs(centerPoint.y - layoutBounds.y));
-		layoutBounds = new DisplayIndependentRectangle(centerPoint.x - maxDistanceX, centerPoint.y - maxDistanceY, maxDistanceX * 2, maxDistanceY * 2);
+		DisplayIndependentPoint centerPoint = (roots != null) ? determineCenterPoint(roots)
+				: new DisplayIndependentPoint(layoutBounds.x + layoutBounds.width / 2,
+						layoutBounds.y + layoutBounds.height / 2);
+		// The center entity is determined in applyLayout
+		double maxDistanceX = Math.max(Math.abs(layoutBounds.x + layoutBounds.width - centerPoint.x),
+				Math.abs(centerPoint.x - layoutBounds.x));
+		double maxDistanceY = Math.max(Math.abs(layoutBounds.y + layoutBounds.height - centerPoint.y),
+				Math.abs(centerPoint.y - layoutBounds.y));
+		layoutBounds = new DisplayIndependentRectangle(centerPoint.x - maxDistanceX, centerPoint.y - maxDistanceY,
+				maxDistanceX * 2, maxDistanceY * 2);
 		return layoutBounds;
 	}
 

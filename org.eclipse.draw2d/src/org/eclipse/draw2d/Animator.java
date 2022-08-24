@@ -31,8 +31,7 @@ public abstract class Animator {
 	 * Captures the final state of the given figure. This method is called once
 	 * after the update manager has completed validation of all invalid figures.
 	 * 
-	 * @param figure
-	 *            the container
+	 * @param figure the container
 	 * @since 3.2
 	 */
 	public void capture(IFigure figure) {
@@ -40,23 +39,21 @@ public abstract class Animator {
 	}
 
 	/**
-	 * Returns an object encapsulating the current state of the figure. This
-	 * method is called to capture both the initial and final states.
+	 * Returns an object encapsulating the current state of the figure. This method
+	 * is called to capture both the initial and final states.
 	 * 
-	 * @param figure
-	 *            the figure
+	 * @param figure the figure
 	 * @return the current state
 	 * @since 3.2
 	 */
 	protected abstract Object getCurrentState(IFigure figure);
 
 	/**
-	 * Plays back the animation for the given figure and returns
-	 * <code>true</code> if successful. This method does nothing by default and
-	 * return <code>false</code>.
+	 * Plays back the animation for the given figure and returns <code>true</code>
+	 * if successful. This method does nothing by default and return
+	 * <code>false</code>.
 	 * 
-	 * @param figure
-	 *            the figure being animated
+	 * @param figure the figure being animated
 	 * @return <code>true</code> if playback was successful
 	 * @since 3.2
 	 */
@@ -67,8 +64,7 @@ public abstract class Animator {
 	/**
 	 * Sent as playback is starting for a given figure.
 	 * 
-	 * @param figure
-	 *            the figure
+	 * @param figure the figure
 	 * @since 3.2
 	 */
 	public void playbackStarting(IFigure figure) {
@@ -77,8 +73,7 @@ public abstract class Animator {
 	/**
 	 * Records the final state information for a figure.
 	 * 
-	 * @param figure
-	 *            the figure
+	 * @param figure the figure
 	 * @since 3.2
 	 */
 	protected void recordFinalState(IFigure figure) {
@@ -88,8 +83,7 @@ public abstract class Animator {
 	/**
 	 * Records initial state information for the given figure.
 	 * 
-	 * @param figure
-	 *            the container.
+	 * @param figure the container.
 	 * @since 3.2
 	 */
 	protected void recordInitialState(IFigure figure) {
@@ -99,12 +93,11 @@ public abstract class Animator {
 	/**
 	 * Sets up the animator for the given figure to be animated. This method is
 	 * called exactly once time prior to any layouts happening. The animator can
-	 * capture the figure's current state, and set any animation-time settings
-	 * for the figure. Changes made to the figure should be reverted in
+	 * capture the figure's current state, and set any animation-time settings for
+	 * the figure. Changes made to the figure should be reverted in
 	 * {@link #tearDown(IFigure)}.
 	 * 
-	 * @param figure
-	 *            the animated figure
+	 * @param figure the animated figure
 	 * @since 3.2
 	 */
 	public void init(IFigure figure) {
@@ -116,8 +109,7 @@ public abstract class Animator {
 	 * method is called exactly once after all animation has been completed.
 	 * Subclasses should extend this method to revert any changes.
 	 * 
-	 * @param figure
-	 *            the animated figure
+	 * @param figure the animated figure
 	 * @since 3.2
 	 * @see #init(IFigure)
 	 */

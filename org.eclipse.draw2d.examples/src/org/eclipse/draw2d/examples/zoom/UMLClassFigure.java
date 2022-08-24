@@ -9,6 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.examples.zoom;
+
 import org.eclipse.swt.graphics.Color;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -22,37 +23,37 @@ import org.eclipse.draw2d.ToolbarLayout;
  */
 public class UMLClassFigure extends Figure {
 
-/** Background color of UMLFigure */
-public static Color classColor = new Color(null,255,255,206);
+	/** Background color of UMLFigure */
+	public static Color classColor = new Color(null, 255, 255, 206);
 
-/** CompartmentFigures */
-private CompartmentFigure attributeFigure = new CompartmentFigure();
-private CompartmentFigure methodFigure = new CompartmentFigure();
+	/** CompartmentFigures */
+	private CompartmentFigure attributeFigure = new CompartmentFigure();
+	private CompartmentFigure methodFigure = new CompartmentFigure();
 
-public UMLClassFigure(Label name) {
-	ToolbarLayout layout = new ToolbarLayout();
-	setLayoutManager(layout);	
-	setBorder(new LineBorder(ColorConstants.black,1));
-	setBackgroundColor(classColor);
-	setOpaque(true);
-	
-	add(name);	
-	add(attributeFigure);
-	add(methodFigure);
-}
+	public UMLClassFigure(Label name) {
+		ToolbarLayout layout = new ToolbarLayout();
+		setLayoutManager(layout);
+		setBorder(new LineBorder(ColorConstants.black, 1));
+		setBackgroundColor(classColor);
+		setOpaque(true);
 
-/**
- * Returns the "attributes" figure
- */
-public CompartmentFigure getAttributesCompartment() {
-	return attributeFigure;
-}
+		add(name);
+		add(attributeFigure);
+		add(methodFigure);
+	}
 
-/**
- * Returns the "methods" figure
- */
-public CompartmentFigure getMethodsCompartment() {
-	return methodFigure;
-}
+	/**
+	 * Returns the "attributes" figure
+	 */
+	public CompartmentFigure getAttributesCompartment() {
+		return attributeFigure;
+	}
+
+	/**
+	 * Returns the "methods" figure
+	 */
+	public CompartmentFigure getMethodsCompartment() {
+		return methodFigure;
+	}
 
 }

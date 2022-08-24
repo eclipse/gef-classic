@@ -32,8 +32,7 @@ public class SelectionToolEntry extends ToolEntry {
 	/**
 	 * Constructor for SelectionToolEntry.
 	 * 
-	 * @param label
-	 *            the label
+	 * @param label the label
 	 */
 	public SelectionToolEntry(String label) {
 		this(label, null);
@@ -42,14 +41,12 @@ public class SelectionToolEntry extends ToolEntry {
 	/**
 	 * Constructor for SelectionToolEntry.
 	 * 
-	 * @param label
-	 *            the label
-	 * @param shortDesc
-	 *            the description
+	 * @param label     the label
+	 * @param shortDesc the description
 	 */
 	public SelectionToolEntry(String label, String shortDesc) {
-		super(label, shortDesc, SharedImages.DESC_SELECTION_TOOL_16,
-				SharedImages.DESC_SELECTION_TOOL_24, SelectionTool.class);
+		super(label, shortDesc, SharedImages.DESC_SELECTION_TOOL_16, SharedImages.DESC_SELECTION_TOOL_24,
+				SelectionTool.class);
 		if (label == null || label.length() == 0)
 			setLabel(GEFMessages.SelectionTool_Label);
 		setUserModificationPermission(PERMISSION_NO_MODIFICATION);

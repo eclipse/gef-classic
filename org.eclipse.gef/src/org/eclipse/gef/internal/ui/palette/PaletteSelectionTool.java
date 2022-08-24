@@ -41,8 +41,7 @@ public class PaletteSelectionTool extends SelectionTool {
 	}
 
 	private void loadDefaultTool() {
-		getPaletteViewer().setActiveTool(
-				getPaletteViewer().getPaletteRoot().getDefaultEntry());
+		getPaletteViewer().setActiveTool(getPaletteViewer().getPaletteRoot().getDefaultEntry());
 	}
 
 }

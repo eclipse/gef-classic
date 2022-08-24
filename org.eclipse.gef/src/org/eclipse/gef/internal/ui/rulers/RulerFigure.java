@@ -46,9 +46,9 @@ public class RulerFigure extends Figure {
 	private boolean drawFocus = false;
 
 	/*
-	 * This is an artificial border. When asked for the preferred size, the
-	 * figure adds this width to its preferred width. The border is painted in
-	 * the paintFigure(Graphics) method.
+	 * This is an artificial border. When asked for the preferred size, the figure
+	 * adds this width to its preferred width. The border is painted in the
+	 * paintFigure(Graphics) method.
 	 */
 	private static final int BORDER_WIDTH = 3;
 
@@ -76,8 +76,7 @@ public class RulerFigure extends Figure {
 			if (getUnit() == RulerProvider.UNIT_PIXELS) {
 				dpu = 1.0;
 			} else {
-				dpu = transposer
-						.t(new Dimension(Display.getCurrent().getDPI())).height;
+				dpu = transposer.t(new Dimension(Display.getCurrent().getDPI())).height;
 				if (getUnit() == RulerProvider.UNIT_CENTIMETERS) {
 					dpu = dpu / 2.54;
 				}
@@ -96,11 +95,9 @@ public class RulerFigure extends Figure {
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		Dimension prefSize = new Dimension();
 		if (isHorizontal()) {
-			prefSize.height = (textMargin * 2) + BORDER_WIDTH
-					+ FigureUtilities.getFontMetrics(getFont()).getAscent();
+			prefSize.height = (textMargin * 2) + BORDER_WIDTH + FigureUtilities.getFontMetrics(getFont()).getAscent();
 		} else {
-			prefSize.width = (textMargin * 2) + BORDER_WIDTH
-					+ FigureUtilities.getFontMetrics(getFont()).getAscent();
+			prefSize.width = (textMargin * 2) + BORDER_WIDTH + FigureUtilities.getFontMetrics(getFont()).getAscent();
 		}
 		return prefSize;
 	}
@@ -140,9 +137,9 @@ public class RulerFigure extends Figure {
 	 */
 	protected void paintFigure(Graphics graphics) {
 		/*
-		 * @TODO:Pratik maybe you can break this method into a few methods. that
-		 * might make it a little easier to read and understand. plus,
-		 * sub-classes could customize certain parts.
+		 * @TODO:Pratik maybe you can break this method into a few methods. that might
+		 * make it a little easier to read and understand. plus, sub-classes could
+		 * customize certain parts.
 		 */
 		double dotsPerUnit = getDPU();
 		Rectangle clip = transposer.t(graphics.getClip(Rectangle.SINGLETON));
@@ -162,15 +159,14 @@ public class RulerFigure extends Figure {
 		}
 
 		/*
-		 * A major mark is one that goes all the way from the left edge to the
-		 * right edge of a ruler and for which a number is displayed. Determine
-		 * the minimum number of pixels that are to be left between major marks.
-		 * This will, in turn, help determine how many units are to be displayed
-		 * per major mark. A major mark should have at least enough pixels to
-		 * display the text and its padding. We take into the consideration the
-		 * max of text's width and height so that for horizontal and vertical
-		 * rulers that are of the same height, the number of units per major
-		 * mark is the same.
+		 * A major mark is one that goes all the way from the left edge to the right
+		 * edge of a ruler and for which a number is displayed. Determine the minimum
+		 * number of pixels that are to be left between major marks. This will, in turn,
+		 * help determine how many units are to be displayed per major mark. A major
+		 * mark should have at least enough pixels to display the text and its padding.
+		 * We take into the consideration the max of text's width and height so that for
+		 * horizontal and vertical rulers that are of the same height, the number of
+		 * units per major mark is the same.
 		 */
 		int unitsPerMajorMark = (int) (minPixelsBetweenMajorMarks / dotsPerUnit);
 		if (minPixelsBetweenMajorMarks % dotsPerUnit != 0.0) {
@@ -178,10 +174,9 @@ public class RulerFigure extends Figure {
 		}
 		if (interval > 0) {
 			/*
-			 * If the client specified how many units are to be displayed per
-			 * major mark, use that. If, however, showing that many units
-			 * wouldn't leave enough room for the text, than take its smallest
-			 * multiple that would leave enough room.
+			 * If the client specified how many units are to be displayed per major mark,
+			 * use that. If, however, showing that many units wouldn't leave enough room for
+			 * the text, than take its smallest multiple that would leave enough room.
 			 */
 			int intervalMultiple = interval;
 			while (intervalMultiple < unitsPerMajorMark) {
@@ -196,31 +191,27 @@ public class RulerFigure extends Figure {
 		}
 
 		/*
-		 * divsPerMajorMark indicates the number of divisions that a major mark
-		 * should be divided into. for eg., a value of 2 would mean that a major
-		 * mark would be shown as having two parts. that means that there would
-		 * be a marker showing the beginning and end of the major marker and
-		 * another right in the middle.
+		 * divsPerMajorMark indicates the number of divisions that a major mark should
+		 * be divided into. for eg., a value of 2 would mean that a major mark would be
+		 * shown as having two parts. that means that there would be a marker showing
+		 * the beginning and end of the major marker and another right in the middle.
 		 */
 		int divsPerMajorMark;
-		if (divisions > 0
-				&& dotsPerUnit * unitsPerMajorMark / divisions >= minPixelsBetweenMarks) {
+		if (divisions > 0 && dotsPerUnit * unitsPerMajorMark / divisions >= minPixelsBetweenMarks) {
 			/*
-			 * If the client has specified the number of divisions per major
-			 * mark, use that unless it would cause the minimum space between
-			 * marks to be less than minPixelsBetweenMarks
+			 * If the client has specified the number of divisions per major mark, use that
+			 * unless it would cause the minimum space between marks to be less than
+			 * minPixelsBetweenMarks
 			 */
 			divsPerMajorMark = divisions;
 		} else {
 			/*
-			 * If the client hasn't specified the number of divisions per major
-			 * mark or the one that the client has specified is invalid, then
-			 * calculate it dynamically. This algorithm will try to display 10
-			 * divisions per CM, and 16 per INCH. However, if that puts the
-			 * marks too close together (i.e., the space between them is less
-			 * than minPixelsBetweenMarks), then it keeps decreasing the number
-			 * of divisions by a factor of 2 until there is enough space between
-			 * them.
+			 * If the client hasn't specified the number of divisions per major mark or the
+			 * one that the client has specified is invalid, then calculate it dynamically.
+			 * This algorithm will try to display 10 divisions per CM, and 16 per INCH.
+			 * However, if that puts the marks too close together (i.e., the space between
+			 * them is less than minPixelsBetweenMarks), then it keeps decreasing the number
+			 * of divisions by a factor of 2 until there is enough space between them.
 			 */
 			divsPerMajorMark = 2;
 			if (getUnit() == RulerProvider.UNIT_CENTIMETERS) {
@@ -246,11 +237,10 @@ public class RulerFigure extends Figure {
 		}
 
 		/*
-		 * mediumMarkerDivNum is used to determine which mark (line drawn to
-		 * indicate a point on the ruler) in a major mark will be of medium
-		 * size. If its value is 1 then every mark will be of medium size. If
-		 * its value is 5, then every 5th mark will be of medium size (the rest
-		 * being of small size).
+		 * mediumMarkerDivNum is used to determine which mark (line drawn to indicate a
+		 * point on the ruler) in a major mark will be of medium size. If its value is 1
+		 * then every mark will be of medium size. If its value is 5, then every 5th
+		 * mark will be of medium size (the rest being of small size).
 		 */
 		int mediumMarkerDivNum = 1;
 		switch (divsPerMajorMark) {
@@ -271,18 +261,16 @@ public class RulerFigure extends Figure {
 		}
 
 		/*
-		 * dotsPerDivision = number of pixels between each mark = number of
-		 * pixels in a division
+		 * dotsPerDivision = number of pixels between each mark = number of pixels in a
+		 * division
 		 */
-		double dotsPerDivision = dotsPerUnit * unitsPerMajorMark
-				/ divsPerMajorMark;
+		double dotsPerDivision = dotsPerUnit * unitsPerMajorMark / divsPerMajorMark;
 		/*
-		 * startMark is the division/mark from which we are going to start
-		 * painting. It should be the last major mark (one for which a number is
-		 * displayed) that is before the top of the clip rectangle.
+		 * startMark is the division/mark from which we are going to start painting. It
+		 * should be the last major mark (one for which a number is displayed) that is
+		 * before the top of the clip rectangle.
 		 */
-		int startMark = (int) (clippedBounds.y / (dotsPerUnit * unitsPerMajorMark))
-				* divsPerMajorMark;
+		int startMark = (int) (clippedBounds.y / (dotsPerUnit * unitsPerMajorMark)) * divsPerMajorMark;
 		if (clippedBounds.y < 0) {
 			// -2 / 10 = 0, not -1. so, if the top of the clip is negative, we
 			// need to move
@@ -301,18 +289,15 @@ public class RulerFigure extends Figure {
 			if (div % divsPerMajorMark == 0) {
 				String num = "" + (div / divsPerMajorMark) * unitsPerMajorMark; //$NON-NLS-1$
 				if (isHorizontal()) {
-					Dimension numSize = FigureUtilities.getStringExtents(num,
-							getFont());
+					Dimension numSize = FigureUtilities.getStringExtents(num, getFont());
 					/*
-					 * If the width is even, we want to increase it by 1. This
-					 * will ensure that when marks are erased because they are
-					 * too close to the number, they are erased from both sides
-					 * of that number.
+					 * If the width is even, we want to increase it by 1. This will ensure that when
+					 * marks are erased because they are too close to the number, they are erased
+					 * from both sides of that number.
 					 */
 					if (numSize.width % 2 == 0)
 						numSize.width++;
-					Point textLocation = new Point(y - (numSize.width / 2),
-							clippedBounds.x + textMargin - leading);
+					Point textLocation = new Point(y - (numSize.width / 2), clippedBounds.x + textMargin - leading);
 					forbiddenZone.setLocation(textLocation);
 					forbiddenZone.setSize(numSize);
 					forbiddenZone.expand(1, 1);
@@ -324,17 +309,12 @@ public class RulerFigure extends Figure {
 					// + clippedBounds.width);
 					graphics.drawText(num, textLocation);
 				} else {
-					Image numImage = ImageUtilities.createRotatedImageOfString(
-							num, getFont(), getForegroundColor(),
+					Image numImage = ImageUtilities.createRotatedImageOfString(num, getFont(), getForegroundColor(),
 							getBackgroundColor());
-					Point textLocation = new Point(
-							clippedBounds.x + textMargin, y
-									- (numImage.getBounds().height / 2));
+					Point textLocation = new Point(clippedBounds.x + textMargin, y - (numImage.getBounds().height / 2));
 					forbiddenZone.setLocation(textLocation);
-					forbiddenZone.setSize(numImage.getBounds().width,
-							numImage.getBounds().height);
-					forbiddenZone.expand(1,
-							1 + (numImage.getBounds().height % 2 == 0 ? 1 : 0));
+					forbiddenZone.setSize(numImage.getBounds().width, numImage.getBounds().height);
+					forbiddenZone.expand(1, 1 + (numImage.getBounds().height % 2 == 0 ? 1 : 0));
 					graphics.fillRectangle(forbiddenZone);
 					graphics.drawImage(numImage, textLocation);
 					numImage.dispose();
@@ -342,21 +322,17 @@ public class RulerFigure extends Figure {
 			} else if ((div % divsPerMajorMark) % mediumMarkerDivNum == 0) {
 				// this is a medium mark, so its length should be longer than
 				// the small marks
-				Point start = transposer.t(new Point(
-						(clippedBounds.getRight().x - mediumMarkWidth) / 2, y));
-				Point end = transposer.t(new Point(
-						((clippedBounds.getRight().x - mediumMarkWidth) / 2)
-								+ mediumMarkWidth, y));
+				Point start = transposer.t(new Point((clippedBounds.getRight().x - mediumMarkWidth) / 2, y));
+				Point end = transposer
+						.t(new Point(((clippedBounds.getRight().x - mediumMarkWidth) / 2) + mediumMarkWidth, y));
 				if (!forbiddenZone.contains(start)) {
 					graphics.drawLine(start, end);
 				}
 			} else {
 				// small mark
-				Point start = transposer.t(new Point(
-						(clippedBounds.getRight().x - smallMarkWidth) / 2, y));
-				Point end = transposer.t(new Point(
-						((clippedBounds.getRight().x - smallMarkWidth) / 2)
-								+ smallMarkWidth, y));
+				Point start = transposer.t(new Point((clippedBounds.getRight().x - smallMarkWidth) / 2, y));
+				Point end = transposer
+						.t(new Point(((clippedBounds.getRight().x - smallMarkWidth) / 2) + smallMarkWidth, y));
 				if (!forbiddenZone.contains(start)) {
 					graphics.drawLine(start, end);
 				}
@@ -365,8 +341,7 @@ public class RulerFigure extends Figure {
 		// paint the border
 		clippedBounds.expand(BORDER_WIDTH, 0);
 		graphics.setForegroundColor(ColorConstants.buttonDarker);
-		graphics.drawLine(
-				transposer.t(clippedBounds.getTopRight().translate(-1, -1)),
+		graphics.drawLine(transposer.t(clippedBounds.getTopRight().translate(-1, -1)),
 				transposer.t(clippedBounds.getBottomRight().translate(-1, -1)));
 	}
 
@@ -383,19 +358,18 @@ public class RulerFigure extends Figure {
 	}
 
 	/**
-	 * Allows the client to set the number of units to be displayed per major
-	 * mark, and the number of divisions to be shown per major mark.
+	 * Allows the client to set the number of units to be displayed per major mark,
+	 * and the number of divisions to be shown per major mark.
 	 * 
 	 * A number on the ruler is considered to be a major mark.
 	 * 
-	 * @param unitsPerMajorMark
-	 *            if less than 1, it will be ignored; if there is not enough
-	 *            space to display that many units per major mark, its smallest
-	 *            multiple that leaves enough room will be used.
-	 * @param divisionsPerMajorMark
-	 *            if less than 1, it will be ignored; if displaying that many
-	 *            divisions does not leave enough room between marks, it will be
-	 *            ignored.
+	 * @param unitsPerMajorMark     if less than 1, it will be ignored; if there is
+	 *                              not enough space to display that many units per
+	 *                              major mark, its smallest multiple that leaves
+	 *                              enough room will be used.
+	 * @param divisionsPerMajorMark if less than 1, it will be ignored; if
+	 *                              displaying that many divisions does not leave
+	 *                              enough room between marks, it will be ignored.
 	 * 
 	 */
 	public void setInterval(int unitsPerMajorMark, int divisionsPerMajorMark) {

@@ -58,48 +58,40 @@ public interface IStylingGraphModelFactory {
 	public Graph createGraphModel(Graph model);
 
 	/**
-	 * Creates and returns a node on the given graph based on the user model
-	 * data, "data", using the content provider returned by
-	 * getContentProvider(). They node will also be styled according to the
-	 * information given by the label provider. If the node already exists in
-	 * the graph, it is restyled and returned; no new node is created.
+	 * Creates and returns a node on the given graph based on the user model data,
+	 * "data", using the content provider returned by getContentProvider(). They
+	 * node will also be styled according to the information given by the label
+	 * provider. If the node already exists in the graph, it is restyled and
+	 * returned; no new node is created.
 	 * 
-	 * @param graph
-	 *            the graph to create or retrieve the node on.
-	 * @param element
-	 *            the user model data to use in the node.
+	 * @param graph   the graph to create or retrieve the node on.
+	 * @param element the user model data to use in the node.
 	 * @return the node created or retrieved for the given graph.
 	 */
 	public GraphNode createNode(Graph graph, Object element);
 
 	/**
 	 * Creates and returns a connection with the given source and destination
-	 * objects from the user model. If the source and destination nodes don't
-	 * exist for the given user model objects, they are created using
-	 * createNode(GraphModel, Object). If a connection already exists for the
-	 * given user data, but with different source or destinations, it is
-	 * disconnected and reconnected to the given source and destination. It is
-	 * always styled according to the label provider provided by
-	 * getLabelProvider().
+	 * objects from the user model. If the source and destination nodes don't exist
+	 * for the given user model objects, they are created using
+	 * createNode(GraphModel, Object). If a connection already exists for the given
+	 * user data, but with different source or destinations, it is disconnected and
+	 * reconnected to the given source and destination. It is always styled
+	 * according to the label provider provided by getLabelProvider().
 	 * 
-	 * @param graph
-	 *            the graph to create or retrieve the connection on.
-	 * @param element
-	 *            the user model data to use in this connection.
-	 * @param source
-	 *            the user model data used for the source node.
-	 * @param dest
-	 *            the user model data used for the destination node.
+	 * @param graph   the graph to create or retrieve the connection on.
+	 * @param element the user model data to use in this connection.
+	 * @param source  the user model data used for the source node.
+	 * @param dest    the user model data used for the destination node.
 	 * @return the created or retrieved connection for the given graph.
 	 */
 	public GraphConnection createConnection(Graph graph, Object element, Object source, Object dest);
 
 	/**
-	 * Restyles the given graph items according to the label provider supplied
-	 * by getLabelProvider().
+	 * Restyles the given graph items according to the label provider supplied by
+	 * getLabelProvider().
 	 * 
-	 * @param items
-	 *            the items to update.
+	 * @param items the items to update.
 	 */
 	public void update(GraphItem[] items);
 
@@ -107,42 +99,36 @@ public interface IStylingGraphModelFactory {
 	 * Restyles the given graph item according to the label provider supplied by
 	 * getLabelProvider().
 	 * 
-	 * @param item
-	 *            the item to update.
+	 * @param item the item to update.
 	 */
 	public void update(GraphItem item);
 
 	/**
-	 * Structurally refreshes the graph model nodes and connections associated
-	 * with the given user model element. Does nothing if the element does not
-	 * currently exist in the view. No restyling is done by default.
+	 * Structurally refreshes the graph model nodes and connections associated with
+	 * the given user model element. Does nothing if the element does not currently
+	 * exist in the view. No restyling is done by default.
 	 * 
 	 * @param graph
-	 * @param element
-	 *            the element to restructure.
+	 * @param element the element to restructure.
 	 */
 	public void refresh(Graph graph, Object element);
 
 	/**
-	 * Structurally refreshes the graph model nodes and connections associated
-	 * with the given user model element. If updateLabels is true, then the
-	 * labels are updated as well. Does nothing if the element does not
-	 * currently exist in the view.
+	 * Structurally refreshes the graph model nodes and connections associated with
+	 * the given user model element. If updateLabels is true, then the labels are
+	 * updated as well. Does nothing if the element does not currently exist in the
+	 * view.
 	 * 
-	 * @param graph
-	 *            the graph to find the element on.
-	 * @param element
-	 *            the user model element.
-	 * @param updateLabels
-	 *            true if the labels should be updated as well.
+	 * @param graph        the graph to find the element on.
+	 * @param element      the user model element.
+	 * @param updateLabels true if the labels should be updated as well.
 	 */
 	public void refresh(Graph graph, Object element, boolean updateLabels);
 
 	/**
 	 * Structurally refreshes the entire graph.
 	 * 
-	 * @param graph
-	 *            the graph to refresh;
+	 * @param graph the graph to refresh;
 	 */
 	public void refreshGraph(Graph graph);
 

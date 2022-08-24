@@ -61,8 +61,7 @@ public class TransitionEditPolicy extends ConnectionEditPolicy {
 	protected Command getSplitTransitionCommand(Request request) {
 		SplitTransitionCommand cmd = new SplitTransitionCommand();
 		cmd.setTransition(((Transition) getHost().getModel()));
-		cmd.setParent(((StructuredActivity) ((TransitionPart) getHost())
-				.getSource().getParent().getModel()));
+		cmd.setParent(((StructuredActivity) ((TransitionPart) getHost()).getSource().getParent().getModel()));
 		cmd.setNewActivity(((Activity) ((CreateRequest) request).getNewObject()));
 		return cmd;
 	}

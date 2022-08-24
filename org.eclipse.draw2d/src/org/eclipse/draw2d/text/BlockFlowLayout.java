@@ -37,8 +37,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * Creates a new BlockFlowLayout with the given BlockFlow.
 	 * 
-	 * @param blockFlow
-	 *            the BlockFlow
+	 * @param blockFlow the BlockFlow
 	 */
 	public BlockFlowLayout(BlockFlow blockFlow) {
 		super(blockFlow);
@@ -48,14 +47,11 @@ public class BlockFlowLayout extends FlowContainerLayout {
 		if (previousLine == null)
 			line.setLineTop(line.getTopMargin());
 		else
-			line.setLineTop(previousLine.getBaseline()
-					+ previousLine.getDescent()
-					+ Math.max(previousLine.getBottomMargin(),
-							line.getTopMargin()));
+			line.setLineTop(previousLine.getBaseline() + previousLine.getDescent()
+					+ Math.max(previousLine.getBottomMargin(), line.getTopMargin()));
 
 		int alignment = getBlockFlow().getHorizontalAligment();
-		if (alignment == PositionConstants.LEFT
-				|| alignment == PositionConstants.RIGHT) {
+		if (alignment == PositionConstants.LEFT || alignment == PositionConstants.RIGHT) {
 			int orientation = getBlockFlow().getOrientation();
 			if (alignment == PositionConstants.LEFT)
 				alignment = orientation == SWT.LEFT_TO_RIGHT ? PositionConstants.ALWAYS_LEFT
@@ -64,10 +60,8 @@ public class BlockFlowLayout extends FlowContainerLayout {
 				alignment = orientation == SWT.LEFT_TO_RIGHT ? PositionConstants.ALWAYS_RIGHT
 						: PositionConstants.ALWAYS_LEFT;
 		}
-		if (alignment != PositionConstants.CENTER
-				&& getBlockFlow().isMirrored())
-			alignment = (PositionConstants.ALWAYS_LEFT | PositionConstants.ALWAYS_RIGHT)
-					& ~alignment;
+		if (alignment != PositionConstants.CENTER && getBlockFlow().isMirrored())
+			alignment = (PositionConstants.ALWAYS_LEFT | PositionConstants.ALWAYS_RIGHT) & ~alignment;
 
 		switch (alignment) {
 		case PositionConstants.ALWAYS_RIGHT:
@@ -129,8 +123,8 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	}
 
 	/**
-	 * Called by flush(), adds the BlockBox associated with this BlockFlowLayout
-	 * to the current line and then ends the line.
+	 * Called by flush(), adds the BlockBox associated with this BlockFlowLayout to
+	 * the current line and then ends the line.
 	 */
 	protected void endBlock() {
 		if (blockInvalid) {
@@ -202,8 +196,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 			index = children.indexOf(child);
 
 		for (int i = index + 1; i < children.size(); i++)
-			if (((FlowFigure) children.get(i))
-					.addLeadingWordRequirements(result))
+			if (((FlowFigure) children.get(i)).addLeadingWordRequirements(result))
 				return;
 	}
 
@@ -233,8 +226,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 			recommended = -1;
 		BlockFlow bf = getBlockFlow();
 		if (recommended > 0) {
-			int borderCorrection = bf.getInsets().getWidth()
-					+ bf.getLeftMargin() + bf.getRightMargin();
+			int borderCorrection = bf.getInsets().getWidth() + bf.getLeftMargin() + bf.getRightMargin();
 			recommended = Math.max(0, recommended - borderCorrection);
 		}
 

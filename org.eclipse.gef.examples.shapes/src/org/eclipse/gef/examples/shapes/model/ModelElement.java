@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
 import java.beans.PropertyChangeListener;
@@ -25,7 +25,8 @@ import org.eclipse.ui.views.properties.IPropertySource;
  * This class provides features necessary for all model elements, like:
  * </p>
  * <ul>
- * <li>property-change support (used to notify edit parts of model changes),</li>
+ * <li>property-change support (used to notify edit parts of model
+ * changes),</li>
  * <li>property-source support (used to display property values in the Property
  * View) and</li>
  * <li>serialization support (the model hierarchy must be serializable, so that
@@ -41,16 +42,13 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 
 	private static final long serialVersionUID = 1;
 	/** Delegate used to implemenent property-change-support. */
-	private transient PropertyChangeSupport pcsDelegate = new PropertyChangeSupport(
-			this);
+	private transient PropertyChangeSupport pcsDelegate = new PropertyChangeSupport(this);
 
 	/**
 	 * Attach a non-null PropertyChangeListener to this object.
 	 * 
-	 * @param l
-	 *            a non-null PropertyChangeListener instance
-	 * @throws IllegalArgumentException
-	 *             if the parameter is null
+	 * @param l a non-null PropertyChangeListener instance
+	 * @throws IllegalArgumentException if the parameter is null
 	 */
 	public synchronized void addPropertyChangeListener(PropertyChangeListener l) {
 		if (l == null) {
@@ -60,18 +58,13 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	}
 
 	/**
-	 * Report a property change to registered listeners (for example edit
-	 * parts).
+	 * Report a property change to registered listeners (for example edit parts).
 	 * 
-	 * @param property
-	 *            the programmatic name of the property that changed
-	 * @param oldValue
-	 *            the old value of this property
-	 * @param newValue
-	 *            the new value of this property
+	 * @param property the programmatic name of the property that changed
+	 * @param oldValue the old value of this property
+	 * @param newValue the new value of this property
 	 */
-	protected void firePropertyChange(String property, Object oldValue,
-			Object newValue) {
+	protected void firePropertyChange(String property, Object oldValue, Object newValue) {
 		if (pcsDelegate.hasListeners(property)) {
 			pcsDelegate.firePropertyChange(property, oldValue, newValue);
 		}
@@ -85,8 +78,8 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	 * </p>
 	 * <ul>
 	 * <li>model elements should return themselves and</li>
-	 * <li>custom IPropertySource implementations (like DimensionPropertySource
-	 * in the GEF-logic example) should return an editable value.</li>
+	 * <li>custom IPropertySource implementations (like DimensionPropertySource in
+	 * the GEF-logic example) should return an editable value.</li>
 	 * </ul>
 	 * <p>
 	 * Override only if necessary.
@@ -99,8 +92,8 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	}
 
 	/**
-	 * Children should override this. The default implementation returns an
-	 * empty array.
+	 * Children should override this. The default implementation returns an empty
+	 * array.
 	 */
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return EMPTY_ARRAY;
@@ -125,8 +118,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	 * 
 	 * @see java.io.Serializable
 	 */
-	private void readObject(ObjectInputStream in) throws IOException,
-			ClassNotFoundException {
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
 		pcsDelegate = new PropertyChangeSupport(this);
 	}
@@ -134,11 +126,9 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	/**
 	 * Remove a PropertyChangeListener from this component.
 	 * 
-	 * @param l
-	 *            a PropertyChangeListener instance
+	 * @param l a PropertyChangeListener instance
 	 */
-	public synchronized void removePropertyChangeListener(
-			PropertyChangeListener l) {
+	public synchronized void removePropertyChangeListener(PropertyChangeListener l) {
 		if (l != null) {
 			pcsDelegate.removePropertyChangeListener(l);
 		}

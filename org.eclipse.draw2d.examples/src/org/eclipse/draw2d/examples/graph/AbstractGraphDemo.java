@@ -97,10 +97,8 @@ public abstract class AbstractGraphDemo {
 	/**
 	 * Builds a figure for the given edge and adds it to contents
 	 * 
-	 * @param contents
-	 *            the parent figure to add the edge to
-	 * @param edge
-	 *            the edge
+	 * @param contents the parent figure to add the edge to
+	 * @param edge     the edge
 	 */
 	static void buildEdgeFigure(Figure contents, Edge edge) {
 		PolylineConnection conn = connection(edge);
@@ -114,10 +112,8 @@ public abstract class AbstractGraphDemo {
 	/**
 	 * Builds a Figure for the given node and adds it to contents
 	 * 
-	 * @param contents
-	 *            the parent Figure to add the node to
-	 * @param node
-	 *            the node to add
+	 * @param contents the parent Figure to add the node to
+	 * @param node     the node to add
 	 */
 	static void buildNodeFigure(Figure contents, Node node) {
 		Label label;
@@ -131,8 +127,7 @@ public abstract class AbstractGraphDemo {
 											// +","+node.sortValue+ ")";
 		label.setText(text);
 		node.data = label;
-		contents.add(label, new Rectangle(node.x, node.y, node.width,
-				node.height));
+		contents.add(label, new Rectangle(node.x, node.y, node.width, node.height));
 	}
 
 	// /**
@@ -163,8 +158,7 @@ public abstract class AbstractGraphDemo {
 	/**
 	 * Builds a connection for the given edge
 	 * 
-	 * @param e
-	 *            the edge
+	 * @param e the edge
 	 * @return the connection
 	 */
 	static PolylineConnection connection(Edge e) {
@@ -217,8 +211,7 @@ public abstract class AbstractGraphDemo {
 		composite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 
 		composite.setLayout(new GridLayout());
-		final org.eclipse.swt.widgets.Label nodesLabel = new org.eclipse.swt.widgets.Label(
-				composite, SWT.NONE);
+		final org.eclipse.swt.widgets.Label nodesLabel = new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
 		nodesLabel.setText("Graph");
 		final Combo graphList = new Combo(composite, SWT.DROP_DOWN);
 
@@ -256,8 +249,7 @@ public abstract class AbstractGraphDemo {
 		// }
 		// });
 
-		final org.eclipse.swt.widgets.Label directionLabel = new org.eclipse.swt.widgets.Label(
-				composite, SWT.NONE);
+		final org.eclipse.swt.widgets.Label directionLabel = new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
 		directionLabel.setText("Graph Direction");
 		final Combo directionCombo = new Combo(composite, SWT.DEFAULT);
 		directionCombo.setItems(new String[] { "SOUTH", "EAST" });
@@ -308,8 +300,7 @@ public abstract class AbstractGraphDemo {
 	/**
 	 * Sets this demo's FigureCanvas
 	 * 
-	 * @param canvas
-	 *            this demo's FigureCanvas
+	 * @param canvas this demo's FigureCanvas
 	 */
 	protected void setFigureCanvas(FigureCanvas canvas) {
 		this.fc = canvas;
@@ -318,8 +309,7 @@ public abstract class AbstractGraphDemo {
 	/**
 	 * Sets the name of the method to call to build the graph
 	 * 
-	 * @param method
-	 *            name of the method used to build the graph
+	 * @param method name of the method used to build the graph
 	 */
 	public static void setGraphMethod(String method) {
 		graphMethod = method;

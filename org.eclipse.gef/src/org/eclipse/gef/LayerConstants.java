@@ -21,8 +21,8 @@ public interface LayerConstants {
 	String PRIMARY_LAYER = "Primary Layer"; //$NON-NLS-1$
 
 	/**
-	 * Identifies the layer containing connections, which typically appear on
-	 * top of anything in the primary layer.
+	 * Identifies the layer containing connections, which typically appear on top of
+	 * anything in the primary layer.
 	 */
 	String CONNECTION_LAYER = "Connection Layer"; //$NON-NLS-1$
 

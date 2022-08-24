@@ -56,10 +56,8 @@ public class ParallelActivityFigure extends SubgraphFigure {
 			getHeader().setForegroundColor(null);
 			getFooter().setForegroundColor(null);
 		} else {
-			getHeader().setForegroundColor(
-					ColorConstants.menuForegroundSelected);
-			getFooter().setForegroundColor(
-					ColorConstants.menuForegroundSelected);
+			getHeader().setForegroundColor(ColorConstants.menuForegroundSelected);
+			getFooter().setForegroundColor(ColorConstants.menuForegroundSelected);
 		}
 
 		repaint();

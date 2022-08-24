@@ -23,9 +23,9 @@ import org.eclipse.draw2d.geometry.Point;
 public interface Bendpoint {
 
 	/**
-	 * Returns the location of the bendpoint <em>relative</em> to the
-	 * connection. The returned value may be by reference. The caller should NOT
-	 * modify the returned value.
+	 * Returns the location of the bendpoint <em>relative</em> to the connection.
+	 * The returned value may be by reference. The caller should NOT modify the
+	 * returned value.
 	 * 
 	 * @return the location of the bendpoint relative to the Connection
 	 */

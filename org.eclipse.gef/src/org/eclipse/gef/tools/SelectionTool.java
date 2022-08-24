@@ -65,14 +65,13 @@ public class SelectionTool extends TargetingTool {
 
 	private boolean acceptTraverseHandle(KeyEvent e) {
 		return (e.character == '.' || e.character == '>')
-				&& isInState(STATE_INITIAL | STATE_ACCESSIBLE_DRAG
-						| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
+				&& isInState(STATE_INITIAL | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
 				&& ((e.stateMask & (SWT.ALT | SWT.CONTROL)) == 0);
 	}
 
 	/**
-	 * Creates the hover request (a {@link LocationRequest}) and sets its type
-	 * to {@link RequestConstants#REQ_SELECTION_HOVER}.
+	 * Creates the hover request (a {@link LocationRequest}) and sets its type to
+	 * {@link RequestConstants#REQ_SELECTION_HOVER}.
 	 */
 	protected void createHoverRequest() {
 		hoverRequest = new LocationRequest();
@@ -92,8 +91,8 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * Deactivates the tool. This method is called whenever the user switches to
-	 * another tool. Use this method to do some clean-up when the tool is
-	 * switched. Sets the drag tracker to <code>null</code>.
+	 * another tool. Use this method to do some clean-up when the tool is switched.
+	 * Sets the drag tracker to <code>null</code>.
 	 */
 	public void deactivate() {
 		setDragTracker(null); // deactivates the current drag tracker
@@ -145,25 +144,23 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	/**
-	 * Returns a new Conditional that evaluates to <code>true</code> if the
-	 * queried edit part's {@link EditPart#isSelectable()} method returns
-	 * <code>true</code>.
+	 * Returns a new Conditional that evaluates to <code>true</code> if the queried
+	 * edit part's {@link EditPart#isSelectable()} method returns <code>true</code>.
 	 * 
 	 * @see TargetingTool#getTargetingConditional()
 	 */
 	protected EditPartViewer.Conditional getTargetingConditional() {
 		return new EditPartViewer.Conditional() {
 			public boolean evaluate(EditPart editpart) {
-				EditPart targetEditPart = editpart
-						.getTargetEditPart(getTargetRequest());
+				EditPart targetEditPart = editpart.getTargetEditPart(getTargetRequest());
 				return targetEditPart != null && targetEditPart.isSelectable();
 			}
 		};
 	}
 
 	/**
-	 * Returns the target hover request. If <code>null</code>, it will be
-	 * created via {@link #createHoverRequest()}.
+	 * Returns the target hover request. If <code>null</code>, it will be created
+	 * via {@link #createHoverRequest()}.
 	 * 
 	 * @return the hover request
 	 */
@@ -175,8 +172,8 @@ public class SelectionTool extends TargetingTool {
 
 	/**
 	 * If there is a {@link Handle} under the mouse, this method sets the drag
-	 * tracker returned from the handle. If there's an {@link EditPart} under
-	 * the mouse, this method sets the drag tracker returned from the edit part.
+	 * tracker returned from the handle. If there's an {@link EditPart} under the
+	 * mouse, this method sets the drag tracker returned from the edit part.
 	 * 
 	 * @see AbstractTool#handleButtonDown(int)
 	 */
@@ -236,14 +233,14 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	/**
-	 * Sets the drag tracker to <code>null</code> and goes into the initial
-	 * state when focus is lost.
+	 * Sets the drag tracker to <code>null</code> and goes into the initial state
+	 * when focus is lost.
 	 * 
 	 * @see AbstractTool#handleFocusLost()
 	 */
 	protected boolean handleFocusLost() {
-		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS
-				| STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
+		if (isInState(
+				STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS | STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
 			if (getDragTracker() != null)
 				setDragTracker(null);
 			setState(STATE_INITIAL);
@@ -275,10 +272,10 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	/**
-	 * Processes key down events. Specifically, arrow keys for moving edit
-	 * parts, the ESC key for aborting a drag, the period '.' key for traversing
-	 * handles, and the ENTER key for committing a drag. If none of these keys
-	 * were pressed and the current viewer has a {@link KeyHandler}, it calls
+	 * Processes key down events. Specifically, arrow keys for moving edit parts,
+	 * the ESC key for aborting a drag, the period '.' key for traversing handles,
+	 * and the ENTER key for committing a drag. If none of these keys were pressed
+	 * and the current viewer has a {@link KeyHandler}, it calls
 	 * {@link KeyHandler#keyPressed(KeyEvent)}.
 	 * 
 	 * @see AbstractTool#handleKeyDown(KeyEvent)
@@ -287,15 +284,13 @@ public class SelectionTool extends TargetingTool {
 		resetHover();
 
 		if (acceptArrowKey(e))
-			if (stateTransition(STATE_ACCESSIBLE_DRAG,
-					STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+			if (stateTransition(STATE_ACCESSIBLE_DRAG, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 				return true;
 
 		if (acceptAbort(e)) {
 			if (getDragTracker() != null)
 				setDragTracker(null);
-			if (isInState(STATE_TRAVERSE_HANDLE | STATE_ACCESSIBLE_DRAG
-					| STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+			if (isInState(STATE_TRAVERSE_HANDLE | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 				placeMouseInViewer(getStartLocation().getTranslated(6, 6));
 			setState(STATE_INITIAL);
 			setLastHandleProvider(null);
@@ -306,8 +301,7 @@ public class SelectionTool extends TargetingTool {
 			if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 				if (getDragTracker() != null)
 					getDragTracker().commitDrag();
-			if (isInState(STATE_ACCESSIBLE_DRAG
-					| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
+			if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 				setDragTracker(null);
 				getCurrentViewer().flush();
 			}
@@ -341,8 +335,7 @@ public class SelectionTool extends TargetingTool {
 	 * @see AbstractTool#handleKeyUp(KeyEvent)
 	 */
 	protected boolean handleKeyUp(KeyEvent e) {
-		if (isInState(STATE_INITIAL)
-				&& getCurrentViewer().getKeyHandler() != null
+		if (isInState(STATE_INITIAL) && getCurrentViewer().getKeyHandler() != null
 				&& getCurrentViewer().getKeyHandler().keyReleased(e))
 			return true;
 
@@ -350,10 +343,10 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	/**
-	 * If in the initial state, updates the request and the mouse target and
-	 * asks to show target feedback. If in the traverse handle state, finds the
-	 * next handle, moves the mouse cursor to that handle, and gets a drag
-	 * tracker from the handle.
+	 * If in the initial state, updates the request and the mouse target and asks to
+	 * show target feedback. If in the traverse handle state, finds the next handle,
+	 * moves the mouse cursor to that handle, and gets a drag tracker from the
+	 * handle.
 	 * 
 	 * @see AbstractTool#handleMove()
 	 */
@@ -368,8 +361,7 @@ public class SelectionTool extends TargetingTool {
 		} else if (isInState(STATE_TRAVERSE_HANDLE)) {
 			EditPartViewer viewer = getCurrentViewer();
 			if (viewer instanceof GraphicalViewer) {
-				Handle handle = ((GraphicalViewer) viewer)
-						.findHandleAt(getLocation());
+				Handle handle = ((GraphicalViewer) viewer).findHandleAt(getLocation());
 				if (handle != null) {
 					setState(STATE_ACCESSIBLE_DRAG);
 					setStartLocation(getLocation());
@@ -417,13 +409,11 @@ public class SelectionTool extends TargetingTool {
 
 		AccessibleHandleProvider provider;
 		provider = focus.getAdapter(AccessibleHandleProvider.class);
-		if (provider == null
-				|| provider.getAccessibleHandleLocations().isEmpty())
+		if (provider == null || provider.getAccessibleHandleLocations().isEmpty())
 			return false;
 
 		/*
-		 * At this point, a handle provider with 1 or more handles has been
-		 * obtained
+		 * At this point, a handle provider with 1 or more handles has been obtained
 		 */
 		setState(STATE_TRAVERSE_HANDLE);
 		List locations = provider.getAccessibleHandleLocations();
@@ -438,8 +428,7 @@ public class SelectionTool extends TargetingTool {
 		}
 
 		Point loc = (Point) locations.get(handleIndex);
-		Point current = new Point(getCurrentViewer().getControl()
-				.toControl(Display.getCurrent().getCursorLocation()));
+		Point current = new Point(getCurrentViewer().getControl().toControl(Display.getCurrent().getCursorLocation()));
 
 		if (current.equals(loc)) {
 			// The cursor is already at the location that it is to be moved to.
@@ -451,8 +440,7 @@ public class SelectionTool extends TargetingTool {
 				if (e.character == '.')
 					handleIndex = (++handleIndex) % locations.size();
 				else
-					handleIndex = (--handleIndex + locations.size())
-							% locations.size();
+					handleIndex = (--handleIndex + locations.size()) % locations.size();
 			else {
 				placeMouseInViewer(loc.getTranslated(6, 6));
 				return false;
@@ -463,14 +451,13 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	/**
-	 * If there's a drag tracker, sets it to <code>null</code> and then sets
-	 * this tool's state to the initial state.
+	 * If there's a drag tracker, sets it to <code>null</code> and then sets this
+	 * tool's state to the initial state.
 	 * 
 	 * @see AbstractTool#handleViewerExited()
 	 */
 	protected boolean handleViewerExited() {
-		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS
-				| STATE_TRAVERSE_HANDLE | STATE_DRAG
+		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS | STATE_TRAVERSE_HANDLE | STATE_DRAG
 				| STATE_DRAG_IN_PROGRESS)) {
 			if (getDragTracker() != null)
 				setDragTracker(null);
@@ -482,8 +469,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * Forwards the key down event to the drag tracker, if one exists.
 	 * 
-	 * @see org.eclipse.gef.Tool#keyDown(KeyEvent,
-	 *      org.eclipse.gef.EditPartViewer)
+	 * @see org.eclipse.gef.Tool#keyDown(KeyEvent, org.eclipse.gef.EditPartViewer)
 	 */
 	public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 		if (getDragTracker() != null)
@@ -515,8 +501,7 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	/**
-	 * Forwards the mouse double clicked event to the drag tracker, if one
-	 * exists.
+	 * Forwards the mouse double clicked event to the drag tracker, if one exists.
 	 * 
 	 * @see org.eclipse.gef.Tool#mouseDoubleClick(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
@@ -566,8 +551,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * Forwards the mouse up event to the drag tracker, if one exists.
 	 * 
-	 * @see org.eclipse.gef.Tool#mouseUp(MouseEvent,
-	 *      org.eclipse.gef.EditPartViewer)
+	 * @see org.eclipse.gef.Tool#mouseUp(MouseEvent, org.eclipse.gef.EditPartViewer)
 	 */
 	public void mouseUp(MouseEvent e, EditPartViewer viewer) {
 		if (getDragTracker() != null)
@@ -576,8 +560,8 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	/**
-	 * Delegates the scrolling to the DragTracker (if there is one). If not,
-	 * invokes the super method.
+	 * Delegates the scrolling to the DragTracker (if there is one). If not, invokes
+	 * the super method.
 	 * 
 	 * @see org.eclipse.gef.Tool#mouseWheelScrolled(org.eclipse.swt.widgets.Event,
 	 *      org.eclipse.gef.EditPartViewer)
@@ -591,8 +575,8 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	/**
-	 * If there is a drag tracker, this method does nothing so that the drag
-	 * tracker can take care of the cursor. Otherwise, calls <code>super</code>.
+	 * If there is a drag tracker, this method does nothing so that the drag tracker
+	 * can take care of the cursor. Otherwise, calls <code>super</code>.
 	 * 
 	 * @see AbstractTool#refreshCursor()
 	 */
@@ -603,13 +587,12 @@ public class SelectionTool extends TargetingTool {
 	}
 
 	/**
-	 * Sets the drag tracker for this SelectionTool. If the current drag tracker
-	 * is not <code>null</code>, this method deactivates it. If the new drag
-	 * tracker is not <code>null</code>, this method will activate it and set
-	 * the {@link EditDomain} and {@link EditPartViewer}.
+	 * Sets the drag tracker for this SelectionTool. If the current drag tracker is
+	 * not <code>null</code>, this method deactivates it. If the new drag tracker is
+	 * not <code>null</code>, this method will activate it and set the
+	 * {@link EditDomain} and {@link EditPartViewer}.
 	 * 
-	 * @param newDragTracker
-	 *            the new drag tracker
+	 * @param newDragTracker the new drag tracker
 	 */
 	public void setDragTracker(DragTracker newDragTracker) {
 		if (newDragTracker == dragTracker)

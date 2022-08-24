@@ -19,16 +19,14 @@ public interface KeyListener {
 	/**
 	 * Called when a key is pressed.
 	 * 
-	 * @param ke
-	 *            The KeyEvent object
+	 * @param ke The KeyEvent object
 	 */
 	void keyPressed(KeyEvent ke);
 
 	/**
 	 * Called when a key is released.
 	 * 
-	 * @param ke
-	 *            The KeyEvent object
+	 * @param ke The KeyEvent object
 	 */
 	void keyReleased(KeyEvent ke);
 

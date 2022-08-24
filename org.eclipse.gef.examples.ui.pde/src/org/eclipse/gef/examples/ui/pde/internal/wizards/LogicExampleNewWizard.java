@@ -21,12 +21,9 @@ public class LogicExampleNewWizard extends ProjectUnzipperNewWizard {
 	 * Constructor
 	 */
 	public LogicExampleNewWizard() {
-		super(
-				"LogicExampleNewWizard", //$NON-NLS-1$
-				Messages.LogicExample_createProjectPage_title,
-				Messages.LogicExample_createProjectPage_desc,
-				"org.eclipse.gef.examples.logic", //$NON-NLS-1$  
-				FileLocator.find(GefExamplesPlugin.getDefault().getBundle(),
-						new Path("examples/logic.zip"), null)); //$NON-NLS-1$
+		super("LogicExampleNewWizard", //$NON-NLS-1$
+				Messages.LogicExample_createProjectPage_title, Messages.LogicExample_createProjectPage_desc,
+				"org.eclipse.gef.examples.logic", //$NON-NLS-1$
+				FileLocator.find(GefExamplesPlugin.getDefault().getBundle(), new Path("examples/logic.zip"), null)); //$NON-NLS-1$
 	}
 }

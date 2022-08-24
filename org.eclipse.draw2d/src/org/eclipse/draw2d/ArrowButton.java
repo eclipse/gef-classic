@@ -33,12 +33,11 @@ public class ArrowButton extends Button implements Orientable {
 	}
 
 	/**
-	 * Constructs an ArrowButton with the arrow having the direction given in
-	 * the input. The direction can be one of many directional constants defined
-	 * in {@link PositionConstants}.
+	 * Constructs an ArrowButton with the arrow having the direction given in the
+	 * input. The direction can be one of many directional constants defined in
+	 * {@link PositionConstants}.
 	 * 
-	 * @param direction
-	 *            Direction of the arrow
+	 * @param direction Direction of the arrow
 	 * @since 2.0
 	 */
 	public ArrowButton(int direction) {
@@ -46,8 +45,8 @@ public class ArrowButton extends Button implements Orientable {
 	}
 
 	/**
-	 * Contructs a triangle with a black background pointing north, and sets it
-	 * as the contents of the button.
+	 * Contructs a triangle with a black background pointing north, and sets it as
+	 * the contents of the button.
 	 * 
 	 * @since 2.0
 	 */

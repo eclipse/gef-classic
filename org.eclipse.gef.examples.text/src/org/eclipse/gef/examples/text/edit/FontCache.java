@@ -28,14 +28,13 @@ public class FontCache {
 	}
 
 	/**
-	 * Clients should only check in fonts that they checked out from this cache,
-	 * and should do only one check-in per checkout. If the given font is not
-	 * found, a null pointer exception will be encountered.
+	 * Clients should only check in fonts that they checked out from this cache, and
+	 * should do only one check-in per checkout. If the given font is not found, a
+	 * null pointer exception will be encountered.
 	 */
 	public static void checkIn(Font font) {
 		FontData fd = font.getFontData()[0];
-		Key key = new Key(fd.getName(), fd.getHeight(),
-				(fd.getStyle() & SWT.BOLD) != 0,
+		Key key = new Key(fd.getName(), fd.getHeight(), (fd.getStyle() & SWT.BOLD) != 0,
 				(fd.getStyle() & SWT.ITALIC) != 0);
 		Value value = (Value) table.get(key);
 		value.refCount--;
@@ -45,16 +44,13 @@ public class FontCache {
 		}
 	}
 
-	public static Font checkOut(String fontName, int fontHeight,
-			boolean isBold, boolean isItalic) {
+	public static Font checkOut(String fontName, int fontHeight, boolean isBold, boolean isItalic) {
 		Key key = new Key(fontName, fontHeight, isBold, isItalic);
 		Value value = (Value) table.get(key);
 		if (value == null) {
 			value = new Value();
-			int style = (isBold ? SWT.BOLD : SWT.NONE)
-					| (isItalic ? SWT.ITALIC : SWT.NONE);
-			value.font = new Font(null, new FontData(fontName, fontHeight,
-					style));
+			int style = (isBold ? SWT.BOLD : SWT.NONE) | (isItalic ? SWT.ITALIC : SWT.NONE);
+			value.font = new Font(null, new FontData(fontName, fontHeight, style));
 			table.put(key, value);
 		}
 		value.refCount++;
@@ -66,8 +62,7 @@ public class FontCache {
 		private int height;
 		private boolean isBold, isItalic;
 
-		private Key(String fontName, int height, boolean isBold,
-				boolean isItalic) {
+		private Key(String fontName, int height, boolean isBold, boolean isItalic) {
 			this.fontName = fontName;
 			this.height = height;
 			this.isBold = isBold;
@@ -78,8 +73,7 @@ public class FontCache {
 			boolean result = obj == this;
 			if (!result && (obj instanceof Key)) {
 				Key key = (Key) obj;
-				result = fontName.equalsIgnoreCase(key.fontName)
-						&& height == key.height && isBold == key.isBold
+				result = fontName.equalsIgnoreCase(key.fontName) && height == key.height && isBold == key.isBold
 						&& isItalic == key.isItalic;
 			}
 			return result;

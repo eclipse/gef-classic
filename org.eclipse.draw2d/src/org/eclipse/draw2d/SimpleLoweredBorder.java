@@ -18,13 +18,12 @@ import org.eclipse.swt.graphics.Color;
 public final class SimpleLoweredBorder extends SchemeBorder {
 
 	private static final Scheme DOUBLE = new Scheme(
-			new Color[] { ColorConstants.buttonDarkest,
-					ColorConstants.buttonDarker },
+			new Color[] { ColorConstants.buttonDarkest, ColorConstants.buttonDarker },
 			new Color[] { ColorConstants.buttonLightest, ColorConstants.button });
 
 	/**
-	 * Constructs a SimpleLoweredBorder with the predefined button-pressed
-	 * Scheme set as default.
+	 * Constructs a SimpleLoweredBorder with the predefined button-pressed Scheme
+	 * set as default.
 	 * 
 	 * @since 2.0
 	 */
@@ -35,11 +34,10 @@ public final class SimpleLoweredBorder extends SchemeBorder {
 	/**
 	 * Constructs a SimpleLoweredBorder with the width of all sides provided as
 	 * input. If width == 2, this SimpleLoweredBorder will use the local DOUBLE
-	 * Scheme, otherwise it will use the
-	 * {@link SchemeBorder.SCHEMES#BUTTON_PRESSED} Scheme.
+	 * Scheme, otherwise it will use the {@link SchemeBorder.SCHEMES#BUTTON_PRESSED}
+	 * Scheme.
 	 * 
-	 * @param width
-	 *            the width of all the sides of the border
+	 * @param width the width of all the sides of the border
 	 * @since 2.0
 	 */
 	public SimpleLoweredBorder(int width) {

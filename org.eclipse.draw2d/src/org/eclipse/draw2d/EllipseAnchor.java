@@ -35,8 +35,8 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	}
 
 	/**
-	 * Returns a point on the ellipse (defined by the owner's bounding box)
-	 * where the connection should be anchored.
+	 * Returns a point on the ellipse (defined by the owner's bounding box) where
+	 * the connection should be anchored.
 	 * 
 	 * @see org.eclipse.draw2d.ConnectionAnchor#getLocation(Point)
 	 */
@@ -67,11 +67,10 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	}
 
 	/**
-	 * Returns <code>true</code> if the other anchor is an EllipseAnchor with
-	 * the same owner.
+	 * Returns <code>true</code> if the other anchor is an EllipseAnchor with the
+	 * same owner.
 	 * 
-	 * @param o
-	 *            the other anchor
+	 * @param o the other anchor
 	 * @return <code>true</code> if equal
 	 */
 	public boolean equals(Object o) {
@@ -83,8 +82,8 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	}
 
 	/**
-	 * The owning figure's hashcode is used since equality is approximately
-	 * based on the owner.
+	 * The owning figure's hashcode is used since equality is approximately based on
+	 * the owner.
 	 * 
 	 * @return the hash code.
 	 */

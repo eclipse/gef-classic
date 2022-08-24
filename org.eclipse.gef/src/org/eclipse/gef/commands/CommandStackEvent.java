@@ -28,17 +28,14 @@ public class CommandStackEvent extends EventObject {
 	private final int detail;
 
 	/**
-	 * Constructs a new event instance. The stack specifies the source of the
-	 * event. If a command is relevant to the event context, one should be
-	 * specified. The detail indicates the type of event occurring.
+	 * Constructs a new event instance. The stack specifies the source of the event.
+	 * If a command is relevant to the event context, one should be specified. The
+	 * detail indicates the type of event occurring.
 	 * 
 	 * @since 3.1
-	 * @param stack
-	 *            the command stack
-	 * @param c
-	 *            a command or <code>null</code>
-	 * @param detail
-	 *            an integer identifier
+	 * @param stack  the command stack
+	 * @param c      a command or <code>null</code>
+	 * @param detail an integer identifier
 	 */
 	public CommandStackEvent(CommandStack stack, Command c, int detail) {
 		super(stack);
@@ -58,8 +55,7 @@ public class CommandStackEvent extends EventObject {
 	}
 
 	/**
-	 * Returns <code>true</code> if this event is fired prior to the stack
-	 * changing.
+	 * Returns <code>true</code> if this event is fired prior to the stack changing.
 	 * 
 	 * @return <code>true</code> if pre-change event
 	 * @since 3.2

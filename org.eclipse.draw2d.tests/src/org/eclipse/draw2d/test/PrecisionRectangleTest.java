@@ -26,8 +26,7 @@ public class PrecisionRectangleTest extends TestCase {
 	public void testShrink() {
 		Insets insets = new Insets(2, 2, 2, 2);
 
-		PrecisionRectangle r = new PrecisionRectangle(new Rectangle(100, 100,
-				250, 250));
+		PrecisionRectangle r = new PrecisionRectangle(new Rectangle(100, 100, 250, 250));
 		PrecisionRectangle copy = r.getPreciseCopy();
 		r.performTranslate(30, 30);
 		r.performScale(2f);
@@ -49,8 +48,7 @@ public class PrecisionRectangleTest extends TestCase {
 
 		assertTrue(!r.equals(copy));
 
-		r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125,
-				41.99055118110236, 25.92755905511811);
+		r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236, 25.92755905511811);
 		r.performScale(26.458333333333332);
 		r.performScale(1.0 / 26.458333333333332);
 		assertEquals(-9.486614173228347, r.preciseX(), 0);
@@ -60,8 +58,7 @@ public class PrecisionRectangleTest extends TestCase {
 	}
 
 	public void testExpand() {
-		PrecisionRectangle r = new PrecisionRectangle(new Rectangle(100, 100,
-				250, 250));
+		PrecisionRectangle r = new PrecisionRectangle(new Rectangle(100, 100, 250, 250));
 		PrecisionRectangle copy = r.getPreciseCopy();
 		r.expand(0.1, 0.1);
 		assertEquals(r, new PrecisionRectangle(99.9, 99.9, 250.2, 250.2));
@@ -70,29 +67,26 @@ public class PrecisionRectangleTest extends TestCase {
 	}
 
 	public void testUnion() {
-		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347,
-				-34.431496062992125, 41.99055118110236, 25.92755905511811);
+		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236,
+				25.92755905511811);
 		r.union(100.5, 100.5);
-		assertEquals(new PrecisionRectangle(-9.486614173228347,
-				-34.431496062992125, 100.5 + 9.486614173228347,
+		assertEquals(new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 100.5 + 9.486614173228347,
 				100.5 + 34.431496062992125), r);
 	}
 
 	public void testResize() {
-		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347,
-				-34.431496062992125, 41.99055118110236, 25.92755905511811);
+		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236,
+				25.92755905511811);
 		r.resize(100.1, 100.1);
-		assertEquals(new PrecisionRectangle(-9.486614173228347,
-				-34.431496062992125, 41.99055118110236 + 100.1,
+		assertEquals(new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236 + 100.1,
 				25.92755905511811 + 100.1), r);
 	}
 
 	public void testContains() {
-		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347,
-				-34.431496062992125, 41.99055118110236, 25.92755905511811);
+		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236,
+				25.92755905511811);
 		assertTrue(r.contains(-9.486614173228347, -34.431496062992125));
-		assertTrue(r.contains(-9.486614173228347 + 41.99055118110235,
-				-34.431496062992125 + 25.92755905511810));
+		assertTrue(r.contains(-9.486614173228347 + 41.99055118110235, -34.431496062992125 + 25.92755905511810));
 	}
 	// contains
 }

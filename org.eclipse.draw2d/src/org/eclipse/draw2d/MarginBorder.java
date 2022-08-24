@@ -25,8 +25,7 @@ public class MarginBorder extends AbstractBorder {
 	/**
 	 * Constructs a MarginBorder with dimensions specified by <i>insets</i>.
 	 * 
-	 * @param insets
-	 *            The Insets for the border
+	 * @param insets The Insets for the border
 	 * @since 2.0
 	 */
 	public MarginBorder(Insets insets) {
@@ -36,14 +35,10 @@ public class MarginBorder extends AbstractBorder {
 	/**
 	 * Constructs a MarginBorder with padding specified by the passed values.
 	 * 
-	 * @param t
-	 *            Top padding
-	 * @param l
-	 *            Left padding
-	 * @param b
-	 *            Bottom padding
-	 * @param r
-	 *            Right padding
+	 * @param t Top padding
+	 * @param l Left padding
+	 * @param b Bottom padding
+	 * @param r Right padding
 	 * @since 2.0
 	 */
 	public MarginBorder(int t, int l, int b, int r) {
@@ -53,8 +48,7 @@ public class MarginBorder extends AbstractBorder {
 	/**
 	 * Constructs a MarginBorder with equal padding on all sides.
 	 * 
-	 * @param allsides
-	 *            Padding size for all sides of the border.
+	 * @param allsides Padding size for all sides of the border.
 	 * @since 2.0
 	 */
 	public MarginBorder(int allsides) {

@@ -16,8 +16,7 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class AndGate extends Gate {
 
-	private static Image AND_ICON = createImage(AndGate.class,
-			"icons/and16.gif"); //$NON-NLS-1$
+	private static Image AND_ICON = createImage(AndGate.class, "icons/and16.gif"); //$NON-NLS-1$
 	static final long serialVersionUID = 1;
 
 	public Image getIconImage() {

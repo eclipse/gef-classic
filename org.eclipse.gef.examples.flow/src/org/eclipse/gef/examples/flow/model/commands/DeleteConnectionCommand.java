@@ -38,8 +38,7 @@ public class DeleteConnectionCommand extends Command {
 	/**
 	 * Sets the source activity
 	 * 
-	 * @param activity
-	 *            the source
+	 * @param activity the source
 	 */
 	public void setSource(Activity activity) {
 		source = activity;
@@ -48,8 +47,7 @@ public class DeleteConnectionCommand extends Command {
 	/**
 	 * Sets the target activity
 	 * 
-	 * @param activity
-	 *            the target
+	 * @param activity the target
 	 */
 	public void setTarget(Activity activity) {
 		target = activity;
@@ -58,8 +56,7 @@ public class DeleteConnectionCommand extends Command {
 	/**
 	 * Sets the transition
 	 * 
-	 * @param transition
-	 *            the transition
+	 * @param transition the transition
 	 */
 	public void setTransition(Transition transition) {
 		this.transition = transition;

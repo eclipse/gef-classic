@@ -47,8 +47,7 @@ import org.eclipse.gef.Request;
  * subclassing this class. Callers of public API should refer to the interface's
  * documentation.
  */
-public abstract class AbstractGraphicalEditPart extends AbstractEditPart
-		implements GraphicalEditPart {
+public abstract class AbstractGraphicalEditPart extends AbstractEditPart implements GraphicalEditPart {
 
 	/**
 	 * The Figure
@@ -66,13 +65,12 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	protected List targetConnections;
 
 	/**
-	 * A default implementation of {@link AccessibleEditPart}. Subclasses can
-	 * extend this implementation to get base accessibility for free.
+	 * A default implementation of {@link AccessibleEditPart}. Subclasses can extend
+	 * this implementation to get base accessibility for free.
 	 * 
 	 * @since 2.0
 	 */
-	protected abstract class AccessibleGraphicalEditPart
-			extends AccessibleEditPart {
+	protected abstract class AccessibleGraphicalEditPart extends AccessibleEditPart {
 		/**
 		 * @see AccessibleEditPart#getChildCount(AccessibleControlEvent)
 		 */
@@ -88,8 +86,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 			Object children[] = new Object[list.size()];
 			for (int i = 0; i < list.size(); i++) {
 				EditPart part = (EditPart) list.get(i);
-				AccessibleEditPart access = part
-						.getAdapter(AccessibleEditPart.class);
+				AccessibleEditPart access = part.getAdapter(AccessibleEditPart.class);
 				if (access == null)
 					return; // fail if any children aren't accessible.
 				children[i] = Integer.valueOf(access.getAccessibleID());
@@ -103,8 +100,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 		public void getLocation(AccessibleControlEvent e) {
 			Rectangle bounds = getFigure().getBounds().getCopy();
 			getFigure().translateToAbsolute(bounds);
-			org.eclipse.swt.graphics.Point p = new org.eclipse.swt.graphics.Point(
-					0, 0);
+			org.eclipse.swt.graphics.Point p = new org.eclipse.swt.graphics.Point(0, 0);
 			p = getViewer().getControl().toDisplay(p);
 			e.x = bounds.x + p.x;
 			e.y = bounds.y + p.y;
@@ -119,8 +115,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 			e.detail = ACC.STATE_SELECTABLE | ACC.STATE_FOCUSABLE;
 			if (getSelected() != EditPart.SELECTED_NONE)
 				e.detail |= ACC.STATE_SELECTED;
-			if (getViewer()
-					.getFocusEditPart() == AbstractGraphicalEditPart.this)
+			if (getViewer().getFocusEditPart() == AbstractGraphicalEditPart.this)
 				e.detail |= ACC.STATE_FOCUSED;
 		}
 
@@ -133,14 +128,13 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * The default implementation of {@link AccessibleAnchorProvider} returned
-	 * in {@link #getAdapter(Class)}. This implementation creates an accessible
+	 * The default implementation of {@link AccessibleAnchorProvider} returned in
+	 * {@link #getAdapter(Class)}. This implementation creates an accessible
 	 * location located along the right edge of the EditPart's Figure.
 	 * 
 	 * @since 2.0
 	 */
-	protected class DefaultAccessibleAnchorProvider
-			implements AccessibleAnchorProvider {
+	protected class DefaultAccessibleAnchorProvider implements AccessibleAnchorProvider {
 		private List getDefaultLocations() {
 			List list = new ArrayList();
 			Rectangle r = getFigure().getBounds();
@@ -174,8 +168,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 				if (!(policy instanceof IAdaptable))
 					continue;
 				IAdaptable adaptable = (IAdaptable) policy;
-				AccessibleHandleProvider adapter = adaptable
-						.getAdapter(AccessibleHandleProvider.class);
+				AccessibleHandleProvider adapter = adaptable.getAdapter(AccessibleHandleProvider.class);
 				if (adapter != null)
 					locations.addAll(adapter.getAccessibleHandleLocations());
 			}
@@ -202,8 +195,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	/**
 	 * Adds the child's Figure to the {@link #getContentPane() contentPane}.
 	 * 
-	 * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart,
-	 *      int)
+	 * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int)
 	 */
 	protected void addChildVisual(EditPart childEditPart, int index) {
 		IFigure child = ((GraphicalEditPart) childEditPart).getFigure();
@@ -232,10 +224,10 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * Adds a <i>source</i> ConnectionEditPart at the specified index. This
-	 * method is called from {@link #refreshSourceConnections()}. There should
-	 * be no reason to call or override this method. Source connection are
-	 * created as a result of overriding {@link #getModelSourceConnections()}.
+	 * Adds a <i>source</i> ConnectionEditPart at the specified index. This method
+	 * is called from {@link #refreshSourceConnections()}. There should be no reason
+	 * to call or override this method. Source connection are created as a result of
+	 * overriding {@link #getModelSourceConnections()}.
 	 * <P>
 	 * {@link #primAddSourceConnection(ConnectionEditPart, int)} is called to
 	 * perform the actual update of the {@link #sourceConnections}
@@ -246,13 +238,10 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * <P>
 	 * Finally, all {@link NodeListener}s are notified of the new connection.
 	 * 
-	 * @param connection
-	 *            Connection being added
-	 * @param index
-	 *            Index where it is being added
+	 * @param connection Connection being added
+	 * @param index      Index where it is being added
 	 */
-	protected void addSourceConnection(ConnectionEditPart connection,
-			int index) {
+	protected void addSourceConnection(ConnectionEditPart connection, int index) {
 		primAddSourceConnection(connection, index);
 
 		GraphicalEditPart source = (GraphicalEditPart) connection.getSource();
@@ -266,10 +255,10 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * Adds a <i>target</i> ConnectionEditPart at the specified index. This
-	 * method is called from {@link #refreshTargetConnections()}. There should
-	 * be no reason to call or override this method. Target connection are
-	 * created as a result of overriding {@link #getModelTargetConnections()}.
+	 * Adds a <i>target</i> ConnectionEditPart at the specified index. This method
+	 * is called from {@link #refreshTargetConnections()}. There should be no reason
+	 * to call or override this method. Target connection are created as a result of
+	 * overriding {@link #getModelTargetConnections()}.
 	 * <P>
 	 * {@link #primAddTargetConnection(ConnectionEditPart, int)} is called to
 	 * perform the actual update of the {@link #targetConnections}
@@ -278,13 +267,10 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * <P>
 	 * Finally, all {@link NodeListener}s are notified of the new connection.
 	 * 
-	 * @param connection
-	 *            Connection being added
-	 * @param index
-	 *            Index where it is being added
+	 * @param connection Connection being added
+	 * @param index      Index where it is being added
 	 */
-	protected void addTargetConnection(ConnectionEditPart connection,
-			int index) {
+	protected void addTargetConnection(ConnectionEditPart connection, int index) {
 		primAddTargetConnection(connection, index);
 
 		GraphicalEditPart target = (GraphicalEditPart) connection.getTarget();
@@ -302,22 +288,19 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * {@link #refreshTargetConnections()}.
 	 * <P>
 	 * The default implementation goes to the EditPartViewer's
-	 * {@link EditPartFactory} to create the connection. This method should not
-	 * be overridden unless factories are not being used.
+	 * {@link EditPartFactory} to create the connection. This method should not be
+	 * overridden unless factories are not being used.
 	 * 
-	 * @param model
-	 *            the connection model object
+	 * @param model the connection model object
 	 * @return the new ConnectionEditPart
 	 */
 	protected ConnectionEditPart createConnection(Object model) {
-		return (ConnectionEditPart) getViewer().getEditPartFactory()
-				.createEditPart(this, model);
+		return (ConnectionEditPart) getViewer().getEditPartFactory().createEditPart(this, model);
 	}
 
 	/**
 	 * Creates the <code>Figure</code> to be used as this part's <i>visuals</i>.
-	 * This is called from {@link #getFigure()} if the figure has not been
-	 * created.
+	 * This is called from {@link #getFigure()} if the figure has not been created.
 	 * 
 	 * @return a Figure
 	 */
@@ -325,27 +308,25 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 
 	/**
 	 * Searches for an existing <code>ConnectionEditPart</code> in the Viewer's
-	 * {@link EditPartViewer#getEditPartRegistry() EditPart registry} and
-	 * returns it if one is found. Otherwise, {@link #createConnection(Object)}
-	 * is called to create a new ConnectionEditPart. Override this method only
-	 * if you need to find an existing connection some other way.
+	 * {@link EditPartViewer#getEditPartRegistry() EditPart registry} and returns it
+	 * if one is found. Otherwise, {@link #createConnection(Object)} is called to
+	 * create a new ConnectionEditPart. Override this method only if you need to
+	 * find an existing connection some other way.
 	 * 
-	 * @param model
-	 *            the Connection's model
+	 * @param model the Connection's model
 	 * @return the ConnectionEditPart
 	 */
 	protected ConnectionEditPart createOrFindConnection(Object model) {
-		ConnectionEditPart conx = (ConnectionEditPart) getViewer()
-				.getEditPartRegistry().get(model);
+		ConnectionEditPart conx = (ConnectionEditPart) getViewer().getEditPartRegistry().get(model);
 		if (conx != null)
 			return conx;
 		return createConnection(model);
 	}
 
 	/**
-	 * Extends {@link AbstractEditPart#deactivate()} to also deactivate the
-	 * source ConnectionEditParts. Subclasses should <em>extend</em> this method
-	 * to remove any listeners added in {@link #activate}.
+	 * Extends {@link AbstractEditPart#deactivate()} to also deactivate the source
+	 * ConnectionEditParts. Subclasses should <em>extend</em> this method to remove
+	 * any listeners added in {@link #activate}.
 	 * 
 	 * @see org.eclipse.gef.EditPart#deactivate()
 	 */
@@ -359,16 +340,13 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 
 	/**
 	 * Notifies listeners that a source connection has been removed. Called from
-	 * {@link #removeSourceConnection(ConnectionEditPart)}. There is no reason
-	 * for subclasses to call or override this method.
+	 * {@link #removeSourceConnection(ConnectionEditPart)}. There is no reason for
+	 * subclasses to call or override this method.
 	 * 
-	 * @param connection
-	 *            <code>ConnectionEditPart</code> being added as child.
-	 * @param index
-	 *            Position child is being added into.
+	 * @param connection <code>ConnectionEditPart</code> being added as child.
+	 * @param index      Position child is being added into.
 	 */
-	protected void fireRemovingSourceConnection(ConnectionEditPart connection,
-			int index) {
+	protected void fireRemovingSourceConnection(ConnectionEditPart connection, int index) {
 		if (eventListeners == null)
 			return;
 		Iterator listeners = eventListeners.getListeners(NodeListener.class);
@@ -381,16 +359,13 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 
 	/**
 	 * Notifies listeners that a target connection has been removed. Called from
-	 * {@link #removeTargetConnection(ConnectionEditPart)}. There is no reason
-	 * for subclasses to call or override this method.
+	 * {@link #removeTargetConnection(ConnectionEditPart)}. There is no reason for
+	 * subclasses to call or override this method.
 	 * 
-	 * @param connection
-	 *            <code>ConnectionEditPart</code> being added as child.
-	 * @param index
-	 *            Position child is being added into.
+	 * @param connection <code>ConnectionEditPart</code> being added as child.
+	 * @param index      Position child is being added into.
 	 */
-	protected void fireRemovingTargetConnection(ConnectionEditPart connection,
-			int index) {
+	protected void fireRemovingTargetConnection(ConnectionEditPart connection, int index) {
 		if (eventListeners == null)
 			return;
 		Iterator listeners = eventListeners.getListeners(NodeListener.class);
@@ -403,16 +378,13 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 
 	/**
 	 * Notifies listeners that a source connection has been added. Called from
-	 * {@link #addSourceConnection(ConnectionEditPart, int)}. There is no reason
-	 * for subclasses to call or override this method.
+	 * {@link #addSourceConnection(ConnectionEditPart, int)}. There is no reason for
+	 * subclasses to call or override this method.
 	 * 
-	 * @param connection
-	 *            <code>ConnectionEditPart</code> being added as child.
-	 * @param index
-	 *            Position child is being added into.
+	 * @param connection <code>ConnectionEditPart</code> being added as child.
+	 * @param index      Position child is being added into.
 	 */
-	protected void fireSourceConnectionAdded(ConnectionEditPart connection,
-			int index) {
+	protected void fireSourceConnectionAdded(ConnectionEditPart connection, int index) {
 		if (eventListeners == null)
 			return;
 		Iterator listeners = eventListeners.getListeners(NodeListener.class);
@@ -425,16 +397,13 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 
 	/**
 	 * Notifies listeners that a target connection has been added. Called from
-	 * {@link #addTargetConnection(ConnectionEditPart, int)}. There is no reason
-	 * for subclasses to call or override this method.
+	 * {@link #addTargetConnection(ConnectionEditPart, int)}. There is no reason for
+	 * subclasses to call or override this method.
 	 * 
-	 * @param connection
-	 *            <code>ConnectionEditPart</code> being added as child.
-	 * @param index
-	 *            Position child is being added into.
+	 * @param connection <code>ConnectionEditPart</code> being added as child.
+	 * @param index      Position child is being added into.
 	 */
-	protected void fireTargetConnectionAdded(ConnectionEditPart connection,
-			int index) {
+	protected void fireTargetConnectionAdded(ConnectionEditPart connection, int index) {
 		if (eventListeners == null)
 			return;
 		Iterator listeners = eventListeners.getListeners(NodeListener.class);
@@ -449,16 +418,15 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * Extends {@link AbstractEditPart#getAdapter(Class)} to handle additional
 	 * adapter types. Currently, these types include
 	 * {@link AccessibleHandleProvider} and {@link AccessibleAnchorProvider}.
-	 * Subclasses should <em>extend</em> this method to support additional
-	 * adapter types, or to replace the default provided adapters.
+	 * Subclasses should <em>extend</em> this method to support additional adapter
+	 * types, or to replace the default provided adapters.
 	 * 
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(Class)
 	 */
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleHandleProvider.class)
-			return key
-					.cast(new MergedAccessibleHandles(getEditPolicyIterator()));
+			return key.cast(new MergedAccessibleHandles(getEditPolicyIterator()));
 
 		if (key == AccessibleAnchorProvider.class)
 			return key.cast(new DefaultAccessibleAnchorProvider());
@@ -467,10 +435,10 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * Implemented to delegate to {@link #getFigure()} by default. Subclasses
-	 * may overwrite in case the {@link IFigure} returned by
-	 * {@link #getFigure()} is a composite figure and child figures should be
-	 * added to one of its children instead of the figure itself.
+	 * Implemented to delegate to {@link #getFigure()} by default. Subclasses may
+	 * overwrite in case the {@link IFigure} returned by {@link #getFigure()} is a
+	 * composite figure and child figures should be added to one of its children
+	 * instead of the figure itself.
 	 * 
 	 * @see GraphicalEditPart#getContentPane()
 	 */
@@ -504,22 +472,20 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * A convenience method for obtaining the specified layer from the
 	 * <code>LayerManager</code>.
 	 * 
-	 * @param layer
-	 *            ID of the Layer
+	 * @param layer ID of the Layer
 	 * @return The requested layer or <code>null</code> if it doesn't exist
 	 */
 	protected IFigure getLayer(Object layer) {
-		LayerManager manager = (LayerManager) getViewer().getEditPartRegistry()
-				.get(LayerManager.ID);
+		LayerManager manager = (LayerManager) getViewer().getEditPartRegistry().get(LayerManager.ID);
 		return manager.getLayer(layer);
 	}
 
 	/**
-	 * Returns the <code>List</code> of the connection model objects for which
-	 * this EditPart's model is the <b>source</b>.
-	 * {@link #refreshSourceConnections()} calls this method. For each
-	 * connection model object, {@link #createConnection(Object)} will be called
-	 * automatically to obtain a corresponding {@link ConnectionEditPart}.
+	 * Returns the <code>List</code> of the connection model objects for which this
+	 * EditPart's model is the <b>source</b>. {@link #refreshSourceConnections()}
+	 * calls this method. For each connection model object,
+	 * {@link #createConnection(Object)} will be called automatically to obtain a
+	 * corresponding {@link ConnectionEditPart}.
 	 * <P>
 	 * Callers must not modify the returned List.
 	 * 
@@ -530,11 +496,11 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * Returns the <code>List</code> of the connection model objects for which
-	 * this EditPart's model is the <b>target</b>.
-	 * {@link #refreshTargetConnections()} calls this method. For each
-	 * connection model object, {@link #createConnection(Object)} will be called
-	 * automatically to obtain a corresponding {@link ConnectionEditPart}.
+	 * Returns the <code>List</code> of the connection model objects for which this
+	 * EditPart's model is the <b>target</b>. {@link #refreshTargetConnections()}
+	 * calls this method. For each connection model object,
+	 * {@link #createConnection(Object)} will be called automatically to obtain a
+	 * corresponding {@link ConnectionEditPart}.
 	 * <P>
 	 * Callers must not modify the returned List.
 	 * 
@@ -563,49 +529,40 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * A GraphicalEditPart is considered selectable, if it is active and its
-	 * figure is showing.
+	 * A GraphicalEditPart is considered selectable, if it is active and its figure
+	 * is showing.
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#isSelectable()
 	 */
 	public boolean isSelectable() {
-		return super.isSelectable() && getFigure() != null
-				&& getFigure().isShowing();
+		return super.isSelectable() && getFigure() != null && getFigure().isShowing();
 	}
 
 	/**
-	 * Adds the specified source <code>ConnectionEditPart</code> at an index.
-	 * This method is used to update the {@link #sourceConnections} List. This
-	 * method is called from
-	 * {@link #addSourceConnection(ConnectionEditPart, int)}. Subclasses should
-	 * not call or override this method.
+	 * Adds the specified source <code>ConnectionEditPart</code> at an index. This
+	 * method is used to update the {@link #sourceConnections} List. This method is
+	 * called from {@link #addSourceConnection(ConnectionEditPart, int)}. Subclasses
+	 * should not call or override this method.
 	 * 
-	 * @param connection
-	 *            the ConnectionEditPart
-	 * @param index
-	 *            the index of the add
+	 * @param connection the ConnectionEditPart
+	 * @param index      the index of the add
 	 */
-	protected void primAddSourceConnection(ConnectionEditPart connection,
-			int index) {
+	protected void primAddSourceConnection(ConnectionEditPart connection, int index) {
 		if (sourceConnections == null)
 			sourceConnections = new ArrayList();
 		sourceConnections.add(index, connection);
 	}
 
 	/**
-	 * Adds the specified target <code>ConnectionEditPart</code> at an index.
-	 * This method is used to update the {@link #targetConnections} List. This
-	 * method is called from
-	 * {@link #addTargetConnection(ConnectionEditPart, int)}. Subclasses should
-	 * not call or override this method.
+	 * Adds the specified target <code>ConnectionEditPart</code> at an index. This
+	 * method is used to update the {@link #targetConnections} List. This method is
+	 * called from {@link #addTargetConnection(ConnectionEditPart, int)}. Subclasses
+	 * should not call or override this method.
 	 * 
-	 * @param connection
-	 *            the ConnectionEditPart
-	 * @param index
-	 *            the index of the add
+	 * @param connection the ConnectionEditPart
+	 * @param index      the index of the add
 	 */
-	protected void primAddTargetConnection(ConnectionEditPart connection,
-			int index) {
+	protected void primAddTargetConnection(ConnectionEditPart connection, int index) {
 		if (targetConnections == null)
 			targetConnections = new ArrayList();
 		targetConnections.add(index, connection);
@@ -614,11 +571,10 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	/**
 	 * Removes the specified source <code>ConnectionEditPart</code> from the
 	 * {@link #sourceConnections} List. This method is called from
-	 * {@link #removeSourceConnection(ConnectionEditPart)}. Subclasses should
-	 * not call or override this method.
+	 * {@link #removeSourceConnection(ConnectionEditPart)}. Subclasses should not
+	 * call or override this method.
 	 * 
-	 * @param connection
-	 *            Connection to remove.
+	 * @param connection Connection to remove.
 	 */
 	protected void primRemoveSourceConnection(ConnectionEditPart connection) {
 		sourceConnections.remove(connection);
@@ -627,11 +583,10 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	/**
 	 * Removes the specified target <code>ConnectionEditPart</code> from the
 	 * {@link #targetConnections} List. This method is called from
-	 * {@link #removeTargetConnection(ConnectionEditPart)}. Subclasses should
-	 * not call or override this method.
+	 * {@link #removeTargetConnection(ConnectionEditPart)}. Subclasses should not
+	 * call or override this method.
 	 * 
-	 * @param connection
-	 *            Connection to remove.
+	 * @param connection Connection to remove.
 	 */
 	protected void primRemoveTargetConnection(ConnectionEditPart connection) {
 		targetConnections.remove(connection);
@@ -639,9 +594,9 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 
 	/**
 	 * Extends {@link AbstractEditPart#refresh()} to refresh two additional
-	 * structural features: <i>source</i> and <i>target</i> connections.
-	 * Subclasses should probably override
-	 * {@link AbstractEditPart#refreshVisuals()} instead of this method.
+	 * structural features: <i>source</i> and <i>target</i> connections. Subclasses
+	 * should probably override {@link AbstractEditPart#refreshVisuals()} instead of
+	 * this method.
 	 * 
 	 * @see org.eclipse.gef.EditPart#refresh()
 	 */
@@ -652,18 +607,17 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * Updates the set of <i>source</i> ConnectionEditParts so that it is in
-	 * sync with the model source connections. This method is called from
-	 * {@link #refresh()}, and may also be called in response to notification
-	 * from the model.
+	 * Updates the set of <i>source</i> ConnectionEditParts so that it is in sync
+	 * with the model source connections. This method is called from
+	 * {@link #refresh()}, and may also be called in response to notification from
+	 * the model.
 	 * <P>
-	 * The update is performed by comparing the existing source
-	 * ConnectionEditParts with the set of model source connections returned
-	 * from {@link #getModelSourceConnections()}. EditParts whose model no
-	 * longer exists are {@link #removeSourceConnection(ConnectionEditPart)
-	 * removed}. New models have their ConnectionEditParts
-	 * {@link #createConnection(Object) created}. Subclasses should override
-	 * <code>getModelSourceChildren()</code>.
+	 * The update is performed by comparing the existing source ConnectionEditParts
+	 * with the set of model source connections returned from
+	 * {@link #getModelSourceConnections()}. EditParts whose model no longer exists
+	 * are {@link #removeSourceConnection(ConnectionEditPart) removed}. New models
+	 * have their ConnectionEditParts {@link #createConnection(Object) created}.
+	 * Subclasses should override <code>getModelSourceChildren()</code>.
 	 * <P>
 	 * This method should <em>not</em> be overridden.
 	 */
@@ -690,9 +644,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 		for (i = 0; i < modelObjects.size(); i++) {
 			model = modelObjects.get(i);
 
-			if (i < sourceConnections.size()
-					&& ((EditPart) sourceConnections.get(i))
-							.getModel() == model)
+			if (i < sourceConnections.size() && ((EditPart) sourceConnections.get(i)).getModel() == model)
 				continue;
 
 			editPart = (ConnectionEditPart) modelToEditPart.get(model);
@@ -716,18 +668,17 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * Updates the set of <i>target</i> ConnectionEditParts so that it is in
-	 * sync with the model target connections. This method is called from
-	 * {@link #refresh()}, and may also be called in response to notification
-	 * from the model.
+	 * Updates the set of <i>target</i> ConnectionEditParts so that it is in sync
+	 * with the model target connections. This method is called from
+	 * {@link #refresh()}, and may also be called in response to notification from
+	 * the model.
 	 * <P>
-	 * The update is performed by comparing the existing source
-	 * ConnectionEditParts with the set of model source connections returned
-	 * from {@link #getModelTargetConnections()}. EditParts whose model no
-	 * longer exists are {@link #removeTargetConnection(ConnectionEditPart)
-	 * removed}. New models have their ConnectionEditParts
-	 * {@link #createConnection(Object) created}. Subclasses should override
-	 * <code>getModelTargetChildren()</code>.
+	 * The update is performed by comparing the existing source ConnectionEditParts
+	 * with the set of model source connections returned from
+	 * {@link #getModelTargetConnections()}. EditParts whose model no longer exists
+	 * are {@link #removeTargetConnection(ConnectionEditPart) removed}. New models
+	 * have their ConnectionEditParts {@link #createConnection(Object) created}.
+	 * Subclasses should override <code>getModelTargetChildren()</code>.
 	 * <P>
 	 * This method should <em>not</em> be overridden.
 	 */
@@ -754,9 +705,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 		for (i = 0; i < modelObjects.size(); i++) {
 			model = modelObjects.get(i);
 
-			if (i < targetConnections.size()
-					&& ((EditPart) targetConnections.get(i))
-							.getModel() == model)
+			if (i < targetConnections.size() && ((EditPart) targetConnections.get(i)).getModel() == model)
 				continue;
 
 			editPart = (ConnectionEditPart) modelToEditPart.get(model);
@@ -780,8 +729,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * Registers the EditPart's Figure in the Viewer. This is what makes it
-	 * possible for the Viewer to map a mouse location to an EditPart.
+	 * Registers the EditPart's Figure in the Viewer. This is what makes it possible
+	 * for the Viewer to map a mouse location to an EditPart.
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#registerVisuals()
 	 */
@@ -831,17 +780,15 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * Removes the given connection for which this EditPart is the
-	 * <B>source</b>. <BR>
+	 * Removes the given connection for which this EditPart is the <B>source</b>.
+	 * <BR>
 	 * Fires notification. <BR>
 	 * Inverse of {@link #addSourceConnection(ConnectionEditPart, int)}
 	 * 
-	 * @param connection
-	 *            Connection being removed
+	 * @param connection Connection being removed
 	 */
 	protected void removeSourceConnection(ConnectionEditPart connection) {
-		fireRemovingSourceConnection(connection,
-				getSourceConnections().indexOf(connection));
+		fireRemovingSourceConnection(connection, getSourceConnections().indexOf(connection));
 		if (connection.getSource() == this) {
 			connection.deactivate();
 			connection.setSource(null);
@@ -850,28 +797,24 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	}
 
 	/**
-	 * Removes the given connection for which this EditPart is the
-	 * <B>target</b>. <BR>
+	 * Removes the given connection for which this EditPart is the <B>target</b>.
+	 * <BR>
 	 * Fires notification. <BR>
 	 * Inverse of {@link #addTargetConnection(ConnectionEditPart, int)}
 	 * 
-	 * @param connection
-	 *            Connection being removed
+	 * @param connection Connection being removed
 	 */
 	protected void removeTargetConnection(ConnectionEditPart connection) {
-		fireRemovingTargetConnection(connection,
-				getTargetConnections().indexOf(connection));
+		fireRemovingTargetConnection(connection, getTargetConnections().indexOf(connection));
 		if (connection.getTarget() == this)
 			connection.setTarget(null);
 		primRemoveTargetConnection(connection);
 	}
 
 	/**
-	 * This method is extended to preserve a LayoutManager constraint if one
-	 * exists.
+	 * This method is extended to preserve a LayoutManager constraint if one exists.
 	 * 
-	 * @see org.eclipse.gef.editparts.AbstractEditPart#reorderChild(EditPart,
-	 *      int)
+	 * @see org.eclipse.gef.editparts.AbstractEditPart#reorderChild(EditPart, int)
 	 */
 	protected void reorderChild(EditPart child, int index) {
 		// Save the constraint of the child so that it does not
@@ -891,13 +834,10 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * currently occupies. This method is called from
 	 * {@link #refreshSourceConnections()}.
 	 * 
-	 * @param connection
-	 *            the ConnectionEditPart
-	 * @param index
-	 *            the new index
+	 * @param connection the ConnectionEditPart
+	 * @param index      the new index
 	 */
-	protected void reorderSourceConnection(ConnectionEditPart connection,
-			int index) {
+	protected void reorderSourceConnection(ConnectionEditPart connection, int index) {
 		primRemoveSourceConnection(connection);
 		primAddSourceConnection(connection, index);
 	}
@@ -907,13 +847,10 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	 * currently occupies. This method is called from
 	 * {@link #refreshTargetConnections()}.
 	 * 
-	 * @param connection
-	 *            the ConnectionEditPart
-	 * @param index
-	 *            the new index
+	 * @param connection the ConnectionEditPart
+	 * @param index      the new index
 	 */
-	protected void reorderTargetConnection(ConnectionEditPart connection,
-			int index) {
+	protected void reorderTargetConnection(ConnectionEditPart connection, int index) {
 		primRemoveTargetConnection(connection);
 		primAddTargetConnection(connection, index);
 	}
@@ -921,8 +858,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	/**
 	 * Sets the Figure
 	 * 
-	 * @param figure
-	 *            the Figure
+	 * @param figure the Figure
 	 */
 	protected void setFigure(IFigure figure) {
 		this.figure = figure;
@@ -931,8 +867,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart
 	/**
 	 * @see GraphicalEditPart#setLayoutConstraint(EditPart, IFigure, Object)
 	 */
-	public void setLayoutConstraint(EditPart child, IFigure childFigure,
-			Object constraint) {
+	public void setLayoutConstraint(EditPart child, IFigure childFigure, Object constraint) {
 		childFigure.getParent().setConstraint(childFigure, constraint);
 	}
 

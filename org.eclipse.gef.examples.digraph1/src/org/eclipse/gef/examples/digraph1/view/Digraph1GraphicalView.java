@@ -33,19 +33,19 @@ public class Digraph1GraphicalView extends ViewPart {
 	private GraphicalViewer graphicalViewer;
 
 	/*
-	 * @see org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
+	 * @see
+	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets.
+	 * Composite)
 	 */
 	@Override
 	public void createPartControl(Composite parent) {
 		setEditDomain(new DefaultEditDomain(null));
 		setGraphicalViewer(new ScrollingGraphicalViewer());
 		getGraphicalViewer().createControl(parent);
-		getGraphicalViewer().setRootEditPart(
-				new FreeformGraphicalRootEditPart());
+		getGraphicalViewer().setRootEditPart(new FreeformGraphicalRootEditPart());
 		getGraphicalViewer().setEditPartFactory(new Digraph1EditPartFactory());
 		getGraphicalViewer().setContents(new Digraph1Graph());
-		getGraphicalViewer().getControl().setBackground(
-				ColorConstants.listBackground);
+		getGraphicalViewer().getControl().setBackground(ColorConstants.listBackground);
 	}
 
 	/**
@@ -69,8 +69,7 @@ public class Digraph1GraphicalView extends ViewPart {
 	/**
 	 * Sets the EditDomain for this ViewPart.
 	 * 
-	 * @param anEditDomain
-	 *            the EditDomain for this ViewPart.
+	 * @param anEditDomain the EditDomain for this ViewPart.
 	 */
 	protected void setEditDomain(DefaultEditDomain anEditDomain) {
 		this.editDomain = anEditDomain;
@@ -87,8 +86,7 @@ public class Digraph1GraphicalView extends ViewPart {
 	/**
 	 * Sets the graphicalViewer for this EditorPart.
 	 * 
-	 * @param viewer
-	 *            the graphical viewer
+	 * @param viewer the graphical viewer
 	 */
 	protected void setGraphicalViewer(GraphicalViewer viewer) {
 		getEditDomain().addViewer(viewer);

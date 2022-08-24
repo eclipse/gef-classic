@@ -125,10 +125,8 @@ class NestingTree {
 	boolean swap(int index) {
 		Object left = contents.get(index);
 		Object right = contents.get(index + 1);
-		double iL = (left instanceof Node) ? ((Node) left).sortValue
-				: ((NestingTree) left).sortValue;
-		double iR = (right instanceof Node) ? ((Node) right).sortValue
-				: ((NestingTree) right).sortValue;
+		double iL = (left instanceof Node) ? ((Node) left).sortValue : ((NestingTree) left).sortValue;
+		double iR = (right instanceof Node) ? ((Node) right).sortValue : ((NestingTree) right).sortValue;
 		if (iL <= iR)
 			return false;
 		contents.set(index, right);

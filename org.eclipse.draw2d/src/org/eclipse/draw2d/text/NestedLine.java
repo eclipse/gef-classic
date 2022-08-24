@@ -28,8 +28,7 @@ public class NestedLine extends LineBox {
 	 */
 	public boolean containsPoint(int x, int y) {
 		// $TODO should contains use LineRoot?
-		return x >= getX() && x < getX() + getWidth()
-				&& y >= getBaseline() - getAscentWithBorder()
+		return x >= getX() && x < getX() + getWidth() && y >= getBaseline() - getAscentWithBorder()
 				&& y < getBaseline() + getDescentWithBorder();
 	}
 
@@ -61,10 +60,10 @@ public class NestedLine extends LineBox {
 	// }
 
 	/**
-	 * Returns the outer ascent of this box. The outer ascent is the ascent
-	 * above the baseline including the border size and margin. This is used
-	 * when adding content into a LineBox. The linebox's own border must be
-	 * drawn around the children.
+	 * Returns the outer ascent of this box. The outer ascent is the ascent above
+	 * the baseline including the border size and margin. This is used when adding
+	 * content into a LineBox. The linebox's own border must be drawn around the
+	 * children.
 	 * 
 	 * @return the outer ascent of this box
 	 */
@@ -73,10 +72,10 @@ public class NestedLine extends LineBox {
 	}
 
 	/**
-	 * Returns the outer descent of this box. The outer descent is the space
-	 * below the baseline including the border size and margin. This is used
-	 * when adding content into a LineBox. The linebox's own border must be
-	 * drawn around the children.
+	 * Returns the outer descent of this box. The outer descent is the space below
+	 * the baseline including the border size and margin. This is used when adding
+	 * content into a LineBox. The linebox's own border must be drawn around the
+	 * children.
 	 * 
 	 * @return the outer descent of this box
 	 */

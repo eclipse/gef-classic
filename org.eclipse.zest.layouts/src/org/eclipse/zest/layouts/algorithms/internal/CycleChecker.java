@@ -28,20 +28,23 @@ import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
  */
 public class CycleChecker {
 	/**
-	 * Tests if there is a directed cirlce in the graph formed by the given entities and relationships.
-	 * @param entities The entities in the graph to check
+	 * Tests if there is a directed cirlce in the graph formed by the given entities
+	 * and relationships.
+	 * 
+	 * @param entities      The entities in the graph to check
 	 * @param relationships The relationships in the graph to check
-	 * @param cycle Populated with the cycle encountered, if there is one.
-	 * @throws RuntimeException Thrown if entities doesn't contain all of the endpoints for each relationship in relationships
-	 * @return <code>true</code> if there is a directed circle.
-	 * Otherwise, <code>false</code>.
+	 * @param cycle         Populated with the cycle encountered, if there is one.
+	 * @throws RuntimeException Thrown if entities doesn't contain all of the
+	 *                          endpoints for each relationship in relationships
+	 * @return <code>true</code> if there is a directed circle. Otherwise,
+	 *         <code>false</code>.
 	 */
 	public static boolean hasDirectedCircles(LayoutEntity[] entities, LayoutRelationship[] relationships, List cycle) {
 		if (!AbstractLayoutAlgorithm.verifyInput(entities, relationships)) {
 			throw new RuntimeException("The endpoints of the relationships aren't contained in the entities list.");
 		}
-		//Enumeration enum;
-		//Iterator iterator;
+		// Enumeration enum;
+		// Iterator iterator;
 
 		Hashtable endPoints = new Hashtable();
 
@@ -49,7 +52,7 @@ public class CycleChecker {
 		for (int i = 0; i < relationships.length; i++) {
 			LayoutRelationship rel = relationships[i];
 
-			//Add the relationship to the source endpoint
+			// Add the relationship to the source endpoint
 			Object subject = rel.getSourceInLayout();
 			List rels = (List) endPoints.get(subject);
 			if (rels == null) {
@@ -79,12 +82,13 @@ public class CycleChecker {
 	}
 
 	/**
-	 * Checks all the nodes attached to the nodeToCheck node for a cycle.  All nodes
+	 * Checks all the nodes attached to the nodeToCheck node for a cycle. All nodes
 	 * checked are placed in nodePathSoFar.
 	 *
 	 * @returns true if there is a cycle
 	 */
-	private static boolean hasCycle(Object nodeToCheck, List nodePathSoFar, SimpleRelationship cameFrom, Hashtable endPoints, List nodesChecked, List cycle) {
+	private static boolean hasCycle(Object nodeToCheck, List nodePathSoFar, SimpleRelationship cameFrom,
+			Hashtable endPoints, List nodesChecked, List cycle) {
 		if (nodePathSoFar.contains(nodeToCheck)) {
 			cycle.addAll(nodePathSoFar);
 			cycle.add(nodeToCheck);

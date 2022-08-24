@@ -81,30 +81,24 @@ public interface Tool {
 	/**
 	 * Called when a Viewer's Control gains keyboard focus.
 	 * 
-	 * @param event
-	 *            The SWT focus event
-	 * @param viewer
-	 *            The Viewer which gained focus
+	 * @param event  The SWT focus event
+	 * @param viewer The Viewer which gained focus
 	 */
 	void focusGained(FocusEvent event, EditPartViewer viewer);
 
 	/**
 	 * Called when a Viewer's Control loses keyboard focus.
 	 * 
-	 * @param event
-	 *            The SWT focus event
-	 * @param viewer
-	 *            The viewer that is losing focus
+	 * @param event  The SWT focus event
+	 * @param viewer The viewer that is losing focus
 	 */
 	void focusLost(FocusEvent event, EditPartViewer viewer);
 
 	/**
 	 * Called when a Viewer receives a key press.
 	 * 
-	 * @param keyEvent
-	 *            the SWT KeyEvent
-	 * @param viewer
-	 *            the Viewer which received a key press
+	 * @param keyEvent the SWT KeyEvent
+	 * @param viewer   the Viewer which received a key press
 	 */
 	void keyDown(KeyEvent keyEvent, EditPartViewer viewer);
 
@@ -112,10 +106,8 @@ public interface Tool {
 	 * Called when a viewer receives a key traversal. A tool can prevent the
 	 * traversal from occuring by setting the doit field to <code>false</code>.
 	 * 
-	 * @param event
-	 *            the SWT event
-	 * @param viewer
-	 *            the viewer which received the traversal
+	 * @param event  the SWT event
+	 * @param viewer the viewer which received the traversal
 	 * @since 3.1
 	 */
 	void keyTraversed(TraverseEvent event, EditPartViewer viewer);
@@ -123,43 +115,34 @@ public interface Tool {
 	/**
 	 * Called when a Viewer receives a key up.
 	 * 
-	 * @param keyEvent
-	 *            the SWT KeyEvent
-	 * @param viewer
-	 *            the Viewer which received a key up
+	 * @param keyEvent the SWT KeyEvent
+	 * @param viewer   the Viewer which received a key up
 	 */
 	void keyUp(KeyEvent keyEvent, EditPartViewer viewer);
 
 	/**
 	 * Called when a Viewer receives a double-click.
 	 * 
-	 * @param mouseEvent
-	 *            the SWT mouse event
-	 * @param viewer
-	 *            the Viewer which received a double-click
+	 * @param mouseEvent the SWT mouse event
+	 * @param viewer     the Viewer which received a double-click
 	 */
 	void mouseDoubleClick(MouseEvent mouseEvent, EditPartViewer viewer);
 
 	/**
 	 * Called when a Viewer receives a mouse down.
 	 * 
-	 * @param mouseEvent
-	 *            the SWT mouse event
-	 * @param viewer
-	 *            the Viewer which received a mouse down
+	 * @param mouseEvent the SWT mouse event
+	 * @param viewer     the Viewer which received a mouse down
 	 */
 	void mouseDown(MouseEvent mouseEvent, EditPartViewer viewer);
 
 	/**
-	 * Called when a Viewer receives a mouse drag. SWT does not distinguish
-	 * between mouse drags and mouse moves, but GEF Viewers will make this
-	 * distinction when dispatching events. A drag occurs if any mouse button is
-	 * down.
+	 * Called when a Viewer receives a mouse drag. SWT does not distinguish between
+	 * mouse drags and mouse moves, but GEF Viewers will make this distinction when
+	 * dispatching events. A drag occurs if any mouse button is down.
 	 * 
-	 * @param mouseEvent
-	 *            the SWT mouse event
-	 * @param viewer
-	 *            the Viewer which received a drag
+	 * @param mouseEvent the SWT mouse event
+	 * @param viewer     the Viewer which received a drag
 	 */
 	void mouseDrag(MouseEvent mouseEvent, EditPartViewer viewer);
 
@@ -167,10 +150,8 @@ public interface Tool {
 	 * Called when a Viewer receives a mouse hover.
 	 * 
 	 * @see MouseTrackListener#mouseHover(MouseEvent)
-	 * @param mouseEvent
-	 *            the SWT mouse event
-	 * @param viewer
-	 *            the Viewer which received a mouse down
+	 * @param mouseEvent the SWT mouse event
+	 * @param viewer     the Viewer which received a mouse down
 	 */
 	void mouseHover(MouseEvent mouseEvent, EditPartViewer viewer);
 
@@ -178,56 +159,46 @@ public interface Tool {
 	 * Called when a Viewer receives a mouse move.
 	 * 
 	 * @see #mouseDrag(MouseEvent, EditPartViewer)
-	 * @param mouseEvent
-	 *            the SWT mouse event
-	 * @param viewer
-	 *            the Viewer which received a mouse move
+	 * @param mouseEvent the SWT mouse event
+	 * @param viewer     the Viewer which received a mouse move
 	 */
 	void mouseMove(MouseEvent mouseEvent, EditPartViewer viewer);
 
 	/**
 	 * Called when a Viewer receives a mouse up.
 	 * 
-	 * @param mouseEvent
-	 *            the SWT mouse event
-	 * @param viewer
-	 *            the Viewer which received a mouse up
+	 * @param mouseEvent the SWT mouse event
+	 * @param viewer     the Viewer which received a mouse up
 	 */
 	void mouseUp(MouseEvent mouseEvent, EditPartViewer viewer);
 
 	/**
 	 * Called when the mouse wheel has been scrolled.
 	 * 
-	 * @param event
-	 *            The SWT event
-	 * @param viewer
-	 *            The source of the event
+	 * @param event  The SWT event
+	 * @param viewer The source of the event
 	 */
 	void mouseWheelScrolled(Event event, EditPartViewer viewer);
 
 	/**
-	 * Called when a native drag ends on a Viewer. This event is important to
-	 * Tools because {@link #mouseUp(MouseEvent, EditPartViewer) mouseUp(..)}
-	 * will not occur once a native drag has started. The Tool should correct
-	 * its state to handle this lost Event.
+	 * Called when a native drag ends on a Viewer. This event is important to Tools
+	 * because {@link #mouseUp(MouseEvent, EditPartViewer) mouseUp(..)} will not
+	 * occur once a native drag has started. The Tool should correct its state to
+	 * handle this lost Event.
 	 * 
-	 * @param event
-	 *            the SWT DragSourceEvent
-	 * @param viewer
-	 *            the Viewer on which a native drag started
+	 * @param event  the SWT DragSourceEvent
+	 * @param viewer the Viewer on which a native drag started
 	 */
 	void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer);
 
 	/**
 	 * Called when a native drag begins on a Viewer. This event is important to
-	 * Tools because {@link #mouseUp(MouseEvent, EditPartViewer) mouseUp(..)}
-	 * will not occur once a native drag has started. The Tool should correct
-	 * its state to handle this lost Event.
+	 * Tools because {@link #mouseUp(MouseEvent, EditPartViewer) mouseUp(..)} will
+	 * not occur once a native drag has started. The Tool should correct its state
+	 * to handle this lost Event.
 	 * 
-	 * @param event
-	 *            the SWT DragSourceEvent
-	 * @param viewer
-	 *            the Viewer on which a native drag started
+	 * @param event  the SWT DragSourceEvent
+	 * @param viewer the Viewer on which a native drag started
 	 */
 	void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer);
 
@@ -235,56 +206,48 @@ public interface Tool {
 	 * Called to set the EditDomain for this Tool. This is called right before
 	 * {@link #activate()}.
 	 * 
-	 * @param domain
-	 *            The EditDomain to which this Tool belongs
+	 * @param domain The EditDomain to which this Tool belongs
 	 */
 	void setEditDomain(EditDomain domain);
 
 	/**
 	 * Called to set the current Viewer receiving events. This method is rarely
-	 * called, since the Viewer is always passed along with the events
-	 * themselves. This method really just applies to {@link DragTracker
-	 * DragTrackers}.
+	 * called, since the Viewer is always passed along with the events themselves.
+	 * This method really just applies to {@link DragTracker DragTrackers}.
 	 * 
-	 * @param viewer
-	 *            The current Viewer
+	 * @param viewer The current Viewer
 	 */
 	void setViewer(EditPartViewer viewer);
 
 	/**
 	 * Called when a Viewer receives a mouse enter.
 	 * 
-	 * @param mouseEvent
-	 *            the SWT mouse event
-	 * @param viewer
-	 *            the Viewer which received a mouse enter
+	 * @param mouseEvent the SWT mouse event
+	 * @param viewer     the Viewer which received a mouse enter
 	 */
 	void viewerEntered(MouseEvent mouseEvent, EditPartViewer viewer);
 
 	/**
 	 * Called when a Viewer receives a mouse exit.
 	 * 
-	 * @param mouseEvent
-	 *            the SWT mouse event
-	 * @param viewer
-	 *            the Viewer which received a mouse exit
+	 * @param mouseEvent the SWT mouse event
+	 * @param viewer     the Viewer which received a mouse exit
 	 */
 	void viewerExited(MouseEvent mouseEvent, EditPartViewer viewer);
 
 	/**
-	 * This method can be invoked to set any properties of this tool. This
-	 * allows clients who do not have direct access to a Tool to still be able
-	 * to configure that tool. The given Map should have the property's key and
-	 * value. This method will ignore unrecognized keys and values that are not
-	 * of the expected type.
+	 * This method can be invoked to set any properties of this tool. This allows
+	 * clients who do not have direct access to a Tool to still be able to configure
+	 * that tool. The given Map should have the property's key and value. This
+	 * method will ignore unrecognized keys and values that are not of the expected
+	 * type.
 	 * <p>
-	 * This method should only be invoked once when the tool is first
-	 * constructed and is being initialized. Invoking this method at other times
-	 * may have undesired effects.
+	 * This method should only be invoked once when the tool is first constructed
+	 * and is being initialized. Invoking this method at other times may have
+	 * undesired effects.
 	 * 
-	 * @param properties
-	 *            a mapping of the properties to be set and their new values;
-	 *            can be <code>null</code>
+	 * @param properties a mapping of the properties to be set and their new values;
+	 *                   can be <code>null</code>
 	 * @since 3.1
 	 */
 	void setProperties(Map properties);

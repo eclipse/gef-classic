@@ -44,8 +44,7 @@ import org.eclipse.zest.layouts.LayoutAlgorithm;
  * @author Ian Bull
  * @author Chris Callendar
  */
-public class GraphViewer extends AbstractStructuredGraphViewer implements
-		ISelectionProvider {
+public class GraphViewer extends AbstractStructuredGraphViewer implements ISelectionProvider {
 
 	protected Graph graph = null;
 	private IStylingGraphModelFactory modelFactory = null;
@@ -55,10 +54,8 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 	/**
 	 * Initializes the viewer.
 	 * 
-	 * @param composite
-	 *            The parent composite.
-	 * @param style
-	 *            The style for the viewer and the related Graph.
+	 * @param composite The parent composite.
+	 * @param style     The style for the viewer and the related Graph.
 	 * @see SWT#V_SCROLL
 	 * @see SWT#H_SCROLL
 	 */
@@ -83,12 +80,10 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 				Iterator iterator = selectionChangedListeners.iterator();
 
 				ISelection structuredSelection = getSelection();
-				SelectionChangedEvent event = new SelectionChangedEvent(
-						GraphViewer.this, structuredSelection);
+				SelectionChangedEvent event = new SelectionChangedEvent(GraphViewer.this, structuredSelection);
 
 				while (iterator.hasNext()) {
-					ISelectionChangedListener listener = (ISelectionChangedListener) iterator
-							.next();
+					ISelectionChangedListener listener = (ISelectionChangedListener) iterator.next();
 					listener.selectionChanged(event);
 				}
 				firePostSelectionChanged(event);
@@ -99,8 +94,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 		control.addMouseListener(new MouseListener() {
 
 			public void mouseDoubleClick(MouseEvent e) {
-				DoubleClickEvent doubleClickEvent = new DoubleClickEvent(
-						GraphViewer.this, getSelection());
+				DoubleClickEvent doubleClickEvent = new DoubleClickEvent(GraphViewer.this, getSelection());
 				fireDoubleClick(doubleClickEvent);
 			}
 
@@ -137,10 +131,8 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 	/**
 	 * Sets the layout algorithm to use for this viewer.
 	 * 
-	 * @param algorithm
-	 *            the algorithm to layout the nodes
-	 * @param runLayout
-	 *            if the layout should be run
+	 * @param algorithm the algorithm to layout the nodes
+	 * @param runLayout if the layout should be run
 	 */
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean runLayout) {
 		graph.setLayoutAlgorithm(algorithm, runLayout);
@@ -159,8 +151,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#setNodeStyle
+	 * @see org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#setNodeStyle
 	 * (int)
 	 */
 	public void setNodeStyle(int nodeStyle) {
@@ -187,21 +178,19 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 	/**
 	 * Finds the graph widget item for a given user model item.
 	 * 
-	 * Note: This method returns an internal interface (GraphItem). You should
-	 * be able to cast this to either a IGraphModelNode or IGraphModelConnection
-	 * (which are also internal). These are internal because this API is not
-	 * stable. If use this method (to access internal nodes and edges), your
-	 * code may not compile between versions.
+	 * Note: This method returns an internal interface (GraphItem). You should be
+	 * able to cast this to either a IGraphModelNode or IGraphModelConnection (which
+	 * are also internal). These are internal because this API is not stable. If use
+	 * this method (to access internal nodes and edges), your code may not compile
+	 * between versions.
 	 * 
-	 * @param The
-	 *            user model node.
+	 * @param The user model node.
 	 * @return An IGraphItem. This should be either a IGraphModelNode or
 	 *         IGraphModelConnection
 	 */
 	public GraphItem findGraphItem(Object element) {
 		Widget[] result = findItems(element);
-		return (result.length == 0 || !(result[0] instanceof GraphItem)) ? null
-				: (GraphItem) result[0];
+		return (result.length == 0 || !(result[0] instanceof GraphItem)) ? null : (GraphItem) result[0];
 	}
 
 	/**
@@ -266,8 +255,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 		}
 	}
 
-	public void removeSelectionChangedListener(
-			ISelectionChangedListener listener) {
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		if (selectionChangedListeners.contains(listener)) {
 			selectionChangedListeners.remove(listener);
 		}
@@ -277,8 +265,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 	// for new actions.
 	protected ZoomManager getZoomManager() {
 		if (zoomManager == null) {
-			zoomManager = new ZoomManager(getGraphControl().getRootLayer(),
-					getGraphControl().getViewport());
+			zoomManager = new ZoomManager(getGraphControl().getRootLayer(), getGraphControl().getViewport());
 		}
 		return zoomManager;
 	}
@@ -286,8 +273,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
+	 * @see org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
 	 */
 	protected IStylingGraphModelFactory getFactory() {
 		if (modelFactory == null) {

@@ -41,8 +41,7 @@ class LocalOptimizer extends GraphVisitor {
 					invertedCrossCount++;
 				else {
 					// edges go to the same location
-					int offsetDiff = nextEdges.getEdge(j).getSourceOffset()
-							- currentEdge.getSourceOffset();
+					int offsetDiff = nextEdges.getEdge(j).getSourceOffset() - currentEdge.getSourceOffset();
 					if (offsetDiff < 0)
 						crossCount++;
 					else if (offsetDiff > 0)
@@ -66,8 +65,7 @@ class LocalOptimizer extends GraphVisitor {
 					invertedCrossCount++;
 				else {
 					// edges go to the same location
-					int offsetDiff = nextEdges.getEdge(j).getTargetOffset()
-							- currentEdge.getTargetOffset();
+					int offsetDiff = nextEdges.getEdge(j).getTargetOffset() - currentEdge.getTargetOffset();
 					if (offsetDiff < 0)
 						crossCount++;
 					else if (offsetDiff > 0)

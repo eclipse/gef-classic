@@ -14,8 +14,7 @@ import org.eclipse.draw2d.PolylineConnection;
 
 import org.eclipse.gef.GraphicalEditPart;
 
-public class WireEndpointEditPolicy extends
-		org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy {
+public class WireEndpointEditPolicy extends org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy {
 
 	protected void addSelectionHandles() {
 		super.addSelectionHandles();

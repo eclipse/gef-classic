@@ -22,13 +22,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This snippet shows how to use the IGraphContentProvider to create a graph with Zest.
- * In this example, getElements returns 3 edges:
- * 	* Rock2Paper
- *  * Paper2Scissors
- *  * Scissors2Rock
+ * This snippet shows how to use the IGraphContentProvider to create a graph
+ * with Zest. In this example, getElements returns 3 edges: * Rock2Paper *
+ * Paper2Scissors * Scissors2Rock
  * 
- * And for each of these, the source and destination are returned in getSource and getDestination.
+ * And for each of these, the source and destination are returned in getSource
+ * and getDestination.
  * 
  * A label provider is also used to create the text and icons for the graph.
  * 

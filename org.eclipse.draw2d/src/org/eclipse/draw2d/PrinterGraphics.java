@@ -36,10 +36,8 @@ public class PrinterGraphics extends ScaledGraphics {
 	/**
 	 * Creates a new PrinterGraphics with Graphics g, using Printer p
 	 * 
-	 * @param g
-	 *            Graphics object to draw with
-	 * @param p
-	 *            Printer to print to
+	 * @param g Graphics object to draw with
+	 * @param p Printer to print to
 	 */
 	public PrinterGraphics(Graphics g, Printer p) {
 		super(g);
@@ -86,14 +84,12 @@ public class PrinterGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int)
 	 */
-	public void drawImage(Image srcImage, int sx, int sy, int sw, int sh,
-			int tx, int ty, int tw, int th) {
+	public void drawImage(Image srcImage, int sx, int sy, int sw, int sh, int tx, int ty, int tw, int th) {
 		super.drawImage(printerImage(srcImage), sx, sy, sw, sh, tx, ty, tw, th);
 	}
 
 	int zoomFontHeight(int height) {
-		return (int) (height * zoom * Display.getCurrent().getDPI().y
-				/ printer.getDPI().y + 0.0000001);
+		return (int) (height * zoom * Display.getCurrent().getDPI().y / printer.getDPI().y + 0.0000001);
 	}
 
 	/**
@@ -109,20 +105,16 @@ public class PrinterGraphics extends ScaledGraphics {
 	 * @see org.eclipse.draw2d.ScaledGraphics#setLineAttributes(org.eclipse.swt.graphics.LineAttributes)
 	 */
 	public void setLineAttributes(LineAttributes attributes) {
-		if (attributes.style == SWT.LINE_CUSTOM && attributes.dash != null
-				&& attributes.dash.length > 0) {
+		if (attributes.style == SWT.LINE_CUSTOM && attributes.dash != null && attributes.dash.length > 0) {
 			float[] newDashes = new float[attributes.dash.length];
-			float printerDot = (float) (printer.getDPI().y
-					/ Display.getCurrent().getDPI().y + 0.0000001);
+			float printerDot = (float) (printer.getDPI().y / Display.getCurrent().getDPI().y + 0.0000001);
 			for (int i = 0; i < attributes.dash.length; i++) {
 				newDashes[i] = attributes.dash[i] * printerDot;
 			}
 			// make a copy of attributes, we dont's want it changed on figure
 			// (or display will be affected)
-			super.setLineAttributes(new LineAttributes(attributes.width,
-					attributes.cap, attributes.join, attributes.style,
-					newDashes, attributes.dashOffset * printerDot,
-					attributes.miterLimit));
+			super.setLineAttributes(new LineAttributes(attributes.width, attributes.cap, attributes.join,
+					attributes.style, newDashes, attributes.dashOffset * printerDot, attributes.miterLimit));
 		} else {
 			super.setLineAttributes(attributes);
 		}

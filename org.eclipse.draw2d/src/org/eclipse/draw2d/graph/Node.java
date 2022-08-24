@@ -56,8 +56,7 @@ public class Node {
 	int workingInts[] = new int[4];
 
 	/**
-	 * Clients may use this field to mark the Node with an arbitrary data
-	 * object.
+	 * Clients may use this field to mark the Node with an arbitrary data object.
 	 */
 	public Object data;
 
@@ -83,8 +82,8 @@ public class Node {
 	public EdgeList incoming = new EdgeList();
 
 	/**
-	 * The default attachment point for incoming edges. <code>-1</code>
-	 * indicates that the node's horizontal center should be used.
+	 * The default attachment point for incoming edges. <code>-1</code> indicates
+	 * that the node's horizontal center should be used.
 	 */
 	public int incomingOffset = -1;
 
@@ -137,8 +136,7 @@ public class Node {
 	/**
 	 * Constructs a node with the given data object
 	 * 
-	 * @param data
-	 *            an arbitrary data object
+	 * @param data an arbitrary data object
 	 */
 	public Node(Object data) {
 		this(data, null);
@@ -147,21 +145,18 @@ public class Node {
 	/**
 	 * Constructs a node inside the given subgraph.
 	 * 
-	 * @param parent
-	 *            the parent subgraph
+	 * @param parent the parent subgraph
 	 */
 	public Node(Subgraph parent) {
 		this(null, parent);
 	}
 
 	/**
-	 * Constructs a node with the given data object and parent subgraph. This
-	 * node is added to the set of members for the parent subgraph
+	 * Constructs a node with the given data object and parent subgraph. This node
+	 * is added to the set of members for the parent subgraph
 	 * 
-	 * @param data
-	 *            an arbitrary data object
-	 * @param parent
-	 *            the parent subgraph or <code>null</code>
+	 * @param data   an arbitrary data object
+	 * @param parent the parent subgraph or <code>null</code>
 	 */
 	public Node(Object data, Subgraph parent) {
 		this.data = data;
@@ -172,9 +167,9 @@ public class Node {
 
 	/**
 	 * Returns the incoming attachment point. This is the distance from the left
-	 * edge to the default incoming attachment point for edges. Each incoming
-	 * edge may have it's own attachment setting which takes priority over this
-	 * default one.
+	 * edge to the default incoming attachment point for edges. Each incoming edge
+	 * may have it's own attachment setting which takes priority over this default
+	 * one.
 	 * 
 	 * @return the incoming offset
 	 */
@@ -186,9 +181,9 @@ public class Node {
 
 	/**
 	 * Returns the outgoing attachment point. This is the distance from the left
-	 * edge to the default outgoing attachment point for edges. Each outgoing
-	 * edge may have it's own attachment setting which takes priority over this
-	 * default one.
+	 * edge to the default outgoing attachment point for edges. Each outgoing edge
+	 * may have it's own attachment setting which takes priority over this default
+	 * one.
 	 * 
 	 * @return the outgoing offset
 	 */
@@ -199,8 +194,8 @@ public class Node {
 	}
 
 	/**
-	 * Returns the padding for this node or <code>null</code> if the default
-	 * padding for the graph should be used.
+	 * Returns the padding for this node or <code>null</code> if the default padding
+	 * for the graph should be used.
 	 * 
 	 * @return the padding or <code>null</code>
 	 */
@@ -219,12 +214,10 @@ public class Node {
 	}
 
 	/**
-	 * For internal use only. Returns <code>true</code> if the given node is
-	 * equal to this node. This method is implemented for consitency with
-	 * Subgraph.
+	 * For internal use only. Returns <code>true</code> if the given node is equal
+	 * to this node. This method is implemented for consitency with Subgraph.
 	 * 
-	 * @param node
-	 *            the node in question
+	 * @param node the node in question
 	 * @return <code>true</code> if nested
 	 */
 	boolean isNested(Node node) {
@@ -232,11 +225,10 @@ public class Node {
 	}
 
 	/**
-	 * Sets the padding. <code>null</code> indicates that the default padding
-	 * should be used.
+	 * Sets the padding. <code>null</code> indicates that the default padding should
+	 * be used.
 	 * 
-	 * @param padding
-	 *            an insets or <code>null</code>
+	 * @param padding an insets or <code>null</code>
 	 */
 	public void setPadding(Insets padding) {
 		this.padding = padding;
@@ -246,8 +238,7 @@ public class Node {
 	 * Sets the parent subgraph. This method should not be called directly. The
 	 * constructor will set the parent accordingly.
 	 * 
-	 * @param parent
-	 *            the parent
+	 * @param parent the parent
 	 */
 	public void setParent(Subgraph parent) {
 		this.parent = parent;
@@ -255,12 +246,11 @@ public class Node {
 
 	/**
 	 * Sets the row sorting constraint for this node. By default, a node's
-	 * constraint is <code>-1</code>. If two nodes have different values both >=
-	 * 0, the node with the smaller constraint will be placed to the left of the
-	 * other node. In all other cases no relative placement is guaranteed.
+	 * constraint is <code>-1</code>. If two nodes have different values both >= 0,
+	 * the node with the smaller constraint will be placed to the left of the other
+	 * node. In all other cases no relative placement is guaranteed.
 	 * 
-	 * @param value
-	 *            the row constraint
+	 * @param value the row constraint
 	 * @since 3.2
 	 */
 	public void setRowConstraint(int value) {
@@ -280,8 +270,7 @@ public class Node {
 	/**
 	 * Sets the size of this node to the given dimension.
 	 * 
-	 * @param size
-	 *            the new size
+	 * @param size the new size
 	 * @since 3.2
 	 */
 	public void setSize(Dimension size) {

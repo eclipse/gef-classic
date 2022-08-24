@@ -23,8 +23,7 @@ import org.eclipse.draw2d.Figure;
  * @author hudsonr
  * @since 2.1
  */
-public abstract class FlowContainerLayout extends FlowFigureLayout implements
-		FlowContext {
+public abstract class FlowContainerLayout extends FlowFigureLayout implements FlowContext {
 
 	/**
 	 * the current line
@@ -61,8 +60,8 @@ public abstract class FlowContainerLayout extends FlowFigureLayout implements
 	protected abstract void createNewLine();
 
 	/**
-	 * Called after {@link #layoutChildren()} when all children have been laid
-	 * out. This method exists to flush the last line.
+	 * Called after {@link #layoutChildren()} when all children have been laid out.
+	 * This method exists to flush the last line.
 	 */
 	protected abstract void flush();
 

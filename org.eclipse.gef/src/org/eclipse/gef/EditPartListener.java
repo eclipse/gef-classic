@@ -21,8 +21,8 @@ public interface EditPartListener {
 
 	/**
 	 * Listeners interested in just a subset of Events can extend this stub
-	 * implementation. Also, extending the Stub will reduce the impact of new
-	 * API on this interface.
+	 * implementation. Also, extending the Stub will reduce the impact of new API on
+	 * this interface.
 	 */
 	public class Stub implements EditPartListener {
 		/**
@@ -59,45 +59,38 @@ public interface EditPartListener {
 	/**
 	 * Called after a child EditPart has been added to its parent.
 	 * 
-	 * @param child
-	 *            the Child
-	 * @param index
-	 *            the index at which the child was added
+	 * @param child the Child
+	 * @param index the index at which the child was added
 	 */
 	void childAdded(EditPart child, int index);
 
 	/**
 	 * Called when the editpart has been activated.
 	 * 
-	 * @param editpart
-	 *            the EditPart
+	 * @param editpart the EditPart
 	 */
 	void partActivated(EditPart editpart);
 
 	/**
 	 * Called when the editpart has been deactivated.
 	 * 
-	 * @param editpart
-	 *            the EditPart
+	 * @param editpart the EditPart
 	 */
 	void partDeactivated(EditPart editpart);
 
 	/**
 	 * Called before a child EditPart is removed from its parent.
 	 * 
-	 * @param child
-	 *            the Child being removed
-	 * @param index
-	 *            the child's current location
+	 * @param child the Child being removed
+	 * @param index the child's current location
 	 */
 	void removingChild(EditPart child, int index);
 
 	/**
-	 * Called when the selected state of an EditPart has changed. Focus changes
-	 * also result in this method being called.
+	 * Called when the selected state of an EditPart has changed. Focus changes also
+	 * result in this method being called.
 	 * 
-	 * @param editpart
-	 *            the part whose selection was changed
+	 * @param editpart the part whose selection was changed
 	 * @see EditPart#getSelected()
 	 */
 	void selectedStateChanged(EditPart editpart);

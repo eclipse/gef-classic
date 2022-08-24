@@ -43,8 +43,7 @@ public abstract class ComponentEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Override to contribute to the component's being deleted.
 	 * 
-	 * @param deleteRequest
-	 *            the DeleteRequest
+	 * @param deleteRequest the DeleteRequest
 	 * @return Command <code>null</code> or a contribution to the delete
 	 */
 	protected Command createDeleteCommand(GroupRequest deleteRequest) {
@@ -65,11 +64,10 @@ public abstract class ComponentEditPolicy extends AbstractEditPolicy {
 	}
 
 	/**
-	 * Calls and returns {@link #createDeleteCommand(GroupRequest)}. This method
-	 * is here for historical reasons and used to perform additional function.
+	 * Calls and returns {@link #createDeleteCommand(GroupRequest)}. This method is
+	 * here for historical reasons and used to perform additional function.
 	 * 
-	 * @param request
-	 *            the DeleteRequest
+	 * @param request the DeleteRequest
 	 * @return a delete command
 	 */
 	protected Command getDeleteCommand(GroupRequest request) {

@@ -18,8 +18,7 @@ public interface ActionListener {
 	/**
 	 * Called when the action occurs.
 	 * 
-	 * @param event
-	 *            The event
+	 * @param event The event
 	 */
 	void actionPerformed(ActionEvent event);
 

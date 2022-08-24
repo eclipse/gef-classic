@@ -36,11 +36,10 @@ public class RemoveRange extends MiniEdit {
 
 	/**
 	 * This class removes a range in the model starting from a given TextRun and
-	 * offset and terminating at another TextRun and offset location. Removing
-	 * the range in the model may result in the merging of 2 or more pieces of
-	 * the model. After this edit is applied, the resulting location in the
-	 * merged model may be obtained. This location should be used for subsequent
-	 * insertions.
+	 * offset and terminating at another TextRun and offset location. Removing the
+	 * range in the model may result in the merging of 2 or more pieces of the
+	 * model. After this edit is applied, the resulting location in the merged model
+	 * may be obtained. This location should be used for subsequent insertions.
 	 * 
 	 * @since 3.1
 	 */

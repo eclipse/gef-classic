@@ -23,8 +23,7 @@ import org.eclipse.gef.examples.logicdesigner.figures.LogicColorConstants;
 
 /**
  */
-public class ContainerHighlightEditPolicy extends
-		org.eclipse.gef.editpolicies.GraphicalEditPolicy {
+public class ContainerHighlightEditPolicy extends org.eclipse.gef.editpolicies.GraphicalEditPolicy {
 
 	private Color revertColor;
 
@@ -44,8 +43,7 @@ public class ContainerHighlightEditPolicy extends
 	}
 
 	public EditPart getTargetEditPart(Request request) {
-		return request.getType().equals(RequestConstants.REQ_SELECTION_HOVER) ? getHost()
-				: null;
+		return request.getType().equals(RequestConstants.REQ_SELECTION_HOVER) ? getHost() : null;
 	}
 
 	private void setContainerBackground(Color c) {
@@ -60,13 +58,10 @@ public class ContainerHighlightEditPolicy extends
 	}
 
 	public void showTargetFeedback(Request request) {
-		if (request.getType().equals(RequestConstants.REQ_MOVE)
-				|| request.getType().equals(RequestConstants.REQ_ADD)
+		if (request.getType().equals(RequestConstants.REQ_MOVE) || request.getType().equals(RequestConstants.REQ_ADD)
 				|| request.getType().equals(RequestConstants.REQ_CLONE)
-				|| request.getType().equals(
-						RequestConstants.REQ_CONNECTION_START)
-				|| request.getType()
-						.equals(RequestConstants.REQ_CONNECTION_END)
+				|| request.getType().equals(RequestConstants.REQ_CONNECTION_START)
+				|| request.getType().equals(RequestConstants.REQ_CONNECTION_END)
 				|| request.getType().equals(RequestConstants.REQ_CREATE))
 			showHighlight();
 	}

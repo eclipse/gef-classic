@@ -20,8 +20,7 @@ public interface TargetRequest {
 	/**
 	 * Sets the target EditPart.
 	 * 
-	 * @param part
-	 *            the target EditPart
+	 * @param part the target EditPart
 	 */
 	void setTargetEditPart(EditPart part);
 

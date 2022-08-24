@@ -56,8 +56,8 @@ public class PasteTemplateAction extends SelectionAction {
 	}
 
 	/**
-	 * Creates and returns a command (which may be <code>null</code>) to create
-	 * a new EditPart based on the template on the clipboard.
+	 * Creates and returns a command (which may be <code>null</code>) to create a
+	 * new EditPart based on the template on the clipboard.
 	 * 
 	 * @return the paste command
 	 */
@@ -95,14 +95,13 @@ public class PasteTemplateAction extends SelectionAction {
 	}
 
 	/**
-	 * Returns the appropriate Factory object to be used for the specified
-	 * template. This Factory is used on the CreateRequest that is sent to the
-	 * target EditPart. Note that the given template might be from a palette for
-	 * a different GEF-based editor. In that case, this method can return
+	 * Returns the appropriate Factory object to be used for the specified template.
+	 * This Factory is used on the CreateRequest that is sent to the target
+	 * EditPart. Note that the given template might be from a palette for a
+	 * different GEF-based editor. In that case, this method can return
 	 * <code>null</code>.
 	 * 
-	 * @param template
-	 *            the template Object; it will never be <code>null</code>
+	 * @param template the template Object; it will never be <code>null</code>
 	 * @return a Factory
 	 */
 	protected CreationFactory getFactory(Object template) {
@@ -112,8 +111,7 @@ public class PasteTemplateAction extends SelectionAction {
 	}
 
 	/**
-	 * @param container
-	 *            the parent of the new part that is being pasted
+	 * @param container the parent of the new part that is being pasted
 	 * @return the location at which to insert
 	 */
 	protected Point getPasteLocation(GraphicalEditPart container) {

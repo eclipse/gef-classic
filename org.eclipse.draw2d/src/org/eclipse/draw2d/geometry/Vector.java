@@ -30,10 +30,8 @@ public class Vector {
 	/**
 	 * Constructs a Vector pointed in the specified direction.
 	 * 
-	 * @param x
-	 *            X value.
-	 * @param y
-	 *            Y value.
+	 * @param x X value.
+	 * @param y Y value.
 	 */
 	public Vector(double x, double y) {
 		this.x = x;
@@ -43,8 +41,7 @@ public class Vector {
 	/**
 	 * Constructs a Vector pointed in the direction specified by a Point.
 	 * 
-	 * @param p
-	 *            the point
+	 * @param p the point
 	 */
 	public Vector(PrecisionPoint p) {
 		x = p.preciseX();
@@ -55,10 +52,8 @@ public class Vector {
 	 * Constructs a Vector representing the direction and magnitude between to
 	 * provided Points.
 	 * 
-	 * @param start
-	 *            starting point
-	 * @param end
-	 *            End Point
+	 * @param start starting point
+	 * @param end   End Point
 	 */
 	public Vector(PrecisionPoint start, PrecisionPoint end) {
 		x = end.preciseX() - start.preciseX();
@@ -66,13 +61,10 @@ public class Vector {
 	}
 
 	/**
-	 * Constructs a Vector representing the difference between two provided
-	 * Vectors.
+	 * Constructs a Vector representing the difference between two provided Vectors.
 	 * 
-	 * @param start
-	 *            The start Ray
-	 * @param end
-	 *            The end Ray
+	 * @param start The start Ray
+	 * @param end   The end Ray
 	 */
 	public Vector(Vector start, Vector end) {
 		x = end.x - start.x;
@@ -80,12 +72,11 @@ public class Vector {
 	}
 
 	/**
-	 * Calculates the magnitude of the cross product of this Vector with
-	 * another. Represents the amount by which two Vectors are directionally
-	 * different. Parallel Vectors return a value of 0.
+	 * Calculates the magnitude of the cross product of this Vector with another.
+	 * Represents the amount by which two Vectors are directionally different.
+	 * Parallel Vectors return a value of 0.
 	 * 
-	 * @param other
-	 *            Vector being compared
+	 * @param other Vector being compared
 	 * @return The dissimilarity
 	 */
 	public double getDissimilarity(Vector other) {
@@ -96,8 +87,7 @@ public class Vector {
 	 * Calculates whether this Vector and the provided one are parallel to each
 	 * other.
 	 * 
-	 * @param other
-	 *            The Vector to test for parallelism
+	 * @param other The Vector to test for parallelism
 	 * @return true if this Vector and the provided one are parallel, false
 	 *         otherwise.
 	 */
@@ -108,67 +98,55 @@ public class Vector {
 	/**
 	 * Calculates the dot product of this Vector with another.
 	 * 
-	 * @param other
-	 *            the Vector used to calculate the dot product
+	 * @param other the Vector used to calculate the dot product
 	 * @return The dot product
 	 */
 	public double getDotProduct(Vector other) {
-		return PrecisionGeometry.preciseAdd(
-				PrecisionGeometry.preciseMultiply(x, other.x),
+		return PrecisionGeometry.preciseAdd(PrecisionGeometry.preciseMultiply(x, other.x),
 				PrecisionGeometry.preciseMultiply(y, other.y));
 	}
 
 	/**
 	 * Calculates the cross product of this Vector with another.
 	 * 
-	 * @param other
-	 *            the Vector used to calculate the cross product
+	 * @param other the Vector used to calculate the cross product
 	 * @return The cross product.
 	 */
 	public double getCrossProduct(Vector other) {
-		return PrecisionGeometry.preciseSubtract(
-				PrecisionGeometry.preciseMultiply(x, other.y),
+		return PrecisionGeometry.preciseSubtract(PrecisionGeometry.preciseMultiply(x, other.y),
 				PrecisionGeometry.preciseMultiply(y, other.x));
 	}
 
 	/**
 	 * Creates a new Vector which is the sum of this Vector with another.
 	 * 
-	 * @param other
-	 *            Vector to be added to this Vector
+	 * @param other Vector to be added to this Vector
 	 * @return a new Vector representing the sum
 	 */
 	public Vector getAdded(Vector other) {
-		return new Vector(PrecisionGeometry.preciseAdd(x, other.x),
-				PrecisionGeometry.preciseAdd(y, other.y));
+		return new Vector(PrecisionGeometry.preciseAdd(x, other.x), PrecisionGeometry.preciseAdd(y, other.y));
 	}
 
 	/**
-	 * Creates a new Vector which is the difference of this Vector with the
-	 * provided Vector.
+	 * Creates a new Vector which is the difference of this Vector with the provided
+	 * Vector.
 	 * 
-	 * @param other
-	 *            Vector to be subtracted from this Vector
+	 * @param other Vector to be subtracted from this Vector
 	 * @return a new Vector representing the difference.
 	 */
 	public Vector getSubtracted(Vector other) {
-		return new Vector(PrecisionGeometry.preciseSubtract(x, other.x),
-				PrecisionGeometry.preciseSubtract(y, other.y));
+		return new Vector(PrecisionGeometry.preciseSubtract(x, other.x), PrecisionGeometry.preciseSubtract(y, other.y));
 	}
 
 	/**
-	 * Returns the angle (in degrees) between this Vector and the provided
-	 * Vector.
+	 * Returns the angle (in degrees) between this Vector and the provided Vector.
 	 * 
-	 * @param other
-	 *            Vector to calculate the angle.
+	 * @param other Vector to calculate the angle.
 	 * @return the angle between the two Vectors in degrees.
 	 */
 	public double getAngle(Vector other) {
-		double cosAlpha = PrecisionGeometry.preciseDivide(
-				getDotProduct(other),
-				(PrecisionGeometry.preciseMultiply(getLength(),
-						other.getLength())));
+		double cosAlpha = PrecisionGeometry.preciseDivide(getDotProduct(other),
+				(PrecisionGeometry.preciseMultiply(getLength(), other.getLength())));
 		// compensate rounding effects that may occur
 		if (cosAlpha > 1) {
 			cosAlpha = 1;
@@ -182,46 +160,39 @@ public class Vector {
 	 * Creates a new Vector which represents the average of this Vector with
 	 * another.
 	 * 
-	 * @param other
-	 *            Vector to calculate the average.
+	 * @param other Vector to calculate the average.
 	 * @return a new Vector
 	 */
 	public Vector getAveraged(Vector other) {
-		return new Vector(PrecisionGeometry.preciseDivide(
-				PrecisionGeometry.preciseAdd(x, other.x), 2),
-				PrecisionGeometry.preciseDivide(
-						PrecisionGeometry.preciseAdd(y, other.y), 2));
+		return new Vector(PrecisionGeometry.preciseDivide(PrecisionGeometry.preciseAdd(x, other.x), 2),
+				PrecisionGeometry.preciseDivide(PrecisionGeometry.preciseAdd(y, other.y), 2));
 	}
 
 	/**
-	 * Creates a new Vector which represents this Vector multiplied by the
-	 * provided scalar factor.
+	 * Creates a new Vector which represents this Vector multiplied by the provided
+	 * scalar factor.
 	 * 
-	 * @param factor
-	 *            Value providing the amount to scale.
+	 * @param factor Value providing the amount to scale.
 	 * @return a new Vector
 	 */
 	public Vector getMultiplied(double factor) {
-		return new Vector(PrecisionGeometry.preciseMultiply(x, factor),
-				PrecisionGeometry.preciseMultiply(y, factor));
+		return new Vector(PrecisionGeometry.preciseMultiply(x, factor), PrecisionGeometry.preciseMultiply(y, factor));
 	}
 
 	/**
 	 * Creates a new Vector which represents this Vector divided by the provided
 	 * scalar factor.
 	 * 
-	 * @param factor
-	 *            Value providing the amount to scale.
+	 * @param factor Value providing the amount to scale.
 	 * @return a new Vector
 	 */
 	public Vector getDivided(double factor) {
-		return new Vector(PrecisionGeometry.preciseDivide(x, factor),
-				PrecisionGeometry.preciseDivide(y, factor));
+		return new Vector(PrecisionGeometry.preciseDivide(x, factor), PrecisionGeometry.preciseDivide(y, factor));
 	}
 
 	/**
-	 * Returns the orthogonal complement of this Vector, which is defined to be
-	 * (-y, x).
+	 * Returns the orthogonal complement of this Vector, which is defined to be (-y,
+	 * x).
 	 * 
 	 * @return the orthogonal complement of this Vector
 	 */
@@ -239,12 +210,11 @@ public class Vector {
 	}
 
 	/**
-	 * Calculates the similarity of this Vector with another. Similarity is
-	 * defined as the absolute value of the dotProduct(). Orthogonal vectors
-	 * return a value of 0.
+	 * Calculates the similarity of this Vector with another. Similarity is defined
+	 * as the absolute value of the dotProduct(). Orthogonal vectors return a value
+	 * of 0.
 	 * 
-	 * @param other
-	 *            Vector being tested for similarity
+	 * @param other Vector being tested for similarity
 	 * @return the Similarity
 	 * @see #getDissimilarity(Vector)
 	 */
@@ -253,11 +223,10 @@ public class Vector {
 	}
 
 	/**
-	 * Calculates whether this Vector and the provided one are orthogonal to
-	 * each other.
+	 * Calculates whether this Vector and the provided one are orthogonal to each
+	 * other.
 	 * 
-	 * @param other
-	 *            Vector being tested for orthogonality
+	 * @param other Vector being tested for orthogonality
 	 * @return true, if this Vector and the provide one are orthogonal, false
 	 *         otherwise
 	 */

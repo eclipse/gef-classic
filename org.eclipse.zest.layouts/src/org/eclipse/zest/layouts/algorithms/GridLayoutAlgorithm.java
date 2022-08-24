@@ -37,6 +37,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Initializes the grid layout.
+	 * 
 	 * @param styles
 	 * @see LayoutStyles
 	 */
@@ -63,10 +64,12 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	/**
 	 * 
 	 */
-	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double x, double y, double width, double height) {
 
 		// TODO: Filter unwanted entities and relationships
-		//super.applyLayout (entitiesToLayout, relationshipsToConsider, boundsX, boundsY, boundsWidth, boundsHeight);
+		// super.applyLayout (entitiesToLayout, relationshipsToConsider, boundsX,
+		// boundsY, boundsWidth, boundsHeight);
 		// now begin
 		numChildren = entitiesToLayout.length;
 		if (numChildren < 1)
@@ -100,19 +103,28 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/**
-	 * Use this algorithm to layout the given entities, using the given relationships and bounds.
-	 * The entities will be placed in the same order as they are passed in, unless a comparator
-	 * is supplied.  
+	 * Use this algorithm to layout the given entities, using the given
+	 * relationships and bounds. The entities will be placed in the same order as
+	 * they are passed in, unless a comparator is supplied.
 	 * 
-	 * @param entitiesToLayout Apply the algorithm to these entities
-	 * @param relationshipsToConsider Only consider these relationships when applying the algorithm.
-	 * @param boundsX The left side of the bounds in which the layout can place the entities.
-	 * @param boundsY The top side of the bounds in which the layout can place the entities.
-	 * @param boundsWidth The width of the bounds in which the layout can place the entities.
-	 * @param boundsHeight The height of the bounds in which the layout can place the entities.
-	 * @throws RuntimeException Thrown if entitiesToLayout doesn't contain all of the endpoints for each relationship in relationshipsToConsider
+	 * @param entitiesToLayout        Apply the algorithm to these entities
+	 * @param relationshipsToConsider Only consider these relationships when
+	 *                                applying the algorithm.
+	 * @param boundsX                 The left side of the bounds in which the
+	 *                                layout can place the entities.
+	 * @param boundsY                 The top side of the bounds in which the layout
+	 *                                can place the entities.
+	 * @param boundsWidth             The width of the bounds in which the layout
+	 *                                can place the entities.
+	 * @param boundsHeight            The height of the bounds in which the layout
+	 *                                can place the entities.
+	 * @throws RuntimeException Thrown if entitiesToLayout doesn't contain all of
+	 *                          the endpoints for each relationship in
+	 *                          relationshipsToConsider
 	 */
-	protected synchronized void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
+	protected synchronized void applyLayoutInternal(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth,
+			double boundsHeight) {
 
 		int index = 0;
 		for (int i = 0; i < rows; i++) {
@@ -132,14 +144,17 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		fireProgressEvent(totalProgress, totalProgress);
 	}
 
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationshipsToConsider) {
 
 	}
 
 	/**
-	 * Calculates and returns an array containing the number of columns, followed by the number of rows
+	 * Calculates and returns an array containing the number of columns, followed by
+	 * the number of rows
 	 */
-	protected int[] calculateNumberOfRowsAndCols(int numChildren, double boundX, double boundY, double boundWidth, double boundHeight) {
+	protected int[] calculateNumberOfRowsAndCols(int numChildren, double boundX, double boundY, double boundWidth,
+			double boundHeight) {
 		if (getEntityAspectRatio() == 1.0) {
 			return calculateNumberOfRowsAndCols_square(numChildren, boundX, boundY, boundWidth, boundHeight);
 		} else {
@@ -147,13 +162,14 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		}
 	}
 
-	protected int[] calculateNumberOfRowsAndCols_square(int numChildren, double boundX, double boundY, double boundWidth, double boundHeight) {
+	protected int[] calculateNumberOfRowsAndCols_square(int numChildren, double boundX, double boundY,
+			double boundWidth, double boundHeight) {
 		int rows = Math.max(1, (int) Math.sqrt(numChildren * boundHeight / boundWidth));
 		int cols = Math.max(1, (int) Math.sqrt(numChildren * boundWidth / boundHeight));
 
 		// if space is taller than wide, adjust rows first
 		if (boundWidth <= boundHeight) {
-			//decrease number of rows and columns until just enough or not enough
+			// decrease number of rows and columns until just enough or not enough
 			while (rows * cols > numChildren) {
 				if (rows > 1)
 					rows--;
@@ -161,14 +177,14 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 					if (cols > 1)
 						cols--;
 			}
-			//increase number of rows and columns until just enough
+			// increase number of rows and columns until just enough
 			while (rows * cols < numChildren) {
 				rows++;
 				if (rows * cols < numChildren)
 					cols++;
 			}
 		} else {
-			//decrease number of rows and columns until just enough or not enough
+			// decrease number of rows and columns until just enough or not enough
 			while (rows * cols > numChildren) {
 				if (cols > 1)
 					cols--;
@@ -176,7 +192,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 					if (rows > 1)
 						rows--;
 			}
-			//increase number of rows and columns until just enough
+			// increase number of rows and columns until just enough
 			while (rows * cols < numChildren) {
 				cols++;
 				if (rows * cols < numChildren)
@@ -209,6 +225,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Increases the padding between rows in the grid
+	 * 
 	 * @param rowPadding Value will not be set if less than 0.
 	 */
 	public void setRowPadding(int rowPadding) {

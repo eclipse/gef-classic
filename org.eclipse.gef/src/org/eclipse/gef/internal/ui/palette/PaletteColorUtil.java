@@ -41,59 +41,46 @@ public class PaletteColorUtil {
 
 	private static final Color SELECTED_COLOR = new Color(null, 207, 227, 250);
 
-	private static final Color HOVER_COLOR_HICONTRAST = new Color(null, 0, 128,
-			0);
+	private static final Color HOVER_COLOR_HICONTRAST = new Color(null, 0, 128, 0);
 
-	private static final Color SELECTED_COLOR_HICONTRAST = new Color(null, 128,
-			0, 128);
+	private static final Color SELECTED_COLOR_HICONTRAST = new Color(null, 128, 0, 128);
 
 	public static final Color WIDGET_BACKGROUND_LIST_BACKGROUND_40 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.4);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.4);
 
 	public static final Color WIDGET_BACKGROUND_LIST_BACKGROUND_60 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.6);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.6);
 
 	public static final Color WIDGET_BACKGROUND_LIST_BACKGROUND_85 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.85);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.85);
 
 	public static final Color WIDGET_BACKGROUND_LIST_BACKGROUND_90 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.9);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_LIST_BACKGROUND, 0.9);
 
 	public static final Color WIDGET_BACKGROUND_NORMAL_SHADOW_40 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.4);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.4);
 
 	public static final Color WIDGET_BACKGROUND_NORMAL_SHADOW_45 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.45);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.45);
 
 	public static final Color WIDGET_BACKGROUND_NORMAL_SHADOW_65 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.65);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.65);
 
 	public static final Color WIDGET_BACKGROUND_NORMAL_SHADOW_70 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.7);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.7);
 
 	public static final Color WIDGET_BACKGROUND_NORMAL_SHADOW_80 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.8);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.8);
 
 	public static final Color WIDGET_BACKGROUND_NORMAL_SHADOW_90 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.9);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.9);
 
 	public static final Color WIDGET_BACKGROUND_NORMAL_SHADOW_95 = FigureUtilities
-			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND,
-					PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.95);
+			.mixColors(PaletteColorUtil.WIDGET_BACKGROUND, PaletteColorUtil.WIDGET_NORMAL_SHADOW, 0.95);
 
 	/**
-	 * Gets the color to be used when hovering over palette items. The color
-	 * differs in high contrast mode.
+	 * Gets the color to be used when hovering over palette items. The color differs
+	 * in high contrast mode.
 	 * 
 	 * @return the hover color
 	 * @since 3.4
@@ -110,8 +97,8 @@ public class PaletteColorUtil {
 	}
 
 	/**
-	 * Gets the color to be used when selecting palette items. The color differs
-	 * in high contrast mode.
+	 * Gets the color to be used when selecting palette items. The color differs in
+	 * high contrast mode.
 	 * 
 	 * @return the selected color
 	 * @since 3.4

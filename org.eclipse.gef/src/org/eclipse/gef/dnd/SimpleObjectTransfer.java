@@ -37,8 +37,8 @@ public abstract class SimpleObjectTransfer extends ByteArrayTransfer {
 
 	/**
 	 * The data object is not converted to bytes. It is held onto in a field.
-	 * Instead, a checksum is written out to prevent unwanted drags across
-	 * mulitple running copies of Eclipse.
+	 * Instead, a checksum is written out to prevent unwanted drags across mulitple
+	 * running copies of Eclipse.
 	 * 
 	 * @see org.eclipse.swt.dnd.Transfer#javaToNative(Object, TransferData)
 	 */
@@ -46,14 +46,13 @@ public abstract class SimpleObjectTransfer extends ByteArrayTransfer {
 		setObject(object);
 		startTime = System.currentTimeMillis();
 		if (transferData != null)
-			super.javaToNative(String.valueOf(startTime).getBytes(),
-					transferData);
+			super.javaToNative(String.valueOf(startTime).getBytes(), transferData);
 	}
 
 	/**
 	 * The data object is not converted to bytes. It is held onto in a field.
-	 * Instead, a checksum is written out to prevent unwanted drags across
-	 * mulitple running. copies of Eclipse.
+	 * Instead, a checksum is written out to prevent unwanted drags across mulitple
+	 * running. copies of Eclipse.
 	 * 
 	 * @see org.eclipse.swt.dnd.Transfer#nativeToJava(TransferData)
 	 */
@@ -69,8 +68,7 @@ public abstract class SimpleObjectTransfer extends ByteArrayTransfer {
 	/**
 	 * Sets the Object.
 	 * 
-	 * @param obj
-	 *            The Object
+	 * @param obj The Object
 	 */
 	public void setObject(Object obj) {
 		object = obj;

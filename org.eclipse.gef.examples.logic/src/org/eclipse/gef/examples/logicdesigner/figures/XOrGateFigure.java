@@ -76,8 +76,8 @@ public class XOrGateFigure extends GateFigure {
 		r.y += 4;
 
 		/*
-		 * Draw the bottom gate arc. This is done with an oval. The oval
-		 * overlaps the top arc of the gate, so this region is clipped.
+		 * Draw the bottom gate arc. This is done with an oval. The oval overlaps the
+		 * top arc of the gate, so this region is clipped.
 		 */
 		g.pushState();
 		r.y++;
@@ -88,8 +88,7 @@ public class XOrGateFigure extends GateFigure {
 		r.height--;
 		g.drawOval(r);
 		g.popState();
-		g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2,
-				r.bottom() + 2);
+		g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2, r.bottom() + 2);
 
 		// Draw the gate outline and top curve
 		g.translate(getLocation());

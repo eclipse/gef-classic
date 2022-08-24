@@ -12,8 +12,8 @@ package org.eclipse.zest.layouts;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 /**
- * This represents a single entity, providing the layout algorithms with 
- * a common interface to run on.
+ * This represents a single entity, providing the layout algorithms with a
+ * common interface to run on.
  * 
  * @author Casey Best
  * @author Ian Bull
@@ -42,6 +42,7 @@ public interface LayoutEntity extends Comparable, LayoutItem {
 
 	/**
 	 * Classes should update the specified layout constraint if recognized
+	 * 
 	 * @return
 	 */
 	public void populateLayoutConstraint(LayoutConstraint constraint);

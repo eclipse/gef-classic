@@ -65,11 +65,9 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	}
 
 	/**
-	 * Creates the button that provides the option to pin a drawer open at
-	 * start-up.
+	 * Creates the button that provides the option to pin a drawer open at start-up.
 	 * 
-	 * @param panel
-	 *            The parent Composite
+	 * @param panel The parent Composite
 	 * @return The button for the new option
 	 */
 	protected Button createOpenDrawerInitiallyOption(Composite panel) {
@@ -94,8 +92,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	 * Creates the button that provides the option to have a drawer open at
 	 * start-up.
 	 * 
-	 * @param panel
-	 *            The parent Composite
+	 * @param panel The parent Composite
 	 * @return The button for the new option
 	 */
 	protected Button createPinDrawerInitiallyOption(Composite panel) {
@@ -105,8 +102,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 		GridData data = new GridData();
 		data.horizontalIndent = 15;
 		pinOption.setLayoutData(data);
-		pinOption.setEnabled(openDrawerOption.getSelection()
-				&& openDrawerOption.isEnabled());
+		pinOption.setEnabled(openDrawerOption.getSelection() && openDrawerOption.isEnabled());
 		pinOption.setSelection(getDrawer().isInitiallyPinned());
 		if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 			pinOption.addSelectionListener(new SelectionAdapter() {
@@ -132,8 +128,8 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	}
 
 	/**
-	 * Returns the checkbox button which controls whether the drawer is
-	 * initially open.
+	 * Returns the checkbox button which controls whether the drawer is initially
+	 * open.
 	 * 
 	 * @return the checkbox button which controls the initially open setting.
 	 */
@@ -142,8 +138,8 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	}
 
 	/**
-	 * Returns the checkbox button which controls whether the drawer is
-	 * initially pinned.
+	 * Returns the checkbox button which controls whether the drawer is initially
+	 * pinned.
 	 * 
 	 * @return the checkbox button which controls the initially pinned setting.
 	 */
@@ -152,17 +148,15 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	}
 
 	/**
-	 * This method is invoked when the selection state of the option to open
-	 * drawer at start-up is toggled.
+	 * This method is invoked when the selection state of the option to open drawer
+	 * at start-up is toggled.
 	 * <p>
 	 * It sets the initial state of the drawer accordingly.
 	 * 
-	 * @param selection
-	 *            <code>true</code> if that option is now selected
+	 * @param selection <code>true</code> if that option is now selected
 	 */
 	protected void handleOpenSelected(boolean selection) {
-		int status = selection ? PaletteDrawer.INITIAL_STATE_OPEN
-				: PaletteDrawer.INITIAL_STATE_CLOSED;
+		int status = selection ? PaletteDrawer.INITIAL_STATE_OPEN : PaletteDrawer.INITIAL_STATE_CLOSED;
 		getDrawer().setInitialState(status);
 		pinDrawerOption.setEnabled(selection);
 		if (!selection) {
@@ -171,17 +165,15 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	}
 
 	/**
-	 * This method is invoked when the selection state of the option to pin a
-	 * drawer open at start-up is toggled.
+	 * This method is invoked when the selection state of the option to pin a drawer
+	 * open at start-up is toggled.
 	 * <p>
 	 * It sets the initial state of the drawer accordingly.
 	 * 
-	 * @param selection
-	 *            <code>true</code> if that option is now selected
+	 * @param selection <code>true</code> if that option is now selected
 	 */
 	protected void handlePinSelected(boolean selection) {
-		int status = selection ? PaletteDrawer.INITIAL_STATE_PINNED_OPEN
-				: PaletteDrawer.INITIAL_STATE_OPEN;
+		int status = selection ? PaletteDrawer.INITIAL_STATE_PINNED_OPEN : PaletteDrawer.INITIAL_STATE_OPEN;
 		getDrawer().setInitialState(status);
 	}
 

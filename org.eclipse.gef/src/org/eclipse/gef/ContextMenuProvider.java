@@ -21,16 +21,14 @@ import org.eclipse.jface.action.MenuManager;
  * 
  * @author hudsonr
  */
-public abstract class ContextMenuProvider extends MenuManager implements
-		IMenuListener {
+public abstract class ContextMenuProvider extends MenuManager implements IMenuListener {
 
 	private EditPartViewer viewer;
 
 	/**
 	 * Constructs a context menu for the specified EditPartViewer.
 	 * 
-	 * @param viewer
-	 *            the editpart viewer
+	 * @param viewer the editpart viewer
 	 */
 	public ContextMenuProvider(EditPartViewer viewer) {
 		setViewer(viewer);
@@ -39,11 +37,10 @@ public abstract class ContextMenuProvider extends MenuManager implements
 	}
 
 	/**
-	 * Called when the menu is about to show. Subclasses must implement this
-	 * method to populate the menu each time it is shown.
+	 * Called when the menu is about to show. Subclasses must implement this method
+	 * to populate the menu each time it is shown.
 	 * 
-	 * @param menu
-	 *            this parameter is actually <code>this</code> object
+	 * @param menu this parameter is actually <code>this</code> object
 	 */
 	public abstract void buildContextMenu(IMenuManager menu);
 
@@ -66,8 +63,7 @@ public abstract class ContextMenuProvider extends MenuManager implements
 	/**
 	 * Sets the editpart viewer. Called during construction.
 	 * 
-	 * @param viewer
-	 *            the viewer
+	 * @param viewer the viewer
 	 */
 	protected void setViewer(EditPartViewer viewer) {
 		this.viewer = viewer;

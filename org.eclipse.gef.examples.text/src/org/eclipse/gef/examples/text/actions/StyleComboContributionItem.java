@@ -82,8 +82,7 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	 * Creates and returns the combo for this contribution item under the given
 	 * parent composite.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 * @return the new control
 	 */
 	protected Control createControl(Composite parent) {
@@ -126,15 +125,12 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	}
 
 	/**
-	 * The control item implementation of this <code>IContributionItem</code>
-	 * method calls the <code>createControl</code> framework method to create a
-	 * control under the given parent, and then creates a new tool item to hold
-	 * it.
+	 * The control item implementation of this <code>IContributionItem</code> method
+	 * calls the <code>createControl</code> framework method to create a control
+	 * under the given parent, and then creates a new tool item to hold it.
 	 * 
-	 * @param parent
-	 *            The ToolBar to add the new control to
-	 * @param index
-	 *            Index
+	 * @param parent The ToolBar to add the new control to
+	 * @param index  Index
 	 */
 	public void fill(ToolBar parent, int index) {
 		toolItem = new ToolItem(parent, SWT.SEPARATOR, index);
@@ -164,8 +160,7 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 		if (styleService == null)
 			enablement = false;
 		else {
-			if (!styleService.getStyleState(getProperty())
-					.equals(StyleService.STATE_EDITABLE))
+			if (!styleService.getStyleState(getProperty()).equals(StyleService.STATE_EDITABLE))
 				// we want the combo disabled, but still want to update the
 				// value
 				enablement = false;

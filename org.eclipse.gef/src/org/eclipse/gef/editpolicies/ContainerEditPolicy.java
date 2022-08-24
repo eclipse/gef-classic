@@ -27,8 +27,7 @@ public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Override to contribute to add requests.
 	 * 
-	 * @param request
-	 *            the add request
+	 * @param request the add request
 	 * @return the command contribution to the add
 	 */
 	protected Command getAddCommand(GroupRequest request) {
@@ -38,8 +37,7 @@ public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Override to contribute to clone requests.
 	 * 
-	 * @param request
-	 *            the clone request
+	 * @param request the clone request
 	 * @return the command contribution to the clone
 	 */
 	protected Command getCloneCommand(ChangeBoundsRequest request) {
@@ -66,8 +64,7 @@ public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Clients must implement to contribute to create requests.
 	 * 
-	 * @param request
-	 *            the create request
+	 * @param request the create request
 	 * @return <code>null</code> or a command contribution
 	 */
 	protected abstract Command getCreateCommand(CreateRequest request);
@@ -75,8 +72,7 @@ public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Override to contribute to orphan requests.
 	 * 
-	 * @param request
-	 *            the orphan request
+	 * @param request the orphan request
 	 * @return a command contribution for the orphan
 	 */
 	protected Command getOrphanChildrenCommand(GroupRequest request) {

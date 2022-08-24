@@ -76,8 +76,7 @@ public final class MultiLineLabel extends FigureCanvas {
 	/**
 	 * Constructs a new MultiLineLabel with the given parent.
 	 * 
-	 * @param parent
-	 *            the parent
+	 * @param parent the parent
 	 */
 	public MultiLineLabel(Composite parent) {
 		super(parent);
@@ -93,16 +92,15 @@ public final class MultiLineLabel extends FigureCanvas {
 	}
 
 	private void addAccessibility() {
-		getAccessible().addAccessibleControlListener(
-				new AccessibleControlAdapter() {
-					public void getRole(AccessibleControlEvent e) {
-						e.detail = ACC.ROLE_LABEL;
-					}
+		getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
+			public void getRole(AccessibleControlEvent e) {
+				e.detail = ACC.ROLE_LABEL;
+			}
 
-					public void getState(AccessibleControlEvent e) {
-						e.detail = ACC.STATE_READONLY;
-					}
-				});
+			public void getState(AccessibleControlEvent e) {
+				e.detail = ACC.STATE_READONLY;
+			}
+		});
 		getAccessible().addAccessibleListener(new AccessibleAdapter() {
 			public void getName(AccessibleEvent e) {
 				e.result = getText();
@@ -124,13 +122,11 @@ public final class MultiLineLabel extends FigureCanvas {
 					scrollToY(p.y - dy);
 					scrollToY(p.y - dy * 3 / 2);
 					scrollToY(p.y - dy * 2);
-				} else if ((!mirrored && e.keyCode == SWT.ARROW_RIGHT)
-						|| (mirrored && e.keyCode == SWT.ARROW_LEFT)) {
+				} else if ((!mirrored && e.keyCode == SWT.ARROW_RIGHT) || (mirrored && e.keyCode == SWT.ARROW_LEFT)) {
 					scrollToX(p.x + dx);
 					scrollToX(p.x + dx * 2);
 					scrollToX(p.x + dx * 3);
-				} else if ((!mirrored && e.keyCode == SWT.ARROW_LEFT)
-						|| (mirrored && e.keyCode == SWT.ARROW_RIGHT)) {
+				} else if ((!mirrored && e.keyCode == SWT.ARROW_LEFT) || (mirrored && e.keyCode == SWT.ARROW_RIGHT)) {
 					scrollToX(p.x - dx);
 					scrollToX(p.x - dx * 2);
 					scrollToX(p.x - dx * 3);
@@ -173,9 +169,8 @@ public final class MultiLineLabel extends FigureCanvas {
 	}
 
 	/**
-	 * @param image
-	 *            The <code>Image</code> to be used for this label. It can be
-	 *            <code>null</code>.
+	 * @param image The <code>Image</code> to be used for this label. It can be
+	 *              <code>null</code>.
 	 */
 	public void setImage(Image image) {
 		this.image = image;
@@ -188,8 +183,7 @@ public final class MultiLineLabel extends FigureCanvas {
 	/**
 	 * Sets the text for this label.
 	 * 
-	 * @param text
-	 *            the new text
+	 * @param text the new text
 	 */
 	public void setText(String text) {
 		textFlow.setText(text);

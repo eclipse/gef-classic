@@ -59,8 +59,7 @@ public class GraphViewerTests extends TestCase {
 	public void testDisposalWithDropTarget() {
 		new DropTarget(viewer.getGraphControl(), DND.DROP_MOVE | DND.DROP_COPY);
 		shell.dispose();
-		Assert.assertTrue("The viewer's graph control should be disposed",
-				viewer.getControl().isDisposed());
+		Assert.assertTrue("The viewer's graph control should be disposed", viewer.getControl().isDisposed());
 	}
 
 	/**
@@ -68,17 +67,15 @@ public class GraphViewerTests extends TestCase {
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=334009)
 	 */
 	public void testDisposalWithDragSource() {
-		viewer.addDragSupport(DND.DROP_MOVE,
-				new Transfer[] { TextTransfer.getInstance() },
+		viewer.addDragSupport(DND.DROP_MOVE, new Transfer[] { TextTransfer.getInstance() },
 				new DelegatingDragAdapter());
 		shell.dispose();
-		Assert.assertTrue("The viewer's graph control should be disposed",
-				viewer.getControl().isDisposed());
+		Assert.assertTrue("The viewer's graph control should be disposed", viewer.getControl().isDisposed());
 	}
 
 	/**
-	 * Assert that no invalid selections with null data are produced by the
-	 * viewer (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=356449)
+	 * Assert that no invalid selections with null data are produced by the viewer
+	 * (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=356449)
 	 */
 	public void testValidSelection() {
 		Graph graph = new Graph(shell, SWT.NONE);
@@ -92,13 +89,12 @@ public class GraphViewerTests extends TestCase {
 				((StructuredSelection) viewer.getSelection()).size());
 		n1.setData("1");
 		n2.setData("2");
-		assertEquals("Other data should be in the selection", 2,
-				((StructuredSelection) viewer.getSelection()).size());
+		assertEquals("Other data should be in the selection", 2, ((StructuredSelection) viewer.getSelection()).size());
 	}
 
 	/**
-	 * Assert that listeners for post selection events are properly notified by
-	 * the viewer (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=366916)
+	 * Assert that listeners for post selection events are properly notified by the
+	 * viewer (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=366916)
 	 */
 	public void testPostSelectionListener() {
 		final List selected = new ArrayList();
@@ -108,7 +104,6 @@ public class GraphViewerTests extends TestCase {
 			}
 		});
 		viewer.getControl().notifyListeners(SWT.Selection, new Event());
-		assertFalse("Post selection listeners should be notified",
-				selected.isEmpty());
+		assertFalse("Post selection listeners should be notified", selected.isEmpty());
 	}
 }

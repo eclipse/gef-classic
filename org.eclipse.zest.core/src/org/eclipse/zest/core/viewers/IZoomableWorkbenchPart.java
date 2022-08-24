@@ -10,8 +10,9 @@
 package org.eclipse.zest.core.viewers;
 
 /**
- * An interface that can be added to IWorkbenchParts based on ZEST views so that zooming
- * is supported.
+ * An interface that can be added to IWorkbenchParts based on ZEST views so that
+ * zooming is supported.
+ * 
  * @author Del Myers
  *
  */
@@ -19,6 +20,7 @@ package org.eclipse.zest.core.viewers;
 public interface IZoomableWorkbenchPart {
 	/**
 	 * Returns the viewer that is zoomable.
+	 * 
 	 * @return the viewer that is zoomable.
 	 */
 	AbstractZoomableViewer getZoomableViewer();

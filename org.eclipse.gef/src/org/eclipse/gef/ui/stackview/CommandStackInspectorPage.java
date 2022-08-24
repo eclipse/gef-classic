@@ -33,8 +33,7 @@ public class CommandStackInspectorPage extends org.eclipse.ui.part.Page {
 	/**
 	 * Creates a new CommandStackInspectorPage with the given CommandStack
 	 * 
-	 * @param input
-	 *            the CommandStack
+	 * @param input the CommandStack
 	 */
 	public CommandStackInspectorPage(CommandStack input) {
 		this.input = input;
@@ -62,8 +61,8 @@ public class CommandStackInspectorPage extends org.eclipse.ui.part.Page {
 	 *      org.eclipse.jface.action.IToolBarManager,
 	 *      org.eclipse.jface.action.IStatusLineManager)
 	 */
-	public void makeContributions(IMenuManager menuManager,
-			IToolBarManager toolBarManager, IStatusLineManager statusLineManager) {
+	public void makeContributions(IMenuManager menuManager, IToolBarManager toolBarManager,
+			IStatusLineManager statusLineManager) {
 		super.makeContributions(menuManager, toolBarManager, statusLineManager);
 		toolBarManager.add(new CommandStackViewerAction(treeViewer));
 	}

@@ -17,15 +17,15 @@ public interface LayoutStyles {
 	/** Default layout style constant. */
 	public final static int NONE = 0x00;
 
-	/** 
-	 * Layout constant indicating that the layout algorithm 
-	 * should NOT resize any of the nodes.
+	/**
+	 * Layout constant indicating that the layout algorithm should NOT resize any of
+	 * the nodes.
 	 */
 	public final static int NO_LAYOUT_NODE_RESIZING = 0x01;
 
 	/**
-	 * Some layouts may prefer to expand their bounds beyond those of the requested bounds. This
-	 * flag asks the layout not to do so.
+	 * Some layouts may prefer to expand their bounds beyond those of the requested
+	 * bounds. This flag asks the layout not to do so.
 	 */
 	public static final int ENFORCE_BOUNDS = 0X02;
 

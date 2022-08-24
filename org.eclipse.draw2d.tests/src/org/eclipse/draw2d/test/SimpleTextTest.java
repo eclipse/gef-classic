@@ -41,8 +41,7 @@ public class SimpleTextTest extends AbstractTextTest {
 	}
 
 	protected void makePageWidth(String string, int extra) {
-		int width = FigureUtilities.getStringExtents(string, font).width
-				+ extra;
+		int width = FigureUtilities.getStringExtents(string, font).width + extra;
 		flowpage.setBounds(new Rectangle(0, 0, width, 300));
 		flowpage.validate();
 	}

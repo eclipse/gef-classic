@@ -185,8 +185,7 @@ public class LEDFigure extends NodeFigure implements HandleBounds {
 	/**
 	 * Sets the value of the LEDFigure to val.
 	 * 
-	 * @param val
-	 *            The value to set on this LEDFigure
+	 * @param val The value to set on this LEDFigure
 	 */
 	public void setValue(int val) {
 		String newValue = String.valueOf(val);

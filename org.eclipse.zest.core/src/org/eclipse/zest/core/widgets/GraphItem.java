@@ -58,8 +58,7 @@ public abstract class GraphItem extends Item {
 	}
 
 	/**
-	 * Gets the graph item type. The item type is one of: GRAPH, NODE or
-	 * CONNECTION
+	 * Gets the graph item type. The item type is one of: GRAPH, NODE or CONNECTION
 	 * 
 	 * @return
 	 */
@@ -68,8 +67,7 @@ public abstract class GraphItem extends Item {
 	/**
 	 * Set the visibility of this item.
 	 * 
-	 * @param visible
-	 *            whether or not this item is visible.
+	 * @param visible whether or not this item is visible.
 	 */
 	public abstract void setVisible(boolean visible);
 
@@ -81,15 +79,15 @@ public abstract class GraphItem extends Item {
 	public abstract boolean isVisible();
 
 	/**
-	 * Gets the graph that this item is rooted on. If this item is itself a
-	 * graph, then this is returned.
+	 * Gets the graph that this item is rooted on. If this item is itself a graph,
+	 * then this is returned.
 	 * 
 	 * @return the parent graph.
 	 */
 	public abstract Graph getGraphModel();
 
 	/**
-	 * Highlights the current GraphItem.  A graph item is either a graph node or 
+	 * Highlights the current GraphItem. A graph item is either a graph node or
 	 * graph connection, and highlighting them will set the appropriate highlight
 	 * color.
 	 */
@@ -105,6 +103,7 @@ public abstract class GraphItem extends Item {
 
 	/**
 	 * Checks a style to see if it is set on the given graph item
+	 * 
 	 * @param styleToCheck The style to check
 	 * @return
 	 */

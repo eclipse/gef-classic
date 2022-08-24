@@ -13,6 +13,7 @@
  */
 
 package swt.bugs;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -30,44 +31,44 @@ import org.eclipse.draw2d.FigureCanvas;
 
 public class EscapeStolen {
 
-static class SubCanvas extends Canvas {
-	SubCanvas(Composite parent) {
-		super(parent, SWT.H_SCROLL);
-		addKeyListener(new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				System.out.println(e);
+	static class SubCanvas extends Canvas {
+		SubCanvas(Composite parent) {
+			super(parent, SWT.H_SCROLL);
+			addKeyListener(new KeyAdapter() {
+				public void keyPressed(KeyEvent e) {
+					System.out.println(e);
+				}
+			});
+		}
+	}
+
+	public static void main(String[] args) {
+		Display display = new Display();
+		Shell shell = new Shell();
+
+		Shell dialog = new Shell(shell);
+		dialog.setLayout(new GridLayout());
+		final FigureCanvas canvas = new FigureCanvas(dialog);
+		canvas.setContents(new Button("draw2d"));
+
+		canvas.addFocusListener(new FocusListener() {
+
+			public void focusGained(FocusEvent e) {
+				canvas.setBackground(new Color(null, 30, 30, 255));
+			}
+
+			public void focusLost(FocusEvent e) {
+				canvas.setBackground(null);
 			}
 		});
+
+		shell.open();
+		dialog.open();
+		canvas.forceFocus();
+
+		while (!shell.isDisposed())
+			if (!display.readAndDispatch())
+				display.sleep();
 	}
-}
-
-public static void main(String[] args) {
-	Display display = new Display();
-	Shell shell = new Shell();
-
-	Shell dialog = new Shell(shell);
-	dialog.setLayout(new GridLayout());
-	final FigureCanvas canvas = new FigureCanvas(dialog);
-	canvas.setContents(new Button("draw2d"));
-
-	canvas.addFocusListener(new FocusListener() {
-
-		public void focusGained(FocusEvent e) {
-			canvas.setBackground(new Color(null, 30, 30, 255));
-		}
-
-		public void focusLost(FocusEvent e) {
-			canvas.setBackground(null);
-		}
-	});
-
-	shell.open();
-	dialog.open();
-	canvas.forceFocus();
-
-	while (!shell.isDisposed())
-		if (!display.readAndDispatch())
-			display.sleep();
-}
 
 }

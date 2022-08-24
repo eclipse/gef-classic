@@ -27,15 +27,16 @@ public class Digraph2ConnectionAnchor extends AbstractConnectionAnchor {
 	/**
 	 * Constructor for a Digraph2ConnectionAnchor.
 	 * 
-	 * @param owner
-	 *            the figure that owns this anchor.
+	 * @param owner the figure that owns this anchor.
 	 */
 	public Digraph2ConnectionAnchor(IFigure owner) {
 		super(owner);
 	}
 
 	/*
-	 * @see org.eclipse.draw2d.ConnectionAnchor#getLocation(org.eclipse.draw2d.geometry.Point)
+	 * @see
+	 * org.eclipse.draw2d.ConnectionAnchor#getLocation(org.eclipse.draw2d.geometry.
+	 * Point)
 	 */
 	public Point getLocation(Point reference) {
 		Point point = getOwner().getBounds().getCenter();

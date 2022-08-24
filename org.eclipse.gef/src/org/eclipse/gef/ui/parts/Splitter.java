@@ -134,9 +134,9 @@ class Splitter extends Composite {
 	}
 
 	/**
-	 * Answer SWT.HORIZONTAL if the controls in the SashForm are laid out side
-	 * by side. Answer SWT.VERTICAL if the controls in the SashForm are laid out
-	 * top to bottom.
+	 * Answer SWT.HORIZONTAL if the controls in the SashForm are laid out side by
+	 * side. Answer SWT.VERTICAL if the controls in the SashForm are laid out top to
+	 * bottom.
 	 */
 	public int getOrientation() {
 		return orientation;
@@ -147,8 +147,8 @@ class Splitter extends Composite {
 	}
 
 	/**
-	 * Answer the control that currently is maximized in the SashForm. This
-	 * value may be null.
+	 * Answer the control that currently is maximized in the SashForm. This value
+	 * may be null.
 	 */
 	public Control getMaximizedControl() {
 		return this.maxControl;
@@ -196,8 +196,7 @@ class Splitter extends Composite {
 		if (sashes.length < controls.length - 1) {
 			Sash[] newSashes = new Sash[controls.length - 1];
 			System.arraycopy(sashes, 0, newSashes, 0, sashes.length);
-			int sashOrientation = (orientation == SWT.HORIZONTAL) ? SWT.VERTICAL
-					: SWT.HORIZONTAL;
+			int sashOrientation = (orientation == SWT.HORIZONTAL) ? SWT.VERTICAL : SWT.HORIZONTAL;
 			for (int i = sashes.length; i < newSashes.length; i++) {
 				newSashes[i] = new Sash(this, sashOrientation);
 				newSashes[i].setBackground(ColorConstants.button);
@@ -247,9 +246,8 @@ class Splitter extends Composite {
 			}
 		}
 		if (sashes.length > 0)
-			sashes[0].setBounds(
-					controls[0].getBounds().x + controls[0].getBounds().width,
-					area.y, getSashWidth(), area.height);
+			sashes[0].setBounds(controls[0].getBounds().x + controls[0].getBounds().width, area.y, getSashWidth(),
+					area.height);
 	}
 
 	public void maintainSize(Control c) {
@@ -289,12 +287,10 @@ class Splitter extends Composite {
 				if (controls[0].getData(MAINTAIN_SIZE) != null) {
 					event.x = Math.max(event.x, DRAG_MINIMUM);
 				} else {
-					event.x = Math.min(event.x, area.width - DRAG_MINIMUM
-							- getSashWidth());
+					event.x = Math.min(event.x, area.width - DRAG_MINIMUM - getSashWidth());
 				}
 			} else {
-				event.y = Math.min(event.y, area.height - DRAG_MINIMUM
-						- getSashWidth());
+				event.y = Math.min(event.y, area.height - DRAG_MINIMUM - getSashWidth());
 			}
 			return;
 		}
@@ -343,9 +339,9 @@ class Splitter extends Composite {
 	}
 
 	/**
-	 * If orientation is SWT.HORIZONTAL, lay the controls in the SashForm out
-	 * side by side. If orientation is SWT.VERTICAL, lay the controls in the
-	 * SashForm out top to bottom.
+	 * If orientation is SWT.HORIZONTAL, lay the controls in the SashForm out side
+	 * by side. If orientation is SWT.VERTICAL, lay the controls in the SashForm out
+	 * top to bottom.
 	 */
 	public void setOrientation(int orientation) {
 		if (this.orientation == orientation)
@@ -355,8 +351,7 @@ class Splitter extends Composite {
 		}
 		this.orientation = orientation;
 
-		int sashOrientation = (orientation == SWT.HORIZONTAL) ? SWT.VERTICAL
-				: SWT.HORIZONTAL;
+		int sashOrientation = (orientation == SWT.HORIZONTAL) ? SWT.VERTICAL : SWT.HORIZONTAL;
 		for (int i = 0; i < sashes.length; i++) {
 			sashes[i].dispose();
 			sashes[i] = new Sash(this, sashOrientation);
@@ -376,11 +371,11 @@ class Splitter extends Composite {
 
 	/**
 	 * Specify the control that should take up the entire client area of the
-	 * SashForm. If one control has been maximized, and this method is called
-	 * with a different control, the previous control will be minimized and the
-	 * new control will be maximized.. if the value of control is null, the
-	 * SashForm will minimize all controls and return to the default layout
-	 * where all controls are laid out separated by sashes.
+	 * SashForm. If one control has been maximized, and this method is called with a
+	 * different control, the previous control will be minimized and the new control
+	 * will be maximized.. if the value of control is null, the SashForm will
+	 * minimize all controls and return to the default layout where all controls are
+	 * laid out separated by sashes.
 	 */
 	public void setMaximizedControl(Control control) {
 		if (control == null) {

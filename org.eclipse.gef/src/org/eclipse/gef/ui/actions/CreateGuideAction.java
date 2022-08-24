@@ -34,8 +34,7 @@ public class CreateGuideAction extends Action {
 	/**
 	 * Constructor
 	 * 
-	 * @param ruler
-	 *            the viewer for the ruler on which the guide is to be created
+	 * @param ruler the viewer for the ruler on which the guide is to be created
 	 */
 	public CreateGuideAction(EditPartViewer ruler) {
 		super(GEFMessages.Create_Guide_Label);
@@ -47,8 +46,7 @@ public class CreateGuideAction extends Action {
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
 	public void run() {
-		RulerProvider provider = ((RulerEditPart) viewer.getRootEditPart()
-				.getChildren().get(0)).getRulerProvider();
+		RulerProvider provider = ((RulerEditPart) viewer.getRootEditPart().getChildren().get(0)).getRulerProvider();
 
 		// Determine where the guide should be created
 		int[] positions = provider.getGuidePositions();
@@ -56,8 +54,7 @@ public class CreateGuideAction extends Action {
 		int index = 0;
 		int newPosition = GuideEditPart.MIN_DISTANCE_BW_GUIDES + 1;
 		int desiredDifference = (GuideEditPart.MIN_DISTANCE_BW_GUIDES * 2) + 1;
-		boolean found = positions.length > 0
-				&& positions[0] > desiredDifference;
+		boolean found = positions.length > 0 && positions[0] > desiredDifference;
 		while (index < positions.length - 1 && !found) {
 			if (positions[index + 1] - positions[index] > desiredDifference) {
 				newPosition += positions[index];
@@ -69,10 +66,8 @@ public class CreateGuideAction extends Action {
 			newPosition += positions[positions.length - 1];
 
 		// Create the guide and reveal it
-		viewer.getEditDomain().getCommandStack()
-				.execute(provider.getCreateGuideCommand(newPosition));
-		viewer.reveal((EditPart) viewer.getEditPartRegistry().get(
-				provider.getGuideAt(newPosition)));
+		viewer.getEditDomain().getCommandStack().execute(provider.getCreateGuideCommand(newPosition));
+		viewer.reveal((EditPart) viewer.getEditPartRegistry().get(provider.getGuideAt(newPosition)));
 	}
 
 }

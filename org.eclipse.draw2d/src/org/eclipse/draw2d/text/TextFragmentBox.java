@@ -31,8 +31,7 @@ public class TextFragmentBox extends ContentBox {
 	/**
 	 * Creates a new TextFragmentBox for the given text flow.
 	 * 
-	 * @param textflow
-	 *            the text flow
+	 * @param textflow the text flow
 	 */
 	public TextFragmentBox(TextFlow textflow) {
 		this.textflow = textflow;
@@ -42,8 +41,7 @@ public class TextFragmentBox extends ContentBox {
 	 * @see org.eclipse.draw2d.text.FlowBox#containsPoint(int, int)
 	 */
 	public boolean containsPoint(int x, int y) {
-		return x >= getX() && x < getX() + getWidth()
-				&& y >= getBaseline() - getAscentWithBorder()
+		return x >= getX() && x < getX() + getWidth() && y >= getBaseline() - getAscentWithBorder()
 				&& y <= getBaseline() + getDescentWithBorder();
 	}
 
@@ -76,13 +74,11 @@ public class TextFragmentBox extends ContentBox {
 	}
 
 	int getOuterAscent() {
-		return textflow.getAscent()
-				+ FlowUtilities.getBorderAscentWithMargin(textflow);
+		return textflow.getAscent() + FlowUtilities.getBorderAscentWithMargin(textflow);
 	}
 
 	int getOuterDescent() {
-		return textflow.getDescent()
-				+ FlowUtilities.getBorderDescentWithMargin(textflow);
+		return textflow.getDescent() + FlowUtilities.getBorderDescentWithMargin(textflow);
 	}
 
 	final int getTextTop() {
@@ -90,9 +86,9 @@ public class TextFragmentBox extends ContentBox {
 	}
 
 	/**
-	 * Returns <code>true</code> if the bidi level is odd. Right to left
-	 * fragments should be queried and rendered with the RLO control character
-	 * inserted in front.
+	 * Returns <code>true</code> if the bidi level is odd. Right to left fragments
+	 * should be queried and rendered with the RLO control character inserted in
+	 * front.
 	 * 
 	 * @return <code>true</code> if right-to-left
 	 * @since 3.1
@@ -103,8 +99,7 @@ public class TextFragmentBox extends ContentBox {
 	}
 
 	/**
-	 * Returns <code>true</code> if the fragment should be rendered as
-	 * truncated.
+	 * Returns <code>true</code> if the fragment should be rendered as truncated.
 	 * 
 	 * @return <code>true</code> if the fragment is truncated
 	 * @since 3.1
@@ -116,8 +111,7 @@ public class TextFragmentBox extends ContentBox {
 	/**
 	 * Marks the fragment as having been truncated.
 	 * 
-	 * @param value
-	 *            <code>true</code> if the fragment is truncated
+	 * @param value <code>true</code> if the fragment is truncated
 	 * @since 3.1
 	 */
 	public void setTruncated(boolean value) {
@@ -129,7 +123,7 @@ public class TextFragmentBox extends ContentBox {
 	 */
 	public String toString() {
 		return "[" + offset + ", " + (offset + length) //$NON-NLS-1$ //$NON-NLS-2$
-				+ ") = \"" + textflow.getText().substring(offset, offset + length) + '\"'; //$NON-NLS-1$ 
+				+ ") = \"" + textflow.getText().substring(offset, offset + length) + '\"'; //$NON-NLS-1$
 	}
 
 }

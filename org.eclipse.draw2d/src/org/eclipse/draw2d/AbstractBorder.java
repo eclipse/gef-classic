@@ -27,20 +27,17 @@ public abstract class AbstractBorder implements Border {
 	protected static Rectangle tempRect = new Rectangle();
 
 	/**
-	 * Returns a temporary rectangle representing the figure's bounds cropped by
-	 * the specified insets. This method exists for convenience and performance;
-	 * the method does not new any Objects and returns a rectangle which the
-	 * caller can manipulate.
+	 * Returns a temporary rectangle representing the figure's bounds cropped by the
+	 * specified insets. This method exists for convenience and performance; the
+	 * method does not new any Objects and returns a rectangle which the caller can
+	 * manipulate.
 	 * 
 	 * @since 2.0
-	 * @param figure
-	 *            Figure for which the paintable rectangle is needed
-	 * @param insets
-	 *            The insets
+	 * @param figure Figure for which the paintable rectangle is needed
+	 * @param insets The insets
 	 * @return The paintable region on the Figure f
 	 */
-	protected static final Rectangle getPaintRectangle(IFigure figure,
-			Insets insets) {
+	protected static final Rectangle getPaintRectangle(IFigure figure, Insets insets) {
 		tempRect.setBounds(figure.getBounds());
 		return tempRect.crop(insets);
 	}

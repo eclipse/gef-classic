@@ -50,8 +50,7 @@ public class Transposer {
 	/**
 	 * Sets the enabled state of this Transposer.
 	 * 
-	 * @param e
-	 *            New enabled value
+	 * @param e New enabled value
 	 * @since 2.0
 	 */
 	public void setEnabled(boolean e) {
@@ -61,8 +60,7 @@ public class Transposer {
 	/**
 	 * Returns a new transposed Dimension of the input Dimension.
 	 * 
-	 * @param d
-	 *            Input dimension being transposed.
+	 * @param d Input dimension being transposed.
 	 * @return The new transposed dimension.
 	 * @since 2.0
 	 */
@@ -75,8 +73,7 @@ public class Transposer {
 	/**
 	 * Returns a new transposed Insets of the input Insets.
 	 * 
-	 * @param i
-	 *            Insets to be transposed.
+	 * @param i Insets to be transposed.
 	 * @return The new transposed Insets.
 	 * @since 2.0
 	 */
@@ -89,8 +86,7 @@ public class Transposer {
 	/**
 	 * Returns a new transposed Point of the input Point.
 	 * 
-	 * @param p
-	 *            Point to be transposed.
+	 * @param p Point to be transposed.
 	 * @return The new transposed Point.
 	 * @since 2.0
 	 */
@@ -103,8 +99,7 @@ public class Transposer {
 	/**
 	 * Returns a new transposed Rectangle of the input Rectangle.
 	 * 
-	 * @param r
-	 *            Rectangle to be transposed.
+	 * @param r Rectangle to be transposed.
 	 * @return The new trasnposed Rectangle.
 	 * @since 2.0
 	 */

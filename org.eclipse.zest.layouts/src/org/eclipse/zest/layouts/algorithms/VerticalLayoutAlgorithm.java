@@ -12,8 +12,8 @@ package org.eclipse.zest.layouts.algorithms;
 import org.eclipse.zest.layouts.LayoutStyles;
 
 /**
- * @version  2.0
- * @author   Casey Best and Rob Lintern (version 1.0 by Rob Lintern)
+ * @version 2.0
+ * @author Casey Best and Rob Lintern (version 1.0 by Rob Lintern)
  */
 public class VerticalLayoutAlgorithm extends GridLayoutAlgorithm {
 
@@ -30,9 +30,11 @@ public class VerticalLayoutAlgorithm extends GridLayoutAlgorithm {
 	}
 
 	/**
-	 * Calculates and returns an array containing the number of columns, followed by the number of rows
+	 * Calculates and returns an array containing the number of columns, followed by
+	 * the number of rows
 	 */
-	protected int[] calculateNumberOfRowsAndCols(int numChildren, double boundX, double boundY, double boundWidth, double boundHeight) {
+	protected int[] calculateNumberOfRowsAndCols(int numChildren, double boundX, double boundY, double boundWidth,
+			double boundHeight) {
 		int cols = 1;
 		int rows = numChildren;
 		int[] result = { cols, rows };

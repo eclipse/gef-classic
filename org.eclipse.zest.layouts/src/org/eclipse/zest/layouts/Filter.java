@@ -10,13 +10,12 @@
 package org.eclipse.zest.layouts;
 
 /**
- * A filter is used to filter objects.  Once implemented, interested
- * parties can ask this filter whether or not a specific object
- * is filtered.
+ * A filter is used to filter objects. Once implemented, interested parties can
+ * ask this filter whether or not a specific object is filtered.
  * 
- * For example, in a visualization tool, only unfiltered objects should
- * be displayed.  Before displaying an object, the display can ask
- * this filter if the object is filtered.
+ * For example, in a visualization tool, only unfiltered objects should be
+ * displayed. Before displaying an object, the display can ask this filter if
+ * the object is filtered.
  * 
  * @author Casey Best
  */

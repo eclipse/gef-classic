@@ -39,8 +39,7 @@ import org.eclipse.gef.commands.Command;
  * behavior, such as interacting with the target EditPart or its ancestors to
  * achieve things like auto-scroll/auto-expose.
  */
-public abstract class AbstractTransferDropTargetListener implements
-		TransferDropTargetListener {
+public abstract class AbstractTransferDropTargetListener implements TransferDropTargetListener {
 
 	private DropTargetEvent currentEvent;
 	private AutoexposeHelper exposeHelper;
@@ -59,8 +58,7 @@ public abstract class AbstractTransferDropTargetListener implements
 	 * EditPartViewer. If you use this constructor, you must set the Transfer
 	 * yourself using {@link #setTransfer(Transfer)}.
 	 * 
-	 * @param viewer
-	 *            the EditPartViewer
+	 * @param viewer the EditPartViewer
 	 */
 	public AbstractTransferDropTargetListener(EditPartViewer viewer) {
 		setViewer(viewer);
@@ -68,23 +66,19 @@ public abstract class AbstractTransferDropTargetListener implements
 
 	/**
 	 * Constructs a new AbstractTransferDropTargetListener and sets the
-	 * EditPartViewer and Transfer. The Viewer's Control should be the Drop
-	 * target.
+	 * EditPartViewer and Transfer. The Viewer's Control should be the Drop target.
 	 * 
-	 * @param viewer
-	 *            the EditPartViewer
-	 * @param xfer
-	 *            the Transfer
+	 * @param viewer the EditPartViewer
+	 * @param xfer   the Transfer
 	 */
-	public AbstractTransferDropTargetListener(EditPartViewer viewer,
-			Transfer xfer) {
+	public AbstractTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) {
 		setViewer(viewer);
 		setTransfer(xfer);
 	}
 
 	private EditPart calculateTargetEditPart() {
-		EditPart ep = getViewer().findObjectAtExcluding(getDropLocation(),
-				getExclusionSet(), new EditPartViewer.Conditional() {
+		EditPart ep = getViewer().findObjectAtExcluding(getDropLocation(), getExclusionSet(),
+				new EditPartViewer.Conditional() {
 					public boolean evaluate(EditPart editpart) {
 						return editpart.getTargetEditPart(getTargetRequest()) != null;
 					}
@@ -96,20 +90,18 @@ public abstract class AbstractTransferDropTargetListener implements
 
 	/**
 	 * Creates and returns the <code>Request</code> that will be sent to the
-	 * targeted EditPart. Subclasses can override to create specialized
-	 * requests.
+	 * targeted EditPart. Subclasses can override to create specialized requests.
 	 * 
-	 * @return the <code>Request</code> to be used with the <i>target</i>
-	 *         EditPart
+	 * @return the <code>Request</code> to be used with the <i>target</i> EditPart
 	 */
 	protected Request createTargetRequest() {
 		return new Request();
 	}
 
 	/**
-	 * Stores the information about the current DropTargetEvent. This method may
-	 * not be called on the listener, because the listener may not be made
-	 * active until after the mouse has entered the drop target.
+	 * Stores the information about the current DropTargetEvent. This method may not
+	 * be called on the listener, because the listener may not be made active until
+	 * after the mouse has entered the drop target.
 	 * 
 	 * @see DropTargetListener#dragEnter(DropTargetEvent)
 	 */
@@ -122,8 +114,8 @@ public abstract class AbstractTransferDropTargetListener implements
 	 * Stores the information about the current DropTargetEvent and then calls
 	 * <code>unload()</code>. Subclasses should override {@link #unload()} to
 	 * perform actions for this event. For some reason, SWT also calls
-	 * <code>dragLeave()</code> when the actual drop is performed, even though
-	 * the mouse has not left the drop target.
+	 * <code>dragLeave()</code> when the actual drop is performed, even though the
+	 * mouse has not left the drop target.
 	 * 
 	 * @see DropTargetListener#dragLeave(DropTargetEvent)
 	 */
@@ -185,8 +177,8 @@ public abstract class AbstractTransferDropTargetListener implements
 	}
 
 	/**
-	 * Stores the current <code>DropTargetEvent</code> and does nothing. By
-	 * default, the drop is accepted.
+	 * Stores the current <code>DropTargetEvent</code> and does nothing. By default,
+	 * the drop is accepted.
 	 * 
 	 * @see DropTargetListener#dropAccept(DropTargetEvent)
 	 */
@@ -195,9 +187,9 @@ public abstract class AbstractTransferDropTargetListener implements
 	}
 
 	/**
-	 * Calls <code>eraseTargetFeedback(Request)</code> on the current
-	 * <i>target</i>, using the target Request. Does nothing if there is no
-	 * target, or if the target has not been requested to show target feedback.
+	 * Calls <code>eraseTargetFeedback(Request)</code> on the current <i>target</i>,
+	 * using the target Request. Does nothing if there is no target, or if the
+	 * target has not been requested to show target feedback.
 	 */
 	protected void eraseTargetFeedback() {
 		if (getTargetEditPart() != null && showingFeedback) {
@@ -232,16 +224,15 @@ public abstract class AbstractTransferDropTargetListener implements
 	 */
 	protected Point getDropLocation() {
 		org.eclipse.swt.graphics.Point swt;
-		swt = new org.eclipse.swt.graphics.Point(getCurrentEvent().x,
-				getCurrentEvent().y);
+		swt = new org.eclipse.swt.graphics.Point(getCurrentEvent().x, getCurrentEvent().y);
 		DropTarget target = (DropTarget) getCurrentEvent().widget;
 		swt = target.getControl().toControl(swt);
 		return new Point(swt.x, swt.y);
 	}
 
 	/**
-	 * Returns a Collection of {@link EditPart EditParts} that are to be
-	 * excluded when searching for the target EditPart.
+	 * Returns a Collection of {@link EditPart EditParts} that are to be excluded
+	 * when searching for the target EditPart.
 	 * 
 	 * @return A Collection of EditParts to be excluded
 	 */
@@ -288,9 +279,9 @@ public abstract class AbstractTransferDropTargetListener implements
 	}
 
 	/**
-	 * Called when the user changes the Drag operation. By default, target
-	 * feedback is erased. The target Request and target EditPart are updated,
-	 * and target feedback is re-displayed on the new target.
+	 * Called when the user changes the Drag operation. By default, target feedback
+	 * is erased. The target Request and target EditPart are updated, and target
+	 * feedback is re-displayed on the new target.
 	 */
 	protected void handleDragOperationChanged() {
 		// Erase any old feedback now, in case the request changes substantially
@@ -305,8 +296,8 @@ public abstract class AbstractTransferDropTargetListener implements
 
 	/**
 	 * Called whenever the User drags over the target. By default, the target
-	 * Request and target EditPart are updated, feedback is shown, and
-	 * auto-expose occurs.
+	 * Request and target EditPart are updated, feedback is shown, and auto-expose
+	 * occurs.
 	 */
 	protected void handleDragOver() {
 		updateTargetRequest();
@@ -322,9 +313,8 @@ public abstract class AbstractTransferDropTargetListener implements
 
 	/**
 	 * Updates the target Request and target EditPart, and performs the drop. By
-	 * default, the drop is performed by asking the target EditPart for a
-	 * Command using the target Request. This Command is then executed on the
-	 * CommandStack.
+	 * default, the drop is performed by asking the target EditPart for a Command
+	 * using the target Request. This Command is then executed on the CommandStack.
 	 * <P>
 	 * If there is no target EditPart or no executable Command, the event's
 	 * <code>detail</code> field is set to <code>DND.DROP_NONE</code>.
@@ -351,8 +341,8 @@ public abstract class AbstractTransferDropTargetListener implements
 	}
 
 	/**
-	 * Called as the current target EditPart is being exited. By default, the
-	 * target is asked to erase feedback.
+	 * Called as the current target EditPart is being exited. By default, the target
+	 * is asked to erase feedback.
 	 */
 	protected void handleExitingEditPart() {
 		eraseTargetFeedback();
@@ -372,21 +362,19 @@ public abstract class AbstractTransferDropTargetListener implements
 	}
 
 	/**
-	 * Returns <code>true</code> if this TransferDropTargetListener is enabled
-	 * for the specified <code>DropTargetEvent</code>. By default, this is
-	 * calculated by comparing the event's {@link DropTargetEvent#dataTypes
-	 * dataTypes} with the <code>Transfer's</code> supported types (
-	 * {@link Transfer#isSupportedType(TransferData)}). If a dataType is
-	 * supported, an attempt is made to find a <i>target</i>
-	 * <code>EditPart</code> at the current drop location. If a target
-	 * <code>EditPart</code> is found, <code>true</code> is returned, and the
-	 * DropTargetEvent's {@link DropTargetEvent#currentDataType} is set to the
-	 * dataType that matched.
+	 * Returns <code>true</code> if this TransferDropTargetListener is enabled for
+	 * the specified <code>DropTargetEvent</code>. By default, this is calculated by
+	 * comparing the event's {@link DropTargetEvent#dataTypes dataTypes} with the
+	 * <code>Transfer's</code> supported types (
+	 * {@link Transfer#isSupportedType(TransferData)}). If a dataType is supported,
+	 * an attempt is made to find a <i>target</i> <code>EditPart</code> at the
+	 * current drop location. If a target <code>EditPart</code> is found,
+	 * <code>true</code> is returned, and the DropTargetEvent's
+	 * {@link DropTargetEvent#currentDataType} is set to the dataType that matched.
 	 * 
-	 * @param event
-	 *            the DropTargetEvent
-	 * @return <code>true</code> if this TransferDropTargetListener is enabled
-	 *         for the given DropTargetEvent
+	 * @param event the DropTargetEvent
+	 * @return <code>true</code> if this TransferDropTargetListener is enabled for
+	 *         the given DropTargetEvent
 	 */
 	public boolean isEnabled(DropTargetEvent event) {
 		for (int i = 0; i < event.dataTypes.length; i++) {
@@ -436,8 +424,7 @@ public abstract class AbstractTransferDropTargetListener implements
 	/**
 	 * Sets the current autoexpose helper.
 	 * 
-	 * @param helper
-	 *            the autoexpose helper
+	 * @param helper the autoexpose helper
 	 */
 	protected void setAutoexposeHelper(AutoexposeHelper helper) {
 		exposeHelper = helper;
@@ -445,12 +432,11 @@ public abstract class AbstractTransferDropTargetListener implements
 
 	/**
 	 * Determines if the target editpart should be asked for a Command during
-	 * {@link #isEnabled(DropTargetEvent)}. For most DND operations, the data is
-	 * not available, thus asking for a command would not make sense. The
-	 * default value is <code>false</code>.
+	 * {@link #isEnabled(DropTargetEvent)}. For most DND operations, the data is not
+	 * available, thus asking for a command would not make sense. The default value
+	 * is <code>false</code>.
 	 * 
-	 * @param value
-	 *            <code>true</code> if a
+	 * @param value <code>true</code> if a
 	 * @since 3.1
 	 */
 	protected void setEnablementDeterminedByCommand(boolean value) {
@@ -460,8 +446,7 @@ public abstract class AbstractTransferDropTargetListener implements
 	/**
 	 * Sets the current DropTargetEvent.
 	 * 
-	 * @param currentEvent
-	 *            the DropTargetEvent
+	 * @param currentEvent the DropTargetEvent
 	 */
 	public void setCurrentEvent(DropTargetEvent currentEvent) {
 		this.currentEvent = currentEvent;
@@ -472,8 +457,7 @@ public abstract class AbstractTransferDropTargetListener implements
 	 * {@link #handleExitingEditPart()} is called before the target changes, and
 	 * {@link #handleEnteredEditPart()} is called afterwards.
 	 * 
-	 * @param ep
-	 *            the new target EditPart
+	 * @param ep the new target EditPart
 	 */
 	protected void setTargetEditPart(EditPart ep) {
 		if (ep != target) {
@@ -488,8 +472,7 @@ public abstract class AbstractTransferDropTargetListener implements
 	/**
 	 * Sets the Tranfer type that this listener can handle.
 	 * 
-	 * @param xfer
-	 *            the Transfer
+	 * @param xfer the Transfer
 	 */
 	protected void setTransfer(Transfer xfer) {
 		transfer = xfer;
@@ -498,16 +481,15 @@ public abstract class AbstractTransferDropTargetListener implements
 	/**
 	 * Sets the EditPartViewer.
 	 * 
-	 * @param viewer
-	 *            the EditPartViewer
+	 * @param viewer the EditPartViewer
 	 */
 	protected void setViewer(EditPartViewer viewer) {
 		this.viewer = viewer;
 	}
 
 	/**
-	 * Asks the target <code>EditPart</code> to show target feedback if it is
-	 * not <code>null</code>.
+	 * Asks the target <code>EditPart</code> to show target feedback if it is not
+	 * <code>null</code>.
 	 * 
 	 * @see EditPart#showTargetFeedback(Request)
 	 */
@@ -527,8 +509,7 @@ public abstract class AbstractTransferDropTargetListener implements
 	 * @return boolean
 	 */
 	private boolean testAndSet(DropTargetEvent event) {
-		boolean result = prevMouseLoc == null
-				|| !(prevMouseLoc.x == event.x && prevMouseLoc.y == event.y);
+		boolean result = prevMouseLoc == null || !(prevMouseLoc.x == event.x && prevMouseLoc.y == event.y);
 		if (prevMouseLoc == null)
 			prevMouseLoc = new Point();
 		prevMouseLoc.x = event.x;
@@ -549,8 +530,8 @@ public abstract class AbstractTransferDropTargetListener implements
 	}
 
 	/**
-	 * Updates the active {@link AutoexposeHelper}. Does nothing if there is
-	 * still an active helper. Otherwise, obtains a new helper (possible
+	 * Updates the active {@link AutoexposeHelper}. Does nothing if there is still
+	 * an active helper. Otherwise, obtains a new helper (possible
 	 * <code>null</code>) at the current mouse location and calls
 	 * {@link #setAutoexposeHelper(AutoexposeHelper)}.
 	 */
@@ -559,8 +540,7 @@ public abstract class AbstractTransferDropTargetListener implements
 			return;
 		AutoexposeHelper.Search search;
 		search = new AutoexposeHelper.Search(getDropLocation());
-		getViewer().findObjectAtExcluding(getDropLocation(),
-				Collections.EMPTY_LIST, search);
+		getViewer().findObjectAtExcluding(getDropLocation(), Collections.EMPTY_LIST, search);
 		setAutoexposeHelper(search.result);
 	}
 

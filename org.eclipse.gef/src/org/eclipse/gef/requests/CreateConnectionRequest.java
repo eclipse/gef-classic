@@ -16,8 +16,7 @@ import org.eclipse.gef.commands.Command;
 /**
  * A Request to create a new Connection.
  */
-public class CreateConnectionRequest extends CreateRequest implements
-		TargetRequest {
+public class CreateConnectionRequest extends CreateRequest implements TargetRequest {
 
 	private Command startCommand;
 	private EditPart targetEditPart;
@@ -44,8 +43,8 @@ public class CreateConnectionRequest extends CreateRequest implements
 	}
 
 	/**
-	 * Returns the start command. This command is only used to pass on
-	 * information to the target EditPart so it can create the final command.
+	 * Returns the start command. This command is only used to pass on information
+	 * to the target EditPart so it can create the final command.
 	 * 
 	 * @return the command
 	 */
@@ -56,8 +55,7 @@ public class CreateConnectionRequest extends CreateRequest implements
 	/**
 	 * Sets the source of the Connection to the given EditPart.
 	 * 
-	 * @param part
-	 *            the source EditPart
+	 * @param part the source EditPart
 	 */
 	public void setSourceEditPart(EditPart part) {
 		sourceEditPart = part;
@@ -66,19 +64,17 @@ public class CreateConnectionRequest extends CreateRequest implements
 	/**
 	 * Sets the target of the Connection to the given EditPart.
 	 * 
-	 * @param part
-	 *            the target EditPart
+	 * @param part the target EditPart
 	 */
 	public void setTargetEditPart(EditPart part) {
 		targetEditPart = part;
 	}
 
 	/**
-	 * Sets the start command. This command is only used to pass on information
-	 * to the target EditPart so it can create the final command.
+	 * Sets the start command. This command is only used to pass on information to
+	 * the target EditPart so it can create the final command.
 	 * 
-	 * @param c
-	 *            the command
+	 * @param c the command
 	 */
 	public void setStartCommand(Command c) {
 		startCommand = c;

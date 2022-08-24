@@ -35,11 +35,9 @@ public class MergeWithPrevious extends MiniEdit {
 	}
 
 	private TextRun getPreviousTextRun() {
-		ModelElement candidate = (ModelElement) container.getChildren().get(
-				index - 1);
+		ModelElement candidate = (ModelElement) container.getChildren().get(index - 1);
 		while (candidate instanceof Container) {
-			candidate = (ModelElement) ((Container) candidate).getChildren()
-					.get(((Container) candidate).size() - 1);
+			candidate = (ModelElement) ((Container) candidate).getChildren().get(((Container) candidate).size() - 1);
 		}
 		return (TextRun) candidate;
 	}

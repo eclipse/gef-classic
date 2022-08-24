@@ -25,8 +25,7 @@ public class BenchmarkAlphaLines {
 			public void paint(Graphics gr) {
 				super.paint(gr);
 				Graphics2D g = (Graphics2D) gr;
-				g.setComposite(AlphaComposite
-						.getInstance(AlphaComposite.SRC_ATOP, 0.1f));
+				g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_ATOP, 0.1f));
 				for (int i = 0; i < 1000; i++) {
 					g.drawLine(0, 1000 - i, i, 0);
 				}

@@ -22,14 +22,11 @@ package org.eclipse.gef;
 public interface EditPartFactory {
 
 	/**
-	 * Creates a new EditPart given the specified <i>context</i> and
-	 * <i>model</i>.
+	 * Creates a new EditPart given the specified <i>context</i> and <i>model</i>.
 	 * 
-	 * @param context
-	 *            The context in which the EditPart is being created, such as
-	 *            its parent.
-	 * @param model
-	 *            the model of the EditPart being created
+	 * @param context The context in which the EditPart is being created, such as
+	 *                its parent.
+	 * @param model   the model of the EditPart being created
 	 * @return EditPart the new EditPart
 	 */
 	EditPart createEditPart(EditPart context, Object model);

@@ -60,24 +60,19 @@ public class GateEditPart extends OutputEditPart {
 			return key.cast(new DefaultAccessibleAnchorProvider() {
 				public List<Point> getSourceAnchorLocations() {
 					List<Point> list = new ArrayList<>();
-					Vector sourceAnchors = getNodeFigure()
-							.getSourceConnectionAnchors();
+					Vector sourceAnchors = getNodeFigure().getSourceConnectionAnchors();
 					for (int i = 0; i < sourceAnchors.size(); i++) {
-						ConnectionAnchor anchor = (ConnectionAnchor) sourceAnchors
-								.get(i);
-						list.add(anchor.getReferencePoint().getTranslated(0,
-								-3));
+						ConnectionAnchor anchor = (ConnectionAnchor) sourceAnchors.get(i);
+						list.add(anchor.getReferencePoint().getTranslated(0, -3));
 					}
 					return list;
 				}
 
 				public List<Object> getTargetAnchorLocations() {
 					List<Object> list = new ArrayList<>();
-					Vector targetAnchors = getNodeFigure()
-							.getTargetConnectionAnchors();
+					Vector targetAnchors = getNodeFigure().getTargetConnectionAnchors();
 					for (int i = 0; i < targetAnchors.size(); i++) {
-						ConnectionAnchor anchor = (ConnectionAnchor) targetAnchors
-								.get(i);
+						ConnectionAnchor anchor = (ConnectionAnchor) targetAnchors.get(i);
 						list.add(anchor.getReferencePoint());
 					}
 					return list;

@@ -32,8 +32,7 @@ import org.eclipse.gef.GraphicalEditPart;
  * 
  * @author hudsonr
  */
-public class ViewportAutoexposeHelper extends ViewportHelper implements
-		AutoexposeHelper {
+public class ViewportAutoexposeHelper extends ViewportHelper implements AutoexposeHelper {
 
 	/** defines the range where autoscroll is active inside a viewer */
 	private static final Insets DEFAULT_EXPOSE_THRESHOLD = new Insets(18);
@@ -46,11 +45,10 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements
 
 	/**
 	 * Constructs a new helper on the given GraphicalEditPart. The editpart must
-	 * have a <code>Viewport</code> somewhere between its <i>contentsPane</i>
-	 * and its <i>figure</i> inclusively.
+	 * have a <code>Viewport</code> somewhere between its <i>contentsPane</i> and
+	 * its <i>figure</i> inclusively.
 	 * 
-	 * @param owner
-	 *            the GraphicalEditPart that owns the Viewport
+	 * @param owner the GraphicalEditPart that owns the Viewport
 	 */
 	public ViewportAutoexposeHelper(GraphicalEditPart owner) {
 		super(owner);
@@ -59,14 +57,12 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements
 
 	/**
 	 * Constructs a new helper on the given GraphicalEditPart. The editpart must
-	 * have a <code>Viewport</code> somewhere between its <i>contentsPane</i>
-	 * and its <i>figure</i> inclusively.
+	 * have a <code>Viewport</code> somewhere between its <i>contentsPane</i> and
+	 * its <i>figure</i> inclusively.
 	 * 
-	 * @param owner
-	 *            the GraphicalEditPart that owns the Viewport
-	 * @param threshold
-	 *            the Expose Threshold to use when determing whether or not a
-	 *            scroll should occur.
+	 * @param owner     the GraphicalEditPart that owns the Viewport
+	 * @param threshold the Expose Threshold to use when determing whether or not a
+	 *                  scroll should occur.
 	 */
 	public ViewportAutoexposeHelper(GraphicalEditPart owner, Insets threshold) {
 		super(owner);
@@ -74,8 +70,8 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is inside the viewport, but
-	 * near its edge.
+	 * Returns <code>true</code> if the given point is inside the viewport, but near
+	 * its edge.
 	 * 
 	 * @see org.eclipse.gef.AutoexposeHelper#detect(org.eclipse.draw2d.geometry.Point)
 	 */
@@ -90,12 +86,12 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements
 	}
 
 	/**
-	 * Returns <code>true</code> if the given point is outside the viewport or
-	 * near its edge. Scrolls the viewport by a calculated (time based) amount
-	 * in the current direction.
+	 * Returns <code>true</code> if the given point is outside the viewport or near
+	 * its edge. Scrolls the viewport by a calculated (time based) amount in the
+	 * current direction.
 	 * 
-	 * todo: investigate if we should allow auto expose when the pointer is
-	 * outside the viewport
+	 * todo: investigate if we should allow auto expose when the pointer is outside
+	 * the viewport
 	 * 
 	 * @see org.eclipse.gef.AutoexposeHelper#step(org.eclipse.draw2d.geometry.Point)
 	 */

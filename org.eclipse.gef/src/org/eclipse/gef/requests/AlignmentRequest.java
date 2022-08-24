@@ -31,8 +31,7 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 	/**
 	 * Constructs a new AlignmentRequest with the new type.
 	 * 
-	 * @param type
-	 *            the type
+	 * @param type the type
 	 */
 	public AlignmentRequest(Object type) {
 		super(type);
@@ -56,46 +55,38 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 			result.x = reference.x + (reference.width / 2) - (result.width / 2);
 			break;
 		case PositionConstants.MIDDLE:
-			result.y = reference.y + (reference.height / 2)
-					- (result.height / 2);
+			result.y = reference.y + (reference.height / 2) - (result.height / 2);
 			break;
 		}
 	}
 
-	private void doPrecisionAlignment(PrecisionRectangle result,
-			PrecisionRectangle reference) {
+	private void doPrecisionAlignment(PrecisionRectangle result, PrecisionRectangle reference) {
 		switch (alignment) {
 		case PositionConstants.LEFT:
 			result.setPreciseX(reference.preciseX());
 			break;
 		case PositionConstants.RIGHT:
-			result.setPreciseX(reference.preciseX() + reference.preciseWidth()
-					- result.preciseWidth());
+			result.setPreciseX(reference.preciseX() + reference.preciseWidth() - result.preciseWidth());
 			break;
 		case PositionConstants.TOP:
 			result.setPreciseY(reference.preciseY());
 			break;
 		case PositionConstants.BOTTOM:
-			result.setPreciseY(reference.preciseY() + reference.preciseHeight()
-					- result.preciseHeight());
+			result.setPreciseY(reference.preciseY() + reference.preciseHeight() - result.preciseHeight());
 			break;
 		case PositionConstants.CENTER:
-			result.setPreciseX(reference.preciseX()
-					+ (reference.preciseWidth() / 2)
-					- (result.preciseWidth() / 2));
+			result.setPreciseX(reference.preciseX() + (reference.preciseWidth() / 2) - (result.preciseWidth() / 2));
 			break;
 		case PositionConstants.MIDDLE:
-			result.setPreciseY(reference.preciseY()
-					+ (reference.preciseHeight() / 2)
-					- (result.preciseHeight() / 2));
+			result.setPreciseY(reference.preciseY() + (reference.preciseHeight() / 2) - (result.preciseHeight() / 2));
 			break;
 		}
 
 	}
 
 	/**
-	 * Returns the alignment. Possible values are {@link PositionConstants#LEFT}
-	 * , {@link PositionConstants#RIGHT}, {@link PositionConstants#TOP} and
+	 * Returns the alignment. Possible values are {@link PositionConstants#LEFT} ,
+	 * {@link PositionConstants#RIGHT}, {@link PositionConstants#TOP} and
 	 * {@link PositionConstants#BOTTOM}.
 	 * 
 	 * @return the alignment
@@ -122,11 +113,9 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 
 		if (result instanceof PrecisionRectangle) {
 			if (reference instanceof PrecisionRectangle)
-				doPrecisionAlignment((PrecisionRectangle) result,
-						(PrecisionRectangle) reference);
+				doPrecisionAlignment((PrecisionRectangle) result, (PrecisionRectangle) reference);
 			else
-				doPrecisionAlignment((PrecisionRectangle) result,
-						new PrecisionRectangle(reference));
+				doPrecisionAlignment((PrecisionRectangle) result, new PrecisionRectangle(reference));
 		} else
 			doNormalAlignment(result, reference);
 		return result;
@@ -135,8 +124,7 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 	/**
 	 * Sets the alignment.
 	 * 
-	 * @param align
-	 *            the alignment
+	 * @param align the alignment
 	 * @see #getAlignment()
 	 */
 	public void setAlignment(int align) {
@@ -146,8 +134,7 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 	/**
 	 * Sets the alignment rectangle.
 	 * 
-	 * @param rect
-	 *            the alignment rectangle
+	 * @param rect the alignment rectangle
 	 * @see #getAlignmentRectangle()
 	 */
 	public void setAlignmentRectangle(Rectangle rect) {

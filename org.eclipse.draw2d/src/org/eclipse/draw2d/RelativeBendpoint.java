@@ -38,8 +38,7 @@ public class RelativeBendpoint implements Bendpoint {
 	 * Constructs a new RelativeBendpoint and associates it with the given
 	 * Connection.
 	 * 
-	 * @param conn
-	 *            The Connection this Bendpoint is associated with
+	 * @param conn The Connection this Bendpoint is associated with
 	 * @since 2.0
 	 */
 	public RelativeBendpoint(Connection conn) {
@@ -63,26 +62,21 @@ public class RelativeBendpoint implements Bendpoint {
 	 * @since 2.0
 	 */
 	public Point getLocation() {
-		PrecisionPoint a1 = new PrecisionPoint(getConnection()
-				.getSourceAnchor().getReferencePoint());
-		PrecisionPoint a2 = new PrecisionPoint(getConnection()
-				.getTargetAnchor().getReferencePoint());
+		PrecisionPoint a1 = new PrecisionPoint(getConnection().getSourceAnchor().getReferencePoint());
+		PrecisionPoint a2 = new PrecisionPoint(getConnection().getTargetAnchor().getReferencePoint());
 
 		getConnection().translateToRelative(a1);
 		getConnection().translateToRelative(a2);
 
 		return new PrecisionPoint(
-				(a1.preciseX() + d1.preciseWidth()) * (1.0 - weight) + weight
-						* (a2.preciseX() + d2.preciseWidth()),
-				(a1.preciseY() + d1.preciseHeight()) * (1.0 - weight) + weight
-						* (a2.preciseY() + d2.preciseHeight()));
+				(a1.preciseX() + d1.preciseWidth()) * (1.0 - weight) + weight * (a2.preciseX() + d2.preciseWidth()),
+				(a1.preciseY() + d1.preciseHeight()) * (1.0 - weight) + weight * (a2.preciseY() + d2.preciseHeight()));
 	}
 
 	/**
 	 * Sets the Connection this bendpoint should be associated with.
 	 * 
-	 * @param conn
-	 *            The Connection this bendpoint should be associated with
+	 * @param conn The Connection this bendpoint should be associated with
 	 * @since 2.0
 	 */
 	public void setConnection(Connection conn) {
@@ -90,16 +84,14 @@ public class RelativeBendpoint implements Bendpoint {
 	}
 
 	/**
-	 * Sets the Dimensions representing the X and Y distances this Bendpoint is
-	 * from the start and end points of the Connection. These Dimensions are
-	 * generally set once and are used in calculating the Bendpoint's location.
+	 * Sets the Dimensions representing the X and Y distances this Bendpoint is from
+	 * the start and end points of the Connection. These Dimensions are generally
+	 * set once and are used in calculating the Bendpoint's location.
 	 * 
-	 * @param dim1
-	 *            The X and Y distances this Bendpoint is from the start of the
-	 *            Connection
-	 * @param dim2
-	 *            The X and Y distances this Bendpoint is from the end of the
-	 *            Connection
+	 * @param dim1 The X and Y distances this Bendpoint is from the start of the
+	 *             Connection
+	 * @param dim2 The X and Y distances this Bendpoint is from the end of the
+	 *             Connection
 	 * @since 2.0
 	 */
 	public void setRelativeDimensions(Dimension dim1, Dimension dim2) {
@@ -111,12 +103,11 @@ public class RelativeBendpoint implements Bendpoint {
 	 * Sets the weight this Bendpoint should use to calculate its location. The
 	 * weight should be between 0.0 and 1.0. A weight of 0.0 will cause the
 	 * Bendpoint to follow the start point, while a weight of 1.0 will cause the
-	 * Bendpoint to follow the end point. A weight of 0.5 (the default) will
-	 * cause the Bendpoint to maintain its original aspect ratio between the
-	 * start and end points.
+	 * Bendpoint to follow the end point. A weight of 0.5 (the default) will cause
+	 * the Bendpoint to maintain its original aspect ratio between the start and end
+	 * points.
 	 * 
-	 * @param w
-	 *            The weight
+	 * @param w The weight
 	 * @since 2.0
 	 */
 	public void setWeight(float w) {

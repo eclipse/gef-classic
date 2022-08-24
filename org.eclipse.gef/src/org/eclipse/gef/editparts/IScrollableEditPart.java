@@ -32,8 +32,7 @@ public interface IScrollableEditPart extends GraphicalEditPart {
 	/**
 	 * Offers type-safe access to the GraphicalEditPart's figure.
 	 * 
-	 * @return The figure of this edit part, which has to be an
-	 *         IScrollableFigure
+	 * @return The figure of this edit part, which has to be an IScrollableFigure
 	 */
 	IScrollableFigure getScrollableFigure();
 

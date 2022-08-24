@@ -50,10 +50,8 @@ public class SliderPaletteEditPart extends PaletteEditPart {
 	 */
 	protected void registerVisuals() {
 		super.registerVisuals();
-		controller = new PaletteAnimator(
-				((PaletteViewer) getViewer()).getPaletteViewerPreferences());
-		getViewer().getEditPartRegistry()
-				.put(PaletteAnimator.class, controller);
+		controller = new PaletteAnimator(((PaletteViewer) getViewer()).getPaletteViewerPreferences());
+		getViewer().getEditPartRegistry().put(PaletteAnimator.class, controller);
 		ToolbarLayout layout = new PaletteToolbarLayout();
 		getFigure().setLayoutManager(layout);
 		getFigure().addLayoutListener(controller);

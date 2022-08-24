@@ -22,8 +22,7 @@ public class InsertModelElement extends MiniEdit {
 	private final ModelElement child;
 	private final ModelLocation location;
 
-	public InsertModelElement(Container parent, int offset, ModelElement child,
-			ModelLocation location) {
+	public InsertModelElement(Container parent, int offset, ModelElement child, ModelLocation location) {
 		this.parent = parent;
 		this.offset = offset;
 		this.child = child;

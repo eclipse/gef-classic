@@ -28,8 +28,7 @@ public class PinDrawerAction extends Action {
 	/**
 	 * Constructor
 	 * 
-	 * @param drawer
-	 *            The EditPart for the drawer that this action pins/unpins
+	 * @param drawer The EditPart for the drawer that this action pins/unpins
 	 */
 	public PinDrawerAction(DrawerEditPart drawer) {
 		this.pinnableEditPart = drawer;
@@ -41,8 +40,7 @@ public class PinDrawerAction extends Action {
 	/**
 	 * Constructor
 	 * 
-	 * @param pinnableEditPart
-	 *            the pinnable palette editpart
+	 * @param pinnableEditPart the pinnable palette editpart
 	 * @since 3.4
 	 */
 	public PinDrawerAction(IPinnableEditPart pinnableEditPart) {

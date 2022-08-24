@@ -41,13 +41,11 @@ public class LogicRulerProvider extends RulerProvider {
 					guide.removePropertyChangeListener(guideListener);
 				}
 				for (int i = 0; i < listeners.size(); i++) {
-					((RulerChangeListener) listeners.get(i))
-							.notifyGuideReparented(guide);
+					((RulerChangeListener) listeners.get(i)).notifyGuideReparented(guide);
 				}
 			} else {
 				for (int i = 0; i < listeners.size(); i++) {
-					((RulerChangeListener) listeners.get(i))
-							.notifyUnitsChanged(ruler.getUnit());
+					((RulerChangeListener) listeners.get(i)).notifyUnitsChanged(ruler.getUnit());
 				}
 			}
 		}
@@ -56,14 +54,12 @@ public class LogicRulerProvider extends RulerProvider {
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(LogicGuide.PROPERTY_CHILDREN)) {
 				for (int i = 0; i < listeners.size(); i++) {
-					((RulerChangeListener) listeners.get(i))
-							.notifyPartAttachmentChanged(evt.getNewValue(),
-									evt.getSource());
+					((RulerChangeListener) listeners.get(i)).notifyPartAttachmentChanged(evt.getNewValue(),
+							evt.getSource());
 				}
 			} else {
 				for (int i = 0; i < listeners.size(); i++) {
-					((RulerChangeListener) listeners.get(i))
-							.notifyGuideMoved(evt.getSource());
+					((RulerChangeListener) listeners.get(i)).notifyGuideMoved(evt.getSource());
 				}
 			}
 		}
@@ -74,8 +70,7 @@ public class LogicRulerProvider extends RulerProvider {
 		this.ruler.addPropertyChangeListener(rulerListener);
 		List guides = getGuides();
 		for (int i = 0; i < guides.size(); i++) {
-			((LogicGuide) guides.get(i))
-					.addPropertyChangeListener(guideListener);
+			((LogicGuide) guides.get(i)).addPropertyChangeListener(guideListener);
 		}
 	}
 

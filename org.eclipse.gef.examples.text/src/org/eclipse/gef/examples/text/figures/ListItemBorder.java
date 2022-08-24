@@ -27,7 +27,6 @@ public abstract class ListItemBorder extends AbstractBorder {
 			paintBorder(figure, graphics, insets);
 	}
 
-	protected abstract void paintBorder(IFigure figure, Graphics graphics,
-			Insets insets);
+	protected abstract void paintBorder(IFigure figure, Graphics graphics, Insets insets);
 
 }

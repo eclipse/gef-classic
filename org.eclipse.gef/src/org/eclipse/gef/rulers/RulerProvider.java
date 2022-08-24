@@ -61,15 +61,15 @@ public abstract class RulerProvider {
 	public static final String PROPERTY_VERTICAL_RULER = "vertical ruler"; //$NON-NLS-1$
 
 	/**
-	 * Constant indicating that the ruler should display centimeters. Note that
-	 * this setting does not affect how a guide's position is interpreted (it is
-	 * always taken as pixels).
+	 * Constant indicating that the ruler should display centimeters. Note that this
+	 * setting does not affect how a guide's position is interpreted (it is always
+	 * taken as pixels).
 	 */
 	public static final int UNIT_CENTIMETERS = 1;
 	/**
 	 * Constant indicating that the ruler should display inches. Note that this
-	 * setting does not affect how a guide's position is interpreted (it is
-	 * always taken as pixels).
+	 * setting does not affect how a guide's position is interpreted (it is always
+	 * taken as pixels).
 	 */
 	public static final int UNIT_INCHES = 0;
 	/**
@@ -86,9 +86,8 @@ public abstract class RulerProvider {
 	/**
 	 * The given listener will be notified of changes in ruler properties.
 	 * 
-	 * @param listener
-	 *            the listener that is to be notified of changes in ruler
-	 *            properties
+	 * @param listener the listener that is to be notified of changes in ruler
+	 *                 properties
 	 */
 	public void addRulerChangeListener(RulerChangeListener listener) {
 		if (!listeners.contains(listener))
@@ -98,13 +97,11 @@ public abstract class RulerProvider {
 	/**
 	 * Return the description of the control or specified child in the
 	 * <code>result</code> field of the event object. Returning an empty string
-	 * tells the client that the control or child does not have a description,
-	 * and returning null tells the client to use the platform description.
+	 * tells the client that the control or child does not have a description, and
+	 * returning null tells the client to use the platform description.
 	 * 
-	 * @param e
-	 *            AccessibleEvent
-	 * @param guide
-	 *            The guide whose accessibility information is requested
+	 * @param e     AccessibleEvent
+	 * @param guide The guide whose accessibility information is requested
 	 * @see org.eclipse.swt.accessibility.AccessibleAdapter#getDescription(AccessibleEvent)
 	 */
 	public void getAccGuideDescription(AccessibleEvent e, Object guide) {
@@ -112,13 +109,11 @@ public abstract class RulerProvider {
 	}
 
 	/**
-	 * Return the given guide's name/label in the <code>result</code> field of
-	 * the given event.
+	 * Return the given guide's name/label in the <code>result</code> field of the
+	 * given event.
 	 * 
-	 * @param e
-	 *            AccessibleEvent
-	 * @param guide
-	 *            The guide whose accessibility information is requested
+	 * @param e     AccessibleEvent
+	 * @param guide The guide whose accessibility information is requested
 	 * @see org.eclipse.swt.accessibility.AccessibleAdapter#getName(AccessibleEvent)
 	 */
 	public void getAccGuideName(AccessibleEvent e, Object guide) {
@@ -129,10 +124,8 @@ public abstract class RulerProvider {
 	 * Return the guide's position in the <code>result</code> field of the given
 	 * event.
 	 * 
-	 * @param e
-	 *            AccessibleEvent
-	 * @param guide
-	 *            The guide whose accessibility information is requested
+	 * @param e     AccessibleEvent
+	 * @param guide The guide whose accessibility information is requested
 	 * @see org.eclipse.swt.accessibility.AccessibleControlAdapter#getValue(AccessibleControlEvent)
 	 */
 	public void getAccGuideValue(AccessibleControlEvent e, Object guide) {
@@ -142,8 +135,7 @@ public abstract class RulerProvider {
 	/**
 	 * Returns a List of model objects that are attached to the given guide.
 	 * 
-	 * @param guide
-	 *            the guide to which the model parts are attached.
+	 * @param guide the guide to which the model parts are attached.
 	 * @return list of attached model objects
 	 */
 	public List getAttachedModelObjects(Object guide) {
@@ -153,10 +145,8 @@ public abstract class RulerProvider {
 	/**
 	 * Returns a List of EditParts that are attached to the given guide.
 	 * 
-	 * @param guide
-	 *            the guide to which the EditParts are attached.
-	 * @param viewer
-	 *            the GraphicalViewer in which these EditParts are shown.
+	 * @param guide  the guide to which the EditParts are attached.
+	 * @param viewer the GraphicalViewer in which these EditParts are shown.
 	 * @return list of attached edit parts
 	 */
 	public List getAttachedEditParts(Object guide, GraphicalViewer viewer) {
@@ -174,11 +164,10 @@ public abstract class RulerProvider {
 	}
 
 	/**
-	 * Clients should override this method to return a Command to create a new
-	 * guide at the given position.
+	 * Clients should override this method to return a Command to create a new guide
+	 * at the given position.
 	 * 
-	 * @param position
-	 *            The pixel position where the new guide is to be created
+	 * @param position The pixel position where the new guide is to be created
 	 * @return UnexecutableCommand
 	 */
 	public Command getCreateGuideCommand(int position) {
@@ -186,11 +175,10 @@ public abstract class RulerProvider {
 	}
 
 	/**
-	 * Clients should override this method to return a Command to delete the
-	 * given guide.
+	 * Clients should override this method to return a Command to delete the given
+	 * guide.
 	 * 
-	 * @param guide
-	 *            The guide that is to be deleted
+	 * @param guide The guide that is to be deleted
 	 * @return UnexecutableCommand
 	 */
 	public Command getDeleteGuideCommand(Object guide) {
@@ -198,13 +186,11 @@ public abstract class RulerProvider {
 	}
 
 	/**
-	 * In most cases, there should be no need for clients to override this
-	 * method.
+	 * In most cases, there should be no need for clients to override this method.
 	 * 
-	 * @param position
-	 *            The position of the guide that is to be found
-	 * @return The guide object at the given position; <code>null</code> if no
-	 *         guide exists at the given position
+	 * @param position The position of the guide that is to be found
+	 * @return The guide object at the given position; <code>null</code> if no guide
+	 *         exists at the given position
 	 */
 	public Object getGuideAt(int position) {
 		List guides = getGuides();
@@ -221,10 +207,8 @@ public abstract class RulerProvider {
 	 * Clients should override this method to return a Command to move the given
 	 * guide by the given amount.
 	 * 
-	 * @param guide
-	 *            The guide that is to be moved
-	 * @param positionDelta
-	 *            The amount by which the guide is to be moved
+	 * @param guide         The guide that is to be moved
+	 * @param positionDelta The amount by which the guide is to be moved
 	 * @return UnexecutableCommand
 	 */
 	public Command getMoveGuideCommand(Object guide, int positionDelta) {
@@ -232,8 +216,8 @@ public abstract class RulerProvider {
 	}
 
 	/**
-	 * Clients should override this method to return a list of all the guides
-	 * set on this ruler.
+	 * Clients should override this method to return a list of all the guides set on
+	 * this ruler.
 	 * 
 	 * @return an empty list
 	 */
@@ -242,8 +226,8 @@ public abstract class RulerProvider {
 	}
 
 	/**
-	 * Clients should override this method to return an array of all the
-	 * positions of all the guides on this ruler.
+	 * Clients should override this method to return an array of all the positions
+	 * of all the guides on this ruler.
 	 * 
 	 * @return an empty array
 	 */
@@ -252,11 +236,10 @@ public abstract class RulerProvider {
 	}
 
 	/**
-	 * Clients should override this method to return the position (in pixels) of
-	 * the given guide.
+	 * Clients should override this method to return the position (in pixels) of the
+	 * given guide.
 	 * 
-	 * @param guide
-	 *            The guide whose position is to be determined
+	 * @param guide The guide whose position is to be determined
 	 * @return <code>Integer.MIN_VALUE</code>
 	 */
 	public int getGuidePosition(Object guide) {
@@ -264,8 +247,8 @@ public abstract class RulerProvider {
 	}
 
 	/**
-	 * Clients should override this method to return a model representation of
-	 * the ruler.
+	 * Clients should override this method to return a model representation of the
+	 * ruler.
 	 * 
 	 * @return <code>null</code>
 	 */
@@ -274,8 +257,8 @@ public abstract class RulerProvider {
 	}
 
 	/**
-	 * Clients should override this method to return the units that the ruler
-	 * should display: one of UNIT_INCHES, UNIT_CENTIMETERS, UNIT_PIXELS.
+	 * Clients should override this method to return the units that the ruler should
+	 * display: one of UNIT_INCHES, UNIT_CENTIMETERS, UNIT_PIXELS.
 	 * 
 	 * @return UNIT_INCHES
 	 */
@@ -286,22 +269,19 @@ public abstract class RulerProvider {
 	/**
 	 * The given listener will not be notified of changes in the ruler anymore.
 	 * 
-	 * @param listener
-	 *            the listener that is to be removed
+	 * @param listener the listener that is to be removed
 	 */
 	public void removeRulerChangeListener(RulerChangeListener listener) {
 		listeners.remove(listener);
 	}
 
 	/**
-	 * This method will be invoked when the user requests that the ruler display
-	 * a different measurement. The default implementation ignores the user's
-	 * request.
+	 * This method will be invoked when the user requests that the ruler display a
+	 * different measurement. The default implementation ignores the user's request.
 	 * 
-	 * @param newUnit
-	 *            the new unit of measurement; will be one of
-	 *            {@link #UNIT_CENTIMETERS}, {@link #UNIT_INCHES}, or
-	 *            {@link #UNIT_PIXELS}
+	 * @param newUnit the new unit of measurement; will be one of
+	 *                {@link #UNIT_CENTIMETERS}, {@link #UNIT_INCHES}, or
+	 *                {@link #UNIT_PIXELS}
 	 */
 	public void setUnit(int newUnit) {
 	}

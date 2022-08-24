@@ -28,8 +28,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
  */
 public class SimpleActivityPart extends ActivityPart {
 
-	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s,
-			Map map) {
+	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
 		Node n = new Node(this, s);
 		n.outgoingOffset = getAnchorOffset();
 		n.incomingOffset = getAnchorOffset();
@@ -57,8 +56,7 @@ public class SimpleActivityPart extends ActivityPart {
 	protected void performDirectEdit() {
 		if (manager == null) {
 			Label l = (Label) getFigure();
-			manager = new ActivityDirectEditManager(this, TextCellEditor.class,
-					new ActivityCellEditorLocator(l), l);
+			manager = new ActivityDirectEditManager(this, TextCellEditor.class, new ActivityCellEditorLocator(l), l);
 		}
 		manager.show();
 	}

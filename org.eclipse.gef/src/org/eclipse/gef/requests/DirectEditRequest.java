@@ -35,16 +35,15 @@ public class DirectEditRequest extends LocationRequest {
 	/**
 	 * Constructor for DirectEditRequest.
 	 * 
-	 * @param type
-	 *            the type
+	 * @param type the type
 	 */
 	public DirectEditRequest(Object type) {
 		super(type);
 	}
 
 	/**
-	 * If the EditPart supports direct editing of multiple features, this
-	 * parameter can be used to discriminate among them.
+	 * If the EditPart supports direct editing of multiple features, this parameter
+	 * can be used to discriminate among them.
 	 * 
 	 * @return the direct edit feature
 	 */
@@ -64,8 +63,7 @@ public class DirectEditRequest extends LocationRequest {
 	/**
 	 * Sets the cell editor to be used when direct editing.
 	 * 
-	 * @param celleditor
-	 *            the cell editor
+	 * @param celleditor the cell editor
 	 */
 	public void setCellEditor(CellEditor celleditor) {
 		this.celleditor = celleditor;
@@ -74,8 +72,7 @@ public class DirectEditRequest extends LocationRequest {
 	/**
 	 * Sets the direct edit feature.
 	 * 
-	 * @param feature
-	 *            the direct edit feature
+	 * @param feature the direct edit feature
 	 * @see #getDirectEditFeature()
 	 */
 	public void setDirectEditFeature(Object feature) {

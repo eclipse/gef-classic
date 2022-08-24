@@ -20,12 +20,12 @@ package org.eclipse.gef;
 public interface DragTracker extends Tool {
 
 	/**
-	 * The <code>SelectionTool</code> supports keyboard accessible drags. In
-	 * such scenarios it is up to the SelectionTool to interpret <i>commit</i>
-	 * and <i>abort</i> keystrokes. Since the DragTracker cannot do this, this
-	 * method is used to indicate that the User has committed the drag using the
-	 * keyboard. Abort is not handled specially, and the DragTracker should
-	 * peform the usual cleanup in its {@link Tool#deactivate()} method.
+	 * The <code>SelectionTool</code> supports keyboard accessible drags. In such
+	 * scenarios it is up to the SelectionTool to interpret <i>commit</i> and
+	 * <i>abort</i> keystrokes. Since the DragTracker cannot do this, this method is
+	 * used to indicate that the User has committed the drag using the keyboard.
+	 * Abort is not handled specially, and the DragTracker should peform the usual
+	 * cleanup in its {@link Tool#deactivate()} method.
 	 */
 	void commitDrag();
 

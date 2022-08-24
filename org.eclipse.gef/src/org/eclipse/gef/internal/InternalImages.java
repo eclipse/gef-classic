@@ -69,20 +69,17 @@ public class InternalImages {
 	public static final ImageDescriptor DESC_PALETTE;
 
 	/**
-	 * Can be used to access the cached pinned image by using
-	 * {@link #get(String)}.
+	 * Can be used to access the cached pinned image by using {@link #get(String)}.
 	 */
 	public static final String IMG_PINNED = "icons/pinned.gif";//$NON-NLS-1$
 
 	/**
-	 * Can be used to access the cached pinned image by using
-	 * {@link #get(String)}.
+	 * Can be used to access the cached pinned image by using {@link #get(String)}.
 	 */
 	public static final String IMG_UNPINNED = "icons/unpinned.gif";//$NON-NLS-1$
 
 	/**
-	 * Can be used to access the cached pinned image by using
-	 * {@link #get(String)}.
+	 * Can be used to access the cached pinned image by using {@link #get(String)}.
 	 */
 	public static final String IMG_PALETTE = "icons/palette_view.gif";//$NON-NLS-1$
 
@@ -124,8 +121,7 @@ public class InternalImages {
 		DESC_VERT_ALIGN_TOP_DIS = createDescriptor("icons/aligntop_d.gif"); //$NON-NLS-1$
 
 		DESC_SEPARATOR = createDescriptor("icons/separator.gif"); //$NON-NLS-1$
-		DESC_FOLDER_OPEN = PlatformUI.getWorkbench().getSharedImages()
-				.getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
+		DESC_FOLDER_OPEN = PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_OBJ_FOLDER);
 		DESC_FOLDER_CLOSED = createDescriptor("icons/folder_closed.gif"); //$NON-NLS-1$
 
 		ICON_MATCH_WIDTH = createDescriptor("icons/sizehz.gif"); //$NON-NLS-1$
@@ -146,26 +142,22 @@ public class InternalImages {
 	 * Creates the image descriptor from the filename given and caches it in the
 	 * plugin's image registry.
 	 * 
-	 * @param imageName
-	 *            the full filename of the image
+	 * @param imageName the full filename of the image
 	 * @return the new image descriptor
 	 */
 	private static ImageDescriptor createAndCache(String imageName) {
 		ImageDescriptor result = createDescriptor(imageName);
-		InternalGEFPlugin.getDefault().getImageRegistry()
-				.put(imageName, result);
+		InternalGEFPlugin.getDefault().getImageRegistry().put(imageName, result);
 		return result;
 	}
 
 	/**
-	 * Gets an image from the image registry. This image should not be disposed
-	 * of, that is handled in the image registry. The image descriptor must have
+	 * Gets an image from the image registry. This image should not be disposed of,
+	 * that is handled in the image registry. The image descriptor must have
 	 * previously been cached in the image registry. The cached images for the
-	 * public image names defined in this file can be retrieved using this
-	 * method.
+	 * public image names defined in this file can be retrieved using this method.
 	 * 
-	 * @param imageName
-	 *            the full filename of the image
+	 * @param imageName the full filename of the image
 	 * @return the image or null if it has not been cached in the registry
 	 */
 	public static Image get(String imageName) {

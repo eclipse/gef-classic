@@ -35,19 +35,16 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 	/**
 	 * Constructor for PrintGraphicalViewerOperation
 	 * 
-	 * @param p
-	 *            The Printer to print to
-	 * @param g
-	 *            The viewer containing what is to be printed NOTE: The
-	 *            GraphicalViewer to be printed must have a
-	 *            {@link org.eclipse.draw2d.Layer Layer} with the
-	 *            {@link org.eclipse.gef.LayerConstants PRINTABLE_LAYERS} key.
+	 * @param p The Printer to print to
+	 * @param g The viewer containing what is to be printed NOTE: The
+	 *          GraphicalViewer to be printed must have a
+	 *          {@link org.eclipse.draw2d.Layer Layer} with the
+	 *          {@link org.eclipse.gef.LayerConstants PRINTABLE_LAYERS} key.
 	 */
 	public PrintGraphicalViewerOperation(Printer p, GraphicalViewer g) {
 		super(p);
 		viewer = g;
-		LayerManager lm = (LayerManager) viewer.getEditPartRegistry().get(
-				LayerManager.ID);
+		LayerManager lm = (LayerManager) viewer.getEditPartRegistry().get(LayerManager.ID);
 		IFigure f = lm.getLayer(LayerConstants.PRINTABLE_LAYERS);
 		setPrintSource(f);
 	}
@@ -81,8 +78,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 	/**
 	 * Sets the viewer.
 	 * 
-	 * @param viewer
-	 *            The viewer to set
+	 * @param viewer The viewer to set
 	 */
 	public void setViewer(GraphicalViewer viewer) {
 		this.viewer = viewer;

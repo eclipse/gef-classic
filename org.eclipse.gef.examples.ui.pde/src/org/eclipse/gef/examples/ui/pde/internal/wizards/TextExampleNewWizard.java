@@ -21,12 +21,9 @@ public class TextExampleNewWizard extends ProjectUnzipperNewWizard {
 	 * Constructor
 	 */
 	public TextExampleNewWizard() {
-		super(
-				"TextExampleNewWizard", //$NON-NLS-1$
-				Messages.TextExample_createProjectPage_title,
-				Messages.TextExample_createProjectPage_desc,
-				"org.eclipse.gef.examples.text", //$NON-NLS-1$  
-				FileLocator.find(GefExamplesPlugin.getDefault().getBundle(),
-						new Path("examples/text.zip"), null)); //$NON-NLS-1$
+		super("TextExampleNewWizard", //$NON-NLS-1$
+				Messages.TextExample_createProjectPage_title, Messages.TextExample_createProjectPage_desc,
+				"org.eclipse.gef.examples.text", //$NON-NLS-1$
+				FileLocator.find(GefExamplesPlugin.getDefault().getBundle(), new Path("examples/text.zip"), null)); //$NON-NLS-1$
 	}
 }

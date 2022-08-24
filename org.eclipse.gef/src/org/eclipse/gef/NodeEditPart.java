@@ -37,30 +37,26 @@ public interface NodeEditPart extends GraphicalEditPart {
 
 	/**
 	 * Returns the <code>ConnectionAnchor</code> for the specified <i>source</i>
-	 * connection. This NodeEditPart is the
-	 * {@link ConnectionEditPart#getSource() source} EditPart for the given
-	 * connection.
+	 * connection. This NodeEditPart is the {@link ConnectionEditPart#getSource()
+	 * source} EditPart for the given connection.
 	 * <P>
-	 * The anchor may be a function of the connection's model, the node's model,
-	 * a combination of both, or it may not depend on anything all.
+	 * The anchor may be a function of the connection's model, the node's model, a
+	 * combination of both, or it may not depend on anything all.
 	 * 
-	 * @param connection
-	 *            the ConnectionEditPart
+	 * @param connection the ConnectionEditPart
 	 * @return the ConnectionAnchor for the given ConnectionEditPart
 	 */
 	ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection);
 
 	/**
 	 * Returns the <code>ConnectionAnchor</code> for the specified <i>target</i>
-	 * connection. This NodeEditPart is the
-	 * {@link ConnectionEditPart#getTarget() target} EditPart for the given
-	 * connection.
+	 * connection. This NodeEditPart is the {@link ConnectionEditPart#getTarget()
+	 * target} EditPart for the given connection.
 	 * <P>
-	 * The anchor may be a function of the connection's model, the node's model,
-	 * a combination of both, or it may not depend on anything all.
+	 * The anchor may be a function of the connection's model, the node's model, a
+	 * combination of both, or it may not depend on anything all.
 	 * 
-	 * @param connection
-	 *            the ConnectionEditPart
+	 * @param connection the ConnectionEditPart
 	 * @return the ConnectionAnchor for the given ConnectionEditPart
 	 */
 	ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection);
@@ -69,11 +65,10 @@ public interface NodeEditPart extends GraphicalEditPart {
 	 * Returns the <i>source</i> <code>ConnectionAnchor</code> for the specified
 	 * Request. The returned ConnectionAnchor is used only when displaying
 	 * <i>feedback</i>. The Request is usually a
-	 * {@link org.eclipse.gef.requests.LocationRequest}, which provides the
-	 * current mouse location.
+	 * {@link org.eclipse.gef.requests.LocationRequest}, which provides the current
+	 * mouse location.
 	 * 
-	 * @param request
-	 *            a Request describing the current interaction
+	 * @param request a Request describing the current interaction
 	 * @return the ConnectionAnchor to use during feedback
 	 */
 	ConnectionAnchor getSourceConnectionAnchor(Request request);
@@ -82,11 +77,10 @@ public interface NodeEditPart extends GraphicalEditPart {
 	 * Returns the <i>target</i> <code>ConnectionAnchor</code> for the specified
 	 * Request. The returned ConnectionAnchor is used only when displaying
 	 * <i>feedback</i>. The Request is usually a
-	 * {@link org.eclipse.gef.requests.LocationRequest}, which provides the
-	 * current mouse location.
+	 * {@link org.eclipse.gef.requests.LocationRequest}, which provides the current
+	 * mouse location.
 	 * 
-	 * @param request
-	 *            a Request describing the current interaction
+	 * @param request a Request describing the current interaction
 	 * @return the ConnectionAnchor to use during feedback
 	 */
 	ConnectionAnchor getTargetConnectionAnchor(Request request);

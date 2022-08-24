@@ -24,8 +24,7 @@ public class FlagSupport {
 	 * Returns <code>true</code> the flag (or one of the flags) indicated by the
 	 * given bitmask is set to true.
 	 * 
-	 * @param flag
-	 *            the bitmask of a flag or flags
+	 * @param flag the bitmask of a flag or flags
 	 * @return <code>true</code> if one of the flags is true
 	 */
 	protected boolean getFlag(int flag) {
@@ -36,10 +35,8 @@ public class FlagSupport {
 	 * Sets the flag (or all of the flags) indicated by the given bitmask to the
 	 * given value.
 	 * 
-	 * @param flag
-	 *            the bitmask of the flag or flags
-	 * @param value
-	 *            the new value
+	 * @param flag  the bitmask of the flag or flags
+	 * @param value the new value
 	 */
 	protected void setFlag(int flag, boolean value) {
 		if (value)

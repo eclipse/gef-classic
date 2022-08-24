@@ -78,16 +78,16 @@ public class GraphJFaceSnippet5 {
 	}
 
 	static class MyLabelProvider extends LabelProvider {
-		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);	
-		
+		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
+
 		public MyLabelProvider() {
-			
+
 		}
-		
+
 		public String getText(Object element) {
 			return element.toString();
 		}
-		
+
 		public Image getImage(Object element) {
 			return image;
 		}

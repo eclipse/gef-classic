@@ -30,8 +30,8 @@ import org.eclipse.gef.internal.GEFMessages;
 public class SetPropertyValueCommand extends Command {
 
 	/**
-	 * Value constant to indicate that the property is to be reset to its
-	 * default value during execute/redo and undo.
+	 * Value constant to indicate that the property is to be reset to its default
+	 * value during execute/redo and undo.
 	 */
 	protected static final Object DEFAULT_VALUE = new Object();
 
@@ -47,24 +47,19 @@ public class SetPropertyValueCommand extends Command {
 	/**
 	 * Constructs a new {@link SetPropertyValueCommand}.
 	 * 
-	 * @param propertyLabel
-	 *            A label to identify the property whose value is set by this
-	 *            command.
-	 * @param propertySource
-	 *            The property source which provides the property, whose value
-	 *            is to be set.
-	 * @param propertyId
-	 *            The id of the property whose value is to be set.
-	 * @param newValue
-	 *            The new value to set for the property or
-	 *            {@link #DEFAULT_VALUE} to indicate that the property should be
-	 *            reset.
+	 * @param propertyLabel  A label to identify the property whose value is set by
+	 *                       this command.
+	 * @param propertySource The property source which provides the property, whose
+	 *                       value is to be set.
+	 * @param propertyId     The id of the property whose value is to be set.
+	 * @param newValue       The new value to set for the property or
+	 *                       {@link #DEFAULT_VALUE} to indicate that the property
+	 *                       should be reset.
 	 * @since 3.7
 	 */
-	public SetPropertyValueCommand(String propertyLabel,
-			IPropertySource propertySource, Object propertyId, Object newValue) {
-		super(MessageFormat.format(GEFMessages.SetPropertyValueCommand_Label,
-				new Object[] { propertyLabel }).trim());
+	public SetPropertyValueCommand(String propertyLabel, IPropertySource propertySource, Object propertyId,
+			Object newValue) {
+		super(MessageFormat.format(GEFMessages.SetPropertyValueCommand_Label, new Object[] { propertyLabel }).trim());
 		this.propertySource = propertySource;
 		this.propertyId = propertyId;
 		this.newValue = newValue;
@@ -83,8 +78,7 @@ public class SetPropertyValueCommand extends Command {
 			// value
 			boolean canExecute = propertySource.isPropertySet(propertyId);
 			if (propertySource instanceof IPropertySource2) {
-				canExecute &= (((IPropertySource2) propertySource)
-						.isPropertyResettable(propertyId));
+				canExecute &= (((IPropertySource2) propertySource).isPropertyResettable(propertyId));
 			}
 			return canExecute;
 		}
@@ -96,14 +90,13 @@ public class SetPropertyValueCommand extends Command {
 	 */
 	public void execute() {
 		/*
-		 * Fix for bug #54250 IPropertySource.isPropertySet(String) returns
-		 * false both when there is no default value, and when there is a
-		 * default value and the property is set to that value. To correctly
-		 * determine if a reset should be done during undo, we compare the
-		 * return value of isPropertySet(String) before and after
-		 * setPropertyValue(...) is invoked. If they are different (it must have
-		 * been false before and true after -- it cannot be the other way
-		 * around), then that means we need to reset.
+		 * Fix for bug #54250 IPropertySource.isPropertySet(String) returns false both
+		 * when there is no default value, and when there is a default value and the
+		 * property is set to that value. To correctly determine if a reset should be
+		 * done during undo, we compare the return value of isPropertySet(String) before
+		 * and after setPropertyValue(...) is invoked. If they are different (it must
+		 * have been false before and true after -- it cannot be the other way around),
+		 * then that means we need to reset.
 		 */
 		boolean wasPropertySet = propertySource.isPropertySet(propertyId);
 		oldValue = unwrapValue(propertySource.getPropertyValue(propertyId));
@@ -120,9 +113,7 @@ public class SetPropertyValueCommand extends Command {
 		// DEFAULT_VALUE the old value may not have been the default value as
 		// well, as the command would not be executable in this case.
 		if (propertySource instanceof IPropertySource2) {
-			if (!wasPropertySet
-					&& ((IPropertySource2) propertySource)
-							.isPropertyResettable(propertyId)) {
+			if (!wasPropertySet && ((IPropertySource2) propertySource).isPropertyResettable(propertyId)) {
 				oldValue = DEFAULT_VALUE;
 			}
 		} else {
@@ -133,11 +124,10 @@ public class SetPropertyValueCommand extends Command {
 	}
 
 	/**
-	 * Returns the new value to be set for the property when executing or
-	 * redoing.
+	 * Returns the new value to be set for the property when executing or redoing.
 	 * 
-	 * @return the new value or {@link #DEFAULT_VALUE} to indicate that the
-	 *         default value should be set as the new value.
+	 * @return the new value or {@link #DEFAULT_VALUE} to indicate that the default
+	 *         value should be set as the new value.
 	 * @since 3.7
 	 */
 	protected Object getNewValue() {
@@ -145,9 +135,9 @@ public class SetPropertyValueCommand extends Command {
 	}
 
 	/**
-	 * After the command has been executed or redone, returns the old value of
-	 * the property or {@link #DEFAULT_VALUE} if the property did not have a
-	 * value before.
+	 * After the command has been executed or redone, returns the old value of the
+	 * property or {@link #DEFAULT_VALUE} if the property did not have a value
+	 * before.
 	 * 
 	 * @return the old value of the property or {@link #DEFAULT_VALUE}.
 	 * @since 3.7
@@ -157,8 +147,7 @@ public class SetPropertyValueCommand extends Command {
 	}
 
 	/**
-	 * Returns the id by which to identify the property whose value is to be
-	 * set.
+	 * Returns the id by which to identify the property whose value is to be set.
 	 * 
 	 * @return the id of the property whose value is to be set.
 	 * @since 3.7
@@ -168,8 +157,8 @@ public class SetPropertyValueCommand extends Command {
 	}
 
 	/**
-	 * Returns the {@link IPropertySource} which provides the property, whose
-	 * value is to be set.
+	 * Returns the {@link IPropertySource} which provides the property, whose value
+	 * is to be set.
 	 * 
 	 * @return the {@link IPropertySource} which provides the property.
 	 * @since 3.7

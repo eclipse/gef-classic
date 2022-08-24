@@ -18,8 +18,7 @@ public interface Locator {
 	/**
 	 * Relocates the given IFigure.
 	 * 
-	 * @param target
-	 *            The figure to relocate
+	 * @param target The figure to relocate
 	 */
 	void relocate(IFigure target);
 

@@ -26,8 +26,7 @@ public class LogicLabel extends LogicSubpart {
 
 	private String text = LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel;
 
-	private static Image LOGIC_LABEL_ICON = createImage(LED.class,
-			"icons/label16.gif"); //$NON-NLS-1$
+	private static Image LOGIC_LABEL_ICON = createImage(LED.class, "icons/label16.gif"); //$NON-NLS-1$
 
 	private static int count;
 
@@ -52,8 +51,7 @@ public class LogicLabel extends LogicSubpart {
 		return new Dimension(size.width, -1);
 	}
 
-	private void readObject(java.io.ObjectInputStream s) throws IOException,
-			ClassNotFoundException {
+	private void readObject(java.io.ObjectInputStream s) throws IOException, ClassNotFoundException {
 		s.defaultReadObject();
 	}
 
@@ -64,14 +62,12 @@ public class LogicLabel extends LogicSubpart {
 
 	public void setLabelContents(String s) {
 		text = s;
-		firePropertyChange("labelContents", null, text); //$NON-NLS-2$//$NON-NLS-1$
+		firePropertyChange("labelContents", null, text); // $NON-NLS-2$//$NON-NLS-1$
 	}
 
 	public String toString() {
-		return LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel
-				+ " #" + getID() + " " //$NON-NLS-1$ //$NON-NLS-2$
-				+ LogicMessages.PropertyDescriptor_Label_Text
-				+ "=" + getLabelContents(); //$NON-NLS-1$ 
+		return LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel + " #" + getID() + " " //$NON-NLS-1$ //$NON-NLS-2$
+				+ LogicMessages.PropertyDescriptor_Label_Text + "=" + getLabelContents(); //$NON-NLS-1$
 	}
 
 }

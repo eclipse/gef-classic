@@ -34,15 +34,13 @@ abstract class ZoomAction extends Action implements ZoomListener, Disposable {
 	/**
 	 * Constructor
 	 * 
-	 * @param text
-	 *            the action's text, or <code>null</code> if there is no text
-	 * @param image
-	 *            the action's image, or <code>null</code> if there is no image
-	 * @param zoomManager
-	 *            the ZoomManager used to zoom in or out
+	 * @param text        the action's text, or <code>null</code> if there is no
+	 *                    text
+	 * @param image       the action's image, or <code>null</code> if there is no
+	 *                    image
+	 * @param zoomManager the ZoomManager used to zoom in or out
 	 */
-	public ZoomAction(String text, ImageDescriptor image,
-			ZoomManager zoomManager) {
+	public ZoomAction(String text, ImageDescriptor image, ZoomManager zoomManager) {
 		super(text, image);
 		this.zoomManager = zoomManager;
 		zoomManager.addZoomListener(this);

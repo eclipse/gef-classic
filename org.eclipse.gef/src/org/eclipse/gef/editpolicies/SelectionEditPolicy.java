@@ -28,8 +28,7 @@ import org.eclipse.gef.RequestConstants;
  * @author hudsonr
  * @since 2.0
  */
-public abstract class SelectionEditPolicy extends
-		org.eclipse.gef.editpolicies.GraphicalEditPolicy {
+public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.GraphicalEditPolicy {
 
 	private EditPartListener selectionListener;
 	private int state = -1;
@@ -62,8 +61,8 @@ public abstract class SelectionEditPolicy extends
 	}
 
 	/**
-	 * Extends deactivate to unhook the seleciton listener and to remove the
-	 * visual changes for representing selection/focus.
+	 * Extends deactivate to unhook the seleciton listener and to remove the visual
+	 * changes for representing selection/focus.
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
@@ -108,8 +107,7 @@ public abstract class SelectionEditPolicy extends
 	 * listener. If the focus value is changed, either {@link #showFocus()} or
 	 * {@link #hideFocus()} will be called.
 	 * 
-	 * @param value
-	 *            <code>true</code> if the EditPolicy should show focus
+	 * @param value <code>true</code> if the EditPolicy should show focus
 	 */
 	protected void setFocus(boolean value) {
 		if (focus == value)
@@ -122,12 +120,11 @@ public abstract class SelectionEditPolicy extends
 	}
 
 	/**
-	 * Sets the internal selection value. This method is called automatically by
-	 * the listener. If the selection value is changed, the appropriate method
-	 * is called to show the specified selection type.
+	 * Sets the internal selection value. This method is called automatically by the
+	 * listener. If the selection value is changed, the appropriate method is called
+	 * to show the specified selection type.
 	 * 
-	 * @param type
-	 *            the type of selection the EditPolicy should display
+	 * @param type the type of selection the EditPolicy should display
 	 */
 	protected void setSelectedState(int type) {
 		if (state == type)
@@ -150,8 +147,8 @@ public abstract class SelectionEditPolicy extends
 	}
 
 	/**
-	 * Calls {@link #showSelection()} by default. Override to distinguish
-	 * between primary and normal selection.
+	 * Calls {@link #showSelection()} by default. Override to distinguish between
+	 * primary and normal selection.
 	 */
 	protected void showPrimarySelection() {
 		showSelection();

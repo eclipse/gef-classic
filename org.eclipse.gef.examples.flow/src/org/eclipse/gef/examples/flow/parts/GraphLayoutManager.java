@@ -29,16 +29,13 @@ class GraphLayoutManager extends AbstractLayout {
 		this.diagram = diagram;
 	}
 
-	protected Dimension calculatePreferredSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		container.validate();
 		List children = container.getChildren();
-		Rectangle result = new Rectangle().setLocation(container
-				.getClientArea().getLocation());
+		Rectangle result = new Rectangle().setLocation(container.getClientArea().getLocation());
 		for (int i = 0; i < children.size(); i++)
 			result.union(((IFigure) children.get(i)).getBounds());
-		result.resize(container.getInsets().getWidth(), container.getInsets()
-				.getHeight());
+		result.resize(container.getInsets().getWidth(), container.getInsets().getHeight());
 		return result.getSize();
 	}
 

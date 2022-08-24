@@ -68,8 +68,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	private static final int MODE_TYPE = 1;
 	private static final String KEY_OVERWRITE = "gef.texttool.overwrite"; //$NON-NLS-1$
 	private CommandStackEventListener commandListener = new CommandStackEventListener() {
-		public void stackChanged(
-				org.eclipse.gef.commands.CommandStackEvent event) {
+		public void stackChanged(org.eclipse.gef.commands.CommandStackEvent event) {
 			if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
 				fireStyleChanges();
 				discardCaretLocation();
@@ -113,8 +112,8 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	}
 
 	/*
-	 * uncomment this when this class moves to the same package as AbstractTool
-	 * Need to override acceptAbort boolean acceptAbort(KeyEvent e) { return
+	 * uncomment this when this class moves to the same package as AbstractTool Need
+	 * to override acceptAbort boolean acceptAbort(KeyEvent e) { return
 	 * !isInState(STATE_INITIAL) && e.character == SWT.ESC; }
 	 */
 
@@ -155,9 +154,8 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		setTextInputMode(0);
 		event.doit = false;
 
-		if (action == ST.PAGE_DOWN || action == ST.SELECT_PAGE_DOWN
-				|| action == ST.PAGE_UP || action == ST.SELECT_PAGE_UP
-				|| action == ST.SELECT_LINE_DOWN || action == ST.LINE_DOWN
+		if (action == ST.PAGE_DOWN || action == ST.SELECT_PAGE_DOWN || action == ST.PAGE_UP
+				|| action == ST.SELECT_PAGE_UP || action == ST.SELECT_LINE_DOWN || action == ST.LINE_DOWN
 				|| action == ST.SELECT_LINE_UP || action == ST.LINE_UP)
 			recordCaretLocation();
 		else
@@ -280,14 +278,12 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		setTextInputMode(MODE_BS);
 		SelectionRange range = getSelectionRange();
 		if (range.isEmpty()) {
-			if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range,
-					pendingCommand)))
+			if (handleTextEdit(new TextRequest(TextRequest.REQ_BACKSPACE, range, pendingCommand)))
 				return true;
 			doSelect(CaretRequest.COLUMN, false, false, null);
 			return false;
 		} else
-			return handleTextEdit(
-					new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
+			return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
 	}
 
 	private boolean doDelete() {
@@ -295,14 +291,12 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		SelectionRange range = getSelectionRange();
 
 		if (range.isEmpty()) {
-			if (handleTextEdit(new TextRequest(TextRequest.REQ_DELETE, range,
-					pendingCommand)))
+			if (handleTextEdit(new TextRequest(TextRequest.REQ_DELETE, range, pendingCommand)))
 				return true;
 			doSelect(CaretRequest.COLUMN, true, false, null);
 			return false;
 		} else
-			return handleTextEdit(
-					new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
+			return handleTextEdit(new TextRequest(TextRequest.REQ_REMOVE_RANGE, range));
 	}
 
 	/**
@@ -325,8 +319,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	 */
 	private boolean doInsertContent(char c) {
 		setTextInputMode(MODE_TYPE);
-		TextRequest edit = new TextRequest(
-				overwrite ? TextRequest.REQ_OVERWRITE : TextRequest.REQ_INSERT,
+		TextRequest edit = new TextRequest(overwrite ? TextRequest.REQ_OVERWRITE : TextRequest.REQ_INSERT,
 				getSelectionRange(), Character.toString(c), pendingCommand);
 		String keys[] = new String[styleKeys.size()];
 		styleKeys.toArray(keys);
@@ -346,8 +339,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			action = lookupAction(event.character | event.stateMask);
 			if (action == 0) {
 				// see if we have a control character
-				if ((event.stateMask & SWT.CTRL) != 0 && (event.character >= 0)
-						&& event.character <= 31) {
+				if ((event.stateMask & SWT.CTRL) != 0 && (event.character >= 0) && event.character <= 31) {
 					// get the character from the CTRL+char sequence, the
 					// control
 					// key subtracts 64 from the value of the key that it
@@ -376,8 +368,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		return handleTextEdit(edit);
 	}
 
-	private void doSelect(Object type, boolean isForward, boolean append,
-			Point loc) {
+	private void doSelect(Object type, boolean isForward, boolean append, Point loc) {
 		GraphicalTextViewer viewer = getTextualViewer();
 		SearchResult result = new SearchResult();
 		CaretRequest search = new CaretRequest();
@@ -395,9 +386,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		} else {
 			TextLocation caretLocation = getCaretLocation();
 			if (loc == null)
-				search.setLocation(
-						new Point(xCaptured ? caretXLoc : getCaretBounds().x,
-								getCaretInfo().getBaseline()));
+				search.setLocation(new Point(xCaptured ? caretXLoc : getCaretBounds().x, getCaretInfo().getBaseline()));
 			search.where = caretLocation;
 			caretLocation.part.getTextLocation(search, result);
 			// isForward = range.isForward;
@@ -408,23 +397,19 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		if (append) {
 			TextLocation otherEnd = isForward ? range.begin : range.end;
 			if (TextUtilities.isForward(otherEnd, result.location))
-				range = new SelectionRange(otherEnd, result.location, true,
-						result.trailing);
+				range = new SelectionRange(otherEnd, result.location, true, result.trailing);
 			else
-				range = new SelectionRange(result.location, otherEnd, false,
-						result.trailing);
+				range = new SelectionRange(result.location, otherEnd, false, result.trailing);
 			viewer.setSelectionRange(range);
 		} else
-			viewer.setSelectionRange(new SelectionRange(result.location,
-					result.location, isForward, result.trailing));
+			viewer.setSelectionRange(new SelectionRange(result.location, result.location, isForward, result.trailing));
 	}
 
 	private void doTraversePage(boolean isForward, boolean appendSelection) {
 		Rectangle caretBounds = getCaretBounds();
 		Point loc = caretBounds.getCenter();
 		loc.x = caretXLoc;
-		int viewerHeight = getTextualViewer().getControl().getBounds().height
-				- caretBounds.height;
+		int viewerHeight = getTextualViewer().getControl().getBounds().height - caretBounds.height;
 		if (isForward)
 			loc.y += viewerHeight;
 		else
@@ -446,23 +431,20 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			// insert a character in the text in this instance). Do not
 			// ignore COMMAND+ALT combinations since that key sequence
 			// produces characters on the mac.
-			ignore = (event.stateMask ^ SWT.COMMAND) == 0
-					|| (event.stateMask ^ (SWT.COMMAND | SWT.SHIFT)) == 0;
+			ignore = (event.stateMask ^ SWT.COMMAND) == 0 || (event.stateMask ^ (SWT.COMMAND | SWT.SHIFT)) == 0;
 		} else {
 			// Ignore accelerator key combinations (we do not want to
 			// insert a character in the text in this instance). Don't
 			// ignore CTRL+ALT combinations since that is the Alt Gr
 			// key on some keyboards.
-			ignore = (event.stateMask ^ SWT.ALT) == 0
-					|| (event.stateMask ^ SWT.CTRL) == 0
+			ignore = (event.stateMask ^ SWT.ALT) == 0 || (event.stateMask ^ SWT.CTRL) == 0
 					|| (event.stateMask ^ (SWT.ALT | SWT.SHIFT)) == 0
 					|| (event.stateMask ^ (SWT.CTRL | SWT.SHIFT)) == 0;
 		}
 		// -ignore anything below SPACE except for line delimiter keys and tab.
 		// -ignore DEL
-		if (!ignore && event.character > 31 && event.character != SWT.DEL
-				|| event.character == SWT.CR || event.character == SWT.LF
-				|| event.character == '\t') {
+		if (!ignore && event.character > 31 && event.character != SWT.DEL || event.character == SWT.CR
+				|| event.character == SWT.LF || event.character == '\t') {
 			doInsertContent(event.character);
 			event.doit = false;
 		}
@@ -506,8 +488,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 
 	public CaretInfo getCaretInfo() {
 		TextLocation location = getCaretLocation();
-		return location.part.getCaretPlacement(location.offset,
-				getSelectionRange().trailing);
+		return location.part.getCaretPlacement(location.offset, getSelectionRange().trailing);
 	}
 
 	public TextLocation getCaretLocation() {
@@ -533,15 +514,13 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		if (viewer != null) {
 			EditPart root = viewer.getRootEditPart();
 			if (root instanceof GraphicalEditPart)
-				return ((GraphicalEditPart) root).getFigure()
-						.getUpdateManager();
+				return ((GraphicalEditPart) root).getFigure().getUpdateManager();
 		}
 		return null;
 	}
 
 	private Object getSelectionStyle(String styleID, boolean isState) {
-		TextRequest req = new TextRequest(TextRequest.REQ_STYLE,
-				getSelectionRange());
+		TextRequest req = new TextRequest(TextRequest.REQ_STYLE, getSelectionRange());
 		req.setStyles(new String[] { styleID }, new Object[] { null });
 		EditPart target = getTextTarget(req);
 		if (target == null)
@@ -567,8 +546,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		SelectionRange range = getSelectionRange();
 		if (range == null)
 			return null;
-		EditPart target, candidate = ToolUtilities
-				.findCommonAncestor(range.begin.part, range.end.part);
+		EditPart target, candidate = ToolUtilities.findCommonAncestor(range.begin.part, range.end.part);
 
 		do {
 			target = candidate.getTargetEditPart(request);
@@ -608,8 +586,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	}
 
 	protected void handleKeyTraversed(TraverseEvent event) {
-		if ((event.detail == SWT.TRAVERSE_TAB_PREVIOUS
-				|| event.detail == SWT.TRAVERSE_TAB_NEXT)
+		if ((event.detail == SWT.TRAVERSE_TAB_PREVIOUS || event.detail == SWT.TRAVERSE_TAB_NEXT)
 				&& (event.stateMask & SWT.CTRL) == 0)
 			event.doit = false;
 	}
@@ -643,8 +620,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			if (!pendingCommand.canExecutePending())
 				return false;
 			pendingCommand.executePending();
-			viewer.setSelectionRange(((TextCommand) pendingCommand)
-					.getExecuteSelectionRange(viewer));
+			viewer.setSelectionRange(((TextCommand) pendingCommand).getExecuteSelectionRange(viewer));
 		}
 
 		return true;
@@ -663,11 +639,9 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		case SWT.ARROW_RIGHT:
 			return isMirrored ? ST.COLUMN_PREVIOUS : ST.COLUMN_NEXT;
 		case SWT.ARROW_RIGHT | SWT.SHIFT:
-			return isMirrored ? ST.SELECT_COLUMN_PREVIOUS
-					: ST.SELECT_COLUMN_NEXT;
+			return isMirrored ? ST.SELECT_COLUMN_PREVIOUS : ST.SELECT_COLUMN_NEXT;
 		case SWT.ARROW_LEFT | SWT.SHIFT:
-			return isMirrored ? ST.SELECT_COLUMN_NEXT
-					: ST.SELECT_COLUMN_PREVIOUS;
+			return isMirrored ? ST.SELECT_COLUMN_NEXT : ST.SELECT_COLUMN_PREVIOUS;
 		case SWT.ARROW_RIGHT | SWT.CONTROL:
 			return isMirrored ? ST.WORD_PREVIOUS : ST.WORD_NEXT;
 		case SWT.ARROW_RIGHT | SWT.CONTROL | SWT.SHIFT:
@@ -748,8 +722,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		}
 
 		// Try to apply immediately, pend otherwise.
-		TextRequest req = new TextRequest(TextRequest.REQ_STYLE,
-				getSelectionRange());
+		TextRequest req = new TextRequest(TextRequest.REQ_STYLE, getSelectionRange());
 		// $TODO should this be all pending styles or just the recently set?
 		req.setStyles(new String[] { styleID }, new Object[] { newValue });
 		EditPart target = getTextTarget(req);
@@ -776,14 +749,12 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		if (currentViewer != null) {
 			if (caretRefresh != null)
 				getUpdateManager().performUpdate();
-			currentViewer.getEditDomain().getCommandStack()
-					.removeCommandStackEventListener(commandListener);
+			currentViewer.getEditDomain().getCommandStack().removeCommandStackEventListener(commandListener);
 			currentViewer.removeSelectionChangedListener(selectionListener);
 			UpdateManager manager = getUpdateManager();
 			if (manager != null)
 				manager.removeUpdateListener(updateListener);
-			currentViewer.setProperty(KEY_OVERWRITE,
-					overwrite ? Boolean.TRUE : Boolean.FALSE);
+			currentViewer.setProperty(KEY_OVERWRITE, overwrite ? Boolean.TRUE : Boolean.FALSE);
 			if (styleService != null)
 				styleService.setStyleProvider(null);
 			setTextInputMode(0);
@@ -792,8 +763,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		super.setViewer(viewer);
 		if (viewer != null) {
 			isMirrored = (viewer.getControl().getStyle() & SWT.MIRRORED) != 0;
-			viewer.getEditDomain().getCommandStack()
-					.addCommandStackEventListener(commandListener);
+			viewer.getEditDomain().getCommandStack().addCommandStackEventListener(commandListener);
 			viewer.addSelectionChangedListener(selectionListener);
 			UpdateManager manager = getUpdateManager();
 			if (manager != null)
@@ -807,8 +777,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 
 	/**
 	 * @since 3.1
-	 * @param mode
-	 *            the new input mode
+	 * @param mode the new input mode
 	 */
 	private void setTextInputMode(int mode) {
 		if (textInputMode != mode)
@@ -841,8 +810,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			if (getCaretOwner() == null)
 				return;
 			CaretInfo info = getCaretInfo();
-			getCaret().setBounds(info.getX(), info.getY(),
-					overwrite ? info.getHeight() / 2 : 1, info.getHeight());
+			getCaret().setBounds(info.getX(), info.getY(), overwrite ? info.getHeight() / 2 : 1, info.getHeight());
 		}
 
 		public void enableReveal(boolean newVal) {

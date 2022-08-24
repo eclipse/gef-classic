@@ -55,8 +55,7 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
  * @author Whitney Sorenson
  * @since 3.0
  */
-public class PaletteStackEditPart extends PaletteEditPart implements
-		IPaletteStackEditPart {
+public class PaletteStackEditPart extends PaletteEditPart implements IPaletteStackEditPart {
 
 	private static final Dimension EMPTY_DIMENSION = new Dimension(0, 0);
 
@@ -64,11 +63,9 @@ public class PaletteStackEditPart extends PaletteEditPart implements
 	private ChangeListener clickableListener = new ChangeListener() {
 		public void handleStateChanged(ChangeEvent event) {
 			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
-				arrowFigure.getModel().setMouseOver(
-						activeFigure.getModel().isMouseOver());
+				arrowFigure.getModel().setMouseOver(activeFigure.getModel().isMouseOver());
 			else if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
-				arrowFigure.getModel().setArmed(
-						activeFigure.getModel().isArmed());
+				arrowFigure.getModel().setArmed(activeFigure.getModel().isArmed());
 		}
 	};
 
@@ -76,11 +73,9 @@ public class PaletteStackEditPart extends PaletteEditPart implements
 	private ChangeListener clickableArrowListener = new ChangeListener() {
 		public void handleStateChanged(ChangeEvent event) {
 			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
-				activeFigure.getModel().setMouseOver(
-						arrowFigure.getModel().isMouseOver());
+				activeFigure.getModel().setMouseOver(arrowFigure.getModel().isMouseOver());
 			if (event.getPropertyName().equals(ButtonModel.ARMED_PROPERTY))
-				activeFigure.getModel().setArmed(
-						arrowFigure.getModel().isArmed());
+				activeFigure.getModel().setArmed(arrowFigure.getModel().isArmed());
 		}
 	};
 
@@ -110,11 +105,9 @@ public class PaletteStackEditPart extends PaletteEditPart implements
 	private Menu menu;
 
 	/**
-	 * Creates a new PaletteStackEditPart with the given PaletteStack as its
-	 * model.
+	 * Creates a new PaletteStackEditPart with the given PaletteStack as its model.
 	 * 
-	 * @param model
-	 *            the PaletteStack to associate with this EditPart.
+	 * @param model the PaletteStack to associate with this EditPart.
 	 */
 	public PaletteStackEditPart(PaletteStack model) {
 		super(model);
@@ -133,18 +126,15 @@ public class PaletteStackEditPart extends PaletteEditPart implements
 	/**
 	 * Called when the active entry has changed.
 	 * 
-	 * @param oldValue
-	 *            the old model value (can be null)
-	 * @param newValue
-	 *            the new model value (can be null)
+	 * @param oldValue the old model value (can be null)
+	 * @param newValue the new model value (can be null)
 	 */
 	private void activeEntryChanged(Object oldValue, Object newValue) {
 		GraphicalEditPart part = null;
 		Clickable clickable = null;
 
 		if (newValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
-					newValue);
+			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(newValue);
 			clickable = (Clickable) part.getFigure();
 			clickable.setVisible(true);
 			clickable.addChangeListener(clickableListener);
@@ -154,8 +144,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements
 		}
 
 		if (oldValue != null) {
-			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(
-					oldValue);
+			part = (GraphicalEditPart) getViewer().getEditPartRegistry().get(oldValue);
 			// if part is null, its no longer a child.
 			if (part != null) {
 				clickable = (Clickable) part.getFigure();
@@ -250,11 +239,8 @@ public class PaletteStackEditPart extends PaletteEditPart implements
 			part = (PaletteEditPart) children.next();
 			entry = (PaletteEntry) part.getModel();
 
-			menuManager
-					.add(new SetActivePaletteToolAction(getPaletteViewer(),
-							entry.getLabel(), entry.getSmallIcon(), getStack()
-									.getActiveEntry().equals(entry),
-							(ToolEntry) entry));
+			menuManager.add(new SetActivePaletteToolAction(getPaletteViewer(), entry.getLabel(), entry.getSmallIcon(),
+					getStack().getActiveEntry().equals(entry), (ToolEntry) entry));
 		}
 
 		menu = menuManager.createContextMenu(getPaletteViewer().getControl());
@@ -263,16 +249,15 @@ public class PaletteStackEditPart extends PaletteEditPart implements
 		Rectangle figureBounds = getFigure().getBounds().getCopy();
 		getFigure().translateToAbsolute(figureBounds);
 
-		Point menuLocation = getPaletteViewer().getControl().toDisplay(
-				figureBounds.getBottomLeft().x, figureBounds.getBottomLeft().y);
+		Point menuLocation = getPaletteViewer().getControl().toDisplay(figureBounds.getBottomLeft().x,
+				figureBounds.getBottomLeft().y);
 
 		// remove feedback from the arrow Figure and children figures
 		arrowFigure.getModel().setMouseOver(false);
 		eraseTargetFeedback(new Request(RequestConstants.REQ_SELECTION));
 
 		menu.setLocation(menuLocation);
-		menu.addMenuListener(new StackMenuListener(menu, getViewer()
-				.getControl().getDisplay()));
+		menu.addMenuListener(new StackMenuListener(menu, getViewer().getControl().getDisplay()));
 		menu.setVisible(true);
 	}
 
@@ -319,8 +304,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements
 	}
 
 	public PaletteEditPart getActiveEntry() {
-		return (PaletteEditPart) getViewer().getEditPartRegistry().get(
-				getStack().getActiveEntry());
+		return (PaletteEditPart) getViewer().getEditPartRegistry().get(getStack().getActiveEntry());
 	}
 
 }
@@ -332,8 +316,8 @@ class StackMenuListener implements MenuListener {
 
 	/**
 	 * Creates a new listener to listen to the menu that it used to select the
-	 * active tool on a stack. Disposes the stack with an asyncExec after hidden
-	 * is called.
+	 * active tool on a stack. Disposes the stack with an asyncExec after hidden is
+	 * called.
 	 */
 	StackMenuListener(Menu menu, Display d) {
 		this.menu = menu;
@@ -365,8 +349,7 @@ class StackMenuListener implements MenuListener {
 
 class RolloverArrow extends Clickable {
 
-	private static final Border BORDER_TOGGLE = new ButtonBorder(
-			ButtonBorder.SCHEMES.TOOLBAR);
+	private static final Border BORDER_TOGGLE = new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR);
 
 	/**
 	 * Creates a new Clickable that paints a triangle figure.

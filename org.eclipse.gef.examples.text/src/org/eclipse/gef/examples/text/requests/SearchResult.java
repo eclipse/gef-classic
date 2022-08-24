@@ -23,8 +23,7 @@ public class SearchResult {
 
 	public boolean trailing;
 	public TextLocation location;
-	public Dimension proximity = new Dimension(Integer.MAX_VALUE,
-			Integer.MAX_VALUE);
+	public Dimension proximity = new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
 	public boolean bestMatchFound;
 
 }

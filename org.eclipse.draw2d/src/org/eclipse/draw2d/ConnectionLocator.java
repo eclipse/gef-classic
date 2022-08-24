@@ -43,11 +43,10 @@ public class ConnectionLocator extends AbstractLocator {
 	private int alignment;
 
 	/**
-	 * Constructs a ConnectionLocator with the passed connection and
-	 * {@link #MIDDLE} alignment.
+	 * Constructs a ConnectionLocator with the passed connection and {@link #MIDDLE}
+	 * alignment.
 	 * 
-	 * @param connection
-	 *            The Connection
+	 * @param connection The Connection
 	 * @since 2.0
 	 */
 	public ConnectionLocator(Connection connection) {
@@ -59,10 +58,8 @@ public class ConnectionLocator extends AbstractLocator {
 	 * Valid values for the alignment are integer constants {@link #SOURCE},
 	 * {@link #MIDDLE}, and {@link #TARGET}.
 	 * 
-	 * @param connection
-	 *            The Connection
-	 * @param align
-	 *            The alignment
+	 * @param connection The Connection
+	 * @param align      The alignment
 	 * 
 	 * @since 2.0
 	 */
@@ -104,14 +101,13 @@ public class ConnectionLocator extends AbstractLocator {
 	}
 
 	/**
-	 * Returns a point from the passed PointList, dependent on
-	 * ConnectionLocator's alignment. If the alignment is {@link #SOURCE}, it
-	 * returns the first point in <i>points</i>. If {@link #TARGET}, it returns
-	 * the last point in <i>points</i>. If {@link #MIDDLE}, it returns the
-	 * middle of line represented by <i>points</i>.
+	 * Returns a point from the passed PointList, dependent on ConnectionLocator's
+	 * alignment. If the alignment is {@link #SOURCE}, it returns the first point in
+	 * <i>points</i>. If {@link #TARGET}, it returns the last point in
+	 * <i>points</i>. If {@link #MIDDLE}, it returns the middle of line represented
+	 * by <i>points</i>.
 	 * 
-	 * @param points
-	 *            The points in the Connection
+	 * @param points The points in the Connection
 	 * @return The location
 	 * @since 2.0
 	 */
@@ -128,8 +124,7 @@ public class ConnectionLocator extends AbstractLocator {
 				Point p1 = points.getPoint(j);
 				Point p2 = points.getPoint(i);
 				Dimension d = p2.getDifference(p1);
-				return Point.SINGLETON.setLocation(p1.x + d.width / 2, p1.y
-						+ d.height / 2);
+				return Point.SINGLETON.setLocation(p1.x + d.width / 2, p1.y + d.height / 2);
 			}
 			int i = (points.size() - 1) / 2;
 			return points.getPoint(Point.SINGLETON, i);
@@ -139,11 +134,10 @@ public class ConnectionLocator extends AbstractLocator {
 	}
 
 	/**
-	 * Sets the alignment. Possible values are {@link #SOURCE}, {@link #MIDDLE},
-	 * and {@link #TARGET}.
+	 * Sets the alignment. Possible values are {@link #SOURCE}, {@link #MIDDLE}, and
+	 * {@link #TARGET}.
 	 * 
-	 * @param align
-	 *            The alignment
+	 * @param align The alignment
 	 * @since 2.0
 	 */
 	protected void setAlignment(int align) {
@@ -153,8 +147,7 @@ public class ConnectionLocator extends AbstractLocator {
 	/**
 	 * Sets the Connection to be associated with this ConnectionLocator.
 	 * 
-	 * @param connection
-	 *            The Connection
+	 * @param connection The Connection
 	 * @since 2.0
 	 */
 	protected void setConnection(Connection connection) {

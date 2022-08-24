@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -37,17 +37,12 @@ public class ShapeSetConstraintCommand extends Command {
 	/**
 	 * Create a command that can resize and/or move a shape.
 	 * 
-	 * @param shape
-	 *            the shape to manipulate
-	 * @param req
-	 *            the move and resize request
-	 * @param newBounds
-	 *            the new size and location
-	 * @throws IllegalArgumentException
-	 *             if any of the parameters is null
+	 * @param shape     the shape to manipulate
+	 * @param req       the move and resize request
+	 * @param newBounds the new size and location
+	 * @throws IllegalArgumentException if any of the parameters is null
 	 */
-	public ShapeSetConstraintCommand(Shape shape, ChangeBoundsRequest req,
-			Rectangle newBounds) {
+	public ShapeSetConstraintCommand(Shape shape, ChangeBoundsRequest req, Rectangle newBounds) {
 		if (shape == null || req == null || newBounds == null) {
 			throw new IllegalArgumentException();
 		}
@@ -65,10 +60,8 @@ public class ShapeSetConstraintCommand extends Command {
 	public boolean canExecute() {
 		Object type = request.getType();
 		// make sure the Request is of a type we support:
-		return (RequestConstants.REQ_MOVE.equals(type)
-				|| RequestConstants.REQ_MOVE_CHILDREN.equals(type)
-				|| RequestConstants.REQ_RESIZE.equals(type) || RequestConstants.REQ_RESIZE_CHILDREN
-				.equals(type));
+		return (RequestConstants.REQ_MOVE.equals(type) || RequestConstants.REQ_MOVE_CHILDREN.equals(type)
+				|| RequestConstants.REQ_RESIZE.equals(type) || RequestConstants.REQ_RESIZE_CHILDREN.equals(type));
 	}
 
 	/*

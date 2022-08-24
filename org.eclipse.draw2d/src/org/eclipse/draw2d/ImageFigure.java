@@ -44,8 +44,7 @@ public class ImageFigure extends AbstractImageFigure {
 	 * Constructor<br>
 	 * The default alignment is <code>PositionConstants.CENTER</code>.
 	 * 
-	 * @param image
-	 *            The Image to be displayed
+	 * @param image The Image to be displayed
 	 */
 	public ImageFigure(Image image) {
 		this(image, PositionConstants.CENTER);
@@ -54,10 +53,8 @@ public class ImageFigure extends AbstractImageFigure {
 	/**
 	 * Constructor
 	 * 
-	 * @param image
-	 *            The Image to be displayed
-	 * @param alignment
-	 *            A PositionConstant indicating the alignment
+	 * @param image     The Image to be displayed
+	 * @param alignment A PositionConstant indicating the alignment
 	 * 
 	 * @see ImageFigure#setImage(Image)
 	 * @see ImageFigure#setAlignment(int)
@@ -75,8 +72,8 @@ public class ImageFigure extends AbstractImageFigure {
 	}
 
 	/**
-	 * Calculates the necessary size to display the Image within the figure's
-	 * client area.
+	 * Calculates the necessary size to display the Image within the figure's client
+	 * area.
 	 * 
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
@@ -124,9 +121,9 @@ public class ImageFigure extends AbstractImageFigure {
 	}
 
 	/**
-	 * Sets the alignment of the Image within this Figure. The alignment comes
-	 * into play when the ImageFigure is larger than the Image. The alignment
-	 * could be any valid combination of the following:
+	 * Sets the alignment of the Image within this Figure. The alignment comes into
+	 * play when the ImageFigure is larger than the Image. The alignment could be
+	 * any valid combination of the following:
 	 * 
 	 * <UL>
 	 * <LI>PositionConstants.NORTH</LI>
@@ -136,8 +133,7 @@ public class ImageFigure extends AbstractImageFigure {
 	 * <LI>PositionConstants.CENTER or PositionConstants.NONE</LI>
 	 * </UL>
 	 * 
-	 * @param flag
-	 *            A constant indicating the alignment
+	 * @param flag A constant indicating the alignment
 	 */
 	public void setAlignment(int flag) {
 		alignment = flag;
@@ -146,11 +142,10 @@ public class ImageFigure extends AbstractImageFigure {
 	/**
 	 * Sets the Image that this ImageFigure displays.
 	 * <p>
-	 * IMPORTANT: Note that it is the client's responsibility to dispose the
-	 * given image.
+	 * IMPORTANT: Note that it is the client's responsibility to dispose the given
+	 * image.
 	 * 
-	 * @param image
-	 *            The Image to be displayed. It can be <code>null</code>.
+	 * @param image The Image to be displayed. It can be <code>null</code>.
 	 */
 	public void setImage(Image image) {
 		if (img == image)

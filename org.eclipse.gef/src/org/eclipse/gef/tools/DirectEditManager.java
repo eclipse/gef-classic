@@ -69,49 +69,41 @@ public abstract class DirectEditManager {
 	private Object feature;
 
 	/**
-	 * Constructs a new DirectEditManager for the given source edit part. The
-	 * cell editor will be created by instantiating the type <i>editorType</i>.
-	 * The cell editor will be placed using the given CellEditorLocator.
+	 * Constructs a new DirectEditManager for the given source edit part. The cell
+	 * editor will be created by instantiating the type <i>editorType</i>. The cell
+	 * editor will be placed using the given CellEditorLocator.
 	 * 
-	 * @param source
-	 *            the source edit part
-	 * @param editorType
-	 *            the cell editor type
-	 * @param locator
-	 *            the locator
+	 * @param source     the source edit part
+	 * @param editorType the cell editor type
+	 * @param locator    the locator
 	 */
-	public DirectEditManager(GraphicalEditPart source, Class editorType,
-			CellEditorLocator locator) {
+	public DirectEditManager(GraphicalEditPart source, Class editorType, CellEditorLocator locator) {
 		this.source = source;
 		this.locator = locator;
 		this.editorType = editorType;
 	}
 
 	/**
-	 * Constructs a new DirectEditManager for the given source edit part. The
-	 * cell editor will be created by instantiating the type <i>editorType</i>.
-	 * The cell editor will be placed using the given CellEditorLocator.
+	 * Constructs a new DirectEditManager for the given source edit part. The cell
+	 * editor will be created by instantiating the type <i>editorType</i>. The cell
+	 * editor will be placed using the given CellEditorLocator.
 	 * 
-	 * @param source
-	 *            the source edit part
-	 * @param editorType
-	 *            the cell editor type
-	 * @param locator
-	 *            the locator
-	 * @param feature
-	 *            If the EditPart supports direct editing of multiple features,
-	 *            this parameter can be used to discriminate among them.
+	 * @param source     the source edit part
+	 * @param editorType the cell editor type
+	 * @param locator    the locator
+	 * @param feature    If the EditPart supports direct editing of multiple
+	 *                   features, this parameter can be used to discriminate among
+	 *                   them.
 	 * @since 3.2
 	 */
-	public DirectEditManager(GraphicalEditPart source, Class editorType,
-			CellEditorLocator locator, Object feature) {
+	public DirectEditManager(GraphicalEditPart source, Class editorType, CellEditorLocator locator, Object feature) {
 		this(source, editorType, locator);
 		this.feature = feature;
 	}
 
 	/**
-	 * Cleanup is done here. Any feedback is erased and listeners unhooked. If
-	 * the cell editor is not <code>null</code>, it will be
+	 * Cleanup is done here. Any feedback is erased and listeners unhooked. If the
+	 * cell editor is not <code>null</code>, it will be
 	 * {@link CellEditor#deactivate() deativated}, {@link CellEditor#dispose()
 	 * disposed}, and set to <code>null</code>.
 	 */
@@ -139,8 +131,7 @@ public abstract class DirectEditManager {
 		try {
 			eraseFeedback();
 			if (isDirty()) {
-				CommandStack stack = getEditPart().getViewer().getEditDomain()
-						.getCommandStack();
+				CommandStack stack = getEditPart().getViewer().getEditDomain().getCommandStack();
 				stack.execute(getEditPart().getCommand(getDirectEditRequest()));
 			}
 		} finally {
@@ -150,20 +141,17 @@ public abstract class DirectEditManager {
 	}
 
 	/**
-	 * Creates the cell editor on the given composite. The cell editor is
-	 * created by instantiating the cell editor type passed into this
-	 * DirectEditManager's constuctor.
+	 * Creates the cell editor on the given composite. The cell editor is created by
+	 * instantiating the cell editor type passed into this DirectEditManager's
+	 * constuctor.
 	 * 
-	 * @param composite
-	 *            the composite to create the cell editor on
+	 * @param composite the composite to create the cell editor on
 	 * @return the newly created cell editor
 	 */
 	protected CellEditor createCellEditorOn(Composite composite) {
 		try {
-			Constructor constructor = editorType
-					.getConstructor(new Class[] { Composite.class });
-			return (CellEditor) constructor
-					.newInstance(new Object[] { composite });
+			Constructor constructor = editorType.getConstructor(new Class[] { Composite.class });
+			return (CellEditor) constructor.newInstance(new Object[] { composite });
 		} catch (Exception e) {
 			return null;
 		}
@@ -186,8 +174,7 @@ public abstract class DirectEditManager {
 	 */
 	protected void eraseFeedback() {
 		if (showingFeedback) {
-			LayerManager.Helper.find(getEditPart())
-					.getLayer(LayerConstants.FEEDBACK_LAYER)
+			LayerManager.Helper.find(getEditPart()).getLayer(LayerConstants.FEEDBACK_LAYER)
 					.remove(getCellEditorFrame());
 			cellEditorFrame = null;
 			getEditPart().eraseSourceFeedback(getDirectEditRequest());
@@ -224,9 +211,9 @@ public abstract class DirectEditManager {
 	}
 
 	/**
-	 * @return <code>Object</code> that can be used if the EditPart supports
-	 *         direct editing of multiple features, this parameter can be used
-	 *         to discriminate among them.
+	 * @return <code>Object</code> that can be used if the EditPart supports direct
+	 *         editing of multiple features, this parameter can be used to
+	 *         discriminate among them.
 	 * @since 3.2
 	 */
 	protected Object getDirectEditFeature() {
@@ -318,8 +305,8 @@ public abstract class DirectEditManager {
 
 	/**
 	 * Initializes the cell editor. Subclasses should implement this to set the
-	 * initial text and add things such as {@link VerifyListener
-	 * VerifyListeners}, if needed.
+	 * initial text and add things such as {@link VerifyListener VerifyListeners},
+	 * if needed.
 	 */
 	protected abstract void initCellEditor();
 
@@ -335,8 +322,7 @@ public abstract class DirectEditManager {
 	private void placeCellEditorFrame() {
 		if (showingFeedback) {
 			IFigure shadow = getCellEditorFrame();
-			Rectangle rect = new Rectangle(getCellEditor().getControl()
-					.getBounds());
+			Rectangle rect = new Rectangle(getCellEditor().getControl().getBounds());
 			rect.expand(shadow.getInsets());
 			shadow.translateToRelative(rect);
 			shadow.setBounds(rect);
@@ -350,8 +336,7 @@ public abstract class DirectEditManager {
 	/**
 	 * Sets the cell editor to the given editor.
 	 * 
-	 * @param editor
-	 *            the cell editor
+	 * @param editor the cell editor
 	 */
 	protected void setCellEditor(CellEditor editor) {
 		ce = editor;
@@ -363,8 +348,7 @@ public abstract class DirectEditManager {
 	/**
 	 * Sets the dirty property.
 	 * 
-	 * @param value
-	 *            the dirty property
+	 * @param value the dirty property
 	 */
 	protected void setDirty(boolean value) {
 		dirty = value;
@@ -373,8 +357,7 @@ public abstract class DirectEditManager {
 	/**
 	 * Sets the source edit part.
 	 * 
-	 * @param source
-	 *            the source edit part
+	 * @param source the source edit part
 	 */
 	protected void setEditPart(GraphicalEditPart source) {
 		this.source = source;
@@ -385,8 +368,7 @@ public abstract class DirectEditManager {
 	 * Sets the CellEditorLocator used to place the cell editor in the correct
 	 * location.
 	 * 
-	 * @param locator
-	 *            the locator
+	 * @param locator the locator
 	 */
 	public void setLocator(CellEditorLocator locator) {
 		this.locator = locator;
@@ -413,9 +395,7 @@ public abstract class DirectEditManager {
 	}
 
 	private void showCellEditorFrame() {
-		LayerManager.Helper.find(getEditPart())
-				.getLayer(LayerConstants.FEEDBACK_LAYER)
-				.add(getCellEditorFrame());
+		LayerManager.Helper.find(getEditPart()).getLayer(LayerConstants.FEEDBACK_LAYER).add(getCellEditorFrame());
 		placeCellEditorFrame();
 	}
 
@@ -471,10 +451,8 @@ public abstract class DirectEditManager {
 			rect.width--;
 			rect.resize(-1, -1);
 			graphics.setForegroundColor(ColorConstants.black);
-			graphics.drawLine(rect.x + 2, rect.bottom(), rect.right(),
-					rect.bottom());
-			graphics.drawLine(rect.right(), rect.bottom(), rect.right(),
-					rect.y + 2);
+			graphics.drawLine(rect.x + 2, rect.bottom(), rect.right(), rect.bottom());
+			graphics.drawLine(rect.right(), rect.bottom(), rect.right(), rect.y + 2);
 
 			rect.resize(-1, -1);
 			graphics.setForegroundColor(BLUE);

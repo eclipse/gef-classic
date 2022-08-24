@@ -21,37 +21,28 @@ package org.eclipse.draw2d.geometry;
 public class Geometry {
 
 	/**
-	 * Determines whether the two line segments p1->p2 and p3->p4, given by
-	 * p1=(x1, y1), p2=(x2,y2), p3=(x3,y3), p4=(x4,y4) intersect. Two line
-	 * segments are regarded to be intersecting in case they share at least one
-	 * common point, i.e if one of the two line segments starts or ends on the
-	 * other line segment or the line segments are collinear and overlapping,
-	 * then they are as well considered to be intersecting.
+	 * Determines whether the two line segments p1->p2 and p3->p4, given by p1=(x1,
+	 * y1), p2=(x2,y2), p3=(x3,y3), p4=(x4,y4) intersect. Two line segments are
+	 * regarded to be intersecting in case they share at least one common point, i.e
+	 * if one of the two line segments starts or ends on the other line segment or
+	 * the line segments are collinear and overlapping, then they are as well
+	 * considered to be intersecting.
 	 * 
-	 * @param x1
-	 *            x coordinate of starting point of line segment 1
-	 * @param y1
-	 *            y coordinate of starting point of line segment 1
-	 * @param x2
-	 *            x coordinate of ending point of line segment 1
-	 * @param y2
-	 *            y coordinate of ending point of line segment 1
-	 * @param x3
-	 *            x coordinate of the starting point of line segment 2
-	 * @param y3
-	 *            y coordinate of the starting point of line segment 2
-	 * @param x4
-	 *            x coordinate of the ending point of line segment 2
-	 * @param y4
-	 *            y coordinate of the ending point of line segment 2
+	 * @param x1 x coordinate of starting point of line segment 1
+	 * @param y1 y coordinate of starting point of line segment 1
+	 * @param x2 x coordinate of ending point of line segment 1
+	 * @param y2 y coordinate of ending point of line segment 1
+	 * @param x3 x coordinate of the starting point of line segment 2
+	 * @param y3 y coordinate of the starting point of line segment 2
+	 * @param x4 x coordinate of the ending point of line segment 2
+	 * @param y4 y coordinate of the ending point of line segment 2
 	 * 
 	 * @return <code>true</code> if the two line segments formed by the given
 	 *         coordinates share at least one common point.
 	 * 
 	 * @since 3.1
 	 */
-	public static boolean linesIntersect(int x1, int y1, int x2, int y2,
-			int x3, int y3, int x4, int y4) {
+	public static boolean linesIntersect(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
 
 		// calculate bounding box of segment p1->p2
 		int bb1_x = Math.min(x1, x2);
@@ -109,15 +100,13 @@ public class Geometry {
 	 * @see PointList#polylineContainsPoint(int, int, int)
 	 * @since 3.5
 	 */
-	public static boolean polylineContainsPoint(PointList points, int x, int y,
-			int tolerance) {
+	public static boolean polylineContainsPoint(PointList points, int x, int y, int tolerance) {
 		int coordinates[] = points.toIntArray();
 		/*
 		 * For each segment of PolyLine calling isSegmentPoint
 		 */
 		for (int index = 0; index < coordinates.length - 3; index += 2) {
-			if (segmentContainsPoint(coordinates[index],
-					coordinates[index + 1], coordinates[index + 2],
+			if (segmentContainsPoint(coordinates[index], coordinates[index + 1], coordinates[index + 2],
 					coordinates[index + 3], x, y, tolerance)) {
 				return true;
 			}
@@ -126,14 +115,13 @@ public class Geometry {
 	}
 
 	/**
-	 * @return true if the least distance between point (px,py) and segment
-	 *         (x1,y1) - (x2,y2) is less then specified tolerance
+	 * @return true if the least distance between point (px,py) and segment (x1,y1)
+	 *         - (x2,y2) is less then specified tolerance
 	 */
-	private static boolean segmentContainsPoint(int x1, int y1, int x2, int y2,
-			int px, int py, int tolerance) {
+	private static boolean segmentContainsPoint(int x1, int y1, int x2, int y2, int px, int py, int tolerance) {
 		/*
-		 * Point should be located inside Rectangle(x1 -+ tolerance, y1 -+
-		 * tolerance, x2 +- tolerance, y2 +- tolerance)
+		 * Point should be located inside Rectangle(x1 -+ tolerance, y1 -+ tolerance, x2
+		 * +- tolerance, y2 +- tolerance)
 		 */
 		Rectangle lineBounds = Rectangle.SINGLETON;
 		lineBounds.setSize(0, 0);
@@ -146,16 +134,16 @@ public class Geometry {
 
 		/*
 		 * If this is horizontal, vertical line or dot then the distance between
-		 * specified point and segment is not more then tolerance (due to the
-		 * lineBounds check above)
+		 * specified point and segment is not more then tolerance (due to the lineBounds
+		 * check above)
 		 */
 		if (x1 == x2 || y1 == y2) {
 			return true;
 		}
 
 		/*
-		 * Calculating square distance from specified point to this segment
-		 * using formula for Dot product of two vectors.
+		 * Calculating square distance from specified point to this segment using
+		 * formula for Dot product of two vectors.
 		 */
 		long v1x = x2 - x1;
 		long v1y = y2 - y1;
@@ -169,10 +157,10 @@ public class Geometry {
 
 	/**
 	 * One simple way of finding whether the point is inside or outside a simple
-	 * polygon is to test how many times a ray starting from the point
-	 * intersects the edges of the polygon. If the point in question is not on
-	 * the boundary of the polygon, the number of intersections is an even
-	 * number if the point is outside, and it is odd if inside.
+	 * polygon is to test how many times a ray starting from the point intersects
+	 * the edges of the polygon. If the point in question is not on the boundary of
+	 * the polygon, the number of intersections is an even number if the point is
+	 * outside, and it is odd if inside.
 	 * 
 	 * @see PointList#polygonContainsPoint(int, int)
 	 * @since 3.5
@@ -204,8 +192,7 @@ public class Geometry {
 					}
 					// This point is outside the edge - simply skipping possible
 					// intersection (no parity changes)
-				} else if ((y0 <= y && y < y1 && crossProduct > 0)
-						|| (y1 <= y && y < y0 && crossProduct < 0)) {
+				} else if ((y0 <= y && y < y1 && crossProduct > 0) || (y1 <= y && y < y0 && crossProduct < 0)) {
 					// has intersection
 					isOdd = !isOdd;
 				}
@@ -223,11 +210,10 @@ public class Geometry {
 	}
 
 	/**
-	 * Calculating cross product of two vectors: 1. [ax - cx, ay - cx] 2. [bx -
-	 * cx, by - cy]
+	 * Calculating cross product of two vectors: 1. [ax - cx, ay - cx] 2. [bx - cx,
+	 * by - cy]
 	 */
-	private static int crossProduct(int ax, int ay, int bx, int by, int cx,
-			int cy) {
+	private static int crossProduct(int ax, int ay, int bx, int by, int cx, int cy) {
 		return (ax - cx) * (by - cy) - (ay - cy) * (bx - cx);
 	}
 

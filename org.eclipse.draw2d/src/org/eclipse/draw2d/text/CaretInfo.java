@@ -25,27 +25,20 @@ public class CaretInfo implements Translatable {
 	private int ascent, lineAscent, descent, lineDescent, baseline, x;
 
 	/**
-	 * Constructor for use by TextFlow. Constructs a new CaretInfo with the
-	 * figure's ascent and descent and line information.
+	 * Constructor for use by TextFlow. Constructs a new CaretInfo with the figure's
+	 * ascent and descent and line information.
 	 * <P>
-	 * <EM>WARNING:</EM> This constructor should not be called by clients. It is
-	 * for use by {@link TextFlow}, and may change in future releases.
+	 * <EM>WARNING:</EM> This constructor should not be called by clients. It is for
+	 * use by {@link TextFlow}, and may change in future releases.
 	 * 
-	 * @param x
-	 *            the x location
-	 * @param y
-	 *            the y location of the top of the caret
-	 * @param ascent
-	 *            the ascent
-	 * @param descent
-	 *            the descent
-	 * @param lineAscent
-	 *            the ascent of the line on which the caret is placed
-	 * @param lineDescent
-	 *            the descent of the line on which the caret is placed
+	 * @param x           the x location
+	 * @param y           the y location of the top of the caret
+	 * @param ascent      the ascent
+	 * @param descent     the descent
+	 * @param lineAscent  the ascent of the line on which the caret is placed
+	 * @param lineDescent the descent of the line on which the caret is placed
 	 */
-	protected CaretInfo(int x, int y, int ascent, int descent, int lineAscent,
-			int lineDescent) {
+	protected CaretInfo(int x, int y, int ascent, int descent, int lineAscent, int lineDescent) {
 		this.x = x;
 		this.baseline = y + ascent;
 		this.ascent = ascent;
@@ -55,11 +48,9 @@ public class CaretInfo implements Translatable {
 	}
 
 	/**
-	 * Constructs a CaretInfo object by copying the values from another
-	 * instance.
+	 * Constructs a CaretInfo object by copying the values from another instance.
 	 * 
-	 * @param info
-	 *            the reference
+	 * @param info the reference
 	 * @since 3.2
 	 */
 	protected CaretInfo(CaretInfo info) {
@@ -81,8 +72,8 @@ public class CaretInfo implements Translatable {
 	}
 
 	/**
-	 * Returns the total height of the caret. The height is the sum of the
-	 * ascent and descent.
+	 * Returns the total height of the caret. The height is the sum of the ascent
+	 * and descent.
 	 * 
 	 * @return the height
 	 */

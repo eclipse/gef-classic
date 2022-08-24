@@ -37,13 +37,12 @@ import org.eclipse.gef.examples.logicdesigner.model.WireBendpoint;
  * Implements a Connection Editpart to represent a Wire like connection.
  * 
  */
-public class WireEditPart extends AbstractConnectionEditPart implements
-		PropertyChangeListener {
+public class WireEditPart extends AbstractConnectionEditPart implements PropertyChangeListener {
 
 	AccessibleEditPart acc;
 
-	public static final Color alive = new Color(Display.getDefault(), 30, 144,
-			255), dead = new Color(Display.getDefault(), 30, 30, 30);
+	public static final Color alive = new Color(Display.getDefault(), 30, 144, 255),
+			dead = new Color(Display.getDefault(), 30, 30, 30);
 
 	public void activate() {
 		super.activate();
@@ -53,19 +52,17 @@ public class WireEditPart extends AbstractConnectionEditPart implements
 	public void activateFigure() {
 		super.activateFigure();
 		/*
-		 * Once the figure has been added to the ConnectionLayer, start
-		 * listening for its router to change.
+		 * Once the figure has been added to the ConnectionLayer, start listening for
+		 * its router to change.
 		 */
-		getFigure().addPropertyChangeListener(
-				Connection.PROPERTY_CONNECTION_ROUTER, this);
+		getFigure().addPropertyChangeListener(Connection.PROPERTY_CONNECTION_ROUTER, this);
 	}
 
 	/**
 	 * Adds extra EditPolicies as required.
 	 */
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE,
-				new WireEndpointEditPolicy());
+		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE, new WireEndpointEditPolicy());
 		// Note that the Connection is already added to the diagram and knows
 		// its Router.
 		refreshBendpointEditPolicy();
@@ -88,8 +85,7 @@ public class WireEditPart extends AbstractConnectionEditPart implements
 	}
 
 	public void deactivateFigure() {
-		getFigure().removePropertyChangeListener(
-				Connection.PROPERTY_CONNECTION_ROUTER, this);
+		getFigure().removePropertyChangeListener(Connection.PROPERTY_CONNECTION_ROUTER, this);
 		super.deactivateFigure();
 	}
 
@@ -125,8 +121,7 @@ public class WireEditPart extends AbstractConnectionEditPart implements
 	 * Listens to changes in properties of the Wire (like the contents being
 	 * carried), and reflects is in the visuals.
 	 * 
-	 * @param event
-	 *            Event notifying the change.
+	 * @param event Event notifying the change.
 	 */
 	public void propertyChange(PropertyChangeEvent event) {
 		String property = event.getPropertyName();
@@ -151,8 +146,7 @@ public class WireEditPart extends AbstractConnectionEditPart implements
 		for (int i = 0; i < modelConstraint.size(); i++) {
 			WireBendpoint wbp = (WireBendpoint) modelConstraint.get(i);
 			RelativeBendpoint rbp = new RelativeBendpoint(getConnectionFigure());
-			rbp.setRelativeDimensions(wbp.getFirstRelativeDimension(),
-					wbp.getSecondRelativeDimension());
+			rbp.setRelativeDimensions(wbp.getFirstRelativeDimension(), wbp.getSecondRelativeDimension());
 			rbp.setWeight((i + 1) / ((float) modelConstraint.size() + 1));
 			figureConstraint.add(rbp);
 		}
@@ -163,13 +157,12 @@ public class WireEditPart extends AbstractConnectionEditPart implements
 		if (getConnectionFigure().getConnectionRouter() instanceof ManhattanConnectionRouter)
 			installEditPolicy(EditPolicy.CONNECTION_BENDPOINTS_ROLE, null);
 		else
-			installEditPolicy(EditPolicy.CONNECTION_BENDPOINTS_ROLE,
-					new WireBendpointEditPolicy());
+			installEditPolicy(EditPolicy.CONNECTION_BENDPOINTS_ROLE, new WireBendpointEditPolicy());
 	}
 
 	/**
-	 * Refreshes the visual aspects of this, based upon the model (Wire). It
-	 * changes the wire color depending on the state of Wire.
+	 * Refreshes the visual aspects of this, based upon the model (Wire). It changes
+	 * the wire color depending on the state of Wire.
 	 * 
 	 */
 	protected void refreshVisuals() {

@@ -36,8 +36,7 @@ public class LEDEditPolicy extends LogicElementEditPolicy {
 		return command;
 	}
 
-	static class IncrementDecrementCommand extends
-			org.eclipse.gef.commands.Command {
+	static class IncrementDecrementCommand extends org.eclipse.gef.commands.Command {
 
 		boolean isIncrement = true;
 		LED child = null;

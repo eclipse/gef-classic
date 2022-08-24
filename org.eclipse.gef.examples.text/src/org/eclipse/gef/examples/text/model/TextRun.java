@@ -44,12 +44,10 @@ public class TextRun extends ModelElement {
 	}
 
 	/**
-	 * Divide this Run into two runs at the given offset. The second run is
-	 * return.
+	 * Divide this Run into two runs at the given offset. The second run is return.
 	 * 
 	 * @since 3.1
-	 * @param offset
-	 *            where to divide
+	 * @param offset where to divide
 	 * @return the second half
 	 */
 	public TextRun subdivideRun(int offset) {
@@ -62,16 +60,13 @@ public class TextRun extends ModelElement {
 	}
 
 	public void insertText(String someText, int offset) {
-		text = text.substring(0, offset) + someText
-				+ text.substring(offset, text.length());
+		text = text.substring(0, offset) + someText + text.substring(offset, text.length());
 		firePropertyChange("text", null, text);
 	}
 
 	public String overwriteText(String someText, int offset) {
-		String result = text.substring(offset,
-				Math.min(offset + someText.length(), text.length()));
-		text = text.substring(0, offset) + someText
-				+ text.substring(offset + result.length());
+		String result = text.substring(offset, Math.min(offset + someText.length(), text.length()));
+		text = text.substring(0, offset) + someText + text.substring(offset + result.length());
 		firePropertyChange("text", null, text);
 		return result;
 	}

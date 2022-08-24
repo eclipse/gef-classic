@@ -26,10 +26,10 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public interface FlowBorder extends Border {
 
 	/**
-	 * Returns the collapsable bottom margin in pixels. Margin is the space
-	 * external to the border and the flow box on which it is rendered. Vertical
-	 * margins (top and bottom) may collapse in some situations, such as
-	 * adjacent or nested blocks.
+	 * Returns the collapsable bottom margin in pixels. Margin is the space external
+	 * to the border and the flow box on which it is rendered. Vertical margins (top
+	 * and bottom) may collapse in some situations, such as adjacent or nested
+	 * blocks.
 	 * 
 	 * @return the bottom margin
 	 * @since 3.1
@@ -37,8 +37,8 @@ public interface FlowBorder extends Border {
 	int getBottomMargin();
 
 	/**
-	 * Returns the left margin in pixels. Margin is the space external to the
-	 * border and the flow box on which it is rendered.
+	 * Returns the left margin in pixels. Margin is the space external to the border
+	 * and the flow box on which it is rendered.
 	 * 
 	 * @return the left margin
 	 * @since 3.1
@@ -55,10 +55,10 @@ public interface FlowBorder extends Border {
 	int getRightMargin();
 
 	/**
-	 * Returns the collapsable top margin in pixels. Margin is the space
-	 * external to the border and the flow box on which it is rendered. Vertical
-	 * margins (top and bottom) may collapse in some situations, such as
-	 * adjacent or nested blocks.
+	 * Returns the collapsable top margin in pixels. Margin is the space external to
+	 * the border and the flow box on which it is rendered. Vertical margins (top
+	 * and bottom) may collapse in some situations, such as adjacent or nested
+	 * blocks.
 	 * 
 	 * @return the top margin
 	 * @since 3.1
@@ -66,24 +66,20 @@ public interface FlowBorder extends Border {
 	int getTopMargin();
 
 	/**
-	 * Paints the border around the given box location. The border is asked to
-	 * paint each of the FlowFigure's boxes. The <code>sideInfo</code> parameter
-	 * is used to indicate whether the left and right sides should be rendered.
-	 * This parameter will contain the following bit flags:
+	 * Paints the border around the given box location. The border is asked to paint
+	 * each of the FlowFigure's boxes. The <code>sideInfo</code> parameter is used
+	 * to indicate whether the left and right sides should be rendered. This
+	 * parameter will contain the following bit flags:
 	 * <UL>
 	 * <LI>{@link org.eclipse.swt.SWT#LEAD}
 	 * <LI>{@link org.eclipse.swt.SWT#TRAIL}
 	 * <LI>{@link org.eclipse.swt.SWT#RIGHT_TO_LEFT}
 	 * </UL>
 	 * 
-	 * @param figure
-	 *            the flow figure whose border is being painted
-	 * @param g
-	 *            the graphics
-	 * @param where
-	 *            the relative location of the box
-	 * @param sides
-	 *            bits indicating sides and bidi orientation
+	 * @param figure the flow figure whose border is being painted
+	 * @param g      the graphics
+	 * @param where  the relative location of the box
+	 * @param sides  bits indicating sides and bidi orientation
 	 * @since 3.1
 	 */
 	void paint(FlowFigure figure, Graphics g, Rectangle where, int sides);

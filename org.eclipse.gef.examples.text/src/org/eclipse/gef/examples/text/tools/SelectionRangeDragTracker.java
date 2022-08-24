@@ -70,22 +70,18 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 			if (end == begin)
 				inverted = endDrag.offset < beginDrag.offset;
 			else {
-				EditPart ancestor = ToolUtilities
-						.findCommonAncestor(end, begin);
+				EditPart ancestor = ToolUtilities.findCommonAncestor(end, begin);
 				while (end.getParent() != ancestor)
 					end = end.getParent();
 				while (begin.getParent() != ancestor)
 					begin = begin.getParent();
-				inverted = ancestor.getChildren().indexOf(end) < ancestor
-						.getChildren().indexOf(begin);
+				inverted = ancestor.getChildren().indexOf(end) < ancestor.getChildren().indexOf(begin);
 			}
 			GraphicalTextViewer viewer = (GraphicalTextViewer) getCurrentViewer();
 			if (!inverted)
-				viewer.setSelectionRange(new SelectionRange(beginDrag, endDrag,
-						true, result.trailing));
+				viewer.setSelectionRange(new SelectionRange(beginDrag, endDrag, true, result.trailing));
 			else
-				viewer.setSelectionRange(new SelectionRange(endDrag, beginDrag,
-						false, result.trailing));
+				viewer.setSelectionRange(new SelectionRange(endDrag, beginDrag, false, result.trailing));
 		}
 	}
 
@@ -118,8 +114,7 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 		TextLocation wordBegin = result.location;
 		if (wordBegin != null && wordEnd != null)
 			((GraphicalTextViewer) getCurrentViewer())
-					.setSelectionRange(new SelectionRange(wordBegin, wordEnd,
-							true, isAfter));
+					.setSelectionRange(new SelectionRange(wordBegin, wordEnd, true, isAfter));
 	}
 
 	/**
@@ -160,8 +155,7 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 			SearchResult result = getCurrentTextLocation();
 			beginDrag = result.location;
 			((GraphicalTextViewer) getCurrentViewer())
-					.setSelectionRange(new SelectionRange(beginDrag, beginDrag,
-							true, result.trailing));
+					.setSelectionRange(new SelectionRange(beginDrag, beginDrag, true, result.trailing));
 			return stateTransition(STATE_INITIAL, STATE_START);
 		}
 		return super.handleButtonDown(button);

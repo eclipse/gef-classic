@@ -38,13 +38,13 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	private SelectionModel selectionModel;
 
 	/**
-	 * Returns the viewers selection range by <em>reference</em>. The range
-	 * should not be modified directly.
+	 * Returns the viewers selection range by <em>reference</em>. The range should
+	 * not be modified directly.
 	 * 
 	 * @since 3.1
 	 * @return the current selection by reference
-	 * @deprecated in 3.2. @TODO:Pratik remove this method and all references to
-	 *             it. Use getSelectionModel() instead.
+	 * @deprecated in 3.2. @TODO:Pratik remove this method and all references to it.
+	 *             Use getSelectionModel() instead.
 	 */
 	public SelectionRange getSelectionRange() {
 		if (selectionModel != null)
@@ -60,8 +60,7 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 		// @TODO:Pratik you should expose the text location first (it might not
 		// be visible)
 		Viewport port = getFigureCanvas().getViewport();
-		Rectangle view = new Rectangle(port.getViewLocation(), port
-				.getClientArea().getSize());
+		Rectangle view = new Rectangle(port.getViewLocation(), port.getClientArea().getSize());
 		Rectangle exposeRegion = new Rectangle(caret.getBounds());
 		port.getContents().translateToRelative(exposeRegion);
 		if (!view.contains(exposeRegion)) {
@@ -79,15 +78,14 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	}
 
 	/**
-	 * Sets the selection range to the given value. Updates any editparts which
-	 * had or will have textual selection. Fires selection changed. Place the
-	 * caret in the appropriate location.
+	 * Sets the selection range to the given value. Updates any editparts which had
+	 * or will have textual selection. Fires selection changed. Place the caret in
+	 * the appropriate location.
 	 * 
 	 * @since 3.1
-	 * @param newRange
-	 *            the new selection range
-	 * @deprecated in 3.2. @TODO:Pratik remove this method and all references to
-	 *             it. Use setSelectionModel() instead.
+	 * @param newRange the new selection range
+	 * @deprecated in 3.2. @TODO:Pratik remove this method and all references to it.
+	 *             Use setSelectionModel() instead.
 	 */
 	public void setSelectionRange(SelectionRange newRange) {
 		// @TODO:Pratik change all these setSelection() methods so that they
@@ -97,11 +95,8 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 		// selected editparts.
 		SelectionModel newModel = null;
 		if (newRange != null)
-			newModel = createSelectionModel(
-					null,
-					newRange,
-					selectionModel == null ? null : selectionModel
-							.getSelectedEditParts(), null);
+			newModel = createSelectionModel(null, newRange,
+					selectionModel == null ? null : selectionModel.getSelectedEditParts(), null);
 		setSelectionModel(newModel);
 	}
 
@@ -154,32 +149,26 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	// You can make that change once you remove the GraphicalTextViewer class.
 	public void setEditDomain(EditDomain domain) {
 		super.setEditDomain(domain);
-		getEditDomain().getCommandStack().addCommandStackEventListener(
-				new CommandStackEventListener() {
-					public void stackChanged(CommandStackEvent event) {
-						if (!(event.getCommand() instanceof TextCommand)
-								|| getSelectionRange() == null)
-							return;
-						TextCommand command = (TextCommand) event.getCommand();
-						if (command != null) {
-							if (event.getDetail() == CommandStack.POST_EXECUTE)
-								setSelectionRange(command
-										.getExecuteSelectionRange(GraphicalTextViewer.this));
-							else if (event.getDetail() == CommandStack.POST_REDO)
-								setSelectionRange(command
-										.getRedoSelectionRange(GraphicalTextViewer.this));
-							else if (event.getDetail() == CommandStack.POST_UNDO)
-								setSelectionRange(command
-										.getUndoSelectionRange(GraphicalTextViewer.this));
-						}
-					}
-				});
+		getEditDomain().getCommandStack().addCommandStackEventListener(new CommandStackEventListener() {
+			public void stackChanged(CommandStackEvent event) {
+				if (!(event.getCommand() instanceof TextCommand) || getSelectionRange() == null)
+					return;
+				TextCommand command = (TextCommand) event.getCommand();
+				if (command != null) {
+					if (event.getDetail() == CommandStack.POST_EXECUTE)
+						setSelectionRange(command.getExecuteSelectionRange(GraphicalTextViewer.this));
+					else if (event.getDetail() == CommandStack.POST_REDO)
+						setSelectionRange(command.getRedoSelectionRange(GraphicalTextViewer.this));
+					else if (event.getDetail() == CommandStack.POST_UNDO)
+						setSelectionRange(command.getUndoSelectionRange(GraphicalTextViewer.this));
+				}
+			}
+		});
 	}
 
 	public void setSelection(ISelection newSelection) {
 		if (newSelection != null)
-			setSelectionModel(createSelectionModel(newSelection, null, null,
-					null));
+			setSelectionModel(createSelectionModel(newSelection, null, null, null));
 		else
 			setSelectionModel(null);
 	}
@@ -190,8 +179,8 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 		return new StructuredSelection(getContents());
 	}
 
-	protected SelectionModel createSelectionModel(ISelection selection,
-			SelectionRange range, List parts, EditPart container) {
+	protected SelectionModel createSelectionModel(ISelection selection, SelectionRange range, List parts,
+			EditPart container) {
 		if (selection instanceof IStructuredSelection)
 			return new SelectionModel(selection);
 		return new SelectionModel(range, parts, container);

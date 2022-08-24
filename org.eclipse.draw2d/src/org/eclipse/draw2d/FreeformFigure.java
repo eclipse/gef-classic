@@ -25,8 +25,7 @@ public interface FreeformFigure extends IFigure {
 	/**
 	 * Adds a FreeformListener to this FreeformFigure.
 	 * 
-	 * @param listener
-	 *            the listener
+	 * @param listener the listener
 	 */
 	void addFreeformListener(FreeformListener listener);
 
@@ -36,8 +35,8 @@ public interface FreeformFigure extends IFigure {
 	void fireExtentChanged();
 
 	/**
-	 * Returns the freeform extent, essentially the bounds of the
-	 * FreeformFigure. This is based on the extent of its children.
+	 * Returns the freeform extent, essentially the bounds of the FreeformFigure.
+	 * This is based on the extent of its children.
 	 * 
 	 * @return the freeform extent
 	 */
@@ -46,16 +45,14 @@ public interface FreeformFigure extends IFigure {
 	/**
 	 * Removes the given listener from this FreeformFigure.
 	 * 
-	 * @param listener
-	 *            the listener
+	 * @param listener the listener
 	 */
 	void removeFreeformListener(FreeformListener listener);
 
 	/**
 	 * Sets the freeform bounds of this FreeformFigure.
 	 * 
-	 * @param bounds
-	 *            the new freeform bounds
+	 * @param bounds the new freeform bounds
 	 */
 	void setFreeformBounds(Rectangle bounds);
 

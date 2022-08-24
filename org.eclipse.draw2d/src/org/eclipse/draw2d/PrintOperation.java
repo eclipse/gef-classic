@@ -41,8 +41,7 @@ public abstract class PrintOperation {
 	/**
 	 * Creates a new PrintOperation on Printer p
 	 * 
-	 * @param p
-	 *            The printer to print on
+	 * @param p The printer to print on
 	 */
 	public PrintOperation(Printer p) {
 		setPrinter(p);
@@ -81,9 +80,9 @@ public abstract class PrintOperation {
 	}
 
 	/**
-	 * This method is invoked by the {@link #run(String)} method to determine
-	 * the orientation of the GC to be used for printing. This default
-	 * implementation always returns SWT.LEFT_TO_RIGHT.
+	 * This method is invoked by the {@link #run(String)} method to determine the
+	 * orientation of the GC to be used for printing. This default implementation
+	 * always returns SWT.LEFT_TO_RIGHT.
 	 * 
 	 * @return SWT.LEFT_TO_RIGHT or SWT.RIGHT_TO_LEFT
 	 * @since 3.1
@@ -103,22 +102,17 @@ public abstract class PrintOperation {
 	}
 
 	/**
-	 * Returns a Rectangle that represents the region that can be printed to.
-	 * The x, y, height, and width values are using the printers coordinates.
+	 * Returns a Rectangle that represents the region that can be printed to. The x,
+	 * y, height, and width values are using the printers coordinates.
 	 * 
 	 * @return the print region
 	 */
 	public Rectangle getPrintRegion() {
-		org.eclipse.swt.graphics.Rectangle trim = printer.computeTrim(0, 0, 0,
-				0);
+		org.eclipse.swt.graphics.Rectangle trim = printer.computeTrim(0, 0, 0, 0);
 		org.eclipse.swt.graphics.Point printerDPI = printer.getDPI();
-		Insets notAvailable = new Insets(-trim.y, -trim.x,
-				trim.height + trim.y, trim.width + trim.x);
-		Insets userPreferred = new Insets(
-				(printMargin.top * printerDPI.x) / 72,
-				(printMargin.left * printerDPI.x) / 72,
-				(printMargin.bottom * printerDPI.x) / 72,
-				(printMargin.right * printerDPI.x) / 72);
+		Insets notAvailable = new Insets(-trim.y, -trim.x, trim.height + trim.y, trim.width + trim.x);
+		Insets userPreferred = new Insets((printMargin.top * printerDPI.x) / 72, (printMargin.left * printerDPI.x) / 72,
+				(printMargin.bottom * printerDPI.x) / 72, (printMargin.right * printerDPI.x) / 72);
 		Rectangle paperBounds = new Rectangle(printer.getBounds());
 		Rectangle printRegion = paperBounds.getCropped(notAvailable);
 		printRegion.intersect(paperBounds.getCropped(userPreferred));
@@ -127,16 +121,16 @@ public abstract class PrintOperation {
 	}
 
 	/**
-	 * This method contains all operations performed to sourceFigure prior to
-	 * being printed.
+	 * This method contains all operations performed to sourceFigure prior to being
+	 * printed.
 	 */
 	protected void preparePrintSource() {
 	}
 
 	/**
-	 * This method is responsible for printing pages. (A page is printed by
-	 * calling Printer.startPage(), followed by painting to the PrinterGraphics
-	 * object, and then calling Printer.endPage()).
+	 * This method is responsible for printing pages. (A page is printed by calling
+	 * Printer.startPage(), followed by painting to the PrinterGraphics object, and
+	 * then calling Printer.endPage()).
 	 */
 	protected abstract void printPages();
 
@@ -150,8 +144,7 @@ public abstract class PrintOperation {
 	/**
 	 * Sets the print job into motion.
 	 * 
-	 * @param jobName
-	 *            A String representing the name of the print job
+	 * @param jobName A String representing the name of the print job
 	 */
 	public void run(String jobName) {
 		preparePrintSource();
@@ -167,30 +160,27 @@ public abstract class PrintOperation {
 	/**
 	 * Sets the printer.
 	 * 
-	 * @param printer
-	 *            The printer to set
+	 * @param printer The printer to set
 	 */
 	public void setPrinter(Printer printer) {
 		this.printer = printer;
 	}
 
 	/**
-	 * Sets the page margin in pels (logical pixels) to the passed Insets.(72
-	 * pels == 1 inch)
+	 * Sets the page margin in pels (logical pixels) to the passed Insets.(72 pels
+	 * == 1 inch)
 	 * 
-	 * @param margin
-	 *            The margin to set on the page
+	 * @param margin The margin to set on the page
 	 */
 	public void setPrintMargin(Insets margin) {
 		printMargin = margin;
 	}
 
 	/**
-	 * Manipulates the PrinterGraphics to position it to paint in the desired
-	 * region of the page. (Default is the top left corner of the page).
+	 * Manipulates the PrinterGraphics to position it to paint in the desired region
+	 * of the page. (Default is the top left corner of the page).
 	 * 
-	 * @param pg
-	 *            The PrinterGraphics to setup
+	 * @param pg The PrinterGraphics to setup
 	 */
 	protected void setupGraphicsForPage(PrinterGraphics pg) {
 		Rectangle printRegion = getPrintRegion();

@@ -15,12 +15,13 @@ package org.eclipse.zest.layouts.constraints;
  */
 public class BasicEdgeConstraints implements LayoutConstraint {
 
-	// These should all be accessed directly.  
+	// These should all be accessed directly.
 	public boolean isBiDirectional = false;
 	public int weight = 1;
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
 	public void clear() {

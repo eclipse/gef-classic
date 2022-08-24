@@ -18,36 +18,35 @@ package org.eclipse.gef;
 public interface RequestConstants {
 
 	/**
-	 * Indicates the creation of a new connection. Creating a connection
-	 * involves both the source node and target node EditParts. This is the
-	 * constant that is used with the first node on which the user clicks.
+	 * Indicates the creation of a new connection. Creating a connection involves
+	 * both the source node and target node EditParts. This is the constant that is
+	 * used with the first node on which the user clicks.
 	 */
 	String REQ_CONNECTION_START = "connection start";//$NON-NLS-1$
 
 	/**
 	 * Indicates the end of creation of a new connection. Creating a connection
-	 * involves both the source node and target node EditParts. This is the
-	 * constant that is used with the second node on which the user clicks.
+	 * involves both the source node and target node EditParts. This is the constant
+	 * that is used with the second node on which the user clicks.
 	 */
 	String REQ_CONNECTION_END = "connection end";//$NON-NLS-1$
 
 	/**
 	 * Constant used to indicate that the <i>source</i> end of an existing
-	 * connection is being reconnected to a new source node EditPart. The new
-	 * source node is the receiver of such Requests.
+	 * connection is being reconnected to a new source node EditPart. The new source
+	 * node is the receiver of such Requests.
 	 */
 	String REQ_RECONNECT_SOURCE = "Reconnection source";//$NON-NLS-1$
 
 	/**
 	 * Constant used to indicate that the <i>target</i> end of an existing
-	 * connection is being reconnected to a new target node EditPart. The new
-	 * target node is the receiver of such Requests.
+	 * connection is being reconnected to a new target node EditPart. The new target
+	 * node is the receiver of such Requests.
 	 */
 	String REQ_RECONNECT_TARGET = "Reconnection target";//$NON-NLS-1$
 
 	/**
-	 * Indicates that an existing bendpoint is being moved or dragged by the
-	 * User.
+	 * Indicates that an existing bendpoint is being moved or dragged by the User.
 	 */
 	String REQ_MOVE_BENDPOINT = "move bendpoint";//$NON-NLS-1$
 
@@ -67,8 +66,8 @@ public interface RequestConstants {
 	String REQ_RESIZE_CHILDREN = "resize children"; //$NON-NLS-1$
 
 	/**
-	 * Indicates that a part (or a group of parts) is being moved within its
-	 * current parent.
+	 * Indicates that a part (or a group of parts) is being moved within its current
+	 * parent.
 	 */
 	String REQ_MOVE = "move"; //$NON-NLS-1$
 
@@ -79,21 +78,21 @@ public interface RequestConstants {
 
 	/**
 	 * Indicates that the user has double-clicked on the receiver. "Open" means
-	 * different things for different applications. Sometimes it means open a
-	 * popup dialog of properties, or the Workbench's properties view. Sometimes
-	 * it means open a sub-diagram.
+	 * different things for different applications. Sometimes it means open a popup
+	 * dialog of properties, or the Workbench's properties view. Sometimes it means
+	 * open a sub-diagram.
 	 */
 	String REQ_OPEN = "open"; //$NON-NLS-1$
 
 	/**
-	 * Indicates that the receiver is being removed from its current parent, to
-	 * be inserted into a new parent.
+	 * Indicates that the receiver is being removed from its current parent, to be
+	 * inserted into a new parent.
 	 */
 	String REQ_ORPHAN = "orphan"; //$NON-NLS-1$
 
 	/**
-	 * Indicates that a group of children are being removed from the receiver of
-	 * the Request.
+	 * Indicates that a group of children are being removed from the receiver of the
+	 * Request.
 	 */
 	String REQ_ORPHAN_CHILDREN = "orphan children"; //$NON-NLS-1$
 
@@ -103,8 +102,8 @@ public interface RequestConstants {
 	String REQ_CREATE = "create child"; //$NON-NLS-1$
 
 	/**
-	 * Constant used to indicate that a group of existing children are being
-	 * added to the receiver of the Request.
+	 * Constant used to indicate that a group of existing children are being added
+	 * to the receiver of the Request.
 	 */
 	String REQ_ADD = "add children"; //$NON-NLS-1$
 
@@ -114,14 +113,13 @@ public interface RequestConstants {
 	String REQ_CLONE = "clone"; //$NON-NLS-1$
 
 	/**
-	 * Constant used to indicate that the receiver of the Request is being
-	 * deleted.
+	 * Constant used to indicate that the receiver of the Request is being deleted.
 	 */
 	String REQ_DELETE = "delete"; //$NON-NLS-1$
 
 	/**
-	 * Constant used to indicate that a child of the receiver the Request is to
-	 * be deleted.
+	 * Constant used to indicate that a child of the receiver the Request is to be
+	 * deleted.
 	 */
 	String REQ_DELETE_DEPENDANT = "delete dependant"; //$NON-NLS-1$
 

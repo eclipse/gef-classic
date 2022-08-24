@@ -49,8 +49,7 @@ public final class CheckBox extends Toggle {
 	/**
 	 * Constructs a CheckBox with the passed text in its label.
 	 * 
-	 * @param text
-	 *            The label text
+	 * @param text The label text
 	 * @since 2.0
 	 */
 	public CheckBox(String text) {
@@ -70,9 +69,9 @@ public final class CheckBox extends Toggle {
 	}
 
 	/**
-	 * Initializes this Clickable by setting a default model and adding a
-	 * clickable event handler for that model. Also adds a ChangeListener to
-	 * update icon when selection status changes.
+	 * Initializes this Clickable by setting a default model and adding a clickable
+	 * event handler for that model. Also adds a ChangeListener to update icon when
+	 * selection status changes.
 	 * 
 	 * @since 2.0
 	 */
@@ -80,8 +79,7 @@ public final class CheckBox extends Toggle {
 		super.init();
 		addChangeListener(new ChangeListener() {
 			public void handleStateChanged(ChangeEvent changeEvent) {
-				if (changeEvent.getPropertyName().equals(
-						ButtonModel.SELECTED_PROPERTY))
+				if (changeEvent.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY))
 					handleSelectionChanged();
 			}
 		});

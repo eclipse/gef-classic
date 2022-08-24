@@ -56,11 +56,10 @@ public class SplitTransitionCommand extends Command {
 	}
 
 	/**
-	 * Sets the parent Activity. The new Activity will be added as a child to
-	 * the parent.
+	 * Sets the parent Activity. The new Activity will be added as a child to the
+	 * parent.
 	 * 
-	 * @param activity
-	 *            the parent
+	 * @param activity the parent
 	 */
 	public void setParent(StructuredActivity activity) {
 		parent = activity;
@@ -69,8 +68,7 @@ public class SplitTransitionCommand extends Command {
 	/**
 	 * Sets the transition to be "split".
 	 * 
-	 * @param transition
-	 *            the transition to be "split".
+	 * @param transition the transition to be "split".
 	 */
 	public void setTransition(Transition transition) {
 		this.transition = transition;
@@ -81,8 +79,7 @@ public class SplitTransitionCommand extends Command {
 	/**
 	 * Sets the Activity to be added.
 	 * 
-	 * @param activity
-	 *            the new activity
+	 * @param activity the new activity
 	 */
 	public void setNewActivity(Activity activity) {
 		newActivity = activity;

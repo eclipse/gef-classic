@@ -38,8 +38,8 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	private CommandStack commandStack;
 
 	/**
-	 * Constructs a non-root, i.e. child entry, which may obtain the command
-	 * stack from its parent.
+	 * Constructs a non-root, i.e. child entry, which may obtain the command stack
+	 * from its parent.
 	 * 
 	 * @since 3.1
 	 */
@@ -49,15 +49,13 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	/**
 	 * Constructs the root entry using the given command stack.
 	 * 
-	 * @param commandStack
-	 *            the command stack to use
+	 * @param commandStack the command stack to use
 	 * @since 3.1
 	 */
 	public UndoablePropertySheetEntry(CommandStack commandStack) {
 		this.commandStack = commandStack;
 		this.commandStackListener = new CommandStackEventListener() {
-			public void stackChanged(
-					org.eclipse.gef.commands.CommandStackEvent event) {
+			public void stackChanged(org.eclipse.gef.commands.CommandStackEvent event) {
 				if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
 					refreshFromRoot();
 				}
@@ -83,8 +81,8 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	}
 
 	/**
-	 * Returns the {@link CommandStack} that is used by this entry. It is
-	 * obtained from the parent in case the entry is not a root entry.
+	 * Returns the {@link CommandStack} that is used by this entry. It is obtained
+	 * from the parent in case the entry is not a root entry.
 	 * 
 	 * @return the {@link CommandStack} to be used.
 	 * @since 3.7
@@ -111,10 +109,8 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 		for (int i = 0; i < objects.length; i++) {
 			IPropertySource source = getPropertySource(objects[i]);
 			if (source.isPropertySet(getDescriptor().getId())) {
-				SetPropertyValueCommand restoreCmd = new SetPropertyValueCommand(
-						getDescriptor().getDisplayName(), source,
-						getDescriptor().getId(),
-						SetPropertyValueCommand.DEFAULT_VALUE);
+				SetPropertyValueCommand restoreCmd = new SetPropertyValueCommand(getDescriptor().getDisplayName(),
+						source, getDescriptor().getId(), SetPropertyValueCommand.DEFAULT_VALUE);
 				cc.add(restoreCmd);
 				change = true;
 			}
@@ -129,27 +125,23 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	 * @see PropertySheetEntry#valueChanged(PropertySheetEntry)
 	 */
 	protected void valueChanged(PropertySheetEntry child) {
-		valueChanged((UndoablePropertySheetEntry) child,
-				new ForwardUndoCompoundCommand());
+		valueChanged((UndoablePropertySheetEntry) child, new ForwardUndoCompoundCommand());
 	}
 
-	private void valueChanged(UndoablePropertySheetEntry child,
-			CompoundCommand command) {
+	private void valueChanged(UndoablePropertySheetEntry child, CompoundCommand command) {
 		CompoundCommand cc = new CompoundCommand();
 		command.add(cc);
 
 		SetPropertyValueCommand setCommand;
 		for (int i = 0; i < getValues().length; i++) {
-			setCommand = new SetPropertyValueCommand(child.getDisplayName(),
-					getPropertySource(getValues()[i]), child.getDescriptor()
-							.getId(), child.getValues()[i]);
+			setCommand = new SetPropertyValueCommand(child.getDisplayName(), getPropertySource(getValues()[i]),
+					child.getDescriptor().getId(), child.getValues()[i]);
 			cc.add(setCommand);
 		}
 
 		// inform our parent
 		if (getParent() != null)
-			((UndoablePropertySheetEntry) getParent()).valueChanged(this,
-					command);
+			((UndoablePropertySheetEntry) getParent()).valueChanged(this, command);
 		else {
 			// I am the root entry
 			commandStack.execute(command);

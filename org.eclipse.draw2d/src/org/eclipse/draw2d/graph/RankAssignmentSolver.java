@@ -87,8 +87,7 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 					edges = n.outgoing;
 				for (int j = 0; j < edges.size(); j++) {
 					Edge e = edges.getEdge(j);
-					if (!subtreeContains(branch, e.opposite(n)) && !e.tree
-							&& e.getSlack() < minSlack) {
+					if (!subtreeContains(branch, e.opposite(n)) && !e.tree && e.getSlack() < minSlack) {
 						result = e;
 						minSlack = e.getSlack();
 					}
@@ -236,8 +235,7 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 	}
 
 	boolean subtreeContains(Node parent, Node child) {
-		return parent.workingInts[0] <= child.workingInts[1]
-				&& child.workingInts[1] <= parent.workingInts[1];
+		return parent.workingInts[0] <= child.workingInts[1] && child.workingInts[1] <= parent.workingInts[1];
 	}
 
 	void tightenEdge(Edge edge) {

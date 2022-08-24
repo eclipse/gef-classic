@@ -41,8 +41,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 * If feedback is being shown, this method calls
 	 * {@link #revertOldEditValue(DirectEditRequest)}.
 	 * 
-	 * @param request
-	 *            the DirectEditRequest
+	 * @param request the DirectEditRequest
 	 */
 	protected void eraseDirectEditFeedback(DirectEditRequest request) {
 		if (showing) {
@@ -63,8 +62,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Returns the <code>Command</code> to perform the direct edit.
 	 * 
-	 * @param request
-	 *            the DirectEditRequest
+	 * @param request the DirectEditRequest
 	 * @return the command to perform the direct edit
 	 */
 	protected abstract Command getDirectEditCommand(DirectEditRequest request);
@@ -73,14 +71,13 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 * Helps erase feedback by reverting the original edit value. The rule when
 	 * using GEF is that all feedback is removed before changes to the model are
 	 * made. By default, the host is sent
-	 * {@link org.eclipse.gef.EditPart#refresh()}, which should cause it to
-	 * refresh all properties.
+	 * {@link org.eclipse.gef.EditPart#refresh()}, which should cause it to refresh
+	 * all properties.
 	 * 
 	 * Subclasses can override this method to perform a more specific revert.
 	 * 
 	 * @see #storeOldEditValue(DirectEditRequest)
-	 * @param request
-	 *            the DirectEditRequest
+	 * @param request the DirectEditRequest
 	 */
 	protected void revertOldEditValue(DirectEditRequest request) {
 		getHost().refresh();
@@ -97,8 +94,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Pushes the original edit value if necessary, and shows feedback.
 	 * 
-	 * @param request
-	 *            the DirectEditRequest
+	 * @param request the DirectEditRequest
 	 */
 	protected void showDirectEditFeedback(DirectEditRequest request) {
 		if (!showing) {
@@ -109,33 +105,28 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	}
 
 	/**
-	 * Override to show the current direct edit value in the host's Figure.
-	 * Although the CellEditor will probably cover the figure's display of this
-	 * value, updating the figure will cause its preferred size to reflect the
-	 * new value.
+	 * Override to show the current direct edit value in the host's Figure. Although
+	 * the CellEditor will probably cover the figure's display of this value,
+	 * updating the figure will cause its preferred size to reflect the new value.
 	 * 
-	 * @param request
-	 *            the DirectEditRequest
+	 * @param request the DirectEditRequest
 	 */
 	protected abstract void showCurrentEditValue(DirectEditRequest request);
 
 	/**
-	 * Called to remember the old value before direct edit feedback begins.
-	 * After feedback is over, {@link #revertOldEditValue(DirectEditRequest)} is
-	 * called to undo the changes done by feedback. By default, this method
-	 * nothing.
+	 * Called to remember the old value before direct edit feedback begins. After
+	 * feedback is over, {@link #revertOldEditValue(DirectEditRequest)} is called to
+	 * undo the changes done by feedback. By default, this method nothing.
 	 * 
-	 * @param request
-	 *            the DirectEditRequest
+	 * @param request the DirectEditRequest
 	 */
 	protected void storeOldEditValue(DirectEditRequest request) {
 	}
 
 	/**
 	 * Returns <code>true</code> for {@link RequestConstants#REQ_DIRECT_EDIT}.
-	 * {@link org.eclipse.gef.ui.actions.DirectEditAction} will determine
-	 * enablement based on whether the selected EditPart understands
-	 * "direct edit".
+	 * {@link org.eclipse.gef.ui.actions.DirectEditAction} will determine enablement
+	 * based on whether the selected EditPart understands "direct edit".
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#understandsRequest(Request)
 	 */

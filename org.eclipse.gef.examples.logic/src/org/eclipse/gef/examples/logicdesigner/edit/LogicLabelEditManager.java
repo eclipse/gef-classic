@@ -45,8 +45,7 @@ public class LogicLabelEditManager extends DirectEditManager {
 		}
 	};
 
-	public LogicLabelEditManager(GraphicalEditPart source,
-			CellEditorLocator locator) {
+	public LogicLabelEditManager(GraphicalEditPart source, CellEditorLocator locator) {
 		super(source, null, locator);
 	}
 
@@ -54,8 +53,7 @@ public class LogicLabelEditManager extends DirectEditManager {
 	 * @see org.eclipse.gef.tools.DirectEditManager#bringDown()
 	 */
 	protected void bringDown() {
-		ZoomManager zoomMgr = (ZoomManager) getEditPart().getViewer()
-				.getProperty(ZoomManager.class.toString());
+		ZoomManager zoomMgr = (ZoomManager) getEditPart().getViewer().getProperty(ZoomManager.class.toString());
 		if (zoomMgr != null)
 			zoomMgr.removeZoomListener(zoomListener);
 
@@ -87,12 +85,10 @@ public class LogicLabelEditManager extends DirectEditManager {
 
 	protected void initCellEditor() {
 		// update text
-		LabelFigure stickyNote = (LabelFigure) getEditPart()
-				.getFigure();
+		LabelFigure stickyNote = (LabelFigure) getEditPart().getFigure();
 		getCellEditor().setValue(stickyNote.getText());
 		// update font
-		ZoomManager zoomMgr = (ZoomManager) getEditPart().getViewer()
-				.getProperty(ZoomManager.class.toString());
+		ZoomManager zoomMgr = (ZoomManager) getEditPart().getViewer().getProperty(ZoomManager.class.toString());
 		if (zoomMgr != null) {
 			// this will force the font to be set
 			cachedZoom = -1.0;
@@ -104,9 +100,8 @@ public class LogicLabelEditManager extends DirectEditManager {
 		// Hook the cell editor's copy/paste actions to the actionBars so that
 		// they can
 		// be invoked via keyboard shortcuts.
-		actionBars = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().getActiveEditor().getEditorSite()
-				.getActionBars();
+		actionBars = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor()
+				.getEditorSite().getActionBars();
 		saveCurrentActions(actionBars);
 		actionHandler = new CellEditorActionHandler(actionBars);
 		actionHandler.addCellEditor(getCellEditor());
@@ -117,8 +112,7 @@ public class LogicLabelEditManager extends DirectEditManager {
 		actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(), copy);
 		actionBars.setGlobalActionHandler(ActionFactory.PASTE.getId(), paste);
 		actionBars.setGlobalActionHandler(ActionFactory.DELETE.getId(), delete);
-		actionBars.setGlobalActionHandler(ActionFactory.SELECT_ALL.getId(),
-				selectAll);
+		actionBars.setGlobalActionHandler(ActionFactory.SELECT_ALL.getId(), selectAll);
 		actionBars.setGlobalActionHandler(ActionFactory.CUT.getId(), cut);
 		actionBars.setGlobalActionHandler(ActionFactory.FIND.getId(), find);
 		actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(), undo);
@@ -128,10 +122,8 @@ public class LogicLabelEditManager extends DirectEditManager {
 	private void saveCurrentActions(IActionBars actionBars) {
 		copy = actionBars.getGlobalActionHandler(ActionFactory.COPY.getId());
 		paste = actionBars.getGlobalActionHandler(ActionFactory.PASTE.getId());
-		delete = actionBars
-				.getGlobalActionHandler(ActionFactory.DELETE.getId());
-		selectAll = actionBars.getGlobalActionHandler(ActionFactory.SELECT_ALL
-				.getId());
+		delete = actionBars.getGlobalActionHandler(ActionFactory.DELETE.getId());
+		selectAll = actionBars.getGlobalActionHandler(ActionFactory.SELECT_ALL.getId());
 		cut = actionBars.getGlobalActionHandler(ActionFactory.CUT.getId());
 		find = actionBars.getGlobalActionHandler(ActionFactory.FIND.getId());
 		undo = actionBars.getGlobalActionHandler(ActionFactory.UNDO.getId());

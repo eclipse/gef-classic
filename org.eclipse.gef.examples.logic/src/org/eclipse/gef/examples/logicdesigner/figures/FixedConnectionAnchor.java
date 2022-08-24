@@ -60,8 +60,7 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 	}
 
 	/**
-	 * @param offsetH
-	 *            The offsetH to set.
+	 * @param offsetH The offsetH to set.
 	 */
 	public void setOffsetH(int offsetH) {
 		this.offsetH = offsetH;
@@ -69,8 +68,7 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 	}
 
 	/**
-	 * @param offsetV
-	 *            The offsetV to set.
+	 * @param offsetV The offsetV to set.
 	 */
 	public void setOffsetV(int offsetV) {
 		this.offsetV = offsetV;
@@ -86,10 +84,8 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 		if (o instanceof FixedConnectionAnchor) {
 			FixedConnectionAnchor fa = (FixedConnectionAnchor) o;
 
-			if (fa.leftToRight == this.leftToRight
-					&& fa.topDown == this.topDown && fa.offsetH == this.offsetH
-					&& fa.offsetV == this.offsetV
-					&& fa.getOwner() == this.getOwner()) {
+			if (fa.leftToRight == this.leftToRight && fa.topDown == this.topDown && fa.offsetH == this.offsetH
+					&& fa.offsetV == this.offsetV && fa.getOwner() == this.getOwner()) {
 				return true;
 			}
 		}
@@ -103,8 +99,7 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 	 * @see java.lang.Object#hashCode()
 	 */
 	public int hashCode() {
-		return ((this.leftToRight ? 31 : 0) + (this.topDown ? 37 : 0)
-				+ this.offsetH * 43 + this.offsetV * 47)
+		return ((this.leftToRight ? 31 : 0) + (this.topDown ? 37 : 0) + this.offsetH * 43 + this.offsetV * 47)
 				^ this.getOwner().hashCode();
 	}
 

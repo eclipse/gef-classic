@@ -65,8 +65,7 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 				CollapsedEdges edges = seed.leftLinks[i];
 				if (!edges.isTight())
 					continue;
-				if ((!isRight || neighbor.getPull() > 0)
-						&& addCluster(neighbor))
+				if ((!isRight || neighbor.getPull() > 0) && addCluster(neighbor))
 					return true;
 			}
 			return false;
@@ -133,14 +132,10 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 	 * weight value is a value by which to scale the edges specified weighting
 	 * factor.
 	 * 
-	 * @param u
-	 *            the source
-	 * @param v
-	 *            the target
-	 * @param e
-	 *            the edge along which u and v exist
-	 * @param weight
-	 *            a scaling for the weight
+	 * @param u      the source
+	 * @param v      the target
+	 * @param e      the edge along which u and v exist
+	 * @param weight a scaling for the weight
 	 */
 	void addEdge(Node u, Node v, Edge e, int weight) {
 		Node ne = new Node(new NodePair(u, v));
@@ -170,10 +165,8 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 	/**
 	 * Adds all of the incoming edges to the graph.
 	 * 
-	 * @param n
-	 *            the original node
-	 * @param nPrime
-	 *            its corresponding node in the auxilary graph
+	 * @param n      the original node
+	 * @param nPrime its corresponding node in the auxilary graph
 	 */
 	void addEdges(Node n) {
 		for (int i = 0; i < n.incoming.size(); i++) {
@@ -292,8 +285,7 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 				map(n, nPrime);
 				if (i == rank.count() - 1) {
 					e = new Edge(nPrime, graphRight, 0, 0);
-					e.delta = n.width + graph.getPadding(n).right
-							+ graph.getMargin().right;
+					e.delta = n.width + graph.getPadding(n).right + graph.getMargin().right;
 					prime.edges.add(e);
 				}
 			}
@@ -311,8 +303,7 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 				node = rank.getNode(cell);
 				locations[cell] = node.x - graph.getPadding(node).left;
 			}
-			locations[cell] = node.x + node.width
-					+ graph.getPadding(node).right;
+			locations[cell] = node.x + node.width + graph.getPadding(node).right;
 		}
 	}
 
@@ -388,8 +379,7 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 	void rowSeparation(Edge e) {
 		Node source = (Node) e.source.data;
 		Node target = (Node) e.target.data;
-		e.delta = source.width + graph.getPadding(source).right
-				+ graph.getPadding(target).left;
+		e.delta = source.width + graph.getPadding(source).right + graph.getPadding(target).left;
 	}
 
 	public void visit(DirectedGraph g) {
@@ -398,8 +388,7 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 		prime.nodes.add(graphLeft = new Node(null));
 		prime.nodes.add(graphRight = new Node(null));
 		if (g.tensorStrength != 0)
-			prime.edges.add(new Edge(graphLeft, graphRight, g.tensorSize,
-					g.tensorStrength));
+			prime.edges.add(new Edge(graphLeft, graphRight, g.tensorSize, g.tensorStrength));
 		buildGPrime();
 		new InitialRankSolver().visit(prime);
 		new TightSpanningTreeSolver().visit(prime);

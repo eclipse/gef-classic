@@ -27,20 +27,23 @@ public class CompositeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		this(0, algoirthms);
 	}
 
-	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
+	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 
 		for (int i = 0; i < algorithms.length; i++) {
 			try {
-				algorithms[i].applyLayout(entitiesToLayout, relationshipsToConsider, boundsX, boundsY, boundsWidth, boundsHeight, this.internalAsynchronous, this.internalContinuous);
+				algorithms[i].applyLayout(entitiesToLayout, relationshipsToConsider, boundsX, boundsY, boundsWidth,
+						boundsHeight, this.internalAsynchronous, this.internalContinuous);
 			} catch (InvalidLayoutConfiguration e) {
 				e.printStackTrace();
 			}
 		}
 		for (int i = 0; i < entitiesToLayout.length; i++) {
-			entitiesToLayout[i].getLayoutEntity().setLocationInLayout(entitiesToLayout[i].getXInLayout(), entitiesToLayout[i].getYInLayout());
+			entitiesToLayout[i].getLayoutEntity().setLocationInLayout(entitiesToLayout[i].getXInLayout(),
+					entitiesToLayout[i].getYInLayout());
 		}
 
-		//updateLayoutLocations(entitiesToLayout);
+		// updateLayoutLocations(entitiesToLayout);
 	}
 
 	protected int getCurrentLayoutStep() {
@@ -58,12 +61,14 @@ public class CompositeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		return true;
 	}
 
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationshipsToConsider) {
 		// TODO Auto-generated method stub
 
 	}
 
-	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double x, double y, double width, double height) {
 		// TODO Auto-generated method stub
 
 	}

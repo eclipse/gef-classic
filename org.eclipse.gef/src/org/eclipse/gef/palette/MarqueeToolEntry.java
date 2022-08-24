@@ -37,8 +37,7 @@ public class MarqueeToolEntry extends ToolEntry {
 	/**
 	 * Constructor for MarqueeToolEntry.
 	 * 
-	 * @param label
-	 *            the label
+	 * @param label the label
 	 */
 	public MarqueeToolEntry(String label) {
 		this(label, null);
@@ -47,10 +46,8 @@ public class MarqueeToolEntry extends ToolEntry {
 	/**
 	 * Constructor for MarqueeToolEntry.
 	 * 
-	 * @param label
-	 *            the label; can be <code>null</code>
-	 * @param description
-	 *            the description (can be <code>null</code>)
+	 * @param label       the label; can be <code>null</code>
+	 * @param description the description (can be <code>null</code>)
 	 */
 	public MarqueeToolEntry(String label, String description) {
 		super(label, description, null, null, MarqueeSelectionTool.class);

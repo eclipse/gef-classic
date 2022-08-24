@@ -18,8 +18,7 @@ public interface FigureListener {
 	/**
 	 * Called when the given IFigure has moved.
 	 * 
-	 * @param source
-	 *            The IFigure that has moved.
+	 * @param source The IFigure that has moved.
 	 */
 	void figureMoved(IFigure source);
 

@@ -96,8 +96,7 @@ public class DirectedGraphLayout {
 	/**
 	 * Lays out the given graph
 	 * 
-	 * @param graph
-	 *            the graph to layout
+	 * @param graph the graph to layout
 	 */
 	public void visit(DirectedGraph graph) {
 		if (graph.nodes.isEmpty())

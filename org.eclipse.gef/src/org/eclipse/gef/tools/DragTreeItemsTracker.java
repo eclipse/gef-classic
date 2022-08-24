@@ -23,8 +23,7 @@ public class DragTreeItemsTracker extends SelectEditPartTracker {
 	/**
 	 * Constructs a new DragTreeItemsTracker.
 	 * 
-	 * @param sourceEditPart
-	 *            the source edit part
+	 * @param sourceEditPart the source edit part
 	 */
 	public DragTreeItemsTracker(EditPart sourceEditPart) {
 		super(sourceEditPart);

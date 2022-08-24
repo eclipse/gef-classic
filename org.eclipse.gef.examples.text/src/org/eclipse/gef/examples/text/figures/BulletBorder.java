@@ -26,8 +26,7 @@ public class BulletBorder extends ListItemBorder {
 	private static final String BULLET = " \u25cf ";
 
 	public Insets getInsets(IFigure figure) {
-		FigureUtilities.getTextExtents(BULLET, figure.getFont(),
-				Dimension.SINGLETON);
+		FigureUtilities.getTextExtents(BULLET, figure.getFont(), Dimension.SINGLETON);
 		return new Insets(0, Dimension.SINGLETON.width, 0, 0);
 	}
 

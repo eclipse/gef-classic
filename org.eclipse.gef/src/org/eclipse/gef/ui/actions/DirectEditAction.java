@@ -44,14 +44,12 @@ public class DirectEditAction extends SelectionAction {
 	/** @deprecated */
 	public static final String ID = GEFActionConstants.DIRECT_EDIT;
 
-	private Request directEditRequest = new Request(
-			RequestConstants.REQ_DIRECT_EDIT);
+	private Request directEditRequest = new Request(RequestConstants.REQ_DIRECT_EDIT);
 
 	/**
 	 * Same as {@link #DirectEditAction(IWorkbenchPart)}.
 	 * 
-	 * @param editor
-	 *            the editor
+	 * @param editor the editor
 	 */
 	public DirectEditAction(IEditorPart editor) {
 		this((IWorkbenchPart) editor);
@@ -60,8 +58,7 @@ public class DirectEditAction extends SelectionAction {
 	/**
 	 * Constructs a DirectEditAction using the specified part.
 	 * 
-	 * @param part
-	 *            the workbench part
+	 * @param part the workbench part
 	 */
 	public DirectEditAction(IWorkbenchPart part) {
 		super(part);
@@ -74,8 +71,7 @@ public class DirectEditAction extends SelectionAction {
 	 * @return <code>true</code> if enabled
 	 */
 	protected boolean calculateEnabled() {
-		if (getSelectedObjects().size() == 1
-				&& (getSelectedObjects().get(0) instanceof EditPart)) {
+		if (getSelectedObjects().size() == 1 && (getSelectedObjects().get(0) instanceof EditPart)) {
 			EditPart part = (EditPart) getSelectedObjects().get(0);
 			return part.understandsRequest(getDirectEditRequest());
 		}
@@ -108,8 +104,7 @@ public class DirectEditAction extends SelectionAction {
 	/**
 	 * Clients may override the request that is used to perform the direct edit.
 	 * 
-	 * @param req
-	 *            the new request to be used
+	 * @param req the new request to be used
 	 */
 	public void setDirectEditRequest(Request req) {
 		directEditRequest = req;

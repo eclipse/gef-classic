@@ -32,13 +32,11 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 	/**
 	 * A figure is growing if it's an expanded drawer.
 	 * 
-	 * @param child
-	 *            The figure that is to be marked as growing or non-growing
+	 * @param child The figure that is to be marked as growing or non-growing
 	 * @return <code>true</code> if the given child is considered growing
 	 */
 	protected boolean isChildGrowing(IFigure child) {
-		return child instanceof DrawerFigure
-				&& ((DrawerFigure) child).isExpanded();
+		return child instanceof DrawerFigure && ((DrawerFigure) child).isExpanded();
 	}
 
 	/**
@@ -64,8 +62,8 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 		int hHint = -1;
 
 		/*
-		 * Store the preferred and minimum sizes of all figures. Determine which
-		 * figures can be stretched/shrunk.
+		 * Store the preferred and minimum sizes of all figures. Determine which figures
+		 * can be stretched/shrunk.
 		 */
 		for (int i = 0; i < numChildren; i++) {
 			IFigure child = (IFigure) children.get(i);
@@ -92,24 +90,23 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 		stretching = totalHeight - Math.max(availableHeight, totalMinHeight) < 0;
 		if (stretching) {
 			/*
-			 * We only want the last child to stretch. So, we mark all but the
-			 * last growing child as non-growing.
+			 * We only want the last child to stretch. So, we mark all but the last growing
+			 * child as non-growing.
 			 */
 			for (int i = 0; i < childrenGrabbingVertical.size() - 1; i++) {
 				int index = children.indexOf(childrenGrabbingVertical.get(i));
 				heightOfNonGrowingChildren += prefSizes[index].height;
 			}
 			if (!childrenGrabbingVertical.isEmpty()) {
-				Object last = childrenGrabbingVertical
-						.get(childrenGrabbingVertical.size() - 1);
+				Object last = childrenGrabbingVertical.get(childrenGrabbingVertical.size() - 1);
 				childrenGrabbingVertical.clear();
 				childrenGrabbingVertical.add(last);
 				heightPerChild = availableHeight - heightOfNonGrowingChildren;
 			}
 		} else if (!childrenGrabbingVertical.isEmpty()) {
 			/*
-			 * So long as there is at least one child that can be grown, figure
-			 * out how much height should be given to each growing child.
+			 * So long as there is at least one child that can be grown, figure out how much
+			 * height should be given to each growing child.
 			 */
 			boolean childrenDiscarded;
 			// spaceToConsume is the space height available on the palette that
@@ -122,15 +119,12 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 			// excessHeight is the space leftover at the bottom of the palette
 			// after each
 			// growing child has been grown by heightPerChild.
-			excessHeight = spaceToConsume
-					- (heightPerChild * childrenGrabbingVertical.size());
+			excessHeight = spaceToConsume - (heightPerChild * childrenGrabbingVertical.size());
 			do {
 				childrenDiscarded = false;
-				for (Iterator iter = childrenGrabbingVertical.iterator(); iter
-						.hasNext();) {
+				for (Iterator iter = childrenGrabbingVertical.iterator(); iter.hasNext();) {
 					IFigure childFig = (IFigure) iter.next();
-					int i = childFig.getParent().getChildren()
-							.indexOf(childFig);
+					int i = childFig.getParent().getChildren().indexOf(childFig);
 					// In the case of shrinking, if the child's height is less
 					// than
 					// heightPerChild, mark that child as non-growing
@@ -140,11 +134,8 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 						iter.remove();
 						if (!childrenGrabbingVertical.isEmpty()) {
 							childrenDiscarded = true;
-							heightPerChild = spaceToConsume
-									/ childrenGrabbingVertical.size();
-							excessHeight = spaceToConsume
-									- (heightPerChild * childrenGrabbingVertical
-											.size());
+							heightPerChild = spaceToConsume / childrenGrabbingVertical.size();
+							excessHeight = spaceToConsume - (heightPerChild * childrenGrabbingVertical.size());
 						}
 						break;
 					}
@@ -157,8 +148,7 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 		 */
 		for (int i = 0; i < numChildren; i++) {
 			IFigure child = (IFigure) children.get(i);
-			Rectangle newBounds = new Rectangle(x, y, prefSizes[i].width,
-					prefSizes[i].height);
+			Rectangle newBounds = new Rectangle(x, y, prefSizes[i].width, prefSizes[i].height);
 
 			if (childrenGrabbingVertical.contains(child)) {
 				// Set the height of growing children. If this is the last one,
@@ -174,8 +164,7 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 			if (getStretchMinorAxis())
 				newBounds.width = clientArea.width;
 			else
-				newBounds.width = Math
-						.min(prefSizes[i].width, clientArea.width);
+				newBounds.width = Math.min(prefSizes[i].width, clientArea.width);
 
 			int adjust = clientArea.width - newBounds.width;
 			switch (getMinorAlignment()) {

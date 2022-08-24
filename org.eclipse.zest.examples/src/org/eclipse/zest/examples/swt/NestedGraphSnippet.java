@@ -54,20 +54,25 @@ public class NestedGraphSnippet {
 	}
 
 	public static void populateContainer(GraphContainer c, Graph g, int number, boolean radial) {
-		GraphNode a = new GraphNode(c, ZestStyles.NODES_FISHEYE | ZestStyles.NODES_HIDE_TEXT, "SomeClass.java", classImage);
+		GraphNode a = new GraphNode(c, ZestStyles.NODES_FISHEYE | ZestStyles.NODES_HIDE_TEXT, "SomeClass.java",
+				classImage);
 		for (int i = 0; i < 4; i++) {
-			GraphNode b = new GraphNode(c, ZestStyles.NODES_FISHEYE | ZestStyles.NODES_HIDE_TEXT, "SomeNestedClass.java", classImage);
+			GraphNode b = new GraphNode(c, ZestStyles.NODES_FISHEYE | ZestStyles.NODES_HIDE_TEXT,
+					"SomeNestedClass.java", classImage);
 			new GraphConnection(g, SWT.NONE, a, b);
 			for (int j = 0; j < 4; j++) {
-				GraphNode d = new GraphNode(c, ZestStyles.NODES_FISHEYE | ZestStyles.NODES_HIDE_TEXT, "DefaultAction.java", classImage);
+				GraphNode d = new GraphNode(c, ZestStyles.NODES_FISHEYE | ZestStyles.NODES_HIDE_TEXT,
+						"DefaultAction.java", classImage);
 				new GraphConnection(g, SWT.NONE, b, d);
 				if (number > 2) {
 					for (int k = 0; k < 4; k++) {
-						GraphNode e = new GraphNode(c, ZestStyles.NODES_FISHEYE | ZestStyles.NODES_HIDE_TEXT, "LastAction(Hero).java", classImage);
+						GraphNode e = new GraphNode(c, ZestStyles.NODES_FISHEYE | ZestStyles.NODES_HIDE_TEXT,
+								"LastAction(Hero).java", classImage);
 						new GraphConnection(g, SWT.NONE, d, e);
 						if (number > 3) {
 							for (int l = 0; l < 4; l++) {
-								GraphNode f = new GraphNode(c, ZestStyles.NODES_FISHEYE | ZestStyles.NODES_HIDE_TEXT, "LastAction(Hero).java", classImage);
+								GraphNode f = new GraphNode(c, ZestStyles.NODES_FISHEYE | ZestStyles.NODES_HIDE_TEXT,
+										"LastAction(Hero).java", classImage);
 								new GraphConnection(g, SWT.NONE, e, f);
 							}
 						}
@@ -107,8 +112,12 @@ public class NestedGraphSnippet {
 		Graph g = new Graph(shell, SWT.NONE);
 		createContainer(g);
 
-		CompositeLayoutAlgorithm compositeLayoutAlgorithm = new CompositeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING, new LayoutAlgorithm[] { new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), new HorizontalShift(LayoutStyles.NO_LAYOUT_NODE_RESIZING) });
-		//g.setLayoutAlgorithm(new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+		CompositeLayoutAlgorithm compositeLayoutAlgorithm = new CompositeLayoutAlgorithm(
+				LayoutStyles.NO_LAYOUT_NODE_RESIZING,
+				new LayoutAlgorithm[] { new GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING),
+						new HorizontalShift(LayoutStyles.NO_LAYOUT_NODE_RESIZING) });
+		// g.setLayoutAlgorithm(new
+		// GridLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 		g.setLayoutAlgorithm(compositeLayoutAlgorithm, true);
 
 		shell.open();

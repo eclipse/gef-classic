@@ -28,8 +28,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class PrintFigureOperation extends PrintOperation {
 
 	/**
-	 * The default print mode. Prints at 100% scale and tiles horizontally
-	 * and/or vertically, if necessary.
+	 * The default print mode. Prints at 100% scale and tiles horizontally and/or
+	 * vertically, if necessary.
 	 */
 	public static final int TILE = 1;
 	/**
@@ -55,8 +55,8 @@ public class PrintFigureOperation extends PrintOperation {
 	/**
 	 * Constructor for PrintFigureOperation.
 	 * <p>
-	 * Note: Descendants must call setPrintSource(IFigure) to set the IFigure
-	 * that is to be printed.
+	 * Note: Descendants must call setPrintSource(IFigure) to set the IFigure that
+	 * is to be printed.
 	 * 
 	 * @see org.eclipse.draw2d.PrintOperation#PrintOperation(Printer)
 	 */
@@ -67,10 +67,8 @@ public class PrintFigureOperation extends PrintOperation {
 	/**
 	 * Constructor for PrintFigureOperation.
 	 * 
-	 * @param p
-	 *            Printer to print on
-	 * @param srcFigure
-	 *            Figure to print
+	 * @param p         Printer to print on
+	 * @param srcFigure Figure to print
 	 */
 	public PrintFigureOperation(Printer p, IFigure srcFigure) {
 		super(p);
@@ -78,13 +76,12 @@ public class PrintFigureOperation extends PrintOperation {
 	}
 
 	/**
-	 * @return SWT.RIGHT_TO_LEFT if the print source is mirrored;
-	 *         SWT.LEFT_TO_RIGHT otherwise
+	 * @return SWT.RIGHT_TO_LEFT if the print source is mirrored; SWT.LEFT_TO_RIGHT
+	 *         otherwise
 	 * @see org.eclipse.draw2d.PrintOperation#getGraphicsOrientation()
 	 */
 	int getGraphicsOrientation() {
-		return getPrintSource().isMirrored() ? SWT.RIGHT_TO_LEFT
-				: SWT.LEFT_TO_RIGHT;
+		return getPrintSource().isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.LEFT_TO_RIGHT;
 	}
 
 	/**
@@ -153,11 +150,10 @@ public class PrintFigureOperation extends PrintOperation {
 	}
 
 	/**
-	 * Sets the print mode. Possible values are {@link #TILE},
-	 * {@link #FIT_HEIGHT}, {@link #FIT_WIDTH} and {@link #FIT_PAGE}.
+	 * Sets the print mode. Possible values are {@link #TILE}, {@link #FIT_HEIGHT},
+	 * {@link #FIT_WIDTH} and {@link #FIT_PAGE}.
 	 * 
-	 * @param mode
-	 *            the print mode
+	 * @param mode the print mode
 	 */
 	public void setPrintMode(int mode) {
 		printMode = mode;
@@ -166,8 +162,7 @@ public class PrintFigureOperation extends PrintOperation {
 	/**
 	 * Sets the printSource.
 	 * 
-	 * @param printSource
-	 *            The printSource to set
+	 * @param printSource The printSource to set
 	 */
 	protected void setPrintSource(IFigure printSource) {
 		this.printSource = printSource;
@@ -176,14 +171,11 @@ public class PrintFigureOperation extends PrintOperation {
 	/**
 	 * Sets up Graphics object for the given IFigure.
 	 * 
-	 * @param graphics
-	 *            The Graphics to setup
-	 * @param figure
-	 *            The IFigure used to setup graphics
+	 * @param graphics The Graphics to setup
+	 * @param figure   The IFigure used to setup graphics
 	 */
 	protected void setupPrinterGraphicsFor(Graphics graphics, IFigure figure) {
-		double dpiScale = (double) getPrinter().getDPI().x
-				/ Display.getCurrent().getDPI().x;
+		double dpiScale = (double) getPrinter().getDPI().x / Display.getCurrent().getDPI().x;
 
 		Rectangle printRegion = getPrintRegion();
 		// put the print region in display coordinates

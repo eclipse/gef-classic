@@ -33,10 +33,8 @@ public class TextUtilities {
 	/**
 	 * Returns the Dimensions of <i>s</i> in Font <i>f</i>.
 	 * 
-	 * @param s
-	 *            the string
-	 * @param f
-	 *            the font
+	 * @param s the string
+	 * @param f the font
 	 * @return the dimensions of the given string
 	 */
 	public Dimension getStringExtents(String s, Font f) {
@@ -47,10 +45,8 @@ public class TextUtilities {
 	 * Returns the Dimensions of the given text, converting newlines and tabs
 	 * appropriately.
 	 * 
-	 * @param s
-	 *            the text
-	 * @param f
-	 *            the font
+	 * @param s the text
+	 * @param f the font
 	 * @return the dimensions of the given text
 	 */
 	public Dimension getTextExtents(String s, Font f) {
@@ -82,16 +78,12 @@ public class TextUtilities {
 	 * Returns the largest substring of <i>s</i> in Font <i>f</i> that can be
 	 * confined to the number of pixels in <i>availableWidth<i>.
 	 * 
-	 * @param s
-	 *            the original string
-	 * @param f
-	 *            the font
-	 * @param availableWidth
-	 *            the available width
+	 * @param s              the original string
+	 * @param f              the font
+	 * @param availableWidth the available width
 	 * @return the largest substring that fits in the given width
 	 */
-	public int getLargestSubstringConfinedTo(String s, Font f,
-			int availableWidth) {
+	public int getLargestSubstringConfinedTo(String s, Font f, int availableWidth) {
 		FontMetrics metrics = FigureUtilities.getFontMetrics(f);
 		int min, max;
 		float avg = metrics.getAverageCharWidth();

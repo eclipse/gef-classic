@@ -17,7 +17,7 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * 
  * @author Ian Bull
  * 
- * Used to represent algorithms that can continuously run.  
+ *         Used to represent algorithms that can continuously run.
  *
  */
 public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm {
@@ -35,9 +35,11 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 
 	/**
 	 * Computes a single iteration of the layout algorithm
+	 * 
 	 * @return
 	 */
-	protected abstract void computeOneIteration(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height);
+	protected abstract void computeOneIteration(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height);
 
 	private boolean continueRunning() {
 		if (layoutStopped) {
@@ -68,15 +70,16 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 	}
 
 	/**
-	 * Calculates and applies the positions of the given entities based on a
-	 * spring layout using the given relationships.
+	 * Calculates and applies the positions of the given entities based on a spring
+	 * layout using the given relationships.
 	 */
-	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double x, double y, double width, double height) {
 
 		this.setBounds(x, y, width, height);
 
 		while (continueRunning()) {
-			// check for entities and relationships to add or remove 
+			// check for entities and relationships to add or remove
 			entitiesToLayout = updateEntities(entitiesToLayout);
 			relationshipsToConsider = updateRelationships(relationshipsToConsider);
 			DisplayIndependentRectangle bounds = this.getBounds();

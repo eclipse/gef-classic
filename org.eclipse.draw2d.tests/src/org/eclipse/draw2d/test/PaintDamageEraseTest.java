@@ -146,15 +146,14 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	}
 
 	/**
-	 * This method tests to see if the old box has been properly erased by
-	 * moving the box by the given offsets and asserting that the damaged region
-	 * is correct.
+	 * This method tests to see if the old box has been properly erased by moving
+	 * the box by the given offsets and asserting that the damaged region is
+	 * correct.
 	 * 
 	 * 
 	 */
 	public void doTestEraseBoxAfterMove(int xOffset, int yOffset, String msg) {
-		insideBox.setBounds(insideBox.getBounds().getTranslated(xOffset,
-				yOffset));
+		insideBox.setBounds(insideBox.getBounds().getTranslated(xOffset, yOffset));
 
 		container.getUpdateManager().performUpdate();
 
@@ -178,8 +177,8 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 			h = Math.abs(yOffset) + 25;
 		}
 
-		if (lastDamaged == null || x != lastDamaged.x || y != lastDamaged.y
-				|| h != lastDamaged.height || w != lastDamaged.width) {
+		if (lastDamaged == null || x != lastDamaged.x || y != lastDamaged.y || h != lastDamaged.height
+				|| w != lastDamaged.width) {
 			errMsg += " " + msg;
 		}
 	}

@@ -18,8 +18,8 @@ public interface LayoutConstraint {
 	// Empty interface
 
 	/**
-	 * This method clears all the fields of the layout constraints.
-	 * This should not be called outside the layout package
+	 * This method clears all the fields of the layout constraints. This should not
+	 * be called outside the layout package
 	 */
 	public void clear();
 }

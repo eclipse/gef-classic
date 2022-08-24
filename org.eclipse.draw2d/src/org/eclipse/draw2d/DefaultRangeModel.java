@@ -29,8 +29,7 @@ public class DefaultRangeModel implements RangeModel {
 	/**
 	 * Listeners interested in the range model's property changes.
 	 */
-	protected PropertyChangeSupport propertyListeners = new PropertyChangeSupport(
-			this);
+	protected PropertyChangeSupport propertyListeners = new PropertyChangeSupport(this);
 	private int minimum = 0;
 	private int maximum = 100;
 	private int extent = 20;
@@ -39,8 +38,7 @@ public class DefaultRangeModel implements RangeModel {
 	/**
 	 * Registers the given listener as a PropertyChangeListener.
 	 * 
-	 * @param listener
-	 *            the listener to be added
+	 * @param listener the listener to be added
 	 * @since 2.0
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -51,12 +49,9 @@ public class DefaultRangeModel implements RangeModel {
 	 * Notifies any listening PropertyChangeListeners that the property with the
 	 * given id has changed.
 	 * 
-	 * @param string
-	 *            the property name
-	 * @param oldValue
-	 *            the old value
-	 * @param newValue
-	 *            the new value
+	 * @param string   the property name
+	 * @param oldValue the old value
+	 * @param newValue the new value
 	 * @since 2.0
 	 */
 	protected void firePropertyChange(String string, int oldValue, int newValue) {
@@ -101,8 +96,7 @@ public class DefaultRangeModel implements RangeModel {
 	/**
 	 * Removes the given PropertyChangeListener from the list of listeners.
 	 * 
-	 * @param listener
-	 *            the listener to be removed
+	 * @param listener the listener to be removed
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		propertyListeners.removePropertyChangeListener(listener);
@@ -128,11 +122,10 @@ public class DefaultRangeModel implements RangeModel {
 	}
 
 	/**
-	 * Sets this RangeModel's extent and fires a property change if the given
-	 * value is different from the current extent.
+	 * Sets this RangeModel's extent and fires a property change if the given value
+	 * is different from the current extent.
 	 * 
-	 * @param extent
-	 *            the new extent value
+	 * @param extent the new extent value
 	 */
 	public void setExtent(int extent) {
 		if (this.extent == extent)
@@ -144,11 +137,10 @@ public class DefaultRangeModel implements RangeModel {
 	}
 
 	/**
-	 * Sets this RangeModel's maximum value and fires a property change if the
-	 * given value is different from the current maximum value.
+	 * Sets this RangeModel's maximum value and fires a property change if the given
+	 * value is different from the current maximum value.
 	 * 
-	 * @param maximum
-	 *            the new maximum value
+	 * @param maximum the new maximum value
 	 */
 	public void setMaximum(int maximum) {
 		if (this.maximum == maximum)
@@ -160,11 +152,10 @@ public class DefaultRangeModel implements RangeModel {
 	}
 
 	/**
-	 * Sets this RangeModel's minimum value and fires a property change if the
-	 * given value is different from the current minimum value.
+	 * Sets this RangeModel's minimum value and fires a property change if the given
+	 * value is different from the current minimum value.
 	 * 
-	 * @param minimum
-	 *            the new minumum value
+	 * @param minimum the new minumum value
 	 */
 	public void setMinimum(int minimum) {
 		if (this.minimum == minimum)
@@ -176,17 +167,15 @@ public class DefaultRangeModel implements RangeModel {
 	}
 
 	/**
-	 * Sets this RangeModel's current value. If the given value is greater than
-	 * the maximum, the maximum value is used. If the given value is less than
-	 * the minimum, the minimum value is used. If the adjusted value is
-	 * different from the current value, a property change is fired.
+	 * Sets this RangeModel's current value. If the given value is greater than the
+	 * maximum, the maximum value is used. If the given value is less than the
+	 * minimum, the minimum value is used. If the adjusted value is different from
+	 * the current value, a property change is fired.
 	 * 
-	 * @param value
-	 *            the new value
+	 * @param value the new value
 	 */
 	public void setValue(int value) {
-		value = Math.max(getMinimum(),
-				Math.min(getMaximum() - getExtent(), value));
+		value = Math.max(getMinimum(), Math.min(getMaximum() - getExtent(), value));
 		if (this.value == value)
 			return;
 		int oldValue = this.value;

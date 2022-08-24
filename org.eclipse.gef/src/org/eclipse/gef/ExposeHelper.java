@@ -22,15 +22,14 @@ package org.eclipse.gef;
 public interface ExposeHelper {
 
 	/**
-	 * Exposes the specified descendant on the EditPart which returned this
-	 * helper. This is done by adjusting the EditPart's <i>visuals</i> such that
-	 * the descendants <i>visuals</i> are exposed. Expose is performed from the
-	 * bottom up, meaning that EditParts in the parent-chain between the
-	 * helper's EditPart and the <i>descendant</i> will already have had a
-	 * change to expose the descendant.
+	 * Exposes the specified descendant on the EditPart which returned this helper.
+	 * This is done by adjusting the EditPart's <i>visuals</i> such that the
+	 * descendants <i>visuals</i> are exposed. Expose is performed from the bottom
+	 * up, meaning that EditParts in the parent-chain between the helper's EditPart
+	 * and the <i>descendant</i> will already have had a change to expose the
+	 * descendant.
 	 * 
-	 * @param editpart
-	 *            the descendant to expose
+	 * @param editpart the descendant to expose
 	 */
 	void exposeDescendant(EditPart editpart);
 

@@ -32,8 +32,8 @@ public interface Handle {
 	DragTracker getDragTracker();
 
 	/**
-	 * Returns an optional accessibility Point. This returned point is in
-	 * absolute coordinates.
+	 * Returns an optional accessibility Point. This returned point is in absolute
+	 * coordinates.
 	 * 
 	 * @return <code>null</code> or the absolute location
 	 */

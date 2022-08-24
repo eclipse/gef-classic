@@ -30,8 +30,7 @@ public class LogicFlowContainerEditPart extends LogicContainerEditPart {
 		installEditPolicy(EditPolicy.NODE_ROLE, null);
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, null);
 		installEditPolicy(EditPolicy.LAYOUT_ROLE, new LogicFlowEditPolicy());
-		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,
-				new ContainerHighlightEditPolicy());
+		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ContainerHighlightEditPolicy());
 	}
 
 	public void activate() {
@@ -72,8 +71,7 @@ public class LogicFlowContainerEditPart extends LogicContainerEditPart {
 
 	protected IFigure createFigure() {
 		Figure figure = new Figure();
-		figure.setLayoutManager(createLayout(getLogicFlowContainer()
-				.getLayout()));
+		figure.setLayoutManager(createLayout(getLogicFlowContainer().getLayout()));
 		figure.setBorder(new LogicFlowBorder());
 		figure.setOpaque(true);
 		return figure;

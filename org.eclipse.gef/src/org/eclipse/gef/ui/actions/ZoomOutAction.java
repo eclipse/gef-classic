@@ -22,12 +22,10 @@ public class ZoomOutAction extends ZoomAction {
 	/**
 	 * Constructor for ZoomOutAction.
 	 * 
-	 * @param zoomManager
-	 *            the zoom manager
+	 * @param zoomManager the zoom manager
 	 */
 	public ZoomOutAction(ZoomManager zoomManager) {
-		super(GEFMessages.ZoomOut_Label, InternalImages.DESC_ZOOM_OUT,
-				zoomManager);
+		super(GEFMessages.ZoomOut_Label, InternalImages.DESC_ZOOM_OUT, zoomManager);
 		setId(GEFActionConstants.ZOOM_OUT);
 		setToolTipText(GEFMessages.ZoomOut_Tooltip);
 		setActionDefinitionId(GEFActionConstants.ZOOM_OUT);

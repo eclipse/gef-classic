@@ -30,8 +30,7 @@ public class TextUtilities {
 			end = end.getParent();
 		while (begin.getParent() != ancestor)
 			begin = begin.getParent();
-		return ancestor.getChildren().indexOf(end) > ancestor.getChildren()
-				.indexOf(begin);
+		return ancestor.getChildren().indexOf(end) > ancestor.getChildren().indexOf(begin);
 	}
 
 }

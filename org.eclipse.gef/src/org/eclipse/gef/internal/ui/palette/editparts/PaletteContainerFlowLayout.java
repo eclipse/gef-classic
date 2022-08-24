@@ -37,25 +37,22 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	 * Constructs a PaletteContainerFlowLayout whose orientation is given in the
 	 * input.
 	 * 
-	 * @param isHorizontal
-	 *            <code>true</code> if the layout should be horizontal
+	 * @param isHorizontal <code>true</code> if the layout should be horizontal
 	 */
 	public PaletteContainerFlowLayout(boolean isHorizontal) {
 		setHorizontal(isHorizontal);
 	}
 
 	/**
-	 * Overridden to include the size of the expanded pane of an expanded
-	 * pinnable palette stack.
+	 * Overridden to include the size of the expanded pane of an expanded pinnable
+	 * palette stack.
 	 * 
-	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(IFigure,
-	 *      int, int)
+	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(IFigure, int,
+	 *      int)
 	 */
-	protected Dimension calculatePreferredSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 
-		Dimension prefSize = super.calculatePreferredSize(container, wHint,
-				hHint);
+		Dimension prefSize = super.calculatePreferredSize(container, wHint, hHint);
 
 		List children = container.getChildren();
 		IFigure child;
@@ -65,16 +62,13 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 		for (int i = 0; i < children.size(); i++) {
 			child = (IFigure) children.get(i);
 
-			if (child instanceof PinnablePaletteStackFigure
-					&& ((PinnablePaletteStackFigure) child).isExpanded()) {
+			if (child instanceof PinnablePaletteStackFigure && ((PinnablePaletteStackFigure) child).isExpanded()) {
 
 				// Subtract out the insets from the hints
 				if (wHint > -1)
-					wHint = Math.max(0, wHint
-							- container.getInsets().getWidth());
+					wHint = Math.max(0, wHint - container.getInsets().getWidth());
 				if (hHint > -1)
-					hHint = Math.max(0, hHint
-							- container.getInsets().getHeight());
+					hHint = Math.max(0, hHint - container.getInsets().getHeight());
 
 				// Figure out the new hint that we are interested in based on
 				// the
@@ -89,8 +83,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 					wHint = -1;
 				}
 
-				expandedPaneSize = ((PinnablePaletteStackFigure) child)
-						.getExpandedContainerPreferredSize(wHint, hHint);
+				expandedPaneSize = ((PinnablePaletteStackFigure) child).getExpandedContainerPreferredSize(wHint, hHint);
 
 				break; // there can only be one expanded stack
 			}
@@ -112,16 +105,15 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	 */
 	protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
 		if (child instanceof PinnablePaletteStackFigure) {
-			return ((PinnablePaletteStackFigure) child).getHeaderPreferredSize(
-					wHint, hHint);
+			return ((PinnablePaletteStackFigure) child).getHeaderPreferredSize(wHint, hHint);
 		} else {
 			return child.getPreferredSize(wHint, hHint);
 		}
 	}
 
 	/**
-	 * Overridden to include the size of the expanded pane of an expanded
-	 * pinnable palette stack during the layout.
+	 * Overridden to include the size of the expanded pane of an expanded pinnable
+	 * palette stack during the layout.
 	 * 
 	 * @see FlowLayout#layoutRow(IFigure)
 	 */
@@ -167,8 +159,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 			IFigure child = data.row[j];
 			setBoundsOfChild(parent, data.row[j], transposer.t(data.bounds[j]));
 
-			if (child instanceof PinnablePaletteStackFigure
-					&& ((PinnablePaletteStackFigure) child).isExpanded()) {
+			if (child instanceof PinnablePaletteStackFigure && ((PinnablePaletteStackFigure) child).isExpanded()) {
 
 				int wHint = -1;
 				int hHint = -1;
@@ -177,11 +168,10 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 				else
 					hHint = parent.getClientArea().height;
 
-				expandedPaneHeight = ((PinnablePaletteStackFigure) child)
-						.getExpandedContainerPreferredSize(wHint, hHint).height;
-				child.setBounds(new Rectangle(data.area.x, data.area.y
-						+ data.rowY, data.area.width, data.rowHeight
-						+ expandedPaneHeight));
+				expandedPaneHeight = ((PinnablePaletteStackFigure) child).getExpandedContainerPreferredSize(wHint,
+						hHint).height;
+				child.setBounds(new Rectangle(data.area.x, data.area.y + data.rowY, data.area.width,
+						data.rowHeight + expandedPaneHeight));
 			}
 		}
 		data.rowY += getMajorSpacing() + data.rowHeight + expandedPaneHeight;
@@ -189,20 +179,16 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	}
 
 	/**
-	 * Overridden to set the bounds for <code>PinnablePaletteStackFigures</code>
-	 * .
+	 * Overridden to set the bounds for <code>PinnablePaletteStackFigures</code> .
 	 * 
 	 * @see FlowLayout#setBoundsOfChild(IFigure, IFigure, Rectangle)
 	 */
-	protected void setBoundsOfChild(IFigure parent, IFigure child,
-			Rectangle bounds) {
+	protected void setBoundsOfChild(IFigure parent, IFigure child, Rectangle bounds) {
 
-		if (child instanceof PinnablePaletteStackFigure
-				&& ((PinnablePaletteStackFigure) child).isExpanded()) {
+		if (child instanceof PinnablePaletteStackFigure && ((PinnablePaletteStackFigure) child).isExpanded()) {
 			parent.getClientArea(Rectangle.SINGLETON);
 			bounds.translate(Rectangle.SINGLETON.x, Rectangle.SINGLETON.y);
-			((PinnablePaletteStackFigure) child)
-					.setHeaderBoundsLayoutHint(bounds);
+			((PinnablePaletteStackFigure) child).setHeaderBoundsLayoutHint(bounds);
 		} else {
 			super.setBoundsOfChild(parent, child, bounds);
 		}

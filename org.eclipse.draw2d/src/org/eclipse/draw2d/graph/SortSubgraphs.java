@@ -79,7 +79,7 @@ class SortSubgraphs extends GraphVisitor {
 				// Display.getCurrent().beep();
 				cycleRoot.x = -1; // prevent x from ever reaching 0
 			} // else if (OGmembers.size() > 0)
-				//System.out.println("FAILED TO FIND CYCLE ROOT"); //$NON-NLS-1$
+				// System.out.println("FAILED TO FIND CYCLE ROOT"); //$NON-NLS-1$
 		} while (cycleRoot != null);
 	}
 
@@ -87,8 +87,7 @@ class SortSubgraphs extends GraphVisitor {
 		RankList ranks = g.ranks;
 		nestingTrees = new NestingTree[ranks.size()];
 		for (int r = 0; r < ranks.size(); r++) {
-			NestingTree entry = NestingTree.buildNestingTreeForRank(ranks
-					.getRank(r));
+			NestingTree entry = NestingTree.buildNestingTreeForRank(ranks.getRank(r));
 			nestingTrees[r] = entry;
 			entry.calculateSortValues();
 			entry.recursiveSort(false);
@@ -139,9 +138,8 @@ class SortSubgraphs extends GraphVisitor {
 		g.subgraphs.resetIndices();
 
 		/*
-		 * For subgraphs, the sum of all positions is kept, along with the
-		 * number of contributions, which is tracked in the subgraph's index
-		 * field.
+		 * For subgraphs, the sum of all positions is kept, along with the number of
+		 * contributions, which is tracked in the subgraph's index field.
 		 */
 		for (int r = 0; r < ranks.size(); r++) {
 			Rank rank = ranks.getRank(r);
@@ -185,8 +183,7 @@ class SortSubgraphs extends GraphVisitor {
 
 	void sortedInsert(List list, Node node) {
 		int insert = 0;
-		while (insert < list.size()
-				&& ((Node) list.get(insert)).sortValue > node.sortValue)
+		while (insert < list.size() && ((Node) list.get(insert)).sortValue > node.sortValue)
 			insert++;
 		list.add(insert, node);
 	}

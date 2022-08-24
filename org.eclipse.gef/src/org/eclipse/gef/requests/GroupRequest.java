@@ -25,8 +25,7 @@ public class GroupRequest extends org.eclipse.gef.Request {
 	/**
 	 * Creates a GroupRequest with the given type.
 	 * 
-	 * @param type
-	 *            The type of Request.
+	 * @param type The type of Request.
 	 */
 	public GroupRequest(Object type) {
 		setType(type);
@@ -50,8 +49,7 @@ public class GroupRequest extends org.eclipse.gef.Request {
 	/**
 	 * Sets the EditParts making this Request to the given List.
 	 * 
-	 * @param list
-	 *            The List of EditParts.
+	 * @param list The List of EditParts.
 	 */
 	public void setEditParts(List list) {
 		parts = list;
@@ -60,8 +58,7 @@ public class GroupRequest extends org.eclipse.gef.Request {
 	/**
 	 * A helper method to set the given EditPart as the requester.
 	 * 
-	 * @param part
-	 *            The EditPart making the request.
+	 * @param part The EditPart making the request.
 	 */
 	public void setEditParts(EditPart part) {
 		parts = new ArrayList(1);

@@ -31,8 +31,7 @@ public class PaletteRoot extends PaletteContainer {
 	 * @see org.eclipse.gef.palette.PaletteContainer#acceptsType(java.lang.Object)
 	 */
 	public boolean acceptsType(Object type) {
-		if (type.equals(ToolEntry.PALETTE_TYPE_TOOL)
-				|| type.equals(PaletteStack.PALETTE_TYPE_STACK))
+		if (type.equals(ToolEntry.PALETTE_TYPE_TOOL) || type.equals(PaletteStack.PALETTE_TYPE_STACK))
 			return false;
 		return super.acceptsType(type);
 	}
@@ -48,8 +47,7 @@ public class PaletteRoot extends PaletteContainer {
 	 * Sets the default entry to the passed value. This ToolEntry represents the
 	 * tool that will be loaded by default.
 	 * 
-	 * @param entry
-	 *            the default entry
+	 * @param entry the default entry
 	 */
 	public void setDefaultEntry(ToolEntry entry) {
 		this.defaultEntry = entry;

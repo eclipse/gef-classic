@@ -25,104 +25,104 @@ import org.eclipse.draw2d.text.TextFlow;
 
 public class BidiBlockExample extends AbstractExample {
 
-public static void main(String[] args) {
-	new BidiBlockExample().run();
-}
+	public static void main(String[] args) {
+		new BidiBlockExample().run();
+	}
 
 // The backwards figure canvas for bidi
-protected FigureCanvas cf;
-protected String s = "\u0634\u0635\u062c\u062d \u0630\u0628\u063a and some english text.";
+	protected FigureCanvas cf;
+	protected String s = "\u0634\u0635\u062c\u062d \u0630\u0628\u063a and some english text.";
 
-protected IFigure getContents() {
-	FlowPage page = new FlowPage();
+	protected IFigure getContents() {
+		FlowPage page = new FlowPage();
 
-	BlockFlow para = new BlockFlow();
-	page.add(para);
-	para.setOrientation(SWT.LEFT_TO_RIGHT);
-	para.setHorizontalAligment(PositionConstants.LEFT);
-	para.add(new TextFlow(s));
-	
-	para = new BlockFlow();
-	page.add(para);
-	para.setOrientation(SWT.LEFT_TO_RIGHT);
-	para.setHorizontalAligment(PositionConstants.RIGHT);
-	para.add(new TextFlow(s));
-	
-	para = new BlockFlow();
-	page.add(para);
-	para.setOrientation(SWT.LEFT_TO_RIGHT);
-	para.setHorizontalAligment(PositionConstants.ALWAYS_LEFT);
-	para.add(new TextFlow(s));
+		BlockFlow para = new BlockFlow();
+		page.add(para);
+		para.setOrientation(SWT.LEFT_TO_RIGHT);
+		para.setHorizontalAligment(PositionConstants.LEFT);
+		para.add(new TextFlow(s));
 
-	para = new BlockFlow();
-	page.add(para);
-	para.setOrientation(SWT.LEFT_TO_RIGHT);
-	para.setHorizontalAligment(PositionConstants.ALWAYS_RIGHT);
-	para.add(new TextFlow(s));
+		para = new BlockFlow();
+		page.add(para);
+		para.setOrientation(SWT.LEFT_TO_RIGHT);
+		para.setHorizontalAligment(PositionConstants.RIGHT);
+		para.add(new TextFlow(s));
 
-	para = new BlockFlow();
-	page.add(para);
-	para.setOrientation(SWT.LEFT_TO_RIGHT);
-	para.add(new TextFlow(s));
+		para = new BlockFlow();
+		page.add(para);
+		para.setOrientation(SWT.LEFT_TO_RIGHT);
+		para.setHorizontalAligment(PositionConstants.ALWAYS_LEFT);
+		para.add(new TextFlow(s));
 
-	para = new BlockFlow();
-	page.add(para);
-	para.setOrientation(SWT.RIGHT_TO_LEFT);
-	para.setHorizontalAligment(PositionConstants.LEFT);
-	para.add(new TextFlow(s));
+		para = new BlockFlow();
+		page.add(para);
+		para.setOrientation(SWT.LEFT_TO_RIGHT);
+		para.setHorizontalAligment(PositionConstants.ALWAYS_RIGHT);
+		para.add(new TextFlow(s));
 
-	para = new BlockFlow();
-	page.add(para);
-	para.setOrientation(SWT.RIGHT_TO_LEFT);
-	para.setHorizontalAligment(PositionConstants.RIGHT);
-	para.add(new TextFlow(s));
+		para = new BlockFlow();
+		page.add(para);
+		para.setOrientation(SWT.LEFT_TO_RIGHT);
+		para.add(new TextFlow(s));
 
-	para = new BlockFlow();
-	page.add(para);
-	para.setOrientation(SWT.RIGHT_TO_LEFT);
-	para.setHorizontalAligment(PositionConstants.ALWAYS_LEFT);
-	para.add(new TextFlow(s));
+		para = new BlockFlow();
+		page.add(para);
+		para.setOrientation(SWT.RIGHT_TO_LEFT);
+		para.setHorizontalAligment(PositionConstants.LEFT);
+		para.add(new TextFlow(s));
 
-	para = new BlockFlow();
-	page.add(para);
-	para.setOrientation(SWT.RIGHT_TO_LEFT);
-	para.setHorizontalAligment(PositionConstants.ALWAYS_RIGHT);
-	para.add(new TextFlow(s));
+		para = new BlockFlow();
+		page.add(para);
+		para.setOrientation(SWT.RIGHT_TO_LEFT);
+		para.setHorizontalAligment(PositionConstants.RIGHT);
+		para.add(new TextFlow(s));
 
-	para = new BlockFlow();
-	page.add(para);
-	para.setOrientation(SWT.RIGHT_TO_LEFT);
-	para.add(new TextFlow(s));
+		para = new BlockFlow();
+		page.add(para);
+		para.setOrientation(SWT.RIGHT_TO_LEFT);
+		para.setHorizontalAligment(PositionConstants.ALWAYS_LEFT);
+		para.add(new TextFlow(s));
 
-	return page;
-}
+		para = new BlockFlow();
+		page.add(para);
+		para.setOrientation(SWT.RIGHT_TO_LEFT);
+		para.setHorizontalAligment(PositionConstants.ALWAYS_RIGHT);
+		para.add(new TextFlow(s));
 
-protected void run() {
-	Display d = Display.getDefault();
-	shell = new Shell(d);
-	String appName = getClass().getName();
-	appName = appName.substring(appName.lastIndexOf('.') + 1);
-	shell.setText(appName);
-	shell.setLayout(new GridLayout(2, true));
+		para = new BlockFlow();
+		page.add(para);
+		para.setOrientation(SWT.RIGHT_TO_LEFT);
+		para.add(new TextFlow(s));
 
-	fc = new FigureCanvas(shell);
-	fc.setContents(getContents());
-	cf = new FigureCanvas(shell, SWT.RIGHT_TO_LEFT);
-	cf.setContents(getContents());
-	
-	fc.getViewport().setContentsTracksWidth(true);
-	cf.getViewport().setContentsTracksWidth(true);
+		return page;
+	}
 
-	fc.setLayoutData(new GridData(GridData.FILL_BOTH));
-	cf.setLayoutData(new GridData(GridData.FILL_BOTH));
-	
-	cf.getViewport().setVerticalRangeModel(fc.getViewport().getVerticalRangeModel());
+	protected void run() {
+		Display d = Display.getDefault();
+		shell = new Shell(d);
+		String appName = getClass().getName();
+		appName = appName.substring(appName.lastIndexOf('.') + 1);
+		shell.setText(appName);
+		shell.setLayout(new GridLayout(2, true));
 
-	shell.pack();
-	shell.open();
-	while (!shell.isDisposed())
-		while (!d.readAndDispatch())
-			d.sleep();
-}
+		fc = new FigureCanvas(shell);
+		fc.setContents(getContents());
+		cf = new FigureCanvas(shell, SWT.RIGHT_TO_LEFT);
+		cf.setContents(getContents());
+
+		fc.getViewport().setContentsTracksWidth(true);
+		cf.getViewport().setContentsTracksWidth(true);
+
+		fc.setLayoutData(new GridData(GridData.FILL_BOTH));
+		cf.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+		cf.getViewport().setVerticalRangeModel(fc.getViewport().getVerticalRangeModel());
+
+		shell.pack();
+		shell.open();
+		while (!shell.isDisposed())
+			while (!d.readAndDispatch())
+				d.sleep();
+	}
 
 }

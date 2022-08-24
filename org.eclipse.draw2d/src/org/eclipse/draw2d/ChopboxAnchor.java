@@ -30,8 +30,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	/**
 	 * Constructs a ChopboxAnchor with the given <i>owner</i> figure.
 	 * 
-	 * @param owner
-	 *            The owner figure
+	 * @param owner The owner figure
 	 * @since 2.0
 	 */
 	public ChopboxAnchor(IFigure owner) {
@@ -39,12 +38,11 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	}
 
 	/**
-	 * Gets a Rectangle from {@link #getBox()} and returns the Point where a
-	 * line from the center of the Rectangle to the Point <i>reference</i>
-	 * intersects the Rectangle.
+	 * Gets a Rectangle from {@link #getBox()} and returns the Point where a line
+	 * from the center of the Rectangle to the Point <i>reference</i> intersects the
+	 * Rectangle.
 	 * 
-	 * @param reference
-	 *            The reference point
+	 * @param reference The reference point
 	 * @return The anchor location
 	 */
 	public Point getLocation(Point reference) {
@@ -57,8 +55,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 		float centerX = r.x + 0.5f * r.width;
 		float centerY = r.y + 0.5f * r.height;
 
-		if (r.isEmpty()
-				|| (reference.x == (int) centerX && reference.y == (int) centerY))
+		if (r.isEmpty() || (reference.x == (int) centerX && reference.y == (int) centerY))
 			return new Point((int) centerX, (int) centerY); // This avoids
 															// divide-by-zero
 
@@ -66,8 +63,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 		float dy = reference.y - centerY;
 
 		// r.width, r.height, dx, and dy are guaranteed to be non-zero.
-		float scale = 0.5f / Math.max(Math.abs(dx) / r.width, Math.abs(dy)
-				/ r.height);
+		float scale = 0.5f / Math.max(Math.abs(dx) / r.width, Math.abs(dy) / r.height);
 
 		dx *= scale;
 		dy *= scale;
@@ -79,9 +75,8 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 
 	/**
 	 * Returns the bounds of this ChopboxAnchor's owner. Subclasses can override
-	 * this method to adjust the box the anchor can be placed on. For instance,
-	 * the owner figure may have a drop shadow that should not be included in
-	 * the box.
+	 * this method to adjust the box the anchor can be placed on. For instance, the
+	 * owner figure may have a drop shadow that should not be included in the box.
 	 * 
 	 * @return The bounds of this ChopboxAnchor's owner
 	 * @since 2.0
@@ -91,8 +86,8 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	}
 
 	/**
-	 * Returns the anchor's reference point. In the case of the ChopboxAnchor,
-	 * this is the center of the anchor's owner.
+	 * Returns the anchor's reference point. In the case of the ChopboxAnchor, this
+	 * is the center of the anchor's owner.
 	 * 
 	 * @return The reference point
 	 */
@@ -105,22 +100,20 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	/**
 	 * Returns <code>true</code> if the other anchor has the same owner and box.
 	 * 
-	 * @param obj
-	 *            the other anchor
+	 * @param obj the other anchor
 	 * @return <code>true</code> if equal
 	 */
 	public boolean equals(Object obj) {
 		if (obj instanceof ChopboxAnchor) {
 			ChopboxAnchor other = (ChopboxAnchor) obj;
-			return other.getOwner() == getOwner()
-					&& other.getBox().equals(getBox());
+			return other.getOwner() == getOwner() && other.getBox().equals(getBox());
 		}
 		return false;
 	}
 
 	/**
-	 * The owning figure's hashcode is used since equality is approximately
-	 * based on the owner.
+	 * The owning figure's hashcode is used since equality is approximately based on
+	 * the owner.
 	 * 
 	 * @return the hash code.
 	 */

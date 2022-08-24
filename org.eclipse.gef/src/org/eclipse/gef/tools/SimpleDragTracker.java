@@ -25,14 +25,13 @@ import org.eclipse.gef.commands.UnexecutableCommand;
  * A simple drag tracker implementation that does not perform targeting. For
  * example, resizing a shape or bendpoint does not involve any target editpart.
  */
-public abstract class SimpleDragTracker extends AbstractTool implements
-		DragTracker {
+public abstract class SimpleDragTracker extends AbstractTool implements DragTracker {
 
 	private static final int FLAG_SOURCE_FEEDBACK = AbstractTool.MAX_FLAG << 1;
 
 	/**
-	 * The maximum bit-mask used as a flag constant. Subclasses should start
-	 * using the next highest bitmask.
+	 * The maximum bit-mask used as a flag constant. Subclasses should start using
+	 * the next highest bitmask.
 	 */
 	protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
 	private Request sourceRequest;
@@ -105,8 +104,8 @@ public abstract class SimpleDragTracker extends AbstractTool implements
 	}
 
 	/**
-	 * Looks for button 1, and goes into the drag state. Any other button is
-	 * invalid input.
+	 * Looks for button 1, and goes into the drag state. Any other button is invalid
+	 * input.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
@@ -172,16 +171,14 @@ public abstract class SimpleDragTracker extends AbstractTool implements
 	protected boolean handleKeyDown(KeyEvent e) {
 		if (acceptArrowKey(e)) {
 			accStepIncrement();
-			if (stateTransition(STATE_INITIAL,
-					STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+			if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 				setStartLocation(getLocation());
 			switch (e.keyCode) {
 			case SWT.ARROW_DOWN:
 				placeMouseInViewer(getLocation().getTranslated(0, accGetStep()));
 				break;
 			case SWT.ARROW_UP:
-				placeMouseInViewer(getLocation()
-						.getTranslated(0, -accGetStep()));
+				placeMouseInViewer(getLocation().getTranslated(0, -accGetStep()));
 				break;
 			case SWT.ARROW_RIGHT:
 				int stepping = accGetStep();
@@ -222,8 +219,8 @@ public abstract class SimpleDragTracker extends AbstractTool implements
 	}
 
 	/**
-	 * Called once the drag has been interpreted. This is where the real work of
-	 * the drag is carried out. By default, the current command is executed.
+	 * Called once the drag has been interpreted. This is where the real work of the
+	 * drag is carried out. By default, the current command is executed.
 	 */
 	protected void performDrag() {
 		executeCurrentCommand();

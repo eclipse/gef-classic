@@ -24,37 +24,34 @@ import org.eclipse.gef.palette.PaletteEntry;
 public interface EntryPage {
 
 	/**
-	 * Sets the page container for this page. This page will report its errors
-	 * to the given page container.
+	 * Sets the page container for this page. This page will report its errors to
+	 * the given page container.
 	 * 
-	 * @param pageContainer
-	 *            The <code>EntryPageContainer</code> to which this page can
-	 *            report errors
+	 * @param pageContainer The <code>EntryPageContainer</code> to which this page
+	 *                      can report errors
 	 */
 	void setPageContainer(EntryPageContainer pageContainer);
 
 	/**
-	 * This method is called when changes made to properties need to be
-	 * reflected in the model.
+	 * This method is called when changes made to properties need to be reflected in
+	 * the model.
 	 */
 	void apply();
 
 	/**
 	 * Creates the Control that displays the properties of the given entry. This
-	 * method will only be called once. The parent Composite's Font is set to
-	 * the Workbench Dialog Font. The page's Controls should use the Workbench
-	 * Dialog Font where appropriate.
+	 * method will only be called once. The parent Composite's Font is set to the
+	 * Workbench Dialog Font. The page's Controls should use the Workbench Dialog
+	 * Font where appropriate.
 	 * 
-	 * @param parent
-	 *            The Composite in which the Control has to be created
-	 * @param entry
-	 *            The entry whose properties have to be displayed
+	 * @param parent The Composite in which the Control has to be created
+	 * @param entry  The entry whose properties have to be displayed
 	 */
 	void createControl(Composite parent, PaletteEntry entry);
 
 	/**
-	 * Returns the Panel (Control) that displays the properties of the entry.
-	 * This is the same Control that was created in
+	 * Returns the Panel (Control) that displays the properties of the entry. This
+	 * is the same Control that was created in
 	 * {@link #createControl(Composite,PaletteEntry)}.
 	 * 
 	 * @return the Control that displays the properties of the entry

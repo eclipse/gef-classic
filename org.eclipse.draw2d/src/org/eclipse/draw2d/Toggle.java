@@ -32,10 +32,8 @@ public class Toggle extends Clickable {
 	/**
 	 * Constructs a Toggle with passed text and icon
 	 * 
-	 * @param text
-	 *            the text
-	 * @param icon
-	 *            the icon
+	 * @param text the text
+	 * @param icon the icon
 	 * @since 2.0
 	 */
 	public Toggle(String text, Image icon) {
@@ -45,8 +43,7 @@ public class Toggle extends Clickable {
 	/**
 	 * Constructs a Toggle with passed IFigure as its contents.
 	 * 
-	 * @param contents
-	 *            the contents
+	 * @param contents the contents
 	 * @since 2.0
 	 */
 	public Toggle(IFigure contents) {
@@ -57,10 +54,8 @@ public class Toggle extends Clickable {
 	 * Constructs a Toggle with the passed figure as its contents and the given
 	 * style.
 	 * 
-	 * @param contents
-	 *            the contents
-	 * @param style
-	 *            the style
+	 * @param contents the contents
+	 * @param style    the style
 	 */
 	public Toggle(IFigure contents, int style) {
 		super(contents, style);

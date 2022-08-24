@@ -35,8 +35,7 @@ public class DeleteAction extends SelectionAction {
 
 	/**
 	 * @deprecated use DeleteAction(IWorkbenchPart part)
-	 * @param editor
-	 *            The editor this action will be associated with.
+	 * @param editor The editor this action will be associated with.
 	 */
 	public DeleteAction(IEditorPart editor) {
 		this((IWorkbenchPart) editor);
@@ -46,10 +45,8 @@ public class DeleteAction extends SelectionAction {
 	 * Creates a <code>DeleteAction</code> with the given label.
 	 * 
 	 * @deprecated use DeleteAction(IWorkbenchPart)
-	 * @param editor
-	 *            The editor this action will be associated with.
-	 * @param label
-	 *            The label to be displayed for this action.
+	 * @param editor The editor this action will be associated with.
+	 * @param label  The label to be displayed for this action.
 	 */
 	public DeleteAction(IEditorPart editor, String label) {
 		this((IWorkbenchPart) editor);
@@ -59,8 +56,7 @@ public class DeleteAction extends SelectionAction {
 	/**
 	 * Constructs a <code>DeleteAction</code> using the specified part.
 	 * 
-	 * @param part
-	 *            The part for this action
+	 * @param part The part for this action
 	 */
 	public DeleteAction(IWorkbenchPart part) {
 		super(part);
@@ -69,8 +65,8 @@ public class DeleteAction extends SelectionAction {
 
 	/**
 	 * Returns <code>true</code> if the selected objects can be deleted. Returns
-	 * <code>false</code> if there are no objects selected or the selected
-	 * objects are not {@link EditPart}s.
+	 * <code>false</code> if there are no objects selected or the selected objects
+	 * are not {@link EditPart}s.
 	 * 
 	 * @return <code>true</code> if the command should be enabled
 	 */
@@ -84,8 +80,7 @@ public class DeleteAction extends SelectionAction {
 	/**
 	 * Create a command to remove the selected objects.
 	 * 
-	 * @param objects
-	 *            The objects to be deleted.
+	 * @param objects The objects to be deleted.
 	 * @return The command to remove the selected objects.
 	 */
 	public Command createDeleteCommand(List objects) {
@@ -97,8 +92,7 @@ public class DeleteAction extends SelectionAction {
 		GroupRequest deleteReq = new GroupRequest(RequestConstants.REQ_DELETE);
 		deleteReq.setEditParts(objects);
 
-		CompoundCommand compoundCmd = new CompoundCommand(
-				GEFMessages.DeleteAction_ActionDeleteCommandName);
+		CompoundCommand compoundCmd = new CompoundCommand(GEFMessages.DeleteAction_ActionDeleteCommandName);
 		for (int i = 0; i < objects.size(); i++) {
 			EditPart object = (EditPart) objects.get(i);
 			Command cmd = object.getCommand(deleteReq);
@@ -117,12 +111,9 @@ public class DeleteAction extends SelectionAction {
 		setText(GEFMessages.DeleteAction_Label);
 		setToolTipText(GEFMessages.DeleteAction_Tooltip);
 		setId(ActionFactory.DELETE.getId());
-		ISharedImages sharedImages = PlatformUI.getWorkbench()
-				.getSharedImages();
-		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-		setDisabledImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
+		setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 		setEnabled(false);
 	}
 

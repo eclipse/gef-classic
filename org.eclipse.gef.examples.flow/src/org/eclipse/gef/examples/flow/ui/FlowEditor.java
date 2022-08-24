@@ -92,11 +92,10 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	}
 
 	/**
-	 * Creates an appropriate output stream and writes the activity diagram out
-	 * to this stream.
+	 * Creates an appropriate output stream and writes the activity diagram out to
+	 * this stream.
 	 * 
-	 * @param os
-	 *            the base output stream
+	 * @param os the base output stream
 	 * @throws IOException
 	 */
 	protected void createOutputStream(OutputStream os) throws IOException {
@@ -112,15 +111,12 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 		super.configureGraphicalViewer();
 		getGraphicalViewer().setRootEditPart(new ScalableRootEditPart());
 		getGraphicalViewer().setEditPartFactory(new ActivityPartFactory());
-		getGraphicalViewer().setKeyHandler(
-				new GraphicalViewerKeyHandler(getGraphicalViewer())
-						.setParent(getCommonKeyHandler()));
+		getGraphicalViewer()
+				.setKeyHandler(new GraphicalViewerKeyHandler(getGraphicalViewer()).setParent(getCommonKeyHandler()));
 
-		ContextMenuProvider provider = new FlowContextMenuProvider(
-				getGraphicalViewer(), getActionRegistry());
+		ContextMenuProvider provider = new FlowContextMenuProvider(getGraphicalViewer(), getActionRegistry());
 		getGraphicalViewer().setContextMenu(provider);
-		getSite().registerContextMenu(
-				"org.eclipse.gef.examples.flow.editor.contextmenu", //$NON-NLS-1$
+		getSite().registerContextMenu("org.eclipse.gef.examples.flow.editor.contextmenu", //$NON-NLS-1$
 				provider, getGraphicalViewer());
 
 	}
@@ -130,8 +126,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	 */
 	protected void initializeGraphicalViewer() {
 		getGraphicalViewer().setContents(diagram);
-		getGraphicalViewer().addDropTargetListener(
-				new TemplateTransferDropTargetListener(getGraphicalViewer()));
+		getGraphicalViewer().addDropTargetListener(new TemplateTransferDropTargetListener(getGraphicalViewer()));
 
 	}
 
@@ -140,8 +135,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	 */
 	protected void initializePaletteViewer() {
 		super.initializePaletteViewer();
-		getPaletteViewer().addDragSourceListener(
-				new TemplateTransferDragSourceListener(getPaletteViewer()));
+		getPaletteViewer().addDragSourceListener(new TemplateTransferDragSourceListener(getPaletteViewer()));
 	}
 
 	/**
@@ -152,8 +146,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			createOutputStream(out);
 			IFile file = ((IFileEditorInput) getEditorInput()).getFile();
-			file.setContents(new ByteArrayInputStream(out.toByteArray()), true,
-					false, monitor);
+			file.setContents(new ByteArrayInputStream(out.toByteArray()), true, false, monitor);
 			out.close();
 			getCommandStack().markSaveLocation();
 		} catch (Exception e) {
@@ -165,8 +158,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	 * @see org.eclipse.ui.ISaveablePart#doSaveAs()
 	 */
 	public void doSaveAs() {
-		SaveAsDialog dialog = new SaveAsDialog(getSite().getWorkbenchWindow()
-				.getShell());
+		SaveAsDialog dialog = new SaveAsDialog(getSite().getWorkbenchWindow().getShell());
 		dialog.setOriginalFile(((IFileEditorInput) getEditorInput()).getFile());
 		dialog.open();
 		IPath path = dialog.getResult();
@@ -178,13 +170,11 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 		final IFile file = workspace.getRoot().getFile(path);
 
 		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
-			public void execute(final IProgressMonitor monitor)
-					throws CoreException {
+			public void execute(final IProgressMonitor monitor) throws CoreException {
 				try {
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					createOutputStream(out);
-					file.create(new ByteArrayInputStream(out.toByteArray()),
-							true, monitor);
+					file.create(new ByteArrayInputStream(out.toByteArray()), true, monitor);
 					out.close();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -193,8 +183,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 		};
 
 		try {
-			new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell())
-					.run(false, true, op);
+			new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell()).run(false, true, op);
 			setInput(new FileEditorInput((IFile) file));
 			getCommandStack().markSaveLocation();
 		} catch (Exception e) {
@@ -205,14 +194,10 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	protected KeyHandler getCommonKeyHandler() {
 		if (sharedKeyHandler == null) {
 			sharedKeyHandler = new KeyHandler();
-			sharedKeyHandler
-					.put(KeyStroke.getPressed(SWT.DEL, 127, 0),
-							getActionRegistry().getAction(
-									ActionFactory.DELETE.getId()));
-			sharedKeyHandler.put(
-					KeyStroke.getPressed(SWT.F2, 0),
-					getActionRegistry().getAction(
-							GEFActionConstants.DIRECT_EDIT));
+			sharedKeyHandler.put(KeyStroke.getPressed(SWT.DEL, 127, 0),
+					getActionRegistry().getAction(ActionFactory.DELETE.getId()));
+			sharedKeyHandler.put(KeyStroke.getPressed(SWT.F2, 0),
+					getActionRegistry().getAction(GEFActionConstants.DIRECT_EDIT));
 		}
 		return sharedKeyHandler;
 	}

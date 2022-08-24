@@ -146,10 +146,8 @@ public class Animation {
 	/**
 	 * Returns the final animation state for the given figure.
 	 * 
-	 * @param animator
-	 *            the animator for the figure
-	 * @param figure
-	 *            the figure being animated
+	 * @param animator the animator for the figure
+	 * @param figure   the figure being animated
 	 * @return the final state
 	 * @since 3.2
 	 */
@@ -158,13 +156,11 @@ public class Animation {
 	}
 
 	/**
-	 * Returns the initial animation state for the given animator and figure. If
-	 * no state was recorded, <code>null</code> is returned.
+	 * Returns the initial animation state for the given animator and figure. If no
+	 * state was recorded, <code>null</code> is returned.
 	 * 
-	 * @param animator
-	 *            the animator for the figure
-	 * @param figure
-	 *            the figure being animated
+	 * @param animator the animator for the figure
+	 * @param figure   the figure being animated
 	 * @return the initial state
 	 * @since 3.2
 	 */
@@ -219,8 +215,8 @@ public class Animation {
 	}
 
 	/**
-	 * Marks the beginning of the animation process. If the beginning has
-	 * already been marked, this has no effect.
+	 * Marks the beginning of the animation process. If the beginning has already
+	 * been marked, this has no effect.
 	 * 
 	 * @return returns <code>true</code> if beginning was not previously marked
 	 * @since 3.2
@@ -266,8 +262,7 @@ public class Animation {
 	/**
 	 * Captures the final states for the animation and then plays the animation.
 	 * 
-	 * @param duration
-	 *            the length of animation in milliseconds
+	 * @param duration the length of animation in milliseconds
 	 * @since 3.2
 	 */
 	public static void run(int duration) {

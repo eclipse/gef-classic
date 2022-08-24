@@ -12,10 +12,10 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 /**
- * Provides a mechanism to style nodes and edges when they are created. 
+ * Provides a mechanism to style nodes and edges when they are created.
  * 
- * After each node or edge is created, the self styling method will be called with both 
- * the element and the widget. 
+ * After each node or edge is created, the self styling method will be called
+ * with both the element and the widget.
  */
 public interface ISelfStyleProvider {
 

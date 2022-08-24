@@ -31,12 +31,9 @@ public class ConnectionLayer extends FreeformLayer {
 	 * Adds the given figure with the given contraint at the given index. If the
 	 * figure is a {@link Connection}, its {@link ConnectionRouter} is set.
 	 * 
-	 * @param figure
-	 *            Figure being added
-	 * @param constraint
-	 *            Constraint of the figure being added
-	 * @param index
-	 *            Index where the figure is to be added
+	 * @param figure     Figure being added
+	 * @param constraint Constraint of the figure being added
+	 * @param index      Index where the figure is to be added
 	 * @since 2.0
 	 */
 	public void add(IFigure figure, Object constraint, int index) {
@@ -68,11 +65,10 @@ public class ConnectionLayer extends FreeformLayer {
 	}
 
 	/**
-	 * Removes the figure from this Layer. If the figure is a {@link Connection}
-	 * , that Connection's {@link ConnectionRouter} is set to <code>null</code>.
+	 * Removes the figure from this Layer. If the figure is a {@link Connection} ,
+	 * that Connection's {@link ConnectionRouter} is set to <code>null</code>.
 	 * 
-	 * @param figure
-	 *            The figure to remove
+	 * @param figure The figure to remove
 	 */
 	public void remove(IFigure figure) {
 		if (figure instanceof Connection)
@@ -84,8 +80,7 @@ public class ConnectionLayer extends FreeformLayer {
 	 * Sets the ConnectionRouter for this layer. This router is set as the
 	 * ConnectionRouter for all the child connections of this Layer.
 	 * 
-	 * @param router
-	 *            The ConnectionRouter to set for this Layer
+	 * @param router The ConnectionRouter to set for this Layer
 	 * @since 2.0
 	 */
 	public void setConnectionRouter(ConnectionRouter router) {
@@ -100,13 +95,12 @@ public class ConnectionLayer extends FreeformLayer {
 	}
 
 	/**
-	 * Sets whether antialiasing should be enabled for the connection layer. If
-	 * this value is set to something other than {@link SWT#DEFAULT},
-	 * {@link Graphics#setAntialias(int)} will be called with the given value
-	 * when painting this layer.
+	 * Sets whether antialiasing should be enabled for the connection layer. If this
+	 * value is set to something other than {@link SWT#DEFAULT},
+	 * {@link Graphics#setAntialias(int)} will be called with the given value when
+	 * painting this layer.
 	 * 
-	 * @param antialias
-	 *            the antialias setting
+	 * @param antialias the antialias setting
 	 * @since 3.1
 	 */
 	public void setAntialias(int antialias) {

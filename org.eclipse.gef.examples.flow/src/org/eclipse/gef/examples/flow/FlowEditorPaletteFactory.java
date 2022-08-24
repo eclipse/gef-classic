@@ -50,30 +50,22 @@ public class FlowEditorPaletteFactory {
 
 		List entries = new ArrayList();
 
-		CombinedTemplateCreationEntry combined = new CombinedTemplateCreationEntry(
-				"Activity", "Create a new Activity Node", Activity.class,
-				new SimpleFactory(Activity.class),
-				ImageDescriptor.createFromFile(FlowPlugin.class,
-						"images/gear16.gif"), ImageDescriptor.createFromFile(
-						Activity.class, "images/gear16.gif"));
+		CombinedTemplateCreationEntry combined = new CombinedTemplateCreationEntry("Activity",
+				"Create a new Activity Node", Activity.class, new SimpleFactory(Activity.class),
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/gear16.gif"),
+				ImageDescriptor.createFromFile(Activity.class, "images/gear16.gif"));
 		entries.add(combined);
 
-		combined = new CombinedTemplateCreationEntry("Sequential Activity",
-				"Create a Sequential Activity", SequentialActivity.class,
-				new SimpleFactory(SequentialActivity.class),
-				ImageDescriptor.createFromFile(FlowPlugin.class,
-						"images/sequence16.gif"),
-				ImageDescriptor.createFromFile(FlowPlugin.class,
-						"images/sequence16.gif"));
+		combined = new CombinedTemplateCreationEntry("Sequential Activity", "Create a Sequential Activity",
+				SequentialActivity.class, new SimpleFactory(SequentialActivity.class),
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/sequence16.gif"),
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/sequence16.gif"));
 		entries.add(combined);
 
-		combined = new CombinedTemplateCreationEntry("Parallel Activity",
-				"Create a  Parallel Activity", ParallelActivity.class,
-				new SimpleFactory(ParallelActivity.class),
-				ImageDescriptor.createFromFile(FlowPlugin.class,
-						"images/parallel16.gif"),
-				ImageDescriptor.createFromFile(FlowPlugin.class,
-						"images/parallel16.gif"));
+		combined = new CombinedTemplateCreationEntry("Parallel Activity", "Create a  Parallel Activity",
+				ParallelActivity.class, new SimpleFactory(ParallelActivity.class),
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/parallel16.gif"),
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/parallel16.gif"));
 		entries.add(combined);
 
 		drawer.addAll(entries);
@@ -92,16 +84,13 @@ public class FlowEditorPaletteFactory {
 		tool = new MarqueeToolEntry();
 		entries.add(tool);
 
-		PaletteSeparator sep = new PaletteSeparator(
-				"org.eclipse.gef.examples.flow.flowplugin.sep2");
+		PaletteSeparator sep = new PaletteSeparator("org.eclipse.gef.examples.flow.flowplugin.sep2");
 		sep.setUserModificationPermission(PaletteEntry.PERMISSION_NO_MODIFICATION);
 		entries.add(sep);
 
-		tool = new ConnectionCreationToolEntry("Connection Creation",
-				"Creating connections", null, ImageDescriptor.createFromFile(
-						FlowPlugin.class, "images/connection16.gif"),
-				ImageDescriptor.createFromFile(Activity.class,
-						"images/connection16.gif"));
+		tool = new ConnectionCreationToolEntry("Connection Creation", "Creating connections", null,
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/connection16.gif"),
+				ImageDescriptor.createFromFile(Activity.class, "images/connection16.gif"));
 		entries.add(tool);
 		controlGroup.addAll(entries);
 		return controlGroup;

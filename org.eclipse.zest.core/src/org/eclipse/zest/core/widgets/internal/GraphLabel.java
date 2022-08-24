@@ -40,9 +40,8 @@ public class GraphLabel extends CachedLabel {
 	/**
 	 * Creates a GraphLabel
 	 * 
-	 * @param cacheLabel
-	 *            Determine if the text should be cached. This will make it
-	 *            faster, but the text is not as clear
+	 * @param cacheLabel Determine if the text should be cached. This will make it
+	 *                   faster, but the text is not as clear
 	 */
 	public GraphLabel(boolean cacheLabel) {
 		this("", cacheLabel);
@@ -51,11 +50,9 @@ public class GraphLabel extends CachedLabel {
 	/**
 	 * Creates a graph label with text
 	 * 
-	 * @param text
-	 *            The text
-	 * @param cacheLabel
-	 *            Determine if the text should be cached. This will make it
-	 *            faster, but the
+	 * @param text       The text
+	 * @param cacheLabel Determine if the text should be cached. This will make it
+	 *                   faster, but the
 	 */
 	public GraphLabel(String text, boolean cacheLabel) {
 		this("", null, cacheLabel);
@@ -64,11 +61,9 @@ public class GraphLabel extends CachedLabel {
 	/**
 	 * Creates the graph label with an image
 	 * 
-	 * @param i
-	 *            The Image
-	 * @param cacheLabel
-	 *            Determine if the text should be cached. This will make it
-	 *            faster, but the
+	 * @param i          The Image
+	 * @param cacheLabel Determine if the text should be cached. This will make it
+	 *                   faster, but the
 	 */
 	public GraphLabel(Image i, boolean cacheLabel) {
 		this("", i, cacheLabel);
@@ -77,13 +72,10 @@ public class GraphLabel extends CachedLabel {
 	/**
 	 * Creates a graph label with an image and text
 	 * 
-	 * @param text
-	 *            The text
-	 * @param i
-	 *            The Image
-	 * @param cacheLabel
-	 *            Determine if the text should be cached. This will make it
-	 *            faster, but the
+	 * @param text       The text
+	 * @param i          The Image
+	 * @param cacheLabel Determine if the text should be cached. This will make it
+	 *                   faster, but the
 	 */
 	public GraphLabel(String text, Image i, boolean cacheLabel) {
 		super(cacheLabel);
@@ -166,7 +158,8 @@ public class GraphLabel extends CachedLabel {
 		if (graphics instanceof ScaledGraphics) {
 			scale = ((ScaledGraphics) graphics).getAbsoluteScale();
 		}
-		// Top part inside the border (as fillGradient does not allow to fill a rectangle with round corners).
+		// Top part inside the border (as fillGradient does not allow to fill a
+		// rectangle with round corners).
 		Rectangle rect = getBounds().getCopy();
 		rect.height /= 2;
 		graphics.setForegroundColor(getBackgroundColor());
@@ -251,7 +244,7 @@ public class GraphLabel extends CachedLabel {
 	 */
 	public void setIcon(Image image) {
 		super.setIcon(image);
-		//adjustBoundsToFit();
+		// adjustBoundsToFit();
 	}
 
 	public Color getBorderColor() {

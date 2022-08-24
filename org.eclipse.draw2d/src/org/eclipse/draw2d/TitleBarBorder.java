@@ -45,8 +45,7 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 	/**
 	 * Constructs a TitleBarBorder with its label set to the passed String.
 	 * 
-	 * @param s
-	 *            text of the label
+	 * @param s text of the label
 	 * @since 2.0
 	 */
 	public TitleBarBorder(String s) {
@@ -57,14 +56,12 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 	/**
 	 * Calculates and returns the Insets for this border.
 	 * 
-	 * @param figure
-	 *            the figure on which Insets calculations are based
+	 * @param figure the figure on which Insets calculations are based
 	 * @return the calculated Insets
 	 * @since 2.0
 	 */
 	protected Insets calculateInsets(IFigure figure) {
-		return new Insets(getTextExtents(figure).height + padding.getHeight(),
-				0, 0, 0);
+		return new Insets(getTextExtents(figure).height + padding.getHeight(), 0, 0, 0);
 	}
 
 	/**
@@ -79,8 +76,7 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 
 	/**
 	 * Returns this TitleBarBorder's padding. Padding provides spacing along the
-	 * sides of the TitleBarBorder. The default value is no padding along all
-	 * sides.
+	 * sides of the TitleBarBorder. The default value is no padding along all sides.
 	 * 
 	 * @return the Insets representing the space along the sides of the
 	 *         TitleBarBorder
@@ -113,8 +109,8 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 
 	/**
 	 * Returns <code>true</code> thereby filling up all the contents within its
-	 * boundaries, eleminating the need by the figure to clip the boundaries and
-	 * do the same.
+	 * boundaries, eleminating the need by the figure to clip the boundaries and do
+	 * the same.
 	 * 
 	 * @see Border#isOpaque()
 	 */
@@ -128,8 +124,7 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		tempRect.setBounds(getPaintRectangle(figure, insets));
 		Rectangle rec = tempRect;
-		rec.height = Math.min(rec.height, getTextExtents(figure).height
-				+ padding.getHeight());
+		rec.height = Math.min(rec.height, getTextExtents(figure).height + padding.getHeight());
 		g.clipRect(rec);
 		g.setBackgroundColor(fillColor);
 		g.fillRectangle(rec);
@@ -151,12 +146,11 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 	}
 
 	/**
-	 * Sets the background color of the area within the boundaries of this
-	 * border. This is required as this border takes responsibility for filling
-	 * up the region, as TitleBarBorders are always opaque.
+	 * Sets the background color of the area within the boundaries of this border.
+	 * This is required as this border takes responsibility for filling up the
+	 * region, as TitleBarBorders are always opaque.
 	 * 
-	 * @param color
-	 *            the background color
+	 * @param color the background color
 	 * @since 2.0
 	 */
 	public void setBackgroundColor(Color color) {
@@ -164,11 +158,10 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 	}
 
 	/**
-	 * Sets the padding space to be applied on all sides of the border. The
-	 * default value is no padding on all sides.
+	 * Sets the padding space to be applied on all sides of the border. The default
+	 * value is no padding on all sides.
 	 * 
-	 * @param all
-	 *            the value of the padding on all sides
+	 * @param all the value of the padding on all sides
 	 * @since 2.0
 	 */
 	public void setPadding(int all) {
@@ -180,8 +173,7 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 	 * Sets the padding space of this TitleBarBorder to the passed value. The
 	 * default value is no padding on all sides.
 	 * 
-	 * @param pad
-	 *            the padding
+	 * @param pad the padding
 	 * @since 2.0
 	 */
 	public void setPadding(Insets pad) {
@@ -194,8 +186,7 @@ public class TitleBarBorder extends AbstractLabeledBorder {
 	 * {@link PositionConstants#LEFT}, {@link PositionConstants#CENTER} and
 	 * {@link PositionConstants#RIGHT}.
 	 * 
-	 * @param align
-	 *            the new text alignment
+	 * @param align the new text alignment
 	 * @since 2.0
 	 */
 	public void setTextAlignment(int align) {

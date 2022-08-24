@@ -63,17 +63,14 @@ public class LogicActionBarContributor extends ActionBarContributor {
 		addRetargetAction(new MatchWidthRetargetAction());
 		addRetargetAction(new MatchHeightRetargetAction());
 
-		addRetargetAction(new RetargetAction(
-				GEFActionConstants.TOGGLE_RULER_VISIBILITY,
+		addRetargetAction(new RetargetAction(GEFActionConstants.TOGGLE_RULER_VISIBILITY,
 				GEFMessages.ToggleRulerVisibility_Label, IAction.AS_CHECK_BOX));
 
-		addRetargetAction(new RetargetAction(
-				GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY,
+		addRetargetAction(new RetargetAction(GEFActionConstants.TOGGLE_SNAP_TO_GEOMETRY,
 				GEFMessages.ToggleSnapToGeometry_Label, IAction.AS_CHECK_BOX));
 
-		addRetargetAction(new RetargetAction(
-				GEFActionConstants.TOGGLE_GRID_VISIBILITY,
-				GEFMessages.ToggleGrid_Label, IAction.AS_CHECK_BOX));
+		addRetargetAction(new RetargetAction(GEFActionConstants.TOGGLE_GRID_VISIBILITY, GEFMessages.ToggleGrid_Label,
+				IAction.AS_CHECK_BOX));
 	}
 
 	/**
@@ -112,8 +109,7 @@ public class LogicActionBarContributor extends ActionBarContributor {
 		tbm.add(getAction(GEFActionConstants.MATCH_HEIGHT));
 
 		tbm.add(new Separator());
-		String[] zoomStrings = new String[] { ZoomManager.FIT_ALL,
-				ZoomManager.FIT_HEIGHT, ZoomManager.FIT_WIDTH };
+		String[] zoomStrings = new String[] { ZoomManager.FIT_ALL, ZoomManager.FIT_HEIGHT, ZoomManager.FIT_WIDTH };
 		tbm.add(new ZoomComboContributionItem(getPage(), zoomStrings));
 	}
 

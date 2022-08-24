@@ -25,8 +25,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * 
  * @since 3.1
  */
-public abstract class AbstractFlowBorder extends AbstractBorder implements
-		FlowBorder {
+public abstract class AbstractFlowBorder extends AbstractBorder implements FlowBorder {
 	/**
 	 * @see FlowBorder#getBottomMargin()
 	 */
@@ -63,16 +62,12 @@ public abstract class AbstractFlowBorder extends AbstractBorder implements
 	}
 
 	/**
-	 * This method is not called on FlowBorders. For this reason it is
-	 * implemented here and made <code>final</code> so that clients override the
-	 * correct method.
+	 * This method is not called on FlowBorders. For this reason it is implemented
+	 * here and made <code>final</code> so that clients override the correct method.
 	 * 
-	 * @param figure
-	 *            the figure
-	 * @param graphics
-	 *            the graphics
-	 * @param insets
-	 *            the insets
+	 * @param figure   the figure
+	 * @param graphics the graphics
+	 * @param insets   the insets
 	 * @see FlowBorder#paint(FlowFigure, Graphics, Rectangle, int)
 	 */
 	public final void paint(IFigure figure, Graphics graphics, Insets insets) {

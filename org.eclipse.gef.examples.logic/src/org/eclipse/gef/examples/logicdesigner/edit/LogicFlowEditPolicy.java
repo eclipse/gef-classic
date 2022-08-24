@@ -28,16 +28,14 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.CloneCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.CreateCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.ReorderPartCommand;
 
-public class LogicFlowEditPolicy extends
-		org.eclipse.gef.editpolicies.FlowLayoutEditPolicy {
+public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayoutEditPolicy {
 
 	/**
 	 * Override to return the <code>Command</code> to perform an
-	 * {@link RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code>
-	 * is returned.
+	 * {@link RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code> is
+	 * returned.
 	 * 
-	 * @param request
-	 *            the Clone Request
+	 * @param request the Clone Request
 	 * @return A command to perform the Clone.
 	 */
 	protected Command getCloneCommand(ChangeBoundsRequest request) {
@@ -83,8 +81,7 @@ public class LogicFlowEditPolicy extends
 		int newIndex = getHost().getChildren().indexOf(after);
 		if (newIndex > oldIndex)
 			newIndex--;
-		ReorderPartCommand command = new ReorderPartCommand(childModel,
-				parentModel, newIndex);
+		ReorderPartCommand command = new ReorderPartCommand(childModel, parentModel, newIndex);
 		return command;
 	}
 

@@ -38,10 +38,10 @@ public final class ViewportUtilities {
 	 * 
 	 * @param figure
 	 * @return A list of {@link Viewport}s representing the figure's enclosing
-	 *         {@link Viewport} path, where the nearest enclosing
-	 *         {@link Viewport} as the first element and the root
-	 *         {@link Viewport} as the last element. In case there is no
-	 *         enclosing {@link Viewport}, an empty list is returned.
+	 *         {@link Viewport} path, where the nearest enclosing {@link Viewport}
+	 *         as the first element and the root {@link Viewport} as the last
+	 *         element. In case there is no enclosing {@link Viewport}, an empty
+	 *         list is returned.
 	 */
 	public static List getEnclosingViewportsPath(IFigure figure) {
 		Viewport nearestEnclosingViewport = getNearestEnclosingViewport(figure);
@@ -55,23 +55,21 @@ public final class ViewportUtilities {
 	/**
 	 * Returns a list containing the provided leaf {@link Viewport} as the first
 	 * element, and all its enclosing {@link Viewport}s up to the root
-	 * {@link Viewport}, where the root {@link Viewport} forms the last element
-	 * of the list.
+	 * {@link Viewport}, where the root {@link Viewport} forms the last element of
+	 * the list.
 	 * 
-	 * @param leafViewport
-	 *            The {@link Viewport}, whose parent hierarchy is processed.
-	 * @param rootViewport
-	 *            an ancestor of the given leafViewport, which marks the end
-	 *            point of the hierarchy to be processed.
-	 * @return A list of {@link Viewport}s containing the leaf {@link Viewport}
-	 *         as the first element, the root {@link Viewport} as the last and
-	 *         in between all enclosing {@link Viewport}s of the leaf
-	 *         {@link Viewport} up to the root. Returns an empty list in case
-	 *         leaf or root {@link Viewport} are null or in case the root
-	 *         viewport is not an ancestor of the leaf {@link Viewport}.
+	 * @param leafViewport The {@link Viewport}, whose parent hierarchy is
+	 *                     processed.
+	 * @param rootViewport an ancestor of the given leafViewport, which marks the
+	 *                     end point of the hierarchy to be processed.
+	 * @return A list of {@link Viewport}s containing the leaf {@link Viewport} as
+	 *         the first element, the root {@link Viewport} as the last and in
+	 *         between all enclosing {@link Viewport}s of the leaf {@link Viewport}
+	 *         up to the root. Returns an empty list in case leaf or root
+	 *         {@link Viewport} are null or in case the root viewport is not an
+	 *         ancestor of the leaf {@link Viewport}.
 	 */
-	public static List getViewportsPath(final Viewport leafViewport,
-			final Viewport rootViewport) {
+	public static List getViewportsPath(final Viewport leafViewport, final Viewport rootViewport) {
 		return getViewportsPath(leafViewport, rootViewport, true);
 	}
 
@@ -82,23 +80,22 @@ public final class ViewportUtilities {
 	 * list, in case includeRootViewport is set to true, otherwise the viewport
 	 * directly nested below the root viewport will be the last in the list.
 	 * 
-	 * @param leafViewport
-	 *            The {@link Viewport}, whose parent hierarchy is processed.
-	 * @param rootViewport
-	 *            an ancestor of the given leafViewport, which marks the end
-	 *            point of the hierarchy to be processed.
-	 * @param includeRootViewport
-	 *            whether the provided rootViewport should be included in the
-	 *            list of returned viewports (as the last one) or not.
-	 * @return A list of {@link Viewport}s containing the leaf {@link Viewport}
-	 *         as the first element, the root {@link Viewport} as the last and
-	 *         in between all enclosing {@link Viewport}s of the leaf
-	 *         {@link Viewport} up to the root. Returns an empty list in case
-	 *         leaf or root {@link Viewport} are null or in case the root
-	 *         viewport is not an ancestor of the leaf {@link Viewport}.
+	 * @param leafViewport        The {@link Viewport}, whose parent hierarchy is
+	 *                            processed.
+	 * @param rootViewport        an ancestor of the given leafViewport, which marks
+	 *                            the end point of the hierarchy to be processed.
+	 * @param includeRootViewport whether the provided rootViewport should be
+	 *                            included in the list of returned viewports (as the
+	 *                            last one) or not.
+	 * @return A list of {@link Viewport}s containing the leaf {@link Viewport} as
+	 *         the first element, the root {@link Viewport} as the last and in
+	 *         between all enclosing {@link Viewport}s of the leaf {@link Viewport}
+	 *         up to the root. Returns an empty list in case leaf or root
+	 *         {@link Viewport} are null or in case the root viewport is not an
+	 *         ancestor of the leaf {@link Viewport}.
 	 */
-	public static List getViewportsPath(final Viewport leafViewport,
-			final Viewport rootViewport, boolean includeRootViewport) {
+	public static List getViewportsPath(final Viewport leafViewport, final Viewport rootViewport,
+			boolean includeRootViewport) {
 		if (leafViewport == null || rootViewport == null) {
 			return Collections.EMPTY_LIST;
 		}
@@ -109,8 +106,7 @@ public final class ViewportUtilities {
 		Viewport currentViewport = leafViewport;
 		do {
 			nestedViewports.add(currentViewport);
-			currentViewport = ViewportUtilities
-					.getNearestEnclosingViewport(currentViewport);
+			currentViewport = ViewportUtilities.getNearestEnclosingViewport(currentViewport);
 		} while (currentViewport != null && currentViewport != rootViewport);
 
 		// check if root viewport is an ancestor of the given leaf viewport
@@ -129,13 +125,11 @@ public final class ViewportUtilities {
 	 * 
 	 * @param firstFigure
 	 * @param secondFigure
-	 * @return The nearest common {@link Viewport} of the two given figures, or
-	 *         null if no common enclosing {@link Viewport} could be found.
+	 * @return The nearest common {@link Viewport} of the two given figures, or null
+	 *         if no common enclosing {@link Viewport} could be found.
 	 */
-	public static Viewport getNearestCommonViewport(IFigure firstFigure,
-			IFigure secondFigure) {
-		return getNearestViewport(FigureUtilities.findCommonAncestor(
-				firstFigure, secondFigure));
+	public static Viewport getNearestCommonViewport(IFigure firstFigure, IFigure secondFigure) {
+		return getNearestViewport(FigureUtilities.findCommonAncestor(firstFigure, secondFigure));
 	}
 
 	/**
@@ -155,13 +149,13 @@ public final class ViewportUtilities {
 	}
 
 	/**
-	 * Returns the given figure in case it is a {@link Viewport} itself,
-	 * otherwise its nearest enclosing {@link Viewport}.
+	 * Returns the given figure in case it is a {@link Viewport} itself, otherwise
+	 * its nearest enclosing {@link Viewport}.
 	 * 
 	 * @param figure
-	 * @return The given figure in case it is a {@link Viewport} itself,
-	 *         otherwise the nearest enclosing {@link Viewport} or null if there
-	 *         is no nearest enclosing {@link Viewport}.
+	 * @return The given figure in case it is a {@link Viewport} itself, otherwise
+	 *         the nearest enclosing {@link Viewport} or null if there is no nearest
+	 *         enclosing {@link Viewport}.
 	 */
 	public static Viewport getNearestViewport(final IFigure figure) {
 		if (figure == null) {
@@ -175,12 +169,12 @@ public final class ViewportUtilities {
 	}
 
 	/**
-	 * Returns the nearest enclosing {@link Viewport} of a given {@link IFigure}
-	 * by walking up the figure's hierarchy.
+	 * Returns the nearest enclosing {@link Viewport} of a given {@link IFigure} by
+	 * walking up the figure's hierarchy.
 	 * 
 	 * @param figure
-	 * @return The nearest enclosing {@link Viewport} of the given figure, or
-	 *         null if none could be found.
+	 * @return The nearest enclosing {@link Viewport} of the given figure, or null
+	 *         if none could be found.
 	 */
 	public static Viewport getNearestEnclosingViewport(final IFigure figure) {
 		if (figure == null) {

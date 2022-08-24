@@ -30,8 +30,7 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.ReorderPartCommand;
 
 public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 
-	protected Command createCreateCommand(LogicSubpart child, Rectangle r,
-			int index, String label) {
+	protected Command createCreateCommand(LogicSubpart child, Rectangle r, int index, String label) {
 		CreateCommand cmd = new CreateCommand();
 		Rectangle rect;
 		if (r == null) {
@@ -62,8 +61,7 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 			else {
 				LogicSubpart childModel = (LogicSubpart) child.getModel();
 				command.add(createCreateCommand(childModel,
-						new Rectangle(new org.eclipse.draw2d.geometry.Point(),
-								childModel.getSize()), index,
+						new Rectangle(new org.eclipse.draw2d.geometry.Point(), childModel.getSize()), index,
 						"Reparent LogicSubpart"));//$NON-NLS-1$
 			}
 		}
@@ -92,8 +90,8 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 			} else if (oldIndex <= tempIndex) {
 				tempIndex--;
 			}
-			command.add(new ReorderPartCommand((LogicSubpart) child.getModel(),
-					(LogicDiagram) getHost().getModel(), tempIndex));
+			command.add(new ReorderPartCommand((LogicSubpart) child.getModel(), (LogicDiagram) getHost().getModel(),
+					tempIndex));
 		}
 		return command;
 	}

@@ -19,15 +19,13 @@ import java.io.Serializable;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-abstract public class LogicElement implements IPropertySource, Cloneable,
-		Serializable {
+abstract public class LogicElement implements IPropertySource, Cloneable, Serializable {
 
 	public static final String CHILDREN = "Children", //$NON-NLS-1$
 			INPUTS = "inputs", //$NON-NLS-1$
 			OUTPUTS = "outputs"; //$NON-NLS-1$
 
-	transient protected PropertyChangeSupport listeners = new PropertyChangeSupport(
-			this);
+	transient protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	static final long serialVersionUID = 1;
 
 	public void addPropertyChangeListener(PropertyChangeListener l) {
@@ -74,8 +72,7 @@ abstract public class LogicElement implements IPropertySource, Cloneable,
 		return true;
 	}
 
-	private void readObject(ObjectInputStream in) throws IOException,
-			ClassNotFoundException {
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
 		listeners = new PropertyChangeSupport(this);
 	}

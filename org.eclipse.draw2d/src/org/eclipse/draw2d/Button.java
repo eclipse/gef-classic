@@ -31,8 +31,7 @@ public class Button extends Clickable {
 	/**
 	 * Contructs a Button containing the icon <i>image</i>.
 	 * 
-	 * @param image
-	 *            Image to be used by the Button as its icon.
+	 * @param image Image to be used by the Button as its icon.
 	 * @since 2.0
 	 */
 	public Button(Image image) {
@@ -42,8 +41,7 @@ public class Button extends Clickable {
 	/**
 	 * Constructs a Button containing the given text.
 	 * 
-	 * @param text
-	 *            Text for the button.
+	 * @param text Text for the button.
 	 * @since 2.0
 	 */
 	public Button(String text) {
@@ -53,10 +51,8 @@ public class Button extends Clickable {
 	/**
 	 * Constructs a Button with the given image and text.
 	 * 
-	 * @param text
-	 *            Text for the button.
-	 * @param image
-	 *            Image for the button.
+	 * @param text  Text for the button.
+	 * @param image Image for the button.
 	 * @since 2.0
 	 */
 	public Button(String text, Image image) {

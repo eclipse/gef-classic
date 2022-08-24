@@ -30,22 +30,18 @@ import org.eclipse.gef.commands.UnexecutableCommand;
  * 
  * @author hudsonr
  */
-public class RootTreeEditPart extends
-		org.eclipse.gef.editparts.AbstractEditPart implements RootEditPart,
-		TreeEditPart {
+public class RootTreeEditPart extends org.eclipse.gef.editparts.AbstractEditPart implements RootEditPart, TreeEditPart {
 
 	private EditPartViewer viewer;
 	private Widget widget;
 	private TreeEditPart contents;
 
 	/**
-	 * This is where the child gets added. No TreeItem is needed here because
-	 * the contents is actually represented by the Tree iteself.
+	 * This is where the child gets added. No TreeItem is needed here because the
+	 * contents is actually represented by the Tree iteself.
 	 * 
-	 * @param childEditPart
-	 *            EditPart of child to be added.
-	 * @param index
-	 *            Position where it is to be added.
+	 * @param childEditPart EditPart of child to be added.
+	 * @param index         Position where it is to be added.
 	 */
 	protected void addChildVisual(EditPart childEditPart, int index) {
 		((TreeEditPart) childEditPart).setWidget(widget);
@@ -114,12 +110,11 @@ public class RootTreeEditPart extends
 	}
 
 	/**
-	 * This is where the child gets removed. This method is overridden here so
-	 * that the AbstractTreeEditPart does not dispose the widget, which is the
-	 * Tree in this case. The tree is owned by the viewer, not the child.
+	 * This is where the child gets removed. This method is overridden here so that
+	 * the AbstractTreeEditPart does not dispose the widget, which is the Tree in
+	 * this case. The tree is owned by the viewer, not the child.
 	 * 
-	 * @param childEditPart
-	 *            EditPart of child to be removed.
+	 * @param childEditPart EditPart of child to be removed.
 	 */
 	protected void removeChildVisual(EditPart childEditPart) {
 		((TreeEditPart) childEditPart).setWidget(null);
@@ -148,9 +143,9 @@ public class RootTreeEditPart extends
 	}
 
 	/**
-	 * Called by <code>TreeViewer</code> to set the <code>Tree</code> into the
-	 * root. The root simply holds onto this widget and passes it to the
-	 * contents when the contents is added.
+	 * Called by <code>TreeViewer</code> to set the <code>Tree</code> into the root.
+	 * The root simply holds onto this widget and passes it to the contents when the
+	 * contents is added.
 	 * 
 	 * @see org.eclipse.gef.TreeEditPart#setWidget(org.eclipse.swt.widgets.Widget)
 	 */

@@ -27,50 +27,37 @@ public class CombinedTemplateCreationEntry extends CreationToolEntry {
 
 	/**
 	 * Constructs an entry with the given creation factory and template. The
-	 * creation factory is used by the creation tool when the entry is selected.
-	 * The template is used with the
+	 * creation factory is used by the creation tool when the entry is selected. The
+	 * template is used with the
 	 * {@link org.eclipse.gef.dnd.TemplateTransferDragSourceListener}.
 	 * 
 	 * @since 3.2
-	 * @param label
-	 *            the label
-	 * @param shortDesc
-	 *            the descriptoin
-	 * @param template
-	 *            the template object
-	 * @param factory
-	 *            the CreationFactory
-	 * @param iconSmall
-	 *            the small icon
-	 * @param iconLarge
-	 *            the large icon
+	 * @param label     the label
+	 * @param shortDesc the descriptoin
+	 * @param template  the template object
+	 * @param factory   the CreationFactory
+	 * @param iconSmall the small icon
+	 * @param iconLarge the large icon
 	 */
-	public CombinedTemplateCreationEntry(String label, String shortDesc,
-			Object template, CreationFactory factory,
+	public CombinedTemplateCreationEntry(String label, String shortDesc, Object template, CreationFactory factory,
 			ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
 		super(label, shortDesc, factory, iconSmall, iconLarge);
 		setTemplate(template);
 	}
 
 	/**
-	 * Constructs an entry with the given creation factory. The creation factory
-	 * is also used as the template object.
+	 * Constructs an entry with the given creation factory. The creation factory is
+	 * also used as the template object.
 	 * 
-	 * @param label
-	 *            the label
-	 * @param shortDesc
-	 *            the description
-	 * @param factory
-	 *            the creation factory and template
-	 * @param iconSmall
-	 *            the small icon
-	 * @param iconLarge
-	 *            the large icon
+	 * @param label     the label
+	 * @param shortDesc the description
+	 * @param factory   the creation factory and template
+	 * @param iconSmall the small icon
+	 * @param iconLarge the large icon
 	 * @since 3.2
 	 */
-	public CombinedTemplateCreationEntry(String label, String shortDesc,
-			CreationFactory factory, ImageDescriptor iconSmall,
-			ImageDescriptor iconLarge) {
+	public CombinedTemplateCreationEntry(String label, String shortDesc, CreationFactory factory,
+			ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
 		this(label, shortDesc, factory, factory, iconSmall, iconLarge);
 	}
 
@@ -86,8 +73,7 @@ public class CombinedTemplateCreationEntry extends CreationToolEntry {
 	/**
 	 * Sets the template.
 	 * 
-	 * @param template
-	 *            The template
+	 * @param template The template
 	 */
 	public void setTemplate(Object template) {
 		this.template = template;

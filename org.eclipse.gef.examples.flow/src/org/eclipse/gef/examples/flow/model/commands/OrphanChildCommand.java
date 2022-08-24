@@ -39,8 +39,7 @@ public class OrphanChildCommand extends Command {
 	/**
 	 * Sets the child to the passed Activity
 	 * 
-	 * @param child
-	 *            the child
+	 * @param child the child
 	 */
 	public void setChild(Activity child) {
 		this.child = child;
@@ -49,8 +48,7 @@ public class OrphanChildCommand extends Command {
 	/**
 	 * Sets the parent to the passed StructuredActivity
 	 * 
-	 * @param parent
-	 *            the parent
+	 * @param parent the parent
 	 */
 	public void setParent(StructuredActivity parent) {
 		this.parent = parent;

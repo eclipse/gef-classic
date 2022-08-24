@@ -35,9 +35,8 @@ public class LineRoot extends LineBox {
 	/**
 	 * Constructor
 	 * 
-	 * @param isMirrored
-	 *            <code>true</code> if the line is to be displayed in a mirrored
-	 *            control
+	 * @param isMirrored <code>true</code> if the line is to be displayed in a
+	 *                   mirrored control
 	 */
 	public LineRoot(boolean isMirrored) {
 		this.isMirrored = isMirrored;
@@ -92,8 +91,8 @@ public class LineRoot extends LineBox {
 
 	/**
 	 * Committing a LineRoot will position its children correctly. All children
-	 * boxes are made to have the same baseline, and are laid out according to
-	 * the Unicode BiDi Algorithm, or left-to-right if Bidi is not necessary.
+	 * boxes are made to have the same baseline, and are laid out according to the
+	 * Unicode BiDi Algorithm, or left-to-right if Bidi is not necessary.
 	 */
 	public void commit() {
 		if (requiresBidi())
@@ -166,8 +165,7 @@ public class LineRoot extends LineBox {
 			List frags = parent.getFragments();
 			for (int j = 0; j < frags.size(); j++) {
 				FlowBox child = (FlowBox) frags.get(j);
-				if (prevChild != null
-						&& prevChild.getX() + prevChild.width != child.getX()
+				if (prevChild != null && prevChild.getX() + prevChild.width != child.getX()
 						&& child.getX() + child.width != prevChild.getX()) {
 					// the boxes are not adjacent, and hence the parent box
 					// needs to
@@ -186,8 +184,7 @@ public class LineRoot extends LineBox {
 					result.parent.getFragments().add(result.index + 1, newBox);
 					// Add the new line box to the flow figure's list of
 					// fragments
-					parentFig.fragments.add(
-							parentFig.fragments.indexOf(parent) + 1, newBox);
+					parentFig.fragments.add(parentFig.fragments.indexOf(parent) + 1, newBox);
 					branches.add(i + 1, newBox);
 					break;
 				}
@@ -205,8 +202,7 @@ public class LineRoot extends LineBox {
 	/**
 	 * Positions the line vertically by settings its baseline.
 	 * 
-	 * @param baseline
-	 *            the baseline
+	 * @param baseline the baseline
 	 */
 	public void setBaseline(int baseline) {
 		this.baseline = baseline;
@@ -259,8 +255,7 @@ public class LineRoot extends LineBox {
 		BidiLevelNode push() {
 			if (!isEmpty()) {
 				Object last = get(size() - 1);
-				if (last instanceof BidiLevelNode
-						&& ((BidiLevelNode) last).level == level + 1)
+				if (last instanceof BidiLevelNode && ((BidiLevelNode) last).level == level + 1)
 					return (BidiLevelNode) last;
 			}
 			BidiLevelNode child = new BidiLevelNode(this, level + 1);

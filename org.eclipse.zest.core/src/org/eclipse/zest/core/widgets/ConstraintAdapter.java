@@ -14,7 +14,8 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 /**
  * 
  * This interface is used to populate layout constraints on Zest nodes.
- * Constraint will be a instance of LayoutConstraint (look at the heirarchy for an up-to-date list).
+ * Constraint will be a instance of LayoutConstraint (look at the heirarchy for
+ * an up-to-date list).
  * 
  * @author Ian Bull
  */

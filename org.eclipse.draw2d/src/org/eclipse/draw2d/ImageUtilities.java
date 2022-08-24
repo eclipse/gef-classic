@@ -29,29 +29,24 @@ import org.eclipse.draw2d.geometry.Dimension;
 public class ImageUtilities {
 
 	/**
-	 * Returns a new Image with the given String rotated left (by 90 degrees).
-	 * The String will be rendered using the provided colors and fonts. The
-	 * client is responsible for disposing the returned Image. Strings cannot
-	 * contain newline or tab characters.
+	 * Returns a new Image with the given String rotated left (by 90 degrees). The
+	 * String will be rendered using the provided colors and fonts. The client is
+	 * responsible for disposing the returned Image. Strings cannot contain newline
+	 * or tab characters.
 	 * 
-	 * @param string
-	 *            the String to be rendered
-	 * @param font
-	 *            the font
-	 * @param foreground
-	 *            the text's color
-	 * @param background
-	 *            the background color
+	 * @param string     the String to be rendered
+	 * @param font       the font
+	 * @param foreground the text's color
+	 * @param background the background color
 	 * @return an Image which must be disposed
 	 */
-	public static Image createRotatedImageOfString(String string, Font font,
-			Color foreground, Color background) {
+	public static Image createRotatedImageOfString(String string, Font font, Color foreground, Color background) {
 		Display display = Display.getDefault();
 
 		FontMetrics metrics = FigureUtilities.getFontMetrics(font);
 		Dimension strSize = FigureUtilities.getStringExtents(string, font);
-		Image srcImage = new Image(display, strSize.width, metrics.getAscent()
-				+ metrics.getDescent() + metrics.getLeading());
+		Image srcImage = new Image(display, strSize.width,
+				metrics.getAscent() + metrics.getDescent() + metrics.getLeading());
 		GC gc = new GC(srcImage);
 		gc.setFont(font);
 		gc.setForeground(foreground);
@@ -65,11 +60,10 @@ public class ImageUtilities {
 	}
 
 	/**
-	 * Returns a new Image that is the given Image rotated left by 90 degrees.
-	 * The client is responsible for disposing the returned Image.
+	 * Returns a new Image that is the given Image rotated left by 90 degrees. The
+	 * client is responsible for disposing the returned Image.
 	 * 
-	 * @param srcImage
-	 *            the Image that is to be rotated left
+	 * @param srcImage the Image that is to be rotated left
 	 * @return the rotated Image (the client is responsible for disposing it)
 	 */
 	public static Image createRotatedImage(Image srcImage) {
@@ -86,13 +80,11 @@ public class ImageUtilities {
 	}
 
 	/**
-	 * Creates an ImageData representing the given <code>Image</code> shaded
-	 * with the given <code>Color</code>.
+	 * Creates an ImageData representing the given <code>Image</code> shaded with
+	 * the given <code>Color</code>.
 	 * 
-	 * @param fromImage
-	 *            Image that has to be shaded
-	 * @param shade
-	 *            The Color to be used for shading
+	 * @param fromImage Image that has to be shaded
+	 * @param shade     The Color to be used for shading
 	 * @return A new ImageData that can be used to create an Image.
 	 */
 	public static ImageData createShadedImage(Image fromImage, Color shade) {
@@ -107,8 +99,7 @@ public class ImageUtilities {
 					RGB color = rgbs[i];
 					color.red = determineShading(color.red, shade.getRed());
 					color.blue = determineShading(color.blue, shade.getBlue());
-					color.green = determineShading(color.green,
-							shade.getGreen());
+					color.green = determineShading(color.green, shade.getGreen());
 				}
 			}
 			data.palette = new PaletteData(rgbs);
@@ -128,21 +119,17 @@ public class ImageUtilities {
 					int red = pixel & redMask;
 					red = (redShift < 0) ? red >>> -redShift : red << redShift;
 					int green = pixel & greenMask;
-					green = (greenShift < 0) ? green >>> -greenShift
-							: green << greenShift;
+					green = (greenShift < 0) ? green >>> -greenShift : green << greenShift;
 					int blue = pixel & blueMask;
-					blue = (blueShift < 0) ? blue >>> -blueShift
-							: blue << blueShift;
+					blue = (blueShift < 0) ? blue >>> -blueShift : blue << blueShift;
 					red = determineShading(red, shade.getRed());
 					blue = determineShading(blue, shade.getBlue());
 					green = determineShading(green, shade.getGreen());
 					red = (redShift < 0) ? red << -redShift : red >> redShift;
 					red &= redMask;
-					green = (greenShift < 0) ? green << -greenShift
-							: green >> greenShift;
+					green = (greenShift < 0) ? green << -greenShift : green >> greenShift;
 					green &= greenMask;
-					blue = (blueShift < 0) ? blue << -blueShift
-							: blue >> blueShift;
+					blue = (blueShift < 0) ? blue << -blueShift : blue >> blueShift;
 					blue &= blueMask;
 					scanline[x] = red | blue | green;
 				}
@@ -158,33 +145,26 @@ public class ImageUtilities {
 
 	private static ImageData rotateOptimized(ImageData srcData) {
 		int bytesPerPixel = Math.max(1, srcData.depth / 8);
-		int destBytesPerLine = ((srcData.height * bytesPerPixel - 1)
-				/ srcData.scanlinePad + 1)
-				* srcData.scanlinePad;
+		int destBytesPerLine = ((srcData.height * bytesPerPixel - 1) / srcData.scanlinePad + 1) * srcData.scanlinePad;
 		byte[] newData = new byte[destBytesPerLine * srcData.width];
 		for (int srcY = 0; srcY < srcData.height; srcY++) {
 			for (int srcX = 0; srcX < srcData.width; srcX++) {
 				int destX = srcY;
 				int destY = srcData.width - srcX - 1;
-				int destIndex = (destY * destBytesPerLine)
-						+ (destX * bytesPerPixel);
-				int srcIndex = (srcY * srcData.bytesPerLine)
-						+ (srcX * bytesPerPixel);
-				System.arraycopy(srcData.data, srcIndex, newData, destIndex,
-						bytesPerPixel);
+				int destIndex = (destY * destBytesPerLine) + (destX * bytesPerPixel);
+				int srcIndex = (srcY * srcData.bytesPerLine) + (srcX * bytesPerPixel);
+				System.arraycopy(srcData.data, srcIndex, newData, destIndex, bytesPerPixel);
 			}
 		}
-		return new ImageData(srcData.height, srcData.width, srcData.depth,
-				srcData.palette, srcData.scanlinePad, newData);
+		return new ImageData(srcData.height, srcData.width, srcData.depth, srcData.palette, srcData.scanlinePad,
+				newData);
 	}
 
 	private static ImageData rotatePixelByPixel(ImageData srcData) {
-		ImageData destData = new ImageData(srcData.height, srcData.width,
-				srcData.depth, srcData.palette);
+		ImageData destData = new ImageData(srcData.height, srcData.width, srcData.depth, srcData.palette);
 		for (int y = 0; y < srcData.height; y++) {
 			for (int x = 0; x < srcData.width; x++) {
-				destData.setPixel(y, srcData.width - x - 1,
-						srcData.getPixel(x, y));
+				destData.setPixel(y, srcData.width - x - 1, srcData.getPixel(x, y));
 			}
 		}
 		return destData;

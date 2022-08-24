@@ -23,8 +23,7 @@ public class XYAnchor extends ConnectionAnchorBase {
 	/**
 	 * Constructs an XYAnchor at the Point p.
 	 * 
-	 * @param p
-	 *            the point where this anchor will be located
+	 * @param p the point where this anchor will be located
 	 * @since 2.0
 	 */
 	public XYAnchor(Point p) {
@@ -32,9 +31,9 @@ public class XYAnchor extends ConnectionAnchorBase {
 	}
 
 	/**
-	 * Returns the location of this anchor relative to the reference point given
-	 * in as input. Since this is XY layout, the location of the point is
-	 * independent of the reference point.
+	 * Returns the location of this anchor relative to the reference point given in
+	 * as input. Since this is XY layout, the location of the point is independent
+	 * of the reference point.
 	 * 
 	 * @see ConnectionAnchor#getLocation(Point)
 	 */
@@ -43,8 +42,8 @@ public class XYAnchor extends ConnectionAnchorBase {
 	}
 
 	/**
-	 * Returns <code>null</code> as these anchors inherently do not depend on
-	 * other figures for their location.
+	 * Returns <code>null</code> as these anchors inherently do not depend on other
+	 * figures for their location.
 	 * 
 	 * @see ConnectionAnchor#getOwner()
 	 * @since 2.0
@@ -54,9 +53,8 @@ public class XYAnchor extends ConnectionAnchorBase {
 	}
 
 	/**
-	 * Returns the point which is used as the reference by this connection
-	 * anchor. In the case of the XYAnchor, this point is the same as its
-	 * location.
+	 * Returns the point which is used as the reference by this connection anchor.
+	 * In the case of the XYAnchor, this point is the same as its location.
 	 * 
 	 * @see ConnectionAnchor#getReferencePoint()
 	 */
@@ -68,8 +66,7 @@ public class XYAnchor extends ConnectionAnchorBase {
 	 * Sets the location of this anchor and notifies all the listeners of the
 	 * update.
 	 * 
-	 * @param p
-	 *            the new location of this anchor
+	 * @param p the new location of this anchor
 	 * @see #getLocation(Point)
 	 * @since 2.0
 	 */

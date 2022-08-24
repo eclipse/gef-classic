@@ -34,8 +34,7 @@ public class ToolUtilitiesTest extends TestCase {
 		super.tearDown();
 	}
 
-	private static class TestGraphicalEditPart extends
-			AbstractGraphicalEditPart {
+	private static class TestGraphicalEditPart extends AbstractGraphicalEditPart {
 
 		/*
 		 * (non-Javadoc)
@@ -58,8 +57,7 @@ public class ToolUtilitiesTest extends TestCase {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+		 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 		 */
 		protected IFigure createFigure() {
 			// TODO Auto-generated method stub
@@ -86,8 +84,7 @@ public class ToolUtilitiesTest extends TestCase {
 		editpartChild1.addChild(editpartChild2);
 		editpartParent.addChild(editpartChild3);
 
-		EditPart result = ToolUtilities.findCommonAncestor(editpartChild2,
-				editpartChild3);
+		EditPart result = ToolUtilities.findCommonAncestor(editpartChild2, editpartChild3);
 		assertTrue(editpartParent == result);
 	}
 
@@ -96,8 +93,7 @@ public class ToolUtilitiesTest extends TestCase {
 		EditPart editpartChild = new TestGraphicalEditPart();
 		editpartParent.addChild(editpartChild);
 
-		EditPart result = ToolUtilities.findCommonAncestor(editpartParent,
-				editpartChild);
+		EditPart result = ToolUtilities.findCommonAncestor(editpartParent, editpartChild);
 		assertTrue(editpartParent == result);
 	}
 }

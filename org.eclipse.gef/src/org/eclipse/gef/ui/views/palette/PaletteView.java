@@ -35,20 +35,18 @@ public class PaletteView extends PageBookView {
 	private boolean viewInPage = true;
 
 	/**
-	 * The ID for this view. This is the same as the String used to register
-	 * this view with the platform's extension point.
+	 * The ID for this view. This is the same as the String used to register this
+	 * view with the platform's extension point.
 	 */
 	public static final String ID = "org.eclipse.gef.ui.palette_view"; //$NON-NLS-1$
 
 	private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
-		public void perspectiveChanged(IWorkbenchPage page,
-				IPerspectiveDescriptor perspective, String changeId) {
+		public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, String changeId) {
 		}
 
 		// fix for bug 109245 and 69098 - fake a partActivated when the
 		// perpsective is switched
-		public void perspectiveActivated(IWorkbenchPage page,
-				IPerspectiveDescriptor perspective) {
+		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
 			viewInPage = page.findViewReference(ID) != null;
 			// getBootstrapPart could return null; but isImportant() can handle
 			// null
@@ -77,8 +75,7 @@ public class PaletteView extends PageBookView {
 	 */
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		getSite().getPage().getWorkbenchWindow()
-				.addPerspectiveListener(perspectiveListener);
+		getSite().getPage().getWorkbenchWindow().addPerspectiveListener(perspectiveListener);
 	}
 
 	/**
@@ -87,8 +84,7 @@ public class PaletteView extends PageBookView {
 	 * @see org.eclipse.ui.IWorkbenchPart#dispose()
 	 */
 	public void dispose() {
-		getSite().getPage().getWorkbenchWindow()
-				.removePerspectiveListener(perspectiveListener);
+		getSite().getPage().getWorkbenchWindow().removePerspectiveListener(perspectiveListener);
 		super.dispose();
 	}
 

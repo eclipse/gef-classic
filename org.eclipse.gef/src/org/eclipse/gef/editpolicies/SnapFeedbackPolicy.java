@@ -66,8 +66,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 		}
 
 		private Color createMixedColor() {
-			return FigureUtilities.mixColors(getLocalBackgroundColor(),
-					getParent().getBackgroundColor(),
+			return FigureUtilities.mixColors(getLocalBackgroundColor(), getParent().getBackgroundColor(),
 					(double) opacity / FRAMES);
 		}
 
@@ -85,8 +84,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 					Display display = Display.getCurrent();
 					PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
 					Color localBackgroundColor = createMixedColor();
-					int fillColor = pData
-							.getPixel(localBackgroundColor.getRGB());
+					int fillColor = pData.getPixel(localBackgroundColor.getRGB());
 					localBackgroundColor.dispose();
 					ImageData iData = new ImageData(1, 1, 24, pData);
 					iData.setPixel(0, 0, fillColor);
@@ -103,8 +101,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 			}
 			Rectangle r = getBounds();
 			if (image != null)
-				graphics.drawImage(image, 0, 0, 1, 1, r.x, r.y, r.width,
-						r.height);
+				graphics.drawImage(image, 0, 0, 1, 1, r.x, r.y, r.width, r.height);
 			else
 				super.paintFigure(graphics);
 		}
@@ -151,8 +148,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 			guide[offset] = fig;
 			addFeedback(fig);
 			fig.translateToRelative(loc);
-			position = offset % 2 == 0 ? (int) Math.round(loc.preciseX())
-					: (int) Math.round(loc.preciseY());
+			position = offset % 2 == 0 ? (int) Math.round(loc.preciseX()) : (int) Math.round(loc.preciseY());
 			Rectangle figBounds = getFeedbackLayer().getBounds().getCopy();
 			if ((offset % 2) == 1) {
 				figBounds.height = 1;
@@ -184,34 +180,26 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(org.eclipse.gef.Request)
 	 */
 	public void showTargetFeedback(Request req) {
-		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_RESIZE)
-				|| req.getType().equals(REQ_CLONE)
-				|| req.getType().equals(REQ_ADD)
-				|| req.getType().equals(REQ_CREATE)) {
+		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_RESIZE) || req.getType().equals(REQ_CLONE)
+				|| req.getType().equals(REQ_ADD) || req.getType().equals(REQ_CREATE)) {
 
 			Integer value;
-			value = (Integer) req.getExtendedData()
-					.get(SnapToGeometry.KEY_WEST_ANCHOR);
+			value = (Integer) req.getExtendedData().get(SnapToGeometry.KEY_WEST_ANCHOR);
 			highlightGuide(value, ColorConstants.blue, 0);
 
-			value = (Integer) req.getExtendedData()
-					.get(SnapToGeometry.KEY_NORTH_ANCHOR);
+			value = (Integer) req.getExtendedData().get(SnapToGeometry.KEY_NORTH_ANCHOR);
 			highlightGuide(value, ColorConstants.blue, 1);
 
-			value = (Integer) req.getExtendedData()
-					.get(SnapToGeometry.KEY_EAST_ANCHOR);
+			value = (Integer) req.getExtendedData().get(SnapToGeometry.KEY_EAST_ANCHOR);
 			highlightGuide(value, ColorConstants.blue, 2);
 
-			value = (Integer) req.getExtendedData()
-					.get(SnapToGeometry.KEY_SOUTH_ANCHOR);
+			value = (Integer) req.getExtendedData().get(SnapToGeometry.KEY_SOUTH_ANCHOR);
 			highlightGuide(value, ColorConstants.blue, 3);
 
-			value = (Integer) req.getExtendedData()
-					.get(SnapToGuides.KEY_VERTICAL_GUIDE);
+			value = (Integer) req.getExtendedData().get(SnapToGuides.KEY_VERTICAL_GUIDE);
 			highlightGuide(value, ColorConstants.red, 4);
 
-			value = (Integer) req.getExtendedData()
-					.get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
+			value = (Integer) req.getExtendedData().get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 			highlightGuide(value, ColorConstants.red, 5);
 		}
 	}

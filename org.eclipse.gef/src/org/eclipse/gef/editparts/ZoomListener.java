@@ -20,8 +20,7 @@ public interface ZoomListener {
 	/**
 	 * Called whenever the ZoomManager's zoom level changes.
 	 * 
-	 * @param zoom
-	 *            the new zoom level.
+	 * @param zoom the new zoom level.
 	 */
 	void zoomChanged(double zoom);
 

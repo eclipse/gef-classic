@@ -30,8 +30,7 @@ public class LogicFlowBorder extends org.eclipse.draw2d.LineBorder {
 	}
 
 	public Insets getInsets(IFigure figure) {
-		return new Insets(getWidth() + 2, grabBarWidth + 2, getWidth() + 2,
-				getWidth() + 2);
+		return new Insets(getWidth() + 2, grabBarWidth + 2, getWidth() + 2, getWidth() + 2);
 	}
 
 	public Dimension getPreferredSize() {
@@ -40,8 +39,7 @@ public class LogicFlowBorder extends org.eclipse.draw2d.LineBorder {
 
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		Rectangle bounds = figure.getBounds();
-		tempRect.setBounds(new Rectangle(bounds.x, bounds.y, grabBarWidth,
-				bounds.height));
+		tempRect.setBounds(new Rectangle(bounds.x, bounds.y, grabBarWidth, bounds.height));
 		graphics.setBackgroundColor(LogicColorConstants.logicGreen);
 		graphics.fillRectangle(tempRect);
 		super.paint(figure, graphics, insets);

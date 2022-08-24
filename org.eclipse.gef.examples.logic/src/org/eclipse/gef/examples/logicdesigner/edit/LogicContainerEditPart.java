@@ -36,8 +36,7 @@ abstract public class LogicContainerEditPart extends LogicEditPart {
 	 */
 	protected void createEditPolicies() {
 		super.createEditPolicies();
-		installEditPolicy(EditPolicy.CONTAINER_ROLE,
-				new LogicContainerEditPolicy());
+		installEditPolicy(EditPolicy.CONTAINER_ROLE, new LogicContainerEditPolicy());
 	}
 
 	/**

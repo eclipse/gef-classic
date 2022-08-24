@@ -21,8 +21,7 @@ public interface LayoutManager {
 	/**
 	 * Returns the constraint for the given figure.
 	 * 
-	 * @param child
-	 *            The figure
+	 * @param child The figure
 	 * @return The constraint
 	 */
 	Object getConstraint(IFigure child);
@@ -30,26 +29,19 @@ public interface LayoutManager {
 	/**
 	 * Returns the minimum size of the given figure.
 	 * 
-	 * @param container
-	 *            The Figure
-	 * @param wHint
-	 *            the width hint
-	 * @param hHint
-	 *            the height hint
+	 * @param container The Figure
+	 * @param wHint     the width hint
+	 * @param hHint     the height hint
 	 * @return The minimum size
 	 */
 	Dimension getMinimumSize(IFigure container, int wHint, int hHint);
 
 	/**
-	 * Returns the preferred size of the given figure, using width and height
-	 * hints.
+	 * Returns the preferred size of the given figure, using width and height hints.
 	 * 
-	 * @param container
-	 *            The figure
-	 * @param wHint
-	 *            The width hint
-	 * @param hHint
-	 *            The height hint
+	 * @param container The figure
+	 * @param wHint     The width hint
+	 * @param hHint     The height hint
 	 * @return The preferred size
 	 */
 	Dimension getPreferredSize(IFigure container, int wHint, int hHint);
@@ -64,26 +56,22 @@ public interface LayoutManager {
 	/**
 	 * Lays out the given figure.
 	 * 
-	 * @param container
-	 *            The figure
+	 * @param container The figure
 	 */
 	void layout(IFigure container);
 
 	/**
 	 * Removes the given child from this layout.
 	 * 
-	 * @param child
-	 *            the child being remoced
+	 * @param child the child being remoced
 	 */
 	void remove(IFigure child);
 
 	/**
 	 * Sets the constraint for the given child.
 	 * 
-	 * @param child
-	 *            The figure
-	 * @param constraint
-	 *            The constraint
+	 * @param child      The figure
+	 * @param constraint The constraint
 	 */
 	void setConstraint(IFigure child, Object constraint);
 
