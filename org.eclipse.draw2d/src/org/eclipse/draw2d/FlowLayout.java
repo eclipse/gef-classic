@@ -68,16 +68,16 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * The spacing along the major axis.
 	 * 
-	 * @deprecated Use {@link #getMajorSpacing()} and
-	 *             {@link #setMajorSpacing(int)} instead.
+	 * @deprecated Use {@link #getMajorSpacing()} and {@link #setMajorSpacing(int)}
+	 *             instead.
 	 */
 	protected int majorSpacing = 5;
 
 	/**
 	 * The spacing along the minor axis.
 	 * 
-	 * @deprecated Use {@link #getMinorSpacing()} and
-	 *             {@link #setMinorSpacing(int)} instead.
+	 * @deprecated Use {@link #getMinorSpacing()} and {@link #setMinorSpacing(int)}
+	 *             instead.
 	 */
 	protected int minorSpacing = 5;
 
@@ -93,8 +93,7 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * Constructs a FlowLayout whose orientation is given in the input.
 	 * 
-	 * @param isHorizontal
-	 *            <code>true</code> if the layout should be horizontal
+	 * @param isHorizontal <code>true</code> if the layout should be horizontal
 	 * @since 2.0
 	 */
 	public FlowLayout(boolean isHorizontal) {
@@ -103,11 +102,10 @@ public class FlowLayout extends OrderedLayout {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(IFigure,
-	 *      int, int)
+	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(IFigure, int,
+	 *      int)
 	 */
-	protected Dimension calculatePreferredSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		// Subtract out the insets from the hints
 		if (wHint > -1)
 			wHint = Math.max(0, wHint - container.getInsets().getWidth());
@@ -176,12 +174,9 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * Provides the given child's preferred size.
 	 * 
-	 * @param child
-	 *            the Figure whose preferred size needs to be calculated
-	 * @param wHint
-	 *            the width hint
-	 * @param hHint
-	 *            the height hint
+	 * @param child the Figure whose preferred size needs to be calculated
+	 * @param wHint the width hint
+	 * @param hHint the height hint
 	 * @return the child's preferred size
 	 */
 	protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
@@ -215,8 +210,8 @@ public class FlowLayout extends OrderedLayout {
 	}
 
 	/**
-	 * Returns the spacing in pixels to be used between children in the
-	 * direction parallel to the layout's orientation.
+	 * Returns the spacing in pixels to be used between children in the direction
+	 * parallel to the layout's orientation.
 	 * 
 	 * @return the major spacing
 	 */
@@ -234,8 +229,7 @@ public class FlowLayout extends OrderedLayout {
 	}
 
 	/**
-	 * Initializes the state of row data, which is internal to the layout
-	 * process.
+	 * Initializes the state of row data, which is internal to the layout process.
 	 */
 	protected void initRow() {
 		data.rowX = 0;
@@ -245,11 +239,10 @@ public class FlowLayout extends OrderedLayout {
 	}
 
 	/**
-	 * Initializes state data for laying out children, based on the Figure given
-	 * as input.
+	 * Initializes state data for laying out children, based on the Figure given as
+	 * input.
 	 * 
-	 * @param parent
-	 *            the parent figure
+	 * @param parent the parent figure
 	 * @since 2.0
 	 */
 	protected void initVariables(IFigure parent) {
@@ -273,8 +266,7 @@ public class FlowLayout extends OrderedLayout {
 	}
 
 	/**
-	 * Overwritten to guarantee backwards compatibility with {@link #fill}
-	 * field.
+	 * Overwritten to guarantee backwards compatibility with {@link #fill} field.
 	 * 
 	 * @see org.eclipse.draw2d.OrderedLayout#isStretchMinorAxis()
 	 */
@@ -331,8 +323,7 @@ public class FlowLayout extends OrderedLayout {
 	 * Layouts one row of components. This is done based on the layout's
 	 * orientation, minor alignment and major alignment.
 	 * 
-	 * @param parent
-	 *            the parent figure
+	 * @param parent the parent figure
 	 * @since 2.0
 	 */
 	protected void layoutRow(IFigure parent) {
@@ -382,16 +373,12 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * Sets the given bounds for the child figure input.
 	 * 
-	 * @param parent
-	 *            the parent figure
-	 * @param child
-	 *            the child figure
-	 * @param bounds
-	 *            the size of the child to be set
+	 * @param parent the parent figure
+	 * @param child  the child figure
+	 * @param bounds the size of the child to be set
 	 * @since 2.0
 	 */
-	protected void setBoundsOfChild(IFigure parent, IFigure child,
-			Rectangle bounds) {
+	protected void setBoundsOfChild(IFigure parent, IFigure child, Rectangle bounds) {
 		parent.getClientArea(Rectangle.SINGLETON);
 		bounds.translate(Rectangle.SINGLETON.x, Rectangle.SINGLETON.y);
 		child.setBounds(bounds);
@@ -407,8 +394,7 @@ public class FlowLayout extends OrderedLayout {
 	 * <li>{@link #ALIGN_RIGHTBOTTOM}
 	 * </ul>
 	 * 
-	 * @param align
-	 *            the major alignment
+	 * @param align the major alignment
 	 * @since 2.0
 	 */
 	public void setMajorAlignment(int align) {
@@ -419,8 +405,7 @@ public class FlowLayout extends OrderedLayout {
 	 * Sets the spacing in pixels to be used between children in the direction
 	 * parallel to the layout's orientation.
 	 * 
-	 * @param n
-	 *            the major spacing
+	 * @param n the major spacing
 	 * @since 2.0
 	 */
 	public void setMajorSpacing(int n) {
@@ -430,8 +415,7 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * Sets the spacing to be used between children within a row/column.
 	 * 
-	 * @param n
-	 *            the minor spacing
+	 * @param n the minor spacing
 	 * @since 2.0
 	 */
 	public void setMinorSpacing(int n) {
@@ -439,8 +423,7 @@ public class FlowLayout extends OrderedLayout {
 	}
 
 	/**
-	 * Overwritten to guarantee backwards compatibility with {@link #fill}
-	 * field.
+	 * Overwritten to guarantee backwards compatibility with {@link #fill} field.
 	 * 
 	 * @see org.eclipse.draw2d.OrderedLayout#setStretchMinorAxis(boolean)
 	 */

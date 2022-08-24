@@ -50,10 +50,8 @@ public abstract class BaseTestCase extends TestCase {
 	}
 
 	public void assertEquals(Image expected, Image actual) {
-		assertTrue(
-				"The given images did not match",
-				Arrays.equals(expected.getImageData().data,
-						actual.getImageData().data));
+		assertTrue("The given images did not match",
+				Arrays.equals(expected.getImageData().data, actual.getImageData().data));
 	}
 
 }

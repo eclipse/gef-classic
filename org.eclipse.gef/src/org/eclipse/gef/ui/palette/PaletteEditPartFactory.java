@@ -42,14 +42,11 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	/**
 	 * Create DrawerEditPart - edit part for PaletteDrawer
 	 * 
-	 * @param parentEditPart
-	 *            the parent of the new editpart to be created
-	 * @param model
-	 *            the PaletteDrawer
+	 * @param parentEditPart the parent of the new editpart to be created
+	 * @param model          the PaletteDrawer
 	 * @return the newly created EditPart
 	 */
-	protected EditPart createDrawerEditPart(EditPart parentEditPart,
-			Object model) {
+	protected EditPart createDrawerEditPart(EditPart parentEditPart, Object model) {
 		return new DrawerEditPart((PaletteDrawer) model);
 	}
 
@@ -65,8 +62,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 			Object type = ((PaletteContainer) model).getType();
 			if (PaletteDrawer.PALETTE_TYPE_DRAWER.equals(type))
 				return createDrawerEditPart(parentEditPart, model);
-			if (PaletteGroup.PALETTE_TYPE_GROUP.equals(type)
-					|| PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(type))
+			if (PaletteGroup.PALETTE_TYPE_GROUP.equals(type) || PaletteContainer.PALETTE_TYPE_UNKNOWN.equals(type))
 				return createGroupEditPart(parentEditPart, model);
 			if (PaletteToolbar.PALETTE_TYPE_TOOLBAR_GROUP.equals(type))
 				return createToolbarEditPart(parentEditPart, model);
@@ -83,29 +79,23 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	/**
 	 * Create SeparatorEditPart - edit part for PaletteSeparator
 	 * 
-	 * @param parentEditPart
-	 *            the parent of the new editpart to be created
-	 * @param model
-	 *            the PaletteSeparator
+	 * @param parentEditPart the parent of the new editpart to be created
+	 * @param model          the PaletteSeparator
 	 * @return the newly created EditPart
 	 */
-	protected EditPart createSeparatorEditPart(EditPart parentEditPart,
-			Object model) {
+	protected EditPart createSeparatorEditPart(EditPart parentEditPart, Object model) {
 		return new SeparatorEditPart((PaletteSeparator) model);
 	}
 
 	/**
 	 * Create PaletteStackEditPart - edit part for PaletteStack
 	 * 
-	 * @param parentEditPart
-	 *            the parent of the new editpart to be created
-	 * @param model
-	 *            the PaletteStack
+	 * @param parentEditPart the parent of the new editpart to be created
+	 * @param model          the PaletteStack
 	 * @return the newly created EditPart
 	 */
 	protected EditPart createStackEditPart(EditPart parentEditPart, Object model) {
-		if (parentEditPart instanceof PaletteEditPart
-				&& ((PaletteEditPart) parentEditPart).isToolbarItem()) {
+		if (parentEditPart instanceof PaletteEditPart && ((PaletteEditPart) parentEditPart).isToolbarItem()) {
 			return new PaletteStackEditPart((PaletteStack) model);
 		}
 		return new PinnablePaletteStackEditPart((PaletteStack) model);
@@ -114,10 +104,8 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	/**
 	 * Create ToolEntryEditPart - edit part for ToolEntry
 	 * 
-	 * @param parentEditPart
-	 *            the parent of the new editpart to be created
-	 * @param model
-	 *            the ToolEntry
+	 * @param parentEditPart the parent of the new editpart to be created
+	 * @param model          the ToolEntry
 	 * @return the newly created EditPart
 	 */
 	protected EditPart createEntryEditPart(EditPart parentEditPart, Object model) {
@@ -127,10 +115,8 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	/**
 	 * Create GroupEditPart - edit part for PaletteGroup
 	 * 
-	 * @param parentEditPart
-	 *            the parent of the new editpart to be created
-	 * @param model
-	 *            the PaletteGroup
+	 * @param parentEditPart the parent of the new editpart to be created
+	 * @param model          the PaletteGroup
 	 * @return the newly created EditPart
 	 */
 	protected EditPart createGroupEditPart(EditPart parentEditPart, Object model) {
@@ -140,42 +126,33 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	/**
 	 * Create ToolbarEditPart - edit part for PaletteToolbar
 	 * 
-	 * @param parentEditPart
-	 *            the parent of the new editpart to be created
-	 * @param model
-	 *            the PaletteToolbar
+	 * @param parentEditPart the parent of the new editpart to be created
+	 * @param model          the PaletteToolbar
 	 * @return the newly created EditPart
 	 */
-	protected EditPart createToolbarEditPart(EditPart parentEditPart,
-			Object model) {
+	protected EditPart createToolbarEditPart(EditPart parentEditPart, Object model) {
 		return new ToolbarEditPart((PaletteToolbar) model);
 	}
 
 	/**
 	 * Create SliderPaletteEditPart - edit part for PaletteRoot
 	 * 
-	 * @param parentEditPart
-	 *            the parent of the new editpart to be created
-	 * @param model
-	 *            the PaletteRoot
+	 * @param parentEditPart the parent of the new editpart to be created
+	 * @param model          the PaletteRoot
 	 * @return the newly created EditPart
 	 */
-	protected EditPart createMainPaletteEditPart(EditPart parentEditPart,
-			Object model) {
+	protected EditPart createMainPaletteEditPart(EditPart parentEditPart, Object model) {
 		return new SliderPaletteEditPart((PaletteRoot) model);
 	}
 
 	/**
 	 * Create TemplateEditPart - edit part for PaletteTemplateEntry
 	 * 
-	 * @param parentEditPart
-	 *            the parent of the new editpart to be created
-	 * @param model
-	 *            the PaletteTemplateEntry
+	 * @param parentEditPart the parent of the new editpart to be created
+	 * @param model          the PaletteTemplateEntry
 	 * @return the newly created EditPart
 	 */
-	protected EditPart createTemplateEditPart(EditPart parentEditPart,
-			Object model) {
+	protected EditPart createTemplateEditPart(EditPart parentEditPart, Object model) {
 		return new TemplateEditPart((PaletteTemplateEntry) model);
 	}
 

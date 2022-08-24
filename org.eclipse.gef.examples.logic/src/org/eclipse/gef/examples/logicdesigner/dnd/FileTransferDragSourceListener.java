@@ -18,8 +18,7 @@ import org.eclipse.gef.EditPartViewer;
 
 import org.eclipse.gef.examples.logicdesigner.edit.LogicLabelEditPart;
 
-public class FileTransferDragSourceListener extends
-		org.eclipse.gef.dnd.AbstractTransferDragSourceListener {
+public class FileTransferDragSourceListener extends org.eclipse.gef.dnd.AbstractTransferDragSourceListener {
 
 	public FileTransferDragSourceListener(EditPartViewer viewer) {
 		super(viewer, TextTransfer.getInstance());

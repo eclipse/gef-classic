@@ -28,8 +28,7 @@ public class LocationRequest extends org.eclipse.gef.Request {
 	/**
 	 * Constructs a LocationRequest with the given type.
 	 * 
-	 * @param type
-	 *            the type
+	 * @param type the type
 	 */
 	public LocationRequest(Object type) {
 		super(type);
@@ -47,8 +46,7 @@ public class LocationRequest extends org.eclipse.gef.Request {
 	/**
 	 * Sets the current location.
 	 * 
-	 * @param p
-	 *            The current location.
+	 * @param p The current location.
 	 */
 	public void setLocation(Point p) {
 		location = p;

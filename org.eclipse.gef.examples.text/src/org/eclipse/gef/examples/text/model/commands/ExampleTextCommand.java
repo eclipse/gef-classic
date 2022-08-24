@@ -33,8 +33,7 @@ public abstract class ExampleTextCommand extends Command implements TextCommand 
 	public void executePending() {
 	}
 
-	protected static TextEditPart lookupModel(GraphicalTextViewer viewer,
-			ModelElement model) {
+	protected static TextEditPart lookupModel(GraphicalTextViewer viewer, ModelElement model) {
 		return (TextEditPart) viewer.getEditPartRegistry().get(model);
 	}
 

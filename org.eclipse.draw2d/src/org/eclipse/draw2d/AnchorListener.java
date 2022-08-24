@@ -23,8 +23,7 @@ public interface AnchorListener {
 	/**
 	 * Called when an anchor has moved to a new location.
 	 * 
-	 * @param anchor
-	 *            The anchor that has moved.
+	 * @param anchor The anchor that has moved.
 	 */
 	void anchorMoved(ConnectionAnchor anchor);
 

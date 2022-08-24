@@ -16,43 +16,38 @@ package org.eclipse.draw2d;
 public interface MouseMotionListener {
 
 	/**
-	 * Called when the mouse has moved over the listened to object while a
-	 * button was pressed.
+	 * Called when the mouse has moved over the listened to object while a button
+	 * was pressed.
 	 * 
-	 * @param me
-	 *            The MouseEvent object
+	 * @param me The MouseEvent object
 	 */
 	void mouseDragged(MouseEvent me);
 
 	/**
 	 * Called when the mouse has entered the listened to object.
 	 * 
-	 * @param me
-	 *            The MouseEvent object
+	 * @param me The MouseEvent object
 	 */
 	void mouseEntered(MouseEvent me);
 
 	/**
 	 * Called when the mouse has exited the listened to object.
 	 * 
-	 * @param me
-	 *            The MouseEvent object
+	 * @param me The MouseEvent object
 	 */
 	void mouseExited(MouseEvent me);
 
 	/**
 	 * Called when the mouse hovers over the listened to object.
 	 * 
-	 * @param me
-	 *            The MouseEvent object
+	 * @param me The MouseEvent object
 	 */
 	void mouseHover(MouseEvent me);
 
 	/**
 	 * Called when the mouse has moved over the listened to object.
 	 * 
-	 * @param me
-	 *            The MouseEvent object
+	 * @param me The MouseEvent object
 	 */
 	void mouseMoved(MouseEvent me);
 

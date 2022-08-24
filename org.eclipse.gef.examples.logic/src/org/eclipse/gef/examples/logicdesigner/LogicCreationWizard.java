@@ -25,8 +25,7 @@ public class LogicCreationWizard extends Wizard implements INewWizard {
 		addPage(logicPage);
 	}
 
-	public void init(IWorkbench aWorkbench,
-			IStructuredSelection currentSelection) {
+	public void init(IWorkbench aWorkbench, IStructuredSelection currentSelection) {
 		workbench = aWorkbench;
 		selection = currentSelection;
 	}

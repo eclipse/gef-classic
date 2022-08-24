@@ -66,12 +66,10 @@ public class DetailedLabelFigure extends Figure {
 		page.setBorder(PAGE_BORDER);
 
 		nameText = new TextFlow();
-		nameText.setLayoutManager(new ParagraphTextLayout(nameText,
-				ParagraphTextLayout.WORD_WRAP_TRUNCATE));
+		nameText.setLayoutManager(new ParagraphTextLayout(nameText, ParagraphTextLayout.WORD_WRAP_TRUNCATE));
 
 		descText = new TextFlow();
-		descText.setLayoutManager(new ParagraphTextLayout(descText,
-				ParagraphTextLayout.WORD_WRAP_TRUNCATE));
+		descText.setLayoutManager(new ParagraphTextLayout(descText, ParagraphTextLayout.WORD_WRAP_TRUNCATE));
 
 		page.add(nameText);
 		add(image);
@@ -135,8 +133,7 @@ public class DetailedLabelFigure extends Figure {
 	}
 
 	/**
-	 * @param s
-	 *            The description for this entry
+	 * @param s The description for this entry
 	 */
 	public void setDescription(String s) {
 		String str = ""; //$NON-NLS-1$
@@ -154,17 +151,15 @@ public class DetailedLabelFigure extends Figure {
 	/**
 	 * Sets the icon for this figure
 	 * 
-	 * @param icon
-	 *            The new image
+	 * @param icon The new image
 	 */
 	public void setImage(Image icon) {
 		image.setImage(icon);
 	}
 
 	/**
-	 * @param layoutMode
-	 *            the palette layout (any of the
-	 *            PaletteViewerPreferences.LAYOUT_XXXX options)
+	 * @param layoutMode the palette layout (any of the
+	 *                   PaletteViewerPreferences.LAYOUT_XXXX options)
 	 */
 	public void setLayoutMode(int layoutMode) {
 		updateFont(layoutMode);
@@ -192,13 +187,12 @@ public class DetailedLabelFigure extends Figure {
 			layout.setConstraint(page, BorderLayout.CENTER);
 		} else if (layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
 			/*
-			 * Fix for Bug# 39130 Earlier, descText was only being added to the
-			 * page if the description was not an empty String. Now, it's always
-			 * added. This fixes the case mentioned in 39130. The undesirable
-			 * side-effect is that the descText will be added to the page even
-			 * when it's empty. However, that shouldn't affect anything because
-			 * the descText will be empty (even in the case where the
-			 * description is not empty, but is equal to the name -- see
+			 * Fix for Bug# 39130 Earlier, descText was only being added to the page if the
+			 * description was not an empty String. Now, it's always added. This fixes the
+			 * case mentioned in 39130. The undesirable side-effect is that the descText
+			 * will be added to the page even when it's empty. However, that shouldn't
+			 * affect anything because the descText will be empty (even in the case where
+			 * the description is not empty, but is equal to the name -- see
 			 * setDescription()).
 			 */
 			page.add(descText);
@@ -209,8 +203,7 @@ public class DetailedLabelFigure extends Figure {
 	}
 
 	/**
-	 * @param str
-	 *            The new name for this entry
+	 * @param str The new name for this entry
 	 */
 	public void setName(String str) {
 		if (nameText.getText().equals(str)) {
@@ -220,8 +213,7 @@ public class DetailedLabelFigure extends Figure {
 	}
 
 	/**
-	 * @param state
-	 *            <code>true</code> if this entry is to be set as selected
+	 * @param state <code>true</code> if this entry is to be set as selected
 	 */
 	public void setSelected(boolean state) {
 		selectionState = state;
@@ -250,8 +242,7 @@ public class DetailedLabelFigure extends Figure {
 				FONTCACHE.checkIn(boldFont);
 				boldFont = null;
 			}
-			if (layout == PaletteViewerPreferences.LAYOUT_DETAILS
-					&& cachedFont != null)
+			if (layout == PaletteViewerPreferences.LAYOUT_DETAILS && cachedFont != null)
 				boldFont = FONTCACHE.checkOut(cachedFont);
 			nameText.setFont(boldFont);
 		}
@@ -263,9 +254,8 @@ public class DetailedLabelFigure extends Figure {
 		protected void useShadedImage() {
 			disposeShadedImage();
 			if (super.getImage() != null) {
-				ImageData data = ImageUtilities
-						.createShadedImage(super.getImage(),
-								ColorConstants.menuBackgroundSelected);
+				ImageData data = ImageUtilities.createShadedImage(super.getImage(),
+						ColorConstants.menuBackgroundSelected);
 				shadedImage = new Image(null, data, data.getTransparencyMask());
 			}
 		}
@@ -303,9 +293,9 @@ public class DetailedLabelFigure extends Figure {
 		}
 
 		/*
-		 * Clients should only check in fonts that they checked out from this
-		 * cache, and should do only one check-in per checkout. If the given
-		 * font is not found, a null pointer exception will be encountered.
+		 * Clients should only check in fonts that they checked out from this cache, and
+		 * should do only one check-in per checkout. If the given font is not found, a
+		 * null pointer exception will be encountered.
 		 */
 		public void checkIn(Font boldFont) {
 			FontInfo info = null;

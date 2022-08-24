@@ -27,8 +27,7 @@ public class BendpointCreationHandle extends BendpointHandle {
 
 	{
 		setCursor(SharedCursors.SIZEALL);
-		setPreferredSize(new Dimension(DEFAULT_HANDLE_SIZE - 2,
-				DEFAULT_HANDLE_SIZE - 2));
+		setPreferredSize(new Dimension(DEFAULT_HANDLE_SIZE - 2, DEFAULT_HANDLE_SIZE - 2));
 	}
 
 	/**
@@ -38,14 +37,12 @@ public class BendpointCreationHandle extends BendpointHandle {
 	}
 
 	/**
-	 * Creates a new BendpointCreationHandle, sets its owner to
-	 * <code>owner</code> and its index to <code>index</code>, and sets its
-	 * locator to a new {@link MidpointLocator}.
+	 * Creates a new BendpointCreationHandle, sets its owner to <code>owner</code>
+	 * and its index to <code>index</code>, and sets its locator to a new
+	 * {@link MidpointLocator}.
 	 * 
-	 * @param owner
-	 *            the ConnectionEditPart owner
-	 * @param index
-	 *            the index
+	 * @param owner the ConnectionEditPart owner
+	 * @param index the index
 	 */
 	public BendpointCreationHandle(ConnectionEditPart owner, int index) {
 		setOwner(owner);
@@ -54,20 +51,15 @@ public class BendpointCreationHandle extends BendpointHandle {
 	}
 
 	/**
-	 * Creates a new BendpointCreationHandle, sets its owner to
-	 * <code>owner</code> and its index to <code>index</code>, and sets its
-	 * locator to a new {@link MidpointLocator} with the given
-	 * <code>locatorIndex</code>.
+	 * Creates a new BendpointCreationHandle, sets its owner to <code>owner</code>
+	 * and its index to <code>index</code>, and sets its locator to a new
+	 * {@link MidpointLocator} with the given <code>locatorIndex</code>.
 	 * 
-	 * @param owner
-	 *            the ConnectionEditPart owner
-	 * @param index
-	 *            the index
-	 * @param locatorIndex
-	 *            the locator index
+	 * @param owner        the ConnectionEditPart owner
+	 * @param index        the index
+	 * @param locatorIndex the locator index
 	 */
-	public BendpointCreationHandle(ConnectionEditPart owner, int index,
-			int locatorIndex) {
+	public BendpointCreationHandle(ConnectionEditPart owner, int index, int locatorIndex) {
 		setOwner(owner);
 		setIndex(index);
 		setLocator(new MidpointLocator(getConnection(), locatorIndex));
@@ -78,15 +70,11 @@ public class BendpointCreationHandle extends BendpointHandle {
 	 * <code>owner</code>, sets its index to <code>index</code>, and sets its
 	 * locator to <code>locator</code>.
 	 * 
-	 * @param owner
-	 *            the ConnectionEditPart owner
-	 * @param index
-	 *            the index
-	 * @param locator
-	 *            the Locator
+	 * @param owner   the ConnectionEditPart owner
+	 * @param index   the index
+	 * @param locator the Locator
 	 */
-	public BendpointCreationHandle(ConnectionEditPart owner, int index,
-			Locator locator) {
+	public BendpointCreationHandle(ConnectionEditPart owner, int index, Locator locator) {
 		setOwner(owner);
 		setIndex(index);
 		setLocator(locator);
@@ -99,8 +87,7 @@ public class BendpointCreationHandle extends BendpointHandle {
 	 */
 	protected DragTracker createDragTracker() {
 		ConnectionBendpointTracker tracker;
-		tracker = new ConnectionBendpointTracker(
-				(ConnectionEditPart) getOwner(), getIndex());
+		tracker = new ConnectionBendpointTracker((ConnectionEditPart) getOwner(), getIndex());
 		tracker.setType(RequestConstants.REQ_CREATE_BENDPOINT);
 		tracker.setDefaultCursor(getCursor());
 		return tracker;

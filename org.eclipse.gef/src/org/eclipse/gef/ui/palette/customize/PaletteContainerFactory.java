@@ -32,8 +32,7 @@ public abstract class PaletteContainerFactory extends PaletteEntryFactory {
 	/**
 	 * @see PaletteEntryFactory#determineContainerForNewEntry(PaletteEntry)
 	 */
-	protected PaletteContainer determineContainerForNewEntry(
-			PaletteEntry selected) {
+	protected PaletteContainer determineContainerForNewEntry(PaletteEntry selected) {
 		if (selected instanceof PaletteRoot)
 			return (PaletteContainer) selected;
 		PaletteContainer current = selected.getParent();
@@ -46,8 +45,7 @@ public abstract class PaletteContainerFactory extends PaletteEntryFactory {
 	 * @see PaletteEntryFactory#determineIndexForNewEntry(PaletteContainer,
 	 *      PaletteEntry)
 	 */
-	protected int determineIndexForNewEntry(PaletteContainer parent,
-			PaletteEntry selected) {
+	protected int determineIndexForNewEntry(PaletteContainer parent, PaletteEntry selected) {
 		if (parent == selected) {
 			return 0;
 		}
@@ -61,8 +59,7 @@ public abstract class PaletteContainerFactory extends PaletteEntryFactory {
 	}
 
 	/**
-	 * You can always create a new container. So, this method always returns
-	 * true.
+	 * You can always create a new container. So, this method always returns true.
 	 * 
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#canCreate(PaletteEntry)
 	 */

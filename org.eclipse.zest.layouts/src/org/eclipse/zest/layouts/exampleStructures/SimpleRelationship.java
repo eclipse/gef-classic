@@ -21,14 +21,13 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 import org.eclipse.zest.layouts.dataStructures.BendPoint;
 
 /**
- * The SimpleRelation class describes the relationship between
- * two objects: source and destination.  Each relationship
- * has a weight and direction associated with it.
- * Note: The source object is at the beginning of the relationship.
- * Note: The destination object is at the end of the relationship.
+ * The SimpleRelation class describes the relationship between two objects:
+ * source and destination. Each relationship has a weight and direction
+ * associated with it. Note: The source object is at the beginning of the
+ * relationship. Note: The destination object is at the end of the relationship.
  *
- * @version  2.0
- * @author   Casey Best (version 1.0 by Jingwei Wu)
+ * @version 2.0
+ * @author Casey Best (version 1.0 by Jingwei Wu)
  * @author Chris Bennett
  */
 public class SimpleRelationship implements LayoutRelationship {
@@ -60,9 +59,9 @@ public class SimpleRelationship implements LayoutRelationship {
 	protected LayoutEntity destinationEntity;
 
 	/**
-	 * If directional, algorithms must note the direction of the relationship.
-	 * If not directional, algorithms are to ignore which direction the relationship is going.
-	 * Switching the source and destination should make no difference. 
+	 * If directional, algorithms must note the direction of the relationship. If
+	 * not directional, algorithms are to ignore which direction the relationship is
+	 * going. Switching the source and destination should make no difference.
 	 */
 	protected boolean bidirectional;
 
@@ -79,12 +78,15 @@ public class SimpleRelationship implements LayoutRelationship {
 
 	/**
 	 * Constructor.
-	 * @param sourceEntity The sourceEntity of this SimpleRelation.
+	 * 
+	 * @param sourceEntity      The sourceEntity of this SimpleRelation.
 	 * @param destinationEntity The object of this SimpleRelation.
-	 * @param bidirectional Determines if the <code>sourceEntity</code> and
-	 * <code>destinationEntity</code> are equal(exchangeable).
+	 * @param bidirectional     Determines if the <code>sourceEntity</code> and
+	 *                          <code>destinationEntity</code> are
+	 *                          equal(exchangeable).
 	 * @throws java.lang.NullPointerException If either <code>sourceEntity
-	 * </code> or <code>destinationEntity</code> is <code>null</code>.
+	 * </code>                             or <code>destinationEntity</code> is
+	 *                                        <code>null</code>.
 	 */
 	public SimpleRelationship(LayoutEntity sourceEntity, LayoutEntity destinationEntity, boolean bidirectional) {
 		this(sourceEntity, destinationEntity, bidirectional, 1);
@@ -92,14 +94,18 @@ public class SimpleRelationship implements LayoutRelationship {
 
 	/**
 	 * Constructor.
-	 * @param sourceEntity The sourceEntity of this SimpleRelation.
+	 * 
+	 * @param sourceEntity      The sourceEntity of this SimpleRelation.
 	 * @param destinationEntity The destinationEntity of this SimpleRelation.
-	 * @param exchangeable Determines if the <code>sourceEntity</code> and
-	 * <code>destinationEntity</code> are equal(exchangeable).
+	 * @param exchangeable      Determines if the <code>sourceEntity</code> and
+	 *                          <code>destinationEntity</code> are
+	 *                          equal(exchangeable).
 	 * @throws java.lang.NullPointerException If either <code>sourceEntity
-	 * </code> or <code>destinationEntity</code> is <code>null</code>.
+	 * </code>                             or <code>destinationEntity</code> is
+	 *                                        <code>null</code>.
 	 */
-	public SimpleRelationship(LayoutEntity sourceEntity, LayoutEntity destinationEntity, boolean bidirectional, double weight) {
+	public SimpleRelationship(LayoutEntity sourceEntity, LayoutEntity destinationEntity, boolean bidirectional,
+			double weight) {
 		this.destinationEntity = destinationEntity;
 		this.sourceEntity = sourceEntity;
 		this.bidirectional = bidirectional;
@@ -112,6 +118,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	/**
 	 * Gets the sourceEntity of this SimpleRelation whether the relation is
 	 * exchangeable or not.
+	 * 
 	 * @return The sourceEntity.
 	 */
 	public LayoutEntity getSourceInLayout() {
@@ -121,6 +128,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	/**
 	 * Gets the destinationEntity of this SimpleRelation whether the relation is
 	 * exchangeable or not.
+	 * 
 	 * @return The destinationEntity of this SimpleRelation.
 	 */
 	public LayoutEntity getDestinationInLayout() {
@@ -128,9 +136,10 @@ public class SimpleRelationship implements LayoutRelationship {
 	}
 
 	/**
-	 * If bidirectional, the direction of the relationship doesn't matter.  Switching the source and destination should make no difference.
-	 * If not bidirectional, layout algorithms need to take into account the direction of the relationship.  The direction is based on the
-	 * source and destination entities.
+	 * If bidirectional, the direction of the relationship doesn't matter. Switching
+	 * the source and destination should make no difference. If not bidirectional,
+	 * layout algorithms need to take into account the direction of the
+	 * relationship. The direction is based on the source and destination entities.
 	 */
 	public boolean isBidirectionalInLayout() {
 		return bidirectional;
@@ -145,14 +154,16 @@ public class SimpleRelationship implements LayoutRelationship {
 	}
 
 	/**
-	 * An algorithm may require a place to store information.  Use this structure for that purpose.
+	 * An algorithm may require a place to store information. Use this structure for
+	 * that purpose.
 	 */
 	public void setAttributeInLayout(String attribute, Object value) {
 		attributes.put(attribute, value);
 	}
 
 	/**
-	 * An algorithm may require a place to store information.  Use this structure for that purpose.
+	 * An algorithm may require a place to store information. Use this structure for
+	 * that purpose.
 	 */
 	public Object getAttributeInLayout(String attribute) {
 		return attributes.get(attribute);
@@ -206,15 +217,21 @@ public class SimpleRelationship implements LayoutRelationship {
 		DEFAULT_RELATIONSHIP_HIGHLIGHT_COLOR = c;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see ca.uvic.cs.chisel.layouts.LayoutRelationship#getInternalRelationship()
 	 */
 	public Object getLayoutInformation() {
 		return internalRelationship;
 	}
 
-	/* (non-Javadoc)
-	 * @see ca.uvic.cs.chisel.layouts.LayoutRelationship#setInternalRelationship(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * ca.uvic.cs.chisel.layouts.LayoutRelationship#setInternalRelationship(java.
+	 * lang.Object)
 	 */
 	public void setLayoutInformation(Object layoutInformation) {
 		this.internalRelationship = layoutInformation;
@@ -237,7 +254,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	}
 
 	/**
-	 * Set the label for this edge (available in the label layout constraint). 
+	 * Set the label for this edge (available in the label layout constraint).
 	 */
 	public void setLabel(String label) {
 		this.label = label;

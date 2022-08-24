@@ -60,8 +60,7 @@ public class SimpleActivityLabel extends Label {
 	/**
 	 * Sets the selection state of this SimpleActivityLabel
 	 * 
-	 * @param b
-	 *            true will cause the label to appear selected
+	 * @param b true will cause the label to appear selected
 	 */
 	public void setSelected(boolean b) {
 		selected = b;
@@ -71,9 +70,8 @@ public class SimpleActivityLabel extends Label {
 	/**
 	 * Sets the focus state of this SimpleActivityLabel
 	 * 
-	 * @param b
-	 *            true will cause a focus rectangle to be drawn around the text
-	 *            of the Label
+	 * @param b true will cause a focus rectangle to be drawn around the text of the
+	 *          Label
 	 */
 	public void setFocus(boolean b) {
 		hasFocus = b;

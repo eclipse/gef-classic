@@ -41,8 +41,7 @@ public class BendpointRequest extends org.eclipse.gef.requests.LocationRequest {
 	/**
 	 * Sets the index of the bendpoint to be changed.
 	 * 
-	 * @param i
-	 *            the bendpoint's index
+	 * @param i the bendpoint's index
 	 */
 	public void setIndex(int i) {
 		index = i;
@@ -51,8 +50,7 @@ public class BendpointRequest extends org.eclipse.gef.requests.LocationRequest {
 	/**
 	 * Sets the ConnectionEditPart the bendpoint belongs to.
 	 * 
-	 * @param s
-	 *            the bendpoint's ConnectionEditPart
+	 * @param s the bendpoint's ConnectionEditPart
 	 */
 	public void setSource(ConnectionEditPart s) {
 		source = s;

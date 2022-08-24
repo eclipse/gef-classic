@@ -32,8 +32,7 @@ public abstract class GraphicalEditPolicy extends AbstractEditPolicy {
 	 * Adds the specified <code>Figure</code> to the
 	 * {@link LayerConstants#FEEDBACK_LAYER}.
 	 * 
-	 * @param figure
-	 *            the feedback to add
+	 * @param figure the feedback to add
 	 */
 	protected void addFeedback(IFigure figure) {
 		getFeedbackLayer().add(figure);
@@ -60,8 +59,7 @@ public abstract class GraphicalEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Obtains the specified layer.
 	 * 
-	 * @param layer
-	 *            the key identifying the layer
+	 * @param layer the key identifying the layer
 	 * @return the requested layer
 	 */
 	protected IFigure getLayer(Object layer) {
@@ -72,8 +70,7 @@ public abstract class GraphicalEditPolicy extends AbstractEditPolicy {
 	 * Removes the specified <code>Figure</code> from the
 	 * {@link LayerConstants#FEEDBACK_LAYER}.
 	 * 
-	 * @param figure
-	 *            the feedback to remove
+	 * @param figure the feedback to remove
 	 */
 	protected void removeFeedback(IFigure figure) {
 		getFeedbackLayer().remove(figure);

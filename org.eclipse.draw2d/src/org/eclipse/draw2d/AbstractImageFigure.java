@@ -22,8 +22,7 @@ import java.util.List;
  * @author aboyko
  * @since 3.6
  */
-public abstract class AbstractImageFigure extends Figure implements
-		IImageFigure {
+public abstract class AbstractImageFigure extends Figure implements IImageFigure {
 
 	private List imageListeners = new ArrayList();
 

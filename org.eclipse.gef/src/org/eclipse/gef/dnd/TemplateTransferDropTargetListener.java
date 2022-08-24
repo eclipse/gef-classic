@@ -31,14 +31,12 @@ import org.eclipse.gef.requests.SimpleFactory;
  * @since 2.1
  * @author Eric Bordeau
  */
-public class TemplateTransferDropTargetListener extends
-		AbstractTransferDropTargetListener {
+public class TemplateTransferDropTargetListener extends AbstractTransferDropTargetListener {
 
 	/**
 	 * Constructs a listener on the specified viewer.
 	 * 
-	 * @param viewer
-	 *            the EditPartViewer
+	 * @param viewer the EditPartViewer
 	 */
 	public TemplateTransferDropTargetListener(EditPartViewer viewer) {
 		super(viewer, TemplateTransfer.getInstance());
@@ -51,8 +49,7 @@ public class TemplateTransferDropTargetListener extends
 		// Look at the data on templatetransfer.
 		// Create factory
 		CreateRequest request = new CreateRequest();
-		request.setFactory(getFactory(TemplateTransfer.getInstance()
-				.getTemplate()));
+		request.setFactory(getFactory(TemplateTransfer.getInstance().getTemplate()));
 		return request;
 	}
 
@@ -66,12 +63,11 @@ public class TemplateTransferDropTargetListener extends
 	}
 
 	/**
-	 * Returns the appropriate Factory object to be used for the specified
-	 * template. This Factory is used on the CreateRequest that is sent to the
-	 * target EditPart.
+	 * Returns the appropriate Factory object to be used for the specified template.
+	 * This Factory is used on the CreateRequest that is sent to the target
+	 * EditPart.
 	 * 
-	 * @param template
-	 *            the template Object
+	 * @param template the template Object
 	 * @return a Factory
 	 */
 	protected CreationFactory getFactory(Object template) {
@@ -95,8 +91,8 @@ public class TemplateTransferDropTargetListener extends
 	}
 
 	/**
-	 * The purpose of a template is to be copied. Therefore, the Drop operation
-	 * is set to <code>DND.DROP_COPY</code> by default.
+	 * The purpose of a template is to be copied. Therefore, the Drop operation is
+	 * set to <code>DND.DROP_COPY</code> by default.
 	 * 
 	 * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#handleDragOver()
 	 */

@@ -21,8 +21,8 @@ public class PrecisionPoint extends Point {
 	 * Double value for X
 	 * 
 	 * @noreference
-	 * @deprecated Use {@link #setPreciseX(double)} and {@link #preciseX()}
-	 *             instead. This field will become private in future versions.
+	 * @deprecated Use {@link #setPreciseX(double)} and {@link #preciseX()} instead.
+	 *             This field will become private in future versions.
 	 */
 	public double preciseX;
 
@@ -30,8 +30,8 @@ public class PrecisionPoint extends Point {
 	 * Double value for Y
 	 * 
 	 * @noreference
-	 * @deprecated Use {@link #setPreciseY(double)} and {@link #preciseY()}
-	 *             instead. This field will become private in future versions.
+	 * @deprecated Use {@link #setPreciseY(double)} and {@link #preciseY()} instead.
+	 *             This field will become private in future versions.
 	 */
 	public double preciseY;
 
@@ -45,10 +45,8 @@ public class PrecisionPoint extends Point {
 	/**
 	 * Constructor for PrecisionPoint.
 	 * 
-	 * @param x
-	 *            X value
-	 * @param y
-	 *            Y value
+	 * @param x X value
+	 * @param y Y value
 	 */
 	public PrecisionPoint(double x, double y) {
 		setPreciseLocation(x, y);
@@ -57,10 +55,8 @@ public class PrecisionPoint extends Point {
 	/**
 	 * Constructor for PrecisionPoint.
 	 * 
-	 * @param x
-	 *            X value
-	 * @param y
-	 *            Y value
+	 * @param x X value
+	 * @param y Y value
 	 */
 	public PrecisionPoint(int x, int y) {
 		this((double) x, (double) y);
@@ -69,8 +65,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * Constructor for PrecisionPoint.
 	 * 
-	 * @param p
-	 *            Point from which the initial values are taken
+	 * @param p Point from which the initial values are taken
 	 */
 	public PrecisionPoint(Point p) {
 		this(p.preciseX(), p.preciseY());
@@ -98,8 +93,7 @@ public class PrecisionPoint extends Point {
 	 * @see org.eclipse.draw2d.geometry.Point#getDifference(org.eclipse.draw2d.geometry.Point)
 	 */
 	public Dimension getDifference(Point p) {
-		return new PrecisionDimension(this.preciseX() - p.preciseX(),
-				this.preciseY() - p.preciseY());
+		return new PrecisionDimension(this.preciseX() - p.preciseX(), this.preciseY() - p.preciseY());
 	}
 
 	/**
@@ -168,13 +162,10 @@ public class PrecisionPoint extends Point {
 	}
 
 	/**
-	 * Sets the precise location of this PrecisionPoint to the given x and y
-	 * values.
+	 * Sets the precise location of this PrecisionPoint to the given x and y values.
 	 * 
-	 * @param x
-	 *            The new x value
-	 * @param y
-	 *            The new y value
+	 * @param x The new x value
+	 * @param y The new y value
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -185,11 +176,10 @@ public class PrecisionPoint extends Point {
 	}
 
 	/**
-	 * Sets the precise location of this PrecisionPoint to the x and y values of
-	 * the given one.
+	 * Sets the precise location of this PrecisionPoint to the x and y values of the
+	 * given one.
 	 * 
-	 * @param p
-	 *            The PrecisionPoint specifying the new x and y values.
+	 * @param p The PrecisionPoint specifying the new x and y values.
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -200,8 +190,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * Sets the precise x value of this PrecisionPoint to the given value.
 	 * 
-	 * @param x
-	 *            The new x value
+	 * @param x The new x value
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -214,8 +203,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * Sets the precise y value of this PrecisionPoint to the given value.
 	 * 
-	 * @param y
-	 *            The new y value
+	 * @param y The new y value
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -268,13 +256,11 @@ public class PrecisionPoint extends Point {
 	}
 
 	/**
-	 * Shifts this Point by the values supplied along each axes, and returns
-	 * this for convenience.
+	 * Shifts this Point by the values supplied along each axes, and returns this
+	 * for convenience.
 	 * 
-	 * @param dx
-	 *            Amount by which point is shifted along X axis.
-	 * @param dy
-	 *            Amount by which point is shifted along Y axis.
+	 * @param dx Amount by which point is shifted along X axis.
+	 * @param dy Amount by which point is shifted along Y axis.
 	 * @return <code>this</code> for convenience
 	 * @since 3.7
 	 */
@@ -297,12 +283,11 @@ public class PrecisionPoint extends Point {
 	/**
 	 * Updates the integer fields using the precise versions.
 	 * 
-	 * @deprecated This method should not be accessed by clients any more (it
-	 *             will be made private in future releases). The update of
-	 *             integer and precision fields is performed automatically if
-	 *             {@link #preciseX} and {@link #preciseY} field values are not
-	 *             manipulated directly, but only via respective methods offered
-	 *             by this class.
+	 * @deprecated This method should not be accessed by clients any more (it will
+	 *             be made private in future releases). The update of integer and
+	 *             precision fields is performed automatically if {@link #preciseX}
+	 *             and {@link #preciseY} field values are not manipulated directly,
+	 *             but only via respective methods offered by this class.
 	 */
 	public final void updateInts() {
 		updateXInt();

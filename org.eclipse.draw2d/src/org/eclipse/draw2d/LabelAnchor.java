@@ -31,8 +31,7 @@ public class LabelAnchor extends ChopboxAnchor {
 	/**
 	 * Constructs a LabelAnchor with owner <i>label</i>.
 	 * 
-	 * @param label
-	 *            This LabelAnchor's owner
+	 * @param label This LabelAnchor's owner
 	 * @since 2.0
 	 */
 	public LabelAnchor(Label label) {

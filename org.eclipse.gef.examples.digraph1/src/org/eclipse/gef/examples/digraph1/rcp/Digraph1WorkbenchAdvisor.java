@@ -24,16 +24,18 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 public class Digraph1WorkbenchAdvisor extends WorkbenchAdvisor {
 
 	/*
-	 * @see org.eclipse.ui.application.WorkbenchAdvisor#createWorkbenchWindowAdvisor(org.eclipse.ui.application.IWorkbenchWindowConfigurer)
+	 * @see
+	 * org.eclipse.ui.application.WorkbenchAdvisor#createWorkbenchWindowAdvisor(org.
+	 * eclipse.ui.application.IWorkbenchWindowConfigurer)
 	 */
 	@Override
-	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
-			IWorkbenchWindowConfigurer configurer) {
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		return new Digraph1WorkbenchWindowAdvisor(configurer);
 	}
 
 	/*
-	 * @see org.eclipse.ui.application.WorkbenchAdvisor#getInitialWindowPerspectiveId()
+	 * @see
+	 * org.eclipse.ui.application.WorkbenchAdvisor#getInitialWindowPerspectiveId()
 	 */
 	@Override
 	public String getInitialWindowPerspectiveId() {

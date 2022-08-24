@@ -32,34 +32,23 @@ public class NonResizableHandleKit {
 	/**
 	 * Fills the given List with handles at each corner of a figure.
 	 * 
-	 * @param part
-	 *            the handles' GraphicalEditPart
-	 * @param handles
-	 *            the List to add the four corner handles to
-	 * @param tracker
-	 *            the handles' DragTracker
-	 * @param cursor
-	 *            the handles' Cursor
+	 * @param part    the handles' GraphicalEditPart
+	 * @param handles the List to add the four corner handles to
+	 * @param tracker the handles' DragTracker
+	 * @param cursor  the handles' Cursor
 	 */
-	public static void addCornerHandles(GraphicalEditPart part, List handles,
-			DragTracker tracker, Cursor cursor) {
-		handles.add(createHandle(part, PositionConstants.SOUTH_EAST, tracker,
-				cursor));
-		handles.add(createHandle(part, PositionConstants.SOUTH_WEST, tracker,
-				cursor));
-		handles.add(createHandle(part, PositionConstants.NORTH_WEST, tracker,
-				cursor));
-		handles.add(createHandle(part, PositionConstants.NORTH_EAST, tracker,
-				cursor));
+	public static void addCornerHandles(GraphicalEditPart part, List handles, DragTracker tracker, Cursor cursor) {
+		handles.add(createHandle(part, PositionConstants.SOUTH_EAST, tracker, cursor));
+		handles.add(createHandle(part, PositionConstants.SOUTH_WEST, tracker, cursor));
+		handles.add(createHandle(part, PositionConstants.NORTH_WEST, tracker, cursor));
+		handles.add(createHandle(part, PositionConstants.NORTH_EAST, tracker, cursor));
 	}
 
 	/**
 	 * Fills the given List with handles at each corner of a figure.
 	 * 
-	 * @param part
-	 *            the handles' GraphicalEditPart
-	 * @param handles
-	 *            the List to add the four corner handles to
+	 * @param part    the handles' GraphicalEditPart
+	 * @param handles the List to add the four corner handles to
 	 */
 	public static void addCornerHandles(GraphicalEditPart part, List handles) {
 		handles.add(createHandle(part, PositionConstants.SOUTH_EAST));
@@ -71,46 +60,35 @@ public class NonResizableHandleKit {
 	/**
 	 * Adds a single handle in the given direction to the given List.
 	 * 
-	 * @param part
-	 *            the owner GraphicalEditPart of the handle
-	 * @param handles
-	 *            the List to add the handle to
-	 * @param direction
-	 *            the integer constant from PositionConstants that refers to the
-	 *            handle direction
+	 * @param part      the owner GraphicalEditPart of the handle
+	 * @param handles   the List to add the handle to
+	 * @param direction the integer constant from PositionConstants that refers to
+	 *                  the handle direction
 	 */
-	public static void addHandle(GraphicalEditPart part, List handles,
-			int direction) {
+	public static void addHandle(GraphicalEditPart part, List handles, int direction) {
 		handles.add(createHandle(part, direction));
 	}
 
 	/**
 	 * Adds a single handle in the given direction to the given List.
 	 * 
-	 * @param tracker
-	 *            the DragTracker to assign to this handle
-	 * @param part
-	 *            the owner GraphicalEditPart of the handle
-	 * @param handles
-	 *            the List to add the handle to
-	 * @param direction
-	 *            the integer constant from PositionConstants that refers to the
-	 *            handle direction
-	 * @param cursor
-	 *            the Cursor to use when hovering over this handle
+	 * @param tracker   the DragTracker to assign to this handle
+	 * @param part      the owner GraphicalEditPart of the handle
+	 * @param handles   the List to add the handle to
+	 * @param direction the integer constant from PositionConstants that refers to
+	 *                  the handle direction
+	 * @param cursor    the Cursor to use when hovering over this handle
 	 */
-	public static void addHandle(GraphicalEditPart part, List handles,
-			int direction, DragTracker tracker, Cursor cursor) {
+	public static void addHandle(GraphicalEditPart part, List handles, int direction, DragTracker tracker,
+			Cursor cursor) {
 		handles.add(createHandle(part, direction, tracker, cursor));
 	}
 
 	/**
 	 * Fills the given List with handles at each corner.
 	 * 
-	 * @param part
-	 *            the handles' GraphicalEditPart
-	 * @param handles
-	 *            the List to add the handles to
+	 * @param part    the handles' GraphicalEditPart
+	 * @param handles the List to add the handles to
 	 * @deprecated
 	 */
 	public static void addHandles(GraphicalEditPart part, List handles) {
@@ -121,18 +99,13 @@ public class NonResizableHandleKit {
 	/**
 	 * Fills the given List with handles at each corner.
 	 * 
-	 * @param part
-	 *            the handles' GraphicalEditPart
-	 * @param handles
-	 *            the List to add the handles to
-	 * @param tracker
-	 *            the handles' DragTracker
-	 * @param cursor
-	 *            the handles' Cursor
+	 * @param part    the handles' GraphicalEditPart
+	 * @param handles the List to add the handles to
+	 * @param tracker the handles' DragTracker
+	 * @param cursor  the handles' Cursor
 	 * @deprecated
 	 */
-	public static void addHandles(GraphicalEditPart part, List handles,
-			DragTracker tracker, Cursor cursor) {
+	public static void addHandles(GraphicalEditPart part, List handles, DragTracker tracker, Cursor cursor) {
 		addMoveHandle(part, handles, tracker, cursor);
 		addCornerHandles(part, handles, tracker, cursor);
 	}
@@ -140,10 +113,8 @@ public class NonResizableHandleKit {
 	/**
 	 * Fills the given List with move borders at each side of a figure.
 	 * 
-	 * @param f
-	 *            the handles' GraphicalEditPart
-	 * @param handles
-	 *            the List to add the handles to
+	 * @param f       the handles' GraphicalEditPart
+	 * @param handles the List to add the handles to
 	 */
 	public static void addMoveHandle(GraphicalEditPart f, List handles) {
 		handles.add(moveHandle(f));
@@ -152,17 +123,12 @@ public class NonResizableHandleKit {
 	/**
 	 * Fills the given List with move borders at each side of a figure.
 	 * 
-	 * @param tracker
-	 *            the DragTracker to assign to this handle
-	 * @param f
-	 *            the handles' GraphicalEditPart
-	 * @param handles
-	 *            the List to add the handles to
-	 * @param cursor
-	 *            the Cursor to use when hovering over this handle
+	 * @param tracker the DragTracker to assign to this handle
+	 * @param f       the handles' GraphicalEditPart
+	 * @param handles the List to add the handles to
+	 * @param cursor  the Cursor to use when hovering over this handle
 	 */
-	public static void addMoveHandle(GraphicalEditPart f, List handles,
-			DragTracker tracker, Cursor cursor) {
+	public static void addMoveHandle(GraphicalEditPart f, List handles, DragTracker tracker, Cursor cursor) {
 		handles.add(moveHandle(f, tracker, cursor));
 	}
 
@@ -173,8 +139,7 @@ public class NonResizableHandleKit {
 		return handle;
 	}
 
-	static Handle createHandle(GraphicalEditPart owner, int direction,
-			DragTracker tracker, Cursor cursor) {
+	static Handle createHandle(GraphicalEditPart owner, int direction, DragTracker tracker, Cursor cursor) {
 		ResizeHandle handle = new ResizeHandle(owner, direction);
 		handle.setCursor(cursor);
 		handle.setDragTracker(tracker);
@@ -184,8 +149,7 @@ public class NonResizableHandleKit {
 	/**
 	 * Returns a new {@link MoveHandle} with the given owner.
 	 * 
-	 * @param owner
-	 *            the GraphicalEditPart that is the owner of the new MoveHandle
+	 * @param owner the GraphicalEditPart that is the owner of the new MoveHandle
 	 * @return the new MoveHandle
 	 */
 	public static Handle moveHandle(GraphicalEditPart owner) {
@@ -195,16 +159,12 @@ public class NonResizableHandleKit {
 	/**
 	 * Returns a new {@link MoveHandle} with the given owner.
 	 * 
-	 * @param tracker
-	 *            the DragTracker to assign to this handle
-	 * @param owner
-	 *            the GraphicalEditPart that is the owner of the new MoveHandle
-	 * @param cursor
-	 *            the Cursor to use when hovering over this handle
+	 * @param tracker the DragTracker to assign to this handle
+	 * @param owner   the GraphicalEditPart that is the owner of the new MoveHandle
+	 * @param cursor  the Cursor to use when hovering over this handle
 	 * @return the new MoveHandle
 	 */
-	public static Handle moveHandle(GraphicalEditPart owner,
-			DragTracker tracker, Cursor cursor) {
+	public static Handle moveHandle(GraphicalEditPart owner, DragTracker tracker, Cursor cursor) {
 		MoveHandle moveHandle = new MoveHandle(owner);
 		moveHandle.setDragTracker(tracker);
 		moveHandle.setCursor(cursor);

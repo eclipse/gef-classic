@@ -25,16 +25,14 @@ public class ProcessMacroCommand extends CompoundEditCommand {
 	/**
 	 * @since 3.1
 	 */
-	public ProcessMacroCommand(TextRun run, int begin, int end,
-			ModelElement substitution, ModelLocation loc) {
+	public ProcessMacroCommand(TextRun run, int begin, int end, ModelElement substitution, ModelLocation loc) {
 		super("$$conversion");
 		RemoveRange removal = new RemoveRange(run, begin, run, end);
 		pendEdit(removal);
 		SubdivideElement subdivide = new SubdivideElement(run, begin);
 		pendEdit(subdivide);
 		InsertModelElement insert = new InsertModelElement(run.getContainer(),
-				run.getContainer().getChildren().indexOf(run) + 1,
-				substitution, loc);
+				run.getContainer().getChildren().indexOf(run) + 1, substitution, loc);
 		pendEdit(insert);
 	}
 

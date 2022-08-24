@@ -33,8 +33,7 @@ import org.eclipse.zest.core.widgets.ZestStyles;
  */
 // @tag bug(151327-Styles) : created to help resolve this bug
 public class GraphItemStyler {
-	public static void styleItem(GraphItem item,
-			final IBaseLabelProvider labelProvider) {
+	public static void styleItem(GraphItem item, final IBaseLabelProvider labelProvider) {
 
 		if (item instanceof GraphNode) {
 			GraphNode node = (GraphNode) item;
@@ -58,15 +57,12 @@ public class GraphItemStyler {
 				node.setFont(fontProvider.getFont(entity));
 			}
 			if (labelProvider instanceof ILabelProvider) {
-				String text = ((ILabelProvider) labelProvider).getText(node
-						.getData());
+				String text = ((ILabelProvider) labelProvider).getText(node.getData());
 				node.setText((text != null) ? text : "");
-				node.setImage(((ILabelProvider) labelProvider).getImage(node
-						.getData()));
+				node.setImage(((ILabelProvider) labelProvider).getImage(node.getData()));
 			}
 			if (labelProvider instanceof ISelfStyleProvider) {
-				((ISelfStyleProvider) labelProvider)
-						.selfStyleNode(entity, node);
+				((ISelfStyleProvider) labelProvider).selfStyleNode(entity, node);
 			}
 		} else if (item instanceof GraphConnection) {
 			GraphConnection conn = (GraphConnection) item;
@@ -79,23 +75,19 @@ public class GraphItemStyler {
 				conn.setConnectionStyle(SWT.NONE);
 			}
 			if (labelProvider instanceof ILabelProvider) {
-				String text = ((ILabelProvider) labelProvider).getText(conn
-						.getExternalConnection());
+				String text = ((ILabelProvider) labelProvider).getText(conn.getExternalConnection());
 				conn.setText((text != null) ? text : "");
-				conn.setImage(((ILabelProvider) labelProvider).getImage(conn
-						.getExternalConnection()));
+				conn.setImage(((ILabelProvider) labelProvider).getImage(conn.getExternalConnection()));
 			}
 			if (labelProvider instanceof IEntityConnectionStyleProvider) {
-				styleEntityConnection(conn,
-						(IEntityConnectionStyleProvider) labelProvider);
+				styleEntityConnection(conn, (IEntityConnectionStyleProvider) labelProvider);
 			} else if (labelProvider instanceof IConnectionStyleProvider) {
 				styleConnection(conn, (IConnectionStyleProvider) labelProvider);
 			}
 			int swt = getLineStyleForZestStyle(conn.getConnectionStyle());
 			conn.setLineStyle(swt);
 			if (labelProvider instanceof ISelfStyleProvider) {
-				((ISelfStyleProvider) labelProvider).selfStyleConnection(
-						conn.getData(), conn);
+				((ISelfStyleProvider) labelProvider).selfStyleConnection(conn.getData(), conn);
 			}
 		}
 	}
@@ -104,8 +96,7 @@ public class GraphItemStyler {
 	 * @param conn
 	 * @param provider
 	 */
-	private static void styleConnection(GraphConnection conn,
-			IConnectionStyleProvider provider) {
+	private static void styleConnection(GraphConnection conn, IConnectionStyleProvider provider) {
 		Object rel = conn.getExternalConnection();
 		Color c;
 		int style = provider.getConnectionStyle(rel);
@@ -156,8 +147,7 @@ public class GraphItemStyler {
 	 * @param conn
 	 * @param provider
 	 */
-	private static void styleEntityConnection(GraphConnection conn,
-			IEntityConnectionStyleProvider provider) {
+	private static void styleEntityConnection(GraphConnection conn, IEntityConnectionStyleProvider provider) {
 		Object src = conn.getSource().getData();
 		Object dest = conn.getDestination().getData();
 		Color c;
@@ -205,12 +195,9 @@ public class GraphItemStyler {
 	/**
 	 * Styles the given node according to the properties in the style provider.
 	 * 
-	 * @param node
-	 *            the graph element to style.
-	 * @param data
-	 *            the element that is being styled.
-	 * @param provider
-	 *            the style provier.
+	 * @param node     the graph element to style.
+	 * @param data     the element that is being styled.
+	 * @param provider the style provier.
 	 */
 	// @tag bug(151327-Styles) : resolution
 	private static void styleNode(GraphNode node, IEntityStyleProvider provider) {
@@ -259,8 +246,7 @@ public class GraphItemStyler {
 	 * 
 	 */
 	public static int getLineStyleForZestStyle(int style) {
-		int lineStyles = ZestStyles.CONNECTIONS_DASH_DOT
-				| ZestStyles.CONNECTIONS_DASH | ZestStyles.CONNECTIONS_DOT
+		int lineStyles = ZestStyles.CONNECTIONS_DASH_DOT | ZestStyles.CONNECTIONS_DASH | ZestStyles.CONNECTIONS_DOT
 				| ZestStyles.CONNECTIONS_SOLID;
 		style = style & lineStyles;
 		if (style == 0) {

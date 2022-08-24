@@ -66,8 +66,7 @@ public class SelectionManager {
 	 * becomes the new primary selection. Fires selection changed to all
 	 * {@link org.eclipse.jface.viewers.ISelectionChangedListener}s.
 	 * 
-	 * @param editpart
-	 *            the EditPart to append
+	 * @param editpart the EditPart to append
 	 * @since 3.2
 	 */
 	public void appendSelection(EditPart editpart) {
@@ -94,8 +93,7 @@ public class SelectionManager {
 	/**
 	 * Removes the <code>EditPart</code> from the current selection.
 	 * 
-	 * @param editpart
-	 *            the editpart
+	 * @param editpart the editpart
 	 * @since 3.2
 	 */
 	public void deselect(EditPart editpart) {
@@ -147,8 +145,7 @@ public class SelectionManager {
 	}
 
 	/**
-	 * Causes the viewer to fire selection changed notification to all
-	 * listeners.
+	 * Causes the viewer to fire selection changed notification to all listeners.
 	 * 
 	 * @since 3.2
 	 */
@@ -191,8 +188,7 @@ public class SelectionManager {
 	/**
 	 * For internal use only. This API is subject to change.
 	 * 
-	 * @param control
-	 *            the control
+	 * @param control the control
 	 * @since 3.2
 	 */
 	public void internalHookControl(Control control) {
@@ -209,8 +205,7 @@ public class SelectionManager {
 	/**
 	 * Provides a hook for when the viewer has been set.
 	 * 
-	 * @param viewer
-	 *            the viewer.
+	 * @param viewer the viewer.
 	 * @since 3.2
 	 */
 	protected void hookViewer(EditPartViewer viewer) {
@@ -219,16 +214,12 @@ public class SelectionManager {
 	/**
 	 * For internal use only.
 	 * 
-	 * @param viewer
-	 *            viewer
-	 * @param selection
-	 *            selection
-	 * @param notifier
-	 *            notifier
+	 * @param viewer    viewer
+	 * @param selection selection
+	 * @param notifier  notifier
 	 * @since 3.2
 	 */
-	public void internalInitialize(EditPartViewer viewer, List selection,
-			Runnable notifier) {
+	public void internalInitialize(EditPartViewer viewer, List selection, Runnable notifier) {
 		this.viewer = viewer;
 		this.selection = selection;
 		this.notifier = notifier;
@@ -239,8 +230,7 @@ public class SelectionManager {
 	/**
 	 * Sets the focus part.
 	 * 
-	 * @param part
-	 *            the focus part
+	 * @param part the focus part
 	 * @since 3.2
 	 */
 	public void setFocus(EditPart part) {
@@ -252,15 +242,13 @@ public class SelectionManager {
 		// accordingly
 		if (viewer instanceof AbstractEditPartViewer) {
 			try {
-				Field focusPartField = AbstractEditPartViewer.class
-						.getDeclaredField("focusPart"); //$NON-NLS-1$
+				Field focusPartField = AbstractEditPartViewer.class.getDeclaredField("focusPart"); //$NON-NLS-1$
 				focusPartField.setAccessible(true);
 				if (focusPartField.get(viewer) != part) {
 					focusPartField.set(viewer, part);
 				}
 			} catch (Exception e) {
-				throw new IllegalStateException(
-						"Workaround for bug #458416 became ineffective"); //$NON-NLS-1$
+				throw new IllegalStateException("Workaround for bug #458416 became ineffective"); //$NON-NLS-1$
 			}
 		}
 		if (focusPart == part)
@@ -275,8 +263,7 @@ public class SelectionManager {
 	/**
 	 * Sets the selection.
 	 * 
-	 * @param newSelection
-	 *            the new selection
+	 * @param newSelection the new selection
 	 * @since 3.2
 	 */
 	public void setSelection(ISelection newSelection) {

@@ -21,8 +21,7 @@ public class AbsoluteBendpoint extends Point implements Bendpoint {
 	/**
 	 * Creates a new AbsoluteBendpoint at the Point p.
 	 * 
-	 * @param p
-	 *            The absolute location of the bendpoint
+	 * @param p The absolute location of the bendpoint
 	 * @since 2.0
 	 */
 	public AbsoluteBendpoint(Point p) {
@@ -32,10 +31,8 @@ public class AbsoluteBendpoint extends Point implements Bendpoint {
 	/**
 	 * Creates a new AbsoluteBendpoint at the Point (x,y).
 	 * 
-	 * @param x
-	 *            The X coordinate
-	 * @param y
-	 *            The Y coordinate
+	 * @param x The X coordinate
+	 * @param y The Y coordinate
 	 * @since 2.0
 	 */
 	public AbsoluteBendpoint(int x, int y) {

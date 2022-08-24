@@ -43,8 +43,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class ScrollableThumbnail extends Thumbnail {
 
-	private class ClickScrollerAndDragTransferrer extends
-			MouseMotionListener.Stub implements MouseListener {
+	private class ClickScrollerAndDragTransferrer extends MouseMotionListener.Stub implements MouseListener {
 		private boolean dragTransfer;
 
 		public void mouseDoubleClicked(MouseEvent me) {
@@ -56,17 +55,11 @@ public class ScrollableThumbnail extends Thumbnail {
 		}
 
 		public void mousePressed(MouseEvent me) {
-			if (!(ScrollableThumbnail.this.getClientArea().contains(me
-					.getLocation())))
+			if (!(ScrollableThumbnail.this.getClientArea().contains(me.getLocation())))
 				return;
-			Dimension selectorCenter = selector.getBounds().getSize()
-					.scale(0.5f);
-			Point scrollPoint = me
-					.getLocation()
-					.getTranslated(getLocation().getNegated())
-					.translate(selectorCenter.negate())
-					.scale(1.0f / getViewportScaleX(),
-							1.0f / getViewportScaleY())
+			Dimension selectorCenter = selector.getBounds().getSize().scale(0.5f);
+			Point scrollPoint = me.getLocation().getTranslated(getLocation().getNegated())
+					.translate(selectorCenter.negate()).scale(1.0f / getViewportScaleX(), 1.0f / getViewportScaleY())
 					.translate(viewport.getHorizontalRangeModel().getMinimum(),
 							viewport.getVerticalRangeModel().getMinimum());
 			viewport.setViewLocation(scrollPoint);
@@ -80,8 +73,7 @@ public class ScrollableThumbnail extends Thumbnail {
 		}
 	}
 
-	private class ScrollSynchronizer extends MouseMotionListener.Stub implements
-			MouseListener {
+	private class ScrollSynchronizer extends MouseMotionListener.Stub implements MouseListener {
 		private Point startLocation;
 		private Point viewLocation;
 
@@ -158,23 +150,15 @@ public class ScrollableThumbnail extends Thumbnail {
 		public void keyPressed(KeyEvent ke) {
 			int moveX = viewport.getClientArea().width / 4;
 			int moveY = viewport.getClientArea().height / 4;
-			if (ke.keycode == SWT.HOME
-					|| (isMirrored() ? ke.keycode == SWT.ARROW_RIGHT
-							: ke.keycode == SWT.ARROW_LEFT))
-				viewport.setViewLocation(viewport.getViewLocation().translate(
-						-moveX, 0));
+			if (ke.keycode == SWT.HOME || (isMirrored() ? ke.keycode == SWT.ARROW_RIGHT : ke.keycode == SWT.ARROW_LEFT))
+				viewport.setViewLocation(viewport.getViewLocation().translate(-moveX, 0));
 			else if (ke.keycode == SWT.END
-					|| (isMirrored() ? ke.keycode == SWT.ARROW_LEFT
-							: ke.keycode == SWT.ARROW_RIGHT))
-				viewport.setViewLocation(viewport.getViewLocation().translate(
-						moveX, 0));
+					|| (isMirrored() ? ke.keycode == SWT.ARROW_LEFT : ke.keycode == SWT.ARROW_RIGHT))
+				viewport.setViewLocation(viewport.getViewLocation().translate(moveX, 0));
 			else if (ke.keycode == SWT.ARROW_UP || ke.keycode == SWT.PAGE_UP)
-				viewport.setViewLocation(viewport.getViewLocation().translate(
-						0, -moveY));
-			else if (ke.keycode == SWT.ARROW_DOWN
-					|| ke.keycode == SWT.PAGE_DOWN)
-				viewport.setViewLocation(viewport.getViewLocation().translate(
-						0, moveY));
+				viewport.setViewLocation(viewport.getViewLocation().translate(0, -moveY));
+			else if (ke.keycode == SWT.ARROW_DOWN || ke.keycode == SWT.PAGE_DOWN)
+				viewport.setViewLocation(viewport.getViewLocation().translate(0, moveY));
 		}
 	};
 
@@ -199,8 +183,7 @@ public class ScrollableThumbnail extends Thumbnail {
 	/**
 	 * Creates a new ScrollableThumbnail that synchs with the given Viewport.
 	 * 
-	 * @param port
-	 *            The Viewport
+	 * @param port The Viewport
 	 */
 	public ScrollableThumbnail(Viewport port) {
 		super();
@@ -218,13 +201,11 @@ public class ScrollableThumbnail extends Thumbnail {
 	}
 
 	private double getViewportScaleX() {
-		return (double) targetSize.width
-				/ viewport.getContents().getBounds().width;
+		return (double) targetSize.width / viewport.getContents().getBounds().width;
 	}
 
 	private double getViewportScaleY() {
-		return (double) targetSize.height
-				/ viewport.getContents().getBounds().height;
+		return (double) targetSize.height / viewport.getContents().getBounds().height;
 	}
 
 	private void hookSelector() {
@@ -235,8 +216,7 @@ public class ScrollableThumbnail extends Thumbnail {
 	}
 
 	private void hookViewport() {
-		viewport.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION,
-				propListener);
+		viewport.addPropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, propListener);
 		viewport.addFigureListener(figureListener);
 	}
 
@@ -264,10 +244,8 @@ public class ScrollableThumbnail extends Thumbnail {
 	/**
 	 * Reconfigures the SelectorFigure's bounds if the scales have changed.
 	 * 
-	 * @param scaleX
-	 *            The X scale
-	 * @param scaleY
-	 *            The Y scale
+	 * @param scaleX The X scale
+	 * @param scaleY The Y scale
 	 * @see org.eclipse.draw2d.parts.Thumbnail#setScales(float, float)
 	 */
 	protected void setScales(float scaleX, float scaleY) {
@@ -281,8 +259,7 @@ public class ScrollableThumbnail extends Thumbnail {
 	/**
 	 * Sets the Viewport that this ScrollableThumbnail will synch with.
 	 * 
-	 * @param port
-	 *            The Viewport
+	 * @param port The Viewport
 	 */
 	public void setViewport(Viewport port) {
 		viewport = port;
@@ -297,8 +274,7 @@ public class ScrollableThumbnail extends Thumbnail {
 	}
 
 	private void unhookViewport() {
-		viewport.removePropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION,
-				propListener);
+		viewport.removePropertyChangeListener(Viewport.PROPERTY_VIEW_LOCATION, propListener);
 		viewport.removeFigureListener(figureListener);
 	}
 

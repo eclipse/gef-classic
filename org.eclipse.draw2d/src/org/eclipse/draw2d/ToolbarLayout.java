@@ -37,7 +37,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * Constant for vertical alignment
 	 * 
 	 * @deprecated Unused.
-	 * */
+	 */
 	public static final boolean VERTICAL = false;
 
 	/**
@@ -45,14 +45,13 @@ public class ToolbarLayout extends OrderedLayout {
 	 * 
 	 * @deprecated Use {@link OrderedLayout#setStretchMinorAxis(boolean)} and
 	 *             {@link OrderedLayout#isStretchMinorAxis()} instead.
-	 * */
+	 */
 	protected boolean matchWidth;
 
 	/**
 	 * Space in pixels between Figures
 	 * 
-	 * @deprecated Use {@link #getSpacing()} and {@link #setSpacing(int)}
-	 *             instead.
+	 * @deprecated Use {@link #getSpacing()} and {@link #setSpacing(int)} instead.
 	 */
 	protected int spacing;
 
@@ -69,12 +68,11 @@ public class ToolbarLayout extends OrderedLayout {
 	}
 
 	/**
-	 * Constructs a ToolbarLayout with a specified orientation. Default values
-	 * are: child spacing 0 pixels, {@link #setStretchMinorAxis(boolean)}
+	 * Constructs a ToolbarLayout with a specified orientation. Default values are:
+	 * child spacing 0 pixels, {@link #setStretchMinorAxis(boolean)}
 	 * <code>false</code>, and {@link #ALIGN_TOPLEFT} alignment.
 	 * 
-	 * @param isHorizontal
-	 *            whether the children are oriented horizontally
+	 * @param isHorizontal whether the children are oriented horizontally
 	 * @since 2.0
 	 */
 	public ToolbarLayout(boolean isHorizontal) {
@@ -83,15 +81,14 @@ public class ToolbarLayout extends OrderedLayout {
 		setSpacing(0);
 	}
 
-	private Dimension calculateChildrenSize(List children, int wHint,
-			int hHint, boolean preferred) {
+	private Dimension calculateChildrenSize(List children, int wHint, int hHint, boolean preferred) {
 		Dimension childSize;
 		IFigure child;
 		int height = 0, width = 0;
 		for (int i = 0; i < children.size(); i++) {
 			child = (IFigure) children.get(i);
-			childSize = transposer.t(preferred ? getChildPreferredSize(child,
-					wHint, hHint) : getChildMinimumSize(child, wHint, hHint));
+			childSize = transposer.t(
+					preferred ? getChildPreferredSize(child, wHint, hHint) : getChildMinimumSize(child, wHint, hHint));
 			height += childSize.height;
 			width = Math.max(width, childSize.width);
 		}
@@ -101,24 +98,20 @@ public class ToolbarLayout extends OrderedLayout {
 	/**
 	 * Calculates the minimum size of the container based on the given hints. If
 	 * this is a vertically-oriented Toolbar Layout, then only the widthHint is
-	 * respected (which means that the children can be as tall as they desire).
-	 * In this case, the minimum width is that of the widest child, and the
-	 * minimum height is the sum of the minimum heights of all children, plus
-	 * the spacing between them. The border and insets of the container figure
-	 * are also accounted for.
+	 * respected (which means that the children can be as tall as they desire). In
+	 * this case, the minimum width is that of the widest child, and the minimum
+	 * height is the sum of the minimum heights of all children, plus the spacing
+	 * between them. The border and insets of the container figure are also
+	 * accounted for.
 	 * 
-	 * @param container
-	 *            the figure whose minimum size has to be calculated
-	 * @param wHint
-	 *            the width hint (the desired width of the container)
-	 * @param hHint
-	 *            the height hint (the desired height of the container)
+	 * @param container the figure whose minimum size has to be calculated
+	 * @param wHint     the width hint (the desired width of the container)
+	 * @param hHint     the height hint (the desired height of the container)
 	 * @return the minimum size of the container
 	 * @see #getMinimumSize(IFigure, int, int)
 	 * @since 2.1
 	 */
-	protected Dimension calculateMinimumSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
 		Insets insets = container.getInsets();
 		if (isHorizontal()) {
 			wHint = -1;
@@ -134,40 +127,33 @@ public class ToolbarLayout extends OrderedLayout {
 		Dimension minSize = calculateChildrenSize(children, wHint, hHint, false);
 		// Do a second pass, if necessary
 		if (wHint >= 0 && minSize.width > wHint) {
-			minSize = calculateChildrenSize(children, minSize.width, hHint,
-					false);
+			minSize = calculateChildrenSize(children, minSize.width, hHint, false);
 		} else if (hHint >= 0 && minSize.width > hHint) {
-			minSize = calculateChildrenSize(children, wHint, minSize.width,
-					false);
+			minSize = calculateChildrenSize(children, wHint, minSize.width, false);
 		}
 
 		minSize.height += Math.max(0, children.size() - 1) * spacing;
-		return transposer.t(minSize)
-				.expand(insets.getWidth(), insets.getHeight())
+		return transposer.t(minSize).expand(insets.getWidth(), insets.getHeight())
 				.union(getBorderPreferredSize(container));
 	}
 
 	/**
-	 * Calculates the preferred size of the container based on the given hints.
-	 * If this is a vertically-oriented Toolbar Layout, then only the widthHint
-	 * is respected (which means that the children can be as tall as they
-	 * desire). In this case, the preferred width is that of the widest child,
-	 * and the preferred height is the sum of the preferred heights of all
-	 * children, plus the spacing between them. The border and insets of the
-	 * container figure are also accounted for.
+	 * Calculates the preferred size of the container based on the given hints. If
+	 * this is a vertically-oriented Toolbar Layout, then only the widthHint is
+	 * respected (which means that the children can be as tall as they desire). In
+	 * this case, the preferred width is that of the widest child, and the preferred
+	 * height is the sum of the preferred heights of all children, plus the spacing
+	 * between them. The border and insets of the container figure are also
+	 * accounted for.
 	 * 
-	 * @param container
-	 *            the figure whose preferred size has to be calculated
-	 * @param wHint
-	 *            the width hint (the desired width of the container)
-	 * @param hHint
-	 *            the height hint (the desired height of the container)
+	 * @param container the figure whose preferred size has to be calculated
+	 * @param wHint     the width hint (the desired width of the container)
+	 * @param hHint     the height hint (the desired height of the container)
 	 * @return the preferred size of the container
 	 * @see #getPreferredSize(IFigure, int, int)
 	 * @since 2.0
 	 */
-	protected Dimension calculatePreferredSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		Insets insets = container.getInsets();
 		if (isHorizontal()) {
 			wHint = -1;
@@ -183,26 +169,20 @@ public class ToolbarLayout extends OrderedLayout {
 		Dimension prefSize = calculateChildrenSize(children, wHint, hHint, true);
 		// Do a second pass, if necessary
 		if (wHint >= 0 && prefSize.width > wHint) {
-			prefSize = calculateChildrenSize(children, prefSize.width, hHint,
-					true);
+			prefSize = calculateChildrenSize(children, prefSize.width, hHint, true);
 		} else if (hHint >= 0 && prefSize.width > hHint) {
-			prefSize = calculateChildrenSize(children, wHint, prefSize.width,
-					true);
+			prefSize = calculateChildrenSize(children, wHint, prefSize.width, true);
 		}
 
 		prefSize.height += Math.max(0, children.size() - 1) * spacing;
-		return transposer.t(prefSize)
-				.expand(insets.getWidth(), insets.getHeight())
+		return transposer.t(prefSize).expand(insets.getWidth(), insets.getHeight())
 				.union(getBorderPreferredSize(container));
 	}
 
 	/**
-	 * @param child
-	 *            the figure whose minimum size is to be determined
-	 * @param wHint
-	 *            the width hint
-	 * @param hHint
-	 *            the height hint
+	 * @param child the figure whose minimum size is to be determined
+	 * @param wHint the width hint
+	 * @param hHint the height hint
 	 * @return the given figure's minimum size
 	 * @since 3.3
 	 */
@@ -211,17 +191,13 @@ public class ToolbarLayout extends OrderedLayout {
 	}
 
 	/**
-	 * @param child
-	 *            the figure whose preferred size is to be determined
-	 * @param wHint
-	 *            the width hint
-	 * @param hHint
-	 *            the height hint
+	 * @param child the figure whose preferred size is to be determined
+	 * @param wHint the width hint
+	 * @param hHint the height hint
 	 * @return given figure's preferred size
 	 * @since 3.3
 	 */
-	protected Dimension getChildPreferredSize(IFigure child, int wHint,
-			int hHint) {
+	protected Dimension getChildPreferredSize(IFigure child, int wHint, int hHint) {
 		return child.getPreferredSize(wHint, hHint);
 	}
 
@@ -256,8 +232,8 @@ public class ToolbarLayout extends OrderedLayout {
 	}
 
 	/**
-	 * Returns <code>true</code> if stretch minor axis has been enabled. The
-	 * default value is false.
+	 * Returns <code>true</code> if stretch minor axis has been enabled. The default
+	 * value is false.
 	 * 
 	 * @return <code>true</code> if stretch minor axis is enabled
 	 * @deprecated Use {@link #isStretchMinorAxis()} instead.
@@ -304,15 +280,15 @@ public class ToolbarLayout extends OrderedLayout {
 		}
 
 		/*
-		 * Calculate sum of preferred heights of all children(totalHeight).
-		 * Calculate sum of minimum heights of all children(minHeight). Cache
-		 * Preferred Sizes and Minimum Sizes of all children.
+		 * Calculate sum of preferred heights of all children(totalHeight). Calculate
+		 * sum of minimum heights of all children(minHeight). Cache Preferred Sizes and
+		 * Minimum Sizes of all children.
 		 * 
 		 * totalHeight is the sum of the preferred heights of all children
 		 * totalMinHeight is the sum of the minimum heights of all children
 		 * prefMinSumHeight is the sum of the difference between all children's
-		 * preferred heights and minimum heights. (This is used as a ratio to
-		 * calculate how much each child will shrink).
+		 * preferred heights and minimum heights. (This is used as a ratio to calculate
+		 * how much each child will shrink).
 		 */
 		IFigure child;
 		int totalHeight = 0;
@@ -322,10 +298,8 @@ public class ToolbarLayout extends OrderedLayout {
 		for (int i = 0; i < numChildren; i++) {
 			child = (IFigure) children.get(i);
 
-			prefSizes[i] = transposer.t(getChildPreferredSize(child, wHint,
-					hHint));
-			minSizes[i] = transposer
-					.t(getChildMinimumSize(child, wHint, hHint));
+			prefSizes[i] = transposer.t(getChildPreferredSize(child, wHint, hHint));
+			minSizes[i] = transposer.t(getChildMinimumSize(child, wHint, hHint));
 
 			totalHeight += prefSizes[i].height;
 			totalMinHeight += minSizes[i].height;
@@ -334,16 +308,14 @@ public class ToolbarLayout extends OrderedLayout {
 		totalMinHeight += (numChildren - 1) * spacing;
 		prefMinSumHeight = totalHeight - totalMinHeight;
 		/*
-		 * The total amount that the children must be shrunk is the sum of the
-		 * preferred Heights of the children minus Max(the available area and
-		 * the sum of the minimum heights of the children).
+		 * The total amount that the children must be shrunk is the sum of the preferred
+		 * Heights of the children minus Max(the available area and the sum of the
+		 * minimum heights of the children).
 		 * 
 		 * amntShrinkHeight is the combined amount that the children must shrink
-		 * amntShrinkCurrentHeight is the amount each child will shrink
-		 * respectively
+		 * amntShrinkCurrentHeight is the amount each child will shrink respectively
 		 */
-		int amntShrinkHeight = totalHeight
-				- Math.max(availableHeight, totalMinHeight);
+		int amntShrinkHeight = totalHeight - Math.max(availableHeight, totalMinHeight);
 
 		if (amntShrinkHeight < 0) {
 			amntShrinkHeight = 0;
@@ -359,11 +331,9 @@ public class ToolbarLayout extends OrderedLayout {
 
 			child = (IFigure) children.get(i);
 			if (prefMinSumHeight != 0)
-				amntShrinkCurrentHeight = (prefHeight - minHeight)
-						* amntShrinkHeight / (prefMinSumHeight);
+				amntShrinkCurrentHeight = (prefHeight - minHeight) * amntShrinkHeight / (prefMinSumHeight);
 
-			int width = Math.min(prefWidth,
-					transposer.t(child.getMaximumSize()).width);
+			int width = Math.min(prefWidth, transposer.t(child.getMaximumSize()).width);
 			if (isStretchMinorAxis())
 				width = transposer.t(child.getMaximumSize()).width;
 			width = Math.max(minWidth, Math.min(clientArea.width, width));
@@ -395,8 +365,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * oriented) to stretch with their container.
 	 * 
 	 * @deprecated use {@link #setStretchMinorAxis(boolean)}
-	 * @param match
-	 *            whether to stretch children
+	 * @param match whether to stretch children
 	 * @since 2.0
 	 */
 	public void setMatchWidth(boolean match) {
@@ -406,8 +375,7 @@ public class ToolbarLayout extends OrderedLayout {
 	/**
 	 * Sets the amount of space between children.
 	 * 
-	 * @param space
-	 *            the amount of space between children
+	 * @param space the amount of space between children
 	 * @since 2.0
 	 */
 	public void setSpacing(int space) {
@@ -427,8 +395,7 @@ public class ToolbarLayout extends OrderedLayout {
 	/**
 	 * Sets the orientation of the layout
 	 * 
-	 * @param flag
-	 *            whether the orientation should be vertical
+	 * @param flag whether the orientation should be vertical
 	 * @since 2.0
 	 * @deprecated Use {@link #setHorizontal(boolean)} with argument
 	 *             <code>false</code> instead.

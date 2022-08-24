@@ -70,19 +70,20 @@ import org.eclipse.zest.layouts.progress.ProgressListener;
  * @author Rob Lintern
  * @author Chris Bennett
  *
- * A simple example of using layout algorithms with a Swing application.
+ *         A simple example of using layout algorithms with a Swing application.
  */
 public class SimpleSwingExample {
 	private static final Color NODE_NORMAL_COLOR = new Color(225, 225, 255);
 	private static final Color NODE_SELECTED_COLOR = new Color(255, 125, 125);
-	//private static final Color NODE_ADJACENT_COLOR = new Color (255, 200, 125); 
+	// private static final Color NODE_ADJACENT_COLOR = new Color (255, 200, 125);
 	private static final Color BORDER_NORMAL_COLOR = new Color(0, 0, 0);
 	private static final Color BORDER_SELECTED_COLOR = new Color(255, 0, 0);
-	//private static final Color BORDER_ADJACENT_COLOR = new Color (255, 128, 0);   
+	// private static final Color BORDER_ADJACENT_COLOR = new Color (255, 128, 0);
 	private static final Stroke BORDER_NORMAL_STROKE = new BasicStroke(1.0f);
 	private static final Stroke BORDER_SELECTED_STROKE = new BasicStroke(2.0f);
 	private static final Color RELATIONSHIP_NORMAL_COLOR = Color.BLUE;
-	//private static final Color RELATIONSHIP_HIGHLIGHT_COLOR = new Color (255, 200, 125); 
+	// private static final Color RELATIONSHIP_HIGHLIGHT_COLOR = new Color (255,
+	// 200, 125);
 
 	public static SpringLayoutAlgorithm SPRING = new SpringLayoutAlgorithm(LayoutStyles.NONE);
 	public static TreeLayoutAlgorithm TREE_VERT = new TreeLayoutAlgorithm(LayoutStyles.NONE);
@@ -104,7 +105,9 @@ public class SimpleSwingExample {
 	private static final double INITIAL_NODE_HEIGHT = 20;
 	private static final int ARROW_HALF_WIDTH = 4;
 	private static final int ARROW_HALF_HEIGHT = 6;
-	private static final Shape ARROW_SHAPE = new Polygon(new int[] { -ARROW_HALF_HEIGHT, ARROW_HALF_HEIGHT, -ARROW_HALF_HEIGHT }, new int[] { -ARROW_HALF_WIDTH, 0, ARROW_HALF_WIDTH }, 3);
+	private static final Shape ARROW_SHAPE = new Polygon(
+			new int[] { -ARROW_HALF_HEIGHT, ARROW_HALF_HEIGHT, -ARROW_HALF_HEIGHT },
+			new int[] { -ARROW_HALF_WIDTH, 0, ARROW_HALF_WIDTH }, 3);
 	private static final Stroke ARROW_BORDER_STROKE = new BasicStroke(0.5f);
 	private static final Color ARROW_HEAD_FILL_COLOR = new Color(125, 255, 125);
 	private static final Color ARROW_HEAD_BORDER_COLOR = Color.BLACK;
@@ -192,7 +195,8 @@ public class SimpleSwingExample {
 		createGraph(false);
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		mainFrame.setLocation((int) (screenSize.getWidth() - INITIAL_PANEL_WIDTH) / 2, (int) (screenSize.getHeight() - INITIAL_PANEL_HEIGHT) / 2);
+		mainFrame.setLocation((int) (screenSize.getWidth() - INITIAL_PANEL_WIDTH) / 2,
+				(int) (screenSize.getHeight() - INITIAL_PANEL_HEIGHT) / 2);
 		mainFrame.pack();
 		mainFrame.setVisible(true);
 		mainFrame.repaint();
@@ -232,14 +236,16 @@ public class SimpleSwingExample {
 					for (int i = 0; i < algorithms.size(); i++) {
 						final LayoutAlgorithm algorithm = (LayoutAlgorithm) algorithms.get(i);
 						final String algorithmName = (String) algorithmNames.get(i);
-						//final boolean algorithmAnimate = ((Boolean)algorithmAnimates.get(i)).booleanValue();
+						// final boolean algorithmAnimate =
+						// ((Boolean)algorithmAnimates.get(i)).booleanValue();
 						JButton algorithmButton = new JButton(algorithmName);
 						algorithmButton.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								currentLayoutAlgorithm = algorithm;
 								currentLayoutAlgorithmName = algorithmName;
-								algorithm.setEntityAspectRatio((double) mainPanel.getWidth() / (double) mainPanel.getHeight());
-								//animate = algorithmAnimate;
+								algorithm.setEntityAspectRatio(
+										(double) mainPanel.getWidth() / (double) mainPanel.getHeight());
+								// animate = algorithmAnimate;
 								performLayout();
 							}
 						});
@@ -272,10 +278,11 @@ public class SimpleSwingExample {
 		final boolean asynchronous = btnAsynchronous.isSelected();
 		ProgressListener progressListener = new ProgressListener() {
 			public void progressUpdated(final ProgressEvent e) {
-				//if (asynchronous) {
+				// if (asynchronous) {
 				updateGUI();
-				//}
-				lblProgress.setText("Progress: " + e.getStepsCompleted() + " of " + e.getTotalNumberOfSteps() + " completed ...");
+				// }
+				lblProgress.setText(
+						"Progress: " + e.getStepsCompleted() + " of " + e.getTotalNumberOfSteps() + " completed ...");
 				lblProgress.paintImmediately(0, 0, lblProgress.getWidth(), lblProgress.getHeight());
 			}
 
@@ -307,7 +314,8 @@ public class SimpleSwingExample {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
 					try {
-						currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0, mainPanel.getWidth(), mainPanel.getHeight(), asynchronous, continuous);
+						currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0,
+								mainPanel.getWidth(), mainPanel.getHeight(), asynchronous, continuous);
 					} catch (InvalidLayoutConfiguration e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -316,9 +324,9 @@ public class SimpleSwingExample {
 				}
 
 			});
-			//if (!animate) {
+			// if (!animate) {
 			updateGUI();
-			//}
+			// }
 			// reset
 			currentNodeShape = DEFAULT_NODE_SHAPE;
 		} catch (StackOverflowError e) {
@@ -351,7 +359,8 @@ public class SimpleSwingExample {
 				}
 				if (selectedEntity != null) {
 					mouseDownPoint = e.getPoint();
-					selectedEntityPositionAtMouseDown = new Point((int) selectedEntity.getX(), (int) selectedEntity.getY());
+					selectedEntityPositionAtMouseDown = new Point((int) selectedEntity.getX(),
+							(int) selectedEntity.getY());
 				} else {
 					mouseDownPoint = null;
 					selectedEntityPositionAtMouseDown = null;
@@ -369,11 +378,12 @@ public class SimpleSwingExample {
 
 		mainPanel.addMouseMotionListener(new MouseMotionListener() {
 			public void mouseDragged(MouseEvent e) {
-				//                if (selectedEntity != null) {
-				//					//TODO: Add mouse moving
-				//                    //selectedEntity.setLocationInLayout(selectedEntityPositionAtMouseDown.x + dx, selectedEntityPositionAtMouseDown.y + dy);
-				//                    updateGUI();
-				//                } 
+				// if (selectedEntity != null) {
+				// //TODO: Add mouse moving
+				// //selectedEntity.setLocationInLayout(selectedEntityPositionAtMouseDown.x +
+				// dx, selectedEntityPositionAtMouseDown.y + dy);
+				// updateGUI();
+				// }
 			}
 
 			public void mouseMoved(MouseEvent e) {
@@ -387,7 +397,7 @@ public class SimpleSwingExample {
 		selectedEntity = null;
 
 		createTreeGraph(2, 4, 2, 5, true, true, addNonTreeRels);
-		//        createCustomGraph();
+		// createCustomGraph();
 
 		placeRandomly();
 		mainPanel.repaint();
@@ -395,18 +405,23 @@ public class SimpleSwingExample {
 
 	/**
 	 * 
-	 * @param maxLevels Max number of levels wanted in tree	
-	 * @param maxChildren Max number of children for each node in the tree
-	 * @param randomNumChildren Whether or not to pick random number of levels (from 1 to maxLevels) and 
-	 * random number of children (from 1 to maxChildren)
+	 * @param maxLevels         Max number of levels wanted in tree
+	 * @param maxChildren       Max number of children for each node in the tree
+	 * @param randomNumChildren Whether or not to pick random number of levels (from
+	 *                          1 to maxLevels) and random number of children (from
+	 *                          1 to maxChildren)
 	 */
-	private void createTreeGraph(int minChildren, int maxChildren, int minLevels, int maxLevels, boolean randomNumChildren, boolean randomLevels, boolean addNonTreeRels) {
+	private void createTreeGraph(int minChildren, int maxChildren, int minLevels, int maxLevels,
+			boolean randomNumChildren, boolean randomLevels, boolean addNonTreeRels) {
 		LayoutEntity currentParent = createSimpleNode(getNextID());
 		entities.add(currentParent);
-		createTreeGraphRecursive(currentParent, minChildren, maxChildren, minLevels, maxLevels, 1, randomNumChildren, randomLevels, addNonTreeRels);
+		createTreeGraphRecursive(currentParent, minChildren, maxChildren, minLevels, maxLevels, 1, randomNumChildren,
+				randomLevels, addNonTreeRels);
 	}
 
-	private void createTreeGraphRecursive(LayoutEntity currentParentNode, int minChildren, int maxChildren, int minLevel, int maxLevel, int level, boolean randomNumChildren, boolean randomLevels, boolean addNonTreeRels) {
+	private void createTreeGraphRecursive(LayoutEntity currentParentNode, int minChildren, int maxChildren,
+			int minLevel, int maxLevel, int level, boolean randomNumChildren, boolean randomLevels,
+			boolean addNonTreeRels) {
 		if (level > maxLevel) {
 			return;
 		}
@@ -418,7 +433,8 @@ public class SimpleSwingExample {
 				}
 			}
 		}
-		int numChildren = randomNumChildren ? Math.max(minChildren, (int) (Math.random() * maxChildren + 1)) : maxChildren;
+		int numChildren = randomNumChildren ? Math.max(minChildren, (int) (Math.random() * maxChildren + 1))
+				: maxChildren;
 		for (int i = 0; i < numChildren; i++) {
 			LayoutEntity newNode = createSimpleNode(getNextID());
 			entities.add(newNode);
@@ -429,25 +445,22 @@ public class SimpleSwingExample {
 			}
 			LayoutRelationship rel = new SimpleRelationship(currentParentNode, newNode, false);
 			relationships.add(rel);
-			createTreeGraphRecursive(newNode, minChildren, maxChildren, minLevel, maxLevel, level + 1, randomNumChildren, randomLevels, addNonTreeRels);
+			createTreeGraphRecursive(newNode, minChildren, maxChildren, minLevel, maxLevel, level + 1,
+					randomNumChildren, randomLevels, addNonTreeRels);
 		}
 	}
 
 	/**
-	 * Call this from createGraph in place of createTreeGraph 
-	 * this for debugging and testing.
+	 * Call this from createGraph in place of createTreeGraph this for debugging and
+	 * testing.
 	 */
-	/*    private void createCustomGraph() {
-	 LayoutEntity A = createSimpleNode("1");
-	 LayoutEntity B = createSimpleNode("10");
-	 LayoutEntity _1 = createSimpleNode("100");
-	 entities.add(A);
-	 entities.add(B);
-	 entities.add(_1);
-	 relationships.add(new SimpleRelationship (A, B, false));
-	 relationships.add(new SimpleRelationship (A, _1, false));
-	 relationships.add(new SimpleRelationship (_1, A, false));
-	 }
+	/*
+	 * private void createCustomGraph() { LayoutEntity A = createSimpleNode("1");
+	 * LayoutEntity B = createSimpleNode("10"); LayoutEntity _1 =
+	 * createSimpleNode("100"); entities.add(A); entities.add(B); entities.add(_1);
+	 * relationships.add(new SimpleRelationship (A, B, false));
+	 * relationships.add(new SimpleRelationship (A, _1, false));
+	 * relationships.add(new SimpleRelationship (_1, A, false)); }
 	 */
 	private String getNextID() {
 		String id = "" + idCount;
@@ -468,6 +481,7 @@ public class SimpleSwingExample {
 
 	/**
 	 * Creates a SimpleNode
+	 * 
 	 * @param name
 	 * @return
 	 */
@@ -504,8 +518,8 @@ public class SimpleSwingExample {
 	}
 
 	/**
-	 * A JPanel that provides entity and relationship rendering
-	 * Instead of letting Swing paint all the JPanels for us, we will just do our own painting here
+	 * A JPanel that provides entity and relationship rendering Instead of letting
+	 * Swing paint all the JPanels for us, we will just do our own painting here
 	 */
 	private class MainPanel extends JPanel {
 
@@ -514,9 +528,11 @@ public class SimpleSwingExample {
 		protected void paintChildren(Graphics g) {
 			if (g instanceof Graphics2D && RENDER_HIGH_QUALITY) {
 				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+						RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+						RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 			}
 
 			// paint the nodes
@@ -524,7 +540,7 @@ public class SimpleSwingExample {
 				paintEntity((SimpleNode) iter.next(), g);
 			}
 
-			// paint the relationships 
+			// paint the relationships
 			for (Iterator iter = relationships.iterator(); iter.hasNext();) {
 				paintRelationship((LayoutRelationship) iter.next(), g);
 			}
@@ -535,13 +551,17 @@ public class SimpleSwingExample {
 			g.setColor(isSelected ? NODE_SELECTED_COLOR : NODE_NORMAL_COLOR);
 			if (currentNodeShape.equals("rectangle")) {
 				g.fillRect((int) entity.getX(), (int) entity.getY(), (int) entity.getWidth(), (int) entity.getHeight());
-			} else { // default 
+			} else { // default
 				g.fillOval((int) entity.getX(), (int) entity.getY(), (int) entity.getWidth(), (int) entity.getHeight());
 			}
 			g.setColor(isSelected ? BORDER_SELECTED_COLOR : BORDER_NORMAL_COLOR);
 			String name = entity.toString();
 			Rectangle2D nameBounds = g.getFontMetrics().getStringBounds(name, g);
-			g.drawString(name, (int) (entity.getX() + entity.getWidth() / 2.0 - nameBounds.getWidth() / 2.0), (int) (entity.getY() + entity.getHeight() / 2.0 + nameBounds.getHeight() / 2.0));//- nameBounds.getHeight() - nameBounds.getY()));
+			g.drawString(name, (int) (entity.getX() + entity.getWidth() / 2.0 - nameBounds.getWidth() / 2.0),
+					(int) (entity.getY() + entity.getHeight() / 2.0 + nameBounds.getHeight() / 2.0));// -
+																										// nameBounds.getHeight()
+																										// -
+																										// nameBounds.getY()));
 			if (g instanceof Graphics2D) {
 				((Graphics2D) g).setStroke(isSelected ? BORDER_SELECTED_STROKE : BORDER_NORMAL_STROKE);
 			}
@@ -558,7 +578,8 @@ public class SimpleSwingExample {
 			SimpleNode dest = (SimpleNode) rel.getDestinationInLayout();
 
 			// Add bend points if required
-			if (((SimpleRelationship) rel).getBendPoints() != null && ((SimpleRelationship) rel).getBendPoints().length > 0) {
+			if (((SimpleRelationship) rel).getBendPoints() != null
+					&& ((SimpleRelationship) rel).getBendPoints().length > 0) {
 				drawBendPoints(rel, g);
 			} else {
 				double srcX = src.getX() + src.getWidth() / 2.0;
@@ -576,17 +597,20 @@ public class SimpleSwingExample {
 		}
 
 		/**
-		 * Draw a line from the edge of the src node to the edge of the destination node 
+		 * Draw a line from the edge of the src node to the edge of the destination node
 		 */
-		private void drawRelationship(SimpleNode src, SimpleNode dest, double theta, double srcX, double srcY, double destX, double destY, Graphics g) {
+		private void drawRelationship(SimpleNode src, SimpleNode dest, double theta, double srcX, double srcY,
+				double destX, double destY, Graphics g) {
 
 			double reverseTheta = theta > 0.0d ? theta - Math.PI : theta + Math.PI;
 
 			Point2D.Double srcIntersectionP = getEllipseIntersectionPoint(theta, src.getWidth(), src.getHeight());
 
-			Point2D.Double destIntersectionP = getEllipseIntersectionPoint(reverseTheta, dest.getWidth(), dest.getHeight());
+			Point2D.Double destIntersectionP = getEllipseIntersectionPoint(reverseTheta, dest.getWidth(),
+					dest.getHeight());
 
-			drawRelationship(srcX + srcIntersectionP.getX(), srcY + srcIntersectionP.getY(), destX + destIntersectionP.getX(), destY + destIntersectionP.getY(), g);
+			drawRelationship(srcX + srcIntersectionP.getX(), srcY + srcIntersectionP.getY(),
+					destX + destIntersectionP.getX(), destY + destIntersectionP.getY(), g);
 		}
 
 		/**
@@ -615,6 +639,7 @@ public class SimpleSwingExample {
 
 		/**
 		 * Get the length of a line ensuring it is not too small to render
+		 * 
 		 * @param start
 		 * @param end
 		 * @return
@@ -635,18 +660,21 @@ public class SimpleSwingExample {
 		/**
 		 * Draw a line from specified source to specified destination
 		 */
-		private void drawCurvedRelationship(double srcX, double srcY, double control1X, double control1Y, double control2X, double control2Y, double destX, double destY, Graphics g) {
+		private void drawCurvedRelationship(double srcX, double srcY, double control1X, double control1Y,
+				double control2X, double control2Y, double destX, double destY, Graphics g) {
 			GeneralPath shape = new GeneralPath();
 			shape.moveTo((float) srcX, (float) srcY);
-			shape.curveTo((float) control1X, (float) control1Y, (float) control2X, (float) control2Y, (float) destX, (float) destY);
+			shape.curveTo((float) control1X, (float) control1Y, (float) control2X, (float) control2Y, (float) destX,
+					(float) destY);
 			g.setColor(RELATIONSHIP_NORMAL_COLOR);
 			((Graphics2D) g).draw(shape);
 		}
 
 		/**
-		 * Draws a set of lines between bendpoints, returning the last bendpoint
-		 * drawn. Note that this assumes the first and last bendpoints are actually
-		 * the source node and destination node centre points. 
+		 * Draws a set of lines between bendpoints, returning the last bendpoint drawn.
+		 * Note that this assumes the first and last bendpoints are actually the source
+		 * node and destination node centre points.
+		 * 
 		 * @param relationship
 		 * @param bendNodes
 		 * @param bendEdges
@@ -672,8 +700,11 @@ public class SimpleSwingExample {
 				bp = bendPoints[bpNum];
 				if (bp.getIsControlPoint()) {
 					if (bendPoints[bpNum + 1].getIsControlPoint()) {
-						destEntity = new SimpleNode(DUMMY_TITLE, bendPoints[bpNum + 2].getX(), bendPoints[bpNum + 2].getY(), 0.01, 0.01);
-						drawCurvedRelationship(srcX, srcY, bp.getX(), bp.getY(), bendPoints[bpNum + 1].getX(), bendPoints[bpNum + 1].getY(), bendPoints[bpNum + 2].getX(), bendPoints[bpNum + 2].getY(), g);
+						destEntity = new SimpleNode(DUMMY_TITLE, bendPoints[bpNum + 2].getX(),
+								bendPoints[bpNum + 2].getY(), 0.01, 0.01);
+						drawCurvedRelationship(srcX, srcY, bp.getX(), bp.getY(), bendPoints[bpNum + 1].getX(),
+								bendPoints[bpNum + 1].getY(), bendPoints[bpNum + 2].getX(),
+								bendPoints[bpNum + 2].getY(), g);
 						bpNum += 4;
 					} else {
 						destEntity = new SimpleNode(DUMMY_TITLE, bp.getX(), bp.getY(), 0.01, 0.01);

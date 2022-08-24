@@ -22,8 +22,7 @@ public class Activity extends FlowElement {
 
 	public static final String NAME = "name"; //$NON-NLS-1$
 	static {
-		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(
-				NAME, "Name") };
+		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(NAME, "Name") };
 	}
 
 	static final long serialVersionUID = 1;
@@ -83,8 +82,7 @@ public class Activity extends FlowElement {
 	 * Returns an Object which represents the appropriate value for the property
 	 * name supplied.
 	 * 
-	 * @param propName
-	 *            Name of the property for which the the values are needed.
+	 * @param propName Name of the property for which the the values are needed.
 	 * @return Object which is the value of the property.
 	 */
 	public Object getPropertyValue(Object propName) {
@@ -115,10 +113,8 @@ public class Activity extends FlowElement {
 	/**
 	 * Sets the value of a given property with the value supplied.
 	 * 
-	 * @param id
-	 *            Name of the parameter to be changed.
-	 * @param value
-	 *            Value to be set to the given parameter.
+	 * @param id    Name of the parameter to be changed.
+	 * @param value Value to be set to the given parameter.
 	 */
 	public void setPropertyValue(Object id, Object value) {
 		if (id == NAME)

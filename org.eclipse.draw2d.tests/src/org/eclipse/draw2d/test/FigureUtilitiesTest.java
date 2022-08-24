@@ -43,8 +43,7 @@ public class FigureUtilitiesTest extends TestCase {
 		figureChild1.add(figureChild2);
 		figureParent.add(figureChild3);
 
-		IFigure result = FigureUtilities.findCommonAncestor(figureChild2,
-				figureChild3);
+		IFigure result = FigureUtilities.findCommonAncestor(figureChild2, figureChild3);
 		assertTrue(figureParent == result);
 	}
 
@@ -53,8 +52,7 @@ public class FigureUtilitiesTest extends TestCase {
 		IFigure figureChild = new Figure();
 		figureParent.add(figureChild);
 
-		IFigure result = FigureUtilities.findCommonAncestor(figureParent,
-				figureChild);
+		IFigure result = FigureUtilities.findCommonAncestor(figureParent, figureChild);
 		assertTrue(figureParent == result);
 	}
 
@@ -67,8 +65,7 @@ public class FigureUtilitiesTest extends TestCase {
 		figureParent.add(figureChild1);
 		figureParent.add(figureChild2);
 
-		IFigure result = FigureUtilities.findCommonAncestor(figureChild1,
-				figureChild2);
+		IFigure result = FigureUtilities.findCommonAncestor(figureChild1, figureChild2);
 		assertTrue(figureParent == result);
 	}
 
@@ -79,8 +76,7 @@ public class FigureUtilitiesTest extends TestCase {
 		figureParent.add(figureChild1);
 		figureParent.add(figureChild2);
 
-		IFigure result = FigureUtilities.findCommonAncestor(figureChild1,
-				figureChild2);
+		IFigure result = FigureUtilities.findCommonAncestor(figureChild1, figureChild2);
 		assertTrue(figureParent == result);
 	}
 
@@ -90,8 +86,7 @@ public class FigureUtilitiesTest extends TestCase {
 		IFigure figureChild = new Figure();
 		figureParent.add(figureChild);
 
-		IFigure result = FigureUtilities.findCommonAncestor(figureChild,
-				orphanFigure);
+		IFigure result = FigureUtilities.findCommonAncestor(figureChild, orphanFigure);
 		assertNull(result);
 	}
 }

@@ -20,8 +20,7 @@ public class Transform {
 	/**
 	 * Sets the value for the amount of scaling to be done along both axes.
 	 * 
-	 * @param scale
-	 *            Scale factor
+	 * @param scale Scale factor
 	 * @since 2.0
 	 */
 	public void setScale(double scale) {
@@ -32,10 +31,8 @@ public class Transform {
 	 * Sets the value for the amount of scaling to be done along X and Y axes
 	 * individually.
 	 * 
-	 * @param x
-	 *            Amount of scaling on X axis
-	 * @param y
-	 *            Amount of scaling on Y axis
+	 * @param x Amount of scaling on X axis
+	 * @param y Amount of scaling on Y axis
 	 * @since 2.0
 	 */
 	public void setScale(double x, double y) {
@@ -46,8 +43,7 @@ public class Transform {
 	/**
 	 * Sets the rotation angle.
 	 * 
-	 * @param angle
-	 *            Angle of rotation
+	 * @param angle Angle of rotation
 	 * @since 2.0
 	 */
 	public void setRotation(double angle) {
@@ -58,10 +54,8 @@ public class Transform {
 	/**
 	 * Sets the translation amounts for both axes.
 	 * 
-	 * @param x
-	 *            Amount of shift on X axis
-	 * @param y
-	 *            Amount of shift on Y axis
+	 * @param x Amount of shift on X axis
+	 * @param y Amount of shift on Y axis
 	 * @since 2.0
 	 */
 	public void setTranslation(double x, double y) {
@@ -73,8 +67,7 @@ public class Transform {
 	 * Returns a new transformed Point of the input Point based on the
 	 * transformation values set.
 	 * 
-	 * @param p
-	 *            Point being transformed
+	 * @param p Point being transformed
 	 * @return The transformed Point
 	 * @since 2.0
 	 */

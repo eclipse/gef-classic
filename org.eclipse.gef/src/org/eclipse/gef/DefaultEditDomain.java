@@ -35,8 +35,7 @@ public class DefaultEditDomain extends EditDomain {
 	/**
 	 * Constructs a DefaultEditDomain with the specified IEditorPart
 	 * 
-	 * @param editorPart
-	 *            <code>null</code> or an IEditorPart
+	 * @param editorPart <code>null</code> or an IEditorPart
 	 */
 	public DefaultEditDomain(IEditorPart editorPart) {
 		setEditorPart(editorPart);
@@ -52,8 +51,7 @@ public class DefaultEditDomain extends EditDomain {
 	/**
 	 * Sets the IEditorPart for this EditDomain.
 	 * 
-	 * @param editorPart
-	 *            the editor
+	 * @param editorPart the editor
 	 */
 	protected void setEditorPart(IEditorPart editorPart) {
 		this.editorPart = editorPart;

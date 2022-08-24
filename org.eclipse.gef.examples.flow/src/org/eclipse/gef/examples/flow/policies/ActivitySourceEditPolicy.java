@@ -37,8 +37,7 @@ public class ActivitySourceEditPolicy extends ContainerEditPolicy {
 			AddAndAssignSourceCommand add = new AddAndAssignSourceCommand();
 			add.setParent((StructuredActivity) getHost().getParent().getModel());
 			add.setSource((Activity) getHost().getModel());
-			add.setChild(((Activity) ((EditPart) request.getEditParts().get(i))
-					.getModel()));
+			add.setChild(((Activity) ((EditPart) request.getEditParts().get(i)).getModel()));
 			cmd.add(add);
 		}
 		return cmd;

@@ -60,8 +60,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	private FigureListener figureListener = new FigureListener() {
 		public void figureMoved(IFigure source) {
 			Rectangle newBounds = source.getBounds().getCopy();
-			if (algorithm.updateObstacle(
-					(Rectangle) figuresToBounds.get(source), newBounds)) {
+			if (algorithm.updateObstacle((Rectangle) figuresToBounds.get(source), newBounds)) {
 				queueSomeRouting();
 				isDirty = true;
 			}
@@ -72,15 +71,13 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	private boolean ignoreInvalidate;
 
 	/**
-	 * Creates a new shortest path router with the given container. The
-	 * container contains all the figure's which will be treated as obstacles
-	 * for the connections to avoid. Any time a child of the container moves,
-	 * one or more connections will be revalidated to process the new obstacle
-	 * locations. The connections being routed must not be contained within the
-	 * container.
+	 * Creates a new shortest path router with the given container. The container
+	 * contains all the figure's which will be treated as obstacles for the
+	 * connections to avoid. Any time a child of the container moves, one or more
+	 * connections will be revalidated to process the new obstacle locations. The
+	 * connections being routed must not be contained within the container.
 	 * 
-	 * @param container
-	 *            the container
+	 * @param container the container
 	 */
 	public ShortestPathConnectionRouter(IFigure container) {
 		isDirty = false;
@@ -122,11 +119,10 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	}
 
 	/**
-	 * Gets the constraint for the given {@link Connection}. The constraint is
-	 * the paths list of bend points for this connection.
+	 * Gets the constraint for the given {@link Connection}. The constraint is the
+	 * paths list of bend points for this connection.
 	 * 
-	 * @param connection
-	 *            The connection whose constraint we are retrieving
+	 * @param connection The connection whose constraint we are retrieving
 	 * @return The constraint
 	 */
 	public Object getConstraint(Connection connection) {
@@ -134,8 +130,8 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	}
 
 	/**
-	 * Returns the default spacing maintained on either side of a connection.
-	 * The default value is 4.
+	 * Returns the default spacing maintained on either side of a connection. The
+	 * default value is 4.
 	 * 
 	 * @return the connection spacing
 	 * @since 3.2
@@ -210,8 +206,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 			return;
 		try {
 			ignoreInvalidate = true;
-			((Connection) connectionToPaths.keySet().iterator().next())
-					.revalidate();
+			((Connection) connectionToPaths.keySet().iterator().next()).revalidate();
 		} finally {
 			ignoreInvalidate = false;
 		}
@@ -318,11 +313,10 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 
 	/**
 	 * Sets the default space that should be maintained on either side of a
-	 * connection. This causes the connections to be separated from each other
-	 * and from the obstacles. The default value is 4.
+	 * connection. This causes the connections to be separated from each other and
+	 * from the obstacles. The default value is 4.
 	 * 
-	 * @param spacing
-	 *            the connection spacing
+	 * @param spacing the connection spacing
 	 * @since 3.2
 	 */
 	public void setSpacing(int spacing) {
@@ -330,8 +324,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	}
 
 	/**
-	 * @return true if there are connections routed by this router, false
-	 *         otherwise
+	 * @return true if there are connections routed by this router, false otherwise
 	 * @since 3.5
 	 */
 	public boolean hasMoreConnections() {
@@ -349,8 +342,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	/**
 	 * Sets the value indicating if connection invalidation should be ignored.
 	 * 
-	 * @param b
-	 *            true if invalidation should be skipped, false otherwise
+	 * @param b true if invalidation should be skipped, false otherwise
 	 * @since 3.5
 	 */
 	public void setIgnoreInvalidate(boolean b) {
@@ -358,8 +350,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	}
 
 	/**
-	 * Returns the value indicating if connection invalidation should be
-	 * ignored.
+	 * Returns the value indicating if connection invalidation should be ignored.
 	 * 
 	 * @return true if invalidation should be skipped, false otherwise
 	 * @since 3.5
@@ -369,8 +360,8 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	}
 
 	/**
-	 * Returns the value indicating if the router is dirty, i.e. if there are
-	 * any outstanding connections that need to be routed
+	 * Returns the value indicating if the router is dirty, i.e. if there are any
+	 * outstanding connections that need to be routed
 	 * 
 	 * @return true if there are connections to be routed, false otherwise
 	 * @since 3.5
@@ -383,8 +374,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	 * Returns true if the given connection is routed by this router, false
 	 * otherwise
 	 * 
-	 * @param conn
-	 *            Connection whose router is questioned
+	 * @param conn Connection whose router is questioned
 	 * @return true if this is the router used for conn
 	 * @since 3.5
 	 */

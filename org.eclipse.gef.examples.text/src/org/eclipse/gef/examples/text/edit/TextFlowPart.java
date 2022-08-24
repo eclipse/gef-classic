@@ -101,8 +101,7 @@ public class TextFlowPart extends AbstractTextPart {
 	protected void refreshVisuals() {
 		TextRun textRun = (TextRun) getModel();
 		Style style = textRun.getContainer().getStyle();
-		Font font = FontCache.checkOut(style.getFontFamily(),
-				style.getFontHeight(), style.isBold(), style.isItalic());
+		Font font = FontCache.checkOut(style.getFontFamily(), style.getFontHeight(), style.isBold(), style.isItalic());
 		if (font != localFont) {
 			if (localFont != null)
 				FontCache.checkIn(localFont);
@@ -120,28 +119,22 @@ public class TextFlowPart extends AbstractTextPart {
 			if (search.isInto) {
 				result.trailing = !search.isForward;
 				if (search.isForward)
-					result.location = new TextLocation(this,
-							flow.getNextVisibleOffset(-1));
+					result.location = new TextLocation(this, flow.getNextVisibleOffset(-1));
 				else
-					result.location = new TextLocation(this,
-							flow.getPreviousVisibleOffset(-1));
+					result.location = new TextLocation(this, flow.getPreviousVisibleOffset(-1));
 			} else {
 				if (getLength() > 0) {
 					if (search.isForward)
-						result.location = new TextLocation(this,
-								flow.getNextVisibleOffset(0));
+						result.location = new TextLocation(this, flow.getNextVisibleOffset(0));
 					else
 						result.location = new TextLocation(this,
-								flow.getPreviousVisibleOffset(flow
-										.getPreviousVisibleOffset(-1)));
+								flow.getPreviousVisibleOffset(flow.getPreviousVisibleOffset(-1)));
 				}
 			}
 		} else if (search.isForward && search.where.offset < getLength())
-			result.location = new TextLocation(this,
-					flow.getNextVisibleOffset(search.where.offset));
+			result.location = new TextLocation(this, flow.getNextVisibleOffset(search.where.offset));
 		else if (!search.isForward && search.where.offset > 0)
-			result.location = new TextLocation(this,
-					flow.getPreviousVisibleOffset(search.where.offset));
+			result.location = new TextLocation(this, flow.getPreviousVisibleOffset(search.where.offset));
 		else
 			getTextParent().getTextLocation(search, result);
 	}
@@ -171,26 +164,22 @@ public class TextFlowPart extends AbstractTextPart {
 		getTextFlow().translateToRelative(pt);
 
 		// This detects the case where you've gone past page up or down
-		if (result.location != null
-				&& vDistanceBetween(getTextFlow().getBounds(), pt.y) > result.proximity.height) {
+		if (result.location != null && vDistanceBetween(getTextFlow().getBounds(), pt.y) > result.proximity.height) {
 			result.bestMatchFound = true;
 			return;
 		}
 
 		int[] trailing = new int[1];
-		int offset = getTextFlow().getOffset(pt, trailing, result.proximity)
-				+ trailing[0];
+		int offset = getTextFlow().getOffset(pt, trailing, result.proximity) + trailing[0];
 		if (offset != -1) {
 			result.trailing = trailing[0] == 1;
 			result.location = new TextLocation(this, offset);
-			result.bestMatchFound = result.proximity.width == 0
-					&& result.proximity.height == 0;
+			result.bestMatchFound = result.proximity.width == 0 && result.proximity.height == 0;
 			if (result.bestMatchFound)
 				return;
 		}
 		if (!search.isRecursive && getParent() instanceof TextEditPart) {
-			search.setReferenceTextLocation(this,
-					search.isForward ? getLength() : 0);
+			search.setReferenceTextLocation(this, search.isForward ? getLength() : 0);
 			getTextParent().getTextLocation(search, result);
 		}
 	}
@@ -201,17 +190,14 @@ public class TextFlowPart extends AbstractTextPart {
 			TextFlow flow = getTextFlow();
 			flow.translateToRelative(where);
 			int[] trailing = new int[1];
-			int offset = flow.getNextOffset(where, search.isForward, trailing)
-					+ trailing[0];
+			int offset = flow.getNextOffset(where, search.isForward, trailing) + trailing[0];
 			if (offset != -1) {
 				CaretInfo info = getCaretPlacement(offset, trailing[0] == 1);
-				int vDistance = Math.abs(info.getBaseline()
-						- search.getLocation().y);
+				int vDistance = Math.abs(info.getBaseline() - search.getLocation().y);
 				if (vDistance > result.proximity.height)
 					result.bestMatchFound = true;
 				else {
-					int hDistance = Math.abs(info.getX()
-							- search.getLocation().x);
+					int hDistance = Math.abs(info.getX() - search.getLocation().x);
 					if (vDistance < result.proximity.height
 							|| (vDistance == result.proximity.height && hDistance < result.proximity.width)) {
 						result.trailing = trailing[0] == 1;
@@ -246,26 +232,21 @@ public class TextFlowPart extends AbstractTextPart {
 					offset = search.where.offset == length ? BreakIterator.DONE
 							: wordIterator.following(search.where.offset);
 				else
-					offset = wordIterator.preceding(Math.min(
-							search.where.offset, length - 1));
+					offset = wordIterator.preceding(Math.min(search.where.offset, length - 1));
 			}
 			int index = Math.min(offset, length - 1);
-			if (offset != BreakIterator.DONE
-					&& Character.isWhitespace(text.charAt(index)))
-				offset = search.isForward ? wordIterator.following(index)
-						: wordIterator.preceding(index);
+			if (offset != BreakIterator.DONE && Character.isWhitespace(text.charAt(index)))
+				offset = search.isForward ? wordIterator.following(index) : wordIterator.preceding(index);
 			if (offset != BreakIterator.DONE) {
 				result.location = new TextLocation(this, offset);
 				result.trailing = offset == length;
 				// this is the case where you're at the beginning or the end of
 				// the text flow
-				result.bestMatchFound = !Character.isWhitespace(text
-						.charAt(Math.min(offset, length - 1)));
+				result.bestMatchFound = !Character.isWhitespace(text.charAt(Math.min(offset, length - 1)));
 			}
 		}
 
-		if (!result.bestMatchFound && !search.isRecursive
-				&& getParent() instanceof TextEditPart)
+		if (!result.bestMatchFound && !search.isRecursive && getParent() instanceof TextEditPart)
 			getTextParent().getTextLocation(search, result);
 	}
 

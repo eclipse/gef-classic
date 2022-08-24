@@ -43,8 +43,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 	/**
 	 * Constructor
 	 * 
-	 * @param isHorzontal
-	 *            whether or not the corresponding model ruler is horizontal
+	 * @param isHorzontal whether or not the corresponding model ruler is horizontal
 	 */
 	public RulerRootEditPart(boolean isHorzontal) {
 		super();
@@ -74,10 +73,8 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 	public <T> T getAdapter(final Class<T> adapter) {
 		if (adapter == AutoexposeHelper.class) {
 			if (((RulerEditPart) getContents()).isHorizontal())
-				return adapter.cast(new ViewportAutoexposeHelper(this,
-						HORIZONTAL_THRESHOLD));
-			return adapter.cast(
-					new ViewportAutoexposeHelper(this, VERTICAL_THRESHOLD));
+				return adapter.cast(new ViewportAutoexposeHelper(this, HORIZONTAL_THRESHOLD));
+			return adapter.cast(new ViewportAutoexposeHelper(this, VERTICAL_THRESHOLD));
 		}
 		return super.getAdapter(adapter);
 	}
@@ -99,9 +96,9 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 	}
 
 	/**
-	 * A RulerViewport shares a RangeModel with that of the primary
-	 * GraphicalViewer. The shared RangeModel is set on this viewport externally
-	 * by a client (in this case, RulerComposite).
+	 * A RulerViewport shares a RangeModel with that of the primary GraphicalViewer.
+	 * The shared RangeModel is set on this viewport externally by a client (in this
+	 * case, RulerComposite).
 	 * 
 	 * @author Pratik Shah
 	 * @since 3.0
@@ -128,20 +125,19 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		}
 
 		/**
-		 * This is the method that does the actual layout. We don't want a
-		 * layout to occur when layout() is invoked, rather when something
-		 * changes in the shared RangeModel.
+		 * This is the method that does the actual layout. We don't want a layout to
+		 * occur when layout() is invoked, rather when something changes in the shared
+		 * RangeModel.
 		 * 
-		 * @param force
-		 *            if <code>true</code>, the contents will be resized and
-		 *            revalidated; otherwise, just a repaint will occur.
+		 * @param force if <code>true</code>, the contents will be resized and
+		 *              revalidated; otherwise, just a repaint will occur.
 		 */
 		protected void doLayout(boolean force) {
 			repaint();
 			/*
-			 * @TODO:Pratik It seems you don't really need this force argument.
-			 * Those that invoke doLayout(false) can invoke repaint()
-			 * themselves. doLayout() should just layout.
+			 * @TODO:Pratik It seems you don't really need this force argument. Those that
+			 * invoke doLayout(false) can invoke repaint() themselves. doLayout() should
+			 * just layout.
 			 */
 			if (force) {
 				RangeModel rModel;
@@ -153,17 +149,13 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 				if (horizontal) {
 					contentBounds.y = 0;
 					contentBounds.x = rModel.getMinimum();
-					contentBounds.height = this.getContents()
-							.getPreferredSize().height;
-					contentBounds.width = rModel.getMaximum()
-							- rModel.getMinimum();
+					contentBounds.height = this.getContents().getPreferredSize().height;
+					contentBounds.width = rModel.getMaximum() - rModel.getMinimum();
 				} else {
 					contentBounds.y = rModel.getMinimum();
 					contentBounds.x = 0;
-					contentBounds.height = rModel.getMaximum()
-							- rModel.getMinimum();
-					contentBounds.width = this.getContents()
-							.getPreferredSize().width;
+					contentBounds.height = rModel.getMaximum() - rModel.getMinimum();
+					contentBounds.width = this.getContents().getPreferredSize().width;
 				}
 				if (!this.getContents().getBounds().equals(contentBounds)) {
 					this.getContents().setBounds(contentBounds);
@@ -186,13 +178,12 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 				RangeModel rModel = getVerticalRangeModel();
 				pSize.height = rModel.getMaximum() - rModel.getMinimum();
 			}
-			return pSize.expand(getInsets().getWidth(),
-					getInsets().getHeight());
+			return pSize.expand(getInsets().getWidth(), getInsets().getHeight());
 		}
 
 		/**
-		 * Since the RangeModel is shared with that of the editor's, a
-		 * RulerViewport should not adjust it.
+		 * Since the RangeModel is shared with that of the editor's, a RulerViewport
+		 * should not adjust it.
 		 * 
 		 * @see org.eclipse.draw2d.Viewport#readjustScrollBars()
 		 */
@@ -204,8 +195,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		 */
 		protected void paintBorder(Graphics graphics) {
 			super.paintBorder(graphics);
-			if (this.getContents() != null
-					&& ((RulerFigure) this.getContents()).getDrawFocus()) {
+			if (this.getContents() != null && ((RulerFigure) this.getContents()).getDrawFocus()) {
 				Rectangle focusBounds = getBounds().getCopy();
 				if (((RulerFigure) this.getContents()).isHorizontal()) {
 					focusBounds.resize(-2, -4);
@@ -224,11 +214,9 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 		 */
 		public void propertyChange(PropertyChangeEvent event) {
-			if (this.getContents() != null
-					&& event.getSource() instanceof RangeModel) {
+			if (this.getContents() != null && event.getSource() instanceof RangeModel) {
 				String property = event.getPropertyName();
-				doLayout(RangeModel.PROPERTY_MAXIMUM.equals(property)
-						|| RangeModel.PROPERTY_MINIMUM.equals(property)
+				doLayout(RangeModel.PROPERTY_MAXIMUM.equals(property) || RangeModel.PROPERTY_MINIMUM.equals(property)
 						|| RangeModel.PROPERTY_VALUE.equals(property));
 			}
 		}

@@ -25,8 +25,8 @@ class CompoundBreakCycles extends GraphVisitor {
 
 	/*
 	 * Caches all nodes in the graph. Used in identifying cycles and in cycle
-	 * removal. Flag field indicates "presence". If true, the node has been
-	 * removed from the list.
+	 * removal. Flag field indicates "presence". If true, the node has been removed
+	 * from the list.
 	 */
 	private NodeList graphNodes;
 	private NodeList sL = new NodeList();
@@ -246,8 +246,7 @@ class CompoundBreakCycles extends GraphVisitor {
 		// Invert edges that are causing a cycle
 		for (int i = 0; i < g.edges.size(); i++) {
 			Edge e = g.edges.getEdge(i);
-			if (getOrderIndex(e.source) > getOrderIndex(e.target)
-					&& !e.source.isNested(e.target)
+			if (getOrderIndex(e.source) > getOrderIndex(e.target) && !e.source.isNested(e.target)
 					&& !e.target.isNested(e.source)) {
 				e.invert();
 				e.isFeedback = true;
@@ -256,8 +255,7 @@ class CompoundBreakCycles extends GraphVisitor {
 	}
 
 	/**
-	 * Removes all edges connecting the given subgraph to other nodes outside of
-	 * it.
+	 * Removes all edges connecting the given subgraph to other nodes outside of it.
 	 * 
 	 * @param s
 	 * @param n
@@ -282,13 +280,11 @@ class CompoundBreakCycles extends GraphVisitor {
 	}
 
 	private boolean isSink(Node n) {
-		return getOutDegree(n) == 0
-				&& (n.getParent() == null || isSink(n.getParent()));
+		return getOutDegree(n) == 0 && (n.getParent() == null || isSink(n.getParent()));
 	}
 
 	private boolean isSource(Node n) {
-		return getInDegree(n) == 0
-				&& (n.getParent() == null || isSource(n.getParent()));
+		return getInDegree(n) == 0 && (n.getParent() == null || isSource(n.getParent()));
 	}
 
 	private void remove(Node n) {
@@ -315,8 +311,7 @@ class CompoundBreakCycles extends GraphVisitor {
 	}
 
 	/**
-	 * Removes all edges between a parent and any of its children or
-	 * descendants.
+	 * Removes all edges between a parent and any of its children or descendants.
 	 */
 	private void removeParentChildEdges(DirectedGraph g) {
 		for (int i = 0; i < g.edges.size(); i++) {
@@ -349,8 +344,7 @@ class CompoundBreakCycles extends GraphVisitor {
 				changeOutDegree(e.source, -1);
 
 				Node target = e.target;
-				if (allSources != null && isSource(target)
-						&& canBeRemoved(target)) {
+				if (allSources != null && isSource(target) && canBeRemoved(target)) {
 					allSources.add(target);
 					target.flag = true;
 				}
@@ -362,8 +356,7 @@ class CompoundBreakCycles extends GraphVisitor {
 	 * Restores an edge if it has been removed, and both of its nodes are not
 	 * removed.
 	 * 
-	 * @param e
-	 *            the edge
+	 * @param e the edge
 	 * @return <code>true</code> if the edge was restored
 	 */
 	private boolean restoreEdge(Edge e) {
@@ -378,17 +371,14 @@ class CompoundBreakCycles extends GraphVisitor {
 	/**
 	 * Brings back all nodes nested in the given node.
 	 * 
-	 * @param node
-	 *            the node to restore
-	 * @param sr
-	 *            current sinks
+	 * @param node the node to restore
+	 * @param sr   current sinks
 	 */
 	private void restoreSinks(Node node, NodeList sR) {
 		if (node.flag && sR.contains(node)) {
 			node.flag = false;
 			if (node.getParent() != null)
-				setChildCount(node.getParent(),
-						getChildCount(node.getParent()) + 1);
+				setChildCount(node.getParent(), getChildCount(node.getParent()) + 1);
 			sR.remove(node);
 			for (int i = 0; i < node.incoming.size(); i++) {
 				Edge e = node.incoming.getEdge(i);
@@ -411,17 +401,14 @@ class CompoundBreakCycles extends GraphVisitor {
 	/**
 	 * Brings back all nodes nested in the given node.
 	 * 
-	 * @param node
-	 *            the node to restore
-	 * @param sr
-	 *            current sinks
+	 * @param node the node to restore
+	 * @param sr   current sinks
 	 */
 	private void restoreSources(Node node) {
 		if (node.flag && sL.contains(node)) {
 			node.flag = false;
 			if (node.getParent() != null)
-				setChildCount(node.getParent(),
-						getChildCount(node.getParent()) + 1);
+				setChildCount(node.getParent(), getChildCount(node.getParent()) + 1);
 			sL.remove(node);
 			for (int i = 0; i < node.incoming.size(); i++) {
 				Edge e = node.incoming.getEdge(i);

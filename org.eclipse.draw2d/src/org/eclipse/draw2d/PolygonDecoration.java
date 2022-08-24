@@ -23,13 +23,11 @@ import org.eclipse.draw2d.geometry.Transform;
 public class PolygonDecoration extends Polygon implements RotatableDecoration {
 
 	/**
-	 * Template for a triangle that points to the right when the rotation angle
-	 * is 0
+	 * Template for a triangle that points to the right when the rotation angle is 0
 	 */
 	public static final PointList TRIANGLE_TIP = new PointList();
 	/**
-	 * Template for a triangle that points to the left when the rotation angle
-	 * is 0
+	 * Template for a triangle that points to the left when the rotation angle is 0
 	 */
 	public static final PointList INVERTED_TRIANGLE_TIP = new PointList();
 
@@ -48,8 +46,8 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	private Transform transform = new Transform();
 
 	/**
-	 * Constructs a PolygonDecoration. Defaults the PolygonDecoration to fill
-	 * its region with black.
+	 * Constructs a PolygonDecoration. Defaults the PolygonDecoration to fill its
+	 * region with black.
 	 * 
 	 * @since 2.0
 	 */
@@ -85,8 +83,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	/**
 	 * Sets the location of this PolygonDecoration.
 	 * 
-	 * @param p
-	 *            the new location
+	 * @param p the new location
 	 */
 	public void setLocation(Point p) {
 		points = null;
@@ -97,12 +94,10 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 
 	/**
 	 * Sets the PolygonDecorations point template to the passed PointList. This
-	 * template is an outline of the PolygonDecoration's region. (The default
-	 * value is TRIANGLE_TIP which is a triangle whose tip is pointing to the
-	 * right).
+	 * template is an outline of the PolygonDecoration's region. (The default value
+	 * is TRIANGLE_TIP which is a triangle whose tip is pointing to the right).
 	 * 
-	 * @param pl
-	 *            the PointList outline to use as the PolygonDecoration's region
+	 * @param pl the PointList outline to use as the PolygonDecoration's region
 	 * @since 2.0
 	 */
 	public void setTemplate(PointList pl) {
@@ -117,10 +112,8 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	 * Sets the amount of scaling to be done along X and Y axes on the
 	 * PolygonDecoration's template.
 	 * 
-	 * @param x
-	 *            X scaling
-	 * @param y
-	 *            Y scaling
+	 * @param x X scaling
+	 * @param y Y scaling
 	 * @since 2.0
 	 */
 	public void setScale(double x, double y) {
@@ -130,11 +123,10 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	}
 
 	/**
-	 * Sets the rotation of this decoration so that the decoration points toward
-	 * the given reference point.
+	 * Sets the rotation of this decoration so that the decoration points toward the
+	 * given reference point.
 	 * 
-	 * @param ref
-	 *            the reference point
+	 * @param ref the reference point
 	 */
 	public void setReferencePoint(Point ref) {
 		Point pt = Point.SINGLETON;
@@ -146,8 +138,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	/**
 	 * Sets the angle by which rotation is to be done on the PolygonDecoration.
 	 * 
-	 * @param angle
-	 *            Angle of rotation
+	 * @param angle Angle of rotation
 	 * @since 2.0
 	 */
 	public void setRotation(double angle) {

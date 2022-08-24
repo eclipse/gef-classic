@@ -88,8 +88,7 @@ class CompoundRankSorter extends RankSorter {
 		// result += Math.random() * rankSize * (1.0 - progress) / 3.0;
 		if (progress > 0.2) {
 			Subgraph s = node.getParent();
-			double connectivity = mergeConnectivity(s, node.rank + 1, result,
-					progress);
+			double connectivity = mergeConnectivity(s, node.rank + 1, result, progress);
 			result = connectivity;
 		}
 		return result;
@@ -100,15 +99,13 @@ class CompoundRankSorter extends RankSorter {
 		// result += Math.random() * rankSize * (1.0 - progress) / 3.0;
 		if (progress > 0.2) {
 			Subgraph s = node.getParent();
-			double connectivity = mergeConnectivity(s, node.rank - 1, result,
-					progress);
+			double connectivity = mergeConnectivity(s, node.rank - 1, result, progress);
 			result = connectivity;
 		}
 		return result;
 	}
 
-	double mergeConnectivity(Subgraph s, int row, double result,
-			double scaleFactor) {
+	double mergeConnectivity(Subgraph s, int row, double result, double scaleFactor) {
 		while (s != null && getRowEntry(s, row) == null)
 			s = s.getParent();
 		if (s != null) {

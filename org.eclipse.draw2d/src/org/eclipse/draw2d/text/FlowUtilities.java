@@ -38,8 +38,7 @@ public class FlowUtilities {
 	 */
 	public static FlowUtilities INSTANCE = new FlowUtilities();
 
-	private static final BreakIterator INTERNAL_LINE_BREAK = BreakIterator
-			.getLineInstance();
+	private static final BreakIterator INTERNAL_LINE_BREAK = BreakIterator.getLineInstance();
 	private static TextLayout layout;
 
 	static final BreakIterator LINE_BREAK = BreakIterator.getLineInstance();
@@ -71,13 +70,11 @@ public class FlowUtilities {
 	/**
 	 * Gets the average character width.
 	 * 
-	 * @param fragment
-	 *            the supplied TextFragmentBox to use for calculation. if the
-	 *            length is 0 or if the width is or below 0, the average
-	 *            character width is taken from standard font metrics.
-	 * @param font
-	 *            the font to use in case the TextFragmentBox conditions above
-	 *            are true.
+	 * @param fragment the supplied TextFragmentBox to use for calculation. if the
+	 *                 length is 0 or if the width is or below 0, the average
+	 *                 character width is taken from standard font metrics.
+	 * @param font     the font to use in case the TextFragmentBox conditions above
+	 *                 are true.
 	 * @return the average character width
 	 */
 	protected float getAverageCharWidth(TextFragmentBox fragment, Font font) {
@@ -119,9 +116,9 @@ public class FlowUtilities {
 	}
 
 	/**
-	 * Provides a TextLayout that can be used by the Draw2d text package for
-	 * Bidi. This TextLayout should not be disposed by clients. The provided
-	 * TextLayout's orientation will be LTR.
+	 * Provides a TextLayout that can be used by the Draw2d text package for Bidi.
+	 * This TextLayout should not be disposed by clients. The provided TextLayout's
+	 * orientation will be LTR.
 	 * 
 	 * @return an SWT TextLayout that can be used for Bidi
 	 * @since 3.1
@@ -148,40 +145,32 @@ public class FlowUtilities {
 		}
 	}
 
-	private int measureString(TextFragmentBox frag, String string, int guess,
-			Font font) {
+	private int measureString(TextFragmentBox frag, String string, int guess, Font font) {
 		if (frag.requiresBidi()) {
 			// The text and/or could have changed if the lookAhead was invoked.
 			// This will
 			// happen at most once.
 			return getTextLayoutBounds(string, font, 0, guess - 1).width;
 		} else
-			return getTextUtilities().getTextExtents(
-					string.substring(0, guess), font).width;
+			return getTextUtilities().getTextExtents(string.substring(0, guess), font).width;
 	}
 
 	/**
 	 * Sets up the fragment width based using the font and string passed in.
 	 * 
-	 * @param fragment
-	 *            the text fragment whose width will be set
-	 * @param font
-	 *            the font to be used in the calculation
-	 * @param string
-	 *            the string to be used in the calculation
+	 * @param fragment the text fragment whose width will be set
+	 * @param font     the font to be used in the calculation
+	 * @param string   the string to be used in the calculation
 	 */
-	final protected void setupFragment(TextFragmentBox fragment, Font font,
-			String string) {
+	final protected void setupFragment(TextFragmentBox fragment, Font font, String string) {
 		if (fragment.getWidth() == -1 || fragment.isTruncated()) {
 			int width;
 			if (string.length() == 0 || fragment.length == 0)
 				width = 0;
 			else if (fragment.requiresBidi()) {
-				width = getTextLayoutBounds(string, font, 0,
-						fragment.length - 1).width;
+				width = getTextLayoutBounds(string, font, 0, fragment.length - 1).width;
 			} else
-				width = getTextUtilities().getTextExtents(
-						string.substring(0, fragment.length), font).width;
+				width = getTextUtilities().getTextExtents(string.substring(0, fragment.length), font).width;
 			if (fragment.isTruncated())
 				width += getEllipsisWidth(font);
 			fragment.setWidth(width);
@@ -190,27 +179,20 @@ public class FlowUtilities {
 
 	/**
 	 * Sets up a fragment and returns the number of characters consumed from the
-	 * given String. An average character width can be provided as a hint for
-	 * faster calculation. If a fragment's bidi level is set, a TextLayout will
-	 * be used to calculate the width.
+	 * given String. An average character width can be provided as a hint for faster
+	 * calculation. If a fragment's bidi level is set, a TextLayout will be used to
+	 * calculate the width.
 	 * 
-	 * @param frag
-	 *            the TextFragmentBox
-	 * @param string
-	 *            the String
-	 * @param font
-	 *            the Font used for measuring
-	 * @param context
-	 *            the flow context
-	 * @param wrapping
-	 *            the word wrap style
-	 * @return the number of characters that will fit in the given space; can be
-	 *         0 (eg., when the first character of the given string is a
-	 *         newline)
+	 * @param frag     the TextFragmentBox
+	 * @param string   the String
+	 * @param font     the Font used for measuring
+	 * @param context  the flow context
+	 * @param wrapping the word wrap style
+	 * @return the number of characters that will fit in the given space; can be 0
+	 *         (eg., when the first character of the given string is a newline)
 	 */
-	final protected int wrapFragmentInContext(TextFragmentBox frag,
-			String string, FlowContext context, LookAhead lookahead, Font font,
-			int wrapping) {
+	final protected int wrapFragmentInContext(TextFragmentBox frag, String string, FlowContext context,
+			LookAhead lookahead, Font font, int wrapping) {
 		frag.setTruncated(false);
 		int strLen = string.length();
 		if (strLen == 0) {
@@ -234,8 +216,7 @@ public class FlowUtilities {
 		int max, min = 1;
 		if (wrapping == ParagraphTextLayout.WORD_WRAP_HARD) {
 			absoluteMin = INTERNAL_LINE_BREAK.next();
-			while (absoluteMin > 0
-					&& Character.isWhitespace(string.charAt(absoluteMin - 1)))
+			while (absoluteMin > 0 && Character.isWhitespace(string.charAt(absoluteMin - 1)))
 				absoluteMin--;
 			min = Math.max(absoluteMin, 1);
 		}
@@ -250,13 +231,9 @@ public class FlowUtilities {
 
 		while (true) {
 			if ((max - min) <= 1) {
-				if (min == absoluteMin
-						&& context.isCurrentLineOccupied()
-						&& !context.getContinueOnSameLine()
-						&& availableWidth < measureString(frag, string, min,
-								font)
-								+ ((min == strLen && lookahead != null) ? lookahead
-										.getWidth() : 0)) {
+				if (min == absoluteMin && context.isCurrentLineOccupied() && !context.getContinueOnSameLine()
+						&& availableWidth < measureString(frag, string, min, font)
+								+ ((min == strLen && lookahead != null) ? lookahead.getWidth() : 0)) {
 					context.endLine();
 					availableWidth = context.getRemainingLineWidth();
 					max = Math.min(strLen, firstDelimiter) + 1;
@@ -277,8 +254,7 @@ public class FlowUtilities {
 
 			guessSize = measureString(frag, string, guess, font);
 
-			if (guess == strLen && lookahead != null
-					&& !canBreakAfter(string.charAt(strLen - 1))
+			if (guess == strLen && lookahead != null && !canBreakAfter(string.charAt(strLen - 1))
 					&& guessSize + lookahead.getWidth() > availableWidth) {
 				max = guess;
 				continue;
@@ -320,8 +296,7 @@ public class FlowUtilities {
 					result++;
 			} else if (string.charAt(min) == '\n')
 				result++;
-		} else if (string.charAt(min) == ' '
-				|| canBreakAfter(string.charAt(min - 1))
+		} else if (string.charAt(min) == ' ' || canBreakAfter(string.charAt(min - 1))
 				|| INTERNAL_LINE_BREAK.isBoundary(min)) {
 			frag.length = min;
 			if (string.charAt(min) == ' ')
@@ -337,14 +312,12 @@ public class FlowUtilities {
 				if (result == 0) {
 					switch (wrapping) {
 					case ParagraphTextLayout.WORD_WRAP_TRUNCATE:
-						int truncatedWidth = availableWidth
-								- getEllipsisWidth(font);
+						int truncatedWidth = availableWidth - getEllipsisWidth(font);
 						if (truncatedWidth > 0) {
 							// $TODO this is very slow. It should be using
 							// avgCharWidth to go faster
 							while (min > 0) {
-								guessSize = measureString(frag, string, min,
-										font);
+								guessSize = measureString(frag, string, min, font);
 								if (guessSize <= truncatedWidth)
 									break;
 								min--;
@@ -397,8 +370,7 @@ public class FlowUtilities {
 	/**
 	 * Gets the ellipsis width.
 	 * 
-	 * @param font
-	 *            the font to be used in the calculation
+	 * @param font the font to be used in the calculation
 	 * @return the width of the ellipsis
 	 * @since 3.4
 	 */

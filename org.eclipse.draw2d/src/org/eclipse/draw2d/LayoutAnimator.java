@@ -41,8 +41,8 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	static final LayoutAnimator INSTANCE = new LayoutAnimator();
 
 	/**
-	 * Constructs a new Animator. The default instance ({@link #getDefault()})
-	 * can be used on all figures being animated.
+	 * Constructs a new Animator. The default instance ({@link #getDefault()}) can
+	 * be used on all figures being animated.
 	 * 
 	 * @since 3.2
 	 */
@@ -53,8 +53,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 * Returns an object encapsulating the placement of children in a container.
 	 * This method is called to capture both the initial and final states.
 	 * 
-	 * @param container
-	 *            the container figure
+	 * @param container the container figure
 	 * @return the current state
 	 * @since 3.2
 	 */
@@ -125,11 +124,10 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 			// TODO need to change this to hide the figure until the end.
 			if (rect1 == null)
 				continue;
-			child.setBounds(new Rectangle(Math.round(progress * rect2.x
-					+ ssergorp * rect1.x), Math.round(progress * rect2.y
-					+ ssergorp * rect1.y), Math.round(progress * rect2.width
-					+ ssergorp * rect1.width), Math.round(progress
-					* rect2.height + ssergorp * rect1.height)));
+			child.setBounds(new Rectangle(Math.round(progress * rect2.x + ssergorp * rect1.x),
+					Math.round(progress * rect2.y + ssergorp * rect1.y),
+					Math.round(progress * rect2.width + ssergorp * rect1.width),
+					Math.round(progress * rect2.height + ssergorp * rect1.height)));
 		}
 		return true;
 	}

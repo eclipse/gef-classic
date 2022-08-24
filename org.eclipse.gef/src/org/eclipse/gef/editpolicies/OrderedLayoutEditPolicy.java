@@ -37,22 +37,20 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 
 	/**
-	 * Returns the <code>Command</code> to add the specified child after a
-	 * reference <code>EditPart</code>. If the reference is <code>null</code>,
-	 * the child should be added as the first child.
+	 * Returns the <code>Command</code> to add the specified child after a reference
+	 * <code>EditPart</code>. If the reference is <code>null</code>, the child
+	 * should be added as the first child.
 	 * 
-	 * @param child
-	 *            the child being added
-	 * @param after
-	 *            <code>null</code> or a reference EditPart
+	 * @param child the child being added
+	 * @param after <code>null</code> or a reference EditPart
 	 * @return a Command to add the child
 	 */
 	protected abstract Command createAddCommand(EditPart child, EditPart after);
 
 	/**
 	 * Since Ordered layouts generally don't use constraints, a
-	 * {@link NonResizableEditPolicy} is used by default for children.
-	 * Subclasses may override this method to supply a different EditPolicy.
+	 * {@link NonResizableEditPolicy} is used by default for children. Subclasses
+	 * may override this method to supply a different EditPolicy.
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
 	 */
@@ -61,32 +59,29 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	}
 
 	/**
-	 * Returns the <code>Command</code> to move the specified child before the
-	 * given reference <code>EditPart</code>. If the reference is
-	 * <code>null</code>, the child should be moved in front of all children.
+	 * Returns the <code>Command</code> to move the specified child before the given
+	 * reference <code>EditPart</code>. If the reference is <code>null</code>, the
+	 * child should be moved in front of all children.
 	 * <P>
-	 * A move is a change in the order of the children, which indirectly causes
-	 * a change in location on the screen.
+	 * A move is a change in the order of the children, which indirectly causes a
+	 * change in location on the screen.
 	 * 
-	 * @param child
-	 *            the child being moved
-	 * @param after
-	 *            <code>null</code> or the EditPart that should be after (or to
-	 *            the right of) the child being moved
+	 * @param child the child being moved
+	 * @param after <code>null</code> or the EditPart that should be after (or to
+	 *              the right of) the child being moved
 	 * @return a Command to move the child
 	 */
-	protected abstract Command createMoveChildCommand(EditPart child,
-			EditPart after);
+	protected abstract Command createMoveChildCommand(EditPart child, EditPart after);
 
 	/**
-	 * This method is overridden from the superclass to calculate the
-	 * <i>index</i> at which the children should be added. The index is
-	 * determined by finding a reference EditPart, and adding the new child[ren]
-	 * <em>after</em> that reference part. <code>null</code> is used to indicate
-	 * that the child[ren] should be added at the beginning.
+	 * This method is overridden from the superclass to calculate the <i>index</i>
+	 * at which the children should be added. The index is determined by finding a
+	 * reference EditPart, and adding the new child[ren] <em>after</em> that
+	 * reference part. <code>null</code> is used to indicate that the child[ren]
+	 * should be added at the beginning.
 	 * <P>
-	 * Subclasses must override {@link #createAddCommand(EditPart, EditPart)},
-	 * and should not override this method.
+	 * Subclasses must override {@link #createAddCommand(EditPart, EditPart)}, and
+	 * should not override this method.
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request)
 	 */
@@ -103,22 +98,21 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 
 	/**
 	 * Calculates a <i>reference</i> <code>EditPart</code> using the specified
-	 * <code>Request</code>. The EditPart returned is used to mark the index
-	 * coming <em>after</em> that EditPart. <code>null</code> is used to
-	 * indicate the index that comes after <em>no</em> EditPart, that is, it
-	 * indicates the very last index.
+	 * <code>Request</code>. The EditPart returned is used to mark the index coming
+	 * <em>after</em> that EditPart. <code>null</code> is used to indicate the index
+	 * that comes after <em>no</em> EditPart, that is, it indicates the very last
+	 * index.
 	 * 
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 * @return <code>null</code> or a reference EditPart
 	 */
 	protected abstract EditPart getInsertionReference(Request request);
 
 	/**
-	 * A move is interpreted here as a change in order of the children. This
-	 * method obtains the proper index, and then calls
-	 * {@link #createMoveChildCommand(EditPart, EditPart)}, which subclasses
-	 * must implement. Subclasses should not override this method.
+	 * A move is interpreted here as a change in order of the children. This method
+	 * obtains the proper index, and then calls
+	 * {@link #createMoveChildCommand(EditPart, EditPart)}, which subclasses must
+	 * implement. Subclasses should not override this method.
 	 * 
 	 * @see LayoutEditPolicy#getMoveChildrenCommand(Request)
 	 */

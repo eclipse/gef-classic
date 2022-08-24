@@ -27,15 +27,13 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * 
  * @since 3.6
  */
-public class ViewportAwareConnectionLayerClippingStrategy implements
-		IClippingStrategy {
+public class ViewportAwareConnectionLayerClippingStrategy implements IClippingStrategy {
 
 	private static final Insets PRIVATE_INSETS = new Insets(0, 0, 1, 1);
 
 	private ConnectionLayer connectionLayer = null;
 
-	public ViewportAwareConnectionLayerClippingStrategy(
-			ConnectionLayer connectionLayer) {
+	public ViewportAwareConnectionLayerClippingStrategy(ConnectionLayer connectionLayer) {
 		this.connectionLayer = connectionLayer;
 	}
 
@@ -70,8 +68,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 		// if XYAnchors are used), returning the bounds is all we can do
 		ConnectionAnchor sourceAnchor = connection.getSourceAnchor();
 		ConnectionAnchor targetAnchor = connection.getTargetAnchor();
-		if (sourceAnchor == null || sourceAnchor.getOwner() == null
-				|| targetAnchor == null || targetAnchor.getOwner() == null) {
+		if (sourceAnchor == null || sourceAnchor.getOwner() == null || targetAnchor == null
+				|| targetAnchor.getOwner() == null) {
 			return new Rectangle[] { clipRect };
 		}
 
@@ -80,8 +78,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 		// the connection has to be clipped at.
 		IFigure sourceFigure = sourceAnchor.getOwner();
 		IFigure targetFigure = targetAnchor.getOwner();
-		Viewport nearestEnclosingCommonViewport = ViewportUtilities
-				.getNearestCommonViewport(sourceFigure, targetFigure);
+		Viewport nearestEnclosingCommonViewport = ViewportUtilities.getNearestCommonViewport(sourceFigure,
+				targetFigure);
 		if (nearestEnclosingCommonViewport == null) {
 			return new Rectangle[] { clipRect };
 		}
@@ -97,35 +95,27 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 		// the nearest enclosing viewport of source and target respectively, the
 		// connection has to be further clipped (the connection may even not be
 		// visible at all)
-		Viewport nearestEnclosingSourceViewport = ViewportUtilities
-				.getNearestEnclosingViewport(sourceFigure);
-		Viewport nearestEnclosingTargetViewport = ViewportUtilities
-				.getNearestEnclosingViewport(targetFigure);
+		Viewport nearestEnclosingSourceViewport = ViewportUtilities.getNearestEnclosingViewport(sourceFigure);
+		Viewport nearestEnclosingTargetViewport = ViewportUtilities.getNearestEnclosingViewport(targetFigure);
 		if (nearestEnclosingSourceViewport != nearestEnclosingTargetViewport) {
 			// compute if source and target anchor are visible
 			// within the nearest common enclosing viewport (which may
 			// itself be nested in other viewports).
 			Rectangle sourceClipRect = clipRect.getCopy();
 			if (nearestEnclosingSourceViewport != nearestEnclosingCommonViewport) {
-				clipAtViewports(sourceClipRect,
-						ViewportUtilities.getViewportsPath(
-								nearestEnclosingSourceViewport,
-								nearestEnclosingCommonViewport, false));
+				clipAtViewports(sourceClipRect, ViewportUtilities.getViewportsPath(nearestEnclosingSourceViewport,
+						nearestEnclosingCommonViewport, false));
 			}
 			Rectangle targetClipRect = clipRect.getCopy();
 			if (nearestEnclosingTargetViewport != nearestEnclosingCommonViewport) {
-				clipAtViewports(targetClipRect,
-						ViewportUtilities.getViewportsPath(
-								nearestEnclosingTargetViewport,
-								nearestEnclosingCommonViewport, false));
+				clipAtViewports(targetClipRect, ViewportUtilities.getViewportsPath(nearestEnclosingTargetViewport,
+						nearestEnclosingCommonViewport, false));
 			}
 			PointList absolutePointsAsCopy = getAbsolutePointsAsCopy(connection);
-			boolean sourceAnchorVisible = sourceClipRect.getExpanded(
-					PRIVATE_INSETS).contains(
-					absolutePointsAsCopy.getFirstPoint());
-			boolean targetAnchorVisible = targetClipRect.getExpanded(
-					PRIVATE_INSETS).contains(
-					absolutePointsAsCopy.getLastPoint());
+			boolean sourceAnchorVisible = sourceClipRect.getExpanded(PRIVATE_INSETS)
+					.contains(absolutePointsAsCopy.getFirstPoint());
+			boolean targetAnchorVisible = targetClipRect.getExpanded(PRIVATE_INSETS)
+					.contains(absolutePointsAsCopy.getLastPoint());
 
 			if (!sourceAnchorVisible || !targetAnchorVisible) {
 				// one (or both) of source or target anchor is invisible
@@ -163,9 +153,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 		// now traverse the viewport path of the figure (and reduce clipRect
 		// to what is actually visible); process all viewports up to the
 		// root viewport
-		List enclosingViewportsPath = ViewportUtilities.getViewportsPath(
-				ViewportUtilities.getNearestEnclosingViewport(figure),
-				getRootViewport(), false);
+		List enclosingViewportsPath = ViewportUtilities
+				.getViewportsPath(ViewportUtilities.getNearestEnclosingViewport(figure), getRootViewport(), false);
 		clipAtViewports(clipRect, enclosingViewportsPath);
 		return clipRect;
 	}
@@ -173,10 +162,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 	/**
 	 * Clips the given clipRect at all given viewports.
 	 */
-	protected void clipAtViewports(Rectangle clipRect,
-			List enclosingViewportsPath) {
-		for (Iterator iterator = enclosingViewportsPath.iterator(); iterator
-				.hasNext();) {
+	protected void clipAtViewports(Rectangle clipRect, List enclosingViewportsPath) {
+		for (Iterator iterator = enclosingViewportsPath.iterator(); iterator.hasNext();) {
 			Viewport viewport = (Viewport) iterator.next();
 			clipRect.intersect(getAbsoluteViewportAreaAsCopy(viewport));
 		}
@@ -184,8 +171,8 @@ public class ViewportAwareConnectionLayerClippingStrategy implements
 
 	/**
 	 * Returns the root viewport, i.e. the nearest enclosing viewport of the
-	 * connection layer, which corresponds to the nearest enclosing common
-	 * viewport of primary and connection layer.
+	 * connection layer, which corresponds to the nearest enclosing common viewport
+	 * of primary and connection layer.
 	 */
 	protected Viewport getRootViewport() {
 		return ViewportUtilities.getNearestEnclosingViewport(connectionLayer);

@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.jface;
 
-
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -28,8 +27,8 @@ import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 /**
- * This snippet shows how to use the INestedGraphContentProvider to create a graph
- * with Zest. In this example, getElements returns 3 edges: * Rock2Paper *
+ * This snippet shows how to use the INestedGraphContentProvider to create a
+ * graph with Zest. In this example, getElements returns 3 edges: * Rock2Paper *
  * Paper2Scissors * Scissors2Rock
  * 
  * And for each of these, the source and destination are returned in getSource
@@ -54,7 +53,7 @@ public class GraphJFaceSnippet6 {
 			if (entity.equals("Third")) {
 				return new Object[] { "First" };
 			}
-			if ( entity.equals("rock")) {
+			if (entity.equals("rock")) {
 				return new Object[] { "paper" };
 			}
 			return null;
@@ -78,12 +77,13 @@ public class GraphJFaceSnippet6 {
 
 		public Object[] getChildren(Object element) {
 			// TODO Auto-generated method stub
-			return new Object[] {"rock", "paper", "scissors"};
+			return new Object[] { "rock", "paper", "scissors" };
 		}
 
 		public boolean hasChildren(Object element) {
 			// TODO Auto-generated method stub
-			if ( element.equals("First")) return true;
+			if (element.equals("First"))
+				return true;
 			return false;
 		}
 
@@ -100,7 +100,8 @@ public class GraphJFaceSnippet6 {
 		}
 
 		public String getText(Object element) {
-			if ( element instanceof EntityConnectionData ) return "";
+			if (element instanceof EntityConnectionData)
+				return "";
 			return element.toString();
 		}
 
@@ -122,7 +123,7 @@ public class GraphJFaceSnippet6 {
 		viewer.setLabelProvider(new MyLabelProvider());
 		viewer.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		viewer.setInput(new Object());
-		
+
 		Button button = new Button(shell, SWT.PUSH);
 		button.setText("push");
 		button.addSelectionListener(new SelectionListener() {
@@ -133,7 +134,7 @@ public class GraphJFaceSnippet6 {
 			public void widgetSelected(SelectionEvent e) {
 				viewer.setInput(new Object());
 			}
-			
+
 		});
 		shell.open();
 		while (!shell.isDisposed()) {

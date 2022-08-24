@@ -66,8 +66,7 @@ public class GraphJFaceSnippet8 {
 		}
 	}
 
-	static class MyLabelProvider extends LabelProvider implements
-			ISelfStyleProvider {
+	static class MyLabelProvider extends LabelProvider implements ISelfStyleProvider {
 
 		public Image getImage(Object element) {
 			return null;
@@ -77,11 +76,9 @@ public class GraphJFaceSnippet8 {
 			return element.toString();
 		}
 
-		public void selfStyleConnection(Object element,
-				GraphConnection connection) {
+		public void selfStyleConnection(Object element, GraphConnection connection) {
 			connection.setLineStyle(SWT.LINE_CUSTOM);
-			PolylineConnection pc = (PolylineConnection) connection
-					.getConnectionFigure();
+			PolylineConnection pc = (PolylineConnection) connection.getConnectionFigure();
 			pc.setLineDash(new float[] { 4 });
 			pc.setTargetDecoration(createDecoration(ColorConstants.white));
 			pc.setSourceDecoration(createDecoration(ColorConstants.green));
@@ -98,7 +95,6 @@ public class GraphJFaceSnippet8 {
 			decoration.setBackgroundColor(color);
 			return decoration;
 		}
-
 
 		public void selfStyleNode(Object element, GraphNode node) {
 		}

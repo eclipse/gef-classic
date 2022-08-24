@@ -30,8 +30,7 @@ public class AddAndAssignSourceCommand extends Command {
 	 */
 	public boolean canExecute() {
 		for (int i = 0; i < source.getOutgoingTransitions().size(); i++) {
-			Activity target = ((Transition) source.getOutgoingTransitions()
-					.get(i)).target;
+			Activity target = ((Transition) source.getOutgoingTransitions().get(i)).target;
 			if (target.equals(child))
 				return false;
 		}
@@ -58,8 +57,7 @@ public class AddAndAssignSourceCommand extends Command {
 	/**
 	 * Sets the parent ActivityDiagram
 	 * 
-	 * @param sa
-	 *            the parent
+	 * @param sa the parent
 	 */
 	public void setParent(StructuredActivity sa) {
 		parent = sa;
@@ -68,8 +66,7 @@ public class AddAndAssignSourceCommand extends Command {
 	/**
 	 * Sets the Activity to create
 	 * 
-	 * @param activity
-	 *            the Activity to create
+	 * @param activity the Activity to create
 	 */
 	public void setChild(Activity activity) {
 		child = activity;
@@ -78,8 +75,7 @@ public class AddAndAssignSourceCommand extends Command {
 	/**
 	 * Sets the source to the passed activity
 	 * 
-	 * @param activity
-	 *            the source
+	 * @param activity the source
 	 */
 	public void setSource(Activity activity) {
 		source = activity;

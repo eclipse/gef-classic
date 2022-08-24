@@ -51,10 +51,8 @@ public class TreeViewer extends AbstractEditPartViewer {
 
 	private boolean ignore = false;
 
-	class EventDispatcher implements MouseListener, MouseMoveListener,
-			KeyListener, MouseTrackListener, FocusListener {
-		protected static final int ANY_BUTTON = SWT.BUTTON1 | SWT.BUTTON2
-				| SWT.BUTTON3;
+	class EventDispatcher implements MouseListener, MouseMoveListener, KeyListener, MouseTrackListener, FocusListener {
+		protected static final int ANY_BUTTON = SWT.BUTTON1 | SWT.BUTTON2 | SWT.BUTTON3;
 
 		public void keyPressed(KeyEvent kee) {
 			getEditDomain().keyDown(kee, TreeViewer.this);
@@ -118,11 +116,10 @@ public class TreeViewer extends AbstractEditPartViewer {
 	}
 
 	/**
-	 * Creates the default tree and sets it as the control. The default styles
-	 * will show scrollbars as needed, and allows for multiple selection.
+	 * Creates the default tree and sets it as the control. The default styles will
+	 * show scrollbars as needed, and allows for multiple selection.
 	 * 
-	 * @param parent
-	 *            The parent for the Tree
+	 * @param parent The parent for the Tree
 	 * @return the control
 	 */
 	public Control createControl(Composite parent) {
@@ -132,23 +129,20 @@ public class TreeViewer extends AbstractEditPartViewer {
 	}
 
 	/**
-	 * @see org.eclipse.gef.EditPartViewer#findObjectAtExcluding(Point,
-	 *      Collection, EditPartViewer.Conditional)
+	 * @see org.eclipse.gef.EditPartViewer#findObjectAtExcluding(Point, Collection,
+	 *      EditPartViewer.Conditional)
 	 */
-	public EditPart findObjectAtExcluding(Point pt, Collection exclude,
-			Conditional condition) {
+	public EditPart findObjectAtExcluding(Point pt, Collection exclude, Conditional condition) {
 		if (getControl() == null)
 			return null;
 
 		Tree tree = (Tree) getControl();
 		Rectangle area = tree.getClientArea();
-		if (pt.x < area.x || pt.y < area.y || pt.x >= area.x + area.width
-				|| pt.y >= area.y + area.height)
+		if (pt.x < area.x || pt.y < area.y || pt.x >= area.x + area.width || pt.y >= area.y + area.height)
 			return null;
 
 		EditPart result = null;
-		TreeItem tie = tree.getItem(new org.eclipse.swt.graphics.Point(pt.x,
-				pt.y));
+		TreeItem tie = tree.getItem(new org.eclipse.swt.graphics.Point(pt.x, pt.y));
 
 		if (tie != null) {
 			result = (EditPart) tie.getData();
@@ -156,8 +150,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 			result = (EditPart) tree.getData();
 		}
 		while (result != null) {
-			if ((condition == null || condition.evaluate(result))
-					&& !exclude.contains(result))
+			if ((condition == null || condition.evaluate(result)) && !exclude.contains(result))
 				return result;
 			result = result.getParent();
 		}
@@ -173,8 +166,8 @@ public class TreeViewer extends AbstractEditPartViewer {
 	}
 
 	/**
-	 * "Hooks up" a Control, i.e. sets it as the control for the
-	 * RootTreeEditPart, adds necessary listener for proper operation, etc.
+	 * "Hooks up" a Control, i.e. sets it as the control for the RootTreeEditPart,
+	 * adds necessary listener for proper operation, etc.
 	 */
 	protected void hookControl() {
 		if (getControl() == null)
@@ -240,9 +233,9 @@ public class TreeViewer extends AbstractEditPartViewer {
 
 	/**
 	 * Unhooks a control so that it can be reset. This method deactivates the
-	 * contents, removes the Control as being the Control of the
-	 * RootTreeEditPart, etc. It does not remove the listeners because it is
-	 * causing errors, although that would be a desirable outcome.
+	 * contents, removes the Control as being the Control of the RootTreeEditPart,
+	 * etc. It does not remove the listeners because it is causing errors, although
+	 * that would be a desirable outcome.
 	 */
 	protected void unhookControl() {
 		if (getControl() == null)

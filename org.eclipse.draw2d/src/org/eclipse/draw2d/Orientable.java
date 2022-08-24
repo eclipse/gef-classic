@@ -26,11 +26,9 @@ public interface Orientable extends PositionConstants, IFigure {
 	int VERTICAL = 1;
 
 	/**
-	 * Sets the orientation. Can be either {@link #HORIZONTAL} or
-	 * {@link #VERTICAL}.
+	 * Sets the orientation. Can be either {@link #HORIZONTAL} or {@link #VERTICAL}.
 	 * 
-	 * @param orientation
-	 *            The orientation
+	 * @param orientation The orientation
 	 */
 	void setOrientation(int orientation);
 
@@ -38,8 +36,7 @@ public interface Orientable extends PositionConstants, IFigure {
 	 * Sets the direction the orientable figure will face. Can be one of many
 	 * directional constants defined in {@link PositionConstants}.
 	 * 
-	 * @param direction
-	 *            The direction
+	 * @param direction The direction
 	 */
 	void setDirection(int direction);
 

@@ -151,16 +151,16 @@ public class MarqueeSelectionTool extends AbstractTool {
 	public static final int BEHAVIOR_CONNECTIONS_TOUCHED = 2;
 
 	/**
-	 * This behavior selects nodes completely encompassed by the marquee
-	 * rectangle. This is the default behavior for this tool.
+	 * This behavior selects nodes completely encompassed by the marquee rectangle.
+	 * This is the default behavior for this tool.
 	 * 
 	 * @since 3.1
 	 */
 	public static final int BEHAVIOR_NODES_CONTAINED = 1;
 
 	/**
-	 * This behavior selects nodes completely encompassed by the marquee
-	 * rectangle, and all connections between those nodes.
+	 * This behavior selects nodes completely encompassed by the marquee rectangle,
+	 * and all connections between those nodes.
 	 * 
 	 * @since 3.7
 	 */
@@ -181,8 +181,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 	public static final int BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS = 5;
 
 	/**
-	 * This behavior selects nodes completely encompassed by the marquee
-	 * rectangle, and all connections between those nodes.
+	 * This behavior selects nodes completely encompassed by the marquee rectangle,
+	 * and all connections between those nodes.
 	 * 
 	 * @since 3.1
 	 * @deprecated use {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS}
@@ -194,13 +194,11 @@ public class MarqueeSelectionTool extends AbstractTool {
 	static final int TOGGLE_MODE = 1;
 	static final int APPEND_MODE = 2;
 
-	private static final Request MARQUEE_REQUEST = new Request(
-			RequestConstants.REQ_SELECTION);
+	private static final Request MARQUEE_REQUEST = new Request(RequestConstants.REQ_SELECTION);
 
 	/**
-	 * The property to be used in
-	 * {@link AbstractTool#setProperties(java.util.Map)} for
-	 * {@link #setMarqueeBehavior(int)}.
+	 * The property to be used in {@link AbstractTool#setProperties(java.util.Map)}
+	 * for {@link #setMarqueeBehavior(int)}.
 	 */
 	public static final Object PROPERTY_MARQUEE_BEHAVIOR = "marqueeBehavior"; //$NON-NLS-1$
 
@@ -246,79 +244,69 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * Called from {@link #performMarqueeSelect()} to determine those
 	 * {@link EditPart}s that are affected by the current marquee selection. In
-	 * default and append mode, the edit parts returned here will become
-	 * selected in the current viewer's new selection (which is calculated and
-	 * set in {@link #performMarqueeSelect()}), while in toggle mode their
-	 * selection state will be inverted.
+	 * default and append mode, the edit parts returned here will become selected in
+	 * the current viewer's new selection (which is calculated and set in
+	 * {@link #performMarqueeSelect()}), while in toggle mode their selection state
+	 * will be inverted.
 	 * 
 	 * Calculation is delegated to
 	 * {@link #calculatePrimaryMarqueeSelectedEditParts()} and
-	 * {@link #calculateSecondaryMarqueeSelectedEditParts(Collection)} to
-	 * compute the set of marquee selected edit parts in a two step-process,
-	 * where all directly affected edit parts are determined first, and those
-	 * indirectly affected (related connections in case of
+	 * {@link #calculateSecondaryMarqueeSelectedEditParts(Collection)} to compute
+	 * the set of marquee selected edit parts in a two step-process, where all
+	 * directly affected edit parts are determined first, and those indirectly
+	 * affected (related connections in case of
 	 * {@link #BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS}, or
 	 * {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS}) afterwards.
 	 * 
-	 * Clients may overwrite to customize the calculation of marquee selected
-	 * edit parts.
+	 * Clients may overwrite to customize the calculation of marquee selected edit
+	 * parts.
 	 * 
 	 * @return A collection containing all edit parts that should be regarded as
-	 *         being included in the current marquee selection, i.e. which
-	 *         should get selected in default or append mode, and whose
-	 *         selection state should get inverted in toggle mode.
+	 *         being included in the current marquee selection, i.e. which should
+	 *         get selected in default or append mode, and whose selection state
+	 *         should get inverted in toggle mode.
 	 * @since 3.7
 	 */
 	protected Collection calculateMarqueeSelectedEditParts() {
 		Collection marqueeSelectedEditParts = new HashSet();
-		marqueeSelectedEditParts
-				.addAll(calculatePrimaryMarqueeSelectedEditParts());
-		marqueeSelectedEditParts
-				.addAll(calculateSecondaryMarqueeSelectedEditParts(
-						marqueeSelectedEditParts));
+		marqueeSelectedEditParts.addAll(calculatePrimaryMarqueeSelectedEditParts());
+		marqueeSelectedEditParts.addAll(calculateSecondaryMarqueeSelectedEditParts(marqueeSelectedEditParts));
 		return marqueeSelectedEditParts;
 	}
 
 	/**
 	 * Responsible of calculating those edit parts that should be regarded as
-	 * directly affected by the current marquee selection. By default, the
-	 * method calculates which edit parts are potential candidates based on the
-	 * current marquee behavior and delegates to
+	 * directly affected by the current marquee selection. By default, the method
+	 * calculates which edit parts are potential candidates based on the current
+	 * marquee behavior and delegates to
 	 * {@link #isMarqueeSelectable(GraphicalEditPart)} and
 	 * {@link #isPrimaryMarqueeSelectedEditPart(GraphicalEditPart)} to decide
 	 * whether the candidate is to be included in the marquee selection.
 	 * 
-	 * @return A {@link Collection} containing all {@link EditPart}s that should
-	 *         be regarded as being directly affected by the current marquee
-	 *         selection.
+	 * @return A {@link Collection} containing all {@link EditPart}s that should be
+	 *         regarded as being directly affected by the current marquee selection.
 	 * @since 3.7
 	 */
 	private Collection calculatePrimaryMarqueeSelectedEditParts() {
 		Collection editPartsToProcess = new HashSet();
-		if (marqueeBehavior != BEHAVIOR_CONNECTIONS_CONTAINED
-				&& marqueeBehavior != BEHAVIOR_CONNECTIONS_TOUCHED) {
+		if (marqueeBehavior != BEHAVIOR_CONNECTIONS_CONTAINED && marqueeBehavior != BEHAVIOR_CONNECTIONS_TOUCHED) {
 			// process nodes
-			editPartsToProcess.addAll(EditPartUtilities.getAllChildren(
-					(GraphicalEditPart) getCurrentViewer().getRootEditPart()));
+			editPartsToProcess
+					.addAll(EditPartUtilities.getAllChildren((GraphicalEditPart) getCurrentViewer().getRootEditPart()));
 		}
 
-		if (marqueeBehavior != BEHAVIOR_NODES_CONTAINED
-				&& marqueeBehavior != BEHAVIOR_NODES_TOUCHED) {
+		if (marqueeBehavior != BEHAVIOR_NODES_CONTAINED && marqueeBehavior != BEHAVIOR_NODES_TOUCHED) {
 			// process connections
-			editPartsToProcess
-					.addAll(EditPartUtilities.getAllNestedConnectionEditParts(
-							(GraphicalEditPart) getCurrentViewer()
-									.getRootEditPart()));
+			editPartsToProcess.addAll(EditPartUtilities
+					.getAllNestedConnectionEditParts((GraphicalEditPart) getCurrentViewer().getRootEditPart()));
 		}
 
 		// process all edit parts and determine which are affected by the
 		// current marquee selection
 		Collection marqueeSelectedEditParts = new ArrayList();
-		for (Iterator iterator = editPartsToProcess.iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = editPartsToProcess.iterator(); iterator.hasNext();) {
 			GraphicalEditPart editPart = (GraphicalEditPart) iterator.next();
-			if (isMarqueeSelectable(editPart)
-					&& isPrimaryMarqueeSelectedEditPart(editPart)) {
+			if (isMarqueeSelectable(editPart) && isPrimaryMarqueeSelectedEditPart(editPart)) {
 				marqueeSelectedEditParts.add(editPart);
 			}
 		}
@@ -326,44 +314,37 @@ public class MarqueeSelectionTool extends AbstractTool {
 	}
 
 	/**
-	 * Responsible of calculating those edit parts that should be regarded as
-	 * being indirectly affected by the marquee selection. By default, the
-	 * method calculates which edit parts are potential candidates based on the
-	 * current marquee behavior and delegates to
+	 * Responsible of calculating those edit parts that should be regarded as being
+	 * indirectly affected by the marquee selection. By default, the method
+	 * calculates which edit parts are potential candidates based on the current
+	 * marquee behavior and delegates to
 	 * {@link #isMarqueeSelectable(GraphicalEditPart)} and
-	 * {@link #isSecondaryMarqueeSelectedEditPart(Collection, EditPart)} to
-	 * decide whether the candidate is to be included in the marquee selection.
+	 * {@link #isSecondaryMarqueeSelectedEditPart(Collection, EditPart)} to decide
+	 * whether the candidate is to be included in the marquee selection.
 	 * 
-	 * @param directlyMarqueeSelectedEditParts
-	 *            A collection containing those {@link EditPart}s that were
-	 *            already identified as being directly affected by the marquee
-	 *            selection
+	 * @param directlyMarqueeSelectedEditParts A collection containing those
+	 *                                         {@link EditPart}s that were already
+	 *                                         identified as being directly affected
+	 *                                         by the marquee selection
 	 * @return A {@link Collection} containing all {@link EditPart}s that are
 	 *         indirectly affected by the current marquee selection
 	 * @since 3.7
 	 */
-	private Collection calculateSecondaryMarqueeSelectedEditParts(
-			Collection directlyMarqueeSelectedEditParts) {
+	private Collection calculateSecondaryMarqueeSelectedEditParts(Collection directlyMarqueeSelectedEditParts) {
 
 		Collection editPartsToProcess = new HashSet();
-		for (Iterator iterator = directlyMarqueeSelectedEditParts
-				.iterator(); iterator.hasNext();) {
-			GraphicalEditPart marqueeSelectedEditPart = (GraphicalEditPart) iterator
-					.next();
-			editPartsToProcess
-					.addAll(marqueeSelectedEditPart.getSourceConnections());
-			editPartsToProcess
-					.addAll(marqueeSelectedEditPart.getTargetConnections());
+		for (Iterator iterator = directlyMarqueeSelectedEditParts.iterator(); iterator.hasNext();) {
+			GraphicalEditPart marqueeSelectedEditPart = (GraphicalEditPart) iterator.next();
+			editPartsToProcess.addAll(marqueeSelectedEditPart.getSourceConnections());
+			editPartsToProcess.addAll(marqueeSelectedEditPart.getTargetConnections());
 		}
 
 		// process all edit parts and decide, whether they are indirectly
 		// affected by marquee selection
 		Collection secondaryMarqueeSelectedEditParts = new HashSet();
-		for (Iterator iterator = editPartsToProcess.iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = editPartsToProcess.iterator(); iterator.hasNext();) {
 			GraphicalEditPart editPart = (GraphicalEditPart) iterator.next();
-			if (isSecondaryMarqueeSelectedEditPart(
-					directlyMarqueeSelectedEditParts, editPart)) {
+			if (isSecondaryMarqueeSelectedEditPart(directlyMarqueeSelectedEditParts, editPart)) {
 				secondaryMarqueeSelectedEditParts.add(editPart);
 			}
 		}
@@ -529,8 +510,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 	}
 
 	/**
-	 * This method is called when mouse or keyboard input is invalid and erases
-	 * the feedback.
+	 * This method is called when mouse or keyboard input is invalid and erases the
+	 * feedback.
 	 * 
 	 * @return <code>true</code>
 	 */
@@ -542,8 +523,8 @@ public class MarqueeSelectionTool extends AbstractTool {
 	}
 
 	/**
-	 * Handles high-level processing of a key down event. KeyEvents are
-	 * forwarded to the current viewer's {@link KeyHandler}, via
+	 * Handles high-level processing of a key down event. KeyEvents are forwarded to
+	 * the current viewer's {@link KeyHandler}, via
 	 * {@link KeyHandler#keyPressed(KeyEvent)}.
 	 * 
 	 * @see AbstractTool#handleKeyDown(KeyEvent)
@@ -561,8 +542,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * Decides whether the given edit part may potentially be included in the
 	 * current marquee selection.
 	 * 
-	 * @param editPart
-	 *            the {@link EditPart} of interest
+	 * @param editPart the {@link EditPart} of interest
 	 * @return <code>true</code> if the given edit part may be included into the
 	 *         marquee selection, <code>false</code> otherwise
 	 * @since 3.7
@@ -572,27 +552,24 @@ public class MarqueeSelectionTool extends AbstractTool {
 		// pre-selection does not depend on hit-testing. Therefore, the visible
 		// state of the edit part's figure has to be taken into consideration as
 		// well.
-		return editPart.getTargetEditPart(MARQUEE_REQUEST) == editPart
-				&& editPart.isSelectable()
+		return editPart.getTargetEditPart(MARQUEE_REQUEST) == editPart && editPart.isSelectable()
 				&& FigureUtilities.isNotFullyClipped(editPart.getFigure());
 	}
 
 	/**
 	 * Determines which edit parts are directly affected by the current marquee
 	 * selection. Calculation is performed by regarding the current marquee
-	 * selection rectangle ( {@link #getCurrentMarqueeSelectionRectangle()}),
-	 * taking into consideration the current marquee behavior (contained vs.
-	 * touched) that was provided ( {@link #setMarqueeBehavior(int)} ).
+	 * selection rectangle ( {@link #getCurrentMarqueeSelectionRectangle()}), taking
+	 * into consideration the current marquee behavior (contained vs. touched) that
+	 * was provided ( {@link #setMarqueeBehavior(int)} ).
 	 * 
-	 * @param editPart
-	 *            the {@link EditPart} whose state is to be determined
-	 * @return <code>true</code> if the {@link EditPart} should be regarded as
-	 *         being included in the current marquee selection,
-	 *         <code>false</code> otherwise.
+	 * @param editPart the {@link EditPart} whose state is to be determined
+	 * @return <code>true</code> if the {@link EditPart} should be regarded as being
+	 *         included in the current marquee selection, <code>false</code>
+	 *         otherwise.
 	 * @since 3.7
 	 */
-	private boolean isPrimaryMarqueeSelectedEditPart(
-			GraphicalEditPart editPart) {
+	private boolean isPrimaryMarqueeSelectedEditPart(GraphicalEditPart editPart) {
 		// figure bounds are used to determine if edit part is included in
 		// selection
 		IFigure figure = editPart.getFigure();
@@ -602,21 +579,17 @@ public class MarqueeSelectionTool extends AbstractTool {
 		boolean included = false;
 		Rectangle marqueeSelectionRectangle = getCurrentMarqueeSelectionRectangle();
 		if (editPart instanceof ConnectionEditPart) {
-			if (marqueeBehavior == BEHAVIOR_CONNECTIONS_TOUCHED
-					|| marqueeBehavior == BEHAVIOR_CONNECTIONS_CONTAINED) {
+			if (marqueeBehavior == BEHAVIOR_CONNECTIONS_TOUCHED || marqueeBehavior == BEHAVIOR_CONNECTIONS_CONTAINED) {
 				if (marqueeSelectionRectangle.intersects(r)) {
 					// children will contain ConnectionEditParts only in case
 					// behavior is BEHAVIOR_CONNECTIONS_TOUCHED or
 					// BEHAVIOR_CONNECTIONS_CONTAINED
 					Rectangle relMarqueeRect = Rectangle.SINGLETON;
-					figure.translateToRelative(relMarqueeRect
-							.setBounds(marqueeSelectionRectangle));
+					figure.translateToRelative(relMarqueeRect.setBounds(marqueeSelectionRectangle));
 					if (marqueeBehavior == BEHAVIOR_CONNECTIONS_TOUCHED) {
-						included = ((Connection) figure).getPoints()
-								.intersects(relMarqueeRect);
+						included = ((Connection) figure).getPoints().intersects(relMarqueeRect);
 					} else if (marqueeBehavior == BEHAVIOR_CONNECTIONS_CONTAINED) {
-						included = relMarqueeRect.contains(
-								((Connection) figure).getPoints().getBounds());
+						included = relMarqueeRect.contains(((Connection) figure).getPoints().getBounds());
 					}
 				}
 			}
@@ -634,77 +607,65 @@ public class MarqueeSelectionTool extends AbstractTool {
 	}
 
 	/**
-	 * Determines which edit parts are indirectly affected by the current
-	 * marquee selection through those edit parts being directly affected. In
-	 * case of {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS} or
+	 * Determines which edit parts are indirectly affected by the current marquee
+	 * selection through those edit parts being directly affected. In case of
+	 * {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS} or
 	 * {@link #BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS} marquee behavior,
 	 * this method will be used to calculate the related connections after all
 	 * respective nodes have been identified as primary selected edit parts.
 	 * 
-	 * @param directlyMarqueeSelectedEditParts
-	 *            A collection of {@link EditPart}s which are regarded to be
-	 *            directly included in the current marquee selection.
-	 * @param editPart
-	 *            the {@link EditPart} of concern
-	 * @return <code>true</code> if the {@link EditPart} should be regarded as
-	 *         being included in the current marquee selection,
-	 *         <code>false</code> otherwise.
+	 * @param directlyMarqueeSelectedEditParts A collection of {@link EditPart}s
+	 *                                         which are regarded to be directly
+	 *                                         included in the current marquee
+	 *                                         selection.
+	 * @param editPart                         the {@link EditPart} of concern
+	 * @return <code>true</code> if the {@link EditPart} should be regarded as being
+	 *         included in the current marquee selection, <code>false</code>
+	 *         otherwise.
 	 * @since 3.7
 	 */
-	private boolean isSecondaryMarqueeSelectedEditPart(
-			Collection directlyMarqueeSelectedEditParts, EditPart editPart) {
+	private boolean isSecondaryMarqueeSelectedEditPart(Collection directlyMarqueeSelectedEditParts, EditPart editPart) {
 		boolean included = false;
 		if (editPart instanceof ConnectionEditPart
 				&& (marqueeBehavior == BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS
 						|| marqueeBehavior == BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS)) {
 			// connections are included, if related nodes are included
 			ConnectionEditPart connection = (ConnectionEditPart) editPart;
-			GraphicalEditPart source = (GraphicalEditPart) connection
-					.getSource();
-			GraphicalEditPart target = (GraphicalEditPart) connection
-					.getTarget();
-			boolean sourceIncludedInMarqueeSelection = directlyMarqueeSelectedEditParts
-					.contains(source);
-			boolean targetIncludedInMarqueeSelection = directlyMarqueeSelectedEditParts
-					.contains(target);
+			GraphicalEditPart source = (GraphicalEditPart) connection.getSource();
+			GraphicalEditPart target = (GraphicalEditPart) connection.getTarget();
+			boolean sourceIncludedInMarqueeSelection = directlyMarqueeSelectedEditParts.contains(source);
+			boolean targetIncludedInMarqueeSelection = directlyMarqueeSelectedEditParts.contains(target);
 
 			if (mode == DEFAULT_MODE) {
 				// in default mode, select connection if source and
 				// target are included in marqee selection
-				included = sourceIncludedInMarqueeSelection
-						&& targetIncludedInMarqueeSelection;
+				included = sourceIncludedInMarqueeSelection && targetIncludedInMarqueeSelection;
 			} else if (mode == APPEND_MODE) {
 				// in append mode, the current viewer selection is of interest
 				// as well, so select connection if not already selected and
 				// source and target are already selected or will get selected
 				included = connection.getSelected() == EditPart.SELECTED_NONE
-						&& (getCurrentViewer().getSelectedEditParts().contains(
-								source) || sourceIncludedInMarqueeSelection)
-						&& (getCurrentViewer().getSelectedEditParts().contains(
-								target) || targetIncludedInMarqueeSelection);
+						&& (getCurrentViewer().getSelectedEditParts().contains(source)
+								|| sourceIncludedInMarqueeSelection)
+						&& (getCurrentViewer().getSelectedEditParts().contains(target)
+								|| targetIncludedInMarqueeSelection);
 			} else if (mode == TOGGLE_MODE) {
 				if (connection.getSelected() == EditPart.SELECTED_NONE) {
 					// connection is currently deselected, include it in the
 					// marquee selection, i.e. select it, if one of
 					// source or target will become selected in the new viewer
 					// selection
-					included = ((source.getSelected() == EditPart.SELECTED_NONE
-							&& sourceIncludedInMarqueeSelection)
-							|| (source.getSelected() != EditPart.SELECTED_NONE
-									&& !sourceIncludedInMarqueeSelection))
-							&& ((target.getSelected() == EditPart.SELECTED_NONE
-									&& targetIncludedInMarqueeSelection)
-									|| (target
-											.getSelected() != EditPart.SELECTED_NONE
+					included = ((source.getSelected() == EditPart.SELECTED_NONE && sourceIncludedInMarqueeSelection)
+							|| (source.getSelected() != EditPart.SELECTED_NONE && !sourceIncludedInMarqueeSelection))
+							&& ((target.getSelected() == EditPart.SELECTED_NONE && targetIncludedInMarqueeSelection)
+									|| (target.getSelected() != EditPart.SELECTED_NONE
 											&& !targetIncludedInMarqueeSelection));
 				} else {
 					// connection is currently selected, include it in marquee
 					// selection, i.e. deselect it, if one of source or target
 					// will become deselected in the new viewer selection
-					included = (source.getSelected() != EditPart.SELECTED_NONE
-							&& sourceIncludedInMarqueeSelection)
-							|| (target.getSelected() != EditPart.SELECTED_NONE
-									&& targetIncludedInMarqueeSelection);
+					included = (source.getSelected() != EditPart.SELECTED_NONE && sourceIncludedInMarqueeSelection)
+							|| (target.getSelected() != EditPart.SELECTED_NONE && targetIncludedInMarqueeSelection);
 				}
 			}
 		}
@@ -712,8 +673,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	}
 
 	/**
-	 * MarqueeSelectionTool is only interested in GraphicalViewers, not
-	 * TreeViewers.
+	 * MarqueeSelectionTool is only interested in GraphicalViewers, not TreeViewers.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#isViewerImportant(org.eclipse.gef.EditPartViewer)
 	 */
@@ -731,13 +691,12 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * selection.
 	 * 
 	 * By default, this method delegates to
-	 * {@link #calculateMarqueeSelectedEditParts()} to obtain the set of edit
-	 * parts, which should be regarded as being affected by the current marquee
-	 * selection. It then calculates a new viewer selection based on the current
-	 * selection state of all affected edit parts and the current selection mode
-	 * of the tool ( {@link #getCurrentSelectionMode()}), as well as the current
-	 * selection of the viewer (in case of APPEND mode), which is then passed to
-	 * the current viewer.
+	 * {@link #calculateMarqueeSelectedEditParts()} to obtain the set of edit parts,
+	 * which should be regarded as being affected by the current marquee selection.
+	 * It then calculates a new viewer selection based on the current selection
+	 * state of all affected edit parts and the current selection mode of the tool (
+	 * {@link #getCurrentSelectionMode()}), as well as the current selection of the
+	 * viewer (in case of APPEND mode), which is then passed to the current viewer.
 	 * 
 	 * @since 3.7
 	 */
@@ -750,11 +709,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 		// dependent on the current mode of the tool
 		Collection editPartsToSelect = new LinkedHashSet();
 		Collection editPartsToDeselect = new HashSet();
-		for (Iterator iterator = marqueeSelectedEditParts.iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = marqueeSelectedEditParts.iterator(); iterator.hasNext();) {
 			EditPart affectedEditPart = (EditPart) iterator.next();
-			if (affectedEditPart.getSelected() == EditPart.SELECTED_NONE
-					|| getCurrentSelectionMode() != TOGGLE_MODE)
+			if (affectedEditPart.getSelected() == EditPart.SELECTED_NONE || getCurrentSelectionMode() != TOGGLE_MODE)
 				editPartsToSelect.add(affectedEditPart);
 			else
 				editPartsToDeselect.add(affectedEditPart);
@@ -766,32 +723,26 @@ public class MarqueeSelectionTool extends AbstractTool {
 			editPartsToSelect.removeAll(editPartsToDeselect);
 		}
 
-		getCurrentViewer().setSelection(
-				new StructuredSelection(editPartsToSelect.toArray()));
+		getCurrentViewer().setSelection(new StructuredSelection(editPartsToSelect.toArray()));
 	}
 
 	/**
-	 * Sets the type of parts that this tool will select. This method should
-	 * only be invoked once: when the tool is being initialized.
+	 * Sets the type of parts that this tool will select. This method should only be
+	 * invoked once: when the tool is being initialized.
 	 * 
-	 * @param type
-	 *            {@link #BEHAVIOR_CONNECTIONS_TOUCHED} or
-	 *            {@link #BEHAVIOR_CONNECTIONS_CONTAINED}
-	 *            {@link #BEHAVIOR_NODES_TOUCHED} or
-	 *            {@link #BEHAVIOR_NODES_CONTAINED} or
-	 *            {@link #BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS} or
-	 *            {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS}
+	 * @param type {@link #BEHAVIOR_CONNECTIONS_TOUCHED} or
+	 *             {@link #BEHAVIOR_CONNECTIONS_CONTAINED}
+	 *             {@link #BEHAVIOR_NODES_TOUCHED} or
+	 *             {@link #BEHAVIOR_NODES_CONTAINED} or
+	 *             {@link #BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS} or
+	 *             {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS}
 	 * @since 3.1
 	 */
 	public void setMarqueeBehavior(int type) {
-		if (type != BEHAVIOR_CONNECTIONS_TOUCHED
-				&& type != BEHAVIOR_CONNECTIONS_CONTAINED
-				&& type != BEHAVIOR_NODES_TOUCHED
-				&& type != BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS
-				&& type != BEHAVIOR_NODES_CONTAINED
-				&& type != BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS)
-			throw new IllegalArgumentException(
-					"Invalid marquee behaviour specified."); //$NON-NLS-1$
+		if (type != BEHAVIOR_CONNECTIONS_TOUCHED && type != BEHAVIOR_CONNECTIONS_CONTAINED
+				&& type != BEHAVIOR_NODES_TOUCHED && type != BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS
+				&& type != BEHAVIOR_NODES_CONTAINED && type != BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS)
+			throw new IllegalArgumentException("Invalid marquee behaviour specified."); //$NON-NLS-1$
 		marqueeBehavior = type;
 	}
 

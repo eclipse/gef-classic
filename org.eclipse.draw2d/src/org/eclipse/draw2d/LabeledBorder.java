@@ -30,16 +30,14 @@ public interface LabeledBorder extends Border {
 	/**
 	 * Sets the Font for the label.
 	 * 
-	 * @param f
-	 *            The Font to be set
+	 * @param f The Font to be set
 	 */
 	void setFont(Font f);
 
 	/**
 	 * Sets the text to be displayed as the label for this Border.
 	 * 
-	 * @param l
-	 *            The text
+	 * @param l The text
 	 */
 	void setLabel(String l);
 

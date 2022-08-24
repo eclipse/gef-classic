@@ -20,13 +20,11 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class FreeformViewport extends Viewport {
 
 	class FreeformViewportLayout extends ViewportLayout {
-		protected Dimension calculatePreferredSize(IFigure parent, int wHint,
-				int hHint) {
+		protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 			getContents().validate();
 			wHint = Math.max(0, wHint);
 			hHint = Math.max(0, hHint);
-			return ((FreeformFigure) getContents()).getFreeformExtent()
-					.getExpanded(getInsets()).union(0, 0)
+			return ((FreeformFigure) getContents()).getFreeformExtent().getExpanded(getInsets()).union(0, 0)
 					.union(wHint - 1, hHint - 1).getSize();
 		}
 
@@ -55,8 +53,8 @@ public class FreeformViewport extends Viewport {
 	/**
 	 * Readjusts the scrollbars. In doing so, it gets the freeform extent of the
 	 * contents and unions this rectangle with this viewport's client area, then
-	 * sets the contents freeform bounds to be this unioned rectangle. Then
-	 * proceeds to set the scrollbar values based on this new information.
+	 * sets the contents freeform bounds to be this unioned rectangle. Then proceeds
+	 * to set the scrollbar values based on this new information.
 	 * 
 	 * @see Viewport#readjustScrollBars()
 	 */
@@ -71,10 +69,8 @@ public class FreeformViewport extends Viewport {
 		bounds.union(0, 0, clientArea.width, clientArea.height);
 		ff.setFreeformBounds(bounds);
 
-		getVerticalRangeModel().setAll(bounds.y, clientArea.height,
-				bounds.bottom());
-		getHorizontalRangeModel().setAll(bounds.x, clientArea.width,
-				bounds.right());
+		getVerticalRangeModel().setAll(bounds.y, clientArea.height, bounds.bottom());
+		getHorizontalRangeModel().setAll(bounds.x, clientArea.width, bounds.right());
 	}
 
 	/**

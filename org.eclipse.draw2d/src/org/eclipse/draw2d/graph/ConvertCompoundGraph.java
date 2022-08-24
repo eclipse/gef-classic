@@ -52,8 +52,7 @@ class ConvertCompoundGraph extends GraphVisitor {
 		return base++;
 	}
 
-	private void connectHead(CompoundDirectedGraph graph, Node node,
-			Subgraph parent) {
+	private void connectHead(CompoundDirectedGraph graph, Node node, Subgraph parent) {
 		boolean connectHead = true;
 		for (int j = 0; connectHead && j < node.incoming.size(); j++) {
 			Node ancestor = node.incoming.getEdge(j).source;
@@ -68,8 +67,7 @@ class ConvertCompoundGraph extends GraphVisitor {
 		}
 	}
 
-	private void connectTail(CompoundDirectedGraph graph, Node node,
-			Subgraph parent) {
+	private void connectTail(CompoundDirectedGraph graph, Node node, Subgraph parent) {
 		boolean connectTail = true;
 		for (int j = 0; connectTail && j < node.outgoing.size(); j++) {
 			Node ancestor = node.outgoing.getEdge(j).target;

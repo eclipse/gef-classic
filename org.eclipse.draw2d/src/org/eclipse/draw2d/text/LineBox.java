@@ -73,8 +73,7 @@ public abstract class LineBox extends CompositeBox {
 	public int getDescent() {
 		int descent = 0;
 		for (int i = 0; i < fragments.size(); i++)
-			descent = Math.max(descent,
-					((FlowBox) fragments.get(i)).getDescent());
+			descent = Math.max(descent, ((FlowBox) fragments.get(i)).getDescent());
 		return descent;
 	}
 

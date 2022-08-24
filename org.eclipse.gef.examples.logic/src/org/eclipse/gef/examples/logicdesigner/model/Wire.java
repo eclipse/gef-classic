@@ -25,15 +25,13 @@ public class Wire extends LogicElement {
 	protected List bendpoints = new ArrayList();
 
 	public void attachSource() {
-		if (getSource() == null
-				|| getSource().getSourceConnections().contains(this))
+		if (getSource() == null || getSource().getSourceConnections().contains(this))
 			return;
 		getSource().connectOutput(this);
 	}
 
 	public void attachTarget() {
-		if (getTarget() == null
-				|| getTarget().getTargetConnections().contains(this))
+		if (getTarget() == null || getTarget().getTargetConnections().contains(this))
 			return;
 		getTarget().connectInput(this);
 	}

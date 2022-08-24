@@ -32,11 +32,10 @@ public class XYLayout extends AbstractLayout {
 
 	/**
 	 * Calculates and returns the preferred size of the input figure. Since in
-	 * XYLayout the location of the child should be preserved, the preferred
-	 * size would be a region which would hold all the children of the input
-	 * figure. If no constraint is set, that child is ignored for calculation.
-	 * If width and height are not positive, the preferred dimensions of the
-	 * child are taken.
+	 * XYLayout the location of the child should be preserved, the preferred size
+	 * would be a region which would hold all the children of the input figure. If
+	 * no constraint is set, that child is ignored for calculation. If width and
+	 * height are not positive, the preferred dimensions of the child are taken.
 	 * 
 	 * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
 	 * @since 2.0
@@ -51,8 +50,7 @@ public class XYLayout extends AbstractLayout {
 				continue;
 
 			if (r.width == -1 || r.height == -1) {
-				Dimension preferredSize = child.getPreferredSize(r.width,
-						r.height);
+				Dimension preferredSize = child.getPreferredSize(r.width, r.height);
 				r = r.getCopy();
 				if (r.width == -1)
 					r.width = preferredSize.width;
@@ -63,8 +61,8 @@ public class XYLayout extends AbstractLayout {
 		}
 		Dimension d = rect.getSize();
 		Insets insets = f.getInsets();
-		return new Dimension(d.width + insets.getWidth(), d.height
-				+ insets.getHeight()).union(getBorderPreferredSize(f));
+		return new Dimension(d.width + insets.getWidth(), d.height + insets.getHeight())
+				.union(getBorderPreferredSize(f));
 	}
 
 	/**
@@ -77,8 +75,7 @@ public class XYLayout extends AbstractLayout {
 	/**
 	 * Returns the origin for the given figure.
 	 * 
-	 * @param parent
-	 *            the figure whose origin is requested
+	 * @param parent the figure whose origin is requested
 	 * @return the origin
 	 */
 	public Point getOrigin(IFigure parent) {
@@ -87,8 +84,8 @@ public class XYLayout extends AbstractLayout {
 
 	/**
 	 * Implements the algorithm to layout the components of the given container
-	 * figure. Each component is laid out using its own layout constraint
-	 * specifying its size and position.
+	 * figure. Each component is laid out using its own layout constraint specifying
+	 * its size and position.
 	 * 
 	 * @see LayoutManager#layout(IFigure)
 	 */
@@ -103,8 +100,7 @@ public class XYLayout extends AbstractLayout {
 				continue;
 
 			if (bounds.width == -1 || bounds.height == -1) {
-				Dimension preferredSize = f.getPreferredSize(bounds.width,
-						bounds.height);
+				Dimension preferredSize = f.getPreferredSize(bounds.width, bounds.height);
 				bounds = bounds.getCopy();
 				if (bounds.width == -1)
 					bounds.width = preferredSize.width;
@@ -125,8 +121,8 @@ public class XYLayout extends AbstractLayout {
 	}
 
 	/**
-	 * Sets the layout constraint of the given figure. The constraints can only
-	 * be of type {@link Rectangle}.
+	 * Sets the layout constraint of the given figure. The constraints can only be
+	 * of type {@link Rectangle}.
 	 * 
 	 * @see LayoutManager#setConstraint(IFigure, Object)
 	 * @since 2.0

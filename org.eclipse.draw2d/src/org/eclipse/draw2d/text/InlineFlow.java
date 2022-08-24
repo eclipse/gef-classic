@@ -55,14 +55,12 @@ public class InlineFlow extends FlowFigure {
 	}
 
 	/**
-	 * Extended to return false if the point is not also contained by at least
-	 * one fragment.
+	 * Extended to return false if the point is not also contained by at least one
+	 * fragment.
 	 * 
 	 * @return <code>true</code> if a fragment contains the given point
-	 * @param x
-	 *            the relative x coordinate
-	 * @param y
-	 *            the relative y coordinate
+	 * @param x the relative x coordinate
+	 * @param y the relative y coordinate
 	 */
 	public boolean containsPoint(int x, int y) {
 		if (super.containsPoint(x, y)) {
@@ -83,8 +81,8 @@ public class InlineFlow extends FlowFigure {
 	}
 
 	/**
-	 * Returns the <code>FlowBox</code> fragments contained in this InlineFlow.
-	 * The returned list should not be modified.
+	 * Returns the <code>FlowBox</code> fragments contained in this InlineFlow. The
+	 * returned list should not be modified.
 	 * 
 	 * @return The fragments
 	 */
@@ -93,12 +91,11 @@ public class InlineFlow extends FlowFigure {
 	}
 
 	/**
-	 * Overridden to paint a {@link FlowBorder} if present, and draw selection.
-	 * The border is painted first, followed by selection which is generally
-	 * done in XOR, which still allows the border to be seen.
+	 * Overridden to paint a {@link FlowBorder} if present, and draw selection. The
+	 * border is painted first, followed by selection which is generally done in
+	 * XOR, which still allows the border to be seen.
 	 * 
-	 * @param graphics
-	 *            the graphics
+	 * @param graphics the graphics
 	 */
 	protected void paintBorder(Graphics graphics) {
 		if (getBorder() != null) {
@@ -130,8 +127,7 @@ public class InlineFlow extends FlowFigure {
 	/**
 	 * Renders the XOR selection rectangles to the graphics.
 	 * 
-	 * @param graphics
-	 *            the graphics to paint on
+	 * @param graphics the graphics to paint on
 	 * @since 3.1
 	 */
 	protected void paintSelection(Graphics graphics) {
@@ -144,8 +140,7 @@ public class InlineFlow extends FlowFigure {
 			box = (FlowBox) list.get(i);
 			int top = box.getLineRoot().getVisibleTop();
 			int bottom = box.getLineRoot().getVisibleBottom();
-			graphics.fillRectangle(box.getX(), top, box.getWidth(), bottom
-					- top);
+			graphics.fillRectangle(box.getX(), top, box.getWidth(), bottom - top);
 		}
 	}
 
@@ -174,18 +169,16 @@ public class InlineFlow extends FlowFigure {
 	}
 
 	/**
-	 * Overridden to assert that only {@link FlowBorder} is used.
-	 * <code>null</code> is still a valid value as well.
+	 * Overridden to assert that only {@link FlowBorder} is used. <code>null</code>
+	 * is still a valid value as well.
 	 * 
-	 * @param border
-	 *            <code>null</code> or a FlowBorder
+	 * @param border <code>null</code> or a FlowBorder
 	 */
 	public void setBorder(Border border) {
 		if (border == null || border instanceof FlowBorder)
 			super.setBorder(border);
 		else
-			throw new RuntimeException(
-					"Border must be an instance of FlowBorder"); //$NON-NLS-1$
+			throw new RuntimeException("Border must be an instance of FlowBorder"); //$NON-NLS-1$
 	}
 
 }

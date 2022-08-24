@@ -33,8 +33,7 @@ public class Request {
 	/**
 	 * Constructs a Request with the specified <i>type</i>
 	 * 
-	 * @param type
-	 *            the Request type
+	 * @param type the Request type
 	 * @see #getType()
 	 */
 	public Request(Object type) {
@@ -42,8 +41,7 @@ public class Request {
 	}
 
 	/**
-	 * Returns a Map that can be used to save useful information in this
-	 * request.
+	 * Returns a Map that can be used to save useful information in this request.
 	 * 
 	 * @return a map to store useful information
 	 */
@@ -69,8 +67,7 @@ public class Request {
 	 * Sets the given map to be the new extended data (by reference) for this
 	 * request.
 	 * 
-	 * @param map
-	 *            The new map
+	 * @param map The new map
 	 */
 	public void setExtendedData(Map map) {
 		extendedData = map;
@@ -79,8 +76,7 @@ public class Request {
 	/**
 	 * Sets the type of the Request.
 	 * 
-	 * @param type
-	 *            the Request type
+	 * @param type the Request type
 	 */
 	public void setType(Object type) {
 		this.type = type;

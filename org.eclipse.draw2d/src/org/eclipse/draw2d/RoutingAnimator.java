@@ -50,9 +50,9 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	}
 
 	/**
-	 * Returns the current state of the connection. Currently, this is a copy of
-	 * the list of points. However this Object could change in future releases
-	 * and should not be considered API.
+	 * Returns the current state of the connection. Currently, this is a copy of the
+	 * list of points. However this Object could change in future releases and
+	 * should not be considered API.
 	 * 
 	 * @see Animator#getCurrentState(IFigure)
 	 */
@@ -156,10 +156,8 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 					points1.getPoint(p, i1);
 					points1.getPoint(q, i1 + 1);
 
-					p.x = (int) (((q.x * (current2 - current1) + p.x
-							* (prev1 - current2)) / (prev1 - current1)));
-					p.y = (int) (((q.y * (current2 - current1) + p.y
-							* (prev1 - current2)) / (prev1 - current1)));
+					p.x = (int) (((q.x * (current2 - current1) + p.x * (prev1 - current2)) / (prev1 - current1)));
+					p.y = (int) (((q.y * (current2 - current1) + p.y * (prev1 - current2)) / (prev1 - current1)));
 
 					points1.insertPoint(p, i1 + 1);
 
@@ -174,10 +172,8 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 					points2.getPoint(p, i2);
 					points2.getPoint(q, i2 + 1);
 
-					p.x = (int) (((q.x * (current1 - current2) + p.x
-							* (prev2 - current1)) / (prev2 - current2)));
-					p.y = (int) (((q.y * (current1 - current2) + p.y
-							* (prev2 - current1)) / (prev2 - current2)));
+					p.x = (int) (((q.x * (current1 - current2) + p.x * (prev2 - current1)) / (prev2 - current2)));
+					p.y = (int) (((q.y * (current1 - current2) + p.y * (prev2 - current1)) / (prev2 - current2)));
 
 					points2.insertPoint(p, i2 + 1);
 

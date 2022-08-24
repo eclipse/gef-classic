@@ -27,8 +27,7 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
 public class PaletteStackFactory extends PaletteEntryFactory {
 
 	/**
-	 * Creates a new PaletteStackFactory with label
-	 * PaletteMessages.MODEL_TYPE_STACK
+	 * Creates a new PaletteStackFactory with label PaletteMessages.MODEL_TYPE_STACK
 	 */
 	public PaletteStackFactory() {
 		setLabel(PaletteMessages.MODEL_TYPE_STACK);
@@ -38,8 +37,7 @@ public class PaletteStackFactory extends PaletteEntryFactory {
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#canCreate(org.eclipse.gef.palette.PaletteEntry)
 	 */
 	public boolean canCreate(PaletteEntry selected) {
-		if (!(selected instanceof ToolEntry)
-				|| selected.getParent() instanceof PaletteStack)
+		if (!(selected instanceof ToolEntry) || selected.getParent() instanceof PaletteStack)
 			return false;
 		return super.canCreate(selected);
 	}

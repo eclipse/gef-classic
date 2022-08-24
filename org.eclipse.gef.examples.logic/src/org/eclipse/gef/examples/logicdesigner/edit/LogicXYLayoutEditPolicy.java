@@ -51,51 +51,44 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.CloneCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.CreateCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.SetConstraintCommand;
 
-public class LogicXYLayoutEditPolicy extends
-		org.eclipse.gef.editpolicies.XYLayoutEditPolicy {
+public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayoutEditPolicy {
 
 	public LogicXYLayoutEditPolicy(XYLayout layout) {
 		super();
 		setXyLayout(layout);
 	}
 
-	protected Command chainGuideAttachmentCommand(Request request,
-			LogicSubpart part, Command cmd, boolean horizontal) {
+	protected Command chainGuideAttachmentCommand(Request request, LogicSubpart part, Command cmd, boolean horizontal) {
 		Command result = cmd;
 
 		// Attach to guide, if one is given
-		Integer guidePos = (Integer) request.getExtendedData().get(
-				horizontal ? SnapToGuides.KEY_HORIZONTAL_GUIDE
-						: SnapToGuides.KEY_VERTICAL_GUIDE);
+		Integer guidePos = (Integer) request.getExtendedData()
+				.get(horizontal ? SnapToGuides.KEY_HORIZONTAL_GUIDE : SnapToGuides.KEY_VERTICAL_GUIDE);
 		if (guidePos != null) {
-			int alignment = ((Integer) request.getExtendedData().get(
-					horizontal ? SnapToGuides.KEY_HORIZONTAL_ANCHOR
-							: SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
+			int alignment = ((Integer) request.getExtendedData()
+					.get(horizontal ? SnapToGuides.KEY_HORIZONTAL_ANCHOR : SnapToGuides.KEY_VERTICAL_ANCHOR))
+					.intValue();
 			ChangeGuideCommand cgm = new ChangeGuideCommand(part, horizontal);
-			cgm.setNewGuide(findGuideAt(guidePos.intValue(), horizontal),
-					alignment);
+			cgm.setNewGuide(findGuideAt(guidePos.intValue(), horizontal), alignment);
 			result = result.chain(cgm);
 		}
 
 		return result;
 	}
 
-	protected Command chainGuideDetachmentCommand(Request request,
-			LogicSubpart part, Command cmd, boolean horizontal) {
+	protected Command chainGuideDetachmentCommand(Request request, LogicSubpart part, Command cmd, boolean horizontal) {
 		Command result = cmd;
 
 		// Detach from guide, if none is given
-		Integer guidePos = (Integer) request.getExtendedData().get(
-				horizontal ? SnapToGuides.KEY_HORIZONTAL_GUIDE
-						: SnapToGuides.KEY_VERTICAL_GUIDE);
+		Integer guidePos = (Integer) request.getExtendedData()
+				.get(horizontal ? SnapToGuides.KEY_HORIZONTAL_GUIDE : SnapToGuides.KEY_VERTICAL_GUIDE);
 		if (guidePos == null)
 			result = result.chain(new ChangeGuideCommand(part, horizontal));
 
 		return result;
 	}
 
-	protected Command createAddCommand(ChangeBoundsRequest request,
-			EditPart child, Object constraint) {
+	protected Command createAddCommand(ChangeBoundsRequest request, EditPart child, Object constraint) {
 		LogicSubpart part = (LogicSubpart) child.getModel();
 		Rectangle rect = (Rectangle) constraint;
 
@@ -108,8 +101,7 @@ public class LogicXYLayoutEditPolicy extends
 		SetConstraintCommand setConstraint = new SetConstraintCommand();
 		setConstraint.setLocation(rect);
 		setConstraint.setPart(part);
-		setConstraint
-				.setLabel(LogicMessages.LogicXYLayoutEditPolicy_AddCommandLabelText);
+		setConstraint.setLabel(LogicMessages.LogicXYLayoutEditPolicy_AddCommandLabelText);
 		setConstraint.setDebugLabel("LogicXYEP setConstraint");//$NON-NLS-1$
 
 		Command cmd = add.chain(setConstraint);
@@ -123,13 +115,11 @@ public class LogicXYLayoutEditPolicy extends
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.EditPart,
 	 *      java.lang.Object)
 	 */
-	protected Command createChangeConstraintCommand(EditPart child,
-			Object constraint) {
+	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
 		return null;
 	}
 
-	protected Command createChangeConstraintCommand(
-			ChangeBoundsRequest request, EditPart child, Object constraint) {
+	protected Command createChangeConstraintCommand(ChangeBoundsRequest request, EditPart child, Object constraint) {
 		SetConstraintCommand cmd = new SetConstraintCommand();
 		LogicSubpart part = (LogicSubpart) child.getModel();
 		cmd.setPart(part);
@@ -137,11 +127,9 @@ public class LogicXYLayoutEditPolicy extends
 		Command result = cmd;
 
 		if ((request.getResizeDirection() & PositionConstants.NORTH_SOUTH) != 0) {
-			Integer guidePos = (Integer) request.getExtendedData().get(
-					SnapToGuides.KEY_HORIZONTAL_GUIDE);
+			Integer guidePos = (Integer) request.getExtendedData().get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 			if (guidePos != null) {
-				result = chainGuideAttachmentCommand(request, part, result,
-						true);
+				result = chainGuideAttachmentCommand(request, part, result, true);
 			} else if (part.getHorizontalGuide() != null) {
 				// SnapToGuides didn't provide a horizontal guide, but this part
 				// is attached
@@ -162,11 +150,9 @@ public class LogicXYLayoutEditPolicy extends
 		}
 
 		if ((request.getResizeDirection() & PositionConstants.EAST_WEST) != 0) {
-			Integer guidePos = (Integer) request.getExtendedData().get(
-					SnapToGuides.KEY_VERTICAL_GUIDE);
+			Integer guidePos = (Integer) request.getExtendedData().get(SnapToGuides.KEY_VERTICAL_GUIDE);
 			if (guidePos != null) {
-				result = chainGuideAttachmentCommand(request, part, result,
-						false);
+				result = chainGuideAttachmentCommand(request, part, result, false);
 			} else if (part.getVerticalGuide() != null) {
 				int alignment = part.getVerticalGuide().getAlignment(part);
 				int edgeBeingResized = 0;
@@ -179,8 +165,7 @@ public class LogicXYLayoutEditPolicy extends
 			}
 		}
 
-		if (request.getType().equals(REQ_MOVE_CHILDREN)
-				|| request.getType().equals(REQ_ALIGN_CHILDREN)) {
+		if (request.getType().equals(REQ_MOVE_CHILDREN) || request.getType().equals(REQ_ALIGN_CHILDREN)) {
 			result = chainGuideAttachmentCommand(request, part, result, true);
 			result = chainGuideAttachmentCommand(request, part, result, false);
 			result = chainGuideDetachmentCommand(request, part, result, true);
@@ -201,8 +186,7 @@ public class LogicXYLayoutEditPolicy extends
 	}
 
 	private int getResizeDirections(Class modelClass) {
-		if (LED.class.equals(modelClass)
-				|| SimpleOutput.class.isAssignableFrom(modelClass)) {
+		if (LED.class.equals(modelClass) || SimpleOutput.class.isAssignableFrom(modelClass)) {
 			return PositionConstants.NONE;
 		} else if (LogicLabel.class.equals(modelClass)) {
 			return PositionConstants.EAST | PositionConstants.WEST;
@@ -214,8 +198,7 @@ public class LogicXYLayoutEditPolicy extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.editpolicies.LayoutEditPolicy#createSizeOnDropFeedback
+	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createSizeOnDropFeedback
 	 * (org.eclipse.gef.requests.CreateRequest)
 	 */
 	protected IFigure createSizeOnDropFeedback(CreateRequest createRequest) {
@@ -241,20 +224,17 @@ public class LogicXYLayoutEditPolicy extends
 	}
 
 	protected LogicGuide findGuideAt(int pos, boolean horizontal) {
-		RulerProvider provider = ((RulerProvider) getHost().getViewer()
-				.getProperty(
-						horizontal ? RulerProvider.PROPERTY_VERTICAL_RULER
-								: RulerProvider.PROPERTY_HORIZONTAL_RULER));
+		RulerProvider provider = ((RulerProvider) getHost().getViewer().getProperty(
+				horizontal ? RulerProvider.PROPERTY_VERTICAL_RULER : RulerProvider.PROPERTY_HORIZONTAL_RULER));
 		return (LogicGuide) provider.getGuideAt(pos);
 	}
 
 	/**
 	 * Override to return the <code>Command</code> to perform an
-	 * {@link RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code>
-	 * is returned.
+	 * {@link RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code> is
+	 * returned.
 	 * 
-	 * @param request
-	 *            the Clone Request
+	 * @param request the Clone Request
 	 * @return A command to perform the Clone.
 	 */
 	protected Command getCloneCommand(ChangeBoundsRequest request) {
@@ -267,28 +247,21 @@ public class LogicXYLayoutEditPolicy extends
 
 		while (i.hasNext()) {
 			currPart = (GraphicalEditPart) i.next();
-			clone.addPart((LogicSubpart) currPart.getModel(),
-					(Rectangle) getConstraintFor(request, currPart));
+			clone.addPart((LogicSubpart) currPart.getModel(), (Rectangle) getConstraintFor(request, currPart));
 		}
 
 		// Attach to horizontal guide, if one is given
-		Integer guidePos = (Integer) request.getExtendedData().get(
-				SnapToGuides.KEY_HORIZONTAL_GUIDE);
+		Integer guidePos = (Integer) request.getExtendedData().get(SnapToGuides.KEY_HORIZONTAL_GUIDE);
 		if (guidePos != null) {
-			int hAlignment = ((Integer) request.getExtendedData().get(
-					SnapToGuides.KEY_HORIZONTAL_ANCHOR)).intValue();
-			clone.setGuide(findGuideAt(guidePos.intValue(), true), hAlignment,
-					true);
+			int hAlignment = ((Integer) request.getExtendedData().get(SnapToGuides.KEY_HORIZONTAL_ANCHOR)).intValue();
+			clone.setGuide(findGuideAt(guidePos.intValue(), true), hAlignment, true);
 		}
 
 		// Attach to vertical guide, if one is given
-		guidePos = (Integer) request.getExtendedData().get(
-				SnapToGuides.KEY_VERTICAL_GUIDE);
+		guidePos = (Integer) request.getExtendedData().get(SnapToGuides.KEY_VERTICAL_GUIDE);
 		if (guidePos != null) {
-			int vAlignment = ((Integer) request.getExtendedData().get(
-					SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
-			clone.setGuide(findGuideAt(guidePos.intValue(), false), vAlignment,
-					false);
+			int vAlignment = ((Integer) request.getExtendedData().get(SnapToGuides.KEY_VERTICAL_ANCHOR)).intValue();
+			clone.setGuide(findGuideAt(guidePos.intValue(), false), vAlignment, false);
 		}
 
 		return clone;
@@ -303,21 +276,18 @@ public class LogicXYLayoutEditPolicy extends
 		create.setLocation(constraint);
 		create.setLabel(LogicMessages.LogicXYLayoutEditPolicy_CreateCommandLabelText);
 
-		Command cmd = chainGuideAttachmentCommand(request, newPart, create,
-				true);
+		Command cmd = chainGuideAttachmentCommand(request, newPart, create, true);
 		return chainGuideAttachmentCommand(request, newPart, cmd, false);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.editpolicies.LayoutEditPolicy#getCreationFeedbackOffset
+	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getCreationFeedbackOffset
 	 * (org.eclipse.gef.requests.CreateRequest)
 	 */
 	protected Insets getCreationFeedbackOffset(CreateRequest request) {
-		if (request.getNewObject() instanceof LED
-				|| request.getNewObject() instanceof Circuit)
+		if (request.getNewObject() instanceof LED || request.getNewObject() instanceof Circuit)
 			return new Insets(2, 0, 2, 0);
 		return new Insets();
 	}

@@ -24,8 +24,7 @@ import org.eclipse.gef.examples.text.model.ModelLocation;
 /**
  * @since 3.1
  */
-public class CompoundEditCommand extends ExampleTextCommand implements
-		AppendableCommand {
+public class CompoundEditCommand extends ExampleTextCommand implements AppendableCommand {
 
 	private ModelLocation beginLocation;
 
@@ -80,8 +79,7 @@ public class CompoundEditCommand extends ExampleTextCommand implements
 	}
 
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
-		ModelLocation loc = ((MiniEdit) edits.get(edits.size() - 1))
-				.getResultingLocation();
+		ModelLocation loc = ((MiniEdit) edits.get(edits.size() - 1)).getResultingLocation();
 		if (loc == null)
 			return getUndoSelectionRange(viewer);
 		return new SelectionRange(lookupModel(viewer, loc.model), loc.offset);
@@ -96,8 +94,7 @@ public class CompoundEditCommand extends ExampleTextCommand implements
 		if (endLocation == null)
 			return new SelectionRange(begin, beginLocation.offset);
 		TextEditPart end = lookupModel(viewer, endLocation.model);
-		return new SelectionRange(begin, beginLocation.offset, end,
-				endLocation.offset);
+		return new SelectionRange(begin, beginLocation.offset, end, endLocation.offset);
 	}
 
 	public void pendEdit(MiniEdit edit) {

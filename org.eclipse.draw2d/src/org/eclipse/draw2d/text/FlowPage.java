@@ -124,8 +124,7 @@ public class FlowPage extends BlockFlow {
 	public void setBounds(Rectangle r) {
 		if (getBounds().equals(r))
 			return;
-		boolean invalidate = getBounds().width != r.width
-				|| getBounds().height != r.height;
+		boolean invalidate = getBounds().width != r.width || getBounds().height != r.height;
 		super.setBounds(r);
 		int newWidth = r.width;
 		if (invalidate || getPageWidth() != newWidth) {

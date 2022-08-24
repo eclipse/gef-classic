@@ -34,10 +34,8 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	 * Creates a <code>SelectionAction</code> and associates it with the given
 	 * editor.
 	 * 
-	 * @param part
-	 *            The workbench part associated with this action
-	 * @param style
-	 *            the style for this action
+	 * @param part  The workbench part associated with this action
+	 * @param style the style for this action
 	 */
 	public SelectionAction(IWorkbenchPart part, int style) {
 		super(part, style);
@@ -47,8 +45,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	 * Creates a <code>SelectionAction</code> and associates it with the given
 	 * workbench part.
 	 * 
-	 * @param part
-	 *            the workbench part
+	 * @param part the workbench part
 	 */
 	public SelectionAction(IWorkbenchPart part) {
 		super(part);
@@ -93,8 +90,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	 * Sets the current selection and calls on subclasses to handle the
 	 * selectionChanged event.
 	 * 
-	 * @param selection
-	 *            The new selection.
+	 * @param selection The new selection.
 	 */
 	protected void setSelection(ISelection selection) {
 		this.selection = selection;
@@ -103,12 +99,11 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 
 	/**
 	 * May be used to provide an alternative selection source other than the
-	 * workbench's selection service. Use of this method is optional. The
-	 * default value is <code>null</code>, in which case the selection is
-	 * obtained using the partsite's selection service.
+	 * workbench's selection service. Use of this method is optional. The default
+	 * value is <code>null</code>, in which case the selection is obtained using the
+	 * partsite's selection service.
 	 * 
-	 * @param provider
-	 *            <code>null</code> or a selection provider
+	 * @param provider <code>null</code> or a selection provider
 	 */
 	public void setSelectionProvider(ISelectionProvider provider) {
 		this.provider = provider;
@@ -121,8 +116,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 		if (provider != null)
 			setSelection(provider.getSelection());
 		else
-			setSelection(getWorkbenchPart().getSite().getWorkbenchWindow()
-					.getSelectionService().getSelection());
+			setSelection(getWorkbenchPart().getSite().getWorkbenchWindow().getSelectionService().getSelection());
 	}
 
 }

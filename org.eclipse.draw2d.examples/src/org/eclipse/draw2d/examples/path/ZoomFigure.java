@@ -39,12 +39,10 @@ public class ZoomFigure extends Figure implements ScalableFigure {
 			if (EMULATED_SCALING == scaleMethod) {
 				g = new ScaledGraphics(graphics);
 			}
-			boolean optimizeClip = getBorder() == null
-					|| getBorder().isOpaque();
+			boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 			if (!optimizeClip)
 				g.clipRect(getBounds().getCropped(getInsets()));
-			g.translate(getBounds().x + getInsets().left, getBounds().y
-					+ getInsets().top);
+			g.translate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
 			g.scale(scale);
 			g.pushState();
 			paintChildren(g);

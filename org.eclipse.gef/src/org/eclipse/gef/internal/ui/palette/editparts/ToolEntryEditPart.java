@@ -72,8 +72,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 		protected void enableTimer() {
 			timer = new MenuTimer();
-			getViewer().getControl().getDisplay()
-					.timerExec(MenuTimer.MENU_TIMER_DELAY, timer);
+			getViewer().getControl().getDisplay().timerExec(MenuTimer.MENU_TIMER_DELAY, timer);
 		}
 
 		protected void disableTimer() {
@@ -91,8 +90,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 				performConditionalSelection();
 			super.handleButtonDown(button);
 			if (button == 1) {
-				getFigure().internalGetEventDispatcher()
-						.requestRemoveFocus(getFigure());
+				getFigure().internalGetEventDispatcher().requestRemoveFocus(getFigure());
 				getButtonModel().setArmed(true);
 				getButtonModel().setPressed(true);
 			}
@@ -183,12 +181,10 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			disableTimer();
 
 			// win hack because button down is delayed
-			if (getParent() instanceof IPaletteStackEditPart
-					&& SWT.getPlatform().equals("win32")) { //$NON-NLS-1$
-				Point nds = getPaletteViewer().getControl()
-						.toControl(event.display.getCursorLocation());
-				if (mouseDownLoc != null && (Math.abs(nds.x - mouseDownLoc.x)
-						+ Math.abs(nds.y - mouseDownLoc.y)) < WIN_THRESHOLD) {
+			if (getParent() instanceof IPaletteStackEditPart && SWT.getPlatform().equals("win32")) { //$NON-NLS-1$
+				Point nds = getPaletteViewer().getControl().toControl(event.display.getCursorLocation());
+				if (mouseDownLoc != null
+						&& (Math.abs(nds.x - mouseDownLoc.x) + Math.abs(nds.y - mouseDownLoc.y)) < WIN_THRESHOLD) {
 					getButtonModel().setArmed(false);
 					getButtonModel().setPressed(false);
 					((IPaletteStackEditPart) getParent()).openMenu();
@@ -264,15 +260,11 @@ public class ToolEntryEditPart extends PaletteEditPart {
 				ButtonModel model = getModel();
 
 				if (model.isSelected()) {
-					graphics.setBackgroundColor(
-							PaletteColorUtil.getSelectedColor());
-					graphics.fillRoundRectangle(getSelectionRectangle(
-							getLayoutSetting(), customLabel), 3, 3);
+					graphics.setBackgroundColor(PaletteColorUtil.getSelectedColor());
+					graphics.fillRoundRectangle(getSelectionRectangle(getLayoutSetting(), customLabel), 3, 3);
 				} else if (model.isMouseOver() || showHoverFeedback) {
-					graphics.setBackgroundColor(
-							PaletteColorUtil.getHoverColor());
-					graphics.fillRoundRectangle(getSelectionRectangle(
-							getLayoutSetting(), customLabel), 3, 3);
+					graphics.setBackgroundColor(PaletteColorUtil.getHoverColor());
+					graphics.fillRoundRectangle(getSelectionRectangle(getLayoutSetting(), customLabel), 3, 3);
 				}
 			}
 		}
@@ -287,14 +279,11 @@ public class ToolEntryEditPart extends PaletteEditPart {
 					graphics.setBackgroundColor(ColorConstants.white);
 
 					Rectangle area = isToolbarItem() ? getClientArea()
-							: getSelectionRectangle(getLayoutSetting(),
-									customLabel);
+							: getSelectionRectangle(getLayoutSetting(), customLabel);
 					if (isStyle(STYLE_BUTTON))
-						graphics.drawFocus(area.x, area.y, area.width,
-								area.height);
+						graphics.drawFocus(area.x, area.y, area.width, area.height);
 					else
-						graphics.drawFocus(area.x, area.y, area.width - 1,
-								area.height - 1);
+						graphics.drawFocus(area.x, area.y, area.width - 1, area.height - 1);
 				}
 			} else {
 				super.paintBorder(graphics);
@@ -302,12 +291,11 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		}
 
 		/**
-		 * Should hover feedback be shown? Allows other palette entities to
-		 * control when the hover feedback should be shown on this tool entry.
+		 * Should hover feedback be shown? Allows other palette entities to control when
+		 * the hover feedback should be shown on this tool entry.
 		 * 
-		 * @param showHoverFeedback
-		 *            true if the hover feedback is to be shown; false
-		 *            otherwise.
+		 * @param showHoverFeedback true if the hover feedback is to be shown; false
+		 *                          otherwise.
 		 */
 		public void setShowHoverFeedback(boolean showHoverFeedback) {
 			this.showHoverFeedback = showHoverFeedback;
@@ -326,10 +314,8 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	public <T> T getAdapter(final Class<T> key) {
 		if (key == IPinnableEditPart.class) {
 			if ((getParent() instanceof PinnablePaletteStackEditPart)
-					&& ((PinnablePaletteStackEditPart) getParent())
-							.canBePinned()
-					&& ((PaletteStack) getParent().getModel()).getActiveEntry()
-							.equals(getModel())) {
+					&& ((PinnablePaletteStackEditPart) getParent()).canBePinned()
+					&& ((PaletteStack) getParent().getModel()).getActiveEntry().equals(getModel())) {
 				return key.cast(getParent());
 			}
 		}
@@ -348,8 +334,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 			public void getRole(AccessibleControlEvent e) {
 				if (getParent() instanceof IPaletteStackEditPart
-						&& (ToolEntryEditPart.this == ((IPaletteStackEditPart) getParent())
-								.getActiveEntry())) {
+						&& (ToolEntryEditPart.this == ((IPaletteStackEditPart) getParent()).getActiveEntry())) {
 					e.detail = ACC.ROLE_COMBOBOX;
 				} else {
 					e.detail = ACC.ROLE_PUSHBUTTON;
@@ -364,8 +349,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		};
 	}
 
-	static final Border TOOLBAR_ITEM_BORDER = new ButtonBorder(
-			ButtonBorder.SCHEMES.TOOLBAR);
+	static final Border TOOLBAR_ITEM_BORDER = new ButtonBorder(ButtonBorder.SCHEMES.TOOLBAR);
 
 	// The following are the insets that the bounds of the label figure should
 	// be
@@ -376,10 +360,8 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	// The following are the borders that go around the entire tool figure to
 	// provide room to draw the arrow and outline of the palette stack figure if
 	// this tool happens to appear as the active tool of a stack.
-	static final Border LIST_BORDER = new MarginBorder(3,
-			PinnablePaletteStackFigure.ARROW_WIDTH + 7, 4, 0);
-	static final Border ICON_BORDER = new MarginBorder(4, 4, 3,
-			PinnablePaletteStackFigure.ARROW_WIDTH + 4);
+	static final Border LIST_BORDER = new MarginBorder(3, PinnablePaletteStackFigure.ARROW_WIDTH + 7, 4, 0);
+	static final Border ICON_BORDER = new MarginBorder(4, 4, 3, PinnablePaletteStackFigure.ARROW_WIDTH + 4);
 
 	public IFigure createFigure() {
 
@@ -448,8 +430,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	 * @return whether the name needs to be included in the tooltip
 	 */
 	protected boolean nameNeededInToolTip() {
-		DetailedLabelFigure label = (DetailedLabelFigure) getFigure()
-				.getChildren().get(0);
+		DetailedLabelFigure label = (DetailedLabelFigure) getFigure().getChildren().get(0);
 		return label.isNameTruncated() || super.nameNeededInToolTip();
 	}
 
@@ -472,8 +453,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		} else if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST
 				|| layoutMode == PaletteViewerPreferences.LAYOUT_DETAILS) {
 			customLabel.setBorder(LIST_BORDER);
-		} else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS
-				&& !isToolbarItem()) {
+		} else if (layoutMode == PaletteViewerPreferences.LAYOUT_ICONS && !isToolbarItem()) {
 			customLabel.setBorder(ICON_BORDER);
 		} else {
 			customLabel.setBorder(null);
@@ -503,9 +483,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 	public void saveState(IMemento memento) {
 		memento.putString(ACTIVE_STATE,
-				Boolean.valueOf(
-						getPaletteViewer().getActiveTool() == getToolEntry())
-						.toString());
+				Boolean.valueOf(getPaletteViewer().getActiveTool() == getToolEntry()).toString());
 		super.saveState(memento);
 	}
 
@@ -513,8 +491,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	 * @see PaletteEditPart#setImageInFigure(Image)
 	 */
 	protected void setImageInFigure(Image image) {
-		DetailedLabelFigure fig = (DetailedLabelFigure) (getFigure()
-				.getChildren().get(0));
+		DetailedLabelFigure fig = (DetailedLabelFigure) (getFigure().getChildren().get(0));
 		fig.setImage(image);
 	}
 
@@ -524,8 +501,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	public void setSelected(int value) {
 		super.setSelected(value);
 		if (value == SELECTED_PRIMARY && getPaletteViewer().getControl() != null
-				&& !getPaletteViewer().getControl().isDisposed()
-				&& getPaletteViewer().getControl().isFocusControl())
+				&& !getPaletteViewer().getControl().isDisposed() && getPaletteViewer().getControl().isFocusControl())
 			getFigure().requestFocus();
 	}
 
@@ -538,8 +514,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		super.showTargetFeedback(request);
 	}
 
-	static Rectangle getSelectionRectangle(int layoutMode,
-			DetailedLabelFigure labelFigure) {
+	static Rectangle getSelectionRectangle(int layoutMode, DetailedLabelFigure labelFigure) {
 		Rectangle rect = Rectangle.SINGLETON;
 		rect.setBounds(labelFigure.getBounds());
 		if (layoutMode == PaletteViewerPreferences.LAYOUT_LIST

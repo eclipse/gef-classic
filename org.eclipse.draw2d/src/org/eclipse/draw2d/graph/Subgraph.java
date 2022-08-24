@@ -67,8 +67,7 @@ public class Subgraph extends Node {
 	 * Constructs a new subgraph with the given data object.
 	 * 
 	 * @see Node#Node(Object)
-	 * @param data
-	 *            an arbitrary data object
+	 * @param data an arbitrary data object
 	 */
 	public Subgraph(Object data) {
 		this(data, null);
@@ -78,10 +77,8 @@ public class Subgraph extends Node {
 	 * Constructs a new subgraph with the given data object and parent subgraph.
 	 * 
 	 * @see Node#Node(Object, Subgraph)
-	 * @param data
-	 *            an arbitrary data object
-	 * @param parent
-	 *            the parent
+	 * @param data   an arbitrary data object
+	 * @param parent the parent
 	 */
 	public Subgraph(Object data, Subgraph parent) {
 		super(data, parent);
@@ -90,24 +87,21 @@ public class Subgraph extends Node {
 	/**
 	 * Adds the given node to this subgraph.
 	 * 
-	 * @param n
-	 *            the node to add
+	 * @param n the node to add
 	 */
 	public void addMember(Node n) {
 		members.add(n);
 	}
 
 	/**
-	 * Returns <code>true</code> if the given node is contained inside the
-	 * branch represented by this subgraph.
+	 * Returns <code>true</code> if the given node is contained inside the branch
+	 * represented by this subgraph.
 	 * 
-	 * @param n
-	 *            the node in question
+	 * @param n the node in question
 	 * @return <code>true</code> if nested
 	 */
 	boolean isNested(Node n) {
-		return n.nestingIndex >= nestingTreeMin
-				&& n.nestingIndex <= nestingIndex;
+		return n.nestingIndex >= nestingTreeMin && n.nestingIndex <= nestingIndex;
 	}
 
 }

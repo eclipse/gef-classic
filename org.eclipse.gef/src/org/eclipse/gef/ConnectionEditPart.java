@@ -69,16 +69,14 @@ public interface ConnectionEditPart extends GraphicalEditPart {
 	/**
 	 * Sets the <i>source</i> of this connection.
 	 * 
-	 * @param source
-	 *            the source of this connection
+	 * @param source the source of this connection
 	 */
 	void setSource(EditPart source);
 
 	/**
 	 * Sets the<i>target</i> of this connection.
 	 * 
-	 * @param target
-	 *            the target of this connection
+	 * @param target the target of this connection
 	 */
 	void setTarget(EditPart target);
 }

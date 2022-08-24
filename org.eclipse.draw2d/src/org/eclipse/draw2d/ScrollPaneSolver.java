@@ -49,31 +49,24 @@ public class ScrollPaneSolver {
 	 * Solves for the viewport area, insets, and visibility of horizontal and
 	 * vertical scrollbars of a ScrollPane
 	 * 
-	 * @param clientArea
-	 *            The ScrollPane's client area
-	 * @param viewport
-	 *            The ScrollPane's Viewport
-	 * @param hVis
-	 *            Horizontal scrollbar visibility
-	 * @param vVis
-	 *            Vertical scrollbar visibility
-	 * @param vBarWidth
-	 *            Width of vertical scrollbar
-	 * @param hBarHeight
-	 *            Height of horizontal scrollbar
+	 * @param clientArea The ScrollPane's client area
+	 * @param viewport   The ScrollPane's Viewport
+	 * @param hVis       Horizontal scrollbar visibility
+	 * @param vVis       Vertical scrollbar visibility
+	 * @param vBarWidth  Width of vertical scrollbar
+	 * @param hBarHeight Height of horizontal scrollbar
 	 * @return the Result
 	 */
-	public static Result solve(Rectangle clientArea, Viewport viewport,
-			int hVis, int vVis, int vBarWidth, int hBarHeight) {
+	public static Result solve(Rectangle clientArea, Viewport viewport, int hVis, int vVis, int vBarWidth,
+			int hBarHeight) {
 		Result result = new Result();
 		result.insets = new Insets();
 		result.insets.bottom = hBarHeight;
 		result.insets.right = vBarWidth;
 
 		Dimension available = clientArea.getSize();
-		Dimension guaranteed = new Dimension(available).shrink(
-				(vVis == NEVER ? 0 : result.insets.right), (hVis == NEVER ? 0
-						: result.insets.bottom));
+		Dimension guaranteed = new Dimension(available).shrink((vVis == NEVER ? 0 : result.insets.right),
+				(hVis == NEVER ? 0 : result.insets.bottom));
 		guaranteed.width = Math.max(guaranteed.width, 0);
 		guaranteed.height = Math.max(guaranteed.height, 0);
 		int wHint = guaranteed.width;
@@ -82,18 +75,16 @@ public class ScrollPaneSolver {
 		Dimension preferred = viewport.getPreferredSize(wHint, hHint).getCopy();
 		Insets viewportInsets = viewport.getInsets();
 		/*
-		 * This was calling viewport.getMinimumSize(), but viewport's minimum
-		 * size was really small, and wasn't a function of its contents.
+		 * This was calling viewport.getMinimumSize(), but viewport's minimum size was
+		 * really small, and wasn't a function of its contents.
 		 */
-		Dimension viewportMinSize = new Dimension(viewportInsets.getWidth(),
-				viewportInsets.getHeight());
+		Dimension viewportMinSize = new Dimension(viewportInsets.getWidth(), viewportInsets.getHeight());
 		if (viewport.getContents() != null) {
 			if (viewport.getContentsTracksHeight() && hHint > -1)
 				hHint = Math.max(0, hHint - viewportInsets.getHeight());
 			if (viewport.getContentsTracksWidth() && wHint > -1)
 				wHint = Math.max(0, wHint - viewportInsets.getWidth());
-			viewportMinSize.expand(viewport.getContents().getMinimumSize(wHint,
-					hHint));
+			viewportMinSize.expand(viewport.getContents().getMinimumSize(wHint, hHint));
 		}
 
 		/*
@@ -105,10 +96,8 @@ public class ScrollPaneSolver {
 		if (viewport.getContentsTracksWidth())
 			preferred.width = viewportMinSize.width;
 
-		boolean none = available.contains(preferred), both = !none
-				&& preferred.containsProper(guaranteed), showV = both
-				|| preferred.height > available.height, showH = both
-				|| preferred.width > available.width;
+		boolean none = available.contains(preferred), both = !none && preferred.containsProper(guaranteed),
+				showV = both || preferred.height > available.height, showH = both || preferred.width > available.width;
 
 		// Adjust for visibility override flags
 		result.showV = vVis != NEVER && (showV || vVis == ALWAYS);

@@ -63,8 +63,7 @@ public class LightweightSystem {
 	/**
 	 * Constructs a LightweightSystem on Canvas <i>c</i>.
 	 * 
-	 * @param c
-	 *            the canvas
+	 * @param c the canvas
 	 * @since 2.0
 	 */
 	public LightweightSystem(Canvas c) {
@@ -195,8 +194,7 @@ public class LightweightSystem {
 	 * Invokes this LightweightSystem's {@link UpdateManager} to paint this
 	 * LightweightSystem's Canvas and contents.
 	 * 
-	 * @param gc
-	 *            the GC used for painting
+	 * @param gc the GC used for painting
 	 * @since 2.0
 	 */
 	public void paint(GC gc) {
@@ -204,11 +202,10 @@ public class LightweightSystem {
 	}
 
 	/**
-	 * Sets the contents of the LightweightSystem to the passed figure. This
-	 * figure should be the top-level Figure in a Draw2d application.
+	 * Sets the contents of the LightweightSystem to the passed figure. This figure
+	 * should be the top-level Figure in a Draw2d application.
 	 * 
-	 * @param figure
-	 *            the new root figure
+	 * @param figure the new root figure
 	 * @since 2.0
 	 */
 	public void setContents(IFigure figure) {
@@ -221,8 +218,7 @@ public class LightweightSystem {
 	/**
 	 * Sets the LightweightSystem's control to the passed Canvas.
 	 * 
-	 * @param c
-	 *            the canvas
+	 * @param c the canvas
 	 * @since 2.0
 	 */
 	public void setControl(Canvas c) {
@@ -230,11 +226,9 @@ public class LightweightSystem {
 			return;
 		canvas = c;
 		if ((c.getStyle() & SWT.DOUBLE_BUFFERED) != 0)
-			getUpdateManager().setGraphicsSource(
-					new NativeGraphicsSource(canvas));
+			getUpdateManager().setGraphicsSource(new NativeGraphicsSource(canvas));
 		else
-			getUpdateManager().setGraphicsSource(
-					new BufferedGraphicsSource(canvas));
+			getUpdateManager().setGraphicsSource(new BufferedGraphicsSource(canvas));
 		getEventDispatcher().setControl(c);
 		addListeners();
 
@@ -248,8 +242,7 @@ public class LightweightSystem {
 	/**
 	 * Sets this LightweightSystem's EventDispatcher.
 	 * 
-	 * @param dispatcher
-	 *            the new event dispatcher
+	 * @param dispatcher the new event dispatcher
 	 * @since 2.0
 	 */
 	public void setEventDispatcher(EventDispatcher dispatcher) {
@@ -268,8 +261,7 @@ public class LightweightSystem {
 	/**
 	 * Sets this LightweightSystem's root figure.
 	 * 
-	 * @param root
-	 *            the new root figure
+	 * @param root the new root figure
 	 */
 	protected void setRootPaneFigure(RootFigure root) {
 		getUpdateManager().setRoot(root);
@@ -279,8 +271,7 @@ public class LightweightSystem {
 	/**
 	 * Sets this LightweightSystem's UpdateManager.
 	 * 
-	 * @param um
-	 *            the new update manager
+	 * @param um the new update manager
 	 * @since 2.0
 	 */
 	public void setUpdateManager(UpdateManager um) {
@@ -289,9 +280,9 @@ public class LightweightSystem {
 	}
 
 	/**
-	 * The figure at the root of the LightweightSystem. If certain properties
-	 * (i.e. font, background/foreground color) are not set, the RootFigure will
-	 * obtain these properties from LightweightSystem's Canvas.
+	 * The figure at the root of the LightweightSystem. If certain properties (i.e.
+	 * font, background/foreground color) are not set, the RootFigure will obtain
+	 * these properties from LightweightSystem's Canvas.
 	 */
 	protected class RootFigure extends Figure {
 		/** @see IFigure#getBackgroundColor() */
@@ -345,13 +336,11 @@ public class LightweightSystem {
 	}
 
 	/**
-	 * Listener used to get all necessary events from the Canvas and pass them
-	 * on to the {@link EventDispatcher}.
+	 * Listener used to get all necessary events from the Canvas and pass them on to
+	 * the {@link EventDispatcher}.
 	 */
-	protected class EventHandler implements MouseMoveListener, MouseListener,
-			AccessibleControlListener, KeyListener, TraverseListener,
-			FocusListener, AccessibleListener, MouseTrackListener, Listener,
-			DisposeListener {
+	protected class EventHandler implements MouseMoveListener, MouseListener, AccessibleControlListener, KeyListener,
+			TraverseListener, FocusListener, AccessibleListener, MouseTrackListener, Listener, DisposeListener {
 		/** @see FocusListener#focusGained(FocusEvent) */
 		public void focusGained(FocusEvent e) {
 			getEventDispatcher().dispatchFocusGained(e);
@@ -505,9 +494,8 @@ public class LightweightSystem {
 		/** @see TraverseListener#keyTraversed(TraverseEvent) */
 		public void keyTraversed(TraverseEvent e) {
 			/*
-			 * Doit is almost always false by default for Canvases with
-			 * KeyListeners. Set to true to allow normal behavior. For example,
-			 * in Dialogs ESC should close.
+			 * Doit is almost always false by default for Canvases with KeyListeners. Set to
+			 * true to allow normal behavior. For example, in Dialogs ESC should close.
 			 */
 			e.doit = true;
 			getEventDispatcher().dispatchKeyTraversed(e);

@@ -22,6 +22,7 @@ public interface IGraphEntityContentProvider extends IStructuredContentProvider 
 
 	/**
 	 * Gets the elements this object is connected to
+	 * 
 	 * @param entity
 	 * @return
 	 */

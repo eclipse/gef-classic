@@ -85,26 +85,20 @@ public class LEDEditPart extends LogicEditPart {
 			return key.cast(new DefaultAccessibleAnchorProvider() {
 				public List<Point> getSourceAnchorLocations() {
 					List<Point> list = new ArrayList<>();
-					Vector sourceAnchors = getNodeFigure()
-							.getSourceConnectionAnchors();
+					Vector sourceAnchors = getNodeFigure().getSourceConnectionAnchors();
 					for (int i = 0; i < sourceAnchors.size(); i++) {
-						ConnectionAnchor anchor = (ConnectionAnchor) sourceAnchors
-								.get(i);
-						list.add(anchor.getReferencePoint().getTranslated(0,
-								-3));
+						ConnectionAnchor anchor = (ConnectionAnchor) sourceAnchors.get(i);
+						list.add(anchor.getReferencePoint().getTranslated(0, -3));
 					}
 					return list;
 				}
 
 				public List<Point> getTargetAnchorLocations() {
 					List<Point> list = new ArrayList<>();
-					Vector targetAnchors = getNodeFigure()
-							.getTargetConnectionAnchors();
+					Vector targetAnchors = getNodeFigure().getTargetConnectionAnchors();
 					for (int i = 0; i < targetAnchors.size(); i++) {
-						ConnectionAnchor anchor = (ConnectionAnchor) targetAnchors
-								.get(i);
-						list.add(
-								anchor.getReferencePoint().getTranslated(0, 3));
+						ConnectionAnchor anchor = (ConnectionAnchor) targetAnchors.get(i);
+						list.add(anchor.getReferencePoint().getTranslated(0, 3));
 					}
 					return list;
 				}
@@ -152,8 +146,8 @@ public class LEDEditPart extends LogicEditPart {
 	}
 
 	/**
-	 * Apart from the usual visual update, it also updates the numeric contents
-	 * of the LED.
+	 * Apart from the usual visual update, it also updates the numeric contents of
+	 * the LED.
 	 */
 	public void refreshVisuals() {
 		getLEDFigure().setValue(getLEDModel().getValue());

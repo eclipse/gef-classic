@@ -67,8 +67,7 @@ public class ChangeString extends MiniEdit {
 	 */
 	public void commitPending() {
 		if (overwrite)
-			overwrittenText += run.overwriteText(pending, offset
-					+ insertedChars.length);
+			overwrittenText += run.overwriteText(pending, offset + insertedChars.length);
 		else
 			run.insertText(pending, offset + insertedChars.length);
 		char old[] = insertedChars;
@@ -84,8 +83,7 @@ public class ChangeString extends MiniEdit {
 
 	public void reapply() {
 		if (overwrite)
-			overwrittenText = run.overwriteText(new String(insertedChars),
-					offset);
+			overwrittenText = run.overwriteText(new String(insertedChars), offset);
 		else
 			run.insertText(new String(insertedChars), offset);
 	}

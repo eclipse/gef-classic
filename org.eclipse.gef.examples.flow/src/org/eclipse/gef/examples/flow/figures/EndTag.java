@@ -27,8 +27,7 @@ public class EndTag extends Label {
 	/**
 	 * Creates a new StartTag
 	 * 
-	 * @param name
-	 *            the text to display in this StartTag
+	 * @param name the text to display in this StartTag
 	 */
 	public EndTag(String name) {
 		setIconTextGap(8);

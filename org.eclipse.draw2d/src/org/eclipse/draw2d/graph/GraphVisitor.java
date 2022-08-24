@@ -21,8 +21,7 @@ abstract class GraphVisitor {
 	/**
 	 * Act on the given directed graph.
 	 * 
-	 * @param g
-	 *            the graph
+	 * @param g the graph
 	 */
 	void visit(DirectedGraph g) {
 	}
@@ -31,8 +30,7 @@ abstract class GraphVisitor {
 	 * Called in reverse order of visit.
 	 * 
 	 * @since 3.1
-	 * @param g
-	 *            the graph to act upon
+	 * @param g the graph to act upon
 	 */
 	void revisit(DirectedGraph g) {
 	}

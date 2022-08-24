@@ -54,8 +54,7 @@ public class GuideFigure extends Figure {
 			prefSize = V_PREFSIZE;
 		}
 		if (getBorder() != null) {
-			prefSize = prefSize.getExpanded(getInsets().getWidth(), getInsets()
-					.getHeight());
+			prefSize = prefSize.getExpanded(getInsets().getWidth(), getInsets().getHeight());
 		}
 		return prefSize;
 	}
@@ -91,48 +90,30 @@ public class GuideFigure extends Figure {
 			clientArea.x = clientArea.x + clientArea.width - 8;
 			clientArea.width = 8;
 
-			graphics.fillRectangle(clientArea
-					.getShrinked(new Insets(2, 2, 2, 1)));
+			graphics.fillRectangle(clientArea.getShrinked(new Insets(2, 2, 2, 1)));
 
 			graphics.setForegroundColor(ColorConstants.buttonLightest);
-			graphics.drawLine(clientArea.x, clientArea.y + 1, clientArea.x,
-					clientArea.y + 7);
-			graphics.drawLine(clientArea.x + 1, clientArea.y, clientArea.x + 4,
-					clientArea.y);
-			graphics.drawLine(clientArea.x + 1, clientArea.y + 8,
-					clientArea.x + 4, clientArea.y + 8);
-			graphics.drawLine(clientArea.x + 2, clientArea.y + 2,
-					clientArea.x + 2, clientArea.y + 5);
-			graphics.drawLine(clientArea.x + 3, clientArea.y + 2,
-					clientArea.x + 3, clientArea.y + 2);
-			graphics.drawLine(clientArea.x + 6, clientArea.y + 2,
-					clientArea.x + 6, clientArea.y + 2);
-			graphics.drawLine(clientArea.x + 6, clientArea.y + 6,
-					clientArea.x + 6, clientArea.y + 6);
-			graphics.drawLine(clientArea.x + 7, clientArea.y + 3,
-					clientArea.x + 7, clientArea.y + 5);
+			graphics.drawLine(clientArea.x, clientArea.y + 1, clientArea.x, clientArea.y + 7);
+			graphics.drawLine(clientArea.x + 1, clientArea.y, clientArea.x + 4, clientArea.y);
+			graphics.drawLine(clientArea.x + 1, clientArea.y + 8, clientArea.x + 4, clientArea.y + 8);
+			graphics.drawLine(clientArea.x + 2, clientArea.y + 2, clientArea.x + 2, clientArea.y + 5);
+			graphics.drawLine(clientArea.x + 3, clientArea.y + 2, clientArea.x + 3, clientArea.y + 2);
+			graphics.drawLine(clientArea.x + 6, clientArea.y + 2, clientArea.x + 6, clientArea.y + 2);
+			graphics.drawLine(clientArea.x + 6, clientArea.y + 6, clientArea.x + 6, clientArea.y + 6);
+			graphics.drawLine(clientArea.x + 7, clientArea.y + 3, clientArea.x + 7, clientArea.y + 5);
 
 			graphics.setForegroundColor(ColorConstants.buttonDarker);
-			graphics.drawLine(clientArea.x + 1, clientArea.y + 1,
-					clientArea.x + 4, clientArea.y + 1);
-			graphics.drawLine(clientArea.x + 1, clientArea.y + 2,
-					clientArea.x + 1, clientArea.y + 7);
-			graphics.drawLine(clientArea.x + 2, clientArea.y + 7,
-					clientArea.x + 2, clientArea.y + 7);
-			graphics.drawLine(clientArea.x + 5, clientArea.y + 2,
-					clientArea.x + 5, clientArea.y + 2);
-			graphics.drawLine(clientArea.x + 6, clientArea.y + 3,
-					clientArea.x + 6, clientArea.y + 3);
+			graphics.drawLine(clientArea.x + 1, clientArea.y + 1, clientArea.x + 4, clientArea.y + 1);
+			graphics.drawLine(clientArea.x + 1, clientArea.y + 2, clientArea.x + 1, clientArea.y + 7);
+			graphics.drawLine(clientArea.x + 2, clientArea.y + 7, clientArea.x + 2, clientArea.y + 7);
+			graphics.drawLine(clientArea.x + 5, clientArea.y + 2, clientArea.x + 5, clientArea.y + 2);
+			graphics.drawLine(clientArea.x + 6, clientArea.y + 3, clientArea.x + 6, clientArea.y + 3);
 
 			graphics.setForegroundColor(ColorConstants.buttonDarkest);
-			graphics.drawLine(clientArea.x + 3, clientArea.y + 7,
-					clientArea.x + 4, clientArea.y + 7);
-			graphics.drawLine(clientArea.x + 5, clientArea.y + 6,
-					clientArea.x + 5, clientArea.y + 6);
-			graphics.drawLine(clientArea.x + 6, clientArea.y + 5,
-					clientArea.x + 6, clientArea.y + 5);
-			graphics.drawLine(clientArea.x + 7, clientArea.y + 4,
-					clientArea.x + 7, clientArea.y + 4);
+			graphics.drawLine(clientArea.x + 3, clientArea.y + 7, clientArea.x + 4, clientArea.y + 7);
+			graphics.drawLine(clientArea.x + 5, clientArea.y + 6, clientArea.x + 5, clientArea.y + 6);
+			graphics.drawLine(clientArea.x + 6, clientArea.y + 5, clientArea.x + 6, clientArea.y + 5);
+			graphics.drawLine(clientArea.x + 7, clientArea.y + 4, clientArea.x + 7, clientArea.y + 4);
 
 			if (drawFocus) {
 				clientArea.expand(1, 1);
@@ -147,48 +128,30 @@ public class GuideFigure extends Figure {
 			clientArea.y = clientArea.y + clientArea.height - 8;
 			clientArea.height = 8;
 
-			graphics.fillRectangle(clientArea
-					.getShrinked(new Insets(2, 2, 1, 2)));
+			graphics.fillRectangle(clientArea.getShrinked(new Insets(2, 2, 1, 2)));
 
 			graphics.setForegroundColor(ColorConstants.buttonLightest);
-			graphics.drawLine(clientArea.x + 1, clientArea.y, clientArea.x + 7,
-					clientArea.y);
-			graphics.drawLine(clientArea.x, clientArea.y + 1, clientArea.x,
-					clientArea.y + 4);
-			graphics.drawLine(clientArea.x + 8, clientArea.y + 1,
-					clientArea.x + 8, clientArea.y + 4);
-			graphics.drawLine(clientArea.x + 2, clientArea.y + 2,
-					clientArea.x + 5, clientArea.y + 2);
-			graphics.drawLine(clientArea.x + 2, clientArea.y + 3,
-					clientArea.x + 2, clientArea.y + 3);
-			graphics.drawLine(clientArea.x + 2, clientArea.y + 6,
-					clientArea.x + 2, clientArea.y + 6);
-			graphics.drawLine(clientArea.x + 6, clientArea.y + 6,
-					clientArea.x + 6, clientArea.y + 6);
-			graphics.drawLine(clientArea.x + 3, clientArea.y + 7,
-					clientArea.x + 5, clientArea.y + 7);
+			graphics.drawLine(clientArea.x + 1, clientArea.y, clientArea.x + 7, clientArea.y);
+			graphics.drawLine(clientArea.x, clientArea.y + 1, clientArea.x, clientArea.y + 4);
+			graphics.drawLine(clientArea.x + 8, clientArea.y + 1, clientArea.x + 8, clientArea.y + 4);
+			graphics.drawLine(clientArea.x + 2, clientArea.y + 2, clientArea.x + 5, clientArea.y + 2);
+			graphics.drawLine(clientArea.x + 2, clientArea.y + 3, clientArea.x + 2, clientArea.y + 3);
+			graphics.drawLine(clientArea.x + 2, clientArea.y + 6, clientArea.x + 2, clientArea.y + 6);
+			graphics.drawLine(clientArea.x + 6, clientArea.y + 6, clientArea.x + 6, clientArea.y + 6);
+			graphics.drawLine(clientArea.x + 3, clientArea.y + 7, clientArea.x + 5, clientArea.y + 7);
 
 			graphics.setForegroundColor(ColorConstants.buttonDarker);
-			graphics.drawLine(clientArea.x + 1, clientArea.y + 1,
-					clientArea.x + 1, clientArea.y + 4);
-			graphics.drawLine(clientArea.x + 2, clientArea.y + 1,
-					clientArea.x + 7, clientArea.y + 1);
-			graphics.drawLine(clientArea.x + 7, clientArea.y + 2,
-					clientArea.x + 7, clientArea.y + 2);
-			graphics.drawLine(clientArea.x + 2, clientArea.y + 5,
-					clientArea.x + 2, clientArea.y + 5);
-			graphics.drawLine(clientArea.x + 3, clientArea.y + 6,
-					clientArea.x + 3, clientArea.y + 6);
+			graphics.drawLine(clientArea.x + 1, clientArea.y + 1, clientArea.x + 1, clientArea.y + 4);
+			graphics.drawLine(clientArea.x + 2, clientArea.y + 1, clientArea.x + 7, clientArea.y + 1);
+			graphics.drawLine(clientArea.x + 7, clientArea.y + 2, clientArea.x + 7, clientArea.y + 2);
+			graphics.drawLine(clientArea.x + 2, clientArea.y + 5, clientArea.x + 2, clientArea.y + 5);
+			graphics.drawLine(clientArea.x + 3, clientArea.y + 6, clientArea.x + 3, clientArea.y + 6);
 
 			graphics.setForegroundColor(ColorConstants.buttonDarkest);
-			graphics.drawLine(clientArea.x + 7, clientArea.y + 3,
-					clientArea.x + 7, clientArea.y + 4);
-			graphics.drawLine(clientArea.x + 6, clientArea.y + 5,
-					clientArea.x + 6, clientArea.y + 5);
-			graphics.drawLine(clientArea.x + 5, clientArea.y + 6,
-					clientArea.x + 5, clientArea.y + 6);
-			graphics.drawLine(clientArea.x + 4, clientArea.y + 7,
-					clientArea.x + 4, clientArea.y + 7);
+			graphics.drawLine(clientArea.x + 7, clientArea.y + 3, clientArea.x + 7, clientArea.y + 4);
+			graphics.drawLine(clientArea.x + 6, clientArea.y + 5, clientArea.x + 6, clientArea.y + 5);
+			graphics.drawLine(clientArea.x + 5, clientArea.y + 6, clientArea.x + 5, clientArea.y + 6);
+			graphics.drawLine(clientArea.x + 4, clientArea.y + 7, clientArea.x + 4, clientArea.y + 7);
 
 			if (drawFocus) {
 				clientArea.expand(1, 1);

@@ -42,16 +42,15 @@ import org.eclipse.zest.layouts.LayoutAlgorithm;
  * 
  * @author Del Myers
  */
-public abstract class AbstractStructuredGraphViewer extends
-		AbstractZoomableViewer {
+public abstract class AbstractStructuredGraphViewer extends AbstractZoomableViewer {
 	/**
 	 * Contains top-level styles for the entire graph. Set in the constructor. *
 	 */
 	private int graphStyle;
 
 	/**
-	 * Contains node-level styles for the graph. Set in setNodeStyle(). Defaults
-	 * are used in the constructor.
+	 * Contains node-level styles for the graph. Set in setNodeStyle(). Defaults are
+	 * used in the constructor.
 	 */
 	private int nodeStyle;
 
@@ -91,8 +90,7 @@ public abstract class AbstractStructuredGraphViewer extends
 		public int compare(Object arg0, Object arg1) {
 			if (arg0 instanceof GraphNode && arg1 instanceof GraphConnection) {
 				return 1;
-			} else if (arg0 instanceof GraphConnection
-					&& arg1 instanceof GraphNode) {
+			} else if (arg0 instanceof GraphConnection && arg1 instanceof GraphNode) {
 				return -1;
 			}
 			if (arg0.equals(arg1)) {
@@ -102,8 +100,7 @@ public abstract class AbstractStructuredGraphViewer extends
 		}
 
 		private String getObjectString(Object o) {
-			String s = o.getClass().getName() + "@"
-					+ Integer.toHexString(o.hashCode());
+			String s = o.getClass().getName() + "@" + Integer.toHexString(o.hashCode());
 			while (storedStrings.contains(s)) {
 				s = s + 'X';
 			}
@@ -119,11 +116,10 @@ public abstract class AbstractStructuredGraphViewer extends
 	}
 
 	/**
-	 * Sets the default style for nodes in this graph. Note: if an input is set
-	 * on the viewer, a ZestException will be thrown.
+	 * Sets the default style for nodes in this graph. Note: if an input is set on
+	 * the viewer, a ZestException will be thrown.
 	 * 
-	 * @param nodeStyle
-	 *            the style for the nodes.
+	 * @param nodeStyle the style for the nodes.
 	 * @see #ZestStyles
 	 */
 	public void setNodeStyle(int nodeStyle) {
@@ -134,11 +130,10 @@ public abstract class AbstractStructuredGraphViewer extends
 	}
 
 	/**
-	 * Sets the default style for connections in this graph. Note: if an input
-	 * is set on the viewer, a ZestException will be thrown.
+	 * Sets the default style for connections in this graph. Note: if an input is
+	 * set on the viewer, a ZestException will be thrown.
 	 * 
-	 * @param connectionStyle
-	 *            the style for the connections.
+	 * @param connectionStyle the style for the connections.
 	 * @see #ZestStyles
 	 */
 	public void setConnectionStyle(int connectionStyle) {
@@ -199,17 +194,14 @@ public abstract class AbstractStructuredGraphViewer extends
 	}
 
 	/**
-	 * Sets the layout algorithm for this viewer. Subclasses may place
-	 * restrictions on the algorithms that it accepts.
+	 * Sets the layout algorithm for this viewer. Subclasses may place restrictions
+	 * on the algorithms that it accepts.
 	 * 
-	 * @param algorithm
-	 *            the layout algorithm
-	 * @param run
-	 *            true if the layout algorithm should be run immediately. This
-	 *            is a hint.
+	 * @param algorithm the layout algorithm
+	 * @param run       true if the layout algorithm should be run immediately. This
+	 *                  is a hint.
 	 */
-	public abstract void setLayoutAlgorithm(LayoutAlgorithm algorithm,
-			boolean run);
+	public abstract void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean run);
 
 	/**
 	 * Gets the current layout algorithm.
@@ -275,12 +267,10 @@ public abstract class AbstractStructuredGraphViewer extends
 		return node;
 	}
 
-	GraphConnection addGraphModelConnection(Object element, GraphNode source,
-			GraphNode target) {
+	GraphConnection addGraphModelConnection(Object element, GraphNode source, GraphNode target) {
 		GraphConnection connection = this.getGraphModelConnection(element);
 		if (connection == null) {
-			connection = new GraphConnection((Graph) getControl(), SWT.NONE,
-					source, target);
+			connection = new GraphConnection((Graph) getControl(), SWT.NONE, source, target);
 			this.connectionsMap.put(element, connection);
 			connection.setData(element);
 		}
@@ -319,8 +309,7 @@ public abstract class AbstractStructuredGraphViewer extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.jface.viewers.StructuredViewer#internalRefresh(java.lang.
+	 * @see org.eclipse.jface.viewers.StructuredViewer#internalRefresh(java.lang.
 	 * Object)
 	 */
 	protected void internalRefresh(Object element) {
@@ -335,8 +324,7 @@ public abstract class AbstractStructuredGraphViewer extends
 		// After all the items are loaded, we call update to ensure drawing.
 		// This way the damaged area does not get too big if we start
 		// adding and removing more nodes
-		getGraphControl().getLightweightSystem().getUpdateManager()
-				.performUpdate();
+		getGraphControl().getLightweightSystem().getUpdateManager().performUpdate();
 	}
 
 	protected void doUpdateItem(Widget item, Object element, boolean fullMap) {
@@ -351,8 +339,7 @@ public abstract class AbstractStructuredGraphViewer extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.jface.viewers.StructuredViewer#doFindInputItem(java.lang.
+	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindInputItem(java.lang.
 	 * Object)
 	 */
 	protected Widget doFindInputItem(Object element) {
@@ -366,8 +353,7 @@ public abstract class AbstractStructuredGraphViewer extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.jface.viewers.StructuredViewer#doFindItem(java.lang.Object)
+	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindItem(java.lang.Object)
 	 */
 	protected Widget doFindItem(Object element) {
 		Widget node = (Widget) nodesMap.get(element);
@@ -392,7 +378,7 @@ public abstract class AbstractStructuredGraphViewer extends
 		return externalSelection;
 	}
 
-	protected GraphItem[] /* GraphItem */findItems(List l) {
+	protected GraphItem[] /* GraphItem */ findItems(List l) {
 		if (l == null) {
 			return new GraphItem[0];
 		}
@@ -410,8 +396,7 @@ public abstract class AbstractStructuredGraphViewer extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.jface.viewers.StructuredViewer#setSelectionToWidget(java.
+	 * @see org.eclipse.jface.viewers.StructuredViewer#setSelectionToWidget(java.
 	 * util.List, boolean)
 	 */
 	protected void setSelectionToWidget(List l, boolean reveal) {
@@ -428,8 +413,7 @@ public abstract class AbstractStructuredGraphViewer extends
 				selection.add(conn);
 			}
 		}
-		control.setSelection((GraphNode[]) selection
-				.toArray(new GraphNode[selection.size()]));
+		control.setSelection((GraphNode[]) selection.toArray(new GraphNode[selection.size()]));
 	}
 
 	/**
@@ -490,11 +474,9 @@ public abstract class AbstractStructuredGraphViewer extends
 			GraphNode newNode = (GraphNode) nodesMap.get(data);
 			if (newNode != null) {
 				GraphNode oldNode = (GraphNode) oldNodesMap.get(data);
-				newNode.setLocation(oldNode.getLocation().x,
-						oldNode.getLocation().y);
+				newNode.setLocation(oldNode.getLocation().x, oldNode.getLocation().y);
 				if (oldNode.isSizeFixed()) {
-					newNode.setSize(oldNode.getSize().width,
-							oldNode.getSize().height);
+					newNode.setSize(oldNode.getSize().width, oldNode.getSize().height);
 				}
 			}
 		}
@@ -503,8 +485,8 @@ public abstract class AbstractStructuredGraphViewer extends
 	}
 
 	/**
-	 * Returns the factory used to create the model. This must not be called
-	 * before the content provider is set.
+	 * Returns the factory used to create the model. This must not be called before
+	 * the content provider is set.
 	 * 
 	 * @return
 	 */
@@ -574,8 +556,7 @@ public abstract class AbstractStructuredGraphViewer extends
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.jface.viewers.StructuredViewer#getRawChildren(java.lang.Object
-	 * )
+	 * org.eclipse.jface.viewers.StructuredViewer#getRawChildren(java.lang.Object )
 	 */
 	protected Object[] getRawChildren(Object parent) {
 		if (parent == getInput()) {
@@ -640,20 +621,17 @@ public abstract class AbstractStructuredGraphViewer extends
 	public abstract void applyLayout();
 
 	/**
-	 * Removes the given connection object from the layout algorithm and the
-	 * model.
+	 * Removes the given connection object from the layout algorithm and the model.
 	 * 
 	 * @param connection
 	 */
 	public void removeRelationship(Object connection) {
-		GraphConnection relationship = (GraphConnection) connectionsMap
-				.get(connection);
+		GraphConnection relationship = (GraphConnection) connectionsMap.get(connection);
 
 		if (relationship != null) {
 			// remove the relationship from the layout algorithm
 			if (getLayoutAlgorithm() != null) {
-				getLayoutAlgorithm().removeRelationship(
-						relationship.getLayoutRelationship());
+				getLayoutAlgorithm().removeRelationship(relationship.getLayoutRelationship());
 			}
 			// remove the relationship from the model
 			relationship.dispose();
@@ -677,8 +655,7 @@ public abstract class AbstractStructuredGraphViewer extends
 	/**
 	 * Removes the given element from the layout algorithm and the model.
 	 * 
-	 * @param element
-	 *            The node element to remove.
+	 * @param element The node element to remove.
 	 */
 	public void removeNode(Object element) {
 		GraphNode node = (GraphNode) nodesMap.get(element);
@@ -687,10 +664,8 @@ public abstract class AbstractStructuredGraphViewer extends
 			// remove the node from the layout algorithm and all the connections
 			if (getLayoutAlgorithm() != null) {
 				getLayoutAlgorithm().removeEntity(node.getLayoutEntity());
-				getLayoutAlgorithm().removeRelationships(
-						node.getSourceConnections());
-				getLayoutAlgorithm().removeRelationships(
-						node.getTargetConnections());
+				getLayoutAlgorithm().removeRelationships(node.getSourceConnections());
+				getLayoutAlgorithm().removeRelationships(node.getTargetConnections());
 			}
 			// remove the node and it's connections from the model
 			node.dispose();
@@ -698,22 +673,17 @@ public abstract class AbstractStructuredGraphViewer extends
 	}
 
 	/**
-	 * Creates a new relationship between the source node and the destination
-	 * node. If either node doesn't exist then it will be created.
+	 * Creates a new relationship between the source node and the destination node.
+	 * If either node doesn't exist then it will be created.
 	 * 
-	 * @param connection
-	 *            The connection data object.
-	 * @param srcNode
-	 *            The source node data object.
-	 * @param destNode
-	 *            The destination node data object.
+	 * @param connection The connection data object.
+	 * @param srcNode    The source node data object.
+	 * @param destNode   The destination node data object.
 	 */
-	public void addRelationship(Object connection, Object srcNode,
-			Object destNode) {
+	public void addRelationship(Object connection, Object srcNode, Object destNode) {
 		// create the new relationship
 		IStylingGraphModelFactory modelFactory = getFactory();
-		modelFactory.createConnection(getGraphControl(), connection, srcNode,
-				destNode);
+		modelFactory.createConnection(getGraphControl(), connection, srcNode, destNode);
 
 	}
 
@@ -721,20 +691,17 @@ public abstract class AbstractStructuredGraphViewer extends
 	 * Adds a new relationship given the connection. It will use the content
 	 * provider to determine the source and destination nodes.
 	 * 
-	 * @param connection
-	 *            The connection data object.
+	 * @param connection The connection data object.
 	 */
 	public void addRelationship(Object connection) {
 		IStylingGraphModelFactory modelFactory = getFactory();
 		if (connectionsMap.get(connection) == null) {
 			if (modelFactory.getContentProvider() instanceof IGraphContentProvider) {
-				IGraphContentProvider content = ((IGraphContentProvider) modelFactory
-						.getContentProvider());
+				IGraphContentProvider content = ((IGraphContentProvider) modelFactory.getContentProvider());
 				Object source = content.getSource(connection);
 				Object dest = content.getDestination(connection);
 				// create the new relationship
-				modelFactory.createConnection(getGraphControl(), connection,
-						source, dest);
+				modelFactory.createConnection(getGraphControl(), connection, source, dest);
 			} else {
 				throw new UnsupportedOperationException();
 			}
@@ -742,16 +709,14 @@ public abstract class AbstractStructuredGraphViewer extends
 	}
 
 	/**
-	 * Converts the list of GraphModelConnection objects into an array and
-	 * returns it.
+	 * Converts the list of GraphModelConnection objects into an array and returns
+	 * it.
 	 * 
 	 * @return GraphModelConnection[]
 	 */
 	protected GraphConnection[] getConnectionsArray(Graph graph) {
-		GraphConnection[] connsArray = new GraphConnection[graph
-				.getConnections().size()];
-		connsArray = (GraphConnection[]) graph.getConnections().toArray(
-				connsArray);
+		GraphConnection[] connsArray = new GraphConnection[graph.getConnections().size()];
+		connsArray = (GraphConnection[]) graph.getConnections().toArray(connsArray);
 		return connsArray;
 	}
 

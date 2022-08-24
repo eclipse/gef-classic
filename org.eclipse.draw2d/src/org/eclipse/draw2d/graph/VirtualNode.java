@@ -33,10 +33,8 @@ public class VirtualNode extends Node {
 	 * Constructs a virtual node.
 	 * 
 	 * @deprecated This class is for internal use only.
-	 * @param e
-	 *            the edge
-	 * @param i
-	 *            the row
+	 * @param e the edge
+	 * @param i the row
 	 */
 	public VirtualNode(Edge e, int i) {
 		super(e);
@@ -51,10 +49,8 @@ public class VirtualNode extends Node {
 	/**
 	 * Constructor.
 	 * 
-	 * @param o
-	 *            object
-	 * @param parent
-	 *            subgraph
+	 * @param o      object
+	 * @param parent subgraph
 	 */
 	public VirtualNode(Object o, Subgraph parent) {
 		super(o, parent);
@@ -97,7 +93,7 @@ public class VirtualNode extends Node {
 	public String toString() {
 		if (data instanceof Edge)
 			return "VN[" + (((Edge) data).vNodes.indexOf(this) + 1) //$NON-NLS-1$
-					+ "](" + data + ")"; //$NON-NLS-1$ //$NON-NLS-2$ 
+					+ "](" + data + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		return super.toString();
 	}
 

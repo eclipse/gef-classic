@@ -42,10 +42,8 @@ abstract public class LogicSubpart extends LogicElement {
 
 	static {
 		descriptors = new IPropertyDescriptor[] {
-				new PropertyDescriptor(ID_SIZE,
-						LogicMessages.PropertyDescriptor_LogicSubPart_Size),
-				new PropertyDescriptor(ID_LOCATION,
-						LogicMessages.PropertyDescriptor_LogicSubPart_Location) };
+				new PropertyDescriptor(ID_SIZE, LogicMessages.PropertyDescriptor_LogicSubPart_Size),
+				new PropertyDescriptor(ID_LOCATION, LogicMessages.PropertyDescriptor_LogicSubPart_Location) };
 	}
 
 	protected static Image createImage(Class rsrcClass, String name) {
@@ -137,8 +135,7 @@ abstract public class LogicSubpart extends LogicElement {
 	 * Returns an Object which represents the appropriate value for the property
 	 * name supplied.
 	 * 
-	 * @param propName
-	 *            Name of the property for which the the values are needed.
+	 * @param propName Name of the property for which the the values are needed.
 	 * @return Object which is the value of the property.
 	 */
 	public Object getPropertyValue(Object propName) {
@@ -170,8 +167,8 @@ abstract public class LogicSubpart extends LogicElement {
 	}
 
 	/**
- * 
- */
+	* 
+	*/
 	public boolean isPropertySet() {
 		return true;
 	}
@@ -184,8 +181,8 @@ abstract public class LogicSubpart extends LogicElement {
 	}
 
 	/*
-	 * Does nothing for the present, but could be used to reset the properties
-	 * of this to whatever values are desired.
+	 * Does nothing for the present, but could be used to reset the properties of
+	 * this to whatever values are desired.
 	 * 
 	 * @param id Parameter which is to be reset.
 	 * 
@@ -209,8 +206,7 @@ abstract public class LogicSubpart extends LogicElement {
 		Wire w;
 		while (elements.hasMoreElements()) {
 			w = (Wire) elements.nextElement();
-			if (w.getSourceTerminal().equals(terminal)
-					&& this.equals(w.getSource()))
+			if (w.getSourceTerminal().equals(terminal) && this.equals(w.getSource()))
 				w.setValue(val);
 		}
 	}
@@ -219,10 +215,8 @@ abstract public class LogicSubpart extends LogicElement {
 	 * Sets the value of a given property with the value supplied. Also fires a
 	 * property change if necessary.
 	 * 
-	 * @param id
-	 *            Name of the parameter to be changed.
-	 * @param value
-	 *            Value to be set to the given parameter.
+	 * @param id    Name of the parameter to be changed.
+	 * @param value Value to be set to the given parameter.
 	 */
 	public void setPropertyValue(Object id, Object value) {
 		if (ID_SIZE.equals(id))

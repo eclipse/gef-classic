@@ -33,10 +33,8 @@ public final class Ray {
 	/**
 	 * Constructs a Ray pointed in the specified direction.
 	 * 
-	 * @param x
-	 *            X value.
-	 * @param y
-	 *            Y value.
+	 * @param x X value.
+	 * @param y Y value.
 	 * @since 2.0
 	 */
 	public Ray(int x, int y) {
@@ -47,8 +45,7 @@ public final class Ray {
 	/**
 	 * Constructs a Ray pointed in the direction specified by a Point.
 	 * 
-	 * @param p
-	 *            the Point
+	 * @param p the Point
 	 * @since 2.0
 	 */
 	public Ray(Point p) {
@@ -57,13 +54,11 @@ public final class Ray {
 	}
 
 	/**
-	 * Constructs a Ray representing the direction and magnitude between to
-	 * provided Points.
+	 * Constructs a Ray representing the direction and magnitude between to provided
+	 * Points.
 	 * 
-	 * @param start
-	 *            Strarting Point
-	 * @param end
-	 *            End Point
+	 * @param start Strarting Point
+	 * @param end   End Point
 	 * @since 2.0
 	 */
 	public Ray(Point start, Point end) {
@@ -74,10 +69,8 @@ public final class Ray {
 	/**
 	 * Constructs a Ray representing the difference between two provided Rays.
 	 * 
-	 * @param start
-	 *            The start Ray
-	 * @param end
-	 *            The end Ray
+	 * @param start The start Ray
+	 * @param end   The end Ray
 	 * @since 2.0
 	 */
 	public Ray(Ray start, Ray end) {
@@ -87,11 +80,10 @@ public final class Ray {
 
 	/**
 	 * Calculates the magnitude of the cross product of this Ray with another.
-	 * Represents the amount by which two Rays are directionally different.
-	 * Parallel Rays return a value of 0.
+	 * Represents the amount by which two Rays are directionally different. Parallel
+	 * Rays return a value of 0.
 	 * 
-	 * @param r
-	 *            Ray being compared
+	 * @param r Ray being compared
 	 * @return The assimilarity
 	 * @see #similarity(Ray)
 	 * @since 2.0
@@ -103,8 +95,7 @@ public final class Ray {
 	/**
 	 * Calculates the dot product of this Ray with another.
 	 * 
-	 * @param r
-	 *            the Ray used to perform the dot product
+	 * @param r the Ray used to perform the dot product
 	 * @return The dot product
 	 * @since 2.0
 	 */
@@ -115,8 +106,7 @@ public final class Ray {
 	/**
 	 * Calculates the dot product of this Ray with another.
 	 * 
-	 * @param r
-	 *            the Ray used to perform the dot product
+	 * @param r the Ray used to perform the dot product
 	 * @return The dot product as <code>long</code> to avoid possible integer
 	 *         overflow
 	 * @since 3.4.1
@@ -141,8 +131,7 @@ public final class Ray {
 	/**
 	 * Creates a new Ray which is the sum of this Ray with another.
 	 * 
-	 * @param r
-	 *            Ray to be added with this Ray
+	 * @param r Ray to be added with this Ray
 	 * @return a new Ray
 	 * @since 2.0
 	 */
@@ -153,8 +142,7 @@ public final class Ray {
 	/**
 	 * Creates a new Ray which represents the average of this Ray with another.
 	 * 
-	 * @param r
-	 *            Ray to calculate the average.
+	 * @param r Ray to calculate the average.
 	 * @return a new Ray
 	 * @since 2.0
 	 */
@@ -163,11 +151,9 @@ public final class Ray {
 	}
 
 	/**
-	 * Creates a new Ray which represents this Ray scaled by the amount
-	 * provided.
+	 * Creates a new Ray which represents this Ray scaled by the amount provided.
 	 * 
-	 * @param s
-	 *            Value providing the amount to scale.
+	 * @param s Value providing the amount to scale.
 	 * @return a new Ray
 	 * @since 2.0
 	 */
@@ -203,11 +189,10 @@ public final class Ray {
 	}
 
 	/**
-	 * Calculates the similarity of this Ray with another. Similarity is defined
-	 * as the absolute value of the dotProduct()
+	 * Calculates the similarity of this Ray with another. Similarity is defined as
+	 * the absolute value of the dotProduct()
 	 * 
-	 * @param r
-	 *            Ray being tested for similarity
+	 * @param r Ray being tested for similarity
 	 * @return the Similarity
 	 * @see #assimilarity(Ray)
 	 * @since 2.0

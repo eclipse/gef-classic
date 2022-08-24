@@ -64,12 +64,9 @@ public abstract class InputEvent extends java.util.EventObject {
 	/**
 	 * Constructs a new InputEvent.
 	 * 
-	 * @param dispatcher
-	 *            the event dispatcher
-	 * @param source
-	 *            the source of the event
-	 * @param state
-	 *            the state of the keyboard modifier and mouse button mask.
+	 * @param dispatcher the event dispatcher
+	 * @param source     the source of the event
+	 * @param state      the state of the keyboard modifier and mouse button mask.
 	 * 
 	 * @see org.eclipse.swt.SWT#MODIFIER_MASK
 	 * @see org.eclipse.swt.SWT#BUTTON_MASK

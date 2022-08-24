@@ -31,14 +31,13 @@ import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
  */
 public class GraphSnippet11 {
 
-
-	public static void createConnection( Graph g, GraphNode n1, GraphNode n2, Color color, int curve) {
+	public static void createConnection(Graph g, GraphNode n1, GraphNode n2, Color color, int curve) {
 		GraphConnection connection = new GraphConnection(g, SWT.NONE, n1, n2);
 		connection.setLineColor(color);
 		connection.setCurveDepth(curve);
 		connection.setLineWidth(1);
 	}
-	
+
 	public static void main(String[] args) {
 		Display d = new Display();
 		Shell shell = new Shell(d);

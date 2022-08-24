@@ -37,15 +37,13 @@ public class ButtonBorder extends SchemeBorder {
 	 * 
 	 * @see SCHEMES#BUTTON_CONTRAST
 	 */
-	public static final Border BUTTON_CONTRAST = new ButtonBorder(
-			SCHEMES.BUTTON_CONTRAST);
+	public static final Border BUTTON_CONTRAST = new ButtonBorder(SCHEMES.BUTTON_CONTRAST);
 	/**
 	 * Used for scrollbar buttons.
 	 * 
 	 * @see SCHEMES#BUTTON_SCROLLBAR
 	 */
-	public static final Border BUTTON_SCROLLBAR = new ButtonBorder(
-			SCHEMES.BUTTON_SCROLLBAR);
+	public static final Border BUTTON_SCROLLBAR = new ButtonBorder(SCHEMES.BUTTON_SCROLLBAR);
 	/**
 	 * Used for toolbar buttons.
 	 * 
@@ -55,23 +53,20 @@ public class ButtonBorder extends SchemeBorder {
 
 	/**
 	 * Provides for a scheme to represent the borders of clickable figures like
-	 * buttons. Though similar to the {@link SchemeBorder.Scheme Scheme} it
-	 * supports an extra set of borders for the pressed states.
+	 * buttons. Though similar to the {@link SchemeBorder.Scheme Scheme} it supports
+	 * an extra set of borders for the pressed states.
 	 */
 	public static class ButtonScheme extends Scheme {
 		private Color highlightPressed[] = null, shadowPressed[] = null;
 
 		/**
-		 * Constructs a new button scheme where the input colors are the colors
-		 * for the top-left and bottom-right sides of the border. These colors
-		 * serve as the colors when the border is in a pressed state too. The
-		 * width of each side is determined by the number of colors passed in as
-		 * input.
+		 * Constructs a new button scheme where the input colors are the colors for the
+		 * top-left and bottom-right sides of the border. These colors serve as the
+		 * colors when the border is in a pressed state too. The width of each side is
+		 * determined by the number of colors passed in as input.
 		 * 
-		 * @param highlight
-		 *            Colors for the top-left sides of the border
-		 * @param shadow
-		 *            Colors for the bottom-right sides of the border
+		 * @param highlight Colors for the top-left sides of the border
+		 * @param shadow    Colors for the bottom-right sides of the border
 		 * @since 2.0
 		 */
 		public ButtonScheme(Color[] highlight, Color[] shadow) {
@@ -81,21 +76,16 @@ public class ButtonBorder extends SchemeBorder {
 		}
 
 		/**
-		 * Constructs a new button scheme where the input colors are the colors
-		 * for the top-left and bottom-right sides of the border, for the normal
-		 * and pressed states. The width of each side is determined by the
-		 * number of colors passed in as input.
+		 * Constructs a new button scheme where the input colors are the colors for the
+		 * top-left and bottom-right sides of the border, for the normal and pressed
+		 * states. The width of each side is determined by the number of colors passed
+		 * in as input.
 		 * 
-		 * @param hl
-		 *            Colors for the top-left sides of the border
-		 * @param sh
-		 *            Colors for the bottom-right sides of the border
-		 * @param hlp
-		 *            Colors for the top-left sides of the border when figure is
+		 * @param hl  Colors for the top-left sides of the border
+		 * @param sh  Colors for the bottom-right sides of the border
+		 * @param hlp Colors for the top-left sides of the border when figure is pressed
+		 * @param shp Colors for the bottom-right sides of the border when figure is
 		 *            pressed
-		 * @param shp
-		 *            Colors for the bottom-right sides of the border when
-		 *            figure is pressed
 		 * @since 2.0
 		 */
 		public ButtonScheme(Color[] hl, Color[] sh, Color[] hlp, Color[] shp) {
@@ -107,16 +97,14 @@ public class ButtonBorder extends SchemeBorder {
 		}
 
 		/**
-		 * Calculates and returns the Insets for this border. The calculations
-		 * are based on the number of normal and pressed, highlight and shadow
-		 * colors.
+		 * Calculates and returns the Insets for this border. The calculations are based
+		 * on the number of normal and pressed, highlight and shadow colors.
 		 * 
 		 * @return The insets for this border
 		 * @since 2.0
 		 */
 		protected Insets calculateInsets() {
-			int br = 1 + Math.max(getShadow().length,
-					getHighlightPressed().length);
+			int br = 1 + Math.max(getShadow().length, getHighlightPressed().length);
 			int tl = Math.max(getHighlight().length, getShadowPressed().length);
 			return new Insets(tl, tl, br, br);
 		}
@@ -126,17 +114,15 @@ public class ButtonBorder extends SchemeBorder {
 		 * <p>
 		 * Returns false in the following conditions:
 		 * <ul>
-		 * <li>The number of highlight colors is different than the the number
-		 * of shadow colors.
-		 * <li>The number of pressed highlight colors is different than the
-		 * number of pressed shadow colors.
-		 * <li>Any of the highlight and shadow colors are set to
-		 * <code>null</code>
+		 * <li>The number of highlight colors is different than the the number of shadow
+		 * colors.
+		 * <li>The number of pressed highlight colors is different than the number of
+		 * pressed shadow colors.
+		 * <li>Any of the highlight and shadow colors are set to <code>null</code>
 		 * <li>Any of the pressed highlight and shadow colors are set to
 		 * <code>null</code>
 		 * </ul>
-		 * This is done so that the entire region under the figure is properly
-		 * covered.
+		 * This is done so that the entire region under the figure is properly covered.
 		 * 
 		 * @return The opaque state of this border
 		 * @since 2.0
@@ -188,29 +174,24 @@ public class ButtonBorder extends SchemeBorder {
 		/**
 		 * Contrast button scheme
 		 */
-		ButtonScheme BUTTON_CONTRAST = new ButtonScheme(new Color[] { button,
-				buttonLightest }, DARKEST_DARKER);
+		ButtonScheme BUTTON_CONTRAST = new ButtonScheme(new Color[] { button, buttonLightest }, DARKEST_DARKER);
 		/**
 		 * Regular button scheme
 		 */
-		ButtonScheme BUTTON = new ButtonScheme(new Color[] { buttonLightest },
-				DARKEST_DARKER);
+		ButtonScheme BUTTON = new ButtonScheme(new Color[] { buttonLightest }, DARKEST_DARKER);
 		/**
 		 * Toolbar button scheme
 		 */
-		ButtonScheme TOOLBAR = new ButtonScheme(new Color[] { buttonLightest },
-				new Color[] { buttonDarker });
+		ButtonScheme TOOLBAR = new ButtonScheme(new Color[] { buttonLightest }, new Color[] { buttonDarker });
 		/**
 		 * Scrollbar button scheme
 		 */
-		ButtonScheme BUTTON_SCROLLBAR = new ButtonScheme(new Color[] { button,
-				buttonLightest }, DARKEST_DARKER, new Color[] { buttonDarker },
-				new Color[] { buttonDarker });
+		ButtonScheme BUTTON_SCROLLBAR = new ButtonScheme(new Color[] { button, buttonLightest }, DARKEST_DARKER,
+				new Color[] { buttonDarker }, new Color[] { buttonDarker });
 	}
 
 	/**
-	 * Constructs a ButtonBorder with a predefined button scheme set as its
-	 * default.
+	 * Constructs a ButtonBorder with a predefined button scheme set as its default.
 	 * 
 	 * @since 2.0
 	 */
@@ -221,8 +202,7 @@ public class ButtonBorder extends SchemeBorder {
 	/**
 	 * Constructs a ButtonBorder with the input ButtonScheme set as its Scheme.
 	 * 
-	 * @param scheme
-	 *            ButtonScheme for this ButtonBorder.
+	 * @param scheme ButtonScheme for this ButtonBorder.
 	 * @since 2.0
 	 */
 	public ButtonBorder(ButtonScheme scheme) {
@@ -231,23 +211,19 @@ public class ButtonBorder extends SchemeBorder {
 
 	/**
 	 * Paints this border with the help of the set scheme, the model of the
-	 * clickable figure, and other inputs. The scheme is used in conjunction
-	 * with the state of the model to get the appropriate colors for the border.
+	 * clickable figure, and other inputs. The scheme is used in conjunction with
+	 * the state of the model to get the appropriate colors for the border.
 	 * 
-	 * @param figure
-	 *            The Clickable that this border belongs to
-	 * @param graphics
-	 *            The graphics used for painting
-	 * @param insets
-	 *            The insets
+	 * @param figure   The Clickable that this border belongs to
+	 * @param graphics The graphics used for painting
+	 * @param insets   The insets
 	 */
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		Clickable clickable = (Clickable) figure;
 		ButtonModel model = clickable.getModel();
 		ButtonScheme colorScheme = (ButtonScheme) getScheme();
 
-		if (clickable.isRolloverEnabled() && !model.isMouseOver()
-				&& !model.isSelected())
+		if (clickable.isRolloverEnabled() && !model.isMouseOver() && !model.isSelected())
 			return;
 
 		Color tl[], br[];

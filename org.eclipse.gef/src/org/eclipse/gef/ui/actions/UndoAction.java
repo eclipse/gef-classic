@@ -27,22 +27,18 @@ import org.eclipse.gef.internal.GEFMessages;
 public class UndoAction extends StackAction {
 
 	/**
-	 * Creates an <code>UndoAction</code> and associates it with the given
-	 * editor.
+	 * Creates an <code>UndoAction</code> and associates it with the given editor.
 	 * 
-	 * @param editor
-	 *            The editor this action is associated with.
+	 * @param editor The editor this action is associated with.
 	 */
 	public UndoAction(IEditorPart editor) {
 		super(editor);
 	}
 
 	/**
-	 * Creates an <code>UndoAction</code> and associates it with the given
-	 * editor.
+	 * Creates an <code>UndoAction</code> and associates it with the given editor.
 	 * 
-	 * @param part
-	 *            The workbench part this action is associated with.
+	 * @param part The workbench part this action is associated with.
 	 */
 	public UndoAction(IWorkbenchPart part) {
 		super(part);
@@ -60,19 +56,14 @@ public class UndoAction extends StackAction {
 	 */
 	protected void init() {
 		super.init();
-		setToolTipText(MessageFormat.format(GEFMessages.UndoAction_Tooltip,
-				new Object[] { "" }).trim()); //$NON-NLS-1$
-		setText(MessageFormat.format(GEFMessages.UndoAction_Label,
-				new Object[] { "" }).trim() //$NON-NLS-1$
+		setToolTipText(MessageFormat.format(GEFMessages.UndoAction_Tooltip, new Object[] { "" }).trim()); //$NON-NLS-1$
+		setText(MessageFormat.format(GEFMessages.UndoAction_Label, new Object[] { "" }).trim() //$NON-NLS-1$
 		);
 		setId(ActionFactory.UNDO.getId());
 
-		ISharedImages sharedImages = PlatformUI.getWorkbench()
-				.getSharedImages();
-		setImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_UNDO));
-		setDisabledImageDescriptor(sharedImages
-				.getImageDescriptor(ISharedImages.IMG_TOOL_UNDO_DISABLED));
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_UNDO));
+		setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_UNDO_DISABLED));
 	}
 
 	/**
@@ -80,10 +71,10 @@ public class UndoAction extends StackAction {
 	 */
 	protected void refresh() {
 		Command undoCmd = getCommandStack().getUndoCommand();
-		setToolTipText(MessageFormat.format(GEFMessages.UndoAction_Tooltip,
-				new Object[] { getLabelForCommand(undoCmd) }).trim());
-		setText(MessageFormat.format(GEFMessages.UndoAction_Label,
-				new Object[] { getLabelForCommand(undoCmd) }).trim());
+		setToolTipText(MessageFormat
+				.format(GEFMessages.UndoAction_Tooltip, new Object[] { getLabelForCommand(undoCmd) }).trim());
+		setText(MessageFormat.format(GEFMessages.UndoAction_Label, new Object[] { getLabelForCommand(undoCmd) })
+				.trim());
 		super.refresh();
 	}
 

@@ -21,12 +21,9 @@ public class FlowExampleNewWizard extends ProjectUnzipperNewWizard {
 	 * Constructor
 	 */
 	public FlowExampleNewWizard() {
-		super(
-				"FlowExampleNewWizard", //$NON-NLS-1$
-				Messages.FlowExample_createProjectPage_title,
-				Messages.FlowExample_createProjectPage_desc,
-				"org.eclipse.gef.examples.flow", //$NON-NLS-1$  
-				FileLocator.find(GefExamplesPlugin.getDefault().getBundle(),
-						new Path("examples/flow.zip"), null)); //$NON-NLS-1$
+		super("FlowExampleNewWizard", //$NON-NLS-1$
+				Messages.FlowExample_createProjectPage_title, Messages.FlowExample_createProjectPage_desc,
+				"org.eclipse.gef.examples.flow", //$NON-NLS-1$
+				FileLocator.find(GefExamplesPlugin.getDefault().getBundle(), new Path("examples/flow.zip"), null)); //$NON-NLS-1$
 	}
 }

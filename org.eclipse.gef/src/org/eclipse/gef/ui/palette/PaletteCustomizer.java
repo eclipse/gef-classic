@@ -35,13 +35,11 @@ public abstract class PaletteCustomizer {
 	/**
 	 * Return true if this container can accept this entry as a new child. By
 	 * default, this method checks to see first if the container has full
-	 * permissions, then checks to see if this container can accept the type of
-	 * the entry.
+	 * permissions, then checks to see if this container can accept the type of the
+	 * entry.
 	 * 
-	 * @param container
-	 *            the container that will be the parent of this entry
-	 * @param entry
-	 *            the entry to add to the container
+	 * @param container the container that will be the parent of this entry
+	 * @param entry     the entry to add to the container
 	 * @return true if this container can hold this entry
 	 */
 	protected boolean canAdd(PaletteContainer container, PaletteEntry entry) {
@@ -58,8 +56,7 @@ public abstract class PaletteCustomizer {
 	 * determine whether or not to enable the "Delete" action.
 	 * </p>
 	 * 
-	 * @param entry
-	 *            The selected palette entry. It'll never be <code>null</code>.
+	 * @param entry The selected palette entry. It'll never be <code>null</code>.
 	 * @return <code>true</code> if the given entry can be deleted
 	 * 
 	 * @see #performDelete(PaletteEntry)
@@ -69,8 +66,8 @@ public abstract class PaletteCustomizer {
 	}
 
 	/**
-	 * Indicates whether the given entry can be moved down or not. Whether or
-	 * not an entry can be moved down or not is determined by its parent's user
+	 * Indicates whether the given entry can be moved down or not. Whether or not an
+	 * entry can be moved down or not is determined by its parent's user
 	 * modification permission (
 	 * {@link PaletteEntry#getUserModificationPermission()}).
 	 * <p>
@@ -78,8 +75,7 @@ public abstract class PaletteCustomizer {
 	 * enable the "Move Down" action.
 	 * </p>
 	 * 
-	 * @param entry
-	 *            The selected palette entry (it'll never be <code>null</code>)
+	 * @param entry The selected palette entry (it'll never be <code>null</code>)
 	 * @return <code>true</code> if the given entry can be moved down
 	 * 
 	 * @see #performMoveDown(PaletteEntry)
@@ -91,13 +87,11 @@ public abstract class PaletteCustomizer {
 			return false;
 		}
 
-		if (parent.getChildren().indexOf(entry) + 1 != parent.getChildren()
-				.size()) {
+		if (parent.getChildren().indexOf(entry) + 1 != parent.getChildren().size()) {
 			return true;
 		} else {
 			// The given entry is the last child in its parent.
-			if (parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION
-					|| parent.getParent() == null)
+			if (parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION || parent.getParent() == null)
 				return false;
 
 			// try to place in grand parent
@@ -123,17 +117,15 @@ public abstract class PaletteCustomizer {
 	}
 
 	/**
-	 * Indicates whether the given entry can be moved up or not. Whether or not
-	 * an entry can be moved up or not is determined by its parent's user
-	 * modification permission (
-	 * {@link PaletteEntry#getUserModificationPermission()}).
+	 * Indicates whether the given entry can be moved up or not. Whether or not an
+	 * entry can be moved up or not is determined by its parent's user modification
+	 * permission ( {@link PaletteEntry#getUserModificationPermission()}).
 	 * <p>
 	 * Will be called by PaletteCustomizerDialog to determine whether or not to
 	 * enable the "Move Up" action.
 	 * </p>
 	 * 
-	 * @param entry
-	 *            The selected palette entry (it'll never be <code>null</code>)
+	 * @param entry The selected palette entry (it'll never be <code>null</code>)
 	 * @return <code>true</code> if the given entry can be moved up
 	 * 
 	 * @see #performMoveUp(PaletteEntry)
@@ -149,8 +141,7 @@ public abstract class PaletteCustomizer {
 			return true;
 		} else {
 			// The given entry is the first child in its parent
-			if (parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION
-					|| parent.getParent() == null)
+			if (parentPermission != PaletteEntry.PERMISSION_FULL_MODIFICATION || parent.getParent() == null)
 				return false;
 
 			// try to place in grand parent
@@ -195,9 +186,8 @@ public abstract class PaletteCustomizer {
 	 * Returns an EntryPage that will display the custom properties of the given
 	 * entry. Can return null if there are no custom properties.
 	 * 
-	 * @param entry
-	 *            The PaletteEntry whose properties page needs to be displayed
-	 *            (it'll never be <code>null</code>)
+	 * @param entry The PaletteEntry whose properties page needs to be displayed
+	 *              (it'll never be <code>null</code>)
 	 * @return The EntryPage to represent the given entry
 	 */
 	public EntryPage getPropertiesPage(PaletteEntry entry) {
@@ -209,11 +199,9 @@ public abstract class PaletteCustomizer {
 
 	/**
 	 * Updates the model by deleting the given entry from it. <br>
-	 * Called when the "Delete" action in the PaletteCustomizerDialog is
-	 * executed.
+	 * Called when the "Delete" action in the PaletteCustomizerDialog is executed.
 	 * 
-	 * @param entry
-	 *            The selected palette entry (it'll never be <code>null</code>)
+	 * @param entry The selected palette entry (it'll never be <code>null</code>)
 	 * 
 	 * @see #canDelete(PaletteEntry)
 	 */
@@ -223,11 +211,9 @@ public abstract class PaletteCustomizer {
 
 	/**
 	 * Updates the model by moving the entry down. <br>
-	 * Called when the "Move Down" action in the PaletteCustomizerDialog is
-	 * invoked.
+	 * Called when the "Move Down" action in the PaletteCustomizerDialog is invoked.
 	 * 
-	 * @param entry
-	 *            The selected palette entry (it'll never be <code>null</code>)
+	 * @param entry The selected palette entry (it'll never be <code>null</code>)
 	 * 
 	 * @see #canMoveDown(PaletteEntry)
 	 */
@@ -264,11 +250,9 @@ public abstract class PaletteCustomizer {
 
 	/**
 	 * Updates the model by moving the entry up. <br>
-	 * Called when the "Move Up" action in the PaletteCustomizerDialog is
-	 * invoked.
+	 * Called when the "Move Up" action in the PaletteCustomizerDialog is invoked.
 	 * 
-	 * @param entry
-	 *            The selected palette entry (it'll never be <code>null</code>)
+	 * @param entry The selected palette entry (it'll never be <code>null</code>)
 	 * 
 	 * @see #canMoveUp(PaletteEntry)
 	 */

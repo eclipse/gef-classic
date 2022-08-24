@@ -37,8 +37,7 @@ import org.eclipse.ui.ide.IDE;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagramFactory;
 
-public class LogicWizardPage1 extends WizardNewFileCreationPage implements
-		SelectionListener {
+public class LogicWizardPage1 extends WizardNewFileCreationPage implements SelectionListener {
 
 	private IWorkbench workbench;
 	private static int exampleCount = 1;
@@ -46,13 +45,11 @@ public class LogicWizardPage1 extends WizardNewFileCreationPage implements
 	private Button model2 = null;
 	private int modelSelected = 1;
 
-	public LogicWizardPage1(IWorkbench aWorkbench,
-			IStructuredSelection selection) {
+	public LogicWizardPage1(IWorkbench aWorkbench, IStructuredSelection selection) {
 		super("sampleLogicPage1", selection); //$NON-NLS-1$
 		this.setTitle(LogicMessages.CreateLogicPage1_Title);
 		this.setDescription(LogicMessages.CreateLogicPage1_Description);
-		this.setImageDescriptor(ImageDescriptor.createFromFile(getClass(),
-				"icons/logicbanner.gif")); //$NON-NLS-1$
+		this.setImageDescriptor(ImageDescriptor.createFromFile(getClass(), "icons/logicbanner.gif")); //$NON-NLS-1$
 		this.workbench = aWorkbench;
 	}
 
@@ -66,8 +63,7 @@ public class LogicWizardPage1 extends WizardNewFileCreationPage implements
 		Group group = new Group(composite, SWT.NONE);
 		group.setLayout(new GridLayout());
 		group.setText(LogicMessages.CreateLogicPage1_ModelNames_GroupName);
-		group.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL
-				| GridData.HORIZONTAL_ALIGN_FILL));
+		group.setLayoutData(new GridData(GridData.GRAB_HORIZONTAL | GridData.HORIZONTAL_ALIGN_FILL));
 
 		// sample section generation checkboxes
 		model1 = new Button(group, SWT.RADIO);

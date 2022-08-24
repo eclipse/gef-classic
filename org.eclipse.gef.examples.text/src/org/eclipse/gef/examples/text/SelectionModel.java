@@ -36,14 +36,11 @@ public class SelectionModel {
 	private final List constantSelection;
 
 	public SelectionModel(ISelection selection) {
-		this(
-				null,
-				selection instanceof IStructuredSelection ? ((IStructuredSelection) selection)
-						.toList() : null, null);
+		this(null, selection instanceof IStructuredSelection ? ((IStructuredSelection) selection).toList() : null,
+				null);
 	}
 
-	public SelectionModel(SelectionRange range, List selectedParts,
-			EditPart container) {
+	public SelectionModel(SelectionRange range, List selectedParts, EditPart container) {
 		selectionRange = range;
 		selectionContainer = container;
 		constantSelection = selectedParts == null ? Collections.EMPTY_LIST
@@ -74,11 +71,9 @@ public class SelectionModel {
 			}
 
 			if (range.begin.part == range.end.part)
-				range.begin.part.setSelection(range.begin.offset,
-						range.end.offset);
+				range.begin.part.setSelection(range.begin.offset, range.end.offset);
 			else {
-				range.begin.part.setSelection(range.begin.offset,
-						range.begin.part.getLength());
+				range.begin.part.setSelection(range.begin.offset, range.begin.part.getLength());
 				range.end.part.setSelection(0, range.end.offset);
 			}
 		}
@@ -110,10 +105,9 @@ public class SelectionModel {
 			EditPart otherContainer = other.getSelectionContainer();
 			SelectionRange otherRange = other.getSelectionRange();
 			result = constantSelection.equals(other.getSelectedEditParts())
-					&& (selectionContainer == otherContainer || (selectionContainer != null && selectionContainer
-							.equals(otherContainer)))
-					&& (selectionRange == otherRange || (selectionRange != null && selectionRange
-							.equals(otherRange)));
+					&& (selectionContainer == otherContainer
+							|| (selectionContainer != null && selectionContainer.equals(otherContainer)))
+					&& (selectionRange == otherRange || (selectionRange != null && selectionRange.equals(otherRange)));
 		}
 		return result;
 	}
@@ -165,8 +159,7 @@ public class SelectionModel {
 		// Convert to HashSet to optimize performance.
 		if (!old.getSelectedEditParts().isEmpty()) {
 			Collection editparts = new HashSet(constantSelection);
-			for (Iterator itr = old.getSelectedEditParts().iterator(); itr
-					.hasNext();) {
+			for (Iterator itr = old.getSelectedEditParts().iterator(); itr.hasNext();) {
 				EditPart part = (EditPart) itr.next();
 				if (!editparts.contains(part))
 					part.setSelected(EditPart.SELECTED_NONE);

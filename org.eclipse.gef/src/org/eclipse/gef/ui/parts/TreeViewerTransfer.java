@@ -63,8 +63,7 @@ final class TreeViewerTransfer extends SimpleObjectTransfer {
 	/**
 	 * Sets the viewer where the drag started.
 	 * 
-	 * @param epv
-	 *            The viewer
+	 * @param epv The viewer
 	 */
 	public void setViewer(EditPartViewer epv) {
 		viewer = epv;

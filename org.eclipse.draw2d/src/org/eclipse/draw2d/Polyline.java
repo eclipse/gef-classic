@@ -40,8 +40,7 @@ public class Polyline extends AbstractPointListShape {
 	 * @see org.eclipse.draw2d.IFigure#containsPoint(int, int)
 	 */
 	public boolean containsPoint(int x, int y) {
-		int tolerance = (int) Math.max(getLineWidthFloat() / 2.0f,
-				this.tolerance);
+		int tolerance = (int) Math.max(getLineWidthFloat() / 2.0f, this.tolerance);
 		LINEBOUNDS.setBounds(getBounds());
 		LINEBOUNDS.expand(tolerance, tolerance);
 		if (!LINEBOUNDS.contains(x, y))
@@ -118,12 +117,11 @@ public class Polyline extends AbstractPointListShape {
 	}
 
 	/**
-	 * Sets the list of points to be used by this polyline connection. Removes
-	 * any previously existing points. The polyline will hold onto the given
-	 * list by reference.
+	 * Sets the list of points to be used by this polyline connection. Removes any
+	 * previously existing points. The polyline will hold onto the given list by
+	 * reference.
 	 * 
-	 * @param points
-	 *            new set of points
+	 * @param points new set of points
 	 * @since 2.0
 	 */
 	public void setPoints(PointList points) {
@@ -134,8 +132,7 @@ public class Polyline extends AbstractPointListShape {
 	/**
 	 * Sets the tolerance
 	 * 
-	 * @param tolerance
-	 *            the new tolerance value of the Polyline
+	 * @param tolerance the new tolerance value of the Polyline
 	 */
 	public void setTolerance(int tolerance) {
 		this.tolerance = tolerance;

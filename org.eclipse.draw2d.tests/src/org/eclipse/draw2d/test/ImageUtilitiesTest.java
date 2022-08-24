@@ -56,14 +56,10 @@ public class ImageUtilitiesTest extends TestCase {
 
 	public void testRotatingImagesWithDifferentDepths() {
 		Image result1 = null, result2 = null, result3 = null, result4 = null;
-		Image img1 = ImageDescriptor.createFromFile(getClass(),
-				"icons/bits1.bmp").createImage(); //$NON-NLS-1$
-		Image img2 = ImageDescriptor.createFromFile(getClass(),
-				"icons/bits4.bmp").createImage(); //$NON-NLS-1$;
-		Image img3 = ImageDescriptor.createFromFile(getClass(),
-				"icons/bits8.gif").createImage(); //$NON-NLS-1$;
-		Image img4 = ImageDescriptor.createFromFile(getClass(),
-				"icons/bits24.jpg").createImage(); //$NON-NLS-1$;
+		Image img1 = ImageDescriptor.createFromFile(getClass(), "icons/bits1.bmp").createImage(); //$NON-NLS-1$
+		Image img2 = ImageDescriptor.createFromFile(getClass(), "icons/bits4.bmp").createImage(); //$NON-NLS-1$ ;
+		Image img3 = ImageDescriptor.createFromFile(getClass(), "icons/bits8.gif").createImage(); //$NON-NLS-1$ ;
+		Image img4 = ImageDescriptor.createFromFile(getClass(), "icons/bits24.jpg").createImage(); //$NON-NLS-1$ ;
 
 		try {
 			result1 = ImageUtilities.createRotatedImage(img1);

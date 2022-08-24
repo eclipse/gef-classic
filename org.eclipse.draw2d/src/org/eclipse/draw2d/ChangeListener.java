@@ -18,8 +18,7 @@ public interface ChangeListener {
 	/**
 	 * Called when the listened to object's state has changed.
 	 * 
-	 * @param event
-	 *            the ChangeEvent
+	 * @param event the ChangeEvent
 	 */
 	void handleStateChanged(ChangeEvent event);
 

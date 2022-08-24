@@ -17,11 +17,10 @@ package org.eclipse.draw2d;
 public interface CoordinateListener {
 
 	/**
-	 * Indicates that the coordinate system has changed in a way that affects
-	 * the absolute locations of contained figures.
+	 * Indicates that the coordinate system has changed in a way that affects the
+	 * absolute locations of contained figures.
 	 * 
-	 * @param source
-	 *            the figure whose coordinate system changed
+	 * @param source the figure whose coordinate system changed
 	 * @since 3.1
 	 */
 	void coordinateSystemChanged(IFigure source);

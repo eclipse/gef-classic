@@ -22,13 +22,12 @@ public interface GraphicalViewer extends EditPartViewer {
 
 	/**
 	 * Returns the <code>Handle</code> at the specified Point. Returns
-	 * <code>null</code> if no handle exists at the given Point. The specified
-	 * point should be relative to the
-	 * {@link org.eclipse.swt.widgets.Scrollable#getClientArea() client area}
-	 * for this Viewer's <code>Control</code>.
+	 * <code>null</code> if no handle exists at the given Point. The specified point
+	 * should be relative to the
+	 * {@link org.eclipse.swt.widgets.Scrollable#getClientArea() client area} for
+	 * this Viewer's <code>Control</code>.
 	 * 
-	 * @param p
-	 *            the location relative to the Control's client area
+	 * @param p the location relative to the Control's client area
 	 * @return Handle <code>null</code> or a Handle
 	 */
 	Handle findHandleAt(Point p);

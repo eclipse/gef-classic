@@ -66,8 +66,7 @@ public class OrGateFigure extends GateFigure {
 		r.width--;
 		r.height--;
 		g.drawOval(r);
-		g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2,
-				r.bottom() + 2);
+		g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2, r.bottom() + 2);
 
 		// draw gate
 		g.translate(getLocation());

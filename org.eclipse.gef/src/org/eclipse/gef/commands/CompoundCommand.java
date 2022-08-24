@@ -41,8 +41,7 @@ public class CompoundCommand extends Command {
 	/**
 	 * Constructs an empty CompoundCommand with the specified label.
 	 * 
-	 * @param label
-	 *            the label for the Command
+	 * @param label the label for the Command
 	 */
 	public CompoundCommand(String label) {
 		super(label);
@@ -51,8 +50,7 @@ public class CompoundCommand extends Command {
 	/**
 	 * Adds the specified command if it is not <code>null</code>.
 	 * 
-	 * @param command
-	 *            <code>null</code> or a Command
+	 * @param command <code>null</code> or a Command
 	 */
 	public void add(Command command) {
 		if (command != null)
@@ -120,8 +118,8 @@ public class CompoundCommand extends Command {
 	}
 
 	/**
-	 * Execute the command.For a compound command this means executing all of
-	 * the commands that it contains.
+	 * Execute the command.For a compound command this means executing all of the
+	 * commands that it contains.
 	 */
 	public void execute() {
 		for (int i = 0; i < commandList.size(); i++) {
@@ -132,8 +130,8 @@ public class CompoundCommand extends Command {
 
 	/**
 	 * This is useful when implementing
-	 * {@link org.eclipse.jface.viewers.ITreeContentProvider#getChildren(Object)}
-	 * to display the Command's nested structure.
+	 * {@link org.eclipse.jface.viewers.ITreeContentProvider#getChildren(Object)} to
+	 * display the Command's nested structure.
 	 * 
 	 * @return returns the Commands as an array of Objects.
 	 */
@@ -192,8 +190,8 @@ public class CompoundCommand extends Command {
 	}
 
 	/**
-	 * Returns the simplest form of this Command that is equivalent. This is
-	 * useful for removing unnecessary nesting of Commands.
+	 * Returns the simplest form of this Command that is equivalent. This is useful
+	 * for removing unnecessary nesting of Commands.
 	 * 
 	 * @return the simplest form of this Command that is equivalent
 	 */

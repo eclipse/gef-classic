@@ -41,15 +41,13 @@ public class Digraph1NodeFigure extends Figure {
 	/**
 	 * Constructor for a Digraph1NodeFigure.
 	 * 
-	 * @param number
-	 *            the node number in the directed graph.
+	 * @param number the node number in the directed graph.
 	 */
 	public Digraph1NodeFigure(int number) {
 		setLayoutManager(new XYLayout());
 		this.rectangleFigure = new RectangleFigure();
 		this.rectangleFigure.setBackgroundColor(ColorConstants.lightBlue);
-		this.rectangleFigure.setLocation(new Point((number + 1) * 57,
-				(number + 1) * 40));
+		this.rectangleFigure.setLocation(new Point((number + 1) * 57, (number + 1) * 40));
 		this.rectangleFigure.setSize(new Dimension(55, 30));
 		add(this.rectangleFigure);
 		this.label = new Label();
@@ -81,8 +79,7 @@ public class Digraph1NodeFigure extends Figure {
 	@Override
 	public void paintFigure(Graphics g) {
 		Rectangle r = getBounds().getCopy();
-		setConstraint(getRectangleFigure(), new Rectangle(0, 0, r.width,
-				r.height));
+		setConstraint(getRectangleFigure(), new Rectangle(0, 0, r.width, r.height));
 		setConstraint(getLabel(), new Rectangle(0, 0, r.width, r.height));
 		getRectangleFigure().invalidate();
 		getLabel().invalidate();

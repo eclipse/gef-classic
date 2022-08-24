@@ -30,10 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * This snippet uses a very simple file format to read a graph. Edges are listed
- * on a new line in a file as such: 
- * a calls b 
- * b calls c 
- * c calld d
+ * on a new line in a file as such: a calls b b calls c c calld d
  * 
  * The content provider creates an edge for each line in the file and names the
  * sources and destination from the line.
@@ -44,7 +41,9 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class GraphJFaceSnippet3 {
 
-	public static final String graph = "a calls b\n" + "a calls c\n" + "b calld d\n" + "b calls e\n" + "c calls f\n" + "c calls g\n" + "d calls h\n" + "d calls i\n" + "e calls j\n" + "e calls k\n" + "f calls l\n" + "f calls m\n";
+	public static final String graph = "a calls b\n" + "a calls c\n" + "b calld d\n" + "b calls e\n" + "c calls f\n"
+			+ "c calls g\n" + "d calls h\n" + "d calls i\n" + "e calls j\n" + "e calls k\n" + "f calls l\n"
+			+ "f calls m\n";
 
 	static class SimpleGraphContentProvider implements IGraphContentProvider {
 
@@ -93,12 +92,13 @@ public class GraphJFaceSnippet3 {
 
 		FileDialog dialog = new FileDialog(shell, SWT.OPEN);
 		dialog.setFilterNames(new String[] { "Simple Graph Files (*.sgf)", "All Files (*.*)" });
-		dialog.setFilterExtensions(new String[] { "*.sgf", "*.*" }); //Windows wild cards
+		dialog.setFilterExtensions(new String[] { "*.sgf", "*.*" }); // Windows wild cards
 
-		String directory = System.getProperty("user.dir") + "/src/org/eclipse/zest/tests/jface/SimpleGraph.sgf"; //eclipse/zest/examples/jface/";
+		String directory = System.getProperty("user.dir") + "/src/org/eclipse/zest/tests/jface/SimpleGraph.sgf"; // eclipse/zest/examples/jface/";
 		System.out.println(directory);
 		dialog.setFilterPath(directory);
-		//dialog.setFilterPath(System.getProperty("user.dir") + "src/org/eclipse/zest/examples/jface/"); //Windows path
+		// dialog.setFilterPath(System.getProperty("user.dir") +
+		// "src/org/eclipse/zest/examples/jface/"); //Windows path
 
 		shell.setLayout(new FillLayout(SWT.VERTICAL));
 		shell.setSize(400, 400);

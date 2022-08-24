@@ -77,10 +77,8 @@ public class CommandStackInspector extends PageBookView {
 	 * destroy a page for the given part.
 	 * </p>
 	 * 
-	 * @param part
-	 *            the input part
-	 * @param rec
-	 *            a page record for the part
+	 * @param part the input part
+	 * @param rec  a page record for the part
 	 */
 	protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
 		rec.page.dispose();

@@ -25,15 +25,13 @@ import org.eclipse.draw2d.geometry.Transposer;
  * made up of five essential Figures: An 'Up' arrow button, a 'Down' arrow
  * button, a draggable 'Thumb', a 'Pageup' button, and a 'Pagedown' button.
  */
-public class ScrollBar extends Figure implements Orientable,
-		PropertyChangeListener {
+public class ScrollBar extends Figure implements Orientable, PropertyChangeListener {
 
 	private static final int ORIENTATION_FLAG = Figure.MAX_FLAG << 1;
 	/** @see Figure#MAX_FLAG */
 	protected static final int MAX_FLAG = ORIENTATION_FLAG;
 
-	private static final Color COLOR_TRACK = FigureUtilities.mixColors(
-			ColorConstants.white, ColorConstants.button);
+	private static final Color COLOR_TRACK = FigureUtilities.mixColors(ColorConstants.white, ColorConstants.button);
 
 	private RangeModel rangeModel = null;
 	private IFigure thumb;
@@ -59,9 +57,9 @@ public class ScrollBar extends Figure implements Orientable,
 	}
 
 	/**
-	 * Constructs a ScrollBar. ScrollBar orientation is vertical by default.
-	 * Call {@link #setHorizontal(boolean)} with <code>true</code> to set
-	 * horizontal orientation.
+	 * Constructs a ScrollBar. ScrollBar orientation is vertical by default. Call
+	 * {@link #setHorizontal(boolean)} with <code>true</code> to set horizontal
+	 * orientation.
 	 * 
 	 * @since 2.0
 	 */
@@ -77,8 +75,7 @@ public class ScrollBar extends Figure implements Orientable,
 	 */
 	protected Clickable createDefaultUpButton() {
 		Button buttonUp = new ArrowButton();
-		buttonUp.setBorder(new ButtonBorder(
-				ButtonBorder.SCHEMES.BUTTON_SCROLLBAR));
+		buttonUp.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.BUTTON_SCROLLBAR));
 		return buttonUp;
 	}
 
@@ -90,8 +87,7 @@ public class ScrollBar extends Figure implements Orientable,
 	 */
 	protected Clickable createDefaultDownButton() {
 		Button buttonDown = new ArrowButton();
-		buttonDown.setBorder(new ButtonBorder(
-				ButtonBorder.SCHEMES.BUTTON_SCROLLBAR));
+		buttonDown.setBorder(new ButtonBorder(ButtonBorder.SCHEMES.BUTTON_SCROLLBAR));
 		return buttonDown;
 	}
 
@@ -214,8 +210,8 @@ public class ScrollBar extends Figure implements Orientable,
 	}
 
 	/**
-	 * Returns the the amound the scrollbar will move when the page up or page
-	 * down areas are pressed.
+	 * Returns the the amound the scrollbar will move when the page up or page down
+	 * areas are pressed.
 	 * 
 	 * @return the page increment
 	 */
@@ -246,8 +242,8 @@ public class ScrollBar extends Figure implements Orientable,
 	}
 
 	/**
-	 * Returns the amount the scrollbar will move when the up or down arrow
-	 * buttons are pressed.
+	 * Returns the amount the scrollbar will move when the up or down arrow buttons
+	 * are pressed.
 	 * 
 	 * @return the step increment
 	 */
@@ -284,9 +280,9 @@ public class ScrollBar extends Figure implements Orientable,
 	}
 
 	/**
-	 * Initilization of the ScrollBar. Sets the Scrollbar to have a
-	 * ScrollBarLayout with vertical orientation. Creates the Figures that make
-	 * up the components of the ScrollBar.
+	 * Initilization of the ScrollBar. Sets the Scrollbar to have a ScrollBarLayout
+	 * with vertical orientation. Creates the Figures that make up the components of
+	 * the ScrollBar.
 	 * 
 	 * @since 2.0
 	 */
@@ -370,8 +366,7 @@ public class ScrollBar extends Figure implements Orientable,
 	 * Sets the Clickable that represents the down arrow of the Scrollbar to
 	 * <i>down</i>.
 	 * 
-	 * @param down
-	 *            the down button
+	 * @param down the down button
 	 * @since 2.0
 	 */
 	public void setDownClickable(Clickable down) {
@@ -381,9 +376,7 @@ public class ScrollBar extends Figure implements Orientable,
 		buttonDown = down;
 		if (buttonDown != null) {
 			if (buttonDown instanceof Orientable)
-				((Orientable) buttonDown)
-						.setDirection(isHorizontal() ? Orientable.EAST
-								: Orientable.SOUTH);
+				((Orientable) buttonDown).setDirection(isHorizontal() ? Orientable.EAST : Orientable.SOUTH);
 			buttonDown.setFiringMethod(Clickable.REPEAT_FIRING);
 			buttonDown.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -398,8 +391,7 @@ public class ScrollBar extends Figure implements Orientable,
 	 * Sets the Clickable that represents the up arrow of the Scrollbar to
 	 * <i>up</i>.
 	 * 
-	 * @param up
-	 *            the up button
+	 * @param up the up button
 	 * @since 2.0
 	 */
 	public void setUpClickable(Clickable up) {
@@ -409,8 +401,7 @@ public class ScrollBar extends Figure implements Orientable,
 		buttonUp = up;
 		if (up != null) {
 			if (up instanceof Orientable)
-				((Orientable) up).setDirection(isHorizontal() ? Orientable.WEST
-						: Orientable.NORTH);
+				((Orientable) up).setDirection(isHorizontal() ? Orientable.WEST : Orientable.NORTH);
 			buttonUp.setFiringMethod(Clickable.REPEAT_FIRING);
 			buttonUp.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -438,8 +429,7 @@ public class ScrollBar extends Figure implements Orientable,
 	/**
 	 * Sets the extent of the Scrollbar to <i>ext</i>
 	 * 
-	 * @param ext
-	 *            the extent
+	 * @param ext the extent
 	 * @since 2.0
 	 */
 	public void setExtent(int ext) {
@@ -449,12 +439,11 @@ public class ScrollBar extends Figure implements Orientable,
 	}
 
 	/**
-	 * Sets the orientation of the ScrollBar. If <code>true</code>, the
-	 * Scrollbar will have a horizontal orientation. If <code>false</code>, the
-	 * scrollBar will have a vertical orientation.
+	 * Sets the orientation of the ScrollBar. If <code>true</code>, the Scrollbar
+	 * will have a horizontal orientation. If <code>false</code>, the scrollBar will
+	 * have a vertical orientation.
 	 * 
-	 * @param value
-	 *            <code>true</code> if the scrollbar should be horizontal
+	 * @param value <code>true</code> if the scrollbar should be horizontal
 	 * @since 2.0
 	 */
 	public final void setHorizontal(boolean value) {
@@ -464,8 +453,7 @@ public class ScrollBar extends Figure implements Orientable,
 	/**
 	 * Sets the maximum position to <i>max</i>.
 	 * 
-	 * @param max
-	 *            the maximum position
+	 * @param max the maximum position
 	 * @since 2.0
 	 */
 	public void setMaximum(int max) {
@@ -477,8 +465,7 @@ public class ScrollBar extends Figure implements Orientable,
 	/**
 	 * Sets the minimum position to <i>min</i>.
 	 * 
-	 * @param min
-	 *            the minumum position
+	 * @param min the minumum position
 	 * @since 2.0
 	 */
 	public void setMinimum(int min) {
@@ -502,12 +489,11 @@ public class ScrollBar extends Figure implements Orientable,
 
 	/**
 	 * Sets the ScrollBar to scroll <i>increment</i> pixels when its pageup or
-	 * pagedown buttons are pressed. (Note that the pageup and pagedown buttons
-	 * are <b>NOT</b> the arrow buttons, they are the figures between the arrow
-	 * buttons and the ScrollBar's thumb figure).
+	 * pagedown buttons are pressed. (Note that the pageup and pagedown buttons are
+	 * <b>NOT</b> the arrow buttons, they are the figures between the arrow buttons
+	 * and the ScrollBar's thumb figure).
 	 * 
-	 * @param increment
-	 *            the new page increment
+	 * @param increment the new page increment
 	 * @since 2.0
 	 */
 	public void setPageIncrement(int increment) {
@@ -515,12 +501,10 @@ public class ScrollBar extends Figure implements Orientable,
 	}
 
 	/**
-	 * Sets the pagedown button to the passed Clickable. The pagedown button is
-	 * the figure between the down arrow button and the ScrollBar's thumb
-	 * figure.
+	 * Sets the pagedown button to the passed Clickable. The pagedown button is the
+	 * figure between the down arrow button and the ScrollBar's thumb figure.
 	 * 
-	 * @param down
-	 *            the page down figure
+	 * @param down the page down figure
 	 * @since 2.0
 	 */
 	public void setPageDown(Clickable down) {
@@ -540,11 +524,10 @@ public class ScrollBar extends Figure implements Orientable,
 
 	/**
 	 * Sets the pageup button to the passed Clickable. The pageup button is the
-	 * rectangular figure between the down arrow button and the ScrollBar's
-	 * thumb figure.
+	 * rectangular figure between the down arrow button and the ScrollBar's thumb
+	 * figure.
 	 * 
-	 * @param up
-	 *            the page up figure
+	 * @param up the page up figure
 	 * @since 2.0
 	 */
 	public void setPageUp(Clickable up) {
@@ -565,8 +548,7 @@ public class ScrollBar extends Figure implements Orientable,
 	/**
 	 * Sets the ScrollBar's RangeModel to the passed value.
 	 * 
-	 * @param rangeModel
-	 *            the new range model
+	 * @param rangeModel the new range model
 	 * @since 2.0
 	 */
 	public void setRangeModel(RangeModel rangeModel) {
@@ -577,12 +559,11 @@ public class ScrollBar extends Figure implements Orientable,
 	}
 
 	/**
-	 * Sets the ScrollBar's step increment to the passed value. The step
-	 * increment indicates how many pixels the ScrollBar will scroll when its up
-	 * or down arrow button is pressed.
+	 * Sets the ScrollBar's step increment to the passed value. The step increment
+	 * indicates how many pixels the ScrollBar will scroll when its up or down arrow
+	 * button is pressed.
 	 * 
-	 * @param increment
-	 *            the new step increment
+	 * @param increment the new step increment
 	 * @since 2.0
 	 */
 	public void setStepIncrement(int increment) {
@@ -590,12 +571,10 @@ public class ScrollBar extends Figure implements Orientable,
 	}
 
 	/**
-	 * Sets the ScrollBar's thumb to the passed Figure. The thumb is the
-	 * draggable component of the ScrollBar that indicates the ScrollBar's
-	 * position.
+	 * Sets the ScrollBar's thumb to the passed Figure. The thumb is the draggable
+	 * component of the ScrollBar that indicates the ScrollBar's position.
 	 * 
-	 * @param figure
-	 *            the thumb figure
+	 * @param figure the thumb figure
 	 * @since 2.0
 	 */
 	public void setThumb(IFigure figure) {
@@ -615,8 +594,7 @@ public class ScrollBar extends Figure implements Orientable,
 	/**
 	 * Sets the value of the Scrollbar to <i>v</i>
 	 * 
-	 * @param v
-	 *            the new value
+	 * @param v the new value
 	 * @since 2.0
 	 */
 	public void setValue(int v) {
@@ -646,8 +624,7 @@ public class ScrollBar extends Figure implements Orientable,
 	/**
 	 * @since 3.6
 	 */
-	protected class ThumbDragger extends MouseMotionListener.Stub implements
-			MouseListener {
+	protected class ThumbDragger extends MouseMotionListener.Stub implements MouseListener {
 		protected Point start;
 		protected int dragRange;
 		protected int revertValue;
@@ -665,8 +642,7 @@ public class ScrollBar extends Figure implements Orientable,
 				area.height -= transposer.t(getButtonUp().getSize()).height;
 			if (getButtonDown() != null)
 				area.height -= transposer.t(getButtonDown().getSize()).height;
-			Dimension sizeDifference = new Dimension(area.width, area.height
-					- thumbSize.height);
+			Dimension sizeDifference = new Dimension(area.width, area.height - thumbSize.height);
 			dragRange = sizeDifference.height;
 			revertValue = getValue();
 			me.consume();
@@ -675,8 +651,7 @@ public class ScrollBar extends Figure implements Orientable,
 		public void mouseDragged(MouseEvent me) {
 			if (!armed)
 				return;
-			Dimension difference = transposer.t(me.getLocation().getDifference(
-					start));
+			Dimension difference = transposer.t(me.getLocation().getDifference(start));
 			int change = getValueRange() * difference.height / dragRange;
 			setValue(revertValue + change);
 			me.consume();

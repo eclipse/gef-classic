@@ -30,25 +30,20 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
 import org.eclipse.gef.examples.logicdesigner.model.commands.ConnectionCommand;
 
-public class LogicNodeEditPolicy extends
-		org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy {
+public class LogicNodeEditPolicy extends org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy {
 
 	protected Connection createDummyConnection(Request req) {
 		PolylineConnection conn = FigureFactory.createNewWire(null);
 		return conn;
 	}
 
-	protected Command getConnectionCompleteCommand(
-			CreateConnectionRequest request) {
-		ConnectionCommand command = (ConnectionCommand) request
-				.getStartCommand();
+	protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
+		ConnectionCommand command = (ConnectionCommand) request.getStartCommand();
 		command.setTarget(getLogicSubpart());
-		ConnectionAnchor ctor = getLogicEditPart().getTargetConnectionAnchor(
-				request);
+		ConnectionAnchor ctor = getLogicEditPart().getTargetConnectionAnchor(request);
 		if (ctor == null)
 			return null;
-		command.setTargetTerminal(getLogicEditPart()
-				.mapConnectionAnchorToTerminal(ctor));
+		command.setTargetTerminal(getLogicEditPart().mapConnectionAnchorToTerminal(ctor));
 		return command;
 	}
 
@@ -56,10 +51,8 @@ public class LogicNodeEditPolicy extends
 		ConnectionCommand command = new ConnectionCommand();
 		command.setWire(new Wire());
 		command.setSource(getLogicSubpart());
-		ConnectionAnchor ctor = getLogicEditPart().getSourceConnectionAnchor(
-				request);
-		command.setSourceTerminal(getLogicEditPart()
-				.mapConnectionAnchorToTerminal(ctor));
+		ConnectionAnchor ctor = getLogicEditPart().getSourceConnectionAnchor(request);
+		command.setSourceTerminal(getLogicEditPart().mapConnectionAnchorToTerminal(ctor));
 		request.setStartCommand(command);
 		return command;
 	}
@@ -71,8 +64,7 @@ public class LogicNodeEditPolicy extends
 	 */
 	protected IFigure getFeedbackLayer() {
 		/*
-		 * Fix for Bug# 66590 Feedback needs to be added to the scaled feedback
-		 * layer
+		 * Fix for Bug# 66590 Feedback needs to be added to the scaled feedback layer
 		 */
 		return getLayer(LayerConstants.SCALED_FEEDBACK_LAYER);
 	}
@@ -86,18 +78,15 @@ public class LogicNodeEditPolicy extends
 	}
 
 	protected Command getReconnectTargetCommand(ReconnectRequest request) {
-		if (getLogicSubpart() instanceof LiveOutput
-				|| getLogicSubpart() instanceof GroundOutput)
+		if (getLogicSubpart() instanceof LiveOutput || getLogicSubpart() instanceof GroundOutput)
 			return null;
 
 		ConnectionCommand cmd = new ConnectionCommand();
 		cmd.setWire((Wire) request.getConnectionEditPart().getModel());
 
-		ConnectionAnchor ctor = getLogicEditPart().getTargetConnectionAnchor(
-				request);
+		ConnectionAnchor ctor = getLogicEditPart().getTargetConnectionAnchor(request);
 		cmd.setTarget(getLogicSubpart());
-		cmd.setTargetTerminal(getLogicEditPart().mapConnectionAnchorToTerminal(
-				ctor));
+		cmd.setTargetTerminal(getLogicEditPart().mapConnectionAnchorToTerminal(ctor));
 		return cmd;
 	}
 
@@ -105,11 +94,9 @@ public class LogicNodeEditPolicy extends
 		ConnectionCommand cmd = new ConnectionCommand();
 		cmd.setWire((Wire) request.getConnectionEditPart().getModel());
 
-		ConnectionAnchor ctor = getLogicEditPart().getSourceConnectionAnchor(
-				request);
+		ConnectionAnchor ctor = getLogicEditPart().getSourceConnectionAnchor(request);
 		cmd.setSource(getLogicSubpart());
-		cmd.setSourceTerminal(getLogicEditPart().mapConnectionAnchorToTerminal(
-				ctor));
+		cmd.setSourceTerminal(getLogicEditPart().mapConnectionAnchorToTerminal(ctor));
 		return cmd;
 	}
 

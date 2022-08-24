@@ -38,8 +38,7 @@ public class FlowCreationWizard extends Wizard implements INewWizard {
 	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
 	 *      org.eclipse.jface.viewers.IStructuredSelection)
 	 */
-	public void init(IWorkbench aWorkbench,
-			IStructuredSelection currentSelection) {
+	public void init(IWorkbench aWorkbench, IStructuredSelection currentSelection) {
 		workbench = aWorkbench;
 		selection = currentSelection;
 	}

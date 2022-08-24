@@ -22,8 +22,7 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.CreateBendpointComm
 import org.eclipse.gef.examples.logicdesigner.model.commands.DeleteBendpointCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.MoveBendpointCommand;
 
-public class WireBendpointEditPolicy extends
-		org.eclipse.gef.editpolicies.BendpointEditPolicy {
+public class WireBendpointEditPolicy extends org.eclipse.gef.editpolicies.BendpointEditPolicy {
 
 	protected Command getCreateBendpointCommand(BendpointRequest request) {
 		CreateBendpointCommand com = new CreateBendpointCommand();

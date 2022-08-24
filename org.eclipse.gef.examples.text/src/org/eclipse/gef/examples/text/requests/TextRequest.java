@@ -23,9 +23,9 @@ public class TextRequest extends Request {
 	public static final Object REQ_BACKSPACE = new Object();
 
 	/**
-	 * The Request type for a break in the current line. A line break is a
-	 * newline within the current paragraph or block, such as a bulleted or
-	 * numbered list. This request indicates that SHIFT+ENTER was received
+	 * The Request type for a break in the current line. A line break is a newline
+	 * within the current paragraph or block, such as a bulleted or numbered list.
+	 * This request indicates that SHIFT+ENTER was received
 	 */
 	public static final Object REQ_BREAK = new Object();
 
@@ -40,9 +40,9 @@ public class TextRequest extends Request {
 	public static final Object REQ_STYLE = new Object();
 
 	/**
-	 * The Request type for a new page. A "Page" may be interpreted to mean
-	 * anything based on the context of the current selection range. This
-	 * request indicates that CTRL+ENTER was received.
+	 * The Request type for a new page. A "Page" may be interpreted to mean anything
+	 * based on the context of the current selection range. This request indicates
+	 * that CTRL+ENTER was received.
 	 */
 	public static final Object REQ_NEW_PAGE = new Object();
 
@@ -63,8 +63,7 @@ public class TextRequest extends Request {
 	 * @param type
 	 * @since 3.1
 	 */
-	public TextRequest(SelectionRange range, String text,
-			AppendableCommand previous) {
+	public TextRequest(SelectionRange range, String text, AppendableCommand previous) {
 		this(REQ_INSERT, range, text, previous);
 	}
 
@@ -72,13 +71,11 @@ public class TextRequest extends Request {
 		this(type, range, null, null);
 	}
 
-	public TextRequest(Object type, SelectionRange range,
-			AppendableCommand previous) {
+	public TextRequest(Object type, SelectionRange range, AppendableCommand previous) {
 		this(type, range, null, previous);
 	}
 
-	public TextRequest(Object type, SelectionRange range, String text,
-			AppendableCommand previous) {
+	public TextRequest(Object type, SelectionRange range, String text, AppendableCommand previous) {
 		super(type == null ? REQ_INSERT : type);
 		this.text = text;
 		this.range = range;

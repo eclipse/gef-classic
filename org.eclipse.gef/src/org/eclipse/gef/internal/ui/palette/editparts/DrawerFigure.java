@@ -55,24 +55,20 @@ import org.eclipse.gef.ui.palette.editparts.PaletteToolbarLayout;
 public class DrawerFigure extends Figure {
 
 	/** Foreground color constant **/
-	protected static final Color FG_COLOR = FigureUtilities.mixColors(
-			PaletteColorUtil.WIDGET_NORMAL_SHADOW,
+	protected static final Color FG_COLOR = FigureUtilities.mixColors(PaletteColorUtil.WIDGET_NORMAL_SHADOW,
 			PaletteColorUtil.WIDGET_BACKGROUND);
 
 	/** Scrollpane border constant for icon and column layout mode **/
-	protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2, 2,
-			2, 2);
+	protected static final Border SCROLL_PANE_BORDER = new MarginBorder(2, 2, 2, 2);
 	/** Scrollpane border constant for list and details layout mode **/
-	protected static final Border SCROLL_PANE_LIST_BORDER = new MarginBorder(2,
-			0, 2, 0);
+	protected static final Border SCROLL_PANE_LIST_BORDER = new MarginBorder(2, 0, 2, 0);
 	/** Title margin border constant **/
-	protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(4, 2,
-			2, 2);
+	protected static final Border TITLE_MARGIN_BORDER = new MarginBorder(4, 2, 2, 2);
 	/** Toggle button border constant **/
 	protected static final Border TOGGLE_BUTTON_BORDER = new RaisedBorder();
 	/** Tooltip border constant **/
-	protected static final Border TOOLTIP_BORDER = new CompoundBorder(
-			new SchemeBorder(SchemeBorder.SCHEMES.RAISED), new MarginBorder(1));
+	protected static final Border TOOLTIP_BORDER = new CompoundBorder(new SchemeBorder(SchemeBorder.SCHEMES.RAISED),
+			new MarginBorder(1));
 	private Toggle collapseToggle;
 	private Label drawerLabel, tipLabel;
 
@@ -95,13 +91,11 @@ public class DrawerFigure extends Figure {
 			addChangeListener(new ChangeListener() {
 
 				public void handleStateChanged(ChangeEvent e) {
-					if (e.getPropertyName().equals(
-							ButtonModel.SELECTED_PROPERTY)) {
+					if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
 						Animation.markBegin();
 						handleExpandStateChanged();
 						Animation.run(150);
-					} else if (e.getPropertyName().equals(
-							ButtonModel.MOUSEOVER_PROPERTY)) {
+					} else if (e.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY)) {
 						repaint();
 					}
 				}
@@ -121,8 +115,7 @@ public class DrawerFigure extends Figure {
 			g.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
 			g.drawLine(r.getTopLeft(), r.getTopRight());
 			g.setForegroundColor(ColorConstants.white);
-			g.drawLine(r.getTopLeft().getTranslated(0, 1), r.getTopRight()
-					.getTranslated(0, 1));
+			g.drawLine(r.getTopLeft().getTranslated(0, 1), r.getTopRight().getTranslated(0, 1));
 			r.crop(new Insets(2, 0, 0, 0));
 			if (isExpanded()) {
 				g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_65);
@@ -133,8 +126,7 @@ public class DrawerFigure extends Figure {
 			// draw bottom border of drawer figure
 			if (!isExpanded()) {
 				g.setForegroundColor(ColorConstants.white);
-				g.drawLine(r.getBottomLeft().getTranslated(0, -1), r
-						.getBottomRight().getTranslated(0, -1));
+				g.drawLine(r.getBottomLeft().getTranslated(0, -1), r.getBottomRight().getTranslated(0, -1));
 				r.crop(new Insets(0, 0, 1, 0));
 			}
 
@@ -146,23 +138,21 @@ public class DrawerFigure extends Figure {
 	/**
 	 * Constructor
 	 * 
-	 * @param control
-	 *            The Control of the LWS to which this Figure belongs (it is
-	 *            used to display the drawer header with an EditPartTipHelper,
-	 *            if the header is not completely visible). It can be
-	 *            <code>null</code> (the tip won't be displayed).
+	 * @param control The Control of the LWS to which this Figure belongs (it is
+	 *                used to display the drawer header with an EditPartTipHelper,
+	 *                if the header is not completely visible). It can be
+	 *                <code>null</code> (the tip won't be displayed).
 	 */
 	public DrawerFigure(final Control control) {
 		/*
-		 * A PaletteToolbarLayout is being used here instead of a ToolbarLayout
-		 * so that the ScrollPane can be stretched to take up vertical space.
-		 * This affects selection and appearance (background color).
+		 * A PaletteToolbarLayout is being used here instead of a ToolbarLayout so that
+		 * the ScrollPane can be stretched to take up vertical space. This affects
+		 * selection and appearance (background color).
 		 */
 		setLayoutManager(new PaletteToolbarLayout() {
 			protected boolean isChildGrowing(IFigure child) {
 				int wHint = child.getBounds().width;
-				return child.getPreferredSize(wHint, -1).height != child
-						.getMinimumSize(wHint, -1).height;
+				return child.getPreferredSize(wHint, -1).height != child.getMinimumSize(wHint, -1).height;
 			}
 		});
 
@@ -185,20 +175,18 @@ public class DrawerFigure extends Figure {
 		/*
 		 * @TODO:Pratik
 		 * 
-		 * There is a bug here. Right-click on the name pop-up for the header of
-		 * a drawer figure in the palette. This will hide the pop-up.
-		 * Right-click again, this time on the collapse toggle, to bring up the
-		 * drawer's context menu. Now, left-click on the collapse toggle. The
-		 * context menu will disappear, the name pop-up will re-appear, and the
-		 * drawer will collapse/expand. If the drawer was in such a position,
-		 * that collapsing/expanding it will cause its header to move, the name
-		 * pop-up will now be floating over where the collapse toggle used to
-		 * be, but is not anymore. To fix this, you can detect the left mouse
-		 * click on the collapse toggle and hide the name pop-up then. The
-		 * problem is that when you click on the collapseToggle after the
-		 * context menu has been brought up, it does not fire a mouse pressed
-		 * event. The listener below, that is commented out for now, is never
-		 * notified.
+		 * There is a bug here. Right-click on the name pop-up for the header of a
+		 * drawer figure in the palette. This will hide the pop-up. Right-click again,
+		 * this time on the collapse toggle, to bring up the drawer's context menu. Now,
+		 * left-click on the collapse toggle. The context menu will disappear, the name
+		 * pop-up will re-appear, and the drawer will collapse/expand. If the drawer was
+		 * in such a position, that collapsing/expanding it will cause its header to
+		 * move, the name pop-up will now be floating over where the collapse toggle
+		 * used to be, but is not anymore. To fix this, you can detect the left mouse
+		 * click on the collapse toggle and hide the name pop-up then. The problem is
+		 * that when you click on the collapseToggle after the context menu has been
+		 * brought up, it does not fire a mouse pressed event. The listener below, that
+		 * is commented out for now, is never notified.
 		 */
 		// collapseToggle.addMouseListener(new MouseListener.Stub(){
 		// public void mousePressed(MouseEvent me) {
@@ -214,10 +202,8 @@ public class DrawerFigure extends Figure {
 	/**
 	 * Paints the background gradient on the drawer toggle figure.
 	 * 
-	 * @param g
-	 *            the graphics object
-	 * @param rect
-	 *            the rectangle which the background gradient should cover
+	 * @param g    the graphics object
+	 * @param rect the rectangle which the background gradient should cover
 	 */
 	private void paintToggleGradient(Graphics g, Rectangle rect) {
 		if (isExpanded()) {
@@ -281,17 +267,15 @@ public class DrawerFigure extends Figure {
 					skipNextEvent = false;
 					return;
 				}
-				if (drawerLabel.isTextTruncated()
-						&& !EditPartTipHelper.isCurrent(tipHelper)) {
+				if (drawerLabel.isTextTruncated() && !EditPartTipHelper.isCurrent(tipHelper)) {
 					tipLabel.setText(drawerLabel.getText());
 					tipLabel.setIcon(drawerLabel.getIcon());
 					tipLabel.setFont(drawerLabel.getFont());
 					tipHelper = new EditPartTipHelper(control);
-					Rectangle bounds = drawerLabel.getBounds()
-							.getExpanded(2, 2);
+					Rectangle bounds = drawerLabel.getBounds().getExpanded(2, 2);
 					drawerLabel.translateToAbsolute(bounds);
-					org.eclipse.swt.graphics.Rectangle loc = new org.eclipse.swt.graphics.Rectangle(
-							bounds.x, bounds.y, bounds.width, bounds.height);
+					org.eclipse.swt.graphics.Rectangle loc = new org.eclipse.swt.graphics.Rectangle(bounds.x, bounds.y,
+							bounds.width, bounds.height);
 					loc = Display.getCurrent().map(control, null, loc);
 					tipHelper.displayToolTipAt(tipLabel, loc.x, loc.y);
 				}
@@ -300,8 +284,7 @@ public class DrawerFigure extends Figure {
 		tipLabel.addMouseListener(new MouseListener.Stub() {
 			public void mousePressed(MouseEvent e) {
 				if (e.button == 1) {
-					Rectangle original = getCollapseToggle().getBounds()
-							.getCopy();
+					Rectangle original = getCollapseToggle().getBounds().getCopy();
 					getCollapseToggle().requestFocus();
 					setExpanded(!isExpanded());
 					// Hide the tip if expanding the drawer causes the collapse
@@ -329,8 +312,7 @@ public class DrawerFigure extends Figure {
 		scrollpane.setLayoutManager(new OverlayScrollPaneLayout());
 		scrollpane.setContents(new Figure());
 		scrollpane.getContents().setOpaque(true);
-		scrollpane.getContents().setBackgroundColor(
-				PaletteColorUtil.WIDGET_LIST_BACKGROUND);
+		scrollpane.getContents().setBackgroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
 	}
 
 	IFigure buildTooltip() {
@@ -345,8 +327,8 @@ public class DrawerFigure extends Figure {
 	}
 
 	/**
-	 * @return The content pane for this figure, i.e. the Figure to which
-	 *         children can be added.
+	 * @return The content pane for this figure, i.e. the Figure to which children
+	 *         can be added.
 	 */
 	public IFigure getContentPane() {
 		return scrollpane.getContents();
@@ -357,20 +339,17 @@ public class DrawerFigure extends Figure {
 	 */
 	public Dimension getMinimumSize(int wHint, int hHint) {
 		/*
-		 * Fix related to Bug #35176 The figure returns a minimum size that is
-		 * of at least a certain height, so as to prevent each drawer from
-		 * getting too small (in which case, the scrollbars cover up the entire
-		 * available space).
+		 * Fix related to Bug #35176 The figure returns a minimum size that is of at
+		 * least a certain height, so as to prevent each drawer from getting too small
+		 * (in which case, the scrollbars cover up the entire available space).
 		 */
 		if (isExpanded()) {
 			List children = getContentPane().getChildren();
 			if (!children.isEmpty()) {
-				Dimension result = collapseToggle
-						.getPreferredSize(wHint, hHint).getCopy();
+				Dimension result = collapseToggle.getPreferredSize(wHint, hHint).getCopy();
 				result.height += getContentPane().getInsets().getHeight();
 				IFigure child = (IFigure) children.get(0);
-				result.height += Math.min(80,
-						child.getPreferredSize(wHint, -1).height + 9);
+				result.height += Math.min(80, child.getPreferredSize(wHint, -1).height + 9);
 				return result.intersect(getPreferredSize(wHint, hHint));
 			}
 		}
@@ -396,8 +375,7 @@ public class DrawerFigure extends Figure {
 				remove(scrollpane);
 
 			// collapse all pinnable palette stack children that aren't pinned
-			for (Iterator iterator = getContentPane().getChildren().iterator(); iterator
-					.hasNext();) {
+			for (Iterator iterator = getContentPane().getChildren().iterator(); iterator.hasNext();) {
 				Object child = iterator.next();
 				if (child instanceof PinnablePaletteStackFigure
 						&& !((PinnablePaletteStackFigure) child).isPinnedOpen()) {
@@ -420,16 +398,15 @@ public class DrawerFigure extends Figure {
 	}
 
 	/**
-	 * @return <code>true</code> if the drawer is expanded and is pinned (i.e.,
-	 *         it can't be automatically collapsed)
+	 * @return <code>true</code> if the drawer is expanded and is pinned (i.e., it
+	 *         can't be automatically collapsed)
 	 */
 	public boolean isPinnedOpen() {
 		return isExpanded() && pinFigure.isVisible() && pinFigure.isSelected();
 	}
 
 	/**
-	 * @return <code>true</code> if the drawer is expanded and its pin is
-	 *         showing
+	 * @return <code>true</code> if the drawer is expanded and its pin is showing
 	 */
 	public boolean isPinShowing() {
 		return isExpanded() && showPin;
@@ -483,8 +460,7 @@ public class DrawerFigure extends Figure {
 	 * Pins or unpins the drawer. The drawer can be pinned open only when it is
 	 * expanded. Attempts to pin it when it is collapsed will do nothing.
 	 * 
-	 * @param pinned
-	 *            <code>true</code> if the drawer is to be pinned
+	 * @param pinned <code>true</code> if the drawer is to be pinned
 	 */
 	public void setPinned(boolean pinned) {
 		if (!isExpanded() || !showPin) {
@@ -497,8 +473,7 @@ public class DrawerFigure extends Figure {
 	/**
 	 * Displays the given text in the drawer's header as its title.
 	 * 
-	 * @param s
-	 *            The title of the drawer
+	 * @param s The title of the drawer
 	 */
 	public void setTitle(String s) {
 		drawerLabel.setText(s);
@@ -507,8 +482,7 @@ public class DrawerFigure extends Figure {
 	/**
 	 * Displays the given image in the header as the drawer's icon.
 	 * 
-	 * @param icon
-	 *            The icon for this drawer.
+	 * @param icon The icon for this drawer.
 	 */
 	public void setTitleIcon(Image icon) {
 		drawerLabel.setIcon(icon);

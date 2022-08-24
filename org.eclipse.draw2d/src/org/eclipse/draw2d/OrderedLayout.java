@@ -31,23 +31,23 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	/**
 	 * Constant to specify components should be layed out horizontally
 	 * 
-	 * @deprecated Pulled up from derived layout manager and deprecated here
-	 *             because unused.
+	 * @deprecated Pulled up from derived layout manager and deprecated here because
+	 *             unused.
 	 */
 	public static final boolean HORIZONTAL = true;
 	/**
 	 * Constant to specify components should be layed out vertically
 	 * 
-	 * @deprecated Pulled up from derived layout manager and deprecated here
-	 *             because unused.
+	 * @deprecated Pulled up from derived layout manager and deprecated here because
+	 *             unused.
 	 */
 	public static final boolean VERTICAL = false;
 
 	/**
 	 * The horizontal property.
 	 * 
-	 * @deprecated Use {@link #setHorizontal(boolean)} and
-	 *             {@link #isHorizontal()} instead.
+	 * @deprecated Use {@link #setHorizontal(boolean)} and {@link #isHorizontal()}
+	 *             instead.
 	 */
 	protected boolean horizontal;
 
@@ -111,18 +111,17 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	 * @return whether children are to be stretched in the minor axis.
 	 * 
 	 * @TODO: Made abstract here, so that derived layout managers can guarantee
-	 *        backwards compatibility for their exposed fields. Can be made
-	 *        concrete in the next major release, removing implementations in
-	 *        the derived layout managers.
+	 *        backwards compatibility for their exposed fields. Can be made concrete
+	 *        in the next major release, removing implementations in the derived
+	 *        layout managers.
 	 */
 	public abstract boolean isStretchMinorAxis();
 
 	/**
 	 * Sets the orientation of the layout.
 	 * 
-	 * @param flag
-	 *            <code>true</code> if this layout should be horizontal,
-	 *            <code>false</code> otherwise.
+	 * @param flag <code>true</code> if this layout should be horizontal,
+	 *             <code>false</code> otherwise.
 	 */
 	public void setHorizontal(boolean flag) {
 		if (horizontal == flag)
@@ -133,12 +132,11 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	}
 
 	/**
-	 * Sets the alignment of the children contained in the layout. Possible
-	 * values are {@link #ALIGN_CENTER}, {@link #ALIGN_BOTTOMRIGHT} and
+	 * Sets the alignment of the children contained in the layout. Possible values
+	 * are {@link #ALIGN_CENTER}, {@link #ALIGN_BOTTOMRIGHT} and
 	 * {@link #ALIGN_TOPLEFT}.
 	 * 
-	 * @param align
-	 *            the minor alignment
+	 * @param align the minor alignment
 	 */
 	public void setMinorAlignment(int align) {
 		minorAlignment = align;
@@ -147,29 +145,26 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	/**
 	 * Causes children that are smaller in the dimension of the minor axis to be
 	 * stretched to fill the minor axis. The minor axis is the opposite of the
-	 * orientation. That is, in horizontal orientation, all figures will have
-	 * the same height. If in vertical orientation, all figures will have the
-	 * same width.
+	 * orientation. That is, in horizontal orientation, all figures will have the
+	 * same height. If in vertical orientation, all figures will have the same
+	 * width.
 	 * 
-	 * @param value
-	 *            whether children should be stretched in the minor axis.
+	 * @param value whether children should be stretched in the minor axis.
 	 * @TODO: Made abstract here, so that derived layout managers can guarantee
-	 *        backwards compatibility for their exposed fields. Can be made
-	 *        concrete in the next major release, removing implementations in
-	 *        the derived layout managers.
+	 *        backwards compatibility for their exposed fields. Can be made concrete
+	 *        in the next major release, removing implementations in the derived
+	 *        layout managers.
 	 */
 	public abstract void setStretchMinorAxis(boolean value);
 
 	/**
-	 * Updates the enabled state of the {@link #transposer} in case the layout
-	 * has a different orientation that its default one.
+	 * Updates the enabled state of the {@link #transposer} in case the layout has a
+	 * different orientation that its default one.
 	 */
 	private void updateTransposerEnabledState() {
 		// enable transposer if the current orientation differs from the default
 		// orientation, disable it otherwise
-		transposer.setEnabled(isHorizontal()
-				&& getDefaultOrientation() == PositionConstants.VERTICAL
-				|| !isHorizontal()
-				&& getDefaultOrientation() == PositionConstants.HORIZONTAL);
+		transposer.setEnabled(isHorizontal() && getDefaultOrientation() == PositionConstants.VERTICAL
+				|| !isHorizontal() && getDefaultOrientation() == PositionConstants.HORIZONTAL);
 	}
 }

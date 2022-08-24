@@ -35,8 +35,7 @@ import org.eclipse.gef.LayerConstants;
  * 
  * @since 2.0
  */
-public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy
-		implements IAdaptable {
+public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy implements IAdaptable {
 
 	/**
 	 * the List of handles
@@ -72,8 +71,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy
 					List<Point> result = new ArrayList<>();
 					if (handles != null) {
 						for (int i = 0; i < handles.size(); i++) {
-							Point p = ((Handle) handles.get(i))
-									.getAccessibleLocation();
+							Point p = ((Handle) handles.get(i)).getAccessibleLocation();
 							if (p != null)
 								result.add(p);
 						}

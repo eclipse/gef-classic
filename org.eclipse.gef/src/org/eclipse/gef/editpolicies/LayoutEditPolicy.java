@@ -72,8 +72,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Returns the "satellite" EditPolicy used to decorate the child.
 	 * 
-	 * @param child
-	 *            the child EditPart
+	 * @param child the child EditPart
 	 * @return an EditPolicy to be installed as the
 	 *         {@link EditPolicy#PRIMARY_DRAG_ROLE}
 	 */
@@ -96,8 +95,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Override to provide custom feedback figure for the given create request.
 	 * 
-	 * @param createRequest
-	 *            the create request
+	 * @param createRequest the create request
 	 * @return custom feedback figure
 	 */
 	protected IFigure createSizeOnDropFeedback(CreateRequest createRequest) {
@@ -122,8 +120,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * Decorates the child with a {@link EditPolicy#PRIMARY_DRAG_ROLE} such as
 	 * {@link ResizableEditPolicy}.
 	 * 
-	 * @param child
-	 *            the child EditPart being decorated
+	 * @param child the child EditPart being decorated
 	 */
 	protected void decorateChild(EditPart child) {
 		EditPolicy policy = createChildEditPolicy(child);
@@ -143,8 +140,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * Erases target layout feedback. This method is the inverse of
 	 * {@link #showLayoutTargetFeedback(Request)}.
 	 * 
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 */
 	protected void eraseLayoutTargetFeedback(Request request) {
 	}
@@ -152,8 +148,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Erases size-on-drop feedback used during creation.
 	 * 
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 */
 	protected void eraseSizeOnDropFeedback(Request request) {
 		if (sizeOnDropFeedback != null) {
@@ -168,10 +163,8 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
 	 */
 	public void eraseTargetFeedback(Request request) {
-		if (REQ_ADD.equals(request.getType())
-				|| REQ_MOVE.equals(request.getType())
-				|| REQ_RESIZE_CHILDREN.equals(request.getType())
-				|| REQ_CREATE.equals(request.getType())
+		if (REQ_ADD.equals(request.getType()) || REQ_MOVE.equals(request.getType())
+				|| REQ_RESIZE_CHILDREN.equals(request.getType()) || REQ_CREATE.equals(request.getType())
 				|| REQ_CLONE.equals(request.getType()))
 			eraseLayoutTargetFeedback(request);
 
@@ -184,8 +177,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * {@link RequestConstants#REQ_ADD ADD}. By default, <code>null</code> is
 	 * returned.
 	 * 
-	 * @param request
-	 *            the ADD Request
+	 * @param request the ADD Request
 	 * @return A command to perform the ADD.
 	 */
 	protected Command getAddCommand(Request request) {
@@ -195,8 +187,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Override to contribute to clone requests.
 	 * 
-	 * @param request
-	 *            the clone request
+	 * @param request the clone request
 	 * @return the command contribution to the clone
 	 */
 	protected Command getCloneCommand(ChangeBoundsRequest request) {
@@ -233,18 +224,15 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Returns the <code>Command</code> to perform a create.
 	 * 
-	 * @param request
-	 *            the CreateRequest
+	 * @param request the CreateRequest
 	 * @return a Command to perform a create
 	 */
 	protected abstract Command getCreateCommand(CreateRequest request);
 
 	/**
-	 * Returns any insets that need to be applied to the creation feedback's
-	 * bounds.
+	 * Returns any insets that need to be applied to the creation feedback's bounds.
 	 * 
-	 * @param request
-	 *            the create request
+	 * @param request the create request
 	 * @return insets, if necessary
 	 */
 	protected Insets getCreationFeedbackOffset(CreateRequest request) {
@@ -252,12 +240,11 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	}
 
 	/**
-	 * Returns the <code>Command</code> to delete a child. This method does not
-	 * get called unless the child forwards an additional request to the
-	 * container editpart.
+	 * Returns the <code>Command</code> to delete a child. This method does not get
+	 * called unless the child forwards an additional request to the container
+	 * editpart.
 	 * 
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 * @return the Command to delete the child
 	 */
 	protected Command getDeleteDependantCommand(Request request) {
@@ -265,11 +252,10 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	}
 
 	/**
-	 * Returns the host's {@link GraphicalEditPart#getContentPane() contentPane}
-	 * . The contentPane is the Figure which parents the childrens' figures. It
-	 * is also the figure which has the LayoutManager that corresponds to this
-	 * EditPolicy. All operations should be interpreted with respect to this
-	 * figure.
+	 * Returns the host's {@link GraphicalEditPart#getContentPane() contentPane} .
+	 * The contentPane is the Figure which parents the childrens' figures. It is
+	 * also the figure which has the LayoutManager that corresponds to this
+	 * EditPolicy. All operations should be interpreted with respect to this figure.
 	 * 
 	 * @return the Figure that owns the corresponding <code>LayoutManager</code>
 	 */
@@ -280,24 +266,21 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Returns the <code>Command</code> to move a group of children.
 	 * 
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 * @return the Command to perform the move
 	 */
 	protected abstract Command getMoveChildrenCommand(Request request);
 
 	/**
 	 * Returns the <code>Command</code> to orphan a group of children. The
-	 * contribution to orphan might contain two parts, both of which are
-	 * optional. The first part is to actually remove the children from their
-	 * existing parent. Some application models will perform an orphan
-	 * implicitly when the children are added to their new parent. The second
-	 * part is to perform some adjustments on the remaining children. For
-	 * example, a Table layout might simplify itself by collapsing any unused
-	 * columns and rows.
+	 * contribution to orphan might contain two parts, both of which are optional.
+	 * The first part is to actually remove the children from their existing parent.
+	 * Some application models will perform an orphan implicitly when the children
+	 * are added to their new parent. The second part is to perform some adjustments
+	 * on the remaining children. For example, a Table layout might simplify itself
+	 * by collapsing any unused columns and rows.
 	 * 
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 * @return <code>null</code> or a Command to perform an orphan
 	 */
 	protected Command getOrphanChildrenCommand(Request request) {
@@ -307,8 +290,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Lazily creates and returns the Figure to use for size-on-drop feedback.
 	 * 
-	 * @param createRequest
-	 *            the createRequest
+	 * @param createRequest the createRequest
 	 * @return the size-on-drop feedback figure
 	 */
 	protected IFigure getSizeOnDropFeedback(CreateRequest createRequest) {
@@ -340,24 +322,21 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
 	public EditPart getTargetEditPart(Request request) {
-		if (REQ_ADD.equals(request.getType())
-				|| REQ_MOVE.equals(request.getType())
-				|| REQ_CREATE.equals(request.getType())
-				|| REQ_CLONE.equals(request.getType()))
+		if (REQ_ADD.equals(request.getType()) || REQ_MOVE.equals(request.getType())
+				|| REQ_CREATE.equals(request.getType()) || REQ_CLONE.equals(request.getType()))
 			return getHost();
 		return null;
 	}
 
 	/**
-	 * Sets the EditPartListener used to decorate new children. If the listener
-	 * is currently set, it will be unhooked. If the new value is not
+	 * Sets the EditPartListener used to decorate new children. If the listener is
+	 * currently set, it will be unhooked. If the new value is not
 	 * <code>null</code>, it will be hooked.
 	 * <P>
-	 * The listener must be remembered in case this EditPolicy is removed from
-	 * the host and replaced with another LayoutEditPolicy.
+	 * The listener must be remembered in case this EditPolicy is removed from the
+	 * host and replaced with another LayoutEditPolicy.
 	 * 
-	 * @param listener
-	 *            <code>null</code> or the listener.
+	 * @param listener <code>null</code> or the listener.
 	 */
 	protected void setListener(EditPartListener listener) {
 		if (this.listener != null)
@@ -370,14 +349,12 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Shows target layout feedback. During <i>moves</i>, <i>reparents</i>, and
 	 * <i>creation</i>, this method is called to allow the LayoutEditPolicy to
-	 * temporarily show features of its layout that will help the User
-	 * understand what will happen if the operation is performed in the current
-	 * location.
+	 * temporarily show features of its layout that will help the User understand
+	 * what will happen if the operation is performed in the current location.
 	 * <P>
 	 * By default, no feedback is shown.
 	 * 
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 * @see #eraseLayoutTargetFeedback(Request)
 	 */
 	protected void showLayoutTargetFeedback(Request request) {
@@ -386,8 +363,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Shows size-on-drop feedback during creation.
 	 * 
-	 * @param request
-	 *            the CreateRequest
+	 * @param request the CreateRequest
 	 */
 	protected void showSizeOnDropFeedback(CreateRequest request) {
 	}
@@ -398,10 +374,8 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
 	 */
 	public void showTargetFeedback(Request request) {
-		if (REQ_ADD.equals(request.getType())
-				|| REQ_CLONE.equals(request.getType())
-				|| REQ_MOVE.equals(request.getType())
-				|| REQ_RESIZE_CHILDREN.equals(request.getType())
+		if (REQ_ADD.equals(request.getType()) || REQ_CLONE.equals(request.getType())
+				|| REQ_MOVE.equals(request.getType()) || REQ_RESIZE_CHILDREN.equals(request.getType())
 				|| REQ_CREATE.equals(request.getType()))
 			showLayoutTargetFeedback(request);
 
@@ -416,8 +390,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Removes the decoration added in {@link #decorateChild(EditPart)}.
 	 * 
-	 * @param child
-	 *            the child whose decoration is being removed.
+	 * @param child the child whose decoration is being removed.
 	 */
 	protected void undecorateChild(EditPart child) {
 		child.removeEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE);
@@ -434,15 +407,15 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Returns the layout's origin relative to the
-	 * {@link LayoutEditPolicy#getLayoutContainer()}. In other words, what Point
-	 * on the parent Figure does the LayoutManager use a reference when
-	 * generating the child figure's bounds from the child's constraint.
+	 * {@link LayoutEditPolicy#getLayoutContainer()}. In other words, what Point on
+	 * the parent Figure does the LayoutManager use a reference when generating the
+	 * child figure's bounds from the child's constraint.
 	 * <P>
-	 * By default, it is assumed that the layout manager positions children
-	 * relative to the client area of the layout container. Thus, when
-	 * processing Viewer-relative Points or Rectangles, the clientArea's
-	 * location (top-left corner) will be subtracted from the Point/Rectangle,
-	 * resulting in an offset from the LayoutOrigin.
+	 * By default, it is assumed that the layout manager positions children relative
+	 * to the client area of the layout container. Thus, when processing
+	 * Viewer-relative Points or Rectangles, the clientArea's location (top-left
+	 * corner) will be subtracted from the Point/Rectangle, resulting in an offset
+	 * from the LayoutOrigin.
 	 * 
 	 * @return Point
 	 * @since 3.7 Moved up from ConstrainedLayoutEditPolicy
@@ -453,12 +426,11 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Translates a {@link Translatable} in absolute coordinates to be
-	 * layout-relative, i.e. relative to the {@link #getLayoutContainer()}'s
-	 * origin, which is obtained via {@link #getLayoutOrigin()}.
+	 * layout-relative, i.e. relative to the {@link #getLayoutContainer()}'s origin,
+	 * which is obtained via {@link #getLayoutOrigin()}.
 	 * 
-	 * @param t
-	 *            the Translatable in absolute coordinates to be translated to
-	 *            layout-relative coordinates.
+	 * @param t the Translatable in absolute coordinates to be translated to
+	 *          layout-relative coordinates.
 	 * @since 3.7
 	 */
 	protected void translateFromAbsoluteToLayoutRelative(Translatable t) {
@@ -474,9 +446,8 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * relative to {@link #getLayoutContainer()}'s origin which is obtained via
 	 * {@link #getLayoutOrigin()}, into absolute coordinates.
 	 * 
-	 * @param t
-	 *            the Translatable in layout-relative coordinates to be
-	 *            translated into absolute coordinates.
+	 * @param t the Translatable in layout-relative coordinates to be translated
+	 *          into absolute coordinates.
 	 * @since 3.7
 	 */
 	protected void translateFromLayoutRelativeToAbsolute(Translatable t) {

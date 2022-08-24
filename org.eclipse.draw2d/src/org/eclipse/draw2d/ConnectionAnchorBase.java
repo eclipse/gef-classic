@@ -42,8 +42,8 @@ public abstract class ConnectionAnchorBase implements ConnectionAnchor {
 
 	/**
 	 * Notifies all the listeners in the list of a change in position of this
-	 * anchor. This is called from one of the implementing anchors when its
-	 * location is changed.
+	 * anchor. This is called from one of the implementing anchors when its location
+	 * is changed.
 	 * 
 	 * @since 2.0
 	 */

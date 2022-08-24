@@ -41,8 +41,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 * Constructs a new SelectEditPartTracker with the given edit part as the
 	 * source.
 	 * 
-	 * @param owner
-	 *            the source edit part
+	 * @param owner the source edit part
 	 */
 	public SelectEditPartTracker(EditPart owner) {
 		setSourceEditPart(owner);
@@ -82,8 +81,8 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 
 	/**
 	 * Performs a conditional selection if needed (if right or left mouse button
-	 * have been pressed) and goes into the drag state. If any other button has
-	 * been pressed, the tool goes into the invalid state.
+	 * have been pressed) and goes into the drag state. If any other button has been
+	 * pressed, the tool goes into the invalid state.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
@@ -102,11 +101,11 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	}
 
 	/**
-	 * If in the drag state, the tool selects the source edit part. If the edit
-	 * part was already selected, {@link #performDirectEdit()} is called. If the
-	 * edit part is newly selected and not completely visible,
-	 * {@link EditPartViewer#reveal(EditPart)} is called to show the selected
-	 * edit part.
+	 * If in the drag state, the tool selects the source edit part. If the edit part
+	 * was already selected, {@link #performDirectEdit()} is called. If the edit
+	 * part is newly selected and not completely visible,
+	 * {@link EditPartViewer#reveal(EditPart)} is called to show the selected edit
+	 * part.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
@@ -115,8 +114,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 			performSelection();
 			if (getFlag(FLAG_ENABLE_DIRECT_EDIT))
 				performDirectEdit();
-			if (button == 1
-					&& getSourceEditPart().getSelected() != EditPart.SELECTED_NONE)
+			if (button == 1 && getSourceEditPart().getSelected() != EditPart.SELECTED_NONE)
 				getCurrentViewer().reveal(getSourceEditPart());
 			setState(STATE_TERMINAL);
 			return true;
@@ -159,8 +157,8 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 * Calls {@link #performSelection()} if the source is not selected. If the
 	 * source is selected and there are no modifier keys pressed (i.e. the user
 	 * isn't selecting multiple edit parts or deselecting edit parts), sets the
-	 * direct edit flag so that when the mouse is released, a direct edit will
-	 * be performed.
+	 * direct edit flag so that when the mouse is released, a direct edit will be
+	 * performed.
 	 */
 	protected void performConditionalSelection() {
 		if (getSourceEditPart().getSelected() == EditPart.SELECTED_NONE)
@@ -170,21 +168,20 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	}
 
 	/**
-	 * Creates a {@link DirectEditRequest} and sends it to a
-	 * DelayedDirectEditHelper to allow the user to directly edit the edit part.
+	 * Creates a {@link DirectEditRequest} and sends it to a DelayedDirectEditHelper
+	 * to allow the user to directly edit the edit part.
 	 */
 	protected void performDirectEdit() {
 		DirectEditRequest req = new DirectEditRequest();
 		req.setLocation(getCurrentInput().getMouseLocation());
-		new DelayedDirectEditHelper(getSourceEditPart().getViewer(), req,
-				getSourceEditPart());
+		new DelayedDirectEditHelper(getSourceEditPart().getViewer(), req, getSourceEditPart());
 	}
 
 	/**
-	 * Creates a {@link SelectionRequest} and sends it to the source edit part
-	 * via {@link EditPart#performRequest(Request)}. Possible uses are to open
-	 * the selected item in another editor or replace the current editor's
-	 * contents based on the selected item.
+	 * Creates a {@link SelectionRequest} and sends it to the source edit part via
+	 * {@link EditPart#performRequest(Request)}. Possible uses are to open the
+	 * selected item in another editor or replace the current editor's contents
+	 * based on the selected item.
 	 */
 	protected void performOpen() {
 		SelectionRequest request = new SelectionRequest();
@@ -195,13 +192,13 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	}
 
 	/**
-	 * Performs the appropriate selection action based on the selection state of
-	 * the source and the modifiers (CTRL and SHIFT). If no modifier key is
-	 * pressed, the source will be set as the only selection. If the CTRL key is
-	 * pressed and the edit part is already selected, it will be deselected. If
-	 * the CTRL key is pressed and the edit part is not selected, it will be
-	 * appended to the selection set. If the SHIFT key is pressed, the source
-	 * will be appended to the selection.
+	 * Performs the appropriate selection action based on the selection state of the
+	 * source and the modifiers (CTRL and SHIFT). If no modifier key is pressed, the
+	 * source will be set as the only selection. If the CTRL key is pressed and the
+	 * edit part is already selected, it will be deselected. If the CTRL key is
+	 * pressed and the edit part is not selected, it will be appended to the
+	 * selection set. If the SHIFT key is pressed, the source will be appended to
+	 * the selection.
 	 */
 	protected void performSelection() {
 		if (hasSelectionOccurred())
@@ -233,8 +230,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	/**
 	 * Sets the source edit part.
 	 * 
-	 * @param part
-	 *            the source edit part
+	 * @param part the source edit part
 	 */
 	protected void setSourceEditPart(EditPart part) {
 		this.editpart = part;

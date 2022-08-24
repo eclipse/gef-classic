@@ -27,8 +27,8 @@ public class PaletteDrawer extends PaletteContainer {
 	 */
 	public static final Object PALETTE_TYPE_DRAWER = "$Palette Drawer"; //$NON-NLS-1$
 	/**
-	 * Property name used when notification about a change in the drawer's
-	 * initial state is fired.
+	 * Property name used when notification about a change in the drawer's initial
+	 * state is fired.
 	 */
 	public static final String PROPERTY_INITIAL_STATUS = "Initial status"; //$NON-NLS-1$
 
@@ -44,8 +44,7 @@ public class PaletteDrawer extends PaletteContainer {
 	 * created.</LI>
 	 * </UL>
 	 */
-	public static final int INITIAL_STATE_OPEN = 0, INITIAL_STATE_CLOSED = 1,
-			INITIAL_STATE_PINNED_OPEN = 2;
+	public static final int INITIAL_STATE_OPEN = 0, INITIAL_STATE_CLOSED = 1, INITIAL_STATE_PINNED_OPEN = 2;
 
 	/**
 	 * @deprecated use {@link #INITIAL_STATE_PINNED_OPEN}
@@ -59,8 +58,7 @@ public class PaletteDrawer extends PaletteContainer {
 	/**
 	 * Constructor
 	 * 
-	 * @param label
-	 *            The name/label for this entry
+	 * @param label The name/label for this entry
 	 */
 	public PaletteDrawer(String label) {
 		this(label, (ImageDescriptor) null);
@@ -69,10 +67,8 @@ public class PaletteDrawer extends PaletteContainer {
 	/**
 	 * Constructor
 	 * 
-	 * @param label
-	 *            The name/label for this entry
-	 * @param icon
-	 *            An icon for this drawer
+	 * @param label The name/label for this entry
+	 * @param icon  An icon for this drawer
 	 */
 	public PaletteDrawer(String label, ImageDescriptor icon) {
 		super(label, null, icon, PALETTE_TYPE_DRAWER);
@@ -82,21 +78,19 @@ public class PaletteDrawer extends PaletteContainer {
 	/**
 	 * Returns true if this type can be a child of this container
 	 * 
-	 * @param type
-	 *            the type being requested
+	 * @param type the type being requested
 	 * @return true if this can be a child of this container
 	 */
 	public boolean acceptsType(Object type) {
-		if (type.equals(PALETTE_TYPE_DRAWER)
-				|| type.equals(PaletteGroup.PALETTE_TYPE_GROUP))
+		if (type.equals(PALETTE_TYPE_DRAWER) || type.equals(PaletteGroup.PALETTE_TYPE_GROUP))
 			return false;
 		return super.acceptsType(type);
 	}
 
 	/**
 	 * @return <code>ToolEntry.PALETTE_TYPE_TOOL</code> or
-	 *         <code>PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE</code> or (if
-	 *         the drawer is empty and a drawerType has not been explicitly set)
+	 *         <code>PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE</code> or (if the
+	 *         drawer is empty and a drawerType has not been explicitly set)
 	 *         <code>PALETTE_TYPE_UNKNOWN</code>
 	 * 
 	 * @see #setDrawerType(Object)
@@ -139,11 +133,10 @@ public class PaletteDrawer extends PaletteContainer {
 	/**
 	 * DrawerType indicates whether a drawer will contain ToolEntries of
 	 * PaletteTemplateEntries. A drawer should not contain entries of both these
-	 * types. However, there are no checks/restrictions that will prevent you
-	 * from doing so.
+	 * types. However, there are no checks/restrictions that will prevent you from
+	 * doing so.
 	 * 
-	 * @param obj
-	 *            <code>ToolEntry.PALETTE_TYPE_TOOL</code> or
+	 * @param obj <code>ToolEntry.PALETTE_TYPE_TOOL</code> or
 	 *            <code>PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE</code>
 	 */
 	public void setDrawerType(Object obj) {
@@ -151,12 +144,11 @@ public class PaletteDrawer extends PaletteContainer {
 	}
 
 	/**
-	 * Sets the initial state of this drawer (i.e. the state that this drawer
-	 * should be when the palette is created).
+	 * Sets the initial state of this drawer (i.e. the state that this drawer should
+	 * be when the palette is created).
 	 * 
-	 * @param state
-	 *            INITIAL_STATE_OPEN or INITIAL_STATE_CLOSED or
-	 *            INITIAL_STATE_PINNED_OPEN
+	 * @param state INITIAL_STATE_OPEN or INITIAL_STATE_CLOSED or
+	 *              INITIAL_STATE_PINNED_OPEN
 	 */
 	public void setInitialState(int state) {
 		if (initialState == state)
@@ -180,9 +172,8 @@ public class PaletteDrawer extends PaletteContainer {
 	/**
 	 * Should the default icon be shown for this drawer if no icon is set?
 	 * 
-	 * @param showDefaultIcon
-	 *            true if the default icon should be shown if no icon is set;
-	 *            false otherwise
+	 * @param showDefaultIcon true if the default icon should be shown if no icon is
+	 *                        set; false otherwise
 	 * @since 3.4
 	 */
 	public void setShowDefaultIcon(boolean showDefaultIcon) {

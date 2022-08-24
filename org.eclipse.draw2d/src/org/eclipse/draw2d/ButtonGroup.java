@@ -43,8 +43,7 @@ public class ButtonGroup {
 	/**
 	 * Adds the passed ButtonModel to the ButtonGroup.
 	 * 
-	 * @param model
-	 *            ButtonModel to be added to this group
+	 * @param model ButtonModel to be added to this group
 	 * @since 2.0
 	 */
 	public void add(ButtonModel model) {
@@ -55,11 +54,10 @@ public class ButtonGroup {
 	}
 
 	/**
-	 * Adds the passed listener. ButtonGroups use PropertyChangeListeners to
-	 * react to selection changes in the ButtonGroup.
+	 * Adds the passed listener. ButtonGroups use PropertyChangeListeners to react
+	 * to selection changes in the ButtonGroup.
 	 * 
-	 * @param listener
-	 *            Listener to be added to this group
+	 * @param listener Listener to be added to this group
 	 * @since 2.0
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -70,22 +68,18 @@ public class ButtonGroup {
 	 * Fires a PropertyChangeEvent to all PropertyChangeListeners added to this
 	 * ButtonGroup.
 	 * 
-	 * @param oldValue
-	 *            Old selection value
-	 * @param newValue
-	 *            New selection value
+	 * @param oldValue Old selection value
+	 * @param newValue New selection value
 	 * @since 2.0
 	 */
 	protected void firePropertyChange(Object oldValue, Object newValue) {
-		PropertyChangeEvent event = new PropertyChangeEvent(this,
-				ButtonModel.SELECTED_PROPERTY, oldValue, newValue);
+		PropertyChangeEvent event = new PropertyChangeEvent(this, ButtonModel.SELECTED_PROPERTY, oldValue, newValue);
 		for (int i = 0; i < listeners.size(); i++)
 			((PropertyChangeListener) listeners.get(i)).propertyChange(event);
 	}
 
 	/**
-	 * Returns the ButtonModel which is selected by default for this
-	 * ButtonGroup.
+	 * Returns the ButtonModel which is selected by default for this ButtonGroup.
 	 * 
 	 * @return The default ButtonModel
 	 * @since 2.0
@@ -118,8 +112,7 @@ public class ButtonGroup {
 	/**
 	 * Determines if the given ButtonModel is selected or not.
 	 * 
-	 * @param model
-	 *            Model being tested for selected status
+	 * @param model Model being tested for selected status
 	 * @return Selection state of the given model
 	 * @since 2.0
 	 */
@@ -130,8 +123,7 @@ public class ButtonGroup {
 	/**
 	 * Removes the given ButtonModel from this ButtonGroup.
 	 * 
-	 * @param model
-	 *            ButtonModel being removed
+	 * @param model ButtonModel being removed
 	 * @since 2.0
 	 */
 	public void remove(ButtonModel model) {
@@ -145,8 +137,7 @@ public class ButtonGroup {
 	/**
 	 * Removes the passed PropertyChangeListener from this ButtonGroup.
 	 * 
-	 * @param listener
-	 *            PropertyChangeListener to be removed
+	 * @param listener PropertyChangeListener to be removed
 	 * @since 2.0
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
@@ -154,11 +145,10 @@ public class ButtonGroup {
 	}
 
 	/**
-	 * Sets the passed ButtonModel to be the currently selected ButtonModel of
-	 * this ButtonGroup. Fires a property change.
+	 * Sets the passed ButtonModel to be the currently selected ButtonModel of this
+	 * ButtonGroup. Fires a property change.
 	 * 
-	 * @param model
-	 *            ButtonModel to be selected
+	 * @param model ButtonModel to be selected
 	 * @since 2.0
 	 */
 	protected void selectNewModel(ButtonModel model) {
@@ -173,8 +163,7 @@ public class ButtonGroup {
 	 * Sets the default selection of this ButtonGroup. Does nothing if it is not
 	 * present in the group. Sets selection to the passed ButtonModel.
 	 * 
-	 * @param model
-	 *            ButtonModel which is to be the default selection.
+	 * @param model ButtonModel which is to be the default selection.
 	 * @since 2.0
 	 */
 	public void setDefault(ButtonModel model) {
@@ -186,8 +175,7 @@ public class ButtonGroup {
 	/**
 	 * Sets the button with the given ButtonModel to be selected.
 	 * 
-	 * @param model
-	 *            The ButtonModel to be selected
+	 * @param model The ButtonModel to be selected
 	 * @since 2.0
 	 */
 	public void setSelected(ButtonModel model) {
@@ -208,19 +196,17 @@ public class ButtonGroup {
 	 * </ul>
 	 * <li><code>false</code>:
 	 * <ul>
-	 * <li>If the passed model owns selection, it will lose selection, and
-	 * selection will be given to the default ButonModel. If no default
-	 * ButtonModel was set, selection will remain as it was, as one ButtonModel
-	 * must own selection at all times.
-	 * <li>If the passed model does not own selection, then selection will
-	 * remain as it was.
+	 * <li>If the passed model owns selection, it will lose selection, and selection
+	 * will be given to the default ButonModel. If no default ButtonModel was set,
+	 * selection will remain as it was, as one ButtonModel must own selection at all
+	 * times.
+	 * <li>If the passed model does not own selection, then selection will remain as
+	 * it was.
 	 * </ul>
 	 * </ul>
 	 * 
-	 * @param model
-	 *            The model to be affected
-	 * @param value
-	 *            The selected state
+	 * @param model The model to be affected
+	 * @param value The selected state
 	 * @since 2.0
 	 */
 	public void setSelected(ButtonModel model, boolean value) {

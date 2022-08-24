@@ -54,10 +54,8 @@ public class SharedCursors extends Cursors {
 	}
 
 	private static Cursor createCursor(String sourceName, String maskName) {
-		ImageDescriptor src = ImageDescriptor.createFromFile(Internal.class,
-				sourceName);
-		ImageDescriptor mask = ImageDescriptor.createFromFile(Internal.class,
-				maskName);
+		ImageDescriptor src = ImageDescriptor.createFromFile(Internal.class, sourceName);
+		ImageDescriptor mask = ImageDescriptor.createFromFile(Internal.class, maskName);
 		return new Cursor(null, src.getImageData(), mask.getImageData(), 0, 0);
 	}
 

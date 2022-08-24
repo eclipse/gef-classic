@@ -26,12 +26,11 @@ public class CompoundSnapToHelper extends SnapToHelper {
 
 	/**
 	 * Constructs a compound snap to helper which will delegate to the provided
-	 * array of helpers. The first helper in the array has highest priority and
-	 * will be given the first opportunity to perform snapping.
+	 * array of helpers. The first helper in the array has highest priority and will
+	 * be given the first opportunity to perform snapping.
 	 * 
 	 * @since 3.0
-	 * @param delegates
-	 *            an array of helpers
+	 * @param delegates an array of helpers
 	 */
 	public CompoundSnapToHelper(SnapToHelper delegates[]) {
 		Assert.isTrue(delegates.length != 0);
@@ -52,11 +51,10 @@ public class CompoundSnapToHelper extends SnapToHelper {
 	 * @see SnapToHelper#snapRectangle(Request, int, PrecisionRectangle,
 	 *      PrecisionRectangle)
 	 */
-	public int snapRectangle(Request request, int snapOrientation,
-			PrecisionRectangle baseRect, PrecisionRectangle result) {
+	public int snapRectangle(Request request, int snapOrientation, PrecisionRectangle baseRect,
+			PrecisionRectangle result) {
 		for (int i = 0; i < getDelegates().length && snapOrientation != NONE; i++)
-			snapOrientation = getDelegates()[i].snapRectangle(request,
-					snapOrientation, baseRect, result);
+			snapOrientation = getDelegates()[i].snapRectangle(request, snapOrientation, baseRect, result);
 		return snapOrientation;
 	}
 

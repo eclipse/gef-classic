@@ -12,11 +12,10 @@ package org.eclipse.zest.layouts;
 import java.util.List;
 
 /**
- * When a layout completes an iteration, it throws this event
- * to allow the application to update.  For example, at the
- * end of an iteration is can be assumed the layout has placed
- * each entity into a new location.  This event allows the application
- * to update the GUI to represent the new locations
+ * When a layout completes an iteration, it throws this event to allow the
+ * application to update. For example, at the end of an iteration is can be
+ * assumed the layout has placed each entity into a new location. This event
+ * allows the application to update the GUI to represent the new locations
  * 
  * @author Casey Best and Rob Lintern
  */
@@ -32,15 +31,14 @@ public class LayoutIterationEvent {
 	}
 
 	/**
-	 * Return the entities used in this layout. 
+	 * Return the entities used in this layout.
 	 */
 	public List getEntitiesToLayout() {
 		return entitiesToLayout;
 	}
 
 	/**
-	 * Return the iteration of the layout algorithm that was
-	 * just completed. 
+	 * Return the iteration of the layout algorithm that was just completed.
 	 */
 	public int getIterationCompleted() {
 		return iterationCompleted;

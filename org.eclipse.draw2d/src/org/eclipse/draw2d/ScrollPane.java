@@ -31,8 +31,8 @@ public class ScrollPane extends Figure {
 	/** Constant indicating to never show the ScrollBar */
 	public static final int NEVER = 0;
 	/**
-	 * Constant indicating to show as needed, when the ScrollPane can't contain
-	 * its view
+	 * Constant indicating to show as needed, when the ScrollPane can't contain its
+	 * view
 	 */
 	public static final int AUTOMATIC = 1;
 	/** Constant indicating to always show the ScrollBar */
@@ -56,8 +56,7 @@ public class ScrollPane extends Figure {
 	}
 
 	/**
-	 * Creates a new horizontally oriented ScrollBar and adds it to this
-	 * ScrollPane.
+	 * Creates a new horizontally oriented ScrollBar and adds it to this ScrollPane.
 	 * 
 	 * @since 2.0
 	 */
@@ -77,8 +76,7 @@ public class ScrollPane extends Figure {
 	}
 
 	/**
-	 * Creates a new vertically oriented ScrollBar and adds it to this
-	 * ScrollPane.
+	 * Creates a new vertically oriented ScrollBar and adds it to this ScrollPane.
 	 * 
 	 * @since 2.0
 	 */
@@ -100,10 +98,9 @@ public class ScrollPane extends Figure {
 	}
 
 	/**
-	 * Returns the visibility of the ScrollPane's horizontal ScrollBar. These
-	 * are represented by the integer class constants {@link #NEVER},
-	 * {@link #AUTOMATIC}, and {@link #ALWAYS}. The default is
-	 * {@link #AUTOMATIC}.
+	 * Returns the visibility of the ScrollPane's horizontal ScrollBar. These are
+	 * represented by the integer class constants {@link #NEVER},
+	 * {@link #AUTOMATIC}, and {@link #ALWAYS}. The default is {@link #AUTOMATIC}.
 	 * 
 	 * @return the visiblity of the horizontal scrollbar
 	 * @since 2.0
@@ -127,8 +124,7 @@ public class ScrollPane extends Figure {
 	/**
 	 * Returns the visibility of the ScrollPane's vertical ScrollBar. These are
 	 * represented by the integer class constants {@link #NEVER},
-	 * {@link #AUTOMATIC}, and {@link #ALWAYS}. The default is
-	 * {@link #AUTOMATIC}.
+	 * {@link #AUTOMATIC}, and {@link #ALWAYS}. The default is {@link #AUTOMATIC}.
 	 * 
 	 * @return the visibility of the vertical scrollbar
 	 * @since 2.0
@@ -147,8 +143,8 @@ public class ScrollPane extends Figure {
 	}
 
 	/**
-	 * Returns the ScrollPane's view. The view is the IFigure that is the
-	 * contents of the ScrollPane.
+	 * Returns the ScrollPane's view. The view is the IFigure that is the contents
+	 * of the ScrollPane.
 	 * 
 	 * @return the contents
 	 * @deprecated use getContents()
@@ -182,8 +178,7 @@ public class ScrollPane extends Figure {
 	/**
 	 * Scrolls the Scrollpane horizontally x pixels from its left-most position.
 	 * 
-	 * @param x
-	 *            the amount to scroll horizontally
+	 * @param x the amount to scroll horizontally
 	 * @since 2.0
 	 */
 	public void scrollHorizontalTo(int x) {
@@ -191,12 +186,10 @@ public class ScrollPane extends Figure {
 	}
 
 	/**
-	 * Scrolls the Scrollpane horizontally from its left-most position by
-	 * location.x pixels and vertically from its top-most position by location.y
-	 * pixels.
+	 * Scrolls the Scrollpane horizontally from its left-most position by location.x
+	 * pixels and vertically from its top-most position by location.y pixels.
 	 * 
-	 * @param location
-	 *            the point to scroll to
+	 * @param location the point to scroll to
 	 * @since 2.0
 	 */
 	public void scrollTo(Point location) {
@@ -207,8 +200,7 @@ public class ScrollPane extends Figure {
 	/**
 	 * Scrolls the Scrollpane vertically y pixels from its top-most position.
 	 * 
-	 * @param y
-	 *            the amount to scroll vertically
+	 * @param y the amount to scroll vertically
 	 * @since 2.0
 	 */
 	public void scrollVerticalTo(int y) {
@@ -218,8 +210,7 @@ public class ScrollPane extends Figure {
 	/**
 	 * Sets the contents of the current viewport.
 	 * 
-	 * @param figure
-	 *            the contents of the viewport
+	 * @param figure the contents of the viewport
 	 */
 	public void setContents(IFigure figure) {
 		setView(figure);
@@ -228,8 +219,7 @@ public class ScrollPane extends Figure {
 	/**
 	 * Sets the ScrollPane's horizontal ScrollBar to the passed ScrollBar.
 	 * 
-	 * @param bar
-	 *            the new horizontal scrollbar
+	 * @param bar the new horizontal scrollbar
 	 * @since 2.0
 	 */
 	public void setHorizontalScrollBar(ScrollBar bar) {
@@ -246,12 +236,10 @@ public class ScrollPane extends Figure {
 
 	/**
 	 * Sets the horizontal ScrollBar visibility of the ScrollPane to the passed
-	 * value. These are represented by the integer class constants
-	 * {@link #NEVER}, {@link #AUTOMATIC}, and {@link #ALWAYS}. The default is
-	 * {@link #AUTOMATIC}.
+	 * value. These are represented by the integer class constants {@link #NEVER},
+	 * {@link #AUTOMATIC}, and {@link #ALWAYS}. The default is {@link #AUTOMATIC}.
 	 * 
-	 * @param v
-	 *            the new horizontal visibility
+	 * @param v the new horizontal visibility
 	 * @since 2.0
 	 */
 	public void setHorizontalScrollBarVisibility(int v) {
@@ -263,12 +251,11 @@ public class ScrollPane extends Figure {
 
 	/**
 	 * Sets both the horizontal and vertical ScrollBar visibilities of the
-	 * ScrollPane to the passed value. These are represented by the integer
-	 * class constants {@link #NEVER}, {@link #AUTOMATIC}, and {@link #ALWAYS}.
-	 * The default is {@link #AUTOMATIC}.
+	 * ScrollPane to the passed value. These are represented by the integer class
+	 * constants {@link #NEVER}, {@link #AUTOMATIC}, and {@link #ALWAYS}. The
+	 * default is {@link #AUTOMATIC}.
 	 * 
-	 * @param v
-	 *            the new vertical and horizontal visibility
+	 * @param v the new vertical and horizontal visibility
 	 * @since 2.0
 	 */
 	public void setScrollBarVisibility(int v) {
@@ -279,8 +266,7 @@ public class ScrollPane extends Figure {
 	/**
 	 * Sets the ScrollPane's vertical ScrollBar to the passed Scrollbar.
 	 * 
-	 * @param bar
-	 *            the new vertical scrollbar
+	 * @param bar the new vertical scrollbar
 	 * @since 2.0
 	 */
 	public void setVerticalScrollBar(ScrollBar bar) {
@@ -296,13 +282,11 @@ public class ScrollPane extends Figure {
 	}
 
 	/**
-	 * Sets the vertical ScrollBar visibility of the ScrollPane to the passed
-	 * value. These are represented by the integer class constants
-	 * {@link #NEVER}, {@link #AUTOMATIC}, and {@link #ALWAYS}. The default is
-	 * {@link #AUTOMATIC}.
+	 * Sets the vertical ScrollBar visibility of the ScrollPane to the passed value.
+	 * These are represented by the integer class constants {@link #NEVER},
+	 * {@link #AUTOMATIC}, and {@link #ALWAYS}. The default is {@link #AUTOMATIC}.
 	 * 
-	 * @param v
-	 *            the new vertical scrollbar visibility
+	 * @param v the new vertical scrollbar visibility
 	 * @since 2.0
 	 */
 	public void setVerticalScrollBarVisibility(int v) {
@@ -313,11 +297,10 @@ public class ScrollPane extends Figure {
 	}
 
 	/**
-	 * Sets the ScrollPane's view to the passed IFigure. The view is the
-	 * top-level IFigure which represents the contents of the ScrollPane.
+	 * Sets the ScrollPane's view to the passed IFigure. The view is the top-level
+	 * IFigure which represents the contents of the ScrollPane.
 	 * 
-	 * @param figure
-	 *            the new contents
+	 * @param figure the new contents
 	 * @deprecated call setContents(IFigure) instead
 	 * @since 2.0
 	 */
@@ -328,8 +311,7 @@ public class ScrollPane extends Figure {
 	/**
 	 * Sets the ScrollPane's Viewport to the passed value.
 	 * 
-	 * @param vp
-	 *            the new viewport
+	 * @param vp the new viewport
 	 * @since 2.0
 	 */
 	public void setViewport(Viewport vp) {

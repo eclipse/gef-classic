@@ -62,15 +62,15 @@ public class Path {
 	 */
 	PointList bendpoints;
 	/**
-	 * An arbitrary data field which can be used to map a Path back to some
-	 * client object.
+	 * An arbitrary data field which can be used to map a Path back to some client
+	 * object.
 	 */
 	public Object data;
 	List excludedObstacles;
 	List grownSegments;
 	/**
-	 * this field is for internal use only. It is true whenever a property has
-	 * been changed which requires the solver to resolve this path.
+	 * this field is for internal use only. It is true whenever a property has been
+	 * changed which requires the solver to resolve this path.
 	 */
 	public boolean isDirty = true;
 
@@ -79,8 +79,8 @@ public class Path {
 	PointList points;
 
 	/**
-	 * The previous cost ratio of the path. The cost ratio is the actual path
-	 * length divided by the length from the start to the end.
+	 * The previous cost ratio of the path. The cost ratio is the actual path length
+	 * divided by the length from the start to the end.
 	 */
 	private double prevCostRatio;
 	List segments;
@@ -111,8 +111,7 @@ public class Path {
 	 * Constructs a new path with the given data.
 	 * 
 	 * @since 3.0
-	 * @param data
-	 *            an arbitrary data field
+	 * @param data an arbitrary data field
 	 */
 	public Path(Object data) {
 		this();
@@ -122,10 +121,8 @@ public class Path {
 	/**
 	 * Constructs a new path with the given data, start and end point.
 	 * 
-	 * @param start
-	 *            the start point for this path
-	 * @param end
-	 *            the end point for this path
+	 * @param start the start point for this path
+	 * @param end   the end point for this path
 	 */
 	public Path(Point start, Point end) {
 		this(new Vertex(start, null), new Vertex(end, null));
@@ -134,10 +131,8 @@ public class Path {
 	/**
 	 * Creates a path between the given vertices.
 	 * 
-	 * @param start
-	 *            start vertex
-	 * @param end
-	 *            end vertex
+	 * @param start start vertex
+	 * @param end   end vertex
 	 */
 	Path(Vertex start, Vertex end) {
 		this();
@@ -146,50 +141,33 @@ public class Path {
 	}
 
 	/**
-	 * Attempts to add all segments between the given obstacles to the
-	 * visibility graph.
+	 * Attempts to add all segments between the given obstacles to the visibility
+	 * graph.
 	 * 
-	 * @param source
-	 *            the source obstacle
-	 * @param target
-	 *            the target obstacle
+	 * @param source the source obstacle
+	 * @param target the target obstacle
 	 */
 	private void addAllSegmentsBetween(Obstacle source, Obstacle target) {
-		addConnectingSegment(new Segment(source.bottomLeft, target.bottomLeft),
-				source, target, false, false);
-		addConnectingSegment(
-				new Segment(source.bottomRight, target.bottomRight), source,
-				target, true, true);
-		addConnectingSegment(new Segment(source.topLeft, target.topLeft),
-				source, target, true, true);
-		addConnectingSegment(new Segment(source.topRight, target.topRight),
-				source, target, false, false);
+		addConnectingSegment(new Segment(source.bottomLeft, target.bottomLeft), source, target, false, false);
+		addConnectingSegment(new Segment(source.bottomRight, target.bottomRight), source, target, true, true);
+		addConnectingSegment(new Segment(source.topLeft, target.topLeft), source, target, true, true);
+		addConnectingSegment(new Segment(source.topRight, target.topRight), source, target, false, false);
 
 		if (source.bottom() == target.bottom()) {
-			addConnectingSegment(new Segment(source.bottomLeft,
-					target.bottomRight), source, target, false, true);
-			addConnectingSegment(new Segment(source.bottomRight,
-					target.bottomLeft), source, target, true, false);
+			addConnectingSegment(new Segment(source.bottomLeft, target.bottomRight), source, target, false, true);
+			addConnectingSegment(new Segment(source.bottomRight, target.bottomLeft), source, target, true, false);
 		}
 		if (source.y == target.y) {
-			addConnectingSegment(new Segment(source.topLeft, target.topRight),
-					source, target, true, false);
-			addConnectingSegment(new Segment(source.topRight, target.topLeft),
-					source, target, false, true);
+			addConnectingSegment(new Segment(source.topLeft, target.topRight), source, target, true, false);
+			addConnectingSegment(new Segment(source.topRight, target.topLeft), source, target, false, true);
 		}
 		if (source.x == target.x) {
-			addConnectingSegment(
-					new Segment(source.bottomLeft, target.topLeft), source,
-					target, false, true);
-			addConnectingSegment(
-					new Segment(source.topLeft, target.bottomLeft), source,
-					target, true, false);
+			addConnectingSegment(new Segment(source.bottomLeft, target.topLeft), source, target, false, true);
+			addConnectingSegment(new Segment(source.topLeft, target.bottomLeft), source, target, true, false);
 		}
 		if (source.right() == target.right()) {
-			addConnectingSegment(new Segment(source.bottomRight,
-					target.topRight), source, target, true, false);
-			addConnectingSegment(new Segment(source.topRight,
-					target.bottomRight), source, target, false, true);
+			addConnectingSegment(new Segment(source.bottomRight, target.topRight), source, target, true, false);
+			addConnectingSegment(new Segment(source.topRight, target.bottomRight), source, target, false, true);
 		}
 	}
 
@@ -199,42 +177,28 @@ public class Path {
 	 * obstacles intersect and contains a boolean as to whether to check the
 	 * diagonal that includes the top right point of the other obstacle.
 	 * 
-	 * @param segment
-	 *            the segment to check
-	 * @param o1
-	 *            the first obstacle
-	 * @param o2
-	 *            the second obstacle
-	 * @param checkTopRight1
-	 *            whether or not to check the diagonal containing top right
-	 *            point
+	 * @param segment        the segment to check
+	 * @param o1             the first obstacle
+	 * @param o2             the second obstacle
+	 * @param checkTopRight1 whether or not to check the diagonal containing top
+	 *                       right point
 	 */
-	private void addConnectingSegment(Segment segment, Obstacle o1,
-			Obstacle o2, boolean checkTopRight1, boolean checkTopRight2) {
-		if (threshold != 0
-				&& (segment.end.getDistance(end)
-						+ segment.end.getDistance(start) > threshold || segment.start
-						.getDistance(end) + segment.start.getDistance(start) > threshold))
+	private void addConnectingSegment(Segment segment, Obstacle o1, Obstacle o2, boolean checkTopRight1,
+			boolean checkTopRight2) {
+		if (threshold != 0 && (segment.end.getDistance(end) + segment.end.getDistance(start) > threshold
+				|| segment.start.getDistance(end) + segment.start.getDistance(start) > threshold))
 			return;
 
 		if (o2.containsProper(segment.start) || o1.containsProper(segment.end))
 			return;
 
-		if (checkTopRight1
-				&& segment.intersects(o1.x, o1.bottom() - 1, o1.right() - 1,
-						o1.y))
+		if (checkTopRight1 && segment.intersects(o1.x, o1.bottom() - 1, o1.right() - 1, o1.y))
 			return;
-		if (checkTopRight2
-				&& segment.intersects(o2.x, o2.bottom() - 1, o2.right() - 1,
-						o2.y))
+		if (checkTopRight2 && segment.intersects(o2.x, o2.bottom() - 1, o2.right() - 1, o2.y))
 			return;
-		if (!checkTopRight1
-				&& segment.intersects(o1.x, o1.y, o1.right() - 1,
-						o1.bottom() - 1))
+		if (!checkTopRight1 && segment.intersects(o1.x, o1.y, o1.right() - 1, o1.bottom() - 1))
 			return;
-		if (!checkTopRight2
-				&& segment.intersects(o2.x, o2.y, o2.right() - 1,
-						o2.bottom() - 1))
+		if (!checkTopRight2 && segment.intersects(o2.x, o2.y, o2.right() - 1, o2.bottom() - 1))
 			return;
 
 		stack.push(o1);
@@ -245,8 +209,7 @@ public class Path {
 	/**
 	 * Adds an obstacle to the visibility graph and generates new segments
 	 * 
-	 * @param newObs
-	 *            the new obstacle, should not be in the graph already
+	 * @param newObs the new obstacle, should not be in the graph already
 	 */
 	private void addObstacle(Obstacle newObs) {
 		visibleObstacles.add(newObs);
@@ -262,11 +225,10 @@ public class Path {
 	}
 
 	/**
-	 * Adds the segments along the perimiter of an obstacle to the visiblity
-	 * graph queue.
+	 * Adds the segments along the perimiter of an obstacle to the visiblity graph
+	 * queue.
 	 * 
-	 * @param obs
-	 *            the obstacle
+	 * @param obs the obstacle
 	 */
 	private void addPerimiterSegments(Obstacle obs) {
 		Segment seg = new Segment(obs.topLeft, obs.topRight);
@@ -288,26 +250,18 @@ public class Path {
 	}
 
 	/**
-	 * Attempts to add a segment to the visibility graph. First checks to see if
-	 * the segment is outside the threshold oval. Then it compares the segment
-	 * against all obstacles. If it is clean, the segment is finally added to
-	 * the graph.
+	 * Attempts to add a segment to the visibility graph. First checks to see if the
+	 * segment is outside the threshold oval. Then it compares the segment against
+	 * all obstacles. If it is clean, the segment is finally added to the graph.
 	 * 
-	 * @param segment
-	 *            the segment
-	 * @param exclude1
-	 *            an obstacle to exclude from the search
-	 * @param exclude2
-	 *            another obstacle to exclude from the search
-	 * @param allObstacles
-	 *            the list of all obstacles
+	 * @param segment      the segment
+	 * @param exclude1     an obstacle to exclude from the search
+	 * @param exclude2     another obstacle to exclude from the search
+	 * @param allObstacles the list of all obstacles
 	 */
-	private void addSegment(Segment segment, Obstacle exclude1,
-			Obstacle exclude2, List allObstacles) {
-		if (threshold != 0
-				&& (segment.end.getDistance(end)
-						+ segment.end.getDistance(start) > threshold || segment.start
-						.getDistance(end) + segment.start.getDistance(start) > threshold))
+	private void addSegment(Segment segment, Obstacle exclude1, Obstacle exclude2, List allObstacles) {
+		if (threshold != 0 && (segment.end.getDistance(end) + segment.end.getDistance(start) > threshold
+				|| segment.start.getDistance(end) + segment.start.getDistance(start) > threshold))
 			return;
 
 		for (int i = 0; i < allObstacles.size(); i++) {
@@ -316,12 +270,9 @@ public class Path {
 			if (obs == exclude1 || obs == exclude2 || obs.exclude)
 				continue;
 
-			if (segment.intersects(obs.x, obs.y, obs.right() - 1,
-					obs.bottom() - 1)
-					|| segment.intersects(obs.x, obs.bottom() - 1,
-							obs.right() - 1, obs.y)
-					|| obs.containsProper(segment.start)
-					|| obs.containsProper(segment.end)) {
+			if (segment.intersects(obs.x, obs.y, obs.right() - 1, obs.bottom() - 1)
+					|| segment.intersects(obs.x, obs.bottom() - 1, obs.right() - 1, obs.y)
+					|| obs.containsProper(segment.start) || obs.containsProper(segment.end)) {
 				if (!visibleObstacles.contains(obs))
 					addObstacle(obs);
 				return;
@@ -334,10 +285,8 @@ public class Path {
 	/**
 	 * Adds the segments between the given obstacles.
 	 * 
-	 * @param source
-	 *            source obstacle
-	 * @param target
-	 *            target obstacle
+	 * @param source source obstacle
+	 * @param target target obstacle
 	 */
 	private void addSegmentsFor(Obstacle source, Obstacle target) {
 		if (source.intersects(target))
@@ -355,10 +304,8 @@ public class Path {
 	/**
 	 * Adds the segments between the given obstacles.
 	 * 
-	 * @param source
-	 *            source obstacle
-	 * @param target
-	 *            target obstacle
+	 * @param source source obstacle
+	 * @param target target obstacle
 	 */
 	private void addSegmentsFor(Vertex vertex, Obstacle obs) {
 		Segment seg = null;
@@ -515,8 +462,8 @@ public class Path {
 	}
 
 	/**
- * 
- */
+	* 
+	*/
 	void cleanup() {
 		// segments.clear();
 		visibleVertices.clear();
@@ -525,8 +472,7 @@ public class Path {
 	/**
 	 * Begins the creation of the visibility graph with the first segment
 	 * 
-	 * @param allObstacles
-	 *            list of all obstacles
+	 * @param allObstacles list of all obstacles
 	 */
 	private void createVisibilityGraph(List allObstacles) {
 		stack.push(null);
@@ -534,14 +480,12 @@ public class Path {
 		stack.push(new Segment(start, end));
 
 		while (!stack.isEmpty())
-			addSegment(stack.pop(), stack.popObstacle(), stack.popObstacle(),
-					allObstacles);
+			addSegment(stack.pop(), stack.popObstacle(), stack.popObstacle(), allObstacles);
 	}
 
 	/**
-	 * Once the visibility graph is constructed, this is called to label the
-	 * graph and determine the shortest path. Returns false if no path can be
-	 * found.
+	 * Once the visibility graph is constructed, this is called to label the graph
+	 * and determine the shortest path. Returns false if no path can be found.
 	 * 
 	 * @return true if a path can be found.
 	 */
@@ -581,11 +525,10 @@ public class Path {
 	}
 
 	/**
-	 * Creates the visibility graph and returns whether or not a shortest path
-	 * could be determined.
+	 * Creates the visibility graph and returns whether or not a shortest path could
+	 * be determined.
 	 * 
-	 * @param allObstacles
-	 *            the list of all obstacles
+	 * @param allObstacles the list of all obstacles
 	 * @return true if a shortest path was found
 	 */
 	boolean generateShortestPath(List allObstacles) {
@@ -598,8 +541,8 @@ public class Path {
 	}
 
 	/**
-	 * Returns the list of constrained points through which this path must pass
-	 * or <code>null</code>.
+	 * Returns the list of constrained points through which this path must pass or
+	 * <code>null</code>.
 	 * 
 	 * @see #setBendPoints(PointList)
 	 * @return list of bend points
@@ -638,19 +581,17 @@ public class Path {
 	/**
 	 * Returns a subpath for this path at the given segment
 	 * 
-	 * @param currentSegment
-	 *            the segment at which the subpath should be created
+	 * @param currentSegment the segment at which the subpath should be created
 	 * @return the new path
 	 */
 	Path getSubPath(Segment currentSegment) {
 		// ready new path
 		Path newPath = new Path(currentSegment.start, end);
-		newPath.grownSegments = new ArrayList(grownSegments.subList(
-				grownSegments.indexOf(currentSegment), grownSegments.size()));
+		newPath.grownSegments = new ArrayList(
+				grownSegments.subList(grownSegments.indexOf(currentSegment), grownSegments.size()));
 
 		// fix old path
-		grownSegments = new ArrayList(grownSegments.subList(0,
-				grownSegments.indexOf(currentSegment) + 1));
+		grownSegments = new ArrayList(grownSegments.subList(0, grownSegments.indexOf(currentSegment) + 1));
 		end = currentSegment.end;
 
 		subPath = newPath;
@@ -658,12 +599,11 @@ public class Path {
 	}
 
 	/**
-	 * Resets the vertices that this path has traveled prior to this segment.
-	 * This is called when the path has become inverted and needs to rectify any
-	 * labeling mistakes it made before it knew it was inverted.
+	 * Resets the vertices that this path has traveled prior to this segment. This
+	 * is called when the path has become inverted and needs to rectify any labeling
+	 * mistakes it made before it knew it was inverted.
 	 * 
-	 * @param currentSegment
-	 *            the segment at which the path found it was inverted
+	 * @param currentSegment the segment at which the path found it was inverted
 	 */
 	void invertPriorVertices(Segment currentSegment) {
 		int stop = grownSegments.indexOf(currentSegment);
@@ -679,8 +619,7 @@ public class Path {
 	/**
 	 * Returns true if this obstacle is in the visibility graph
 	 * 
-	 * @param obs
-	 *            the obstacle
+	 * @param obs the obstacle
 	 * @return true if obstacle is in the visibility graph
 	 */
 	boolean isObstacleVisible(Obstacle obs) {
@@ -722,8 +661,7 @@ public class Path {
 			Iterator v = visibleVertices.iterator();
 			while (v.hasNext()) {
 				tempVertex = (Vertex) v.next();
-				if (!tempVertex.isPermanent
-						&& tempVertex.label != null
+				if (!tempVertex.isPermanent && tempVertex.label != null
 						&& (tempVertex.cost < smallestCost || smallestCost == 0)) {
 					smallestCost = tempVertex.cost;
 					vertex = tempVertex;
@@ -739,8 +677,7 @@ public class Path {
 	/**
 	 * Links two vertices together in the visibility graph
 	 * 
-	 * @param segment
-	 *            the segment to add
+	 * @param segment the segment to add
 	 */
 	private void linkVertices(Segment segment) {
 		if (segment.start.neighbors == null)
@@ -758,16 +695,15 @@ public class Path {
 	}
 
 	/**
-	 * Called to reconnect a subpath back onto this path. Does a depth-first
-	 * search to reconnect all paths. Should be called after sorting.
+	 * Called to reconnect a subpath back onto this path. Does a depth-first search
+	 * to reconnect all paths. Should be called after sorting.
 	 */
 	void reconnectSubPaths() {
 		if (subPath != null) {
 			subPath.reconnectSubPaths();
 
 			Segment changedSegment = (Segment) subPath.grownSegments.remove(0);
-			Segment oldSegment = (Segment) grownSegments.get(grownSegments
-					.size() - 1);
+			Segment oldSegment = (Segment) grownSegments.get(grownSegments.size() - 1);
 
 			oldSegment.end = changedSegment.end;
 			grownSegments.addAll(subPath.grownSegments);
@@ -787,8 +723,7 @@ public class Path {
 	 * Refreshes the exclude field on the obstacles in the list. Excludes all
 	 * obstacles that contain the start or end point for this path.
 	 * 
-	 * @param allObstacles
-	 *            list of all obstacles
+	 * @param allObstacles list of all obstacles
 	 */
 	void refreshExcludedObstacles(List allObstacles) {
 		excludedObstacles.clear();
@@ -802,12 +737,11 @@ public class Path {
 					o.exclude = true;
 				else {
 					/*
-					 * $TODO Check for corners. If the path begins exactly at
-					 * the corner of an obstacle, the exclude should also be
-					 * true.
+					 * $TODO Check for corners. If the path begins exactly at the corner of an
+					 * obstacle, the exclude should also be true.
 					 * 
-					 * Or, change segment intersection so that two segments that
-					 * share an endpoint do not intersect.
+					 * Or, change segment intersection so that two segments that share an endpoint
+					 * do not intersect.
 					 */
 				}
 			}
@@ -841,8 +775,7 @@ public class Path {
 	/**
 	 * Sets the list of bend points to the given list and dirties the path.
 	 * 
-	 * @param bendPoints
-	 *            the list of bend points
+	 * @param bendPoints the list of bend points
 	 */
 	public void setBendPoints(PointList bendPoints) {
 		this.bendpoints = bendPoints;
@@ -852,8 +785,7 @@ public class Path {
 	/**
 	 * Sets the end point for this path to the given point.
 	 * 
-	 * @param end
-	 *            the new end point for this path
+	 * @param end the new end point for this path
 	 */
 	public void setEndPoint(Point end) {
 		if (end.equals(this.end))
@@ -865,8 +797,7 @@ public class Path {
 	/**
 	 * Sets the start point for this path to the given point.
 	 * 
-	 * @param start
-	 *            the new start point for this path
+	 * @param start the new start point for this path
 	 */
 	public void setStartPoint(Point start) {
 		if (start.equals(this.start))
@@ -880,8 +811,7 @@ public class Path {
 	 * obstacle. Also dirties the path in the process.
 	 * 
 	 * @since 3.0
-	 * @param obs
-	 *            the obstacle
+	 * @param obs the obstacle
 	 * @return <code>true</code> if a clean path touches the obstacle
 	 */
 	boolean testAndSet(Obstacle obs) {
@@ -899,8 +829,7 @@ public class Path {
 			points.getPoint(CURRENT, s);
 			points.getPoint(NEXT, s + 1);
 
-			if (seg1.intersects(CURRENT, NEXT)
-					|| seg2.intersects(CURRENT, NEXT) || obs.contains(CURRENT)
+			if (seg1.intersects(CURRENT, NEXT) || seg2.intersects(CURRENT, NEXT) || obs.contains(CURRENT)
 					|| obs.contains(NEXT)) {
 				isDirty = true;
 				return true;

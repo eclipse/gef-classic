@@ -40,9 +40,9 @@ import org.eclipse.gef.requests.CreationFactory;
 public class AbstractConnectionCreationTool extends TargetingTool {
 
 	/**
-	 * The state which indicates that the connection creation has begun. This
-	 * means that the source of the connection has been identified, and the user
-	 * is still to determine the target.
+	 * The state which indicates that the connection creation has begun. This means
+	 * that the source of the connection has been identified, and the user is still
+	 * to determine the target.
 	 */
 	protected static final int STATE_CONNECTION_STARTED = TargetingTool.MAX_STATE << 1;
 	/**
@@ -78,8 +78,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * Constructs a new abstract creation tool with the given creation factory.
 	 * 
-	 * @param factory
-	 *            the creation factory
+	 * @param factory the creation factory
 	 */
 	public AbstractConnectionCreationTool(CreationFactory factory) {
 		this();
@@ -135,8 +134,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
 	 */
 	protected String getCommandName() {
-		if (isInState(STATE_CONNECTION_STARTED
-				| STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+		if (isInState(STATE_CONNECTION_STARTED | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 			return REQ_CONNECTION_END;
 		else
 			return REQ_CONNECTION_START;
@@ -153,8 +151,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugNameForState(int)
 	 */
 	protected String getDebugNameForState(int s) {
-		if (s == STATE_CONNECTION_STARTED
-				|| s == STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
+		if (s == STATE_CONNECTION_STARTED || s == STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
 			return "Connection Started";//$NON-NLS-1$
 		return super.getDebugNameForState(s);
 	}
@@ -171,8 +168,8 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 
 	/**
 	 * Returns the request sent to the source node. The source node receives the
-	 * same request that is used with the target node. The only difference is
-	 * that at that time the request will be typed as
+	 * same request that is used with the target node. The only difference is that
+	 * at that time the request will be typed as
 	 * {@link RequestConstants#REQ_CONNECTION_START}.
 	 * 
 	 * @return the request used with the source node editpart
@@ -183,12 +180,11 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 
 	/**
 	 * When the button is first pressed, the source node and its command
-	 * contribution are determined and locked in. After that time, the tool will
-	 * be looking for the target node to complete the connection
+	 * contribution are determined and locked in. After that time, the tool will be
+	 * looking for the target node to complete the connection
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
-	 * @param button
-	 *            which button is pressed
+	 * @param button which button is pressed
 	 * @return <code>true</code> if the button down was processed
 	 */
 	protected boolean handleButtonDown(int button) {
@@ -197,8 +193,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 			updateTargetUnderMouse();
 			setConnectionSource(getTargetEditPart());
 			Command command = getCommand();
-			((CreateConnectionRequest) getTargetRequest())
-					.setSourceEditPart(getTargetEditPart());
+			((CreateConnectionRequest) getTargetRequest()).setSourceEditPart(getTargetEditPart());
 			if (command != null) {
 				setState(STATE_CONNECTION_STARTED);
 				setCurrentCommand(command);
@@ -214,8 +209,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	}
 
 	/**
-	 * Unloads or resets the tool if the state is in the terminal or invalid
-	 * state.
+	 * Unloads or resets the tool if the state is in the terminal or invalid state.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
@@ -312,8 +306,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	protected boolean handleMove() {
 		if (isInState(STATE_CONNECTION_STARTED) && viewer != getCurrentViewer())
 			return false;
-		if (isInState(STATE_CONNECTION_STARTED | STATE_INITIAL
-				| STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
+		if (isInState(STATE_CONNECTION_STARTED | STATE_INITIAL | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			updateTargetRequest();
 			updateTargetUnderMouse();
 			showSourceFeedback();
@@ -325,9 +318,9 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 
 	/**
 	 * Called if the source editpart is deactivated for some reason during the
-	 * creation process. For example, the user performs an Undo while in the
-	 * middle of creating a connection, which undoes a prior command which
-	 * created the source.
+	 * creation process. For example, the user performs an Undo while in the middle
+	 * of creating a connection, which undoes a prior command which created the
+	 * source.
 	 */
 	protected void handleSourceDeactivated() {
 		setState(STATE_INVALID);
@@ -347,8 +340,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * Sets the source editpart for the creation
 	 * 
-	 * @param source
-	 *            the source editpart node
+	 * @param source the source editpart node
 	 */
 	protected void setConnectionSource(EditPart source) {
 		if (connectionSource != null)
@@ -361,16 +353,15 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * Sets the creation factory used in the request.
 	 * 
-	 * @param factory
-	 *            the factory
+	 * @param factory the factory
 	 */
 	public void setFactory(CreationFactory factory) {
 		this.factory = factory;
 	}
 
 	/**
-	 * Sends a show feedback request to the source editpart and sets the
-	 * feedback flag.
+	 * Sends a show feedback request to the source editpart and sets the feedback
+	 * flag.
 	 */
 	protected void showSourceFeedback() {
 		if (connectionSource != null) {

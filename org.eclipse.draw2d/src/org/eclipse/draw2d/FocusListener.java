@@ -18,16 +18,14 @@ public interface FocusListener {
 	/**
 	 * Called when the listened to object has gained focus.
 	 * 
-	 * @param fe
-	 *            The FocusEvent object
+	 * @param fe The FocusEvent object
 	 */
 	void focusGained(FocusEvent fe);
 
 	/**
 	 * Called when the listened to object has lost focus.
 	 * 
-	 * @param fe
-	 *            The FocusEvent object
+	 * @param fe The FocusEvent object
 	 */
 	void focusLost(FocusEvent fe);
 

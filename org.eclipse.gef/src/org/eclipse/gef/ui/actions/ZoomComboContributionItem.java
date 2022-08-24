@@ -38,8 +38,7 @@ import org.eclipse.gef.editparts.ZoomManager;
  * 
  * @author Eric Bordeau
  */
-public class ZoomComboContributionItem extends ContributionItem
-		implements ZoomListener {
+public class ZoomComboContributionItem extends ContributionItem implements ZoomListener {
 
 	private boolean forceSetText;
 	private Combo combo;
@@ -52,8 +51,7 @@ public class ZoomComboContributionItem extends ContributionItem
 	/**
 	 * Constructor for ComboToolItem.
 	 * 
-	 * @param partService
-	 *            used to add a PartListener
+	 * @param partService used to add a PartListener
 	 */
 	public ZoomComboContributionItem(IPartService partService) {
 		this(partService, "8888%");//$NON-NLS-1$
@@ -62,26 +60,20 @@ public class ZoomComboContributionItem extends ContributionItem
 	/**
 	 * Constructor for ComboToolItem.
 	 * 
-	 * @param partService
-	 *            used to add a PartListener
-	 * @param initString
-	 *            the initial string displayed in the combo
+	 * @param partService used to add a PartListener
+	 * @param initString  the initial string displayed in the combo
 	 */
-	public ZoomComboContributionItem(IPartService partService,
-			String initString) {
+	public ZoomComboContributionItem(IPartService partService, String initString) {
 		this(partService, new String[] { initString });
 	}
 
 	/**
 	 * Constructor for ComboToolItem.
 	 * 
-	 * @param partService
-	 *            used to add a PartListener
-	 * @param initStrings
-	 *            the initial string displayed in the combo
+	 * @param partService used to add a PartListener
+	 * @param initStrings the initial string displayed in the combo
 	 */
-	public ZoomComboContributionItem(IPartService partService,
-			String[] initStrings) {
+	public ZoomComboContributionItem(IPartService partService, String[] initStrings) {
 		super(GEFActionConstants.ZOOM_TOOLBAR_WIDGET);
 		this.initStrings = initStrings;
 		service = partService;
@@ -133,8 +125,7 @@ public class ZoomComboContributionItem extends ContributionItem
 	/**
 	 * Computes the width required by control
 	 * 
-	 * @param control
-	 *            The control to compute width
+	 * @param control The control to compute width
 	 * @return int The width required
 	 */
 	protected int computeWidth(Control control) {
@@ -142,11 +133,10 @@ public class ZoomComboContributionItem extends ContributionItem
 	}
 
 	/**
-	 * Creates and returns the control for this contribution item under the
-	 * given parent composite.
+	 * Creates and returns the control for this contribution item under the given
+	 * parent composite.
 	 * 
-	 * @param parent
-	 *            the parent composite
+	 * @param parent the parent composite
 	 * @return the new control
 	 */
 	protected Control createControl(Composite parent) {
@@ -193,42 +183,36 @@ public class ZoomComboContributionItem extends ContributionItem
 	}
 
 	/**
-	 * The control item implementation of this <code>IContributionItem</code>
-	 * method calls the <code>createControl</code> framework method. Subclasses
-	 * must implement <code>createControl</code> rather than overriding this
-	 * method.
+	 * The control item implementation of this <code>IContributionItem</code> method
+	 * calls the <code>createControl</code> framework method. Subclasses must
+	 * implement <code>createControl</code> rather than overriding this method.
 	 * 
-	 * @param parent
-	 *            The parent of the control to fill
+	 * @param parent The parent of the control to fill
 	 */
 	public final void fill(Composite parent) {
 		createControl(parent);
 	}
 
 	/**
-	 * The control item implementation of this <code>IContributionItem</code>
-	 * method throws an exception since controls cannot be added to menus.
+	 * The control item implementation of this <code>IContributionItem</code> method
+	 * throws an exception since controls cannot be added to menus.
 	 * 
-	 * @param parent
-	 *            The menu
-	 * @param index
-	 *            Menu index
+	 * @param parent The menu
+	 * @param index  Menu index
 	 */
 	public final void fill(Menu parent, int index) {
 		Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
 	}
 
 	/**
-	 * The control item implementation of this <code>IContributionItem</code>
-	 * method calls the <code>createControl</code> framework method to create a
-	 * control under the given parent, and then creates a new tool item to hold
-	 * it. Subclasses must implement <code>createControl</code> rather than
-	 * overriding this method.
+	 * The control item implementation of this <code>IContributionItem</code> method
+	 * calls the <code>createControl</code> framework method to create a control
+	 * under the given parent, and then creates a new tool item to hold it.
+	 * Subclasses must implement <code>createControl</code> rather than overriding
+	 * this method.
 	 * 
-	 * @param parent
-	 *            The ToolBar to add the new control to
-	 * @param index
-	 *            Index
+	 * @param parent The ToolBar to add the new control to
+	 * @param index  Index
 	 */
 	public void fill(ToolBar parent, int index) {
 		toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
@@ -248,8 +232,7 @@ public class ZoomComboContributionItem extends ContributionItem
 	/**
 	 * Sets the ZoomManager
 	 * 
-	 * @param zm
-	 *            The ZoomManager
+	 * @param zm The ZoomManager
 	 */
 	public void setZoomManager(ZoomManager zm) {
 		if (zoomManager == zm)
@@ -270,20 +253,19 @@ public class ZoomComboContributionItem extends ContributionItem
 	private void handleWidgetDefaultSelected(SelectionEvent event) {
 		if (zoomManager != null) {
 			if (combo.getSelectionIndex() >= 0)
-				zoomManager.setZoomAsText(
-						combo.getItem(combo.getSelectionIndex()));
+				zoomManager.setZoomAsText(combo.getItem(combo.getSelectionIndex()));
 			else
 				zoomManager.setZoomAsText(combo.getText());
 		}
 		/*
-		 * There are several cases where invoking setZoomAsText (above) will not
-		 * result in zoomChanged being fired (the method below), such as when
-		 * the user types "asdf" as the zoom level and hits enter, or when they
-		 * type in 1%, which is below the minimum limit, and the current zoom is
-		 * already at the minimum level. Hence, there is no guarantee that
-		 * refresh() will always be invoked. But we need to invoke it to clear
-		 * out the invalid text and show the current zoom level. Hence, an
-		 * (often redundant) invocation to refresh() is made below.
+		 * There are several cases where invoking setZoomAsText (above) will not result
+		 * in zoomChanged being fired (the method below), such as when the user types
+		 * "asdf" as the zoom level and hits enter, or when they type in 1%, which is
+		 * below the minimum limit, and the current zoom is already at the minimum
+		 * level. Hence, there is no guarantee that refresh() will always be invoked.
+		 * But we need to invoke it to clear out the invalid text and show the current
+		 * zoom level. Hence, an (often redundant) invocation to refresh() is made
+		 * below.
 		 */
 		refresh(false);
 	}

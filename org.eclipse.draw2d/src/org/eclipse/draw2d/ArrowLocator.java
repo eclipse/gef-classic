@@ -21,14 +21,12 @@ import org.eclipse.draw2d.geometry.PointList;
 public class ArrowLocator extends ConnectionLocator {
 
 	/**
-	 * Constructs an ArrowLocator associated with passed connection and tip
-	 * location (either {@link ConnectionLocator#SOURCE} or
+	 * Constructs an ArrowLocator associated with passed connection and tip location
+	 * (either {@link ConnectionLocator#SOURCE} or
 	 * {@link ConnectionLocator#TARGET}).
 	 * 
-	 * @param connection
-	 *            The connection associated with the locator
-	 * @param location
-	 *            Location of the arrow decoration
+	 * @param connection The connection associated with the locator
+	 * @param location   Location of the arrow decoration
 	 * @since 2.0
 	 */
 	public ArrowLocator(Connection connection, int location) {
@@ -36,12 +34,10 @@ public class ArrowLocator extends ConnectionLocator {
 	}
 
 	/**
-	 * Relocates the passed in figure (which must be a
-	 * {@link RotatableDecoration}) at either the start or end of the
-	 * connection.
+	 * Relocates the passed in figure (which must be a {@link RotatableDecoration})
+	 * at either the start or end of the connection.
 	 * 
-	 * @param target
-	 *            The RotatableDecoration to relocate
+	 * @param target The RotatableDecoration to relocate
 	 */
 	public void relocate(IFigure target) {
 		PointList points = getConnection().getPoints();

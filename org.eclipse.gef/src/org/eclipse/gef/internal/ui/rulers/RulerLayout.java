@@ -31,8 +31,7 @@ public class RulerLayout extends XYLayout {
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure,
 	 *      int, int)
 	 */
-	protected Dimension calculatePreferredSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		return new Dimension(1, 1);
 	}
 
@@ -55,12 +54,10 @@ public class RulerLayout extends XYLayout {
 			int position = ((Integer) getConstraint(child)).intValue();
 			if (((RulerFigure) container).isHorizontal()) {
 				childSize.height = rulerSize.height - 1;
-				Rectangle.SINGLETON.setLocation(position
-						- (childSize.width / 2), rulerSize.y);
+				Rectangle.SINGLETON.setLocation(position - (childSize.width / 2), rulerSize.y);
 			} else {
 				childSize.width = rulerSize.width - 1;
-				Rectangle.SINGLETON.setLocation(rulerSize.x, position
-						- (childSize.height / 2));
+				Rectangle.SINGLETON.setLocation(rulerSize.x, position - (childSize.height / 2));
 			}
 			Rectangle.SINGLETON.setSize(childSize);
 			child.setBounds(Rectangle.SINGLETON);

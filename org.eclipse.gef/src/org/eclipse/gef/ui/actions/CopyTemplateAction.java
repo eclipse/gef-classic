@@ -28,18 +28,16 @@ import org.eclipse.gef.palette.PaletteTemplateEntry;
  * 
  * @author Eric Bordeau
  */
-public class CopyTemplateAction extends WorkbenchPartAction implements
-		ISelectionChangedListener {
+public class CopyTemplateAction extends WorkbenchPartAction implements ISelectionChangedListener {
 
 	private Object template;
 
 	/**
-	 * Constructs a new CopyTemplateAction. You must manually add this action to
-	 * the palette viewer's list of selection listeners. Otherwise, this
-	 * action's enabled state won't be updated properly.
+	 * Constructs a new CopyTemplateAction. You must manually add this action to the
+	 * palette viewer's list of selection listeners. Otherwise, this action's
+	 * enabled state won't be updated properly.
 	 * 
-	 * @param editor
-	 *            the workbench part
+	 * @param editor the workbench part
 	 * @see org.eclipse.gef.ui.actions.EditorPartAction#EditorPartAction(IEditorPart)
 	 */
 	public CopyTemplateAction(IEditorPart editor) {
@@ -65,16 +63,15 @@ public class CopyTemplateAction extends WorkbenchPartAction implements
 	}
 
 	/**
-	 * Sets the default {@link Clipboard Clipboard's} contents to be the
-	 * currently selected template.
+	 * Sets the default {@link Clipboard Clipboard's} contents to be the currently
+	 * selected template.
 	 */
 	public void run() {
 		Clipboard.getDefault().setContents(template);
 	}
 
 	/**
-	 * Sets the selected EditPart and refreshes the enabled state of this
-	 * action.
+	 * Sets the selected EditPart and refreshes the enabled state of this action.
 	 * 
 	 * @see ISelectionChangedListener#selectionChanged(SelectionChangedEvent)
 	 */
@@ -89,8 +86,7 @@ public class CopyTemplateAction extends WorkbenchPartAction implements
 			if (obj instanceof EditPart) {
 				Object model = ((EditPart) obj).getModel();
 				if (model instanceof CombinedTemplateCreationEntry)
-					template = ((CombinedTemplateCreationEntry) model)
-							.getTemplate();
+					template = ((CombinedTemplateCreationEntry) model).getTemplate();
 				else if (model instanceof PaletteTemplateEntry)
 					template = ((PaletteTemplateEntry) model).getTemplate();
 			}

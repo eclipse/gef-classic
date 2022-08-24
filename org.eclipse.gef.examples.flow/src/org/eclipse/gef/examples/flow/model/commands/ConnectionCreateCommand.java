@@ -89,8 +89,7 @@ public class ConnectionCreateCommand extends Command {
 	/**
 	 * Sets the source Activity
 	 * 
-	 * @param activity
-	 *            the source Activity
+	 * @param activity the source Activity
 	 */
 	public void setSource(Activity activity) {
 		source = activity;
@@ -99,8 +98,7 @@ public class ConnectionCreateCommand extends Command {
 	/**
 	 * Sets the Transistion between the source and target Activities
 	 * 
-	 * @param transition
-	 *            the transistion
+	 * @param transition the transistion
 	 */
 	public void setTransition(Transition transition) {
 		this.transition = transition;
@@ -109,8 +107,7 @@ public class ConnectionCreateCommand extends Command {
 	/**
 	 * Sets the target Activity
 	 * 
-	 * @param activity
-	 *            the target
+	 * @param activity the target
 	 */
 	public void setTarget(Activity activity) {
 		target = activity;

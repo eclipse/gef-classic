@@ -53,8 +53,8 @@ public class FlowAdapter extends FlowFigure {
 	}
 
 	/**
-	 * Sizes the content box to be big enough to display all figures. Wraps to
-	 * the next line if there is not enough room on the current one.
+	 * Sizes the content box to be big enough to display all figures. Wraps to the
+	 * next line if there is not enough room on the current one.
 	 * 
 	 * @see org.eclipse.draw2d.Figure#layout()
 	 */
@@ -63,8 +63,7 @@ public class FlowAdapter extends FlowFigure {
 		if (wHint == Integer.MAX_VALUE)
 			wHint = -1;
 		Dimension prefSize = getPreferredSize(wHint, -1);
-		if (context.isCurrentLineOccupied()
-				&& prefSize.width > context.getRemainingLineWidth()) {
+		if (context.isCurrentLineOccupied() && prefSize.width > context.getRemainingLineWidth()) {
 			context.endLine();
 			prefSize = getPreferredSize(context.getRemainingLineWidth(), -1);
 		}
@@ -73,14 +72,13 @@ public class FlowAdapter extends FlowFigure {
 	}
 
 	/**
-	 * Updates the bounds of this figure to match that of its content box, and
-	 * lays out this figure's children.
+	 * Updates the bounds of this figure to match that of its content box, and lays
+	 * out this figure's children.
 	 * 
 	 * @see FlowFigure#postValidate()
 	 */
 	public void postValidate() {
-		setBounds(new Rectangle(box.getX(), box.getBaseline() - box.ascent,
-				box.width, box.ascent));
+		setBounds(new Rectangle(box.getX(), box.getBaseline() - box.ascent, box.width, box.ascent));
 		super.layout();
 		for (Iterator itr = getChildren().iterator(); itr.hasNext();)
 			((IFigure) itr.next()).validate();
@@ -101,9 +99,8 @@ public class FlowAdapter extends FlowFigure {
 	public void setBounds(Rectangle rect) {
 		int x = bounds.x, y = bounds.y;
 
-		boolean resize = (rect.width != bounds.width)
-				|| (rect.height != bounds.height), translate = (rect.x != x)
-				|| (rect.y != y);
+		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
+				translate = (rect.x != x) || (rect.y != y);
 
 		if ((resize || translate) && isVisible())
 			erase();

@@ -66,8 +66,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 
 		public void addNotify() {
 			super.addNotify();
-			getConnection().addPropertyChangeListener(
-					Connection.PROPERTY_POINTS, this);
+			getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
 			getConnection().addAncestorListener(ancestorListener);
 		}
 
@@ -81,8 +80,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 		}
 
 		public void removeNotify() {
-			getConnection().removePropertyChangeListener(
-					Connection.PROPERTY_POINTS, this);
+			getConnection().removePropertyChangeListener(Connection.PROPERTY_POINTS, this);
 			getConnection().removeAncestorListener(ancestorListener);
 			super.removeNotify();
 		}
@@ -103,10 +101,8 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	protected List createSelectionHandles() {
 		List list = new ArrayList();
-		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(),
-				ConnectionLocator.SOURCE));
-		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(),
-				ConnectionLocator.TARGET));
+		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(), ConnectionLocator.SOURCE));
+		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(), ConnectionLocator.TARGET));
 		return list;
 	}
 
@@ -114,8 +110,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 * Erases connection move feedback. This method is called when a
 	 * ReconnectRequest is received.
 	 * 
-	 * @param request
-	 *            the reconnect request.
+	 * @param request the reconnect request.
 	 */
 	protected void eraseConnectionMoveFeedback(ReconnectRequest request) {
 		if (originalAnchor == null)
@@ -132,8 +127,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(org.eclipse.gef.Request)
 	 */
 	public void eraseSourceFeedback(Request request) {
-		if (REQ_RECONNECT_TARGET.equals(request.getType())
-				|| REQ_RECONNECT_SOURCE.equals(request.getType()))
+		if (REQ_RECONNECT_TARGET.equals(request.getType()) || REQ_RECONNECT_SOURCE.equals(request.getType()))
 			eraseConnectionMoveFeedback((ReconnectRequest) request);
 	}
 
@@ -145,8 +139,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	}
 
 	/**
-	 * Convenience method for obtaining the host's <code>Connection</code>
-	 * figure.
+	 * Convenience method for obtaining the host's <code>Connection</code> figure.
 	 * 
 	 * @return the Connection figure
 	 */
@@ -156,11 +149,10 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Lazily creates and returns the feedback helper for the given request. The
-	 * helper will be configured as either moving the source or target end of
-	 * the connection.
+	 * helper will be configured as either moving the source or target end of the
+	 * connection.
 	 * 
-	 * @param request
-	 *            the reconnect request
+	 * @param request the reconnect request
 	 * @return the feedback helper
 	 */
 	protected FeedbackHelper getFeedbackHelper(ReconnectRequest request) {
@@ -173,8 +165,8 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	}
 
 	/**
-	 * Hides the focus indicator. The focus indicator is a dotted outline around
-	 * the connection.
+	 * Hides the focus indicator. The focus indicator is a dotted outline around the
+	 * connection.
 	 * 
 	 * @see #showFocus()
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideFocus()
@@ -187,11 +179,10 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	}
 
 	/**
-	 * Shows or updates connection move feedback. Called whenever a show
-	 * feedback request is received for reconnection.
+	 * Shows or updates connection move feedback. Called whenever a show feedback
+	 * request is received for reconnection.
 	 * 
-	 * @param request
-	 *            the reconnect request
+	 * @param request the reconnect request
 	 */
 	protected void showConnectionMoveFeedback(ReconnectRequest request) {
 		NodeEditPart node = null;
@@ -230,8 +221,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
 	 */
 	public void showSourceFeedback(Request request) {
-		if (REQ_RECONNECT_SOURCE.equals(request.getType())
-				|| REQ_RECONNECT_TARGET.equals(request.getType()))
+		if (REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
 			showConnectionMoveFeedback((ReconnectRequest) request);
 	}
 

@@ -30,41 +30,35 @@ package org.eclipse.zest.core.viewers;
 interface IEntityConnectionStyleBezierExtension {
 
 	/**
-	 * Gets the angle between the start point, and the line between the start
-	 * and end, which will define the position of the start control point. If
-	 * the start angle, and the end angle are the same sign, the two control
-	 * points are guaranteed to be on the same side of the line.
+	 * Gets the angle between the start point, and the line between the start and
+	 * end, which will define the position of the start control point. If the start
+	 * angle, and the end angle are the same sign, the two control points are
+	 * guaranteed to be on the same side of the line.
 	 * 
-	 * @param source
-	 *            the source node to base on.
-	 * @param dest
-	 *            the destination node to base on.
+	 * @param source the source node to base on.
+	 * @param dest   the destination node to base on.
 	 * @return the start angle or <code>Double.NaN</code> for defaults.
 	 */
 	double getStartAngle(Object source, Object dest);
 
 	/**
-	 * Gets the angle between the end point, and the line between the start and
-	 * end, which will define the position of the end control point. If the
-	 * start angle, and the end angle are the same sign, the two control points
-	 * are guaranteed to be on the same side of the line.
+	 * Gets the angle between the end point, and the line between the start and end,
+	 * which will define the position of the end control point. If the start angle,
+	 * and the end angle are the same sign, the two control points are guaranteed to
+	 * be on the same side of the line.
 	 * 
-	 * @param source
-	 *            the source node to base on.
-	 * @param dest
-	 *            the destination node to base on.
+	 * @param source the source node to base on.
+	 * @param dest   the destination node to base on.
 	 * @return the end angle or <code>Double.NaN</code> for defaults.
 	 */
 	double getEndAngle(Object source, Object dest);
 
 	/**
-	 * Gets the distance between the start point and the start control point, as
-	 * a fraction of the distance between the start point and end point.
+	 * Gets the distance between the start point and the start control point, as a
+	 * fraction of the distance between the start point and end point.
 	 * 
-	 * @param source
-	 *            the source node to base on.
-	 * @param dest
-	 *            the destination node to base on.
+	 * @param source the source node to base on.
+	 * @param dest   the destination node to base on.
 	 * @return the start distance or <code>Double.NaN</code> for defaults.
 	 */
 	double getStartDistance(Object source, Object dest);
@@ -73,10 +67,8 @@ interface IEntityConnectionStyleBezierExtension {
 	 * Gets the distance between the end point and the end control point, as a
 	 * fraction of the distance between the start point and end point.
 	 * 
-	 * @param source
-	 *            the source node to base on.
-	 * @param dest
-	 *            the destination node to base on.
+	 * @param source the source node to base on.
+	 * @param dest   the destination node to base on.
 	 * @return the end distance or <code>Double.NaN</code> for defaults.
 	 */
 	double getEndDistance(Object source, Object dest);

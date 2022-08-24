@@ -24,8 +24,7 @@ public class Digraph2NodeFigure extends Digraph1NodeFigure {
 	/**
 	 * Constructor for a Digraph2NodeFigure.
 	 * 
-	 * @param number
-	 *            the node number in the directed graph.
+	 * @param number the node number in the directed graph.
 	 */
 	public Digraph2NodeFigure(int number) {
 		super(number);

@@ -30,8 +30,7 @@ public final class NativeGraphicsSource implements GraphicsSource {
 	/**
 	 * Constructs a new graphics source on the given control.
 	 * 
-	 * @param canvas
-	 *            the control
+	 * @param canvas the control
 	 * @since 3.2
 	 */
 	public NativeGraphicsSource(Control canvas) {

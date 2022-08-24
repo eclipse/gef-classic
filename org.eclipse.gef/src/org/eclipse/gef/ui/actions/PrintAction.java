@@ -31,8 +31,7 @@ public class PrintAction extends WorkbenchPartAction {
 	/**
 	 * Constructor for PrintAction.
 	 * 
-	 * @param part
-	 *            The workbench part associated with this PrintAction
+	 * @param part The workbench part associated with this PrintAction
 	 */
 	public PrintAction(IWorkbenchPart part) {
 		super(part);
@@ -60,16 +59,13 @@ public class PrintAction extends WorkbenchPartAction {
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
 	public void run() {
-		GraphicalViewer viewer = getWorkbenchPart()
-				.getAdapter(GraphicalViewer.class);
+		GraphicalViewer viewer = getWorkbenchPart().getAdapter(GraphicalViewer.class);
 
-		PrintDialog dialog = new PrintDialog(viewer.getControl().getShell(),
-				SWT.NULL);
+		PrintDialog dialog = new PrintDialog(viewer.getControl().getShell(), SWT.NULL);
 		PrinterData data = dialog.open();
 
 		if (data != null) {
-			PrintGraphicalViewerOperation op = new PrintGraphicalViewerOperation(
-					new Printer(data), viewer);
+			PrintGraphicalViewerOperation op = new PrintGraphicalViewerOperation(new Printer(data), viewer);
 			op.run(getWorkbenchPart().getTitle());
 		}
 	}

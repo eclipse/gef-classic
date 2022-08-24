@@ -22,8 +22,7 @@ public class ReorderPartCommand extends Command {
 	private LogicSubpart child;
 	private LogicDiagram parent;
 
-	public ReorderPartCommand(LogicSubpart child, LogicDiagram parent,
-			int newIndex) {
+	public ReorderPartCommand(LogicSubpart child, LogicDiagram parent, int newIndex) {
 		super(LogicMessages.ReorderPartCommand_Label);
 		this.child = child;
 		this.parent = parent;

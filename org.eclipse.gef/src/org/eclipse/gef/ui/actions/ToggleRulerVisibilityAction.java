@@ -35,8 +35,8 @@ public class ToggleRulerVisibilityAction extends Action {
 	/**
 	 * Constructor
 	 * 
-	 * @param diagramViewer
-	 *            the viewer whose ruler visibility property is to be toggled
+	 * @param diagramViewer the viewer whose ruler visibility property is to be
+	 *                      toggled
 	 */
 	public ToggleRulerVisibilityAction(GraphicalViewer diagramViewer) {
 		super(GEFMessages.ToggleRulerVisibility_Label, AS_CHECK_BOX);
@@ -51,8 +51,7 @@ public class ToggleRulerVisibilityAction extends Action {
 	 * @see org.eclipse.jface.action.IAction#isChecked()
 	 */
 	public boolean isChecked() {
-		Boolean val = ((Boolean) diagramViewer
-				.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY));
+		Boolean val = ((Boolean) diagramViewer.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY));
 		if (val != null)
 			return val.booleanValue();
 		return false;
@@ -62,8 +61,7 @@ public class ToggleRulerVisibilityAction extends Action {
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
 	public void run() {
-		diagramViewer.setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY,
-				Boolean.valueOf(!isChecked()));
+		diagramViewer.setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, Boolean.valueOf(!isChecked()));
 	}
 
 }

@@ -33,8 +33,7 @@ public class RenameActivityCommand extends Command {
 	/**
 	 * Sets the new Activity name
 	 * 
-	 * @param string
-	 *            the new name
+	 * @param string the new name
 	 */
 	public void setName(String string) {
 		name = string;
@@ -43,8 +42,7 @@ public class RenameActivityCommand extends Command {
 	/**
 	 * Sets the old Activity name
 	 * 
-	 * @param string
-	 *            the old name
+	 * @param string the old name
 	 */
 	public void setOldName(String string) {
 		oldName = string;
@@ -53,8 +51,7 @@ public class RenameActivityCommand extends Command {
 	/**
 	 * Sets the source Activity
 	 * 
-	 * @param activity
-	 *            the source Activity
+	 * @param activity the source Activity
 	 */
 	public void setSource(Activity activity) {
 		source = activity;

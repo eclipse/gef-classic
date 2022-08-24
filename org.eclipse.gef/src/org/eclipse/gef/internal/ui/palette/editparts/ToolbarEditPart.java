@@ -31,8 +31,7 @@ public class ToolbarEditPart extends GroupEditPart {
 	/**
 	 * Creates a new instance.
 	 * 
-	 * @param model
-	 *            the <code>PaletteToolbar</code>
+	 * @param model the <code>PaletteToolbar</code>
 	 */
 	public ToolbarEditPart(PaletteToolbar model) {
 		super(model);
@@ -46,13 +45,11 @@ public class ToolbarEditPart extends GroupEditPart {
 
 				// draw top border
 				graphics.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
-				graphics.drawLine(getBounds().getTopLeft(), getBounds()
-						.getTopRight());
+				graphics.drawLine(getBounds().getTopLeft(), getBounds().getTopRight());
 
 				// draw bottom border
 				graphics.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_NORMAL_SHADOW_70);
-				graphics.drawLine(
-						getBounds().getBottomLeft().getTranslated(0, -1),
+				graphics.drawLine(getBounds().getBottomLeft().getTranslated(0, -1),
 						getBounds().getBottomRight().getTranslated(0, -1));
 			}
 

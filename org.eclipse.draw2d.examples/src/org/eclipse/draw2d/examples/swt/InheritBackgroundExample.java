@@ -18,7 +18,7 @@ public class InheritBackgroundExample {
 
 	static Shell shell;
 	static Image bg;
-	
+
 	static {
 		bg = new Image(null, 10, 800);
 		GC gc = new GC(bg);
@@ -45,7 +45,7 @@ public class InheritBackgroundExample {
 				SWT.DOUBLE_BUFFERED | SWT.BORDER | SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL,
 				"Paints Background");
 		canvas.setBackground(ColorConstants.orange);
-		
+
 		canvas = createCanvas(shell,
 				SWT.DOUBLE_BUFFERED | SWT.BORDER | SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL,
 				"Inherits Background");
@@ -64,16 +64,12 @@ public class InheritBackgroundExample {
 		group.setText(text);
 		parent = group;
 		group.setLayout(new FillLayout());
-		
+
 		FigureCanvas canvas = new FigureCanvas(style, parent);
 		canvas.setContents(new Label(
-				"This is a figure canvas\n" +
-				"with a label.  The background\n" +
-				"is either painted by the root\n" +
-				"figure, or by the operating system.\n" +
-				"Note that vertical scrolling may not be\n" +
-				"as fast when the background from the\n" +
-				"parent is inherited."));
+				"This is a figure canvas\n" + "with a label.  The background\n" + "is either painted by the root\n"
+						+ "figure, or by the operating system.\n" + "Note that vertical scrolling may not be\n"
+						+ "as fast when the background from the\n" + "parent is inherited."));
 		return canvas;
 	}
 

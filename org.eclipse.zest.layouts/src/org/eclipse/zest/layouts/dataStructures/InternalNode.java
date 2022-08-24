@@ -89,7 +89,7 @@ public class InternalNode implements Comparable, LayoutEntity {
 	double normalizedHeight = 0.0;
 
 	public void setInternalLocation(double x, double y) {
-		//entity.setLocationInLayout(x,y);
+		// entity.setLocationInLayout(x,y);
 
 		normalizedX = x;
 		normalizedY = y;
@@ -106,12 +106,12 @@ public class InternalNode implements Comparable, LayoutEntity {
 	}
 
 	public double getInternalX() {
-		//return entity.getXInLayout();
+		// return entity.getXInLayout();
 		return normalizedX;
 	}
 
 	public double getInternalY() {
-		//return entity.getYInLayout();
+		// return entity.getYInLayout();
 		return normalizedY;
 	}
 
@@ -124,24 +124,26 @@ public class InternalNode implements Comparable, LayoutEntity {
 	}
 
 	/**
-	 * An algorithm may require a place to store information.  Use this structure for that purpose.
+	 * An algorithm may require a place to store information. Use this structure for
+	 * that purpose.
 	 */
 	public void setAttributeInLayout(Object attribute, Object value) {
 		attributeMap.put(attribute, value);
 	}
 
 	/**
-	 * An algorithm may require a place to store information.  Use this structure for that purpose.
+	 * An algorithm may require a place to store information. Use this structure for
+	 * that purpose.
 	 */
 	public Object getAttributeInLayout(Object attribute) {
 		return attributeMap.get(attribute);
 	}
 
-	//TODO: Fix all these preferred stuff!!!!! NOW!
+	// TODO: Fix all these preferred stuff!!!!! NOW!
 
 	public boolean hasPreferredWidth() {
 		return false;
-		//return enity.getAttributeInLayout(LayoutEntity.ATTR_PREFERRED_WIDTH) != null;
+		// return enity.getAttributeInLayout(LayoutEntity.ATTR_PREFERRED_WIDTH) != null;
 	}
 
 	public double getPreferredWidth() {
@@ -155,7 +157,8 @@ public class InternalNode implements Comparable, LayoutEntity {
 
 	public boolean hasPreferredHeight() {
 		return false;
-		//    return entity.getAttributeInLayout(LayoutEntity.ATTR_PREFERRED_HEIGHT) != null;
+		// return entity.getAttributeInLayout(LayoutEntity.ATTR_PREFERRED_HEIGHT) !=
+		// null;
 	}
 
 	public double getPreferredHeight() {
@@ -167,14 +170,18 @@ public class InternalNode implements Comparable, LayoutEntity {
 //	    }
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Object arg0) {
 		return 0;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {

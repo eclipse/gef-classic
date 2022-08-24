@@ -42,8 +42,7 @@ public class PolylineArcConnection extends PolylineConnection {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.draw2d.Polyline#setPoints(org.eclipse.draw2d.geometry.PointList
-	 * )
+	 * org.eclipse.draw2d.Polyline#setPoints(org.eclipse.draw2d.geometry.PointList )
 	 */
 	public void setPoints(PointList points) {
 		updateArc(points);
@@ -57,8 +56,7 @@ public class PolylineArcConnection extends PolylineConnection {
 	}
 
 	/**
-	 * @param depth
-	 *            the depth to set
+	 * @param depth the depth to set
 	 */
 	public void setDepth(int depth) {
 		this.inverse = depth < 0 ? true : false;
@@ -113,8 +111,7 @@ public class PolylineArcConnection extends PolylineConnection {
 			// the center of the chord
 			float cartChordX = (x2 + x1) / 2;
 			float cartChordY = (y2 + y1) / 2;
-			float chordLength = (float) Math.sqrt((x1 - x2) * (x1 - x2)
-					+ (y1 - y2) * (y1 - y2));
+			float chordLength = (float) Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 			if (Math.abs(depth) >= chordLength / 2) {
 				depth = (chordLength / 3) * (depth / Math.abs(depth));
 			}
@@ -137,8 +134,7 @@ public class PolylineArcConnection extends PolylineConnection {
 
 			float th1;
 			if (Float.isNaN(chordNormal)) {
-				cartCenterX = (y1 > y2) ? (cartChordX - r + (depth))
-						: (cartChordX + r - (depth));
+				cartCenterX = (y1 > y2) ? (cartChordX - r + (depth)) : (cartChordX + r - (depth));
 				cartCenterY = cartChordY;
 				th1 = PI / 2;
 			} else if (Float.isInfinite(chordNormal)) {
@@ -148,11 +144,9 @@ public class PolylineArcConnection extends PolylineConnection {
 			} else {
 				// assume that the center of the chord is on the origin.
 				th1 = (float) Math.atan(chordNormal);
-				cartCenterX = (r - (depth)) * (float) Math.sin(th1)
-						+ cartChordX;// cartChordX+r
+				cartCenterX = (r - (depth)) * (float) Math.sin(th1) + cartChordX;// cartChordX+r
 				// -depth;
-				cartCenterY = (r - (depth)) * (float) Math.cos(th1)
-						+ cartChordY;// cartChordY+r-depth;
+				cartCenterY = (r - (depth)) * (float) Math.cos(th1) + cartChordY;// cartChordY+r-depth;
 
 			}
 			// figure out the new angles
@@ -221,8 +215,8 @@ public class PolylineArcConnection extends PolylineConnection {
 	}
 
 	/*
-	 * Gets an angle in radians for the x, y coordinates. The angle will be
-	 * between 0 and 2PI.
+	 * Gets an angle in radians for the x, y coordinates. The angle will be between
+	 * 0 and 2PI.
 	 */
 	float angleRadians(float x, float y) {
 		float theta = (float) Math.atan(y / x);

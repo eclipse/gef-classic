@@ -20,8 +20,7 @@ public class DeselectAllTracker extends SelectEditPartTracker {
 	/**
 	 * Constructs a new DeselectAllTracker.
 	 * 
-	 * @param ep
-	 *            the edit part that returned this tracker
+	 * @param ep the edit part that returned this tracker
 	 */
 	public DeselectAllTracker(EditPart ep) {
 		super(ep);

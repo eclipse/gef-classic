@@ -36,10 +36,8 @@ public class TreeBorder extends AbstractBorder {
 
 	public Insets getInsets(IFigure figure) {
 		if (insets == null) {
-			FigureUtilities.getTextExtents(text, figure.getFont(),
-					Dimension.SINGLETON);
-			insets = new Insets(Math.max(16, Dimension.SINGLETON.height), 9, 0,
-					0);
+			FigureUtilities.getTextExtents(text, figure.getFont(), Dimension.SINGLETON);
+			insets = new Insets(Math.max(16, Dimension.SINGLETON.height), 9, 0, 0);
 		}
 		return insets;
 	}

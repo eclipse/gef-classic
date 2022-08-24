@@ -26,22 +26,17 @@ public class SetActivePaletteToolAction extends Action {
 	private ToolEntry entry;
 
 	/**
-	 * Creates a new SetActivePaletteToolAction with the given entry to set, as
-	 * well as a label, icon, and isChecked to be used in a menu.
+	 * Creates a new SetActivePaletteToolAction with the given entry to set, as well
+	 * as a label, icon, and isChecked to be used in a menu.
 	 * 
-	 * @param viewer
-	 *            the PaletteViewer
-	 * @param label
-	 *            the label to show in the menu for this entry.
-	 * @param icon
-	 *            the icon to show in the menu for this entry.
-	 * @param isChecked
-	 *            whether or not this is the current active entry.
-	 * @param entry
-	 *            the entry to set if this action is invoked.
+	 * @param viewer    the PaletteViewer
+	 * @param label     the label to show in the menu for this entry.
+	 * @param icon      the icon to show in the menu for this entry.
+	 * @param isChecked whether or not this is the current active entry.
+	 * @param entry     the entry to set if this action is invoked.
 	 */
-	public SetActivePaletteToolAction(PaletteViewer viewer, String label,
-			ImageDescriptor icon, boolean isChecked, ToolEntry entry) {
+	public SetActivePaletteToolAction(PaletteViewer viewer, String label, ImageDescriptor icon, boolean isChecked,
+			ToolEntry entry) {
 		super(label, icon);
 		this.viewer = viewer;
 		this.entry = entry;

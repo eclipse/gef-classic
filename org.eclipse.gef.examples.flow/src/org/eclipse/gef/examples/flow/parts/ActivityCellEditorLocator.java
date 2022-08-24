@@ -28,8 +28,7 @@ public class ActivityCellEditorLocator implements CellEditorLocator {
 	/**
 	 * Creates a new ActivityCellEditorLocator for the given Label
 	 * 
-	 * @param label
-	 *            the Label
+	 * @param label the Label
 	 */
 	public ActivityCellEditorLocator(Label label) {
 		setLabel(label);
@@ -58,8 +57,7 @@ public class ActivityCellEditorLocator implements CellEditorLocator {
 	/**
 	 * Sets the label.
 	 * 
-	 * @param label
-	 *            The label to set
+	 * @param label The label to set
 	 */
 	protected void setLabel(Label label) {
 		this.label = label;

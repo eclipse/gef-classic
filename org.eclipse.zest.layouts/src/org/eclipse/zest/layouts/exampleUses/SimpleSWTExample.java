@@ -64,8 +64,8 @@ import org.eclipse.zest.layouts.progress.ProgressListener;
 
 /**
  * @author Rob Lintern
- * @author Ian Bull
- * A simple example of using layout algorithms with a SWT application.
+ * @author Ian Bull A simple example of using layout algorithms with a SWT
+ *         application.
  */
 public class SimpleSWTExample {
 
@@ -79,12 +79,19 @@ public class SimpleSWTExample {
 	private static final Color RELATIONSHIP_COLOR = new Color(Display.getDefault(), 192, 192, 225);
 	private static final Color RELATIONSHIP_HIGHLIGHT_COLOR = new Color(Display.getDefault(), 255, 200, 125);
 
-	private static final String[] NAMES = new String[] { "Peggy", "Rob", "Ian", "Chris", "Simon", "Wendy", "Steven", "Kim", "Neil", "Dave", "John", "Suzanne", "Jody", "Casey", "Bjorn", "Peter", "Erin", "Lisa", "Jennie", "Liz", "Bert", "Ryan", "Nick", "Amy", "Lee", "Me", "You", "Max", "NCI", "OWL",
-			"Ed", "Jamie", "Protege", "Matt", "Bryan", "Pete", "Sam", "Bob", "Katie", "Bill", "Josh", "Davor", "Ken", "Jacob", "Norm", "Jim", "Maya", "Jill", "Kit", "Jo", "Joe", "Andrew", "Charles", "Pat", "Patrick", "Jeremy", "Mike", "Michael", "Patricia", "Marg", "Terry", "Emily", "Ben", "Holly",
-			"Joanna", "Joanne", "Evan", "Tom", "Dan", "Eric", "Corey", "Meghan", "Kevin", "Nina", "Ron", "Daniel", "David", "Jeff", "Nathan", "Amanda", "Phil", "Tricia", "Steph", "Stewart", "Stuart", "Bull", "Lintern", "Callendar", "Thompson", "Rigby", "Adam", "Judith", "Cynthia", "Sarah", "Sara",
-			"Roger", "Andy", "Kris", "Mark", "Shane", "Spence", "Ivy", "Ivanna", "Julie", "Justin", "Emile", "Toby", "Robin", "Rich", "Kathy", "Cathy", "Nicky", "Ricky", "Danny", "Anne", "Ann", "Jen", "Robert", "Calvin", "Alvin", "Scott", "Kumar" };
+	private static final String[] NAMES = new String[] { "Peggy", "Rob", "Ian", "Chris", "Simon", "Wendy", "Steven",
+			"Kim", "Neil", "Dave", "John", "Suzanne", "Jody", "Casey", "Bjorn", "Peter", "Erin", "Lisa", "Jennie",
+			"Liz", "Bert", "Ryan", "Nick", "Amy", "Lee", "Me", "You", "Max", "NCI", "OWL", "Ed", "Jamie", "Protege",
+			"Matt", "Bryan", "Pete", "Sam", "Bob", "Katie", "Bill", "Josh", "Davor", "Ken", "Jacob", "Norm", "Jim",
+			"Maya", "Jill", "Kit", "Jo", "Joe", "Andrew", "Charles", "Pat", "Patrick", "Jeremy", "Mike", "Michael",
+			"Patricia", "Marg", "Terry", "Emily", "Ben", "Holly", "Joanna", "Joanne", "Evan", "Tom", "Dan", "Eric",
+			"Corey", "Meghan", "Kevin", "Nina", "Ron", "Daniel", "David", "Jeff", "Nathan", "Amanda", "Phil", "Tricia",
+			"Steph", "Stewart", "Stuart", "Bull", "Lintern", "Callendar", "Thompson", "Rigby", "Adam", "Judith",
+			"Cynthia", "Sarah", "Sara", "Roger", "Andy", "Kris", "Mark", "Shane", "Spence", "Ivy", "Ivanna", "Julie",
+			"Justin", "Emile", "Toby", "Robin", "Rich", "Kathy", "Cathy", "Nicky", "Ricky", "Danny", "Anne", "Ann",
+			"Jen", "Robert", "Calvin", "Alvin", "Scott", "Kumar" };
 
-	//private static final boolean RENDER_HIGH_QUALITY = true;
+	// private static final boolean RENDER_HIGH_QUALITY = true;
 
 	private static final int INITIAL_PANEL_WIDTH = 800;
 	private static final int INITIAL_PANEL_HEIGHT = 600;
@@ -126,7 +133,7 @@ public class SimpleSWTExample {
 		algorithmAnimates.add(Boolean.FALSE);
 	}
 
-	//private long updateGUICount = 0;
+	// private long updateGUICount = 0;
 	private boolean animate = true;
 	private static boolean continuous = false;
 	private static boolean asynchronously = false;
@@ -159,12 +166,14 @@ public class SimpleSWTExample {
 		});
 		GridLayout gridLayout = new GridLayout(1, true);
 		mainShell.setLayout(gridLayout);
-		GridData toolbarGridData = new GridData(GridData.HORIZONTAL_ALIGN_CENTER, GridData.VERTICAL_ALIGN_BEGINNING, true, true);
+		GridData toolbarGridData = new GridData(GridData.HORIZONTAL_ALIGN_CENTER, GridData.VERTICAL_ALIGN_BEGINNING,
+				true, true);
 		toolBar = new ToolBar(mainShell, SWT.HORIZONTAL);
 		toolBar.setLayoutData(toolbarGridData);
 		toolBar.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		GridData progressGridData = new GridData(GridData.HORIZONTAL_ALIGN_CENTER, GridData.VERTICAL_ALIGN_END, true, false);
+		GridData progressGridData = new GridData(GridData.HORIZONTAL_ALIGN_CENTER, GridData.VERTICAL_ALIGN_END, true,
+				false);
 		progressGridData.widthHint = 300;
 		lblProgress = new Label(mainShell, SWT.NONE);
 		lblProgress.setLayoutData(progressGridData);
@@ -182,7 +191,8 @@ public class SimpleSWTExample {
 			algorithmButton.addSelectionListener(new SelectionListener() {
 				public void widgetSelected(org.eclipse.swt.events.SelectionEvent e) {
 					currentLayoutAlgorithm = algorithm;
-					algorithm.setEntityAspectRatio((double) mainComposite.getClientArea().width / (double) mainComposite.getClientArea().height);
+					algorithm.setEntityAspectRatio((double) mainComposite.getClientArea().width
+							/ (double) mainComposite.getClientArea().height);
 					animate = algorithmAnimate;
 					performLayout(false);
 				}
@@ -237,12 +247,13 @@ public class SimpleSWTExample {
 		});
 
 		createMainPanel();
-		SimpleNode.setNodeColors(NODE_NORMAL_COLOR, BORDER_NORMAL_COLOR, NODE_SELECTED_COLOR, NODE_ADJACENT_COLOR, BORDER_SELECTED_COLOR, BORDER_ADJACENT_COLOR);
+		SimpleNode.setNodeColors(NODE_NORMAL_COLOR, BORDER_NORMAL_COLOR, NODE_SELECTED_COLOR, NODE_ADJACENT_COLOR,
+				BORDER_SELECTED_COLOR, BORDER_ADJACENT_COLOR);
 		SimpleRelationship.setDefaultColor(RELATIONSHIP_COLOR);
 		SimpleRelationship.setDefaultHighlightColor(RELATIONSHIP_HIGHLIGHT_COLOR);
 		createTreeGraph(4, 3, false);
 		mainShell.pack();
-		//mainShell.setSize(INITIAL_PANEL_WIDTH + 100, INITIAL_PANEL_HEIGHT + 200);
+		// mainShell.setSize(INITIAL_PANEL_WIDTH + 100, INITIAL_PANEL_HEIGHT + 200);
 	}
 
 	public void setAsynchronously() {
@@ -386,7 +397,9 @@ public class SimpleSWTExample {
 			entities.toArray(layoutEntities);
 			LayoutRelationship[] layoutRelationships = new LayoutRelationship[relationships.size()];
 			relationships.toArray(layoutRelationships);
-			currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0, mainComposite.getClientArea().width - 30, mainComposite.getClientArea().height - 17, asynchronously, continuous);
+			currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0,
+					mainComposite.getClientArea().width - 30, mainComposite.getClientArea().height - 17, asynchronously,
+					continuous);
 			if (!animate) {
 				updateGUI();
 			}
@@ -463,7 +476,8 @@ public class SimpleSWTExample {
 				}
 				if (selectedEntity != null) {
 					mouseDownPoint = new Point(e.x, e.y);
-					selectedEntityPositionAtMouseDown = new Point((int) selectedEntity.getX(), (int) selectedEntity.getY());
+					selectedEntityPositionAtMouseDown = new Point((int) selectedEntity.getX(),
+							(int) selectedEntity.getY());
 					selectedEntity.ignoreInLayout(true);
 					selectedEntity.setSelected();
 				} else {
@@ -508,7 +522,8 @@ public class SimpleSWTExample {
 					double dx = e.x - mouseDownPoint.x;
 					double dy = e.y - mouseDownPoint.y;
 
-					selectedEntity.setLocation(selectedEntityPositionAtMouseDown.x + dx, selectedEntityPositionAtMouseDown.y + dy);
+					selectedEntity.setLocation(selectedEntityPositionAtMouseDown.x + dx,
+							selectedEntityPositionAtMouseDown.y + dy);
 					mainComposite.redraw();
 				}
 			}
@@ -519,16 +534,17 @@ public class SimpleSWTExample {
 
 	/**
 	 * 
-	 * @param maxLevels Max number of levels wanted in tree	
+	 * @param maxLevels   Max number of levels wanted in tree
 	 * @param maxChildren Max number of children for each node in the tree
-	 * @param random Whether or not to pick random number of levels (from 1 to maxLevels) and 
-	 * random number of children (from 1 to maxChildren)
+	 * @param random      Whether or not to pick random number of levels (from 1 to
+	 *                    maxLevels) and random number of children (from 1 to
+	 *                    maxChildren)
 	 */
 	private void createTreeGraph(int maxLevels, int maxChildren, boolean random) {
 		entities = new ArrayList();
 		relationships = new ArrayList();
 
-		// ccallendar - testing out having 2 roots 
+		// ccallendar - testing out having 2 roots
 		SimpleNode root = createSimpleNode(getNextID());
 		entities.add(root);
 		SimpleNode root2 = createSimpleNode(getNextID());
@@ -547,13 +563,14 @@ public class SimpleSWTExample {
 		root2.addRelationship(rel);
 		currentParent.addRelationship(rel);
 		relationships.add(rel);
-		// end 
+		// end
 
 		int levels = random ? (int) (Math.random() * maxLevels + 1) : maxLevels;
 		createTreeGraphRecursive(currentParent, maxChildren, levels, 1, random);
 	}
 
-	private void createTreeGraphRecursive(SimpleNode currentParentNode, int maxChildren, int maxLevel, int level, boolean random) {
+	private void createTreeGraphRecursive(SimpleNode currentParentNode, int maxChildren, int maxLevel, int level,
+			boolean random) {
 		if (level > maxLevel) {
 			return;
 		}
@@ -574,9 +591,9 @@ public class SimpleSWTExample {
 	private int repeats = 0;
 
 	/**
-	 * Gets the next name from the names list.
-	 * Once all the names have been used up the names are
-	 * repeated with a '1' after the name.
+	 * Gets the next name from the names list. Once all the names have been used up
+	 * the names are repeated with a '1' after the name.
+	 * 
 	 * @return String name
 	 */
 	private String getNextID() {
@@ -604,6 +621,7 @@ public class SimpleSWTExample {
 
 	/**
 	 * Creates a SimpleNode
+	 * 
 	 * @param name
 	 * @return SimpleNode
 	 */
@@ -617,7 +635,7 @@ public class SimpleSWTExample {
 	private void updateGUI() {
 		if (!mainComposite.isDisposed()) {
 			mainComposite.redraw();
-			//mainComposite.update();
+			// mainComposite.update();
 		}
 	}
 
@@ -627,7 +645,7 @@ public class SimpleSWTExample {
 		display = Display.getDefault();
 		SimpleSWTExample simpleSWTExample = new SimpleSWTExample(display);
 		Shell shell = simpleSWTExample.getShell();
-		//shell.pack();
+		// shell.pack();
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch()) {
@@ -638,7 +656,7 @@ public class SimpleSWTExample {
 	}
 
 	/**
-	 * Implements a paint listener to display nodes and edges  
+	 * Implements a paint listener to display nodes and edges
 	 */
 	private class GraphPaintListener implements PaintListener {
 
@@ -674,7 +692,7 @@ public class SimpleSWTExample {
 
 			GC gcBuffer = new GC(imageBuffer);
 
-			// paint the relationships 
+			// paint the relationships
 			for (Iterator iter = relationships.iterator(); iter.hasNext();) {
 				SimpleRelationship rel = (SimpleRelationship) iter.next();
 				SimpleNode src = (SimpleNode) rel.getSourceInLayout();
@@ -712,7 +730,7 @@ public class SimpleSWTExample {
 				Point textSize = gcBuffer.stringExtent(name);
 				int entityX = (int) entity.getX();
 				int entityY = (int) entity.getY();
-				//TODO: What about resize from the layout algorithm
+				// TODO: What about resize from the layout algorithm
 				int entityWidth = Math.max((int) entity.getWidth(), textSize.x + 8);
 				int entityHeight = Math.max((int) entity.getHeight(), textSize.y + 2);
 
@@ -739,6 +757,7 @@ public class SimpleSWTExample {
 
 		/**
 		 * Draw an edge
+		 * 
 		 * @param gcBuffer
 		 * @param srcX
 		 * @param srcY
@@ -746,15 +765,17 @@ public class SimpleSWTExample {
 		 * @param destY
 		 * @param rel
 		 */
-		private void drawEdge(double srcX, double srcY, double destX, double destY, SimpleRelationship rel, GC gcBuffer) {
+		private void drawEdge(double srcX, double srcY, double destX, double destY, SimpleRelationship rel,
+				GC gcBuffer) {
 			gcBuffer.setForeground((Color) rel.getColor());
 			gcBuffer.setLineWidth(rel.getLineWidth());
 			gcBuffer.drawLine((int) srcX, (int) srcY, (int) destX, (int) destY);
 		}
 
 		/**
-		 * Draws a set of lines between bendpoints
-		 * TODO - This does not always draw outside the node.
+		 * Draws a set of lines between bendpoints TODO - This does not always draw
+		 * outside the node.
+		 * 
 		 * @param relationship
 		 * @param bendNodes
 		 * @param bendEdges

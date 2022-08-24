@@ -21,8 +21,7 @@ public class TestImages {
 	static final Image depth_24;
 
 	static {
-		InputStream is = TestImages.class
-				.getResourceAsStream("icons/bits8.gif");
+		InputStream is = TestImages.class.getResourceAsStream("icons/bits8.gif");
 		depth_8 = new Image(null, is);
 		try {
 			is.close();

@@ -45,8 +45,7 @@ public class DragEditPartsTrackerTest extends TestCase {
 		super.tearDown();
 	}
 
-	private static class TestGraphicalEditPart
-			extends AbstractGraphicalEditPart {
+	private static class TestGraphicalEditPart extends AbstractGraphicalEditPart {
 
 		/*
 		 * (non-Javadoc)
@@ -60,8 +59,7 @@ public class DragEditPartsTrackerTest extends TestCase {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
+		 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 		 */
 		protected IFigure createFigure() {
 			return new Figure();
@@ -123,8 +121,7 @@ public class DragEditPartsTrackerTest extends TestCase {
 			return null;
 		}
 
-		public void init(IEditorSite site, IEditorInput input)
-				throws PartInitException {
+		public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 
 		}
 
@@ -167,8 +164,7 @@ public class DragEditPartsTrackerTest extends TestCase {
 	};
 
 	public void test_createOperationSet() {
-		TestDragEditPartsTracker dept = new TestDragEditPartsTracker(
-				new TestGraphicalEditPart());
+		TestDragEditPartsTracker dept = new TestDragEditPartsTracker(new TestGraphicalEditPart());
 
 		dept.setEditDomain(new DefaultEditDomain(new DummyEditorPart()));
 		dept.activate();

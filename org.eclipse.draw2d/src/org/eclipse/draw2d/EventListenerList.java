@@ -23,10 +23,8 @@ public final class EventListenerList {
 	/**
 	 * Adds a listener of type <i>c</i> to the list.
 	 * 
-	 * @param c
-	 *            the class
-	 * @param listener
-	 *            the listener
+	 * @param c        the class
+	 * @param listener the listener
 	 */
 	public synchronized void addListener(Class c, Object listener) {
 		if (listener == null || c == null)
@@ -42,11 +40,10 @@ public final class EventListenerList {
 	}
 
 	/**
-	 * Returns <code>true</code> if this list of listeners contains a listener
-	 * of type <i>c</i>.
+	 * Returns <code>true</code> if this list of listeners contains a listener of
+	 * type <i>c</i>.
 	 * 
-	 * @param c
-	 *            the type
+	 * @param c the type
 	 * @return whether this list contains a listener of type <i>c</i>
 	 */
 	public synchronized boolean containsListener(Class c) {
@@ -83,16 +80,14 @@ public final class EventListenerList {
 		}
 
 		public void remove() {
-			throw new UnsupportedOperationException(
-					"Iterator removal not supported"); //$NON-NLS-1$
+			throw new UnsupportedOperationException("Iterator removal not supported"); //$NON-NLS-1$
 		}
 	}
 
 	/**
 	 * Returns an Iterator of all the listeners of type <i>c</i>.
 	 * 
-	 * @param listenerType
-	 *            the type
+	 * @param listenerType the type
 	 * @return an Iterator of all the listeners of type <i>c</i>
 	 */
 	public synchronized Iterator getListeners(final Class listenerType) {
@@ -102,10 +97,8 @@ public final class EventListenerList {
 	/**
 	 * Removes the first <i>listener</i> of the specified type by identity.
 	 * 
-	 * @param c
-	 *            the type
-	 * @param listener
-	 *            the listener
+	 * @param c        the type
+	 * @param listener the listener
 	 */
 	public synchronized void removeListener(Class c, Object listener) {
 		if (array == null || array.length == 0)
@@ -124,8 +117,7 @@ public final class EventListenerList {
 
 		Object newArray[] = new Object[array.length - 2];
 		System.arraycopy(array, 0, newArray, 0, index);
-		System.arraycopy(array, index + 2, newArray, index, array.length
-				- index - 2);
+		System.arraycopy(array, index + 2, newArray, index, array.length - index - 2);
 		array = newArray;
 	}
 

@@ -67,8 +67,7 @@ public class StyleService {
 	/**
 	 * Removes the first occurrence of the given listener.
 	 * 
-	 * @param listener
-	 *            the style listener
+	 * @param listener the style listener
 	 */
 	public void removeStyleListener(StyleListener listener) {
 		listeners.remove(listener);

@@ -8,25 +8,17 @@ import org.eclipse.draw2d.geometry.Point;
 public class PointTests extends TestCase {
 
 	public void testMin() {
-		assertTrue(Point.min(new Point(1, 3), new Point(2, 6)).equals(
-				new Point(1, 3)));
-		assertTrue(Point.min(new Point(4, 8), new Point(2, 6)).equals(
-				new Point(2, 6)));
-		assertTrue(Point.min(new Point(4, 8), new Point(2, 10)).equals(
-				new Point(2, 8)));
-		assertTrue(Point.min(new Point(4, 12), new Point(6, 10)).equals(
-				new Point(4, 10)));
+		assertTrue(Point.min(new Point(1, 3), new Point(2, 6)).equals(new Point(1, 3)));
+		assertTrue(Point.min(new Point(4, 8), new Point(2, 6)).equals(new Point(2, 6)));
+		assertTrue(Point.min(new Point(4, 8), new Point(2, 10)).equals(new Point(2, 8)));
+		assertTrue(Point.min(new Point(4, 12), new Point(6, 10)).equals(new Point(4, 10)));
 	}
 
 	public void testMax() {
-		assertTrue(Point.max(new Point(1, 3), new Point(2, 6)).equals(
-				new Point(2, 6)));
-		assertTrue(Point.max(new Point(4, 8), new Point(2, 6)).equals(
-				new Point(4, 8)));
-		assertTrue(Point.max(new Point(4, 8), new Point(2, 10)).equals(
-				new Point(4, 10)));
-		assertTrue(Point.max(new Point(4, 12), new Point(6, 10)).equals(
-				new Point(6, 12)));
+		assertTrue(Point.max(new Point(1, 3), new Point(2, 6)).equals(new Point(2, 6)));
+		assertTrue(Point.max(new Point(4, 8), new Point(2, 6)).equals(new Point(4, 8)));
+		assertTrue(Point.max(new Point(4, 8), new Point(2, 10)).equals(new Point(4, 10)));
+		assertTrue(Point.max(new Point(4, 12), new Point(6, 10)).equals(new Point(6, 12)));
 	}
 
 	public void testEquals() {
@@ -64,7 +56,6 @@ public class PointTests extends TestCase {
 
 	public void testSetLocation() {
 		assertTrue(new Point().setLocation(4711, 678).equals(4711, 678));
-		assertTrue(new Point().setLocation(new Point(4711, 678)).equals(4711,
-				678));
+		assertTrue(new Point().setLocation(new Point(4711, 678)).equals(4711, 678));
 	}
 }

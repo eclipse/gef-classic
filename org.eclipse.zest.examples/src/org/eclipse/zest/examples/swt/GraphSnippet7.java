@@ -22,7 +22,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This snippet shows how to use the findFigureAt to get the figure under the mouse
+ * This snippet shows how to use the findFigureAt to get the figure under the
+ * mouse
  * 
  * @author Ian Bull
  * 
@@ -48,17 +49,17 @@ public class GraphSnippet7 {
 		new GraphConnection(g, SWT.NONE, n2, n3);
 		new GraphConnection(g, SWT.NONE, n3, n);
 		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
-		
+
 		g.addMouseMoveListener(new MouseMoveListener() {
 
 			public void mouseMove(MouseEvent e) {
-				// Get the figure at the current mouse location 
+				// Get the figure at the current mouse location
 				Object o = g.getFigureAt(e.x, e.y);
-				if ( o != null ) {
+				if (o != null) {
 					System.out.println(o + " is at: (" + e.x + "," + e.y + ")");
 				}
 			}
-			
+
 		});
 
 		shell.open();

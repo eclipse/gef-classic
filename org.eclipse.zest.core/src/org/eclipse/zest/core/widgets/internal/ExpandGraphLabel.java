@@ -66,7 +66,9 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	}
 
 	/**
-	 * Sets the expander state (the little triangle) to ExpanderGraphLabel.OPEN or ExpanderGraphLabel.CLOSED
+	 * Sets the expander state (the little triangle) to ExpanderGraphLabel.OPEN or
+	 * ExpanderGraphLabel.CLOSED
+	 * 
 	 * @param state
 	 */
 	public void setExpandedState(int state) {
@@ -80,7 +82,9 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.draw2d.ActionListener#actionPerformed(org.eclipse.draw2d.ActionEvent)
+	 * 
+	 * @see org.eclipse.draw2d.ActionListener#actionPerformed(org.eclipse.draw2d.
+	 * ActionEvent)
 	 */
 	public void actionPerformed(ActionEvent event) {
 		if (state == OPEN) {
@@ -112,8 +116,8 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 		this.label = new Label(text) {
 
 			/*
-			 * This method is overwritten so that the text is not truncated.
-			 * (non-Javadoc)
+			 * This method is overwritten so that the text is not truncated. (non-Javadoc)
+			 * 
 			 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 			 */
 			protected void paintFigure(Graphics graphics) {
@@ -148,7 +152,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 		this.setLayoutManager(layout);
 		this.add(this.expander);
 		this.add(this.label);
-		//this.remove(this.label);
+		// this.remove(this.label);
 	}
 
 	/**
@@ -207,28 +211,28 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 		// fill in the background
 		Rectangle bounds = getBounds().getCopy();
 		Rectangle r = bounds.getCopy();
-		//r.x += arcWidth / 2;
+		// r.x += arcWidth / 2;
 		r.y += arcWidth / 2;
-		//r.width -= arcWidth;
+		// r.width -= arcWidth;
 		r.height -= arcWidth;
 
 		Rectangle top = bounds.getCopy();
 		top.height /= 2;
-		//graphics.setForegroundColor(lightenColor);
-		//graphics.setBackgroundColor(lightenColor);
+		// graphics.setForegroundColor(lightenColor);
+		// graphics.setBackgroundColor(lightenColor);
 		graphics.setForegroundColor(getBackgroundColor());
 		graphics.setBackgroundColor(getBackgroundColor());
 		graphics.fillRoundRectangle(top, arcWidth, arcWidth);
 
 		top.y = top.y + top.height;
-		//graphics.setForegroundColor(getBackgroundColor());
-		//graphics.setBackgroundColor(getBackgroundColor());
+		// graphics.setForegroundColor(getBackgroundColor());
+		// graphics.setBackgroundColor(getBackgroundColor());
 		graphics.setForegroundColor(lightenColor);
 		graphics.setBackgroundColor(lightenColor);
 		graphics.fillRoundRectangle(top, arcWidth, arcWidth);
 
-		//graphics.setForegroundColor(lightenColor);
-		//graphics.setBackgroundColor(getBackgroundColor());
+		// graphics.setForegroundColor(lightenColor);
+		// graphics.setBackgroundColor(getBackgroundColor());
 		graphics.setBackgroundColor(lightenColor);
 		graphics.setForegroundColor(getBackgroundColor());
 		graphics.fillGradient(r, true);
@@ -251,23 +255,23 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 		this.setPreferredSize(null);
 		this.label.setText(string);
 		this.add(label);
-		//System.out.println(this.label.getPreferredSize());
+		// System.out.println(this.label.getPreferredSize());
 		this.layout.layout(this);
 		this.invalidate();
 		this.revalidate();
 		this.validate();
-		//this.remove(label);
+		// this.remove(label);
 	}
 
 	public void setText(String string) {
 		this.label.setText(string);
-		//this.label.setPreferredSize(500, 30);
-		//adjustBoundsToFit();
+		// this.label.setPreferredSize(500, 30);
+		// adjustBoundsToFit();
 	}
 
 	public void setImage(Image image) {
 		this.label.setIcon(image);
-		//adjustBoundsToFit();
+		// adjustBoundsToFit();
 	}
 
 	public void setLocation(Point p) {

@@ -44,10 +44,8 @@ public class DebugGEFAction extends Action {
 	/**
 	 * Creates a new DebugGEFAction with the given String and ImageDescriptor
 	 * 
-	 * @param label
-	 *            the label
-	 * @param desc
-	 *            the ImageDescriptor
+	 * @param label the label
+	 * @param desc  the ImageDescriptor
 	 */
 	public DebugGEFAction(String label, ImageDescriptor desc) {
 		super(label, desc);

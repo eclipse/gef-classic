@@ -21,8 +21,7 @@ public interface CellEditorLocator {
 	/**
 	 * Relocates a CellEditor.
 	 * 
-	 * @param celleditor
-	 *            the CellEditor
+	 * @param celleditor the CellEditor
 	 */
 	void relocate(CellEditor celleditor);
 

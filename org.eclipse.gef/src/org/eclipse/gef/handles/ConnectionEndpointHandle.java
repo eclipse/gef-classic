@@ -31,48 +31,39 @@ import org.eclipse.gef.tools.ConnectionEndpointTracker;
 public class ConnectionEndpointHandle extends ConnectionHandle {
 
 	/**
-	 * Caches whether the handle is for the source or target endpoint. endPoint
-	 * is either {@link ConnectionLocator#SOURCE} or
-	 * {@link ConnectionLocator#TARGET}.
+	 * Caches whether the handle is for the source or target endpoint. endPoint is
+	 * either {@link ConnectionLocator#SOURCE} or {@link ConnectionLocator#TARGET}.
 	 */
 	private int endPoint;
 
 	/**
-	 * Creates a new ConnectionStartHandle, sets its owner to <code>owner</code>
-	 * , and sets its locator to a {@link ConnectionLocator}.
+	 * Creates a new ConnectionStartHandle, sets its owner to <code>owner</code> ,
+	 * and sets its locator to a {@link ConnectionLocator}.
 	 * 
-	 * @param owner
-	 *            the ConnectionEditPart owner
-	 * @param endPoint
-	 *            one of {@link ConnectionLocator#SOURCE} or
-	 *            {@link ConnectionLocator#TARGET}.
+	 * @param owner    the ConnectionEditPart owner
+	 * @param endPoint one of {@link ConnectionLocator#SOURCE} or
+	 *                 {@link ConnectionLocator#TARGET}.
 	 */
 	public ConnectionEndpointHandle(ConnectionEditPart owner, int endPoint) {
 		setOwner(owner);
-		Assert.isTrue(endPoint == ConnectionLocator.SOURCE
-				|| endPoint == ConnectionLocator.TARGET);
+		Assert.isTrue(endPoint == ConnectionLocator.SOURCE || endPoint == ConnectionLocator.TARGET);
 		this.endPoint = endPoint;
 		setLocator(new ConnectionLocator(getConnection(), endPoint));
 	}
 
 	/**
-	 * Creates a new ConnectionStartHandle and sets its owner to
-	 * <code>owner</code>. If the handle is fixed, it cannot be dragged.
+	 * Creates a new ConnectionStartHandle and sets its owner to <code>owner</code>.
+	 * If the handle is fixed, it cannot be dragged.
 	 * 
-	 * @param owner
-	 *            the ConnectionEditPart owner
-	 * @param fixed
-	 *            if true, handle cannot be dragged.
-	 * @param endPoint
-	 *            one of {@link ConnectionLocator#SOURCE} or
-	 *            {@link ConnectionLocator#TARGET}.
+	 * @param owner    the ConnectionEditPart owner
+	 * @param fixed    if true, handle cannot be dragged.
+	 * @param endPoint one of {@link ConnectionLocator#SOURCE} or
+	 *                 {@link ConnectionLocator#TARGET}.
 	 */
-	public ConnectionEndpointHandle(ConnectionEditPart owner, boolean fixed,
-			int endPoint) {
+	public ConnectionEndpointHandle(ConnectionEditPart owner, boolean fixed, int endPoint) {
 		super(fixed);
 		setOwner(owner);
-		Assert.isTrue(endPoint == ConnectionLocator.SOURCE
-				|| endPoint == ConnectionLocator.TARGET);
+		Assert.isTrue(endPoint == ConnectionLocator.SOURCE || endPoint == ConnectionLocator.TARGET);
 		this.endPoint = endPoint;
 		setLocator(new ConnectionLocator(getConnection(), endPoint));
 	}
@@ -80,13 +71,11 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 	/**
 	 * Creates a new ConnectionStartHandle.
 	 * 
-	 * @param endPoint
-	 *            one of {@link ConnectionLocator#SOURCE} or
-	 *            {@link ConnectionLocator#TARGET}.
+	 * @param endPoint one of {@link ConnectionLocator#SOURCE} or
+	 *                 {@link ConnectionLocator#TARGET}.
 	 */
 	public ConnectionEndpointHandle(int endPoint) {
-		Assert.isTrue(endPoint == ConnectionLocator.SOURCE
-				|| endPoint == ConnectionLocator.TARGET);
+		Assert.isTrue(endPoint == ConnectionLocator.SOURCE || endPoint == ConnectionLocator.TARGET);
 		this.endPoint = endPoint;
 	}
 
@@ -113,8 +102,7 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 	 * Return the endpoint handle.
 	 * 
 	 * @return the endPoint handle, which is is either
-	 *         {@link ConnectionLocator#SOURCE} or
-	 *         {@link ConnectionLocator#TARGET}.
+	 *         {@link ConnectionLocator#SOURCE} or {@link ConnectionLocator#TARGET}.
 	 * @since 3.5
 	 */
 	public int getEndPoint() {

@@ -45,9 +45,8 @@ class PaletteTreeProvider implements ITreeContentProvider {
 	/**
 	 * Constructor
 	 * 
-	 * @param treeviewer
-	 *            The TreeViewer whose ContentProvider this PaletteTreeProvider
-	 *            is
+	 * @param treeviewer The TreeViewer whose ContentProvider this
+	 *                   PaletteTreeProvider is
 	 */
 	public PaletteTreeProvider(TreeViewer treeviewer) {
 		this.viewer = treeviewer;
@@ -63,9 +62,9 @@ class PaletteTreeProvider implements ITreeContentProvider {
 	}
 
 	/**
-	 * If the given element does not have any children, this method should
-	 * return <code>null</code>. This fixes the problem where a "+" sign is
-	 * incorrectly placed next to an empty container in the tree.
+	 * If the given element does not have any children, this method should return
+	 * <code>null</code>. This fixes the problem where a "+" sign is incorrectly
+	 * placed next to an empty container in the tree.
 	 * 
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(Object)
 	 */
@@ -107,19 +106,16 @@ class PaletteTreeProvider implements ITreeContentProvider {
 	}
 
 	/**
-	 * This method is invoked whenever there is any change in the model. It
-	 * updates the viewer with the changes that were made to the model.
-	 * Sub-classes may override this method to change or extend its
-	 * functionality.
+	 * This method is invoked whenever there is any change in the model. It updates
+	 * the viewer with the changes that were made to the model. Sub-classes may
+	 * override this method to change or extend its functionality.
 	 * 
-	 * @param evt
-	 *            The {@link PropertyChangeEvent} that was fired from the model
+	 * @param evt The {@link PropertyChangeEvent} that was fired from the model
 	 */
 	protected void handlePropertyChanged(PropertyChangeEvent evt) {
 		PaletteEntry entry = ((PaletteEntry) evt.getSource());
 		String property = evt.getPropertyName();
-		if (property.equals(PaletteEntry.PROPERTY_LABEL)
-				|| property.equals(PaletteEntry.PROPERTY_SMALL_ICON)) {
+		if (property.equals(PaletteEntry.PROPERTY_LABEL) || property.equals(PaletteEntry.PROPERTY_SMALL_ICON)) {
 			viewer.update(entry, null);
 		} else if (property.equals(PaletteEntry.PROPERTY_VISIBLE)) {
 			viewer.refresh(entry);
@@ -135,8 +131,8 @@ class PaletteTreeProvider implements ITreeContentProvider {
 	}
 
 	/**
-	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer,
-	 *      Object, Object)
+	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer, Object,
+	 *      Object)
 	 */
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		if (root != null)

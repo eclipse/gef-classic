@@ -44,102 +44,100 @@ import org.eclipse.draw2d.geometry.Insets;
  */
 public class PrintExample {
 
-static FigureCanvas canvas;
-static Figure printFigure;
-static Figure internalPrintFigure;
-static int count = 1;
+	static FigureCanvas canvas;
+	static Figure printFigure;
+	static Figure internalPrintFigure;
+	static int count = 1;
 
-public static void main(String[] args) {
-	Display d = Display.getDefault();
-	Shell shell = new Shell(d);
-	
-	shell.setLayout(new GridLayout(1,false)); 
-	
-	Button printButton = new Button(shell,SWT.PUSH);
-	printButton.setText("Print it");
-	printButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+	public static void main(String[] args) {
+		Display d = Display.getDefault();
+		Shell shell = new Shell(d);
 
-	GridData canvasData = new GridData(GridData.FILL_BOTH);
-	canvasData.horizontalSpan =2;
-	canvas = new FigureCanvas(shell);
-	canvas.setLayoutData(canvasData);
-	
-	LightweightSystem lws = new LightweightSystem(canvas);
+		shell.setLayout(new GridLayout(1, false));
 
-	final Figure printFigure = new Figure ();
-	printFigure.setMinimumSize(new Dimension(5,5));
-	addAllFigures(printFigure);	
-	lws.setContents(printFigure);
-	
-	printButton.addMouseListener(new MouseListener() {
-		public void mouseDoubleClick(MouseEvent e) {
-		}
+		Button printButton = new Button(shell, SWT.PUSH);
+		printButton.setText("Print it");
+		printButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
-		public void mouseDown(MouseEvent e) {
-			printIt(printFigure);
-		}
-		public void mouseUp(MouseEvent e) {
-		}
-	});
-	shell.setSize(300,500);
-	shell.open();
-	
-	while (!shell.isDisposed())
-		if (!d.readAndDispatch())
-			d.sleep();
-		
-}
+		GridData canvasData = new GridData(GridData.FILL_BOTH);
+		canvasData.horizontalSpan = 2;
+		canvas = new FigureCanvas(shell);
+		canvas.setLayoutData(canvasData);
 
-static void addAllFigures(IFigure parent){
-	Font fonts[] = {
-					new Font(null,"Helvetica",16,SWT.NONE),
-					new Font(null,"Times New Roman",24,SWT.BOLD),
-					new Font(null,"Perpetua",48,SWT.NONE)
-	};
-	
-	parent.setLayoutManager(new FlowLayout());
-	org.eclipse.draw2d.Button button = new org.eclipse.draw2d.Button("Button");
-	RectangleFigure rf = new RectangleFigure();
-	rf.setSize(50,50);
-	Ellipse e = new Ellipse();
-	e.setSize(50,50);
-	RoundedRectangle rr = new RoundedRectangle();
-	rr.setSize(50,50);
-	
-	for(int i = 0; i < fonts.length; i++) {
-		org.eclipse.draw2d.Label label = new org.eclipse.draw2d.Label(fonts[i].getFontData()[0].getName());
-		label.setFont(fonts[i]);
-		label.setBorder(new LineBorder());
-		parent.add(label);
+		LightweightSystem lws = new LightweightSystem(canvas);
+
+		final Figure printFigure = new Figure();
+		printFigure.setMinimumSize(new Dimension(5, 5));
+		addAllFigures(printFigure);
+		lws.setContents(printFigure);
+
+		printButton.addMouseListener(new MouseListener() {
+			public void mouseDoubleClick(MouseEvent e) {
+			}
+
+			public void mouseDown(MouseEvent e) {
+				printIt(printFigure);
+			}
+
+			public void mouseUp(MouseEvent e) {
+			}
+		});
+		shell.setSize(300, 500);
+		shell.open();
+
+		while (!shell.isDisposed())
+			if (!d.readAndDispatch())
+				d.sleep();
+
 	}
-	Figure rect1 = new RectangleFigure();
-	rect1.setSize(50,50);
-	Figure rect2 = new RectangleFigure();
-	rect2.setSize(50,50);
-	
-	PolylineConnection c = new PolylineConnection();
-	ChopboxAnchor chop = new ChopboxAnchor(rect1);
-	c.setSourceAnchor(chop);
-	c.setTargetAnchor(new ChopboxAnchor(rect2));
-	
-	Label icon = new Label(new Image(null, PrintExample.class.getResourceAsStream("brazil.ico")));
-	
-	parent.add(rf);
-	parent.add(e);
-	parent.add(rr);
-	parent.add(button);
-	parent.add(rect1);
-	parent.add(rect2);
-	parent.add(icon);
-	parent.add(c);
-}
 
-static private void printIt(IFigure fig){
-	Printer p = new Printer();
-	PrintOperation op = new PrintFigureOperation(p, fig);
-	op.setPrintMargin(new Insets(0,0,0,0));
-	op.run("Test");  // "Test" is the print job name
-	p.dispose();
-}
+	static void addAllFigures(IFigure parent) {
+		Font fonts[] = { new Font(null, "Helvetica", 16, SWT.NONE), new Font(null, "Times New Roman", 24, SWT.BOLD),
+				new Font(null, "Perpetua", 48, SWT.NONE) };
+
+		parent.setLayoutManager(new FlowLayout());
+		org.eclipse.draw2d.Button button = new org.eclipse.draw2d.Button("Button");
+		RectangleFigure rf = new RectangleFigure();
+		rf.setSize(50, 50);
+		Ellipse e = new Ellipse();
+		e.setSize(50, 50);
+		RoundedRectangle rr = new RoundedRectangle();
+		rr.setSize(50, 50);
+
+		for (int i = 0; i < fonts.length; i++) {
+			org.eclipse.draw2d.Label label = new org.eclipse.draw2d.Label(fonts[i].getFontData()[0].getName());
+			label.setFont(fonts[i]);
+			label.setBorder(new LineBorder());
+			parent.add(label);
+		}
+		Figure rect1 = new RectangleFigure();
+		rect1.setSize(50, 50);
+		Figure rect2 = new RectangleFigure();
+		rect2.setSize(50, 50);
+
+		PolylineConnection c = new PolylineConnection();
+		ChopboxAnchor chop = new ChopboxAnchor(rect1);
+		c.setSourceAnchor(chop);
+		c.setTargetAnchor(new ChopboxAnchor(rect2));
+
+		Label icon = new Label(new Image(null, PrintExample.class.getResourceAsStream("brazil.ico")));
+
+		parent.add(rf);
+		parent.add(e);
+		parent.add(rr);
+		parent.add(button);
+		parent.add(rect1);
+		parent.add(rect2);
+		parent.add(icon);
+		parent.add(c);
+	}
+
+	static private void printIt(IFigure fig) {
+		Printer p = new Printer();
+		PrintOperation op = new PrintFigureOperation(p, fig);
+		op.setPrintMargin(new Insets(0, 0, 0, 0));
+		op.run("Test"); // "Test" is the print job name
+		p.dispose();
+	}
 
 }

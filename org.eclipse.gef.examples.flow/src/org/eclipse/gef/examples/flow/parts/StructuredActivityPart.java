@@ -37,8 +37,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
 /**
  * @author hudsonr Created on Jun 30, 2003
  */
-public abstract class StructuredActivityPart extends ActivityPart implements
-		NodeEditPart {
+public abstract class StructuredActivityPart extends ActivityPart implements NodeEditPart {
 
 	static final Insets PADDING = new Insets(8, 6, 8, 6);
 	static final Insets INNER_PADDING = new Insets(0);
@@ -63,21 +62,15 @@ public abstract class StructuredActivityPart extends ActivityPart implements
 	 * @see org.eclipse.gef.examples.flow.parts.ActivityPart#createEditPolicies()
 	 */
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
-				new ActivityNodeEditPolicy());
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new ActivityNodeEditPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ActivityEditPolicy());
-		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE,
-				new ActivityContainerHighlightEditPolicy());
-		installEditPolicy(EditPolicy.CONTAINER_ROLE,
-				new ActivityContainerEditPolicy());
-		installEditPolicy(EditPolicy.LAYOUT_ROLE,
-				new StructuredActivityLayoutEditPolicy());
-		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
-				new StructuredActivityDirectEditPolicy());
+		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ActivityContainerHighlightEditPolicy());
+		installEditPolicy(EditPolicy.CONTAINER_ROLE, new ActivityContainerEditPolicy());
+		installEditPolicy(EditPolicy.LAYOUT_ROLE, new StructuredActivityLayoutEditPolicy());
+		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new StructuredActivityDirectEditPolicy());
 	}
 
-	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s,
-			Map map) {
+	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
 		GraphAnimation.recordInitialState(getContentPane());
 		Subgraph me = new Subgraph(this, s);
 		// me.rowOrder = getActivity().getSortIndex();
@@ -86,8 +79,7 @@ public abstract class StructuredActivityPart extends ActivityPart implements
 		IFigure fig = getFigure();
 		if (fig instanceof SubgraphFigure) {
 			me.width = fig.getPreferredSize(me.width, me.height).width;
-			int tagHeight = ((SubgraphFigure) fig).getHeader()
-					.getPreferredSize().height;
+			int tagHeight = ((SubgraphFigure) fig).getHeader().getPreferredSize().height;
 			me.insets.top = tagHeight;
 			me.insets.left = 0;
 			me.insets.bottom = tagHeight;
@@ -116,8 +108,7 @@ public abstract class StructuredActivityPart extends ActivityPart implements
 	public void performRequest(Request request) {
 		if (request.getType() == RequestConstants.REQ_DIRECT_EDIT) {
 			if (request instanceof DirectEditRequest
-					&& !directEditHitTest(((DirectEditRequest) request)
-							.getLocation().getCopy()))
+					&& !directEditHitTest(((DirectEditRequest) request).getLocation().getCopy()))
 				return;
 			performDirectEdit();
 		}
@@ -147,8 +138,7 @@ public abstract class StructuredActivityPart extends ActivityPart implements
 	protected void performDirectEdit() {
 		if (manager == null) {
 			Label l = ((Label) ((SubgraphFigure) getFigure()).getHeader());
-			manager = new ActivityDirectEditManager(this, TextCellEditor.class,
-					new ActivityCellEditorLocator(l), l);
+			manager = new ActivityDirectEditManager(this, TextCellEditor.class, new ActivityCellEditorLocator(l), l);
 		}
 		manager.show();
 	}
@@ -157,10 +147,8 @@ public abstract class StructuredActivityPart extends ActivityPart implements
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
 	 */
 	protected void refreshVisuals() {
-		((Label) ((SubgraphFigure) getFigure()).getHeader())
-				.setText(getActivity().getName());
-		((Label) ((SubgraphFigure) getFigure()).getFooter())
-				.setText("/" + getActivity().getName()); //$NON-NLS-1$
+		((Label) ((SubgraphFigure) getFigure()).getHeader()).setText(getActivity().getName());
+		((Label) ((SubgraphFigure) getFigure()).getFooter()).setText("/" + getActivity().getName()); //$NON-NLS-1$
 	}
 
 }

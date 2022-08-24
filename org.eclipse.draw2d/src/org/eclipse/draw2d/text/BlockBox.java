@@ -86,8 +86,7 @@ public class BlockBox extends CompositeBox {
 	/**
 	 * Sets the height.
 	 * 
-	 * @param h
-	 *            The height
+	 * @param h The height
 	 */
 	public void setHeight(int h) {
 		height = h;
@@ -101,8 +100,7 @@ public class BlockBox extends CompositeBox {
 	}
 
 	Rectangle toRectangle() {
-		return new Rectangle(getX(), y, Math.max(getWidth(), recommendedWidth),
-				height);
+		return new Rectangle(getX(), y, Math.max(getWidth(), recommendedWidth), height);
 	}
 
 }

@@ -45,8 +45,7 @@ public class FlowWizardPage1 extends WizardNewFileCreationPage {
 		super("sampleFlowPage1", selection);
 		this.setTitle("Create Flow Example File");
 		this.setDescription("Create a new flow file resource");
-		this.setImageDescriptor(ImageDescriptor.createFromFile(
-				FlowPlugin.class, "images/flowbanner.gif"));
+		this.setImageDescriptor(ImageDescriptor.createFromFile(FlowPlugin.class, "images/flowbanner.gif"));
 		this.workbench = aWorkbench;
 	}
 

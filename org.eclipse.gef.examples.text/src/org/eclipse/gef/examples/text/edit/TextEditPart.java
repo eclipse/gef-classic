@@ -31,8 +31,7 @@ public interface TextEditPart extends GraphicalEditPart {
 	 * Returns the placement for the caret in absolute coordinates.
 	 * 
 	 * @since 3.1
-	 * @param offset
-	 *            the location of the caret within the receiver
+	 * @param offset the location of the caret within the receiver
 	 * @return the absolute caret location
 	 */
 	CaretInfo getCaretPlacement(int offset, boolean trailing);
@@ -48,17 +47,15 @@ public interface TextEditPart extends GraphicalEditPart {
 	void getTextLocation(CaretRequest search, SearchResult result);
 
 	/**
-	 * Sets the begin and ending selection indices. Indices are zero-based, and
-	 * are specified in terms of caret offsets. In a part's length is N, there
-	 * are N+1 caret positions ranging from 0..N. The begin index should always
-	 * be less than or equal to the end index. No selection is indicated by
-	 * setting both values to <code>-1</code>.
+	 * Sets the begin and ending selection indices. Indices are zero-based, and are
+	 * specified in terms of caret offsets. In a part's length is N, there are N+1
+	 * caret positions ranging from 0..N. The begin index should always be less than
+	 * or equal to the end index. No selection is indicated by setting both values
+	 * to <code>-1</code>.
 	 * 
 	 * @since 3.1
-	 * @param begin
-	 *            the beginning offset or -1
-	 * @param end
-	 *            the end offset or -1
+	 * @param begin the beginning offset or -1
+	 * @param end   the end offset or -1
 	 */
 	void setSelection(int begin, int end);
 

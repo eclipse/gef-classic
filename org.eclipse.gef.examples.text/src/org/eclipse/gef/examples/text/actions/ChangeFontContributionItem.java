@@ -51,9 +51,7 @@ public class ChangeFontContributionItem extends StyleComboContributionItem {
 
 	protected void handleWidgetSelected(SelectionEvent e) {
 		int index = findIndexOf(combo.getText());
-		if (index >= 0
-				&& !getItems()[index].equals(styleService
-						.getStyle(getProperty())))
+		if (index >= 0 && !getItems()[index].equals(styleService.getStyle(getProperty())))
 			styleService.setStyle(getProperty(), getItems()[index]);
 		else
 			refresh();

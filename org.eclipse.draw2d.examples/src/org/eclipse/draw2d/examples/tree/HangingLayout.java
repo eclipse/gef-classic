@@ -58,8 +58,7 @@ class HangingLayout extends BranchLayout {
 	void updateRowHeights() {
 		Transposer transposer = branch.getRoot().getTransposer();
 		preferredRowHeights = new int[getDepth()];
-		preferredRowHeights[0] = transposer.t(branch.getNode()
-				.getPreferredSize()).height + getMajorSpacing();
+		preferredRowHeights[0] = transposer.t(branch.getNode().getPreferredSize()).height + getMajorSpacing();
 		if (!branch.isExpanded())
 			return;
 
@@ -80,11 +79,9 @@ class HangingLayout extends BranchLayout {
 		return branch.getRoot().getMinorSpacing();
 	}
 
-	protected Dimension calculatePreferredSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		Transposer transposer = branch.getRoot().getTransposer();
-		Dimension result = transposer.t(branch.getNode().getPreferredSize()
-				.getCopy());
+		Dimension result = transposer.t(branch.getNode().getPreferredSize().getCopy());
 		result.height = rowHeight;
 		IFigure pane = branch.getContentsPane();
 		if (!pane.isVisible() || pane.getChildren().isEmpty())
@@ -112,9 +109,8 @@ class HangingLayout extends BranchLayout {
 		branch.getNode().setBounds(transposer.t(nodeBounds));
 
 		IFigure contents = branch.getContentsPane();
-		Rectangle contentsBounds = new Rectangle(clientArea.getLocation()
-				.translate(getGap() * 2, rowHeight), transposer.t(contents
-				.getPreferredSize()));
+		Rectangle contentsBounds = new Rectangle(clientArea.getLocation().translate(getGap() * 2, rowHeight),
+				transposer.t(contents.getPreferredSize()));
 		contents.setBounds(transposer.t(contentsBounds));
 	}
 
@@ -133,8 +129,7 @@ class HangingLayout extends BranchLayout {
 				return;
 			int right = x;
 			for (int i = 0; i < children.size(); i++) {
-				Point pt = ((TreeBranch) children.get(i)).getNodeBounds()
-						.getTop();
+				Point pt = ((TreeBranch) children.get(i)).getNodeBounds().getTop();
 				g.drawLine(pt.x(), y, pt.x(), pt.y());
 				right = Math.max(right, pt.x());
 			}
@@ -150,8 +145,7 @@ class HangingLayout extends BranchLayout {
 				return;
 			int bottom = y;
 			for (int i = 0; i < children.size(); i++) {
-				Point pt = ((TreeBranch) children.get(i)).getNodeBounds()
-						.getLeft();
+				Point pt = ((TreeBranch) children.get(i)).getNodeBounds().getLeft();
 				g.drawLine(x, pt.y(), pt.x(), pt.y());
 				bottom = Math.max(bottom, pt.y());
 			}
@@ -167,8 +161,7 @@ class HangingLayout extends BranchLayout {
 		cachedContourLeft = new int[getDepth()];
 		cachedContourRight = new int[getDepth()];
 
-		Rectangle clientArea = transposer.t(branch
-				.getClientArea(Rectangle.SINGLETON));
+		Rectangle clientArea = transposer.t(branch.getClientArea(Rectangle.SINGLETON));
 		Rectangle nodeBounds = transposer.t(branch.getNodeBounds());
 		int rightEdge = clientArea.right();
 

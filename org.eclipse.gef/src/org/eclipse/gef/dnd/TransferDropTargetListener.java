@@ -20,14 +20,14 @@ import org.eclipse.swt.dnd.Transfer;
  * drop location, and/or criteria.
  * <LI>When enabled, optionally showing feedback on the DropTarget.
  * <LI>Performing the actualy Drop
- * </UL> {@link DelegatingDropAdapter} allows these functions to be implemented
+ * </UL>
+ * {@link DelegatingDropAdapter} allows these functions to be implemented
  * separately for unrelated types of Drags. DelegatingDropAdapter then combines
  * the function of each TransferDropTargetListener, while allowing them to be
  * implemented as if they were the only DragSourceListener.
  * 
  * @deprecated use org.eclipse.jface.util.TransferDropTargetListener instead
  */
-public interface TransferDropTargetListener extends
-		org.eclipse.jface.util.TransferDropTargetListener {
+public interface TransferDropTargetListener extends org.eclipse.jface.util.TransferDropTargetListener {
 
 }

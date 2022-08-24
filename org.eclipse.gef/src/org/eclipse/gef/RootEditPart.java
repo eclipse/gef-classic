@@ -20,8 +20,8 @@ package org.eclipse.gef;
 public interface RootEditPart extends EditPart {
 
 	/**
-	 * Returns the <i>contents</i> EditPart. A RootEditPart only has a single
-	 * child, called its <i>contents</i>.
+	 * Returns the <i>contents</i> EditPart. A RootEditPart only has a single child,
+	 * called its <i>contents</i>.
 	 * 
 	 * @return the contents.
 	 */
@@ -35,19 +35,17 @@ public interface RootEditPart extends EditPart {
 	EditPartViewer getViewer();
 
 	/**
-	 * Sets the <i>contents</i> EditPart. A RootEditPart only has a single
-	 * child, called its <i>contents</i>.
+	 * Sets the <i>contents</i> EditPart. A RootEditPart only has a single child,
+	 * called its <i>contents</i>.
 	 * 
-	 * @param editpart
-	 *            the contents
+	 * @param editpart the contents
 	 */
 	void setContents(EditPart editpart);
 
 	/**
 	 * Sets the root's EditPartViewer.
 	 * 
-	 * @param viewer
-	 *            the EditPartViewer
+	 * @param viewer the EditPartViewer
 	 */
 	void setViewer(EditPartViewer viewer);
 

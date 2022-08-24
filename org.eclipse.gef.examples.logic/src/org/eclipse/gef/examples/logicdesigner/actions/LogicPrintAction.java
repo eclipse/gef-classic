@@ -62,10 +62,8 @@ public class LogicPrintAction extends Action implements IObjectActionDelegate {
 	 * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
 	 */
 	public void run(IAction action) {
-		int style = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getShell().getStyle();
-		Shell shell = new Shell((style & SWT.MIRRORED) != 0 ? SWT.RIGHT_TO_LEFT
-				: SWT.NONE);
+		int style = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell().getStyle();
+		Shell shell = new Shell((style & SWT.MIRRORED) != 0 ? SWT.RIGHT_TO_LEFT : SWT.NONE);
 		GraphicalViewer viewer = new ScrollingGraphicalViewer();
 		viewer.createControl(shell);
 		viewer.setEditDomain(new DefaultEditDomain(null));
@@ -80,8 +78,7 @@ public class LogicPrintAction extends Action implements IObjectActionDelegate {
 		PrintDialog dialog = new PrintDialog(shell, SWT.NULL);
 		PrinterData data = dialog.open();
 		if (data != null) {
-			PrintGraphicalViewerOperation op = new PrintGraphicalViewerOperation(
-					new Printer(data), viewer);
+			PrintGraphicalViewerOperation op = new PrintGraphicalViewerOperation(new Printer(data), viewer);
 			op.setPrintMode(printMode);
 			op.run(selectedFile.getName());
 		}

@@ -14,11 +14,9 @@ import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 
 /**
- * The root figure for Zest.  The figure is broken up into four segments, 
- * 1. The Connections
- * 2. The Nodes
- * 3. The Highlighted Connections
- * 4. The Highlighted Nodes
+ * The root figure for Zest. The figure is broken up into four segments, 1. The
+ * Connections 2. The Nodes 3. The Highlighted Connections 4. The Highlighted
+ * Nodes
  * 
  * @author Ian Bull
  * 
@@ -33,6 +31,7 @@ public class ZestRootLayer extends FreeformLayer {
 
 	/**
 	 * Adds a node to the ZestRootLayer
+	 * 
 	 * @param nodeFigure The figure representing the node
 	 */
 	public void addNode(IFigure nodeFigure) {
@@ -43,6 +42,7 @@ public class ZestRootLayer extends FreeformLayer {
 
 	/**
 	 * Removes a node from the layer
+	 * 
 	 * @param nodeFigure
 	 */
 	public void removeNode(IFigure nodeFigure) {
@@ -101,7 +101,8 @@ public class ZestRootLayer extends FreeformLayer {
 	public void unHighlightNode(IFigure nodeFigure) {
 		int nodePosition = this.getChildren().indexOf(nodeFigure);
 		if (nodePosition < 0 || nodePosition > getHighlightNodePosition()) {
-			//throw new RuntimeException("Node: " + nodeFigure + " not currently Highlighted");
+			// throw new RuntimeException("Node: " + nodeFigure + " not currently
+			// Highlighted");
 			return;
 		}
 		this.numberOfHighlightedNodes--;
@@ -116,7 +117,8 @@ public class ZestRootLayer extends FreeformLayer {
 	public void unHighlightConnection(IFigure connectionFigure) {
 		int connectionPosition = this.getChildren().indexOf(connectionFigure);
 		if (connectionPosition < 0 || connectionPosition > getHighlightConnectionPosition()) {
-			//throw new RuntimeException("Connection: " + connectionFigure + " not currently Highlighted");
+			// throw new RuntimeException("Connection: " + connectionFigure + " not
+			// currently Highlighted");
 			return;
 		}
 		this.numberOfHighlightedConnections--;
@@ -163,7 +165,8 @@ public class ZestRootLayer extends FreeformLayer {
 	}
 
 	/*
-	 * Highlighted connection position is at the end of the list of highlighted connections
+	 * Highlighted connection position is at the end of the list of highlighted
+	 * connections
 	 */
 	private int getHighlightConnectionPosition() {
 		if (EDGES_ON_TOP) {

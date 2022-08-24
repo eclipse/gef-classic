@@ -19,16 +19,14 @@ public interface MouseListener {
 	 * Called when a mouse button has been pressed while over the listened to
 	 * object.
 	 * 
-	 * @param me
-	 *            The MouseEvent object
+	 * @param me The MouseEvent object
 	 */
 	void mousePressed(MouseEvent me);
 
 	/**
 	 * Called when a pressed mouse button has been released.
 	 * 
-	 * @param me
-	 *            The MouseEvent object
+	 * @param me The MouseEvent object
 	 */
 	void mouseReleased(MouseEvent me);
 
@@ -36,8 +34,7 @@ public interface MouseListener {
 	 * Called when a mouse button has been double clicked over the listened to
 	 * object.
 	 * 
-	 * @param me
-	 *            The MouseEvent object
+	 * @param me The MouseEvent object
 	 */
 	void mouseDoubleClicked(MouseEvent me);
 

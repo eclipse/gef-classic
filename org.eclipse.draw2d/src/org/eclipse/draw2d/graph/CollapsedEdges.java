@@ -27,8 +27,8 @@ class CollapsedEdges {
 	int collapsedCount;
 
 	/**
-	 * The total amount of weighted difference in the collapsed edges slack and
-	 * the tightest edge's slack.
+	 * The total amount of weighted difference in the collapsed edges slack and the
+	 * tightest edge's slack.
 	 */
 	int overage;
 	int unOverage;
@@ -49,21 +49,19 @@ class CollapsedEdges {
 	}
 
 	/**
-	 * Compares the given edge to the current tightest edge. If the given edge
-	 * is tighter than the current, the current tightest is returned. Otherwise,
-	 * the edge itself is returned. The returned edge would be the one to remove
-	 * from the graph.
+	 * Compares the given edge to the current tightest edge. If the given edge is
+	 * tighter than the current, the current tightest is returned. Otherwise, the
+	 * edge itself is returned. The returned edge would be the one to remove from
+	 * the graph.
 	 * 
-	 * @param candidate
-	 *            another edge
+	 * @param candidate another edge
 	 * @return the edge which is not the tightest edge
 	 * @since 3.1
 	 */
 	Edge processEdge(Edge candidate) {
 		collapsedCount++;
 		if (candidate.getSlack() < tightestEdge.getSlack()) {
-			overage += collapsedWeight
-					* (tightestEdge.getSlack() - candidate.getSlack());
+			overage += collapsedWeight * (tightestEdge.getSlack() - candidate.getSlack());
 			Edge temp = tightestEdge;
 			tightestEdge = candidate;
 			collapsedWeight += candidate.weight;

@@ -36,14 +36,12 @@ public class PathExample {
 
 	public static void main(String[] args) {
 		Display d = new Display();
-		final Shell shell = new Shell(d, SWT.SHELL_TRIM | SWT.NO_BACKGROUND
-				| SWT.NO_REDRAW_RESIZE);
+		final Shell shell = new Shell(d, SWT.SHELL_TRIM | SWT.NO_BACKGROUND | SWT.NO_REDRAW_RESIZE);
 		shell.setSize(800, 800);
 		shell.setLayout(new org.eclipse.swt.layout.GridLayout(1, false));
 
 		Canvas canvas = new Canvas(shell, SWT.NONE);
-		canvas.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,
-				true));
+		canvas.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 		LightweightSystem lws = new LightweightSystem(canvas);
 		final Figure fig = new Figure();
 

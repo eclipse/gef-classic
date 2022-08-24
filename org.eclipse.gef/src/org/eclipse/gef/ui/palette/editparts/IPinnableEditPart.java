@@ -35,9 +35,8 @@ public interface IPinnableEditPart {
 	/**
 	 * Sets the palette editpart's pinned state to the specified value.
 	 * 
-	 * @param pinned
-	 *            <code>true</code> if the palette editpart should be pinned
-	 *            when opened
+	 * @param pinned <code>true</code> if the palette editpart should be pinned when
+	 *               opened
 	 */
 	public void setPinnedOpen(boolean pinned);
 

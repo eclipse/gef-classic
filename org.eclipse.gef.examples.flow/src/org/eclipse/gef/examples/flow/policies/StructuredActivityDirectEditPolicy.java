@@ -23,8 +23,7 @@ import org.eclipse.gef.requests.DirectEditRequest;
  * 
  * @author Daniel Lee
  */
-public class StructuredActivityDirectEditPolicy extends
-		ActivityDirectEditPolicy {
+public class StructuredActivityDirectEditPolicy extends ActivityDirectEditPolicy {
 
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
@@ -43,8 +42,7 @@ public class StructuredActivityDirectEditPolicy extends
 	protected void showCurrentEditValue(DirectEditRequest request) {
 		String value = (String) request.getCellEditor().getValue();
 		((Label) ((SubgraphFigure) getHostFigure()).getHeader()).setText(value);
-		((Label) ((SubgraphFigure) getHostFigure()).getFooter())
-				.setText("/" + value);//$NON-NLS-1$
+		((Label) ((SubgraphFigure) getHostFigure()).getFooter()).setText("/" + value);//$NON-NLS-1$
 
 		// hack to prevent async layout from placing the cell editor twice.
 		getHostFigure().getUpdateManager().performUpdate();

@@ -24,10 +24,8 @@ public class FocusEvent {
 	/**
 	 * Constructs a new FocusEvent.
 	 * 
-	 * @param loser
-	 *            the figure losing focus
-	 * @param gainer
-	 *            the figure gaining focus
+	 * @param loser  the figure losing focus
+	 * @param gainer the figure gaining focus
 	 */
 	public FocusEvent(IFigure loser, IFigure gainer) {
 		this.loser = loser;

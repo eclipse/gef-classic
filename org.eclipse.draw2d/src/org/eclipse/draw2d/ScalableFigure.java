@@ -28,8 +28,7 @@ public interface ScalableFigure extends IFigure {
 	/**
 	 * Sets the new scale factor.
 	 * 
-	 * @param scale
-	 *            the scale
+	 * @param scale the scale
 	 */
 	void setScale(double scale);
 

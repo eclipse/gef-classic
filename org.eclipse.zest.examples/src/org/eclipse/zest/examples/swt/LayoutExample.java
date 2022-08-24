@@ -63,8 +63,7 @@ public class LayoutExample {
 					GraphConnection connection = (GraphConnection) object;
 					if (connection.getSource().getText().equals("Root")) {
 						basicEdgeConstraints.weight = 1;
-					}
-					else {
+					} else {
 						basicEdgeConstraints.weight = -1;
 					}
 				}

@@ -31,8 +31,7 @@ public class ChangeGuideCommand extends Command {
 		horizontal = horizontalGuide;
 	}
 
-	protected void changeGuide(LogicGuide oldGuide, LogicGuide newGuide,
-			int newAlignment) {
+	protected void changeGuide(LogicGuide oldGuide, LogicGuide newGuide, int newAlignment) {
 		if (oldGuide != null && oldGuide != newGuide) {
 			oldGuide.detachPart(part);
 		}
@@ -46,8 +45,7 @@ public class ChangeGuideCommand extends Command {
 
 	public void execute() {
 		// Cache the old values
-		oldGuide = horizontal ? part.getHorizontalGuide() : part
-				.getVerticalGuide();
+		oldGuide = horizontal ? part.getHorizontalGuide() : part.getVerticalGuide();
 		if (oldGuide != null)
 			oldAlign = oldGuide.getAlignment(part);
 

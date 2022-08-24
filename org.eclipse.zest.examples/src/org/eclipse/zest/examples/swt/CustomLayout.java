@@ -13,14 +13,15 @@ import org.eclipse.zest.layouts.dataStructures.InternalNode;
 import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
 /**
- * This snippet shows how to create a custom layout. This layout simply lays the nodes out vertically
- * on the same Y-Axis as they currently have.  All the work is done in the applyLayoutInternal Method.
+ * This snippet shows how to create a custom layout. This layout simply lays the
+ * nodes out vertically on the same Y-Axis as they currently have. All the work
+ * is done in the applyLayoutInternal Method.
  * 
  * @author irbull
  *
  */
 public class CustomLayout {
-	
+
 	public static void main(String[] args) {
 		Display d = new Display();
 		Shell shell = new Shell(d);
@@ -38,24 +39,23 @@ public class CustomLayout {
 		new GraphConnection(g, SWT.NONE, n3, n);
 		g.setLayoutAlgorithm(new AbstractLayoutAlgorithm(SWT.NONE) {
 
-			
 			private int totalSteps;
 			private int currentStep;
 
 			protected void applyLayoutInternal(InternalNode[] entitiesToLayout,
 					InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth,
 					double boundsHeight) {
-				
+
 				totalSteps = entitiesToLayout.length;
 				double distance = boundsWidth / totalSteps;
 				int xLocation = 0;
-			
+
 				fireProgressStarted(totalSteps);
-				
+
 				for (currentStep = 0; currentStep < entitiesToLayout.length; currentStep++) {
 					LayoutEntity layoutEntity = entitiesToLayout[currentStep].getLayoutEntity();
 					layoutEntity.setLocationInLayout(xLocation, layoutEntity.getYInLayout());
-					xLocation+= distance;
+					xLocation += distance;
 					fireProgressEvent(currentStep, totalSteps);
 				}
 				fireProgressEnded(totalSteps);
@@ -86,7 +86,7 @@ public class CustomLayout {
 			public void setLayoutArea(double x, double y, double width, double height) {
 				// do nothing
 			}
-			
+
 		}, true);
 
 		shell.open();

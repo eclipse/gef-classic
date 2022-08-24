@@ -55,8 +55,7 @@ public class FeedbackHelper {
 	/**
 	 * Sets the connection.
 	 * 
-	 * @param c
-	 *            connection
+	 * @param c connection
 	 */
 	public void setConnection(Connection c) {
 		connection = c;
@@ -65,8 +64,7 @@ public class FeedbackHelper {
 	/**
 	 * Sets if moving start of connection.
 	 * 
-	 * @param value
-	 *            <code>true</code> if the starts is being moved
+	 * @param value <code>true</code> if the starts is being moved
 	 */
 	public void setMovingStartAnchor(boolean value) {
 		isMovingStartAnchor = value;
@@ -75,8 +73,7 @@ public class FeedbackHelper {
 	/**
 	 * Sets the anchor for the end being moved.
 	 * 
-	 * @param anchor
-	 *            the new anchor
+	 * @param anchor the new anchor
 	 */
 	protected void setAnchor(ConnectionAnchor anchor) {
 		if (isMovingStartAnchor())
@@ -86,13 +83,11 @@ public class FeedbackHelper {
 	}
 
 	/**
-	 * Updates the feedback based on the given anchor or point. The anchor is
-	 * used unless <code>null</code>. The point is used when there is no anchor.
+	 * Updates the feedback based on the given anchor or point. The anchor is used
+	 * unless <code>null</code>. The point is used when there is no anchor.
 	 * 
-	 * @param anchor
-	 *            <code>null</code> or an anchor
-	 * @param p
-	 *            the point to use when there is no anchor
+	 * @param anchor <code>null</code> or an anchor
+	 * @param p      the point to use when there is no anchor
 	 */
 	public void update(ConnectionAnchor anchor, Point p) {
 		if (anchor != null)

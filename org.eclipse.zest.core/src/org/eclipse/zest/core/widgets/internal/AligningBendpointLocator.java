@@ -19,6 +19,7 @@ import org.eclipse.draw2d.geometry.PointList;
 
 /**
  * A locator that finds the middle of a connection based on the bendpoints.
+ * 
  * @author Del Myers
  *
  */
@@ -26,8 +27,8 @@ import org.eclipse.draw2d.geometry.PointList;
 //@tag zest.bug.160368-ConnectionAlign : replaces MidBenpointLocator in order to have finer control over alignment.
 public class AligningBendpointLocator extends AbstractLocator {
 	/**
-	 * "Vertical" alignment contstant. Figures should be placed in the middle
-	 * of the line.
+	 * "Vertical" alignment contstant. Figures should be placed in the middle of the
+	 * line.
 	 */
 	public static final int MIDDLE = 0;
 	/**
@@ -40,40 +41,40 @@ public class AligningBendpointLocator extends AbstractLocator {
 	public static final int BELOW = 2;
 
 	/**
-	 * "Horizontal" alignment constant. Figures should be placed in the center
-	 * of the points on the line.
+	 * "Horizontal" alignment constant. Figures should be placed in the center of
+	 * the points on the line.
 	 */
 	public static final int CENTER = 0;
 
 	/**
-	 * "Horizontal" alignment constant. Figures should be placed at the beginning
-	 * of the line. Figures will be anchored so that they have one end at the
-	 * beginning of the connection, not so that they are centered at the start
-	 * point. Which end of the figure is placed at that point will depend
-	 * on the direction of the first two points.
+	 * "Horizontal" alignment constant. Figures should be placed at the beginning of
+	 * the line. Figures will be anchored so that they have one end at the beginning
+	 * of the connection, not so that they are centered at the start point. Which
+	 * end of the figure is placed at that point will depend on the direction of the
+	 * first two points.
 	 */
 	public static final int BEGINNING = 1;
 
 	/**
-	 * "Horizontal" alignment constant. Figures should be placed at the end of
-	 * the line. Figures will be anchored so that they have one end at the
-	 * beginning of the connection, not so that they are centered at the end
-	 * point. Which end of the figure is placed at that point will depend
-	 * on the direction of the last two points.
+	 * "Horizontal" alignment constant. Figures should be placed at the end of the
+	 * line. Figures will be anchored so that they have one end at the beginning of
+	 * the connection, not so that they are centered at the end point. Which end of
+	 * the figure is placed at that point will depend on the direction of the last
+	 * two points.
 	 */
 	public static final int END = 2;
 
 	/**
-	 * "Horizontal" alignment constant. Figures should be centered between the
-	 * first two points on the connection. For connections with only two points, 
-	 * this will behave the same as CENTER.
+	 * "Horizontal" alignment constant. Figures should be centered between the first
+	 * two points on the connection. For connections with only two points, this will
+	 * behave the same as CENTER.
 	 */
 	public static final int CENTER_BEGINNING = 3;
 
 	/**
-	 * "Horizontal" alignment constant. Figures should be centered between the
-	 * last two points on the connection. For connections with only two points,
-	 * this will behave the same as CENTER.
+	 * "Horizontal" alignment constant. Figures should be centered between the last
+	 * two points on the connection. For connections with only two points, this will
+	 * behave the same as CENTER.
 	 */
 	public static final int CENTER_END = 4;
 	private int horizontal;
@@ -93,7 +94,9 @@ public class AligningBendpointLocator extends AbstractLocator {
 		this.vertical = vertical;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.draw2d.ConnectionLocator#getReferencePoint()
 	 */
 	protected Point getReferencePoint() {
@@ -127,20 +130,23 @@ public class AligningBendpointLocator extends AbstractLocator {
 
 	/**
 	 * Recalculates the position of the figure and returns the updated bounds.
+	 * 
 	 * @param target The figure to relocate
 	 */
 	public void relocate(IFigure target) {
 		Dimension prefSize = target.getPreferredSize();
 		Point center = getReferencePoint();
 		calculatePosition();
-		//@tag zest(bug(GEFProblem)) : there seems to be a bug in GEF that if the following is done, then labels get printed in the wrong location
-		//target.translateToRelative(center);
+		// @tag zest(bug(GEFProblem)) : there seems to be a bug in GEF that if the
+		// following is done, then labels get printed in the wrong location
+		// target.translateToRelative(center);
 		target.setBounds(getNewBounds(prefSize, center));
 	}
 
 	/**
 	 * Translates the center point depending on the horizontal and veritical
 	 * alignments based on the given bounds.
+	 * 
 	 * @param center
 	 */
 	private void calculatePosition() {
@@ -189,8 +195,8 @@ public class AligningBendpointLocator extends AbstractLocator {
 	}
 
 	/**
-	 * @param horizontal the horizontal alignment to set. One of CENTER,
-	 * BEGINNING, END, CENTER_BEGINNING, or CENTER_END.
+	 * @param horizontal the horizontal alignment to set. One of CENTER, BEGINNING,
+	 *                   END, CENTER_BEGINNING, or CENTER_END.
 	 */
 	public void setHorizontalAlignment(int horizontal) {
 		this.horizontal = horizontal;
@@ -198,7 +204,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 
 	/**
 	 * @param vertical the vertical alignment to set. One of ABOVE, MIDDLE, or
-	 * BELOW.
+	 *                 BELOW.
 	 */
 	public void setVerticalAlginment(int vertical) {
 		this.vertical = vertical;

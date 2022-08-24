@@ -62,8 +62,7 @@ public class AndGateFigure extends GateFigure {
 		r.width--;
 		r.height--;
 		g.drawArc(r, 180, 190);
-		g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2,
-				r.bottom() + 2);
+		g.drawLine(r.x + r.width / 2, r.bottom(), r.x + r.width / 2, r.bottom() + 2);
 	}
 
 }

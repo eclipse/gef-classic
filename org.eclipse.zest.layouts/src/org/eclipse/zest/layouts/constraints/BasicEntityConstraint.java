@@ -31,6 +31,7 @@ public class BasicEntityConstraint implements LayoutConstraint {
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
 	public void clear() {

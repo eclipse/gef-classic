@@ -23,8 +23,7 @@ import org.eclipse.draw2d.Cursors;
  * connection's points are changed. Changing the points of a connection does not
  * fire "figure moved", it only fires "points" property as changing.
  */
-public abstract class ConnectionHandle extends SquareHandle implements
-		PropertyChangeListener {
+public abstract class ConnectionHandle extends SquareHandle implements PropertyChangeListener {
 
 	private boolean fixed = false;
 
@@ -36,11 +35,10 @@ public abstract class ConnectionHandle extends SquareHandle implements
 	}
 
 	/**
-	 * Creates a new handle with the given fixed setting. If the handle is
-	 * fixed, it cannot be dragged.
+	 * Creates a new handle with the given fixed setting. If the handle is fixed, it
+	 * cannot be dragged.
 	 * 
-	 * @param fixed
-	 *            <code>true</code> if the handle cannot be dragged.
+	 * @param fixed <code>true</code> if the handle cannot be dragged.
 	 */
 	public ConnectionHandle(boolean fixed) {
 		setFixed(fixed);
@@ -56,8 +54,7 @@ public abstract class ConnectionHandle extends SquareHandle implements
 	 */
 	public void addNotify() {
 		super.addNotify();
-		getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS,
-				this);
+		getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
 	}
 
 	/**
@@ -93,16 +90,14 @@ public abstract class ConnectionHandle extends SquareHandle implements
 	 * @see org.eclipse.draw2d.IFigure#removeNotify()
 	 */
 	public void removeNotify() {
-		getConnection().removePropertyChangeListener(
-				Connection.PROPERTY_POINTS, this);
+		getConnection().removePropertyChangeListener(Connection.PROPERTY_POINTS, this);
 		super.removeNotify();
 	}
 
 	/**
 	 * Sets whether the handle is fixed and cannot be moved
 	 * 
-	 * @param fixed
-	 *            <code>true</code> if the handle should be unmovable
+	 * @param fixed <code>true</code> if the handle should be unmovable
 	 */
 	public void setFixed(boolean fixed) {
 		this.fixed = fixed;

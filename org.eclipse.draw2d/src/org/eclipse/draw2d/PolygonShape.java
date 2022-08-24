@@ -26,8 +26,7 @@ public class PolygonShape extends AbstractPointListShape {
 
 	protected boolean shapeContainsPoint(int x, int y) {
 		Point location = getLocation();
-		return Geometry.polygonContainsPoint(points, x - location.x, y
-				- location.y);
+		return Geometry.polygonContainsPoint(points, x - location.x, y - location.y);
 	}
 
 	protected void fillShape(Graphics graphics) {

@@ -29,8 +29,8 @@ import org.eclipse.gef.EditPartViewer;
  * 
  * @author hudsonr
  */
-public class ContentOutlinePage extends org.eclipse.ui.part.Page implements
-		org.eclipse.ui.views.contentoutline.IContentOutlinePage {
+public class ContentOutlinePage extends org.eclipse.ui.part.Page
+		implements org.eclipse.ui.views.contentoutline.IContentOutlinePage {
 
 	private EditPartViewer viewer;
 	private Control control;
@@ -38,8 +38,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page implements
 	/**
 	 * Constructs a ContentOutlinePage for the given viewer.
 	 * 
-	 * @param viewer
-	 *            the viewer
+	 * @param viewer the viewer
 	 */
 	public ContentOutlinePage(EditPartViewer viewer) {
 		this.viewer = viewer;
@@ -92,8 +91,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page implements
 	/**
 	 * @see ISelectionProvider#removeSelectionChangedListener(ISelectionChangedListener)
 	 */
-	public void removeSelectionChangedListener(
-			ISelectionChangedListener listener) {
+	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		getViewer().removeSelectionChangedListener(listener);
 	}
 

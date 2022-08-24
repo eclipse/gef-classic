@@ -34,7 +34,7 @@ public class NestedGraphSnippet2 {
 
 		Graph g = new Graph(shell, SWT.NONE);
 
-		/* Machines  */
+		/* Machines */
 		GraphContainer machine1 = new GraphContainer(g, SWT.NONE);
 		machine1.setText("Machine 1 (prop:1)");
 		GraphContainer machine2 = new GraphContainer(g, SWT.NONE);

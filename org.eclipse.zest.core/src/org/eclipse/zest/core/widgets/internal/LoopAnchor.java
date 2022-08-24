@@ -18,13 +18,15 @@ public class LoopAnchor extends ChopboxAnchor {
 		super(owner);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.draw2d.ChopboxAnchor#getReferencePoint()
 	 */
 	public Point getReferencePoint() {
-		//modification to getReferencePoint. Returns
-		//a point on the outside of the owners box, rather than the
-		//center. Only usefull for self-loops.
+		// modification to getReferencePoint. Returns
+		// a point on the outside of the owners box, rather than the
+		// center. Only usefull for self-loops.
 		if (getOwner() == null)
 			return null;
 		else {

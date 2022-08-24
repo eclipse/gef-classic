@@ -22,8 +22,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class FreeformLayout extends XYLayout {
 
 	/**
-	 * Option that forces only positive coordinates to children figures by
-	 * setting the layout origin appropriately
+	 * Option that forces only positive coordinates to children figures by setting
+	 * the layout origin appropriately
 	 */
 	private static final int FLAG__POSITIVE_COORDINATES = 1;
 
@@ -62,8 +62,8 @@ public class FreeformLayout extends XYLayout {
 	}
 
 	/**
-	 * Checks whether the positive coordinates flag is on, e.g positive
-	 * coordinates for children are inforced by the layout
+	 * Checks whether the positive coordinates flag is on, e.g positive coordinates
+	 * for children are inforced by the layout
 	 * 
 	 * @return <code>boolean</code>
 	 * @since 3.6
@@ -75,8 +75,7 @@ public class FreeformLayout extends XYLayout {
 	/**
 	 * Sets/unsets the positive coordinates flag for true/false parameters
 	 * respectively. If option is set to on then layout calculates positive
-	 * coordinates for children figures by adjusting the layout origin
-	 * accordingly.
+	 * coordinates for children figures by adjusting the layout origin accordingly.
 	 * 
 	 * @param positiveCoordinates
 	 * @since 3.6

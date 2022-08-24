@@ -33,8 +33,8 @@ public class SelectionRange {
 	private List leafParts;
 
 	/**
-	 * Constructs a selection range which starts and ends at the given location.
-	 * The direction of the range is forward.
+	 * Constructs a selection range which starts and ends at the given location. The
+	 * direction of the range is forward.
 	 * 
 	 * @since 3.1
 	 * @param location
@@ -44,8 +44,8 @@ public class SelectionRange {
 	}
 
 	/**
-	 * Constructs a selection range which starts and ends at the given
-	 * locations. The direction of the range is forward.
+	 * Constructs a selection range which starts and ends at the given locations.
+	 * The direction of the range is forward.
 	 * 
 	 * @since 3.1
 	 * @param begin
@@ -57,8 +57,8 @@ public class SelectionRange {
 
 	/**
 	 * Constructs a selection range which starts and ends at the given locations
-	 * with the given direction. If a range is forward, the caret will be placed
-	 * at the end of the range. Otherwise, it is placed at the beginning.
+	 * with the given direction. If a range is forward, the caret will be placed at
+	 * the end of the range. Otherwise, it is placed at the beginning.
 	 * 
 	 * @since 3.1
 	 * @param begin
@@ -69,8 +69,7 @@ public class SelectionRange {
 		this(begin, end, forward, true);
 	}
 
-	public SelectionRange(TextLocation begin, TextLocation end,
-			boolean forward, boolean trailing) {
+	public SelectionRange(TextLocation begin, TextLocation end, boolean forward, boolean trailing) {
 		Assert.isNotNull(begin);
 		Assert.isNotNull(end);
 		this.begin = begin;
@@ -92,15 +91,13 @@ public class SelectionRange {
 			result.add(part);
 		else
 			for (int i = 0; i < part.getChildren().size(); i++)
-				depthFirstTraversal((EditPart) part.getChildren().get(i),
-						result);
+				depthFirstTraversal((EditPart) part.getChildren().get(i), result);
 	}
 
 	public boolean equals(Object obj) {
 		if (obj instanceof SelectionRange) {
 			SelectionRange other = (SelectionRange) obj;
-			return other.begin == begin && other.end == end
-					&& other.isForward == isForward;
+			return other.begin == begin && other.end == end && other.isForward == isForward;
 		}
 		return false;
 	}
@@ -202,8 +199,8 @@ public class SelectionRange {
 	}
 
 	/**
-	 * @return the list of selected EditParts. There is no guarantee as to the
-	 *         order of EditParts.
+	 * @return the list of selected EditParts. There is no guarantee as to the order
+	 *         of EditParts.
 	 */
 	public List getSelectedParts() {
 		if (selectedParts == null) {

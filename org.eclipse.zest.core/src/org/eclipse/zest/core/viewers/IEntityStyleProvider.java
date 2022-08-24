@@ -36,24 +36,20 @@ import org.eclipse.ui.services.IDisposable;
 public interface IEntityStyleProvider extends IDisposable {
 
 	/**
-	 * Returns the forground colour of this entity. May return null for
-	 * defaults. Any resources created by this class must be disposed by this
-	 * class.
+	 * Returns the forground colour of this entity. May return null for defaults.
+	 * Any resources created by this class must be disposed by this class.
 	 * 
-	 * @param entity
-	 *            the entity to be styled.
+	 * @param entity the entity to be styled.
 	 * @return the forground colour of this entity.
 	 * @see #dispose()
 	 */
 	public Color getNodeHighlightColor(Object entity);
 
 	/**
-	 * Returns the background colour for this entity. May return null for
-	 * defaults. Any resources created by this class must be disposed by this
-	 * class.
+	 * Returns the background colour for this entity. May return null for defaults.
+	 * Any resources created by this class must be disposed by this class.
 	 * 
-	 * @param entity
-	 *            the entity to be styled.
+	 * @param entity the entity to be styled.
 	 * @return the background colour for this entity.
 	 * @see #dispose()
 	 */
@@ -61,11 +57,9 @@ public interface IEntityStyleProvider extends IDisposable {
 
 	/**
 	 * Returns the border highlight colour for this entity. May return null for
-	 * defaults. Any resources created by this class must be disposed by this
-	 * class.
+	 * defaults. Any resources created by this class must be disposed by this class.
 	 * 
-	 * @param entity
-	 *            the entity to be styled.
+	 * @param entity the entity to be styled.
 	 * @return the border highlight colour for this entity.
 	 * @see #dispose()
 	 */
@@ -74,42 +68,40 @@ public interface IEntityStyleProvider extends IDisposable {
 	/**
 	 * Returns the border width for this entity. May return -1 for defaults.
 	 * 
-	 * @param entity
-	 *            the entity to be styled.
+	 * @param entity the entity to be styled.
 	 * @return the border width, or -1 for defaults.
 	 */
 	public int getBorderWidth(Object entity);
 
 	/**
-	 * Returns true iff the adjacent entities should be highlighted when this
-	 * node is selected. Zest's default action is true.
+	 * Returns true iff the adjacent entities should be highlighted when this node
+	 * is selected. Zest's default action is true.
 	 * 
-	 * @return true iff the adjacent entities should be highlighted when this
-	 *         node is selected.
+	 * @return true iff the adjacent entities should be highlighted when this node
+	 *         is selected.
 	 */
 	// @tag ADJACENT : Removed highlight adjacent
-	//public boolean highlightAdjacentEntities(Object entity);
+	// public boolean highlightAdjacentEntities(Object entity);
 	/**
-	 * Returns the color that adjacent entities will be drawn when this entity
-	 * is selected. Will be ignored if HighlightAdjacentEntities() returns
-	 * false. May return null for defaults. Any resources created by this class
-	 * must be disposed by this class.
+	 * Returns the color that adjacent entities will be drawn when this entity is
+	 * selected. Will be ignored if HighlightAdjacentEntities() returns false. May
+	 * return null for defaults. Any resources created by this class must be
+	 * disposed by this class.
 	 * 
-	 * @param entity
-	 *            the entity to be styled.
+	 * @param entity the entity to be styled.
 	 * @return the color for adjacent entities.
 	 * @see #highlightAdjacentEntities(Object entity)
 	 * @see #dispose()
 	 */
+
 	// @tag ADJACENT : Removed highlight adjacent
-	//public Color getAdjacentEntityHighlightColor(Object entity);
+	// public Color getAdjacentEntityHighlightColor(Object entity);
 	/**
-	 * Returns the colour that this node should be coloured. This will be
-	 * ignored if getNodeColour returns null. Any resources created by this
-	 * class must be diposed by this class.
+	 * Returns the colour that this node should be coloured. This will be ignored if
+	 * getNodeColour returns null. Any resources created by this class must be
+	 * diposed by this class.
 	 * 
-	 * @param entity
-	 *            The entity to be styled
+	 * @param entity The entity to be styled
 	 * @return The colour for the node
 	 * @see #dispose()
 	 */
@@ -118,8 +110,8 @@ public interface IEntityStyleProvider extends IDisposable {
 	public Color getForegroundColour(Object entity);
 
 	/**
-	 * Returns the tooltop for this node. If null is returned Zest will simply
-	 * use the default tooltip.
+	 * Returns the tooltop for this node. If null is returned Zest will simply use
+	 * the default tooltip.
 	 * 
 	 * @param entity
 	 * @return

@@ -30,44 +30,42 @@ public interface GraphicalEditPart extends EditPart {
 	 * Adds a NodeListener to the EditPart. Duplicate calls result in duplicate
 	 * notification.
 	 * 
-	 * @param listener
-	 *            the Listener
+	 * @param listener the Listener
 	 */
 	void addNodeListener(NodeListener listener);
 
 	/**
-	 * Returns the primary Figure representing this GraphicalEditPart. The
-	 * parent will add this Figure to its <i>content pane</i>. The Figure may be
-	 * a composition of several Figures.
+	 * Returns the primary Figure representing this GraphicalEditPart. The parent
+	 * will add this Figure to its <i>content pane</i>. The Figure may be a
+	 * composition of several Figures.
 	 * 
 	 * @return this EditPart's Figure
 	 */
 	IFigure getFigure();
 
 	/**
-	 * Returns the <i>source</i> connections for this GraphicalEditPart. This
-	 * method should only be called by the EditPart itself, and its helpers such
-	 * as EditPolicies.
+	 * Returns the <i>source</i> connections for this GraphicalEditPart. This method
+	 * should only be called by the EditPart itself, and its helpers such as
+	 * EditPolicies.
 	 * 
 	 * @return the source connections
 	 */
 	List getSourceConnections();
 
 	/**
-	 * Returns the <i>target</i> connections for this GraphicalEditPart. This
-	 * method should only be called by the EditPart itself, and its helpers such
-	 * as EditPolicies.
+	 * Returns the <i>target</i> connections for this GraphicalEditPart. This method
+	 * should only be called by the EditPart itself, and its helpers such as
+	 * EditPolicies.
 	 * 
 	 * @return the target connections
 	 */
 	List getTargetConnections();
 
 	/**
-	 * The Figure into which childrens' Figures will be added. May return the
-	 * same Figure as {@link #getFigure()}. The GraphicalEditPart's
-	 * {@link #getFigure() primary Figure} may be composed of multiple figures.
-	 * This is the figure in that composition that will contain children's
-	 * figures.
+	 * The Figure into which childrens' Figures will be added. May return the same
+	 * Figure as {@link #getFigure()}. The GraphicalEditPart's {@link #getFigure()
+	 * primary Figure} may be composed of multiple figures. This is the figure in
+	 * that composition that will contain children's figures.
 	 * 
 	 * @return the <i>content pane</i> Figure
 	 */
@@ -77,27 +75,22 @@ public interface GraphicalEditPart extends EditPart {
 	 * Removes the first occurance of the specified listener from the list of
 	 * listeners. Does nothing if the listener was not present.
 	 * 
-	 * @param listener
-	 *            the listener being removed
+	 * @param listener the listener being removed
 	 */
 	void removeNodeListener(NodeListener listener);
 
 	/**
 	 * Sets the specified constraint for a child's Figure on the
-	 * {@link #getContentPane() content pane} figure for this GraphicalEditPart.
-	 * The constraint will be applied to the content pane's
-	 * {@link org.eclipse.draw2d.LayoutManager}. <code>revalidate()</code> is
-	 * called on the content pane, which will cause it to layout during the next
-	 * update.
+	 * {@link #getContentPane() content pane} figure for this GraphicalEditPart. The
+	 * constraint will be applied to the content pane's
+	 * {@link org.eclipse.draw2d.LayoutManager}. <code>revalidate()</code> is called
+	 * on the content pane, which will cause it to layout during the next update.
 	 * 
-	 * @param child
-	 *            the <i>child</i> GraphicalEditPart whose constraint is being
-	 *            set
-	 * @param figure
-	 *            the Figure whose constraint is being set
-	 * @param constraint
-	 *            the constraint for the draw2d
-	 *            {@link org.eclipse.draw2d.LayoutManager}
+	 * @param child      the <i>child</i> GraphicalEditPart whose constraint is
+	 *                   being set
+	 * @param figure     the Figure whose constraint is being set
+	 * @param constraint the constraint for the draw2d
+	 *                   {@link org.eclipse.draw2d.LayoutManager}
 	 */
 	void setLayoutConstraint(EditPart child, IFigure figure, Object constraint);
 

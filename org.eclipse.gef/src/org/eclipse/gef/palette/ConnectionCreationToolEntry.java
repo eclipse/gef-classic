@@ -27,20 +27,14 @@ public class ConnectionCreationToolEntry extends CreationToolEntry {
 	/**
 	 * Constructor for ConnectionCreationToolEntry.
 	 * 
-	 * @param label
-	 *            the label
-	 * @param shortDesc
-	 *            the description
-	 * @param factory
-	 *            the CreationFactory
-	 * @param iconSmall
-	 *            the small icon
-	 * @param iconLarge
-	 *            the large icon
+	 * @param label     the label
+	 * @param shortDesc the description
+	 * @param factory   the CreationFactory
+	 * @param iconSmall the small icon
+	 * @param iconLarge the large icon
 	 */
-	public ConnectionCreationToolEntry(String label, String shortDesc,
-			CreationFactory factory, ImageDescriptor iconSmall,
-			ImageDescriptor iconLarge) {
+	public ConnectionCreationToolEntry(String label, String shortDesc, CreationFactory factory,
+			ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
 		super(label, shortDesc, factory, iconSmall, iconLarge);
 		setToolClass(ConnectionCreationTool.class);
 		setUserModificationPermission(PERMISSION_NO_MODIFICATION);

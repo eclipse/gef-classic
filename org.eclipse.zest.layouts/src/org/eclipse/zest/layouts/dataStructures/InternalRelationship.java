@@ -30,7 +30,8 @@ public class InternalRelationship implements LayoutRelationship {
 	private List bendPoints = new LinkedList();
 	BasicEdgeConstraints basicEdgeConstraints = new BasicEdgeConstraints();
 
-	public InternalRelationship(LayoutRelationship externalRelationship, InternalNode source, InternalNode destination) {
+	public InternalRelationship(LayoutRelationship externalRelationship, InternalNode source,
+			InternalNode destination) {
 		this.externalRelationship = externalRelationship;
 		this.externalRelationship.setLayoutInformation(this);
 		this.source = source;
@@ -66,6 +67,7 @@ public class InternalRelationship implements LayoutRelationship {
 
 	/**
 	 * Ensure this is called in order of source to target node position.
+	 * 
 	 * @param x
 	 * @param y
 	 */
@@ -74,8 +76,9 @@ public class InternalRelationship implements LayoutRelationship {
 	}
 
 	/**
-	 * Ensure this is called in order of source to target node position.
-	 * Specifies if the bendpoint is a curve control point
+	 * Ensure this is called in order of source to target node position. Specifies
+	 * if the bendpoint is a curve control point
+	 * 
 	 * @param x
 	 * @param y
 	 * @param isControlPoint

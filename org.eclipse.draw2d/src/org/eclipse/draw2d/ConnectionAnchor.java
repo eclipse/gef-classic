@@ -21,25 +21,23 @@ public interface ConnectionAnchor {
 	/**
 	 * Adds a listener interested in the movement of this ConnectionAnchor.
 	 * 
-	 * @param listener
-	 *            The AnchorListener to be added
+	 * @param listener The AnchorListener to be added
 	 */
 	void addAnchorListener(AnchorListener listener);
 
 	/**
 	 * Returns the location where the Connection should be anchored in absolute
-	 * coordinates. The anchor may use the given reference Point to calculate
-	 * this location.
+	 * coordinates. The anchor may use the given reference Point to calculate this
+	 * location.
 	 * 
-	 * @param reference
-	 *            The reference Point in absolute coordinates
+	 * @param reference The reference Point in absolute coordinates
 	 * @return The anchor's location
 	 */
 	Point getLocation(Point reference);
 
 	/**
-	 * Returns the IFigure that contains this ConnectionAnchor. Moving this
-	 * figure will cause the anchor to move with it.
+	 * Returns the IFigure that contains this ConnectionAnchor. Moving this figure
+	 * will cause the anchor to move with it.
 	 * 
 	 * @return The IFigure that contains this ConnectionAnchor
 	 */
@@ -57,8 +55,7 @@ public interface ConnectionAnchor {
 	/**
 	 * Removes the listener.
 	 * 
-	 * @param listener
-	 *            The AnchorListener to be removed
+	 * @param listener The AnchorListener to be removed
 	 */
 	void removeAnchorListener(AnchorListener listener);
 

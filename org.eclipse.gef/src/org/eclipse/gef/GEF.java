@@ -77,8 +77,7 @@ public final class GEF {
 	 * Sets a text control to be used as a console.
 	 * 
 	 * @since 1.0
-	 * @param textBox
-	 *            the text control for streaming
+	 * @param textBox the text control for streaming
 	 */
 	public static void setConsole(Text textBox) {
 		msgCount = 0;
@@ -100,8 +99,7 @@ public final class GEF {
 	 * Prints the given string to a trace window and increments indentation.
 	 * 
 	 * @since 2.0
-	 * @param heading
-	 *            the message describing the indented text to follow
+	 * @param heading the message describing the indented text to follow
 	 */
 	public static void debugPush(String heading) {
 		debug(heading);
@@ -112,8 +110,7 @@ public final class GEF {
 	 * Prints the given message to a trace window if available.
 	 * 
 	 * @since 1.0
-	 * @param message
-	 *            a debug message
+	 * @param message a debug message
 	 */
 	public static void debug(String message) {
 		String lineNumber = formatter.format(new Long(msgCount++));

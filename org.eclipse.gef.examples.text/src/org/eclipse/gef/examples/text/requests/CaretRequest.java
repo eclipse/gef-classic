@@ -36,17 +36,17 @@ public class CaretRequest extends SelectionRequest {
 
 	/**
 	 * Indicates that a search is being done by a parent element. If a search is
-	 * recursive, the receiver should not implement the search by calling out to
-	 * its container, since the container is the one performing the search.
+	 * recursive, the receiver should not implement the search by calling out to its
+	 * container, since the container is the one performing the search.
 	 */
 	public boolean isRecursive;
 
 	/**
-	 * Indicates that the first available result should be returned. For
-	 * example, normally advancing left and right would skip over at least one
-	 * character. But, if the caret is moving from the end of one paragraph to
-	 * the beginning of another, the first character in the next paragraph
-	 * should not be skipped. The search is moving the caret into the paragraph.
+	 * Indicates that the first available result should be returned. For example,
+	 * normally advancing left and right would skip over at least one character.
+	 * But, if the caret is moving from the end of one paragraph to the beginning of
+	 * another, the first character in the next paragraph should not be skipped. The
+	 * search is moving the caret into the paragraph.
 	 */
 	public boolean isInto;
 

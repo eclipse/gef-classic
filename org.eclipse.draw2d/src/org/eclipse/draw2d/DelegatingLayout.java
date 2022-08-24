@@ -28,21 +28,16 @@ public class DelegatingLayout extends AbstractLayout {
 	private Map constraints = new HashMap();
 
 	/**
-	 * Calculates the preferred size of the given Figure. For the
-	 * DelegatingLayout, this is the largest width and height values of the
-	 * passed Figure's children.
+	 * Calculates the preferred size of the given Figure. For the DelegatingLayout,
+	 * this is the largest width and height values of the passed Figure's children.
 	 * 
-	 * @param parent
-	 *            the figure whose preferred size is being calculated
-	 * @param wHint
-	 *            the width hint
-	 * @param hHint
-	 *            the height hint
+	 * @param parent the figure whose preferred size is being calculated
+	 * @param wHint  the width hint
+	 * @param hHint  the height hint
 	 * @return the preferred size
 	 * @since 2.0
 	 */
-	protected Dimension calculatePreferredSize(IFigure parent, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 		List children = parent.getChildren();
 		Dimension d = new Dimension();
 		for (int i = 0; i < children.size(); i++) {
@@ -63,8 +58,7 @@ public class DelegatingLayout extends AbstractLayout {
 	 * Lays out the given figure's children based on their {@link Locator}
 	 * constraint.
 	 * 
-	 * @param parent
-	 *            the figure whose children should be layed out
+	 * @param parent the figure whose children should be layed out
 	 */
 	public void layout(IFigure parent) {
 		List children = parent.getChildren();
@@ -80,8 +74,7 @@ public class DelegatingLayout extends AbstractLayout {
 	/**
 	 * Removes the locator for the given figure.
 	 * 
-	 * @param child
-	 *            the child being removed
+	 * @param child the child being removed
 	 */
 	public void remove(IFigure child) {
 		constraints.remove(child);
@@ -90,10 +83,8 @@ public class DelegatingLayout extends AbstractLayout {
 	/**
 	 * Sets the constraint for the given figure.
 	 * 
-	 * @param figure
-	 *            the figure whose contraint is being set
-	 * @param constraint
-	 *            the new constraint
+	 * @param figure     the figure whose contraint is being set
+	 * @param constraint the new constraint
 	 */
 	public void setConstraint(IFigure figure, Object constraint) {
 		super.setConstraint(figure, constraint);

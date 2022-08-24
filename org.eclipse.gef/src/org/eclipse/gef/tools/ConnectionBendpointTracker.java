@@ -47,10 +47,8 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	/**
 	 * Constructs a tracker for the given connection and index.
 	 * 
-	 * @param editpart
-	 *            the connection
-	 * @param i
-	 *            the index of the bendpoint
+	 * @param editpart the connection
+	 * @param i        the index of the bendpoint
 	 */
 	public ConnectionBendpointTracker(ConnectionEditPart editpart, int i) {
 		setConnectionEditPart(editpart);
@@ -130,8 +128,8 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	}
 
 	/**
-	 * The type of tracker, either {@link RequestConstants#REQ_CREATE_BENDPOINT}
-	 * or {@link RequestConstants#REQ_MOVE_BENDPOINT}.
+	 * The type of tracker, either {@link RequestConstants#REQ_CREATE_BENDPOINT} or
+	 * {@link RequestConstants#REQ_MOVE_BENDPOINT}.
 	 * 
 	 * @return the type of operation being performed (move or create bendpoint)
 	 */
@@ -142,8 +140,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	/**
 	 * Sets the connection editpart being operated on.
 	 * 
-	 * @param cep
-	 *            the connection
+	 * @param cep the connection
 	 */
 	public void setConnectionEditPart(ConnectionEditPart cep) {
 		editpart = cep;
@@ -152,8 +149,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	/**
 	 * Sets the index of the operation.
 	 * 
-	 * @param i
-	 *            the index
+	 * @param i the index
 	 */
 	public void setIndex(int i) {
 		index = i;
@@ -163,8 +159,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	 * Sets the type of bendpoint drag being performed.
 	 * 
 	 * @see #getType()
-	 * @param type
-	 *            the drag type
+	 * @param type the drag type
 	 */
 	public void setType(Object type) {
 		this.type = type;

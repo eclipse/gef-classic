@@ -88,27 +88,23 @@ public abstract class Shape extends ModelElement {
 	 * @see #setPropertyValue(Object, Object)
 	 */
 	static {
-		descriptors = new IPropertyDescriptor[] {
-				new TextPropertyDescriptor(XPOS_PROP, "X"), // id and
-															// description pair
-				new TextPropertyDescriptor(YPOS_PROP, "Y"),
-				new TextPropertyDescriptor(WIDTH_PROP, "Width"),
+		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(XPOS_PROP, "X"), // id and
+																								// description pair
+				new TextPropertyDescriptor(YPOS_PROP, "Y"), new TextPropertyDescriptor(WIDTH_PROP, "Width"),
 				new TextPropertyDescriptor(HEIGHT_PROP, "Height"), };
 		// use a custom cell editor validator for all four array entries
 		for (int i = 0; i < descriptors.length; i++) {
-			((PropertyDescriptor) descriptors[i])
-					.setValidator(new ICellEditorValidator() {
-						public String isValid(Object value) {
-							int intValue = -1;
-							try {
-								intValue = Integer.parseInt((String) value);
-							} catch (NumberFormatException exc) {
-								return "Not a number";
-							}
-							return (intValue >= 0) ? null
-									: "Value must be >=  0";
-						}
-					});
+			((PropertyDescriptor) descriptors[i]).setValidator(new ICellEditorValidator() {
+				public String isValid(Object value) {
+					int intValue = -1;
+					try {
+						intValue = Integer.parseInt((String) value);
+					} catch (NumberFormatException exc) {
+						return "Not a number";
+					}
+					return (intValue >= 0) ? null : "Value must be >=  0";
+				}
+			});
 		}
 	} // static
 
@@ -134,10 +130,9 @@ public abstract class Shape extends ModelElement {
 	/**
 	 * Add an incoming or outgoing connection to this shape.
 	 * 
-	 * @param conn
-	 *            a non-null connection instance
-	 * @throws IllegalArgumentException
-	 *             if the connection is null or has not distinct endpoints
+	 * @param conn a non-null connection instance
+	 * @throws IllegalArgumentException if the connection is null or has not
+	 *                                  distinct endpoints
 	 */
 	void addConnection(Connection conn) {
 		if (conn == null || conn.getSource() == conn.getTarget()) {
@@ -187,8 +182,8 @@ public abstract class Shape extends ModelElement {
 	/**
 	 * Return the property value for the given propertyId, or null.
 	 * <p>
-	 * The property view uses the IDs from the IPropertyDescriptors array to
-	 * obtain the value of the corresponding properties.
+	 * The property view uses the IDs from the IPropertyDescriptors array to obtain
+	 * the value of the corresponding properties.
 	 * </p>
 	 * 
 	 * @see #descriptors
@@ -236,10 +231,8 @@ public abstract class Shape extends ModelElement {
 	/**
 	 * Remove an incoming or outgoing connection from this shape.
 	 * 
-	 * @param conn
-	 *            a non-null connection instance
-	 * @throws IllegalArgumentException
-	 *             if the parameter is null
+	 * @param conn a non-null connection instance
+	 * @throws IllegalArgumentException if the parameter is null
 	 */
 	void removeConnection(Connection conn) {
 		if (conn == null) {
@@ -257,10 +250,8 @@ public abstract class Shape extends ModelElement {
 	/**
 	 * Set the Location of this shape.
 	 * 
-	 * @param newLocation
-	 *            a non-null Point instance
-	 * @throws IllegalArgumentException
-	 *             if the parameter is null
+	 * @param newLocation a non-null Point instance
+	 * @throws IllegalArgumentException if the parameter is null
 	 */
 	public void setLocation(Point newLocation) {
 		if (newLocation == null) {
@@ -271,11 +262,11 @@ public abstract class Shape extends ModelElement {
 	}
 
 	/**
-	 * Set the property value for the given property id. If no matching id is
-	 * found, the call is forwarded to the superclass.
+	 * Set the property value for the given property id. If no matching id is found,
+	 * the call is forwarded to the superclass.
 	 * <p>
-	 * The property view uses the IDs from the IPropertyDescriptors array to set
-	 * the values of the corresponding properties.
+	 * The property view uses the IDs from the IPropertyDescriptors array to set the
+	 * values of the corresponding properties.
 	 * </p>
 	 * 
 	 * @see #descriptors
@@ -302,8 +293,7 @@ public abstract class Shape extends ModelElement {
 	/**
 	 * Set the Size of this shape. Will not modify the size if newSize is null.
 	 * 
-	 * @param newSize
-	 *            a non-null Dimension instance or null
+	 * @param newSize a non-null Dimension instance or null
 	 */
 	public void setSize(Dimension newSize) {
 		if (newSize != null) {

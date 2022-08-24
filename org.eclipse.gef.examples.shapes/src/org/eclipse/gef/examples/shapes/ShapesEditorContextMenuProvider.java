@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes;
 
 import org.eclipse.jface.action.IAction;
@@ -30,18 +30,14 @@ class ShapesEditorContextMenuProvider extends ContextMenuProvider {
 	private ActionRegistry actionRegistry;
 
 	/**
-	 * Instantiate a new menu context provider for the specified EditPartViewer
-	 * and ActionRegistry.
+	 * Instantiate a new menu context provider for the specified EditPartViewer and
+	 * ActionRegistry.
 	 * 
-	 * @param viewer
-	 *            the editor's graphical viewer
-	 * @param registry
-	 *            the editor's action registry
-	 * @throws IllegalArgumentException
-	 *             if registry is <tt>null</tt>.
+	 * @param viewer   the editor's graphical viewer
+	 * @param registry the editor's action registry
+	 * @throws IllegalArgumentException if registry is <tt>null</tt>.
 	 */
-	public ShapesEditorContextMenuProvider(EditPartViewer viewer,
-			ActionRegistry registry) {
+	public ShapesEditorContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
 		super(viewer);
 		if (registry == null) {
 			throw new IllegalArgumentException();
@@ -62,10 +58,8 @@ class ShapesEditorContextMenuProvider extends ContextMenuProvider {
 		// Add actions to the menu
 		menu.appendToGroup(GEFActionConstants.GROUP_UNDO, // target group id
 				getAction(ActionFactory.UNDO.getId())); // action to add
-		menu.appendToGroup(GEFActionConstants.GROUP_UNDO,
-				getAction(ActionFactory.REDO.getId()));
-		menu.appendToGroup(GEFActionConstants.GROUP_EDIT,
-				getAction(ActionFactory.DELETE.getId()));
+		menu.appendToGroup(GEFActionConstants.GROUP_UNDO, getAction(ActionFactory.REDO.getId()));
+		menu.appendToGroup(GEFActionConstants.GROUP_EDIT, getAction(ActionFactory.DELETE.getId()));
 	}
 
 	private IAction getAction(String actionId) {

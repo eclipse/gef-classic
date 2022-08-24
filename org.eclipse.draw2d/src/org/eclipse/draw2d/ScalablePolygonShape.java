@@ -31,8 +31,7 @@ public class ScalablePolygonShape extends AbstractPointListShape {
 
 	protected boolean shapeContainsPoint(int x, int y) {
 		Point location = getLocation();
-		return Geometry.polygonContainsPoint(getScaledPoints(), x - location.x,
-				y - location.y);
+		return Geometry.polygonContainsPoint(getScaledPoints(), x - location.x, y - location.y);
 	}
 
 	protected void fillShape(Graphics graphics) {
@@ -72,11 +71,10 @@ public class ScalablePolygonShape extends AbstractPointListShape {
 		}
 		Rectangle pointsBounds = getTemplateBounds();
 		Rectangle actualBounds = getBounds();
-		double xScale = actualBounds.width > lineWidth ? ((double) actualBounds.width - lineWidth)
-				/ pointsBounds.width
+		double xScale = actualBounds.width > lineWidth ? ((double) actualBounds.width - lineWidth) / pointsBounds.width
 				: 0;
-		double yScale = actualBounds.height > lineWidth ? ((double) actualBounds.height - lineWidth)
-				/ pointsBounds.height
+		double yScale = actualBounds.height > lineWidth
+				? ((double) actualBounds.height - lineWidth) / pointsBounds.height
 				: 0;
 		double halfLineWidth = ((double) lineWidth) / 2;
 

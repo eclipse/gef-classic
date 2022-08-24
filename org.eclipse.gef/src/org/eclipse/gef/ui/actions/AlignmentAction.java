@@ -74,10 +74,8 @@ public final class AlignmentAction extends SelectionAction {
 
 	/**
 	 * @deprecated use AlignmentAction(IWorkbenchPart, int align)
-	 * @param editor
-	 *            the editor
-	 * @param align
-	 *            the alignment ID
+	 * @param editor the editor
+	 * @param align  the alignment ID
 	 */
 	public AlignmentAction(IEditorPart editor, int align) {
 		this((IWorkbenchPart) editor, align);
@@ -95,10 +93,8 @@ public final class AlignmentAction extends SelectionAction {
 	 * <LI>GEFActionConstants.ALIGN_MIDDLE
 	 * </UL>
 	 * 
-	 * @param part
-	 *            the workbench part used to obtain context
-	 * @param align
-	 *            the aligment ID.
+	 * @param part  the workbench part used to obtain context
+	 * @param align the aligment ID.
 	 */
 	public AlignmentAction(IWorkbenchPart part, int align) {
 		super(part);
@@ -110,16 +106,14 @@ public final class AlignmentAction extends SelectionAction {
 	 * Returns the alignment rectangle to which all selected parts should be
 	 * aligned.
 	 * 
-	 * @param request
-	 *            the alignment Request
+	 * @param request the alignment Request
 	 * @return the alignment rectangle
 	 */
 	protected Rectangle calculateAlignmentRectangle(Request request) {
 		List editparts = getOperationSet(request);
 		if (editparts == null || editparts.isEmpty())
 			return null;
-		GraphicalEditPart part = (GraphicalEditPart) editparts.get(editparts
-				.size() - 1);
+		GraphicalEditPart part = (GraphicalEditPart) editparts.get(editparts.size() - 1);
 		Rectangle rect = new PrecisionRectangle(part.getFigure().getBounds());
 		part.getFigure().translateToAbsolute(rect);
 		return rect;
@@ -137,8 +131,7 @@ public final class AlignmentAction extends SelectionAction {
 	}
 
 	private Command createAlignmentCommand() {
-		AlignmentRequest request = new AlignmentRequest(
-				RequestConstants.REQ_ALIGN);
+		AlignmentRequest request = new AlignmentRequest(RequestConstants.REQ_ALIGN);
 		request.setAlignmentRectangle(calculateAlignmentRectangle(request));
 		request.setAlignment(alignment);
 		List editparts = getOperationSet(request);
@@ -165,16 +158,14 @@ public final class AlignmentAction extends SelectionAction {
 	/**
 	 * Returns the list of editparts which will participate in alignment.
 	 * 
-	 * @param request
-	 *            the alignment request
+	 * @param request the alignment request
 	 * @return the list of parts which will be aligned
 	 */
 	protected List getOperationSet(Request request) {
 		if (operationSet != null)
 			return operationSet;
 		List editparts = new ArrayList(getSelectedObjects());
-		if (editparts.isEmpty()
-				|| !(editparts.get(0) instanceof GraphicalEditPart))
+		if (editparts.isEmpty() || !(editparts.get(0) instanceof GraphicalEditPart))
 			return Collections.EMPTY_LIST;
 		Object primary = editparts.get(editparts.size() - 1);
 		editparts = ToolUtilities.getSelectionWithoutDependants(editparts);

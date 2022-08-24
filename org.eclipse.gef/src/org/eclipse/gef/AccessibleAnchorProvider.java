@@ -35,9 +35,9 @@ import java.util.List;
 public interface AccessibleAnchorProvider {
 
 	/**
-	 * Returns a list of Points in <B>absolute</B> coordinates where source
-	 * anchors are located. Tools that work with connections should use these
-	 * locations when operating in accesible keyboard modes.
+	 * Returns a list of Points in <B>absolute</B> coordinates where source anchors
+	 * are located. Tools that work with connections should use these locations when
+	 * operating in accesible keyboard modes.
 	 * 
 	 * @return A list of absolute locations (Points relative to the Viewer's
 	 *         Control)
@@ -45,9 +45,9 @@ public interface AccessibleAnchorProvider {
 	List getSourceAnchorLocations();
 
 	/**
-	 * Returns a list of Points in <B>absolute</B> coordinates where target
-	 * anchors are located. Tools that work with connections should use these
-	 * locations when operating in accesible keyboard modes.
+	 * Returns a list of Points in <B>absolute</B> coordinates where target anchors
+	 * are located. Tools that work with connections should use these locations when
+	 * operating in accesible keyboard modes.
 	 * 
 	 * @return A list of absolute locations (Points relative to the Viewer's
 	 *         Control)

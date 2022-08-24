@@ -29,8 +29,7 @@ public class SingleEditCommand extends ExampleTextCommand {
 	 * @param label
 	 * @since 3.1
 	 */
-	public SingleEditCommand(MiniEdit edit, ModelLocation start,
-			ModelLocation end) {
+	public SingleEditCommand(MiniEdit edit, ModelLocation start, ModelLocation end) {
 		super("");
 		this.edit = edit;
 		this.start = start;
@@ -44,8 +43,7 @@ public class SingleEditCommand extends ExampleTextCommand {
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
 		ModelLocation loc = edit.getResultingLocation();
 		if (loc != null)
-			return new SelectionRange(lookupModel(viewer, loc.model),
-					loc.offset);
+			return new SelectionRange(lookupModel(viewer, loc.model), loc.offset);
 		return getUndoSelectionRange(viewer);
 	}
 
@@ -54,10 +52,8 @@ public class SingleEditCommand extends ExampleTextCommand {
 	}
 
 	public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {
-		TextLocation startLoc = new TextLocation(lookupModel(viewer,
-				start.model), start.offset);
-		TextLocation endLoc = new TextLocation(lookupModel(viewer, end.model),
-				end.offset);
+		TextLocation startLoc = new TextLocation(lookupModel(viewer, start.model), start.offset);
+		TextLocation endLoc = new TextLocation(lookupModel(viewer, end.model), end.offset);
 		return new SelectionRange(startLoc, endLoc);
 	}
 

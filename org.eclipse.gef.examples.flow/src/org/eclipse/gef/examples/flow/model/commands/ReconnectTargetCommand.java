@@ -89,8 +89,7 @@ public class ReconnectTargetCommand extends Command {
 	/**
 	 * Sets the source Activity associated with this command
 	 * 
-	 * @param activity
-	 *            the source Activity
+	 * @param activity the source Activity
 	 */
 	public void setSource(Activity activity) {
 		source = activity;
@@ -99,8 +98,7 @@ public class ReconnectTargetCommand extends Command {
 	/**
 	 * Sets the target Activity assoicated with this command
 	 * 
-	 * @param activity
-	 *            the target Activity
+	 * @param activity the target Activity
 	 */
 	public void setTarget(Activity activity) {
 		target = activity;
@@ -109,8 +107,7 @@ public class ReconnectTargetCommand extends Command {
 	/**
 	 * Sets the transition associated with this
 	 * 
-	 * @param trans
-	 *            the transition
+	 * @param trans the transition
 	 */
 	public void setTransition(Transition trans) {
 		transition = trans;

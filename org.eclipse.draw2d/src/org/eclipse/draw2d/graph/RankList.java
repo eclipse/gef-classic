@@ -25,8 +25,7 @@ public final class RankList {
 	/**
 	 * Returns the specified rank.
 	 * 
-	 * @param rank
-	 *            the row
+	 * @param rank the row
 	 * @return the rank
 	 */
 	public Rank getRank(int rank) {

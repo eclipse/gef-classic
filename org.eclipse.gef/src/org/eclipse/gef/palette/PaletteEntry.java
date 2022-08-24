@@ -111,10 +111,8 @@ public class PaletteEntry {
 	 * Any parameter can be <code>null</code>
 	 * </p>
 	 * 
-	 * @param label
-	 *            The entry's name
-	 * @param shortDescription
-	 *            The entry's description
+	 * @param label            The entry's name
+	 * @param shortDescription The entry's description
 	 */
 	public PaletteEntry(String label, String shortDescription) {
 		this(label, shortDescription, null, null, null);
@@ -126,12 +124,9 @@ public class PaletteEntry {
 	 * Any parameter can be <code>null</code>
 	 * </p>
 	 * 
-	 * @param label
-	 *            The entry's name
-	 * @param shortDescription
-	 *            The entry's description
-	 * @param type
-	 *            The entry's type
+	 * @param label            The entry's name
+	 * @param shortDescription The entry's description
+	 * @param type             The entry's type
 	 */
 	public PaletteEntry(String label, String shortDescription, Object type) {
 		this(label, shortDescription, null, null, type);
@@ -143,17 +138,12 @@ public class PaletteEntry {
 	 * Any parameter can be <code>null</code>
 	 * </p>
 	 * 
-	 * @param label
-	 *            The entry's name
-	 * @param shortDescription
-	 *            The entry's description
-	 * @param iconSmall
-	 *            The small icon to represent this entry
-	 * @param iconLarge
-	 *            The large icon to represent this entry
+	 * @param label            The entry's name
+	 * @param shortDescription The entry's description
+	 * @param iconSmall        The small icon to represent this entry
+	 * @param iconLarge        The large icon to represent this entry
 	 */
-	public PaletteEntry(String label, String shortDescription,
-			ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
+	public PaletteEntry(String label, String shortDescription, ImageDescriptor iconSmall, ImageDescriptor iconLarge) {
 		this(label, shortDescription, iconSmall, iconLarge, null);
 	}
 
@@ -163,19 +153,14 @@ public class PaletteEntry {
 	 * Any parameter can be <code>null</code>
 	 * </p>
 	 * 
-	 * @param label
-	 *            The entry's name
-	 * @param shortDescription
-	 *            The entry's description
-	 * @param iconSmall
-	 *            The small icon to represent this entry
-	 * @param iconLarge
-	 *            The large icon to represent this entry
-	 * @param type
-	 *            The entry's type
+	 * @param label            The entry's name
+	 * @param shortDescription The entry's description
+	 * @param iconSmall        The small icon to represent this entry
+	 * @param iconLarge        The large icon to represent this entry
+	 * @param type             The entry's type
 	 */
-	public PaletteEntry(String label, String shortDescription,
-			ImageDescriptor iconSmall, ImageDescriptor iconLarge, Object type) {
+	public PaletteEntry(String label, String shortDescription, ImageDescriptor iconSmall, ImageDescriptor iconLarge,
+			Object type) {
 		this(label, shortDescription, iconSmall, iconLarge, type, null);
 	}
 
@@ -185,22 +170,15 @@ public class PaletteEntry {
 	 * Any parameter can be <code>null</code>
 	 * </p>
 	 * 
-	 * @param label
-	 *            The entry's name
-	 * @param shortDescription
-	 *            The entry's description
-	 * @param smallIcon
-	 *            The small icon to represent this entry
-	 * @param largeIcon
-	 *            The large icon to represent this entry
-	 * @param type
-	 *            The entry's type
-	 * @param id
-	 *            The entry's id (preferrably unique)
+	 * @param label            The entry's name
+	 * @param shortDescription The entry's description
+	 * @param smallIcon        The small icon to represent this entry
+	 * @param largeIcon        The large icon to represent this entry
+	 * @param type             The entry's type
+	 * @param id               The entry's id (preferrably unique)
 	 */
-	public PaletteEntry(String label, String shortDescription,
-			ImageDescriptor smallIcon, ImageDescriptor largeIcon, Object type,
-			String id) {
+	public PaletteEntry(String label, String shortDescription, ImageDescriptor smallIcon, ImageDescriptor largeIcon,
+			Object type, String id) {
 		setLabel(label);
 		setDescription(shortDescription);
 		setSmallIcon(smallIcon);
@@ -210,11 +188,9 @@ public class PaletteEntry {
 	}
 
 	/**
-	 * A listener can only be added once. Adding it more than once will do
-	 * nothing.
+	 * A listener can only be added once. Adding it more than once will do nothing.
 	 * 
-	 * @param listener
-	 *            the PropertyChangeListener that is to be notified of changes
+	 * @param listener the PropertyChangeListener that is to be notified of changes
 	 * @see java.beans.PropertyChangeSupport#addPropertyChangeListener(java.beans.PropertyChangeListener)
 	 */
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -230,8 +206,8 @@ public class PaletteEntry {
 	}
 
 	/**
-	 * Returns the id. If no ID has been set (or it is <code>null</code>), an
-	 * empty String will be returned.
+	 * Returns the id. If no ID has been set (or it is <code>null</code>), an empty
+	 * String will be returned.
 	 * 
 	 * @return String id
 	 */
@@ -270,8 +246,8 @@ public class PaletteEntry {
 	}
 
 	/**
-	 * @return the type of this entry. Useful for different interpretations of
-	 *         the palette model.
+	 * @return the type of this entry. Useful for different interpretations of the
+	 *         palette model.
 	 */
 	public Object getType() {
 		return type;
@@ -294,16 +270,15 @@ public class PaletteEntry {
 	}
 
 	/**
-	 * @return whether or not this entry is visible. An entry that is not
-	 *         visible is not shown on the palette.
+	 * @return whether or not this entry is visible. An entry that is not visible is
+	 *         not shown on the palette.
 	 */
 	public boolean isVisible() {
 		return visible;
 	}
 
 	/**
-	 * @param listener
-	 *            the PropertyChangeListener that is not to be notified anymore
+	 * @param listener the PropertyChangeListener that is not to be notified anymore
 	 * @see java.beans.PropertyChangeSupport#removePropertyChangeListener(java.beans.PropertyChangeListener)
 	 */
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
@@ -313,8 +288,7 @@ public class PaletteEntry {
 	/**
 	 * Mutator method for description
 	 * 
-	 * @param s
-	 *            The new description
+	 * @param s The new description
 	 */
 	public void setDescription(String s) {
 		if (s == null && shortDescription == null) {
@@ -324,16 +298,14 @@ public class PaletteEntry {
 		if (s == null || !s.equals(shortDescription)) {
 			String oldDescrption = shortDescription;
 			shortDescription = s;
-			listeners.firePropertyChange(PROPERTY_DESCRIPTION, oldDescrption,
-					shortDescription);
+			listeners.firePropertyChange(PROPERTY_DESCRIPTION, oldDescrption, shortDescription);
 		}
 	}
 
 	/**
 	 * Sets the id. Can be <code>null</code>.
 	 * 
-	 * @param id
-	 *            The new id to be set
+	 * @param id The new id to be set
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -342,8 +314,7 @@ public class PaletteEntry {
 	/**
 	 * Mutator method for label
 	 * 
-	 * @param s
-	 *            The new name
+	 * @param s The new name
 	 */
 	public void setLabel(String s) {
 		if (s == null && label == null) {
@@ -360,23 +331,20 @@ public class PaletteEntry {
 	/**
 	 * Mutator method for large icon
 	 * 
-	 * @param icon
-	 *            The large icon to represent this entry
+	 * @param icon The large icon to represent this entry
 	 */
 	public void setLargeIcon(ImageDescriptor icon) {
 		if (icon != iconLarge) {
 			ImageDescriptor oldIcon = iconLarge;
 			iconLarge = icon;
-			listeners.firePropertyChange(PROPERTY_LARGE_ICON, oldIcon,
-					iconLarge);
+			listeners.firePropertyChange(PROPERTY_LARGE_ICON, oldIcon, iconLarge);
 		}
 	}
 
 	/**
 	 * Sets the parent of this entry
 	 * 
-	 * @param newParent
-	 *            The parent PaletteContainer
+	 * @param newParent The parent PaletteContainer
 	 */
 	public void setParent(PaletteContainer newParent) {
 		if (parent != newParent) {
@@ -389,8 +357,7 @@ public class PaletteEntry {
 	/**
 	 * Mutator method for small icon
 	 * 
-	 * @param icon
-	 *            The new small icon to represent this entry
+	 * @param icon The new small icon to represent this entry
 	 */
 	public void setSmallIcon(ImageDescriptor icon) {
 		if (icon != iconSmall) {
@@ -403,8 +370,7 @@ public class PaletteEntry {
 	/**
 	 * Mutator method for type
 	 * 
-	 * @param newType
-	 *            The new type
+	 * @param newType The new type
 	 */
 	public void setType(Object newType) {
 		if (newType == null && type == null) {
@@ -419,9 +385,9 @@ public class PaletteEntry {
 	}
 
 	/**
-	 * Permissions are not checked before making modifications. Clients should
-	 * check the permission before invoking a modification. Sub-classes may
-	 * extend the set of permissions. Current set has:
+	 * Permissions are not checked before making modifications. Clients should check
+	 * the permission before invoking a modification. Sub-classes may extend the set
+	 * of permissions. Current set has:
 	 * <UL>
 	 * <LI>PERMISSION_NO_MODIFICATION</LI>
 	 * <LI>PERMISSION_HIDE_ONLY</LI>
@@ -430,19 +396,17 @@ public class PaletteEntry {
 	 * </UL>
 	 * Default is <code>PERMISSION_FULL_MODIFICATION</code>
 	 * 
-	 * @param permission
-	 *            One of the above-specified permission levels
+	 * @param permission One of the above-specified permission levels
 	 */
 	public void setUserModificationPermission(int permission) {
 		this.permission = permission;
 	}
 
 	/**
-	 * Makes this entry visible or invisible. An invisible entry does not show
-	 * up on the palette.
+	 * Makes this entry visible or invisible. An invisible entry does not show up on
+	 * the palette.
 	 * 
-	 * @param newVal
-	 *            The new boolean indicating whether the entry is visible or not
+	 * @param newVal The new boolean indicating whether the entry is visible or not
 	 */
 	public void setVisible(boolean newVal) {
 		if (newVal != visible) {

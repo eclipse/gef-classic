@@ -40,21 +40,16 @@ final class ShapesEditorPaletteFactory {
 	private static PaletteContainer createShapesDrawer() {
 		PaletteDrawer componentsDrawer = new PaletteDrawer("Shapes");
 
-		CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry(
-				"Ellipse", "Create an elliptical shape", EllipticalShape.class,
-				new SimpleFactory(EllipticalShape.class),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/ellipse16.gif"), ImageDescriptor.createFromFile(
-						ShapesPlugin.class, "icons/ellipse24.gif"));
+		CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry("Ellipse",
+				"Create an elliptical shape", EllipticalShape.class, new SimpleFactory(EllipticalShape.class),
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/ellipse16.gif"),
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/ellipse24.gif"));
 		componentsDrawer.add(component);
 
-		component = new CombinedTemplateCreationEntry("Rectangle",
-				"Create a rectangular shape", RectangularShape.class,
+		component = new CombinedTemplateCreationEntry("Rectangle", "Create a rectangular shape", RectangularShape.class,
 				new SimpleFactory(RectangularShape.class),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/rectangle16.gif"),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/rectangle24.gif"));
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/rectangle16.gif"),
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/rectangle24.gif"));
 		componentsDrawer.add(component);
 
 		return componentsDrawer;
@@ -86,8 +81,8 @@ final class ShapesEditorPaletteFactory {
 		toolbar.add(new MarqueeToolEntry());
 
 		// Add (solid-line) connection tool
-		tool = new ConnectionCreationToolEntry("Solid connection",
-				"Create a solid-line connection", new CreationFactory() {
+		tool = new ConnectionCreationToolEntry("Solid connection", "Create a solid-line connection",
+				new CreationFactory() {
 					public Object getNewObject() {
 						return null;
 					}
@@ -97,15 +92,13 @@ final class ShapesEditorPaletteFactory {
 					public Object getObjectType() {
 						return Connection.SOLID_CONNECTION;
 					}
-				}, ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/connection_s16.gif"),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/connection_s24.gif"));
+				}, ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_s16.gif"),
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_s24.gif"));
 		toolbar.add(tool);
 
 		// Add (dashed-line) connection tool
-		tool = new ConnectionCreationToolEntry("Dashed connection",
-				"Create a dashed-line connection", new CreationFactory() {
+		tool = new ConnectionCreationToolEntry("Dashed connection", "Create a dashed-line connection",
+				new CreationFactory() {
 					public Object getNewObject() {
 						return null;
 					}
@@ -115,10 +108,8 @@ final class ShapesEditorPaletteFactory {
 					public Object getObjectType() {
 						return Connection.DASHED_CONNECTION;
 					}
-				}, ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/connection_d16.gif"),
-				ImageDescriptor.createFromFile(ShapesPlugin.class,
-						"icons/connection_d24.gif"));
+				}, ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_d16.gif"),
+				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/connection_d24.gif"));
 		toolbar.add(tool);
 
 		return toolbar;

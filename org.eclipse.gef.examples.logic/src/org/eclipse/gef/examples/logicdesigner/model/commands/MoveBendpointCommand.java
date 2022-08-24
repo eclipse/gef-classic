@@ -20,8 +20,7 @@ public class MoveBendpointCommand extends BendpointCommand {
 
 	public void execute() {
 		WireBendpoint bp = new WireBendpoint();
-		bp.setRelativeDimensions(getFirstRelativeDimension(),
-				getSecondRelativeDimension());
+		bp.setRelativeDimensions(getFirstRelativeDimension(), getSecondRelativeDimension());
 		setOldBendpoint((Bendpoint) getWire().getBendpoints().get(getIndex()));
 		getWire().setBendpoint(getIndex(), bp);
 		super.execute();

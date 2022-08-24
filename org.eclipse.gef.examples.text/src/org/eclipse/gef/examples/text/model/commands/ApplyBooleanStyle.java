@@ -34,8 +34,7 @@ public class ApplyBooleanStyle extends MiniEdit {
 	private TextRun right;
 	Object[] values;
 
-	public ApplyBooleanStyle(ModelLocation start, ModelLocation end,
-			String keys[], Object values[]) {
+	public ApplyBooleanStyle(ModelLocation start, ModelLocation end, String keys[], Object values[]) {
 		begin = (TextRun) start.model;
 		parent = begin.getContainer();
 		beginOffset = start.offset;
@@ -54,17 +53,13 @@ public class ApplyBooleanStyle extends MiniEdit {
 		for (int i = 0; i < keys.length; i++) {
 			String key = keys[i];
 			if (key.equals(Style.PROPERTY_BOLD))
-				container.getStyle().setBold(
-						((Boolean) values[i]).booleanValue());
+				container.getStyle().setBold(((Boolean) values[i]).booleanValue());
 			else if (key.equals(Style.PROPERTY_FONT_SIZE))
-				container.getStyle().setFontHeight(
-						((Integer) values[i]).intValue());
+				container.getStyle().setFontHeight(((Integer) values[i]).intValue());
 			else if (key.equals(Style.PROPERTY_ITALIC))
-				container.getStyle().setItalic(
-						((Boolean) values[i]).booleanValue());
+				container.getStyle().setItalic(((Boolean) values[i]).booleanValue());
 			else if (key.equals(Style.PROPERTY_UNDERLINE))
-				container.getStyle().setUnderline(
-						((Boolean) values[i]).booleanValue());
+				container.getStyle().setUnderline(((Boolean) values[i]).booleanValue());
 			else if (key.equals(Style.PROPERTY_FONT))
 				container.getStyle().setFontFamily((String) values[i]);
 		}

@@ -124,11 +124,9 @@ public class RelativeBendpointTest extends TestCase {
 		// bendpoints
 		RelativeBendpoint bendpoint1 = new RelativeBendpoint(connection);
 		RelativeBendpoint bendpoint2 = new RelativeBendpoint(connection);
-		bendpoint1.setRelativeDimensions(new Dimension(0, 50), new Dimension(
-				-100, -50));
+		bendpoint1.setRelativeDimensions(new Dimension(0, 50), new Dimension(-100, -50));
 		bendpoint1.setWeight(1f / 3f);
-		bendpoint2.setRelativeDimensions(new Dimension(100, 50), new Dimension(
-				0, -50));
+		bendpoint2.setRelativeDimensions(new Dimension(100, 50), new Dimension(0, -50));
 		bendpoint2.setWeight(2f / 3f);
 		List bendpoints = new ArrayList(2);
 		bendpoints.add(bendpoint1);

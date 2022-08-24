@@ -28,8 +28,7 @@ public final class GEFActionConstants implements IWorkbenchActionConstants {
 	public static final String CONTEXT_TEXT = "org.eclipse.gef.textContext"; //$NON-NLS-1$
 
 	/**
-	 * Align bottom action id. Value:
-	 * <code>"org.eclipse.gef.align_bottom"</code>
+	 * Align bottom action id. Value: <code>"org.eclipse.gef.align_bottom"</code>
 	 */
 	public static final String ALIGN_BOTTOM = "org.eclipse.gef.align_bottom";//$NON-NLS-1$
 
@@ -93,7 +92,7 @@ public final class GEFActionConstants implements IWorkbenchActionConstants {
 	 * Context menu group for actions which do not fit in one of the other
 	 * categories. Value: <code>"org.eclipse.gef.group.rest"</code>
 	 */
-	public static final String GROUP_REST = "org.eclipse.gef.group.rest"; //$NON-NLS-1$	
+	public static final String GROUP_REST = "org.eclipse.gef.group.rest"; //$NON-NLS-1$
 
 	/**
 	 * Context menu group for save related actions. Value:
@@ -166,8 +165,7 @@ public final class GEFActionConstants implements IWorkbenchActionConstants {
 	/**
 	 * Adds standard group separators to the given MenuManager.
 	 * 
-	 * @param menu
-	 *            the MenuManager
+	 * @param menu the MenuManager
 	 */
 	public static void addStandardActionGroups(IMenuManager menu) {
 		menu.add(new Separator(GROUP_UNDO));

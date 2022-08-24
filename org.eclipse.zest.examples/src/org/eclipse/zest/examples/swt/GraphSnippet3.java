@@ -48,7 +48,7 @@ public class GraphSnippet3 {
 				System.out.println(((Graph) e.widget).getSelection());
 			}
 		});
-		
+
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);
 		GraphNode n1 = new GraphNode(g, SWT.NONE, "Information", image1);
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Warning", image2);

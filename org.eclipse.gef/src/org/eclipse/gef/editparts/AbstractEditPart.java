@@ -51,8 +51,7 @@ import org.eclipse.gef.editpolicies.SelectionEditPolicy;
  * AbstractEditPart provides support for children. All AbstractEditPart's can
  * potentially be containers for other EditParts.
  */
-public abstract class AbstractEditPart implements EditPart, RequestConstants,
-		IAdaptable {
+public abstract class AbstractEditPart implements EditPart, RequestConstants, IAdaptable {
 
 	/**
 	 * This flag is set during {@link #activate()}, and reset on
@@ -106,8 +105,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 		 * Constructs an Iterator for the given <code>List</code>.
 		 * 
 		 * @deprecated this constructor should not be used
-		 * @param list
-		 *            the list of policies.
+		 * @param list the list of policies.
 		 */
 		public EditPolicyIterator(List list) {
 			this(list.toArray());
@@ -133,8 +131,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 			if (list == null)
 				return false;
 
-			while (offset < list.length
-					&& !(list[offset] instanceof EditPolicy))
+			while (offset < list.length && !(list[offset] instanceof EditPolicy))
 				offset++;
 			return offset < list.length;
 		}
@@ -142,10 +139,10 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Activates this EditPart, which in turn activates its children and
-	 * EditPolicies. Subclasses should <em>extend</em> this method to add
-	 * listeners to the model. Activation indicates that the EditPart is
-	 * realized in an EditPartViewer. <code>deactivate()</code> is the inverse,
-	 * and is eventually called on all EditParts.
+	 * EditPolicies. Subclasses should <em>extend</em> this method to add listeners
+	 * to the model. Activation indicates that the EditPart is realized in an
+	 * EditPartViewer. <code>deactivate()</code> is the inverse, and is eventually
+	 * called on all EditParts.
 	 * 
 	 * @see EditPart#activate()
 	 * @see #deactivate()
@@ -175,12 +172,12 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Adds a child <code>EditPart</code> to this EditPart. This method is
-	 * called from {@link #refreshChildren()}. The following events occur in the
-	 * order listed:
+	 * Adds a child <code>EditPart</code> to this EditPart. This method is called
+	 * from {@link #refreshChildren()}. The following events occur in the order
+	 * listed:
 	 * <OL>
-	 * <LI>The child is added to the {@link #children} List, and its parent is
-	 * set to <code>this</code>
+	 * <LI>The child is added to the {@link #children} List, and its parent is set
+	 * to <code>this</code>
 	 * <LI>{@link #addChildVisual(EditPart, int)} is called to add the child's
 	 * visual
 	 * <LI>{@link EditPart#addNotify()} is called on the child.
@@ -191,10 +188,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * <P>
 	 * Subclasses should implement {@link #addChildVisual(EditPart, int)}.
 	 * 
-	 * @param child
-	 *            The <code>EditPart</code> to add
-	 * @param index
-	 *            The index
+	 * @param child The <code>EditPart</code> to add
+	 * @param index The index
 	 * @see #addChildVisual(EditPart, int)
 	 * @see #removeChild(EditPart)
 	 * @see #reorderChild(EditPart,int)
@@ -217,15 +212,13 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Performs the addition of the child's <i>visual</i> to this EditPart's
-	 * Visual. The provided subclasses {@link AbstractGraphicalEditPart} and
-	 * {@link AbstractTreeEditPart} already implement this method correctly, so
-	 * it is unlikely that this method should be overridden.
+	 * Performs the addition of the child's <i>visual</i> to this EditPart's Visual.
+	 * The provided subclasses {@link AbstractGraphicalEditPart} and
+	 * {@link AbstractTreeEditPart} already implement this method correctly, so it
+	 * is unlikely that this method should be overridden.
 	 * 
-	 * @param child
-	 *            The EditPart being added
-	 * @param index
-	 *            The child's position
+	 * @param child The EditPart being added
+	 * @param index The child's position
 	 * @see #addChild(EditPart, int)
 	 * @see AbstractGraphicalEditPart#removeChildVisual(EditPart)
 	 */
@@ -234,8 +227,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	/**
 	 * Adds an EditPartListener.
 	 * 
-	 * @param listener
-	 *            the listener
+	 * @param listener the listener
 	 */
 	public void addEditPartListener(EditPartListener listener) {
 		eventListeners.addListener(EditPartListener.class, listener);
@@ -261,8 +253,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * <code>EditPartViewer</code>'s {@link EditPartFactory}. Subclasses may
 	 * override this method instead of using a Factory.
 	 * 
-	 * @param model
-	 *            the Child model object
+	 * @param model the Child model object
 	 * @return The child EditPart
 	 */
 	protected EditPart createChild(Object model) {
@@ -271,9 +262,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Creates the initial EditPolicies and/or reserves slots for dynamic ones.
-	 * Should be implemented to install the inital EditPolicies based on the
-	 * model's initial state. <code>null</code> can be used to reserve a "slot",
-	 * should there be some desire to guarantee the ordering of EditPolcies.
+	 * Should be implemented to install the inital EditPolicies based on the model's
+	 * initial state. <code>null</code> can be used to reserve a "slot", should
+	 * there be some desire to guarantee the ordering of EditPolcies.
 	 * 
 	 * @see EditPart#installEditPolicy(Object, EditPolicy)
 	 */
@@ -311,8 +302,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * This method will log a message to GEF's trace/debug system if the
 	 * corresponding flag for EditParts is set to true.
 	 * 
-	 * @param message
-	 *            a debug message
+	 * @param message a debug message
 	 * @deprecated in 3.1
 	 */
 	protected final void debug(String message) {
@@ -322,17 +312,16 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * This method will log the message to GEF's trace/debug system if the
 	 * corrseponding flag for FEEDBACK is set to true.
 	 * 
-	 * @param message
-	 *            Message to be passed
+	 * @param message Message to be passed
 	 * @deprecated in 3.1
 	 */
 	protected final void debugFeedback(String message) {
 	}
 
 	/**
-	 * Erases source feedback for the given <code>Request</code>. By default,
-	 * this responsibility is delegated to this part's <code>EditPolicies</code>
-	 * . Subclasses should rarely extend this method.
+	 * Erases source feedback for the given <code>Request</code>. By default, this
+	 * responsibility is delegated to this part's <code>EditPolicies</code> .
+	 * Subclasses should rarely extend this method.
 	 * <P>
 	 * <table>
 	 * <tr>
@@ -342,8 +331,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * </tr>
 	 * </table>
 	 * 
-	 * @param request
-	 *            identifies the type of feedback to erase.
+	 * @param request identifies the type of feedback to erase.
 	 * @see #showSourceFeedback(Request)
 	 */
 	public void eraseSourceFeedback(Request request) {
@@ -355,9 +343,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Erases target feedback for the given <code>Request</code>. By default,
-	 * this responsibility is delegated to this part's EditPolicies. Subclasses
-	 * should rarely extend this method.
+	 * Erases target feedback for the given <code>Request</code>. By default, this
+	 * responsibility is delegated to this part's EditPolicies. Subclasses should
+	 * rarely extend this method.
 	 * <P>
 	 * <table>
 	 * <tr>
@@ -367,8 +355,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * </tr>
 	 * </table>
 	 * 
-	 * @param request
-	 *            Command requesting the erase.
+	 * @param request Command requesting the erase.
 	 * @see #showTargetFeedback(Request)
 	 */
 	public void eraseTargetFeedback(Request request) {
@@ -392,10 +379,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	/**
 	 * Notifies <code>EditPartListeners</code> that a child has been added.
 	 * 
-	 * @param child
-	 *            <code>EditPart</code> being added as child.
-	 * @param index
-	 *            Position child is being added into.
+	 * @param child <code>EditPart</code> being added as child.
+	 * @param index Position child is being added into.
 	 */
 	protected void fireChildAdded(EditPart child, int index) {
 		Iterator listeners = getEventListeners(EditPartListener.class);
@@ -416,10 +401,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	/**
 	 * Notifies <code>EditPartListeners</code> that a child is being removed.
 	 * 
-	 * @param child
-	 *            <code>EditPart</code> being removed.
-	 * @param index
-	 *            Position of the child in children list.
+	 * @param child <code>EditPart</code> being removed.
+	 * @param index Position of the child in children list.
 	 */
 	protected void fireRemovingChild(EditPart child, int index) {
 		Iterator listeners = getEventListeners(EditPartListener.class);
@@ -437,11 +420,11 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Returns the <code>AccessibleEditPart</code> adapter for this EditPart.
-	 * The <B>same</B> adapter instance must be used throughout the editpart's
+	 * Returns the <code>AccessibleEditPart</code> adapter for this EditPart. The
+	 * <B>same</B> adapter instance must be used throughout the editpart's
 	 * existance. Each adapter has a unique ID which is registered during
-	 * {@link #register()}. Accessibility clients can only refer to this
-	 * editpart via that ID.
+	 * {@link #register()}. Accessibility clients can only refer to this editpart
+	 * via that ID.
 	 * 
 	 * @return <code>null</code> or an AccessibleEditPart adapter
 	 */
@@ -453,8 +436,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * Returns the specified adapter if recognized. Delegates to the workbench
 	 * adapter mechanism.
 	 * <P>
-	 * Additional adapter types may be added in the future. Subclasses should
-	 * extend this method as needed.
+	 * Additional adapter types may be added in the future. Subclasses should extend
+	 * this method as needed.
 	 * 
 	 * @see IAdaptable#getAdapter(java.lang.Class)
 	 */
@@ -476,21 +459,20 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Subclasses should rarely extend this method. The default implementation
-	 * combines the contributions from each installed <code>EditPolicy</code>.
-	 * This method is implemented indirectly using EditPolicies.
+	 * combines the contributions from each installed <code>EditPolicy</code>. This
+	 * method is implemented indirectly using EditPolicies.
 	 * <P>
 	 * <table>
 	 * <tr>
 	 * <td><img src="../doc-files/important.gif"/>
-	 * <td>It is recommended that Command creation be handled by EditPolicies,
-	 * and not directly by the EditPart.
+	 * <td>It is recommended that Command creation be handled by EditPolicies, and
+	 * not directly by the EditPart.
 	 * </tr>
 	 * </table>
 	 * 
 	 * @see EditPart#getCommand(Request)
 	 * @see EditPolicy#getCommand(Request)
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 * @return a Command
 	 */
 	public Command getCommand(Request request) {
@@ -508,8 +490,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	/**
 	 * Returns an iterator for the specified type of listener
 	 * 
-	 * @param clazz
-	 *            the Listener type over which to iterate
+	 * @param clazz the Listener type over which to iterate
 	 * @return Iterator
 	 */
 	protected final Iterator getEventListeners(Class clazz) {
@@ -529,9 +510,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Used internally to iterate over the installed EditPolicies. While
-	 * EditPolicy slots may be reserved with <code>null</code>, the iterator
-	 * only returns the non-null ones.
+	 * Used internally to iterate over the installed EditPolicies. While EditPolicy
+	 * slots may be reserved with <code>null</code>, the iterator only returns the
+	 * non-null ones.
 	 * 
 	 * @return an EditPolicyIterator
 	 */
@@ -541,11 +522,10 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Returns the boolean value of the given flag. Specifically, returns
-	 * <code>true</code> if the bitwise AND of the specified flag and the
-	 * internal flags field is non-zero.
+	 * <code>true</code> if the bitwise AND of the specified flag and the internal
+	 * flags field is non-zero.
 	 * 
-	 * @param flag
-	 *            Bitmask indicating which flag to return
+	 * @param flag Bitmask indicating which flag to return
 	 * @return the requested flag's value
 	 * @see #setFlag(int,boolean)
 	 */
@@ -561,13 +541,11 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Returns a <code>List</code> containing the children model objects. If
-	 * this EditPart's model is a container, this method should be overridden to
-	 * returns its children. This is what causes children EditParts to be
-	 * created.
+	 * Returns a <code>List</code> containing the children model objects. If this
+	 * EditPart's model is a container, this method should be overridden to returns
+	 * its children. This is what causes children EditParts to be created.
 	 * <P>
-	 * Callers must not modify the returned List. Must not return
-	 * <code>null</code>.
+	 * Callers must not modify the returned List. Must not return <code>null</code>.
 	 * 
 	 * @return the List of children
 	 */
@@ -601,10 +579,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Returns the <code>EditPart</code> which is the target of the
-	 * <code>Request</code>. The default implementation delegates this method to
-	 * the installed EditPolicies. The first non-<code>null</code> result
-	 * returned by an EditPolicy is returned. Subclasses should rarely extend
-	 * this method.
+	 * <code>Request</code>. The default implementation delegates this method to the
+	 * installed EditPolicies. The first non-<code>null</code> result returned by an
+	 * EditPolicy is returned. Subclasses should rarely extend this method.
 	 * <P>
 	 * <table>
 	 * <tr>
@@ -614,8 +591,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * </tr>
 	 * </table>
 	 * 
-	 * @param request
-	 *            Describes the type of target desired.
+	 * @param request Describes the type of target desired.
 	 * @return <code>null</code> or the <i>target</i> <code>EditPart</code>
 	 * @see EditPart#getTargetEditPart(Request)
 	 * @see EditPolicy#getTargetEditPart(Request)
@@ -707,8 +683,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Subclasses should extend this method to handle Requests. For now, the
-	 * default implementation does not handle any requests.
+	 * Subclasses should extend this method to handle Requests. For now, the default
+	 * implementation does not handle any requests.
 	 * 
 	 * @see EditPart#performRequest(Request)
 	 */
@@ -717,10 +693,10 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Refreshes all properties visually displayed by this EditPart. The default
-	 * implementation will call {@link #refreshChildren()} to update its
-	 * structural features. It also calls {@link #refreshVisuals()} to update
-	 * its own displayed properties. Subclasses should extend this method to
-	 * handle additional types of structural refreshing.
+	 * implementation will call {@link #refreshChildren()} to update its structural
+	 * features. It also calls {@link #refreshVisuals()} to update its own displayed
+	 * properties. Subclasses should extend this method to handle additional types
+	 * of structural refreshing.
 	 */
 	public void refresh() {
 		refreshVisuals();
@@ -728,17 +704,17 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Updates the set of children EditParts so that it is in sync with the
-	 * model children. This method is called from {@link #refresh()}, and may
-	 * also be called in response to notification from the model. This method
-	 * requires linear time to complete. Clients should call this method as few
-	 * times as possible. Consider also calling {@link #removeChild(EditPart)}
-	 * and {@link #addChild(EditPart, int)} which run in constant time.
+	 * Updates the set of children EditParts so that it is in sync with the model
+	 * children. This method is called from {@link #refresh()}, and may also be
+	 * called in response to notification from the model. This method requires
+	 * linear time to complete. Clients should call this method as few times as
+	 * possible. Consider also calling {@link #removeChild(EditPart)} and
+	 * {@link #addChild(EditPart, int)} which run in constant time.
 	 * <P>
-	 * The update is performed by comparing the existing EditParts with the set
-	 * of model children returned from {@link #getModelChildren()}. EditParts
-	 * whose models no longer exist are {@link #removeChild(EditPart) removed}.
-	 * New models have their EditParts {@link #createChild(Object) created}.
+	 * The update is performed by comparing the existing EditParts with the set of
+	 * model children returned from {@link #getModelChildren()}. EditParts whose
+	 * models no longer exist are {@link #removeChild(EditPart) removed}. New models
+	 * have their EditParts {@link #createChild(Object) created}.
 	 * <P>
 	 * This method should <em>not</em> be overridden.
 	 * 
@@ -765,8 +741,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 			model = modelObjects.get(i);
 
 			// Do a quick check to see if editPart[i] == model[i]
-			if (i < children.size()
-					&& ((EditPart) children.get(i)).getModel() == model)
+			if (i < children.size() && ((EditPart) children.get(i)).getModel() == model)
 				continue;
 
 			// Look to see if the EditPart is already around but in the
@@ -798,17 +773,16 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Refreshes this EditPart's <i>visuals</i>. This method is called by
-	 * {@link #refresh()}, and may also be called in response to notifications
-	 * from the model. This method does nothing by default. Subclasses may
-	 * override.
+	 * {@link #refresh()}, and may also be called in response to notifications from
+	 * the model. This method does nothing by default. Subclasses may override.
 	 */
 	protected void refreshVisuals() {
 	}
 
 	/**
-	 * Registers itself in the viewer's various registries. If your EditPart has
-	 * a 1-to-1 relationship with a visual object and a 1-to-1 relationship with
-	 * a model object, the default implementation should be sufficent.
+	 * Registers itself in the viewer's various registries. If your EditPart has a
+	 * 1-to-1 relationship with a visual object and a 1-to-1 relationship with a
+	 * model object, the default implementation should be sufficent.
 	 * 
 	 * @see #unregister()
 	 * @see EditPartViewer#getVisualPartMap()
@@ -832,9 +806,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Registers the <i>model</i> in the
-	 * {@link EditPartViewer#getEditPartRegistry()}. Subclasses should only
-	 * extend this method if they need to register this EditPart in additional
-	 * ways.
+	 * {@link EditPartViewer#getEditPartRegistry()}. Subclasses should only extend
+	 * this method if they need to register this EditPart in additional ways.
 	 */
 	protected void registerModel() {
 		getViewer().getEditPartRegistry().put(getModel(), this);
@@ -842,18 +815,16 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Registers the <i>visuals</i> in the
-	 * {@link EditPartViewer#getVisualPartMap()}. Subclasses should override
-	 * this method for the visual part they support.
-	 * {@link AbstractGraphicalEditPart} and {@link AbstractTreeEditPart}
-	 * already do this.
+	 * {@link EditPartViewer#getVisualPartMap()}. Subclasses should override this
+	 * method for the visual part they support. {@link AbstractGraphicalEditPart}
+	 * and {@link AbstractTreeEditPart} already do this.
 	 */
 	protected void registerVisuals() {
 	}
 
 	/**
 	 * Removes a child <code>EditPart</code>. This method is called from
-	 * {@link #refreshChildren()}. The following events occur in the order
-	 * listed:
+	 * {@link #refreshChildren()}. The following events occur in the order listed:
 	 * <OL>
 	 * <LI><code>EditPartListeners</code> are notified that the child is being
 	 * removed
@@ -866,8 +837,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * <P>
 	 * Subclasses should implement {@link #removeChildVisual(EditPart)}.
 	 * 
-	 * @param child
-	 *            EditPart being removed
+	 * @param child EditPart being removed
 	 * @see #addChild(EditPart,int)
 	 */
 	protected void removeChild(EditPart child) {
@@ -889,8 +859,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * implement this method to support the visual type they introduce, such as
 	 * Figures or TreeItems.
 	 * 
-	 * @param child
-	 *            the child EditPart
+	 * @param child the child EditPart
 	 */
 	protected abstract void removeChildVisual(EditPart child);
 
@@ -923,8 +892,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Removes all references from the <code>EditPartViewer</code> to this
-	 * EditPart. This includes:
+	 * Removes all references from the <code>EditPartViewer</code> to this EditPart.
+	 * This includes:
 	 * <UL>
 	 * <LI>deselecting this EditPart if selected
 	 * <LI>setting the Viewer's focus to <code>null</code> if this EditPart has
@@ -933,8 +902,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * </UL>
 	 * <P>
 	 * In addition, <code>removeNotify()</code> is called recursively on all
-	 * children EditParts. Subclasses should <em>extend</em> this method to
-	 * perform any additional cleanup.
+	 * children EditParts. Subclasses should <em>extend</em> this method to perform
+	 * any additional cleanup.
 	 * 
 	 * @see EditPart#removeNotify()
 	 */
@@ -954,10 +923,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * Moves a child <code>EditPart</code> into a lower index than it currently
 	 * occupies. This method is called from {@link #refreshChildren()}.
 	 * 
-	 * @param editpart
-	 *            the child being reordered
-	 * @param index
-	 *            new index for the child
+	 * @param editpart the child being reordered
+	 * @param index    new index for the child
 	 */
 	protected void reorderChild(EditPart editpart, int index) {
 		removeChildVisual(editpart);
@@ -972,10 +939,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * constants. Subclasses may define additional constants above
 	 * {@link #MAX_FLAG}.
 	 * 
-	 * @param flag
-	 *            Flag being set
-	 * @param value
-	 *            Value of the flag to be set
+	 * @param flag  Flag being set
+	 * @param value Value of the flag to be set
 	 * @see #getFlag(int)
 	 */
 	protected final void setFlag(int flag, boolean value) {
@@ -986,12 +951,12 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Called by {@link EditPartViewer} to indicate that the {@link EditPart}
-	 * has gained or lost keyboard focus. Focus is considered to be part of the
-	 * selected state. Therefore, only selectable {@link EditPart}s are able to
-	 * obtain focus, and the method may thus only be called with a value of
-	 * <code>true</code> in case the receiver is selectable, i.e.
-	 * {@link #isSelectable()} returns <code>true</code>.
+	 * Called by {@link EditPartViewer} to indicate that the {@link EditPart} has
+	 * gained or lost keyboard focus. Focus is considered to be part of the selected
+	 * state. Therefore, only selectable {@link EditPart}s are able to obtain focus,
+	 * and the method may thus only be called with a value of <code>true</code> in
+	 * case the receiver is selectable, i.e. {@link #isSelectable()} returns
+	 * <code>true</code>.
 	 * 
 	 * The method should rarely be overridden. Instead, EditPolicies that are
 	 * selection-aware listen for notifications about the change of focus via
@@ -1003,8 +968,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 */
 	public void setFocus(boolean value) {
 		// only selectable edit parts may obtain focus
-		Assert.isLegal(
-				isSelectable() || !value,
+		Assert.isLegal(isSelectable() || !value,
 				"An EditPart has to be selectable (isSelectable() == true) in order to obtain focus."); //$NON-NLS-1$
 
 		if (hasFocus() == value)
@@ -1014,8 +978,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Set the primary model object that this EditPart represents. This method
-	 * is used by an <code>EditPartFactory</code> when creating an EditPart.
+	 * Set the primary model object that this EditPart represents. This method is
+	 * used by an <code>EditPartFactory</code> when creating an EditPart.
 	 * 
 	 * @see EditPart#setModel(Object)
 	 */
@@ -1040,26 +1004,24 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * <li>{@link EditPart#SELECTED_NONE}</li>.
 	 * </ul>
 	 * 
-	 * As only selectable {@link EditPart}s may get selected, the method may
-	 * only be called with a selected value of {@link EditPart#SELECTED} or
-	 * {@link EditPart#SELECTED_PRIMARY} in case the receiver is selectable,
-	 * i.e. {@link #isSelectable()} returns <code>true</code>.
+	 * As only selectable {@link EditPart}s may get selected, the method may only be
+	 * called with a selected value of {@link EditPart#SELECTED} or
+	 * {@link EditPart#SELECTED_PRIMARY} in case the receiver is selectable, i.e.
+	 * {@link #isSelectable()} returns <code>true</code>.
 	 * 
 	 * The method should rarely be overridden. Instead, EditPolicies that are
-	 * selection-aware listen for notifications about the change of selection
-	 * state via {@link EditPartListener#selectedStateChanged(EditPart)}.
+	 * selection-aware listen for notifications about the change of selection state
+	 * via {@link EditPartListener#selectedStateChanged(EditPart)}.
 	 * 
 	 * @see EditPart#setSelected(int)
 	 * @see EditPartListener#selectedStateChanged(EditPart)
 	 * @see SelectionEditPolicy
 	 * 
-	 * @param value
-	 *            the selected value
+	 * @param value the selected value
 	 */
 	public void setSelected(int value) {
 		// only selectable edit parts may get selected.
-		Assert.isLegal(
-				isSelectable() || value == SELECTED_NONE,
+		Assert.isLegal(isSelectable() || value == SELECTED_NONE,
 				"An EditPart has to be selectable (isSelectable() == true) in order to get selected."); //$NON-NLS-1$
 
 		if (selected == value)
@@ -1083,8 +1045,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * 
 	 * @see EditPolicy#showSourceFeedback(Request)
 	 * @see EditPart#showSourceFeedback(Request)
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 */
 	public void showSourceFeedback(Request request) {
 		if (!isActive())
@@ -1109,8 +1070,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	 * 
 	 * @see EditPolicy#showTargetFeedback(Request)
 	 * @see EditPart#showTargetFeedback(Request)
-	 * @param request
-	 *            the Request
+	 * @param request the Request
 	 */
 	public void showTargetFeedback(Request request) {
 		if (!isActive())
@@ -1132,9 +1092,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Returns <code>true</code> if this <code>EditPart</code> understand the
-	 * given <code>Request</code>. By default, this responsibility is delegated
-	 * to this part's installed EditPolicies.
+	 * Returns <code>true</code> if this <code>EditPart</code> understand the given
+	 * <code>Request</code>. By default, this responsibility is delegated to this
+	 * part's installed EditPolicies.
 	 * <P>
 	 * <table>
 	 * <tr>
@@ -1156,8 +1116,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Undoes any registration performed by {@link #register()}. The provided
-	 * base classes will correctly unregister their visuals.
+	 * Undoes any registration performed by {@link #register()}. The provided base
+	 * classes will correctly unregister their visuals.
 	 */
 	protected void unregister() {
 		unregisterAccessibility();
@@ -1166,8 +1126,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 	}
 
 	/**
-	 * Unregisters the {@link #getAccessibleEditPart() AccessibleEditPart}
-	 * adapter.
+	 * Unregisters the {@link #getAccessibleEditPart() AccessibleEditPart} adapter.
 	 */
 	protected final void unregisterAccessibility() {
 		if (getAccessibleEditPart() != null)
@@ -1176,9 +1135,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Unregisters the <i>model</i> in the
-	 * {@link EditPartViewer#getEditPartRegistry()}. Subclasses should only
-	 * extend this method if they need to unregister this EditPart in additional
-	 * ways.
+	 * {@link EditPartViewer#getEditPartRegistry()}. Subclasses should only extend
+	 * this method if they need to unregister this EditPart in additional ways.
 	 */
 	protected void unregisterModel() {
 		Map registry = getViewer().getEditPartRegistry();
@@ -1188,10 +1146,9 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants,
 
 	/**
 	 * Unregisters the <i>visuals</i> in the
-	 * {@link EditPartViewer#getVisualPartMap()}. Subclasses should override
-	 * this method for the visual part they support.
-	 * {@link AbstractGraphicalEditPart} and {@link AbstractTreeEditPart}
-	 * already do this.
+	 * {@link EditPartViewer#getVisualPartMap()}. Subclasses should override this
+	 * method for the visual part they support. {@link AbstractGraphicalEditPart}
+	 * and {@link AbstractTreeEditPart} already do this.
 	 */
 	protected void unregisterVisuals() {
 	}

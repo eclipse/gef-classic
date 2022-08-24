@@ -20,21 +20,17 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * An implementation of {@link Connection} based on Polyline. PolylineConnection
  * adds the following additional features:
  * <UL>
- * <LI>
- * A {@link ConnectionRouter} may be provided which will be used to determine
- * the connections points.
- * <LI>
- * Children may be added. The bounds calculation is extended such that the
+ * <LI>A {@link ConnectionRouter} may be provided which will be used to
+ * determine the connections points.
+ * <LI>Children may be added. The bounds calculation is extended such that the
  * bounds is the smallest Rectangle which is large enough to display the
  * Polyline and all of its children figures.
- * <LI>
- * A {@link DelegatingLayout} is set as the default layout. A delegating layout
- * allows children to position themselves via {@link Locator Locators}.
+ * <LI>A {@link DelegatingLayout} is set as the default layout. A delegating
+ * layout allows children to position themselves via {@link Locator Locators}.
  * </UL>
  * <P>
  */
-public class PolylineConnection extends Polyline implements Connection,
-		AnchorListener {
+public class PolylineConnection extends Polyline implements Connection, AnchorListener {
 
 	private ConnectionAnchor startAnchor, endAnchor;
 	private ConnectionRouter connectionRouter = ConnectionRouter.NULL;
@@ -60,8 +56,7 @@ public class PolylineConnection extends Polyline implements Connection,
 	/**
 	 * Appends the given routing listener to the list of listeners.
 	 * 
-	 * @param listener
-	 *            the routing listener
+	 * @param listener the routing listener
 	 * @since 3.2
 	 */
 	public void addRoutingListener(RoutingListener listener) {
@@ -73,20 +68,19 @@ public class PolylineConnection extends Polyline implements Connection,
 	}
 
 	/**
-	 * Called by the anchors of this connection when they have moved,
-	 * revalidating this polyline connection.
+	 * Called by the anchors of this connection when they have moved, revalidating
+	 * this polyline connection.
 	 * 
-	 * @param anchor
-	 *            the anchor that moved
+	 * @param anchor the anchor that moved
 	 */
 	public void anchorMoved(ConnectionAnchor anchor) {
 		revalidate();
 	}
 
 	/**
-	 * Returns the bounds which holds all the points in this polyline
-	 * connection. Returns any previously existing bounds, else calculates by
-	 * unioning all the children's dimensions.
+	 * Returns the bounds which holds all the points in this polyline connection.
+	 * Returns any previously existing bounds, else calculates by unioning all the
+	 * children's dimensions.
 	 * 
 	 * @return the bounds
 	 */
@@ -114,8 +108,8 @@ public class PolylineConnection extends Polyline implements Connection,
 	}
 
 	/**
-	 * Returns this connection's routing constraint from its connection router.
-	 * May return <code>null</code>.
+	 * Returns this connection's routing constraint from its connection router. May
+	 * return <code>null</code>.
 	 * 
 	 * @return the connection's routing constraint
 	 */
@@ -168,8 +162,8 @@ public class PolylineConnection extends Polyline implements Connection,
 
 	/**
 	 * Layouts this polyline. If the start and end anchors are present, the
-	 * connection router is used to route this, after which it is laid out. It
-	 * also fires a moved method.
+	 * connection router is used to route this, after which it is laid out. It also
+	 * fires a moved method.
 	 */
 	public void layout() {
 		if (getSourceAnchor() != null && getTargetAnchor() != null)
@@ -189,8 +183,8 @@ public class PolylineConnection extends Polyline implements Connection,
 	}
 
 	/**
-	 * Called just before the receiver is being removed from its parent. Results
-	 * in removing itself from the connection router.
+	 * Called just before the receiver is being removed from its parent. Results in
+	 * removing itself from the connection router.
 	 * 
 	 * @since 2.0
 	 */
@@ -204,8 +198,7 @@ public class PolylineConnection extends Polyline implements Connection,
 	/**
 	 * Removes the first occurence of the given listener.
 	 * 
-	 * @param listener
-	 *            the listener being removed
+	 * @param listener the listener being removed
 	 * @since 3.2
 	 */
 	public void removeRoutingListener(RoutingListener listener) {
@@ -229,8 +222,7 @@ public class PolylineConnection extends Polyline implements Connection,
 	 * Sets the connection router which handles the layout of this polyline.
 	 * Generally set by the parent handling the polyline connection.
 	 * 
-	 * @param cr
-	 *            the connection router
+	 * @param cr the connection router
 	 */
 	public void setConnectionRouter(ConnectionRouter cr) {
 		if (cr == null)
@@ -242,8 +234,7 @@ public class PolylineConnection extends Polyline implements Connection,
 				((RoutingNotifier) connectionRouter).realRouter = cr;
 			else
 				connectionRouter = cr;
-			firePropertyChange(Connection.PROPERTY_CONNECTION_ROUTER,
-					oldRouter, cr);
+			firePropertyChange(Connection.PROPERTY_CONNECTION_ROUTER, oldRouter, cr);
 			revalidate();
 		}
 	}
@@ -251,8 +242,7 @@ public class PolylineConnection extends Polyline implements Connection,
 	/**
 	 * Sets the routing constraint for this connection.
 	 * 
-	 * @param cons
-	 *            the constraint
+	 * @param cons the constraint
 	 */
 	public void setRoutingConstraint(Object cons) {
 		if (connectionRouter != null)
@@ -263,8 +253,7 @@ public class PolylineConnection extends Polyline implements Connection,
 	/**
 	 * Sets the anchor to be used at the start of this polyline connection.
 	 * 
-	 * @param anchor
-	 *            the new source anchor
+	 * @param anchor the new source anchor
 	 */
 	public void setSourceAnchor(ConnectionAnchor anchor) {
 		if (anchor == startAnchor)
@@ -281,8 +270,7 @@ public class PolylineConnection extends Polyline implements Connection,
 	/**
 	 * Sets the decoration to be used at the start of the {@link Connection}.
 	 * 
-	 * @param dec
-	 *            the new source decoration
+	 * @param dec the new source decoration
 	 * @since 2.0
 	 */
 	public void setSourceDecoration(RotatableDecoration dec) {
@@ -299,8 +287,7 @@ public class PolylineConnection extends Polyline implements Connection,
 	 * Sets the anchor to be used at the end of the polyline connection. Removes
 	 * this listener from the old anchor and adds it to the new anchor.
 	 * 
-	 * @param anchor
-	 *            the new target anchor
+	 * @param anchor the new target anchor
 	 */
 	public void setTargetAnchor(ConnectionAnchor anchor) {
 		if (anchor == endAnchor)
@@ -317,8 +304,7 @@ public class PolylineConnection extends Polyline implements Connection,
 	/**
 	 * Sets the decoration to be used at the end of the {@link Connection}.
 	 * 
-	 * @param dec
-	 *            the new target decoration
+	 * @param dec the new target decoration
 	 */
 	public void setTargetDecoration(RotatableDecoration dec) {
 		if (endArrow == dec)
@@ -364,8 +350,7 @@ public class PolylineConnection extends Polyline implements Connection,
 		public void route(Connection connection) {
 			boolean consumed = false;
 			for (int i = 0; i < listeners.size(); i++)
-				consumed |= ((RoutingListener) listeners.get(i))
-						.route(connection);
+				consumed |= ((RoutingListener) listeners.get(i)).route(connection);
 
 			if (!consumed)
 				realRouter.route(connection);
@@ -382,8 +367,7 @@ public class PolylineConnection extends Polyline implements Connection,
 
 		public void setConstraint(Connection connection, Object constraint) {
 			for (int i = 0; i < listeners.size(); i++)
-				((RoutingListener) listeners.get(i)).setConstraint(connection,
-						constraint);
+				((RoutingListener) listeners.get(i)).setConstraint(connection, constraint);
 			realRouter.setConstraint(connection, constraint);
 		}
 

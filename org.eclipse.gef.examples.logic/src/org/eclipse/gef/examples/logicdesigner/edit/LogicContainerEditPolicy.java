@@ -32,8 +32,7 @@ public class LogicContainerEditPolicy extends ContainerEditPolicy {
 
 	public Command getOrphanChildrenCommand(GroupRequest request) {
 		List parts = request.getEditParts();
-		CompoundCommand result = new CompoundCommand(
-				LogicMessages.LogicContainerEditPolicy_OrphanCommandLabelText);
+		CompoundCommand result = new CompoundCommand(LogicMessages.LogicContainerEditPolicy_OrphanCommandLabelText);
 		for (int i = 0; i < parts.size(); i++) {
 			OrphanChildCommand orphan = new OrphanChildCommand();
 			orphan.setChild((LogicSubpart) ((EditPart) parts.get(i)).getModel());

@@ -39,8 +39,7 @@ import org.eclipse.gef.internal.InternalGEFPlugin;
  * 
  * @author Pratik Shah
  */
-public class DefaultPaletteViewerPreferences implements
-		PaletteViewerPreferences {
+public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences {
 
 	private static final String DEFAULT_FONT = "Default"; //$NON-NLS-1$
 
@@ -49,8 +48,7 @@ public class DefaultPaletteViewerPreferences implements
 	private FontData fontData;
 	private PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	private IPreferenceStore store;
-	private int[] supportedModes = { LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS,
-			LAYOUT_DETAILS };
+	private int[] supportedModes = { LAYOUT_COLUMNS, LAYOUT_LIST, LAYOUT_ICONS, LAYOUT_DETAILS };
 
 	/**
 	 * Default Constructor
@@ -65,8 +63,7 @@ public class DefaultPaletteViewerPreferences implements
 	/**
 	 * Constructor
 	 * 
-	 * @param store
-	 *            The IPreferenceStore where the settings are to be saved.
+	 * @param store The IPreferenceStore where the settings are to be saved.
 	 */
 	public DefaultPaletteViewerPreferences(final IPreferenceStore store) {
 		this.store = store;
@@ -84,10 +81,8 @@ public class DefaultPaletteViewerPreferences implements
 		fontListener = new IPropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent event) {
 				if (JFaceResources.DIALOG_FONT.equals(event.getProperty())) {
-					if (getPreferenceStore().getString(PREFERENCE_FONT).equals(
-							DEFAULT_FONT)) {
-						setFontData(JFaceResources.getDialogFont()
-								.getFontData()[0]);
+					if (getPreferenceStore().getString(PREFERENCE_FONT).equals(DEFAULT_FONT)) {
+						setFontData(JFaceResources.getDialogFont().getFontData()[0]);
 						handlePreferenceStorePropertyChanged(PREFERENCE_FONT);
 					}
 				}
@@ -97,9 +92,8 @@ public class DefaultPaletteViewerPreferences implements
 	}
 
 	/**
-	 * NOTE: The <code>oldValue</code> field of the
-	 * <code>PropertyChangeEvent</code> used to notify listeners will always be
-	 * <code>null</code>.
+	 * NOTE: The <code>oldValue</code> field of the <code>PropertyChangeEvent</code>
+	 * used to notify listeners will always be <code>null</code>.
 	 * 
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#addPropertyChangeListener(PropertyChangeListener)
 	 */
@@ -119,8 +113,7 @@ public class DefaultPaletteViewerPreferences implements
 	 * <LI>LAYOUT_DETAILS <-> PREFERENCE_DETAILS_ICON_SIZE</LI>
 	 * </UL>
 	 * 
-	 * @param layout
-	 *            LAYOUT_LIST, LAYOUT_DETAILS, LAYOUT_COLUMNS, or LAYOUT_ICONS
+	 * @param layout LAYOUT_LIST, LAYOUT_DETAILS, LAYOUT_COLUMNS, or LAYOUT_ICONS
 	 * @return The corresponding preference String
 	 */
 	public static String convertLayoutToPreferenceName(int layout) {
@@ -143,8 +136,8 @@ public class DefaultPaletteViewerPreferences implements
 	}
 
 	/**
-	 * This convenience method converts the given preference to the matching
-	 * layout mode.
+	 * This convenience method converts the given preference to the matching layout
+	 * mode.
 	 * 
 	 * <UL>
 	 * <LI>int <-> String</LI>
@@ -154,9 +147,8 @@ public class DefaultPaletteViewerPreferences implements
 	 * <LI>LAYOUT_DETAILS <-> PREFERENCE_DETAILS_ICON_SIZE</LI>
 	 * </UL>
 	 * 
-	 * @param preference
-	 *            PREFERENCE_DETAILS_ICON_SIZE, PREFERENCE_COLUMNS_ICON_SIZE,
-	 *            PREFERENCE_ICONS_ICON_SIZE or PREFERENCE_LIST_ICON_SIZE
+	 * @param preference PREFERENCE_DETAILS_ICON_SIZE, PREFERENCE_COLUMNS_ICON_SIZE,
+	 *                   PREFERENCE_ICONS_ICON_SIZE or PREFERENCE_LIST_ICON_SIZE
 	 * @return The corresponding layout code
 	 */
 	public static int convertPreferenceNameToLayout(String preference) {
@@ -177,10 +169,8 @@ public class DefaultPaletteViewerPreferences implements
 	 * The oldValue of the PropertyChangeEvent that is fired will always be
 	 * <code>null</code>.
 	 * 
-	 * @param property
-	 *            The programmatic name of the property that was changed
-	 * @param newVal
-	 *            The new value of the property
+	 * @param property The programmatic name of the property that was changed
+	 * @param newVal   The new value of the property
 	 * @see java.beans.PropertyChangeSupport#firePropertyChange(java.lang.String,
 	 *      java.lang.Object, java.lang.Object)
 	 */
@@ -227,9 +217,8 @@ public class DefaultPaletteViewerPreferences implements
 	/**
 	 * This method is invoked when the preference store fires a property change.
 	 * 
-	 * @param property
-	 *            The property String used for the change fired by the
-	 *            preference store
+	 * @param property The property String used for the change fired by the
+	 *                 preference store
 	 */
 	protected void handlePreferenceStorePropertyChanged(String property) {
 		if (property.equals(PREFERENCE_LAYOUT)) {
@@ -239,8 +228,7 @@ public class DefaultPaletteViewerPreferences implements
 		} else if (property.equals(PREFERENCE_FONT)) {
 			firePropertyChanged(property, getFontData());
 		} else {
-			firePropertyChanged(property, Boolean.valueOf(
-					useLargeIcons(convertPreferenceNameToLayout(property))));
+			firePropertyChanged(property, Boolean.valueOf(useLargeIcons(convertPreferenceNameToLayout(property))));
 		}
 	}
 
@@ -304,23 +292,20 @@ public class DefaultPaletteViewerPreferences implements
 	}
 
 	/**
-	 * NOTE: Restricting the layout modes here does not in any way restrict
-	 * those values from being stored in the preference store. Instead, it is
-	 * the responsibility of all clients manipulating the layout settings to
-	 * check to see if a particular layout mode is supported before manipulating
-	 * it, or allowing the end user to manipulate it.
+	 * NOTE: Restricting the layout modes here does not in any way restrict those
+	 * values from being stored in the preference store. Instead, it is the
+	 * responsibility of all clients manipulating the layout settings to check to
+	 * see if a particular layout mode is supported before manipulating it, or
+	 * allowing the end user to manipulate it.
 	 * 
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setSupportedLayoutModes(int[])
 	 */
 	public void setSupportedLayoutModes(int[] modes) {
 		supportedModes = modes;
-		if (!isSupportedLayoutMode(getPreferenceStore().getDefaultInt(
-				PREFERENCE_LAYOUT))) {
-			getPreferenceStore().setDefault(PREFERENCE_LAYOUT,
-					supportedModes[0]);
+		if (!isSupportedLayoutMode(getPreferenceStore().getDefaultInt(PREFERENCE_LAYOUT))) {
+			getPreferenceStore().setDefault(PREFERENCE_LAYOUT, supportedModes[0]);
 		}
-		if (!isSupportedLayoutMode(getPreferenceStore().getInt(
-				PREFERENCE_LAYOUT))) {
+		if (!isSupportedLayoutMode(getPreferenceStore().getInt(PREFERENCE_LAYOUT))) {
 			setLayoutSetting(supportedModes[0]);
 		}
 	}
@@ -330,16 +315,14 @@ public class DefaultPaletteViewerPreferences implements
 	 *      boolean)
 	 */
 	public void setUseLargeIcons(int layout, boolean newVal) {
-		getPreferenceStore().setValue(convertLayoutToPreferenceName(layout),
-				newVal);
+		getPreferenceStore().setValue(convertLayoutToPreferenceName(layout), newVal);
 	}
 
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#useLargeIcons(int)
 	 */
 	public boolean useLargeIcons(int layout) {
-		return getPreferenceStore().getBoolean(
-				convertLayoutToPreferenceName(layout));
+		return getPreferenceStore().getBoolean(convertLayoutToPreferenceName(layout));
 	}
 
 	/**

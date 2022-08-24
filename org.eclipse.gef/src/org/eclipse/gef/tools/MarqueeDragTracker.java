@@ -15,12 +15,11 @@ import org.eclipse.gef.DragTracker;
 /**
  * A marqueeSelectionTool that implements the DragTracker interface.
  */
-public class MarqueeDragTracker extends MarqueeSelectionTool implements
-		DragTracker {
+public class MarqueeDragTracker extends MarqueeSelectionTool implements DragTracker {
 
 	/**
-	 * Called when the mouse button is released. Overridden to do nothing, since
-	 * a drag tracker does not need to unload when finished.
+	 * Called when the mouse button is released. Overridden to do nothing, since a
+	 * drag tracker does not need to unload when finished.
 	 */
 	protected void handleFinished() {
 	}

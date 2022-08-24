@@ -33,8 +33,7 @@ import org.eclipse.gef.TreeEditPart;
  * <em>subclassing</em> this class. Callers of public API should refer to the
  * interface's documentation.
  */
-public abstract class AbstractTreeEditPart extends AbstractEditPart implements
-		TreeEditPart {
+public abstract class AbstractTreeEditPart extends AbstractEditPart implements TreeEditPart {
 
 	/**
 	 * Either a Tree or TreeItem
@@ -46,8 +45,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements
 	/**
 	 * Constructs a new EditPart with the specified model.
 	 * 
-	 * @param model
-	 *            the model
+	 * @param model the model
 	 */
 	public AbstractTreeEditPart(Object model) {
 		setModel(model);
@@ -60,9 +58,8 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements
 	}
 
 	/**
-	 * Implemented to assign the child its
-	 * {@link TreeEditPart#setWidget(Widget) widget}. Subclasses should not call
-	 * or override this method.
+	 * Implemented to assign the child its {@link TreeEditPart#setWidget(Widget)
+	 * widget}. Subclasses should not call or override this method.
 	 * 
 	 * @see AbstractEditPart#addChildVisual(EditPart, int)
 	 */
@@ -77,11 +74,11 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements
 	}
 
 	/**
-	 * Convenience method that returns <code>true</code> if the widget is a
-	 * TreeItem and is safe to use.
+	 * Convenience method that returns <code>true</code> if the widget is a TreeItem
+	 * and is safe to use.
 	 * 
-	 * @return <code>true</code> if the widget is a <code>TreeItem</code> and is
-	 *         not disposed
+	 * @return <code>true</code> if the widget is a <code>TreeItem</code> and is not
+	 *         disposed
 	 */
 	protected final boolean checkTreeItem() {
 		return !(widget == null || widget.isDisposed() || widget instanceof Tree);
@@ -146,8 +143,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements
 	}
 
 	/**
-	 * Disposes the child's <code>widget</code> and sets it to <code>null</code>
-	 * .
+	 * Disposes the child's <code>widget</code> and sets it to <code>null</code> .
 	 * 
 	 * @see AbstractEditPart#removeChildVisual(EditPart)
 	 */
@@ -208,8 +204,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements
 	 * Sets a specified <code>Image</code> into the widget iff it is a
 	 * <code>TreeItem</code>.
 	 * 
-	 * @param image
-	 *            the Image
+	 * @param image the Image
 	 */
 	protected final void setWidgetImage(Image image) {
 		if (checkTreeItem())
@@ -220,8 +215,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements
 	 * Sets a specified <code>String</code> into the widget iff it is a
 	 * <code>TreeItem</code>.
 	 * 
-	 * @param text
-	 *            the String
+	 * @param text the String
 	 */
 	protected final void setWidgetText(String text) {
 		if (checkTreeItem())

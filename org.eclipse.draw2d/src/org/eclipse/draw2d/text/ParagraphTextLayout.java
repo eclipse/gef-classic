@@ -28,16 +28,15 @@ public class ParagraphTextLayout extends TextLayout {
 	public static final int WORD_WRAP_HARD = 0;
 
 	/**
-	 * Wrapping will always occur at the end of the available space, breaking in
-	 * the middle of a word.
+	 * Wrapping will always occur at the end of the available space, breaking in the
+	 * middle of a word.
 	 */
 	public static final int WORD_WRAP_SOFT = 1;
 
 	/**
-	 * Wrapping will always occur at the end of available space, truncating a
-	 * word if it doesn't fit. Note that truncation is not supported across
-	 * multiple figures and with BiDi. Undesired effects may result if that is
-	 * the case.
+	 * Wrapping will always occur at the end of available space, truncating a word
+	 * if it doesn't fit. Note that truncation is not supported across multiple
+	 * figures and with BiDi. Undesired effects may result if that is the case.
 	 */
 	public static final int WORD_WRAP_TRUNCATE = 2;
 
@@ -46,8 +45,7 @@ public class ParagraphTextLayout extends TextLayout {
 	/**
 	 * Constructs a new ParagraphTextLayout on the specified TextFlow.
 	 * 
-	 * @param flow
-	 *            the TextFlow
+	 * @param flow the TextFlow
 	 */
 	public ParagraphTextLayout(TextFlow flow) {
 		super(flow);
@@ -62,10 +60,8 @@ public class ParagraphTextLayout extends TextLayout {
 	 * <LI>{@link #WORD_WRAP_TRUNCATE}</LI>
 	 * </UL>
 	 * 
-	 * @param flow
-	 *            the textflow
-	 * @param style
-	 *            the style of wrapping
+	 * @param flow  the textflow
+	 * @param style the style of wrapping
 	 */
 	public ParagraphTextLayout(TextFlow flow, int style) {
 		this(flow);
@@ -73,13 +69,11 @@ public class ParagraphTextLayout extends TextLayout {
 	}
 
 	/**
-	 * Given the Bidi levels of the given text, this method breaks the given
-	 * text up by its level runs.
+	 * Given the Bidi levels of the given text, this method breaks the given text up
+	 * by its level runs.
 	 * 
-	 * @param text
-	 *            the String that needs to be broken up into its level runs
-	 * @param levelInfo
-	 *            the Bidi levels
+	 * @param text      the String that needs to be broken up into its level runs
+	 * @param levelInfo the Bidi levels
 	 * @return the requested segment
 	 */
 	private String[] getSegments(String text, int levelInfo[]) {
@@ -155,16 +149,14 @@ public class ParagraphTextLayout extends TextLayout {
 		int advance = 0;
 
 		TextFragmentBox fragment;
-		int levelInfo[] = (textFlow.getBidiInfo() == null) ? new int[] { -1 }
-				: textFlow.getBidiInfo().levelInfo;
+		int levelInfo[] = (textFlow.getBidiInfo() == null) ? new int[] { -1 } : textFlow.getBidiInfo().levelInfo;
 
 		String segment, segments[] = getSegments(textFlow.getText(), levelInfo);
 		FlowBorder border = null;
 		if (textFlow.getBorder() instanceof FlowBorder)
 			border = (FlowBorder) textFlow.getBorder();
 
-		SegmentLookahead lookahead = new SegmentLookahead(segments,
-				border == null ? 0 : border.getRightMargin());
+		SegmentLookahead lookahead = new SegmentLookahead(segments, border == null ? 0 : border.getRightMargin());
 		int seg;
 
 		if (border != null) {
@@ -172,10 +164,8 @@ public class ParagraphTextLayout extends TextLayout {
 			fragment.setBidiLevel(levelInfo[0]);
 			fragment.setTruncated(false);
 			fragment.offset = fragment.length = -1;
-			fragment.setWidth(border.getLeftMargin()
-					+ border.getInsets(textFlow).left);
-			if (context.getRemainingLineWidth() < fragment.getWidth()
-					+ lookahead.getWidth())
+			fragment.setWidth(border.getLeftMargin() + border.getInsets(textFlow).left);
+			if (context.getRemainingLineWidth() < fragment.getWidth() + lookahead.getWidth())
 				context.endLine();
 			context.addToCurrentLine(fragment);
 		}
@@ -191,15 +181,13 @@ public class ParagraphTextLayout extends TextLayout {
 				fragment.offset = offset;
 				fragment.setBidiLevel(levelInfo[seg * 2]);
 
-				advance = flowUtilities.wrapFragmentInContext(fragment,
-						segment, context, lookahead, font, wrappingStyle);
+				advance = flowUtilities.wrapFragmentInContext(fragment, segment, context, lookahead, font,
+						wrappingStyle);
 				segment = segment.substring(advance);
 				offset += advance;
-				if ((segment.length() > 0 || fragment.length < advance)
-						|| fragment.isTruncated())
+				if ((segment.length() > 0 || fragment.length < advance) || fragment.isTruncated())
 					context.endLine();
-			} while (segment.length() > 0
-					|| (!fragment.isTruncated() && fragment.length < advance));
+			} while (segment.length() > 0 || (!fragment.isTruncated() && fragment.length < advance));
 		}
 
 		if (border != null) {
@@ -207,8 +195,7 @@ public class ParagraphTextLayout extends TextLayout {
 			fragment.setBidiLevel(levelInfo[0]);
 			fragment.setTruncated(false);
 			fragment.offset = fragment.length = -1;
-			fragment.setWidth(border.getRightMargin()
-					+ border.getInsets(textFlow).right);
+			fragment.setWidth(border.getRightMargin() + border.getInsets(textFlow).right);
 			context.addToCurrentLine(fragment);
 		}
 

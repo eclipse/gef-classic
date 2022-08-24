@@ -37,8 +37,7 @@ import org.eclipse.swt.widgets.Shell;
 public class AdvancedGraphicsTests extends TestCase {
 
 	static final int LINE[] = new int[] { 5, 5, 20, 20, 35, 5, 50, 5 };
-	static final int POLY[] = new int[] { 5, 5, 45, 15, 20, 30, 20, 20, 45, 35,
-			5, 45 };
+	static final int POLY[] = new int[] { 5, 5, 45, 15, 20, 30, 20, 20, 45, 35, 5, 45 };
 	private static final int PREVIEW_DELAY = 250;
 	private SWTGraphics g;
 
@@ -61,11 +60,9 @@ public class AdvancedGraphicsTests extends TestCase {
 					RGB rgb1 = palette.getRGB(src);
 					RGB rgb2 = palette.getRGB(dst);
 					// HACK, image operations seem to differ by as much as 4
-					if (Math.abs(rgb1.red - rgb2.red) > 4
-							|| Math.abs(rgb1.green - rgb2.green) > 4
+					if (Math.abs(rgb1.red - rgb2.red) > 4 || Math.abs(rgb1.green - rgb2.green) > 4
 							|| Math.abs(rgb1.blue - rgb2.blue) > 4)
-						assertEquals("Discrepancy at coordinates <" + x + ", "
-								+ y + ">", rgb1, rgb2);
+						assertEquals("Discrepancy at coordinates <" + x + ", " + y + ">", rgb1, rgb2);
 				}
 			}
 	}
@@ -166,10 +163,8 @@ public class AdvancedGraphicsTests extends TestCase {
 		Runnable tests[] = new Runnable[4];
 		tests[0] = new AntialiasSettings(SWT.ON, SWT.ON, ColorConstants.red);
 		tests[1] = new AntialiasSettings(SWT.OFF, SWT.OFF, ColorConstants.blue);
-		tests[2] = new AntialiasSettings(SWT.DEFAULT, SWT.ON,
-				ColorConstants.black);
-		tests[3] = new AntialiasSettings(SWT.ON, SWT.DEFAULT,
-				ColorConstants.darkGreen);
+		tests[2] = new AntialiasSettings(SWT.DEFAULT, SWT.ON, ColorConstants.black);
+		tests[3] = new AntialiasSettings(SWT.ON, SWT.DEFAULT, ColorConstants.darkGreen);
 		performTestcase(new Runnable() {
 			public void run() {
 				g.drawPolyline(LINE);
@@ -257,8 +252,7 @@ public class AdvancedGraphicsTests extends TestCase {
 		g.setLineWidthFloat(9);
 		g.pushState();
 
-		Runnable[] tests = new Runnable[] {
-				new LineSettings(SWT.JOIN_ROUND, SWT.CAP_ROUND, SWT.LINE_DASH),
+		Runnable[] tests = new Runnable[] { new LineSettings(SWT.JOIN_ROUND, SWT.CAP_ROUND, SWT.LINE_DASH),
 				new LineSettings(SWT.JOIN_BEVEL, SWT.CAP_FLAT, SWT.LINE_DOT),
 				new LineSettings(SWT.JOIN_ROUND, SWT.CAP_SQUARE, SWT.LINE_SOLID) };
 
@@ -290,22 +284,16 @@ public class AdvancedGraphicsTests extends TestCase {
 		float[] dash = new float[] { 2.5f, 3, 8 };
 
 		Runnable[] tests = new Runnable[] {
-				new LineSettings(new LineAttributes(0.0f, SWT.CAP_FLAT,
-						SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
-				new LineSettings(new LineAttributes(1.0f, SWT.CAP_FLAT,
-						SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
-				new LineSettings(new LineAttributes(2.5f, SWT.CAP_FLAT,
-						SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
-				new LineSettings(new LineAttributes(5.0f, SWT.CAP_FLAT,
-						SWT.JOIN_MITER, SWT.LINE_DASH, null, 0, 10)),
-				new LineSettings(new LineAttributes(5.0f, SWT.CAP_FLAT,
-						SWT.JOIN_ROUND, SWT.LINE_DASHDOTDOT, null, 0, 10)),
-				new LineSettings(new LineAttributes(4.5f, SWT.CAP_FLAT,
-						SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
-				new LineSettings(new LineAttributes(9.0f, SWT.CAP_FLAT,
-						SWT.JOIN_ROUND, SWT.LINE_CUSTOM, dash, 0, 10)),
-				new LineSettings(new LineAttributes(9.5f, SWT.CAP_FLAT,
-						SWT.JOIN_ROUND, SWT.LINE_CUSTOM, dash, 5, 10)), };
+				new LineSettings(new LineAttributes(0.0f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
+				new LineSettings(new LineAttributes(1.0f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
+				new LineSettings(new LineAttributes(2.5f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
+				new LineSettings(new LineAttributes(5.0f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_DASH, null, 0, 10)),
+				new LineSettings(
+						new LineAttributes(5.0f, SWT.CAP_FLAT, SWT.JOIN_ROUND, SWT.LINE_DASHDOTDOT, null, 0, 10)),
+				new LineSettings(new LineAttributes(4.5f, SWT.CAP_FLAT, SWT.JOIN_MITER, SWT.LINE_SOLID, null, 0, 10)),
+				new LineSettings(new LineAttributes(9.0f, SWT.CAP_FLAT, SWT.JOIN_ROUND, SWT.LINE_CUSTOM, dash, 0, 10)),
+				new LineSettings(
+						new LineAttributes(9.5f, SWT.CAP_FLAT, SWT.JOIN_ROUND, SWT.LINE_CUSTOM, dash, 5, 10)), };
 
 		performTestcase(new Runnable() {
 			public void run() {
@@ -420,8 +408,7 @@ public class AdvancedGraphicsTests extends TestCase {
 		g.setBackgroundColor(ColorConstants.yellow);
 		g.pushState();
 
-		Pattern gradient = new Pattern(null, 0, 0, 80, 40, ColorConstants.gray,
-				ColorConstants.black);
+		Pattern gradient = new Pattern(null, 0, 0, 80, 40, ColorConstants.gray, ColorConstants.black);
 		Pattern image = new Pattern(null, TestImages.depth_24);
 
 		resources.push(gradient);

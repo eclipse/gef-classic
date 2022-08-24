@@ -34,8 +34,8 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	private Transform transform = new Transform();
 
 	/**
-	 * Constructs a PolylineDecoration. Defaults the PolylineDecoration to fill
-	 * its region with black.
+	 * Constructs a PolylineDecoration. Defaults the PolylineDecoration to fill its
+	 * region with black.
 	 * 
 	 * @since 2.0
 	 */
@@ -67,12 +67,11 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	}
 
 	/**
-	 * Sets the PolylineDecoration's point template. This template is an outline
-	 * of the PolylineDecoration's region. (The default value is TRIANGLE_TIP
-	 * which is a triangle whose tip is pointing to the right).
+	 * Sets the PolylineDecoration's point template. This template is an outline of
+	 * the PolylineDecoration's region. (The default value is TRIANGLE_TIP which is
+	 * a triangle whose tip is pointing to the right).
 	 * 
-	 * @param pl
-	 *            the template
+	 * @param pl the template
 	 * @since 2.0
 	 */
 	public void setTemplate(PointList pl) {
@@ -87,10 +86,8 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	 * Sets the amount of scaling to be done along X and Y axes on the
 	 * PolylineDecoration's template.
 	 * 
-	 * @param x
-	 *            the x scale
-	 * @param y
-	 *            the y scale
+	 * @param x the x scale
+	 * @param y the y scale
 	 * @since 2.0
 	 */
 	public void setScale(double x, double y) {
@@ -112,8 +109,7 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	/**
 	 * Sets the angle by which rotation is to be done on the PolylineDecoration.
 	 * 
-	 * @param angle
-	 *            the angle of rotation
+	 * @param angle the angle of rotation
 	 * @since 2.0
 	 */
 	public void setRotation(double angle) {

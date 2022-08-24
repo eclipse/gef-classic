@@ -21,10 +21,8 @@ public abstract class EditorPartAction extends WorkbenchPartAction {
 	/**
 	 * Constructs a new EditorPartAction with the given editor and style.
 	 * 
-	 * @param editor
-	 *            The editor to be associated with this action.
-	 * @param style
-	 *            the Action's style as defined in Action
+	 * @param editor The editor to be associated with this action.
+	 * @param style  the Action's style as defined in Action
 	 */
 	public EditorPartAction(IEditorPart editor, int style) {
 		super(editor, style);
@@ -33,8 +31,7 @@ public abstract class EditorPartAction extends WorkbenchPartAction {
 	/**
 	 * Constructs a new EditorPartAction with the given editor.
 	 * 
-	 * @param editor
-	 *            The editor to be associated with this action.
+	 * @param editor The editor to be associated with this action.
 	 */
 	public EditorPartAction(IEditorPart editor) {
 		super(editor);
@@ -43,8 +40,7 @@ public abstract class EditorPartAction extends WorkbenchPartAction {
 	/**
 	 * Used internally to avoid deprecation warnings in GEF subclasses.
 	 * 
-	 * @param part
-	 *            the part
+	 * @param part the part
 	 */
 	EditorPartAction(IWorkbenchPart part) {
 		super(part);
@@ -62,8 +58,7 @@ public abstract class EditorPartAction extends WorkbenchPartAction {
 	/**
 	 * Sets the editor.
 	 * 
-	 * @param part
-	 *            the editorpart
+	 * @param part the editorpart
 	 */
 	protected void setEditorPart(IEditorPart part) {
 		setWorkbenchPart(part);

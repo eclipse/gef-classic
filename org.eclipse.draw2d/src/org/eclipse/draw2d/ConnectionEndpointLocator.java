@@ -30,21 +30,19 @@ public class ConnectionEndpointLocator implements Locator {
 	private static Rectangle figureBounds;
 
 	/**
-	 * Transposes the location if the connection point is along the top or
-	 * bottom of its owner figure.
+	 * Transposes the location if the connection point is along the top or bottom of
+	 * its owner figure.
 	 */
 	protected Transposer transposer = new Transposer();
 
 	/**
-	 * Constructs a ConnectionEndpointLocator using the given {@link Connection}
-	 * . If <i>isEnd</i> is <code>true</code>, the location is relative to the
-	 * Connection's end (or target) point. If <i>isEnd</i> is <code>false</code>
-	 * , the location is relative to the Connection's start (or source) point.
+	 * Constructs a ConnectionEndpointLocator using the given {@link Connection} .
+	 * If <i>isEnd</i> is <code>true</code>, the location is relative to the
+	 * Connection's end (or target) point. If <i>isEnd</i> is <code>false</code> ,
+	 * the location is relative to the Connection's start (or source) point.
 	 * 
-	 * @param c
-	 *            The Connection
-	 * @param isEnd
-	 *            <code>true</code> is location is relative to end point
+	 * @param c     The Connection
+	 * @param isEnd <code>true</code> is location is relative to end point
 	 * @since 2.0
 	 */
 	public ConnectionEndpointLocator(Connection c, boolean isEnd) {
@@ -56,13 +54,12 @@ public class ConnectionEndpointLocator implements Locator {
 	}
 
 	/*
-	 * Returns an integer representing the side of the passed Rectangle that a
-	 * point lies on. 1 == Top 2 == Right 3 == Bottom 4 == Left
+	 * Returns an integer representing the side of the passed Rectangle that a point
+	 * lies on. 1 == Top 2 == Right 3 == Bottom 4 == Left
 	 * 
 	 * @param loc The point that is to be located
 	 */
-	private int calculateConnectionLocation(Point loc, Point topLeft,
-			Point center) {
+	private int calculateConnectionLocation(Point loc, Point topLeft, Point center) {
 		double m1, m2 = 0;
 		m1 = (double) (topLeft.y - center.y) / (double) (topLeft.x - center.x);
 
@@ -91,8 +88,8 @@ public class ConnectionEndpointLocator implements Locator {
 	}
 
 	/*
-	 * This method is used to calculate the "quadrant" value of a connection
-	 * that does not have an owner on its starting point.
+	 * This method is used to calculate the "quadrant" value of a connection that
+	 * does not have an owner on its starting point.
 	 * 
 	 * 1 == Top 2 == Right 3 == Bottom 4 == Left
 	 * 
@@ -101,8 +98,7 @@ public class ConnectionEndpointLocator implements Locator {
 	 * @param endPoint The end point of the connection.
 	 */
 	private int calculateConnectionLocation(Point startPoint, Point endPoint) {
-		if (Math.abs(endPoint.x - startPoint.x) > Math.abs(endPoint.y
-				- startPoint.y)) {
+		if (Math.abs(endPoint.x - startPoint.x) > Math.abs(endPoint.y - startPoint.y)) {
 			if (endPoint.x > startPoint.x)
 				return 2;
 			else
@@ -116,9 +112,9 @@ public class ConnectionEndpointLocator implements Locator {
 	}
 
 	/*
-	 * Calculates 'tan' which is used as a factor for y adjustment when placing
-	 * the connection label. 'tan' is capped at 1.0 in the positive direction
-	 * and -1.0 in the negative direction.
+	 * Calculates 'tan' which is used as a factor for y adjustment when placing the
+	 * connection label. 'tan' is capped at 1.0 in the positive direction and -1.0
+	 * in the negative direction.
 	 * 
 	 * @param startPoint The starting point of the connection.
 	 * 
@@ -131,8 +127,7 @@ public class ConnectionEndpointLocator implements Locator {
 		if (endPoint.x == startPoint.x)
 			tan = 1.0;
 		else
-			tan = (double) (endPoint.y - startPoint.y)
-					/ (double) (endPoint.x - startPoint.x);
+			tan = (double) (endPoint.y - startPoint.y) / (double) (endPoint.x - startPoint.x);
 		if (tan > 1)
 			tan = 1.0;
 		else if (tan < -1)
@@ -191,8 +186,7 @@ public class ConnectionEndpointLocator implements Locator {
 	 * Connection, based on the <code>boolean</code> given in the constructor
 	 * {@link #ConnectionEndpointLocator(Connection, boolean)}.
 	 * 
-	 * @param figure
-	 *            The figure to relocate
+	 * @param figure The figure to relocate
 	 */
 	public void relocate(IFigure figure) {
 		Connection conn = getConnection();
@@ -216,8 +210,7 @@ public class ConnectionEndpointLocator implements Locator {
 			Rectangle connOwnerBounds = connOwner.getBounds();
 			Point connOwnerCenter = connOwnerBounds.getCenter();
 			Point connOwnerTL = connOwnerBounds.getTopLeft();
-			quadrant = calculateConnectionLocation(startPoint, connOwnerTL,
-					connOwnerCenter);
+			quadrant = calculateConnectionLocation(startPoint, connOwnerTL, connOwnerCenter);
 		} else
 			quadrant = calculateConnectionLocation(startPoint, endPoint);
 
@@ -225,9 +218,9 @@ public class ConnectionEndpointLocator implements Locator {
 		transposer.setEnabled(false);
 
 		/*
-		 * Label placement calculations are done as if the connection point is
-		 * along the left or right side of the figure. If the connection point
-		 * is along the top or bottom, values are transposed.
+		 * Label placement calculations are done as if the connection point is along the
+		 * left or right side of the figure. If the connection point is along the top or
+		 * bottom, values are transposed.
 		 */
 		if (quadrant == 1 || quadrant == 3)
 			transposer.setEnabled(true);
@@ -245,9 +238,8 @@ public class ConnectionEndpointLocator implements Locator {
 		int figureHeight = figureSize.height;
 		int yShift = calculateYShift(figureWidth, figureHeight);
 
-		Point figurePoint = new Point(startPoint.x + (uDistance * cos)
-				+ figureWidth * ((cos - 1) / 2), (int) (startPoint.y + cos
-				* uDistance * tan + vDistance + yShift));
+		Point figurePoint = new Point(startPoint.x + (uDistance * cos) + figureWidth * ((cos - 1) / 2),
+				(int) (startPoint.y + cos * uDistance * tan + vDistance + yShift));
 
 		figureBounds.setSize(transposer.t(figureSize));
 		figureBounds.setLocation(transposer.t(figurePoint));
@@ -257,9 +249,8 @@ public class ConnectionEndpointLocator implements Locator {
 	/**
 	 * Sets the distance in pixels from the Connection's owner.
 	 * 
-	 * @param distance
-	 *            Number of pixels to place the ConnectionEndpointLocator from
-	 *            its owner.
+	 * @param distance Number of pixels to place the ConnectionEndpointLocator from
+	 *                 its owner.
 	 * @since 2.0
 	 */
 	public void setUDistance(int distance) {
@@ -269,9 +260,8 @@ public class ConnectionEndpointLocator implements Locator {
 	/**
 	 * Sets the distance in pixels from the Connection.
 	 * 
-	 * @param distance
-	 *            Number of pixels to place the ConnectionEndpointLocator from
-	 *            its Connection.
+	 * @param distance Number of pixels to place the ConnectionEndpointLocator from
+	 *                 its Connection.
 	 * @since 2.0
 	 */
 	public void setVDistance(int distance) {

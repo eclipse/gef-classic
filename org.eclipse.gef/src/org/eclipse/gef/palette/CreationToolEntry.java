@@ -35,19 +35,13 @@ public class CreationToolEntry extends ToolEntry {
 	/**
 	 * Constructor for CreationToolEntry.
 	 * 
-	 * @param label
-	 *            the label
-	 * @param shortDesc
-	 *            the description
-	 * @param factory
-	 *            the CreationFactory
-	 * @param iconSmall
-	 *            the small icon
-	 * @param iconLarge
-	 *            the large icon
+	 * @param label     the label
+	 * @param shortDesc the description
+	 * @param factory   the CreationFactory
+	 * @param iconSmall the small icon
+	 * @param iconLarge the large icon
 	 */
-	public CreationToolEntry(String label, String shortDesc,
-			CreationFactory factory, ImageDescriptor iconSmall,
+	public CreationToolEntry(String label, String shortDesc, CreationFactory factory, ImageDescriptor iconSmall,
 			ImageDescriptor iconLarge) {
 		super(label, shortDesc, iconSmall, iconLarge, CreationTool.class);
 		this.factory = factory;

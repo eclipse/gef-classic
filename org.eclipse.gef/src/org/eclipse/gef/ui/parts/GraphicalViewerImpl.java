@@ -60,8 +60,7 @@ import org.eclipse.gef.editparts.ScalableRootEditPart;
  * 
  * @author hudsonr
  */
-public class GraphicalViewerImpl extends AbstractEditPartViewer
-		implements GraphicalViewer {
+public class GraphicalViewerImpl extends AbstractEditPartViewer implements GraphicalViewer {
 
 	private final LightweightSystem lws = createLightweightSystem();
 	IFigure rootFigure;
@@ -73,8 +72,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 	 */
 	public GraphicalViewerImpl() {
 		createDefaultRoot();
-		setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.NONE),
-				MouseWheelDelegateHandler.SINGLETON);
+		setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.NONE), MouseWheelDelegateHandler.SINGLETON);
 	}
 
 	/**
@@ -93,8 +91,8 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 	}
 
 	/**
-	 * Creates the lightweight system used to host figures. Subclasses should
-	 * not need to override this method.
+	 * Creates the lightweight system used to host figures. Subclasses should not
+	 * need to override this method.
 	 * 
 	 * @return the lightweight system
 	 */
@@ -111,12 +109,10 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 	}
 
 	/**
-	 * This method is invoked when this viewer's control gains focus. It gives
-	 * focus to the {@link AbstractEditPartViewer#focusPart focusPart}, if there
-	 * is one.
+	 * This method is invoked when this viewer's control gains focus. It gives focus
+	 * to the {@link AbstractEditPartViewer#focusPart focusPart}, if there is one.
 	 * 
-	 * @param fe
-	 *            the focusEvent received by this viewer's control
+	 * @param fe the focusEvent received by this viewer's control
 	 */
 	protected void handleFocusGained(FocusEvent fe) {
 		if (focusPart != null)
@@ -125,11 +121,10 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 
 	/**
 	 * This method is invoked when this viewer's control loses focus. It removes
-	 * focus from the {@link AbstractEditPartViewer#focusPart focusPart}, if
-	 * there is one.
+	 * focus from the {@link AbstractEditPartViewer#focusPart focusPart}, if there
+	 * is one.
 	 * 
-	 * @param fe
-	 *            the focusEvent received by this viewer's control
+	 * @param fe the focusEvent received by this viewer's control
 	 */
 	protected void handleFocusLost(FocusEvent fe) {
 		if (focusPart != null)
@@ -140,16 +135,14 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 	 * @see GraphicalViewer#findHandleAt(org.eclipse.draw2d.geometry.Point)
 	 */
 	public Handle findHandleAt(Point p) {
-		LayerManager layermanager = (LayerManager) getEditPartRegistry()
-				.get(LayerManager.ID);
+		LayerManager layermanager = (LayerManager) getEditPartRegistry().get(LayerManager.ID);
 		if (layermanager == null)
 			return null;
 		List list = new ArrayList(3);
 		list.add(layermanager.getLayer(LayerConstants.PRIMARY_LAYER));
 		list.add(layermanager.getLayer(LayerConstants.CONNECTION_LAYER));
 		list.add(layermanager.getLayer(LayerConstants.FEEDBACK_LAYER));
-		IFigure handle = getLightweightSystem().getRootFigure()
-				.findFigureAtExcluding(p.x, p.y, list);
+		IFigure handle = getLightweightSystem().getRootFigure().findFigureAtExcluding(p.x, p.y, list);
 		if (handle instanceof Handle)
 			return (Handle) handle;
 		return null;
@@ -159,8 +152,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 	 * @see EditPartViewer#findObjectAtExcluding(Point, Collection,
 	 *      EditPartViewer.Conditional)
 	 */
-	public EditPart findObjectAtExcluding(Point pt, Collection exclude,
-			final Conditional condition) {
+	public EditPart findObjectAtExcluding(Point pt, Collection exclude, final Conditional condition) {
 		class ConditionalTreeSearch extends ExclusionSearch {
 			ConditionalTreeSearch(Collection coll) {
 				super(coll);
@@ -172,12 +164,11 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 					editpart = (EditPart) getVisualPartMap().get(figure);
 					figure = figure.getParent();
 				}
-				return editpart != null
-						&& (condition == null || condition.evaluate(editpart));
+				return editpart != null && (condition == null || condition.evaluate(editpart));
 			}
 		}
-		IFigure figure = getLightweightSystem().getRootFigure()
-				.findFigureAt(pt.x, pt.y, new ConditionalTreeSearch(exclude));
+		IFigure figure = getLightweightSystem().getRootFigure().findFigureAt(pt.x, pt.y,
+				new ConditionalTreeSearch(exclude));
 		EditPart part = null;
 		while (part == null && figure != null) {
 			part = (EditPart) getVisualPartMap().get(figure);
@@ -228,8 +219,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 	/**
 	 * Returns the root figure
 	 * 
-	 * @deprecated There is no reason to call this method $TODO delete this
-	 *             method
+	 * @deprecated There is no reason to call this method $TODO delete this method
 	 * @return the root figure
 	 */
 	protected IFigure getRootFigure() {
@@ -285,8 +275,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 	/**
 	 * Registers the accessible editpart with the event dispatcher.
 	 * 
-	 * @param acc
-	 *            the accessible
+	 * @param acc the accessible
 	 */
 	public void registerAccessibleEditPart(AccessibleEditPart acc) {
 		Assert.isNotNull(acc);
@@ -297,9 +286,9 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 	}
 
 	/**
-	 * Reveals the specified editpart by using {@link ExposeHelper}s. A
-	 * bottom-up scan through the parent-chain is performed, looking for expose
-	 * helpers along the way, and asking them to expose the given editpart.
+	 * Reveals the specified editpart by using {@link ExposeHelper}s. A bottom-up
+	 * scan through the parent-chain is performed, looking for expose helpers along
+	 * the way, and asking them to expose the given editpart.
 	 * 
 	 * @see org.eclipse.gef.EditPartViewer#reveal(EditPart)
 	 */
@@ -358,28 +347,25 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 					event.doit = false;
 				if (event.doit) {
 					// A drag is going to occur, tell the EditDomain
-					getEventDispatcher().dispatchNativeDragStarted(event,
-							GraphicalViewerImpl.this);
+					getEventDispatcher().dispatchNativeDragStarted(event, GraphicalViewerImpl.this);
 					/*
-					 * The mouse down that came before the dragstart, or the
-					 * dragstart event itself, may have caused selection or
-					 * something that needs to be painted. paints will not get
-					 * processed during DND, so flush.
+					 * The mouse down that came before the dragstart, or the dragstart event itself,
+					 * may have caused selection or something that needs to be painted. paints will
+					 * not get processed during DND, so flush.
 					 */
 					flush();
 				}
 			}
 
 			public void dragFinished(DragSourceEvent event) {
-				getEventDispatcher().dispatchNativeDragFinished(event,
-						GraphicalViewerImpl.this);
+				getEventDispatcher().dispatchNativeDragFinished(event, GraphicalViewerImpl.this);
 			}
 		}
 
 		/*
-		 * The DragSource may be set to null if there are no listeners. If there
-		 * are listeners, this should be *the* last listener because all other
-		 * listeners are hooked in super().
+		 * The DragSource may be set to null if there are no listeners. If there are
+		 * listeners, this should be *the* last listener because all other listeners are
+		 * hooked in super().
 		 */
 		if (source != null)
 			getDragSource().addDragListener(new TheLastListener());
@@ -393,8 +379,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 		// Set the new event dispatcher, even if the new domain is null. This
 		// will dispose
 		// the old event dispatcher.
-		getLightweightSystem().setEventDispatcher(
-				eventDispatcher = new DomainEventDispatcher(domain, this));
+		getLightweightSystem().setEventDispatcher(eventDispatcher = new DomainEventDispatcher(domain, this));
 	}
 
 	/**
@@ -408,8 +393,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 	/**
 	 * Sets the lightweight system's root figure.
 	 * 
-	 * @param figure
-	 *            the root figure
+	 * @param figure the root figure
 	 * @deprecated This method should no longer be used.
 	 */
 	protected void setRootFigure(IFigure figure) {
@@ -455,8 +439,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 		}
 	}
 
-	private static class MouseWheelDelegateHandler
-			implements MouseWheelHandler {
+	private static class MouseWheelDelegateHandler implements MouseWheelHandler {
 		private static final MouseWheelHandler SINGLETON = new MouseWheelDelegateHandler();
 
 		private MouseWheelDelegateHandler() {
@@ -471,8 +454,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer
 		public void handleMouseWheel(Event event, EditPartViewer viewer) {
 			EditPart part = viewer.getFocusEditPart();
 			do {
-				MouseWheelHelper helper = part
-						.getAdapter(MouseWheelHelper.class);
+				MouseWheelHelper helper = part.getAdapter(MouseWheelHelper.class);
 				if (helper != null)
 					helper.handleMouseWheelScrolled(event);
 				part = part.getParent();

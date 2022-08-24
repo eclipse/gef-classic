@@ -77,21 +77,18 @@ public interface LayoutListener {
 	/**
 	 * Called when a container has been invalidated.
 	 * 
-	 * @param container
-	 *            the invalidated Figure
+	 * @param container the invalidated Figure
 	 * @since 3.1
 	 */
 	void invalidate(IFigure container);
 
 	/**
 	 * Called prior to layout occurring. A listener may intercept a layout by
-	 * returning <code>true</code>. If the layout is intercepted, the
-	 * container's <code>LayoutManager</code> will not receive a layout call.
+	 * returning <code>true</code>. If the layout is intercepted, the container's
+	 * <code>LayoutManager</code> will not receive a layout call.
 	 * 
-	 * @param container
-	 *            the figure incurring a layout
-	 * @return <code>true</code> if the layout has been intercepted by the
-	 *         listener
+	 * @param container the figure incurring a layout
+	 * @return <code>true</code> if the layout has been intercepted by the listener
 	 * @since 3.1
 	 */
 	boolean layout(IFigure container);
@@ -100,8 +97,7 @@ public interface LayoutListener {
 	 * Called after layout has occurred.
 	 * 
 	 * @since 3.1
-	 * @param container
-	 *            the figure incurring a layout
+	 * @param container the figure incurring a layout
 	 */
 	void postLayout(IFigure container);
 
@@ -109,18 +105,15 @@ public interface LayoutListener {
 	 * Called when a child is about to be removed from its parent.
 	 * 
 	 * @since 3.1
-	 * @param child
-	 *            the child being removed
+	 * @param child the child being removed
 	 */
 	void remove(IFigure child);
 
 	/**
 	 * Called when a child's constraint is initialized or updated.
 	 * 
-	 * @param child
-	 *            the child being updated
-	 * @param constraint
-	 *            the child's new constraint
+	 * @param child      the child being updated
+	 * @param constraint the child's new constraint
 	 * @since 3.1
 	 */
 	void setConstraint(IFigure child, Object constraint);

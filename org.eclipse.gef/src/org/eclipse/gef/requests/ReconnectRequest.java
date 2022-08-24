@@ -17,8 +17,7 @@ import org.eclipse.gef.RequestConstants;
 /**
  * A Request to reconnect a connection.
  */
-public class ReconnectRequest extends LocationRequest implements DropRequest,
-		TargetRequest {
+public class ReconnectRequest extends LocationRequest implements DropRequest, TargetRequest {
 
 	private ConnectionEditPart connection;
 	private EditPart target;
@@ -32,8 +31,7 @@ public class ReconnectRequest extends LocationRequest implements DropRequest,
 	/**
 	 * Creates a ReconnectRequest with the given type.
 	 * 
-	 * @param type
-	 *            the type
+	 * @param type the type
 	 */
 	public ReconnectRequest(Object type) {
 		setType(type);
@@ -58,8 +56,8 @@ public class ReconnectRequest extends LocationRequest implements DropRequest,
 	}
 
 	/**
-	 * Returns <code>true</code> if the start (source) anchor is the anchor
-	 * being moved.
+	 * Returns <code>true</code> if the start (source) anchor is the anchor being
+	 * moved.
 	 * 
 	 * @return whether the start anchor is being moved
 	 */
@@ -70,8 +68,7 @@ public class ReconnectRequest extends LocationRequest implements DropRequest,
 	/**
 	 * Sets the ConnectionEditPart to be reconnected.
 	 * 
-	 * @param conn
-	 *            The ConnectionEditPart.
+	 * @param conn The ConnectionEditPart.
 	 */
 	public void setConnectionEditPart(ConnectionEditPart conn) {
 		connection = conn;
@@ -80,8 +77,7 @@ public class ReconnectRequest extends LocationRequest implements DropRequest,
 	/**
 	 * Sets the target edit part that the connection should be connected to.
 	 * 
-	 * @param ep
-	 *            the target edit part
+	 * @param ep the target edit part
 	 */
 	public void setTargetEditPart(EditPart ep) {
 		target = ep;

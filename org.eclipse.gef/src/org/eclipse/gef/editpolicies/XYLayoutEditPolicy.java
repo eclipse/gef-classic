@@ -40,15 +40,14 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	private XYLayout xyLayout;
 
 	/**
-	 * Overridden to preserve existing width and height (as well as preferred
-	 * sizes) during MOVE requests.
+	 * Overridden to preserve existing width and height (as well as preferred sizes)
+	 * during MOVE requests.
 	 * 
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#getConstraintFor(org.eclipse.gef.Request,
 	 *      org.eclipse.gef.GraphicalEditPart,
 	 *      org.eclipse.draw2d.geometry.Rectangle)
 	 */
-	protected Object getConstraintFor(Request request, GraphicalEditPart child,
-			Rectangle rect) {
+	protected Object getConstraintFor(Request request, GraphicalEditPart child, Rectangle rect) {
 		if (request instanceof ChangeBoundsRequest) {
 			if (((ChangeBoundsRequest) request).getSizeDelta().width == 0
 					&& ((ChangeBoundsRequest) request).getSizeDelta().height == 0) {
@@ -58,8 +57,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 				}
 			} else {
 				// for backwards compatibility, ensure minimum size is respected
-				rect.setSize(Dimension.max(getMinimumSizeFor(child),
-						rect.getSize()));
+				rect.setSize(Dimension.max(getMinimumSizeFor(child), rect.getSize()));
 			}
 		}
 		return super.getConstraintFor(request, child, rect);
@@ -70,8 +68,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 * <code>XYLayout</code> uses width or height equal to '-1' to mean use the
 	 * figure's preferred size.
 	 * 
-	 * @param p
-	 *            the input Point
+	 * @param p the input Point
 	 * @return a Rectangle
 	 */
 	public Object getConstraintFor(Point p) {
@@ -81,8 +78,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	/**
 	 * Returns a new Rectangle equivalent to the passed Rectangle.
 	 * 
-	 * @param r
-	 *            the input Rectangle
+	 * @param r the input Rectangle
 	 * @return a copy of the input Rectangle
 	 */
 	public Object getConstraintFor(Rectangle r) {
@@ -90,17 +86,14 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	}
 
 	/**
-	 * Retrieves the child's current constraint from the
-	 * <code>LayoutManager</code>.
+	 * Retrieves the child's current constraint from the <code>LayoutManager</code>.
 	 * 
-	 * @param child
-	 *            the child
+	 * @param child the child
 	 * @return the current constraint
 	 */
 	protected Rectangle getCurrentConstraintFor(GraphicalEditPart child) {
 		IFigure fig = child.getFigure();
-		return (Rectangle) fig.getParent().getLayoutManager()
-				.getConstraint(fig);
+		return (Rectangle) fig.getParent().getLayoutManager().getConstraint(fig);
 	}
 
 	/**
@@ -125,8 +118,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	}
 
 	/**
-	 * @param xyLayout
-	 *            The xyLayout to set.
+	 * @param xyLayout The xyLayout to set.
 	 */
 	public void setXyLayout(XYLayout xyLayout) {
 		this.xyLayout = xyLayout;
@@ -141,25 +133,22 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 		Rectangle feedbackBounds = new Rectangle(p, size);
 		IFigure feedback = getSizeOnDropFeedback(request);
 		feedback.translateToRelative(feedbackBounds);
-		feedback.setBounds(feedbackBounds
-				.expand(getCreationFeedbackOffset(request)));
+		feedback.setBounds(feedbackBounds.expand(getCreationFeedbackOffset(request)));
 		feedback.validate();
 	}
 
 	/**
-	 * Determines the <em>minimum</em> size that the specified child can be
-	 * resized to. Called from
+	 * Determines the <em>minimum</em> size that the specified child can be resized
+	 * to. Called from
 	 * {@link #getConstraintFor(ChangeBoundsRequest, GraphicalEditPart)}. By
 	 * default, a small <code>Dimension</code> is returned.
 	 * 
-	 * @param child
-	 *            the child
+	 * @param child the child
 	 * @return the minimum size
 	 * 
-	 * @deprecated Clients should no longer extend this method. Instead, the
-	 *             resize tracker, constructed by the 'satellite' primary drag
-	 *             edit policy should be parameterized with max and min size
-	 *             constraints.
+	 * @deprecated Clients should no longer extend this method. Instead, the resize
+	 *             tracker, constructed by the 'satellite' primary drag edit policy
+	 *             should be parameterized with max and min size constraints.
 	 */
 	protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
 		return new Dimension(8, 8);

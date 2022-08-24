@@ -28,18 +28,14 @@ import org.eclipse.gef.palette.PaletteTemplateEntry;
  * @since 2.1
  * @author Eric Bordeau
  */
-public class TemplateTransferDragSourceListener extends
-		AbstractTransferDragSourceListener {
+public class TemplateTransferDragSourceListener extends AbstractTransferDragSourceListener {
 
 	/**
 	 * @deprecated Use the constructor without the transfer specified.
-	 * @param viewer
-	 *            viewer
-	 * @param xfer
-	 *            xfer
+	 * @param viewer viewer
+	 * @param xfer   xfer
 	 */
-	public TemplateTransferDragSourceListener(EditPartViewer viewer,
-			Transfer xfer) {
+	public TemplateTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) {
 		super(viewer, xfer);
 	}
 
@@ -50,8 +46,7 @@ public class TemplateTransferDragSourceListener extends
 	 * EditPart is selected, and the EditPart's model is a
 	 * {@link PaletteTemplateEntry}.
 	 * 
-	 * @param viewer
-	 *            the EditPartViewer that is the drag source
+	 * @param viewer the EditPartViewer that is the drag source
 	 */
 	public TemplateTransferDragSourceListener(EditPartViewer viewer) {
 		super(viewer, TemplateTransfer.getInstance());
@@ -65,11 +60,10 @@ public class TemplateTransferDragSourceListener extends
 	}
 
 	/**
-	 * Get the <i>template</i> from the selected {@link PaletteTemplateEntry}
-	 * and sets it as the event data to be dropped.
+	 * Get the <i>template</i> from the selected {@link PaletteTemplateEntry} and
+	 * sets it as the event data to be dropped.
 	 * 
-	 * @param event
-	 *            the DragSourceEvent
+	 * @param event the DragSourceEvent
 	 */
 	public void dragSetData(DragSourceEvent event) {
 		event.data = getTemplate();
@@ -89,16 +83,15 @@ public class TemplateTransferDragSourceListener extends
 	}
 
 	/**
-	 * A helper method that returns <code>null</code> or the <i>template</i>
-	 * Object from the currently selected EditPart.
+	 * A helper method that returns <code>null</code> or the <i>template</i> Object
+	 * from the currently selected EditPart.
 	 * 
 	 * @return the template
 	 */
 	protected Object getTemplate() {
 		List selection = getViewer().getSelectedEditParts();
 		if (selection.size() == 1) {
-			EditPart editpart = (EditPart) getViewer().getSelectedEditParts()
-					.get(0);
+			EditPart editpart = (EditPart) getViewer().getSelectedEditParts().get(0);
 			Object model = editpart.getModel();
 			if (model instanceof PaletteTemplateEntry)
 				return ((PaletteTemplateEntry) model).getTemplate();

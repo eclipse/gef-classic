@@ -30,8 +30,7 @@ public class PanningSelectionToolEntry extends SelectionToolEntry {
 	/**
 	 * Constructor for PanningSelectionToolEntry.
 	 * 
-	 * @param label
-	 *            the label
+	 * @param label the label
 	 */
 	public PanningSelectionToolEntry(String label) {
 		this(label, null);
@@ -40,10 +39,8 @@ public class PanningSelectionToolEntry extends SelectionToolEntry {
 	/**
 	 * Constructor for PanningSelectionToolEntry.
 	 * 
-	 * @param label
-	 *            the label
-	 * @param shortDesc
-	 *            the description
+	 * @param label     the label
+	 * @param shortDesc the description
 	 */
 	public PanningSelectionToolEntry(String label, String shortDesc) {
 		super(label, shortDesc);

@@ -29,7 +29,7 @@ public class Digraph2EditPartFactory implements EditPartFactory {
 
 	/*
 	 * @see org.eclipse.gef.EditPartFactory#createEditPart(org.eclipse.gef.EditPart,
-	 *      java.lang.Object)
+	 * java.lang.Object)
 	 */
 	public EditPart createEditPart(EditPart context, Object model) {
 		EditPart editPart = null;

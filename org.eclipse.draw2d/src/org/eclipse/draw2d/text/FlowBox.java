@@ -35,19 +35,16 @@ public abstract class FlowBox {
 	 * This method must be called on a block that is completely positioned and
 	 * committed.
 	 * 
-	 * @param x
-	 *            X
-	 * @param y
-	 *            Y
+	 * @param x X
+	 * @param y Y
 	 * @return <code>true</code> if the FlowBox contains the point
 	 */
 	public abstract boolean containsPoint(int x, int y);
 
 	/**
 	 * Returns the amount of line content in pixels which is above the baseline.
-	 * Ascent and descent are used to space consecutive lines apart. Certain
-	 * types of line content, such as borders, extend beyond the ascent and
-	 * descent.
+	 * Ascent and descent are used to space consecutive lines apart. Certain types
+	 * of line content, such as borders, extend beyond the ascent and descent.
 	 * 
 	 * @return the <i>descent</i> in pixels below the baseline
 	 */
@@ -80,20 +77,20 @@ public abstract class FlowBox {
 	abstract LineRoot getLineRoot();
 
 	/**
-	 * Returns the outer ascent of this box. The outer ascent is the ascent
-	 * above the baseline including the border size and margin. This is used
-	 * when adding content into a LineBox. The linebox's own border must be
-	 * drawn around the children.
+	 * Returns the outer ascent of this box. The outer ascent is the ascent above
+	 * the baseline including the border size and margin. This is used when adding
+	 * content into a LineBox. The linebox's own border must be drawn around the
+	 * children.
 	 */
 	int getOuterAscent() {
 		return getAscent();
 	}
 
 	/**
-	 * Returns the outer descent of this box. The outer descent is the space
-	 * below the baseline including the border size and margin. This is used
-	 * when adding content into a LineBox. The linebox's own border must be
-	 * drawn around the children.
+	 * Returns the outer descent of this box. The outer descent is the space below
+	 * the baseline including the border size and margin. This is used when adding
+	 * content into a LineBox. The linebox's own border must be drawn around the
+	 * children.
 	 */
 	int getOuterDescent() {
 		return getDescent();
@@ -127,8 +124,8 @@ public abstract class FlowBox {
 	}
 
 	/**
-	 * Returns <code>true</code> if any of the children are bi-directional.
-	 * Default implementation returns false.
+	 * Returns <code>true</code> if any of the children are bi-directional. Default
+	 * implementation returns false.
 	 * 
 	 * @return <code>true</code> if the box is bi-directional
 	 * @since 3.1
@@ -140,8 +137,7 @@ public abstract class FlowBox {
 	/**
 	 * Sets the line root.
 	 * 
-	 * @param root
-	 *            the line root
+	 * @param root the line root
 	 * @since 3.1
 	 */
 	void setLineRoot(LineRoot root) {
@@ -150,8 +146,7 @@ public abstract class FlowBox {
 	/**
 	 * Sets the width of the box.
 	 * 
-	 * @param width
-	 *            the new width
+	 * @param width the new width
 	 * @since 3.1
 	 */
 	public void setWidth(int width) {
@@ -161,8 +156,7 @@ public abstract class FlowBox {
 	/**
 	 * Sets the x coordinate for this box.
 	 * 
-	 * @param x
-	 *            the x coordinate
+	 * @param x the x coordinate
 	 * @since 3.1
 	 */
 	public void setX(int x) {

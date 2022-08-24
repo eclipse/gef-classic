@@ -25,23 +25,19 @@ import org.eclipse.zest.core.widgets.GraphNode;
 // @tag bug.154580-Content.fix
 // @tag bug.160367-Refreshing.fix : updated to use new
 // AbstractStylingModelFactory
-public class GraphModelEntityRelationshipFactory extends
-		AbstractStylingModelFactory {
+public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFactory {
 
-	public GraphModelEntityRelationshipFactory(
-			AbstractStructuredGraphViewer viewer) {
+	public GraphModelEntityRelationshipFactory(AbstractStructuredGraphViewer viewer) {
 		super(viewer);
 		if (!(viewer.getContentProvider() instanceof IGraphEntityRelationshipContentProvider)) {
-			throw new IllegalArgumentException(
-					"Expected IGraphEntityRelationshipContentProvider");
+			throw new IllegalArgumentException("Expected IGraphEntityRelationshipContentProvider");
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
+	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
 	 * #createGraphModel()
 	 */
 	public Graph createGraphModel(Graph model) {
@@ -52,25 +48,22 @@ public class GraphModelEntityRelationshipFactory extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
+	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
 	 * #doBuildGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
 	protected void doBuildGraph(Graph model) {
 		super.doBuildGraph(model);
-		Object[] nodes = getContentProvider().getElements(
-				getViewer().getInput());
+		Object[] nodes = getContentProvider().getElements(getViewer().getInput());
 		nodes = filter(getViewer().getInput(), nodes);
 		createModelNodes(model, nodes);
 		createModelRelationships(model);
 	}
 
 	/**
-	 * Creates all the model relationships. Assumes that all of the model nodes
-	 * have been created in the graph model already. Runtime O(n^2) + O(r).
+	 * Creates all the model relationships. Assumes that all of the model nodes have
+	 * been created in the graph model already. Runtime O(n^2) + O(r).
 	 * 
-	 * @param model
-	 *            the model to create the relationship on.
+	 * @param model the model to create the relationship on.
 	 */
 	private void createModelRelationships(Graph model) {
 		GraphNode[] modelNodes = getNodesArray(model);
@@ -86,20 +79,16 @@ public class GraphModelEntityRelationshipFactory extends
 				listOfNodes.addAll(childNodes);
 			}
 		}
-		modelNodes = (GraphNode[]) listOfNodes
-				.toArray(new GraphNode[listOfNodes.size()]);
+		modelNodes = (GraphNode[]) listOfNodes.toArray(new GraphNode[listOfNodes.size()]);
 
 		IGraphEntityRelationshipContentProvider content = getCastedContent();
 		for (int i = 0; i < modelNodes.length; i++) {
 			for (int j = 0; j < modelNodes.length; j++) {
-				Object[] rels = content.getRelationships(
-						modelNodes[i].getData(), modelNodes[j].getData());
+				Object[] rels = content.getRelationships(modelNodes[i].getData(), modelNodes[j].getData());
 				if (rels != null) {
 					rels = filter(getViewer().getInput(), rels);
 					for (int r = 0; r < rels.length; r++) {
-						createConnection(model, rels[r],
-								modelNodes[i].getData(),
-								modelNodes[j].getData());
+						createConnection(model, rels[r], modelNodes[i].getData(), modelNodes[j].getData());
 					}
 				}
 			}
@@ -109,10 +98,8 @@ public class GraphModelEntityRelationshipFactory extends
 	/**
 	 * Creates the model nodes for the given external nodes.
 	 * 
-	 * @param model
-	 *            the graph model.
-	 * @param nodes
-	 *            the external nodes.
+	 * @param model the graph model.
+	 * @param nodes the external nodes.
 	 */
 	private void createModelNodes(Graph model, Object[] nodes) {
 		for (int i = 0; i < nodes.length; i++) {

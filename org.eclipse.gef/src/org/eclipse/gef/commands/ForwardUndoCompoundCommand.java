@@ -27,8 +27,7 @@ public class ForwardUndoCompoundCommand extends CompoundCommand {
 	/**
 	 * Constructs a ForwardUndoCompoundCommand with the specified label
 	 * 
-	 * @param label
-	 *            the label
+	 * @param label the label
 	 */
 	public ForwardUndoCompoundCommand(String label) {
 		super(label);
@@ -42,8 +41,8 @@ public class ForwardUndoCompoundCommand extends CompoundCommand {
 	}
 
 	/**
-	 * Undo the command. For a Preorder compound command this means undoing all
-	 * of the commands that it contains. Do it in the same order as applied.
+	 * Undo the command. For a Preorder compound command this means undoing all of
+	 * the commands that it contains. Do it in the same order as applied.
 	 */
 	public void undo() {
 		ListIterator itr = getCommands().listIterator();

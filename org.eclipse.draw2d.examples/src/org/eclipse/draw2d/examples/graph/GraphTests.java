@@ -98,17 +98,13 @@ public class GraphTests {
 		firstRow[2] = new Node("h2");
 		firstRow[3] = new Node("h3");
 		addNodes(nodes, firstRow);
-		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 2,
-				3, 2, 4, 3, 3, 3, 4 });
+		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 2, 3, 2, 4, 3, 3, 3, 4 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 3, 4, 2, 1, 2, 3,
-				3, 2, 4, 4 });
+		row = joinRows(nodes, edges, row, new int[] { 1, 1, 3, 4, 2, 1, 2, 3, 3, 2, 4, 4 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 1, 2, 4,
-				3, 3, 3, 4, 4, 3, 4, 5 });
+		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 1, 2, 4, 3, 3, 3, 4, 4, 3, 4, 5 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 3, 3, 4, 4,
-				5, 5, 1, 2, 4, 3, 5, 4 });
+		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 1, 2, 4, 3, 5, 4 });
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -281,8 +277,7 @@ public class GraphTests {
 
 		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 3, 2, 4 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 3, 2, 4,
-				3, 5, 3, 6, 4, 7, 4, 8 });
+		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 3, 2, 4, 3, 5, 3, 6, 4, 7, 4, 8 });
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -303,29 +298,25 @@ public class GraphTests {
 		firstRow[1] = new Node("h1");
 		firstRow[2] = new Node("h2");
 		addNodes(nodes, firstRow);
-		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 1,
-				4, 1, 5, 1, 6, 2, 7, 2, 8, 2, 9, 2, 10 });
+		row = joinRows(nodes, edges, firstRow,
+				new int[] { 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 2, 7, 2, 8, 2, 9, 2, 10 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 2, 3, 3, 1,
-				4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9, 10, 10, 11 });
+		row = joinRows(nodes, edges, row,
+				new int[] { 1, 1, 2, 2, 2, 3, 3, 1, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9, 10, 10, 11 });
 
 		// Row 3->4
 		row = joinRows(nodes, edges, row,
-				new int[] { 1, 1, 1, 2, 2, 3, 2, 6, 3, 6, 4, 4, 5, 5, 6, 7, 7,
-						6, 8, 8, 9, 6, 10, 9, 10, 10, 11, 11 });
+				new int[] { 1, 1, 1, 2, 2, 3, 2, 6, 3, 6, 4, 4, 5, 5, 6, 7, 7, 6, 8, 8, 9, 6, 10, 9, 10, 10, 11, 11 });
 
 		// Row 4->5
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 1, 3, 2, 3,
-				3, 4, 4, 5, 5, 6, 7, 3, 8, 7, 9, 8, 10, 9, 10, 10, 11, 11 });
+		row = joinRows(nodes, edges, row,
+				new int[] { 1, 1, 1, 2, 1, 3, 2, 3, 3, 4, 4, 5, 5, 6, 7, 3, 8, 7, 9, 8, 10, 9, 10, 10, 11, 11 });
 		// Row 5->6
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 4, 3, 5, 4,
-				6, 5, 7, 6, 8, 7, 9, 7, 10, 7, 11, 7 });
+		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 4, 3, 5, 4, 6, 5, 7, 6, 8, 7, 9, 7, 10, 7, 11, 7 });
 		// Row 6->7
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 3, 4, 4, 4,
-				5, 3, 6, 4, 7, 4, 7, 5 });
+		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 3, 4, 4, 4, 5, 3, 6, 4, 7, 4, 7, 5 });
 		// Row 7->8
-		row = joinRows(nodes, edges, row, new int[] { 1, 2, 2, 1, 3, 2, 4, 2,
-				4, 3, 5, 4 });
+		row = joinRows(nodes, edges, row, new int[] { 1, 2, 2, 1, 3, 2, 4, 2, 4, 3, 5, 4 });
 
 		// Row 8->9
 		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 1, 3, 1, 4, 1 });
@@ -352,8 +343,7 @@ public class GraphTests {
 		firstRow[4] = new Node("h4");
 		firstRow[1].width = firstRow[2].width = firstRow[3].width = firstRow[4].width = 160;
 		addNodes(nodes, firstRow);
-		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 2, 2, 2,
-				3, 3, 3, 3, 4, 4, 4, 4, 5 });
+		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5 });
 
 		row = joinRows(nodes, edges, row, new int[] { 1, 1, 3, 3, 5, 2 });
 
@@ -382,17 +372,13 @@ public class GraphTests {
 		firstRow[3] = new Node("h3");
 		firstRow[1].width = firstRow[2].width = firstRow[3].width = 120;
 		addNodes(nodes, firstRow);
-		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 2,
-				3, 2, 4, 3, 3, 3, 4 });
+		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 2, 3, 2, 4, 3, 3, 3, 4 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 3, 4, 2, 1, 2, 3,
-				3, 2, 4, 4 });
+		row = joinRows(nodes, edges, row, new int[] { 1, 1, 3, 4, 2, 1, 2, 3, 3, 2, 4, 4 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 1, 2, 4,
-				3, 3, 3, 4, 4, 3, 4, 5 });
+		row = joinRows(nodes, edges, row, new int[] { 1, 1, 1, 2, 2, 1, 2, 4, 3, 3, 3, 4, 4, 3, 4, 5 });
 
-		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 4, 4, 5, 5,
-				1, 2, 4, 3, 5, 4 });
+		row = joinRows(nodes, edges, row, new int[] { 1, 1, 2, 2, 4, 4, 5, 5, 1, 2, 4, 3, 5, 4 });
 
 		DirectedGraph graph = new DirectedGraph();
 		graph.setDirection(direction);
@@ -411,8 +397,7 @@ public class GraphTests {
 	 * @param is
 	 * @return
 	 */
-	private static Node[] joinRows(NodeList nodes, EdgeList edges,
-			Node[] firstRow, int[] conns) {
+	private static Node[] joinRows(NodeList nodes, EdgeList edges, Node[] firstRow, int[] conns) {
 		shuffleConnections(conns);
 		Node secondRow[] = new Node[20];
 		Node head, tail;
@@ -434,8 +419,7 @@ public class GraphTests {
 	 */
 	private static void shuffleConnections(int[] conns) {
 		for (int i = 0; i < conns.length; i += 2) {
-			int swap = (int) (rand.nextFloat() * conns.length) % conns.length
-					/ 2;
+			int swap = (int) (rand.nextFloat() * conns.length) % conns.length / 2;
 			swap *= 2;
 			int temp = conns[i];
 			conns[i] = conns[swap];

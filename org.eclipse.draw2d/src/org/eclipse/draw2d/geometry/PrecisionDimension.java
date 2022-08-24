@@ -22,17 +22,16 @@ public class PrecisionDimension extends Dimension {
 	 * 
 	 * @noreference
 	 * @deprecated Use {@link #setPreciseHeight(double)} and
-	 *             {@link #preciseHeight()} instead. This field will become
-	 *             private in the future.
+	 *             {@link #preciseHeight()} instead. This field will become private
+	 *             in the future.
 	 */
 	public double preciseHeight;
 	/**
 	 * The width in double precision.
 	 * 
 	 * @noreference
-	 * @deprecated Use {@link #setPreciseWidth(double)} and
-	 *             {@link #preciseWidth()} instead. This field will become
-	 *             private in the future.
+	 * @deprecated Use {@link #setPreciseWidth(double)} and {@link #preciseWidth()}
+	 *             instead. This field will become private in the future.
 	 */
 	public double preciseWidth;
 
@@ -45,8 +44,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * Constructs a precision representation of the given dimension.
 	 * 
-	 * @param d
-	 *            the reference dimension
+	 * @param d the reference dimension
 	 */
 	public PrecisionDimension(Dimension d) {
 		this(d.preciseWidth(), d.preciseHeight());
@@ -55,10 +53,8 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * Constructs a new precision dimension with the given values.
 	 * 
-	 * @param w
-	 *            the width
-	 * @param h
-	 *            the height
+	 * @param w the width
+	 * @param h the height
 	 */
 	public PrecisionDimension(double w, double h) {
 		setPreciseSize(w, h);
@@ -68,16 +64,14 @@ public class PrecisionDimension extends Dimension {
 	 * @see org.eclipse.draw2d.geometry.Dimension#contains(org.eclipse.draw2d.geometry.Dimension)
 	 */
 	public boolean contains(Dimension d) {
-		return preciseWidth() >= d.preciseWidth()
-				&& preciseHeight() >= d.preciseHeight();
+		return preciseWidth() >= d.preciseWidth() && preciseHeight() >= d.preciseHeight();
 	}
 
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#containsProper(org.eclipse.draw2d.geometry.Dimension)
 	 */
 	public boolean containsProper(Dimension d) {
-		return preciseWidth() > d.preciseWidth()
-				&& preciseHeight() > d.preciseHeight();
+		return preciseWidth() > d.preciseWidth() && preciseHeight() > d.preciseHeight();
 	}
 
 	/**
@@ -86,8 +80,7 @@ public class PrecisionDimension extends Dimension {
 	public boolean equals(Object o) {
 		if (o instanceof PrecisionDimension) {
 			PrecisionDimension d = (PrecisionDimension) o;
-			return d.preciseWidth() == preciseWidth()
-					&& d.preciseHeight() == preciseHeight();
+			return d.preciseWidth() == preciseWidth() && d.preciseHeight() == preciseHeight();
 		}
 		return super.equals(o);
 	}
@@ -117,10 +110,8 @@ public class PrecisionDimension extends Dimension {
 	 * Expands the size of this PrecisionDimension by the specified width and
 	 * height.
 	 * 
-	 * @param w
-	 *            Value by which the width should be increased
-	 * @param h
-	 *            Value by which the height should be increased
+	 * @param w Value by which the width should be increased
+	 * @param h Value by which the height should be increased
 	 * @return <code>this</code> for convenience
 	 * @since 3.7
 	 */
@@ -202,8 +193,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * Sets the height.
 	 * 
-	 * @param h
-	 *            the new height
+	 * @param h the new height
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -216,10 +206,8 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * Sets the size of this PrecisionDimension to the given width and height.
 	 * 
-	 * @param w
-	 *            The new width
-	 * @param h
-	 *            The new height
+	 * @param w The new width
+	 * @param h The new height
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -232,9 +220,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * Sets the size of this Dimension to the width and height of the given one.
 	 * 
-	 * @param d
-	 *            The PrecisionDimension specifying the new width and height
-	 *            values.
+	 * @param d The PrecisionDimension specifying the new width and height values.
 	 * @return This for convenience
 	 * @since 3.7
 	 */
@@ -245,8 +231,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * Sets the width.
 	 * 
-	 * @param w
-	 *            the new width
+	 * @param w the new width
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -299,13 +284,11 @@ public class PrecisionDimension extends Dimension {
 	}
 
 	/**
-	 * Reduces the width of this Dimension by <i>w</i>, and reduces the height
-	 * of this Dimension by <i>h</i>. Returns this for convenience.
+	 * Reduces the width of this Dimension by <i>w</i>, and reduces the height of
+	 * this Dimension by <i>h</i>. Returns this for convenience.
 	 * 
-	 * @param w
-	 *            the value by which the width is to be reduced
-	 * @param h
-	 *            the value by which the height is to be reduced
+	 * @param w the value by which the width is to be reduced
+	 * @param h the value by which the height is to be reduced
 	 * @return <code>this</code> for convenience
 	 * @since 3.7
 	 */
@@ -344,12 +327,12 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * Updates the integer fields using the precise versions.
 	 * 
-	 * @deprecated This method should not be accessed by clients any more (it
-	 *             will be made private in future releases). The update of
-	 *             integer and precision fields is performed automatically if
-	 *             {@link #preciseWidth} and {@link #preciseHeight} field values
-	 *             are not manipulated directly, but only via respective methods
-	 *             offered by this class.
+	 * @deprecated This method should not be accessed by clients any more (it will
+	 *             be made private in future releases). The update of integer and
+	 *             precision fields is performed automatically if
+	 *             {@link #preciseWidth} and {@link #preciseHeight} field values are
+	 *             not manipulated directly, but only via respective methods offered
+	 *             by this class.
 	 */
 	public final void updateInts() {
 		updateWidthInt();

@@ -39,15 +39,12 @@ public class ActivityDirectEditManager extends DirectEditManager {
 	/**
 	 * Creates a new ActivityDirectEditManager with the given attributes.
 	 * 
-	 * @param source
-	 *            the source EditPart
-	 * @param editorType
-	 *            type of editor
-	 * @param locator
-	 *            the CellEditorLocator
+	 * @param source     the source EditPart
+	 * @param editorType type of editor
+	 * @param locator    the CellEditorLocator
 	 */
-	public ActivityDirectEditManager(GraphicalEditPart source,
-			Class editorType, CellEditorLocator locator, Label label) {
+	public ActivityDirectEditManager(GraphicalEditPart source, Class editorType, CellEditorLocator locator,
+			Label label) {
 		super(source, editorType, locator);
 		activityLabel = label;
 	}
@@ -74,8 +71,7 @@ public class ActivityDirectEditManager extends DirectEditManager {
 				Text text = (Text) getCellEditor().getControl();
 				String oldText = text.getText();
 				String leftText = oldText.substring(0, event.start);
-				String rightText = oldText.substring(event.end,
-						oldText.length());
+				String rightText = oldText.substring(event.end, oldText.length());
 				GC gc = new GC(text);
 				Point size = gc.textExtent(leftText + event.text + rightText);
 				gc.dispose();

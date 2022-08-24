@@ -32,9 +32,8 @@ public class ToggleSnapToGeometryAction extends Action {
 	/**
 	 * Constructor
 	 * 
-	 * @param diagramViewer
-	 *            the GraphicalViewer whose snap to geometry property is to be
-	 *            toggled
+	 * @param diagramViewer the GraphicalViewer whose snap to geometry property is
+	 *                      to be toggled
 	 */
 	public ToggleSnapToGeometryAction(GraphicalViewer diagramViewer) {
 		super(GEFMessages.ToggleSnapToGeometry_Label, AS_CHECK_BOX);
@@ -49,8 +48,7 @@ public class ToggleSnapToGeometryAction extends Action {
 	 * @see org.eclipse.jface.action.IAction#isChecked()
 	 */
 	public boolean isChecked() {
-		Boolean val = (Boolean) diagramViewer
-				.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
+		Boolean val = (Boolean) diagramViewer.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
 		if (val != null)
 			return val.booleanValue();
 		return false;
@@ -60,8 +58,7 @@ public class ToggleSnapToGeometryAction extends Action {
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
 	public void run() {
-		diagramViewer.setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED,
-				Boolean.valueOf(!isChecked()));
+		diagramViewer.setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, Boolean.valueOf(!isChecked()));
 	}
 
 }

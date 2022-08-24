@@ -32,8 +32,7 @@ class BufferedGraphicsSource implements GraphicsSource {
 	 * Constructs a new buffered graphics source using the given control.
 	 * 
 	 * @since 2.1
-	 * @param c
-	 *            the control
+	 * @param c the control
 	 */
 	public BufferedGraphicsSource(Control c) {
 		control = c;
@@ -61,8 +60,8 @@ class BufferedGraphicsSource implements GraphicsSource {
 		 */
 		if (imageBuffer != null) {
 			imageGC.dispose();
-			controlGC.drawImage(getImage(), 0, 0, inUse.width, inUse.height,
-					inUse.x, inUse.y, inUse.width, inUse.height);
+			controlGC.drawImage(getImage(), 0, 0, inUse.width, inUse.height, inUse.x, inUse.y, inUse.width,
+					inUse.height);
 			imageBuffer.dispose();
 			imageBuffer = null;
 			imageGC = null;
@@ -88,9 +87,8 @@ class BufferedGraphicsSource implements GraphicsSource {
 			return null;
 
 		/*
-		 * Bugzilla 53632 - Attempts to create large images on some platforms
-		 * will fail. When this happens, do not use double-buffering for
-		 * painting.
+		 * Bugzilla 53632 - Attempts to create large images on some platforms will fail.
+		 * When this happens, do not use double-buffering for painting.
 		 */
 		try {
 			imageBuffer = new Image(null, inUse.width, inUse.height);
@@ -100,12 +98,10 @@ class BufferedGraphicsSource implements GraphicsSource {
 			imageBuffer = null;
 		}
 
-		controlGC = new GC(control, control.getStyle()
-				& (SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT));
+		controlGC = new GC(control, control.getStyle() & (SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT));
 		Graphics graphics;
 		if (imageBuffer != null) {
-			imageGC = new GC(imageBuffer, control.getStyle()
-					& (SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT));
+			imageGC = new GC(imageBuffer, control.getStyle() & (SWT.RIGHT_TO_LEFT | SWT.LEFT_TO_RIGHT));
 			imageGC.setBackground(controlGC.getBackground());
 			imageGC.setForeground(controlGC.getForeground());
 			imageGC.setFont(controlGC.getFont());

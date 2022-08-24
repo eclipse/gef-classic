@@ -25,21 +25,15 @@ public class PaletteTemplateEntry extends PaletteEntry {
 	/**
 	 * Creates a new PaletteTemplateEntry with the given template.
 	 * 
-	 * @param label
-	 *            the entry's name
-	 * @param shortDesc
-	 *            the entry's description
-	 * @param template
-	 *            the template for this entry
-	 * @param iconSmall
-	 *            an ImageDescriptor for the entry's small icon
-	 * @param iconLarge
-	 *            an ImageDescriptor for the entry's large icon
+	 * @param label     the entry's name
+	 * @param shortDesc the entry's description
+	 * @param template  the template for this entry
+	 * @param iconSmall an ImageDescriptor for the entry's small icon
+	 * @param iconLarge an ImageDescriptor for the entry's large icon
 	 * @see PaletteEntry#PaletteEntry(String, String, ImageDescriptor,
 	 *      ImageDescriptor, Object)
 	 */
-	public PaletteTemplateEntry(String label, String shortDesc,
-			Object template, ImageDescriptor iconSmall,
+	public PaletteTemplateEntry(String label, String shortDesc, Object template, ImageDescriptor iconSmall,
 			ImageDescriptor iconLarge) {
 		super(label, shortDesc, iconSmall, iconLarge, PALETTE_TYPE_TEMPLATE);
 		setTemplate(template);
@@ -55,8 +49,7 @@ public class PaletteTemplateEntry extends PaletteEntry {
 	/**
 	 * Sets the template object to the given value
 	 * 
-	 * @param template
-	 *            the template object
+	 * @param template the template object
 	 */
 	public void setTemplate(Object template) {
 		this.template = template;

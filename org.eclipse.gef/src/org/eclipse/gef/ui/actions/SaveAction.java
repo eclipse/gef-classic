@@ -21,11 +21,9 @@ import org.eclipse.gef.internal.GEFMessages;
 public class SaveAction extends EditorPartAction {
 
 	/**
-	 * Constructs a <code>SaveAction</code> and associates it with the given
-	 * editor.
+	 * Constructs a <code>SaveAction</code> and associates it with the given editor.
 	 * 
-	 * @param editor
-	 *            the IEditorPart
+	 * @param editor the IEditorPart
 	 */
 	public SaveAction(IEditorPart editor) {
 		super(editor);

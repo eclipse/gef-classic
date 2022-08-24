@@ -27,15 +27,14 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	protected Scheme scheme = null;
 
 	/** Arrays of Colors, used for shadow or highlight effects **/
-	protected static final Color DARKEST_DARKER[] = new Color[] {
-			buttonDarkest, buttonDarker }, LIGHTER_DARKER[] = new Color[] {
-			buttonLightest, buttonDarker }, DARKER_LIGHTER[] = new Color[] {
-			buttonDarker, buttonLightest };
+	protected static final Color DARKEST_DARKER[] = new Color[] { buttonDarkest, buttonDarker },
+			LIGHTER_DARKER[] = new Color[] { buttonLightest, buttonDarker },
+			DARKER_LIGHTER[] = new Color[] { buttonDarker, buttonLightest };
 
 	/**
-	 * Holds a set of information about a border, which can be changed to create
-	 * a wide range of schemes. Provides support for border opacity, size,
-	 * highlight side and shadow side colors.
+	 * Holds a set of information about a border, which can be changed to create a
+	 * wide range of schemes. Provides support for border opacity, size, highlight
+	 * side and shadow side colors.
 	 */
 	public static class Scheme {
 		private Insets insets;
@@ -53,16 +52,14 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		}
 
 		/**
-		 * Constructs a border Scheme with the specified highlight and shadow
-		 * colors. The size of the border depends on the number of colors passed
-		 * in for each parameter. Hightlight colors are used in the top and left
-		 * sides of the border, and Shadow colors are used in the bottom and
-		 * right sides of the border.
+		 * Constructs a border Scheme with the specified highlight and shadow colors.
+		 * The size of the border depends on the number of colors passed in for each
+		 * parameter. Hightlight colors are used in the top and left sides of the
+		 * border, and Shadow colors are used in the bottom and right sides of the
+		 * border.
 		 * 
-		 * @param highlight
-		 *            the hightlight colors
-		 * @param shadow
-		 *            the shadow colors
+		 * @param highlight the hightlight colors
+		 * @param shadow    the shadow colors
 		 * @since 2.0
 		 */
 		public Scheme(Color[] highlight, Color[] shadow) {
@@ -72,14 +69,13 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		}
 
 		/**
-		 * Constructs a border scheme with the specified colors. The input
-		 * colors serve as both highlight and shadow colors. The size of the
-		 * border is the number of colors passed in as input. Hightlight colors
-		 * are used in the top and left sides of the border, and Shadow colors
-		 * are used in the bottom and right sides of the border.
+		 * Constructs a border scheme with the specified colors. The input colors serve
+		 * as both highlight and shadow colors. The size of the border is the number of
+		 * colors passed in as input. Hightlight colors are used in the top and left
+		 * sides of the border, and Shadow colors are used in the bottom and right sides
+		 * of the border.
 		 * 
-		 * @param colors
-		 *            the colors to be used for the border
+		 * @param colors the colors to be used for the border
 		 * @since 2.0
 		 */
 		public Scheme(Color[] colors) {
@@ -88,8 +84,8 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		}
 
 		/**
-		 * Calculates and returns the Insets for this border Scheme. The
-		 * calculations depend on the number of colors passed in as input.
+		 * Calculates and returns the Insets for this border Scheme. The calculations
+		 * depend on the number of colors passed in as input.
 		 * 
 		 * @return the Insets used by this border
 		 * @since 2.0
@@ -102,9 +98,9 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 		/**
 		 * Calculates and retuns the opaque state of this border scheme. Returns
-		 * <code>false</code> if any of the border colors are <code>null</code>.
-		 * This is done to prevent the appearance of underlying pixels since the
-		 * border color is <code>null</code>.
+		 * <code>false</code> if any of the border colors are <code>null</code>. This is
+		 * done to prevent the appearance of underlying pixels since the border color is
+		 * <code>null</code>.
 		 * 
 		 * @return <code>true</code> if this border is opaque
 		 * @since 2.0
@@ -122,8 +118,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		}
 
 		/**
-		 * Returns the highlight colors of this border scheme as an array of
-		 * Colors.
+		 * Returns the highlight colors of this border scheme as an array of Colors.
 		 * 
 		 * @return the highlight colors
 		 * @since 2.0
@@ -143,8 +138,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		}
 
 		/**
-		 * Returns the shadow colors of this border scheme as an array of
-		 * Colors.
+		 * Returns the shadow colors of this border scheme as an array of Colors.
 		 * 
 		 * @return the shadow colors
 		 * @since 2.0
@@ -182,17 +176,13 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	public static interface SCHEMES {
 
 		/** Schemes used for shadow and highlight effects **/
-		Scheme BUTTON_CONTRAST = new Scheme(new Color[] { button,
-				buttonLightest }, DARKEST_DARKER), BUTTON_RAISED = new Scheme(
-				new Color[] { buttonLightest }, DARKEST_DARKER),
-				BUTTON_PRESSED = new Scheme(DARKEST_DARKER,
-						new Color[] { buttonLightest }), RAISED = new Scheme(
-						new Color[] { buttonLightest },
-						new Color[] { buttonDarkest }), LOWERED = new Scheme(
-						new Color[] { buttonDarkest },
-						new Color[] { buttonLightest }), RIDGED = new Scheme(
-						LIGHTER_DARKER, DARKER_LIGHTER), ETCHED = new Scheme(
-						DARKER_LIGHTER, LIGHTER_DARKER);
+		Scheme BUTTON_CONTRAST = new Scheme(new Color[] { button, buttonLightest }, DARKEST_DARKER),
+				BUTTON_RAISED = new Scheme(new Color[] { buttonLightest }, DARKEST_DARKER),
+				BUTTON_PRESSED = new Scheme(DARKEST_DARKER, new Color[] { buttonLightest }),
+				RAISED = new Scheme(new Color[] { buttonLightest }, new Color[] { buttonDarkest }),
+				LOWERED = new Scheme(new Color[] { buttonDarkest }, new Color[] { buttonLightest }),
+				RIDGED = new Scheme(LIGHTER_DARKER, DARKER_LIGHTER),
+				ETCHED = new Scheme(DARKER_LIGHTER, LIGHTER_DARKER);
 	}
 
 	/**
@@ -206,8 +196,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	/**
 	 * Constructs a SchemeBorder with the Scheme given as input.
 	 * 
-	 * @param scheme
-	 *            the Scheme to be used by this border
+	 * @param scheme the Scheme to be used by this border
 	 * @since 2.0
 	 */
 	public SchemeBorder(Scheme scheme) {
@@ -232,8 +221,8 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	}
 
 	/**
-	 * Returns the opaque state of this border. Returns <code>true</code>
-	 * indicating that this will fill in the area enclosed by the border.
+	 * Returns the opaque state of this border. Returns <code>true</code> indicating
+	 * that this will fill in the area enclosed by the border.
 	 * 
 	 * @see Border#isOpaque()
 	 */
@@ -244,8 +233,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	/**
 	 * Sets the Scheme for this border to the Scheme given as input.
 	 * 
-	 * @param scheme
-	 *            the Scheme for this border
+	 * @param scheme the Scheme for this border
 	 * @since 2.0
 	 */
 	protected void setScheme(Scheme scheme) {
@@ -264,22 +252,16 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 	/**
 	 * Paints the border using the information in the set Scheme and the inputs
-	 * given. Side widths are determined by the number of colors in the Scheme
-	 * for each side.
+	 * given. Side widths are determined by the number of colors in the Scheme for
+	 * each side.
 	 * 
-	 * @param graphics
-	 *            the graphics object
-	 * @param fig
-	 *            the figure this border belongs to
-	 * @param insets
-	 *            the insets
-	 * @param tl
-	 *            the highlight (top/left) colors
-	 * @param br
-	 *            the shadow (bottom/right) colors
+	 * @param graphics the graphics object
+	 * @param fig      the figure this border belongs to
+	 * @param insets   the insets
+	 * @param tl       the highlight (top/left) colors
+	 * @param br       the shadow (bottom/right) colors
 	 */
-	protected void paint(Graphics graphics, IFigure fig, Insets insets,
-			Color[] tl, Color[] br) {
+	protected void paint(Graphics graphics, IFigure fig, Insets insets, Color[] tl, Color[] br) {
 		graphics.setLineWidth(1);
 		graphics.setLineStyle(Graphics.LINE_SOLID);
 		graphics.setXORMode(false);

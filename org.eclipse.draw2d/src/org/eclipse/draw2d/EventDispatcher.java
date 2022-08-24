@@ -27,13 +27,11 @@ import org.eclipse.swt.widgets.Event;
 public abstract class EventDispatcher {
 
 	/**
-	 * Combines {@link AccessibleControlListener} and {@link AccessibleListener}
-	 * . Implements
-	 * {@link AccessibleControlListener#getChild(AccessibleControlEvent)} to do
-	 * nothing.
+	 * Combines {@link AccessibleControlListener} and {@link AccessibleListener} .
+	 * Implements {@link AccessibleControlListener#getChild(AccessibleControlEvent)}
+	 * to do nothing.
 	 */
-	public abstract static class AccessibilityDispatcher implements
-			AccessibleControlListener, AccessibleListener {
+	public abstract static class AccessibilityDispatcher implements AccessibleControlListener, AccessibleListener {
 		/** @see AccessibleControlListener#getChild(AccessibleControlEvent) */
 		public void getChild(AccessibleControlEvent e) {
 		}
@@ -42,104 +40,91 @@ public abstract class EventDispatcher {
 	/**
 	 * Dispatches a focus gained event.
 	 * 
-	 * @param e
-	 *            the event
+	 * @param e the event
 	 */
 	public abstract void dispatchFocusGained(FocusEvent e);
 
 	/**
 	 * Dispatches a focus lost event.
 	 * 
-	 * @param e
-	 *            the event
+	 * @param e the event
 	 */
 	public abstract void dispatchFocusLost(FocusEvent e);
 
 	/**
 	 * Dispatches a key pressed event.
 	 * 
-	 * @param e
-	 *            the event
+	 * @param e the event
 	 */
 	public abstract void dispatchKeyPressed(KeyEvent e);
 
 	/**
 	 * Dispatches a key released event.
 	 * 
-	 * @param e
-	 *            the event
+	 * @param e the event
 	 */
 	public abstract void dispatchKeyReleased(KeyEvent e);
 
 	/**
 	 * Dispatches a key traversed event.
 	 * 
-	 * @param e
-	 *            the event
+	 * @param e the event
 	 */
 	public abstract void dispatchKeyTraversed(TraverseEvent e);
 
 	/**
 	 * Dispatches a mouse double clicked event.
 	 * 
-	 * @param me
-	 *            the event
+	 * @param me the event
 	 */
 	public abstract void dispatchMouseDoubleClicked(MouseEvent me);
 
 	/**
 	 * Dispatches a mouse entered event.
 	 * 
-	 * @param e
-	 *            the event
+	 * @param e the event
 	 */
 	public abstract void dispatchMouseEntered(MouseEvent e);
 
 	/**
 	 * Dispatches a mouse exited event.
 	 * 
-	 * @param e
-	 *            the event
+	 * @param e the event
 	 */
 	public abstract void dispatchMouseExited(MouseEvent e);
 
 	/**
 	 * Dispatches a mouse hover event.
 	 * 
-	 * @param me
-	 *            the event
+	 * @param me the event
 	 */
 	public abstract void dispatchMouseHover(MouseEvent me);
 
 	/**
 	 * Dispatches a moved event event.
 	 * 
-	 * @param me
-	 *            the event
+	 * @param me the event
 	 */
 	public abstract void dispatchMouseMoved(MouseEvent me);
 
 	/**
 	 * Dispatches a mouse pressed event.
 	 * 
-	 * @param me
-	 *            the event
+	 * @param me the event
 	 */
 	public abstract void dispatchMousePressed(MouseEvent me);
 
 	/**
 	 * Dispatches a mouse released event.
 	 * 
-	 * @param me
-	 *            the event
+	 * @param me the event
 	 */
 	public abstract void dispatchMouseReleased(MouseEvent me);
 
 	/**
 	 * Dispatches a MouseWheel event. Does nothing by default.
 	 * 
-	 * @param event
-	 *            the SWT event
+	 * @param event the SWT event
 	 * @since 3.1
 	 */
 	public void dispatchMouseWheelScrolled(Event event) {
@@ -173,41 +158,36 @@ public abstract class EventDispatcher {
 	/**
 	 * Requests focus for the given figure.
 	 * 
-	 * @param fig
-	 *            the figure requesting focus
+	 * @param fig the figure requesting focus
 	 */
 	public abstract void requestFocus(IFigure fig);
 
 	/**
 	 * Requests focus to be removed from the given figure.
 	 * 
-	 * @param fig
-	 *            the figure requesting focus be removed
+	 * @param fig the figure requesting focus be removed
 	 */
 	public abstract void requestRemoveFocus(IFigure fig);
 
 	/**
-	 * Sets capture to the given figure. All subsequent events will be sent to
-	 * the given figure until {@link #releaseCapture()} is called.
+	 * Sets capture to the given figure. All subsequent events will be sent to the
+	 * given figure until {@link #releaseCapture()} is called.
 	 * 
-	 * @param figure
-	 *            the figure capturing the events
+	 * @param figure the figure capturing the events
 	 */
 	protected abstract void setCapture(IFigure figure);
 
 	/**
 	 * Sets the contol associated with this event dispatcher.
 	 * 
-	 * @param control
-	 *            the control
+	 * @param control the control
 	 */
 	public abstract void setControl(Control control);
 
 	/**
 	 * Sets the root figure for this dispatcher.
 	 * 
-	 * @param figure
-	 *            the root figure
+	 * @param figure the root figure
 	 */
 	public abstract void setRoot(IFigure figure);
 

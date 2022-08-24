@@ -26,10 +26,8 @@ public class Polygon extends Polyline {
 	/**
 	 * Returns whether the point (x,y) is contained inside this polygon.
 	 * 
-	 * @param x
-	 *            the X coordinate
-	 * @param y
-	 *            the Y coordinate
+	 * @param x the X coordinate
+	 * @param y the Y coordinate
 	 * @return whether the point (x,y) is contained in this polygon
 	 */
 	public boolean containsPoint(int x, int y) {
@@ -45,8 +43,7 @@ public class Polygon extends Polyline {
 	/**
 	 * Fill the Polygon with the background color set by <i>g</i>.
 	 * 
-	 * @param g
-	 *            the Graphics object
+	 * @param g the Graphics object
 	 * @since 2.0
 	 */
 	protected void fillShape(Graphics g) {
@@ -56,8 +53,7 @@ public class Polygon extends Polyline {
 	/**
 	 * Draw the outline of the Polygon.
 	 * 
-	 * @param g
-	 *            the Graphics object
+	 * @param g the Graphics object
 	 * @since 2.0
 	 */
 	protected void outlineShape(Graphics g) {

@@ -36,22 +36,18 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 	}
 
 	protected Request createTargetRequest() {
-		ChangeBoundsRequest request = new ChangeBoundsRequest(
-				RequestConstants.REQ_MOVE);
-		request.setEditParts((List) TreeViewerTransfer.getInstance()
-				.getObject());
+		ChangeBoundsRequest request = new ChangeBoundsRequest(RequestConstants.REQ_MOVE);
+		request.setEditParts((List) TreeViewerTransfer.getInstance().getObject());
 		return request;
 	}
 
 	protected Command getCommand() {
 		CompoundCommand command = new CompoundCommand();
 
-		Iterator iter = ((List) TreeViewerTransfer.getInstance().getObject())
-				.iterator();
+		Iterator iter = ((List) TreeViewerTransfer.getInstance().getObject()).iterator();
 
 		Request request = getTargetRequest();
-		request.setType(isMove() ? RequestConstants.REQ_MOVE
-				: RequestConstants.REQ_ORPHAN);
+		request.setType(isMove() ? RequestConstants.REQ_MOVE : RequestConstants.REQ_ORPHAN);
 
 		while (iter.hasNext()) {
 			EditPart editPart = (EditPart) iter.next();
@@ -93,8 +89,7 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 
 	protected EditPart getSourceEditPart() {
 		List selection = (List) TreeViewerTransfer.getInstance().getObject();
-		if (selection == null || selection.isEmpty()
-				|| !(selection.get(0) instanceof EditPart))
+		if (selection == null || selection.isEmpty() || !(selection.get(0) instanceof EditPart))
 			return null;
 		return (EditPart) selection.get(0);
 	}

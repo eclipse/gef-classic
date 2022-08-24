@@ -24,8 +24,8 @@ import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 /**
  * 
- * This snippet shows how to create a curved connection using Zest.
- * Each time the Button is clicked, the curve changes.
+ * This snippet shows how to create a curved connection using Zest. Each time
+ * the Button is clicked, the curve changes.
  * 
  * @author Ian Bull
  * 
@@ -51,17 +51,17 @@ public class GraphSnippet10 {
 		new GraphConnection(g, SWT.NONE, n2, n3);
 		new GraphConnection(g, SWT.NONE, n3, n);
 		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
-		
+
 		Button button = new Button(shell, SWT.PUSH);
 		button.setText("Change Curve");
 		button.addSelectionListener(new SelectionAdapter() {
 			int count = 0;
+
 			public void widgetSelected(SelectionEvent e) {
 				count = ++count % 16;
-				if ( count > 8 ) {
+				if (count > 8) {
 					connection.setCurveDepth((-16 + count) * 10);
-				}
-				else {
+				} else {
 					connection.setCurveDepth(count * 10);
 				}
 			}

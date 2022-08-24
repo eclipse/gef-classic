@@ -86,32 +86,32 @@ public class GridLayout extends AbstractHintLayout {
 	public boolean makeColumnsEqualWidth = false;
 
 	/**
-	 * marginWidth specifies the number of pixels of horizontal margin that will
-	 * be placed along the left and right edges of the layout.
+	 * marginWidth specifies the number of pixels of horizontal margin that will be
+	 * placed along the left and right edges of the layout.
 	 * 
 	 * The default value is 5.
 	 */
 	public int marginWidth = 5;
 
 	/**
-	 * marginHeight specifies the number of pixels of vertical margin that will
-	 * be placed along the top and bottom edges of the layout.
+	 * marginHeight specifies the number of pixels of vertical margin that will be
+	 * placed along the top and bottom edges of the layout.
 	 * 
 	 * The default value is 5.
 	 */
 	public int marginHeight = 5;
 
 	/**
-	 * horizontalSpacing specifies the number of pixels between the right edge
-	 * of one cell and the left edge of its neighbouring cell to the right.
+	 * horizontalSpacing specifies the number of pixels between the right edge of
+	 * one cell and the left edge of its neighbouring cell to the right.
 	 * 
 	 * The default value is 5.
 	 */
 	public int horizontalSpacing = 5;
 
 	/**
-	 * verticalSpacing specifies the number of pixels between the bottom edge of
-	 * one cell and the top edge of its neighbouring cell underneath.
+	 * verticalSpacing specifies the number of pixels between the bottom edge of one
+	 * cell and the top edge of its neighbouring cell underneath.
 	 * 
 	 * The default value is 5.
 	 */
@@ -131,10 +131,8 @@ public class GridLayout extends AbstractHintLayout {
 	 * Constructs a new instance of this class given the number of columns, and
 	 * whether or not the columns should be forced to have the same width.
 	 * 
-	 * @param numColumns
-	 *            the number of columns in the grid
-	 * @param makeColumnsEqualWidth
-	 *            whether or not the columns will have equal width
+	 * @param numColumns            the number of columns in the grid
+	 * @param makeColumnsEqualWidth whether or not the columns will have equal width
 	 * 
 	 */
 	public GridLayout(int numColumns, boolean makeColumnsEqualWidth) {
@@ -152,8 +150,7 @@ public class GridLayout extends AbstractHintLayout {
 		return child.getPreferredSize(wHint, hHint);
 	}
 
-	GridData getData(IFigure[][] grid, int row, int column, int rowCount,
-			int columnCount, boolean first) {
+	GridData getData(IFigure[][] grid, int row, int column, int rowCount, int columnCount, boolean first) {
 		IFigure figure = grid[row][column];
 		if (figure != null) {
 			GridData data = (GridData) getConstraint(figure);
@@ -183,12 +180,10 @@ public class GridLayout extends AbstractHintLayout {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.
+	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.
 	 * draw2d.IFigure, int, int)
 	 */
-	protected Dimension calculatePreferredSize(IFigure container, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		// Remove the size of the border from the wHint and hHint in case a size
 		// different to the preferred size is used
 		int borderWidth = container.getInsets().getWidth();
@@ -229,8 +224,7 @@ public class GridLayout extends AbstractHintLayout {
 
 	}
 
-	Dimension layout(IFigure container, boolean move, int x, int y, int width,
-			int height, boolean flushCache) {
+	Dimension layout(IFigure container, boolean move, int x, int y, int width, int height, boolean flushCache) {
 		if (numColumns < 1)
 			return new Dimension(marginWidth * 2, marginHeight * 2);
 		List children = container.getChildren();
@@ -294,8 +288,7 @@ public class GridLayout extends AbstractHintLayout {
 		}
 
 		/* Column widths */
-		int availableWidth = width - horizontalSpacing * (columnCount - 1)
-				- marginWidth * 2;
+		int availableWidth = width - horizontalSpacing * (columnCount - 1) - marginWidth * 2;
 		int expandCount = 0;
 		int[] widths = new int[columnCount];
 		int[] minWidths = new int[columnCount];
@@ -304,8 +297,7 @@ public class GridLayout extends AbstractHintLayout {
 			for (int i = 0; i < rowCount; i++) {
 				GridData data = getData(grid, i, j, rowCount, columnCount, true);
 				if (data != null) {
-					int hSpan = Math.max(1,
-							Math.min(data.horizontalSpan, columnCount));
+					int hSpan = Math.max(1, Math.min(data.horizontalSpan, columnCount));
 					if (hSpan == 1) {
 						int w = data.cacheWidth + data.horizontalIndent;
 						widths[j] = Math.max(widths[j], w);
@@ -314,19 +306,16 @@ public class GridLayout extends AbstractHintLayout {
 								expandCount++;
 							expandColumn[j] = true;
 						}
-						if (data.widthHint != SWT.DEFAULT
-								|| !data.grabExcessHorizontalSpace) {
+						if (data.widthHint != SWT.DEFAULT || !data.grabExcessHorizontalSpace) {
 							minWidths[j] = Math.max(minWidths[j], w);
 						}
 					}
 				}
 			}
 			for (int i = 0; i < rowCount; i++) {
-				GridData data = getData(grid, i, j, rowCount, columnCount,
-						false);
+				GridData data = getData(grid, i, j, rowCount, columnCount, false);
 				if (data != null) {
-					int hSpan = Math.max(1,
-							Math.min(data.horizontalSpan, columnCount));
+					int hSpan = Math.max(1, Math.min(data.horizontalSpan, columnCount));
 					if (hSpan > 1) {
 						int spanWidth = 0, spanMinWidth = 0, spanExpandCount = 0;
 						for (int k = 0; k < hSpan; k++) {
@@ -335,13 +324,11 @@ public class GridLayout extends AbstractHintLayout {
 							if (expandColumn[j - k])
 								spanExpandCount++;
 						}
-						if (data.grabExcessHorizontalSpace
-								&& spanExpandCount == 0) {
+						if (data.grabExcessHorizontalSpace && spanExpandCount == 0) {
 							expandCount++;
 							expandColumn[j] = true;
 						}
-						int w = data.cacheWidth + data.horizontalIndent
-								- spanWidth - (hSpan - 1) * horizontalSpacing;
+						int w = data.cacheWidth + data.horizontalIndent - spanWidth - (hSpan - 1) * horizontalSpacing;
 						if (w > 0) {
 							if (spanExpandCount == 0) {
 								widths[j] += w;
@@ -357,11 +344,9 @@ public class GridLayout extends AbstractHintLayout {
 									widths[last] += remainder;
 							}
 						}
-						if (data.widthHint != SWT.DEFAULT
-								|| !data.grabExcessHorizontalSpace) {
-							w = data.cacheWidth + data.horizontalIndent
-									- spanMinWidth - (hSpan - 1)
-									* horizontalSpacing;
+						if (data.widthHint != SWT.DEFAULT || !data.grabExcessHorizontalSpace) {
+							w = data.cacheWidth + data.horizontalIndent - spanMinWidth
+									- (hSpan - 1) * horizontalSpacing;
 							if (w > 0) {
 								if (spanExpandCount == 0) {
 									minWidths[j] += w;
@@ -422,32 +407,25 @@ public class GridLayout extends AbstractHintLayout {
 
 					for (int j = 0; j < columnCount; j++) {
 						for (int i = 0; i < rowCount; i++) {
-							GridData data = getData(grid, i, j, rowCount,
-									columnCount, false);
+							GridData data = getData(grid, i, j, rowCount, columnCount, false);
 							if (data != null) {
-								int hSpan = Math.max(1, Math.min(
-										data.horizontalSpan, columnCount));
+								int hSpan = Math.max(1, Math.min(data.horizontalSpan, columnCount));
 								if (hSpan > 1) {
-									if (data.widthHint != SWT.DEFAULT
-											|| !data.grabExcessHorizontalSpace) {
+									if (data.widthHint != SWT.DEFAULT || !data.grabExcessHorizontalSpace) {
 										int spanWidth = 0, spanExpandCount = 0;
 										for (int k = 0; k < hSpan; k++) {
 											spanWidth += widths[j - k];
 											if (expandColumn[j - k])
 												spanExpandCount++;
 										}
-										int w = data.cacheWidth
-												+ data.horizontalIndent
-												- spanWidth - (hSpan - 1)
-												* horizontalSpacing;
+										int w = data.cacheWidth + data.horizontalIndent - spanWidth
+												- (hSpan - 1) * horizontalSpacing;
 										if (w > 0) {
 											if (spanExpandCount == 0) {
 												widths[j] += w;
 											} else {
-												int delta2 = w
-														/ spanExpandCount;
-												int remainder2 = w
-														% spanExpandCount, last2 = -1;
+												int delta2 = w / spanExpandCount;
+												int remainder2 = w % spanExpandCount, last2 = -1;
 												for (int k = 0; k < hSpan; k++) {
 													if (expandColumn[j - k]) {
 														widths[last2 = j - k] += delta2;
@@ -481,40 +459,31 @@ public class GridLayout extends AbstractHintLayout {
 		if (width != SWT.DEFAULT) {
 			for (int j = 0; j < columnCount; j++) {
 				for (int i = 0; i < rowCount; i++) {
-					GridData data = getData(grid, i, j, rowCount, columnCount,
-							false);
+					GridData data = getData(grid, i, j, rowCount, columnCount, false);
 					if (data != null) {
 						if (data.heightHint == SWT.DEFAULT) {
 							IFigure child = grid[i][j];
 							// TEMPORARY CODE
-							int hSpan = Math.max(1,
-									Math.min(data.horizontalSpan, columnCount));
+							int hSpan = Math.max(1, Math.min(data.horizontalSpan, columnCount));
 							int currentWidth = 0;
 							for (int k = 0; k < hSpan; k++) {
 								currentWidth += widths[j - k];
 							}
-							currentWidth += (hSpan - 1) * horizontalSpacing
-									- data.horizontalIndent;
+							currentWidth += (hSpan - 1) * horizontalSpacing - data.horizontalIndent;
 							if ((currentWidth != data.cacheWidth && data.horizontalAlignment == SWT.FILL)
 									|| (data.cacheWidth > currentWidth)) {
 								int trim = 0;
 								/*
-								 * // *Note*: Left this in place from SWT //
-								 * GridLayout. Not sure if Draw2D Borders or //
-								 * Scrollbars 'trim' will need to be takeninto
-								 * account.
+								 * // *Note*: Left this in place from SWT // GridLayout. Not sure if Draw2D
+								 * Borders or // Scrollbars 'trim' will need to be takeninto account.
 								 * 
-								 * if (child instanceof Group) { Group g
-								 * =(Group)child; trim = g.getSize ().x -
-								 * g.getClientArea ().width; } else if (child
-								 * instanceof Scrollable) { Rectangle rect =
-								 * ((Scrollable) child).computeTrim (0, 0, 0,0);
-								 * trim = rect.width; } else { trim =
-								 * child.getBorderWidth () * 2; }
+								 * if (child instanceof Group) { Group g =(Group)child; trim = g.getSize ().x -
+								 * g.getClientArea ().width; } else if (child instanceof Scrollable) { Rectangle
+								 * rect = ((Scrollable) child).computeTrim (0, 0, 0,0); trim = rect.width; }
+								 * else { trim = child.getBorderWidth () * 2; }
 								 */
 								int oldWidthHint = data.widthHint;
-								data.widthHint = Math.max(0, currentWidth
-										- trim);
+								data.widthHint = Math.max(0, currentWidth - trim);
 								data.cacheWidth = data.cacheHeight = SWT.DEFAULT;
 								data.computeSize(child, false);
 								data.widthHint = oldWidthHint;
@@ -529,8 +498,7 @@ public class GridLayout extends AbstractHintLayout {
 		}
 
 		/* Row heights */
-		int availableHeight = height - verticalSpacing * (rowCount - 1)
-				- marginHeight * 2;
+		int availableHeight = height - verticalSpacing * (rowCount - 1) - marginHeight * 2;
 		expandCount = 0;
 		int[] heights = new int[rowCount];
 		int[] minHeights = new int[rowCount];
@@ -539,8 +507,7 @@ public class GridLayout extends AbstractHintLayout {
 			for (int j = 0; j < columnCount; j++) {
 				GridData data = getData(grid, i, j, rowCount, columnCount, true);
 				if (data != null) {
-					int vSpan = Math.max(1,
-							Math.min(data.verticalSpan, rowCount));
+					int vSpan = Math.max(1, Math.min(data.verticalSpan, rowCount));
 					if (vSpan == 1) {
 						int h = data.cacheHeight; // + data.verticalIndent;
 						heights[i] = Math.max(heights[i], h);
@@ -549,19 +516,16 @@ public class GridLayout extends AbstractHintLayout {
 								expandCount++;
 							expandRow[i] = true;
 						}
-						if (data.heightHint != SWT.DEFAULT
-								|| !data.grabExcessVerticalSpace) {
+						if (data.heightHint != SWT.DEFAULT || !data.grabExcessVerticalSpace) {
 							minHeights[i] = Math.max(minHeights[i], h);
 						}
 					}
 				}
 			}
 			for (int j = 0; j < columnCount; j++) {
-				GridData data = getData(grid, i, j, rowCount, columnCount,
-						false);
+				GridData data = getData(grid, i, j, rowCount, columnCount, false);
 				if (data != null) {
-					int vSpan = Math.max(1,
-							Math.min(data.verticalSpan, rowCount));
+					int vSpan = Math.max(1, Math.min(data.verticalSpan, rowCount));
 					if (vSpan > 1) {
 						int spanHeight = 0, spanMinHeight = 0, spanExpandCount = 0;
 						for (int k = 0; k < vSpan; k++) {
@@ -570,13 +534,12 @@ public class GridLayout extends AbstractHintLayout {
 							if (expandRow[i - k])
 								spanExpandCount++;
 						}
-						if (data.grabExcessVerticalSpace
-								&& spanExpandCount == 0) {
+						if (data.grabExcessVerticalSpace && spanExpandCount == 0) {
 							expandCount++;
 							expandRow[i] = true;
 						}
-						int h = data.cacheHeight - spanHeight - (vSpan - 1)
-								* verticalSpacing; // + data.verticalalIndent
+						int h = data.cacheHeight - spanHeight - (vSpan - 1) * verticalSpacing; // +
+																								// data.verticalalIndent
 						if (h > 0) {
 							if (spanExpandCount == 0) {
 								heights[i] += h;
@@ -592,10 +555,9 @@ public class GridLayout extends AbstractHintLayout {
 									heights[last] += remainder;
 							}
 						}
-						if (data.heightHint != SWT.DEFAULT
-								|| !data.grabExcessVerticalSpace) {
-							h = data.cacheHeight - spanMinHeight - (vSpan - 1)
-									* verticalSpacing; // + data.verticalIndent
+						if (data.heightHint != SWT.DEFAULT || !data.grabExcessVerticalSpace) {
+							h = data.cacheHeight - spanMinHeight - (vSpan - 1) * verticalSpacing; // +
+																									// data.verticalIndent
 							if (h > 0) {
 								if (spanExpandCount == 0) {
 									minHeights[i] += h;
@@ -642,30 +604,25 @@ public class GridLayout extends AbstractHintLayout {
 
 				for (int i = 0; i < rowCount; i++) {
 					for (int j = 0; j < columnCount; j++) {
-						GridData data = getData(grid, i, j, rowCount,
-								columnCount, false);
+						GridData data = getData(grid, i, j, rowCount, columnCount, false);
 						if (data != null) {
-							int vSpan = Math.max(1,
-									Math.min(data.verticalSpan, rowCount));
+							int vSpan = Math.max(1, Math.min(data.verticalSpan, rowCount));
 							if (vSpan > 1) {
-								if (data.heightHint != SWT.DEFAULT
-										|| !data.grabExcessVerticalSpace) {
+								if (data.heightHint != SWT.DEFAULT || !data.grabExcessVerticalSpace) {
 									int spanHeight = 0, spanExpandCount = 0;
 									for (int k = 0; k < vSpan; k++) {
 										spanHeight += heights[i - k];
 										if (expandRow[i - k])
 											spanExpandCount++;
 									}
-									int h = data.cacheHeight - spanHeight
-											- (vSpan - 1) * verticalSpacing; // +
+									int h = data.cacheHeight - spanHeight - (vSpan - 1) * verticalSpacing; // +
 									// data.verticalIndent
 									if (h > 0) {
 										if (spanExpandCount == 0) {
 											heights[i] += h;
 										} else {
 											int delta2 = h / spanExpandCount;
-											int remainder2 = h
-													% spanExpandCount, last2 = -1;
+											int remainder2 = h % spanExpandCount, last2 = -1;
 											for (int k = 0; k < vSpan; k++) {
 												if (expandRow[i - k]) {
 													heights[last2 = i - k] += delta2;
@@ -698,11 +655,9 @@ public class GridLayout extends AbstractHintLayout {
 			for (int i = 0; i < rowCount; i++) {
 				int gridX = x + marginWidth;
 				for (int j = 0; j < columnCount; j++) {
-					GridData data = getData(grid, i, j, rowCount, columnCount,
-							true);
+					GridData data = getData(grid, i, j, rowCount, columnCount, true);
 					if (data != null) {
-						int hSpan = Math.max(1,
-								Math.min(data.horizontalSpan, columnCount));
+						int hSpan = Math.max(1, Math.min(data.horizontalSpan, columnCount));
 						int vSpan = Math.max(1, data.verticalSpan);
 						int cellWidth = 0, cellHeight = 0;
 						for (int k = 0; k < hSpan; k++) {
@@ -717,14 +672,12 @@ public class GridLayout extends AbstractHintLayout {
 						switch (data.horizontalAlignment) {
 						case SWT.CENTER:
 						case GridData.CENTER:
-							childX = gridX
-									+ Math.max(0, (cellWidth - childWidth) / 2);
+							childX = gridX + Math.max(0, (cellWidth - childWidth) / 2);
 							break;
 						case SWT.RIGHT:
 						case SWT.END:
 						case GridData.END:
-							childX = gridX
-									+ Math.max(0, cellWidth - childWidth);
+							childX = gridX + Math.max(0, cellWidth - childWidth);
 							break;
 						case SWT.FILL:
 							childWidth = cellWidth - data.horizontalIndent;
@@ -732,20 +685,16 @@ public class GridLayout extends AbstractHintLayout {
 						}
 						cellHeight += verticalSpacing * (vSpan - 1);
 						int childY = gridY; // + data.verticalIndent;
-						int childHeight = Math
-								.min(data.cacheHeight, cellHeight);
+						int childHeight = Math.min(data.cacheHeight, cellHeight);
 						switch (data.verticalAlignment) {
 						case SWT.CENTER:
 						case GridData.CENTER:
-							childY = gridY
-									+ Math.max(0,
-											(cellHeight - childHeight) / 2);
+							childY = gridY + Math.max(0, (cellHeight - childHeight) / 2);
 							break;
 						case SWT.BOTTOM:
 						case SWT.END:
 						case GridData.END:
-							childY = gridY
-									+ Math.max(0, cellHeight - childHeight);
+							childY = gridY + Math.max(0, cellHeight - childHeight);
 							break;
 						case SWT.FILL:
 							childHeight = cellHeight; // -
@@ -756,8 +705,7 @@ public class GridLayout extends AbstractHintLayout {
 						if (child != null) {
 							// following param could be replaced by
 							// Rectangle.SINGLETON
-							child.setBounds(new Rectangle(childX, childY,
-									childWidth, childHeight));
+							child.setBounds(new Rectangle(childX, childY, childWidth, childHeight));
 						}
 					}
 					gridX += widths[j] + horizontalSpacing;
@@ -779,10 +727,8 @@ public class GridLayout extends AbstractHintLayout {
 		for (int i = 0; i < rowCount; i++) {
 			totalDefaultHeight += heights[i];
 		}
-		totalDefaultWidth += horizontalSpacing * (columnCount - 1)
-				+ marginWidth * 2;
-		totalDefaultHeight += verticalSpacing * (rowCount - 1) + marginHeight
-				* 2;
+		totalDefaultWidth += horizontalSpacing * (columnCount - 1) + marginWidth * 2;
+		totalDefaultHeight += verticalSpacing * (rowCount - 1) + marginHeight * 2;
 		return new Dimension(totalDefaultWidth, totalDefaultHeight);
 	}
 
@@ -790,16 +736,15 @@ public class GridLayout extends AbstractHintLayout {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure
-	 * )
+	 * org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure )
 	 */
 	public Object getConstraint(IFigure child) {
 		return constraints.get(child);
 	}
 
 	/**
-	 * Sets the layout constraint of the given figure. The constraints can only
-	 * be of type {@link GridData}.
+	 * Sets the layout constraint of the given figure. The constraints can only be
+	 * of type {@link GridData}.
 	 * 
 	 * @see LayoutManager#setConstraint(IFigure, Object)
 	 */

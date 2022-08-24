@@ -50,8 +50,7 @@ public final class PaletteScrollBar extends ScrollBar {
 	static {
 		Display display = Display.getCurrent();
 		PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
-		RGB rgb = display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW)
-				.getRGB();
+		RGB rgb = display.getSystemColor(SWT.COLOR_WIDGET_NORMAL_SHADOW).getRGB();
 		int fillColor = pData.getPixel(rgb);
 		ImageData iData = new ImageData(1, 1, 24, pData);
 		iData.setPixel(0, 0, fillColor);
@@ -99,9 +98,8 @@ public final class PaletteScrollBar extends ScrollBar {
 	/**
 	 * Creates the figure used for the scrollbar button.
 	 * 
-	 * @param down
-	 *            true if the arrow should be pointing down; false, if it should
-	 *            be pointing up.
+	 * @param down true if the arrow should be pointing down; false, if it should be
+	 *             pointing up.
 	 * @return a new <code>Toggle</code> figure for the scroll bar button
 	 */
 	private Toggle createTransparentArrowButton(final boolean down) {
@@ -109,21 +107,17 @@ public final class PaletteScrollBar extends ScrollBar {
 			protected void paintFigure(Graphics g) {
 				// paint background
 				if (!getModel().isMouseOver())
-					g.drawImage(TRANSPARENCY, new Rectangle(0, 0, 1, 1),
-							getBounds());
+					g.drawImage(TRANSPARENCY, new Rectangle(0, 0, 1, 1), getBounds());
 				else {
-					g.setBackgroundColor(getModel().isArmed() ? PaletteColorUtil
-							.getSelectedColor() : PaletteColorUtil
-							.getHoverColor());
+					g.setBackgroundColor(getModel().isArmed() ? PaletteColorUtil.getSelectedColor()
+							: PaletteColorUtil.getHoverColor());
 					g.fillRectangle(getBounds());
 				}
 
 				// paint triangle
 				g.translate(getLocation());
-				PointList outerPoints = transpose(down ? OUTER_DOWN_TRIANGLE
-						: OUTER_UP_TRIANGLE);
-				PointList innerPoints = transpose(down ? INNER_DOWN_TRIANGLE
-						: INNER_UP_TRIANGLE);
+				PointList outerPoints = transpose(down ? OUTER_DOWN_TRIANGLE : OUTER_UP_TRIANGLE);
+				PointList innerPoints = transpose(down ? INNER_DOWN_TRIANGLE : INNER_UP_TRIANGLE);
 				g.setBackgroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
 				g.fillPolygon(outerPoints);
 				g.setBackgroundColor(PaletteColorUtil.WIDGET_DARK_SHADOW);
@@ -139,8 +133,7 @@ public final class PaletteScrollBar extends ScrollBar {
 	/**
 	 * Transposes a list of points using the <code>transposer</code>.
 	 * 
-	 * @param origPoints
-	 *            the original list of points
+	 * @param origPoints the original list of points
 	 * @return a new list of transposed points
 	 */
 	private PointList transpose(PointList origPoints) {
@@ -167,25 +160,17 @@ public final class PaletteScrollBar extends ScrollBar {
 		setLayoutManager(new ScrollBarLayout(transposer) {
 			protected Rectangle layoutButtons(ScrollBar scrollBar) {
 				Rectangle bounds = transposer.t(scrollBar.getClientArea());
-				Dimension buttonSize = new Dimension(BUTTON_WIDTH,
-						BUTTON_HEIGHT);
+				Dimension buttonSize = new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT);
 
-				getButtonUp().setBounds(
-						transposer.t(new Rectangle(bounds.getTop()
-								.getTranslated(-(buttonSize.width / 2), 0),
-								buttonSize)));
-				Rectangle r = new Rectangle(bounds.getBottom().getTranslated(
-						-(buttonSize.width / 2), -buttonSize.height),
-						buttonSize);
+				getButtonUp().setBounds(transposer
+						.t(new Rectangle(bounds.getTop().getTranslated(-(buttonSize.width / 2), 0), buttonSize)));
+				Rectangle r = new Rectangle(
+						bounds.getBottom().getTranslated(-(buttonSize.width / 2), -buttonSize.height), buttonSize);
 				getButtonDown().setBounds(transposer.t(r));
-				Rectangle trackBounds = bounds.getCropped(new Insets(
-						buttonSize.height, 0, buttonSize.height, 0));
+				Rectangle trackBounds = bounds.getCropped(new Insets(buttonSize.height, 0, buttonSize.height, 0));
 				RangeModel model = scrollBar.getRangeModel();
-				getButtonUp()
-						.setVisible(model.getValue() != model.getMinimum());
-				getButtonDown().setVisible(
-						model.getValue() != model.getMaximum()
-								- model.getExtent());
+				getButtonUp().setVisible(model.getValue() != model.getMinimum());
+				getButtonDown().setVisible(model.getValue() != model.getMaximum() - model.getExtent());
 				return trackBounds;
 			}
 		});

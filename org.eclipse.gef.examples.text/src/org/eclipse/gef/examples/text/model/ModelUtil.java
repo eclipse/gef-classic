@@ -19,8 +19,7 @@ import java.util.List;
  */
 public class ModelUtil {
 
-	public static List getModelSpan(ModelElement start, int startIndex,
-			ModelElement end, int endIndex) {
+	public static List getModelSpan(ModelElement start, int startIndex, ModelElement end, int endIndex) {
 		Container ancestor = start.getContainer();
 		while (!ancestor.contains(end))
 			ancestor = ancestor.getContainer();

@@ -26,8 +26,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 public abstract class PaletteCustomizationAction extends Action {
 
 	/**
-	 * Call this method to have the action update its state and enable or
-	 * disable itself.
+	 * Call this method to have the action update its state and enable or disable
+	 * itself.
 	 */
 	public abstract void update();
 

@@ -33,8 +33,7 @@ public class ToggleButton extends Toggle {
 	/**
 	 * Constructs a ToggleButton with the passed IFigure as its contents.
 	 * 
-	 * @param contents
-	 *            the contents of the toggle button
+	 * @param contents the contents of the toggle button
 	 * @since 2.0
 	 */
 	public ToggleButton(IFigure contents) {
@@ -44,8 +43,7 @@ public class ToggleButton extends Toggle {
 	/**
 	 * Constructs a ToggleButton with the passed string as its text.
 	 * 
-	 * @param text
-	 *            the text to be displayed on the button
+	 * @param text the text to be displayed on the button
 	 * @since 2.0
 	 */
 	public ToggleButton(String text) {
@@ -53,13 +51,10 @@ public class ToggleButton extends Toggle {
 	}
 
 	/**
-	 * Constructs a ToggleButton with a Label containing the passed text and
-	 * icon.
+	 * Constructs a ToggleButton with a Label containing the passed text and icon.
 	 * 
-	 * @param text
-	 *            the text
-	 * @param normalIcon
-	 *            the icon
+	 * @param text       the text
+	 * @param normalIcon the icon
 	 * @since 2.0
 	 */
 	public ToggleButton(String text, Image normalIcon) {
@@ -78,17 +73,15 @@ public class ToggleButton extends Toggle {
 	}
 
 	/**
-	 * Draws a checkered pattern to emulate a toggle button that is in the
-	 * selected state.
+	 * Draws a checkered pattern to emulate a toggle button that is in the selected
+	 * state.
 	 * 
-	 * @param graphics
-	 *            The Graphics object used to paint
+	 * @param graphics The Graphics object used to paint
 	 */
 	protected void fillCheckeredRectangle(Graphics graphics) {
 		graphics.setBackgroundColor(ColorConstants.button);
 		graphics.setForegroundColor(ColorConstants.buttonLightest);
-		Rectangle rect = getClientArea(Rectangle.SINGLETON).crop(
-				new Insets(1, 1, 0, 0));
+		Rectangle rect = getClientArea(Rectangle.SINGLETON).crop(new Insets(1, 1, 0, 0));
 		graphics.fillRectangle(rect.x, rect.y, rect.width, rect.height);
 
 		graphics.clipRect(rect);

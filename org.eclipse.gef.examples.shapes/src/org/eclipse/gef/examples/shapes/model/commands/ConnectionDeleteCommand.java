@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ï¿½* All rights reserved. This program and the accompanying materials
+ï¿½* are made available under the terms of the Eclipse Public License v1.0
+ï¿½* which accompanies this distribution, and is available at
+ï¿½* http://www.eclipse.org/legal/epl-v10.html
+ï¿½*
+ï¿½* Contributors:
+ï¿½*ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
+ï¿½*******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.gef.commands.Command;
@@ -28,10 +28,8 @@ public class ConnectionDeleteCommand extends Command {
 	/**
 	 * Create a command that will disconnect a connection from its endpoints.
 	 * 
-	 * @param conn
-	 *            the connection instance to disconnect (non-null)
-	 * @throws IllegalArgumentException
-	 *             if conn is null
+	 * @param conn the connection instance to disconnect (non-null)
+	 * @throws IllegalArgumentException if conn is null
 	 */
 	public ConnectionDeleteCommand(Connection conn) {
 		if (conn == null) {

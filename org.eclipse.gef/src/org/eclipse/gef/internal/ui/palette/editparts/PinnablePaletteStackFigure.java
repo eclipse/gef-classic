@@ -84,8 +84,7 @@ public class PinnablePaletteStackFigure extends Figure {
 			int[] points = new int[8];
 
 			int middleY = rect.height / 2;
-			if (isSelected()
-					|| layoutMode == PaletteViewerPreferences.LAYOUT_ICONS
+			if (isSelected() || layoutMode == PaletteViewerPreferences.LAYOUT_ICONS
 					|| layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
 				// pointing down
 				int startingX = (ARROW_WIDTH - 5) / 2; // triangle width = 5
@@ -118,9 +117,9 @@ public class PinnablePaletteStackFigure extends Figure {
 	}
 
 	/**
-	 * Layout manager for the palette stack header figure that handles the
-	 * layout of the <code>headerFigure</code> (<code>arrowFigure</code> and the
-	 * active tool figure) when in icons or columns layout mode.
+	 * Layout manager for the palette stack header figure that handles the layout of
+	 * the <code>headerFigure</code> (<code>arrowFigure</code> and the active tool
+	 * figure) when in icons or columns layout mode.
 	 */
 	private class HeaderIconLayout extends StackLayout {
 
@@ -142,8 +141,7 @@ public class PinnablePaletteStackFigure extends Figure {
 			// ToolEntryEditPart). Calculate the arrow figure bounds by using
 			// the insets
 			// of the active tool figure.
-			r.x = r.right() - ToolEntryEditPart.ICON_HIGHLIGHT_INSETS.right
-					- ARROW_WIDTH;
+			r.x = r.right() - ToolEntryEditPart.ICON_HIGHLIGHT_INSETS.right - ARROW_WIDTH;
 			r.y += ToolEntryEditPart.ICON_HIGHLIGHT_INSETS.top;
 			r.width = ARROW_WIDTH;
 			r.height -= ToolEntryEditPart.ICON_HIGHLIGHT_INSETS.getHeight();
@@ -152,10 +150,10 @@ public class PinnablePaletteStackFigure extends Figure {
 	}
 
 	/**
-	 * Layout manager for the palette stack header figure that handles the
-	 * layout of the <code>headerFigure</code> (<code>pinFigure</code>,
-	 * <code>arrowFigure</code>, and the active tool figure) when in list or
-	 * details layout mode.
+	 * Layout manager for the palette stack header figure that handles the layout of
+	 * the <code>headerFigure</code> (<code>pinFigure</code>,
+	 * <code>arrowFigure</code>, and the active tool figure) when in list or details
+	 * layout mode.
 	 */
 	private class HeaderListLayout extends StackLayout {
 
@@ -163,12 +161,10 @@ public class PinnablePaletteStackFigure extends Figure {
 			return false;
 		}
 
-		protected Dimension calculatePreferredSize(IFigure parent, int wHint,
-				int hHint) {
+		protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 			if (isExpanded()) {
 				Dimension pinSize = pinFigure.getSize();
-				Dimension preferredSize = super.calculatePreferredSize(parent,
-						wHint - pinSize.width, hHint);
+				Dimension preferredSize = super.calculatePreferredSize(parent, wHint - pinSize.width, hHint);
 				preferredSize.width += pinSize.width;
 				return preferredSize;
 			} else {
@@ -179,13 +175,11 @@ public class PinnablePaletteStackFigure extends Figure {
 		public void layout(IFigure parent) {
 
 			Rectangle r = parent.getClientArea();
-			Dimension pinSize = isExpanded() ? pinFigure.getPreferredSize()
-					: EMPTY_DIMENSION;
+			Dimension pinSize = isExpanded() ? pinFigure.getPreferredSize() : EMPTY_DIMENSION;
 
 			// layout the pin figure
 			Rectangle.SINGLETON.setSize(pinSize);
-			Rectangle.SINGLETON.setLocation(r.right() - pinSize.width,
-					r.getCenter().y - (pinSize.height / 2));
+			Rectangle.SINGLETON.setLocation(r.right() - pinSize.width, r.getCenter().y - (pinSize.height / 2));
 			pinFigure.setBounds(Rectangle.SINGLETON);
 
 			if (activeToolFigure != null) {
@@ -208,14 +202,13 @@ public class PinnablePaletteStackFigure extends Figure {
 	}
 
 	/**
-	 * Layout manager for the palette stack figure that handles the layout of
-	 * the <code>headerFigure</code>, <code>expandablePane</code>, and
+	 * Layout manager for the palette stack figure that handles the layout of the
+	 * <code>headerFigure</code>, <code>expandablePane</code>, and
 	 * <code>pinFigure</code> when in icons or columns layout mode.
 	 */
 	private class PaletteStackIconLayout extends AbstractLayout {
 
-		protected Dimension calculatePreferredSize(IFigure parent, int wHint,
-				int hHint) {
+		protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 			return parent.getSize();
 		}
 
@@ -232,10 +225,8 @@ public class PinnablePaletteStackFigure extends Figure {
 				Dimension pinSize = pinFigure.getPreferredSize();
 				pinBounds.setSize(pinSize);
 				int pinFigureAreaHeight = expandablePane.getInsets().top;
-				pinBounds.setLocation(expandablePane.getClientArea().right()
-						- pinSize.width,
-						(paneBounds.y + pinFigureAreaHeight / 2)
-								- (pinSize.height / 2));
+				pinBounds.setLocation(expandablePane.getClientArea().right() - pinSize.width,
+						(paneBounds.y + pinFigureAreaHeight / 2) - (pinSize.height / 2));
 				pinFigure.setBounds(pinBounds);
 			} else {
 				headerFigure.setBounds(parent.getClientArea());
@@ -252,9 +243,7 @@ public class PinnablePaletteStackFigure extends Figure {
 			Clickable clickable = (Clickable) event.getSource();
 			if (event.getPropertyName() == ButtonModel.MOUSEOVER_PROPERTY
 					&& getActiveFigure() instanceof ToolEntryToggle) {
-				((ToolEntryToggle) getActiveFigure())
-						.setShowHoverFeedback(clickable.getModel()
-								.isMouseOver());
+				((ToolEntryToggle) getActiveFigure()).setShowHoverFeedback(clickable.getModel().isMouseOver());
 			}
 			if (event.getPropertyName() == ButtonModel.SELECTED_PROPERTY) {
 
@@ -268,21 +257,18 @@ public class PinnablePaletteStackFigure extends Figure {
 				// can
 				// be expanded at a time for layout reasons).
 				if (isExpanded()) {
-					boolean collapseOtherStacks = (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS || layoutMode == PaletteViewerPreferences.LAYOUT_ICONS);
+					boolean collapseOtherStacks = (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS
+							|| layoutMode == PaletteViewerPreferences.LAYOUT_ICONS);
 
-					for (Iterator iterator = getParent().getChildren()
-							.iterator(); iterator.hasNext();) {
+					for (Iterator iterator = getParent().getChildren().iterator(); iterator.hasNext();) {
 						Object childFigure = iterator.next();
 						if (childFigure instanceof PinnablePaletteStackFigure
 								&& childFigure != PinnablePaletteStackFigure.this) {
 
-							if (collapseOtherStacks
-									|| (((PinnablePaletteStackFigure) childFigure)
-											.isExpanded() && !((PinnablePaletteStackFigure) childFigure)
-											.isPinnedOpen())) {
+							if (collapseOtherStacks || (((PinnablePaletteStackFigure) childFigure).isExpanded()
+									&& !((PinnablePaletteStackFigure) childFigure).isPinnedOpen())) {
 
-								((PinnablePaletteStackFigure) childFigure)
-										.setExpanded(false);
+								((PinnablePaletteStackFigure) childFigure).setExpanded(false);
 							}
 						}
 					}
@@ -340,8 +326,8 @@ public class PinnablePaletteStackFigure extends Figure {
 				|| layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS) {
 
 			int pinHeight = expandablePane.getInsets().top;
-			Rectangle pinAreaBounds = new Rectangle(paneBounds.x,
-					expandablePane.getBounds().y, paneBounds.width, pinHeight);
+			Rectangle pinAreaBounds = new Rectangle(paneBounds.x, expandablePane.getBounds().y, paneBounds.width,
+					pinHeight);
 
 			// fill background colors
 			g.setForegroundColor(PaletteColorUtil.WIDGET_BACKGROUND_LIST_BACKGROUND_40);
@@ -353,10 +339,8 @@ public class PinnablePaletteStackFigure extends Figure {
 
 			// draw white lines
 			g.setForegroundColor(PaletteColorUtil.WIDGET_LIST_BACKGROUND);
-			g.drawLine(headerBounds.getTopLeft().getTranslated(1, 1),
-					headerBounds.getTopRight().getTranslated(-1, 1));
-			g.drawLine(headerBounds.getBottomLeft().getTranslated(1, 0),
-					headerBounds.getTopLeft().getTranslated(1, 1));
+			g.drawLine(headerBounds.getTopLeft().getTranslated(1, 1), headerBounds.getTopRight().getTranslated(-1, 1));
+			g.drawLine(headerBounds.getBottomLeft().getTranslated(1, 0), headerBounds.getTopLeft().getTranslated(1, 1));
 			g.drawLine(headerBounds.getBottomRight().getTranslated(-2, 0),
 					headerBounds.getTopRight().getTranslated(-2, 1));
 
@@ -415,8 +399,8 @@ public class PinnablePaletteStackFigure extends Figure {
 	}
 
 	/**
-	 * @return The content pane for this figure, i.e. the Figure to which
-	 *         children can be added.
+	 * @return The content pane for this figure, i.e. the Figure to which children
+	 *         can be added.
 	 */
 	public IFigure getContentPane(IFigure figure) {
 		if (figure == activeToolFigure) {
@@ -452,8 +436,7 @@ public class PinnablePaletteStackFigure extends Figure {
 	 * Pins or unpins the stack. The stack can be pinned open only when it is
 	 * expanded. Attempts to pin it when it is collapsed will do nothing.
 	 * 
-	 * @param pinned
-	 *            <code>true</code> if the stack is to be pinned
+	 * @param pinned <code>true</code> if the stack is to be pinned
 	 */
 	public void setPinned(boolean pinned) {
 		if (isExpanded()) {
@@ -493,8 +476,7 @@ public class PinnablePaletteStackFigure extends Figure {
 		} else {
 			headerFigure.setLayoutManager(new HeaderIconLayout());
 			if (activeToolFigure != null) {
-				headerFigure.setConstraint(activeToolFigure,
-						BorderLayout.CENTER);
+				headerFigure.setConstraint(activeToolFigure, BorderLayout.CENTER);
 			}
 
 			setLayoutManager(new PaletteStackIconLayout());
@@ -513,8 +495,7 @@ public class PinnablePaletteStackFigure extends Figure {
 		}
 	}
 
-	public void activeEntryChanged(IFigure oldFigure, int oldFigureIndex,
-			IFigure newFigure) {
+	public void activeEntryChanged(IFigure oldFigure, int oldFigureIndex, IFigure newFigure) {
 
 		if (oldFigure != null) {
 			// if figure is null, its no longer a child.
@@ -551,15 +532,13 @@ public class PinnablePaletteStackFigure extends Figure {
 
 	/**
 	 * Gets the preferred size of the expandable pane figure. Used by
-	 * <code>PaletteContainerFlowLayout</code> when the layout is icons or
-	 * columns mode.
+	 * <code>PaletteContainerFlowLayout</code> when the layout is icons or columns
+	 * mode.
 	 * 
-	 * @param wHint
-	 *            width hint
-	 * @param hHint
-	 *            height hint
-	 * @return the preferred size of the expandable pane figure or (0,0) if the
-	 *         pane is collapsed
+	 * @param wHint width hint
+	 * @param hHint height hint
+	 * @return the preferred size of the expandable pane figure or (0,0) if the pane
+	 *         is collapsed
 	 */
 	public Dimension getExpandedContainerPreferredSize(int wHint, int hHint) {
 		if (isExpanded()) {
@@ -571,11 +550,10 @@ public class PinnablePaletteStackFigure extends Figure {
 
 	/**
 	 * Sets the header bounds layout hint. Set by
-	 * <code>PaletteContainerFlowLayout</code> when the layout is icons or
-	 * columns mode and used by <code>PaletteStackIconLayout</code>.
+	 * <code>PaletteContainerFlowLayout</code> when the layout is icons or columns
+	 * mode and used by <code>PaletteStackIconLayout</code>.
 	 * 
-	 * @param rect
-	 *            the new value
+	 * @param rect the new value
 	 */
 	public void setHeaderBoundsLayoutHint(Rectangle rect) {
 		headerBoundsLayoutHint.setBounds(rect);
@@ -583,13 +561,11 @@ public class PinnablePaletteStackFigure extends Figure {
 
 	/**
 	 * Gets the preferred size of the header figure. Used by
-	 * <code>PaletteContainerFlowLayout</code> and <code>ColumnsLayout</code>
-	 * when the layout is icons or columns mode.
+	 * <code>PaletteContainerFlowLayout</code> and <code>ColumnsLayout</code> when
+	 * the layout is icons or columns mode.
 	 * 
-	 * @param wHint
-	 *            width hint
-	 * @param hHint
-	 *            height hint
+	 * @param wHint width hint
+	 * @param hHint height hint
 	 * @return the preferred size of the header figure
 	 */
 	public Dimension getHeaderPreferredSize(int wHint, int hHint) {
@@ -597,8 +573,7 @@ public class PinnablePaletteStackFigure extends Figure {
 	}
 
 	public boolean containsPoint(int x, int y) {
-		return headerFigure.containsPoint(x, y)
-				|| (isExpanded() && expandablePane.containsPoint(x, y));
+		return headerFigure.containsPoint(x, y) || (isExpanded() && expandablePane.containsPoint(x, y));
 	}
 
 }

@@ -28,21 +28,20 @@ public interface AppendableCommand {
 	boolean canExecutePending();
 
 	/**
-	 * Executes any pending changes for this command. Immediately after calling
-	 * this method, {@link #canExecutePending()} should return
-	 * <code>false</code>.
+	 * Executes any pending changes for this command. Immediately after calling this
+	 * method, {@link #canExecutePending()} should return <code>false</code>.
 	 * 
 	 * @since 3.1
 	 */
 	void executePending();
 
 	/**
-	 * Flushes any pending changes which were not executed. This method should
-	 * be called to free up memory consumed by changes for which
-	 * {@link #canExecutePending()} returned <code>false</code>. Also, calling
-	 * this method resets any pending changes so that pending changes coming
-	 * afterwards may be applied. This method may be called regardless of the
-	 * return value for {@link #canExecutePending()}.
+	 * Flushes any pending changes which were not executed. This method should be
+	 * called to free up memory consumed by changes for which
+	 * {@link #canExecutePending()} returned <code>false</code>. Also, calling this
+	 * method resets any pending changes so that pending changes coming afterwards
+	 * may be applied. This method may be called regardless of the return value for
+	 * {@link #canExecutePending()}.
 	 * 
 	 * @since 3.1
 	 */

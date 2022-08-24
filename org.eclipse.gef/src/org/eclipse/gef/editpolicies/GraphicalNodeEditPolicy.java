@@ -49,8 +49,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Returns a connection to be used as feeback during creates.
 	 * 
-	 * @param req
-	 *            the operation being performed
+	 * @param req the operation being performed
 	 * @return a connection to use as feedback
 	 */
 	protected Connection createDummyConnection(Request req) {
@@ -72,8 +71,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Erases connection feedback if necessary. Frees unused fields.
 	 * 
-	 * @param request
-	 *            the CreateConnectionRequest
+	 * @param request the CreateConnectionRequest
 	 */
 	protected void eraseCreationFeedback(CreateConnectionRequest request) {
 		if (connectionFeedback != null) {
@@ -97,23 +95,19 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Override to erase target feedback. Does nothing by default.
 	 * 
-	 * @param request
-	 *            the DropRequest
+	 * @param request the DropRequest
 	 */
 	protected void eraseTargetConnectionFeedback(DropRequest request) {
 	}
 
 	/**
-	 * Calls {@link #eraseTargetConnectionFeedback(DropRequest)} when
-	 * appropriate.
+	 * Calls {@link #eraseTargetConnectionFeedback(DropRequest)} when appropriate.
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
 	 */
 	public void eraseTargetFeedback(Request request) {
-		if (REQ_CONNECTION_START.equals(request.getType())
-				|| REQ_CONNECTION_END.equals(request.getType())
-				|| REQ_RECONNECT_SOURCE.equals(request.getType())
-				|| REQ_RECONNECT_TARGET.equals(request.getType()))
+		if (REQ_CONNECTION_START.equals(request.getType()) || REQ_CONNECTION_END.equals(request.getType())
+				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
 			eraseTargetConnectionFeedback((DropRequest) request);
 	}
 
@@ -137,59 +131,49 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	}
 
 	/**
-	 * Returns the Command that will create the connection. This is second part
-	 * of creation. {@link CreateConnectionRequest#getStartCommand()} is used
-	 * here to obtain the contribution from the EditPart from which the User
-	 * started the <i>creation</i>.
+	 * Returns the Command that will create the connection. This is second part of
+	 * creation. {@link CreateConnectionRequest#getStartCommand()} is used here to
+	 * obtain the contribution from the EditPart from which the User started the
+	 * <i>creation</i>.
 	 * 
-	 * @param request
-	 *            the CreateConnectionRequest
+	 * @param request the CreateConnectionRequest
 	 * @return the complete command to create a connection
 	 */
-	protected abstract Command getConnectionCompleteCommand(
-			CreateConnectionRequest request);
+	protected abstract Command getConnectionCompleteCommand(CreateConnectionRequest request);
 
 	/**
-	 * Returns the command that represents the first half of creating a
-	 * connection. In case the first half of the connection creation was
-	 * successful (i.e. the returned start command is executable), the target
-	 * edit part is then responsible of creating a Command that represents the
-	 * entire creation. In case the target edit part needs to refer to the start
-	 * command to achieve this, the start command may be registered on the
-	 * passed in create request (see
-	 * {@link CreateConnectionRequest#setStartCommand(Command)}) before
+	 * Returns the command that represents the first half of creating a connection.
+	 * In case the first half of the connection creation was successful (i.e. the
+	 * returned start command is executable), the target edit part is then
+	 * responsible of creating a Command that represents the entire creation. In
+	 * case the target edit part needs to refer to the start command to achieve
+	 * this, the start command may be registered on the passed in create request
+	 * (see {@link CreateConnectionRequest#setStartCommand(Command)}) before
 	 * returning it here.
 	 * 
-	 * @param request
-	 *            the CreateConnectionRequest
+	 * @param request the CreateConnectionRequest
 	 * @see #getConnectionCompleteCommand(CreateConnectionRequest)
 	 * @return a Command representing half of a connection creation
 	 */
-	protected abstract Command getConnectionCreateCommand(
-			CreateConnectionRequest request);
+	protected abstract Command getConnectionCreateCommand(CreateConnectionRequest request);
 
 	/**
 	 * Returns the ConnectionRouter for the creation feedback's connection.
 	 * 
-	 * @param request
-	 *            the create request
+	 * @param request the create request
 	 * @return a connection router
 	 * @since 3.2
 	 */
-	protected ConnectionRouter getDummyConnectionRouter(
-			CreateConnectionRequest request) {
-		return ((ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER))
-				.getConnectionRouter();
+	protected ConnectionRouter getDummyConnectionRouter(CreateConnectionRequest request) {
+		return ((ConnectionLayer) getLayer(LayerConstants.CONNECTION_LAYER)).getConnectionRouter();
 	}
 
 	/**
-	 * Returns the FeedbackHelper that is ready to use. The feedback helper must
-	 * be configured with the connection that will be used to display feedback,
-	 * and that connection must be added to the appropriate layer in the
-	 * diagram.
+	 * Returns the FeedbackHelper that is ready to use. The feedback helper must be
+	 * configured with the connection that will be used to display feedback, and
+	 * that connection must be added to the appropriate layer in the diagram.
 	 * 
-	 * @param request
-	 *            the CreateConnectionRequest
+	 * @param request the CreateConnectionRequest
 	 * @return a FeedbackHelper
 	 */
 	protected FeedbackHelper getFeedbackHelper(CreateConnectionRequest request) {
@@ -197,10 +181,8 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 			feedbackHelper = new FeedbackHelper();
 			Point p = request.getLocation();
 			connectionFeedback = createDummyConnection(request);
-			connectionFeedback
-					.setConnectionRouter(getDummyConnectionRouter(request));
-			connectionFeedback
-					.setSourceAnchor(getSourceConnectionAnchor(request));
+			connectionFeedback.setConnectionRouter(getDummyConnectionRouter(request));
+			connectionFeedback.setSourceAnchor(getSourceConnectionAnchor(request));
 			feedbackHelper.setConnection(connectionFeedback);
 			addFeedback(connectionFeedback);
 			feedbackHelper.update(null, p);
@@ -209,68 +191,56 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	}
 
 	/**
-	 * Returns the <code>Command</code> to reconnect a connection's
-	 * <i>target</i> end to the host.
+	 * Returns the <code>Command</code> to reconnect a connection's <i>target</i>
+	 * end to the host.
 	 * 
-	 * @param request
-	 *            the ReconnectRequest
+	 * @param request the ReconnectRequest
 	 * @return a Command
 	 */
-	protected abstract Command getReconnectTargetCommand(
-			ReconnectRequest request);
+	protected abstract Command getReconnectTargetCommand(ReconnectRequest request);
 
 	/**
-	 * Returns the <code>Command</code> to reconnect a connection's
-	 * <i>source</i> end to the host.
+	 * Returns the <code>Command</code> to reconnect a connection's <i>source</i>
+	 * end to the host.
 	 * 
-	 * @param request
-	 *            the ReconnectRequest
+	 * @param request the ReconnectRequest
 	 * @return a Command
 	 */
-	protected abstract Command getReconnectSourceCommand(
-			ReconnectRequest request);
+	protected abstract Command getReconnectSourceCommand(ReconnectRequest request);
 
 	/**
-	 * Called during the display of creation feedback to snap the feedback to
-	 * the nearest source ConnectionAnchor.
+	 * Called during the display of creation feedback to snap the feedback to the
+	 * nearest source ConnectionAnchor.
 	 * 
-	 * @param request
-	 *            CreateConnectionRequest
+	 * @param request CreateConnectionRequest
 	 * @return <code>null</code> or the nearest source ConnectionAnchor
 	 */
-	protected ConnectionAnchor getSourceConnectionAnchor(
-			CreateConnectionRequest request) {
+	protected ConnectionAnchor getSourceConnectionAnchor(CreateConnectionRequest request) {
 		EditPart source = request.getSourceEditPart();
-		return source instanceof NodeEditPart ? ((NodeEditPart) source)
-				.getSourceConnectionAnchor(request) : null;
+		return source instanceof NodeEditPart ? ((NodeEditPart) source).getSourceConnectionAnchor(request) : null;
 	}
 
 	/**
-	 * Called during the display of creation feedback to snap the feedback to
-	 * the nearest target ConnectionAnchor.
+	 * Called during the display of creation feedback to snap the feedback to the
+	 * nearest target ConnectionAnchor.
 	 * 
-	 * @param request
-	 *            CreateConnectionRequest
+	 * @param request CreateConnectionRequest
 	 * @return <code>null</code> or the nearest target ConnectionAnchor
 	 */
-	protected ConnectionAnchor getTargetConnectionAnchor(
-			CreateConnectionRequest request) {
+	protected ConnectionAnchor getTargetConnectionAnchor(CreateConnectionRequest request) {
 		EditPart target = request.getTargetEditPart();
-		return target instanceof NodeEditPart ? ((NodeEditPart) target)
-				.getTargetConnectionAnchor(request) : null;
+		return target instanceof NodeEditPart ? ((NodeEditPart) target).getTargetConnectionAnchor(request) : null;
 	}
 
 	/**
-	 * Returns the <i>host</i> for the appropriate <code>Requests</code>.
-	 * Returns <code>null</code> otherwise.
+	 * Returns the <i>host</i> for the appropriate <code>Requests</code>. Returns
+	 * <code>null</code> otherwise.
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
 	public EditPart getTargetEditPart(Request request) {
-		if (REQ_CONNECTION_START.equals(request.getType())
-				|| REQ_CONNECTION_END.equals(request.getType())
-				|| REQ_RECONNECT_SOURCE.equals(request.getType())
-				|| REQ_RECONNECT_TARGET.equals(request.getType()))
+		if (REQ_CONNECTION_START.equals(request.getType()) || REQ_CONNECTION_END.equals(request.getType())
+				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
 			return getHost();
 		return null;
 	}
@@ -278,8 +248,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Shows feedback during a creation.
 	 * 
-	 * @param request
-	 *            CreateConnectionRequest
+	 * @param request CreateConnectionRequest
 	 */
 	protected void showCreationFeedback(CreateConnectionRequest request) {
 		FeedbackHelper helper = getFeedbackHelper(request);
@@ -301,23 +270,19 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * Override to show target connection feedback. Does nothing by default.
 	 * 
-	 * @param request
-	 *            the DropRequest
+	 * @param request the DropRequest
 	 */
 	protected void showTargetConnectionFeedback(DropRequest request) {
 	}
 
 	/**
-	 * Calls {@link #showTargetConnectionFeedback(DropRequest)} when
-	 * appropriate.
+	 * Calls {@link #showTargetConnectionFeedback(DropRequest)} when appropriate.
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
 	 */
 	public void showTargetFeedback(Request request) {
-		if (REQ_CONNECTION_START.equals(request.getType())
-				|| REQ_CONNECTION_END.equals(request.getType())
-				|| REQ_RECONNECT_SOURCE.equals(request.getType())
-				|| REQ_RECONNECT_TARGET.equals(request.getType()))
+		if (REQ_CONNECTION_START.equals(request.getType()) || REQ_CONNECTION_END.equals(request.getType())
+				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
 			showTargetConnectionFeedback((DropRequest) request);
 	}
 

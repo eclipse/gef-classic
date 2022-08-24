@@ -82,8 +82,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 			// Make sure the host edit part is always selected as primary
 			// selection, when it fires a property change event from its
 			// viewport
-			if (event.getSource() == ((IScrollableFigure) getHostFigure())
-					.getScrollPane().getViewport()
+			if (event.getSource() == ((IScrollableFigure) getHostFigure()).getScrollPane().getViewport()
 					&& getHost().getSelected() != EditPart.SELECTED_PRIMARY) {
 				getHost().getViewer().deselectAll();
 				getHost().getViewer().select(getHost());
@@ -105,27 +104,24 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		// to the host figure itself will be registered within showFeedback()
 		// and
 		// unregistered within hideFeedback()
-		for (Iterator iterator = ViewportUtilities.getViewportsPath(
-				getHostFigureViewport(),
-				ViewportUtilities.getRootViewport(getHostFigure())).iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = ViewportUtilities
+				.getViewportsPath(getHostFigureViewport(), ViewportUtilities.getRootViewport(getHostFigure()))
+				.iterator(); iterator.hasNext();) {
 			Viewport viewport = (Viewport) iterator.next();
 			viewport.addPropertyChangeListener(viewportViewLocationChangeListener);
 		}
 	}
 
 	/**
-	 * Adds a given feedback figure to the feedback layer (using the provided
-	 * bounds to layout it) and registers it in the local
-	 * {@link #feedbackFigures} list.
+	 * Adds a given feedback figure to the feedback layer (using the provided bounds
+	 * to layout it) and registers it in the local {@link #feedbackFigures} list.
 	 * 
-	 * @param feedbackFigure
-	 *            the feedback figure to add to the feedback layer
-	 * @param feedbackFigureAbsoluteBounds
-	 *            the absolute bounds used to layout the feedback figure
+	 * @param feedbackFigure               the feedback figure to add to the
+	 *                                     feedback layer
+	 * @param feedbackFigureAbsoluteBounds the absolute bounds used to layout the
+	 *                                     feedback figure
 	 */
-	protected void addFeedbackFigure(IFigure feedbackFigure,
-			Rectangle feedbackFigureAbsoluteBounds) {
+	protected void addFeedbackFigure(IFigure feedbackFigure, Rectangle feedbackFigureAbsoluteBounds) {
 		getFeedbackLayer().translateToRelative(feedbackFigureAbsoluteBounds);
 		getFeedbackLayer().translateFromParent(feedbackFigureAbsoluteBounds);
 		feedbackFigure.setBounds(feedbackFigureAbsoluteBounds);
@@ -140,11 +136,10 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * 
 	 * @param connectionEditPart
 	 */
-	protected void createConnectionFeedbackFigure(
-			ConnectionEditPart connectionEditPart) {
-		addFeedbackFigure(new GhostImageFigure(connectionEditPart.getFigure(),
-				getAlpha(), getLayer(LayerConstants.CONNECTION_LAYER)
-						.getBackgroundColor().getRGB()),
+	protected void createConnectionFeedbackFigure(ConnectionEditPart connectionEditPart) {
+		addFeedbackFigure(
+				new GhostImageFigure(connectionEditPart.getFigure(), getAlpha(),
+						getLayer(LayerConstants.CONNECTION_LAYER).getBackgroundColor().getRGB()),
 				getAbsoluteBounds(connectionEditPart.getFigure()));
 	}
 
@@ -155,8 +150,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		HashSet transitiveNestedConnections = EditPartUtilities
 				.getAllNestedConnectionEditParts((GraphicalEditPart) getHost());
 
-		for (Iterator iterator = transitiveNestedConnections.iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = transitiveNestedConnections.iterator(); iterator.hasNext();) {
 			Object connection = iterator.next();
 			if (connection instanceof ConnectionEditPart) {
 				createConnectionFeedbackFigure((ConnectionEditPart) connection);
@@ -172,8 +166,8 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * @param childEditPart
 	 */
 	protected void createNodeFeedbackFigure(GraphicalEditPart childEditPart) {
-		addFeedbackFigure(new GhostImageFigure(childEditPart.getFigure(),
-				getAlpha(), null), getAbsoluteBounds(childEditPart.getFigure()));
+		addFeedbackFigure(new GhostImageFigure(childEditPart.getFigure(), getAlpha(), null),
+				getAbsoluteBounds(childEditPart.getFigure()));
 	}
 
 	/**
@@ -181,8 +175,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 */
 	protected void createNodeFeedbackFigures() {
 		// create ghost feedback for node children
-		for (Iterator iterator = getHost().getChildren().iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = getHost().getChildren().iterator(); iterator.hasNext();) {
 			Object child = iterator.next();
 			if (child instanceof GraphicalEditPart) {
 				createNodeFeedbackFigure((GraphicalEditPart) child);
@@ -197,10 +190,9 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		// remove viewport listeners; listener to host figure, which were
 		// registered during showSelection() will be unregistered during
 		// hideSelection(), so they do not have to be unregistered here
-		for (Iterator iterator = ViewportUtilities.getViewportsPath(
-				getHostFigureViewport(),
-				ViewportUtilities.getRootViewport(getHostFigure())).iterator(); iterator
-				.hasNext();) {
+		for (Iterator iterator = ViewportUtilities
+				.getViewportsPath(getHostFigureViewport(), ViewportUtilities.getRootViewport(getHostFigure()))
+				.iterator(); iterator.hasNext();) {
 			Viewport viewport = (Viewport) iterator.next();
 			viewport.removePropertyChangeListener(viewportViewLocationChangeListener);
 
@@ -209,8 +201,8 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	}
 
 	/**
-	 * Used to obtain the alpha value used for all feedback figures. The valid
-	 * range is the one documented for {@link Graphics#setAlpha(int)}.
+	 * Used to obtain the alpha value used for all feedback figures. The valid range
+	 * is the one documented for {@link Graphics#setAlpha(int)}.
 	 * 
 	 * @return the alpha
 	 */
@@ -228,12 +220,10 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Provides access to the host figure's {@link Viewport}.
 	 * 
-	 * @return the nested {@link Viewport} of the host figure's
-	 *         {@link ScrollPane}
+	 * @return the nested {@link Viewport} of the host figure's {@link ScrollPane}
 	 */
 	protected Viewport getHostFigureViewport() {
-		return ((IScrollableFigure) getHostFigure()).getScrollPane()
-				.getViewport();
+		return ((IScrollableFigure) getHostFigure()).getScrollPane().getViewport();
 	}
 
 	/**
@@ -277,10 +267,10 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	}
 
 	/**
-	 * Creates feedback figures for all node figures nested within the host
-	 * figure's viewport, as well as for all incoming and outgoing connections
-	 * of these nodes. Feedback figures are only created in case there are
-	 * children or connections, which are not fully visible.
+	 * Creates feedback figures for all node figures nested within the host figure's
+	 * viewport, as well as for all incoming and outgoing connections of these
+	 * nodes. Feedback figures are only created in case there are children or
+	 * connections, which are not fully visible.
 	 */
 	protected void showFeedback() {
 		// ensure primary and connection layer are revalidated,
@@ -293,26 +283,22 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		// check if there is a node child exceeding the client are
 		Rectangle clientArea = getAbsoluteClientArea(getHostFigure());
 		boolean primaryLayerChildExceedsViewport = !clientArea
-				.equals(getAbsoluteViewportArea(((IScrollableFigure) getHostFigure())
-						.getScrollPane().getViewport()));
+				.equals(getAbsoluteViewportArea(((IScrollableFigure) getHostFigure()).getScrollPane().getViewport()));
 		// check if there is a connection exceeding the client area
 		boolean connectionLayerChildExceedsClientArea = false;
-		List connectionLayerChildren = getLayer(LayerConstants.CONNECTION_LAYER)
-				.getChildren();
-		for (Iterator iterator = connectionLayerChildren.iterator(); iterator
-				.hasNext() && !connectionLayerChildExceedsClientArea;) {
+		List connectionLayerChildren = getLayer(LayerConstants.CONNECTION_LAYER).getChildren();
+		for (Iterator iterator = connectionLayerChildren.iterator(); iterator.hasNext()
+				&& !connectionLayerChildExceedsClientArea;) {
 			IFigure connectionLayerChild = (IFigure) iterator.next();
-			connectionLayerChildExceedsClientArea = (ViewportUtilities
-					.getNearestEnclosingViewport(connectionLayerChild) == ((IScrollableFigure) getHostFigure())
-					.getScrollPane().getViewport() && !clientArea.getExpanded(
-					new Insets(1, 1, 1, 1)).contains(
-					getAbsoluteBounds(connectionLayerChild)));
+			connectionLayerChildExceedsClientArea = (ViewportUtilities.getNearestEnclosingViewport(
+					connectionLayerChild) == ((IScrollableFigure) getHostFigure()).getScrollPane().getViewport()
+					&& !clientArea.getExpanded(new Insets(1, 1, 1, 1))
+							.contains(getAbsoluteBounds(connectionLayerChild)));
 		}
 
 		// Only show feedback if there is a child or connection figure whose
 		// bounds exceed the client area
-		if (primaryLayerChildExceedsViewport
-				|| connectionLayerChildExceedsClientArea) {
+		if (primaryLayerChildExceedsViewport || connectionLayerChildExceedsClientArea) {
 			createNodeFeedbackFigures();
 			createConnectionFeedbackFigures();
 		}
@@ -334,8 +320,8 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 
 	/**
 	 * Removes any existing feedback figures by delegating to
-	 * {@link #hideFeedback()}. In case the host edit part is the primary
-	 * selection, recreates feedback figures via {@link #showFeedback()}.
+	 * {@link #hideFeedback()}. In case the host edit part is the primary selection,
+	 * recreates feedback figures via {@link #showFeedback()}.
 	 */
 	protected void updateFeedback() {
 		hideFeedback();
@@ -358,16 +344,14 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	}
 
 	private static Rectangle getAbsoluteViewportArea(Viewport viewport) {
-		Rectangle viewportParentBounds = viewport.getParent().getBounds()
-				.getCopy();
+		Rectangle viewportParentBounds = viewport.getParent().getBounds().getCopy();
 
 		int widthMax = viewport.getHorizontalRangeModel().getMaximum();
 		int widthMin = viewport.getHorizontalRangeModel().getMinimum();
 		int heightMax = viewport.getVerticalRangeModel().getMaximum();
 		int heightMin = viewport.getVerticalRangeModel().getMinimum();
 
-		viewportParentBounds
-				.setSize(widthMax - widthMin, heightMax - heightMin);
+		viewportParentBounds.setSize(widthMax - widthMin, heightMax - heightMin);
 		viewportParentBounds.translate(widthMin, heightMin);
 		viewportParentBounds.translate(viewport.getViewLocation().getNegated());
 		viewport.getParent().translateToAbsolute(viewportParentBounds);

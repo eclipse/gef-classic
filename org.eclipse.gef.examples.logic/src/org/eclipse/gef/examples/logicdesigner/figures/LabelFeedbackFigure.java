@@ -53,8 +53,7 @@ public class LabelFeedbackFigure extends BentCornerFigure {
 
 		graphics.drawPolygon(innerLine);
 
-		graphics.drawLine(rect.width - getCornerSize() - 1, 0, rect.width - 1,
-				getCornerSize());
+		graphics.drawLine(rect.width - getCornerSize() - 1, 0, rect.width - 1, getCornerSize());
 
 		graphics.translate(getLocation().getNegated());
 	}

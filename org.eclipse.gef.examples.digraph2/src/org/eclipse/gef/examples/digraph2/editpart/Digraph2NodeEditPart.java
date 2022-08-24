@@ -32,8 +32,7 @@ import org.eclipse.gef.examples.digraph2.model.Digraph2Node;
  * 
  * @author Anthony Hunter
  */
-public class Digraph2NodeEditPart extends Digraph1NodeEditPart implements
-		NodeEditPart {
+public class Digraph2NodeEditPart extends Digraph1NodeEditPart implements NodeEditPart {
 
 	private Digraph2ConnectionAnchor sourceAnchor;
 
@@ -52,7 +51,9 @@ public class Digraph2NodeEditPart extends Digraph1NodeEditPart implements
 	}
 
 	/*
-	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelSourceConnections()
+	 * @see
+	 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelSourceConnections
+	 * ()
 	 */
 	@Override
 	protected List<Digraph2Edge> getModelSourceConnections() {
@@ -60,7 +61,9 @@ public class Digraph2NodeEditPart extends Digraph1NodeEditPart implements
 	}
 
 	/*
-	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelTargetConnections()
+	 * @see
+	 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelTargetConnections
+	 * ()
 	 */
 	@Override
 	protected List<Digraph2Edge> getModelTargetConnections() {
@@ -68,30 +71,32 @@ public class Digraph2NodeEditPart extends Digraph1NodeEditPart implements
 	}
 
 	/*
-	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
+	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.
+	 * ConnectionEditPart)
 	 */
-	public ConnectionAnchor getSourceConnectionAnchor(
-			ConnectionEditPart connection) {
+	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return this.sourceAnchor;
 	}
 
 	/*
-	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.Request)
+	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.
+	 * Request)
 	 */
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
 		return this.sourceAnchor;
 	}
 
 	/*
-	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
+	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.
+	 * ConnectionEditPart)
 	 */
-	public ConnectionAnchor getTargetConnectionAnchor(
-			ConnectionEditPart connection) {
+	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
 		return this.targetAnchor;
 	}
 
 	/*
-	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.Request)
+	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.
+	 * Request)
 	 */
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return this.targetAnchor;

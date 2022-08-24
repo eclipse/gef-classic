@@ -38,8 +38,7 @@ public interface TreeEditPart extends EditPart {
 	 * <code>Tree</code> cannot be created without a parent, a TreeEditPart must
 	 * rely on its parent providing its Widget.
 	 * 
-	 * @param widget
-	 *            the Widget
+	 * @param widget the Widget
 	 */
 	void setWidget(Widget widget);
 

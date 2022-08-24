@@ -38,8 +38,8 @@ import org.eclipse.gef.requests.CreationFactory;
 public class CreationTool extends TargetingTool {
 
 	/**
-	 * Property to be used in {@link AbstractTool#setProperties(java.util.Map)}
-	 * for {@link #setFactory(CreationFactory)}.
+	 * Property to be used in {@link AbstractTool#setProperties(java.util.Map)} for
+	 * {@link #setFactory(CreationFactory)}.
 	 */
 	public static final Object PROPERTY_CREATION_FACTORY = "factory"; //$NON-NLS-1$
 
@@ -57,8 +57,7 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * Constructs a new CreationTool with the given factory.
 	 * 
-	 * @param aFactory
-	 *            the creation factory
+	 * @param aFactory the creation factory
 	 */
 	public CreationTool(CreationFactory aFactory) {
 		this();
@@ -83,11 +82,11 @@ public class CreationTool extends TargetingTool {
 	 */
 	protected Cursor calculateCursor() {
 		/*
-		 * Fix for Bug# 66010 The following two lines of code were added for the
-		 * case where a tool is activated via the keyboard (that code hasn't
-		 * been released yet). However, they were causing a problem as described
-		 * in 66010. Since the keyboard activation code is not being released
-		 * for 3.0, the following lines are being commented out.
+		 * Fix for Bug# 66010 The following two lines of code were added for the case
+		 * where a tool is activated via the keyboard (that code hasn't been released
+		 * yet). However, they were causing a problem as described in 66010. Since the
+		 * keyboard activation code is not being released for 3.0, the following lines
+		 * are being commented out.
 		 */
 		// if (isInState(STATE_INITIAL))
 		// return getDefaultCursor();
@@ -95,8 +94,7 @@ public class CreationTool extends TargetingTool {
 	}
 
 	/**
-	 * Creates a {@link CreateRequest} and sets this tool's factory on the
-	 * request.
+	 * Creates a {@link CreateRequest} and sets this tool's factory on the request.
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
 	 */
@@ -150,10 +148,10 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * The creation tool only works by clicking mouse button 1 (the left mouse
 	 * button in a right-handed world). If any other button is pressed, the tool
-	 * goes into an invalid state. Otherwise, it goes into the drag state,
-	 * updates the request's location and calls
-	 * {@link TargetingTool#lockTargetEditPart(EditPart)} with the edit part
-	 * that was just clicked on.
+	 * goes into an invalid state. Otherwise, it goes into the drag state, updates
+	 * the request's location and calls
+	 * {@link TargetingTool#lockTargetEditPart(EditPart)} with the edit part that
+	 * was just clicked on.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
@@ -174,16 +172,14 @@ public class CreationTool extends TargetingTool {
 	}
 
 	/**
-	 * If the tool is currently in a drag or drag-in-progress state, it goes
-	 * into the terminal state, performs some cleanup (erasing feedback,
-	 * unlocking target edit part), and then calls {@link #performCreation(int)}
-	 * .
+	 * If the tool is currently in a drag or drag-in-progress state, it goes into
+	 * the terminal state, performs some cleanup (erasing feedback, unlocking target
+	 * edit part), and then calls {@link #performCreation(int)} .
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
 	protected boolean handleButtonUp(int button) {
-		if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS,
-				STATE_TERMINAL)) {
+		if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 			eraseTargetFeedback();
 			unlockTargetEditPart();
 			performCreation(button);
@@ -242,8 +238,8 @@ public class CreationTool extends TargetingTool {
 	}
 
 	/**
-	 * Updates the request and mouse target, gets the current command and asks
-	 * to show feedback.
+	 * Updates the request and mouse target, gets the current command and asks to
+	 * show feedback.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleMove()
 	 */
@@ -256,13 +252,12 @@ public class CreationTool extends TargetingTool {
 	}
 
 	/**
-	 * Executes the current command and selects the newly created object. The
-	 * button that was released to cause this creation is passed in, but since
+	 * Executes the current command and selects the newly created object. The button
+	 * that was released to cause this creation is passed in, but since
 	 * {@link #handleButtonDown(int)} goes into the invalid state if the button
 	 * pressed is not button 1, this will always be button 1.
 	 * 
-	 * @param button
-	 *            the button that was pressed
+	 * @param button the button that was pressed
 	 */
 	protected void performCreation(int button) {
 		EditPartViewer viewer = getCurrentViewer();
@@ -279,8 +274,7 @@ public class CreationTool extends TargetingTool {
 			return;
 		Object editpart = viewer.getEditPartRegistry().get(model);
 		viewer.flush();
-		if (editpart != null && editpart instanceof EditPart
-				&& ((EditPart) editpart).isSelectable()) {
+		if (editpart != null && editpart instanceof EditPart && ((EditPart) editpart).isSelectable()) {
 			// Force the new object to get positioned in the viewer.
 			viewer.select((EditPart) editpart);
 		}
@@ -289,16 +283,15 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * Sets the creation factory used to create the new edit parts.
 	 * 
-	 * @param factory
-	 *            the factory
+	 * @param factory the factory
 	 */
 	public void setFactory(CreationFactory factory) {
 		this.factory = factory;
 	}
 
 	/**
-	 * Sets the location (and size if the user is performing size-on-drop) of
-	 * the request.
+	 * Sets the location (and size if the user is performing size-on-drop) of the
+	 * request.
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
@@ -311,13 +304,11 @@ public class CreationTool extends TargetingTool {
 			createRequest.setSize(bounds.getSize());
 			createRequest.setLocation(bounds.getLocation());
 			createRequest.getExtendedData().clear();
-			createRequest.setSnapToEnabled(
-					!getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING));
+			createRequest.setSnapToEnabled(!getCurrentInput().isModKeyDown(MODIFIER_NO_SNAPPING));
 			if (helper != null && createRequest.isSnapToEnabled()) {
 				PrecisionRectangle baseRect = new PrecisionRectangle(bounds);
 				PrecisionRectangle result = baseRect.getPreciseCopy();
-				helper.snapRectangle(createRequest, PositionConstants.NSEW,
-						baseRect, result);
+				helper.snapRectangle(createRequest, PositionConstants.NSEW, baseRect, result);
 				createRequest.setLocation(result.getLocation());
 				createRequest.setSize(result.getSize());
 			}
@@ -330,40 +321,33 @@ public class CreationTool extends TargetingTool {
 	}
 
 	/**
-	 * Ensures size constraints (by default minimum and maximum) are respected
-	 * by the given request. May be overwritten by clients to enforce additional
+	 * Ensures size constraints (by default minimum and maximum) are respected by
+	 * the given request. May be overwritten by clients to enforce additional
 	 * constraints.
 	 * 
 	 * @since 3.7
 	 */
-	protected void enforceConstraintsForSizeOnDropCreate(
-			CreateRequest request) {
+	protected void enforceConstraintsForSizeOnDropCreate(CreateRequest request) {
 		CreateRequest createRequest = (CreateRequest) getTargetRequest();
 		if (createRequest.getSize() != null) {
 			// ensure create request respects minimum and maximum size
 			// constraints
-			PrecisionRectangle constraint = new PrecisionRectangle(
-					createRequest.getLocation(), createRequest.getSize());
-			((GraphicalEditPart) getTargetEditPart()).getContentPane()
-					.translateToRelative(constraint);
-			constraint.setSize(Dimension.max(constraint.getSize(),
-					getMinimumSizeFor(createRequest)));
-			constraint.setSize(Dimension.min(constraint.getSize(),
-					getMaximumSizeFor(createRequest)));
-			((GraphicalEditPart) getTargetEditPart()).getContentPane()
-					.translateToAbsolute(constraint);
+			PrecisionRectangle constraint = new PrecisionRectangle(createRequest.getLocation(),
+					createRequest.getSize());
+			((GraphicalEditPart) getTargetEditPart()).getContentPane().translateToRelative(constraint);
+			constraint.setSize(Dimension.max(constraint.getSize(), getMinimumSizeFor(createRequest)));
+			constraint.setSize(Dimension.min(constraint.getSize(), getMaximumSizeFor(createRequest)));
+			((GraphicalEditPart) getTargetEditPart()).getContentPane().translateToAbsolute(constraint);
 			createRequest.setSize(constraint.getSize());
 		}
 	}
 
 	/**
-	 * Determines the <em>maximum</em> size for CreateRequest's size on drop. It
-	 * is called from
-	 * {@link #enforceConstraintsForSizeOnDropCreate(CreateRequest)} during
-	 * creation. By default, a large <code>Dimension</code> is returned.
+	 * Determines the <em>maximum</em> size for CreateRequest's size on drop. It is
+	 * called from {@link #enforceConstraintsForSizeOnDropCreate(CreateRequest)}
+	 * during creation. By default, a large <code>Dimension</code> is returned.
 	 * 
-	 * @param request
-	 *            the request.
+	 * @param request the request.
 	 * @return the minimum size
 	 * @since 3.7
 	 */
@@ -372,13 +356,11 @@ public class CreationTool extends TargetingTool {
 	}
 
 	/**
-	 * Determines the <em>minimum</em> size for CreateRequest's size on drop. It
-	 * is called from
-	 * {@link #enforceConstraintsForSizeOnDropCreate(CreateRequest)} during
-	 * creation. By default, a small <code>Dimension</code> is returned.
+	 * Determines the <em>minimum</em> size for CreateRequest's size on drop. It is
+	 * called from {@link #enforceConstraintsForSizeOnDropCreate(CreateRequest)}
+	 * during creation. By default, a small <code>Dimension</code> is returned.
 	 * 
-	 * @param request
-	 *            the request.
+	 * @param request the request.
 	 * @return the minimum size
 	 * @since 3.7
 	 */

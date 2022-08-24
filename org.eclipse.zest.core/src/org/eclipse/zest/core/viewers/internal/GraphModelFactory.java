@@ -46,7 +46,8 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory#doBuildGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
+	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory#
+	 * doBuildGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
 	protected void doBuildGraph(Graph model) {
 		super.doBuildGraph(model);
@@ -107,8 +108,9 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.zest.core.internal.graphmodel.GraphModel,
-	 *      java.lang.Object)
+	 * @see
+	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(
+	 * org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
 	 */
 	public void refresh(Graph graph, Object element) {
 		refresh(graph, element, false);
@@ -117,8 +119,10 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(org.eclipse.zest.core.internal.graphmodel.GraphModel,
-	 *      java.lang.Object, boolean)
+	 * @see
+	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(
+	 * org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object,
+	 * boolean)
 	 */
 	public void refresh(Graph graph, Object element, boolean updateLabels) {
 		GraphConnection conn = viewer.getGraphModelConnection(element);

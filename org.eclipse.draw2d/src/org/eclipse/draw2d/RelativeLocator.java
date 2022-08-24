@@ -32,8 +32,8 @@ public class RelativeLocator implements Locator {
 	private IFigure reference;
 
 	/**
-	 * Null constructor. The reference figure must be set before use. The
-	 * relative locations will default to (0.0, 0.0).
+	 * Null constructor. The reference figure must be set before use. The relative
+	 * locations will default to (0.0, 0.0).
 	 * 
 	 * @since 2.0
 	 */
@@ -44,14 +44,11 @@ public class RelativeLocator implements Locator {
 
 	/**
 	 * Constructs a RelativeLocator with the given reference figure and relative
-	 * location. The location is a constant from {@link PositionConstants} used
-	 * as a convenient and readable way to set both the relativeX and relativeY
-	 * values.
+	 * location. The location is a constant from {@link PositionConstants} used as a
+	 * convenient and readable way to set both the relativeX and relativeY values.
 	 * 
-	 * @param reference
-	 *            the reference figure
-	 * @param location
-	 *            one of NORTH, NORTH_EAST, etc.
+	 * @param reference the reference figure
+	 * @param location  one of NORTH, NORTH_EAST, etc.
 	 * @since 2.0
 	 */
 	public RelativeLocator(IFigure reference, int location) {
@@ -83,12 +80,9 @@ public class RelativeLocator implements Locator {
 	 * Constructs a RelativeLocator with the given reference Figure and offset
 	 * ratios.
 	 * 
-	 * @param reference
-	 *            the reference figure
-	 * @param relativeX
-	 *            the relative X offset
-	 * @param relativeY
-	 *            the relative Y offset
+	 * @param reference the reference figure
+	 * @param relativeX the relative X offset
+	 * @param relativeY the relative Y offset
 	 * @since 2.0
 	 */
 	public RelativeLocator(IFigure reference, double relativeX, double relativeY) {
@@ -98,9 +92,8 @@ public class RelativeLocator implements Locator {
 	}
 
 	/**
-	 * Returns the Reference Box in the Reference Figure's coordinate system.
-	 * The returned Rectangle may be by reference, and should <b>not</b> be
-	 * modified.
+	 * Returns the Reference Box in the Reference Figure's coordinate system. The
+	 * returned Rectangle may be by reference, and should <b>not</b> be modified.
 	 * 
 	 * @return the reference box
 	 * @since 2.0
@@ -126,8 +119,7 @@ public class RelativeLocator implements Locator {
 	 */
 	public void relocate(IFigure target) {
 		IFigure reference = getReferenceFigure();
-		Rectangle targetBounds = new PrecisionRectangle(getReferenceBox()
-				.getResized(-1, -1));
+		Rectangle targetBounds = new PrecisionRectangle(getReferenceBox().getResized(-1, -1));
 		reference.translateToAbsolute(targetBounds);
 		target.translateToRelative(targetBounds);
 		targetBounds.resize(1, 1);
@@ -143,8 +135,7 @@ public class RelativeLocator implements Locator {
 	/**
 	 * Sets the reference figure this locator uses to place the target figure.
 	 * 
-	 * @param reference
-	 *            the reference figure
+	 * @param reference the reference figure
 	 * @since 2.0
 	 */
 	public void setReferenceFigure(IFigure reference) {

@@ -112,8 +112,7 @@ public class LogicMessages extends NLS {
 	public static String XORGate_LabelText;
 
 	static {
-		NLS.initializeMessages(
-				"org.eclipse.gef.examples.logicdesigner.messages", LogicMessages.class); //$NON-NLS-1$
+		NLS.initializeMessages("org.eclipse.gef.examples.logicdesigner.messages", LogicMessages.class); //$NON-NLS-1$
 	}
 
 }

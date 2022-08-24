@@ -50,8 +50,7 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * Construct a Label with passed String as its text.
 	 * 
-	 * @param s
-	 *            the label text
+	 * @param s the label text
 	 * @since 2.0
 	 */
 	public Label(String s) {
@@ -61,8 +60,7 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * Construct a Label with passed Image as its icon.
 	 * 
-	 * @param i
-	 *            the label image
+	 * @param i the label image
 	 * @since 2.0
 	 */
 	public Label(Image i) {
@@ -70,13 +68,10 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Construct a Label with passed String as text and passed Image as its
-	 * icon.
+	 * Construct a Label with passed String as text and passed Image as its icon.
 	 * 
-	 * @param s
-	 *            the label text
-	 * @param i
-	 *            the label image
+	 * @param s the label text
+	 * @param i the label image
 	 * @since 2.0
 	 */
 	public Label(String s, Image i) {
@@ -128,11 +123,10 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Calculates the size of the Label using the passed Dimension as the size
-	 * of the Label's text.
+	 * Calculates the size of the Label using the passed Dimension as the size of
+	 * the Label's text.
 	 * 
-	 * @param txtSize
-	 *            the precalculated size of the label's text
+	 * @param txtSize the precalculated size of the label's text
 	 * @return the label's size
 	 * @since 2.0
 	 */
@@ -223,9 +217,9 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Calculates the size of the Label's text size. The text size calculated
-	 * takes into consideration if the Label's text is currently truncated. If
-	 * text size without considering current truncation is desired, use
+	 * Calculates the size of the Label's text size. The text size calculated takes
+	 * into consideration if the Label's text is currently truncated. If text size
+	 * without considering current truncation is desired, use
 	 * {@link #calculateTextSize()}.
 	 * 
 	 * @return the size of the label's text, taking into account truncation
@@ -236,10 +230,10 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Calculates and returns the size of the Label's text. Note that this
-	 * Dimension is calculated using the Label's full text, regardless of
-	 * whether or not its text is currently truncated. If text size considering
-	 * current truncation is desired, use {@link #calculateSubStringTextSize()}.
+	 * Calculates and returns the size of the Label's text. Note that this Dimension
+	 * is calculated using the Label's full text, regardless of whether or not its
+	 * text is currently truncated. If text size considering current truncation is
+	 * desired, use {@link #calculateSubStringTextSize()}.
 	 * 
 	 * @return the size of the label's text, ignoring truncation
 	 * @since 2.0
@@ -281,8 +275,7 @@ public class Label extends Figure implements PositionConstants {
 	 */
 	public Rectangle getIconBounds() {
 		Rectangle bounds = getBounds();
-		return new Rectangle(bounds.getLocation().translate(getIconLocation()),
-				getIconSize());
+		return new Rectangle(bounds.getLocation().translate(getIconLocation()), getIconSize());
 	}
 
 	/**
@@ -317,10 +310,8 @@ public class Label extends Figure implements PositionConstants {
 		if (getLayoutManager() != null)
 			minSize.setSize(getLayoutManager().getMinimumSize(this, w, h));
 
-		Dimension labelSize = calculateLabelSize(getTextUtilities()
-				.getTextExtents(getTruncationString(), getFont())
-				.intersect(
-						getTextUtilities().getTextExtents(getText(), getFont())));
+		Dimension labelSize = calculateLabelSize(getTextUtilities().getTextExtents(getTruncationString(), getFont())
+				.intersect(getTextUtilities().getTextExtents(getText(), getFont())));
 		Insets insets = getInsets();
 		labelSize.expand(insets.getWidth(), insets.getHeight());
 		minSize.union(labelSize);
@@ -336,8 +327,7 @@ public class Label extends Figure implements PositionConstants {
 			Insets insets = getInsets();
 			prefSize.expand(insets.getWidth(), insets.getHeight());
 			if (getLayoutManager() != null)
-				prefSize.union(getLayoutManager().getPreferredSize(this, wHint,
-						hHint));
+				prefSize.union(getLayoutManager().getPreferredSize(this, wHint, hHint));
 		}
 		if (wHint >= 0 && wHint < prefSize.width) {
 			Dimension minSize = getMinimumSize(wHint, hHint);
@@ -367,16 +357,14 @@ public class Label extends Figure implements PositionConstants {
 
 		Dimension effectiveSize = getTextSize().getExpanded(-widthShrink, 0);
 		Font currentFont = getFont();
-		int dotsWidth = getTextUtilities().getTextExtents(
-				getTruncationString(), currentFont).width;
+		int dotsWidth = getTextUtilities().getTextExtents(getTruncationString(), currentFont).width;
 
 		if (effectiveSize.width < dotsWidth)
 			effectiveSize.width = dotsWidth;
 
-		int subStringLength = getTextUtilities().getLargestSubstringConfinedTo(
-				text, currentFont, effectiveSize.width - dotsWidth);
-		subStringText = new String(text.substring(0, subStringLength)
-				+ getTruncationString());
+		int subStringLength = getTextUtilities().getLargestSubstringConfinedTo(text, currentFont,
+				effectiveSize.width - dotsWidth);
+		subStringText = new String(text.substring(0, subStringLength) + getTruncationString());
 		return subStringText;
 	}
 
@@ -397,8 +385,8 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * Returns the text of the label. Note that this is the complete text of the
 	 * label, regardless of whether it is currently being truncated. Call
-	 * {@link #getSubStringText()} to return the label's current text contents
-	 * with truncation considered.
+	 * {@link #getSubStringText()} to return the label's current text contents with
+	 * truncation considered.
 	 * 
 	 * @return the complete text of this label
 	 * @since 2.0
@@ -408,8 +396,8 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Returns the current alignment of the Label's text. The default text
-	 * alignment is {@link PositionConstants#CENTER}.
+	 * Returns the current alignment of the Label's text. The default text alignment
+	 * is {@link PositionConstants#CENTER}.
 	 * 
 	 * @return the text alignment
 	 */
@@ -418,17 +406,16 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Returns the bounds of the label's text. Note that the bounds are
-	 * calculated using the label's complete text regardless of whether the
-	 * label's text is currently truncated.
+	 * Returns the bounds of the label's text. Note that the bounds are calculated
+	 * using the label's complete text regardless of whether the label's text is
+	 * currently truncated.
 	 * 
 	 * @return the bounds of this label's complete text
 	 * @since 2.0
 	 */
 	public Rectangle getTextBounds() {
 		Rectangle bounds = getBounds();
-		return new Rectangle(bounds.getLocation().translate(getTextLocation()),
-				textSize);
+		return new Rectangle(bounds.getLocation().translate(getTextLocation()), textSize);
 	}
 
 	/**
@@ -445,8 +432,8 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Returns the current placement of the label's text relative to its icon.
-	 * The default text placement is {@link PositionConstants#EAST}.
+	 * Returns the current placement of the label's text relative to its icon. The
+	 * default text placement is {@link PositionConstants#EAST}.
 	 * 
 	 * @return the text placement
 	 * @since 2.0
@@ -458,8 +445,8 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * Returns the size of the label's complete text. Note that the text used to
 	 * make this calculation is the label's full text, regardless of whether the
-	 * label's text is currently being truncated and is displaying an ellipsis.
-	 * If the size considering current truncation is desired, call
+	 * label's text is currently being truncated and is displaying an ellipsis. If
+	 * the size considering current truncation is desired, call
 	 * {@link #getSubStringTextSize()}.
 	 * 
 	 * @return the size of this label's complete text
@@ -485,8 +472,8 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Returns <code>true</code> if the label's text is currently truncated and
-	 * is displaying an ellipsis, <code>false</code> otherwise.
+	 * Returns <code>true</code> if the label's text is currently truncated and is
+	 * displaying an ellipsis, <code>false</code> otherwise.
 	 * 
 	 * @return <code>true</code> if the label's text is truncated
 	 * @since 2.0
@@ -519,8 +506,7 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * Sets the label's icon to the passed image.
 	 * 
-	 * @param image
-	 *            the new label image
+	 * @param image the new label image
 	 * @since 2.0
 	 */
 	public void setIcon(Image image) {
@@ -536,9 +522,9 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * This method sets the alignment of the icon within the bounds of the
-	 * label. If the label is larger than the icon, then the icon will be
-	 * aligned according to this alignment. Valid values are:
+	 * This method sets the alignment of the icon within the bounds of the label. If
+	 * the label is larger than the icon, then the icon will be aligned according to
+	 * this alignment. Valid values are:
 	 * <UL>
 	 * <LI><EM>{@link PositionConstants#CENTER}</EM>
 	 * <LI>{@link PositionConstants#TOP}
@@ -547,8 +533,7 @@ public class Label extends Figure implements PositionConstants {
 	 * <LI>{@link PositionConstants#RIGHT}
 	 * </UL>
 	 * 
-	 * @param align
-	 *            the icon alignment
+	 * @param align the icon alignment
 	 * @since 2.0
 	 */
 	public void setIconAlignment(int align) {
@@ -562,8 +547,7 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * Sets the label's icon size to the passed Dimension.
 	 * 
-	 * @param d
-	 *            the new icon size
+	 * @param d the new icon size
 	 * @deprecated the icon is automatically displayed at 1:1
 	 * @since 2.0
 	 */
@@ -575,11 +559,10 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Sets the gap in pixels between the label's icon and text to the passed
-	 * value. The default is 4.
+	 * Sets the gap in pixels between the label's icon and text to the passed value.
+	 * The default is 4.
 	 * 
-	 * @param gap
-	 *            the gap
+	 * @param gap the gap
 	 * @since 2.0
 	 */
 	public void setIconTextGap(int gap) {
@@ -591,9 +574,9 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Sets the alignment of the label (icon and text) within the figure. If
-	 * this figure's bounds are larger than the size needed to display the
-	 * label, the label will be aligned accordingly. Valid values are:
+	 * Sets the alignment of the label (icon and text) within the figure. If this
+	 * figure's bounds are larger than the size needed to display the label, the
+	 * label will be aligned accordingly. Valid values are:
 	 * <UL>
 	 * <LI><EM>{@link PositionConstants#CENTER}</EM>
 	 * <LI>{@link PositionConstants#TOP}
@@ -602,8 +585,7 @@ public class Label extends Figure implements PositionConstants {
 	 * <LI>{@link PositionConstants#RIGHT}
 	 * </UL>
 	 * 
-	 * @param align
-	 *            label alignment
+	 * @param align label alignment
 	 */
 	public void setLabelAlignment(int align) {
 		if (labelAlignment == align)
@@ -616,8 +598,7 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * Sets the label's text.
 	 * 
-	 * @param s
-	 *            the new label text
+	 * @param s the new label text
 	 * @since 2.0
 	 */
 	public void setText(String s) {
@@ -633,9 +614,9 @@ public class Label extends Figure implements PositionConstants {
 
 	/**
 	 * Sets the alignment of the text relative to the icon within the label. The
-	 * text alignment must be orthogonal to the text placement. For example, if
-	 * the placement is EAST, then the text can be aligned using TOP, CENTER, or
-	 * BOTTOM. Valid values are:
+	 * text alignment must be orthogonal to the text placement. For example, if the
+	 * placement is EAST, then the text can be aligned using TOP, CENTER, or BOTTOM.
+	 * Valid values are:
 	 * <UL>
 	 * <LI><EM>{@link PositionConstants#CENTER}</EM>
 	 * <LI>{@link PositionConstants#TOP}
@@ -645,8 +626,7 @@ public class Label extends Figure implements PositionConstants {
 	 * </UL>
 	 * 
 	 * @see #setLabelAlignment(int)
-	 * @param align
-	 *            the text alignment
+	 * @param align the text alignment
 	 * @since 2.0
 	 */
 	public void setTextAlignment(int align) {
@@ -658,8 +638,8 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Sets the placement of the text relative to the icon within the label.
-	 * Valid values are:
+	 * Sets the placement of the text relative to the icon within the label. Valid
+	 * values are:
 	 * <UL>
 	 * <LI><EM>{@link PositionConstants#EAST}</EM>
 	 * <LI>{@link PositionConstants#NORTH}
@@ -667,8 +647,7 @@ public class Label extends Figure implements PositionConstants {
 	 * <LI>{@link PositionConstants#WEST}
 	 * </UL>
 	 * 
-	 * @param where
-	 *            the text placement
+	 * @param where the text placement
 	 * @since 2.0
 	 */
 	public void setTextPlacement(int where) {
@@ -712,8 +691,8 @@ public class Label extends Figure implements PositionConstants {
 	}
 
 	/**
-	 * Returns the alignment of the entire label (icon and text). The default
-	 * label alignment is {@link PositionConstants#CENTER}.
+	 * Returns the alignment of the entire label (icon and text). The default label
+	 * alignment is {@link PositionConstants#CENTER}.
 	 * 
 	 * @return the label alignment
 	 * @since 3.5

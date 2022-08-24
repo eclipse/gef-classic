@@ -20,22 +20,19 @@ import org.eclipse.gef.commands.Command;
 public abstract class StackAction extends WorkbenchPartAction {
 
 	/**
-	 * Creates a <code>StackAction</code> and associates it with the given
-	 * editor.
+	 * Creates a <code>StackAction</code> and associates it with the given editor.
 	 * 
-	 * @param editor
-	 *            The editor this action is associated with.
+	 * @param editor The editor this action is associated with.
 	 */
 	public StackAction(IWorkbenchPart editor) {
 		super(editor);
 	}
 
 	/**
-	 * Returns the label for the given command. Guarantees that
-	 * <code>null</code> is never returned.
+	 * Returns the label for the given command. Guarantees that <code>null</code> is
+	 * never returned.
 	 * 
-	 * @param command
-	 *            the command
+	 * @param command the command
 	 * @return a non-<code>null</code> String
 	 */
 	protected String getLabelForCommand(Command command) {

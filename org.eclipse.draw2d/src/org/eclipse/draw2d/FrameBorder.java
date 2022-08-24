@@ -20,14 +20,12 @@ import org.eclipse.swt.graphics.Font;
 public class FrameBorder extends CompoundBorder implements LabeledBorder {
 
 	/**
-	 * The border scheme that determines the border highlight and shadow colors,
-	 * as well as the border width (3).
+	 * The border scheme that determines the border highlight and shadow colors, as
+	 * well as the border width (3).
 	 */
 	protected static final SchemeBorder.Scheme SCHEME_FRAME = new SchemeBorder.Scheme(
-			new Color[] { ColorConstants.button, ColorConstants.buttonLightest,
-					ColorConstants.button }, new Color[] {
-					ColorConstants.buttonDarkest, ColorConstants.buttonDarker,
-					ColorConstants.button });
+			new Color[] { ColorConstants.button, ColorConstants.buttonLightest, ColorConstants.button },
+			new Color[] { ColorConstants.buttonDarkest, ColorConstants.buttonDarker, ColorConstants.button });
 
 	{
 		createBorders();
@@ -45,8 +43,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	/**
 	 * Constructs a FrameBorder with the title set to the passed String.
 	 * 
-	 * @param label
-	 *            label or title of the frame.
+	 * @param label label or title of the frame.
 	 * @since 2.0
 	 */
 	public FrameBorder(String label) {
@@ -65,8 +62,8 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	}
 
 	/**
-	 * Returns the inner border of this FrameBorder, which contains the label
-	 * for the FrameBorder.
+	 * Returns the inner border of this FrameBorder, which contains the label for
+	 * the FrameBorder.
 	 * 
 	 * @return the border holding the label.
 	 * @since 2.0
@@ -85,8 +82,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	/**
 	 * Sets the label for this border.
 	 * 
-	 * @param label
-	 *            the label
+	 * @param label the label
 	 */
 	public void setLabel(String label) {
 		getLabeledBorder().setLabel(label);
@@ -95,8 +91,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	/**
 	 * Sets the font for this border's label.
 	 * 
-	 * @param font
-	 *            the font
+	 * @param font the font
 	 */
 	public void setFont(Font font) {
 		getLabeledBorder().setFont(font);

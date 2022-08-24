@@ -11,16 +11,18 @@ package org.eclipse.zest.layouts.constraints;
 
 /**
  * A layout constraint that uses priorities
+ * 
  * @author Ian Bull
  */
 public class EntityPriorityConstraint implements LayoutConstraint {
 
-	// A priority that can be set for nodes.  This could be used
+	// A priority that can be set for nodes. This could be used
 	// for a treemap layout
 	public double priority = 1.0;
 
 	/*
 	 * (non-Javadoc)
+	 * 
 	 * @see org.eclipse.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
 	public void clear() {

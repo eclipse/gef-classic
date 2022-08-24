@@ -24,18 +24,12 @@ public class TextActionBarContributor extends ActionBarContributor {
 	 * @see ActionBarContributor#buildActions()
 	 */
 	protected void buildActions() {
-		addRetargetAction(new StyleRetargetAction(
-				TextActionConstants.STYLE_BOLD));
-		addRetargetAction(new StyleRetargetAction(
-				TextActionConstants.STYLE_ITALIC));
-		addRetargetAction(new StyleRetargetAction(
-				TextActionConstants.STYLE_UNDERLINE));
-		addRetargetAction(new StyleRetargetAction(
-				TextActionConstants.BLOCK_ALIGN_CENTER));
-		addRetargetAction(new StyleRetargetAction(
-				TextActionConstants.BLOCK_ALIGN_LEFT));
-		addRetargetAction(new StyleRetargetAction(
-				TextActionConstants.BLOCK_ALIGN_RIGHT));
+		addRetargetAction(new StyleRetargetAction(TextActionConstants.STYLE_BOLD));
+		addRetargetAction(new StyleRetargetAction(TextActionConstants.STYLE_ITALIC));
+		addRetargetAction(new StyleRetargetAction(TextActionConstants.STYLE_UNDERLINE));
+		addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_ALIGN_CENTER));
+		addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_ALIGN_LEFT));
+		addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_ALIGN_RIGHT));
 		addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_LTR));
 		addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_RTL));
 	}

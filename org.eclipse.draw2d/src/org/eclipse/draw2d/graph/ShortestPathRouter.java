@@ -59,8 +59,8 @@ public class ShortestPathRouter {
 	}
 
 	/**
-	 * The number of times to grow obstacles and test for intersections. This is
-	 * a tradeoff between performance and quality of output.
+	 * The number of times to grow obstacles and test for intersections. This is a
+	 * tradeoff between performance and quality of output.
 	 */
 	private static final int NUM_GROW_PASSES = 2;
 
@@ -89,10 +89,8 @@ public class ShortestPathRouter {
 	/**
 	 * Adds an obstacle with the given bounds to the obstacles.
 	 * 
-	 * @param rect
-	 *            the bounds of this obstacle
-	 * @return <code>true</code> if the added obstacle has dirtied one or more
-	 *         paths
+	 * @param rect the bounds of this obstacle
+	 * @return <code>true</code> if the added obstacle has dirtied one or more paths
 	 */
 	public boolean addObstacle(Rectangle rect) {
 		return internalAddObstacle(new Obstacle(rect, this));
@@ -101,8 +99,7 @@ public class ShortestPathRouter {
 	/**
 	 * Adds a path to the routing.
 	 * 
-	 * @param path
-	 *            the path to add.
+	 * @param path the path to add.
 	 */
 	public void addPath(Path path) {
 		userPaths.add(path);
@@ -138,8 +135,7 @@ public class ShortestPathRouter {
 	/**
 	 * Checks a vertex to see if its offset should shrink
 	 * 
-	 * @param vertex
-	 *            the vertex to check
+	 * @param vertex the vertex to check
 	 */
 	private void checkVertexForIntersections(Vertex vertex) {
 		if (vertex.nearestObstacle != 0 || vertex.nearestObstacleChecked)
@@ -181,8 +177,7 @@ public class ShortestPathRouter {
 					// use left
 					xDist = obs.x - vertex.x;
 
-				if (Math.max(xDist, yDist) < vertex.nearestObstacle
-						|| vertex.nearestObstacle == 0) {
+				if (Math.max(xDist, yDist) < vertex.nearestObstacle || vertex.nearestObstacle == 0) {
 					vertex.nearestObstacle = Math.max(xDist, yDist);
 					vertex.updateOffset();
 				}
@@ -218,8 +213,8 @@ public class ShortestPathRouter {
 	}
 
 	/**
-	 * Counts how many paths are on given vertices in order to increment their
-	 * total count.
+	 * Counts how many paths are on given vertices in order to increment their total
+	 * count.
 	 */
 	private void countVertices() {
 		for (int i = 0; i < workingPaths.size(); i++) {
@@ -232,8 +227,7 @@ public class ShortestPathRouter {
 	/**
 	 * Dirties the paths that are on the given vertex
 	 * 
-	 * @param vertex
-	 *            the vertex that has the paths
+	 * @param vertex the vertex that has the paths
 	 */
 	private boolean dirtyPathsOn(Vertex vertex) {
 		List paths = vertex.paths;
@@ -246,19 +240,19 @@ public class ShortestPathRouter {
 	}
 
 	/**
-	 * Resyncs the parent paths with any new child paths that are necessary
-	 * because bendpoints have been added to the parent path.
+	 * Resyncs the parent paths with any new child paths that are necessary because
+	 * bendpoints have been added to the parent path.
 	 * 
 	 * private void generateChildPaths() { for (int i = 0; i < userPaths.size();
 	 * i++) { Path path = (Path)userPaths.get(i); PointList bendPoints =
 	 * path.bendpoints; if (bendPoints != null && bendPoints.size() != 0) { List
-	 * childPaths = new ArrayList(bendPoints.size() + 1); Path child = null;
-	 * Vertex prevVertex = path.start; Vertex currVertex = null;
+	 * childPaths = new ArrayList(bendPoints.size() + 1); Path child = null; Vertex
+	 * prevVertex = path.start; Vertex currVertex = null;
 	 * 
 	 * for (int b = 0; b < bendPoints.size(); b++) { Point bp =
-	 * (Point)bendPoints.getPoint(b); currVertex = new Vertex(bp, null); child =
-	 * new Path(prevVertex, currVertex); childPaths.add(child);
-	 * workingPaths.add(child); prevVertex = currVertex; }
+	 * (Point)bendPoints.getPoint(b); currVertex = new Vertex(bp, null); child = new
+	 * Path(prevVertex, currVertex); childPaths.add(child); workingPaths.add(child);
+	 * prevVertex = currVertex; }
 	 * 
 	 * child = new Path(prevVertex, path.end); childPaths.add(child);
 	 * workingPaths.add(child); pathsToChildPaths.put(path, childPaths); } else
@@ -268,17 +262,14 @@ public class ShortestPathRouter {
 	/**
 	 * Returns the closest vertex to the given segment.
 	 * 
-	 * @param v1
-	 *            the first vertex
-	 * @param v2
-	 *            the second vertex
-	 * @param segment
-	 *            the segment
+	 * @param v1      the first vertex
+	 * @param v2      the second vertex
+	 * @param segment the segment
 	 * @return v1, or v2 whichever is closest to the segment
 	 */
 	private Vertex getNearestVertex(Vertex v1, Vertex v2, Segment segment) {
-		if (segment.start.getDistance(v1) + segment.end.getDistance(v1) > segment.start
-				.getDistance(v2) + segment.end.getDistance(v2))
+		if (segment.start.getDistance(v1) + segment.end.getDistance(v1) > segment.start.getDistance(v2)
+				+ segment.end.getDistance(v2))
 			return v2;
 		else
 			return v1;
@@ -298,10 +289,8 @@ public class ShortestPathRouter {
 	/**
 	 * Returns the subpath for a split on the given path at the given segment.
 	 * 
-	 * @param path
-	 *            the path
-	 * @param segment
-	 *            the segment
+	 * @param path    the path
+	 * @param segment the segment
 	 * @return the new subpath
 	 */
 	private Path getSubpathForSplit(Path path, Segment segment) {
@@ -323,9 +312,8 @@ public class ShortestPathRouter {
 	}
 
 	/**
-	 * Performs a single pass of the grow obstacles step, this can be repeated
-	 * as desired. Grows obstacles, then tests paths against the grown
-	 * obstacles.
+	 * Performs a single pass of the grow obstacles step, this can be repeated as
+	 * desired. Grows obstacles, then tests paths against the grown obstacles.
 	 */
 	private void growObstaclesPass() {
 		// grow obstacles
@@ -341,14 +329,12 @@ public class ShortestPathRouter {
 
 			if (path.grownSegments.size() == 0) {
 				for (int s = 0; s < path.segments.size(); s++)
-					testOffsetSegmentForIntersections(
-							(Segment) path.segments.get(s), -1, path);
+					testOffsetSegmentForIntersections((Segment) path.segments.get(s), -1, path);
 			} else {
 				int counter = 0;
 				List currentSegments = new ArrayList(path.grownSegments);
 				for (int s = 0; s < currentSegments.size(); s++)
-					counter += testOffsetSegmentForIntersections(
-							(Segment) currentSegments.get(s), s + counter, path);
+					counter += testOffsetSegmentForIntersections((Segment) currentSegments.get(s), s + counter, path);
 			}
 
 			for (int e = 0; e < path.excludedObstacles.size(); e++)
@@ -364,8 +350,7 @@ public class ShortestPathRouter {
 	/**
 	 * Adds an obstacle to the routing
 	 * 
-	 * @param obs
-	 *            the obstacle
+	 * @param obs the obstacle
 	 */
 	private boolean internalAddObstacle(Obstacle obs) {
 		userObstacles.add(obs);
@@ -375,8 +360,7 @@ public class ShortestPathRouter {
 	/**
 	 * Removes an obstacle from the routing.
 	 * 
-	 * @param rect
-	 *            the bounds of the obstacle
+	 * @param rect the bounds of the obstacle
 	 * @return the obstacle removed
 	 */
 	private boolean internalRemoveObstacle(Rectangle rect) {
@@ -410,11 +394,10 @@ public class ShortestPathRouter {
 	}
 
 	/**
-	 * Labels the given path's vertices as innies, or outies, as well as
-	 * determining if this path is inverted.
+	 * Labels the given path's vertices as innies, or outies, as well as determining
+	 * if this path is inverted.
 	 * 
-	 * @param path
-	 *            the path
+	 * @param path the path
 	 */
 	private void labelPath(Path path) {
 		Segment segment = null;
@@ -425,13 +408,12 @@ public class ShortestPathRouter {
 			segment = (Segment) path.grownSegments.get(v);
 			nextSegment = (Segment) path.grownSegments.get(v + 1);
 			vertex = segment.end;
-			long crossProduct = segment.crossProduct(new Segment(vertex,
-					vertex.obs.center));
+			long crossProduct = segment.crossProduct(new Segment(vertex, vertex.obs.center));
 
 			if (vertex.type == Vertex.NOT_SET) {
 				labelVertex(segment, crossProduct, path);
-			} else if (!path.isInverted
-					&& ((crossProduct > 0 && vertex.type == Vertex.OUTIE) || (crossProduct < 0 && vertex.type == Vertex.INNIE))) {
+			} else if (!path.isInverted && ((crossProduct > 0 && vertex.type == Vertex.OUTIE)
+					|| (crossProduct < 0 && vertex.type == Vertex.INNIE))) {
 				if (agree) {
 					// split detected.
 					stack.push(getSubpathForSplit(path, segment));
@@ -440,8 +422,8 @@ public class ShortestPathRouter {
 					path.isInverted = true;
 					path.invertPriorVertices(segment);
 				}
-			} else if (path.isInverted
-					&& ((crossProduct < 0 && vertex.type == Vertex.OUTIE) || (crossProduct > 0 && vertex.type == Vertex.INNIE))) {
+			} else if (path.isInverted && ((crossProduct < 0 && vertex.type == Vertex.OUTIE)
+					|| (crossProduct > 0 && vertex.type == Vertex.INNIE))) {
 				// split detected.
 				stack.push(getSubpathForSplit(path, segment));
 				return;
@@ -490,13 +472,10 @@ public class ShortestPathRouter {
 	/**
 	 * Labels the vertex at the end of the semgent based on the cross product.
 	 * 
-	 * @param segment
-	 *            the segment to this vertex
-	 * @param crossProduct
-	 *            the cross product of this segment and a segment to the
-	 *            obstacles center
-	 * @param path
-	 *            the path
+	 * @param segment      the segment to this vertex
+	 * @param crossProduct the cross product of this segment and a segment to the
+	 *                     obstacles center
+	 * @param path         the path
 	 */
 	private void labelVertex(Segment segment, long crossProduct, Path path) {
 		// assumes vertex in question is segment.end
@@ -517,11 +496,9 @@ public class ShortestPathRouter {
 	}
 
 	/**
-	 * Orders the path by comparing its angle at shared vertices with other
-	 * paths.
+	 * Orders the path by comparing its angle at shared vertices with other paths.
 	 * 
-	 * @param path
-	 *            the path
+	 * @param path the path
 	 */
 	private void orderPath(Path path) {
 		if (path.isMarked)
@@ -532,16 +509,14 @@ public class ShortestPathRouter {
 		for (int v = 0; v < path.grownSegments.size() - 1; v++) {
 			segment = (Segment) path.grownSegments.get(v);
 			vertex = segment.end;
-			double thisAngle = ((Double) vertex.cachedCosines.get(path))
-					.doubleValue();
+			double thisAngle = ((Double) vertex.cachedCosines.get(path)).doubleValue();
 			if (path.isInverted)
 				thisAngle = -thisAngle;
 
 			for (int i = 0; i < vertex.paths.size(); i++) {
 				Path vPath = (Path) vertex.paths.get(i);
 				if (!vPath.isMarked) {
-					double otherAngle = ((Double) vertex.cachedCosines
-							.get(vPath)).doubleValue();
+					double otherAngle = ((Double) vertex.cachedCosines.get(vPath)).doubleValue();
 
 					if (vPath.isInverted)
 						otherAngle = -otherAngle;
@@ -612,8 +587,7 @@ public class ShortestPathRouter {
 	/**
 	 * Removes the obstacle with the rectangle's bounds from the routing.
 	 * 
-	 * @param rect
-	 *            the bounds of the obstacle to remove
+	 * @param rect the bounds of the obstacle to remove
 	 * @return <code>true</code> if the removal has dirtied one or more paths
 	 */
 	public boolean removeObstacle(Rectangle rect) {
@@ -623,8 +597,7 @@ public class ShortestPathRouter {
 	/**
 	 * Removes the given path from the routing.
 	 * 
-	 * @param path
-	 *            the path to remove.
+	 * @param path the path to remove.
 	 * @return <code>true</code> if the removal may have affected one of the
 	 *         remaining paths
 	 */
@@ -662,13 +635,12 @@ public class ShortestPathRouter {
 	}
 
 	/**
-	 * Sets the default spacing between paths. The spacing is the minimum
-	 * distance that path should be offset from other paths or obstacles. The
-	 * default value is 4. When this value can not be satisfied, paths will be
-	 * squeezed together uniformly.
+	 * Sets the default spacing between paths. The spacing is the minimum distance
+	 * that path should be offset from other paths or obstacles. The default value
+	 * is 4. When this value can not be satisfied, paths will be squeezed together
+	 * uniformly.
 	 * 
-	 * @param spacing
-	 *            the path spacing
+	 * @param spacing the path spacing
 	 * @since 3.2
 	 */
 	public void setSpacing(int spacing) {
@@ -676,8 +648,8 @@ public class ShortestPathRouter {
 	}
 
 	/**
-	 * Updates the points in the paths in order to represent the current
-	 * solution with the given paths and obstacles.
+	 * Updates the points in the paths in order to represent the current solution
+	 * with the given paths and obstacles.
 	 * 
 	 * @return returns the list of paths which were updated.
 	 */
@@ -731,8 +703,7 @@ public class ShortestPathRouter {
 				newCount = path.getBendPoints().size() + 1;
 
 			if (prevCount != newCount)
-				children = regenerateChildPaths(path, children, prevCount,
-						newCount);
+				children = regenerateChildPaths(path, children, prevCount, newCount);
 			refreshChildrenEndpoints(path, children);
 		}
 
@@ -795,8 +766,7 @@ public class ShortestPathRouter {
 	 * @param path
 	 * @param children
 	 */
-	private List regenerateChildPaths(Path path, List children,
-			int currentSize, int newSize) {
+	private List regenerateChildPaths(Path path, List children, int currentSize, int newSize) {
 		// Path used to be simple but now is compound, children is EMPTY.
 		if (currentSize == 1) {
 			workingPaths.remove(path);
@@ -832,60 +802,45 @@ public class ShortestPathRouter {
 	/**
 	 * Tests a segment that has been offset for new intersections
 	 * 
-	 * @param segment
-	 *            the segment
-	 * @param index
-	 *            the index of the segment along the path
-	 * @param path
-	 *            the path
+	 * @param segment the segment
+	 * @param index   the index of the segment along the path
+	 * @param path    the path
 	 * @return 1 if new segments have been inserted
 	 */
-	private int testOffsetSegmentForIntersections(Segment segment, int index,
-			Path path) {
+	private int testOffsetSegmentForIntersections(Segment segment, int index, Path path) {
 		for (int i = 0; i < userObstacles.size(); i++) {
 			Obstacle obs = (Obstacle) userObstacles.get(i);
 
-			if (segment.end.obs == obs || segment.start.obs == obs
-					|| obs.exclude)
+			if (segment.end.obs == obs || segment.start.obs == obs || obs.exclude)
 				continue;
 			Vertex vertex = null;
 
 			int offset = getSpacing();
 			if (segment.getSlope() < 0) {
-				if (segment.intersects(obs.topLeft.x - offset, obs.topLeft.y
-						- offset, obs.bottomRight.x + offset, obs.bottomRight.y
-						+ offset))
-					vertex = getNearestVertex(obs.topLeft, obs.bottomRight,
-							segment);
-				else if (segment.intersects(obs.bottomLeft.x - offset,
-						obs.bottomLeft.y + offset, obs.topRight.x + offset,
-						obs.topRight.y - offset))
-					vertex = getNearestVertex(obs.bottomLeft, obs.topRight,
-							segment);
-			} else {
-				if (segment.intersects(obs.bottomLeft.x - offset,
-						obs.bottomLeft.y + offset, obs.topRight.x + offset,
-						obs.topRight.y - offset))
-					vertex = getNearestVertex(obs.bottomLeft, obs.topRight,
-							segment);
-				else if (segment.intersects(obs.topLeft.x - offset,
-						obs.topLeft.y - offset, obs.bottomRight.x + offset,
+				if (segment.intersects(obs.topLeft.x - offset, obs.topLeft.y - offset, obs.bottomRight.x + offset,
 						obs.bottomRight.y + offset))
-					vertex = getNearestVertex(obs.topLeft, obs.bottomRight,
-							segment);
+					vertex = getNearestVertex(obs.topLeft, obs.bottomRight, segment);
+				else if (segment.intersects(obs.bottomLeft.x - offset, obs.bottomLeft.y + offset,
+						obs.topRight.x + offset, obs.topRight.y - offset))
+					vertex = getNearestVertex(obs.bottomLeft, obs.topRight, segment);
+			} else {
+				if (segment.intersects(obs.bottomLeft.x - offset, obs.bottomLeft.y + offset, obs.topRight.x + offset,
+						obs.topRight.y - offset))
+					vertex = getNearestVertex(obs.bottomLeft, obs.topRight, segment);
+				else if (segment.intersects(obs.topLeft.x - offset, obs.topLeft.y - offset, obs.bottomRight.x + offset,
+						obs.bottomRight.y + offset))
+					vertex = getNearestVertex(obs.topLeft, obs.bottomRight, segment);
 			}
 
 			if (vertex != null) {
 				Rectangle vRect = vertex.getDeformedRectangle(offset);
 				if (segment.end.obs != null) {
-					Rectangle endRect = segment.end
-							.getDeformedRectangle(offset);
+					Rectangle endRect = segment.end.getDeformedRectangle(offset);
 					if (vRect.intersects(endRect))
 						continue;
 				}
 				if (segment.start.obs != null) {
-					Rectangle startRect = segment.start
-							.getDeformedRectangle(offset);
+					Rectangle startRect = segment.start.getDeformedRectangle(offset);
 					if (vRect.intersects(startRect))
 						continue;
 				}
@@ -924,8 +879,7 @@ public class ShortestPathRouter {
 	/**
 	 * Tests all paths against the given obstacle
 	 * 
-	 * @param obs
-	 *            the obstacle
+	 * @param obs the obstacle
 	 */
 	private boolean testAndDirtyPaths(Obstacle obs) {
 		boolean result = false;
@@ -939,12 +893,9 @@ public class ShortestPathRouter {
 	/**
 	 * Updates the position of an existing obstacle.
 	 * 
-	 * @param oldBounds
-	 *            the old bounds(used to find the obstacle)
-	 * @param newBounds
-	 *            the new bounds
-	 * @return <code>true</code> if the change the current results to become
-	 *         stale
+	 * @param oldBounds the old bounds(used to find the obstacle)
+	 * @param newBounds the new bounds
+	 * @return <code>true</code> if the change the current results to become stale
 	 */
 	public boolean updateObstacle(Rectangle oldBounds, Rectangle newBounds) {
 		boolean result = internalRemoveObstacle(oldBounds);

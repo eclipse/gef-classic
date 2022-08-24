@@ -25,18 +25,16 @@ public interface INestedContentProvider {
 	 * Does the current node have children? If so, it will be rendered as a
 	 * container.
 	 * 
-	 * @param element
-	 *            The current node
+	 * @param element The current node
 	 * @return True if it has children, false otherwise
 	 */
 	public boolean hasChildren(Object element);
 
 	/**
-	 * Gets the children of this node. This method will not be called if
-	 * hasChildren returns false.
+	 * Gets the children of this node. This method will not be called if hasChildren
+	 * returns false.
 	 * 
-	 * @param element
-	 *            The current node
+	 * @param element The current node
 	 * @return The list of children for this node.
 	 */
 	public Object[] getChildren(Object element);

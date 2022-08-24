@@ -44,8 +44,8 @@ public abstract class ContentBox extends FlowBox {
 	}
 
 	/**
-	 * Returns <code>true</code> if the bidi level for this box is specified,
-	 * and is not the default level (0).
+	 * Returns <code>true</code> if the bidi level for this box is specified, and is
+	 * not the default level (0).
 	 * 
 	 * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
 	 */
@@ -54,12 +54,11 @@ public abstract class ContentBox extends FlowBox {
 	}
 
 	/**
-	 * Sets the Bidi level of this fragment. It is used to rearrange fragments
-	 * as defined by the Unicode Bi-directional algorithm. Valid values are -1
-	 * (meaning no Bidi level), or any non-negative integer less than 62.
+	 * Sets the Bidi level of this fragment. It is used to rearrange fragments as
+	 * defined by the Unicode Bi-directional algorithm. Valid values are -1 (meaning
+	 * no Bidi level), or any non-negative integer less than 62.
 	 * 
-	 * @param newLevel
-	 *            the new BidiLevel
+	 * @param newLevel the new BidiLevel
 	 * @see #getBidiLevel()
 	 */
 	public void setBidiLevel(int newLevel) {

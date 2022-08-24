@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.jface;
 
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -33,8 +32,8 @@ import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
 /**
- * This snippet shows how to use the INestedGraphContentProvider to create a graph
- * with Zest. In this example, getElements returns 3 edges: * Rock2Paper *
+ * This snippet shows how to use the INestedGraphContentProvider to create a
+ * graph with Zest. In this example, getElements returns 3 edges: * Rock2Paper *
  * Paper2Scissors * Scissors2Rock
  * 
  * And for each of these, the source and destination are returned in getSource
@@ -66,7 +65,7 @@ public class GraphJFaceSnippet7 {
 
 		return classFigure;
 	}
-	
+
 	static class MyContentProvider implements IGraphEntityContentProvider, INestedContentProvider {
 
 		public Object[] getConnectedTo(Object entity) {
@@ -79,7 +78,7 @@ public class GraphJFaceSnippet7 {
 			if (entity.equals("Third")) {
 				return new Object[] { "First" };
 			}
-			if ( entity.equals("rock")) {
+			if (entity.equals("rock")) {
 				return new Object[] { "paper" };
 			}
 			return null;
@@ -103,19 +102,18 @@ public class GraphJFaceSnippet7 {
 
 		public Object[] getChildren(Object element) {
 			// TODO Auto-generated method stub
-			return new Object[] {"rock", "paper", "scissors"};
+			return new Object[] { "rock", "paper", "scissors" };
 		}
 
 		public boolean hasChildren(Object element) {
 			// TODO Auto-generated method stub
-			if ( element.equals("First")) return true;
+			if (element.equals("First"))
+				return true;
 			return false;
 		}
 
 	}
 
-
-	
 	static class MyLabelProvider extends LabelProvider implements IFigureProvider {
 		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 
@@ -127,15 +125,19 @@ public class GraphJFaceSnippet7 {
 		}
 
 		public String getText(Object element) {
-			if ( element instanceof EntityConnectionData ) return "";
+			if (element instanceof EntityConnectionData)
+				return "";
 			return element.toString();
 		}
-		
+
 		public IFigure getFigure(Object element) {
 			Font classFont = new Font(null, "Arial", 12, SWT.BOLD);
-			Image classImage = new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("class_obj.gif"));
-			Image privateField = new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("field_private_obj.gif"));
-			Image publicField= new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("methpub_obj.gif"));
+			Image classImage = new Image(Display.getDefault(),
+					UMLClassFigure.class.getResourceAsStream("class_obj.gif"));
+			Image privateField = new Image(Display.getDefault(),
+					UMLClassFigure.class.getResourceAsStream("field_private_obj.gif"));
+			Image publicField = new Image(Display.getDefault(),
+					UMLClassFigure.class.getResourceAsStream("methpub_obj.gif"));
 			return createClassFigure1(classFont, classImage, publicField, privateField);
 		}
 
@@ -157,7 +159,7 @@ public class GraphJFaceSnippet7 {
 		viewer.setLabelProvider(new MyLabelProvider());
 		viewer.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		viewer.setInput(new Object());
-		
+
 		Button button = new Button(shell, SWT.PUSH);
 		button.setText("push");
 		button.addSelectionListener(new SelectionListener() {
@@ -168,7 +170,7 @@ public class GraphJFaceSnippet7 {
 			public void widgetSelected(SelectionEvent e) {
 				viewer.setInput(new Object());
 			}
-			
+
 		});
 		shell.open();
 		while (!shell.isDisposed()) {

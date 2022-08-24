@@ -24,16 +24,13 @@ import org.eclipse.gef.commands.CommandStack;
  * 
  * @deprecated this class will be deleted
  */
-public class TreeLabelProvider implements
-		org.eclipse.jface.viewers.ILabelProvider {
+public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvider {
 
 	/** The CommandStack **/
 	protected CommandStack stack = null;
 	/** Icons associated with a TreeLabelProvider **/
-	protected static Image yesIcon = ImageDescriptor.createFromFile(
-			TreeLabelProvider.class, "icons/YESGRN.gif").createImage(), //$NON-NLS-1$
-			noIcon = ImageDescriptor.createFromFile(TreeLabelProvider.class,
-					"icons/NORED.gif").createImage(); //$NON-NLS-1$
+	protected static Image yesIcon = ImageDescriptor.createFromFile(TreeLabelProvider.class, "icons/YESGRN.gif") //$NON-NLS-1$
+			.createImage(), noIcon = ImageDescriptor.createFromFile(TreeLabelProvider.class, "icons/NORED.gif").createImage(); //$NON-NLS-1$
 	/** Label style constants **/
 	public static byte NORMAL_LABEL_STYLE = 2, DEBUG_LABEL_STYLE = 3;
 
@@ -43,8 +40,7 @@ public class TreeLabelProvider implements
 	/**
 	 * Creates a new TreeLabelProvider with the given CommandStack
 	 * 
-	 * @param stack
-	 *            the CommandStack
+	 * @param stack the CommandStack
 	 */
 	public TreeLabelProvider(CommandStack stack) {
 		this.stack = stack;
@@ -129,8 +125,7 @@ public class TreeLabelProvider implements
 	/**
 	 * Sets the labelStyle to the passed value
 	 * 
-	 * @param labelStyle
-	 *            the label style
+	 * @param labelStyle the label style
 	 */
 	public void setLabelStyle(byte labelStyle) {
 		this.labelStyle = labelStyle;

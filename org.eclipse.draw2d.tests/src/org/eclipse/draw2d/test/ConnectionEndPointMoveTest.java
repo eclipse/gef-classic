@@ -29,8 +29,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class ConnectionEndPointMoveTest extends TestCase implements
-		UpdateListener {
+public class ConnectionEndPointMoveTest extends TestCase implements UpdateListener {
 
 	private FigureCanvas fc;
 	protected IFigure contents;

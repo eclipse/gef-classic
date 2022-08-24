@@ -71,8 +71,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * The unmodifiable list of selected editparts.
 	 */
-	protected final List constantSelection = Collections
-			.unmodifiableList(selection);
+	protected final List constantSelection = Collections.unmodifiableList(selection);
 
 	/**
 	 * The list of selection listeners.
@@ -83,8 +82,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * The editpart specifically set to have focus. Note that if this value is
-	 * <code>null</code>, the focus editpart is still implied to be the part
-	 * with primary selection. Subclasses should call the accessor:
+	 * <code>null</code>, the focus editpart is still implied to be the part with
+	 * primary selection. Subclasses should call the accessor:
 	 * {@link #getFocusEditPart()} whenever possible.
 	 * 
 	 * @deprecated
@@ -138,8 +137,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener)
 	 */
-	public void addDragSourceListener(
-			org.eclipse.gef.dnd.TransferDragSourceListener listener) {
+	public void addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener) {
 		addDragSourceListener((TransferDragSourceListener) listener);
 	}
 
@@ -154,8 +152,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener)
 	 */
-	public void addDropTargetListener(
-			org.eclipse.gef.dnd.TransferDropTargetListener listener) {
+	public void addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener) {
 		addDropTargetListener((TransferDropTargetListener) listener);
 	}
 
@@ -213,8 +210,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Called if and when the <code>Control</code> is disposed. Subclasses may
 	 * extend this method to perform additional cleanup.
 	 * 
-	 * @param e
-	 *            the disposeevent
+	 * @param e the disposeevent
 	 */
 	protected void handleDispose(DisposeEvent e) {
 		if (resources != null)
@@ -241,8 +237,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 */
 	protected void fireSelectionChanged() {
 		Object listeners[] = selectionListeners.toArray();
-		SelectionChangedEvent event = new SelectionChangedEvent(this,
-				getSelection());
+		SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
 		for (int i = 0; i < listeners.length; i++)
 			((ISelectionChangedListener) listeners[i]).selectionChanged(event);
 	}
@@ -298,8 +293,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * Returns <code>null</code> or the DragSource. The drag source is created
-	 * automatically when
-	 * {@link #addDragSourceListener(TransferDragSourceListener)} is called.
+	 * automatically when {@link #addDragSourceListener(TransferDragSourceListener)}
+	 * is called.
 	 * 
 	 * @return <code>null</code> or the drag source
 	 */
@@ -309,8 +304,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * Returns <code>null</code> or the DropTarget. The drop target is created
-	 * automatically when
-	 * {@link #addDropTargetListener(TransferDropTargetListener)} is called.
+	 * automatically when {@link #addDropTargetListener(TransferDropTargetListener)}
+	 * is called.
 	 * 
 	 * @return <code>null</code> or the drop target
 	 */
@@ -398,9 +393,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * Returns an ISelection containing a list of one or more EditPart. Whenever
-	 * {@link #getSelectedEditParts()} returns an empty list, the
-	 * <i>contents</i> editpart ({@link #getContents()}) is returned as the
-	 * current selection.
+	 * {@link #getSelectedEditParts()} returns an empty list, the <i>contents</i>
+	 * editpart ({@link #getContents()}) is returned as the current selection.
 	 * 
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
@@ -486,8 +480,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	}
 
 	/**
-	 * Creates or disposes a DragSource as needed, and sets the supported
-	 * transfer types. Clients should not need to call or override this method.
+	 * Creates or disposes a DragSource as needed, and sets the supported transfer
+	 * types. Clients should not need to call or override this method.
 	 */
 	protected void refreshDragSourceAdapter() {
 		if (getControl() == null)
@@ -496,16 +490,14 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 			setDragSource(null);
 		else {
 			if (getDragSource() == null)
-				setDragSource(new DragSource(getControl(), DND.DROP_MOVE
-						| DND.DROP_COPY | DND.DROP_LINK));
-			getDragSource().setTransfer(
-					getDelegatingDragAdapter().getTransfers());
+				setDragSource(new DragSource(getControl(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
+			getDragSource().setTransfer(getDelegatingDragAdapter().getTransfers());
 		}
 	}
 
 	/**
-	 * Creates or disposes a DropTarget as needed, and sets the supported
-	 * transfer types. Clients should not need to call or override this method.
+	 * Creates or disposes a DropTarget as needed, and sets the supported transfer
+	 * types. Clients should not need to call or override this method.
 	 */
 	protected void refreshDropTargetAdapter() {
 		if (getControl() == null)
@@ -514,10 +506,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 			setDropTarget(null);
 		else {
 			if (getDropTarget() == null)
-				setDropTarget(new DropTarget(getControl(), DND.DROP_MOVE
-						| DND.DROP_COPY | DND.DROP_LINK));
-			getDropTarget().setTransfer(
-					getDelegatingDropAdapter().getTransfers());
+				setDropTarget(new DropTarget(getControl(), DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK));
+			getDropTarget().setTransfer(getDelegatingDropAdapter().getTransfers());
 		}
 	}
 
@@ -531,8 +521,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#removeDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener)
 	 * @deprecated
 	 */
-	public void removeDragSourceListener(
-			org.eclipse.gef.dnd.TransferDragSourceListener listener) {
+	public void removeDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener) {
 		removeDragSourceListener((TransferDragSourceListener) listener);
 	}
 
@@ -549,8 +538,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener)
 	 * @deprecated
 	 */
-	public void removeDropTargetListener(
-			org.eclipse.gef.dnd.TransferDropTargetListener listener) {
+	public void removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener) {
 		removeDropTargetListener((TransferDropTargetListener) listener);
 	}
 
@@ -592,8 +580,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 */
 	public void select(EditPart editpart) {
 		// If selection isn't changing, do nothing.
-		if ((getSelectedEditParts().size() == 1)
-				&& (getSelectedEditParts().get(0) == editpart))
+		if ((getSelectedEditParts().size() == 1) && (getSelectedEditParts().get(0) == editpart))
 			return;
 		primDeselectAll();
 		appendSelection(editpart); // fireSelectionChanged() is called here
@@ -621,8 +608,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#setContents(Object)
 	 */
 	public void setContents(Object contents) {
-		Assert.isTrue(getEditPartFactory() != null,
-				"An EditPartFactory is required to call setContents(Object)");//$NON-NLS-1$
+		Assert.isTrue(getEditPartFactory() != null, "An EditPartFactory is required to call setContents(Object)");//$NON-NLS-1$
 		setContents(getEditPartFactory().createEditPart(null, contents));
 	}
 
@@ -649,8 +635,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * Sets the drag source. Called from {@link #refreshDragSourceAdapter()}.
 	 * 
-	 * @param source
-	 *            <code>null</code> or a drag source
+	 * @param source <code>null</code> or a drag source
 	 */
 	protected void setDragSource(DragSource source) {
 		if (dragSource != null)
@@ -663,8 +648,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * Sets the drop target. Called from {@link #refreshDropTargetAdapter()}.
 	 * 
-	 * @param target
-	 *            dropTarget <code>null</code> or a drop target
+	 * @param target dropTarget <code>null</code> or a drop target
 	 */
 	protected void setDropTarget(DropTarget target) {
 		if (dropTarget != null)
@@ -741,9 +725,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	}
 
 	/**
-	 * Sets the selection to the given selection and fires selection changed.
-	 * The ISelection should be an {@link IStructuredSelection} or it will be
-	 * ignored.
+	 * Sets the selection to the given selection and fires selection changed. The
+	 * ISelection should be an {@link IStructuredSelection} or it will be ignored.
 	 * 
 	 * @see ISelectionProvider#setSelection(ISelection)
 	 */
@@ -752,8 +735,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	}
 
 	/**
-	 * Called when the control is being set to <code>null</code>, but before it
-	 * is null.
+	 * Called when the control is being set to <code>null</code>, but before it is
+	 * null.
 	 */
 	protected void unhookControl() {
 		Assert.isTrue(getControl() != null);

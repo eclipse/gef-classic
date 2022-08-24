@@ -26,8 +26,7 @@ class CompoundPopulateRanks extends PopulateRanks {
 		CompoundDirectedGraph graph = (CompoundDirectedGraph) g;
 
 		/**
-		 * Remove long containment edges at this point so they don't affect
-		 * MinCross.
+		 * Remove long containment edges at this point so they don't affect MinCross.
 		 */
 		Iterator containment = graph.containment.iterator();
 		while (containment.hasNext()) {
@@ -51,8 +50,7 @@ class CompoundPopulateRanks extends PopulateRanks {
 	 */
 	private void bridgeSubgraph(Subgraph subgraph, CompoundDirectedGraph g) {
 		int offset = subgraph.head.rank;
-		boolean occupied[] = new boolean[subgraph.tail.rank
-				- subgraph.head.rank + 1];
+		boolean occupied[] = new boolean[subgraph.tail.rank - subgraph.head.rank + 1];
 		Node bridge[] = new Node[occupied.length];
 
 		for (int i = 0; i < subgraph.members.size(); i++) {

@@ -23,8 +23,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class BentCornerFigure extends Figure {
 
 	/**
-	 * The default amount of pixels subtracted from the figure's height and
-	 * width to determine the size of the corner.
+	 * The default amount of pixels subtracted from the figure's height and width to
+	 * determine the size of the corner.
 	 */
 	protected static int DEFAULT_CORNER_SIZE = 10;
 
@@ -89,8 +89,7 @@ public class BentCornerFigure extends Figure {
 	/**
 	 * Sets the size of the figure's corner to the given offset.
 	 * 
-	 * @param newSize
-	 *            the new size to use.
+	 * @param newSize the new size to use.
 	 */
 	public void setCornerSize(int newSize) {
 		cornerSize = newSize;

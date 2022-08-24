@@ -28,7 +28,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * This snippet shows how to use the IGraphEntityContentProvider to build a graph.  
+ * This snippet shows how to use the IGraphEntityContentProvider to build a
+ * graph.
+ * 
  * @author Ian Bull
  * 
  */
@@ -36,6 +38,7 @@ public class GraphJFaceSnippet1 {
 
 	/**
 	 * The Content Provider
+	 * 
 	 * @author irbull
 	 *
 	 */

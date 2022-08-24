@@ -164,8 +164,7 @@ public class ObstructionExample extends AbstractExample {
 					offset.setHeight(0);
 					if (event.button == 3) {
 						getParent().remove(thisFigure);
-						router.removeObstacle((Rectangle) ObstructionExample.obstacleMap
-								.get(thisFigure));
+						router.removeObstacle((Rectangle) ObstructionExample.obstacleMap.get(thisFigure));
 						ObstructionExample.obstacleMap.remove(thisFigure);
 					}
 				}
@@ -176,9 +175,7 @@ public class ObstructionExample extends AbstractExample {
 					Rectangle rect = getBounds().getCopy();
 					rect.setX(event.x - offset.width());
 					rect.setY(event.y - offset.height());
-					router.updateObstacle(
-							(Rectangle) ObstructionExample.obstacleMap
-									.get(thisFigure), rect);
+					router.updateObstacle((Rectangle) ObstructionExample.obstacleMap.get(thisFigure), rect);
 					ObstructionExample.obstacleMap.put(thisFigure, rect);
 					setBounds(rect);
 					getParent().repaint();
@@ -220,10 +217,8 @@ public class ObstructionExample extends AbstractExample {
 							DragFigure f = new DragFigure();
 							add(f);
 
-							f.setBounds(new Rectangle(pPoint, event
-									.getLocation()));
-							Rectangle bounds = new Rectangle(pPoint,
-									event.getLocation());
+							f.setBounds(new Rectangle(pPoint, event.getLocation()));
+							Rectangle bounds = new Rectangle(pPoint, event.getLocation());
 
 							router.addObstacle(bounds);
 							ObstructionExample.obstacleMap.put(f, bounds);
@@ -233,18 +228,13 @@ public class ObstructionExample extends AbstractExample {
 						if (sourceList.size() > targetList.size()) {
 							// source already there, create target
 							targetList.add(event.getLocation());
-							EllipseDragFigure eFigure = new EllipseDragFigure(
-									event.getLocation(), false);
-							eFigure.setBounds(new Rectangle(event.getLocation()
-									.x() - 10, event.getLocation().y() - 10,
-									20, 20));
+							EllipseDragFigure eFigure = new EllipseDragFigure(event.getLocation(), false);
+							eFigure.setBounds(
+									new Rectangle(event.getLocation().x() - 10, event.getLocation().y() - 10, 20, 20));
 							add(eFigure);
 							figure.addOtherFigure(eFigure);
 							eFigure.addOtherFigure(figure);
-							Path path = new Path(
-									(Point) sourceList
-											.get(targetList.size() - 1),
-									event.getLocation());
+							Path path = new Path((Point) sourceList.get(targetList.size() - 1), event.getLocation());
 							router.addPath(path);
 							paths.add(path);
 							eFigure.path = path;
@@ -253,11 +243,9 @@ public class ObstructionExample extends AbstractExample {
 							path = null;
 						} else {
 							sourceList.add(event.getLocation());
-							EllipseDragFigure eFigure = new EllipseDragFigure(
-									event.getLocation(), true);
-							eFigure.setBounds(new Rectangle(event.getLocation()
-									.x() - 10, event.getLocation().y() - 10,
-									20, 20));
+							EllipseDragFigure eFigure = new EllipseDragFigure(event.getLocation(), true);
+							eFigure.setBounds(
+									new Rectangle(event.getLocation().x() - 10, event.getLocation().y() - 10, 20, 20));
 							add(eFigure);
 							figure = eFigure;
 						}
@@ -272,16 +260,13 @@ public class ObstructionExample extends AbstractExample {
 			int rowSize = (int) Math.sqrt(COUNT);
 			for (int i = 0; i < COUNT; i++) {
 				add(f = new DragFigure());
-				f.setBounds(new Rectangle((i / rowSize) * 101 + (i) % 3 * 10
-						+ 100, i % rowSize * 101 + (i % 7) * 6, 50,
+				f.setBounds(new Rectangle((i / rowSize) * 101 + (i) % 3 * 10 + 100, i % rowSize * 101 + (i % 7) * 6, 50,
 						80 + (int) (r.nextDouble() * 10)));
 			}
 
 			for (int i = 0; i < COUNT; i++) {
-				Rectangle bounds = ((IFigure) obstaclesList.get(i)).getBounds()
-						.getCopy();
-				ObstructionExample.obstacleMap
-						.put(obstaclesList.get(i), bounds);
+				Rectangle bounds = ((IFigure) obstaclesList.get(i)).getBounds().getCopy();
+				ObstructionExample.obstacleMap.put(obstaclesList.get(i), bounds);
 				router.addObstacle(bounds);
 			}
 		}

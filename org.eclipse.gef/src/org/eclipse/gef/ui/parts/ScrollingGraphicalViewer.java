@@ -55,8 +55,8 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 	}
 
 	/**
-	 * Convenience method which types the control as a <code>FigureCanvas</code>
-	 * . This method returns <code>null</code> whenever the control is null.
+	 * Convenience method which types the control as a <code>FigureCanvas</code> .
+	 * This method returns <code>null</code> whenever the control is null.
 	 * 
 	 * @return <code>null</code> or the Control as a FigureCanvas
 	 */
@@ -85,22 +85,17 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 		Dimension viewportSize = port.getClientArea().getSize();
 
 		Point topLeft = exposeRegion.getTopLeft();
-		Point bottomRight = exposeRegion.getBottomRight().translate(
-				viewportSize.getNegated());
+		Point bottomRight = exposeRegion.getBottomRight().translate(viewportSize.getNegated());
 		Point finalLocation = new Point();
 		if (viewportSize.width < exposeRegion.width)
-			finalLocation.x = Math.min(bottomRight.x,
-					Math.max(topLeft.x, port.getViewLocation().x));
+			finalLocation.x = Math.min(bottomRight.x, Math.max(topLeft.x, port.getViewLocation().x));
 		else
-			finalLocation.x = Math.min(topLeft.x,
-					Math.max(bottomRight.x, port.getViewLocation().x));
+			finalLocation.x = Math.min(topLeft.x, Math.max(bottomRight.x, port.getViewLocation().x));
 
 		if (viewportSize.height < exposeRegion.height)
-			finalLocation.y = Math.min(bottomRight.y,
-					Math.max(topLeft.y, port.getViewLocation().y));
+			finalLocation.y = Math.min(bottomRight.y, Math.max(topLeft.y, port.getViewLocation().y));
 		else
-			finalLocation.y = Math.min(topLeft.y,
-					Math.max(bottomRight.y, port.getViewLocation().y));
+			finalLocation.y = Math.min(topLeft.y, Math.max(bottomRight.y, port.getViewLocation().y));
 
 		getFigureCanvas().scrollSmoothTo(finalLocation.x, finalLocation.y);
 	}

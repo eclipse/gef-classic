@@ -43,21 +43,21 @@ public class DefaultEntryPage implements EntryPage {
 
 	/**
 	 * This is the panel that is created by
-	 * {@link #createControl(Composite, PaletteEntry)}. It will be
-	 * <code>null</code> if that method hasn't been invoked yet.
+	 * {@link #createControl(Composite, PaletteEntry)}. It will be <code>null</code>
+	 * if that method hasn't been invoked yet.
 	 */
 	private Composite panel;
 	/**
-	 * This is the <code>PaletteEntry</code> that this page represents. It will
-	 * be <code>null</code> until
-	 * {@link #createControl(Composite, PaletteEntry)} is invoked.
+	 * This is the <code>PaletteEntry</code> that this page represents. It will be
+	 * <code>null</code> until {@link #createControl(Composite, PaletteEntry)} is
+	 * invoked.
 	 */
 	private PaletteEntry entry;
 
 	/**
-	 * Being live, this method is completely ignored. Model is updated with
-	 * every keystroke. So, there is no need to wait for this method to be
-	 * called to actually make the changes to the model.
+	 * Being live, this method is completely ignored. Model is updated with every
+	 * keystroke. So, there is no need to wait for this method to be called to
+	 * actually make the changes to the model.
 	 */
 	public final void apply() {
 	}
@@ -92,18 +92,16 @@ public class DefaultEntryPage implements EntryPage {
 	 * Creates the <code>Text</code> where the description of the entry is to be
 	 * displayed.
 	 * 
-	 * @param panel
-	 *            The Composite in which the <code>Text</code> is to be created
+	 * @param panel The Composite in which the <code>Text</code> is to be created
 	 * @return The newly created <code>Text</code>
 	 */
 	protected Text createDescText(Composite panel) {
 		String desc = entry.getDescription();
-		Text description = createText(panel, SWT.MULTI | SWT.WRAP | SWT.BORDER
-				| SWT.V_SCROLL, desc);
+		Text description = createText(panel, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL, desc);
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint = 150;
-		data.heightHint = description.computeTrim(0, 0, 10, FigureUtilities
-				.getFontMetrics(description.getFont()).getHeight() * 2).height;
+		data.heightHint = description.computeTrim(0, 0, 10,
+				FigureUtilities.getFontMetrics(description.getFont()).getHeight() * 2).height;
 		description.setLayoutData(data);
 		if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 			description.addModifyListener(new ModifyListener() {
@@ -116,12 +114,10 @@ public class DefaultEntryPage implements EntryPage {
 	}
 
 	/**
-	 * Creates the <code>Button</code> (CheckBox) for indicating the hidden
-	 * status of the entry. It initializes it with the current hidden state of
-	 * entry.
+	 * Creates the <code>Button</code> (CheckBox) for indicating the hidden status
+	 * of the entry. It initializes it with the current hidden state of entry.
 	 * 
-	 * @param panel
-	 *            The Composite in which the Button is to be created
+	 * @param panel The Composite in which the Button is to be created
 	 * @return The newly created Button
 	 */
 	protected Button createHiddenCheckBox(Composite panel) {
@@ -135,8 +131,7 @@ public class DefaultEntryPage implements EntryPage {
 		} else {
 			hidden.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
-					handleHiddenSelected(((Button) e.getSource())
-							.getSelection());
+					handleHiddenSelected(((Button) e.getSource()).getSelection());
 				}
 			});
 		}
@@ -147,12 +142,9 @@ public class DefaultEntryPage implements EntryPage {
 	/**
 	 * Creates a label
 	 * 
-	 * @param panel
-	 *            The Composite in which the Label is to be created
-	 * @param style
-	 *            The stylebits for the Label
-	 * @param text
-	 *            The Label's text
+	 * @param panel The Composite in which the Label is to be created
+	 * @param style The stylebits for the Label
+	 * @param text  The Label's text
 	 * @return Label - The newly created Label
 	 */
 	protected Label createLabel(Composite panel, int style, String text) {
@@ -165,8 +157,7 @@ public class DefaultEntryPage implements EntryPage {
 	/**
 	 * Creates the Text where the name of the entry is to be displayed.
 	 * 
-	 * @param panel
-	 *            The Composite in which the Text is to be created
+	 * @param panel The Composite in which the Text is to be created
 	 * @return Text - The newly created Text
 	 */
 	protected Text createNameText(Composite panel) {
@@ -186,17 +177,13 @@ public class DefaultEntryPage implements EntryPage {
 	 * Creates a <code>Text</code>. This method is mainly a result of
 	 * code-factoring.
 	 * 
-	 * @param panel
-	 *            The Composite in which the Text is to be created
-	 * @param style
-	 *            The stylebits for the Text
-	 * @param text
-	 *            The text to be displayed in the Text
+	 * @param panel The Composite in which the Text is to be created
+	 * @param style The stylebits for the Text
+	 * @param text  The text to be displayed in the Text
 	 * @return a text widget with griddata constraint
 	 */
 	protected Text createText(Composite panel, int style, String text) {
-		if (getEntry() instanceof PaletteSeparator
-				|| getPermission() < PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
+		if (getEntry() instanceof PaletteSeparator || getPermission() < PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 			style = style | SWT.READ_ONLY;
 		}
 
@@ -230,8 +217,7 @@ public class DefaultEntryPage implements EntryPage {
 	 * Sub-classes should override this method to provide appropriate error
 	 * notification messages.
 	 * 
-	 * @return The message to be used when notifying listeners about a state
-	 *         change
+	 * @return The message to be used when notifying listeners about a state change
 	 */
 	protected String getMessage() {
 		return ""; //$NON-NLS-1$
@@ -247,16 +233,15 @@ public class DefaultEntryPage implements EntryPage {
 
 	/**
 	 * <p>
-	 * Updates the model with the change in the entry's description, and updates
-	 * the state of the page.
+	 * Updates the model with the change in the entry's description, and updates the
+	 * state of the page.
 	 * </p>
 	 * <p>
 	 * This method is invoked on every keystroke in the Text displaying the
 	 * description of the entry.
 	 * </p>
 	 * 
-	 * @param text
-	 *            The new description
+	 * @param text The new description
 	 */
 	protected void handleDescriptionChanged(String text) {
 		getEntry().setDescription(text.trim());
@@ -264,15 +249,14 @@ public class DefaultEntryPage implements EntryPage {
 
 	/**
 	 * <p>
-	 * Updates the model with the change in the entry's hidden state, and
-	 * updates the state of the page.
+	 * Updates the model with the change in the entry's hidden state, and updates
+	 * the state of the page.
 	 * </p>
 	 * <p>
 	 * This method is invokes whenever the "Hidden" checkbox is selected.
 	 * </p>
 	 * 
-	 * @param isChecked
-	 *            The new selection value
+	 * @param isChecked The new selection value
 	 */
 	protected void handleHiddenSelected(boolean isChecked) {
 		getEntry().setVisible(!isChecked);
@@ -280,16 +264,15 @@ public class DefaultEntryPage implements EntryPage {
 
 	/**
 	 * <p>
-	 * Updates the model with the change in the entry's name, and updates the
-	 * state of the page.
+	 * Updates the model with the change in the entry's name, and updates the state
+	 * of the page.
 	 * </p>
 	 * <p>
-	 * This method is invoked on every keystroke in the Text displaying the
-	 * entry's name.
+	 * This method is invoked on every keystroke in the Text displaying the entry's
+	 * name.
 	 * </p>
 	 * 
-	 * @param text
-	 *            The new name
+	 * @param text The new name
 	 */
 	protected void handleNameChanged(String text) {
 		getEntry().setLabel(text.trim());

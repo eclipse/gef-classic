@@ -27,14 +27,11 @@ public final class GEFPlugin extends AbstractUIPlugin {
 	 * This method will be deleted.
 	 * 
 	 * @deprecated use org.eclipse.gef.ui.properties.UndoablePropertySheetEntry
-	 * @param stack
-	 *            a command stack
+	 * @param stack a command stack
 	 * @return the implementation for the entry
 	 */
-	public static IPropertySheetEntry createUndoablePropertySheetEntry(
-			CommandStack stack) {
-		return new org.eclipse.gef.ui.properties.UndoablePropertySheetEntry(
-				stack);
+	public static IPropertySheetEntry createUndoablePropertySheetEntry(CommandStack stack) {
+		return new org.eclipse.gef.ui.properties.UndoablePropertySheetEntry(stack);
 	}
 
 	/**

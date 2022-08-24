@@ -21,6 +21,7 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
 /**
  * This layout shifts overlapping nodes to the right.
+ * 
  * @author Ian Bull
  */
 public class HorizontalShift extends AbstractLayoutAlgorithm {
@@ -32,7 +33,8 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 		super(styles);
 	}
 
-	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
+	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 
 		ArrayList row = new ArrayList();
 		for (int i = 0; i < entitiesToLayout.length; i++) {
@@ -59,7 +61,8 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 			List currentRow = (List) iterator.next();
 			Collections.sort(currentRow, new Comparator() {
 				public int compare(Object arg0, Object arg1) {
-					return (int) (((InternalNode) arg1).getLayoutEntity().getYInLayout() - ((InternalNode) arg0).getLayoutEntity().getYInLayout());
+					return (int) (((InternalNode) arg1).getLayoutEntity().getYInLayout()
+							- ((InternalNode) arg0).getLayoutEntity().getYInLayout());
 				}
 			});
 			Iterator iterator2 = currentRow.iterator();
@@ -84,10 +87,11 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 			List currentRow = (List) list.get(i);
 			InternalNode currentRowNode = (InternalNode) currentRow.get(0);
 			double currentRowY = currentRowNode.getLayoutEntity().getYInLayout();
-			//double currentRowHeight = currentRowNode.getLayoutEntity().getHeightInLayout();
+			// double currentRowHeight =
+			// currentRowNode.getLayoutEntity().getHeightInLayout();
 			if (layoutY >= (currentRowY - DELTA) && layoutY <= currentRowY + DELTA) {
 				currentRow.add(node);
-				//list.add(i, currentRow);
+				// list.add(i, currentRow);
 				return;
 			}
 		}
@@ -111,11 +115,13 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 		return true;
 	}
 
-	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider) {
+	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationshipsToConsider) {
 		// TODO Auto-generated method stub
 	}
 
-	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
+	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
+			double x, double y, double width, double height) {
 		// TODO Auto-generated method stub
 
 	}

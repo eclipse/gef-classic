@@ -49,8 +49,7 @@ public class Digraph2Edge {
 	/**
 	 * Set the source node for this edge.
 	 * 
-	 * @param newSource
-	 *            the source node.
+	 * @param newSource the source node.
 	 */
 	public void setSource(Digraph2Node newSource) {
 		if (this.source != null) {
@@ -65,8 +64,7 @@ public class Digraph2Edge {
 	/**
 	 * Set the target node for this edge.
 	 * 
-	 * @param newTarget
-	 *            the target node.
+	 * @param newTarget the target node.
 	 */
 	public void setTarget(Digraph2Node newTarget) {
 		if (this.target != null) {

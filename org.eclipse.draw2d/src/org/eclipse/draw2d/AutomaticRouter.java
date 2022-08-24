@@ -78,17 +78,14 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	}
 
 	/**
-	 * Handles collisions between 2 or more Connections. Collisions are
-	 * currently defined as 2 connections with no bendpoints and whose start and
-	 * end points coincide. In other words, the 2 connections are the exact same
-	 * line.
+	 * Handles collisions between 2 or more Connections. Collisions are currently
+	 * defined as 2 connections with no bendpoints and whose start and end points
+	 * coincide. In other words, the 2 connections are the exact same line.
 	 * 
-	 * @param list
-	 *            The PointList of a connection that collides with another
-	 *            connection
-	 * @param index
-	 *            The index of the current connection in the list of colliding
-	 *            connections
+	 * @param list  The PointList of a connection that collides with another
+	 *              connection
+	 * @param index The index of the current connection in the list of colliding
+	 *              connections
 	 */
 	protected abstract void handleCollision(PointList list, int index);
 
@@ -139,12 +136,11 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	}
 
 	/**
-	 * Routes the given connection. Calls the 'next' router first (if one
-	 * exists) and if no bendpoints were added by the next router, collisions
-	 * are dealt with by calling {@link #handleCollision(PointList, int)}.
+	 * Routes the given connection. Calls the 'next' router first (if one exists)
+	 * and if no bendpoints were added by the next router, collisions are dealt with
+	 * by calling {@link #handleCollision(PointList, int)}.
 	 * 
-	 * @param conn
-	 *            The connection to route
+	 * @param conn The connection to route
 	 */
 	public void route(Connection conn) {
 		if (next() != null)
@@ -179,12 +175,11 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	}
 
 	/**
-	 * An AutomaticRouter needs no constraints for the connections it routes.
-	 * This method invalidates the connections and calls
+	 * An AutomaticRouter needs no constraints for the connections it routes. This
+	 * method invalidates the connections and calls
 	 * {@link #setConstraint(Connection, Object)} on the {@link #next()} router.
 	 * 
-	 * @see org.eclipse.draw2d.ConnectionRouter#setConstraint(Connection,
-	 *      Object)
+	 * @see org.eclipse.draw2d.ConnectionRouter#setConstraint(Connection, Object)
 	 */
 	public void setConstraint(Connection connection, Object constraint) {
 		invalidate(connection);
@@ -195,8 +190,7 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	/**
 	 * Sets the start and end points for the given connection.
 	 * 
-	 * @param conn
-	 *            The connection
+	 * @param conn The connection
 	 */
 	protected void setEndPoints(Connection conn) {
 		PointList points = conn.getPoints();
@@ -213,8 +207,7 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	/**
 	 * Sets the next router.
 	 * 
-	 * @param router
-	 *            The ConnectionRouter
+	 * @param router The ConnectionRouter
 	 * @since 2.0
 	 */
 	public void setNextRouter(ConnectionRouter router) {

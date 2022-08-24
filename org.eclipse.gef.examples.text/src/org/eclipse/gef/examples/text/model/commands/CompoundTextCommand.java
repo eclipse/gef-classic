@@ -19,8 +19,7 @@ import org.eclipse.gef.examples.text.GraphicalTextViewer;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextCommand;
 
-public class CompoundTextCommand extends Command implements TextCommand,
-		AppendableCommand {
+public class CompoundTextCommand extends Command implements TextCommand, AppendableCommand {
 
 	private List pending = new ArrayList();
 	private List applied = new ArrayList();
@@ -81,15 +80,13 @@ public class CompoundTextCommand extends Command implements TextCommand,
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
 		if (applied.isEmpty())
 			return null;
-		return ((TextCommand) applied.get(applied.size() - 1))
-				.getExecuteSelectionRange(viewer);
+		return ((TextCommand) applied.get(applied.size() - 1)).getExecuteSelectionRange(viewer);
 	}
 
 	public SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer) {
 		if (applied.isEmpty())
 			return null;
-		return ((TextCommand) applied.get(applied.size() - 1))
-				.getExecuteSelectionRange(viewer);
+		return ((TextCommand) applied.get(applied.size() - 1)).getExecuteSelectionRange(viewer);
 	}
 
 	public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {

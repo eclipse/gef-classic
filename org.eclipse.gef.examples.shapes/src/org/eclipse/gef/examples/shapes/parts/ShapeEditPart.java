@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Elias Volanakis - initial API and implementation
+ *ï¿½ï¿½ï¿½ï¿½Elias Volanakis - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
@@ -52,14 +52,12 @@ import org.eclipse.gef.examples.shapes.model.commands.ConnectionReconnectCommand
  * 
  * @author Elias Volanakis
  */
-class ShapeEditPart extends AbstractGraphicalEditPart implements
-		PropertyChangeListener, NodeEditPart {
+class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener, NodeEditPart {
 
 	private ConnectionAnchor anchor;
 
 	/**
-	 * Upon activation, attach to the model element as a property change
-	 * listener.
+	 * Upon activation, attach to the model element as a property change listener.
 	 */
 	public void activate() {
 		if (!isActive()) {
@@ -75,85 +73,65 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements
 	 */
 	protected void createEditPolicies() {
 		// allow removal of the associated model element
-		installEditPolicy(EditPolicy.COMPONENT_ROLE,
-				new ShapeComponentEditPolicy());
+		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ShapeComponentEditPolicy());
 		// allow the creation of connections and
 		// and the reconnection of connections between Shape instances
-		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
-				new GraphicalNodeEditPolicy() {
-					/*
-					 * (non-Javadoc)
-					 * 
-					 * @see
-					 * org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
-					 * getConnectionCompleteCommand
-					 * (org.eclipse.gef.requests.CreateConnectionRequest)
-					 */
-					protected Command getConnectionCompleteCommand(
-							CreateConnectionRequest request) {
-						ConnectionCreateCommand cmd = (ConnectionCreateCommand) request
-								.getStartCommand();
-						cmd.setTarget((Shape) getHost().getModel());
-						return cmd;
-					}
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new GraphicalNodeEditPolicy() {
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
+			 * getConnectionCompleteCommand
+			 * (org.eclipse.gef.requests.CreateConnectionRequest)
+			 */
+			protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
+				ConnectionCreateCommand cmd = (ConnectionCreateCommand) request.getStartCommand();
+				cmd.setTarget((Shape) getHost().getModel());
+				return cmd;
+			}
 
-					/*
-					 * (non-Javadoc)
-					 * 
-					 * @see
-					 * org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
-					 * getConnectionCreateCommand
-					 * (org.eclipse.gef.requests.CreateConnectionRequest)
-					 */
-					protected Command getConnectionCreateCommand(
-							CreateConnectionRequest request) {
-						Shape source = (Shape) getHost().getModel();
-						int style = ((Integer) request.getNewObjectType())
-								.intValue();
-						ConnectionCreateCommand cmd = new ConnectionCreateCommand(
-								source, style);
-						request.setStartCommand(cmd);
-						return cmd;
-					}
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
+			 * getConnectionCreateCommand (org.eclipse.gef.requests.CreateConnectionRequest)
+			 */
+			protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
+				Shape source = (Shape) getHost().getModel();
+				int style = ((Integer) request.getNewObjectType()).intValue();
+				ConnectionCreateCommand cmd = new ConnectionCreateCommand(source, style);
+				request.setStartCommand(cmd);
+				return cmd;
+			}
 
-					/*
-					 * (non-Javadoc)
-					 * 
-					 * @see
-					 * org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
-					 * getReconnectSourceCommand
-					 * (org.eclipse.gef.requests.ReconnectRequest)
-					 */
-					protected Command getReconnectSourceCommand(
-							ReconnectRequest request) {
-						Connection conn = (Connection) request
-								.getConnectionEditPart().getModel();
-						Shape newSource = (Shape) getHost().getModel();
-						ConnectionReconnectCommand cmd = new ConnectionReconnectCommand(
-								conn);
-						cmd.setNewSource(newSource);
-						return cmd;
-					}
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
+			 * getReconnectSourceCommand (org.eclipse.gef.requests.ReconnectRequest)
+			 */
+			protected Command getReconnectSourceCommand(ReconnectRequest request) {
+				Connection conn = (Connection) request.getConnectionEditPart().getModel();
+				Shape newSource = (Shape) getHost().getModel();
+				ConnectionReconnectCommand cmd = new ConnectionReconnectCommand(conn);
+				cmd.setNewSource(newSource);
+				return cmd;
+			}
 
-					/*
-					 * (non-Javadoc)
-					 * 
-					 * @see
-					 * org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
-					 * getReconnectTargetCommand
-					 * (org.eclipse.gef.requests.ReconnectRequest)
-					 */
-					protected Command getReconnectTargetCommand(
-							ReconnectRequest request) {
-						Connection conn = (Connection) request
-								.getConnectionEditPart().getModel();
-						Shape newTarget = (Shape) getHost().getModel();
-						ConnectionReconnectCommand cmd = new ConnectionReconnectCommand(
-								conn);
-						cmd.setNewTarget(newTarget);
-						return cmd;
-					}
-				});
+			/*
+			 * (non-Javadoc)
+			 * 
+			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
+			 * getReconnectTargetCommand (org.eclipse.gef.requests.ReconnectRequest)
+			 */
+			protected Command getReconnectTargetCommand(ReconnectRequest request) {
+				Connection conn = (Connection) request.getConnectionEditPart().getModel();
+				Shape newTarget = (Shape) getHost().getModel();
+				ConnectionReconnectCommand cmd = new ConnectionReconnectCommand(conn);
+				cmd.setNewTarget(newTarget);
+				return cmd;
+			}
+		});
 	}
 
 	/*
@@ -169,8 +147,8 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements
 	}
 
 	/**
-	 * Return a IFigure depending on the instance of the current model element.
-	 * This allows this EditPart to be used for both sublasses of Shape.
+	 * Return a IFigure depending on the instance of the current model element. This
+	 * allows this EditPart to be used for both sublasses of Shape.
 	 */
 	private IFigure createFigureForModel() {
 		if (getModel() instanceof EllipticalShape) {
@@ -236,20 +214,17 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef
+	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef
 	 * .ConnectionEditPart)
 	 */
-	public ConnectionAnchor getSourceConnectionAnchor(
-			ConnectionEditPart connection) {
+	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return getConnectionAnchor();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef
+	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef
 	 * .Request)
 	 */
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
@@ -259,20 +234,17 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef
+	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef
 	 * .ConnectionEditPart)
 	 */
-	public ConnectionAnchor getTargetConnectionAnchor(
-			ConnectionEditPart connection) {
+	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
 		return getConnectionAnchor();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef
+	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef
 	 * .Request)
 	 */
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
@@ -303,9 +275,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements
 		// (the Figure of the ShapesDiagramEditPart), will not know the bounds
 		// of this figure
 		// and will not draw it correctly.
-		Rectangle bounds = new Rectangle(getCastedModel().getLocation(),
-				getCastedModel().getSize());
-		((GraphicalEditPart) getParent()).setLayoutConstraint(this,
-				getFigure(), bounds);
+		Rectangle bounds = new Rectangle(getCastedModel().getLocation(), getCastedModel().getSize());
+		((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);
 	}
 }

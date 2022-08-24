@@ -24,8 +24,7 @@ public class MatchHeightRetargetAction extends LabelRetargetAction {
 	 * Constructs a <code>MatchHeightRetargetAction</code>.
 	 */
 	public MatchHeightRetargetAction() {
-		super(GEFActionConstants.MATCH_HEIGHT,
-				GEFMessages.MatchHeightAction_Label);
+		super(GEFActionConstants.MATCH_HEIGHT, GEFMessages.MatchHeightAction_Label);
 		setImageDescriptor(InternalImages.DESC_MATCH_HEIGHT);
 		setDisabledImageDescriptor(InternalImages.DESC_MATCH_HEIGHT_DIS);
 		setToolTipText(GEFMessages.MatchHeightAction_Tooltip);

@@ -19,8 +19,7 @@ import org.eclipse.gef.EditPartViewer;
  * An abstract implementation of <code>TransferDragSourceListener</code>
  * associated with an {@link EditPartViewer}
  */
-public abstract class AbstractTransferDragSourceListener implements
-		TransferDragSourceListener {
+public abstract class AbstractTransferDragSourceListener implements TransferDragSourceListener {
 
 	private EditPartViewer viewer;
 	private Transfer transfer;
@@ -29,8 +28,7 @@ public abstract class AbstractTransferDragSourceListener implements
 	 * Constructs an AbstractTransferDragSourceListener for the given
 	 * EditPartViewer.
 	 * 
-	 * @param viewer
-	 *            the EditPartViewer
+	 * @param viewer the EditPartViewer
 	 */
 	public AbstractTransferDragSourceListener(EditPartViewer viewer) {
 		setViewer(viewer);
@@ -40,13 +38,10 @@ public abstract class AbstractTransferDragSourceListener implements
 	 * Constructs an AbstractTransferDragSourceListener with the specified
 	 * EditPartViewer and Transfer.
 	 * 
-	 * @param viewer
-	 *            the EditPartViewer
-	 * @param xfer
-	 *            the Transfer
+	 * @param viewer the EditPartViewer
+	 * @param xfer   the Transfer
 	 */
-	public AbstractTransferDragSourceListener(EditPartViewer viewer,
-			Transfer xfer) {
+	public AbstractTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) {
 		setViewer(viewer);
 		setTransfer(xfer);
 	}
@@ -82,8 +77,7 @@ public abstract class AbstractTransferDragSourceListener implements
 	/**
 	 * Sets the <code>Transfer</code> for this listener.
 	 * 
-	 * @param xfer
-	 *            the Transfer
+	 * @param xfer the Transfer
 	 */
 	protected void setTransfer(Transfer xfer) {
 		transfer = xfer;
@@ -92,8 +86,7 @@ public abstract class AbstractTransferDragSourceListener implements
 	/**
 	 * Sets the EditPartViewer for this listener.
 	 * 
-	 * @param viewer
-	 *            the EditPartViewer
+	 * @param viewer the EditPartViewer
 	 */
 	protected void setViewer(EditPartViewer viewer) {
 		this.viewer = viewer;

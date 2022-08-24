@@ -49,8 +49,7 @@ class FreeformHelper implements FreeformListener {
 		}
 		Insets insets = host.getInsets();
 		if (freeformExtent == null)
-			freeformExtent = new Rectangle(0, 0, insets.getWidth(),
-					insets.getHeight());
+			freeformExtent = new Rectangle(0, 0, insets.getWidth(), insets.getHeight());
 		else {
 			host.translateToParent(freeformExtent);
 			freeformExtent.expand(insets);

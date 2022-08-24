@@ -18,8 +18,7 @@ import org.eclipse.gef.dnd.AbstractTransferDropTargetListener;
 
 import org.eclipse.gef.examples.logicdesigner.edit.NativeDropRequest;
 
-public class TextTransferDropTargetListener extends
-		AbstractTransferDropTargetListener {
+public class TextTransferDropTargetListener extends AbstractTransferDropTargetListener {
 
 	public TextTransferDropTargetListener(EditPartViewer viewer, Transfer xfer) {
 		super(viewer, xfer);

@@ -28,8 +28,7 @@ import org.eclipse.gef.commands.UnexecutableCommand;
  * @author Pratik Shah
  * @since 3.2
  */
-public class SimpleRootEditPart extends AbstractGraphicalEditPart implements
-		RootEditPart {
+public class SimpleRootEditPart extends AbstractGraphicalEditPart implements RootEditPart {
 
 	private EditPart contents;
 	private EditPartViewer viewer;

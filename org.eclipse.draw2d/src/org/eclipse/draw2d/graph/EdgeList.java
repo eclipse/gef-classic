@@ -23,8 +23,7 @@ public class EdgeList extends ArrayList {
 	/**
 	 * Returns the edge for the given index.
 	 * 
-	 * @param index
-	 *            the index of the requested edge
+	 * @param index the index of the requested edge
 	 * @return the edge at the given index
 	 */
 	public Edge getEdge(int index) {
@@ -34,8 +33,7 @@ public class EdgeList extends ArrayList {
 	/**
 	 * For intrenal use only.
 	 * 
-	 * @param i
-	 *            and index
+	 * @param i and index
 	 * @return a value
 	 */
 	public int getSourceIndex(int i) {
@@ -45,8 +43,7 @@ public class EdgeList extends ArrayList {
 	/**
 	 * For internal use only.
 	 * 
-	 * @param i
-	 *            an index
+	 * @param i an index
 	 * @return a value
 	 */
 	public int getTargetIndex(int i) {
@@ -93,8 +90,7 @@ public class EdgeList extends ArrayList {
 	/**
 	 * For internal use only. Resets all flags.
 	 * 
-	 * @param resetTree
-	 *            internal
+	 * @param resetTree internal
 	 */
 	public void resetFlags(boolean resetTree) {
 		for (int i = 0; i < size(); i++) {
@@ -107,8 +103,7 @@ public class EdgeList extends ArrayList {
 	/**
 	 * For internal use only.
 	 * 
-	 * @param value
-	 *            value
+	 * @param value value
 	 */
 	public void setFlags(boolean value) {
 		for (int i = 0; i < size(); i++)

@@ -25,12 +25,10 @@ import org.eclipse.gef.ui.palette.editparts.PaletteEditPart;
 public class GroupEditPart extends PaletteEditPart {
 
 	/** Scrollpane border constant for icon and column layout mode **/
-	private static final Border SCROLL_PANE_BORDER = new MarginBorder(2, 2, 2,
-			2);
+	private static final Border SCROLL_PANE_BORDER = new MarginBorder(2, 2, 2, 2);
 
 	/** Scrollpane border constant for list and details layout mode **/
-	private static final Border SCROLL_PANE_LIST_BORDER = new MarginBorder(2,
-			0, 2, 0);
+	private static final Border SCROLL_PANE_LIST_BORDER = new MarginBorder(2, 0, 2, 0);
 
 	private int cachedLayout = -1;
 

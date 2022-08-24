@@ -19,8 +19,8 @@ import org.eclipse.gef.examples.text.SelectionRange;
 public interface TextStyleManager {
 
 	/**
-	 * Returns the effective value for the requested style and range. If the
-	 * range does not have a consistent value for that style, then
+	 * Returns the effective value for the requested style and range. If the range
+	 * does not have a consistent value for that style, then
 	 * {@link org.eclipse.gef.examples.text.actions.StyleService#UNDEFINED} is
 	 * returned.
 	 * 

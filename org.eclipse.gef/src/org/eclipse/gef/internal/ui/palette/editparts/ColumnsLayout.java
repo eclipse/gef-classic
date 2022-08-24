@@ -43,15 +43,13 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 	protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
 		if (!(child instanceof SeparatorEditPart.SeparatorFigure)) {
 			Dimension hints = getMinimumHints(child, wHint, hHint);
-			int numOfColumns = (wHint + majorSpacing)
-					/ (hints.width + majorSpacing);
+			int numOfColumns = (wHint + majorSpacing) / (hints.width + majorSpacing);
 			// numOfColumns = Math.min(numOfColumns,
 			// maxChildrenInRowWith(child));
 			if (numOfColumns == 0) {
 				wHint = hints.width;
 			} else {
-				wHint = (wHint - ((numOfColumns - 1) * majorSpacing))
-						/ numOfColumns;
+				wHint = (wHint - ((numOfColumns - 1) * majorSpacing)) / numOfColumns;
 			}
 			hHint = hints.height;
 		}
@@ -60,9 +58,9 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 	}
 
 	/*
-	 * Returns a dimension which has a width that is the greater of the
-	 * following two: the default width (set on defaultConstraint), and the
-	 * minimum width of the widest child.
+	 * Returns a dimension which has a width that is the greater of the following
+	 * two: the default width (set on defaultConstraint), and the minimum width of
+	 * the widest child.
 	 */
 	private Dimension getMinimumHints(IFigure figure, int wHint, int hHint) {
 		if (cachedConstraint == null) {
@@ -70,13 +68,11 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 			List children = figure.getParent().getChildren();
 			for (Iterator iter = children.iterator(); iter.hasNext();) {
 				IFigure child = (IFigure) iter.next();
-				Dimension childSize = (child instanceof PinnablePaletteStackFigure) ? ((PinnablePaletteStackFigure) child)
-						.getHeaderPreferredSize(cachedConstraint.width,
-								cachedConstraint.height) : child
-						.getPreferredSize(cachedConstraint.width,
-								cachedConstraint.height);
-				cachedConstraint.width = Math.max(cachedConstraint.width,
-						childSize.width);
+				Dimension childSize = (child instanceof PinnablePaletteStackFigure)
+						? ((PinnablePaletteStackFigure) child).getHeaderPreferredSize(cachedConstraint.width,
+								cachedConstraint.height)
+						: child.getPreferredSize(cachedConstraint.width, cachedConstraint.height);
+				cachedConstraint.width = Math.max(cachedConstraint.width, childSize.width);
 			}
 			cachedConstraint.height = hHint;
 		}
@@ -94,9 +90,8 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 	/**
 	 * For use by the palette
 	 * 
-	 * @param d
-	 *            The constraints to be respected by the children of the figure
-	 *            that has this layout; Should not be <code>null</code>.
+	 * @param d The constraints to be respected by the children of the figure that
+	 *          has this layout; Should not be <code>null</code>.
 	 */
 	public void setDefaultConstraint(Dimension d) {
 		defaultConstraint = d;

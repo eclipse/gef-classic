@@ -63,8 +63,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	/**
 	 * Constructs a key handler for the given viewer.
 	 * 
-	 * @param viewer
-	 *            the viewer
+	 * @param viewer the viewer
 	 */
 	public GraphicalViewerKeyHandler(GraphicalViewer viewer) {
 		this.viewer = viewer;
@@ -75,18 +74,16 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 *         traversal/selection
 	 */
 	boolean acceptConnection(KeyEvent event) {
-		return event.character == '/' || event.character == '?'
-				|| event.character == '\\' || event.character == '\u001c'
-				|| event.character == '|';
+		return event.character == '/' || event.character == '?' || event.character == '\\'
+				|| event.character == '\u001c' || event.character == '|';
 	}
 
 	/**
-	 * @return <code>true</code> if the keys pressed indicate to traverse inside
-	 *         a container
+	 * @return <code>true</code> if the keys pressed indicate to traverse inside a
+	 *         container
 	 */
 	boolean acceptIntoContainer(KeyEvent event) {
-		return ((event.stateMask & SWT.ALT) != 0)
-				&& (event.keyCode == SWT.ARROW_DOWN);
+		return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_DOWN);
 	}
 
 	/**
@@ -96,21 +93,19 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	boolean acceptLeaveConnection(KeyEvent event) {
 		int key = event.keyCode;
 		if (getFocusEditPart() instanceof ConnectionEditPart)
-			if ((key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT)
-					|| (key == SWT.ARROW_DOWN) || (key == SWT.ARROW_LEFT))
+			if ((key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT) || (key == SWT.ARROW_DOWN) || (key == SWT.ARROW_LEFT))
 				return true;
 		return false;
 	}
 
 	/**
-	 * @return <code>true</code> if the viewer's contents has focus and one of
-	 *         the arrow keys is pressed
+	 * @return <code>true</code> if the viewer's contents has focus and one of the
+	 *         arrow keys is pressed
 	 */
 	boolean acceptLeaveContents(KeyEvent event) {
 		int key = event.keyCode;
-		return getFocusEditPart() == getViewer().getContents()
-				&& ((key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT)
-						|| (key == SWT.ARROW_DOWN) || (key == SWT.ARROW_LEFT));
+		return getFocusEditPart() == getViewer().getContents() && ((key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT)
+				|| (key == SWT.ARROW_DOWN) || (key == SWT.ARROW_LEFT));
 	}
 
 	/**
@@ -118,32 +113,26 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 *         parent of the currently focused EditPart
 	 */
 	boolean acceptOutOf(KeyEvent event) {
-		return ((event.stateMask & SWT.ALT) != 0)
-				&& (event.keyCode == SWT.ARROW_UP);
+		return ((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_UP);
 	}
 
 	boolean acceptScroll(KeyEvent event) {
-		return ((event.stateMask & SWT.CTRL) != 0
-				&& (event.stateMask & SWT.SHIFT) != 0 && (event.keyCode == SWT.ARROW_DOWN
-				|| event.keyCode == SWT.ARROW_LEFT
-				|| event.keyCode == SWT.ARROW_RIGHT || event.keyCode == SWT.ARROW_UP));
+		return ((event.stateMask & SWT.CTRL) != 0 && (event.stateMask & SWT.SHIFT) != 0
+				&& (event.keyCode == SWT.ARROW_DOWN || event.keyCode == SWT.ARROW_LEFT
+						|| event.keyCode == SWT.ARROW_RIGHT || event.keyCode == SWT.ARROW_UP));
 	}
 
 	/**
-	 * Given a connection on a node, this method finds the next (or the
-	 * previous) connection of that node.
+	 * Given a connection on a node, this method finds the next (or the previous)
+	 * connection of that node.
 	 * 
-	 * @param node
-	 *            The EditPart whose connections are being traversed
-	 * @param current
-	 *            The connection relative to which the next connection has to be
-	 *            found
-	 * @param forward
-	 *            <code>true</code> if the next connection has to be found;
-	 *            false otherwise
+	 * @param node    The EditPart whose connections are being traversed
+	 * @param current The connection relative to which the next connection has to be
+	 *                found
+	 * @param forward <code>true</code> if the next connection has to be found;
+	 *                false otherwise
 	 */
-	ConnectionEditPart findConnection(GraphicalEditPart node,
-			ConnectionEditPart current, boolean forward) {
+	ConnectionEditPart findConnection(GraphicalEditPart node, ConnectionEditPart current, boolean forward) {
 		List connections = new ArrayList(node.getSourceConnections());
 		connections.addAll(node.getTargetConnections());
 		connections = getValidNavigationTargets(connections);
@@ -156,8 +145,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		while (counter < 0)
 			counter += connections.size();
 		counter %= connections.size();
-		return (ConnectionEditPart) connections.get(counter
-				% connections.size());
+		return (ConnectionEditPart) connections.get(counter % connections.size());
 	}
 
 	private List getValidNavigationTargets(List candidateEditParts) {
@@ -172,23 +160,18 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	}
 
 	/**
-	 * Given an absolute point (pStart) and a list of EditParts, this method
-	 * finds the closest EditPart (except for the one to be excluded) in the
-	 * given direction.
+	 * Given an absolute point (pStart) and a list of EditParts, this method finds
+	 * the closest EditPart (except for the one to be excluded) in the given
+	 * direction.
 	 * 
-	 * @param siblings
-	 *            List of sibling EditParts
-	 * @param pStart
-	 *            The starting point (must be in absolute coordinates) from
-	 *            which the next sibling is to be found.
-	 * @param direction
-	 *            PositionConstants
-	 * @param exclude
-	 *            The EditPart to be excluded from the search
+	 * @param siblings  List of sibling EditParts
+	 * @param pStart    The starting point (must be in absolute coordinates) from
+	 *                  which the next sibling is to be found.
+	 * @param direction PositionConstants
+	 * @param exclude   The EditPart to be excluded from the search
 	 * 
 	 */
-	GraphicalEditPart findSibling(List siblings, Point pStart, int direction,
-			EditPart exclude) {
+	GraphicalEditPart findSibling(List siblings, Point pStart, int direction, EditPart exclude) {
 		GraphicalEditPart epCurrent;
 		GraphicalEditPart epFinal = null;
 		IFigure figure;
@@ -216,8 +199,8 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	}
 
 	/**
-	 * Figures' navigation points are used to determine their direction compared
-	 * to one another, and the distance between them.
+	 * Figures' navigation points are used to determine their direction compared to
+	 * one another, and the distance between them.
 	 * 
 	 * @return the center of the given figure
 	 */
@@ -226,8 +209,8 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	}
 
 	/**
-	 * Returns the cached node. It is possible that the node is not longer in
-	 * the viewer but has not been garbage collected yet.
+	 * Returns the cached node. It is possible that the node is not longer in the
+	 * viewer but has not been garbage collected yet.
 	 */
 	private GraphicalEditPart getCachedNode() {
 		if (cachedNode == null)
@@ -249,8 +232,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * navigation as the currently focused editpart. By default, these are the
 	 * siblings of the focused part.
 	 * <p>
-	 * This implementation returns a list that contains the EditPart that has
-	 * focus.
+	 * This implementation returns a list that contains the EditPart that has focus.
 	 * </p>
 	 * 
 	 * @return a list of navigation editparts
@@ -316,15 +298,11 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 
 		switch (event.keyCode) {
 		case SWT.ARROW_LEFT:
-			if (navigateNextSibling(event,
-					isViewerMirrored() ? PositionConstants.EAST
-							: PositionConstants.WEST))
+			if (navigateNextSibling(event, isViewerMirrored() ? PositionConstants.EAST : PositionConstants.WEST))
 				return true;
 			break;
 		case SWT.ARROW_RIGHT:
-			if (navigateNextSibling(event,
-					isViewerMirrored() ? PositionConstants.WEST
-							: PositionConstants.EAST))
+			if (navigateNextSibling(event, isViewerMirrored() ? PositionConstants.WEST : PositionConstants.EAST))
 				return true;
 			break;
 		case SWT.ARROW_UP:
@@ -364,9 +342,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		GraphicalEditPart node = getCachedNode();
 		if (focus instanceof ConnectionEditPart) {
 			current = (ConnectionEditPart) focus;
-			if (node == null
-					|| (node != current.getSource() && node != current
-							.getTarget())) {
+			if (node == null || (node != current.getSource() && node != current.getTarget())) {
 				node = (GraphicalEditPart) current.getSource();
 				counter = 0;
 			}
@@ -385,8 +361,8 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	}
 
 	/**
-	 * This method traverses to the closest child of the currently focused
-	 * EditPart, if it has one.
+	 * This method traverses to the closest child of the currently focused EditPart,
+	 * if it has one.
 	 */
 	void navigateIntoContainer(KeyEvent event) {
 		GraphicalEditPart focus = getFocusEditPart();
@@ -423,27 +399,23 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	/**
 	 * Traverses to the next sibling in the given direction.
 	 * 
-	 * @param event
-	 *            the KeyEvent for the keys that were pressed to trigger this
-	 *            traversal
-	 * @param direction
-	 *            PositionConstants.* indicating the direction in which to
-	 *            traverse
+	 * @param event     the KeyEvent for the keys that were pressed to trigger this
+	 *                  traversal
+	 * @param direction PositionConstants.* indicating the direction in which to
+	 *                  traverse
 	 */
 	boolean navigateNextSibling(KeyEvent event, int direction) {
 		return navigateNextSibling(event, direction, getNavigationSiblings());
 	}
 
 	/**
-	 * Traverses to the closest EditPart in the given list that is also in the
-	 * given direction.
+	 * Traverses to the closest EditPart in the given list that is also in the given
+	 * direction.
 	 * 
-	 * @param event
-	 *            the KeyEvent for the keys that were pressed to trigger this
-	 *            traversal
-	 * @param direction
-	 *            PositionConstants.* indicating the direction in which to
-	 *            traverse
+	 * @param event     the KeyEvent for the keys that were pressed to trigger this
+	 *                  traversal
+	 * @param direction PositionConstants.* indicating the direction in which to
+	 *                  traverse
 	 */
 	boolean navigateNextSibling(KeyEvent event, int direction, List list) {
 		GraphicalEditPart epStart = getFocusEditPart();
@@ -461,13 +433,11 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * Navigates to the parent of the currently focused EditPart.
 	 */
 	void navigateOut(KeyEvent event) {
-		if (getFocusEditPart() == null
-				|| getFocusEditPart() == getViewer().getContents())
+		if (getFocusEditPart() == null || getFocusEditPart() == getViewer().getContents())
 			return;
 
 		EditPart editPart = getFocusEditPart().getParent();
-		while (editPart != null && editPart != getViewer().getContents()
-				&& !isValidNavigationTarget(editPart)) {
+		while (editPart != null && editPart != getViewer().getContents() && !isValidNavigationTarget(editPart)) {
 			editPart = editPart.getParent();
 		}
 
@@ -483,8 +453,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	void navigateOutOfConnection(KeyEvent event) {
 		GraphicalEditPart cached = getCachedNode();
 		ConnectionEditPart conn = (ConnectionEditPart) getFocusEditPart();
-		if (cached != null
-				&& (cached == conn.getSource() || cached == conn.getTarget()))
+		if (cached != null && (cached == conn.getSource() || cached == conn.getTarget()))
 			navigateTo(cached, event);
 		else
 			navigateTo(conn.getSource(), event);
@@ -493,10 +462,8 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	/**
 	 * Navigates to the given EditPart
 	 * 
-	 * @param part
-	 *            the EditPart to navigate to
-	 * @param event
-	 *            the KeyEvent that triggered this traversal
+	 * @param part  the EditPart to navigate to
+	 * @param event the KeyEvent that triggered this traversal
 	 */
 	protected void navigateTo(EditPart part, KeyEvent event) {
 		if (part == null)
@@ -512,17 +479,15 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	}
 
 	/**
-	 * This method is invoked when the user presses the space bar. It toggles
-	 * the selection of the EditPart that currently has focus.
+	 * This method is invoked when the user presses the space bar. It toggles the
+	 * selection of the EditPart that currently has focus.
 	 * 
-	 * @param event
-	 *            the key event received
+	 * @param event the key event received
 	 */
 	protected void processSelect(KeyEvent event) {
 		EditPart part = getViewer().getFocusEditPart();
 		if (part != getViewer().getContents()) {
-			if ((event.stateMask & SWT.CTRL) != 0
-					&& part.getSelected() != EditPart.SELECTED_NONE)
+			if ((event.stateMask & SWT.CTRL) != 0 && part.getSelected() != EditPart.SELECTED_NONE)
 				getViewer().deselect(part);
 			else
 				getViewer().appendSelection(part);
@@ -536,8 +501,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 			return;
 		FigureCanvas figCanvas = (FigureCanvas) getViewer().getControl();
 		Point loc = figCanvas.getViewport().getViewLocation();
-		Rectangle area = figCanvas.getViewport()
-				.getClientArea(Rectangle.SINGLETON).scale(.1);
+		Rectangle area = figCanvas.getViewport().getClientArea(Rectangle.SINGLETON).scale(.1);
 		switch (event.keyCode) {
 		case SWT.ARROW_DOWN:
 			figCanvas.scrollToY(loc.y + area.height);

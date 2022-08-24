@@ -26,8 +26,7 @@ public class ExclusionSearch implements TreeSearch {
 	/**
 	 * Constructs an Exclusion search using the given collection.
 	 * 
-	 * @param collection
-	 *            the exclusion set
+	 * @param collection the exclusion set
 	 */
 	public ExclusionSearch(Collection collection) {
 		this.c = collection;

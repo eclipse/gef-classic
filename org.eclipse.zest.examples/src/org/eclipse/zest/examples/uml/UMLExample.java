@@ -63,7 +63,7 @@ public class UMLExample {
 		classLabel2.setFont(classFont);
 
 		UMLClassFigure classFigure = new UMLClassFigure(classLabel2);
-		Label attribute3 = new Label("columnID: int", privateField );
+		Label attribute3 = new Label("columnID: int", privateField);
 		Label attribute4 = new Label("items: List", privateField);
 
 		Label method3 = new Label("getColumnID(): int", publicField);
@@ -101,11 +101,13 @@ public class UMLExample {
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 		classColor = new Color(null, 255, 255, 206);
-		
+
 		Font classFont = new Font(null, "Arial", 12, SWT.BOLD);
 		Image classImage = new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("class_obj.gif"));
-		Image privateField = new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("field_private_obj.gif"));
-		Image publicField= new Image(Display.getDefault(), UMLClassFigure.class.getResourceAsStream("methpub_obj.gif"));
+		Image privateField = new Image(Display.getDefault(),
+				UMLClassFigure.class.getResourceAsStream("field_private_obj.gif"));
+		Image publicField = new Image(Display.getDefault(),
+				UMLClassFigure.class.getResourceAsStream("methpub_obj.gif"));
 
 		Graph g = new Graph(shell, SWT.NONE);
 		g.setConnectionStyle(ZestStyles.CONNECTIONS_DIRECTED);

@@ -26,8 +26,8 @@ public interface EntryPageContainer {
 	/**
 	 * Shows the error to the user.
 	 * 
-	 * @param description
-	 *            A description of the problem. Should be as brief as possible.
+	 * @param description A description of the problem. Should be as brief as
+	 *                    possible.
 	 */
 	void showProblem(String description);
 

@@ -22,13 +22,11 @@ import org.eclipse.gef.ui.actions.GEFActionConstants;
 
 import org.eclipse.gef.examples.logicdesigner.actions.IncrementDecrementAction;
 
-public class LogicContextMenuProvider extends
-		org.eclipse.gef.ContextMenuProvider {
+public class LogicContextMenuProvider extends org.eclipse.gef.ContextMenuProvider {
 
 	private ActionRegistry actionRegistry;
 
-	public LogicContextMenuProvider(EditPartViewer viewer,
-			ActionRegistry registry) {
+	public LogicContextMenuProvider(EditPartViewer viewer, ActionRegistry registry) {
 		super(viewer);
 		setActionRegistry(registry);
 	}
@@ -36,8 +34,7 @@ public class LogicContextMenuProvider extends
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.gef.ContextMenuProvider#menuAboutToShow(org.eclipse.jface
+	 * @see org.eclipse.gef.ContextMenuProvider#menuAboutToShow(org.eclipse.jface
 	 * .action.IMenuManager)
 	 */
 	public void buildContextMenu(IMenuManager manager) {
@@ -63,19 +60,16 @@ public class LogicContextMenuProvider extends
 		if (action.isEnabled())
 			manager.appendToGroup(GEFActionConstants.GROUP_EDIT, action);
 
-		action = getActionRegistry().getAction(
-				IncrementDecrementAction.INCREMENT);
+		action = getActionRegistry().getAction(IncrementDecrementAction.INCREMENT);
 		if (action.isEnabled())
 			manager.appendToGroup(GEFActionConstants.GROUP_REST, action);
 
-		action = getActionRegistry().getAction(
-				IncrementDecrementAction.DECREMENT);
+		action = getActionRegistry().getAction(IncrementDecrementAction.DECREMENT);
 		if (action.isEnabled())
 			manager.appendToGroup(GEFActionConstants.GROUP_REST, action);
 
 		// Alignment Actions
-		MenuManager submenu = new MenuManager(
-				LogicMessages.AlignmentAction_AlignSubmenu_ActionLabelText);
+		MenuManager submenu = new MenuManager(LogicMessages.AlignmentAction_AlignSubmenu_ActionLabelText);
 
 		action = getActionRegistry().getAction(GEFActionConstants.ALIGN_LEFT);
 		if (action.isEnabled())

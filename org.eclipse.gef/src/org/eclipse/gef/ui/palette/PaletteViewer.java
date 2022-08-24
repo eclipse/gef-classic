@@ -63,14 +63,10 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 			if (property.equals(PaletteViewerPreferences.PREFERENCE_FONT)) {
 				updateFont();
 				refreshAllEditParts(root);
-			} else if (property
-					.equals(PaletteViewerPreferences.PREFERENCE_LAYOUT)
-					|| property
-							.equals(PaletteViewerPreferences.PREFERENCE_AUTO_COLLAPSE)
-					|| property
-							.equals(DefaultPaletteViewerPreferences
-									.convertLayoutToPreferenceName(getPaletteViewerPreferences()
-											.getLayoutSetting()))) {
+			} else if (property.equals(PaletteViewerPreferences.PREFERENCE_LAYOUT)
+					|| property.equals(PaletteViewerPreferences.PREFERENCE_AUTO_COLLAPSE)
+					|| property.equals(DefaultPaletteViewerPreferences
+							.convertLayoutToPreferenceName(getPaletteViewerPreferences().getLayoutSetting()))) {
 				refreshAllEditParts(root);
 			}
 		}
@@ -109,12 +105,11 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	}
 
 	/**
-	 * Adds the given PaletteListener as the one to be notified when the active
-	 * tool on the palette changes.
+	 * Adds the given PaletteListener as the one to be notified when the active tool
+	 * on the palette changes.
 	 * 
-	 * @param paletteListener
-	 *            The listener that needs to be notified of active tool changes
-	 *            on the palette
+	 * @param paletteListener The listener that needs to be notified of active tool
+	 *                        changes on the palette
 	 */
 	public void addPaletteListener(PaletteListener paletteListener) {
 		if (paletteListeners != null)
@@ -136,20 +131,18 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	}
 
 	/**
-	 * Indicates that the palette should scroll using a native vertical
-	 * scrollbar as opposed to individual lightweight buttons that appear
-	 * dynamically on each drawer. The default settings is <code>false</code>.
-	 * Enabling this setting requires additional horizontal screen space for the
-	 * scrollbar. Therefore, its use is discouraged.
+	 * Indicates that the palette should scroll using a native vertical scrollbar as
+	 * opposed to individual lightweight buttons that appear dynamically on each
+	 * drawer. The default settings is <code>false</code>. Enabling this setting
+	 * requires additional horizontal screen space for the scrollbar. Therefore, its
+	 * use is discouraged.
 	 * <p>
 	 * This setting must be changed prior to calling
 	 * {@link ScrollingGraphicalViewer#createControl(org.eclipse.swt.widgets.Composite)}
-	 * . After the control is created, changing this setting will have no
-	 * effect.
+	 * . After the control is created, changing this setting will have no effect.
 	 * </p>
 	 * 
-	 * @param value
-	 *            <code>true</code> if a vertical scrollbar should be displayed
+	 * @param value <code>true</code> if a vertical scrollbar should be displayed
 	 */
 	public void enableVerticalScrollbar(boolean value) {
 		this.globalScrollbar = value;
@@ -174,8 +167,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 		if (paletteListeners == null)
 			return;
 		for (int listener = 0; listener < paletteListeners.size(); listener++)
-			((PaletteListener) paletteListeners.get(listener))
-					.activeToolChanged(this, activeEntry);
+			((PaletteListener) paletteListeners.get(listener)).activeToolChanged(this, activeEntry);
 	}
 
 	/**
@@ -194,8 +186,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 */
 	public PaletteCustomizerDialog getCustomizerDialog() {
 		if (customizerDialog == null) {
-			customizerDialog = new PaletteCustomizerDialog(getControl()
-					.getShell(), getCustomizer(), getPaletteRoot());
+			customizerDialog = new PaletteCustomizerDialog(getControl().getShell(), getCustomizer(), getPaletteRoot());
 		}
 		return customizerDialog;
 	}
@@ -217,9 +208,9 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	}
 
 	/**
-	 * @return The PaletteViewerPreferences that this palette is using to store
-	 *         its preferences (if none has been set, it returns the default
-	 *         one, which uses the GEF preference store)
+	 * @return The PaletteViewerPreferences that this palette is using to store its
+	 *         preferences (if none has been set, it returns the default one, which
+	 *         uses the GEF preference store)
 	 */
 	public PaletteViewerPreferences getPaletteViewerPreferences() {
 		return prefs;
@@ -243,14 +234,13 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	protected void handleFocusGained(FocusEvent fe) {
 		super.handleFocusGained(fe);
 		/*
-		 * Fix for Bug# 63297 When the palette gets focus, the LWS will take
-		 * care of setting focus on the correct figure. However, when the user
-		 * clicks on an entry, the focus is "thrown away." In that case, the LWS
-		 * would set focus on the first focusable figure. We override that here
-		 * and set focus on the correct/selected figure. Invoking
-		 * getFocusEditPart().setFocus(true) does not work because that editpart
-		 * thinks it already has focus (it's not aware of focus being thrown
-		 * away) and does nothing.
+		 * Fix for Bug# 63297 When the palette gets focus, the LWS will take care of
+		 * setting focus on the correct figure. However, when the user clicks on an
+		 * entry, the focus is "thrown away." In that case, the LWS would set focus on
+		 * the first focusable figure. We override that here and set focus on the
+		 * correct/selected figure. Invoking getFocusEditPart().setFocus(true) does not
+		 * work because that editpart thinks it already has focus (it's not aware of
+		 * focus being thrown away) and does nothing.
 		 */
 		if (focusPart == null) {
 			IFigure fig = ((GraphicalEditPart) getFocusEditPart()).getFigure();
@@ -267,8 +257,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 		canvas.getViewport().setContentsTracksWidth(true);
 		canvas.getViewport().setContentsTracksHeight(!globalScrollbar);
 		canvas.setHorizontalScrollBarVisibility(FigureCanvas.NEVER);
-		canvas.setVerticalScrollBarVisibility(globalScrollbar ? FigureCanvas.ALWAYS
-				: FigureCanvas.AUTOMATIC);
+		canvas.setVerticalScrollBarVisibility(globalScrollbar ? FigureCanvas.ALWAYS : FigureCanvas.AUTOMATIC);
 		if (prefs != null)
 			prefs.addPropertyChangeListener(prefListener);
 		updateFont();
@@ -277,8 +266,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * Returns true if the given PaletteDrawer is expanded
 	 * 
-	 * @param drawer
-	 *            the PaletteDrawer
+	 * @param drawer the PaletteDrawer
 	 * @return true if expanded
 	 */
 	public boolean isExpanded(PaletteDrawer drawer) {
@@ -291,8 +279,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * Returns true if the given PaletteDrawer is pinned
 	 * 
-	 * @param drawer
-	 *            the PaletteDrawer
+	 * @param drawer the PaletteDrawer
 	 * @return true if pinned
 	 */
 	public boolean isPinned(PaletteDrawer drawer) {
@@ -303,12 +290,11 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	}
 
 	/**
-	 * The given PaletteListener will not be notified of active tool changes in
-	 * the palette.
+	 * The given PaletteListener will not be notified of active tool changes in the
+	 * palette.
 	 * 
-	 * @param paletteListener
-	 *            the PaletteListener which doesn't want to be notified of
-	 *            active tool changes in the palette anymore
+	 * @param paletteListener the PaletteListener which doesn't want to be notified
+	 *                        of active tool changes in the palette anymore
 	 */
 	public void removePaletteListener(PaletteListener paletteListener) {
 		paletteListeners.remove(paletteListener);
@@ -316,26 +302,23 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 
 	/**
 	 * Tries to apply the state of the given IMemento to the contents of this
-	 * viewer. It fails silently, i.e. no exceptions are thrown if the given
-	 * state could not be applied.
+	 * viewer. It fails silently, i.e. no exceptions are thrown if the given state
+	 * could not be applied.
 	 * 
-	 * @param memento
-	 *            The memento that has the state to be applied to the contents
-	 *            of this viewer
+	 * @param memento The memento that has the state to be applied to the contents
+	 *                of this viewer
 	 * @return a boolean indicating whether or not the given memento was
 	 *         successfully applied
 	 * @since 3.0
 	 */
 	public boolean restoreState(IMemento memento) {
 		try {
-			PaletteEditPart part = (PaletteEditPart) getEditPartRegistry().get(
-					getPaletteRoot());
+			PaletteEditPart part = (PaletteEditPart) getEditPartRegistry().get(getPaletteRoot());
 			if (part != null)
 				part.restoreState(memento);
 		} catch (RuntimeException re) {
 			/*
-			 * @TODO:Pratik Perhaps you should log this exception. Or not catch
-			 * it at all.
+			 * @TODO:Pratik Perhaps you should log this exception. Or not catch it at all.
 			 */
 			return false;
 		}
@@ -354,24 +337,20 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 			drawer.setExpanded(true);
 		// if the part is inside a stack, set it to be the top level item of the
 		// stack.
-		if (part.getParent() != null
-				&& part.getParent() instanceof PaletteStackEditPart)
-			((PaletteStack) part.getParent().getModel())
-					.setActiveEntry((PaletteEntry) part.getModel());
+		if (part.getParent() != null && part.getParent() instanceof PaletteStackEditPart)
+			((PaletteStack) part.getParent().getModel()).setActiveEntry((PaletteEntry) part.getModel());
 		super.reveal(part);
 	}
 
 	/**
 	 * Captures the state of the contents of this viewer in the given memento
 	 * 
-	 * @param memento
-	 *            the IMemento in which the state is to be saved
+	 * @param memento the IMemento in which the state is to be saved
 	 * @since 3.0
 	 */
 	public void saveState(IMemento memento) {
 		// Bug# 69026 - The PaletteRoot can be null initially for VEP
-		PaletteEditPart base = (PaletteEditPart) getEditPartRegistry().get(
-				getPaletteRoot());
+		PaletteEditPart base = (PaletteEditPart) getEditPartRegistry().get(getPaletteRoot());
 		if (base != null)
 			base.saveState(memento);
 	}
@@ -379,20 +358,18 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * Sets the customizer.
 	 * 
-	 * @param customizer
-	 *            the customizer to be set
+	 * @param customizer the customizer to be set
 	 */
 	public void setCustomizer(PaletteCustomizer customizer) {
 		this.customizer = customizer;
 	}
 
 	/**
-	 * Sets the active entry for this palette. The Editpart for the given entry
-	 * will be activated (selected).
+	 * Sets the active entry for this palette. The Editpart for the given entry will
+	 * be activated (selected).
 	 * 
-	 * @param newMode
-	 *            the ToolEntry whose EditPart has to be set as the active tool
-	 *            in this palette
+	 * @param newMode the ToolEntry whose EditPart has to be set as the active tool
+	 *                in this palette
 	 */
 	public void setActiveTool(ToolEntry newMode) {
 		if (newMode == null)
@@ -412,16 +389,14 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * Sets the root for this palette.
 	 * 
-	 * @param root
-	 *            the PaletteRoot for this palette
+	 * @param root the PaletteRoot for this palette
 	 */
 	public void setPaletteRoot(PaletteRoot root) {
 		if (root == paletteRoot)
 			return;
 		paletteRoot = root;
 		if (paletteRoot != null) {
-			EditPart palette = getEditPartFactory().createEditPart(
-					getRootEditPart(), root);
+			EditPart palette = getEditPartFactory().createEditPart(getRootEditPart(), root);
 			getRootEditPart().setContents(palette);
 		}
 	}
@@ -430,15 +405,14 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 * This palette will use the given PaletteViewerPreferences to store all its
 	 * preferences.
 	 * <p>
-	 * NOTE: This method should be invoked by a client only once (before the
-	 * first time {@link #getPaletteViewerPreferences()} is invoked). Trying to
-	 * invoke this method after that could lead to problems where some
-	 * preferences would still be stored in the old preference store.
+	 * NOTE: This method should be invoked by a client only once (before the first
+	 * time {@link #getPaletteViewerPreferences()} is invoked). Trying to invoke
+	 * this method after that could lead to problems where some preferences would
+	 * still be stored in the old preference store.
 	 * </p>
 	 * 
-	 * @param prefs
-	 *            the PaletteViewerPreferences that is to be used to store all
-	 *            the preferences for this palette
+	 * @param prefs the PaletteViewerPreferences that is to be used to store all the
+	 *              preferences for this palette
 	 */
 	public void setPaletteViewerPreferences(PaletteViewerPreferences prefs) {
 		if (this.prefs != null)
@@ -464,8 +438,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 		if (getControl() == null || getControl().isDisposed())
 			return;
 
-		font = new Font(Display.getCurrent(), getPaletteViewerPreferences()
-				.getFontData());
+		font = new Font(Display.getCurrent(), getPaletteViewerPreferences().getFontData());
 		getControl().setFont(font);
 		getFigureCanvas().getViewport().invalidateTree();
 		getFigureCanvas().getViewport().revalidate();

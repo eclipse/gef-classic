@@ -43,8 +43,7 @@ public class LogicLabelEditPart extends LogicEditPart {
 	protected void createEditPolicies() {
 		super.createEditPolicies();
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, null);
-		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
-				new LabelDirectEditPolicy());
+		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new LabelDirectEditPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LogicLabelEditPolicy());
 	}
 
@@ -58,8 +57,7 @@ public class LogicLabelEditPart extends LogicEditPart {
 	}
 
 	private void performDirectEdit() {
-		new LogicLabelEditManager(this, new LabelCellEditorLocator(
-				(LabelFigure) getFigure())).show();
+		new LogicLabelEditManager(this, new LabelCellEditorLocator((LabelFigure) getFigure())).show();
 	}
 
 	public void performRequest(Request request) {
@@ -75,8 +73,7 @@ public class LogicLabelEditPart extends LogicEditPart {
 	}
 
 	protected void refreshVisuals() {
-		((LabelFigure) getFigure()).setText(getLogicLabel()
-				.getLabelContents());
+		((LabelFigure) getFigure()).setText(getLogicLabel().getLabelContents());
 		super.refreshVisuals();
 	}
 

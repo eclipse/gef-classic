@@ -20,10 +20,8 @@ public interface Translatable {
 	 * Translates this object horizontally by <code>dx</code> and vertically by
 	 * <code>dy</code>.
 	 * 
-	 * @param dx
-	 *            The amount to translate horizontally
-	 * @param dy
-	 *            The amount to translate vertically
+	 * @param dx The amount to translate horizontally
+	 * @param dy The amount to translate vertically
 	 * @since 2.0
 	 */
 	void performTranslate(int dx, int dy);
@@ -31,8 +29,7 @@ public interface Translatable {
 	/**
 	 * Scales this object by the scale factor.
 	 * 
-	 * @param factor
-	 *            The scale factor
+	 * @param factor The scale factor
 	 * @since 2.0
 	 */
 	void performScale(double factor);

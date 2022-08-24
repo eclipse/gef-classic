@@ -46,22 +46,16 @@ public abstract class UpdateManager {
 
 	/**
 	 * Adds the dirty region defined by the coordinates on the IFigure
-	 * <b>figure</b>. The update manager should repaint the dirty region in a
-	 * timely fashion.
+	 * <b>figure</b>. The update manager should repaint the dirty region in a timely
+	 * fashion.
 	 * 
-	 * @param figure
-	 *            the dirty figure
-	 * @param x
-	 *            the x coordinate of the dirty region
-	 * @param y
-	 *            the y coordinate of the dirty region
-	 * @param w
-	 *            the width of the dirty region
-	 * @param h
-	 *            the height of the dirty region
+	 * @param figure the dirty figure
+	 * @param x      the x coordinate of the dirty region
+	 * @param y      the y coordinate of the dirty region
+	 * @param w      the width of the dirty region
+	 * @param h      the height of the dirty region
 	 */
-	public abstract void addDirtyRegion(IFigure figure, int x, int y, int w,
-			int h);
+	public abstract void addDirtyRegion(IFigure figure, int x, int y, int w, int h);
 
 	/**
 	 * @see #addDirtyRegion(IFigure, int, int, int, int)
@@ -71,31 +65,28 @@ public abstract class UpdateManager {
 	}
 
 	/**
-	 * Causes an update to occur at some time, and the given runnable to be
-	 * executed following the update.
+	 * Causes an update to occur at some time, and the given runnable to be executed
+	 * following the update.
 	 * 
 	 * @since 3.1
-	 * @param run
-	 *            the runnable
+	 * @param run the runnable
 	 */
 	public void runWithUpdate(Runnable run) {
 	}
 
 	/**
-	 * The receiver should call validate() on the IFigure <i>figure</i> in a
-	 * timely fashion.
+	 * The receiver should call validate() on the IFigure <i>figure</i> in a timely
+	 * fashion.
 	 * 
-	 * @param figure
-	 *            the invalid figure
+	 * @param figure the invalid figure
 	 */
 	public abstract void addInvalidFigure(IFigure figure);
 
 	/**
-	 * Adds the given listener to the list of listeners to be notified of
-	 * painting and validation.
+	 * Adds the given listener to the list of listeners to be notified of painting
+	 * and validation.
 	 * 
-	 * @param listener
-	 *            the listener to add
+	 * @param listener the listener to add
 	 */
 	public void addUpdateListener(UpdateListener listener) {
 		if (listener == null)
@@ -120,13 +111,11 @@ public abstract class UpdateManager {
 	}
 
 	/**
-	 * Notifies listeners that painting is about to occur, passing them the
-	 * damaged rectangle and the map of dirty regions.
+	 * Notifies listeners that painting is about to occur, passing them the damaged
+	 * rectangle and the map of dirty regions.
 	 * 
-	 * @param damage
-	 *            the damaged rectangle
-	 * @param dirtyRegions
-	 *            map of dirty regions to figures
+	 * @param damage       the damaged rectangle
+	 * @param dirtyRegions map of dirty regions to figures
 	 */
 	protected void firePainting(Rectangle damage, Map dirtyRegions) {
 		UpdateListener localListeners[] = listeners;
@@ -160,12 +149,11 @@ public abstract class UpdateManager {
 	/**
 	 * Invoked by the {@link LightweightSystem} (
 	 * {@link LightweightSystem#paint(GC)}) to have the update manger paint its
-	 * contents. Delegates to {@link #performUpdate(Rectangle)} with the passed
-	 * in gc's clipping region ({@link GC#getClipping()}) by default. Subclasses
-	 * may override if they need to access the {@link GC} for updating.
+	 * contents. Delegates to {@link #performUpdate(Rectangle)} with the passed in
+	 * gc's clipping region ({@link GC#getClipping()}) by default. Subclasses may
+	 * override if they need to access the {@link GC} for updating.
 	 * 
-	 * @param gc
-	 *            The {@link GC} to be used for updating
+	 * @param gc The {@link GC} to be used for updating
 	 * @since 3.10
 	 */
 	protected void paint(GC gc) {
@@ -175,16 +163,14 @@ public abstract class UpdateManager {
 	/**
 	 * Performs an update on the given exposed rectangle.
 	 * 
-	 * @param exposed
-	 *            the exposed rectangle
+	 * @param exposed the exposed rectangle
 	 */
 	public abstract void performUpdate(Rectangle exposed);
 
 	/**
 	 * Removes one occurrence of the given UpdateListener by identity.
 	 * 
-	 * @param listener
-	 *            the listener to remove
+	 * @param listener the listener to remove
 	 */
 	public void removeUpdateListener(UpdateListener listener) {
 		if (listener == null)
@@ -196,8 +182,7 @@ public abstract class UpdateManager {
 				if (newSize != 0) {
 					newListeners = new UpdateListener[newSize];
 					System.arraycopy(listeners, 0, newListeners, 0, index);
-					System.arraycopy(listeners, index + 1, newListeners, index,
-							newSize - index);
+					System.arraycopy(listeners, index + 1, newListeners, index, newSize - index);
 				} else {
 					newListeners = new UpdateListener[0];
 				}
@@ -209,24 +194,22 @@ public abstract class UpdateManager {
 	/**
 	 * Sets the GraphicsSource for this update manager.
 	 * 
-	 * @param gs
-	 *            the new GraphicsSource
+	 * @param gs the new GraphicsSource
 	 */
 	public abstract void setGraphicsSource(GraphicsSource gs);
 
 	/**
 	 * Sets the root figure.
 	 * 
-	 * @param figure
-	 *            the new root figure
+	 * @param figure the new root figure
 	 */
 	public abstract void setRoot(IFigure figure);
 
 	/**
-	 * Performs a partial update if supported (validation only). Fires
-	 * notification to listeners that validation has been performed. By default
-	 * this method calls {@link #performUpdate()}. Subclasses should override
-	 * this method to support validation without repainting.
+	 * Performs a partial update if supported (validation only). Fires notification
+	 * to listeners that validation has been performed. By default this method calls
+	 * {@link #performUpdate()}. Subclasses should override this method to support
+	 * validation without repainting.
 	 * 
 	 * @since 3.2
 	 */

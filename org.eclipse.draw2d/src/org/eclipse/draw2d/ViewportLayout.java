@@ -22,13 +22,12 @@ public class ViewportLayout extends AbstractHintLayout {
 
 	/**
 	 * Returns the minimum size required by the input viewport figure. Since
-	 * viewport is flexible, the minimum size required would be the just the
-	 * size of the borders.
+	 * viewport is flexible, the minimum size required would be the just the size of
+	 * the borders.
 	 * 
 	 * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int)
 	 */
-	protected Dimension calculateMinimumSize(IFigure figure, int wHint,
-			int hHint) {
+	protected Dimension calculateMinimumSize(IFigure figure, int wHint, int hHint) {
 		Viewport viewport = (Viewport) figure;
 		Dimension min = new Dimension();
 		Insets insets = viewport.getInsets();
@@ -36,21 +35,17 @@ public class ViewportLayout extends AbstractHintLayout {
 	}
 
 	/**
-	 * Calculates and returns the preferred size of the figure based on the
-	 * given hints. The given wHint is ignored unless the viewport (parent) is
-	 * tracking width. The same is true for the height hint.
+	 * Calculates and returns the preferred size of the figure based on the given
+	 * hints. The given wHint is ignored unless the viewport (parent) is tracking
+	 * width. The same is true for the height hint.
 	 * 
-	 * @param parent
-	 *            the Viewport whose preferred size is to be calculated
-	 * @param wHint
-	 *            the width hint
-	 * @param hHint
-	 *            the height hint
+	 * @param parent the Viewport whose preferred size is to be calculated
+	 * @param wHint  the width hint
+	 * @param hHint  the height hint
 	 * @return the Preferred size of the given viewport
 	 * @since 2.0
 	 */
-	protected Dimension calculatePreferredSize(IFigure parent, int wHint,
-			int hHint) {
+	protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 		Viewport viewport = (Viewport) parent;
 		Insets insets = viewport.getInsets();
 		IFigure contents = viewport.getContents();
@@ -72,8 +67,7 @@ public class ViewportLayout extends AbstractHintLayout {
 				wHint = Math.max(wHint, minSize.width);
 			if (hHint > -1)
 				hHint = Math.max(hHint, minSize.height);
-			return contents.getPreferredSize(wHint, hHint).getExpanded(
-					insets.getWidth(), insets.getHeight());
+			return contents.getPreferredSize(wHint, hHint).getExpanded(insets.getWidth(), insets.getHeight());
 		}
 
 		// Layout currently does not union border's preferred size.

@@ -38,11 +38,9 @@ public abstract class ConnectionEditPolicy extends AbstractEditPolicy {
 	}
 
 	/**
-	 * Subclasses should implement to return the Command to delete the
-	 * connection.
+	 * Subclasses should implement to return the Command to delete the connection.
 	 * 
-	 * @param request
-	 *            the DeleteRequest
+	 * @param request the DeleteRequest
 	 * @return the Command to delete the connection
 	 */
 	protected abstract Command getDeleteCommand(GroupRequest request);

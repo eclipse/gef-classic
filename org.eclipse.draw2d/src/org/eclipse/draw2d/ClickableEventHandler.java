@@ -10,9 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-class ClickableEventHandler extends MouseMotionListener.Stub implements
-		MouseListener, FigureListener, ChangeListener, KeyListener,
-		FocusListener {
+class ClickableEventHandler extends MouseMotionListener.Stub
+		implements MouseListener, FigureListener, ChangeListener, KeyListener, FocusListener {
 
 	private MouseEvent lastEvent;
 
@@ -36,8 +35,7 @@ class ClickableEventHandler extends MouseMotionListener.Stub implements
 
 	public void handleStateChanged(ChangeEvent change) {
 		Clickable clickable = (Clickable) change.getSource();
-		if (change.getPropertyName() == ButtonModel.MOUSEOVER_PROPERTY
-				&& !clickable.isRolloverEnabled())
+		if (change.getPropertyName() == ButtonModel.MOUSEOVER_PROPERTY && !clickable.isRolloverEnabled())
 			return;
 		clickable.repaint();
 	}

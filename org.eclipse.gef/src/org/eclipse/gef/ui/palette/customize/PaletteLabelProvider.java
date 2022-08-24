@@ -44,8 +44,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	/**
 	 * Constructor
 	 * 
-	 * @param viewer
-	 *            The TreeViewer for which this instance is a LabelProvider
+	 * @param viewer The TreeViewer for which this instance is a LabelProvider
 	 */
 	public PaletteLabelProvider(TreeViewer viewer) {
 	}

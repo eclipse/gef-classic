@@ -39,8 +39,7 @@ import org.eclipse.gef.tools.DirectEditManager;
 /**
  * @author hudsonr Created on Jun 30, 2003
  */
-public abstract class ActivityPart extends AbstractGraphicalEditPart implements
-		PropertyChangeListener, NodeEditPart {
+public abstract class ActivityPart extends AbstractGraphicalEditPart implements PropertyChangeListener, NodeEditPart {
 
 	protected DirectEditManager manager;
 
@@ -57,8 +56,7 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements
 		getFigure().setBounds(new Rectangle(n.x, n.y, n.width, n.height));
 
 		for (int i = 0; i < getSourceConnections().size(); i++) {
-			TransitionPart trans = (TransitionPart) getSourceConnections().get(
-					i);
+			TransitionPart trans = (TransitionPart) getSourceConnections().get(i);
 			trans.applyGraphResults(graph, map);
 		}
 	}
@@ -66,8 +64,7 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements
 	public void contributeEdgesToGraph(CompoundDirectedGraph graph, Map map) {
 		List outgoing = getSourceConnections();
 		for (int i = 0; i < outgoing.size(); i++) {
-			TransitionPart part = (TransitionPart) getSourceConnections()
-					.get(i);
+			TransitionPart part = (TransitionPart) getSourceConnections().get(i);
 			part.contributeToGraph(graph, map);
 		}
 		for (int i = 0; i < getChildren().size(); i++) {
@@ -76,20 +73,16 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements
 		}
 	}
 
-	public abstract void contributeNodesToGraph(CompoundDirectedGraph graph,
-			Subgraph s, Map map);
+	public abstract void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map);
 
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
 	protected void createEditPolicies() {
-		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE,
-				new ActivityNodeEditPolicy());
-		installEditPolicy(EditPolicy.CONTAINER_ROLE,
-				new ActivitySourceEditPolicy());
+		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new ActivityNodeEditPolicy());
+		installEditPolicy(EditPolicy.CONTAINER_ROLE, new ActivitySourceEditPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ActivityEditPolicy());
-		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE,
-				new ActivityDirectEditPolicy());
+		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new ActivityDirectEditPolicy());
 	}
 
 	/**
@@ -128,8 +121,7 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements
 	/**
 	 * @see NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
 	 */
-	public ConnectionAnchor getSourceConnectionAnchor(
-			ConnectionEditPart connection) {
+	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return new BottomAnchor(getFigure(), getAnchorOffset());
 	}
 
@@ -143,8 +135,7 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements
 	/**
 	 * @see NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.ConnectionEditPart)
 	 */
-	public ConnectionAnchor getTargetConnectionAnchor(
-			ConnectionEditPart connection) {
+	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
 		return new TopAnchor(getFigure(), getAnchorOffset());
 	}
 
@@ -181,8 +172,7 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements
 			refreshVisuals();
 
 		// Causes Graph to re-layout
-		((GraphicalEditPart) (getViewer().getContents())).getFigure()
-				.revalidate();
+		((GraphicalEditPart) (getViewer().getContents())).getFigure().revalidate();
 	}
 
 	/**

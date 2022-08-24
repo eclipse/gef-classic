@@ -29,15 +29,13 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 /**
  * EditPart for Logic components in the Tree.
  */
-public class LogicTreeEditPart extends
-		org.eclipse.gef.editparts.AbstractTreeEditPart implements
-		PropertyChangeListener {
+public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEditPart
+		implements PropertyChangeListener {
 
 	/**
 	 * Constructor initializes this with the given model.
 	 * 
-	 * @param model
-	 *            Model for this.
+	 * @param model Model for this.
 	 */
 	public LogicTreeEditPart(Object model) {
 		super(model);
@@ -58,8 +56,7 @@ public class LogicTreeEditPart extends
 		else
 			component = new LogicElementEditPolicy();
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, component);
-		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE,
-				new LogicTreeEditPolicy());
+		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new LogicTreeEditPolicy());
 	}
 
 	public void deactivate() {
@@ -89,12 +86,10 @@ public class LogicTreeEditPart extends
 		if (change.getPropertyName().equals(LogicDiagram.CHILDREN)) {
 			if (change.getOldValue() instanceof Integer)
 				// new child
-				addChild(createChild(change.getNewValue()),
-						((Integer) change.getOldValue()).intValue());
+				addChild(createChild(change.getNewValue()), ((Integer) change.getOldValue()).intValue());
 			else
 				// remove child
-				removeChild((EditPart) getViewer().getEditPartRegistry().get(
-						change.getOldValue()));
+				removeChild((EditPart) getViewer().getEditPartRegistry().get(change.getOldValue()));
 		} else
 			refreshVisuals();
 	}

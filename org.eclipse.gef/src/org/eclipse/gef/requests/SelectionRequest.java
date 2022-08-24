@@ -22,8 +22,8 @@ public class SelectionRequest extends LocationRequest {
 
 	/**
 	 * Returns the last button that was pressed. This is useful if there is more
-	 * than one mouse button pressed and the most recent button pressed needs to
-	 * be identified.
+	 * than one mouse button pressed and the most recent button pressed needs to be
+	 * identified.
 	 * 
 	 * @return the last button pressed
 	 */
@@ -108,8 +108,7 @@ public class SelectionRequest extends LocationRequest {
 	/**
 	 * Sets the statemask for this request.
 	 * 
-	 * @param mask
-	 *            the statemask
+	 * @param mask the statemask
 	 */
 	public void setModifiers(int mask) {
 		statemask = mask;
@@ -118,8 +117,7 @@ public class SelectionRequest extends LocationRequest {
 	/**
 	 * Sets the last mouse button that was pressed.
 	 * 
-	 * @param button
-	 *            the last button pressed
+	 * @param button the last button pressed
 	 */
 	public void setLastButtonPressed(int button) {
 		lastButtonPressed = button;

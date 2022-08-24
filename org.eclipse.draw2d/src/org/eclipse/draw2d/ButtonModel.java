@@ -60,8 +60,7 @@ public class ButtonModel {
 	public static final int DEFAULT_FIRING_BEHAVIOR = 0;
 
 	/**
-	 * Action performed events fire repeatedly until the mouse button is
-	 * released.
+	 * Action performed events fire repeatedly until the mouse button is released.
 	 */
 	public static final int REPEAT_FIRING_BEHAVIOR = 1;
 
@@ -78,8 +77,8 @@ public class ButtonModel {
 	private EventListenerList listeners = new EventListenerList();
 
 	/**
-	 * Listens to button state transitions and fires action performed events
-	 * based on the desired behavior ({@link #DEFAULT_FIRING_BEHAVIOR} or
+	 * Listens to button state transitions and fires action performed events based
+	 * on the desired behavior ({@link #DEFAULT_FIRING_BEHAVIOR} or
 	 * {@link #REPEAT_FIRING_BEHAVIOR}).
 	 */
 	protected ButtonStateTransitionListener firingBehavior;
@@ -90,8 +89,7 @@ public class ButtonModel {
 	/**
 	 * Registers the given listener as an ActionListener.
 	 * 
-	 * @param listener
-	 *            The ActionListener to add
+	 * @param listener The ActionListener to add
 	 * @since 2.0
 	 */
 	public void addActionListener(ActionListener listener) {
@@ -103,8 +101,7 @@ public class ButtonModel {
 	/**
 	 * Registers the given listener as a ChangeListener.
 	 * 
-	 * @param listener
-	 *            The ChangeListener to add
+	 * @param listener The ChangeListener to add
 	 * @since 2.0
 	 */
 	public void addChangeListener(ChangeListener listener) {
@@ -116,12 +113,10 @@ public class ButtonModel {
 	/**
 	 * Registers the given listener as a ButtonStateTransitionListener.
 	 * 
-	 * @param listener
-	 *            The ButtonStateTransitionListener to add
+	 * @param listener The ButtonStateTransitionListener to add
 	 * @since 2.0
 	 */
-	public void addStateTransitionListener(
-			ButtonStateTransitionListener listener) {
+	public void addStateTransitionListener(ButtonStateTransitionListener listener) {
 		if (listener == null)
 			throw new IllegalArgumentException();
 		listeners.addListener(ButtonStateTransitionListener.class, listener);
@@ -141,14 +136,13 @@ public class ButtonModel {
 	}
 
 	/**
-	 * Notifies any listening ButtonStateTransitionListener that the pressed
-	 * state of this button has been cancelled.
+	 * Notifies any listening ButtonStateTransitionListener that the pressed state
+	 * of this button has been cancelled.
 	 * 
 	 * @since 2.0
 	 */
 	protected void fireCanceled() {
-		Iterator iter = listeners
-				.getListeners(ButtonStateTransitionListener.class);
+		Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
 		while (iter.hasNext())
 			((ButtonStateTransitionListener) iter.next()).canceled();
 	}
@@ -160,8 +154,7 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	protected void firePressed() {
-		Iterator iter = listeners
-				.getListeners(ButtonStateTransitionListener.class);
+		Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
 		while (iter.hasNext())
 			((ButtonStateTransitionListener) iter.next()).pressed();
 	}
@@ -173,31 +166,27 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	protected void fireReleased() {
-		Iterator iter = listeners
-				.getListeners(ButtonStateTransitionListener.class);
+		Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
 		while (iter.hasNext())
 			((ButtonStateTransitionListener) iter.next()).released();
 	}
 
 	/**
-	 * Notifies any listening ButtonStateTransitionListeners that this button
-	 * has resumed activity.
+	 * Notifies any listening ButtonStateTransitionListeners that this button has
+	 * resumed activity.
 	 * 
 	 * @since 2.0
 	 */
 	protected void fireResume() {
-		Iterator iter = listeners
-				.getListeners(ButtonStateTransitionListener.class);
+		Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
 		while (iter.hasNext())
 			((ButtonStateTransitionListener) iter.next()).resume();
 	}
 
 	/**
-	 * Notifies any listening ChangeListeners that this button's state has
-	 * changed.
+	 * Notifies any listening ChangeListeners that this button's state has changed.
 	 * 
-	 * @param property
-	 *            The name of the property that changed
+	 * @param property The name of the property that changed
 	 * @since 2.0
 	 */
 	protected void fireStateChanged(String property) {
@@ -208,14 +197,13 @@ public class ButtonModel {
 	}
 
 	/**
-	 * Notifies any listening ButtonStateTransitionListeners that this button
-	 * has suspended activity.
+	 * Notifies any listening ButtonStateTransitionListeners that this button has
+	 * suspended activity.
 	 * 
 	 * @since 2.0
 	 */
 	protected void fireSuspend() {
-		Iterator iter = listeners
-				.getListeners(ButtonStateTransitionListener.class);
+		Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
 		while (iter.hasNext())
 			((ButtonStateTransitionListener) iter.next()).suspend();
 	}
@@ -254,8 +242,8 @@ public class ButtonModel {
 	}
 
 	/**
-	 * Returns <code>true</code> if this button is armed. If a button is armed,
-	 * it will fire an ActionPerformed when released.
+	 * Returns <code>true</code> if this button is armed. If a button is armed, it
+	 * will fire an ActionPerformed when released.
 	 * 
 	 * @return <code>true</code> if this button is armed
 	 * @since 2.0
@@ -312,8 +300,7 @@ public class ButtonModel {
 	/**
 	 * Removes the given ActionListener.
 	 * 
-	 * @param listener
-	 *            The ActionListener to remove
+	 * @param listener The ActionListener to remove
 	 * @since 2.0
 	 */
 	public void removeActionListener(ActionListener listener) {
@@ -323,8 +310,7 @@ public class ButtonModel {
 	/**
 	 * Removes the given ChangeListener.
 	 * 
-	 * @param listener
-	 *            The ChangeListener to remove
+	 * @param listener The ChangeListener to remove
 	 * @since 2.0
 	 */
 	public void removeChangeListener(ChangeListener listener) {
@@ -334,12 +320,10 @@ public class ButtonModel {
 	/**
 	 * Removes the given ButtonStateTransitionListener.
 	 * 
-	 * @param listener
-	 *            The ButtonStateTransitionListener to remove
+	 * @param listener The ButtonStateTransitionListener to remove
 	 * @since 2.0
 	 */
-	public void removeStateTransitionListener(
-			ButtonStateTransitionListener listener) {
+	public void removeStateTransitionListener(ButtonStateTransitionListener listener) {
 		listeners.removeListener(ButtonStateTransitionListener.class, listener);
 	}
 
@@ -347,8 +331,7 @@ public class ButtonModel {
 	 * Sets this button to be armed. If a button is armed, it will fire an
 	 * ActionPerformed when released.
 	 * 
-	 * @param value
-	 *            The armed state
+	 * @param value The armed state
 	 * @since 2.0
 	 */
 	public void setArmed(boolean value) {
@@ -363,8 +346,7 @@ public class ButtonModel {
 	/**
 	 * Sets this button to be enabled.
 	 * 
-	 * @param value
-	 *            The enabled state
+	 * @param value The enabled state
 	 * @since 2.0
 	 */
 	public void setEnabled(boolean value) {
@@ -380,14 +362,12 @@ public class ButtonModel {
 	}
 
 	/**
-	 * Sets the firing behavior for this button.
-	 * {@link #DEFAULT_FIRING_BEHAVIOR} is the default behavior, where action
-	 * performed events are not fired until the mouse button is released.
-	 * {@link #REPEAT_FIRING_BEHAVIOR} causes action performed events to fire
-	 * repeatedly until the mouse button is released.
+	 * Sets the firing behavior for this button. {@link #DEFAULT_FIRING_BEHAVIOR} is
+	 * the default behavior, where action performed events are not fired until the
+	 * mouse button is released. {@link #REPEAT_FIRING_BEHAVIOR} causes action
+	 * performed events to fire repeatedly until the mouse button is released.
 	 * 
-	 * @param type
-	 *            The firing behavior type
+	 * @param type The firing behavior type
 	 * @since 2.0
 	 * 
 	 */
@@ -415,8 +395,7 @@ public class ButtonModel {
 	 * Sets the ButtonGroup to which this model belongs to. Adds this model as a
 	 * listener to the group.
 	 * 
-	 * @param bg
-	 *            The group to which this model belongs.
+	 * @param bg The group to which this model belongs.
 	 * @since 2.0
 	 */
 	public void setGroup(ButtonGroup bg) {
@@ -432,8 +411,7 @@ public class ButtonModel {
 	/**
 	 * Sets the mouseover property of this button.
 	 * 
-	 * @param value
-	 *            The value the mouseover property will be set to
+	 * @param value The value the mouseover property will be set to
 	 * @since 2.0
 	 */
 	public void setMouseOver(boolean value) {
@@ -451,8 +429,7 @@ public class ButtonModel {
 	/**
 	 * Sets the pressed property of this button.
 	 * 
-	 * @param value
-	 *            The value the pressed property will be set to
+	 * @param value The value the pressed property will be set to
 	 * @since 2.0
 	 */
 	public void setPressed(boolean value) {
@@ -473,8 +450,7 @@ public class ButtonModel {
 	/**
 	 * Sets this button to be selected.
 	 * 
-	 * @param value
-	 *            The value the selected property will be set to
+	 * @param value The value the selected property will be set to
 	 * @since 2.0
 	 */
 	public void setSelected(boolean value) {
@@ -493,8 +469,7 @@ public class ButtonModel {
 	/**
 	 * Sets user data.
 	 * 
-	 * @param data
-	 *            The user data
+	 * @param data The user data
 	 * @since 2.0
 	 */
 	public void setUserData(Object data) {
@@ -558,14 +533,13 @@ public class ButtonModel {
 		}
 
 		public void run() {
-			org.eclipse.swt.widgets.Display.getDefault().syncExec(
-					new Runnable() {
-						public void run() {
-							if (!isEnabled())
-								timer.cancel();
-							fireActionPerformed();
-						}
-					});
+			org.eclipse.swt.widgets.Display.getDefault().syncExec(new Runnable() {
+				public void run() {
+					if (!isEnabled())
+						timer.cancel();
+					fireActionPerformed();
+				}
+			});
 		}
 	}
 

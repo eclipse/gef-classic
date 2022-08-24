@@ -32,8 +32,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	/**
 	 * Gets the constraint for the given {@link Connection}.
 	 * 
-	 * @param connection
-	 *            The connection whose constraint we are retrieving
+	 * @param connection The connection whose constraint we are retrieving
 	 * @return The constraint
 	 */
 	public Object getConstraint(Connection connection) {
@@ -43,8 +42,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	/**
 	 * Removes the given connection from the map of constraints.
 	 * 
-	 * @param connection
-	 *            The connection to remove
+	 * @param connection The connection to remove
 	 */
 	public void remove(Connection connection) {
 		constraints.remove(connection);
@@ -54,8 +52,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	 * Routes the {@link Connection}. Expects the constraint to be a List of
 	 * {@link org.eclipse.draw2d.Bendpoint Bendpoints}.
 	 * 
-	 * @param conn
-	 *            The connection to route
+	 * @param conn The connection to route
 	 */
 	public void route(Connection conn) {
 		PointList points = conn.getPoints();
@@ -73,9 +70,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 		} else {
 			ref1 = new Point(((Bendpoint) bendpoints.get(0)).getLocation());
 			conn.translateToAbsolute(ref1);
-			ref2 = new Point(
-					((Bendpoint) bendpoints.get(bendpoints.size() - 1))
-							.getLocation());
+			ref2 = new Point(((Bendpoint) bendpoints.get(bendpoints.size() - 1)).getLocation());
 			conn.translateToAbsolute(ref2);
 		}
 
@@ -97,10 +92,8 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	/**
 	 * Sets the constraint for the given {@link Connection}.
 	 * 
-	 * @param connection
-	 *            The connection whose constraint we are setting
-	 * @param constraint
-	 *            The constraint
+	 * @param connection The connection whose constraint we are setting
+	 * @param constraint The constraint
 	 */
 	public void setConstraint(Connection connection, Object constraint) {
 		constraints.put(connection, constraint);

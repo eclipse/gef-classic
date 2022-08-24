@@ -30,16 +30,14 @@ import org.eclipse.gef.EditPart;
 public interface LayerManager {
 
 	/**
-	 * This key used to register the LayerManager in the Viewer's
-	 * EditPartRegistry.
+	 * This key used to register the LayerManager in the Viewer's EditPartRegistry.
 	 */
 	Object ID = new Object();
 
 	/**
 	 * Returns a specified layer.
 	 * 
-	 * @param key
-	 *            a key identifying the layer
+	 * @param key a key identifying the layer
 	 * @return the specified layer
 	 */
 	IFigure getLayer(Object key);
@@ -53,13 +51,11 @@ public interface LayerManager {
 		/**
 		 * Finds the LayerManager given any EditPart in the Viewer.
 		 * 
-		 * @param part
-		 *            any EditPart in a GraphicalViewer
+		 * @param part any EditPart in a GraphicalViewer
 		 * @return the <code>LayerManager</code>
 		 */
 		public static LayerManager find(EditPart part) {
-			return (LayerManager) part.getViewer().getEditPartRegistry()
-					.get(ID);
+			return (LayerManager) part.getViewer().getEditPartRegistry().get(ID);
 		}
 	}
 

@@ -79,19 +79,15 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * handle by delegating to
 	 * {@link NonResizableEditPolicy#createDragHandle(List, int)}.
 	 * 
-	 * @param handles
-	 *            The list of handles to add the resize handle to
-	 * @param direction
-	 *            A position constant indicating the direction to create the
-	 *            handle for
+	 * @param handles   The list of handles to add the resize handle to
+	 * @param direction A position constant indicating the direction to create the
+	 *                  handle for
 	 * @since 3.7
 	 */
 	protected void createResizeHandle(List handles, int direction) {
 		if ((resizeDirections & direction) == direction) {
-			ResizableHandleKit.addHandle((GraphicalEditPart) getHost(),
-					handles, direction, getResizeTracker(direction), Cursors
-							.getDirectionalCursor(direction, getHostFigure()
-									.isMirrored()));
+			ResizableHandleKit.addHandle((GraphicalEditPart) getHost(), handles, direction, getResizeTracker(direction),
+					Cursors.getDirectionalCursor(direction, getHostFigure().isMirrored()));
 		} else {
 			// display 'resize' handle to allow dragging or indicate selection
 			// only
@@ -103,8 +99,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * Returns a resize tracker for the given direction to be used by a resize
 	 * handle.
 	 * 
-	 * @param direction
-	 *            the resize direction for the {@link ResizeTracker}.
+	 * @param direction the resize direction for the {@link ResizeTracker}.
 	 * @return a new {@link ResizeTracker}
 	 * @since 3.7
 	 */
@@ -135,14 +130,13 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	}
 
 	/**
-	 * Returns the command contribution for the given resize request. By
-	 * default, the request is re-dispatched to the host's parent as a
-	 * {@link org.eclipse.gef.RequestConstants#REQ_RESIZE_CHILDREN}. The
-	 * parent's edit policies determine how to perform the resize based on the
-	 * layout manager in use.
+	 * Returns the command contribution for the given resize request. By default,
+	 * the request is re-dispatched to the host's parent as a
+	 * {@link org.eclipse.gef.RequestConstants#REQ_RESIZE_CHILDREN}. The parent's
+	 * edit policies determine how to perform the resize based on the layout manager
+	 * in use.
 	 * 
-	 * @param request
-	 *            the resize request
+	 * @param request the resize request
 	 * @return the command contribution obtained from the parent
 	 */
 	protected Command getResizeCommand(ChangeBoundsRequest request) {
@@ -161,8 +155,8 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	}
 
 	/**
-	 * Sets the directions in which handles should allow resizing. Valid values
-	 * are bit-wise combinations of:
+	 * Sets the directions in which handles should allow resizing. Valid values are
+	 * bit-wise combinations of:
 	 * <UL>
 	 * <LI>{@link PositionConstants#NORTH}
 	 * <LI>{@link PositionConstants#SOUTH}
@@ -170,8 +164,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * <LI>{@link PositionConstants#WEST}
 	 * </UL>
 	 * 
-	 * @param newDirections
-	 *            the direction in which resizing is allowed
+	 * @param newDirections the direction in which resizing is allowed
 	 */
 	public void setResizeDirections(int newDirections) {
 		resizeDirections = newDirections;
@@ -194,8 +187,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	public boolean understandsRequest(Request request) {
 		if (REQ_RESIZE.equals(request.getType())) {
 			// check all resize directions of the request are supported
-			int resizeDirections = ((ChangeBoundsRequest) request)
-					.getResizeDirection();
+			int resizeDirections = ((ChangeBoundsRequest) request).getResizeDirection();
 			return (resizeDirections & getResizeDirections()) == resizeDirections;
 		}
 		return super.understandsRequest(request);

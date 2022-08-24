@@ -14,15 +14,18 @@ import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.zest.core.viewers.internal.ZoomManager;
 
 /**
- * A simple interface that provides zooming capabilites. Not intended to be subclassed by clients.
+ * A simple interface that provides zooming capabilites. Not intended to be
+ * subclassed by clients.
+ * 
  * @author Del Myers
  *
  */
 //@tag bug.156286-Zooming.fix
 public abstract class AbstractZoomableViewer extends StructuredViewer {
 	/**
-	 * Returns a ZoomManager that zooming can be done on. May return null if none
-	 * is available.
+	 * Returns a ZoomManager that zooming can be done on. May return null if none is
+	 * available.
+	 * 
 	 * @return a ZoomManager that zooming can be done on.
 	 */
 	protected abstract ZoomManager getZoomManager();

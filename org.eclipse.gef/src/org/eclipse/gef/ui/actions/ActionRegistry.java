@@ -31,8 +31,8 @@ public class ActionRegistry {
 	private Map map = new HashMap(15);
 
 	/**
-	 * Calls dispose on all actions which implement the {@link Disposable}
-	 * interface so they can perform their own clean-up.
+	 * Calls dispose on all actions which implement the {@link Disposable} interface
+	 * so they can perform their own clean-up.
 	 */
 	public void dispose() {
 		Iterator actions = getActions();
@@ -46,8 +46,7 @@ public class ActionRegistry {
 	/**
 	 * Returns <code>null</code> or the <code>IAction</code> with the given key.
 	 * 
-	 * @param key
-	 *            the ID of the action being requested
+	 * @param key the ID of the action being requested
 	 * @return <code>null</code> or the action with the corresponding ID
 	 */
 	public IAction getAction(Object key) {
@@ -66,8 +65,7 @@ public class ActionRegistry {
 	/**
 	 * Register an action with this registry. The action must have an ID.
 	 * 
-	 * @param action
-	 *            the action being registered.
+	 * @param action the action being registered.
 	 */
 	public void registerAction(IAction action) {
 		Assert.isNotNull(action.getId(), "action must have an ID in " + //$NON-NLS-1$
@@ -85,8 +83,7 @@ public class ActionRegistry {
 	/**
 	 * Removes an action from this registry. The action must have an ID.
 	 * 
-	 * @param action
-	 *            the action to remove
+	 * @param action the action to remove
 	 */
 	public void removeAction(IAction action) {
 		map.remove(action.getId());

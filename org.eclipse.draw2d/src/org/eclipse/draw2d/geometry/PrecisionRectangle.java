@@ -26,8 +26,8 @@ public final class PrecisionRectangle extends Rectangle {
 	 * 
 	 * @noreference
 	 * @deprecated Use {@link #setPreciseHeight(double)} and
-	 *             {@link #preciseHeight()} instead. This field will become
-	 *             private in the future.
+	 *             {@link #preciseHeight()} instead. This field will become private
+	 *             in the future.
 	 */
 	public double preciseHeight;
 
@@ -35,9 +35,8 @@ public final class PrecisionRectangle extends Rectangle {
 	 * Double value for width
 	 * 
 	 * @noreference
-	 * @deprecated Use {@link #setPreciseWidth(double)} and
-	 *             {@link #preciseWidth()} instead. This field will become
-	 *             private in the future.
+	 * @deprecated Use {@link #setPreciseWidth(double)} and {@link #preciseWidth()}
+	 *             instead. This field will become private in the future.
 	 */
 	public double preciseWidth;
 
@@ -45,8 +44,8 @@ public final class PrecisionRectangle extends Rectangle {
 	 * Double value for X
 	 * 
 	 * @noreference
-	 * @deprecated Use {@link #setPreciseX(double)} and {@link #preciseX()}
-	 *             instead. This field will become private in the future.
+	 * @deprecated Use {@link #setPreciseX(double)} and {@link #preciseX()} instead.
+	 *             This field will become private in the future.
 	 */
 	public double preciseX;
 
@@ -54,8 +53,8 @@ public final class PrecisionRectangle extends Rectangle {
 	 * Double value for Y
 	 * 
 	 * @noreference
-	 * @deprecated Use {@link #setPreciseX(double)} and {@link #preciseY()}
-	 *             instead. This field will become private in the future.
+	 * @deprecated Use {@link #setPreciseX(double)} and {@link #preciseY()} instead.
+	 *             This field will become private in the future.
 	 */
 	public double preciseY;
 
@@ -68,14 +67,10 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Constructs a PrecisionRectangle with the provided values.
 	 * 
-	 * @param x
-	 *            X location
-	 * @param y
-	 *            Y location
-	 * @param width
-	 *            Width of the rectangle
-	 * @param height
-	 *            Height of the rectangle
+	 * @param x      X location
+	 * @param y      Y location
+	 * @param width  Width of the rectangle
+	 * @param height Height of the rectangle
 	 * @since 3.7
 	 */
 	public PrecisionRectangle(double x, double y, double width, double height) {
@@ -87,12 +82,8 @@ public final class PrecisionRectangle extends Rectangle {
 	 * 
 	 * Constructs a new PrecisionRectangle from a given Point and a Dimension
 	 * 
-	 * @param p
-	 *            The Point to specify x and y location of the
-	 *            PrecisionRectangle
-	 * @param d
-	 *            The Dimension to use for width and height of the
-	 *            PrecisionRectangle
+	 * @param p The Point to specify x and y location of the PrecisionRectangle
+	 * @param d The Dimension to use for width and height of the PrecisionRectangle
 	 * @since 3.7
 	 */
 	public PrecisionRectangle(Point p, Dimension d) {
@@ -102,12 +93,10 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Constructs a new PrecisionRectangle from the given integer Rectangle.
 	 * 
-	 * @param rect
-	 *            the base rectangle
+	 * @param rect the base rectangle
 	 */
 	public PrecisionRectangle(Rectangle rect) {
-		this(rect.preciseX(), rect.preciseY(), rect.preciseWidth(), rect
-				.preciseHeight());
+		this(rect.preciseX(), rect.preciseY(), rect.preciseWidth(), rect.preciseHeight());
 	}
 
 	/**
@@ -135,8 +124,8 @@ public final class PrecisionRectangle extends Rectangle {
 	 * @see org.eclipse.draw2d.geometry.Rectangle#contains(org.eclipse.draw2d.geometry.Rectangle)
 	 */
 	public boolean contains(Rectangle rect) {
-		return preciseX() <= rect.preciseX() && preciseY() <= rect.preciseY()
-				&& right() >= rect.right() && bottom() >= rect.bottom();
+		return preciseX() <= rect.preciseX() && preciseY() <= rect.preciseY() && right() >= rect.right()
+				&& bottom() >= rect.bottom();
 	}
 
 	/**
@@ -144,16 +133,14 @@ public final class PrecisionRectangle extends Rectangle {
 	 * Rectangle. The boundaries are inclusive of the top and left edges, but
 	 * exclusive of the bottom and right edges.
 	 * 
-	 * @param x
-	 *            X value
-	 * @param y
-	 *            Y value
+	 * @param x X value
+	 * @param y Y value
 	 * @return true if the coordinates are within this Rectangle
 	 * @since 3.7
 	 */
 	private boolean containsPrecise(double x, double y) {
-		return y >= preciseY() && y < preciseY() + preciseHeight()
-				&& x >= preciseX() && x < preciseX() + preciseWidth();
+		return y >= preciseY() && y < preciseY() + preciseHeight() && x >= preciseX()
+				&& x < preciseX() + preciseWidth();
 	}
 
 	/**
@@ -162,8 +149,7 @@ public final class PrecisionRectangle extends Rectangle {
 	public boolean equals(Object o) {
 		if (o instanceof PrecisionRectangle) {
 			PrecisionRectangle rect = (PrecisionRectangle) o;
-			return super.equals(o)
-					&& Math.abs(rect.preciseX() - preciseX()) < 0.000000001
+			return super.equals(o) && Math.abs(rect.preciseX() - preciseX()) < 0.000000001
 					&& Math.abs(rect.preciseY() - preciseY()) < 0.000000001
 					&& Math.abs(rect.preciseWidth() - preciseWidth()) < 0.000000001
 					&& Math.abs(rect.preciseHeight() - preciseHeight()) < 0.00000001;
@@ -173,14 +159,12 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
-	 * Expands the horizontal and vertical sides of this Rectangle with the
-	 * values provided as input, and returns this for convenience. The location
-	 * of its center is kept constant.
+	 * Expands the horizontal and vertical sides of this Rectangle with the values
+	 * provided as input, and returns this for convenience. The location of its
+	 * center is kept constant.
 	 * 
-	 * @param h
-	 *            Horizontal increment
-	 * @param v
-	 *            Vertical increment
+	 * @param h Horizontal increment
+	 * @param v Vertical increment
 	 * @return <code>this</code> for convenience
 	 * @since 3.4
 	 */
@@ -209,14 +193,12 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
-	 * Expands the horizontal and vertical sides of this Rectangle with the
-	 * values provided as input, and returns this for convenience. The location
-	 * of its center is kept constant.
+	 * Expands the horizontal and vertical sides of this Rectangle with the values
+	 * provided as input, and returns this for convenience. The location of its
+	 * center is kept constant.
 	 * 
-	 * @param h
-	 *            Horizontal increment
-	 * @param v
-	 *            Vertical increment
+	 * @param h Horizontal increment
+	 * @param v Vertical increment
 	 * @return <code>this</code> for convenience
 	 * @since 3.7
 	 */
@@ -242,16 +224,14 @@ public final class PrecisionRectangle extends Rectangle {
 	 * @see org.eclipse.draw2d.geometry.Rectangle#getBottomRight()
 	 */
 	public Point getBottomRight() {
-		return new PrecisionPoint(preciseX() + preciseWidth(), preciseY()
-				+ preciseHeight());
+		return new PrecisionPoint(preciseX() + preciseWidth(), preciseY() + preciseHeight());
 	}
 
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#getCenter()
 	 */
 	public Point getCenter() {
-		return new PrecisionPoint(preciseX() + preciseWidth() / 2.0, preciseY()
-				+ preciseHeight() / 2.0);
+		return new PrecisionPoint(preciseX() + preciseWidth() / 2.0, preciseY() + preciseHeight() / 2.0);
 	}
 
 	/**
@@ -267,8 +247,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * @return a precise copy
 	 */
 	public PrecisionRectangle getPreciseCopy() {
-		return new PrecisionRectangle(preciseX(), preciseY(), preciseWidth(),
-				preciseHeight());
+		return new PrecisionRectangle(preciseX(), preciseY(), preciseWidth(), preciseHeight());
 	}
 
 	/**
@@ -300,23 +279,20 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
-	 * Sets the size of this Rectangle to the intersection region with the
-	 * Rectangle supplied as input, and returns this for convenience. The
-	 * location and dimensions are set to zero if there is no intersection with
-	 * the input Rectangle.
+	 * Sets the size of this Rectangle to the intersection region with the Rectangle
+	 * supplied as input, and returns this for convenience. The location and
+	 * dimensions are set to zero if there is no intersection with the input
+	 * Rectangle.
 	 * 
-	 * @param rect
-	 *            Rectangle for the calculating intersection.
+	 * @param rect Rectangle for the calculating intersection.
 	 * @return <code>this</code> for convenience
 	 * @since 3.7
 	 */
 	private PrecisionRectangle intersectPrecise(Rectangle rect) {
 		double x1 = Math.max(preciseX(), rect.preciseX());
-		double x2 = Math.min(preciseX() + preciseWidth(), rect.preciseX()
-				+ rect.preciseWidth());
+		double x2 = Math.min(preciseX() + preciseWidth(), rect.preciseX() + rect.preciseWidth());
 		double y1 = Math.max(preciseY(), rect.preciseY());
-		double y2 = Math.min(preciseY() + preciseHeight(), rect.preciseY()
-				+ rect.preciseHeight());
+		double y2 = Math.min(preciseY() + preciseHeight(), rect.preciseY() + rect.preciseHeight());
 		if (((x2 - x1) < 0) || ((y2 - y1) < 0))
 			return setPreciseBounds(0, 0, 0, 0); // no intersection
 		else {
@@ -417,10 +393,8 @@ public final class PrecisionRectangle extends Rectangle {
 	 * Resizes this Rectangle by adding the values supplied, returning this for
 	 * convenience.
 	 * 
-	 * @param w
-	 *            Amount by which width is to be resized
-	 * @param h
-	 *            Amount by which height is to be resized
+	 * @param w Amount by which width is to be resized
+	 * @param h Amount by which height is to be resized
 	 * @return <code>this</code> for convenience
 	 * @since 3.7
 	 */
@@ -442,23 +416,20 @@ public final class PrecisionRectangle extends Rectangle {
 	 *      org.eclipse.draw2d.geometry.Dimension)
 	 */
 	public Rectangle setBounds(Point location, Dimension size) {
-		return setPreciseBounds(location.preciseX(), location.preciseY(),
-				size.preciseWidth(), size.preciseHeight());
+		return setPreciseBounds(location.preciseX(), location.preciseY(), size.preciseWidth(), size.preciseHeight());
 	}
 
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
 	public Rectangle setBounds(Rectangle rect) {
-		return setPreciseBounds(rect.preciseX(), rect.preciseY(),
-				rect.preciseWidth(), rect.preciseHeight());
+		return setPreciseBounds(rect.preciseX(), rect.preciseY(), rect.preciseWidth(), rect.preciseHeight());
 	}
 
 	/**
 	 * Sets the height.
 	 * 
-	 * @param value
-	 *            the new height
+	 * @param value the new height
 	 * @deprecated Use {@link #setPreciseHeight(double)} instead.
 	 */
 	public void setHeight(double value) {
@@ -487,23 +458,18 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
-	 * Sets the preciseX, preciseY, preciseWidth, and preciseHeight values of
-	 * this PrecisionRectangle to the provided values and updates the integer
-	 * values of x, y, width, and height accordingly.
+	 * Sets the preciseX, preciseY, preciseWidth, and preciseHeight values of this
+	 * PrecisionRectangle to the provided values and updates the integer values of
+	 * x, y, width, and height accordingly.
 	 * 
-	 * @param x
-	 *            The new x
-	 * @param y
-	 *            The new y
-	 * @param width
-	 *            The new width
-	 * @param height
-	 *            The new height
+	 * @param x      The new x
+	 * @param y      The new y
+	 * @param width  The new width
+	 * @param height The new height
 	 * @return this for convenience
 	 * @since 3.7
 	 */
-	public PrecisionRectangle setPreciseBounds(double x, double y,
-			double width, double height) {
+	public PrecisionRectangle setPreciseBounds(double x, double y, double width, double height) {
 		setPreciseLocation(x, y);
 		setPreciseSize(width, height);
 		return this;
@@ -512,8 +478,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Sets the height of this PrecisionRectangle to the specified value.
 	 * 
-	 * @param value
-	 *            The new height.
+	 * @param value The new height.
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -527,10 +492,8 @@ public final class PrecisionRectangle extends Rectangle {
 	 * Sets the preciseX and preciseY values of this PrecisionRectangle to the
 	 * provided values and updates the integer values of x and y accordingly.
 	 * 
-	 * @param x
-	 *            The new x value
-	 * @param y
-	 *            The new y value
+	 * @param x The new x value
+	 * @param y The new y value
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -543,8 +506,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Sets the precise location of this PrecisionRectangle
 	 * 
-	 * @param loc
-	 *            The new location
+	 * @param loc The new location
 	 * @return this for convenience.
 	 * @since 3.7
 	 */
@@ -553,14 +515,12 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
-	 * Sets the preciseWidth and preciseHeight values of this PrecisionRectangle
-	 * to the provided values and updates the integer values of width and height
+	 * Sets the preciseWidth and preciseHeight values of this PrecisionRectangle to
+	 * the provided values and updates the integer values of width and height
 	 * accordingly.
 	 * 
-	 * @param w
-	 *            The new width
-	 * @param h
-	 *            The new height
+	 * @param w The new width
+	 * @param h The new height
 	 * @return this for convenience.
 	 * @since 3.7
 	 */
@@ -571,11 +531,10 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
-	 * Set the size of this PrecisionRectangle to the given dimension's width
-	 * and height. Returns this for convenience.
+	 * Set the size of this PrecisionRectangle to the given dimension's width and
+	 * height. Returns this for convenience.
 	 * 
-	 * @param size
-	 *            The new size
+	 * @param size The new size
 	 * @return this for convenience.
 	 * @since 3.7
 	 */
@@ -586,8 +545,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Sets the width of this PrecisionRectangle to the specified one.
 	 * 
-	 * @param value
-	 *            The new width
+	 * @param value The new width
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -600,8 +558,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Sets the x value.
 	 * 
-	 * @param value
-	 *            The new x value
+	 * @param value The new x value
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -614,8 +571,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Sets the y value.
 	 * 
-	 * @param value
-	 *            the new y value
+	 * @param value the new y value
 	 * @return this for convenience
 	 * @since 3.7
 	 */
@@ -642,8 +598,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Sets the width.
 	 * 
-	 * @param value
-	 *            the new width
+	 * @param value the new width
 	 * @deprecated Use {@link #setPreciseWidth(double)} instead.
 	 */
 	public void setWidth(double value) {
@@ -660,8 +615,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Sets the x value.
 	 * 
-	 * @param value
-	 *            the new x value
+	 * @param value the new x value
 	 * @deprecated Use {@link #setPreciseX(double)} instead.
 	 */
 	public void setX(double value) {
@@ -678,8 +632,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Sets the y value.
 	 * 
-	 * @param value
-	 *            the new y value
+	 * @param value the new y value
 	 * @deprecated Use {@link #setPreciseX(double)} instead.
 	 */
 	public void setY(double value) {
@@ -695,13 +648,11 @@ public final class PrecisionRectangle extends Rectangle {
 
 	/**
 	 * Shrinks the sides of this Rectangle by the horizontal and vertical values
-	 * provided as input, and returns this Rectangle for convenience. The center
-	 * of this Rectangle is kept constant.
+	 * provided as input, and returns this Rectangle for convenience. The center of
+	 * this Rectangle is kept constant.
 	 * 
-	 * @param h
-	 *            Horizontal reduction amount
-	 * @param v
-	 *            Vertical reduction amount
+	 * @param h Horizontal reduction amount
+	 * @param v Vertical reduction amount
 	 * @return <code>this</code> for convenience
 	 * @since 3.4
 	 */
@@ -731,13 +682,11 @@ public final class PrecisionRectangle extends Rectangle {
 
 	/**
 	 * Shrinks the sides of this Rectangle by the horizontal and vertical values
-	 * provided as input, and returns this Rectangle for convenience. The center
-	 * of this Rectangle is kept constant.
+	 * provided as input, and returns this Rectangle for convenience. The center of
+	 * this Rectangle is kept constant.
 	 * 
-	 * @param h
-	 *            Horizontal reduction amount
-	 * @param v
-	 *            Vertical reduction amount
+	 * @param h Horizontal reduction amount
+	 * @param v Vertical reduction amount
 	 * @return <code>this</code> for convenience
 	 * @since 3.7
 	 */
@@ -753,8 +702,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * @see org.eclipse.draw2d.geometry.Rectangle#touches(org.eclipse.draw2d.geometry.Rectangle)
 	 */
 	public boolean touches(Rectangle rect) {
-		return rect.preciseX() <= preciseX() + preciseWidth()
-				&& rect.preciseY() <= preciseY() + preciseHeight()
+		return rect.preciseX() <= preciseX() + preciseWidth() && rect.preciseY() <= preciseY() + preciseHeight()
 				&& rect.preciseX() + rect.preciseWidth() >= preciseX()
 				&& rect.preciseY() + rect.preciseHeight() >= preciseY();
 	}
@@ -781,13 +729,11 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
-	 * Moves this Rectangle horizontally by dx and vertically by dy, then
-	 * returns this Rectangle for convenience.
+	 * Moves this Rectangle horizontally by dx and vertically by dy, then returns
+	 * this Rectangle for convenience.
 	 * 
-	 * @param dx
-	 *            Shift along X axis
-	 * @param dy
-	 *            Shift along Y axis
+	 * @param dx Shift along X axis
+	 * @param dy Shift along Y axis
 	 * @return <code>this</code> for convenience
 	 * @since 3.7
 	 */
@@ -851,8 +797,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * <code>this</code> for convenience.
 	 * 
 	 * @since 3.0
-	 * @param rect
-	 *            the rectangle being unioned
+	 * @param rect the rectangle being unioned
 	 * @return <code>this</code> for convenience
 	 * @deprecated Use {@link #union(Rectangle)} instead
 	 */
@@ -860,8 +805,7 @@ public final class PrecisionRectangle extends Rectangle {
 		if (rect == null || rect.isEmpty()) {
 			return this;
 		}
-		return unionPrecise(rect.preciseX(), rect.preciseY(),
-				rect.preciseWidth(), rect.preciseHeight());
+		return unionPrecise(rect.preciseX(), rect.preciseY(), rect.preciseWidth(), rect.preciseHeight());
 	}
 
 	/**
@@ -870,19 +814,16 @@ public final class PrecisionRectangle extends Rectangle {
 	public Rectangle union(Rectangle rect) {
 		if (rect == null || rect.isEmpty())
 			return this;
-		return unionPrecise(rect.preciseX(), rect.preciseY(),
-				rect.preciseWidth(), rect.preciseHeight());
+		return unionPrecise(rect.preciseX(), rect.preciseY(), rect.preciseWidth(), rect.preciseHeight());
 	}
 
 	/**
-	 * Updates this Rectangle's bounds to the minimum size which can hold both
-	 * this Rectangle and the coordinate (x,y).
+	 * Updates this Rectangle's bounds to the minimum size which can hold both this
+	 * Rectangle and the coordinate (x,y).
 	 * 
 	 * @return <code>this</code> for convenience
-	 * @param x
-	 *            X coordinate
-	 * @param y
-	 *            Y coordinate
+	 * @param x X coordinate
+	 * @param y Y coordinate
 	 * @since 3.7
 	 */
 	private PrecisionRectangle unionPrecise(double x, double y) {
@@ -908,22 +849,17 @@ public final class PrecisionRectangle extends Rectangle {
 	}
 
 	/**
-	 * Updates this Rectangle's dimensions to the minimum size which can hold
-	 * both this Rectangle and the rectangle (x, y, w, h).
+	 * Updates this Rectangle's dimensions to the minimum size which can hold both
+	 * this Rectangle and the rectangle (x, y, w, h).
 	 * 
-	 * @param x
-	 *            X coordinate of desired union.
-	 * @param y
-	 *            Y coordinate of desired union.
-	 * @param w
-	 *            Width of desired union.
-	 * @param h
-	 *            Height of desired union.
+	 * @param x X coordinate of desired union.
+	 * @param y Y coordinate of desired union.
+	 * @param w Width of desired union.
+	 * @param h Height of desired union.
 	 * @return <code>this</code> for convenience
 	 * @since 3.7
 	 */
-	private PrecisionRectangle unionPrecise(double x, double y, double w,
-			double h) {
+	private PrecisionRectangle unionPrecise(double x, double y, double w, double h) {
 		double right = Math.max(preciseX() + preciseWidth(), x + w);
 		double bottom = Math.max(preciseY() + preciseHeight(), y + h);
 		setPreciseX(Math.min(preciseX(), x));
@@ -943,13 +879,12 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * Updates the integer values based on the current precise values.
 	 * 
-	 * @deprecated This method should not be accessed by clients any more (it
-	 *             will be made private in future releases). The update of
-	 *             integer and precision fields is performed automatically if
-	 *             {@link #preciseX}, {@link #preciseY}, {@link #preciseWidth},
-	 *             and {@link #preciseHeight} field values are not manipulated
-	 *             directly, but only via respective methods offered by this
-	 *             class.
+	 * @deprecated This method should not be accessed by clients any more (it will
+	 *             be made private in future releases). The update of integer and
+	 *             precision fields is performed automatically if {@link #preciseX},
+	 *             {@link #preciseY}, {@link #preciseWidth}, and
+	 *             {@link #preciseHeight} field values are not manipulated directly,
+	 *             but only via respective methods offered by this class.
 	 * 
 	 * @since 3.0
 	 */

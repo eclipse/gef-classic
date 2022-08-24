@@ -34,15 +34,16 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * Figure.
  * 
  * @author Eric Bordeau
- * @author Alexander Nyßen (anyssen)
+ * @author Alexander Nyï¿½en (anyssen)
  */
 public class Thumbnail extends Figure implements UpdateListener {
-	
+
 	// Bug on Mac - images are cached
 	// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=543796
-	// This affects macOS 10.14 and greater but we'll patch it for all macOS versions
+	// This affects macOS 10.14 and greater but we'll patch it for all macOS
+	// versions
 	private static final boolean isMac = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$
-	
+
 	/**
 	 * This updates the Thumbnail by breaking the thumbnail {@link Image} into
 	 * several tiles and updating each tile individually.
@@ -99,9 +100,9 @@ public class Thumbnail extends Figure implements UpdateListener {
 		}
 
 		/**
-		 * Returns <code>true</code> if this ThumbnailUpdater is active. An
-		 * inactive updater has disposed of its {@link Image}. The updater may
-		 * be active and not currently running.
+		 * Returns <code>true</code> if this ThumbnailUpdater is active. An inactive
+		 * updater has disposed of its {@link Image}. The updater may be active and not
+		 * currently running.
 		 * 
 		 * @return <code>true</code> if this ThumbnailUpdater is active
 		 */
@@ -110,8 +111,8 @@ public class Thumbnail extends Figure implements UpdateListener {
 		}
 
 		/**
-		 * Returns <code>true</code> if this is currently running and updating
-		 * at least one tile on the thumbnail {@link Image}.
+		 * Returns <code>true</code> if this is currently running and updating at least
+		 * one tile on the thumbnail {@link Image}.
 		 * 
 		 * @return <code>true</code> if this is currently running
 		 */
@@ -120,8 +121,8 @@ public class Thumbnail extends Figure implements UpdateListener {
 		}
 
 		/**
-		 * Resets the number of vertical and horizontal tiles, as well as the
-		 * tile size and current tile index.
+		 * Resets the number of vertical and horizontal tiles, as well as the tile size
+		 * and current tile index.
 		 */
 		public void resetTileValues() {
 			// Keep track of source size that matches the computed tile size.
@@ -133,14 +134,9 @@ public class Thumbnail extends Figure implements UpdateListener {
 			// the bottom and right border will have at least a size of
 			// MIN_TILE_SIZE size and that at most MAX_NUMBER_OF_TILES tiles
 			// will be created.
-			hTiles = Math.min(
-					(int) Math.ceil((float) sourceSize.width
-							/ (float) MIN_TILE_SIZE), MAX_NUMBER_OF_TILES);
-			vTiles = Math.min(
-					(int) Math.ceil((float) sourceSize.height
-							/ (float) MIN_TILE_SIZE), MAX_NUMBER_OF_TILES);
-			tileSize = new Dimension((int) Math.ceil((float) sourceSize.width
-					/ (float) hTiles),
+			hTiles = Math.min((int) Math.ceil((float) sourceSize.width / (float) MIN_TILE_SIZE), MAX_NUMBER_OF_TILES);
+			vTiles = Math.min((int) Math.ceil((float) sourceSize.height / (float) MIN_TILE_SIZE), MAX_NUMBER_OF_TILES);
+			tileSize = new Dimension((int) Math.ceil((float) sourceSize.width / (float) hTiles),
 					(int) Math.ceil((float) sourceSize.height / (float) vTiles));
 
 			// Reset the current indices so that the next update will start with
@@ -158,14 +154,13 @@ public class Thumbnail extends Figure implements UpdateListener {
 		}
 
 		/**
-		 * Updates the current tile on the Thumbnail. An area of the source
-		 * Figure is painted to an {@link Image}. That Image is then drawn on
-		 * the Thumbnail. Scaling of the source Image is done inside
-		 * {@link GC#drawImage(Image, int, int, int, int, int, int, int, int)}
-		 * since the source and target sizes are different. The current tile
-		 * indexes are incremented and if more updating is necesary, this
-		 * {@link Runnable} is called again in a
-		 * {@link Display#timerExec(int, Runnable)}. If no more updating is
+		 * Updates the current tile on the Thumbnail. An area of the source Figure is
+		 * painted to an {@link Image}. That Image is then drawn on the Thumbnail.
+		 * Scaling of the source Image is done inside
+		 * {@link GC#drawImage(Image, int, int, int, int, int, int, int, int)} since the
+		 * source and target sizes are different. The current tile indexes are
+		 * incremented and if more updating is necesary, this {@link Runnable} is called
+		 * again in a {@link Display#timerExec(int, Runnable)}. If no more updating is
 		 * required, {@link #stop()} is called.
 		 */
 		public void run() {
@@ -179,9 +174,9 @@ public class Thumbnail extends Figure implements UpdateListener {
 			int h = getCurrentHTile();
 			int sx1 = h * tileSize.width;
 			int sx2 = Math.min((h + 1) * tileSize.width, sourceSize.width);
-			
+
 			// Mac fix - create new Tile Graphics instances
-			if(isMac) {
+			if (isMac) {
 				createTileGraphics();
 			}
 
@@ -197,17 +192,14 @@ public class Thumbnail extends Figure implements UpdateListener {
 			// set its own clip inside paint(Graphics) and overwrite areas of
 			// tiles that have already been rendered. By providing an own tile
 			// image and copying from it into the thumbnail image, we are safe.
-			org.eclipse.draw2d.geometry.Point p = getSourceRectangle()
-					.getLocation();
-			tileGraphics.translate(-p.x * getScaleX() - sx1, -p.y * getScaleY()
-					- sy1);
+			org.eclipse.draw2d.geometry.Point p = getSourceRectangle().getLocation();
+			tileGraphics.translate(-p.x * getScaleX() - sx1, -p.y * getScaleY() - sy1);
 			tileGraphics.scale(getScaleX());
 			sourceFigure.paint(tileGraphics);
 			tileGraphics.popState();
 
 			// Copy the painted tile image into the thumbnail image.
-			thumbnailGC.drawImage(tileImage, 0, 0, sx2 - sx1, sy2 - sy1, sx1,
-					sy1, sx2 - sx1, sy2 - sy1);
+			thumbnailGC.drawImage(tileImage, 0, 0, sx2 - sx1, sy2 - sy1, sx1, sy1, sx2 - sx1, sy2 - sy1);
 
 			if (getCurrentHTile() < (hTiles - 1))
 				setCurrentHTile(getCurrentHTile() + 1);
@@ -234,8 +226,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 		/**
 		 * Sets the active flag.
 		 * 
-		 * @param value
-		 *            The active value
+		 * @param value The active value
 		 */
 		public void setActive(boolean value) {
 			isActive = value;
@@ -244,8 +235,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 		/**
 		 * Sets the current horizontal tile index.
 		 * 
-		 * @param count
-		 *            current horizontal tile index
+		 * @param count current horizontal tile index
 		 */
 		protected void setCurrentHTile(int count) {
 			currentHTile = count;
@@ -254,18 +244,16 @@ public class Thumbnail extends Figure implements UpdateListener {
 		/**
 		 * Sets the current vertical tile index.
 		 * 
-		 * @param count
-		 *            current vertical tile index
+		 * @param count current vertical tile index
 		 */
 		protected void setCurrentVTile(int count) {
 			currentVTile = count;
 		}
 
 		/**
-		 * Starts this updater. This method initializes all the necessary
-		 * resources and puts this {@link Runnable} on the asynch queue. If this
-		 * updater is not active or is already running, this method just
-		 * returns.
+		 * Starts this updater. This method initializes all the necessary resources and
+		 * puts this {@link Runnable} on the asynch queue. If this updater is not active
+		 * or is already running, this method just returns.
 		 */
 		public void start() {
 			if (!isActive() || isRunning())
@@ -291,31 +279,30 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 			createTileGraphics();
 
-			setScales(targetSize.width / (float) sourceSize.width,
-					targetSize.height / (float) sourceSize.height);
+			setScales(targetSize.width / (float) sourceSize.width, targetSize.height / (float) sourceSize.height);
 
 			Display.getCurrent().asyncExec(this);
 		}
-		
+
 		/**
 		 * Create new GC, SWTGraphics, and ScaledGraphics instances
 		 */
 		private void createTileGraphics() {
-			// For the Mac fixe we have to create a new GC instance to flush the previous tile image...
-			if(tileGC != null && !tileGC.isDisposed()) {
+			// For the Mac fixe we have to create a new GC instance to flush the previous
+			// tile image...
+			if (tileGC != null && !tileGC.isDisposed()) {
 				tileGC.dispose();
 			}
-			tileGC = new GC(tileImage,
-					sourceFigure.isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.NONE);
+			tileGC = new GC(tileImage, sourceFigure.isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.NONE);
 
 			// ...and this means we need a new SWTGraphics instance
-			if(tileGCGraphics != null) {
+			if (tileGCGraphics != null) {
 				tileGCGraphics.dispose();
 			}
 			tileGCGraphics = new SWTGraphics(tileGC);
-			
+
 			// ...and a new ScaledGraphics instance
-			if(tileGraphics != null) {
+			if (tileGraphics != null) {
 				tileGraphics.dispose();
 			}
 			tileGraphics = new ScaledGraphics(tileGCGraphics);
@@ -334,8 +321,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 				thumbnailImage.dispose();
 
 			if (!targetSize.isEmpty()) {
-				thumbnailImage = new Image(Display.getDefault(),
-						targetSize.width, targetSize.height);
+				thumbnailImage = new Image(Display.getDefault(), targetSize.width, targetSize.height);
 				thumbnailImageSize = new Dimension(targetSize);
 			} else {
 				thumbnailImage = null;
@@ -348,8 +334,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 				tileImage.dispose();
 
 			if (!tileSize.isEmpty()) {
-				tileImage = new Image(Display.getDefault(), tileSize.width,
-						tileSize.height);
+				tileImage = new Image(Display.getDefault(), tileSize.width, tileSize.height);
 				tileImageSize = new Dimension(tileSize);
 			} else {
 				tileImage = null;
@@ -358,8 +343,8 @@ public class Thumbnail extends Figure implements UpdateListener {
 		}
 
 		/**
-		 * Stops this updater. Also disposes of resources (except the thumbnail
-		 * image which is still needed for painting).
+		 * Stops this updater. Also disposes of resources (except the thumbnail image
+		 * which is still needed for painting).
 		 */
 		public void stop() {
 			isRunning = false;
@@ -402,8 +387,8 @@ public class Thumbnail extends Figure implements UpdateListener {
 	private ThumbnailUpdater updater = new ThumbnailUpdater();
 
 	/**
-	 * Creates a new Thumbnail. The source Figure must be set separately if you
-	 * use this constructor.
+	 * Creates a new Thumbnail. The source Figure must be set separately if you use
+	 * this constructor.
 	 */
 	public Thumbnail() {
 		super();
@@ -412,31 +397,24 @@ public class Thumbnail extends Figure implements UpdateListener {
 	/**
 	 * Creates a new Thumbnail with the given IFigure as its source figure.
 	 * 
-	 * @param fig
-	 *            The source figure
+	 * @param fig The source figure
 	 */
 	public Thumbnail(IFigure fig) {
 		this();
 		setSource(fig);
 	}
 
-	private Dimension adjustToAspectRatio(Dimension size,
-			boolean adjustToMaxDimension) {
+	private Dimension adjustToAspectRatio(Dimension size, boolean adjustToMaxDimension) {
 		Dimension sourceSize = getSourceRectangle().getSize();
-		Dimension borderSize = new Dimension(getInsets().getWidth(),
-				getInsets().getHeight());
+		Dimension borderSize = new Dimension(getInsets().getWidth(), getInsets().getHeight());
 		size.expand(borderSize.getNegated());
 		int width, height;
 		if (adjustToMaxDimension) {
-			width = Math.max(size.width, (int) (size.height * sourceSize.width
-					/ (float) sourceSize.height + 0.5));
-			height = Math.max(size.height, (int) (size.width
-					* sourceSize.height / (float) sourceSize.width + 0.5));
+			width = Math.max(size.width, (int) (size.height * sourceSize.width / (float) sourceSize.height + 0.5));
+			height = Math.max(size.height, (int) (size.width * sourceSize.height / (float) sourceSize.width + 0.5));
 		} else {
-			width = Math.min(size.width, (int) (size.height * sourceSize.width
-					/ (float) sourceSize.height + 0.5));
-			height = Math.min(size.height, (int) (size.width
-					* sourceSize.height / (float) sourceSize.width + 0.5));
+			width = Math.min(size.width, (int) (size.height * sourceSize.width / (float) sourceSize.height + 0.5));
+			height = Math.min(size.height, (int) (size.width * sourceSize.height / (float) sourceSize.width + 0.5));
 		}
 		size.width = width;
 		size.height = height;
@@ -455,10 +433,8 @@ public class Thumbnail extends Figure implements UpdateListener {
 	 * Returns the preferred size of this Thumbnail. The preferred size will be
 	 * calculated in a way that maintains the source Figure's aspect ratio.
 	 * 
-	 * @param wHint
-	 *            The width hint
-	 * @param hHint
-	 *            The height hint
+	 * @param wHint The width hint
+	 * @param hHint The height hint
 	 * @return The preferred size
 	 */
 	public Dimension getPreferredSize(int wHint, int hHint) {
@@ -505,9 +481,9 @@ public class Thumbnail extends Figure implements UpdateListener {
 	}
 
 	/**
-	 * Returns the rectangular region relative to the source figure which will
-	 * be the basis of the thumbnail. The value may be returned by reference and
-	 * should not be modified by the caller.
+	 * Returns the rectangular region relative to the source figure which will be
+	 * the basis of the thumbnail. The value may be returned by reference and should
+	 * not be modified by the caller.
 	 * 
 	 * @since 3.1
 	 * @return the region of the source figure being used for the thumbnail
@@ -525,8 +501,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 	protected Image getThumbnailImage() {
 		Dimension oldSize = targetSize;
 		targetSize = getPreferredSize();
-		targetSize.expand(new Dimension(getInsets().getWidth(), getInsets()
-				.getHeight()).negate());
+		targetSize.expand(new Dimension(getInsets().getWidth(), getInsets().getHeight()).negate());
 		setScales(targetSize.width / (float) getSourceRectangle().width,
 				targetSize.height / (float) getSourceRectangle().height);
 		if ((isDirty()) && !updater.isRunning())
@@ -587,21 +562,18 @@ public class Thumbnail extends Figure implements UpdateListener {
 	/**
 	 * Sets the dirty flag.
 	 * 
-	 * @param value
-	 *            The dirty value
+	 * @param value The dirty value
 	 */
 	public void setDirty(boolean value) {
 		isDirty = value;
 	}
 
 	/**
-	 * Sets the X and Y scales for the Thumbnail. These scales represent the
-	 * ratio between the source figure and the Thumbnail.
+	 * Sets the X and Y scales for the Thumbnail. These scales represent the ratio
+	 * between the source figure and the Thumbnail.
 	 * 
-	 * @param x
-	 *            The X scale
-	 * @param y
-	 *            The Y scale
+	 * @param x The X scale
+	 * @param y The Y scale
 	 */
 	protected void setScales(float x, float y) {
 		scaleX = x;
@@ -609,11 +581,10 @@ public class Thumbnail extends Figure implements UpdateListener {
 	}
 
 	/**
-	 * Sets the source Figure. Also sets the scales and creates the necessary
-	 * update manager.
+	 * Sets the source Figure. Also sets the scales and creates the necessary update
+	 * manager.
 	 * 
-	 * @param fig
-	 *            The source figure
+	 * @param fig The source figure
 	 */
 	public void setSource(IFigure fig) {
 		if (sourceFigure == fig)
@@ -622,10 +593,8 @@ public class Thumbnail extends Figure implements UpdateListener {
 			sourceFigure.getUpdateManager().removeUpdateListener(this);
 		sourceFigure = fig;
 		if (sourceFigure != null) {
-			setScales((float) getSize().width
-					/ (float) getSourceRectangle().width,
-					(float) getSize().height
-							/ (float) getSourceRectangle().height);
+			setScales((float) getSize().width / (float) getSourceRectangle().width,
+					(float) getSize().height / (float) getSourceRectangle().height);
 			sourceFigure.getUpdateManager().addUpdateListener(this);
 			repaint();
 		}

@@ -38,26 +38,24 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	/**
 	 * Adds the given action to the action registry.
 	 * 
-	 * @param action
-	 *            the action to add
+	 * @param action the action to add
 	 */
 	protected void addAction(IAction action) {
 		getActionRegistry().registerAction(action);
 	}
 
 	/**
-	 * Indicates the existence of a global action identified by the specified
-	 * key. This global action is defined outside the scope of this contributor,
-	 * such as the Workbench's undo action, or an action provided by a workbench
-	 * ActionSet. The list of global action keys is used whenever the active
-	 * editor is changed ({@link #setActiveEditor(IEditorPart)}). Keys provided
-	 * here will result in corresponding actions being obtained from the active
-	 * editor's <code>ActionRegistry</code>, and those actions will be
-	 * registered with the ActionBars for this contributor. The editor's action
-	 * handler and the global action must have the same key.
+	 * Indicates the existence of a global action identified by the specified key.
+	 * This global action is defined outside the scope of this contributor, such as
+	 * the Workbench's undo action, or an action provided by a workbench ActionSet.
+	 * The list of global action keys is used whenever the active editor is changed
+	 * ({@link #setActiveEditor(IEditorPart)}). Keys provided here will result in
+	 * corresponding actions being obtained from the active editor's
+	 * <code>ActionRegistry</code>, and those actions will be registered with the
+	 * ActionBars for this contributor. The editor's action handler and the global
+	 * action must have the same key.
 	 * 
-	 * @param key
-	 *            the key identifying the global action
+	 * @param key the key identifying the global action
 	 */
 	protected void addGlobalActionKey(String key) {
 		globalActionKeys.add(key);
@@ -70,8 +68,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 * action's ID is flagged as a global action key, by calling
 	 * {@link #addGlobalActionKey(String)}.
 	 * 
-	 * @param action
-	 *            the retarget action being added
+	 * @param action the retarget action being added
 	 */
 	protected void addRetargetAction(RetargetAction action) {
 		addAction(action);
@@ -86,8 +83,8 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	protected abstract void buildActions();
 
 	/**
-	 * Subclasses must implement to declare additional global actions IDs. Only
-	 * IDs which were not already added directly or indirectly using
+	 * Subclasses must implement to declare additional global actions IDs. Only IDs
+	 * which were not already added directly or indirectly using
 	 * {@link #addGlobalActionKey(String)} need to be added.
 	 * 
 	 * @see #addGlobalActionKey(String)
@@ -97,8 +94,8 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	/**
 	 * Disposes the contributor. Removes all {@link RetargetAction}s that were
 	 * {@link org.eclipse.ui.IPartListener}s on the
-	 * {@link org.eclipse.ui.IWorkbenchPage} and disposes them. Also disposes
-	 * the action registry.
+	 * {@link org.eclipse.ui.IWorkbenchPage} and disposes them. Also disposes the
+	 * action registry.
 	 * <P>
 	 * Subclasses may extend this method to perform additional cleanup.
 	 * 
@@ -118,8 +115,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	/**
 	 * Retrieves an action from the action registry using the given ID.
 	 * 
-	 * @param id
-	 *            the ID of the sought action
+	 * @param id the ID of the sought action
 	 * @return <code>null</code> or the action if found
 	 */
 	protected IAction getAction(String id) {

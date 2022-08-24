@@ -28,8 +28,7 @@ public class ToolUtilities {
 	 * Returns a list containing the top level selected edit parts based on the
 	 * viewer's selection.
 	 * 
-	 * @param viewer
-	 *            the viewer
+	 * @param viewer the viewer
 	 * @return the selection excluding dependants
 	 */
 	public static List getSelectionWithoutDependants(EditPartViewer viewer) {
@@ -47,8 +46,7 @@ public class ToolUtilities {
 	 * Returns a list containing the top level selected edit parts based on the
 	 * passed in list of selection.
 	 * 
-	 * @param selectedParts
-	 *            the complete selection
+	 * @param selectedParts the complete selection
 	 * @return the selection excluding dependants
 	 */
 	public static List getSelectionWithoutDependants(List selectedParts) {
@@ -63,14 +61,12 @@ public class ToolUtilities {
 
 	/**
 	 * Filters the given list of EditParts so that the list only contains the
-	 * EditParts that understand the given request (i.e. return
-	 * <code>true</code> from {@link EditPart#understandsRequest(Request)} when
-	 * passed the given request).
+	 * EditParts that understand the given request (i.e. return <code>true</code>
+	 * from {@link EditPart#understandsRequest(Request)} when passed the given
+	 * request).
 	 * 
-	 * @param list
-	 *            the list of edit parts to filter
-	 * @param request
-	 *            the request
+	 * @param list    the list of edit parts to filter
+	 * @param request the request
 	 */
 	public static void filterEditPartsUnderstanding(List list, Request request) {
 		Iterator iter = list.iterator();
@@ -84,10 +80,8 @@ public class ToolUtilities {
 	/**
 	 * Checks if collection contains any ancestor of editpart <code>ep</code>
 	 * 
-	 * @param c
-	 *            - collection of editparts
-	 * @param ep
-	 *            - the editparts to check ancestors for
+	 * @param c  - collection of editparts
+	 * @param ep - the editparts to check ancestors for
 	 * @return <code>true</code> if collection contains any ancestor(s) of the
 	 *         editpart <code>ep</code>
 	 * @since 3.6
@@ -103,15 +97,13 @@ public class ToolUtilities {
 	}
 
 	/**
-	 * Returns the common parent editpart for given pair of EditParts. If the
-	 * two parts are identical, the result is that part. If the two parts do not
-	 * have a common ancestor, some form of RuntimeException will be thrown.
+	 * Returns the common parent editpart for given pair of EditParts. If the two
+	 * parts are identical, the result is that part. If the two parts do not have a
+	 * common ancestor, some form of RuntimeException will be thrown.
 	 * 
 	 * @since 3.1
-	 * @param ll
-	 *            the first editpart
-	 * @param rr
-	 *            the second editpart
+	 * @param ll the first editpart
+	 * @param rr the second editpart
 	 * @return the editpart which is the common ancestor.
 	 */
 	public static EditPart findCommonAncestor(EditPart ll, EditPart rr) {

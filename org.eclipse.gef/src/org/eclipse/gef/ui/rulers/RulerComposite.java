@@ -92,11 +92,9 @@ public class RulerComposite extends Composite {
 	/**
 	 * Constructor
 	 * 
-	 * @param parent
-	 *            a widget which will be the parent of the new instance (cannot
-	 *            be null)
-	 * @param style
-	 *            the style of widget to construct
+	 * @param parent a widget which will be the parent of the new instance (cannot
+	 *               be null)
+	 * @param style  the style of widget to construct
 	 * @see Composite#Composite(org.eclipse.swt.widgets.Composite, int)
 	 */
 	public RulerComposite(Composite parent, int style) {
@@ -112,8 +110,7 @@ public class RulerComposite extends Composite {
 	 * Calculates the proper trim. Includes scrollbars' sizes only if they're
 	 * visible.
 	 * 
-	 * @param canvas
-	 *            The canvas.
+	 * @param canvas The canvas.
 	 * @since 3.6
 	 */
 	public static Rectangle calculateEditorTrim(Canvas canvas) {
@@ -122,8 +119,7 @@ public class RulerComposite extends Composite {
 		 */
 		Rectangle bounds = canvas.getBounds();
 		Rectangle clientArea = canvas.getClientArea();
-		Rectangle result = new Rectangle(0, 0, bounds.width - clientArea.width,
-				bounds.height - clientArea.height);
+		Rectangle result = new Rectangle(0, 0, bounds.width - clientArea.width, bounds.height - clientArea.height);
 		if (result.width != 0 || result.height != 0) {
 			Rectangle trim = canvas.computeTrim(0, 0, 0, 0);
 			result.x = result.height == 0 ? 0 : trim.x;
@@ -135,8 +131,7 @@ public class RulerComposite extends Composite {
 	/**
 	 * Calculates the proper trim for the ruler.
 	 * 
-	 * @param canvas
-	 *            The canvas.
+	 * @param canvas The canvas.
 	 * @since 3.6
 	 */
 	public static Rectangle calculateRulerTrim(Canvas canvas) {
@@ -153,15 +148,13 @@ public class RulerComposite extends Composite {
 
 	private GraphicalViewer createRulerContainer(int orientation) {
 		ScrollingGraphicalViewer viewer = new RulerViewer();
-		final boolean isHorizontal = orientation == PositionConstants.NORTH
-				|| orientation == PositionConstants.SOUTH;
+		final boolean isHorizontal = orientation == PositionConstants.NORTH || orientation == PositionConstants.SOUTH;
 
 		// Finish initializing the viewer
 		viewer.setRootEditPart(new RulerRootEditPart(isHorizontal));
 		viewer.setEditPartFactory(new RulerEditPartFactory(diagramViewer));
 		viewer.createControl(this);
-		((GraphicalEditPart) viewer.getRootEditPart()).getFigure().setBorder(
-				new RulerBorder(isHorizontal));
+		((GraphicalEditPart) viewer.getRootEditPart()).getFigure().setBorder(new RulerBorder(isHorizontal));
 		viewer.setProperty(GraphicalViewer.class.toString(), diagramViewer);
 
 		// Configure the viewer's control
@@ -176,18 +169,15 @@ public class RulerComposite extends Composite {
 		}
 		canvas.setFont(font);
 		if (isHorizontal) {
-			canvas.getViewport().setHorizontalRangeModel(
-					editor.getViewport().getHorizontalRangeModel());
+			canvas.getViewport().setHorizontalRangeModel(editor.getViewport().getHorizontalRangeModel());
 		} else {
-			canvas.getViewport().setVerticalRangeModel(
-					editor.getViewport().getVerticalRangeModel());
+			canvas.getViewport().setVerticalRangeModel(editor.getViewport().getVerticalRangeModel());
 		}
 
 		// Add the viewer to the rulerEditDomain
 		if (rulerEditDomain == null) {
 			rulerEditDomain = new EditDomain();
-			rulerEditDomain.setCommandStack(diagramViewer.getEditDomain()
-					.getCommandStack());
+			rulerEditDomain.setCommandStack(diagramViewer.getEditDomain().getCommandStack());
 		}
 		rulerEditDomain.addViewer(viewer);
 
@@ -208,9 +198,9 @@ public class RulerComposite extends Composite {
 		if (viewer == null)
 			return;
 		/*
-		 * There's a tie from the editor's range model to the RulerViewport (via
-		 * a listener) to the RulerRootEditPart to the RulerViewer. Break this
-		 * tie so that the viewer doesn't leak and can be garbage collected.
+		 * There's a tie from the editor's range model to the RulerViewport (via a
+		 * listener) to the RulerRootEditPart to the RulerViewer. Break this tie so that
+		 * the viewer doesn't leak and can be garbage collected.
 		 */
 		RangeModel rModel = new DefaultRangeModel();
 		Viewport port = ((FigureCanvas) viewer.getControl()).getViewport();
@@ -228,8 +218,7 @@ public class RulerComposite extends Composite {
 	public void doLayout() {
 		if (left == null && top == null) {
 			Rectangle area = getClientArea();
-			if (editor != null && !editor.isDisposed()
-					&& !editor.getBounds().equals(area))
+			if (editor != null && !editor.isDisposed() && !editor.getBounds().equals(area))
 				editor.setBounds(area);
 			return;
 		}
@@ -240,13 +229,11 @@ public class RulerComposite extends Composite {
 			leftTrim = calculateRulerTrim((Canvas) left.getControl());
 			// Adding the trim width here because FigureCanvas#computeSize()
 			// does not
-			leftWidth = left.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).x
-					+ leftTrim.width;
+			leftWidth = left.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).x + leftTrim.width;
 		}
 		if (top != null) {
 			topTrim = calculateRulerTrim((Canvas) top.getControl());
-			topHeight = top.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).y
-					+ topTrim.height;
+			topHeight = top.getControl().computeSize(SWT.DEFAULT, SWT.DEFAULT).y + topTrim.height;
 		}
 
 		Rectangle editorSize = getClientArea();
@@ -257,20 +244,18 @@ public class RulerComposite extends Composite {
 		editor.setBounds(editorSize);
 
 		/*
-		 * Fix for Bug# 67554 Take trim into account. Some platforms (such as
-		 * MacOS and Motif) leave some trimming around some canvasses.
+		 * Fix for Bug# 67554 Take trim into account. Some platforms (such as MacOS and
+		 * Motif) leave some trimming around some canvasses.
 		 */
 		Rectangle trim = calculateEditorTrim(editor);
 		if (left != null) {
 			// The - 1 and + 1 are to compensate for the RulerBorder
-			left.getControl().setBounds(0, topHeight - trim.x + leftTrim.x - 1,
-					leftWidth,
+			left.getControl().setBounds(0, topHeight - trim.x + leftTrim.x - 1, leftWidth,
 					editorSize.height - trim.height + leftTrim.height + 1);
 		}
 		if (top != null) {
 			top.getControl().setBounds(leftWidth - trim.y + topTrim.y - 1, 0,
-					editorSize.width - trim.width + topTrim.width + 1,
-					topHeight);
+					editorSize.width - trim.width + topTrim.width + 1, topHeight);
 		}
 	}
 
@@ -310,13 +295,12 @@ public class RulerComposite extends Composite {
 	 * <p>
 	 * To create ruler(s), simply add the RulerProvider(s) (with the right key:
 	 * RulerProvider.PROPERTY_HORIZONTAL_RULER or
-	 * RulerProvider.PROPERTY_VERTICAL_RULER) as a property on the given viewer.
-	 * It can be done after this method is invoked.
-	 * RulerProvider.PROPERTY_RULER_VISIBILITY can be used to show/hide the
-	 * rulers.
+	 * RulerProvider.PROPERTY_VERTICAL_RULER) as a property on the given viewer. It
+	 * can be done after this method is invoked.
+	 * RulerProvider.PROPERTY_RULER_VISIBILITY can be used to show/hide the rulers.
 	 * 
-	 * @param primaryViewer
-	 *            The graphical viewer for which the rulers have to be created
+	 * @param primaryViewer The graphical viewer for which the rulers have to be
+	 *                      created
 	 */
 	public void setGraphicalViewer(ScrollingGraphicalViewer primaryViewer) {
 		// pre-conditions
@@ -350,35 +334,23 @@ public class RulerComposite extends Composite {
 			public void propertyChange(PropertyChangeEvent evt) {
 				String property = evt.getPropertyName();
 				if (RulerProvider.PROPERTY_HORIZONTAL_RULER.equals(property)) {
-					setRuler(
-							(RulerProvider) diagramViewer
-									.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER),
+					setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER),
 							PositionConstants.NORTH);
-				} else if (RulerProvider.PROPERTY_VERTICAL_RULER
-						.equals(property)) {
-					setRuler(
-							(RulerProvider) diagramViewer
-									.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
+				} else if (RulerProvider.PROPERTY_VERTICAL_RULER.equals(property)) {
+					setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
 							PositionConstants.WEST);
-				} else if (RulerProvider.PROPERTY_RULER_VISIBILITY
-						.equals(property))
-					setRulerVisibility(((Boolean) diagramViewer
-							.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY))
+				} else if (RulerProvider.PROPERTY_RULER_VISIBILITY.equals(property))
+					setRulerVisibility(((Boolean) diagramViewer.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY))
 							.booleanValue());
 			}
 		};
 		diagramViewer.addPropertyChangeListener(propertyListener);
-		Boolean rulerVisibility = (Boolean) diagramViewer
-				.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
+		Boolean rulerVisibility = (Boolean) diagramViewer.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
 		if (rulerVisibility != null)
 			setRulerVisibility(rulerVisibility.booleanValue());
-		setRuler(
-				(RulerProvider) diagramViewer
-						.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER),
+		setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER),
 				PositionConstants.NORTH);
-		setRuler(
-				(RulerProvider) diagramViewer
-						.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
+		setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
 				PositionConstants.WEST);
 	}
 
@@ -427,13 +399,9 @@ public class RulerComposite extends Composite {
 		if (isRulerVisible != isVisible) {
 			isRulerVisible = isVisible;
 			if (diagramViewer != null) {
-				setRuler(
-						(RulerProvider) diagramViewer
-								.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER),
+				setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_HORIZONTAL_RULER),
 						PositionConstants.NORTH);
-				setRuler(
-						(RulerProvider) diagramViewer
-								.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
+				setRuler((RulerProvider) diagramViewer.getProperty(RulerProvider.PROPERTY_VERTICAL_RULER),
 						PositionConstants.WEST);
 			}
 		}
@@ -447,9 +415,8 @@ public class RulerComposite extends Composite {
 		/**
 		 * Constructor
 		 * 
-		 * @param isHorizontal
-		 *            whether or not the ruler being bordered is horizontal or
-		 *            not
+		 * @param isHorizontal whether or not the ruler being bordered is horizontal or
+		 *                     not
 		 */
 		public RulerBorder(boolean isHorizontal) {
 			horizontal = isHorizontal;
@@ -469,21 +436,11 @@ public class RulerComposite extends Composite {
 		public void paint(IFigure figure, Graphics graphics, Insets insets) {
 			graphics.setForegroundColor(ColorConstants.buttonDarker);
 			if (horizontal) {
-				graphics.drawLine(
-						figure.getBounds().getTopLeft(),
-						figure.getBounds()
-								.getBottomLeft()
-								.translate(
-										new org.eclipse.draw2d.geometry.Point(
-												0, -4)));
+				graphics.drawLine(figure.getBounds().getTopLeft(),
+						figure.getBounds().getBottomLeft().translate(new org.eclipse.draw2d.geometry.Point(0, -4)));
 			} else {
-				graphics.drawLine(
-						figure.getBounds().getTopLeft(),
-						figure.getBounds()
-								.getTopRight()
-								.translate(
-										new org.eclipse.draw2d.geometry.Point(
-												-4, 0)));
+				graphics.drawLine(figure.getBounds().getTopLeft(),
+						figure.getBounds().getTopRight().translate(new org.eclipse.draw2d.geometry.Point(-4, 0)));
 			}
 		}
 	}
@@ -517,8 +474,7 @@ public class RulerComposite extends Composite {
 		 * @see org.eclipse.gef.GraphicalViewer#findHandleAt(org.eclipse.draw2d.geometry.Point)
 		 */
 		public Handle findHandleAt(org.eclipse.draw2d.geometry.Point p) {
-			final GraphicalEditPart gep = (GraphicalEditPart) findObjectAtExcluding(
-					p, new ArrayList());
+			final GraphicalEditPart gep = (GraphicalEditPart) findObjectAtExcluding(p, new ArrayList());
 			if (gep == null || !(gep instanceof GuideEditPart))
 				return null;
 			return new Handle() {
@@ -541,8 +497,8 @@ public class RulerComposite extends Composite {
 		}
 
 		/**
-		 * Requests to reveal a ruler are ignored since that causes undesired
-		 * scrolling to the origin of the ruler
+		 * Requests to reveal a ruler are ignored since that causes undesired scrolling
+		 * to the origin of the ruler
 		 * 
 		 * @see org.eclipse.gef.EditPartViewer#reveal(org.eclipse.gef.EditPart)
 		 */
@@ -579,14 +535,11 @@ public class RulerComposite extends Composite {
 		 * @author Pratik Shah
 		 * @since 3.0
 		 */
-		protected static class RulerKeyHandler extends
-				GraphicalViewerKeyHandler {
+		protected static class RulerKeyHandler extends GraphicalViewerKeyHandler {
 			/**
 			 * Constructor
 			 * 
-			 * @param viewer
-			 *            The viewer for which this handler processes keyboard
-			 *            input
+			 * @param viewer The viewer for which this handler processes keyboard input
 			 */
 			public RulerKeyHandler(GraphicalViewer viewer) {
 				super(viewer);
@@ -599,22 +552,14 @@ public class RulerComposite extends Composite {
 				if (event.keyCode == SWT.DEL) {
 					// If a guide has focus, delete it
 					if (getFocusEditPart() instanceof GuideEditPart) {
-						RulerEditPart parent = (RulerEditPart) getFocusEditPart()
-								.getParent();
-						getViewer()
-								.getEditDomain()
-								.getCommandStack()
-								.execute(
-										parent.getRulerProvider()
-												.getDeleteGuideCommand(
-														getFocusEditPart()
-																.getModel()));
+						RulerEditPart parent = (RulerEditPart) getFocusEditPart().getParent();
+						getViewer().getEditDomain().getCommandStack().execute(
+								parent.getRulerProvider().getDeleteGuideCommand(getFocusEditPart().getModel()));
 						event.doit = false;
 						return true;
 					}
 					return false;
-				} else if (((event.stateMask & SWT.ALT) != 0)
-						&& (event.keyCode == SWT.ARROW_UP)) {
+				} else if (((event.stateMask & SWT.ALT) != 0) && (event.keyCode == SWT.ARROW_UP)) {
 					// ALT + UP_ARROW pressed
 					// If a guide has focus, give focus to the ruler
 					EditPart parent = getFocusEditPart().getParent();

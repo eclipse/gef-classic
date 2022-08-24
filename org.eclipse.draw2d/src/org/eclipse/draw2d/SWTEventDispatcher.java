@@ -29,8 +29,7 @@ import org.eclipse.swt.widgets.Control;
 public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
-	 * Used to tell if any button is pressed without regard to the specific
-	 * button.
+	 * Used to tell if any button is pressed without regard to the specific button.
 	 * 
 	 * @deprecated Use {@link SWT#BUTTON_MASK} instead.
 	 */
@@ -54,11 +53,10 @@ public class SWTEventDispatcher extends EventDispatcher {
 	private FocusTraverseManager focusManager = new FocusTraverseManager();
 
 	/**
-	 * Implements {@link EventDispatcher.AccessibilityDispatcher} but does
-	 * nothing in the implementation.
+	 * Implements {@link EventDispatcher.AccessibilityDispatcher} but does nothing
+	 * in the implementation.
 	 */
-	protected class FigureAccessibilityDispatcher extends
-			AccessibilityDispatcher {
+	protected class FigureAccessibilityDispatcher extends AccessibilityDispatcher {
 		/** @see AccessibleControlListener#getChildAtPoint(AccessibleControlEvent) */
 		public void getChildAtPoint(AccessibleControlEvent e) {
 		}
@@ -120,16 +118,14 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 * @see EventDispatcher#dispatchFocusGained(org.eclipse.swt.events.FocusEvent)
 	 */
 	public void dispatchFocusGained(org.eclipse.swt.events.FocusEvent e) {
-		IFigure currentFocusOwner = getFocusTraverseManager()
-				.getCurrentFocusOwner();
+		IFigure currentFocusOwner = getFocusTraverseManager().getCurrentFocusOwner();
 
 		/*
-		 * Upon focus gained, if there is no current focus owner, set focus on
-		 * first focusable child.
+		 * Upon focus gained, if there is no current focus owner, set focus on first
+		 * focusable child.
 		 */
 		if (currentFocusOwner == null)
-			currentFocusOwner = getFocusTraverseManager()
-					.getNextFocusableFigure(root, focusOwner);
+			currentFocusOwner = getFocusTraverseManager().getNextFocusableFigure(root, focusOwner);
 		setFocus(currentFocusOwner);
 	}
 
@@ -169,11 +165,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 		IFigure nextFigure = null;
 
 		if (e.detail == SWT.TRAVERSE_TAB_NEXT)
-			nextFigure = getFocusTraverseManager().getNextFocusableFigure(root,
-					focusOwner);
+			nextFigure = getFocusTraverseManager().getNextFocusableFigure(root, focusOwner);
 		else if (e.detail == SWT.TRAVERSE_TAB_PREVIOUS)
-			nextFigure = getFocusTraverseManager().getPreviousFocusableFigure(
-					root, focusOwner);
+			nextFigure = getFocusTraverseManager().getPreviousFocusableFigure(root, focusOwner);
 
 		if (nextFigure != null) {
 			e.doit = false;
@@ -189,18 +183,16 @@ public class SWTEventDispatcher extends EventDispatcher {
 		if (mouseTarget != null)
 			mouseTarget.handleMouseHover(currentEvent);
 		/*
-		 * Check Tooltip source. Get Tooltip source's Figure. Set that tooltip
-		 * as the lws contents on the helper.
+		 * Check Tooltip source. Get Tooltip source's Figure. Set that tooltip as the
+		 * lws contents on the helper.
 		 */
 		if (hoverSource != null) {
 			toolTipHelper = getToolTipHelper();
 			IFigure tip = hoverSource.getToolTip();
 			Control control = (Control) me.getSource();
 			org.eclipse.swt.graphics.Point absolute;
-			absolute = control.toDisplay(new org.eclipse.swt.graphics.Point(
-					me.x, me.y));
-			toolTipHelper.displayToolTipNear(hoverSource, tip, absolute.x,
-					absolute.y);
+			absolute = control.toDisplay(new org.eclipse.swt.graphics.Point(me.x, me.y));
+			toolTipHelper.displayToolTipNear(hoverSource, tip, absolute.x, absolute.y);
 		}
 	}
 
@@ -314,8 +306,8 @@ public class SWTEventDispatcher extends EventDispatcher {
 	}
 
 	/**
-	 * Returns the FocusTraverseManager which is used to determine which figure
-	 * will get focus when a TAB or ALT+TAB key sequence occurs.
+	 * Returns the FocusTraverseManager which is used to determine which figure will
+	 * get focus when a TAB or ALT+TAB key sequence occurs.
 	 * 
 	 * @return the FocusTraverseManager
 	 */
@@ -335,10 +327,9 @@ public class SWTEventDispatcher extends EventDispatcher {
 	}
 
 	/**
-	 * Returns the figure that is the target of mouse events. This may not be
-	 * the figure beneath the cursor because another figure may have captured
-	 * the mouse and will continue to get mouse events until capture is
-	 * released.
+	 * Returns the figure that is the target of mouse events. This may not be the
+	 * figure beneath the cursor because another figure may have captured the mouse
+	 * and will continue to get mouse events until capture is released.
 	 * 
 	 * @return the mouse target
 	 */
@@ -431,8 +422,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 		if (c == control)
 			return;
 		if (control != null && !control.isDisposed())
-			throw new RuntimeException(
-					"Can not set control again once it has been set"); //$NON-NLS-1$
+			throw new RuntimeException("Can not set control again once it has been set"); //$NON-NLS-1$
 		if (c != null)
 			c.addDisposeListener(new org.eclipse.swt.events.DisposeListener() {
 				public void widgetDisposed(DisposeEvent e) {
@@ -446,8 +436,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * Sets the mouse cursor.
 	 * 
-	 * @param c
-	 *            the new cursor
+	 * @param c the new cursor
 	 */
 	protected void setCursor(Cursor c) {
 		if (c == null && cursor == null) {
@@ -463,8 +452,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 * Enables key traversal via TAB and ALT+TAB if <i>traverse</i> is
 	 * <code>true</code>. Disables it otherwise.
 	 * 
-	 * @param traverse
-	 *            whether key traversal should be enabled
+	 * @param traverse whether key traversal should be enabled
 	 */
 	public void setEnableKeyTraversal(boolean traverse) {
 		figureTraverse = traverse;
@@ -473,8 +461,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * Sets the figure under the mouse cursor.
 	 * 
-	 * @param f
-	 *            the new figure under the cursor
+	 * @param f the new figure under the cursor
 	 */
 	protected void setFigureUnderCursor(IFigure f) {
 		if (cursorTarget == f)
@@ -485,13 +472,12 @@ public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
 	 * Sets the focus figure. If the figure currently with focus is not
-	 * <code>null</code>, {@link IFigure#handleFocusLost(FocusEvent)} is called
-	 * on the current focused figure. If the new focus figure is not
-	 * <code>null</code>, this will call
-	 * {@link IFigure#handleFocusGained(FocusEvent)} on the new focused figure.
+	 * <code>null</code>, {@link IFigure#handleFocusLost(FocusEvent)} is called on
+	 * the current focused figure. If the new focus figure is not <code>null</code>,
+	 * this will call {@link IFigure#handleFocusGained(FocusEvent)} on the new
+	 * focused figure.
 	 * 
-	 * @param fig
-	 *            the new focus figure
+	 * @param fig the new focus figure
 	 */
 	protected void setFocus(IFigure fig) {
 		if (fig == focusOwner)
@@ -510,34 +496,27 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * Sets the figure that the mouse cursor is hovering over.
 	 * 
-	 * @param figure
-	 *            the new hover source
-	 * @param me
-	 *            the mouse event
+	 * @param figure the new hover source
+	 * @param me     the mouse event
 	 */
-	protected void setHoverSource(Figure figure,
-			org.eclipse.swt.events.MouseEvent me) {
+	protected void setHoverSource(Figure figure, org.eclipse.swt.events.MouseEvent me) {
 		hoverSource = figure;
 		if (figure != null) {
 			Control control = (Control) me.getSource();
 			org.eclipse.swt.graphics.Point absolute;
-			absolute = control.toDisplay(new org.eclipse.swt.graphics.Point(
-					me.x, me.y));
+			absolute = control.toDisplay(new org.eclipse.swt.graphics.Point(me.x, me.y));
 			toolTipHelper = getToolTipHelper();
-			toolTipHelper.updateToolTip(hoverSource, getCurrentToolTip(),
-					absolute.x, absolute.y);
+			toolTipHelper.updateToolTip(hoverSource, getCurrentToolTip(), absolute.x, absolute.y);
 		} else if (toolTipHelper != null) {
 			// Update with null to clear hoverSource in ToolTipHelper
-			toolTipHelper.updateToolTip(hoverSource, getCurrentToolTip(), me.x,
-					me.y);
+			toolTipHelper.updateToolTip(hoverSource, getCurrentToolTip(), me.x, me.y);
 		}
 	}
 
 	/**
 	 * Sets the given figure to be the target of future mouse events.
 	 * 
-	 * @param figure
-	 *            the new mouse target
+	 * @param figure the new mouse target
 	 */
 	protected void setMouseTarget(IFigure figure) {
 		mouseTarget = figure;
@@ -561,12 +540,10 @@ public class SWTEventDispatcher extends EventDispatcher {
 	}
 
 	/**
-	 * Updates the figure under the cursor, unless the mouse is captured, in
-	 * which case all mouse events will be routed to the figure that captured
-	 * the mouse.
+	 * Updates the figure under the cursor, unless the mouse is captured, in which
+	 * case all mouse events will be routed to the figure that captured the mouse.
 	 * 
-	 * @param me
-	 *            the mouse event
+	 * @param me the mouse event
 	 */
 	protected void updateFigureUnderCursor(org.eclipse.swt.events.MouseEvent me) {
 		if (!captured) {
@@ -578,20 +555,18 @@ public class SWTEventDispatcher extends EventDispatcher {
 	}
 
 	/**
-	 * Updates the figure that will receive hover events. The hover source must
-	 * have a tooltip. If the figure under the mouse doesn't have a tooltip set,
-	 * this method will walk up the ancestor hierarchy until either a figure
-	 * with a tooltip is found or it gets to the root figure.
+	 * Updates the figure that will receive hover events. The hover source must have
+	 * a tooltip. If the figure under the mouse doesn't have a tooltip set, this
+	 * method will walk up the ancestor hierarchy until either a figure with a
+	 * tooltip is found or it gets to the root figure.
 	 * 
-	 * @param me
-	 *            the mouse event
+	 * @param me the mouse event
 	 */
 	protected void updateHoverSource(org.eclipse.swt.events.MouseEvent me) {
 		/*
-		 * Derive source from figure under cursor. Set the source in
-		 * setHoverSource(); If figure.getToolTip() is null, get parent's
-		 * toolTip Continue parent traversal until a toolTip is found or root is
-		 * reached.
+		 * Derive source from figure under cursor. Set the source in setHoverSource();
+		 * If figure.getToolTip() is null, get parent's toolTip Continue parent
+		 * traversal until a toolTip is found or root is reached.
 		 */
 		if (cursorTarget != null) {
 			boolean sourceFound = false;

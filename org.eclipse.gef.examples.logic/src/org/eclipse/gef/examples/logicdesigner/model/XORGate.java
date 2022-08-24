@@ -17,16 +17,14 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 public class XORGate extends Gate {
 
 	static final long serialVersionUID = 1;
-	private static Image XOR_ICON = createImage(XORGate.class,
-			"icons/xor16.gif"); //$NON-NLS-1$
+	private static Image XOR_ICON = createImage(XORGate.class, "icons/xor16.gif"); //$NON-NLS-1$
 
 	public Image getIconImage() {
 		return XOR_ICON;
 	}
 
 	public boolean getResult() {
-		return getInput(TERMINAL_A) & !getInput(TERMINAL_B)
-				|| !getInput(TERMINAL_A) & getInput(TERMINAL_B);
+		return getInput(TERMINAL_A) & !getInput(TERMINAL_B) || !getInput(TERMINAL_A) & getInput(TERMINAL_B);
 	}
 
 	public String toString() {

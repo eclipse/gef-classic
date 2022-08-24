@@ -45,8 +45,7 @@ public class PanningSelectionTool extends SelectionTool {
 	/**
 	 * Returns <code>true</code> if spacebar condition was accepted.
 	 * 
-	 * @param e
-	 *            the key event
+	 * @param e the key event
 	 * @return true if the space bar was the key event.
 	 */
 	protected boolean acceptSpaceBar(KeyEvent e) {
@@ -87,11 +86,9 @@ public class PanningSelectionTool extends SelectionTool {
 	 * @see org.eclipse.gef.tools.SelectionTool#handleButtonDown(int)
 	 */
 	protected boolean handleButtonDown(int which) {
-		if (which == 1
-				&& getCurrentViewer().getControl() instanceof FigureCanvas
+		if (which == 1 && getCurrentViewer().getControl() instanceof FigureCanvas
 				&& stateTransition(PAN, PAN_IN_PROGRESS)) {
-			viewLocation = ((FigureCanvas) getCurrentViewer().getControl())
-					.getViewport().getViewLocation();
+			viewLocation = ((FigureCanvas) getCurrentViewer().getControl()).getViewport().getViewLocation();
 			return true;
 		}
 		return super.handleButtonDown(which);
@@ -101,8 +98,7 @@ public class PanningSelectionTool extends SelectionTool {
 	 * @see org.eclipse.gef.tools.SelectionTool#handleButtonUp(int)
 	 */
 	protected boolean handleButtonUp(int which) {
-		if (which == 1 && isSpaceBarDown
-				&& stateTransition(PAN_IN_PROGRESS, PAN))
+		if (which == 1 && isSpaceBarDown && stateTransition(PAN_IN_PROGRESS, PAN))
 			return true;
 		else if (which == 1 && stateTransition(PAN_IN_PROGRESS, STATE_INITIAL)) {
 			refreshCursor();
@@ -116,12 +112,9 @@ public class PanningSelectionTool extends SelectionTool {
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDrag()
 	 */
 	protected boolean handleDrag() {
-		if (isInState(PAN_IN_PROGRESS)
-				&& getCurrentViewer().getControl() instanceof FigureCanvas) {
-			FigureCanvas canvas = (FigureCanvas) getCurrentViewer()
-					.getControl();
-			canvas.scrollTo(viewLocation.x - getDragMoveDelta().width,
-					viewLocation.y - getDragMoveDelta().height);
+		if (isInState(PAN_IN_PROGRESS) && getCurrentViewer().getControl() instanceof FigureCanvas) {
+			FigureCanvas canvas = (FigureCanvas) getCurrentViewer().getControl();
+			canvas.scrollTo(viewLocation.x - getDragMoveDelta().width, viewLocation.y - getDragMoveDelta().height);
 			return true;
 		} else {
 			return super.handleDrag();

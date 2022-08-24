@@ -35,8 +35,7 @@ import org.eclipse.gef.requests.ReconnectRequest;
 /**
  * A DragTracker that moves the endpoint of a connection to another location.
  */
-public class ConnectionEndpointTracker extends TargetingTool
-		implements DragTracker {
+public class ConnectionEndpointTracker extends TargetingTool implements DragTracker {
 
 	private static final int FLAG_SOURCE_FEEBBACK = TargetingTool.MAX_FLAG << 1;
 	/** The max flag */
@@ -48,11 +47,9 @@ public class ConnectionEndpointTracker extends TargetingTool
 	private ConnectionEditPart connectionEditPart;
 
 	/**
-	 * Constructs a new ConnectionEndpointTracker for the given
-	 * ConnectionEditPart.
+	 * Constructs a new ConnectionEndpointTracker for the given ConnectionEditPart.
 	 * 
-	 * @param cep
-	 *            the ConnectionEditPart
+	 * @param cep the ConnectionEditPart
 	 */
 	public ConnectionEndpointTracker(ConnectionEditPart cep) {
 		setConnectionEditPart(cep);
@@ -94,9 +91,9 @@ public class ConnectionEndpointTracker extends TargetingTool
 	}
 
 	/**
-	 * Erases feedback and sets the viewer's focus to <code>null</code>. This
-	 * will remove any focus rectangles that were painted to show the new target
-	 * or source edit part.
+	 * Erases feedback and sets the viewer's focus to <code>null</code>. This will
+	 * remove any focus rectangles that were painted to show the new target or
+	 * source edit part.
 	 * 
 	 * @see Tool#deactivate()
 	 */
@@ -160,8 +157,8 @@ public class ConnectionEndpointTracker extends TargetingTool
 	}
 
 	/**
-	 * If currently in the drag-in-progress state, it goes into the terminal
-	 * state erases feedback and executes the current command.
+	 * If currently in the drag-in-progress state, it goes into the terminal state
+	 * erases feedback and executes the current command.
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
@@ -175,8 +172,8 @@ public class ConnectionEndpointTracker extends TargetingTool
 	}
 
 	/**
-	 * Updates the request and the mouse target, asks to show feedback, and gets
-	 * the current command.
+	 * Updates the request and the mouse target, asks to show feedback, and gets the
+	 * current command.
 	 * 
 	 * @return <code>true</code>
 	 */
@@ -207,28 +204,23 @@ public class ConnectionEndpointTracker extends TargetingTool
 	}
 
 	/**
-	 * Processes the arrow keys (to choose a different source or target edit
-	 * part) and forwardslash and backslash keys (to try to connect to another
+	 * Processes the arrow keys (to choose a different source or target edit part)
+	 * and forwardslash and backslash keys (to try to connect to another
 	 * connection).
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
 	 */
 	protected boolean handleKeyDown(KeyEvent e) {
 		if (acceptArrowKey(e)) {
-			if (stateTransition(STATE_INITIAL,
-					STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
+			if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 				// When the drag first starts, set the focus Part to be one end
 				// of the connection
 				if (isTarget()) {
-					getCurrentViewer()
-							.setFocus(getConnectionEditPart().getTarget());
-					getCurrentViewer()
-							.reveal(getConnectionEditPart().getTarget());
+					getCurrentViewer().setFocus(getConnectionEditPart().getTarget());
+					getCurrentViewer().reveal(getConnectionEditPart().getTarget());
 				} else {
-					getCurrentViewer()
-							.setFocus(getConnectionEditPart().getSource());
-					getCurrentViewer()
-							.reveal(getConnectionEditPart().getSource());
+					getCurrentViewer().setFocus(getConnectionEditPart().getSource());
+					getCurrentViewer().reveal(getConnectionEditPart().getSource());
 				}
 			}
 			int direction = 0;
@@ -240,12 +232,10 @@ public class ConnectionEndpointTracker extends TargetingTool
 				direction = PositionConstants.NORTH;
 				break;
 			case SWT.ARROW_RIGHT:
-				direction = isCurrentViewerMirrored() ? PositionConstants.WEST
-						: PositionConstants.EAST;
+				direction = isCurrentViewerMirrored() ? PositionConstants.WEST : PositionConstants.EAST;
 				break;
 			case SWT.ARROW_LEFT:
-				direction = isCurrentViewerMirrored() ? PositionConstants.EAST
-						: PositionConstants.WEST;
+				direction = isCurrentViewerMirrored() ? PositionConstants.EAST : PositionConstants.WEST;
 				break;
 			}
 
@@ -265,8 +255,7 @@ public class ConnectionEndpointTracker extends TargetingTool
 			e.stateMask |= SWT.CONTROL;
 			if (getCurrentViewer().getKeyHandler().keyPressed(e)) {
 				// Do not try to connect to the same connection being dragged.
-				if (getCurrentViewer()
-						.getFocusEditPart() != getConnectionEditPart())
+				if (getCurrentViewer().getFocusEditPart() != getConnectionEditPart())
 					navigateNextAnchor(0);
 				return true;
 			}
@@ -297,8 +286,7 @@ public class ConnectionEndpointTracker extends TargetingTool
 		Point next = null;
 		for (int i = 0; i < list.size(); i++) {
 			Point p = (Point) list.get(i);
-			if (p.equals(start)
-					|| (direction != 0 && (start.getPosition(p) != direction)))
+			if (p.equals(start) || (direction != 0 && (start.getPosition(p) != direction)))
 				continue;
 			int d = p.getDistanceOrthogonal(start);
 			if (d < distance) {
@@ -317,8 +305,7 @@ public class ConnectionEndpointTracker extends TargetingTool
 	/**
 	 * Sets the command name.
 	 * 
-	 * @param newCommandName
-	 *            the new command name
+	 * @param newCommandName the new command name
 	 */
 	public void setCommandName(String newCommandName) {
 		commandName = newCommandName;
@@ -327,8 +314,7 @@ public class ConnectionEndpointTracker extends TargetingTool
 	/**
 	 * Sets the connection edit part that is being reconnected.
 	 * 
-	 * @param cep
-	 *            the connection edit part
+	 * @param cep the connection edit part
 	 */
 	public void setConnectionEditPart(ConnectionEditPart cep) {
 		this.connectionEditPart = cep;

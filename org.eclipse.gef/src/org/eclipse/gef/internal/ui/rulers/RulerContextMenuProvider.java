@@ -27,8 +27,7 @@ public class RulerContextMenuProvider extends ContextMenuProvider {
 
 	public void buildContextMenu(IMenuManager menu) {
 		GEFActionConstants.addStandardActionGroups(menu);
-		menu.appendToGroup(GEFActionConstants.GROUP_ADD, new CreateGuideAction(
-				getViewer()));
+		menu.appendToGroup(GEFActionConstants.GROUP_ADD, new CreateGuideAction(getViewer()));
 	}
 
 }

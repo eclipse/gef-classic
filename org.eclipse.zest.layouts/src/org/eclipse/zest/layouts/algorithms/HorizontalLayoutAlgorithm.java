@@ -22,16 +22,18 @@ public class HorizontalLayoutAlgorithm extends GridLayoutAlgorithm {
 	}
 
 	/**
-	 * Horizontal Layout Algorithm constructor.  Sets the Style to none.
+	 * Horizontal Layout Algorithm constructor. Sets the Style to none.
 	 */
 	public HorizontalLayoutAlgorithm() {
 		this(LayoutStyles.NONE);
 	}
 
 	/**
-	 * Calculates and returns an array containing the number of columns, followed by the number of rows
+	 * Calculates and returns an array containing the number of columns, followed by
+	 * the number of rows
 	 */
-	protected int[] calculateNumberOfRowsAndCols(int numChildren, double boundX, double boundY, double boundWidth, double boundHeight) {
+	protected int[] calculateNumberOfRowsAndCols(int numChildren, double boundX, double boundY, double boundWidth,
+			double boundHeight) {
 		int rows = 1;
 		int cols = numChildren;
 		int[] result = { cols, rows };

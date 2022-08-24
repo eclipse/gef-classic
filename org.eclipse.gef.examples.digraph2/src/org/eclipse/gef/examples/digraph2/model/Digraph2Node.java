@@ -36,8 +36,7 @@ public class Digraph2Node extends Digraph1Node {
 	/**
 	 * Constructor for a Digraph2Node.
 	 * 
-	 * @param aNumber
-	 *            the node number.
+	 * @param aNumber the node number.
 	 */
 	public Digraph2Node(int aNumber) {
 		super(aNumber);
@@ -48,8 +47,7 @@ public class Digraph2Node extends Digraph1Node {
 	/**
 	 * Add the edge to the list of source edges.
 	 * 
-	 * @param sourceEdge
-	 *            the edge to add.
+	 * @param sourceEdge the edge to add.
 	 */
 	public void addSourceEdge(Digraph2Edge sourceEdge) {
 		this.sourceEdges.add(sourceEdge);
@@ -58,8 +56,7 @@ public class Digraph2Node extends Digraph1Node {
 	/**
 	 * Add the edge to the list of target edges.
 	 * 
-	 * @param targetEdge
-	 *            the edge to add.
+	 * @param targetEdge the edge to add.
 	 */
 	public void addTargetEdge(Digraph2Edge targetEdge) {
 		this.targetEdges.add(targetEdge);
@@ -86,8 +83,7 @@ public class Digraph2Node extends Digraph1Node {
 	/**
 	 * Remove the edge to the list of source edges.
 	 * 
-	 * @param sourceEdge
-	 *            the edge to remove.
+	 * @param sourceEdge the edge to remove.
 	 */
 	public void removeSourceEdge(Digraph2Edge sourceEdge) {
 		this.sourceEdges.remove(sourceEdge);
@@ -96,8 +92,7 @@ public class Digraph2Node extends Digraph1Node {
 	/**
 	 * Remove the edge to the list of target edges.
 	 * 
-	 * @param targetEdge
-	 *            the edge to remove.
+	 * @param targetEdge the edge to remove.
 	 */
 	public void removeTargetEdge(Digraph2Edge targetEdge) {
 		this.targetEdges.remove(targetEdge);

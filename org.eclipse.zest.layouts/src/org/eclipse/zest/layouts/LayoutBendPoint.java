@@ -11,6 +11,7 @@ package org.eclipse.zest.layouts;
 
 /**
  * Specifies a single bend point in a graph relationship.
+ * 
  * @author Ian Bull
  * @author Chris Bennett
  */

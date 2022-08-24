@@ -21,14 +21,12 @@ public class Cursors {
 	/**
 	 * Returns the cursor corresponding to the given direction, defined in
 	 * {@link PositionConstants}. Note that
-	 * {@link #getDirectionalCursor(int, boolean)} should be used for
-	 * applications which want to run properly when running in a mirrored
-	 * environment. The behavior is the same as calling
-	 * {@link #getDirectionalCursor(int, boolean)
+	 * {@link #getDirectionalCursor(int, boolean)} should be used for applications
+	 * which want to run properly when running in a mirrored environment. The
+	 * behavior is the same as calling {@link #getDirectionalCursor(int, boolean)
 	 * getDirectionalCursor(direction, false)}.
 	 * 
-	 * @param direction
-	 *            the relative direction of the desired cursor
+	 * @param direction the relative direction of the desired cursor
 	 * @return The appropriate directional cursor
 	 */
 	public static Cursor getDirectionalCursor(int direction) {
@@ -36,8 +34,8 @@ public class Cursors {
 	}
 
 	/**
-	 * Returns the cursor corresponding to the given direction and mirroring.
-	 * The direction must be one of:
+	 * Returns the cursor corresponding to the given direction and mirroring. The
+	 * direction must be one of:
 	 * <UL>
 	 * <LI>{@link PositionConstants#NORTH}
 	 * <LI>{@link PositionConstants#SOUTH}
@@ -49,13 +47,11 @@ public class Cursors {
 	 * <LI>{@link PositionConstants#SOUTH_WEST}
 	 * </UL>
 	 * <P>
-	 * The behavior is undefined for other values. If <code>isMirrored</code> is
-	 * set to <code>true</code>, EAST and WEST will be inverted.
+	 * The behavior is undefined for other values. If <code>isMirrored</code> is set
+	 * to <code>true</code>, EAST and WEST will be inverted.
 	 * 
-	 * @param direction
-	 *            the relative direction of the desired cursor
-	 * @param isMirrored
-	 *            <code>true</code> if EAST and WEST should be inverted
+	 * @param direction  the relative direction of the desired cursor
+	 * @param isMirrored <code>true</code> if EAST and WEST should be inverted
 	 * @return The appropriate directional cursor
 	 */
 	public static Cursor getDirectionalCursor(int direction, boolean isMirrored) {

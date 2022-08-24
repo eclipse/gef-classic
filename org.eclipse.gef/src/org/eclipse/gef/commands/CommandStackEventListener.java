@@ -25,8 +25,7 @@ public interface CommandStackEventListener {
 	 * event which has occurred.
 	 * 
 	 * @since 3.1
-	 * @param event
-	 *            the event
+	 * @param event the event
 	 */
 	void stackChanged(CommandStackEvent event);
 

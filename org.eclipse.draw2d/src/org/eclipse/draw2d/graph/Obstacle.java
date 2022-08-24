@@ -32,8 +32,7 @@ class Obstacle extends Rectangle {
 	/**
 	 * Creates a new obstacle from the given rectangle bounds.
 	 * 
-	 * @param rect
-	 *            the bounds
+	 * @param rect the bounds
 	 */
 	Obstacle(Rectangle rect, ShortestPathRouter router) {
 		init(rect);
@@ -44,13 +43,11 @@ class Obstacle extends Rectangle {
 	 * Returns <code>true</code> if the given point is contained but not on the
 	 * boundary of this obstacle.
 	 * 
-	 * @param p
-	 *            a point
+	 * @param p a point
 	 * @return <code>true</code> if properly contained
 	 */
 	public boolean containsProper(Point p) {
-		return p.x > this.x && p.x < this.x + this.width - 1 && p.y > this.y
-				&& p.y < this.y + this.height - 1;
+		return p.x > this.x && p.x < this.x + this.width - 1 && p.y > this.y && p.y < this.y + this.height - 1;
 	}
 
 	public int getSpacing() {
@@ -75,8 +72,7 @@ class Obstacle extends Rectangle {
 	/**
 	 * Initializes this obstacle to the values of the given rectangle
 	 * 
-	 * @param rect
-	 *            bounds of this obstacle
+	 * @param rect bounds of this obstacle
 	 */
 	void init(Rectangle rect) {
 		this.x = rect.x;
