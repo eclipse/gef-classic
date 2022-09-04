@@ -105,6 +105,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.Tool#activate()
 	 */
+	@Override
 	public void activate() {
 		super.activate();
 		if (owner != null) {
@@ -123,6 +124,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#commitDrag()
 	 */
+	@Override
 	public void commitDrag() {
 		eraseTargetFeedback();
 		super.commitDrag();
@@ -133,6 +135,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
 	 */
+	@Override
 	protected List createOperationSet() {
 		List list = super.createOperationSet();
 		ToolUtilities.filterEditPartsUnderstanding(list, getSourceRequest());
@@ -142,6 +145,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
 	 */
+	@Override
 	protected Request createSourceRequest() {
 		ChangeBoundsRequest request;
 		request = new ChangeBoundsRequest(REQ_RESIZE);
@@ -152,6 +156,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		// For the case where ESC key was hit while resizing
 		eraseTargetFeedback();
@@ -176,6 +181,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommand()
 	 */
+	@Override
 	protected Command getCommand() {
 		List editparts = getOperationSet();
 		EditPart part;
@@ -198,6 +204,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDefaultCursor()
 	 */
+	@Override
 	protected Cursor getDefaultCursor() {
 		return SharedCursors.getDirectionalCursor(direction, getTargetEditPart().getFigure().isMirrored());
 	}
@@ -205,6 +212,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "Resize Handle Tracker";//$NON-NLS-1$
 	}
@@ -246,6 +254,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.SimpleDragTracker#handleButtonUp(int)
 	 */
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 			eraseSourceFeedback();
@@ -260,6 +269,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.SimpleDragTracker#handleDragInProgress()
 	 */
+	@Override
 	protected boolean handleDragInProgress() {
 		if (isInDragInProgress()) {
 			updateSourceRequest();
@@ -427,6 +437,39 @@ public class ResizeTracker extends SimpleDragTracker {
 			owner.getFigure().translateToAbsolute(manipulatedConstraint);
 			Dimension newSizeDelta = manipulatedConstraint.getSize().getShrinked(originalConstraint.getSize());
 			changeBoundsRequest.setSizeDelta(newSizeDelta);
+			if (isTopOrLeftResize()) {
+				enforceResizeConstraintsForBottomRightCorner(changeBoundsRequest);
+			}
+		}
+	}
+
+	/**
+	 * Ensures that the in addition to the size constraints also the position is
+	 * respected by the given request. It ensure that on resize the bottom right
+	 * corner is fixed when resized from any top/left direction. May be overwritten
+	 * by clients to enforce additional constraints.
+	 * 
+	 * @param changeBoundsRequest The request to validate
+	 * @since 3.13
+	 */
+	protected void enforceResizeConstraintsForBottomRightCorner(final ChangeBoundsRequest changeBoundsRequest) {
+		final PrecisionRectangle originalConstraint = new PrecisionRectangle(getOwner().getFigure().getBounds());
+		getOwner().getFigure().translateToAbsolute(originalConstraint);
+		final PrecisionRectangle manipulatedConstraint = new PrecisionRectangle(
+				changeBoundsRequest.getTransformedRectangle(originalConstraint));
+		final Point origBR = originalConstraint.getBottomRight();
+		final Point newBR = manipulatedConstraint.getBottomRight();
+
+		if (isLeftResize() && (origBR.x < newBR.x)) {
+			final Point moveDelta = changeBoundsRequest.getMoveDelta();
+			moveDelta.x -= (newBR.x - origBR.x);
+			changeBoundsRequest.setMoveDelta(moveDelta);
+		}
+
+		if (isTopResize() && (origBR.y < newBR.y)) {
+			final Point moveDelta = changeBoundsRequest.getMoveDelta();
+			moveDelta.y -= (newBR.y - origBR.y);
+			changeBoundsRequest.setMoveDelta(moveDelta);
 		}
 	}
 
@@ -456,6 +499,20 @@ public class ResizeTracker extends SimpleDragTracker {
 	 */
 	protected Dimension getMinimumSizeFor(ChangeBoundsRequest request) {
 		return IFigure.MIN_DIMENSION;
+	}
+
+	private boolean isTopOrLeftResize() {
+		return isLeftResize() || isTopResize();
+	}
+
+	private boolean isLeftResize() {
+		return getResizeDirection() == PositionConstants.WEST || getResizeDirection() == PositionConstants.NORTH_WEST
+				|| getResizeDirection() == PositionConstants.SOUTH_WEST;
+	}
+
+	private boolean isTopResize() {
+		return getResizeDirection() == PositionConstants.NORTH || getResizeDirection() == PositionConstants.NORTH_WEST
+				|| getResizeDirection() == PositionConstants.NORTH_EAST;
 	}
 
 }
