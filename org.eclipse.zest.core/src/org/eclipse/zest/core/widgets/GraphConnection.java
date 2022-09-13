@@ -60,8 +60,8 @@ public class GraphConnection extends GraphItem {
 	private boolean isDisposed = false;
 
 	private Label connectionLabel = null;
-	private PolylineArcConnection connectionFigure = null;
-	private PolylineArcConnection cachedConnectionFigure = null;
+	private PolylineConnection connectionFigure = null;
+	private PolylineConnection cachedConnectionFigure = null;
 	private Connection sourceContainerConnectionFigure = null;
 	private Connection targetContainerConnectionFigure = null;
 
@@ -614,7 +614,12 @@ public class GraphConnection extends GraphItem {
 		connection.setToolTip(toolTip);
 	}
 
-	private PolylineArcConnection createFigure() {
+	/**
+	 * expose to allow to use custom figures
+	 * 
+	 * @since 1.7
+	 */
+	protected PolylineConnection createFigure() {
 		/*
 		 * if ((sourceNode.getParent()).getItemType() == GraphItem.CONTAINER) {
 		 * GraphContainer container = (GraphContainer) sourceNode.getParent();
@@ -632,8 +637,8 @@ public class GraphConnection extends GraphItem {
 
 	}
 
-	private PolylineArcConnection doCreateFigure() {
-		PolylineArcConnection connectionFigure = cachedOrNewConnectionFigure();
+	private PolylineConnection doCreateFigure() {
+		PolylineConnection connectionFigure = cachedOrNewConnectionFigure();
 		ChopboxAnchor sourceAnchor = null;
 		ChopboxAnchor targetAnchor = null;
 		this.connectionLabel = new Label();
@@ -655,8 +660,8 @@ public class GraphConnection extends GraphItem {
 				}
 			};
 		} else {
-			if (curveDepth != 0) {
-				connectionFigure.setDepth(this.curveDepth);
+			if (connectionFigure instanceof PolylineArcConnection && curveDepth != 0) {
+				((PolylineArcConnection) connectionFigure).setDepth(this.curveDepth);
 			}
 			sourceAnchor = new RoundedChopboxAnchor(getSource().getNodeFigure(), 8);
 			targetAnchor = new RoundedChopboxAnchor(getDestination().getNodeFigure(), 8);
@@ -671,7 +676,12 @@ public class GraphConnection extends GraphItem {
 		return connectionFigure;
 	}
 
-	private PolylineArcConnection cachedOrNewConnectionFigure() {
+	/**
+	 * expose to allow to use custom figures
+	 * 
+	 * @since 1.7
+	 */
+	protected PolylineConnection cachedOrNewConnectionFigure() {
 		return cachedConnectionFigure == null ? new PolylineArcConnection() : cachedConnectionFigure;
 	}
 
