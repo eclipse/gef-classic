@@ -230,7 +230,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	HashMap getNodesMap() {
 		return this.nodesMap;
 	}
-
+	
 	GraphNode addGraphModelContainer(Object element) {
 		GraphNode node = this.getGraphModelNode(element);
 		if (node == null) {
@@ -250,12 +250,40 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		}
 		return node;
 	}
+	
+	/**
+	 * Implement and return the new node object, enables to define custom graph nodes
+	 * 
+	 * @param graphModel where the created nodes gets added to
+	 * @param figure of the created node object
+	 * @return instance of a {@link GraphNode}
+	 * 
+	 * @since 1.7 
+	 */
+	protected GraphNode createNodeObject(final Graph graphModel, IFigure figure) {
+		return new CGraphNode(graphModel, SWT.NONE, figure);
+	}
+
+	/**
+	 * Implement and return the new connection object, enables to define custom graph connections
+	 * 
+	 * @param graphModel where the created nodes gets added to
+	 * @param source {@link GraphNode}
+	 * @param destination {@link GraphNode}
+	 * @return instance of a {@link GraphConnection}
+	 * 
+	 * @since 1.7 
+	 */
+	protected GraphConnection createConnectionObject(final Graph graphModel, final GraphNode source, 
+			final GraphNode destination) {
+		return new GraphConnection(graphModel, SWT.NONE, source, destination);
+	}
 
 	GraphNode addGraphModelNode(Object element, IFigure figure) {
 		GraphNode node = this.getGraphModelNode(element);
 		if (node == null) {
 			if (figure != null) {
-				node = new CGraphNode((Graph) getControl(), SWT.NONE, figure);
+				node = createNodeObject((Graph) getControl(), figure);
 				this.nodesMap.put(element, node);
 				node.setData(element);
 			} else {
@@ -270,7 +298,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	GraphConnection addGraphModelConnection(Object element, GraphNode source, GraphNode target) {
 		GraphConnection connection = this.getGraphModelConnection(element);
 		if (connection == null) {
-			connection = new GraphConnection((Graph) getControl(), SWT.NONE, source, target);
+			connection = createConnectionObject(getGraphControl(), source, target);
 			this.connectionsMap.put(element, connection);
 			connection.setData(element);
 		}
