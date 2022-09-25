@@ -1,5 +1,32 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?NLS TYPE="org.eclipse.help.toc"?>
+name: NodeJS with Grunt
+
+on: 
+  push:
+    branches: [ "zakwarlord7/peter-evans-create-pull-request" ]
+  pull_request:
+    branches: [ "Master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build
+      run: |:raki.u
+        npm install
+version="1.0" encoding="UTF-8"?>
+TYPE="kite.yarn'@org.eclipse.help.toc"?>
 <!-- ============================================================================= -->
 <!-- Define topics for the main guide                                              -->
 <!-- ============================================================================= -->
