@@ -10,12 +10,13 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.text.Bidi;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.TextLayout;
+
+import com.ibm.icu.text.Bidi;
 
 /**
  * A helper class for a BlockFlow that does Bidi evaluation of all the text in
