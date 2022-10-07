@@ -11,10 +11,12 @@
 	<!-- this is the parent POM from which all modules inherit common settings -->
 	<properties>
 		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
-		<tycho.version>2.7.2</tycho.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>		
+		<tycho.version>3.0.0</tycho.version>
 		<cbi-plugins.version>1.3.2</cbi-plugins.version>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
-		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-legacy.git</tycho.scmUrl>
+		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-classic.git</tycho.scmUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<comparator.repo>https://download.eclipse.org/tools/gef/classic/releases/3.14.0</comparator.repo>
 	</properties>
@@ -221,7 +223,7 @@
 							<includePackedArtifacts>false</includePackedArtifacts>
 							<!-- add target file content to target platform -->
 						    <target>
-								<file>../target-platform/2022-03.target</file>
+								<file>../target-platform/2022-09.target</file>
 							  </target>
 							<environments>
 								<environment>
@@ -258,7 +260,7 @@
 						<includePackedArtifacts>false</includePackedArtifacts>
 						<!-- add target file content to target platform -->
 						<target>
-							<file>../target-platform/2022-03.target</file>
+							<file>../target-platform/2022-09.target</file>
 						  </target>
 						<environments>
 							<environment>
