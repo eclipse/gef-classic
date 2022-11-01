@@ -55,7 +55,7 @@ public class SelectionTool extends TargetingTool {
 	private DragTracker dragTracker;
 	private LocationRequest hoverRequest;
 
-	private WeakReference cachedHandlePart;
+	private WeakReference<EditPart> cachedHandlePart;
 
 	/**
 	 * Default constructor.
@@ -137,10 +137,7 @@ public class SelectionTool extends TargetingTool {
 	private EditPart getLastHandleProvider() {
 		if (cachedHandlePart == null)
 			return null;
-		EditPart part = (EditPart) cachedHandlePart.get();
-		if (cachedHandlePart.isEnqueued())
-			return null;
-		return part;
+		return cachedHandlePart.get();
 	}
 
 	/**
@@ -616,7 +613,7 @@ public class SelectionTool extends TargetingTool {
 		if (part == null)
 			cachedHandlePart = null;
 		else
-			cachedHandlePart = new WeakReference(part);
+			cachedHandlePart = new WeakReference<>(part);
 	}
 
 	/**
