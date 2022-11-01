@@ -57,7 +57,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * When navigating through connections, a "Node" EditPart is used as a
 	 * reference.
 	 */
-	private WeakReference cachedNode;
+	private WeakReference<GraphicalEditPart> cachedNode;
 	private GraphicalViewer viewer;
 
 	/**
@@ -215,9 +215,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	private GraphicalEditPart getCachedNode() {
 		if (cachedNode == null)
 			return null;
-		if (cachedNode.isEnqueued())
-			return null;
-		return (GraphicalEditPart) cachedNode.get();
+		return cachedNode.get();
 	}
 
 	/**
@@ -527,7 +525,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		if (node == null)
 			cachedNode = null;
 		else
-			cachedNode = new WeakReference(node);
+			cachedNode = new WeakReference<>(node);
 	}
 
 }
