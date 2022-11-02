@@ -80,6 +80,7 @@ import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.ViewportAwareConnectionLayerClippingStrategy;
 import org.eclipse.draw2d.parts.ScrollableThumbnail;
 import org.eclipse.draw2d.parts.Thumbnail;
+import org.eclipse.draw2d.zoom.MouseLocationZoomScrollPolicy;
 
 import org.eclipse.gef.ContextMenuProvider;
 import org.eclipse.gef.DefaultEditDomain;
@@ -432,6 +433,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		zoomLevels.add(ZoomManager.FIT_WIDTH);
 		zoomLevels.add(ZoomManager.FIT_HEIGHT);
 		root.getZoomManager().setZoomLevelContributions(zoomLevels);
+		root.getZoomManager().setScrollPolicy(new MouseLocationZoomScrollPolicy(viewer.getControl()));
 
 		IAction zoomIn = new ZoomInAction(root.getZoomManager());
 		IAction zoomOut = new ZoomOutAction(root.getZoomManager());
