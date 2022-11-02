@@ -66,14 +66,35 @@ public abstract class AbstractZoomManager {
 	DecimalFormat format = new DecimalFormat("####%"); //$NON-NLS-1$
 
 	/**
+	 * The zoom scroll policy associated with this zoom manager. Zoom scroll
+	 * policies regulate how the position of the scroll bars are treated during
+	 * zooming.
+	 */
+	private IZoomScrollPolicy scrollPolicy;
+
+	/**
+	 * Creates a new ZoomManager.
+	 * 
+	 * @param pane         The ScalableFigure associated with this ZoomManager
+	 * @param viewport     The Viewport associated with this ZoomManager
+	 * @param scrollPolicy The zoom scroll policy to be used with this ZoomManager
+	 * 
+	 * @since 3.12
+	 */
+	protected AbstractZoomManager(ScalableFigure pane, Viewport viewport, IZoomScrollPolicy scrollPolicy) {
+		this.pane = pane;
+		this.viewport = viewport;
+		this.scrollPolicy = scrollPolicy;
+	}
+
+	/**
 	 * Creates a new ZoomManager.
 	 * 
 	 * @param pane     The ScalableFigure associated with this ZoomManager
 	 * @param viewport The Viewport associated with this ZoomManager
 	 */
 	protected AbstractZoomManager(ScalableFigure pane, Viewport viewport) {
-		this.pane = pane;
-		this.viewport = viewport;
+		this(pane, viewport, new DefaultScrollPolicy());
 	}
 
 	/**
@@ -322,20 +343,12 @@ public abstract class AbstractZoomManager {
 	 * @param zoom the new zoom level
 	 */
 	protected void primSetZoom(double zoom) {
-		Point p1 = getViewport().getClientArea().getCenter();
-		Point p2 = p1.getCopy();
-		Point p = getViewport().getViewLocation();
-		double prevZoom = this.zoom;
+		Point newLocation = scrollPolicy.calcNewViewLocation(getViewport(), this.zoom, zoom);
 		this.zoom = zoom;
 		pane.setScale(zoom);
 		fireZoomChanged();
 		getViewport().validate();
-
-		p2.scale(zoom / prevZoom);
-		Dimension dif = p2.getDifference(p1);
-		p.x += dif.width;
-		p.y += dif.height;
-		setViewLocation(p);
+		setViewLocation(newLocation);
 	}
 
 	/**
@@ -477,6 +490,13 @@ public abstract class AbstractZoomManager {
 	 */
 	public void setZoomLevels(double[] zoomLevels) {
 		this.zoomLevels = zoomLevels;
+	}
+
+	/**
+	 * @since 3.12
+	 */
+	public void setScrollPolicy(IZoomScrollPolicy scrollPolicy) {
+		this.scrollPolicy = scrollPolicy;
 	}
 
 	/**
