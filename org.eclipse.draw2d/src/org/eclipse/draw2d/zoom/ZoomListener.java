@@ -8,12 +8,13 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.eclipse.zest.core.viewers.internal;
+package org.eclipse.draw2d.zoom;
 
 /**
  * Listens to zoom level changes.
  * 
  * @author Eric Bordeau
+ * @since 3.12
  */
 public interface ZoomListener {
 

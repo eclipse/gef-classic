@@ -14,14 +14,10 @@ package org.eclipse.gef.editparts;
  * Listens to zoom level changes.
  * 
  * @author Eric Bordeau
+ * 
+ * @deprecated Use {@link #org.eclipse.draw2d.zoom.ZoomListener} instead.
  */
-public interface ZoomListener {
-
-	/**
-	 * Called whenever the ZoomManager's zoom level changes.
-	 * 
-	 * @param zoom the new zoom level.
-	 */
-	void zoomChanged(double zoom);
+@Deprecated(since = "3.13", forRemoval = true)
+public interface ZoomListener extends org.eclipse.draw2d.zoom.ZoomListener {
 
 }

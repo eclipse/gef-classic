@@ -24,8 +24,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.CellEditorActionHandler;
 
+import org.eclipse.draw2d.zoom.ZoomListener;
+
 import org.eclipse.gef.GraphicalEditPart;
-import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.tools.CellEditorLocator;
 import org.eclipse.gef.tools.DirectEditManager;
@@ -39,11 +40,8 @@ public class LogicLabelEditManager extends DirectEditManager {
 	private IAction copy, cut, paste, undo, redo, find, selectAll, delete;
 	private double cachedZoom = -1.0;
 	private Font scaledFont;
-	private ZoomListener zoomListener = new ZoomListener() {
-		public void zoomChanged(double newZoom) {
-			updateScaledFont(newZoom);
-		}
-	};
+
+	private ZoomListener zoomListener = newZoom -> updateScaledFont(newZoom);
 
 	public LogicLabelEditManager(GraphicalEditPart source, CellEditorLocator locator) {
 		super(source, null, locator);

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.zest.core.viewers;
 
+import org.eclipse.draw2d.zoom.ZoomListener;
 import org.eclipse.jface.action.ContributionItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;
@@ -23,7 +24,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.zest.core.viewers.internal.ZoomListener;
 import org.eclipse.zest.core.viewers.internal.ZoomManager;
 
 /**

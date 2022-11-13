@@ -22,8 +22,8 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Transposer;
+import org.eclipse.draw2d.zoom.ZoomListener;
 
-import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.rulers.RulerProvider;
 
@@ -56,11 +56,7 @@ public class RulerFigure extends Figure {
 	private int unit, interval, divisions;
 	private double dpu = -1.0;
 
-	private ZoomListener zoomListener = new ZoomListener() {
-		public void zoomChanged(double newZoomValue) {
-			handleZoomChanged();
-		}
-	};
+	private ZoomListener zoomListener = newZoomValue -> handleZoomChanged();
 
 	public RulerFigure(boolean isHorizontal, int measurementUnit) {
 		setHorizontal(isHorizontal);
