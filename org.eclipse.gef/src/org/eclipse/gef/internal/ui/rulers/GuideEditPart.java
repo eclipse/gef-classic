@@ -23,6 +23,7 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.zoom.ZoomListener;
 
 import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.AccessibleHandleProvider;
@@ -31,7 +32,6 @@ import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.editparts.ZoomListener;
 import org.eclipse.gef.editparts.ZoomManager;
 import org.eclipse.gef.editpolicies.SelectionEditPolicy;
 import org.eclipse.gef.rulers.RulerChangeListener;
@@ -50,11 +50,8 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	private AccessibleEditPart accPart;
 	private GuideLineFigure guideLineFig;
 	private Cursor cursor = null;
-	private ZoomListener zoomListener = new ZoomListener() {
-		public void zoomChanged(double zoom) {
-			handleZoomChanged();
-		}
-	};
+	private ZoomListener zoomListener = zoom -> handleZoomChanged();
+
 	private RulerChangeListener listener = new RulerChangeListener.Stub() {
 		public void notifyGuideMoved(Object guide) {
 			if (getModel() == guide) {
