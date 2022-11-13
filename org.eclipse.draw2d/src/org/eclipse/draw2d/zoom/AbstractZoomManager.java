@@ -27,13 +27,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * Manage the primary zoom function in a graphical viewer. This class is used by
- * the zoom contribution items, including:
- * <UL>
- * <LI>{@link org.eclipse.gef.ui.actions.ZoomInAction}
- * <LI>{@link org.eclipse.gef.ui.actions.ZoomOutAction}
- * <LI>and {@link org.eclipse.gef.ui.actions.ZoomComboContributionItem}
- * </UL>
+ * Manage the primary zoom function in a graphical viewer.
  * <P>
  * A ZoomManager controls how zoom in and zoom out are performed. It also
  * determines the list of choices the user sees in the drop-down Combo on the
@@ -41,10 +35,11 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * performs the actual zoom, and also a <code>Viewport</code>. The viewport is
  * needed so that the scrolled location is preserved as the zoom level changes.
  * <p>
- * <b>NOTE:</b> For the settings of {@link #FIT_ALL Page}, {@link #FIT_WIDTH
- * Width} and {@link #FIT_HEIGHT Height} to work properly, the given
- * <code>Viewport</code> should have its scrollbars always visible or never
- * visible. Otherwise, these settings may cause undesired effects.
+ * <b>NOTE:</b> For the settings of {@link #isFitAll(String) Page},
+ * {@link #isFitWidth(String) Width} and {@link #isFitHeight(String) Height} to
+ * work properly, the given <code>Viewport</code> should have its scrollbars
+ * always visible or never visible. Otherwise, these settings may cause
+ * undesired effects.
  * 
  * @author Dan Lee
  * @author Eric Bordeau
@@ -76,7 +71,7 @@ public abstract class AbstractZoomManager {
 	 * @param pane     The ScalableFigure associated with this ZoomManager
 	 * @param viewport The Viewport associated with this ZoomManager
 	 */
-	public AbstractZoomManager(ScalableFigure pane, Viewport viewport) {
+	protected AbstractZoomManager(ScalableFigure pane, Viewport viewport) {
 		this.pane = pane;
 		this.viewport = viewport;
 	}
@@ -157,7 +152,7 @@ public abstract class AbstractZoomManager {
 	/**
 	 * Calculates and returns the zoom percent required so that the entire height of
 	 * the {@link #getScalableFigure() scalable figure} is visible on the screen.
-	 * This is the zoom level associated with {@link #FIT_HEIGHT}.
+	 * This is the zoom level associated with {@link #isFitHeight(String)}.
 	 * 
 	 * @return zoom setting required to fit the scalable figure vertically on the
 	 *         screen
@@ -169,7 +164,7 @@ public abstract class AbstractZoomManager {
 	/**
 	 * Calculates and returns the zoom percentage required to fit the entire
 	 * {@link #getScalableFigure() scalable figure} on the screen. This is the zoom
-	 * setting associated with {@link #FIT_ALL}. It is the minimum of
+	 * setting associated with {@link #isFitAll(String)}. It is the minimum of
 	 * {@link #getFitHeightZoomLevel()} and {@link #getFitWidthZoomLevel()}.
 	 * 
 	 * @return zoom setting required to fit the entire scalable figure on the screen
@@ -181,7 +176,7 @@ public abstract class AbstractZoomManager {
 	/**
 	 * Calculates and returns the zoom percentage required so that the entire width
 	 * of the {@link #getScalableFigure() scalable figure} is visible on the screen.
-	 * This is the zoom setting associated with {@link #FIT_WIDTH}.
+	 * This is the zoom setting associated with {@link #isFitWidth(String)}.
 	 * 
 	 * @return zoom setting required to fit the scalable figure horizontally on the
 	 *         screen
@@ -462,8 +457,9 @@ public abstract class AbstractZoomManager {
 
 	/**
 	 * Sets the list of zoom level contributions (as strings). If you contribute
-	 * something <b>other than</b> {@link #FIT_HEIGHT}, {@link #FIT_WIDTH} and
-	 * {@link #FIT_ALL} you must subclass this class and override this method to
+	 * something <b>other than</b> {@link #isFitHeight(String)},
+	 * {@link #isFitWidth(String)} and {@link #isFitAll(String)} you must subclass
+	 * this class and override the {@link #setZoomAsText(String)} method to
 	 * implement your contributed zoom function.
 	 * 
 	 * @param contributions the list of contributed zoom levels
