@@ -397,11 +397,20 @@ public abstract class AbstractZoomManager {
 	 */
 	public void setZoomAsText(String zoomString) {
 		if (isFitHeight(zoomString)) {
-			zoomFitLevel(getFitHeightZoomLevel());
+			primSetZoom(getFitHeightZoomLevel());
+			viewport.getUpdateManager().performUpdate();
+			viewport.setViewLocation(viewport.getHorizontalRangeModel().getValue(),
+					viewport.getVerticalRangeModel().getMinimum());
 		} else if (isFitAll(zoomString)) {
-			zoomFitLevel(getFitPageZoomLevel());
+			primSetZoom(getFitPageZoomLevel());
+			viewport.getUpdateManager().performUpdate();
+			viewport.setViewLocation(viewport.getHorizontalRangeModel().getMinimum(),
+					viewport.getVerticalRangeModel().getMinimum());
 		} else if (isFitWidth(zoomString)) {
-			zoomFitLevel(getFitWidthZoomLevel());
+			primSetZoom(getFitWidthZoomLevel());
+			viewport.getUpdateManager().performUpdate();
+			viewport.setViewLocation(viewport.getHorizontalRangeModel().getMinimum(),
+					viewport.getVerticalRangeModel().getValue());
 		} else {
 			try {
 				// Trim off the '%'
@@ -447,13 +456,6 @@ public abstract class AbstractZoomManager {
 	 * @since 3.12
 	 */
 	protected abstract boolean isFitHeight(String zoomString);
-
-	protected void zoomFitLevel(double level) {
-		primSetZoom(level);
-		viewport.getUpdateManager().performUpdate();
-		viewport.setViewLocation(viewport.getHorizontalRangeModel().getValue(),
-				viewport.getVerticalRangeModel().getMinimum());
-	}
 
 	/**
 	 * Sets the list of zoom level contributions (as strings). If you contribute
