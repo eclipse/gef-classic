@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ import org.eclipse.gef.examples.logicdesigner.model.Wire;
 
 public class GraphicalPartFactory implements EditPartFactory {
 
+	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
 		EditPart child = null;
 
@@ -45,7 +46,11 @@ public class GraphicalPartFactory implements EditPartFactory {
 		// like Circuit
 		else if (model instanceof LogicDiagram)
 			child = new LogicDiagramEditPart();
-		child.setModel(model);
+
+		if (child != null) {
+			child.setModel(model);
+		}
+
 		return child;
 	}
 

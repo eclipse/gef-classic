@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,10 +31,12 @@ public class CreateGuideCommand extends Command {
 		this.position = position;
 	}
 
+	@Override
 	public boolean canUndo() {
 		return true;
 	}
 
+	@Override
 	public void execute() {
 		if (guide == null)
 			guide = new LogicGuide(!parent.isHorizontal());
@@ -42,6 +44,7 @@ public class CreateGuideCommand extends Command {
 		parent.addGuide(guide);
 	}
 
+	@Override
 	public void undo() {
 		parent.removeGuide(guide);
 	}

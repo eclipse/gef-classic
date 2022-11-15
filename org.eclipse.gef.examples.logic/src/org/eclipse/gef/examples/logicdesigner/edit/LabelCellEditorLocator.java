@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.gef.tools.CellEditorLocator;
 
 import org.eclipse.gef.examples.logicdesigner.figures.LabelFigure;
 
-final public class LabelCellEditorLocator implements CellEditorLocator {
+public final class LabelCellEditorLocator implements CellEditorLocator {
 
 	private LabelFigure stickyNote;
 
@@ -28,6 +28,7 @@ final public class LabelCellEditorLocator implements CellEditorLocator {
 		setLabel(stickyNote);
 	}
 
+	@Override
 	public void relocate(CellEditor celleditor) {
 		Text text = (Text) celleditor.getControl();
 		Rectangle rect = stickyNote.getClientArea();

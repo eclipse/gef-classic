@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ public class ContainerHighlightEditPolicy extends org.eclipse.gef.editpolicies.G
 
 	private Color revertColor;
 
+	@Override
 	public void eraseTargetFeedback(Request request) {
 		if (revertColor != null) {
 			setContainerBackground(revertColor);
@@ -42,6 +43,7 @@ public class ContainerHighlightEditPolicy extends org.eclipse.gef.editpolicies.G
 		return ((GraphicalEditPart) getHost()).getFigure();
 	}
 
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		return request.getType().equals(RequestConstants.REQ_SELECTION_HOVER) ? getHost() : null;
 	}
@@ -57,6 +59,7 @@ public class ContainerHighlightEditPolicy extends org.eclipse.gef.editpolicies.G
 		}
 	}
 
+	@Override
 	public void showTargetFeedback(Request request) {
 		if (request.getType().equals(RequestConstants.REQ_MOVE) || request.getType().equals(RequestConstants.REQ_ADD)
 				|| request.getType().equals(RequestConstants.REQ_CLONE)

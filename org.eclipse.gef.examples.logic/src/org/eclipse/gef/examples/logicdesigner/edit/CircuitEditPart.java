@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
@@ -43,6 +42,7 @@ public class CircuitEditPart extends LogicContainerEditPart implements IScrollab
 
 	private static final String SCROLLABLE_SELECTION_FEEDBACK = "SCROLLABLE_SELECTION_FEEDBACK"; //$NON-NLS-1$
 
+	@Override
 	protected void createEditPolicies() {
 		super.createEditPolicies();
 		installEditPolicy(EditPolicy.LAYOUT_ROLE,
@@ -56,6 +56,7 @@ public class CircuitEditPart extends LogicContainerEditPart implements IScrollab
 	 * 
 	 * @return Figure representing the circuit.
 	 */
+	@Override
 	protected IFigure createFigure() {
 		return FigureFactory.createNewCircuit();
 	}
@@ -71,18 +72,19 @@ public class CircuitEditPart extends LogicContainerEditPart implements IScrollab
 				@Override
 				public List<Point> getSourceAnchorLocations() {
 					List<Point> list = new ArrayList<>();
-					Vector sourceAnchors = getNodeFigure().getSourceConnectionAnchors();
-					Vector targetAnchors = getNodeFigure().getTargetConnectionAnchors();
+					List<ConnectionAnchor> sourceAnchors = getNodeFigure().getSourceConnectionAnchors();
+					List<ConnectionAnchor> targetAnchors = getNodeFigure().getTargetConnectionAnchors();
 					for (int i = 0; i < sourceAnchors.size(); i++) {
-						ConnectionAnchor sourceAnchor = (ConnectionAnchor) sourceAnchors.get(i);
-						ConnectionAnchor targetAnchor = (ConnectionAnchor) targetAnchors.get(i);
+						ConnectionAnchor sourceAnchor = sourceAnchors.get(i);
+						ConnectionAnchor targetAnchor = targetAnchors.get(i);
 						list.add(new Rectangle(sourceAnchor.getReferencePoint(), targetAnchor.getReferencePoint())
 								.getCenter());
 					}
 					return list;
 				}
 
-				public List getTargetAnchorLocations() {
+				@Override
+				public List<Point> getTargetAnchorLocations() {
 					return getSourceAnchorLocations();
 				}
 			});
@@ -100,10 +102,12 @@ public class CircuitEditPart extends LogicContainerEditPart implements IScrollab
 		return (CircuitFigure) getFigure();
 	}
 
+	@Override
 	public IFigure getContentPane() {
 		return getCircuitBoardFigure().getContentsPane();
 	}
 
+	@Override
 	public IScrollableFigure getScrollableFigure() {
 		return (IScrollableFigure) getFigure();
 	}

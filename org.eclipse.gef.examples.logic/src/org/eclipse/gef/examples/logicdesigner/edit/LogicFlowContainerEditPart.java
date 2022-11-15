@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,6 +25,7 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
 
 public class LogicFlowContainerEditPart extends LogicContainerEditPart {
 
+	@Override
 	protected void createEditPolicies() {
 		super.createEditPolicies();
 		installEditPolicy(EditPolicy.NODE_ROLE, null);
@@ -33,6 +34,7 @@ public class LogicFlowContainerEditPart extends LogicContainerEditPart {
 		installEditPolicy(EditPolicy.SELECTION_FEEDBACK_ROLE, new ContainerHighlightEditPolicy());
 	}
 
+	@Override
 	public void activate() {
 		if (isActive()) {
 			return;
@@ -41,6 +43,7 @@ public class LogicFlowContainerEditPart extends LogicContainerEditPart {
 		updateLayout(getLogicFlowContainer().getLayout());
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (LogicFlowContainer.ID_LAYOUT.equals(prop)) {
@@ -54,7 +57,7 @@ public class LogicFlowContainerEditPart extends LogicContainerEditPart {
 		getFigure().setLayoutManager(createLayout(newLayout));
 	}
 
-	private OrderedLayout createLayout(Integer newLayout) {
+	private static OrderedLayout createLayout(Integer newLayout) {
 		OrderedLayout layout;
 		if (newLayout.equals(LogicFlowContainer.LAYOUT_SINGLE_ROW)) {
 			layout = new ToolbarLayout(false);
@@ -69,6 +72,7 @@ public class LogicFlowContainerEditPart extends LogicContainerEditPart {
 		return (LogicFlowContainer) getModel();
 	}
 
+	@Override
 	protected IFigure createFigure() {
 		Figure figure = new Figure();
 		figure.setLayoutManager(createLayout(getLogicFlowContainer().getLayout()));

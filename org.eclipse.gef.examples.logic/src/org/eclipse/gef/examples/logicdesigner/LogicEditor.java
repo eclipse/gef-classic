@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.core.resources.IFile;
@@ -45,7 +44,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuListener;
@@ -138,7 +137,8 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		private PageBook pageBook;
 		private Control outline;
 		private Canvas overview;
-		private IAction showOutlineAction, showOverviewAction;
+		private IAction showOutlineAction;
+		private IAction showOverviewAction;
 		static final int ID_OUTLINE = 0;
 		static final int ID_OVERVIEW = 1;
 		private Thumbnail thumbnail;
@@ -148,6 +148,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			super(viewer);
 		}
 
+		@Override
 		public void init(IPageSite pageSite) {
 			super.init(pageSite);
 			ActionRegistry registry = getActionRegistry();
@@ -177,6 +178,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 					(TransferDropTargetListener) new TemplateTransferDropTargetListener(getViewer()));
 			IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
 			showOutlineAction = new Action() {
+				@Override
 				public void run() {
 					showPage(ID_OUTLINE);
 				}
@@ -186,6 +188,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			showOutlineAction.setToolTipText(LogicMessages.LogicEditor_outline_show_outline);
 			tbm.add(showOutlineAction);
 			showOverviewAction = new Action() {
+				@Override
 				public void run() {
 					showPage(ID_OVERVIEW);
 				}
@@ -197,6 +200,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			showPage(ID_OUTLINE);
 		}
 
+		@Override
 		public void createControl(Composite parent) {
 			pageBook = new PageBook(parent, SWT.NONE);
 			outline = getViewer().createControl(pageBook);
@@ -207,6 +211,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			initializeOutlineViewer();
 		}
 
+		@Override
 		public void dispose() {
 			unhookOutlineViewer();
 			if (thumbnail != null) {
@@ -225,6 +230,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			return null;
 		}
 
+		@Override
 		public Control getControl() {
 			return pageBook;
 		}
@@ -247,6 +253,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 				thumbnail.setSource(root.getLayer(LayerConstants.PRINTABLE_LAYERS));
 				lws.setContents(thumbnail);
 				disposeListener = new DisposeListener() {
+					@Override
 					public void widgetDisposed(DisposeEvent e) {
 						if (thumbnail != null) {
 							thumbnail.deactivate();
@@ -297,6 +304,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 	// 2) An open file gets renamed or moved -> change the editor's input
 	// accordingly
 	class ResourceTracker implements IResourceChangeListener, IResourceDeltaVisitor {
+		@Override
 		public void resourceChanged(IResourceChangeEvent event) {
 			IResourceDelta delta = event.getDelta();
 			try {
@@ -307,6 +315,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			}
 		}
 
+		@Override
 		public boolean visit(IResourceDelta delta) {
 			if (delta == null || !delta.getResource().equals(((IFileEditorInput) getEditorInput()).getFile()))
 				return true;
@@ -323,6 +332,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 					// PartListener added to the Workbench in the initialize()
 					// method.
 					display.asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							if (!isDirty())
 								closeEditor(false);
@@ -331,6 +341,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 				} else { // else if it was moved or renamed
 					final IFile newFile = ResourcesPlugin.getWorkspace().getRoot().getFile(delta.getMovedToPath());
 					display.asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							superSetInput(new FileEditorInput(newFile));
 						}
@@ -344,6 +355,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 					final IFile newFile = ResourcesPlugin.getWorkspace().getRoot().getFile(delta.getFullPath());
 					Display display = getSite().getShell().getDisplay();
 					display.asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							setInput(new FileEditorInput(newFile));
 							getCommandStack().flush();
@@ -359,6 +371,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		// If an open, unsaved file was deleted, query the user to either do a
 		// "Save As"
 		// or close the editor.
+		@Override
 		public void partActivated(IWorkbenchPart part) {
 			if (part != LogicEditor.this)
 				return;
@@ -379,15 +392,19 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			}
 		}
 
+		@Override
 		public void partBroughtToTop(IWorkbenchPart part) {
 		}
 
+		@Override
 		public void partClosed(IWorkbenchPart part) {
 		}
 
+		@Override
 		public void partDeactivated(IWorkbenchPart part) {
 		}
 
+		@Override
 		public void partOpened(IWorkbenchPart part) {
 		}
 	};
@@ -413,36 +430,26 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		getSite().getPage().closeEditor(LogicEditor.this, save);
 	}
 
+	@Override
 	public void commandStackChanged(EventObject event) {
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 		super.commandStackChanged(event);
 	}
 
+	@Override
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
 		ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer) getGraphicalViewer();
 
-		ScalableFreeformRootEditPart root = new ScalableFreeformRootEditPart();
+		ScalableFreeformRootEditPart rootEP = new ScalableFreeformRootEditPart();
 
 		// set clipping strategy for connection layer
-		ConnectionLayer connectionLayer = (ConnectionLayer) root.getLayer(LayerConstants.CONNECTION_LAYER);
+		ConnectionLayer connectionLayer = (ConnectionLayer) rootEP.getLayer(LayerConstants.CONNECTION_LAYER);
 		connectionLayer.setClippingStrategy(new ViewportAwareConnectionLayerClippingStrategy(connectionLayer));
 
-		List zoomLevels = new ArrayList(3);
-		zoomLevels.add(ZoomManager.FIT_ALL);
-		zoomLevels.add(ZoomManager.FIT_WIDTH);
-		zoomLevels.add(ZoomManager.FIT_HEIGHT);
-		root.getZoomManager().setZoomLevelContributions(zoomLevels);
-		root.getZoomManager().setScrollPolicy(new MouseLocationZoomScrollPolicy(viewer.getControl()));
+		configureZoomManager(viewer, rootEP.getZoomManager());
 
-		IAction zoomIn = new ZoomInAction(root.getZoomManager());
-		IAction zoomOut = new ZoomOutAction(root.getZoomManager());
-		getActionRegistry().registerAction(zoomIn);
-		getActionRegistry().registerAction(zoomOut);
-		getSite().getKeyBindingService().registerAction(zoomIn);
-		getSite().getKeyBindingService().registerAction(zoomOut);
-
-		viewer.setRootEditPart(root);
+		viewer.setRootEditPart(rootEP);
 
 		viewer.setEditPartFactory(new GraphicalPartFactory());
 		ContextMenuProvider provider = new LogicContextMenuProvider(viewer, getActionRegistry());
@@ -463,13 +470,24 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		IAction showGrid = new ToggleGridAction(getGraphicalViewer());
 		getActionRegistry().registerAction(showGrid);
 
-		Listener listener = new Listener() {
-			public void handleEvent(Event event) {
-				handleActivationChanged(event);
-			}
-		};
-		getGraphicalControl().addListener(SWT.Activate, listener);
-		getGraphicalControl().addListener(SWT.Deactivate, listener);
+		getGraphicalControl().addListener(SWT.Activate, this::handleActivationChanged);
+		getGraphicalControl().addListener(SWT.Deactivate, this::handleActivationChanged);
+	}
+
+	protected void configureZoomManager(ScrollingGraphicalViewer viewer, ZoomManager zoomManager) {
+		List<String> zoomLevels = new ArrayList<>(3);
+		zoomLevels.add(ZoomManager.FIT_ALL);
+		zoomLevels.add(ZoomManager.FIT_WIDTH);
+		zoomLevels.add(ZoomManager.FIT_HEIGHT);
+		zoomManager.setZoomLevelContributions(zoomLevels);
+		zoomManager.setScrollPolicy(new MouseLocationZoomScrollPolicy(viewer.getControl()));
+
+		IAction zoomIn = new ZoomInAction(zoomManager);
+		IAction zoomOut = new ZoomOutAction(zoomManager);
+		getActionRegistry().registerAction(zoomIn);
+		getActionRegistry().registerAction(zoomOut);
+		getSite().getKeyBindingService().registerAction(zoomIn);
+		getSite().getKeyBindingService().registerAction(zoomOut);
 	}
 
 	protected void writeToOutputStream(OutputStream os) throws IOException {
@@ -478,8 +496,10 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		out.close();
 	}
 
+	@Override
 	protected CustomPalettePage createPalettePage() {
 		return new CustomPalettePage(getPaletteViewerProvider()) {
+			@Override
 			public void init(IPageSite pageSite) {
 				super.init(pageSite);
 				IAction copy = getActionRegistry().getAction(ActionFactory.COPY.getId());
@@ -488,32 +508,33 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		};
 	}
 
+	@Override
 	protected PaletteViewerProvider createPaletteViewerProvider() {
 		return new PaletteViewerProvider(getEditDomain()) {
 			private IMenuListener menuListener;
 
+			@Override
 			protected void configurePaletteViewer(PaletteViewer viewer) {
 				super.configurePaletteViewer(viewer);
 				viewer.setCustomizer(new LogicPaletteCustomizer());
 				viewer.addDragSourceListener(new TemplateTransferDragSourceListener(viewer));
 			}
 
+			@Override
 			protected void hookPaletteViewer(PaletteViewer viewer) {
 				super.hookPaletteViewer(viewer);
 				final CopyTemplateAction copy = (CopyTemplateAction) getActionRegistry()
 						.getAction(ActionFactory.COPY.getId());
 				viewer.addSelectionChangedListener(copy);
-				if (menuListener == null)
-					menuListener = new IMenuListener() {
-						public void menuAboutToShow(IMenuManager manager) {
-							manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
-						}
-					};
+				if (menuListener == null) {
+					menuListener = (IMenuManager manager) -> manager.appendToGroup(GEFActionConstants.GROUP_COPY, copy);
+				}
 				viewer.getContextMenu().addMenuListener(menuListener);
 			}
 		};
 	}
 
+	@Override
 	public void dispose() {
 		getSite().getWorkbenchWindow().getPartService().removePartListener(partListener);
 		partListener = null;
@@ -521,9 +542,11 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		super.dispose();
 	}
 
+	@Override
 	public void doSave(final IProgressMonitor progressMonitor) {
 		editorSaving = true;
-		Platform.run(new SafeRunnable() {
+		SafeRunner.run(new SafeRunnable() {
+			@Override
 			public void run() throws Exception {
 				saveProperties();
 				ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -536,6 +559,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		editorSaving = false;
 	}
 
+	@Override
 	public void doSaveAs() {
 		performSaveAs();
 	}
@@ -552,6 +576,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		return super.getAdapter(type);
 	}
 
+	@Override
 	protected Control getGraphicalControl() {
 		return rulerComp;
 	}
@@ -573,6 +598,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		return logicDiagram;
 	}
 
+	@Override
 	protected PaletteRoot getPaletteRoot() {
 		if (root == null) {
 			root = LogicPlugin.createPalette();
@@ -593,6 +619,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		}
 	}
 
+	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
 		getGraphicalViewer().setContents(getLogicDiagram());
@@ -603,6 +630,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 				getGraphicalViewer(), TextTransfer.getInstance()));
 	}
 
+	@Override
 	protected void createActions() {
 		super.createActions();
 		ActionRegistry registry = getActionRegistry();
@@ -670,6 +698,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#createGraphicalViewer(org.
 	 * eclipse .swt.widgets.Composite)
 	 */
+	@Override
 	protected void createGraphicalViewer(Composite parent) {
 		rulerComp = new RulerComposite(parent, SWT.NONE);
 		super.createGraphicalViewer(rulerComp);
@@ -680,6 +709,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		return (FigureCanvas) getGraphicalViewer().getControl();
 	}
 
+	@Override
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
@@ -736,13 +766,12 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 
 		if (!file.exists()) {
 			WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
+				@Override
 				public void execute(final IProgressMonitor monitor) {
 					saveProperties();
-					try {
-						ByteArrayOutputStream out = new ByteArrayOutputStream();
+					try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 						writeToOutputStream(out);
 						file.create(new ByteArrayInputStream(out.toByteArray()), true, monitor);
-						out.close();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -776,15 +805,13 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 			getLogicDiagram().setZoom(manager.getZoom());
 	}
 
+	@Override
 	protected void setInput(IEditorInput input) {
 		superSetInput(input);
 
 		IFile file = ((IFileEditorInput) input).getFile();
-		try {
-			InputStream is = file.getContents(false);
-			ObjectInputStream ois = new ObjectInputStream(is);
+		try (InputStream is = file.getContents(false); ObjectInputStream ois = new ObjectInputStream(is);) {
 			setLogicDiagram((LogicDiagram) ois.readObject());
-			ois.close();
 		} catch (Exception e) {
 			// This is just an example. All exceptions caught here.
 			e.printStackTrace();
@@ -827,6 +854,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		}
 	}
 
+	@Override
 	protected void setSite(IWorkbenchPartSite site) {
 		super.setSite(site);
 		getSite().getWorkbenchWindow().getPartService().addPartListener(partListener);

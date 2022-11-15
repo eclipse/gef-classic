@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,7 +13,6 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PolylineConnection;
 
 import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
@@ -32,11 +31,12 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.ConnectionCommand;
 
 public class LogicNodeEditPolicy extends org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy {
 
+	@Override
 	protected Connection createDummyConnection(Request req) {
-		PolylineConnection conn = FigureFactory.createNewWire(null);
-		return conn;
+		return FigureFactory.createNewWire(null);
 	}
 
+	@Override
 	protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
 		ConnectionCommand command = (ConnectionCommand) request.getStartCommand();
 		command.setTarget(getLogicSubpart());
@@ -47,6 +47,7 @@ public class LogicNodeEditPolicy extends org.eclipse.gef.editpolicies.GraphicalN
 		return command;
 	}
 
+	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
 		ConnectionCommand command = new ConnectionCommand();
 		command.setWire(new Wire());
@@ -62,6 +63,7 @@ public class LogicNodeEditPolicy extends org.eclipse.gef.editpolicies.GraphicalN
 	 * 
 	 * @see org.eclipse.gef.editpolicies.GraphicalEditPolicy#getFeedbackLayer()
 	 */
+	@Override
 	protected IFigure getFeedbackLayer() {
 		/*
 		 * Fix for Bug# 66590 Feedback needs to be added to the scaled feedback layer
@@ -77,6 +79,7 @@ public class LogicNodeEditPolicy extends org.eclipse.gef.editpolicies.GraphicalN
 		return (LogicSubpart) getHost().getModel();
 	}
 
+	@Override
 	protected Command getReconnectTargetCommand(ReconnectRequest request) {
 		if (getLogicSubpart() instanceof LiveOutput || getLogicSubpart() instanceof GroundOutput)
 			return null;
@@ -90,6 +93,7 @@ public class LogicNodeEditPolicy extends org.eclipse.gef.editpolicies.GraphicalN
 		return cmd;
 	}
 
+	@Override
 	protected Command getReconnectSourceCommand(ReconnectRequest request) {
 		ConnectionCommand cmd = new ConnectionCommand();
 		cmd.setWire((Wire) request.getConnectionEditPart().getModel());

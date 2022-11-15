@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,11 +19,11 @@ import java.io.Serializable;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-abstract public class LogicElement implements IPropertySource, Cloneable, Serializable {
+public abstract class LogicElement implements IPropertySource, Cloneable, Serializable {
 
-	public static final String CHILDREN = "Children", //$NON-NLS-1$
-			INPUTS = "inputs", //$NON-NLS-1$
-			OUTPUTS = "outputs"; //$NON-NLS-1$
+	public static final String CHILDREN = "Children"; //$NON-NLS-1$
+	public static final String INPUTS = "inputs"; //$NON-NLS-1$
+	public static final String OUTPUTS = "outputs"; //$NON-NLS-1$
 
 	transient protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
 	static final long serialVersionUID = 1;

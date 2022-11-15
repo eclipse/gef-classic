@@ -13,7 +13,7 @@ package org.eclipse.gef.examples.logicdesigner.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,7 +45,7 @@ public class LogicGuide implements Serializable {
 	static final long serialVersionUID = 1;
 
 	protected PropertyChangeSupport listeners = new PropertyChangeSupport(this);
-	private Map map;
+	private Map<LogicSubpart, Integer> map;
 	private int position;
 	private boolean horizontal;
 
@@ -136,7 +136,7 @@ public class LogicGuide implements Serializable {
 	 */
 	public int getAlignment(LogicSubpart part) {
 		if (getMap().get(part) != null)
-			return ((Integer) getMap().get(part)).intValue();
+			return getMap().get(part).intValue();
 		return -2;
 	}
 
@@ -144,9 +144,9 @@ public class LogicGuide implements Serializable {
 	 * @return The Map containing all the parts attached to this guide, and their
 	 *         alignments; the keys are LogicSubparts and values are Integers
 	 */
-	public Map getMap() {
+	public Map<LogicSubpart, Integer> getMap() {
 		if (map == null) {
-			map = new Hashtable();
+			map = new HashMap<>();
 		}
 		return map;
 	}
@@ -155,7 +155,7 @@ public class LogicGuide implements Serializable {
 	 * @return the set of all the parts attached to this guide; a set is used
 	 *         because a part can only be attached to a guide along one edge.
 	 */
-	public Set getParts() {
+	public Set<LogicSubpart> getParts() {
 		return getMap().keySet();
 	}
 

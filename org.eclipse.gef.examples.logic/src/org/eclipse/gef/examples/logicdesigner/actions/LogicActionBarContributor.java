@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ public class LogicActionBarContributor extends ActionBarContributor {
 	/**
 	 * @see org.eclipse.gef.ui.actions.ActionBarContributor#buildActions()
 	 */
+	@Override
 	protected void buildActions() {
 		addRetargetAction(new UndoRetargetAction());
 		addRetargetAction(new RedoRetargetAction());
@@ -76,6 +77,7 @@ public class LogicActionBarContributor extends ActionBarContributor {
 	/**
 	 * @see org.eclipse.gef.ui.actions.ActionBarContributor#declareGlobalActionKeys()
 	 */
+	@Override
 	protected void declareGlobalActionKeys() {
 		addGlobalActionKey(ActionFactory.PRINT.getId());
 		addGlobalActionKey(ActionFactory.SELECT_ALL.getId());
@@ -86,6 +88,7 @@ public class LogicActionBarContributor extends ActionBarContributor {
 	/**
 	 * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToToolBar(IToolBarManager)
 	 */
+	@Override
 	public void contributeToToolBar(IToolBarManager tbm) {
 		tbm.add(getAction(ActionFactory.UNDO.getId()));
 		tbm.add(getAction(ActionFactory.REDO.getId()));
@@ -116,6 +119,7 @@ public class LogicActionBarContributor extends ActionBarContributor {
 	/**
 	 * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToMenu(IMenuManager)
 	 */
+	@Override
 	public void contributeToMenu(IMenuManager menubar) {
 		super.contributeToMenu(menubar);
 		MenuManager viewMenu = new MenuManager(LogicMessages.ViewMenu_LabelText);

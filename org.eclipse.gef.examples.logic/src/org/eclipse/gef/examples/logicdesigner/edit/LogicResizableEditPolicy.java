@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -53,6 +53,7 @@ public class LogicResizableEditPolicy extends ResizableEditPolicy {
 	 * 
 	 * @return the new feedback figure
 	 */
+	@Override
 	protected IFigure createDragSourceFeedbackFigure() {
 		IFigure figure = createFigure((GraphicalEditPart) getHost(), null);
 
@@ -124,6 +125,7 @@ public class LogicResizableEditPolicy extends ResizableEditPolicy {
 	 * 
 	 * @return the feedback layer
 	 */
+	@Override
 	protected IFigure getFeedbackLayer() {
 		return getLayer(LayerConstants.SCALED_FEEDBACK_LAYER);
 	}
@@ -131,6 +133,7 @@ public class LogicResizableEditPolicy extends ResizableEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.NonResizableEditPolicy#getInitialFeedbackBounds()
 	 */
+	@Override
 	protected Rectangle getInitialFeedbackBounds() {
 		return getHostFigure().getBounds();
 	}
@@ -138,6 +141,7 @@ public class LogicResizableEditPolicy extends ResizableEditPolicy {
 	/**
 	 * Overwritten to ensure size constraints are respected.
 	 */
+	@Override
 	protected ResizeTracker getResizeTracker(int direction) {
 		return new LogicResizeTracker((GraphicalEditPart) getHost(), direction);
 	}

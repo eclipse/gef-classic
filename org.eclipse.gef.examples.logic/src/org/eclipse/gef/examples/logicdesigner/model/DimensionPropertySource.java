@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,8 +21,8 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class DimensionPropertySource implements IPropertySource {
 
-	public static String ID_WIDTH = "width"; //$NON-NLS-1$
-	public static String ID_HEIGHT = "height";//$NON-NLS-1$
+	public static final String ID_WIDTH = "width"; //$NON-NLS-1$
+	public static final String ID_HEIGHT = "height";//$NON-NLS-1$
 	protected static IPropertyDescriptor[] descriptors;
 
 	static {
@@ -41,10 +41,12 @@ public class DimensionPropertySource implements IPropertySource {
 		this.dimension = dimension.getCopy();
 	}
 
+	@Override
 	public Object getEditableValue() {
 		return dimension.getCopy();
 	}
 
+	@Override
 	public Object getPropertyValue(Object propName) {
 		return getPropertyValue((String) propName);
 	}
@@ -59,6 +61,7 @@ public class DimensionPropertySource implements IPropertySource {
 		return null;
 	}
 
+	@Override
 	public void setPropertyValue(Object propName, Object value) {
 		setPropertyValue((String) propName, value);
 	}
@@ -72,6 +75,7 @@ public class DimensionPropertySource implements IPropertySource {
 		}
 	}
 
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return descriptors;
 	}
@@ -79,19 +83,20 @@ public class DimensionPropertySource implements IPropertySource {
 	public void resetPropertyValue(String propName) {
 	}
 
+	@Override
 	public void resetPropertyValue(Object propName) {
 	}
 
+	@Override
 	public boolean isPropertySet(Object propName) {
 		return true;
 	}
 
 	public boolean isPropertySet(String propName) {
-		if (ID_HEIGHT.equals(propName) || ID_WIDTH.equals(propName))
-			return true;
-		return false;
+		return (ID_HEIGHT.equals(propName) || ID_WIDTH.equals(propName));
 	}
 
+	@Override
 	public String toString() {
 		return new String("(" + dimension.width + "," + dimension.height + ")");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 	}

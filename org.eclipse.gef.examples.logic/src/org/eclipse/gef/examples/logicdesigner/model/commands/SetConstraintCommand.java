@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,18 +25,21 @@ public class SetConstraintCommand extends org.eclipse.gef.commands.Command {
 	private Dimension oldSize;
 	private LogicSubpart part;
 
+	@Override
 	public void execute() {
 		oldSize = part.getSize();
 		oldPos = part.getLocation();
 		redo();
 	}
 
+	@Override
 	public String getLabel() {
 		if (oldSize.equals(newSize))
 			return LogicMessages.SetLocationCommand_Label_Location;
 		return LogicMessages.SetLocationCommand_Label_Resize;
 	}
 
+	@Override
 	public void redo() {
 		part.setSize(newSize);
 		part.setLocation(newPos);
@@ -59,6 +62,7 @@ public class SetConstraintCommand extends org.eclipse.gef.commands.Command {
 		newSize = p;
 	}
 
+	@Override
 	public void undo() {
 		part.setSize(oldSize);
 		part.setLocation(oldPos);

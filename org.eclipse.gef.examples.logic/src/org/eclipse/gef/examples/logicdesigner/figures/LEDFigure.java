@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -79,52 +79,54 @@ public class LEDFigure extends NodeFigure implements HandleBounds {
 		c = new FixedConnectionAnchor(this);
 		c.offsetH = 51;
 		connectionAnchors.put(LED.TERMINAL_1_IN, c);
-		inputConnectionAnchors.addElement(c);
+		inputConnectionAnchors.add(c);
 		c = new FixedConnectionAnchor(this);
 		c.offsetH = 36;
 		connectionAnchors.put(LED.TERMINAL_2_IN, c);
-		inputConnectionAnchors.addElement(c);
+		inputConnectionAnchors.add(c);
 		c = new FixedConnectionAnchor(this);
 		c.offsetH = 21;
 		connectionAnchors.put(LED.TERMINAL_3_IN, c);
-		inputConnectionAnchors.addElement(c);
+		inputConnectionAnchors.add(c);
 		c = new FixedConnectionAnchor(this);
 		c.offsetH = 6;
 		connectionAnchors.put(LED.TERMINAL_4_IN, c);
-		inputConnectionAnchors.addElement(c);
+		inputConnectionAnchors.add(c);
 		c = new FixedConnectionAnchor(this);
 		c.offsetH = 51;
 		c.topDown = false;
 		connectionAnchors.put(LED.TERMINAL_1_OUT, c);
-		outputConnectionAnchors.addElement(c);
+		outputConnectionAnchors.add(c);
 		c = new FixedConnectionAnchor(this);
 		c.offsetH = 36;
 		c.topDown = false;
 		connectionAnchors.put(LED.TERMINAL_2_OUT, c);
-		outputConnectionAnchors.addElement(c);
+		outputConnectionAnchors.add(c);
 		c = new FixedConnectionAnchor(this);
 		c.offsetH = 21;
 		c.topDown = false;
 		connectionAnchors.put(LED.TERMINAL_3_OUT, c);
-		outputConnectionAnchors.addElement(c);
+		outputConnectionAnchors.add(c);
 		c = new FixedConnectionAnchor(this);
 		c.offsetH = 6;
 		c.topDown = false;
 		connectionAnchors.put(LED.TERMINAL_4_OUT, c);
-		outputConnectionAnchors.addElement(c);
+		outputConnectionAnchors.add(c);
 
 	}
 
 	/**
 	 * @see org.eclipse.gef.handles.HandleBounds#getHandleBounds()
 	 */
+	@Override
 	public Rectangle getHandleBounds() {
-		return getBounds().getCropped(new Insets(2, 0, 2, 0));
+		return getBounds().getShrinked(new Insets(2, 0, 2, 0));
 	}
 
 	/**
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		return SIZE;
 	}
@@ -132,6 +134,7 @@ public class LEDFigure extends NodeFigure implements HandleBounds {
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics g) {
 		Rectangle r = getBounds().getCopy();
 		g.translate(r.getLocation());
@@ -201,6 +204,7 @@ public class LEDFigure extends NodeFigure implements HandleBounds {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "LEDFigure"; //$NON-NLS-1$
 	}

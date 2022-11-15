@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,6 +24,7 @@ public class AddCommand extends org.eclipse.gef.commands.Command {
 		super(LogicMessages.AddCommand_Label);
 	}
 
+	@Override
 	public void execute() {
 		if (index < 0)
 			parent.addChild(child);
@@ -35,6 +36,7 @@ public class AddCommand extends org.eclipse.gef.commands.Command {
 		return parent;
 	}
 
+	@Override
 	public void redo() {
 		if (index < 0)
 			parent.addChild(child);
@@ -54,6 +56,7 @@ public class AddCommand extends org.eclipse.gef.commands.Command {
 		parent = newParent;
 	}
 
+	@Override
 	public void undo() {
 		parent.removeChild(child);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,13 +18,16 @@ import org.eclipse.gef.AccessibleEditPart;
 import org.eclipse.gef.EditPolicy;
 
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicElement;
 
 /**
  * Provides support for Container EditParts.
  */
-abstract public class LogicContainerEditPart extends LogicEditPart {
+public abstract class LogicContainerEditPart extends LogicEditPart {
+	@Override
 	protected AccessibleEditPart createAccessible() {
 		return new AccessibleGraphicalEditPart() {
+			@Override
 			public void getName(AccessibleEvent e) {
 				e.result = getLogicDiagram().toString();
 			}
@@ -34,6 +37,7 @@ abstract public class LogicContainerEditPart extends LogicEditPart {
 	/**
 	 * Installs the desired EditPolicies for this.
 	 */
+	@Override
 	protected void createEditPolicies() {
 		super.createEditPolicies();
 		installEditPolicy(EditPolicy.CONTAINER_ROLE, new LogicContainerEditPolicy());
@@ -53,7 +57,8 @@ abstract public class LogicContainerEditPart extends LogicEditPart {
 	 * 
 	 * @return Children of this as a List.
 	 */
-	protected List getModelChildren() {
+	@Override
+	protected List<LogicElement> getModelChildren() {
 		return getLogicDiagram().getChildren();
 	}
 

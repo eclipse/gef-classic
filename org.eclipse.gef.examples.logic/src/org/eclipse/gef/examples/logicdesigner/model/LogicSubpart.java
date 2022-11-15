@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,10 @@ package org.eclipse.gef.examples.logicdesigner.model;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 
@@ -26,19 +27,19 @@ import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
-abstract public class LogicSubpart extends LogicElement {
+public abstract class LogicSubpart extends LogicElement {
 
 	private String id;
 	private LogicGuide verticalGuide, horizontalGuide;
-	protected Hashtable inputs = new Hashtable(7);
+	protected Map<String, Wire> inputs = new HashMap<>(7);
 	protected Point location = new Point(0, 0);
-	protected Vector outputs = new Vector(4, 4);
+	protected List<Wire> outputs = new ArrayList<>(4);
 	static final long serialVersionUID = 1;
 	protected Dimension size = new Dimension(-1, -1);
 
 	protected static IPropertyDescriptor[] descriptors = null;
-	public static String ID_SIZE = "size"; //$NON-NLS-1$
-	public static String ID_LOCATION = "location"; //$NON-NLS-1$
+	public static final String ID_SIZE = "size"; //$NON-NLS-1$
+	public static final String ID_LOCATION = "location"; //$NON-NLS-1$
 
 	static {
 		descriptors = new IPropertyDescriptor[] {
@@ -56,7 +57,7 @@ abstract public class LogicSubpart extends LogicElement {
 		return image;
 	}
 
-	public LogicSubpart() {
+	protected LogicSubpart() {
 		setID(getNewID());
 	}
 
@@ -67,7 +68,7 @@ abstract public class LogicSubpart extends LogicElement {
 	}
 
 	public void connectOutput(Wire w) {
-		outputs.addElement(w);
+		outputs.add(w);
 		update();
 		fireStructureChange(OUTPUTS, w);
 	}
@@ -79,17 +80,15 @@ abstract public class LogicSubpart extends LogicElement {
 	}
 
 	public void disconnectOutput(Wire w) {
-		outputs.removeElement(w);
+		outputs.remove(w);
 		update();
 		fireStructureChange(OUTPUTS, w);
 	}
 
-	public Vector getConnections() {
-		Vector v = (Vector) outputs.clone();
-		Enumeration ins = inputs.elements();
-		while (ins.hasMoreElements())
-			v.addElement(ins.nextElement());
-		return v;
+	public List<Wire> getConnections() {
+		List<Wire> conns = new ArrayList<>(outputs);
+		conns.addAll(inputs.values());
+		return conns;
 	}
 
 	public LogicGuide getHorizontalGuide() {
@@ -110,7 +109,7 @@ abstract public class LogicSubpart extends LogicElement {
 		if (inputs.isEmpty()) {
 			return false;
 		}
-		Wire w = (Wire) inputs.get(terminal);
+		Wire w = inputs.get(terminal);
 		return (w == null) ? false : w.getValue();
 
 	}
@@ -119,7 +118,7 @@ abstract public class LogicSubpart extends LogicElement {
 		return location;
 	}
 
-	abstract protected String getNewID();
+	protected abstract String getNewID();
 
 	/**
 	 * Returns useful property descriptors for the use in property sheets. this
@@ -127,6 +126,7 @@ abstract public class LogicSubpart extends LogicElement {
 	 * 
 	 * @return Array of property descriptors.
 	 */
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return descriptors;
 	}
@@ -138,6 +138,7 @@ abstract public class LogicSubpart extends LogicElement {
 	 * @param propName Name of the property for which the the values are needed.
 	 * @return Object which is the value of the property.
 	 */
+	@Override
 	public Object getPropertyValue(Object propName) {
 		if (ID_SIZE.equals(propName))
 			return new DimensionPropertySource(getSize());
@@ -150,16 +151,12 @@ abstract public class LogicSubpart extends LogicElement {
 		return size;
 	}
 
-	public Vector getSourceConnections() {
-		return (Vector) outputs.clone();
+	public List<Wire> getSourceConnections() {
+		return new ArrayList<>(outputs);
 	}
 
-	public Vector getTargetConnections() {
-		Enumeration elements = inputs.elements();
-		Vector v = new Vector(inputs.size());
-		while (elements.hasMoreElements())
-			v.addElement(elements.nextElement());
-		return v;
+	public List<Wire> getTargetConnections() {
+		return new ArrayList<>(inputs.values());
 	}
 
 	public LogicGuide getVerticalGuide() {
@@ -202,13 +199,8 @@ abstract public class LogicSubpart extends LogicElement {
 	}
 
 	protected void setOutput(String terminal, boolean val) {
-		Enumeration elements = outputs.elements();
-		Wire w;
-		while (elements.hasMoreElements()) {
-			w = (Wire) elements.nextElement();
-			if (w.getSourceTerminal().equals(terminal) && this.equals(w.getSource()))
-				w.setValue(val);
-		}
+		outputs.stream().filter(w -> (w.getSourceTerminal().equals(terminal) && this.equals(w.getSource())))
+				.forEach(w -> w.setValue(val));
 	}
 
 	/**
@@ -218,6 +210,7 @@ abstract public class LogicSubpart extends LogicElement {
 	 * @param id    Name of the parameter to be changed.
 	 * @param value Value to be set to the given parameter.
 	 */
+	@Override
 	public void setPropertyValue(Object id, Object value) {
 		if (ID_SIZE.equals(id))
 			setSize((Dimension) value);

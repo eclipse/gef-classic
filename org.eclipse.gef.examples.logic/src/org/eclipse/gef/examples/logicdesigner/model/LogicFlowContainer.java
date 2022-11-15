@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,12 +17,13 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 
 public class LogicFlowContainer extends LogicDiagram {
 
-	private class LayoutLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
+	private static class LayoutLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 
 		public LayoutLabelProvider() {
 			super();
 		}
 
+		@Override
 		public String getText(Object element) {
 			if (element instanceof Integer) {
 				Integer integer = (Integer) element;
@@ -57,6 +58,7 @@ public class LogicFlowContainer extends LogicDiagram {
 	 * 
 	 * @return Array of property descriptors.
 	 */
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		if (getClass().equals(LogicFlowContainer.class)) {
 			ComboBoxPropertyDescriptor cbd = new ComboBoxPropertyDescriptor(ID_LAYOUT,
@@ -69,6 +71,7 @@ public class LogicFlowContainer extends LogicDiagram {
 		return super.getPropertyDescriptors();
 	}
 
+	@Override
 	public Object getPropertyValue(Object propName) {
 		if (propName.equals(ID_LAYOUT))
 			return layout;
@@ -81,6 +84,7 @@ public class LogicFlowContainer extends LogicDiagram {
 		firePropertyChange(ID_LAYOUT, oldLayout, layout);
 	}
 
+	@Override
 	public void setPropertyValue(Object id, Object value) {
 		if (ID_LAYOUT.equals(id))
 			setLayout((Integer) value);
@@ -88,6 +92,7 @@ public class LogicFlowContainer extends LogicDiagram {
 			super.setPropertyValue(id, value);
 	}
 
+	@Override
 	public String toString() {
 		return LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label;
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ public class LogicFlowBorder extends org.eclipse.draw2d.LineBorder {
 		grabBarSize = new Dimension(width, 18);
 	}
 
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return new Insets(getWidth() + 2, grabBarWidth + 2, getWidth() + 2, getWidth() + 2);
 	}
@@ -37,6 +38,7 @@ public class LogicFlowBorder extends org.eclipse.draw2d.LineBorder {
 		return grabBarSize;
 	}
 
+	@Override
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		Rectangle bounds = figure.getBounds();
 		tempRect.setBounds(new Rectangle(bounds.x, bounds.y, grabBarWidth, bounds.height));

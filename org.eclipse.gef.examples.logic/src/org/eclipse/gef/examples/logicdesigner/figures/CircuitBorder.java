@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -66,12 +66,14 @@ public class CircuitBorder extends AbstractBorder {
 		}
 	}
 
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return insets;
 	}
 
+	@Override
 	public void paint(IFigure figure, Graphics g, Insets in) {
-		Rectangle r = figure.getBounds().getCropped(in);
+		Rectangle r = figure.getBounds().getShrinked(in);
 
 		g.setForegroundColor(LogicColorConstants.logicGreen);
 		g.setBackgroundColor(LogicColorConstants.logicGreen);
@@ -89,10 +91,10 @@ public class CircuitBorder extends AbstractBorder {
 		g.drawLine(r.x, r.y + 2, r.x, r.bottom() - 3);
 		g.drawLine(r.right() - 1, r.bottom() - 3, r.right() - 1, r.y + 2);
 
-		r.crop(new Insets(1, 1, 0, 0));
+		r.shrink(new Insets(1, 1, 0, 0));
 		r.expand(1, 1);
-		r.crop(getInsets(figure));
-		drawConnectors(g, figure.getBounds().getCropped(in));
+		r.shrink(getInsets(figure));
+		drawConnectors(g, figure.getBounds().getShrinked(in));
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -53,6 +53,7 @@ public class LogicWizardPage1 extends WizardNewFileCreationPage implements Selec
 		this.workbench = aWorkbench;
 	}
 
+	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 		this.setFileName("emptyModel" + exampleCount + ".logic"); //$NON-NLS-2$//$NON-NLS-1$
@@ -80,6 +81,7 @@ public class LogicWizardPage1 extends WizardNewFileCreationPage implements Selec
 		setPageComplete(validatePage());
 	}
 
+	@Override
 	protected InputStream getInitialContents() {
 		LogicDiagram ld = new LogicDiagram();
 		if (modelSelected == 2)
@@ -123,6 +125,7 @@ public class LogicWizardPage1 extends WizardNewFileCreationPage implements Selec
 	/**
 	 * @see org.eclipse.swt.events.SelectionListener#widgetSelected(SelectionEvent)
 	 */
+	@Override
 	public void widgetSelected(SelectionEvent e) {
 		if (e.getSource() == model1) {
 			modelSelected = 1;
@@ -136,6 +139,7 @@ public class LogicWizardPage1 extends WizardNewFileCreationPage implements Selec
 	/**
 	 * Empty method
 	 */
+	@Override
 	public void widgetDefaultSelected(SelectionEvent e) {
 	}
 
