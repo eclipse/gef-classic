@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,7 @@ import org.eclipse.gef.GraphicalEditPart;
 
 public class WireEndpointEditPolicy extends org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy {
 
+	@Override
 	protected void addSelectionHandles() {
 		super.addSelectionHandles();
 		getConnectionFigure().setLineWidth(2);
@@ -25,6 +26,7 @@ public class WireEndpointEditPolicy extends org.eclipse.gef.editpolicies.Connect
 		return (PolylineConnection) ((GraphicalEditPart) getHost()).getFigure();
 	}
 
+	@Override
 	protected void removeSelectionHandles() {
 		super.removeSelectionHandles();
 		getConnectionFigure().setLineWidth(0);

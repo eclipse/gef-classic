@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,16 +17,19 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 public class XORGate extends Gate {
 
 	static final long serialVersionUID = 1;
-	private static Image XOR_ICON = createImage(XORGate.class, "icons/xor16.gif"); //$NON-NLS-1$
+	private static final Image XOR_ICON = createImage(XORGate.class, "icons/xor16.gif"); //$NON-NLS-1$
 
+	@Override
 	public Image getIconImage() {
 		return XOR_ICON;
 	}
 
+	@Override
 	public boolean getResult() {
 		return getInput(TERMINAL_A) & !getInput(TERMINAL_B) || !getInput(TERMINAL_A) & getInput(TERMINAL_B);
 	}
 
+	@Override
 	public String toString() {
 		return LogicMessages.XORGate_LabelText + " #" + getID();//$NON-NLS-1$
 	}

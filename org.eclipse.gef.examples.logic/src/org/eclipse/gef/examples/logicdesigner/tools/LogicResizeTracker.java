@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.tools;
 
 import org.eclipse.draw2d.geometry.Dimension;
@@ -14,10 +24,12 @@ public final class LogicResizeTracker extends ResizeTracker {
 		super(owner, direction);
 	}
 
+	@Override
 	protected Dimension getMaximumSizeFor(ChangeBoundsRequest request) {
 		return LogicPlugin.getMaximumSizeFor(getOwner().getModel().getClass());
 	}
 
+	@Override
 	protected Dimension getMinimumSizeFor(ChangeBoundsRequest request) {
 		return LogicPlugin.getMinimumSizeFor(getOwner().getModel().getClass());
 	}

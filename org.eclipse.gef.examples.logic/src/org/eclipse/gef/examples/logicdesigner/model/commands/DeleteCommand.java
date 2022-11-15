@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,8 +28,8 @@ public class DeleteCommand extends Command {
 	private LogicGuide vGuide, hGuide;
 	private int vAlign, hAlign;
 	private int index = -1;
-	private List sourceConnections = new ArrayList();
-	private List targetConnections = new ArrayList();
+	private List<Wire> sourceConnections = new ArrayList<>();
+	private List<Wire> targetConnections = new ArrayList<>();
 
 	public DeleteCommand() {
 		super(LogicMessages.DeleteCommand_Label);
@@ -43,13 +43,13 @@ public class DeleteCommand extends Command {
 		}
 		sourceConnections.addAll(part.getSourceConnections());
 		for (int i = 0; i < sourceConnections.size(); i++) {
-			Wire wire = (Wire) sourceConnections.get(i);
+			Wire wire = sourceConnections.get(i);
 			wire.detachSource();
 			wire.detachTarget();
 		}
 		targetConnections.addAll(part.getTargetConnections());
 		for (int i = 0; i < targetConnections.size(); i++) {
-			Wire wire = (Wire) targetConnections.get(i);
+			Wire wire = targetConnections.get(i);
 			wire.detachSource();
 			wire.detachTarget();
 		}
@@ -69,6 +69,7 @@ public class DeleteCommand extends Command {
 
 	}
 
+	@Override
 	public void execute() {
 		primExecute();
 	}
@@ -87,19 +88,20 @@ public class DeleteCommand extends Command {
 			hGuide.attachPart(part, hAlign);
 	}
 
+	@Override
 	public void redo() {
 		primExecute();
 	}
 
 	private void restoreConnections() {
 		for (int i = 0; i < sourceConnections.size(); i++) {
-			Wire wire = (Wire) sourceConnections.get(i);
+			Wire wire = sourceConnections.get(i);
 			wire.attachSource();
 			wire.attachTarget();
 		}
 		sourceConnections.clear();
 		for (int i = 0; i < targetConnections.size(); i++) {
-			Wire wire = (Wire) targetConnections.get(i);
+			Wire wire = targetConnections.get(i);
 			wire.attachSource();
 			wire.attachTarget();
 		}
@@ -114,6 +116,7 @@ public class DeleteCommand extends Command {
 		parent = p;
 	}
 
+	@Override
 	public void undo() {
 		parent.addChild(child, index);
 		restoreConnections();

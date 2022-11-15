@@ -20,6 +20,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
+import org.eclipse.gef.palette.CreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
 import org.eclipse.gef.palette.PaletteContainer;
 import org.eclipse.gef.palette.PaletteDrawer;
@@ -93,8 +94,8 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		return IFigure.MIN_DIMENSION;
 	}
 
-	static private List createCategories(PaletteRoot root) {
-		List categories = new ArrayList();
+	private static List<PaletteContainer> createCategories(PaletteRoot root) {
+		List<PaletteContainer> categories = new ArrayList<>(3);
 
 		categories.add(createControlGroup(root));
 		categories.add(createComponentsDrawer());
@@ -105,11 +106,11 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		return categories;
 	}
 
-	static private PaletteContainer createComplexPartsDrawer() {
+	private static PaletteContainer createComplexPartsDrawer() {
 		PaletteDrawer drawer = new PaletteDrawer(LogicMessages.LogicPlugin_Category_ComplexParts_Label,
 				ImageDescriptor.createFromFile(Circuit.class, "icons/can.gif")); //$NON-NLS-1$
 
-		List entries = new ArrayList();
+		List<CreationToolEntry> entries = new ArrayList<>();
 
 		CombinedTemplateCreationEntry combined = new CombinedTemplateCreationEntry(
 				LogicMessages.LogicPlugin_Tool_CreationTool_HalfAdder_Label,
@@ -132,12 +133,12 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		return drawer;
 	}
 
-	static private PaletteContainer createComponentsDrawer() {
+	private static PaletteContainer createComponentsDrawer() {
 
 		PaletteDrawer drawer = new PaletteDrawer(LogicMessages.LogicPlugin_Category_Components_Label,
 				ImageDescriptor.createFromFile(Circuit.class, "icons/comp.gif"));//$NON-NLS-1$
 
-		List entries = new ArrayList();
+		List<PaletteEntry> entries = new ArrayList<>();
 
 		CombinedTemplateCreationEntry combined = new CombinedTemplateCreationEntry(
 				LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label,
@@ -225,10 +226,10 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		return drawer;
 	}
 
-	static private PaletteContainer createControlGroup(PaletteRoot root) {
+	private static PaletteContainer createControlGroup(PaletteRoot root) {
 		PaletteGroup controlGroup = new PaletteGroup(LogicMessages.LogicPlugin_Category_ControlGroup_Label);
 
-		List entries = new ArrayList();
+		List<PaletteEntry> entries = new ArrayList<>();
 
 		ToolEntry tool = new PanningSelectionToolEntry();
 		entries.add(tool);

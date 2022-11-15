@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,10 +25,12 @@ import org.eclipse.gef.examples.logicdesigner.LogicPlugin;
  */
 public class LogicCreationTool extends CreationTool {
 
+	@Override
 	protected Dimension getMaximumSizeFor(CreateRequest request) {
 		return LogicPlugin.getMaximumSizeFor(request.getNewObject().getClass());
 	}
 
+	@Override
 	protected Dimension getMinimumSizeFor(CreateRequest request) {
 		return LogicPlugin.getMinimumSizeFor(request.getNewObject().getClass());
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.draw2d.Bendpoint;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ManhattanConnectionRouter;
@@ -41,14 +42,16 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 
 	AccessibleEditPart acc;
 
-	public static final Color alive = new Color(Display.getDefault(), 30, 144, 255),
-			dead = new Color(Display.getDefault(), 30, 30, 30);
+	public static final Color alive = new Color(Display.getDefault(), 30, 144, 255);
+	public static final Color dead = new Color(Display.getDefault(), 30, 30, 30);
 
+	@Override
 	public void activate() {
 		super.activate();
 		getWire().addPropertyChangeListener(this);
 	}
 
+	@Override
 	public void activateFigure() {
 		super.activateFigure();
 		/*
@@ -61,6 +64,7 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 	/**
 	 * Adds extra EditPolicies as required.
 	 */
+	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE, new WireEndpointEditPolicy());
 		// Note that the Connection is already added to the diagram and knows
@@ -74,24 +78,28 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 	 * 
 	 * @return The created Figure.
 	 */
+	@Override
 	protected IFigure createFigure() {
-		Connection connx = FigureFactory.createNewBendableWire(getWire());
-		return connx;
+		return FigureFactory.createNewBendableWire(getWire());
 	}
 
+	@Override
 	public void deactivate() {
 		getWire().removePropertyChangeListener(this);
 		super.deactivate();
 	}
 
+	@Override
 	public void deactivateFigure() {
 		getFigure().removePropertyChangeListener(Connection.PROPERTY_CONNECTION_ROUTER, this);
 		super.deactivateFigure();
 	}
 
+	@Override
 	public AccessibleEditPart getAccessibleEditPart() {
 		if (acc == null)
 			acc = new AccessibleGraphicalEditPart() {
+				@Override
 				public void getName(AccessibleEvent e) {
 					e.result = LogicMessages.Wire_LabelText;
 				}
@@ -123,6 +131,7 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 	 * 
 	 * @param event Event notifying the change.
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		String property = event.getPropertyName();
 		if (Connection.PROPERTY_CONNECTION_ROUTER.equals(property)) {
@@ -141,8 +150,8 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 	protected void refreshBendpoints() {
 		if (getConnectionFigure().getConnectionRouter() instanceof ManhattanConnectionRouter)
 			return;
-		List modelConstraint = getWire().getBendpoints();
-		List figureConstraint = new ArrayList();
+		List<Bendpoint> modelConstraint = getWire().getBendpoints();
+		List<RelativeBendpoint> figureConstraint = new ArrayList<>();
 		for (int i = 0; i < modelConstraint.size(); i++) {
 			WireBendpoint wbp = (WireBendpoint) modelConstraint.get(i);
 			RelativeBendpoint rbp = new RelativeBendpoint(getConnectionFigure());
@@ -165,6 +174,7 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 	 * the wire color depending on the state of Wire.
 	 * 
 	 */
+	@Override
 	protected void refreshVisuals() {
 		refreshBendpoints();
 		if (getWire().getValue())

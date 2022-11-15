@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,12 +31,14 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 	/**
 	 * @see org.eclipse.draw2d.AbstractConnectionAnchor#ancestorMoved(IFigure)
 	 */
+	@Override
 	public void ancestorMoved(IFigure figure) {
 		if (figure instanceof ScalableFigure)
 			return;
 		super.ancestorMoved(figure);
 	}
 
+	@Override
 	public Point getLocation(Point reference) {
 		Rectangle r = getOwner().getBounds();
 		int x, y;
@@ -55,6 +57,7 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 		return p;
 	}
 
+	@Override
 	public Point getReferencePoint() {
 		return getLocation(null);
 	}
@@ -80,6 +83,7 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof FixedConnectionAnchor) {
 			FixedConnectionAnchor fa = (FixedConnectionAnchor) o;
@@ -98,6 +102,7 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return ((this.leftToRight ? 31 : 0) + (this.topDown ? 37 : 0) + this.offsetH * 43 + this.offsetV * 47)
 				^ this.getOwner().hashCode();

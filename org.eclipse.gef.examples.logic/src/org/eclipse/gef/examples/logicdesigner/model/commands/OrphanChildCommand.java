@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import org.eclipse.gef.commands.Command;
 
 import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicElement;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 public class OrphanChildCommand extends Command {
@@ -31,13 +32,15 @@ public class OrphanChildCommand extends Command {
 		super(LogicMessages.OrphanChildCommand_Label);
 	}
 
+	@Override
 	public void execute() {
-		List children = diagram.getChildren();
+		List<LogicElement> children = diagram.getChildren();
 		index = children.indexOf(child);
 		oldLocation = child.getLocation();
 		diagram.removeChild(child);
 	}
 
+	@Override
 	public void redo() {
 		diagram.removeChild(child);
 	}
@@ -50,6 +53,7 @@ public class OrphanChildCommand extends Command {
 		diagram = parent;
 	}
 
+	@Override
 	public void undo() {
 		child.setLocation(oldLocation);
 		diagram.addChild(child, index);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
-
-import java.util.Iterator;
-import java.util.Vector;
 
 import org.eclipse.gef.commands.Command;
 
@@ -35,20 +32,20 @@ public class ConnectionCommand extends Command {
 		super(LogicMessages.ConnectionCommand_Label);
 	}
 
+	@Override
 	public boolean canExecute() {
 		if (target != null) {
-			Vector conns = target.getConnections();
-			Iterator i = conns.iterator();
-			while (i.hasNext()) {
-				Wire conn = (Wire) i.next();
-				if (targetTerminal != null && conn.getTargetTerminal() != null)
-					if (conn.getTargetTerminal().equals(targetTerminal) && conn.getTarget().equals(target))
-						return false;
+			for (Wire conn : target.getConnections()) {
+				if ((targetTerminal != null && conn.getTargetTerminal() != null)
+						&& (conn.getTargetTerminal().equals(targetTerminal) && conn.getTarget().equals(target))) {
+					return false;
+				}
 			}
 		}
 		return true;
 	}
 
+	@Override
 	public void execute() {
 		if (source != null) {
 			wire.detachSource();
@@ -70,6 +67,7 @@ public class ConnectionCommand extends Command {
 		}
 	}
 
+	@Override
 	public String getLabel() {
 		return LogicMessages.ConnectionCommand_Description;
 	}
@@ -94,6 +92,7 @@ public class ConnectionCommand extends Command {
 		return wire;
 	}
 
+	@Override
 	public void redo() {
 		execute();
 	}
@@ -122,6 +121,7 @@ public class ConnectionCommand extends Command {
 		oldTargetTerminal = w.getTargetTerminal();
 	}
 
+	@Override
 	public void undo() {
 		source = wire.getSource();
 		target = wire.getTarget();

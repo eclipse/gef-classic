@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ public class LogicLabel extends LogicSubpart {
 
 	private String text = LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel;
 
-	private static Image LOGIC_LABEL_ICON = createImage(LED.class, "icons/label16.gif"); //$NON-NLS-1$
+	private static final Image LOGIC_LABEL_ICON = createImage(LED.class, "icons/label16.gif"); //$NON-NLS-1$
 
 	private static int count;
 
@@ -39,14 +39,17 @@ public class LogicLabel extends LogicSubpart {
 		return text;
 	}
 
+	@Override
 	public Image getIconImage() {
 		return LOGIC_LABEL_ICON;
 	}
 
+	@Override
 	protected String getNewID() {
 		return Integer.toString(count++);
 	}
 
+	@Override
 	public Dimension getSize() {
 		return new Dimension(size.width, -1);
 	}
@@ -55,6 +58,7 @@ public class LogicLabel extends LogicSubpart {
 		s.defaultReadObject();
 	}
 
+	@Override
 	public void setSize(Dimension d) {
 		d.height = -1;
 		super.setSize(d);
@@ -65,6 +69,7 @@ public class LogicLabel extends LogicSubpart {
 		firePropertyChange("labelContents", null, text); // $NON-NLS-2$//$NON-NLS-1$
 	}
 
+	@Override
 	public String toString() {
 		return LogicMessages.LogicPlugin_Tool_CreationTool_LogicLabel + " #" + getID() + " " //$NON-NLS-1$ //$NON-NLS-2$
 				+ LogicMessages.PropertyDescriptor_Label_Text + "=" + getLabelContents(); //$NON-NLS-1$

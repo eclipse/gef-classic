@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.figures;
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.Figure;
@@ -20,17 +22,15 @@ import org.eclipse.draw2d.geometry.Point;
 
 public class NodeFigure extends Figure {
 
-	protected Hashtable connectionAnchors = new Hashtable(7);
-	protected Vector inputConnectionAnchors = new Vector(2, 2);
-	protected Vector outputConnectionAnchors = new Vector(2, 2);
+	protected Map<String, ConnectionAnchor> connectionAnchors = new HashMap<>(7);
+	protected List<ConnectionAnchor> inputConnectionAnchors = new ArrayList<>(2);
+	protected List<ConnectionAnchor> outputConnectionAnchors = new ArrayList<>(2);
 
 	public ConnectionAnchor connectionAnchorAt(Point p) {
 		ConnectionAnchor closest = null;
 		long min = Long.MAX_VALUE;
 
-		Enumeration e = getSourceConnectionAnchors().elements();
-		while (e.hasMoreElements()) {
-			ConnectionAnchor c = (ConnectionAnchor) e.nextElement();
+		for (ConnectionAnchor c : getSourceConnectionAnchors()) {
 			Point p2 = c.getLocation(null);
 			long d = p.getDistance2(p2);
 			if (d < min) {
@@ -38,9 +38,7 @@ public class NodeFigure extends Figure {
 				closest = c;
 			}
 		}
-		e = getTargetConnectionAnchors().elements();
-		while (e.hasMoreElements()) {
-			ConnectionAnchor c = (ConnectionAnchor) e.nextElement();
+		for (ConnectionAnchor c : getTargetConnectionAnchors()) {
 			Point p2 = c.getLocation(null);
 			long d = p.getDistance2(p2);
 			if (d < min) {
@@ -52,16 +50,14 @@ public class NodeFigure extends Figure {
 	}
 
 	public ConnectionAnchor getConnectionAnchor(String terminal) {
-		return (ConnectionAnchor) connectionAnchors.get(terminal);
+		return connectionAnchors.get(terminal);
 	}
 
 	public String getConnectionAnchorName(ConnectionAnchor c) {
-		Enumeration keys = connectionAnchors.keys();
-		String key;
-		while (keys.hasMoreElements()) {
-			key = (String) keys.nextElement();
-			if (connectionAnchors.get(key).equals(c))
-				return key;
+		for (Entry<String, ConnectionAnchor> entry : connectionAnchors.entrySet()) {
+			if (entry.getValue().equals(c)) {
+				return entry.getKey();
+			}
 		}
 		return null;
 	}
@@ -70,9 +66,7 @@ public class NodeFigure extends Figure {
 		ConnectionAnchor closest = null;
 		long min = Long.MAX_VALUE;
 
-		Enumeration e = getSourceConnectionAnchors().elements();
-		while (e.hasMoreElements()) {
-			ConnectionAnchor c = (ConnectionAnchor) e.nextElement();
+		for (ConnectionAnchor c : getSourceConnectionAnchors()) {
 			Point p2 = c.getLocation(null);
 			long d = p.getDistance2(p2);
 			if (d < min) {
@@ -83,7 +77,7 @@ public class NodeFigure extends Figure {
 		return closest;
 	}
 
-	public Vector getSourceConnectionAnchors() {
+	public List<ConnectionAnchor> getSourceConnectionAnchors() {
 		return outputConnectionAnchors;
 	}
 
@@ -91,9 +85,7 @@ public class NodeFigure extends Figure {
 		ConnectionAnchor closest = null;
 		long min = Long.MAX_VALUE;
 
-		Enumeration e = getTargetConnectionAnchors().elements();
-		while (e.hasMoreElements()) {
-			ConnectionAnchor c = (ConnectionAnchor) e.nextElement();
+		for (ConnectionAnchor c : getTargetConnectionAnchors()) {
 			Point p2 = c.getLocation(null);
 			long d = p.getDistance2(p2);
 			if (d < min) {
@@ -104,7 +96,7 @@ public class NodeFigure extends Figure {
 		return closest;
 	}
 
-	public Vector getTargetConnectionAnchors() {
+	public List<ConnectionAnchor> getTargetConnectionAnchors() {
 		return inputConnectionAnchors;
 	}
 

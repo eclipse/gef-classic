@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,16 +26,17 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
 public class LogicDiagram extends LogicSubpart {
 	static final long serialVersionUID = 1;
 
-	public static String ID_ROUTER = "router"; //$NON-NLS-1$
-	public static Integer ROUTER_MANUAL = 0;
-	public static Integer ROUTER_MANHATTAN = 1;
-	public static Integer ROUTER_SHORTEST_PATH = 2;
+	public static final String ID_ROUTER = "router"; //$NON-NLS-1$
+	public static final Integer ROUTER_MANUAL = 0;
+	public static final Integer ROUTER_MANHATTAN = 1;
+	public static final Integer ROUTER_SHORTEST_PATH = 2;
 	private static int count;
-	private static Image LOGIC_ICON = createImage(LogicDiagram.class, "icons/circuit16.gif"); //$NON-NLS-1$
+	private static final Image LOGIC_ICON = createImage(LogicDiagram.class, "icons/circuit16.gif"); //$NON-NLS-1$
 
-	protected List children = new ArrayList();
-	protected LogicRuler leftRuler, topRuler;
-	protected Integer connectionRouter = null;
+	private List<LogicElement> children = new ArrayList<>();
+	private LogicRuler leftRuler;
+	private LogicRuler topRuler;
+	private Integer connectionRouter = null;
 	private boolean rulersVisibility = false;
 	private boolean snapToGeometry = false;
 	private boolean gridEnabled = false;
@@ -66,7 +67,7 @@ public class LogicDiagram extends LogicSubpart {
 		topRuler = new LogicRuler(true);
 	}
 
-	public List getChildren() {
+	public List<LogicElement> getChildren() {
 		return children;
 	}
 
@@ -76,10 +77,12 @@ public class LogicDiagram extends LogicSubpart {
 		return connectionRouter;
 	}
 
+	@Override
 	public Image getIconImage() {
 		return LOGIC_ICON;
 	}
 
+	@Override
 	public String getNewID() {
 		return Integer.toString(count++);
 	}
@@ -94,6 +97,7 @@ public class LogicDiagram extends LogicSubpart {
 	 * 
 	 * @return Array of property descriptors.
 	 */
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		if (getClass().equals(LogicDiagram.class)) {
 			ComboBoxPropertyDescriptor cbd = new ComboBoxPropertyDescriptor(ID_ROUTER,
@@ -107,6 +111,7 @@ public class LogicDiagram extends LogicSubpart {
 		return super.getPropertyDescriptors();
 	}
 
+	@Override
 	public Object getPropertyValue(Object propName) {
 		if (propName.equals(ID_ROUTER))
 			return connectionRouter;
@@ -153,6 +158,7 @@ public class LogicDiagram extends LogicSubpart {
 		firePropertyChange(ID_ROUTER, oldConnectionRouter, connectionRouter);
 	}
 
+	@Override
 	public void setPropertyValue(Object id, Object value) {
 		if (ID_ROUTER.equals(id))
 			setConnectionRouter((Integer) value);
@@ -176,16 +182,18 @@ public class LogicDiagram extends LogicSubpart {
 		this.zoom = zoom;
 	}
 
+	@Override
 	public String toString() {
 		return LogicMessages.LogicDiagram_LabelText;
 	}
 
-	private class ConnectionRouterLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
+	private static class ConnectionRouterLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 
 		public ConnectionRouterLabelProvider() {
 			super();
 		}
 
+		@Override
 		public String getText(Object element) {
 			if (element instanceof Integer) {
 				Integer integer = (Integer) element;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.gef.commands.Command;
@@ -28,7 +27,7 @@ public class DeleteGuideCommand extends Command {
 
 	private LogicRuler parent;
 	private LogicGuide guide;
-	private Map oldParts;
+	private Map<LogicSubpart, Integer> oldParts;
 
 	public DeleteGuideCommand(LogicGuide guide, LogicRuler parent) {
 		super(LogicMessages.DeleteGuideCommand_Label);
@@ -36,25 +35,25 @@ public class DeleteGuideCommand extends Command {
 		this.parent = parent;
 	}
 
+	@Override
 	public boolean canUndo() {
 		return true;
 	}
 
+	@Override
 	public void execute() {
-		oldParts = new HashMap(guide.getMap());
-		Iterator iter = oldParts.keySet().iterator();
-		while (iter.hasNext()) {
-			guide.detachPart((LogicSubpart) iter.next());
+		oldParts = new HashMap<>(guide.getMap());
+		for (LogicSubpart subPart : oldParts.keySet()) {
+			guide.detachPart(subPart);
 		}
 		parent.removeGuide(guide);
 	}
 
+	@Override
 	public void undo() {
 		parent.addGuide(guide);
-		Iterator iter = oldParts.keySet().iterator();
-		while (iter.hasNext()) {
-			LogicSubpart part = (LogicSubpart) iter.next();
-			guide.attachPart(part, ((Integer) oldParts.get(part)).intValue());
+		for (LogicSubpart subPart : oldParts.keySet()) {
+			guide.attachPart(subPart, oldParts.get(subPart).intValue());
 		}
 	}
 }

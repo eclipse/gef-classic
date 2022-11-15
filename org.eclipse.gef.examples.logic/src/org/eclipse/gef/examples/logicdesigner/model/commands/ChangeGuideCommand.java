@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,6 +43,7 @@ public class ChangeGuideCommand extends Command {
 		}
 	}
 
+	@Override
 	public void execute() {
 		// Cache the old values
 		oldGuide = horizontal ? part.getHorizontalGuide() : part.getVerticalGuide();
@@ -52,6 +53,7 @@ public class ChangeGuideCommand extends Command {
 		redo();
 	}
 
+	@Override
 	public void redo() {
 		changeGuide(oldGuide, newGuide, newAlign);
 	}
@@ -61,6 +63,7 @@ public class ChangeGuideCommand extends Command {
 		newAlign = alignment;
 	}
 
+	@Override
 	public void undo() {
 		changeGuide(newGuide, oldGuide, oldAlign);
 	}

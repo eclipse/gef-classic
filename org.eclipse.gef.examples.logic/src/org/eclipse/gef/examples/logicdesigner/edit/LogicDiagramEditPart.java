@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -60,8 +60,10 @@ import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
  */
 public class LogicDiagramEditPart extends LogicContainerEditPart implements LayerConstants {
 
+	@Override
 	protected AccessibleEditPart createAccessible() {
 		return new AccessibleGraphicalEditPart() {
+			@Override
 			public void getName(AccessibleEvent e) {
 				e.result = LogicMessages.LogicDiagram_LabelText;
 			}
@@ -71,6 +73,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 	/**
 	 * Installs EditPolicies specific to this.
 	 */
+	@Override
 	protected void createEditPolicies() {
 		super.createEditPolicies();
 
@@ -89,6 +92,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 	 * 
 	 * @return Figure.
 	 */
+	@Override
 	protected IFigure createFigure() {
 		Figure f = new FreeformLayer();
 		// f.setBorder(new GroupBoxBorder("Diagram"));
@@ -103,7 +107,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 	@Override
 	public <T> T getAdapter(final Class<T> adapter) {
 		if (adapter == SnapToHelper.class) {
-			List snapStrategies = new ArrayList();
+			List<SnapToHelper> snapStrategies = new ArrayList<>();
 			Boolean val = (Boolean) getViewer().getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY);
 			if (val != null && val.booleanValue())
 				snapStrategies.add(new SnapToGuides(this));
@@ -114,19 +118,17 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 			if (val != null && val.booleanValue())
 				snapStrategies.add(new SnapToGrid(this));
 
-			if (snapStrategies.size() == 0)
+			if (snapStrategies.isEmpty())
 				return null;
 			if (snapStrategies.size() == 1)
 				return adapter.cast(snapStrategies.get(0));
 
-			SnapToHelper ss[] = new SnapToHelper[snapStrategies.size()];
-			for (int i = 0; i < snapStrategies.size(); i++)
-				ss[i] = (SnapToHelper) snapStrategies.get(i);
-			return adapter.cast(new CompoundSnapToHelper(ss));
+			return adapter.cast(new CompoundSnapToHelper(snapStrategies.toArray(new SnapToHelper[0])));
 		}
 		return super.getAdapter(adapter);
 	}
 
+	@Override
 	public DragTracker getDragTracker(Request req) {
 		if (req instanceof SelectionRequest && ((SelectionRequest) req).getLastButtonPressed() == 3)
 			return new DeselectAllTracker(this);
@@ -138,6 +140,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 	 * 
 	 * @return ConnectionAnchor
 	 */
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart editPart) {
 		return null;
 	}
@@ -156,6 +159,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 	 * 
 	 * @return ConnectionAnchor
 	 */
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart editPart) {
 		return null;
 	}
@@ -169,6 +173,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 		return null;
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (LogicDiagram.ID_ROUTER.equals(evt.getPropertyName()))
 			refreshVisuals();
@@ -176,6 +181,7 @@ public class LogicDiagramEditPart extends LogicContainerEditPart implements Laye
 			super.propertyChange(evt);
 	}
 
+	@Override
 	protected void refreshVisuals() {
 		Animation.markBegin();
 		ConnectionLayer cLayer = (ConnectionLayer) getLayer(CONNECTION_LAYER);

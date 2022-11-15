@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2001, 2010 IBM Corporation and others.
+ * Copyright (c) 2001, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -88,6 +88,7 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 		return result;
 	}
 
+	@Override
 	protected Command createAddCommand(ChangeBoundsRequest request, EditPart child, Object constraint) {
 		LogicSubpart part = (LogicSubpart) child.getModel();
 		Rectangle rect = (Rectangle) constraint;
@@ -115,10 +116,12 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 	 * @see org.eclipse.gef.editpolicies.ConstrainedLayoutEditPolicy#createChangeConstraintCommand(org.eclipse.gef.EditPart,
 	 *      java.lang.Object)
 	 */
+	@Override
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
 		return null;
 	}
 
+	@Override
 	protected Command createChangeConstraintCommand(ChangeBoundsRequest request, EditPart child, Object constraint) {
 		SetConstraintCommand cmd = new SetConstraintCommand();
 		LogicSubpart part = (LogicSubpart) child.getModel();
@@ -175,6 +178,7 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 		return result;
 	}
 
+	@Override
 	protected EditPolicy createChildEditPolicy(EditPart child) {
 		LogicResizableEditPolicy editPolicy = new LogicResizableEditPolicy();
 		editPolicy.setResizeDirections(getResizeDirections(child));
@@ -201,6 +205,7 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createSizeOnDropFeedback
 	 * (org.eclipse.gef.requests.CreateRequest)
 	 */
+	@Override
 	protected IFigure createSizeOnDropFeedback(CreateRequest createRequest) {
 		IFigure figure;
 
@@ -237,6 +242,7 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 	 * @param request the Clone Request
 	 * @return A command to perform the Clone.
 	 */
+	@Override
 	protected Command getCloneCommand(ChangeBoundsRequest request) {
 		CloneCommand clone = new CloneCommand();
 
@@ -267,6 +273,7 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 		return clone;
 	}
 
+	@Override
 	protected Command getCreateCommand(CreateRequest request) {
 		CreateCommand create = new CreateCommand();
 		create.setParent((LogicDiagram) getHost().getModel());
@@ -286,6 +293,7 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getCreationFeedbackOffset
 	 * (org.eclipse.gef.requests.CreateRequest)
 	 */
+	@Override
 	protected Insets getCreationFeedbackOffset(CreateRequest request) {
 		if (request.getNewObject() instanceof LED || request.getNewObject() instanceof Circuit)
 			return new Insets(2, 0, 2, 0);
@@ -297,6 +305,7 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 	 * 
 	 * @return the feedback layer
 	 */
+	@Override
 	protected IFigure getFeedbackLayer() {
 		return getLayer(LayerConstants.SCALED_FEEDBACK_LAYER);
 	}

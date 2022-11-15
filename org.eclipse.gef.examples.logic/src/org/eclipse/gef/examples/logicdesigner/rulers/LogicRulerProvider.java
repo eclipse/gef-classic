@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.gef.rulers.RulerProvider;
 
 import org.eclipse.gef.examples.logicdesigner.model.LogicGuide;
 import org.eclipse.gef.examples.logicdesigner.model.LogicRuler;
+import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 import org.eclipse.gef.examples.logicdesigner.model.commands.CreateGuideCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.DeleteGuideCommand;
 import org.eclipse.gef.examples.logicdesigner.model.commands.MoveGuideCommand;
@@ -32,6 +33,7 @@ public class LogicRulerProvider extends RulerProvider {
 
 	private LogicRuler ruler;
 	private PropertyChangeListener rulerListener = new PropertyChangeListener() {
+		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(LogicRuler.PROPERTY_CHILDREN)) {
 				LogicGuide guide = (LogicGuide) evt.getNewValue();
@@ -51,6 +53,7 @@ public class LogicRulerProvider extends RulerProvider {
 		}
 	};
 	private PropertyChangeListener guideListener = new PropertyChangeListener() {
+		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(LogicGuide.PROPERTY_CHILDREN)) {
 				for (int i = 0; i < listeners.size(); i++) {
@@ -68,54 +71,61 @@ public class LogicRulerProvider extends RulerProvider {
 	public LogicRulerProvider(LogicRuler ruler) {
 		this.ruler = ruler;
 		this.ruler.addPropertyChangeListener(rulerListener);
-		List guides = getGuides();
-		for (int i = 0; i < guides.size(); i++) {
-			((LogicGuide) guides.get(i)).addPropertyChangeListener(guideListener);
-		}
+		getGuides().forEach(guide -> guide.addPropertyChangeListener(guideListener));
 	}
 
-	public List getAttachedModelObjects(Object guide) {
-		return new ArrayList(((LogicGuide) guide).getParts());
+	@Override
+	public List<LogicSubpart> getAttachedModelObjects(Object guide) {
+		return new ArrayList<>(((LogicGuide) guide).getParts());
 	}
 
+	@Override
 	public Command getCreateGuideCommand(int position) {
 		return new CreateGuideCommand(ruler, position);
 	}
 
+	@Override
 	public Command getDeleteGuideCommand(Object guide) {
 		return new DeleteGuideCommand((LogicGuide) guide, ruler);
 	}
 
+	@Override
 	public Command getMoveGuideCommand(Object guide, int pDelta) {
 		return new MoveGuideCommand((LogicGuide) guide, pDelta);
 	}
 
+	@Override
 	public int[] getGuidePositions() {
-		List guides = getGuides();
+		List<LogicGuide> guides = getGuides();
 		int[] result = new int[guides.size()];
 		for (int i = 0; i < guides.size(); i++) {
-			result[i] = ((LogicGuide) guides.get(i)).getPosition();
+			result[i] = guides.get(i).getPosition();
 		}
 		return result;
 	}
 
+	@Override
 	public Object getRuler() {
 		return ruler;
 	}
 
+	@Override
 	public int getUnit() {
 		return ruler.getUnit();
 	}
 
+	@Override
 	public void setUnit(int newUnit) {
 		ruler.setUnit(newUnit);
 	}
 
+	@Override
 	public int getGuidePosition(Object guide) {
 		return ((LogicGuide) guide).getPosition();
 	}
 
-	public List getGuides() {
+	@Override
+	public List<LogicGuide> getGuides() {
 		return ruler.getGuides();
 	}
 

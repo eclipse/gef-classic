@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.eclipse.swt.accessibility.AccessibleControlEvent;
 import org.eclipse.swt.accessibility.AccessibleEvent;
@@ -42,22 +41,23 @@ public class LEDEditPart extends LogicEditPart {
 	private static Image LED_SEL_SECD_BG;
 
 	private static Image createImage(String name) {
-		InputStream stream = LEDFigure.class.getResourceAsStream(name);
-		Image image = new Image(null, stream);
-		try {
-			stream.close();
+		try (InputStream stream = LEDFigure.class.getResourceAsStream(name)) {
+			return new Image(null, stream);
 		} catch (IOException ioe) {
 		}
-		return image;
+		return null;
 	}
 
+	@Override
 	protected AccessibleEditPart createAccessible() {
 		return new AccessibleGraphicalEditPart() {
 
+			@Override
 			public void getName(AccessibleEvent e) {
 				e.result = LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label;
 			}
 
+			@Override
 			public void getValue(AccessibleControlEvent e) {
 				e.result = Integer.toString(getLEDModel().getValue());
 			}
@@ -65,6 +65,7 @@ public class LEDEditPart extends LogicEditPart {
 		};
 	}
 
+	@Override
 	protected void createEditPolicies() {
 		super.createEditPolicies();
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LEDEditPolicy());
@@ -75,6 +76,7 @@ public class LEDEditPart extends LogicEditPart {
 	 * 
 	 * @return Figure of this.
 	 */
+	@Override
 	protected IFigure createFigure() {
 		return FigureFactory.createNewLED();
 	}
@@ -83,23 +85,19 @@ public class LEDEditPart extends LogicEditPart {
 	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleAnchorProvider.class)
 			return key.cast(new DefaultAccessibleAnchorProvider() {
+				@Override
 				public List<Point> getSourceAnchorLocations() {
 					List<Point> list = new ArrayList<>();
-					Vector sourceAnchors = getNodeFigure().getSourceConnectionAnchors();
-					for (int i = 0; i < sourceAnchors.size(); i++) {
-						ConnectionAnchor anchor = (ConnectionAnchor) sourceAnchors.get(i);
-						list.add(anchor.getReferencePoint().getTranslated(0, -3));
-					}
+					List<ConnectionAnchor> sourceAnchors = getNodeFigure().getSourceConnectionAnchors();
+					sourceAnchors.forEach(anchor -> list.add(anchor.getReferencePoint().getTranslated(0, -3)));
 					return list;
 				}
 
+				@Override
 				public List<Point> getTargetAnchorLocations() {
 					List<Point> list = new ArrayList<>();
-					Vector targetAnchors = getNodeFigure().getTargetConnectionAnchors();
-					for (int i = 0; i < targetAnchors.size(); i++) {
-						ConnectionAnchor anchor = (ConnectionAnchor) targetAnchors.get(i);
-						list.add(anchor.getReferencePoint().getTranslated(0, 3));
-					}
+					List<ConnectionAnchor> targetAnchors = getNodeFigure().getTargetConnectionAnchors();
+					targetAnchors.forEach(anchor -> list.add(anchor.getReferencePoint().getTranslated(0, 3)));
 					return list;
 				}
 			});
@@ -138,6 +136,7 @@ public class LEDEditPart extends LogicEditPart {
 		return (LED) getModel();
 	}
 
+	@Override
 	public void propertyChange(java.beans.PropertyChangeEvent change) {
 		if (change.getPropertyName().equals(LED.P_VALUE))
 			refreshVisuals();
@@ -149,11 +148,13 @@ public class LEDEditPart extends LogicEditPart {
 	 * Apart from the usual visual update, it also updates the numeric contents of
 	 * the LED.
 	 */
+	@Override
 	public void refreshVisuals() {
 		getLEDFigure().setValue(getLEDModel().getValue());
 		super.refreshVisuals();
 	}
 
+	@Override
 	public void setSelected(int i) {
 		super.setSelected(i);
 		refreshVisuals();

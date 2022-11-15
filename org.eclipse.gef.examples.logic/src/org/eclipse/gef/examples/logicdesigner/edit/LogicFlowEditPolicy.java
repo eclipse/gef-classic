@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayout
 	 * @param request the Clone Request
 	 * @return A command to perform the Clone.
 	 */
+	@Override
 	protected Command getCloneCommand(ChangeBoundsRequest request) {
 		CloneCommand clone = new CloneCommand();
 		clone.setParent((LogicDiagram) getHost().getModel());
@@ -56,6 +57,7 @@ public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayout
 		return clone;
 	}
 
+	@Override
 	protected Command createAddCommand(EditPart child, EditPart after) {
 		AddCommand command = new AddCommand();
 		command.setChild((LogicSubpart) child.getModel());
@@ -68,12 +70,14 @@ public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayout
 	/**
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(org.eclipse.gef.EditPart)
 	 */
+	@Override
 	protected EditPolicy createChildEditPolicy(EditPart child) {
 		LogicResizableEditPolicy policy = new LogicResizableEditPolicy();
 		policy.setResizeDirections(0);
 		return policy;
 	}
 
+	@Override
 	protected Command createMoveChildCommand(EditPart child, EditPart after) {
 		LogicSubpart childModel = (LogicSubpart) child.getModel();
 		LogicDiagram parentModel = (LogicDiagram) getHost().getModel();
@@ -81,10 +85,10 @@ public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayout
 		int newIndex = getHost().getChildren().indexOf(after);
 		if (newIndex > oldIndex)
 			newIndex--;
-		ReorderPartCommand command = new ReorderPartCommand(childModel, parentModel, newIndex);
-		return command;
+		return new ReorderPartCommand(childModel, parentModel, newIndex);
 	}
 
+	@Override
 	protected Command getCreateCommand(CreateRequest request) {
 		CreateCommand command = new CreateCommand();
 		EditPart after = getInsertionReference(request);

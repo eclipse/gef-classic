@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 public class LogicTreeEditPolicy extends AbstractEditPolicy {
 
+	@Override
 	public Command getCommand(Request req) {
 		if (REQ_MOVE.equals(req.getType()))
 			return getMoveCommand((ChangeBoundsRequest) req);

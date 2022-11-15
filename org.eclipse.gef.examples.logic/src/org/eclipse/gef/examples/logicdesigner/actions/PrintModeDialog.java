@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,22 +27,28 @@ import org.eclipse.gef.examples.logicdesigner.LogicMessages;
  */
 public class PrintModeDialog extends Dialog {
 
-	private Button tile, fitPage, fitWidth, fitHeight;
+	private Button tile;
+	private Button fitPage;
+	private Button fitWidth;
+	private Button fitHeight;
 
 	public PrintModeDialog(Shell shell) {
 		super(shell);
 	}
 
+	@Override
 	protected void cancelPressed() {
 		setReturnCode(-1);
 		close();
 	}
 
+	@Override
 	protected void configureShell(Shell newShell) {
 		newShell.setText(LogicMessages.PrintDialog_Title);
 		super.configureShell(newShell);
 	}
 
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
 
@@ -62,6 +68,7 @@ public class PrintModeDialog extends Dialog {
 		return composite;
 	}
 
+	@Override
 	protected void okPressed() {
 		int returnCode = -1;
 		if (tile.getSelection())

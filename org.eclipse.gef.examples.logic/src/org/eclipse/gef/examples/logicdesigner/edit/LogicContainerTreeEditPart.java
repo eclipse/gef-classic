@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.editpolicies.RootComponentEditPolicy;
 
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicElement;
 
 /**
  * Tree EditPart for the Container.
@@ -33,12 +34,12 @@ public class LogicContainerTreeEditPart extends LogicTreeEditPart {
 	/**
 	 * Creates and installs pertinent EditPolicies.
 	 */
+	@Override
 	protected void createEditPolicies() {
 		super.createEditPolicies();
 		installEditPolicy(EditPolicy.CONTAINER_ROLE, new LogicContainerEditPolicy());
 		installEditPolicy(EditPolicy.TREE_CONTAINER_ROLE, new LogicTreeContainerEditPolicy());
-		// If this editpart is the contents of the viewer, then it is not
-		// deletable!
+		// If this editpart is the contents of the viewer, then it is not deletable!
 		if (getParent() instanceof RootEditPart)
 			installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
 	}
@@ -58,7 +59,8 @@ public class LogicContainerTreeEditPart extends LogicTreeEditPart {
 	 * 
 	 * @return List of children.
 	 */
-	protected List getModelChildren() {
+	@Override
+	protected List<LogicElement> getModelChildren() {
 		return getLogicDiagram().getChildren();
 	}
 

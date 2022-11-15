@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
-import java.util.Iterator;
-
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.commands.Command;
@@ -34,11 +32,10 @@ public class MoveGuideCommand extends Command {
 		pDelta = positionDelta;
 	}
 
+	@Override
 	public void execute() {
 		guide.setPosition(guide.getPosition() + pDelta);
-		Iterator iter = guide.getParts().iterator();
-		while (iter.hasNext()) {
-			LogicSubpart part = (LogicSubpart) iter.next();
+		for (LogicSubpart part : guide.getParts()) {
 			Point location = part.getLocation().getCopy();
 			if (guide.isHorizontal()) {
 				location.y += pDelta;
@@ -49,11 +46,10 @@ public class MoveGuideCommand extends Command {
 		}
 	}
 
+	@Override
 	public void undo() {
 		guide.setPosition(guide.getPosition() - pDelta);
-		Iterator iter = guide.getParts().iterator();
-		while (iter.hasNext()) {
-			LogicSubpart part = (LogicSubpart) iter.next();
+		for (LogicSubpart part : guide.getParts()) {
 			Point location = part.getLocation().getCopy();
 			if (guide.isHorizontal()) {
 				location.y -= pDelta;

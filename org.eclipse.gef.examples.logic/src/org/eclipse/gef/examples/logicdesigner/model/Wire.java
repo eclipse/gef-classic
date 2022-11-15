@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,17 +12,18 @@ package org.eclipse.gef.examples.logicdesigner.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.eclipse.draw2d.Bendpoint;
 
 public class Wire extends LogicElement {
 
 	static final long serialVersionUID = 1;
-	protected boolean value;
-	protected LogicSubpart source, target;
-	protected String sourceTerminal, targetTerminal;
-	protected List bendpoints = new ArrayList();
+	private boolean value;
+	private LogicSubpart source;
+	private LogicSubpart target;
+	private String sourceTerminal;
+	private String targetTerminal;
+	private List<Bendpoint> bendpoints = new ArrayList<>();
 
 	public void attachSource() {
 		if (getSource() == null || getSource().getSourceConnections().contains(this))
@@ -48,7 +49,7 @@ public class Wire extends LogicElement {
 		getTarget().disconnectInput(this);
 	}
 
-	public List getBendpoints() {
+	public List<Bendpoint> getBendpoints() {
 		return bendpoints;
 	}
 
@@ -87,7 +88,7 @@ public class Wire extends LogicElement {
 		firePropertyChange("bendpoint", null, null);//$NON-NLS-1$
 	}
 
-	public void setBendpoints(Vector points) {
+	public void setBendpoints(List<Bendpoint> points) {
 		bendpoints = points;
 		firePropertyChange("bendpoint", null, null);//$NON-NLS-1$
 	}
@@ -125,6 +126,7 @@ public class Wire extends LogicElement {
 		firePropertyChange("value", null, null);//$NON-NLS-1$
 	}
 
+	@Override
 	public String toString() {
 		return "Wire(" + getSource() + "," + getSourceTerminal() + "->" + getTarget() + "," + getTargetTerminal() + ")";//$NON-NLS-5$//$NON-NLS-4$//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 	}

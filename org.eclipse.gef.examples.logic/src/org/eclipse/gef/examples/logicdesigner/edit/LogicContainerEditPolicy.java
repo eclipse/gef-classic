@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,10 +26,12 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.OrphanChildCommand;
 
 public class LogicContainerEditPolicy extends ContainerEditPolicy {
 
+	@Override
 	protected Command getCreateCommand(CreateRequest request) {
 		return null;
 	}
 
+	@Override
 	public Command getOrphanChildrenCommand(GroupRequest request) {
 		List parts = request.getEditParts();
 		CompoundCommand result = new CompoundCommand(LogicMessages.LogicContainerEditPolicy_OrphanCommandLabelText);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,7 @@ import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 
 import org.eclipse.gef.examples.logicdesigner.model.LED;
-import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicElement;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 
 /**
@@ -41,6 +41,7 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 		super(model);
 	}
 
+	@Override
 	public void activate() {
 		super.activate();
 		getLogicSubpart().addPropertyChangeListener(this);
@@ -49,6 +50,7 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 	/**
 	 * Creates and installs pertinent EditPolicies for this.
 	 */
+	@Override
 	protected void createEditPolicies() {
 		EditPolicy component;
 		if (getModel() instanceof LED)
@@ -59,6 +61,7 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 		installEditPolicy(EditPolicy.PRIMARY_DRAG_ROLE, new LogicTreeEditPolicy());
 	}
 
+	@Override
 	public void deactivate() {
 		getLogicSubpart().removePropertyChangeListener(this);
 		super.deactivate();
@@ -78,12 +81,14 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 	 * 
 	 * @return <code>null</code>
 	 */
+	@Override
 	protected List getModelChildren() {
 		return Collections.EMPTY_LIST;
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent change) {
-		if (change.getPropertyName().equals(LogicDiagram.CHILDREN)) {
+		if (change.getPropertyName().equals(LogicElement.CHILDREN)) {
 			if (change.getOldValue() instanceof Integer)
 				// new child
 				addChild(createChild(change.getNewValue()), ((Integer) change.getOldValue()).intValue());
@@ -97,6 +102,7 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 	/**
 	 * Refreshes the visual properties of the TreeItem for this part.
 	 */
+	@Override
 	protected void refreshVisuals() {
 		if (getWidget() instanceof Tree)
 			return;

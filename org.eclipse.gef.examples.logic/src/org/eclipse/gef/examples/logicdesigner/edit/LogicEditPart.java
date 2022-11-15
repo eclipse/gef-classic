@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,17 +29,19 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.requests.DropRequest;
 
 import org.eclipse.gef.examples.logicdesigner.figures.NodeFigure;
+import org.eclipse.gef.examples.logicdesigner.model.LogicElement;
 import org.eclipse.gef.examples.logicdesigner.model.LogicSubpart;
 import org.eclipse.gef.examples.logicdesigner.model.Wire;
 
 /**
  * Provides support for
  */
-abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGraphicalEditPart
+public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGraphicalEditPart
 		implements NodeEditPart, PropertyChangeListener {
 
 	private AccessibleEditPart acc;
 
+	@Override
 	public void activate() {
 		if (isActive())
 			return;
@@ -47,17 +49,19 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 		getLogicSubpart().addPropertyChangeListener(this);
 	}
 
+	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new LogicElementEditPolicy());
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new LogicNodeEditPolicy());
 	}
 
-	abstract protected AccessibleEditPart createAccessible();
+	protected abstract AccessibleEditPart createAccessible();
 
 	/**
 	 * Makes the EditPart insensible to changes in the model by removing itself from
 	 * the model's list of listeners.
 	 */
+	@Override
 	public void deactivate() {
 		if (!isActive())
 			return;
@@ -65,6 +69,7 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 		getLogicSubpart().removePropertyChangeListener(this);
 	}
 
+	@Override
 	protected AccessibleEditPart getAccessibleEditPart() {
 		if (acc == null)
 			acc = createAccessible();
@@ -85,7 +90,8 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	 * 
 	 * @return List of connections.
 	 */
-	protected List getModelSourceConnections() {
+	@Override
+	protected List<Wire> getModelSourceConnections() {
 		return getLogicSubpart().getSourceConnections();
 	}
 
@@ -94,7 +100,8 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	 * 
 	 * @return List of connections.
 	 */
-	protected List getModelTargetConnections() {
+	@Override
+	protected List<Wire> getModelTargetConnections() {
 		return getLogicSubpart().getTargetConnections();
 	}
 
@@ -112,6 +119,7 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	 * 
 	 * @return ConnectionAnchor.
 	 */
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connEditPart) {
 		Wire wire = (Wire) connEditPart.getModel();
 		return getNodeFigure().getConnectionAnchor(wire.getSourceTerminal());
@@ -123,6 +131,7 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	 * 
 	 * @return ConnectionAnchor.
 	 */
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
 		Point pt = new Point(((DropRequest) request).getLocation());
 		return getNodeFigure().getSourceConnectionAnchorAt(pt);
@@ -133,6 +142,7 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	 * 
 	 * @return ConnectionAnchor.
 	 */
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connEditPart) {
 		Wire wire = (Wire) connEditPart.getModel();
 		return getNodeFigure().getConnectionAnchor(wire.getTargetTerminal());
@@ -144,6 +154,7 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	 * 
 	 * @return ConnectionAnchor.
 	 */
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		Point pt = new Point(((DropRequest) request).getLocation());
 		return getNodeFigure().getTargetConnectionAnchorAt(pt);
@@ -154,7 +165,7 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	 * 
 	 * @return The name of the ConnectionAnchor as a String.
 	 */
-	final protected String mapConnectionAnchorToTerminal(ConnectionAnchor c) {
+	protected final String mapConnectionAnchorToTerminal(ConnectionAnchor c) {
 		return getNodeFigure().getConnectionAnchorName(c);
 	}
 
@@ -165,18 +176,19 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	 * 
 	 * @param evt Event which details the property change.
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
-		if (LogicSubpart.CHILDREN.equals(prop)) {
+		if (LogicElement.CHILDREN.equals(prop)) {
 			if (evt.getOldValue() instanceof Integer)
 				// new child
 				addChild(createChild(evt.getNewValue()), ((Integer) evt.getOldValue()).intValue());
 			else
 				// remove child
 				removeChild((EditPart) getViewer().getEditPartRegistry().get(evt.getOldValue()));
-		} else if (LogicSubpart.INPUTS.equals(prop))
+		} else if (LogicElement.INPUTS.equals(prop))
 			refreshTargetConnections();
-		else if (LogicSubpart.OUTPUTS.equals(prop))
+		else if (LogicElement.OUTPUTS.equals(prop))
 			refreshSourceConnections();
 		else if (prop.equals(LogicSubpart.ID_SIZE) || prop.equals(LogicSubpart.ID_LOCATION))
 			refreshVisuals();
@@ -185,6 +197,7 @@ abstract public class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	/**
 	 * Updates the visual aspect of this.
 	 */
+	@Override
 	protected void refreshVisuals() {
 		Point loc = getLogicSubpart().getLocation();
 		Dimension size = getLogicSubpart().getSize();

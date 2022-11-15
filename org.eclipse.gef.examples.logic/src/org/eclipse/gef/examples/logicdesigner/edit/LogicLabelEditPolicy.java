@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,6 +19,7 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.LogicLabelCommand;
 
 public class LogicLabelEditPolicy extends LogicElementEditPolicy {
 
+	@Override
 	public Command getCommand(Request request) {
 		if (NativeDropRequest.ID.equals(request.getType()))
 			return getDropTextCommand((NativeDropRequest) request);
@@ -26,11 +27,10 @@ public class LogicLabelEditPolicy extends LogicElementEditPolicy {
 	}
 
 	protected Command getDropTextCommand(NativeDropRequest request) {
-		LogicLabelCommand command = new LogicLabelCommand((LogicLabel) getHost().getModel(),
-				(String) request.getData());
-		return command;
+		return new LogicLabelCommand((LogicLabel) getHost().getModel(), (String) request.getData());
 	}
 
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		if (NativeDropRequest.ID.equals(request.getType()))
 			return getHost();

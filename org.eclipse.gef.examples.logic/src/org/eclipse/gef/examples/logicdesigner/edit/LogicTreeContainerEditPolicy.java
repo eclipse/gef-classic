@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -48,6 +48,7 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 		return cmd;
 	}
 
+	@Override
 	protected Command getAddCommand(ChangeBoundsRequest request) {
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Add in LogicTreeContainerEditPolicy");//$NON-NLS-1$
@@ -68,12 +69,14 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 		return command;
 	}
 
+	@Override
 	protected Command getCreateCommand(CreateRequest request) {
 		LogicSubpart child = (LogicSubpart) request.getNewObject();
 		int index = findIndexOfTreeItemAt(request.getLocation());
 		return createCreateCommand(child, null, index, "Create LogicSubpart");//$NON-NLS-1$
 	}
 
+	@Override
 	protected Command getMoveChildrenCommand(ChangeBoundsRequest request) {
 		CompoundCommand command = new CompoundCommand();
 		List editparts = request.getEditParts();

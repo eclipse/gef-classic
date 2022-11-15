@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,25 +26,25 @@ public class LED extends LogicSubpart {
 
 	private static final Dimension DEFAULT_SIZE = new Dimension(61, 47);
 
-	private static Image LED_ICON = createImage(LED.class, "icons/ledicon16.gif"); //$NON-NLS-1$
+	private static final Image LED_ICON = createImage(LED.class, "icons/ledicon16.gif"); //$NON-NLS-1$
 	private static int count;
-	public static String P_VALUE = "value"; //$NON-NLS-1$
+	public static final String P_VALUE = "value"; //$NON-NLS-1$
 	protected static IPropertyDescriptor[] newDescriptors = null;
 
 	// Inputs
-	public static String TERMINAL_1_IN = "A", //$NON-NLS-1$
-			TERMINAL_2_IN = "B", //$NON-NLS-1$
-			TERMINAL_3_IN = "C", //$NON-NLS-1$
-			TERMINAL_4_IN = "D"; //$NON-NLS-1$
+	public static final String TERMINAL_1_IN = "A"; //$NON-NLS-1$
+	public static final String TERMINAL_2_IN = "B"; //$NON-NLS-1$
+	public static final String TERMINAL_3_IN = "C"; //$NON-NLS-1$
+	public static final String TERMINAL_4_IN = "D"; //$NON-NLS-1$
 	// Outputs
-	public static String TERMINAL_1_OUT = "1", //$NON-NLS-1$
-			TERMINAL_2_OUT = "2", //$NON-NLS-1$
-			TERMINAL_3_OUT = "3", //$NON-NLS-1$
-			TERMINAL_4_OUT = "4"; //$NON-NLS-1$
+	public static final String TERMINAL_1_OUT = "1"; //$NON-NLS-1$
+	public static final String TERMINAL_2_OUT = "2"; //$NON-NLS-1$
+	public static final String TERMINAL_3_OUT = "3"; //$NON-NLS-1$
+	public static final String TERMINAL_4_OUT = "4"; //$NON-NLS-1$
 
-	protected static String[] IN_TERMINALS = new String[] { TERMINAL_1_IN, TERMINAL_2_IN, TERMINAL_3_IN,
+	protected static final String[] IN_TERMINALS = new String[] { TERMINAL_1_IN, TERMINAL_2_IN, TERMINAL_3_IN,
 			TERMINAL_4_IN };
-	protected boolean bits[] = new boolean[4];
+	protected boolean[] bits = new boolean[4];
 
 	static {
 		PropertyDescriptor pValueProp = new TextPropertyDescriptor(P_VALUE, LogicMessages.PropertyDescriptor_LED_Value);
@@ -65,18 +65,22 @@ public class LED extends LogicSubpart {
 		location.y = 20;
 	}
 
+	@Override
 	public Image getIconImage() {
 		return LED_ICON;
 	}
 
+	@Override
 	public String getNewID() {
 		return Integer.toString(count++);
 	}
 
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return newDescriptors;
 	}
 
+	@Override
 	public Object getPropertyValue(Object propName) {
 		if (P_VALUE.equals(propName))
 			return Integer.toString(getValue());
@@ -86,6 +90,7 @@ public class LED extends LogicSubpart {
 		return super.getPropertyValue(propName);
 	}
 
+	@Override
 	public void resetPropertyValue(Object id) {
 		if (P_VALUE.equals(id))
 			setValue(0);
@@ -120,6 +125,7 @@ public class LED extends LogicSubpart {
 	/**
 	 * Nulls out any changes to this's size as it is fixed.
 	 */
+	@Override
 	public void setPropertyValue(Object id, Object value) {
 		if (P_VALUE.equals(id))
 			setValue(Integer.parseInt((String) value));
@@ -127,6 +133,7 @@ public class LED extends LogicSubpart {
 			super.setPropertyValue(id, value);
 	}
 
+	@Override
 	public void setSize(Dimension d) {
 		super.setSize(DEFAULT_SIZE);
 	}
@@ -149,12 +156,14 @@ public class LED extends LogicSubpart {
 		update();
 	}
 
+	@Override
 	public String toString() {
 		return LogicMessages.LED_LabelText + " #" + getID() //$NON-NLS-1$
 				+ " " + LogicMessages.PropertyDescriptor_LED_Value //$NON-NLS-1$
 				+ "=" + getValue(); //$NON-NLS-1$
 	}
 
+	@Override
 	public void update() {
 		boolean[] outputBits = new boolean[4];
 		if (!inputs.isEmpty()) {

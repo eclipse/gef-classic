@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.eclipse.swt.accessibility.AccessibleEvent;
 
@@ -35,8 +34,10 @@ import org.eclipse.gef.examples.logicdesigner.model.SimpleOutput;
  */
 public class OutputEditPart extends LogicEditPart {
 
+	@Override
 	protected AccessibleEditPart createAccessible() {
 		return new AccessibleGraphicalEditPart() {
+			@Override
 			public void getName(AccessibleEvent e) {
 				e.result = getSimpleOutput().toString();
 			}
@@ -46,6 +47,7 @@ public class OutputEditPart extends LogicEditPart {
 	/**
 	 * Returns a newly created Figure.
 	 */
+	@Override
 	protected IFigure createFigure() {
 		OutputFigure figure;
 		if (getModel() == null)
@@ -63,13 +65,11 @@ public class OutputEditPart extends LogicEditPart {
 	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleAnchorProvider.class)
 			return key.cast(new DefaultAccessibleAnchorProvider() {
+				@Override
 				public List<Point> getSourceAnchorLocations() {
 					List<Point> list = new ArrayList<>();
-					Vector sourceAnchors = getNodeFigure().getSourceConnectionAnchors();
-					for (int i = 0; i < sourceAnchors.size(); i++) {
-						ConnectionAnchor anchor = (ConnectionAnchor) sourceAnchors.get(i);
-						list.add(anchor.getReferencePoint().getTranslated(0, -3));
-					}
+					List<ConnectionAnchor> sourceAnchors = getNodeFigure().getSourceConnectionAnchors();
+					sourceAnchors.forEach(anchor -> list.add(anchor.getReferencePoint().getTranslated(0, -3)));
 					return list;
 				}
 

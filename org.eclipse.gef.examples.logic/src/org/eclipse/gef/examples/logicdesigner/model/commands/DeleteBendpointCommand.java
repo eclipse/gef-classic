@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2022 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,12 +16,14 @@ public class DeleteBendpointCommand extends BendpointCommand {
 
 	private Bendpoint bendpoint;
 
+	@Override
 	public void execute() {
 		bendpoint = (Bendpoint) getWire().getBendpoints().get(getIndex());
 		getWire().removeBendpoint(getIndex());
 		super.execute();
 	}
 
+	@Override
 	public void undo() {
 		super.undo();
 		getWire().insertBendpoint(getIndex(), bendpoint);
