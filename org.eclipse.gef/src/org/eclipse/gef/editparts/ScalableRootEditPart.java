@@ -132,10 +132,20 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	private ZoomManager zoomManager;
 
+	private boolean useScaledGraphics = true;
+
 	/**
-	 * Constructor for ScalableFreeformRootEditPart
+	 * Constructor for ScalableRootEditPart
 	 */
 	public ScalableRootEditPart() {
+		this(true);
+	}
+
+	/**
+	 * Constructor for ScalableRootEditPart
+	 */
+	public ScalableRootEditPart(boolean useScaledGraphics) {
+		this.useScaledGraphics = useScaledGraphics;
 		zoomManager = createZoomManager((ScalableLayeredPane) getScaledLayers(), ((Viewport) getFigure()));
 	}
 
@@ -219,7 +229,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * @return a new <code>ScalableLayeredPane</code> containing the scalable layers
 	 */
 	protected ScalableLayeredPane createScaledLayers() {
-		ScalableLayeredPane layers = new ScalableLayeredPane();
+		ScalableLayeredPane layers = new ScalableLayeredPane(useScaledGraphics);
 		layers.add(createGridLayer(), GRID_LAYER);
 		layers.add(getPrintableLayers(), PRINTABLE_LAYERS);
 		layers.add(new FeedbackLayer(), SCALED_FEEDBACK_LAYER);

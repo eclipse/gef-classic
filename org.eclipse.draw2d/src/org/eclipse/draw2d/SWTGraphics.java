@@ -42,6 +42,8 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class SWTGraphics extends Graphics {
 
+	private double scale = 1.0;
+
 	/**
 	 * An internal type used to represent and update the GC's clipping.
 	 * 
@@ -745,6 +747,10 @@ public class SWTGraphics extends Graphics {
 		return currentState.lineAttributes.dashOffset;
 	}
 
+	public double getScale() {
+		return scale;
+	}
+
 	/**
 	 * @see Graphics#getTextAntialias()
 	 */
@@ -943,6 +949,7 @@ public class SWTGraphics extends Graphics {
 	 */
 	public void scale(double factor) {
 		scale((float) factor, (float) factor);
+		scale = factor;
 	}
 
 	/**
