@@ -68,6 +68,10 @@ public class Thumbnail extends Figure implements UpdateListener {
 		// GC used to copy from the tile image into the thumbnail image
 		private GC thumbnailGC;
 
+		// Actual graphics used. Can be tileGCGraphics or tileGraphics depending on
+		// useScaledGraphics setting
+		private Graphics theGraphics;
+
 		/**
 		 * Stops the updater and disposes of any resources.
 		 */
@@ -164,7 +168,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 		 * required, {@link #stop()} is called.
 		 */
 		public void run() {
-			if (!isActive() || !isRunning() || tileGraphics == null)
+			if (!isActive() || !isRunning() || theGraphics == null)
 				return;
 
 			int v = getCurrentVTile();
@@ -180,10 +184,10 @@ public class Thumbnail extends Figure implements UpdateListener {
 				createTileGraphics();
 			}
 
-			tileGraphics.pushState();
+			theGraphics.pushState();
 			// clear the background (by filling with the background color)
 			Rectangle rect = new Rectangle(0, 0, sx2 - sx1, sy2 - sy1);
-			tileGraphics.fillRectangle(rect);
+			theGraphics.fillRectangle(rect);
 
 			// Let the source figure paint into the tile image.
 			// IMPORTANT (fix for bug #309912): we do not let the source figure
@@ -193,10 +197,10 @@ public class Thumbnail extends Figure implements UpdateListener {
 			// tiles that have already been rendered. By providing an own tile
 			// image and copying from it into the thumbnail image, we are safe.
 			org.eclipse.draw2d.geometry.Point p = getSourceRectangle().getLocation();
-			tileGraphics.translate(-p.x * getScaleX() - sx1, -p.y * getScaleY() - sy1);
-			tileGraphics.scale(getScaleX());
+			theGraphics.translate(-p.x * getScaleX() - sx1, -p.y * getScaleY() - sy1);
+			theGraphics.scale(getScaleX());
 			sourceFigure.paint(tileGraphics);
-			tileGraphics.popState();
+			theGraphics.popState();
 
 			// Copy the painted tile image into the thumbnail image.
 			thumbnailGC.drawImage(tileImage, 0, 0, sx2 - sx1, sy2 - sy1, sx1, sy1, sx2 - sx1, sy2 - sy1);
@@ -305,15 +309,20 @@ public class Thumbnail extends Figure implements UpdateListener {
 			if (tileGraphics != null) {
 				tileGraphics.dispose();
 			}
-			tileGraphics = new ScaledGraphics(tileGCGraphics);
+			if (useScaledGraphics) {
+				tileGraphics = new ScaledGraphics(tileGCGraphics);
+				theGraphics = tileGraphics;
+			} else {
+				theGraphics = tileGCGraphics;
+			}
 
 			Color color = sourceFigure.getForegroundColor();
 			if (color != null)
-				tileGraphics.setForegroundColor(color);
+				theGraphics.setForegroundColor(color);
 			color = sourceFigure.getBackgroundColor();
 			if (color != null)
-				tileGraphics.setBackgroundColor(color);
-			tileGraphics.setFont(sourceFigure.getFont());
+				theGraphics.setBackgroundColor(color);
+			theGraphics.setFont(sourceFigure.getFont());
 		}
 
 		private void resetThumbnailImage() {
@@ -369,6 +378,9 @@ public class Thumbnail extends Figure implements UpdateListener {
 				tileImage = null;
 				tileImageSize = null;
 			}
+
+			theGraphics = null;
+
 			// Don't dispose of the thumbnail image since it is needed to paint
 			// the figure when the source is not dirty (i.e. showing/hiding the
 			// dock).
@@ -386,6 +398,8 @@ public class Thumbnail extends Figure implements UpdateListener {
 	private Dimension thumbnailImageSize;
 	private ThumbnailUpdater updater = new ThumbnailUpdater();
 
+	private boolean useScaledGraphics = true;
+
 	/**
 	 * Creates a new Thumbnail. The source Figure must be set separately if you use
 	 * this constructor.
@@ -402,6 +416,15 @@ public class Thumbnail extends Figure implements UpdateListener {
 	public Thumbnail(IFigure fig) {
 		this();
 		setSource(fig);
+	}
+
+	/**
+	 * Set whether to use a ScaledGraphics instance for rendering
+	 * 
+	 * @param useScaledGraphics
+	 */
+	public void setUseScaledGraphics(boolean useScaledGraphics) {
+		this.useScaledGraphics = useScaledGraphics;
 	}
 
 	private Dimension adjustToAspectRatio(Dimension size, boolean adjustToMaxDimension) {
