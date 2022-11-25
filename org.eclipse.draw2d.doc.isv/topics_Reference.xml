@@ -22,5 +22,6 @@
 		<topic label="org.eclipse.draw2d.parts" href="reference/api/org/eclipse/draw2d/parts/package-summary.html" />
 		<topic label="org.eclipse.draw2d.text" href="reference/api/org/eclipse/draw2d/text/package-summary.html" />
 		<topic label="org.eclipse.draw2d.widgets" href="reference/api/org/eclipse/draw2d/widgets/package-summary.html" />
+		<topic label="org.eclipse.draw2d.zoom" href="reference/api/org/eclipse/draw2d/zoom/package-summary.html" />
 	</topic>
 </toc>

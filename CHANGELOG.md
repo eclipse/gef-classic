@@ -1,24 +1,46 @@
+# GEF Classic 3.15.0 (Eclipse 2022-12)
+
+##General
+ - Code clean-up and reduced deprecated code usage
+ - Rreduced dependencies to com.ibm.icu.text package
+
+##Draw2d
+ - Common ZoomManager code from GEF and ZEST was moved to Draw2d to reduce code duplication
+ - Introduction of ZoomScrollPolicies allowing to configure how the ZoomManager will scroll after zooming
+ - New MouseLocationZoomScrollPolicy which maintains the content under the mouse during zooming
+ - Fixed thumbnailing for Mac OS
+ - Fixed unwanted drawing artifacts that could occur during drag operations
+
+##GEF
+ - Clients can now provide their own marquee selection figure 
+ - Fixed resizing from left or top: When reaching minimum size it moved the element
+ 
+## Zest
+ - Improved scroll performance on ZEST
+ - Enable custom graph nodes and connections
+
+# GEF Classic 3.14.0 (Eclipse 2022-06)
+
+GEF-Legacy was revived as GEF Classic. This first reactivation release contains "only" the upgrade to Java 11.
+
+
+
 # [GEF 4.0.0 (Neon)](https://projects.eclipse.org/projects/tools.gef/releases/4.0.0-neon)
 
 Annual release providing minor revisions of the GEF-Legacy components Draw2d 3.x (3.11.0), GEF (MVC) 3.x (3.11.0), and Zest 1.x (1.7.0). As the new GEF4 components were graduated as production components in version 1.0.0 with this release, the GEF-Legacy components have been put into pure maintenance mode, i.e. annual service releases will be provided for critical fixes or in case patches are provided by the community.
 
-See [GEF@github.com CHANGELOG](https://github.com/eclipse/gef/blob/master/CHANGELOG.md#gef-400-neon) for details about GEF4.
 
 # [GEF 3.10.1 (Mars.1)](https://projects.eclipse.org/projects/tools.gef/releases/3.10.1-mars.1)
 
 ## General
 
-The GEF 3.10.1 (Mars SR1) release provides service revisions of the production components Draw2d 3.x (3.10.1), GEF (MVC) 3.x (3.10.1), and Zest 1.x (1.6.1), as well as minor revisions of the new GEF4 components (0.2.0).
-
-See [GEF@github.com CHANGELOG](https://github.com/eclipse/gef/blob/master/CHANGELOG.md#gef-3101-mars1) for details about GEF4.
+The GEF 3.10.1 (Mars SR1) release provides service revisions of the production components Draw2d 3.x (3.10.1), GEF (MVC) 3.x (3.10.1), and Zest 1.x (1.6.1).
 
 # [GEF 3.10.0 (Mars)](https://projects.eclipse.org/projects/tools.gef/releases/3.10.0-mars)
 
 ## General
 
-The GEF 3.10.0 (Mars) release provides minor releases for the Draw2d 3.x (3.10.0), GEF (MVC) 3.x (3.10.0), and Zest 1.x (1.6.0) components, as well as a first snapshot release (0.1.0) of the new GEF4 components, which are intended as a replacement.
-
-An overview of all GEF4 components and detailed documentation on each can be found under GEF4 reference documentation. The most significant changes in the Mars release timeframe are documented in the [GEF@github.com CHANGELOG](https://github.com/eclipse/gef/blob/master/CHANGELOG.md#gef-3100-mars).
+The GEF 3.10.0 (Mars) release provides minor releases for the Draw2d 3.x (3.10.0), GEF (MVC) 3.x (3.10.0), and Zest 1.x (1.6.0) components, as well as a first snapshot release (0.1.0).
 
 ## Draw2d 3.10.0
 

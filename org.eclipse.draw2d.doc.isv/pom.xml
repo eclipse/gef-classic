@@ -12,11 +12,8 @@
 	<artifactId>org.eclipse.draw2d.doc.isv</artifactId>
 	<version>3.11.200-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
-	<!--
 	<build>
 		<plugins>
-		
-		
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
@@ -68,6 +65,4 @@
 		
 		</plugins>
 	</build>
-			-->
-	
 </project>
