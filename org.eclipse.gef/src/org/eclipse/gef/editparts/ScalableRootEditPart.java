@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -101,7 +101,7 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  */
 public class ScalableRootEditPart extends SimpleRootEditPart implements LayerConstants, LayerManager {
 
-	class FeedbackLayer extends Layer {
+	static class FeedbackLayer extends Layer {
 		FeedbackLayer() {
 			setEnabled(false);
 		}
@@ -121,21 +121,31 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	private LayeredPane innerLayers;
 	private LayeredPane printableLayers;
 	private ScalableLayeredPane scaledLayers;
-	private PropertyChangeListener gridListener = new PropertyChangeListener() {
-		public void propertyChange(PropertyChangeEvent evt) {
-			String property = evt.getPropertyName();
-			if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN) || property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
-					|| property.equals(SnapToGrid.PROPERTY_GRID_VISIBLE))
-				refreshGridLayer();
-		}
+	private PropertyChangeListener gridListener = (PropertyChangeEvent evt) -> {
+		String property = evt.getPropertyName();
+		if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN) || property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
+				|| property.equals(SnapToGrid.PROPERTY_GRID_VISIBLE))
+			refreshGridLayer();
 	};
 
-	private ZoomManager zoomManager;
+	private final ZoomManager zoomManager;
+
+	private final boolean useScaledGraphics;
 
 	/**
-	 * Constructor for ScalableFreeformRootEditPart
+	 * Constructor for ScalableRootEditPart
 	 */
 	public ScalableRootEditPart() {
+		this(true);
+	}
+
+	/**
+	 * Constructor which allows to configure if scaled graphics should be used.
+	 * 
+	 * @since 3.14
+	 */
+	public ScalableRootEditPart(boolean useScaledGraphics) {
+		this.useScaledGraphics = useScaledGraphics;
 		zoomManager = createZoomManager((ScalableLayeredPane) getScaledLayers(), ((Viewport) getFigure()));
 	}
 
@@ -147,6 +157,8 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 *         and {@link Viewport}.
 	 * @since 3.10
 	 */
+	@SuppressWarnings("static-method") // allow children to provide their own zoom manager implementation or
+										// configuration
 	protected ZoomManager createZoomManager(ScalableFigure scalableFigure, Viewport viewport) {
 		return new ZoomManager(scalableFigure, viewport);
 	}
@@ -154,6 +166,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		Viewport viewport = createViewport();
 
@@ -173,6 +186,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * 
 	 * @return the newly created GridLayer
 	 */
+	@SuppressWarnings("static-method") // alow children to provide their own gridlayer implementation or configuration
 	protected GridLayer createGridLayer() {
 		return new GridLayer();
 	}
@@ -185,6 +199,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	protected void createLayers(LayeredPane layeredPane) {
 		layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);
 		layeredPane.add(new Layer() {
+			@Override
 			public Dimension getPreferredSize(int wHint, int hHint) {
 				return new Dimension();
 			}
@@ -199,6 +214,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * @see org.eclipse.gef.print.PrintGraphicalViewerOperation
 	 * @return a new LayeredPane containing the printable layers
 	 */
+	@SuppressWarnings("static-method") // allow children to override
 	protected LayeredPane createPrintableLayers() {
 		LayeredPane pane = new LayeredPane();
 
@@ -219,7 +235,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * @return a new <code>ScalableLayeredPane</code> containing the scalable layers
 	 */
 	protected ScalableLayeredPane createScaledLayers() {
-		ScalableLayeredPane layers = new ScalableLayeredPane();
+		ScalableLayeredPane layers = new ScalableLayeredPane(useScaledGraphics);
 		layers.add(createGridLayer(), GRID_LAYER);
 		layers.add(getPrintableLayers(), PRINTABLE_LAYERS);
 		layers.add(new FeedbackLayer(), SCALED_FEEDBACK_LAYER);
@@ -231,6 +247,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * 
 	 * @return a new Viewport
 	 */
+	@SuppressWarnings("static-method") // allow chidren to override
 	protected Viewport createViewport() {
 		return new Viewport(true);
 	}
@@ -250,6 +267,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * 
 	 * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
 	 */
+	@Override
 	public IFigure getContentPane() {
 		return getLayer(PRIMARY_LAYER);
 	}
@@ -259,6 +277,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * 
 	 * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
 	 */
+	@Override
 	public DragTracker getDragTracker(Request req) {
 		/*
 		 * The root will only be asked for a drag tracker if for some reason the
@@ -272,6 +291,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * 
 	 * @see LayerManager#getLayer(Object)
 	 */
+	@Override
 	public IFigure getLayer(Object key) {
 		if (innerLayers == null)
 			return null;
@@ -290,6 +310,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * 
 	 * @see org.eclipse.gef.EditPart#getModel()
 	 */
+	@Override
 	public Object getModel() {
 		return LayerManager.ID;
 	}
@@ -350,6 +371,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#register()
 	 */
+	@Override
 	protected void register() {
 		super.register();
 		getViewer().setProperty(ZoomManager.class.toString(), getZoomManager());
@@ -362,6 +384,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
 	 */
+	@Override
 	protected void unregister() {
 		getViewer().removePropertyChangeListener(gridListener);
 		super.unregister();
