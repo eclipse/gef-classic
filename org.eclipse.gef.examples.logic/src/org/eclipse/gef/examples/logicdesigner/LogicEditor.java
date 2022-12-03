@@ -441,7 +441,7 @@ public class LogicEditor extends GraphicalEditorWithFlyoutPalette {
 		super.configureGraphicalViewer();
 		ScrollingGraphicalViewer viewer = (ScrollingGraphicalViewer) getGraphicalViewer();
 
-		ScalableFreeformRootEditPart rootEP = new ScalableFreeformRootEditPart();
+		ScalableFreeformRootEditPart rootEP = new ScalableFreeformRootEditPart(true);
 
 		// set clipping strategy for connection layer
 		ConnectionLayer connectionLayer = (ConnectionLayer) rootEP.getLayer(LayerConstants.CONNECTION_LAYER);

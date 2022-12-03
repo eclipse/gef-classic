@@ -11,13 +11,12 @@
 package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.draw2d.geometry.Translatable;
 
 /**
  * @author hudsonr
  * @since 2.1
  */
-public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements ScalableFigure {
+public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements IScalablePane {
 
 	private double scale = 1.0;
 
@@ -33,13 +32,9 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 	/**
 	 * @see org.eclipse.draw2d.Figure#getClientArea()
 	 */
+	@Override
 	public Rectangle getClientArea(Rectangle rect) {
-		super.getClientArea(rect);
-		rect.width /= scale;
-		rect.height /= scale;
-		rect.x /= scale;
-		rect.y /= scale;
-		return rect;
+		return getScaledRect(super.getClientArea(rect));
 	}
 
 	/**
@@ -47,47 +42,25 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 	 * 
 	 * @return the scale
 	 */
+	@Override
 	public double getScale() {
 		return scale;
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.IFigure#isCoordinateSystem()
-	 */
-	public boolean isCoordinateSystem() {
-		return true;
-	}
-
-	/**
 	 * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
 	 */
-	protected void paintClientArea(Graphics graphics) {
+	@Override
+	protected void paintClientArea(final Graphics graphics) {
 		if (getChildren().isEmpty())
 			return;
-		if (scale == 1.0) {
-			super.paintClientArea(graphics);
-		} else {
-			boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
 
-			if (useScaledGraphics) {
-				ScaledGraphics g = new ScaledGraphics(graphics);
-				if (!optimizeClip)
-					g.clipRect(getBounds().getShrinked(getInsets()));
-				g.scale(scale);
-				g.pushState();
-				paintChildren(g);
-				g.dispose();
-			} else {
-				if (!optimizeClip)
-					graphics.clipRect(getBounds().getShrinked(getInsets()));
-				graphics.scale(scale);
-				graphics.pushState();
-				paintChildren(graphics);
-				graphics.popState();
-			}
-
-			graphics.restoreState();
+		Graphics graphicsToUse = getScaledGraphics(graphics);
+		super.paintClientArea(graphicsToUse);
+		if (graphicsToUse != graphics) {
+			graphicsToUse.dispose();
 		}
+		graphics.restoreState();
 	}
 
 	/**
@@ -95,6 +68,7 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 	 * 
 	 * @param newZoom The new zoom level
 	 */
+	@Override
 	public void setScale(double newZoom) {
 		if (scale == newZoom)
 			return;
@@ -104,25 +78,9 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 		repaint();
 	}
 
-	/**
-	 * @see org.eclipse.draw2d.Figure#translateToParent(Translatable)
-	 */
-	public void translateToParent(Translatable t) {
-		t.performScale(scale);
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.Figure#translateFromParent(Translatable)
-	 */
-	public void translateFromParent(Translatable t) {
-		t.performScale(1 / scale);
-	}
-
-	/**
-	 * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
-	 */
-	protected final boolean useLocalCoordinates() {
-		return false;
+	@Override
+	public boolean useScaledGraphics() {
+		return useScaledGraphics;
 	}
 
 }
