@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -81,12 +81,24 @@ import org.eclipse.draw2d.Viewport;
 public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart {
 
 	private ScalableFreeformLayeredPane scaledLayers;
-	private ZoomManager zoomManager;
+	private final ZoomManager zoomManager;
+
+	private final boolean useScaledGraphics;
 
 	/**
 	 * Constructor for ScalableFreeformRootEditPart
 	 */
 	public ScalableFreeformRootEditPart() {
+		this(true);
+	}
+
+	/**
+	 * Constructor which allows to configure if scaled graphics should be used.
+	 * 
+	 * @since 3.14
+	 */
+	public ScalableFreeformRootEditPart(boolean useScaledGraphics) {
+		this.useScaledGraphics = useScaledGraphics;
 		zoomManager = createZoomManager((ScalableFigure) getScaledLayers(), ((Viewport) getFigure()));
 	}
 
@@ -98,6 +110,8 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 	 *         and {@link Viewport}.
 	 * @since 3.10
 	 */
+	@SuppressWarnings("static-method") // allow children to provide their own zoom manager implementation or
+										// configuration
 	protected ZoomManager createZoomManager(ScalableFigure scalableFigure, Viewport viewport) {
 		return new ZoomManager(scalableFigure, viewport);
 	}
@@ -105,6 +119,7 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 	/**
 	 * @see FreeformGraphicalRootEditPart#createLayers(LayeredPane)
 	 */
+	@Override
 	protected void createLayers(LayeredPane layeredPane) {
 		layeredPane.add(getScaledLayers(), SCALABLE_LAYERS);
 		layeredPane.add(new FreeformLayer(), HANDLE_LAYER);
@@ -118,7 +133,7 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 	 * @return a new freeform layered pane containing the scalable layers
 	 */
 	protected ScalableFreeformLayeredPane createScaledLayers() {
-		ScalableFreeformLayeredPane layers = new ScalableFreeformLayeredPane();
+		ScalableFreeformLayeredPane layers = new ScalableFreeformLayeredPane(useScaledGraphics);
 		layers.add(createGridLayer(), GRID_LAYER);
 		layers.add(getPrintableLayers(), PRINTABLE_LAYERS);
 		layers.add(new FeedbackLayer(), SCALED_FEEDBACK_LAYER);
@@ -128,6 +143,7 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 	/**
 	 * @see FreeformGraphicalRootEditPart#getLayer(Object)
 	 */
+	@Override
 	public IFigure getLayer(Object key) {
 		IFigure layer = scaledLayers.getLayer(key);
 		if (layer != null)
@@ -158,6 +174,7 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#register()
 	 */
+	@Override
 	protected void register() {
 		super.register();
 		getViewer().setProperty(ZoomManager.class.toString(), getZoomManager());
@@ -166,6 +183,7 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
 	 */
+	@Override
 	protected void unregister() {
 		super.unregister();
 		getViewer().setProperty(ZoomManager.class.toString(), null);
