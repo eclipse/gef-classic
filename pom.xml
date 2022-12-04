@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.eclipse.gef</groupId>
 	<artifactId>org.eclipse.gef.releng</artifactId>
-	<version>3.15.0-SNAPSHOT</version>
+	<version>3.16.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<!-- this is the parent POM from which all modules inherit common settings -->
@@ -18,7 +18,7 @@
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-classic.git</tycho.scmUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<comparator.repo>https://download.eclipse.org/tools/gef/classic/releases/3.14.0</comparator.repo>
+		<comparator.repo>https://download.eclipse.org/tools/gef/classic/releases/3.15.0</comparator.repo>
 	</properties>
 
 	<build>
@@ -223,7 +223,7 @@
 							<includePackedArtifacts>false</includePackedArtifacts>
 							<!-- add target file content to target platform -->
 						    <target>
-								<file>../target-platform/2022-09.target</file>
+								<file>../target-platform/2022-12.target</file>
 							  </target>
 							<environments>
 								<environment>
@@ -260,7 +260,7 @@
 						<includePackedArtifacts>false</includePackedArtifacts>
 						<!-- add target file content to target platform -->
 						<target>
-							<file>../target-platform/2022-09.target</file>
+							<file>../target-platform/2022-12.target</file>
 						  </target>
 						<environments>
 							<environment>
