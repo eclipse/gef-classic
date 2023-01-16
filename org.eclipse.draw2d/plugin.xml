@@ -14,6 +14,15 @@
  -->
 
 <plugin>
+	<extension
+			point="org.eclipse.e4.ui.css.swt.theme">
+		<stylesheet
+				uri="css/gef_dark.css">
+			<themeid
+					refid="org.eclipse.e4.ui.css.theme.e4_dark">
+			</themeid>
+		</stylesheet>
+	</extension>
 	<extension point="org.eclipse.ui.themes">
 
 		<themeElementCategory label="%themeElementCategory.org.eclipse.draw2d.label" id="org.eclipse.draw2d">
@@ -156,14 +165,14 @@
 				label="%colorDefinition.org.eclipse.draw2d.color.list.hover.background.label"
 				categoryId="org.eclipse.draw2d"
 				id="org.eclipse.draw2d.color.list.hover.background"
-				value="COLOR_WIDGET_NORMAL_SHADOW">
+				value="252, 228, 179">
 			<description>%colorDefinition.org.eclipse.draw2d.color.list.hover.background.description</description>
 		</colorDefinition>
 		<colorDefinition
 				label="%colorDefinition.org.eclipse.draw2d.color.list.selected.background.label"
 				categoryId="org.eclipse.draw2d"
 				id="org.eclipse.draw2d.color.list.selected.background"
-				value="COLOR_WIDGET_DARK_SHADOW">
+				value="207, 227, 250">
 			<description>%colorDefinition.org.eclipse.draw2d.color.list.selected.background.description</description>
 		</colorDefinition>
 
