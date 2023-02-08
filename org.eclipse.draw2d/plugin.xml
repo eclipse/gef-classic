@@ -40,7 +40,7 @@
 				categoryId="org.eclipse.draw2d"
 				id="org.eclipse.draw2d.color.button"
 				value="COLOR_WIDGET_BACKGROUND">
-			<description>%colorDefinition.org.eclipse.draw2d.color.button.foreground.description</description>
+			<description>%colorDefinition.org.eclipse.draw2d.color.button.description</description>
 		</colorDefinition>
 		<colorDefinition
 				label="%colorDefinition.org.eclipse.draw2d.color.button.darker.label"
@@ -60,7 +60,7 @@
 				label="%colorDefinition.org.eclipse.draw2d.color.list.background.label"
 				categoryId="org.eclipse.draw2d"
 				id="org.eclipse.draw2d.color.list.background"
-				value="COLOR_WIDGET_BACKGROUND">
+				value="COLOR_LIST_BACKGROUND">
 			<description>%colorDefinition.org.eclipse.draw2d.color.list.background.description</description>
 		</colorDefinition>
 		<colorDefinition
