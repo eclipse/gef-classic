@@ -114,12 +114,12 @@ public class ColorProviderDefault implements ColorProvider {
 
 	@Override
 	public Color getTooltipForeground() {
-		return themeManager.getCurrentTheme().getColorRegistry().get(ThemeConstants.CONFIG_COLOR_TOOLTIP_BACKGROUND);
+		return themeManager.getCurrentTheme().getColorRegistry().get(ThemeConstants.CONFIG_COLOR_TOOLTIP_FOREGROUND);
 	}
 
 	@Override
 	public Color getTooltipBackground() {
-		return themeManager.getCurrentTheme().getColorRegistry().get(ThemeConstants.CONFIG_COLOR_TOOLTIP_FOREGROUND);
+		return themeManager.getCurrentTheme().getColorRegistry().get(ThemeConstants.CONFIG_COLOR_TOOLTIP_BACKGROUND);
 	}
 
 	@Override
