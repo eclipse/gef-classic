@@ -103,7 +103,7 @@
 				categoryId="org.eclipse.draw2d"
 				id="org.eclipse.draw2d.color.menu.foreground.selected"
 				value="COLOR_LIST_SELECTION_TEXT">
-			<description>%colorDefinition.org.eclipse.draw2d.color.menu.foreground.selected.foreground.description</description>
+			<description>%colorDefinition.org.eclipse.draw2d.color.menu.foreground.selected.description</description>
 		</colorDefinition>
 		<colorDefinition
 				label="%colorDefinition.org.eclipse.draw2d.color.title.background.label"
