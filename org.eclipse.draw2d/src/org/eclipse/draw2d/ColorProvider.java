@@ -15,6 +15,8 @@ import org.eclipse.swt.graphics.Color;
 
 /**
  * A collection of color-related constants.
+ * 
+ * @since 3.13
  */
 public interface ColorProvider {
 

@@ -12,11 +12,37 @@ package org.eclipse.draw2d;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * A collection of color-related constants.
+ * 
+ * @since 3.13
  */
 public interface ColorConstants {
+
+	/**
+	 * @deprecated Color Provider should be used instead of SystemColorFactory
+	 */
+	class SystemColorFactory {
+		private static Color getColor(final int which) {
+			Display display = Display.getCurrent();
+			if (display != null)
+				return display.getSystemColor(which);
+			display = Display.getDefault();
+			final Color result[] = new Color[1];
+			display.syncExec(new Runnable() {
+				public void run() {
+					synchronized (result) {
+						result[0] = Display.getCurrent().getSystemColor(which);
+					}
+				}
+			});
+			synchronized (result) {
+				return result[0];
+			}
+		}
+	}
 
 	/**
 	 * @see SWT#COLOR_WIDGET_HIGHLIGHT_SHADOW
@@ -41,9 +67,13 @@ public interface ColorConstants {
 	Color listBackground = ColorProvider.SystemColorFactory.colorProvider.getListBackground();
 	/**
 	 * @see SWT#COLOR_LIST_FOREGROUND
+	 * @since 3.13
 	 */
 	Color listForeground = ColorProvider.SystemColorFactory.colorProvider.getListForeground();
 
+	/**
+	 * @since 3.13
+	 */
 	Color lineForeground = ColorProvider.SystemColorFactory.colorProvider.getLineForeground();
 
 	/**
@@ -94,11 +124,18 @@ public interface ColorConstants {
 	Color tooltipForeground = ColorProvider.SystemColorFactory.colorProvider.getTooltipForeground();
 	/**
 	 * @see SWT#COLOR_INFO_BACKGROUND
+	 * @since 3.13
 	 */
 	Color tooltipBackground = ColorProvider.SystemColorFactory.colorProvider.getTooltipBackground();
 
+	/**
+	 * @since 3.13
+	 */
 	Color listHoverBackgroundColor = ColorProvider.SystemColorFactory.colorProvider.getListHoverBackgroundColor();
 
+	/**
+	 * @since 3.13
+	 */
 	Color listSelectedBackgroundColor = ColorProvider.SystemColorFactory.colorProvider.getListSelectedBackgroundColor();
 	/*
 	 * Misc. colors
