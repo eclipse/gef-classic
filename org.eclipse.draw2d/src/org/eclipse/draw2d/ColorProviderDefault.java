@@ -13,11 +13,14 @@
 package org.eclipse.draw2d;
 
 import org.eclipse.swt.graphics.Color;
+
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.themes.IThemeManager;
 
 /**
  * A collection of color-related constants.
+ * 
+ * @since 3.13
  */
 public class ColorProviderDefault implements ColorProvider {
 
@@ -74,12 +77,14 @@ public class ColorProviderDefault implements ColorProvider {
 
 	@Override
 	public Color getMenuBackgroundSelected() {
-		return themeManager.getCurrentTheme().getColorRegistry().get(ThemeConstants.CONFIG_COLOR_MENU_BACKGROUND_SELECTED);
+		return themeManager.getCurrentTheme().getColorRegistry()
+				.get(ThemeConstants.CONFIG_COLOR_MENU_BACKGROUND_SELECTED);
 	}
 
 	@Override
 	public Color getMenuForegroundSelected() {
-		return themeManager.getCurrentTheme().getColorRegistry().get(ThemeConstants.CONFIG_COLOR_MENU_FOREGROUND_SELECTED);
+		return themeManager.getCurrentTheme().getColorRegistry()
+				.get(ThemeConstants.CONFIG_COLOR_MENU_FOREGROUND_SELECTED);
 	}
 
 	@Override
@@ -99,17 +104,20 @@ public class ColorProviderDefault implements ColorProvider {
 
 	@Override
 	public Color getTitleInactiveForeground() {
-		return themeManager.getCurrentTheme().getColorRegistry().get(ThemeConstants.CONFIG_COLOR_TITLE_INACTIVE_FOREGROUND);
+		return themeManager.getCurrentTheme().getColorRegistry()
+				.get(ThemeConstants.CONFIG_COLOR_TITLE_INACTIVE_FOREGROUND);
 	}
 
 	@Override
 	public Color getTitleInactiveBackground() {
-		return themeManager.getCurrentTheme().getColorRegistry().get(ThemeConstants.CONFIG_COLOR_TITLE_INACTIVE_BACKGROUND);
+		return themeManager.getCurrentTheme().getColorRegistry()
+				.get(ThemeConstants.CONFIG_COLOR_TITLE_INACTIVE_BACKGROUND);
 	}
 
 	@Override
 	public Color getTitleInactiveGradient() {
-		return themeManager.getCurrentTheme().getColorRegistry().get(ThemeConstants.CONFIG_COLOR_TITLE_INACTIVE_GRADIENT);
+		return themeManager.getCurrentTheme().getColorRegistry()
+				.get(ThemeConstants.CONFIG_COLOR_TITLE_INACTIVE_GRADIENT);
 	}
 
 	@Override
@@ -129,8 +137,8 @@ public class ColorProviderDefault implements ColorProvider {
 
 	@Override
 	public Color getListSelectedBackgroundColor() {
-		return themeManager.getCurrentTheme().getColorRegistry().get(ThemeConstants.CONFIG_COLOR_LIST_SELECTED_BACKGROUND);
+		return themeManager.getCurrentTheme().getColorRegistry()
+				.get(ThemeConstants.CONFIG_COLOR_LIST_SELECTED_BACKGROUND);
 	}
-
 
 }
