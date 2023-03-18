@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.draw2d.ActionEvent;
+import org.eclipse.draw2d.ActionListener;
+import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
@@ -27,6 +30,7 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.zest.core.widgets.internal.ContainerFigure;
 import org.eclipse.zest.core.widgets.internal.GraphLabel;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
@@ -44,6 +48,8 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 public class GraphNode extends GraphItem {
 	public static final int HIGHLIGHT_NONE = 0;
 	public static final int HIGHLIGHT_ON = 1;
+
+	private static final int hideButtonsSize = 20;
 	// @tag ADJACENT : Removed highlight adjacent
 	// public static final int HIGHLIGHT_ADJACENT = 2;
 
@@ -76,6 +82,11 @@ public class GraphNode extends GraphItem {
 	protected int highlighted = HIGHLIGHT_NONE;
 	private IFigure tooltip;
 	protected IFigure nodeFigure;
+
+	private IFigure hideContainer = new ContainerFigure();
+	private Button hideButton = new Button("-");
+	private Button showButton = new Button("+");
+	private List<GraphNode> hiddenNodes = new ArrayList<>();
 
 	private boolean isDisposed = false;
 	private boolean hasCustomTooltip;
@@ -120,6 +131,27 @@ public class GraphNode extends GraphItem {
 
 	protected void initFigure() {
 		nodeFigure = createFigureForModel();
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public void hiddenButton(boolean visible) {
+		hideButton.setVisible(visible);
+		hideButton.setBounds(new Rectangle(getLocation(), new Dimension(hideButtonsSize, hideButtonsSize)));
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public void showButton(boolean visible) {
+		if (!hiddenNodes.isEmpty()) {
+			showButton.setVisible(visible);
+
+			Rectangle bounds = getBounds();
+			showButton.setBounds(new Rectangle(bounds.x + bounds.width - hideButtonsSize,
+					bounds.y + bounds.height - hideButtonsSize, hideButtonsSize, hideButtonsSize));
+		}
 	}
 
 	static int count = 0;
@@ -626,12 +658,27 @@ public class GraphNode extends GraphItem {
 		for (Iterator iterator2 = sConnections.iterator(); iterator2.hasNext();) {
 			GraphConnection connection = (GraphConnection) iterator2.next();
 			connection.setVisible(visible);
+
+			if (!visible) {
+				connection.getDestination().addHiddenNode(this);
+			}
 		}
 
 		for (Iterator iterator2 = tConnections.iterator(); iterator2.hasNext();) {
 			GraphConnection connection = (GraphConnection) iterator2.next();
 			connection.setVisible(visible);
+
+			if (!visible) {
+				connection.getSource().addHiddenNode(this);
+			}
 		}
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public void addHiddenNode(GraphNode node) {
+		this.hiddenNodes.add(node);
 	}
 
 	public int getStyle() {
@@ -771,6 +818,31 @@ public class GraphNode extends GraphItem {
 		if (checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
 			label.setText("");
 		}
+
+		hideButton.setVisible(false);
+		showButton.setVisible(false);
+		hideButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				// code when button pressed
+				setVisible(false);
+			}
+		});
+		showButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				// code when button pressed
+				for (GraphNode graphNode : hiddenNodes) {
+					graphNode.setVisible(true);
+				}
+				hiddenNodes.clear();
+				showButton.setVisible(false);
+			}
+		});
+		hideContainer.add(hideButton);
+		hideContainer.add(showButton);
+		label.add(hideContainer);
+
 		updateFigureForModel(label);
 		return label;
 	}
