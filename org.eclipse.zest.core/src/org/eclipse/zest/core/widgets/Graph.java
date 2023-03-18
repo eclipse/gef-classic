@@ -84,6 +84,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	private final List<GraphNode> nodes;
 	protected List<GraphConnection> connections;
 	private List<GraphItem> selectedItems = null;
+	private GraphNode hoverNode = null;
 	IFigure fisheyedFigure = null;
 	private List<SelectionListener> selectionListeners = null;
 
@@ -526,6 +527,18 @@ public class Graph extends FigureCanvas implements IContainer {
 			if (figureUnderMouse != null) {
 				// There is a figure under this mouse
 				GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
+				if (itemUnderMouse.getItemType() == GraphItem.NODE) {
+					hoverNode = (GraphNode) itemUnderMouse;
+					hoverNode.hiddenButton(true);
+					hoverNode.showButton(true);
+				} else {
+					if (hoverNode != null) {
+						hoverNode.hiddenButton(false);
+						hoverNode.showButton(false);
+						hoverNode = null;
+					}
+				}
+
 				if (itemUnderMouse == fisheyedItem) {
 
 				} else if (itemUnderMouse != null && itemUnderMouse.getItemType() == GraphItem.NODE) {
@@ -543,6 +556,11 @@ public class Graph extends FigureCanvas implements IContainer {
 					fisheyedFigure = null;
 				}
 			} else {
+				if (hoverNode != null) {
+					hoverNode.hiddenButton(false);
+					hoverNode.showButton(false);
+					hoverNode = null;
+				}
 				if (fisheyedItem != null) {
 					((GraphNode) fisheyedItem).fishEye(false, true);
 					fisheyedItem = null;
