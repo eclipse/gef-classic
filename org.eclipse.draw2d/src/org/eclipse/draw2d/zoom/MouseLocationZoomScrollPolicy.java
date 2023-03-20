@@ -17,15 +17,18 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Point;
 
-/** A scroll policy which ensures that the content under the mouse cursor stays where it is after scrolling. If the
- * mouse is not inside of the viewerControl the {@link DefaultScrollPolicy} is used as fallback.
+/**
+ * A scroll policy which ensures that the content under the mouse cursor stays
+ * where it is after scrolling. If the mouse is not inside of the viewerControl
+ * the {@link DefaultScrollPolicy} is used as fallback.
  * 
- * In order to keep the target under the mouse stable we have to calculate the new view location such that the following
- * equation holds:
+ * In order to keep the target under the mouse stable we have to calculate the
+ * new view location such that the following equation holds:
  * 
  * (mousepos + oldViewLocation) / oldZoom = (mousepos + newViewLocation)/newZoom
  * 
- * @since 3.12 */
+ * @since 3.13
+ */
 public class MouseLocationZoomScrollPolicy extends DefaultScrollPolicy {
 
 	final Control viewerControl;

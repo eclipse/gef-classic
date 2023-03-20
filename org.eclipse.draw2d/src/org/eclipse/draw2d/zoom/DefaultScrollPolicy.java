@@ -22,7 +22,7 @@ import org.eclipse.draw2d.geometry.Point;
  * This behavior was the default behavior of GEF Classic and Zest pre version
  * 3.15.
  * 
- * @since 3.12
+ * @since 3.13
  */
 public class DefaultScrollPolicy implements IZoomScrollPolicy {
 

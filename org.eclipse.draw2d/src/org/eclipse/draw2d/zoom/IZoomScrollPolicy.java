@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Point;
  * It is used by the {@link AbstractZoomManager} to calculate the new viewport
  * location after zooming.
  * 
- * @since 3.12
+ * @since 3.13
  */
 public interface IZoomScrollPolicy {
 
