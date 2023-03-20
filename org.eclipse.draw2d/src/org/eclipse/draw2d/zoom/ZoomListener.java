@@ -14,7 +14,7 @@ package org.eclipse.draw2d.zoom;
  * Listens to zoom level changes.
  * 
  * @author Eric Bordeau
- * @since 3.12
+ * @since 3.13
  */
 public interface ZoomListener {
 

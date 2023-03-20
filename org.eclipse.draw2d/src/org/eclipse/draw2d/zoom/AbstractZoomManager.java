@@ -43,7 +43,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * 
  * @author Dan Lee
  * @author Eric Bordeau
- * @since 3.12
+ * @since 3.13
  */
 public abstract class AbstractZoomManager {
 
