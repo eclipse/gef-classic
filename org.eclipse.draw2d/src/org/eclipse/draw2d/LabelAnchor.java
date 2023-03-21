@@ -44,6 +44,7 @@ public class LabelAnchor extends ChopboxAnchor {
 	 * @return The bounds of this LabelAnchor's owning Label icon
 	 * @since 2.0
 	 */
+	@Override
 	protected Rectangle getBox() {
 		Label label = (Label) getOwner();
 		return label.getIconBounds();

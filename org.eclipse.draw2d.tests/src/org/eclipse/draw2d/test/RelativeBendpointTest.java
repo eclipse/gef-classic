@@ -13,8 +13,6 @@ package org.eclipse.draw2d.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.AbstractConnectionAnchor;
 import org.eclipse.draw2d.BendpointConnectionRouter;
 import org.eclipse.draw2d.ColorConstants;
@@ -30,6 +28,8 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.widgets.Shell;
+
+import junit.framework.TestCase;
 
 /**
  * @author Romain Raugi
@@ -60,6 +60,7 @@ public class RelativeBendpointTest extends TestCase {
 			super(owner);
 		}
 
+		@Override
 		public Point getLocation(Point loc) {
 			Rectangle r = getOwner().getBounds();
 			double x = r.x + place.preciseX() * r.width;
@@ -69,6 +70,7 @@ public class RelativeBendpointTest extends TestCase {
 			return p;
 		}
 
+		@Override
 		public Point getReferencePoint() {
 			return getLocation(null);
 		}
@@ -84,6 +86,7 @@ public class RelativeBendpointTest extends TestCase {
 
 	private DiagramFigure diagram;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		shell = new Shell();
@@ -96,6 +99,7 @@ public class RelativeBendpointTest extends TestCase {
 		lws.setContents(diagram);
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		shell.close();
 		super.tearDown();

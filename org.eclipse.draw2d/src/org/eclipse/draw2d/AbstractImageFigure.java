@@ -12,7 +12,6 @@
 package org.eclipse.draw2d;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ import java.util.List;
  */
 public abstract class AbstractImageFigure extends Figure implements IImageFigure {
 
-	private List imageListeners = new ArrayList();
+	private List<ImageChangedListener> imageListeners = new ArrayList<>();
 
 	public final void addImageChangedListener(ImageChangedListener listener) {
 		if (listener == null) {
@@ -41,9 +40,7 @@ public abstract class AbstractImageFigure extends Figure implements IImageFigure
 	}
 
 	protected final void notifyImageChanged() {
-		for (Iterator itr = imageListeners.iterator(); itr.hasNext();) {
-			((ImageChangedListener) itr.next()).imageChanged();
-		}
+		imageListeners.forEach(ImageChangedListener::imageChanged);
 	}
 
 }

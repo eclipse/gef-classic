@@ -63,6 +63,7 @@ public abstract class AbstractGraphDemo {
 			super(owner);
 		}
 
+		@Override
 		public Point getLocation(Point reference) {
 			Point p;
 			p = getOwner().getBounds().getCenter();
@@ -81,6 +82,7 @@ public abstract class AbstractGraphDemo {
 			super(owner);
 		}
 
+		@Override
 		public Point getLocation(Point reference) {
 			Point p;
 			p = getOwner().getBounds().getCenter();

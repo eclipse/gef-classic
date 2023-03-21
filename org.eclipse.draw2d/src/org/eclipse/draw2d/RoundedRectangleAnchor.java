@@ -65,6 +65,7 @@ public class RoundedRectangleAnchor extends ChopboxAnchor {
 	 * 
 	 * @return The anchor location
 	 */
+	@Override
 	public Point getLocation(final Point ref) {
 		Dimension corner = dimension;
 		if (getOwner() instanceof RoundedRectangle) {

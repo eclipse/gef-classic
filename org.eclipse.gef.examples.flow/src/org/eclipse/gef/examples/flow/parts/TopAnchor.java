@@ -24,6 +24,7 @@ class TopAnchor extends AbstractConnectionAnchor {
 		this.offset = offset;
 	}
 
+	@Override
 	public Point getLocation(Point reference) {
 		Rectangle r = getOwner().getBounds().getCopy();
 		getOwner().translateToAbsolute(r);

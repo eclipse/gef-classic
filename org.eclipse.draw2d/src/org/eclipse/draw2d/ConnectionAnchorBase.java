@@ -11,7 +11,6 @@
 package org.eclipse.draw2d;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -24,7 +23,7 @@ public abstract class ConnectionAnchorBase implements ConnectionAnchor {
 	/**
 	 * The list of listeners
 	 */
-	protected List listeners = new ArrayList(1);
+	protected List<AnchorListener> listeners = new ArrayList<>(1);
 
 	/**
 	 * @see org.eclipse.draw2d.ConnectionAnchor#addAnchorListener(AnchorListener)
@@ -48,9 +47,7 @@ public abstract class ConnectionAnchorBase implements ConnectionAnchor {
 	 * @since 2.0
 	 */
 	protected void fireAnchorMoved() {
-		Iterator iter = listeners.iterator();
-		while (iter.hasNext())
-			((AnchorListener) iter.next()).anchorMoved(this);
+		listeners.forEach(listener -> listener.anchorMoved(this));
 	}
 
 }
