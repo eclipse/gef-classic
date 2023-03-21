@@ -25,7 +25,7 @@ import org.eclipse.draw2d.geometry.Dimension;
  */
 public class DelegatingLayout extends AbstractLayout {
 
-	private Map constraints = new HashMap();
+	private Map<IFigure, Object> constraints = new HashMap<>();
 
 	/**
 	 * Calculates the preferred size of the given Figure. For the DelegatingLayout,
@@ -50,6 +50,7 @@ public class DelegatingLayout extends AbstractLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public Object getConstraint(IFigure child) {
 		return constraints.get(child);
 	}
@@ -76,6 +77,7 @@ public class DelegatingLayout extends AbstractLayout {
 	 * 
 	 * @param child the child being removed
 	 */
+	@Override
 	public void remove(IFigure child) {
 		constraints.remove(child);
 	}
@@ -86,6 +88,7 @@ public class DelegatingLayout extends AbstractLayout {
 	 * @param figure     the figure whose contraint is being set
 	 * @param constraint the new constraint
 	 */
+	@Override
 	public void setConstraint(IFigure figure, Object constraint) {
 		super.setConstraint(figure, constraint);
 		if (constraint != null)

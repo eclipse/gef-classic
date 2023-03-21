@@ -25,7 +25,7 @@ import org.eclipse.draw2d.geometry.PrecisionPoint;
  */
 public class BendpointConnectionRouter extends AbstractRouter {
 
-	private Map constraints = new HashMap(11);
+	private Map<Connection, Object> constraints = new HashMap<>(11);
 
 	private static final PrecisionPoint A_POINT = new PrecisionPoint();
 
@@ -35,6 +35,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	 * @param connection The connection whose constraint we are retrieving
 	 * @return The constraint
 	 */
+	@Override
 	public Object getConstraint(Connection connection) {
 		return constraints.get(connection);
 	}
@@ -44,6 +45,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	 * 
 	 * @param connection The connection to remove
 	 */
+	@Override
 	public void remove(Connection connection) {
 		constraints.remove(connection);
 	}
@@ -60,9 +62,10 @@ public class BendpointConnectionRouter extends AbstractRouter {
 
 		List bendpoints = (List) getConstraint(conn);
 		if (bendpoints == null)
-			bendpoints = Collections.EMPTY_LIST;
+			bendpoints = Collections.emptyList();
 
-		Point ref1, ref2;
+		Point ref1;
+		Point ref2;
 
 		if (bendpoints.isEmpty()) {
 			ref1 = conn.getTargetAnchor().getReferencePoint();
@@ -95,6 +98,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	 * @param connection The connection whose constraint we are setting
 	 * @param constraint The constraint
 	 */
+	@Override
 	public void setConstraint(Connection connection, Object constraint) {
 		constraints.put(connection, constraint);
 	}

@@ -38,6 +38,7 @@ public class Digraph2ConnectionAnchor extends AbstractConnectionAnchor {
 	 * org.eclipse.draw2d.ConnectionAnchor#getLocation(org.eclipse.draw2d.geometry.
 	 * Point)
 	 */
+	@Override
 	public Point getLocation(Point reference) {
 		Point point = getOwner().getBounds().getCenter();
 		getOwner().translateToAbsolute(point);

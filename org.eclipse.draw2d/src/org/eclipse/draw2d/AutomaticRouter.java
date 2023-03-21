@@ -31,9 +31,10 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	private ConnectionRouter nextRouter;
 	private MultiValueMap connections = new MultiValueMap();
 
-	private class HashKey {
+	private static final class HashKey {
 
-		private ConnectionAnchor anchor1, anchor2;
+		private final ConnectionAnchor anchor1;
+		private final ConnectionAnchor anchor2;
 
 		HashKey(Connection conn) {
 			anchor1 = conn.getSourceAnchor();
@@ -71,6 +72,7 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	/**
 	 * @see org.eclipse.draw2d.ConnectionRouter#getConstraint(Connection)
 	 */
+	@Override
 	public Object getConstraint(Connection connection) {
 		if (next() != null)
 			return next().getConstraint(connection);
@@ -92,6 +94,7 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	/**
 	 * @see org.eclipse.draw2d.ConnectionRouter#invalidate(Connection)
 	 */
+	@Override
 	public void invalidate(Connection conn) {
 		if (next() != null)
 			next().invalidate(conn);

@@ -29,8 +29,8 @@ public class ButtonGroup {
 
 	private ButtonModel selectedModel;
 	private ButtonModel defaultModel;
-	private List members = new ArrayList();
-	private List listeners = new ArrayList();
+	private List<ButtonModel> members = new ArrayList<>();
+	private List<PropertyChangeListener> listeners = new ArrayList<>();
 
 	/**
 	 * Constructs a ButtonGroup with no default selection.
@@ -74,8 +74,7 @@ public class ButtonGroup {
 	 */
 	protected void firePropertyChange(Object oldValue, Object newValue) {
 		PropertyChangeEvent event = new PropertyChangeEvent(this, ButtonModel.SELECTED_PROPERTY, oldValue, newValue);
-		for (int i = 0; i < listeners.size(); i++)
-			((PropertyChangeListener) listeners.get(i)).propertyChange(event);
+		listeners.forEach(listener -> listener.propertyChange(event));
 	}
 
 	/**
