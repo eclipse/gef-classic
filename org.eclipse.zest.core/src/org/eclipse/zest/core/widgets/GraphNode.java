@@ -49,7 +49,7 @@ public class GraphNode extends GraphItem {
 	public static final int HIGHLIGHT_NONE = 0;
 	public static final int HIGHLIGHT_ON = 1;
 
-	private static final int hideButtonsSize = 20;
+	private static final int hideButtonsSize = 15;
 	// @tag ADJACENT : Removed highlight adjacent
 	// public static final int HIGHLIGHT_ADJACENT = 2;
 
@@ -86,7 +86,11 @@ public class GraphNode extends GraphItem {
 	private IFigure hideContainer = new ContainerFigure();
 	private Button hideButton = new Button("-");
 	private Button showButton = new Button("+");
+	private List<HideNodesListener> hideNodesListener = new ArrayList<>();
+	private HideNodesListener hideNodeListener = new HideNodesListener(this);
 	private List<GraphNode> hiddenNodes = new ArrayList<>();
+	private int nodeCount = 0;
+	private Label hiddenNodesCountLabel = new GraphLabel("", false);
 
 	private boolean isDisposed = false;
 	private boolean hasCustomTooltip;
@@ -145,7 +149,7 @@ public class GraphNode extends GraphItem {
 	 * @since 1.8
 	 */
 	public void showButton(boolean visible) {
-		if (!hiddenNodes.isEmpty()) {
+		if (nodeCount > 0) {
 			showButton.setVisible(visible);
 
 			Rectangle bounds = getBounds();
@@ -658,18 +662,20 @@ public class GraphNode extends GraphItem {
 		for (Iterator iterator2 = sConnections.iterator(); iterator2.hasNext();) {
 			GraphConnection connection = (GraphConnection) iterator2.next();
 			connection.setVisible(visible);
-
-			if (!visible) {
-				connection.getDestination().addHiddenNode(this);
-			}
 		}
 
 		for (Iterator iterator2 = tConnections.iterator(); iterator2.hasNext();) {
 			GraphConnection connection = (GraphConnection) iterator2.next();
 			connection.setVisible(visible);
+		}
 
-			if (!visible) {
-				connection.getSource().addHiddenNode(this);
+		if (visible) {
+			for (HideNodesListener hideNodeListenere : hideNodesListener) {
+				hideNodeListenere.fireNodeRevealed();
+			}
+		} else {
+			for (HideNodesListener hideNodesListener : hideNodesListener) {
+				hideNodesListener.fireNodeHidden();
 			}
 		}
 	}
@@ -677,8 +683,46 @@ public class GraphNode extends GraphItem {
 	/**
 	 * @since 1.8
 	 */
-	public void addHiddenNode(GraphNode node) {
-		this.hiddenNodes.add(node);
+	public void addHideNodeListener(HideNodesListener listener) {
+		if (!this.hideNodesListener.contains(listener)) {
+			this.hideNodesListener.add(listener);
+		}
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public void removeHideNodeListener(HideNodesListener listener) {
+		this.hideNodesListener.remove(listener);
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public void increaseHiddenNode() {
+		this.nodeCount++;
+		hiddenNodesCountLabel.setVisible(true);
+		hiddenNodesCountLabel.setText(Integer.toString(nodeCount));
+		hiddenNodesCountLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - hideButtonsSize,
+				getLocation().y, hideButtonsSize, hideButtonsSize));
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public void decreaseHiddenNode() {
+		// this function should update the hidden connected nodes when they are visible
+		// again from another node's button press
+		this.nodeCount--;
+		if (nodeCount < 1) {
+			hiddenNodesCountLabel.setVisible(false);
+		} else {
+
+			hiddenNodesCountLabel.setVisible(true);
+		}
+		hiddenNodesCountLabel.setText(Integer.toString(nodeCount));
+		hiddenNodesCountLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - hideButtonsSize,
+				getLocation().y, hideButtonsSize, hideButtonsSize));
 	}
 
 	public int getStyle() {
@@ -821,6 +865,7 @@ public class GraphNode extends GraphItem {
 
 		hideButton.setVisible(false);
 		showButton.setVisible(false);
+		hiddenNodesCountLabel.setVisible(false);
 		hideButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -832,15 +877,19 @@ public class GraphNode extends GraphItem {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				// code when button pressed
-				for (GraphNode graphNode : hiddenNodes) {
-					graphNode.setVisible(true);
+				for (HideNodesListener hideNodesListener : hideNodesListener) {
+					hideNodesListener.revealNode();
 				}
-				hiddenNodes.clear();
+				hiddenNodesCountLabel.setText("");
+				hiddenNodesCountLabel.setVisible(false);
 				showButton.setVisible(false);
 			}
 		});
+		hiddenNodesCountLabel.setBackgroundColor(ColorConstants.red);
+		hiddenNodesCountLabel.setForegroundColor(ColorConstants.black);
 		hideContainer.add(hideButton);
 		hideContainer.add(showButton);
+		hideContainer.add(hiddenNodesCountLabel);
 		label.add(hideContainer);
 
 		updateFigureForModel(label);
@@ -875,20 +924,28 @@ public class GraphNode extends GraphItem {
 		return visible;
 	}
 
+	HideNodesListener getHideNodesListener() {
+		return this.hideNodeListener;
+	}
+
 	void addSourceConnection(GraphConnection connection) {
 		this.sourceConnections.add(connection);
+		addHideNodeListener(connection.getDestination().getHideNodesListener());
 	}
 
 	void addTargetConnection(GraphConnection connection) {
 		this.targetConnections.add(connection);
+		addHideNodeListener(connection.getSource().getHideNodesListener());
 	}
 
 	void removeSourceConnection(GraphConnection connection) {
 		this.sourceConnections.remove(connection);
+		removeHideNodeListener(connection.getDestination().getHideNodesListener());
 	}
 
 	void removeTargetConnection(GraphConnection connection) {
 		this.targetConnections.remove(connection);
+		removeHideNodeListener(connection.getSource().getHideNodesListener());
 	}
 
 	/**
@@ -993,5 +1050,28 @@ public class GraphNode extends GraphItem {
 
 	void paint() {
 
+	}
+
+	class HideNodesListener {
+		private GraphNode node;
+
+		public HideNodesListener(GraphNode node) {
+			this.node = node;
+		}
+
+		public void fireNodeHidden() {
+			this.node.increaseHiddenNode();
+		}
+
+		public void revealNode() {
+			if (this.node.isVisible()) {
+				return; // node already visible
+			}
+			this.node.setVisible(true);
+		}
+
+		public void fireNodeRevealed() {
+			this.node.decreaseHiddenNode();
+		}
 	}
 }
