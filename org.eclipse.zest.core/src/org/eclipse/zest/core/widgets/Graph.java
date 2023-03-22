@@ -529,12 +529,12 @@ public class Graph extends FigureCanvas implements IContainer {
 				GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
 				if (itemUnderMouse.getItemType() == GraphItem.NODE) {
 					hoverNode = (GraphNode) itemUnderMouse;
-					hoverNode.hiddenButton(true);
-					hoverNode.showButton(true);
+					hoverNode.setHideButtonVisible(true);
+					hoverNode.setRevealButtonVisible(true);
 				} else {
 					if (hoverNode != null) {
-						hoverNode.hiddenButton(false);
-						hoverNode.showButton(false);
+						hoverNode.setHideButtonVisible(false);
+						hoverNode.setRevealButtonVisible(false);
 						hoverNode = null;
 					}
 				}
@@ -557,8 +557,8 @@ public class Graph extends FigureCanvas implements IContainer {
 				}
 			} else {
 				if (hoverNode != null) {
-					hoverNode.hiddenButton(false);
-					hoverNode.showButton(false);
+					hoverNode.setHideButtonVisible(false);
+					hoverNode.setRevealButtonVisible(false);
 					hoverNode = null;
 				}
 				if (fisheyedItem != null) {

@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.draw2d.ActionEvent;
-import org.eclipse.draw2d.ActionListener;
 import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
@@ -85,12 +83,11 @@ public class GraphNode extends GraphItem {
 
 	private IFigure hideContainer = new ContainerFigure();
 	private Button hideButton = new Button("-");
-	private Button showButton = new Button("+");
-	private List<HideNodesListener> hideNodesListener = new ArrayList<>();
-	private HideNodesListener hideNodeListener = new HideNodesListener(this);
-	private List<GraphNode> hiddenNodes = new ArrayList<>();
-	private int nodeCount = 0;
-	private Label hiddenNodesCountLabel = new GraphLabel("", false);
+	private Button revealButton = new Button("+");
+	private List<HideNodeListener> hideNodeListeners = new ArrayList<>();
+	private HideNodeListener thisHideNodeListener = new HideNodeListener(this);
+	private int hiddenNodeCount = 0;
+	private Label hiddenNodesLabel = new GraphLabel("0", false);
 
 	private boolean isDisposed = false;
 	private boolean hasCustomTooltip;
@@ -135,27 +132,6 @@ public class GraphNode extends GraphItem {
 
 	protected void initFigure() {
 		nodeFigure = createFigureForModel();
-	}
-
-	/**
-	 * @since 1.8
-	 */
-	public void hiddenButton(boolean visible) {
-		hideButton.setVisible(visible);
-		hideButton.setBounds(new Rectangle(getLocation(), new Dimension(hideButtonsSize, hideButtonsSize)));
-	}
-
-	/**
-	 * @since 1.8
-	 */
-	public void showButton(boolean visible) {
-		if (nodeCount > 0) {
-			showButton.setVisible(visible);
-
-			Rectangle bounds = getBounds();
-			showButton.setBounds(new Rectangle(bounds.x + bounds.width - hideButtonsSize,
-					bounds.y + bounds.height - hideButtonsSize, hideButtonsSize, hideButtonsSize));
-		}
 	}
 
 	static int count = 0;
@@ -670,12 +646,14 @@ public class GraphNode extends GraphItem {
 		}
 
 		if (visible) {
-			for (HideNodesListener hideNodeListenere : hideNodesListener) {
+			// node has been revealed
+			for (HideNodeListener hideNodeListenere : hideNodeListeners) {
 				hideNodeListenere.fireNodeRevealed();
 			}
 		} else {
-			for (HideNodesListener hideNodesListener : hideNodesListener) {
-				hideNodesListener.fireNodeHidden();
+			// node has been hidden
+			for (HideNodeListener hideNodeListener : hideNodeListeners) {
+				hideNodeListener.fireNodeHidden();
 			}
 		}
 	}
@@ -683,46 +661,67 @@ public class GraphNode extends GraphItem {
 	/**
 	 * @since 1.8
 	 */
-	public void addHideNodeListener(HideNodesListener listener) {
-		if (!this.hideNodesListener.contains(listener)) {
-			this.hideNodesListener.add(listener);
+	public void setHideButtonVisible(boolean visible) {
+		hideButton.setVisible(visible);
+		hideButton.setBounds(new Rectangle(getLocation(), new Dimension(hideButtonsSize, hideButtonsSize)));
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public void setRevealButtonVisible(boolean visible) {
+		if (hiddenNodeCount > 0) {
+			revealButton.setVisible(visible);
+			Rectangle bounds = getBounds();
+			revealButton.setBounds(new Rectangle(bounds.x + bounds.width - hideButtonsSize,
+					bounds.y + bounds.height - hideButtonsSize, hideButtonsSize, hideButtonsSize));
 		}
 	}
 
 	/**
 	 * @since 1.8
 	 */
-	public void removeHideNodeListener(HideNodesListener listener) {
-		this.hideNodesListener.remove(listener);
+	public void addHideNodeListener(HideNodeListener listener) {
+		if (!this.hideNodeListeners.contains(listener) && listener != thisHideNodeListener) {
+			// new HideNodeListener of other node
+			this.hideNodeListeners.add(listener);
+		}
 	}
 
 	/**
 	 * @since 1.8
 	 */
-	public void increaseHiddenNode() {
-		this.nodeCount++;
-		hiddenNodesCountLabel.setVisible(true);
-		hiddenNodesCountLabel.setText(Integer.toString(nodeCount));
-		hiddenNodesCountLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - hideButtonsSize,
-				getLocation().y, hideButtonsSize, hideButtonsSize));
+	public void removeHideNodeListener(HideNodeListener listener) {
+		this.hideNodeListeners.remove(listener);
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public HideNodeListener getHideNodesListener() {
+		return this.thisHideNodeListener;
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public void increaseHiddenNodes() {
+		this.hiddenNodeCount++;
+		hiddenNodesLabel.setVisible(true);
+		hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
+		hiddenNodesLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - hideButtonsSize, getLocation().y,
+				hideButtonsSize, hideButtonsSize));
 	}
 
 	/**
 	 * @since 1.8
 	 */
 	public void decreaseHiddenNode() {
-		// this function should update the hidden connected nodes when they are visible
-		// again from another node's button press
-		this.nodeCount--;
-		if (nodeCount < 1) {
-			hiddenNodesCountLabel.setVisible(false);
-		} else {
-
-			hiddenNodesCountLabel.setVisible(true);
-		}
-		hiddenNodesCountLabel.setText(Integer.toString(nodeCount));
-		hiddenNodesCountLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - hideButtonsSize,
-				getLocation().y, hideButtonsSize, hideButtonsSize));
+		this.hiddenNodeCount--;
+		hiddenNodesLabel.setVisible(hiddenNodeCount > 0); // true if hidden node still exists
+		hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
+		hiddenNodesLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - hideButtonsSize, getLocation().y,
+				hideButtonsSize, hideButtonsSize));
 	}
 
 	public int getStyle() {
@@ -863,33 +862,25 @@ public class GraphNode extends GraphItem {
 			label.setText("");
 		}
 
+		// create buttons and label for hiding nodes
 		hideButton.setVisible(false);
-		showButton.setVisible(false);
-		hiddenNodesCountLabel.setVisible(false);
-		hideButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				// code when button pressed
-				setVisible(false);
+		revealButton.setVisible(false);
+		hiddenNodesLabel.setVisible(false);
+
+		hideButton.addActionListener(event -> setVisible(false));
+		revealButton.addActionListener(event -> {
+			for (HideNodeListener hideNodeListener : hideNodeListeners) {
+				hideNodeListener.revealNode(); // try to reveal all connected nodes
 			}
+			revealButton.setVisible(false);
 		});
-		showButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				// code when button pressed
-				for (HideNodesListener hideNodesListener : hideNodesListener) {
-					hideNodesListener.revealNode();
-				}
-				hiddenNodesCountLabel.setText("");
-				hiddenNodesCountLabel.setVisible(false);
-				showButton.setVisible(false);
-			}
-		});
-		hiddenNodesCountLabel.setBackgroundColor(ColorConstants.red);
-		hiddenNodesCountLabel.setForegroundColor(ColorConstants.black);
+
+		hiddenNodesLabel.setBackgroundColor(ColorConstants.red);
+		hiddenNodesLabel.setForegroundColor(ColorConstants.black);
+
 		hideContainer.add(hideButton);
-		hideContainer.add(showButton);
-		hideContainer.add(hiddenNodesCountLabel);
+		hideContainer.add(revealButton);
+		hideContainer.add(hiddenNodesLabel);
 		label.add(hideContainer);
 
 		updateFigureForModel(label);
@@ -922,10 +913,6 @@ public class GraphNode extends GraphItem {
 
 	public boolean isVisible() {
 		return visible;
-	}
-
-	HideNodesListener getHideNodesListener() {
-		return this.hideNodeListener;
 	}
 
 	void addSourceConnection(GraphConnection connection) {
@@ -1052,15 +1039,19 @@ public class GraphNode extends GraphItem {
 
 	}
 
-	class HideNodesListener {
+	class HideNodeListener {
 		private GraphNode node;
 
-		public HideNodesListener(GraphNode node) {
+		public HideNodeListener(GraphNode node) {
 			this.node = node;
 		}
 
 		public void fireNodeHidden() {
-			this.node.increaseHiddenNode();
+			this.node.increaseHiddenNodes();
+		}
+
+		public void fireNodeRevealed() {
+			this.node.decreaseHiddenNode();
 		}
 
 		public void revealNode() {
@@ -1068,10 +1059,6 @@ public class GraphNode extends GraphItem {
 				return; // node already visible
 			}
 			this.node.setVisible(true);
-		}
-
-		public void fireNodeRevealed() {
-			this.node.decreaseHiddenNode();
 		}
 	}
 }
