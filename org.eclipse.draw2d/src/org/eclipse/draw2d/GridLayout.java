@@ -12,7 +12,6 @@
 package org.eclipse.draw2d;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -169,9 +168,7 @@ public class GridLayout extends AbstractHintLayout {
 	}
 
 	void initChildren(IFigure container) {
-		List children = container.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			IFigure child = (IFigure) children.get(i);
+		for (IFigure child : container.getChildren()) {
 			if (child.getLayoutManager() == null)
 				child.setLayoutManager(this);
 		}
@@ -227,10 +224,7 @@ public class GridLayout extends AbstractHintLayout {
 	Dimension layout(IFigure container, boolean move, int x, int y, int width, int height, boolean flushCache) {
 		if (numColumns < 1)
 			return new Dimension(marginWidth * 2, marginHeight * 2);
-		List children = container.getChildren();
-		for (int i = 0; i < children.size(); i++) {
-			IFigure child = (IFigure) children.get(i);
-
+		for (IFigure child : container.getChildren()) {
 			GridData data = (GridData) getConstraint(child);
 			if (data == null)
 				setConstraint(child, data = new GridData());
@@ -242,8 +236,7 @@ public class GridLayout extends AbstractHintLayout {
 		/* Build the grid */
 		int row = 0, column = 0, rowCount = 0, columnCount = numColumns;
 		IFigure[][] grid = new IFigure[4][columnCount];
-		for (int i = 0; i < children.size(); i++) {
-			IFigure child = (IFigure) children.get(i);
+		for (IFigure child : container.getChildren()) {
 			GridData data = (GridData) getConstraint(child);
 			int hSpan = Math.max(1, Math.min(data.horizontalSpan, columnCount));
 			int vSpan = Math.max(1, data.verticalSpan);
@@ -488,7 +481,7 @@ public class GridLayout extends AbstractHintLayout {
 								data.computeSize(child, false);
 								data.widthHint = oldWidthHint;
 								if (flush == null)
-									flush = new GridData[children.size()];
+									flush = new GridData[container.getChildren().size()];
 								flush[flushLength++] = data;
 							}
 						}

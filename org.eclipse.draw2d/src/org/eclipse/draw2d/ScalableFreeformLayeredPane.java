@@ -52,6 +52,7 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
 	 */
+	@Override
 	protected void paintClientArea(Graphics graphics) {
 		if (getChildren().isEmpty())
 			return;

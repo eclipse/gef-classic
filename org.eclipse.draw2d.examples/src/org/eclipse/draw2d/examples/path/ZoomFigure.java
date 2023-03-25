@@ -29,6 +29,7 @@ public class ZoomFigure extends Figure implements ScalableFigure {
 	/*
 	 * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
 	 */
+	@Override
 	protected void paintClientArea(Graphics graphics) {
 		if (getChildren().isEmpty())
 			return;
@@ -58,6 +59,7 @@ public class ZoomFigure extends Figure implements ScalableFigure {
 	/*
 	 * @see org.eclipse.draw2d.ScalableFigure#getScale()
 	 */
+	@Override
 	public double getScale() {
 		return scale;
 	}

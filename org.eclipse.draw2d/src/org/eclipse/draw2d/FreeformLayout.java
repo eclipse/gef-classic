@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.ListIterator;
-
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -42,13 +40,12 @@ public class FreeformLayout extends XYLayout {
 	 * 
 	 * @see XYLayout#getOrigin(IFigure)
 	 */
+	@Override
 	public Point getOrigin(IFigure figure) {
 		if (origin == null) {
 			origin = new Point();
 			if (isPositiveCoordinates()) {
-				ListIterator children = figure.getChildren().listIterator();
-				while (children.hasNext()) {
-					IFigure f = (IFigure) children.next();
+				for (IFigure f : figure.getChildren()) {
 					Rectangle constraint = (Rectangle) getConstraint(f);
 					if (constraint != null) {
 						origin.x = Math.min(origin.x, constraint.x);
@@ -94,6 +91,7 @@ public class FreeformLayout extends XYLayout {
 	/**
 	 * @see org.eclipse.draw2d.AbstractLayout#invalidate()
 	 */
+	@Override
 	public void invalidate() {
 		origin = null;
 		super.invalidate();

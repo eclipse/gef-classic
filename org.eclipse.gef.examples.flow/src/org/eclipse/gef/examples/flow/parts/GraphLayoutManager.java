@@ -11,7 +11,6 @@
 package org.eclipse.gef.examples.flow.parts;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.AbstractLayout;
@@ -29,16 +28,16 @@ class GraphLayoutManager extends AbstractLayout {
 		this.diagram = diagram;
 	}
 
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		container.validate();
-		List children = container.getChildren();
 		Rectangle result = new Rectangle().setLocation(container.getClientArea().getLocation());
-		for (int i = 0; i < children.size(); i++)
-			result.union(((IFigure) children.get(i)).getBounds());
+		container.getChildren().forEach(child -> result.union(child.getBounds()));
 		result.resize(container.getInsets().getWidth(), container.getInsets().getHeight());
 		return result.getSize();
 	}
 
+	@Override
 	public void layout(IFigure container) {
 		GraphAnimation.recordInitialState(container);
 		if (GraphAnimation.playbackState(container))

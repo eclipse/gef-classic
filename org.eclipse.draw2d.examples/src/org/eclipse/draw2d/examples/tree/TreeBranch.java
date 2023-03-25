@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.tree;
 
-import java.util.List;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
@@ -98,7 +96,6 @@ public class TreeBranch extends Figure {
 	 * @param bounds where to set
 	 */
 	public void animationReset(Rectangle bounds) {
-		List subtrees = contents.getChildren();
 		contents.setBounds(bounds);
 
 		// Make the center of this node match the center of the given bounds
@@ -109,11 +106,10 @@ public class TreeBranch extends Figure {
 		revalidate(); // Otherwise, this branch will not layout
 
 		// Pass the location to all children
-		for (int i = 0; i < subtrees.size(); i++) {
-			TreeBranch subtree = (TreeBranch) subtrees.get(i);
-			subtree.setBounds(bounds);
-			subtree.animationReset(bounds);
-		}
+		contents.getChildren().forEach(child -> {
+			child.setBounds(bounds);
+			((TreeBranch) child).animationReset(bounds);
+		});
 	}
 
 	public void collapse() {
@@ -151,6 +147,7 @@ public class TreeBranch extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#containsPoint(int, int)
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		return node.containsPoint(x, y) || contents.containsPoint(x, y);
 	}
@@ -196,6 +193,7 @@ public class TreeBranch extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#getMinimumSize(int, int)
 	 */
+	@Override
 	public Dimension getMinimumSize(int wHint, int hHint) {
 		if (!Animation.PLAYBACK)
 			validate();
@@ -217,6 +215,7 @@ public class TreeBranch extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		if (!Animation.PLAYBACK)
 			validate();
@@ -241,6 +240,7 @@ public class TreeBranch extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
 		if (isExpanded())
@@ -293,6 +293,7 @@ public class TreeBranch extends Figure {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return toString(0);
 	}
@@ -310,11 +311,13 @@ public class TreeBranch extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#validate()
 	 */
+	@Override
 	public void validate() {
 		if (isValid())
 			return;
 		if (style == STYLE_HANGING) {
 			ToolbarLayout layout = new ToolbarLayout(!getRoot().isHorizontal()) {
+				@Override
 				public void layout(IFigure parent) {
 					Animation.recordInitialState(parent);
 					if (Animation.playbackState(parent))

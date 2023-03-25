@@ -46,6 +46,7 @@ public class ZoomContainer extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
 	 */
+	@Override
 	protected void paintClientArea(Graphics graphics) {
 		if (getChildren().isEmpty())
 			return;
@@ -74,6 +75,7 @@ public class ZoomContainer extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#translateToParent(Translatable)
 	 */
+	@Override
 	public void translateToParent(Translatable t) {
 		t.performScale(zoom);
 		super.translateToParent(t);
@@ -82,6 +84,7 @@ public class ZoomContainer extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#translateFromParent(Translatable)
 	 */
+	@Override
 	public void translateFromParent(Translatable t) {
 		super.translateFromParent(t);
 		t.performScale(1 / zoom);
@@ -90,6 +93,7 @@ public class ZoomContainer extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
 	 */
+	@Override
 	protected boolean useLocalCoordinates() {
 		return true;
 	}

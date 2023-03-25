@@ -26,6 +26,7 @@ public class ImportPart extends TextFlowPart {
 		super(model);
 	}
 
+	@Override
 	protected IFigure createFigure() {
 		TextFlow flow = new TextFlow();
 		BlockFlow block = new BlockFlow();
@@ -34,6 +35,7 @@ public class ImportPart extends TextFlowPart {
 		return block;
 	}
 
+	@Override
 	TextFlow getTextFlow() {
 		return (TextFlow) getFigure().getChildren().get(0);
 	}

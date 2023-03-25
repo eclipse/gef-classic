@@ -24,8 +24,8 @@ import org.eclipse.gef.Request;
 import org.eclipse.gef.SharedCursors;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.UnexecutableCommand;
-import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
 import org.eclipse.gef.editparts.ZoomManager;
+import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
 import org.eclipse.gef.requests.ChangeBoundsRequest;
 
 /**
@@ -193,6 +193,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 			((EditPart) i.next()).showSourceFeedback(req);
 	}
 
+	@Override
 	public void showSourceFeedback(Request request) {
 		if (!dragInProgress) {
 			dragInProgress = true;
@@ -211,7 +212,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 			// move the guide being dragged to the last index so that it's drawn
 			// on
 			// top of other guides
-			List children = getHostFigure().getParent().getChildren();
+			List<IFigure> children = (List<IFigure>) getHostFigure().getParent().getChildren();
 			children.remove(getHostFigure());
 			children.add(getHostFigure());
 		}

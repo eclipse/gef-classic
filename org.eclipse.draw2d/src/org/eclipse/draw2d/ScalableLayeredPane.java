@@ -79,6 +79,7 @@ public class ScalableLayeredPane extends LayeredPane implements ScalableFigure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintClientArea(Graphics)
 	 */
+	@Override
 	protected void paintClientArea(Graphics graphics) {
 		if (getChildren().isEmpty())
 			return;

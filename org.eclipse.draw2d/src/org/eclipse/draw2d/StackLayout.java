@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.List;
-
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -34,10 +32,7 @@ public class StackLayout extends AbstractHintLayout {
 		if (hHint > -1)
 			hHint = Math.max(0, hHint - figure.getInsets().getHeight());
 		Dimension d = new Dimension();
-		List children = figure.getChildren();
-		IFigure child;
-		for (int i = 0; i < children.size(); i++) {
-			child = (IFigure) children.get(i);
+		for (IFigure child : figure.getChildren()) {
 			if (!isObservingVisibility() || child.isVisible())
 				d.union(child.getMinimumSize(wHint, hHint));
 		}
@@ -61,10 +56,7 @@ public class StackLayout extends AbstractHintLayout {
 		if (hHint > -1)
 			hHint = Math.max(0, hHint - figure.getInsets().getHeight());
 		Dimension d = new Dimension();
-		List children = figure.getChildren();
-		IFigure child;
-		for (int i = 0; i < children.size(); i++) {
-			child = (IFigure) children.get(i);
+		for (IFigure child : figure.getChildren()) {
 			if (!isObservingVisibility() || child.isVisible())
 				d.union(child.getPreferredSize(wHint, hHint));
 		}
@@ -79,12 +71,7 @@ public class StackLayout extends AbstractHintLayout {
 	 */
 	public void layout(IFigure figure) {
 		Rectangle r = figure.getClientArea();
-		List children = figure.getChildren();
-		IFigure child;
-		for (int i = 0; i < children.size(); i++) {
-			child = (IFigure) children.get(i);
-			child.setBounds(r);
-		}
+		figure.getChildren().forEach(child -> child.setBounds(r));
 	}
 
 }

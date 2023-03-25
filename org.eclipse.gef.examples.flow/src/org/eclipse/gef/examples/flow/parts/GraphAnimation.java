@@ -12,7 +12,6 @@ package org.eclipse.gef.examples.flow.parts;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.Connection;
@@ -124,10 +123,8 @@ public class GraphAnimation {
 		if (!PLAYBACK)
 			return false;
 
-		List children = container.getChildren();
 		Rectangle rect1, rect2;
-		for (int i = 0; i < children.size(); i++) {
-			IFigure child = (IFigure) children.get(i);
+		for (IFigure child : container.getChildren()) {
 			rect1 = (Rectangle) initialStates.get(child);
 			rect2 = (Rectangle) finalStates.get(child);
 			if (rect2 == null)
@@ -236,10 +233,7 @@ public class GraphAnimation {
 		if (!RECORDING)
 			return;
 
-		List children = container.getChildren();
-		IFigure child;
-		for (int i = 0; i < children.size(); i++) {
-			child = (IFigure) children.get(i);
+		for (IFigure child : container.getChildren()) {
 			initialStates.put(child, child.getBounds().getCopy());
 		}
 	}

@@ -43,8 +43,8 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 	 * @see org.eclipse.draw2d.ToolbarLayout#layout(org.eclipse.draw2d.IFigure)
 	 */
 	public void layout(IFigure parent) {
-		List children = parent.getChildren();
-		List childrenGrabbingVertical = new ArrayList();
+		List<? extends IFigure> children = parent.getChildren();
+		List<IFigure> childrenGrabbingVertical = new ArrayList<>();
 		int numChildren = children.size();
 		Rectangle clientArea = parent.getClientArea();
 		int x = clientArea.x;
@@ -66,7 +66,7 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 		 * can be stretched/shrunk.
 		 */
 		for (int i = 0; i < numChildren; i++) {
-			IFigure child = (IFigure) children.get(i);
+			IFigure child = children.get(i);
 
 			prefSizes[i] = child.getPreferredSize(wHint, hHint);
 			minSizes[i] = child.getMinimumSize(wHint, hHint);
@@ -98,7 +98,7 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 				heightOfNonGrowingChildren += prefSizes[index].height;
 			}
 			if (!childrenGrabbingVertical.isEmpty()) {
-				Object last = childrenGrabbingVertical.get(childrenGrabbingVertical.size() - 1);
+				IFigure last = childrenGrabbingVertical.get(childrenGrabbingVertical.size() - 1);
 				childrenGrabbingVertical.clear();
 				childrenGrabbingVertical.add(last);
 				heightPerChild = availableHeight - heightOfNonGrowingChildren;
@@ -122,8 +122,8 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 			excessHeight = spaceToConsume - (heightPerChild * childrenGrabbingVertical.size());
 			do {
 				childrenDiscarded = false;
-				for (Iterator iter = childrenGrabbingVertical.iterator(); iter.hasNext();) {
-					IFigure childFig = (IFigure) iter.next();
+				for (Iterator<IFigure> iter = childrenGrabbingVertical.iterator(); iter.hasNext();) {
+					IFigure childFig = iter.next();
 					int i = childFig.getParent().getChildren().indexOf(childFig);
 					// In the case of shrinking, if the child's height is less
 					// than

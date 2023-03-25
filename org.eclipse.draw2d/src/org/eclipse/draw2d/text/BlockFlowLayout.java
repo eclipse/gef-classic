@@ -15,6 +15,7 @@ import java.util.List;
 import org.eclipse.swt.SWT;
 
 import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Insets;
 
@@ -138,9 +139,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 
 		if (blockInvalid) {
 			blockInvalid = false;
-			List v = getFlowFigure().getChildren();
-			for (int i = 0; i < v.size(); i++)
-				((FlowFigure) v.get(i)).postValidate();
+			getFlowFigure().getChildren().forEach(child -> ((FlowFigure) child).postValidate());
 		}
 	}
 
@@ -190,7 +189,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	 * @see FlowContext#getWidthLookahead(FlowFigure, int[])
 	 */
 	public void getWidthLookahead(FlowFigure child, int result[]) {
-		List children = getFlowFigure().getChildren();
+		List<? extends IFigure> children = getFlowFigure().getChildren();
 		int index = -1;
 		if (child != null)
 			index = children.indexOf(child);

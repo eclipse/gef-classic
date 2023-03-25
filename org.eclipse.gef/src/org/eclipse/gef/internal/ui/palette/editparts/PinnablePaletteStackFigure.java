@@ -11,8 +11,6 @@
 
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import java.util.Iterator;
-
 import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.BorderLayout;
@@ -260,15 +258,11 @@ public class PinnablePaletteStackFigure extends Figure {
 					boolean collapseOtherStacks = (layoutMode == PaletteViewerPreferences.LAYOUT_COLUMNS
 							|| layoutMode == PaletteViewerPreferences.LAYOUT_ICONS);
 
-					for (Iterator iterator = getParent().getChildren().iterator(); iterator.hasNext();) {
-						Object childFigure = iterator.next();
-						if (childFigure instanceof PinnablePaletteStackFigure
-								&& childFigure != PinnablePaletteStackFigure.this) {
-
-							if (collapseOtherStacks || (((PinnablePaletteStackFigure) childFigure).isExpanded()
-									&& !((PinnablePaletteStackFigure) childFigure).isPinnedOpen())) {
-
-								((PinnablePaletteStackFigure) childFigure).setExpanded(false);
+					for (IFigure child : getParent().getChildren()) {
+						if (child instanceof PinnablePaletteStackFigure && child != PinnablePaletteStackFigure.this) {
+							if (collapseOtherStacks || (((PinnablePaletteStackFigure) child).isExpanded()
+									&& !((PinnablePaletteStackFigure) child).isPinnedOpen())) {
+								((PinnablePaletteStackFigure) child).setExpanded(false);
 							}
 						}
 					}

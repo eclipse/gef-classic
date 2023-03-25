@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.tree;
 
-import org.eclipse.swt.graphics.Color;
-
 import org.eclipse.draw2d.AbstractBorder;
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.ColorConstants;
@@ -25,6 +23,7 @@ import org.eclipse.draw2d.StackLayout;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.Color;
 
 /**
  * 
@@ -59,10 +58,12 @@ public class PageNode extends Figure {
 
 		static final Insets insets = new Insets(CORNER_SIZE, 2, 4, 4);
 
+		@Override
 		public Insets getInsets(IFigure figure) {
 			return insets;
 		}
 
+		@Override
 		public void paint(IFigure figure, Graphics g, Insets insets) {
 			Rectangle r = getPaintRectangle(figure, insets);
 
@@ -105,6 +106,7 @@ public class PageNode extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics g) {
 		super.paintFigure(g);
 		if (selected) {
@@ -129,6 +131,7 @@ public class PageNode extends Figure {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return ((Label) getChildren().get(0)).getText();
 	}

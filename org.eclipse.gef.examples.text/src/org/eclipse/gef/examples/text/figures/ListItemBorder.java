@@ -22,6 +22,7 @@ import org.eclipse.draw2d.text.TextFlow;
  */
 public abstract class ListItemBorder extends AbstractBorder {
 
+	@Override
 	public final void paint(IFigure figure, Graphics graphics, Insets insets) {
 		if (((TextFlow) figure.getChildren().get(0)).getText().length() > 0)
 			paintBorder(figure, graphics, insets);

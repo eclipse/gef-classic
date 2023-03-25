@@ -24,6 +24,7 @@ public class Layer extends Figure {
 	 * @see IFigure#containsPoint(int, int)
 	 * 
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		if (isOpaque())
 			return super.containsPoint(x, y);
@@ -32,8 +33,7 @@ public class Layer extends Figure {
 		translateFromParent(pt);
 		x = pt.x;
 		y = pt.y;
-		for (int i = 0; i < getChildren().size(); i++) {
-			IFigure child = (IFigure) getChildren().get(i);
+		for (IFigure child : getChildren()) {
 			if (child.containsPoint(x, y))
 				return true;
 		}

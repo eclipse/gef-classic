@@ -357,8 +357,8 @@ public class Clickable extends Figure {
 	 */
 	protected void setContents(IFigure contents) {
 		setLayoutManager(new StackLayout());
-		if (getChildren().size() > 0)
-			remove((IFigure) getChildren().get(0));
+		if (!getChildren().isEmpty())
+			remove(getChildren().get(0));
 		add(contents);
 	}
 
