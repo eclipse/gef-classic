@@ -12,6 +12,8 @@ package org.eclipse.draw2d.text;
 
 import java.util.List;
 
+import org.eclipse.draw2d.IFigure;
+
 /**
  * The layout manager for {@link InlineFlow} figures.
  * 
@@ -85,7 +87,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	 * @see FlowContext#getWidthLookahead(FlowFigure, int[])
 	 */
 	public void getWidthLookahead(FlowFigure child, int result[]) {
-		List children = getFlowFigure().getChildren();
+		List<? extends IFigure> children = getFlowFigure().getChildren();
 		int index = -1;
 		if (child != null)
 			index = children.indexOf(child);

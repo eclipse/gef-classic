@@ -84,13 +84,11 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * 
 	 * @return the bounds
 	 */
+	@Override
 	public Rectangle getBounds() {
 		if (bounds == null) {
 			super.getBounds();
-			for (int i = 0; i < getChildren().size(); i++) {
-				IFigure child = (IFigure) getChildren().get(i);
-				bounds.union(child.getBounds());
-			}
+			getChildren().forEach(child -> bounds.union(child.getBounds()));
 		}
 		return bounds;
 	}

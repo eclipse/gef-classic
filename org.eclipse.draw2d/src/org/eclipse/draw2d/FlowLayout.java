@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
@@ -132,7 +131,7 @@ public class FlowLayout extends OrderedLayout {
 		// The preferred dimension that is to be calculated and returned
 		Dimension prefSize = new Dimension();
 
-		List children = container.getChildren();
+		List<? extends IFigure> children = container.getChildren();
 		int width = 0;
 		int height = 0;
 		IFigure child;
@@ -140,7 +139,7 @@ public class FlowLayout extends OrderedLayout {
 
 		// Build the sizes for each row, and update prefSize accordingly
 		for (int i = 0; i < children.size(); i++) {
-			child = (IFigure) children.get(i);
+			child = children.get(i);
 			childSize = transposer.t(getChildSize(child, wHint, hHint));
 			if (i == 0) {
 				width = childSize.width;
@@ -282,7 +281,6 @@ public class FlowLayout extends OrderedLayout {
 		Rectangle relativeArea = parent.getClientArea();
 		data.area = transposer.t(relativeArea);
 
-		Iterator iterator = parent.getChildren().iterator();
 		int dx;
 
 		// Calculate the hints to be passed to children
@@ -295,8 +293,7 @@ public class FlowLayout extends OrderedLayout {
 
 		initVariables(parent);
 		initRow();
-		while (iterator.hasNext()) {
-			IFigure f = (IFigure) iterator.next();
+		for (IFigure f : parent.getChildren()) {
 			Dimension pref = transposer.t(getChildSize(f, wHint, hHint));
 			Rectangle r = new Rectangle(0, 0, pref.width, pref.height);
 

@@ -49,7 +49,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	}
 
 	private Map constraintMap = new HashMap();
-	private Map figuresToBounds;
+	private Map<IFigure, Rectangle> figuresToBounds;
 	private Map connectionToPaths;
 	private boolean isDirty;
 	private ShortestPathRouter algorithm = new ShortestPathRouter();
@@ -98,19 +98,18 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	}
 
 	private void hookAll() {
-		figuresToBounds = new HashMap();
-		for (int i = 0; i < container.getChildren().size(); i++)
-			addChild((IFigure) container.getChildren().get(i));
+		figuresToBounds = new HashMap<>();
+		container.getChildren().forEach(this::addChild);
 		container.addLayoutListener(listener);
 	}
 
 	private void unhookAll() {
 		container.removeLayoutListener(listener);
 		if (figuresToBounds != null) {
-			Iterator figureItr = figuresToBounds.keySet().iterator();
+			Iterator<IFigure> figureItr = figuresToBounds.keySet().iterator();
 			while (figureItr.hasNext()) {
 				// Must use iterator's remove to avoid concurrent modification
-				IFigure child = (IFigure) figureItr.next();
+				IFigure child = figureItr.next();
 				figureItr.remove();
 				removeChild(child);
 			}

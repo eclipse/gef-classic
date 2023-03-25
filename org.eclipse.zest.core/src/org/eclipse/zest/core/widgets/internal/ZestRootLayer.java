@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
 
+import java.util.List;
+
 import org.eclipse.draw2d.FreeformLayer;
 import org.eclipse.draw2d.IFigure;
 
@@ -83,7 +85,7 @@ public class ZestRootLayer extends FreeformLayer {
 		int highlightNodePosition = getHighlightNodePosition();
 		this.numberOfHighlightedNodes++;
 		this.getChildren().remove(nodeFigure);
-		this.getChildren().add(highlightNodePosition, nodeFigure);
+		((List<IFigure>) this.getChildren()).add(highlightNodePosition, nodeFigure);
 		this.invalidate();
 		this.repaint();
 	}
@@ -93,7 +95,7 @@ public class ZestRootLayer extends FreeformLayer {
 		int highlightConnectionPosition = getHighlightConnectionPosition();
 		this.numberOfHighlightedConnections++;
 		this.getChildren().remove(connectionFigure);
-		this.getChildren().add(highlightConnectionPosition, connectionFigure);
+		((List<IFigure>) this.getChildren()).add(highlightConnectionPosition, connectionFigure);
 		this.invalidate();
 		this.repaint();
 	}
@@ -109,7 +111,7 @@ public class ZestRootLayer extends FreeformLayer {
 		nodePosition = getNodePosition();
 		this.numberOfNodes++;
 		this.getChildren().remove(nodeFigure);
-		this.getChildren().add(nodePosition, nodeFigure);
+		((List<IFigure>) this.getChildren()).add(nodePosition, nodeFigure);
 		this.invalidate();
 		this.repaint();
 	}
@@ -124,11 +126,12 @@ public class ZestRootLayer extends FreeformLayer {
 		this.numberOfHighlightedConnections--;
 		this.numberOfConnections++;
 		connectionPosition = getConnectionPosition();
-		this.getChildren().remove(connectionFigure);
+		List<IFigure> children = (List<IFigure>) this.getChildren();
+		children.remove(connectionFigure);
 		if (connectionPosition > this.getChildren().size()) {
-			this.getChildren().add(connectionFigure);
+			children.add(connectionFigure);
 		} else {
-			this.getChildren().add(connectionPosition, connectionFigure);
+			children.add(connectionPosition, connectionFigure);
 		}
 		this.invalidate();
 		this.repaint();

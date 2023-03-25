@@ -34,17 +34,16 @@ public class TreeLayout extends AbstractLayout {
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure,
 	 *      int, int)
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		container.validate();
-		List children = container.getChildren();
 		Rectangle result = new Rectangle().setLocation(container.getClientArea().getLocation());
-		for (int i = 0; i < children.size(); i++)
-			result.union(((IFigure) children.get(i)).getBounds());
+		container.getChildren().forEach(child -> result.union(child.getBounds()));
 		result.resize(container.getInsets().getWidth(), container.getInsets().getHeight());
 		return result.getSize();
 	}
 
-	private int[] calculateNewRightContour(int old[], int add[], int shift) {
+	private static int[] calculateNewRightContour(int old[], int add[], int shift) {
 		if (old == null)
 			return add;
 //	if (shift < 0)
@@ -77,6 +76,7 @@ public class TreeLayout extends AbstractLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#layout(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void layout(IFigure container) {
 		Animation.recordInitialState(container);
 		if (Animation.playbackState(container))
@@ -84,11 +84,11 @@ public class TreeLayout extends AbstractLayout {
 		TreeRoot root = ((TreeBranch) container.getParent()).getRoot();
 		Transposer transposer = root.getTransposer();
 		int gap = root.getMinorSpacing();
-		List subtrees = container.getChildren();
+		List<? extends IFigure> subtrees = container.getChildren();
 		TreeBranch subtree;
 		int previousSubtreeDepth = 0;
-		int rightContour[] = null;
-		int leftContour[];
+		int[] rightContour = null;
+		int[] leftContour;
 		int contactDepth;
 
 		Point reference = transposer.t(container.getBounds().getLocation());

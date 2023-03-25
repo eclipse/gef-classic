@@ -89,7 +89,7 @@ public class BlockFlow extends FlowFigure {
 			FlowBorder border = (FlowBorder) getBorder();
 			return border.getBottomMargin();
 		}
-		List children = getChildren();
+		List<? extends IFigure> children = getChildren();
 		int childIndex = children.size() - 1;
 		if (childIndex >= 0 && children.get(childIndex) instanceof BlockFlow) {
 			margin = Math.max(margin, ((BlockFlow) children.get(childIndex)).getBottomMargin());
@@ -177,8 +177,8 @@ public class BlockFlow extends FlowFigure {
 			FlowBorder border = (FlowBorder) getBorder();
 			return border.getTopMargin();
 		}
-		List children = getChildren();
-		if (children.size() > 0 && children.get(0) instanceof BlockFlow) {
+		List<? extends IFigure> children = getChildren();
+		if (!children.isEmpty() && children.get(0) instanceof BlockFlow) {
 			margin = Math.max(margin, ((BlockFlow) children.get(0)).getTopMargin());
 		}
 		return margin;

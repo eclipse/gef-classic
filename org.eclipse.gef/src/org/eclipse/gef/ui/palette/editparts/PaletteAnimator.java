@@ -78,9 +78,8 @@ public class PaletteAnimator extends LayoutAnimator {
 		int wHint = openDrawer.getParent().getClientArea().width;
 		int availableHeight = openDrawer.getParent().getSize().height;
 		int requiredHeight = 0;
-		List closable = new ArrayList();
-		for (Iterator iter = openDrawer.getParent().getChildren().iterator(); iter.hasNext();) {
-			IFigure sibling = (IFigure) iter.next();
+		List<DrawerFigure> closable = new ArrayList<>();
+		for (IFigure sibling : openDrawer.getParent().getChildren()) {
 			int height = sibling.getPreferredSize(wHint, -1).height;
 			requiredHeight += height;
 			if (!(sibling instanceof DrawerFigure) || sibling == openDrawer)
@@ -92,7 +91,7 @@ public class PaletteAnimator extends LayoutAnimator {
 
 		// Start closing until requiredHeight <= available
 		for (int i = closable.size() - 1; i >= 0 && requiredHeight > availableHeight; i--) {
-			drawer = (DrawerFigure) closable.get(i);
+			drawer = closable.get(i);
 			int expandedHeight = drawer.getPreferredSize(wHint, -1).height;
 			drawer.setExpanded(false);
 			int collapsedHeight = drawer.getPreferredSize(wHint, -1).height;

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.util.Iterator;
-
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -87,8 +85,8 @@ public abstract class FlowFigure extends Figure {
 	 * @since 3.1
 	 */
 	protected void contributeBidi(BidiProcessor proc) {
-		for (Iterator iter = getChildren().iterator(); iter.hasNext();)
-			((FlowFigure) iter.next()).contributeBidi(proc);
+		for (IFigure child : getChildren())
+			((FlowFigure) child).contributeBidi(proc);
 	}
 
 	/**

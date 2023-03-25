@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import java.util.List;
-
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -54,14 +52,9 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 
 		Dimension prefSize = super.calculatePreferredSize(container, wHint, hHint);
 
-		List children = container.getChildren();
-		IFigure child;
-
 		// Build the sizes for each row, and update prefSize accordingly
 		Dimension expandedPaneSize = null;
-		for (int i = 0; i < children.size(); i++) {
-			child = (IFigure) children.get(i);
-
+		for (IFigure child : container.getChildren()) {
 			if (child instanceof PinnablePaletteStackFigure && ((PinnablePaletteStackFigure) child).isExpanded()) {
 
 				// Subtract out the insets from the hints
@@ -70,13 +63,11 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 				if (hHint > -1)
 					hHint = Math.max(0, hHint - container.getInsets().getHeight());
 
-				// Figure out the new hint that we are interested in based on
-				// the
-				// orientation. Ignore the other hint (by setting it to -1).
+				// Figure out the new hint that we are interested in based on the orientation.
+				// Ignore the other hint (by setting it to -1).
 				// NOTE:
-				// The children of the parent figure will then be asked to
-				// ignore
-				// that hint as well.
+				// The children of the parent figure will then be asked to ignore that hint as
+				// well.
 				if (isHorizontal()) {
 					hHint = -1;
 				} else {

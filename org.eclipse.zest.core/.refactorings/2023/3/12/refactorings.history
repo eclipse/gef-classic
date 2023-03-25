@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Extract local variable &apos;children&apos; from expression &apos;((List&lt;IFigure&gt;)this.getChildren())&apos;&#x0A;- Original project: &apos;org.eclipse.zest.core&apos;&#x0A;- Variable name: &apos;children&apos;&#x0A;- Destination method: &apos;org.eclipse.zest.core.widgets.internal.ZestRootLayer.unHighlightConnection(...)&apos;&#x0A;- Variable expression: &apos;((List&lt;IFigure&gt;)this.getChildren())&apos;&#x0A;- Replace occurrences of expression with variable" description="Extract local variable &apos;children&apos;" final="false" id="org.eclipse.jdt.ui.extract.temp" input="/src&lt;org.eclipse.zest.core.widgets.internal{ZestRootLayer.java" name="children" replace="true" selection="4446 36" stamp="1679747442771" varType="false" version="1.0"/>
+</session>

@@ -12,7 +12,6 @@
 package org.eclipse.draw2d;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -58,13 +57,8 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 * @since 3.2
 	 */
 	protected Object getCurrentState(IFigure container) {
-		Map locations = new HashMap();
-		List children = container.getChildren();
-		IFigure child;
-		for (int i = 0; i < children.size(); i++) {
-			child = (IFigure) children.get(i);
-			locations.put(child, child.getBounds().getCopy());
-		}
+		Map<IFigure, Rectangle> locations = new HashMap<>();
+		container.getChildren().forEach(child -> locations.put(child, child.getBounds().getCopy()));
 		return locations;
 	}
 
@@ -109,15 +103,13 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 		Map ending = (Map) Animation.getFinalState(this, container);
 		if (initial == null)
 			return false;
-		List children = container.getChildren();
 
 		float progress = Animation.getProgress();
 		float ssergorp = 1 - progress;
 
 		Rectangle rect1, rect2;
 
-		for (int i = 0; i < children.size(); i++) {
-			IFigure child = (IFigure) children.get(i);
+		for (IFigure child : container.getChildren()) {
 			rect1 = (Rectangle) initial.get(child);
 			rect2 = (Rectangle) ending.get(child);
 

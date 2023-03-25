@@ -32,9 +32,9 @@ public class FocusTraverseManager {
 	public FocusTraverseManager() {
 	}
 
-	private IFigure findDeepestRightmostChildOf(IFigure fig) {
-		while (fig.getChildren().size() != 0) {
-			fig = (IFigure) fig.getChildren().get(fig.getChildren().size() - 1);
+	private static IFigure findDeepestRightmostChildOf(IFigure fig) {
+		while (!fig.getChildren().isEmpty()) {
+			fig = fig.getChildren().get(fig.getChildren().size() - 1);
 		}
 		return fig;
 	}
@@ -56,8 +56,8 @@ public class FocusTraverseManager {
 		 * child.
 		 */
 		if (prevFocus == null) {
-			if (root.getChildren().size() != 0) {
-				nextFocus = ((IFigure) root.getChildren().get(0));
+			if (!root.getChildren().isEmpty()) {
+				nextFocus = root.getChildren().get(0);
 				if (isFocusEligible(nextFocus))
 					return nextFocus;
 			} else
@@ -140,7 +140,7 @@ public class FocusTraverseManager {
 			if (parent == null)
 				return null;
 
-			List siblings = parent.getChildren();
+			List<? extends IFigure> siblings = parent.getChildren();
 			int siblingPos = siblings.indexOf(nextFocus);
 
 			/*
@@ -152,7 +152,7 @@ public class FocusTraverseManager {
 			 * traverse its parent.
 			 */
 			if (siblingPos != 0) {
-				IFigure child = findDeepestRightmostChildOf((IFigure) siblings.get(siblingPos - 1));
+				IFigure child = findDeepestRightmostChildOf(siblings.get(siblingPos - 1));
 				if (isFocusEligible(child)) {
 					found = true;
 					nextFocus = child;

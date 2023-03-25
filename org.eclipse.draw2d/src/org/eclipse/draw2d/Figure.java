@@ -78,7 +78,7 @@ public class Figure implements IFigure {
 	private PropertyChangeSupport propertyListeners;
 	private EventListenerList eventListeners = new EventListenerList();
 
-	private List children = Collections.EMPTY_LIST;
+	private List<IFigure> children = Collections.emptyList();
 
 	/**
 	 * This Figure's preferred size.
@@ -135,8 +135,8 @@ public class Figure implements IFigure {
 	 * @see IFigure#add(IFigure, Object, int)
 	 */
 	public void add(IFigure figure, Object constraint, int index) {
-		if (children == Collections.EMPTY_LIST)
-			children = new ArrayList(2);
+		if (children.equals(Collections.emptyList()))
+			children = new ArrayList<>(2);
 		if (index < -1 || index > children.size())
 			throw new IndexOutOfBoundsException("Index does not exist"); //$NON-NLS-1$
 
@@ -271,8 +271,7 @@ public class Figure implements IFigure {
 		if (getFlag(FLAG_REALIZED))
 			throw new RuntimeException("addNotify() should not be called multiple times"); //$NON-NLS-1$
 		setFlag(FLAG_REALIZED, true);
-		for (int i = 0; i < children.size(); i++)
-			((IFigure) children.get(i)).addNotify();
+		children.forEach(IFigure::addNotify);
 	}
 
 	/**
@@ -340,10 +339,8 @@ public class Figure implements IFigure {
 
 		x = PRIVATE_POINT.x;
 		y = PRIVATE_POINT.y;
-		IFigure fig;
-		for (int i = children.size(); i > 0;) {
-			i--;
-			fig = (IFigure) children.get(i);
+		for (int i = children.size() - 1; i >= 0; i--) {
+			IFigure fig = children.get(i);
 			if (fig.isVisible()) {
 				fig = fig.findFigureAt(x, y, search);
 				if (fig != null)
@@ -432,16 +429,12 @@ public class Figure implements IFigure {
 		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
 			return null;
 
-		IFigure fig;
-		for (int i = children.size(); i > 0;) {
-			i--;
-			fig = (IFigure) children.get(i);
-			if (fig.isVisible() && fig.isEnabled()) {
-				if (fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
-					fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x, PRIVATE_POINT.y);
-					if (fig != null) {
-						return fig;
-					}
+		for (int i = children.size() - 1; i >= 0; i--) {
+			IFigure fig = children.get(i);
+			if (fig.isVisible() && fig.isEnabled() && fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
+				fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x, PRIVATE_POINT.y);
+				if (fig != null) {
+					return fig;
 				}
 			}
 		}
@@ -573,7 +566,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getChildren()
 	 */
-	public List getChildren() {
+	public List<? extends IFigure> getChildren() {
 		return children;
 	}
 
@@ -1112,8 +1105,7 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void paintChildren(Graphics graphics) {
-		for (int i = 0; i < children.size(); i++) {
-			IFigure child = (IFigure) children.get(i);
+		for (IFigure child : children) {
 			if (child.isVisible()) {
 				// determine clipping areas for child
 				Rectangle[] clipping = null;
@@ -1204,8 +1196,7 @@ public class Figure implements IFigure {
 			fireCoordinateSystemChanged();
 			return;
 		}
-		for (int i = 0; i < children.size(); i++)
-			((IFigure) children.get(i)).translate(dx, dy);
+		children.forEach(child -> child.translate(dx, dy));
 	}
 
 	/**
@@ -1238,10 +1229,8 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	public void removeAll() {
-		List list = new ArrayList(getChildren());
-		for (int i = 0; i < list.size(); i++) {
-			remove((IFigure) list.get(i));
-		}
+		List<? extends IFigure> list = new ArrayList<>(getChildren());
+		list.forEach(this::remove);
 	}
 
 	/**
@@ -1332,8 +1321,7 @@ public class Figure implements IFigure {
 	 * Called prior to this figure's removal from its parent
 	 */
 	public void removeNotify() {
-		for (int i = 0; i < children.size(); i++)
-			((IFigure) children.get(i)).removeNotify();
+		children.forEach(IFigure::removeNotify);
 		if (internalGetEventDispatcher() != null)
 			internalGetEventDispatcher().requestRemoveFocus(this);
 		setFlag(FLAG_REALIZED, false);
@@ -1832,8 +1820,7 @@ public class Figure implements IFigure {
 			return;
 		setValid(true);
 		layout();
-		for (int i = 0; i < children.size(); i++)
-			((IFigure) children.get(i)).validate();
+		children.forEach(IFigure::validate);
 	}
 
 	/**
@@ -1933,7 +1920,7 @@ public class Figure implements IFigure {
 	 * Iterates over a Figure's children.
 	 */
 	public static class FigureIterator {
-		private List list;
+		private List<? extends IFigure> list;
 		private int index;
 
 		/**
@@ -1952,7 +1939,7 @@ public class Figure implements IFigure {
 		 * @return The next Figure
 		 */
 		public IFigure nextFigure() {
-			return (IFigure) list.get(--index);
+			return list.get(--index);
 		}
 
 		/**

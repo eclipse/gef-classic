@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.util.Iterator;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -80,8 +78,7 @@ public class FlowAdapter extends FlowFigure {
 	public void postValidate() {
 		setBounds(new Rectangle(box.getX(), box.getBaseline() - box.ascent, box.width, box.ascent));
 		super.layout();
-		for (Iterator itr = getChildren().iterator(); itr.hasNext();)
-			((IFigure) itr.next()).validate();
+		getChildren().forEach(IFigure::validate);
 	}
 
 	/**

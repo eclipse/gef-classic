@@ -29,23 +29,23 @@ class HangingLayout extends BranchLayout {
 		super(branch);
 	}
 
+	@Override
 	void calculateDepth() {
 		depth = 0;
-		List subtrees = branch.contents.getChildren();
-		for (int i = 0; i < subtrees.size(); i++)
-			depth += ((TreeBranch) subtrees.get(i)).getDepth();
+		for (IFigure child : branch.contents.getChildren()) {
+			depth += ((TreeBranch) child).getDepth();
+		}
 		depth++;
 	}
 
+	@Override
 	void setRowHeights(int[] heights, int offset) {
 		super.setRowHeights(heights, offset);
 		offset++;
 		if (branch.isExpanded()) {
-			List subtrees = branch.contents.getChildren();
 			TreeBranch subtree;
-
-			for (int i = 0; i < subtrees.size(); i++) {
-				subtree = (TreeBranch) subtrees.get(i);
+			for (IFigure child : branch.contents.getChildren()) {
+				subtree = (TreeBranch) child;
 				subtree.setRowHeights(heights, offset);
 				offset += subtree.getDepth();
 			}
@@ -55,6 +55,7 @@ class HangingLayout extends BranchLayout {
 	/**
 	 * @see org.eclipse.draw2d.examples.tree.BranchLayout#updateRowHeights()
 	 */
+	@Override
 	void updateRowHeights() {
 		Transposer transposer = branch.getRoot().getTransposer();
 		preferredRowHeights = new int[getDepth()];
@@ -117,6 +118,7 @@ class HangingLayout extends BranchLayout {
 	/**
 	 * @see org.eclipse.draw2d.examples.tree.BranchLayout#paintLines(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	void paintLines(Graphics g) {
 		int gap = getGap();
 		if (getTransposer().isEnabled()) {
@@ -124,8 +126,8 @@ class HangingLayout extends BranchLayout {
 			IFigure contents = branch.getContentsPane();
 			int x = node.getBounds().right();
 			int y = node.getBounds().y() + gap;
-			List children = contents.getChildren();
-			if (children.size() == 0)
+			List<? extends IFigure> children = contents.getChildren();
+			if (children.isEmpty())
 				return;
 			int right = x;
 			for (int i = 0; i < children.size(); i++) {
@@ -140,8 +142,8 @@ class HangingLayout extends BranchLayout {
 			IFigure contents = branch.getContentsPane();
 			int x = node.getBounds().x() + gap;
 			int y = node.getBounds().bottom();
-			List children = contents.getChildren();
-			if (children.size() == 0)
+			List<? extends IFigure> children = contents.getChildren();
+			if (children.isEmpty())
 				return;
 			int bottom = y;
 			for (int i = 0; i < children.size(); i++) {
@@ -153,6 +155,7 @@ class HangingLayout extends BranchLayout {
 		}
 	}
 
+	@Override
 	void updateContours() {
 		// Make sure we layout first
 		Transposer transposer = getTransposer();
@@ -171,7 +174,6 @@ class HangingLayout extends BranchLayout {
 		if (!branch.isExpanded())
 			return;
 
-		List subtrees = branch.contents.getChildren();
 		TreeBranch subtree;
 
 		int leftSide = getGap();
@@ -180,8 +182,8 @@ class HangingLayout extends BranchLayout {
 
 		int rightMargin;
 		int offset = 1;
-		for (int i = 0; i < subtrees.size(); i++) {
-			subtree = (TreeBranch) subtrees.get(i);
+		for (IFigure child : branch.contents.getChildren()) {
+			subtree = (TreeBranch) child;
 			rightMargin = rightEdge - transposer.t(subtree.getBounds()).right();
 			int rightContour[] = subtree.getContourRight();
 			for (int j = 0; j < rightContour.length; j++)

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.text;
 
-import java.util.List;
-
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -99,13 +97,12 @@ public class FlowPage extends BlockFlow {
 	/**
 	 * @see BlockFlow#postValidate()
 	 */
+	@Override
 	public void postValidate() {
 		Rectangle r = getBlockBox().toRectangle();
 		pageSize.width = r.width;
 		pageSize.height = r.height;
-		List v = getChildren();
-		for (int i = 0; i < v.size(); i++)
-			((FlowFigure) v.get(i)).postValidate();
+		getChildren().forEach(child -> ((FlowFigure) child).postValidate());
 	}
 
 	/**
@@ -113,6 +110,7 @@ public class FlowPage extends BlockFlow {
 	 * 
 	 * @see org.eclipse.draw2d.IFigure#removeNotify()
 	 */
+	@Override
 	public void removeNotify() {
 		super.removeNotify();
 		setValid(true);
@@ -121,6 +119,7 @@ public class FlowPage extends BlockFlow {
 	/**
 	 * @see FlowFigure#setBounds(Rectangle)
 	 */
+	@Override
 	public void setBounds(Rectangle r) {
 		if (getBounds().equals(r))
 			return;

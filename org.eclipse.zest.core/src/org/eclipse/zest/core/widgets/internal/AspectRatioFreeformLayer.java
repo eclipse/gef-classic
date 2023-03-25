@@ -184,6 +184,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 	// return true;
 	// }
 
+	@Override
 	protected void paintClientArea(Graphics graphics) {
 
 		if (getChildren().isEmpty()) {

@@ -11,7 +11,6 @@
 package org.eclipse.gef.editparts;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.draw2d.FreeformLayer;
@@ -29,7 +28,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class GuideLayer extends FreeformLayer {
 
-	private Map constraints;
+	private Map<IFigure, Object> constraints;
 
 	/**
 	 * @param child the figure whose constraint is to be found
@@ -46,7 +45,7 @@ public class GuideLayer extends FreeformLayer {
 	 */
 	public Map getConstraints() {
 		if (constraints == null) {
-			constraints = new HashMap();
+			constraints = new HashMap<>();
 		}
 		return constraints;
 	}
@@ -54,6 +53,7 @@ public class GuideLayer extends FreeformLayer {
 	/**
 	 * @see org.eclipse.draw2d.FreeformFigure#getFreeformExtent()
 	 */
+	@Override
 	public Rectangle getFreeformExtent() {
 		/*
 		 * The freeform extents are just big enough to include all the children: tall
@@ -66,10 +66,11 @@ public class GuideLayer extends FreeformLayer {
 		 * These ints are initialized to 5, and not 0, so that when the final extent is
 		 * expanded by 5, the bounds do not go into the negative (unless necessary).
 		 */
-		int maxX = 5, minX = 5, maxY = 5, minY = 5;
-		Iterator children = getChildren().iterator();
-		while (children.hasNext()) {
-			IFigure child = (IFigure) children.next();
+		int maxX = 5;
+		int minX = 5;
+		int maxY = 5;
+		int minY = 5;
+		for (IFigure child : getChildren()) {
 			Boolean isHorizontal = (Boolean) getConstraint(child);
 			if (isHorizontal != null) {
 				if (isHorizontal.booleanValue()) {
@@ -94,6 +95,7 @@ public class GuideLayer extends FreeformLayer {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
 	 */
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		Rectangle extents = getFreeformExtent();
 		return new Dimension(extents.right(), extents.bottom());
@@ -102,6 +104,7 @@ public class GuideLayer extends FreeformLayer {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#remove(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void remove(IFigure child) {
 		getConstraints().remove(child);
 		super.remove(child);
@@ -110,11 +113,10 @@ public class GuideLayer extends FreeformLayer {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	public void setBounds(Rectangle rect) {
 		super.setBounds(rect);
-		Iterator children = getChildren().iterator();
-		while (children.hasNext()) {
-			IFigure child = (IFigure) children.next();
+		for (IFigure child : getChildren()) {
 			Boolean isHorizontal = (Boolean) getConstraint(child);
 			if (isHorizontal != null) {
 				if (isHorizontal.booleanValue()) {
@@ -136,6 +138,7 @@ public class GuideLayer extends FreeformLayer {
 	 * @see org.eclipse.draw2d.IFigure#setConstraint(org.eclipse.draw2d.IFigure,
 	 *      java.lang.Object)
 	 */
+	@Override
 	public void setConstraint(IFigure child, Object constraint) {
 		getConstraints().put(child, constraint);
 	}

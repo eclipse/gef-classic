@@ -109,10 +109,10 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 		/**
 		 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 		 */
+		@Override
 		public Dimension getPreferredSize(int wHint, int hHint) {
 			Rectangle rect = new Rectangle();
-			for (int i = 0; i < getChildren().size(); i++)
-				rect.union(((IFigure) getChildren().get(i)).getBounds());
+			getChildren().forEach(child -> rect.union(child.getBounds()));
 			return rect.getSize();
 		}
 

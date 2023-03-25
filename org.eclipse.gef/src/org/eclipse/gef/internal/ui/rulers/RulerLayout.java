@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.rulers;
 
-import java.util.List;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Dimension;
@@ -45,11 +43,10 @@ public class RulerLayout extends XYLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#layout(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void layout(IFigure container) {
-		List children = container.getChildren();
 		Rectangle rulerSize = container.getClientArea();
-		for (int i = 0; i < children.size(); i++) {
-			IFigure child = (IFigure) children.get(i);
+		for (IFigure child : container.getChildren()) {
 			Dimension childSize = child.getPreferredSize();
 			int position = ((Integer) getConstraint(child)).intValue();
 			if (((RulerFigure) container).isHorizontal()) {

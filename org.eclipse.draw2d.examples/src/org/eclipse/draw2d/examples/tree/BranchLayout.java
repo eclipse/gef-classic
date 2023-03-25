@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Transposer;
 
 /**
@@ -64,7 +65,7 @@ public abstract class BranchLayout extends AbstractLayout {
 		return preferredRowHeights;
 	}
 
-	List getSubtrees() {
+	List<? extends IFigure> getSubtrees() {
 		return branch.getContentsPane().getChildren();
 	}
 
@@ -78,6 +79,7 @@ public abstract class BranchLayout extends AbstractLayout {
 		return branch.getRoot().getMajorSpacing();
 	}
 
+	@Override
 	public void invalidate() {
 		preferredRowHeights = null;
 		cachedContourLeft = null;
@@ -96,7 +98,7 @@ public abstract class BranchLayout extends AbstractLayout {
 		horizontal = value;
 	}
 
-	void setRowHeights(int heights[], int offset) {
+	void setRowHeights(int[] heights, int offset) {
 		if (rowHeight != heights[offset]) {
 			rowHeight = heights[offset];
 			branch.revalidate();

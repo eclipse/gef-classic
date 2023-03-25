@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.internal.ui.palette.editparts;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Dimension;
 
@@ -65,9 +62,7 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 	private Dimension getMinimumHints(IFigure figure, int wHint, int hHint) {
 		if (cachedConstraint == null) {
 			cachedConstraint = defaultConstraint.getCopy();
-			List children = figure.getParent().getChildren();
-			for (Iterator iter = children.iterator(); iter.hasNext();) {
-				IFigure child = (IFigure) iter.next();
+			for (IFigure child : figure.getParent().getChildren()) {
 				Dimension childSize = (child instanceof PinnablePaletteStackFigure)
 						? ((PinnablePaletteStackFigure) child).getHeaderPreferredSize(cachedConstraint.width,
 								cachedConstraint.height)

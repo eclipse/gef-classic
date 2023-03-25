@@ -102,6 +102,7 @@ public class LayeredPane extends Layer {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#remove(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void remove(IFigure figure) {
 		int index = getChildren().indexOf(figure);
 		if (index != -1)

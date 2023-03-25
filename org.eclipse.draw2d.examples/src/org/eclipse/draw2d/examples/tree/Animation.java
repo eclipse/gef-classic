@@ -10,11 +10,16 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.tree;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Viewport;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * @author hudsonr Created on Apr 28, 2003
@@ -86,7 +91,7 @@ public class Animation {
 			return false;
 		}
 		List target = (List) finalStates.get(container);
-		List children = container.getChildren();
+		List<? extends IFigure> children = container.getChildren();
 		Rectangle rect1, rect2;
 		for (int i = 0; i < children.size(); i++) {
 			IFigure child = (IFigure) children.get(i);
@@ -118,10 +123,10 @@ public class Animation {
 			return;
 //		System.out.println("Error recording initial state");
 		initialStates.put(container, list = new ArrayList());
-		List children = container.getChildren();
 		list.clear();
-		for (int i = 0; i < children.size(); i++)
-			list.add(((IFigure) children.get(i)).getBounds().getCopy());
+		for (IFigure child : container.getChildren()) {
+			list.add(child.getBounds().getCopy());
+		}
 	}
 
 	static void swap() {
