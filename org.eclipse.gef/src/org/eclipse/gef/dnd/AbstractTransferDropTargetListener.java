@@ -12,6 +12,8 @@ package org.eclipse.gef.dnd;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
@@ -20,11 +22,13 @@ import org.eclipse.swt.dnd.DropTargetListener;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.dnd.TransferData;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.AutoexposeHelper;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 
@@ -77,12 +81,10 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	}
 
 	private EditPart calculateTargetEditPart() {
-		EditPart ep = getViewer().findObjectAtExcluding(getDropLocation(), getExclusionSet(),
-				new EditPartViewer.Conditional() {
-					public boolean evaluate(EditPart editpart) {
-						return editpart.getTargetEditPart(getTargetRequest()) != null;
-					}
-				});
+		List<IFigure> exclusionFigures = getExclusionSet().stream().filter(GraphicalEditPart.class::isInstance)
+				.map(ep -> ((GraphicalEditPart) ep).getFigure()).collect(Collectors.toList());
+		EditPart ep = getViewer().findObjectAtExcluding(getDropLocation(), exclusionFigures,
+				editpart -> editpart.getTargetEditPart(getTargetRequest()) != null);
 		if (ep != null)
 			ep = ep.getTargetEditPart(getTargetRequest());
 		return ep;
@@ -236,8 +238,9 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * 
 	 * @return A Collection of EditParts to be excluded
 	 */
-	protected Collection getExclusionSet() {
-		return Collections.EMPTY_LIST;
+	@SuppressWarnings("static-method") // allow children to override this method
+	protected Collection<EditPart> getExclusionSet() {
+		return Collections.emptySet();
 	}
 
 	/**
@@ -540,7 +543,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 			return;
 		AutoexposeHelper.Search search;
 		search = new AutoexposeHelper.Search(getDropLocation());
-		getViewer().findObjectAtExcluding(getDropLocation(), Collections.EMPTY_LIST, search);
+		getViewer().findObjectAtExcluding(getDropLocation(), Collections.emptyList(), search);
 		setAutoexposeHelper(search.result);
 	}
 

@@ -138,7 +138,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 		LayerManager layermanager = (LayerManager) getEditPartRegistry().get(LayerManager.ID);
 		if (layermanager == null)
 			return null;
-		List list = new ArrayList(3);
+		List<IFigure> list = new ArrayList<>(3);
 		list.add(layermanager.getLayer(LayerConstants.PRIMARY_LAYER));
 		list.add(layermanager.getLayer(LayerConstants.CONNECTION_LAYER));
 		list.add(layermanager.getLayer(LayerConstants.FEEDBACK_LAYER));
@@ -152,12 +152,14 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * @see EditPartViewer#findObjectAtExcluding(Point, Collection,
 	 *      EditPartViewer.Conditional)
 	 */
-	public EditPart findObjectAtExcluding(Point pt, Collection exclude, final Conditional condition) {
+	@Override
+	public EditPart findObjectAtExcluding(Point pt, Collection<IFigure> exclude, final Conditional condition) {
 		class ConditionalTreeSearch extends ExclusionSearch {
-			ConditionalTreeSearch(Collection coll) {
+			ConditionalTreeSearch(Collection<IFigure> coll) {
 				super(coll);
 			}
 
+			@Override
 			public boolean accept(IFigure figure) {
 				EditPart editpart = null;
 				while (editpart == null && figure != null) {

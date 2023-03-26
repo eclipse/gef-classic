@@ -374,7 +374,7 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public final IFigure findFigureAt(Point pt) {
-		return findFigureAtExcluding(pt.x, pt.y, Collections.EMPTY_LIST);
+		return findFigureAtExcluding(pt.x, pt.y, Collections.emptyList());
 	}
 
 	/**
@@ -406,7 +406,7 @@ public class Figure implements IFigure {
 	 * @see IFigure#findFigureAtExcluding(int, int, Collection)
 	 */
 	@Override
-	public final IFigure findFigureAtExcluding(int x, int y, Collection c) {
+	public final IFigure findFigureAtExcluding(int x, int y, Collection<IFigure> c) {
 		return findFigureAt(x, y, new ExclusionSearch(c));
 	}
 

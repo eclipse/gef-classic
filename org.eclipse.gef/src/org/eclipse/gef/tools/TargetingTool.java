@@ -15,6 +15,7 @@ import java.util.Collections;
 
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.AutoexposeHelper;
@@ -124,13 +125,14 @@ public abstract class TargetingTool extends AbstractTool {
 	}
 
 	/**
-	 * Returns a List of objects that should be excluded as potential targets for
+	 * Returns a List of figures that should be excluded as potential targets for
 	 * the operation.
 	 * 
-	 * @return the list of objects to be excluded as targets
+	 * @return the list of figures to be excluded as targets
 	 */
-	protected Collection getExclusionSet() {
-		return Collections.EMPTY_LIST;
+	@SuppressWarnings("static-method") // to be overridden by children
+	protected Collection<IFigure> getExclusionSet() {
+		return Collections.emptyList();
 	}
 
 	/**
@@ -391,7 +393,7 @@ public abstract class TargetingTool extends AbstractTool {
 			return;
 		AutoexposeHelper.Search search;
 		search = new AutoexposeHelper.Search(getLocation());
-		getCurrentViewer().findObjectAtExcluding(getLocation(), Collections.EMPTY_LIST, search);
+		getCurrentViewer().findObjectAtExcluding(getLocation(), Collections.emptyList(), search);
 		setAutoexposeHelper(search.result);
 	}
 

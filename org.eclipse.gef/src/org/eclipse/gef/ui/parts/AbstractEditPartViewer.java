@@ -41,6 +41,7 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Point;
 
 import org.eclipse.gef.AccessibleEditPart;
@@ -222,13 +223,13 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#findObjectAt(Point)
 	 */
 	public final EditPart findObjectAt(Point pt) {
-		return findObjectAtExcluding(pt, Collections.EMPTY_SET);
+		return findObjectAtExcluding(pt, Collections.emptySet());
 	}
 
 	/**
 	 * @see EditPartViewer#findObjectAtExcluding(Point, Collection)
 	 */
-	public final EditPart findObjectAtExcluding(Point pt, Collection exclude) {
+	public final EditPart findObjectAtExcluding(Point pt, Collection<IFigure> exclude) {
 		return findObjectAtExcluding(pt, exclude, null);
 	}
 

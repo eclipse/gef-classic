@@ -19,6 +19,7 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.Connection;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.geometry.Point;
 
@@ -42,7 +43,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	protected static final int MAX_FLAG = FLAG_SOURCE_FEEBBACK;
 
 	private String commandName;
-	private List exclusionSet;
+	private List<IFigure> exclusionSet;
 
 	private ConnectionEditPart connectionEditPart;
 
@@ -148,9 +149,9 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	/**
 	 * @see org.eclipse.gef.tools.TargetingTool#getExclusionSet()
 	 */
-	protected Collection getExclusionSet() {
+	protected Collection<IFigure> getExclusionSet() {
 		if (exclusionSet == null) {
-			exclusionSet = new ArrayList();
+			exclusionSet = new ArrayList<>(1);
 			exclusionSet.add(getConnection());
 		}
 		return exclusionSet;
