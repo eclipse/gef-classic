@@ -249,7 +249,7 @@ public interface IFigure {
 	 * @return The IFigure at the specified location, excluding any IFigures in
 	 *         collection
 	 */
-	IFigure findFigureAtExcluding(int x, int y, Collection collection);
+	IFigure findFigureAtExcluding(int x, int y, Collection<IFigure> collection);
 
 	/**
 	 * Returns the IFigure located at the given location which will accept mouse

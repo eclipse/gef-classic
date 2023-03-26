@@ -71,13 +71,15 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 		return RequestConstants.REQ_ADD;
 	}
 
-	protected Collection getExclusionSet() {
+	@Override
+	protected Collection<EditPart> getExclusionSet() {
 		List selection = getViewer().getSelectedEditParts();
-		List exclude = new ArrayList(selection);
+		List<EditPart> exclude = new ArrayList<>(selection);
 		exclude.addAll(includeChildren(selection));
 		return exclude;
 	}
 
+	@Override
 	protected void handleDragOver() {
 		if (TreeViewerTransfer.getInstance().getViewer() != getViewer()) {
 			getCurrentEvent().detail = DND.DROP_NONE;

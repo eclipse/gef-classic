@@ -21,14 +21,14 @@ import java.util.Collection;
  */
 public class ExclusionSearch implements TreeSearch {
 
-	private final Collection c;
+	private final Collection<IFigure> c;
 
 	/**
 	 * Constructs an Exclusion search using the given collection.
 	 * 
 	 * @param collection the exclusion set
 	 */
-	public ExclusionSearch(Collection collection) {
+	public ExclusionSearch(Collection<IFigure> collection) {
 		this.c = collection;
 	}
 

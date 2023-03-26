@@ -12,7 +12,7 @@ package org.eclipse.gef.ui.rulers;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
+import java.util.Collections;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
@@ -473,8 +473,9 @@ public class RulerComposite extends Composite {
 		/**
 		 * @see org.eclipse.gef.GraphicalViewer#findHandleAt(org.eclipse.draw2d.geometry.Point)
 		 */
+		@Override
 		public Handle findHandleAt(org.eclipse.draw2d.geometry.Point p) {
-			final GraphicalEditPart gep = (GraphicalEditPart) findObjectAtExcluding(p, new ArrayList());
+			final GraphicalEditPart gep = (GraphicalEditPart) findObjectAtExcluding(p, Collections.emptyList());
 			if (gep == null || !(gep instanceof GuideEditPart))
 				return null;
 			return new Handle() {
@@ -491,6 +492,7 @@ public class RulerComposite extends Composite {
 		/**
 		 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#init()
 		 */
+		@Override
 		protected void init() {
 			setContextMenu(new RulerContextMenuProvider(this));
 			setKeyHandler(new RulerKeyHandler(this));

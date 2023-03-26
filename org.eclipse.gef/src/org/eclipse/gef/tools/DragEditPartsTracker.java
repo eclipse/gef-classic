@@ -69,7 +69,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	private static final int FLAG_SOURCE_FEEDBACK = SelectEditPartTracker.MAX_FLAG << 1;
 	/** Max flag */
 	protected static final int MAX_FLAG = FLAG_SOURCE_FEEDBACK;
-	private List exclusionSet;
+	private List<IFigure> exclusionSet;
 	private PrecisionPoint sourceRelativeStartPoint;
 	private SnapToHelper snapToHelper;
 	private PrecisionRectangle sourceRectangle, compoundSrcRect;
@@ -338,10 +338,10 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#getExclusionSet()
 	 */
-	protected Collection getExclusionSet() {
+	protected Collection<IFigure> getExclusionSet() {
 		if (exclusionSet == null) {
 			List set = getOperationSet();
-			exclusionSet = new ArrayList(set.size() + 1);
+			exclusionSet = new ArrayList<>(set.size() + 1);
 			for (int i = 0; i < set.size(); i++) {
 				GraphicalEditPart editpart = (GraphicalEditPart) set.get(i);
 				exclusionSet.add(editpart.getFigure());
