@@ -26,7 +26,7 @@ public final class EventListenerList {
 	 * @param c        the class
 	 * @param listener the listener
 	 */
-	public synchronized void addListener(Class c, Object listener) {
+	public synchronized <T> void addListener(Class<T> c, Object listener) {
 		if (listener == null || c == null)
 			throw new IllegalArgumentException();
 
@@ -46,7 +46,7 @@ public final class EventListenerList {
 	 * @param c the type
 	 * @return whether this list contains a listener of type <i>c</i>
 	 */
-	public synchronized boolean containsListener(Class c) {
+	public synchronized <T> boolean containsListener(Class<T> c) {
 		if (array == null)
 			return false;
 		for (int i = 0; i < array.length; i += 2)
@@ -55,18 +55,19 @@ public final class EventListenerList {
 		return false;
 	}
 
-	static class TypeIterator implements Iterator {
+	static class TypeIterator<T> implements Iterator<T> {
 		private final Object[] items;
-		private final Class type;
+		private final Class<T> type;
 		private int index;
 
-		TypeIterator(Object items[], Class type) {
+		TypeIterator(Object[] items, Class<T> type) {
 			this.items = items;
 			this.type = type;
 		}
 
-		public Object next() {
-			Object result = items[index + 1];
+		public T next() {
+			@SuppressWarnings("unchecked") // check is performed in hasNext
+			T result = (T) items[index + 1];
 			index += 2;
 			return result;
 		}
@@ -79,6 +80,7 @@ public final class EventListenerList {
 			return index < items.length;
 		}
 
+		@Override
 		public void remove() {
 			throw new UnsupportedOperationException("Iterator removal not supported"); //$NON-NLS-1$
 		}
@@ -90,8 +92,19 @@ public final class EventListenerList {
 	 * @param listenerType the type
 	 * @return an Iterator of all the listeners of type <i>c</i>
 	 */
-	public synchronized Iterator getListeners(final Class listenerType) {
-		return new TypeIterator(array, listenerType);
+	public synchronized <T> Iterator<T> getListeners(final Class<T> listenerType) {
+		return new TypeIterator<>(array, listenerType);
+	}
+
+	/**
+	 * Returns a typed Iterable of all listeners of a of type <i>c</i>.
+	 * 
+	 * @param listenerType the type
+	 * @return an Iterable of all the listeners of type <i>c</i>
+	 * @since 3.13
+	 */
+	public synchronized <T> Iterable<T> getListenersIterable(final Class<T> listenerType) {
+		return () -> new TypeIterator<>(array, listenerType);
 	}
 
 	/**
@@ -100,7 +113,7 @@ public final class EventListenerList {
 	 * @param c        the type
 	 * @param listener the listener
 	 */
-	public synchronized void removeListener(Class c, Object listener) {
+	public synchronized <T> void removeListener(Class<T> c, Object listener) {
 		if (array == null || array.length == 0)
 			return;
 		if (listener == null || c == null)
@@ -115,7 +128,7 @@ public final class EventListenerList {
 		if (index == array.length)
 			return; // listener was not found
 
-		Object newArray[] = new Object[array.length - 2];
+		Object[] newArray = new Object[array.length - 2];
 		System.arraycopy(array, 0, newArray, 0, index);
 		System.arraycopy(array, index + 2, newArray, index, array.length - index - 2);
 		array = newArray;

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.Iterator;
-
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
@@ -192,11 +190,7 @@ public class Clickable extends Figure {
 	 */
 	protected void fireActionPerformed() {
 		ActionEvent action = new ActionEvent(this);
-		Iterator listeners = getListeners(ActionListener.class);
-		while (listeners.hasNext())
-			((ActionListener) listeners.next()) // Leave newline for debug
-												// stepping
-					.actionPerformed(action);
+		getListenersIterable(ActionListener.class).forEach(lst -> lst.actionPerformed(action));
 	}
 
 	/**
@@ -208,11 +202,7 @@ public class Clickable extends Figure {
 	 */
 	protected void fireStateChanged(ChangeEvent modelChange) {
 		ChangeEvent change = new ChangeEvent(this, modelChange.getPropertyName());
-		Iterator listeners = getListeners(ChangeListener.class);
-		while (listeners.hasNext())
-			((ChangeListener) listeners.next()) // Leave newline for debug
-												// stepping
-					.handleStateChanged(change);
+		getListenersIterable(ChangeListener.class).forEach(lst -> lst.handleStateChanged(change));
 	}
 
 	/**
@@ -293,6 +283,7 @@ public class Clickable extends Figure {
 	 * 
 	 * @param graphics Graphics handle for painting
 	 */
+	@Override
 	protected void paintBorder(Graphics graphics) {
 		super.paintBorder(graphics);
 		if (hasFocus()) {
@@ -315,6 +306,7 @@ public class Clickable extends Figure {
 	 * @param graphics Graphics handle for painting
 	 * @since 2.0
 	 */
+	@Override
 	protected void paintClientArea(Graphics graphics) {
 		if (isStyle(STYLE_BUTTON) && (getModel().isArmed() || getModel().isSelected())) {
 			graphics.translate(1, 1);
@@ -365,6 +357,7 @@ public class Clickable extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#setEnabled(boolean)
 	 */
+	@Override
 	public void setEnabled(boolean value) {
 		if (isEnabled() == value)
 			return;

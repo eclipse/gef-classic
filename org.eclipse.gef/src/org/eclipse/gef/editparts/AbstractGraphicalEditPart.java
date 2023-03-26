@@ -13,7 +13,6 @@ package org.eclipse.gef.editparts;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -349,12 +348,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	protected void fireRemovingSourceConnection(ConnectionEditPart connection, int index) {
 		if (eventListeners == null)
 			return;
-		Iterator listeners = eventListeners.getListeners(NodeListener.class);
-		NodeListener listener = null;
-		while (listeners.hasNext()) {
-			listener = (NodeListener) listeners.next();
-			listener.removingSourceConnection(connection, index);
-		}
+		eventListeners.getListenersIterable(NodeListener.class)
+				.forEach(lst -> lst.removingSourceConnection(connection, index));
 	}
 
 	/**
@@ -368,12 +363,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	protected void fireRemovingTargetConnection(ConnectionEditPart connection, int index) {
 		if (eventListeners == null)
 			return;
-		Iterator listeners = eventListeners.getListeners(NodeListener.class);
-		NodeListener listener = null;
-		while (listeners.hasNext()) {
-			listener = (NodeListener) listeners.next();
-			listener.removingTargetConnection(connection, index);
-		}
+		eventListeners.getListenersIterable(NodeListener.class)
+				.forEach(lst -> lst.removingTargetConnection(connection, index));
 	}
 
 	/**
@@ -387,12 +378,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	protected void fireSourceConnectionAdded(ConnectionEditPart connection, int index) {
 		if (eventListeners == null)
 			return;
-		Iterator listeners = eventListeners.getListeners(NodeListener.class);
-		NodeListener listener = null;
-		while (listeners.hasNext()) {
-			listener = (NodeListener) listeners.next();
-			listener.sourceConnectionAdded(connection, index);
-		}
+		eventListeners.getListenersIterable(NodeListener.class)
+				.forEach(lst -> lst.sourceConnectionAdded(connection, index));
 	}
 
 	/**
@@ -406,12 +393,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	protected void fireTargetConnectionAdded(ConnectionEditPart connection, int index) {
 		if (eventListeners == null)
 			return;
-		Iterator listeners = eventListeners.getListeners(NodeListener.class);
-		NodeListener listener = null;
-		while (listeners.hasNext()) {
-			listener = (NodeListener) listeners.next();
-			listener.targetConnectionAdded(connection, index);
-		}
+		eventListeners.getListenersIterable(NodeListener.class)
+				.forEach(lst -> lst.targetConnectionAdded(connection, index));
 	}
 
 	/**

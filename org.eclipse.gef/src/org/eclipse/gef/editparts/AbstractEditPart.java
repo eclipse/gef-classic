@@ -371,9 +371,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * activated.
 	 */
 	protected void fireActivated() {
-		Iterator listeners = getEventListeners(EditPartListener.class);
-		while (listeners.hasNext())
-			((EditPartListener) listeners.next()).partActivated(this);
+		getEventListenersIterable(EditPartListener.class).forEach(lst -> lst.partActivated(this));
 	}
 
 	/**
@@ -383,9 +381,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * @param index Position child is being added into.
 	 */
 	protected void fireChildAdded(EditPart child, int index) {
-		Iterator listeners = getEventListeners(EditPartListener.class);
-		while (listeners.hasNext())
-			((EditPartListener) listeners.next()).childAdded(child, index);
+		getEventListenersIterable(EditPartListener.class).forEach(lst -> lst.childAdded(child, index));
 	}
 
 	/**
@@ -393,9 +389,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * deactivated.
 	 */
 	protected void fireDeactivated() {
-		Iterator listeners = getEventListeners(EditPartListener.class);
-		while (listeners.hasNext())
-			((EditPartListener) listeners.next()).partDeactivated(this);
+		getEventListenersIterable(EditPartListener.class).forEach(lst -> lst.partDeactivated(this));
 	}
 
 	/**
@@ -405,18 +399,14 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * @param index Position of the child in children list.
 	 */
 	protected void fireRemovingChild(EditPart child, int index) {
-		Iterator listeners = getEventListeners(EditPartListener.class);
-		while (listeners.hasNext())
-			((EditPartListener) listeners.next()).removingChild(child, index);
+		getEventListenersIterable(EditPartListener.class).forEach(lst -> lst.removingChild(child, index));
 	}
 
 	/**
 	 * Notifies <code>EditPartListeners</code> that the selection has changed.
 	 */
 	protected void fireSelectionChanged() {
-		Iterator listeners = getEventListeners(EditPartListener.class);
-		while (listeners.hasNext())
-			((EditPartListener) listeners.next()).selectedStateChanged(this);
+		getEventListenersIterable(EditPartListener.class).forEach(lst -> lst.selectedStateChanged(this));
 	}
 
 	/**
@@ -493,8 +483,19 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * @param clazz the Listener type over which to iterate
 	 * @return Iterator
 	 */
-	protected final Iterator getEventListeners(Class clazz) {
+	protected final <T> Iterator<T> getEventListeners(Class<T> clazz) {
 		return eventListeners.getListeners(clazz);
+	}
+
+	/**
+	 * * Returns an Iterator for the specified type of listener
+	 * 
+	 * @param listenerType the type of listeners to get
+	 * @return an Iterable over the requested listeners
+	 * @since 3.14
+	 */
+	protected <T> Iterable<T> getEventListenersIterable(final Class<T> listenerType) {
+		return eventListeners.getListenersIterable(listenerType);
 	}
 
 	/**

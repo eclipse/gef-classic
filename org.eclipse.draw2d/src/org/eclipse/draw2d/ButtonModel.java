@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -129,10 +128,8 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	protected void fireActionPerformed() {
-		Iterator iter = listeners.getListeners(ActionListener.class);
 		ActionEvent action = new ActionEvent(this);
-		while (iter.hasNext())
-			((ActionListener) iter.next()).actionPerformed(action);
+		listeners.getListenersIterable(ActionListener.class).forEach(lst -> lst.actionPerformed(action));
 	}
 
 	/**
@@ -142,9 +139,8 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	protected void fireCanceled() {
-		Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
-		while (iter.hasNext())
-			((ButtonStateTransitionListener) iter.next()).canceled();
+		listeners.getListenersIterable(ButtonStateTransitionListener.class)
+				.forEach(ButtonStateTransitionListener::canceled);
 	}
 
 	/**
@@ -154,9 +150,8 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	protected void firePressed() {
-		Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
-		while (iter.hasNext())
-			((ButtonStateTransitionListener) iter.next()).pressed();
+		listeners.getListenersIterable(ButtonStateTransitionListener.class)
+				.forEach(ButtonStateTransitionListener::pressed);
 	}
 
 	/**
@@ -166,9 +161,8 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	protected void fireReleased() {
-		Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
-		while (iter.hasNext())
-			((ButtonStateTransitionListener) iter.next()).released();
+		listeners.getListenersIterable(ButtonStateTransitionListener.class)
+				.forEach(ButtonStateTransitionListener::released);
 	}
 
 	/**
@@ -178,9 +172,8 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	protected void fireResume() {
-		Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
-		while (iter.hasNext())
-			((ButtonStateTransitionListener) iter.next()).resume();
+		listeners.getListenersIterable(ButtonStateTransitionListener.class)
+				.forEach(ButtonStateTransitionListener::resume);
 	}
 
 	/**
@@ -190,10 +183,8 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	protected void fireStateChanged(String property) {
-		Iterator iter = listeners.getListeners(ChangeListener.class);
 		ChangeEvent change = new ChangeEvent(this, property);
-		while (iter.hasNext())
-			((ChangeListener) iter.next()).handleStateChanged(change);
+		listeners.getListenersIterable(ChangeListener.class).forEach(lst -> lst.handleStateChanged(change));
 	}
 
 	/**
@@ -203,9 +194,8 @@ public class ButtonModel {
 	 * @since 2.0
 	 */
 	protected void fireSuspend() {
-		Iterator iter = listeners.getListeners(ButtonStateTransitionListener.class);
-		while (iter.hasNext())
-			((ButtonStateTransitionListener) iter.next()).suspend();
+		listeners.getListenersIterable(ButtonStateTransitionListener.class)
+				.forEach(ButtonStateTransitionListener::suspend);
 	}
 
 	boolean getFlag(int which) {
