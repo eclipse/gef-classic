@@ -339,8 +339,8 @@ public class Figure implements IFigure {
 
 		x = PRIVATE_POINT.x;
 		y = PRIVATE_POINT.y;
-		for (int i = children.size() - 1; i >= 0; i--) {
-			IFigure fig = children.get(i);
+
+		for (IFigure fig : getChildrenRevIterable()) {
 			if (fig.isVisible()) {
 				fig = fig.findFigureAt(x, y, search);
 				if (fig != null)
@@ -429,8 +429,7 @@ public class Figure implements IFigure {
 		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
 			return null;
 
-		for (int i = children.size() - 1; i >= 0; i--) {
-			IFigure fig = children.get(i);
+		for (IFigure fig : getChildrenRevIterable()) {
 			if (fig.isVisible() && fig.isEnabled() && fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
 				fig = fig.findMouseEventTargetAt(PRIVATE_POINT.x, PRIVATE_POINT.y);
 				if (fig != null) {
@@ -568,6 +567,16 @@ public class Figure implements IFigure {
 	 */
 	public List<? extends IFigure> getChildren() {
 		return children;
+	}
+
+	/**
+	 * Provide an iterable that will iterate in reverse over all children of this
+	 * figure.
+	 * 
+	 * @since 3.13
+	 */
+	public Iterable<IFigure> getChildrenRevIterable() {
+		return () -> new ReverseFigureChildrenIterator(Figure.this);
 	}
 
 	/**
@@ -1469,13 +1478,10 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void setChildrenDirection(int direction) {
-		FigureIterator iterator = new FigureIterator(this);
-		IFigure child;
-		while (iterator.hasNext()) {
-			child = iterator.nextFigure();
+		getChildrenRevIterable().forEach(child -> {
 			if (child instanceof Orientable)
 				((Orientable) child).setDirection(direction);
-		}
+		});
 	}
 
 	/**
@@ -1486,9 +1492,7 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void setChildrenEnabled(boolean value) {
-		FigureIterator iterator = new FigureIterator(this);
-		while (iterator.hasNext())
-			iterator.nextFigure().setEnabled(value);
+		getChildrenRevIterable().forEach(child -> child.setEnabled(value));
 	}
 
 	/**
@@ -1500,13 +1504,10 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void setChildrenOrientation(int orientation) {
-		FigureIterator iterator = new FigureIterator(this);
-		IFigure child;
-		while (iterator.hasNext()) {
-			child = iterator.nextFigure();
+		getChildrenRevIterable().forEach(child -> {
 			if (child instanceof Orientable)
 				((Orientable) child).setOrientation(orientation);
-		}
+		});
 	}
 
 	/**
@@ -1917,7 +1918,9 @@ public class Figure implements IFigure {
 	}
 
 	/**
-	 * Iterates over a Figure's children.
+	 * Iterates over a Figure's children in reverse order.
+	 * 
+	 * @deprecated use ReverseFigureChildrenIterator instead
 	 */
 	public static class FigureIterator {
 		private List<? extends IFigure> list;
@@ -1950,6 +1953,26 @@ public class Figure implements IFigure {
 		public boolean hasNext() {
 			return index > 0;
 		}
+
+	}
+
+	/**
+	 * Figure children iterator which implements the java iterator interface for
+	 * more convenient figure iteration.
+	 * 
+	 * @since 3.13
+	 */
+	public static final class ReverseFigureChildrenIterator extends FigureIterator implements Iterator<IFigure> {
+
+		public ReverseFigureChildrenIterator(IFigure figure) {
+			super(figure);
+		}
+
+		@Override
+		public IFigure next() {
+			return nextFigure();
+		}
+
 	}
 
 	/**
