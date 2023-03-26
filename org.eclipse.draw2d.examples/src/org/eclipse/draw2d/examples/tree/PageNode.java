@@ -70,8 +70,8 @@ public class PageNode extends Figure {
 			g.setLineWidth(4);
 			r.resize(-2, -2);
 			g.setForegroundColor(shadow);
-			g.drawLine(r.x + 3, r.bottom(), r.right() - 1, r.bottom());
-			g.drawLine(r.right(), r.y + 3 + CORNER_SIZE, r.right(), r.bottom() - 1);
+			g.drawLine(r.x + 3, r.bottom(), r.right() + 3, r.bottom());
+			g.drawLine(r.right(), r.y + CORNER_SIZE, r.right(), r.bottom());
 
 			g.restoreState();
 			r.resize(-1, -1);
@@ -79,6 +79,7 @@ public class PageNode extends Figure {
 			g.setForegroundColor(blue);
 			g.drawRectangle(r.x + 1, r.y + 1, r.width - 2, r.height - 2);
 			g.translate(r.getTopRight());
+			g.translate(0, -1);
 			g.fillPolygon(CORNER_ERASE);
 			g.setBackgroundColor(corner1);
 			g.fillPolygon(CORNER_PAINT);

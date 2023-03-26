@@ -48,14 +48,14 @@ public class TreeLayout extends AbstractLayout {
 			return add;
 //	if (shift < 0)
 //		shift = 0;
-		int result[] = new int[Math.max(old.length, add.length)];
+		int[] result = new int[Math.max(old.length, add.length)];
 		System.arraycopy(add, 0, result, 0, add.length);
 		for (int i = add.length; i < result.length; i++)
 			result[i] = old[i] + shift;
 		return result;
 	}
 
-	private int calculateOverlap(int leftSubtree[], int rightSubtree[]) {
+	private int calculateOverlap(int[] leftSubtree, int[] rightSubtree) {
 		pointOfContact = 0;
 		if (leftSubtree == null)
 			return 0;

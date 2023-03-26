@@ -50,6 +50,7 @@ public class TreeRoot extends TreeBranch {
 		return minor;
 	}
 
+	@Override
 	public TreeRoot getRoot() {
 		return this;
 	}
@@ -89,6 +90,7 @@ public class TreeRoot extends TreeBranch {
 	/**
 	 * @see org.eclipse.draw2d.Figure#validate()
 	 */
+	@Override
 	public void validate() {
 		if (isValid())
 			return;
