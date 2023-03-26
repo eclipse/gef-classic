@@ -10,12 +10,15 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.tree;
 
+import java.util.List;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Layer;
 import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.OrderedLayout;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.Viewport;
@@ -33,12 +36,14 @@ public class TreeBranch extends Figure {
 		/**
 		 * @see org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 		 */
+		@Override
 		public void setBounds(Rectangle rect) {
 
-			int x = bounds.x, y = bounds.y;
+			int x = bounds.x;
+			int y = bounds.y;
 
-			boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
-					translate = (rect.x != x) || (rect.y != y);
+			boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height);
+			boolean translate = (rect.x != x) || (rect.y != y);
 
 			if (isVisible() && (resize || translate))
 				erase();
@@ -57,6 +62,12 @@ public class TreeBranch extends Figure {
 			}
 		}
 
+		@SuppressWarnings("unchecked") // we only have treebranches in our layer
+		@Override
+		public List<TreeBranch> getChildren() {
+			return (List<TreeBranch>) super.getChildren();
+		}
+
 	}
 
 	public static final int STYLE_HANGING = 1;
@@ -70,11 +81,11 @@ public class TreeBranch extends Figure {
 	 * by "transparent". If a layer is not used, then overlapping branches will
 	 * cause hit-test problems.
 	 */
-	AnimatingLayer contents = new AnimatingLayer();
+	private AnimatingLayer contents = new AnimatingLayer();
 	boolean expanded = true;
 
-	IFigure node;
-	int style;
+	private IFigure node;
+	private int style;
 
 	public TreeBranch(IFigure title) {
 		this(title, STYLE_NORMAL);
@@ -108,7 +119,7 @@ public class TreeBranch extends Figure {
 		// Pass the location to all children
 		contents.getChildren().forEach(child -> {
 			child.setBounds(bounds);
-			((TreeBranch) child).animationReset(bounds);
+			child.animationReset(bounds);
 		});
 	}
 
@@ -170,12 +181,20 @@ public class TreeBranch extends Figure {
 		return aligment;
 	}
 
-	protected BranchLayout getBranchLayout() {
-		return (BranchLayout) getLayoutManager();
+	protected AbstractBranchLayout getBranchLayout() {
+		return (AbstractBranchLayout) getLayoutManager();
+	}
+
+	public void addBranch(TreeBranch branch) {
+		contents.add(branch);
 	}
 
 	public IFigure getContentsPane() {
 		return contents;
+	}
+
+	public List<TreeBranch> getSubtrees() {
+		return contents.getChildren();
 	}
 
 	public int[] getContourLeft() {
@@ -265,12 +284,7 @@ public class TreeBranch extends Figure {
 		revalidate();
 	}
 
-	public void setNode(IFigure node) {
-		remove(this.node);
-		add(this.node, 0);
-	}
-
-	public void setRowHeights(int heights[], int offset) {
+	public void setRowHeights(int[] heights, int offset) {
 		getBranchLayout().setRowHeights(heights, offset);
 	}
 
@@ -298,14 +312,16 @@ public class TreeBranch extends Figure {
 		return toString(0);
 	}
 
-	public String toString(int level) {
-		String result = "";
-		for (int i = 0; i < level; i++)
-			result += "  ";
-		result += getChildren().get(1) + "\n";
-		for (int i = 0; i < contents.getChildren().size(); i++)
-			result += ((TreeBranch) contents.getChildren().get(i)).toString(level + 1);
-		return result;
+	protected String toString(int level) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < level; i++) {
+			builder.append("  "); //$NON-NLS-1$
+		}
+		builder.append(getChildren().get(1));
+		builder.append("\n"); //$NON-NLS-1$
+		final int childrenlevel = level + 1;
+		contents.getChildren().forEach(child -> builder.append(child.toString(childrenlevel)));
+		return builder.toString();
 	}
 
 	/**
@@ -327,7 +343,7 @@ public class TreeBranch extends Figure {
 				}
 
 			};
-			layout.setMinorAlignment(ToolbarLayout.ALIGN_TOPLEFT);
+			layout.setMinorAlignment(OrderedLayout.ALIGN_TOPLEFT);
 			layout.setStretchMinorAxis(false);
 			contents.setLayoutManager(layout);
 		}

@@ -14,14 +14,13 @@ import java.util.List;
 
 import org.eclipse.draw2d.AbstractLayout;
 import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Transposer;
 
 /**
  * 
  * @author hudsonr Created on Apr 22, 2003
  */
-public abstract class BranchLayout extends AbstractLayout {
+public abstract class AbstractBranchLayout extends AbstractLayout {
 
 	private Transposer transposer;
 	final TreeBranch branch;
@@ -33,7 +32,7 @@ public abstract class BranchLayout extends AbstractLayout {
 	int[] preferredRowHeights;
 	int rowHeight;
 
-	public BranchLayout(TreeBranch branch) {
+	protected AbstractBranchLayout(TreeBranch branch) {
 		this.branch = branch;
 	}
 
@@ -65,8 +64,8 @@ public abstract class BranchLayout extends AbstractLayout {
 		return preferredRowHeights;
 	}
 
-	List<? extends IFigure> getSubtrees() {
-		return branch.getContentsPane().getChildren();
+	List<TreeBranch> getSubtrees() {
+		return branch.getSubtrees();
 	}
 
 	Transposer getTransposer() {

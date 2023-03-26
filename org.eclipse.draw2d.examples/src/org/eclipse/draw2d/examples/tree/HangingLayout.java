@@ -23,7 +23,7 @@ import org.eclipse.draw2d.geometry.Transposer;
  * 
  * @author hudsonr Created on Apr 22, 2003
  */
-class HangingLayout extends BranchLayout {
+class HangingLayout extends AbstractBranchLayout {
 
 	HangingLayout(TreeBranch branch) {
 		super(branch);
@@ -31,11 +31,7 @@ class HangingLayout extends BranchLayout {
 
 	@Override
 	void calculateDepth() {
-		depth = 0;
-		for (IFigure child : branch.contents.getChildren()) {
-			depth += ((TreeBranch) child).getDepth();
-		}
-		depth++;
+		depth = getSubtrees().stream().mapToInt(TreeBranch::getDepth).sum() + 1;
 	}
 
 	@Override
@@ -43,9 +39,7 @@ class HangingLayout extends BranchLayout {
 		super.setRowHeights(heights, offset);
 		offset++;
 		if (branch.isExpanded()) {
-			TreeBranch subtree;
-			for (IFigure child : branch.contents.getChildren()) {
-				subtree = (TreeBranch) child;
+			for (TreeBranch subtree : branch.getSubtrees()) {
 				subtree.setRowHeights(heights, offset);
 				offset += subtree.getDepth();
 			}
@@ -53,7 +47,7 @@ class HangingLayout extends BranchLayout {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.tree.BranchLayout#updateRowHeights()
+	 * @see org.eclipse.draw2d.examples.tree.AbstractBranchLayout#updateRowHeights()
 	 */
 	@Override
 	void updateRowHeights() {
@@ -63,13 +57,9 @@ class HangingLayout extends BranchLayout {
 		if (!branch.isExpanded())
 			return;
 
-		List subtrees = getSubtrees();
-		TreeBranch subtree;
-
 		int offset = 1;
-		for (int i = 0; i < subtrees.size(); i++) {
-			subtree = (TreeBranch) subtrees.get(i);
-			int rowHeights[] = subtree.getPreferredRowHeights();
+		for (TreeBranch subtree : branch.getSubtrees()) {
+			int[] rowHeights = subtree.getPreferredRowHeights();
 			for (int row = 0; row < rowHeights.length; row++)
 				preferredRowHeights[row + offset] = rowHeights[row];
 			offset += subtree.getDepth();
@@ -80,6 +70,7 @@ class HangingLayout extends BranchLayout {
 		return branch.getRoot().getMinorSpacing();
 	}
 
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		Transposer transposer = branch.getRoot().getTransposer();
 		Dimension result = transposer.t(branch.getNode().getPreferredSize().getCopy());
@@ -93,6 +84,7 @@ class HangingLayout extends BranchLayout {
 		return transposer.t(result);
 	}
 
+	@Override
 	public void layout(IFigure f) {
 		Animation.recordInitialState(f);
 		if (Animation.playbackState(f))
@@ -116,38 +108,34 @@ class HangingLayout extends BranchLayout {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.tree.BranchLayout#paintLines(org.eclipse.draw2d.Graphics)
+	 * @see org.eclipse.draw2d.examples.tree.AbstractBranchLayout#paintLines(org.eclipse.draw2d.Graphics)
 	 */
 	@Override
 	void paintLines(Graphics g) {
+		List<TreeBranch> children = branch.getSubtrees();
+		if (children.isEmpty())
+			return;
+
 		int gap = getGap();
+		IFigure node = branch.getNode();
+
 		if (getTransposer().isEnabled()) {
-			IFigure node = branch.getNode();
-			IFigure contents = branch.getContentsPane();
 			int x = node.getBounds().right();
 			int y = node.getBounds().y() + gap;
-			List<? extends IFigure> children = contents.getChildren();
-			if (children.isEmpty())
-				return;
 			int right = x;
-			for (int i = 0; i < children.size(); i++) {
-				Point pt = ((TreeBranch) children.get(i)).getNodeBounds().getTop();
+			for (TreeBranch subTree : children) {
+				Point pt = subTree.getNodeBounds().getTop();
 				g.drawLine(pt.x(), y, pt.x(), pt.y());
 				right = Math.max(right, pt.x());
 			}
 			g.drawLine(x, y, right, y);
 
 		} else {
-			IFigure node = branch.getNode();
-			IFigure contents = branch.getContentsPane();
 			int x = node.getBounds().x() + gap;
 			int y = node.getBounds().bottom();
-			List<? extends IFigure> children = contents.getChildren();
-			if (children.isEmpty())
-				return;
 			int bottom = y;
-			for (int i = 0; i < children.size(); i++) {
-				Point pt = ((TreeBranch) children.get(i)).getNodeBounds().getLeft();
+			for (TreeBranch subTree : children) {
+				Point pt = subTree.getNodeBounds().getLeft();
 				g.drawLine(x, pt.y(), pt.x(), pt.y());
 				bottom = Math.max(bottom, pt.y());
 			}
@@ -174,18 +162,15 @@ class HangingLayout extends BranchLayout {
 		if (!branch.isExpanded())
 			return;
 
-		TreeBranch subtree;
-
 		int leftSide = getGap();
 		for (int i = 1; i < getDepth(); i++)
 			cachedContourLeft[i] = leftSide;
 
 		int rightMargin;
 		int offset = 1;
-		for (IFigure child : branch.contents.getChildren()) {
-			subtree = (TreeBranch) child;
+		for (TreeBranch subtree : branch.getSubtrees()) {
 			rightMargin = rightEdge - transposer.t(subtree.getBounds()).right();
-			int rightContour[] = subtree.getContourRight();
+			int[] rightContour = subtree.getContourRight();
 			for (int j = 0; j < rightContour.length; j++)
 				cachedContourRight[j + offset] = rightContour[j] + rightMargin;
 			offset += subtree.getDepth();

@@ -27,6 +27,7 @@ public class PlusMinus extends Toggle {
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics g) {
 		super.paintFigure(g);
 		Rectangle r = Rectangle.SINGLETON;
