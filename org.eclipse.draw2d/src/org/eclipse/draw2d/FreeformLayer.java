@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d;
 
-import java.util.Iterator;
-
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
@@ -40,9 +38,7 @@ public class FreeformLayer extends Layer implements FreeformFigure {
 	 * @see FreeformFigure#fireExtentChanged()
 	 */
 	public void fireExtentChanged() {
-		Iterator iter = getListeners(FreeformListener.class);
-		while (iter.hasNext())
-			((FreeformListener) iter.next()).notifyFreeformExtentChanged();
+		getListenersIterable(FreeformListener.class).forEach(lst -> lst.notifyFreeformExtentChanged());
 	}
 
 	/**

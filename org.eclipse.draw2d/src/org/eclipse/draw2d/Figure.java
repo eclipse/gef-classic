@@ -127,6 +127,7 @@ public class Figure implements IFigure {
 	 * 
 	 * @see IFigure#add(IFigure, Object)
 	 */
+	@Override
 	public final void add(IFigure figure, Object constraint) {
 		add(figure, constraint, -1);
 	}
@@ -134,6 +135,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#add(IFigure, Object, int)
 	 */
+	@Override
 	public void add(IFigure figure, Object constraint, int index) {
 		if (children.equals(Collections.emptyList()))
 			children = new ArrayList<>(2);
@@ -171,6 +173,7 @@ public class Figure implements IFigure {
 	 * 
 	 * @see IFigure#add(IFigure)
 	 */
+	@Override
 	public final void add(IFigure figure) {
 		add(figure, null, -1);
 	}
@@ -181,6 +184,7 @@ public class Figure implements IFigure {
 	 * 
 	 * @see IFigure#add(IFigure, int)
 	 */
+	@Override
 	public final void add(IFigure figure, int index) {
 		add(figure, null, index);
 	}
@@ -188,6 +192,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#addAncestorListener(AncestorListener)
 	 */
+	@Override
 	public void addAncestorListener(AncestorListener ancestorListener) {
 		if (ancestorHelper == null)
 			ancestorHelper = new AncestorHelper(this);
@@ -197,6 +202,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#addCoordinateListener(CoordinateListener)
 	 */
+	@Override
 	public void addCoordinateListener(CoordinateListener listener) {
 		eventListeners.addListener(CoordinateListener.class, listener);
 	}
@@ -204,6 +210,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#addFigureListener(FigureListener)
 	 */
+	@Override
 	public void addFigureListener(FigureListener listener) {
 		eventListeners.addListener(FigureListener.class, listener);
 	}
@@ -211,6 +218,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#addFocusListener(FocusListener)
 	 */
+	@Override
 	public void addFocusListener(FocusListener listener) {
 		eventListeners.addListener(FocusListener.class, listener);
 	}
@@ -218,6 +226,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#addKeyListener(KeyListener)
 	 */
+	@Override
 	public void addKeyListener(KeyListener listener) {
 		eventListeners.addListener(KeyListener.class, listener);
 	}
@@ -228,6 +237,7 @@ public class Figure implements IFigure {
 	 * @since 3.1
 	 * @param listener the listener being added
 	 */
+	@Override
 	public void addLayoutListener(LayoutListener listener) {
 		if (layoutManager instanceof LayoutNotifier) {
 			LayoutNotifier notifier = (LayoutNotifier) layoutManager;
@@ -243,13 +253,14 @@ public class Figure implements IFigure {
 	 * @param clazz    The listener type
 	 * @param listener The listener
 	 */
-	protected void addListener(Class clazz, Object listener) {
+	protected <T> void addListener(Class<T> clazz, Object listener) {
 		eventListeners.addListener(clazz, listener);
 	}
 
 	/**
 	 * @see IFigure#addMouseListener(MouseListener)
 	 */
+	@Override
 	public void addMouseListener(MouseListener listener) {
 		eventListeners.addListener(MouseListener.class, listener);
 	}
@@ -257,6 +268,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#addMouseMotionListener(MouseMotionListener)
 	 */
+	@Override
 	public void addMouseMotionListener(MouseMotionListener listener) {
 		eventListeners.addListener(MouseMotionListener.class, listener);
 	}
@@ -267,6 +279,7 @@ public class Figure implements IFigure {
 	 * 
 	 * @since 2.0
 	 */
+	@Override
 	public void addNotify() {
 		if (getFlag(FLAG_REALIZED))
 			throw new RuntimeException("addNotify() should not be called multiple times"); //$NON-NLS-1$
@@ -277,6 +290,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#addPropertyChangeListener(String, PropertyChangeListener)
 	 */
+	@Override
 	public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
 		if (propertyListeners == null)
 			propertyListeners = new PropertyChangeSupport(this);
@@ -286,6 +300,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#addPropertyChangeListener(PropertyChangeListener)
 	 */
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		if (propertyListeners == null)
 			propertyListeners = new PropertyChangeSupport(this);
@@ -298,6 +313,7 @@ public class Figure implements IFigure {
 	 * @see IFigure#containsPoint(Point)
 	 * @since 2.0
 	 */
+	@Override
 	public final boolean containsPoint(Point p) {
 		return containsPoint(p.x, p.y);
 	}
@@ -305,6 +321,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#containsPoint(int, int)
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		return getBounds().contains(x, y);
 	}
@@ -312,6 +329,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#erase()
 	 */
+	@Override
 	public void erase() {
 		if (getParent() == null || !isVisible())
 			return;
@@ -354,6 +372,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#findFigureAt(Point)
 	 */
+	@Override
 	public final IFigure findFigureAt(Point pt) {
 		return findFigureAtExcluding(pt.x, pt.y, Collections.EMPTY_LIST);
 	}
@@ -361,6 +380,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#findFigureAt(int, int)
 	 */
+	@Override
 	public final IFigure findFigureAt(int x, int y) {
 		return findFigureAt(x, y, IdentitySearch.INSTANCE);
 	}
@@ -368,6 +388,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#findFigureAt(int, int, TreeSearch)
 	 */
+	@Override
 	public IFigure findFigureAt(int x, int y, TreeSearch search) {
 		if (!containsPoint(x, y))
 			return null;
@@ -384,6 +405,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#findFigureAtExcluding(int, int, Collection)
 	 */
+	@Override
 	public final IFigure findFigureAtExcluding(int x, int y, Collection c) {
 		return findFigureAt(x, y, new ExclusionSearch(c));
 	}
@@ -450,9 +472,7 @@ public class Figure implements IFigure {
 	protected void fireCoordinateSystemChanged() {
 		if (!eventListeners.containsListener(CoordinateListener.class))
 			return;
-		Iterator figureListeners = eventListeners.getListeners(CoordinateListener.class);
-		while (figureListeners.hasNext())
-			((CoordinateListener) figureListeners.next()).coordinateSystemChanged(this);
+		eventListeners.getListenersIterable(CoordinateListener.class).forEach(lst -> lst.coordinateSystemChanged(this));
 	}
 
 	/**
@@ -464,9 +484,7 @@ public class Figure implements IFigure {
 	protected void fireFigureMoved() {
 		if (!eventListeners.containsListener(FigureListener.class))
 			return;
-		Iterator figureListeners = eventListeners.getListeners(FigureListener.class);
-		while (figureListeners.hasNext())
-			((FigureListener) figureListeners.next()).figureMoved(this);
+		eventListeners.getListenersIterable(FigureListener.class).forEach(lst -> lst.figureMoved(this));
 	}
 
 	/**
@@ -538,6 +556,7 @@ public class Figure implements IFigure {
 	 * 
 	 * @see IFigure#getBackgroundColor()
 	 */
+	@Override
 	public Color getBackgroundColor() {
 		if (bgColor == null && getParent() != null)
 			return getParent().getBackgroundColor();
@@ -547,6 +566,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getBorder()
 	 */
+	@Override
 	public Border getBorder() {
 		return border;
 	}
@@ -558,6 +578,7 @@ public class Figure implements IFigure {
 	 * 
 	 * @return The bounds of this Figure
 	 */
+	@Override
 	public Rectangle getBounds() {
 		return bounds;
 	}
@@ -565,6 +586,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getChildren()
 	 */
+	@Override
 	public List<? extends IFigure> getChildren() {
 		return children;
 	}
@@ -582,6 +604,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getClientArea(Rectangle)
 	 */
+	@Override
 	public Rectangle getClientArea(Rectangle rect) {
 		rect.setBounds(getBounds());
 		rect.crop(getInsets());
@@ -593,6 +616,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getClientArea()
 	 */
+	@Override
 	public final Rectangle getClientArea() {
 		return getClientArea(new Rectangle());
 	}
@@ -603,6 +627,7 @@ public class Figure implements IFigure {
 	 * @return the IClipppingStrategy used to clip this figure's children.
 	 * @since 3.6
 	 */
+	@Override
 	public IClippingStrategy getClippingStrategy() {
 		return clippingStrategy;
 	}
@@ -610,6 +635,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getCursor()
 	 */
+	@Override
 	public Cursor getCursor() {
 		if (cursor == null && getParent() != null)
 			return getParent().getCursor();
@@ -629,6 +655,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getFont()
 	 */
+	@Override
 	public Font getFont() {
 		if (font != null)
 			return font;
@@ -640,6 +667,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getForegroundColor()
 	 */
+	@Override
 	public Color getForegroundColor() {
 		if (fgColor == null && getParent() != null)
 			return getParent().getForegroundColor();
@@ -653,6 +681,7 @@ public class Figure implements IFigure {
 	 * 
 	 * @return This Figure's Insets
 	 */
+	@Override
 	public Insets getInsets() {
 		if (getBorder() != null)
 			return getBorder().getInsets(this);
@@ -662,6 +691,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getLayoutManager()
 	 */
+	@Override
 	public LayoutManager getLayoutManager() {
 		if (layoutManager instanceof LayoutNotifier)
 			return ((LayoutNotifier) layoutManager).realLayout;
@@ -677,10 +707,25 @@ public class Figure implements IFigure {
 	 * @return An Iterator over the requested listeners
 	 * @since 2.0
 	 */
-	protected Iterator getListeners(Class clazz) {
+	protected <T> Iterator<T> getListeners(Class<T> clazz) {
 		if (eventListeners == null)
-			return Collections.EMPTY_LIST.iterator();
+			return Collections.emptyIterator();
 		return eventListeners.getListeners(clazz);
+	}
+
+	/**
+	 * * Returns an Iterator over the listeners of type <i>listenerType</i> that are
+	 * listening to this Figure. If there are no listeners of type
+	 * <i>listenerType</i>, an empty iterator is returned.
+	 * 
+	 * @param listenerType The type of listeners to get
+	 * @return an Iterable over the requested listeners <i>c</i>
+	 * @since 3.13
+	 */
+	protected <T> Iterable<T> getListenersIterable(final Class<T> listenerType) {
+		if (eventListeners == null)
+			return Collections.emptyList();
+		return eventListeners.getListenersIterable(listenerType);
 	}
 
 	/**
@@ -689,6 +734,7 @@ public class Figure implements IFigure {
 	 * 
 	 * @return bgColor <code>null</code> or the local background Color
 	 */
+	@Override
 	public Color getLocalBackgroundColor() {
 		return bgColor;
 	}
@@ -710,6 +756,7 @@ public class Figure implements IFigure {
 	 * 
 	 * @return fgColor <code>null</code> or the local foreground Color
 	 */
+	@Override
 	public Color getLocalForegroundColor() {
 		return fgColor;
 	}
@@ -727,6 +774,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getMaximumSize()
 	 */
+	@Override
 	public Dimension getMaximumSize() {
 		if (maxSize != null)
 			return maxSize;
@@ -736,6 +784,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getMinimumSize()
 	 */
+	@Override
 	public final Dimension getMinimumSize() {
 		return getMinimumSize(-1, -1);
 	}
@@ -743,6 +792,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getMinimumSize(int, int)
 	 */
+	@Override
 	public Dimension getMinimumSize(int wHint, int hHint) {
 		if (minSize != null)
 			return minSize;
@@ -757,6 +807,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getParent()
 	 */
+	@Override
 	public IFigure getParent() {
 		return parent;
 	}
@@ -764,6 +815,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getPreferredSize()
 	 */
+	@Override
 	public final Dimension getPreferredSize() {
 		return getPreferredSize(-1, -1);
 	}
@@ -771,6 +823,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getPreferredSize(int, int)
 	 */
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		if (prefSize != null)
 			return prefSize;
@@ -785,6 +838,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getSize()
 	 */
+	@Override
 	public final Dimension getSize() {
 		return getBounds().getSize();
 	}
@@ -792,6 +846,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getToolTip()
 	 */
+	@Override
 	public IFigure getToolTip() {
 		return toolTip;
 	}
@@ -799,6 +854,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#getUpdateManager()
 	 */
+	@Override
 	public UpdateManager getUpdateManager() {
 		if (getParent() != null)
 			return getParent().getUpdateManager();
@@ -809,114 +865,133 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#handleFocusGained(FocusEvent)
 	 */
+	@Override
 	public void handleFocusGained(FocusEvent event) {
-		Iterator iter = eventListeners.getListeners(FocusListener.class);
-		while (iter.hasNext())
-			((FocusListener) iter.next()).focusGained(event);
+		eventListeners.getListenersIterable(FocusListener.class).forEach(lst -> lst.focusGained(event));
 	}
 
 	/**
 	 * @see IFigure#handleFocusLost(FocusEvent)
 	 */
+	@Override
 	public void handleFocusLost(FocusEvent event) {
-		Iterator iter = eventListeners.getListeners(FocusListener.class);
-		while (iter.hasNext())
-			((FocusListener) iter.next()).focusLost(event);
+		eventListeners.getListenersIterable(FocusListener.class).forEach(lst -> lst.focusLost(event));
 	}
 
 	/**
 	 * @see IFigure#handleKeyPressed(KeyEvent)
 	 */
+	@Override
 	public void handleKeyPressed(KeyEvent event) {
-		Iterator iter = eventListeners.getListeners(KeyListener.class);
-		while (!event.isConsumed() && iter.hasNext())
-			((KeyListener) iter.next()).keyPressed(event);
+		var iter = eventListeners.getListeners(KeyListener.class);
+		while (!event.isConsumed() && iter.hasNext()) {
+			iter.next().keyPressed(event);
+		}
 	}
 
 	/**
 	 * @see IFigure#handleKeyReleased(KeyEvent)
 	 */
+	@Override
 	public void handleKeyReleased(KeyEvent event) {
-		Iterator iter = eventListeners.getListeners(KeyListener.class);
-		while (!event.isConsumed() && iter.hasNext())
-			((KeyListener) iter.next()).keyReleased(event);
+		var iter = eventListeners.getListeners(KeyListener.class);
+		while (!event.isConsumed() && iter.hasNext()) {
+			iter.next().keyReleased(event);
+		}
 	}
 
 	/**
 	 * @see IFigure#handleMouseDoubleClicked(MouseEvent)
 	 */
+	@Override
 	public void handleMouseDoubleClicked(MouseEvent event) {
-		Iterator iter = eventListeners.getListeners(MouseListener.class);
-		while (!event.isConsumed() && iter.hasNext())
-			((MouseListener) iter.next()).mouseDoubleClicked(event);
+		var iter = eventListeners.getListeners(MouseListener.class);
+		while (!event.isConsumed() && iter.hasNext()) {
+			iter.next().mouseDoubleClicked(event);
+		}
 	}
 
 	/**
 	 * @see IFigure#handleMouseDragged(MouseEvent)
 	 */
+	@Override
 	public void handleMouseDragged(MouseEvent event) {
-		Iterator iter = eventListeners.getListeners(MouseMotionListener.class);
-		while (!event.isConsumed() && iter.hasNext())
-			((MouseMotionListener) iter.next()).mouseDragged(event);
+		var iter = eventListeners.getListeners(MouseMotionListener.class);
+		while (!event.isConsumed() && iter.hasNext()) {
+			iter.next().mouseDragged(event);
+		}
 	}
 
 	/**
 	 * @see IFigure#handleMouseEntered(MouseEvent)
 	 */
+	@Override
 	public void handleMouseEntered(MouseEvent event) {
-		Iterator iter = eventListeners.getListeners(MouseMotionListener.class);
-		while (!event.isConsumed() && iter.hasNext())
-			((MouseMotionListener) iter.next()).mouseEntered(event);
+		var iter = eventListeners.getListeners(MouseMotionListener.class);
+		while (!event.isConsumed() && iter.hasNext()) {
+			iter.next().mouseEntered(event);
+		}
 	}
 
 	/**
 	 * @see IFigure#handleMouseExited(MouseEvent)
 	 */
+	@Override
 	public void handleMouseExited(MouseEvent event) {
-		Iterator iter = eventListeners.getListeners(MouseMotionListener.class);
-		while (!event.isConsumed() && iter.hasNext())
-			((MouseMotionListener) iter.next()).mouseExited(event);
+		var iter = eventListeners.getListeners(MouseMotionListener.class);
+		while (!event.isConsumed() && iter.hasNext()) {
+			iter.next().mouseExited(event);
+		}
 	}
 
 	/**
 	 * @see IFigure#handleMouseHover(MouseEvent)
 	 */
+	@Override
 	public void handleMouseHover(MouseEvent event) {
-		Iterator iter = eventListeners.getListeners(MouseMotionListener.class);
-		while (!event.isConsumed() && iter.hasNext())
-			((MouseMotionListener) iter.next()).mouseHover(event);
+		var iter = eventListeners.getListeners(MouseMotionListener.class);
+		while (!event.isConsumed() && iter.hasNext()) {
+			iter.next().mouseHover(event);
+		}
 	}
 
 	/**
 	 * @see IFigure#handleMouseMoved(MouseEvent)
 	 */
+	@Override
 	public void handleMouseMoved(MouseEvent event) {
-		Iterator iter = eventListeners.getListeners(MouseMotionListener.class);
-		while (!event.isConsumed() && iter.hasNext())
-			((MouseMotionListener) iter.next()).mouseMoved(event);
+		var iter = eventListeners.getListeners(MouseMotionListener.class);
+		while (!event.isConsumed() && iter.hasNext()) {
+			iter.next().mouseMoved(event);
+		}
 	}
 
 	/**
 	 * @see IFigure#handleMousePressed(MouseEvent)
 	 */
+	@Override
 	public void handleMousePressed(MouseEvent event) {
-		Iterator iter = eventListeners.getListeners(MouseListener.class);
-		while (!event.isConsumed() && iter.hasNext())
-			((MouseListener) iter.next()).mousePressed(event);
+		var iter = eventListeners.getListeners(MouseListener.class);
+		while (!event.isConsumed() && iter.hasNext()) {
+			iter.next().mousePressed(event);
+		}
 	}
 
 	/**
 	 * @see IFigure#handleMouseReleased(MouseEvent)
 	 */
+	@Override
 	public void handleMouseReleased(MouseEvent event) {
-		Iterator iter = eventListeners.getListeners(MouseListener.class);
-		while (!event.isConsumed() && iter.hasNext())
-			((MouseListener) iter.next()).mouseReleased(event);
+		var iter = eventListeners.getListeners(MouseListener.class);
+		while (!event.isConsumed() && iter.hasNext()) {
+			iter.next().mouseReleased(event);
+		}
 	}
 
 	/**
 	 * @see IFigure#hasFocus()
 	 */
+	@Override
 	public boolean hasFocus() {
 		EventDispatcher dispatcher = internalGetEventDispatcher();
 		if (dispatcher == null)
