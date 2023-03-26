@@ -85,13 +85,10 @@ public class ConnectionLayer extends FreeformLayer {
 	 */
 	public void setConnectionRouter(ConnectionRouter router) {
 		connectionRouter = router;
-		FigureIterator iter = new FigureIterator(this);
-		IFigure figure;
-		while (iter.hasNext()) {
-			figure = iter.nextFigure();
-			if (figure instanceof Connection)
-				((Connection) figure).setConnectionRouter(router);
-		}
+		getChildrenRevIterable().forEach(child -> {
+			if (child instanceof Connection)
+				((Connection) child).setConnectionRouter(router);
+		});
 	}
 
 	/**
