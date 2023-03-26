@@ -1858,7 +1858,7 @@ public class Figure implements IFigure {
 	final class LayoutNotifier implements LayoutManager {
 
 		LayoutManager realLayout;
-		List listeners = new ArrayList(1);
+		List<LayoutListener> listeners = new ArrayList<>(1);
 
 		LayoutNotifier(LayoutManager layout, LayoutListener listener) {
 			realLayout = layout;
@@ -1884,8 +1884,7 @@ public class Figure implements IFigure {
 		}
 
 		public void invalidate() {
-			for (int i = 0; i < listeners.size(); i++)
-				((LayoutListener) listeners.get(i)).invalidate(Figure.this);
+			listeners.forEach(listener -> listener.invalidate(Figure.this));
 
 			if (realLayout != null)
 				realLayout.invalidate();
@@ -1893,25 +1892,23 @@ public class Figure implements IFigure {
 
 		public void layout(IFigure container) {
 			boolean consumed = false;
-			for (int i = 0; i < listeners.size(); i++)
-				consumed |= ((LayoutListener) listeners.get(i)).layout(container);
+			for (LayoutListener listener : listeners) {
+				consumed |= listener.layout(container);
+			}
 
 			if (realLayout != null && !consumed)
 				realLayout.layout(container);
-			for (int i = 0; i < listeners.size(); i++)
-				((LayoutListener) listeners.get(i)).postLayout(container);
+			listeners.forEach(listener -> listener.postLayout(container));
 		}
 
 		public void remove(IFigure child) {
-			for (int i = 0; i < listeners.size(); i++)
-				((LayoutListener) listeners.get(i)).remove(child);
+			listeners.forEach(listener -> listener.remove(child));
 			if (realLayout != null)
 				realLayout.remove(child);
 		}
 
 		public void setConstraint(IFigure child, Object constraint) {
-			for (int i = 0; i < listeners.size(); i++)
-				((LayoutListener) listeners.get(i)).setConstraint(child, constraint);
+			listeners.forEach(listener -> listener.setConstraint(child, constraint));
 			if (realLayout != null)
 				realLayout.setConstraint(child, constraint);
 		}
