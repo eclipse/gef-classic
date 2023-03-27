@@ -13,7 +13,7 @@
 		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
 		<maven.compiler.source>11</maven.compiler.source>
 		<maven.compiler.target>11</maven.compiler.target>		
-		<tycho.version>3.0.1</tycho.version>
+		<tycho.version>${tycho-version}</tycho.version>
 		<cbi-plugins.version>1.3.2</cbi-plugins.version>
 		<maven.test.failure.ignore>true</maven.test.failure.ignore>
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-classic.git</tycho.scmUrl>
