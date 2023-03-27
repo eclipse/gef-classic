@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Plugin.name
 Bundle-SymbolicName: org.eclipse.gef.tests
+Fragment-Host: org.eclipse.gef
 Bundle-Version: 3.13.100.qualifier
 Bundle-Vendor: %Plugin.providerName
 Bundle-Localization: plugin

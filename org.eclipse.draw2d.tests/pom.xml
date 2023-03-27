@@ -45,11 +45,12 @@
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
+					<product>org.eclipse.platform.ide</product>
 					<includes>
 						<include>**/Draw2dTestSuite.class</include>
 					</includes>
-					<useUIHarness>false</useUIHarness>
-					<useUIThread>false</useUIThread>
+					<useUIHarness>true</useUIHarness>
+					<useUIThread>true</useUIThread>
 					<argLine>${test.vmargs}</argLine>
 				</configuration>
 			</plugin>
