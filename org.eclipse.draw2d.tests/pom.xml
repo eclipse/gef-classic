@@ -21,7 +21,7 @@
 				</os>
 			</activation>
 			<properties>
-				<test.vmargs>-Xmx512m -XX:MaxPermSize=256m -XstartOnFirstThread</test.vmargs>
+				<test.vmargs>-Xmx512m -XstartOnFirstThread</test.vmargs>
 			</properties>
 		</profile>
 		<profile>
