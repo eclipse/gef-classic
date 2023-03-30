@@ -862,6 +862,15 @@ public class GraphNode extends GraphItem {
 			label.setText("");
 		}
 
+		createHideButtons(label);
+		updateFigureForModel(label);
+		return label;
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	protected void createHideButtons(IFigure figure) {
 		// create buttons and label for hiding nodes
 		hideButton.setVisible(false);
 		revealButton.setVisible(false);
@@ -881,10 +890,8 @@ public class GraphNode extends GraphItem {
 		hideContainer.add(hideButton);
 		hideContainer.add(revealButton);
 		hideContainer.add(hiddenNodesLabel);
-		label.add(hideContainer);
-
-		updateFigureForModel(label);
-		return label;
+		hideContainer.setSize(figure.getSize());
+		figure.add(hideContainer);
 	}
 
 	private IFigure createFishEyeFigure() {
