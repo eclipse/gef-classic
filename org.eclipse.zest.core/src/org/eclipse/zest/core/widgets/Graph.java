@@ -527,7 +527,8 @@ public class Graph extends FigureCanvas implements IContainer {
 			if (figureUnderMouse != null) {
 				// There is a figure under this mouse
 				GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
-				if (itemUnderMouse.getItemType() == GraphItem.NODE) {
+				if (itemUnderMouse != null && (itemUnderMouse.getItemType() == GraphItem.NODE
+						|| itemUnderMouse.getItemType() == GraphItem.CONTAINER)) {
 					hoverNode = (GraphNode) itemUnderMouse;
 					hoverNode.setHideButtonVisible(true);
 					hoverNode.setRevealButtonVisible(true);

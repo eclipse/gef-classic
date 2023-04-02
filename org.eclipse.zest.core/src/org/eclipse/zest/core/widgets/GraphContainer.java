@@ -518,6 +518,13 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
+	 * @since 1.8
+	 */
+	public Rectangle getExpandGraphLabelBounds() {
+		return expandGraphLabel.getBounds();
+	}
+
+	/**
 	 * 
 	 */
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
@@ -737,6 +744,8 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 		scrollPane.getViewport().setContents(scalledLayer);
 		scrollPane.setBorder(new LineBorder());
+
+		createHideButtons(containerFigure);
 
 		return containerFigure;
 	}
