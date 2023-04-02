@@ -663,7 +663,7 @@ public class GraphNode extends GraphItem {
 	 */
 	public void setHideButtonVisible(boolean visible) {
 		hideButton.setVisible(visible);
-		hideButton.setBounds(new Rectangle(getLocation(), new Dimension(hideButtonsSize, hideButtonsSize)));
+		updateHideButtonFigure();
 	}
 
 	/**
@@ -672,9 +672,7 @@ public class GraphNode extends GraphItem {
 	public void setRevealButtonVisible(boolean visible) {
 		if (hiddenNodeCount > 0) {
 			revealButton.setVisible(visible);
-			Rectangle bounds = getBounds();
-			revealButton.setBounds(new Rectangle(bounds.x + bounds.width - hideButtonsSize,
-					bounds.y + bounds.height - hideButtonsSize, hideButtonsSize, hideButtonsSize));
+			updateHideButtonFigure();
 		}
 	}
 
@@ -709,8 +707,7 @@ public class GraphNode extends GraphItem {
 		this.hiddenNodeCount++;
 		hiddenNodesLabel.setVisible(true);
 		hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
-		hiddenNodesLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - hideButtonsSize, getLocation().y,
-				hideButtonsSize, hideButtonsSize));
+		updateHideButtonFigure();
 	}
 
 	/**
@@ -720,8 +717,7 @@ public class GraphNode extends GraphItem {
 		this.hiddenNodeCount--;
 		hiddenNodesLabel.setVisible(hiddenNodeCount > 0); // true if hidden node still exists
 		hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
-		hiddenNodesLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - hideButtonsSize, getLocation().y,
-				hideButtonsSize, hideButtonsSize));
+		updateHideButtonFigure();
 	}
 
 	public int getStyle() {
@@ -890,8 +886,23 @@ public class GraphNode extends GraphItem {
 		hideContainer.add(hideButton);
 		hideContainer.add(revealButton);
 		hideContainer.add(hiddenNodesLabel);
-		hideContainer.setSize(figure.getSize());
+		updateHideButtonFigure();
 		figure.add(hideContainer);
+	}
+
+	private void updateHideButtonFigure() {
+		Rectangle bounds;
+		if (this instanceof GraphContainer) {
+			bounds = ((GraphContainer) this).getExpandGraphLabelBounds();
+		} else {
+			bounds = getBounds();
+		}
+		hideContainer.setBounds(bounds);
+		hideButton.setBounds(new Rectangle(getLocation(), new Dimension(hideButtonsSize, hideButtonsSize)));
+		revealButton.setBounds(new Rectangle(bounds.x + bounds.width - hideButtonsSize,
+				bounds.y + bounds.height - hideButtonsSize, hideButtonsSize, hideButtonsSize));
+		hiddenNodesLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - hideButtonsSize, getLocation().y,
+				hideButtonsSize, hideButtonsSize));
 	}
 
 	private IFigure createFishEyeFigure() {
