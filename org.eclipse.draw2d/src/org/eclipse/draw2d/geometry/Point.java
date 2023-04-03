@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -111,6 +111,15 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	public Point(Point p) {
 		x = p.x();
 		y = p.y();
+	}
+
+	/**
+	 * Constructs a {@link Point} which is at the same location as the specified
+	 * {@link Dimension}.
+	 */
+	public Point(Dimension copy) {
+		x = copy.width;
+		y = copy.height;
 	}
 
 	/**
@@ -428,6 +437,15 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	}
 
 	/**
+	 * Sets the location of this Point to the specified Point.
+	 */
+	public Point setLocation(org.eclipse.swt.graphics.Point point) {
+		x = point.x;
+		y = point.y;
+		return this;
+	}
+
+	/**
 	 * Sets the x value of this Point to the given value.
 	 * 
 	 * @param x The new x value
@@ -509,6 +527,14 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 */
 	public Point translate(Point p) {
 		return translate(p.x(), p.y());
+	}
+
+	/**
+	 * Shifts this {@link Point} by the values of the {@link Insets} along each
+	 * axis, and returns this for convenience.
+	 */
+	public Point translate(Insets insets) {
+		return translate(insets.left, insets.top);
 	}
 
 	/**

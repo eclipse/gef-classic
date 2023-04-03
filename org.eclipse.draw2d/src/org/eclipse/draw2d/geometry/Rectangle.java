@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -347,6 +347,14 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
+	 * Creates and returns a new SWT {@link org.eclipse.swt.graphics.Rectangle
+	 * Rectangle} from this Rectangle.
+	 */
+	public org.eclipse.swt.graphics.Rectangle getSWTRectangle() {
+		return new org.eclipse.swt.graphics.Rectangle(x, y, width, height);
+	}
+
+	/**
 	 * Returns a new incremented Rectangle, where the sides are expanded by the
 	 * horizontal and vertical values provided. The center of the Rectangle is
 	 * maintained constant.
@@ -397,6 +405,14 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 */
 	public Rectangle getIntersection(Rectangle rect) {
 		return getCopy().intersect(rect);
+	}
+
+	/**
+	 * @return the {@link Interval} of projection on X or Y axis, depending on
+	 *         <code>isHorizonal</code> param.
+	 */
+	public Interval getInterval(boolean isHorizontal) {
+		return isHorizontal ? new Interval(x, width) : new Interval(y, height);
 	}
 
 	/**
@@ -706,6 +722,29 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
+	 * Returns the x-coordinate of the left side of this Rectangle.
+	 */
+	public int left() {
+		return x;
+	}
+
+	/**
+	 * Moves x-coordinate on specified value, keeping right side.
+	 */
+	public void moveX(int deltaX) {
+		x += deltaX;
+		width -= deltaX;
+	}
+
+	/**
+	 * Moves y-coordinate on specified value, keeping bottom side.
+	 */
+	public void moveY(int deltaY) {
+		y += deltaY;
+		height -= deltaY;
+	}
+
+	/**
 	 * Returns <code>true</code> if this Rectangle's width or height is less than or
 	 * equal to 0.
 	 * 
@@ -838,6 +877,13 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
+	 * Updates the width to have specified {@link #bottom()}.
+	 */
+	public void setBottom(int bottom) {
+		height = bottom - y;
+	}
+
+	/**
 	 * Scales the location and size of this Rectangle by the given scales and
 	 * returns this for convenience.
 	 * 
@@ -939,6 +985,13 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
+	 * Updates the width to have specified {@link #right()}.
+	 */
+	public void setRight(int right) {
+		width = right - x;
+	}
+
+	/**
 	 * Sets the width and height of this Rectangle to the width and height of the
 	 * given Dimension and returns this for convenience.
 	 * 
@@ -978,25 +1031,29 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
-	 * Sets the x value of the Rectangle and returns this for convenience.
+	 * Sets the x value of the Rectangle, but keeps {@link #right()} and returns
+	 * this for convenience.
 	 * 
 	 * @return <code>this</code> for convenience
 	 * @param x The new x value
 	 * @since 3.7
 	 */
 	public Rectangle setX(int x) {
+		width += this.x - x;
 		this.x = x;
 		return this;
 	}
 
 	/**
-	 * Sets the y value of the Rectangle and returns this for convenience.
+	 * Sets the y value of the Rectangle, but keeps {@link #bottom()} and returns
+	 * this for convenience.
 	 * 
 	 * @return <code>this</code> for convenience
 	 * @param y The new y value
 	 * @since 3.7
 	 */
 	public Rectangle setY(int y) {
+		height += this.y - y;
 		this.y = y;
 		return this;
 	}
@@ -1048,6 +1105,13 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 		y += v;
 		height -= (v + v);
 		return this;
+	}
+
+	/**
+	 * Returns the y-coordinate of the top side of this Rectangle.
+	 */
+	public int top() {
+		return y;
 	}
 
 	/**
@@ -1112,6 +1176,28 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	public Rectangle translate(Point p) {
 		x += p.x;
 		y += p.y;
+		return this;
+	}
+
+	/**
+	 * Moves this {@link Rectangle} horizontally by the <code>.width</code> value of
+	 * the given {@link Dimension} and vertically by the <code>.height</code> value
+	 * of the given {@link Dimension}.
+	 */
+	public Rectangle translate(Dimension dimension) {
+		x += dimension.width;
+		y += dimension.height;
+		return this;
+	}
+
+	/**
+	 * Moves this {@link Rectangle} horizontally by the <code>.left</code> value of
+	 * the given {@link Insets} and vertically by the <code>.top</code> value of the
+	 * given {@link Insets}.
+	 */
+	public Rectangle translate(Insets insets) {
+		x += insets.left;
+		y += insets.top;
 		return this;
 	}
 

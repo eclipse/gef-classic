@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -137,6 +137,13 @@ public class Insets implements Cloneable, java.io.Serializable {
 	}
 
 	/**
+	 * Returns negate of the Insets.
+	 */
+	public Insets getNegated() {
+		return new Insets(-top, -left, -bottom, -right);
+	}
+
+	/**
 	 * Returns the width for this Insets, equal to <code>left</code> +
 	 * <code>right</code>.
 	 * 
@@ -189,6 +196,17 @@ public class Insets implements Cloneable, java.io.Serializable {
 		right = bottom;
 		bottom = temp;
 		return this;
+	}
+
+	/**
+	 * @return the minimal {@link Insets} (minimum for each side) from two given
+	 *         {@link Insets}.
+	 */
+	public static Insets min(Insets insets_1, Insets insets_2) {
+		return new Insets(Math.min(insets_1.top, insets_2.top), //
+				Math.min(insets_1.left, insets_2.left), //
+				Math.min(insets_1.bottom, insets_2.bottom), //
+				Math.min(insets_1.right, insets_2.right));
 	}
 
 }
