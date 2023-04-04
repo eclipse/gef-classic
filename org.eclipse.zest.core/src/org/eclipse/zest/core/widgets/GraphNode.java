@@ -47,7 +47,8 @@ public class GraphNode extends GraphItem {
 	public static final int HIGHLIGHT_NONE = 0;
 	public static final int HIGHLIGHT_ON = 1;
 
-	private static final int hideButtonsSize = 15;
+	private static final int HIDEBUTTONSIZE = 13;
+	private static final int MARGIN = 5;
 	// @tag ADJACENT : Removed highlight adjacent
 	// public static final int HIGHLIGHT_ADJACENT = 2;
 
@@ -80,6 +81,8 @@ public class GraphNode extends GraphItem {
 	protected int highlighted = HIGHLIGHT_NONE;
 	private IFigure tooltip;
 	protected IFigure nodeFigure;
+
+	private GraphLabel labelFigure;
 
 	private IFigure hideContainer = new ContainerFigure();
 	private Button hideButton = new Button("-");
@@ -466,14 +469,15 @@ public class GraphNode extends GraphItem {
 
 	protected void refreshLocation() {
 		Point loc = this.getLocation();
-		Dimension size = this.getSize();
-		Rectangle bounds = new Rectangle(loc, size);
+		Dimension lableSize = labelFigure.getSize();
+		Rectangle containerBounds = new Rectangle(loc.x, loc.y, lableSize.width + MARGIN * 2,
+				lableSize.height + MARGIN * 2);
 
 		if (nodeFigure == null || nodeFigure.getParent() == null) {
 			return; // node figure has not been created yet
 		}
 		// nodeFigure.setBounds(bounds);
-		nodeFigure.getParent().setConstraint(nodeFigure, bounds);
+		nodeFigure.getParent().setConstraint(nodeFigure, containerBounds);
 	}
 
 	/**
@@ -805,10 +809,15 @@ public class GraphNode extends GraphItem {
 			return;
 		}
 
-		if (!(currentFigure instanceof GraphLabel)) {
-			return;
+		GraphLabel figure;
+		if (currentFigure instanceof GraphLabel) {
+			figure = (GraphLabel) currentFigure;
+		} else {
+			if(labelFigure == null){
+				return;
+			}
+			figure = labelFigure;
 		}
-		GraphLabel figure = (GraphLabel) currentFigure;
 		IFigure toolTip;
 
 		if (!checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
@@ -852,15 +861,20 @@ public class GraphNode extends GraphItem {
 	protected IFigure createFigureForModel() {
 		GraphNode node = this;
 		boolean cacheLabel = (this).cacheLabel();
-		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
-		label.setFont(this.font);
+
+		IFigure container = new ContainerFigure();
+		labelFigure = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
+		labelFigure.setFont(this.font);
 		if (checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
-			label.setText("");
+			labelFigure.setText("");
 		}
 
-		createHideButtons(label);
-		updateFigureForModel(label);
-		return label;
+		labelFigure.translate(MARGIN, MARGIN); // centers label on node
+		container.add(labelFigure);
+		
+		createHideButtons(container);
+		updateFigureForModel(container);
+		return container;
 	}
 
 	/**
@@ -898,11 +912,11 @@ public class GraphNode extends GraphItem {
 			bounds = getBounds();
 		}
 		hideContainer.setBounds(bounds);
-		hideButton.setBounds(new Rectangle(getLocation(), new Dimension(hideButtonsSize, hideButtonsSize)));
-		revealButton.setBounds(new Rectangle(bounds.x + bounds.width - hideButtonsSize,
-				bounds.y + bounds.height - hideButtonsSize, hideButtonsSize, hideButtonsSize));
-		hiddenNodesLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - hideButtonsSize, getLocation().y,
-				hideButtonsSize, hideButtonsSize));
+		hideButton.setBounds(new Rectangle(getLocation(), new Dimension(HIDEBUTTONSIZE, HIDEBUTTONSIZE)));
+		revealButton.setBounds(new Rectangle(bounds.x + bounds.width - HIDEBUTTONSIZE,
+				bounds.y + bounds.height - HIDEBUTTONSIZE, HIDEBUTTONSIZE, HIDEBUTTONSIZE));
+		hiddenNodesLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - HIDEBUTTONSIZE, getLocation().y,
+				HIDEBUTTONSIZE, HIDEBUTTONSIZE));
 	}
 
 	private IFigure createFishEyeFigure() {
