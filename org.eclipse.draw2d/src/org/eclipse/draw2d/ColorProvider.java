@@ -63,7 +63,11 @@ public interface ColorProvider {
 	Color getListSelectedBackgroundColor();
 
 	class SystemColorFactory {
-		static ColorProvider colorProvider = new ColorProviderDefault();
+		static ColorProvider colorProvider = new BasicColorProvider();
+
+		public static ColorProvider getColorProvider() {
+			return colorProvider;
+		}
 
 		public static void setColorProvider(ColorProvider colorProvider) {
 			SystemColorFactory.colorProvider = colorProvider;

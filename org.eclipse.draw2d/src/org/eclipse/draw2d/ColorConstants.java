@@ -21,11 +21,11 @@ import org.eclipse.swt.widgets.Display;
  */
 public interface ColorConstants {
 
-	/**
-	 * @deprecated Color Provider should be used instead of SystemColorFactory
-	 */
 	class SystemColorFactory {
-		private static Color getColor(final int which) {
+		/**
+		 * @since 3.13
+		 */
+		public static Color getColor(final int which) {
 			Display display = Display.getCurrent();
 			if (display != null)
 				return display.getSystemColor(which);
