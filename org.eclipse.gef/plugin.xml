@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?><!--
-    Copyright (c) 2005, 2009 IBM Corporation and others.
+<?eclipse version="3.0"?>
+<!--
+    Copyright (c) 2005, 2023 IBM Corporation and others.
     All rights reserved. This program and the accompanying materials
     are made available under the terms of the Eclipse Public License v1.0
     which accompanies this distribution, and is available at
@@ -8,6 +9,8 @@
    
     Contributors:
         IBM Corporation - initial API and implementation
+        Georgii Gvinepadze - georgii.gvinepadze@dbeaver.com Theming update
+        Serge Rider - serge@dbeaver.com Theming update
  -->
 
 <plugin>
@@ -40,6 +43,168 @@
 				id="org.eclipse.gef.zoom_out">
 		</command>
 			
+	</extension>
+	<extension
+			point="org.eclipse.e4.ui.css.swt.theme">
+		<stylesheet
+				uri="css/gef_dark.css">
+			<themeid
+					refid="org.eclipse.e4.ui.css.theme.e4_dark">
+			</themeid>
+		</stylesheet>
+	</extension>
+	<extension point="org.eclipse.ui.themes">
+
+		<themeElementCategory label="%themeElementCategory.org.eclipse.gef.label" id="org.eclipse.gef">
+			<description>%themeElementCategory.org.eclipse.gef.description</description>
+		</themeElementCategory>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.button.lightest.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.button.lightest"
+				value="COLOR_WIDGET_HIGHLIGHT_SHADOW">
+			<description>%colorDefinition.org.eclipse.gef.color.button.lightest.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.button.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.button"
+				value="COLOR_WIDGET_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.button.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.button.darker.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.button.darker"
+				value="COLOR_WIDGET_NORMAL_SHADOW">
+			<description>%colorDefinition.org.eclipse.gef.color.button.darker.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.button.darkest.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.button.darkest"
+				value="COLOR_WIDGET_DARK_SHADOW">
+			<description>%colorDefinition.org.eclipse.gef.color.button.darkest.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.list.background.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.list.background"
+				value="COLOR_LIST_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.list.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.list.foreground.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.list.foreground"
+				value="COLOR_LIST_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.list.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.line.foreground.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.line.foreground"
+				value="COLOR_LIST_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.line.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.menu.background.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.menu.background"
+				value="COLOR_WIDGET_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.menu.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.menu.foreground.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.menu.foreground"
+				value="COLOR_WIDGET_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.menu.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.menu.background.selected.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.menu.background.selected"
+				value="COLOR_LIST_SELECTION">
+			<description>%colorDefinition.org.eclipse.gef.color.menu.background.selected.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.menu.foreground.selected.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.menu.foreground.selected"
+				value="COLOR_LIST_SELECTION_TEXT">
+			<description>%colorDefinition.org.eclipse.gef.color.menu.foreground.selected.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.title.background.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.title.background"
+				value="COLOR_TITLE_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.title.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.title.gradient.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.title.gradient"
+				value="COLOR_TITLE_BACKGROUND_GRADIENT">
+			<description>%colorDefinition.org.eclipse.gef.color.title.gradient.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.title.foreground.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.title.foreground"
+				value="COLOR_TITLE_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.title.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.title.inactive.foreground.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.title.inactive.foreground"
+				value="COLOR_TITLE_INACTIVE_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.title.inactive.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.title.inactive.background.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.title.inactive.background"
+				value="COLOR_TITLE_INACTIVE_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.title.inactive.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.title.inactive.gradient.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.title.inactive.gradient"
+				value="COLOR_TITLE_INACTIVE_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.title.inactive.gradient.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.tooltip.foreground.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.tooltip.foreground"
+				value="COLOR_INFO_FOREGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.tooltip.foreground.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.tooltip.background.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.tooltip.background"
+				value="COLOR_INFO_BACKGROUND">
+			<description>%colorDefinition.org.eclipse.gef.color.tooltip.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.list.hover.background.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.list.hover.background"
+				value="252, 228, 179">
+			<description>%colorDefinition.org.eclipse.gef.color.list.hover.background.description</description>
+		</colorDefinition>
+		<colorDefinition
+				label="%colorDefinition.org.eclipse.gef.color.list.selected.background.label"
+				categoryId="org.eclipse.gef"
+				id="org.eclipse.gef.color.list.selected.background"
+				value="207, 227, 250">
+			<description>%colorDefinition.org.eclipse.gef.color.list.selected.background.description</description>
+		</colorDefinition>
 	</extension>
 	<extension
 			point="org.eclipse.ui.views">

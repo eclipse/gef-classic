@@ -13,6 +13,11 @@ package org.eclipse.gef.internal;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import org.eclipse.draw2d.BasicColorProvider;
+import org.eclipse.draw2d.ColorProvider;
+
+import org.eclipse.gef.GEFColorProvider;
+
 import org.osgi.framework.BundleContext;
 
 public class InternalGEFPlugin extends AbstractUIPlugin {
@@ -26,6 +31,10 @@ public class InternalGEFPlugin extends AbstractUIPlugin {
 
 	public void start(BundleContext bc) throws Exception {
 		super.start(bc);
+		// Overloads the basic color provider with customizable one
+		if (ColorProvider.SystemColorFactory.getColorProvider() instanceof BasicColorProvider) {
+			ColorProvider.SystemColorFactory.setColorProvider(new GEFColorProvider());
+		}
 		context = bc;
 	}
 

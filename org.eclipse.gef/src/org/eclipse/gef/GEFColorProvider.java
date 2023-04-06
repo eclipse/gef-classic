@@ -1,32 +1,35 @@
+package org.eclipse.gef;
+
 /*******************************************************************************
- * Copyright (c) 2000, 2022 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     IBM Corporation - initial API and implementation
- *     Georgii Gvinepadze - georgii.gvinepadze@dbeaver.com
- *     Serge Rider - serge@dbeaver.com
- *******************************************************************************/
-package org.eclipse.draw2d;
+* Copyright (c) 2000, 2023 IBM Corporation and others.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contributors:
+*     IBM Corporation - initial API and implementation
+*     Georgii Gvinepadze - georgii.gvinepadze@dbeaver.com
+*     Serge Rider - serge@dbeaver.com
+*******************************************************************************/
 
 import org.eclipse.swt.graphics.Color;
 
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.themes.IThemeManager;
 
+import org.eclipse.draw2d.ColorProvider;
+
 /**
  * A collection of color-related constants.
  * 
- * @since 3.13
+ * @since 3.14
  */
-public class ColorProviderDefault implements ColorProvider {
+public class GEFColorProvider implements ColorProvider {
 
 	private final IThemeManager themeManager;
 
-	public ColorProviderDefault() {
+	public GEFColorProvider() {
 		themeManager = PlatformUI.getWorkbench().getThemeManager();
 	}
 
