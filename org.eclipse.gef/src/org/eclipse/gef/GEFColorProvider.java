@@ -1,16 +1,15 @@
 package org.eclipse.gef;
 
 /*******************************************************************************
-* Copyright (c) 2000, 2023 IBM Corporation and others.
+* Copyright (c) 2000, 2023 DBeaver Corporation and others.
 * All rights reserved. This program and the accompanying materials
 * are made available under the terms of the Eclipse Public License v1.0
 * which accompanies this distribution, and is available at
 * http://www.eclipse.org/legal/epl-v10.html
 *
 * Contributors:
-*     IBM Corporation - initial API and implementation
-*     Georgii Gvinepadze - georgii.gvinepadze@dbeaver.com
-*     Serge Rider - serge@dbeaver.com
+*     Georgii Gvinepadze - georgii.gvinepadze@dbeaver.com initial API and implementation
+*     Serge Rider - serge@dbeaver.com initial API and implementation
 *******************************************************************************/
 
 import org.eclipse.swt.graphics.Color;
