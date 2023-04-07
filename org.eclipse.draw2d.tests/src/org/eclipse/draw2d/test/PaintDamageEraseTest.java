@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,9 +11,6 @@
 package org.eclipse.draw2d.test;
 
 import java.util.Map;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
@@ -27,6 +24,9 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import junit.framework.AssertionFailedError;
+import junit.framework.TestCase;
+
 public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 
 	private FigureCanvas fc;
@@ -39,6 +39,14 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	private String errMsg;
 
 	public void testPaintDamageErase() {
+		// As it seems that the first test does not run reliable run a test without
+		// feedback first to warmup things.
+		// TODO split in individual test with independent and correct setup
+		doIndividualSetup(true);
+		insideBox.setBounds(insideBox.getBounds().getTranslated(15, -15));
+		performUpdate();
+		doIndividualTearDown();
+
 		doRelativeBoundsMixedMove2();
 		doRelativeBoundsMixedMove();
 		doRelativeBoundsPositiveMove();
@@ -56,7 +64,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	public void doRelativeBoundsMixedMove2() {
 		doIndividualSetup(true);
 
-		doTestEraseBoxAfterMove(15, -15, "RelativeMixed2");
+		doTestEraseBoxAfterMove(15, -15, "RelativeMixed2"); //$NON-NLS-1$
 
 		doIndividualTearDown();
 	}
@@ -68,7 +76,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	public void doAbsoluteBoundsMixedMove2() {
 		doIndividualSetup(false);
 
-		doTestEraseBoxAfterMove(15, -15, "AbsoluteMixed2");
+		doTestEraseBoxAfterMove(15, -15, "AbsoluteMixed2"); //$NON-NLS-1$
 
 		doIndividualTearDown();
 	}
@@ -80,7 +88,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	public void doRelativeBoundsMixedMove() {
 		doIndividualSetup(true);
 
-		doTestEraseBoxAfterMove(-15, 15, "RelativeMixed");
+		doTestEraseBoxAfterMove(-15, 15, "RelativeMixed"); //$NON-NLS-1$
 
 		doIndividualTearDown();
 	}
@@ -92,7 +100,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	public void doAbsoluteBoundsMixedMove() {
 		doIndividualSetup(false);
 
-		doTestEraseBoxAfterMove(-15, 15, "AbsoluteMixed");
+		doTestEraseBoxAfterMove(-15, 15, "AbsoluteMixed"); //$NON-NLS-1$
 
 		doIndividualTearDown();
 	}
@@ -104,7 +112,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	public void doRelativeBoundsPositiveMove() {
 		doIndividualSetup(true);
 
-		doTestEraseBoxAfterMove(15, 15, "RelativePositive");
+		doTestEraseBoxAfterMove(15, 15, "RelativePositive"); //$NON-NLS-1$
 
 		doIndividualTearDown();
 	}
@@ -116,7 +124,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	public void doRelativeBoundsNegativeMove() {
 		doIndividualSetup(true);
 
-		doTestEraseBoxAfterMove(-15, -15, "RelativeNegative");
+		doTestEraseBoxAfterMove(-15, -15, "RelativeNegative"); //$NON-NLS-1$
 
 		doIndividualTearDown();
 	}
@@ -128,7 +136,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	public void doAbsoluteBoundsPositiveMove() {
 		doIndividualSetup(false);
 
-		doTestEraseBoxAfterMove(15, 15, "AbsolutePositive");
+		doTestEraseBoxAfterMove(15, 15, "AbsolutePositive"); //$NON-NLS-1$
 
 		doIndividualTearDown();
 	}
@@ -140,7 +148,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	public void doAbsoluteBoundsNegativeMove() {
 		doIndividualSetup(false);
 
-		doTestEraseBoxAfterMove(-15, -15, "AbsoluteNegative");
+		doTestEraseBoxAfterMove(-15, -15, "AbsoluteNegative"); //$NON-NLS-1$
 
 		doIndividualTearDown();
 	}
@@ -155,7 +163,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	public void doTestEraseBoxAfterMove(int xOffset, int yOffset, String msg) {
 		insideBox.setBounds(insideBox.getBounds().getTranslated(xOffset, yOffset));
 
-		container.getUpdateManager().performUpdate();
+		performUpdate();
 
 		assertNotNull(lastDamaged);
 
@@ -179,7 +187,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 
 		if (lastDamaged == null || x != lastDamaged.x || y != lastDamaged.y || h != lastDamaged.height
 				|| w != lastDamaged.width) {
-			errMsg += " " + msg;
+			errMsg += " " + msg; //$NON-NLS-1$
 		}
 	}
 
@@ -207,9 +215,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 
 		fc.setContents(container);
 
-		container.getUpdateManager().performUpdate();
-		while (shell.getDisplay().readAndDispatch()) {
-		}
+		performUpdate();
 		container.getUpdateManager().addUpdateListener(this);
 	}
 
@@ -225,10 +231,11 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	/*
 	 * @see TestCase#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		errMsg = new String();
+		errMsg = ""; //$NON-NLS-1$
 		d = Display.getDefault();
 		shell = new Shell(d);
 
@@ -248,12 +255,13 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	/*
 	 * @see TestCase#tearDown()
 	 */
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 
 		shell.dispose();
 
-		if (!errMsg.equals("")) {
+		if (!errMsg.isEmpty()) {
 			throw new AssertionFailedError(errMsg);
 		}
 	}
@@ -267,6 +275,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 		super(name);
 	}
 
+	@Override
 	public void notifyPainting(Rectangle damage, Map dirtyRegions) {
 		lastDamaged = damage;
 	}
@@ -276,13 +285,22 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	 * 
 	 * @see org.eclipse.draw2d.UpdateListener#notifyValidating()
 	 */
+	@Override
 	public void notifyValidating() {
 		// nothing
+	}
+
+	private void performUpdate() {
+		container.getUpdateManager().performUpdate();
+		while (shell.getDisplay().readAndDispatch()) {
+			// dispatch all updates
+		}
 	}
 
 }
 
 class FigureWithRelativeCoords extends RectangleFigure {
+	@Override
 	protected boolean useLocalCoordinates() {
 		return true;
 	}

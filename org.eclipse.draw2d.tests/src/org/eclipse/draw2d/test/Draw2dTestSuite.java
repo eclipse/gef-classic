@@ -31,7 +31,8 @@ public class Draw2dTestSuite extends TestSuite {
 	public Draw2dTestSuite() {
 		addTest(new TestSuite(ShortestPathRoutingTest.class));
 		addTest(new TestSuite(XYLayoutTest.class));
-		// The text flow wrap test are currently unstable and therefore deactivated
+		// FIXME The text flow wrap test are currently unstable and therefore
+		// deactivated
 		// addTest(new TestSuite(TextFlowWrapTest.class));
 		addTest(new TestSuite(LocalOptimizerTest.class));
 		addTest(new TestSuite(AdvancedGraphicsTests.class));

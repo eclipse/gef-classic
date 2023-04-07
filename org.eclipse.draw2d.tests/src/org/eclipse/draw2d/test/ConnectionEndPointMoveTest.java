@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,8 +11,6 @@
 package org.eclipse.draw2d.test;
 
 import java.util.Map;
-
-import junit.framework.TestCase;
 
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionEndpointLocator;
@@ -29,25 +27,25 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import junit.framework.TestCase;
+
 public class ConnectionEndPointMoveTest extends TestCase implements UpdateListener {
 
-	private FigureCanvas fc;
-	protected IFigure contents;
+	private IFigure contents;
 	private RectangleFigure dec;
-	protected Shell shell;
+	private Shell shell;
 	private PolylineConnection conn;
-	protected Display d;
 	private Rectangle lastDamaged;
 	private Rectangle origBounds;
 
 	/*
 	 * @see TestCase#setUp()
 	 */
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		d = Display.getDefault();
-		shell = new Shell(d);
+		shell = new Shell(Display.getDefault());
 
 		String appName = getClass().getName();
 		appName = appName.substring(appName.lastIndexOf('.') + 1);
@@ -55,7 +53,7 @@ public class ConnectionEndPointMoveTest extends TestCase implements UpdateListen
 		shell.setText(appName);
 		shell.setLayout(new FillLayout());
 
-		fc = new FigureCanvas(shell);
+		FigureCanvas fc = new FigureCanvas(shell);
 
 		fc.setSize(200, 200);
 
@@ -78,9 +76,7 @@ public class ConnectionEndPointMoveTest extends TestCase implements UpdateListen
 		fc.setContents(contents);
 
 		shell.open();
-		contents.getUpdateManager().performUpdate();
-		while (shell.getDisplay().readAndDispatch()) {
-		}
+		performUpdate();
 		contents.getUpdateManager().addUpdateListener(this);
 
 		origBounds = conn.getBounds();
@@ -93,6 +89,7 @@ public class ConnectionEndPointMoveTest extends TestCase implements UpdateListen
 	 * org.eclipse.draw2d.UpdateListener#notifyPainting(org.eclipse.draw2d.geometry
 	 * .Rectangle, java.util.Map)
 	 */
+	@Override
 	public void notifyPainting(Rectangle damage, Map dirtyRegions) {
 		lastDamaged = damage;
 	}
@@ -102,27 +99,34 @@ public class ConnectionEndPointMoveTest extends TestCase implements UpdateListen
 	 * 
 	 * @see org.eclipse.draw2d.UpdateListener#notifyValidating()
 	 */
+	@Override
 	public void notifyValidating() {
 		// nothing
 	}
 
 	public void testConnectionDecoration() {
-
 		conn.setConstraint(dec, new MidpointLocator(conn, 0));
 		conn.layout();
 
-		contents.getUpdateManager().performUpdate();
-
+		performUpdate();
 		assertTrue(lastDamaged.contains(origBounds));
 	}
 
 	/*
 	 * @see TestCase#tearDown()
 	 */
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 
 		shell.dispose();
+	}
+
+	private void performUpdate() {
+		contents.getUpdateManager().performUpdate();
+		while (shell.getDisplay().readAndDispatch()) {
+			// dispatch all updates
+		}
 	}
 
 }
