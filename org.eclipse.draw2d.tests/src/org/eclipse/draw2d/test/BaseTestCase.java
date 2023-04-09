@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,6 +16,8 @@ import java.util.Arrays;
 
 import junit.framework.TestCase;
 
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
@@ -52,6 +54,26 @@ public abstract class BaseTestCase extends TestCase {
 	public void assertEquals(Image expected, Image actual) {
 		assertTrue("The given images did not match",
 				Arrays.equals(expected.getImageData().data, actual.getImageData().data));
+	}
+
+	/**
+	 * Asserts that two objects are equal. Expected object
+	 * <code>(width, height)</code>. Actual object <code>{@link Dimension}</code>.
+	 * If they are not an AssertionFailedError is thrown.
+	 */
+	public void assertEquals(int width, int height, Dimension dimension) throws Exception {
+		assertEquals(width, dimension.width);
+		assertEquals(height, dimension.height);
+	}
+
+	/**
+	 * Asserts that two objects are equal. Expected object <code>(x, y)</code>.
+	 * Actual object <code>{@link Point}</code>. If they are not an
+	 * AssertionFailedError is thrown.
+	 */
+	public void assertEquals(int x, int y, Point point) throws Exception {
+		assertEquals(x, point.x);
+		assertEquals(y, point.y);
 	}
 
 }
