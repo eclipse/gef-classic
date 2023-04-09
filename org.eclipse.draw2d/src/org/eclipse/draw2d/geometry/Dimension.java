@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -382,7 +382,21 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension getUnioned(Dimension d) {
-		return getCopy().union(d);
+		return getUnioned(d.width(), d.height());
+	}
+
+	/**
+	 * Creates a new Dimension representing the union of this Dimension with width
+	 * and height specified. Union is defined as the max() of the values from each
+	 * Dimension.
+	 * 
+	 * @param w the value by which the width is to be unioned
+	 * @param h the value by which the height is to be unioned
+	 * @return a new Dimension
+	 * @since 3.13
+	 */
+	public Dimension getUnioned(int w, int h) {
+		return getCopy().union(w, h);
 	}
 
 	/**
@@ -625,8 +639,21 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Dimension union(Dimension d) {
-		width = Math.max(width, d.width());
-		height = Math.max(height, d.height());
+		return union(d.width, d.height);
+	}
+
+	/**
+	 * Sets the width of this Dimension to the greater of this Dimension's width and
+	 * <i>width</i>. Likewise for this Dimension's height.
+	 * 
+	 * @param w the value by which the width is to be unioned
+	 * @param h the value by which the height is to be unioned
+	 * @return a new Dimension
+	 * @since 3.13
+	 */
+	public Dimension union(int w, int h) {
+		width = Math.max(width, w);
+		height = Math.max(height, h);
 		return this;
 	}
 
