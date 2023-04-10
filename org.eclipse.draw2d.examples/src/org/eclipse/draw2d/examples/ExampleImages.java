@@ -18,6 +18,12 @@ import org.eclipse.swt.graphics.Image;
  * @author hudsonr
  * @since 2.0
  */
-public class ExampleImages {
-	public static Image GEORGE = new Image(null, ExampleImages.class.getResourceAsStream("images/george.gif"));
+public final class ExampleImages {
+
+	public static final Image GEORGE = new Image(null, ExampleImages.class.getResourceAsStream("images/george.gif")); //$NON-NLS-1$
+
+	private ExampleImages() {
+		throw new UnsupportedOperationException("Utility class should not be instantiated"); //$NON-NLS-1$
+	}
+
 }

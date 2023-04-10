@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,96 +41,56 @@ public class ObstructionExample extends AbstractExample {
 
 	static ShortestPathRouter router = new ShortestPathRouter();
 
-	static int COUNT = 0;
-	static List sourceList = new ArrayList();
-	static List targetList = new ArrayList();
-	static Map obstacleMap = new HashMap();
-	static List paths = new ArrayList();
+	static Map<IFigure, Rectangle> obstacleMap = new HashMap<>();
+	static List<Path> paths = new ArrayList<>();
 
 	static class EllipseDragFigure extends Ellipse {
 
-		protected Point loc;
 		protected EllipseDragFigure oFigure;
-		protected EllipseDragFigure thisFigure;
 		protected boolean isSource;
 		protected Path path;
 
 		private static Dimension offset = new Dimension();
 
-		public EllipseDragFigure(Point location, boolean isItSource) {
-			loc = location;
-			thisFigure = this;
+		public EllipseDragFigure(boolean isItSource) {
 			this.isSource = isItSource;
 			setBackgroundColor(ColorConstants.darkBlue);
 
 			addMouseListener(new MouseListener.Stub() {
+				@Override
 				public void mousePressed(MouseEvent event) {
 					event.consume();
 					offset.setWidth(event.x - getLocation().x());
 					offset.setHeight(event.y - getLocation().y());
 				}
 
+				@Override
 				public void mouseReleased(MouseEvent event) {
 					offset.setWidth(0);
 					offset.setHeight(0);
-					if (event.button == 3) {
-						if (oFigure != null) {
-							getParent().remove(oFigure);
-							router.removePath(path);
-							paths.remove(path);
-						}
-
-						getParent().remove(thisFigure);
-
-						if (isSource) {
-							sourceList.remove(loc);
-							if (oFigure != null) {
-								targetList.remove(oFigure.loc);
-							}
-						} else {
-							// targets always have an oFigure
-							sourceList.remove(oFigure.loc);
-							targetList.remove(loc);
-						}
-
+					if (event.button == 2) {
+						getParent().remove(EllipseDragFigure.this);
 					}
 				}
 			});
 			addMouseMotionListener(new MouseMotionListener.Stub() {
+				@Override
 				public void mouseDragged(MouseEvent event) {
 					Rectangle rect = getBounds().getCopy();
 					rect.setX(event.x - offset.width());
 					rect.setY(event.y - offset.height());
 					setBounds(rect);
-					int index = 0;
+					router.removePath(path);
+					paths.remove(path);
 					if (isSource) {
-						index = sourceList.indexOf(loc);
-
-						sourceList.remove(loc);
-						loc = new Point(rect.x() + 10, rect.y() + 10);
-						sourceList.add(index, loc);
-
-						if (targetList.size() > index) {
-							router.removePath(path);
-							paths.remove(path);
-							path = new Path(loc, (Point) targetList.get(index));
-							router.addPath(path);
-							paths.add(path);
-							oFigure.path = path;
-						}
+						path = new Path(getBounds().getCenter(), oFigure.getBounds().getCenter());
 					} else {
-						index = targetList.indexOf(loc);
-
-						router.removePath(path);
-						paths.remove(path);
-						targetList.remove(loc);
-						loc = new Point(rect.x() + 10, rect.y() + 10);
-						targetList.add(index, loc);
-						path = new Path((Point) sourceList.get(index), loc);
-						router.addPath(path);
-						paths.add(path);
-						oFigure.path = path;
+						path = new Path(oFigure.getBounds().getCenter(), getBounds().getCenter());
 					}
+					router.addPath(path);
+					paths.add(path);
+					oFigure.path = path;
+
 					getParent().repaint();
 
 				}
@@ -141,48 +101,51 @@ public class ObstructionExample extends AbstractExample {
 		public void addOtherFigure(EllipseDragFigure figure) {
 			this.oFigure = figure;
 		}
+
+		public EllipseDragFigure getOtherFigure() {
+			return oFigure;
+		}
 	}
 
 	static class DragFigure extends RectangleFigure {
 		private static Dimension offset = new Dimension();
-		private DragFigure thisFigure;
 
 		public DragFigure() {
-			thisFigure = this;
 
 			setBackgroundColor(ColorConstants.green);
 
 			addMouseListener(new MouseListener.Stub() {
+				@Override
 				public void mousePressed(MouseEvent event) {
 					event.consume();
 					offset.setWidth(event.x - getLocation().x());
 					offset.setHeight(event.y - getLocation().y());
 				}
 
+				@Override
 				public void mouseReleased(MouseEvent event) {
 					offset.setWidth(0);
 					offset.setHeight(0);
 					if (event.button == 3) {
-						getParent().remove(thisFigure);
-						router.removeObstacle((Rectangle) ObstructionExample.obstacleMap.get(thisFigure));
-						ObstructionExample.obstacleMap.remove(thisFigure);
+						getParent().remove(DragFigure.this);
 					}
 				}
 			});
 			addMouseMotionListener(new MouseMotionListener.Stub() {
+				@Override
 				public void mouseDragged(MouseEvent event) {
-
 					Rectangle rect = getBounds().getCopy();
 					rect.setX(event.x - offset.width());
 					rect.setY(event.y - offset.height());
-					router.updateObstacle((Rectangle) ObstructionExample.obstacleMap.get(thisFigure), rect);
-					ObstructionExample.obstacleMap.put(thisFigure, rect);
+					router.updateObstacle(ObstructionExample.obstacleMap.get(DragFigure.this), rect);
+					ObstructionExample.obstacleMap.put(DragFigure.this, rect);
 					setBounds(rect);
 					getParent().repaint();
 				}
 			});
 		}
 
+		@Override
 		public void paint(Graphics graphics) {
 			super.paint(graphics);
 			Rectangle b = getBounds();
@@ -195,8 +158,9 @@ public class ObstructionExample extends AbstractExample {
 
 	class TestFigure extends Figure {
 
+		private static final int INITAL_OBSTACLE_COUNT = 5;
+
 		Map obstacleMap = new HashMap();
-		List obstaclesList = new ArrayList();
 		boolean showSegs = false;
 
 		public TestFigure() {
@@ -206,44 +170,33 @@ public class ObstructionExample extends AbstractExample {
 				private EllipseDragFigure figure;
 				private Point pPoint;
 
+				@Override
 				public void mousePressed(MouseEvent event) {
 					event.consume();
 					pPoint = event.getLocation();
 				}
 
+				@Override
 				public void mouseReleased(MouseEvent event) {
 					if (event.button == 1) {
 						if (Math.abs(pPoint.x() - event.getLocation().x()) > 10) {
 							DragFigure f = new DragFigure();
-							add(f);
-
 							f.setBounds(new Rectangle(pPoint, event.getLocation()));
-							Rectangle bounds = new Rectangle(pPoint, event.getLocation());
-
-							router.addObstacle(bounds);
-							ObstructionExample.obstacleMap.put(f, bounds);
-
+							add(f);
 						}
 					} else if (event.button == 3) {
-						if (sourceList.size() > targetList.size()) {
+						if (figure != null) {
 							// source already there, create target
-							targetList.add(event.getLocation());
-							EllipseDragFigure eFigure = new EllipseDragFigure(event.getLocation(), false);
+							EllipseDragFigure eFigure = new EllipseDragFigure(false);
 							eFigure.setBounds(
 									new Rectangle(event.getLocation().x() - 10, event.getLocation().y() - 10, 20, 20));
-							add(eFigure);
 							figure.addOtherFigure(eFigure);
 							eFigure.addOtherFigure(figure);
-							Path path = new Path((Point) sourceList.get(targetList.size() - 1), event.getLocation());
-							router.addPath(path);
-							paths.add(path);
-							eFigure.path = path;
-							figure.path = path;
+							add(eFigure);
+							// start with a new path
 							figure = null;
-							path = null;
 						} else {
-							sourceList.add(event.getLocation());
-							EllipseDragFigure eFigure = new EllipseDragFigure(event.getLocation(), true);
+							EllipseDragFigure eFigure = new EllipseDragFigure(true);
 							eFigure.setBounds(
 									new Rectangle(event.getLocation().x() - 10, event.getLocation().y() - 10, 20, 20));
 							add(eFigure);
@@ -255,29 +208,23 @@ public class ObstructionExample extends AbstractExample {
 				}
 			});
 
-			DragFigure f;
+			createInitialObstacles();
+		}
+
+		private final void createInitialObstacles() {
 			Random r = new Random(0);
-			int rowSize = (int) Math.sqrt(COUNT);
-			for (int i = 0; i < COUNT; i++) {
-				add(f = new DragFigure());
-				f.setBounds(new Rectangle((i / rowSize) * 101 + (i) % 3 * 10 + 100, i % rowSize * 101 + (i % 7) * 6, 50,
-						80 + (int) (r.nextDouble() * 10)));
-			}
+			int rowSize = (int) Math.sqrt(INITAL_OBSTACLE_COUNT);
+			for (int i = 0; i < INITAL_OBSTACLE_COUNT; i++) {
+				DragFigure f = new DragFigure();
+				Rectangle bounds = new Rectangle((i / rowSize) * 101 + (i) % 3 * 10 + 100,
+						i % rowSize * 101 + (i % 7) * 6, 50, 80 + (int) (r.nextDouble() * 10));
+				f.setBounds(bounds);
 
-			for (int i = 0; i < COUNT; i++) {
-				Rectangle bounds = ((IFigure) obstaclesList.get(i)).getBounds().getCopy();
-				ObstructionExample.obstacleMap.put(obstaclesList.get(i), bounds);
-				router.addObstacle(bounds);
+				add(f);
 			}
 		}
 
-		public void add(IFigure figure, Object constraint, int index) {
-			if (figure instanceof DragFigure)
-				obstaclesList.add(figure);
-
-			super.add(figure, constraint, index);
-		}
-
+		@Override
 		protected void paintBorder(Graphics g) {
 			router.solve();
 			g.setLineWidth(1);
@@ -286,31 +233,66 @@ public class ObstructionExample extends AbstractExample {
 			g.setBackgroundColor(ColorConstants.button);
 
 			// draw paths
-			Path path = null;
-			for (int n = 0; n < paths.size(); n++) {
-				path = (Path) paths.get(n);
-				PointList pList = path.getPoints();
-
+			paths.forEach(p -> {
+				PointList pList = p.getPoints();
 				for (int i = 1; i < pList.size(); i++)
 					g.drawLine(pList.getPoint(i - 1), pList.getPoint(i));
+			});
+		}
+
+		@Override
+		public void add(IFigure figure, Object constraint, int index) {
+			if (figure instanceof DragFigure) {
+				ObstructionExample.obstacleMap.put(figure, figure.getBounds());
+				router.addObstacle(figure.getBounds());
+			}
+			if (figure instanceof EllipseDragFigure) {
+				handleAddEllipseDragFigure((EllipseDragFigure) figure);
+			}
+
+			super.add(figure, constraint, index);
+		}
+
+		private void handleAddEllipseDragFigure(EllipseDragFigure figure) {
+			EllipseDragFigure otherFigure = figure.getOtherFigure();
+			if (otherFigure != null) {
+				// this is the target figure add a path
+				Path path = new Path(otherFigure.getBounds().getCenter(), figure.getBounds().getCenter());
+				router.addPath(path);
+				paths.add(path);
+				otherFigure.path = path;
+				figure.path = path;
 			}
 		}
 
+		@Override
 		public void remove(IFigure figure) {
 			if (figure instanceof DragFigure) {
-				obstaclesList.remove(figure);
+				router.removeObstacle(ObstructionExample.obstacleMap.remove(figure));
 			}
+			if (figure instanceof EllipseDragFigure) {
+				handleRemoveEllipseDragFigure((EllipseDragFigure) figure);
 
+			}
 			super.remove(figure);
 			repaint();
 		}
 
+		private void handleRemoveEllipseDragFigure(EllipseDragFigure figure) {
+			EllipseDragFigure otherFigure = figure.getOtherFigure();
+			if (otherFigure != null) {
+				getParent().remove(otherFigure);
+				router.removePath(figure.path);
+				paths.remove(figure.path);
+			}
+		}
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
-	protected IFigure getContents() {
+	@Override
+	protected IFigure createContents() {
 		Figure f = new TestFigure();
 		f.setPreferredSize(900, 700);
 		return f;

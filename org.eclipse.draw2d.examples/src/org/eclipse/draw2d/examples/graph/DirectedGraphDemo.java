@@ -141,7 +141,7 @@ public class DirectedGraphDemo extends AbstractGraphDemo {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
 	protected IFigure getContents() {
 		DirectedGraph graph = null;

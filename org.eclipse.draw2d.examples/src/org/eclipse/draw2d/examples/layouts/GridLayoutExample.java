@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -76,9 +77,9 @@ public class GridLayoutExample extends AbstractExample {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
-	protected IFigure getContents() {
+	protected IFigure createContents() {
 		container = new Figure();
 		container.setBorder(new LineBorder());
 
@@ -174,8 +175,8 @@ public class GridLayoutExample extends AbstractExample {
 	}
 
 	protected void updateView() {
-		contents.revalidate();
-		shell.pack();
+		getContents().revalidate();
+		getShell().pack();
 	}
 
 	protected void createColumnGroup() {
@@ -606,7 +607,7 @@ public class GridLayoutExample extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell()
 	 */
-	protected void hookShell() {
+	protected void hookShell(Shell shell) {
 		composite = new Composite(shell, 0);
 		_data = new org.eclipse.swt.layout.GridData(org.eclipse.swt.layout.GridData.FILL_VERTICAL);
 		_data.widthHint = 300;

@@ -35,7 +35,7 @@ public class ScrollPaneExample extends AbstractExample {
 		new ScrollPaneExample().run();
 	}
 
-	protected IFigure getContents() {
+	protected IFigure createContents() {
 		Figure mainPanel = new Figure();
 		mainPanel.add(newScrollingFrame("Flow layouts", ExampleUtil.createToolbarLayout()));
 

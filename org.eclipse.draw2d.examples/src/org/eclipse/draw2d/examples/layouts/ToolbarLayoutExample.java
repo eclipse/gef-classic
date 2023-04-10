@@ -10,18 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.layouts;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Scale;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Ellipse;
 import org.eclipse.draw2d.Figure;
@@ -33,6 +21,18 @@ import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.examples.AbstractExample;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author hudsonr Created on Apr 30, 2003
@@ -48,9 +48,9 @@ public class ToolbarLayoutExample extends AbstractExample {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
-	protected IFigure getContents() {
+	protected IFigure createContents() {
 		Figure container = new Figure();
 		container.setBorder(new LineBorder());
 		container.setLayoutManager(layout = new ToolbarLayout(true));
@@ -86,7 +86,7 @@ public class ToolbarLayoutExample extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell()
 	 */
-	protected void hookShell() {
+	protected void hookShell(Shell shell) {
 		Composite composite = new Composite(shell, 0);
 		composite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 
@@ -100,7 +100,7 @@ public class ToolbarLayoutExample extends AbstractExample {
 				layout.setVertical(layout.isHorizontal());
 				if (layout.getStretchMinorAxis())
 					resetShapes();
-				contents.revalidate();
+				getContents().revalidate();
 				shell.layout(true);
 			}
 		});
@@ -112,7 +112,7 @@ public class ToolbarLayoutExample extends AbstractExample {
 			public void widgetSelected(SelectionEvent e) {
 				layout.setStretchMinorAxis(!layout.getStretchMinorAxis());
 				resetShapes();
-				contents.revalidate();
+				getContents().revalidate();
 				shell.layout(true);
 			}
 		});
@@ -127,7 +127,7 @@ public class ToolbarLayoutExample extends AbstractExample {
 			left.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					layout.setMinorAlignment(FlowLayout.ALIGN_LEFTTOP);
-					contents.revalidate();
+					getContents().revalidate();
 				}
 			});
 
@@ -136,7 +136,7 @@ public class ToolbarLayoutExample extends AbstractExample {
 			center.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					layout.setMinorAlignment(FlowLayout.ALIGN_CENTER);
-					contents.revalidate();
+					getContents().revalidate();
 				}
 			});
 
@@ -145,7 +145,7 @@ public class ToolbarLayoutExample extends AbstractExample {
 			right.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					layout.setMinorAlignment(FlowLayout.ALIGN_RIGHTBOTTOM);
-					contents.revalidate();
+					getContents().revalidate();
 				}
 			});
 
@@ -156,7 +156,7 @@ public class ToolbarLayoutExample extends AbstractExample {
 			spacing.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					layout.setSpacing(spacing.getSelection());
-					contents.revalidate();
+					getContents().revalidate();
 				}
 			});
 			Label spacingLabel = new Label(major, SWT.CENTER);

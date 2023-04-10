@@ -10,15 +10,14 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.GroupBoxBorder;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
 
 /**
  * A factory for figures. Created on :Sep 26, 2002
@@ -26,7 +25,7 @@ import org.eclipse.draw2d.ToolbarLayout;
  * @author hudsonr
  * @since 2.0
  */
-public class ExampleUtil {
+public final class ExampleUtil {
 
 	static final Font FONT_LARGE = new Font(null, "Arial", 16, SWT.BOLD);
 

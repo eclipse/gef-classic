@@ -9,31 +9,32 @@
 
 package org.eclipse.draw2d.examples.text;
 
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.text.BlockFlow;
+import org.eclipse.draw2d.text.FlowPage;
+import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.PositionConstants;
-import org.eclipse.draw2d.examples.AbstractExample;
-import org.eclipse.draw2d.text.BlockFlow;
-import org.eclipse.draw2d.text.FlowPage;
-import org.eclipse.draw2d.text.TextFlow;
-
-public class BidiBlockExample extends AbstractExample {
+public class BidiBlockExample {
 
 	public static void main(String[] args) {
 		new BidiBlockExample().run();
 	}
 
+	private FigureCanvas fc;
+	protected Shell shell;
+
 // The backwards figure canvas for bidi
 	protected FigureCanvas cf;
 	protected String s = "\u0634\u0635\u062c\u062d \u0630\u0628\u063a and some english text.";
 
-	protected IFigure getContents() {
+	protected IFigure createContents() {
 		FlowPage page = new FlowPage();
 
 		BlockFlow para = new BlockFlow();
@@ -106,9 +107,9 @@ public class BidiBlockExample extends AbstractExample {
 		shell.setLayout(new GridLayout(2, true));
 
 		fc = new FigureCanvas(shell);
-		fc.setContents(getContents());
+		fc.setContents(createContents());
 		cf = new FigureCanvas(shell, SWT.RIGHT_TO_LEFT);
-		cf.setContents(getContents());
+		cf.setContents(createContents());
 
 		fc.getViewport().setContentsTracksWidth(true);
 		cf.getViewport().setContentsTracksWidth(true);
