@@ -30,6 +30,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Caret;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 
 public class CaretExample extends AbstractExample {
 
@@ -40,9 +41,11 @@ public class CaretExample extends AbstractExample {
 	private Label trailLabel;
 	private Label charLabel;
 
-	protected IFigure getContents() {
+	@Override
+	protected IFigure createContents() {
 		caret = new Caret(getFigureCanvas(), 0);
 		final FlowPage page = new FlowPage() {
+			@Override
 			protected void paintFigure(org.eclipse.draw2d.Graphics graphics) {
 				graphics.setBackgroundColor(new Color(null, 190, 220, 250));
 				graphics.fillRectangle(getBounds());
@@ -64,6 +67,7 @@ public class CaretExample extends AbstractExample {
 		page.add(text);
 
 		page.addMouseMotionListener(new MouseMotionListener.Stub() {
+			@Override
 			public void mouseMoved(MouseEvent me) {
 				int trail[] = new int[1];
 				Point where = me.getLocation();
@@ -72,6 +76,7 @@ public class CaretExample extends AbstractExample {
 				showCaret(text, offset, trail);
 			}
 
+			@Override
 			public void mouseExited(MouseEvent me) {
 
 			};
@@ -83,7 +88,8 @@ public class CaretExample extends AbstractExample {
 	// return super.getShellStyle() | SWT.RIGHT_TO_LEFT;
 	// }
 
-	protected void hookShell() {
+	@Override
+	protected void hookShell(Shell shell) {
 		getFigureCanvas().addKeyListener(new KeyAdapter() {
 		});
 		Group panel = new Group(shell, 0);
@@ -121,8 +127,9 @@ public class CaretExample extends AbstractExample {
 		new CaretExample().run();
 	}
 
+	@Override
 	protected void sizeShell() {
-		shell.setSize(shell.computeSize(400, -1));
+		getShell().setSize(getShell().computeSize(400, -1));
 	}
 
 }

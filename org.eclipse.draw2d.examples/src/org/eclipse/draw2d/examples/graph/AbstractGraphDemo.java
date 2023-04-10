@@ -182,7 +182,7 @@ public abstract class AbstractGraphDemo {
 	}
 
 	/**
-	 * @see org.eclipse.graph.AbstractExample#getContents()
+	 * @see org.eclipse.graph.AbstractExample#createContents()
 	 */
 	protected IFigure getContents() {
 		return null;

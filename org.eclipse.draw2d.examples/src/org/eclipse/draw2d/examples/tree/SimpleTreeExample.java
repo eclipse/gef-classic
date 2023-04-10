@@ -25,10 +25,10 @@ public class SimpleTreeExample extends AbstractExample {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
 	@Override
-	protected IFigure getContents() {
+	protected IFigure createContents() {
 		getFigureCanvas().setBackground(ColorConstants.white);
 		TreeRoot root = new TreeRoot(new PageNode("Graph Root")); //$NON-NLS-1$
 		root.setAlignment(PositionConstants.LEFT);

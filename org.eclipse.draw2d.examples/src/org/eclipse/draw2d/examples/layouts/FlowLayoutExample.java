@@ -16,6 +16,7 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.OrderedLayout;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.Triangle;
@@ -31,6 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author hudsonr Created on Apr 30, 2003
@@ -55,9 +57,9 @@ public class FlowLayoutExample extends AbstractExample {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
-	protected IFigure getContents() {
+	protected IFigure createContents() {
 		Figure container = new Figure();
 		container.setBorder(new LineBorder());
 		container.setLayoutManager(layout = new FlowLayout());
@@ -123,7 +125,7 @@ public class FlowLayoutExample extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell()
 	 */
-	protected void hookShell() {
+	protected void hookShell(Shell shell) {
 		Composite composite = new Composite(shell, 0);
 		composite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 
@@ -136,7 +138,7 @@ public class FlowLayoutExample extends AbstractExample {
 			public void widgetSelected(SelectionEvent e) {
 				layout.setHorizontal(!layout.isHorizontal());
 				resetShapes();
-				contents.revalidate();
+				getContents().revalidate();
 				shell.layout(true);
 			}
 		});
@@ -147,7 +149,7 @@ public class FlowLayoutExample extends AbstractExample {
 			public void widgetSelected(SelectionEvent e) {
 				layout.setStretchMinorAxis(stretch.getSelection());
 				resetShapes();
-				contents.revalidate();
+				getContents().revalidate();
 				shell.layout(true);
 			}
 		});
@@ -162,7 +164,7 @@ public class FlowLayoutExample extends AbstractExample {
 			left.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					layout.setMajorAlignment(FlowLayout.ALIGN_LEFTTOP);
-					contents.revalidate();
+					getContents().revalidate();
 				}
 			});
 
@@ -171,7 +173,7 @@ public class FlowLayoutExample extends AbstractExample {
 			center.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					layout.setMajorAlignment(FlowLayout.ALIGN_CENTER);
-					contents.revalidate();
+					getContents().revalidate();
 				}
 			});
 
@@ -180,7 +182,7 @@ public class FlowLayoutExample extends AbstractExample {
 			right.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					layout.setMajorAlignment(FlowLayout.ALIGN_RIGHTBOTTOM);
-					contents.revalidate();
+					getContents().revalidate();
 				}
 			});
 
@@ -191,7 +193,7 @@ public class FlowLayoutExample extends AbstractExample {
 			spacing.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					layout.setMajorSpacing(spacing.getSelection());
-					contents.revalidate();
+					getContents().revalidate();
 				}
 			});
 			Label spacingLabel = new Label(major, SWT.CENTER);
@@ -209,8 +211,8 @@ public class FlowLayoutExample extends AbstractExample {
 			left.setSelection(true);
 			left.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
-					layout.setMinorAlignment(FlowLayout.ALIGN_LEFTTOP);
-					contents.revalidate();
+					layout.setMinorAlignment(OrderedLayout.ALIGN_TOPLEFT);
+					getContents().revalidate();
 				}
 			});
 
@@ -219,7 +221,7 @@ public class FlowLayoutExample extends AbstractExample {
 			center.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					layout.setMinorAlignment(FlowLayout.ALIGN_CENTER);
-					contents.revalidate();
+					getContents().revalidate();
 				}
 			});
 
@@ -227,8 +229,8 @@ public class FlowLayoutExample extends AbstractExample {
 			right.setText("Buttom/Right");
 			right.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
-					layout.setMinorAlignment(FlowLayout.ALIGN_RIGHTBOTTOM);
-					contents.revalidate();
+					layout.setMinorAlignment(OrderedLayout.ALIGN_BOTTOMRIGHT);
+					getContents().revalidate();
 				}
 			});
 
@@ -239,7 +241,7 @@ public class FlowLayoutExample extends AbstractExample {
 			spacing.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					layout.setMinorSpacing(spacing.getSelection());
-					contents.revalidate();
+					getContents().revalidate();
 				}
 			});
 			Label spacingLabel = new Label(minor, SWT.CENTER);

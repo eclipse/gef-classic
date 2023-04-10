@@ -44,9 +44,9 @@ public class ConnectionAndAnchorExample extends AbstractExample {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
-	protected IFigure getContents() {
+	protected IFigure createContents() {
 		IFigure panel = new Figure();
 
 		Figure endPointPanel = new Figure();

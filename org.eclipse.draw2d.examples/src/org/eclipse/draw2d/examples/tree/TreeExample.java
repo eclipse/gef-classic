@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author hudsonr Created on Apr 18, 2003
@@ -126,10 +127,10 @@ public class TreeExample extends AbstractExample {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#getContents()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
 	@Override
-	protected IFigure getContents() {
+	protected IFigure createContents() {
 		getFigureCanvas().setBackground(ColorConstants.white);
 		root = new TreeRoot(createPageNode("Graph Root")); //$NON-NLS-1$
 
@@ -167,7 +168,7 @@ public class TreeExample extends AbstractExample {
 	 * @see org.eclipse.draw2d.examples.AbstractExample#run()
 	 */
 	@Override
-	protected void hookShell() {
+	protected void hookShell(Shell shell) {
 		Composite localShell = new Composite(shell, 0);
 		localShell.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 
