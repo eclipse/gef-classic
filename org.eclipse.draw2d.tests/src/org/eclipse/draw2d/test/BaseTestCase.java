@@ -17,6 +17,7 @@ import java.util.Arrays;
 import junit.framework.TestCase;
 
 import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
@@ -74,6 +75,19 @@ public abstract class BaseTestCase extends TestCase {
 	public void assertEquals(int x, int y, Point point) throws Exception {
 		assertEquals(x, point.x);
 		assertEquals(y, point.y);
+	}
+
+	/**
+	 * Asserts that two objects are equal. Expected object
+	 * <code>(top, left, bottom, right)</code>. Actual object
+	 * <code>{@link Insets}</code>. If they are not an AssertionFailedError is
+	 * thrown.
+	 */
+	public void assertEquals(int top, int left, int bottom, int right, Insets insets) throws Exception {
+		assertEquals(top, insets.top);
+		assertEquals(left, insets.left);
+		assertEquals(bottom, insets.bottom);
+		assertEquals(right, insets.right);
 	}
 
 }
