@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -137,6 +137,17 @@ public class Insets implements Cloneable, java.io.Serializable {
 	}
 
 	/**
+	 * Creates a new {@link Insets} with negated values. Top, Left, Bottom and Right
+	 * are multiplied by {@code -1}
+	 * 
+	 * @return The negate of this {@link Insets}
+	 * @since 3.13
+	 */
+	public Insets getNegated() {
+		return new Insets(-top, -left, -bottom, -right);
+	}
+
+	/**
 	 * Returns the width for this Insets, equal to <code>left</code> +
 	 * <code>right</code>.
 	 * 
@@ -189,6 +200,24 @@ public class Insets implements Cloneable, java.io.Serializable {
 		right = bottom;
 		bottom = temp;
 		return this;
+	}
+
+	/**
+	 * Creates a new minimal {@link Insets} using the distances of the given
+	 * arguments. The Top, Left, Bottom and Right computes using the minimum of the
+	 * respective distances.
+	 * 
+	 * @param insets_1 The first {@link Insets}.
+	 * @param insets_2 The second {@link Insets}.
+	 * @return the minimal {@link Insets} (minimum for each side) from two given
+	 *         {@link Insets}.
+	 * @since 3.13
+	 */
+	public static Insets min(Insets insets_1, Insets insets_2) {
+		return new Insets(Math.min(insets_1.top, insets_2.top), //
+				Math.min(insets_1.left, insets_2.left), //
+				Math.min(insets_1.bottom, insets_2.bottom), //
+				Math.min(insets_1.right, insets_2.right));
 	}
 
 }
