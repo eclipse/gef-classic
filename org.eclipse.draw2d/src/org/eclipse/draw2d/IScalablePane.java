@@ -13,17 +13,18 @@ package org.eclipse.draw2d;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
-/** Interface for scaleable panes which provides the default functionality for deciding if a scaled graphics or the
- * given graphics should be used for drawing.
+/**
+ * Interface for scaleable panes which provides the default functionality for
+ * deciding if a scaled graphics or the given graphics should be used for
+ * drawing.
  * 
- * @since 3.13 */
+ * @since 3.13
+ */
 public interface IScalablePane extends ScalableFigure {
 
 	boolean useScaledGraphics();
 
-	default Graphics getScaledGraphics(final Graphics graphics) {
-		return (useScaledGraphics()) ? new ScaledGraphics(graphics) : graphics;
-	}
+	boolean optimizeClip();
 
 	public default Rectangle getScaledRect(Rectangle rect) {
 		double scale = getScale();
@@ -34,4 +35,29 @@ public interface IScalablePane extends ScalableFigure {
 		return rect;
 	}
 
+	public static final class IScalablePaneHelper {
+
+		static Graphics prepareScaledGraphics(final Graphics graphics, IScalablePane figurePane) {
+			Graphics graphicsToUse = (figurePane.useScaledGraphics()) ? new ScaledGraphics(graphics) : graphics;
+			if (!figurePane.optimizeClip()) {
+				graphicsToUse.clipRect(figurePane.getBounds().getShrinked(figurePane.getInsets()));
+			}
+			graphicsToUse.scale(figurePane.getScale());
+			graphicsToUse.pushState();
+			return graphicsToUse;
+		}
+
+		static void cleanupScaledGraphics(final Graphics graphics, final Graphics graphicsUsed) {
+			graphicsUsed.popState();
+
+			if (graphicsUsed != graphics) {
+				graphicsUsed.dispose();
+			}
+			graphics.restoreState();
+		}
+
+		private IScalablePaneHelper() {
+			throw new UnsupportedOperationException("Helper class IScalablePaneHelper should not be instantiated"); //$NON-NLS-1$
+		}
+	}
 }
