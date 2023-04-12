@@ -16,10 +16,12 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Translatable;
 
-/** A non-freeform, scalable layered pane.
+/**
+ * A non-freeform, scalable layered pane.
  * 
  * @author Eric Bordeau
- * @since 2.1.1 */
+ * @since 2.1.1
+ */
 public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 
 	private double scale = 1.0;
@@ -30,9 +32,11 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 		this(true);
 	}
 
-	/** Constructor which allows to configure if scaled graphics should be used.
+	/**
+	 * Constructor which allows to configure if scaled graphics should be used.
 	 * 
-	 * @since 3.13 */
+	 * @since 3.13
+	 */
 	public ScalableLayeredPane(boolean useScaledGraphics) {
 		this.useScaledGraphics = useScaledGraphics;
 	}
@@ -63,9 +67,11 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 		return d.getExpanded(-w, -h).scale(scale).expand(w, h);
 	}
 
-	/** Returns the scale level, default is 1.0.
+	/**
+	 * Returns the scale level, default is 1.0.
 	 * 
-	 * @return the scale level */
+	 * @return the scale level
+	 */
 	@Override
 	public double getScale() {
 		return scale;
@@ -80,10 +86,8 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 		if (scale == 1.0) {
 			super.paintClientArea(graphics);
 		} else {
-			boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
-
 			Graphics graphicsToUse = getScaledGraphics(graphics);
-			if (!optimizeClip) {
+			if (!optimizeClip()) {
 				graphicsToUse.clipRect(getBounds().getShrinked(getInsets()));
 			}
 			graphicsToUse.scale(scale);
@@ -98,9 +102,11 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 		}
 	}
 
-	/** Sets the zoom level
+	/**
+	 * Sets the zoom level
 	 * 
-	 * @param newZoom The new zoom level */
+	 * @param newZoom The new zoom level
+	 */
 	@Override
 	public void setScale(double newZoom) {
 		if (scale == newZoom)
