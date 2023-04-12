@@ -19,6 +19,7 @@ import junit.framework.TestCase;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
@@ -88,6 +89,19 @@ public abstract class BaseTestCase extends TestCase {
 		assertEquals(left, insets.left);
 		assertEquals(bottom, insets.bottom);
 		assertEquals(right, insets.right);
+	}
+
+	/**
+	 * Asserts that two objects are equal. Expected object
+	 * <code>(x, y, width, height)</code>. Actual object
+	 * <code>{@link Rectangle}</code>. If they are not an AssertionFailedError is
+	 * thrown.
+	 */
+	public void assertEquals(int x, int y, int width, int height, Rectangle rectangle) throws Exception {
+		assertEquals(x, rectangle.x);
+		assertEquals(y, rectangle.y);
+		assertEquals(width, rectangle.width);
+		assertEquals(height, rectangle.height);
 	}
 
 }
