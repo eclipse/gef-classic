@@ -86,20 +86,20 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 		if (scale == 1.0) {
 			super.paintClientArea(graphics);
 		} else {
-			Graphics graphicsToUse = getScaledGraphics(graphics);
-			if (!optimizeClip()) {
-				graphicsToUse.clipRect(getBounds().getShrinked(getInsets()));
-			}
-			graphicsToUse.scale(scale);
-			graphicsToUse.pushState();
+			Graphics graphicsToUse = IScalablePaneHelper.prepareScaledGraphics(graphics, this);
 			paintChildren(graphics);
-			graphicsToUse.popState();
-
-			if (graphicsToUse != graphics) {
-				graphicsToUse.dispose();
-			}
-			graphics.restoreState();
+			IScalablePaneHelper.cleanupScaledGraphics(graphics, graphicsToUse);
 		}
+	}
+
+	/**
+	 * Make this method publicly accessible for IScaleablePane.
+	 * 
+	 * @since 3.13
+	 */
+	@Override
+	public boolean optimizeClip() {
+		return super.optimizeClip();
 	}
 
 	/**
