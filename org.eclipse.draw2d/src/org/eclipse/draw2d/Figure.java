@@ -1149,18 +1149,16 @@ public class Figure implements IFigure {
 		if (children.isEmpty())
 			return;
 
-		boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
-
 		if (useLocalCoordinates()) {
 			graphics.translate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
-			if (!optimizeClip)
+			if (!optimizeClip())
 				graphics.clipRect(getClientArea(PRIVATE_RECT));
 			graphics.pushState();
 			paintChildren(graphics);
 			graphics.popState();
 			graphics.restoreState();
 		} else {
-			if (optimizeClip)
+			if (optimizeClip())
 				paintChildren(graphics);
 			else {
 				graphics.clipRect(getClientArea(PRIVATE_RECT));
@@ -1170,6 +1168,13 @@ public class Figure implements IFigure {
 				graphics.restoreState();
 			}
 		}
+	}
+
+	/**
+	 * @since 3.13
+	 */
+	protected boolean optimizeClip() {
+		return getBorder() == null || getBorder().isOpaque();
 	}
 
 	/**

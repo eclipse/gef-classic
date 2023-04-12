@@ -200,8 +200,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 			disposeGraphics = true;
 		}
 
-		boolean optimizeClip = getBorder() == null || getBorder().isOpaque();
-		if (!optimizeClip) {
+		if (!optimizeClip()) {
 			g.clipRect(getBounds().getShrinked(getInsets()));
 		}
 
