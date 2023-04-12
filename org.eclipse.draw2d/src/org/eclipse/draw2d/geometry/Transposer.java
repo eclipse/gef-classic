@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,19 @@ package org.eclipse.draw2d.geometry;
 public class Transposer {
 
 	private boolean enabled = false;
+
+	public Transposer() {
+	}
+
+	/**
+	 * Convenience constructor to initialize the "enabled" flag during creation.
+	 * 
+	 * @param enabled {code true}, whether geometrical objects should be transposed.
+	 * @since 3.13
+	 */
+	public Transposer(boolean enabled) {
+		this.enabled = enabled;
+	}
 
 	/**
 	 * Disables transposing of inputs.
