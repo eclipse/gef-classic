@@ -16,6 +16,7 @@ pipeline {
 		stage('Build') {
 			steps {
 				sh '''
+				export GDK_BACKEND=x11
 				mvn clean verify -Dmaven.repo.local=$WORKSPACE/.m2/repository \
 					-DapiBaselineTargetDirectory=${WORKSPACE} \
 					-Dgpg.passphrase="${KEYRING_PASSPHRASE}" \
