@@ -30,6 +30,9 @@ pipeline {
 				always {
 					archiveArtifacts artifacts: '.*log,org.eclipse.gef.repository/target/repository/*', allowEmptyArchive: true
 				}
+				failure {
+		            mail bcc: '', body: "<b>GEF Classic: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: GEF Classic -> ${env.JOB_NAME}", to: "alois.zoitl@gmx.at";
+		        }
 			}
 
 		}
