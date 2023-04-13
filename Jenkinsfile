@@ -15,16 +15,17 @@ pipeline {
 		
 		stage('Build') {
 			steps {
-				sh '''
-				export GDK_BACKEND=x11
-				mvn clean verify -Dmaven.repo.local=$WORKSPACE/.m2/repository \
-					-DapiBaselineTargetDirectory=${WORKSPACE} \
-					-Dgpg.passphrase="${KEYRING_PASSPHRASE}" \
-					-Dproject.build.sourceEncoding=UTF-8 \
-					-Peclipse-sign
-				'''
-			
-			}            
+				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
+					sh '''
+					export GDK_BACKEND=x11
+					mvn clean verify -Dmaven.repo.local=$WORKSPACE/.m2/repository \
+						-DapiBaselineTargetDirectory=${WORKSPACE} \
+						-Dgpg.passphrase="${KEYRING_PASSPHRASE}" \
+						-Dproject.build.sourceEncoding=UTF-8 \
+						-Peclipse-sign
+					'''
+				}
+			}
 			post {
 				always {
 					archiveArtifacts artifacts: '.*log,org.eclipse.gef.repository/target/repository/*', allowEmptyArchive: true
