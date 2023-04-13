@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -111,6 +111,18 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	public Point(Point p) {
 		x = p.x();
 		y = p.y();
+	}
+
+	/**
+	 * Constructs a {@link Point} which is at the same location as the specified
+	 * {@link Dimension}.
+	 * 
+	 * @param copy Dimension from which the initial values are taken.
+	 * @since 3.13
+	 */
+	public Point(Dimension copy) {
+		x = copy.width;
+		y = copy.height;
 	}
 
 	/**
