@@ -18,6 +18,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.Interval;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Font;
@@ -104,4 +105,13 @@ public abstract class BaseTestCase extends TestCase {
 		assertEquals(height, rectangle.height);
 	}
 
+	/**
+	 * Asserts that two objects are equal. Expected object
+	 * <code>(begin, length)</code>. Actual object <code>{@link Interval}</code>. If
+	 * they are not an AssertionFailedError is thrown.
+	 */
+	public void assertEquals(int begin, int length, Interval interval) throws Exception {
+		assertEquals(begin, interval.begin());
+		assertEquals(length, interval.length());
+	}
 }

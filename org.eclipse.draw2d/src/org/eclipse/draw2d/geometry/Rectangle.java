@@ -400,6 +400,28 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	}
 
 	/**
+	 * Returns a new Interval beginning at the x coordinate with the width as
+	 * length.
+	 * 
+	 * @return the {@link Interval} of projection on X axis.
+	 * @since 3.13
+	 */
+	public Interval getHorizontalInterval() {
+		return new Interval(x, width);
+	}
+
+	/**
+	 * Returns a new Interval beginning at the y coordinate with the height as
+	 * length.
+	 * 
+	 * @return the {@link Interval} of projection on Y axis.
+	 * @since 3.13
+	 */
+	public Interval getVerticalInterval() {
+		return new Interval(y, height);
+	}
+
+	/**
 	 * Returns a new Point representing the middle point of the left hand side of
 	 * this Rectangle.
 	 * 
