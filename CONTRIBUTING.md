@@ -52,7 +52,7 @@ Having properly set up your development environment you can start working on the
 ## Run a headless build
 GEF uses a Maven/Tycho-based build infrastructure. With the [Eclipse Maven Integration](http://eclipse.org/m2e/), a headless build can also be executed in the local workspace. Make sure you have checked out all projects of the respective git repository. Then easily run the build by right-clicking the `pom.xml` file located in the root directory of the GEF classic repository, and selecting 'Run As -> Maven build...'.
 
-In the configuration wizard you have to specify the goals ("clean verify"). The build needs to be executed with a Java 11 VM, so if you have installed multiple JVMs, you should check the settings in the *JRE* tab.
+In the configuration wizard you have to specify the goals ("clean verify"). The build needs to be executed with a Java 17 VM, so if you have installed multiple JVMs, you should check the settings in the *JRE* tab.
 
 As a result of the build, an update-site will be created in the `target` sub-folder of the `org.eclipse.gef.repository` project.
 
