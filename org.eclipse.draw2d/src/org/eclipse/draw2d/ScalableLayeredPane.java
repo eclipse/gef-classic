@@ -117,6 +117,9 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 		repaint();
 	}
 
+	/**
+	 * @since 3.13
+	 */
 	@Override
 	public boolean useScaledGraphics() {
 		return useScaledGraphics;

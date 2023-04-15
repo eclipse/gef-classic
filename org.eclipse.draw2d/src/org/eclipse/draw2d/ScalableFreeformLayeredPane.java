@@ -52,6 +52,13 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 		return scale;
 	}
 
+	/**
+	 * @see org.eclipse.draw2d.IFigure#isCoordinateSystem()
+	 */
+	public boolean isCoordinateSystem() {
+		return true;
+	}
+
 	/** @see org.eclipse.draw2d.Figure#paintClientArea(Graphics) */
 	@Override
 	protected void paintClientArea(final Graphics graphics) {
@@ -92,6 +99,9 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 		repaint();
 	}
 
+	/**
+	 * @since 3.13
+	 */
 	@Override
 	public boolean useScaledGraphics() {
 		return useScaledGraphics;
@@ -107,12 +117,6 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 	@Override
 	public void translateFromParent(Translatable t) {
 		t.performScale(1 / getScale());
-	}
-
-	/** @see org.eclipse.draw2d.IFigure#isCoordinateSystem() */
-	@Override
-	public boolean isCoordinateSystem() {
-		return true;
 	}
 
 }
