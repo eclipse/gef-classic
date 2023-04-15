@@ -20,4 +20,32 @@
             </message_arguments>
         </filter>
     </resource>
+    <resource path="src/org/eclipse/draw2d/ScalableFreeformLayeredPane.java" type="org.eclipse.draw2d.ScalableFreeformLayeredPane">
+        <filter comment="the overriden protected method useLocalCoordinates() has been removed as it provided the same functionality as the base class" id="338792546">
+            <message_arguments>
+                <message_argument value="org.eclipse.draw2d.ScalableFreeformLayeredPane"/>
+                <message_argument value="useLocalCoordinates()"/>
+            </message_arguments>
+        </filter>
+    </resource>
+    <resource path="src/org/eclipse/draw2d/geometry/Translatable.java" type="org.eclipse.draw2d.geometry.Translatable">
+        <filter comment="default method added to interface Translateable this should be uncritical" id="404000815">
+            <message_arguments>
+                <message_argument value="org.eclipse.draw2d.geometry.Translatable"/>
+                <message_argument value="performTranslate(Dimension)"/>
+            </message_arguments>
+        </filter>
+        <filter comment="default method added to interface Translateable this should be uncritical" id="404000815">
+            <message_arguments>
+                <message_argument value="org.eclipse.draw2d.geometry.Translatable"/>
+                <message_argument value="performTranslate(Insets)"/>
+            </message_arguments>
+        </filter>
+        <filter comment="default method added to interface Translateable this should be uncritical" id="404000815">
+            <message_arguments>
+                <message_argument value="org.eclipse.draw2d.geometry.Translatable"/>
+                <message_argument value="performTranslate(Point)"/>
+            </message_arguments>
+        </filter>
+    </resource>
 </component>
