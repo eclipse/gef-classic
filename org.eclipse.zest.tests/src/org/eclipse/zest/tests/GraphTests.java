@@ -8,7 +8,7 @@
  *******************************************************************************/
 package org.eclipse.zest.tests;
 
-import junit.framework.TestCase;
+import java.util.List;
 
 import org.eclipse.draw2d.Figure;
 import org.eclipse.swt.SWT;
@@ -18,6 +18,8 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
+
+import junit.framework.TestCase;
 
 /**
  * General tests for the {@link Graph} class.
@@ -68,7 +70,7 @@ public class GraphTests extends TestCase {
 	 */
 	public void testDisposeGraphWithDisposedNode() {
 		nodes[0].dispose(); // removes the node from the graph's nodes list
-		graph.getNodes().add(nodes[0]); // but we're malicious and add it back
+		((List<GraphNode>) graph.getNodes()).add(nodes[0]); // but we're malicious and add it back
 		assertTrue("Node should be disposed", nodes[0].isDisposed());
 		graph.dispose();
 		assertTrue("Graph should be disposed", graph.isDisposed());
@@ -81,7 +83,7 @@ public class GraphTests extends TestCase {
 	 */
 	public void testDisposeGraphWithDisposedConnection() {
 		connection.dispose();
-		graph.getConnections().add(connection);
+		((List<GraphConnection>) graph.getConnections()).add(connection);
 		assertTrue("Connection should be disposed", connection.isDisposed());
 		graph.dispose();
 		assertTrue("Graph should be disposed", graph.isDisposed());

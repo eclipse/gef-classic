@@ -34,16 +34,10 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
@@ -87,20 +81,20 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * These are all the children of this graph. These lists contains all nodes and
 	 * connections that have added themselves to this graph.
 	 */
-	private final List nodes;
-	protected List connections;
-	private List selectedItems = null;
+	private final List<GraphNode> nodes;
+	protected List<GraphConnection> connections;
+	private List<GraphItem> selectedItems = null;
 	IFigure fisheyedFigure = null;
-	private List /* SelectionListener */ selectionListeners = null;
+	private List<SelectionListener> selectionListeners = null;
 
 	/** This maps all visible nodes to their model element. */
-	private HashMap figure2ItemMap = null;
+	private HashMap<IFigure, GraphItem> figure2ItemMap = null;
 
 	/** Maps user nodes to internal nodes */
 	private int connectionStyle;
 	private int nodeStyle;
-	private List constraintAdapters;
-	private List revealListeners = null;
+	private List<ConstraintAdapter> constraintAdapters;
+	private List<RevealListener> revealListeners = null;
 
 	private ScalableFreeformLayeredPane fishEyeLayer = null;
 	LayoutAlgorithm layoutAlgorithm = null;
@@ -160,42 +154,34 @@ public class Graph extends FigureCanvas implements IContainer {
 		this.getLightweightSystem().getRootFigure().addMouseListener(dragSupport);
 		this.getLightweightSystem().getRootFigure().addMouseMotionListener(dragSupport);
 
-		this.nodes = new ArrayList();
+		this.nodes = new ArrayList<>();
 		this.preferredSize = new Dimension(-1, -1);
 		this.connectionStyle = ZestStyles.NONE;
 		this.nodeStyle = ZestStyles.NONE;
-		this.connections = new ArrayList();
-		this.constraintAdapters = new ArrayList();
-		this.selectedItems = new ArrayList();
-		this.selectionListeners = new ArrayList();
-		this.figure2ItemMap = new HashMap();
+		this.connections = new ArrayList<>();
+		this.constraintAdapters = new ArrayList<>();
+		this.selectedItems = new ArrayList<>();
+		this.selectionListeners = new ArrayList<>();
+		this.figure2ItemMap = new HashMap<>();
 
-		revealListeners = new ArrayList(1);
-		this.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				if (!revealListeners.isEmpty()) {
-					// Go through the reveal list and let everyone know that the
-					// view is now available. Remove the listeners so they are
-					// only
-					// called once!
-					Iterator iterator = revealListeners.iterator();
-					while (iterator.hasNext()) {
-						RevealListener reveallisetner = (RevealListener) iterator.next();
-						reveallisetner.revealed(Graph.this);
-						iterator.remove();
-					}
-				}
-				/*
-				 * Iterator iterator = getNodes().iterator(); while (iterator.hasNext()) {
-				 * GraphNode node = (GraphNode) iterator.next(); node.paint(); }
-				 */
+		revealListeners = new ArrayList<>(1);
+		this.addPaintListener(event -> {
+			// Go through the reveal list and let everyone know that the
+			// view is now available. Remove the listeners so they are
+			// only called once!
+			Iterator<RevealListener> iterator = revealListeners.iterator();
+			while (iterator.hasNext()) {
+				RevealListener reveallisetner = iterator.next();
+				reveallisetner.revealed(Graph.this);
+				iterator.remove();
 			}
+
+			/*
+			 * Iterator iterator = getNodes().iterator(); while (iterator.hasNext()) {
+			 * GraphNode node = (GraphNode) iterator.next(); node.paint(); }
+			 */
 		});
-		this.addDisposeListener(new DisposeListener() {
-			public void widgetDisposed(DisposeEvent e) {
-				release();
-			}
-		});
+		this.addDisposeListener(event -> release());
 	}
 
 	/**
@@ -223,7 +209,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * 
 	 * @return List of GraphModelNode objects
 	 */
-	public List getNodes() {
+	public List<? extends GraphNode> getNodes() {
 		return nodes;
 	}
 
@@ -241,7 +227,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * 
 	 * @param constraintAdapters
 	 */
-	public void setConstraintAdapters(List /* ConstraintAdapters */ constraintAdapters) {
+	public void setConstraintAdapters(List<ConstraintAdapter> constraintAdapters) {
 		this.constraintAdapters = constraintAdapters;
 	}
 
@@ -299,7 +285,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * 
 	 * @return list of GraphModelConnection objects
 	 */
-	public List getConnections() {
+	public List<? extends GraphConnection> getConnections() {
 		return this.connections;
 	}
 
@@ -320,7 +306,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	public void selectAll() {
-		setSelection((GraphItem[]) nodes.toArray(new GraphItem[] {}));
+		setSelection(nodes.toArray(new GraphItem[] {}));
 	}
 
 	/**
@@ -328,7 +314,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * 
 	 * @return Currently selected graph node
 	 */
-	public List getSelection() {
+	public List<? extends GraphItem> getSelection() {
 		return selectedItems;
 	}
 
@@ -337,6 +323,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * 
 	 * @see org.eclipse.swt.widgets.Widget#toString()
 	 */
+	@Override
 	public String toString() {
 		return "GraphModel {" + nodes.size() + " nodes, " + connections.size() + " connections}";
 	}
@@ -354,6 +341,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	/**
 	 * Dispose of the nodes and edges when the graph is disposed.
 	 */
+	@Override
 	public void dispose() {
 		release();
 		super.dispose();
@@ -367,16 +355,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	public void applyLayout() {
 		if (!hasPendingLayoutRequest) {
 			hasPendingLayoutRequest = true;
-			this.addRevealListener(new RevealListener() {
-				public void revealed(Control c) {
-					Display.getDefault().asyncExec(new Runnable() {
-
-						public void run() {
-							applyLayoutInternal();
-						}
-					});
-				}
-			});
+			this.addRevealListener(control -> Display.getDefault().asyncExec(this::applyLayoutInternal));
 		}
 	}
 
@@ -411,7 +390,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * This point should be translated to relative before calling findFigureAt
 	 */
 	public IFigure getFigureAt(int x, int y) {
-		IFigure figureUnderMouse = this.getContents().findFigureAt(x, y, new TreeSearch() {
+		return this.getContents().findFigureAt(x, y, new TreeSearch() {
 
 			public boolean accept(IFigure figure) {
 				return true;
@@ -434,21 +413,15 @@ public class Graph extends FigureCanvas implements IContainer {
 						|| parent == zestRootLayer.getParent().getParent()) {
 					return false;
 				}
-				GraphItem item = (GraphItem) figure2ItemMap.get(figure);
-				if (item != null && item.getItemType() == GraphItem.CONTAINER) {
-					return false;
-				} else if (figure instanceof FreeformLayer || parent instanceof FreeformLayer
-						|| figure instanceof ScrollPane || parent instanceof ScrollPane
-						|| parent instanceof ScalableFreeformLayeredPane
+				GraphItem item = figure2ItemMap.get(figure);
+				return !((item != null && item.getItemType() == GraphItem.CONTAINER) || figure instanceof FreeformLayer
+						|| parent instanceof FreeformLayer || figure instanceof ScrollPane
+						|| parent instanceof ScrollPane || parent instanceof ScalableFreeformLayeredPane
 						|| figure instanceof ScalableFreeformLayeredPane || figure instanceof FreeformViewport
-						|| parent instanceof FreeformViewport) {
-					return false;
-				}
-				return true;
+						|| parent instanceof FreeformViewport);
 			}
 
 		});
-		return figureUnderMouse;
 
 	}
 
@@ -474,10 +447,8 @@ public class Graph extends FigureCanvas implements IContainer {
 			}
 			Point mousePoint = new Point(me.x, me.y);
 			Point tempPoint = mousePoint.getCopy();
-			if (selectedItems.size() > 0) {
-				Iterator iterator = selectedItems.iterator();
-				while (iterator.hasNext()) {
-					GraphItem item = (GraphItem) iterator.next();
+			if (!selectedItems.isEmpty()) {
+				for (GraphItem item : selectedItems) {
 					if ((item.getItemType() == GraphItem.NODE) || (item.getItemType() == GraphItem.CONTAINER)) {
 						// @tag Zest.selection Zest.move : This is where the
 						// node movement is tracked
@@ -554,7 +525,7 @@ public class Graph extends FigureCanvas implements IContainer {
 
 			if (figureUnderMouse != null) {
 				// There is a figure under this mouse
-				GraphItem itemUnderMouse = (GraphItem) figure2ItemMap.get(figureUnderMouse);
+				GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
 				if (itemUnderMouse == fisheyedItem) {
 
 				} else if (itemUnderMouse != null && itemUnderMouse.getItemType() == GraphItem.NODE) {
@@ -600,23 +571,19 @@ public class Graph extends FigureCanvas implements IContainer {
 					Point delta = new Point(newMousePoint.x - mousePoint.x, newMousePoint.y - mousePoint.y);
 					Point newViewLocation = getViewport().getViewLocation().getCopy().translate(delta);
 					getViewport().setViewLocation(newViewLocation);
-
 					clearSelection();
-					return;
 				} else {
 					double scale = getRootLayer().getScale();
 					scale /= 1.05;
 					getRootLayer().setScale(scale);
-
 					Point newMousePoint = mousePoint.getCopy().scale(1 / 1.05);
 					Point delta = new Point(newMousePoint.x - mousePoint.x, newMousePoint.y - mousePoint.y);
 					Point newViewLocation = getViewport().getViewLocation().getCopy().translate(delta);
 					getViewport().setViewLocation(newViewLocation);
 					clearSelection();
-					return;
 				}
 			} else {
-				boolean hasSelection = selectedItems.size() > 0;
+				boolean hasSelection = !selectedItems.isEmpty();
 				IFigure figureUnderMouse = getFigureAt(mousePoint.x, mousePoint.y);
 				getRootLayer().translateFromParent(mousePoint);
 
@@ -636,7 +603,7 @@ public class Graph extends FigureCanvas implements IContainer {
 					return;
 				}
 
-				GraphItem itemUnderMouse = (GraphItem) figure2ItemMap.get(figureUnderMouse);
+				GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
 				if (itemUnderMouse == null) {
 					if ((me.getState() & SWT.MOD1) != 0) {
 						clearSelection();
@@ -697,6 +664,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * @see org.eclipse.swt.widgets.Widget#notifyListeners(int,
 	 * org.eclipse.swt.widgets.Event)
 	 */
+	@Override
 	public void notifyListeners(int eventType, Event event) {
 		super.notifyListeners(eventType, event);
 		if (eventType == SWT.Selection && event != null) {
@@ -705,14 +673,14 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	private void release() {
-		while (nodes.size() > 0) {
-			GraphNode node = (GraphNode) nodes.get(0);
+		while (!nodes.isEmpty()) {
+			GraphNode node = nodes.get(0);
 			if (node != null) {
 				node.dispose();
 			}
 		}
-		while (connections.size() > 0) {
-			GraphConnection connection = (GraphConnection) connections.get(0);
+		while (!connections.isEmpty()) {
+			GraphConnection connection = connections.get(0);
 			if (connection != null) {
 				connection.dispose();
 			}
@@ -736,9 +704,8 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	private void clearSelection() {
-		Iterator iterator = new ArrayList(selectedItems).iterator();
-		while (iterator.hasNext()) {
-			deselect((GraphItem) iterator.next());
+		for (GraphItem item : new ArrayList<>(selectedItems)) {
+			deselect(item);
 		}
 	}
 
@@ -750,9 +717,8 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	private void notifySelectionListeners(SelectionEvent event) {
-		Iterator iterator = selectionListeners.iterator();
-		while (iterator.hasNext()) {
-			((SelectionListener) iterator.next()).widgetSelected(event);
+		for (SelectionListener listener : selectionListeners) {
+			(listener).widgetSelected(event);
 		}
 	}
 
@@ -854,57 +820,53 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 	GraphConnection[] getConnectionsArray() {
 		GraphConnection[] connsArray = new GraphConnection[connections.size()];
-		connsArray = (GraphConnection[]) connections.toArray(connsArray);
+		connsArray = connections.toArray(connsArray);
 		return connsArray;
 	}
 
-	LayoutRelationship[] getConnectionsToLayout(List nodesToLayout) {
+	LayoutRelationship[] getConnectionsToLayout(List<GraphNode> nodesToLayout) {
 		// @tag zest.bug.156528-Filters.follows : make sure not to layout
 		// filtered connections, if the style says so.
 		LayoutRelationship[] entities;
 		if (ZestStyles.checkStyle(style, ZestStyles.IGNORE_INVISIBLE_LAYOUT)) {
-			LinkedList connectionList = new LinkedList();
-			for (Iterator i = this.getConnections().iterator(); i.hasNext();) {
-				GraphConnection next = (GraphConnection) i.next();
+			LinkedList<LayoutRelationship> connectionList = new LinkedList<>();
+			for (GraphConnection next : this.getConnections()) {
 				if (next.isVisible() && nodesToLayout.contains(next.getSource())
 						&& nodesToLayout.contains(next.getDestination())) {
 					connectionList.add(next.getLayoutRelationship());
 				}
 			}
-			entities = (LayoutRelationship[]) connectionList.toArray(new LayoutRelationship[] {});
+			entities = connectionList.toArray(new LayoutRelationship[] {});
 		} else {
-			LinkedList nodeList = new LinkedList();
-			for (Iterator i = this.getConnections().iterator(); i.hasNext();) {
-				GraphConnection next = (GraphConnection) i.next();
+			LinkedList<LayoutRelationship> nodeList = new LinkedList<>();
+			for (GraphConnection next : this.getConnections()) {
 				if (nodesToLayout.contains(next.getSource()) && nodesToLayout.contains(next.getDestination())) {
 					nodeList.add(next.getLayoutRelationship());
 				}
 			}
-			entities = (LayoutRelationship[]) nodeList.toArray(new LayoutRelationship[] {});
+			entities = nodeList.toArray(new LayoutRelationship[] {});
 		}
 		return entities;
 	}
 
-	LayoutEntity[] getNodesToLayout(List nodes) {
+	LayoutEntity[] getNodesToLayout(List<? extends GraphNode> nodes) {
 		// @tag zest.bug.156528-Filters.follows : make sure not to layout
 		// filtered nodes, if the style says so.
 		LayoutEntity[] entities;
 		if (ZestStyles.checkStyle(style, ZestStyles.IGNORE_INVISIBLE_LAYOUT)) {
-			LinkedList nodeList = new LinkedList();
-			for (Iterator i = nodes.iterator(); i.hasNext();) {
-				GraphNode next = (GraphNode) i.next();
+			LinkedList<LayoutEntity> nodeList = new LinkedList<>();
+			for (GraphNode next : nodes) {
 				if (next.isVisible()) {
 					nodeList.add(next.getLayoutEntity());
 				}
 			}
-			entities = (LayoutEntity[]) nodeList.toArray(new LayoutEntity[] {});
+			entities = nodeList.toArray(new LayoutEntity[] {});
 		} else {
-			LinkedList nodeList = new LinkedList();
-			for (Iterator i = nodes.iterator(); i.hasNext();) {
-				GraphNode next = (GraphNode) i.next();
+			LinkedList<LayoutEntity> nodeList = new LinkedList<>();
+			for (GraphNode next : nodes) {
 				nodeList.add(next.getLayoutEntity());
 			}
-			entities = (LayoutEntity[]) nodeList.toArray(new LayoutEntity[] {});
+			entities = nodeList.toArray(new LayoutEntity[] {});
 		}
 		return entities;
 	}
@@ -941,7 +903,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	void addConnection(GraphConnection connection, boolean addToEdgeLayer) {
-		this.getConnections().add(connection);
+		connections.add(connection);
 		if (addToEdgeLayer) {
 			zestRootLayer.addConnection(connection.getFigure());
 		}
@@ -966,18 +928,18 @@ public class Graph extends FigureCanvas implements IContainer {
 	 */
 
 	void addNode(GraphNode node) {
-		this.getNodes().add(node);
+		nodes.add(node);
 		zestRootLayer.addNode(node.getFigure());
 	}
 
 	void addNode(GraphContainer graphContainer) {
-		this.getNodes().add(graphContainer);
+		nodes.add(graphContainer);
 		zestRootLayer.addNode(graphContainer.getFigure());
 
 	}
 
 	void registerItem(GraphItem item) {
-		if (item.getItemType() == GraphItem.NODE) {
+		if (item.getItemType() == GraphItem.NODE || item.getItemType() == GraphItem.CONTAINER) {
 			IFigure figure = item.getFigure();
 			figure2ItemMap.put(figure, item);
 		} else if (item.getItemType() == GraphItem.CONNECTION) {
@@ -989,9 +951,6 @@ public class Graph extends FigureCanvas implements IContainer {
 			if (((GraphConnection) item).getTargetContainerConnectionFigure() != null) {
 				figure2ItemMap.put(((GraphConnection) item).getTargetContainerConnectionFigure(), item);
 			}
-		} else if (item.getItemType() == GraphItem.CONTAINER) {
-			IFigure figure = item.getFigure();
-			figure2ItemMap.put(figure, item);
 		} else {
 			throw new RuntimeException("Unknown item type: " + item.getItemType());
 		}
@@ -1012,7 +971,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	/**
-	 * Invoke all the constraint adapaters for this constraints
+	 * Invoke all the constraint adapters for this constraints
 	 * 
 	 * @param object
 	 * @param constraint
@@ -1021,9 +980,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		if (constraintAdapters == null) {
 			return;
 		}
-		Iterator iterator = this.constraintAdapters.iterator();
-		while (iterator.hasNext()) {
-			ConstraintAdapter constraintAdapter = (ConstraintAdapter) iterator.next();
+		for (ConstraintAdapter constraintAdapter : constraintAdapters) {
 			constraintAdapter.populateConstraint(object, constraint);
 		}
 	}
@@ -1031,7 +988,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	private void applyLayoutInternal() {
 		hasPendingLayoutRequest = false;
 
-		if ((this.getNodes().size() == 0)) {
+		if (this.getNodes().isEmpty()) {
 			return;
 		}
 
@@ -1241,7 +1198,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	GraphItem getGraphItem(IFigure figure) {
-		return (GraphItem) figure2ItemMap.get(figure);
+		return figure2ItemMap.get(figure);
 	}
 
 }
