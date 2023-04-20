@@ -453,20 +453,21 @@ public class Graph extends FigureCanvas implements IContainer {
 					if ((item.getItemType() == GraphItem.NODE) || (item.getItemType() == GraphItem.CONTAINER)) {
 						// @tag Zest.selection Zest.move : This is where the
 						// node movement is tracked
+						GraphNode node = (GraphNode) item;
 						Point pointCopy = mousePoint.getCopy();
 
 						Point tempLastLocation = lastLocation.getCopy();
-						item.getFigure().getParent().translateToRelative(tempLastLocation);
-						item.getFigure().getParent().translateFromParent(tempLastLocation);
+						node.getNodeFigure().getParent().translateToRelative(tempLastLocation);
+						node.getNodeFigure().getParent().translateFromParent(tempLastLocation);
 
-						item.getFigure().getParent().translateToRelative(pointCopy);
-						item.getFigure().getParent().translateFromParent(pointCopy);
+						node.getNodeFigure().getParent().translateToRelative(pointCopy);
+						node.getNodeFigure().getParent().translateFromParent(pointCopy);
 						Point delta = new Point(pointCopy.x - tempLastLocation.x, pointCopy.y - tempLastLocation.y);
-						if (item.getItemType() == GraphItem.NODE || item.getItemType() == GraphItem.CONTAINER) {
-							GraphNode node = (GraphNode) item;
-							node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
+//						if (item.getItemType() == GraphItem.NODE || item.getItemType() == GraphItem.CONTAINER) {
+//							GraphNode node = item;
+						node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
 
-						}
+//						}
 						/*
 						 * else if (item.getItemType() == GraphItem.CONTAINER) { GraphContainer
 						 * container = (GraphContainer) item;
@@ -948,18 +949,17 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	void addNode(GraphNode node) {
 		nodes.add(node);
-		zestRootLayer.addNode(node.getFigure());
+		zestRootLayer.addNode(node.getNodeFigure());
 	}
 
 	void addNode(GraphContainer graphContainer) {
 		nodes.add(graphContainer);
-		zestRootLayer.addNode(graphContainer.getFigure());
-
+		zestRootLayer.addNode(graphContainer.getNodeFigure());
 	}
 
 	void registerItem(GraphItem item) {
 		if (item.getItemType() == GraphItem.NODE || item.getItemType() == GraphItem.CONTAINER) {
-			IFigure figure = item.getFigure();
+			IFigure figure = ((GraphNode) item).getNodeFigure();
 			figure2ItemMap.put(figure, item);
 		} else if (item.getItemType() == GraphItem.CONNECTION) {
 			IFigure figure = item.getFigure();

@@ -648,8 +648,8 @@ public class GraphConnection extends GraphItem {
 			// If this is a self loop, create a looped arc and put the locator
 			// at the top
 			// of the connection
-			sourceAnchor = new LoopAnchor(getSource().getNodeFigure());
-			targetAnchor = new LoopAnchor(getDestination().getNodeFigure());
+			sourceAnchor = new LoopAnchor(getSource().getFigure());
+			targetAnchor = new LoopAnchor(getDestination().getFigure());
 			labelLocator = new MidpointLocator(connectionFigure, 0) {
 				protected Point getReferencePoint() {
 					Point p = Point.SINGLETON;
@@ -663,8 +663,8 @@ public class GraphConnection extends GraphItem {
 			if (connectionFigure instanceof PolylineArcConnection && curveDepth != 0) {
 				((PolylineArcConnection) connectionFigure).setDepth(this.curveDepth);
 			}
-			sourceAnchor = new RoundedChopboxAnchor(getSource().getNodeFigure(), 8);
-			targetAnchor = new RoundedChopboxAnchor(getDestination().getNodeFigure(), 8);
+			sourceAnchor = new RoundedChopboxAnchor(getSource().getFigure(), 8);
+			targetAnchor = new RoundedChopboxAnchor(getDestination().getFigure(), 8);
 			labelLocator = new MidpointLocator(connectionFigure, 0);
 		}
 
