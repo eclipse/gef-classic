@@ -576,7 +576,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 25, 25, d.width - 50, d.height - 50, false,
 					false);
 			Animation.run(ANIMATION_TIME);
-			getFigure().getUpdateManager().performUpdate();
+			getNodeFigure().getUpdateManager().performUpdate();
 
 		} catch (InvalidLayoutConfiguration e) {
 			e.printStackTrace();

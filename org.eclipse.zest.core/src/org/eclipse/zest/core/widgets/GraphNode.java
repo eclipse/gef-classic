@@ -80,9 +80,12 @@ public class GraphNode extends GraphItem {
 	private boolean selected;
 	protected int highlighted = HIGHLIGHT_NONE;
 	private IFigure tooltip;
-	protected IFigure nodeFigure;
 
-	private GraphLabel labelFigure;
+	/**
+	 * @since 1.8
+	 */
+	private IFigure modelFigure;
+	protected IFigure nodeFigure;
 
 	private IFigure hideContainer = new ContainerFigure();
 	private Button hideButton = new Button("-");
@@ -118,7 +121,7 @@ public class GraphNode extends GraphItem {
 	public GraphNode(IContainer graphModel, int style, String text, Image image, Object data) {
 		super(graphModel.getGraph(), style, data);
 		initModel(graphModel, text, image);
-		if (nodeFigure == null) {
+		if (modelFigure == null) {
 			initFigure();
 		}
 
@@ -134,7 +137,11 @@ public class GraphNode extends GraphItem {
 	}
 
 	protected void initFigure() {
-		nodeFigure = createFigureForModel();
+		modelFigure = createFigureForModel();
+		updateFigureForModel(modelFigure);
+		nodeFigure = new ContainerFigure();
+		nodeFigure.add(modelFigure);
+		createHideButtons(nodeFigure);
 	}
 
 	static int count = 0;
@@ -292,8 +299,11 @@ public class GraphNode extends GraphItem {
 	 * @return Dimension
 	 */
 	public Dimension getSize() {
-		if (size.height < 0 && size.width < 0 && nodeFigure != null) {
-			return nodeFigure.getSize().getCopy();
+		if (size.height < 0 && size.width < 0 && modelFigure != null) {
+			// return size of node calculated from the model
+			Dimension modelSize = modelFigure.getSize();
+			size.width = modelSize.width + 2 * MARGIN;
+			size.height = modelSize.height + 2 * MARGIN;
 		}
 		return size.getCopy();
 	}
@@ -310,7 +320,7 @@ public class GraphNode extends GraphItem {
 	 */
 	public void setForegroundColor(Color c) {
 		this.foreColor = c;
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(modelFigure);
 	}
 
 	/**
@@ -330,7 +340,7 @@ public class GraphNode extends GraphItem {
 	 */
 	public void setBackgroundColor(Color c) {
 		backColor = c;
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(modelFigure);
 	}
 
 	/**
@@ -341,7 +351,7 @@ public class GraphNode extends GraphItem {
 	public void setTooltip(IFigure tooltip) {
 		hasCustomTooltip = true;
 		this.tooltip = tooltip;
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(modelFigure);
 	}
 
 	/**
@@ -359,7 +369,7 @@ public class GraphNode extends GraphItem {
 	 */
 	public void setBorderColor(Color c) {
 		borderColor = c;
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(modelFigure);
 	}
 
 	/**
@@ -369,7 +379,7 @@ public class GraphNode extends GraphItem {
 	 */
 	public void setBorderHighlightColor(Color c) {
 		this.borderHighlightColor = c;
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(modelFigure);
 	}
 
 	/**
@@ -431,7 +441,7 @@ public class GraphNode extends GraphItem {
 			((Graph) parent).highlightNode(this);
 		}
 		highlighted = HIGHLIGHT_ON;
-		updateFigureForModel(getNodeFigure());
+		updateFigureForModel(modelFigure);
 	}
 
 	/**
@@ -463,21 +473,22 @@ public class GraphNode extends GraphItem {
 			((Graph) parent).unhighlightNode(this);
 		}
 		highlighted = HIGHLIGHT_NONE;
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(modelFigure);
 
 	}
 
 	protected void refreshLocation() {
-		Point loc = this.getLocation();
-		Dimension lableSize = labelFigure.getSize();
-		Rectangle containerBounds = new Rectangle(loc.x, loc.y, lableSize.width + MARGIN * 2,
-				lableSize.height + MARGIN * 2);
+		Point loc = getLocation();
+		Dimension nodeSize = getSize();
+		Rectangle bounds = new Rectangle(loc.x, loc.y, nodeSize.width, nodeSize.height);
 
 		if (nodeFigure == null || nodeFigure.getParent() == null) {
 			return; // node figure has not been created yet
 		}
-		// nodeFigure.setBounds(bounds);
-		nodeFigure.getParent().setConstraint(nodeFigure, containerBounds);
+
+		nodeFigure.setBounds(bounds);
+		modelFigure.setBounds(new Rectangle(loc.x + MARGIN, loc.y + MARGIN, nodeSize.width - MARGIN * 2,
+				nodeSize.height - MARGIN * 2));
 	}
 
 	/**
@@ -533,7 +544,7 @@ public class GraphNode extends GraphItem {
 
 	public void setBorderWidth(int width) {
 		this.borderWidth = width;
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(modelFigure);
 	}
 
 	public Font getFont() {
@@ -542,7 +553,7 @@ public class GraphNode extends GraphItem {
 
 	public void setFont(Font font) {
 		this.font = font;
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(modelFigure);
 	}
 
 	/*
@@ -557,7 +568,7 @@ public class GraphNode extends GraphItem {
 		super.setText(string);
 
 		if (nodeFigure != null) {
-			updateFigureForModel(this.nodeFigure);
+			updateFigureForModel(modelFigure);
 		}
 	}
 
@@ -569,7 +580,7 @@ public class GraphNode extends GraphItem {
 	public void setImage(Image image) {
 		super.setImage(image);
 		if (nodeFigure != null) {
-			updateFigureForModel(nodeFigure);
+			updateFigureForModel(modelFigure);
 		}
 	}
 
@@ -629,6 +640,11 @@ public class GraphNode extends GraphItem {
 		this.cacheLabel = cacheLabel;
 	}
 
+	/**
+	 * Returns the figure of the whole node.
+	 * 
+	 * @return nodeFigure
+	 */
 	public IFigure getNodeFigure() {
 		return this.nodeFigure;
 	}
@@ -636,7 +652,7 @@ public class GraphNode extends GraphItem {
 	public void setVisible(boolean visible) {
 		// graph.addRemoveFigure(this, visible);
 		this.visible = visible;
-		this.getFigure().setVisible(visible);
+		this.getNodeFigure().setVisible(visible);
 		List sConnections = (this).getSourceConnections();
 		List tConnections = (this).getTargetConnections();
 		for (Iterator iterator2 = sConnections.iterator(); iterator2.hasNext();) {
@@ -813,10 +829,10 @@ public class GraphNode extends GraphItem {
 		if (currentFigure instanceof GraphLabel) {
 			figure = (GraphLabel) currentFigure;
 		} else {
-			if(labelFigure == null){
+			if (modelFigure == null) {
 				return;
 			}
-			figure = labelFigure;
+			figure = (GraphLabel) modelFigure;
 		}
 		IFigure toolTip;
 
@@ -861,20 +877,12 @@ public class GraphNode extends GraphItem {
 	protected IFigure createFigureForModel() {
 		GraphNode node = this;
 		boolean cacheLabel = (this).cacheLabel();
-
-		IFigure container = new ContainerFigure();
-		labelFigure = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
-		labelFigure.setFont(this.font);
+		GraphLabel label = new GraphLabel(node.getText(), node.getImage(), cacheLabel);
+		label.setFont(this.font);
 		if (checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
-			labelFigure.setText("");
+			label.setText("");
 		}
-
-		labelFigure.translate(MARGIN, MARGIN); // centers label on node
-		container.add(labelFigure);
-		
-		createHideButtons(container);
-		updateFigureForModel(container);
-		return container;
+		return label;
 	}
 
 	/**
@@ -909,13 +917,15 @@ public class GraphNode extends GraphItem {
 		if (this instanceof GraphContainer) {
 			bounds = ((GraphContainer) this).getExpandGraphLabelBounds();
 		} else {
-			bounds = getBounds();
+			Point loc = getLocation();
+			Dimension size = getSize();
+			bounds = new Rectangle(loc.x, loc.y, size.width, size.height);
 		}
 		hideContainer.setBounds(bounds);
 		hideButton.setBounds(new Rectangle(getLocation(), new Dimension(HIDEBUTTONSIZE, HIDEBUTTONSIZE)));
 		revealButton.setBounds(new Rectangle(bounds.x + bounds.width - HIDEBUTTONSIZE,
 				bounds.y + bounds.height - HIDEBUTTONSIZE, HIDEBUTTONSIZE, HIDEBUTTONSIZE));
-		hiddenNodesLabel.setBounds(new Rectangle(getLocation().x + getBounds().width - HIDEBUTTONSIZE, getLocation().y,
+		hiddenNodesLabel.setBounds(new Rectangle(getLocation().x + bounds.width - HIDEBUTTONSIZE, getLocation().y,
 				HIDEBUTTONSIZE, HIDEBUTTONSIZE));
 	}
 
@@ -1060,11 +1070,17 @@ public class GraphNode extends GraphItem {
 
 	}
 
+	/**
+	 * Returns the figure of the model in the node, initialises it, if it doesn't
+	 * exist yet.
+	 * 
+	 * @return modelFigure.
+	 */
 	IFigure getFigure() {
-		if (this.nodeFigure == null) {
+		if (this.modelFigure == null) {
 			initFigure();
 		}
-		return this.getNodeFigure();
+		return this.modelFigure;
 	}
 
 	void paint() {
