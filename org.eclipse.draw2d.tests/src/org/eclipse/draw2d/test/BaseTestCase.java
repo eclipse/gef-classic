@@ -123,7 +123,8 @@ public abstract class BaseTestCase extends TestCase {
 	protected void waitEventLoop(Shell shell, int timeMillis) {
 		long start = System.currentTimeMillis();
 		do {
-			while (shell.getDisplay().readAndDispatch()) {
+			// One of the events might dispose the shell...
+			while (!shell.isDisposed() && shell.getDisplay().readAndDispatch()) {
 				// dispatch all updates
 			}
 		} while (System.currentTimeMillis() - start < timeMillis);

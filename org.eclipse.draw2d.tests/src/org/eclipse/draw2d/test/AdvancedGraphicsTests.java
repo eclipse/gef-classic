@@ -13,8 +13,6 @@ package org.eclipse.draw2d.test;
 
 import java.util.Stack;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.swt.SWT;
@@ -34,11 +32,10 @@ import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class AdvancedGraphicsTests extends TestCase {
+public class AdvancedGraphicsTests extends BaseTestCase {
 
 	static final int LINE[] = new int[] { 5, 5, 20, 20, 35, 5, 50, 5 };
 	static final int POLY[] = new int[] { 5, 5, 45, 15, 20, 30, 20, 20, 45, 35, 5, 45 };
-	private static final int PREVIEW_DELAY = 250;
 	private SWTGraphics g;
 
 	private Image image;
@@ -77,16 +74,13 @@ public class AdvancedGraphicsTests extends TestCase {
 		shell.setBounds(100, 100, 800, 600);
 		shell.open();
 		Display d = shell.getDisplay();
-		d.timerExec(PREVIEW_DELAY, new Runnable() {
+		d.asyncExec(new Runnable() {
 			public void run() {
 				if (!shell.isDisposed())
 					shell.close();
 			}
 		});
-		while (!shell.isDisposed())
-			while (!d.readAndDispatch())
-				d.sleep();
-
+		waitEventLoop(shell, 100);
 	}
 
 	private void performTestcase(Runnable painter, Runnable tests[]) {
