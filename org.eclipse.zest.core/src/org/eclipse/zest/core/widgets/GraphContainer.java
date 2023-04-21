@@ -745,8 +745,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 		scrollPane.getViewport().setContents(scalledLayer);
 		scrollPane.setBorder(new LineBorder());
 
-		createHideButtons(containerFigure);
-
 		return containerFigure;
 	}
 

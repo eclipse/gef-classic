@@ -84,7 +84,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	private final List<GraphNode> nodes;
 	protected List<GraphConnection> connections;
 	private List<GraphItem> selectedItems = null;
-	private GraphNode hoverNode = null;
+	private HideNodeHelper hoverNode = null;
 	IFigure fisheyedFigure = null;
 	private List<SelectionListener> selectionListeners = null;
 
@@ -106,6 +106,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	private ZestRootLayer zestRootLayer;
 
 	private boolean hasPendingLayoutRequest;
+	private boolean enableHideNodes;
 
 	/**
 	 * Constructor for a Graph. This widget represents the root of the graph, and
@@ -115,6 +116,19 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * @param style
 	 */
 	public Graph(Composite parent, int style) {
+		this(parent, style, false);
+	}
+
+	/**
+	 * Constructor for a Graph. This widget represents the root of the graph, and
+	 * can contain graph items such as graph nodes and graph connections.
+	 * 
+	 * @param parent
+	 * @param style
+	 * @param enableHideNodes
+	 * @since 1.8
+	 */
+	public Graph(Composite parent, int style, boolean enableHideNodes) {
 		super(parent, style | SWT.DOUBLE_BUFFERED);
 		this.style = style;
 		this.setBackground(ColorConstants.white);
@@ -164,6 +178,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		this.selectedItems = new ArrayList<>();
 		this.selectionListeners = new ArrayList<>();
 		this.figure2ItemMap = new HashMap<>();
+		this.enableHideNodes = enableHideNodes;
 
 		revealListeners = new ArrayList<>(1);
 		this.addPaintListener(event -> {
@@ -426,6 +441,13 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	}
 
+	/**
+	 * @since 1.8
+	 */
+	public boolean getHideNodesEnabled() {
+		return enableHideNodes;
+	}
+
 	// /////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE METHODS. These are NON API
 	// /////////////////////////////////////////////////////////////////////////////////
@@ -463,11 +485,8 @@ public class Graph extends FigureCanvas implements IContainer {
 						node.getNodeFigure().getParent().translateToRelative(pointCopy);
 						node.getNodeFigure().getParent().translateFromParent(pointCopy);
 						Point delta = new Point(pointCopy.x - tempLastLocation.x, pointCopy.y - tempLastLocation.y);
-//						if (item.getItemType() == GraphItem.NODE || item.getItemType() == GraphItem.CONTAINER) {
-//							GraphNode node = item;
 						node.setLocation(node.getLocation().x + delta.x, node.getLocation().y + delta.y);
 
-//						}
 						/*
 						 * else if (item.getItemType() == GraphItem.CONTAINER) { GraphContainer
 						 * container = (GraphContainer) item;
@@ -528,11 +547,12 @@ public class Graph extends FigureCanvas implements IContainer {
 			if (figureUnderMouse != null) {
 				// There is a figure under this mouse
 				GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
-				if (itemUnderMouse != null && (itemUnderMouse.getItemType() == GraphItem.NODE
-						|| itemUnderMouse.getItemType() == GraphItem.CONTAINER)) {
-					hoverNode = (GraphNode) itemUnderMouse;
-					hoverNode.setHideButtonVisible(true);
-					hoverNode.setRevealButtonVisible(true);
+				if (itemUnderMouse instanceof GraphNode node) {
+					hoverNode = node.getHideNode();
+					if (hoverNode != null) {
+						hoverNode.setHideButtonVisible(true);
+						hoverNode.setRevealButtonVisible(true);
+					}
 				} else {
 					if (hoverNode != null) {
 						hoverNode.setHideButtonVisible(false);
