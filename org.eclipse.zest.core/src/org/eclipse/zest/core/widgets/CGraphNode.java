@@ -31,7 +31,6 @@ public class CGraphNode extends GraphNode {
 
 	protected IFigure createFigureForModel() {
 		this.figure = (IFigure) this.getData();
-		createHideButtons(figure);
 		return this.figure;
 	}
 
