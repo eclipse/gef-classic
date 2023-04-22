@@ -38,119 +38,84 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	protected IFigure container;
 	private String errMsg;
 
-	public void testPaintDamageErase() {
-		// As it seems that the first test does not run reliable run a test without
-		// feedback first to warmup things.
-		// TODO split in individual test with independent and correct setup
-		doIndividualSetup(true);
-		insideBox.setBounds(insideBox.getBounds().getTranslated(15, -15));
-		performUpdate();
-		doIndividualTearDown();
-
-		doRelativeBoundsMixedMove2();
-		doRelativeBoundsMixedMove();
-		doRelativeBoundsPositiveMove();
-		doRelativeBoundsNegativeMove();
-		doAbsoluteBoundsMixedMove2();
-		doAbsoluteBoundsMixedMove();
-		doAbsoluteBoundsPositiveMove();
-		doAbsoluteBoundsNegativeMove();
-	}
-
 	/**
 	 * Tests a mixed move (x pos,y neg) with relative bounds.
 	 * 
 	 */
-	public void doRelativeBoundsMixedMove2() {
+	public void testRelativeBoundsMixedMove2() {
 		doIndividualSetup(true);
 
 		doTestEraseBoxAfterMove(15, -15, "RelativeMixed2"); //$NON-NLS-1$
-
-		doIndividualTearDown();
 	}
 
 	/**
 	 * Tests a mixed move (x pos,y neg) with absolute bounds.
 	 * 
 	 */
-	public void doAbsoluteBoundsMixedMove2() {
+	public void testAbsoluteBoundsMixedMove2() {
 		doIndividualSetup(false);
 
 		doTestEraseBoxAfterMove(15, -15, "AbsoluteMixed2"); //$NON-NLS-1$
-
-		doIndividualTearDown();
 	}
 
 	/**
 	 * Tests a mixed move (x neg,x pos) with relative bounds.
 	 * 
 	 */
-	public void doRelativeBoundsMixedMove() {
+	public void testRelativeBoundsMixedMove() {
 		doIndividualSetup(true);
 
 		doTestEraseBoxAfterMove(-15, 15, "RelativeMixed"); //$NON-NLS-1$
-
-		doIndividualTearDown();
 	}
 
 	/**
 	 * Tests a mixed move (x neg, y pos) with absolute bounds.
 	 * 
 	 */
-	public void doAbsoluteBoundsMixedMove() {
+	public void testAbsoluteBoundsMixedMove() {
 		doIndividualSetup(false);
 
 		doTestEraseBoxAfterMove(-15, 15, "AbsoluteMixed"); //$NON-NLS-1$
-
-		doIndividualTearDown();
 	}
 
 	/**
 	 * Tests a positive move with relative bounds.
 	 * 
 	 */
-	public void doRelativeBoundsPositiveMove() {
+	public void testRelativeBoundsPositiveMove() {
 		doIndividualSetup(true);
 
 		doTestEraseBoxAfterMove(15, 15, "RelativePositive"); //$NON-NLS-1$
-
-		doIndividualTearDown();
 	}
 
 	/**
 	 * Tests a negative move with relative bounds.
 	 * 
 	 */
-	public void doRelativeBoundsNegativeMove() {
+	public void testRelativeBoundsNegativeMove() {
 		doIndividualSetup(true);
 
 		doTestEraseBoxAfterMove(-15, -15, "RelativeNegative"); //$NON-NLS-1$
-
-		doIndividualTearDown();
 	}
 
 	/**
 	 * Tests a positive move with absolute bounds.
 	 * 
 	 */
-	public void doAbsoluteBoundsPositiveMove() {
+	public void testAbsoluteBoundsPositiveMove() {
 		doIndividualSetup(false);
 
 		doTestEraseBoxAfterMove(15, 15, "AbsolutePositive"); //$NON-NLS-1$
-
-		doIndividualTearDown();
 	}
 
 	/**
 	 * Tests a negative move with absolute bounds.
 	 * 
 	 */
-	public void doAbsoluteBoundsNegativeMove() {
+	public void testAbsoluteBoundsNegativeMove() {
 		doIndividualSetup(false);
 
 		doTestEraseBoxAfterMove(-15, -15, "AbsoluteNegative"); //$NON-NLS-1$
-
-		doIndividualTearDown();
 	}
 
 	/**
@@ -259,6 +224,8 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 	protected void tearDown() throws Exception {
 		super.tearDown();
 
+		doIndividualTearDown();
+
 		shell.dispose();
 
 		if (!errMsg.isEmpty()) {
@@ -292,9 +259,20 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 
 	private void performUpdate() {
 		container.getUpdateManager().performUpdate();
-		while (shell.getDisplay().readAndDispatch()) {
-			// dispatch all updates
-		}
+		waitEventLoop(100);
+	}
+
+	/**
+	 * Waits given number of milliseconds and pumps the SWT event queue.<br>
+	 * At least one events loop will be executed.
+	 */
+	private void waitEventLoop(int timeMillis) {
+		long start = System.currentTimeMillis();
+		do {
+			while (shell.getDisplay().readAndDispatch()) {
+				// dispatch all updates
+			}
+		} while (System.currentTimeMillis() - start < timeMillis);
 	}
 
 }
