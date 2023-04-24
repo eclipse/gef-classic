@@ -25,9 +25,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
 
-public class PaintDamageEraseTest extends TestCase implements UpdateListener {
+public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener {
 
 	private FigureCanvas fc;
 	protected IFigure contents;
@@ -259,20 +258,7 @@ public class PaintDamageEraseTest extends TestCase implements UpdateListener {
 
 	private void performUpdate() {
 		container.getUpdateManager().performUpdate();
-		waitEventLoop(100);
-	}
-
-	/**
-	 * Waits given number of milliseconds and pumps the SWT event queue.<br>
-	 * At least one events loop will be executed.
-	 */
-	private void waitEventLoop(int timeMillis) {
-		long start = System.currentTimeMillis();
-		do {
-			while (shell.getDisplay().readAndDispatch()) {
-				// dispatch all updates
-			}
-		} while (System.currentTimeMillis() - start < timeMillis);
+		waitEventLoop(shell, 100);
 	}
 
 }

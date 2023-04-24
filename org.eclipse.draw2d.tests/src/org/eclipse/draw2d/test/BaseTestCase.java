@@ -23,6 +23,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author Pratik Shah
@@ -113,5 +114,18 @@ public abstract class BaseTestCase extends TestCase {
 	public void assertEquals(int begin, int length, Interval interval) throws Exception {
 		assertEquals(begin, interval.begin());
 		assertEquals(length, interval.length());
+	}
+
+	/**
+	 * Waits given number of milliseconds and pumps the SWT event queue.<br>
+	 * At least one events loop will be executed.
+	 */
+	protected void waitEventLoop(Shell shell, int timeMillis) {
+		long start = System.currentTimeMillis();
+		do {
+			while (shell.getDisplay().readAndDispatch()) {
+				// dispatch all updates
+			}
+		} while (System.currentTimeMillis() - start < timeMillis);
 	}
 }
