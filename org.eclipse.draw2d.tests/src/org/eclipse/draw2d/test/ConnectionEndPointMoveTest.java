@@ -27,9 +27,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import junit.framework.TestCase;
-
-public class ConnectionEndPointMoveTest extends TestCase implements UpdateListener {
+public class ConnectionEndPointMoveTest extends BaseTestCase implements UpdateListener {
 
 	private IFigure contents;
 	private RectangleFigure dec;
@@ -124,9 +122,7 @@ public class ConnectionEndPointMoveTest extends TestCase implements UpdateListen
 
 	private void performUpdate() {
 		contents.getUpdateManager().performUpdate();
-		while (shell.getDisplay().readAndDispatch()) {
-			// dispatch all updates
-		}
+		waitEventLoop(shell, 100);
 	}
 
 }
