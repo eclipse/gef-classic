@@ -8,7 +8,6 @@ import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.zest.core.widgets.internal.ContainerFigure;
 import org.eclipse.zest.core.widgets.internal.GraphLabel;
@@ -65,14 +64,8 @@ public class HideNodeHelper {
 	}
 
 	public void updateHideButtonFigure() {
-		Rectangle bounds;
-		if (node instanceof GraphContainer) {
-			bounds = ((GraphContainer) node).getExpandGraphLabelBounds();
-		} else {
-			Point loc = node.getLocation();
-			Dimension size = node.getSize();
-			bounds = new Rectangle(loc.x, loc.y, size.width, size.height);
-		}
+		Rectangle bounds = node.getNodeFigure().getBounds();
+
 		hideContainer.setBounds(bounds);
 		hideButton.setBounds(new Rectangle(node.getLocation(), new Dimension(HIDEBUTTONSIZE, HIDEBUTTONSIZE)));
 		revealButton.setBounds(new Rectangle(bounds.x + bounds.width - HIDEBUTTONSIZE,
@@ -105,6 +98,14 @@ public class HideNodeHelper {
 		hiddenNodesLabel.setVisible(hiddenNodeCount > 0); // true if hidden node still exists
 		hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
 		updateHideButtonFigure();
+	}
+
+	public void setBounds(Rectangle bounds) {
+		node.getNodeFigure().setBounds(bounds);
+		node.getModelFigure()
+				.setBounds(new Rectangle(bounds.x + HideNodeHelper.MARGIN, bounds.y + HideNodeHelper.MARGIN,
+						bounds.width - HideNodeHelper.MARGIN * 2, bounds.height - HideNodeHelper.MARGIN * 2));
+
 	}
 
 	/**

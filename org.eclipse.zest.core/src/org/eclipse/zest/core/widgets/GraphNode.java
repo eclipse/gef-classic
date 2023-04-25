@@ -77,12 +77,12 @@ public class GraphNode extends GraphItem {
 	private boolean selected;
 	protected int highlighted = HIGHLIGHT_NONE;
 	private IFigure tooltip;
+	protected IFigure nodeFigure;
 
 	/**
 	 * @since 1.8
 	 */
 	private IFigure modelFigure;
-	protected IFigure nodeFigure;
 
 	/**
 	 * @since 1.8
@@ -488,9 +488,7 @@ public class GraphNode extends GraphItem {
 		}
 
 		if (hideNodeHelper != null) {
-			nodeFigure.setBounds(bounds);
-			modelFigure.setBounds(new Rectangle(loc.x + HideNodeHelper.MARGIN, loc.y + HideNodeHelper.MARGIN,
-					nodeSize.width - HideNodeHelper.MARGIN * 2, nodeSize.height - HideNodeHelper.MARGIN * 2));
+			hideNodeHelper.setBounds(bounds);
 		}
 		nodeFigure.getParent().setConstraint(nodeFigure, bounds);
 
@@ -688,7 +686,28 @@ public class GraphNode extends GraphItem {
 	/**
 	 * @since 1.8
 	 */
-	public HideNodeHelper getHideNode() {
+	public void setModelFigure(IFigure figure) {
+		this.modelFigure = figure;
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public IFigure getModelFigure() {
+		return this.modelFigure;
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public void setHideNodeHelper(HideNodeHelper hideNodeHelper) {
+		this.hideNodeHelper = hideNodeHelper;
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	public HideNodeHelper getHideNodeHelper() {
 		return this.hideNodeHelper;
 	}
 
