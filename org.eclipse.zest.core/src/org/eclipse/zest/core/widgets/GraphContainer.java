@@ -146,7 +146,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 			Animation.run(ANIMATION_TIME);
 		}
 		// this.nodeFigure.getUpdateManager().performUpdate();
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(getModelFigure());
 	}
 
 	private static void addNodeToOrderedList(List orderedNodeList, GraphNode node) {
@@ -310,7 +310,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 			item.setVisible(true);
 		}
 
-		updateFigureForModel(nodeFigure);
+		updateFigureForModel(getModelFigure());
 
 		Rectangle containerBounds = new Rectangle(this.getLocation(),
 				new Dimension(this.getSize().width, CONTAINER_HEIGHT + this.expandGraphLabel.getSize().height));
@@ -518,13 +518,6 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * @since 1.8
-	 */
-	public Rectangle getExpandGraphLabelBounds() {
-		return expandGraphLabel.getBounds();
-	}
-
-	/**
 	 * 
 	 */
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
@@ -576,7 +569,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 			layoutAlgorithm.applyLayout(nodesToLayout, connectionsToLayout, 25, 25, d.width - 50, d.height - 50, false,
 					false);
 			Animation.run(ANIMATION_TIME);
-			getNodeFigure().getUpdateManager().performUpdate();
+			getFigure().getUpdateManager().performUpdate();
 
 		} catch (InvalidLayoutConfiguration e) {
 			e.printStackTrace();
@@ -608,7 +601,14 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * NON API MEMBERS
 	 **************************************************************************/
 	protected void initFigure() {
-		nodeFigure = createContainerFigure();
+		setModelFigure(createContainerFigure());
+		if (graph.getHideNodesEnabled()) {
+			nodeFigure = new ContainerFigure();
+			nodeFigure.add(getModelFigure());
+			setHideNodeHelper(new HideNodeHelper(this));
+		} else {
+			nodeFigure = getModelFigure();
+		}
 	}
 
 	/**
@@ -796,12 +796,12 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	}
 
+	@Override
 	protected void refreshLocation() {
 		if (nodeFigure == null || nodeFigure.getParent() == null) {
 			return; // node figure has not been created yet
 		}
-		GraphNode node = this;
-		Point loc = node.getLocation();
+		Point loc = getLocation();
 
 		ContainerDimension containerDimension = computeContainerSize();
 		Dimension size = new Dimension();
@@ -821,6 +821,11 @@ public class GraphContainer extends GraphNode implements IContainer {
 				expandGraphLabel.getLocation().y + containerDimension.labelHeight - SUBLAYER_OFFSET));
 		scrollPane.setSize(computeChildArea());
 		scalledLayer.setScale(computeWidthScale(), computeHeightScale());
+		if (getHideNodeHelper() != null) {
+			bounds.width += 2 * HideNodeHelper.MARGIN;
+			bounds.height += 2 * HideNodeHelper.MARGIN;
+			getHideNodeHelper().setBounds(bounds);
+		}
 	}
 
 	void addConnectionFigure(PolylineConnection connection) {
