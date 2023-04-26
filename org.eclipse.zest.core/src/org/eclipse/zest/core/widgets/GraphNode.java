@@ -136,6 +136,7 @@ public class GraphNode extends GraphItem {
 			nodeFigure = new ContainerFigure();
 			nodeFigure.add(modelFigure);
 			hideNodeHelper = new HideNodeHelper(this);
+			nodeFigure.setToolTip(modelFigure.getToolTip());
 		} else {
 			nodeFigure = modelFigure;
 		}
