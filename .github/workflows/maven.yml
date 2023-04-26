@@ -25,7 +25,7 @@ jobs:
       uses: coactions/setup-xvfb@v1
       with:
        run: >- 
-        mvn -V -B -fae clean verify
+        mvn -V -B -fae -ntp clean verify
     - name: Upload Test Results for Java-${{ matrix.java }}
       if: always()
       uses: actions/upload-artifact@v3
