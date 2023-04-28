@@ -13,12 +13,11 @@ import org.eclipse.zest.core.widgets.internal.GraphLabel;
 /**
  * @since 1.8
  */
-public class HideNodeHelper {
+public class HideNodeHelper extends ContainerFigure {
 	public static final int MARGIN = 5;
 
 	private GraphNode node;
 
-	private IFigure hideContainer = new ContainerFigure();
 	private Button hideButton = new Button("-");
 	private Button revealButton = new Button("+");
 	private int hiddenNodeCount = 0;
@@ -53,18 +52,18 @@ public class HideNodeHelper {
 		hiddenNodesLabel.setBackgroundColor(ColorConstants.red);
 		hiddenNodesLabel.setForegroundColor(ColorConstants.black);
 
-		hideContainer.add(hideButton);
-		hideContainer.add(revealButton);
-		hideContainer.add(hiddenNodesLabel);
+		this.add(hideButton);
+		this.add(revealButton);
+		this.add(hiddenNodesLabel);
 
-		figure.add(hideContainer);
+		figure.add(this);
 	}
 
 	public void updateHideButtonFigure() {
-		Rectangle bounds = node.getNodeFigure().getBounds();
+		Rectangle bounds = node.getHideContainerBounds();
 		int hideButtonSize = revealButton.getPreferredSize().width;
 
-		hideContainer.setBounds(bounds);
+		this.setBounds(bounds);
 		hideButton.setBounds(new Rectangle(bounds.x, bounds.y, hideButtonSize, hideButtonSize));
 		revealButton.setBounds(new Rectangle(bounds.x + bounds.width - hideButtonSize,
 				bounds.y + bounds.height - hideButtonSize, hideButtonSize, hideButtonSize));
@@ -98,7 +97,7 @@ public class HideNodeHelper {
 		updateHideButtonFigure();
 	}
 
-	public void setBounds(Rectangle bounds) {
+	public void updateNodeBounds(Rectangle bounds) {
 		node.getNodeFigure().setBounds(bounds);
 		node.getModelFigure()
 				.setBounds(new Rectangle(bounds.x + HideNodeHelper.MARGIN, bounds.y + HideNodeHelper.MARGIN,
