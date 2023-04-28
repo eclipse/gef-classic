@@ -6,8 +6,6 @@ import java.util.List;
 import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.zest.core.widgets.internal.ContainerFigure;
 import org.eclipse.zest.core.widgets.internal.GraphLabel;
@@ -16,16 +14,15 @@ import org.eclipse.zest.core.widgets.internal.GraphLabel;
  * @since 1.8
  */
 public class HideNodeHelper {
-	public static final int HIDEBUTTONSIZE = 13;
 	public static final int MARGIN = 5;
 
-	public GraphNode node;
+	private GraphNode node;
 
 	private IFigure hideContainer = new ContainerFigure();
 	private Button hideButton = new Button("-");
 	private Button revealButton = new Button("+");
 	private int hiddenNodeCount = 0;
-	private Label hiddenNodesLabel = new GraphLabel("0", false);
+	private GraphLabel hiddenNodesLabel = new GraphLabel("0", false);
 
 	private HideNodeListener thisHideNodeListener;
 	private List<HideNodeListener> hideNodeListeners = new ArrayList<>();
@@ -65,13 +62,14 @@ public class HideNodeHelper {
 
 	public void updateHideButtonFigure() {
 		Rectangle bounds = node.getNodeFigure().getBounds();
+		int hideButtonSize = revealButton.getPreferredSize().width;
 
 		hideContainer.setBounds(bounds);
-		hideButton.setBounds(new Rectangle(node.getLocation(), new Dimension(HIDEBUTTONSIZE, HIDEBUTTONSIZE)));
-		revealButton.setBounds(new Rectangle(bounds.x + bounds.width - HIDEBUTTONSIZE,
-				bounds.y + bounds.height - HIDEBUTTONSIZE, HIDEBUTTONSIZE, HIDEBUTTONSIZE));
-		hiddenNodesLabel.setBounds(new Rectangle(node.getLocation().x + bounds.width - HIDEBUTTONSIZE,
-				node.getLocation().y, HIDEBUTTONSIZE, HIDEBUTTONSIZE));
+		hideButton.setBounds(new Rectangle(bounds.x, bounds.y, hideButtonSize, hideButtonSize));
+		revealButton.setBounds(new Rectangle(bounds.x + bounds.width - hideButtonSize,
+				bounds.y + bounds.height - hideButtonSize, hideButtonSize, hideButtonSize));
+		hiddenNodesLabel.setBounds(new Rectangle(node.getLocation().x + bounds.width - hideButtonSize,
+				node.getLocation().y, hideButtonSize, hideButtonSize));
 	}
 
 	public void setHideButtonVisible(boolean visible) {
@@ -86,14 +84,14 @@ public class HideNodeHelper {
 		}
 	}
 
-	public void increaseHiddenNodes() {
+	private void increaseHiddenNodes() {
 		this.hiddenNodeCount++;
 		hiddenNodesLabel.setVisible(true);
 		hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
 		updateHideButtonFigure();
 	}
 
-	public void decreaseHiddenNode() {
+	private void decreaseHiddenNodes() {
 		this.hiddenNodeCount--;
 		hiddenNodesLabel.setVisible(hiddenNodeCount > 0); // true if hidden node still exists
 		hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
@@ -151,7 +149,7 @@ public class HideNodeHelper {
 		}
 
 		public void fireNodeRevealed() {
-			decreaseHiddenNode();
+			decreaseHiddenNodes();
 		}
 
 		public void revealNode() {

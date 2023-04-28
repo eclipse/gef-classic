@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.zest.examples.swt;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * This snippet creates a very simple graph where Rock is connected to Paper
@@ -39,7 +39,7 @@ public class GraphSnippet1 {
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		Graph g = new Graph(shell, SWT.NONE);
+		Graph g = new Graph(shell, SWT.NONE, true);
 
 		GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");
