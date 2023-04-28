@@ -311,6 +311,19 @@ public class RectangleTest extends BaseTestCase {
 		Insets insets = new Insets(1, 2, 3, 4);
 		assertSame(template, template.crop(insets));
 		assertEquals(1, 2, 3, 4, insets);
+		assertEquals(12, 16, 64, 26, template);
+		//
+		insets = new Insets(4, 3, 2, 1);
+		assertSame(template, template.crop(insets));
+		assertEquals(15, 20, 60, 20, template);
+		//
+		insets = new Insets(20, 0, 20, 0);
+		assertSame(template, template.crop(insets));
+		assertEquals(15, 40, 60, 0, template);
+		//
+		insets = new Insets(0, 40, 0, 40);
+		assertSame(template, template.crop(insets));
+		assertEquals(55, 40, 0, 0, template);
 	}
 
 	public void testExpandIntInt() throws Exception {
@@ -378,12 +391,22 @@ public class RectangleTest extends BaseTestCase {
 
 	public void testShrink() throws Exception {
 		Rectangle template = new Rectangle(1, 2, 30, 40);
+		Point center = new Point(16, 22);
 		assertSame(template, template.shrink(5, 7));
 		assertEquals(6, 9, 20, 26, template);
+		assertEquals(center, template.getCenter());
 		//
 		template = new Rectangle(10, 20, 3, 4);
+		center = new Point(11, 22);
 		assertSame(template, template.shrink(-5, -7));
 		assertEquals(5, 13, 13, 18, template);
+		assertEquals(center, template.getCenter());
+		//
+		template = new Rectangle(10, 20, 10, 10);
+		center = new Point(15, 25);
+		assertSame(template, template.shrink(20, 20));
+		assertEquals(15, 25, 0, 0, template);
+		assertEquals(center, template.getCenter());
 	}
 
 	public void testTranslate() throws Exception {
