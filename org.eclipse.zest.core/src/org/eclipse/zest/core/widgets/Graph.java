@@ -978,7 +978,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	}
 
 	void registerItem(GraphItem item) {
-		if (item.getItemType() == GraphItem.NODE || item.getItemType() == GraphItem.CONTAINER) {
+		if (item.getItemType() == GraphItem.NODE) {
 			IFigure figure = ((GraphNode) item).getNodeFigure();
 			figure2ItemMap.put(figure, item);
 		} else if (item.getItemType() == GraphItem.CONNECTION) {
@@ -990,6 +990,9 @@ public class Graph extends FigureCanvas implements IContainer {
 			if (((GraphConnection) item).getTargetContainerConnectionFigure() != null) {
 				figure2ItemMap.put(((GraphConnection) item).getTargetContainerConnectionFigure(), item);
 			}
+		} else if (item.getItemType() == GraphItem.CONTAINER) {
+			IFigure figure = ((GraphNode) item).getModelFigure();
+			figure2ItemMap.put(figure, item);
 		} else {
 			throw new RuntimeException("Unknown item type: " + item.getItemType());
 		}

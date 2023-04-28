@@ -597,6 +597,15 @@ public class GraphContainer extends GraphNode implements IContainer {
 		this.scalledLayer.setScale(scale);
 	}
 
+	@Override
+	protected Rectangle getHideContainerBounds() {
+		Point loc = getLocation();
+		ContainerDimension containerDimension = computeContainerSize();
+		Dimension size = new Dimension(containerDimension.width + 2 * HideNodeHelper.MARGIN,
+				containerDimension.labelHeight + 2 * HideNodeHelper.MARGIN);
+		return new Rectangle(loc, size);
+	}
+
 	/***************************************************************************
 	 * NON API MEMBERS
 	 **************************************************************************/
@@ -824,7 +833,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		if (getHideNodeHelper() != null) {
 			bounds.width += 2 * HideNodeHelper.MARGIN;
 			bounds.height += 2 * HideNodeHelper.MARGIN;
-			getHideNodeHelper().setBounds(bounds);
+			getHideNodeHelper().updateNodeBounds(bounds);
 		}
 	}
 

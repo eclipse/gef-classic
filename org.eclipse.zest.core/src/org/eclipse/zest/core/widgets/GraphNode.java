@@ -132,7 +132,7 @@ public class GraphNode extends GraphItem {
 
 	protected void initFigure() {
 		modelFigure = createFigureForModel();
-		if (graph.getHideNodesEnabled()) {
+		if (graph.getHideNodesEnabled() && !checkStyle(ZestStyles.NODES_FISHEYE)) {
 			nodeFigure = new ContainerFigure();
 			nodeFigure.add(modelFigure);
 			hideNodeHelper = new HideNodeHelper(this);
@@ -489,7 +489,7 @@ public class GraphNode extends GraphItem {
 		}
 
 		if (hideNodeHelper != null) {
-			hideNodeHelper.setBounds(bounds);
+			hideNodeHelper.updateNodeBounds(bounds);
 		}
 		nodeFigure.getParent().setConstraint(nodeFigure, bounds);
 
@@ -714,6 +714,13 @@ public class GraphNode extends GraphItem {
 
 	public int getStyle() {
 		return super.getStyle() | this.getNodeStyle();
+	}
+
+	/**
+	 * @since 1.8
+	 */
+	protected Rectangle getHideContainerBounds() {
+		return nodeFigure.getBounds();
 	}
 
 	/***************************************************************************
