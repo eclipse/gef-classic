@@ -1085,16 +1085,18 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	public Rectangle shrink(Insets insets) {
 		if (insets == null)
 			return this;
-		x += insets.left;
-		y += insets.top;
-		width -= (insets.getWidth());
-		height -= (insets.getHeight());
+		shrinkLeft(insets.left);
+		shrinkTop(insets.top);
+		width = Math.max(0, width - insets.right);
+		height = Math.max(0, height - insets.bottom);
 		return this;
 	}
 
 	/**
 	 * Shrinks the sides of this Rectangle by the horizontal and vertical values
-	 * provided as input, and returns this Rectangle for convenience. The center of
+	 * provided as input, and returns this Rectangle for convenience. If the given
+	 * reduction amount of larger than the current {@link #width()} or
+	 * {@link #height()} of the rectangle, {@code 0} is used instead. The center of
 	 * this Rectangle is kept constant.
 	 * 
 	 * @param h Horizontal reduction amount
@@ -1103,10 +1105,11 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Rectangle shrink(int h, int v) {
-		x += h;
-		width -= (h + h);
-		y += v;
-		height -= (v + v);
+		Point center = getCenter();
+		x = Math.min(center.x, x + h);
+		width = Math.max(0, width - 2 * h);
+		y = Math.min(center.y, y + v);
+		height = Math.max(0, height - 2 * v);
 		return this;
 	}
 
