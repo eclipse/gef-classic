@@ -378,12 +378,15 @@ public class RectangleTest extends BaseTestCase {
 
 	public void testShrink() throws Exception {
 		Rectangle template = new Rectangle(1, 2, 30, 40);
+		Point center = new Point(16, 22);
 		assertSame(template, template.shrink(5, 7));
 		assertEquals(6, 9, 20, 26, template);
+		assertEquals(center, template.getCenter());
 		//
 		template = new Rectangle(10, 20, 3, 4);
 		assertSame(template, template.shrink(-5, -7));
 		assertEquals(5, 13, 13, 18, template);
+		assertEquals(center, template.getCenter());
 	}
 
 	public void testTranslate() throws Exception {
