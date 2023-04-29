@@ -19,10 +19,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
+import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.zest.core.widgets.internal.ContainerFigure;
 import org.eclipse.zest.core.widgets.internal.RevealListener;
@@ -32,6 +34,7 @@ import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
@@ -618,7 +621,35 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		@Override
 		public void mouseDoubleClicked(org.eclipse.draw2d.MouseEvent me) {
+			Point mousePoint = new Point(me.x, me.y);
+			getRootLayer().translateToRelative(mousePoint);
+			IFigure figureUnderMouse = getFigureAt(mousePoint.x, mousePoint.y);
+			if (figureUnderMouse instanceof ContainerFigure) {
+				// There is a figure under this mouse
+				GraphContainer itemUnderMouse = (GraphContainer) figure2ItemMap.get(figureUnderMouse);
 
+				Display d = Display.getCurrent();
+				Shell shell = new Shell(d);
+				shell.setText(itemUnderMouse.getText());
+				shell.setLayout(new FillLayout());
+				shell.setSize(400, 400);
+
+				Graph g = new Graph(shell, SWT.NONE);
+				GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
+				GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");
+				GraphNode n3 = new GraphNode(g, SWT.NONE, "Scissors");
+				new GraphConnection(g, SWT.NONE, n, n2);
+				new GraphConnection(g, SWT.NONE, n2, n3);
+				new GraphConnection(g, SWT.NONE, n3, n);
+				g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+
+				shell.open();
+				while (!shell.isDisposed()) {
+					while (!d.readAndDispatch()) {
+						d.sleep();
+					}
+				}
+			}
 		}
 
 		@Override
@@ -1291,7 +1322,7 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	/**
 	 * Returns the item for the given figure
-	 * 
+	 *
 	 * @param figure
 	 * @return GraphItem for the given IFigure
 	 * @since 1.9
