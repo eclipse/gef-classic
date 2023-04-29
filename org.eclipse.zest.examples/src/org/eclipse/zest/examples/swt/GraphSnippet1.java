@@ -39,7 +39,7 @@ public class GraphSnippet1 {
 		shell.setLayout(new FillLayout());
 		shell.setSize(400, 400);
 
-		Graph g = new Graph(shell, SWT.NONE, true);
+		Graph g = new Graph(shell, SWT.NONE);
 
 		GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
 		GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");
