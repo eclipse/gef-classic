@@ -19,10 +19,10 @@ import java.io.Serializable;
  * @author lobas_av
  * @author scheglov_ke
  * @coverage gef.draw2d
+ * @since 3.13
  */
 public record Interval(int begin, int length) implements Serializable {
 
-	private static final long serialVersionUID = 0L;
 	public static final Interval INFINITE = new Interval(0, Integer.MAX_VALUE);
 
 	/**
