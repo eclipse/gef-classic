@@ -624,31 +624,34 @@ public class Graph extends FigureCanvas implements IContainer {
 			Point mousePoint = new Point(me.x, me.y);
 			getRootLayer().translateToRelative(mousePoint);
 			IFigure figureUnderMouse = getFigureAt(mousePoint.x, mousePoint.y);
-			if (figureUnderMouse instanceof ContainerFigure) {
-				// There is a figure under this mouse
-				GraphContainer itemUnderMouse = (GraphContainer) figure2ItemMap.get(figureUnderMouse);
 
+			if (figureUnderMouse == null) {
+				return;
+			}
+			GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
+			if (itemUnderMouse instanceof GraphContainer container) {
 				Display d = Display.getCurrent();
-				Shell shell = new Shell(d);
-				shell.setText(itemUnderMouse.getText());
+				Shell shell = new Shell(d.getActiveShell());
+				shell.setText(d.getActiveShell().getText() + "/" + container.getText());
 				shell.setLayout(new FillLayout());
 				shell.setSize(400, 400);
 
 				Graph g = new Graph(shell, SWT.NONE);
-				GraphNode n = new GraphNode(g, SWT.NONE, "Paper");
-				GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");
-				GraphNode n3 = new GraphNode(g, SWT.NONE, "Scissors");
-				new GraphConnection(g, SWT.NONE, n, n2);
-				new GraphConnection(g, SWT.NONE, n2, n3);
-				new GraphConnection(g, SWT.NONE, n3, n);
+				for (GraphNode node : container.getNodes()) {
+					g.addNode(node);
+					g.registerItem(node);
+				}
+//				for (GraphNode node : container.getNodes()) {
+//					for (GraphConnection connection : node.getTargetConnections()) {
+//						g.addConnection(connection, false);
+//						g.registerItem(connection);
+//					}
+//				}
+
 				g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
 
 				shell.open();
-				while (!shell.isDisposed()) {
-					while (!d.readAndDispatch()) {
-						d.sleep();
-					}
-				}
+				shell.addListener(SWT.Close, event -> g.nodes.clear());
 			}
 		}
 

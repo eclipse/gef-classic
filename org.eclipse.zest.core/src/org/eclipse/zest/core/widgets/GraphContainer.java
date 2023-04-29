@@ -4,7 +4,7 @@
  * made available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria, Sebastian Hollersbacher
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
@@ -13,6 +13,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.eclipse.swt.graphics.Image;
+
+import org.eclipse.zest.core.widgets.internal.AspectRatioFreeformLayer;
+import org.eclipse.zest.core.widgets.internal.ContainerFigure;
+import org.eclipse.zest.core.widgets.internal.ExpandGraphLabel;
+import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
+import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
+import org.eclipse.zest.layouts.LayoutAlgorithm;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.LayoutRelationship;
+import org.eclipse.zest.layouts.LayoutStyles;
+import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 import org.eclipse.draw2d.Animation;
 import org.eclipse.draw2d.ColorConstants;
@@ -27,25 +40,14 @@ import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.zest.core.widgets.internal.AspectRatioFreeformLayer;
-import org.eclipse.zest.core.widgets.internal.ContainerFigure;
-import org.eclipse.zest.core.widgets.internal.ExpandGraphLabel;
-import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
-import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
-import org.eclipse.zest.layouts.LayoutAlgorithm;
-import org.eclipse.zest.layouts.LayoutEntity;
-import org.eclipse.zest.layouts.LayoutRelationship;
-import org.eclipse.zest.layouts.LayoutStyles;
-import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 
 /**
  * A Container than can be added to a Graph. Nodes can be added to this
  * container. The container supports collapsing and expanding and has the same
  * properties as the nodes. Containers cannot have custom figures.
- * 
+ *
  * @author Ian Bull
- * 
+ *
  * @author Sebastian Hollersbacher
  */
 public class GraphContainer extends GraphNode implements IContainer {
@@ -75,7 +77,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/**
 	 * Creates a new GraphContainer. A GraphContainer may contain nodes, and has
 	 * many of the same properties as a graph node.
-	 * 
+	 *
 	 * @param graph The graph that the container is being added to
 	 * @param style
 	 */
@@ -105,10 +107,10 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#getItemType() public int
 	 * getItemType() { return GraphItem.CONTAINER; }
-	 * 
+	 *
 	 * /** Gets the figure for this container.
 	 */
 	@Override
@@ -118,7 +120,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	/**
 	 * Close this node.
-	 * 
+	 *
 	 * @param animate
 	 */
 	public void close(boolean animate) {
@@ -177,7 +179,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	/**
 	 * Gets all the nodes below the yValue. The nodes are returned in order.
-	 * 
+	 *
 	 * @param nodes
 	 * @param yValue
 	 * @return
@@ -206,7 +208,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	/**
 	 * Checks if the node intersects the stripe between left and right
-	 * 
+	 *
 	 * @param left
 	 * @param right
 	 * @param node
@@ -222,16 +224,14 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param g
 	 * @return
 	 */
 	static GraphNode getHighestNode(Graph g) {
-		Iterator iterator = g.getNodes().iterator();
 		GraphNode lowest /* highest on the screen */ = null;
 
-		while (iterator.hasNext()) {
-			GraphNode node = (GraphNode) iterator.next();
+		for (GraphNode node : g.getNodes()) {
 			if (lowest == null || lowest.getBounds().y > node.getBounds().y) {
 				lowest = node;
 			}
@@ -242,7 +242,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	/**
 	 * Move the nodes below this node up
-	 * 
+	 *
 	 * @param containerBounds
 	 * @param graphContainer
 	 */
@@ -252,10 +252,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		List orderedNodesBelowY = getOrderedNodesBelowY(parent.getNodes(), containerBounds.y, graphContainer);
 		int leftSide = containerBounds.x;
 		int rightSide = containerBounds.x + containerBounds.width;
-		List nodesToConsider = new LinkedList();
-		for (int i = 0; i < orderedNodesBelowY.size(); i++) {
-			nodesToConsider.add(orderedNodesBelowY.get(i));
-		}
+		List nodesToConsider = new LinkedList(orderedNodesBelowY);
 		addNodeToOrderedList(orderedNodesBelowY, graphContainer);
 
 		while (nodesToConsider.size() > 0) {
@@ -336,7 +333,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param containerBounds
 	 * @param graphContainer
 	 */
@@ -404,7 +401,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/**
 	 * Checks all the nodes in the list of nodesToCheck to see if they intersect
 	 * with the bounds set
-	 * 
+	 *
 	 * @param node
 	 * @param nodesToCheck
 	 * @return
@@ -427,7 +424,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/**
 	 * Gets the max distance the intersecting nodes need to be shifted to make room
 	 * for the expanding node
-	 * 
+	 *
 	 * @param bounds
 	 * @param nodesToMove
 	 * @return
@@ -446,7 +443,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	/**
 	 * Shifts a collection of nodes down.
-	 * 
+	 *
 	 * @param nodesToShift
 	 * @param amount
 	 */
@@ -529,7 +526,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
@@ -593,7 +590,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/**
 	 * Get the scale for this container. This is the scale applied to the children
 	 * contained within
-	 * 
+	 *
 	 * @return
 	 */
 	public double getScale() {
@@ -603,7 +600,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/**
 	 * Set the scale for this container. This is the scale applied to the children
 	 * contained within.
-	 * 
+	 *
 	 * @param scale
 	 */
 	public void setScale(double scale) {
@@ -646,7 +643,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	/**
 	 * Computes size of the scroll pane that the child nodes will be placed in.
-	 * 
+	 *
 	 * @return
 	 */
 	private Dimension computeChildArea() {
@@ -660,7 +657,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/**
 	 * Computes the desired size of the container. This method uses the minimum
 	 * size, label size and setSize to compute the size.
-	 * 
+	 *
 	 * @return
 	 */
 	private ContainerDimension computeContainerSize() {
@@ -692,14 +689,12 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 */
 	private double computeHeightScale() {
 		Dimension childArea = computeChildArea();
-		double heightScale = childArea.height / scaledHeight;
-		return heightScale;
+		return childArea.height / scaledHeight;
 	}
 
 	private double computeWidthScale() {
 		Dimension childArea = computeChildArea();
-		double widthScale = childArea.width / scaledWidth;
-		return widthScale;
+		return childArea.width / scaledWidth;
 	}
 
 	private IFigure createContainerFigure() {
@@ -722,12 +717,12 @@ public class GraphContainer extends GraphNode implements IContainer {
 		/*
 		 * This is the code that helps remove the scroll bars moving when the nodes are
 		 * dragged.
-		 * 
+		 *
 		 * viewport.setHorizontalRangeModel(new DefaultRangeModel() { public void
 		 * setAll(int min, int ext, int max) { System.out.println("Max: " + max +
 		 * " : current Max:  " + getMaximum()); if (max < getMaximum()) { max =
 		 * getMaximum(); } super.setAll(min, ext, max); }
-		 * 
+		 *
 		 * public void setMaximum(int maximum) { // TODO Auto-generated method stub
 		 * System.out.println("Max: " + maximum + " : current Max:  " + getMaximum());
 		 * if (maximum < getMaximum()) { return; } super.setMaximum(maximum); } });
@@ -869,16 +864,13 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	@Override
-	public List getNodes() {
+	public List<GraphNode> getNodes() {
 		return this.childNodes;
 	}
 
 	@Override
 	void paint() {
-		Iterator iterator = getNodes().iterator();
-
-		while (iterator.hasNext()) {
-			GraphNode node = (GraphNode) iterator.next();
+		for (GraphNode node : getNodes()) {
 			node.paint();
 		}
 	}
