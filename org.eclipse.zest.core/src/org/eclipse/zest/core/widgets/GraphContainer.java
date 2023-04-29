@@ -138,6 +138,12 @@ public class GraphContainer extends GraphNode implements IContainer {
 		for (IFigure child : zestLayer.getChildren()) {
 			GraphItem item = getGraph().getGraphItem(child);
 			item.setVisible(false);
+			if (item instanceof GraphNode) { // refresh nodes in container if closed
+				HideNodeHelper hideNodeHelper = ((GraphNode) item).getHideNodeHelper();
+				if (hideNodeHelper != null) {
+					hideNodeHelper.resetCounter();
+				}
+			}
 		}
 		Rectangle containerBounds = new Rectangle(this.getLocation(),
 				new Dimension(this.getSize().width, CONTAINER_HEIGHT + this.expandGraphLabel.getSize().height));
@@ -838,7 +844,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	void addConnectionFigure(PolylineConnection connection) {
-		nodeFigure.add(connection);
+		getModelFigure().add(connection);
 		// zestLayer.addConnection(connection);
 	}
 

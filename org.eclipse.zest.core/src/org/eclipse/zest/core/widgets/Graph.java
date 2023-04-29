@@ -991,7 +991,9 @@ public class Graph extends FigureCanvas implements IContainer {
 				figure2ItemMap.put(((GraphConnection) item).getTargetContainerConnectionFigure(), item);
 			}
 		} else if (item.getItemType() == GraphItem.CONTAINER) {
-			IFigure figure = ((GraphNode) item).getModelFigure();
+			IFigure figure = ((GraphNode) item).getNodeFigure();
+			figure2ItemMap.put(figure, item);
+			figure = ((GraphNode) item).getModelFigure();
 			figure2ItemMap.put(figure, item);
 		} else {
 			throw new RuntimeException("Unknown item type: " + item.getItemType());

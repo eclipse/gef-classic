@@ -27,7 +27,6 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.zest.core.widgets.HideNodeHelper.HideNodeListener;
 import org.eclipse.zest.core.widgets.internal.ContainerFigure;
 import org.eclipse.zest.core.widgets.internal.GraphLabel;
 import org.eclipse.zest.layouts.LayoutEntity;
@@ -299,16 +298,15 @@ public class GraphNode extends GraphItem {
 	public Dimension getSize() {
 		if (size.height < 0 && size.width < 0 && modelFigure != null) {
 			// return size of node calculated from the model
+			Dimension modelSize = modelFigure.getSize();
 			if (hideNodeHelper != null) {
-				Dimension modelSize = modelFigure.getSize();
 				if (modelSize.equals(-1, -1)) {
 					modelSize = modelFigure.getPreferredSize();
 				}
-				size.width = modelSize.width + 2 * HideNodeHelper.MARGIN;
-				size.height = modelSize.height + 2 * HideNodeHelper.MARGIN;
-			} else {
-				size = modelFigure.getSize();
+				modelSize.width = modelSize.width + 2 * HideNodeHelper.MARGIN;
+				modelSize.height = modelSize.height + 2 * HideNodeHelper.MARGIN;
 			}
+			return modelSize;
 		}
 		return size.getCopy();
 	}
@@ -485,7 +483,7 @@ public class GraphNode extends GraphItem {
 	protected void refreshLocation() {
 		Point loc = getLocation();
 		Dimension nodeSize = getSize();
-		Rectangle bounds = new Rectangle(loc, size);
+		Rectangle bounds = new Rectangle(loc, nodeSize);
 
 		if (nodeFigure == null || nodeFigure.getParent() == null) {
 			return; // node figure has not been created yet
@@ -670,20 +668,6 @@ public class GraphNode extends GraphItem {
 		for (Iterator iterator2 = tConnections.iterator(); iterator2.hasNext();) {
 			GraphConnection connection = (GraphConnection) iterator2.next();
 			connection.setVisible(visible);
-		}
-
-		if (hideNodeHelper != null) {
-			if (visible) {
-				// node has been revealed
-				for (HideNodeListener hideNodeListenere : hideNodeHelper.getHideNodesListeners()) {
-					hideNodeListenere.fireNodeRevealed();
-				}
-			} else {
-				// node has been hidden
-				for (HideNodeListener hideNodeListener : hideNodeHelper.getHideNodesListeners()) {
-					hideNodeListener.fireNodeHidden();
-				}
-			}
 		}
 	}
 

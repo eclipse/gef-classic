@@ -41,7 +41,10 @@ public class HideNodeHelper extends ContainerFigure {
 		revealButton.setVisible(false);
 		hiddenNodesLabel.setVisible(false);
 
-		hideButton.addActionListener(event -> node.setVisible(false));
+		hideButton.addActionListener(event -> {
+			node.setVisible(false);
+			notifyHideNodeListener(false);
+		});
 		revealButton.addActionListener(event -> {
 			for (HideNodeListener hideNodeListener : hideNodeListeners) {
 				hideNodeListener.revealNode(); // try to reveal all connected nodes
@@ -83,18 +86,25 @@ public class HideNodeHelper extends ContainerFigure {
 		}
 	}
 
-	private void increaseHiddenNodes() {
-		this.hiddenNodeCount++;
-		hiddenNodesLabel.setVisible(true);
-		hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
-		updateHideButtonFigure();
+	public void resetCounter() {
+		hiddenNodeCount = 0;
+		hideButton.setVisible(false);
+		revealButton.setVisible(false);
+		hiddenNodesLabel.setVisible(false);
 	}
 
-	private void decreaseHiddenNodes() {
-		this.hiddenNodeCount--;
-		hiddenNodesLabel.setVisible(hiddenNodeCount > 0); // true if hidden node still exists
-		hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
-		updateHideButtonFigure();
+	public void notifyHideNodeListener(boolean visible) {
+		if (visible) {
+			// node has been revealed
+			for (HideNodeListener hideNodeListenere : getHideNodesListeners()) {
+				hideNodeListenere.fireNodeRevealed();
+			}
+		} else {
+			// node has been hidden
+			for (HideNodeListener hideNodeListener : getHideNodesListeners()) {
+				hideNodeListener.fireNodeHidden();
+			}
+		}
 	}
 
 	public void updateNodeBounds(Rectangle bounds) {
@@ -156,6 +166,21 @@ public class HideNodeHelper extends ContainerFigure {
 				return; // node already visible
 			}
 			this.node.setVisible(true);
+			notifyHideNodeListener(true);
+		}
+
+		private void increaseHiddenNodes() {
+			hiddenNodeCount++;
+			hiddenNodesLabel.setVisible(true);
+			hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
+			updateHideButtonFigure();
+		}
+
+		private void decreaseHiddenNodes() {
+			hiddenNodeCount--;
+			hiddenNodesLabel.setVisible(hiddenNodeCount > 0); // true if hidden node still exists
+			hiddenNodesLabel.setText(Integer.toString(hiddenNodeCount));
+			updateHideButtonFigure();
 		}
 	}
 }
