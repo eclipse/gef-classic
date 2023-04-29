@@ -301,6 +301,9 @@ public class GraphNode extends GraphItem {
 			// return size of node calculated from the model
 			if (hideNodeHelper != null) {
 				Dimension modelSize = modelFigure.getSize();
+				if (modelSize.equals(-1, -1)) {
+					modelSize = modelFigure.getPreferredSize();
+				}
 				size.width = modelSize.width + 2 * HideNodeHelper.MARGIN;
 				size.height = modelSize.height + 2 * HideNodeHelper.MARGIN;
 			} else {
