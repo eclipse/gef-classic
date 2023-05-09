@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.draw2d.Animation;
+import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.FreeformLayer;
@@ -116,7 +117,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * @param style
 	 */
 	public Graph(Composite parent, int style) {
-		this(parent, style, false);
+		this(parent, style, true);
 	}
 
 	/**
@@ -179,6 +180,21 @@ public class Graph extends FigureCanvas implements IContainer {
 		this.selectionListeners = new ArrayList<>();
 		this.figure2ItemMap = new HashMap<>();
 		this.enableHideNodes = enableHideNodes;
+
+		if (enableHideNodes) {
+			Button revealAllButton = new Button("Reveal All");
+			revealAllButton.setBounds(new Rectangle(new Point(0, 0), revealAllButton.getPreferredSize()));
+			revealAllButton.addActionListener(event -> {
+				for (GraphNode node : (List<GraphNode>) nodes) {
+					HideNodeHelper hideNodeHelper = node.getHideNodeHelper();
+					if (hideNodeHelper != null) {
+						node.setVisible(true);
+						hideNodeHelper.resetCounter();
+					}
+				}
+			});
+			zestRootLayer.add(revealAllButton);
+		}
 
 		revealListeners = new ArrayList<>(1);
 		this.addPaintListener(event -> {
