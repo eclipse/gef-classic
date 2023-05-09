@@ -45,6 +45,8 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
  * properties as the nodes. Containers cannot have custom figures.
  * 
  * @author Ian Bull
+ * 
+ * @author Sebastian Hollersbacher
  */
 public class GraphContainer extends GraphNode implements IContainer {
 

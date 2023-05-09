@@ -59,6 +59,8 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
  * @author Chris Callendar
  * 
  * @author Ian Bull
+ * 
+ * @author Sebastian Hollersbacher
  */
 public class Graph extends FigureCanvas implements IContainer {
 
@@ -117,7 +119,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * @param style
 	 */
 	public Graph(Composite parent, int style) {
-		this(parent, style, true);
+		this(parent, style, false);
 	}
 
 	/**

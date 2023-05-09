@@ -41,6 +41,8 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
  * @author Del Myers
  * 
  * @author Ian Bull
+ * 
+ * @author Sebastian Hollersbacher
  */
 public class GraphNode extends GraphItem {
 	public static final int HIGHLIGHT_NONE = 0;
