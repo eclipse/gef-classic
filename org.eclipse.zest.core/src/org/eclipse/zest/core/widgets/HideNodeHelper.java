@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright 2023, Sebastian Hollersbacher, Johannes Kepler Universität Linz
+ * All rights reserved. This program and the accompanying materials are
+ * made available under the terms of the Eclipse Public License v2.0 which
+ * accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-v20.html
+ * 
+ * Contributors: Sebastian Hollersbacher, Johannes Kepler Universität Linz
+ ******************************************************************************/
+
 package org.eclipse.zest.core.widgets;
 
 import java.util.ArrayList;
@@ -11,6 +21,10 @@ import org.eclipse.zest.core.widgets.internal.ContainerFigure;
 import org.eclipse.zest.core.widgets.internal.GraphLabel;
 
 /**
+ * A ContainerFigure that container buttons and labels for hiding and revealing
+ * nodes. This class also provides helper methods for hiding/revealing nodes.
+ * 
+ * @author Sebastian Hollersbacher
  * @since 1.8
  */
 public class HideNodeHelper extends ContainerFigure {
@@ -26,16 +40,18 @@ public class HideNodeHelper extends ContainerFigure {
 	private HideNodeListener thisHideNodeListener;
 	private List<HideNodeListener> hideNodeListeners = new ArrayList<>();
 
+	/**
+	 * Create a HideNodeHelper and add it to the node's nodeFigure
+	 * 
+	 * @param node
+	 */
 	public HideNodeHelper(GraphNode node) {
 		this.node = node;
 		thisHideNodeListener = new HideNodeListener(node);
 		createHideButtons(node.getNodeFigure());
 	}
 
-	/**
-	 * @since 1.8
-	 */
-	public void createHideButtons(IFigure figure) {
+	private void createHideButtons(IFigure figure) {
 		// create buttons and label for hiding nodes
 		hideButton.setVisible(false);
 		revealButton.setVisible(false);
@@ -62,7 +78,7 @@ public class HideNodeHelper extends ContainerFigure {
 		figure.add(this);
 	}
 
-	public void updateHideButtonFigure() {
+	private void updateHideButtonFigure() {
 		Rectangle bounds = node.getHideContainerBounds();
 		int hideButtonSize = revealButton.getPreferredSize().width;
 
@@ -74,11 +90,21 @@ public class HideNodeHelper extends ContainerFigure {
 				node.getLocation().y, hideButtonSize, hideButtonSize));
 	}
 
+	/**
+	 * Show button for hiding a node
+	 * 
+	 * @param visible
+	 */
 	public void setHideButtonVisible(boolean visible) {
 		hideButton.setVisible(visible);
 		updateHideButtonFigure();
 	}
 
+	/**
+	 * Show button for revealing a node
+	 * 
+	 * @param visible
+	 */
 	public void setRevealButtonVisible(boolean visible) {
 		if (hiddenNodeCount > 0) {
 			revealButton.setVisible(visible);
@@ -86,6 +112,9 @@ public class HideNodeHelper extends ContainerFigure {
 		}
 	}
 
+	/**
+	 * Resets buttons and label
+	 */
 	public void resetCounter() {
 		hiddenNodeCount = 0;
 		hideButton.setVisible(false);
@@ -93,7 +122,7 @@ public class HideNodeHelper extends ContainerFigure {
 		hiddenNodesLabel.setVisible(false);
 	}
 
-	public void notifyHideNodeListener(boolean visible) {
+	private void notifyHideNodeListener(boolean visible) {
 		if (visible) {
 			// node has been revealed
 			for (HideNodeListener hideNodeListenere : getHideNodesListeners()) {
@@ -107,6 +136,11 @@ public class HideNodeHelper extends ContainerFigure {
 		}
 	}
 
+	/**
+	 * Updates bounds of the node and its modelFigure
+	 * 
+	 * @param bounds of the whole node including the margin for the buttons
+	 */
 	public void updateNodeBounds(Rectangle bounds) {
 		node.getNodeFigure().setBounds(bounds);
 		node.getModelFigure()
@@ -116,7 +150,9 @@ public class HideNodeHelper extends ContainerFigure {
 	}
 
 	/**
-	 * @since 1.8
+	 * Add listener to be notified when the node gets hidden/revealed
+	 * 
+	 * @param listener of connected node
 	 */
 	public void addHideNodeListener(HideNodeListener listener) {
 		if (!this.hideNodeListeners.contains(listener) && listener != thisHideNodeListener) {
@@ -126,24 +162,25 @@ public class HideNodeHelper extends ContainerFigure {
 	}
 
 	/**
-	 * @since 1.8
+	 * Remove listener that gets notified when the node gets hidden/revealed
+	 * 
+	 * @param listener of connected node
 	 */
 	public void removeHideNodeListener(HideNodeListener listener) {
 		this.hideNodeListeners.remove(listener);
 	}
 
 	/**
-	 * @since 1.8
-	 */
-	public List<HideNodeListener> getHideNodesListeners() {
-		return this.hideNodeListeners;
-	}
-
-	/**
-	 * @since 1.8
+	 * Get HideNodeListener corresponding to the node of this HideNodeHelper
+	 * 
+	 * @return HideNodeListener
 	 */
 	public HideNodeListener getHideNodesListener() {
 		return this.thisHideNodeListener;
+	}
+
+	private List<HideNodeListener> getHideNodesListeners() {
+		return this.hideNodeListeners;
 	}
 
 	class HideNodeListener {
@@ -153,14 +190,23 @@ public class HideNodeHelper extends ContainerFigure {
 			this.node = node;
 		}
 
+		/**
+		 * Fire if connected node got hidden
+		 */
 		public void fireNodeHidden() {
 			increaseHiddenNodes();
 		}
 
+		/**
+		 * Fire if connected node got revealed
+		 */
 		public void fireNodeRevealed() {
 			decreaseHiddenNodes();
 		}
 
+		/**
+		 * Fire this node should get revealed
+		 */
 		public void revealNode() {
 			if (this.node.isVisible()) {
 				return; // node already visible
