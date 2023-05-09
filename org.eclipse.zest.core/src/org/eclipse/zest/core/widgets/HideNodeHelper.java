@@ -125,12 +125,12 @@ public class HideNodeHelper extends ContainerFigure {
 	private void notifyHideNodeListener(boolean visible) {
 		if (visible) {
 			// node has been revealed
-			for (HideNodeListener hideNodeListenere : getHideNodesListeners()) {
+			for (HideNodeListener hideNodeListenere : hideNodeListeners) {
 				hideNodeListenere.fireNodeRevealed();
 			}
 		} else {
 			// node has been hidden
-			for (HideNodeListener hideNodeListener : getHideNodesListeners()) {
+			for (HideNodeListener hideNodeListener : hideNodeListeners) {
 				hideNodeListener.fireNodeHidden();
 			}
 		}
@@ -177,10 +177,6 @@ public class HideNodeHelper extends ContainerFigure {
 	 */
 	public HideNodeListener getHideNodesListener() {
 		return this.thisHideNodeListener;
-	}
-
-	private List<HideNodeListener> getHideNodesListeners() {
-		return this.hideNodeListeners;
 	}
 
 	class HideNodeListener {
