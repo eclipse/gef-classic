@@ -34,7 +34,6 @@ import org.eclipse.zest.layouts.LayoutAlgorithm;
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.LayoutStyles;
-import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
@@ -234,7 +233,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * @return List of GraphModelNode objects
 	 */
 	@Override
-	public List<? extends GraphNode> getNodes() {
+	public List<GraphNode> getNodes() {
 		return nodes;
 	}
 
@@ -631,27 +630,49 @@ public class Graph extends FigureCanvas implements IContainer {
 			GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
 			if (itemUnderMouse instanceof GraphContainer container) {
 				Display d = Display.getCurrent();
-				Shell shell = new Shell(d.getActiveShell());
+				Shell shell = new Shell(d.getActiveShell(),
+						SWT.MODELESS | SWT.RESIZE | SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.MAX);
 				shell.setText(d.getActiveShell().getText() + "/" + container.getText());
 				shell.setLayout(new FillLayout());
 				shell.setSize(400, 400);
 
 				Graph g = new Graph(shell, SWT.NONE);
 				for (GraphNode node : container.getNodes()) {
-					g.addNode(node);
-					g.registerItem(node);
+					container.graph.removeNode(node); // remove nodes from old graph
+					g.addNode(node); // add node to new graph
+					g.registerItem(node); // register figure in new graph
+					node.parent = g; // change parent and graph of node
+					node.graph = g;
 				}
-//				for (GraphNode node : container.getNodes()) {
-//					for (GraphConnection connection : node.getTargetConnections()) {
-//						g.addConnection(connection, false);
-//						g.registerItem(connection);
-//					}
-//				}
-
-				g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+				container.clearNodes(); // clear nodes in container
+				for (GraphNode node : g.getNodes()) {
+					for (GraphConnection connection : (List<GraphConnection>) node.getTargetConnections()) {
+						container.graph.removeConnection(connection);
+						g.addConnection(connection, true);
+						g.registerItem(connection);
+					}
+				}
+				g.setLayoutAlgorithm(container.getLayoutAlgorithm(), true);
 
 				shell.open();
-				shell.addListener(SWT.Close, event -> g.nodes.clear());
+				shell.addListener(SWT.Close, event -> {
+					for (GraphNode node : new ArrayList<>(g.getNodes())) {
+						g.removeNode(node); // remove nodes from graph
+						container.addNode(node); // add nodes to container
+						container.graph.registerItem(node); // register figure in old graph
+						node.parent = container; // change parent and graph of node
+						node.graph = container.getGraph();
+					}
+					for (GraphNode node : container.getNodes()) {
+						for (GraphConnection connection : (List<GraphConnection>) node.getTargetConnections()) {
+							g.removeConnection(connection);
+							container.graph.addConnection(connection, true);
+							container.graph.registerItem(connection);
+						}
+					}
+
+					container.applyLayout();
+				});
 			}
 		}
 
