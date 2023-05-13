@@ -38,6 +38,7 @@ import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 import org.eclipse.draw2d.Animation;
+import org.eclipse.draw2d.Button;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.FreeformLayer;
@@ -629,14 +630,22 @@ public class Graph extends FigureCanvas implements IContainer {
 			}
 			GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
 			if (itemUnderMouse instanceof GraphContainer container) {
+				// GraphContainer under this mouse
+				Graph contGra = container.getGraph();
+
 				Display d = Display.getCurrent();
-				Shell shell = new Shell(d.getActiveShell(),
-						SWT.MODELESS | SWT.RESIZE | SWT.CLOSE | SWT.TITLE | SWT.MIN | SWT.MAX);
+				Shell shell = d.getActiveShell();
 				shell.setText(d.getActiveShell().getText() + "/" + container.getText());
 				shell.setLayout(new FillLayout());
-				shell.setSize(400, 400);
 
 				Graph g = new Graph(shell, SWT.NONE);
+				contGra.setParent(new Shell()); // remove old graph from shell
+				shell.layout();
+				shell.addDisposeListener(e -> {
+					g.connections.clear();
+					g.nodes.clear();
+				});
+
 				for (GraphNode node : container.getNodes()) {
 					container.graph.removeNode(node); // remove nodes from old graph
 					g.addNode(node); // add node to new graph
@@ -652,10 +661,11 @@ public class Graph extends FigureCanvas implements IContainer {
 						g.registerItem(connection);
 					}
 				}
-				g.setLayoutAlgorithm(container.getLayoutAlgorithm(), true);
+				g.setLayoutAlgorithm(container.getLayoutAlgorithm(), false);
 
-				shell.open();
-				shell.addListener(SWT.Close, event -> {
+				Button revealAllButton = new Button("Back");
+				revealAllButton.setBounds(new Rectangle(new Point(0, 0), revealAllButton.getPreferredSize()));
+				revealAllButton.addActionListener(event -> {
 					for (GraphNode node : new ArrayList<>(g.getNodes())) {
 						g.removeNode(node); // remove nodes from graph
 						container.addNode(node); // add nodes to container
@@ -663,16 +673,19 @@ public class Graph extends FigureCanvas implements IContainer {
 						node.parent = container; // change parent and graph of node
 						node.graph = container.getGraph();
 					}
-					for (GraphNode node : container.getNodes()) {
-						for (GraphConnection connection : (List<GraphConnection>) node.getTargetConnections()) {
-							g.removeConnection(connection);
-							container.graph.addConnection(connection, true);
-							container.graph.registerItem(connection);
-						}
+					for (GraphConnection connection : new ArrayList<GraphConnection>(g.getConnections())) {
+						g.removeConnection(connection);
+						container.graph.addConnection(connection, true);
+						container.graph.registerItem(connection);
 					}
 
 					container.applyLayout();
+
+					g.setParent(new Shell()); // remove graph from shell
+					contGra.setParent(shell);
+					shell.layout();
 				});
+				g.zestRootLayer.add(revealAllButton);
 			}
 		}
 
