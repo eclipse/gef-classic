@@ -5,7 +5,7 @@
  * accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-v20.html
  * 
- * Contributors: Sebastian Hollersbacher, Johannes Kepler Universität Linz
+ * Contributors: Sebastian Hollersbacher
  ******************************************************************************/
 
 package org.eclipse.zest.core.widgets;
