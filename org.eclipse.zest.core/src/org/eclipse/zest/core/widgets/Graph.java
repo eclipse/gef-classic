@@ -534,6 +534,7 @@ public class Graph extends FigureCanvas implements IContainer {
 					Point delta = new Point(pointCopy.x - tempLastLocation.x, pointCopy.y - tempLastLocation.y);
 					Point point = new Point(fisheyedFigure.getBounds().x + delta.x,
 							fisheyedFigure.getBounds().y + delta.y);
+					// TODO fisheyedFigure.parent not reset after leaving subgraph
 					fishEyeLayer.setConstraint(fisheyedFigure, new Rectangle(point, fisheyedFigure.getSize()));
 					fishEyeLayer.getUpdateManager().performUpdate();
 					// fisheyedFigure.setBounds(new Rectangle(point2,
@@ -652,10 +653,6 @@ public class Graph extends FigureCanvas implements IContainer {
 				Graph g = new Graph(shell, SWT.NONE);
 				container.getGraph().setParent(new Shell()); // remove old graph from shell
 				shell.layout();
-				shell.addDisposeListener(e -> {
-					g.connections.clear();
-					g.nodes.clear();
-				});
 
 				for (GraphNode node : container.getNodes()) {
 					container.graph.removeNode(node); // remove nodes from old graph
@@ -663,6 +660,11 @@ public class Graph extends FigureCanvas implements IContainer {
 					g.registerItem(node); // register figure in new graph
 					node.parent = g; // change parent and graph of node
 					node.graph = g;
+					node.setVisible(true); // make sure the nodes are visible
+
+					if (node instanceof GraphContainer containerNode) {
+						g.registerChildrenOfContainer(containerNode, true); // recursively add childNodes to graph
+					}
 				}
 				container.clearNodes(); // clear nodes in container
 				for (GraphNode node : g.getNodes()) {
@@ -671,24 +673,35 @@ public class Graph extends FigureCanvas implements IContainer {
 						g.addConnection(connection, true);
 						g.registerItem(connection);
 					}
+					for (GraphConnection connection : (List<GraphConnection>) node.getSourceConnections()) {
+						container.graph.removeConnection(connection);
+						g.addConnection(connection, true);
+						g.registerItem(connection);
+					}
 				}
 				g.setLayoutAlgorithm(container.getLayoutAlgorithm(), false);
 
 				Image img = new Image(Display.getDefault(), Graph.class.getResourceAsStream("back_arrow.gif"));
-				Button revealAllButton = new Button(img);
-				revealAllButton.setBounds(new Rectangle(new Point(0, 0), revealAllButton.getPreferredSize()));
-				revealAllButton.addActionListener(event -> {
+				Button backButton = new Button(img);
+				backButton.setBounds(new Rectangle(new Point(0, 0), backButton.getPreferredSize()));
+				backButton.addActionListener(event -> {
 					for (GraphNode node : new ArrayList<>(g.getNodes())) {
 						g.removeNode(node); // remove nodes from graph
 						container.addNode(node); // add nodes to container
 						container.graph.registerItem(node); // register figure in old graph
 						node.parent = container; // change parent and graph of node
 						node.graph = container.getGraph();
+
+						if (node instanceof GraphContainer containerNode) {
+							registerChildrenOfContainer(containerNode, false); // recursively add childNodes to graph
+						}
 					}
 					for (GraphConnection connection : new ArrayList<GraphConnection>(g.getConnections())) {
 						g.removeConnection(connection);
-						container.graph.addConnection(connection, true);
+						container.graph.addConnection(connection, ZestRootLayer.EDGES_ON_TOP);
 						container.graph.registerItem(connection);
+						connection.registerConnection(connection.getSource(), connection.getDestination());
+						connection.setVisible(true);
 					}
 
 					container.applyLayout();
@@ -697,8 +710,17 @@ public class Graph extends FigureCanvas implements IContainer {
 					container.getGraph().setParent(shell);
 					shell.layout();
 					shell.setText(oldShellLabel);
+
+					g.release();
 				});
-				g.zestRootLayer.add(revealAllButton);
+
+				g.rootlayer.add(backButton);
+
+				shell.addDisposeListener(e -> {
+					g.connections.clear();
+					g.nodes.clear();
+					g.release();
+				});
 			}
 		}
 
@@ -1105,6 +1127,20 @@ public class Graph extends FigureCanvas implements IContainer {
 			figure2ItemMap.put(figure, item);
 		} else {
 			throw new RuntimeException("Unknown item type: " + item.getItemType());
+		}
+	}
+
+	private void registerChildrenOfContainer(GraphContainer container, boolean addToMap) {
+		for (GraphNode node : container.getNodes()) {
+			if (node instanceof GraphContainer childContainer) {
+				registerChildrenOfContainer(childContainer, addToMap);
+			} else {
+				node.graph = this;
+				if (addToMap) {
+					IFigure figure = node.getFigure();
+					figure2ItemMap.put(figure, node);
+				}
+			}
 		}
 	}
 
