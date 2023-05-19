@@ -19,6 +19,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -628,18 +629,28 @@ public class Graph extends FigureCanvas implements IContainer {
 			if (figureUnderMouse == null) {
 				return;
 			}
+
 			GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
 			if (itemUnderMouse instanceof GraphContainer container) {
 				// GraphContainer under this mouse
-				Graph contGra = container.getGraph();
 
-				Display d = Display.getCurrent();
-				Shell shell = d.getActiveShell();
-				shell.setText(d.getActiveShell().getText() + "/" + container.getText());
+				Display display = Display.getCurrent();
+				Shell shell = display.getActiveShell();
 				shell.setLayout(new FillLayout());
 
+				String oldShellLabel = display.getActiveShell().getText();
+				StringBuilder labelBuilder = new StringBuilder();
+				IContainer currentContainer = container;
+				while (currentContainer instanceof GraphContainer current) {
+					labelBuilder.insert(0, current.getText());
+					labelBuilder.insert(0, "/");
+					currentContainer = current.getParent();
+				}
+				labelBuilder.insert(0, oldShellLabel);
+				shell.setText(labelBuilder.toString());
+
 				Graph g = new Graph(shell, SWT.NONE);
-				contGra.setParent(new Shell()); // remove old graph from shell
+				container.getGraph().setParent(new Shell()); // remove old graph from shell
 				shell.layout();
 				shell.addDisposeListener(e -> {
 					g.connections.clear();
@@ -663,7 +674,8 @@ public class Graph extends FigureCanvas implements IContainer {
 				}
 				g.setLayoutAlgorithm(container.getLayoutAlgorithm(), false);
 
-				Button revealAllButton = new Button("Back");
+				Image img = new Image(Display.getDefault(), Graph.class.getResourceAsStream("back_arrow.gif"));
+				Button revealAllButton = new Button(img);
 				revealAllButton.setBounds(new Rectangle(new Point(0, 0), revealAllButton.getPreferredSize()));
 				revealAllButton.addActionListener(event -> {
 					for (GraphNode node : new ArrayList<>(g.getNodes())) {
@@ -682,8 +694,9 @@ public class Graph extends FigureCanvas implements IContainer {
 					container.applyLayout();
 
 					g.setParent(new Shell()); // remove graph from shell
-					contGra.setParent(shell);
+					container.getGraph().setParent(shell);
 					shell.layout();
+					shell.setText(oldShellLabel);
 				});
 				g.zestRootLayer.add(revealAllButton);
 			}
