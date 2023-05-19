@@ -100,7 +100,10 @@ public class GraphConnection extends GraphItem {
 		registerConnection(source, destination);
 	}
 
-	private void registerConnection(GraphNode source, GraphNode destination) {
+	/**
+	 * @since 1.8
+	 */
+	public void registerConnection(GraphNode source, GraphNode destination) {
 		if (source.getSourceConnections().contains(this)) {
 			source.removeSourceConnection(this);
 		}
