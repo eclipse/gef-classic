@@ -62,12 +62,6 @@ public class ZestRootLayer extends FreeformLayer {
 		this.remove(nodeFigure);
 	}
 
-	public void clearNodes() {
-		for (IFigure f : getChildren()) {
-			removeNode(f);
-		}
-	}
-
 	public void removeConnection(IFigure connectionFigure) {
 		int connectionPosition = this.getChildren().indexOf(connectionFigure);
 		if (connectionPosition > getHighlightConnectionStartPosition()) {
