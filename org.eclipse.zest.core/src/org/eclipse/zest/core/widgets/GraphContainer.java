@@ -859,14 +859,11 @@ public class GraphContainer extends GraphNode implements IContainer {
 		// zestLayer.addConnection(connection);
 	}
 
-	void clearNodes() {
-		zestLayer.clearNodes();
-		this.childNodes.clear();
-	}
-
 	void addNode(GraphNode node) {
 		zestLayer.addNode(node.getNodeFigure());
-		this.childNodes.add(node);
+		if (!childNodes.contains(node)) {
+			childNodes.add(node);
+		}
 		// container.add(node.getNodeFigure());
 		// graph.registerItem(node);
 	}

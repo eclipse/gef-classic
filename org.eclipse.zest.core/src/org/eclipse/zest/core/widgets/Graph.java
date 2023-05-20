@@ -661,12 +661,12 @@ public class Graph extends FigureCanvas implements IContainer {
 					node.parent = g; // change parent and graph of node
 					node.graph = g;
 					node.setVisible(true); // make sure the nodes are visible
+					node.unhighlight();
 
 					if (node instanceof GraphContainer containerNode) {
 						g.registerChildrenOfContainer(containerNode, true); // recursively add childNodes to graph
 					}
 				}
-				container.clearNodes(); // clear nodes in container
 				for (GraphNode node : g.getNodes()) {
 					for (GraphConnection connection : (List<GraphConnection>) node.getTargetConnections()) {
 						container.graph.removeConnection(connection);
@@ -691,6 +691,7 @@ public class Graph extends FigureCanvas implements IContainer {
 						container.graph.registerItem(node); // register figure in old graph
 						node.parent = container; // change parent and graph of node
 						node.graph = container.getGraph();
+						node.unhighlight();
 
 						if (node instanceof GraphContainer containerNode) {
 							registerChildrenOfContainer(containerNode, false); // recursively add childNodes to graph
@@ -1136,6 +1137,7 @@ public class Graph extends FigureCanvas implements IContainer {
 				registerChildrenOfContainer(childContainer, addToMap);
 			} else {
 				node.graph = this;
+				node.unhighlight();
 				if (addToMap) {
 					IFigure figure = node.getFigure();
 					figure2ItemMap.put(figure, node);
