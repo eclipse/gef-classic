@@ -42,7 +42,6 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -225,11 +224,11 @@ public class Graph extends FigureCanvas implements IContainer {
 			 */
 		});
 
+		NodeSearchDialog searchDialog = new NodeSearchDialog(getShell(), nodes);
 		this.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.stateMask == SWT.CONTROL && e.keyCode == 'f') {
-					NodeSearchDialog searchDialog = new NodeSearchDialog(getShell(), nodes);
 					searchDialog.open();
 				}
 			}
