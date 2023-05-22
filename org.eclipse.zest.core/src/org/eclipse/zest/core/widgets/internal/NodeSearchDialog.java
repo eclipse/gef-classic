@@ -16,21 +16,25 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.zest.core.widgets.GraphNode;
 
 public class NodeSearchDialog {
+	private Shell parent;
 	private Shell dialog;
 	private List<GraphNode> nodes;
 
 	private List<GraphNode> searchNodes;
 	private GraphNode prevNode;
 	private int index = 0;
+	private boolean isDisposed = false;
 
 	public NodeSearchDialog(Shell parent, List<GraphNode> nodes) {
 		this.nodes = nodes;
+		this.parent = parent;
+
 		searchNodes = new ArrayList<>();
-		this.dialog = createDialog(parent);
+		createDialog(parent);
 	}
 
-	private Shell createDialog(Shell parentShell) {
-		Shell dialog = new Shell(parentShell, SWT.DIALOG_TRIM | SWT.MAX);
+	private void createDialog(Shell parentShell) {
+		dialog = new Shell(parentShell, SWT.DIALOG_TRIM | SWT.MAX);
 		dialog.setText("Find");
 		dialog.setSize(300, 200);
 		GridLayout layout = new GridLayout(2, false);
@@ -103,10 +107,14 @@ public class NodeSearchDialog {
 		closeButton.setText("Close");
 		closeButton.addListener(SWT.Selection, e -> dialog.close());
 
-		return dialog;
+		dialog.addDisposeListener(e -> isDisposed = true);
 	}
 
 	public void open() {
+		if (isDisposed) {
+			isDisposed = false;
+			createDialog(this.parent);
+		}
 		dialog.open();
 	}
 }
