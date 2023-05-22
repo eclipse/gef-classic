@@ -24,6 +24,12 @@ public class NodeSearchDialog {
 	private int index = 0;
 	private boolean isDisposed = false;
 
+	private Text text;
+	private Button nextButton;
+	private Button prevButton;
+	private Button caseSensButton;
+	private Button wholeWordButton;
+
 	public NodeSearchDialog(Shell parent, List<GraphNode> nodes) {
 		this.nodes = nodes;
 		this.parent = parent;
@@ -43,48 +49,95 @@ public class NodeSearchDialog {
 		final Label label = new Label(dialog, SWT.NONE);
 		label.setText("Find:");
 
-		final Text text = new Text(dialog, SWT.BORDER);
+		text = new Text(dialog, SWT.BORDER);
 		text.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
-				String search = text.getText();
-				if (searchNodes.isEmpty() || !searchNodes.get(0).getText().equals(search)) {
-					index = 0;
-					searchNodes.clear();
-					for (GraphNode node : (nodes)) {
-						if (node.getText().equals(search)) {
-							searchNodes.add(node);
-						}
-					}
-				}
+				searchForNodes();
+			}
+		});
+		text.addModifyListener(e -> {
+			if (text.getText().isBlank()) {
+				nextButton.setEnabled(false);
+				prevButton.setEnabled(false);
+			} else {
+				nextButton.setEnabled(true);
+				prevButton.setEnabled(true);
 			}
 		});
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		text.setLayoutData(gridData);
 
 		// 2nd row
+		final Label optionsLabel = new Label(dialog, SWT.NONE);
+		optionsLabel.setText("Options:");
 		new Label(dialog, SWT.NULL);
 
-		Composite comp = new Composite(dialog, 0);
+		// 3rd row
+		wholeWordButton = new Button(dialog, SWT.CHECK);
+		wholeWordButton.addListener(SWT.Selection, e -> searchForNodes());
+		final Label wholeWordLabel = new Label(dialog, SWT.NONE);
+		wholeWordLabel.setText("Whole Word");
+
+		// 4th row
+		caseSensButton = new Button(dialog, SWT.CHECK);
+		caseSensButton.addListener(SWT.Selection, e -> searchForNodes());
+		final Label caseSensitiveLabel = new Label(dialog, SWT.NONE);
+		caseSensitiveLabel.setText("Case sensitive");
+
+		// 5th row
+		new Label(dialog, SWT.NULL);
+
+		Composite comp = new Composite(dialog, SWT.NONE);
 		comp.setLayout(new GridLayout(3, false));
+		comp.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, true, true));
 
-		Button nextButton = new Button(comp, SWT.PUSH);
+		nextButton = new Button(comp, SWT.PUSH);
 		nextButton.setText("Next");
-		nextButton.addListener(SWT.Selection, e -> {
-			changeNode(true);
-		});
+		nextButton.setEnabled(false);
+		nextButton.addListener(SWT.Selection, e -> changeNode(true));
 
-		Button prevButton = new Button(comp, SWT.PUSH);
+		prevButton = new Button(comp, SWT.PUSH);
 		prevButton.setText("Previous");
-		prevButton.addListener(SWT.Selection, e -> {
-			changeNode(false);
-		});
+		prevButton.setEnabled(false);
+		prevButton.addListener(SWT.Selection, e -> changeNode(false));
 
 		Button closeButton = new Button(comp, SWT.PUSH);
 		closeButton.setText("Close");
 		closeButton.addListener(SWT.Selection, e -> dialog.close());
 
 		dialog.addDisposeListener(e -> isDisposed = true);
+	}
+
+	private void searchForNodes() {
+		if (text.getText().isEmpty()) {
+			return;
+		}
+
+		boolean searchWhole = wholeWordButton.getSelection();
+		boolean caseSensitive = caseSensButton.getSelection();
+
+		List<GraphNode> newNodes = new ArrayList<>();
+		for (GraphNode node : nodes) {
+			String nodeText;
+			String search;
+			if (caseSensitive) {
+				nodeText = node.getText().toLowerCase();
+				search = text.getText().toLowerCase();
+			} else {
+				nodeText = node.getText();
+				search = text.getText();
+			}
+
+			if (searchWhole && nodeText.equals(search) || !searchWhole && nodeText.contains(search)) {
+				newNodes.add(node);
+			}
+		}
+
+		if (newNodes.size() != searchNodes.size() || !searchNodes.containsAll(newNodes)) {
+			index = 0;
+			searchNodes = newNodes;
+		}
 	}
 
 	private void changeNode(boolean forward) {
