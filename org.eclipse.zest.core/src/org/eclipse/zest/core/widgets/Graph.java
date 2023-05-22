@@ -35,6 +35,14 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
+
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -43,6 +51,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
 import org.eclipse.zest.core.widgets.internal.ContainerFigure;
+import org.eclipse.zest.core.widgets.internal.NodeSearchDialog;
 import org.eclipse.zest.core.widgets.internal.RevealListener;
 import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
@@ -215,6 +224,17 @@ public class Graph extends FigureCanvas implements IContainer {
 			 * GraphNode node = (GraphNode) iterator.next(); node.paint(); }
 			 */
 		});
+
+		this.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.stateMask == SWT.CONTROL && e.keyCode == 'f') {
+					NodeSearchDialog searchDialog = new NodeSearchDialog(getShell(), nodes);
+					searchDialog.open();
+				}
+			}
+		});
+
 		this.addDisposeListener(event -> release());
 	}
 
