@@ -21,7 +21,6 @@ public class NodeSearchDialog {
 	private List<GraphNode> nodes;
 
 	private List<GraphNode> searchNodes;
-	private GraphNode prevNode;
 	private int index = 0;
 	private boolean isDisposed = false;
 
@@ -72,35 +71,13 @@ public class NodeSearchDialog {
 		Button nextButton = new Button(comp, SWT.PUSH);
 		nextButton.setText("Next");
 		nextButton.addListener(SWT.Selection, e -> {
-			if (searchNodes.isEmpty()) {
-				return;
-			}
-			GraphNode node = searchNodes.get(index % searchNodes.size());
-			node.getGraphModel().setSelection(new GraphNode[] { node }); // select node
-			index++;
-			if (prevNode != null && prevNode != node) {
-				prevNode.unhighlight();
-			}
-			prevNode = node;
+			changeNode(true);
 		});
 
 		Button prevButton = new Button(comp, SWT.PUSH);
 		prevButton.setText("Previous");
 		prevButton.addListener(SWT.Selection, e -> {
-			if (searchNodes.isEmpty()) {
-				return;
-			}
-			if (index < 0) {
-				index = searchNodes.size() - 1;
-			}
-			GraphNode node = searchNodes.get(index % searchNodes.size());
-			node.highlight();
-			node.getGraphModel().setSelection(new GraphNode[] { node }); // select node
-			index--;
-			if (prevNode != null && prevNode != node) {
-				prevNode.unhighlight();
-			}
-			prevNode = node;
+			changeNode(false);
 		});
 
 		Button closeButton = new Button(comp, SWT.PUSH);
@@ -108,6 +85,19 @@ public class NodeSearchDialog {
 		closeButton.addListener(SWT.Selection, e -> dialog.close());
 
 		dialog.addDisposeListener(e -> isDisposed = true);
+	}
+
+	private void changeNode(boolean forward) {
+		if (searchNodes.isEmpty()) {
+			return;
+		}
+		if (index < 0) {
+			index = searchNodes.size() - 1;
+		}
+		GraphNode node = searchNodes.get(index % searchNodes.size());
+		node.getGraphModel().setSelection(new GraphNode[] { node }); // select node
+
+		index = forward ? index + 1 : index - 1; // increase / decrease index
 	}
 
 	public void open() {
