@@ -187,7 +187,7 @@ public class Graph extends FigureCanvas implements IContainer {
 			Button revealAllButton = new Button("Reveal All");
 			revealAllButton.setBounds(new Rectangle(new Point(0, 0), revealAllButton.getPreferredSize()));
 			revealAllButton.addActionListener(event -> {
-				for (GraphNode node : (List<GraphNode>) nodes) {
+				for (GraphNode node : nodes) {
 					HideNodeHelper hideNodeHelper = node.getHideNodeHelper();
 					if (hideNodeHelper != null) {
 						node.setVisible(true);
@@ -564,9 +564,9 @@ public class Graph extends FigureCanvas implements IContainer {
 
 			if (figureUnderMouse != null) {
 				// There is a figure under this mouse
-				GraphItem itemUnderMouse = (GraphItem) figure2ItemMap.get(figureUnderMouse);
-				if (itemUnderMouse instanceof GraphNode) {
-					hoverNode = ((GraphNode) itemUnderMouse).getHideNodeHelper();
+				GraphItem itemUnderMouse = figure2ItemMap.get(figureUnderMouse);
+				if (itemUnderMouse instanceof GraphNode node) {
+					hoverNode = node.getHideNodeHelper();
 					if (hoverNode != null) {
 						hoverNode.setHideButtonVisible(true);
 						hoverNode.setRevealButtonVisible(true);
