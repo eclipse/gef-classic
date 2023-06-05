@@ -39,9 +39,8 @@ public class NodeSearchDialog {
 	}
 
 	private void createDialog(Shell parentShell) {
-		dialog = new Shell(parentShell, SWT.DIALOG_TRIM | SWT.MAX);
+		dialog = new Shell(parentShell, SWT.DIALOG_TRIM | SWT.MAX | SWT.RESIZE);
 		dialog.setText("Find");
-		dialog.setSize(300, 200);
 		GridLayout layout = new GridLayout(2, false);
 		dialog.setLayout(layout);
 
@@ -66,6 +65,7 @@ public class NodeSearchDialog {
 			}
 		});
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.minimumWidth = 200;
 		text.setLayoutData(gridData);
 
 		// 2nd row
@@ -89,8 +89,7 @@ public class NodeSearchDialog {
 		new Label(dialog, SWT.NULL);
 
 		Composite comp = new Composite(dialog, SWT.NONE);
-		comp.setLayout(new GridLayout(3, false));
-		comp.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, true, true));
+		comp.setLayout(new GridLayout(2, false));
 
 		nextButton = new Button(comp, SWT.PUSH);
 		nextButton.setText("Next");
@@ -102,11 +101,18 @@ public class NodeSearchDialog {
 		prevButton.setEnabled(false);
 		prevButton.addListener(SWT.Selection, e -> changeNode(false));
 
+		// 6th row
+		new Label(dialog, SWT.NULL);
+		comp = new Composite(dialog, SWT.NONE);
+		comp.setLayout(new GridLayout(1, false));
+		comp.setLayoutData(new GridData(SWT.RIGHT, SWT.BOTTOM, true, true));
+
 		Button closeButton = new Button(comp, SWT.PUSH);
 		closeButton.setText("Close");
 		closeButton.addListener(SWT.Selection, e -> dialog.close());
 
 		dialog.addDisposeListener(e -> isDisposed = true);
+		dialog.pack();
 	}
 
 	private void searchForNodes() {
@@ -122,11 +128,11 @@ public class NodeSearchDialog {
 			String nodeText;
 			String search;
 			if (caseSensitive) {
-				nodeText = node.getText().toLowerCase();
-				search = text.getText().toLowerCase();
-			} else {
 				nodeText = node.getText();
 				search = text.getText();
+			} else {
+				nodeText = node.getText().toLowerCase();
+				search = text.getText().toLowerCase();
 			}
 
 			if (searchWhole && nodeText.equals(search) || !searchWhole && nodeText.contains(search)) {
