@@ -234,8 +234,9 @@ public class Graph extends FigureCanvas implements IContainer {
 	 *
 	 * @return List of GraphModelNode objects
 	 */
+
 	@Override
-	public List<GraphNode> getNodes() {
+	public List<? extends GraphNode> getNodes() {
 		return nodes;
 	}
 
@@ -681,7 +682,8 @@ public class Graph extends FigureCanvas implements IContainer {
 				}
 				g.setLayoutAlgorithm(container.getLayoutAlgorithm(), false);
 
-				Image img = new Image(Display.getDefault(), Graph.class.getResourceAsStream("back_arrow.gif"));
+				Image img = new Image(Display.getDefault(),
+						Graph.class.getResourceAsStream("../../../../../icons/back_arrow.gif"));
 				Button backButton = new Button(img);
 				backButton.setBounds(new Rectangle(new Point(0, 0), backButton.getPreferredSize()));
 				backButton.addActionListener(event -> {
