@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,10 +43,12 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	private RulerProvider rulerProvider;
 	private boolean horizontal;
 	private RulerChangeListener listener = new RulerChangeListener.Stub() {
+		@Override
 		public void notifyGuideReparented(Object guide) {
 			handleGuideReparented(guide);
 		}
 
+		@Override
 		public void notifyUnitsChanged(int newUnit) {
 			handleUnitsChanged(newUnit);
 		}
@@ -61,6 +63,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
 	 */
+	@Override
 	public void activate() {
 		getRulerProvider().addRulerChangeListener(listener);
 		getRulerFigure().setZoomManager(getZoomManager());
@@ -72,6 +75,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 		/*
 		 * @TODO:Pratik the right way of creating guides and figuring out the target
@@ -88,6 +92,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		RulerFigure ruler = new RulerFigure(isHorizontal(), getRulerProvider().getUnit());
 		if (ruler.getUnit() == RulerProvider.UNIT_PIXELS)
@@ -100,6 +105,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		super.deactivate();
 		getRulerProvider().removeRulerChangeListener(listener);
@@ -107,18 +113,27 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 		getRulerFigure().setZoomManager(null);
 	}
 
+	@Override
 	protected AccessibleEditPart getAccessibleEditPart() {
 		if (accPart == null)
 			accPart = new AccessibleGraphicalEditPart() {
+				@Override
 				public void getName(AccessibleEvent e) {
 					e.result = isHorizontal() ? GEFMessages.Ruler_Horizontal_Label : GEFMessages.Ruler_Vertical_Label;
 				}
 
+				@Override
 				public void getDescription(AccessibleEvent e) {
 					e.result = GEFMessages.Ruler_Desc;
 				}
 			};
 		return accPart;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<? extends GuideEditPart> getChildren() {
+		return (List<? extends GuideEditPart>) super.getChildren();
 	}
 
 	/**
@@ -136,6 +151,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(org
 	 * .eclipse.gef.Request)
 	 */
+	@Override
 	public DragTracker getDragTracker(Request request) {
 		if (request.getType().equals(REQ_SELECTION) && ((SelectionRequest) request).getLastButtonPressed() != 1) {
 			return null;
@@ -155,6 +171,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
+	@Override
 	protected List getModelChildren() {
 		return getRulerProvider().getGuides();
 	}
@@ -172,6 +189,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	 * 
 	 * @see org.eclipse.gef.EditPart#getTargetEditPart(org.eclipse.gef.Request)
 	 */
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		if (request.getType().equals(REQ_MOVE)) {
 			return this;
@@ -204,6 +222,7 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 		return horizontal;
 	}
 
+	@Override
 	public void setParent(EditPart parent) {
 		super.setParent(parent);
 		if (getParent() != null && diagramViewer == null) {
@@ -220,18 +239,22 @@ public class RulerEditPart extends AbstractGraphicalEditPart {
 	}
 
 	public static class RulerSelectionPolicy extends SelectionEditPolicy {
+		@Override
 		protected void hideFocus() {
 			((RulerFigure) getHostFigure()).setDrawFocus(false);
 		}
 
+		@Override
 		protected void hideSelection() {
 			((RulerFigure) getHostFigure()).setDrawFocus(false);
 		}
 
+		@Override
 		protected void showFocus() {
 			((RulerFigure) getHostFigure()).setDrawFocus(true);
 		}
 
+		@Override
 		protected void showSelection() {
 			((RulerFigure) getHostFigure()).setDrawFocus(true);
 		}
