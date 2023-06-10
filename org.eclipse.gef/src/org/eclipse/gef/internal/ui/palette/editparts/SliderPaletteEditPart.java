@@ -42,12 +42,14 @@ public class SliderPaletteEditPart extends PaletteEditPart {
 	 * 
 	 * @see PaletteEditPart#refreshVisuals()
 	 */
+	@Override
 	protected void refreshVisuals() {
 	}
 
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#registerVisuals()
 	 */
+	@Override
 	protected void registerVisuals() {
 		super.registerVisuals();
 		controller = new PaletteAnimator(((PaletteViewer) getViewer()).getPaletteViewerPreferences());

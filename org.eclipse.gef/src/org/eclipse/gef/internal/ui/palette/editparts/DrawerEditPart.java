@@ -63,12 +63,13 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	 */
 	public IFigure createFigure() {
 		DrawerFigure fig = new DrawerFigure(getViewer().getControl()) {
+			@Override
 			IFigure buildTooltip() {
 				return createToolTip();
 			}
 		};
-		fig.setExpanded(getDrawer().isInitiallyOpen());
-		fig.setPinned(getDrawer().isInitiallyPinned());
+		fig.setExpanded(getModel().isInitiallyOpen());
+		fig.setPinned(getModel().isInitiallyPinned());
 
 		fig.getCollapseToggle().addFocusListener(new FocusListener.Stub() {
 			public void focusGained(FocusEvent fe) {
@@ -101,14 +102,9 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 		return (PaletteAnimator) getViewer().getEditPartRegistry().get(PaletteAnimator.class);
 	}
 
-	/**
-	 * Convenience method that provides access to the PaletteDrawer that is the
-	 * model.
-	 * 
-	 * @return The model PaletteDrawer
-	 */
-	public PaletteDrawer getDrawer() {
-		return (PaletteDrawer) getPaletteEntry();
+	@Override
+	public PaletteDrawer getModel() {
+		return (PaletteDrawer) super.getModel();
 	}
 
 	/**
@@ -123,6 +119,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
 	 */
+	@Override
 	public IFigure getContentPane() {
 		return getDrawerFigure().getContentPane();
 	}
@@ -138,6 +135,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#nameNeededInToolTip()
 	 */
+	@Override
 	protected boolean nameNeededInToolTip() {
 		return false;
 	}
@@ -154,20 +152,25 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#createAccessible()
 	 */
+	@Override
 	protected AccessibleEditPart createAccessible() {
 		return new AccessibleGraphicalEditPart() {
+			@Override
 			public void getDescription(AccessibleEvent e) {
-				e.result = getPaletteEntry().getDescription();
+				e.result = getModel().getDescription();
 			}
 
+			@Override
 			public void getName(AccessibleEvent e) {
-				e.result = getPaletteEntry().getLabel();
+				e.result = getModel().getLabel();
 			}
 
+			@Override
 			public void getRole(AccessibleControlEvent e) {
 				e.detail = ACC.ROLE_TREE;
 			}
 
+			@Override
 			public void getState(AccessibleControlEvent e) {
 				super.getState(e);
 				e.detail |= isExpanded() ? ACC.STATE_EXPANDED : ACC.STATE_COLLAPSED;
@@ -178,22 +181,23 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
 	 */
+	@Override
 	protected void refreshVisuals() {
 		getDrawerFigure().setToolTip(createToolTip());
 
-		ImageDescriptor img = getDrawer().getSmallIcon();
-		if (img == null && getDrawer().showDefaultIcon()) {
+		ImageDescriptor img = getModel().getSmallIcon();
+		if (img == null && getModel().showDefaultIcon()) {
 			img = InternalImages.DESC_FOLDER_OPEN;
 		}
 		setImageDescriptor(img);
 
-		getDrawerFigure().setTitle(getPaletteEntry().getLabel());
+		getDrawerFigure().setTitle(getModel().getLabel());
 		getDrawerFigure().setLayoutMode(getLayoutSetting());
 
 		boolean showPin = getPreferenceSource().getAutoCollapseSetting() == PaletteViewerPreferences.COLLAPSE_AS_NEEDED;
 		getDrawerFigure().showPin(showPin);
 
-		Color background = getDrawer().getDrawerType().equals(PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE)
+		Color background = getModel().getDrawerType().equals(PaletteTemplateEntry.PALETTE_TYPE_TEMPLATE)
 				? PaletteColorUtil.WIDGET_LIST_BACKGROUND
 				: null;
 		getDrawerFigure().getScrollpane().setBackgroundColor(background);
@@ -202,6 +206,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#register()
 	 */
+	@Override
 	protected void register() {
 		super.register();
 		getPaletteAnimator().addDrawer(this);
@@ -211,6 +216,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#restoreState(org.eclipse.ui.IMemento)
 	 */
+	@Override
 	public void restoreState(IMemento memento) {
 		setExpanded(Boolean.valueOf(memento.getString(PROPERTY_EXPANSION_STATE)).booleanValue());
 		setPinnedOpen(Boolean.valueOf(memento.getString(PROPERTY_PINNED_STATE)).booleanValue());
@@ -225,6 +231,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#saveState(org.eclipse.ui.IMemento)
 	 */
+	@Override
 	public void saveState(IMemento memento) {
 		memento.putString(PROPERTY_EXPANSION_STATE, Boolean.valueOf(isExpanded()).toString());
 		memento.putString(PROPERTY_PINNED_STATE, Boolean.valueOf(isPinnedOpen()).toString());
@@ -248,6 +255,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
 	 */
+	@Override
 	protected void setImageInFigure(Image image) {
 		getDrawerFigure().setTitleIcon(image);
 	}
@@ -259,6 +267,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.EditPart#setSelected(int)
 	 */
+	@Override
 	public void setSelected(int value) {
 		super.setSelected(value);
 		getDrawerFigure().getCollapseToggle().requestFocus();
@@ -267,6 +276,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#unregister()
 	 */
+	@Override
 	protected void unregister() {
 		getPaletteAnimator().removeDrawer(this);
 		super.unregister();

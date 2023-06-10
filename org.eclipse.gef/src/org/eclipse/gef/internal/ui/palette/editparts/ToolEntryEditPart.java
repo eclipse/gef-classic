@@ -20,8 +20,6 @@ import org.eclipse.swt.graphics.Point;
 
 import org.eclipse.ui.IMemento;
 
-import org.eclipse.draw2d.ActionEvent;
-import org.eclipse.draw2d.ActionListener;
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.ButtonModel;
@@ -82,6 +80,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			}
 		}
 
+		@Override
 		protected boolean handleButtonDown(int button) {
 			if (getParent() instanceof IPaletteStackEditPart)
 				enableTimer();
@@ -97,6 +96,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			return true;
 		}
 
+		@Override
 		protected boolean handleDrag() {
 			org.eclipse.draw2d.geometry.Point point = getLocation().getCopy();
 			getFigure().translateToRelative(point);
@@ -111,6 +111,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			return true;
 		}
 
+		@Override
 		protected boolean handleNativeDragFinished(DragSourceEvent event) {
 			getPaletteViewer().setActiveTool(null);
 			return true;
@@ -120,11 +121,13 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	class GTKToggleButtonTracker extends ToggleButtonTracker {
 		int gtkState = 0;
 
+		@Override
 		public void deactivate() {
 			disableTimer();
 			super.deactivate();
 		}
 
+		@Override
 		protected boolean handleButtonUp(int button) {
 			disableTimer();
 
@@ -142,6 +145,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			return super.handleButtonUp(button);
 		}
 
+		@Override
 		protected boolean handleNativeDragStarted(DragSourceEvent event) {
 			disableTimer();
 			gtkState = 1;
@@ -155,6 +159,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 
 		private Point mouseDownLoc = null;
 
+		@Override
 		public void deactivate() {
 			disableTimer();
 			getButtonModel().setPressed(false);
@@ -162,11 +167,13 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			super.deactivate();
 		}
 
+		@Override
 		protected boolean handleButtonDown(int button) {
 			mouseDownLoc = new Point(getLocation().x, getLocation().y);
 			return super.handleButtonDown(button);
 		}
 
+		@Override
 		protected boolean handleButtonUp(int button) {
 			disableTimer();
 
@@ -177,6 +184,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			return super.handleButtonUp(button);
 		}
 
+		@Override
 		protected boolean handleNativeDragStarted(DragSourceEvent event) {
 			disableTimer();
 
@@ -217,6 +225,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			}
 		}
 
+		@Override
 		public boolean containsPoint(int x, int y) {
 			Rectangle rect = getBounds().getCopy();
 			if (customLabel.getBorder() == ICON_BORDER) {
@@ -228,14 +237,17 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			return rect.contains(x, y);
 		}
 
+		@Override
 		public IFigure findMouseEventTargetAt(int x, int y) {
 			return null;
 		}
 
+		@Override
 		public IFigure getToolTip() {
 			return createToolTip();
 		}
 
+		@Override
 		public void setEnabled(boolean value) {
 			super.setEnabled(value);
 			if (isEnabled()) {
@@ -253,6 +265,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			}
 		}
 
+		@Override
 		protected void paintFigure(Graphics graphics) {
 			super.paintFigure(graphics);
 
@@ -269,6 +282,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			}
 		}
 
+		@Override
 		protected void paintBorder(Graphics graphics) {
 			if (isEnabled()) {
 
@@ -322,16 +336,20 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		return super.getAdapter(key);
 	}
 
+	@Override
 	protected AccessibleEditPart createAccessible() {
 		return new AccessibleGraphicalEditPart() {
+			@Override
 			public void getDescription(AccessibleEvent e) {
-				e.result = getPaletteEntry().getDescription();
+				e.result = getModel().getDescription();
 			}
 
+			@Override
 			public void getName(AccessibleEvent e) {
-				e.result = getPaletteEntry().getLabel();
+				e.result = getModel().getLabel();
 			}
 
+			@Override
 			public void getRole(AccessibleControlEvent e) {
 				if (getParent() instanceof IPaletteStackEditPart
 						&& (ToolEntryEditPart.this == ((IPaletteStackEditPart) getParent()).getActiveEntry())) {
@@ -341,6 +359,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 				}
 			}
 
+			@Override
 			public void getState(AccessibleControlEvent e) {
 				super.getState(e);
 				if (getButtonModel().isSelected())
@@ -363,22 +382,18 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	static final Border LIST_BORDER = new MarginBorder(3, PinnablePaletteStackFigure.ARROW_WIDTH + 7, 4, 0);
 	static final Border ICON_BORDER = new MarginBorder(4, 4, 3, PinnablePaletteStackFigure.ARROW_WIDTH + 4);
 
+	@Override
 	public IFigure createFigure() {
-
 		customLabel = new DetailedLabelFigure();
 		Clickable button = new ToolEntryToggle(customLabel);
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				getPaletteViewer().setActiveTool(getToolEntry());
-			}
-		});
-
+		button.addActionListener(event -> getPaletteViewer().setActiveTool(getModel()));
 		return button;
 	}
 
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		customLabel.dispose();
 		super.deactivate();
@@ -387,6 +402,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.EditPart#eraseTargetFeedback(Request)
 	 */
+	@Override
 	public void eraseTargetFeedback(Request request) {
 		if (RequestConstants.REQ_SELECTION.equals(request.getType()))
 			getButtonModel().setMouseOver(false);
@@ -401,6 +417,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	/**
 	 * @see PaletteEditPart#getDragTracker(Request)
 	 */
+	@Override
 	public DragTracker getDragTracker(Request request) {
 		if (SWT.getPlatform().equals("gtk")) //$NON-NLS-1$
 			return new GTKToggleButtonTracker();
@@ -408,13 +425,15 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			return new OtherToggleButtonTracker();
 	}
 
-	private ToolEntry getToolEntry() {
-		return (ToolEntry) getPaletteEntry();
+	@Override
+	public ToolEntry getModel() {
+		return (ToolEntry) super.getModel();
 	}
 
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getToolTipText()
 	 */
+	@Override
 	protected String getToolTipText() {
 		String result = null;
 		if (getLayoutSetting() != PaletteViewerPreferences.LAYOUT_DETAILS) {
@@ -429,6 +448,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	 * 
 	 * @return whether the name needs to be included in the tooltip
 	 */
+	@Override
 	protected boolean nameNeededInToolTip() {
 		DetailedLabelFigure label = (DetailedLabelFigure) getFigure().getChildren().get(0);
 		return label.isNameTruncated() || super.nameNeededInToolTip();
@@ -437,8 +457,9 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
 	 */
+	@Override
 	protected void refreshVisuals() {
-		PaletteEntry entry = getPaletteEntry();
+		PaletteEntry entry = getModel();
 
 		customLabel.setName(entry.getLabel());
 		customLabel.setDescription(entry.getDescription());
@@ -465,6 +486,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.EditPart#removeNotify()
 	 */
+	@Override
 	public void removeNotify() {
 		if (getButtonModel().isSelected())
 			getPaletteViewer().setActiveTool(null);
@@ -475,21 +497,23 @@ public class ToolEntryEditPart extends PaletteEditPart {
 		getButtonModel().setSelected(value);
 	}
 
+	@Override
 	public void restoreState(IMemento memento) {
 		if (Boolean.valueOf(memento.getString(ACTIVE_STATE)).booleanValue())
-			getPaletteViewer().setActiveTool(getToolEntry());
+			getPaletteViewer().setActiveTool(getModel());
 		super.restoreState(memento);
 	}
 
+	@Override
 	public void saveState(IMemento memento) {
-		memento.putString(ACTIVE_STATE,
-				Boolean.valueOf(getPaletteViewer().getActiveTool() == getToolEntry()).toString());
+		memento.putString(ACTIVE_STATE, Boolean.valueOf(getPaletteViewer().getActiveTool() == getModel()).toString());
 		super.saveState(memento);
 	}
 
 	/**
 	 * @see PaletteEditPart#setImageInFigure(Image)
 	 */
+	@Override
 	protected void setImageInFigure(Image image) {
 		DetailedLabelFigure fig = (DetailedLabelFigure) (getFigure().getChildren().get(0));
 		fig.setImage(image);
@@ -498,6 +522,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.EditPart#setSelected(int)
 	 */
+	@Override
 	public void setSelected(int value) {
 		super.setSelected(value);
 		if (value == SELECTED_PRIMARY && getPaletteViewer().getControl() != null
@@ -508,6 +533,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.EditPart#showTargetFeedback(Request)
 	 */
+	@Override
 	public void showTargetFeedback(Request request) {
 		if (RequestConstants.REQ_SELECTION.equals(request.getType()))
 			getButtonModel().setMouseOver(true);
@@ -526,10 +552,10 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			if (newWidth < rect.width) {
 				rect.width = newWidth;
 			}
-			rect.crop(LIST_HIGHLIGHT_INSETS);
+			rect.shrink(LIST_HIGHLIGHT_INSETS);
 		} else {
 			rect.width -= PinnablePaletteStackFigure.ARROW_WIDTH;
-			rect.crop(ICON_HIGHLIGHT_INSETS);
+			rect.shrink(ICON_HIGHLIGHT_INSETS);
 		}
 		return rect;
 	}

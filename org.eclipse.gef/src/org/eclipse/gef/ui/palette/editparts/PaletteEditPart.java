@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -57,11 +57,9 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	private static final Border TOOLTIP_BORDER = new MarginBorder(0, 2, 1, 0);
 	private static ImageCache globalImageCache;
 	private AccessibleEditPart acc;
-	private PropertyChangeListener childListener = new PropertyChangeListener() {
-		public void propertyChange(PropertyChangeEvent evt) {
-			if (evt.getPropertyName().equals(PaletteEntry.PROPERTY_VISIBLE)) {
-				refreshChildren();
-			}
+	private PropertyChangeListener childListener = evt -> {
+		if (evt.getPropertyName().equals(PaletteEntry.PROPERTY_VISIBLE)) {
+			refreshChildren();
 		}
 	};
 	private Image image;
@@ -79,9 +77,10 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
 	 */
+	@Override
 	public void activate() {
 		super.activate();
-		PaletteEntry model = (PaletteEntry) getModel();
+		PaletteEntry model = getModel();
 		model.addPropertyChangeListener(this);
 		traverseChildren(model, true);
 	}
@@ -92,6 +91,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * 
 	 * @return the AccessibleEditPart.
 	 */
+	@SuppressWarnings("static-method") // allow subclasses to create their AccesibleEditPart
 	protected AccessibleEditPart createAccessible() {
 		return null;
 	}
@@ -99,6 +99,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
+	@Override
 	public void createEditPolicies() {
 	}
 
@@ -113,6 +114,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 			return null;
 
 		FlowPage fp = new FlowPage() {
+			@Override
 			public Dimension getPreferredSize(int w, int h) {
 				Dimension d = super.getPreferredSize(-1, -1);
 				if (d.width > 150)
@@ -131,8 +133,9 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#deactivate()
 	 */
+	@Override
 	public void deactivate() {
-		PaletteEntry model = (PaletteEntry) getModel();
+		PaletteEntry model = getModel();
 		model.removePropertyChangeListener(this);
 		traverseChildren(model, false);
 		if (image != null) {
@@ -145,6 +148,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getAccessibleEditPart()
 	 */
+	@Override
 	protected AccessibleEditPart getAccessibleEditPart() {
 		if (acc == null)
 			acc = createAccessible();
@@ -165,6 +169,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 		/**
 		 * @see org.eclipse.gef.tools.SelectEditPartTracker#performSelection()
 		 */
+		@Override
 		protected void performSelection() {
 			if (hasSelectionOccurred())
 				return;
@@ -173,9 +178,16 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 		}
 	}
 
+	@SuppressWarnings("unchecked") // PaletteEditPart may only have PaletteEditParts as children
+	@Override
+	public List<? extends PaletteEditPart> getChildren() {
+		return (List<? extends PaletteEditPart>) super.getChildren();
+	}
+
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getDragTracker(Request)
 	 */
+	@Override
 	public DragTracker getDragTracker(Request request) {
 		return new SingleSelectionTracker();
 	}
@@ -194,12 +206,10 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 			globalImageCache = cache = new ImageCache();
 			Display display = Display.getDefault();
 			if (display != null) {
-				display.disposeExec(new Runnable() {
-					public void run() {
-						if (globalImageCache != null) {
-							globalImageCache.dispose();
-							globalImageCache = null;
-						}
+				display.disposeExec(() -> {
+					if (globalImageCache != null) {
+						globalImageCache.dispose();
+						globalImageCache = null;
 					}
 				});
 			}
@@ -210,10 +220,11 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
+	@Override
 	public List getModelChildren() {
 		List modelChildren;
-		if (getModel() instanceof PaletteContainer)
-			modelChildren = new ArrayList(((PaletteContainer) getModel()).getChildren());
+		if (getModel() instanceof PaletteContainer palCont)
+			modelChildren = new ArrayList(palCont.getChildren());
 		else
 			return Collections.EMPTY_LIST;
 
@@ -241,12 +252,24 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	}
 
 	/**
+	 * Get the casted model element for this palette edit part.
+	 * 
+	 * @return the model element.
+	 * @since 3.15
+	 */
+	@Override
+	public PaletteEntry getModel() {
+		return (PaletteEntry) super.getModel();
+	}
+
+	/**
 	 * Get the model element for this palette edit part.
 	 * 
 	 * @return the model element.
+	 * @deprecated use getModel() instead
 	 */
 	protected PaletteEntry getPaletteEntry() {
-		return (PaletteEntry) getModel();
+		return getModel();
 	}
 
 	/**
@@ -283,7 +306,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 */
 	protected String getToolTipText() {
 		String text = null;
-		PaletteEntry entry = (PaletteEntry) getModel();
+		PaletteEntry entry = getModel();
 		String desc = entry.getDescription();
 		boolean needName = nameNeededInToolTip();
 		if (desc == null || desc.trim().equals(entry.getLabel()) || desc.trim().equals("")) { //$NON-NLS-1$
@@ -301,17 +324,6 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 		return text;
 	}
 
-	// /**
-	// * Overwritten because palette edit parts are not bound to the constraint
-	// * that their figure has to be visible (they may get selected while being
-	// * stacked).
-	// *
-	// * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#isSelectable()
-	// */
-	// public boolean isSelectable() {
-	// return true;
-	// }
-
 	/**
 	 * Determine if the name is needed in the tool tip.
 	 * 
@@ -325,6 +337,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	/**
 	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String property = evt.getPropertyName();
 		if (property.equals(PaletteContainer.PROPERTY_CHILDREN)) {
@@ -343,11 +356,12 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * @param memento the saved state of the palette entry.
 	 */
 	public void restoreState(IMemento memento) {
-		Iterator iter = getChildren().iterator();
 		IMemento[] childMementos = memento.getChildren(XML_NAME);
 		int index = 0;
-		while (iter.hasNext())
-			((PaletteEditPart) iter.next()).restoreState(childMementos[index++]);
+		for (PaletteEditPart part : getChildren()) {
+			part.restoreState(childMementos[index]);
+			++index;
+		}
 	}
 
 	/**
@@ -356,9 +370,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * @param memento the saved state of the palette entry.
 	 */
 	public void saveState(IMemento memento) {
-		Iterator iter = getChildren().iterator();
-		while (iter.hasNext())
-			((PaletteEditPart) iter.next()).saveState(memento.createChild(XML_NAME));
+		getChildren().forEach(part -> part.saveState(memento.createChild(XML_NAME)));
 	}
 
 	/**
@@ -404,21 +416,13 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 */
 	protected static class ImageCache {
 		/** Map from ImageDescriptor to Image */
-		private Map images = new HashMap(11);
+		private Map<ImageDescriptor, Image> images = new HashMap<>(11);
 
 		Image getImage(ImageDescriptor desc) {
 			if (desc == null) {
 				return null;
 			}
-			Image img = null;
-			Object obj = images.get(desc);
-			if (obj != null) {
-				img = (Image) obj;
-			} else {
-				img = desc.createImage();
-				images.put(desc, img);
-			}
-			return img;
+			return images.computeIfAbsent(desc, d -> d.createImage());
 		}
 
 		Image getMissingImage() {
@@ -426,10 +430,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 		}
 
 		void dispose() {
-			for (Iterator i = images.values().iterator(); i.hasNext();) {
-				Image img = (Image) i.next();
-				img.dispose();
-			}
+			images.values().forEach(img -> img.dispose());
 			images.clear();
 		}
 	}
@@ -442,8 +443,8 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * @since 3.4
 	 */
 	protected int getLayoutSetting() {
-		if (getParent() instanceof PaletteEditPart) {
-			return ((PaletteEditPart) getParent()).getLayoutSetting();
+		if (getParent() instanceof PaletteEditPart palEP) {
+			return palEP.getLayoutSetting();
 		}
 		return getPreferenceSource().getLayoutSetting();
 	}
@@ -454,6 +455,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#isSelectable()
 	 */
+	@Override
 	public boolean isSelectable() {
 		// bug #349124
 		return true;
@@ -466,8 +468,8 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * @since 3.4
 	 */
 	public boolean isToolbarItem() {
-		if (getParent() instanceof PaletteEditPart) {
-			return ((PaletteEditPart) getParent()).isToolbarItem();
+		if (getParent() instanceof PaletteEditPart palEP) {
+			return palEP.isToolbarItem();
 		}
 		return false;
 	}

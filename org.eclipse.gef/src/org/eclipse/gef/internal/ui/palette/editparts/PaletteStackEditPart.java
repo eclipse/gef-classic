@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Iterator;
 
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.MenuListener;
@@ -21,7 +20,6 @@ import org.eclipse.swt.widgets.Menu;
 
 import org.eclipse.jface.action.MenuManager;
 
-import org.eclipse.draw2d.ActionEvent;
 import org.eclipse.draw2d.ActionListener;
 import org.eclipse.draw2d.Border;
 import org.eclipse.draw2d.BorderLayout;
@@ -80,11 +78,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	};
 
 	// listen to see if arrow is pressed
-	private ActionListener actionListener = new ActionListener() {
-		public void actionPerformed(ActionEvent event) {
-			openMenu();
-		}
-	};
+	private ActionListener actionListener = event -> openMenu();
 
 	// listen to see if active tool is changed in palette
 	private PaletteListener paletteListener = new PaletteListener() {
@@ -116,6 +110,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	/**
 	 * @see org.eclipse.gef.EditPart#activate()
 	 */
+	@Override
 	public void activate() {
 		// in case the model is out of sync
 		checkActiveEntrySync();
@@ -162,9 +157,11 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	public IFigure createFigure() {
 
 		Figure figure = new Figure() {
+			@Override
 			public Dimension getPreferredSize(int wHint, int hHint) {
 				if (PaletteStackEditPart.this.getChildren().isEmpty())
 					return EMPTY_DIMENSION;
@@ -193,6 +190,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	/**
 	 * @see org.eclipse.gef.EditPart#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		if (activeFigure != null)
 			activeFigure.removeChangeListener(clickableListener);
@@ -205,19 +203,16 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	/**
 	 * @see org.eclipse.gef.EditPart#eraseTargetFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void eraseTargetFeedback(Request request) {
-		Iterator children = getChildren().iterator();
-
-		while (children.hasNext()) {
-			PaletteEditPart part = (PaletteEditPart) children.next();
-			part.eraseTargetFeedback(request);
-		}
+		getChildren().forEach(ep -> ep.eraseTargetFeedback(request));
 		super.eraseTargetFeedback(request);
 	}
 
 	/**
 	 * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
 	 */
+	@Override
 	public IFigure getContentPane() {
 		return contentsFigure;
 	}
@@ -232,16 +227,11 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	public void openMenu() {
 		MenuManager menuManager = new MenuManager();
 
-		Iterator children = getChildren().iterator();
-		PaletteEditPart part = null;
-		PaletteEntry entry = null;
-		while (children.hasNext()) {
-			part = (PaletteEditPart) children.next();
-			entry = (PaletteEntry) part.getModel();
-
+		getChildren().forEach(part -> {
+			PaletteEntry entry = part.getModel();
 			menuManager.add(new SetActivePaletteToolAction(getPaletteViewer(), entry.getLabel(), entry.getSmallIcon(),
 					getStack().getActiveEntry().equals(entry), (ToolEntry) entry));
-		}
+		});
 
 		menu = menuManager.createContextMenu(getPaletteViewer().getControl());
 
@@ -264,6 +254,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	/**
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY))
 			activeEntryChanged(event.getOldValue(), event.getNewValue());
@@ -274,32 +265,24 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshChildren()
 	 */
+	@Override
 	protected void refreshChildren() {
 		super.refreshChildren();
 		checkActiveEntrySync();
-		Iterator children = getChildren().iterator();
-		while (children.hasNext()) {
-			PaletteEditPart editPart = (PaletteEditPart) children.next();
-			if (!editPart.getFigure().equals(activeFigure))
-				editPart.getFigure().setVisible(false);
-		}
+		getChildren().stream().filter(ep -> !ep.getFigure().equals(activeFigure))
+				.forEach(ep -> ep.getFigure().setVisible(false));
 	}
 
 	/**
 	 * @see org.eclipse.gef.EditPart#showTargetFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void showTargetFeedback(Request request) {
 		// if menu is showing, don't show feedback. this is a fix
 		// for the occasion when show is called after forced erase
 		if (menu != null && !menu.isDisposed() && menu.isVisible())
 			return;
-
-		Iterator children = getChildren().iterator();
-		while (children.hasNext()) {
-			PaletteEditPart part = (PaletteEditPart) children.next();
-			part.showTargetFeedback(request);
-		}
-
+		getChildren().forEach(part -> part.showTargetFeedback(request));
 		super.showTargetFeedback(request);
 	}
 
@@ -327,20 +310,21 @@ class StackMenuListener implements MenuListener {
 	/**
 	 * @see org.eclipse.swt.events.MenuListener#menuShown(org.eclipse.swt.events.MenuEvent)
 	 */
+	@Override
 	public void menuShown(MenuEvent e) {
+		// currently nothing to do here
 	}
 
 	/**
 	 * @see org.eclipse.swt.events.MenuListener#menuHidden(org.eclipse.swt.events.MenuEvent)
 	 */
+	@Override
 	public void menuHidden(MenuEvent e) {
-		d.asyncExec(new Runnable() {
-			public void run() {
-				if (menu != null) {
-					if (!menu.isDisposed())
-						menu.dispose();
-					menu = null;
-				}
+		d.asyncExec(() -> {
+			if (menu != null) {
+				if (!menu.isDisposed())
+					menu.dispose();
+				menu = null;
 			}
 		});
 	}
@@ -366,10 +350,12 @@ class RolloverArrow extends Clickable {
 	/**
 	 * @return false so that the focus rectangle is not drawn.
 	 */
+	@Override
 	public boolean hasFocus() {
 		return false;
 	}
 
+	@Override
 	public void paintFigure(Graphics graphics) {
 		Rectangle rect = getClientArea();
 
