@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -106,9 +106,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 			}
 		}
 
-		List children = palettePart.getChildren();
-		for (int k = 0; k < children.size(); k++) {
-			EditPart ep = (EditPart) children.get(k);
+		for (EditPart ep : palettePart.getChildren()) {
 			if (ep instanceof IPaletteStackEditPart)
 				stackPart = ep;
 			buildNavigationList(ep, exclusion, navList, stackPart);
@@ -132,6 +130,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	 * @param figure the figure whose navigation point is to be returned
 	 * @return the top-left of the given figure
 	 */
+	@Override
 	protected Point getNavigationPoint(IFigure figure) {
 		return figure.getBounds().getTopLeft();
 	}
@@ -141,8 +140,9 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	 *         traversed to from the current
 	 *         {@link GraphicalViewerKeyHandler#getFocusEditPart() focus part}
 	 */
+	@Override
 	protected List getNavigationSiblings() {
-		ArrayList siblingsList = new ArrayList();
+		ArrayList<EditPart> siblingsList = new ArrayList<>();
 		EditPart focusPart = getFocusEditPart();
 		EditPart parent = focusPart.getParent();
 		if (parent == null) {
@@ -162,7 +162,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	 * {@link org.eclipse.gef.ui.palette.DrawerEditPart Drawer}, false otherwise.
 	 */
 	boolean isCollapsedDrawer(EditPart part) {
-		return part instanceof DrawerEditPart && !((DrawerEditPart) part).isExpanded();
+		return part instanceof DrawerEditPart dEP && !dEP.isExpanded();
 	}
 
 	/**
@@ -170,7 +170,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	 * {@link org.eclipse.gef.ui.palette.DrawerEditPart Drawer}, false otherwise.
 	 */
 	boolean isExpandedDrawer(EditPart part) {
-		return part instanceof DrawerEditPart && ((DrawerEditPart) part).isExpanded();
+		return part instanceof DrawerEditPart dEP && dEP.isExpanded();
 	}
 
 	/**
@@ -179,8 +179,8 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	 */
 	boolean isCollapsedStack(EditPart focusPart) {
 		EditPart parent = focusPart.getParent();
-		return parent instanceof PaletteStackEditPart || (parent instanceof PinnablePaletteStackEditPart
-				&& !((PinnablePaletteStackEditPart) parent).isExpanded());
+		return parent instanceof PaletteStackEditPart
+				|| (parent instanceof PinnablePaletteStackEditPart ppsEP && !ppsEP.isExpanded());
 	}
 
 	/**
@@ -189,8 +189,8 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	 */
 	boolean isExpandedStack(EditPart focusPart) {
 		EditPart parent = focusPart.getParent();
-		return parent instanceof PaletteStackEditPart || (parent instanceof PinnablePaletteStackEditPart
-				&& ((PinnablePaletteStackEditPart) parent).isExpanded());
+		return parent instanceof PaletteStackEditPart
+				|| (parent instanceof PinnablePaletteStackEditPart ppsEP && ppsEP.isExpanded());
 	}
 
 	/**
@@ -198,6 +198,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	 * 
 	 * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	public boolean keyPressed(KeyEvent event) {
 
 		if (acceptExpandDrawer(event)) {
@@ -234,11 +235,11 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	}
 
 	private boolean navigateIntoExpandedDrawer(KeyEvent event) {
-		ArrayList potentials = new ArrayList();
+		ArrayList<EditPart> potentials = new ArrayList<>();
 		EditPart focusPart = getFocusEditPart();
 		buildNavigationList(focusPart, focusPart, potentials, focusPart);
 		if (!potentials.isEmpty()) {
-			navigateTo((EditPart) potentials.get(0), event);
+			navigateTo(potentials.get(0), event);
 			return true;
 		}
 		return false;
@@ -247,6 +248,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	/**
 	 * @see GraphicalViewerKeyHandler#navigateTo(EditPart, KeyEvent)
 	 */
+	@Override
 	protected void navigateTo(EditPart part, KeyEvent event) {
 		if (part == null)
 			return;
@@ -275,12 +277,12 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 		EditPart current = getFocusEditPart();
 		while (current != null) {
 			if (current instanceof DrawerEditPart || current instanceof GroupEditPart) {
-				List siblings = current.getParent().getChildren();
+				List<? extends EditPart> siblings = current.getParent().getChildren();
 				int index = siblings.indexOf(current);
 				if (index != -1 && siblings.size() > index + 1) {
-					EditPart part = (EditPart) siblings.get(index + 1);
-					if (part instanceof GroupEditPart && part.getChildren().size() > 0) {
-						EditPart child = (EditPart) part.getChildren().get(0);
+					EditPart part = siblings.get(index + 1);
+					if (part instanceof GroupEditPart && !part.getChildren().isEmpty()) {
+						EditPart child = part.getChildren().get(0);
 						navigateTo(child, event);
 					} else
 						navigateTo(part, event);
