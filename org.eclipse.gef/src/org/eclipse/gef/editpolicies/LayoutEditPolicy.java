@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
-
-import java.util.List;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureUtilities;
@@ -63,6 +61,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#activate()
 	 */
+	@Override
 	public void activate() {
 		setListener(createListener());
 		decorateChildren();
@@ -86,6 +85,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 */
 	protected EditPartListener createListener() {
 		return new EditPartListener.Stub() {
+			@Override
 			public void childAdded(EditPart child, int index) {
 				decorateChild(child);
 			}
@@ -107,6 +107,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		if (sizeOnDropFeedback != null) {
 			removeFeedback(sizeOnDropFeedback);
@@ -131,9 +132,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * Decorates all existing children. This method is called on activation.
 	 */
 	protected void decorateChildren() {
-		List children = getHost().getChildren();
-		for (int i = 0; i < children.size(); i++)
-			decorateChild((EditPart) children.get(i));
+		getHost().getChildren().forEach(this::decorateChild);
 	}
 
 	/**
@@ -162,6 +161,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
 	 */
+	@Override
 	public void eraseTargetFeedback(Request request) {
 		if (REQ_ADD.equals(request.getType()) || REQ_MOVE.equals(request.getType())
 				|| REQ_RESIZE_CHILDREN.equals(request.getType()) || REQ_CREATE.equals(request.getType())
@@ -199,6 +199,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		if (REQ_DELETE_DEPENDANT.equals(request.getType()))
 			return getDeleteDependantCommand(request);
@@ -321,6 +322,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		if (REQ_ADD.equals(request.getType()) || REQ_MOVE.equals(request.getType())
 				|| REQ_CREATE.equals(request.getType()) || REQ_CLONE.equals(request.getType()))
@@ -373,6 +375,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
 	 */
+	@Override
 	public void showTargetFeedback(Request request) {
 		if (REQ_ADD.equals(request.getType()) || REQ_CLONE.equals(request.getType())
 				|| REQ_MOVE.equals(request.getType()) || REQ_RESIZE_CHILDREN.equals(request.getType())
@@ -400,9 +403,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * Removes all decorations added by {@link #decorateChildren()}.
 	 */
 	protected void undecorateChildren() {
-		List children = getHost().getChildren();
-		for (int i = 0; i < children.size(); i++)
-			undecorateChild((EditPart) children.get(i));
+		getHost().getChildren().forEach(this::undecorateChild);
 	}
 
 	/**

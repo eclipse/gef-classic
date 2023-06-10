@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,6 +38,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	/**
 	 * @see LayoutEditPolicy#eraseLayoutTargetFeedback(Request)
 	 */
+	@Override
 	protected void eraseLayoutTargetFeedback(Request request) {
 		if (insertionLine != null) {
 			removeFeedback(insertionLine);
@@ -56,7 +57,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	 * @return the index for the insertion reference
 	 */
 	protected int getFeedbackIndexFor(Request request) {
-		List children = getHost().getChildren();
+		List<? extends EditPart> children = getHost().getChildren();
 		if (children.isEmpty())
 			return -1;
 
@@ -69,7 +70,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 		int rowBottom = Integer.MIN_VALUE;
 		int candidate = -1;
 		for (int i = 0; i < children.size(); i++) {
-			EditPart child = (EditPart) children.get(i);
+			EditPart child = children.get(i);
 			Rectangle rect = transposer.t(getAbsoluteBounds(((GraphicalEditPart) child)));
 			if (rect.y > rowBottom) {
 				/*
@@ -114,20 +115,20 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	 * @see OrderedLayoutEditPolicy#getInsertionReference(Request)
 	 */
 	protected EditPart getInsertionReference(Request request) {
-		List children = getHost().getChildren();
+		List<? extends EditPart> children = getHost().getChildren();
 
 		if (request.getType().equals(RequestConstants.REQ_CREATE)) {
 			int i = getFeedbackIndexFor(request);
 			if (i == -1)
 				return null;
-			return (EditPart) children.get(i);
+			return children.get(i);
 		}
 
 		int index = getFeedbackIndexFor(request);
 		if (index != -1) {
 			List selection = getHost().getViewer().getSelectedEditParts();
 			do {
-				EditPart editpart = (EditPart) children.get(index);
+				EditPart editpart = children.get(index);
 				if (!selection.contains(editpart))
 					return editpart;
 			} while (++index < children.size());
@@ -171,7 +172,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	 * @see LayoutEditPolicy#showLayoutTargetFeedback(Request)
 	 */
 	protected void showLayoutTargetFeedback(Request request) {
-		if (getHost().getChildren().size() == 0)
+		if (getHost().getChildren().isEmpty())
 			return;
 		Polyline fb = getLineFeedback();
 		Transposer transposer = new Transposer();
@@ -183,10 +184,10 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 		if (epIndex == -1) {
 			before = false;
 			epIndex = getHost().getChildren().size() - 1;
-			EditPart editPart = (EditPart) getHost().getChildren().get(epIndex);
+			EditPart editPart = getHost().getChildren().get(epIndex);
 			r = transposer.t(getAbsoluteBounds((GraphicalEditPart) editPart));
 		} else {
-			EditPart editPart = (EditPart) getHost().getChildren().get(epIndex);
+			EditPart editPart = getHost().getChildren().get(epIndex);
 			r = transposer.t(getAbsoluteBounds((GraphicalEditPart) editPart));
 			Point p = transposer.t(getLocationFromRequest(request));
 			if (p.x <= r.x + (r.width / 2))
@@ -198,7 +199,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 				 */
 				before = false;
 				epIndex--;
-				editPart = (EditPart) getHost().getChildren().get(epIndex);
+				editPart = getHost().getChildren().get(epIndex);
 				r = transposer.t(getAbsoluteBounds((GraphicalEditPart) editPart));
 			}
 		}

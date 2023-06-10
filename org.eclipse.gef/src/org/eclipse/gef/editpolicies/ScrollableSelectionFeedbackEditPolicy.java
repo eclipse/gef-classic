@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 IBM Corporation and others.
+ * Copyright (c) 2010, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
  */
 package org.eclipse.gef.editpolicies;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -56,18 +55,16 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 
 	private final List feedbackFigures = new ArrayList();
 
-	private final FigureListener figureListener = new FigureListener() {
-
-		public void figureMoved(IFigure source) {
-			// react on host figure move
-			if (getHost().getSelected() == EditPart.SELECTED_PRIMARY) {
-				updateFeedback();
-			}
+	private final FigureListener figureListener = source -> {
+		// react on host figure move
+		if (getHost().getSelected() == EditPart.SELECTED_PRIMARY) {
+			updateFeedback();
 		}
 	};
 
 	private final LayoutListener layoutListener = new LayoutListener.Stub() {
 
+		@Override
 		public void postLayout(IFigure container) {
 			// react to host figure layout changes
 			if (getHost().getSelected() == EditPart.SELECTED_PRIMARY) {
@@ -76,27 +73,25 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		};
 	};
 
-	private final PropertyChangeListener viewportViewLocationChangeListener = new PropertyChangeListener() {
-
-		public void propertyChange(PropertyChangeEvent event) {
-			// Make sure the host edit part is always selected as primary
-			// selection, when it fires a property change event from its
-			// viewport
-			if (event.getSource() == ((IScrollableFigure) getHostFigure()).getScrollPane().getViewport()
-					&& getHost().getSelected() != EditPart.SELECTED_PRIMARY) {
-				getHost().getViewer().deselectAll();
-				getHost().getViewer().select(getHost());
-			}
-			// update feedback in case the viewport's view location changed
-			if (event.getPropertyName().equals(Viewport.PROPERTY_VIEW_LOCATION)) {
-				updateFeedback();
-			}
+	private final PropertyChangeListener viewportViewLocationChangeListener = event -> {
+		// Make sure the host edit part is always selected as primary
+		// selection, when it fires a property change event from its
+		// viewport
+		if (event.getSource() == ((IScrollableFigure) getHostFigure()).getScrollPane().getViewport()
+				&& getHost().getSelected() != EditPart.SELECTED_PRIMARY) {
+			getHost().getViewer().deselectAll();
+			getHost().getViewer().select(getHost());
+		}
+		// update feedback in case the viewport's view location changed
+		if (event.getPropertyName().equals(Viewport.PROPERTY_VIEW_LOCATION)) {
+			updateFeedback();
 		}
 	};
 
 	/**
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#activate()
 	 */
+	@Override
 	public void activate() {
 		super.activate();
 		// register listeners to all viewports in the host figure's path;
@@ -175,17 +170,17 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 */
 	protected void createNodeFeedbackFigures() {
 		// create ghost feedback for node children
-		for (Iterator iterator = getHost().getChildren().iterator(); iterator.hasNext();) {
-			Object child = iterator.next();
-			if (child instanceof GraphicalEditPart) {
-				createNodeFeedbackFigure((GraphicalEditPart) child);
+		getHost().getChildren().forEach(child -> {
+			if (child instanceof GraphicalEditPart gEP) {
+				createNodeFeedbackFigure(gEP);
 			}
-		}
+		});
 	}
 
 	/**
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		// remove viewport listeners; listener to host figure, which were
 		// registered during showSelection() will be unregistered during
@@ -213,6 +208,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#getFeedbackLayer()
 	 */
+	@Override
 	protected IFigure getFeedbackLayer() {
 		return getLayer(LayerConstants.SCALED_FEEDBACK_LAYER);
 	}
@@ -261,6 +257,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.AbstractEditPolicy#setHost(EditPart)
 	 */
+	@Override
 	public void setHost(EditPart host) {
 		Assert.isLegal(host instanceof IScrollableEditPart);
 		super.setHost(host);
