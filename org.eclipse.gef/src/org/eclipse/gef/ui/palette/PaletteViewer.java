@@ -13,7 +13,6 @@ package org.eclipse.gef.ui.palette;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.events.DisposeEvent;
@@ -73,11 +72,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 
 		private void refreshAllEditParts(EditPart part) {
 			part.refresh();
-			List children = part.getChildren();
-			for (Iterator iter = children.iterator(); iter.hasNext();) {
-				EditPart child = (EditPart) iter.next();
-				refreshAllEditParts(child);
-			}
+			part.getChildren().forEach(this::refreshAllEditParts);
 		}
 	}
 
@@ -223,6 +218,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#handleDispose(org.eclipse.swt.events.DisposeEvent)
 	 */
+	@Override
 	protected void handleDispose(DisposeEvent e) {
 		super.handleDispose(e);
 		disposeFont();
@@ -231,6 +227,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#handleFocusGained(FocusEvent)
 	 */
+	@Override
 	protected void handleFocusGained(FocusEvent fe) {
 		super.handleFocusGained(fe);
 		/*
@@ -251,6 +248,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#hookControl()
 	 */
+	@Override
 	protected void hookControl() {
 		super.hookControl();
 		FigureCanvas canvas = getFigureCanvas();
@@ -328,6 +326,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * @see ScrollingGraphicalViewer#reveal(EditPart)
 	 */
+	@Override
 	public void reveal(EditPart part) {
 		// If the given part is a drawer, we don't need to expand it. Hence,
 		// when invoking
@@ -337,7 +336,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 			drawer.setExpanded(true);
 		// if the part is inside a stack, set it to be the top level item of the
 		// stack.
-		if (part.getParent() != null && part.getParent() instanceof PaletteStackEditPart)
+		if (part.getParent() instanceof PaletteStackEditPart)
 			((PaletteStack) part.getParent().getModel()).setActiveEntry((PaletteEntry) part.getModel());
 		super.reveal(part);
 	}
@@ -425,6 +424,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#unhookControl()
 	 */
+	@Override
 	protected void unhookControl() {
 		super.unhookControl();
 		disposeFont();

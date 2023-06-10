@@ -10,11 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.editparts;
 
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
@@ -66,8 +63,8 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	protected void addChildVisual(EditPart childEditPart, int index) {
 		Widget widget = getWidget();
 		TreeItem item;
-		if (widget instanceof Tree)
-			item = new TreeItem((Tree) widget, 0, index);
+		if (widget instanceof Tree tree)
+			item = new TreeItem(tree, 0, index);
 		else
 			item = new TreeItem((TreeItem) widget, 0, index);
 		((TreeEditPart) childEditPart).setWidget(item);
@@ -90,6 +87,12 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	 * @see AbstractEditPart#createEditPolicies()
 	 */
 	protected void createEditPolicies() {
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<? extends TreeEditPart> getChildren() {
+		return (List<? extends TreeEditPart>) super.getChildren();
 	}
 
 	/**
@@ -137,6 +140,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	 * 
 	 * @see AbstractEditPart#refreshVisuals()
 	 */
+	@Override
 	protected void refreshVisuals() {
 		setWidgetImage(getImage());
 		setWidgetText(getText());
@@ -147,6 +151,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	 * 
 	 * @see AbstractEditPart#removeChildVisual(EditPart)
 	 */
+	@Override
 	protected void removeChildVisual(EditPart childEditPart) {
 		TreeEditPart treeEditPart = (TreeEditPart) childEditPart;
 		treeEditPart.getWidget().dispose();
@@ -156,6 +161,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	/**
 	 * @see AbstractEditPart#reorderChild(EditPart, int)
 	 */
+	@Override
 	protected void reorderChild(EditPart editpart, int index) {
 		super.reorderChild(editpart, index);
 		// Reordering assigns a new Widget to the child. Call refresh() to
@@ -169,33 +175,24 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	 * @see org.eclipse.gef.TreeEditPart#setWidget(Widget)
 	 */
 	public void setWidget(Widget widget) {
-		List children = getChildren();
 		if (widget != null) {
 			widget.setData(this);
-			if (widget instanceof TreeItem) {
-				final TreeItem item = (TreeItem) widget;
-				item.addDisposeListener(new DisposeListener() {
-					public void widgetDisposed(DisposeEvent e) {
-						expanded = item.getExpanded();
-					}
-				});
+			if (widget instanceof TreeItem item) {
+				item.addDisposeListener(e -> expanded = item.getExpanded());
 			}
-			for (int i = 0; i < children.size(); i++) {
-				TreeEditPart tep = (TreeEditPart) children.get(i);
-				if (widget instanceof TreeItem)
-					tep.setWidget(new TreeItem((TreeItem) widget, 0));
+			for (TreeEditPart tep : getChildren()) {
+				if (widget instanceof TreeItem ti)
+					tep.setWidget(new TreeItem(ti, 0));
 				else
 					tep.setWidget(new TreeItem((Tree) widget, 0));
 
 				// We have just assigned a new TreeItem to the EditPart
 				tep.refresh();
 			}
-			if (widget instanceof TreeItem)
-				((TreeItem) widget).setExpanded(expanded);
+			if (widget instanceof TreeItem item)
+				item.setExpanded(expanded);
 		} else {
-			Iterator iter = getChildren().iterator();
-			while (iter.hasNext())
-				((TreeEditPart) iter.next()).setWidget(null);
+			getChildren().forEach(child -> child.setWidget(null));
 		}
 		this.widget = widget;
 	}

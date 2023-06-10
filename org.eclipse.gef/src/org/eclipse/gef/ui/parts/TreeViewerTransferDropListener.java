@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,12 +35,14 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 		setEnablementDeterminedByCommand(true);
 	}
 
+	@Override
 	protected Request createTargetRequest() {
 		ChangeBoundsRequest request = new ChangeBoundsRequest(RequestConstants.REQ_MOVE);
 		request.setEditParts((List) TreeViewerTransfer.getInstance().getObject());
 		return request;
 	}
 
+	@Override
 	protected Command getCommand() {
 		CompoundCommand command = new CompoundCommand();
 
@@ -97,9 +99,9 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 	}
 
 	protected List includeChildren(List list) {
-		List result = new ArrayList();
+		List<EditPart> result = new ArrayList<>();
 		for (int i = 0; i < list.size(); i++) {
-			List children = ((EditPart) list.get(i)).getChildren();
+			List<? extends EditPart> children = ((EditPart) list.get(i)).getChildren();
 			result.addAll(children);
 			result.addAll(includeChildren(children));
 		}

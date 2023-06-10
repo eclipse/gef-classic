@@ -240,7 +240,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 		EditPart focusPart = getFocusEditPart();
 		if (focusPart.getParent() != null)
 			return focusPart.getParent().getChildren();
-		List list = new ArrayList();
+		List<EditPart> list = new ArrayList<>(1);
 		list.add(focusPart);
 		return list;
 	}
