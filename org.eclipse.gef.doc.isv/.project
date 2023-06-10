@@ -19,6 +19,5 @@
 		</buildCommand>
 	</buildSpec>
 	<natures>
-		<nature>org.eclipse.oomph.version.VersionNature</nature>
 	</natures>
 </projectDescription>
