@@ -17,7 +17,7 @@
 		<cbi-plugins.version>1.3.2</cbi-plugins.version>
 		<tycho.scmUrl>scm:git:https://github.com/eclipse/gef-classic.git</tycho.scmUrl>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<comparator.repo>https://download.eclipse.org/tools/gef/classic/releases/3.15.0</comparator.repo>
+		<comparator.repo>https://download.eclipse.org/tools/gef/classic/releases/3.16.0</comparator.repo>
 		<surefire.timeout>300</surefire.timeout>
 	</properties>
 
