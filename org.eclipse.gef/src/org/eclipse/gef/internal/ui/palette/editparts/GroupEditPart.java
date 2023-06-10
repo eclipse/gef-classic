@@ -49,6 +49,7 @@ public class GroupEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
 	 */
+	@Override
 	protected void refreshVisuals() {
 		int layout = getLayoutSetting();
 		if (cachedLayout == layout)

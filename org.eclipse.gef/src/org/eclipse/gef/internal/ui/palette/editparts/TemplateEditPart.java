@@ -48,16 +48,20 @@ public class TemplateEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#createAccessible()
 	 */
+	@Override
 	protected AccessibleEditPart createAccessible() {
 		return new AccessibleGraphicalEditPart() {
+			@Override
 			public void getDescription(AccessibleEvent e) {
 				e.result = getTemplateEntry().getDescription();
 			}
 
+			@Override
 			public void getName(AccessibleEvent e) {
 				e.result = getTemplateEntry().getLabel();
 			}
 
+			@Override
 			public void getRole(AccessibleControlEvent e) {
 				e.detail = ACC.ROLE_LISTITEM;
 			}
@@ -67,13 +71,16 @@ public class TemplateEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	public IFigure createFigure() {
 		IFigure fig = new DetailedLabelFigure() {
 
+			@Override
 			public IFigure getToolTip() {
 				return createToolTip();
 			}
 
+			@Override
 			protected void paintFigure(Graphics graphics) {
 				super.paintFigure(graphics);
 
@@ -91,6 +98,7 @@ public class TemplateEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		((DetailedLabelFigure) getFigure()).dispose();
 		super.deactivate();
@@ -99,8 +107,10 @@ public class TemplateEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getDragTracker(Request)
 	 */
+	@Override
 	public DragTracker getDragTracker(Request request) {
 		return new SingleSelectionTracker() {
+			@Override
 			protected boolean handleButtonDown(int button) {
 				getFigure().requestFocus();
 				return super.handleButtonDown(button);
@@ -115,6 +125,7 @@ public class TemplateEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getToolTipText()
 	 */
+	@Override
 	protected String getToolTipText() {
 		String result = null;
 		if (getLayoutSetting() != PaletteViewerPreferences.LAYOUT_DETAILS) {
@@ -129,6 +140,7 @@ public class TemplateEditPart extends PaletteEditPart {
 	 * 
 	 * @return whether the name needs to be included in the tooltip
 	 */
+	@Override
 	protected boolean nameNeededInToolTip() {
 		DetailedLabelFigure label = (DetailedLabelFigure) getFigure();
 		return label.isNameTruncated() || super.nameNeededInToolTip();
@@ -137,9 +149,10 @@ public class TemplateEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
 	 */
+	@Override
 	protected void refreshVisuals() {
 		DetailedLabelFigure fig = (DetailedLabelFigure) getFigure();
-		PaletteEntry entry = getPaletteEntry();
+		PaletteEntry entry = getModel();
 		fig.setName(entry.getLabel());
 		fig.setDescription(entry.getDescription());
 		if (getPreferenceSource().useLargeIcons())
@@ -161,11 +174,13 @@ public class TemplateEditPart extends PaletteEditPart {
 		super.refreshVisuals();
 	}
 
+	@Override
 	public void restoreState(IMemento memento) {
 		setSelected(memento.getInteger(SELECTION_STATE).intValue());
 		super.restoreState(memento);
 	}
 
+	@Override
 	public void saveState(IMemento memento) {
 		memento.putInteger(SELECTION_STATE, getSelected());
 		super.saveState(memento);
@@ -174,6 +189,7 @@ public class TemplateEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#setImageInFigure(Image)
 	 */
+	@Override
 	protected void setImageInFigure(Image image) {
 		DetailedLabelFigure fig = (DetailedLabelFigure) getFigure();
 		fig.setImage(image);
@@ -182,6 +198,7 @@ public class TemplateEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.EditPart#setSelected(int)
 	 */
+	@Override
 	public void setSelected(int value) {
 		super.setSelected(value);
 		DetailedLabelFigure label = (DetailedLabelFigure) getFigure();

@@ -49,6 +49,7 @@ public class SeparatorEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.ui.palette.editparts.PaletteEditPart#getToolTipText()
 	 */
+	@Override
 	protected String getToolTipText() {
 		return null;
 	}
@@ -62,6 +63,7 @@ public class SeparatorEditPart extends PaletteEditPart {
 		/**
 		 * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
 		 */
+		@Override
 		public Dimension getPreferredSize(int wHint, int hHint) {
 			if (getBackgroundColor().equals(PaletteColorUtil.WIDGET_BACKGROUND))
 				return new Dimension(wHint, 4);
@@ -74,8 +76,9 @@ public class SeparatorEditPart extends PaletteEditPart {
 		 * 
 		 * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
 		 */
+		@Override
 		protected void paintFigure(Graphics g) {
-			Rectangle r = getBounds().getCropped(CROP);
+			Rectangle r = getBounds().getShrinked(CROP);
 			if (getBackgroundColor().equals(PaletteColorUtil.WIDGET_LIST_BACKGROUND)) {
 				g.setForegroundColor(PaletteColorUtil.WIDGET_NORMAL_SHADOW);
 				g.drawLine(r.getLeft(), r.getRight());

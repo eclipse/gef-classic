@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 IBM Corporation and others.
+ * Copyright (c) 2008, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,7 +11,6 @@
 package org.eclipse.gef.internal.ui.palette.editparts;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.IFigure;
@@ -40,13 +39,13 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 	private PaletteListener paletteListener = new PaletteListener() {
 
 		public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
-			if (!getStackFigure().isPinnedOpen() && getStack().getChildren().contains(tool)) {
+			if (!getFigure().isPinnedOpen() && getStack().getChildren().contains(tool)) {
 				if (!getStack().getActiveEntry().equals(tool)) {
 					getStack().setActiveEntry(tool);
 				}
 			}
-			if (!getStackFigure().isPinnedOpen()) {
-				getStackFigure().setExpanded(false);
+			if (!getFigure().isPinnedOpen()) {
+				getFigure().setExpanded(false);
 			}
 		}
 	};
@@ -63,6 +62,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 	/**
 	 * @see org.eclipse.gef.EditPart#activate()
 	 */
+	@Override
 	public void activate() {
 		// in case the model is out of sync
 		checkActiveEntrySync();
@@ -98,73 +98,79 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 			newFigure = part.getFigure();
 		}
 
-		getStackFigure().activeEntryChanged(oldFigure, index, newFigure);
+		getFigure().activeEntryChanged(oldFigure, index, newFigure);
 	}
 
 	private void checkActiveEntrySync() {
-		if (getStackFigure().getActiveFigure() == null)
+		if (getFigure().getActiveFigure() == null)
 			activeEntryChanged(null, getStack().getActiveEntry());
 	}
 
+	@Override
 	public IFigure createFigure() {
 		return new PinnablePaletteStackFigure();
 	}
 
-	private PinnablePaletteStackFigure getStackFigure() {
-		return (PinnablePaletteStackFigure) getFigure();
+	@Override
+	public PinnablePaletteStackFigure getFigure() {
+		return (PinnablePaletteStackFigure) super.getFigure();
 	}
 
+	@Override
 	public void deactivate() {
 		getPaletteViewer().removePaletteListener(paletteListener);
 		super.deactivate();
 	}
 
+	@Override
 	public void eraseTargetFeedback(Request request) {
-		Iterator children = getChildren().iterator();
-
-		while (children.hasNext()) {
-			PaletteEditPart part = (PaletteEditPart) children.next();
-			part.eraseTargetFeedback(request);
-		}
+		getChildren().forEach(part -> part.eraseTargetFeedback(request));
 		super.eraseTargetFeedback(request);
 	}
 
+	@Override
 	public IFigure getContentPane() {
 		// not completely accurate, but is there any other way?
-		return getStackFigure().getContentPane();
+		return getFigure().getContentPane();
 	}
 
+	@Override
 	protected void removeChildVisual(EditPart childEditPart) {
 		IFigure child = ((GraphicalEditPart) childEditPart).getFigure();
-		getStackFigure().getContentPane(child).remove(child);
+		getFigure().getContentPane(child).remove(child);
 	}
 
+	@Override
 	protected void addChild(EditPart childEP, int index) {
 		index = updateIndexBasedOnActiveFigure(index, childEP);
 		super.addChild(childEP, index);
 	}
 
+	@Override
 	protected void reorderChild(EditPart childEP, int index) {
 		IFigure childFigure = ((GraphicalEditPart) childEP).getFigure();
-		if (childFigure == getStackFigure().getActiveFigure()) {
+		if (childFigure == getFigure().getActiveFigure()) {
 			// no need to reorder figures if this is the active figure
-			List children = getChildren();
-			children.remove(childEP);
-			children.add(index, childEP);
+			reorderChildInChildrenList((PaletteEditPart) childEP, index);
 		} else {
 			removeChildVisual(childEP);
-			List children = getChildren();
-			children.remove(childEP);
-			children.add(index, childEP);
+			reorderChildInChildrenList((PaletteEditPart) childEP, index);
 			index = updateIndexBasedOnActiveFigure(index, childEP);
 			addChildVisual(childEP, index);
 		}
 	}
 
+	private void reorderChildInChildrenList(PaletteEditPart childEP, int index) {
+		@SuppressWarnings("unchecked")
+		List<PaletteEditPart> children = (List<PaletteEditPart>) getChildren();
+		children.remove(childEP);
+		children.add(index, childEP);
+	}
+
 	private int updateIndexBasedOnActiveFigure(int index, EditPart childEP) {
 		for (int i = 0; i < index; i++) {
-			Object ep = getChildren().get(i);
-			if (((GraphicalEditPart) ep).getFigure() == getStackFigure().getActiveFigure()) {
+			PaletteEditPart ep = getChildren().get(i);
+			if (ep.getFigure() == getFigure().getActiveFigure()) {
 				return index - 1;
 			}
 		}
@@ -175,6 +181,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 		return (PaletteStack) getModel();
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals(PaletteStack.PROPERTY_ACTIVE_ENTRY))
 			activeEntryChanged(event.getOldValue(), event.getNewValue());
@@ -182,13 +189,15 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 			super.propertyChange(event);
 	}
 
+	@Override
 	protected void refreshChildren() {
 		super.refreshChildren();
 		checkActiveEntrySync();
 	}
 
+	@Override
 	protected void refreshVisuals() {
-		getStackFigure().setLayoutMode(getLayoutSetting());
+		getFigure().setLayoutMode(getLayoutSetting());
 	}
 
 	public void openMenu() {
@@ -196,11 +205,11 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 	}
 
 	public void setExpanded(boolean value) {
-		getStackFigure().setExpanded(value);
+		getFigure().setExpanded(value);
 	}
 
 	public boolean isExpanded() {
-		return getStackFigure().isExpanded();
+		return getFigure().isExpanded();
 	}
 
 	public boolean canBePinned() {
@@ -208,11 +217,11 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 	}
 
 	public boolean isPinnedOpen() {
-		return getStackFigure().isPinnedOpen();
+		return getFigure().isPinnedOpen();
 	}
 
 	public void setPinnedOpen(boolean pinned) {
-		getStackFigure().setPinned(pinned);
+		getFigure().setPinned(pinned);
 	}
 
 	public PaletteEditPart getActiveEntry() {

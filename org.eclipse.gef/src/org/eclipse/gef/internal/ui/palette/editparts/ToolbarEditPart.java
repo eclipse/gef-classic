@@ -37,6 +37,7 @@ public class ToolbarEditPart extends GroupEditPart {
 		super(model);
 	}
 
+	@Override
 	public IFigure createFigure() {
 		IFigure figure = new Figure() {
 
@@ -61,10 +62,12 @@ public class ToolbarEditPart extends GroupEditPart {
 		return figure;
 	}
 
+	@Override
 	protected int getLayoutSetting() {
 		return PaletteViewerPreferences.LAYOUT_ICONS;
 	}
 
+	@Override
 	public boolean isToolbarItem() {
 		return true;
 	}
