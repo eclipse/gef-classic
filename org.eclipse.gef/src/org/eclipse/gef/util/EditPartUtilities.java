@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 IBM Corporation and others.
+ * Copyright (c) 2010, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,9 +12,7 @@
 package org.eclipse.gef.util;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalEditPart;
@@ -44,14 +42,9 @@ public final class EditPartUtilities {
 	 * 
 	 * @return the transitive child edit part set
 	 */
-	public static LinkedHashSet getAllChildren(GraphicalEditPart parentEditPart) {
-		LinkedHashSet transitiveChildren = new LinkedHashSet();
-		List children = parentEditPart.getChildren();
-		transitiveChildren.addAll(children);
-		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
-			GraphicalEditPart child = (GraphicalEditPart) iterator.next();
-			transitiveChildren.addAll(getAllChildren(child));
-		}
+	public static LinkedHashSet<? extends GraphicalEditPart> getAllChildren(GraphicalEditPart parentEditPart) {
+		LinkedHashSet<GraphicalEditPart> transitiveChildren = new LinkedHashSet<>(parentEditPart.getChildren());
+		parentEditPart.getChildren().forEach(child -> transitiveChildren.addAll(getAllChildren(child)));
 		return transitiveChildren;
 	}
 
@@ -64,12 +57,10 @@ public final class EditPartUtilities {
 	 */
 	public static HashSet getAllNestedConnectionEditParts(GraphicalEditPart graphicalEditPart) {
 		HashSet transitiveConnections = new HashSet();
-		HashSet transitiveChildren = getAllChildren(graphicalEditPart);
-		for (Iterator iterator = transitiveChildren.iterator(); iterator.hasNext();) {
-			GraphicalEditPart child = (GraphicalEditPart) iterator.next();
+		getAllChildren(graphicalEditPart).forEach(child -> {
 			transitiveConnections.addAll(child.getSourceConnections());
 			transitiveConnections.addAll(child.getTargetConnections());
-		}
+		});
 		return transitiveConnections;
 	}
 
@@ -84,15 +75,10 @@ public final class EditPartUtilities {
 	 */
 	public static HashSet getNestedConnectionEditParts(GraphicalEditPart graphicalEditPart) {
 		HashSet edges = new HashSet();
-		List children = graphicalEditPart.getChildren();
-		for (Iterator iterator = children.iterator(); iterator.hasNext();) {
-			Object child = iterator.next();
-			if (child instanceof GraphicalEditPart) {
-				GraphicalEditPart childEditPart = (GraphicalEditPart) child;
-				edges.addAll(childEditPart.getSourceConnections());
-				edges.addAll(childEditPart.getTargetConnections());
-			}
-		}
+		graphicalEditPart.getChildren().forEach(child -> {
+			edges.addAll(child.getSourceConnections());
+			edges.addAll(child.getTargetConnections());
+		});
 		return edges;
 	}
 }

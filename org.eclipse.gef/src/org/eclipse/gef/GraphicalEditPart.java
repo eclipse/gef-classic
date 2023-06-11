@@ -62,6 +62,15 @@ public interface GraphicalEditPart extends EditPart {
 	List getTargetConnections();
 
 	/**
+	 * The children of GraphicalEditparts have to be GraphicalEditParts. Therefore
+	 * the GraphicalEditPart refines this method from its parent interface.
+	 * 
+	 * @see org.eclipse.gef.EditPart#getChildren()
+	 */
+	@Override
+	List<? extends GraphicalEditPart> getChildren();
+
+	/**
 	 * The Figure into which childrens' Figures will be added. May return the same
 	 * Figure as {@link #getFigure()}. The GraphicalEditPart's {@link #getFigure()
 	 * primary Figure} may be composed of multiple figures. This is the figure in

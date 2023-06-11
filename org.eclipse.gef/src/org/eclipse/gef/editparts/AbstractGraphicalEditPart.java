@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -81,16 +81,14 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		 * @see AccessibleEditPart#getChildren(AccessibleControlEvent)
 		 */
 		public void getChildren(AccessibleControlEvent e) {
-			List list = AbstractGraphicalEditPart.this.getChildren();
-			Object children[] = new Object[list.size()];
-			for (int i = 0; i < list.size(); i++) {
-				EditPart part = (EditPart) list.get(i);
+			ArrayList<Integer> children = new ArrayList<>(AbstractGraphicalEditPart.this.getChildren().size());
+			for (EditPart part : AbstractGraphicalEditPart.this.getChildren()) {
 				AccessibleEditPart access = part.getAdapter(AccessibleEditPart.class);
 				if (access == null)
 					return; // fail if any children aren't accessible.
-				children[i] = Integer.valueOf(access.getAccessibleID());
+				children.add(Integer.valueOf(access.getAccessibleID()));
 			}
-			e.children = children;
+			e.children = children.toArray();
 		}
 
 		/**
@@ -134,8 +132,8 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * @since 2.0
 	 */
 	protected class DefaultAccessibleAnchorProvider implements AccessibleAnchorProvider {
-		private List getDefaultLocations() {
-			List list = new ArrayList();
+		private List<Point> getDefaultLocations() {
+			List<Point> list = new ArrayList<>();
 			Rectangle r = getFigure().getBounds();
 			Point p = r.getTopRight().translate(-1, r.height / 3);
 			getFigure().translateToAbsolute(p);
@@ -146,6 +144,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		/**
 		 * @see AccessibleAnchorProvider#getSourceAnchorLocations()
 		 */
+		@Override
 		public List getSourceAnchorLocations() {
 			return getDefaultLocations();
 		}
@@ -153,6 +152,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		/**
 		 * @see AccessibleAnchorProvider#getTargetAnchorLocations()
 		 */
+		@Override
 		public List getTargetAnchorLocations() {
 			return getDefaultLocations();
 		}
@@ -184,6 +184,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see org.eclipse.gef.EditPart#activate()
 	 */
+	@Override
 	public void activate() {
 		super.activate();
 		List l = getSourceConnections();
@@ -196,6 +197,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(EditPart, int)
 	 */
+	@Override
 	protected void addChildVisual(EditPart childEditPart, int index) {
 		IFigure child = ((GraphicalEditPart) childEditPart).getFigure();
 		getContentPane().add(child, index);
@@ -204,6 +206,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * @see org.eclipse.gef.GraphicalEditPart#addNodeListener(org.eclipse.gef.NodeListener)
 	 */
+	@Override
 	public void addNodeListener(NodeListener listener) {
 		eventListeners.addListener(NodeListener.class, listener);
 	}
@@ -211,6 +214,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * @see org.eclipse.gef.EditPart#addNotify()
 	 */
+	@Override
 	public void addNotify() {
 		super.addNotify();
 		List conns;
@@ -329,6 +333,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see org.eclipse.gef.EditPart#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		List l = getSourceConnections();
 		for (int i = 0; i < l.size(); i++)
@@ -417,6 +422,12 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		return super.getAdapter(key);
 	}
 
+	@SuppressWarnings("unchecked") // the children of a GraphicalEditPart have to be GraphicalEditParts
+	@Override
+	public List<? extends GraphicalEditPart> getChildren() {
+		return (List<? extends GraphicalEditPart>) super.getChildren();
+	}
+
 	/**
 	 * Implemented to delegate to {@link #getFigure()} by default. Subclasses may
 	 * overwrite in case the {@link IFigure} returned by {@link #getFigure()} is a
@@ -425,6 +436,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see GraphicalEditPart#getContentPane()
 	 */
+	@Override
 	public IFigure getContentPane() {
 		return getFigure();
 	}
@@ -435,6 +447,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see org.eclipse.gef.EditPart#getDragTracker(Request)
 	 */
+	@Override
 	public DragTracker getDragTracker(Request request) {
 		return new org.eclipse.gef.tools.DragEditPartsTracker(this);
 	}
@@ -445,6 +458,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see org.eclipse.gef.GraphicalEditPart#getFigure()
 	 */
+	@Override
 	public IFigure getFigure() {
 		if (figure == null)
 			setFigure(createFigure());
@@ -517,6 +531,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#isSelectable()
 	 */
+	@Override
 	public boolean isSelectable() {
 		return super.isSelectable() && getFigure() != null && getFigure().isShowing();
 	}
@@ -583,6 +598,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see org.eclipse.gef.EditPart#refresh()
 	 */
+	@Override
 	public void refresh() {
 		super.refresh();
 		refreshSourceConnections();
@@ -717,6 +733,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#registerVisuals()
 	 */
+	@Override
 	protected void registerVisuals() {
 		getViewer().getVisualPartMap().put(getFigure(), this);
 	}
@@ -726,6 +743,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see AbstractEditPart#removeChildVisual(EditPart)
 	 */
+	@Override
 	protected void removeChildVisual(EditPart childEditPart) {
 		IFigure child = ((GraphicalEditPart) childEditPart).getFigure();
 		getContentPane().remove(child);
@@ -734,6 +752,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * @see org.eclipse.gef.GraphicalEditPart#removeNodeListener(org.eclipse.gef.NodeListener)
 	 */
+	@Override
 	public void removeNodeListener(NodeListener listener) {
 		eventListeners.removeListener(NodeListener.class, listener);
 	}
@@ -744,6 +763,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see EditPart#removeNotify()
 	 */
+	@Override
 	public void removeNotify() {
 		List conns;
 		ConnectionEditPart cep;
@@ -799,6 +819,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#reorderChild(EditPart, int)
 	 */
+	@Override
 	protected void reorderChild(EditPart child, int index) {
 		// Save the constraint of the child so that it does not
 		// get lost during the remove and re-add.
@@ -850,6 +871,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * @see GraphicalEditPart#setLayoutConstraint(EditPart, IFigure, Object)
 	 */
+	@Override
 	public void setLayoutConstraint(EditPart child, IFigure childFigure, Object constraint) {
 		childFigure.getParent().setConstraint(childFigure, constraint);
 	}
@@ -859,6 +881,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	 * 
 	 * @see AbstractEditPart#unregisterVisuals()
 	 */
+	@Override
 	protected void unregisterVisuals() {
 		getViewer().getVisualPartMap().remove(getFigure());
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@ package org.eclipse.gef;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -144,12 +143,12 @@ public class SnapToGeometry extends SnapToHelper {
 	/**
 	 * The horizontal rows being snapped to.
 	 */
-	protected Entry rows[];
+	protected Entry[] rows;
 
 	/**
-	 * The vertical columnd being snapped to.
+	 * The vertical columns being snapped to.
 	 */
-	protected Entry cols[];
+	protected Entry[] cols;
 
 	/**
 	 * The container editpart providing the coordinates and the children to which
@@ -202,19 +201,11 @@ public class SnapToGeometry extends SnapToHelper {
 	 */
 	protected List generateSnapPartsList(List exclusions) {
 		// Don't snap to any figure that is being dragged
-		List children = new ArrayList(container.getChildren());
+		List<? extends GraphicalEditPart> children = new ArrayList<>(container.getChildren());
 		children.removeAll(exclusions);
 
 		// Don't snap to hidden figures
-		List hiddenChildren = new ArrayList();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			GraphicalEditPart child = (GraphicalEditPart) iter.next();
-			if (!child.getFigure().isVisible())
-				hiddenChildren.add(child);
-		}
-		children.removeAll(hiddenChildren);
-
-		return children;
+		return children.stream().filter(child -> child.getFigure().isVisible()).toList();
 	}
 
 	/**
@@ -228,7 +219,7 @@ public class SnapToGeometry extends SnapToHelper {
 	 * @param far          the right/bottom side of the rectangle
 	 * @return the correction amount or #getThreshold () if no correction was made
 	 */
-	protected double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, double near, double far) {
+	protected double getCorrectionFor(Entry[] entries, Map extendedData, boolean vert, double near, double far) {
 		far -= 1.0;
 		double total = near + far;
 		// If the width is even (i.e., odd right now because we have reduced one
@@ -257,7 +248,7 @@ public class SnapToGeometry extends SnapToHelper {
 	 * @param side         which sides should be considered
 	 * @return the correction or #getThreshold () if no correction was made
 	 */
-	protected double getCorrectionFor(Entry entries[], Map extendedData, boolean vert, double value, int side) {
+	protected double getCorrectionFor(Entry[] entries, Map extendedData, boolean vert, double value, int side) {
 		double resultMag = getThreshold();
 		double result = getThreshold();
 
@@ -307,9 +298,7 @@ public class SnapToGeometry extends SnapToHelper {
 	 */
 	protected Rectangle getFigureBounds(GraphicalEditPart part) {
 		IFigure fig = part.getFigure();
-		if (fig instanceof HandleBounds)
-			return ((HandleBounds) fig).getHandleBounds();
-		return fig.getBounds();
+		return (fig instanceof HandleBounds hb) ? hb.getHandleBounds() : fig.getBounds();
 	}
 
 	/**
@@ -337,6 +326,7 @@ public class SnapToGeometry extends SnapToHelper {
 	 * @see SnapToHelper#snapRectangle(Request, int, PrecisionRectangle,
 	 *      PrecisionRectangle)
 	 */
+	@Override
 	public int snapRectangle(Request request, int snapOrientation, PrecisionRectangle baseRect,
 			PrecisionRectangle result) {
 
