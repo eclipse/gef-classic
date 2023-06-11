@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *����Elias Volanakis - initial API and implementation
+ *    Elias Volanakis - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
@@ -59,6 +59,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	/**
 	 * Upon activation, attach to the model element as a property change listener.
 	 */
+	@Override
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
@@ -84,6 +85,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 			 * getConnectionCompleteCommand
 			 * (org.eclipse.gef.requests.CreateConnectionRequest)
 			 */
+			@Override
 			protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
 				ConnectionCreateCommand cmd = (ConnectionCreateCommand) request.getStartCommand();
 				cmd.setTarget((Shape) getHost().getModel());
@@ -96,6 +98,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
 			 * getConnectionCreateCommand (org.eclipse.gef.requests.CreateConnectionRequest)
 			 */
+			@Override
 			protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
 				Shape source = (Shape) getHost().getModel();
 				int style = ((Integer) request.getNewObjectType()).intValue();
@@ -110,6 +113,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
 			 * getReconnectSourceCommand (org.eclipse.gef.requests.ReconnectRequest)
 			 */
+			@Override
 			protected Command getReconnectSourceCommand(ReconnectRequest request) {
 				Connection conn = (Connection) request.getConnectionEditPart().getModel();
 				Shape newSource = (Shape) getHost().getModel();
@@ -124,6 +128,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 			 * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy#
 			 * getReconnectTargetCommand (org.eclipse.gef.requests.ReconnectRequest)
 			 */
+			@Override
 			protected Command getReconnectTargetCommand(ReconnectRequest request) {
 				Connection conn = (Connection) request.getConnectionEditPart().getModel();
 				Shape newTarget = (Shape) getHost().getModel();
@@ -139,6 +144,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		IFigure f = createFigureForModel();
 		f.setOpaque(true); // non-transparent figure
@@ -165,6 +171,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * Upon deactivation, detach from the model element as a property change
 	 * listener.
 	 */
+	@Override
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
@@ -172,8 +179,9 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 		}
 	}
 
-	private Shape getCastedModel() {
-		return (Shape) getModel();
+	@Override
+	public Shape getModel() {
+		return (Shape) super.getModel();
 	}
 
 	protected ConnectionAnchor getConnectionAnchor() {
@@ -196,8 +204,9 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelSourceConnections
 	 * ()
 	 */
+	@Override
 	protected List getModelSourceConnections() {
-		return getCastedModel().getSourceConnections();
+		return getModel().getSourceConnections();
 	}
 
 	/*
@@ -207,8 +216,9 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelTargetConnections
 	 * ()
 	 */
+	@Override
 	protected List getModelTargetConnections() {
-		return getCastedModel().getTargetConnections();
+		return getModel().getTargetConnections();
 	}
 
 	/*
@@ -217,6 +227,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef
 	 * .ConnectionEditPart)
 	 */
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return getConnectionAnchor();
 	}
@@ -227,6 +238,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef
 	 * .Request)
 	 */
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
 		return getConnectionAnchor();
 	}
@@ -237,6 +249,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef
 	 * .ConnectionEditPart)
 	 */
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
 		return getConnectionAnchor();
 	}
@@ -247,6 +260,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef
 	 * .Request)
 	 */
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return getConnectionAnchor();
 	}
@@ -257,6 +271,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
 	 * PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (Shape.SIZE_PROP.equals(prop) || Shape.LOCATION_PROP.equals(prop)) {
@@ -268,14 +283,13 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 		}
 	}
 
+	@Override
 	protected void refreshVisuals() {
 		// notify parent container of changed position & location
-		// if this line is removed, the XYLayoutManager used by the parent
-		// container
-		// (the Figure of the ShapesDiagramEditPart), will not know the bounds
-		// of this figure
-		// and will not draw it correctly.
-		Rectangle bounds = new Rectangle(getCastedModel().getLocation(), getCastedModel().getSize());
+		// if this line is removed, the XYLayoutManager used by the parent container
+		// (the Figure of the ShapesDiagramEditPart), will not know the bounds of this
+		// figure and will not draw it correctly.
+		Rectangle bounds = new Rectangle(getModel().getLocation(), getModel().getSize());
 		((GraphicalEditPart) getParent()).setLayoutConstraint(this, getFigure(), bounds);
 	}
 }

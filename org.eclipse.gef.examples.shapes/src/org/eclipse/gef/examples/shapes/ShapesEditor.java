@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,7 +7,7 @@
  *
  * Contributors:
  * Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes;
 
 import java.io.ByteArrayInputStream;
@@ -93,6 +93,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * 
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#configureGraphicalViewer()
 	 */
+	@Override
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
 
@@ -113,6 +114,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#commandStackChanged(java.util
 	 * .EventObject)
 	 */
+	@Override
 	public void commandStackChanged(EventObject event) {
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 		super.commandStackChanged(event);
@@ -130,8 +132,10 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#
 	 * createPaletteViewerProvider()
 	 */
+	@Override
 	protected PaletteViewerProvider createPaletteViewerProvider() {
 		return new PaletteViewerProvider(getEditDomain()) {
+			@Override
 			protected void configurePaletteViewer(PaletteViewer viewer) {
 				super.configurePaletteViewer(viewer);
 				// create a drag source listener for this palette viewer
@@ -168,6 +172,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * @see org.eclipse.ui.ISaveablePart#doSave(org.eclipse.core.runtime.
 	 * IProgressMonitor )
 	 */
+	@Override
 	public void doSave(IProgressMonitor monitor) {
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		try {
@@ -200,6 +205,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * 
 	 * @see org.eclipse.ui.ISaveablePart#doSaveAs()
 	 */
+	@Override
 	public void doSaveAs() {
 		// Show a SaveAs dialog
 		Shell shell = getSite().getWorkbenchWindow().getShell();
@@ -260,6 +266,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#getPaletteRoot
 	 * ()
 	 */
+	@Override
 	protected PaletteRoot getPaletteRoot() {
 		if (PALETTE_MODEL == null)
 			PALETTE_MODEL = ShapesEditorPaletteFactory.createPalette();
@@ -277,6 +284,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * 
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithFlyoutPalette#initializeGraphicalViewer()
 	 */
+	@Override
 	protected void initializeGraphicalViewer() {
 		super.initializeGraphicalViewer();
 		GraphicalViewer viewer = getGraphicalViewer();
@@ -291,6 +299,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * 
 	 * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
 	 */
+	@Override
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
@@ -300,13 +309,12 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * 
 	 * @see org.eclipse.ui.part.EditorPart#setInput(org.eclipse.ui.IEditorInput)
 	 */
+	@Override
 	protected void setInput(IEditorInput input) {
 		super.setInput(input);
-		try {
-			IFile file = ((IFileEditorInput) input).getFile();
-			ObjectInputStream in = new ObjectInputStream(file.getContents());
+		IFile file = ((IFileEditorInput) input).getFile();
+		try (ObjectInputStream in = new ObjectInputStream(file.getContents())) {
 			diagram = (ShapesDiagram) in.readObject();
-			in.close();
 			setPartName(file.getName());
 		} catch (IOException e) {
 			handleLoadException(e);
@@ -337,6 +345,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		 * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.
 		 * Composite )
 		 */
+		@Override
 		public void createControl(Composite parent) {
 			// create outline viewer page
 			getViewer().createControl(parent);
@@ -360,6 +369,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		 * 
 		 * @see org.eclipse.ui.part.IPage#dispose()
 		 */
+		@Override
 		public void dispose() {
 			// unhook outline viewer
 			getSelectionSynchronizer().removeViewer(getViewer());
@@ -372,6 +382,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		 * 
 		 * @see org.eclipse.ui.part.IPage#getControl()
 		 */
+		@Override
 		public Control getControl() {
 			return getViewer().getControl();
 		}
@@ -379,6 +390,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		/**
 		 * @see org.eclipse.ui.part.IPageBookViewPage#init(org.eclipse.ui.part.IPageSite)
 		 */
+		@Override
 		public void init(IPageSite pageSite) {
 			super.init(pageSite);
 			ActionRegistry registry = getActionRegistry();

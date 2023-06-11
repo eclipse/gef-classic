@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
 import java.io.IOException;
@@ -123,9 +123,9 @@ public abstract class Shape extends ModelElement {
 	/** Size of this shape. */
 	private Dimension size = new Dimension(50, 50);
 	/** List of outgoing Connections. */
-	private List sourceConnections = new ArrayList();
+	private List<Connection> sourceConnections = new ArrayList<>();
 	/** List of incoming Connections. */
-	private List targetConnections = new ArrayList();
+	private List<Connection> targetConnections = new ArrayList<>();
 
 	/**
 	 * Add an incoming or outgoing connection to this shape.
@@ -175,6 +175,7 @@ public abstract class Shape extends ModelElement {
 	 * @see #getPropertyValue(Object)
 	 * @see #setPropertyValue(Object, Object)
 	 */
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return descriptors;
 	}
@@ -189,6 +190,7 @@ public abstract class Shape extends ModelElement {
 	 * @see #descriptors
 	 * @see #getPropertyDescriptors()
 	 */
+	@Override
 	public Object getPropertyValue(Object propertyId) {
 		if (XPOS_PROP.equals(propertyId)) {
 			return Integer.toString(location.x);
@@ -217,15 +219,15 @@ public abstract class Shape extends ModelElement {
 	/**
 	 * Return a List of outgoing Connections.
 	 */
-	public List getSourceConnections() {
-		return new ArrayList(sourceConnections);
+	public List<Connection> getSourceConnections() {
+		return new ArrayList<>(sourceConnections);
 	}
 
 	/**
 	 * Return a List of incoming Connections.
 	 */
-	public List getTargetConnections() {
-		return new ArrayList(targetConnections);
+	public List<Connection> getTargetConnections() {
+		return new ArrayList<>(targetConnections);
 	}
 
 	/**
@@ -272,6 +274,7 @@ public abstract class Shape extends ModelElement {
 	 * @see #descriptors
 	 * @see #getPropertyDescriptors()
 	 */
+	@Override
 	public void setPropertyValue(Object propertyId, Object value) {
 		if (XPOS_PROP.equals(propertyId)) {
 			int x = Integer.parseInt((String) value);

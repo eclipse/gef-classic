@@ -1,16 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
-
-import java.util.Iterator;
 
 import org.eclipse.gef.commands.Command;
 
@@ -79,6 +77,7 @@ public class ConnectionReconnectCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
+	@Override
 	public boolean canExecute() {
 		if (newSource != null) {
 			return checkSourceReconnection();
@@ -96,17 +95,10 @@ public class ConnectionReconnectCommand extends Command {
 		if (newSource.equals(oldTarget)) {
 			return false;
 		}
-		// return false, if the connection exists already
-		for (Iterator iter = newSource.getSourceConnections().iterator(); iter.hasNext();) {
-			Connection conn = (Connection) iter.next();
-			// return false if a newSource -> oldTarget connection exists
-			// already
-			// and it is a different instance than the connection-field
-			if (conn.getTarget().equals(oldTarget) && !conn.equals(connection)) {
-				return false;
-			}
-		}
-		return true;
+		// return false if a newSource -> oldTarget connection exists already
+		// and it is a different instance than the connection-field
+		return newSource.getSourceConnections().stream()
+				.noneMatch(conn -> conn.getTarget().equals(oldTarget) && !conn.equals(connection));
 	}
 
 	/**
@@ -117,23 +109,17 @@ public class ConnectionReconnectCommand extends Command {
 		if (newTarget.equals(oldSource)) {
 			return false;
 		}
-		// return false, if the connection exists already
-		for (Iterator iter = newTarget.getTargetConnections().iterator(); iter.hasNext();) {
-			Connection conn = (Connection) iter.next();
-			// return false if a oldSource -> newTarget connection exists
-			// already
-			// and it is a differenct instance that the connection-field
-			if (conn.getSource().equals(oldSource) && !conn.equals(connection)) {
-				return false;
-			}
-		}
-		return true;
+		// return false if a oldSource -> newTarget connection exists already
+		// and it is a different instance that the connection-field
+		return newTarget.getTargetConnections().stream()
+				.noneMatch(conn -> conn.getSource().equals(oldSource) && !conn.equals(connection));
 	}
 
 	/**
 	 * Reconnect the connection to newSource (if setNewSource(...) was invoked
 	 * before) or newTarget (if setNewTarget(...) was invoked before).
 	 */
+	@Override
 	public void execute() {
 		if (newSource != null) {
 			connection.reconnect(newSource, oldTarget);
@@ -193,6 +179,7 @@ public class ConnectionReconnectCommand extends Command {
 	/**
 	 * Reconnect the connection to its original source and target endpoints.
 	 */
+	@Override
 	public void undo() {
 		connection.reconnect(oldSource, oldTarget);
 	}

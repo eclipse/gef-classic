@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
 import java.beans.PropertyChangeEvent;
@@ -61,6 +61,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 	/**
 	 * Upon activation, attach to the model element as a property change listener.
 	 */
+	@Override
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
@@ -73,6 +74,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 		// disallows the removal of this edit part from its parent
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new RootComponentEditPolicy());
@@ -87,6 +89,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		Figure f = new FreeformLayer();
 		f.setBorder(new MarginBorder(3));
@@ -103,6 +106,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 	 * Upon deactivation, detach from the model element as a property change
 	 * listener.
 	 */
+	@Override
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
@@ -119,6 +123,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
+	@Override
 	protected List getModelChildren() {
 		return getCastedModel().getChildren(); // return a list of shapes
 	}
@@ -128,6 +133,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 	 * 
 	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		// these properties are fired when Shapes are added into or removed from
@@ -152,6 +158,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 		 * @see ConstrainedLayoutEditPolicy#createChangeConstraintCommand(
 		 * ChangeBoundsRequest, EditPart, Object)
 		 */
+		@Override
 		protected Command createChangeConstraintCommand(ChangeBoundsRequest request, EditPart child,
 				Object constraint) {
 			if (child instanceof ShapeEditPart && constraint instanceof Rectangle) {
@@ -164,19 +171,9 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see ConstrainedLayoutEditPolicy#createChangeConstraintCommand(EditPart,
-		 * Object)
-		 */
-		protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
-			// not used in this example
-			return null;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
 		 * @see LayoutEditPolicy#getCreateCommand(CreateRequest)
 		 */
+		@Override
 		protected Command getCreateCommand(CreateRequest request) {
 			Object childClass = request.getNewObjectType();
 			if (childClass == EllipticalShape.class || childClass == RectangularShape.class) {

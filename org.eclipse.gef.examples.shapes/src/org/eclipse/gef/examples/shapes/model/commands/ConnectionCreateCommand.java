@@ -1,16 +1,14 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contributors:
+*Elias Volanakis - initial API and implementation
+*******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
-
-import java.util.Iterator;
 
 import org.eclipse.gef.commands.Command;
 
@@ -72,19 +70,14 @@ public class ConnectionCreateCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
+	@Override
 	public boolean canExecute() {
 		// disallow source -> source connections
 		if (source.equals(target)) {
 			return false;
 		}
 		// return false, if the source -> target connection exists already
-		for (Iterator iter = source.getSourceConnections().iterator(); iter.hasNext();) {
-			Connection conn = (Connection) iter.next();
-			if (conn.getTarget().equals(target)) {
-				return false;
-			}
-		}
-		return true;
+		return source.getSourceConnections().stream().noneMatch(conn -> conn.getTarget().equals(target));
 	}
 
 	/*
@@ -92,6 +85,7 @@ public class ConnectionCreateCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		// create a new connection between source and target
 		connection = new Connection(source, target);
@@ -104,6 +98,7 @@ public class ConnectionCreateCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
+	@Override
 	public void redo() {
 		connection.reconnect();
 	}

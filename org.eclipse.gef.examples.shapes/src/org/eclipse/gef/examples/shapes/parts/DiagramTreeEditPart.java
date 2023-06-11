@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
 import java.beans.PropertyChangeEvent;
@@ -47,6 +47,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 	/**
 	 * Upon activation, attach to the model element as a property change listener.
 	 */
+	@Override
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
@@ -60,6 +61,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 	 * @see
 	 * org.eclipse.gef.examples.shapes.parts.ShapeTreeEditPart#createEditPolicies ()
 	 */
+	@Override
 	protected void createEditPolicies() {
 		// If this editpart is the root content of the viewer, then disallow
 		// removal
@@ -72,6 +74,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 	 * Upon deactivation, detach from the model element as a property change
 	 * listener.
 	 */
+	@Override
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
@@ -79,8 +82,9 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 		}
 	}
 
-	private ShapesDiagram getCastedModel() {
-		return (ShapesDiagram) getModel();
+	@Override
+	public ShapesDiagram getModel() {
+		return (ShapesDiagram) super.getModel();
 	}
 
 	/**
@@ -98,8 +102,9 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
+	@Override
 	protected List getModelChildren() {
-		return getCastedModel().getChildren(); // a list of shapes
+		return getModel().getChildren(); // a list of shapes
 	}
 
 	/*
@@ -108,6 +113,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
 	 * PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		String prop = evt.getPropertyName();
 		if (ShapesDiagram.CHILD_ADDED_PROP.equals(prop)) {
