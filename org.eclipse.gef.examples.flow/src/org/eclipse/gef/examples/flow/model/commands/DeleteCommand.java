@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,32 +28,30 @@ public class DeleteCommand extends Command {
 	private Activity child;
 	private StructuredActivity parent;
 	private int index = -1;
-	private List sourceConnections = new ArrayList();
-	private List targetConnections = new ArrayList();
+	private List<Transition> sourceConnections = new ArrayList<>();
+	private List<Transition> targetConnections = new ArrayList<>();
 
 	private void deleteConnections(Activity a) {
-		if (a instanceof StructuredActivity) {
-			List children = ((StructuredActivity) a).getChildren();
-			for (int i = 0; i < children.size(); i++)
-				deleteConnections((Activity) children.get(i));
+		if (a instanceof StructuredActivity structAct) {
+			structAct.getChildren().forEach(this::deleteConnections);
 		}
 		sourceConnections.addAll(a.getIncomingTransitions());
-		for (int i = 0; i < sourceConnections.size(); i++) {
-			Transition t = (Transition) sourceConnections.get(i);
+		sourceConnections.forEach(t -> {
 			t.source.removeOutput(t);
 			a.removeInput(t);
-		}
+		});
+
 		targetConnections.addAll(a.getOutgoingTransitions());
-		for (int i = 0; i < targetConnections.size(); i++) {
-			Transition t = (Transition) targetConnections.get(i);
+		targetConnections.forEach(t -> {
 			t.target.removeInput(t);
 			a.removeOutput(t);
-		}
+		});
 	}
 
 	/**
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		primExecute();
 	}
@@ -70,22 +68,21 @@ public class DeleteCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
+	@Override
 	public void redo() {
 		primExecute();
 	}
 
 	private void restoreConnections() {
-		for (int i = 0; i < sourceConnections.size(); i++) {
-			Transition t = (Transition) sourceConnections.get(i);
+		sourceConnections.forEach(t -> {
 			t.target.addInput(t);
 			t.source.addOutput(t);
-		}
+		});
 		sourceConnections.clear();
-		for (int i = 0; i < targetConnections.size(); i++) {
-			Transition t = (Transition) targetConnections.get(i);
+		targetConnections.forEach(t -> {
 			t.source.addOutput(t);
 			t.target.addInput(t);
-		}
+		});
 		targetConnections.clear();
 	}
 
@@ -110,6 +107,7 @@ public class DeleteCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
 		parent.addChild(child, index);
 		restoreConnections();

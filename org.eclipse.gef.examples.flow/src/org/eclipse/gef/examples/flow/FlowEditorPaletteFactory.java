@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,10 +35,10 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * 
  * @author Daniel Lee
  */
-public class FlowEditorPaletteFactory {
+public final class FlowEditorPaletteFactory {
 
-	private static List createCategories(PaletteRoot root) {
-		List categories = new ArrayList();
+	private static List<PaletteContainer> createCategories(PaletteRoot root) {
+		List<PaletteContainer> categories = new ArrayList<>(2);
 		categories.add(createControlGroup(root));
 		categories.add(createComponentsDrawer());
 		return categories;
@@ -46,26 +46,26 @@ public class FlowEditorPaletteFactory {
 
 	private static PaletteContainer createComponentsDrawer() {
 
-		PaletteDrawer drawer = new PaletteDrawer("Components", null);
+		PaletteDrawer drawer = new PaletteDrawer("Components", null); //$NON-NLS-1$
 
-		List entries = new ArrayList();
+		List<PaletteEntry> entries = new ArrayList<>();
 
-		CombinedTemplateCreationEntry combined = new CombinedTemplateCreationEntry("Activity",
-				"Create a new Activity Node", Activity.class, new SimpleFactory(Activity.class),
-				ImageDescriptor.createFromFile(FlowPlugin.class, "images/gear16.gif"),
-				ImageDescriptor.createFromFile(Activity.class, "images/gear16.gif"));
+		CombinedTemplateCreationEntry combined = new CombinedTemplateCreationEntry("Activity", //$NON-NLS-1$
+				"Create a new Activity Node", Activity.class, new SimpleFactory(Activity.class), //$NON-NLS-1$
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/gear16.gif"), //$NON-NLS-1$
+				ImageDescriptor.createFromFile(Activity.class, "images/gear16.gif")); //$NON-NLS-1$
 		entries.add(combined);
 
-		combined = new CombinedTemplateCreationEntry("Sequential Activity", "Create a Sequential Activity",
+		combined = new CombinedTemplateCreationEntry("Sequential Activity", "Create a Sequential Activity", //$NON-NLS-1$ //$NON-NLS-2$
 				SequentialActivity.class, new SimpleFactory(SequentialActivity.class),
-				ImageDescriptor.createFromFile(FlowPlugin.class, "images/sequence16.gif"),
-				ImageDescriptor.createFromFile(FlowPlugin.class, "images/sequence16.gif"));
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/sequence16.gif"), //$NON-NLS-1$
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/sequence16.gif")); //$NON-NLS-1$
 		entries.add(combined);
 
-		combined = new CombinedTemplateCreationEntry("Parallel Activity", "Create a  Parallel Activity",
+		combined = new CombinedTemplateCreationEntry("Parallel Activity", "Create a  Parallel Activity", //$NON-NLS-1$ //$NON-NLS-2$
 				ParallelActivity.class, new SimpleFactory(ParallelActivity.class),
-				ImageDescriptor.createFromFile(FlowPlugin.class, "images/parallel16.gif"),
-				ImageDescriptor.createFromFile(FlowPlugin.class, "images/parallel16.gif"));
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/parallel16.gif"), //$NON-NLS-1$
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/parallel16.gif")); //$NON-NLS-1$
 		entries.add(combined);
 
 		drawer.addAll(entries);
@@ -73,9 +73,9 @@ public class FlowEditorPaletteFactory {
 	}
 
 	private static PaletteContainer createControlGroup(PaletteRoot root) {
-		PaletteGroup controlGroup = new PaletteGroup("Control Group");
+		PaletteGroup controlGroup = new PaletteGroup("Control Group"); //$NON-NLS-1$
 
-		List entries = new ArrayList();
+		List<PaletteEntry> entries = new ArrayList<>();
 
 		ToolEntry tool = new SelectionToolEntry();
 		entries.add(tool);
@@ -84,13 +84,13 @@ public class FlowEditorPaletteFactory {
 		tool = new MarqueeToolEntry();
 		entries.add(tool);
 
-		PaletteSeparator sep = new PaletteSeparator("org.eclipse.gef.examples.flow.flowplugin.sep2");
+		PaletteSeparator sep = new PaletteSeparator("org.eclipse.gef.examples.flow.flowplugin.sep2"); //$NON-NLS-1$
 		sep.setUserModificationPermission(PaletteEntry.PERMISSION_NO_MODIFICATION);
 		entries.add(sep);
 
-		tool = new ConnectionCreationToolEntry("Connection Creation", "Creating connections", null,
-				ImageDescriptor.createFromFile(FlowPlugin.class, "images/connection16.gif"),
-				ImageDescriptor.createFromFile(Activity.class, "images/connection16.gif"));
+		tool = new ConnectionCreationToolEntry("Connection Creation", "Creating connections", null, //$NON-NLS-1$ //$NON-NLS-2$
+				ImageDescriptor.createFromFile(FlowPlugin.class, "images/connection16.gif"), //$NON-NLS-1$
+				ImageDescriptor.createFromFile(Activity.class, "images/connection16.gif")); //$NON-NLS-1$
 		entries.add(tool);
 		controlGroup.addAll(entries);
 		return controlGroup;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ public class ActivityContainerHighlightEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void eraseTargetFeedback(Request request) {
 		if (revertColor != null) {
 			setContainerBackground(revertColor);
@@ -47,6 +48,7 @@ public class ActivityContainerHighlightEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(org.eclipse.gef.Request)
 	 */
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		return request.getType().equals(RequestConstants.REQ_SELECTION_HOVER) ? getHost() : null;
 	}
@@ -68,6 +70,7 @@ public class ActivityContainerHighlightEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void showTargetFeedback(Request request) {
 		if (request.getType().equals(RequestConstants.REQ_CREATE) || request.getType().equals(RequestConstants.REQ_ADD))
 			showHighlight();

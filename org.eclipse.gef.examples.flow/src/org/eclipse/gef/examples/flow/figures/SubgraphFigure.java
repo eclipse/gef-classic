@@ -49,6 +49,7 @@ public class SubgraphFigure extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		Dimension dim = new Dimension();
 		dim.width = getFooter().getPreferredSize().width;
@@ -57,6 +58,7 @@ public class SubgraphFigure extends Figure {
 		return dim;
 	}
 
+	@Override
 	public void setBounds(Rectangle rect) {
 		super.setBounds(rect);
 		rect = Rectangle.SINGLETON;

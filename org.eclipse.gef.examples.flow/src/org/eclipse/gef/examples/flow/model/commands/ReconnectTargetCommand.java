@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.model.commands;
-
-import java.util.List;
 
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.flow.model.Activity;
@@ -35,22 +33,19 @@ public class ReconnectTargetCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
+	@Override
 	public boolean canExecute() {
 		if (transition.source.equals(target))
 			return false;
 
-		List transitions = source.getOutgoingTransitions();
-		for (int i = 0; i < transitions.size(); i++) {
-			Transition trans = ((Transition) (transitions.get(i)));
-			if (trans.target.equals(target) && !trans.target.equals(oldTarget))
-				return false;
-		}
-		return true;
+		return source.getOutgoingTransitions().stream()
+				.noneMatch(t -> t.target.equals(target) && !t.source.equals(oldTarget));
 	}
 
 	/**
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		if (target != null) {
 			oldTarget.removeInput(transition);
@@ -118,6 +113,7 @@ public class ReconnectTargetCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
 		target.removeInput(transition);
 		transition.target = oldTarget;

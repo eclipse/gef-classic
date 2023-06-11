@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ public class SplitTransitionCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		oldSource.removeOutput(transition);
 		oldTarget.removeInput(transition);
@@ -45,6 +46,7 @@ public class SplitTransitionCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
+	@Override
 	public void redo() {
 		oldSource.addOutput(newIncomingTransition);
 		oldTarget.addInput(newOutgoingTransition);
@@ -83,12 +85,13 @@ public class SplitTransitionCommand extends Command {
 	 */
 	public void setNewActivity(Activity activity) {
 		newActivity = activity;
-		newActivity.setName("a " + (parent.getChildren().size() + 1));
+		newActivity.setName("a " + (parent.getChildren().size() + 1)); //$NON-NLS-1$
 	}
 
 	/**
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
 		oldSource.removeOutput(newIncomingTransition);
 		oldTarget.removeInput(newOutgoingTransition);

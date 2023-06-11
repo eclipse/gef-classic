@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,6 +32,7 @@ public class ActivityContainerEditPolicy extends ContainerEditPolicy {
 	/**
 	 * @see ContainerEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)
 	 */
+	@Override
 	protected Command getCreateCommand(CreateRequest request) {
 		return null;
 	}
@@ -39,6 +40,7 @@ public class ActivityContainerEditPolicy extends ContainerEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.ContainerEditPolicy#getOrphanChildrenCommand(org.eclipse.gef.requests.GroupRequest)
 	 */
+	@Override
 	protected Command getOrphanChildrenCommand(GroupRequest request) {
 		List parts = request.getEditParts();
 		CompoundCommand result = new CompoundCommand();

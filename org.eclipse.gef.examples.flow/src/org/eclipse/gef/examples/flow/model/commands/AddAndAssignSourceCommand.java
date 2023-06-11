@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,18 +28,15 @@ public class AddAndAssignSourceCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
+	@Override
 	public boolean canExecute() {
-		for (int i = 0; i < source.getOutgoingTransitions().size(); i++) {
-			Activity target = ((Transition) source.getOutgoingTransitions().get(i)).target;
-			if (target.equals(child))
-				return false;
-		}
-		return true;
+		return source.getOutgoingTransitions().stream().noneMatch(c -> c.target.equals(child));
 	}
 
 	/**
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		parent.addChild(child);
 		transition = new Transition(source, child);
@@ -48,6 +45,7 @@ public class AddAndAssignSourceCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
+	@Override
 	public void redo() {
 		source.addOutput(transition);
 		child.addInput(transition);
@@ -84,6 +82,7 @@ public class AddAndAssignSourceCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
 		source.removeOutput(transition);
 		child.removeInput(transition);

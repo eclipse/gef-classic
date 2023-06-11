@@ -36,13 +36,13 @@ import org.eclipse.gef.examples.flow.policies.TransitionEditPolicy;
  */
 public class TransitionPart extends AbstractConnectionEditPart {
 
-	protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
+	protected void applyGraphResults(CompoundDirectedGraph graph, Map<ActivityPart, Object> map) {
 		Edge e = (Edge) map.get(this);
 		NodeList nodes = e.vNodes;
 		PolylineConnection conn = (PolylineConnection) getConnectionFigure();
 		conn.setTargetDecoration(new PolygonDecoration());
 		if (nodes != null) {
-			List bends = new ArrayList();
+			List<AbsoluteBendpoint> bends = new ArrayList<>();
 			for (int i = 0; i < nodes.size(); i++) {
 				Node vn = nodes.getNode(i);
 				int x = vn.x;
@@ -64,6 +64,7 @@ public class TransitionPart extends AbstractConnectionEditPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE, new ConnectionEndpointEditPolicy());
 		installEditPolicy(EditPolicy.CONNECTION_ROLE, new TransitionEditPolicy());
@@ -72,9 +73,11 @@ public class TransitionPart extends AbstractConnectionEditPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractConnectionEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		PolylineConnection conn = (PolylineConnection) super.createFigure();
 		conn.setConnectionRouter(new BendpointConnectionRouter() {
+			@Override
 			public void route(Connection conn) {
 				GraphAnimation.recordInitialState(conn);
 				if (!GraphAnimation.playbackState(conn))
@@ -89,6 +92,7 @@ public class TransitionPart extends AbstractConnectionEditPart {
 	/**
 	 * @see org.eclipse.gef.EditPart#setSelected(int)
 	 */
+	@Override
 	public void setSelected(int value) {
 		super.setSelected(value);
 		if (value != EditPart.SELECTED_NONE)

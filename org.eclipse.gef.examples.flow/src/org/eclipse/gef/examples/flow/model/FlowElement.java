@@ -19,7 +19,7 @@ import java.io.Serializable;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-abstract public class FlowElement implements IPropertySource, Cloneable, Serializable {
+public abstract class FlowElement implements IPropertySource, Cloneable, Serializable {
 
 	public static final String CHILDREN = "Children", //$NON-NLS-1$
 			INPUTS = "inputs", //$NON-NLS-1$
@@ -40,18 +40,22 @@ abstract public class FlowElement implements IPropertySource, Cloneable, Seriali
 		listeners.firePropertyChange(prop, null, child);
 	}
 
+	@Override
 	public Object getEditableValue() {
 		return this;
 	}
 
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return new IPropertyDescriptor[0];
 	}
 
+	@Override
 	public Object getPropertyValue(Object propName) {
 		return null;
 	}
 
+	@Override
 	public boolean isPropertySet(Object propName) {
 		return true;
 	}
@@ -65,9 +69,11 @@ abstract public class FlowElement implements IPropertySource, Cloneable, Seriali
 		listeners.removePropertyChangeListener(l);
 	}
 
+	@Override
 	public void resetPropertyValue(Object propName) {
 	}
 
+	@Override
 	public void setPropertyValue(Object propName, Object val) {
 	}
 
