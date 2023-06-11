@@ -160,11 +160,8 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Add in ConstrainedLayoutEditPolicy");//$NON-NLS-1$
 
-		for (EditPart child : request.getEditParts()) {
-			GraphicalEditPart gChild = (GraphicalEditPart) child;
-			command.add(
-					createAddCommand(request, child, translateToModelConstraint(getConstraintFor(request, gChild))));
-		}
+		request.getEditParts().forEach(child -> command
+				.add(createAddCommand(request, child, translateToModelConstraint(getConstraintFor(request, child)))));
 		return command.unwrap();
 	}
 
@@ -349,12 +346,8 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 */
 	protected Command getChangeConstraintCommand(ChangeBoundsRequest request) {
 		CompoundCommand resize = new CompoundCommand();
-
-		for (EditPart child : request.getEditParts()) {
-			GraphicalEditPart gChild = (GraphicalEditPart) child;
-			resize.add(createChangeConstraintCommand(request, child,
-					translateToModelConstraint(getConstraintFor(request, gChild))));
-		}
+		request.getEditParts().forEach(child -> resize.add(createChangeConstraintCommand(request, child,
+				translateToModelConstraint(getConstraintFor(request, child)))));
 		return resize.unwrap();
 	}
 

@@ -20,7 +20,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
@@ -247,10 +246,8 @@ public class LogicXYLayoutEditPolicy extends XYLayoutEditPolicy {
 
 		clone.setParent((LogicDiagram) getHost().getModel());
 
-		for (EditPart currPart : request.getEditParts()) {
-			clone.addPart((LogicSubpart) currPart.getModel(),
-					(Rectangle) getConstraintFor(request, (GraphicalEditPart) currPart));
-		}
+		request.getEditParts().forEach(currPart -> clone.addPart((LogicSubpart) currPart.getModel(),
+				(Rectangle) getConstraintFor(request, currPart)));
 
 		// Attach to horizontal guide, if one is given
 		Integer guidePos = (Integer) request.getExtendedData().get(SnapToGuides.KEY_HORIZONTAL_GUIDE);

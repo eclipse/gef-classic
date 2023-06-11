@@ -83,6 +83,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request)
 	 */
+	@Override
 	protected Command getAddCommand(Request req) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) req;
 		CompoundCommand command = new CompoundCommand();

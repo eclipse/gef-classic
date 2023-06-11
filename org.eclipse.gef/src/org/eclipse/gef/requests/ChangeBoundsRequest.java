@@ -10,9 +10,13 @@
  *******************************************************************************/
 package org.eclipse.gef.requests;
 
+import java.util.List;
+
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+
+import org.eclipse.gef.GraphicalEditPart;
 
 /**
  * A Request to change the bounds of the EditPart(s).
@@ -42,6 +46,12 @@ public class ChangeBoundsRequest extends GroupRequest implements DropRequest {
 	 */
 	public ChangeBoundsRequest(Object type) {
 		setType(type);
+	}
+
+	@SuppressWarnings("unchecked") // a change bound request should always have graphical editparts as target
+	@Override
+	public List<? extends GraphicalEditPart> getEditParts() {
+		return (List<? extends GraphicalEditPart>) super.getEditParts();
 	}
 
 	/**
