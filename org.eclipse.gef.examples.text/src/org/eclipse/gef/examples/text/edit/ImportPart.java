@@ -16,13 +16,14 @@ import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.gef.examples.text.figures.Images;
 import org.eclipse.gef.examples.text.figures.TreeItemBorder;
+import org.eclipse.gef.examples.text.model.TextRun;
 
 /**
  * @since 3.1
  */
 public class ImportPart extends TextFlowPart {
 
-	public ImportPart(Object model) {
+	public ImportPart(TextRun model) {
 		super(model);
 	}
 

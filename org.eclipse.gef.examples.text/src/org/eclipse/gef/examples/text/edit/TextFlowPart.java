@@ -37,13 +37,15 @@ public class TextFlowPart extends AbstractTextPart {
 	private static BreakIterator wordIterator = null;
 	private Font localFont;
 
-	public TextFlowPart(Object model) {
+	public TextFlowPart(TextRun model) {
 		setModel(model);
 	}
 
+	@Override
 	protected void createEditPolicies() {
 	}
 
+	@Override
 	protected IFigure createFigure() {
 		TextFlow flow = new TextFlow();
 		if (((TextRun) getModel()).getType() == TextRun.TYPE_CODE)
@@ -51,12 +53,14 @@ public class TextFlowPart extends AbstractTextPart {
 		return flow;
 	}
 
+	@Override
 	public void deactivate() {
 		super.deactivate();
 		if (localFont != null)
 			FontCache.checkIn(localFont);
 	}
 
+	@Override
 	public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 		Assert.isTrue(offset <= getLength());
 		if (trailing)
@@ -70,14 +74,21 @@ public class TextFlowPart extends AbstractTextPart {
 		return getTextFlow().getCaretPlacement(offset, trailing);
 	}
 
+	@Override
 	public int getLength() {
 		return getTextFlow().getText().length();
+	}
+
+	@Override
+	public TextRun getModel() {
+		return (TextRun) super.getModel();
 	}
 
 	TextFlow getTextFlow() {
 		return (TextFlow) getFigure();
 	}
 
+	@Override
 	public void getTextLocation(CaretRequest search, SearchResult result) {
 		if (search.getType() == CaretRequest.LINE_BOUNDARY)
 			searchLineBoundary(search, result);
@@ -93,11 +104,13 @@ public class TextFlowPart extends AbstractTextPart {
 			getTextParent().getTextLocation(search, result);
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals("text"))
 			refreshVisuals();
 	}
 
+	@Override
 	protected void refreshVisuals() {
 		TextRun textRun = (TextRun) getModel();
 		Style style = textRun.getContainer().getStyle();
@@ -250,6 +263,7 @@ public class TextFlowPart extends AbstractTextPart {
 			getTextParent().getTextLocation(search, result);
 	}
 
+	@Override
 	public void setSelection(int start, int end) {
 		if (start == end)
 			getTextFlow().setSelection(-1, -1);
@@ -257,7 +271,7 @@ public class TextFlowPart extends AbstractTextPart {
 			getTextFlow().setSelection(start, end);
 	}
 
-	private int vDistanceBetween(Rectangle rect, int y) {
+	private static int vDistanceBetween(Rectangle rect, int y) {
 		if (y < rect.y)
 			return rect.y - y;
 		return Math.max(0, y - rect.bottom());
