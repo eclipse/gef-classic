@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.gef.examples.text.SelectionRange;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.actions.StyleService;
+import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.gef.examples.text.model.TextRun;
 import org.eclipse.gef.examples.text.requests.CaretRequest;
@@ -27,10 +28,11 @@ import org.eclipse.gef.examples.text.requests.SearchResult;
  */
 public class DocumentPart extends BlockTextPart implements TextStyleManager {
 
-	public DocumentPart(Object model) {
+	public DocumentPart(Container model) {
 		super(model);
 	}
 
+	@Override
 	protected void createEditPolicies() {
 		installEditPolicy("Text Editing", new BlockEditPolicy());
 	}
@@ -46,6 +48,7 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 		return null;
 	}
 
+	@Override
 	public void getTextLocation(CaretRequest search, SearchResult result) {
 		if (search.getType() == CaretRequest.DOCUMENT) {
 			search.isInto = true;
@@ -56,10 +59,12 @@ public class DocumentPart extends BlockTextPart implements TextStyleManager {
 		super.getTextLocation(search, result);
 	}
 
+	@Override
 	public Object getStyleState(String styleID, SelectionRange range) {
 		return StyleService.STATE_EDITABLE;
 	}
 
+	@Override
 	public Object getStyleValue(String styleID, SelectionRange range) {
 		if (styleID.equals(Style.PROPERTY_BOLD)) {
 			for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {

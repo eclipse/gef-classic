@@ -11,6 +11,7 @@
 
 package org.eclipse.gef.examples.text.edit;
 
+import org.eclipse.gef.examples.text.model.Container;
 import org.eclipse.gef.examples.text.requests.CaretRequest;
 import org.eclipse.gef.examples.text.requests.SearchResult;
 
@@ -19,10 +20,11 @@ import org.eclipse.gef.examples.text.requests.SearchResult;
  */
 public class InlineTextPart extends CompoundTextPart {
 
-	public InlineTextPart(Object model) {
+	public InlineTextPart(Container model) {
 		super(model);
 	}
 
+	@Override
 	public void getTextLocation(CaretRequest search, SearchResult result) {
 		if (!search.isRecursive
 				&& (search.getType() == CaretRequest.LINE_BOUNDARY || search.getType() == CaretRequest.ROW)) {

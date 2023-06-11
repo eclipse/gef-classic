@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,6 +26,7 @@ import org.eclipse.gef.examples.text.tools.SelectionRangeDragTracker;
 public abstract class AbstractTextPart extends AbstractGraphicalEditPart
 		implements TextEditPart, PropertyChangeListener {
 
+	@Override
 	public boolean acceptsCaret() {
 		return true;
 	}
@@ -33,29 +34,36 @@ public abstract class AbstractTextPart extends AbstractGraphicalEditPart
 	/**
 	 * @see org.eclipse.gef.EditPart#activate()
 	 */
+	@Override
 	public void activate() {
 		super.activate();
-		ModelElement model = (ModelElement) getModel();
-		model.addPropertyChangeListener(this);
+		getModel().addPropertyChangeListener(this);
 	}
 
 	/**
 	 * @see org.eclipse.gef.EditPart#deactivate()
 	 */
+	@Override
 	public void deactivate() {
-		ModelElement model = (ModelElement) getModel();
-		model.removePropertyChangeListener(this);
+		getModel().removePropertyChangeListener(this);
 		super.deactivate();
 	}
 
+	@Override
 	public DragTracker getDragTracker(Request request) {
 		return new SelectionRangeDragTracker(this);
+	}
+
+	@Override
+	public ModelElement getModel() {
+		return (ModelElement) super.getModel();
 	}
 
 	protected TextEditPart getTextParent() {
 		return (TextEditPart) getParent();
 	}
 
+	@Override
 	public void setSelection(int start, int end) {
 		FlowFigure ff = (FlowFigure) getFigure();
 		ff.setSelection(start, end);

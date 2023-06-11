@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@
 package org.eclipse.gef.examples.text.edit;
 
 import java.beans.PropertyChangeEvent;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.draw2d.Figure;
@@ -33,30 +32,29 @@ import org.eclipse.gef.examples.text.requests.SearchResult;
  */
 public abstract class CompoundTextPart extends AbstractTextPart {
 
-	public CompoundTextPart(Object model) {
+	public CompoundTextPart(Container model) {
 		setModel(model);
 	}
 
+	@Override
 	public boolean acceptsCaret() {
-		for (Iterator iter = getChildren().iterator(); iter.hasNext();) {
-			TextEditPart part = (TextEditPart) iter.next();
-			if (part.acceptsCaret())
-				return true;
-		}
-		return false;
+		return getChildren().stream().anyMatch(TextEditPart::acceptsCaret);
 	}
 
+	@Override
 	public void activate() {
 		super.activate();
-		getContainer().getStyle().addPropertyChangeListener(this);
+		getModel().getStyle().addPropertyChangeListener(this);
 	}
 
+	@Override
 	protected void createEditPolicies() {
 	}
 
+	@Override
 	protected IFigure createFigure() {
 		Figure figure = null;
-		switch (getContainer().getType()) {
+		switch (getModel().getType()) {
 		case Container.TYPE_INLINE:
 			figure = new InlineFlow();
 			break;
@@ -77,33 +75,45 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		return figure;
 	}
 
+	@Override
 	public void deactivate() {
-		getContainer().getStyle().removePropertyChangeListener(this);
+		getModel().getStyle().removePropertyChangeListener(this);
 		super.deactivate();
 	}
 
+	@Override
 	public CaretInfo getCaretPlacement(int offset, boolean trailing) {
 		throw new RuntimeException("This part cannot place the caret");
 	}
 
-	protected Container getContainer() {
-		return (Container) getModel();
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<? extends TextEditPart> getChildren() {
+		return (List<? extends TextEditPart>) super.getChildren();
 	}
 
 	/**
 	 * @see TextEditPart#getLength()
 	 */
+	@Override
 	public int getLength() {
 		return getChildren().size();
 	}
 
+	@Override
+	public Container getModel() {
+		return (Container) super.getModel();
+	}
+
+	@Override
 	protected List getModelChildren() {
-		return getContainer().getChildren();
+		return getModel().getChildren();
 	}
 
 	/**
 	 * @see TextEditPart#getTextLocation(int, TextLocation)
 	 */
+	@Override
 	public void getTextLocation(CaretRequest search, SearchResult result) {
 		if (search.getType() == CaretRequest.LINE_BOUNDARY) {
 			if (search.isForward)
@@ -124,6 +134,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 			getTextParent().getTextLocation(search, result);
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals("children"))
 			refreshChildren();
@@ -134,7 +145,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
 		while (childIndex >= 0) {
-			TextEditPart part = (TextEditPart) getChildren().get(childIndex--);
+			TextEditPart part = getChildren().get(childIndex--);
 			part.getTextLocation(search, result);
 			if (result.location != null)
 				return;
@@ -154,7 +165,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
 		while (childIndex < childCount) {
-			TextEditPart part = (TextEditPart) getChildren().get(childIndex++);
+			TextEditPart part = getChildren().get(childIndex++);
 			part.getTextLocation(search, result);
 			if (result.location != null)
 				return;
@@ -182,7 +193,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
 		while (childIndex >= 0) {
-			part = (TextEditPart) getChildren().get(childIndex--);
+			part = getChildren().get(childIndex--);
 			part.getTextLocation(search, result);
 			if (result.bestMatchFound)
 				return;
@@ -199,7 +210,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		int childCount = getChildren().size();
 		search.setRecursive(true);
 		while (childIndex < childCount) {
-			TextEditPart newPart = (TextEditPart) getChildren().get(childIndex++);
+			TextEditPart newPart = getChildren().get(childIndex++);
 			newPart.getTextLocation(search, result);
 			if (result.location != null)
 				return;
@@ -224,7 +235,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		boolean wasRecursive = search.isRecursive;
 		search.setRecursive(true);
 		while (childIndex < childCount) {
-			TextEditPart part = (TextEditPart) getChildren().get(childIndex++);
+			TextEditPart part = getChildren().get(childIndex++);
 			part.getTextLocation(search, result);
 			if (result.bestMatchFound)
 				return;
@@ -241,7 +252,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 		TextEditPart child;
 		search.setRecursive(true);
 		while (childIndex >= 0) {
-			child = (TextEditPart) getChildren().get(childIndex--);
+			child = getChildren().get(childIndex--);
 			child.getTextLocation(search, result);
 			if (result.location != null)
 				return;

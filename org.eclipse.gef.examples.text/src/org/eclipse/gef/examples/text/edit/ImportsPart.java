@@ -18,6 +18,7 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.text.BlockFlow;
 import org.eclipse.gef.examples.text.figures.Images;
 import org.eclipse.gef.examples.text.figures.TreeBorder;
+import org.eclipse.gef.examples.text.model.Container;
 
 /**
  * @since 3.1
@@ -26,10 +27,11 @@ public class ImportsPart extends BlockTextPart {
 
 	IFigure pane;
 
-	public ImportsPart(Object model) {
+	public ImportsPart(Container model) {
 		super(model);
 	}
 
+	@Override
 	protected IFigure createFigure() {
 		Figure figure = new BlockFlow();
 		figure.setBorder(new CompoundBorder(new MarginBorder(5, 2, 8, 0),
