@@ -1,16 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.gef.commands.Command;
@@ -32,9 +31,9 @@ public class ShapeDeleteCommand extends Command {
 	/** ShapeDiagram to remove from. */
 	private final ShapesDiagram parent;
 	/** Holds a copy of the outgoing connections of child. */
-	private List sourceConnections;
+	private List<Connection> sourceConnections;
 	/** Holds a copy of the incoming connections of child. */
-	private List targetConnections;
+	private List<Connection> targetConnections;
 	/** True, if child was removed from its parent. */
 	private boolean wasRemoved;
 
@@ -59,11 +58,8 @@ public class ShapeDeleteCommand extends Command {
 	 * 
 	 * @param connections a non-null List of connections
 	 */
-	private void addConnections(List connections) {
-		for (Iterator iter = connections.iterator(); iter.hasNext();) {
-			Connection conn = (Connection) iter.next();
-			conn.reconnect();
-		}
+	private static void addConnections(List<Connection> connections) {
+		connections.forEach(Connection::reconnect);
 	}
 
 	/*
@@ -71,6 +67,7 @@ public class ShapeDeleteCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#canUndo()
 	 */
+	@Override
 	public boolean canUndo() {
 		return wasRemoved;
 	}
@@ -80,6 +77,7 @@ public class ShapeDeleteCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		// store a copy of incoming & outgoing connections before proceeding
 		sourceConnections = child.getSourceConnections();
@@ -92,6 +90,7 @@ public class ShapeDeleteCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
+	@Override
 	public void redo() {
 		// remove the child and disconnect its connections
 		wasRemoved = parent.removeChild(child);
@@ -106,11 +105,8 @@ public class ShapeDeleteCommand extends Command {
 	 * 
 	 * @param connections a non-null List of connections
 	 */
-	private void removeConnections(List connections) {
-		for (Iterator iter = connections.iterator(); iter.hasNext();) {
-			Connection conn = (Connection) iter.next();
-			conn.disconnect();
-		}
+	private static void removeConnections(List<Connection> connections) {
+		connections.forEach(Connection::disconnect);
 	}
 
 	/*
@@ -118,6 +114,7 @@ public class ShapeDeleteCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
 		// add the child and reconnect its connections
 		if (parent.addChild(child)) {

@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
+* All rights reserved. This program and the accompanying materials
+* are made available under the terms of the Eclipse Public License v1.0
+* which accompanies this distribution, and is available at
+* http://www.eclipse.org/legal/epl-v10.html
+*
+* Contributors:
+*Elias Volanakis - initial API and implementation
+*******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class ShapesDiagram extends ModelElement {
 	/** Property ID to use when a child is removed from this diagram. */
 	public static final String CHILD_REMOVED_PROP = "ShapesDiagram.ChildRemoved";
 	private static final long serialVersionUID = 1;
-	private List shapes = new ArrayList();
+	private List<Shape> shapes = new ArrayList<>();
 
 	/**
 	 * Add a shape to this diagram.
@@ -46,7 +46,7 @@ public class ShapesDiagram extends ModelElement {
 	 * Return a List of Shapes in this diagram. The returned List should not be
 	 * modified.
 	 */
-	public List getChildren() {
+	public List<Shape> getChildren() {
 		return shapes;
 	}
 

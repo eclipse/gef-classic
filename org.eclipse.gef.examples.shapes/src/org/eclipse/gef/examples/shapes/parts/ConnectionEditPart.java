@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
 import java.beans.PropertyChangeEvent;
@@ -42,6 +42,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 	/**
 	 * Upon activation, attach to the model element as a property change listener.
 	 */
+	@Override
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
@@ -54,6 +55,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 		// Selection handle edit policy.
 		// Makes the connection show a feedback, when selected by the user.
@@ -61,7 +63,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 		// Allows the removal of the connection model element
 		installEditPolicy(EditPolicy.CONNECTION_ROLE, new ConnectionEditPolicy() {
 			protected Command getDeleteCommand(GroupRequest request) {
-				return new ConnectionDeleteCommand(getCastedModel());
+				return new ConnectionDeleteCommand(getModel());
 			}
 		});
 	}
@@ -71,14 +73,15 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		PolylineConnection connection = (PolylineConnection) super.createFigure();
 		connection.setTargetDecoration(new PolygonDecoration()); // arrow at
 																	// target
 																	// endpoint
-		connection.setLineStyle(getCastedModel().getLineStyle()); // line
-																	// drawing
-																	// style
+		connection.setLineStyle(getModel().getLineStyle()); // line
+															// drawing
+															// style
 		return connection;
 	}
 
@@ -86,6 +89,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 	 * Upon deactivation, detach from the model element as a property change
 	 * listener.
 	 */
+	@Override
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
@@ -93,8 +97,9 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 		}
 	}
 
-	private Connection getCastedModel() {
-		return (Connection) getModel();
+	@Override
+	public Connection getModel() {
+		return (Connection) super.getModel();
 	}
 
 	/*
@@ -103,10 +108,11 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
 	 * PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		String property = event.getPropertyName();
 		if (Connection.LINESTYLE_PROP.equals(property)) {
-			((PolylineConnection) getFigure()).setLineStyle(getCastedModel().getLineStyle());
+			((PolylineConnection) getFigure()).setLineStyle(getModel().getLineStyle());
 		}
 	}
 

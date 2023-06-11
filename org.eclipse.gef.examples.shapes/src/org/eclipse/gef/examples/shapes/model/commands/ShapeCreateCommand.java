@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.draw2d.geometry.Dimension;
@@ -55,6 +55,7 @@ public class ShapeCreateCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
+	@Override
 	public boolean canExecute() {
 		return newShape != null && parent != null && bounds != null;
 	}
@@ -64,6 +65,7 @@ public class ShapeCreateCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		newShape.setLocation(bounds.getLocation());
 		Dimension size = bounds.getSize();
@@ -77,6 +79,7 @@ public class ShapeCreateCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
+	@Override
 	public void redo() {
 		parent.addChild(newShape);
 	}
@@ -86,6 +89,7 @@ public class ShapeCreateCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
 		parent.removeChild(newShape);
 	}

@@ -1,13 +1,13 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * Copyright (c) 2004, 2023 Elias Volanakis and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
 import org.eclipse.gef.EditPart;
@@ -30,6 +30,7 @@ public class ShapesEditPartFactory implements EditPartFactory {
 	 * @see org.eclipse.gef.EditPartFactory#createEditPart(org.eclipse.gef.EditPart,
 	 * java.lang.Object)
 	 */
+	@Override
 	public EditPart createEditPart(EditPart context, Object modelElement) {
 		// get EditPart for model element
 		EditPart part = getPartForElement(modelElement);
@@ -43,7 +44,7 @@ public class ShapesEditPartFactory implements EditPartFactory {
 	 * 
 	 * @throws RuntimeException if no match was found (programming error)
 	 */
-	private EditPart getPartForElement(Object modelElement) {
+	private static EditPart getPartForElement(Object modelElement) {
 		if (modelElement instanceof ShapesDiagram) {
 			return new DiagramEditPart();
 		}
