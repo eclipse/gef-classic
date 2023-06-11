@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,6 +27,7 @@ public class ActivityDirectEditPolicy extends DirectEditPolicy {
 	/**
 	 * @see DirectEditPolicy#getDirectEditCommand(org.eclipse.gef.requests.DirectEditRequest)
 	 */
+	@Override
 	protected Command getDirectEditCommand(DirectEditRequest request) {
 		RenameActivityCommand cmd = new RenameActivityCommand();
 		cmd.setSource((Activity) getHost().getModel());
@@ -38,6 +39,7 @@ public class ActivityDirectEditPolicy extends DirectEditPolicy {
 	/**
 	 * @see DirectEditPolicy#showCurrentEditValue(org.eclipse.gef.requests.DirectEditRequest)
 	 */
+	@Override
 	protected void showCurrentEditValue(DirectEditRequest request) {
 		String value = (String) request.getCellEditor().getValue();
 		((Label) getHostFigure()).setText(value);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -52,6 +52,7 @@ public class ActivityDirectEditManager extends DirectEditManager {
 	/**
 	 * @see org.eclipse.gef.tools.DirectEditManager#bringDown()
 	 */
+	@Override
 	protected void bringDown() {
 		// This method might be re-entered when super.bringDown() is called.
 		Font disposeFont = scaledFont;
@@ -64,9 +65,11 @@ public class ActivityDirectEditManager extends DirectEditManager {
 	/**
 	 * @see org.eclipse.gef.tools.DirectEditManager#initCellEditor()
 	 */
+	@Override
 	protected void initCellEditor() {
 		Text text = (Text) getCellEditor().getControl();
 		verifyListener = new VerifyListener() {
+			@Override
 			public void verifyText(VerifyEvent event) {
 				Text text = (Text) getCellEditor().getControl();
 				String oldText = text.getText();
@@ -98,6 +101,7 @@ public class ActivityDirectEditManager extends DirectEditManager {
 	/**
 	 * @see org.eclipse.gef.tools.DirectEditManager#unhookListeners()
 	 */
+	@Override
 	protected void unhookListeners() {
 		super.unhookListeners();
 		Text text = (Text) getCellEditor().getControl();

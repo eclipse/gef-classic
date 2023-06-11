@@ -42,56 +42,57 @@ public class FlowWizardPage1 extends WizardNewFileCreationPage {
 	private static int exampleCount = 1;
 
 	public FlowWizardPage1(IWorkbench aWorkbench, IStructuredSelection selection) {
-		super("sampleFlowPage1", selection);
-		this.setTitle("Create Flow Example File");
-		this.setDescription("Create a new flow file resource");
-		this.setImageDescriptor(ImageDescriptor.createFromFile(FlowPlugin.class, "images/flowbanner.gif"));
+		super("sampleFlowPage1", selection); //$NON-NLS-1$
+		this.setTitle("Create Flow Example File"); //$NON-NLS-1$
+		this.setDescription("Create a new flow file resource"); //$NON-NLS-1$
+		this.setImageDescriptor(ImageDescriptor.createFromFile(FlowPlugin.class, "images/flowbanner.gif")); //$NON-NLS-1$
 		this.workbench = aWorkbench;
 	}
 
 	/**
 	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		super.createControl(parent);
-		this.setFileName("flowExample" + exampleCount + ".flow");
+		this.setFileName("flowExample" + exampleCount + ".flow"); //$NON-NLS-1$ //$NON-NLS-2$
 		setPageComplete(validatePage());
 	}
 
-	private ActivityDiagram createWakeupModel() {
+	private static ActivityDiagram createWakeupModel() {
 		ActivityDiagram diagram = new ActivityDiagram();
 		SequentialActivity wakeup = new SequentialActivity();
-		Activity backToSleep = new Activity("Go back to sleep");
-		Activity turnOff = new Activity("Turn off alarm");
-		wakeup.setName("Wake up");
-		wakeup.addChild(new Activity("Hit snooze button"));
+		Activity backToSleep = new Activity("Go back to sleep"); //$NON-NLS-1$
+		Activity turnOff = new Activity("Turn off alarm"); //$NON-NLS-1$
+		wakeup.setName("Wake up"); //$NON-NLS-1$
+		wakeup.addChild(new Activity("Hit snooze button")); //$NON-NLS-1$
 		wakeup.addChild(backToSleep);
 		wakeup.addChild(turnOff);
-		wakeup.addChild(new Activity("Get out of bed"));
+		wakeup.addChild(new Activity("Get out of bed")); //$NON-NLS-1$
 		diagram.addChild(wakeup);
 
 		SequentialActivity bathroom = new SequentialActivity();
-		bathroom.addChild(new Activity("Brush teeth"));
-		bathroom.addChild(new Activity("Take shower"));
-		bathroom.addChild(new Activity("Comb hair"));
-		bathroom.setName("Bathroom activities");
+		bathroom.addChild(new Activity("Brush teeth")); //$NON-NLS-1$
+		bathroom.addChild(new Activity("Take shower")); //$NON-NLS-1$
+		bathroom.addChild(new Activity("Comb hair")); //$NON-NLS-1$
+		bathroom.setName("Bathroom activities"); //$NON-NLS-1$
 		diagram.addChild(bathroom);
 
 		ParallelActivity relaxation = new ParallelActivity();
-		relaxation.addChild(new Activity("Watch cartoons"));
-		relaxation.addChild(new Activity("Power Yoga"));
-		relaxation.setName("Morning relaxation ritual");
+		relaxation.addChild(new Activity("Watch cartoons")); //$NON-NLS-1$
+		relaxation.addChild(new Activity("Power Yoga")); //$NON-NLS-1$
+		relaxation.setName("Morning relaxation ritual"); //$NON-NLS-1$
 		diagram.addChild(relaxation);
 
 		Activity sleep, alarm, alarm2, clothes, spare, no, yes, drive;
-		diagram.addChild(sleep = new Activity("Sleep....."));
-		diagram.addChild(alarm = new Activity("Alarm!!!"));
-		diagram.addChild(alarm2 = new Activity("Alarm!!!"));
-		diagram.addChild(clothes = new Activity("Put on clothes"));
-		diagram.addChild(spare = new Activity("Is there time to spare?"));
-		diagram.addChild(yes = new Activity("YES"));
-		diagram.addChild(no = new Activity("NO"));
-		diagram.addChild(drive = new Activity("Drive to work"));
+		diagram.addChild(sleep = new Activity("Sleep.....")); //$NON-NLS-1$
+		diagram.addChild(alarm = new Activity("Alarm!!!")); //$NON-NLS-1$
+		diagram.addChild(alarm2 = new Activity("Alarm!!!")); //$NON-NLS-1$
+		diagram.addChild(clothes = new Activity("Put on clothes")); //$NON-NLS-1$
+		diagram.addChild(spare = new Activity("Is there time to spare?")); //$NON-NLS-1$
+		diagram.addChild(yes = new Activity("YES")); //$NON-NLS-1$
+		diagram.addChild(no = new Activity("NO")); //$NON-NLS-1$
+		diagram.addChild(drive = new Activity("Drive to work")); //$NON-NLS-1$
 
 		new Transition(sleep, alarm);
 		new Transition(alarm, wakeup);
@@ -108,6 +109,7 @@ public class FlowWizardPage1 extends WizardNewFileCreationPage {
 		return diagram;
 	}
 
+	@Override
 	protected InputStream getInitialContents() {
 		ActivityDiagram diag = createWakeupModel();
 		ByteArrayInputStream bais = null;

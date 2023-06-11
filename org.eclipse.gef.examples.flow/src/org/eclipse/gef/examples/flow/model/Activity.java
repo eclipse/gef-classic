@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,13 +22,13 @@ public class Activity extends FlowElement {
 
 	public static final String NAME = "name"; //$NON-NLS-1$
 	static {
-		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(NAME, "Name") };
+		descriptors = new IPropertyDescriptor[] { new TextPropertyDescriptor(NAME, "Name") }; //$NON-NLS-1$
 	}
 
 	static final long serialVersionUID = 1;
-	private List inputs = new ArrayList();
-	private String name = "Activity";
-	private List outputs = new ArrayList();
+	private List<Transition> inputs = new ArrayList<>();
+	private String name = "Activity"; //$NON-NLS-1$
+	private List<Transition> outputs = new ArrayList<>();
 	private int sortIndex;
 
 	public Activity() {
@@ -48,7 +48,7 @@ public class Activity extends FlowElement {
 		fireStructureChange(OUTPUTS, transtition);
 	}
 
-	public List getIncomingTransitions() {
+	public List<Transition> getIncomingTransitions() {
 		return inputs;
 	}
 
@@ -56,17 +56,9 @@ public class Activity extends FlowElement {
 		return name;
 	}
 
-	public List getOutgoingTransitions() {
+	public List<Transition> getOutgoingTransitions() {
 		return outputs;
 	}
-
-	// public List getConnections() {
-	// Vector v = (Vector)outputs.clone();
-	// Enumeration ins = inputs.elements();
-	// while (ins.hasMoreElements())
-	// v.addElement(ins.nextElement());
-	// return v;
-	// }
 
 	/**
 	 * Returns useful property descriptors for the use in property sheets. this
@@ -74,6 +66,7 @@ public class Activity extends FlowElement {
 	 * 
 	 * @return Array of property descriptors.
 	 */
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return descriptors;
 	}
@@ -85,6 +78,7 @@ public class Activity extends FlowElement {
 	 * @param propName Name of the property for which the the values are needed.
 	 * @return Object which is the value of the property.
 	 */
+	@Override
 	public Object getPropertyValue(Object propName) {
 		if (NAME.equals(propName))
 			return getName();
@@ -116,6 +110,7 @@ public class Activity extends FlowElement {
 	 * @param id    Name of the parameter to be changed.
 	 * @param value Value to be set to the given parameter.
 	 */
+	@Override
 	public void setPropertyValue(Object id, Object value) {
 		if (id == NAME)
 			setName((String) value);
@@ -128,10 +123,11 @@ public class Activity extends FlowElement {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		String className = getClass().getName();
 		className = className.substring(className.lastIndexOf('.') + 1);
-		return className + "(" + name + ")";
+		return className + "(" + name + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 }

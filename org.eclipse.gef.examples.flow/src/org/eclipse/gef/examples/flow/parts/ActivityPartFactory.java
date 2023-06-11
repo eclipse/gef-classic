@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ import org.eclipse.gef.examples.flow.model.Transition;
  */
 public class ActivityPartFactory implements EditPartFactory {
 
+	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
 		EditPart part = null;
 		if (model instanceof ActivityDiagram)
@@ -35,7 +36,9 @@ public class ActivityPartFactory implements EditPartFactory {
 			part = new SimpleActivityPart();
 		else if (model instanceof Transition)
 			part = new TransitionPart();
-		part.setModel(model);
+		if (part != null) {
+			part.setModel(model);
+		}
 		return part;
 	}
 

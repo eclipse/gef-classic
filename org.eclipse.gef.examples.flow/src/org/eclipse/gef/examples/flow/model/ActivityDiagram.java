@@ -18,11 +18,4 @@ public class ActivityDiagram extends ParallelActivity {
 
 	private static final long serialVersionUID = -1220159739618345237L;
 
-	/**
-	 * 
-	 */
-	public ActivityDiagram() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 }

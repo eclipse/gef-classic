@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,6 +30,7 @@ public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 	/**
 	 * @see GraphicalNodeEditPolicy#getConnectionCompleteCommand(CreateConnectionRequest)
 	 */
+	@Override
 	protected Command getConnectionCompleteCommand(CreateConnectionRequest request) {
 		ConnectionCreateCommand cmd = (ConnectionCreateCommand) request.getStartCommand();
 		cmd.setTarget(getActivity());
@@ -39,6 +40,7 @@ public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 	/**
 	 * @see GraphicalNodeEditPolicy#getConnectionCreateCommand(CreateConnectionRequest)
 	 */
+	@Override
 	protected Command getConnectionCreateCommand(CreateConnectionRequest request) {
 		ConnectionCreateCommand cmd = new ConnectionCreateCommand();
 		cmd.setSource(getActivity());
@@ -68,6 +70,7 @@ public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 	/**
 	 * @see GraphicalNodeEditPolicy#getReconnectSourceCommand(ReconnectRequest)
 	 */
+	@Override
 	protected Command getReconnectSourceCommand(ReconnectRequest request) {
 		ReconnectSourceCommand cmd = new ReconnectSourceCommand();
 		cmd.setTransition((Transition) request.getConnectionEditPart().getModel());
@@ -78,6 +81,7 @@ public class ActivityNodeEditPolicy extends GraphicalNodeEditPolicy {
 	/**
 	 * @see GraphicalNodeEditPolicy#getReconnectTargetCommand(ReconnectRequest)
 	 */
+	@Override
 	protected Command getReconnectTargetCommand(ReconnectRequest request) {
 		ReconnectTargetCommand cmd = new ReconnectTargetCommand();
 		cmd.setTransition((Transition) request.getConnectionEditPart().getModel());

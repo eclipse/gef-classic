@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -73,6 +73,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	/**
 	 * @see org.eclipse.gef.commands.CommandStackListener#commandStackChanged(java.util.EventObject)
 	 */
+	@Override
 	public void commandStackChanged(EventObject event) {
 		firePropertyChange(IEditorPart.PROP_DIRTY);
 		super.commandStackChanged(event);
@@ -81,6 +82,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#createActions()
 	 */
+	@Override
 	protected void createActions() {
 		super.createActions();
 		ActionRegistry registry = getActionRegistry();
@@ -107,6 +109,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#configureGraphicalViewer()
 	 */
+	@Override
 	protected void configureGraphicalViewer() {
 		super.configureGraphicalViewer();
 		getGraphicalViewer().setRootEditPart(new ScalableRootEditPart());
@@ -124,6 +127,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#initializeGraphicalViewer()
 	 */
+	@Override
 	protected void initializeGraphicalViewer() {
 		getGraphicalViewer().setContents(diagram);
 		getGraphicalViewer().addDropTargetListener(new TemplateTransferDropTargetListener(getGraphicalViewer()));
@@ -133,6 +137,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#initializePaletteViewer()
 	 */
+	@Override
 	protected void initializePaletteViewer() {
 		super.initializePaletteViewer();
 		getPaletteViewer().addDragSourceListener(new TemplateTransferDragSourceListener(getPaletteViewer()));
@@ -141,13 +146,12 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	/**
 	 * @see org.eclipse.ui.ISaveablePart#doSave(org.eclipse.core.runtime.IProgressMonitor)
 	 */
+	@Override
 	public void doSave(IProgressMonitor monitor) {
-		try {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
+		try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 			createOutputStream(out);
 			IFile file = ((IFileEditorInput) getEditorInput()).getFile();
 			file.setContents(new ByteArrayInputStream(out.toByteArray()), true, false, monitor);
-			out.close();
 			getCommandStack().markSaveLocation();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,6 +161,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	/**
 	 * @see org.eclipse.ui.ISaveablePart#doSaveAs()
 	 */
+	@Override
 	public void doSaveAs() {
 		SaveAsDialog dialog = new SaveAsDialog(getSite().getWorkbenchWindow().getShell());
 		dialog.setOriginalFile(((IFileEditorInput) getEditorInput()).getFile());
@@ -170,12 +175,11 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 		final IFile file = workspace.getRoot().getFile(path);
 
 		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
+			@Override
 			public void execute(final IProgressMonitor monitor) throws CoreException {
-				try {
-					ByteArrayOutputStream out = new ByteArrayOutputStream();
+				try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 					createOutputStream(out);
 					file.create(new ByteArrayInputStream(out.toByteArray()), true, monitor);
-					out.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -184,7 +188,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 
 		try {
 			new ProgressMonitorDialog(getSite().getWorkbenchWindow().getShell()).run(false, true, op);
-			setInput(new FileEditorInput((IFile) file));
+			setInput(new FileEditorInput(file));
 			getCommandStack().markSaveLocation();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -205,6 +209,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditorWithPalette#getPaletteRoot()
 	 */
+	@Override
 	protected PaletteRoot getPaletteRoot() {
 		if (root == null)
 			root = FlowEditorPaletteFactory.createPalette();
@@ -217,6 +222,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	/**
 	 * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
 	 */
+	@Override
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
@@ -224,6 +230,7 @@ public class FlowEditor extends GraphicalEditorWithPalette {
 	/**
 	 * @see org.eclipse.ui.part.EditorPart#setInput(org.eclipse.ui.IEditorInput)
 	 */
+	@Override
 	protected void setInput(IEditorInput input) {
 		super.setInput(input);
 

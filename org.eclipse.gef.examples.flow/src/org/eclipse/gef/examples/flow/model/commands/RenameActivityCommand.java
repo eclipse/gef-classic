@@ -26,6 +26,7 @@ public class RenameActivityCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		source.setName(name);
 	}
@@ -60,6 +61,7 @@ public class RenameActivityCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
 		source.setName(oldName);
 	}

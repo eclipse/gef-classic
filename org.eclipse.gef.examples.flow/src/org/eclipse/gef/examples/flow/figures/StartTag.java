@@ -36,6 +36,7 @@ public class StartTag extends Label {
 		setBorder(new MarginBorder(2, 0, 2, 9));
 	}
 
+	@Override
 	protected void paintFigure(Graphics g) {
 		super.paintFigure(g);
 		Rectangle r = getTextBounds();

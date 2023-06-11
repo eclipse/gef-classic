@@ -35,18 +35,17 @@ public class SequentialActivityFigure extends SubgraphFigure {
 	 * @param footer
 	 */
 	public SequentialActivityFigure() {
-		super(new StartTag(""), new EndTag(""));
+		super(new StartTag(""), new EndTag("")); //$NON-NLS-1$ //$NON-NLS-2$
 		setBorder(MARGIN_BORDER);
 		setOpaque(true);
 	}
 
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
 		graphics.setBackgroundColor(ColorConstants.button);
 		Rectangle r = getBounds();
 		graphics.fillRectangle(r.x + 13, r.y + 10, 8, r.height - 18);
-		// graphics.fillPolygon(ARROW);
-		// graphics.drawPolygon(ARROW);
 	}
 
 }

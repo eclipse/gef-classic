@@ -38,6 +38,7 @@ public class SimpleActivityLabel extends Label {
 	/**
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		if (selected) {
 			graphics.pushState();

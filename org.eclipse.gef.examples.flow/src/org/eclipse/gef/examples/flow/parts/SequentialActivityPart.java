@@ -48,7 +48,6 @@ public class SequentialActivityPart extends StructuredActivityPart {
 			}
 			prev = node;
 		}
-		;
 	}
 
 	/**

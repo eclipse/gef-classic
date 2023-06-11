@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ public class StructuredActivityDirectEditPolicy extends ActivityDirectEditPolicy
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		if (RequestConstants.REQ_DIRECT_EDIT == request.getType()) {
 			((DirectEditRequest) request).getLocation();
@@ -39,6 +40,7 @@ public class StructuredActivityDirectEditPolicy extends ActivityDirectEditPolicy
 	/**
 	 * @see DirectEditPolicy#showCurrentEditValue(org.eclipse.gef.requests.DirectEditRequest)
 	 */
+	@Override
 	protected void showCurrentEditValue(DirectEditRequest request) {
 		String value = (String) request.getCellEditor().getValue();
 		((Label) ((SubgraphFigure) getHostFigure()).getHeader()).setText(value);

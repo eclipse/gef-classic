@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,16 +43,14 @@ public class StructuredActivityLayoutEditPolicy extends LayoutEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.OrderedLayoutEditPolicy#createChildEditPolicy(org.eclipse.gef.EditPart)
 	 */
+	@Override
 	protected EditPolicy createChildEditPolicy(EditPart child) {
 		if (child instanceof SimpleActivityPart)
 			return new SimpleActivitySelectionEditPolicy();
 		return new NonResizableEditPolicy();
 	}
 
-	protected Command createMoveChildCommand(EditPart child, EditPart after) {
-		return null;
-	}
-
+	@Override
 	protected Command getAddCommand(Request req) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) req;
 		List editParts = request.getEditParts();
@@ -67,6 +65,7 @@ public class StructuredActivityLayoutEditPolicy extends LayoutEditPolicy {
 	/**
 	 * @see LayoutEditPolicy#getCreateCommand(org.eclipse.gef.requests.CreateRequest)
 	 */
+	@Override
 	protected Command getCreateCommand(CreateRequest request) {
 		CreateCommand command = new CreateCommand();
 		command.setParent((StructuredActivity) getHost().getModel());
@@ -77,6 +76,7 @@ public class StructuredActivityLayoutEditPolicy extends LayoutEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getMoveChildrenCommand(org.eclipse.gef.Request)
 	 */
+	@Override
 	protected Command getMoveChildrenCommand(Request request) {
 		return null;
 	}
