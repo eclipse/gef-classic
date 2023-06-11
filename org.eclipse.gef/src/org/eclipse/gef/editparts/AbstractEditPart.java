@@ -137,6 +137,14 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 		}
 	}
 
+	private static class EditPolicyIterator2 extends EditPolicyIterator implements Iterator<EditPolicy> {
+
+		EditPolicyIterator2(Object[] list) {
+			super(list);
+		}
+
+	}
+
 	/**
 	 * Activates this EditPart, which in turn activates its children and
 	 * EditPolicies. Subclasses should <em>extend</em> this method to add listeners
@@ -165,9 +173,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * @see #activate()
 	 */
 	protected void activateEditPolicies() {
-		EditPolicyIterator i = getEditPolicyIterator();
-		while (i.hasNext())
-			i.next().activate();
+		getEditPolicyIterable().forEach(EditPolicy::activate);
 	}
 
 	/**
@@ -288,9 +294,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * Deactivates all installed EditPolicies.
 	 */
 	protected void deactivateEditPolicies() {
-		EditPolicyIterator i = getEditPolicyIterator();
-		while (i.hasNext())
-			i.next().deactivate();
+		getEditPolicyIterable().forEach(EditPolicy::deactivate);
 	}
 
 	/**
@@ -332,9 +336,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	@Override
 	public void eraseSourceFeedback(Request request) {
 		if (isActive()) {
-			EditPolicyIterator iter = getEditPolicyIterator();
-			while (iter.hasNext())
-				iter.next().eraseSourceFeedback(request);
+			getEditPolicyIterable().forEach(ep -> ep.eraseSourceFeedback(request));
 		}
 	}
 
@@ -357,9 +359,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	@Override
 	public void eraseTargetFeedback(Request request) {
 		if (isActive()) {
-			EditPolicyIterator iter = getEditPolicyIterator();
-			while (iter.hasNext())
-				iter.next().eraseTargetFeedback(request);
+			getEditPolicyIterable().forEach(ep -> ep.eraseTargetFeedback(request));
 		}
 	}
 
@@ -467,12 +467,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	@Override
 	public Command getCommand(Request request) {
 		Command command = null;
-		EditPolicyIterator i = getEditPolicyIterator();
-		while (i.hasNext()) {
-			if (command != null)
-				command = command.chain(i.next().getCommand(request));
-			else
-				command = i.next().getCommand(request);
+		for (EditPolicy ep : getEditPolicyIterable()) {
+			command = (command != null) ? command.chain(ep.getCommand(request)) : ep.getCommand(request);
 		}
 		return command;
 	}
@@ -517,9 +513,22 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * non-null ones.
 	 * 
 	 * @return an EditPolicyIterator
+	 * 
+	 * @deprecated use Use {@link #getEditPolicyIterable()} instead.
 	 */
+	@Deprecated(since = "3.15", forRemoval = true)
 	protected final EditPolicyIterator getEditPolicyIterator() {
 		return new EditPolicyIterator(policies);
+	}
+
+	/**
+	 * Used internally to iterate over the installed EditPolicies.
+	 * 
+	 * @return an Iterable for the installed EditPolicies
+	 * @since 3.15
+	 */
+	protected final Iterable<EditPolicy> getEditPolicyIterable() {
+		return () -> new EditPolicyIterator2(policies);
 	}
 
 	/**
@@ -603,10 +612,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * @see EditPolicy#getTargetEditPart(Request)
 	 */
 	public EditPart getTargetEditPart(Request request) {
-		EditPolicyIterator i = getEditPolicyIterator();
-		EditPart editPart;
-		while (i.hasNext()) {
-			editPart = i.next().getTargetEditPart(request);
+		for (EditPolicy ep : getEditPolicyIterable()) {
+			EditPart editPart = ep.getTargetEditPart(request);
 			if (editPart != null)
 				return editPart;
 		}
@@ -1056,9 +1063,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	public void showSourceFeedback(Request request) {
 		if (!isActive())
 			return;
-		EditPolicyIterator i = getEditPolicyIterator();
-		while (i.hasNext())
-			i.next().showSourceFeedback(request);
+
+		getEditPolicyIterable().forEach(ep -> ep.showSourceFeedback(request));
 	}
 
 	/**
@@ -1082,9 +1088,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	public void showTargetFeedback(Request request) {
 		if (!isActive())
 			return;
-		EditPolicyIterator i = getEditPolicyIterator();
-		while (i.hasNext())
-			i.next().showTargetFeedback(request);
+		getEditPolicyIterable().forEach(ep -> ep.showTargetFeedback(request));
 	}
 
 	/**
@@ -1115,9 +1119,8 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 */
 	@Override
 	public boolean understandsRequest(Request req) {
-		EditPolicyIterator iter = getEditPolicyIterator();
-		while (iter.hasNext()) {
-			if (iter.next().understandsRequest(req))
+		for (EditPolicy ep : getEditPolicyIterable()) {
+			if (ep.understandsRequest(req))
 				return true;
 		}
 		return false;
