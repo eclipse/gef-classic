@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.jface.viewers.TextCellEditor;
  */
 public class SimpleActivityPart extends ActivityPart {
 
+	@Override
 	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
 		Node n = new Node(this, s);
 		n.outgoingOffset = getAnchorOffset();
@@ -42,6 +43,7 @@ public class SimpleActivityPart extends ActivityPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		Label l = new SimpleActivityLabel();
 		l.setLabelAlignment(PositionConstants.LEFT);
@@ -49,13 +51,20 @@ public class SimpleActivityPart extends ActivityPart {
 		return l;
 	}
 
+	@Override
 	int getAnchorOffset() {
 		return 9;
 	}
 
+	@Override
+	public Label getFigure() {
+		return (Label) super.getFigure();
+	}
+
+	@Override
 	protected void performDirectEdit() {
 		if (manager == null) {
-			Label l = (Label) getFigure();
+			Label l = getFigure();
 			manager = new ActivityDirectEditManager(this, TextCellEditor.class, new ActivityCellEditorLocator(l), l);
 		}
 		manager.show();
@@ -64,8 +73,9 @@ public class SimpleActivityPart extends ActivityPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
 	 */
+	@Override
 	protected void refreshVisuals() {
-		((Label) getFigure()).setText(getActivity().getName());
+		getFigure().setText(getModel().getName());
 	}
 
 }

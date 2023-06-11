@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -43,12 +43,10 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	static final Insets INNER_PADDING = new Insets(0);
 
 	protected void applyChildrenResults(CompoundDirectedGraph graph, Map map) {
-		for (int i = 0; i < getChildren().size(); i++) {
-			ActivityPart part = (ActivityPart) getChildren().get(i);
-			part.applyGraphResults(graph, map);
-		}
+		getChildren().forEach(part -> part.applyGraphResults(graph, map));
 	}
 
+	@Override
 	protected void applyGraphResults(CompoundDirectedGraph graph, Map map) {
 		applyOwnResults(graph, map);
 		applyChildrenResults(graph, map);
@@ -61,6 +59,7 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	/**
 	 * @see org.eclipse.gef.examples.flow.parts.ActivityPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, new ActivityNodeEditPolicy());
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ActivityEditPolicy());
@@ -70,6 +69,7 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 		installEditPolicy(EditPolicy.DIRECT_EDIT_ROLE, new StructuredActivityDirectEditPolicy());
 	}
 
+	@Override
 	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
 		GraphAnimation.recordInitialState(getContentPane());
 		Subgraph me = new Subgraph(this, s);
@@ -77,9 +77,9 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 		me.outgoingOffset = 5;
 		me.incomingOffset = 5;
 		IFigure fig = getFigure();
-		if (fig instanceof SubgraphFigure) {
-			me.width = fig.getPreferredSize(me.width, me.height).width;
-			int tagHeight = ((SubgraphFigure) fig).getHeader().getPreferredSize().height;
+		if (fig instanceof SubgraphFigure sgFig) {
+			me.width = sgFig.getPreferredSize(me.width, me.height).width;
+			int tagHeight = sgFig.getHeader().getPreferredSize().height;
 			me.insets.top = tagHeight;
 			me.insets.left = 0;
 			me.insets.bottom = tagHeight;
@@ -88,10 +88,7 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 		me.setPadding(PADDING);
 		map.put(this, me);
 		graph.nodes.add(me);
-		for (int i = 0; i < getChildren().size(); i++) {
-			ActivityPart activity = (ActivityPart) getChildren().get(i);
-			activity.contributeNodesToGraph(graph, me, map);
-		}
+		getChildren().forEach(activity -> activity.contributeNodesToGraph(graph, me, map));
 	}
 
 	private boolean directEditHitTest(Point requestLoc) {
@@ -105,25 +102,28 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	/**
 	 * @see org.eclipse.gef.EditPart#performRequest(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void performRequest(Request request) {
 		if (request.getType() == RequestConstants.REQ_DIRECT_EDIT) {
-			if (request instanceof DirectEditRequest
-					&& !directEditHitTest(((DirectEditRequest) request).getLocation().getCopy()))
+			if (request instanceof DirectEditRequest der && !directEditHitTest(der.getLocation().getCopy()))
 				return;
 			performDirectEdit();
 		}
 	}
 
+	@Override
 	int getAnchorOffset() {
 		return -1;
 	}
 
+	@Override
 	public IFigure getContentPane() {
-		if (getFigure() instanceof SubgraphFigure)
-			return ((SubgraphFigure) getFigure()).getContents();
+		if (getFigure() instanceof SubgraphFigure sgFig)
+			return sgFig.getContents();
 		return getFigure();
 	}
 
+	@Override
 	protected List getModelChildren() {
 		return getStructuredActivity().getChildren();
 	}
@@ -135,6 +135,7 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	/**
 	 * @see org.eclipse.gef.examples.flow.parts.ActivityPart#performDirectEdit()
 	 */
+	@Override
 	protected void performDirectEdit() {
 		if (manager == null) {
 			Label l = ((Label) ((SubgraphFigure) getFigure()).getHeader());
@@ -146,9 +147,10 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#refreshVisuals()
 	 */
+	@Override
 	protected void refreshVisuals() {
-		((Label) ((SubgraphFigure) getFigure()).getHeader()).setText(getActivity().getName());
-		((Label) ((SubgraphFigure) getFigure()).getFooter()).setText("/" + getActivity().getName()); //$NON-NLS-1$
+		((Label) ((SubgraphFigure) getFigure()).getHeader()).setText(getModel().getName());
+		((Label) ((SubgraphFigure) getFigure()).getFooter()).setText("/" + getModel().getName()); //$NON-NLS-1$
 	}
 
 }

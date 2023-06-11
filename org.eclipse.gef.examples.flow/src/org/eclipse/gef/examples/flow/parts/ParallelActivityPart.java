@@ -19,6 +19,7 @@ import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
  */
 public class ParallelActivityPart extends StructuredActivityPart {
 
+	@Override
 	protected IFigure createFigure() {
 		return new ParallelActivityFigure();
 	}
@@ -26,6 +27,7 @@ public class ParallelActivityPart extends StructuredActivityPart {
 	/**
 	 * @see org.eclipse.gef.EditPart#setSelected(int)
 	 */
+	@Override
 	public void setSelected(int value) {
 		super.setSelected(value);
 		SubgraphFigure sf = (SubgraphFigure) getFigure();
