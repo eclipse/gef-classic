@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 IBM Corporation and others.
+ * Copyright (c) 2007, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -74,6 +74,7 @@ public class Digraph2NodeEditPart extends Digraph1NodeEditPart implements NodeEd
 	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.
 	 * ConnectionEditPart)
 	 */
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(ConnectionEditPart connection) {
 		return this.sourceAnchor;
 	}
@@ -82,6 +83,7 @@ public class Digraph2NodeEditPart extends Digraph1NodeEditPart implements NodeEd
 	 * @see org.eclipse.gef.NodeEditPart#getSourceConnectionAnchor(org.eclipse.gef.
 	 * Request)
 	 */
+	@Override
 	public ConnectionAnchor getSourceConnectionAnchor(Request request) {
 		return this.sourceAnchor;
 	}
@@ -90,6 +92,7 @@ public class Digraph2NodeEditPart extends Digraph1NodeEditPart implements NodeEd
 	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.
 	 * ConnectionEditPart)
 	 */
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(ConnectionEditPart connection) {
 		return this.targetAnchor;
 	}
@@ -98,6 +101,7 @@ public class Digraph2NodeEditPart extends Digraph1NodeEditPart implements NodeEd
 	 * @see org.eclipse.gef.NodeEditPart#getTargetConnectionAnchor(org.eclipse.gef.
 	 * Request)
 	 */
+	@Override
 	public ConnectionAnchor getTargetConnectionAnchor(Request request) {
 		return this.targetAnchor;
 	}

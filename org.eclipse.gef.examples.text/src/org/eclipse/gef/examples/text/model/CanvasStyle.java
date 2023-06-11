@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,10 +22,12 @@ public class CanvasStyle extends Style {
 		this.canvas = canvas;
 	}
 
+	@Override
 	public String getFontFamily() {
 		return canvas.getFont().getFontData()[0].getName();
 	}
 
+	@Override
 	public int getFontHeight() {
 		return canvas.getFont().getFontData()[0].getHeight();
 	}

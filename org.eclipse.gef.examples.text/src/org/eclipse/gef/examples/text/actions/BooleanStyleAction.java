@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,11 +23,9 @@ public class BooleanStyleAction extends Action {
 
 	protected String property;
 	protected StyleService service;
-	private StyleListener styleListener = new StyleListener() {
-		public void styleChanged(String styleID) {
-			if (styleID == null || styleID.equals(getId()))
-				refresh();
-		}
+	private StyleListener styleListener = styleID -> {
+		if (styleID == null || styleID.equals(getId()))
+			refresh();
 	};
 
 	public BooleanStyleAction(StyleService service, String styleID, String property) {
@@ -45,34 +43,35 @@ public class BooleanStyleAction extends Action {
 		String styleID = a.getId();
 		a.setActionDefinitionId(styleID);
 		if (styleID.equals(TextActionConstants.STYLE_BOLD)) {
-			a.setText("Bold");
+			a.setText("Bold"); //$NON-NLS-1$
 			a.setImageDescriptor(InternalImages.DESC_BOLD);
 		} else if (styleID.equals(TextActionConstants.STYLE_ITALIC)) {
-			a.setText("Italics");
+			a.setText("Italics"); //$NON-NLS-1$
 			a.setImageDescriptor(InternalImages.DESC_ITALIC);
 		} else if (styleID.equals(TextActionConstants.STYLE_UNDERLINE)) {
-			a.setText("Underline");
+			a.setText("Underline"); //$NON-NLS-1$
 			a.setImageDescriptor(InternalImages.DESC_UNDERLINE);
 		} else if (styleID.equals(TextActionConstants.BLOCK_ALIGN_CENTER)) {
-			a.setText("Center");
+			a.setText("Center"); //$NON-NLS-1$
 			a.setImageDescriptor(InternalImages.DESC_BLOCK_ALIGN_CENTER);
 		} else if (styleID.equals(TextActionConstants.BLOCK_ALIGN_LEFT)) {
-			a.setText("Left");
+			a.setText("Left"); //$NON-NLS-1$
 			a.setImageDescriptor(InternalImages.DESC_BLOCK_ALIGN_LEFT);
 		} else if (styleID.equals(TextActionConstants.BLOCK_ALIGN_RIGHT)) {
-			a.setText("Right");
+			a.setText("Right"); //$NON-NLS-1$
 			a.setImageDescriptor(InternalImages.DESC_BLOCK_ALIGN_RIGHT);
 		} else if (styleID.equals(TextActionConstants.BLOCK_LTR)) {
-			a.setText("Left to Right");
+			a.setText("Left to Right"); //$NON-NLS-1$
 			a.setImageDescriptor(InternalImages.DESC_BLOCK_LTR);
 		} else if (styleID.equals(TextActionConstants.BLOCK_RTL)) {
-			a.setText("Right to Left");
+			a.setText("Right to Left"); //$NON-NLS-1$
 			a.setImageDescriptor(InternalImages.DESC_BLOCK_RTL);
 		} else {
 			throw new RuntimeException("The given style ID was not recognized"); //$NON-NLS-1$
 		}
 	}
 
+	@Override
 	public void run() {
 		service.setStyle(property, isChecked() ? Boolean.TRUE : Boolean.FALSE);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,37 +37,44 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	protected ToolItem toolItem;
 	protected StyleService styleService;
 	protected IPartService partService;
-	protected StyleListener styleListener = new StyleListener() {
-		public void styleChanged(String styleID) {
-			if (styleID == null || styleID.equals(getProperty()))
-				refresh();
-		}
+	protected StyleListener styleListener = styleID -> {
+		if (styleID == null || styleID.equals(getProperty()))
+			refresh();
 	};
+
 	protected IPartListener2 partListener = new IPartListener2() {
+		@Override
 		public void partActivated(IWorkbenchPartReference partRef) {
 			IWorkbenchPart part = partRef.getPart(false);
 			if (part instanceof TextEditor)
 				setStyleService(part.getAdapter(StyleService.class));
 		}
 
+		@Override
 		public void partBroughtToTop(IWorkbenchPartReference partRef) {
 		}
 
+		@Override
 		public void partClosed(IWorkbenchPartReference partRef) {
 		}
 
+		@Override
 		public void partDeactivated(IWorkbenchPartReference partRef) {
 		}
 
+		@Override
 		public void partOpened(IWorkbenchPartReference partRef) {
 		}
 
+		@Override
 		public void partHidden(IWorkbenchPartReference partRef) {
 		}
 
+		@Override
 		public void partVisible(IWorkbenchPartReference partRef) {
 		}
 
+		@Override
 		public void partInputChanged(IWorkbenchPartReference partRef) {
 		}
 	};
@@ -88,19 +95,23 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	protected Control createControl(Composite parent) {
 		combo = new Combo(parent, SWT.DROP_DOWN);
 		combo.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				handleWidgetSelected(e);
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleWidgetSelected(e);
 			}
 		});
 		combo.addFocusListener(new FocusListener() {
+			@Override
 			public void focusGained(FocusEvent e) {
 				// do nothing
 			}
 
+			@Override
 			public void focusLost(FocusEvent e) {
 				refresh();
 			}
@@ -118,6 +129,7 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	 * 
 	 * @see org.eclipse.jface.action.IContributionItem#dispose()
 	 */
+	@Override
 	public void dispose() {
 		if (styleService != null)
 			styleService.removeStyleListener(styleListener);
@@ -132,6 +144,7 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	 * @param parent The ToolBar to add the new control to
 	 * @param index  Index
 	 */
+	@Override
 	public void fill(ToolBar parent, int index) {
 		toolItem = new ToolItem(parent, SWT.SEPARATOR, index);
 		Control control = createControl(parent);
@@ -167,7 +180,7 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 			Object style = styleService.getStyle(getProperty());
 			String value = style.toString();
 			if (StyleService.UNDEFINED.equals(style))
-				value = "";
+				value = ""; //$NON-NLS-1$
 			int index = findIndexOf(value);
 			if (index >= 0)
 				combo.select(index);

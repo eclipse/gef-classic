@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ public class TreeBorder extends AbstractBorder {
 		this.text = text;
 	}
 
+	@Override
 	public Insets getInsets(IFigure figure) {
 		if (insets == null) {
 			FigureUtilities.getTextExtents(text, figure.getFont(), Dimension.SINGLETON);
@@ -42,6 +43,7 @@ public class TreeBorder extends AbstractBorder {
 		return insets;
 	}
 
+	@Override
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		Rectangle where = getPaintRectangle(figure, insets);
 

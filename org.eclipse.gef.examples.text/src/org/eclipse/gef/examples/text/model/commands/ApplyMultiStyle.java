@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,8 @@ import org.eclipse.gef.examples.text.model.Style;
 
 public class ApplyMultiStyle extends MiniEdit {
 
-	private int oldValue, newValue = -1;
+	private int oldValue;
+	private int newValue = -1;
 	private String styleID;
 	private Style style;
 
@@ -26,10 +27,12 @@ public class ApplyMultiStyle extends MiniEdit {
 		newValue = ((Integer) value).intValue();
 	}
 
+	@Override
 	public boolean canApply() {
 		return newValue != -1;
 	}
 
+	@Override
 	public void apply() {
 		if (Style.PROPERTY_ALIGNMENT.equals(styleID)) {
 			oldValue = style.getAlignment();
@@ -40,10 +43,12 @@ public class ApplyMultiStyle extends MiniEdit {
 		}
 	}
 
+	@Override
 	public ModelLocation getResultingLocation() {
 		return null;
 	}
 
+	@Override
 	public void rollback() {
 		if (Style.PROPERTY_ALIGNMENT.equals(styleID))
 			style.setAlignment(oldValue);

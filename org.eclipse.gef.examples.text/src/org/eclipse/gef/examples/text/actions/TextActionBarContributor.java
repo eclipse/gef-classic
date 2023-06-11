@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,6 +23,7 @@ public class TextActionBarContributor extends ActionBarContributor {
 	/**
 	 * @see ActionBarContributor#buildActions()
 	 */
+	@Override
 	protected void buildActions() {
 		addRetargetAction(new StyleRetargetAction(TextActionConstants.STYLE_BOLD));
 		addRetargetAction(new StyleRetargetAction(TextActionConstants.STYLE_ITALIC));
@@ -34,6 +35,7 @@ public class TextActionBarContributor extends ActionBarContributor {
 		addRetargetAction(new StyleRetargetAction(TextActionConstants.BLOCK_RTL));
 	}
 
+	@Override
 	public void contributeToToolBar(IToolBarManager toolbar) {
 		toolbar.add(new ChangeFontContributionItem(getPage()));
 		toolbar.add(new ResizeFontContributionItem(getPage()));
@@ -53,6 +55,7 @@ public class TextActionBarContributor extends ActionBarContributor {
 	/**
 	 * @see ActionBarContributor#declareGlobalActionKeys()
 	 */
+	@Override
 	protected void declareGlobalActionKeys() {
 	}
 

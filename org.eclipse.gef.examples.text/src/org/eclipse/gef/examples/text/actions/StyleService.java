@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,13 +23,9 @@ public class StyleService {
 	public static final Object STATE_READ_ONLY = new Object();
 	public static final Object UNDEFINED = new Object();
 
-	private List listeners = new ArrayList();
+	private List<StyleListener> listeners = new ArrayList<>();
 	private StyleProvider provider;
-	private StyleListener providerListener = new StyleListener() {
-		public void styleChanged(String styleID) {
-			propogateChange(styleID);
-		}
-	};
+	private StyleListener providerListener = StyleService.this::propogateChange;
 
 	/**
 	 * Constructs a new StyleService object
@@ -58,10 +54,7 @@ public class StyleService {
 	 * @param styleID
 	 */
 	protected void propogateChange(String styleID) {
-		for (int i = 0; i < listeners.size(); i++) {
-			StyleListener listener = (StyleListener) listeners.get(i);
-			listener.styleChanged(styleID);
-		}
+		listeners.forEach(listener -> listener.styleChanged(styleID));
 	}
 
 	/**

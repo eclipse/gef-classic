@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.eclipse.gef.examples.text.model.TextRun;
 public class ConvertElementCommand extends ExampleTextCommand {
 
 	private final TextRun text;
-	private final char removed[];
+	private final char[] removed;
 	private final int offset;
 	private final ModelElement converted;
 	private final ModelLocation caret;
@@ -33,7 +33,7 @@ public class ConvertElementCommand extends ExampleTextCommand {
 	 * @since 3.1
 	 */
 	public ConvertElementCommand(TextRun text, int begin, int end, ModelElement converted, ModelLocation caret) {
-		super("bogus");
+		super("bogus"); //$NON-NLS-1$
 		this.text = text;
 		this.offset = begin;
 		this.converted = converted;
@@ -41,6 +41,7 @@ public class ConvertElementCommand extends ExampleTextCommand {
 		removed = text.getText().substring(begin, end).toCharArray();
 	}
 
+	@Override
 	public void execute() {
 		text.removeRange(offset, removed.length);
 		Container container = text.getContainer();
@@ -48,14 +49,17 @@ public class ConvertElementCommand extends ExampleTextCommand {
 		container.add(converted);
 	}
 
+	@Override
 	public SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer) {
 		return null;
 	}
 
+	@Override
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
 		return new SelectionRange(lookupModel(viewer, caret.model), caret.offset);
 	}
 
+	@Override
 	public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {
 		return null;
 	}

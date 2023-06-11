@@ -21,11 +21,11 @@ import org.eclipse.swt.graphics.Image;
  */
 public class Images {
 
-	public static final Image IMPORTS = createImage("imports.gif");
-	public static final Image IMPORT = createImage("importstatement.gif");
-	public static final Image PUBLIC = createImage("public.gif");
-	public static final Image PRIVATE = createImage("private.gif");
-	public static final Image PROTECTED = createImage("protected.gif");
+	public static final Image IMPORTS = createImage("imports.gif"); //$NON-NLS-1$
+	public static final Image IMPORT = createImage("importstatement.gif"); //$NON-NLS-1$
+	public static final Image PUBLIC = createImage("public.gif"); //$NON-NLS-1$
+	public static final Image PRIVATE = createImage("private.gif"); //$NON-NLS-1$
+	public static final Image PROTECTED = createImage("protected.gif"); //$NON-NLS-1$
 
 	private static Image createImage(String name) {
 		InputStream stream = Images.class.getResourceAsStream(name);

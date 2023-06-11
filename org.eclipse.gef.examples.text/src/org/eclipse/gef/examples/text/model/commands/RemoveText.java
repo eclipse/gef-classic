@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,7 +18,7 @@ public class RemoveText extends MiniEdit {
 
 	int offset;
 
-	char chars[];
+	char[] chars;
 
 	private final TextRun run;
 
@@ -28,22 +28,27 @@ public class RemoveText extends MiniEdit {
 		this.chars = run.getText().substring(offset, end).toCharArray();
 	}
 
+	@Override
 	public void apply() {
 		run.removeRange(offset, chars.length);
 	}
 
+	@Override
 	public boolean canApply() {
 		return chars != null && chars.length != 0;
 	}
 
+	@Override
 	public ModelLocation getResultingLocation() {
 		return new ModelLocation(run, offset);
 	}
 
+	@Override
 	public void reapply() {
 		apply();
 	}
 
+	@Override
 	public void rollback() {
 		run.insertText(new String(chars), offset);
 	}

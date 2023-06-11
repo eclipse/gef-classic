@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,6 +36,7 @@ public class TreeItemBorder extends ListItemBorder {
 		setImage(image);
 	}
 
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return imgInsets;
 	}
@@ -44,10 +45,12 @@ public class TreeItemBorder extends ListItemBorder {
 		return image;
 	}
 
+	@Override
 	public Dimension getPreferredSize(IFigure f) {
 		return imageSize;
 	}
 
+	@Override
 	public void paintBorder(IFigure figure, Graphics graphics, Insets insets) {
 		if (image == null)
 			return;

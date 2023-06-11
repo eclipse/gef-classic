@@ -35,9 +35,9 @@ public class TextLocation {
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof TextLocation) {
-			TextLocation other = (TextLocation) obj;
+		if (obj instanceof TextLocation other) {
 			return other.offset == offset && other.part == part;
 		}
 		return false;
@@ -46,6 +46,7 @@ public class TextLocation {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return part.hashCode() << 11 ^ offset;
 	}

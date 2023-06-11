@@ -120,8 +120,8 @@ public class TextEditor extends GraphicalEditor {
 			treeViewer.setEditPartFactory(new EditPartFactory() {
 				@Override
 				public EditPart createEditPart(EditPart context, Object model) {
-					if (model instanceof Container)
-						return new ContainerTreePart(model);
+					if (model instanceof Container cont)
+						return new ContainerTreePart(cont);
 					return new TextRunTreePart(model);
 				}
 			});
@@ -322,30 +322,29 @@ public class TextEditor extends GraphicalEditor {
 		if (doc == null) {
 			doc = new Block(Container.TYPE_ROOT);
 			Container preface = new Block(Container.TYPE_PARAGRAPH);
-			preface.add(new TextRun("package org.eclipse.gef.examples.text"));
+			preface.add(new TextRun("package org.eclipse.gef.examples.text")); //$NON-NLS-1$
 			doc.add(preface);
 			Container imports = new Block(Container.TYPE_IMPORT_DECLARATIONS);
 			doc.add(imports);
-			imports.add(new TextRun("org.eclipse.draw2d", TextRun.TYPE_IMPORT));
-			imports.add(new TextRun("org.eclipse.gef", TextRun.TYPE_IMPORT));
+			imports.add(new TextRun("org.eclipse.draw2d", TextRun.TYPE_IMPORT)); //$NON-NLS-1$
+			imports.add(new TextRun("org.eclipse.gef", TextRun.TYPE_IMPORT)); //$NON-NLS-1$
 			// for (int i = 0; i < 400; i++) {
 			Container block = new Block(Container.TYPE_COMMENT);
 			block.add(
-					new TextRun("Copyright (c) 2005 IBM Corporation and others. All rights reserved. This program and "
-							+ "the accompanying materials are made available under the terms of the Eclipse Public "
-							+ "License v1.0 which accompanies this distribution, and is available at "
-							+ "http://www.eclipse.org/legal/epl-v10.html (\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329)\r\n"
-							+ "Contributors:\n    IBM Corporation - initial API and implementation\n"
-							+ "\u0630\u0628\u063a \u0634\u0635\u062c\u062d (Saeed Anwar) - \u0634\u0635\u062c\u062d "
-							+ "\u0638\u0635\u0634\u0637\u0635\u0639\u0633 \u0635\u0639\u0633\u0640 \u0630\u0628\u063a (Bug 113700)"));
+					new TextRun("Copyright (c) 2005 IBM Corporation and others. All rights reserved. This program and " //$NON-NLS-1$
+							+ "the accompanying materials are made available under the terms of the Eclipse Public " //$NON-NLS-1$
+							+ "License v1.0 which accompanies this distribution, and is available at " //$NON-NLS-1$
+							+ "http://www.eclipse.org/legal/epl-v10.html (\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329\u7325\u7334\u7329)\r\n" //$NON-NLS-1$
+							+ "Contributors:\n    IBM Corporation - initial API and implementation\n" //$NON-NLS-1$
+							+ "\u0630\u0628\u063a \u0634\u0635\u062c\u062d (Saeed Anwar) - \u0634\u0635\u062c\u062d " //$NON-NLS-1$
+							+ "\u0638\u0635\u0634\u0637\u0635\u0639\u0633 \u0635\u0639\u0633\u0640 \u0630\u0628\u063a (Bug 113700)")); //$NON-NLS-1$
 			doc.add(block);
 
 			Container code = new Block(Container.TYPE_PARAGRAPH);
-			code.getStyle().setFontFamily("Courier New");
+			code.getStyle().setFontFamily("Courier New"); //$NON-NLS-1$
 			doc.add(code);
-			code.add(new TextRun(
-					"public void countToANumber(int limit) {\n" + "    for (int i = 0; i < limit; i++)\n"
-							+ "        System.out.println(\"Counting: \" + i); //$NON-NLS-1$\n\n" + "}",
+			code.add(new TextRun("public void countToANumber(int limit) {\n" + "    for (int i = 0; i < limit; i++)\n" //$NON-NLS-1$ //$NON-NLS-2$
+					+ "        System.out.println(\"Counting: \" + i); //$NON-NLS-1$\n\n" + "}", //$NON-NLS-1$ //$NON-NLS-2$
 					TextRun.TYPE_CODE));
 			// }
 		}

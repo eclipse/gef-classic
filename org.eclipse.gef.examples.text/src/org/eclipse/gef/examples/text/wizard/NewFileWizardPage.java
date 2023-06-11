@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,8 +19,6 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
@@ -49,16 +47,17 @@ public class NewFileWizardPage extends WizardPage {
 	 * @param pageName
 	 */
 	public NewFileWizardPage(ISelection selection) {
-		super("wizardPage");
-		setTitle("GEF WYSIWYG Text Document");
-		setDescription("This wizard creates a GEF-based WYSIWYG text document with "
-				+ "a *.text. extension.  Choose a container and file name for the new" + " resource.");
+		super("wizardPage"); //$NON-NLS-1$
+		setTitle("GEF WYSIWYG Text Document"); //$NON-NLS-1$
+		setDescription("This wizard creates a GEF-based WYSIWYG text document with " //$NON-NLS-1$
+				+ "a *.text. extension.  Choose a container and file name for the new" + " resource."); //$NON-NLS-1$ //$NON-NLS-2$
 		this.selection = selection;
 	}
 
 	/**
 	 * @see IDialogPage#createControl(Composite)
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		Composite container = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
@@ -66,35 +65,28 @@ public class NewFileWizardPage extends WizardPage {
 		layout.numColumns = 3;
 		layout.verticalSpacing = 9;
 		Label label = new Label(container, SWT.NULL);
-		label.setText("&Container:");
+		label.setText("&Container:"); //$NON-NLS-1$
 
 		containerText = new Text(container, SWT.BORDER | SWT.SINGLE);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		containerText.setLayoutData(gd);
-		containerText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				dialogChanged();
-			}
-		});
+		containerText.addModifyListener(e -> dialogChanged());
 
 		Button button = new Button(container, SWT.PUSH);
-		button.setText("Browse...");
+		button.setText("Browse..."); //$NON-NLS-1$
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleBrowse();
 			}
 		});
 		label = new Label(container, SWT.NULL);
-		label.setText("&File name:");
+		label.setText("&File name:"); //$NON-NLS-1$
 
 		fileText = new Text(container, SWT.BORDER | SWT.SINGLE);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		fileText.setLayoutData(gd);
-		fileText.addModifyListener(new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				dialogChanged();
-			}
-		});
+		fileText.addModifyListener(e -> dialogChanged());
 		initialize();
 		dialogChanged();
 		setControl(container);
@@ -104,21 +96,20 @@ public class NewFileWizardPage extends WizardPage {
 	 * Tests if the current workbench selection is a suitable container to use.
 	 */
 	private void initialize() {
-		if (selection != null && selection.isEmpty() == false && selection instanceof IStructuredSelection) {
-			IStructuredSelection ssel = (IStructuredSelection) selection;
+		if (selection != null && selection.isEmpty() == false && selection instanceof IStructuredSelection ssel) {
 			if (ssel.size() > 1)
 				return;
 			Object obj = ssel.getFirstElement();
-			if (obj instanceof IResource) {
+			if (obj instanceof IResource res) {
 				IContainer container;
-				if (obj instanceof IContainer)
-					container = (IContainer) obj;
+				if (obj instanceof IContainer cont)
+					container = cont;
 				else
-					container = ((IResource) obj).getParent();
+					container = res.getParent();
 				containerText.setText(container.getFullPath().toString());
 			}
 		}
-		fileText.setText("new_file.text");
+		fileText.setText("new_file.text"); //$NON-NLS-1$
 	}
 
 	/**
@@ -127,7 +118,7 @@ public class NewFileWizardPage extends WizardPage {
 	 */
 	private void handleBrowse() {
 		ContainerSelectionDialog dialog = new ContainerSelectionDialog(getShell(),
-				ResourcesPlugin.getWorkspace().getRoot(), false, "Select new file container");
+				ResourcesPlugin.getWorkspace().getRoot(), false, "Select new file container"); //$NON-NLS-1$
 		if (dialog.open() == ContainerSelectionDialog.OK) {
 			Object[] result = dialog.getResult();
 			if (result.length == 1) {
@@ -144,30 +135,30 @@ public class NewFileWizardPage extends WizardPage {
 		String fileName = getFileName();
 
 		if (getContainerName().length() == 0) {
-			updateStatus("File container must be specified");
+			updateStatus("File container must be specified"); //$NON-NLS-1$
 			return;
 		}
 		if (container == null || (container.getType() & (IResource.PROJECT | IResource.FOLDER)) == 0) {
-			updateStatus("File container must exist");
+			updateStatus("File container must exist"); //$NON-NLS-1$
 			return;
 		}
 		if (!container.isAccessible()) {
-			updateStatus("Project must be writable");
+			updateStatus("Project must be writable"); //$NON-NLS-1$
 			return;
 		}
 		if (fileName.length() == 0) {
-			updateStatus("File name must be specified");
+			updateStatus("File name must be specified"); //$NON-NLS-1$
 			return;
 		}
 		if (fileName.replace('\\', '/').indexOf('/', 1) > 0) {
-			updateStatus("File name must be valid");
+			updateStatus("File name must be valid"); //$NON-NLS-1$
 			return;
 		}
 		int dotLoc = fileName.lastIndexOf('.');
 		if (dotLoc != -1) {
 			String ext = fileName.substring(dotLoc + 1);
-			if (ext.equalsIgnoreCase("text") == false) {
-				updateStatus("File extension must be \"text\"");
+			if (ext.equalsIgnoreCase("text") == false) { //$NON-NLS-1$
+				updateStatus("File extension must be \"text\""); //$NON-NLS-1$
 				return;
 			}
 		}

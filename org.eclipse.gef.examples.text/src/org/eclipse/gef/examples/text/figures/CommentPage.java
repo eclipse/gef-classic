@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,8 @@ import org.eclipse.swt.graphics.Image;
 
 public class CommentPage extends BlockFlow {
 
-	private static final Image BEGIN = new Image(null, CommentPage.class.getResourceAsStream("javadoc_begin.gif"));
-	private static final Image END = new Image(null, CommentPage.class.getResourceAsStream("javadoc_end.gif"));
+	private static final Image BEGIN = new Image(null, CommentPage.class.getResourceAsStream("javadoc_begin.gif")); //$NON-NLS-1$
+	private static final Image END = new Image(null, CommentPage.class.getResourceAsStream("javadoc_end.gif")); //$NON-NLS-1$
 	private static final Insets INSETS = new Insets(9, 15, 12, 10);
 	private static final Color COMMENT_FG = ColorConstants.darkBlue;
 
@@ -29,10 +29,12 @@ public class CommentPage extends BlockFlow {
 		setForegroundColor(COMMENT_FG);
 	}
 
+	@Override
 	public Insets getInsets() {
 		return INSETS;
 	}
 
+	@Override
 	protected void paintFigure(Graphics g) {
 		g.drawImage(BEGIN, bounds.x, bounds.y);
 		g.drawImage(END, bounds.x + 6, bounds.bottom() - 10);
