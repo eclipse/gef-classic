@@ -161,18 +161,18 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	static class MergedAccessibleHandles implements AccessibleHandleProvider {
 		List locations = new ArrayList();
 
-		MergedAccessibleHandles(EditPolicyIterator iter) {
-			while (iter.hasNext()) {
-				EditPolicy policy = iter.next();
-				if (!(policy instanceof IAdaptable))
-					continue;
-				IAdaptable adaptable = (IAdaptable) policy;
-				AccessibleHandleProvider adapter = adaptable.getAdapter(AccessibleHandleProvider.class);
-				if (adapter != null)
-					locations.addAll(adapter.getAccessibleHandleLocations());
+		MergedAccessibleHandles(Iterable<EditPolicy> iterable) {
+			for (EditPolicy policy : iterable) {
+				if (policy instanceof IAdaptable adaptable) {
+					AccessibleHandleProvider adapter = adaptable.getAdapter(AccessibleHandleProvider.class);
+					if (adapter != null) {
+						locations.addAll(adapter.getAccessibleHandleLocations());
+					}
+				}
 			}
 		}
 
+		@Override
 		public List getAccessibleHandleLocations() {
 			return locations;
 		}
@@ -414,7 +414,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	@Override
 	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleHandleProvider.class)
-			return key.cast(new MergedAccessibleHandles(getEditPolicyIterator()));
+			return key.cast(new MergedAccessibleHandles(getEditPolicyIterable()));
 
 		if (key == AccessibleAnchorProvider.class)
 			return key.cast(new DefaultAccessibleAnchorProvider());
