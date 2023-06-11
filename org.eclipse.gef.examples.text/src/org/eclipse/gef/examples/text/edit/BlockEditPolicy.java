@@ -11,8 +11,6 @@
 
 package org.eclipse.gef.examples.text.edit;
 
-import java.util.Iterator;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.Request;
@@ -46,29 +44,29 @@ import org.eclipse.gef.examples.text.requests.TextRequest;
  */
 public class BlockEditPolicy extends GraphicalEditPolicy {
 
-	private Command checkForConversion(TextLocation location) {
+	private static Command checkForConversion(TextLocation location) {
 		TextRun run = (TextRun) location.part.getModel();
 		String prefix = run.getText().substring(0, location.offset);
-		if (prefix.endsWith("<b>")) {
+		if (prefix.endsWith("<b>")) { //$NON-NLS-1$
 			Container converted = new InlineContainer(Container.TYPE_INLINE);
 			converted.getStyle().setBold(true);
-			TextRun boldText = new TextRun("BOLD");
+			TextRun boldText = new TextRun("BOLD"); //$NON-NLS-1$
 			converted.add(boldText);
 			ProcessMacroCommand command = new ProcessMacroCommand(run, location.offset - 3, location.offset, converted,
 					new ModelLocation(boldText, 0));
 			command.setEndLocation(new ModelLocation(boldText, 1));
 			return command;
-		} else if (prefix.equals("()")) {
+		} else if (prefix.equals("()")) { //$NON-NLS-1$
 			ConvertElementCommand command;
 			Container list = new Block(Container.TYPE_BULLETED_LIST);
-			TextRun bullet = new TextRun("", TextRun.TYPE_BULLET);
+			TextRun bullet = new TextRun("", TextRun.TYPE_BULLET); //$NON-NLS-1$
 			list.add(bullet);
 			command = new ConvertElementCommand(run, 0, 2, list, new ModelLocation(bullet, 0));
 			return command;
-		} else if (prefix.equals("import")) {
+		} else if (prefix.equals("import")) { //$NON-NLS-1$
 			ConvertElementCommand command;
 			Container imports = new Block(Container.TYPE_IMPORT_DECLARATIONS);
-			TextRun statement = new TextRun("", TextRun.TYPE_IMPORT);
+			TextRun statement = new TextRun("", TextRun.TYPE_IMPORT); //$NON-NLS-1$
 			imports.add(statement);
 			command = new ConvertElementCommand(run, 0, 6, imports, new ModelLocation(statement, 0));
 			return command;
@@ -76,12 +74,12 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 		return null;
 	}
 
-	private Command getBackspaceCommand(TextRequest request) {
+	private static Command getBackspaceCommand(TextRequest request) {
 		TextLocation where = request.getSelectionRange().begin;
 
 		CompoundEditCommand command = (CompoundEditCommand) request.getPreviousCommand();
 		if (command == null)
-			command = new CompoundEditCommand("Backspace");
+			command = new CompoundEditCommand("Backspace"); //$NON-NLS-1$
 
 		TextRun run = (TextRun) where.part.getModel();
 		MiniEdit remove;
@@ -100,6 +98,7 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 		return command;
 	}
 
+	@Override
 	public Command getCommand(Request request) {
 		if (TextRequest.REQ_STYLE == request.getType())
 			return getTextStyleApplication((TextRequest) request);
@@ -119,24 +118,24 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 		return null;
 	}
 
-	private Command getTextStyleApplication(TextRequest request) {
+	private static Command getTextStyleApplication(TextRequest request) {
 		SelectionRange range = request.getSelectionRange();
 		ModelLocation start = new ModelLocation((TextRun) range.begin.part.getModel(), range.begin.offset);
 		ModelLocation end = new ModelLocation((TextRun) range.end.part.getModel(), range.end.offset);
-		CompoundEditCommand command = new CompoundEditCommand("Set Style");
+		CompoundEditCommand command = new CompoundEditCommand("Set Style"); //$NON-NLS-1$
 		command.setBeginLocation(start);
 		command.setEndLocation(end);
 
 		String styleID = request.getStyleKeys()[0];
 		if (Style.PROPERTY_ALIGNMENT.equals(styleID) || Style.PROPERTY_ORIENTATION.equals(styleID)) {
 			Object value = request.getStyleValues()[0];
-			for (Iterator iter = range.getLeafParts().iterator(); iter.hasNext();) {
-				// TODO optimize by ensuring that runs in the same container
-				// don't cause
-				// that container's style to be set multiple times
-				TextRun run = (TextRun) ((TextEditPart) iter.next()).getModel();
+
+			range.getLeafParts().forEach(ep -> {
+				// TODO optimize by ensuring that runs in the same container don't cause that
+				// container's style to be set multiple times
+				TextRun run = (TextRun) ep.getModel();
 				command.pendEdit(new ApplyMultiStyle(run.getBlockContainer(), styleID, value));
-			}
+			});
 		} else if (!range.isEmpty()) {
 			command.pendEdit(new ApplyBooleanStyle(start, end, request.getStyleKeys(), request.getStyleValues()));
 		}
@@ -144,17 +143,17 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 		return command;
 	}
 
-	private Command getIndentCommand(TextRequest request) {
+	private static Command getIndentCommand(TextRequest request) {
 		SelectionRange range = request.getSelectionRange();
 		return new NestElementCommand(range.begin.part, range.begin.offset);
 	}
 
-	private Command getUnindentCommand(TextRequest request) {
+	private static Command getUnindentCommand(TextRequest request) {
 		SelectionRange range = request.getSelectionRange();
 		return new PromoteElementCommand(range.begin.part, range.begin.offset);
 	}
 
-	private Command getDeleteCommand(TextRequest request) {
+	private static Command getDeleteCommand(TextRequest request) {
 		TextLocation where = request.getSelectionRange().begin;
 		if (where.offset == where.part.getLength())
 			return null;
@@ -162,7 +161,7 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 		MiniEdit remove = new RemoveText(run, where.offset, where.offset + 1);
 		CompoundEditCommand command = (CompoundEditCommand) request.getPreviousCommand();
 		if (command == null) {
-			command = new CompoundEditCommand("Delete");
+			command = new CompoundEditCommand("Delete"); //$NON-NLS-1$
 			command.setBeginLocation(new ModelLocation(run, where.offset));
 			command.setEndLocation(new ModelLocation(run, where.offset + 1));
 		}
@@ -170,7 +169,7 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 		return command;
 	}
 
-	private MiniEdit getMergeBackspaceEdit(TextRequest request) {
+	private static MiniEdit getMergeBackspaceEdit(TextRequest request) {
 		TextEditPart part = request.getSelectionRange().begin.part;
 		MergeWithPrevious edit = new MergeWithPrevious(part);
 		if (edit.canApply())
@@ -178,7 +177,7 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 		return null;
 	}
 
-	private Command getNewlineCommand(TextRequest request) {
+	private static Command getNewlineCommand(TextRequest request) {
 		TextLocation where = request.getSelectionRange().end;
 		TextRun run = (TextRun) where.part.getModel();
 		SubdivideElement edit = new SubdivideElement(run, where.offset);
@@ -187,25 +186,26 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 		if (request.getPreviousCommand() instanceof CompoundEditCommand)
 			command = (CompoundEditCommand) request.getPreviousCommand();
 		else
-			command = new CompoundEditCommand("typing");
+			command = new CompoundEditCommand("typing"); //$NON-NLS-1$
 		command.pendEdit(edit);
 		return command;
 	}
 
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		if (request instanceof TextRequest)
 			return getHost();
 		return null;
 	}
 
-	private Command getChangeTextCommand(TextRequest request) {
+	private static Command getChangeTextCommand(TextRequest request) {
 		CompoundEditCommand command = null;
-		if (request.getPreviousCommand() instanceof CompoundEditCommand)
-			command = (CompoundEditCommand) request.getPreviousCommand();
+		if (request.getPreviousCommand() instanceof CompoundEditCommand cec)
+			command = cec;
 
 		SelectionRange range = request.getSelectionRange();
 
-		if (range.isEmpty() && request.getText().equals(" ")) {
+		if (range.isEmpty() && request.getText().equals(" ")) { //$NON-NLS-1$
 			Command result = checkForConversion(request.getSelectionRange().begin);
 			if (result != null)
 				return result;
@@ -213,7 +213,7 @@ public class BlockEditPolicy extends GraphicalEditPolicy {
 		TextRun rangeBegin = (TextRun) range.begin.part.getModel();
 		if (command == null) {
 			TextRun rangeEnd = (TextRun) range.end.part.getModel();
-			command = new CompoundEditCommand("typing");
+			command = new CompoundEditCommand("typing"); //$NON-NLS-1$
 			command.setBeginLocation(new ModelLocation(rangeBegin, range.begin.offset));
 
 			if (!range.isEmpty()) {

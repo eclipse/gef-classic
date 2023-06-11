@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,28 +30,33 @@ public class SubdivideElement extends MiniEdit {
 		this.offset = offset;
 	}
 
+	@Override
 	public void apply() {
 		inserted = run.subdivideRun(offset);
 		int index = run.getContainer().getChildren().indexOf(run);
 		run.getContainer().add(inserted, index + 1);
 	}
 
+	@Override
 	public boolean canApply() {
 		return true;
 	}
 
+	@Override
 	public void reapply() {
-		throw new RuntimeException("Need to implement");
+		throw new RuntimeException("Need to implement"); //$NON-NLS-1$
 	}
 
+	@Override
 	public ModelLocation getResultingLocation() {
 		return new ModelLocation(inserted, 0);
 	}
 
+	@Override
 	public void rollback() {
 		inserted.getContainer().remove(inserted);
 		run.insertText(inserted.getText(), run.size());
-		inserted.setText("");
+		inserted.setText(""); //$NON-NLS-1$
 	}
 
 }

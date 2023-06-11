@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,12 +31,13 @@ public class PromoteElementCommand extends ExampleTextCommand {
 	private int caretOffset;
 
 	public PromoteElementCommand(TextEditPart part, int caretOffset) {
-		super("decrease indentation");
+		super("decrease indentation"); //$NON-NLS-1$
 		this.caretOffset = caretOffset;
 		run = (TextRun) part.getModel();
 		oldParent = run.getContainer();
 	}
 
+	@Override
 	public void execute() {
 		index = oldParent.getChildren().indexOf(run);
 		Container newParent = oldParent.getContainer();
@@ -48,19 +49,23 @@ public class PromoteElementCommand extends ExampleTextCommand {
 			oldParent.getContainer().remove(oldParent);
 	}
 
+	@Override
 	public boolean canExecute() {
 		// Is there a container into which the run can be promoted.
 		return oldParent.getContainer() != null;
 	}
 
+	@Override
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
 		return new SelectionRange(lookupModel(viewer, run), caretOffset);
 	}
 
+	@Override
 	public SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer) {
 		return getExecuteSelectionRange(viewer);
 	}
 
+	@Override
 	public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {
 		return getExecuteSelectionRange(viewer);
 	}

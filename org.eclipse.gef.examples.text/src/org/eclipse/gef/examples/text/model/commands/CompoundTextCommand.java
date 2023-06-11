@@ -37,12 +37,14 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 			pending.add(command);
 	}
 
+	@Override
 	public boolean canExecute() {
 		return canExecutePending();
 	}
 
+	@Override
 	public boolean canExecutePending() {
-		if (pending.size() == 0)
+		if (pending.isEmpty())
 			return false;
 		for (int i = 0; i < pending.size(); i++) {
 			Command cmd = (Command) pending.get(i);
@@ -54,16 +56,19 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 		return true;
 	}
 
+	@Override
 	public void dispose() {
 		for (int i = 0; i < applied.size(); i++)
 			((Command) applied.get(i)).dispose();
 		flushPending();
 	}
 
+	@Override
 	public void execute() {
 		executePending();
 	}
 
+	@Override
 	public void executePending() {
 		for (int i = 0; i < pending.size(); i++) {
 			Command cmd = (Command) pending.get(i);
@@ -73,33 +78,39 @@ public class CompoundTextCommand extends Command implements TextCommand, Appenda
 		flushPending();
 	}
 
+	@Override
 	public void flushPending() {
 		pending.clear();
 	}
 
+	@Override
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
 		if (applied.isEmpty())
 			return null;
 		return ((TextCommand) applied.get(applied.size() - 1)).getExecuteSelectionRange(viewer);
 	}
 
+	@Override
 	public SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer) {
 		if (applied.isEmpty())
 			return null;
 		return ((TextCommand) applied.get(applied.size() - 1)).getExecuteSelectionRange(viewer);
 	}
 
+	@Override
 	public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {
 		if (applied.isEmpty())
 			return null;
 		return ((TextCommand) applied.get(0)).getUndoSelectionRange(viewer);
 	}
 
+	@Override
 	public void redo() {
 		for (int i = 0; i < applied.size(); i++)
 			((Command) applied.get(i)).redo();
 	}
 
+	@Override
 	public void undo() {
 		for (int i = applied.size() - 1; i >= 0; i--)
 			((Command) applied.get(i)).undo();

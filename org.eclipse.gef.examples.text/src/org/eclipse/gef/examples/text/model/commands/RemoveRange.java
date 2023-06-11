@@ -47,7 +47,7 @@ public class RemoveRange extends MiniEdit {
 		if (begin == end) {
 			clipBeginning = new RemoveText(begin, so, eo);
 		} else {
-			List remove = ModelUtil.getModelSpan(begin, so, end, eo);
+			List<ModelElement> remove = ModelUtil.getModelSpan(begin, so, end, eo);
 
 			removed = new ModelElement[remove.size()];
 			removedFrom = new Container[removed.length];
@@ -64,6 +64,7 @@ public class RemoveRange extends MiniEdit {
 		}
 	}
 
+	@Override
 	public void apply() {
 		if (removed != null) {
 			removalIndices = new int[removed.length];
@@ -77,10 +78,12 @@ public class RemoveRange extends MiniEdit {
 			clipEnding.apply();
 	}
 
+	@Override
 	public boolean canApply() {
 		return true;
 	}
 
+	@Override
 	public ModelLocation getResultingLocation() {
 		return clipBeginning.getResultingLocation();
 	}
@@ -88,10 +91,12 @@ public class RemoveRange extends MiniEdit {
 	/**
 	 * @see org.eclipse.gef.examples.text.model.commands.MiniEdit#reapply()
 	 */
+	@Override
 	public void reapply() {
 		apply();
 	}
 
+	@Override
 	public void rollback() {
 		if (removed != null)
 			for (int i = 0; i < removed.length; i++)

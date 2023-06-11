@@ -47,7 +47,6 @@ import org.eclipse.gef.examples.text.requests.TextRequest;
 import org.eclipse.gef.tools.SelectionTool;
 import org.eclipse.gef.tools.ToolUtilities;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ST;
 import org.eclipse.swt.events.KeyEvent;
@@ -67,35 +66,33 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	private static final int MODE_DEL = 3;
 	private static final int MODE_TYPE = 1;
 	private static final String KEY_OVERWRITE = "gef.texttool.overwrite"; //$NON-NLS-1$
-	private CommandStackEventListener commandListener = new CommandStackEventListener() {
-		public void stackChanged(org.eclipse.gef.commands.CommandStackEvent event) {
-			if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
-				fireStyleChanges();
-				discardCaretLocation();
-			}
+	private CommandStackEventListener commandListener = event -> {
+		if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
+			fireStyleChanges();
+			discardCaretLocation();
 		}
 	};
 	private StyleListener listener;
 	private AppendableCommand pendingCommand;
-	private ISelectionChangedListener selectionListener = new ISelectionChangedListener() {
-		public void selectionChanged(SelectionChangedEvent event) {
-			fireStyleChanges();
-			getCaret().setVisible(getSelectionRange() != null);
-			queueCaretRefresh(true);
-		}
+	private ISelectionChangedListener selectionListener = event -> {
+		fireStyleChanges();
+		getCaret().setVisible(getSelectionRange() != null);
+		queueCaretRefresh(true);
 	};
 	private UpdateListener updateListener = new UpdateListener() {
+		@Override
 		public void notifyPainting(Rectangle damage, Map dirtyRegions) {
 			queueCaretRefresh(false);
 		}
 
+		@Override
 		public void notifyValidating() {
 		}
 	};
-	private List styleKeys = new ArrayList();
+	private List<String> styleKeys = new ArrayList<>();
 	// @TODO:Pratik StyleService cannot be final
 	private final StyleService styleService;
-	private List styleValues = new ArrayList();
+	private List<Object> styleValues = new ArrayList<>();
 	private CaretRefresh caretRefresh;
 	private int textInputMode, caretXLoc;
 	private boolean isMirrored, xCaptured, overwrite;
@@ -117,15 +114,16 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	 * !isInState(STATE_INITIAL) && e.character == SWT.ESC; }
 	 */
 
+	@Override
 	public void addStyleListener(StyleListener listener) {
 		Assert.isTrue(this.listener == null);
 		this.listener = listener;
 	}
 
+	@Override
 	protected Cursor calculateCursor() {
 		EditPart target = getTargetEditPart();
-		if (target instanceof TextEditPart) {
-			TextEditPart textTarget = (TextEditPart) target;
+		if (target instanceof TextEditPart textTarget) {
 			if (textTarget.acceptsCaret())
 				return Cursors.IBEAM;
 		}
@@ -378,8 +376,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 
 		SelectionRange range = getSelectionRange();
 		if (range == null) {
-			if (viewer.getContents() instanceof TextEditPart) {
-				TextEditPart tep = (TextEditPart) viewer.getContents();
+			if (viewer.getContents() instanceof TextEditPart tep) {
 				if (tep.acceptsCaret())
 					tep.getTextLocation(search, result);
 			}
@@ -513,8 +510,8 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		EditPartViewer viewer = getCurrentViewer();
 		if (viewer != null) {
 			EditPart root = viewer.getRootEditPart();
-			if (root instanceof GraphicalEditPart)
-				return ((GraphicalEditPart) root).getFigure().getUpdateManager();
+			if (root instanceof GraphicalEditPart gep)
+				return gep.getFigure().getUpdateManager();
 		}
 		return null;
 	}
@@ -531,6 +528,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		return manager.getStyleValue(styleID, getSelectionRange());
 	}
 
+	@Override
 	public Object getStyle(String styleID) {
 		for (int i = 0; i < styleKeys.size(); i++)
 			if (styleID.equals(styleKeys.get(i)))
@@ -538,6 +536,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		return getSelectionStyle(styleID, false);
 	}
 
+	@Override
 	public Object getStyleState(String styleID) {
 		return getSelectionStyle(styleID, true);
 	}
@@ -546,7 +545,8 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		SelectionRange range = getSelectionRange();
 		if (range == null)
 			return null;
-		EditPart target, candidate = ToolUtilities.findCommonAncestor(range.begin.part, range.end.part);
+		EditPart target;
+		EditPart candidate = ToolUtilities.findCommonAncestor(range.begin.part, range.end.part);
 
 		do {
 			target = candidate.getTargetEditPart(request);
@@ -559,23 +559,27 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		return (GraphicalTextViewer) getCurrentViewer();
 	}
 
+	@Override
 	protected boolean handleButtonDown(int button) {
 		discardCaretLocation();
 		return super.handleButtonDown(button);
 	}
 
+	@Override
 	protected boolean handleCommandStackChanged() {
 		setTextInputMode(0);
 		discardCaretLocation();
 		return super.handleCommandStackChanged();
 	}
 
+	@Override
 	protected boolean handleFocusGained() {
 		if (getSelectionRange() == null)
 			doSelect(CaretRequest.DOCUMENT, false, false, null);
 		return super.handleFocusGained();
 	}
 
+	@Override
 	protected boolean handleKeyDown(KeyEvent e) {
 		if (isInState(STATE_INITIAL) && getTextualViewer().isTextSelected())
 			doKeyDown(e);
@@ -585,12 +589,14 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		return true;
 	}
 
+	@Override
 	protected void handleKeyTraversed(TraverseEvent event) {
 		if ((event.detail == SWT.TRAVERSE_TAB_PREVIOUS || event.detail == SWT.TRAVERSE_TAB_NEXT)
 				&& (event.stateMask & SWT.CTRL) == 0)
 			event.doit = false;
 	}
 
+	@Override
 	protected boolean handleMove() {
 		super.handleMove();
 		refreshCursor();
@@ -598,7 +604,6 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	}
 
 	private boolean handleTextEdit(TextRequest edit) {
-		GraphicalTextViewer viewer = getTextualViewer();
 		EditPart target = getTextTarget(edit);
 
 		Command insert = null;
@@ -620,6 +625,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			if (!pendingCommand.canExecutePending())
 				return false;
 			pendingCommand.executePending();
+			GraphicalTextViewer viewer = getTextualViewer();
 			viewer.setSelectionRange(((TextCommand) pendingCommand).getExecuteSelectionRange(viewer));
 		}
 
@@ -697,11 +703,13 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			caretRefresh.enableReveal(revealAfterwards);
 	}
 
+	@Override
 	public void removeStyleListener(StyleListener listener) {
 		Assert.isTrue(this.listener == listener);
 		this.listener = null;
 	}
 
+	@Override
 	public void setDragTracker(DragTracker newDragTracker) {
 		if (getDragTracker() == newDragTracker)
 			return;
@@ -709,6 +717,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		super.setDragTracker(newDragTracker);
 	}
 
+	@Override
 	public void setStyle(String styleID, Object newValue) {
 		// Check for cancellations: lookup old style and remove any pending ones
 		Object oldValue = getSelectionStyle(styleID, false);
@@ -741,6 +750,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 		}
 	}
 
+	@Override
 	public void setViewer(EditPartViewer viewer) {
 		EditPartViewer currentViewer = getCurrentViewer();
 		if (viewer == currentViewer || viewer == null)
@@ -799,6 +809,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 			enableReveal(reveal);
 		}
 
+		@Override
 		public void run() {
 			refreshCaret();
 			caretRefresh = null;

@@ -24,6 +24,7 @@ import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.gef.examples.text.TextLocation;
 import org.eclipse.gef.examples.text.figures.CommentPage;
 import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.ModelElement;
 import org.eclipse.gef.examples.text.requests.CaretRequest;
 import org.eclipse.gef.examples.text.requests.SearchResult;
 
@@ -32,7 +33,7 @@ import org.eclipse.gef.examples.text.requests.SearchResult;
  */
 public abstract class CompoundTextPart extends AbstractTextPart {
 
-	public CompoundTextPart(Container model) {
+	protected CompoundTextPart(Container model) {
 		setModel(model);
 	}
 
@@ -70,7 +71,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 			figure.setBorder(new MarginBorder(4));
 			break;
 		default:
-			throw new RuntimeException("unexpected container");
+			throw new RuntimeException("unexpected container"); //$NON-NLS-1$
 		}
 		return figure;
 	}
@@ -83,7 +84,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 
 	@Override
 	public CaretInfo getCaretPlacement(int offset, boolean trailing) {
-		throw new RuntimeException("This part cannot place the caret");
+		throw new RuntimeException("This part cannot place the caret"); //$NON-NLS-1$
 	}
 
 	@SuppressWarnings("unchecked")
@@ -106,7 +107,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 	}
 
 	@Override
-	protected List getModelChildren() {
+	protected List<ModelElement> getModelChildren() {
 		return getModel().getChildren();
 	}
 
@@ -136,7 +137,7 @@ public abstract class CompoundTextPart extends AbstractTextPart {
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("children"))
+		if (evt.getPropertyName().equals("children")) //$NON-NLS-1$
 			refreshChildren();
 	}
 

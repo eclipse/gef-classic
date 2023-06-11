@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,7 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 		this.textSource = part;
 	}
 
+	@Override
 	protected Cursor calculateCursor() {
 		return Cursors.IBEAM;
 	}
@@ -123,15 +124,15 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 	private void doWordSwipe() {
 	}
 
+	@Override
 	protected String getCommandName() {
-		return "Drop Text Request";
+		return "Drop Text Request"; //$NON-NLS-1$
 	}
 
 	private SearchResult getCurrentTextLocation() {
 		SearchResult result = new SearchResult();
 		EditPart part = getCurrentViewer().findObjectAt(getLocation());
-		if (part instanceof TextEditPart) {
-			TextEditPart textPart = (TextEditPart) part;
+		if (part instanceof TextEditPart textPart) {
 			if (textPart.acceptsCaret()) {
 				CaretRequest request = new CaretRequest();
 				request.setType(CaretRequest.LOCATION);
@@ -150,6 +151,7 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 		return textSource;
 	}
 
+	@Override
 	protected boolean handleButtonDown(int button) {
 		if (button == 1) {
 			SearchResult result = getCurrentTextLocation();
@@ -161,6 +163,7 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 		return super.handleButtonDown(button);
 	}
 
+	@Override
 	protected boolean handleDoubleClick(int button) {
 		if (button == 1) {
 			doWordSelect();
@@ -170,6 +173,7 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 		return super.handleDoubleClick(button);
 	}
 
+	@Override
 	protected boolean handleDragInProgress() {
 		// $TODO during a swipe, the viewer should not be firing selection
 		// changes the whole time.
@@ -182,6 +186,7 @@ public class SelectionRangeDragTracker extends SimpleDragTracker {
 		return super.handleDragInProgress();
 	}
 
+	@Override
 	protected boolean handleDragStarted() {
 		return stateTransition(STATE_START, STATE_SWIPE);
 	}

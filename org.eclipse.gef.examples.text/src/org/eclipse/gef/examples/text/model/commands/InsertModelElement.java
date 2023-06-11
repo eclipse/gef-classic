@@ -29,18 +29,22 @@ public class InsertModelElement extends MiniEdit {
 		this.location = location;
 	}
 
+	@Override
 	public void apply() {
 		parent.add(child, offset);
 	}
 
+	@Override
 	public boolean canApply() {
 		return true;
 	}
 
+	@Override
 	public ModelLocation getResultingLocation() {
 		return location;
 	}
 
+	@Override
 	public void rollback() {
 		parent.remove(child);
 	}

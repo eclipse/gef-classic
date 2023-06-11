@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.List;
 
 import org.eclipse.gef.examples.text.model.Container;
+import org.eclipse.gef.examples.text.model.ModelElement;
 import org.eclipse.gef.examples.text.model.Style;
 import org.eclipse.swt.widgets.TreeItem;
 
@@ -22,62 +23,66 @@ import org.eclipse.swt.widgets.TreeItem;
  */
 public class ContainerTreePart extends ExampleTreePart {
 
-	public ContainerTreePart(Object model) {
+	public ContainerTreePart(Container model) {
 		setModel(model);
 	}
 
-	protected List getModelChildren() {
-		return ((Container) getModel()).getChildren();
+	@Override
+	protected List<ModelElement> getModelChildren() {
+		return getModel().getChildren();
 	}
 
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("children"))
+		if (evt.getPropertyName().equals("children")) //$NON-NLS-1$
 			refreshChildren();
 	}
 
-	private Container getContainer() {
-		return (Container) getModel();
+	@Override
+	public Container getModel() {
+		return (Container) super.getModel();
 	}
 
+	@Override
 	protected void refreshChildren() {
 		super.refreshChildren();
-		if (getWidget() instanceof TreeItem) {
-			TreeItem item = (TreeItem) getWidget();
+		if (getWidget() instanceof TreeItem item) {
 			item.setExpanded(true);
 		}
 	}
 
+	@Override
 	protected void refreshVisuals() {
 		StringBuffer label = new StringBuffer();
-		switch (getContainer().getType()) {
+		switch (getModel().getType()) {
 		case Container.TYPE_BULLETED_LIST:
-			label.append("<bullet>");
+			label.append("<bullet>"); //$NON-NLS-1$
 			break;
 		case Container.TYPE_COMMENT:
-			label.append("<comment>");
+			label.append("<comment>"); //$NON-NLS-1$
 			break;
 		case Container.TYPE_IMPORT_DECLARATIONS:
-			label.append("<import declarations>");
+			label.append("<import declarations>"); //$NON-NLS-1$
 			break;
 
 		case Container.TYPE_INLINE:
-			Style style = getContainer().getStyle();
+			Style style = getModel().getStyle();
 			if (style.isSet(Style.PROPERTY_FONT_SIZE))
-				label.append("<FONT SIZE>");
+				label.append("<FONT SIZE>"); //$NON-NLS-1$
 			if (style.isSet(Style.PROPERTY_BOLD))
-				label.append("<B>");
+				label.append("<B>"); //$NON-NLS-1$
 			if (style.isSet(Style.PROPERTY_ITALIC))
-				label.append("<I>");
+				label.append("<I>"); //$NON-NLS-1$
 			if (style.isSet(Style.PROPERTY_UNDERLINE))
-				label.append("<U>");
+				label.append("<U>"); //$NON-NLS-1$
 			if (style.isSet(Style.PROPERTY_FONT))
-				label.append("<FONT>");
+				label.append("<FONT>"); //$NON-NLS-1$
 			break;
 		case Container.TYPE_PARAGRAPH:
-			label.append("Paragraph");
+			label.append("Paragraph"); //$NON-NLS-1$
 			break;
 		default:
-			label.append("Unknown container");
+			label.append("Unknown container"); //$NON-NLS-1$
 			break;
 		}
 		setWidgetText(label.toString());

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,12 +21,14 @@ import org.eclipse.gef.examples.text.model.ModelElement;
  */
 public abstract class ExampleTreePart extends AbstractTreeEditPart implements PropertyChangeListener {
 
+	@Override
 	public void activate() {
 		super.activate();
 		ModelElement model = (ModelElement) getModel();
 		model.addPropertyChangeListener(this);
 	}
 
+	@Override
 	public void deactivate() {
 		ModelElement model = (ModelElement) getModel();
 		model.removePropertyChangeListener(this);

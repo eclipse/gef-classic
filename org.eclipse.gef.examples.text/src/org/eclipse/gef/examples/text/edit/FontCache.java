@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.text.edit;
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -22,7 +23,7 @@ import org.eclipse.swt.graphics.FontData;
  */
 public class FontCache {
 
-	private static Hashtable table = new Hashtable();
+	private static Map<Key, Value> table = new HashMap<>();
 
 	private FontCache() {
 	}
@@ -36,7 +37,7 @@ public class FontCache {
 		FontData fd = font.getFontData()[0];
 		Key key = new Key(fd.getName(), fd.getHeight(), (fd.getStyle() & SWT.BOLD) != 0,
 				(fd.getStyle() & SWT.ITALIC) != 0);
-		Value value = (Value) table.get(key);
+		Value value = table.get(key);
 		value.refCount--;
 		if (value.refCount == 0) {
 			table.remove(key);
@@ -46,7 +47,7 @@ public class FontCache {
 
 	public static Font checkOut(String fontName, int fontHeight, boolean isBold, boolean isItalic) {
 		Key key = new Key(fontName, fontHeight, isBold, isItalic);
-		Value value = (Value) table.get(key);
+		Value value = table.get(key);
 		if (value == null) {
 			value = new Value();
 			int style = (isBold ? SWT.BOLD : SWT.NONE) | (isItalic ? SWT.ITALIC : SWT.NONE);
@@ -57,7 +58,7 @@ public class FontCache {
 		return value.font;
 	}
 
-	private static class Key {
+	private static final class Key {
 		private String fontName;
 		private int height;
 		private boolean isBold, isItalic;
@@ -69,16 +70,17 @@ public class FontCache {
 			this.isItalic = isItalic;
 		}
 
+		@Override
 		public boolean equals(Object obj) {
 			boolean result = obj == this;
-			if (!result && (obj instanceof Key)) {
-				Key key = (Key) obj;
+			if (!result && (obj instanceof Key key)) {
 				result = fontName.equalsIgnoreCase(key.fontName) && height == key.height && isBold == key.isBold
 						&& isItalic == key.isItalic;
 			}
 			return result;
 		}
 
+		@Override
 		public int hashCode() {
 			return fontName.toLowerCase().hashCode() + height;
 		}

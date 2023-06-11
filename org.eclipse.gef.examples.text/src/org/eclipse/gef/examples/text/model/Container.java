@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,10 +30,10 @@ public abstract class Container extends ModelElement {
 
 	private static final long serialVersionUID = 1;
 
-	private List children = new ArrayList();
+	private List<ModelElement> children = new ArrayList<>();
 	private Style style = new Style();
 
-	public Container(int type) {
+	protected Container(int type) {
 		this.type = type;
 	}
 
@@ -46,7 +46,7 @@ public abstract class Container extends ModelElement {
 		if (index == -1)
 			index = children.size();
 		children.add(index, child);
-		firePropertyChange("children", null, child);
+		firePropertyChange("children", null, child); //$NON-NLS-1$
 	}
 
 	/**
@@ -65,7 +65,7 @@ public abstract class Container extends ModelElement {
 		return false;
 	}
 
-	public List getChildren() {
+	public List<ModelElement> getChildren() {
 		return children;
 	}
 
@@ -88,15 +88,16 @@ public abstract class Container extends ModelElement {
 		int index = children.indexOf(child);
 		children.remove(child);
 		child.setParent(null);
-		firePropertyChange("children", child, null);
+		firePropertyChange("children", child, null); //$NON-NLS-1$
 		return index;
 	}
 
-	public void removeAll(Collection children) {
+	public void removeAll(Collection<ModelElement> children) {
 		if (children.removeAll(children))
-			firePropertyChange("children", children, null);
+			firePropertyChange("children", children, null); //$NON-NLS-1$
 	}
 
+	@Override
 	public void setParent(Container container) {
 		super.setParent(container);
 		if (container == null)
@@ -108,6 +109,7 @@ public abstract class Container extends ModelElement {
 	/**
 	 * @see org.eclipse.gef.examples.text.model.ModelElement#size()
 	 */
+	@Override
 	public int size() {
 		return getChildren().size();
 	}
@@ -116,7 +118,7 @@ public abstract class Container extends ModelElement {
 
 	public Container subdivideContainer(int offset) {
 		Container result = newContainer();
-		List reparent = getChildren().subList(offset, getChildren().size());
+		List<ModelElement> reparent = getChildren().subList(offset, getChildren().size());
 		removeAll(reparent);
 		result.getChildren().addAll(reparent);
 		return result;

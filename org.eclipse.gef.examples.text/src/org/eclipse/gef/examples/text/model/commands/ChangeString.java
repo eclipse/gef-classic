@@ -22,7 +22,7 @@ public class ChangeString extends MiniEdit {
 
 	private String pending;
 
-	private char insertedChars[];
+	private char[] insertedChars;
 
 	private final int offset;
 
@@ -49,6 +49,7 @@ public class ChangeString extends MiniEdit {
 	/**
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void apply() {
 		if (overwrite)
 			overwrittenText = run.overwriteText(pending, offset);
@@ -58,6 +59,7 @@ public class ChangeString extends MiniEdit {
 		pending = null;
 	}
 
+	@Override
 	public boolean canApply() {
 		return pending != null;
 	}
@@ -70,17 +72,19 @@ public class ChangeString extends MiniEdit {
 			overwrittenText += run.overwriteText(pending, offset + insertedChars.length);
 		else
 			run.insertText(pending, offset + insertedChars.length);
-		char old[] = insertedChars;
+		char[] old = insertedChars;
 		insertedChars = new char[old.length + 1];
 		System.arraycopy(old, 0, insertedChars, 0, old.length);
 		insertedChars[insertedChars.length - 1] = pending.toCharArray()[0];
 		pending = null;
 	}
 
+	@Override
 	public ModelLocation getResultingLocation() {
 		return new ModelLocation(run, offset + insertedChars.length);
 	}
 
+	@Override
 	public void reapply() {
 		if (overwrite)
 			overwrittenText = run.overwriteText(new String(insertedChars), offset);
@@ -88,6 +92,7 @@ public class ChangeString extends MiniEdit {
 			run.insertText(new String(insertedChars), offset);
 	}
 
+	@Override
 	public void rollback() {
 		if (overwrite) {
 			run.overwriteText(overwrittenText, offset);

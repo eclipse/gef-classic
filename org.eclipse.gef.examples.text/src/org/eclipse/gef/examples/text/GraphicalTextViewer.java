@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.draw2d.LightweightSystem;
 import org.eclipse.draw2d.Viewport;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.gef.EditDomain;
@@ -118,6 +117,7 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 		fireSelectionChanged();
 	}
 
+	@Override
 	public void appendSelection(EditPart editpart) {
 		if (focusPart != editpart)
 			setFocus(null);
@@ -127,19 +127,22 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 			select(editpart);
 	}
 
+	@Override
 	public void deselect(EditPart editpart) {
 		if (selectionModel != null)
 			setSelectionModel(selectionModel.getExcludedSelection(editpart));
 	}
 
+	@Override
 	public void deselectAll() {
 		setSelectionModel(null);
 	}
 
+	@Override
 	public void select(EditPart editpart) {
 		if (focusPart != editpart)
 			setFocus(null);
-		ArrayList list = new ArrayList();
+		ArrayList<EditPart> list = new ArrayList<>();
 		list.add(editpart);
 		setSelectionModel(createSelectionModel(null, null, list, null));
 	}
@@ -147,9 +150,11 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	// @TODO:Pratik Hack. This shouldn't be here. CommandStack should be doing
 	// this automatically.
 	// You can make that change once you remove the GraphicalTextViewer class.
+	@Override
 	public void setEditDomain(EditDomain domain) {
 		super.setEditDomain(domain);
 		getEditDomain().getCommandStack().addCommandStackEventListener(new CommandStackEventListener() {
+			@Override
 			public void stackChanged(CommandStackEvent event) {
 				if (!(event.getCommand() instanceof TextCommand) || getSelectionRange() == null)
 					return;
@@ -166,6 +171,7 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 		});
 	}
 
+	@Override
 	public void setSelection(ISelection newSelection) {
 		if (newSelection != null)
 			setSelectionModel(createSelectionModel(newSelection, null, null, null));
@@ -173,13 +179,14 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 			setSelectionModel(null);
 	}
 
+	@Override
 	public ISelection getSelection() {
 		if (selectionModel != null)
 			return selectionModel.getSelection();
 		return new StructuredSelection(getContents());
 	}
 
-	protected SelectionModel createSelectionModel(ISelection selection, SelectionRange range, List parts,
+	private static SelectionModel createSelectionModel(ISelection selection, SelectionRange range, List<EditPart> parts,
 			EditPart container) {
 		if (selection instanceof IStructuredSelection)
 			return new SelectionModel(selection);
@@ -189,7 +196,8 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	/**
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#getSelectedEditParts()
 	 */
-	public List getSelectedEditParts() {
+	@Override
+	public List<EditPart> getSelectedEditParts() {
 		return primGetSelectedEditParts();
 	}
 
@@ -200,18 +208,15 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	 * @deprecated
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#primGetSelectedEditParts()
 	 */
-	protected List primGetSelectedEditParts() {
+	@Override
+	protected List<EditPart> primGetSelectedEditParts() {
 		if (selectionModel != null)
 			return selectionModel.getSelectedEditParts();
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	public boolean isTextSelected() {
 		return selectionModel != null && selectionModel.isTextSelected();
-	}
-
-	protected LightweightSystem getLightweightSystem() {
-		return super.getLightweightSystem();
 	}
 
 }

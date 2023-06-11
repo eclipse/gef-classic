@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -61,13 +61,13 @@ public class TextRun extends ModelElement {
 
 	public void insertText(String someText, int offset) {
 		text = text.substring(0, offset) + someText + text.substring(offset, text.length());
-		firePropertyChange("text", null, text);
+		firePropertyChange("text", null, text); //$NON-NLS-1$
 	}
 
 	public String overwriteText(String someText, int offset) {
 		String result = text.substring(offset, Math.min(offset + someText.length(), text.length()));
 		text = text.substring(0, offset) + someText + text.substring(offset + result.length());
-		firePropertyChange("text", null, text);
+		firePropertyChange("text", null, text); //$NON-NLS-1$
 		return result;
 	}
 
@@ -76,22 +76,24 @@ public class TextRun extends ModelElement {
 		Assert.isTrue(offset + length <= text.length());
 		String result = text.substring(offset, offset + length);
 		text = text.substring(0, offset) + text.substring(offset + length);
-		firePropertyChange("text", null, text);
+		firePropertyChange("text", null, text); //$NON-NLS-1$
 		return result;
 	}
 
 	public void setText(String text) {
 		this.text = text;
-		firePropertyChange("text", null, text);
+		firePropertyChange("text", null, text); //$NON-NLS-1$
 	}
 
 	/**
 	 * @see org.eclipse.gef.examples.text.model.ModelElement#size()
 	 */
+	@Override
 	public int size() {
 		return getText().length();
 	}
 
+	@Override
 	public String toString() {
 		return text;
 	}

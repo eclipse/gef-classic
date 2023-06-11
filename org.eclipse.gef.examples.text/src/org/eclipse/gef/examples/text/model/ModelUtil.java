@@ -17,20 +17,18 @@ import java.util.List;
 /**
  * @since 3.1
  */
-public class ModelUtil {
+public final class ModelUtil {
 
-	public static List getModelSpan(ModelElement start, int startIndex, ModelElement end, int endIndex) {
+	public static List<ModelElement> getModelSpan(ModelElement start, int startIndex, ModelElement end, int endIndex) {
 		Container ancestor = start.getContainer();
 		while (!ancestor.contains(end))
 			ancestor = ancestor.getContainer();
 
-		List result = new ArrayList();
-
-		List children;
+		List<ModelElement> result = new ArrayList<>();
 
 		Container branch = start.getContainer();
 		while (branch != ancestor) {
-			children = branch.getChildren();
+			List<ModelElement> children = branch.getChildren();
 			int branchIndex = children.indexOf(start);
 			if (startIndex == 0) {
 				// We should either delete the child, or the entire branch
@@ -52,11 +50,11 @@ public class ModelUtil {
 			}
 		}
 
-		List rightSide = new ArrayList();
+		List<ModelElement> rightSide = new ArrayList<>();
 		branch = end.getContainer();
 
 		while (branch != ancestor) {
-			children = branch.getChildren();
+			List<ModelElement> children = branch.getChildren();
 			// The index to the right side of end.
 			int branchIndex = children.indexOf(end) + 1;
 			if (endIndex == end.size()) {
@@ -78,7 +76,7 @@ public class ModelUtil {
 				endIndex = branchIndex - 1;
 			}
 		}
-		children = ancestor.getChildren();
+		List<ModelElement> children = ancestor.getChildren();
 		if (startIndex == 0)
 			startIndex = children.indexOf(start);
 		else

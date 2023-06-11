@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ public class ProcessMacroCommand extends CompoundEditCommand {
 	 * @since 3.1
 	 */
 	public ProcessMacroCommand(TextRun run, int begin, int end, ModelElement substitution, ModelLocation loc) {
-		super("$$conversion");
+		super("$$conversion"); //$NON-NLS-1$
 		RemoveRange removal = new RemoveRange(run, begin, run, end);
 		pendEdit(removal);
 		SubdivideElement subdivide = new SubdivideElement(run, begin);
@@ -39,6 +39,7 @@ public class ProcessMacroCommand extends CompoundEditCommand {
 	/**
 	 * @see org.eclipse.gef.examples.text.TextCommand#getRedoSelectionRange(org.eclipse.gef.examples.text.GraphicalTextViewer)
 	 */
+	@Override
 	public SelectionRange getRedoSelectionRange(GraphicalTextViewer viewer) {
 		return null;
 	}
@@ -46,6 +47,7 @@ public class ProcessMacroCommand extends CompoundEditCommand {
 	/**
 	 * @see org.eclipse.gef.examples.text.TextCommand#getExecuteSelectionRange(org.eclipse.gef.examples.text.GraphicalTextViewer)
 	 */
+	@Override
 	public SelectionRange getExecuteSelectionRange(GraphicalTextViewer viewer) {
 		return super.getExecuteSelectionRange(viewer);
 	}
@@ -53,6 +55,7 @@ public class ProcessMacroCommand extends CompoundEditCommand {
 	/**
 	 * @see org.eclipse.gef.examples.text.TextCommand#getUndoSelectionRange(org.eclipse.gef.examples.text.GraphicalTextViewer)
 	 */
+	@Override
 	public SelectionRange getUndoSelectionRange(GraphicalTextViewer viewer) {
 		return null;
 	}
