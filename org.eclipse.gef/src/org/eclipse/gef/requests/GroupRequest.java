@@ -20,7 +20,7 @@ import org.eclipse.gef.EditPart;
  */
 public class GroupRequest extends org.eclipse.gef.Request {
 
-	List<EditPart> parts;
+	List<? extends EditPart> parts;
 
 	/**
 	 * Creates a GroupRequest with the given type.
@@ -51,7 +51,7 @@ public class GroupRequest extends org.eclipse.gef.Request {
 	 * 
 	 * @param list The List of EditParts.
 	 */
-	public void setEditParts(List<EditPart> list) {
+	public void setEditParts(List<? extends EditPart> list) {
 		parts = list;
 	}
 
@@ -61,8 +61,9 @@ public class GroupRequest extends org.eclipse.gef.Request {
 	 * @param part The EditPart making the request.
 	 */
 	public void setEditParts(EditPart part) {
-		parts = new ArrayList<>(1);
-		parts.add(part);
+		List<EditPart> newParts = new ArrayList<>(1);
+		newParts.add(part);
+		setEditParts(newParts);
 	}
 
 }
