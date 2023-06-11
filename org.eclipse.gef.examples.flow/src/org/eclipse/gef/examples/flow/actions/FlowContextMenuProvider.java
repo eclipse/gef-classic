@@ -42,6 +42,7 @@ public class FlowContextMenuProvider extends ContextMenuProvider {
 	/**
 	 * @see ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
 	 */
+	@Override
 	public void buildContextMenu(IMenuManager menu) {
 		GEFActionConstants.addStandardActionGroups(menu);
 

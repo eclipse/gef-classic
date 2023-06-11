@@ -28,11 +28,12 @@ public class ParallelActivityFigure extends SubgraphFigure {
 	 * @param footer
 	 */
 	public ParallelActivityFigure() {
-		super(new Label(""), new Label(""));
+		super(new Label(""), new Label("")); //$NON-NLS-1$ //$NON-NLS-2$
 		setBorder(new MarginBorder(3, 5, 3, 0));
 		setOpaque(true);
 	}
 
+	@Override
 	protected void paintFigure(Graphics g) {
 		super.paintFigure(g);
 		Rectangle r = getBounds();
@@ -48,6 +49,7 @@ public class ParallelActivityFigure extends SubgraphFigure {
 		g.fillRectangle(r.x, r.y, r.width, 18);
 	}
 
+	@Override
 	public void setSelected(boolean selected) {
 		if (this.selected == selected)
 			return;

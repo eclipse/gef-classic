@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,6 +29,7 @@ public class FlowCreationWizard extends Wizard implements INewWizard {
 	/**
 	 * @see org.eclipse.jface.wizard.IWizard#addPages()
 	 */
+	@Override
 	public void addPages() {
 		flowWizardPage = new FlowWizardPage1(workbench, selection);
 		addPage(flowWizardPage);
@@ -38,6 +39,7 @@ public class FlowCreationWizard extends Wizard implements INewWizard {
 	 * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench,
 	 *      org.eclipse.jface.viewers.IStructuredSelection)
 	 */
+	@Override
 	public void init(IWorkbench aWorkbench, IStructuredSelection currentSelection) {
 		workbench = aWorkbench;
 		selection = currentSelection;
@@ -46,6 +48,7 @@ public class FlowCreationWizard extends Wizard implements INewWizard {
 	/**
 	 * @see org.eclipse.jface.wizard.IWizard#performFinish()
 	 */
+	@Override
 	public boolean performFinish() {
 		return flowWizardPage.finish();
 	}

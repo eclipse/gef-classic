@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,12 +23,7 @@ public class StructuredActivity extends Activity {
 
 	static final long serialVersionUID = 1;
 
-	private static int count;
-
-	protected List children = new ArrayList();
-
-	public StructuredActivity() {
-	}
+	private List<Activity> children = new ArrayList<>();
 
 	public void addChild(Activity child) {
 		addChild(child, -1);
@@ -42,12 +37,8 @@ public class StructuredActivity extends Activity {
 		fireStructureChange(CHILDREN, child);
 	}
 
-	public List getChildren() {
+	public List<Activity> getChildren() {
 		return children;
-	}
-
-	public String getNewID() {
-		return Integer.toString(count++);
 	}
 
 	public void removeChild(FlowElement child) {

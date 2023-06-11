@@ -30,6 +30,7 @@ import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.FlowElement;
+import org.eclipse.gef.examples.flow.model.Transition;
 import org.eclipse.gef.examples.flow.policies.ActivityDirectEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityNodeEditPolicy;
@@ -113,7 +114,7 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements 
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelSourceConnections()
 	 */
 	@Override
-	protected List getModelSourceConnections() {
+	protected List<Transition> getModelSourceConnections() {
 		return getModel().getOutgoingTransitions();
 	}
 
@@ -121,7 +122,7 @@ public abstract class ActivityPart extends AbstractGraphicalEditPart implements 
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#getModelTargetConnections()
 	 */
 	@Override
-	protected List getModelTargetConnections() {
+	protected List<Transition> getModelTargetConnections() {
 		return getModel().getIncomingTransitions();
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.model.commands;
 
-import java.util.List;
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.Transition;
@@ -21,7 +19,7 @@ import org.eclipse.gef.examples.flow.model.Transition;
  */
 public class ConnectionCreateCommand extends Command {
 
-	/** The Transistion between source and target Activities **/
+	/** The Transition between source and target Activities **/
 	protected Transition transition;
 	/** The source Activity **/
 	protected Activity source;
@@ -31,22 +29,19 @@ public class ConnectionCreateCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
+	@Override
 	public boolean canExecute() {
 		if (source.equals(target))
 			return false;
 
 		// Check for existence of connection already
-		List transistions = source.getOutgoingTransitions();
-		for (int i = 0; i < transistions.size(); i++) {
-			if (((Transition) transistions.get(i)).target.equals(target))
-				return false;
-		}
-		return true;
+		return source.getOutgoingTransitions().stream().noneMatch(t -> t.target.equals(target));
 	}
 
 	/**
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		transition = new Transition(source, target);
 	}
@@ -81,6 +76,7 @@ public class ConnectionCreateCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
+	@Override
 	public void redo() {
 		source.addOutput(transition);
 		target.addInput(transition);
@@ -116,6 +112,7 @@ public class ConnectionCreateCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
 		source.removeOutput(transition);
 		target.removeInput(transition);

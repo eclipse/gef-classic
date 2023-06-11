@@ -28,6 +28,7 @@ public class DummyLayout extends AbstractLayout {
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure,
 	 *      int, int)
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		return null;
 	}
@@ -35,6 +36,7 @@ public class DummyLayout extends AbstractLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#layout(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void layout(IFigure container) {
 		// GraphAnimation.recordInitialState(container);
 		GraphAnimation.playbackState(container);

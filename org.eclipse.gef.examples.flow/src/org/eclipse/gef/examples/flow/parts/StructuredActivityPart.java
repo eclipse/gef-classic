@@ -24,6 +24,7 @@ import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.examples.flow.figures.SubgraphFigure;
+import org.eclipse.gef.examples.flow.model.Activity;
 import org.eclipse.gef.examples.flow.model.StructuredActivity;
 import org.eclipse.gef.examples.flow.policies.ActivityContainerEditPolicy;
 import org.eclipse.gef.examples.flow.policies.ActivityContainerHighlightEditPolicy;
@@ -73,7 +74,6 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	public void contributeNodesToGraph(CompoundDirectedGraph graph, Subgraph s, Map map) {
 		GraphAnimation.recordInitialState(getContentPane());
 		Subgraph me = new Subgraph(this, s);
-		// me.rowOrder = getActivity().getSortIndex();
 		me.outgoingOffset = 5;
 		me.incomingOffset = 5;
 		IFigure fig = getFigure();
@@ -124,7 +124,7 @@ public abstract class StructuredActivityPart extends ActivityPart implements Nod
 	}
 
 	@Override
-	protected List getModelChildren() {
+	protected List<Activity> getModelChildren() {
 		return getStructuredActivity().getChildren();
 	}
 

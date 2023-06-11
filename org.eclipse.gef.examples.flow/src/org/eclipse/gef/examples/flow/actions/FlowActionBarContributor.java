@@ -28,6 +28,7 @@ public class FlowActionBarContributor extends ActionBarContributor {
 	/**
 	 * @see org.eclipse.gef.ui.actions.ActionBarContributor#buildActions()
 	 */
+	@Override
 	protected void buildActions() {
 		addRetargetAction(new UndoRetargetAction());
 		addRetargetAction(new RedoRetargetAction());
@@ -38,6 +39,7 @@ public class FlowActionBarContributor extends ActionBarContributor {
 	/**
 	 * @see EditorActionBarContributor#contributeToToolBar(IToolBarManager)
 	 */
+	@Override
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
 		toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
 		toolBarManager.add(getAction(ActionFactory.REDO.getId()));
@@ -46,6 +48,7 @@ public class FlowActionBarContributor extends ActionBarContributor {
 	/**
 	 * @see org.eclipse.gef.ui.actions.ActionBarContributor#declareGlobalActionKeys()
 	 */
+	@Override
 	protected void declareGlobalActionKeys() {
 	}
 
