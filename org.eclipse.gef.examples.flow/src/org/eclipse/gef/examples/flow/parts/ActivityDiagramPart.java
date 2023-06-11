@@ -28,25 +28,24 @@ import org.eclipse.gef.examples.flow.policies.StructuredActivityLayoutEditPolicy
  */
 public class ActivityDiagramPart extends StructuredActivityPart {
 
-	CommandStackEventListener stackListener = new CommandStackEventListener() {
-
-		public void stackChanged(org.eclipse.gef.commands.CommandStackEvent event) {
-			if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
-				if (!GraphAnimation.captureLayout(getFigure()))
-					return;
-				while (GraphAnimation.step())
-					getFigure().getUpdateManager().performUpdate();
-				GraphAnimation.end();
-			}
-		};
+	CommandStackEventListener stackListener = event -> {
+		if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
+			if (!GraphAnimation.captureLayout(getFigure()))
+				return;
+			while (GraphAnimation.step())
+				getFigure().getUpdateManager().performUpdate();
+			GraphAnimation.end();
+		}
 	};
 
+	@Override
 	protected void applyOwnResults(CompoundDirectedGraph graph, Map map) {
 	}
 
 	/**
 	 * @see org.eclipse.gef.examples.flow.parts.ActivityPart#activate()
 	 */
+	@Override
 	public void activate() {
 		super.activate();
 		getViewer().getEditDomain().getCommandStack().addCommandStackEventListener(stackListener);
@@ -55,6 +54,7 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 	/**
 	 * @see org.eclipse.gef.examples.flow.parts.ActivityPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 		installEditPolicy(EditPolicy.NODE_ROLE, null);
 		installEditPolicy(EditPolicy.GRAPHICAL_NODE_ROLE, null);
@@ -64,8 +64,10 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 		installEditPolicy(EditPolicy.CONTAINER_ROLE, new ActivityContainerEditPolicy());
 	}
 
+	@Override
 	protected IFigure createFigure() {
 		Figure f = new Figure() {
+			@Override
 			public void setBounds(Rectangle rect) {
 				int x = bounds.x, y = bounds.y;
 
@@ -94,6 +96,7 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 	/**
 	 * @see org.eclipse.gef.examples.flow.parts.ActivityPart#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		getViewer().getEditDomain().getCommandStack().removeCommandStackEventListener(stackListener);
 		super.deactivate();
@@ -102,6 +105,7 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#isSelectable()
 	 */
+	@Override
 	public boolean isSelectable() {
 		return false;
 	}
@@ -109,6 +113,7 @@ public class ActivityDiagramPart extends StructuredActivityPart {
 	/**
 	 * @see org.eclipse.gef.examples.flow.parts.StructuredActivityPart#refreshVisuals()
 	 */
+	@Override
 	protected void refreshVisuals() {
 	}
 
