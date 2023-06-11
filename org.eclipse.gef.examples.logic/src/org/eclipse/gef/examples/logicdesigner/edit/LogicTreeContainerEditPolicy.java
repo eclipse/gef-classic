@@ -80,7 +80,7 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 	protected Command getMoveChildrenCommand(ChangeBoundsRequest request) {
 		CompoundCommand command = new CompoundCommand();
 		List editparts = request.getEditParts();
-		List children = getHost().getChildren();
+		List<? extends EditPart> children = getHost().getChildren();
 		int newIndex = findIndexOfTreeItemAt(request.getLocation());
 
 		for (int i = 0; i < editparts.size(); i++) {
