@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.examples.scrollpane;
-
-import org.eclipse.swt.graphics.Cursor;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.CompoundBorder;
@@ -28,6 +26,7 @@ import org.eclipse.draw2d.TitleBarBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.swt.graphics.Cursor;
 
 public class InternalFrame extends LabeledContainer {
 
@@ -68,25 +67,29 @@ public class InternalFrame extends LabeledContainer {
 		private Rectangle bounds;
 		private int position = PositionConstants.NONE;
 
+		@Override
 		public void mouseDoubleClicked(MouseEvent me) {
 		}
 
+		@Override
 		public void mouseDragged(MouseEvent me) {
-			if (position == PositionConstants.NONE)
+			if (position == PositionConstants.NONE) {
 				return;
+			}
 			int dx = 0, dy = 0, dw = 0, dh = 0;
 			Rectangle rect = bounds.getCopy();
 			Dimension diff = me.getLocation().getDifference(startLocation);
 			if ((position & PositionConstants.NORTH) == PositionConstants.NORTH) {
 				dy = diff.height;
-				if (move)
+				if (move) {
 					dx = diff.width;
-				else
+				} else {
 					dh = -diff.height;
+				}
 			}
 			if ((position & PositionConstants.WEST) == PositionConstants.WEST) {
 				dx = diff.width;
-				dx = rect.x + dx > rect.x + rect.width - 100 ? rect.width - 100 : dx;
+				dx = (rect.x + dx) > ((rect.x + rect.width) - 100) ? rect.width - 100 : dx;
 				dw = -diff.width;
 			}
 			if ((position & PositionConstants.EAST) == PositionConstants.EAST) {
@@ -105,13 +108,16 @@ public class InternalFrame extends LabeledContainer {
 			revalidate();
 		}
 
+		@Override
 		public void mouseMoved(MouseEvent me) {
 			Rectangle figBounds = getBounds();
 			Point mouseLocation = me.getLocation();
-			if (!getBounds().contains(mouseLocation))
+			if (!getBounds().contains(mouseLocation)) {
 				System.out.println("Error");
-			if (!figBounds.contains(mouseLocation))
+			}
+			if (!figBounds.contains(mouseLocation)) {
 				return;
+			}
 			position = getClientArea().getCopy().shrink(4, 4).getPosition(mouseLocation);
 			move = false;
 			Cursor newCursor = null;
@@ -138,11 +144,12 @@ public class InternalFrame extends LabeledContainer {
 				newCursor = Cursors.SIZESW;
 				break;
 			case PositionConstants.NORTH:
-				if (mouseLocation.y > (getBounds().y + getInsets().left))
+				if (mouseLocation.y > (getBounds().y + getInsets().left)) {
 					// Special case: MOVE and NOT RESIZE
 					move = true;
-				else
+				} else {
 					newCursor = Cursors.SIZEN;
+				}
 				break;
 			case PositionConstants.WEST:
 				newCursor = Cursors.SIZEW;
@@ -151,6 +158,7 @@ public class InternalFrame extends LabeledContainer {
 			setCursor(newCursor);
 		}
 
+		@Override
 		public void mousePressed(MouseEvent me) {
 			// Request focus
 			requestFocus();
@@ -162,6 +170,7 @@ public class InternalFrame extends LabeledContainer {
 			bounds = getBounds().getCopy();
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent me) {
 			revalidate();
 			startLocation = null;
@@ -169,6 +178,7 @@ public class InternalFrame extends LabeledContainer {
 			move = false;
 		}
 
+		@Override
 		public void mouseExited(MouseEvent me) {
 			setCursor(null);
 		}

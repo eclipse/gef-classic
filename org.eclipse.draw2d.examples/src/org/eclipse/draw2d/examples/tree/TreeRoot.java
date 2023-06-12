@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Transposer;
 
 /**
- * 
+ *
  * @author hudsonr Created on Apr 23, 2003
  */
 public class TreeRoot extends TreeBranch {
@@ -92,8 +92,9 @@ public class TreeRoot extends TreeBranch {
 	 */
 	@Override
 	public void validate() {
-		if (isValid())
+		if (isValid()) {
 			return;
+		}
 		setRowHeights(getPreferredRowHeights(), 0);
 		super.validate();
 	}

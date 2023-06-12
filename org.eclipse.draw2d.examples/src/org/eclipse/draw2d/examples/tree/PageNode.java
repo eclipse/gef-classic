@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.Color;
 
 /**
- * 
+ *
  * @author hudsonr Created on Apr 22, 2003
  */
 public class PageNode extends Figure {
@@ -87,7 +87,7 @@ public class PageNode extends Figure {
 			g.drawPolygon(CORNER_PAINT);
 			g.restoreState();
 			g.setForegroundColor(corner2);
-			g.drawLine(r.right() - CORNER_SIZE + 1, r.y + 2, r.right() - 2, r.y + CORNER_SIZE - 1);
+			g.drawLine((r.right() - CORNER_SIZE) + 1, r.y + 2, r.right() - 2, (r.y + CORNER_SIZE) - 1);
 		}
 	}
 
@@ -122,10 +122,11 @@ public class PageNode extends Figure {
 
 	public void setSelected(boolean value) {
 		this.selected = value;
-		if (selected)
+		if (selected) {
 			label.setForegroundColor(ColorConstants.white);
-		else
+		} else {
 			label.setForegroundColor(null);
+		}
 		repaint();
 	}
 

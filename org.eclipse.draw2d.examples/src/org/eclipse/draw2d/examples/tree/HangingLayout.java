@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Transposer;
 
 /**
- * 
+ *
  * @author hudsonr Created on Apr 22, 2003
  */
 class HangingLayout extends AbstractBranchLayout {
@@ -54,14 +54,16 @@ class HangingLayout extends AbstractBranchLayout {
 		Transposer transposer = branch.getRoot().getTransposer();
 		preferredRowHeights = new int[getDepth()];
 		preferredRowHeights[0] = transposer.t(branch.getNode().getPreferredSize()).height + getMajorSpacing();
-		if (!branch.isExpanded())
+		if (!branch.isExpanded()) {
 			return;
+		}
 
 		int offset = 1;
 		for (TreeBranch subtree : branch.getSubtrees()) {
 			int[] rowHeights = subtree.getPreferredRowHeights();
-			for (int row = 0; row < rowHeights.length; row++)
+			for (int row = 0; row < rowHeights.length; row++) {
 				preferredRowHeights[row + offset] = rowHeights[row];
+			}
 			offset += subtree.getDepth();
 		}
 	}
@@ -76,10 +78,11 @@ class HangingLayout extends AbstractBranchLayout {
 		Dimension result = transposer.t(branch.getNode().getPreferredSize().getCopy());
 		result.height = rowHeight;
 		IFigure pane = branch.getContentsPane();
-		if (!pane.isVisible() || pane.getChildren().isEmpty())
+		if (!pane.isVisible() || pane.getChildren().isEmpty()) {
 			return transposer.t(result);
+		}
 		Dimension d = transposer.t(branch.getContentsPane().getPreferredSize());
-		result.width = Math.max(result.width, d.width + getGap() * 2);
+		result.width = Math.max(result.width, d.width + (getGap() * 2));
 		result.height += d.height;
 		return transposer.t(result);
 	}
@@ -87,8 +90,9 @@ class HangingLayout extends AbstractBranchLayout {
 	@Override
 	public void layout(IFigure f) {
 		Animation.recordInitialState(f);
-		if (Animation.playbackState(f))
+		if (Animation.playbackState(f)) {
 			return;
+		}
 		branch.getContentsPane().validate();
 
 		Transposer transposer = getTransposer();
@@ -113,8 +117,9 @@ class HangingLayout extends AbstractBranchLayout {
 	@Override
 	void paintLines(Graphics g) {
 		List<TreeBranch> children = branch.getSubtrees();
-		if (children.isEmpty())
+		if (children.isEmpty()) {
 			return;
+		}
 
 		int gap = getGap();
 		IFigure node = branch.getNode();
@@ -159,20 +164,23 @@ class HangingLayout extends AbstractBranchLayout {
 		cachedContourLeft[0] = nodeBounds.x() - clientArea.x();
 		cachedContourRight[0] = rightEdge - nodeBounds.right();
 
-		if (!branch.isExpanded())
+		if (!branch.isExpanded()) {
 			return;
+		}
 
 		int leftSide = getGap();
-		for (int i = 1; i < getDepth(); i++)
+		for (int i = 1; i < getDepth(); i++) {
 			cachedContourLeft[i] = leftSide;
+		}
 
 		int rightMargin;
 		int offset = 1;
 		for (TreeBranch subtree : branch.getSubtrees()) {
 			rightMargin = rightEdge - transposer.t(subtree.getBounds()).right();
 			int[] rightContour = subtree.getContourRight();
-			for (int j = 0; j < rightContour.length; j++)
+			for (int j = 0; j < rightContour.length; j++) {
 				cachedContourRight[j + offset] = rightContour[j] + rightMargin;
+			}
 			offset += subtree.getDepth();
 		}
 	}

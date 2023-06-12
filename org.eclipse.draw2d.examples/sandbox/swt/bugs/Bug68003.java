@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,6 +46,7 @@ public class Bug68003 {
 		status.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		canvas.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseDown(MouseEvent e) {
 				state = DRAGGING;
 				status.setText("drag in progress");
@@ -53,6 +54,7 @@ public class Bug68003 {
 				shell.setEnabled(true);
 			}
 
+			@Override
 			public void mouseUp(MouseEvent e) {
 				if (state == DRAGGING) {
 					status.setText("drag completed");
@@ -62,6 +64,7 @@ public class Bug68003 {
 		});
 
 		canvas.addFocusListener(new FocusAdapter() {
+			@Override
 			public void focusLost(FocusEvent e) {
 				if (state == DRAGGING) {
 					state = ABORTED;
@@ -73,9 +76,11 @@ public class Bug68003 {
 		shell.setSize(400, 300);
 		shell.open();
 
-		while (!shell.isDisposed())
-			if (!display.readAndDispatch())
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
+		}
 	}
 
 }

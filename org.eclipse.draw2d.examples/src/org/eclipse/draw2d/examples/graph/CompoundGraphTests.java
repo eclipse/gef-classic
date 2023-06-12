@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import org.eclipse.draw2d.graph.Subgraph;
 
 /**
  * A collection of compound graph tests.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -225,7 +225,7 @@ public class CompoundGraphTests {
 		edges.add(new Edge(s8c, s8e));
 
 		Node inner1, inner2, inner3, inner4, inner5, inner6, inner7, inner8, inner9, inner10, inner11, inner12, inner13,
-				inner14, inner15, inner16;
+		inner14, inner15, inner16;
 
 		nodes.add(inner1 = new Node("buckyball", s1));
 		nodes.add(inner2 = new Node("d", s1));

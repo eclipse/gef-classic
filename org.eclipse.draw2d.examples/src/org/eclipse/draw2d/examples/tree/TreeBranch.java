@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,8 +45,9 @@ public class TreeBranch extends Figure {
 			boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height);
 			boolean translate = (rect.x != x) || (rect.y != y);
 
-			if (isVisible() && (resize || translate))
+			if (isVisible() && (resize || translate)) {
 				erase();
+			}
 			if (translate) {
 				int dx = rect.x - x;
 				int dy = rect.y - y;
@@ -54,8 +55,8 @@ public class TreeBranch extends Figure {
 			}
 			bounds.width = rect.width;
 			bounds.height = rect.height;
-//	if (resize)  Layouts dont depend on size.
-//		invalidate();
+			//	if (resize)  Layouts dont depend on size.
+			//		invalidate();
 			if (resize || translate) {
 				fireMoved();
 				repaint();
@@ -93,8 +94,9 @@ public class TreeBranch extends Figure {
 
 	public TreeBranch(IFigure title, int style) {
 		setStyle(style);
-		if (title.getBorder() == null)
+		if (title.getBorder() == null) {
 			title.setBorder(new LineBorder(ColorConstants.gray, 2));
+		}
 		this.node = title;
 		add(contents);
 		add(title);
@@ -103,7 +105,7 @@ public class TreeBranch extends Figure {
 	/**
 	 * recursively set all nodes and sub-treebranch nodes to the same location. This
 	 * gives the appearance of all nodes coming from the same place.
-	 * 
+	 *
 	 * @param bounds where to set
 	 */
 	public void animationReset(Rectangle bounds) {
@@ -111,8 +113,8 @@ public class TreeBranch extends Figure {
 
 		// Make the center of this node match the center of the given bounds
 		Rectangle r = node.getBounds();
-		int dx = bounds.x + bounds.width / 2 - r.x - r.width / 2;
-		int dy = bounds.y + bounds.height / 2 - r.y - r.height / 2;
+		int dx = (bounds.x + (bounds.width / 2)) - r.x - (r.width / 2);
+		int dy = (bounds.y + (bounds.height / 2)) - r.y - (r.height / 2);
 		node.translate(dx, dy);
 		revalidate(); // Otherwise, this branch will not layout
 
@@ -124,18 +126,19 @@ public class TreeBranch extends Figure {
 	}
 
 	public void collapse() {
-		if (!expanded)
+		if (!expanded) {
 			return;
+		}
 
 		IFigure root = this;
 		Viewport port = null;
-		Point viewportStart = null;
 		while (root.getParent() != null) {
-			if (root instanceof Viewport)
+			if (root instanceof Viewport) {
 				port = ((Viewport) root);
+			}
 			root = root.getParent();
 		}
-		viewportStart = port.getViewLocation();
+		Point viewportStart = port.getViewLocation();
 		Point nodeStart = node.getBounds().getLocation();
 		setExpanded(false);
 		root.validate();
@@ -149,8 +152,9 @@ public class TreeBranch extends Figure {
 
 		root.validate();
 		port.setViewLocation(viewportStart);
-		while (Animation.step())
+		while (Animation.step()) {
 			getUpdateManager().performUpdate();
+		}
 		Animation.end();
 		setExpanded(false);
 	}
@@ -164,16 +168,18 @@ public class TreeBranch extends Figure {
 	}
 
 	public void expand() {
-		if (expanded)
+		if (expanded) {
 			return;
+		}
 		setExpanded(true);
 		animationReset(getNodeBounds());
 
 		Animation.mark(getNode());
 		Animation.captureLayout(getRoot());
 
-		while (Animation.step())
+		while (Animation.step()) {
 			getUpdateManager().performUpdate();
+		}
 		Animation.end();
 	}
 
@@ -214,8 +220,9 @@ public class TreeBranch extends Figure {
 	 */
 	@Override
 	public Dimension getMinimumSize(int wHint, int hHint) {
-		if (!Animation.PLAYBACK)
+		if (!Animation.PLAYBACK) {
 			validate();
+		}
 		return super.getMinimumSize(wHint, hHint);
 	}
 
@@ -236,8 +243,9 @@ public class TreeBranch extends Figure {
 	 */
 	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
-		if (!Animation.PLAYBACK)
+		if (!Animation.PLAYBACK) {
 			validate();
+		}
 		return super.getPreferredSize(wHint, hHint);
 	}
 
@@ -263,9 +271,11 @@ public class TreeBranch extends Figure {
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
 		if (isExpanded())
+		{
 			getBranchLayout().paintLines(graphics);
-//	if (getDepth() == 2)
-//		graphics.drawRectangle(getBounds().getResized(-1, -1));
+			//	if (getDepth() == 2)
+			//		graphics.drawRectangle(getBounds().getResized(-1, -1));
+		}
 	}
 
 	public void setAlignment(int value) {
@@ -277,8 +287,9 @@ public class TreeBranch extends Figure {
 	 * @param b
 	 */
 	public void setExpanded(boolean b) {
-		if (expanded == b)
+		if (expanded == b) {
 			return;
+		}
 		expanded = b;
 		contents.setVisible(b);
 		revalidate();
@@ -289,8 +300,9 @@ public class TreeBranch extends Figure {
 	}
 
 	public void setStyle(int style) {
-		if (this.style == style)
+		if (this.style == style) {
 			return;
+		}
 		this.style = style;
 		switch (style) {
 		case STYLE_HANGING:
@@ -329,15 +341,17 @@ public class TreeBranch extends Figure {
 	 */
 	@Override
 	public void validate() {
-		if (isValid())
+		if (isValid()) {
 			return;
+		}
 		if (style == STYLE_HANGING) {
 			ToolbarLayout layout = new ToolbarLayout(!getRoot().isHorizontal()) {
 				@Override
 				public void layout(IFigure parent) {
 					Animation.recordInitialState(parent);
-					if (Animation.playbackState(parent))
+					if (Animation.playbackState(parent)) {
 						return;
+					}
 
 					super.layout(parent);
 				}

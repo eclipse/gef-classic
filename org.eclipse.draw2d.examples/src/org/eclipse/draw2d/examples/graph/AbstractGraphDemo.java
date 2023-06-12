@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -68,10 +68,11 @@ public abstract class AbstractGraphDemo {
 			Point p;
 			p = getOwner().getBounds().getCenter();
 			getOwner().translateToAbsolute(p);
-			if (reference.y < p.y)
+			if (reference.y < p.y) {
 				p = getOwner().getBounds().getTop();
-			else
+			} else {
 				p = getOwner().getBounds().getBottom();
+			}
 			getOwner().translateToAbsolute(p);
 			return p;
 		}
@@ -87,10 +88,11 @@ public abstract class AbstractGraphDemo {
 			Point p;
 			p = getOwner().getBounds().getCenter();
 			getOwner().translateToAbsolute(p);
-			if (reference.x() < p.x())
+			if (reference.x() < p.x()) {
 				p = getOwner().getBounds().getLeft();
-			else
+			} else {
 				p = getOwner().getBounds().getRight();
+			}
 			getOwner().translateToAbsolute(p);
 			return p;
 		}
@@ -98,7 +100,7 @@ public abstract class AbstractGraphDemo {
 
 	/**
 	 * Builds a figure for the given edge and adds it to contents
-	 * 
+	 *
 	 * @param contents the parent figure to add the edge to
 	 * @param edge     the edge
 	 */
@@ -113,7 +115,7 @@ public abstract class AbstractGraphDemo {
 
 	/**
 	 * Builds a Figure for the given node and adds it to contents
-	 * 
+	 *
 	 * @param contents the parent Figure to add the node to
 	 * @param node     the node to add
 	 */
@@ -123,10 +125,11 @@ public abstract class AbstractGraphDemo {
 		label.setBackgroundColor(ColorConstants.lightGray);
 		label.setOpaque(true);
 		label.setBorder(new LineBorder());
-		if (node.incoming.isEmpty())
+		if (node.incoming.isEmpty()) {
 			label.setBorder(new LineBorder(2));
+		}
 		String text = node.data.toString();// + "(" + node.index
-											// +","+node.sortValue+ ")";
+		// +","+node.sortValue+ ")";
 		label.setText(text);
 		node.data = label;
 		contents.add(label, new Rectangle(node.x, node.y, node.width, node.height));
@@ -159,14 +162,14 @@ public abstract class AbstractGraphDemo {
 
 	/**
 	 * Builds a connection for the given edge
-	 * 
+	 *
 	 * @param e the edge
 	 * @return the connection
 	 */
 	static PolylineConnection connection(Edge e) {
 		PolylineConnection conn = new PolylineConnection();
 		conn.setConnectionRouter(new BendpointConnectionRouter());
-		List bends = new ArrayList();
+		List<AbsoluteBendpoint> bends = new ArrayList<>();
 		NodeList nodes = e.vNodes;
 		if (nodes != null) {
 			for (int i = 0; i < nodes.size(); i++) {
@@ -190,7 +193,7 @@ public abstract class AbstractGraphDemo {
 
 	/**
 	 * Returns the FigureCanvas
-	 * 
+	 *
 	 * @return this demo's FigureCanvas
 	 */
 	protected FigureCanvas getFigureCanvas() {
@@ -200,7 +203,7 @@ public abstract class AbstractGraphDemo {
 	/**
 	 * Returns an array of strings that represent the names of the methods which
 	 * build graphs for this graph demo
-	 * 
+	 *
 	 * @return array of graph building method names
 	 */
 	protected abstract String[] getGraphMethods();
@@ -214,22 +217,25 @@ public abstract class AbstractGraphDemo {
 
 		composite.setLayout(new GridLayout());
 		final org.eclipse.swt.widgets.Label nodesLabel = new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
-		nodesLabel.setText("Graph");
+		nodesLabel.setText("Graph"); //$NON-NLS-1$
 		final Combo graphList = new Combo(composite, SWT.DROP_DOWN);
 
 		String[] graphMethods = getGraphMethods();
-		for (int i = 0; i < graphMethods.length; i++) {
-			if (graphMethods[i] != null)
-				graphList.add(graphMethods[i]);
+		for (String graphMethod2 : graphMethods) {
+			if (graphMethod2 != null) {
+				graphList.add(graphMethod2);
+			}
 		}
 		setGraphMethod(graphMethods[0]);
 		graphList.setText(graphMethod);
 		graphList.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				setGraphMethod(graphList.getItem(graphList.getSelectionIndex()));
 				getFigureCanvas().setContents(getContents());
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				graphList.setText(graphMethod);
 			}
@@ -252,11 +258,12 @@ public abstract class AbstractGraphDemo {
 		// });
 
 		final org.eclipse.swt.widgets.Label directionLabel = new org.eclipse.swt.widgets.Label(composite, SWT.NONE);
-		directionLabel.setText("Graph Direction");
+		directionLabel.setText("Graph Direction"); //$NON-NLS-1$
 		final Combo directionCombo = new Combo(composite, SWT.DEFAULT);
-		directionCombo.setItems(new String[] { "SOUTH", "EAST" });
+		directionCombo.setItems("SOUTH", "EAST"); //$NON-NLS-1$ //$NON-NLS-2$
 		directionCombo.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int index = directionCombo.getSelectionIndex();
 				switch (index) {
@@ -270,6 +277,7 @@ public abstract class AbstractGraphDemo {
 				getFigureCanvas().setContents(getContents());
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
@@ -294,14 +302,16 @@ public abstract class AbstractGraphDemo {
 		getFigureCanvas().setLayoutData(new GridData(GridData.FILL_BOTH));
 		shell.setSize(1100, 700);
 		shell.open();
-		while (!shell.isDisposed())
-			while (!d.readAndDispatch())
+		while (!shell.isDisposed()) {
+			while (!d.readAndDispatch()) {
 				d.sleep();
+			}
+		}
 	}
 
 	/**
 	 * Sets this demo's FigureCanvas
-	 * 
+	 *
 	 * @param canvas this demo's FigureCanvas
 	 */
 	protected void setFigureCanvas(FigureCanvas canvas) {
@@ -310,7 +320,7 @@ public abstract class AbstractGraphDemo {
 
 	/**
 	 * Sets the name of the method to call to build the graph
-	 * 
+	 *
 	 * @param method name of the method used to build the graph
 	 */
 	public static void setGraphMethod(String method) {

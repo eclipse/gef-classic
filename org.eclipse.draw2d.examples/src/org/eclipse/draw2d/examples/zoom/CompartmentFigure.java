@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,11 +32,13 @@ public class CompartmentFigure extends Figure {
 		setBorder(new CompartmentFigureBorder());
 	}
 
-	public class CompartmentFigureBorder extends AbstractBorder {
+	public static class CompartmentFigureBorder extends AbstractBorder {
+		@Override
 		public Insets getInsets(IFigure figure) {
 			return new Insets(1, 0, 0, 0);
 		}
 
+		@Override
 		public void paint(IFigure figure, Graphics graphics, Insets insets) {
 			graphics.drawLine(getPaintRectangle(figure, insets).getTopLeft(), tempRect.getTopRight());
 		}

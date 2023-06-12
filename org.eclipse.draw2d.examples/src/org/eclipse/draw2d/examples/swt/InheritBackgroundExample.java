@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2008, 2023 IBM Corporation and others.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     IBM Corporation - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.draw2d.examples.swt;
 
 import org.eclipse.draw2d.ColorConstants;
@@ -34,7 +44,7 @@ public class InheritBackgroundExample {
 	public static void main(String[] args) {
 		Display d = Display.getDefault();
 		shell = new Shell(d, SWT.SHELL_TRIM);
-		shell.setText("Figure Canvas inheriting background from parent Composite");
+		shell.setText("Figure Canvas inheriting background from parent Composite"); //$NON-NLS-1$
 		shell.setLayout(new GridLayout(2, false));
 		shell.setBackgroundImage(bg);
 		shell.setBackgroundMode(SWT.INHERIT_FORCE);
@@ -43,19 +53,21 @@ public class InheritBackgroundExample {
 
 		canvas = createCanvas(shell,
 				SWT.DOUBLE_BUFFERED | SWT.BORDER | SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL,
-				"Paints Background");
+				"Paints Background"); //$NON-NLS-1$
 		canvas.setBackground(ColorConstants.orange);
 
 		canvas = createCanvas(shell,
 				SWT.DOUBLE_BUFFERED | SWT.BORDER | SWT.NO_REDRAW_RESIZE | SWT.V_SCROLL | SWT.H_SCROLL,
-				"Inherits Background");
+				"Inherits Background"); //$NON-NLS-1$
 		canvas.getLightweightSystem().getRootFigure().setOpaque(false);
 
 		shell.pack();
 		shell.open();
-		while (!shell.isDisposed())
-			while (!d.readAndDispatch())
+		while (!shell.isDisposed()) {
+			while (!d.readAndDispatch()) {
 				d.sleep();
+			}
+		}
 	}
 
 	private static FigureCanvas createCanvas(Composite parent, int style, String text) {
@@ -66,10 +78,14 @@ public class InheritBackgroundExample {
 		group.setLayout(new FillLayout());
 
 		FigureCanvas canvas = new FigureCanvas(style, parent);
-		canvas.setContents(new Label(
-				"This is a figure canvas\n" + "with a label.  The background\n" + "is either painted by the root\n"
-						+ "figure, or by the operating system.\n" + "Note that vertical scrolling may not be\n"
-						+ "as fast when the background from the\n" + "parent is inherited."));
+		canvas.setContents(new Label("""
+				This is a figure canvas
+				with a label.  The background
+				is either painted by the root
+				figure, or by the operating system.
+				Note that vertical scrolling may not be
+				as fast when the background from the
+				parent is inherited."""));
 		return canvas;
 	}
 

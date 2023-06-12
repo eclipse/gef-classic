@@ -202,8 +202,9 @@ public class ObstructionExample extends AbstractExample {
 							add(eFigure);
 							figure = eFigure;
 						}
-					} else
+					} else {
 						showSegs = !showSegs;
+					}
 					getParent().repaint();
 				}
 			});
@@ -216,8 +217,8 @@ public class ObstructionExample extends AbstractExample {
 			int rowSize = (int) Math.sqrt(INITAL_OBSTACLE_COUNT);
 			for (int i = 0; i < INITAL_OBSTACLE_COUNT; i++) {
 				DragFigure f = new DragFigure();
-				Rectangle bounds = new Rectangle((i / rowSize) * 101 + (i) % 3 * 10 + 100,
-						i % rowSize * 101 + (i % 7) * 6, 50, 80 + (int) (r.nextDouble() * 10));
+				Rectangle bounds = new Rectangle(((i / rowSize) * 101) + (((i) % 3) * 10) + 100,
+						((i % rowSize) * 101) + ((i % 7) * 6), 50, 80 + (int) (r.nextDouble() * 10));
 				f.setBounds(bounds);
 
 				add(f);
@@ -235,8 +236,9 @@ public class ObstructionExample extends AbstractExample {
 			// draw paths
 			paths.forEach(p -> {
 				PointList pList = p.getPoints();
-				for (int i = 1; i < pList.size(); i++)
+				for (int i = 1; i < pList.size(); i++) {
 					g.drawLine(pList.getPoint(i - 1), pList.getPoint(i));
+				}
 			});
 		}
 

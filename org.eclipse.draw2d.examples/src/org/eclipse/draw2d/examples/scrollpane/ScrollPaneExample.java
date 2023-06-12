@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * when scrollbars should be displayed. One window shows a view of a fixed-sized
  * figure. The other shows a FlowLayout that wraps from left-to-right, and then
  * top-to-bottom.
- * 
+ *
  * @author hudsonr
  */
 public class ScrollPaneExample extends AbstractExample {
@@ -35,14 +35,15 @@ public class ScrollPaneExample extends AbstractExample {
 		new ScrollPaneExample().run();
 	}
 
+	@Override
 	protected IFigure createContents() {
 		Figure mainPanel = new Figure();
-		mainPanel.add(newScrollingFrame("Flow layouts", ExampleUtil.createToolbarLayout()));
+		mainPanel.add(newScrollingFrame("Flow layouts", ExampleUtil.createToolbarLayout())); //$NON-NLS-1$
 
 		Figure fixedSize = new Figure();
 		fixedSize.setBorder(new LineBorder());
 		fixedSize.setPreferredSize(100, 100);
-		mainPanel.add(newScrollingFrame("fixed 100x100", fixedSize));
+		mainPanel.add(newScrollingFrame("fixed 100x100", fixedSize)); //$NON-NLS-1$
 
 		return mainPanel;
 	}
@@ -51,8 +52,8 @@ public class ScrollPaneExample extends AbstractExample {
 		InternalFrame frame = new InternalFrame();
 		frame.setLabel(title);
 		ScrollPane scrollpane = new ScrollPane();
-		scrollpane.setBorder(new GroupBoxBorder("scrollpane"));
-//	scrollpane.setScrollBarVisibility(scrollpane.ALWAYS);
+		scrollpane.setBorder(new GroupBoxBorder("scrollpane")); //$NON-NLS-1$
+		//	scrollpane.setScrollBarVisibility(scrollpane.ALWAYS);
 		scrollpane.getViewport().setContentsTracksWidth(true);
 		scrollpane.setContents(contents);
 		frame.add(scrollpane);

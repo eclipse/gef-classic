@@ -1,6 +1,6 @@
 
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,12 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.FigureUtilities;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
@@ -17,25 +23,20 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.FigureUtilities;
-import org.eclipse.draw2d.Graphics;
-import org.eclipse.draw2d.ToolbarLayout;
-import org.eclipse.draw2d.geometry.Dimension;
-
 public class BenchmarkTextPackage {
 
 	static class StyledLine extends Figure {
 		Dimension pref;
 		private String text;
 
+		@Override
 		public Dimension getPreferredSize(int wHint, int hHint) {
 			if (pref == null)
 				pref = FigureUtilities.getTextExtents(text, getFont());
 			return pref;
 		}
 
+		@Override
 		protected void paintFigure(Graphics graphics) {
 			graphics.setFont(getFont());
 			graphics.drawText(text, bounds.x, bounds.y);
@@ -52,7 +53,7 @@ public class BenchmarkTextPackage {
 		}
 	}
 
-	static Font BIG = new Font(null, "Times", 18, SWT.BOLD);
+	static final Font BIG = new Font(null, "Times", 18, SWT.BOLD); //$NON-NLS-1$
 	static StyledLine typing;
 
 	public static void main(String[] args) {
@@ -76,7 +77,7 @@ public class BenchmarkTextPackage {
 			StyledLine line = new StyledLine();
 			if (i % 20 == 0)
 				line.setFont(BIG);
-			line.setText("This is line number " + i);
+			line.setText("This is line number " + i); //$NON-NLS-1$
 			if (i == 99)
 				typing = line;
 			page.add(line);
@@ -84,12 +85,14 @@ public class BenchmarkTextPackage {
 		canvas.setContents(page);
 
 		canvas.addKeyListener(new KeyListener() {
+			@Override
 			public void keyPressed(KeyEvent e) {
 				typing.setText(typing.getText() + e.character);
 				typing.revalidate();
 				typing.repaint();
 			}
 
+			@Override
 			public void keyReleased(KeyEvent e) {
 			}
 		});

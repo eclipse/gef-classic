@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2005 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,12 @@
 
 package org.eclipse.draw2d.examples.uml;
 
-import org.eclipse.draw2d.*;
 import org.eclipse.draw2d.AbstractBorder;
-import org.eclipse.draw2d.geometry.*;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Graphics;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.TextFlow;
@@ -30,6 +32,7 @@ public class StickyNote extends FlowPage {
 		/**
 		 * @see org.eclipse.draw2d.Border#getInsets(org.eclipse.draw2d.IFigure)
 		 */
+		@Override
 		public Insets getInsets(IFigure figure) {
 			return INSETS;
 		}
@@ -38,6 +41,7 @@ public class StickyNote extends FlowPage {
 		 * @see org.eclipse.draw2d.Border#paint(org.eclipse.draw2d.IFigure,
 		 *      org.eclipse.draw2d.Graphics, org.eclipse.draw2d.geometry.Insets)
 		 */
+		@Override
 		public void paint(IFigure figure, Graphics g, Insets insets) {
 			Rectangle r = getPaintRectangle(figure, insets);
 			r.resize(-1, -1);
@@ -57,7 +61,7 @@ public class StickyNote extends FlowPage {
 	public StickyNote() {
 		setBorder(new DogEar());
 		add(text);
-		text.setText("This is a sticky note.  It wraps text based on its " + "width.");
+		text.setText("This is a sticky note.  It wraps text based on its " + "width."); //$NON-NLS-1$ //$NON-NLS-2$
 		setBackgroundColor(ColorConstants.tooltipBackground);
 		setOpaque(true);
 	}
@@ -65,6 +69,7 @@ public class StickyNote extends FlowPage {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowFigure#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics g) {
 		Rectangle r = getBounds();
 		PointList pl = new PointList(5);

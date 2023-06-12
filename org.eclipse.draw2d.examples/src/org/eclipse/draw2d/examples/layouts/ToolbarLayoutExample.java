@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,7 @@ public class ToolbarLayoutExample extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
+	@Override
 	protected IFigure createContents() {
 		Figure container = new Figure();
 		container.setBorder(new LineBorder());
@@ -86,6 +87,7 @@ public class ToolbarLayoutExample extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell()
 	 */
+	@Override
 	protected void hookShell(Shell shell) {
 		Composite composite = new Composite(shell, 0);
 		composite.setLayoutData(new GridData(GridData.FILL_VERTICAL));
@@ -93,24 +95,27 @@ public class ToolbarLayoutExample extends AbstractExample {
 		composite.setLayout(new GridLayout());
 
 		final Button horizontal = new Button(composite, SWT.CHECK);
-		horizontal.setText("Horizontal");
+		horizontal.setText("Horizontal"); //$NON-NLS-1$
 		horizontal.setSelection(true);
 		horizontal.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				layout.setVertical(layout.isHorizontal());
-				if (layout.getStretchMinorAxis())
+				layout.setHorizontal(!layout.isHorizontal());
+				if (layout.isStretchMinorAxis()) {
 					resetShapes();
+				}
 				getContents().revalidate();
 				shell.layout(true);
 			}
 		});
 
 		final Button stretch = new Button(composite, SWT.CHECK);
-		stretch.setText("Stretch Minor Axis");
+		stretch.setText("Stretch Minor Axis"); //$NON-NLS-1$
 		stretch.setSelection(false);
 		stretch.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				layout.setStretchMinorAxis(!layout.getStretchMinorAxis());
+				layout.setStretchMinorAxis(!layout.isStretchMinorAxis());
 				resetShapes();
 				getContents().revalidate();
 				shell.layout(true);
@@ -119,21 +124,23 @@ public class ToolbarLayoutExample extends AbstractExample {
 		{
 			Group major = new Group(composite, 0);
 			major.setLayout(new FillLayout(SWT.VERTICAL));
-			major.setText("Minor Axis");
+			major.setText("Minor Axis"); //$NON-NLS-1$
 
 			Button left = new Button(major, SWT.RADIO);
-			left.setText("Top/Left");
+			left.setText("Top/Left"); //$NON-NLS-1$
 			left.setSelection(true);
 			left.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
-					layout.setMinorAlignment(FlowLayout.ALIGN_LEFTTOP);
+					layout.setMinorAlignment(FlowLayout.ALIGN_TOPLEFT);
 					getContents().revalidate();
 				}
 			});
 
 			Button center = new Button(major, SWT.RADIO);
-			center.setText("Middle/Center");
+			center.setText("Middle/Center"); //$NON-NLS-1$
 			center.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					layout.setMinorAlignment(FlowLayout.ALIGN_CENTER);
 					getContents().revalidate();
@@ -141,10 +148,11 @@ public class ToolbarLayoutExample extends AbstractExample {
 			});
 
 			Button right = new Button(major, SWT.RADIO);
-			right.setText("Buttom/Right");
+			right.setText("Buttom/Right"); //$NON-NLS-1$
 			right.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
-					layout.setMinorAlignment(FlowLayout.ALIGN_RIGHTBOTTOM);
+					layout.setMinorAlignment(FlowLayout.ALIGN_BOTTOMRIGHT);
 					getContents().revalidate();
 				}
 			});
@@ -154,13 +162,14 @@ public class ToolbarLayoutExample extends AbstractExample {
 			spacing.setMaximum(20);
 			spacing.setSelection(5);
 			spacing.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					layout.setSpacing(spacing.getSelection());
 					getContents().revalidate();
 				}
 			});
 			Label spacingLabel = new Label(major, SWT.CENTER);
-			spacingLabel.setText("Spacing");
+			spacingLabel.setText("Spacing"); //$NON-NLS-1$
 
 		}
 	}

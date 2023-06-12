@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,7 +34,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * This class demonstrates the use of connections, anchors, and locators in
  * draw2d.
- * 
+ *
  * @author delee
  */
 public class ConnectionAndAnchorExample extends AbstractExample {
@@ -46,13 +46,14 @@ public class ConnectionAndAnchorExample extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
+	@Override
 	protected IFigure createContents() {
 		IFigure panel = new Figure();
 
 		Figure endPointPanel = new Figure();
 		endPointPanel.setBounds(new Rectangle(0, 0, 400, 400));
 
-		endPointPanel.setBorder(new GroupBoxBorder("Midpoint Locator"));
+		endPointPanel.setBorder(new GroupBoxBorder("Midpoint Locator")); //$NON-NLS-1$
 
 		RectangleFigure node1 = new RectangleFigure(), node2 = new RectangleFigure();
 		node1.setBackgroundColor(ColorConstants.red);
@@ -65,7 +66,7 @@ public class ConnectionAndAnchorExample extends AbstractExample {
 		conn.setTargetAnchor(new ChopboxAnchor(node2));
 		conn.setTargetDecoration(new PolygonDecoration());
 
-		Label label = new Label("Midpoint");
+		Label label = new Label("Midpoint"); //$NON-NLS-1$
 		label.setOpaque(true);
 		label.setBackgroundColor(ColorConstants.buttonLightest);
 		label.setBorder(new LineBorder());
@@ -81,7 +82,7 @@ public class ConnectionAndAnchorExample extends AbstractExample {
 		Figure ellipsePanel = new Figure();
 		ellipsePanel.setBounds(new Rectangle(420, 0, 400, 400));
 
-		ellipsePanel.setBorder(new GroupBoxBorder("Connection endpoint Locator"));
+		ellipsePanel.setBorder(new GroupBoxBorder("Connection endpoint Locator")); //$NON-NLS-1$
 
 		Shape node3 = new RectangleFigure(), node4 = new RectangleFigure();
 		node3.setBackgroundColor(ColorConstants.green);
@@ -94,13 +95,13 @@ public class ConnectionAndAnchorExample extends AbstractExample {
 		conn2.setTargetAnchor(new ChopboxAnchor(node4));
 		conn2.setTargetDecoration(new PolygonDecoration());
 
-		Label endPointLabel = new Label("Endpoint");
+		Label endPointLabel = new Label("Endpoint"); //$NON-NLS-1$
 		endPointLabel.setOpaque(true);
 		endPointLabel.setBackgroundColor(ColorConstants.buttonLightest);
 		endPointLabel.setBorder(new LineBorder());
 		conn2.add(endPointLabel, new ConnectionEndpointLocator(conn2, true));
 
-		Label endPointLabel2 = new Label("Endpoint");
+		Label endPointLabel2 = new Label("Endpoint"); //$NON-NLS-1$
 		endPointLabel2.setOpaque(true);
 		endPointLabel2.setBackgroundColor(ColorConstants.buttonLightest);
 		endPointLabel2.setBorder(new LineBorder());
@@ -109,7 +110,7 @@ public class ConnectionAndAnchorExample extends AbstractExample {
 		endpointLocator.setVDistance(-3);
 		conn2.add(endPointLabel2, endpointLocator);
 
-		Label instructions = new Label(" Drag the shapes to see the Locators in action ");
+		Label instructions = new Label(" Drag the shapes to see the Locators in action "); //$NON-NLS-1$
 		instructions.setBorder(new LineBorder());
 		instructions.setLocation(new Point(10, 420));
 		instructions.setSize(instructions.getPreferredSize());
@@ -142,20 +143,24 @@ public class ConnectionAndAnchorExample extends AbstractExample {
 
 		Point last;
 
+		@Override
 		public void mouseReleased(MouseEvent e) {
 		}
 
 		public void mouseClicked(MouseEvent e) {
 		}
 
+		@Override
 		public void mouseDoubleClicked(MouseEvent e) {
 		}
 
+		@Override
 		public void mousePressed(MouseEvent e) {
 			last = e.getLocation();
 			e.consume();
 		}
 
+		@Override
 		public void mouseDragged(MouseEvent e) {
 			Point p = e.getLocation();
 			Dimension delta = p.getDifference(last);

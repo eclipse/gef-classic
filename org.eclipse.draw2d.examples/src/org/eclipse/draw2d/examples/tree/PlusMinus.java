@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import org.eclipse.draw2d.Toggle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
- * 
+ *
  * @author hudsonr Created on Apr 22, 2003
  */
 public class PlusMinus extends Toggle {
@@ -33,11 +33,12 @@ public class PlusMinus extends Toggle {
 		Rectangle r = Rectangle.SINGLETON;
 		r.setBounds(getBounds()).resize(-1, -1);
 		g.drawRectangle(r);
-		int xMid = r.x + r.width / 2;
-		int yMid = r.y + r.height / 2;
+		int xMid = r.x + (r.width / 2);
+		int yMid = r.y + (r.height / 2);
 		g.drawLine(r.x + 2, yMid, r.right() - 2, yMid);
-		if (!isSelected())
+		if (!isSelected()) {
 			g.drawLine(xMid, r.y + 2, xMid, r.bottom() - 2);
+		}
 	}
 
 }

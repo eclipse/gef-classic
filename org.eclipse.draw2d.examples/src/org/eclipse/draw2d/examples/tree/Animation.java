@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -69,8 +69,9 @@ public class Animation {
 
 	static void captureLayout(IFigure root) {
 		RECORDING = true;
-		while (root.getParent() != null)
+		while (root.getParent() != null) {
 			root = root.getParent();
+		}
 
 		root.validate();
 		initialStates.keySet().forEach(Animation::recordFinalStates);
@@ -80,8 +81,9 @@ public class Animation {
 	}
 
 	static boolean playbackState(IFigure container) {
-		if (!PLAYBACK)
+		if (!PLAYBACK) {
 			return false;
+		}
 		List<Rectangle> initial = initialStates.get(container);
 		if (initial == null) {
 			System.out.println("Error playing back state");
@@ -94,10 +96,10 @@ public class Animation {
 			IFigure child = children.get(i);
 			Rectangle rect1 = initial.get(i);
 			Rectangle rect2 = target.get(i);
-			child.setBounds(new Rectangle((int) Math.round(progress * rect2.x + (1 - progress) * rect1.x),
-					(int) Math.round(progress * rect2.y + (1 - progress) * rect1.y),
-					(int) Math.round(progress * rect2.width + (1 - progress) * rect1.width),
-					(int) Math.round(progress * rect2.height + (1 - progress) * rect1.height)));
+			child.setBounds(new Rectangle((int) Math.round((progress * rect2.x) + ((1 - progress) * rect1.x)),
+					(int) Math.round((progress * rect2.y) + ((1 - progress) * rect1.y)),
+					(int) Math.round((progress * rect2.width) + ((1 - progress) * rect1.width)),
+					(int) Math.round((progress * rect2.height) + ((1 - progress) * rect1.height))));
 		}
 		return true;
 	}
@@ -107,11 +109,13 @@ public class Animation {
 	}
 
 	static void recordInitialState(IFigure container) {
-		if (!RECORDING)
+		if (!RECORDING) {
 			return;
+		}
 		List<Rectangle> list = initialStates.get(container);
-		if (list != null)
+		if (list != null) {
 			return;
+		}
 		recordStates(container, initialStates);
 	}
 

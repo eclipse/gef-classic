@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,8 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.examples.text;
-
-import org.eclipse.swt.graphics.Font;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureCanvas;
@@ -22,10 +20,11 @@ import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.SimpleTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
+import org.eclipse.swt.graphics.Font;
 
 /**
  * This example shows the basic ways that the draw2d.text figures can be used.
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -34,25 +33,24 @@ public class TextFlowExample extends AbstractExample {
 	static protected IFigure createAlignmentParagraph() {
 		BlockFlow block = new BlockFlow();
 		block.setHorizontalAligment(PositionConstants.RIGHT);
-		block.add(new TextFlow("An inline flow figure's aligment is determined "
-				+ "by the block flow in which it resides. This block is aligned using "));
-		TextFlow text = new TextFlow("PositionConstants.RIGHT");
+		block.add(new TextFlow("An inline flow figure's aligment is determined by the block flow in which it resides. This block is aligned using ")); //$NON-NLS-1$
+		TextFlow text = new TextFlow("PositionConstants.RIGHT"); //$NON-NLS-1$
 		text.setFont(COURIER);
 		block.add(text);
-		block.add(new TextFlow(", which results in right text aligment"));
+		block.add(new TextFlow(", which results in right text aligment")); //$NON-NLS-1$
 		return block;
 	}
 
 	static protected IFigure createBaselineParagraph() {
 		BlockFlow block = new BlockFlow();
 
-		String message[] = { "Text fragments ", "with different ", "Font sizes will ", "have their ", "baseline ",
-				"vertically ", "aligned ", "within ", "the current ", "line" };
+		String message[] = { "Text fragments ", "with different ", "Font sizes will ", "have their ", "baseline ", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+				"vertically ", "aligned ", "within ", "the current ", "line" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
 		for (int i = 0; i < message.length; i++) {
 			TextFlow tf = new TextFlow(message[i]);
 			// This is a resource leak.
-			tf.setFont(new Font(null, "Helvetica", i + 8, 0));
+			tf.setFont(new Font(null, "Helvetica", i + 8, 0)); //$NON-NLS-1$
 			block.add(tf);
 		}
 
@@ -64,9 +62,15 @@ public class TextFlowExample extends AbstractExample {
 		blockFlow.setFont(COURIER);
 		TextFlow contents = new TextFlow();
 		contents.setLayoutManager(new SimpleTextLayout(contents));
-		contents.setText("/**\n" + " * The SimpleTextLayout only breaks at newlines\n"
-				+ " * It can be used to render source code.\r" + " */\r\n" + "public void foo() {\n"
-				+ "    //TABs are not handled currently, only spaces.\n" + "    System.out.println(\"foo\")\n" + "}");
+		contents.setText("""
+				/**
+				 * The SimpleTextLayout only breaks at newlines
+				 * It can be used to render source code.\r\
+				 */\r
+				public void foo() {
+				    //TABs are not handled currently, only spaces.
+				    System.out.println("foo")
+				}""");
 		blockFlow.add(contents);
 		return blockFlow;
 	}
@@ -81,17 +85,17 @@ public class TextFlowExample extends AbstractExample {
 		inline.setForegroundColor(ColorConstants.darkBlue);
 		inline.add(new TextFlow(
 				"This TextFlow is inside an InlineFlow with a blue " + "foreground color. Children can have "));
-		text = new TextFlow("Bold ");
+		text = new TextFlow("Bold "); //$NON-NLS-1$
 		text.setFont(BOLD);
 		inline.add(text);
 
-		inline.add(new TextFlow("or "));
+		inline.add(new TextFlow("or ")); //$NON-NLS-1$
 
-		text = new TextFlow("Italic ");
+		text = new TextFlow("Italic "); //$NON-NLS-1$
 		text.setFont(ITALICS);
 		inline.add(text);
 
-		inline.add(new TextFlow("Font, or override other inherited attributes."));
+		inline.add(new TextFlow("Font, or override other inherited attributes.")); //$NON-NLS-1$
 		blockFlow.add(inline);
 		return blockFlow;
 	}
@@ -99,12 +103,14 @@ public class TextFlowExample extends AbstractExample {
 	static protected IFigure createParagraph() {
 		BlockFlow blockFlow = new BlockFlow();
 		TextFlow contents = new TextFlow();
-		contents.setText("A paragraph is created by using a BlockFlow figure. A "
-				+ "paragraph usually wraps to the width of the current page. "
-				+ "To see this, try resizing the example's window. "
-				+ "The contents of this paragraph were created using a TextFlow figure "
-				+ "in its default layout, which breaks at whitespace. "
-				+ "a block of text that doesn't wrap can be created by using the " + "SimpleTextLayout on a TextFlow");
+		contents.setText("""
+				A paragraph is created by using a BlockFlow figure. A\s\
+				paragraph usually wraps to the width of the current page.\s\
+				To see this, try resizing the example's window.\s\
+				The contents of this paragraph were created using a TextFlow figure\s\
+				in its default layout, which breaks at whitespace.\s\
+				a block of text that doesn't wrap can be created by using the\s\
+				SimpleTextLayout on a TextFlow""");
 
 		blockFlow.add(contents);
 		return blockFlow;
@@ -112,7 +118,7 @@ public class TextFlowExample extends AbstractExample {
 
 	static protected IFigure createTitle() {
 		BlockFlow blockFlow = new BlockFlow();
-		TextFlow contents = new TextFlow("Draw2D TextFlow Example");
+		TextFlow contents = new TextFlow("Draw2D TextFlow Example"); //$NON-NLS-1$
 		contents.setFont(HEADING_1);
 		blockFlow.add(contents);
 		return blockFlow;
@@ -121,6 +127,7 @@ public class TextFlowExample extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
+	@Override
 	protected IFigure createContents() {
 		FlowPage page = new FlowPage();
 		page.setOpaque(true);
@@ -141,9 +148,10 @@ public class TextFlowExample extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#setFigureCanvas(FigureCanvas)
 	 */
+	@Override
 	protected void setFigureCanvas(FigureCanvas canvas) {
 		super.setFigureCanvas(canvas);
-//	canvas.setVerticalScrollBarVisibility(canvas.ALWAYS);
+		//	canvas.setVerticalScrollBarVisibility(canvas.ALWAYS);
 		canvas.getViewport().setContentsTracksWidth(true);
 	}
 
