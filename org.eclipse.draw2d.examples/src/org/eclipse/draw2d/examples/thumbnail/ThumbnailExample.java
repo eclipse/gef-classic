@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * This example demonstrates an overview window
- * 
+ *
  * @author hudsonr
  */
 public class ThumbnailExample {
@@ -44,13 +44,13 @@ public class ThumbnailExample {
 		Display display = new Display();
 
 		mainShell = new Shell(display);
-		mainShell.setText("Source Shell");
+		mainShell.setText("Source Shell"); //$NON-NLS-1$
 		mainShell.setLayout(new FillLayout());
 		FigureCanvas mainCanvas = new FigureCanvas(mainShell);
 		mainCanvas.setContents(getContents());
 
 		overviewShell = new Shell(mainShell, SWT.TITLE | SWT.RESIZE | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND);
-		overviewShell.setText("Overview Shell");
+		overviewShell.setText("Overview Shell"); //$NON-NLS-1$
 		overviewShell.setLayout(new FillLayout());
 		LightweightSystem overviewLWS = new LightweightSystem(overviewShell);
 		overviewLWS.setContents(createThumbnail(getContents()));
@@ -60,16 +60,19 @@ public class ThumbnailExample {
 		overviewShell.setSize(200, 200);
 		overviewShell.open();
 
-		while (!mainShell.isDisposed())
-			if (!display.readAndDispatch())
+		while (!mainShell.isDisposed()) {
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
+		}
 		mainShell.dispose();
 		overviewShell.dispose();
 	}
 
 	protected static Figure getContents() {
-		if (contents == null)
+		if (contents == null) {
 			contents = createContents();
+		}
 		return contents;
 	}
 
@@ -81,17 +84,20 @@ public class ThumbnailExample {
 		figure1.setBackgroundColor(ColorConstants.green);
 		figure1.setBounds(new Rectangle(50, 50, 200, 200));
 		figure1.addMouseListener(new MouseListener.Stub() {
+			@Override
 			public void mousePressed(MouseEvent event) {
 				offset.setWidth(event.x - figure1.getLocation().x());
 				offset.setHeight(event.y - figure1.getLocation().y());
 			}
 
+			@Override
 			public void mouseReleased(MouseEvent event) {
 				offset.setWidth(0);
 				offset.setHeight(0);
 			}
 		});
 		figure1.addMouseMotionListener(new MouseMotionListener.Stub() {
+			@Override
 			public void mouseDragged(MouseEvent event) {
 				Rectangle rect = figure1.getBounds().getCopy();
 				rect.setX(event.x - offset.width());
@@ -104,17 +110,20 @@ public class ThumbnailExample {
 		figure2.setBackgroundColor(ColorConstants.blue);
 		figure2.setBounds(new Rectangle(350, 350, 150, 200));
 		figure2.addMouseListener(new MouseListener.Stub() {
+			@Override
 			public void mousePressed(MouseEvent event) {
 				offset.setWidth(event.x - figure2.getLocation().x());
 				offset.setHeight(event.y - figure2.getLocation().y());
 			}
 
+			@Override
 			public void mouseReleased(MouseEvent event) {
 				offset.setWidth(0);
 				offset.setHeight(0);
 			}
 		});
 		figure2.addMouseMotionListener(new MouseMotionListener.Stub() {
+			@Override
 			public void mouseDragged(MouseEvent event) {
 				Rectangle rect = figure2.getBounds().getCopy();
 				rect.setX(event.x - offset.width());
@@ -128,7 +137,7 @@ public class ThumbnailExample {
 
 	protected static Figure createThumbnail(Figure source) {
 		Thumbnail thumbnail = new Thumbnail();
-		thumbnail.setBorder(new GroupBoxBorder("Overview Figure"));
+		thumbnail.setBorder(new GroupBoxBorder("Overview Figure")); //$NON-NLS-1$
 		thumbnail.setSource(source);
 		return thumbnail;
 	}

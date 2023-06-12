@@ -1,6 +1,5 @@
-
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +11,9 @@
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 public class ShellTestor {
 
@@ -24,9 +25,10 @@ public class ShellTestor {
 
 		Text text = new Text(shell, SWT.BORDER);
 		text.setBounds(100, 10, 80, 23);
-		text.setText("foobar");
+		text.setText("foobar"); //$NON-NLS-1$
 
 		shell.getVerticalBar().addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int dy = shell.getVerticalBar().getSelection() - y;
 				shell.scroll(0, 0, x, dy, 200, 200, true);
@@ -36,9 +38,11 @@ public class ShellTestor {
 
 		shell.setSize(600, 500);
 		shell.open();
-		while (!shell.isDisposed())
-			while (!d.readAndDispatch())
+		while (!shell.isDisposed()) {
+			while (!d.readAndDispatch()) {
 				d.sleep();
+			}
+		}
 
 	}
 

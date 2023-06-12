@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2007 Asim Ullah and others.
+ * Copyright (c) 2004, 2023 Asim Ullah and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -65,7 +65,7 @@ public class GridLayoutExample extends AbstractExample {
 	Shape selectedShape = null, prevSelectedShape = null;
 	int shapeCount = 0;
 	int colorCount = 0;
-	Color colors[] = new Color[] { ColorConstants.blue, ColorConstants.red, ColorConstants.yellow, ColorConstants.gray,
+	Color colors[] = { ColorConstants.blue, ColorConstants.red, ColorConstants.yellow, ColorConstants.gray,
 			ColorConstants.green, ColorConstants.lightBlue, ColorConstants.cyan, ColorConstants.darkGreen,
 			ColorConstants.orange };
 
@@ -79,6 +79,7 @@ public class GridLayoutExample extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
+	@Override
 	protected IFigure createContents() {
 		container = new Figure();
 		container.setBorder(new LineBorder());
@@ -89,9 +90,11 @@ public class GridLayoutExample extends AbstractExample {
 
 		container.setLayoutManager(gridLayout);
 		container.addMouseListener(new MouseListener.Stub() {
+			@Override
 			public void mousePressed(MouseEvent event) {
-				if (selectedShape != null)
+				if (selectedShape != null) {
 					prevSelectedShape.setLineWidth(1);
+				}
 				selectedShape = prevSelectedShape = null;
 				setEnableGridDataGroup(false);
 			}
@@ -106,35 +109,38 @@ public class GridLayoutExample extends AbstractExample {
 
 	protected Shape createShape() {
 		Shape shape = null;
-		if (shapeCount == 0)
+		if (shapeCount == 0) {
 			shape = new Ellipse();
-		else if (shapeCount == 1)
+		} else if (shapeCount == 1) {
 			shape = new RectangleFigure();
-		else if (shapeCount == 2)
+		} else if (shapeCount == 2) {
 			shape = new RoundedRectangle();
-		else if (shapeCount == 3)
+		} else if (shapeCount == 3) {
 			shape = new RectangleFigure();
-		else if (shapeCount == 4)
+		} else if (shapeCount == 4) {
 			shape = new Ellipse();
-		else if (shapeCount == 5)
+		} else if (shapeCount == 5) {
 			shape = new Triangle();
-		else if (shapeCount == 6)
+		} else if (shapeCount == 6) {
 			shape = new RoundedRectangle();
-		else if (shapeCount == 7)
+		} else if (shapeCount == 7) {
 			shape = new Triangle();
-		else
+		} else {
 			shape = new RoundedRectangle();
+		}
 
 		shape.setBackgroundColor(colors[colorCount]);
 		shape.setSize(70, 70);
 
 		shape.addMouseListener(new MouseListener.Stub() {
+			@Override
 			public void mousePressed(MouseEvent event) {
 				selectedShape = (Shape) event.getSource();
 				setEnableGridDataGroup(true);
 				selectedShape.setLineWidth(4);
-				if (prevSelectedShape != null && prevSelectedShape != selectedShape)
+				if ((prevSelectedShape != null) && (prevSelectedShape != selectedShape)) {
 					prevSelectedShape.setLineWidth(1);
+				}
 
 				GridData d = (GridData) gridLayout.getConstraint(selectedShape);
 				populateGridDataGroup(d);
@@ -143,33 +149,33 @@ public class GridLayoutExample extends AbstractExample {
 			}
 		});
 
-		if (shapeCount == 8) // reset shapes and colors
+		if (shapeCount == 8) { // reset shapes and colors
 			shapeCount = colorCount = 0;
-		else {
+		} else {
 			shapeCount++;
 			colorCount++;
 		}
 		return shape;
 	}
 
-	protected Integer getEventValue(Event e, String id) {
+	protected static Integer getEventValue(Event e, String id) {
 		try {
-			if (e.widget instanceof Text) {
-				return Integer.parseInt(((Text) e.widget).getText());
+			if (e.widget instanceof Text text) {
+				return Integer.parseInt(text.getText());
 			}
 		} catch (NumberFormatException ex) {
-			System.out.println("Error: Invalid Number entered for " + id);
+			System.out.println("Error: Invalid Number entered for " + id); //$NON-NLS-1$
 		}
 		return Integer.valueOf(1);
 	}
 
-	protected Integer getEventValue(SelectionEvent e, String id) {
+	protected static Integer getEventValue(SelectionEvent e, String id) {
 		try {
-			if (e.widget instanceof Combo) {
-				return Integer.parseInt(((Combo) e.widget).getText());
+			if (e.widget instanceof Combo combo) {
+				return Integer.parseInt(combo.getText());
 			}
 		} catch (NumberFormatException ex) {
-			System.out.println("Error: Invalid Number entered for " + id);
+			System.out.println("Error: Invalid Number entered for " + id); //$NON-NLS-1$
 		}
 		return Integer.valueOf(5);
 	}
@@ -182,7 +188,7 @@ public class GridLayoutExample extends AbstractExample {
 	protected void createColumnGroup() {
 		// Columns section
 		Group columnsGroup = new Group(composite, 0);
-		columnsGroup.setText("Columns");
+		columnsGroup.setText("Columns"); //$NON-NLS-1$
 
 		_layout = new org.eclipse.swt.layout.GridLayout();
 		_layout.numColumns = 2;
@@ -191,24 +197,23 @@ public class GridLayoutExample extends AbstractExample {
 		_data = new org.eclipse.swt.layout.GridData(org.eclipse.swt.layout.GridData.VERTICAL_ALIGN_FILL);
 		columnsGroup.setLayoutData(_data);
 		Text numColumns = new Text(columnsGroup, SWT.BORDER);
-		numColumns.setText("2");
-		Listener numColumnsListener = new Listener() {
-			public void handleEvent(Event e) {
-				gridLayout.numColumns = getEventValue(e, "numColumns").intValue();
-				updateView();
-			}
+		numColumns.setText("2"); //$NON-NLS-1$
+		Listener numColumnsListener = e -> {
+			gridLayout.numColumns = getEventValue(e, "numColumns").intValue(); //$NON-NLS-1$
+			updateView();
 		};
 		numColumns.addListener(SWT.DefaultSelection, numColumnsListener);
 		numColumns.addListener(SWT.FocusOut, numColumnsListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 15;
 		numColumns.setLayoutData(_data);
-		new Label(columnsGroup, SWT.NONE).setText("numColumns");
+		new Label(columnsGroup, SWT.NONE).setText("numColumns"); //$NON-NLS-1$
 
 		Button makeColumnsEqualWidth = new Button(columnsGroup, SWT.CHECK);
-		makeColumnsEqualWidth.setText("makeColumnsEqualWidth");
+		makeColumnsEqualWidth.setText("makeColumnsEqualWidth"); //$NON-NLS-1$
 		makeColumnsEqualWidth.setSelection(false);
 		makeColumnsEqualWidth.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				gridLayout.makeColumnsEqualWidth = !gridLayout.makeColumnsEqualWidth;
 				updateView();
@@ -225,9 +230,9 @@ public class GridLayoutExample extends AbstractExample {
 
 		Group marginGroup = new Group(composite, 0);
 		marginGroup.setLayout(new FillLayout(SWT.VERTICAL));
-		marginGroup.setText("Margins and Spacing");
+		marginGroup.setText("Margins and Spacing"); //$NON-NLS-1$
 
-		String[] marginValues = new String[] { "0", "3", "5", "10" };
+		String[] marginValues = { "0", "3", "5", "10" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.verticalSpan = 2;
@@ -235,7 +240,7 @@ public class GridLayoutExample extends AbstractExample {
 		_layout = new org.eclipse.swt.layout.GridLayout();
 		_layout.numColumns = 2;
 		marginGroup.setLayout(_layout);
-		new Label(marginGroup, SWT.NONE).setText("marginHeight");
+		new Label(marginGroup, SWT.NONE).setText("marginHeight"); //$NON-NLS-1$
 		Combo marginHeight = new Combo(marginGroup, SWT.NONE);
 		marginHeight.setItems(marginValues);
 		marginHeight.select(2);
@@ -243,20 +248,19 @@ public class GridLayoutExample extends AbstractExample {
 		_data.widthHint = 60;
 		marginHeight.setLayoutData(_data);
 
-		marginHeight.addListener(SWT.DefaultSelection, new Listener() {
-			public void handleEvent(Event e) {
-				gridLayout.marginHeight = getEventValue(e, "marginHeight").intValue();
-				updateView();
-			};
+		marginHeight.addListener(SWT.DefaultSelection, e -> {
+			gridLayout.marginHeight = getEventValue(e, "marginHeight").intValue(); //$NON-NLS-1$
+			updateView();
 		});
 		marginHeight.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				gridLayout.marginHeight = getEventValue(e, "marginHeight").intValue();
+				gridLayout.marginHeight = getEventValue(e, "marginHeight").intValue(); //$NON-NLS-1$
 				updateView();
 			}
 		});
 
-		new Label(marginGroup, SWT.NONE).setText("marginWidth");
+		new Label(marginGroup, SWT.NONE).setText("marginWidth"); //$NON-NLS-1$
 		Combo marginWidth = new Combo(marginGroup, SWT.NONE);
 		marginWidth.setItems(marginValues);
 		marginWidth.select(2);
@@ -264,20 +268,19 @@ public class GridLayoutExample extends AbstractExample {
 		_data.widthHint = 60;
 		marginWidth.setLayoutData(_data);
 
-		marginWidth.addListener(SWT.DefaultSelection, new Listener() {
-			public void handleEvent(Event e) {
-				gridLayout.marginWidth = getEventValue(e, "marginWidth").intValue();
-				updateView();
-			};
+		marginWidth.addListener(SWT.DefaultSelection, e -> {
+			gridLayout.marginWidth = getEventValue(e, "marginWidth").intValue(); //$NON-NLS-1$
+			updateView();
 		});
 		marginWidth.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				gridLayout.marginWidth = getEventValue(e, "marginWidth").intValue();
+				gridLayout.marginWidth = getEventValue(e, "marginWidth").intValue(); //$NON-NLS-1$
 				updateView();
 			}
 		});
 
-		new Label(marginGroup, SWT.NONE).setText("horizontalSpacing");
+		new Label(marginGroup, SWT.NONE).setText("horizontalSpacing"); //$NON-NLS-1$
 		Combo horizontalSpacing = new Combo(marginGroup, SWT.NONE);
 		horizontalSpacing.setItems(marginValues);
 		horizontalSpacing.select(2);
@@ -285,20 +288,19 @@ public class GridLayoutExample extends AbstractExample {
 		_data.widthHint = 60;
 		horizontalSpacing.setLayoutData(_data);
 
-		horizontalSpacing.addListener(SWT.DefaultSelection, new Listener() {
-			public void handleEvent(Event e) {
-				gridLayout.horizontalSpacing = getEventValue(e, "horizontalSpacing").intValue();
-				updateView();
-			};
+		horizontalSpacing.addListener(SWT.DefaultSelection, e -> {
+			gridLayout.horizontalSpacing = getEventValue(e, "horizontalSpacing").intValue(); //$NON-NLS-1$
+			updateView();
 		});
 		horizontalSpacing.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				gridLayout.horizontalSpacing = getEventValue(e, "horizontalSpacing").intValue();
+				gridLayout.horizontalSpacing = getEventValue(e, "horizontalSpacing").intValue(); //$NON-NLS-1$
 				updateView();
 			}
 		});
 
-		new Label(marginGroup, SWT.NONE).setText("verticalSpacing");
+		new Label(marginGroup, SWT.NONE).setText("verticalSpacing"); //$NON-NLS-1$
 		Combo verticalSpacing = new Combo(marginGroup, SWT.NONE);
 		verticalSpacing.setItems(marginValues);
 		verticalSpacing.select(2);
@@ -306,16 +308,15 @@ public class GridLayoutExample extends AbstractExample {
 		_data.widthHint = 60;
 		verticalSpacing.setLayoutData(_data);
 
-		verticalSpacing.addListener(SWT.DefaultSelection, new Listener() {
-			public void handleEvent(Event e) {
-				gridLayout.verticalSpacing = getEventValue(e, "verticalSpacing").intValue();
-				updateView();
-			};
+		verticalSpacing.addListener(SWT.DefaultSelection, e -> {
+			gridLayout.verticalSpacing = getEventValue(e, "verticalSpacing").intValue(); //$NON-NLS-1$
+			updateView();
 		});
 
 		verticalSpacing.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				gridLayout.verticalSpacing = getEventValue(e, "verticalSpacing").intValue();
+				gridLayout.verticalSpacing = getEventValue(e, "verticalSpacing").intValue(); //$NON-NLS-1$
 				;
 				updateView();
 			}
@@ -328,7 +329,7 @@ public class GridLayoutExample extends AbstractExample {
 		Button add, clear;
 
 		childGroup = new Group(composite, SWT.NONE);
-		childGroup.setText("Children");
+		childGroup.setText("Children"); //$NON-NLS-1$
 		org.eclipse.swt.layout.GridLayout layout = new org.eclipse.swt.layout.GridLayout();
 		layout.numColumns = 3;
 		childGroup.setLayout(layout);
@@ -339,9 +340,10 @@ public class GridLayoutExample extends AbstractExample {
 
 		/* Controls for adding and removing children */
 		add = new Button(childGroup, SWT.PUSH);
-		add.setText("Add");
+		add.setText("Add"); //$NON-NLS-1$
 		add.setLayoutData(new org.eclipse.swt.layout.GridData(org.eclipse.swt.layout.GridData.FILL_HORIZONTAL));
 		add.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				container.add(createShape());
 				updateView();
@@ -349,9 +351,10 @@ public class GridLayoutExample extends AbstractExample {
 		});
 
 		clear = new Button(childGroup, SWT.PUSH);
-		clear.setText("Clear All");
+		clear.setText("Clear All"); //$NON-NLS-1$
 		clear.setLayoutData(new org.eclipse.swt.layout.GridData(org.eclipse.swt.layout.GridData.FILL_HORIZONTAL));
 		clear.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				container.removeAll();
 				setEnableGridDataGroup(false);
@@ -362,11 +365,11 @@ public class GridLayoutExample extends AbstractExample {
 	}
 
 	protected void createGridDataGroup() {
-		String[] alignValues = new String[] { "BEGINNING", "CENTER", "END", "FILL" };
+		String[] alignValues = { "BEGINNING", "CENTER", "END", "FILL" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 		Group gridDataGroup;
 
 		gridDataGroup = new Group(composite, SWT.NONE);
-		gridDataGroup.setText("Selected Figure's GridData");
+		gridDataGroup.setText("Selected Figure's GridData"); //$NON-NLS-1$
 
 		_layout = new org.eclipse.swt.layout.GridLayout();
 		_layout.numColumns = 2;
@@ -377,41 +380,39 @@ public class GridLayoutExample extends AbstractExample {
 
 		// widthHint --------------------------------------
 		widthHint = new Text(gridDataGroup, SWT.BORDER);
-		widthHint.setText("-1");
-		Listener gridDataListener = new Listener() {
-			public void handleEvent(Event e) {
-				if (selectedShape == null)
-					return;
-				GridData d = (GridData) gridLayout.getConstraint(selectedShape);
-				d.widthHint = getEventValue(e, "widthHint").intValue();
-				updateView();
+		widthHint.setText("-1"); //$NON-NLS-1$
+		Listener gridDataListener = e -> {
+			if (selectedShape == null) {
+				return;
 			}
+			GridData d = (GridData) gridLayout.getConstraint(selectedShape);
+			d.widthHint = getEventValue(e, "widthHint").intValue(); //$NON-NLS-1$
+			updateView();
 		};
 		widthHint.addListener(SWT.DefaultSelection, gridDataListener);
 		widthHint.addListener(SWT.FocusOut, gridDataListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 35;
 		widthHint.setLayoutData(_data);
-		new Label(gridDataGroup, SWT.NONE).setText("widthHint");
+		new Label(gridDataGroup, SWT.NONE).setText("widthHint"); //$NON-NLS-1$
 
 		// heightHint ------------------------------------
 		heightHint = new Text(gridDataGroup, SWT.BORDER);
-		heightHint.setText("-1");
-		Listener heightHintListener = new Listener() {
-			public void handleEvent(Event e) {
-				if (selectedShape == null)
-					return;
-				GridData d = (GridData) gridLayout.getConstraint(selectedShape);
-				d.heightHint = getEventValue(e, "heightHint").intValue();
-				updateView();
+		heightHint.setText("-1"); //$NON-NLS-1$
+		Listener heightHintListener = e -> {
+			if (selectedShape == null) {
+				return;
 			}
+			GridData d = (GridData) gridLayout.getConstraint(selectedShape);
+			d.heightHint = getEventValue(e, "heightHint").intValue(); //$NON-NLS-1$
+			updateView();
 		};
 		heightHint.addListener(SWT.DefaultSelection, heightHintListener);
 		heightHint.addListener(SWT.FocusOut, heightHintListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 35;
 		heightHint.setLayoutData(_data);
-		new Label(gridDataGroup, SWT.NONE).setText("heightHint");
+		new Label(gridDataGroup, SWT.NONE).setText("heightHint"); //$NON-NLS-1$
 
 		// horizontalAlignment ------------------------------------
 		horizAlign = new Combo(gridDataGroup, SWT.READ_ONLY);
@@ -422,16 +423,18 @@ public class GridLayoutExample extends AbstractExample {
 		horizAlign.setLayoutData(_data);
 
 		horizAlign.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (selectedShape == null)
+				if (selectedShape == null) {
 					return;
+				}
 				GridData d = (GridData) gridLayout.getConstraint(selectedShape);
 				String align = ((Combo) e.widget).getText();
 				d.horizontalAlignment = findAlignment(align);
 				updateView();
 			}
 		});
-		new Label(gridDataGroup, SWT.NONE).setText("horizontalAlignment");
+		new Label(gridDataGroup, SWT.NONE).setText("horizontalAlignment"); //$NON-NLS-1$
 
 		// verticalAlignment ------------------------------------
 		vertAlign = new Combo(gridDataGroup, SWT.READ_ONLY);
@@ -442,83 +445,84 @@ public class GridLayoutExample extends AbstractExample {
 		vertAlign.setLayoutData(_data);
 
 		vertAlign.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (selectedShape == null)
+				if (selectedShape == null) {
 					return;
+				}
 				GridData d = (GridData) gridLayout.getConstraint(selectedShape);
 				String align = ((Combo) e.widget).getText();
 				d.verticalAlignment = findAlignment(align);
 				updateView();
 			}
 		});
-		new Label(gridDataGroup, SWT.NONE).setText("verticalAlignment");
+		new Label(gridDataGroup, SWT.NONE).setText("verticalAlignment"); //$NON-NLS-1$
 
 		// horizontalIndent ------------------------------------
 		horizIndent = new Text(gridDataGroup, SWT.BORDER);
-		horizIndent.setText("0");
-		Listener horizontalIndentListener = new Listener() {
-			public void handleEvent(Event e) {
-				if (selectedShape == null)
-					return;
-				GridData d = (GridData) gridLayout.getConstraint(selectedShape);
-				d.horizontalIndent = getEventValue(e, "horizontalIndent").intValue();
-				updateView();
+		horizIndent.setText("0"); //$NON-NLS-1$
+		Listener horizontalIndentListener = e -> {
+			if (selectedShape == null) {
+				return;
 			}
+			GridData d = (GridData) gridLayout.getConstraint(selectedShape);
+			d.horizontalIndent = getEventValue(e, "horizontalIndent").intValue(); //$NON-NLS-1$
+			updateView();
 		};
 		horizIndent.addListener(SWT.DefaultSelection, horizontalIndentListener);
 		horizIndent.addListener(SWT.FocusOut, horizontalIndentListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 35;
 		horizIndent.setLayoutData(_data);
-		new Label(gridDataGroup, SWT.NONE).setText("horizontalIndent");
+		new Label(gridDataGroup, SWT.NONE).setText("horizontalIndent"); //$NON-NLS-1$
 
 		// horizontalSpan ------------------------------------
 		horizSpan = new Text(gridDataGroup, SWT.BORDER);
-		horizSpan.setText("1");
-		Listener horizontalSpanListener = new Listener() {
-			public void handleEvent(Event e) {
-				if (selectedShape == null)
-					return;
-				GridData d = (GridData) gridLayout.getConstraint(selectedShape);
-				d.horizontalSpan = getEventValue(e, "horizontalSpan").intValue();
-				updateView();
+		horizSpan.setText("1"); //$NON-NLS-1$
+		Listener horizontalSpanListener = e -> {
+			if (selectedShape == null) {
+				return;
 			}
+			GridData d = (GridData) gridLayout.getConstraint(selectedShape);
+			d.horizontalSpan = getEventValue(e, "horizontalSpan").intValue(); //$NON-NLS-1$
+			updateView();
 		};
 		horizSpan.addListener(SWT.DefaultSelection, horizontalSpanListener);
 		horizSpan.addListener(SWT.FocusOut, horizontalSpanListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 35;
 		horizSpan.setLayoutData(_data);
-		new Label(gridDataGroup, SWT.NONE).setText("horizontalSpan");
+		new Label(gridDataGroup, SWT.NONE).setText("horizontalSpan"); //$NON-NLS-1$
 
 		// verticalSpan ------------------------------------
 		vertSpan = new Text(gridDataGroup, SWT.BORDER);
-		vertSpan.setText("1");
-		Listener verticalSpanListener = new Listener() {
-			public void handleEvent(Event e) {
-				if (selectedShape == null)
-					return;
-				GridData d = (GridData) gridLayout.getConstraint(selectedShape);
-				d.verticalSpan = getEventValue(e, "verticalSpan").intValue();
-				updateView();
+		vertSpan.setText("1"); //$NON-NLS-1$
+		Listener verticalSpanListener = e -> {
+			if (selectedShape == null) {
+				return;
 			}
+			GridData d = (GridData) gridLayout.getConstraint(selectedShape);
+			d.verticalSpan = getEventValue(e, "verticalSpan").intValue(); //$NON-NLS-1$
+			updateView();
 		};
 		vertSpan.addListener(SWT.DefaultSelection, verticalSpanListener);
 		vertSpan.addListener(SWT.FocusOut, verticalSpanListener);
 		_data = new org.eclipse.swt.layout.GridData();
 		_data.widthHint = 35;
 		vertSpan.setLayoutData(_data);
-		new Label(gridDataGroup, SWT.NONE).setText("verticalSpan");
+		new Label(gridDataGroup, SWT.NONE).setText("verticalSpan"); //$NON-NLS-1$
 
 		// grabExcessHorizontalSpace ------------------------------------
 
 		grabHSpace = new Button(gridDataGroup, SWT.CHECK);
-		grabHSpace.setText("grabExcessHorizontalSpace");
+		grabHSpace.setText("grabExcessHorizontalSpace"); //$NON-NLS-1$
 		grabHSpace.setSelection(false);
 		grabHSpace.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (selectedShape == null)
+				if (selectedShape == null) {
 					return;
+				}
 				GridData d = (GridData) gridLayout.getConstraint(selectedShape);
 				d.grabExcessHorizontalSpace = !d.grabExcessHorizontalSpace;
 				updateView();
@@ -532,12 +536,14 @@ public class GridLayoutExample extends AbstractExample {
 		// grabExcessVerticalSpace ------------------------------------
 
 		grabVSpace = new Button(gridDataGroup, SWT.CHECK);
-		grabVSpace.setText("grabExcessVerticalSpace");
+		grabVSpace.setText("grabExcessVerticalSpace"); //$NON-NLS-1$
 		grabVSpace.setSelection(false);
 		grabVSpace.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if (selectedShape == null)
+				if (selectedShape == null) {
 					return;
+				}
 				GridData d = (GridData) gridLayout.getConstraint(selectedShape);
 				d.grabExcessVerticalSpace = !d.grabExcessVerticalSpace;
 				updateView();
@@ -575,7 +581,7 @@ public class GridLayoutExample extends AbstractExample {
 		grabHSpace.setSelection(d.grabExcessHorizontalSpace);
 	}
 
-	protected int findAlignment(int align) {
+	protected static int findAlignment(int align) {
 		switch (align) {
 		case SWT.BEGINNING:
 			return 0; // these are the index into the align combo
@@ -591,14 +597,14 @@ public class GridLayoutExample extends AbstractExample {
 		return -1;
 	}
 
-	protected int findAlignment(String align) {
-		if (align.equals("BEGINNING")) {
+	protected static int findAlignment(String align) {
+		if (align.equals("BEGINNING")) { //$NON-NLS-1$
 			return SWT.BEGINNING;
-		} else if (align.equals("CENTER")) {
+		} else if (align.equals("CENTER")) { //$NON-NLS-1$
 			return SWT.CENTER;
-		} else if (align.equals("END")) {
+		} else if (align.equals("END")) { //$NON-NLS-1$
 			return SWT.END;
-		} else if (align.equals("FILL")) {
+		} else if (align.equals("FILL")) { //$NON-NLS-1$
 			return SWT.FILL;
 		}
 		return -1;
@@ -607,6 +613,7 @@ public class GridLayoutExample extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell()
 	 */
+	@Override
 	protected void hookShell(Shell shell) {
 		composite = new Composite(shell, 0);
 		_data = new org.eclipse.swt.layout.GridData(org.eclipse.swt.layout.GridData.FILL_VERTICAL);

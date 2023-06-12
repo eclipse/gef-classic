@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -67,61 +67,72 @@ public class TreeExample extends AbstractExample {
 	}
 
 	void doAddChild() {
-		if (selected == null)
+		if (selected == null) {
 			return;
+		}
 		TreeBranch parent = (TreeBranch) selected.getParent();
 		parent.addBranch(new TreeBranch(createPageNode(BASIC_CHILD_NAME), parent.getStyle()));
 	}
 
 	void doAlignCenter() {
-		if (selected == null)
+		if (selected == null) {
 			return;
+		}
 		TreeBranch parent = (TreeBranch) selected.getParent();
 		parent.setAlignment(PositionConstants.CENTER);
 	}
 
 	void doAlignLeft() {
-		if (selected == null)
+		if (selected == null) {
 			return;
+		}
 		TreeBranch parent = (TreeBranch) selected.getParent();
 		parent.setAlignment(PositionConstants.LEFT);
 	}
 
 	void doDeleteChild() {
-		if (selected == null)
+		if (selected == null) {
 			return;
+		}
 		TreeBranch parent = (TreeBranch) selected.getParent();
 		IFigure contents = parent.getContentsPane();
-		if (contents.getChildren().isEmpty())
+		if (contents.getChildren().isEmpty()) {
 			return;
+		}
 		contents.remove(contents.getChildren().get(contents.getChildren().size() - 1));
 	}
 
 	void doExpandCollapse() {
-		if (selected == null)
+		if (selected == null) {
 			return;
+		}
 		TreeBranch parent = (TreeBranch) selected.getParent();
-		if (parent.getSubtrees().isEmpty())
+		if (parent.getSubtrees().isEmpty()) {
 			return;
+		}
 		if (animate) {
-			if (parent.isExpanded())
+			if (parent.isExpanded()) {
 				parent.collapse();
-			else
+			} else {
 				parent.expand();
-		} else
+			}
+		} else {
 			parent.setExpanded(!parent.isExpanded());
+		}
 	}
 
 	void doStyleHanging() {
-		if (selected == null)
+		if (selected == null) {
 			return;
+		}
 		TreeBranch parent = (TreeBranch) selected.getParent();
 		parent.setStyle(TreeBranch.STYLE_HANGING);
 	}
 
 	void doStyleNormal() {
-		if (selected == null)
+		if (selected == null) {
 			return;
+		}
 		TreeBranch parent = (TreeBranch) selected.getParent();
 		parent.setStyle(TreeBranch.STYLE_NORMAL);
 	}

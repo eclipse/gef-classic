@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,23 +10,29 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.text;
 
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.text.*;
-
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.PositionConstants;
+import org.eclipse.draw2d.text.BlockFlow;
+import org.eclipse.draw2d.text.FlowFigure;
+import org.eclipse.draw2d.text.FlowPage;
+import org.eclipse.draw2d.text.InlineFlow;
+import org.eclipse.draw2d.text.TextFlow;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.SWT;
 
 /**
  * The example is used to build large draw2d.text flow documents to benchmark
  * the layout performance as the document changes. In this case, we allow fake
  * typing of text.
- * 
+ *
  * @author hudsonr
  */
 
@@ -37,8 +43,8 @@ public class TextFlowLargeExample {
 	static FigureCanvas canvas;
 	static TextFlow target;
 	static FlowPage page;
-	static Font regularFont = new Font(Display.getDefault(), "Arial", 15, SWT.NORMAL),
-			boldFont = new Font(Display.getDefault(), "Comic Sans MS", 16, SWT.BOLD);
+	static Font regularFont = new Font(Display.getDefault(), "Arial", 15, SWT.NORMAL), //$NON-NLS-1$
+			boldFont = new Font(Display.getDefault(), "Comic Sans MS", 16, SWT.BOLD); //$NON-NLS-1$
 
 	public static void main(String[] args) {
 		Display d = Display.getDefault();
@@ -47,11 +53,12 @@ public class TextFlowLargeExample {
 
 		canvas = new FigureCanvas(shell);
 		canvas.setLayoutData(new GridData(GridData.FILL_BOTH));
-		canvas.setVerticalScrollBarVisibility(canvas.ALWAYS);
+		canvas.setVerticalScrollBarVisibility(FigureCanvas.ALWAYS);
 		canvas.getViewport().setContentsTracksWidth(true);
 		shell.open();
 
 		canvas.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(KeyEvent e) {
 				addText(e.character);
 			}
@@ -61,26 +68,29 @@ public class TextFlowLargeExample {
 		populatePage();
 		canvas.setContents(page);
 
-		while (!shell.isDisposed())
-			if (!d.readAndDispatch())
+		while (!shell.isDisposed()) {
+			if (!d.readAndDispatch()) {
 				d.sleep();
+			}
+		}
 	}
 
 	static protected void addText(char c) {
-		if ((c <= 'Z' && c >= 'A') || (c <= 'z' && c >= 'a') || (c == ' '))
+		if (((c <= 'Z') && (c >= 'A')) || ((c <= 'z') && (c >= 'a')) || (c == ' ')) {
 			if (target != null) {
 				target.setText(target.getText() + c);
-				if (PERFORMANCE && (KEYS_TYPED % 10 == 0)) {
-//			System.out.println(KEYS_TYPED + " keys typed " + FlowPage.VALIDATIONS + " paints and layouts");
+				if (PERFORMANCE && ((KEYS_TYPED % 10) == 0)) {
+					//			System.out.println(KEYS_TYPED + " keys typed " + FlowPage.VALIDATIONS + " paints and layouts");
 				}
 				KEYS_TYPED++;
 			}
+		}
 	}
 
 	static public void populatePage() {
 
-		target = new TextFlow("Normal text.");
-		target.setToolTip(new Label("This is a Tooltip"));
+		target = new TextFlow("Normal text."); //$NON-NLS-1$
+		target.setToolTip(new Label("This is a Tooltip")); //$NON-NLS-1$
 		page.add(target);
 		page.setOpaque(true);
 		page.setBackgroundColor(ColorConstants.white);
@@ -88,11 +98,12 @@ public class TextFlowLargeExample {
 		for (int i = 0; i < 20; i++) {
 			BlockFlow bf = new BlockFlow();
 			page.add(bf);
-			if (i == 0)
+			if (i == 0) {
 				bf.add(target);
+			}
 
 			FlowFigure ff = new InlineFlow();
-			ff.add(new TextFlow("This is the first small sentence. "));
+			ff.add(new TextFlow("This is the first small sentence. ")); //$NON-NLS-1$
 			bf.add(ff);
 
 			FlowFigure inline = new InlineFlow();

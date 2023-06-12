@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,10 +11,6 @@
 package swt.bugs;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -43,26 +39,24 @@ public class MnemonicsFix {
 		 * Constructs a MnemonicDisabler for the given Composite. Controls nested inside
 		 * this composite will only be focusable via mnemonics after this composite has
 		 * become the focus owner.
-		 * 
+		 *
 		 * @param root the activation root
 		 */
 		public MnemonicDisabler(Composite root) {
 			this.root = root;
 			root.addListener(SWT.Activate, this);
 			root.addListener(SWT.Deactivate, this);
-			if (!root.isFocusControl())
+			if (!root.isFocusControl()) {
 				hookFilter(root.getDisplay());
-			root.addDisposeListener(new DisposeListener() {
-				public void widgetDisposed(DisposeEvent e) {
-					unhookFilter(e.display);
-				}
-			});
+			}
+			root.addDisposeListener(e -> unhookFilter(e.display));
 		}
 
 		private void unhookFilter(Display d) {
 			d.removeFilter(SWT.Traverse, this);
 		}
 
+		@Override
 		public void handleEvent(Event event) {
 			if (event.type == SWT.Activate) {
 				unhookFilter(event.display);
@@ -75,7 +69,7 @@ public class MnemonicsFix {
 
 		private void handleTraverse(Event event) {
 			// if doit == true, the control is the candidate to receive focus via mnemonics
-			if (event.detail == SWT.TRAVERSE_MNEMONIC && event.doit == true) {
+			if ((event.detail == SWT.TRAVERSE_MNEMONIC) && (event.doit == true)) {
 				Control control = (Control) event.widget;
 				while (control != null) {
 					if (control == root) {
@@ -112,11 +106,9 @@ public class MnemonicsFix {
 		Text editor = new Text(shell, SWT.BORDER | SWT.MULTI);
 		editor.setText("import foo.bar;");
 		editor.setLayoutData(new GridData(GridData.FILL_BOTH));
-		editor.addTraverseListener(new TraverseListener() {
-			public void keyTraversed(TraverseEvent e) {
-				if (e.detail == SWT.TRAVERSE_TAB_NEXT) {
-					e.doit = true;
-				}
+		editor.addTraverseListener(e -> {
+			if (e.detail == SWT.TRAVERSE_TAB_NEXT) {
+				e.doit = true;
 			}
 		});
 
@@ -132,17 +124,17 @@ public class MnemonicsFix {
 		new Label(props, 0).setText("&Height");
 		new Text(props, SWT.BORDER).setText("30");
 
-		props.addListener(SWT.Activate, new Listener() {
-			public void handleEvent(Event event) {
-			}
+		props.addListener(SWT.Activate, event -> {
 		});
 
 		shell.setSize(500, 300);
 		shell.open();
 
-		while (!shell.isDisposed())
-			if (!display.readAndDispatch())
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
+		}
 	}
 
 }

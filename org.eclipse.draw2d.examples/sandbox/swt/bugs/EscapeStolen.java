@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,6 +14,8 @@
 
 package swt.bugs;
 
+import org.eclipse.draw2d.Button;
+import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -26,15 +28,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import org.eclipse.draw2d.Button;
-import org.eclipse.draw2d.FigureCanvas;
-
 public class EscapeStolen {
 
 	static class SubCanvas extends Canvas {
 		SubCanvas(Composite parent) {
 			super(parent, SWT.H_SCROLL);
 			addKeyListener(new KeyAdapter() {
+				@Override
 				public void keyPressed(KeyEvent e) {
 					System.out.println(e);
 				}
@@ -53,10 +53,12 @@ public class EscapeStolen {
 
 		canvas.addFocusListener(new FocusListener() {
 
+			@Override
 			public void focusGained(FocusEvent e) {
 				canvas.setBackground(new Color(null, 30, 30, 255));
 			}
 
+			@Override
 			public void focusLost(FocusEvent e) {
 				canvas.setBackground(null);
 			}
@@ -66,9 +68,11 @@ public class EscapeStolen {
 		dialog.open();
 		canvas.forceFocus();
 
-		while (!shell.isDisposed())
-			if (!display.readAndDispatch())
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
+		}
 	}
 
 }

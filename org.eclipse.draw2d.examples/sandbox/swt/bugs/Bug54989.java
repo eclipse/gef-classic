@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,15 @@ package swt.bugs;
 import java.lang.reflect.Method;
 
 import org.eclipse.swt.custom.CCombo;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.*;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Canvas;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 public class Bug54989 {
 
@@ -41,20 +45,19 @@ public class Bug54989 {
 
 		final Canvas canvas = new Canvas(shell, 0) {
 			/* This is just a hack to make canvas size == button size */
+			@Override
 			public Point computeSize(int wHint, int hHint, boolean flush) {
 				return b.computeSize(wHint, hHint, flush);
 			}
 		};
 
-		canvas.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				Image image = new Image(null, canvas.getBounds().width, canvas.getBounds().height);
-				GC gc = new GC(b);
-				gc.copyArea(image, 0, 0);
-				e.gc.drawImage(image, 0, 0);
-				gc.dispose();
-				image.dispose();
-			}
+		canvas.addPaintListener(e -> {
+			Image image = new Image(null, canvas.getBounds().width, canvas.getBounds().height);
+			GC gc = new GC(b);
+			gc.copyArea(image, 0, 0);
+			e.gc.drawImage(image, 0, 0);
+			gc.dispose();
+			image.dispose();
 		});
 
 		long time = System.currentTimeMillis();
@@ -71,8 +74,9 @@ public class Bug54989 {
 		shell.pack();
 		shell.open();
 		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
 		}
 	}
 }

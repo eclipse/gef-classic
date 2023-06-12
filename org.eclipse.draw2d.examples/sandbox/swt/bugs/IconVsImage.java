@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,15 +26,15 @@ public class IconVsImage {
 		Menu menu = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menu);
 		MenuItem file = new MenuItem(menu, SWT.CASCADE);
-		file.setText("File");
+		file.setText("File"); //$NON-NLS-1$
 		Menu fileMenu = new Menu(file);
 		file.setMenu(fileMenu);
 		MenuItem item1 = new MenuItem(fileMenu, 0);
-		item1.setText("item 1");
+		item1.setText("item 1"); //$NON-NLS-1$
 		MenuItem item2 = new MenuItem(fileMenu, 0);
-		item2.setText("item 2");
+		item2.setText("item 2"); //$NON-NLS-1$
 
-		Image image1 = new Image(null, IconVsImage.class.getResourceAsStream("and16.gif"));
+		Image image1 = new Image(null, IconVsImage.class.getResourceAsStream("and16.gif")); //$NON-NLS-1$
 		Image image2 = new Image(null, image1.getImageData(), image1.getImageData().getTransparencyMask());
 
 		item1.setImage(image1);
@@ -42,9 +42,11 @@ public class IconVsImage {
 
 		shell.setSize(600, 500);
 		shell.open();
-		while (!shell.isDisposed())
-			if (!display.readAndDispatch())
+		while (!shell.isDisposed()) {
+			if (!display.readAndDispatch()) {
 				display.sleep();
+			}
+		}
 	}
 
 }

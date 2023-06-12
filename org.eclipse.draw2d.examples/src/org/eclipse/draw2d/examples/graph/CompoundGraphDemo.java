@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,7 +33,7 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 
 	/**
 	 * Builds the graph, creates Draw2d figures for all graph components.
-	 * 
+	 *
 	 * @param graph the graph to build
 	 * @return the Figure representing the graph
 	 */
@@ -43,8 +43,8 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 		contents.setBackgroundColor(ColorConstants.white);
 		contents.setLayoutManager(new XYLayout());
 
-		for (int i = 0; i < graph.subgraphs.size(); i++) {
-			Subgraph s = (Subgraph) graph.subgraphs.get(i);
+		for (Object element : graph.subgraphs) {
+			Subgraph s = (Subgraph) element;
 			buildSubgraphFigure(contents, s);
 		}
 
@@ -117,7 +117,7 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 
 	/**
 	 * Run this demo
-	 * 
+	 *
 	 * @param args command line args
 	 */
 	public static void main(String[] args) {
@@ -127,6 +127,7 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
+	@Override
 	protected IFigure getContents() {
 		CompoundDirectedGraph graph = null;
 		try {
@@ -135,21 +136,21 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 		} catch (Exception e) {
 			System.out.println("Could not build graph");
 		}
-		Figure contents = buildGraph(graph);
-		return contents;
+		return buildGraph(graph);
 	}
 
 	/**
 	 * @see org.eclipse.graph.demo.GraphDemo#getGraphMethods()
 	 */
+	@Override
 	protected String[] getGraphMethods() {
 		Method[] methods = CompoundGraphTests.class.getMethods();
 		String[] methodNames = new String[methods.length];
 
 		int nameIndex = 0;
-		for (int i = 0; i < methods.length; i++) {
-			if (methods[i].getReturnType().equals(CompoundDirectedGraph.class)) {
-				methodNames[nameIndex] = methods[i].getName();
+		for (Method method : methods) {
+			if (method.getReturnType().equals(CompoundDirectedGraph.class)) {
+				methodNames[nameIndex] = method.getName();
 				nameIndex++;
 			}
 		}

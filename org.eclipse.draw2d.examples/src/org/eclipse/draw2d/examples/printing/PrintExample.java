@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,18 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.examples.printing;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.printing.Printer;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.Ellipse;
@@ -38,6 +26,17 @@ import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.RoundedRectangle;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.printing.Printer;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author danlee
@@ -56,7 +55,7 @@ public class PrintExample {
 		shell.setLayout(new GridLayout(1, false));
 
 		Button printButton = new Button(shell, SWT.PUSH);
-		printButton.setText("Print it");
+		printButton.setText("Print it"); //$NON-NLS-1$
 		printButton.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
 
 		GridData canvasData = new GridData(GridData.FILL_BOTH);
@@ -72,31 +71,36 @@ public class PrintExample {
 		lws.setContents(printFigure);
 
 		printButton.addMouseListener(new MouseListener() {
+			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 			}
 
+			@Override
 			public void mouseDown(MouseEvent e) {
 				printIt(printFigure);
 			}
 
+			@Override
 			public void mouseUp(MouseEvent e) {
 			}
 		});
 		shell.setSize(300, 500);
 		shell.open();
 
-		while (!shell.isDisposed())
-			if (!d.readAndDispatch())
+		while (!shell.isDisposed()) {
+			if (!d.readAndDispatch()) {
 				d.sleep();
+			}
+		}
 
 	}
 
 	static void addAllFigures(IFigure parent) {
-		Font fonts[] = { new Font(null, "Helvetica", 16, SWT.NONE), new Font(null, "Times New Roman", 24, SWT.BOLD),
-				new Font(null, "Perpetua", 48, SWT.NONE) };
+		Font fonts[] = { new Font(null, "Helvetica", 16, SWT.NONE), new Font(null, "Times New Roman", 24, SWT.BOLD), //$NON-NLS-1$ //$NON-NLS-2$
+				new Font(null, "Perpetua", 48, SWT.NONE) }; //$NON-NLS-1$
 
 		parent.setLayoutManager(new FlowLayout());
-		org.eclipse.draw2d.Button button = new org.eclipse.draw2d.Button("Button");
+		org.eclipse.draw2d.Button button = new org.eclipse.draw2d.Button("Button"); //$NON-NLS-1$
 		RectangleFigure rf = new RectangleFigure();
 		rf.setSize(50, 50);
 		Ellipse e = new Ellipse();
@@ -104,9 +108,9 @@ public class PrintExample {
 		RoundedRectangle rr = new RoundedRectangle();
 		rr.setSize(50, 50);
 
-		for (int i = 0; i < fonts.length; i++) {
-			org.eclipse.draw2d.Label label = new org.eclipse.draw2d.Label(fonts[i].getFontData()[0].getName());
-			label.setFont(fonts[i]);
+		for (Font font : fonts) {
+			org.eclipse.draw2d.Label label = new org.eclipse.draw2d.Label(font.getFontData()[0].getName());
+			label.setFont(font);
 			label.setBorder(new LineBorder());
 			parent.add(label);
 		}
@@ -120,7 +124,7 @@ public class PrintExample {
 		c.setSourceAnchor(chop);
 		c.setTargetAnchor(new ChopboxAnchor(rect2));
 
-		Label icon = new Label(new Image(null, PrintExample.class.getResourceAsStream("brazil.ico")));
+		Label icon = new Label(new Image(null, PrintExample.class.getResourceAsStream("brazil.ico"))); //$NON-NLS-1$
 
 		parent.add(rf);
 		parent.add(e);
@@ -136,7 +140,7 @@ public class PrintExample {
 		Printer p = new Printer();
 		PrintOperation op = new PrintFigureOperation(p, fig);
 		op.setPrintMargin(new Insets(0, 0, 0, 0));
-		op.run("Test"); // "Test" is the print job name
+		op.run("Test"); // "Test" is the print job name //$NON-NLS-1$
 		p.dispose();
 	}
 

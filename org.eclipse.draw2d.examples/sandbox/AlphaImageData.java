@@ -1,6 +1,6 @@
 
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,12 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.*;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.PaletteData;
+import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 public class AlphaImageData {
 
@@ -27,11 +31,7 @@ public class AlphaImageData {
 		iData.setAlpha(0, 0, 55);
 		final Image image = new Image(display, iData);
 
-		shell.addListener(SWT.Paint, new Listener() {
-			public void handleEvent(Event event) {
-				event.gc.drawImage(image, 0, 0, 1, 1, 40, 40, 40, 40);
-			}
-		});
+		shell.addListener(SWT.Paint, event -> event.gc.drawImage(image, 0, 0, 1, 1, 40, 40, 40, 40));
 
 		shell.open();
 		while (!shell.isDisposed())

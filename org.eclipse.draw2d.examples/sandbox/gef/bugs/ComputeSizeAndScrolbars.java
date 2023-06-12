@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,13 +26,14 @@ public class ComputeSizeAndScrolbars extends AbstractExample {
 	/**
 	 * @see org.eclipse.draw2d.examples.AbstractExample#createContents()
 	 */
+	@Override
 	protected IFigure createContents() {
 		FlowPage page = new FlowPage();
 		page.setOpaque(true);
 		page.setBackgroundColor(ColorConstants.white);
-		TextFlow courier = new TextFlow("Courier Courier Courier");
+		TextFlow courier = new TextFlow("Courier Courier Courier"); //$NON-NLS-1$
 		courier.setLayoutManager(new SimpleTextLayout(courier));
-		TextFlow heading = new TextFlow("Heading Heading");
+		TextFlow heading = new TextFlow("Heading Heading"); //$NON-NLS-1$
 		courier.setFont(COURIER);
 		heading.setFont(HEADING_1);
 		page.add(courier);
@@ -44,6 +45,7 @@ public class ComputeSizeAndScrolbars extends AbstractExample {
 		new ComputeSizeAndScrolbars().run();
 	}
 
+	@Override
 	protected void setFigureCanvas(FigureCanvas canvas) {
 		super.setFigureCanvas(canvas);
 		canvas.setVerticalScrollBarVisibility(FigureCanvas.ALWAYS);

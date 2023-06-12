@@ -1,6 +1,6 @@
 
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,10 +9,6 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
@@ -29,7 +25,7 @@ import org.eclipse.swt.widgets.Shell;
 public class InfoTextLayoutHitTest {
 
 	static Image image;
-	static Font font = new Font(null, "", 30, 0);
+	static Font font = new Font(null, "", 30, 0); //$NON-NLS-1$
 	static Button selectFont;
 	static TextLayout layout;
 	static Color wheel[] = new Color[6];
@@ -52,7 +48,7 @@ public class InfoTextLayoutHitTest {
 
 		layout = new TextLayout(display);
 		layout.setFont(font);
-		layout.setText("GEF! @ This is a test for hit testing \ufeec\ufeeb\ufeed bidi");
+		layout.setText("GEF! @ This is a test for hit testing \ufeec\ufeeb\ufeed bidi"); ////$NON-NLS-1$
 		// layout.setStyle(new TextStyle(null, new Color(null, 100, 200, 150), null),
 		// 10, 13);
 
@@ -81,23 +77,19 @@ public class InfoTextLayoutHitTest {
 		layout.draw(gc, 20, 20);
 		gc.dispose();
 
-		shell.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				e.gc.drawImage(image, 0, 0);
-				if (mouse != null) {
-					int trail[] = new int[1];
-					int offset = layout.getOffset(mouse, trail);
-					Point where = layout.getLocation(offset, trail[0] == 1);
-					e.gc.drawOval(where.x + 19, where.y + 19, 2, 2);
-				}
+		shell.addPaintListener(e -> {
+			e.gc.drawImage(image, 0, 0);
+			if (mouse != null) {
+				int[] trail = new int[1];
+				int offset = layout.getOffset(mouse, trail);
+				Point where = layout.getLocation(offset, trail[0] == 1);
+				e.gc.drawOval(where.x + 19, where.y + 19, 2, 2);
 			}
 		});
 
-		shell.addMouseMoveListener(new MouseMoveListener() {
-			public void mouseMove(MouseEvent e) {
-				mouse = new Point(e.x - 20, e.y - 20);
-				shell.redraw();
-			}
+		shell.addMouseMoveListener(e -> {
+			mouse = new Point(e.x - 20, e.y - 20);
+			shell.redraw();
 		});
 
 		shell.setSize(400, 300);

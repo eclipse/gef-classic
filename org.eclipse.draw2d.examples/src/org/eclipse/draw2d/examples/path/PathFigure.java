@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 IBM Corporation and others.
+ * Copyright (c) 2008, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -36,11 +36,13 @@ public class PathFigure extends Polyline {
 
 	private float cx, cy;
 
+	@Override
 	protected void outlineShape(Graphics g) {
 		drawShape(g, false);
 
 	}
 
+	@Override
 	protected void fillShape(Graphics g) {
 		drawShape(g, true);
 
@@ -50,16 +52,16 @@ public class PathFigure extends Polyline {
 		Path path = createPath();
 		g.pushState();
 		g.setAntialias(SWT.ON);
-		if (fill)
+		if (fill) {
 			g.fillPath(path);
-		else {
+		} else {
 			g.drawPath(path);
 		}
 		g.rotate(degrees);
 		g.setForegroundColor(ColorConstants.black);
 
 		double angle = degreesToRadians(degrees);
-		double cos = (double) Math.cos(angle), sin = (double) Math.sin(angle);
+		double cos = Math.cos(angle), sin = Math.sin(angle);
 
 		TextLayout textLayout = new TextLayout(Display.getDefault());
 		textLayout.setFont(g.getFont());
@@ -107,7 +109,7 @@ public class PathFigure extends Polyline {
 		Path path = new Path(Display.getCurrent());
 
 		double angle = degreesToRadians(degrees);
-		double cos = (double) Math.cos(angle), sin = (double) Math.sin(angle);
+		double cos = Math.cos(angle), sin = Math.sin(angle);
 
 		PrecisionPoint p1 = getRotatedPoint(points.getFirstPoint().x(), points.getFirstPoint().y(), cos, sin);
 		path.moveTo((float) p1.preciseX(), (float) p1.preciseY());
@@ -115,8 +117,9 @@ public class PathFigure extends Polyline {
 			PrecisionPoint p = getRotatedPoint(points.getPoint(i).x(), points.getPoint(i).y(), cos, sin);
 			path.lineTo((float) p.preciseX(), (float) p.preciseY());
 		}
-		if (isClosed())
+		if (isClosed()) {
 			path.close();
+		}
 
 		return path;
 
@@ -125,27 +128,29 @@ public class PathFigure extends Polyline {
 	public PrecisionPoint getRotatedPoint(float x, float y, double cos, double sin) {
 
 		PrecisionPoint p = new PrecisionPoint(x, y);
-		if (degrees == 0)
+		if (degrees == 0) {
 			return p;
+		}
 
 		p.setPreciseX(p.preciseX() - cx);
 		p.setPreciseY(p.preciseY() - cy);
 
-		float x1 = (float) (p.preciseX() * cos - p.preciseY() * sin);
-		float y1 = (float) (p.preciseY() * cos + p.preciseX() * sin);
+		float x1 = (float) ((p.preciseX() * cos) - (p.preciseY() * sin));
+		float y1 = (float) ((p.preciseY() * cos) + (p.preciseX() * sin));
 
 		p.setPreciseX(x1 + cx);
 		p.setPreciseY(y1 + cy);
 		return p;
 	}
 
+	@Override
 	public Rectangle getBounds() {
 		if (bounds == null) {
 			bounds = new Rectangle();
 			if (getPoints().size() > 0) {
 				PointList points = getPoints();
 				double angle = degreesToRadians(degrees);
-				double cos = (double) Math.cos(angle), sin = (double) Math.sin(angle);
+				double cos = Math.cos(angle), sin = Math.sin(angle);
 				PrecisionPoint p1 = getRotatedPoint(points.getFirstPoint().x(), points.getFirstPoint().y(), cos, sin);
 				bounds.setLocation(p1);
 				for (int i = 1; i < points.size(); i++) {
@@ -154,11 +159,11 @@ public class PathFigure extends Polyline {
 				}
 			}
 		}
-		return bounds.getExpanded(lineWidth / 2, lineWidth / 2);
+		return bounds.getExpanded(getLineWidth() / 2, getLineWidth() / 2);
 	}
 
 	static private double degreesToRadians(double angle) {
-		return angle * Math.PI / 180;
+		return (angle * Math.PI) / 180;
 	}
 
 }

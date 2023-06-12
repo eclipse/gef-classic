@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,23 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.uml;
 
+import org.eclipse.draw2d.ChopboxAnchor;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.ConnectionEndpointLocator;
+import org.eclipse.draw2d.ConnectionLocator;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.PolygonDecoration;
+import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.XYLayout;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
-import org.eclipse.draw2d.*;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.geometry.PointList;
-import org.eclipse.draw2d.geometry.Rectangle;
 
 public class UMLClassDiagram {
 
@@ -63,9 +71,11 @@ public class UMLClassDiagram {
 
 		shell.setSize(500, 300);
 		shell.open();
-		while (!shell.isDisposed())
-			while (!d.readAndDispatch())
+		while (!shell.isDisposed()) {
+			while (!d.readAndDispatch()) {
 				d.sleep();
+			}
+		}
 
 	}
 

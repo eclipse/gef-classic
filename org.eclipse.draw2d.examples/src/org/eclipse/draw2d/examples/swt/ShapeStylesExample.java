@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 IBM Corporation and others.
+ * Copyright (c) 2008, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -33,76 +33,84 @@ import org.eclipse.swt.widgets.Shell;
 
 public class ShapeStylesExample {
 
-	static StyleAxis[] styleAxes = new StyleAxis[] { new StyleAxis("Line Width",
+	static StyleAxis[] styleAxes = { new StyleAxis("Line Width", //$NON-NLS-1$
 			new StyleItem[] { new StyleItem(0.0f), new StyleItem(0.25f), new StyleItem(0.5f), new StyleItem(1.0f),
 					new StyleItem(2.5f), new StyleItem(5.0f), new StyleItem(10.0f), }) {
+		@Override
 		public void applyTo(Shape shape, int i) {
 			shape.setLineWidthFloat(elements[i].getValue());
 		}
 	},
 
-			new StyleAxis("Line Style", new StyleItem[] { new StyleItem("SWT.LINE_SOLID", SWT.LINE_SOLID),
-					new StyleItem("SWT.LINE_DASH", SWT.LINE_DASH), new StyleItem("SWT.LINE_DASHDOT", SWT.LINE_DASHDOT),
-					new StyleItem("SWT.LINE_DASHDOTDOT", SWT.LINE_DASHDOTDOT),
-					new StyleItem("SWT.LINE_DOT", SWT.LINE_DOT), }) {
-				public void applyTo(Shape shape, int i) {
-					shape.setLineStyle((int) elements[i].getValue());
-				}
-			},
+			new StyleAxis("Line Style", new StyleItem[] { new StyleItem("SWT.LINE_SOLID", SWT.LINE_SOLID), //$NON-NLS-1$ //$NON-NLS-2$
+					new StyleItem("SWT.LINE_DASH", SWT.LINE_DASH), new StyleItem("SWT.LINE_DASHDOT", SWT.LINE_DASHDOT), //$NON-NLS-1$ //$NON-NLS-2$
+					new StyleItem("SWT.LINE_DASHDOTDOT", SWT.LINE_DASHDOTDOT), //$NON-NLS-1$
+					new StyleItem("SWT.LINE_DOT", SWT.LINE_DOT), }) { //$NON-NLS-1$
+		@Override
+		public void applyTo(Shape shape, int i) {
+			shape.setLineStyle((int) elements[i].getValue());
+		}
+	},
 
-			new StyleAxis("Line Cap", new StyleItem[] { new StyleItem("SWT.CAP_FLAT", SWT.CAP_FLAT),
-					new StyleItem("SWT.CAP_ROUND", SWT.CAP_ROUND), new StyleItem("SWT.CAP_SQUARE", SWT.CAP_SQUARE), }) {
-				public void applyTo(Shape shape, int i) {
-					shape.setLineCap((int) elements[i].getValue());
-				}
-			},
+			new StyleAxis("Line Cap", new StyleItem[] { new StyleItem("SWT.CAP_FLAT", SWT.CAP_FLAT), //$NON-NLS-1$ //$NON-NLS-2$
+					new StyleItem("SWT.CAP_ROUND", SWT.CAP_ROUND), new StyleItem("SWT.CAP_SQUARE", SWT.CAP_SQUARE), }) { //$NON-NLS-1$ //$NON-NLS-2$
+		@Override
+		public void applyTo(Shape shape, int i) {
+			shape.setLineCap((int) elements[i].getValue());
+		}
+	},
 
-			new StyleAxis("Line Miter Limit",
+			new StyleAxis("Line Miter Limit", //$NON-NLS-1$
 					new StyleItem[] { new StyleItem(0.0f), new StyleItem(0.5f), new StyleItem(1.0f),
 							new StyleItem(2.0f), new StyleItem(5.0f), new StyleItem(10.0f), new StyleItem(50.0f), }) {
-				public void applyTo(Shape shape, int i) {
-					shape.setLineMiterLimit(elements[i].getValue());
-				}
-			},
+		@Override
+		public void applyTo(Shape shape, int i) {
+			shape.setLineMiterLimit(elements[i].getValue());
+		}
+	},
 
-			new StyleAxis("Line Dash Offset",
+			new StyleAxis("Line Dash Offset", //$NON-NLS-1$
 					new StyleItem[] { new StyleItem(0.0f), new StyleItem(0.25f), new StyleItem(0.5f),
 							new StyleItem(1.0f), new StyleItem(2.0f), new StyleItem(2.5f), new StyleItem(5.0f),
 							new StyleItem(10.0f), }) {
-				public void applyTo(Shape shape, int i) {
-					shape.setLineDashOffset(elements[i].getValue());
-				}
-			},
+		@Override
+		public void applyTo(Shape shape, int i) {
+			shape.setLineDashOffset(elements[i].getValue());
+		}
+	},
 
-			new StyleAxis("Anti-Aliasing", new StyleItem[] { new StyleItem("SWT.ON", SWT.ON),
-					new StyleItem("SWT.OFF", SWT.OFF), new StyleItem("SWT.DEFAULT", SWT.DEFAULT), }) {
-				public void applyTo(Shape shape, int i) {
-					shape.setAntialias((int) elements[i].getValue());
-				}
-			},
+			new StyleAxis("Anti-Aliasing", new StyleItem[] { new StyleItem("SWT.ON", SWT.ON), //$NON-NLS-1$ //$NON-NLS-2$
+					new StyleItem("SWT.OFF", SWT.OFF), new StyleItem("SWT.DEFAULT", SWT.DEFAULT), }) { //$NON-NLS-1$ //$NON-NLS-2$
+		@Override
+		public void applyTo(Shape shape, int i) {
+			shape.setAntialias((int) elements[i].getValue());
+		}
+	},
 
-			new StyleAxis("Alpha", new StyleItem[] { new StyleItem(0), new StyleItem(10), new StyleItem(50),
+			new StyleAxis("Alpha", new StyleItem[] { new StyleItem(0), new StyleItem(10), new StyleItem(50), //$NON-NLS-1$
 					new StyleItem(100), new StyleItem(150), new StyleItem(200), new StyleItem(255), }) {
-				public void applyTo(Shape shape, int i) {
-					shape.setAlpha((int) elements[i].getValue());
-				}
-			},
+		@Override
+		public void applyTo(Shape shape, int i) {
+			shape.setAlpha((int) elements[i].getValue());
+		}
+	},
 
-			new StyleAxis("Enabled", new StyleItem[] { new StyleItem("true", 1), new StyleItem("false", 0), }) {
-				public void applyTo(Shape shape, int i) {
-					int setting = (int) elements[i].getValue();
-					if (setting == 1) {
-						shape.setEnabled(true);
-					} else {
-						shape.setEnabled(false);
-					}
-				}
-			}, };
+			new StyleAxis("Enabled", new StyleItem[] { new StyleItem("true", 1), new StyleItem("false", 0), }) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		@Override
+		public void applyTo(Shape shape, int i) {
+			int setting = (int) elements[i].getValue();
+			if (setting == 1) {
+				shape.setEnabled(true);
+			} else {
+				shape.setEnabled(false);
+			}
+		}
+	}, };
 
-	static final String[] sampleShapeClasses = new String[] { Ellipse.class.getName(), RectangleFigure.class.getName(),
+	static final String[] sampleShapeClasses = { Ellipse.class.getName(), RectangleFigure.class.getName(),
 			RoundedRectangle.class.getName(), Triangle.class.getName(), Polyline.class.getName() };
 
-	static final String[] defaultLineWidths = new String[] { "0", "0.5", "1", "2.5", "5", "10", "30" };
+	static final String[] defaultLineWidths = { "0", "0.5", "1", "2.5", "5", "10", "30" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
 
 	private static Shell shell;
 	private static Group styleGrid;
@@ -117,28 +125,30 @@ public class ShapeStylesExample {
 		// create outer shell/window
 		Display display = Display.getDefault();
 		shell = new Shell(display, SWT.SHELL_TRIM);
-		shell.setText("Shape Style Example");
+		shell.setText("Shape Style Example"); //$NON-NLS-1$
 		shell.setLayout(new GridLayout(2, false));
 
 		// create control pane
 		Group controlPane = new Group(shell, SWT.NONE);
-		controlPane.setText("Style Axis Settings");
+		controlPane.setText("Style Axis Settings"); //$NON-NLS-1$
 		controlPane.setLayout(new GridLayout(2, false));
 		controlPane.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, true, true, 1, 1));
 
 		// x-axis selection
 		Label xAxisSelectionLabel = new Label(controlPane, SWT.NONE);
-		xAxisSelectionLabel.setText("X Axis");
+		xAxisSelectionLabel.setText("X Axis"); //$NON-NLS-1$
 		final Combo xAxisSelection = new Combo(controlPane, SWT.READ_ONLY);
-		for (int i = 0; i < styleAxes.length; i++) {
-			xAxisSelection.add(styleAxes[i].getName());
+		for (StyleAxis element : styleAxes) {
+			xAxisSelection.add(element.getName());
 		}
 		xAxisSelection.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				xAxis = styleAxes[xAxisSelection.getSelectionIndex()];
 				refreshGrid();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
@@ -146,17 +156,19 @@ public class ShapeStylesExample {
 
 		// y-axis selection
 		Label yAxisSelectionLabel = new Label(controlPane, SWT.NONE);
-		yAxisSelectionLabel.setText("Y Axis");
+		yAxisSelectionLabel.setText("Y Axis"); //$NON-NLS-1$
 		final Combo yAxisSelection = new Combo(controlPane, SWT.READ_ONLY);
-		for (int i = 0; i < styleAxes.length; i++) {
-			yAxisSelection.add(styleAxes[i].getName());
+		for (StyleAxis element : styleAxes) {
+			yAxisSelection.add(element.getName());
 		}
 		yAxisSelection.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				yAxis = styleAxes[yAxisSelection.getSelectionIndex()];
 				refreshGrid();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
@@ -164,10 +176,11 @@ public class ShapeStylesExample {
 
 		// shape selection
 		Label shapeSelectionLabel = new Label(controlPane, SWT.NONE);
-		shapeSelectionLabel.setText("Shape");
+		shapeSelectionLabel.setText("Shape"); //$NON-NLS-1$
 		final Combo shapeSelection = new Combo(controlPane, SWT.NONE);
 		shapeSelection.setItems(sampleShapeClasses);
 		shapeSelection.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
 					sampleShape = Class.forName(shapeSelection.getText());
@@ -177,6 +190,7 @@ public class ShapeStylesExample {
 				refreshGrid();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
@@ -184,15 +198,17 @@ public class ShapeStylesExample {
 
 		// default line width selection
 		Label lineWidthSelectionLabel = new Label(controlPane, SWT.NONE);
-		lineWidthSelectionLabel.setText("Line Width");
+		lineWidthSelectionLabel.setText("Line Width"); //$NON-NLS-1$
 		final Combo lineWidthSelection = new Combo(controlPane, SWT.NONE);
 		lineWidthSelection.setItems(defaultLineWidths);
 		lineWidthSelection.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				defaultLineWidth = Float.parseFloat(lineWidthSelection.getText());
 				refreshGrid();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
@@ -230,7 +246,7 @@ public class ShapeStylesExample {
 		}
 
 		styleGrid = new Group(shell, SWT.NONE);
-		styleGrid.setText(xAxis.getName() + " vs. " + yAxis.getName());
+		styleGrid.setText(xAxis.getName() + " vs. " + yAxis.getName()); //$NON-NLS-1$
 		styleGrid.setLayout(new GridLayout(xAxis.getCount() + 1, false));
 		styleGrid.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, true, true, 1, 1));
 
@@ -240,18 +256,18 @@ public class ShapeStylesExample {
 		// add x-axis labels
 		for (int x = 0; x < xAxis.getCount(); x++) {
 			label = new Label(styleGrid, SWT.NONE);
-			label.setText(xAxis.getName() + " =\n" + xAxis.getAt(x).getName());
+			label.setText(xAxis.getName() + " =\n" + xAxis.getAt(x).getName()); //$NON-NLS-1$
 		}
 
 		// iterate over the y-axis style settings
-		for (int y = 1; y < yAxis.getCount() + 1; y++) {
+		for (int y = 1; y < (yAxis.getCount() + 1); y++) {
 
 			// add y-axis label for this row
 			label = new Label(styleGrid, SWT.NONE);
-			label.setText(yAxis.getName() + " =\n" + yAxis.getAt(y - 1).getName());
+			label.setText(yAxis.getName() + " =\n" + yAxis.getAt(y - 1).getName()); //$NON-NLS-1$
 
 			// iterate over the x-axis style settings
-			for (int x = 1; x < xAxis.getCount() + 1; x++) {
+			for (int x = 1; x < (xAxis.getCount() + 1); x++) {
 
 				// create a sample shape instance
 				Shape shape;
@@ -265,7 +281,7 @@ public class ShapeStylesExample {
 					try {
 						shape = (Shape) sampleShape.getConstructor(null).newInstance(null);
 					} catch (Exception e) {
-						throw new RuntimeException("Could not find a no args constructor for " + sampleShape.getName());
+						throw new RuntimeException("Could not find a no args constructor for " + sampleShape.getName()); //$NON-NLS-1$
 					}
 					shape.setBounds(new Rectangle(0, 0, 100, 75));
 				}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,17 +29,17 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(head = new Node("Head"));
+		nodes.add(head = new Node("Head")); //$NON-NLS-1$
 		head.width = 100;
-		nodes.add(a1 = new Node("node a1"));
-		nodes.add(a2 = new Node("node a2"));
-		nodes.add(a3 = new Node("node a3"));
-		nodes.add(a4 = new Node("node a4"));
+		nodes.add(a1 = new Node("node a1")); //$NON-NLS-1$
+		nodes.add(a2 = new Node("node a2")); //$NON-NLS-1$
+		nodes.add(a3 = new Node("node a3")); //$NON-NLS-1$
+		nodes.add(a4 = new Node("node a4")); //$NON-NLS-1$
 
-		nodes.add(b1 = new Node("node b1"));
-		nodes.add(b2 = new Node("node b2"));
-		nodes.add(b3 = new Node("node b3"));
-		nodes.add(b4 = new Node("node b4"));
+		nodes.add(b1 = new Node("node b1")); //$NON-NLS-1$
+		nodes.add(b2 = new Node("node b2")); //$NON-NLS-1$
+		nodes.add(b3 = new Node("node b3")); //$NON-NLS-1$
+		nodes.add(b4 = new Node("node b4")); //$NON-NLS-1$
 
 		Edge e = new Edge(head, a1);
 		e.setSourceOffset(10);
@@ -83,9 +83,11 @@ public class GraphTests {
 	 * @param row
 	 */
 	private static void addNodes(NodeList nodes, Node[] row) {
-		for (int i = 0; i < row.length; i++)
-			if (row[i] != null)
-				nodes.add(row[i]);
+		for (Node element : row) {
+			if (element != null) {
+				nodes.add(element);
+			}
+		}
 	}
 
 	public static DirectedGraph anotherTour(int direction) {
@@ -94,9 +96,9 @@ public class GraphTests {
 
 		Node row[], firstRow[];
 		firstRow = new Node[4];
-		firstRow[1] = new Node("h1");
-		firstRow[2] = new Node("h2");
-		firstRow[3] = new Node("h3");
+		firstRow[1] = new Node("h1"); //$NON-NLS-1$
+		firstRow[2] = new Node("h2"); //$NON-NLS-1$
+		firstRow[3] = new Node("h3"); //$NON-NLS-1$
 		addNodes(nodes, firstRow);
 		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 2, 3, 2, 4, 3, 3, 3, 4 });
 
@@ -121,17 +123,17 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(b1 = new Node("node b1"));
-		nodes.add(b2 = new Node("node b2"));
-		nodes.add(b3 = new Node("node b3"));
-		nodes.add(b4 = new Node("node b4"));
-		nodes.add(b5 = new Node("node b5"));
-		nodes.add(c = new Node("node c"));
-		nodes.add(d = new Node("node d"));
-		nodes.add(e = new Node("node e"));
-		nodes.add(f = new Node("node f"));
-		nodes.add(g = new Node("node g"));
-		nodes.add(a = new Node("node a"));
+		nodes.add(b1 = new Node("node b1")); //$NON-NLS-1$
+		nodes.add(b2 = new Node("node b2")); //$NON-NLS-1$
+		nodes.add(b3 = new Node("node b3")); //$NON-NLS-1$
+		nodes.add(b4 = new Node("node b4")); //$NON-NLS-1$
+		nodes.add(b5 = new Node("node b5")); //$NON-NLS-1$
+		nodes.add(c = new Node("node c")); //$NON-NLS-1$
+		nodes.add(d = new Node("node d")); //$NON-NLS-1$
+		nodes.add(e = new Node("node e")); //$NON-NLS-1$
+		nodes.add(f = new Node("node f")); //$NON-NLS-1$
+		nodes.add(g = new Node("node g")); //$NON-NLS-1$
+		nodes.add(a = new Node("node a")); //$NON-NLS-1$
 
 		b3.width = b2.width = 90;
 
@@ -165,15 +167,15 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(b2 = new Node("node b2"));
-		nodes.add(b3 = new Node("node b3"));
-		nodes.add(b4 = new Node("node b4"));
-		nodes.add(c = new Node("node c"));
-		nodes.add(d = new Node("node d"));
-		nodes.add(e = new Node("node e"));
-		nodes.add(f = new Node("node f"));
-		nodes.add(g = new Node("node g"));
-		nodes.add(a = new Node("node a"));
+		nodes.add(b2 = new Node("node b2")); //$NON-NLS-1$
+		nodes.add(b3 = new Node("node b3")); //$NON-NLS-1$
+		nodes.add(b4 = new Node("node b4")); //$NON-NLS-1$
+		nodes.add(c = new Node("node c")); //$NON-NLS-1$
+		nodes.add(d = new Node("node d")); //$NON-NLS-1$
+		nodes.add(e = new Node("node e")); //$NON-NLS-1$
+		nodes.add(f = new Node("node f")); //$NON-NLS-1$
+		nodes.add(g = new Node("node g")); //$NON-NLS-1$
+		nodes.add(a = new Node("node a")); //$NON-NLS-1$
 
 		edges.add(new Edge(d, c));
 		edges.add(new Edge(e, c));
@@ -208,31 +210,31 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(top1 = new Node("Top 1"));
+		nodes.add(top1 = new Node("Top 1")); //$NON-NLS-1$
 		top1.width = 400;
 
-		nodes.add(top2 = new Node("Top 2"));
+		nodes.add(top2 = new Node("Top 2")); //$NON-NLS-1$
 		top2.width = 400;
 
-		nodes.add(a1 = new Node("a1"));
-		nodes.add(a2 = new Node("a2"));
-		nodes.add(a3 = new Node("a3"));
-		nodes.add(a4 = new Node("a4"));
-		nodes.add(b1 = new Node("b1"));
-		nodes.add(b2 = new Node("b2"));
-		nodes.add(b3 = new Node("b3"));
-		nodes.add(b4 = new Node("b4"));
-		nodes.add(b5 = new Node("b5"));
-		nodes.add(b6 = new Node("b6"));
-		nodes.add(c1 = new Node("c1"));
-		nodes.add(c2 = new Node("c2"));
-		nodes.add(c3 = new Node("c3"));
-		nodes.add(c4 = new Node("c4"));
+		nodes.add(a1 = new Node("a1")); //$NON-NLS-1$
+		nodes.add(a2 = new Node("a2")); //$NON-NLS-1$
+		nodes.add(a3 = new Node("a3")); //$NON-NLS-1$
+		nodes.add(a4 = new Node("a4")); //$NON-NLS-1$
+		nodes.add(b1 = new Node("b1")); //$NON-NLS-1$
+		nodes.add(b2 = new Node("b2")); //$NON-NLS-1$
+		nodes.add(b3 = new Node("b3")); //$NON-NLS-1$
+		nodes.add(b4 = new Node("b4")); //$NON-NLS-1$
+		nodes.add(b5 = new Node("b5")); //$NON-NLS-1$
+		nodes.add(b6 = new Node("b6")); //$NON-NLS-1$
+		nodes.add(c1 = new Node("c1")); //$NON-NLS-1$
+		nodes.add(c2 = new Node("c2")); //$NON-NLS-1$
+		nodes.add(c3 = new Node("c3")); //$NON-NLS-1$
+		nodes.add(c4 = new Node("c4")); //$NON-NLS-1$
 
-		nodes.add(bottom1 = new Node("Bottom 1"));
+		nodes.add(bottom1 = new Node("Bottom 1")); //$NON-NLS-1$
 		bottom1.width = 400;
 
-		nodes.add(bottom2 = new Node("Bottom 2"));
+		nodes.add(bottom2 = new Node("Bottom 2")); //$NON-NLS-1$
 		bottom2.width = 400;
 
 		edges.add(new Edge(top1, a1));
@@ -270,7 +272,7 @@ public class GraphTests {
 
 		Node row[], firstRow[];
 		firstRow = new Node[2];
-		firstRow[1] = new Node("root");
+		firstRow[1] = new Node("root"); //$NON-NLS-1$
 		addNodes(nodes, firstRow);
 
 		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2 });
@@ -295,8 +297,8 @@ public class GraphTests {
 
 		Node row[], firstRow[];
 		firstRow = new Node[3];
-		firstRow[1] = new Node("h1");
-		firstRow[2] = new Node("h2");
+		firstRow[1] = new Node("h1"); //$NON-NLS-1$
+		firstRow[2] = new Node("h2"); //$NON-NLS-1$
 		addNodes(nodes, firstRow);
 		row = joinRows(nodes, edges, firstRow,
 				new int[] { 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 2, 7, 2, 8, 2, 9, 2, 10 });
@@ -337,10 +339,10 @@ public class GraphTests {
 
 		Node row[], firstRow[];
 		firstRow = new Node[5];
-		firstRow[1] = new Node("h1");
-		firstRow[2] = new Node("h2");
-		firstRow[3] = new Node("h3");
-		firstRow[4] = new Node("h4");
+		firstRow[1] = new Node("h1"); //$NON-NLS-1$
+		firstRow[2] = new Node("h2"); //$NON-NLS-1$
+		firstRow[3] = new Node("h3"); //$NON-NLS-1$
+		firstRow[4] = new Node("h4"); //$NON-NLS-1$
 		firstRow[1].width = firstRow[2].width = firstRow[3].width = firstRow[4].width = 160;
 		addNodes(nodes, firstRow);
 		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5 });
@@ -367,9 +369,9 @@ public class GraphTests {
 
 		Node row[], firstRow[];
 		firstRow = new Node[4];
-		firstRow[1] = new Node("h1");
-		firstRow[2] = new Node("h2");
-		firstRow[3] = new Node("h3");
+		firstRow[1] = new Node("h1"); //$NON-NLS-1$
+		firstRow[2] = new Node("h2"); //$NON-NLS-1$
+		firstRow[3] = new Node("h3"); //$NON-NLS-1$
 		firstRow[1].width = firstRow[2].width = firstRow[3].width = 120;
 		addNodes(nodes, firstRow);
 		row = joinRows(nodes, edges, firstRow, new int[] { 1, 1, 1, 2, 1, 3, 2, 3, 2, 4, 3, 3, 3, 4 });
@@ -405,7 +407,7 @@ public class GraphTests {
 			head = firstRow[conns[i]];
 			tail = secondRow[conns[i + 1]];
 			if (tail == null) {
-				tail = secondRow[conns[i + 1]] = new Node("node" + conns[i + 1]);
+				tail = secondRow[conns[i + 1]] = new Node("node" + conns[i + 1]); //$NON-NLS-1$
 				tail.width = 78;
 			}
 			edges.add(new Edge(head, tail));
@@ -419,7 +421,7 @@ public class GraphTests {
 	 */
 	private static void shuffleConnections(int[] conns) {
 		for (int i = 0; i < conns.length; i += 2) {
-			int swap = (int) (rand.nextFloat() * conns.length) % conns.length / 2;
+			int swap = ((int) (rand.nextFloat() * conns.length) % conns.length) / 2;
 			swap *= 2;
 			int temp = conns[i];
 			conns[i] = conns[swap];
@@ -436,16 +438,16 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a"));
-		nodes.add(e = new Node("node e"));
-		nodes.add(b = new Node("node b"));
-		nodes.add(c = new Node("node c"));
-		nodes.add(d = new Node("node d"));
-		nodes.add(x = new Node("node X"));
-		nodes.add(f = new Node("node f"));
-		nodes.add(g = new Node("node g"));
-		nodes.add(h = new Node("node h"));
-		nodes.add(i = new Node("node i"));
+		nodes.add(a = new Node("node a")); //$NON-NLS-1$
+		nodes.add(e = new Node("node e")); //$NON-NLS-1$
+		nodes.add(b = new Node("node b")); //$NON-NLS-1$
+		nodes.add(c = new Node("node c")); //$NON-NLS-1$
+		nodes.add(d = new Node("node d")); //$NON-NLS-1$
+		nodes.add(x = new Node("node X")); //$NON-NLS-1$
+		nodes.add(f = new Node("node f")); //$NON-NLS-1$
+		nodes.add(g = new Node("node g")); //$NON-NLS-1$
+		nodes.add(h = new Node("node h")); //$NON-NLS-1$
+		nodes.add(i = new Node("node i")); //$NON-NLS-1$
 		// nodes.add(j = new Node("node j"));
 
 		edges.add(new Edge(a, i));
@@ -483,13 +485,13 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a"));
-		nodes.add(b = new Node("node b"));
-		nodes.add(c = new Node("node c"));
-		nodes.add(d = new Node("node d"));
-		nodes.add(e = new Node("node e"));
-		nodes.add(f = new Node("node f"));
-		nodes.add(g = new Node("node g"));
+		nodes.add(a = new Node("node a")); //$NON-NLS-1$
+		nodes.add(b = new Node("node b")); //$NON-NLS-1$
+		nodes.add(c = new Node("node c")); //$NON-NLS-1$
+		nodes.add(d = new Node("node d")); //$NON-NLS-1$
+		nodes.add(e = new Node("node e")); //$NON-NLS-1$
+		nodes.add(f = new Node("node f")); //$NON-NLS-1$
+		nodes.add(g = new Node("node g")); //$NON-NLS-1$
 
 		edges.add(new Edge(a, d));
 		edges.add(new Edge(b, d));
@@ -513,12 +515,12 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a"));
-		nodes.add(b = new Node("node b"));
-		nodes.add(c = new Node("node c"));
-		nodes.add(d = new Node("node d"));
-		nodes.add(e = new Node("node e"));
-		nodes.add(f = new Node("node f"));
+		nodes.add(a = new Node("node a")); //$NON-NLS-1$
+		nodes.add(b = new Node("node b")); //$NON-NLS-1$
+		nodes.add(c = new Node("node c")); //$NON-NLS-1$
+		nodes.add(d = new Node("node d")); //$NON-NLS-1$
+		nodes.add(e = new Node("node e")); //$NON-NLS-1$
+		nodes.add(f = new Node("node f")); //$NON-NLS-1$
 		// nodes.add(g = new Node("node g"));
 		// nodes.add(h = new Node("node h"));
 		// nodes.add(i = new Node("node i"));
@@ -547,10 +549,10 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a"));
-		nodes.add(b = new Node("node b"));
-		nodes.add(c = new Node("node c"));
-		nodes.add(d = new Node("node d"));
+		nodes.add(a = new Node("node a")); //$NON-NLS-1$
+		nodes.add(b = new Node("node b")); //$NON-NLS-1$
+		nodes.add(c = new Node("node c")); //$NON-NLS-1$
+		nodes.add(d = new Node("node d")); //$NON-NLS-1$
 
 		a.width = 80;
 		d.width = 75;
@@ -577,17 +579,17 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a"));
-		nodes.add(b = new Node("node b"));
-		nodes.add(c = new Node("node c"));
-		nodes.add(d = new Node("node d"));
-		nodes.add(e = new Node("node e"));
-		nodes.add(f = new Node("node f"));
-		nodes.add(g = new Node("node g"));
-		nodes.add(h = new Node("node h"));
-		nodes.add(i = new Node("node i"));
-		nodes.add(j = new Node("node j"));
-		nodes.add(k = new Node("node k"));
+		nodes.add(a = new Node("node a")); //$NON-NLS-1$
+		nodes.add(b = new Node("node b")); //$NON-NLS-1$
+		nodes.add(c = new Node("node c")); //$NON-NLS-1$
+		nodes.add(d = new Node("node d")); //$NON-NLS-1$
+		nodes.add(e = new Node("node e")); //$NON-NLS-1$
+		nodes.add(f = new Node("node f")); //$NON-NLS-1$
+		nodes.add(g = new Node("node g")); //$NON-NLS-1$
+		nodes.add(h = new Node("node h")); //$NON-NLS-1$
+		nodes.add(i = new Node("node i")); //$NON-NLS-1$
+		nodes.add(j = new Node("node j")); //$NON-NLS-1$
+		nodes.add(k = new Node("node k")); //$NON-NLS-1$
 
 		edges.add(new Edge(a, b));
 		edges.add(new Edge(a, c));
@@ -622,13 +624,13 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a = new Node("node a"));
-		nodes.add(b = new Node("node b"));
-		nodes.add(c = new Node("node c"));
-		nodes.add(d = new Node("node d"));
-		nodes.add(e = new Node("node e"));
+		nodes.add(a = new Node("node a")); //$NON-NLS-1$
+		nodes.add(b = new Node("node b")); //$NON-NLS-1$
+		nodes.add(c = new Node("node c")); //$NON-NLS-1$
+		nodes.add(d = new Node("node d")); //$NON-NLS-1$
+		nodes.add(e = new Node("node e")); //$NON-NLS-1$
 		// nodes.add(f = new Node("node f"));
-		nodes.add(g = new Node("node g"));
+		nodes.add(g = new Node("node g")); //$NON-NLS-1$
 
 		edges.add(new Edge(a, d));
 		edges.add(new Edge(c, b));
@@ -653,15 +655,15 @@ public class GraphTests {
 		NodeList nodes = new NodeList();
 		EdgeList edges = new EdgeList();
 
-		nodes.add(a0 = new Node("node a0"));
-		nodes.add(b0 = new Node("node b0"));
-		nodes.add(c0 = new Node("node c0"));
-		nodes.add(a1 = new Node("node a1"));
-		nodes.add(b1 = new Node("node b1"));
-		nodes.add(c1 = new Node("node c1"));
-		nodes.add(a2 = new Node("node a2"));
-		nodes.add(b2 = new Node("node b2"));
-		nodes.add(c2 = new Node("node c2"));
+		nodes.add(a0 = new Node("node a0")); //$NON-NLS-1$
+		nodes.add(b0 = new Node("node b0")); //$NON-NLS-1$
+		nodes.add(c0 = new Node("node c0")); //$NON-NLS-1$
+		nodes.add(a1 = new Node("node a1")); //$NON-NLS-1$
+		nodes.add(b1 = new Node("node b1")); //$NON-NLS-1$
+		nodes.add(c1 = new Node("node c1")); //$NON-NLS-1$
+		nodes.add(a2 = new Node("node a2")); //$NON-NLS-1$
+		nodes.add(b2 = new Node("node b2")); //$NON-NLS-1$
+		nodes.add(c2 = new Node("node c2")); //$NON-NLS-1$
 
 		// edges.add(new Edge(ab, a0));
 		// edges.add(new Edge(ab, b0));

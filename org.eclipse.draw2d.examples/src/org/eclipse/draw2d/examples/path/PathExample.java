@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 IBM Corporation and others.
+ * Copyright (c) 2008, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,9 +9,6 @@
  *     Stephane Lizeray slizeray@ilog.fr - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.examples.path;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.ButtonBorder;
@@ -48,7 +45,7 @@ public class PathExample {
 		fig.setLayoutManager(new ToolbarLayout());
 
 		final ScrollBar bar = new ScrollBar();
-		final Label l = new Label("<Zoom>");
+		final Label l = new Label("<Zoom>"); //$NON-NLS-1$
 
 		l.setBorder(new SchemeBorder(ButtonBorder.SCHEMES.BUTTON_SCROLLBAR));
 		bar.setThumb(l);
@@ -68,10 +65,11 @@ public class PathExample {
 
 		final Button zoomMethodButton = new Button(shell, SWT.CHECK);
 		zoomMethodButton.setSelection(true);
-		zoomMethodButton.setText("EMULATED_SCALING");
+		zoomMethodButton.setText("EMULATED_SCALING"); //$NON-NLS-1$
 
 		zoomMethodButton.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (zoomMethodButton.getSelection()) {
 					zoomFigure.setScaleMethod(ZoomFigure.EMULATED_SCALING);
@@ -81,13 +79,14 @@ public class PathExample {
 				zoomFigure.revalidate();
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		});
 
 		PathFigure polyline = new PathFigure();
-		float w = 70;
-		float k = 50;
+		int w = 70;
+		int k = 50;
 		polyline.addPoint(new Point(0 + k, 0 + k));
 		polyline.addPoint(new Point(w + k, 0 + k));
 		polyline.addPoint(new Point(w + k, w + k));
@@ -100,18 +99,18 @@ public class PathExample {
 		polyline.setRotation(c.x(), c.y(), 45);
 		zoomFigure.add(polyline, BorderLayout.CENTER);
 
-		bar.addPropertyChangeListener("value", new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				float z = (bar.getValue() + 50) * 0.02f;
-				zoomFigure.setScale(z);
-			}
+		bar.addPropertyChangeListener("value", evt -> { //$NON-NLS-1$
+			float z = (bar.getValue() + 50) * 0.02f;
+			zoomFigure.setScale(z);
 		});
 
 		lws.setContents(fig);
 		shell.open();
-		while (!shell.isDisposed())
-			while (!d.readAndDispatch())
+		while (!shell.isDisposed()) {
+			while (!d.readAndDispatch()) {
 				d.sleep();
+			}
+		}
 
 	}
 }

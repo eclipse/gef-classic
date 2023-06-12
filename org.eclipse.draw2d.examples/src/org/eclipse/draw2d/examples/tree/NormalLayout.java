@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ class NormalLayout extends AbstractBranchLayout {
 	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		Rectangle union = branch.getNodeBounds().getCopy();
-//	if (branch.isExpanded())
+		//	if (branch.isExpanded())
 		union.union(branch.getContentsPane().getBounds());
 
 		return union.getSize();
@@ -50,8 +50,9 @@ class NormalLayout extends AbstractBranchLayout {
 	@Override
 	public void layout(IFigure f) {
 		Animation.recordInitialState(f);
-		if (Animation.playbackState(f))
+		if (Animation.playbackState(f)) {
 			return;
+		}
 
 		Transposer transposer = getTransposer();
 		IFigure contents = branch.getContentsPane();
@@ -76,9 +77,9 @@ class NormalLayout extends AbstractBranchLayout {
 
 		TreeBranch firstChild = branch.getSubtrees().get(0);
 		TreeBranch lastChild = branch.getSubtrees().get(branch.getSubtrees().size() - 1);
-		int leftInset = firstChild.getContourLeft()[0] + transposer.t(firstChild.getBounds()).x
+		int leftInset = (firstChild.getContourLeft()[0] + transposer.t(firstChild.getBounds()).x)
 				- transposer.t(contents.getBounds()).x;
-		int rightInset = lastChild.getContourRight()[0] - transposer.t(lastChild.getBounds()).right()
+		int rightInset = (lastChild.getContourRight()[0] - transposer.t(lastChild.getBounds()).right())
 				+ transposer.t(contents.getBounds()).right();
 		rightInset = Math.max(rightInset, 0);
 		leftInset = Math.max(leftInset, 0);
@@ -88,24 +89,26 @@ class NormalLayout extends AbstractBranchLayout {
 			leftInset += (childrenSpan - nodeLocation.width) / 2;
 		}
 
-		if (leftInset > 0)
+		if (leftInset > 0) {
 			nodeLocation.x += leftInset;
-		else
+		} else {
 			contentsLocation.x -= leftInset;
+		}
 
 		int adjust = branchBounds.width - Rectangle.SINGLETON.setBounds(contentsLocation).union(nodeLocation).width;
 		adjust /= 2;
 		nodeLocation.x += adjust;
 		contentsLocation.x += adjust;
 		node.setBounds(transposer.t(nodeLocation));
-//	Animation.setBounds(node, transposer.t(nodeLocation));
-//	Animation.setBounds(contents, transposer.t(contentsLocation));
+		//	Animation.setBounds(node, transposer.t(nodeLocation));
+		//	Animation.setBounds(contents, transposer.t(contentsLocation));
 		contents.setBounds(transposer.t(contentsLocation));
 	}
 
 	private static void mergeContour(int[] destination, int[] source, int startdepth, int offset) {
-		for (int i = startdepth; i < source.length; i++)
+		for (int i = startdepth; i < source.length; i++) {
 			destination[i + 1] = source[i] + offset;
+		}
 	}
 
 	/**
@@ -114,8 +117,9 @@ class NormalLayout extends AbstractBranchLayout {
 	@Override
 	void paintLines(Graphics g) {
 		List<TreeBranch> children = getSubtrees();
-		if (children.isEmpty())
+		if (children.isEmpty()) {
 			return;
+		}
 		IFigure node = branch.getNode();
 
 		if (getTransposer().isEnabled()) {
@@ -169,12 +173,13 @@ class NormalLayout extends AbstractBranchLayout {
 
 		cachedContourLeft[0] = nodeBounds.x - clientArea.x;
 		cachedContourRight[0] = clientArea.right() - nodeBounds.right();
-		if (!branch.isExpanded())
+		if (!branch.isExpanded()) {
 			return;
+		}
 
 		List<TreeBranch> subtrees = getSubtrees();
 		int currentDepth = 0;
-		for (int i = 0; i < subtrees.size() && currentDepth < getDepth(); i++) {
+		for (int i = 0; (i < subtrees.size()) && (currentDepth < getDepth()); i++) {
 			TreeBranch subtree = subtrees.get(i);
 			if (subtree.getDepth() > currentDepth) {
 				int[] leftContour = subtree.getContourLeft();
@@ -185,7 +190,7 @@ class NormalLayout extends AbstractBranchLayout {
 		}
 
 		currentDepth = 0;
-		for (int i = subtrees.size() - 1; i >= 0 && currentDepth < getDepth(); i--) {
+		for (int i = subtrees.size() - 1; (i >= 0) && (currentDepth < getDepth()); i--) {
 			TreeBranch subtree = subtrees.get(i);
 			if (subtree.getDepth() > currentDepth) {
 				int[] rightContour = subtree.getContourRight();
@@ -206,8 +211,9 @@ class NormalLayout extends AbstractBranchLayout {
 
 		preferredRowHeights[0] = transposer.t(branch.getNode().getPreferredSize()).height + getMajorSpacing();
 
-		if (!branch.isExpanded())
+		if (!branch.isExpanded()) {
 			return;
+		}
 
 		for (TreeBranch subtree : getSubtrees()) {
 			int[] rowHeights = subtree.getPreferredRowHeights();
