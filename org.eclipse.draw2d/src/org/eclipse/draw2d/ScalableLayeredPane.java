@@ -87,7 +87,7 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 			super.paintClientArea(graphics);
 		} else {
 			Graphics graphicsToUse = IScalablePaneHelper.prepareScaledGraphics(graphics, this);
-			paintChildren(graphics);
+			paintChildren(graphicsToUse);
 			IScalablePaneHelper.cleanupScaledGraphics(graphics, graphicsToUse);
 		}
 	}
