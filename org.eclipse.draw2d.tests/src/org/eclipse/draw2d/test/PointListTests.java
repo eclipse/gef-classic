@@ -323,6 +323,37 @@ public class PointListTests extends BaseTestCase {
 		assertSame(boundsNew, list.getBounds());
 	}
 
+	public void testGetSmallestBounds() throws Exception {
+		PointList list = new PointList();
+		//
+		list.addPoint(10, 10);
+		list.addPoint(20, 20);
+		assertEquals(10, 10, 11, 11, list.getBounds());
+
+		list.setPoint(new Point(20, 20), 0);
+		assertEquals(20, 20, 1, 1, list.getBounds());
+		//
+		list.removeAllPoints();
+
+		list.addPoint(10, 10);
+		list.addPoint(20, 20);
+		assertEquals(10, 10, 11, 11, list.getBounds());
+
+		list.removePoint(1);
+		assertEquals(10, 10, 1, 1, list.getBounds());
+		//
+		list.removeAllPoints();
+
+		list.addPoint(10, 10);
+		assertEquals(10, 10, 1, 1, list.getBounds());
+
+		list.addPoint(0, 0);
+		assertEquals(0, 0, 11, 11, list.getBounds());
+
+		list.addPoint(20, 20);
+		assertEquals(0, 0, 21, 21, list.getBounds());
+	}
+
 	public void testTranslate() throws Exception {
 		PointList list = new PointList();
 		for (int i = 0; i < 5; i++) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -346,8 +346,7 @@ public class PointList implements java.io.Serializable, Translatable {
 		if (index < 0 || index >= size)
 			throw new IndexOutOfBoundsException("Index: " + index + //$NON-NLS-1$
 					", Size: " + size); //$NON-NLS-1$
-		if (bounds != null && !bounds.contains(pt))
-			bounds = null;
+		bounds = null;
 		points[index * 2] = pt.x;
 		points[index * 2 + 1] = pt.y;
 	}
