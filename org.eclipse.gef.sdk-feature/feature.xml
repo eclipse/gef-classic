@@ -43,6 +43,15 @@
          id="org.eclipse.draw2d"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.draw2d.source"
+         version="0.0.0"/>         
+
+   <includes
+         id="org.eclipse.gef.source"
+         version="0.0.0"/>
+   	
+
    <plugin
          id="org.eclipse.gef.doc.isv"
          download-size="0"
