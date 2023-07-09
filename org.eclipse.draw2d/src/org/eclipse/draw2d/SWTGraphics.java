@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -28,6 +28,7 @@ import org.eclipse.swt.graphics.TextLayout;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -750,6 +751,15 @@ public class SWTGraphics extends Graphics {
 	 */
 	public int getTextAntialias() {
 		return ((currentState.graphicHints & TEXT_AA_MASK) >> TEXT_AA_SHIFT) - AA_WHOLE_NUMBER;
+	}
+
+	/**
+	 * @see Graphics#getTextExtent(String)
+	 */
+	public Dimension getTextExtent(String s) {
+		checkText();
+		org.eclipse.swt.graphics.Point extent = gc.textExtent(s);
+		return new Dimension(extent.x, extent.y);
 	}
 
 	/**

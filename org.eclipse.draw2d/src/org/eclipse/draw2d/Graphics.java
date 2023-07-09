@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,6 +21,7 @@ import org.eclipse.swt.graphics.Path;
 import org.eclipse.swt.graphics.Pattern;
 import org.eclipse.swt.graphics.TextLayout;
 
+import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -760,6 +761,22 @@ public abstract class Graphics {
 	public int getTextAntialias() {
 		throwNotImplemented();
 		return SWT.DEFAULT;
+	}
+
+	/**
+	 * <p>Returns the extent of the given string. Tab expansion and carriage return
+	 * processing are performed.</p>
+	 * <p>The <em>extent</em> of a string is the width and height of the rectangular
+	 * area it would cover if drawn in a particular font (in this case, the current
+	 * font in the receiver).</p>
+	 *
+	 * @param string the string to measure
+	 * @return a dimension containing the extent of the string
+	 * @since 3.13
+	 */
+	public Dimension getTextExtent(String string) {
+		throwNotImplemented();
+		return null;
 	}
 
 	/**
