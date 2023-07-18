@@ -28,28 +28,24 @@ public class DeleteCommand extends Command {
 	private LogicGuide vGuide, hGuide;
 	private int vAlign, hAlign;
 	private int index = -1;
-	private List<Wire> sourceConnections = new ArrayList<>();
-	private List<Wire> targetConnections = new ArrayList<>();
+	private final List<Wire> sourceConnections = new ArrayList<>();
+	private final List<Wire> targetConnections = new ArrayList<>();
 
 	public DeleteCommand() {
 		super(LogicMessages.DeleteCommand_Label);
 	}
 
 	private void deleteConnections(LogicSubpart part) {
-		if (part instanceof LogicDiagram) {
-			List children = ((LogicDiagram) part).getChildren();
-			for (int i = 0; i < children.size(); i++)
-				deleteConnections((LogicSubpart) children.get(i));
+		if (part instanceof LogicDiagram ld) {
+			ld.getChildren().forEach(c -> deleteConnections((LogicSubpart) c));
 		}
 		sourceConnections.addAll(part.getSourceConnections());
-		for (int i = 0; i < sourceConnections.size(); i++) {
-			Wire wire = sourceConnections.get(i);
+		for (Wire wire : sourceConnections) {
 			wire.detachSource();
 			wire.detachTarget();
 		}
 		targetConnections.addAll(part.getTargetConnections());
-		for (int i = 0; i < targetConnections.size(); i++) {
-			Wire wire = targetConnections.get(i);
+		for (Wire wire : targetConnections) {
 			wire.detachSource();
 			wire.detachTarget();
 		}
@@ -82,10 +78,12 @@ public class DeleteCommand extends Command {
 	}
 
 	private void reattachToGuides(LogicSubpart part) {
-		if (vGuide != null)
+		if (vGuide != null) {
 			vGuide.attachPart(part, vAlign);
-		if (hGuide != null)
+		}
+		if (hGuide != null) {
 			hGuide.attachPart(part, hAlign);
+		}
 	}
 
 	@Override
@@ -94,14 +92,12 @@ public class DeleteCommand extends Command {
 	}
 
 	private void restoreConnections() {
-		for (int i = 0; i < sourceConnections.size(); i++) {
-			Wire wire = sourceConnections.get(i);
+		for (Wire wire : sourceConnections) {
 			wire.attachSource();
 			wire.attachTarget();
 		}
 		sourceConnections.clear();
-		for (int i = 0; i < targetConnections.size(); i++) {
-			Wire wire = targetConnections.get(i);
+		for (Wire wire : targetConnections) {
 			wire.attachSource();
 			wire.attachTarget();
 		}

@@ -18,7 +18,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 public class CircuitFeedbackBorder extends CircuitBorder {
 
-	private void drawConnectors(Graphics g, Rectangle rec) {
+	private static void drawConnectors(Graphics g, Rectangle rec) {
 		int y1 = rec.y, width = rec.width, x1, bottom = y1 + rec.height;
 		for (int i = 0; i < 4; i++) {
 			x1 = rec.x + (2 * i + 1) * width / 8;

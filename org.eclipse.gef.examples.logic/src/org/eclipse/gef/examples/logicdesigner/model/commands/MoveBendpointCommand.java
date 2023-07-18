@@ -10,13 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
-import org.eclipse.draw2d.Bendpoint;
-
 import org.eclipse.gef.examples.logicdesigner.model.WireBendpoint;
 
 public class MoveBendpointCommand extends BendpointCommand {
 
-	private Bendpoint oldBendpoint;
+	private WireBendpoint oldBendpoint;
 
 	@Override
 	public void execute() {
@@ -27,11 +25,11 @@ public class MoveBendpointCommand extends BendpointCommand {
 		super.execute();
 	}
 
-	protected Bendpoint getOldBendpoint() {
+	protected WireBendpoint getOldBendpoint() {
 		return oldBendpoint;
 	}
 
-	public void setOldBendpoint(Bendpoint bp) {
+	public void setOldBendpoint(WireBendpoint bp) {
 		oldBendpoint = bp;
 	}
 
