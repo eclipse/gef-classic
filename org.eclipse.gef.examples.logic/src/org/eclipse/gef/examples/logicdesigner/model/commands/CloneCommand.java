@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,12 +10,11 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model.commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import org.eclipse.draw2d.geometry.Rectangle;
 
@@ -28,6 +27,7 @@ import org.eclipse.gef.examples.logicdesigner.model.GroundOutput;
 import org.eclipse.gef.examples.logicdesigner.model.LED;
 import org.eclipse.gef.examples.logicdesigner.model.LiveOutput;
 import org.eclipse.gef.examples.logicdesigner.model.LogicDiagram;
+import org.eclipse.gef.examples.logicdesigner.model.LogicElement;
 import org.eclipse.gef.examples.logicdesigner.model.LogicFlowContainer;
 import org.eclipse.gef.examples.logicdesigner.model.LogicGuide;
 import org.eclipse.gef.examples.logicdesigner.model.LogicLabel;
@@ -39,22 +39,26 @@ import org.eclipse.gef.examples.logicdesigner.model.XORGate;
 
 public class CloneCommand extends Command {
 
-	private List parts, newTopLevelParts, newConnections;
+	private final List<LogicSubpart> parts;
+	private List<LogicSubpart> newTopLevelParts;
+	private List<Wire> newConnections;
 	private LogicDiagram parent;
-	private Map bounds, indices, connectionPartMap;
+	private Map<LogicSubpart, Rectangle> bounds;
+	private Map<LogicSubpart, Integer> indices;
+	private Map<LogicSubpart, LogicSubpart> connectionPartMap;
 	private ChangeGuideCommand vGuideCommand, hGuideCommand;
 	private LogicGuide hGuide, vGuide;
 	private int hAlignment, vAlignment;
 
 	public CloneCommand() {
 		super(LogicMessages.CloneCommand_Label);
-		parts = new LinkedList();
+		parts = new LinkedList<>();
 	}
 
 	public void addPart(LogicSubpart part, Rectangle newBounds) {
 		parts.add(part);
 		if (bounds == null) {
-			bounds = new HashMap();
+			bounds = new HashMap<>();
 		}
 		bounds.put(part, newBounds);
 	}
@@ -62,13 +66,13 @@ public class CloneCommand extends Command {
 	public void addPart(LogicSubpart part, int index) {
 		parts.add(part);
 		if (indices == null) {
-			indices = new HashMap();
+			indices = new HashMap<>();
 		}
 		indices.put(part, Integer.valueOf(index));
 	}
 
-	protected void clonePart(LogicSubpart oldPart, LogicDiagram newParent, Rectangle newBounds, List newConnections,
-			Map connectionPartMap, int index) {
+	protected void clonePart(LogicSubpart oldPart, LogicDiagram newParent, Rectangle newBounds,
+			List<Wire> newConnections, Map<LogicSubpart, LogicSubpart> connectionPartMap, int index) {
 		LogicSubpart newPart = null;
 
 		if (oldPart instanceof AndGate) {
@@ -93,37 +97,21 @@ public class CloneCommand extends Command {
 			newPart = new XORGate();
 		}
 
-		if (oldPart instanceof LogicDiagram) {
-			Iterator i = ((LogicDiagram) oldPart).getChildren().iterator();
-			while (i.hasNext()) {
+		if (oldPart instanceof LogicDiagram ld) {
+			for (LogicElement element : ld.getChildren()) {
 				// for children they will not need new bounds
-				clonePart((LogicSubpart) i.next(), (LogicDiagram) newPart, null, newConnections, connectionPartMap, -1);
+				clonePart((LogicSubpart) element, (LogicDiagram) newPart, null, newConnections, connectionPartMap, -1);
 			}
 		}
 
-		Iterator i = oldPart.getTargetConnections().iterator();
-		while (i.hasNext()) {
-			Wire connection = (Wire) i.next();
+		for (Wire connection : oldPart.getTargetConnections()) {
 			Wire newConnection = new Wire();
 			newConnection.setValue(connection.getValue());
 			newConnection.setTarget(newPart);
 			newConnection.setTargetTerminal(connection.getTargetTerminal());
 			newConnection.setSourceTerminal(connection.getSourceTerminal());
 			newConnection.setSource(connection.getSource());
-
-			Iterator b = connection.getBendpoints().iterator();
-			Vector newBendPoints = new Vector();
-
-			while (b.hasNext()) {
-				WireBendpoint bendPoint = (WireBendpoint) b.next();
-				WireBendpoint newBendPoint = new WireBendpoint();
-				newBendPoint.setRelativeDimensions(bendPoint.getFirstRelativeDimension(),
-						bendPoint.getSecondRelativeDimension());
-				newBendPoint.setWeight(bendPoint.getWeight());
-				newBendPoints.add(newBendPoint);
-			}
-
-			newConnection.setBendpoints(newBendPoints);
+			newConnection.setBendpoints(cloneBendPoints(connection));
 			newConnections.add(newConnection);
 		}
 
@@ -145,53 +133,58 @@ public class CloneCommand extends Command {
 		// keep track of the oldpart -> newpart map so that we can properly
 		// attach
 		// all connections.
-		if (newParent == parent)
+		if (newParent == parent) {
 			newTopLevelParts.add(newPart);
+		}
 		connectionPartMap.put(oldPart, newPart);
 	}
 
+	private static List<WireBendpoint> cloneBendPoints(Wire connection) {
+		List<WireBendpoint> newBendPoints = new ArrayList<>(connection.getBendpoints().size());
+
+		for (WireBendpoint bendPoint : connection.getBendpoints()) {
+			WireBendpoint newBendPoint = new WireBendpoint();
+			newBendPoint.setRelativeDimensions(bendPoint.getFirstRelativeDimension(),
+					bendPoint.getSecondRelativeDimension());
+			newBendPoint.setWeight(bendPoint.getWeight());
+			newBendPoints.add(newBendPoint);
+		}
+		return newBendPoints;
+	}
+
+	@Override
 	public void execute() {
-		connectionPartMap = new HashMap();
-		newConnections = new LinkedList();
-		newTopLevelParts = new LinkedList();
+		connectionPartMap = new HashMap<>();
+		newConnections = new LinkedList<>();
+		newTopLevelParts = new LinkedList<>();
 
-		Iterator i = parts.iterator();
-
-		LogicSubpart part = null;
-		while (i.hasNext()) {
-			part = (LogicSubpart) i.next();
+		for (LogicSubpart part : parts) {
 			if (bounds != null && bounds.containsKey(part)) {
-				clonePart(part, parent, (Rectangle) bounds.get(part), newConnections, connectionPartMap, -1);
+				clonePart(part, parent, bounds.get(part), newConnections, connectionPartMap, -1);
 			} else if (indices != null && indices.containsKey(part)) {
-				clonePart(part, parent, null, newConnections, connectionPartMap,
-						((Integer) indices.get(part)).intValue());
+				clonePart(part, parent, null, newConnections, connectionPartMap, indices.get(part).intValue());
 			} else {
 				clonePart(part, parent, null, newConnections, connectionPartMap, -1);
 			}
 		}
 
-		// go through and set the source of each connection to the proper
-		// source.
-		Iterator c = newConnections.iterator();
-
-		while (c.hasNext()) {
-			Wire conn = (Wire) c.next();
+		for (Wire conn : newConnections) {
 			LogicSubpart source = conn.getSource();
 			if (connectionPartMap.containsKey(source)) {
-				conn.setSource((LogicSubpart) connectionPartMap.get(source));
+				conn.setSource(connectionPartMap.get(source));
 				conn.attachSource();
 				conn.attachTarget();
 			}
 		}
 
 		if (hGuide != null) {
-			hGuideCommand = new ChangeGuideCommand((LogicSubpart) connectionPartMap.get(parts.get(0)), true);
+			hGuideCommand = new ChangeGuideCommand(connectionPartMap.get(parts.get(0)), true);
 			hGuideCommand.setNewGuide(hGuide, hAlignment);
 			hGuideCommand.execute();
 		}
 
 		if (vGuide != null) {
-			vGuideCommand = new ChangeGuideCommand((LogicSubpart) connectionPartMap.get(parts.get(0)), false);
+			vGuideCommand = new ChangeGuideCommand(connectionPartMap.get(parts.get(0)), false);
 			vGuideCommand.setNewGuide(vGuide, vAlignment);
 			vGuideCommand.execute();
 		}
@@ -201,22 +194,23 @@ public class CloneCommand extends Command {
 		this.parent = parent;
 	}
 
+	@Override
 	public void redo() {
-		for (Iterator iter = newTopLevelParts.iterator(); iter.hasNext();)
-			parent.addChild((LogicSubpart) iter.next());
-		for (Iterator iter = newConnections.iterator(); iter.hasNext();) {
-			Wire conn = (Wire) iter.next();
+		newTopLevelParts.forEach(nTLP -> parent.addChild(nTLP));
+		for (Wire conn : newConnections) {
 			LogicSubpart source = conn.getSource();
 			if (connectionPartMap.containsKey(source)) {
-				conn.setSource((LogicSubpart) connectionPartMap.get(source));
+				conn.setSource(connectionPartMap.get(source));
 				conn.attachSource();
 				conn.attachTarget();
 			}
 		}
-		if (hGuideCommand != null)
+		if (hGuideCommand != null) {
 			hGuideCommand.redo();
-		if (vGuideCommand != null)
+		}
+		if (vGuideCommand != null) {
 			vGuideCommand.redo();
+		}
 	}
 
 	public void setGuide(LogicGuide guide, int alignment, boolean isHorizontal) {
@@ -229,13 +223,15 @@ public class CloneCommand extends Command {
 		}
 	}
 
+	@Override
 	public void undo() {
-		if (hGuideCommand != null)
+		if (hGuideCommand != null) {
 			hGuideCommand.undo();
-		if (vGuideCommand != null)
+		}
+		if (vGuideCommand != null) {
 			vGuideCommand.undo();
-		for (Iterator iter = newTopLevelParts.iterator(); iter.hasNext();)
-			parent.removeChild((LogicSubpart) iter.next());
+		}
+		newTopLevelParts.forEach(nTLP -> parent.removeChild(nTLP));
 	}
 
 }
