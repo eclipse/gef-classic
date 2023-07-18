@@ -40,7 +40,7 @@ public class CircuitBorder extends AbstractBorder {
 		bottomConnector.addPoint(-1, -2);
 	}
 
-	private void drawConnectors(Graphics g, Rectangle rec) {
+	private static void drawConnectors(Graphics g, Rectangle rec) {
 		int y1 = rec.y, width = rec.width, x1, bottom = y1 + rec.height;
 		g.setBackgroundColor(LogicColorConstants.connectorGreen);
 		for (int i = 0; i < 4; i++) {

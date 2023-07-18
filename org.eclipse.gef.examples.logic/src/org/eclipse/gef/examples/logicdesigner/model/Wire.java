@@ -13,8 +13,6 @@ package org.eclipse.gef.examples.logicdesigner.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.draw2d.Bendpoint;
-
 public class Wire extends LogicElement {
 
 	static final long serialVersionUID = 1;
@@ -23,33 +21,37 @@ public class Wire extends LogicElement {
 	private LogicSubpart target;
 	private String sourceTerminal;
 	private String targetTerminal;
-	private List<Bendpoint> bendpoints = new ArrayList<>();
+	private List<WireBendpoint> bendpoints = new ArrayList<>();
 
 	public void attachSource() {
-		if (getSource() == null || getSource().getSourceConnections().contains(this))
+		if (getSource() == null || getSource().getSourceConnections().contains(this)) {
 			return;
+		}
 		getSource().connectOutput(this);
 	}
 
 	public void attachTarget() {
-		if (getTarget() == null || getTarget().getTargetConnections().contains(this))
+		if (getTarget() == null || getTarget().getTargetConnections().contains(this)) {
 			return;
+		}
 		getTarget().connectInput(this);
 	}
 
 	public void detachSource() {
-		if (getSource() == null)
+		if (getSource() == null) {
 			return;
+		}
 		getSource().disconnectOutput(this);
 	}
 
 	public void detachTarget() {
-		if (getTarget() == null)
+		if (getTarget() == null) {
 			return;
+		}
 		getTarget().disconnectInput(this);
 	}
 
-	public List<Bendpoint> getBendpoints() {
+	public List<WireBendpoint> getBendpoints() {
 		return bendpoints;
 	}
 
@@ -73,7 +75,7 @@ public class Wire extends LogicElement {
 		return value;
 	}
 
-	public void insertBendpoint(int index, Bendpoint point) {
+	public void insertBendpoint(int index, WireBendpoint point) {
 		getBendpoints().add(index, point);
 		firePropertyChange("bendpoint", null, null);//$NON-NLS-1$
 	}
@@ -83,12 +85,12 @@ public class Wire extends LogicElement {
 		firePropertyChange("bendpoint", null, null);//$NON-NLS-1$
 	}
 
-	public void setBendpoint(int index, Bendpoint point) {
+	public void setBendpoint(int index, WireBendpoint point) {
 		getBendpoints().set(index, point);
 		firePropertyChange("bendpoint", null, null);//$NON-NLS-1$
 	}
 
-	public void setBendpoints(List<Bendpoint> points) {
+	public void setBendpoints(List<WireBendpoint> points) {
 		bendpoints = points;
 		firePropertyChange("bendpoint", null, null);//$NON-NLS-1$
 	}
@@ -118,11 +120,13 @@ public class Wire extends LogicElement {
 	}
 
 	public void setValue(boolean value) {
-		if (value == this.value)
+		if (value == this.value) {
 			return;
+		}
 		this.value = value;
-		if (target != null)
+		if (target != null) {
 			target.update();
+		}
 		firePropertyChange("value", null, null);//$NON-NLS-1$
 	}
 

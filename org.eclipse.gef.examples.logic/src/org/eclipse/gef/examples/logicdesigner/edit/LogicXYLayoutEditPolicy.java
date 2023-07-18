@@ -54,7 +54,6 @@ import org.eclipse.gef.examples.logicdesigner.model.commands.SetConstraintComman
 public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayoutEditPolicy {
 
 	public LogicXYLayoutEditPolicy(XYLayout layout) {
-		super();
 		setXyLayout(layout);
 	}
 
@@ -82,8 +81,9 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 		// Detach from guide, if none is given
 		Integer guidePos = (Integer) request.getExtendedData()
 				.get(horizontal ? SnapToGuides.KEY_HORIZONTAL_GUIDE : SnapToGuides.KEY_VERTICAL_GUIDE);
-		if (guidePos == null)
+		if (guidePos == null) {
 			result = result.chain(new ChangeGuideCommand(part, horizontal));
+		}
 
 		return result;
 	}
@@ -143,12 +143,14 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 				// detach the part from the guide; otherwise, we leave it alone.
 				int alignment = part.getHorizontalGuide().getAlignment(part);
 				int edgeBeingResized = 0;
-				if ((request.getResizeDirection() & PositionConstants.NORTH) != 0)
+				if ((request.getResizeDirection() & PositionConstants.NORTH) != 0) {
 					edgeBeingResized = -1;
-				else
+				} else {
 					edgeBeingResized = 1;
-				if (alignment == edgeBeingResized)
+				}
+				if (alignment == edgeBeingResized) {
 					result = result.chain(new ChangeGuideCommand(part, true));
+				}
 			}
 		}
 
@@ -159,12 +161,14 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 			} else if (part.getVerticalGuide() != null) {
 				int alignment = part.getVerticalGuide().getAlignment(part);
 				int edgeBeingResized = 0;
-				if ((request.getResizeDirection() & PositionConstants.WEST) != 0)
+				if ((request.getResizeDirection() & PositionConstants.WEST) != 0) {
 					edgeBeingResized = -1;
-				else
+				} else {
 					edgeBeingResized = 1;
-				if (alignment == edgeBeingResized)
+				}
+				if (alignment == edgeBeingResized) {
 					result = result.chain(new ChangeGuideCommand(part, false));
+				}
 			}
 		}
 
@@ -189,10 +193,11 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 		return getResizeDirections(child.getModel().getClass());
 	}
 
-	private int getResizeDirections(Class modelClass) {
+	private static int getResizeDirections(Class modelClass) {
 		if (LED.class.equals(modelClass) || SimpleOutput.class.isAssignableFrom(modelClass)) {
 			return PositionConstants.NONE;
-		} else if (LogicLabel.class.equals(modelClass)) {
+		}
+		if (LogicLabel.class.equals(modelClass)) {
 			return PositionConstants.EAST | PositionConstants.WEST;
 		} else {
 			return PositionConstants.NSEW;
@@ -201,7 +206,7 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createSizeOnDropFeedback
 	 * (org.eclipse.gef.requests.CreateRequest)
 	 */
@@ -209,13 +214,13 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 	protected IFigure createSizeOnDropFeedback(CreateRequest createRequest) {
 		IFigure figure;
 
-		if (createRequest.getNewObject() instanceof Circuit)
+		if (createRequest.getNewObject() instanceof Circuit) {
 			figure = new CircuitFeedbackFigure();
-		else if (createRequest.getNewObject() instanceof LogicFlowContainer)
+		} else if (createRequest.getNewObject() instanceof LogicFlowContainer) {
 			figure = new LogicFlowFeedbackFigure();
-		else if (createRequest.getNewObject() instanceof LogicLabel)
+		} else if (createRequest.getNewObject() instanceof LogicLabel) {
 			figure = new LabelFeedbackFigure();
-		else {
+		} else {
 			figure = new RectangleFigure();
 			((RectangleFigure) figure).setXOR(true);
 			((RectangleFigure) figure).setFill(true);
@@ -238,7 +243,7 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 	 * Override to return the <code>Command</code> to perform an
 	 * {@link RequestConstants#REQ_CLONE CLONE}. By default, <code>null</code> is
 	 * returned.
-	 * 
+	 *
 	 * @param request the Clone Request
 	 * @return A command to perform the Clone.
 	 */
@@ -289,20 +294,21 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getCreationFeedbackOffset
 	 * (org.eclipse.gef.requests.CreateRequest)
 	 */
 	@Override
 	protected Insets getCreationFeedbackOffset(CreateRequest request) {
-		if (request.getNewObject() instanceof LED || request.getNewObject() instanceof Circuit)
+		if (request.getNewObject() instanceof LED || request.getNewObject() instanceof Circuit) {
 			return new Insets(2, 0, 2, 0);
+		}
 		return new Insets();
 	}
 
 	/**
 	 * Returns the layer used for displaying feedback.
-	 * 
+	 *
 	 * @return the feedback layer
 	 */
 	@Override

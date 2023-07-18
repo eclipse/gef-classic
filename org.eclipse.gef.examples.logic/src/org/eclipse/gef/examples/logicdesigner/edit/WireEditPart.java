@@ -19,7 +19,6 @@ import org.eclipse.swt.accessibility.AccessibleEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Display;
 
-import org.eclipse.draw2d.Bendpoint;
 import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.ManhattanConnectionRouter;
@@ -36,7 +35,7 @@ import org.eclipse.gef.examples.logicdesigner.model.WireBendpoint;
 
 /**
  * Implements a Connection Editpart to represent a Wire like connection.
- * 
+ *
  */
 public class WireEditPart extends AbstractConnectionEditPart implements PropertyChangeListener {
 
@@ -75,7 +74,7 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 
 	/**
 	 * Returns a newly created Figure to represent the connection.
-	 * 
+	 *
 	 * @return The created Figure.
 	 */
 	@Override
@@ -97,19 +96,20 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 
 	@Override
 	public AccessibleEditPart getAccessibleEditPart() {
-		if (acc == null)
+		if (acc == null) {
 			acc = new AccessibleGraphicalEditPart() {
 				@Override
 				public void getName(AccessibleEvent e) {
 					e.result = LogicMessages.Wire_LabelText;
 				}
 			};
+		}
 		return acc;
 	}
 
 	/**
 	 * Returns the model of this represented as a Wire.
-	 * 
+	 *
 	 * @return Model of this as <code>Wire</code>
 	 */
 	protected Wire getWire() {
@@ -118,7 +118,7 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 
 	/**
 	 * Returns the Figure associated with this, which draws the Wire.
-	 * 
+	 *
 	 * @return Figure of this.
 	 */
 	protected IFigure getWireFigure() {
@@ -128,7 +128,7 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 	/**
 	 * Listens to changes in properties of the Wire (like the contents being
 	 * carried), and reflects is in the visuals.
-	 * 
+	 *
 	 * @param event Event notifying the change.
 	 */
 	@Override
@@ -138,22 +138,25 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 			refreshBendpoints();
 			refreshBendpointEditPolicy();
 		}
-		if ("value".equals(property)) //$NON-NLS-1$
+		if ("value".equals(property)) { //$NON-NLS-1$
 			refreshVisuals();
-		if ("bendpoint".equals(property)) //$NON-NLS-1$
+		}
+		if ("bendpoint".equals(property)) { //$NON-NLS-1$
 			refreshBendpoints();
+		}
 	}
 
 	/**
 	 * Updates the bendpoints, based on the model.
 	 */
 	protected void refreshBendpoints() {
-		if (getConnectionFigure().getConnectionRouter() instanceof ManhattanConnectionRouter)
+		if (getConnectionFigure().getConnectionRouter() instanceof ManhattanConnectionRouter) {
 			return;
-		List<Bendpoint> modelConstraint = getWire().getBendpoints();
+		}
+		List<WireBendpoint> modelConstraint = getWire().getBendpoints();
 		List<RelativeBendpoint> figureConstraint = new ArrayList<>();
 		for (int i = 0; i < modelConstraint.size(); i++) {
-			WireBendpoint wbp = (WireBendpoint) modelConstraint.get(i);
+			WireBendpoint wbp = modelConstraint.get(i);
 			RelativeBendpoint rbp = new RelativeBendpoint(getConnectionFigure());
 			rbp.setRelativeDimensions(wbp.getFirstRelativeDimension(), wbp.getSecondRelativeDimension());
 			rbp.setWeight((i + 1) / ((float) modelConstraint.size() + 1));
@@ -163,24 +166,26 @@ public class WireEditPart extends AbstractConnectionEditPart implements Property
 	}
 
 	private void refreshBendpointEditPolicy() {
-		if (getConnectionFigure().getConnectionRouter() instanceof ManhattanConnectionRouter)
+		if (getConnectionFigure().getConnectionRouter() instanceof ManhattanConnectionRouter) {
 			installEditPolicy(EditPolicy.CONNECTION_BENDPOINTS_ROLE, null);
-		else
+		} else {
 			installEditPolicy(EditPolicy.CONNECTION_BENDPOINTS_ROLE, new WireBendpointEditPolicy());
+		}
 	}
 
 	/**
 	 * Refreshes the visual aspects of this, based upon the model (Wire). It changes
 	 * the wire color depending on the state of Wire.
-	 * 
+	 *
 	 */
 	@Override
 	protected void refreshVisuals() {
 		refreshBendpoints();
-		if (getWire().getValue())
+		if (getWire().getValue()) {
 			getWireFigure().setForegroundColor(alive);
-		else
+		} else {
 			getWireFigure().setForegroundColor(dead);
+		}
 	}
 
 }

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.model;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,7 @@ public class LogicDiagram extends LogicSubpart {
 	private static int count;
 	private static final Image LOGIC_ICON = createImage(LogicDiagram.class, "icons/circuit16.gif"); //$NON-NLS-1$
 
-	private List<LogicElement> children = new ArrayList<>();
+	private final List<LogicElement> children = new ArrayList<>();
 	private LogicRuler leftRuler;
 	private LogicRuler topRuler;
 	private Integer connectionRouter = null;
@@ -55,10 +54,11 @@ public class LogicDiagram extends LogicSubpart {
 	}
 
 	public void addChild(LogicElement child, int index) {
-		if (index >= 0)
+		if (index >= 0) {
 			children.add(index, child);
-		else
+		} else {
 			children.add(child);
+		}
 		fireChildAdded(CHILDREN, child, Integer.valueOf(index));
 	}
 
@@ -72,8 +72,9 @@ public class LogicDiagram extends LogicSubpart {
 	}
 
 	public Integer getConnectionRouter() {
-		if (connectionRouter == null)
+		if (connectionRouter == null) {
 			connectionRouter = ROUTER_MANUAL;
+		}
 		return connectionRouter;
 	}
 
@@ -94,7 +95,7 @@ public class LogicDiagram extends LogicSubpart {
 	/**
 	 * Returns <code>null</code> for this model. Returns normal descriptors for all
 	 * subclasses.
-	 * 
+	 *
 	 * @return Array of property descriptors.
 	 */
 	@Override
@@ -113,8 +114,9 @@ public class LogicDiagram extends LogicSubpart {
 
 	@Override
 	public Object getPropertyValue(Object propName) {
-		if (propName.equals(ID_ROUTER))
+		if (propName.equals(ID_ROUTER)) {
 			return connectionRouter;
+		}
 		return super.getPropertyValue(propName);
 	}
 
@@ -143,10 +145,6 @@ public class LogicDiagram extends LogicSubpart {
 		return snapToGeometry;
 	}
 
-	private void readObject(java.io.ObjectInputStream s) throws IOException, ClassNotFoundException {
-		s.defaultReadObject();
-	}
-
 	public void removeChild(LogicElement child) {
 		children.remove(child);
 		fireChildRemoved(CHILDREN, child);
@@ -160,10 +158,11 @@ public class LogicDiagram extends LogicSubpart {
 
 	@Override
 	public void setPropertyValue(Object id, Object value) {
-		if (ID_ROUTER.equals(id))
+		if (ID_ROUTER.equals(id)) {
 			setConnectionRouter((Integer) value);
-		else
+		} else {
 			super.setPropertyValue(id, value);
+		}
 	}
 
 	public void setRulerVisibility(boolean newValue) {
@@ -190,19 +189,20 @@ public class LogicDiagram extends LogicSubpart {
 	private static class ConnectionRouterLabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 
 		public ConnectionRouterLabelProvider() {
-			super();
 		}
 
 		@Override
 		public String getText(Object element) {
-			if (element instanceof Integer) {
-				Integer integer = (Integer) element;
-				if (ROUTER_MANUAL.intValue() == integer.intValue())
+			if (element instanceof Integer integer) {
+				if (ROUTER_MANUAL.intValue() == integer.intValue()) {
 					return LogicMessages.PropertyDescriptor_LogicDiagram_Manual;
-				if (ROUTER_MANHATTAN.intValue() == integer.intValue())
+				}
+				if (ROUTER_MANHATTAN.intValue() == integer.intValue()) {
 					return LogicMessages.PropertyDescriptor_LogicDiagram_Manhattan;
-				if (ROUTER_SHORTEST_PATH.intValue() == integer.intValue())
+				}
+				if (ROUTER_SHORTEST_PATH.intValue() == integer.intValue()) {
 					return LogicMessages.PropertyDescriptor_LogicDiagram_ShortestPath;
+				}
 			}
 			return super.getText(element);
 		}

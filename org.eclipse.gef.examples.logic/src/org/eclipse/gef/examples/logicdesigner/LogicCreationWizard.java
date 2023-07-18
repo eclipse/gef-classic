@@ -20,16 +20,19 @@ public class LogicCreationWizard extends Wizard implements INewWizard {
 	private IStructuredSelection selection;
 	private IWorkbench workbench;
 
+	@Override
 	public void addPages() {
 		logicPage = new LogicWizardPage1(workbench, selection);
 		addPage(logicPage);
 	}
 
+	@Override
 	public void init(IWorkbench aWorkbench, IStructuredSelection currentSelection) {
 		workbench = aWorkbench;
 		selection = currentSelection;
 	}
 
+	@Override
 	public boolean performFinish() {
 		return logicPage.finish();
 	}

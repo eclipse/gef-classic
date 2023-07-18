@@ -48,14 +48,17 @@ public abstract class LogicElement implements IPropertySource, Cloneable, Serial
 		listeners.firePropertyChange(prop, null, child);
 	}
 
+	@Override
 	public Object getEditableValue() {
 		return this;
 	}
 
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return new IPropertyDescriptor[0];
 	}
 
+	@Override
 	public Object getPropertyValue(Object propName) {
 		return null;
 	}
@@ -64,6 +67,7 @@ public abstract class LogicElement implements IPropertySource, Cloneable, Serial
 		return null;
 	}
 
+	@Override
 	public boolean isPropertySet(Object propName) {
 		return isPropertySet((String) propName);
 	}
@@ -81,12 +85,14 @@ public abstract class LogicElement implements IPropertySource, Cloneable, Serial
 		listeners.removePropertyChangeListener(l);
 	}
 
+	@Override
 	public void resetPropertyValue(Object propName) {
 	}
 
 	final void resetPropertyValue(String propName) {
 	}
 
+	@Override
 	public void setPropertyValue(Object propName, Object val) {
 	}
 

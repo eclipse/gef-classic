@@ -42,8 +42,7 @@ public class LED extends LogicSubpart {
 	public static final String TERMINAL_3_OUT = "3"; //$NON-NLS-1$
 	public static final String TERMINAL_4_OUT = "4"; //$NON-NLS-1$
 
-	protected static final String[] IN_TERMINALS = new String[] { TERMINAL_1_IN, TERMINAL_2_IN, TERMINAL_3_IN,
-			TERMINAL_4_IN };
+	protected static final String[] IN_TERMINALS = { TERMINAL_1_IN, TERMINAL_2_IN, TERMINAL_3_IN, TERMINAL_4_IN };
 	protected boolean[] bits = new boolean[4];
 
 	static {
@@ -51,11 +50,13 @@ public class LED extends LogicSubpart {
 		pValueProp.setValidator(LogicNumberCellEditorValidator.instance());
 		if (descriptors != null) {
 			newDescriptors = new IPropertyDescriptor[descriptors.length + 1];
-			for (int i = 0; i < descriptors.length; i++)
+			for (int i = 0; i < descriptors.length; i++) {
 				newDescriptors[i] = descriptors[i];
+			}
 			newDescriptors[descriptors.length] = pValueProp;
-		} else
+		} else {
 			newDescriptors = new IPropertyDescriptor[] { pValueProp };
+		}
 	}
 
 	public LED() {
@@ -82,18 +83,20 @@ public class LED extends LogicSubpart {
 
 	@Override
 	public Object getPropertyValue(Object propName) {
-		if (P_VALUE.equals(propName))
+		if (P_VALUE.equals(propName)) {
 			return Integer.toString(getValue());
+		}
 		if (ID_SIZE.equals(propName)) {
-			return new String("(" + getSize().width + "," + getSize().height + ")");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
+			return ("(" + getSize().width + "," + getSize().height + ")");//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 		}
 		return super.getPropertyValue(propName);
 	}
 
 	@Override
 	public void resetPropertyValue(Object id) {
-		if (P_VALUE.equals(id))
+		if (P_VALUE.equals(id)) {
 			setValue(0);
+		}
 		super.resetPropertyValue(id);
 	}
 
@@ -109,16 +112,20 @@ public class LED extends LogicSubpart {
 		return getValue(bits);
 	}
 
-	private int getValue(boolean[] bits) {
+	private static int getValue(boolean[] bits) {
 		int val = 0;
-		if (bits[0])
+		if (bits[0]) {
 			val += 1;
-		if (bits[1])
+		}
+		if (bits[1]) {
 			val += 2;
-		if (bits[2])
+		}
+		if (bits[2]) {
 			val += 4;
-		if (bits[3])
+		}
+		if (bits[3]) {
 			val += 8;
+		}
 		return val;
 	}
 
@@ -127,10 +134,11 @@ public class LED extends LogicSubpart {
 	 */
 	@Override
 	public void setPropertyValue(Object id, Object value) {
-		if (P_VALUE.equals(id))
+		if (P_VALUE.equals(id)) {
 			setValue(Integer.parseInt((String) value));
-		else
+		} else {
 			super.setPropertyValue(id, value);
+		}
 	}
 
 	@Override
@@ -145,12 +153,15 @@ public class LED extends LogicSubpart {
 		}
 		int val = v % 16;
 		bits = new boolean[4]; // Shorthand to set all bits to false
-		if (val >= 8)
+		if (val >= 8) {
 			bits[3] = true;
-		if (val % 8 > 3)
+		}
+		if (val % 8 > 3) {
 			bits[2] = true;
-		if (val % 4 > 1)
+		}
+		if (val % 4 > 1) {
 			bits[1] = true;
+		}
 		bits[0] = val % 2 == 1;
 		firePropertyChange(P_VALUE, null, null);
 		update();
