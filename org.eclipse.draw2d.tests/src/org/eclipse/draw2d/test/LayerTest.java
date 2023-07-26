@@ -10,14 +10,16 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Layer;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-public class LayerTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
 
+public class LayerTest extends Assert {
+
+	@Test
 	public void testContainsPointInLayer() {
 		MyLayer layer = new MyLayer();
 		layer.setBounds(new Rectangle(0, 0, 1000, 1000));

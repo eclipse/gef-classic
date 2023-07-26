@@ -19,7 +19,9 @@ import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * General tests for the {@link Graph} class.
@@ -27,7 +29,7 @@ import junit.framework.TestCase;
  * @author Fabian Steeg (fsteeg)
  * 
  */
-public class GraphTests extends TestCase {
+public class GraphTests extends Assert {
 
 	private static final int STYLE = SWT.NONE;
 
@@ -39,24 +41,28 @@ public class GraphTests extends TestCase {
 
 	Shell shell;
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		shell = new Shell();
 		graph = new Graph(shell, STYLE);
 		nodes = new GraphNode[] { new GraphNode(graph, STYLE), new GraphNode(graph, STYLE) };
 		connection = new GraphConnection(graph, STYLE, nodes[0], nodes[1]);
 	}
 
+	@Test
 	public void testGraphData() {
 		graph.setData("graph data");
 		assertEquals("graph data", graph.getData());
 	}
 
+	@Test
 	public void testNodeItemData() {
 		GraphItem item = (GraphNode) graph.getNodes().get(0);
 		item.setData("node item data");
 		assertEquals("node item data", item.getData());
 	}
 
+	@Test
 	public void testConnectionItemData() {
 		GraphItem item = (GraphConnection) graph.getConnections().get(0);
 		item.setData("connection item data");
@@ -68,6 +74,7 @@ public class GraphTests extends TestCase {
 	 * 
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361541
 	 */
+	@Test
 	public void testDisposeGraphWithDisposedNode() {
 		nodes[0].dispose(); // removes the node from the graph's nodes list
 		((List<GraphNode>) graph.getNodes()).add(nodes[0]); // but we're malicious and add it back
@@ -81,6 +88,7 @@ public class GraphTests extends TestCase {
 	 * 
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361541
 	 */
+	@Test
 	public void testDisposeGraphWithDisposedConnection() {
 		connection.dispose();
 		((List<GraphConnection>) graph.getConnections()).add(connection);
@@ -95,6 +103,7 @@ public class GraphTests extends TestCase {
 	 * 
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361525
 	 */
+	@Test
 	public void testUnHighlightNode() {
 		new ZestRootLayer().unHighlightNode(new Figure());
 	}
@@ -105,6 +114,7 @@ public class GraphTests extends TestCase {
 	 * 
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361525
 	 */
+	@Test
 	public void testUnHighlightConnection() {
 		new ZestRootLayer().unHighlightConnection(new Figure());
 	}
@@ -113,6 +123,7 @@ public class GraphTests extends TestCase {
 	 * Check that Graph resources are cleaned up when parent is disposed (see
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=373191)
 	 */
+	@Test
 	public void testDisposal() {
 		GraphNode n = (GraphNode) graph.getNodes().get(0);
 		GraphConnection c = (GraphConnection) graph.getConnections().get(0);

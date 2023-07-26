@@ -9,27 +9,21 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.test;
-
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 
-public class XYLayoutTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class XYLayoutTest extends Assert {
 
 	protected XYLayout layout;
 	protected RectangleFigure figure;
 	protected RectangleFigure contents;
 
-	/*
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
+	@Test
 	public void testPreferredSize() {
 		layout = new XYLayout();
 		contents = new RectangleFigure();
@@ -43,13 +37,6 @@ public class XYLayoutTest extends TestCase {
 
 		assertEquals(100, d.width);
 		assertEquals(150, d.height);
-	}
-
-	/*
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
 	}
 
 }

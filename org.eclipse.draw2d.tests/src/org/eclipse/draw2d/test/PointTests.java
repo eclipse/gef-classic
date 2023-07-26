@@ -3,8 +3,11 @@ package org.eclipse.draw2d.test;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 
+import org.junit.Test;
+
 public class PointTests extends BaseTestCase {
 
+	@Test
 	public void testMin() {
 		assertTrue(Point.min(new Point(1, 3), new Point(2, 6)).equals(new Point(1, 3)));
 		assertTrue(Point.min(new Point(4, 8), new Point(2, 6)).equals(new Point(2, 6)));
@@ -12,6 +15,7 @@ public class PointTests extends BaseTestCase {
 		assertTrue(Point.min(new Point(4, 12), new Point(6, 10)).equals(new Point(4, 10)));
 	}
 
+	@Test
 	public void testMax() {
 		assertTrue(Point.max(new Point(1, 3), new Point(2, 6)).equals(new Point(2, 6)));
 		assertTrue(Point.max(new Point(4, 8), new Point(2, 6)).equals(new Point(4, 8)));
@@ -19,12 +23,14 @@ public class PointTests extends BaseTestCase {
 		assertTrue(Point.max(new Point(4, 12), new Point(6, 10)).equals(new Point(6, 12)));
 	}
 
+	@Test
 	public void testEquals() {
 		assertTrue(new Point(4, 7).equals(4, 7));
 		assertFalse(new Point(3, 6).equals(3, 7));
 		assertFalse(new Point(3, 6).equals(4, 6));
 	}
 
+	@Test
 	public void testDifference() {
 		Point p1 = new Point(4, 7);
 		Point p2 = new Point(2, 4);
@@ -35,6 +41,7 @@ public class PointTests extends BaseTestCase {
 		assertTrue(p2.equals(2, 4));
 	}
 
+	@Test
 	public void testTranslate() {
 		Point p1 = new Point(3, 6);
 		p1.translate(new Dimension(4711, 567));
@@ -44,37 +51,45 @@ public class PointTests extends BaseTestCase {
 		assertTrue(p1.equals(4714, 573));
 	}
 
+	@Test
 	public void testSetX() {
 		assertTrue(new Point(4711, 678).setX(3).equals(3, 678));
 	}
 
+	@Test
 	public void testSetY() {
 		assertTrue(new Point(4711, 678).setY(3).equals(4711, 3));
 	}
 
+	@Test
 	public void testSetLocation() {
 		assertTrue(new Point().setLocation(4711, 678).equals(4711, 678));
 		assertTrue(new Point().setLocation(new Point(4711, 678)).equals(4711, 678));
 	}
 
+	@Test
 	public void testConstructor() throws Exception {
 		assertEquals(0, 0, new Point());
 	}
 
+	@Test
 	public void testConstructorIntInt() throws Exception {
 		assertEquals(-1, 2, new Point(-1, 2));
 	}
 
+	@Test
 	public void testConstructorDoubleDouble() throws Exception {
 		assertEquals((int) Math.PI, (int) -Math.E, new Point(Math.PI, -Math.E));
 	}
 
+	@Test
 	public void testConstructorPoint() throws Exception {
 		Point template = new Point(-1, 2);
 		assertEquals(-1, 2, new Point(template));
 		assertEquals(-1, 2, template); // assert read only argument point
 	}
 
+	@Test
 	public void testConstructorSwtPoint() throws Exception {
 		org.eclipse.swt.graphics.Point template = new org.eclipse.swt.graphics.Point(-1, 2);
 		assertEquals(-1, 2, new Point(template));
@@ -83,12 +98,14 @@ public class PointTests extends BaseTestCase {
 		assertEquals(2, template.y);
 	}
 
+	@Test
 	public void testConstructorDimension() throws Exception {
 		Dimension dimension = new Dimension(100, 200);
 		assertEquals(100, 200, new Point(dimension));
 		assertEquals(100, 200, dimension);
 	}
 
+	@Test
 	public void testEqualsObject() throws Exception {
 		Point testPoint = new Point(-1, 2);
 		assertFalse(testPoint.equals(null));
@@ -98,6 +115,7 @@ public class PointTests extends BaseTestCase {
 		assertFalse(testPoint.equals(new Point()));
 	}
 
+	@Test
 	public void testHashCodeToString() throws Exception {
 		assertEquals(0, new Point().hashCode());
 		assertEquals((1 * 2) ^ (1 + 2), new Point(1, 2).hashCode());
@@ -106,6 +124,7 @@ public class PointTests extends BaseTestCase {
 		assertNotNull(new Point(1, 2).toString());
 	}
 
+	@Test
 	public void testGetCopy() throws Exception {
 		Point template = new Point(-1, 2);
 		Point testPoint = template.getCopy();
@@ -114,6 +133,7 @@ public class PointTests extends BaseTestCase {
 		assertEquals(template, testPoint);
 	}
 
+	@Test
 	public void testGetSwtPoint() throws Exception {
 		org.eclipse.swt.graphics.Point testPoint = new Point(-1, 2).getSWTPoint();
 		assertNotNull(testPoint);
@@ -121,12 +141,14 @@ public class PointTests extends BaseTestCase {
 		assertEquals(2, testPoint.y);
 	}
 
+	@Test
 	public void testSetLocationIntInt() throws Exception {
 		Point testPoint = new Point();
 		assertSame(testPoint, testPoint.setLocation(-1, 2));
 		assertEquals(-1, 2, testPoint);
 	}
 
+	@Test
 	public void testSetLocationPoint() throws Exception {
 		Point template = new Point(-1, 2);
 		Point testPoint = new Point();
@@ -134,22 +156,26 @@ public class PointTests extends BaseTestCase {
 		assertEquals(template, testPoint);
 	}
 
+	@Test
 	public void testGetDifferencePoint() throws Exception {
 		Dimension dimension = new Point(5, -5).getDifference(new Point(4, -4));
 		assertEquals(1, dimension.width);
 		assertEquals(-1, dimension.height);
 	}
 
+	@Test
 	public void testGetDistance2Point() throws Exception {
 		assertEquals(25, new Point(4, 7).getDistance2(new Point(1, 3)));
 		assertEquals(25, new Point(-1, -2).getDistance2(new Point(-5, 1)));
 	}
 
+	@Test
 	public void testGetDistancePoint() throws Exception {
 		assertEquals(5, new Point(4, 7).getDistance(new Point(1, 3)), 0);
 		assertEquals(5, new Point(-1, -2).getDistance(new Point(-5, 1)), 0);
 	}
 
+	@Test
 	public void testGetDistanceOrthogonal() throws Exception {
 		assertEquals(53, new Point(10, 20).getDistanceOrthogonal(new Point(51, 32)));
 		assertEquals(53, new Point(51, 32).getDistanceOrthogonal(new Point(10, 20)));
@@ -158,6 +184,7 @@ public class PointTests extends BaseTestCase {
 		assertEquals(60, new Point(10, 20).getDistanceOrthogonal(new Point(-10, -20)));
 	}
 
+	@Test
 	public void testNegate() throws Exception {
 		Point testPoint = new Point(1, 2);
 		assertSame(testPoint, testPoint.negate());
@@ -167,6 +194,7 @@ public class PointTests extends BaseTestCase {
 		assertEquals(1, 2, testPoint);
 	}
 
+	@Test
 	public void testScale() throws Exception {
 		// check work scal(double)
 		Point testPoint = new Point(10, 20);
@@ -178,12 +206,14 @@ public class PointTests extends BaseTestCase {
 		assertEquals(100, 100, testPoint);
 	}
 
+	@Test
 	public void testTranspose() throws Exception {
 		Point testPoint = new Point(3, 5);
 		assertSame(testPoint, testPoint.transpose());
 		assertEquals(5, 3, testPoint);
 	}
 
+	@Test
 	public void testGetNegated() throws Exception {
 		Point template = new Point(1, 2);
 		Point testPoint = template.getNegated();
@@ -196,6 +226,7 @@ public class PointTests extends BaseTestCase {
 		assertEquals(1, 2, testPoint);
 	}
 
+	@Test
 	public void testGetScaled() throws Exception {
 		Point template = new Point(10, 20);
 		Point testPoint = template.getScaled(0.5);
@@ -203,6 +234,7 @@ public class PointTests extends BaseTestCase {
 		assertEquals(5, 10, testPoint);
 	}
 
+	@Test
 	public void testGetTranslated() throws Exception {
 		// check work getTranslated(int, int)
 		Point template = new Point(3, 5);
@@ -223,6 +255,7 @@ public class PointTests extends BaseTestCase {
 		assertEquals(0, 0, testPoint);
 	}
 
+	@Test
 	public void testGetTransposed() throws Exception {
 		Point template = new Point(3, 5);
 		Point testPoint = template.getTransposed();

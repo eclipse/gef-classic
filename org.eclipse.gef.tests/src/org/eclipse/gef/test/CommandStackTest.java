@@ -3,16 +3,16 @@ package org.eclipse.gef.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.junit.Assert;
+import org.junit.Test;
 
-public class CommandStackTest extends TestCase {
+public class CommandStackTest extends Assert {
 
+	@Test
 	public void testCommandStackEventListenerNotifications() {
 		final List commandStackEvents = new ArrayList();
 

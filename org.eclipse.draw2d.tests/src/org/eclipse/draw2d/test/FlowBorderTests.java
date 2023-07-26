@@ -17,11 +17,14 @@ import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.draw2d.text.TextFragmentBox;
 import org.eclipse.swt.graphics.FontMetrics;
 
+import org.junit.Test;
+
 /**
  * @since 3.1
  */
 public class FlowBorderTests extends SimpleTextTest {
 
+	@Test
 	public void testBorderedTextFlow() {
 		sentence.setBorder(new TestBorder(new Insets(5)));
 		makePageWidth("The quick", 5);

@@ -11,20 +11,22 @@
 
 package org.eclipse.draw2d.test;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.geometry.PrecisionDimension;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * JUnit Tests for PrecisionDimension.
  * 
  * @author Anthony Hunter
  */
-public class PrecisionDimensionTest extends TestCase {
+public class PrecisionDimensionTest extends Assert {
 
 	/**
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=227977
 	 */
+	@Test
 	public void testEquals() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
 		PrecisionDimension p2 = new PrecisionDimension(0.2, 0.2);
@@ -34,11 +36,13 @@ public class PrecisionDimensionTest extends TestCase {
 	/**
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=124904
 	 */
+	@Test
 	public void testGetCopy() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
 		assertTrue(p1.equals(p1.getCopy()));
 	}
 
+	@Test
 	public void testExpand() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
 		PrecisionDimension p2 = new PrecisionDimension(0.2, 0.2);
@@ -46,6 +50,7 @@ public class PrecisionDimensionTest extends TestCase {
 		assertTrue(p2.equals(p1.getExpanded(p1)));
 	}
 
+	@Test
 	public void testShrink() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
 		PrecisionDimension p2 = new PrecisionDimension(0.2, 0.2);

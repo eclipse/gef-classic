@@ -9,9 +9,6 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.test;
-
-import junit.framework.TestCase;
-
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteEntry;
@@ -22,7 +19,10 @@ import org.eclipse.gef.ui.palette.customize.PaletteDrawerFactory;
 import org.eclipse.gef.ui.palette.customize.PaletteSeparatorFactory;
 import org.eclipse.gef.ui.palette.customize.PaletteStackFactory;
 
-public class PaletteCustomizerTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class PaletteCustomizerTest extends Assert {
 
 	class TestCustomizer extends PaletteCustomizer {
 		public void revertToSaved() {
@@ -100,25 +100,12 @@ public class PaletteCustomizerTest extends TestCase {
 	}
 
 	/**
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	/**
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
-	/**
 	 * 
 	 * 1-Root 2-Drawer A 3-Tool 4-Stack A 5-Tool 6-Selection (Limited Permissions)
 	 * 8-Stack B (Full Permissions) 9-Tool 10-Drawer B
 	 * 
 	 */
+	@Test
 	public void testBottomSelection() {
 		resetBottom();
 		drawerA.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
@@ -236,6 +223,7 @@ public class PaletteCustomizerTest extends TestCase {
 	 * 1-Root 2-Drawer A 3-Tool 4-Selection 5-Tool 6-Drawer B
 	 * 
 	 */
+	@Test
 	public void testMiddleSelection() {
 		resetMiddle();
 		drawerA.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
@@ -295,6 +283,7 @@ public class PaletteCustomizerTest extends TestCase {
 	 * 1-Root 2-Drawer A 3-Tool 4-Tool 5-Drawer B 6-Stack (Full Permissions)
 	 * (Selection) 7-Tool 8-Tool 9-Drawer C
 	 */
+	@Test
 	public void testTopSelection() {
 		resetTop();
 

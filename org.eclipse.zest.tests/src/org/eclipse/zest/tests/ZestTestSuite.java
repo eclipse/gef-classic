@@ -10,23 +10,19 @@
  *******************************************************************************/
 package org.eclipse.zest.tests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 /**
  * The main test suite for Zest.
  * 
  * @author anyssen
  */
-public class ZestTestSuite extends TestSuite {
-
-	public static Test suite() {
-		return new ZestTestSuite();
-	}
-
-	public ZestTestSuite() {
-		addTest(new TestSuite(GraphTests.class));
-		addTest(new TestSuite(GraphSelectionTests.class));
-		addTest(new TestSuite(GraphViewerTests.class));
-	}
+@RunWith(Suite.class) 
+@Suite.SuiteClasses({
+	GraphTests.class,
+	GraphSelectionTests.class,
+	GraphViewerTests.class
+})
+public class ZestTestSuite {
 }

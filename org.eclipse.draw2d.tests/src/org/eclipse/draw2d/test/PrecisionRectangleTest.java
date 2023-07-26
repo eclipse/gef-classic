@@ -11,18 +11,20 @@
 
 package org.eclipse.draw2d.test;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @author sshaw
  * 
  */
-public class PrecisionRectangleTest extends TestCase {
+public class PrecisionRectangleTest extends Assert {
 
+	@Test
 	public void testShrink() {
 		Insets insets = new Insets(2, 2, 2, 2);
 
@@ -57,6 +59,7 @@ public class PrecisionRectangleTest extends TestCase {
 		assertEquals(25.92755905511811, r.preciseHeight(), 0);
 	}
 
+	@Test
 	public void testExpand() {
 		PrecisionRectangle r = new PrecisionRectangle(new Rectangle(100, 100, 250, 250));
 		PrecisionRectangle copy = r.getPreciseCopy();
@@ -66,6 +69,7 @@ public class PrecisionRectangleTest extends TestCase {
 		r.shrink(0.1, 0.1);
 	}
 
+	@Test
 	public void testUnion() {
 		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236,
 				25.92755905511811);
@@ -74,6 +78,7 @@ public class PrecisionRectangleTest extends TestCase {
 				100.5 + 34.431496062992125), r);
 	}
 
+	@Test
 	public void testResize() {
 		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236,
 				25.92755905511811);
@@ -82,6 +87,7 @@ public class PrecisionRectangleTest extends TestCase {
 				25.92755905511811 + 100.1), r);
 	}
 
+	@Test
 	public void testContains() {
 		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236,
 				25.92755905511811);

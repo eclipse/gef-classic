@@ -14,8 +14,11 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.swt.graphics.Image;
 
+import org.junit.Test;
+
 public class DimensionTests extends BaseTestCase {
 
+	@Test
 	public void testGetExpanded() throws Exception {
 		Dimension d = new Dimension(3, 5);
 		assertEquals(new Dimension(6, 7), d.getExpanded(3, 2));
@@ -40,12 +43,14 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(17, 18, template1);
 	}
 
+	@Test
 	public void testGetShrinked() {
 		Dimension d = new Dimension(6, 7);
 		assertEquals(new Dimension(3, 5), d.getShrinked(3, 2));
 		assertEquals(new Dimension(3, 5), d.getShrinked(3.4, 2.7));
 	}
 
+	@Test
 	public void testConstructors() throws Exception {
 		Image image = new Image(null, getClass().getResourceAsStream("icons/recorder.gif"));
 
@@ -62,6 +67,7 @@ public class DimensionTests extends BaseTestCase {
 		image.dispose();
 	}
 
+	@Test
 	public void testEqualsObject() throws Exception {
 		Dimension testDimension = new Dimension(-7, 8);
 		assertFalse(testDimension.equals(null));
@@ -71,11 +77,13 @@ public class DimensionTests extends BaseTestCase {
 		assertFalse(testDimension.equals(new Dimension()));
 	}
 
+	@Test
 	public void testToString() throws Exception {
 		assertNotNull(new Dimension().toString());
 		assertNotNull(new Dimension(1, 2).toString());
 	}
 
+	@Test
 	public void testContains() throws Exception {
 		Dimension template = new Dimension(-7, 8);
 		assertTrue(template.contains(template));
@@ -86,28 +94,33 @@ public class DimensionTests extends BaseTestCase {
 		assertFalse(template.contains(new Dimension(10, 10)));
 	}
 
+	@Test
 	public void testContainsProper() throws Exception {
 		Dimension template = new Dimension(-7, 8);
 		assertFalse(template.containsProper(template));
 		assertTrue(template.containsProper(new Dimension(-8, -8)));
 	}
 
+	@Test
 	public void testGetArea() throws Exception {
 		assertEquals(6, new Dimension(2, 3).getArea());
 	}
 
+	@Test
 	public void testEqualsIntInt() throws Exception {
 		assertTrue(new Dimension().equals(0, 0));
 		assertTrue(new Dimension(1, -2).equals(1, -2));
 		assertFalse(new Dimension(1, -2).equals(7, -7));
 	}
 
+	@Test
 	public void testIsEmpty() throws Exception {
 		assertTrue(new Dimension().isEmpty());
 		assertTrue(new Dimension(1, -2).isEmpty());
 		assertFalse(new Dimension(3, 3).isEmpty());
 	}
 
+	@Test
 	public void testSetSize() throws Exception {
 		Dimension template = new Dimension(-7, 8);
 		Dimension testDimension = new Dimension();
@@ -115,6 +128,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(template, testDimension);
 	}
 
+	@Test
 	public void testExpand() throws Exception {
 		// check work expand(Dimension)
 		Dimension template = new Dimension(-1, 1);
@@ -134,6 +148,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(3, 10, testDimension);
 	}
 
+	@Test
 	public void testIntersect() throws Exception {
 		Dimension template = new Dimension(-7, 8);
 		Dimension testDimension = new Dimension(0, 5);
@@ -142,6 +157,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(-7, 8, template);
 	}
 
+	@Test
 	public void testNegate() throws Exception {
 		Dimension testDimension = new Dimension(1, 2);
 		assertSame(testDimension, testDimension.negate());
@@ -150,6 +166,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(1, 2, testDimension);
 	}
 
+	@Test
 	public void testScale() throws Exception {
 		// check work scale(double)
 		Dimension testDimension = new Dimension(10, 20);
@@ -161,6 +178,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(100, 100, testDimension);
 	}
 
+	@Test
 	public void testShrink() throws Exception {
 		Dimension testDimension = new Dimension(3, 5);
 		assertSame(testDimension, testDimension.shrink(1, 2));
@@ -169,12 +187,14 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(3, 3, testDimension);
 	}
 
+	@Test
 	public void testTranspose() throws Exception {
 		Dimension testDimension = new Dimension(3, 5);
 		assertSame(testDimension, testDimension.transpose());
 		assertEquals(5, 3, testDimension);
 	}
 
+	@Test
 	public void testUnion() throws Exception {
 		// check work union(Dimension)
 		Dimension template = new Dimension(-7, 8);
@@ -188,6 +208,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(5, 8, testDimension);
 	}
 
+	@Test
 	public void testGetCopy() throws Exception {
 		Dimension template = new Dimension(-7, 8);
 		Dimension testDimension = template.getCopy();
@@ -196,6 +217,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(template, testDimension);
 	}
 
+	@Test
 	public void testGetDifference() throws Exception {
 		Dimension template1 = new Dimension(17, 18);
 		Dimension template2 = new Dimension(11, 10);
@@ -208,6 +230,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(11, 10, template2);
 	}
 
+	@Test
 	public void testGetIntersected() throws Exception {
 		Dimension template1 = new Dimension(-7, 8);
 		Dimension template2 = new Dimension(0, 5);
@@ -220,6 +243,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(0, 5, template2);
 	}
 
+	@Test
 	public void testGetNegated() throws Exception {
 		Dimension template = new Dimension(-7, 8);
 		Dimension testDimension = template.getNegated();
@@ -229,6 +253,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(-7, 8, template);
 	}
 
+	@Test
 	public void testGetScaled() throws Exception {
 		Dimension template = new Dimension(10, 20);
 		Dimension testDimension = template.getScaled(0.5);
@@ -238,6 +263,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(10, 20, template);
 	}
 
+	@Test
 	public void testGetTransposed() throws Exception {
 		Dimension template = new Dimension(3, 5);
 		Dimension testDimension = template.getTransposed();
@@ -247,6 +273,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(3, 5, template);
 	}
 
+	@Test
 	public void testGetUnioned() throws Exception {
 		// check work getUnioned(Dimension)
 		Dimension template1 = new Dimension(-7, 8);

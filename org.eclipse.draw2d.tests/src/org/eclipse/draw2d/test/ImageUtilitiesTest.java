@@ -10,25 +10,19 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.ImageUtilities;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
+import org.junit.Assert;
+import org.junit.Test;
+
 /**
  * @author Pratik Shah
  */
-public class ImageUtilitiesTest extends TestCase {
+public class ImageUtilitiesTest extends Assert {
 
-	public ImageUtilitiesTest() {
-		super();
-	}
-
-	public ImageUtilitiesTest(String name) {
-		super(name);
-	}
-
+	@Test
 	public void testImageRotation() {
 		Image result1 = null, result2 = null, result3 = null;
 		Image img1 = new Image(null, 80, 80);
@@ -54,6 +48,7 @@ public class ImageUtilitiesTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void testRotatingImagesWithDifferentDepths() {
 		Image result1 = null, result2 = null, result3 = null, result4 = null;
 		Image img1 = ImageDescriptor.createFromFile(getClass(), "icons/bits1.bmp").createImage(); //$NON-NLS-1$

@@ -29,12 +29,15 @@ import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.widgets.Shell;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author Romain Raugi
  */
-public class RelativeBendpointTest extends TestCase {
+public class RelativeBendpointTest extends Assert {
 
 	private static class DiagramFigure extends FreeformLayeredPane {
 		public DiagramFigure() {
@@ -86,9 +89,8 @@ public class RelativeBendpointTest extends TestCase {
 
 	private DiagramFigure diagram;
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		shell = new Shell();
 		shell.setSize(300, 350);
 		shell.open();
@@ -99,12 +101,12 @@ public class RelativeBendpointTest extends TestCase {
 		lws.setContents(diagram);
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		shell.close();
-		super.tearDown();
 	}
 
+	@Test
 	public void test237802() {
 		// first node
 		NodeFigure source = new NodeFigure();

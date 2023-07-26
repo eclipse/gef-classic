@@ -11,9 +11,6 @@ package org.eclipse.zest.tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
 import org.eclipse.jface.util.DelegatingDragAdapter;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
@@ -31,22 +28,25 @@ import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphItem;
 import org.eclipse.zest.core.widgets.GraphNode;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * Tests for the {@link GraphViewer} class.
  * 
  * @author Fabian Steeg (fsteeg)
  * 
  */
-public class GraphViewerTests extends TestCase {
+public class GraphViewerTests extends Assert {
 
 	private GraphViewer viewer;
 	private Shell shell;
 
 	/**
 	 * Set up the shell and viewer to use in the tests.
-	 * 
-	 * @see junit.framework.TestCase#setUp()
 	 */
+	@Before
 	public void setUp() {
 		shell = new Shell();
 		viewer = new GraphViewer(shell, SWT.NONE);
@@ -56,6 +56,7 @@ public class GraphViewerTests extends TestCase {
 	 * Create a drop target on a viewer's control and check disposal (see
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=200732)
 	 */
+	@Test
 	public void testDisposalWithDropTarget() {
 		new DropTarget(viewer.getGraphControl(), DND.DROP_MOVE | DND.DROP_COPY);
 		shell.dispose();
@@ -66,6 +67,7 @@ public class GraphViewerTests extends TestCase {
 	 * Create a drag source on a viewer and check disposal (see
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=334009)
 	 */
+	@Test
 	public void testDisposalWithDragSource() {
 		viewer.addDragSupport(DND.DROP_MOVE, new Transfer[] { TextTransfer.getInstance() },
 				new DelegatingDragAdapter());
@@ -77,6 +79,7 @@ public class GraphViewerTests extends TestCase {
 	 * Assert that no invalid selections with null data are produced by the viewer
 	 * (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=356449)
 	 */
+	@Test
 	public void testValidSelection() {
 		Graph graph = new Graph(shell, SWT.NONE);
 		GraphNode n1 = new GraphNode(graph, SWT.NONE);
@@ -96,6 +99,7 @@ public class GraphViewerTests extends TestCase {
 	 * Assert that listeners for post selection events are properly notified by the
 	 * viewer (see https://bugs.eclipse.org/bugs/show_bug.cgi?id=366916)
 	 */
+	@Test
 	public void testPostSelectionListener() {
 		final List selected = new ArrayList();
 		viewer.addPostSelectionChangedListener(new ISelectionChangedListener() {

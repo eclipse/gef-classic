@@ -12,6 +12,8 @@ package org.eclipse.draw2d.test;
 
 import org.eclipse.draw2d.geometry.Interval;
 
+import org.junit.Test;
+
 /**
  * Tests for {@link Interval} class.
  *
@@ -20,20 +22,24 @@ import org.eclipse.draw2d.geometry.Interval;
  */
 public class IntervalTest extends BaseTestCase {
 
+	@Test
 	public void testConstructor() throws Exception {
 		assertEquals(0, 0, new Interval());
 	}
 
+	@Test
 	public void testConstructorIntInt() throws Exception {
 		assertEquals(-1, 2, new Interval(-1, 2));
 	}
 
+	@Test
 	public void testConstructorInterval() throws Exception {
 		Interval template = new Interval(-1, 2);
 		assertEquals(-1, 2, new Interval(template));
 		assertEquals(-1, 2, template); // assert read only argument interval
 	}
 
+	@Test
 	public void testGetCopy() throws Exception {
 		Interval template = new Interval(-1, 2);
 		Interval testInterval = template.getCopy();
@@ -42,12 +48,14 @@ public class IntervalTest extends BaseTestCase {
 		assertEquals(template, testInterval);
 	}
 
+	@Test
 	public void testEnd() throws Exception {
 		Interval interval = new Interval(1, 2);
 		assertEquals(3, interval.end());
 		assertEquals(1, 2, interval);
 	}
 
+	@Test
 	public void testIsEmpty() throws Exception {
 		{
 			Interval interval = new Interval();
@@ -59,6 +67,7 @@ public class IntervalTest extends BaseTestCase {
 		}
 	}
 
+	@Test
 	public void testCenter() throws Exception {
 		{
 			Interval interval = new Interval(1, 2);
@@ -78,6 +87,7 @@ public class IntervalTest extends BaseTestCase {
 		}
 	}
 
+	@Test
 	public void testDistance() throws Exception {
 		Interval interval = new Interval(10, 100);
 		assertEquals(7, interval.distance(3));
@@ -87,6 +97,7 @@ public class IntervalTest extends BaseTestCase {
 		assertEquals(40, interval.distance(150));
 	}
 
+	@Test
 	public void testContains() throws Exception {
 		Interval interval = new Interval(1, 2);
 		assertFalse(interval.contains(0));
@@ -96,6 +107,7 @@ public class IntervalTest extends BaseTestCase {
 		assertFalse(interval.contains(4));
 	}
 
+	@Test
 	public void testIntersects() throws Exception {
 		{
 			// not intersects
@@ -120,6 +132,7 @@ public class IntervalTest extends BaseTestCase {
 		}
 	}
 
+	@Test
 	public void testIsLeadingOf() throws Exception {
 		Interval interval1 = new Interval(10, 20);
 		Interval interval2 = new Interval(15, 20);
@@ -127,6 +140,7 @@ public class IntervalTest extends BaseTestCase {
 		assertFalse(interval2.isLeadingOf(interval1));
 	}
 
+	@Test
 	public void testIsTrailingOf() throws Exception {
 		Interval interval1 = new Interval(10, 20);
 		Interval interval2 = new Interval(15, 20);
@@ -134,6 +148,7 @@ public class IntervalTest extends BaseTestCase {
 		assertTrue(interval2.isTrailingOf(interval1));
 	}
 
+	@Test
 	public void testGetIntersection() throws Exception {
 		// intervals intersect
 		{
@@ -157,6 +172,7 @@ public class IntervalTest extends BaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGrowLeading() throws Exception {
 		// to right
 		Interval interval = new Interval(1, 2);
@@ -166,6 +182,7 @@ public class IntervalTest extends BaseTestCase {
 		assertEquals(0, 3, interval.growLeading(-1));
 	}
 
+	@Test
 	public void testGrowTrailing() throws Exception {
 		// to right
 		{
@@ -179,6 +196,7 @@ public class IntervalTest extends BaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetRightMostIntervalIndex() throws Exception {
 		Interval[] intervals = { new Interval(1, 5), new Interval(8, 1) };
 		assertEquals(-1, Interval.getRightMostIntervalIndex(intervals, 3));

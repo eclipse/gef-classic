@@ -12,12 +12,15 @@ package org.eclipse.draw2d.test;
 
 import org.eclipse.draw2d.geometry.Insets;
 
+import org.junit.Test;
+
 /**
  * @author lobas_av
  *
  */
 public class InsetsTest extends BaseTestCase {
 
+	@Test
 	public void testConstructors() throws Exception {
 		// check create object use constructor()
 		assertEquals(0, 0, 0, 0, new Insets());
@@ -32,6 +35,7 @@ public class InsetsTest extends BaseTestCase {
 		assertEquals(1, 2, 3, 4, new Insets(new Insets(1, 2, 3, 4)));
 	}
 
+	@Test
 	public void testEqualsObject() throws Exception {
 		Insets testInsets = new Insets(1, 2, 3, 4);
 		assertFalse(testInsets.equals(null));
@@ -41,32 +45,38 @@ public class InsetsTest extends BaseTestCase {
 		assertFalse(testInsets.equals(new Insets()));
 	}
 
+	@Test
 	public void testToString() throws Exception {
 		assertNotNull(new Insets().toString());
 		assertNotNull(new Insets(3).toString());
 		assertNotNull(new Insets(1, 2, 3, 4).toString());
 	}
 
+	@Test
 	public void testGetHeight() throws Exception {
 		assertEquals(11, new Insets(1, 1, 10, 5).getHeight());
 	}
 
+	@Test
 	public void testGetWidth() throws Exception {
 		assertEquals(6, new Insets(1, 1, 10, 5).getWidth());
 	}
 
+	@Test
 	public void testIsEmpty() throws Exception {
 		assertTrue(new Insets().isEmpty());
 		assertFalse(new Insets(7).isEmpty());
 		assertFalse(new Insets(1, 0, 0, 0).isEmpty());
 	}
 
+	@Test
 	public void testAddInsets() throws Exception {
 		Insets testInsets = new Insets(1, 2, 3, 4);
 		assertSame(testInsets, testInsets.add(new Insets(4, 3, 2, 1)));
 		assertEquals(5, 5, 5, 5, testInsets);
 	}
 
+	@Test
 	public void testTranspose() throws Exception {
 		int top = 1;
 		int left = 2;
@@ -77,6 +87,7 @@ public class InsetsTest extends BaseTestCase {
 		assertEquals(left, top, right, bottom, testInsets);
 	}
 
+	@Test
 	public void testGetAdded() throws Exception {
 		Insets template = new Insets(1, 2, 3, 4);
 		Insets testInsets = template.getAdded(new Insets(4, 3, 2, 1));
@@ -84,6 +95,7 @@ public class InsetsTest extends BaseTestCase {
 		assertEquals(5, 5, 5, 5, testInsets);
 	}
 
+	@Test
 	public void testGetTransposed() throws Exception {
 		int top = 1;
 		int left = 2;
@@ -95,6 +107,7 @@ public class InsetsTest extends BaseTestCase {
 		assertEquals(left, top, right, bottom, testInsets);
 	}
 
+	@Test
 	public void testGetNegated() throws Exception {
 		Insets template = new Insets(1, 2, 3, 4);
 		Insets testInsets = template.getNegated();

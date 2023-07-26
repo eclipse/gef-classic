@@ -10,29 +10,16 @@
  *******************************************************************************/
 
 package org.eclipse.gef.test;
-
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.tools.ToolUtilities;
 
-public class ToolUtilitiesTest extends TestCase {
-	/**
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
+import org.junit.Assert;
+import org.junit.Test;
 
-	/**
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
+public class ToolUtilitiesTest extends Assert {
 
 	private static class TestGraphicalEditPart extends AbstractGraphicalEditPart {
 
@@ -74,6 +61,7 @@ public class ToolUtilitiesTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void test_findCommonAncestor_happypath() {
 		TestGraphicalEditPart editpartParent = new TestGraphicalEditPart();
 		TestGraphicalEditPart editpartChild1 = new TestGraphicalEditPart();
@@ -88,6 +76,7 @@ public class ToolUtilitiesTest extends TestCase {
 		assertTrue(editpartParent == result);
 	}
 
+	@Test
 	public void test_findCommonAncestor_bugzilla130042() {
 		TestGraphicalEditPart editpartParent = new TestGraphicalEditPart();
 		EditPart editpartChild = new TestGraphicalEditPart();

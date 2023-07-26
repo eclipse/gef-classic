@@ -9,16 +9,18 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.test;
-
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.Path;
 import org.eclipse.draw2d.graph.ShortestPathRouter;
 
-public class ShortestPathRoutingTest extends TestCase {
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+public class ShortestPathRoutingTest extends Assert {
 
 	private static final Point bend = new Point(620, 309);
 	private static final Point bendAEnd = new Point(264, 472);
@@ -370,19 +372,13 @@ public class ShortestPathRoutingTest extends TestCase {
 		doAssertPointAbove(pathA.getPoint(1), pathB.getPoint(1));
 	}
 
-	/*
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		routing = new ShortestPathRouter();
 	}
 
-	/*
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
+	@After
+	public void tearDown() throws Exception {
 		routing = null;
 		pathA = null;
 		pathC = null;
@@ -391,6 +387,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		rect = null;
 	}
 
+	@Test
 	public void testBendpoints() {
 		routing.addObstacle(bendTopRect.getCopy());
 		routing.addObstacle(bendBottomRect.getCopy());
@@ -408,6 +405,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doAssertNumPoints(pathA, 3);
 	}
 
+	@Test
 	public void testBlockedPath() {
 		routing.addObstacle(blockRect1.getCopy());
 		routing.addObstacle(blockRect2.getCopy());
@@ -418,36 +416,43 @@ public class ShortestPathRoutingTest extends TestCase {
 		doAssertNumPoints(pathA, 0);
 	}
 
+	@Test
 	public void testBottomLeftIntersection() {
 		doSetUp(corner2AStart, corner2AEnd, corner2BStart, corner2BEnd, corner2CStart, corner2CEnd, bl);
 		doTestBottomLeftIntersection();
 	}
 
+	@Test
 	public void testBottomLeftIntersectionCross() {
 		doSetUp(corner2BStart, corner2BEnd, corner2AStart, corner2AEndCross, corner2CStart, corner2CEnd, bl);
 		doTestBottomLeftIntersection();
 	}
 
+	@Test
 	public void testBottomLeftIntersectionCrossInverted() {
 		doSetUp(corner2BStart, corner2BEnd, corner2AStart, corner2AEndCross, corner2CEnd, corner2CStart, bl);
 		doTestBottomLeftIntersection();
 	}
 
+	@Test
 	public void testBottomLeftIntersectionInverted() {
 		doSetUp(corner2AStart, corner2AEnd, corner2BEnd, corner2BStart, corner2CStart, corner2CEnd, bl);
 		doTestBottomLeftIntersection();
 	}
 
+	@Test
 	public void testBottomRightIntersection() {
 		doSetUp(cornerAStart, cornerAEnd, cornerBStart, cornerBEnd, br);
 		doTestBottomRightIntersection();
 	}
 
+	@Test
 	public void testBottomRightIntersectionInverted() {
 		doSetUp(cornerAStart, cornerAEnd, cornerBEnd, cornerBStart, br);
 		doTestBottomRightIntersection();
 	}
 
+	@Test
 	public void testDeformed() {
 		routing.addObstacle(deformedLeft.getCopy());
 		routing.addObstacle(deformedLeftMid.getCopy());
@@ -456,6 +461,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doTestDeformed();
 	}
 
+	@Test
 	public void testDeformedInverted() {
 		routing.addObstacle(deformedLeft.getCopy());
 		routing.addObstacle(deformedLeftMid.getCopy());
@@ -464,6 +470,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doTestDeformed();
 	}
 
+	@Test
 	public void testDeltasAddObstacleIntersection() {
 		doSetUp(deltaAStart, deltaAEnd, deltaBStart, deltaBEnd, deltaRect);
 
@@ -472,6 +479,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		assertTrue("Both paths should have been solved.", routing.solve().size() == 2);
 	}
 
+	@Test
 	public void testDeltasAddObstacleNoIntersection() {
 		doSetUp(deltaAStart, deltaAEnd, deltaBStart, deltaBEnd, deltaRect);
 
@@ -480,6 +488,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doAssertNoPathsSolved();
 	}
 
+	@Test
 	public void testDeltasAddPath() {
 		doSetUp(corner2AStart, corner2AEnd, corner2BStart, corner2BEnd, bl);
 
@@ -497,6 +506,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doAssertPointAbove(pathC.getPoint(1), pathB.getPoint(1));
 	}
 
+	@Test
 	public void testDeltasMoveObstacleIntersection() {
 		doSetUp(deltaAStart, deltaAEnd, deltaBStart, deltaBEnd, deltaRect);
 
@@ -505,6 +515,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		assertTrue("Both paths should have been solved.", routing.solve().size() > 0);
 	}
 
+	@Test
 	public void testDeltasMoveObstacleNoIntersection() {
 		doSetUp(deltaAStart, deltaAEnd, deltaBStart, deltaBEnd, deltaRect);
 
@@ -515,6 +526,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doAssertNoPathsSolved();
 	}
 
+	@Test
 	public void testDeltasRemoveObstacleIntersection() {
 		doSetUp(deltaAStart, deltaAEnd, deltaBStart, deltaBEnd, deltaRect);
 
@@ -523,6 +535,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		assertTrue("Both paths should have been solved.", routing.solve().size() > 0);
 	}
 
+	@Test
 	public void testDeltasRemoveObstacleNoIntersection() {
 		doSetUp(deltaAStart, deltaAEnd, deltaBStart, deltaBEnd, deltaRect);
 
@@ -532,6 +545,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doAssertNoPathsSolved();
 	}
 
+	@Test
 	public void testDeltasRemovePath() {
 		doSetUp(corner2AStart, corner2AEnd, corner2BStart, corner2BEnd, bl);
 		Path c = new Path(corner2CStart, corner2CEnd);
@@ -541,6 +555,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doAssertNoPathsSolved();
 	}
 
+	@Test
 	public void testOffsetShrink() {
 		routing.addObstacle(offsetRectLeft.getCopy());
 		routing.addObstacle(offsetRectRight.getCopy());
@@ -550,6 +565,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doTestOffsetShrink();
 	}
 
+	@Test
 	public void testQuadBendHit() {
 		routing.addObstacle(quadBendBottom.getCopy());
 		routing.addObstacle(quadBendMiddleHit.getCopy());
@@ -558,6 +574,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doTestQuadBendMiss(5);
 	}
 
+	@Test
 	public void testQuadBendHit2() {
 		routing.addObstacle(quadBendBottom.getCopy());
 		routing.addObstacle(quadBendMiddleHit2.getCopy());
@@ -566,6 +583,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doTestQuadBendMiss(5);
 	}
 
+	@Test
 	public void testQuadBendMiss() {
 		routing.addObstacle(quadBendBottom.getCopy());
 		routing.addObstacle(quadBendMiddleMiss.getCopy());
@@ -574,6 +592,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doTestQuadBendMiss(4);
 	}
 
+	@Test
 	public void testShortestPathOutsideOval() {
 		routing.addObstacle(ovalRect1.getCopy());
 		routing.addObstacle(ovalRect2.getCopy());
@@ -584,26 +603,31 @@ public class ShortestPathRoutingTest extends TestCase {
 		doAssertNumPoints(pathA, 4);
 	}
 
+	@Test
 	public void testSideIntersectionBottom() {
 		doSetUp(sideAStart, sideAEnd, sideBStart, sideBEnd, sideBottom);
 		doTestSideIntersectionBottom();
 	}
 
+	@Test
 	public void testSideIntersectionBottomInverted() {
 		doSetUp(sideAStart, sideAEnd, sideBEnd, sideBStart, sideBottom);
 		doTestSideIntersectionBottom();
 	}
 
+	@Test
 	public void testSideIntersectionTop() {
 		doSetUp(sideAStart, sideAEnd, sideBStart, sideBEnd, sideTop);
 		doTestSideIntersectionTop();
 	}
 
+	@Test
 	public void testSideIntersectionTopInverted() {
 		doSetUp(sideAStart, sideAEnd, sideBEnd, sideBStart, sideTop);
 		doTestSideIntersectionTop();
 	}
 
+	@Test
 	public void testSubpath() {
 		routing.addObstacle(subpathLeftRect.getCopy());
 		doSetUp(subpathAStart, subpathAEnd, subpathBStart, subpathBEnd, subpathCStart, subpathCEnd, subpathDStart,
@@ -616,6 +640,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doAssertPointAbove(pathD.getPoint(3), pathC.getPoint(2));
 	}
 
+	@Test
 	public void testTangent() {
 		routing.addObstacle(tangentMiddle.getCopy());
 		routing.addObstacle(tangentRight.getCopy());
@@ -623,6 +648,7 @@ public class ShortestPathRoutingTest extends TestCase {
 		doTestTangent();
 	}
 
+	@Test
 	public void testTangentInverted() {
 		routing.addObstacle(tangentMiddle.getCopy());
 		routing.addObstacle(tangentRight.getCopy());
@@ -630,31 +656,37 @@ public class ShortestPathRoutingTest extends TestCase {
 		doTestTangent();
 	}
 
+	@Test
 	public void testTopLeftIntersection() {
 		doSetUp(cornerAStart, cornerAEnd, cornerBStart, cornerBEnd, tl);
 		doTestTopLeftIntersection();
 	}
 
+	@Test
 	public void testTopLeftIntersectionCross() {
 		doSetUp(cornerBStart, cornerAEnd, cornerAStart, cornerBEnd, tl);
 		doTestTopLeftIntersectionCross();
 	}
 
+	@Test
 	public void testTopLeftIntersectionCrossInverted() {
 		doSetUp(cornerBStart, cornerAEnd, cornerBEnd, cornerAStart, tl);
 		doTestTopLeftIntersectionCross();
 	}
 
+	@Test
 	public void testTopLeftIntersectionInverted() {
 		doSetUp(cornerAStart, cornerAEnd, cornerBEnd, cornerBStart, tl);
 		doTestTopLeftIntersection();
 	}
 
+	@Test
 	public void testTopRightIntersection() {
 		doSetUp(corner2AStart, corner2AEnd, corner2BStart, corner2BEnd, tr);
 		doTestTopRightIntersection();
 	}
 
+	@Test
 	public void testTopRightIntersectionInverted() {
 		doSetUp(corner2AStart, corner2AEnd, corner2BEnd, corner2BStart, tr);
 		doTestTopRightIntersection();

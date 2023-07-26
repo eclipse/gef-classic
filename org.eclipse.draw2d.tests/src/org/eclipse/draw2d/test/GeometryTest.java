@@ -11,8 +11,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.geometry.Geometry;
 import org.eclipse.draw2d.geometry.PointList;
@@ -21,7 +19,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 
-public class GeometryTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class GeometryTest extends Assert {
 
 	/*
 	 * For Geometry.polygonContainsPoint tests
@@ -55,6 +56,7 @@ public class GeometryTest extends TestCase {
 	 * Testing points inside/outside the rhomb located in top half. Excluding points
 	 * of RHOMB border - separate test present for it
 	 */
+	@Test
 	public void testTopRhombHalfPoints() {
 		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 1));
 		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 2, 1));
@@ -65,6 +67,7 @@ public class GeometryTest extends TestCase {
 	 * Testing points inside/outside the rhomb located in bottop half. Excluding
 	 * points of RHOMB border - separate test present for it
 	 */
+	@Test
 	public void testBottomRhombHalfPoints() {
 		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 3));
 		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 2, 3));
@@ -75,6 +78,7 @@ public class GeometryTest extends TestCase {
 	 * Testing points inside/outside the rhomb located on the equator. Excluding
 	 * points of RHOMB border - separate test present for it
 	 */
+	@Test
 	public void testRhombEquatorPoints() {
 		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, -1, 2));
 		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 2, 2));
@@ -85,6 +89,7 @@ public class GeometryTest extends TestCase {
 	 * Testing points outside the rhomb located on top horizontal tangent line.
 	 * Excluding points of RHOMB border - separate test present for it
 	 */
+	@Test
 	public void testTopRhombTangentPoints() {
 		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 0));
 		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 4, 0));
@@ -94,6 +99,7 @@ public class GeometryTest extends TestCase {
 	 * Testing points outside the rhomb located on bottom horizontal tangent line.
 	 * Excluding points of RHOMB border - separate test present for it
 	 */
+	@Test
 	public void testBottomRhombTangentPoints() {
 		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 4));
 		assertFalse("This point is outside the rhomb", Geometry.polygonContainsPoint(RHOMB, 4, 4));
@@ -102,6 +108,7 @@ public class GeometryTest extends TestCase {
 	/**
 	 * Testing points of RHOMB border - all vertexes + one point on the edge
 	 */
+	@Test
 	public void testRhombBorderPoints() {
 		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 2));
 		assertTrue("This point is inside the rhomb", Geometry.polygonContainsPoint(RHOMB, 0, 2));
@@ -114,6 +121,7 @@ public class GeometryTest extends TestCase {
 	 * Testing points inside/outside the pentagon located on equator of concave.
 	 * Excluding points of CONCAVE_PENTAGON border - separate test present for it
 	 */
+	@Test
 	public void testConcavePentagonEquatorPoints() {
 		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, -1, 6));
 		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 1, 6));
@@ -126,6 +134,7 @@ public class GeometryTest extends TestCase {
 	 * Testing points outside the pentagon located on top concave tangent. Excluding
 	 * points of CONCAVE_PENTAGON border - separate test present for it
 	 */
+	@Test
 	public void testTopConcavePentagonTangentPoints() {
 		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, -1, 8));
 		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 4, 8));
@@ -136,6 +145,7 @@ public class GeometryTest extends TestCase {
 	 * Testing points inside/outside the pentagon located on bottom concave tangent.
 	 * Excluding points of CONCAVE_PENTAGON border - separate test present for it
 	 */
+	@Test
 	public void testBottomConcavePentagonTangentPoints() {
 		assertFalse("This point is outside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, -1, 4));
 		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 1, 4));
@@ -147,6 +157,7 @@ public class GeometryTest extends TestCase {
 	 * Testing points of CONCAVE_PENTAGON border - all vertexes + points on concave
 	 * edges
 	 */
+	@Test
 	public void testConcavePentagonBorderPoints() {
 		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 0, 8));
 		assertTrue("This point is inside the pentagon", Geometry.polygonContainsPoint(CONCAVE_PENTAGON, 2, 6));
@@ -159,6 +170,7 @@ public class GeometryTest extends TestCase {
 	 * Testing points located of the horizontal line containing one of the "concave"
 	 * edges
 	 */
+	@Test
 	public void testConcaveOctagonBottomTangentPoints() {
 		assertFalse("This point is outside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, -1, 2));
 		assertTrue("This point is inside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 0, 2));
@@ -170,6 +182,7 @@ public class GeometryTest extends TestCase {
 		assertFalse("This point is outside the octagon", Geometry.polygonContainsPoint(CONCAVE_OCTAGON, 7, 2));
 	}
 
+	@Test
 	public void testNotPolylinePoints() {
 		// Point is outside of (polyline.bounds +- tolerance) rectangle
 		assertFalse(Geometry.polylineContainsPoint(POLYLINE, 9, 5, TOLERANCE));
@@ -178,6 +191,7 @@ public class GeometryTest extends TestCase {
 		assertFalse(Geometry.polylineContainsPoint(POLYLINE, 1, 4, TOLERANCE));
 	}
 
+	@Test
 	public void testPolylinePoints() {
 		// point is close to horizontal segment
 		assertTrue(Geometry.polylineContainsPoint(POLYLINE, -1, 0, TOLERANCE));
@@ -193,6 +207,7 @@ public class GeometryTest extends TestCase {
 	 * Testing
 	 * {@link Geometry#linesIntersect(int, int, int, int, int, int, int, int)}.
 	 */
+	@Test
 	public void testLinesIntersect() {
 		// line segments collapsed to single points
 		assertTrue("Starting point on segment", Geometry.linesIntersect(0, 0, 0, 0, 0, 0, 3, 3));

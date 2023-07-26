@@ -11,18 +11,20 @@
  */
 package org.eclipse.draw2d.test;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Straight;
 import org.eclipse.draw2d.geometry.Vector;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @author Alexander Nyssen
  * 
  */
-public class StraightTest extends TestCase {
+public class StraightTest extends Assert {
 
+	@Test
 	public void test_getIntersection() {
 		// test integer precision
 		Vector p = new Vector(1, 1);
@@ -77,6 +79,7 @@ public class StraightTest extends TestCase {
 		assertTrue(s2.contains(intersection));
 	}
 
+	@Test
 	public void test_isParallelTo() {
 		Straight s1 = new Straight(new Vector(0, 0), new Vector(3, 3));
 		Straight s2 = new Straight(new Vector(0, 4), new Vector(2, 2));
@@ -87,6 +90,7 @@ public class StraightTest extends TestCase {
 		assertFalse(s1.isParallelTo(s2));
 	}
 
+	@Test
 	public void test_getAngle() {
 		Straight s1 = new Straight(new Vector(0, 0), new Vector(3, 3));
 		Straight s2 = new Straight(new Vector(0, 4), new Vector(2, 2));
@@ -97,6 +101,7 @@ public class StraightTest extends TestCase {
 		assertTrue((float) s1.getAngle(s2) == 45.0); // rounding effects
 	}
 
+	@Test
 	public void test_equals() {
 		Straight s1 = new Straight(new Vector(0, 0), new Vector(3, 3));
 		Straight s2 = new Straight(new Vector(4, 4), new Vector(2, 2));

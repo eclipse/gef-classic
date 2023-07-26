@@ -20,23 +20,21 @@ import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Rank;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Tests the swapping of adjacent nodes in a directed graph. since 3.0
  * 
  */
-public class LocalOptimizerTest extends TestCase {
+public class LocalOptimizerTest extends Assert {
 
 	private DirectedGraph graph;
 	private Node a, b, c, d, e, f, g, h, i, j, k, l;
 
-	/*
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
-
+	@Before
+	public void setUp() throws Exception {
 		graph = new DirectedGraph();
 
 		// create nodes and populate their ranks
@@ -61,13 +59,7 @@ public class LocalOptimizerTest extends TestCase {
 				.visit(graph);
 	}
 
-	/*
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
+	@Test
 	public void testIncomingSwapNeeded() {
 		/*
 		 * A B C D |\| \ | | X \| | |\ | E F G H
@@ -84,6 +76,7 @@ public class LocalOptimizerTest extends TestCase {
 		checkResults(new Node[][] { new Node[] { a, b, c, d }, new Node[] { e, g, f, h } });
 	}
 
+	@Test
 	public void testOutgoingSwapNeeded() {
 		/*
 		 * A BC D \ | X \|/ \ E F G H
@@ -99,6 +92,7 @@ public class LocalOptimizerTest extends TestCase {
 		checkResults(new Node[][] { new Node[] { a, b, d, c }, new Node[] { e, f, g, h } });
 	}
 
+	@Test
 	public void testIncomingOffsetSwapNeeded() {
 		/*
 		 * A B C (C should swap twice to first position) \ \ / \ X X \ / \ \
@@ -118,6 +112,7 @@ public class LocalOptimizerTest extends TestCase {
 		checkResults(new Node[][] { new Node[] { c, a, b, d }, new Node[] { e, f, g, h }, new Node[] { i, j, k, l } });
 	}
 
+	@Test
 	public void testBidirectionalSwapNeeded() {
 		/*
 		 * A B C D \ |\ \| \ E F G H (F and G should swap) X| / X | |\ I J K L

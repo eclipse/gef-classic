@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
-import static org.junit.Assert.assertThrows;
-
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
@@ -19,8 +17,11 @@ import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
 
+import org.junit.Test;
+
 public class PointListTests extends BaseTestCase {
 
+	@Test
 	public void testIntersects() {
 		PointList points = new PointList();
 		points.addPoint(0, 0);
@@ -61,6 +62,7 @@ public class PointListTests extends BaseTestCase {
 		assertFalse(points.intersects(new Rectangle(0, 0, 1, 1)));
 	}
 
+	@Test
 	public void testAddPointGetPointInt() throws Exception {
 		PointList list = new PointList();
 		list.addPoint(10, 20);
@@ -83,6 +85,7 @@ public class PointListTests extends BaseTestCase {
 		assertThrows(IndexOutOfBoundsException.class, () -> list.getPoint(3));
 	}
 
+	@Test
 	public void testInsertPoint() throws Exception {
 		PointList list = new PointList();
 		//
@@ -105,6 +108,7 @@ public class PointListTests extends BaseTestCase {
 		assertThrows(NullPointerException.class, () -> list.insertPoint(null, 0));
 	}
 
+	@Test
 	public void testRemovePoint() throws Exception {
 		PointList list = new PointList();
 		//
@@ -135,6 +139,7 @@ public class PointListTests extends BaseTestCase {
 		assertThrows(IndexOutOfBoundsException.class, () -> list.removePoint(0));
 	}
 
+	@Test
 	public void testRemoveAllPoints() throws Exception {
 		PointList list = new PointList();
 		//
@@ -156,6 +161,7 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(0, list.size());
 	}
 
+	@Test
 	public void testSizeSetSize() throws Exception {
 		assertEquals(0, new PointList().size());
 		assertEquals(0, new PointList(7).size());
@@ -184,6 +190,7 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(0, list.size());
 	}
 
+	@Test
 	public void testToIntArray() throws Exception {
 		PointList list = new PointList(5);
 		list.addPoint(10, -20);
@@ -199,6 +206,7 @@ public class PointListTests extends BaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetCopy() throws Exception {
 		PointList list = new PointList();
 		list.addPoint(10, -20);
@@ -215,6 +223,7 @@ public class PointListTests extends BaseTestCase {
 		}
 	}
 
+	@Test
 	public void testGetFirstPoint() throws Exception {
 		PointList list = new PointList();
 		//
@@ -226,6 +235,7 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(10, -20, list.getFirstPoint());
 	}
 
+	@Test
 	public void testGetLastPoint() throws Exception {
 		PointList list = new PointList();
 		//
@@ -239,6 +249,7 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(120, 120, list.getLastPoint());
 	}
 
+	@Test
 	public void testGetMidpoint() throws Exception {
 		PointList list = new PointList();
 		list.addPoint(10, -20);
@@ -254,6 +265,7 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(30, 30, list.getMidpoint());
 	}
 
+	@Test
 	public void testGetPointPointInt() throws Exception {
 		PointList list = new PointList();
 		list.addPoint(10, -20);
@@ -278,6 +290,7 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(10, -20, point);
 	}
 
+	@Test
 	public void testSetPointPointInt() throws Exception {
 		PointList list = new PointList();
 		list.addPoint(10, -20);
@@ -307,6 +320,7 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(point, list.getPoint(0));
 	}
 
+	@Test
 	public void testGetBounds() throws Exception {
 		PointList list = new PointList();
 		//
@@ -323,6 +337,7 @@ public class PointListTests extends BaseTestCase {
 		assertSame(boundsNew, list.getBounds());
 	}
 
+	@Test
 	public void testGetSmallestBounds() throws Exception {
 		PointList list = new PointList();
 		//
@@ -354,6 +369,7 @@ public class PointListTests extends BaseTestCase {
 		assertEquals(0, 0, 21, 21, list.getBounds());
 	}
 
+	@Test
 	public void testTranslate() throws Exception {
 		PointList list = new PointList();
 		for (int i = 0; i < 5; i++) {

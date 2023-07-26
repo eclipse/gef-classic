@@ -28,22 +28,10 @@ import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PartInitException;
 
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
-public class DragEditPartsTrackerTest extends TestCase {
-	/**
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	/**
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
+public class DragEditPartsTrackerTest extends Assert {
 
 	private static class TestGraphicalEditPart extends AbstractGraphicalEditPart {
 
@@ -163,6 +151,7 @@ public class DragEditPartsTrackerTest extends TestCase {
 		}
 	};
 
+	@Test
 	public void test_createOperationSet() {
 		TestDragEditPartsTracker dept = new TestDragEditPartsTracker(new TestGraphicalEditPart());
 

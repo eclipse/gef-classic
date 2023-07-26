@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -23,13 +21,17 @@ import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * Selection-related tests for the {@link Graph} class.
  * 
  * @author Fabian Steeg (fsteeg)
  * 
  */
-public class GraphSelectionTests extends TestCase {
+public class GraphSelectionTests extends Assert {
 
 	private static final int STYLE = SWT.NONE;
 
@@ -37,12 +39,14 @@ public class GraphSelectionTests extends TestCase {
 
 	private Graph graph;
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		graph = new Graph(new Shell(), STYLE);
 		nodes = new GraphNode[] { new GraphNode(graph, STYLE), new GraphNode(graph, STYLE) };
 		new GraphConnection(graph, STYLE, nodes[0], nodes[1]);
 	}
 
+	@Test
 	public void testSetSelectionGetSelection() {
 		graph.setSelection(new GraphNode[] {});
 		assertEquals(0, graph.getSelection().size());
@@ -50,11 +54,13 @@ public class GraphSelectionTests extends TestCase {
 		assertEquals(2, graph.getSelection().size());
 	}
 
+	@Test
 	public void testSelectAllGetSelection() {
 		graph.selectAll();
 		assertEquals(2, graph.getSelection().size());
 	}
 
+	@Test
 	public void testAddSelectionListenerEventIdentity() {
 		final List selectionEvents = new ArrayList();
 		graph.addSelectionListener(setupListener(selectionEvents));
@@ -69,6 +75,7 @@ public class GraphSelectionTests extends TestCase {
 	/**
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=314710
 	 */
+	@Test
 	public void testSelectedNodeDisposal() {
 		graph.setSelection(nodes);
 		nodes[0].dispose();
@@ -80,6 +87,7 @@ public class GraphSelectionTests extends TestCase {
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=320281
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=218148#c6
 	 */
+	@Test
 	public void testAddSelectionListenerSetSelection() {
 		final List selectionEvents = new ArrayList();
 		graph.addSelectionListener(setupListener(selectionEvents));
@@ -100,6 +108,7 @@ public class GraphSelectionTests extends TestCase {
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=320281
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=322054
 	 */
+	@Test
 	public void testAddSelectionListenerSelectAll() {
 		final List selectionEvents = new ArrayList();
 		graph.addSelectionListener(setupListener(selectionEvents));
@@ -115,6 +124,7 @@ public class GraphSelectionTests extends TestCase {
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=320281
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=218148#c6
 	 */
+	@Test
 	public void testAddSelectionListenerNotifyListeners() {
 		final List selectionEvents = new ArrayList();
 		graph.addSelectionListener(setupListener(selectionEvents));
