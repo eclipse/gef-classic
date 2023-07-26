@@ -27,6 +27,10 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 public class ConnectionEndPointMoveTest extends BaseTestCase implements UpdateListener {
 
 	private IFigure contents;
@@ -36,13 +40,8 @@ public class ConnectionEndPointMoveTest extends BaseTestCase implements UpdateLi
 	private Rectangle lastDamaged;
 	private Rectangle origBounds;
 
-	/*
-	 * @see TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-
+	@Before
+	public void setUp() throws Exception {
 		shell = new Shell(Display.getDefault());
 
 		String appName = getClass().getName();
@@ -102,6 +101,7 @@ public class ConnectionEndPointMoveTest extends BaseTestCase implements UpdateLi
 		// nothing
 	}
 
+	@Test
 	public void testConnectionDecoration() {
 		conn.setConstraint(dec, new MidpointLocator(conn, 0));
 		conn.layout();
@@ -110,13 +110,8 @@ public class ConnectionEndPointMoveTest extends BaseTestCase implements UpdateLi
 		assertTrue(lastDamaged.contains(origBounds));
 	}
 
-	/*
-	 * @see TestCase#tearDown()
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-
+	@After
+	public void tearDown() throws Exception {
 		shell.dispose();
 	}
 

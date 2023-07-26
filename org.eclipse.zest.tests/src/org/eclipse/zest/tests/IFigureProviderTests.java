@@ -8,8 +8,6 @@
  *******************************************************************************/
 package org.eclipse.zest.tests;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.BorderLayout;
 import org.eclipse.draw2d.Ellipse;
 import org.eclipse.draw2d.IFigure;
@@ -23,22 +21,25 @@ import org.eclipse.zest.core.viewers.IFigureProvider;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.core.widgets.CGraphNode;
 
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * Tests for the {@link IFigureProvider} class.
  * 
  * @author Fabian Steeg (fsteeg)
  * 
  */
-public class IFigureProviderTests extends TestCase {
+public class IFigureProviderTests extends Assert {
 
 	private GraphViewer viewer;
 	private Shell shell;
 
 	/**
 	 * Set up the shell and viewer to use in the tests.
-	 * 
-	 * @see junit.framework.TestCase#setUp()
 	 */
+	@Before
 	public void setUp() {
 		shell = new Shell();
 		viewer = new GraphViewer(shell, SWT.NONE);
@@ -47,6 +48,7 @@ public class IFigureProviderTests extends TestCase {
 	/**
 	 * Test with IGraphContentProvider that provides destinations only.
 	 */
+	@Test
 	public void testWithDestinationProvider() {
 		testWith(new DestinationContentProvider());
 	}
@@ -54,6 +56,7 @@ public class IFigureProviderTests extends TestCase {
 	/**
 	 * Test with IGraphContentProvider that provides sources only.
 	 */
+	@Test
 	public void testWithSourceProvider() {
 		testWith(new SourceContentProvider());
 	}
@@ -61,6 +64,7 @@ public class IFigureProviderTests extends TestCase {
 	/**
 	 * Test with IGraphContentProvider that provides destinations and sources.
 	 */
+	@Test
 	public void testWithFullProvider() {
 		testWith(new FullContentProvider());
 	}

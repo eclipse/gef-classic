@@ -10,29 +10,16 @@
  *******************************************************************************/
 
 package org.eclipse.draw2d.test;
-
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.IFigure;
 
-public class FigureUtilitiesTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
 
-	/**
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
+public class FigureUtilitiesTest extends Assert {
 
-	/**
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
+	@Test
 	public void test_findCommonAncestor_happypath() {
 		IFigure figureParent = new Figure();
 		IFigure figureChild1 = new Figure();
@@ -47,6 +34,7 @@ public class FigureUtilitiesTest extends TestCase {
 		assertTrue(figureParent == result);
 	}
 
+	@Test
 	public void test_findCommonAncestor_bugzilla130042() {
 		IFigure figureParent = new Figure();
 		IFigure figureChild = new Figure();
@@ -56,6 +44,7 @@ public class FigureUtilitiesTest extends TestCase {
 		assertTrue(figureParent == result);
 	}
 
+	@Test
 	public void test_findCommonAncestor_check_finds_nearest_ancestor() {
 		IFigure figureGrandParent = new Figure();
 		IFigure figureParent = new Figure();
@@ -69,6 +58,7 @@ public class FigureUtilitiesTest extends TestCase {
 		assertTrue(figureParent == result);
 	}
 
+	@Test
 	public void test_findCommonAncestor_parent_is_common_ancestor() {
 		IFigure figureParent = new Figure();
 		IFigure figureChild1 = new Figure();
@@ -80,6 +70,7 @@ public class FigureUtilitiesTest extends TestCase {
 		assertTrue(figureParent == result);
 	}
 
+	@Test
 	public void test_findCommonAncestor_orphaned_child() {
 		IFigure orphanFigure = new Figure();
 		IFigure figureParent = new Figure();

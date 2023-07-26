@@ -18,12 +18,15 @@ import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.draw2d.text.TextFragmentBox;
 import org.eclipse.swt.graphics.Font;
 
+import org.junit.Test;
+
 /**
  * @author Pratik Shah
  * @since 3.1
  */
 public class TextualTests extends BaseTestCase {
 
+	@Test
 	public void testLineRootBidiCommit() {
 		FlowPage block = new FlowPage();
 		InlineFlow bold = new InlineFlow();
@@ -54,6 +57,7 @@ public class TextualTests extends BaseTestCase {
 	}
 
 	// test for bug 113700
+	@Test
 	public void testGetFirstAndLastOffsetForLine() {
 		Font xlFont = new Font(null, "Tahoma", 28, 0);
 		FlowPage block = new FlowPage();

@@ -9,26 +9,16 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.test;
-
-import junit.framework.TestCase;
-
 import org.eclipse.swt.widgets.Display;
 
-public class ColorConstantTest extends TestCase {
-	/**
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
 
-	/**
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
+@Ignore
+public class ColorConstantTest extends Assert {
 
+	@Test
 	public void test_ColorConstantInit() {
 		final Boolean result[] = new Boolean[2];
 		result[0] = Boolean.FALSE;

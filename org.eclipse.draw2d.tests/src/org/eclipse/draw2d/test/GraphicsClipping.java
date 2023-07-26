@@ -11,20 +11,24 @@
 
 package org.eclipse.draw2d.test;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
-public class GraphicsClipping extends TestCase {
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+public class GraphicsClipping extends Assert {
 
 	private Image image;
 	private GC gc;
 	private SWTGraphics graphics;
 
+	@Test
 	public void testSimpleClip() {
 		Rectangle rect = new Rectangle(14, 21, 30, 40);
 		graphics.setClip(rect);
@@ -46,6 +50,7 @@ public class GraphicsClipping extends TestCase {
 		return graphics.getClip(new Rectangle());
 	}
 
+	@Test
 	public void testTranslatedClip() {
 		Rectangle rect = new Rectangle(14, 21, 300, 400);
 		graphics.setClip(rect);
@@ -68,6 +73,7 @@ public class GraphicsClipping extends TestCase {
 		assertEquals(gcClipping(), rect);
 	}
 
+	@Test
 	public void testZoomedClip() {
 		Rectangle rect = new Rectangle(14, 21, 300, 400);
 		graphics.setClip(rect);
@@ -80,13 +86,15 @@ public class GraphicsClipping extends TestCase {
 		assertEquals(graphicsClip(), rect);
 	}
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		image = new Image(Display.getDefault(), 800, 600);
 		gc = new GC(image);
 		graphics = new SWTGraphics(gc);
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		graphics.dispose();
 		gc.dispose();
 		image.dispose();

@@ -32,6 +32,10 @@ import org.eclipse.swt.graphics.Resource;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 public class AdvancedGraphicsTests extends BaseTestCase {
 
 	static final int LINE[] = new int[] { 5, 5, 20, 20, 35, 5, 50, 5 };
@@ -103,7 +107,8 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		assertImageEquality(100 * tests.length, 100);
 	}
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		path1 = new Path(null);
 		path1.moveTo(20, 5);
 		path1.quadTo(40, 5, 50, 25);
@@ -126,12 +131,14 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		resources.push(imageGC);
 	}
 
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		g.dispose();
 		while (!resources.isEmpty())
 			((Resource) resources.pop()).dispose();
 	}
 
+	@Test
 	public void testAntialias() {
 		class AntialiasSettings implements Runnable {
 			private final Color color;
@@ -167,6 +174,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		}, tests);
 	}
 
+	@Test
 	public void testFillRules() {
 
 		class FillRules implements Runnable {
@@ -223,6 +231,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 	// }, tests);
 	// }
 
+	@Test
 	public void testLineJoinCap() {
 
 		class LineSettings implements Runnable {
@@ -257,11 +266,13 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		}, tests);
 	}
 
+	@Test
 	public void testLineJoinCapAA() {
 		g.setAntialias(SWT.ON);
 		testLineJoinCap();
 	}
 
+	@Test
 	public void testLineAttributes() {
 		class LineSettings implements Runnable {
 			private LineAttributes attributes;
@@ -296,6 +307,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		}, tests);
 	}
 
+	@Test
 	public void testLineAttributesAA() {
 		g.setAntialias(SWT.ON);
 		testLineAttributes();
@@ -378,6 +390,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 	// path1.dispose();
 	// }
 
+	@Test
 	public void testPatterns() {
 
 		class SetPattern implements Runnable {

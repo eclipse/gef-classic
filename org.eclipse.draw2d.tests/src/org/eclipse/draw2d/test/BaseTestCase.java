@@ -14,8 +14,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Interval;
@@ -25,20 +23,14 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 
+import org.junit.Assert;
+
 /**
  * @author Pratik Shah
  */
-public abstract class BaseTestCase extends TestCase {
+public abstract class BaseTestCase extends Assert {
 
 	protected static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
-
-	public BaseTestCase() {
-		super();
-	}
-
-	public BaseTestCase(String text) {
-		super(text);
-	}
 
 	protected boolean callBooleanMethod(Object receiver, String method) {
 		try {

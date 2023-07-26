@@ -24,7 +24,9 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-import junit.framework.AssertionFailedError;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener {
 
@@ -41,6 +43,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 	 * Tests a mixed move (x pos,y neg) with relative bounds.
 	 * 
 	 */
+	@Test
 	public void testRelativeBoundsMixedMove2() {
 		doIndividualSetup(true);
 
@@ -51,6 +54,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 	 * Tests a mixed move (x pos,y neg) with absolute bounds.
 	 * 
 	 */
+	@Test
 	public void testAbsoluteBoundsMixedMove2() {
 		doIndividualSetup(false);
 
@@ -61,6 +65,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 	 * Tests a mixed move (x neg,x pos) with relative bounds.
 	 * 
 	 */
+	@Test
 	public void testRelativeBoundsMixedMove() {
 		doIndividualSetup(true);
 
@@ -71,6 +76,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 	 * Tests a mixed move (x neg, y pos) with absolute bounds.
 	 * 
 	 */
+	@Test
 	public void testAbsoluteBoundsMixedMove() {
 		doIndividualSetup(false);
 
@@ -81,6 +87,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 	 * Tests a positive move with relative bounds.
 	 * 
 	 */
+	@Test
 	public void testRelativeBoundsPositiveMove() {
 		doIndividualSetup(true);
 
@@ -91,6 +98,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 	 * Tests a negative move with relative bounds.
 	 * 
 	 */
+	@Test
 	public void testRelativeBoundsNegativeMove() {
 		doIndividualSetup(true);
 
@@ -101,6 +109,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 	 * Tests a positive move with absolute bounds.
 	 * 
 	 */
+	@Test
 	public void testAbsoluteBoundsPositiveMove() {
 		doIndividualSetup(false);
 
@@ -111,6 +120,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 	 * Tests a negative move with absolute bounds.
 	 * 
 	 */
+	@Test
 	public void testAbsoluteBoundsNegativeMove() {
 		doIndividualSetup(false);
 
@@ -192,13 +202,8 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 		container = null;
 	}
 
-	/*
-	 * @see TestCase#setUp()
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-
+	@Before
+	public void setUp() throws Exception {
 		errMsg = ""; //$NON-NLS-1$
 		d = Display.getDefault();
 		shell = new Shell(d);
@@ -216,29 +221,15 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 		shell.open();
 	}
 
-	/*
-	 * @see TestCase#tearDown()
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-
+	@After
+	public void tearDown() throws Exception {
 		doIndividualTearDown();
 
 		shell.dispose();
 
 		if (!errMsg.isEmpty()) {
-			throw new AssertionFailedError(errMsg);
+			throw new AssertionError(errMsg);
 		}
-	}
-
-	/**
-	 * Constructor for PaintDamageEraseTest.
-	 * 
-	 * @param name
-	 */
-	public PaintDamageEraseTest(String name) {
-		super(name);
 	}
 
 	@Override

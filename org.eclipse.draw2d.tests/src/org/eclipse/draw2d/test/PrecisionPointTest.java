@@ -11,26 +11,29 @@
 
 package org.eclipse.draw2d.test;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.geometry.PrecisionPoint;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * JUnit Tests for PrecisionPoint.
  * 
  * @author Anthony Hunter
  */
-public class PrecisionPointTest extends TestCase {
+public class PrecisionPointTest extends Assert {
 
 	/**
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=227977
 	 */
+	@Test
 	public void testEquals() {
 		PrecisionPoint p1 = new PrecisionPoint(0.1, 0.1);
 		PrecisionPoint p2 = new PrecisionPoint(0.2, 0.2);
 		assertFalse(p1.equals(p2));
 	}
 
+	@Test
 	public void testTranslate() {
 		PrecisionPoint p1 = new PrecisionPoint(0.1, 0.1);
 		PrecisionPoint p2 = new PrecisionPoint(0.2, 0.2);

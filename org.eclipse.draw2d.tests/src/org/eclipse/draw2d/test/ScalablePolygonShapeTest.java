@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.SWTGraphics;
 import org.eclipse.draw2d.ScalablePolygonShape;
@@ -23,7 +21,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.widgets.Display;
 
-public class ScalablePolygonShapeTest extends TestCase {
+import org.junit.Assert;
+import org.junit.Test;
+
+public class ScalablePolygonShapeTest extends Assert {
 
 	private static final int RECTANGLE_START = 1;
 
@@ -40,6 +41,7 @@ public class ScalablePolygonShapeTest extends TestCase {
 	private static final Rectangle RECTANGLE_DOUBLED_BOUNDS = new Rectangle(0, 0, RECTANGLE_END * 2 + LINE_WIDTH,
 			RECTANGLE_END * 2 + LINE_WIDTH);
 
+	@Test
 	public void testScaledPointsEquality() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
 		scalablePolygon.setPoints(RECTANGLE_POINTS);
@@ -49,6 +51,7 @@ public class ScalablePolygonShapeTest extends TestCase {
 		checkScaledPointsNotChanged(scalablePolygon, scaledPoints);
 	}
 
+	@Test
 	public void testPointsUnchangedOnScaling() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
 		PointList points = RECTANGLE_POINTS.getCopy();
@@ -61,6 +64,7 @@ public class ScalablePolygonShapeTest extends TestCase {
 		checkEquals(RECTANGLE_POINTS, points);
 	}
 
+	@Test
 	public void testSmallBounds() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
 		scalablePolygon.setPoints(RECTANGLE_POINTS);
@@ -86,6 +90,7 @@ public class ScalablePolygonShapeTest extends TestCase {
 		}
 	}
 
+	@Test
 	public void testScaledPointsUpdateOnPointsChanging() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
 		scalablePolygon.setBounds(RECTANGLE_BOUNDS);
@@ -118,6 +123,7 @@ public class ScalablePolygonShapeTest extends TestCase {
 		scaledPoints = checkScaledPointsChanged(scalablePolygon, scaledPoints, scaledPoints.size() - 1);
 	}
 
+	@Test
 	public void testScaledPointsUpdateOnBoundsChanging() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
 		scalablePolygon.setPoints(RECTANGLE_POINTS);
@@ -134,6 +140,7 @@ public class ScalablePolygonShapeTest extends TestCase {
 		checkScaledPointsNotChanged(scalablePolygon, scaledPoints);
 	}
 
+	@Test
 	public void testScaledPointsUpdateOnSetLineWidth() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
 		scalablePolygon.setLineWidth(LINE_WIDTH);
@@ -144,6 +151,7 @@ public class ScalablePolygonShapeTest extends TestCase {
 		checkScaledPointsChanged(scalablePolygon, scaledPoints, scaledPoints.size());
 	}
 
+	@Test
 	public void testScaling() {
 		ScalablePolygonShape scalablePolygon = new ScalablePolygonShape();
 		scalablePolygon.setPoints(RECTANGLE_POINTS);

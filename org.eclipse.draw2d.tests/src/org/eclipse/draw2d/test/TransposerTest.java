@@ -16,12 +16,15 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.geometry.Transposer;
 
+import org.junit.Test;
+
 /**
  * @author lobas_av
  *
  */
 public class TransposerTest extends BaseTestCase {
 
+	@Test
 	public void testState() throws Exception {
 		Transposer transposer = new Transposer();
 		// check "not enabled" new Transposer
@@ -49,6 +52,7 @@ public class TransposerTest extends BaseTestCase {
 		assertFalse(transposer.isEnabled());
 	}
 
+	@Test
 	public void testTDimension() throws Exception {
 		Dimension dimension = new Dimension(100, 200);
 		Transposer transposer = new Transposer();
@@ -68,6 +72,7 @@ public class TransposerTest extends BaseTestCase {
 		assertEquals(100, 200, dimension);
 	}
 
+	@Test
 	public void testTInsets() throws Exception {
 		Insets insets = new Insets(1, 2, 3, 4);
 		Transposer transposer = new Transposer();
@@ -87,6 +92,7 @@ public class TransposerTest extends BaseTestCase {
 		assertEquals(1, 2, 3, 4, insets);
 	}
 
+	@Test
 	public void testTPoint() throws Exception {
 		Point point = new Point(100, 200);
 		Transposer transposer = new Transposer();
@@ -106,6 +112,7 @@ public class TransposerTest extends BaseTestCase {
 		assertEquals(100, 200, point);
 	}
 
+	@Test
 	public void testTRectangle() throws Exception {
 		Rectangle rectangle = new Rectangle(1, 2, 3, 4);
 		Transposer transposer = new Transposer();

@@ -19,6 +19,8 @@ import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
 
+import org.junit.Before;
+
 /**
  * @since 3.1
  */
@@ -32,7 +34,8 @@ public class SimpleTextTest extends AbstractTextTest {
 	public TextFlow child2 = new TextFlow(PHRASE);
 	public Font font = Display.getDefault().getSystemFont();
 
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		flowpage.setFont(font);
 		flowpage.add(sentence);
 		flowpage.add(inline);

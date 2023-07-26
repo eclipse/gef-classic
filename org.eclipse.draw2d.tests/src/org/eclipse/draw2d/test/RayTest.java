@@ -9,10 +9,10 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.test;
-
-import junit.framework.TestCase;
-
 import org.eclipse.draw2d.geometry.Ray;
+
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Ray's tests
@@ -20,27 +20,15 @@ import org.eclipse.draw2d.geometry.Ray;
  * @author aboyko
  * 
  */
-public class RayTest extends TestCase {
+public class RayTest extends Assert {
 
-	/**
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	/**
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
+	@Test
 	public void test_length() {
 		testLengthValues(3, 4, 5);
 		testLengthValues(0, Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
 
+	@Test
 	public void test_getScalarProduct() {
 		Ray a = new Ray(3, 2);
 		Ray b = new Ray(2, -2);

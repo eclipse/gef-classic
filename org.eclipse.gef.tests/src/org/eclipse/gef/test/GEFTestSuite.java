@@ -10,28 +10,20 @@
  *******************************************************************************/
 package org.eclipse.gef.test;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 /**
  * The main test suite for GEF.
  * 
  * @author Eric Bordeau
  */
-public class GEFTestSuite extends TestSuite {
-
-	public static Test suite() {
-		return new GEFTestSuite();
-	}
-
-	/**
-	 * Constructs a new GEFTestSuite. Add any JUnit tests to the suite here.
-	 */
-	public GEFTestSuite() {
-		addTest(new TestSuite(PaletteCustomizerTest.class));
-		addTest(new TestSuite(ToolUtilitiesTest.class));
-		addTest(new TestSuite(DragEditPartsTrackerTest.class));
-		addTest(new TestSuite(CommandStackTest.class));
-	}
-
+@RunWith(Suite.class) 
+@Suite.SuiteClasses({
+	PaletteCustomizerTest.class,
+	ToolUtilitiesTest.class,
+	DragEditPartsTrackerTest.class,
+	CommandStackTest.class
+})
+public class GEFTestSuite {
 }

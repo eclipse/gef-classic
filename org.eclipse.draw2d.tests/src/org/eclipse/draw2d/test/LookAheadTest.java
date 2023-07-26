@@ -19,6 +19,9 @@ import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.swt.graphics.Font;
 
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * @author Pratik Shah
  * @author Randy Hudson
@@ -54,8 +57,8 @@ public class LookAheadTest extends BaseTestCase {
 		return FigureUtilities.getStringExtents(s, TIMES_ROMAN).width;
 	}
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		simpleText = new TextFlow();
 		simpleText.setFont(TIMES_ROMAN);
 		width = new int[1];
@@ -82,11 +85,13 @@ public class LookAheadTest extends BaseTestCase {
 		paragraph2.add(new TextFlow("lo")); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testContainerLeadingWord() {
 		p1inline.addLeadingWordRequirements(width);
 		assertLookaheadMatchesString(width, "brown"); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testBlockLeadingWord() {
 		paragraph1.addLeadingWordRequirements(width);
 		assertEquals("Blocks should have no leading word", 0, width[0]); //$NON-NLS-1$
@@ -101,38 +106,46 @@ public class LookAheadTest extends BaseTestCase {
 		return width[0];
 	}
 
+	@Test
 	public void testContextLookaheadPrecedingInline() {
 		assertEquals("Context lookahead into inline flow failed", getFollow(p1text1), getWidth("brown")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Test
 	public void testContextLookaheadFromNested() {
 		assertEquals("Context lookahead from nested inline textflow failed", getFollow(p1text2), getWidth("jumped")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Test
 	public void testContextLookaheadAtEndOfBlock() {
 		assertTrue("Last figure in a block should have no lookahead", getFollow(p1text3) == 0); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testContextLookaheadPastEmptyString() {
 		assertEquals("Context lookahead over empty TextFlow failed", getFollow(p2text1), getWidth("lo")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Test
 	public void testContextChineseCharLookahead() {
 		p1text2.setText("\u7325abcdef"); //$NON-NLS-1$
 		assertTrue("Chinese characters should have no lookahead", getFollow(p1text1) == 0); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testContextHyphenLookahead() {
 		p1text2.setText("-abc"); //$NON-NLS-1$
 		assertEquals("Context lookahead should be hyphen character", getFollow(p1text1), getWidth("-")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
+	@Test
 	public void testSingleLetter() {
 		simpleText.setText("a"); //$NON-NLS-1$
 		assertLineBreakNotFound(simpleText.addLeadingWordRequirements(width));
 		assertLookaheadMatchesString(width, "a"); //$NON-NLS-1$
 	}
 
+	@Test
 	public void testSingleSpace() {
 		simpleText.setText(" "); //$NON-NLS-1$
 		assertTrue("Line break should have been found", simpleText.addLeadingWordRequirements(width)); //$NON-NLS-1$
