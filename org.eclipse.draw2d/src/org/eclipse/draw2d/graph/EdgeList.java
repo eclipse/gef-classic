@@ -28,7 +28,7 @@ public class EdgeList extends ArrayList<Edge> {
 	 *
 	 * @deprecated use Use {@link #get(int)} instead.
 	 */
-	@Deprecated(since = "3.13.100", forRemoval = true)
+	@Deprecated(since = "3.14", forRemoval = true)
 	public Edge getEdge(int index) {
 		return super.get(index);
 	}

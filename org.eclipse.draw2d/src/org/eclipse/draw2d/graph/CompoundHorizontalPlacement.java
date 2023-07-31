@@ -65,9 +65,7 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 	void buildRankSeparators(RankList ranks) {
 		CompoundDirectedGraph g = (CompoundDirectedGraph) graph;
 
-		Rank rank;
-		for (int row = 0; row < g.ranks.size(); row++) {
-			rank = g.ranks.getRank(row);
+		for (Rank rank : g.ranks) {
 			Node n = null, prev = null;
 			for (Node element : rank) {
 				n = element;

@@ -90,8 +90,7 @@ class LocalOptimizer extends GraphVisitor {
 		boolean flag;
 		do {
 			flag = false;
-			for (int r = 0; r < g.ranks.size(); r++) {
-				Rank rank = g.ranks.getRank(r);
+			for (Rank rank : g.ranks) {
 				for (int n = 0; n < rank.count() - 1; n++) {
 					Node currentNode = rank.get(n);
 					Node nextNode = rank.get(n + 1);

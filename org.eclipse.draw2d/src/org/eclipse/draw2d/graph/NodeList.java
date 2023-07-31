@@ -72,7 +72,7 @@ public class NodeList extends ArrayList<Node> {
 	 *
 	 * @deprecated use Use {@link #get(int)} instead.
 	 */
-	@Deprecated(since = "3.13.100", forRemoval = true)
+	@Deprecated(since = "3.14", forRemoval = true)
 	public Node getNode(int index) {
 		return super.get(index);
 	}
