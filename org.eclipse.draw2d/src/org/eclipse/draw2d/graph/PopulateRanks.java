@@ -36,7 +36,7 @@ class PopulateRanks extends GraphVisitor {
 	public void visit(DirectedGraph g) {
 		if (g.forestRoot != null) {
 			for (int i = g.forestRoot.outgoing.size() - 1; i >= 0; i--) {
-				g.removeEdge(g.forestRoot.outgoing.getEdge(i));
+				g.removeEdge(g.forestRoot.outgoing.get(i));
 			}
 			g.removeNode(g.forestRoot);
 		}
@@ -46,7 +46,7 @@ class PopulateRanks extends GraphVisitor {
 		}
 		for (Node node : g.nodes) {
 			for (int j = 0; j < node.outgoing.size();) {
-				Edge e = node.outgoing.getEdge(j);
+				Edge e = node.outgoing.get(j);
 				if (e.getLength() > 1) {
 					changes.push(new VirtualNodeCreation(e, g));
 				} else {

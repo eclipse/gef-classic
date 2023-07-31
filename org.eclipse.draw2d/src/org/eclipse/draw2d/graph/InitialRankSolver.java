@@ -38,7 +38,7 @@ class InitialRankSolver extends GraphVisitor {
 	}
 
 	protected void solve() {
-		if (graph.nodes.size() == 0) {
+		if (graph.nodes.isEmpty()) {
 			return;
 		}
 		NodeList unranked = new NodeList(graph.nodes);
@@ -71,7 +71,6 @@ class InitialRankSolver extends GraphVisitor {
 		Deque<Node> stack = new ArrayDeque<>();
 		graph.nodes.resetFlags();
 		for (Node n : graph.nodes) {
-			Node neighbor;
 			if (n.flag) {
 				continue;
 			}
@@ -81,14 +80,14 @@ class InitialRankSolver extends GraphVisitor {
 				n = stack.pop();
 				n.flag = true;
 				tree.add(n);
-				for (int s = 0; s < n.incoming.size(); s++) {
-					neighbor = n.incoming.getEdge(s).source;
+				for (Edge e : n.incoming) {
+					Node neighbor = e.source;
 					if (!neighbor.flag) {
 						stack.push(neighbor);
 					}
 				}
-				for (int s = 0; s < n.outgoing.size(); s++) {
-					neighbor = n.outgoing.getEdge(s).target;
+				for (Edge e : n.outgoing) {
+					Node neighbor = e.target;
 					if (!neighbor.flag) {
 						stack.push(neighbor);
 					}
@@ -107,11 +106,9 @@ class InitialRankSolver extends GraphVisitor {
 		}
 	}
 
-	private void assignMinimumRank(Node node) {
+	private static void assignMinimumRank(Node node) {
 		int rank = 0;
-		Edge e;
-		for (int i1 = 0; i1 < node.incoming.size(); i1++) {
-			e = node.incoming.getEdge(i1);
+		for (Edge e : node.incoming) {
 			rank = Math.max(rank, e.delta + e.source.rank);
 		}
 		node.rank = rank;

@@ -244,8 +244,7 @@ class CompoundBreakCycles extends GraphVisitor {
 			orderIndex++;
 		}
 		// Invert edges that are causing a cycle
-		for (int i = 0; i < g.edges.size(); i++) {
-			Edge e = g.edges.getEdge(i);
+		for (Edge e : g.edges) {
 			if (getOrderIndex(e.source) > getOrderIndex(e.target) && !e.source.isNested(e.target)
 					&& !e.target.isNested(e.source)) {
 				e.invert();
@@ -261,15 +260,12 @@ class CompoundBreakCycles extends GraphVisitor {
 	 * @param n
 	 */
 	private static void isolateSubgraph(Subgraph subgraph, Node member) {
-		Edge edge = null;
-		for (int i = 0; i < member.incoming.size(); i++) {
-			edge = member.incoming.getEdge(i);
+		for (Edge edge : member.incoming) {
 			if (!subgraph.isNested(edge.source) && !edge.flag) {
 				removeEdge(edge);
 			}
 		}
-		for (int i = 0; i < member.outgoing.size(); i++) {
-			edge = member.outgoing.getEdge(i);
+		for (Edge edge : member.outgoing) {
 			if (!subgraph.isNested(edge.target) && !edge.flag) {
 				removeEdge(edge);
 			}
@@ -315,17 +311,12 @@ class CompoundBreakCycles extends GraphVisitor {
 	 * Removes all edges between a parent and any of its children or descendants.
 	 */
 	private static void removeParentChildEdges(DirectedGraph g) {
-		for (int i = 0; i < g.edges.size(); i++) {
-			Edge e = g.edges.getEdge(i);
-			if (e.source.isNested(e.target) || e.target.isNested(e.source)) {
-				removeEdge(e);
-			}
-		}
+		g.edges.stream().filter(e -> (e.source.isNested(e.target) || e.target.isNested(e.source)))
+				.forEach(CompoundBreakCycles::removeEdge);
 	}
 
 	private static void removeSink(Node sink, NodeList allSinks) {
-		for (int i = 0; i < sink.incoming.size(); i++) {
-			Edge e = sink.incoming.getEdge(i);
+		for (Edge e : sink.incoming) {
 			if (!e.flag) {
 				removeEdge(e);
 				Node source = e.source;
@@ -338,8 +329,7 @@ class CompoundBreakCycles extends GraphVisitor {
 	}
 
 	private static void removeSource(Node n, NodeList allSources) {
-		for (int i = 0; i < n.outgoing.size(); i++) {
-			Edge e = n.outgoing.getEdge(i);
+		for (Edge e : n.outgoing) {
 			if (!e.flag) {
 				e.flag = true;
 				changeInDegree(e.target, -1);
@@ -384,14 +374,8 @@ class CompoundBreakCycles extends GraphVisitor {
 				setChildCount(node.getParent(), getChildCount(node.getParent()) + 1);
 			}
 			sR.remove(node);
-			for (int i = 0; i < node.incoming.size(); i++) {
-				Edge e = node.incoming.getEdge(i);
-				restoreEdge(e);
-			}
-			for (int i = 0; i < node.outgoing.size(); i++) {
-				Edge e = node.outgoing.getEdge(i);
-				restoreEdge(e);
-			}
+			node.incoming.forEach(CompoundBreakCycles::restoreEdge);
+			node.outgoing.forEach(CompoundBreakCycles::restoreEdge);
 		}
 		if (node instanceof Subgraph s) {
 			s.members.forEach(n -> restoreSinks(n, sR));
@@ -411,14 +395,8 @@ class CompoundBreakCycles extends GraphVisitor {
 				setChildCount(node.getParent(), getChildCount(node.getParent()) + 1);
 			}
 			sL.remove(node);
-			for (int i = 0; i < node.incoming.size(); i++) {
-				Edge e = node.incoming.getEdge(i);
-				restoreEdge(e);
-			}
-			for (int i = 0; i < node.outgoing.size(); i++) {
-				Edge e = node.outgoing.getEdge(i);
-				restoreEdge(e);
-			}
+			node.incoming.forEach(CompoundBreakCycles::restoreEdge);
+			node.outgoing.forEach(CompoundBreakCycles::restoreEdge);
 		}
 		if (node instanceof Subgraph s) {
 			s.members.forEach(this::restoreSources);
@@ -427,12 +405,7 @@ class CompoundBreakCycles extends GraphVisitor {
 
 	@Override
 	public void revisit(DirectedGraph g) {
-		for (int i = 0; i < g.edges.size(); i++) {
-			Edge e = g.edges.getEdge(i);
-			if (e.isFeedback()) {
-				e.invert();
-			}
-		}
+		g.edges.stream().filter(Edge::isFeedback).forEach(Edge::invert);
 	}
 
 	private static void setChildCount(Node n, int count) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Insets;
  * {@link Edge}s. A node is given a width and height by the client. When a
  * layout places the node in the graph, it will determine the node's x and y
  * location. It may also modify the node's height.
- * 
+ *
  * A node represents both the <EM>input</EM> and the <EM>output</EM> for a
  * layout algorithm. The following fields are used as input to a graph layout:
  * <UL>
@@ -44,16 +44,17 @@ import org.eclipse.draw2d.geometry.Insets;
  * <LI>{@link #height} - the node's height may be stretched to match the height
  * of other nodes
  * </UL>
- * 
+ *
  * @author Randy Hudson
  * @since 2.1.2
  */
 public class Node {
 
-	Node left, right;
+	Node left;
+	Node right;
 
-	Object workingData[] = new Object[3];
-	int workingInts[] = new int[4];
+	Object[] workingData = new Object[3];
+	int[] workingInts = new int[4];
 
 	/**
 	 * Clients may use this field to mark the Node with an arbitrary data object.
@@ -74,6 +75,7 @@ public class Node {
 	 * @deprecated use {@link #setRowConstraint(int)} and
 	 *             {@link #getRowConstraint()}
 	 */
+	@Deprecated
 	public int rowOrder = -1;
 
 	/**
@@ -106,6 +108,7 @@ public class Node {
 	/**
 	 * @deprecated for internal use only
 	 */
+	@Deprecated
 	public double sortValue;
 
 	/**
@@ -135,7 +138,7 @@ public class Node {
 
 	/**
 	 * Constructs a node with the given data object
-	 * 
+	 *
 	 * @param data an arbitrary data object
 	 */
 	public Node(Object data) {
@@ -144,7 +147,7 @@ public class Node {
 
 	/**
 	 * Constructs a node inside the given subgraph.
-	 * 
+	 *
 	 * @param parent the parent subgraph
 	 */
 	public Node(Subgraph parent) {
@@ -154,15 +157,16 @@ public class Node {
 	/**
 	 * Constructs a node with the given data object and parent subgraph. This node
 	 * is added to the set of members for the parent subgraph
-	 * 
+	 *
 	 * @param data   an arbitrary data object
 	 * @param parent the parent subgraph or <code>null</code>
 	 */
 	public Node(Object data, Subgraph parent) {
 		this.data = data;
 		this.parent = parent;
-		if (parent != null)
+		if (parent != null) {
 			parent.addMember(this);
+		}
 	}
 
 	/**
@@ -170,12 +174,13 @@ public class Node {
 	 * edge to the default incoming attachment point for edges. Each incoming edge
 	 * may have it's own attachment setting which takes priority over this default
 	 * one.
-	 * 
+	 *
 	 * @return the incoming offset
 	 */
 	public int getOffsetIncoming() {
-		if (incomingOffset == -1)
+		if (incomingOffset == -1) {
 			return width / 2;
+		}
 		return incomingOffset;
 	}
 
@@ -184,19 +189,20 @@ public class Node {
 	 * edge to the default outgoing attachment point for edges. Each outgoing edge
 	 * may have it's own attachment setting which takes priority over this default
 	 * one.
-	 * 
+	 *
 	 * @return the outgoing offset
 	 */
 	public int getOffsetOutgoing() {
-		if (outgoingOffset == -1)
+		if (outgoingOffset == -1) {
 			return width / 2;
+		}
 		return outgoingOffset;
 	}
 
 	/**
 	 * Returns the padding for this node or <code>null</code> if the default padding
 	 * for the graph should be used.
-	 * 
+	 *
 	 * @return the padding or <code>null</code>
 	 */
 	public Insets getPadding() {
@@ -206,7 +212,7 @@ public class Node {
 	/**
 	 * Returns the parent Subgraph or <code>null</code> if there is no parent.
 	 * Subgraphs are only for use in {@link CompoundDirectedGraphLayout}.
-	 * 
+	 *
 	 * @return the parent or <code>null</code>
 	 */
 	public Subgraph getParent() {
@@ -216,7 +222,7 @@ public class Node {
 	/**
 	 * For internal use only. Returns <code>true</code> if the given node is equal
 	 * to this node. This method is implemented for consitency with Subgraph.
-	 * 
+	 *
 	 * @param node the node in question
 	 * @return <code>true</code> if nested
 	 */
@@ -227,7 +233,7 @@ public class Node {
 	/**
 	 * Sets the padding. <code>null</code> indicates that the default padding should
 	 * be used.
-	 * 
+	 *
 	 * @param padding an insets or <code>null</code>
 	 */
 	public void setPadding(Insets padding) {
@@ -237,7 +243,7 @@ public class Node {
 	/**
 	 * Sets the parent subgraph. This method should not be called directly. The
 	 * constructor will set the parent accordingly.
-	 * 
+	 *
 	 * @param parent the parent
 	 */
 	public void setParent(Subgraph parent) {
@@ -249,7 +255,7 @@ public class Node {
 	 * constraint is <code>-1</code>. If two nodes have different values both >= 0,
 	 * the node with the smaller constraint will be placed to the left of the other
 	 * node. In all other cases no relative placement is guaranteed.
-	 * 
+	 *
 	 * @param value the row constraint
 	 * @since 3.2
 	 */
@@ -259,7 +265,7 @@ public class Node {
 
 	/**
 	 * Returns the row constraint for this node.
-	 * 
+	 *
 	 * @return the row constraint
 	 * @since 3.2
 	 */
@@ -269,7 +275,7 @@ public class Node {
 
 	/**
 	 * Sets the size of this node to the given dimension.
-	 * 
+	 *
 	 * @param size the new size
 	 * @since 3.2
 	 */
@@ -281,32 +287,39 @@ public class Node {
 	/**
 	 * @see Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "N(" + data + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	Iterator iteratorNeighbors() {
-		return new Iterator() {
+	Iterator<Node> iteratorNeighbors() {
+		return new Iterator<>() {
 			int offset;
 			EdgeList list = outgoing;
 
-			public Object next() {
-				Edge edge = list.getEdge(offset++);
-				if (offset < list.size())
+			@Override
+			public Node next() {
+				Edge edge = list.get(offset++);
+				if (offset < list.size()) {
 					return edge.opposite(Node.this);
+				}
 				if (list == outgoing) {
 					list = incoming;
 					offset = 0;
-				} else
+				} else {
 					list = null;
+				}
 				return edge.opposite(Node.this);
 			}
 
+			@Override
 			public boolean hasNext() {
-				if (list == null)
+				if (list == null) {
 					return false;
-				if (offset < list.size())
+				}
+				if (offset < list.size()) {
 					return true;
+				}
 				if (list == outgoing) {
 					list = incoming;
 					offset = 0;
@@ -314,6 +327,7 @@ public class Node {
 				return offset < list.size();
 			}
 
+			@Override
 			public void remove() {
 				throw new RuntimeException("Remove not supported"); //$NON-NLS-1$
 			}
@@ -322,7 +336,7 @@ public class Node {
 
 	/**
 	 * Returns a reference to a node located left from this one
-	 * 
+	 *
 	 * @return <code>Node</code> on the left from this one
 	 * @since 3.4
 	 */
@@ -332,7 +346,7 @@ public class Node {
 
 	/**
 	 * Returns a reference to a node located right from this one
-	 * 
+	 *
 	 * @return <code>Node</code> on the right from this one
 	 * @since 3.4
 	 */

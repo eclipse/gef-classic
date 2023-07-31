@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,6 @@ package org.eclipse.draw2d.graph;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Iterator;
 
 /**
  * Assigns the final rank assignment for a DirectedGraph with an initial
@@ -32,12 +31,8 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 		setTreeMin(n, count);
 		int cutvalue = 0;
 		int multiplier = (edge.target == n) ? 1 : -1;
-		EdgeList list;
 
-		list = n.outgoing;
-		Edge e;
-		for (int i = 0; i < list.size(); i++) {
-			e = list.getEdge(i);
+		for (Edge e : n.outgoing) {
 			if (e.tree && e != edge) {
 				count = depthFirstCutValue(e, count);
 				cutvalue += (e.cut - e.weight) * multiplier;
@@ -45,9 +40,8 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 				cutvalue -= e.weight * multiplier;
 			}
 		}
-		list = n.incoming;
-		for (int i = 0; i < list.size(); i++) {
-			e = list.getEdge(i);
+
+		for (Edge e : n.incoming) {
 			if (e.tree && e != edge) {
 				count = depthFirstCutValue(e, count);
 				cutvalue -= (e.cut - e.weight) * multiplier;
@@ -89,8 +83,7 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 				} else {
 					edges = n.outgoing;
 				}
-				for (int j = 0; j < edges.size(); j++) {
-					Edge e = edges.getEdge(j);
+				for (Edge e : edges) {
 					if (!subtreeContains(branch, e.opposite(n)) && !e.tree && e.getSlack() < minSlack) {
 						result = e;
 						minSlack = e.getSlack();
@@ -112,19 +105,16 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 	void initCutValues() {
 		Node root = graph.nodes.get(0);
 		spanningTree = new EdgeList();
-		Edge e;
 		setTreeMin(root, 1);
 		setTreeMax(root, 1);
 
-		for (int i = 0; i < root.outgoing.size(); i++) {
-			e = root.outgoing.getEdge(i);
+		for (Edge e : root.outgoing) {
 			if (!getSpanningTreeChildren(root).contains(e)) {
 				continue;
 			}
 			setTreeMax(root, depthFirstCutValue(e, getTreeMax(root)));
 		}
-		for (int i = 0; i < root.incoming.size(); i++) {
-			e = root.incoming.getEdge(i);
+		for (Edge e : root.incoming) {
 			if (!getSpanningTreeChildren(root).contains(e)) {
 				continue;
 			}
@@ -134,11 +124,9 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 
 	Edge leave() {
 		Edge result = null;
-		Edge e;
 		int minCut = 0;
 		int weight = -1;
-		for (int i = 0; i < spanningTree.size(); i++) {
-			e = spanningTree.getEdge(i);
+		for (Edge e : spanningTree) {
 			if (e.cut < minCut) {
 				result = e;
 				minCut = result.cut;
@@ -209,21 +197,15 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 		Node n = getTreeTail(edge);
 		int cutvalue = 0;
 		int multiplier = (edge.target == n) ? 1 : -1;
-		EdgeList list;
 
-		list = n.outgoing;
-		Edge e;
-		for (int i = 0; i < list.size(); i++) {
-			e = list.getEdge(i);
+		for (Edge e : n.outgoing) {
 			if (e.tree && e != edge) {
 				cutvalue += (e.cut - e.weight) * multiplier;
 			} else {
 				cutvalue -= e.weight * multiplier;
 			}
 		}
-		list = n.incoming;
-		for (int i = 0; i < list.size(); i++) {
-			e = list.getEdge(i);
+		for (Edge e : n.incoming) {
 			if (e.tree && e != edge) {
 				cutvalue -= (e.cut - e.weight) * multiplier;
 			} else {
@@ -264,9 +246,8 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 
 	int updateMinMax(Node root, int count) {
 		setTreeMin(root, count);
-		EdgeList edges = getSpanningTreeChildren(root);
-		for (int i = 0; i < edges.size(); i++) {
-			count = updateMinMax(getTreeTail(edges.getEdge(i)), count);
+		for (Edge e : getSpanningTreeChildren(root)) {
+			count = updateMinMax(getTreeTail(e), count);
 		}
 		setTreeMax(root, count);
 		return count + 1;
@@ -303,21 +284,19 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 		graph.forestRoot.flag = true;
 		EdgeList rootEdges = graph.forestRoot.outgoing;
 		Deque<Node> stack = new ArrayDeque<>();
-		for (int i = 0; i < rootEdges.size(); i++) {
-			Node node = rootEdges.getEdge(i).target;
+		for (Edge e : rootEdges) {
+			Node node = e.target;
 			node.flag = true;
 			stack.push(node);
 			while (!stack.isEmpty()) {
 				node = stack.pop();
 				tree.add(node);
-				Iterator neighbors = node.iteratorNeighbors();
-				while (neighbors.hasNext()) {
-					Node neighbor = (Node) neighbors.next();
+				node.iteratorNeighbors().forEachRemaining(neighbor -> {
 					if (!neighbor.flag) {
 						neighbor.flag = true;
 						stack.push(neighbor);
 					}
-				}
+				});
 			}
 			tree.normalizeRanks();
 			tree.clear();

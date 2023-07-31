@@ -56,8 +56,7 @@ class TransposeMetrics extends GraphVisitor {
 				node.setPadding(t.t(node.getPadding()));
 			}
 		}
-		for (int i = 0; i < g.edges.size(); i++) {
-			Edge edge = g.edges.getEdge(i);
+		for (Edge edge : g.edges) {
 			edge.start.transpose();
 			edge.end.transpose();
 			edge.getPoints().transpose();

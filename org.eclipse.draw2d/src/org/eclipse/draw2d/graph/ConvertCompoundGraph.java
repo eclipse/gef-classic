@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Insets;
  */
 class ConvertCompoundGraph extends GraphVisitor {
 
-	private void addContainmentEdges(CompoundDirectedGraph graph) {
+	private static void addContainmentEdges(CompoundDirectedGraph graph) {
 		// For all nested nodes, connect to head and/or tail of containing
 		// subgraph if present
 		for (Node node : graph.nodes) {
@@ -53,7 +53,7 @@ class ConvertCompoundGraph extends GraphVisitor {
 	private static void connectHead(CompoundDirectedGraph graph, Node node, Subgraph parent) {
 		boolean connectHead = true;
 		for (int j = 0; connectHead && j < node.incoming.size(); j++) {
-			Node ancestor = node.incoming.getEdge(j).source;
+			Node ancestor = node.incoming.get(j).source;
 			if (parent.isNested(ancestor)) {
 				connectHead = false;
 			}
@@ -69,7 +69,7 @@ class ConvertCompoundGraph extends GraphVisitor {
 	private static void connectTail(CompoundDirectedGraph graph, Node node, Subgraph parent) {
 		boolean connectTail = true;
 		for (int j = 0; connectTail && j < node.outgoing.size(); j++) {
-			Node ancestor = node.outgoing.getEdge(j).target;
+			Node ancestor = node.outgoing.get(j).target;
 			if (parent.isNested(ancestor)) {
 				connectTail = false;
 			}
@@ -84,7 +84,7 @@ class ConvertCompoundGraph extends GraphVisitor {
 
 	private static void convertSubgraphEndpoints(CompoundDirectedGraph graph) {
 		for (int i = 0; i < graph.edges.size(); i++) {
-			Edge edge = (Edge) graph.edges.get(i);
+			Edge edge = graph.edges.get(i);
 			if (edge.source instanceof Subgraph s) {
 				Node newSource;
 				if (s.isNested(edge.target)) {
@@ -122,8 +122,7 @@ class ConvertCompoundGraph extends GraphVisitor {
 
 	@Override
 	void revisit(DirectedGraph g) {
-		for (int i = 0; i < g.edges.size(); i++) {
-			Edge e = g.edges.getEdge(i);
+		for (Edge e : g.edges) {
 			if (e.source instanceof SubgraphBoundary) {
 				e.source.outgoing.remove(e);
 				e.source = e.source.getParent();

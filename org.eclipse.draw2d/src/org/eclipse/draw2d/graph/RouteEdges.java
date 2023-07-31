@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,20 +23,20 @@ class RouteEdges extends GraphVisitor {
 	/**
 	 * @see GraphVisitor#visit(DirectedGraph)
 	 */
+	@Override
 	public void revisit(DirectedGraph g) {
-		for (int i = 0; i < g.edges.size(); i++) {
-			Edge edge = (Edge) g.edges.get(i);
+		for (Edge edge : g.edges) {
 			edge.start = new Point(edge.getSourceOffset() + edge.source.x, edge.source.y + edge.source.height);
-			if (edge.source instanceof SubgraphBoundary) {
-				SubgraphBoundary boundary = (SubgraphBoundary) edge.source;
-				if (boundary.getParent().head == boundary)
+			if (edge.source instanceof SubgraphBoundary boundary) {
+				if (boundary.getParent().head == boundary) {
 					edge.start.y = boundary.getParent().y + boundary.getParent().insets.top;
+				}
 			}
 			edge.end = new Point(edge.getTargetOffset() + edge.target.x, edge.target.y);
 
-			if (edge.vNodes != null)
+			if (edge.vNodes != null) {
 				routeLongEdge(edge, g);
-			else {
+			} else {
 				PointList list = new PointList();
 				list.addPoint(edge.start);
 				list.addPoint(edge.end);
@@ -51,8 +51,8 @@ class RouteEdges extends GraphVisitor {
 		router.addPath(path);
 		Rectangle o;
 		Insets padding;
-		for (int i = 0; i < edge.vNodes.size(); i++) {
-			VirtualNode node = (VirtualNode) edge.vNodes.get(i);
+		for (Node element : edge.vNodes) {
+			VirtualNode node = (VirtualNode) element;
 			Node neighbor;
 			if (node.left != null) {
 				neighbor = node.left;

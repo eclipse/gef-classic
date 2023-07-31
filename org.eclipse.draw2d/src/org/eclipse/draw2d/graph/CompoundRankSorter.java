@@ -11,7 +11,6 @@
 package org.eclipse.draw2d.graph;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -82,10 +81,7 @@ class CompoundRankSorter extends RankSorter {
 	@Override
 	void optimize(DirectedGraph g) {
 		CompoundDirectedGraph graph = (CompoundDirectedGraph) g;
-		Iterator containment = graph.containment.iterator();
-		while (containment.hasNext()) {
-			graph.removeEdge((Edge) containment.next());
-		}
+		graph.containment.forEach(graph::removeEdge);
 		graph.containment.clear();
 		new LocalOptimizer().visit(graph);
 	}
