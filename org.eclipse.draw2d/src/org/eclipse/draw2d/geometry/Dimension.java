@@ -162,6 +162,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @return <code>true</code> if the given object is equal to this dimension
 	 * @since 2.0
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Dimension) {
 			Dimension d = (Dimension) o;
@@ -402,6 +403,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return (width * height) ^ (width + height);
 	}
@@ -453,6 +455,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * @see org.eclipse.draw2d.geometry.Translatable#performScale(double)
 	 */
+	@Override
 	public void performScale(double factor) {
 		scale(factor);
 	}
@@ -460,6 +463,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * @see org.eclipse.draw2d.geometry.Translatable#performTranslate(int, int)
 	 */
+	@Override
 	public void performTranslate(int dx, int dy) {
 		// FIXME: actually Dimension are not translatable. Remove this
 		// method as soon as bug #307276 is resolved.
@@ -610,6 +614,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 * @see Object#toString()
 	 */
 
+	@Override
 	public String toString() {
 		return "Dimension(" + //$NON-NLS-1$
 				preciseWidth() + ", " + //$NON-NLS-1$

@@ -38,6 +38,7 @@ public class GraphJFaceSnippet2 {
 
 	static class MyContentProvider implements IGraphContentProvider {
 
+		@Override
 		public Object getDestination(Object rel) {
 			if ("Rock2Paper".equals(rel)) {
 				return "Rock";
@@ -49,10 +50,12 @@ public class GraphJFaceSnippet2 {
 			return null;
 		}
 
+		@Override
 		public Object[] getElements(Object input) {
 			return new Object[] { "Rock2Paper", "Paper2Scissors", "Scissors2Rock" };
 		}
 
+		@Override
 		public Object getSource(Object rel) {
 			if ("Rock2Paper".equals(rel)) {
 				return "Paper";
@@ -68,9 +71,11 @@ public class GraphJFaceSnippet2 {
 			return 0;
 		}
 
+		@Override
 		public void dispose() {
 		}
 
+		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
 
@@ -79,6 +84,7 @@ public class GraphJFaceSnippet2 {
 	static class MyLabelProvider extends LabelProvider {
 		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 
+		@Override
 		public Image getImage(Object element) {
 			if (element.equals("Rock") || element.equals("Paper") || element.equals("Scissors")) {
 				return image;
@@ -86,6 +92,7 @@ public class GraphJFaceSnippet2 {
 			return null;
 		}
 
+		@Override
 		public String getText(Object element) {
 			return element.toString();
 		}

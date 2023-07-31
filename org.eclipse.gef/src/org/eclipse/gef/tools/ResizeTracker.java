@@ -197,6 +197,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
 	 */
+	@Override
 	protected String getCommandName() {
 		return REQ_RESIZE;
 	}
@@ -293,6 +294,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.SimpleDragTracker#updateSourceRequest()
 	 */
+	@Override
 	protected void updateSourceRequest() {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) getSourceRequest();
 		Dimension d = getDragMoveDelta();

@@ -48,6 +48,7 @@ public class RedoAction extends StackAction {
 	/**
 	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		return getCommandStack().canRedo();
 	}
@@ -55,6 +56,7 @@ public class RedoAction extends StackAction {
 	/**
 	 * Initializes this actions text and images.
 	 */
+	@Override
 	protected void init() {
 		super.init();
 		setToolTipText(MessageFormat.format(GEFMessages.RedoAction_Tooltip, new Object[] { "" }).trim()); //$NON-NLS-1$
@@ -70,6 +72,7 @@ public class RedoAction extends StackAction {
 	/**
 	 * Refreshes this action's text to use the last undone command's label.
 	 */
+	@Override
 	protected void refresh() {
 		Command redoCmd = getCommandStack().getRedoCommand();
 		setToolTipText(MessageFormat
@@ -82,6 +85,7 @@ public class RedoAction extends StackAction {
 	/**
 	 * Redoes the last command.
 	 */
+	@Override
 	public void run() {
 		getCommandStack().redo();
 	}

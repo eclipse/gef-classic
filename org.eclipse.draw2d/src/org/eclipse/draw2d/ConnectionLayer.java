@@ -36,6 +36,7 @@ public class ConnectionLayer extends FreeformLayer {
 	 * @param index      Index where the figure is to be added
 	 * @since 2.0
 	 */
+	@Override
 	public void add(IFigure figure, Object constraint, int index) {
 		super.add(figure, constraint, index);
 
@@ -58,6 +59,7 @@ public class ConnectionLayer extends FreeformLayer {
 	/**
 	 * @see IFigure#paint(Graphics)
 	 */
+	@Override
 	public void paint(Graphics graphics) {
 		if (antialias != SWT.DEFAULT)
 			graphics.setAntialias(antialias);
@@ -70,6 +72,7 @@ public class ConnectionLayer extends FreeformLayer {
 	 * 
 	 * @param figure The figure to remove
 	 */
+	@Override
 	public void remove(IFigure figure) {
 		if (figure instanceof Connection)
 			((Connection) figure).setConnectionRouter(null);

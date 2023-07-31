@@ -70,6 +70,7 @@ class Splitter extends Composite {
 	}
 
 	class SashPainter implements Listener {
+		@Override
 		public void handleEvent(Event e) {
 			paint((Sash) e.widget, e.gc);
 		}
@@ -82,12 +83,14 @@ class Splitter extends Composite {
 			orientation = SWT.HORIZONTAL;
 
 		this.addListener(SWT.Resize, new Listener() {
+			@Override
 			public void handleEvent(Event e) {
 				layout(true);
 			}
 		});
 
 		sashListener = new Listener() {
+			@Override
 			public void handleEvent(Event e) {
 				onDragSash(e);
 			}
@@ -99,6 +102,7 @@ class Splitter extends Composite {
 		return style & mask;
 	}
 
+	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed) {
 
 		Control[] controls = getControls(true);
@@ -138,6 +142,7 @@ class Splitter extends Composite {
 	 * side. Answer SWT.VERTICAL if the controls in the SashForm are laid out top to
 	 * bottom.
 	 */
+	@Override
 	public int getOrientation() {
 		return orientation;
 	}
@@ -171,6 +176,7 @@ class Splitter extends Composite {
 		return controls;
 	}
 
+	@Override
 	public void layout(boolean changed) {
 		Rectangle area = getClientArea();
 		if (area.width == 0 || area.height == 0)
@@ -343,6 +349,7 @@ class Splitter extends Composite {
 	 * by side. If orientation is SWT.VERTICAL, lay the controls in the SashForm out
 	 * top to bottom.
 	 */
+	@Override
 	public void setOrientation(int orientation) {
 		if (this.orientation == orientation)
 			return;
@@ -365,6 +372,7 @@ class Splitter extends Composite {
 		sashWidth = width;
 	}
 
+	@Override
 	public void setLayout(Layout layout) {
 		// SashForm does not use Layout
 	}

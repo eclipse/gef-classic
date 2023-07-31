@@ -86,6 +86,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	 * @see org.eclipse.draw2d.ActionListener#actionPerformed(org.eclipse.draw2d.
 	 * ActionEvent)
 	 */
+	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (state == OPEN) {
 			container.close(true);
@@ -120,6 +121,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 			 * 
 			 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 			 */
+			@Override
 			protected void paintFigure(Graphics graphics) {
 				if (isOpaque()) {
 					super.paintFigure(graphics);
@@ -188,6 +190,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	 * 
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	public void paint(Graphics graphics) {
 
 		int blue = getBackgroundColor().getBlue();
@@ -274,11 +277,13 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 		// adjustBoundsToFit();
 	}
 
+	@Override
 	public void setLocation(Point p) {
 		// TODO Auto-generated method stub
 		super.setLocation(p);
 	}
 
+	@Override
 	public void setBounds(Rectangle rect) {
 		// TODO Auto-generated method stub
 		super.setBounds(rect);

@@ -94,6 +94,7 @@ public class ConnectionLocator extends AbstractLocator {
 	 * @return The reference point
 	 * @since 2.0
 	 */
+	@Override
 	protected Point getReferencePoint() {
 		Point p = getLocation(getConnection().getPoints());
 		getConnection().translateToAbsolute(p);

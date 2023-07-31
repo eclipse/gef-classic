@@ -109,6 +109,7 @@ public class SWTGraphics extends Graphics {
 			bottom = rect.bottom();
 		}
 
+		@Override
 		public Rectangle getBoundingBox(Rectangle rect) {
 			rect.x = (int) left;
 			rect.y = (int) top;
@@ -117,10 +118,12 @@ public class SWTGraphics extends Graphics {
 			return rect;
 		}
 
+		@Override
 		public Clipping getCopy() {
 			return new RectangleClipping(left, top, right, bottom);
 		}
 
+		@Override
 		public void intersect(int left, int top, final int right, final int bottom) {
 			this.left = Math.max(this.left, left);
 			this.right = Math.min(this.right, right);
@@ -133,6 +136,7 @@ public class SWTGraphics extends Graphics {
 			}
 		}
 
+		@Override
 		public void scale(float horz, float vert) {
 			left /= horz;
 			right /= horz;
@@ -140,6 +144,7 @@ public class SWTGraphics extends Graphics {
 			bottom /= vert;
 		}
 
+		@Override
 		public void setOn(GC gc, int translateX, int translateY) {
 			int xInt = (int) Math.floor(left);
 			int yInt = (int) Math.floor(top);
@@ -147,6 +152,7 @@ public class SWTGraphics extends Graphics {
 					(int) Math.ceil(bottom) - yInt);
 		}
 
+		@Override
 		public void translate(float dx, float dy) {
 			left += dx;
 			right += dx;
@@ -166,6 +172,7 @@ public class SWTGraphics extends Graphics {
 
 		Pattern fgPattern;
 
+		@Override
 		public Object clone() throws CloneNotSupportedException {
 			State clone = (State) super.clone();
 			clone.lineAttributes = SWTGraphics.clone(clone.lineAttributes);
@@ -349,6 +356,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#clipRect(Rectangle)
 	 */
+	@Override
 	public void clipRect(Rectangle rect) {
 		if (currentState.relativeClip == null) {
 			throw new IllegalStateException("The current clipping area does not " + //$NON-NLS-1$
@@ -363,6 +371,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#dispose()
 	 */
+	@Override
 	public void dispose() {
 		while (stackPointer > 0) {
 			popState();
@@ -376,6 +385,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawArc(int, int, int, int, int, int)
 	 */
+	@Override
 	public void drawArc(int x, int y, int width, int height, int offset, int length) {
 		checkPaint();
 		gc.drawArc(x + translateX, y + translateY, width, height, offset, length);
@@ -384,6 +394,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawFocus(int, int, int, int)
 	 */
+	@Override
 	public void drawFocus(int x, int y, int w, int h) {
 		checkPaint();
 		gc.drawFocus(x + translateX, y + translateY, w + 1, h + 1);
@@ -392,6 +403,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawImage(Image, int, int)
 	 */
+	@Override
 	public void drawImage(Image srcImage, int x, int y) {
 		checkGC();
 		gc.drawImage(srcImage, x + translateX, y + translateY);
@@ -400,6 +412,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int)
 	 */
+	@Override
 	public void drawImage(Image srcImage, int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2) {
 		checkGC();
 		gc.drawImage(srcImage, x1, y1, w1, h1, x2 + translateX, y2 + translateY, w2, h2);
@@ -408,6 +421,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawLine(int, int, int, int)
 	 */
+	@Override
 	public void drawLine(int x1, int y1, int x2, int y2) {
 		checkPaint();
 		gc.drawLine(x1 + translateX, y1 + translateY, x2 + translateX, y2 + translateY);
@@ -416,6 +430,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawOval(int, int, int, int)
 	 */
+	@Override
 	public void drawOval(int x, int y, int width, int height) {
 		checkPaint();
 		gc.drawOval(x + translateX, y + translateY, width, height);
@@ -428,6 +443,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#drawPath(Path)
 	 */
+	@Override
 	public void drawPath(Path path) {
 		checkPaint();
 		initTransform(false);
@@ -437,6 +453,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawPoint(int, int)
 	 */
+	@Override
 	public void drawPoint(int x, int y) {
 		checkPaint();
 		gc.drawPoint(x + translateX, y + translateY);
@@ -445,6 +462,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawPolygon(int[])
 	 */
+	@Override
 	public void drawPolygon(int[] points) {
 		checkPaint();
 		try {
@@ -458,6 +476,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawPolygon(PointList)
 	 */
+	@Override
 	public void drawPolygon(PointList points) {
 		drawPolygon(points.toIntArray());
 	}
@@ -465,6 +484,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawPolyline(int[])
 	 */
+	@Override
 	public void drawPolyline(int[] points) {
 		checkPaint();
 		try {
@@ -478,6 +498,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawPolyline(PointList)
 	 */
+	@Override
 	public void drawPolyline(PointList points) {
 		drawPolyline(points.toIntArray());
 	}
@@ -485,6 +506,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawRectangle(int, int, int, int)
 	 */
+	@Override
 	public void drawRectangle(int x, int y, int width, int height) {
 		checkPaint();
 		gc.drawRectangle(x + translateX, y + translateY, width, height);
@@ -493,6 +515,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawRoundRectangle(Rectangle, int, int)
 	 */
+	@Override
 	public void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 		checkPaint();
 		gc.drawRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, arcWidth, arcHeight);
@@ -501,6 +524,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawString(String, int, int)
 	 */
+	@Override
 	public void drawString(String s, int x, int y) {
 		checkText();
 		gc.drawString(s, x + translateX, y + translateY, true);
@@ -509,6 +533,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawText(String, int, int)
 	 */
+	@Override
 	public void drawText(String s, int x, int y) {
 		checkText();
 		gc.drawText(s, x + translateX, y + translateY, true);
@@ -517,6 +542,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#drawTextLayout(TextLayout, int, int, int, int, Color, Color)
 	 */
+	@Override
 	public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart, int selectionEnd,
 			Color selectionForeground, Color selectionBackground) {
 		// $TODO probably just call checkPaint since Font and BG color don't
@@ -529,6 +555,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#fillArc(int, int, int, int, int, int)
 	 */
+	@Override
 	public void fillArc(int x, int y, int width, int height, int offset, int length) {
 		checkFill();
 		gc.fillArc(x + translateX, y + translateY, width, height, offset, length);
@@ -537,6 +564,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#fillGradient(int, int, int, int, boolean)
 	 */
+	@Override
 	public void fillGradient(int x, int y, int w, int h, boolean vertical) {
 		checkPaint();
 		gc.fillGradientRectangle(x + translateX, y + translateY, w, h, vertical);
@@ -545,6 +573,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#fillOval(int, int, int, int)
 	 */
+	@Override
 	public void fillOval(int x, int y, int width, int height) {
 		checkFill();
 		gc.fillOval(x + translateX, y + translateY, width, height);
@@ -557,6 +586,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#fillPath(Path)
 	 */
+	@Override
 	public void fillPath(Path path) {
 		checkFill();
 		initTransform(false);
@@ -566,6 +596,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#fillPolygon(int[])
 	 */
+	@Override
 	public void fillPolygon(int[] points) {
 		checkFill();
 		try {
@@ -579,6 +610,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#fillPolygon(PointList)
 	 */
+	@Override
 	public void fillPolygon(PointList points) {
 		fillPolygon(points.toIntArray());
 	}
@@ -586,6 +618,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#fillRectangle(int, int, int, int)
 	 */
+	@Override
 	public void fillRectangle(int x, int y, int width, int height) {
 		checkFill();
 		gc.fillRectangle(x + translateX, y + translateY, width, height);
@@ -594,6 +627,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#fillRoundRectangle(Rectangle, int, int)
 	 */
+	@Override
 	public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 		checkFill();
 		gc.fillRoundRectangle(r.x + translateX, r.y + translateY, r.width, r.height, arcWidth, arcHeight);
@@ -602,6 +636,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#fillString(String, int, int)
 	 */
+	@Override
 	public void fillString(String s, int x, int y) {
 		checkText();
 		gc.drawString(s, x + translateX, y + translateY, false);
@@ -610,6 +645,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#fillText(String, int, int)
 	 */
+	@Override
 	public void fillText(String s, int x, int y) {
 		checkText();
 		gc.drawText(s, x + translateX, y + translateY, false);
@@ -618,6 +654,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getAlpha()
 	 */
+	@Override
 	public int getAlpha() {
 		return currentState.alpha;
 	}
@@ -625,10 +662,12 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getAntialias()
 	 */
+	@Override
 	public int getAntialias() {
 		return ((currentState.graphicHints & AA_MASK) >> AA_SHIFT) - AA_WHOLE_NUMBER;
 	}
 
+	@Override
 	public boolean getAdvanced() {
 		return (currentState.graphicHints & ADVANCED_GRAPHICS_MASK) != 0;
 	}
@@ -636,6 +675,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getBackgroundColor()
 	 */
+	@Override
 	public Color getBackgroundColor() {
 		return currentState.bgColor;
 	}
@@ -643,6 +683,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getClip(Rectangle)
 	 */
+	@Override
 	public Rectangle getClip(Rectangle rect) {
 		if (currentState.relativeClip != null) {
 			currentState.relativeClip.getBoundingBox(rect);
@@ -655,6 +696,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getFillRule()
 	 */
+	@Override
 	public int getFillRule() {
 		return ((currentState.graphicHints & FILL_RULE_MASK) >> FILL_RULE_SHIFT) - FILL_RULE_WHOLE_NUMBER;
 	}
@@ -662,6 +704,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getFont()
 	 */
+	@Override
 	public Font getFont() {
 		return currentState.font;
 	}
@@ -669,6 +712,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getFontMetrics()
 	 */
+	@Override
 	public FontMetrics getFontMetrics() {
 		checkText();
 		return gc.getFontMetrics();
@@ -677,6 +721,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getForegroundColor()
 	 */
+	@Override
 	public Color getForegroundColor() {
 		return currentState.fgColor;
 	}
@@ -684,6 +729,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getInterpolation()
 	 */
+	@Override
 	public int getInterpolation() {
 		return ((currentState.graphicHints & INTERPOLATION_MASK) >> INTERPOLATION_SHIFT) - INTERPOLATION_WHOLE_NUMBER;
 	}
@@ -698,6 +744,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getLineCap()
 	 */
+	@Override
 	public int getLineCap() {
 		return currentState.lineAttributes.cap;
 	}
@@ -705,6 +752,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getLineJoin()
 	 */
+	@Override
 	public int getLineJoin() {
 		return currentState.lineAttributes.join;
 	}
@@ -712,6 +760,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getLineStyle()
 	 */
+	@Override
 	public int getLineStyle() {
 		return currentState.lineAttributes.style;
 	}
@@ -719,14 +768,17 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getLineWidth()
 	 */
+	@Override
 	public int getLineWidth() {
 		return (int) currentState.lineAttributes.width;
 	}
 
+	@Override
 	public float getLineWidthFloat() {
 		return currentState.lineAttributes.width;
 	}
 
+	@Override
 	public float getLineMiterLimit() {
 		return currentState.lineAttributes.miterLimit;
 	}
@@ -748,6 +800,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getTextAntialias()
 	 */
+	@Override
 	public int getTextAntialias() {
 		return ((currentState.graphicHints & TEXT_AA_MASK) >> TEXT_AA_SHIFT) - AA_WHOLE_NUMBER;
 	}
@@ -755,6 +808,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#getXORMode()
 	 */
+	@Override
 	public boolean getXORMode() {
 		return (currentState.graphicHints & XOR_MASK) != 0;
 	}
@@ -797,6 +851,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#popState()
 	 */
+	@Override
 	public void popState() {
 		stackPointer--;
 		restoreState((State) stack.get(stackPointer));
@@ -805,6 +860,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#pushState()
 	 */
+	@Override
 	public void pushState() {
 		if (currentState.relativeClip == null) {
 			throw new IllegalStateException("The clipping has been modified in" + //$NON-NLS-1$
@@ -873,6 +929,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#restoreState()
 	 */
+	@Override
 	public void restoreState() {
 		restoreState((State) stack.get(stackPointer - 1));
 	}
@@ -926,6 +983,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#rotate(float)
 	 */
+	@Override
 	public void rotate(float degrees) {
 		// Flush clipping, patter, etc., before applying transform
 		checkGC();
@@ -941,6 +999,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#scale(double)
 	 */
+	@Override
 	public void scale(double factor) {
 		scale((float) factor, (float) factor);
 	}
@@ -952,6 +1011,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see org.eclipse.draw2d.Graphics#scale(float, float)
 	 */
+	@Override
 	public void scale(float horizontal, float vertical) {
 		// Flush any clipping before scaling
 		checkGC();
@@ -987,6 +1047,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#setAlpha(int)
 	 */
+	@Override
 	public void setAlpha(int alpha) {
 		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
 		if (currentState.alpha != alpha)
@@ -1000,11 +1061,13 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#setAntialias(int)
 	 */
+	@Override
 	public void setAntialias(int value) {
 		currentState.graphicHints &= ~AA_MASK;
 		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK | (value + AA_WHOLE_NUMBER) << AA_SHIFT;
 	}
 
+	@Override
 	public void setAdvanced(boolean value) {
 		if (value) {
 			currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
@@ -1016,6 +1079,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setBackgroundColor(Color)
 	 */
+	@Override
 	public void setBackgroundColor(Color color) {
 		currentState.bgColor = color;
 		if (currentState.bgPattern != null) {
@@ -1028,6 +1092,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setBackgroundPattern(Pattern)
 	 */
+	@Override
 	public void setBackgroundPattern(Pattern pattern) {
 		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
 		if (currentState.bgPattern == pattern) {
@@ -1048,6 +1113,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#setClip(Path)
 	 */
+	@Override
 	public void setClip(Path path) {
 		initTransform(false);
 		if (((appliedState.graphicHints ^ currentState.graphicHints) & FILL_RULE_MASK) != 0) {
@@ -1069,6 +1135,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see org.eclipse.draw2d.Graphics#clipPath(org.eclipse.swt.graphics.Path)
 	 */
+	@Override
 	public void clipPath(Path path) {
 		initTransform(false);
 		if (((appliedState.graphicHints ^ currentState.graphicHints) & FILL_RULE_MASK) != 0) {
@@ -1096,6 +1163,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setClip(Rectangle)
 	 */
+	@Override
 	public void setClip(Rectangle rect) {
 		currentState.relativeClip = new RectangleClipping(rect);
 	}
@@ -1103,6 +1171,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setFillRule(int)
 	 */
+	@Override
 	public void setFillRule(int rule) {
 		currentState.graphicHints &= ~FILL_RULE_MASK;
 		currentState.graphicHints |= (rule + FILL_RULE_WHOLE_NUMBER) << FILL_RULE_SHIFT;
@@ -1111,6 +1180,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setFont(Font)
 	 */
+	@Override
 	public void setFont(Font f) {
 		currentState.font = f;
 	}
@@ -1118,6 +1188,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setForegroundColor(Color)
 	 */
+	@Override
 	public void setForegroundColor(Color color) {
 		currentState.fgColor = color;
 		if (currentState.fgPattern != null) {
@@ -1130,6 +1201,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setForegroundPattern(Pattern)
 	 */
+	@Override
 	public void setForegroundPattern(Pattern pattern) {
 		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK;
 		if (currentState.fgPattern == pattern) {
@@ -1154,6 +1226,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#setInterpolation(int)
 	 */
+	@Override
 	public void setInterpolation(int interpolation) {
 		// values range [-1, 3]
 		currentState.graphicHints &= ~INTERPOLATION_MASK;
@@ -1161,6 +1234,7 @@ public class SWTGraphics extends Graphics {
 				| (interpolation + INTERPOLATION_WHOLE_NUMBER) << INTERPOLATION_SHIFT;
 	}
 
+	@Override
 	public void setLineAttributes(LineAttributes lineAttributes) {
 		copyLineAttributes(currentState.lineAttributes, lineAttributes);
 	}
@@ -1168,6 +1242,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setLineCap(int)
 	 */
+	@Override
 	public void setLineCap(int value) {
 		currentState.lineAttributes.cap = value;
 	}
@@ -1175,6 +1250,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setLineDash(int[])
 	 */
+	@Override
 	public void setLineDash(int[] dashes) {
 		float[] fArray = null;
 		if (dashes != null) {
@@ -1190,6 +1266,7 @@ public class SWTGraphics extends Graphics {
 	 * @param value
 	 * @since 3.5
 	 */
+	@Override
 	public void setLineDash(float[] value) {
 		if (value != null) {
 			// validate dash values
@@ -1210,6 +1287,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @since 3.5
 	 */
+	@Override
 	public void setLineDashOffset(float value) {
 		currentState.lineAttributes.dashOffset = value;
 	}
@@ -1217,6 +1295,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setLineJoin(int)
 	 */
+	@Override
 	public void setLineJoin(int value) {
 		currentState.lineAttributes.join = value;
 	}
@@ -1224,6 +1303,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setLineStyle(int)
 	 */
+	@Override
 	public void setLineStyle(int value) {
 		currentState.lineAttributes.style = value;
 	}
@@ -1231,14 +1311,17 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setLineWidth(int)
 	 */
+	@Override
 	public void setLineWidth(int width) {
 		currentState.lineAttributes.width = width;
 	}
 
+	@Override
 	public void setLineWidthFloat(float value) {
 		currentState.lineAttributes.width = value;
 	}
 
+	@Override
 	public void setLineMiterLimit(float value) {
 		currentState.lineAttributes.miterLimit = value;
 	}
@@ -1250,6 +1333,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#setTextAntialias(int)
 	 */
+	@Override
 	public void setTextAntialias(int value) {
 		currentState.graphicHints &= ~TEXT_AA_MASK;
 		currentState.graphicHints |= ADVANCED_GRAPHICS_MASK | (value + AA_WHOLE_NUMBER) << TEXT_AA_SHIFT;
@@ -1258,6 +1342,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * @see Graphics#setXORMode(boolean)
 	 */
+	@Override
 	public void setXORMode(boolean xor) {
 		currentState.graphicHints &= ~XOR_MASK;
 		if (xor) {
@@ -1272,6 +1357,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#shear(float, float)
 	 */
+	@Override
 	public void shear(float horz, float vert) {
 		// Flush any clipping changes before shearing
 		checkGC();
@@ -1295,6 +1381,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#translate(int, int)
 	 */
+	@Override
 	public void translate(int dx, int dy) {
 		if (dx == 0 && dy == 0)
 			return;
@@ -1320,6 +1407,7 @@ public class SWTGraphics extends Graphics {
 	 * 
 	 * @see Graphics#translate(float, float)
 	 */
+	@Override
 	public void translate(float dx, float dy) {
 		initTransform(true);
 		checkGC();

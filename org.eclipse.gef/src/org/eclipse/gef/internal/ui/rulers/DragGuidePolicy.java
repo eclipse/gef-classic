@@ -52,6 +52,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 	 * deactivated (and hence eraseSourceFeedback is never called on this policy).
 	 * So we make sure that this policy cleans up when it is deactivated.
 	 */
+	@Override
 	public void deactivate() {
 		removeFeedback();
 		super.deactivate();
@@ -70,6 +71,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 		}
 	}
 
+	@Override
 	public void eraseSourceFeedback(Request request) {
 		getGuideEditPart().updateLocationOfFigures(getGuideEditPart().getZoomedPosition());
 		getHostFigure().setVisible(true);
@@ -88,6 +90,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 		return attachedEditParts;
 	}
 
+	@Override
 	public Command getCommand(Request request) {
 		Command cmd;
 		final ChangeBoundsRequest req = (ChangeBoundsRequest) request;
@@ -243,6 +246,7 @@ public class DragGuidePolicy extends GraphicalEditPolicy {
 		}
 	}
 
+	@Override
 	public boolean understandsRequest(Request req) {
 		return req.getType().equals(REQ_MOVE);
 	}

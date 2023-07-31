@@ -81,15 +81,18 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	///// Public Methods /////
 	/////////////////////////////////////////////////////////////////////////
 
+	@Override
 	public void setLayoutArea(double x, double y, double width, double height) {
 		throw new RuntimeException();
 	}
 
+	@Override
 	protected int getCurrentLayoutStep() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	@Override
 	protected int getTotalNumberOfLayoutSteps() {
 		return 4;
 	}
@@ -114,6 +117,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	 *                          the endpoints for each relationship in
 	 *                          relationshipsToConsider
 	 */
+	@Override
 	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
 		// Filter unwanted entities and relationships
@@ -139,6 +143,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	}
 
+	@Override
 	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 
@@ -157,6 +162,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		}
 	}
 
+	@Override
 	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider) {
 		updateLayoutLocations(entitiesToLayout);
@@ -323,6 +329,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			// children
 			// TODO: SLOW
 			Collections.sort(children, new Comparator() {
+				@Override
 				public int compare(Object o1, Object o2) {
 					InternalNode node1 = (InternalNode) o1;
 					InternalNode node2 = (InternalNode) o2;
@@ -583,6 +590,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		throw new RuntimeException("Couldn't find index of internal node: " + nodeToFind);
 	}
 
+	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if (asynchronous && continueous) {
 			return false;

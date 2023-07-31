@@ -22,6 +22,7 @@ public class ToggleModel extends ButtonModel {
 	 * 
 	 * @since 2.0
 	 */
+	@Override
 	public void fireActionPerformed() {
 		setSelected(!isSelected());
 		super.fireActionPerformed();

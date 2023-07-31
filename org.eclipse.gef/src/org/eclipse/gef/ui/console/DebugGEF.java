@@ -46,6 +46,7 @@ public class DebugGEF extends ViewPart {
 	/**
 	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		text = new Text(parent, SWT.V_SCROLL | SWT.MULTI | SWT.BORDER);
 		text.setFont(new org.eclipse.swt.graphics.Font(parent.getDisplay(), "Arial", 7, //$NON-NLS-1$
@@ -59,6 +60,7 @@ public class DebugGEF extends ViewPart {
 	/**
 	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
 	 */
+	@Override
 	public void dispose() {
 		GEF.setConsole(null);
 		super.dispose();
@@ -128,6 +130,7 @@ public class DebugGEF extends ViewPart {
 	/**
 	 * @see org.eclipse.ui.IWorkbenchPart#setFocus()
 	 */
+	@Override
 	public void setFocus() {
 		if (text != null)
 			text.setFocus();

@@ -72,6 +72,7 @@ class ShapeEditPart extends AbstractGraphicalEditPart implements PropertyChangeL
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 		// allow removal of the associated model element
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ShapeComponentEditPolicy());

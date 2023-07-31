@@ -25,6 +25,7 @@ public abstract class AbstractPointListShape extends Shape {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#containsPoint(int, int)
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		if (!super.containsPoint(x, y)) {
 			return false;

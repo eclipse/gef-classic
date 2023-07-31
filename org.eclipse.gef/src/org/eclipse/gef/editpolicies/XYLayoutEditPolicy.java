@@ -47,6 +47,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 *      org.eclipse.gef.GraphicalEditPart,
 	 *      org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	protected Object getConstraintFor(Request request, GraphicalEditPart child, Rectangle rect) {
 		if (request instanceof ChangeBoundsRequest) {
 			if (((ChangeBoundsRequest) request).getSizeDelta().width == 0
@@ -71,6 +72,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 * @param p the input Point
 	 * @return a Rectangle
 	 */
+	@Override
 	public Object getConstraintFor(Point p) {
 		return new Rectangle(p, PREFERRED_SIZE);
 	}
@@ -81,6 +83,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 * @param r the input Rectangle
 	 * @return a copy of the input Rectangle
 	 */
+	@Override
 	public Object getConstraintFor(Rectangle r) {
 		return new Rectangle(r);
 	}
@@ -101,6 +104,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 * 
 	 * @see ConstrainedLayoutEditPolicy#getLayoutOrigin()
 	 */
+	@Override
 	protected Point getLayoutOrigin() {
 		return getXYLayout().getOrigin(getLayoutContainer());
 	}
@@ -127,6 +131,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#showSizeOnDropFeedback(org.eclipse.gef.requests.CreateRequest)
 	 */
+	@Override
 	protected void showSizeOnDropFeedback(CreateRequest request) {
 		Point p = new Point(request.getLocation().getCopy());
 		Dimension size = request.getSize().getCopy();

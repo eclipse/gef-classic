@@ -70,6 +70,7 @@ public class DirectEditAction extends SelectionAction {
 	 * 
 	 * @return <code>true</code> if enabled
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		if (getSelectedObjects().size() == 1 && (getSelectedObjects().get(0) instanceof EditPart)) {
 			EditPart part = (EditPart) getSelectedObjects().get(0);
@@ -90,6 +91,7 @@ public class DirectEditAction extends SelectionAction {
 	/**
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
+	@Override
 	public void run() {
 		try {
 			EditPart part = (EditPart) getSelectedObjects().get(0);
@@ -113,6 +115,7 @@ public class DirectEditAction extends SelectionAction {
 	/**
 	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#init()
 	 */
+	@Override
 	protected void init() {
 		super.init();
 		setText(GEFMessages.RenameAction_Label);

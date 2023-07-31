@@ -79,6 +79,7 @@ public class ReconnectRequest extends LocationRequest implements DropRequest, Ta
 	 * 
 	 * @param ep the target edit part
 	 */
+	@Override
 	public void setTargetEditPart(EditPart ep) {
 		target = ep;
 	}

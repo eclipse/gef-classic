@@ -30,6 +30,7 @@ public class PageFlowLayout extends BlockFlowLayout {
 	/**
 	 * @see org.eclipse.draw2d.text.BlockFlowLayout#getContextWidth()
 	 */
+	@Override
 	int getContextWidth() {
 		return ((FlowPage) getFlowFigure()).getPageWidth();
 	}

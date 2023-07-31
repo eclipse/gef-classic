@@ -86,12 +86,15 @@ public class IFigureProviderTests extends Assert {
 
 	private class DestinationContentProvider implements IGraphContentProvider {
 
+		@Override
 		public void dispose() {
 		}
 
+		@Override
 		public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
 		}
 
+		@Override
 		public Object getDestination(Object r) {
 			if (r.equals("1to2"))
 				return "2";
@@ -102,10 +105,12 @@ public class IFigureProviderTests extends Assert {
 			return null;
 		}
 
+		@Override
 		public Object[] getElements(Object arg0) {
 			return new String[] { "1to2", "2to3", "3to1" };
 		}
 
+		@Override
 		public Object getSource(Object r) {
 			return null;
 		}
@@ -114,20 +119,25 @@ public class IFigureProviderTests extends Assert {
 
 	private class SourceContentProvider implements IGraphContentProvider {
 
+		@Override
 		public void dispose() {
 		}
 
+		@Override
 		public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
 		}
 
+		@Override
 		public Object getDestination(Object r) {
 			return null;
 		}
 
+		@Override
 		public Object[] getElements(Object arg0) {
 			return new String[] { "1to2", "2to3", "3to1" };
 		}
 
+		@Override
 		public Object getSource(Object r) {
 			if (r.equals("1to2"))
 				return "1";
@@ -142,12 +152,15 @@ public class IFigureProviderTests extends Assert {
 
 	private class FullContentProvider implements IGraphContentProvider {
 
+		@Override
 		public void dispose() {
 		}
 
+		@Override
 		public void inputChanged(Viewer arg0, Object arg1, Object arg2) {
 		}
 
+		@Override
 		public Object getDestination(Object r) {
 			if (r.equals("1to2"))
 				return "2";
@@ -158,10 +171,12 @@ public class IFigureProviderTests extends Assert {
 			return null;
 		}
 
+		@Override
 		public Object[] getElements(Object arg0) {
 			return new String[] { "1to2", "2to3", "3to1" };
 		}
 
+		@Override
 		public Object getSource(Object r) {
 			if (r.equals("1to2"))
 				return "1";
@@ -175,10 +190,12 @@ public class IFigureProviderTests extends Assert {
 	}
 
 	private class CustomLabelProvider extends LabelProvider implements IFigureProvider {
+		@Override
 		public String getText(Object node) {
 			return node.toString();
 		}
 
+		@Override
 		public IFigure getFigure(Object node) {
 			Ellipse e = new Ellipse();
 			e.setSize(40, 40);

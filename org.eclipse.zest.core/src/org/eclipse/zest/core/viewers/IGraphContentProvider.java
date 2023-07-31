@@ -50,6 +50,7 @@ public interface IGraphContentProvider extends IStructuredContentProvider {
 	 * @input the input model object.
 	 * @return all the relationships in the graph for the given input.
 	 */
+	@Override
 	public Object[] getElements(Object input);
 
 }

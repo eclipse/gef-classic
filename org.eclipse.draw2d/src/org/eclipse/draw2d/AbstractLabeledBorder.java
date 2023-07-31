@@ -79,6 +79,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	 * @param fig Figure used to calculate insets
 	 * @return The insets
 	 */
+	@Override
 	public Insets getInsets(IFigure fig) {
 		if (insets == null)
 			insets = calculateInsets(fig);
@@ -88,6 +89,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	/**
 	 * @see org.eclipse.draw2d.LabeledBorder#getLabel()
 	 */
+	@Override
 	public String getLabel() {
 		return label;
 	}
@@ -95,6 +97,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	/**
 	 * @see org.eclipse.draw2d.Border#getPreferredSize(IFigure)
 	 */
+	@Override
 	public Dimension getPreferredSize(IFigure fig) {
 		return new Dimension(getTextExtents(fig));
 	}
@@ -138,6 +141,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	 * 
 	 * @param font The font
 	 */
+	@Override
 	public void setFont(Font font) {
 		this.font = font;
 		invalidate();
@@ -146,6 +150,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	/**
 	 * @see org.eclipse.draw2d.LabeledBorder#setLabel(String)
 	 */
+	@Override
 	public void setLabel(String s) {
 		label = ((s == null) ? "" : s); //$NON-NLS-1$
 		invalidate();

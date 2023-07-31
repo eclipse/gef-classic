@@ -50,6 +50,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#calculateCursor()
 	 */
+	@Override
 	protected Cursor calculateCursor() {
 		if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG))
 			return getDefaultCursor();
@@ -59,6 +60,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
 	 */
+	@Override
 	protected String getCommandName() {
 		return "Select Tracker";//$NON-NLS-1$
 	}
@@ -66,6 +68,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "Select Tracker";//$NON-NLS-1$
 	}
@@ -86,6 +89,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
+	@Override
 	protected boolean handleButtonDown(int button) {
 		if ((button == 3 || button == 1) && isInState(STATE_INITIAL))
 			performConditionalSelection();
@@ -109,6 +113,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (isInState(STATE_DRAG)) {
 			performSelection();
@@ -127,6 +132,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDoubleClick(int)
 	 */
+	@Override
 	protected boolean handleDoubleClick(int button) {
 		setFlag(FLAG_ENABLE_DIRECT_EDIT, false);
 		if (button == 1) {
@@ -140,6 +146,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragStarted()
 	 */
+	@Override
 	protected boolean handleDragStarted() {
 		return stateTransition(STATE_DRAG, STATE_DRAG_IN_PROGRESS);
 	}
@@ -221,6 +228,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#resetFlags()
 	 */
+	@Override
 	protected void resetFlags() {
 		super.resetFlags();
 		setFlag(FLAG_SELECTION_PERFORMED, false);

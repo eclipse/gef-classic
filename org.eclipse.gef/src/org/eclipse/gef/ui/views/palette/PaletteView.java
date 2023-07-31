@@ -41,11 +41,13 @@ public class PaletteView extends PageBookView {
 	public static final String ID = "org.eclipse.gef.ui.palette_view"; //$NON-NLS-1$
 
 	private IPerspectiveListener perspectiveListener = new IPerspectiveListener() {
+		@Override
 		public void perspectiveChanged(IWorkbenchPage page, IPerspectiveDescriptor perspective, String changeId) {
 		}
 
 		// fix for bug 109245 and 69098 - fake a partActivated when the
 		// perpsective is switched
+		@Override
 		public void perspectiveActivated(IWorkbenchPage page, IPerspectiveDescriptor perspective) {
 			viewInPage = page.findViewReference(ID) != null;
 			// getBootstrapPart could return null; but isImportant() can handle
@@ -59,6 +61,7 @@ public class PaletteView extends PageBookView {
 	 * 
 	 * @see org.eclipse.ui.part.PageBookView#createDefaultPage(org.eclipse.ui.part.PageBook)
 	 */
+	@Override
 	protected IPage createDefaultPage(PageBook book) {
 		MessagePage page = new MessagePage();
 		initPage(page);
@@ -73,6 +76,7 @@ public class PaletteView extends PageBookView {
 	 * 
 	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 		getSite().getPage().getWorkbenchWindow().addPerspectiveListener(perspectiveListener);
@@ -83,6 +87,7 @@ public class PaletteView extends PageBookView {
 	 * 
 	 * @see org.eclipse.ui.IWorkbenchPart#dispose()
 	 */
+	@Override
 	public void dispose() {
 		getSite().getPage().getWorkbenchWindow().removePerspectiveListener(perspectiveListener);
 		super.dispose();
@@ -91,6 +96,7 @@ public class PaletteView extends PageBookView {
 	/**
 	 * @see org.eclipse.ui.part.PageBookView#doCreatePage(org.eclipse.ui.IWorkbenchPart)
 	 */
+	@Override
 	protected PageRec doCreatePage(IWorkbenchPart part) {
 		// Try to get a custom palette page
 		PalettePage page = part.getAdapter(PalettePage.class);
@@ -108,6 +114,7 @@ public class PaletteView extends PageBookView {
 	 * @see PageBookView#doDestroyPage(org.eclipse.ui.IWorkbenchPart,
 	 *      org.eclipse.ui.part.PageBookView.PageRec)
 	 */
+	@Override
 	protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
 		rec.page.dispose();
 	}
@@ -117,6 +124,7 @@ public class PaletteView extends PageBookView {
 	 * 
 	 * @see PageBookView#getBootstrapPart()
 	 */
+	@Override
 	protected IWorkbenchPart getBootstrapPart() {
 		IWorkbenchPage page = getSite().getPage();
 		if (page != null)
@@ -129,6 +137,7 @@ public class PaletteView extends PageBookView {
 	 * 
 	 * @see PageBookView#isImportant(org.eclipse.ui.IWorkbenchPart)
 	 */
+	@Override
 	protected boolean isImportant(IWorkbenchPart part) {
 		// Workaround for Bug# 69098 -- This should be removed when/if Bug#
 		// 70510 is fixed

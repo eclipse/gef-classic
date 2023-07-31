@@ -49,6 +49,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 	 * 
 	 * @see org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public Object getConstraint(IFigure child) {
 		return null;
 	}
@@ -76,6 +77,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 	 * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(org.eclipse.draw2d.IFigure,
 	 *      int, int)
 	 */
+	@Override
 	public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
 		return null;
 	}
@@ -86,6 +88,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 	 * @see org.eclipse.draw2d.LayoutManager#getPreferredSize(org.eclipse.draw2d.IFigure,
 	 *      int, int)
 	 */
+	@Override
 	public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
 		return null;
 	}
@@ -95,6 +98,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 	 * 
 	 * @see org.eclipse.draw2d.LayoutManager#invalidate()
 	 */
+	@Override
 	public void invalidate() {
 	}
 
@@ -106,6 +110,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#layout(IFigure)
 	 */
+	@Override
 	public final void layout(IFigure figure) {
 		layout();
 	}
@@ -115,6 +120,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 	 * 
 	 * @see org.eclipse.draw2d.LayoutManager#remove(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void remove(IFigure child) {
 	}
 
@@ -124,6 +130,7 @@ public abstract class FlowFigureLayout implements LayoutManager {
 	 * @see org.eclipse.draw2d.LayoutManager#setConstraint(org.eclipse.draw2d.IFigure,
 	 *      java.lang.Object)
 	 */
+	@Override
 	public void setConstraint(IFigure child, Object constraint) {
 	}
 

@@ -114,6 +114,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	/**
 	 * @see OrderedLayoutEditPolicy#getInsertionReference(Request)
 	 */
+	@Override
 	protected EditPart getInsertionReference(Request request) {
 		List<? extends EditPart> children = getHost().getChildren();
 
@@ -171,6 +172,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	 * 
 	 * @see LayoutEditPolicy#showLayoutTargetFeedback(Request)
 	 */
+	@Override
 	protected void showLayoutTargetFeedback(Request request) {
 		if (getHost().getChildren().isEmpty())
 			return;

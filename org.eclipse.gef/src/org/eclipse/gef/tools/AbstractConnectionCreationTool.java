@@ -62,6 +62,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	private EditPartViewer viewer;
 
 	private EditPartListener.Stub deactivationListener = new EditPartListener.Stub() {
+		@Override
 		public void partDeactivated(EditPart editpart) {
 			handleSourceDeactivated();
 		}
@@ -88,6 +89,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#calculateCursor()
 	 */
+	@Override
 	protected Cursor calculateCursor() {
 		if (isInState(STATE_INITIAL)) {
 			if (getCurrentCommand() != null)
@@ -99,6 +101,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
 	 */
+	@Override
 	protected Request createTargetRequest() {
 		CreateRequest req = new CreateConnectionRequest();
 		req.setFactory(getFactory());
@@ -110,6 +113,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.Tool#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		eraseSourceFeedback();
 		setConnectionSource(null);
@@ -133,6 +137,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
 	 */
+	@Override
 	protected String getCommandName() {
 		if (isInState(STATE_CONNECTION_STARTED | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 			return REQ_CONNECTION_END;
@@ -143,6 +148,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "Connection Creation Tool";//$NON-NLS-1$
 	}
@@ -150,6 +156,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugNameForState(int)
 	 */
+	@Override
 	protected String getDebugNameForState(int s) {
 		if (s == STATE_CONNECTION_STARTED || s == STATE_ACCESSIBLE_DRAG_IN_PROGRESS)
 			return "Connection Started";//$NON-NLS-1$
@@ -187,6 +194,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 * @param button which button is pressed
 	 * @return <code>true</code> if the button down was processed
 	 */
+	@Override
 	protected boolean handleButtonDown(int button) {
 		if (isInState(STATE_INITIAL) && button == 1) {
 			updateTargetRequest();
@@ -213,6 +221,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (isInState(STATE_TERMINAL | STATE_INVALID))
 			handleFinished();
@@ -222,6 +231,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleCommandStackChanged()
 	 */
+	@Override
 	protected boolean handleCommandStackChanged() {
 		if (!isInState(STATE_INITIAL)) {
 			if (getCurrentInput().isMouseButtonDown(1))
@@ -254,6 +264,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDrag()
 	 */
+	@Override
 	protected boolean handleDrag() {
 		if (isInState(STATE_CONNECTION_STARTED))
 			return handleMove();
@@ -263,6 +274,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
 	 */
+	@Override
 	protected boolean handleDragInProgress() {
 		if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
 			return handleMove();
@@ -272,6 +284,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleFocusLost()
 	 */
+	@Override
 	protected boolean handleFocusLost() {
 		if (isInState(STATE_CONNECTION_STARTED)) {
 			eraseSourceFeedback();
@@ -285,6 +298,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.TargetingTool#handleHover()
 	 */
+	@Override
 	protected boolean handleHover() {
 		if (isInState(STATE_CONNECTION_STARTED))
 			updateAutoexposeHelper();
@@ -294,6 +308,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.TargetingTool#handleInvalidInput()
 	 */
+	@Override
 	protected boolean handleInvalidInput() {
 		eraseSourceFeedback();
 		setConnectionSource(null);
@@ -303,6 +318,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleMove()
 	 */
+	@Override
 	protected boolean handleMove() {
 		if (isInState(STATE_CONNECTION_STARTED) && viewer != getCurrentViewer())
 			return false;
@@ -373,6 +389,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
+	@Override
 	protected void updateTargetRequest() {
 		CreateConnectionRequest request = (CreateConnectionRequest) getTargetRequest();
 		request.setType(getCommandName());

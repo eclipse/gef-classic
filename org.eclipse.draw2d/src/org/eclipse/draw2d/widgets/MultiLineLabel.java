@@ -53,16 +53,19 @@ public final class MultiLineLabel extends FigureCanvas {
 			setBorder(MARGIN);
 		}
 
+		@Override
 		public void handleFocusGained(FocusEvent event) {
 			super.handleFocusGained(event);
 			repaint();
 		}
 
+		@Override
 		public void handleFocusLost(FocusEvent event) {
 			super.handleFocusLost(event);
 			repaint();
 		}
 
+		@Override
 		protected void paintBorder(Graphics graphics) {
 			super.paintBorder(graphics);
 			if (hasFocus()) {
@@ -93,20 +96,24 @@ public final class MultiLineLabel extends FigureCanvas {
 
 	private void addAccessibility() {
 		getAccessible().addAccessibleControlListener(new AccessibleControlAdapter() {
+			@Override
 			public void getRole(AccessibleControlEvent e) {
 				e.detail = ACC.ROLE_LABEL;
 			}
 
+			@Override
 			public void getState(AccessibleControlEvent e) {
 				e.detail = ACC.STATE_READONLY;
 			}
 		});
 		getAccessible().addAccessibleListener(new AccessibleAdapter() {
+			@Override
 			public void getName(AccessibleEvent e) {
 				e.result = getText();
 			}
 		});
 		addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyPressed(KeyEvent e) {
 				Point p = getViewport().getViewLocation();
 				int dy = getFont().getFontData()[0].getHeight();
@@ -138,6 +145,7 @@ public final class MultiLineLabel extends FigureCanvas {
 	/**
 	 * @see org.eclipse.swt.widgets.Control#setEnabled(boolean)
 	 */
+	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		textFlow.setEnabled(getEnabled());
@@ -163,6 +171,7 @@ public final class MultiLineLabel extends FigureCanvas {
 	/**
 	 * @see org.eclipse.swt.widgets.Canvas#setFont(org.eclipse.swt.graphics.Font)
 	 */
+	@Override
 	public void setFont(Font font) {
 		super.setFont(font);
 		textFlow.revalidate();

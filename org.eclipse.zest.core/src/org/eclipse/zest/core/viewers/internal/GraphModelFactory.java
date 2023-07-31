@@ -38,6 +38,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 	 * 
 	 * @see ca.uvic.cs.zest.internal.graphmodel.IGraphModelFactory#createModel()
 	 */
+	@Override
 	public Graph createGraphModel(Graph model) {
 		doBuildGraph(model);
 		return model;
@@ -49,6 +50,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory#
 	 * doBuildGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
+	@Override
 	protected void doBuildGraph(Graph model) {
 		super.doBuildGraph(model);
 		// make the model have the same styles as the viewer
@@ -112,6 +114,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh(
 	 * org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
 	 */
+	@Override
 	public void refresh(Graph graph, Object element) {
 		refresh(graph, element, false);
 	}
@@ -124,6 +127,7 @@ public class GraphModelFactory extends AbstractStylingModelFactory {
 	 * org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object,
 	 * boolean)
 	 */
+	@Override
 	public void refresh(Graph graph, Object element, boolean updateLabels) {
 		GraphConnection conn = viewer.getGraphModelConnection(element);
 		if (conn == null) {

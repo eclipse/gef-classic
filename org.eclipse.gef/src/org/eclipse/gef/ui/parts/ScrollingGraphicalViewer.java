@@ -48,6 +48,7 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 	/**
 	 * @see org.eclipse.gef.EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public final Control createControl(Composite parent) {
 		setControl(new FigureCanvas(parent, getLightweightSystem()));
 		hookRootFigure();
@@ -70,6 +71,7 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 	 * 
 	 * @see org.eclipse.gef.EditPartViewer#reveal(org.eclipse.gef.EditPart)
 	 */
+	@Override
 	public void reveal(EditPart part) {
 		super.reveal(part);
 		Viewport port = getFigureCanvas().getViewport();
@@ -104,6 +106,7 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 	 * If the figure is a viewport, set the canvas' viewport, otherwise, set its
 	 * contents.
 	 */
+	@Override
 	protected void hookRootFigure() {
 		if (getFigureCanvas() == null)
 			return;

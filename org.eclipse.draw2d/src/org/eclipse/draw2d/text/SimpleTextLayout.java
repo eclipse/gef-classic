@@ -39,6 +39,7 @@ public class SimpleTextLayout extends TextLayout {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowFigureLayout#layout()
 	 */
+	@Override
 	protected void layout() {
 		TextFlow textFlow = (TextFlow) getFlowFigure();
 		String text = textFlow.getText();

@@ -90,6 +90,7 @@ public class DrawerFigure extends Figure {
 			setRequestFocusEnabled(true);
 			addChangeListener(new ChangeListener() {
 
+				@Override
 				public void handleStateChanged(ChangeEvent e) {
 					if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
 						Animation.markBegin();
@@ -102,10 +103,12 @@ public class DrawerFigure extends Figure {
 			});
 		}
 
+		@Override
 		public IFigure getToolTip() {
 			return buildTooltip();
 		}
 
+		@Override
 		protected void paintFigure(Graphics g) {
 			super.paintFigure(g);
 			Rectangle r = Rectangle.SINGLETON;
@@ -150,6 +153,7 @@ public class DrawerFigure extends Figure {
 		 * selection and appearance (background color).
 		 */
 		setLayoutManager(new PaletteToolbarLayout() {
+			@Override
 			protected boolean isChildGrowing(IFigure child) {
 				int wHint = child.getBounds().width;
 				return child.getPreferredSize(wHint, -1).height != child.getMinimumSize(wHint, -1).height;
@@ -244,10 +248,12 @@ public class DrawerFigure extends Figure {
 			/**
 			 * @see org.eclipse.draw2d.Figure#getToolTip()
 			 */
+			@Override
 			public IFigure getToolTip() {
 				return buildTooltip();
 			}
 
+			@Override
 			protected void paintFigure(Graphics graphics) {
 				Rectangle r = Rectangle.SINGLETON;
 				r.setBounds(getBounds());
@@ -260,6 +266,7 @@ public class DrawerFigure extends Figure {
 		tipLabel.setOpaque(false);
 		tipLabel.setBorder(TOOLTIP_BORDER);
 		collapseToggle.addMouseMotionListener(new MouseMotionListener.Stub() {
+			@Override
 			public void mouseMoved(MouseEvent e) {
 				if (!drawerLabel.getBounds().contains(e.getLocation()))
 					return;
@@ -282,6 +289,7 @@ public class DrawerFigure extends Figure {
 			}
 		});
 		tipLabel.addMouseListener(new MouseListener.Stub() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				if (e.button == 1) {
 					Rectangle original = getCollapseToggle().getBounds().getCopy();

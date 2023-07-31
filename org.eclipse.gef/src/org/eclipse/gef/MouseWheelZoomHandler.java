@@ -40,6 +40,7 @@ public final class MouseWheelZoomHandler implements MouseWheelHandler {
 	 * 
 	 * @see MouseWheelHandler#handleMouseWheel(Event, EditPartViewer)
 	 */
+	@Override
 	public void handleMouseWheel(Event event, EditPartViewer viewer) {
 		ZoomManager zoomMgr = (ZoomManager) viewer.getProperty(ZoomManager.class.toString());
 		if (zoomMgr != null) {

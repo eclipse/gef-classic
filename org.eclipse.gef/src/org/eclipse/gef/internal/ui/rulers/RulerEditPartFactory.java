@@ -32,6 +32,7 @@ public class RulerEditPartFactory implements EditPartFactory {
 	 * @see org.eclipse.gef.EditPartFactory#createEditPart(org.eclipse.gef.EditPart,
 	 * java.lang.Object)
 	 */
+	@Override
 	public EditPart createEditPart(EditPart parentEditPart, Object model) {
 		// the model can be null when the contents of the root edit part are set
 		// to null

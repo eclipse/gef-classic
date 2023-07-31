@@ -54,6 +54,7 @@ public class DebugGEFAction extends Action {
 	/**
 	 * @see Action#run()
 	 */
+	@Override
 	public void run() {
 		String type = getText();
 		if (type.compareTo(DEBUG_STATES) == 0) {

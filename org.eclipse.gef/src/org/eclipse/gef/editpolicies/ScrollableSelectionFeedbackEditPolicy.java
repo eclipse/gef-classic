@@ -236,6 +236,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideSelection()
 	 */
+	@Override
 	protected void hideSelection() {
 		// remove figure and layout listeners
 		getHostFigure().removeLayoutListener(layoutListener);
@@ -303,6 +304,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showSelection()
 	 */
+	@Override
 	protected void showSelection() {
 		// force ViewportExposeHelper to perform auto scrolling before
 		// showing the feedback.

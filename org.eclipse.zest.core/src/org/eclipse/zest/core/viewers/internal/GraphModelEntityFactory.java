@@ -42,6 +42,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
 	 * createGraphModel()
 	 */
+	@Override
 	public Graph createGraphModel(Graph model) {
 		doBuildGraph(model);
 		return model;
@@ -53,6 +54,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
 	 * #doBuildGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
+	@Override
 	protected void doBuildGraph(Graph model) {
 		super.doBuildGraph(model);
 		Object inputElement = getViewer().getInput();
@@ -112,6 +114,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh
 	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
 	 */
+	@Override
 	public void refresh(Graph graph, Object element, boolean refreshLabels) {
 		if (element == null) {
 			return;
@@ -212,6 +215,7 @@ public class GraphModelEntityFactory extends AbstractStylingModelFactory {
 	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object,
 	 * boolean)
 	 */
+	@Override
 	public void refresh(Graph graph, Object element) {
 		refresh(graph, element, false);
 	}

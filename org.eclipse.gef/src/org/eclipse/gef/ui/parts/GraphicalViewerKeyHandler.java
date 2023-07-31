@@ -267,6 +267,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * 
 	 * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	public boolean keyPressed(KeyEvent event) {
 		// if CTRL + SPACE is pressed, event.character == ' ' does not hold;
 		// therefore using the keyCode to decide whether SPACE was pressed (with

@@ -52,6 +52,7 @@ public class ViewportExposeHelper extends ViewportHelper implements ExposeHelper
 	 * 
 	 * @see org.eclipse.gef.ExposeHelper#exposeDescendant(EditPart)
 	 */
+	@Override
 	public void exposeDescendant(EditPart part) {
 		Viewport port = findViewport(owner);
 		if (port == null)

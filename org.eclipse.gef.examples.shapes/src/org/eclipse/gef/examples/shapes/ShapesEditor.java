@@ -221,6 +221,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 				new ProgressMonitorDialog(shell).run(false, // don't fork
 						false, // not cancelable
 						new WorkspaceModifyOperation() { // run this operation
+							@Override
 							public void execute(final IProgressMonitor monitor) {
 								try {
 									ByteArrayOutputStream out = new ByteArrayOutputStream();

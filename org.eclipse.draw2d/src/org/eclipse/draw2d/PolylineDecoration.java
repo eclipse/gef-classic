@@ -47,6 +47,7 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	/**
 	 * @see Polyline#getPoints()
 	 */
+	@Override
 	public PointList getPoints() {
 		if (points == null) {
 			points = new PointList();
@@ -59,6 +60,7 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	/**
 	 * @see IFigure#setLocation(Point)
 	 */
+	@Override
 	public void setLocation(Point p) {
 		points = null;
 		bounds = null;
@@ -99,6 +101,7 @@ public class PolylineDecoration extends Polyline implements RotatableDecoration 
 	/**
 	 * @see RotatableDecoration#setReferencePoint(Point)
 	 */
+	@Override
 	public void setReferencePoint(Point ref) {
 		Point pt = Point.SINGLETON;
 		pt.setLocation(ref);

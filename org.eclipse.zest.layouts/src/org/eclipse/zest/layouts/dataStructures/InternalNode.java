@@ -175,6 +175,7 @@ public class InternalNode implements Comparable, LayoutEntity {
 	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
+	@Override
 	public int compareTo(Object arg0) {
 		return 0;
 	}
@@ -184,6 +185,7 @@ public class InternalNode implements Comparable, LayoutEntity {
 	 * 
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return (entity != null ? entity.toString() : "");
 	}
@@ -194,41 +196,49 @@ public class InternalNode implements Comparable, LayoutEntity {
 	double layoutY;
 	Object layoutInfo;
 
+	@Override
 	public double getHeightInLayout() {
 		// TODO Auto-generated method stub
 		return layoutHeight;
 	}
 
+	@Override
 	public Object getLayoutInformation() {
 		// TODO Auto-generated method stub
 		return this.layoutInfo;
 	}
 
+	@Override
 	public double getWidthInLayout() {
 		// TODO Auto-generated method stub
 		return layoutWidth;
 	}
 
+	@Override
 	public double getXInLayout() {
 		// TODO Auto-generated method stub
 		return layoutX;
 	}
 
+	@Override
 	public double getYInLayout() {
 		// TODO Auto-generated method stub
 		return layoutY;
 	}
 
+	@Override
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	public void setLayoutInformation(Object internalEntity) {
 		this.layoutInfo = internalEntity;
 
 	}
 
+	@Override
 	public void setLocationInLayout(double x, double y) {
 		// TODO Auto-generated method stub
 		this.layoutX = x;
@@ -236,15 +246,18 @@ public class InternalNode implements Comparable, LayoutEntity {
 
 	}
 
+	@Override
 	public void setSizeInLayout(double width, double height) {
 		this.layoutWidth = width;
 		this.layoutHeight = height;
 	}
 
+	@Override
 	public Object getGraphData() {
 		return null;
 	}
 
+	@Override
 	public void setGraphData(Object o) {
 		// TODO Auto-generated method stub
 

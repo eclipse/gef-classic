@@ -3,11 +3,11 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes;
 
 import org.eclipse.jface.action.IToolBarManager;
@@ -31,6 +31,7 @@ public class ShapesEditorActionBarContributor extends ActionBarContributor {
 	 * 
 	 * @see org.eclipse.gef.ui.actions.ActionBarContributor#buildActions()
 	 */
+	@Override
 	protected void buildActions() {
 		addRetargetAction(new DeleteRetargetAction());
 		addRetargetAction(new UndoRetargetAction());
@@ -42,6 +43,7 @@ public class ShapesEditorActionBarContributor extends ActionBarContributor {
 	 * 
 	 * @see org.eclipse.ui.part.EditorActionBarContributor#contributeToToolBar(org.eclipse.jface.action.IToolBarManager)
 	 */
+	@Override
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
 		toolBarManager.add(getAction(ActionFactory.UNDO.getId()));
 		toolBarManager.add(getAction(ActionFactory.REDO.getId()));
@@ -53,6 +55,7 @@ public class ShapesEditorActionBarContributor extends ActionBarContributor {
 	 * @see
 	 * org.eclipse.gef.ui.actions.ActionBarContributor#declareGlobalActionKeys()
 	 */
+	@Override
 	protected void declareGlobalActionKeys() {
 		// currently none
 	}

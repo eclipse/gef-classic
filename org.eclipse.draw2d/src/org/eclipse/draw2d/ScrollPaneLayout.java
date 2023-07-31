@@ -30,6 +30,7 @@ public class ScrollPaneLayout extends AbstractHintLayout {
 	/**
 	 * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int)
 	 */
+	@Override
 	public Dimension calculateMinimumSize(IFigure figure, int w, int h) {
 		ScrollPane scrollpane = (ScrollPane) figure;
 		Insets insets = scrollpane.getInsets();
@@ -50,6 +51,7 @@ public class ScrollPaneLayout extends AbstractHintLayout {
 	 * @return the preferred size of the given container
 	 * @since 2.0
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		ScrollPane scrollpane = (ScrollPane) container;
 		ScrollBar hBar = scrollpane.getHorizontalScrollBar();
@@ -75,6 +77,7 @@ public class ScrollPaneLayout extends AbstractHintLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#layout(IFigure)
 	 */
+	@Override
 	public void layout(IFigure parent) {
 		ScrollPane scrollpane = (ScrollPane) parent;
 		Viewport viewport = scrollpane.getViewport();

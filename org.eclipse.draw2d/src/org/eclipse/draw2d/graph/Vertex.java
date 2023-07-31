@@ -213,6 +213,7 @@ class Vertex extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#toString()
 	 */
+	@Override
 	public String toString() {
 		return "V(" + origX + ", " + origY + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}

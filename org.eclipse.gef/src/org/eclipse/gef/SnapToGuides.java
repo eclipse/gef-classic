@@ -243,6 +243,7 @@ public class SnapToGuides extends SnapToHelper {
 	 * @see SnapToHelper#snapRectangle(Request, int, PrecisionRectangle,
 	 *      PrecisionRectangle)
 	 */
+	@Override
 	public int snapRectangle(Request request, int snapOrientation, PrecisionRectangle baseRect,
 			PrecisionRectangle result) {
 		if (request instanceof GroupRequest && ((GroupRequest) request).getEditParts().size() > 1)

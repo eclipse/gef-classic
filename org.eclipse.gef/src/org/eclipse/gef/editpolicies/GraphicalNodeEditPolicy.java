@@ -59,6 +59,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		if (connectionFeedback != null) {
 			removeFeedback(connectionFeedback);
@@ -87,6 +88,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request)
 	 */
+	@Override
 	public void eraseSourceFeedback(Request request) {
 		if (REQ_CONNECTION_END.equals(request.getType()))
 			eraseCreationFeedback((CreateConnectionRequest) request);
@@ -105,6 +107,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
 	 */
+	@Override
 	public void eraseTargetFeedback(Request request) {
 		if (REQ_CONNECTION_START.equals(request.getType()) || REQ_CONNECTION_END.equals(request.getType())
 				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
@@ -117,6 +120,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		if (REQ_CONNECTION_START.equals(request.getType()))
 			return getConnectionCreateCommand((CreateConnectionRequest) request);
@@ -238,6 +242,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		if (REQ_CONNECTION_START.equals(request.getType()) || REQ_CONNECTION_END.equals(request.getType())
 				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
@@ -262,6 +267,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request)
 	 */
+	@Override
 	public void showSourceFeedback(Request request) {
 		if (REQ_CONNECTION_END.equals(request.getType()))
 			showCreationFeedback((CreateConnectionRequest) request);
@@ -280,6 +286,7 @@ public abstract class GraphicalNodeEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
 	 */
+	@Override
 	public void showTargetFeedback(Request request) {
 		if (REQ_CONNECTION_START.equals(request.getType()) || REQ_CONNECTION_END.equals(request.getType())
 				|| REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))

@@ -36,6 +36,7 @@ public interface LayoutListener {
 		 * 
 		 * @see LayoutListener#invalidate(IFigure)
 		 */
+		@Override
 		public void invalidate(IFigure container) {
 		}
 
@@ -44,6 +45,7 @@ public interface LayoutListener {
 		 * 
 		 * @see LayoutListener#layout(IFigure)
 		 */
+		@Override
 		public boolean layout(IFigure container) {
 			return false;
 		}
@@ -53,6 +55,7 @@ public interface LayoutListener {
 		 * 
 		 * @see LayoutListener#postLayout(IFigure)
 		 */
+		@Override
 		public void postLayout(IFigure container) {
 		}
 
@@ -61,6 +64,7 @@ public interface LayoutListener {
 		 * 
 		 * @see LayoutListener#remove(IFigure)
 		 */
+		@Override
 		public void remove(IFigure child) {
 		}
 
@@ -69,6 +73,7 @@ public interface LayoutListener {
 		 * 
 		 * @see LayoutListener#setConstraint(IFigure, java.lang.Object)
 		 */
+		@Override
 		public void setConstraint(IFigure child, Object constraint) {
 		}
 

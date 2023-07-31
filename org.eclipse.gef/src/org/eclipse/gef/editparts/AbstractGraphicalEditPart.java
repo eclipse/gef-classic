@@ -73,6 +73,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		/**
 		 * @see AccessibleEditPart#getChildCount(AccessibleControlEvent)
 		 */
+		@Override
 		public void getChildCount(AccessibleControlEvent e) {
 			e.detail = AbstractGraphicalEditPart.this.getChildren().size();
 		}
@@ -80,6 +81,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		/**
 		 * @see AccessibleEditPart#getChildren(AccessibleControlEvent)
 		 */
+		@Override
 		public void getChildren(AccessibleControlEvent e) {
 			ArrayList<Integer> children = new ArrayList<>(AbstractGraphicalEditPart.this.getChildren().size());
 			for (EditPart part : AbstractGraphicalEditPart.this.getChildren()) {
@@ -94,6 +96,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		/**
 		 * @see AccessibleEditPart#getLocation(AccessibleControlEvent)
 		 */
+		@Override
 		public void getLocation(AccessibleControlEvent e) {
 			Rectangle bounds = getFigure().getBounds().getCopy();
 			getFigure().translateToAbsolute(bounds);
@@ -108,6 +111,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		/**
 		 * @see AccessibleEditPart#getState(AccessibleControlEvent)
 		 */
+		@Override
 		public void getState(AccessibleControlEvent e) {
 			e.detail = ACC.STATE_SELECTABLE | ACC.STATE_FOCUSABLE;
 			if (getSelected() != EditPart.SELECTED_NONE)
@@ -119,6 +123,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 		/**
 		 * @see AccessibleEditPart#getRole(AccessibleControlEvent)
 		 */
+		@Override
 		public void getRole(AccessibleControlEvent e) {
 			e.detail = ACC.ROLE_LABEL;
 		}
@@ -510,6 +515,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * @see org.eclipse.gef.GraphicalEditPart#getSourceConnections()
 	 */
+	@Override
 	public List getSourceConnections() {
 		if (sourceConnections == null)
 			return Collections.EMPTY_LIST;
@@ -519,6 +525,7 @@ public abstract class AbstractGraphicalEditPart extends AbstractEditPart impleme
 	/**
 	 * @see org.eclipse.gef.GraphicalEditPart#getTargetConnections()
 	 */
+	@Override
 	public List getTargetConnections() {
 		if (targetConnections == null)
 			return Collections.EMPTY_LIST;

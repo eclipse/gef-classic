@@ -39,6 +39,7 @@ public class ChangeIconSizeAction extends Action {
 	 * 
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
+	@Override
 	public void run() {
 		prefs.setCurrentUseLargeIcons(!prefs.useLargeIcons());
 	}

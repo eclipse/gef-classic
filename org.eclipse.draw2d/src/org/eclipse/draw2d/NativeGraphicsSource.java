@@ -42,6 +42,7 @@ public final class NativeGraphicsSource implements GraphicsSource {
 	 * 
 	 * @see GraphicsSource#getGraphics(Rectangle)
 	 */
+	@Override
 	public Graphics getGraphics(Rectangle r) {
 		canvas.redraw(r.x, r.y, r.width, r.height, false);
 
@@ -61,6 +62,7 @@ public final class NativeGraphicsSource implements GraphicsSource {
 	 * 
 	 * @see GraphicsSource#flushGraphics(Rectangle)
 	 */
+	@Override
 	public void flushGraphics(Rectangle region) {
 	}
 

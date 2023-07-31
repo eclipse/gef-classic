@@ -56,6 +56,7 @@ public abstract class ContextMenuProvider extends MenuManager implements IMenuLi
 	/**
 	 * @see IMenuListener#menuAboutToShow(IMenuManager)
 	 */
+	@Override
 	public void menuAboutToShow(IMenuManager menu) {
 		buildContextMenu(menu);
 	}

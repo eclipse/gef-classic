@@ -28,30 +28,35 @@ public interface EditPartListener {
 		/**
 		 * @see org.eclipse.gef.EditPartListener#childAdded(EditPart, int)
 		 */
+		@Override
 		public void childAdded(EditPart child, int index) {
 		}
 
 		/**
 		 * @see org.eclipse.gef.EditPartListener#partActivated(EditPart)
 		 */
+		@Override
 		public void partActivated(EditPart editpart) {
 		}
 
 		/**
 		 * @see org.eclipse.gef.EditPartListener#partDeactivated(EditPart)
 		 */
+		@Override
 		public void partDeactivated(EditPart editpart) {
 		}
 
 		/**
 		 * @see org.eclipse.gef.EditPartListener#removingChild(EditPart, int)
 		 */
+		@Override
 		public void removingChild(EditPart child, int index) {
 		}
 
 		/**
 		 * @see org.eclipse.gef.EditPartListener#selectedStateChanged(EditPart)
 		 */
+		@Override
 		public void selectedStateChanged(EditPart part) {
 		}
 	};

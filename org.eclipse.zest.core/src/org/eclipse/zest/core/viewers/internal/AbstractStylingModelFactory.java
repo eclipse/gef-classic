@@ -129,6 +129,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		}
 	}
 
+	@Override
 	public StructuredViewer getViewer() {
 		return viewer;
 	}
@@ -139,6 +140,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
 	 * getLabelProvider()
 	 */
+	@Override
 	public IBaseLabelProvider getLabelProvider() {
 		return viewer.getLabelProvider();
 	}
@@ -149,6 +151,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
 	 * getContentProvider()
 	 */
+	@Override
 	public IStructuredContentProvider getContentProvider() {
 		return (IStructuredContentProvider) viewer.getContentProvider();
 	}
@@ -160,6 +163,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * createConnection(org.eclipse.zest.core.internal.graphmodel.GraphModel,
 	 * java.lang.Object, java.lang.Object, java.lang.Object)
 	 */
+	@Override
 	public GraphConnection createConnection(Graph graph, Object element, Object source, Object dest) {
 		if (source == null || dest == null) {
 			return null;
@@ -238,6 +242,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		return node;
 	}
 
+	@Override
 	public GraphNode createNode(Graph graph, Object element) {
 		IFigure nodeFigure = null;
 		if (getLabelProvider() instanceof IFigureProvider) {
@@ -246,6 +251,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 		return this.createNode(graph, element, nodeFigure);
 	}
 
+	@Override
 	public void setConnectionStyle(int style) {
 		this.connectionStyle = style;
 	}
@@ -253,10 +259,12 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/**
 	 * @return the connectionStyle
 	 */
+	@Override
 	public int getConnectionStyle() {
 		return connectionStyle;
 	}
 
+	@Override
 	public void setNodeStyle(int style) {
 		this.nodeStyle = style;
 	}
@@ -268,6 +276,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/**
 	 * @return the nodeStyle
 	 */
+	@Override
 	public int getNodeStyle() {
 		return nodeStyle;
 	}
@@ -276,6 +285,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * Default implementation simply restyles the item, regardless of the
 	 * properties.
 	 */
+	@Override
 	public void update(GraphItem item) {
 		styleItem(item);
 	}
@@ -284,6 +294,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * Default implementation simply restyles the items, regardless of the
 	 * properties.
 	 */
+	@Override
 	public void update(GraphItem[] items) {
 		for (int i = 0; i < items.length; i++) {
 			styleItem(items[i]);
@@ -296,6 +307,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
 	 * refreshGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
+	@Override
 	public void refreshGraph(Graph graph) {
 		// with this kind of graph, it is just as easy and cost-effective to
 		// rebuild the whole thing.
@@ -407,6 +419,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh
 	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
 	 */
+	@Override
 	public void refresh(Graph graph, Object element) {
 		refresh(graph, element, false);
 	}

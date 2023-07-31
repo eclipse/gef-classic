@@ -157,6 +157,7 @@ public class GuideEditPart extends AbstractGraphicalEditPart {
 	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleHandleProvider.class) {
 			return key.cast(new AccessibleHandleProvider() {
+				@Override
 				public List<Point> getAccessibleHandleLocations() {
 					List<Point> result = new ArrayList<>();
 					Point pt = getFigure().getBounds().getCenter();

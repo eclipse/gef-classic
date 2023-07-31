@@ -63,6 +63,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * 
 	 * @return the cursor
 	 */
+	@Override
 	protected Cursor calculateCursor() {
 		if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG))
 			return getDefaultCursor();
@@ -74,6 +75,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * 
 	 * @see DragTracker#commitDrag()
 	 */
+	@Override
 	public void commitDrag() {
 		eraseSourceFeedback();
 		eraseTargetFeedback();
@@ -85,6 +87,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * 
 	 * @return the target request
 	 */
+	@Override
 	protected Request createTargetRequest() {
 		ReconnectRequest request = new ReconnectRequest(getCommandName());
 		request.setConnectionEditPart(getConnectionEditPart());
@@ -98,6 +101,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * 
 	 * @see Tool#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		eraseSourceFeedback();
 		getCurrentViewer().setFocus(null);
@@ -117,6 +121,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	/**
 	 * @see AbstractTool#getCommandName()
 	 */
+	@Override
 	protected String getCommandName() {
 		return commandName;
 	}
@@ -142,6 +147,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	/**
 	 * @see AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "Connection Endpoint Tool";//$NON-NLS-1$
 	}
@@ -149,6 +155,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	/**
 	 * @see org.eclipse.gef.tools.TargetingTool#getExclusionSet()
 	 */
+	@Override
 	protected Collection<IFigure> getExclusionSet() {
 		if (exclusionSet == null) {
 			exclusionSet = new ArrayList<>(1);
@@ -163,6 +170,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 			eraseSourceFeedback();
@@ -178,6 +186,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * 
 	 * @return <code>true</code>
 	 */
+	@Override
 	protected boolean handleDragInProgress() {
 		updateTargetRequest();
 		updateTargetUnderMouse();
@@ -190,6 +199,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragStarted()
 	 */
+	@Override
 	protected boolean handleDragStarted() {
 		stateTransition(STATE_INITIAL, STATE_DRAG_IN_PROGRESS);
 		return false;
@@ -198,6 +208,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	/**
 	 * @see org.eclipse.gef.tools.TargetingTool#handleHover()
 	 */
+	@Override
 	protected boolean handleHover() {
 		if (isInDragInProgress())
 			updateAutoexposeHelper();
@@ -211,6 +222,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	protected boolean handleKeyDown(KeyEvent e) {
 		if (acceptArrowKey(e)) {
 			if (stateTransition(STATE_INITIAL, STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
@@ -334,6 +346,7 @@ public class ConnectionEndpointTracker extends TargetingTool implements DragTrac
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
+	@Override
 	protected void updateTargetRequest() {
 		ReconnectRequest request = (ReconnectRequest) getTargetRequest();
 		Point p = getLocation();

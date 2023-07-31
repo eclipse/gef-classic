@@ -40,6 +40,7 @@ public class PrintAction extends WorkbenchPartAction {
 	/**
 	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		PrinterData[] printers = Printer.getPrinterList();
 		return printers != null && printers.length > 0;
@@ -48,6 +49,7 @@ public class PrintAction extends WorkbenchPartAction {
 	/**
 	 * @see org.eclipse.gef.ui.actions.EditorPartAction#init()
 	 */
+	@Override
 	protected void init() {
 		super.init();
 		setText(GEFMessages.PrintAction_Label);
@@ -58,6 +60,7 @@ public class PrintAction extends WorkbenchPartAction {
 	/**
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
+	@Override
 	public void run() {
 		GraphicalViewer viewer = getWorkbenchPart().getAdapter(GraphicalViewer.class);
 

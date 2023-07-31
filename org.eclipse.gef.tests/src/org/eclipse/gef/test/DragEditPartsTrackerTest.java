@@ -40,6 +40,7 @@ public class DragEditPartsTrackerTest extends Assert {
 		 * 
 		 * @see org.eclipse.gef.editparts.AbstractEditPart#register()
 		 */
+		@Override
 		protected void register() {
 			// do nothing
 		}
@@ -49,6 +50,7 @@ public class DragEditPartsTrackerTest extends Assert {
 		 * 
 		 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 		 */
+		@Override
 		protected IFigure createFigure() {
 			return new Figure();
 		}
@@ -58,6 +60,7 @@ public class DragEditPartsTrackerTest extends Assert {
 		 * 
 		 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 		 */
+		@Override
 		protected void createEditPolicies() {
 			// do nothing
 		}
@@ -65,70 +68,87 @@ public class DragEditPartsTrackerTest extends Assert {
 
 	private class DummyEditorPart implements org.eclipse.ui.IEditorPart {
 
+		@Override
 		public void addPropertyListener(IPropertyListener listener) {
 
 		}
 
+		@Override
 		public void createPartControl(Composite parent) {
 
 		}
 
+		@Override
 		public void dispose() {
 
 		}
 
+		@Override
 		public IWorkbenchPartSite getSite() {
 			return null;
 		}
 
+		@Override
 		public String getTitle() {
 			return null;
 		}
 
+		@Override
 		public Image getTitleImage() {
 			return null;
 		}
 
+		@Override
 		public String getTitleToolTip() {
 			return null;
 		}
 
+		@Override
 		public void removePropertyListener(IPropertyListener listener) {
 
 		}
 
+		@Override
 		public void setFocus() {
 
 		}
 
+		@Override
 		public IEditorInput getEditorInput() {
 			return null;
 		}
 
+		@Override
 		public IEditorSite getEditorSite() {
 			return null;
 		}
 
+		@Override
 		public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 
 		}
 
+		@Override
 		public void doSave(IProgressMonitor monitor) {
 
 		}
 
+		@Override
 		public void doSaveAs() {
 
 		}
 
+		@Override
 		public boolean isDirty() {
 			return false;
 		}
 
+		@Override
 		public boolean isSaveAsAllowed() {
 			return false;
 		}
 
+		@Override
 		public boolean isSaveOnCloseNeeded() {
 			return false;
 		}
@@ -146,6 +166,7 @@ public class DragEditPartsTrackerTest extends Assert {
 			super(sourceEditPart);
 		}
 
+		@Override
 		public List createOperationSet() {
 			return super.createOperationSet();
 		}

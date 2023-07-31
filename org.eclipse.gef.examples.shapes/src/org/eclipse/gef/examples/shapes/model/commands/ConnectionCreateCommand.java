@@ -121,6 +121,7 @@ public class ConnectionCreateCommand extends Command {
 	 * 
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
 		connection.disconnect();
 	}

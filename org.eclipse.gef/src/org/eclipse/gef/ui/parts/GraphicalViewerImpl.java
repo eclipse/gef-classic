@@ -78,6 +78,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * @see org.eclipse.gef.EditPartViewer#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public Control createControl(Composite composite) {
 		setControl(new Canvas(composite, SWT.NO_BACKGROUND));
 		return getControl();
@@ -103,6 +104,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * @see AbstractEditPartViewer#handleDispose(org.eclipse.swt.events.DisposeEvent)
 	 */
+	@Override
 	protected void handleDispose(DisposeEvent e) {
 		super.handleDispose(e);
 		getLightweightSystem().getUpdateManager().dispose();
@@ -134,6 +136,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * @see GraphicalViewer#findHandleAt(org.eclipse.draw2d.geometry.Point)
 	 */
+	@Override
 	public Handle findHandleAt(Point p) {
 		LayerManager layermanager = (LayerManager) getEditPartRegistry().get(LayerManager.ID);
 		if (layermanager == null)
@@ -186,6 +189,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * 
 	 * @see org.eclipse.gef.EditPartViewer#flush()
 	 */
+	@Override
 	public void flush() {
 		getLightweightSystem().getUpdateManager().performUpdate();
 	}
@@ -233,6 +237,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * 
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#hookDropTarget()
 	 */
+	@Override
 	protected void hookDropTarget() {
 		// Allow the real drop targets to make their changes first.
 		super.hookDropTarget();
@@ -240,14 +245,17 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 		// Then force and update since async paints won't occurs during a Drag
 		// operation
 		getDropTarget().addDropListener(new DropTargetAdapter() {
+			@Override
 			public void dragEnter(DropTargetEvent event) {
 				flush();
 			}
 
+			@Override
 			public void dragLeave(DropTargetEvent event) {
 				flush();
 			}
 
+			@Override
 			public void dragOver(DropTargetEvent event) {
 				flush();
 			}
@@ -260,14 +268,17 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * 
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#hookControl()
 	 */
+	@Override
 	protected void hookControl() {
 		super.hookControl();
 		getLightweightSystem().setControl((Canvas) getControl());
 		getControl().addFocusListener(lFocus = new FocusListener() {
+			@Override
 			public void focusGained(FocusEvent e) {
 				handleFocusGained(e);
 			}
 
+			@Override
 			public void focusLost(FocusEvent e) {
 				handleFocusLost(e);
 			}
@@ -279,6 +290,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * 
 	 * @param acc the accessible
 	 */
+	@Override
 	public void registerAccessibleEditPart(AccessibleEditPart acc) {
 		Assert.isNotNull(acc);
 		DomainEventDispatcher domainEventDispatcher = getEventDispatcher();
@@ -294,6 +306,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * 
 	 * @see org.eclipse.gef.EditPartViewer#reveal(EditPart)
 	 */
+	@Override
 	public void reveal(EditPart part) {
 		if (part == null)
 			return;
@@ -314,10 +327,12 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * 
 	 * @see EditPartViewer#setContextMenu(org.eclipse.jface.action.MenuManager)
 	 */
+	@Override
 	public void setContextMenu(MenuManager contextMenu) {
 		super.setContextMenu(contextMenu);
 		if (contextMenu != null)
 			contextMenu.addMenuListener(new IMenuListener() {
+				@Override
 				public void menuAboutToShow(IMenuManager manager) {
 					flush();
 				}
@@ -327,6 +342,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * @see org.eclipse.gef.EditPartViewer#setCursor(org.eclipse.swt.graphics.Cursor)
 	 */
+	@Override
 	public void setCursor(Cursor newCursor) {
 		if (getEventDispatcher() != null)
 			getEventDispatcher().setOverrideCursor(newCursor);
@@ -338,10 +354,12 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * 
 	 * @see AbstractEditPartViewer#setDragSource(org.eclipse.swt.dnd.DragSource)
 	 */
+	@Override
 	protected void setDragSource(DragSource source) {
 		super.setDragSource(source);
 
 		class TheLastListener extends DragSourceAdapter {
+			@Override
 			public void dragStart(DragSourceEvent event) {
 				// If the EventDispatcher has captured the mouse, don't perform
 				// native drag.
@@ -359,6 +377,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 				}
 			}
 
+			@Override
 			public void dragFinished(DragSourceEvent event) {
 				getEventDispatcher().dispatchNativeDragFinished(event, GraphicalViewerImpl.this);
 			}
@@ -376,6 +395,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * @see org.eclipse.gef.EditPartViewer#setEditDomain(org.eclipse.gef.EditDomain)
 	 */
+	@Override
 	public void setEditDomain(EditDomain domain) {
 		super.setEditDomain(domain);
 		// Set the new event dispatcher, even if the new domain is null. This
@@ -387,6 +407,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * @see org.eclipse.gef.EditPartViewer#setRootEditPart(org.eclipse.gef.RootEditPart)
 	 */
+	@Override
 	public void setRootEditPart(RootEditPart editpart) {
 		super.setRootEditPart(editpart);
 		setRootFigure(((GraphicalEditPart) editpart).getFigure());
@@ -415,6 +436,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * @see org.eclipse.gef.EditPartViewer#setRouteEventsToEditDomain(boolean)
 	 */
+	@Override
 	public void setRouteEventsToEditDomain(boolean value) {
 		getEventDispatcher().setRouteEventsToEditor(value);
 	}
@@ -422,6 +444,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#unhookControl()
 	 */
+	@Override
 	protected void unhookControl() {
 		super.unhookControl();
 		if (lFocus != null) {
@@ -433,6 +456,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * @see EditPartViewer#unregisterAccessibleEditPart(org.eclipse.gef.AccessibleEditPart)
 	 */
+	@Override
 	public void unregisterAccessibleEditPart(AccessibleEditPart acc) {
 		Assert.isNotNull(acc);
 		DomainEventDispatcher domainEventDispatcher = getEventDispatcher();
@@ -453,6 +477,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 		 * @see org.eclipse.gef.MouseWheelHandler#handleMouseWheel(org.eclipse.swt.widgets.Event,
 		 *      org.eclipse.gef.EditPartViewer)
 		 */
+		@Override
 		public void handleMouseWheel(Event event, EditPartViewer viewer) {
 			EditPart part = viewer.getFocusEditPart();
 			do {

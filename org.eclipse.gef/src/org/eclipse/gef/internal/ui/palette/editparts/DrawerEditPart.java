@@ -61,6 +61,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	public IFigure createFigure() {
 		DrawerFigure fig = new DrawerFigure(getViewer().getControl()) {
 			@Override
@@ -72,6 +73,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 		fig.setPinned(getModel().isInitiallyPinned());
 
 		fig.getCollapseToggle().addFocusListener(new FocusListener.Stub() {
+			@Override
 			public void focusGained(FocusEvent fe) {
 				getViewer().select(DrawerEditPart.this);
 			}
@@ -124,10 +126,12 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 		return getDrawerFigure().getContentPane();
 	}
 
+	@Override
 	public boolean isExpanded() {
 		return getDrawerFigure().isExpanded();
 	}
 
+	@Override
 	public boolean isPinnedOpen() {
 		return getDrawerFigure().isPinnedOpen();
 	}
@@ -145,6 +149,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 	 *         only true when the drawer is expanded and the auto-collapse strategy
 	 *         is <code>PaletteViewerPreferences.COLLAPSE_AS_NEEDED</code>.
 	 */
+	@Override
 	public boolean canBePinned() {
 		return getDrawerFigure().isPinShowing();
 	}
@@ -260,6 +265,7 @@ public class DrawerEditPart extends PaletteEditPart implements IPinnableEditPart
 		getDrawerFigure().setTitleIcon(image);
 	}
 
+	@Override
 	public void setPinnedOpen(boolean pinned) {
 		getDrawerFigure().setPinned(pinned);
 	}

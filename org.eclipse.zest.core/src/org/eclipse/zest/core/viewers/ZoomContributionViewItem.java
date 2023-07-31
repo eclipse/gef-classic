@@ -57,6 +57,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	private Combo combo;
 	private Menu fMenu;
 	private MenuAdapter menuAdapter = new MenuAdapter() {
+		@Override
 		public void menuShown(MenuEvent e) {
 			refresh(true);
 		}
@@ -81,6 +82,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	 * org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.Menu,
 	 * int)
 	 */
+	@Override
 	public void fill(Menu menu, int index) {
 		if (this.fMenu == null || this.fMenu != menu) {
 			if (this.fMenu != null) {
@@ -98,6 +100,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	 * @see org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.
 	 * CoolBar, int)
 	 */
+	@Override
 	public void fill(CoolBar parent, int index) {
 		CoolItem item = new CoolItem(parent, SWT.DROP_DOWN);
 		Combo combo = createCombo(parent);
@@ -110,6 +113,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	 * @see org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.
 	 * ToolBar, int)
 	 */
+	@Override
 	public void fill(ToolBar parent, int index) {
 		ToolItem item = new ToolItem(parent, SWT.SEPARATOR, index);
 		Combo combo = createCombo(parent);
@@ -131,6 +135,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
 			 * .SelectionEvent)
 			 */
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int selection = combo.getSelectionIndex();
 				if (selection > 0) {
@@ -180,6 +185,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 				item.setText(zoomLevels[i]);
 				item.setData(this);
 				item.addSelectionListener(new SelectionAdapter() {
+					@Override
 					public void widgetSelected(SelectionEvent e) {
 						MenuItem source = (MenuItem) e.getSource();
 						doZoom(source.getText());
@@ -225,6 +231,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	 * 
 	 * @see org.eclipse.gef.editparts.ZoomListener#zoomChanged(double)
 	 */
+	@Override
 	public void zoomChanged(double z) {
 		refresh(false);
 	}
@@ -235,6 +242,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	 * @see org.eclipse.jface.action.ContributionItem#dispose()
 	 */
 
+	@Override
 	public void dispose() {
 		if (combo != null) {
 			combo = null;

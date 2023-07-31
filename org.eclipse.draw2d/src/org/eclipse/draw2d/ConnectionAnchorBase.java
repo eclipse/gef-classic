@@ -28,6 +28,7 @@ public abstract class ConnectionAnchorBase implements ConnectionAnchor {
 	/**
 	 * @see org.eclipse.draw2d.ConnectionAnchor#addAnchorListener(AnchorListener)
 	 */
+	@Override
 	public void addAnchorListener(AnchorListener listener) {
 		listeners.add(listener);
 	}
@@ -35,6 +36,7 @@ public abstract class ConnectionAnchorBase implements ConnectionAnchor {
 	/**
 	 * @see org.eclipse.draw2d.ConnectionAnchor#removeAnchorListener(AnchorListener)
 	 */
+	@Override
 	public void removeAnchorListener(AnchorListener listener) {
 		listeners.remove(listener);
 	}

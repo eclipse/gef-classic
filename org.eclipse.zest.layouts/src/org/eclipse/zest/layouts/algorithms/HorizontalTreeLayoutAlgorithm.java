@@ -38,12 +38,14 @@ public class HorizontalTreeLayoutAlgorithm extends TreeLayoutAlgorithm {
 		super(styles);
 	}
 
+	@Override
 	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
 		// NOTE: width and height are swtiched here when calling super method
 		super.preLayoutAlgorithm(entitiesToLayout, relationshipsToConsider, x, y, height, width);
 	}
 
+	@Override
 	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider) {
 		// swap x->y and width->height
@@ -55,6 +57,7 @@ public class HorizontalTreeLayoutAlgorithm extends TreeLayoutAlgorithm {
 		super.postLayoutAlgorithm(entitiesToLayout, relationshipsToConsider);
 	}
 
+	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if (asynchronous && continueous)
 			return false;

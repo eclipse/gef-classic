@@ -114,6 +114,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		clickable.setRequestFocusEnabled(false);
 		clickable.setFocusTraversable(false);
 		clickable.addChangeListener(new ChangeListener() {
+			@Override
 			public void handleStateChanged(ChangeEvent evt) {
 				if (clickable.getModel().isArmed())
 					clickable.setBackgroundColor(ColorConstants.black);
@@ -316,6 +317,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * @see PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getSource() instanceof RangeModel) {
 			setEnabled(getRangeModel().isEnabled());
@@ -345,6 +347,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * @see IFigure#revalidate()
 	 */
+	@Override
 	public void revalidate() {
 		// Override default revalidate to prevent going up the parent chain.
 		// Reason for this
@@ -358,6 +361,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * 
 	 * @see Orientable#setDirection(int)
 	 */
+	@Override
 	public void setDirection(int direction) {
 		// Doesn't make sense for Scrollbar.
 	}
@@ -379,6 +383,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 				((Orientable) buttonDown).setDirection(isHorizontal() ? Orientable.EAST : Orientable.SOUTH);
 			buttonDown.setFiringMethod(Clickable.REPEAT_FIRING);
 			buttonDown.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					stepDown();
 				}
@@ -404,6 +409,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 				((Orientable) up).setDirection(isHorizontal() ? Orientable.WEST : Orientable.NORTH);
 			buttonUp.setFiringMethod(Clickable.REPEAT_FIRING);
 			buttonUp.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					stepUp();
 				}
@@ -415,6 +421,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * @see IFigure#setEnabled(boolean)
 	 */
+	@Override
 	public void setEnabled(boolean value) {
 		if (isEnabled() == value)
 			return;
@@ -477,6 +484,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * @see Orientable#setOrientation(int)
 	 */
+	@Override
 	public void setOrientation(int value) {
 		if ((value == HORIZONTAL) == isHorizontal())
 			return;
@@ -514,6 +522,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		if (pageDown != null) {
 			pageDown.setFiringMethod(Clickable.REPEAT_FIRING);
 			pageDown.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent event) {
 					pageDown();
 				}
@@ -537,6 +546,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		if (pageUp != null) {
 			pageUp.setFiringMethod(Clickable.REPEAT_FIRING);
 			pageUp.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent event) {
 					pageUp();
 				}
@@ -633,6 +643,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 		public ThumbDragger() {
 		}
 
+		@Override
 		public void mousePressed(MouseEvent me) {
 			armed = true;
 			start = me.getLocation();
@@ -648,6 +659,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 			me.consume();
 		}
 
+		@Override
 		public void mouseDragged(MouseEvent me) {
 			if (!armed)
 				return;
@@ -657,6 +669,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 			me.consume();
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent me) {
 			if (!armed)
 				return;
@@ -664,6 +677,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 			me.consume();
 		}
 
+		@Override
 		public void mouseDoubleClicked(MouseEvent me) {
 		}
 	}

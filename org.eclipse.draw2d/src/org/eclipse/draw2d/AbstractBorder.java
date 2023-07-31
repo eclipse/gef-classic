@@ -45,6 +45,7 @@ public abstract class AbstractBorder implements Border {
 	/**
 	 * @see org.eclipse.draw2d.Border#getPreferredSize(IFigure)
 	 */
+	@Override
 	public Dimension getPreferredSize(IFigure f) {
 		return EMPTY;
 	}
@@ -52,6 +53,7 @@ public abstract class AbstractBorder implements Border {
 	/**
 	 * @see org.eclipse.draw2d.Border#isOpaque()
 	 */
+	@Override
 	public boolean isOpaque() {
 		return false;
 	}

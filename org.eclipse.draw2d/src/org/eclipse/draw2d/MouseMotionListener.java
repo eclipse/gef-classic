@@ -58,30 +58,35 @@ public interface MouseMotionListener {
 		/**
 		 * @see org.eclipse.draw2d.MouseMotionListener#mouseDragged(MouseEvent)
 		 */
+		@Override
 		public void mouseDragged(MouseEvent me) {
 		}
 
 		/**
 		 * @see org.eclipse.draw2d.MouseMotionListener#mouseEntered(MouseEvent)
 		 */
+		@Override
 		public void mouseEntered(MouseEvent me) {
 		}
 
 		/**
 		 * @see org.eclipse.draw2d.MouseMotionListener#mouseExited(MouseEvent)
 		 */
+		@Override
 		public void mouseExited(MouseEvent me) {
 		}
 
 		/**
 		 * @see org.eclipse.draw2d.MouseMotionListener#mouseMoved(MouseEvent)
 		 */
+		@Override
 		public void mouseMoved(MouseEvent me) {
 		}
 
 		/**
 		 * @see org.eclipse.draw2d.MouseMotionListener#mouseHover(MouseEvent)
 		 */
+		@Override
 		public void mouseHover(MouseEvent me) {
 		}
 	}

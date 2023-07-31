@@ -41,6 +41,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		// setOpaque(false);
 	}
 
+	@Override
 	protected boolean isValidationRoot() {
 		return true;
 	}
@@ -63,6 +64,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 	 * return true; }
 	 */
 
+	@Override
 	public double getScale() {
 		// TODO Auto-generated method stub
 		throw new RuntimeException("Operation not supported");
@@ -71,6 +73,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		// throw new RuntimeException("Operation Not supported");
 	}
 
+	@Override
 	public void setScale(double scale) {
 		// super.setScale( scale );
 		this.widthScale = scale;
@@ -85,6 +88,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 	 * @see org.eclipse.draw2d.Figure#getClientArea()
 	 */
 
+	@Override
 	public Rectangle getClientArea(Rectangle rect) {
 		// return super.getClientArea(rect);
 
@@ -95,6 +99,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		return rect;
 	}
 
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		Dimension d = super.getPreferredSize(wHint, hHint);
 		int w = getInsets().getWidth();
@@ -102,6 +107,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		return d.getExpanded(-w, -h).scale(widthScale, heigthScale).expand(w, h);
 	}
 
+	@Override
 	public void translateFromParent(Translatable t) {
 		super.translateFromParent(t);
 		// t.performScale(1/widthScale);
@@ -141,6 +147,7 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		// t.performScale(1/widthScale);
 	}
 
+	@Override
 	public void translateToParent(Translatable t) {
 		// t.performScale(widthScale);
 

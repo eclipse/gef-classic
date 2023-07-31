@@ -29,6 +29,7 @@ public class AbstractTextTest extends BaseTestCase {
 			this.insets = insets;
 		}
 
+		@Override
 		public Insets getInsets(IFigure figure) {
 			return insets;
 		}

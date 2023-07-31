@@ -33,6 +33,7 @@ public class PaletteGroupFactory extends PaletteContainerFactory {
 	/**
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
 	 */
+	@Override
 	protected PaletteEntry createNewEntry(Shell shell) {
 		PaletteGroup group = new PaletteGroup(PaletteMessages.NEW_GROUP_LABEL);
 		group.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);

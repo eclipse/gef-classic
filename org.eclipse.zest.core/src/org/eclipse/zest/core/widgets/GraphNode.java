@@ -179,6 +179,7 @@ public class GraphNode extends GraphItem {
 	/**
 	 * A simple toString that we can use for debugging
 	 */
+	@Override
 	public String toString() {
 		return "GraphModelNode: " + getText();
 	}
@@ -192,6 +193,7 @@ public class GraphNode extends GraphItem {
 	 * 
 	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#dispose()
 	 */
+	@Override
 	public void dispose() {
 		if (isFisheyeEnabled) {
 			this.fishEye(false, false);
@@ -222,6 +224,7 @@ public class GraphNode extends GraphItem {
 	 * 
 	 * @see org.eclipse.swt.widgets.Widget#isDisposed()
 	 */
+	@Override
 	public boolean isDisposed() {
 		return isDisposed;
 	}
@@ -425,6 +428,7 @@ public class GraphNode extends GraphItem {
 	 * source and destination connections are also highlighted, and the adjacent
 	 * nodes are highlighted too in a different color.
 	 */
+	@Override
 	public void highlight() {
 		if (highlighted == HIGHLIGHT_ON) {
 			return;
@@ -452,6 +456,7 @@ public class GraphNode extends GraphItem {
 	/**
 	 * Restores the nodes original background color and border width.
 	 */
+	@Override
 	public void unhighlight() {
 
 		// @tag ADJACENT : Removed highlight adjacent
@@ -568,6 +573,7 @@ public class GraphNode extends GraphItem {
 	 * 
 	 * @see org.eclipse.swt.widgets.Item#setText(java.lang.String)
 	 */
+	@Override
 	public void setText(String string) {
 		if (string == null) {
 			string = "";
@@ -584,6 +590,7 @@ public class GraphNode extends GraphItem {
 	 * 
 	 * @see org.eclipse.swt.widgets.Item#setImage(org.eclipse.swt.graphics.Image)
 	 */
+	@Override
 	public void setImage(Image image) {
 		super.setImage(image);
 		if (nodeFigure != null) {
@@ -596,6 +603,7 @@ public class GraphNode extends GraphItem {
 	 * 
 	 * @return The graph model that this node is contained in
 	 */
+	@Override
 	public Graph getGraphModel() {
 		return this.graph;
 	}
@@ -656,6 +664,7 @@ public class GraphNode extends GraphItem {
 		return this.nodeFigure;
 	}
 
+	@Override
 	public void setVisible(boolean visible) {
 		// graph.addRemoveFigure(this, visible);
 		this.visible = visible;
@@ -701,6 +710,7 @@ public class GraphNode extends GraphItem {
 		return this.hideNodeHelper;
 	}
 
+	@Override
 	public int getStyle() {
 		return super.getStyle() | this.getNodeStyle();
 	}
@@ -873,6 +883,7 @@ public class GraphNode extends GraphItem {
 		return label;
 	}
 
+	@Override
 	public boolean isVisible() {
 		return visible;
 	}
@@ -925,6 +936,7 @@ public class GraphNode extends GraphItem {
 	 * 
 	 * @see org.eclipse.mylar.zest.core.widgets.IGraphItem#getItemType()
 	 */
+	@Override
 	public int getItemType() {
 		return NODE;
 	}
@@ -932,43 +944,53 @@ public class GraphNode extends GraphItem {
 	class LayoutGraphNode implements LayoutEntity {
 		Object layoutInformation = null;
 
+		@Override
 		public double getHeightInLayout() {
 			return getSize().height;
 		}
 
+		@Override
 		public Object getLayoutInformation() {
 			return layoutInformation;
 		}
 
+		@Override
 		public String toString() {
 			return getText();
 		}
 
+		@Override
 		public double getWidthInLayout() {
 			return getSize().width;
 		}
 
+		@Override
 		public double getXInLayout() {
 			return getLocation().x;
 		}
 
+		@Override
 		public double getYInLayout() {
 			return getLocation().y;
 		}
 
+		@Override
 		public void populateLayoutConstraint(LayoutConstraint constraint) {
 			invokeLayoutListeners(constraint);
 		}
 
+		@Override
 		public void setLayoutInformation(Object internalEntity) {
 			this.layoutInformation = internalEntity;
 
 		}
 
+		@Override
 		public void setLocationInLayout(double x, double y) {
 			setLocation(x, y);
 		}
 
+		@Override
 		public void setSizeInLayout(double width, double height) {
 			setSize(width, height);
 		}
@@ -976,6 +998,7 @@ public class GraphNode extends GraphItem {
 		/**
 		 * Compares two nodes.
 		 */
+		@Override
 		public int compareTo(Object otherNode) {
 			int rv = 0;
 			if (otherNode instanceof GraphNode) {
@@ -987,10 +1010,12 @@ public class GraphNode extends GraphItem {
 			return rv;
 		}
 
+		@Override
 		public Object getGraphData() {
 			return GraphNode.this;
 		}
 
+		@Override
 		public void setGraphData(Object o) {
 			// TODO Auto-generated method stub
 
@@ -1004,6 +1029,7 @@ public class GraphNode extends GraphItem {
 	 * 
 	 * @return modelFigure.
 	 */
+	@Override
 	IFigure getFigure() {
 		if (this.modelFigure == null) {
 			initFigure();

@@ -48,6 +48,7 @@ public class ToggleGridAction extends Action {
 	/**
 	 * @see org.eclipse.jface.action.IAction#isChecked()
 	 */
+	@Override
 	public boolean isChecked() {
 		Boolean val = (Boolean) diagramViewer.getProperty(SnapToGrid.PROPERTY_GRID_ENABLED);
 		if (val != null)
@@ -58,6 +59,7 @@ public class ToggleGridAction extends Action {
 	/**
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
+	@Override
 	public void run() {
 		boolean val = !isChecked();
 		diagramViewer.setProperty(SnapToGrid.PROPERTY_GRID_VISIBLE, Boolean.valueOf(val));

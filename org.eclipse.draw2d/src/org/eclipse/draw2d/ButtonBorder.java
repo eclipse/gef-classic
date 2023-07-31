@@ -103,6 +103,7 @@ public class ButtonBorder extends SchemeBorder {
 		 * @return The insets for this border
 		 * @since 2.0
 		 */
+		@Override
 		protected Insets calculateInsets() {
 			int br = 1 + Math.max(getShadow().length, getHighlightPressed().length);
 			int tl = Math.max(getHighlight().length, getShadowPressed().length);
@@ -127,6 +128,7 @@ public class ButtonBorder extends SchemeBorder {
 		 * @return The opaque state of this border
 		 * @since 2.0
 		 */
+		@Override
 		protected boolean calculateOpaque() {
 			if (!super.calculateOpaque())
 				return false;
@@ -218,6 +220,7 @@ public class ButtonBorder extends SchemeBorder {
 	 * @param graphics The graphics used for painting
 	 * @param insets   The insets
 	 */
+	@Override
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		Clickable clickable = (Clickable) figure;
 		ButtonModel model = clickable.getModel();

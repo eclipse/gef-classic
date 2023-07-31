@@ -32,6 +32,7 @@ public class PaletteSelectionTool extends SelectionTool {
 		return false;
 	}
 
+	@Override
 	protected boolean handleKeyDown(KeyEvent e) {
 		if (handleAbort(e)) {
 			loadDefaultTool();

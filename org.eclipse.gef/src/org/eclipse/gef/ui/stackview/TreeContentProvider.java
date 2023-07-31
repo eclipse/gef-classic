@@ -40,12 +40,14 @@ public class TreeContentProvider implements org.eclipse.jface.viewers.ITreeConte
 	/**
 	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 	 */
+	@Override
 	public void dispose() {
 	}
 
 	/**
 	 * @see CommandStackListener#commandStackChanged(EventObject)
 	 */
+	@Override
 	public void commandStackChanged(EventObject event) {
 		viewer.refresh();
 	}
@@ -53,6 +55,7 @@ public class TreeContentProvider implements org.eclipse.jface.viewers.ITreeConte
 	/**
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(java.lang.Object)
 	 */
+	@Override
 	public Object[] getChildren(Object o) {
 		if (o instanceof CompoundCommand) {
 			return ((CompoundCommand) o).getChildren();
@@ -63,6 +66,7 @@ public class TreeContentProvider implements org.eclipse.jface.viewers.ITreeConte
 	/**
 	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(java.lang.Object)
 	 */
+	@Override
 	public Object[] getElements(Object o) {
 		if (o instanceof CommandStack) {
 			return ((CommandStack) o).getCommands();
@@ -75,6 +79,7 @@ public class TreeContentProvider implements org.eclipse.jface.viewers.ITreeConte
 	/**
 	 * @see TreeContentProvider#getParent(Object)
 	 */
+	@Override
 	public Object getParent(Object child) {
 		return null;
 	}
@@ -82,6 +87,7 @@ public class TreeContentProvider implements org.eclipse.jface.viewers.ITreeConte
 	/**
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#hasChildren(java.lang.Object)
 	 */
+	@Override
 	public boolean hasChildren(Object o) {
 		return o instanceof CompoundCommand;
 	}
@@ -90,6 +96,7 @@ public class TreeContentProvider implements org.eclipse.jface.viewers.ITreeConte
 	 * @see org.eclipse.jface.viewers.IContentProvider#inputChanged(Viewer, Object,
 	 *      Object)
 	 */
+	@Override
 	public void inputChanged(Viewer v, Object o, Object n) {
 		viewer = v;
 	}

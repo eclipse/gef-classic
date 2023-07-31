@@ -68,6 +68,7 @@ public class SetPropertyValueCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
+	@Override
 	public boolean canExecute() {
 		if (propertySource == null || propertyId == null) {
 			return false;
@@ -88,6 +89,7 @@ public class SetPropertyValueCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
+	@Override
 	public void execute() {
 		/*
 		 * Fix for bug #54250 IPropertySource.isPropertySet(String) returns false both
@@ -170,6 +172,7 @@ public class SetPropertyValueCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
+	@Override
 	public void redo() {
 		execute();
 	}
@@ -177,6 +180,7 @@ public class SetPropertyValueCommand extends Command {
 	/**
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
+	@Override
 	public void undo() {
 		if (oldValue == DEFAULT_VALUE) {
 			propertySource.resetPropertyValue(propertyId);

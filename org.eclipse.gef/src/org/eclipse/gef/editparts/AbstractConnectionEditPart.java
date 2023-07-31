@@ -58,6 +58,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 		/**
 		 * @see AccessibleAnchorProvider#getSourceAnchorLocations()
 		 */
+		@Override
 		public List getSourceAnchorLocations() {
 			List list = new ArrayList();
 			if (getFigure() instanceof Connection) {
@@ -71,6 +72,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 		/**
 		 * @see AccessibleAnchorProvider#getTargetAnchorLocations()
 		 */
+		@Override
 		public List getTargetAnchorLocations() {
 			return getSourceAnchorLocations();
 		}
@@ -91,6 +93,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	/**
 	 * @see org.eclipse.gef.EditPart#addNotify()
 	 */
+	@Override
 	public void addNotify() {
 		activateFigure();
 		super.addNotify();
@@ -101,6 +104,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 * 
 	 * @return The created Figure.
 	 */
+	@Override
 	protected IFigure createFigure() {
 		return new PolylineConnection();
 	}
@@ -146,6 +150,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	/**
 	 * @see org.eclipse.gef.EditPart#getDragTracker(Request)
 	 */
+	@Override
 	public DragTracker getDragTracker(Request req) {
 		return new SelectEditPartTracker(this);
 	}
@@ -153,6 +158,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	/**
 	 * @see org.eclipse.gef.ConnectionEditPart#getSource()
 	 */
+	@Override
 	public EditPart getSource() {
 		return sourceEditPart;
 	}
@@ -160,6 +166,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	/**
 	 * @see org.eclipse.gef.ConnectionEditPart#getTarget()
 	 */
+	@Override
 	public EditPart getTarget() {
 		return targetEditPart;
 	}
@@ -215,6 +222,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 * 
 	 * @see org.eclipse.gef.EditPart#refresh()
 	 */
+	@Override
 	public void refresh() {
 		refreshSourceAnchor();
 		refreshTargetAnchor();
@@ -243,6 +251,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 * 
 	 * @see org.eclipse.gef.EditPart#removeNotify()
 	 */
+	@Override
 	public void removeNotify() {
 		deactivateFigure();
 		super.removeNotify();
@@ -253,6 +262,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 * 
 	 * @see org.eclipse.gef.EditPart#setParent(EditPart)
 	 */
+	@Override
 	public void setParent(EditPart parent) {
 		boolean wasNull = getParent() == null;
 		boolean becomingNull = parent == null;
@@ -268,6 +278,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 * 
 	 * @param editPart EditPart which is the source.
 	 */
+	@Override
 	public void setSource(EditPart editPart) {
 		if (sourceEditPart == editPart)
 			return;
@@ -285,6 +296,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 * 
 	 * @param editPart EditPart which is the target.
 	 */
+	@Override
 	public void setTarget(EditPart editPart) {
 		if (targetEditPart == editPart)
 			return;

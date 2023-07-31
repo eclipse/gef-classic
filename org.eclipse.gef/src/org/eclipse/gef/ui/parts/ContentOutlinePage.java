@@ -47,6 +47,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 	/**
 	 * @see ISelectionProvider#addSelectionChangedListener(ISelectionChangedListener)
 	 */
+	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		getViewer().addSelectionChangedListener(listener);
 	}
@@ -56,6 +57,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 	 * 
 	 * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		control = getViewer().createControl(parent);
 	}
@@ -63,6 +65,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 	/**
 	 * @see org.eclipse.ui.part.IPage#getControl()
 	 */
+	@Override
 	public Control getControl() {
 		return control;
 	}
@@ -72,6 +75,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 	 * 
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
+	@Override
 	public ISelection getSelection() {
 		// $TODO when could this even happen?
 		if (getViewer() == null)
@@ -91,6 +95,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 	/**
 	 * @see ISelectionProvider#removeSelectionChangedListener(ISelectionChangedListener)
 	 */
+	@Override
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		getViewer().removeSelectionChangedListener(listener);
 	}
@@ -98,6 +103,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 	/**
 	 * Sets focus to a part in the page.
 	 */
+	@Override
 	public void setFocus() {
 		if (getControl() != null)
 			getControl().setFocus();
@@ -106,6 +112,7 @@ public class ContentOutlinePage extends org.eclipse.ui.part.Page
 	/**
 	 * @see ISelectionProvider#setSelection(org.eclipse.jface.viewers.ISelection)
 	 */
+	@Override
 	public void setSelection(ISelection selection) {
 		if (getViewer() != null)
 			getViewer().setSelection(selection);

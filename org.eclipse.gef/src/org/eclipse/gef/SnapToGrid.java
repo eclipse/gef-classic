@@ -117,6 +117,7 @@ public class SnapToGrid extends SnapToHelper {
 	 * @see SnapToHelper#snapRectangle(Request, int, PrecisionRectangle,
 	 *      PrecisionRectangle)
 	 */
+	@Override
 	public int snapRectangle(Request request, int snapLocations, PrecisionRectangle rect, PrecisionRectangle result) {
 
 		rect = rect.getPreciseCopy();

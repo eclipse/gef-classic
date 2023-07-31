@@ -48,6 +48,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(IFigure, int,
 	 *      int)
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 
 		Dimension prefSize = super.calculatePreferredSize(container, wHint, hHint);
@@ -94,6 +95,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	 * 
 	 * @see FlowLayout#getChildSize(IFigure, int, int)
 	 */
+	@Override
 	protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
 		if (child instanceof PinnablePaletteStackFigure) {
 			return ((PinnablePaletteStackFigure) child).getHeaderPreferredSize(wHint, hHint);
@@ -108,6 +110,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	 * 
 	 * @see FlowLayout#layoutRow(IFigure)
 	 */
+	@Override
 	protected void layoutRow(IFigure parent) {
 		int majorAdjustment = 0;
 		int minorAdjustment = 0;
@@ -174,6 +177,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	 * 
 	 * @see FlowLayout#setBoundsOfChild(IFigure, IFigure, Rectangle)
 	 */
+	@Override
 	protected void setBoundsOfChild(IFigure parent, IFigure child, Rectangle bounds) {
 
 		if (child instanceof PinnablePaletteStackFigure && ((PinnablePaletteStackFigure) child).isExpanded()) {

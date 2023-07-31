@@ -78,6 +78,7 @@ public class MouseEvent extends InputEvent {
 	/**
 	 * @see Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "MouseEvent(" + x + ',' + y + ") to Figure: " + source;//$NON-NLS-2$//$NON-NLS-1$
 	}

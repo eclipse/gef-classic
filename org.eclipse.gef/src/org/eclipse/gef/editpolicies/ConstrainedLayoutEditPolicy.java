@@ -143,6 +143,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
 	 */
+	@Override
 	protected EditPolicy createChildEditPolicy(EditPart child) {
 		return new ResizableEditPolicy();
 	}
@@ -155,6 +156,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request)
 	 */
+	@Override
 	protected Command getAddCommand(Request generic) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) generic;
 		List editParts = request.getEditParts();
@@ -186,6 +188,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		if (REQ_RESIZE_CHILDREN.equals(request.getType()))
 			return getResizeChildrenCommand((ChangeBoundsRequest) request);
@@ -369,6 +372,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getMoveChildrenCommand(Request)
 	 */
+	@Override
 	protected Command getMoveChildrenCommand(Request request) {
 		// By default, move and resize are treated the same for constrained
 		// layouts.

@@ -57,6 +57,7 @@ public class GraphSnippet10 {
 		button.addSelectionListener(new SelectionAdapter() {
 			int count = 0;
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				count = ++count % 16;
 				if (count > 8) {

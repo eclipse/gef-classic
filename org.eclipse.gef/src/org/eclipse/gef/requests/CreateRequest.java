@@ -59,6 +59,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 	 * 
 	 * @return the location
 	 */
+	@Override
 	public Point getLocation() {
 		return location;
 	}

@@ -22,6 +22,7 @@ class CompoundVerticalPlacement extends VerticalPlacement {
 	/**
 	 * @see GraphVisitor#visit(DirectedGraph) Extended to set subgraph values.
 	 */
+	@Override
 	void visit(DirectedGraph dg) {
 		CompoundDirectedGraph g = (CompoundDirectedGraph) dg;
 		super.visit(g);

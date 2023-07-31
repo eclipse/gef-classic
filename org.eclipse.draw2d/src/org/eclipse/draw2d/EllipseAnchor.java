@@ -40,6 +40,7 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	 * 
 	 * @see org.eclipse.draw2d.ConnectionAnchor#getLocation(Point)
 	 */
+	@Override
 	public Point getLocation(Point reference) {
 		Rectangle r = Rectangle.SINGLETON;
 		r.setBounds(getOwner().getBounds());
@@ -73,6 +74,7 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	 * @param o the other anchor
 	 * @return <code>true</code> if equal
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof EllipseAnchor) {
 			EllipseAnchor other = (EllipseAnchor) o;
@@ -87,6 +89,7 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	 * 
 	 * @return the hash code.
 	 */
+	@Override
 	public int hashCode() {
 		if (getOwner() != null)
 			return getOwner().hashCode();

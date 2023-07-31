@@ -46,6 +46,7 @@ public class PuristicScrollPane extends ScrollPane {
 		/**
 		 * @see org.eclipse.draw2d.ScrollBar#createDefaultDownButton()
 		 */
+		@Override
 		protected Clickable createDefaultDownButton() {
 			Clickable buttonDown = super.createDefaultDownButton();
 			buttonDown.setBorder(null);
@@ -56,6 +57,7 @@ public class PuristicScrollPane extends ScrollPane {
 		/**
 		 * @see org.eclipse.draw2d.ScrollBar#createDefaultThumb()
 		 */
+		@Override
 		protected IFigure createDefaultThumb() {
 			return null;
 		}
@@ -63,6 +65,7 @@ public class PuristicScrollPane extends ScrollPane {
 		/**
 		 * @see org.eclipse.draw2d.ScrollBar#createDefaultUpButton()
 		 */
+		@Override
 		protected Clickable createDefaultUpButton() {
 			Clickable buttonUp = super.createDefaultUpButton();
 			buttonUp.setBorder(null);
@@ -73,6 +76,7 @@ public class PuristicScrollPane extends ScrollPane {
 		/**
 		 * @see org.eclipse.draw2d.ScrollBar#createPageDown()
 		 */
+		@Override
 		protected Clickable createPageDown() {
 			return null;
 		}
@@ -80,6 +84,7 @@ public class PuristicScrollPane extends ScrollPane {
 		/**
 		 * @see org.eclipse.draw2d.ScrollBar#createPageUp()
 		 */
+		@Override
 		protected Clickable createPageUp() {
 			return null;
 		}
@@ -87,6 +92,7 @@ public class PuristicScrollPane extends ScrollPane {
 		/**
 		 * @see PropertyChangeListener#propertyChange(java.beans. PropertyChangeEvent )
 		 */
+		@Override
 		public void propertyChange(PropertyChangeEvent event) {
 			if (event.getSource() instanceof RangeModel) {
 				getButtonDown().setVisible(getValue() != getMaximum() - getExtent());
@@ -100,6 +106,7 @@ public class PuristicScrollPane extends ScrollPane {
 	public PuristicScrollPane() {
 		// layout to ensure, viewport gets complete client area
 		setLayoutManager(new ScrollPaneLayout() {
+			@Override
 			public void layout(IFigure parent) {
 				// scroll panes are layouted normally
 				super.layout(parent);
@@ -114,6 +121,7 @@ public class PuristicScrollPane extends ScrollPane {
 	/**
 	 * @see org.eclipse.draw2d.ScrollPane#createVerticalScrollBar()
 	 */
+	@Override
 	protected void createVerticalScrollBar() {
 		PuristicScrollBar verticalScrollBar = new PuristicScrollBar(false);
 		setVerticalScrollBar(verticalScrollBar);
@@ -122,6 +130,7 @@ public class PuristicScrollPane extends ScrollPane {
 	/**
 	 * @see org.eclipse.draw2d.ScrollPane#createHorizontalScrollBar()
 	 */
+	@Override
 	protected void createHorizontalScrollBar() {
 		PuristicScrollBar horizontalScrollBar = new PuristicScrollBar(true);
 		setHorizontalScrollBar(horizontalScrollBar);

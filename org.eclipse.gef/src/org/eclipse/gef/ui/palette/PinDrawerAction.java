@@ -55,6 +55,7 @@ public class PinDrawerAction extends Action {
 	 * 
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
+	@Override
 	public void run() {
 		pinnableEditPart.setPinnedOpen(!pinnableEditPart.isPinnedOpen());
 	}

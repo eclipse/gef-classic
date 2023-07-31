@@ -68,6 +68,7 @@ public class GraphJFaceSnippet7 {
 
 	static class MyContentProvider implements IGraphEntityContentProvider, INestedContentProvider {
 
+		@Override
 		public Object[] getConnectedTo(Object entity) {
 			if (entity.equals("First")) {
 				return new Object[] { "Second" };
@@ -84,6 +85,7 @@ public class GraphJFaceSnippet7 {
 			return null;
 		}
 
+		@Override
 		public Object[] getElements(Object inputElement) {
 			return new String[] { "First", "Second", "Third" };
 		}
@@ -92,19 +94,23 @@ public class GraphJFaceSnippet7 {
 			return 0;
 		}
 
+		@Override
 		public void dispose() {
 
 		}
 
+		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
 		}
 
+		@Override
 		public Object[] getChildren(Object element) {
 			// TODO Auto-generated method stub
 			return new Object[] { "rock", "paper", "scissors" };
 		}
 
+		@Override
 		public boolean hasChildren(Object element) {
 			// TODO Auto-generated method stub
 			if (element.equals("First"))
@@ -117,6 +123,7 @@ public class GraphJFaceSnippet7 {
 	static class MyLabelProvider extends LabelProvider implements IFigureProvider {
 		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 
+		@Override
 		public Image getImage(Object element) {
 			if (element.equals("Rock") || element.equals("Paper") || element.equals("Scissors")) {
 				return image;
@@ -124,12 +131,14 @@ public class GraphJFaceSnippet7 {
 			return null;
 		}
 
+		@Override
 		public String getText(Object element) {
 			if (element instanceof EntityConnectionData)
 				return "";
 			return element.toString();
 		}
 
+		@Override
 		public IFigure getFigure(Object element) {
 			Font classFont = new Font(null, "Arial", 12, SWT.BOLD);
 			Image classImage = new Image(Display.getDefault(),
@@ -164,9 +173,11 @@ public class GraphJFaceSnippet7 {
 		button.setText("push");
 		button.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				viewer.setInput(new Object());
 			}

@@ -69,6 +69,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
 	 */
+	@Override
 	public void eraseTargetFeedback(Request req) {
 		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_ADD) || req.getType().equals(REQ_CREATE))
 			eraseDropFeedback(req);
@@ -105,6 +106,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request req) {
 		if (req.getType().equals(REQ_MOVE_CHILDREN))
 			return getMoveChildrenCommand((ChangeBoundsRequest) req);
@@ -122,6 +124,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
+	@Override
 	public EditPart getTargetEditPart(Request req) {
 		if (req.getType().equals(REQ_ADD) || req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_CREATE)) {
 			DropRequest drop = (DropRequest) req;
@@ -182,6 +185,7 @@ public abstract class TreeContainerEditPolicy extends AbstractEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
 	 */
+	@Override
 	public void showTargetFeedback(Request req) {
 		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_ADD) || req.getType().equals(REQ_CREATE))
 			showDropFeedback((DropRequest) req);

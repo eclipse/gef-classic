@@ -75,6 +75,7 @@ public abstract class Command {
 		if (command == null)
 			return this;
 		class ChainedCompoundCommand extends CompoundCommand {
+			@Override
 			public Command chain(Command c) {
 				add(c);
 				return this;

@@ -41,6 +41,7 @@ public abstract class AutomaticRouter extends AbstractRouter {
 			anchor2 = conn.getTargetAnchor();
 		}
 
+		@Override
 		public boolean equals(Object object) {
 			boolean isEqual = false;
 			HashKey hashKey;
@@ -64,6 +65,7 @@ public abstract class AutomaticRouter extends AbstractRouter {
 			return anchor2;
 		}
 
+		@Override
 		public int hashCode() {
 			return anchor1.hashCode() ^ anchor2.hashCode();
 		}
@@ -124,6 +126,7 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	/**
 	 * @see org.eclipse.draw2d.ConnectionRouter#remove(Connection)
 	 */
+	@Override
 	public void remove(Connection conn) {
 		if (conn.getSourceAnchor() == null || conn.getTargetAnchor() == null)
 			return;
@@ -145,6 +148,7 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	 * 
 	 * @param conn The connection to route
 	 */
+	@Override
 	public void route(Connection conn) {
 		if (next() != null)
 			next().route(conn);
@@ -184,6 +188,7 @@ public abstract class AutomaticRouter extends AbstractRouter {
 	 * 
 	 * @see org.eclipse.draw2d.ConnectionRouter#setConstraint(Connection, Object)
 	 */
+	@Override
 	public void setConstraint(Connection connection, Object constraint) {
 		invalidate(connection);
 		if (next() != null)

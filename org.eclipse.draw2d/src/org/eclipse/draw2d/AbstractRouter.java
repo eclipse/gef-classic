@@ -28,6 +28,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 	 * @return The constraint
 	 * @since 2.0
 	 */
+	@Override
 	public Object getConstraint(Connection connection) {
 		return null;
 	}
@@ -73,6 +74,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 	 * @param connection The connection to invalidate
 	 * @since 2.0
 	 */
+	@Override
 	public void invalidate(Connection connection) {
 	}
 
@@ -83,6 +85,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 	 * @param connection The connection to remove
 	 * @since 2.0
 	 */
+	@Override
 	public void remove(Connection connection) {
 	}
 
@@ -93,6 +96,7 @@ public abstract class AbstractRouter implements ConnectionRouter {
 	 * @param constraint The constraint
 	 * @since 2.0
 	 */
+	@Override
 	public void setConstraint(Connection connection, Object constraint) {
 	}
 

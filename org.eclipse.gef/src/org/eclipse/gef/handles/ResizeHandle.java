@@ -57,6 +57,7 @@ public class ResizeHandle extends SquareHandle {
 	 * 
 	 * @return returns <code>null</code>
 	 */
+	@Override
 	protected DragTracker createDragTracker() {
 		return new ResizeTracker(getOwner(), cursorDirection);
 	}

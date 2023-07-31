@@ -123,6 +123,7 @@ class NodeCluster extends NodeList {
 		affected.add(this);
 	}
 
+	@Override
 	public boolean equals(Object o) {
 		return o == this;
 	}
@@ -147,6 +148,7 @@ class NodeCluster extends NodeList {
 		return null;
 	}
 
+	@Override
 	public int hashCode() {
 		return hashCode;
 	}

@@ -63,6 +63,7 @@ public class CompoundBorder extends AbstractBorder {
 	 * @return The total insets for this border
 	 * @since 2.0
 	 */
+	@Override
 	public Insets getInsets(IFigure figure) {
 		Insets insets = null;
 		if (inner != null)
@@ -79,6 +80,7 @@ public class CompoundBorder extends AbstractBorder {
 	/**
 	 * @see org.eclipse.draw2d.Border#getPreferredSize(IFigure)
 	 */
+	@Override
 	public Dimension getPreferredSize(IFigure fig) {
 		Dimension prefSize = new Dimension(inner.getPreferredSize(fig));
 		Insets outerInsets = outer.getInsets(fig);
@@ -105,6 +107,7 @@ public class CompoundBorder extends AbstractBorder {
 	 * 
 	 * @return <code>true</code> if this border is opaque
 	 */
+	@Override
 	public boolean isOpaque() {
 		return ((inner != null) ? inner.isOpaque() : false) && ((outer != null) ? outer.isOpaque() : false);
 	}
@@ -112,6 +115,7 @@ public class CompoundBorder extends AbstractBorder {
 	/**
 	 * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
 	 */
+	@Override
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		if (outer != null) {
 			g.pushState();

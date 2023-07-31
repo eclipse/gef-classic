@@ -42,6 +42,7 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	/**
 	 * @see ConnectionRouter#invalidate(Connection)
 	 */
+	@Override
 	public void invalidate(Connection connection) {
 		removeReservedLines(connection);
 	}
@@ -235,6 +236,7 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	/**
 	 * @see ConnectionRouter#remove(Connection)
 	 */
+	@Override
 	public void remove(Connection connection) {
 		removeReservedLines(connection);
 	}
@@ -274,6 +276,7 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	/**
 	 * @see ConnectionRouter#route(Connection)
 	 */
+	@Override
 	public void route(Connection conn) {
 		if ((conn.getSourceAnchor() == null) || (conn.getTargetAnchor() == null))
 			return;

@@ -102,6 +102,7 @@ public class PaletteAnimator extends LayoutAnimator {
 	/**
 	 * @see org.eclipse.draw2d.Animator#playbackStarting(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void playbackStarting(IFigure figure) {
 		if (figure instanceof DrawerFigure)
 			((DrawerFigure) figure).setAnimating(true);
@@ -119,6 +120,7 @@ public class PaletteAnimator extends LayoutAnimator {
 	/**
 	 * @see org.eclipse.draw2d.Animator#init(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void init(IFigure figure) {
 		if (figure instanceof DrawerFigure) {
 			DrawerFigure drawer = (DrawerFigure) figure;
@@ -132,6 +134,7 @@ public class PaletteAnimator extends LayoutAnimator {
 	/**
 	 * @see org.eclipse.draw2d.Animator#tearDown(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void tearDown(IFigure figure) {
 		if (figure instanceof DrawerFigure)
 			((DrawerFigure) figure).setAnimating(false);

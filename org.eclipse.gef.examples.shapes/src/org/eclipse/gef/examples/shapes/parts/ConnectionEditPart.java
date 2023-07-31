@@ -62,6 +62,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 		installEditPolicy(EditPolicy.CONNECTION_ENDPOINTS_ROLE, new ConnectionEndpointEditPolicy());
 		// Allows the removal of the connection model element
 		installEditPolicy(EditPolicy.CONNECTION_ROLE, new ConnectionEditPolicy() {
+			@Override
 			protected Command getDeleteCommand(GroupRequest request) {
 				return new ConnectionDeleteCommand(getModel());
 			}

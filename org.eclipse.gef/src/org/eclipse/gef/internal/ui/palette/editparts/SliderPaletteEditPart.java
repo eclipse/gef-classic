@@ -29,6 +29,7 @@ public class SliderPaletteEditPart extends PaletteEditPart {
 		super(paletteRoot);
 	}
 
+	@Override
 	public IFigure createFigure() {
 		Figure figure = new Figure();
 		figure.setOpaque(true);

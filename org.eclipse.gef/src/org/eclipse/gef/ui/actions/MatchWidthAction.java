@@ -47,6 +47,7 @@ public class MatchWidthAction extends MatchSizeAction {
 	 *                             EditPart's Figure
 	 * @return 0.
 	 */
+	@Override
 	protected double getPreciseHeightDelta(PrecisionRectangle precisePartBounds,
 			PrecisionRectangle precisePrimaryBounds) {
 		return 0;

@@ -44,6 +44,7 @@ public class GraphSnippet3 {
 
 		Graph g = new Graph(shell, SWT.NONE);
 		g.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				System.out.println(((Graph) e.widget).getSelection());
 			}

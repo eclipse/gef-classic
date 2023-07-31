@@ -37,10 +37,12 @@ class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener 
 		super(viewer, xfer);
 	}
 
+	@Override
 	public void dragSetData(DragSourceEvent event) {
 		event.data = getViewer().getSelectedEditParts();
 	}
 
+	@Override
 	public void dragStart(DragSourceEvent event) {
 		TreeViewerTransfer.getInstance().setViewer(getViewer());
 		List selection = getViewer().getSelectedEditParts();
@@ -48,6 +50,7 @@ class TreeViewerTransferDragListener extends AbstractTransferDragSourceListener 
 		saveModelSelection(selection);
 	}
 
+	@Override
 	public void dragFinished(DragSourceEvent event) {
 		TreeViewerTransfer.getInstance().setObject(null);
 		TreeViewerTransfer.getInstance().setViewer(null);

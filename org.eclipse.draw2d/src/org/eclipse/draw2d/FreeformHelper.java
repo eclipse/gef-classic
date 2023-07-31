@@ -16,6 +16,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 class FreeformHelper implements FreeformListener {
 
 	class ChildTracker implements FigureListener {
+		@Override
 		public void figureMoved(IFigure source) {
 			invalidate();
 		}
@@ -70,6 +71,7 @@ class FreeformHelper implements FreeformListener {
 			host.revalidate();
 	}
 
+	@Override
 	public void notifyFreeformExtentChanged() {
 		// A childs freeform extent has changed, therefore this extent must be
 		// recalculated

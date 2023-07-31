@@ -31,6 +31,7 @@ public class BlockBox extends CompositeBox {
 	/**
 	 * @see CompositeBox#add(FlowBox)
 	 */
+	@Override
 	public void add(FlowBox box) {
 		width = Math.max(width, box.getWidth());
 		height = Math.max(height, box.getBaseline() + box.getDescent());
@@ -39,6 +40,7 @@ public class BlockBox extends CompositeBox {
 	/**
 	 * @see FlowBox#containsPoint(int, int)
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		return true;
 	}
@@ -46,6 +48,7 @@ public class BlockBox extends CompositeBox {
 	/**
 	 * @see FlowBox#getAscent()
 	 */
+	@Override
 	public int getAscent() {
 		return 0;
 	}
@@ -53,10 +56,12 @@ public class BlockBox extends CompositeBox {
 	/**
 	 * @see FlowBox#getBaseline()
 	 */
+	@Override
 	public int getBaseline() {
 		return y;
 	}
 
+	@Override
 	int getBottomMargin() {
 		return owner.getBottomMargin();
 	}
@@ -64,6 +69,7 @@ public class BlockBox extends CompositeBox {
 	/**
 	 * @see FlowBox#getDescent()
 	 */
+	@Override
 	public int getDescent() {
 		return height;
 	}
@@ -75,10 +81,12 @@ public class BlockBox extends CompositeBox {
 		return height;
 	}
 
+	@Override
 	LineRoot getLineRoot() {
 		return null;
 	}
 
+	@Override
 	int getTopMargin() {
 		return owner.getTopMargin();
 	}
@@ -95,6 +103,7 @@ public class BlockBox extends CompositeBox {
 	/**
 	 * @see CompositeBox#setLineTop(int)
 	 */
+	@Override
 	public void setLineTop(int y) {
 		this.y = y;
 	}

@@ -25,6 +25,7 @@ public class EntityPriorityConstraint implements LayoutConstraint {
 	 * 
 	 * @see org.eclipse.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
+	@Override
 	public void clear() {
 		this.priority = 1.0;
 	}

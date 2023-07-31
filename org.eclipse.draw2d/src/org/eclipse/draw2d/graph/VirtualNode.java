@@ -90,6 +90,7 @@ public class VirtualNode extends Node {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		if (data instanceof Edge)
 			return "VN[" + (((Edge) data).vNodes.indexOf(this) + 1) //$NON-NLS-1$

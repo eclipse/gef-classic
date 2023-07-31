@@ -63,6 +63,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#contains(org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public boolean contains(Dimension d) {
 		return preciseWidth() >= d.preciseWidth() && preciseHeight() >= d.preciseHeight();
 	}
@@ -70,6 +71,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#containsProper(org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public boolean containsProper(Dimension d) {
 		return preciseWidth() > d.preciseWidth() && preciseHeight() > d.preciseHeight();
 	}
@@ -77,6 +79,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PrecisionDimension) {
 			PrecisionDimension d = (PrecisionDimension) o;
@@ -88,6 +91,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#expand(org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public Dimension expand(Dimension d) {
 		return expandPrecise(d.preciseWidth(), d.preciseHeight());
 	}
@@ -95,6 +99,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#expand(double, double)
 	 */
+	@Override
 	public Dimension expand(double w, double h) {
 		return expandPrecise(w, h);
 	}
@@ -102,6 +107,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#expand(int, int)
 	 */
+	@Override
 	public Dimension expand(int w, int h) {
 		return expandPrecise(w, h);
 	}
@@ -124,6 +130,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#getCopy()
 	 */
+	@Override
 	public Dimension getCopy() {
 		return getPreciseCopy();
 	}
@@ -144,6 +151,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#intersect(org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public Dimension intersect(Dimension d) {
 		setPreciseWidth(Math.min(d.preciseWidth(), preciseWidth()));
 		setPreciseHeight(Math.min(d.preciseHeight(), preciseHeight()));
@@ -153,6 +161,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#performScale(double)
 	 */
+	@Override
 	public void performScale(double factor) {
 		setPreciseWidth(preciseWidth() * factor);
 		setPreciseHeight(preciseHeight() * factor);
@@ -161,6 +170,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#preciseHeight()
 	 */
+	@Override
 	public double preciseHeight() {
 		updatePreciseHeightDouble();
 		return preciseHeight;
@@ -169,6 +179,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#preciseWidth()
 	 */
+	@Override
 	public double preciseWidth() {
 		updatePreciseWidthDouble();
 		return preciseWidth;
@@ -177,6 +188,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#scale(double, double)
 	 */
+	@Override
 	public Dimension scale(double widthFactor, double heightFactor) {
 		setPreciseWidth(preciseWidth() * widthFactor);
 		setPreciseHeight(preciseHeight() * heightFactor);
@@ -186,6 +198,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#setHeight(int)
 	 */
+	@Override
 	public Dimension setHeight(int h) {
 		return setPreciseHeight(h);
 	}
@@ -244,6 +257,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#setSize(org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public void setSize(Dimension d) {
 		setPreciseSize(d.preciseWidth(), d.preciseHeight());
 	}
@@ -251,6 +265,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#setSize(int, int)
 	 */
+	@Override
 	public Dimension setSize(int w, int h) {
 		return setPreciseSize(w, h);
 	}
@@ -258,6 +273,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#setWidth(int)
 	 */
+	@Override
 	public Dimension setWidth(int width) {
 		return setPreciseWidth(width);
 	}
@@ -265,6 +281,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#shrink(org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public Dimension shrink(Dimension d) {
 		return shrinkPrecise(d.preciseWidth(), d.preciseHeight());
 	}
@@ -272,6 +289,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#shrink(int, int)
 	 */
+	@Override
 	public Dimension shrink(int w, int h) {
 		return shrinkPrecise(w, h);
 	}
@@ -279,6 +297,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#shrink(double, double)
 	 */
+	@Override
 	public Dimension shrink(double w, double h) {
 		return shrinkPrecise(w, h);
 	}
@@ -301,6 +320,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#transpose()
 	 */
+	@Override
 	public Dimension transpose() {
 		double temp = preciseWidth();
 		setPreciseWidth(preciseHeight());
@@ -311,6 +331,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Dimension#union(org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public Dimension union(Dimension d) {
 		setPreciseWidth(Math.max(preciseWidth(), d.preciseWidth()));
 		setPreciseHeight(Math.max(preciseHeight(), d.preciseHeight()));

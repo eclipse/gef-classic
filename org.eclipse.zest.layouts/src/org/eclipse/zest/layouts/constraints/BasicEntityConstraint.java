@@ -34,6 +34,7 @@ public class BasicEntityConstraint implements LayoutConstraint {
 	 * 
 	 * @see org.eclipse.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
+	@Override
 	public void clear() {
 		this.hasPreferredLocation = false;
 		this.hasPreferredSize = false;

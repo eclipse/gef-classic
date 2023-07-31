@@ -52,6 +52,7 @@ public class PinFigure extends Toggle {
 
 		addChangeListener(new ChangeListener() {
 
+			@Override
 			public void handleStateChanged(ChangeEvent e) {
 				if (e.getPropertyName().equals(ButtonModel.SELECTED_PROPERTY)) {
 					if (isSelected()) {
@@ -67,6 +68,7 @@ public class PinFigure extends Toggle {
 		});
 	}
 
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
 

@@ -103,6 +103,7 @@ public class GraphLabel extends CachedLabel {
 	 * 
 	 * @see org.eclipse.draw2d.Figure#setFont(org.eclipse.swt.graphics.Font)
 	 */
+	@Override
 	public void setFont(Font f) {
 		super.setFont(f);
 		adjustBoundsToFit();
@@ -134,6 +135,7 @@ public class GraphLabel extends CachedLabel {
 	 * 
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	public void paint(Graphics graphics) {
 		int blue = getBackgroundColor().getBlue();
 		blue = (int) (blue - (blue * 0.20));
@@ -204,6 +206,7 @@ public class GraphLabel extends CachedLabel {
 		lightenColor.dispose();
 	}
 
+	@Override
 	protected Color getBackgroundTextColor() {
 		return getBackgroundColor();
 	}
@@ -216,6 +219,7 @@ public class GraphLabel extends CachedLabel {
 	 * 
 	 * @see org.eclipse.draw2d.Label#invalidate()
 	 */
+	@Override
 	public void invalidate() {
 		if (!painting) {
 			super.invalidate();
@@ -227,6 +231,7 @@ public class GraphLabel extends CachedLabel {
 	 * 
 	 * @see org.eclipse.draw2d.Label#setText(java.lang.String)
 	 */
+	@Override
 	public void setText(String s) {
 		if (!s.equals("")) {
 			super.setText(s);
@@ -242,6 +247,7 @@ public class GraphLabel extends CachedLabel {
 	 * 
 	 * @see org.eclipse.draw2d.Label#setIcon(org.eclipse.swt.graphics.Image)
 	 */
+	@Override
 	public void setIcon(Image image) {
 		super.setIcon(image);
 		// adjustBoundsToFit();
@@ -271,6 +277,7 @@ public class GraphLabel extends CachedLabel {
 		this.arcWidth = arcWidth;
 	}
 
+	@Override
 	public void setBounds(Rectangle rect) {
 		// TODO Auto-generated method stub
 		super.setBounds(rect);

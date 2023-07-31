@@ -42,6 +42,7 @@ public abstract class SimpleObjectTransfer extends ByteArrayTransfer {
 	 * 
 	 * @see org.eclipse.swt.dnd.Transfer#javaToNative(Object, TransferData)
 	 */
+	@Override
 	public void javaToNative(Object object, TransferData transferData) {
 		setObject(object);
 		startTime = System.currentTimeMillis();
@@ -56,6 +57,7 @@ public abstract class SimpleObjectTransfer extends ByteArrayTransfer {
 	 * 
 	 * @see org.eclipse.swt.dnd.Transfer#nativeToJava(TransferData)
 	 */
+	@Override
 	public Object nativeToJava(TransferData transferData) {
 		byte bytes[] = (byte[]) super.nativeToJava(transferData);
 		if (bytes == null) {

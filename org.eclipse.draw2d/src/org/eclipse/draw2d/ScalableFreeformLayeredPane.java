@@ -55,6 +55,7 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 	/**
 	 * @see org.eclipse.draw2d.IFigure#isCoordinateSystem()
 	 */
+	@Override
 	public boolean isCoordinateSystem() {
 		return true;
 	}

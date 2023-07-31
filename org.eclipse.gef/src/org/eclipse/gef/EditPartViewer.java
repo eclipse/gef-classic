@@ -374,6 +374,7 @@ public interface EditPartViewer extends org.eclipse.jface.viewers.ISelectionProv
 	 * 
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
+	@Override
 	ISelection getSelection();
 
 	/**

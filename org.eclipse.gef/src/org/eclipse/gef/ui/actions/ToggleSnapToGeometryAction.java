@@ -47,6 +47,7 @@ public class ToggleSnapToGeometryAction extends Action {
 	/**
 	 * @see org.eclipse.jface.action.IAction#isChecked()
 	 */
+	@Override
 	public boolean isChecked() {
 		Boolean val = (Boolean) diagramViewer.getProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED);
 		if (val != null)
@@ -57,6 +58,7 @@ public class ToggleSnapToGeometryAction extends Action {
 	/**
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
+	@Override
 	public void run() {
 		diagramViewer.setProperty(SnapToGeometry.PROPERTY_SNAP_ENABLED, Boolean.valueOf(!isChecked()));
 	}

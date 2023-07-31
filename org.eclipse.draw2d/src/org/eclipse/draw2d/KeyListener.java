@@ -37,12 +37,14 @@ public interface KeyListener {
 		/**
 		 * @see org.eclipse.draw2d.KeyListener#keyPressed(KeyEvent)
 		 */
+		@Override
 		public void keyPressed(KeyEvent ke) {
 		}
 
 		/**
 		 * @see org.eclipse.draw2d.KeyListener#keyReleased(KeyEvent)
 		 */
+		@Override
 		public void keyReleased(KeyEvent ke) {
 		}
 

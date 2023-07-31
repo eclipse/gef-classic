@@ -56,6 +56,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 		/**
 		 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 		 */
+		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			String property = evt.getPropertyName();
 			EditPart root = getRootEditPart().getContents();
@@ -114,6 +115,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#createDefaultRoot()
 	 */
+	@Override
 	protected void createDefaultRoot() {
 		setRootEditPart(new SimpleRootEditPart());
 	}

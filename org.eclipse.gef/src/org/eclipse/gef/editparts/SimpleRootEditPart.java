@@ -38,6 +38,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 	}
 
@@ -46,6 +47,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		Figure figure = new Figure();
 		figure.setLayoutManager(new StackLayout());
@@ -58,6 +60,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	 * 
 	 * @see EditPart#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request req) {
 		return UnexecutableCommand.INSTANCE;
 	}
@@ -65,6 +68,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	/**
 	 * @see RootEditPart#getContents()
 	 */
+	@Override
 	public EditPart getContents() {
 		return contents;
 	}
@@ -72,6 +76,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	/**
 	 * @see EditPart#getRoot()
 	 */
+	@Override
 	public RootEditPart getRoot() {
 		return this;
 	}
@@ -79,6 +84,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	/**
 	 * @see EditPart#getViewer()
 	 */
+	@Override
 	public EditPartViewer getViewer() {
 		return viewer;
 	}
@@ -88,12 +94,14 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	 * 
 	 * @see AbstractEditPart#refreshChildren()
 	 */
+	@Override
 	protected void refreshChildren() {
 	}
 
 	/**
 	 * @see RootEditPart#setContents(EditPart)
 	 */
+	@Override
 	public void setContents(EditPart editpart) {
 		if (contents == editpart)
 			return;
@@ -107,6 +115,7 @@ public class SimpleRootEditPart extends AbstractGraphicalEditPart implements Roo
 	/**
 	 * @see RootEditPart#setViewer(EditPartViewer)
 	 */
+	@Override
 	public void setViewer(EditPartViewer newViewer) {
 		if (viewer == newViewer)
 			return;

@@ -39,6 +39,7 @@ package org.eclipse.draw2d.graph;
  */
 public final class CompoundDirectedGraphLayout extends DirectedGraphLayout {
 
+	@Override
 	void init() {
 		steps.add(new CompoundTransposeMetrics());
 		steps.add(new CompoundBreakCycles());

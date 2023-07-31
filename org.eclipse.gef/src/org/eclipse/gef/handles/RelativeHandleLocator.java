@@ -40,6 +40,7 @@ public class RelativeHandleLocator extends org.eclipse.draw2d.RelativeLocator {
 	 * 
 	 * @see org.eclipse.draw2d.RelativeLocator#getReferenceBox()
 	 */
+	@Override
 	protected Rectangle getReferenceBox() {
 		IFigure f = getReferenceFigure();
 		if (f instanceof HandleBounds)

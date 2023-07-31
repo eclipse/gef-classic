@@ -70,12 +70,14 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 		hookControl(this.graph);
 	}
 
+	@Override
 	protected void hookControl(Control control) {
 		super.hookControl(control);
 
 		selectionChangedListeners = new ArrayList();
 		getGraphControl().addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Iterator iterator = selectionChangedListeners.iterator();
 
@@ -93,15 +95,18 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 		control.addMouseListener(new MouseListener() {
 
+			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				DoubleClickEvent doubleClickEvent = new DoubleClickEvent(GraphViewer.this, getSelection());
 				fireDoubleClick(doubleClickEvent);
 			}
 
+			@Override
 			public void mouseDown(MouseEvent e) {
 
 			}
 
+			@Override
 			public void mouseUp(MouseEvent e) {
 
 			}
@@ -124,6 +129,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * @see org.eclipse.zest.core.viewer.internal.AbstractStructuredGraphViewer#
 	 * getGraphControl()
 	 */
+	@Override
 	public Graph getGraphControl() {
 		return super.getGraphControl();
 	};
@@ -134,6 +140,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * @param algorithm the algorithm to layout the nodes
 	 * @param runLayout if the layout should be run
 	 */
+	@Override
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean runLayout) {
 		graph.setLayoutAlgorithm(algorithm, runLayout);
 	}
@@ -144,6 +151,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * @see org.eclipse.zest.core.viewer.internal.AbstractStructuredGraphViewer#
 	 * setLayoutAlgorithm(org.eclipse.zest.layouts.LayoutAlgorithm)
 	 */
+	@Override
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
 		super.setLayoutAlgorithm(algorithm);
 	}
@@ -154,11 +162,13 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * @see org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#setNodeStyle
 	 * (int)
 	 */
+	@Override
 	public void setNodeStyle(int nodeStyle) {
 		super.setNodeStyle(nodeStyle);
 		this.graph.setNodeStyle(nodeStyle);
 	}
 
+	@Override
 	public void setContentProvider(IContentProvider contentProvider) {
 		if (contentProvider instanceof IGraphContentProvider) {
 			modelFactory = null;
@@ -196,23 +206,28 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	/**
 	 * Applys the current layout to the viewer
 	 */
+	@Override
 	public void applyLayout() {
 		graph.applyLayout();
 	}
 
+	@Override
 	protected void setSelectionToWidget(List l, boolean reveal) {
 		GraphItem[] listOfItems = findItems(l);
 		graph.setSelection(listOfItems);
 	}
 
+	@Override
 	public Control getControl() {
 		return graph;
 	}
 
+	@Override
 	public Object[] getNodeElements() {
 		return super.getNodeElements();
 	}
 
+	@Override
 	public Object[] getConnectionElements() {
 		return super.getConnectionElements();
 	}
@@ -224,6 +239,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * org.eclipse.zest.core.viewer.internal.AbstractStructuredGraphViewer#reveal
 	 * (java.lang.Object)
 	 */
+	@Override
 	public void reveal(Object element) {
 		super.reveal(element);
 	}
@@ -234,6 +250,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * @see org.eclipse.zest.core.viewer.internal.AbstractStructuredGraphViewer#
 	 * setConnectionStyle(int)
 	 */
+	@Override
 	public void setConnectionStyle(int connectionStyle) {
 		super.setConnectionStyle(connectionStyle);
 	}
@@ -245,16 +262,19 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * org.eclipse.zest.core.viewer.internal.AbstractStructuredGraphViewer#unReveal
 	 * (java.lang.Object)
 	 */
+	@Override
 	public void unReveal(Object element) {
 		super.unReveal(element);
 	}
 
+	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		if (!selectionChangedListeners.contains(listener)) {
 			selectionChangedListeners.add(listener);
 		}
 	}
 
+	@Override
 	public void removeSelectionChangedListener(ISelectionChangedListener listener) {
 		if (selectionChangedListeners.contains(listener)) {
 			selectionChangedListeners.remove(listener);
@@ -263,6 +283,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	// @tag zest.bug.156286-Zooming.fix.experimental : expose the zoom manager
 	// for new actions.
+	@Override
 	protected ZoomManager getZoomManager() {
 		if (zoomManager == null) {
 			zoomManager = new ZoomManager(getGraphControl().getRootLayer(), getGraphControl().getViewport());
@@ -275,6 +296,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * 
 	 * @see org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
 	 */
+	@Override
 	protected IStylingGraphModelFactory getFactory() {
 		if (modelFactory == null) {
 			if (getContentProvider() instanceof IGraphContentProvider) {
@@ -294,6 +316,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 	 * @see org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#
 	 * getLayoutAlgorithm()
 	 */
+	@Override
 	protected LayoutAlgorithm getLayoutAlgorithm() {
 		return graph.getLayoutAlgorithm();
 	}

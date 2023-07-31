@@ -45,6 +45,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	 * @param reference The reference point
 	 * @return The anchor location
 	 */
+	@Override
 	public Point getLocation(Point reference) {
 		Rectangle r = Rectangle.SINGLETON;
 		r.setBounds(getBox());
@@ -91,6 +92,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	 * 
 	 * @return The reference point
 	 */
+	@Override
 	public Point getReferencePoint() {
 		Point ref = getBox().getCenter();
 		getOwner().translateToAbsolute(ref);
@@ -103,6 +105,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	 * @param obj the other anchor
 	 * @return <code>true</code> if equal
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ChopboxAnchor) {
 			ChopboxAnchor other = (ChopboxAnchor) obj;
@@ -117,6 +120,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	 * 
 	 * @return the hash code.
 	 */
+	@Override
 	public int hashCode() {
 		if (getOwner() != null)
 			return getOwner().hashCode();

@@ -52,6 +52,7 @@ public class MatchSizeAction extends SelectionAction {
 	/**
 	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		Command cmd = createMatchSizeCommand(getSelectedObjects());
 		if (cmd == null)
@@ -155,6 +156,7 @@ public class MatchSizeAction extends SelectionAction {
 	 * viewer, and matching the size of the selected EditPart's Figures to that of
 	 * the Primary Selection's Figure.
 	 */
+	@Override
 	public void run() {
 		execute(createMatchSizeCommand(getSelectedObjects()));
 	}

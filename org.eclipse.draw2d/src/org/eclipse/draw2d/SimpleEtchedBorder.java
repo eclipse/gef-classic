@@ -38,6 +38,7 @@ public final class SimpleEtchedBorder extends SchemeBorder {
 	 * 
 	 * @see Border#getInsets(IFigure)
 	 */
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return new Insets(INSETS);
 	}
@@ -48,6 +49,7 @@ public final class SimpleEtchedBorder extends SchemeBorder {
 	 * 
 	 * @see Border#isOpaque()
 	 */
+	@Override
 	public boolean isOpaque() {
 		return true;
 	}
@@ -55,6 +57,7 @@ public final class SimpleEtchedBorder extends SchemeBorder {
 	/**
 	 * @see Border#paint(IFigure, Graphics, Insets)
 	 */
+	@Override
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		Rectangle rect = getPaintRectangle(figure, insets);
 		FigureUtilities.paintEtchedBorder(g, rect);

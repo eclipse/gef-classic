@@ -42,6 +42,7 @@ public class CommandStackInspectorPage extends org.eclipse.ui.part.Page {
 	/**
 	 * @see org.eclipse.ui.part.Page#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createControl(Composite composite) {
 		treeViewer = new TreeViewer(composite);
 		treeViewer.setContentProvider(new TreeContentProvider(input));
@@ -52,6 +53,7 @@ public class CommandStackInspectorPage extends org.eclipse.ui.part.Page {
 	/**
 	 * @see org.eclipse.ui.part.Page#getControl()
 	 */
+	@Override
 	public Control getControl() {
 		return treeViewer.getControl();
 	}
@@ -61,6 +63,7 @@ public class CommandStackInspectorPage extends org.eclipse.ui.part.Page {
 	 *      org.eclipse.jface.action.IToolBarManager,
 	 *      org.eclipse.jface.action.IStatusLineManager)
 	 */
+	@Override
 	public void makeContributions(IMenuManager menuManager, IToolBarManager toolBarManager,
 			IStatusLineManager statusLineManager) {
 		super.makeContributions(menuManager, toolBarManager, statusLineManager);
@@ -70,6 +73,7 @@ public class CommandStackInspectorPage extends org.eclipse.ui.part.Page {
 	/**
 	 * @see org.eclipse.ui.part.Page#setFocus()
 	 */
+	@Override
 	public void setFocus() {
 		getControl().setFocus();
 	}

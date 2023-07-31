@@ -24,11 +24,13 @@ import org.eclipse.draw2d.geometry.Point;
  */
 public class PolygonShape extends AbstractPointListShape {
 
+	@Override
 	protected boolean shapeContainsPoint(int x, int y) {
 		Point location = getLocation();
 		return Geometry.polygonContainsPoint(points, x - location.x, y - location.y);
 	}
 
+	@Override
 	protected void fillShape(Graphics graphics) {
 		graphics.pushState();
 		graphics.translate(getLocation());
@@ -36,6 +38,7 @@ public class PolygonShape extends AbstractPointListShape {
 		graphics.popState();
 	}
 
+	@Override
 	protected void outlineShape(Graphics graphics) {
 		graphics.pushState();
 		graphics.translate(getLocation());

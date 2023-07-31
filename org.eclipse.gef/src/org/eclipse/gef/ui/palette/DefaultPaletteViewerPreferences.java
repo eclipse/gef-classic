@@ -79,6 +79,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 		store.addPropertyChangeListener(listener);
 
 		fontListener = new IPropertyChangeListener() {
+			@Override
 			public void propertyChange(PropertyChangeEvent event) {
 				if (JFaceResources.DIALOG_FONT.equals(event.getProperty())) {
 					if (getPreferenceStore().getString(PREFERENCE_FONT).equals(DEFAULT_FONT)) {
@@ -97,6 +98,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	 * 
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#addPropertyChangeListener(PropertyChangeListener)
 	 */
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		listeners.addPropertyChangeListener(listener);
 	}
@@ -181,6 +183,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getAutoCollapseSetting()
 	 */
+	@Override
 	public int getAutoCollapseSetting() {
 		return getPreferenceStore().getInt(PREFERENCE_AUTO_COLLAPSE);
 	}
@@ -188,6 +191,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getFontData()
 	 */
+	@Override
 	public FontData getFontData() {
 		if (fontData == null) {
 			String value = getPreferenceStore().getString(PREFERENCE_FONT);
@@ -203,6 +207,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getLayoutSetting()
 	 */
+	@Override
 	public int getLayoutSetting() {
 		return getPreferenceStore().getInt(PREFERENCE_LAYOUT);
 	}
@@ -210,6 +215,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#getSupportedLayoutModes()
 	 */
+	@Override
 	public int[] getSupportedLayoutModes() {
 		return supportedModes;
 	}
@@ -242,6 +248,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#isSupportedLayoutMode(int)
 	 */
+	@Override
 	public boolean isSupportedLayoutMode(int layout) {
 		for (int i = 0; i < supportedModes.length; i++) {
 			if (supportedModes[i] == layout) {
@@ -254,6 +261,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#removePropertyChangeListener(PropertyChangeListener)
 	 */
+	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		listeners.removePropertyChangeListener(listener);
 	}
@@ -261,6 +269,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setAutoCollapseSetting(int)
 	 */
+	@Override
 	public void setAutoCollapseSetting(int newVal) {
 		getPreferenceStore().setValue(PREFERENCE_AUTO_COLLAPSE, newVal);
 	}
@@ -268,6 +277,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setFontData(FontData)
 	 */
+	@Override
 	public void setFontData(FontData data) {
 		fontData = data;
 		String value = data.toString();
@@ -280,6 +290,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setLayoutSetting(int)
 	 */
+	@Override
 	public void setLayoutSetting(int newVal) {
 		getPreferenceStore().setValue(PREFERENCE_LAYOUT, newVal);
 	}
@@ -287,6 +298,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setCurrentUseLargeIcons(boolean)
 	 */
+	@Override
 	public void setCurrentUseLargeIcons(boolean newVal) {
 		setUseLargeIcons(getLayoutSetting(), newVal);
 	}
@@ -300,6 +312,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	 * 
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setSupportedLayoutModes(int[])
 	 */
+	@Override
 	public void setSupportedLayoutModes(int[] modes) {
 		supportedModes = modes;
 		if (!isSupportedLayoutMode(getPreferenceStore().getDefaultInt(PREFERENCE_LAYOUT))) {
@@ -314,6 +327,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#setUseLargeIcons(int,
 	 *      boolean)
 	 */
+	@Override
 	public void setUseLargeIcons(int layout, boolean newVal) {
 		getPreferenceStore().setValue(convertLayoutToPreferenceName(layout), newVal);
 	}
@@ -321,6 +335,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#useLargeIcons(int)
 	 */
+	@Override
 	public boolean useLargeIcons(int layout) {
 		return getPreferenceStore().getBoolean(convertLayoutToPreferenceName(layout));
 	}
@@ -328,6 +343,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 	/**
 	 * @see org.eclipse.gef.ui.palette.PaletteViewerPreferences#useLargeIcons()
 	 */
+	@Override
 	public boolean useLargeIcons() {
 		return useLargeIcons(getLayoutSetting());
 	}
@@ -336,6 +352,7 @@ public class DefaultPaletteViewerPreferences implements PaletteViewerPreferences
 		/**
 		 * @see org.eclipse.jface.util.IPropertyChangeListener#propertyChange(org.eclipse.jface.util.PropertyChangeEvent)
 		 */
+		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			handlePreferenceStorePropertyChanged(evt.getProperty());
 		}

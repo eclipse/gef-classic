@@ -80,6 +80,7 @@ class VirtualNodeCreation extends RevertableChange {
 		graph.removeEdge(edge);
 	}
 
+	@Override
 	void revert() {
 		edge.start = edges[0].start;
 		edge.end = edges[edges.length - 1].end;

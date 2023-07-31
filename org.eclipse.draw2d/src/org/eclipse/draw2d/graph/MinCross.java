@@ -56,6 +56,7 @@ class MinCross extends GraphVisitor {
 	/**
 	 * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
 	 */
+	@Override
 	public void visit(DirectedGraph g) {
 		sorter.init(g);
 		this.g = g;

@@ -56,6 +56,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 	/**
 	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		Splitter splitter = new Splitter(parent, SWT.HORIZONTAL);
 		createPaletteViewer(splitter);
@@ -63,6 +64,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 		splitter.maintainSize(getPaletteViewer().getControl());
 		splitter.setFixedSize(getInitialPaletteSize());
 		splitter.addFixedSizeChangeListener(new PropertyChangeListener() {
+			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				handlePaletteResized(((Splitter) evt.getSource()).getFixedSize());
 			}
@@ -132,6 +134,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 	 * 
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#setEditDomain(org.eclipse.gef.DefaultEditDomain)
 	 */
+	@Override
 	protected void setEditDomain(DefaultEditDomain ed) {
 		super.setEditDomain(ed);
 		getEditDomain().setPaletteRoot(getPaletteRoot());

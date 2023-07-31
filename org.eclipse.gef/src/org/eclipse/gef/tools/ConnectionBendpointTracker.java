@@ -58,6 +58,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
 	 */
+	@Override
 	protected List createOperationSet() {
 		List list = new ArrayList();
 		list.add(getConnectionEditPart());
@@ -69,6 +70,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
 	 */
+	@Override
 	protected Request createSourceRequest() {
 		BendpointRequest request = new BendpointRequest();
 		request.setType(getType());
@@ -82,6 +84,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommand()
 	 */
+	@Override
 	protected Command getCommand() {
 		return getConnectionEditPart().getCommand(getSourceRequest());
 	}
@@ -89,6 +92,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
 	 */
+	@Override
 	protected String getCommandName() {
 		return getType().toString();
 	}
@@ -114,6 +118,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "Bendpoint Handle Tracker " + getCommandName();//$NON-NLS-1$
 	}
@@ -168,6 +173,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	/**
 	 * @see org.eclipse.gef.tools.SimpleDragTracker#updateSourceRequest()
 	 */
+	@Override
 	protected void updateSourceRequest() {
 		BendpointRequest request = (BendpointRequest) getSourceRequest();
 		request.setLocation(getLocation());

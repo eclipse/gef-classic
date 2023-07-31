@@ -265,6 +265,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Translatable#performScale(double)
 	 */
+	@Override
 	public void performScale(double factor) {
 		for (int i = 0; i < points.length; i++)
 			points[i] = (int) Math.floor(points[i] * factor);
@@ -274,6 +275,7 @@ public class PointList implements java.io.Serializable, Translatable {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Translatable#performTranslate(int, int)
 	 */
+	@Override
 	public void performTranslate(int dx, int dy) {
 		for (int i = 0; i < size * 2; i += 2) {
 			points[i] += dx;

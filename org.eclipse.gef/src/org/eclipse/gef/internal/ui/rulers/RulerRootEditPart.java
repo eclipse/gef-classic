@@ -54,6 +54,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#addChildVisual(org.eclipse.gef.EditPart,
 	 *      int)
 	 */
+	@Override
 	protected void addChildVisual(EditPart childEditPart, int index) {
 		IFigure child = ((GraphicalEditPart) childEditPart).getFigure();
 		getViewport().setContents(child);
@@ -62,6 +63,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		return new RulerViewport();
 	}
@@ -91,6 +93,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#removeChildVisual(org.eclipse.gef.EditPart)
 	 */
+	@Override
 	protected void removeChildVisual(EditPart childEditPart) {
 		getViewport().setContents(null);
 	}
@@ -167,6 +170,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		/**
 		 * @see org.eclipse.draw2d.IFigure#getPreferredSize(int, int)
 		 */
+		@Override
 		public Dimension getPreferredSize(int wHint, int hHint) {
 			if (this.getContents() == null)
 				return new Dimension();
@@ -187,12 +191,14 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		 * 
 		 * @see org.eclipse.draw2d.Viewport#readjustScrollBars()
 		 */
+		@Override
 		protected void readjustScrollBars() {
 		}
 
 		/**
 		 * @see org.eclipse.draw2d.Figure#paintBorder(org.eclipse.draw2d.Graphics)
 		 */
+		@Override
 		protected void paintBorder(Graphics graphics) {
 			super.paintBorder(graphics);
 			if (this.getContents() != null && ((RulerFigure) this.getContents()).getDrawFocus()) {
@@ -213,6 +219,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		/**
 		 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 		 */
+		@Override
 		public void propertyChange(PropertyChangeEvent event) {
 			if (this.getContents() != null && event.getSource() instanceof RangeModel) {
 				String property = event.getPropertyName();
@@ -224,6 +231,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		/**
 		 * @see org.eclipse.draw2d.Viewport#setContents(org.eclipse.draw2d.IFigure)
 		 */
+		@Override
 		public void setContents(IFigure figure) {
 			super.setContents(figure);
 			// Need to layout when contents change
@@ -236,6 +244,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		 * 
 		 * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
 		 */
+		@Override
 		protected boolean useLocalCoordinates() {
 			return true;
 		}

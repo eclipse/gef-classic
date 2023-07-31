@@ -26,6 +26,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	protected int rowPadding = 0;
 
+	@Override
 	public void setLayoutArea(double x, double y, double width, double height) {
 		throw new RuntimeException("Operation not implemented");
 	}
@@ -52,11 +53,13 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		this(LayoutStyles.NONE);
 	}
 
+	@Override
 	protected int getCurrentLayoutStep() {
 		// TODO: This isn't right
 		return 0;
 	}
 
+	@Override
 	protected int getTotalNumberOfLayoutSteps() {
 		return totalProgress;
 	}
@@ -64,6 +67,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	/**
 	 * 
 	 */
+	@Override
 	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
 
@@ -122,6 +126,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	 *                          the endpoints for each relationship in
 	 *                          relationshipsToConsider
 	 */
+	@Override
 	protected synchronized void applyLayoutInternal(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth,
 			double boundsHeight) {
@@ -144,6 +149,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		fireProgressEvent(totalProgress, totalProgress);
 	}
 
+	@Override
 	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider) {
 
@@ -235,6 +241,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		this.rowPadding = rowPadding;
 	}
 
+	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if (asynchronous && continueous)
 			return false;

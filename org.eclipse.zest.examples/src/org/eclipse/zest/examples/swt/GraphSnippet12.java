@@ -104,6 +104,7 @@ public class GraphSnippet12 {
 		final Graph g = new Graph(shell, SWT.NONE);
 		g.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Iterator iter = g.getSelection().iterator();
 				while (iter.hasNext()) {
@@ -126,6 +127,7 @@ public class GraphSnippet12 {
 				}
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
 

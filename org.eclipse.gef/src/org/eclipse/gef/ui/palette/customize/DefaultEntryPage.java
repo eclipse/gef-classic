@@ -59,6 +59,7 @@ public class DefaultEntryPage implements EntryPage {
 	 * keystroke. So, there is no need to wait for this method to be called to
 	 * actually make the changes to the model.
 	 */
+	@Override
 	public final void apply() {
 	}
 
@@ -66,6 +67,7 @@ public class DefaultEntryPage implements EntryPage {
 	 * @see org.eclipse.gef.ui.palette.customize.EntryPage#createControl(Composite,
 	 *      PaletteEntry)
 	 */
+	@Override
 	public void createControl(Composite parent, PaletteEntry entry) {
 		this.entry = entry;
 
@@ -105,6 +107,7 @@ public class DefaultEntryPage implements EntryPage {
 		description.setLayoutData(data);
 		if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 			description.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(ModifyEvent e) {
 					handleDescriptionChanged(((Text) e.getSource()).getText());
 				}
@@ -130,6 +133,7 @@ public class DefaultEntryPage implements EntryPage {
 			hidden.setEnabled(false);
 		} else {
 			hidden.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					handleHiddenSelected(((Button) e.getSource()).getSelection());
 				}
@@ -164,6 +168,7 @@ public class DefaultEntryPage implements EntryPage {
 		Text name = createText(panel, SWT.SINGLE | SWT.BORDER, entry.getLabel());
 		if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 			name.addModifyListener(new ModifyListener() {
+				@Override
 				public void modifyText(ModifyEvent e) {
 					handleNameChanged(((Text) e.getSource()).getText());
 				}
@@ -200,6 +205,7 @@ public class DefaultEntryPage implements EntryPage {
 	/**
 	 * @see org.eclipse.gef.ui.palette.customize.EntryPage#getControl()
 	 */
+	@Override
 	public Control getControl() {
 		return panel;
 	}
@@ -288,6 +294,7 @@ public class DefaultEntryPage implements EntryPage {
 	/**
 	 * @see org.eclipse.gef.ui.palette.customize.EntryPage#setPageContainer(EntryPageContainer)
 	 */
+	@Override
 	public void setPageContainer(EntryPageContainer pageContainer) {
 		container = pageContainer;
 	}

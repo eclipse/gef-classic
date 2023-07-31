@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
  */
 public interface IGraphEntityContentProvider extends IStructuredContentProvider {
 
+	@Override
 	public Object[] getElements(Object inputElement);
 
 	/**

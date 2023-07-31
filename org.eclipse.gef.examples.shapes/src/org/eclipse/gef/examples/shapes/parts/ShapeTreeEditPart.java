@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.parts;
 
 import java.beans.PropertyChangeEvent;
@@ -46,6 +46,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
 	/**
 	 * Upon activation, attach to the model element as a property change listener.
 	 */
+	@Override
 	public void activate() {
 		if (!isActive()) {
 			super.activate();
@@ -58,6 +59,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractTreeEditPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 		// allow removal of the associated model element
 		installEditPolicy(EditPolicy.COMPONENT_ROLE, new ShapeComponentEditPolicy());
@@ -67,6 +69,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
 	 * Upon deactivation, detach from the model element as a property change
 	 * listener.
 	 */
+	@Override
 	public void deactivate() {
 		if (isActive()) {
 			super.deactivate();
@@ -83,6 +86,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractTreeEditPart#getImage()
 	 */
+	@Override
 	protected Image getImage() {
 		return getCastedModel().getIcon();
 	}
@@ -92,6 +96,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
 	 * 
 	 * @see org.eclipse.gef.editparts.AbstractTreeEditPart#getText()
 	 */
+	@Override
 	protected String getText() {
 		return getCastedModel().toString();
 	}
@@ -102,6 +107,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
 	 * PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		refreshVisuals(); // this will cause an invocation of getImage() and
 							// getText(), see below

@@ -40,6 +40,7 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#activate()
 	 */
+	@Override
 	public void activate() {
 		super.activate();
 		addSelectionListener();
@@ -52,6 +53,7 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	 */
 	protected void addSelectionListener() {
 		selectionListener = new EditPartListener.Stub() {
+			@Override
 			public void selectedStateChanged(EditPart part) {
 				setSelectedState(part.getSelected());
 				setFocus(part.hasFocus());
@@ -66,6 +68,7 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		removeSelectionListener();
 		setSelectedState(EditPart.SELECTED_NONE);
@@ -76,6 +79,7 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		if (RequestConstants.REQ_SELECTION.equals(request.getType()))
 			return getHost();

@@ -24,6 +24,7 @@ public abstract class ContentBox extends FlowBox {
 	/**
 	 * @see FlowBox#getBaseline()
 	 */
+	@Override
 	public int getBaseline() {
 		return lineRoot.getBaseline();
 	}
@@ -39,6 +40,7 @@ public abstract class ContentBox extends FlowBox {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowBox#getLineRoot()
 	 */
+	@Override
 	LineRoot getLineRoot() {
 		return lineRoot;
 	}
@@ -49,6 +51,7 @@ public abstract class ContentBox extends FlowBox {
 	 * 
 	 * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
 	 */
+	@Override
 	public boolean requiresBidi() {
 		return bidiLevel > 0;
 	}
@@ -65,6 +68,7 @@ public abstract class ContentBox extends FlowBox {
 		bidiLevel = newLevel;
 	}
 
+	@Override
 	void setLineRoot(LineRoot root) {
 		this.lineRoot = root;
 	}

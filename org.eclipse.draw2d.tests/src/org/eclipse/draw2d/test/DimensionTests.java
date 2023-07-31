@@ -6,13 +6,14 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *     Alexander Ny�en (itemis AG) - initial API and implementation
+ *     Alexander Nyßen (itemis AG) - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
+import org.eclipse.swt.graphics.Image;
+
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.swt.graphics.Image;
 
 import org.junit.Test;
 

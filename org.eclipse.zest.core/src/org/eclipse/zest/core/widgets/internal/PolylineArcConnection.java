@@ -44,6 +44,7 @@ public class PolylineArcConnection extends PolylineConnection {
 	 * @see
 	 * org.eclipse.draw2d.Polyline#setPoints(org.eclipse.draw2d.geometry.PointList )
 	 */
+	@Override
 	public void setPoints(PointList points) {
 		updateArc(points);
 	}
@@ -52,6 +53,7 @@ public class PolylineArcConnection extends PolylineConnection {
 	 * This method is not supported by this kind of connection. Points are
 	 * calculated based on the arc definition.
 	 */
+	@Override
 	public void addPoint(Point pt) {
 	}
 

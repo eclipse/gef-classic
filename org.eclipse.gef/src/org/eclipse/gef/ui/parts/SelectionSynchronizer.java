@@ -86,6 +86,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 * 
 	 * @param event the selection event
 	 */
+	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		if (isDispatching)
 			return;

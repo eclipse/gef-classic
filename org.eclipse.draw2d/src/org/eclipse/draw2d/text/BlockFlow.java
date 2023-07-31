@@ -59,6 +59,7 @@ public class BlockFlow extends FlowFigure {
 	 * 
 	 * @see org.eclipse.draw2d.text.FlowFigure#contributeBidi(org.eclipse.draw2d.text.BidiProcessor)
 	 */
+	@Override
 	protected void contributeBidi(BidiProcessor proc) {
 		proc.addControlChar(BidiChars.P_SEP);
 	}
@@ -70,6 +71,7 @@ public class BlockFlow extends FlowFigure {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowFigure#createDefaultFlowLayout()
 	 */
+	@Override
 	protected FlowFigureLayout createDefaultFlowLayout() {
 		return new BlockFlowLayout(this);
 	}
@@ -187,6 +189,7 @@ public class BlockFlow extends FlowFigure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintBorder(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	public void paintBorder(Graphics graphics) {
 		if (getBorder() instanceof FlowBorder) {
 			Rectangle where = getBlockBox().toRectangle();
@@ -205,6 +208,7 @@ public class BlockFlow extends FlowFigure {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowFigure#postValidate()
 	 */
+	@Override
 	public void postValidate() {
 		Rectangle newBounds = getBlockBox().toRectangle();
 		newBounds.crop(new Insets(getTopMargin(), getLeftMargin(), getBottomMargin(), getRightMargin()));
@@ -214,6 +218,7 @@ public class BlockFlow extends FlowFigure {
 	/**
 	 * @see FlowFigure#revalidate()
 	 */
+	@Override
 	public void revalidate() {
 		BlockFlowLayout layout = (BlockFlowLayout) getLayoutManager();
 		layout.blockContentsChanged();
@@ -226,6 +231,7 @@ public class BlockFlow extends FlowFigure {
 	 * 
 	 * @see org.eclipse.draw2d.text.FlowFigure#revalidateBidi(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	protected void revalidateBidi(IFigure origin) {
 		if (bidiValid) {
 			bidiValid = false;
@@ -284,6 +290,7 @@ public class BlockFlow extends FlowFigure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
 	 */
+	@Override
 	protected boolean useLocalCoordinates() {
 		return true;
 	}
@@ -293,6 +300,7 @@ public class BlockFlow extends FlowFigure {
 	 * 
 	 * @see org.eclipse.draw2d.IFigure#validate()
 	 */
+	@Override
 	public void validate() {
 		if (!bidiValid) {
 			BidiProcessor.INSTANCE.setOrientation(getOrientation());

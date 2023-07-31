@@ -23,6 +23,7 @@ import org.junit.Test;
 public class ThumbnailTest extends Assert {
 
 	class TestThumbnail extends Thumbnail {
+		@Override
 		public Image getThumbnailImage() {
 			return super.getThumbnailImage();
 		}

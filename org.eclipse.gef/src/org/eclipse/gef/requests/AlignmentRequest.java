@@ -107,6 +107,7 @@ public class AlignmentRequest extends ChangeBoundsRequest {
 	/**
 	 * @see ChangeBoundsRequest#getTransformedRectangle(Rectangle)
 	 */
+	@Override
 	public Rectangle getTransformedRectangle(Rectangle rect) {
 		Rectangle result = rect.getCopy();
 		Rectangle reference = getAlignmentRectangle();

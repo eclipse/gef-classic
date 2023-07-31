@@ -37,6 +37,7 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 	/**
 	 * @see org.eclipse.draw2d.FlowLayout#getChildSize(IFigure, int, int)
 	 */
+	@Override
 	protected Dimension getChildSize(IFigure child, int wHint, int hHint) {
 		if (!(child instanceof SeparatorEditPart.SeparatorFigure)) {
 			Dimension hints = getMinimumHints(child, wHint, hHint);
@@ -77,6 +78,7 @@ public class ColumnsLayout extends PaletteContainerFlowLayout {
 	/**
 	 * @see org.eclipse.draw2d.AbstractHintLayout#invalidate()
 	 */
+	@Override
 	public void invalidate() {
 		super.invalidate();
 		cachedConstraint = null;

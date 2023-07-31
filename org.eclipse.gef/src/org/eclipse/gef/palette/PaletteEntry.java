@@ -418,6 +418,7 @@ public class PaletteEntry {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "Palette Entry (" + (label != null ? label : "") //$NON-NLS-2$//$NON-NLS-1$
 				+ ")"; //$NON-NLS-1$

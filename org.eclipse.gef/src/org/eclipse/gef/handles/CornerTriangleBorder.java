@@ -46,6 +46,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	 * 
 	 * @see org.eclipse.draw2d.Border#isOpaque()
 	 */
+	@Override
 	public boolean isOpaque() {
 		return true;
 	}
@@ -53,6 +54,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	/**
 	 * @see org.eclipse.draw2d.Border#getInsets(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return new Insets(1);
 	}
@@ -65,6 +67,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	 * @param graphics The <code>Graphics</code>.
 	 * @param insets   The <code>Insets</code>.
 	 */
+	@Override
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		// Don't paint the center of the figure.
 		int width = 1, edgeSize;

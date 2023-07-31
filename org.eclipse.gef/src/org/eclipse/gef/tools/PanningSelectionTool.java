@@ -55,6 +55,7 @@ public class PanningSelectionTool extends SelectionTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "Panning Tool";//$NON-NLS-1$
 	}
@@ -62,6 +63,7 @@ public class PanningSelectionTool extends SelectionTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugNameForState(int)
 	 */
+	@Override
 	protected String getDebugNameForState(int state) {
 		if (state == PAN)
 			return "Pan Initial"; //$NON-NLS-1$
@@ -76,6 +78,7 @@ public class PanningSelectionTool extends SelectionTool {
 	 * @see #setDefaultCursor(Cursor)
 	 * @return the default cursor
 	 */
+	@Override
 	protected Cursor getDefaultCursor() {
 		if (isInState(PAN | PAN_IN_PROGRESS))
 			return SharedCursors.HAND;
@@ -85,6 +88,7 @@ public class PanningSelectionTool extends SelectionTool {
 	/**
 	 * @see org.eclipse.gef.tools.SelectionTool#handleButtonDown(int)
 	 */
+	@Override
 	protected boolean handleButtonDown(int which) {
 		if (which == 1 && getCurrentViewer().getControl() instanceof FigureCanvas
 				&& stateTransition(PAN, PAN_IN_PROGRESS)) {
@@ -97,6 +101,7 @@ public class PanningSelectionTool extends SelectionTool {
 	/**
 	 * @see org.eclipse.gef.tools.SelectionTool#handleButtonUp(int)
 	 */
+	@Override
 	protected boolean handleButtonUp(int which) {
 		if (which == 1 && isSpaceBarDown && stateTransition(PAN_IN_PROGRESS, PAN))
 			return true;
@@ -111,6 +116,7 @@ public class PanningSelectionTool extends SelectionTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDrag()
 	 */
+	@Override
 	protected boolean handleDrag() {
 		if (isInState(PAN_IN_PROGRESS) && getCurrentViewer().getControl() instanceof FigureCanvas) {
 			FigureCanvas canvas = (FigureCanvas) getCurrentViewer().getControl();
@@ -124,6 +130,7 @@ public class PanningSelectionTool extends SelectionTool {
 	/**
 	 * @see org.eclipse.gef.tools.SelectionTool#handleFocusLost()
 	 */
+	@Override
 	protected boolean handleFocusLost() {
 		if (isInState(PAN | PAN_IN_PROGRESS)) {
 			setState(STATE_INITIAL);
@@ -136,6 +143,7 @@ public class PanningSelectionTool extends SelectionTool {
 	/**
 	 * @see org.eclipse.gef.tools.SelectionTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	protected boolean handleKeyDown(KeyEvent e) {
 		if (acceptSpaceBar(e)) {
 			isSpaceBarDown = true;
@@ -157,6 +165,7 @@ public class PanningSelectionTool extends SelectionTool {
 	/**
 	 * @see org.eclipse.gef.tools.SelectionTool#handleKeyUp(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	protected boolean handleKeyUp(KeyEvent e) {
 		if (acceptSpaceBar(e)) {
 			isSpaceBarDown = false;

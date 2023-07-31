@@ -36,6 +36,7 @@ public class GraphJFaceSnippet8 {
 
 	static class MyContentProvider implements IGraphEntityContentProvider {
 
+		@Override
 		public Object[] getConnectedTo(Object entity) {
 			if (entity.equals("First")) {
 				return new Object[] { "First", "Second" };
@@ -49,6 +50,7 @@ public class GraphJFaceSnippet8 {
 			return null;
 		}
 
+		@Override
 		public Object[] getElements(Object inputElement) {
 			return new String[] { "First", "Second", "Third" };
 		}
@@ -57,10 +59,12 @@ public class GraphJFaceSnippet8 {
 			return 0;
 		}
 
+		@Override
 		public void dispose() {
 
 		}
 
+		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
 		}
@@ -68,14 +72,17 @@ public class GraphJFaceSnippet8 {
 
 	static class MyLabelProvider extends LabelProvider implements ISelfStyleProvider {
 
+		@Override
 		public Image getImage(Object element) {
 			return null;
 		}
 
+		@Override
 		public String getText(Object element) {
 			return element.toString();
 		}
 
+		@Override
 		public void selfStyleConnection(Object element, GraphConnection connection) {
 			connection.setLineStyle(SWT.LINE_CUSTOM);
 			PolylineConnection pc = (PolylineConnection) connection.getConnectionFigure();
@@ -86,6 +93,7 @@ public class GraphJFaceSnippet8 {
 
 		private PolygonDecoration createDecoration(final Color color) {
 			PolygonDecoration decoration = new PolygonDecoration() {
+				@Override
 				protected void fillShape(Graphics g) {
 					g.setBackgroundColor(color);
 					super.fillShape(g);
@@ -96,6 +104,7 @@ public class GraphJFaceSnippet8 {
 			return decoration;
 		}
 
+		@Override
 		public void selfStyleNode(Object element, GraphNode node) {
 		}
 

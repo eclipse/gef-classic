@@ -26,10 +26,12 @@ public class ShapeTest extends Assert {
 		attributes.style = SWT.LINE_DASHDOT;
 		Shape shape = new Shape() {
 
+			@Override
 			protected void fillShape(Graphics graphics) {
 				// NOTHING TO DO
 			}
 
+			@Override
 			protected void outlineShape(Graphics graphics) {
 				// NOTHING TO DO
 			}
@@ -44,10 +46,12 @@ public class ShapeTest extends Assert {
 		LineAttributes attributes = new LineAttributes(4);
 		Shape shape = new Shape() {
 
+			@Override
 			protected void fillShape(Graphics graphics) {
 				// NOTHING TO DO
 			}
 
+			@Override
 			protected void outlineShape(Graphics graphics) {
 				// NOTHING TO DO
 			}

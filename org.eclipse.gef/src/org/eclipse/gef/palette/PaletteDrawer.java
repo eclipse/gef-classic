@@ -81,6 +81,7 @@ public class PaletteDrawer extends PaletteContainer {
 	 * @param type the type being requested
 	 * @return true if this can be a child of this container
 	 */
+	@Override
 	public boolean acceptsType(Object type) {
 		if (type.equals(PALETTE_TYPE_DRAWER) || type.equals(PaletteGroup.PALETTE_TYPE_GROUP))
 			return false;

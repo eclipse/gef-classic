@@ -88,6 +88,7 @@ public class RulerFigure extends Figure {
 		return drawFocus;
 	}
 
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		Dimension prefSize = new Dimension();
 		if (isHorizontal()) {
@@ -113,6 +114,7 @@ public class RulerFigure extends Figure {
 	 * 
 	 * @see org.eclipse.draw2d.Figure#invalidate()
 	 */
+	@Override
 	public void invalidate() {
 		super.invalidate();
 		dpu = -1.0;
@@ -131,6 +133,7 @@ public class RulerFigure extends Figure {
 	 * 
 	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		/*
 		 * @TODO:Pratik maybe you can break this method into a few methods. that might

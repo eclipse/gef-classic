@@ -33,6 +33,7 @@ public class PaletteDrawerFactory extends PaletteContainerFactory {
 	/**
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
 	 */
+	@Override
 	protected PaletteEntry createNewEntry(Shell shell) {
 		PaletteEntry entry = new PaletteDrawer(PaletteMessages.NEW_DRAWER_LABEL);
 		entry.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
@@ -42,6 +43,7 @@ public class PaletteDrawerFactory extends PaletteContainerFactory {
 	/**
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
 	 */
+	@Override
 	protected Object determineTypeForNewEntry(PaletteEntry selected) {
 		return PaletteDrawer.PALETTE_TYPE_DRAWER;
 	}

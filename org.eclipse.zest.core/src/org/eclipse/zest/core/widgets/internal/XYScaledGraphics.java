@@ -60,10 +60,12 @@ public class XYScaledGraphics extends ScaledGraphics {
 			this.height = height;
 		}
 
+		@Override
 		public boolean equals(Object obj) {
 			return (((FontKey) obj).font.equals(font) && ((FontKey) obj).height == height);
 		}
 
+		@Override
 		public int hashCode() {
 			return font.hashCode() ^ height;
 		}
@@ -170,6 +172,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#clipRect(Rectangle) */
+	@Override
 	public void clipRect(Rectangle r) {
 		graphics.clipRect(zoomClipRect(r));
 	}
@@ -179,6 +182,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#dispose() */
+	@Override
 	public void dispose() {
 		// Remove all states from the stack
 		while (stackPointer > 0) {
@@ -195,6 +199,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#drawArc(int, int, int, int, int, int) */
+	@Override
 	public void drawArc(int x, int y, int w, int h, int offset, int sweep) {
 		Rectangle z = zoomRect(x, y, w, h);
 		if (z.isEmpty() || sweep == 0) {
@@ -204,11 +209,13 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#drawFocus(int, int, int, int) */
+	@Override
 	public void drawFocus(int x, int y, int w, int h) {
 		graphics.drawFocus(zoomRect(x, y, w, h));
 	}
 
 	/** @see Graphics#drawImage(Image, int, int) */
+	@Override
 	public void drawImage(Image srcImage, int x, int y) {
 		org.eclipse.swt.graphics.Rectangle size = srcImage.getBounds();
 		double imageZoom = Math.min(xZoom, yZoom);
@@ -219,6 +226,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#drawImage(Image, int, int, int, int, int, int, int, int) */
+	@Override
 	public void drawImage(Image srcImage, int sx, int sy, int sw, int sh, int tx, int ty, int tw, int th) {
 		// "t" == target rectangle, "s" = source
 
@@ -229,6 +237,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#drawLine(int, int, int, int) */
+	@Override
 	public void drawLine(int x1, int y1, int x2, int y2) {
 		graphics.drawLine((int) (Math.floor((x1 * xZoom + fractionalX))),
 				(int) (Math.floor((y1 * yZoom + fractionalY))), (int) (Math.floor((x2 * xZoom + fractionalX))),
@@ -236,11 +245,13 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#drawOval(int, int, int, int) */
+	@Override
 	public void drawOval(int x, int y, int w, int h) {
 		graphics.drawOval(zoomRect(x, y, w, h));
 	}
 
 	/** @see Graphics#drawPoint(int, int) */
+	@Override
 	public void drawPoint(int x, int y) {
 		graphics.drawPoint((int) Math.floor(x * xZoom + fractionalX), (int) Math.floor(y * yZoom + fractionalY));
 	}
@@ -248,11 +259,13 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#drawPolygon(int[])
 	 */
+	@Override
 	public void drawPolygon(int[] points) {
 		graphics.drawPolygon(zoomPointList(points));
 	}
 
 	/** @see Graphics#drawPolygon(PointList) */
+	@Override
 	public void drawPolygon(PointList points) {
 		graphics.drawPolygon(zoomPointList(points.toIntArray()));
 	}
@@ -260,27 +273,32 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#drawPolyline(int[])
 	 */
+	@Override
 	public void drawPolyline(int[] points) {
 		graphics.drawPolyline(zoomPointList(points));
 	}
 
 	/** @see Graphics#drawPolyline(PointList) */
+	@Override
 	public void drawPolyline(PointList points) {
 		graphics.drawPolyline(zoomPointList(points.toIntArray()));
 	}
 
 	/** @see Graphics#drawRectangle(int, int, int, int) */
+	@Override
 	public void drawRectangle(int x, int y, int w, int h) {
 		graphics.drawRectangle(zoomRect(x, y, w, h));
 	}
 
 	/** @see Graphics#drawRoundRectangle(Rectangle, int, int) */
+	@Override
 	public void drawRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 		graphics.drawRoundRectangle(zoomRect(r.x, r.y, r.width, r.height), (int) (arcWidth * xZoom),
 				(int) (arcHeight * yZoom));
 	}
 
 	/** @see Graphics#drawString(String, int, int) */
+	@Override
 	public void drawString(String s, int x, int y) {
 		if (allowText) {
 			graphics.drawString(s, zoomTextPoint(x, y));
@@ -288,6 +306,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#drawText(String, int, int) */
+	@Override
 	public void drawText(String s, int x, int y) {
 		if (allowText) {
 			graphics.drawText(s, zoomTextPoint(x, y));
@@ -297,6 +316,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#drawText(String, int, int, int)
 	 */
+	@Override
 	public void drawText(String s, int x, int y, int style) {
 		if (allowText) {
 			graphics.drawText(s, zoomTextPoint(x, y), style);
@@ -306,6 +326,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#drawTextLayout(TextLayout, int, int, int, int, Color, Color)
 	 */
+	@Override
 	public void drawTextLayout(TextLayout layout, int x, int y, int selectionStart, int selectionEnd,
 			Color selectionForeground, Color selectionBackground) {
 		TextLayout scaled = zoomTextLayout(layout);
@@ -316,6 +337,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#fillArc(int, int, int, int, int, int) */
+	@Override
 	public void fillArc(int x, int y, int w, int h, int offset, int sweep) {
 		Rectangle z = zoomFillRect(x, y, w, h);
 		if (z.isEmpty() || sweep == 0) {
@@ -325,11 +347,13 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#fillGradient(int, int, int, int, boolean) */
+	@Override
 	public void fillGradient(int x, int y, int w, int h, boolean vertical) {
 		graphics.fillGradient(zoomFillRect(x, y, w, h), vertical);
 	}
 
 	/** @see Graphics#fillOval(int, int, int, int) */
+	@Override
 	public void fillOval(int x, int y, int w, int h) {
 		graphics.fillOval(zoomFillRect(x, y, w, h));
 	}
@@ -337,27 +361,32 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#fillPolygon(int[])
 	 */
+	@Override
 	public void fillPolygon(int[] points) {
 		graphics.fillPolygon(zoomPointList(points));
 	}
 
 	/** @see Graphics#fillPolygon(PointList) */
+	@Override
 	public void fillPolygon(PointList points) {
 		graphics.fillPolygon(zoomPointList(points.toIntArray()));
 	}
 
 	/** @see Graphics#fillRectangle(int, int, int, int) */
+	@Override
 	public void fillRectangle(int x, int y, int w, int h) {
 		graphics.fillRectangle(zoomFillRect(x, y, w, h));
 	}
 
 	/** @see Graphics#fillRoundRectangle(Rectangle, int, int) */
+	@Override
 	public void fillRoundRectangle(Rectangle r, int arcWidth, int arcHeight) {
 		graphics.fillRoundRectangle(zoomFillRect(r.x, r.y, r.width, r.height), (int) (arcWidth * xZoom),
 				(int) (arcHeight * yZoom));
 	}
 
 	/** @see Graphics#fillString(String, int, int) */
+	@Override
 	public void fillString(String s, int x, int y) {
 		if (allowText) {
 			graphics.fillString(s, zoomTextPoint(x, y));
@@ -365,6 +394,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#fillText(String, int, int) */
+	@Override
 	public void fillText(String s, int x, int y) {
 		if (allowText) {
 			graphics.fillText(s, zoomTextPoint(x, y));
@@ -374,6 +404,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#getAbsoluteScale()
 	 */
+	@Override
 	public double getAbsoluteScale() {
 		return xZoom * graphics.getAbsoluteScale();
 	}
@@ -381,6 +412,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#getAlpha()
 	 */
+	@Override
 	public int getAlpha() {
 		return graphics.getAlpha();
 	}
@@ -388,11 +420,13 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#getAntialias()
 	 */
+	@Override
 	public int getAntialias() {
 		return graphics.getAntialias();
 	}
 
 	/** @see Graphics#getBackgroundColor() */
+	@Override
 	public Color getBackgroundColor() {
 		return graphics.getBackgroundColor();
 	}
@@ -421,6 +455,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#getClip(Rectangle) */
+	@Override
 	public Rectangle getClip(Rectangle rect) {
 		graphics.getClip(rect);
 		int x = (int) (rect.x / xZoom);
@@ -441,21 +476,25 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#getFillRule()
 	 */
+	@Override
 	public int getFillRule() {
 		return graphics.getFillRule();
 	}
 
 	/** @see Graphics#getFont() */
+	@Override
 	public Font getFont() {
 		return getLocalFont();
 	}
 
 	/** @see Graphics#getFontMetrics() */
+	@Override
 	public FontMetrics getFontMetrics() {
 		return FigureUtilities.getFontMetrics(localFont);
 	}
 
 	/** @see Graphics#getForegroundColor() */
+	@Override
 	public Color getForegroundColor() {
 		return graphics.getForegroundColor();
 	}
@@ -463,6 +502,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#getInterpolation()
 	 */
+	@Override
 	public int getInterpolation() {
 		return graphics.getInterpolation();
 	}
@@ -470,6 +510,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#getLineCap()
 	 */
+	@Override
 	public int getLineCap() {
 		return graphics.getLineCap();
 	}
@@ -477,16 +518,19 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#getLineJoin()
 	 */
+	@Override
 	public int getLineJoin() {
 		return graphics.getLineJoin();
 	}
 
 	/** @see Graphics#getLineStyle() */
+	@Override
 	public int getLineStyle() {
 		return graphics.getLineStyle();
 	}
 
 	/** @see Graphics#getLineWidth() */
+	@Override
 	public int getLineWidth() {
 		return getLocalLineWidth();
 	}
@@ -502,16 +546,19 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#getTextAntialias()
 	 */
+	@Override
 	public int getTextAntialias() {
 		return graphics.getTextAntialias();
 	}
 
 	/** @see Graphics#getXORMode() */
+	@Override
 	public boolean getXORMode() {
 		return graphics.getXORMode();
 	}
 
 	/** @see Graphics#popState() */
+	@Override
 	public void popState() {
 		graphics.popState();
 		stackPointer--;
@@ -519,6 +566,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#pushState() */
+	@Override
 	public void pushState() {
 		State s;
 		if (stack.size() > stackPointer) {
@@ -541,6 +589,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#restoreState() */
+	@Override
 	public void restoreState() {
 		graphics.restoreState();
 		restoreLocalState((State) stack.get(stackPointer - 1));
@@ -552,6 +601,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	}
 
 	/** @see Graphics#scale(double) */
+	@Override
 	public void scale(double amount) {
 		// setScale(zoom * amount);
 		throw new RuntimeException("Operation not supported, use scale(x, y)");
@@ -560,6 +610,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#setAlpha(int)
 	 */
+	@Override
 	public void setAlpha(int alpha) {
 		graphics.setAlpha(alpha);
 	}
@@ -567,16 +618,19 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#setAntialias(int)
 	 */
+	@Override
 	public void setAntialias(int value) {
 		graphics.setAntialias(value);
 	}
 
 	/** @see Graphics#setBackgroundColor(Color) */
+	@Override
 	public void setBackgroundColor(Color rgb) {
 		graphics.setBackgroundColor(rgb);
 	}
 
 	/** @see Graphics#setClip(Rectangle) */
+	@Override
 	public void setClip(Rectangle r) {
 		graphics.setClip(zoomClipRect(r));
 	}
@@ -584,16 +638,19 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#setFillRule(int)
 	 */
+	@Override
 	public void setFillRule(int rule) {
 		graphics.setFillRule(rule);
 	}
 
 	/** @see Graphics#setFont(Font) */
+	@Override
 	public void setFont(Font f) {
 		setLocalFont(f);
 	}
 
 	/** @see Graphics#setForegroundColor(Color) */
+	@Override
 	public void setForegroundColor(Color rgb) {
 		graphics.setForegroundColor(rgb);
 	}
@@ -601,6 +658,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see org.eclipse.draw2d.Graphics#setInterpolation(int)
 	 */
+	@Override
 	public void setInterpolation(int interpolation) {
 		graphics.setInterpolation(interpolation);
 	}
@@ -608,6 +666,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#setLineCap(int)
 	 */
+	@Override
 	public void setLineCap(int cap) {
 		graphics.setLineCap(cap);
 	}
@@ -615,6 +674,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#setLineDash(int[])
 	 */
+	@Override
 	public void setLineDash(int[] dash) {
 		graphics.setLineDash(dash);
 	}
@@ -622,16 +682,19 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#setLineJoin(int)
 	 */
+	@Override
 	public void setLineJoin(int join) {
 		graphics.setLineJoin(join);
 	}
 
 	/** @see Graphics#setLineStyle(int) */
+	@Override
 	public void setLineStyle(int style) {
 		graphics.setLineStyle(style);
 	}
 
 	/** @see Graphics#setLineWidth(int) */
+	@Override
 	public void setLineWidth(int width) {
 		setLocalLineWidth(width);
 	}
@@ -669,16 +732,19 @@ public class XYScaledGraphics extends ScaledGraphics {
 	/**
 	 * @see Graphics#setTextAntialias(int)
 	 */
+	@Override
 	public void setTextAntialias(int value) {
 		graphics.setTextAntialias(value);
 	}
 
 	/** @see Graphics#setXORMode(boolean) */
+	@Override
 	public void setXORMode(boolean b) {
 		graphics.setXORMode(b);
 	}
 
 	/** @see Graphics#translate(int, int) */
+	@Override
 	public void translate(int dx, int dy) {
 		// fractionalX/Y is the fractional part left over from previous
 		// translates that gets lost in the integer approximation.

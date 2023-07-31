@@ -37,14 +37,17 @@ class DropShadowButtonBorder extends AbstractBorder {
 	 * @param figure Figure for which this is the border.
 	 * @return Insets for this border.
 	 */
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return insets;
 	}
 
+	@Override
 	public boolean isOpaque() {
 		return true;
 	}
 
+	@Override
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		ButtonModel model = ((Clickable) figure).getModel();
 		Rectangle r = getPaintRectangle(figure, insets);

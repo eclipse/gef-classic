@@ -50,6 +50,7 @@ public class MoveHandleLocator implements Locator {
 	 * 
 	 * @param target The IFigure to relocate
 	 */
+	@Override
 	public void relocate(IFigure target) {
 		Insets insets = target.getInsets();
 		Rectangle bounds;

@@ -55,6 +55,7 @@ public abstract class CachedLabel extends Label {
 	 * 
 	 * @see org.eclipse.draw2d.Label#setIcon(org.eclipse.swt.graphics.Image)
 	 */
+	@Override
 	public void setIcon(Image image) {
 		updateInvalidation();
 		super.setIcon(image);
@@ -66,6 +67,7 @@ public abstract class CachedLabel extends Label {
 	 * @see
 	 * org.eclipse.draw2d.Figure#setForegroundColor(org.eclipse.swt.graphics.Color)
 	 */
+	@Override
 	public void setForegroundColor(Color fg) {
 		updateInvalidation();
 		super.setForegroundColor(fg);
@@ -77,6 +79,7 @@ public abstract class CachedLabel extends Label {
 	 * @see
 	 * org.eclipse.draw2d.Figure#setBackgroundColor(org.eclipse.swt.graphics.Color)
 	 */
+	@Override
 	public void setBackgroundColor(Color bg) {
 		updateInvalidation();
 		super.setBackgroundColor(bg);
@@ -87,6 +90,7 @@ public abstract class CachedLabel extends Label {
 	 * 
 	 * @see org.eclipse.draw2d.Figure#setFont(org.eclipse.swt.graphics.Font)
 	 */
+	@Override
 	public void setFont(Font f) {
 		updateInvalidation();
 		super.setFont(f);
@@ -97,6 +101,7 @@ public abstract class CachedLabel extends Label {
 	 * 
 	 * @see org.eclipse.draw2d.Label#setText(java.lang.String)
 	 */
+	@Override
 	public void setText(String s) {
 		updateInvalidation();
 		super.setText(s);
@@ -107,6 +112,7 @@ public abstract class CachedLabel extends Label {
 	 * 
 	 * @see org.eclipse.draw2d.Figure#setSize(int, int)
 	 */
+	@Override
 	public void setSize(int w, int h) {
 		updateInvalidation();
 
@@ -122,6 +128,7 @@ public abstract class CachedLabel extends Label {
 	 * @see
 	 * org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	public void setBounds(Rectangle rect) {
 		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height);
 
@@ -151,6 +158,7 @@ public abstract class CachedLabel extends Label {
 	 */
 	static Rectangle tempRect = new Rectangle();
 
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		if (graphics.getClass() == ScaledGraphics.class) {
 			if (((ScaledGraphics) graphics).getAbsoluteScale() < 0.30) {

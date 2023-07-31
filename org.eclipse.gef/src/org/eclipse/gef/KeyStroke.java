@@ -137,6 +137,7 @@ public class KeyStroke {
 	 * @return true iff the Object is an equivalent KeyStroke
 	 * @param obj the Object being compared
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof KeyStroke) {
 			KeyStroke stroke = (KeyStroke) obj;
@@ -149,6 +150,7 @@ public class KeyStroke {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return (stateMask + 1) * ((character ^ keyCode) + 1) // One of these is
 																// always Zero.

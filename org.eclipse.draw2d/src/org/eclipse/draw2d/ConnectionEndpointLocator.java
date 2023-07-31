@@ -188,6 +188,7 @@ public class ConnectionEndpointLocator implements Locator {
 	 * 
 	 * @param figure The figure to relocate
 	 */
+	@Override
 	public void relocate(IFigure figure) {
 		Connection conn = getConnection();
 		Point startPoint = Point.SINGLETON;

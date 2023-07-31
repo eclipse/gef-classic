@@ -72,19 +72,24 @@ public interface RoutingListener {
 	 * @since 3.2
 	 */
 	class Stub implements RoutingListener {
+		@Override
 		public void invalidate(Connection connection) {
 		}
 
+		@Override
 		public void postRoute(Connection connection) {
 		}
 
+		@Override
 		public void remove(Connection connection) {
 		}
 
+		@Override
 		public boolean route(Connection connection) {
 			return false;
 		}
 
+		@Override
 		public void setConstraint(Connection connection, Object constraint) {
 		}
 	}

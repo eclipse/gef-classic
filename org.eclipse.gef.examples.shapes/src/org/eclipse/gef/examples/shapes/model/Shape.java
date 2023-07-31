@@ -95,6 +95,7 @@ public abstract class Shape extends ModelElement {
 		// use a custom cell editor validator for all four array entries
 		for (int i = 0; i < descriptors.length; i++) {
 			((PropertyDescriptor) descriptors[i]).setValidator(new ICellEditorValidator() {
+				@Override
 				public String isValid(Object value) {
 					int intValue = -1;
 					try {

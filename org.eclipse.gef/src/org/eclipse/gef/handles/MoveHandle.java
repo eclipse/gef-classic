@@ -59,6 +59,7 @@ public class MoveHandle extends AbstractHandle {
 	 * 
 	 * @see org.eclipse.gef.handles.AbstractHandle#createDragTracker()
 	 */
+	@Override
 	protected DragTracker createDragTracker() {
 		DragEditPartsTracker tracker = new DragEditPartsTracker(getOwner());
 		tracker.setDefaultCursor(getCursor());
@@ -72,6 +73,7 @@ public class MoveHandle extends AbstractHandle {
 	 * @param y The y coordinate.
 	 * @return <code>true</code> if the point (x,y) is contained within this handle.
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		if (!super.containsPoint(x, y))
 			return false;
@@ -83,6 +85,7 @@ public class MoveHandle extends AbstractHandle {
 	 * 
 	 * @see org.eclipse.gef.Handle#getAccessibleLocation()
 	 */
+	@Override
 	public Point getAccessibleLocation() {
 		Point p = getBounds().getTopRight().translate(-1, getBounds().height / 4);
 		translateToAbsolute(p);

@@ -59,6 +59,7 @@ public class MarqueeToolEntry extends ToolEntry {
 	/**
 	 * @see org.eclipse.gef.palette.PaletteEntry#getDescription()
 	 */
+	@Override
 	public String getDescription() {
 		String description = super.getDescription();
 		if (description != null)
@@ -89,6 +90,7 @@ public class MarqueeToolEntry extends ToolEntry {
 	/**
 	 * @see org.eclipse.gef.palette.PaletteEntry#getLargeIcon()
 	 */
+	@Override
 	public ImageDescriptor getLargeIcon() {
 		ImageDescriptor imageDescriptor = super.getLargeIcon();
 		if (imageDescriptor != null) {
@@ -120,6 +122,7 @@ public class MarqueeToolEntry extends ToolEntry {
 	/**
 	 * @see org.eclipse.gef.palette.PaletteEntry#getSmallIcon()
 	 */
+	@Override
 	public ImageDescriptor getSmallIcon() {
 		ImageDescriptor imageDescriptor = super.getSmallIcon();
 		if (imageDescriptor != null) {

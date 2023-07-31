@@ -66,6 +66,7 @@ public class CreateConnectionRequest extends CreateRequest implements TargetRequ
 	 * 
 	 * @param part the target EditPart
 	 */
+	@Override
 	public void setTargetEditPart(EditPart part) {
 		targetEditPart = part;
 	}

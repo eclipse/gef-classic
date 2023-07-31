@@ -36,6 +36,7 @@ public class FlowAdapter extends FlowFigure {
 	 * 
 	 * @see FlowFigure#contributeBidi(BidiProcessor)
 	 */
+	@Override
 	protected void contributeBidi(BidiProcessor proc) {
 		box.setBidiLevel(-1);
 		// contributes a single object replacement char
@@ -46,6 +47,7 @@ public class FlowAdapter extends FlowFigure {
 	 * @return <code>null</code>
 	 * @see org.eclipse.draw2d.text.FlowFigure#createDefaultFlowLayout()
 	 */
+	@Override
 	protected FlowFigureLayout createDefaultFlowLayout() {
 		return null;
 	}
@@ -56,6 +58,7 @@ public class FlowAdapter extends FlowFigure {
 	 * 
 	 * @see org.eclipse.draw2d.Figure#layout()
 	 */
+	@Override
 	protected void layout() {
 		int wHint = context.getRemainingLineWidth();
 		if (wHint == Integer.MAX_VALUE)
@@ -75,6 +78,7 @@ public class FlowAdapter extends FlowFigure {
 	 * 
 	 * @see FlowFigure#postValidate()
 	 */
+	@Override
 	public void postValidate() {
 		setBounds(new Rectangle(box.getX(), box.getBaseline() - box.ascent, box.width, box.ascent));
 		super.layout();
@@ -86,6 +90,7 @@ public class FlowAdapter extends FlowFigure {
 	 * 
 	 * @see FlowFigure#setBidiInfo(BidiInfo)
 	 */
+	@Override
 	public void setBidiInfo(BidiInfo info) {
 		box.setBidiLevel(info.levelInfo[0]);
 	}
@@ -93,6 +98,7 @@ public class FlowAdapter extends FlowFigure {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	public void setBounds(Rectangle rect) {
 		int x = bounds.x, y = bounds.y;
 
@@ -119,6 +125,7 @@ public class FlowAdapter extends FlowFigure {
 	/**
 	 * @see FlowFigure#setFlowContext(FlowContext)
 	 */
+	@Override
 	public void setFlowContext(FlowContext flowContext) {
 		context = flowContext;
 	}
@@ -128,6 +135,7 @@ public class FlowAdapter extends FlowFigure {
 	 * 
 	 * @see org.eclipse.draw2d.IFigure#validate()
 	 */
+	@Override
 	public void validate() {
 		if (isValid())
 			return;
@@ -138,14 +146,17 @@ public class FlowAdapter extends FlowFigure {
 	private class FigureBox extends ContentBox {
 		private int ascent;
 
+		@Override
 		public boolean containsPoint(int x, int y) {
 			return FlowAdapter.this.containsPoint(x, y);
 		}
 
+		@Override
 		public int getAscent() {
 			return ascent;
 		}
 
+		@Override
 		public int getDescent() {
 			return 0;
 		}

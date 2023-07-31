@@ -45,6 +45,7 @@ public class CreateGuideAction extends Action {
 	/**
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
+	@Override
 	public void run() {
 		RulerProvider provider = ((RulerEditPart) viewer.getRootEditPart().getChildren().get(0)).getRulerProvider();
 

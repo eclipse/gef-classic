@@ -71,6 +71,7 @@ public abstract class TargetingTool extends AbstractTool {
 	/**
 	 * @see org.eclipse.gef.Tool#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		if (isHoverActive())
 			resetHover();
@@ -118,6 +119,7 @@ public abstract class TargetingTool extends AbstractTool {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommand()
 	 */
+	@Override
 	protected Command getCommand() {
 		if (getTargetEditPart() == null)
 			return null;
@@ -149,6 +151,7 @@ public abstract class TargetingTool extends AbstractTool {
 	 */
 	protected EditPartViewer.Conditional getTargetingConditional() {
 		return new EditPartViewer.Conditional() {
+			@Override
 			public boolean evaluate(EditPart editpart) {
 				return editpart.getTargetEditPart(getTargetRequest()) != null;
 			}
@@ -232,6 +235,7 @@ public abstract class TargetingTool extends AbstractTool {
 	 * 
 	 * @return <code>true</code>
 	 */
+	@Override
 	protected boolean handleInvalidInput() {
 		eraseTargetFeedback();
 		setCurrentCommand(UnexecutableCommand.INSTANCE);
@@ -251,6 +255,7 @@ public abstract class TargetingTool extends AbstractTool {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleViewerExited()
 	 */
+	@Override
 	protected boolean handleViewerExited() {
 		setTargetEditPart(null);
 		return true;
@@ -296,6 +301,7 @@ public abstract class TargetingTool extends AbstractTool {
 	 * @see org.eclipse.gef.tools.AbstractTool#resetFlags()
 	 * @see #lockTargetEditPart(EditPart)
 	 */
+	@Override
 	protected void resetFlags() {
 		setFlag(FLAG_LOCK_TARGET, false);
 		super.resetFlags();
@@ -313,6 +319,7 @@ public abstract class TargetingTool extends AbstractTool {
 	}
 
 	class QueuedAutoexpose implements Runnable {
+		@Override
 		public void run() {
 			if (exposeHelper != null)
 				doAutoexpose();

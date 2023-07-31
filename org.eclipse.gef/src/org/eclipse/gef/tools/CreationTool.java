@@ -68,6 +68,7 @@ public class CreationTool extends TargetingTool {
 	 * @see org.eclipse.gef.tools.AbstractTool#applyProperty(java.lang.Object,
 	 *      java.lang.Object)
 	 */
+	@Override
 	protected void applyProperty(Object key, Object value) {
 		if (PROPERTY_CREATION_FACTORY.equals(key)) {
 			if (value instanceof CreationFactory)
@@ -80,6 +81,7 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#calculateCursor()
 	 */
+	@Override
 	protected Cursor calculateCursor() {
 		/*
 		 * Fix for Bug# 66010 The following two lines of code were added for the case
@@ -98,6 +100,7 @@ public class CreationTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
 	 */
+	@Override
 	protected Request createTargetRequest() {
 		CreateRequest request = new CreateRequest();
 		request.setFactory(getFactory());
@@ -107,6 +110,7 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.Tool#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		super.deactivate();
 		helper = null;
@@ -115,6 +119,7 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
 	 */
+	@Override
 	protected String getCommandName() {
 		return REQ_CREATE;
 	}
@@ -132,6 +137,7 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "Creation Tool";//$NON-NLS-1$
 	}
@@ -155,6 +161,7 @@ public class CreationTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
+	@Override
 	protected boolean handleButtonDown(int button) {
 		if (button != 1) {
 			setState(STATE_INVALID);
@@ -178,6 +185,7 @@ public class CreationTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (stateTransition(STATE_DRAG | STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 			eraseTargetFeedback();
@@ -196,6 +204,7 @@ public class CreationTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
 	 */
+	@Override
 	protected boolean handleDragInProgress() {
 		if (isInState(STATE_DRAG_IN_PROGRESS)) {
 			updateTargetRequest();
@@ -208,6 +217,7 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragStarted()
 	 */
+	@Override
 	protected boolean handleDragStarted() {
 		return stateTransition(STATE_DRAG, STATE_DRAG_IN_PROGRESS);
 	}
@@ -218,6 +228,7 @@ public class CreationTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleFocusLost()
 	 */
+	@Override
 	protected boolean handleFocusLost() {
 		if (isInState(STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
 			eraseTargetFeedback();
@@ -231,6 +242,7 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * @see org.eclipse.gef.tools.TargetingTool#handleHover()
 	 */
+	@Override
 	protected boolean handleHover() {
 		if (isInState(STATE_INITIAL))
 			updateAutoexposeHelper();
@@ -243,6 +255,7 @@ public class CreationTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleMove()
 	 */
+	@Override
 	protected boolean handleMove() {
 		updateTargetRequest();
 		updateTargetUnderMouse();
@@ -295,6 +308,7 @@ public class CreationTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
+	@Override
 	protected void updateTargetRequest() {
 		CreateRequest createRequest = getCreateRequest();
 		if (isInState(STATE_DRAG_IN_PROGRESS)) {

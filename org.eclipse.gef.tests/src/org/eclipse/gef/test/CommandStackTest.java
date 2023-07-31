@@ -19,6 +19,7 @@ public class CommandStackTest extends Assert {
 		// capture all notifications in an event list
 		CommandStack stack = new CommandStack();
 		stack.addCommandStackEventListener(new CommandStackEventListener() {
+			@Override
 			public void stackChanged(CommandStackEvent event) {
 				commandStackEvents.add(event);
 			}

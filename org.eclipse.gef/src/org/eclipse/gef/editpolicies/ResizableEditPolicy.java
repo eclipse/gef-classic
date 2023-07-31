@@ -53,6 +53,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
+	@Override
 	protected List createSelectionHandles() {
 		if (resizeDirections == PositionConstants.NONE) {
 			// non resizable, so delegate to super implementation
@@ -112,6 +113,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void eraseSourceFeedback(Request request) {
 		if (REQ_RESIZE.equals(request.getType()))
 			eraseChangeBoundsFeedback((ChangeBoundsRequest) request);
@@ -122,6 +124,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		if (REQ_RESIZE.equals(request.getType())) {
 			return getResizeCommand((ChangeBoundsRequest) request);
@@ -173,6 +176,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void showSourceFeedback(Request request) {
 		if (REQ_RESIZE.equals(request.getType())) {
 			showChangeBoundsFeedback((ChangeBoundsRequest) request);
@@ -184,6 +188,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#understandsRequest(org.eclipse.gef.Request)
 	 */
+	@Override
 	public boolean understandsRequest(Request request) {
 		if (REQ_RESIZE.equals(request.getType())) {
 			// check all resize directions of the request are supported

@@ -170,11 +170,13 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 	 * 
 	 * @see Wizard#performFinish
 	 */
+	@Override
 	public boolean performFinish() {
 
 		try {
 			IRunnableWithProgress operation = new WorkspaceModifyOperation() {
 
+				@Override
 				public void execute(IProgressMonitor monitor) throws InterruptedException {
 					try {
 						monitor.beginTask(Messages.monitor_creatingProject, 120);
@@ -410,6 +412,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 	 * 
 	 * @see WizardNewProjectCreationPage#WizardNewProjectCreationPage(String)
 	 */
+	@Override
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 
 		wizardNewProjectCreationPage = new WizardNewProjectCreationPage(getPageName());
@@ -484,6 +487,7 @@ abstract public class ProjectUnzipperNewWizard extends Wizard implements INewWiz
 	 * .eclipse.core.runtime.IConfigurationElement, java.lang.String,
 	 * java.lang.Object)
 	 */
+	@Override
 	public void setInitializationData(IConfigurationElement configIn, String propertyName, Object data)
 			throws CoreException {
 		config = configIn;

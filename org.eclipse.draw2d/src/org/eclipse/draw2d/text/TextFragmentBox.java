@@ -40,6 +40,7 @@ public class TextFragmentBox extends ContentBox {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowBox#containsPoint(int, int)
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		return x >= getX() && x < getX() + getWidth() && y >= getBaseline() - getAscentWithBorder()
 				&& y <= getBaseline() + getDescentWithBorder();
@@ -51,10 +52,12 @@ public class TextFragmentBox extends ContentBox {
 	 * 
 	 * @return the ascent
 	 */
+	@Override
 	public int getAscent() {
 		return textflow.getAscent();
 	}
 
+	@Override
 	int getAscentWithBorder() {
 		return textflow.getAscent() + FlowUtilities.getBorderAscent(textflow);
 	}
@@ -65,18 +68,22 @@ public class TextFragmentBox extends ContentBox {
 	 * 
 	 * @return the descent
 	 */
+	@Override
 	public int getDescent() {
 		return textflow.getDescent();
 	}
 
+	@Override
 	int getDescentWithBorder() {
 		return textflow.getDescent() + FlowUtilities.getBorderDescent(textflow);
 	}
 
+	@Override
 	int getOuterAscent() {
 		return textflow.getAscent() + FlowUtilities.getBorderAscentWithMargin(textflow);
 	}
 
+	@Override
 	int getOuterDescent() {
 		return textflow.getDescent() + FlowUtilities.getBorderDescentWithMargin(textflow);
 	}
@@ -121,6 +128,7 @@ public class TextFragmentBox extends ContentBox {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "[" + offset + ", " + (offset + length) //$NON-NLS-1$ //$NON-NLS-2$
 				+ ") = \"" + textflow.getText().substring(offset, offset + length) + '\"'; //$NON-NLS-1$

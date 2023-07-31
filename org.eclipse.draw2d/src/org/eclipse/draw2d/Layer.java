@@ -45,6 +45,7 @@ public class Layer extends Figure {
 	 * 
 	 * @see IFigure#findFigureAt(int, int, TreeSearch)
 	 */
+	@Override
 	public IFigure findFigureAt(int x, int y, TreeSearch search) {
 		if (!isEnabled())
 			return null;

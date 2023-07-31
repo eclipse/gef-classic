@@ -68,6 +68,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	 * @param button the button that was pressed
 	 * @return <code>true</code> if the button down was processed
 	 */
+	@Override
 	protected boolean handleButtonDown(int button) {
 		if (button == 1 && stateTransition(STATE_CONNECTION_STARTED, STATE_TERMINAL))
 			return handleCreateConnection();
@@ -85,6 +86,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	 * 
 	 * @return <code>true</code> if this focus lost event was processed
 	 */
+	@Override
 	protected boolean handleFocusLost() {
 		if (isInState(STATE_CONNECTION_STARTED | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			eraseSourceFeedback();
@@ -102,6 +104,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	 * @param event the key event
 	 * @return <code>true</code> if this key down event was processed
 	 */
+	@Override
 	protected boolean handleKeyDown(KeyEvent event) {
 		if (acceptArrowKey(event)) {
 			int direction = 0;
@@ -182,6 +185,7 @@ public class ConnectionCreationTool extends AbstractConnectionCreationTool {
 	 * @see org.eclipse.gef.Tool#mouseWheelScrolled(org.eclipse.swt.widgets.Event,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
 		if (isInState(STATE_INITIAL | STATE_CONNECTION_STARTED))
 			performViewerMouseWheel(event, viewer);

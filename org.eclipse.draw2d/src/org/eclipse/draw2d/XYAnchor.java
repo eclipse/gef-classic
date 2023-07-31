@@ -37,6 +37,7 @@ public class XYAnchor extends ConnectionAnchorBase {
 	 * 
 	 * @see ConnectionAnchor#getLocation(Point)
 	 */
+	@Override
 	public Point getLocation(Point reference) {
 		return location;
 	}
@@ -48,6 +49,7 @@ public class XYAnchor extends ConnectionAnchorBase {
 	 * @see ConnectionAnchor#getOwner()
 	 * @since 2.0
 	 */
+	@Override
 	public IFigure getOwner() {
 		return null;
 	}
@@ -58,6 +60,7 @@ public class XYAnchor extends ConnectionAnchorBase {
 	 * 
 	 * @see ConnectionAnchor#getReferencePoint()
 	 */
+	@Override
 	public Point getReferencePoint() {
 		return location;
 	}

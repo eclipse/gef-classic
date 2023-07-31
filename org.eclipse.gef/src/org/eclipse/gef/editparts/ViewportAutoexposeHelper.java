@@ -75,6 +75,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 	 * 
 	 * @see org.eclipse.gef.AutoexposeHelper#detect(org.eclipse.draw2d.geometry.Point)
 	 */
+	@Override
 	public boolean detect(Point where) {
 		lastStepTime = 0;
 		Viewport port = findViewport(owner);
@@ -95,6 +96,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 	 * 
 	 * @see org.eclipse.gef.AutoexposeHelper#step(org.eclipse.draw2d.geometry.Point)
 	 */
+	@Override
 	public boolean step(Point where) {
 		Viewport port = findViewport(owner);
 
@@ -144,6 +146,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "ViewportAutoexposeHelper for: " + owner; //$NON-NLS-1$
 	}

@@ -32,6 +32,7 @@ public interface ColorConstants {
 			display = Display.getDefault();
 			final Color result[] = new Color[1];
 			display.syncExec(new Runnable() {
+				@Override
 				public void run() {
 					synchronized (result) {
 						result[0] = Display.getCurrent().getSystemColor(which);

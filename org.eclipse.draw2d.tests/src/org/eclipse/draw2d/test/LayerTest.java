@@ -47,6 +47,7 @@ public class LayerTest extends Assert {
 
 	public class MyLayer extends Layer {
 
+		@Override
 		protected boolean useLocalCoordinates() {
 			return true;
 		}

@@ -30,10 +30,12 @@ public class BendPoint extends DisplayIndependentPoint implements LayoutBendPoin
 		this.isControlPoint = isControlPoint;
 	}
 
+	@Override
 	public double getX() {
 		return x;
 	}
 
+	@Override
 	public double getY() {
 		return y;
 	}
@@ -46,6 +48,7 @@ public class BendPoint extends DisplayIndependentPoint implements LayoutBendPoin
 		this.y = y;
 	}
 
+	@Override
 	public boolean getIsControlPoint() {
 		return isControlPoint;
 	}

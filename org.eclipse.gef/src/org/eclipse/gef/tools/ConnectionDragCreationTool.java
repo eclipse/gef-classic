@@ -41,6 +41,7 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 	 * 
 	 * @see AbstractConnectionCreationTool#handleButtonDown(int)
 	 */
+	@Override
 	protected boolean handleButtonDown(int button) {
 		super.handleButtonDown(button);
 		setState(STATE_DRAG);
@@ -54,6 +55,7 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 	 * @param button the button that was released
 	 * @return <code>true</code> if this button up event was processed
 	 */
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (isInState(STATE_CONNECTION_STARTED))
 			handleCreateConnection();
@@ -67,6 +69,7 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 	 * 
 	 * @return <code>true</code> if the state transition completed successfully
 	 */
+	@Override
 	protected boolean handleDragStarted() {
 		return stateTransition(STATE_DRAG, STATE_CONNECTION_STARTED);
 	}
@@ -77,6 +80,7 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 	 * 
 	 * @see AbstractTool#handleFinished()
 	 */
+	@Override
 	protected void handleFinished() {
 		if (getDomain().getActiveTool() == this)
 			super.handleFinished();

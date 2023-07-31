@@ -65,6 +65,7 @@ public final class EventListenerList {
 			this.type = type;
 		}
 
+		@Override
 		public T next() {
 			@SuppressWarnings("unchecked") // check is performed in hasNext
 			T result = (T) items[index + 1];
@@ -72,6 +73,7 @@ public final class EventListenerList {
 			return result;
 		}
 
+		@Override
 		public boolean hasNext() {
 			if (items == null)
 				return false;

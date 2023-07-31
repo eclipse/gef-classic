@@ -74,6 +74,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PrecisionPoint) {
 			PrecisionPoint p = (PrecisionPoint) o;
@@ -85,6 +86,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#getCopy()
 	 */
+	@Override
 	public Point getCopy() {
 		return getPreciseCopy();
 	}
@@ -92,6 +94,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#getDifference(org.eclipse.draw2d.geometry.Point)
 	 */
+	@Override
 	public Dimension getDifference(Point p) {
 		return new PrecisionDimension(this.preciseX() - p.preciseX(), this.preciseY() - p.preciseY());
 	}
@@ -109,6 +112,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#performScale(double)
 	 */
+	@Override
 	public void performScale(double factor) {
 		setPreciseX(preciseX() * factor);
 		setPreciseY(preciseY() * factor);
@@ -117,6 +121,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#performTranslate(int, int)
 	 */
+	@Override
 	public void performTranslate(int dx, int dy) {
 		setPreciseX(preciseX() + dx);
 		setPreciseY(preciseY() + dy);
@@ -125,6 +130,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#preciseX()
 	 */
+	@Override
 	public double preciseX() {
 		updatePreciseXDouble();
 		return preciseX;
@@ -133,6 +139,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#preciseY()
 	 */
+	@Override
 	public double preciseY() {
 		updatePreciseYDouble();
 		return preciseY;
@@ -141,6 +148,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#scale(double, double)
 	 */
+	@Override
 	public Point scale(double xFactor, double yFactor) {
 		setPreciseX(preciseX() * xFactor);
 		setPreciseY(preciseY() * yFactor);
@@ -150,6 +158,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#setLocation(int, int)
 	 */
+	@Override
 	public Point setLocation(int x, int y) {
 		return setPreciseLocation(x, y);
 	}
@@ -157,6 +166,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#setLocation(Point)
 	 */
+	@Override
 	public Point setLocation(Point pt) {
 		return setPreciseLocation(pt.preciseX(), pt.preciseY());
 	}
@@ -216,6 +226,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#setX(int)
 	 */
+	@Override
 	public Point setX(int x) {
 		return setPreciseX(x);
 	}
@@ -223,6 +234,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#setY(int)
 	 */
+	@Override
 	public Point setY(int y) {
 		return setPreciseY(y);
 	}
@@ -230,6 +242,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#translate(org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public Point translate(Dimension d) {
 		return translatePrecise(d.preciseWidth(), d.preciseHeight());
 	}
@@ -237,6 +250,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#translate(int, int)
 	 */
+	@Override
 	public Point translate(int dx, int dy) {
 		return translatePrecise(dx, dy);
 	}
@@ -244,6 +258,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#translate(double, double)
 	 */
+	@Override
 	public Point translate(double dx, double dy) {
 		return translatePrecise(dx, dy);
 	}
@@ -251,6 +266,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#translate(org.eclipse.draw2d.geometry.Point)
 	 */
+	@Override
 	public Point translate(Point p) {
 		return translatePrecise(p.preciseX(), p.preciseY());
 	}
@@ -273,6 +289,7 @@ public class PrecisionPoint extends Point {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Point#transpose()
 	 */
+	@Override
 	public Point transpose() {
 		double temp = preciseX();
 		setPreciseX(preciseY());

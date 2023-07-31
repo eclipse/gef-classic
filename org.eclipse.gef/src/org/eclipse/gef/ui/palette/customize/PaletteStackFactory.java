@@ -36,6 +36,7 @@ public class PaletteStackFactory extends PaletteEntryFactory {
 	/**
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#canCreate(org.eclipse.gef.palette.PaletteEntry)
 	 */
+	@Override
 	public boolean canCreate(PaletteEntry selected) {
 		if (!(selected instanceof ToolEntry) || selected.getParent() instanceof PaletteStack)
 			return false;
@@ -45,6 +46,7 @@ public class PaletteStackFactory extends PaletteEntryFactory {
 	/**
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
 	 */
+	@Override
 	protected PaletteEntry createNewEntry(Shell shell) {
 		return new PaletteStack(PaletteMessages.NEW_STACK_LABEL, null, null);
 	}
@@ -53,6 +55,7 @@ public class PaletteStackFactory extends PaletteEntryFactory {
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(org.eclipse.swt.widgets.Shell,
 	 *      org.eclipse.gef.palette.PaletteEntry)
 	 */
+	@Override
 	public PaletteEntry createNewEntry(Shell shell, PaletteEntry selected) {
 		PaletteContainer parent = determineContainerForNewEntry(selected);
 		int index = determineIndexForNewEntry(parent, selected);
@@ -67,6 +70,7 @@ public class PaletteStackFactory extends PaletteEntryFactory {
 	/**
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
 	 */
+	@Override
 	protected Object determineTypeForNewEntry(PaletteEntry selected) {
 		return PaletteStack.PALETTE_TYPE_STACK;
 	}

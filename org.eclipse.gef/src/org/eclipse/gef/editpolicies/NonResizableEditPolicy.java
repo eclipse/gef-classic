@@ -80,6 +80,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
+	@Override
 	protected List createSelectionHandles() {
 		List list = new ArrayList();
 		createMoveHandle(list);
@@ -155,6 +156,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		if (feedback != null) {
 			removeFeedback(feedback);
@@ -180,6 +182,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void eraseSourceFeedback(Request request) {
 		if ((REQ_MOVE.equals(request.getType()) && isDragAllowed()) || REQ_CLONE.equals(request.getType())
 				|| REQ_ADD.equals(request.getType()))
@@ -189,6 +192,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		Object type = request.getType();
 
@@ -280,6 +284,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * @see #showFocus()
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideFocus()
 	 */
+	@Override
 	protected void hideFocus() {
 		if (focusRect != null)
 			removeFeedback(focusRect);
@@ -331,8 +336,10 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showFocus()
 	 */
+	@Override
 	protected void showFocus() {
 		focusRect = new AbstractHandle((GraphicalEditPart) getHost(), new Locator() {
+			@Override
 			public void relocate(IFigure target) {
 				IFigure figure = getHostFigure();
 				Rectangle r;
@@ -349,6 +356,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 				setBorder(new FocusBorder());
 			}
 
+			@Override
 			protected DragTracker createDragTracker() {
 				return null;
 			}
@@ -361,6 +369,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void showSourceFeedback(Request request) {
 		if ((REQ_MOVE.equals(request.getType()) && isDragAllowed()) || REQ_ADD.equals(request.getType())
 				|| REQ_CLONE.equals(request.getType()))
@@ -374,6 +383,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#understandsRequest(org.eclipse.gef.Request)
 	 */
+	@Override
 	public boolean understandsRequest(Request request) {
 		if (REQ_MOVE.equals(request.getType()))
 			return isDragAllowed();

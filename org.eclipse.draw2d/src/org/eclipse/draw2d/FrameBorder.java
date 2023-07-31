@@ -75,6 +75,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	/**
 	 * @return the label for this border
 	 */
+	@Override
 	public String getLabel() {
 		return getLabeledBorder().getLabel();
 	}
@@ -84,6 +85,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	 * 
 	 * @param label the label
 	 */
+	@Override
 	public void setLabel(String label) {
 		getLabeledBorder().setLabel(label);
 	}
@@ -93,6 +95,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	 * 
 	 * @param font the font
 	 */
+	@Override
 	public void setFont(Font font) {
 		getLabeledBorder().setFont(font);
 	}

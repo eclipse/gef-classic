@@ -101,6 +101,7 @@ public abstract class Shape extends Figure {
 	 * 
 	 * @see Figure#paintFigure(Graphics)
 	 */
+	@Override
 	public void paintFigure(Graphics graphics) {
 		if (antialias != null) {
 			graphics.setAntialias(antialias.intValue());

@@ -44,6 +44,7 @@ public class GraphJFaceSnippet1 {
 	 */
 	static class MyContentProvider implements IGraphEntityContentProvider {
 
+		@Override
 		public Object[] getConnectedTo(Object entity) {
 			if (entity.equals("First")) {
 				return new Object[] { "Second" };
@@ -57,6 +58,7 @@ public class GraphJFaceSnippet1 {
 			return null;
 		}
 
+		@Override
 		public Object[] getElements(Object inputElement) {
 			return new String[] { "First", "Second", "Third" };
 		}
@@ -65,10 +67,12 @@ public class GraphJFaceSnippet1 {
 			return 0;
 		}
 
+		@Override
 		public void dispose() {
 
 		}
 
+		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
 		}
@@ -77,6 +81,7 @@ public class GraphJFaceSnippet1 {
 	static class MyLabelProvider extends LabelProvider {
 		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 
+		@Override
 		public Image getImage(Object element) {
 			if (element instanceof String) {
 				return image;
@@ -84,6 +89,7 @@ public class GraphJFaceSnippet1 {
 			return null;
 		}
 
+		@Override
 		public String getText(Object element) {
 			if (element instanceof String) {
 				return element.toString();
@@ -107,6 +113,7 @@ public class GraphJFaceSnippet1 {
 		button.setText("Reload");
 		button.addSelectionListener(new SelectionAdapter() {
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				viewer.setInput(new Object());
 			}
@@ -118,6 +125,7 @@ public class GraphJFaceSnippet1 {
 		viewer.setLabelProvider(new MyLabelProvider());
 		viewer.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING));
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				System.out.println("Selection changed: " + (event.getSelection()));
 			}

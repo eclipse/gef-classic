@@ -28,6 +28,7 @@ public class DisplayIndependentDimension {
 		this.height = dimension.height;
 	}
 
+	@Override
 	public String toString() {
 		return "(" + width + ", " + height + ")";
 	}

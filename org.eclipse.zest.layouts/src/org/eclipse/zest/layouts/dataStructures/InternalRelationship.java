@@ -91,45 +91,54 @@ public class InternalRelationship implements LayoutRelationship {
 		return this.bendPoints;
 	}
 
+	@Override
 	public void clearBendPoints() {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	public LayoutEntity getDestinationInLayout() {
 		// TODO Auto-generated method stub
 		return destination;
 	}
 
+	@Override
 	public Object getLayoutInformation() {
 		// TODO Auto-generated method stub
 		return layoutInfo;
 	}
 
+	@Override
 	public LayoutEntity getSourceInLayout() {
 		// TODO Auto-generated method stub
 		return source;
 	}
 
+	@Override
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	public void setBendPoints(LayoutBendPoint[] bendPoints) {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	public void setLayoutInformation(Object layoutInformation) {
 		this.layoutInfo = layoutInformation;
 
 	}
 
+	@Override
 	public Object getGraphData() {
 		return null;
 	}
 
+	@Override
 	public void setGraphData(Object o) {
 
 	}

@@ -26,6 +26,7 @@ public final class UnexecutableCommand extends Command {
 	/**
 	 * @return <code>false</code>
 	 */
+	@Override
 	public boolean canExecute() {
 		return false;
 	}
@@ -33,6 +34,7 @@ public final class UnexecutableCommand extends Command {
 	/**
 	 * @return <code>false</code>
 	 */
+	@Override
 	public boolean canUndo() {
 		return false;
 	}

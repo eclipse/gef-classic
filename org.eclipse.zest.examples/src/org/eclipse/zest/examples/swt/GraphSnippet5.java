@@ -83,6 +83,7 @@ public class GraphSnippet5 {
 
 		g.addKeyListener(new KeyAdapter() {
 
+			@Override
 			public void keyPressed(KeyEvent e) {
 				boolean complete = false;
 				if (e.keyCode == BACKSPACE) {
@@ -116,6 +117,7 @@ public class GraphSnippet5 {
 		});
 
 		g.addPaintListener(new PaintListener() {
+			@Override
 			public void paintControl(PaintEvent e) {
 				e.gc.setFont(font);
 				e.gc.setClipping((Region) null);

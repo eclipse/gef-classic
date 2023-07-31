@@ -25,6 +25,7 @@ public abstract class AbstractImageFigure extends Figure implements IImageFigure
 
 	private List<ImageChangedListener> imageListeners = new ArrayList<>();
 
+	@Override
 	public final void addImageChangedListener(ImageChangedListener listener) {
 		if (listener == null) {
 			throw new IllegalArgumentException();
@@ -32,6 +33,7 @@ public abstract class AbstractImageFigure extends Figure implements IImageFigure
 		imageListeners.add(listener);
 	}
 
+	@Override
 	public final void removeImageChangedListener(ImageChangedListener listener) {
 		if (listener == null) {
 			throw new IllegalArgumentException();

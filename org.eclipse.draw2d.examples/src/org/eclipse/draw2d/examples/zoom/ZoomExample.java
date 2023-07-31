@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.zoom;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.draw2d.ButtonBorder;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.GroupBoxBorder;
@@ -22,11 +28,6 @@ import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.parts.Thumbnail;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * This class demonstrates Draw2d's zoom capabilities.
@@ -37,7 +38,7 @@ import org.eclipse.swt.widgets.Shell;
 public class ZoomExample {
 
 	private static Figure contents;
-	//private static Shell overviewShell;
+	// private static Shell overviewShell;
 
 	public static void main(String args[]) {
 		Display d = new Display();
@@ -49,7 +50,7 @@ public class ZoomExample {
 		fig.setLayoutManager(new ToolbarLayout());
 
 		final ScrollBar bar = new ScrollBar();
-		final Label l = new Label("�Zoom�"); //$NON-NLS-1$
+		final Label l = new Label("< Zoom >"); //$NON-NLS-1$
 
 		l.setBorder(new SchemeBorder(ButtonBorder.SCHEMES.BUTTON_SCROLLBAR));
 		bar.setThumb(l);
@@ -75,21 +76,20 @@ public class ZoomExample {
 
 		lws.setContents(fig);
 
-		//	overviewShell = new Shell(shell, SWT.TITLE| SWT.RESIZE | SWT.NO_REDRAW_RESIZE | SWT.NO_BACKGROUND);
-		//	overviewShell.setText("Overview Shell");
-		//	overviewShell.setLayout(new FillLayout());
-		//	LightweightSystem overviewLWS = new LightweightSystem(overviewShell);
-		//	overviewLWS.setContents(createThumbnail(getContents()));
-		//	overviewShell.setSize(200, 200);
+		// overviewShell = new Shell(shell, SWT.TITLE| SWT.RESIZE | SWT.NO_REDRAW_RESIZE
+		// | SWT.NO_BACKGROUND);
+		// overviewShell.setText("Overview Shell");
+		// overviewShell.setLayout(new FillLayout());
+		// LightweightSystem overviewLWS = new LightweightSystem(overviewShell);
+		// overviewLWS.setContents(createThumbnail(getContents()));
+		// overviewShell.setSize(200, 200);
 
 		shell.open();
-		//	overviewShell.open();
-		while (!shell.isDisposed())
-		{
-			while (!d.readAndDispatch())
-			{
+		// overviewShell.open();
+		while (!shell.isDisposed()) {
+			while (!d.readAndDispatch()) {
 				d.sleep();
-				//	overviewShell.dispose();
+				// overviewShell.dispose();
 			}
 		}
 	}

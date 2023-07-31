@@ -162,10 +162,12 @@ public class Clickable extends Figure {
 	 */
 	protected ModelObserver createModelObserver() {
 		return new ModelObserver() {
+			@Override
 			public void actionPerformed(ActionEvent action) {
 				fireActionPerformed();
 			}
 
+			@Override
 			public void handleStateChanged(ChangeEvent change) {
 				fireStateChanged(change);
 			}

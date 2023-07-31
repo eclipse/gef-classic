@@ -29,6 +29,7 @@ public abstract class AbstractFlowBorder extends AbstractBorder implements FlowB
 	/**
 	 * @see FlowBorder#getBottomMargin()
 	 */
+	@Override
 	public int getBottomMargin() {
 		return 0;
 	}
@@ -36,6 +37,7 @@ public abstract class AbstractFlowBorder extends AbstractBorder implements FlowB
 	/**
 	 * @see Border#getInsets(IFigure)
 	 */
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return IFigure.NO_INSETS;
 	}
@@ -43,6 +45,7 @@ public abstract class AbstractFlowBorder extends AbstractBorder implements FlowB
 	/**
 	 * @see FlowBorder#getLeftMargin()
 	 */
+	@Override
 	public int getLeftMargin() {
 		return 0;
 	}
@@ -50,6 +53,7 @@ public abstract class AbstractFlowBorder extends AbstractBorder implements FlowB
 	/**
 	 * @see FlowBorder#getRightMargin()
 	 */
+	@Override
 	public int getRightMargin() {
 		return 0;
 	}
@@ -57,6 +61,7 @@ public abstract class AbstractFlowBorder extends AbstractBorder implements FlowB
 	/**
 	 * @see FlowBorder#getTopMargin()
 	 */
+	@Override
 	public int getTopMargin() {
 		return 0;
 	}
@@ -70,6 +75,7 @@ public abstract class AbstractFlowBorder extends AbstractBorder implements FlowB
 	 * @param insets   the insets
 	 * @see FlowBorder#paint(FlowFigure, Graphics, Rectangle, int)
 	 */
+	@Override
 	public final void paint(IFigure figure, Graphics graphics, Insets insets) {
 	}
 
@@ -78,6 +84,7 @@ public abstract class AbstractFlowBorder extends AbstractBorder implements FlowB
 	 * 
 	 * @see FlowBorder#paint(FlowFigure, Graphics, Rectangle, int)
 	 */
+	@Override
 	public void paint(FlowFigure figure, Graphics g, Rectangle where, int sides) {
 	}
 

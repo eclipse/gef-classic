@@ -57,6 +57,7 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 	 * 
 	 * @see Page#createControl(org.eclipse.swt.widgets.Composite)
 	 */
+	@Override
 	public void createControl(Composite parent) {
 		viewer = provider.createPaletteViewer(parent);
 	}
@@ -66,6 +67,7 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 	 * 
 	 * @see Page#dispose()
 	 */
+	@Override
 	public void dispose() {
 		if (provider.getEditDomain().getPaletteViewer() == viewer)
 			provider.getEditDomain().setPaletteViewer(null);
@@ -92,6 +94,7 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 	 * @return the palette viewer's control
 	 * @see Page#getControl()
 	 */
+	@Override
 	public Control getControl() {
 		return viewer.getControl();
 	}
@@ -101,6 +104,7 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 	 * 
 	 * @see Page#setFocus()
 	 */
+	@Override
 	public void setFocus() {
 		getControl().setFocus();
 	}

@@ -40,6 +40,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
 	 * #createGraphModel()
 	 */
+	@Override
 	public Graph createGraphModel(Graph model) {
 		doBuildGraph(model);
 		return model;
@@ -51,6 +52,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 * @see org.eclipse.zest.core.internal.graphmodel.AbstractStylingModelFactory
 	 * #doBuildGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
+	@Override
 	protected void doBuildGraph(Graph model) {
 		super.doBuildGraph(model);
 		Object[] nodes = getContentProvider().getElements(getViewer().getInput());
@@ -114,6 +116,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh
 	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
 	 */
+	@Override
 	public void refresh(Graph graph, Object element) {
 		refresh(graph, element, false);
 	}
@@ -126,6 +129,7 @@ public class GraphModelEntityRelationshipFactory extends AbstractStylingModelFac
 	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object,
 	 * boolean)
 	 */
+	@Override
 	public void refresh(Graph graph, Object element, boolean updateLabels) {
 		// with this kind of graph, it is just as easy and cost-effective to
 		// rebuild the whole thing.

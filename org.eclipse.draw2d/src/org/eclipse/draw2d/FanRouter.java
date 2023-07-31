@@ -40,6 +40,7 @@ public class FanRouter extends AutomaticRouter {
 	 * @param points the colliding points
 	 * @param index  the index
 	 */
+	@Override
 	protected void handleCollision(PointList points, int index) {
 		Point start = points.getFirstPoint();
 		Point end = points.getLastPoint();

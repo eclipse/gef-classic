@@ -59,6 +59,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 
 	// listen to changes of clickable tool figure
 	private ChangeListener clickableListener = new ChangeListener() {
+		@Override
 		public void handleStateChanged(ChangeEvent event) {
 			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
 				arrowFigure.getModel().setMouseOver(activeFigure.getModel().isMouseOver());
@@ -69,6 +70,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 
 	// listen to changes of arrow figure
 	private ChangeListener clickableArrowListener = new ChangeListener() {
+		@Override
 		public void handleStateChanged(ChangeEvent event) {
 			if (event.getPropertyName().equals(ButtonModel.MOUSEOVER_PROPERTY))
 				activeFigure.getModel().setMouseOver(arrowFigure.getModel().isMouseOver());
@@ -82,6 +84,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 
 	// listen to see if active tool is changed in palette
 	private PaletteListener paletteListener = new PaletteListener() {
+		@Override
 		public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
 			if (getStack().getChildren().contains(tool)) {
 				if (!arrowFigure.getModel().isSelected())
@@ -224,6 +227,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 	/**
 	 * Opens the menu to display the choices for the active entry.
 	 */
+	@Override
 	public void openMenu() {
 		MenuManager menuManager = new MenuManager();
 
@@ -286,6 +290,7 @@ public class PaletteStackEditPart extends PaletteEditPart implements IPaletteSta
 		super.showTargetFeedback(request);
 	}
 
+	@Override
 	public PaletteEditPart getActiveEntry() {
 		return (PaletteEditPart) getViewer().getEditPartRegistry().get(getStack().getActiveEntry());
 	}

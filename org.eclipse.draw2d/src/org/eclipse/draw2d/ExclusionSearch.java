@@ -35,6 +35,7 @@ public class ExclusionSearch implements TreeSearch {
 	/**
 	 * @see org.eclipse.draw2d.TreeSearch#accept(IFigure)
 	 */
+	@Override
 	public boolean accept(IFigure figure) {
 		// Prune is called before accept, so there is no reason to check the
 		// collection again.
@@ -46,6 +47,7 @@ public class ExclusionSearch implements TreeSearch {
 	 * 
 	 * @see org.eclipse.draw2d.TreeSearch#prune(IFigure)
 	 */
+	@Override
 	public boolean prune(IFigure f) {
 		return c.contains(f);
 	}

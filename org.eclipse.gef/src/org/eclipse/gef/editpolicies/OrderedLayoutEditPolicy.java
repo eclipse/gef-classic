@@ -54,6 +54,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
 	 */
+	@Override
 	protected EditPolicy createChildEditPolicy(EditPart child) {
 		return new NonResizableEditPolicy();
 	}
@@ -85,6 +86,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request)
 	 */
+	@Override
 	protected Command getAddCommand(Request req) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) req;
 		List editParts = request.getEditParts();
@@ -116,6 +118,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * 
 	 * @see LayoutEditPolicy#getMoveChildrenCommand(Request)
 	 */
+	@Override
 	protected Command getMoveChildrenCommand(Request request) {
 		CompoundCommand command = new CompoundCommand();
 		List editParts = ((ChangeBoundsRequest) request).getEditParts();

@@ -100,6 +100,7 @@ public class Subgraph extends Node {
 	 * @param n the node in question
 	 * @return <code>true</code> if nested
 	 */
+	@Override
 	boolean isNested(Node n) {
 		return n.nestingIndex >= nestingTreeMin && n.nestingIndex <= nestingIndex;
 	}

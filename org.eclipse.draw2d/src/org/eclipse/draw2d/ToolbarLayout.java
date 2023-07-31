@@ -110,6 +110,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * @see #getMinimumSize(IFigure, int, int)
 	 * @since 2.1
 	 */
+	@Override
 	protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
 		Insets insets = container.getInsets();
 		if (isHorizontal()) {
@@ -152,6 +153,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * @see #getPreferredSize(IFigure, int, int)
 	 * @since 2.0
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		Insets insets = container.getInsets();
 		if (isHorizontal()) {
@@ -205,6 +207,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * 
 	 * @see org.eclipse.draw2d.OrderedLayout#getDefaultOrientation()
 	 */
+	@Override
 	protected int getDefaultOrientation() {
 		return PositionConstants.VERTICAL;
 	}
@@ -219,6 +222,7 @@ public class ToolbarLayout extends OrderedLayout {
 	/**
 	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
 	 */
+	@Override
 	protected boolean isSensitiveHorizontally(IFigure parent) {
 		return !isHorizontal();
 	}
@@ -226,6 +230,7 @@ public class ToolbarLayout extends OrderedLayout {
 	/**
 	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically(IFigure)
 	 */
+	@Override
 	protected boolean isSensitiveVertically(IFigure parent) {
 		return isHorizontal();
 	}
@@ -247,6 +252,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * 
 	 * @see org.eclipse.draw2d.OrderedLayout#isStretchMinorAxis()
 	 */
+	@Override
 	public boolean isStretchMinorAxis() {
 		return matchWidth;
 	}
@@ -254,6 +260,7 @@ public class ToolbarLayout extends OrderedLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#layout(IFigure)
 	 */
+	@Override
 	public void layout(IFigure parent) {
 		List<? extends IFigure> children = parent.getChildren();
 		int numChildren = children.size();
@@ -387,6 +394,7 @@ public class ToolbarLayout extends OrderedLayout {
 	 * 
 	 * @see org.eclipse.draw2d.OrderedLayout#setStretchMinorAxis(boolean)
 	 */
+	@Override
 	public void setStretchMinorAxis(boolean value) {
 		matchWidth = value;
 	}

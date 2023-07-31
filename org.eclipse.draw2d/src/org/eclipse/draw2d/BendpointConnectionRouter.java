@@ -56,6 +56,7 @@ public class BendpointConnectionRouter extends AbstractRouter {
 	 * 
 	 * @param conn The connection to route
 	 */
+	@Override
 	public void route(Connection conn) {
 		PointList points = conn.getPoints();
 		points.removeAllPoints();

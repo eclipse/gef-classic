@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
 import java.beans.PropertyChangeListener;
@@ -87,6 +87,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	 * 
 	 * @return this instance
 	 */
+	@Override
 	public Object getEditableValue() {
 		return this;
 	}
@@ -95,6 +96,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	 * Children should override this. The default implementation returns an empty
 	 * array.
 	 */
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return EMPTY_ARRAY;
 	}
@@ -102,6 +104,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	/**
 	 * Children should override this. The default implementation returns null.
 	 */
+	@Override
 	public Object getPropertyValue(Object id) {
 		return null;
 	}
@@ -109,6 +112,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	/**
 	 * Children should override this. The default implementation returns false.
 	 */
+	@Override
 	public boolean isPropertySet(Object id) {
 		return false;
 	}
@@ -137,6 +141,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	/**
 	 * Children should override this. The default implementation does nothing.
 	 */
+	@Override
 	public void resetPropertyValue(Object id) {
 		// do nothing
 	}
@@ -144,6 +149,7 @@ public abstract class ModelElement implements IPropertySource, Serializable {
 	/**
 	 * Children should override this. The default implementation does nothing.
 	 */
+	@Override
 	public void setPropertyValue(Object id, Object value) {
 		// do nothing
 	}

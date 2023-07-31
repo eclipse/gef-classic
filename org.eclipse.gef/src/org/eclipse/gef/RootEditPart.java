@@ -32,6 +32,7 @@ public interface RootEditPart extends EditPart {
 	 * 
 	 * @return The <code>EditPartViewer</code>
 	 */
+	@Override
 	EditPartViewer getViewer();
 
 	/**

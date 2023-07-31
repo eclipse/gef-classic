@@ -34,6 +34,7 @@ public class ZoomOutAction extends ZoomAction {
 	/**
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
+	@Override
 	public void run() {
 		zoomManager.zoomOut();
 	}
@@ -41,6 +42,7 @@ public class ZoomOutAction extends ZoomAction {
 	/**
 	 * @see org.eclipse.gef.editparts.ZoomListener#zoomChanged(double)
 	 */
+	@Override
 	public void zoomChanged(double zoom) {
 		setEnabled(zoomManager.canZoomOut());
 	}
