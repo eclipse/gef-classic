@@ -32,9 +32,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * A Thumbnail is a Figure that displays an image of its source Figure at a
  * smaller size. The Thumbnail will maintain the aspect ratio of the source
  * Figure.
- * 
+ *
  * @author Eric Bordeau
- * @author Alexander Ny�en (anyssen)
+ * @author Alexander Nyßen (anyssen)
  */
 public class Thumbnail extends Figure implements UpdateListener {
 
@@ -83,7 +83,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 		/**
 		 * Returns the current horizontal tile index.
-		 * 
+		 *
 		 * @return current horizontal tile index.
 		 */
 		protected int getCurrentHTile() {
@@ -92,7 +92,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 		/**
 		 * Returns the current vertical tile index.
-		 * 
+		 *
 		 * @return current vertical tile index.
 		 */
 		protected int getCurrentVTile() {
@@ -103,7 +103,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 		 * Returns <code>true</code> if this ThumbnailUpdater is active. An inactive
 		 * updater has disposed of its {@link Image}. The updater may be active and not
 		 * currently running.
-		 * 
+		 *
 		 * @return <code>true</code> if this ThumbnailUpdater is active
 		 */
 		public boolean isActive() {
@@ -113,7 +113,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 		/**
 		 * Returns <code>true</code> if this is currently running and updating at least
 		 * one tile on the thumbnail {@link Image}.
-		 * 
+		 *
 		 * @return <code>true</code> if this is currently running
 		 */
 		public boolean isRunning() {
@@ -163,9 +163,11 @@ public class Thumbnail extends Figure implements UpdateListener {
 		 * again in a {@link Display#timerExec(int, Runnable)}. If no more updating is
 		 * required, {@link #stop()} is called.
 		 */
+		@Override
 		public void run() {
-			if (!isActive() || !isRunning() || tileGraphics == null)
+			if (!isActive() || !isRunning() || tileGraphics == null) {
 				return;
+			}
 
 			int v = getCurrentVTile();
 			int sy1 = v * tileSize.height;
@@ -201,14 +203,15 @@ public class Thumbnail extends Figure implements UpdateListener {
 			// Copy the painted tile image into the thumbnail image.
 			thumbnailGC.drawImage(tileImage, 0, 0, sx2 - sx1, sy2 - sy1, sx1, sy1, sx2 - sx1, sy2 - sy1);
 
-			if (getCurrentHTile() < (hTiles - 1))
+			if (getCurrentHTile() < (hTiles - 1)) {
 				setCurrentHTile(getCurrentHTile() + 1);
-			else {
+			} else {
 				setCurrentHTile(0);
-				if (getCurrentVTile() < (vTiles - 1))
+				if (getCurrentVTile() < (vTiles - 1)) {
 					setCurrentVTile(getCurrentVTile() + 1);
-				else
+				} else {
 					setCurrentVTile(0);
+				}
 			}
 
 			if (getCurrentHTile() != 0 || getCurrentVTile() != 0) {
@@ -225,7 +228,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 		/**
 		 * Sets the active flag.
-		 * 
+		 *
 		 * @param value The active value
 		 */
 		public void setActive(boolean value) {
@@ -234,7 +237,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 		/**
 		 * Sets the current horizontal tile index.
-		 * 
+		 *
 		 * @param count current horizontal tile index
 		 */
 		protected void setCurrentHTile(int count) {
@@ -243,7 +246,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 		/**
 		 * Sets the current vertical tile index.
-		 * 
+		 *
 		 * @param count current vertical tile index
 		 */
 		protected void setCurrentVTile(int count) {
@@ -256,8 +259,9 @@ public class Thumbnail extends Figure implements UpdateListener {
 		 * or is already running, this method just returns.
 		 */
 		public void start() {
-			if (!isActive() || isRunning())
+			if (!isActive() || isRunning()) {
 				return;
+			}
 
 			isRunning = true;
 			setDirty(false);
@@ -268,8 +272,9 @@ public class Thumbnail extends Figure implements UpdateListener {
 				resetThumbnailImage();
 			}
 
-			if (targetSize.isEmpty())
+			if (targetSize.isEmpty()) {
 				return;
+			}
 
 			thumbnailGC = new GC(thumbnailImage, SWT.NONE);
 
@@ -308,17 +313,20 @@ public class Thumbnail extends Figure implements UpdateListener {
 			tileGraphics = new ScaledGraphics(tileGCGraphics);
 
 			Color color = sourceFigure.getForegroundColor();
-			if (color != null)
+			if (color != null) {
 				tileGraphics.setForegroundColor(color);
+			}
 			color = sourceFigure.getBackgroundColor();
-			if (color != null)
+			if (color != null) {
 				tileGraphics.setBackgroundColor(color);
+			}
 			tileGraphics.setFont(sourceFigure.getFont());
 		}
 
 		private void resetThumbnailImage() {
-			if (thumbnailImage != null)
+			if (thumbnailImage != null) {
 				thumbnailImage.dispose();
+			}
 
 			if (!targetSize.isEmpty()) {
 				thumbnailImage = new Image(Display.getDefault(), targetSize.width, targetSize.height);
@@ -330,8 +338,9 @@ public class Thumbnail extends Figure implements UpdateListener {
 		}
 
 		private void resetTileImage() {
-			if (tileImage != null)
+			if (tileImage != null) {
 				tileImage.dispose();
+			}
 
 			if (!tileSize.isEmpty()) {
 				tileImage = new Image(Display.getDefault(), tileSize.width, tileSize.height);
@@ -384,19 +393,18 @@ public class Thumbnail extends Figure implements UpdateListener {
 	private Image thumbnailImage;
 
 	private Dimension thumbnailImageSize;
-	private ThumbnailUpdater updater = new ThumbnailUpdater();
+	private final ThumbnailUpdater updater = new ThumbnailUpdater();
 
 	/**
 	 * Creates a new Thumbnail. The source Figure must be set separately if you use
 	 * this constructor.
 	 */
 	public Thumbnail() {
-		super();
 	}
 
 	/**
 	 * Creates a new Thumbnail with the given IFigure as its source figure.
-	 * 
+	 *
 	 * @param fig The source figure
 	 */
 	public Thumbnail(IFigure fig) {
@@ -432,30 +440,33 @@ public class Thumbnail extends Figure implements UpdateListener {
 	/**
 	 * Returns the preferred size of this Thumbnail. The preferred size will be
 	 * calculated in a way that maintains the source Figure's aspect ratio.
-	 * 
+	 *
 	 * @param wHint The width hint
 	 * @param hHint The height hint
 	 * @return The preferred size
 	 */
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
-		if (prefSize == null)
+		if (prefSize == null) {
 			return adjustToAspectRatio(getBounds().getSize(), false);
+		}
 
 		Dimension preferredSize = adjustToAspectRatio(prefSize.getCopy(), true);
 
-		if (maxSize == null)
+		if (maxSize == null) {
 			return preferredSize;
+		}
 
 		Dimension maximumSize = adjustToAspectRatio(maxSize.getCopy(), true);
-		if (preferredSize.contains(maximumSize))
+		if (preferredSize.contains(maximumSize)) {
 			return maximumSize;
-		else
-			return preferredSize;
+		}
+		return preferredSize;
 	}
 
 	/**
 	 * Returns the scale factor on the X-axis.
-	 * 
+	 *
 	 * @return X scale
 	 */
 	protected float getScaleX() {
@@ -464,7 +475,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 	/**
 	 * Returns the scale factor on the Y-axis.
-	 * 
+	 *
 	 * @return Y scale
 	 */
 	protected float getScaleY() {
@@ -473,7 +484,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 	/**
 	 * Returns the source figure being used to generate a thumbnail.
-	 * 
+	 *
 	 * @return the source figure
 	 */
 	protected IFigure getSource() {
@@ -484,7 +495,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 	 * Returns the rectangular region relative to the source figure which will be
 	 * the basis of the thumbnail. The value may be returned by reference and should
 	 * not be modified by the caller.
-	 * 
+	 *
 	 * @since 3.1
 	 * @return the region of the source figure being used for the thumbnail
 	 */
@@ -495,7 +506,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 	/**
 	 * Returns the scaled Image of the source Figure. If the Image needs to be
 	 * updated, the ThumbnailUpdater will notified.
-	 * 
+	 *
 	 * @return The thumbnail image
 	 */
 	protected Image getThumbnailImage() {
@@ -504,9 +515,9 @@ public class Thumbnail extends Figure implements UpdateListener {
 		targetSize.expand(new Dimension(getInsets().getWidth(), getInsets().getHeight()).negate());
 		setScales(targetSize.width / (float) getSourceRectangle().width,
 				targetSize.height / (float) getSourceRectangle().height);
-		if ((isDirty()) && !updater.isRunning())
+		if ((isDirty()) && !updater.isRunning()) {
 			updater.start();
-		else if (oldSize != null && !targetSize.equals(oldSize)) {
+		} else if (oldSize != null && !targetSize.equals(oldSize)) {
 			revalidate();
 			updater.restart();
 		}
@@ -516,7 +527,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 	/**
 	 * Returns <code>true</code> if the source figure has changed.
-	 * 
+	 *
 	 * @return <code>true</code> if the source figure has changed
 	 */
 	protected boolean isDirty() {
@@ -526,6 +537,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 	/**
 	 * @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle, Map)
 	 */
+	@Override
 	public void notifyPainting(Rectangle damage, Map dirtyRegions) {
 		Iterator dirtyFigures = dirtyRegions.keySet().iterator();
 		while (dirtyFigures.hasNext()) {
@@ -544,6 +556,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 	/**
 	 * @see org.eclipse.draw2d.UpdateListener#notifyValidating()
 	 */
+	@Override
 	public void notifyValidating() {
 		// setDirty(true);
 		// revalidate();
@@ -552,16 +565,18 @@ public class Thumbnail extends Figure implements UpdateListener {
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		Image thumbnail = getThumbnailImage();
-		if (thumbnail == null)
+		if (thumbnail == null) {
 			return;
+		}
 		graphics.drawImage(thumbnail, getClientArea().getLocation());
 	}
 
 	/**
 	 * Sets the dirty flag.
-	 * 
+	 *
 	 * @param value The dirty value
 	 */
 	public void setDirty(boolean value) {
@@ -571,7 +586,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 	/**
 	 * Sets the X and Y scales for the Thumbnail. These scales represent the ratio
 	 * between the source figure and the Thumbnail.
-	 * 
+	 *
 	 * @param x The X scale
 	 * @param y The Y scale
 	 */
@@ -583,14 +598,16 @@ public class Thumbnail extends Figure implements UpdateListener {
 	/**
 	 * Sets the source Figure. Also sets the scales and creates the necessary update
 	 * manager.
-	 * 
+	 *
 	 * @param fig The source figure
 	 */
 	public void setSource(IFigure fig) {
-		if (sourceFigure == fig)
+		if (sourceFigure == fig) {
 			return;
-		if (sourceFigure != null)
+		}
+		if (sourceFigure != null) {
 			sourceFigure.getUpdateManager().removeUpdateListener(this);
+		}
 		sourceFigure = fig;
 		if (sourceFigure != null) {
 			setScales((float) getSize().width / (float) getSourceRectangle().width,
