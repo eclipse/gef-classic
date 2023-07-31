@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Iterator;
-import java.util.Stack;
 
 /**
  * Assigns the final rank assignment for a DirectedGraph with an initial
  * feasible spanning tree.
- * 
+ *
  * @author Randy Hudson
  * @since 2.1.2
  */
@@ -56,15 +57,16 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 		}
 
 		edge.cut = cutvalue;
-		if (cutvalue < 0)
+		if (cutvalue < 0) {
 			spanningTree.add(edge);
+		}
 		setTreeMax(n, count);
 		return count + 1;
 	}
 
 	/**
 	 * returns the Edge which should be entered.
-	 * 
+	 *
 	 * @param branch
 	 * @return Edge
 	 */
@@ -75,16 +77,18 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 		boolean incoming = getParentEdge(branch).target != branch;
 		// searchDirection = !searchDirection;
 		for (int i = 0; i < graph.nodes.size(); i++) {
-			if (searchDirection)
-				n = graph.nodes.getNode(i);
-			else
-				n = graph.nodes.getNode(graph.nodes.size() - 1 - i);
+			if (searchDirection) {
+				n = graph.nodes.get(i);
+			} else {
+				n = graph.nodes.get(graph.nodes.size() - 1 - i);
+			}
 			if (subtreeContains(branch, n)) {
 				EdgeList edges;
-				if (incoming)
+				if (incoming) {
 					edges = n.incoming;
-				else
+				} else {
 					edges = n.outgoing;
+				}
 				for (int j = 0; j < edges.size(); j++) {
 					Edge e = edges.getEdge(j);
 					if (!subtreeContains(branch, e.opposite(n)) && !e.tree && e.getSlack() < minSlack) {
@@ -106,7 +110,7 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 	}
 
 	void initCutValues() {
-		Node root = graph.nodes.getNode(0);
+		Node root = graph.nodes.get(0);
 		spanningTree = new EdgeList();
 		Edge e;
 		setTreeMin(root, 1);
@@ -114,14 +118,16 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 
 		for (int i = 0; i < root.outgoing.size(); i++) {
 			e = root.outgoing.getEdge(i);
-			if (!getSpanningTreeChildren(root).contains(e))
+			if (!getSpanningTreeChildren(root).contains(e)) {
 				continue;
+			}
 			setTreeMax(root, depthFirstCutValue(e, getTreeMax(root)));
 		}
 		for (int i = 0; i < root.incoming.size(); i++) {
 			e = root.incoming.getEdge(i);
-			if (!getSpanningTreeChildren(root).contains(e))
+			if (!getSpanningTreeChildren(root).contains(e)) {
 				continue;
+			}
 			setTreeMax(root, depthFirstCutValue(e, getTreeMax(root)));
 		}
 	}
@@ -156,8 +162,9 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 			Node leaveHead = getTreeHead(leave);
 
 			enter = enter(leaveTail);
-			if (enter == null)
+			if (enter == null) {
 				break;
+			}
 
 			// Break the "leave" edge from the spanning tree
 			getSpanningTreeChildren(leaveHead).remove(leave);
@@ -166,9 +173,10 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 			spanningTree.remove(leave);
 
 			Node enterTail = enter.source;
-			if (!subtreeContains(leaveTail, enterTail))
+			if (!subtreeContains(leaveTail, enterTail)) {
 				// Oops, wrong end of the edge
 				enterTail = enter.target;
+			}
 			Node enterHead = enter.opposite(enterTail);
 
 			// Prepare enterTail by making it the root of its sub-tree
@@ -207,23 +215,26 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 		Edge e;
 		for (int i = 0; i < list.size(); i++) {
 			e = list.getEdge(i);
-			if (e.tree && e != edge)
+			if (e.tree && e != edge) {
 				cutvalue += (e.cut - e.weight) * multiplier;
-			else
+			} else {
 				cutvalue -= e.weight * multiplier;
+			}
 		}
 		list = n.incoming;
 		for (int i = 0; i < list.size(); i++) {
 			e = list.getEdge(i);
-			if (e.tree && e != edge)
+			if (e.tree && e != edge) {
 				cutvalue -= (e.cut - e.weight) * multiplier;
-			else
+			} else {
 				cutvalue += e.weight * multiplier;
+			}
 		}
 
 		edge.cut = cutvalue;
-		if (cutvalue < 0)
+		if (cutvalue < 0) {
 			spanningTree.add(edge);
+		}
 	}
 
 	void setTreeMax(Node n, int value) {
@@ -241,21 +252,22 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 	void tightenEdge(Edge edge) {
 		Node tail = getTreeTail(edge);
 		int delta = edge.getSlack();
-		if (tail == edge.target)
+		if (tail == edge.target) {
 			delta = -delta;
-		Node n;
-		for (int i = 0; i < graph.nodes.size(); i++) {
-			n = graph.nodes.getNode(i);
-			if (subtreeContains(tail, n))
+		}
+		for (Node n : graph.nodes) {
+			if (subtreeContains(tail, n)) {
 				n.rank += delta;
+			}
 		}
 	}
 
 	int updateMinMax(Node root, int count) {
 		setTreeMin(root, count);
 		EdgeList edges = getSpanningTreeChildren(root);
-		for (int i = 0; i < edges.size(); i++)
+		for (int i = 0; i < edges.size(); i++) {
 			count = updateMinMax(getTreeTail(edges.getEdge(i)), count);
+		}
 		setTreeMax(root, count);
 		return count + 1;
 	}
@@ -273,14 +285,16 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 		}
 	}
 
+	@Override
 	public void visit(DirectedGraph graph) {
 		this.graph = graph;
 		initCutValues();
 		networkSimplexLoop();
-		if (graph.forestRoot == null)
+		if (graph.forestRoot == null) {
 			graph.nodes.normalizeRanks();
-		else
+		} else {
 			normalizeForest();
+		}
 	}
 
 	private void normalizeForest() {
@@ -288,13 +302,13 @@ class RankAssignmentSolver extends SpanningTreeVisitor {
 		graph.nodes.resetFlags();
 		graph.forestRoot.flag = true;
 		EdgeList rootEdges = graph.forestRoot.outgoing;
-		Stack stack = new Stack();
+		Deque<Node> stack = new ArrayDeque<>();
 		for (int i = 0; i < rootEdges.size(); i++) {
 			Node node = rootEdges.getEdge(i).target;
 			node.flag = true;
 			stack.push(node);
 			while (!stack.isEmpty()) {
-				node = (Node) stack.pop();
+				node = stack.pop();
 				tree.add(node);
 				Iterator neighbors = node.iteratorNeighbors();
 				while (neighbors.hasNext()) {

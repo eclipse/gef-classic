@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,16 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * Assigns a valid rank assignment to all nodes based on their edges. The
  * assignment is not optimal in that it does not provide the minimum global
  * length of edge lengths.
- * 
+ *
  * @author Randy Hudson
  * @since 2.1.2
  */
@@ -28,6 +29,7 @@ class InitialRankSolver extends GraphVisitor {
 	protected EdgeList candidates = new EdgeList();
 	protected NodeList members = new NodeList();
 
+	@Override
 	public void visit(DirectedGraph graph) {
 		this.graph = graph;
 		graph.edges.resetFlags(false);
@@ -36,26 +38,26 @@ class InitialRankSolver extends GraphVisitor {
 	}
 
 	protected void solve() {
-		if (graph.nodes.size() == 0)
+		if (graph.nodes.size() == 0) {
 			return;
+		}
 		NodeList unranked = new NodeList(graph.nodes);
 		NodeList rankMe = new NodeList();
-		Node node;
-		int i;
 		while (!unranked.isEmpty()) {
 			rankMe.clear();
-			for (i = 0; i < unranked.size();) {
-				node = unranked.getNode(i);
+			for (int i = 0; i < unranked.size();) {
+				Node node = unranked.get(i);
 				if (node.incoming.isCompletelyFlagged()) {
 					rankMe.add(node);
 					unranked.remove(i);
-				} else
+				} else {
 					i++;
+				}
 			}
-			if (rankMe.size() == 0)
+			if (rankMe.isEmpty()) {
 				throw new RuntimeException("Cycle detected in graph"); //$NON-NLS-1$
-			for (i = 0; i < rankMe.size(); i++) {
-				node = rankMe.getNode(i);
+			}
+			for (Node node : rankMe) {
 				assignMinimumRank(node);
 				node.outgoing.setFlags(true);
 			}
@@ -65,29 +67,31 @@ class InitialRankSolver extends GraphVisitor {
 	}
 
 	private void connectForest() {
-		List forest = new ArrayList();
-		Stack stack = new Stack();
-		NodeList tree;
+		List<NodeList> forest = new ArrayList<>();
+		Deque<Node> stack = new ArrayDeque<>();
 		graph.nodes.resetFlags();
-		for (int i = 0; i < graph.nodes.size(); i++) {
-			Node neighbor, n = graph.nodes.getNode(i);
-			if (n.flag)
+		for (Node n : graph.nodes) {
+			Node neighbor;
+			if (n.flag) {
 				continue;
-			tree = new NodeList();
+			}
+			NodeList tree = new NodeList();
 			stack.push(n);
 			while (!stack.isEmpty()) {
-				n = (Node) stack.pop();
+				n = stack.pop();
 				n.flag = true;
 				tree.add(n);
 				for (int s = 0; s < n.incoming.size(); s++) {
 					neighbor = n.incoming.getEdge(s).source;
-					if (!neighbor.flag)
+					if (!neighbor.flag) {
 						stack.push(neighbor);
+					}
 				}
 				for (int s = 0; s < n.outgoing.size(); s++) {
 					neighbor = n.outgoing.getEdge(s).target;
-					if (!neighbor.flag)
+					if (!neighbor.flag) {
 						stack.push(neighbor);
+					}
 				}
 			}
 			forest.add(tree);
@@ -97,9 +101,8 @@ class InitialRankSolver extends GraphVisitor {
 			// connect the forest
 			graph.forestRoot = new Node("the forest root"); //$NON-NLS-1$
 			graph.nodes.add(graph.forestRoot);
-			for (int i = 0; i < forest.size(); i++) {
-				tree = (NodeList) forest.get(i);
-				graph.edges.add(new Edge(graph.forestRoot, tree.getNode(0), 0, 0));
+			for (NodeList tree : forest) {
+				graph.edges.add(new Edge(graph.forestRoot, tree.get(0), 0, 0));
 			}
 		}
 	}

@@ -23,7 +23,6 @@ import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
-import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Subgraph;
 
 /**
@@ -49,10 +48,7 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 			buildSubgraphFigure(contents, s);
 		}
 
-		for (int i = 0; i < graph.nodes.size(); i++) {
-			Node node = graph.nodes.getNode(i);
-			buildNodeFigure(contents, node);
-		}
+		graph.nodes.forEach(n -> buildNodeFigure(contents, n));
 
 		for (int i = 0; i < graph.edges.size(); i++) {
 			Edge edge = graph.edges.getEdge(i);

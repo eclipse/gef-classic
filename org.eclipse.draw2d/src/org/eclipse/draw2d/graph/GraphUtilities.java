@@ -12,7 +12,7 @@ package org.eclipse.draw2d.graph;
 
 /**
  * Some utility methods for graphs.
- * 
+ *
  * @author Eric Bordeau
  * @since 2.1.2
  */
@@ -20,13 +20,15 @@ class GraphUtilities {
 
 	static Subgraph getCommonAncestor(Node left, Node right) {
 		Subgraph parent;
-		if (right instanceof Subgraph)
+		if (right instanceof Subgraph) {
 			parent = (Subgraph) right;
-		else
+		} else {
 			parent = right.getParent();
+		}
 		while (parent != null) {
-			if (parent.isNested(left))
+			if (parent.isNested(left)) {
 				return parent;
+			}
 			parent = parent.getParent();
 		}
 		return null;
@@ -34,7 +36,7 @@ class GraphUtilities {
 
 	/**
 	 * Returns <code>true</code> if the given graph contains at least one cycle.
-	 * 
+	 *
 	 * @param graph the graph to test
 	 * @return whether the graph is cyclic
 	 */
@@ -46,17 +48,17 @@ class GraphUtilities {
 	 * Recursively removes leaf nodes from the list until there are no nodes
 	 * remaining (acyclic) or there are no leaf nodes but the list is not empty
 	 * (cyclic), then returns the result.
-	 * 
+	 *
 	 * @param nodes the list of nodes to test
 	 * @return whether the graph is cyclic
 	 */
 	public static boolean isCyclic(NodeList nodes) {
-		if (nodes.isEmpty())
+		if (nodes.isEmpty()) {
 			return false;
+		}
 		int size = nodes.size();
 		// remove all the leaf nodes from the graph
-		for (int i = 0; i < nodes.size(); i++) {
-			Node node = nodes.getNode(i);
+		for (Node node : nodes) {
 			if (node.outgoing == null || node.outgoing.isEmpty()) { // this is a
 																	// leaf node
 				nodes.remove(node);
@@ -68,8 +70,9 @@ class GraphUtilities {
 		}
 		// if no nodes were removed, that means there are no leaf nodes and the
 		// graph is cyclic
-		if (nodes.size() == size)
+		if (nodes.size() == size) {
 			return true;
+		}
 		// leaf nodes were removed, so recursively call this method with the new
 		// list
 		return isCyclic(nodes);
@@ -77,7 +80,7 @@ class GraphUtilities {
 
 	/**
 	 * Counts the number of edge crossings in a DirectedGraph
-	 * 
+	 *
 	 * @param graph the graph whose crossed edges are counted
 	 * @return the number of edge crossings in the graph
 	 */
@@ -92,25 +95,26 @@ class GraphUtilities {
 
 	/**
 	 * Counts the number of edge crossings in a Rank
-	 * 
+	 *
 	 * @param rank the rank whose crossed edges are counted
 	 * @return the number of edge crossings in the rank
 	 */
 	public static int numberOfCrossingsInRank(Rank rank) {
 		int crossings = 0;
 		for (int i = 0; i < rank.size() - 1; i++) {
-			Node currentNode = rank.getNode(i);
+			Node currentNode = rank.get(i);
 			Node nextNode;
 			for (int j = i + 1; j < rank.size(); j++) {
-				nextNode = rank.getNode(j);
+				nextNode = rank.get(j);
 				EdgeList currentOutgoing = currentNode.outgoing;
 				EdgeList nextOutgoing = nextNode.outgoing;
 				for (int k = 0; k < currentOutgoing.size(); k++) {
 					Edge currentEdge = currentOutgoing.getEdge(k);
 					for (int l = 0; l < nextOutgoing.size(); l++) {
 						if (nextOutgoing.getEdge(l).getIndexForRank(currentNode.rank + 1) < currentEdge
-								.getIndexForRank(currentNode.rank + 1))
+								.getIndexForRank(currentNode.rank + 1)) {
 							crossings++;
+						}
 					}
 				}
 			}
@@ -119,19 +123,21 @@ class GraphUtilities {
 	}
 
 	private static NodeList search(Node node, NodeList list) {
-		if (node.flag)
+		if (node.flag) {
 			return list;
+		}
 		node.flag = true;
 		list.add(node);
-		for (int i = 0; i < node.outgoing.size(); i++)
+		for (int i = 0; i < node.outgoing.size(); i++) {
 			search(node.outgoing.getEdge(i).target, list);
+		}
 		return list;
 	}
 
 	/**
 	 * Returns <code>true</code> if adding an edge between the 2 given nodes will
 	 * introduce a cycle in the containing graph.
-	 * 
+	 *
 	 * @param source the potential source node
 	 * @param target the potential target node
 	 * @return whether an edge between the 2 given nodes will introduce a cycle
@@ -148,8 +154,9 @@ class GraphUtilities {
 			left = left.getParent();
 			common = left.getParent();
 		}
-		while (right.getParent() != common)
+		while (right.getParent() != common) {
 			right = right.getParent();
+		}
 		return (left.rowOrder != -1 && right.rowOrder != -1) && left.rowOrder != right.rowOrder;
 	}
 

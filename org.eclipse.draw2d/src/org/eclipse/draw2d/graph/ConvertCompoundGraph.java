@@ -14,7 +14,7 @@ import org.eclipse.draw2d.geometry.Insets;
 
 /**
  * Converts a compound directed graph into a simple directed graph.
- * 
+ *
  * @author Randy Hudson
  * @since 2.1.2
  */
@@ -23,13 +23,12 @@ class ConvertCompoundGraph extends GraphVisitor {
 	private void addContainmentEdges(CompoundDirectedGraph graph) {
 		// For all nested nodes, connect to head and/or tail of containing
 		// subgraph if present
-		for (int i = 0; i < graph.nodes.size(); i++) {
-			Node node = graph.nodes.getNode(i);
+		for (Node node : graph.nodes) {
 			Subgraph parent = node.getParent();
-			if (parent == null)
+			if (parent == null) {
 				continue;
-			if (node instanceof Subgraph) {
-				Subgraph sub = (Subgraph) node;
+			}
+			if (node instanceof Subgraph sub) {
 				connectHead(graph, sub.head, parent);
 				connectTail(graph, sub.tail, parent);
 			} else {
@@ -40,24 +39,24 @@ class ConvertCompoundGraph extends GraphVisitor {
 	}
 
 	int buildNestingTreeIndices(NodeList nodes, int base) {
-		for (int i = 0; i < nodes.size(); i++) {
-			Node node = (Node) nodes.get(i);
-			if (node instanceof Subgraph) {
-				Subgraph s = (Subgraph) node;
+		for (Node node : nodes) {
+			if (node instanceof Subgraph s) {
 				s.nestingTreeMin = base;
 				base = buildNestingTreeIndices(s.members, base);
 			}
-			node.nestingIndex = base++;
+			node.nestingIndex = base;
+			base++;
 		}
 		return base++;
 	}
 
-	private void connectHead(CompoundDirectedGraph graph, Node node, Subgraph parent) {
+	private static void connectHead(CompoundDirectedGraph graph, Node node, Subgraph parent) {
 		boolean connectHead = true;
 		for (int j = 0; connectHead && j < node.incoming.size(); j++) {
 			Node ancestor = node.incoming.getEdge(j).source;
-			if (parent.isNested(ancestor))
+			if (parent.isNested(ancestor)) {
 				connectHead = false;
+			}
 		}
 		if (connectHead) {
 			Edge e = new Edge(parent.head, node);
@@ -67,12 +66,13 @@ class ConvertCompoundGraph extends GraphVisitor {
 		}
 	}
 
-	private void connectTail(CompoundDirectedGraph graph, Node node, Subgraph parent) {
+	private static void connectTail(CompoundDirectedGraph graph, Node node, Subgraph parent) {
 		boolean connectTail = true;
 		for (int j = 0; connectTail && j < node.outgoing.size(); j++) {
 			Node ancestor = node.outgoing.getEdge(j).target;
-			if (parent.isNested(ancestor))
+			if (parent.isNested(ancestor)) {
 				connectTail = false;
+			}
 		}
 		if (connectTail) {
 			Edge e = new Edge(node, parent.tail);
@@ -82,27 +82,27 @@ class ConvertCompoundGraph extends GraphVisitor {
 		}
 	}
 
-	private void convertSubgraphEndpoints(CompoundDirectedGraph graph) {
+	private static void convertSubgraphEndpoints(CompoundDirectedGraph graph) {
 		for (int i = 0; i < graph.edges.size(); i++) {
 			Edge edge = (Edge) graph.edges.get(i);
-			if (edge.source instanceof Subgraph) {
-				Subgraph s = (Subgraph) edge.source;
+			if (edge.source instanceof Subgraph s) {
 				Node newSource;
-				if (s.isNested(edge.target))
+				if (s.isNested(edge.target)) {
 					newSource = s.head;
-				else
+				} else {
 					newSource = s.tail;
+				}
 				// s.outgoing.remove(edge);
 				edge.source = newSource;
 				newSource.outgoing.add(edge);
 			}
-			if (edge.target instanceof Subgraph) {
-				Subgraph s = (Subgraph) edge.target;
+			if (edge.target instanceof Subgraph s) {
 				Node newTarget;
-				if (s.isNested(edge.source))
+				if (s.isNested(edge.source)) {
 					newTarget = s.tail;
-				else
+				} else {
 					newTarget = s.head;
+				}
 
 				// s.incoming.remove(edge);
 				edge.target = newTarget;
@@ -111,7 +111,7 @@ class ConvertCompoundGraph extends GraphVisitor {
 		}
 	}
 
-	private void replaceSubgraphsWithBoundaries(CompoundDirectedGraph graph) {
+	private static void replaceSubgraphsWithBoundaries(CompoundDirectedGraph graph) {
 		for (int i = 0; i < graph.subgraphs.size(); i++) {
 			Subgraph s = (Subgraph) graph.subgraphs.get(i);
 			graph.nodes.add(s.head);
@@ -120,6 +120,7 @@ class ConvertCompoundGraph extends GraphVisitor {
 		}
 	}
 
+	@Override
 	void revisit(DirectedGraph g) {
 		for (int i = 0; i < g.edges.size(); i++) {
 			Edge e = g.edges.getEdge(i);
@@ -137,15 +138,14 @@ class ConvertCompoundGraph extends GraphVisitor {
 	/**
 	 * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
 	 */
+	@Override
 	public void visit(DirectedGraph dg) {
 		CompoundDirectedGraph graph = (CompoundDirectedGraph) dg;
 
 		NodeList roots = new NodeList();
 		// Find all subgraphs and root subgraphs
-		for (int i = 0; i < graph.nodes.size(); i++) {
-			Object node = graph.nodes.get(i);
-			if (node instanceof Subgraph) {
-				Subgraph s = (Subgraph) node;
+		for (Node node : graph.nodes) {
+			if (node instanceof Subgraph s) {
 				Insets padding = dg.getPadding(s);
 				s.head = new SubgraphBoundary(s, padding, 0);
 				s.tail = new SubgraphBoundary(s, padding, 2);
@@ -155,10 +155,12 @@ class ConvertCompoundGraph extends GraphVisitor {
 				graph.containment.add(headToTail);
 
 				graph.subgraphs.add(s);
-				if (s.getParent() == null)
+				if (s.getParent() == null) {
 					roots.add(s);
-				if (s.members.size() == 2) // The 2 being the head and tail only
+				}
+				if (s.members.size() == 2) { // The 2 being the head and tail only
 					graph.edges.add(new Edge(s.head, s.tail));
+				}
 			}
 		}
 

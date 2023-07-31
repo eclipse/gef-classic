@@ -15,7 +15,7 @@ import java.util.Set;
 
 /**
  * Calculates the X-coordinates for nodes in a compound directed graph.
- * 
+ *
  * @author Randy Hudson
  * @since 2.1.2
  */
@@ -30,11 +30,13 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 			right = r;
 		}
 
+		@Override
 		public boolean equals(Object obj) {
 			LeftRight entry = (LeftRight) obj;
 			return entry.left.equals(left) && entry.right.equals(right);
 		}
 
+		@Override
 		public int hashCode() {
 			return left.hashCode() ^ right.hashCode();
 		}
@@ -45,11 +47,12 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 	/**
 	 * @see org.eclipse.graph.HorizontalPlacement#applyGPrime()
 	 */
+	@Override
 	void applyGPrime() {
 		super.applyGPrime();
 		NodeList subgraphs = ((CompoundDirectedGraph) graph).subgraphs;
-		for (int i = 0; i < subgraphs.size(); i++) {
-			Subgraph s = (Subgraph) subgraphs.get(i);
+		for (Node subgraph : subgraphs) {
+			Subgraph s = (Subgraph) subgraph;
 			s.x = s.left.x;
 			s.width = s.right.x + s.right.width - s.x;
 		}
@@ -58,6 +61,7 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 	/**
 	 * @see HorizontalPlacement#buildRankSeparators(RankList)
 	 */
+	@Override
 	void buildRankSeparators(RankList ranks) {
 		CompoundDirectedGraph g = (CompoundDirectedGraph) graph;
 
@@ -65,8 +69,8 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 		for (int row = 0; row < g.ranks.size(); row++) {
 			rank = g.ranks.getRank(row);
 			Node n = null, prev = null;
-			for (int j = 0; j < rank.size(); j++) {
-				n = rank.getNode(j);
+			for (Node element : rank) {
+				n = element;
 				if (prev == null) {
 					Node left = addSeparatorsLeft(n, null);
 					if (left != null) {
@@ -83,15 +87,17 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 				}
 				prev = n;
 			}
-			if (n != null)
+			if (n != null) {
 				addSeparatorsRight(n, null);
+			}
 		}
 	}
 
 	void createEdge(Node left, Node right) {
 		LeftRight entry = new LeftRight(left, right);
-		if (entries.contains(entry))
+		if (entries.contains(entry)) {
 			return;
+		}
 		entries.add(entry);
 		int separation = left.width + graph.getPadding(left).right + graph.getPadding(right).left;
 		prime.edges.add(new Edge(getPrime(left), getPrime(right), separation, 0));
@@ -153,6 +159,7 @@ class CompoundHorizontalPlacement extends HorizontalPlacement {
 		return nPrime;
 	}
 
+	@Override
 	public void visit(DirectedGraph g) {
 		super.visit(g);
 	}

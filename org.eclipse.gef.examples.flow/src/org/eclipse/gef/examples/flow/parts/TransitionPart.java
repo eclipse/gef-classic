@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,10 +25,12 @@ import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.NodeList;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.editparts.AbstractConnectionEditPart;
 import org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy;
+
 import org.eclipse.gef.examples.flow.policies.TransitionEditPolicy;
 
 /**
@@ -43,8 +45,7 @@ public class TransitionPart extends AbstractConnectionEditPart {
 		conn.setTargetDecoration(new PolygonDecoration());
 		if (nodes != null) {
 			List<AbsoluteBendpoint> bends = new ArrayList<>();
-			for (int i = 0; i < nodes.size(); i++) {
-				Node vn = nodes.getNode(i);
+			for (Node vn : nodes) {
 				int x = vn.x;
 				int y = vn.y;
 				if (e.isFeedback()) {
@@ -80,8 +81,9 @@ public class TransitionPart extends AbstractConnectionEditPart {
 			@Override
 			public void route(Connection conn) {
 				GraphAnimation.recordInitialState(conn);
-				if (!GraphAnimation.playbackState(conn))
+				if (!GraphAnimation.playbackState(conn)) {
 					super.route(conn);
+				}
 			}
 		});
 
@@ -95,10 +97,11 @@ public class TransitionPart extends AbstractConnectionEditPart {
 	@Override
 	public void setSelected(int value) {
 		super.setSelected(value);
-		if (value != EditPart.SELECTED_NONE)
+		if (value != EditPart.SELECTED_NONE) {
 			((PolylineConnection) getFigure()).setLineWidth(2);
-		else
+		} else {
 			((PolylineConnection) getFigure()).setLineWidth(1);
+		}
 	}
 
 	public void contributeToGraph(CompoundDirectedGraph graph, Map map) {

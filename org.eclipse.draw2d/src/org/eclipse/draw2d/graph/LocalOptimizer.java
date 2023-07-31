@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,15 +13,16 @@ package org.eclipse.draw2d.graph;
 /**
  * This graph visitor examines all adjacent pairs of nodes and determines if
  * swapping the two nodes provides improved graph aesthetics.
- * 
+ *
  * @author Daniel Lee
  * @since 2.1.2
  */
 class LocalOptimizer extends GraphVisitor {
 
 	boolean shouldSwap(Node current, Node next) {
-		if (GraphUtilities.isConstrained(current, next))
+		if (GraphUtilities.isConstrained(current, next)) {
 			return false;
+		}
 		int crossCount = 0;
 		int invertedCrossCount = 0;
 
@@ -35,17 +36,18 @@ class LocalOptimizer extends GraphVisitor {
 			iCurrent = currentEdge.getIndexForRank(rank);
 			for (int j = 0; j < nextEdges.size(); j++) {
 				iNext = nextEdges.getEdge(j).getIndexForRank(rank);
-				if (iNext < iCurrent)
+				if (iNext < iCurrent) {
 					crossCount++;
-				else if (iNext > iCurrent)
+				} else if (iNext > iCurrent) {
 					invertedCrossCount++;
-				else {
+				} else {
 					// edges go to the same location
 					int offsetDiff = nextEdges.getEdge(j).getSourceOffset() - currentEdge.getSourceOffset();
-					if (offsetDiff < 0)
+					if (offsetDiff < 0) {
 						crossCount++;
-					else if (offsetDiff > 0)
+					} else if (offsetDiff > 0) {
 						invertedCrossCount++;
+					}
 				}
 			}
 		}
@@ -59,26 +61,28 @@ class LocalOptimizer extends GraphVisitor {
 			iCurrent = currentEdge.getIndexForRank(rank);
 			for (int j = 0; j < nextEdges.size(); j++) {
 				iNext = nextEdges.getEdge(j).getIndexForRank(rank);
-				if (iNext < iCurrent)
+				if (iNext < iCurrent) {
 					crossCount++;
-				else if (iNext > iCurrent)
+				} else if (iNext > iCurrent) {
 					invertedCrossCount++;
-				else {
+				} else {
 					// edges go to the same location
 					int offsetDiff = nextEdges.getEdge(j).getTargetOffset() - currentEdge.getTargetOffset();
-					if (offsetDiff < 0)
+					if (offsetDiff < 0) {
 						crossCount++;
-					else if (offsetDiff > 0)
+					} else if (offsetDiff > 0) {
 						invertedCrossCount++;
+					}
 				}
 			}
 		}
-		if (invertedCrossCount < crossCount)
+		if (invertedCrossCount < crossCount) {
 			return true;
+		}
 		return false;
 	}
 
-	private void swapNodes(Node current, Node next, Rank rank) {
+	private static void swapNodes(Node current, Node next, Rank rank) {
 		int index = rank.indexOf(current);
 		rank.set(index + 1, current);
 		rank.set(index, next);
@@ -90,6 +94,7 @@ class LocalOptimizer extends GraphVisitor {
 	/**
 	 * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
 	 */
+	@Override
 	public void visit(DirectedGraph g) {
 		boolean flag;
 		do {
@@ -97,8 +102,8 @@ class LocalOptimizer extends GraphVisitor {
 			for (int r = 0; r < g.ranks.size(); r++) {
 				Rank rank = g.ranks.getRank(r);
 				for (int n = 0; n < rank.count() - 1; n++) {
-					Node currentNode = rank.getNode(n);
-					Node nextNode = rank.getNode(n + 1);
+					Node currentNode = rank.get(n);
+					Node nextNode = rank.get(n + 1);
 					if (shouldSwap(currentNode, nextNode)) {
 						swapNodes(currentNode, nextNode, rank);
 						flag = true;
