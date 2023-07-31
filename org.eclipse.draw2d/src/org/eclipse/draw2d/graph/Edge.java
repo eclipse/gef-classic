@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,7 +37,7 @@ import org.eclipse.draw2d.geometry.PointList;
  * <LI>{@link #vNodes} - the virtual nodes (if any) which make up the bendpoints
  * <LI>{@link #isFeedback} - <code>true</code> if the edge points backwards
  * </UL>
- * 
+ *
  * @author hudsonr
  * @since 2.1.2
  */
@@ -53,16 +53,18 @@ public class Edge {
 	/**
 	 * The minimum rank separation between the source and target nodes. The default
 	 * value is 1.
-	 * 
+	 *
 	 * @deprecated use accessors instead
 	 */
+	@Deprecated
 	public int delta = 1;
 
 	/**
 	 * The ending point.
-	 * 
+	 *
 	 * @deprecated use {@link #getPoints()}
 	 */
+	@Deprecated
 	public Point end;
 
 	boolean flag;
@@ -71,32 +73,36 @@ public class Edge {
 	 * @deprecated INTERNAL field, use accessor method Indicates an edge was
 	 *             inverted during the layout
 	 */
+	@Deprecated
 	public boolean isFeedback = false;
 
 	/**
 	 * The edge's attachment point at the <em>source</em> node. The default value is
 	 * -1, which indicates that the edge should use the node's default
 	 * {@link Node#getOffsetOutgoing() outgoing} attachment point.
-	 * 
+	 *
 	 * @deprecated use accessors instead
 	 */
+	@Deprecated
 	public int offsetSource = -1;
 
 	/**
 	 * The edge's attachment point at the <em>target</em> node. The default value is
 	 * -1, which indicates that the edge should use the node's default
 	 * {@link Node#getOffsetIncoming() incoming} attachment point.
-	 * 
+	 *
 	 * @deprecated use accessors instead
 	 */
+	@Deprecated
 	public int offsetTarget = -1;
 
 	/**
 	 * The minimum amount of space to leave on both the left and right sides of the
 	 * edge.
-	 * 
+	 *
 	 * @deprecated use accessors instead
 	 */
+	@Deprecated
 	public int padding = 10;
 
 	private PointList points;
@@ -107,9 +113,10 @@ public class Edge {
 	public Node source;
 	/**
 	 * The starting point.
-	 * 
+	 *
 	 * @deprecated use {@link #getPoints()}
 	 */
+	@Deprecated
 	public Point start;
 
 	/**
@@ -136,12 +143,13 @@ public class Edge {
 	/**
 	 * @deprecated use accessors instead
 	 */
+	@Deprecated
 	public int width = 1;
 
 	/**
 	 * Constructs a new edge with the given source and target nodes. All other
 	 * fields will have their default values.
-	 * 
+	 *
 	 * @param source the source Node
 	 * @param target the target Node
 	 */
@@ -151,7 +159,7 @@ public class Edge {
 
 	/**
 	 * Constructs a new edge with the given source, target, delta, and weight.
-	 * 
+	 *
 	 * @param source the source Node
 	 * @param target the target Node
 	 * @param delta  the minimum edge span
@@ -165,7 +173,7 @@ public class Edge {
 
 	/**
 	 * Constructs a new edge with the given data object, source, and target node.
-	 * 
+	 *
 	 * @param data   an arbitrary data object
 	 * @param source the source node
 	 * @param target the target node
@@ -181,7 +189,7 @@ public class Edge {
 	/**
 	 * Returns the delta value. The delta is the minimum rank separation for the
 	 * edge's source and target nodes.
-	 * 
+	 *
 	 * @return the delta.
 	 * @since 3.2
 	 */
@@ -193,24 +201,27 @@ public class Edge {
 	 * For internal use only. Returns the index of the {@link Node} (or
 	 * {@link VirtualNode}) on this edge at the given rank. If this edge doesn't
 	 * have a node at the given rank, -1 is returned.
-	 * 
+	 *
 	 * @param rank the rank
 	 * @return the edges index at the given rank
 	 */
 	int getIndexForRank(int rank) {
-		if (source.rank == rank)
+		if (source.rank == rank) {
 			return source.index;
-		if (target.rank == rank)
+		}
+		if (target.rank == rank) {
 			return target.index;
-		if (vNodes != null)
-			return vNodes.getNode(rank - source.rank - 1).index;
+		}
+		if (vNodes != null) {
+			return vNodes.get(rank - source.rank - 1).index;
+		}
 		return -1;
 	}
 
 	/**
 	 * For internal use only. Returns the target node's row minus the source node's
 	 * row.
-	 * 
+	 *
 	 * @return the distance from the source to target ranks
 	 */
 	public int getLength() {
@@ -223,7 +234,7 @@ public class Edge {
 
 	/**
 	 * Returns the path connecting the edge's source and target.
-	 * 
+	 *
 	 * @return a point list
 	 * @since 3.2
 	 */
@@ -239,12 +250,13 @@ public class Edge {
 	 * Returns the effective source offset for this edge. The effective source
 	 * offset is either the {@link #offsetSource} field, or the source node's
 	 * default outgoing offset if that field's value is -1.
-	 * 
+	 *
 	 * @return the source offset
 	 */
 	public int getSourceOffset() {
-		if (offsetSource != -1)
+		if (offsetSource != -1) {
 			return offsetSource;
+		}
 		return source.getOffsetOutgoing();
 	}
 
@@ -252,12 +264,13 @@ public class Edge {
 	 * Returns the effective target offset for this edge. The effective target
 	 * offset is either the {@link #offsetTarget} field, or the target node's
 	 * default incoming offset if that field's value is -1.
-	 * 
+	 *
 	 * @return the target offset
 	 */
 	public int getTargetOffset() {
-		if (offsetTarget != -1)
+		if (offsetTarget != -1) {
 			return offsetTarget;
+		}
 		return target.getOffsetIncoming();
 	}
 
@@ -268,7 +281,7 @@ public class Edge {
 	/**
 	 * Swaps the source and target nodes. If any positional data has been
 	 * calculated, it is inverted as well to reflect the new direction.
-	 * 
+	 *
 	 * @since 2.1.2
 	 */
 	public void invert() {
@@ -286,13 +299,14 @@ public class Edge {
 		target.incoming.add(this);
 		source.outgoing.add(this);
 
-		if (points != null)
+		if (points != null) {
 			points.reverse();
+		}
 
 		if (vNodes != null) {
 			NodeList newVNodes = new NodeList();
 			for (int j = vNodes.size() - 1; j >= 0; j--) {
-				newVNodes.add(vNodes.getNode(j));
+				newVNodes.add(vNodes.get(j));
 			}
 			vNodes = newVNodes;
 		}
@@ -308,7 +322,7 @@ public class Edge {
 	 * Returns <code>true</code> if the edge was a feedback edge. The layout
 	 * algorithm may invert one or more edges to remove all cycles from the input.
 	 * The set of edges that are inverted are referred to as the "feedback" set.
-	 * 
+	 *
 	 * @return <code>true</code> if the edge is feedback
 	 * @since 3.2
 	 */
@@ -318,19 +332,20 @@ public class Edge {
 
 	/**
 	 * For internal use only. Returns the node opposite the given node on this edge.
-	 * 
+	 *
 	 * @param end one end
 	 * @return the other end
 	 */
 	public Node opposite(Node end) {
-		if (source == end)
+		if (source == end) {
 			return target;
+		}
 		return source;
 	}
 
 	/**
 	 * Sets the delta value.
-	 * 
+	 *
 	 * @param delta the new delta value
 	 * @since 3.2
 	 */
@@ -340,7 +355,7 @@ public class Edge {
 
 	/**
 	 * Sets the padding for this edge.
-	 * 
+	 *
 	 * @param padding the padding
 	 * @since 3.2
 	 */
@@ -358,18 +373,21 @@ public class Edge {
 	 * Sets the source node and adds this edge to the new source's outgoing edges.
 	 * If the source node is previously set, removes this edge from the old source's
 	 * outgoing edges.
-	 * 
+	 *
 	 * @param node the new source
 	 * @since 3.2
 	 */
 	public void setSource(Node node) {
-		if (source == node)
+		if (source == node) {
 			return;
-		if (source != null)
+		}
+		if (source != null) {
 			source.outgoing.remove(this);
+		}
 		source = node;
-		if (source != null)
+		if (source != null) {
 			source.outgoing.add(this);
+		}
 	}
 
 	public void setSourceOffset(int offset) {
@@ -380,18 +398,21 @@ public class Edge {
 	 * Sets the target node and adds this edge to the new target's incoming edges.
 	 * If the target node is previously set, removes this edge from the old target's
 	 * incoming edges.
-	 * 
+	 *
 	 * @param node the new target
 	 * @since 3.2
 	 */
 	public void setTarget(Node node) {
-		if (target == node)
+		if (target == node) {
 			return;
-		if (target != null)
+		}
+		if (target != null) {
 			target.incoming.remove(this);
+		}
 		target = node;
-		if (target != null)
+		if (target != null) {
 			target.incoming.add(this);
+		}
 	}
 
 	public void setTargetOffset(int offset) {
@@ -400,7 +421,7 @@ public class Edge {
 
 	/**
 	 * Sets the width of the edge.
-	 * 
+	 *
 	 * @param width the new width
 	 * @since 3.2
 	 */

@@ -173,8 +173,7 @@ public abstract class AbstractGraphDemo {
 		List<AbsoluteBendpoint> bends = new ArrayList<>();
 		NodeList nodes = e.vNodes;
 		if (nodes != null) {
-			for (int i = 0; i < nodes.size(); i++) {
-				Node n = nodes.getNode(i);
+			for (Node n : nodes) {
 				int x = n.x;
 				int y = n.y;
 				bends.add(new AbsoluteBendpoint(x, y));

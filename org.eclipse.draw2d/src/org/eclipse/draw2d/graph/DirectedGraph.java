@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,7 +19,7 @@ import org.eclipse.draw2d.geometry.Insets;
  * input to a graph layout algorithm. The algorithm will place the graph's nodes
  * and edges according to certain goals, such as short, non-crossing edges, and
  * readability.
- * 
+ *
  * @author hudsonr
  * @since 2.1.2
  */
@@ -46,9 +46,10 @@ public class DirectedGraph {
 
 	/**
 	 * For internal use only. The list of rows which makeup the final graph layout.
-	 * 
+	 *
 	 * @deprecated
 	 */
+	@Deprecated
 	public RankList ranks = new RankList();
 
 	Node forestRoot;
@@ -61,7 +62,7 @@ public class DirectedGraph {
 
 	/**
 	 * Returns the default padding for nodes.
-	 * 
+	 *
 	 * @return the default padding
 	 * @since 3.2
 	 */
@@ -71,7 +72,7 @@ public class DirectedGraph {
 
 	/**
 	 * Returns the direction in which the graph will be layed out.
-	 * 
+	 *
 	 * @return the layout direction
 	 * @since 3.2
 	 */
@@ -82,7 +83,7 @@ public class DirectedGraph {
 	/**
 	 * Sets the outer margin for the entire graph. The margin is the space in which
 	 * nodes should not be placed.
-	 * 
+	 *
 	 * @return the graph's margin
 	 * @since 3.2
 	 */
@@ -94,14 +95,15 @@ public class DirectedGraph {
 	 * Returns the effective padding for the given node. If the node has a specified
 	 * padding, it will be used, otherwise, the graph's defaultPadding is returned.
 	 * The returned value must not be modified.
-	 * 
+	 *
 	 * @param node the node
 	 * @return the effective padding for that node
 	 */
 	public Insets getPadding(Node node) {
 		Insets pad = node.getPadding();
-		if (pad == null)
+		if (pad == null) {
 			return defaultPadding;
+		}
 		return pad;
 	}
 
@@ -126,37 +128,40 @@ public class DirectedGraph {
 	// }
 
 	public Node getNode(int rank, int index) {
-		if (ranks.size() <= rank)
+		if (ranks.size() <= rank) {
 			return null;
+		}
 		Rank r = ranks.getRank(rank);
-		if (r.size() <= index)
+		if (r.size() <= index) {
 			return null;
-		return r.getNode(index);
+		}
+		return r.get(index);
 	}
 
 	/**
 	 * Removes the given edge from the graph.
-	 * 
+	 *
 	 * @param edge the edge to be removed
 	 */
 	public void removeEdge(Edge edge) {
 		edges.remove(edge);
 		edge.source.outgoing.remove(edge);
 		edge.target.incoming.remove(edge);
-		if (edge.vNodes != null)
-			for (int j = 0; j < edge.vNodes.size(); j++)
-				removeNode(edge.vNodes.getNode(j));
+		if (edge.vNodes != null) {
+			edge.vNodes.forEach(this::removeNode);
+		}
 	}
 
 	/**
 	 * Removes the given node from the graph. Does not remove the node's edges.
-	 * 
+	 *
 	 * @param node the node to remove
 	 */
 	public void removeNode(Node node) {
 		nodes.remove(node);
-		if (ranks != null)
+		if (ranks != null) {
 			ranks.getRank(node.rank).remove(node);
+		}
 	}
 
 	/**
@@ -164,7 +169,7 @@ public class DirectedGraph {
 	 * space left around the <em>outside</em> of each node. The default padding is
 	 * used for all nodes which do not specify a specific amount of padding (i.e.,
 	 * their padding is <code>null</code>).
-	 * 
+	 *
 	 * @param insets the padding
 	 */
 	public void setDefaultPadding(Insets insets) {
@@ -180,7 +185,7 @@ public class DirectedGraph {
 	 * </UL>
 	 * <P>
 	 * The default direction is south.
-	 * 
+	 *
 	 * @param direction the layout direction
 	 * @since 3.2
 	 */
@@ -195,7 +200,7 @@ public class DirectedGraph {
 
 	/**
 	 * Sets the graphs margin.
-	 * 
+	 *
 	 * @param insets the graph's margin
 	 * @since 3.2
 	 */

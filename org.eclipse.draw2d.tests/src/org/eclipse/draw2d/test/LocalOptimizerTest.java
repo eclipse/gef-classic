@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -26,7 +26,7 @@ import org.junit.Test;
 
 /**
  * Tests the swapping of adjacent nodes in a directed graph. since 3.0
- * 
+ *
  */
 public class LocalOptimizerTest extends Assert {
 
@@ -34,28 +34,28 @@ public class LocalOptimizerTest extends Assert {
 	private Node a, b, c, d, e, f, g, h, i, j, k, l;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		graph = new DirectedGraph();
 
 		// create nodes and populate their ranks
-		a = createNode("a");
-		b = createNode("b");
-		c = createNode("c");
-		d = createNode("d");
-		e = createNode("e");
-		f = createNode("f");
-		g = createNode("g");
-		h = createNode("h");
-		i = createNode("i");
-		j = createNode("j");
-		k = createNode("k");
-		l = createNode("l");
+		a = createNode("a"); //$NON-NLS-1$
+		b = createNode("b"); //$NON-NLS-1$
+		c = createNode("c"); //$NON-NLS-1$
+		d = createNode("d"); //$NON-NLS-1$
+		e = createNode("e"); //$NON-NLS-1$
+		f = createNode("f"); //$NON-NLS-1$
+		g = createNode("g"); //$NON-NLS-1$
+		h = createNode("h"); //$NON-NLS-1$
+		i = createNode("i"); //$NON-NLS-1$
+		j = createNode("j"); //$NON-NLS-1$
+		k = createNode("k"); //$NON-NLS-1$
+		l = createNode("l"); //$NON-NLS-1$
 
 		rankNodes(new Node[] { a, b, c, d }, 0);
 		rankNodes(new Node[] { e, f, g, h }, 1);
 		rankNodes(new Node[] { i, j, k, l }, 2);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.PopulateRanks" })
+		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.PopulateRanks" }) //$NON-NLS-1$
 				.visit(graph);
 	}
 
@@ -70,7 +70,7 @@ public class LocalOptimizerTest extends Assert {
 		createEdge(c, h);
 		createEdge(d, h);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" }) //$NON-NLS-1$
 				.visit(graph);
 
 		checkResults(new Node[][] { new Node[] { a, b, c, d }, new Node[] { e, g, f, h } });
@@ -86,7 +86,7 @@ public class LocalOptimizerTest extends Assert {
 		createEdge(d, f);
 		createEdge(c, h);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" }) //$NON-NLS-1$
 				.visit(graph);
 
 		checkResults(new Node[][] { new Node[] { a, b, d, c }, new Node[] { e, f, g, h } });
@@ -106,7 +106,7 @@ public class LocalOptimizerTest extends Assert {
 		createEdge(e, j).offsetSource = 30;
 		createEdge(f, k);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" }) //$NON-NLS-1$
 				.visit(graph);
 
 		checkResults(new Node[][] { new Node[] { c, a, b, d }, new Node[] { e, f, g, h }, new Node[] { i, j, k, l } });
@@ -116,8 +116,8 @@ public class LocalOptimizerTest extends Assert {
 	public void testBidirectionalSwapNeeded() {
 		/*
 		 * A B C D \ |\ \| \ E F G H (F and G should swap) X| / X | |\ I J K L
-		 * 
-		 * 
+		 *
+		 *
 		 * A B C D (Which causes A&B on previous rank to swap) \ /| X | / \| E G F H |\
 		 * \ | \ \ I J K L
 		 */
@@ -128,7 +128,7 @@ public class LocalOptimizerTest extends Assert {
 		createEdge(g, j);
 		createEdge(g, k);
 
-		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" })
+		createDirectedGraphLayoutWithSelectedStepOnly(new String[] { "org.eclipse.draw2d.graph.LocalOptimizer" }) //$NON-NLS-1$
 				.visit(graph);
 
 		checkResults(new Node[][] { new Node[] { b, a, c, d }, new Node[] { e, g, f, h }, new Node[] { i, j, k, l } });
@@ -138,20 +138,20 @@ public class LocalOptimizerTest extends Assert {
 	 * LocalOptimizer and other GraphVisitors are package private, so we cannot
 	 * instantiate them directly. Instead, we use a DirectedGraphLayout and remove
 	 * all other steps from it.
-	 * 
+	 *
 	 * @return A DirectedGraphLayout containing only the selected steps.
 	 */
-	private DirectedGraphLayout createDirectedGraphLayoutWithSelectedStepOnly(String[] graphVisitorClassNames) {
+	private static DirectedGraphLayout createDirectedGraphLayoutWithSelectedStepOnly(String[] graphVisitorClassNames) {
 		try {
 			DirectedGraphLayout layout = new DirectedGraphLayout();
-			Field stepsField = DirectedGraphLayout.class.getDeclaredField("steps");
+			Field stepsField = DirectedGraphLayout.class.getDeclaredField("steps"); //$NON-NLS-1$
 			stepsField.setAccessible(true);
 			ArrayList steps = (ArrayList) stepsField.get(layout);
 			ArrayList filteredSteps = new ArrayList();
 			for (int i = 0; i < steps.size(); i++) {
 				Object graphVisitor = steps.get(i);
-				for (int j = 0; j < graphVisitorClassNames.length; j++) {
-					if (graphVisitorClassNames[j].equals(graphVisitor.getClass().getName())) {
+				for (String graphVisitorClassName : graphVisitorClassNames) {
+					if (graphVisitorClassName.equals(graphVisitor.getClass().getName())) {
 						filteredSteps.add(graphVisitor);
 					}
 				}
@@ -177,16 +177,16 @@ public class LocalOptimizerTest extends Assert {
 		return edge;
 	}
 
-	private void rankNodes(Node[] nodes, int rank) {
+	private static void rankNodes(Node[] nodes, int rank) {
 		for (int i = 0; i < nodes.length; i++) {
 			Node node = nodes[i];
 			try {
 				// node.rank = rank;
-				Field rankField = Node.class.getDeclaredField("rank");
+				Field rankField = Node.class.getDeclaredField("rank"); //$NON-NLS-1$
 				rankField.setAccessible(true);
 				rankField.set(node, Integer.valueOf(rank));
 				// node.index = i;
-				Field indexField = Node.class.getDeclaredField("index");
+				Field indexField = Node.class.getDeclaredField("index"); //$NON-NLS-1$
 				indexField.setAccessible(true);
 				indexField.set(node, Integer.valueOf(i));
 			} catch (Exception e) {
@@ -202,7 +202,7 @@ public class LocalOptimizerTest extends Assert {
 			assertEquals(rank.size(), row.length);
 			for (int n = 0; n < row.length; n++) {
 				Node node = row[n];
-				assertEquals("Unexpected node encountered at:" + r + "," + n, node, rank.getNode(n));
+				assertEquals("Unexpected node encountered at:" + r + "," + n, node, rank.get(n)); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 	}

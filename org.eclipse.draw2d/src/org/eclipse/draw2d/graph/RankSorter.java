@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,12 +11,11 @@
 package org.eclipse.draw2d.graph;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Random;
 
 /**
  * Sorts Ranks during the up and down sweeps of the MinCross visitor.
- * 
+ *
  * @author Randy Hudson
  * @since 2.1.2
  */
@@ -33,10 +32,11 @@ class RankSorter {
 	protected void assignIncomingSortValues() {
 		rankSize = rank.total;
 		prevRankSize = g.ranks.getRank(currentRow - 1).total;
-		if (currentRow < g.ranks.size() - 1)
+		if (currentRow < g.ranks.size() - 1) {
 			nextRankSize = g.ranks.getRank(currentRow + 1).total;
+		}
 		for (int n = 0; n < rank.count(); n++) {
-			node = rank.getNode(n);
+			node = rank.get(n);
 			sortValueIncoming();
 		}
 	}
@@ -44,11 +44,12 @@ class RankSorter {
 	protected void assignOutgoingSortValues() {
 		rankSize = rank.total;
 		prevRankSize = g.ranks.getRank(currentRow + 1).total;
-		if (currentRow > 1)
+		if (currentRow > 1) {
 			nextRankSize = g.ranks.getRank(currentRow - 1).total;
+		}
 
 		for (int n = 0; n < rank.count(); n++) {
-			node = rank.getNode(n);
+			node = rank.get(n);
 			sortValueOutgoing();
 		}
 	}
@@ -72,24 +73,27 @@ class RankSorter {
 		if (n == 0) {
 			return node.index * prevRankSize / rankSize;
 		}
-		if (n % 2 == 1)
+		if (n % 2 == 1) {
 			return incoming.getSourceIndex(n / 2);
+		}
 
 		int l = incoming.getSourceIndex(n / 2 - 1);
 		int r = incoming.getSourceIndex(n / 2);
 		if (progress >= 0.8 && n > 2) {
 			int dl = l - incoming.getSourceIndex(0);
 			int dr = incoming.getSourceIndex(n - 1) - r;
-			if (dl < dr)
+			if (dl < dr) {
 				return l;
-			if (dl > dr)
+			}
+			if (dl > dr) {
 				return r;
+			}
 		}
 		if (progress > 0.25 && progress < 0.75) {
-			if (flipflop.nextBoolean())
+			if (flipflop.nextBoolean()) {
 				return (l + l + r) / 3.0;
-			else
-				return (r + r + l) / 3.0;
+			}
+			return (r + r + l) / 3.0;
 		}
 		return (l + r) / 2.0;
 	}
@@ -110,25 +114,29 @@ class RankSorter {
 		} while (change);
 
 		int n = outgoing.size();
-		if (n == 0)
+		if (n == 0) {
 			return node.index * prevRankSize / rankSize;
-		if (n % 2 == 1)
+		}
+		if (n % 2 == 1) {
 			return outgoing.getTargetIndex(n / 2);
+		}
 		int l = outgoing.getTargetIndex(n / 2 - 1);
 		int r = outgoing.getTargetIndex(n / 2);
 		if (progress >= 0.8 && n > 2) {
 			int dl = l - outgoing.getTargetIndex(0);
 			int dr = outgoing.getTargetIndex(n - 1) - r;
-			if (dl < dr)
+			if (dl < dr) {
 				return l;
-			if (dl > dr)
+			}
+			if (dl > dr) {
 				return r;
+			}
 		}
 		if (progress > 0.25 && progress < 0.75) {
-			if (flipflop.nextBoolean())
+			if (flipflop.nextBoolean()) {
 				return (l + l + r) / 3.0;
-			else
-				return (r + r + l) / 3.0;
+			}
+			return (r + r + l) / 3.0;
 		}
 		return (l + r) / 2.0;
 	}
@@ -149,11 +157,7 @@ class RankSorter {
 
 			// Sort the ranks based on their constraints. Constraints are
 			// preserved throughout.
-			Collections.sort(rank, new Comparator() {
-				public int compare(Object left, Object right) {
-					return ((Node) left).rowOrder - ((Node) right).rowOrder;
-				}
-			});
+			Collections.sort(rank, (left, right) -> left.rowOrder - right.rowOrder);
 			postSort();
 		}
 	}
@@ -169,23 +173,28 @@ class RankSorter {
 		boolean change;
 		do {
 			change = false;
-			for (int i = 0; i < rank.size() - 1; i++)
+			for (int i = 0; i < rank.size() - 1; i++) {
 				change |= swap(i);
-			if (!change)
+			}
+			if (!change) {
 				break;
+			}
 			change = false;
-			for (int i = rank.size() - 2; i >= 0; i--)
+			for (int i = rank.size() - 2; i >= 0; i--) {
 				change |= swap(i);
+			}
 		} while (change);
 	}
 
 	boolean swap(int i) {
-		Node left = rank.getNode(i);
-		Node right = rank.getNode(i + 1);
-		if (GraphUtilities.isConstrained(left, right))
+		Node left = rank.get(i);
+		Node right = rank.get(i + 1);
+		if (GraphUtilities.isConstrained(left, right)) {
 			return false;
-		if (left.sortValue <= right.sortValue)
+		}
+		if (left.sortValue <= right.sortValue) {
 			return false;
+		}
 		rank.set(i, right);
 		rank.set(i + 1, left);
 		return true;
@@ -206,8 +215,9 @@ class RankSorter {
 		// if (progress == 0.0 && !(node instanceof VirtualNode))
 		// node.sortValue = -1;
 		double value = evaluateNodeOutgoing();
-		if (value < 0)
+		if (value < 0) {
 			value = node.index * nextRankSize / rankSize;
+		}
 		node.sortValue += value * progress;
 		// if (progress < 0.7 && node.sortValue != -1)
 		// node.sortValue += Math.random() * rankSize / (5 + 8 * progress);
@@ -219,8 +229,9 @@ class RankSorter {
 		// if (progress == 0.0 && !(node instanceof VirtualNode))
 		// node.sortValue = -1;
 		double value = evaluateNodeIncoming();
-		if (value < 0)
+		if (value < 0) {
 			value = node.index * nextRankSize / rankSize;
+		}
 		node.sortValue += value * progress;
 		// if (progress < 0.7 && node.sortValue != -1)
 		// node.sortValue += Math.random() * rankSize / (5 + 8 * progress);

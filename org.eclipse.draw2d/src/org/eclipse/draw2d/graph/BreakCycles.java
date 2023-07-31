@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import java.util.List;
  * source. The process is repeated until all nodes have been marked and placed
  * in a list. The lists are then concatenated, and any edges which go backwards
  * in this list will be inverted during the layout procedure.
- * 
+ *
  * @author Daniel Lee
  * @since 2.1.2
  */
@@ -33,11 +33,7 @@ class BreakCycles extends GraphVisitor {
 	NodeList graphNodes = new NodeList();
 
 	private boolean allNodesFlagged() {
-		for (int i = 0; i < graphNodes.size(); i++) {
-			if (graphNodes.getNode(i).flag == false)
-				return false;
-		}
-		return true;
+		return graphNodes.stream().noneMatch(n -> !n.flag);
 	}
 
 	private void breakCycles(DirectedGraph g) {
@@ -50,28 +46,27 @@ class BreakCycles extends GraphVisitor {
 	 * Returns true if g contains cycles, false otherwise
 	 */
 	private boolean containsCycles(DirectedGraph g) {
-		List noLefts = new ArrayList();
+		List<Node> noLefts = new ArrayList<>();
 		// Identify all initial nodes for removal
-		for (int i = 0; i < graphNodes.size(); i++) {
-			Node node = graphNodes.getNode(i);
-			if (getIncomingCount(node) == 0)
+		for (Node node : graphNodes) {
+			if (getIncomingCount(node) == 0) {
 				sortedInsert(noLefts, node);
+			}
 		}
 
-		while (noLefts.size() > 0) {
-			Node node = (Node) noLefts.remove(noLefts.size() - 1);
+		while (!noLefts.isEmpty()) {
+			Node node = noLefts.remove(noLefts.size() - 1);
 			node.flag = true;
 			for (int i = 0; i < node.outgoing.size(); i++) {
 				Node right = node.outgoing.getEdge(i).target;
 				setIncomingCount(right, getIncomingCount(right) - 1);
-				if (getIncomingCount(right) == 0)
+				if (getIncomingCount(right) == 0) {
 					sortedInsert(noLefts, right);
+				}
 			}
 		}
 
-		if (allNodesFlagged())
-			return false;
-		return true;
+		return !allNodesFlagged();
 	}
 
 	/*
@@ -82,9 +77,8 @@ class BreakCycles extends GraphVisitor {
 		int max = Integer.MIN_VALUE;
 		Node maxNode = null;
 
-		for (int i = 0; i < graphNodes.size(); i++) {
-			Node node = graphNodes.getNode(i);
-			if (getDegree(node) >= max && node.flag == false) {
+		for (Node node : graphNodes) {
+			if (getDegree(node) >= max && !node.flag) {
 				max = getDegree(node);
 				maxNode = node;
 			}
@@ -92,23 +86,23 @@ class BreakCycles extends GraphVisitor {
 		return maxNode;
 	}
 
-	private int getDegree(Node n) {
+	private static int getDegree(Node n) {
 		return n.workingInts[3];
 	}
 
-	private int getIncomingCount(Node n) {
+	private static int getIncomingCount(Node n) {
 		return n.workingInts[0];
 	}
 
-	private int getInDegree(Node n) {
+	private static int getInDegree(Node n) {
 		return n.workingInts[1];
 	}
 
-	private int getOrderIndex(Node n) {
+	private static int getOrderIndex(Node n) {
 		return n.workingInts[0];
 	}
 
-	private int getOutDegree(Node n) {
+	private static int getOutDegree(Node n) {
 		return n.workingInts[2];
 	}
 
@@ -121,9 +115,8 @@ class BreakCycles extends GraphVisitor {
 			boolean hasSink;
 			do {
 				hasSink = false;
-				for (int i = 0; i < graphNodes.size(); i++) {
-					Node node = graphNodes.getNode(i);
-					if (getOutDegree(node) == 0 && node.flag == false) {
+				for (Node node : graphNodes) {
+					if (getOutDegree(node) == 0 && !node.flag) {
 						hasSink = true;
 						node.flag = true;
 						updateIncoming(node);
@@ -137,9 +130,8 @@ class BreakCycles extends GraphVisitor {
 			boolean hasSource;
 			do {
 				hasSource = false;
-				for (int i = 0; i < graphNodes.size(); i++) {
-					Node node = graphNodes.getNode(i);
-					if (getInDegree(node) == 0 && node.flag == false) {
+				for (Node node : graphNodes) {
+					if (getInDegree(node) == 0 && !node.flag) {
 						hasSource = true;
 						node.flag = true;
 						updateOutgoing(node);
@@ -162,25 +154,27 @@ class BreakCycles extends GraphVisitor {
 
 		// Assign order indexes
 		int orderIndex = 0;
-		for (int i = 0; i < sL.size(); i++) {
-			setOrderIndex(sL.getNode(i), orderIndex++);
+		for (Node element : sL) {
+			setOrderIndex(element, orderIndex);
+			orderIndex++;
 		}
 		for (int i = sR.size() - 1; i >= 0; i--) {
-			setOrderIndex(sR.getNode(i), orderIndex++);
+			setOrderIndex(sR.get(i), orderIndex);
+			orderIndex++;
 		}
 	}
 
 	private void initializeDegrees(DirectedGraph g) {
 		graphNodes.resetFlags();
 		for (int i = 0; i < g.nodes.size(); i++) {
-			Node n = graphNodes.getNode(i);
+			Node n = graphNodes.get(i);
 			setInDegree(n, n.incoming.size());
 			setOutDegree(n, n.outgoing.size());
 			setDegree(n, n.outgoing.size() - n.incoming.size());
 		}
 	}
 
-	private void invertEdges(DirectedGraph g) {
+	private static void invertEdges(DirectedGraph g) {
 		for (int i = 0; i < g.edges.size(); i++) {
 			Edge e = g.edges.getEdge(i);
 			if (getOrderIndex(e.source) > getOrderIndex(e.target)) {
@@ -190,40 +184,41 @@ class BreakCycles extends GraphVisitor {
 		}
 	}
 
-	private void setDegree(Node n, int deg) {
+	private static void setDegree(Node n, int deg) {
 		n.workingInts[3] = deg;
 	}
 
-	private void setIncomingCount(Node n, int count) {
+	private static void setIncomingCount(Node n, int count) {
 		n.workingInts[0] = count;
 	}
 
-	private void setInDegree(Node n, int deg) {
+	private static void setInDegree(Node n, int deg) {
 		n.workingInts[1] = deg;
 	}
 
-	private void setOutDegree(Node n, int deg) {
+	private static void setOutDegree(Node n, int deg) {
 		n.workingInts[2] = deg;
 	}
 
-	private void setOrderIndex(Node n, int index) {
+	private static void setOrderIndex(Node n, int index) {
 		n.workingInts[0] = index;
 	}
 
-	private void sortedInsert(List list, Node node) {
+	private static void sortedInsert(List<Node> list, Node node) {
 		int insert = 0;
-		while (insert < list.size() && ((Node) list.get(insert)).sortValue > node.sortValue)
+		while (insert < list.size() && (list.get(insert)).sortValue > node.sortValue) {
 			insert++;
+		}
 		list.add(insert, node);
 	}
 
 	/*
 	 * Called after removal of n. Updates the degree values of n's incoming nodes.
 	 */
-	private void updateIncoming(Node n) {
+	private static void updateIncoming(Node n) {
 		for (int i = 0; i < n.incoming.size(); i++) {
 			Node in = n.incoming.getEdge(i).source;
-			if (in.flag == false) {
+			if (!in.flag) {
 				setOutDegree(in, getOutDegree(in) - 1);
 				setDegree(in, getOutDegree(in) - getInDegree(in));
 			}
@@ -233,32 +228,34 @@ class BreakCycles extends GraphVisitor {
 	/*
 	 * Called after removal of n. Updates the degree values of n's outgoing nodes.
 	 */
-	private void updateOutgoing(Node n) {
+	private static void updateOutgoing(Node n) {
 		for (int i = 0; i < n.outgoing.size(); i++) {
 			Node out = n.outgoing.getEdge(i).target;
-			if (out.flag == false) {
+			if (!out.flag) {
 				setInDegree(out, getInDegree(out) - 1);
 				setDegree(out, getOutDegree(out) - getInDegree(out));
 			}
 		}
 	}
 
+	@Override
 	public void revisit(DirectedGraph g) {
 		for (int i = 0; i < g.edges.size(); i++) {
 			Edge e = g.edges.getEdge(i);
-			if (e.isFeedback())
+			if (e.isFeedback()) {
 				e.invert();
+			}
 		}
 	}
 
 	/**
 	 * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
 	 */
+	@Override
 	public void visit(DirectedGraph g) {
 		// put all nodes in list, initialize index
 		graphNodes.resetFlags();
-		for (int i = 0; i < g.nodes.size(); i++) {
-			Node n = g.nodes.getNode(i);
+		for (Node n : graphNodes) {
 			setIncomingCount(n, n.incoming.size());
 			graphNodes.add(n);
 		}

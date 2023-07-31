@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,7 @@ package org.eclipse.draw2d.graph;
  * Finds a tight spanning tree from the graphs edges which induce a valid rank
  * assignment. This process requires that the nodes be initially given a
  * feasible ranking.
- * 
+ *
  * @author Randy Hudson
  * @since 2.1.2
  */
@@ -58,6 +58,7 @@ class TightSpanningTreeSolver extends SpanningTreeVisitor {
 
 	protected NodeList members = new NodeList();
 
+	@Override
 	public void visit(DirectedGraph graph) {
 		this.graph = graph;
 		init();
@@ -83,19 +84,19 @@ class TightSpanningTreeSolver extends SpanningTreeVisitor {
 		return node;
 	}
 
-	private boolean isNodeReachable(Node node) {
+	private static boolean isNodeReachable(Node node) {
 		return node.flag;
 	}
 
-	private void setNodeReachable(Node node) {
+	private static void setNodeReachable(Node node) {
 		node.flag = true;
 	}
 
-	private boolean isCandidate(Edge e) {
+	private static boolean isCandidate(Edge e) {
 		return e.flag;
 	}
 
-	private void setCandidate(Edge e) {
+	private static void setCandidate(Edge e) {
 		e.flag = true;
 	}
 
@@ -110,8 +111,9 @@ class TightSpanningTreeSolver extends SpanningTreeVisitor {
 					setCandidate(e);
 					candidates.add(e);
 				}
-			} else
+			} else {
 				candidates.remove(e);
+			}
 		}
 
 		list = node.outgoing;
@@ -122,8 +124,9 @@ class TightSpanningTreeSolver extends SpanningTreeVisitor {
 					setCandidate(e);
 					candidates.add(e);
 				}
-			} else
+			} else {
 				candidates.remove(e);
+			}
 		}
 		members.add(node);
 	}
@@ -131,19 +134,19 @@ class TightSpanningTreeSolver extends SpanningTreeVisitor {
 	void init() {
 		graph.edges.resetFlags(true);
 		graph.nodes.resetFlags();
-		for (int i = 0; i < graph.nodes.size(); i++) {
-			Node node = (Node) graph.nodes.get(i);
+		for (Node node : graph.nodes) {
 			node.workingData[0] = new EdgeList();
 		}
 	}
 
 	protected void solve() {
-		Node root = graph.nodes.getNode(0);
+		Node root = graph.nodes.get(0);
 		setParentEdge(root, null);
 		addNode(root);
 		while (members.size() < graph.nodes.size()) {
-			if (candidates.size() == 0)
+			if (candidates.size() == 0) {
 				throw new RuntimeException("graph is not fully connected");//$NON-NLS-1$
+			}
 			int minSlack = Integer.MAX_VALUE, slack;
 			Edge minEdge = null, edge;
 			for (int i = 0; i < candidates.size() && minSlack > 0; i++) {

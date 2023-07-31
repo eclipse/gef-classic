@@ -12,14 +12,13 @@ package org.eclipse.draw2d.graph;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Performs a topological sort from left to right of the subgraphs in a compound
  * directed graph. This ensures that subgraphs do not intertwine.
- * 
+ *
  * @author Randy Hudson
  * @since 2.1.2
  */
@@ -35,38 +34,41 @@ class SortSubgraphs extends GraphVisitor {
 
 	private void breakSubgraphCycles() {
 		// The stack of nodes which have no unmarked incoming edges
-		List noLefts = new ArrayList();
+		List<Node> noLefts = new ArrayList<>();
 
 		int index = 1;
 		// Identify all initial nodes for removal
-		for (Iterator iter = orderingGraphNodes.iterator(); iter.hasNext();) {
-			Node node = (Node) iter.next();
-			if (node.x == 0)
+		for (Object orderingGraphNode : orderingGraphNodes) {
+			Node node = (Node) orderingGraphNode;
+			if (node.x == 0) {
 				sortedInsert(noLefts, node);
+			}
 		}
 
 		Node cycleRoot;
 		do {
 			// Remove all leftmost nodes, updating the nodes to their right
 			while (noLefts.size() > 0) {
-				Node node = (Node) noLefts.remove(noLefts.size() - 1);
-				node.sortValue = index++;
+				Node node = noLefts.remove(noLefts.size() - 1);
+				node.sortValue = index;
+				index++;
 				orderingGraphNodes.remove(node);
 				// System.out.println("removed:" + node);
 				NodeList rightOf = rightOf(node);
-				if (rightOf == null)
+				if (rightOf == null) {
 					continue;
-				for (int i = 0; i < rightOf.size(); i++) {
-					Node right = rightOf.getNode(i);
+				}
+				for (Node right : rightOf) {
 					right.x--;
-					if (right.x == 0)
+					if (right.x == 0) {
 						sortedInsert(noLefts, right);
+					}
 				}
 			}
 			cycleRoot = null;
 			double min = Double.MAX_VALUE;
-			for (Iterator iter = orderingGraphNodes.iterator(); iter.hasNext();) {
-				Node node = (Node) iter.next();
+			for (Object orderingGraphNode : orderingGraphNodes) {
+				Node node = (Node) orderingGraphNode;
 				if (node.sortValue < min) {
 					cycleRoot = node;
 					min = node.sortValue;
@@ -93,21 +95,20 @@ class SortSubgraphs extends GraphVisitor {
 			entry.recursiveSort(false);
 		}
 
-		for (int i = 0; i < nestingTrees.length; i++) {
-			NestingTree entry = nestingTrees[i];
+		for (NestingTree entry : nestingTrees) {
 			buildSubgraphOrderingGraph(entry);
 		}
 	}
 
 	private void buildSubgraphOrderingGraph(NestingTree entry) {
 		NodePair pair = new NodePair();
-		if (entry.isLeaf)
+		if (entry.isLeaf) {
 			return;
-		for (int i = 0; i < entry.contents.size(); i++) {
-			Object right = entry.contents.get(i);
-			if (right instanceof Node)
-				pair.n2 = (Node) right;
-			else {
+		}
+		for (Object right : entry.contents) {
+			if (right instanceof Node n) {
+				pair.n2 = n;
+			} else {
 				pair.n2 = ((NestingTree) right).subgraph;
 				buildSubgraphOrderingGraph((NestingTree) right);
 			}
@@ -127,7 +128,7 @@ class SortSubgraphs extends GraphVisitor {
 	/**
 	 * Calculates the average position P for each node and subgraph. The average
 	 * position is stored in the sortValue for each node or subgraph.
-	 * 
+	 *
 	 * Runs in approximately linear time with respect to the number of nodes,
 	 * including virtual nodes.
 	 */
@@ -143,8 +144,7 @@ class SortSubgraphs extends GraphVisitor {
 		 */
 		for (int r = 0; r < ranks.size(); r++) {
 			Rank rank = ranks.getRank(r);
-			for (int j = 0; j < rank.count(); j++) {
-				Node node = rank.getNode(j);
+			for (Node node : rank) {
 				node.sortValue = node.index;
 				Subgraph parent = node.getParent();
 				while (parent != null) {
@@ -159,8 +159,8 @@ class SortSubgraphs extends GraphVisitor {
 		 * For each subgraph, divide the sum of the positions by the number of
 		 * contributions, to give the average position.
 		 */
-		for (int i = 0; i < g.subgraphs.size(); i++) {
-			Subgraph subgraph = (Subgraph) g.subgraphs.get(i);
+		for (Node element : g.subgraphs) {
+			Subgraph subgraph = (Subgraph) element;
 			subgraph.sortValue /= subgraph.index;
 		}
 	}
@@ -173,25 +173,26 @@ class SortSubgraphs extends GraphVisitor {
 		}
 	}
 
-	private NodeList rightOf(Node left) {
+	private static NodeList rightOf(Node left) {
 		return (NodeList) left.workingData[0];
 	}
 
-	private void leftToRight(Node left, Node right) {
+	private static void leftToRight(Node left, Node right) {
 		rightOf(left).add(right);
 	}
 
-	void sortedInsert(List list, Node node) {
+	static void sortedInsert(List<Node> list, Node node) {
 		int insert = 0;
-		while (insert < list.size() && ((Node) list.get(insert)).sortValue > node.sortValue)
+		while (insert < list.size() && list.get(insert).sortValue > node.sortValue) {
 			insert++;
+		}
 		list.add(insert, node);
 	}
 
 	private void topologicalSort() {
-		for (int i = 0; i < nestingTrees.length; i++) {
-			nestingTrees[i].getSortValueFromSubgraph();
-			nestingTrees[i].recursiveSort(false);
+		for (NestingTree nestingTree : nestingTrees) {
+			nestingTree.getSortValueFromSubgraph();
+			nestingTree.recursiveSort(false);
 		}
 	}
 
@@ -199,16 +200,17 @@ class SortSubgraphs extends GraphVisitor {
 		for (int r = 0; r < g.ranks.size(); r++) {
 			Rank rank = g.ranks.getRank(r);
 			for (int i = 0; i < rank.count(); i++) {
-				Node n = (Node) rank.get(i);
+				Node n = rank.get(i);
 				n.workingData[0] = new NodeList();
 			}
 		}
-		for (int i = 0; i < g.subgraphs.size(); i++) {
-			Subgraph s = (Subgraph) g.subgraphs.get(i);
+		for (Node element : g.subgraphs) {
+			Subgraph s = (Subgraph) element;
 			s.workingData[0] = new NodeList();
 		}
 	}
 
+	@Override
 	public void visit(DirectedGraph dg) {
 		g = (CompoundDirectedGraph) dg;
 

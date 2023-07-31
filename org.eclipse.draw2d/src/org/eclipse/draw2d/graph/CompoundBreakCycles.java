@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,7 +16,7 @@ package org.eclipse.draw2d.graph;
  * been modified to handle the presence of Subgraphs and compound cycles which
  * may result. This algorithm determines a set of edges which can be inverted
  * and result in a graph without compound cycles.
- * 
+ *
  * @author Daniel Lee
  * @author Randy Hudson
  * @since 2.1.2
@@ -29,38 +29,33 @@ class CompoundBreakCycles extends GraphVisitor {
 	 * from the list.
 	 */
 	private NodeList graphNodes;
-	private NodeList sL = new NodeList();
+	private final NodeList sL = new NodeList();
 
-	private boolean allFlagged(NodeList nodes) {
-		for (int i = 0; i < nodes.size(); i++) {
-			if (nodes.getNode(i).flag == false)
-				return false;
-		}
-		return true;
+	private static boolean allFlagged(NodeList nodes) {
+		return nodes.stream().allMatch(n -> n.flag);
 	}
 
-	private int buildNestingTreeIndices(NodeList nodes, int base) {
-		for (int i = 0; i < nodes.size(); i++) {
-			Node node = (Node) nodes.get(i);
-			if (node instanceof Subgraph) {
-				Subgraph s = (Subgraph) node;
+	private static int buildNestingTreeIndices(NodeList nodes, int base) {
+		for (Node node : nodes) {
+			if (node instanceof Subgraph s) {
 				s.nestingTreeMin = base;
 				base = buildNestingTreeIndices(s.members, base);
 			}
-			node.nestingIndex = base++;
+			node.nestingIndex = base;
+			base++;
 		}
 		return base++;
 	}
 
-	private boolean canBeRemoved(Node n) {
+	private static boolean canBeRemoved(Node n) {
 		return !n.flag && getChildCount(n) == 0;
 	}
 
-	private boolean changeInDegree(Node n, int delta) {
+	private static boolean changeInDegree(Node n, int delta) {
 		return (n.workingInts[1] += delta) == 0;
 	}
 
-	private boolean changeOutDegree(Node n, int delta) {
+	private static boolean changeOutDegree(Node n, int delta) {
 		return (n.workingInts[2] += delta) == 0;
 	}
 
@@ -77,58 +72,61 @@ class CompoundBreakCycles extends GraphVisitor {
 			// outDegree - inDegree
 			Node max = findNodeWithMaxDegree(children);
 			if (max != null) {
-				for (int i = 0; i < children.size(); i++) {
-					Node child = (Node) children.get(i);
-					if (child.flag)
+				for (Node child : children) {
+					if (child.flag) {
 						continue;
-					if (child == max)
+					}
+					if (child == max) {
 						restoreSinks(max, sR);
-					else
+					} else {
 						restoreSources(child);
+					}
 				}
 				remove(max);
 			}
 		} while (!allFlagged(children));
-		while (!sR.isEmpty())
+		while (!sR.isEmpty()) {
 			sL.add(sR.remove(sR.size() - 1));
+		}
 	}
 
-	private void findInitialSinks(NodeList children, NodeList sinks) {
-		for (int i = 0; i < children.size(); i++) {
-			Node node = children.getNode(i);
-			if (node.flag)
+	private static void findInitialSinks(NodeList children, NodeList sinks) {
+		for (Node node : children) {
+			if (node.flag) {
 				continue;
+			}
 			if (isSink(node) && canBeRemoved(node)) {
 				sinks.add(node);
 				node.flag = true;
 			}
-			if (node instanceof Subgraph)
-				findInitialSinks(((Subgraph) node).members, sinks);
+			if (node instanceof Subgraph s) {
+				findInitialSinks(s.members, sinks);
+			}
 		}
 	}
 
-	private void findInitialSources(NodeList children, NodeList sources) {
-		for (int i = 0; i < children.size(); i++) {
-			Node node = children.getNode(i);
+	private static void findInitialSources(NodeList children, NodeList sources) {
+		for (Node node : children) {
 			if (isSource(node) && canBeRemoved(node)) {
 				sources.add(node);
 				node.flag = true;
 			}
-			if (node instanceof Subgraph)
-				findInitialSources(((Subgraph) node).members, sources);
+			if (node instanceof Subgraph s) {
+				findInitialSources(s.members, sources);
+			}
 		}
 	}
 
-	private Node findNodeWithMaxDegree(NodeList nodes) {
+	private static Node findNodeWithMaxDegree(NodeList nodes) {
 		int max = Integer.MIN_VALUE;
 		Node maxNode = null;
 
-		for (int i = 0; i < nodes.size(); i++) {
-			Node node = nodes.getNode(i);
-			if (node.flag)
+		for (Node node : nodes) {
+			if (node.flag) {
 				continue;
+			}
 			int degree = getNestedOutDegree(node) - getNestedInDegree(node);
-			if (degree >= max && node.flag == false) {
+			if (degree >= max && !node.flag) {
 				max = degree;
 				maxNode = node;
 			}
@@ -139,12 +137,11 @@ class CompoundBreakCycles extends GraphVisitor {
 	/*
 	 * Finds all sinks in graphNodes and adds them to the passed NodeList
 	 */
-	private void findSinks(NodeList children, NodeList rightList) {
-		// NodeList rightList = new NodeList();
+	private static void findSinks(NodeList children, NodeList rightList) {
 		NodeList sinks = new NodeList();
 		findInitialSinks(children, sinks);
 		while (!sinks.isEmpty()) {
-			Node sink = sinks.getNode(sinks.size() - 1);
+			Node sink = sinks.get(sinks.size() - 1);
 			rightList.add(sink);
 			sinks.remove(sink);
 			removeSink(sink, sinks);
@@ -168,7 +165,7 @@ class CompoundBreakCycles extends GraphVisitor {
 		NodeList sources = new NodeList();
 		findInitialSources(children, sources);
 		while (!sources.isEmpty()) {
-			Node source = sources.getNode(sources.size() - 1);
+			Node source = sources.get(sources.size() - 1);
 			sL.add(source);
 			sources.remove(source);
 			removeSource(source, sources);
@@ -185,63 +182,66 @@ class CompoundBreakCycles extends GraphVisitor {
 		}
 	}
 
-	private int getChildCount(Node n) {
+	private static int getChildCount(Node n) {
 		return n.workingInts[3];
 	}
 
-	private int getInDegree(Node n) {
+	private static int getInDegree(Node n) {
 		return n.workingInts[1];
 	}
 
-	private int getNestedInDegree(Node n) {
+	private static int getNestedInDegree(Node n) {
 		int result = getInDegree(n);
-		if (n instanceof Subgraph) {
-			Subgraph s = (Subgraph) n;
-			for (int i = 0; i < s.members.size(); i++)
-				if (!s.members.getNode(i).flag)
-					result += getInDegree(s.members.getNode(i));
+		if (n instanceof Subgraph s) {
+			for (Node node : s.members) {
+				if (!node.flag) {
+					result += getInDegree(node);
+				}
+			}
 		}
 		return result;
 	}
 
-	private int getNestedOutDegree(Node n) {
+	private static int getNestedOutDegree(Node n) {
 		int result = getOutDegree(n);
-		if (n instanceof Subgraph) {
-			Subgraph s = (Subgraph) n;
-			for (int i = 0; i < s.members.size(); i++)
-				if (!s.members.getNode(i).flag)
-					result += getOutDegree(s.members.getNode(i));
+		if (n instanceof Subgraph s) {
+			for (Node node : s.members) {
+				if (!node.flag) {
+					result += getOutDegree(node);
+				}
+			}
 		}
 		return result;
 	}
 
-	private int getOrderIndex(Node n) {
+	private static int getOrderIndex(Node n) {
 		return n.workingInts[0];
 	}
 
-	private int getOutDegree(Node n) {
+	private static int getOutDegree(Node n) {
 		return n.workingInts[2];
 	}
 
-	private void initializeDegrees(DirectedGraph g) {
+	private static void initializeDegrees(DirectedGraph g) {
 		g.nodes.resetFlags();
 		g.edges.resetFlags(false);
-		for (int i = 0; i < g.nodes.size(); i++) {
-			Node n = g.nodes.getNode(i);
+		for (Node n : g.nodes) {
 			setInDegree(n, n.incoming.size());
 			setOutDegree(n, n.outgoing.size());
-			if (n instanceof Subgraph)
-				setChildCount(n, ((Subgraph) n).members.size());
-			else
+			if (n instanceof Subgraph s) {
+				setChildCount(n, s.members.size());
+			} else {
 				setChildCount(n, 0);
+			}
 		}
 	}
 
 	private void invertEdges(DirectedGraph g) {
 		// Assign order indices
 		int orderIndex = 0;
-		for (int i = 0; i < sL.size(); i++) {
-			setOrderIndex(sL.getNode(i), orderIndex++);
+		for (Node element : sL) {
+			setOrderIndex(element, orderIndex);
+			orderIndex++;
 		}
 		// Invert edges that are causing a cycle
 		for (int i = 0; i < g.edges.size(); i++) {
@@ -256,54 +256,55 @@ class CompoundBreakCycles extends GraphVisitor {
 
 	/**
 	 * Removes all edges connecting the given subgraph to other nodes outside of it.
-	 * 
+	 *
 	 * @param s
 	 * @param n
 	 */
-	private void isolateSubgraph(Subgraph subgraph, Node member) {
+	private static void isolateSubgraph(Subgraph subgraph, Node member) {
 		Edge edge = null;
 		for (int i = 0; i < member.incoming.size(); i++) {
 			edge = member.incoming.getEdge(i);
-			if (!subgraph.isNested(edge.source) && !edge.flag)
+			if (!subgraph.isNested(edge.source) && !edge.flag) {
 				removeEdge(edge);
+			}
 		}
 		for (int i = 0; i < member.outgoing.size(); i++) {
 			edge = member.outgoing.getEdge(i);
-			if (!subgraph.isNested(edge.target) && !edge.flag)
+			if (!subgraph.isNested(edge.target) && !edge.flag) {
 				removeEdge(edge);
+			}
 		}
-		if (member instanceof Subgraph) {
-			NodeList members = ((Subgraph) member).members;
-			for (int i = 0; i < members.size(); i++)
-				isolateSubgraph(subgraph, members.getNode(i));
+		if (member instanceof Subgraph s) {
+			s.members.forEach(n -> isolateSubgraph(subgraph, n));
 		}
 	}
 
-	private boolean isSink(Node n) {
+	private static boolean isSink(Node n) {
 		return getOutDegree(n) == 0 && (n.getParent() == null || isSink(n.getParent()));
 	}
 
-	private boolean isSource(Node n) {
+	private static boolean isSource(Node n) {
 		return getInDegree(n) == 0 && (n.getParent() == null || isSource(n.getParent()));
 	}
 
 	private void remove(Node n) {
 		n.flag = true;
-		if (n.getParent() != null)
+		if (n.getParent() != null) {
 			setChildCount(n.getParent(), getChildCount(n.getParent()) - 1);
+		}
 		removeSink(n, null);
 		removeSource(n, null);
 		sL.add(n);
-		if (n instanceof Subgraph) {
-			Subgraph s = (Subgraph) n;
+		if (n instanceof Subgraph s) {
 			isolateSubgraph(s, s);
 			cycleRemove(s.members);
 		}
 	}
 
-	private boolean removeEdge(Edge e) {
-		if (e.flag)
+	private static boolean removeEdge(Edge e) {
+		if (e.flag) {
 			return false;
+		}
 		e.flag = true;
 		changeOutDegree(e.source, -1);
 		changeInDegree(e.target, -1);
@@ -313,15 +314,16 @@ class CompoundBreakCycles extends GraphVisitor {
 	/**
 	 * Removes all edges between a parent and any of its children or descendants.
 	 */
-	private void removeParentChildEdges(DirectedGraph g) {
+	private static void removeParentChildEdges(DirectedGraph g) {
 		for (int i = 0; i < g.edges.size(); i++) {
 			Edge e = g.edges.getEdge(i);
-			if (e.source.isNested(e.target) || e.target.isNested(e.source))
+			if (e.source.isNested(e.target) || e.target.isNested(e.source)) {
 				removeEdge(e);
+			}
 		}
 	}
 
-	private void removeSink(Node sink, NodeList allSinks) {
+	private static void removeSink(Node sink, NodeList allSinks) {
 		for (int i = 0; i < sink.incoming.size(); i++) {
 			Edge e = sink.incoming.getEdge(i);
 			if (!e.flag) {
@@ -335,7 +337,7 @@ class CompoundBreakCycles extends GraphVisitor {
 		}
 	}
 
-	private void removeSource(Node n, NodeList allSources) {
+	private static void removeSource(Node n, NodeList allSources) {
 		for (int i = 0; i < n.outgoing.size(); i++) {
 			Edge e = n.outgoing.getEdge(i);
 			if (!e.flag) {
@@ -355,13 +357,14 @@ class CompoundBreakCycles extends GraphVisitor {
 	/**
 	 * Restores an edge if it has been removed, and both of its nodes are not
 	 * removed.
-	 * 
+	 *
 	 * @param e the edge
 	 * @return <code>true</code> if the edge was restored
 	 */
-	private boolean restoreEdge(Edge e) {
-		if (!e.flag || e.source.flag || e.target.flag)
+	private static boolean restoreEdge(Edge e) {
+		if (!e.flag || e.source.flag || e.target.flag) {
 			return false;
+		}
 		e.flag = false;
 		changeOutDegree(e.source, 1);
 		changeInDegree(e.target, 1);
@@ -370,15 +373,16 @@ class CompoundBreakCycles extends GraphVisitor {
 
 	/**
 	 * Brings back all nodes nested in the given node.
-	 * 
+	 *
 	 * @param node the node to restore
 	 * @param sr   current sinks
 	 */
-	private void restoreSinks(Node node, NodeList sR) {
+	private static void restoreSinks(Node node, NodeList sR) {
 		if (node.flag && sR.contains(node)) {
 			node.flag = false;
-			if (node.getParent() != null)
+			if (node.getParent() != null) {
 				setChildCount(node.getParent(), getChildCount(node.getParent()) + 1);
+			}
 			sR.remove(node);
 			for (int i = 0; i < node.incoming.size(); i++) {
 				Edge e = node.incoming.getEdge(i);
@@ -389,26 +393,23 @@ class CompoundBreakCycles extends GraphVisitor {
 				restoreEdge(e);
 			}
 		}
-		if (node instanceof Subgraph) {
-			Subgraph s = (Subgraph) node;
-			for (int i = 0; i < s.members.size(); i++) {
-				Node member = s.members.getNode(i);
-				restoreSinks(member, sR);
-			}
+		if (node instanceof Subgraph s) {
+			s.members.forEach(n -> restoreSinks(n, sR));
 		}
 	}
 
 	/**
 	 * Brings back all nodes nested in the given node.
-	 * 
+	 *
 	 * @param node the node to restore
 	 * @param sr   current sinks
 	 */
 	private void restoreSources(Node node) {
 		if (node.flag && sL.contains(node)) {
 			node.flag = false;
-			if (node.getParent() != null)
+			if (node.getParent() != null) {
 				setChildCount(node.getParent(), getChildCount(node.getParent()) + 1);
+			}
 			sL.remove(node);
 			for (int i = 0; i < node.incoming.size(); i++) {
 				Edge e = node.incoming.getEdge(i);
@@ -419,51 +420,47 @@ class CompoundBreakCycles extends GraphVisitor {
 				restoreEdge(e);
 			}
 		}
-		if (node instanceof Subgraph) {
-			Subgraph s = (Subgraph) node;
-			for (int i = 0; i < s.members.size(); i++) {
-				Node member = s.members.getNode(i);
-				restoreSources(member);
+		if (node instanceof Subgraph s) {
+			s.members.forEach(this::restoreSources);
+		}
+	}
+
+	@Override
+	public void revisit(DirectedGraph g) {
+		for (int i = 0; i < g.edges.size(); i++) {
+			Edge e = g.edges.getEdge(i);
+			if (e.isFeedback()) {
+				e.invert();
 			}
 		}
 	}
 
-	public void revisit(DirectedGraph g) {
-		for (int i = 0; i < g.edges.size(); i++) {
-			Edge e = g.edges.getEdge(i);
-			if (e.isFeedback())
-				e.invert();
-		}
-	}
-
-	private void setChildCount(Node n, int count) {
+	private static void setChildCount(Node n, int count) {
 		n.workingInts[3] = count;
 	}
 
-	private void setInDegree(Node n, int deg) {
+	private static void setInDegree(Node n, int deg) {
 		n.workingInts[1] = deg;
 	}
 
-	private void setOrderIndex(Node n, int index) {
+	private static void setOrderIndex(Node n, int index) {
 		n.workingInts[0] = index;
 	}
 
-	private void setOutDegree(Node n, int deg) {
+	private static void setOutDegree(Node n, int deg) {
 		n.workingInts[2] = deg;
 	}
 
 	/**
 	 * @see GraphVisitor#visit(org.eclipse.draw2d.graph.DirectedGraph)
 	 */
+	@Override
 	public void visit(DirectedGraph g) {
 		initializeDegrees(g);
 		graphNodes = g.nodes;
 
 		NodeList roots = new NodeList();
-		for (int i = 0; i < graphNodes.size(); i++) {
-			if (graphNodes.getNode(i).getParent() == null)
-				roots.add(graphNodes.getNode(i));
-		}
+		graphNodes.stream().filter(n -> n.getParent() == null).forEach(n -> roots.add(n));
 		buildNestingTreeIndices(roots, 0);
 		removeParentChildEdges(g);
 		cycleRemove(roots);
