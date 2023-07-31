@@ -61,8 +61,7 @@ class PopulateRanks extends GraphVisitor {
 	 */
 	@Override
 	public void revisit(DirectedGraph g) {
-		for (int r = 0; r < g.ranks.size(); r++) {
-			Rank rank = g.ranks.getRank(r);
+		for (Rank rank : g.ranks) {
 			Node prev = null;
 			for (Node cur : rank) {
 				cur.left = prev;

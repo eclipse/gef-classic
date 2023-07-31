@@ -262,11 +262,9 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 	}
 
 	void buildRankSeparators(RankList ranks) {
-		Rank rank;
 		Node prevNPrime;
 		Edge e;
-		for (int r = 0; r < ranks.size(); r++) {
-			rank = ranks.getRank(r);
+		for (Rank rank : ranks) {
 			prevNPrime = null;
 			for (int i = 0; i < rank.count(); i++) {
 				Node n = rank.get(i);
@@ -297,7 +295,7 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 		graph.cellLocations = new int[graph.ranks.size() + 1][];
 		for (int row = 0; row < graph.ranks.size(); row++) {
 			Rank rank = graph.ranks.getRank(row);
-			int locations[] = graph.cellLocations[row] = new int[rank.size() + 1];
+			int[] locations = graph.cellLocations[row] = new int[rank.size() + 1];
 			int cell;
 			Node node = null;
 			for (cell = 0; cell < rank.size(); cell++) {

@@ -142,18 +142,15 @@ class SortSubgraphs extends GraphVisitor {
 		 * For subgraphs, the sum of all positions is kept, along with the number of
 		 * contributions, which is tracked in the subgraph's index field.
 		 */
-		for (int r = 0; r < ranks.size(); r++) {
-			Rank rank = ranks.getRank(r);
-			for (Node node : rank) {
-				node.sortValue = node.index;
-				Subgraph parent = node.getParent();
-				while (parent != null) {
-					parent.sortValue += node.sortValue;
-					parent.index++;
-					parent = parent.getParent();
-				}
+		ranks.forEach(rank -> rank.forEach(node -> {
+			node.sortValue = node.index;
+			Subgraph parent = node.getParent();
+			while (parent != null) {
+				parent.sortValue += node.sortValue;
+				parent.index++;
+				parent = parent.getParent();
 			}
-		}
+		}));
 
 		/*
 		 * For each subgraph, divide the sum of the positions by the number of
@@ -197,13 +194,7 @@ class SortSubgraphs extends GraphVisitor {
 	}
 
 	void init() {
-		for (int r = 0; r < g.ranks.size(); r++) {
-			Rank rank = g.ranks.getRank(r);
-			for (int i = 0; i < rank.count(); i++) {
-				Node n = rank.get(i);
-				n.workingData[0] = new NodeList();
-			}
-		}
+		g.ranks.forEach(rank -> rank.forEach(n -> n.workingData[0] = new NodeList()));
 		for (Node element : g.subgraphs) {
 			Subgraph s = (Subgraph) element;
 			s.workingData[0] = new NodeList();

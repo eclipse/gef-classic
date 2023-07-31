@@ -83,8 +83,7 @@ class GraphUtilities {
 	 */
 	public static int numberOfCrossingsInGraph(DirectedGraph graph) {
 		int crossings = 0;
-		for (int i = 0; i < graph.ranks.size(); i++) {
-			Rank rank = graph.ranks.getRank(i);
+		for (Rank rank : graph.ranks) {
 			crossings += numberOfCrossingsInRank(rank);
 		}
 		return crossings;
