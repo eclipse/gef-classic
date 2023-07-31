@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.scrollpane;
 
+import org.eclipse.swt.graphics.Cursor;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.CompoundBorder;
 import org.eclipse.draw2d.Cursors;
@@ -26,7 +28,6 @@ import org.eclipse.draw2d.TitleBarBorder;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Cursor;
 
 public class InternalFrame extends LabeledContainer {
 
@@ -113,7 +114,7 @@ public class InternalFrame extends LabeledContainer {
 			Rectangle figBounds = getBounds();
 			Point mouseLocation = me.getLocation();
 			if (!getBounds().contains(mouseLocation)) {
-				System.out.println("Error");
+				System.out.println("Error"); //$NON-NLS-1$
 			}
 			if (!figBounds.contains(mouseLocation)) {
 				return;

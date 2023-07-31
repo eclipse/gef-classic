@@ -10,6 +10,10 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.uml;
 
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ConnectionEndpointLocator;
@@ -24,9 +28,6 @@ import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 public class UMLClassDiagram {
 
@@ -56,12 +57,12 @@ public class UMLClassDiagram {
 		assoc.setTargetDecoration(containment);
 		diagram.add(assoc);
 
-		Label ref = new Label("end1");
+		Label ref = new Label("end1"); //$NON-NLS-1$
 		ConnectionEndpointLocator locator = new ConnectionEndpointLocator(assoc, false);
 		locator.setUDistance(8);
 		assoc.add(ref, locator);
 
-		Label connLabel = new Label("connection");
+		Label connLabel = new Label("connection"); //$NON-NLS-1$
 		connLabel.setBorder(new LineBorder());
 		connLabel.setOpaque(true);
 		connLabel.setBackgroundColor(ColorConstants.tooltipBackground);

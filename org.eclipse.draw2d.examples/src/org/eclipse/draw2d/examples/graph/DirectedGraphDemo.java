@@ -124,7 +124,7 @@ public class DirectedGraphDemo extends AbstractGraphDemo {
 	}
 
 	/**
-	 * @see org.eclipse.graph.demo.GraphDemo#getGraphMethods()
+	 * @see org.eclipse.draw2d.examples.graph.AbstractGraphDemo#getGraphMethods()
 	 */
 	@Override
 	protected String[] getGraphMethods() {

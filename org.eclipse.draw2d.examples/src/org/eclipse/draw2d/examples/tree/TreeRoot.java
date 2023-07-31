@@ -21,7 +21,7 @@ public class TreeRoot extends TreeBranch {
 
 	private int major = 10;
 	private int minor = 10;
-	private Transposer transposer = new Transposer();
+	private final Transposer transposer = new Transposer();
 	private boolean compression;
 
 	/**
@@ -43,9 +43,6 @@ public class TreeRoot extends TreeBranch {
 		return major;
 	}
 
-	/**
-	 * @return
-	 */
 	public int getMinorSpacing() {
 		return minor;
 	}

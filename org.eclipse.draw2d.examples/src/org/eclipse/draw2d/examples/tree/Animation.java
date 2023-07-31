@@ -86,7 +86,7 @@ public class Animation {
 		}
 		List<Rectangle> initial = initialStates.get(container);
 		if (initial == null) {
-			System.out.println("Error playing back state");
+			System.out.println("Error playing back state"); //$NON-NLS-1$
 			return false;
 		}
 		List<Rectangle> target = finalStates.get(container);

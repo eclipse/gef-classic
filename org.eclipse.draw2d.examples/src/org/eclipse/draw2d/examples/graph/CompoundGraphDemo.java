@@ -12,6 +12,8 @@ package org.eclipse.draw2d.examples.graph;
 
 import java.lang.reflect.Method;
 
+import org.eclipse.swt.graphics.Font;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
@@ -23,7 +25,6 @@ import org.eclipse.draw2d.graph.CompoundDirectedGraph;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.Subgraph;
-import org.eclipse.swt.graphics.Font;
 
 /**
  * @author hudsonr
@@ -39,7 +40,7 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 	 */
 	public static Figure buildGraph(CompoundDirectedGraph graph) {
 		Figure contents = new Panel();
-		contents.setFont(new Font(null, "Tahoma", 10, 0));
+		contents.setFont(new Font(null, "Tahoma", 10, 0)); //$NON-NLS-1$
 		contents.setBackgroundColor(ColorConstants.white);
 		contents.setLayoutManager(new XYLayout());
 
@@ -134,13 +135,13 @@ public class CompoundGraphDemo extends AbstractGraphDemo {
 			graph = (CompoundDirectedGraph) (CompoundGraphTests.class.getMethod(graphMethod, int.class).invoke(null,
 					Integer.valueOf(graphDirection)));
 		} catch (Exception e) {
-			System.out.println("Could not build graph");
+			System.out.println("Could not build graph"); //$NON-NLS-1$
 		}
 		return buildGraph(graph);
 	}
 
 	/**
-	 * @see org.eclipse.graph.demo.GraphDemo#getGraphMethods()
+	 * @see org.eclipse.draw2d.examples.graph.AbstractGraphDemo#getGraphMethods()
 	 */
 	@Override
 	protected String[] getGraphMethods() {

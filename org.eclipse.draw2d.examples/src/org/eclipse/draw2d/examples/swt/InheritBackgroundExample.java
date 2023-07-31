@@ -10,9 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.swt;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.Label;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -23,6 +20,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.Label;
 
 public class InheritBackgroundExample {
 

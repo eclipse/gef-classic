@@ -10,17 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.layouts;
 
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.Ellipse;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.FlowLayout;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LineBorder;
-import org.eclipse.draw2d.OrderedLayout;
-import org.eclipse.draw2d.RectangleFigure;
-import org.eclipse.draw2d.RoundedRectangle;
-import org.eclipse.draw2d.Triangle;
-import org.eclipse.draw2d.examples.AbstractExample;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -33,6 +22,18 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.Ellipse;
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.FlowLayout;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LineBorder;
+import org.eclipse.draw2d.OrderedLayout;
+import org.eclipse.draw2d.RectangleFigure;
+import org.eclipse.draw2d.RoundedRectangle;
+import org.eclipse.draw2d.Triangle;
+import org.eclipse.draw2d.examples.AbstractExample;
 
 /**
  * @author hudsonr Created on Apr 30, 2003
@@ -124,7 +125,7 @@ public class FlowLayoutExample extends AbstractExample {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell(Shell shell)
 	 */
 	@Override
 	protected void hookShell(Shell shell) {
