@@ -49,7 +49,7 @@ public class Bug68003 {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				state = DRAGGING;
-				status.setText("drag in progress");
+				status.setText("drag in progress"); //$NON-NLS-1$
 				shell.setEnabled(false);
 				shell.setEnabled(true);
 			}
@@ -57,7 +57,7 @@ public class Bug68003 {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				if (state == DRAGGING) {
-					status.setText("drag completed");
+					status.setText("drag completed"); //$NON-NLS-1$
 				}
 				state = INITIAL;
 			}
@@ -68,7 +68,7 @@ public class Bug68003 {
 			public void focusLost(FocusEvent e) {
 				if (state == DRAGGING) {
 					state = ABORTED;
-					status.setText("Drag Aborted due to FocusLost");
+					status.setText("Drag Aborted due to FocusLost"); //$NON-NLS-1$
 				}
 			}
 		});

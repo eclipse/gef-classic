@@ -26,7 +26,7 @@ public class RTL_StyledText {
 
 		shell.setLayout(new GridLayout());
 		new StyledText(shell, SWT.RIGHT_TO_LEFT | SWT.MULTI).setLayoutData(new GridData(GridData.FILL_BOTH));
-		shell.getChildren()[0].setFont(new Font(null, "", 20, 0));
+		shell.getChildren()[0].setFont(new Font(null, "", 20, 0)); //$NON-NLS-1$
 
 		shell.setSize(400, 300);
 		shell.open();

@@ -26,7 +26,7 @@ public class MixedOrientations {
 		final Shell shell = new Shell(SWT.SHELL_TRIM | SWT.RIGHT_TO_LEFT);
 		shell.setLayout(new GridLayout());
 
-		final String message = "\u202b\u0634\u0634\u0634 \u202c\u202c\u0636\u0636\u0636";
+		final String message = "\u202b\u0634\u0634\u0634 \u202c\u202c\u0636\u0636\u0636"; //$NON-NLS-1$
 		final String rawMessage = message.substring(1);
 
 		StyledText text = new StyledText(shell, SWT.MULTI | SWT.BORDER | SWT.LEFT_TO_RIGHT);

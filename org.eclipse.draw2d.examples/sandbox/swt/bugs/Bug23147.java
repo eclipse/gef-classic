@@ -10,14 +10,15 @@
  *******************************************************************************/
 package swt.bugs;
 
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FlowLayout;
 import org.eclipse.draw2d.Label;
 import org.eclipse.draw2d.LightweightSystem;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 public class Bug23147 {
 
@@ -31,9 +32,8 @@ public class Bug23147 {
 		lws.setContents(panel);
 
 		Image image = new Image(null, 20, 20);
-		Label label = new Label("foo", image);
+		Label label = new Label("foo", image); //$NON-NLS-1$
 		panel.add(label);
-		//	label.setTextPlacement(label.NORTH);
 		label.setBackgroundColor(ColorConstants.yellow);
 		label.setOpaque(true);
 
