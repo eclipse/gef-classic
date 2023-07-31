@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,8 +30,9 @@ class NestingTree {
 			parent = new NestingTree();
 			parent.subgraph = subgraph;
 			map.put(subgraph, parent);
-			if (subgraph != null)
+			if (subgraph != null) {
 				addToNestingTree(map, parent);
+			}
 		}
 		parent.contents.add(child);
 	}
@@ -43,8 +44,9 @@ class NestingTree {
 			parent = new NestingTree();
 			parent.subgraph = subgraph;
 			map.put(subgraph, parent);
-			if (subgraph != null)
+			if (subgraph != null) {
 				addToNestingTree(map, parent);
+			}
 		}
 		parent.contents.add(branch);
 	}
@@ -53,7 +55,7 @@ class NestingTree {
 		Map nestingMap = new HashMap();
 
 		for (int j = 0; j < rank.count(); j++) {
-			Node node = rank.getNode(j);
+			Node node = rank.get(j);
 			addToNestingTree(nestingMap, node);
 		}
 
@@ -62,11 +64,9 @@ class NestingTree {
 
 	void calculateSortValues() {
 		int total = 0;
-		for (int i = 0; i < contents.size(); i++) {
-			Object o = contents.get(i);
-			if (o instanceof NestingTree) {
+		for (Object o : contents) {
+			if (o instanceof NestingTree e) {
 				isLeaf = false;
-				NestingTree e = (NestingTree) o;
 				e.calculateSortValues();
 				total += (int) (e.sortValue * e.size);
 				size += e.size;
@@ -81,59 +81,66 @@ class NestingTree {
 	}
 
 	void getSortValueFromSubgraph() {
-		if (subgraph != null)
+		if (subgraph != null) {
 			sortValue = subgraph.sortValue;
-		for (int i = 0; i < contents.size(); i++) {
-			Object o = contents.get(i);
-			if (o instanceof NestingTree)
+		}
+		for (Object o : contents) {
+			if (o instanceof NestingTree) {
 				((NestingTree) o).getSortValueFromSubgraph();
+			}
 		}
 	}
 
 	void recursiveSort(boolean sortLeaves) {
-		if (isLeaf && !sortLeaves)
+		if (isLeaf && !sortLeaves) {
 			return;
+		}
 		boolean change = false;
 		// Use modified bubble sort for almost-sorted lists.
 		do {
 			change = false;
-			for (int i = 0; i < contents.size() - 1; i++)
+			for (int i = 0; i < contents.size() - 1; i++) {
 				change |= swap(i);
-			if (!change)
+			}
+			if (!change) {
 				break;
+			}
 			change = false;
-			for (int i = contents.size() - 2; i >= 0; i--)
+			for (int i = contents.size() - 2; i >= 0; i--) {
 				change |= swap(i);
+			}
 		} while (change);
-		for (int i = 0; i < contents.size(); i++) {
-			Object o = contents.get(i);
-			if (o instanceof NestingTree)
-				((NestingTree) o).recursiveSort(sortLeaves);
+		for (Object o : contents) {
+			if (o instanceof NestingTree nt) {
+				nt.recursiveSort(sortLeaves);
+			}
 		}
 	}
 
 	void repopulateRank(Rank r) {
-		for (int i = 0; i < contents.size(); i++) {
-			Object o = contents.get(i);
-			if (o instanceof Node)
-				r.add(o);
-			else
+		for (Object o : contents) {
+			if (o instanceof Node node) {
+				r.add(node);
+			} else {
 				((NestingTree) o).repopulateRank(r);
+			}
 		}
 	}
 
 	boolean swap(int index) {
 		Object left = contents.get(index);
 		Object right = contents.get(index + 1);
-		double iL = (left instanceof Node) ? ((Node) left).sortValue : ((NestingTree) left).sortValue;
-		double iR = (right instanceof Node) ? ((Node) right).sortValue : ((NestingTree) right).sortValue;
-		if (iL <= iR)
+		double iL = (left instanceof Node node) ? node.sortValue : ((NestingTree) left).sortValue;
+		double iR = (right instanceof Node node) ? node.sortValue : ((NestingTree) right).sortValue;
+		if (iL <= iR) {
 			return false;
+		}
 		contents.set(index, right);
 		contents.set(index + 1, left);
 		return true;
 	}
 
+	@Override
 	public String toString() {
 		return "Nesting:" + subgraph; //$NON-NLS-1$
 	}

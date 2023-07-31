@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,7 +12,7 @@ package org.eclipse.draw2d.graph;
 
 /**
  * For Internal Use only.
- * 
+ *
  * @author hudsonr
  * @since 2.1.2
  */
@@ -26,21 +26,18 @@ public class Rank extends NodeList {
 	int topPadding;
 	int total;
 
-	void add(Node n) {
-		super.add(n);
-	}
-
 	void assignIndices() {
 		total = 0;
 		Node node;
 
 		int mag;
 		for (int i = 0; i < size(); i++) {
-			node = getNode(i);
+			node = get(i);
 			mag = Math.max(1, node.incoming.size() + node.outgoing.size());
 			mag = Math.min(mag, 5);
-			if (node instanceof SubgraphBoundary)
+			if (node instanceof SubgraphBoundary) {
 				mag = 4;
+			}
 			total += mag;
 			node.index = total;
 			total += mag;
@@ -49,7 +46,7 @@ public class Rank extends NodeList {
 
 	/**
 	 * Returns the number of nodes in this rank.
-	 * 
+	 *
 	 * @return the number of nodes
 	 */
 	public int count() {
@@ -59,6 +56,7 @@ public class Rank extends NodeList {
 	/**
 	 * @see Object#equals(Object)
 	 */
+	@Override
 	public boolean equals(Object o) {
 		return o == this;
 	}
@@ -66,6 +64,7 @@ public class Rank extends NodeList {
 	/**
 	 * @see Object#hashCode() Overridden for speed based on equality.
 	 */
+	@Override
 	public int hashCode() {
 		return hash;
 	}
@@ -74,7 +73,7 @@ public class Rank extends NodeList {
 		this.height = rowHeight;
 		this.location = location;
 		for (int i = 0; i < size(); i++) {
-			Node n = getNode(i);
+			Node n = get(i);
 			n.y = location;
 			n.height = rowHeight;
 		}
@@ -83,6 +82,7 @@ public class Rank extends NodeList {
 	/**
 	 * @deprecated Do not call
 	 */
+	@Deprecated
 	public void sort() {
 	}
 
