@@ -26,7 +26,7 @@ public class BidiMixedOrientations {
 		shell.addPaintListener(e -> {
 			TextLayout tl = new TextLayout(display);
 			tl.setOrientation(SWT.RIGHT_TO_LEFT);
-			tl.setText("\u202BIBM ABC \ufeeb\ufeec\ufeec");
+			tl.setText("\u202BIBM ABC \ufeeb\ufeec\ufeec"); //$NON-NLS-1$
 			tl.setStyle(new TextStyle(null, new Color(null, 100, 200, 150), null), 2, 2);
 			tl.setStyle(new TextStyle(null, new Color(null, 100, 200, 150), null), 10, 10);
 			tl.draw(e.gc, 10, 10);

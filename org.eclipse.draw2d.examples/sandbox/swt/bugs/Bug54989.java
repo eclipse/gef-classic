@@ -38,10 +38,10 @@ public class Bug54989 {
 		display = new Display();
 		shell = new Shell(display);
 		shell.setLayout(new GridLayout(2, true));
-		shell.setText("CCombo Accessibility Test");
+		shell.setText("CCombo Accessibility Test"); //$NON-NLS-1$
 
 		final Button b = new Button(shell, 0);
-		b.setText("some button");
+		b.setText("some button"); //$NON-NLS-1$
 
 		final Canvas canvas = new Canvas(shell, 0) {
 			/* This is just a hack to make canvas size == button size */
@@ -62,8 +62,8 @@ public class Bug54989 {
 
 		long time = System.currentTimeMillis();
 		try {
-			Class clazz = Class.forName("java.text.BreakIterator");
-			Method m = clazz.getMethod("getLineInstance", null);
+			Class clazz = Class.forName("java.text.BreakIterator"); //$NON-NLS-1$
+			Method m = clazz.getMethod("getLineInstance", null); //$NON-NLS-1$
 			m.invoke(null, null);
 		} catch (Exception e) {
 			e.printStackTrace();

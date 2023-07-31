@@ -58,12 +58,18 @@ public class MnemonicsFix {
 
 		@Override
 		public void handleEvent(Event event) {
-			if (event.type == SWT.Activate) {
+			switch (event.type) {
+			case SWT.Activate:
 				unhookFilter(event.display);
-			} else if (event.type == SWT.Deactivate) {
+				break;
+			case SWT.Deactivate:
 				hookFilter(event.display);
-			} else if (event.type == SWT.Traverse) {
+				break;
+			case SWT.Traverse:
 				handleTraverse(event);
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -96,15 +102,15 @@ public class MnemonicsFix {
 		shell.setMenuBar(menubar);
 
 		MenuItem help = new MenuItem(menubar, SWT.MENU);
-		help.setText("&Help");
+		help.setText("&Help"); //$NON-NLS-1$
 
 		Menu helpMenu = new Menu(help);
 		help.setMenu(helpMenu);
 
-		new MenuItem(helpMenu, 0).setText("About");
+		new MenuItem(helpMenu, 0).setText("About"); //$NON-NLS-1$
 
 		Text editor = new Text(shell, SWT.BORDER | SWT.MULTI);
-		editor.setText("import foo.bar;");
+		editor.setText("import foo.bar;"); //$NON-NLS-1$
 		editor.setLayoutData(new GridData(GridData.FILL_BOTH));
 		editor.addTraverseListener(e -> {
 			if (e.detail == SWT.TRAVERSE_TAB_NEXT) {
@@ -113,16 +119,16 @@ public class MnemonicsFix {
 		});
 
 		Group props = new Group(shell, 0);
-		props.setText("properties view");
+		props.setText("properties view"); //$NON-NLS-1$
 		props.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		new MnemonicDisabler(props);
 
 		props.setLayout(new GridLayout(2, false));
-		new Label(props, 0).setText("&Width");
-		new Text(props, SWT.BORDER).setText("50");
-		new Label(props, 0).setText("&Height");
-		new Text(props, SWT.BORDER).setText("30");
+		new Label(props, 0).setText("&Width"); //$NON-NLS-1$
+		new Text(props, SWT.BORDER).setText("50"); //$NON-NLS-1$
+		new Label(props, 0).setText("&Height"); //$NON-NLS-1$
+		new Text(props, SWT.BORDER).setText("30"); //$NON-NLS-1$
 
 		props.addListener(SWT.Activate, event -> {
 		});

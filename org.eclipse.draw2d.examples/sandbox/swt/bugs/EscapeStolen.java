@@ -14,8 +14,6 @@
 
 package swt.bugs;
 
-import org.eclipse.draw2d.Button;
-import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -27,6 +25,9 @@ import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.draw2d.Button;
+import org.eclipse.draw2d.FigureCanvas;
 
 public class EscapeStolen {
 
@@ -49,7 +50,7 @@ public class EscapeStolen {
 		Shell dialog = new Shell(shell);
 		dialog.setLayout(new GridLayout());
 		final FigureCanvas canvas = new FigureCanvas(dialog);
-		canvas.setContents(new Button("draw2d"));
+		canvas.setContents(new Button("draw2d")); //$NON-NLS-1$
 
 		canvas.addFocusListener(new FocusListener() {
 

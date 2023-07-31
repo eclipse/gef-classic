@@ -26,7 +26,7 @@ public class Bug45640 {
 		Shell shell = new Shell();
 		shell.setLayout(new GridLayout());
 		final Button b1 = new Button(shell, 0);
-		b1.setText("Leak some pens");
+		b1.setText("Leak some pens"); //$NON-NLS-1$
 
 		b1.addSelectionListener(new SelectionAdapter() {
 			@Override
