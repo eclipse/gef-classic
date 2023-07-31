@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,11 +14,11 @@ import java.util.ArrayList;
 
 /**
  * A list containing nodes.
- * 
+ *
  * @author hudsonr
  * @since 2.1.2
  */
-public class NodeList extends ArrayList {
+public class NodeList extends ArrayList<Node> {
 
 	/**
 	 * Constructs an empty NodeList.
@@ -28,7 +28,7 @@ public class NodeList extends ArrayList {
 
 	/**
 	 * Constructs a NodeList with the elements from the specified list.
-	 * 
+	 *
 	 * @param list the list whose elements are to be added to this list
 	 */
 	public NodeList(NodeList list) {
@@ -36,42 +36,50 @@ public class NodeList extends ArrayList {
 	}
 
 	void adjustRank(int delta) {
-		if (delta == 0)
+		if (delta == 0) {
 			return;
-		for (int i = 0; i < size(); i++)
-			getNode(i).rank += delta;
+		}
+		for (int i = 0; i < size(); i++) {
+			get(i).rank += delta;
+		}
 	}
 
 	void resetSortValues() {
-		for (int i = 0; i < size(); i++)
-			getNode(i).sortValue = 0.0;
+		for (int i = 0; i < size(); i++) {
+			get(i).sortValue = 0.0;
+		}
 	}
 
 	void resetIndices() {
-		for (int i = 0; i < size(); i++)
-			getNode(i).index = 0;
+		for (int i = 0; i < size(); i++) {
+			get(i).index = 0;
+		}
 	}
 
 	void normalizeRanks() {
 		int minRank = Integer.MAX_VALUE;
-		for (int i = 0; i < size(); i++)
-			minRank = Math.min(minRank, getNode(i).rank);
+		for (int i = 0; i < size(); i++) {
+			minRank = Math.min(minRank, get(i).rank);
+		}
 		adjustRank(-minRank);
 	}
 
 	/**
 	 * Returns the Node at the given index.
-	 * 
+	 *
 	 * @param index the index
 	 * @return the node at a given index
+	 *
+	 * @deprecated use Use {@link #get(int)} instead.
 	 */
+	@Deprecated(since = "3.13.100", forRemoval = true)
 	public Node getNode(int index) {
-		return (Node) super.get(index);
+		return super.get(index);
 	}
 
 	void resetFlags() {
 		for (int i = 0; i < size(); i++) {
-			getNode(i).flag = false;
+			get(i).flag = false;
 		}
 	}
 
