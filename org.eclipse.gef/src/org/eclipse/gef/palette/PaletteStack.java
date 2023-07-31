@@ -34,6 +34,7 @@ public class PaletteStack extends PaletteContainer {
 	 * active entry can be updated if the current active entry is hidden.
 	 */
 	private PropertyChangeListener childListener = new PropertyChangeListener() {
+		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (evt.getPropertyName().equals(PaletteEntry.PROPERTY_VISIBLE) && evt.getNewValue() == Boolean.FALSE
 					&& activeEntry == evt.getSource()) {
@@ -73,6 +74,7 @@ public class PaletteStack extends PaletteContainer {
 	 * @param type the type being requested
 	 * @return true if this can be a child of this container
 	 */
+	@Override
 	public boolean acceptsType(Object type) {
 		if (!type.equals(ToolEntry.PALETTE_TYPE_TOOL))
 			return false;
@@ -83,6 +85,7 @@ public class PaletteStack extends PaletteContainer {
 	 * @see org.eclipse.gef.palette.PaletteContainer#add(int,
 	 *      org.eclipse.gef.palette.PaletteEntry)
 	 */
+	@Override
 	public void add(int index, PaletteEntry entry) {
 		super.add(index, entry);
 		checkActiveEntry();
@@ -91,6 +94,7 @@ public class PaletteStack extends PaletteContainer {
 	/**
 	 * @see org.eclipse.gef.palette.PaletteContainer#addAll(java.util.List)
 	 */
+	@Override
 	public void addAll(List list) {
 		super.addAll(list);
 		checkActiveEntry();
@@ -134,6 +138,7 @@ public class PaletteStack extends PaletteContainer {
 	/**
 	 * @see org.eclipse.gef.palette.PaletteContainer#remove(org.eclipse.gef.palette.PaletteEntry)
 	 */
+	@Override
 	public void remove(PaletteEntry entry) {
 		super.remove(entry);
 		checkActiveEntry();
@@ -154,11 +159,13 @@ public class PaletteStack extends PaletteContainer {
 		listeners.firePropertyChange(PROPERTY_ACTIVE_ENTRY, oldEntry, activeEntry);
 	}
 
+	@Override
 	public void add(PaletteEntry entry) {
 		super.add(entry);
 		updateListeners(Collections.singletonList(entry), true);
 	}
 
+	@Override
 	public void setChildren(List list) {
 		updateListeners(getChildren(), false);
 		super.setChildren(list);

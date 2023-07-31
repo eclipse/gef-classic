@@ -22,6 +22,7 @@ public interface RotatableDecoration extends IFigure {
 	 * 
 	 * @param p The location
 	 */
+	@Override
 	void setLocation(Point p);
 
 	/**

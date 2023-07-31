@@ -23,6 +23,7 @@ final class SeparatorBorder extends MarginBorder {
 		super(t, l, b, r);
 	}
 
+	@Override
 	public void paint(IFigure f, Graphics g, Insets i) {
 		Rectangle r = getPaintRectangle(f, i);
 		r.height--;

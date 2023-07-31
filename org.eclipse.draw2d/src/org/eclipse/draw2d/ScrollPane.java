@@ -171,6 +171,7 @@ public class ScrollPane extends Figure {
 	 * 
 	 * @see IFigure#isOpaque()
 	 */
+	@Override
 	public boolean isOpaque() {
 		return true;
 	}
@@ -325,6 +326,7 @@ public class ScrollPane extends Figure {
 	/**
 	 * @see IFigure#validate()
 	 */
+	@Override
 	public void validate() {
 		super.validate();
 		getHorizontalScrollBar().validate();

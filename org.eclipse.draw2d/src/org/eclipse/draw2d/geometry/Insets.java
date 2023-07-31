@@ -93,6 +93,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	 * @return true if all values are the same.
 	 * @since 2.0
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Insets) {
 			Insets i = (Insets) o;
@@ -162,6 +163,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return top * 7 + left * 2 + bottom * 31 + right * 37;
 	}
@@ -180,6 +182,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	 * @return String representation.
 	 * @since 2.0
 	 */
+	@Override
 	public String toString() {
 		return "Insets(t=" + top + ", l=" + left + //$NON-NLS-2$//$NON-NLS-1$
 				", b=" + bottom + ", r=" + right + ")";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$

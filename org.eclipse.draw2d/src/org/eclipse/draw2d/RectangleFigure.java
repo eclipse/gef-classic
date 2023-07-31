@@ -25,6 +25,7 @@ public class RectangleFigure extends Shape {
 	/**
 	 * @see Shape#fillShape(Graphics)
 	 */
+	@Override
 	protected void fillShape(Graphics graphics) {
 		graphics.fillRectangle(getBounds());
 	}
@@ -32,6 +33,7 @@ public class RectangleFigure extends Shape {
 	/**
 	 * @see Shape#outlineShape(Graphics)
 	 */
+	@Override
 	protected void outlineShape(Graphics graphics) {
 		float lineInset = Math.max(1.0f, getLineWidthFloat()) / 2.0f;
 		int inset1 = (int) Math.floor(lineInset);

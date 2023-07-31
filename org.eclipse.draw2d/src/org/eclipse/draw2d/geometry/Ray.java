@@ -118,6 +118,7 @@ public final class Ray {
 	/**
 	 * @see java.lang.Object#equals(Object)
 	 */
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
@@ -164,6 +165,7 @@ public final class Ray {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return (x * y) ^ (x + y);
 	}
@@ -204,6 +206,7 @@ public final class Ray {
 	/**
 	 * @return a String representation
 	 */
+	@Override
 	public String toString() {
 		return "(" + x + "," + y + ")";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 	}

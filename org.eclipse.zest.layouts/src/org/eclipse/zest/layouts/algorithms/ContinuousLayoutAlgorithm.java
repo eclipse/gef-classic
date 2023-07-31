@@ -53,6 +53,7 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 		}
 	}
 
+	@Override
 	public void setLayoutArea(double x, double y, double width, double height) {
 		this.setBounds(x, y, width, height);
 
@@ -73,6 +74,7 @@ public abstract class ContinuousLayoutAlgorithm extends AbstractLayoutAlgorithm 
 	 * Calculates and applies the positions of the given entities based on a spring
 	 * layout using the given relationships.
 	 */
+	@Override
 	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
 

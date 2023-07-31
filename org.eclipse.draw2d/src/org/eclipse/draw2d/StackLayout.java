@@ -26,6 +26,7 @@ public class StackLayout extends AbstractHintLayout {
 	 * 
 	 * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int)
 	 */
+	@Override
 	protected Dimension calculateMinimumSize(IFigure figure, int wHint, int hHint) {
 		if (wHint > -1)
 			wHint = Math.max(0, wHint - figure.getInsets().getWidth());
@@ -50,6 +51,7 @@ public class StackLayout extends AbstractHintLayout {
 	 * 
 	 * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint) {
 		if (wHint > -1)
 			wHint = Math.max(0, wHint - figure.getInsets().getWidth());
@@ -69,6 +71,7 @@ public class StackLayout extends AbstractHintLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#layout(IFigure)
 	 */
+	@Override
 	public void layout(IFigure figure) {
 		Rectangle r = figure.getClientArea();
 		figure.getChildren().forEach(child -> child.setBounds(r));

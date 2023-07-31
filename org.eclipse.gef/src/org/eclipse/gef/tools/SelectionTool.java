@@ -83,6 +83,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see TargetingTool#createTargetRequest()
 	 */
+	@Override
 	protected Request createTargetRequest() {
 		SelectionRequest request = new SelectionRequest();
 		request.setType(getCommandName());
@@ -94,6 +95,7 @@ public class SelectionTool extends TargetingTool {
 	 * another tool. Use this method to do some clean-up when the tool is switched.
 	 * Sets the drag tracker to <code>null</code>.
 	 */
+	@Override
 	public void deactivate() {
 		setDragTracker(null); // deactivates the current drag tracker
 		super.deactivate();
@@ -114,6 +116,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * @see AbstractTool#getCommandName()
 	 */
+	@Override
 	protected String getCommandName() {
 		return REQ_SELECTION;
 	}
@@ -121,6 +124,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * @see AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "Selection Tool";//$NON-NLS-1$
 	}
@@ -146,8 +150,10 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see TargetingTool#getTargetingConditional()
 	 */
+	@Override
 	protected EditPartViewer.Conditional getTargetingConditional() {
 		return new EditPartViewer.Conditional() {
+			@Override
 			public boolean evaluate(EditPart editpart) {
 				EditPart targetEditPart = editpart.getTargetEditPart(getTargetRequest());
 				return targetEditPart != null && targetEditPart.isSelectable();
@@ -174,6 +180,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#handleButtonDown(int)
 	 */
+	@Override
 	protected boolean handleButtonDown(int button) {
 		if (!stateTransition(STATE_INITIAL, STATE_DRAG)) {
 			resetHover();
@@ -210,6 +217,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#handleButtonUp(int)
 	 */
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (getCurrentInput().isAnyButtonDown())
 			return false;
@@ -223,6 +231,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * @see AbstractTool#handleCommandStackChanged()
 	 */
+	@Override
 	protected boolean handleCommandStackChanged() {
 		if (getDragTracker() == null)
 			return super.handleCommandStackChanged();
@@ -235,6 +244,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#handleFocusLost()
 	 */
+	@Override
 	protected boolean handleFocusLost() {
 		if (isInState(
 				STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS | STATE_DRAG | STATE_DRAG_IN_PROGRESS)) {
@@ -251,6 +261,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#handleHover()
 	 */
+	@Override
 	protected boolean handleHover() {
 		setHoverActive(true);
 		showHoverFeedback();
@@ -263,6 +274,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see TargetingTool#handleHoverStop()
 	 */
+	@Override
 	protected boolean handleHoverStop() {
 		eraseHoverFeedback();
 		return true;
@@ -277,6 +289,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#handleKeyDown(KeyEvent)
 	 */
+	@Override
 	protected boolean handleKeyDown(KeyEvent e) {
 		resetHover();
 
@@ -331,6 +344,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#handleKeyUp(KeyEvent)
 	 */
+	@Override
 	protected boolean handleKeyUp(KeyEvent e) {
 		if (isInState(STATE_INITIAL) && getCurrentViewer().getKeyHandler() != null
 				&& getCurrentViewer().getKeyHandler().keyReleased(e))
@@ -347,6 +361,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#handleMove()
 	 */
+	@Override
 	protected boolean handleMove() {
 		if (stateTransition(STATE_ACCESSIBLE_DRAG, STATE_INITIAL))
 			setDragTracker(null);
@@ -378,6 +393,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#handleNativeDragFinished(DragSourceEvent)
 	 */
+	@Override
 	public boolean handleNativeDragFinished(DragSourceEvent event) {
 		if (getDragTracker() != null)
 			getDragTracker().nativeDragFinished(event, getCurrentViewer());
@@ -391,6 +407,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#handleNativeDragStarted(DragSourceEvent)
 	 */
+	@Override
 	public boolean handleNativeDragStarted(DragSourceEvent event) {
 		if (getDragTracker() != null)
 			getDragTracker().nativeDragStarted(event, getCurrentViewer());
@@ -453,6 +470,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#handleViewerExited()
 	 */
+	@Override
 	protected boolean handleViewerExited() {
 		if (isInState(STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS | STATE_TRAVERSE_HANDLE | STATE_DRAG
 				| STATE_DRAG_IN_PROGRESS)) {
@@ -468,6 +486,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.Tool#keyDown(KeyEvent, org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 		if (getDragTracker() != null)
 			getDragTracker().keyDown(evt, viewer);
@@ -479,6 +498,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.Tool#keyUp(KeyEvent, org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 		if (getDragTracker() != null)
 			getDragTracker().keyUp(evt, viewer);
@@ -491,6 +511,7 @@ public class SelectionTool extends TargetingTool {
 	 * @see org.eclipse.gef.Tool#mouseDown(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void mouseDown(MouseEvent e, EditPartViewer viewer) {
 		super.mouseDown(e, viewer);
 		if (getDragTracker() != null)
@@ -503,6 +524,7 @@ public class SelectionTool extends TargetingTool {
 	 * @see org.eclipse.gef.Tool#mouseDoubleClick(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void mouseDoubleClick(MouseEvent e, EditPartViewer viewer) {
 		super.mouseDoubleClick(e, viewer);
 		if (getDragTracker() != null)
@@ -515,6 +537,7 @@ public class SelectionTool extends TargetingTool {
 	 * @see org.eclipse.gef.Tool#mouseDrag(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void mouseDrag(MouseEvent e, EditPartViewer viewer) {
 		if (getDragTracker() != null)
 			getDragTracker().mouseDrag(e, viewer);
@@ -527,6 +550,7 @@ public class SelectionTool extends TargetingTool {
 	 * @see org.eclipse.gef.Tool#mouseHover(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void mouseHover(MouseEvent me, EditPartViewer viewer) {
 		if (getDragTracker() != null)
 			getDragTracker().mouseHover(me, viewer);
@@ -539,6 +563,7 @@ public class SelectionTool extends TargetingTool {
 	 * @see org.eclipse.gef.Tool#mouseMove(MouseEvent,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 		if (getDragTracker() != null)
 			getDragTracker().mouseMove(me, viewer);
@@ -550,6 +575,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see org.eclipse.gef.Tool#mouseUp(MouseEvent, org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void mouseUp(MouseEvent e, EditPartViewer viewer) {
 		if (getDragTracker() != null)
 			getDragTracker().mouseUp(e, viewer);
@@ -563,6 +589,7 @@ public class SelectionTool extends TargetingTool {
 	 * @see org.eclipse.gef.Tool#mouseWheelScrolled(org.eclipse.swt.widgets.Event,
 	 *      org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
 		if (getDragTracker() != null) {
 			getDragTracker().mouseWheelScrolled(event, viewer);
@@ -577,6 +604,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see AbstractTool#refreshCursor()
 	 */
+	@Override
 	protected void refreshCursor() {
 		// If we have a DragTracker, let it control the Cursor
 		if (getDragTracker() == null)
@@ -642,6 +670,7 @@ public class SelectionTool extends TargetingTool {
 	 * 
 	 * @see TargetingTool#updateTargetRequest()
 	 */
+	@Override
 	protected void updateTargetRequest() {
 		SelectionRequest request = (SelectionRequest) getTargetRequest();
 		request.setModifiers(getCurrentInput().getModifiers());
@@ -653,6 +682,7 @@ public class SelectionTool extends TargetingTool {
 	/**
 	 * @see AbstractTool#getDebugNameForState(int)
 	 */
+	@Override
 	protected String getDebugNameForState(int state) {
 		if (state == STATE_TRAVERSE_HANDLE)
 			return "Traverse Handle"; //$NON-NLS-1$

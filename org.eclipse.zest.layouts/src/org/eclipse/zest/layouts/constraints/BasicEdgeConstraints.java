@@ -24,6 +24,7 @@ public class BasicEdgeConstraints implements LayoutConstraint {
 	 * 
 	 * @see org.eclipse.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
+	@Override
 	public void clear() {
 		this.isBiDirectional = false;
 		this.weight = 1;

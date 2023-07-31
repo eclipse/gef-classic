@@ -18,6 +18,7 @@ package org.eclipse.zest.layouts.dataStructures;
 public class DisplayIndependentPoint {
 	public double x, y;
 
+	@Override
 	public boolean equals(Object o) {
 		DisplayIndependentPoint that = (DisplayIndependentPoint) o;
 		if (this.x == that.x && this.y == that.y)
@@ -36,6 +37,7 @@ public class DisplayIndependentPoint {
 		this.y = point.y;
 	}
 
+	@Override
 	public String toString() {
 		return "(" + x + ", " + y + ")";
 	}

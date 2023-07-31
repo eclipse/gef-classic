@@ -40,6 +40,7 @@ public class RulerDragTracker extends SimpleDragTracker {
 		guideline.setVisible(false);
 	}
 
+	@Override
 	protected void eraseSourceFeedback() {
 		if (guide.getParent() != null) {
 			guide.getParent().remove(guide);
@@ -49,6 +50,7 @@ public class RulerDragTracker extends SimpleDragTracker {
 		}
 	}
 
+	@Override
 	protected Command getCommand() {
 		if (isCreationValid() && !isDelete())
 			return source.getRulerProvider().getCreateGuideCommand(getCurrentPosition());
@@ -56,6 +58,7 @@ public class RulerDragTracker extends SimpleDragTracker {
 			return UnexecutableCommand.INSTANCE;
 	}
 
+	@Override
 	protected String getCommandName() {
 		return REQ_CREATE;
 	}
@@ -80,10 +83,12 @@ public class RulerDragTracker extends SimpleDragTracker {
 		return position;
 	}
 
+	@Override
 	protected String getDebugName() {
 		return "Guide creation"; //$NON-NLS-1$
 	}
 
+	@Override
 	protected Cursor getDefaultCursor() {
 		if (isDelete())
 			return super.getDefaultCursor();
@@ -93,12 +98,14 @@ public class RulerDragTracker extends SimpleDragTracker {
 			return SharedCursors.NO;
 	}
 
+	@Override
 	protected boolean handleButtonDown(int button) {
 		stateTransition(STATE_INITIAL, STATE_DRAG_IN_PROGRESS);
 		showSourceFeedback();
 		return true;
 	}
 
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 			setCurrentCommand(getCommand());
@@ -137,10 +144,12 @@ public class RulerDragTracker extends SimpleDragTracker {
 		return pos < min || pos > max;
 	}
 
+	@Override
 	protected boolean movedPastThreshold() {
 		return true;
 	}
 
+	@Override
 	protected void showSourceFeedback() {
 		if (guide.getParent() == null) {
 			getCurrentViewer().deselectAll();

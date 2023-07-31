@@ -48,6 +48,7 @@ public class EditDomain {
 	 * Tool accordingly.
 	 */
 	private PaletteListener paletteListener = new PaletteListener() {
+		@Override
 		public void activeToolChanged(PaletteViewer viewer, ToolEntry tool) {
 			handlePaletteToolChanged();
 		}

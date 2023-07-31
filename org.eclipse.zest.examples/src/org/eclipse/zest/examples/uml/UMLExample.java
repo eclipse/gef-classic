@@ -86,6 +86,7 @@ public class UMLExample {
 			super(graphModel, style, figure);
 		}
 
+		@Override
 		protected IFigure createFigureForModel() {
 			return (IFigure) this.getData();
 		}

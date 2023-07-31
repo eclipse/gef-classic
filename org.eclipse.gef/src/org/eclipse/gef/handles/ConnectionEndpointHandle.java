@@ -84,6 +84,7 @@ public class ConnectionEndpointHandle extends ConnectionHandle {
 	 * 
 	 * @return the new ConnectionEndpointTracker
 	 */
+	@Override
 	protected DragTracker createDragTracker() {
 		if (isFixed())
 			return null;

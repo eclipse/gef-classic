@@ -103,6 +103,7 @@ public class GraphViewerTests extends Assert {
 	public void testPostSelectionListener() {
 		final List selected = new ArrayList();
 		viewer.addPostSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				selected.add(event);
 			}

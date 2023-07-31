@@ -26,16 +26,19 @@ public class NestedLine extends LineBox {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowBox#containsPoint(int, int)
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		// $TODO should contains use LineRoot?
 		return x >= getX() && x < getX() + getWidth() && y >= getBaseline() - getAscentWithBorder()
 				&& y < getBaseline() + getDescentWithBorder();
 	}
 
+	@Override
 	int getAscentWithBorder() {
 		return contentAscent + FlowUtilities.getBorderAscent(owner);
 	}
 
+	@Override
 	int getDescentWithBorder() {
 		return contentDescent + FlowUtilities.getBorderDescent(owner);
 	}
@@ -43,10 +46,12 @@ public class NestedLine extends LineBox {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowBox#getBaseline()
 	 */
+	@Override
 	public int getBaseline() {
 		return root.getBaseline();
 	}
 
+	@Override
 	LineRoot getLineRoot() {
 		return root;
 	}
@@ -67,6 +72,7 @@ public class NestedLine extends LineBox {
 	 * 
 	 * @return the outer ascent of this box
 	 */
+	@Override
 	public int getOuterAscent() {
 		return contentAscent + FlowUtilities.getBorderAscentWithMargin(owner);
 	}
@@ -79,10 +85,12 @@ public class NestedLine extends LineBox {
 	 * 
 	 * @return the outer descent of this box
 	 */
+	@Override
 	public int getOuterDescent() {
 		return contentDescent + FlowUtilities.getBorderDescentWithMargin(owner);
 	}
 
+	@Override
 	void setLineRoot(LineRoot root) {
 		this.root = root;
 		for (int i = 0; i < fragments.size(); i++)
@@ -92,6 +100,7 @@ public class NestedLine extends LineBox {
 	/**
 	 * @see org.eclipse.draw2d.text.CompositeBox#setLineTop(int)
 	 */
+	@Override
 	public void setLineTop(int top) {
 		throw new RuntimeException("not supported"); //$NON-NLS-1$
 	}

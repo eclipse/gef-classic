@@ -94,6 +94,7 @@ public class LineBorder extends AbstractBorder {
 	 * @param figure The figure this border belongs to
 	 * @return This border's insets
 	 */
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return new Insets(getWidth());
 	}
@@ -113,6 +114,7 @@ public class LineBorder extends AbstractBorder {
 	 * 
 	 * @return <code>true</code> since this border is opaque
 	 */
+	@Override
 	public boolean isOpaque() {
 		return true;
 	}
@@ -120,6 +122,7 @@ public class LineBorder extends AbstractBorder {
 	/**
 	 * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
 	 */
+	@Override
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		tempRect.setBounds(getPaintRectangle(figure, insets));
 		if (getWidth() % 2 == 1) {

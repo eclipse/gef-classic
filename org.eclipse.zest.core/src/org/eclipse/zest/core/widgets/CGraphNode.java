@@ -25,35 +25,43 @@ public class CGraphNode extends GraphNode {
 		super(graphModel, style, figure);
 	}
 
+	@Override
 	public IFigure getFigure() {
 		return super.getFigure();
 	}
 
+	@Override
 	protected IFigure createFigureForModel() {
 		this.figure = (IFigure) this.getData();
 		return this.figure;
 	}
 
+	@Override
 	public void setBackgroundColor(Color c) {
 		getFigure().setBackgroundColor(c);
 	}
 
+	@Override
 	public void setFont(Font font) {
 		getFigure().setFont(font);
 	}
 
+	@Override
 	public Color getBackgroundColor() {
 		return getFigure().getBackgroundColor();
 	}
 
+	@Override
 	public Font getFont() {
 		return getFigure().getFont();
 	}
 
+	@Override
 	public Color getForegroundColor() {
 		return getFigure().getForegroundColor();
 	}
 
+	@Override
 	protected void updateFigureForModel(IFigure currentFigure) {
 		// Undefined
 	}

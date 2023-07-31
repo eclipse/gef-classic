@@ -15,6 +15,7 @@ class ClickableEventHandler extends MouseMotionListener.Stub
 
 	private MouseEvent lastEvent;
 
+	@Override
 	public void focusLost(FocusEvent fe) {
 		Clickable loser = (Clickable) fe.loser;
 		loser.repaint();
@@ -22,17 +23,20 @@ class ClickableEventHandler extends MouseMotionListener.Stub
 		loser.getModel().setPressed(false);
 	}
 
+	@Override
 	public void focusGained(FocusEvent fe) {
 		Clickable clickable = (Clickable) fe.gainer;
 		clickable.repaint();
 	}
 
+	@Override
 	public void figureMoved(IFigure source) {
 		if (lastEvent == null)
 			return;
 		mouseDragged(lastEvent);
 	}
 
+	@Override
 	public void handleStateChanged(ChangeEvent change) {
 		Clickable clickable = (Clickable) change.getSource();
 		if (change.getPropertyName() == ButtonModel.MOUSEOVER_PROPERTY && !clickable.isRolloverEnabled())
@@ -40,9 +44,11 @@ class ClickableEventHandler extends MouseMotionListener.Stub
 		clickable.repaint();
 	}
 
+	@Override
 	public void mouseDoubleClicked(MouseEvent me) {
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent me) {
 		lastEvent = me;
 		Clickable click = (Clickable) me.getSource();
@@ -54,21 +60,25 @@ class ClickableEventHandler extends MouseMotionListener.Stub
 		}
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent me) {
 		Clickable click = (Clickable) me.getSource();
 		click.getModel().setMouseOver(true);
 		click.addFigureListener(this);
 	}
 
+	@Override
 	public void mouseExited(MouseEvent me) {
 		Clickable click = (Clickable) me.getSource();
 		click.getModel().setMouseOver(false);
 		click.removeFigureListener(this);
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent me) {
 	}
 
+	@Override
 	public void mousePressed(MouseEvent me) {
 		if (me.button != 1)
 			return;
@@ -81,6 +91,7 @@ class ClickableEventHandler extends MouseMotionListener.Stub
 		me.consume();
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent me) {
 		if (me.button != 1)
 			return;
@@ -92,6 +103,7 @@ class ClickableEventHandler extends MouseMotionListener.Stub
 		me.consume();
 	}
 
+	@Override
 	public void keyPressed(KeyEvent ke) {
 		ButtonModel model = ((Clickable) ke.getSource()).getModel();
 		if (ke.character == ' ' || ke.character == '\r') {
@@ -100,6 +112,7 @@ class ClickableEventHandler extends MouseMotionListener.Stub
 		}
 	}
 
+	@Override
 	public void keyReleased(KeyEvent ke) {
 		ButtonModel model = ((Clickable) ke.getSource()).getModel();
 		if (ke.character == ' ' || ke.character == '\r') {

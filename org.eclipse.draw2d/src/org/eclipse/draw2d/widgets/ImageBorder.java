@@ -38,6 +38,7 @@ class ImageBorder extends AbstractBorder {
 		setImage(image);
 	}
 
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return imgInsets;
 	}
@@ -49,10 +50,12 @@ class ImageBorder extends AbstractBorder {
 	/**
 	 * @see org.eclipse.draw2d.AbstractBorder#getPreferredSize(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public Dimension getPreferredSize(IFigure f) {
 		return imageSize;
 	}
 
+	@Override
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		if (image == null)
 			return;

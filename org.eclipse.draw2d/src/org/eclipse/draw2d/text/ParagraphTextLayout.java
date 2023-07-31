@@ -107,6 +107,7 @@ public class ParagraphTextLayout extends TextLayout {
 			this.trailingBorderSize = trailingBorderSize;
 		}
 
+		@Override
 		public int getWidth() {
 			if (width == null) {
 				width = new int[1];
@@ -138,6 +139,7 @@ public class ParagraphTextLayout extends TextLayout {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowFigureLayout#layout()
 	 */
+	@Override
 	protected void layout() {
 		TextFlow textFlow = (TextFlow) getFlowFigure();
 		int offset = 0;

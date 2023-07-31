@@ -27,6 +27,7 @@ public class CompositeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		this(0, algoirthms);
 	}
 
+	@Override
 	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 
@@ -46,33 +47,39 @@ public class CompositeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		// updateLayoutLocations(entitiesToLayout);
 	}
 
+	@Override
 	protected int getCurrentLayoutStep() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	@Override
 	protected int getTotalNumberOfLayoutSteps() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continuous) {
 		// TODO Auto-generated method stub
 		return true;
 	}
 
+	@Override
 	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider) {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
 		// TODO Auto-generated method stub
 
 	}
 
+	@Override
 	public void setLayoutArea(double x, double y, double width, double height) {
 		// TODO Auto-generated method stub
 

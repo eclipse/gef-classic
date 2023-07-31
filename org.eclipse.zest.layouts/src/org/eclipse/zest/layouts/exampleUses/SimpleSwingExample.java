@@ -154,6 +154,7 @@ public class SimpleSwingExample {
 
 		createMainPanel();
 		mainFrame.addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				stop();
 				mainFrame.dispose();
@@ -169,6 +170,7 @@ public class SimpleSwingExample {
 
 		btnStop = new JButton("Stop");
 		btnStop.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				stop();
 			}
@@ -177,6 +179,7 @@ public class SimpleSwingExample {
 
 		JButton btnCreateGraph = new JButton("New graph");
 		btnCreateGraph.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				stop();
 				createGraph(true);
@@ -185,6 +188,7 @@ public class SimpleSwingExample {
 		toolBar.add(btnCreateGraph);
 		JButton btnCreateTree = new JButton("New tree");
 		btnCreateTree.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				stop();
 				createGraph(false);
@@ -204,6 +208,7 @@ public class SimpleSwingExample {
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 
+				@Override
 				public void run() {
 					SPRING = new SpringLayoutAlgorithm(LayoutStyles.NONE);
 					TREE_VERT = new TreeLayoutAlgorithm(LayoutStyles.NONE);
@@ -216,6 +221,7 @@ public class SimpleSwingExample {
 					SPRING.setIterations(1000);
 					// initialize layouts
 					TREE_VERT.setComparator(new Comparator() {
+						@Override
 						public int compare(Object o1, Object o2) {
 							if (o1 instanceof Comparable && o2 instanceof Comparable) {
 								return ((Comparable) o1).compareTo(o2);
@@ -240,6 +246,7 @@ public class SimpleSwingExample {
 						// ((Boolean)algorithmAnimates.get(i)).booleanValue();
 						JButton algorithmButton = new JButton(algorithmName);
 						algorithmButton.addActionListener(new ActionListener() {
+							@Override
 							public void actionPerformed(ActionEvent e) {
 								currentLayoutAlgorithm = algorithm;
 								currentLayoutAlgorithmName = algorithmName;
@@ -277,6 +284,7 @@ public class SimpleSwingExample {
 		final boolean continuous = btnContinuous.isSelected();
 		final boolean asynchronous = btnAsynchronous.isSelected();
 		ProgressListener progressListener = new ProgressListener() {
+			@Override
 			public void progressUpdated(final ProgressEvent e) {
 				// if (asynchronous) {
 				updateGUI();
@@ -286,6 +294,7 @@ public class SimpleSwingExample {
 				lblProgress.paintImmediately(0, 0, lblProgress.getWidth(), lblProgress.getHeight());
 			}
 
+			@Override
 			public void progressStarted(ProgressEvent e) {
 				if (!asynchronous) {
 					mainFrame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -294,6 +303,7 @@ public class SimpleSwingExample {
 				lblProgress.paintImmediately(0, 0, lblProgress.getWidth(), lblProgress.getHeight());
 			}
 
+			@Override
 			public void progressEnded(ProgressEvent e) {
 				lblProgress.setText("Layout completed ...");
 				lblProgress.paintImmediately(0, 0, lblProgress.getWidth(), lblProgress.getHeight());
@@ -312,6 +322,7 @@ public class SimpleSwingExample {
 			final LayoutRelationship[] layoutRelationships = new LayoutRelationship[relationships.size()];
 			relationships.toArray(layoutRelationships);
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					try {
 						currentLayoutAlgorithm.applyLayout(layoutEntities, layoutRelationships, 0, 0,
@@ -344,6 +355,7 @@ public class SimpleSwingExample {
 		mainFrame.getContentPane().add(new JScrollPane(mainPanel), BorderLayout.CENTER);
 
 		mainPanel.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mousePressed(MouseEvent e) {
 				selectedEntity = null;
 				for (Iterator iter = entities.iterator(); iter.hasNext() && selectedEntity == null;) {
@@ -368,6 +380,7 @@ public class SimpleSwingExample {
 				updateGUI();
 			}
 
+			@Override
 			public void mouseReleased(MouseEvent e) {
 				selectedEntity = null;
 				mouseDownPoint = null;
@@ -377,6 +390,7 @@ public class SimpleSwingExample {
 		});
 
 		mainPanel.addMouseMotionListener(new MouseMotionListener() {
+			@Override
 			public void mouseDragged(MouseEvent e) {
 				// if (selectedEntity != null) {
 				// //TODO: Add mouse moving
@@ -386,6 +400,7 @@ public class SimpleSwingExample {
 				// }
 			}
 
+			@Override
 			public void mouseMoved(MouseEvent e) {
 			}
 		});
@@ -525,6 +540,7 @@ public class SimpleSwingExample {
 
 		private static final long serialVersionUID = 1;
 
+		@Override
 		protected void paintChildren(Graphics g) {
 			if (g instanceof Graphics2D && RENDER_HIGH_QUALITY) {
 				((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

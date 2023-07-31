@@ -41,6 +41,7 @@ public class DefaultRangeModel implements RangeModel {
 	 * @param listener the listener to be added
 	 * @since 2.0
 	 */
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		propertyListeners.addPropertyChangeListener(listener);
 	}
@@ -61,6 +62,7 @@ public class DefaultRangeModel implements RangeModel {
 	/**
 	 * @return the extent
 	 */
+	@Override
 	public int getExtent() {
 		return extent;
 	}
@@ -68,6 +70,7 @@ public class DefaultRangeModel implements RangeModel {
 	/**
 	 * @return the maximum value
 	 */
+	@Override
 	public int getMaximum() {
 		return maximum;
 	}
@@ -75,6 +78,7 @@ public class DefaultRangeModel implements RangeModel {
 	/**
 	 * @return the minimum value
 	 */
+	@Override
 	public int getMinimum() {
 		return minimum;
 	}
@@ -82,6 +86,7 @@ public class DefaultRangeModel implements RangeModel {
 	/**
 	 * @return the current value
 	 */
+	@Override
 	public int getValue() {
 		return value;
 	}
@@ -89,6 +94,7 @@ public class DefaultRangeModel implements RangeModel {
 	/**
 	 * @return whether the extent is between the minimum and maximum values
 	 */
+	@Override
 	public boolean isEnabled() {
 		return (getMaximum() - getMinimum()) > getExtent();
 	}
@@ -98,6 +104,7 @@ public class DefaultRangeModel implements RangeModel {
 	 * 
 	 * @param listener the listener to be removed
 	 */
+	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		propertyListeners.removePropertyChangeListener(listener);
 	}
@@ -105,6 +112,7 @@ public class DefaultRangeModel implements RangeModel {
 	/**
 	 * @see org.eclipse.draw2d.RangeModel#setAll(int, int, int)
 	 */
+	@Override
 	public void setAll(int min, int ext, int max) {
 		int oldMin = minimum;
 		int oldExtent = extent;
@@ -127,6 +135,7 @@ public class DefaultRangeModel implements RangeModel {
 	 * 
 	 * @param extent the new extent value
 	 */
+	@Override
 	public void setExtent(int extent) {
 		if (this.extent == extent)
 			return;
@@ -142,6 +151,7 @@ public class DefaultRangeModel implements RangeModel {
 	 * 
 	 * @param maximum the new maximum value
 	 */
+	@Override
 	public void setMaximum(int maximum) {
 		if (this.maximum == maximum)
 			return;
@@ -157,6 +167,7 @@ public class DefaultRangeModel implements RangeModel {
 	 * 
 	 * @param minimum the new minumum value
 	 */
+	@Override
 	public void setMinimum(int minimum) {
 		if (this.minimum == minimum)
 			return;
@@ -174,6 +185,7 @@ public class DefaultRangeModel implements RangeModel {
 	 * 
 	 * @param value the new value
 	 */
+	@Override
 	public void setValue(int value) {
 		value = Math.max(getMinimum(), Math.min(getMaximum() - getExtent(), value));
 		if (this.value == value)
@@ -186,6 +198,7 @@ public class DefaultRangeModel implements RangeModel {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return super.toString() + " (" + minimum + ", " + maximum //$NON-NLS-2$ //$NON-NLS-1$
 				+ ", " + extent + ", " + value + ")"; //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$

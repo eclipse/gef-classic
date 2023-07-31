@@ -45,6 +45,7 @@ public class PropertySourceAdapterFactory implements IAdapterFactory {
 		return Platform.getAdapterManager().getAdapter(model, adapterType);
 	}
 
+	@Override
 	public Class<?>[] getAdapterList() {
 		return new Class[] { IPropertySource.class };
 	}

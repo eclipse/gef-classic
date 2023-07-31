@@ -35,6 +35,7 @@ public class SimpleFactory implements CreationFactory {
 	 * 
 	 * @return The newly created object.
 	 */
+	@Override
 	public Object getNewObject() {
 		try {
 			return type.newInstance();
@@ -48,6 +49,7 @@ public class SimpleFactory implements CreationFactory {
 	 * 
 	 * @return The type of object this factory creates.
 	 */
+	@Override
 	public Object getObjectType() {
 		return type;
 	}

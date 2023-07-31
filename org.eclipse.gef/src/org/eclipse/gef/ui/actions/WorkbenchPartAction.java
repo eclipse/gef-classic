@@ -62,6 +62,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 	/**
 	 * Disposes the action when it is no longer needed.
 	 */
+	@Override
 	public void dispose() {
 	}
 
@@ -113,6 +114,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 	 * @see #setLazyEnablementCalculation(boolean)
 	 * @return <code>true</code> if the action is enabled
 	 */
+	@Override
 	public boolean isEnabled() {
 		if (lazyEnablement)
 			setEnabled(calculateEnabled());
@@ -162,6 +164,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 	/**
 	 * @see UpdateAction#update()
 	 */
+	@Override
 	public void update() {
 		refresh();
 	}

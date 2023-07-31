@@ -49,18 +49,21 @@ public abstract class AbstractTransferDragSourceListener implements TransferDrag
 	/**
 	 * @see org.eclipse.swt.dnd.DragSourceListener#dragFinished(DragSourceEvent)
 	 */
+	@Override
 	public void dragFinished(DragSourceEvent event) {
 	}
 
 	/**
 	 * @see org.eclipse.swt.dnd.DragSourceListener#dragStart(DragSourceEvent)
 	 */
+	@Override
 	public void dragStart(DragSourceEvent event) {
 	}
 
 	/**
 	 * @see TransferDragSourceListener#getTransfer()
 	 */
+	@Override
 	public Transfer getTransfer() {
 		return transfer;
 	}

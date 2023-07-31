@@ -30,6 +30,7 @@ public class ShapesTreeEditPartFactory implements EditPartFactory {
 	 * @see org.eclipse.gef.EditPartFactory#createEditPart(org.eclipse.gef.EditPart,
 	 * java.lang.Object)
 	 */
+	@Override
 	public EditPart createEditPart(EditPart context, Object model) {
 		if (model instanceof Shape shape) {
 			return new ShapeTreeEditPart(shape);

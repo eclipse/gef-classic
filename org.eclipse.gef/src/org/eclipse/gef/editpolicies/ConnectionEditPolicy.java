@@ -31,6 +31,7 @@ public abstract class ConnectionEditPolicy extends AbstractEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		if (REQ_DELETE.equals(request.getType()))
 			return getDeleteCommand((GroupRequest) request);

@@ -83,12 +83,14 @@ final class ShapesEditorPaletteFactory {
 		// Add (solid-line) connection tool
 		tool = new ConnectionCreationToolEntry("Solid connection", "Create a solid-line connection",
 				new CreationFactory() {
+					@Override
 					public Object getNewObject() {
 						return null;
 					}
 
 					// see ShapeEditPart#createEditPolicies()
 					// this is abused to transmit the desired line style
+					@Override
 					public Object getObjectType() {
 						return Connection.SOLID_CONNECTION;
 					}
@@ -99,12 +101,14 @@ final class ShapesEditorPaletteFactory {
 		// Add (dashed-line) connection tool
 		tool = new ConnectionCreationToolEntry("Dashed connection", "Create a dashed-line connection",
 				new CreationFactory() {
+					@Override
 					public Object getNewObject() {
 						return null;
 					}
 
 					// see ShapeEditPart#createEditPolicies()
 					// this is abused to transmit the desired line style
+					@Override
 					public Object getObjectType() {
 						return Connection.DASHED_CONNECTION;
 					}

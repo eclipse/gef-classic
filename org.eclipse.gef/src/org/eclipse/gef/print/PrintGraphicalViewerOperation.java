@@ -61,6 +61,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 	/**
 	 * @see org.eclipse.draw2d.PrintOperation#preparePrintSource()
 	 */
+	@Override
 	protected void preparePrintSource() {
 		super.preparePrintSource();
 		selectedEditParts = new ArrayList(viewer.getSelectedEditParts());
@@ -70,6 +71,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 	/**
 	 * @see org.eclipse.draw2d.PrintOperation#restorePrintSource()
 	 */
+	@Override
 	protected void restorePrintSource() {
 		super.restorePrintSource();
 		viewer.setSelection(new StructuredSelection(selectedEditParts));

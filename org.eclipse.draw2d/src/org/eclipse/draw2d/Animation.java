@@ -53,11 +53,13 @@ public class Animation {
 			this.figure = figure;
 		}
 
+		@Override
 		public boolean equals(Object obj) {
 			AnimPair pair = (AnimPair) obj;
 			return pair.animator == animator && pair.figure == figure;
 		}
 
+		@Override
 		public int hashCode() {
 			return animator.hashCode() ^ figure.hashCode();
 		}

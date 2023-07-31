@@ -32,6 +32,7 @@ public class BendpointHandle extends ConnectionHandle implements PropertyChangeL
 	 * 
 	 * @return returns null by default
 	 */
+	@Override
 	protected DragTracker createDragTracker() {
 		return null;
 	}
@@ -56,6 +57,7 @@ public class BendpointHandle extends ConnectionHandle implements PropertyChangeL
 	 * 
 	 * @param event the event that caused the points change
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		revalidate();
 	}

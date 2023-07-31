@@ -54,34 +54,42 @@ public class TreeViewer extends AbstractEditPartViewer {
 	class EventDispatcher implements MouseListener, MouseMoveListener, KeyListener, MouseTrackListener, FocusListener {
 		protected static final int ANY_BUTTON = SWT.BUTTON1 | SWT.BUTTON2 | SWT.BUTTON3;
 
+		@Override
 		public void keyPressed(KeyEvent kee) {
 			getEditDomain().keyDown(kee, TreeViewer.this);
 		}
 
+		@Override
 		public void keyReleased(KeyEvent kee) {
 			getEditDomain().keyUp(kee, TreeViewer.this);
 		}
 
+		@Override
 		public void mouseDoubleClick(MouseEvent me) {
 			getEditDomain().mouseDoubleClick(me, TreeViewer.this);
 		}
 
+		@Override
 		public void mouseDown(MouseEvent me) {
 			getEditDomain().mouseDown(me, TreeViewer.this);
 		}
 
+		@Override
 		public void mouseEnter(MouseEvent me) {
 			getEditDomain().viewerEntered(me, TreeViewer.this);
 		}
 
+		@Override
 		public void mouseExit(MouseEvent me) {
 			getEditDomain().viewerExited(me, TreeViewer.this);
 		}
 
+		@Override
 		public void mouseHover(MouseEvent me) {
 			getEditDomain().mouseHover(me, TreeViewer.this);
 		}
 
+		@Override
 		public void mouseMove(MouseEvent me) {
 			if ((me.stateMask & ANY_BUTTON) != 0)
 				getEditDomain().mouseDrag(me, TreeViewer.this);
@@ -89,14 +97,17 @@ public class TreeViewer extends AbstractEditPartViewer {
 				getEditDomain().mouseMove(me, TreeViewer.this);
 		}
 
+		@Override
 		public void mouseUp(MouseEvent me) {
 			getEditDomain().mouseUp(me, TreeViewer.this);
 		}
 
+		@Override
 		public void focusGained(FocusEvent event) {
 			getEditDomain().focusGained(event, TreeViewer.this);
 		}
 
+		@Override
 		public void focusLost(FocusEvent event) {
 			getEditDomain().focusLost(event, TreeViewer.this);
 		}
@@ -122,6 +133,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 	 * @param parent The parent for the Tree
 	 * @return the control
 	 */
+	@Override
 	public Control createControl(Composite parent) {
 		Tree tree = new Tree(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		setControl(tree);
@@ -132,6 +144,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 	 * @see org.eclipse.gef.EditPartViewer#findObjectAtExcluding(Point, Collection,
 	 *      EditPartViewer.Conditional)
 	 */
+	@Override
 	public EditPart findObjectAtExcluding(Point pt, Collection exclude, Conditional condition) {
 		if (getControl() == null)
 			return null;
@@ -160,6 +173,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 	/**
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#fireSelectionChanged()
 	 */
+	@Override
 	protected void fireSelectionChanged() {
 		super.fireSelectionChanged();
 		showSelectionInTree();
@@ -169,6 +183,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 	 * "Hooks up" a Control, i.e. sets it as the control for the RootTreeEditPart,
 	 * adds necessary listener for proper operation, etc.
 	 */
+	@Override
 	protected void hookControl() {
 		if (getControl() == null)
 			return;
@@ -180,6 +195,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 		tree.addKeyListener(dispatcher);
 		tree.addMouseTrackListener(dispatcher);
 		tree.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				TreeItem[] ties = tree.getSelection();
 				Object newSelection[] = new Object[ties.length];
@@ -190,6 +206,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 				ignore = false;
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				widgetSelected(e);
 			}
@@ -202,6 +219,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 	/**
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#reveal(org.eclipse.gef.EditPart)
 	 */
+	@Override
 	public void reveal(EditPart part) {
 		if (!(part instanceof TreeEditPart))
 			return;
@@ -237,6 +255,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 	 * etc. It does not remove the listeners because it is causing errors, although
 	 * that would be a desirable outcome.
 	 */
+	@Override
 	protected void unhookControl() {
 		if (getControl() == null)
 			return;

@@ -28,6 +28,7 @@ public class AbstractBackground extends AbstractBorder {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return IFigure.NO_INSETS;
 	}
@@ -36,6 +37,7 @@ public class AbstractBackground extends AbstractBorder {
 	 * {@inheritDoc} By default, this method is stubbed out for backgrounds which
 	 * only paint underneath a figure.
 	 */
+	@Override
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 	}
 

@@ -39,6 +39,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	 * 
 	 * @param box the box to add
 	 */
+	@Override
 	public void addLine(CompositeBox box) {
 		endLine();
 		getContext().addLine(box);
@@ -47,6 +48,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContainerLayout#createNewLine()
 	 */
+	@Override
 	protected void createNewLine() {
 		currentLine = new NestedLine((InlineFlow) getFlowFigure());
 		setupLine(currentLine);
@@ -55,6 +57,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContext#endLine()
 	 */
+	@Override
 	public void endLine() {
 		flush();
 		getContext().endLine();
@@ -63,6 +66,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContainerLayout#flush()
 	 */
+	@Override
 	protected void flush() {
 		if (currentLine != null && currentLine.isOccupied()) {
 			// We want to preserve the state when a linebox is being added
@@ -79,6 +83,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	 * 
 	 * @see FlowContext#getContinueOnSameLine()
 	 */
+	@Override
 	public boolean getContinueOnSameLine() {
 		return getContext().getContinueOnSameLine();
 	}
@@ -86,6 +91,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContext#getWidthLookahead(FlowFigure, int[])
 	 */
+	@Override
 	public void getWidthLookahead(FlowFigure child, int result[]) {
 		List<? extends IFigure> children = getFlowFigure().getChildren();
 		int index = -1;
@@ -102,6 +108,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContainerLayout#isCurrentLineOccupied()
 	 */
+	@Override
 	public boolean isCurrentLineOccupied() {
 		return (currentLine != null && !currentLine.getFragments().isEmpty()) || getContext().isCurrentLineOccupied();
 	}
@@ -109,6 +116,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	/**
 	 * Clears out all fragments prior to the call to layoutChildren().
 	 */
+	@Override
 	public void preLayout() {
 		((InlineFlow) getFlowFigure()).getFragments().clear();
 	}
@@ -118,6 +126,7 @@ public class InlineFlowLayout extends FlowContainerLayout {
 	 * 
 	 * @see FlowContext#setContinueOnSameLine(boolean)
 	 */
+	@Override
 	public void setContinueOnSameLine(boolean value) {
 		getContext().setContinueOnSameLine(value);
 	}

@@ -52,6 +52,7 @@ public class GraphSnippet7 {
 
 		g.addMouseMoveListener(new MouseMoveListener() {
 
+			@Override
 			public void mouseMove(MouseEvent e) {
 				// Get the figure at the current mouse location
 				Object o = g.getFigureAt(e.x, e.y);

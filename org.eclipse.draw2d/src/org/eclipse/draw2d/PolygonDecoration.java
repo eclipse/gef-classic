@@ -59,6 +59,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#getBackgroundColor()
 	 */
+	@Override
 	public Color getLocalBackgroundColor() {
 		if (super.getLocalBackgroundColor() == null)
 			return getForegroundColor();
@@ -71,6 +72,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	 * @return the points in this PolygonDecoration
 	 * @since 2.0
 	 */
+	@Override
 	public PointList getPoints() {
 		if (points == null) {
 			points = new PointList();
@@ -85,6 +87,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	 * 
 	 * @param p the new location
 	 */
+	@Override
 	public void setLocation(Point p) {
 		points = null;
 		bounds = null;
@@ -128,6 +131,7 @@ public class PolygonDecoration extends Polygon implements RotatableDecoration {
 	 * 
 	 * @param ref the reference point
 	 */
+	@Override
 	public void setReferencePoint(Point ref) {
 		Point pt = Point.SINGLETON;
 		pt.setLocation(ref);

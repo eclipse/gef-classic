@@ -39,6 +39,7 @@ public class GroupEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	public IFigure createFigure() {
 		Figure figure = new Figure();
 		figure.setOpaque(true);

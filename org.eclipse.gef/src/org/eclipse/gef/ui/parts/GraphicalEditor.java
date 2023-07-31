@@ -62,6 +62,7 @@ import org.eclipse.gef.ui.properties.UndoablePropertySheetPage;
 public abstract class GraphicalEditor extends EditorPart implements CommandStackListener, ISelectionListener {
 
 	private static class ActionIDList extends ArrayList {
+		@Override
 		public boolean add(Object o) {
 			if (o instanceof IAction) {
 				try {
@@ -97,6 +98,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * 
 	 * @param event the change event
 	 */
+	@Override
 	public void commandStackChanged(EventObject event) {
 		updateActions(stackActions);
 	}
@@ -162,6 +164,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * 
 	 * @param parent the parent composite
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		createGraphicalViewer(parent);
 	}
@@ -169,6 +172,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	/**
 	 * @see org.eclipse.ui.IWorkbenchPart#dispose()
 	 */
+	@Override
 	public void dispose() {
 		getCommandStack().removeCommandStackListener(this);
 		getSite().getWorkbenchWindow().getSelectionService().removeSelectionListener(this);
@@ -183,6 +187,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * 
 	 * @see org.eclipse.ui.ISaveablePart#doSaveAs()
 	 */
+	@Override
 	public void doSaveAs() {
 		throw new RuntimeException("doSaveAs must be overridden"); //$NON-NLS-1$
 	}
@@ -190,6 +195,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	/**
 	 * @see org.eclipse.ui.part.WorkbenchPart#firePropertyChange(int)
 	 */
+	@Override
 	protected void firePropertyChange(int property) {
 		super.firePropertyChange(property);
 		updateActions(propertyActions);
@@ -333,6 +339,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * 
 	 * @see org.eclipse.ui.IEditorPart#init(IEditorSite, IEditorInput)
 	 */
+	@Override
 	public void init(IEditorSite site, IEditorInput input) throws PartInitException {
 		setSite(site);
 		setInput(input);
@@ -368,6 +375,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * 
 	 * @see org.eclipse.ui.ISaveablePart#isDirty()
 	 */
+	@Override
 	public boolean isDirty() {
 		return getCommandStack().isDirty();
 	}
@@ -378,6 +386,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * 
 	 * @see org.eclipse.ui.ISaveablePart#isSaveAsAllowed()
 	 */
+	@Override
 	public boolean isSaveAsAllowed() {
 		return false;
 	}
@@ -386,6 +395,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	 * @see org.eclipse.ui.ISelectionListener#selectionChanged(IWorkbenchPart,
 	 *      ISelection)
 	 */
+	@Override
 	public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 		// If not the active editor, ignore selection changed.
 		if (this.equals(getSite().getPage().getActiveEditor()))
@@ -413,6 +423,7 @@ public abstract class GraphicalEditor extends EditorPart implements CommandStack
 	/**
 	 * @see org.eclipse.ui.IWorkbenchPart#setFocus()
 	 */
+	@Override
 	public void setFocus() {
 		getGraphicalViewer().getControl().setFocus();
 	}

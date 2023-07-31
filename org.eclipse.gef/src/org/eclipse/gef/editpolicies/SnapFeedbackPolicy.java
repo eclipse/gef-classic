@@ -45,6 +45,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void eraseTargetFeedback(Request request) {
 		for (int i = 0; i < guide.length; i++) {
 			if (guide[i] != null)
@@ -73,6 +74,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 		/**
 		 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 		 */
+		@Override
 		protected void paintFigure(Graphics graphics) {
 			if (opacity != FRAMES) {
 				if (image != null) {
@@ -93,6 +95,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 					count++;
 				}
 				Display.getCurrent().timerExec(100, new Runnable() {
+					@Override
 					public void run() {
 						opacity = Math.min(FRAMES, opacity + 1);
 						repaint();
@@ -109,6 +112,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 		/**
 		 * @see org.eclipse.draw2d.Figure#removeNotify()
 		 */
+		@Override
 		public void removeNotify() {
 			if (image != null) {
 				image.dispose();
@@ -179,6 +183,7 @@ public class SnapFeedbackPolicy extends GraphicalEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void showTargetFeedback(Request req) {
 		if (req.getType().equals(REQ_MOVE) || req.getType().equals(REQ_RESIZE) || req.getType().equals(REQ_CLONE)
 				|| req.getType().equals(REQ_ADD) || req.getType().equals(REQ_CREATE)) {

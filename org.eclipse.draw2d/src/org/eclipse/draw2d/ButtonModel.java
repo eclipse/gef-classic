@@ -467,6 +467,7 @@ public class ButtonModel {
 	}
 
 	class DefaultFiringBehavior extends ButtonStateTransitionListener {
+		@Override
 		public void released() {
 			fireActionPerformed();
 		}
@@ -479,6 +480,7 @@ public class ButtonModel {
 
 		protected Timer timer;
 
+		@Override
 		public void pressed() {
 			fireActionPerformed();
 			if (!isEnabled())
@@ -490,14 +492,17 @@ public class ButtonModel {
 			timer.scheduleAtFixedRate(runAction, INITIAL_DELAY, STEP_DELAY);
 		}
 
+		@Override
 		public void canceled() {
 			suspend();
 		}
 
+		@Override
 		public void released() {
 			suspend();
 		}
 
+		@Override
 		public void resume() {
 			timer = new Timer();
 
@@ -506,6 +511,7 @@ public class ButtonModel {
 			timer.scheduleAtFixedRate(runAction, STEP_DELAY, STEP_DELAY);
 		}
 
+		@Override
 		public void suspend() {
 			if (timer == null)
 				return;
@@ -522,8 +528,10 @@ public class ButtonModel {
 			this.timer = timer;
 		}
 
+		@Override
 		public void run() {
 			org.eclipse.swt.widgets.Display.getDefault().syncExec(new Runnable() {
+				@Override
 				public void run() {
 					if (!isEnabled())
 						timer.cancel();

@@ -65,10 +65,12 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 * polluting ToolbarDropdownContributionItem with public listener methods.
 	 */
 	private class ActionListener implements Listener, IPropertyChangeListener {
+		@Override
 		public void handleEvent(Event event) {
 			ToolbarDropdownContributionItem.this.handleWidgetEvent(event);
 		}
 
+		@Override
 		public void propertyChange(PropertyChangeEvent event) {
 			ToolbarDropdownContributionItem.this.actionPropertyChange(event);
 		}
@@ -170,6 +172,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 				update(e.getProperty());
 			} else {
 				display.asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						update(e.getProperty());
 					}
@@ -196,6 +199,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 * Compares this action contribution item with another object. Two action
 	 * contribution items are equal if they refer to the identical Action.
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof ToolbarDropdownContributionItem)) {
 			return false;
@@ -209,6 +213,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 * the action's checked property has been set, a toggle button is created and
 	 * primed to the value of the checked property.
 	 */
+	@Override
 	public void fill(Composite parent) {
 		if (widget == null && parent != null) {
 			int flags = SWT.PUSH;
@@ -240,6 +245,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 * primed to the value of the checked property. If the action's menu creator
 	 * property has been set, a cascading submenu is created.
 	 */
+	@Override
 	public void fill(Menu parent, int index) {
 		if (widget == null && parent != null) {
 			int flags = SWT.PUSH;
@@ -286,6 +292,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 * primed to the value of the checked property. If the action's menu creator
 	 * property has been set, a drop-down tool item is created.
 	 */
+	@Override
 	public void fill(ToolBar parent, int index) {
 		if (widget == null && parent != null) {
 			int flags = SWT.PUSH;
@@ -338,6 +345,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 			Display display = Display.getDefault();
 			if (display != null) {
 				display.disposeExec(new Runnable() {
+					@Override
 					public void run() {
 						if (globalImageCache != null) {
 							globalImageCache.dispose();
@@ -448,6 +456,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	/*
 	 * (non-Javadoc) Method declared on Object.
 	 */
+	@Override
 	public int hashCode() {
 		return action.hashCode();
 	}
@@ -455,6 +464,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	/*
 	 * (non-Javadoc) Method declared on IContributionItem.
 	 */
+	@Override
 	public boolean isEnabled() {
 		return action != null && action.isEnabled();
 	}
@@ -464,6 +474,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 * returns <code>true</code> for menu items and <code>false</code> for
 	 * everything else.
 	 */
+	@Override
 	public boolean isDynamic() {
 		if (widget instanceof MenuItem) {
 			// Optimization. Only recreate the item is the check style has
@@ -493,6 +504,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 * The action item implementation of this <code>IContributionItem</code> method
 	 * calls <code>update(null)</code>.
 	 */
+	@Override
 	public final void update() {
 		update(null);
 	}
@@ -503,6 +515,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	 * @param propertyName the name of the property, or <code>null</code> meaning
 	 *                     all applicable properties
 	 */
+	@Override
 	public void update(String propertyName) {
 		if (widget != null) {
 

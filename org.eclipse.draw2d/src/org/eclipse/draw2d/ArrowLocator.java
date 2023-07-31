@@ -39,6 +39,7 @@ public class ArrowLocator extends ConnectionLocator {
 	 * 
 	 * @param target The RotatableDecoration to relocate
 	 */
+	@Override
 	public void relocate(IFigure target) {
 		PointList points = getConnection().getPoints();
 		RotatableDecoration arrow = (RotatableDecoration) target;

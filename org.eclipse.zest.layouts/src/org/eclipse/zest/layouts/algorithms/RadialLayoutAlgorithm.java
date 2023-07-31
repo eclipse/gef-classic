@@ -48,10 +48,12 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 		endDegree = MAX_DEGREES;
 	}
 
+	@Override
 	public void setLayoutArea(double x, double y, double width, double height) {
 		throw new RuntimeException("Operation not implemented");
 	}
 
+	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if (asynchronous && continueous)
 			return false;
@@ -67,6 +69,7 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 
 	DisplayIndependentRectangle layoutBounds = null;
 
+	@Override
 	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
 		// TODO Auto-generated method stub
@@ -74,6 +77,7 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 		super.preLayoutAlgorithm(entitiesToLayout, relationshipsToConsider, x, y, width, height);
 	}
 
+	@Override
 	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider) {
 		roots = treeLayout.getRoots();
@@ -123,6 +127,7 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	 * nodes or not. If the size is not included, the bounds will only be guaranteed
 	 * to include the center of each node.
 	 */
+	@Override
 	protected DisplayIndependentRectangle getLayoutBounds(InternalNode[] entitiesToLayout, boolean includeNodeSize) {
 		DisplayIndependentRectangle layoutBounds = super.getLayoutBounds(entitiesToLayout, includeNodeSize);
 		DisplayIndependentPoint centerPoint = (roots != null) ? determineCenterPoint(roots)

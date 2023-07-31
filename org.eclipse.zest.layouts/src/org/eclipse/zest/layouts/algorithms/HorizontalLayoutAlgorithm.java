@@ -32,6 +32,7 @@ public class HorizontalLayoutAlgorithm extends GridLayoutAlgorithm {
 	 * Calculates and returns an array containing the number of columns, followed by
 	 * the number of rows
 	 */
+	@Override
 	protected int[] calculateNumberOfRowsAndCols(int numChildren, double boundX, double boundY, double boundWidth,
 			double boundHeight) {
 		int rows = 1;
@@ -40,6 +41,7 @@ public class HorizontalLayoutAlgorithm extends GridLayoutAlgorithm {
 		return result;
 	}
 
+	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if (asynchronous && continueous) {
 			return false;

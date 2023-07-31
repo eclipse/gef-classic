@@ -44,6 +44,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 	 * @see org.eclipse.gef.ui.palette.customize.EntryPage#createControl(Composite,
 	 *      PaletteEntry)
 	 */
+	@Override
 	public void createControl(Composite parent, PaletteEntry entry) {
 		super.createControl(parent, entry);
 
@@ -77,6 +78,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 		b.setSelection(getDrawer().isInitiallyOpen());
 		if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 			b.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					handleOpenSelected(((Button) e.getSource()).getSelection());
 				}
@@ -106,6 +108,7 @@ public class DrawerEntryPage extends DefaultEntryPage {
 		pinOption.setSelection(getDrawer().isInitiallyPinned());
 		if (getPermission() >= PaletteEntry.PERMISSION_LIMITED_MODIFICATION) {
 			pinOption.addSelectionListener(new SelectionAdapter() {
+				@Override
 				public void widgetSelected(SelectionEvent e) {
 					handlePinSelected(((Button) e.getSource()).getSelection());
 				}

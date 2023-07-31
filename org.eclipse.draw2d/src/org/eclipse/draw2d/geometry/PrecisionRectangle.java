@@ -102,6 +102,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#contains(double, double)
 	 */
+	@Override
 	public boolean contains(double x, double y) {
 		return containsPrecise(x, y);
 	}
@@ -109,6 +110,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#contains(int, int)
 	 */
+	@Override
 	public boolean contains(int x, int y) {
 		return containsPrecise(x, y);
 	}
@@ -116,6 +118,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#contains(org.eclipse.draw2d.geometry.Point)
 	 */
+	@Override
 	public boolean contains(Point p) {
 		return containsPrecise(p.preciseX(), p.preciseY());
 	}
@@ -123,6 +126,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#contains(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	public boolean contains(Rectangle rect) {
 		return preciseX() <= rect.preciseX() && preciseY() <= rect.preciseY() && right() >= rect.right()
 				&& bottom() >= rect.bottom();
@@ -146,6 +150,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see Rectangle#equals(Object)
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof PrecisionRectangle) {
 			PrecisionRectangle rect = (PrecisionRectangle) o;
@@ -168,6 +173,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * @return <code>this</code> for convenience
 	 * @since 3.4
 	 */
+	@Override
 	public Rectangle expand(double h, double v) {
 		return expandPrecise(h, v);
 	}
@@ -175,6 +181,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#expand(org.eclipse.draw2d.geometry.Insets)
 	 */
+	@Override
 	public Rectangle expand(Insets insets) {
 		if (insets == null)
 			return this;
@@ -188,6 +195,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#expand(int, int)
 	 */
+	@Override
 	public Rectangle expand(int h, int v) {
 		return expandPrecise(h, v);
 	}
@@ -209,6 +217,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#getBottom()
 	 */
+	@Override
 	public Point getBottom() {
 		return new PrecisionPoint(preciseX() + preciseWidth() / 2, bottom());
 	}
@@ -216,6 +225,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#getBottomLeft()
 	 */
+	@Override
 	public Point getBottomLeft() {
 		return new PrecisionPoint(preciseX(), preciseY() + preciseHeight());
 	}
@@ -223,6 +233,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#getBottomRight()
 	 */
+	@Override
 	public Point getBottomRight() {
 		return new PrecisionPoint(preciseX() + preciseWidth(), preciseY() + preciseHeight());
 	}
@@ -230,6 +241,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#getCenter()
 	 */
+	@Override
 	public Point getCenter() {
 		return new PrecisionPoint(preciseX() + preciseWidth() / 2.0, preciseY() + preciseHeight() / 2.0);
 	}
@@ -237,6 +249,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#getCopy()
 	 */
+	@Override
 	public Rectangle getCopy() {
 		return getPreciseCopy();
 	}
@@ -253,6 +266,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#getTop()
 	 */
+	@Override
 	public Point getTop() {
 		return new PrecisionPoint(preciseX() + preciseWidth() / 2, preciseY());
 	}
@@ -260,6 +274,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#getTopLeft()
 	 */
+	@Override
 	public Point getTopLeft() {
 		return new PrecisionPoint(preciseX(), preciseY());
 	}
@@ -267,6 +282,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#getTopRight()
 	 */
+	@Override
 	public Point getTopRight() {
 		return new PrecisionPoint(preciseX() + preciseWidth(), preciseY());
 	}
@@ -274,6 +290,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#intersect(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	public Rectangle intersect(Rectangle rect) {
 		return intersectPrecise(rect);
 	}
@@ -303,6 +320,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#performScale(double)
 	 */
+	@Override
 	public void performScale(double factor) {
 		setPreciseX(preciseX() * factor);
 		setPreciseY(preciseY() * factor);
@@ -313,6 +331,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#performTranslate(int, int)
 	 */
+	@Override
 	public void performTranslate(int dx, int dy) {
 		setPreciseX(preciseX() + dx);
 		setPreciseY(preciseY() + dy);
@@ -330,6 +349,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#preciseHeight()
 	 */
+	@Override
 	public double preciseHeight() {
 		updatePreciseHeightDouble();
 		return preciseHeight;
@@ -347,6 +367,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#preciseWidth()
 	 */
+	@Override
 	public double preciseWidth() {
 		updatePreciseWidthDouble();
 		return preciseWidth;
@@ -355,6 +376,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#preciseX()
 	 */
+	@Override
 	public double preciseX() {
 		updatePreciseXDouble();
 		return preciseX;
@@ -363,6 +385,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#preciseY()
 	 */
+	@Override
 	public double preciseY() {
 		updatePreciseYDouble();
 		return preciseY;
@@ -371,6 +394,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#resize(org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public Rectangle resize(Dimension d) {
 		return resizePrecise(d.preciseWidth(), d.preciseHeight());
 	}
@@ -378,6 +402,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#resize(double, double)
 	 */
+	@Override
 	public Rectangle resize(double w, double h) {
 		return resizePrecise(w, h);
 	}
@@ -385,6 +410,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#resize(int, int)
 	 */
+	@Override
 	public Rectangle resize(int w, int h) {
 		return resizePrecise(w, h);
 	}
@@ -407,6 +433,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setBounds(int, int, int, int)
 	 */
+	@Override
 	public Rectangle setBounds(int x, int y, int width, int height) {
 		return setPreciseBounds(x, y, width, height);
 	}
@@ -415,6 +442,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setBounds(org.eclipse.draw2d.geometry.Point,
 	 *      org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public Rectangle setBounds(Point location, Dimension size) {
 		return setPreciseBounds(location.preciseX(), location.preciseY(), size.preciseWidth(), size.preciseHeight());
 	}
@@ -422,6 +450,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	public Rectangle setBounds(Rectangle rect) {
 		return setPreciseBounds(rect.preciseX(), rect.preciseY(), rect.preciseWidth(), rect.preciseHeight());
 	}
@@ -439,6 +468,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setHeight(int)
 	 */
+	@Override
 	public Rectangle setHeight(int height) {
 		return setPreciseHeight(height);
 	}
@@ -446,6 +476,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setLocation(int, int)
 	 */
+	@Override
 	public Rectangle setLocation(int x, int y) {
 		return setPreciseLocation(x, y);
 	}
@@ -453,6 +484,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setLocation(org.eclipse.draw2d.geometry.Point)
 	 */
+	@Override
 	public Rectangle setLocation(Point loc) {
 		return setPreciseLocation(loc.preciseX(), loc.preciseY());
 	}
@@ -584,6 +616,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setSize(org.eclipse.draw2d.geometry.Dimension)
 	 */
+	@Override
 	public Rectangle setSize(Dimension d) {
 		return setPreciseSize(d.preciseWidth(), d.preciseHeight());
 	}
@@ -591,6 +624,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setSize(int, int)
 	 */
+	@Override
 	public Rectangle setSize(int w, int h) {
 		return setPreciseSize(w, h);
 	}
@@ -608,6 +642,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setWidth(int)
 	 */
+	@Override
 	public Rectangle setWidth(int width) {
 		return setPreciseWidth(width);
 	}
@@ -625,6 +660,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setX(int)
 	 */
+	@Override
 	public Rectangle setX(int value) {
 		return setPreciseX(value);
 	}
@@ -642,6 +678,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#setY(int)
 	 */
+	@Override
 	public Rectangle setY(int value) {
 		return setPreciseY(value);
 	}
@@ -656,6 +693,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * @return <code>this</code> for convenience
 	 * @since 3.4
 	 */
+	@Override
 	public Rectangle shrink(double h, double v) {
 		return shrinkPrecise(h, v);
 	}
@@ -663,6 +701,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#shrink(org.eclipse.draw2d.geometry.Insets)
 	 */
+	@Override
 	public Rectangle shrink(Insets insets) {
 		if (insets == null)
 			return this;
@@ -676,6 +715,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#shrink(int, int)
 	 */
+	@Override
 	public Rectangle shrink(int h, int v) {
 		return shrinkPrecise(h, v);
 	}
@@ -701,6 +741,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#touches(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	public boolean touches(Rectangle rect) {
 		return rect.preciseX() <= preciseX() + preciseWidth() && rect.preciseY() <= preciseY() + preciseHeight()
 				&& rect.preciseX() + rect.preciseWidth() >= preciseX()
@@ -710,6 +751,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#translate(double, double)
 	 */
+	@Override
 	public Rectangle translate(double dx, double dy) {
 		return translatePrecise(dx, dy);
 	}
@@ -717,6 +759,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#translate(int, int)
 	 */
+	@Override
 	public Rectangle translate(int dx, int dy) {
 		return translatePrecise(dx, dy);
 	}
@@ -724,6 +767,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#translate(org.eclipse.draw2d.geometry.Point)
 	 */
+	@Override
 	public Rectangle translate(Point p) {
 		return translatePrecise(p.preciseX(), p.preciseY());
 	}
@@ -746,6 +790,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#transpose()
 	 */
+	@Override
 	public Rectangle transpose() {
 		double temp = preciseX();
 		setPreciseX(preciseY());
@@ -759,6 +804,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#union(double, double)
 	 */
+	@Override
 	public Rectangle union(double x, double y) {
 		return unionPrecise(x, y);
 	}
@@ -767,6 +813,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 * @see org.eclipse.draw2d.geometry.Rectangle#union(double, double, double,
 	 *      double)
 	 */
+	@Override
 	public Rectangle union(double x, double y, double w, double h) {
 		return unionPrecise(x, y, w, h);
 	}
@@ -774,6 +821,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#union(int, int)
 	 */
+	@Override
 	public Rectangle union(int x, int y) {
 		return unionPrecise(x, y);
 	}
@@ -781,6 +829,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#union(int, int, int, int)
 	 */
+	@Override
 	public Rectangle union(int x, int y, int w, int h) {
 		return unionPrecise(x, y, w, h);
 	}
@@ -788,6 +837,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#union(org.eclipse.draw2d.geometry.Point)
 	 */
+	@Override
 	public void union(Point p) {
 		unionPrecise(p.preciseX(), p.preciseY());
 	}
@@ -811,6 +861,7 @@ public final class PrecisionRectangle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#union(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	public Rectangle union(Rectangle rect) {
 		if (rect == null || rect.isEmpty())
 			return this;

@@ -40,6 +40,7 @@ public class ViewportAwareConnectionLayerClippingStrategy implements IClippingSt
 	/**
 	 * @see org.eclipse.draw2d.IClippingStrategy#getClip(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public Rectangle[] getClip(IFigure figure) {
 		Rectangle[] clipRect = null;
 		if (figure instanceof Connection) {

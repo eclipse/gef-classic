@@ -27,6 +27,7 @@ public class ViewportLayout extends AbstractHintLayout {
 	 * 
 	 * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int)
 	 */
+	@Override
 	protected Dimension calculateMinimumSize(IFigure figure, int wHint, int hHint) {
 		Viewport viewport = (Viewport) figure;
 		Dimension min = new Dimension();
@@ -45,6 +46,7 @@ public class ViewportLayout extends AbstractHintLayout {
 	 * @return the Preferred size of the given viewport
 	 * @since 2.0
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 		Viewport viewport = (Viewport) parent;
 		Insets insets = viewport.getInsets();
@@ -76,6 +78,7 @@ public class ViewportLayout extends AbstractHintLayout {
 	/**
 	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
 	 */
+	@Override
 	protected boolean isSensitiveHorizontally(IFigure parent) {
 		return ((Viewport) parent).getContentsTracksWidth();
 	}
@@ -83,6 +86,7 @@ public class ViewportLayout extends AbstractHintLayout {
 	/**
 	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
 	 */
+	@Override
 	protected boolean isSensitiveVertically(IFigure parent) {
 		return ((Viewport) parent).getContentsTracksHeight();
 	}
@@ -90,6 +94,7 @@ public class ViewportLayout extends AbstractHintLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#layout(IFigure)
 	 */
+	@Override
 	public void layout(IFigure figure) {
 		Viewport viewport = (Viewport) figure;
 		IFigure contents = viewport.getContents();

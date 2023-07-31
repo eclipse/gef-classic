@@ -45,6 +45,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	/**
 	 * @see GraphicalEditor#initializeGraphicalViewer()
 	 */
+	@Override
 	protected void initializeGraphicalViewer() {
 		splitter.hookDropTargetListener(getGraphicalViewer());
 	}
@@ -69,6 +70,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	/**
 	 * @see GraphicalEditor#createPartControl(Composite)
 	 */
+	@Override
 	public void createPartControl(Composite parent) {
 		splitter = createPaletteComposite(parent);
 		super.createPartControl(splitter);
@@ -153,6 +155,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	 * 
 	 * @param ed The new EditDomain
 	 */
+	@Override
 	protected void setEditDomain(DefaultEditDomain ed) {
 		super.setEditDomain(ed);
 		getEditDomain().setPaletteRoot(getPaletteRoot());
@@ -180,6 +183,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 		/**
 		 * @see org.eclipse.ui.part.IPage#createControl(org.eclipse.swt.widgets.Composite)
 		 */
+		@Override
 		public void createControl(Composite parent) {
 			super.createControl(parent);
 			if (splitter != null)
@@ -189,6 +193,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 		/**
 		 * @see org.eclipse.ui.part.IPage#dispose()
 		 */
+		@Override
 		public void dispose() {
 			if (splitter != null)
 				splitter.setExternalViewer(null);

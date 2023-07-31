@@ -25,6 +25,7 @@ public class ColorConstantTest extends Assert {
 		result[1] = Boolean.FALSE;
 
 		Thread testThread = new Thread() {
+			@Override
 			public void run() {
 				try {
 					Class.forName("org.eclipse.draw2d.ColorConstants");

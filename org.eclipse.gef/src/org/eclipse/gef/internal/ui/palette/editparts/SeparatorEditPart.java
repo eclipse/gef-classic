@@ -42,6 +42,7 @@ public class SeparatorEditPart extends PaletteEditPart {
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		return new SeparatorFigure();
 	}

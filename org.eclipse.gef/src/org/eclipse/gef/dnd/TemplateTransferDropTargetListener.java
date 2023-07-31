@@ -45,6 +45,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 	/**
 	 * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#createTargetRequest()
 	 */
+	@Override
 	protected Request createTargetRequest() {
 		// Look at the data on templatetransfer.
 		// Create factory
@@ -85,6 +86,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 	 * 
 	 * @see AbstractTransferDropTargetListener#handleDragOperationChanged()
 	 */
+	@Override
 	protected void handleDragOperationChanged() {
 		getCurrentEvent().detail = DND.DROP_COPY;
 		super.handleDragOperationChanged();
@@ -96,6 +98,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 	 * 
 	 * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#handleDragOver()
 	 */
+	@Override
 	protected void handleDragOver() {
 		getCurrentEvent().detail = DND.DROP_COPY;
 		getCurrentEvent().feedback = DND.FEEDBACK_SCROLL | DND.FEEDBACK_EXPAND;
@@ -107,6 +110,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 	 * 
 	 * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#handleDrop()
 	 */
+	@Override
 	protected void handleDrop() {
 		super.handleDrop();
 		selectAddedObject();
@@ -129,6 +133,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 	/**
 	 * Assumes that the target request is a {@link CreateRequest}.
 	 */
+	@Override
 	protected void updateTargetRequest() {
 		CreateRequest request = getCreateRequest();
 		request.setLocation(getDropLocation());

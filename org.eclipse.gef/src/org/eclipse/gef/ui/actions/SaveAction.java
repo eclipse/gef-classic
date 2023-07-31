@@ -33,6 +33,7 @@ public class SaveAction extends EditorPartAction {
 	/**
 	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		return getEditorPart().isDirty();
 	}
@@ -40,6 +41,7 @@ public class SaveAction extends EditorPartAction {
 	/**
 	 * Initializes this action's text.
 	 */
+	@Override
 	protected void init() {
 		setId(ActionFactory.SAVE.getId());
 		setText(GEFMessages.SaveAction_Label);
@@ -49,6 +51,7 @@ public class SaveAction extends EditorPartAction {
 	/**
 	 * Saves the state of the associated editor.
 	 */
+	@Override
 	public void run() {
 		getEditorPart().getSite().getPage().saveEditor(getEditorPart(), false);
 	}

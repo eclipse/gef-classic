@@ -72,6 +72,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 			this.externalComparator = externalComparator;
 		}
 
+		@Override
 		public int compare(Object o1, Object o2) {
 			InternalNode internalNode1 = (InternalNode) o1;
 			InternalNode internalNode2 = (InternalNode) o2;
@@ -140,6 +141,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * 
 	 * @param entity
 	 */
+	@Override
 	public void addEntity(LayoutEntity entity) {
 		if ((entity != null) && !entitiesToAdd.contains(entity)) {
 			entitiesToAdd.add(entity);
@@ -152,6 +154,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * 
 	 * @param relationship
 	 */
+	@Override
 	public void addRelationship(LayoutRelationship relationship) {
 		if ((relationship != null) && !relationshipsToAdd.contains(relationship)) {
 			relationshipsToAdd.add(relationship);
@@ -164,6 +167,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * 
 	 * @param entity The entity to remove
 	 */
+	@Override
 	public void removeEntity(LayoutEntity entity) {
 		if ((entity != null) && !entitiesToRemove.contains(entity)) {
 			entitiesToRemove.add(entity);
@@ -176,6 +180,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * 
 	 * @param relationship The relationship to remove.
 	 */
+	@Override
 	public void removeRelationship(LayoutRelationship relationship) {
 		if ((relationship != null) && !relationshipsToRemove.contains(relationship)) {
 			relationshipsToRemove.add(relationship);
@@ -187,6 +192,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * 
 	 * @param relationships
 	 */
+	@Override
 	public void removeRelationships(List relationships) {
 		// note we don't check if the relationshipsToRemove contains
 		// any of the objects in relationships.
@@ -199,6 +205,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * 
 	 * @param style
 	 */
+	@Override
 	public void setStyle(int style) {
 		this.layout_styles = style;
 	}
@@ -208,6 +215,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * 
 	 * @return
 	 */
+	@Override
 	public int getStyle() {
 		return this.layout_styles;
 	}
@@ -369,6 +377,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * 
 	 * @return boolean if the layout algorithm is running
 	 */
+	@Override
 	public synchronized boolean isRunning() {
 		return !layoutStopped;
 	}
@@ -377,6 +386,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * Stops the current layout from running. All layout algorithms should
 	 * constantly check isLayoutRunning
 	 */
+	@Override
 	public synchronized void stop() {
 		layoutStopped = true;
 		postLayoutAlgorithm(internalNodes, internalRelationships);
@@ -468,6 +478,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * This actually applies the layout
 	 */
+	@Override
 	public synchronized void applyLayout(final LayoutEntity[] entitiesToLayout,
 			final LayoutRelationship[] relationshipsToConsider, final double x, final double y, final double width,
 			final double height, boolean asynchronous, boolean continuous) throws InvalidLayoutConfiguration {
@@ -489,6 +500,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 			Thread thread = new Thread(new Runnable() {
 
+				@Override
 				public void run() {
 					setupLayout(entitiesToLayout, relationshipsToConsider, x, y, width, height);
 					preLayoutAlgorithm(internalNodes, internalRelationships, internalX, internalY, internalWidth,
@@ -642,6 +654,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Filters the entities and relationships to apply the layout on
 	 */
+	@Override
 	public void setFilter(Filter filter) {
 		this.filter = filter;
 	}
@@ -650,6 +663,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * Determines the order in which the objects should be displayed. Note: Some
 	 * algorithms force a specific order.
 	 */
+	@Override
 	public void setComparator(Comparator comparator) {
 		this.comparator = new InternalComparator(comparator);
 	}
@@ -986,6 +1000,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Set the width to height ratio you want the entities to use
 	 */
+	@Override
 	public void setEntityAspectRatio(double ratio) {
 		widthToHeightRatio = ratio;
 	}
@@ -994,6 +1009,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * Returns the width to height ratio this layout will use to set the size of the
 	 * entities.
 	 */
+	@Override
 	public double getEntityAspectRatio() {
 		return widthToHeightRatio;
 	}
@@ -1003,6 +1019,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * relieve some of the mystery, the layout algorithm will notify each
 	 * ProgressListener of its progress.
 	 */
+	@Override
 	public void addProgressListener(ProgressListener listener) {
 		if (!progressListeners.contains(listener)) {
 			progressListeners.add(listener);
@@ -1013,6 +1030,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * Removes the given progress listener, preventing it from receiving any more
 	 * updates.
 	 */
+	@Override
 	public void removeProgressListener(ProgressListener listener) {
 		if (progressListeners.contains(listener)) {
 			progressListeners.remove(listener);

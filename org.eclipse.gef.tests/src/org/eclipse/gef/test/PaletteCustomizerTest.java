@@ -25,9 +25,11 @@ import org.junit.Test;
 public class PaletteCustomizerTest extends Assert {
 
 	class TestCustomizer extends PaletteCustomizer {
+		@Override
 		public void revertToSaved() {
 		}
 
+		@Override
 		public void save() {
 		}
 	}

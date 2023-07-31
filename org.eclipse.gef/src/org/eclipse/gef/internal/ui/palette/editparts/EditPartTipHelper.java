@@ -82,6 +82,7 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 		}
 	}
 
+	@Override
 	public void dispose() {
 		if (shellListener != null) {
 			control.getShell().removeShellListener(shellListener);
@@ -93,11 +94,13 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 	/**
 	 * @see org.eclipse.draw2d.PopUpHelper#hide()
 	 */
+	@Override
 	protected void hide() {
 		super.hide();
 		currentHelper = null;
 	}
 
+	@Override
 	protected void hookShellListeners() {
 
 		/*
@@ -105,6 +108,7 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 		 * shell
 		 */
 		getShell().addMouseTrackListener(new MouseTrackAdapter() {
+			@Override
 			public void mouseExit(MouseEvent e) {
 				getShell().setCapture(false);
 				dispose();
@@ -116,6 +120,7 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 		 * mouseEnter is not received on the tooltip when it appears.
 		 */
 		getShell().addMouseMoveListener(new MouseMoveListener() {
+			@Override
 			public void mouseMove(MouseEvent e) {
 				Point eventPoint = getShell().toDisplay(new Point(e.x, e.y));
 				if (!getShell().getBounds().contains(eventPoint)) {
@@ -130,8 +135,10 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 		// window.
 		if (shellListener == null) {
 			shellListener = new ShellAdapter() {
+				@Override
 				public void shellDeactivated(ShellEvent event) {
 					Display.getCurrent().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							Shell active = Display.getCurrent().getActiveShell();
 							if (getShell() == active || control.getShell() == active || getShell().isDisposed())
@@ -154,12 +161,14 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 		 */
 		if (SWT.getPlatform().equals("gtk")) { //$NON-NLS-1$
 			getShell().addPaintListener(new PaintListener() {
+				@Override
 				public void paintControl(PaintEvent event) {
 					Point cursorLoc = Display.getCurrent().getCursorLocation();
 					if (!getShell().getBounds().contains(cursorLoc)) {
 						// This must be run asynchronously. If not, other paint
 						// listeners may attempt to paint on a disposed control.
 						Display.getCurrent().asyncExec(new Runnable() {
+							@Override
 							public void run() {
 								if (isShowing())
 									getShell().setCapture(false);

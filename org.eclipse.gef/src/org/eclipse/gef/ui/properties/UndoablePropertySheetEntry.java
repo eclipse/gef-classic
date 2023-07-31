@@ -55,6 +55,7 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	public UndoablePropertySheetEntry(CommandStack commandStack) {
 		this.commandStack = commandStack;
 		this.commandStackListener = new CommandStackEventListener() {
+			@Override
 			public void stackChanged(org.eclipse.gef.commands.CommandStackEvent event) {
 				if ((event.getDetail() & CommandStack.POST_MASK) != 0) {
 					refreshFromRoot();
@@ -67,6 +68,7 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	/**
 	 * @see org.eclipse.ui.views.properties.PropertySheetEntry#createChildEntry()
 	 */
+	@Override
 	protected PropertySheetEntry createChildEntry() {
 		return new UndoablePropertySheetEntry();
 	}
@@ -74,6 +76,7 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySheetEntry#dispose()
 	 */
+	@Override
 	public void dispose() {
 		if (commandStack != null)
 			commandStack.removeCommandStackEventListener(commandStackListener);
@@ -97,6 +100,7 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	/**
 	 * @see org.eclipse.ui.views.properties.IPropertySheetEntry#resetPropertyValue()
 	 */
+	@Override
 	public void resetPropertyValue() {
 		CompoundCommand cc = new CompoundCommand();
 		if (getParent() == null)
@@ -124,6 +128,7 @@ public class UndoablePropertySheetEntry extends PropertySheetEntry {
 	/**
 	 * @see PropertySheetEntry#valueChanged(PropertySheetEntry)
 	 */
+	@Override
 	protected void valueChanged(PropertySheetEntry child) {
 		valueChanged((UndoablePropertySheetEntry) child, new ForwardUndoCompoundCommand());
 	}

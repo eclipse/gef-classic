@@ -110,6 +110,7 @@ class Segment {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return start + "---" + end; //$NON-NLS-1$
 	}

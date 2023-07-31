@@ -112,6 +112,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * @see #setDefaultCursor(Cursor)
 	 * @return the default cursor
 	 */
+	@Override
 	protected Cursor getDefaultCursor() {
 		if (isCloneActive())
 			return SharedCursors.CURSOR_TREE_ADD;
@@ -163,6 +164,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#commitDrag()
 	 */
+	@Override
 	public void commitDrag() {
 		eraseSourceFeedback();
 		eraseTargetFeedback();
@@ -212,6 +214,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
 	 */
+	@Override
 	protected List createOperationSet() {
 		if (getCurrentViewer() != null) {
 			List list = ToolUtilities.getSelectionWithoutDependants(getCurrentViewer());
@@ -231,6 +234,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
 	 */
+	@Override
 	protected Request createTargetRequest() {
 		if (isCloneActive())
 			return new ChangeBoundsRequest(REQ_CLONE);
@@ -243,6 +247,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.Tool#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		eraseSourceFeedback();
 		super.deactivate();
@@ -277,6 +282,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommand()
 	 */
+	@Override
 	protected Command getCommand() {
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Drag Object Tracker");//$NON-NLS-1$
@@ -315,6 +321,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
 	 */
+	@Override
 	protected String getCommandName() {
 		if (isCloneActive())
 			return REQ_CLONE;
@@ -327,6 +334,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "DragEditPartsTracker:" + getCommandName();//$NON-NLS-1$
 	}
@@ -338,6 +346,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#getExclusionSet()
 	 */
+	@Override
 	protected Collection<IFigure> getExclusionSet() {
 		if (exclusionSet == null) {
 			List set = getOperationSet();
@@ -357,6 +366,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * @see org.eclipse.gef.tools.TargetingTool#handleAutoexpose()
 	 */
+	@Override
 	protected void handleAutoexpose() {
 		updateTargetRequest();
 		updateTargetUnderMouse();
@@ -370,6 +380,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 			eraseSourceFeedback();
@@ -386,6 +397,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
 	 */
+	@Override
 	protected boolean handleDragInProgress() {
 		if (isInDragInProgress()) {
 			updateTargetRequest();
@@ -404,6 +416,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#handleHover()
 	 */
+	@Override
 	protected boolean handleHover() {
 		if (isInDragInProgress())
 			updateAutoexposeHelper();
@@ -415,6 +428,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#handleInvalidInput()
 	 */
+	@Override
 	protected boolean handleInvalidInput() {
 		super.handleInvalidInput();
 		eraseSourceFeedback();
@@ -426,6 +440,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	protected boolean handleKeyDown(KeyEvent e) {
 		setAutoexposeHelper(null);
 		if (acceptArrowKey(e)) {
@@ -471,6 +486,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyUp(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	protected boolean handleKeyUp(KeyEvent e) {
 		if (acceptArrowKey(e)) {
 			accStepReset();
@@ -542,6 +558,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	/**
 	 * @see org.eclipse.gef.tools.TargetingTool#setAutoexposeHelper(org.eclipse.gef.AutoexposeHelper)
 	 */
+	@Override
 	protected void setAutoexposeHelper(AutoexposeHelper helper) {
 		super.setAutoexposeHelper(helper);
 		if (helper != null && sourceRelativeStartPoint == null && isInDragInProgress()) {
@@ -569,6 +586,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#setTargetEditPart(org.eclipse.gef.EditPart)
 	 */
+	@Override
 	protected void setTargetEditPart(EditPart editpart) {
 		if (getTargetEditPart() == editpart)
 			return;
@@ -597,6 +615,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#setState(int)
 	 */
+	@Override
 	protected void setState(int state) {
 		boolean check = isInState(STATE_INITIAL);
 		super.setState(state);
@@ -619,6 +638,7 @@ public class DragEditPartsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
+	@Override
 	protected void updateTargetRequest() {
 		repairStartLocation();
 		ChangeBoundsRequest request = (ChangeBoundsRequest) getTargetRequest();

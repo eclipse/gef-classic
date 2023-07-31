@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.parts;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
@@ -514,7 +513,9 @@ public class Thumbnail extends Figure implements UpdateListener {
 		return isDirty;
 	}
 
-	/** @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle, Map) */
+	/**
+	 * @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle, Map)
+	 */
 	@Override
 	public void notifyPainting(Rectangle damage, Map<IFigure, Rectangle> dirtyRegions) {
 		for (IFigure current : dirtyRegions.keySet()) {
@@ -529,14 +530,18 @@ public class Thumbnail extends Figure implements UpdateListener {
 		}
 	}
 
-	/** @see org.eclipse.draw2d.UpdateListener#notifyValidating() */
+	/**
+	 * @see org.eclipse.draw2d.UpdateListener#notifyValidating()
+	 */
 	@Override
 	public void notifyValidating() {
 		// setDirty(true);
 		// revalidate();
 	}
 
-	/** @see org.eclipse.draw2d.Figure#paintFigure(Graphics) */
+	/**
+	 * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
+	 */
 	@Override
 	protected void paintFigure(Graphics graphics) {
 		Image thumbnail = getThumbnailImage();

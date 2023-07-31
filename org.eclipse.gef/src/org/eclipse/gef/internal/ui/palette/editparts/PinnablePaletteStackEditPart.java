@@ -38,6 +38,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 	// listen to see if active tool is changed in the palette
 	private PaletteListener paletteListener = new PaletteListener() {
 
+		@Override
 		public void activeToolChanged(PaletteViewer palette, ToolEntry tool) {
 			if (!getFigure().isPinnedOpen() && getStack().getChildren().contains(tool)) {
 				if (!getStack().getActiveEntry().equals(tool)) {
@@ -200,6 +201,7 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 		getFigure().setLayoutMode(getLayoutSetting());
 	}
 
+	@Override
 	public void openMenu() {
 		setExpanded(true);
 	}
@@ -208,22 +210,27 @@ public class PinnablePaletteStackEditPart extends PaletteEditPart implements IPa
 		getFigure().setExpanded(value);
 	}
 
+	@Override
 	public boolean isExpanded() {
 		return getFigure().isExpanded();
 	}
 
+	@Override
 	public boolean canBePinned() {
 		return isExpanded();
 	}
 
+	@Override
 	public boolean isPinnedOpen() {
 		return getFigure().isPinnedOpen();
 	}
 
+	@Override
 	public void setPinnedOpen(boolean pinned) {
 		getFigure().setPinned(pinned);
 	}
 
+	@Override
 	public PaletteEditPart getActiveEntry() {
 		return (PaletteEditPart) getViewer().getEditPartRegistry().get(getStack().getActiveEntry());
 	}

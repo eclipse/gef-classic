@@ -117,6 +117,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 	 * 
 	 * @see org.eclipse.jface.action.IMenuCreator#dispose()
 	 */
+	@Override
 	public void dispose() {
 	}
 
@@ -135,6 +136,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 	/**
 	 * @see org.eclipse.jface.action.IMenuCreator#getMenu(Control)
 	 */
+	@Override
 	public Menu getMenu(Control parent) {
 		return fillMenu(new Menu(parent));
 	}
@@ -142,6 +144,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 	/**
 	 * @see org.eclipse.jface.action.IMenuCreator#getMenu(Menu)
 	 */
+	@Override
 	public Menu getMenu(Menu parent) {
 		return fillMenu(new Menu(parent));
 	}
@@ -157,6 +160,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 			return value;
 		}
 
+		@Override
 		public void run() {
 			prefs.setLayoutSetting(value);
 		}

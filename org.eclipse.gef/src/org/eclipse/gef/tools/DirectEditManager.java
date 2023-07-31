@@ -252,6 +252,7 @@ public abstract class DirectEditManager {
 
 	protected void hookListeners() {
 		ancestorListener = new AncestorListener.Stub() {
+			@Override
 			public void ancestorMoved(IFigure ancestor) {
 				placeCellEditor();
 			}
@@ -261,6 +262,7 @@ public abstract class DirectEditManager {
 		Control control = getControl();
 
 		controlListener = new ControlAdapter() {
+			@Override
 			public void controlMoved(ControlEvent e) {
 				// This must be handled async because during scrolling, the
 				// CellEditor moves
@@ -268,12 +270,14 @@ public abstract class DirectEditManager {
 				// cause the
 				// shadow to move twice
 				Display.getCurrent().asyncExec(new Runnable() {
+					@Override
 					public void run() {
 						placeCellEditorFrame();
 					}
 				});
 			}
 
+			@Override
 			public void controlResized(ControlEvent e) {
 				placeCellEditorFrame();
 			}
@@ -281,14 +285,17 @@ public abstract class DirectEditManager {
 		control.addControlListener(controlListener);
 
 		cellEditorListener = new ICellEditorListener() {
+			@Override
 			public void applyEditorValue() {
 				commit();
 			}
 
+			@Override
 			public void cancelEditor() {
 				bringDown();
 			}
 
+			@Override
 			public void editorValueChanged(boolean old, boolean newState) {
 				handleValueChanged();
 			}
@@ -296,6 +303,7 @@ public abstract class DirectEditManager {
 		getCellEditor().addListener(cellEditorListener);
 
 		editPartListener = new EditPartListener.Stub() {
+			@Override
 			public void partDeactivated(EditPart editpart) {
 				bringDown();
 			}
@@ -439,10 +447,12 @@ public abstract class DirectEditManager {
 	protected static class DirectEditBorder extends AbstractBorder {
 		private static final Insets insets = new Insets(1, 2, 2, 2);
 
+		@Override
 		public Insets getInsets(IFigure figure) {
 			return insets;
 		}
 
+		@Override
 		public void paint(IFigure figure, Graphics graphics, Insets insets) {
 			Rectangle rect = getPaintRectangle(figure, insets);
 			graphics.setForegroundColor(ColorConstants.white);

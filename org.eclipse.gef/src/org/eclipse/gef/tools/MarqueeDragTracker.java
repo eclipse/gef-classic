@@ -21,6 +21,7 @@ public class MarqueeDragTracker extends MarqueeSelectionTool implements DragTrac
 	 * Called when the mouse button is released. Overridden to do nothing, since a
 	 * drag tracker does not need to unload when finished.
 	 */
+	@Override
 	protected void handleFinished() {
 	}
 

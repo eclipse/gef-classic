@@ -34,6 +34,7 @@ public abstract class PaletteCustomizationAction extends Action {
 	/**
 	 * @see org.eclipse.jface.action.Action#setImageDescriptor(ImageDescriptor)
 	 */
+	@Override
 	public void setImageDescriptor(ImageDescriptor newImage) {
 		super.setImageDescriptor(newImage);
 		setHoverImageDescriptor(newImage);

@@ -44,6 +44,7 @@ public class CustomizeAction extends Action {
 	 * 
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
+	@Override
 	public void run() {
 		PaletteCustomizerDialog dialog = paletteViewer.getCustomizerDialog();
 		List list = paletteViewer.getSelectedEditParts();

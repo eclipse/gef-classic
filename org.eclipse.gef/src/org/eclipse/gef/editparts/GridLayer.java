@@ -54,6 +54,7 @@ public class GridLayer extends FreeformLayer {
 	 * 
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		return new Dimension();
 	}
@@ -61,6 +62,7 @@ public class GridLayer extends FreeformLayer {
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
 		paintGrid(graphics);

@@ -112,6 +112,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * 
 	 * @see Dialog#buttonPressed(int)
 	 */
+	@Override
 	protected void buttonPressed(int buttonId) {
 		Button b = getButton(buttonId);
 
@@ -168,6 +169,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * @see org.eclipse.jface.window.Window#close()
 	 */
+	@Override
 	public boolean close() {
 		// Save or dump changes
 		// This needs to be done here and not in the handle methods because the
@@ -185,6 +187,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * @see org.eclipse.jface.window.Window#configureShell(Shell)
 	 */
+	@Override
 	protected void configureShell(Shell newShell) {
 		newShell.setText(PaletteMessages.SETTINGS_DIALOG_TITLE);
 		super.configureShell(newShell);
@@ -220,6 +223,7 @@ public class PaletteSettingsDialog extends Dialog {
 
 		button.setData(Integer.valueOf(id));
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				buttonPressed(((Integer) event.widget.getData()).intValue());
 			}
@@ -229,6 +233,7 @@ public class PaletteSettingsDialog extends Dialog {
 		if (descriptor != null) {
 			button.setImage(new Image(parent.getDisplay(), descriptor.getImageData()));
 			button.addDisposeListener(new DisposeListener() {
+				@Override
 				public void widgetDisposed(DisposeEvent e) {
 					Image img = ((Button) e.getSource()).getImage();
 					if (img != null && !img.isDisposed()) {
@@ -306,6 +311,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(Composite)
 	 */
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
 		GridLayout layout = (GridLayout) composite.getLayout();
@@ -596,6 +602,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#getButton(int)
 	 */
+	@Override
 	protected Button getButton(int id) {
 		Button button = null;
 		Widget widget = getWidget(id);

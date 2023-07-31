@@ -154,6 +154,7 @@ public class ScrollableThumbnail extends Thumbnail {
 	}
 
 	private final FigureListener figureListener = source -> reconfigureSelectorBounds();
+
 	private final KeyListener keyListener = new KeyListener.Stub() {
 		@Override
 		public void keyPressed(KeyEvent ke) {
@@ -194,7 +195,9 @@ public class ScrollableThumbnail extends Thumbnail {
 		initialize();
 	}
 
-	/** @see Thumbnail#deactivate() */
+	/**
+	 * @see Thumbnail#deactivate()
+	 */
 	@Override
 	public void deactivate() {
 		unhookViewport();

@@ -67,6 +67,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 	public <T> T getAdapter(final Class<T> key) {
 		if (key == AccessibleHandleProvider.class)
 			return key.cast(new AccessibleHandleProvider() {
+				@Override
 				public List<Point> getAccessibleHandleLocations() {
 					List<Point> result = new ArrayList<>();
 					if (handles != null) {
@@ -87,6 +88,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 	 * 
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideSelection()
 	 */
+	@Override
 	protected void hideSelection() {
 		removeSelectionHandles();
 	}
@@ -108,6 +110,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 	 * 
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showSelection()
 	 */
+	@Override
 	protected void showSelection() {
 		addSelectionHandles();
 	}

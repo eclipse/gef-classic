@@ -27,6 +27,7 @@ public class RaisedBorder extends MarginBorder {
 	/**
 	 * @see org.eclipse.draw2d.Border#getInsets(IFigure)
 	 */
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return insets;
 	}
@@ -43,6 +44,7 @@ public class RaisedBorder extends MarginBorder {
 		super(t, l, b, r);
 	}
 
+	@Override
 	public boolean isOpaque() {
 		return true;
 	}
@@ -50,6 +52,7 @@ public class RaisedBorder extends MarginBorder {
 	/**
 	 * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
 	 */
+	@Override
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		g.setLineStyle(Graphics.LINE_SOLID);
 		g.setLineWidth(1);

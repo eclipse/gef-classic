@@ -49,6 +49,7 @@ public class PasteTemplateAction extends SelectionAction {
 	 *         executable command
 	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		// TODO Workaround for Bug 82622/39369. Should be removed when 39369 is
 		// fixed.
@@ -125,6 +126,7 @@ public class PasteTemplateAction extends SelectionAction {
 	/**
 	 * @see org.eclipse.gef.ui.actions.EditorPartAction#init()
 	 */
+	@Override
 	protected void init() {
 		setId(ActionFactory.PASTE.getId());
 		setText(GEFMessages.PasteAction_Label);
@@ -133,6 +135,7 @@ public class PasteTemplateAction extends SelectionAction {
 	/**
 	 * Executes the command returned by {@link #createPasteCommand()}.
 	 */
+	@Override
 	public void run() {
 		execute(createPasteCommand());
 	}

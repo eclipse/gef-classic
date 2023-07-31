@@ -30,14 +30,17 @@ public class PolylineShape extends AbstractPointListShape {
 	 * @return true if the distance between specified point and closest segment of
 	 *         this PolyLine is less then {@link PolylineShape#tolerance}
 	 */
+	@Override
 	protected boolean shapeContainsPoint(int x, int y) {
 		Point location = getLocation();
 		return Geometry.polylineContainsPoint(points, x - location.x, y - location.y, tolerance);
 	}
 
+	@Override
 	protected void fillShape(Graphics graphics) {
 	}
 
+	@Override
 	protected void outlineShape(Graphics graphics) {
 		graphics.pushState();
 		graphics.translate(getLocation());

@@ -139,10 +139,12 @@ public class GraphSelectionTests extends Assert {
 
 	private SelectionListener setupListener(final List events) {
 		return new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				events.add(e);
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 		};

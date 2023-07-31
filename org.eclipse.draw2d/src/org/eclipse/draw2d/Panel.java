@@ -27,6 +27,7 @@ public class Panel extends Figure {
 	 * @return the opaque state of this figure
 	 * @since 2.0
 	 */
+	@Override
 	public boolean isOpaque() {
 		return true;
 	}

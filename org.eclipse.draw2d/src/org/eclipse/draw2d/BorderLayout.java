@@ -47,6 +47,7 @@ public class BorderLayout extends AbstractHintLayout {
 	 * @see org.eclipse.draw2d.AbstractHintLayout#calculateMinimumSize(IFigure, int,
 	 *      int)
 	 */
+	@Override
 	protected Dimension calculateMinimumSize(IFigure container, int wHint, int hHint) {
 		int minWHint = 0, minHHint = 0;
 		if (wHint < 0) {
@@ -107,6 +108,7 @@ public class BorderLayout extends AbstractHintLayout {
 	/**
 	 * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure figure, int wHint, int hHint) {
 		int minWHint = 0, minHHint = 0;
 		if (wHint < 0)
@@ -168,6 +170,7 @@ public class BorderLayout extends AbstractHintLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#layout(IFigure)
 	 */
+	@Override
 	public void layout(IFigure container) {
 		Rectangle area = container.getClientArea();
 		Rectangle rect = new Rectangle();
@@ -220,6 +223,7 @@ public class BorderLayout extends AbstractHintLayout {
 	/**
 	 * @see org.eclipse.draw2d.AbstractLayout#remove(IFigure)
 	 */
+	@Override
 	public void remove(IFigure child) {
 		if (center == child) {
 			center = null;
@@ -262,6 +266,7 @@ public class BorderLayout extends AbstractHintLayout {
 	 * 
 	 * @see org.eclipse.draw2d.AbstractLayout#setConstraint(IFigure, Object)
 	 */
+	@Override
 	public void setConstraint(IFigure child, Object constraint) {
 		remove(child);
 		super.setConstraint(child, constraint);

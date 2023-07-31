@@ -49,6 +49,7 @@ public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		if (REQ_CREATE.equals(request.getType()))
 			return getCreateCommand((CreateRequest) request);

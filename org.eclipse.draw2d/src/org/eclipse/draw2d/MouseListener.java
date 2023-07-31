@@ -45,18 +45,21 @@ public interface MouseListener {
 		/**
 		 * @see org.eclipse.draw2d.MouseListener#mousePressed(MouseEvent)
 		 */
+		@Override
 		public void mousePressed(MouseEvent me) {
 		}
 
 		/**
 		 * @see org.eclipse.draw2d.MouseListener#mouseReleased(MouseEvent)
 		 */
+		@Override
 		public void mouseReleased(MouseEvent me) {
 		}
 
 		/**
 		 * @see org.eclipse.draw2d.MouseListener#mouseDoubleClicked(MouseEvent)
 		 */
+		@Override
 		public void mouseDoubleClicked(MouseEvent me) {
 		}
 	}

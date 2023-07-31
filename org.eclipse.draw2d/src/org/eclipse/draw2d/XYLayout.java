@@ -38,6 +38,7 @@ public class XYLayout extends AbstractLayout {
 	 * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
 	 * @since 2.0
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure f, int wHint, int hHint) {
 		Rectangle rect = new Rectangle();
 		for (IFigure child : f.getChildren()) {
@@ -64,6 +65,7 @@ public class XYLayout extends AbstractLayout {
 	/**
 	 * @see LayoutManager#getConstraint(IFigure)
 	 */
+	@Override
 	public Object getConstraint(IFigure figure) {
 		return constraints.get(figure);
 	}
@@ -109,6 +111,7 @@ public class XYLayout extends AbstractLayout {
 	/**
 	 * @see LayoutManager#remove(IFigure)
 	 */
+	@Override
 	public void remove(IFigure figure) {
 		super.remove(figure);
 		constraints.remove(figure);
@@ -121,6 +124,7 @@ public class XYLayout extends AbstractLayout {
 	 * @see LayoutManager#setConstraint(IFigure, Object)
 	 * @since 2.0
 	 */
+	@Override
 	public void setConstraint(IFigure figure, Object newConstraint) {
 		super.setConstraint(figure, newConstraint);
 		if (newConstraint != null)

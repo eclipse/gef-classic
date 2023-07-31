@@ -64,6 +64,7 @@ public class TextFlow extends InlineFlow {
 	 * 
 	 * @see org.eclipse.draw2d.text.FlowFigure#addLeadingWordRequirements(int[])
 	 */
+	@Override
 	public boolean addLeadingWordRequirements(int[] width) {
 		return addLeadingWordWidth(getText(), width);
 	}
@@ -116,6 +117,7 @@ public class TextFlow extends InlineFlow {
 	 * 
 	 * @see org.eclipse.draw2d.text.FlowFigure#contributeBidi(org.eclipse.draw2d.text.BidiProcessor)
 	 */
+	@Override
 	protected void contributeBidi(BidiProcessor proc) {
 		bidiInfo = null;
 		proc.add(this, getText());
@@ -124,6 +126,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * @see org.eclipse.draw2d.text.InlineFlow#createDefaultFlowLayout()
 	 */
+	@Override
 	protected FlowFigureLayout createDefaultFlowLayout() {
 		return new ParagraphTextLayout(this);
 	}
@@ -516,6 +519,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics g) {
 		TextFragmentBox frag;
 		g.getClip(Rectangle.SINGLETON);
@@ -562,6 +566,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * @see InlineFlow#paintSelection(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void paintSelection(Graphics graphics) {
 		if (selectionStart == -1)
 			return;
@@ -608,6 +613,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowFigure#setBidiInfo(org.eclipse.draw2d.text.BidiInfo)
 	 */
+	@Override
 	public void setBidiInfo(BidiInfo info) {
 		this.bidiInfo = info;
 	}
@@ -620,6 +626,7 @@ public class TextFlow extends InlineFlow {
 	 * @param end   the end offset
 	 * @since 3.1
 	 */
+	@Override
 	public void setSelection(int start, int end) {
 		boolean repaint = false;
 
@@ -652,6 +659,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return text;
 	}

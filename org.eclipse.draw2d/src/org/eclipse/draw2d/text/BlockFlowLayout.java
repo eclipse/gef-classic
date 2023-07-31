@@ -92,6 +92,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContext#addLine(CompositeBox)
 	 */
+	@Override
 	public void addLine(CompositeBox box) {
 		endLine();
 		addBelowPreviousLine(box);
@@ -110,6 +111,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContainerLayout#cleanup()
 	 */
+	@Override
 	protected void cleanup() {
 		super.cleanup();
 		previousLine = null;
@@ -118,6 +120,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContainerLayout#createNewLine()
 	 */
+	@Override
 	protected void createNewLine() {
 		currentLine = new LineRoot(getBlockFlow().isMirrored());
 		currentLine.setRecommendedWidth(blockBox.getRecommendedWidth());
@@ -146,6 +149,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContext#endLine()
 	 */
+	@Override
 	public void endLine() {
 		if (currentLine == null || !currentLine.isOccupied())
 			return;
@@ -156,6 +160,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContainerLayout#flush()
 	 */
+	@Override
 	protected void flush() {
 		endLine();
 		endBlock();
@@ -181,6 +186,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContext#getContinueOnSameLine()
 	 */
+	@Override
 	public boolean getContinueOnSameLine() {
 		return continueOnSameLine;
 	}
@@ -188,6 +194,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContext#getWidthLookahead(FlowFigure, int[])
 	 */
+	@Override
 	public void getWidthLookahead(FlowFigure child, int result[]) {
 		List<? extends IFigure> children = getFlowFigure().getChildren();
 		int index = -1;
@@ -202,6 +209,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see FlowContainerLayout#preLayout()
 	 */
+	@Override
 	protected void preLayout() {
 		setContinueOnSameLine(false);
 		blockBox = getBlockFlow().getBlockBox();
@@ -212,6 +220,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowContext#setContinueOnSameLine(boolean)
 	 */
+	@Override
 	public void setContinueOnSameLine(boolean value) {
 		continueOnSameLine = value;
 	}

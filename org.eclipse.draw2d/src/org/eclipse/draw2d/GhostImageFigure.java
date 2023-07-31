@@ -76,6 +76,7 @@ public class GhostImageFigure extends Figure {
 	/**
 	 * @see Figure#paintFigure(Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		Image feedbackImage = new Image(Display.getCurrent(), ghostImageData);
 		graphics.setAlpha(alpha);

@@ -36,6 +36,7 @@ public class DelegatingLayout extends AbstractLayout {
 	 * @return the preferred size
 	 * @since 2.0
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 		Dimension d = new Dimension();
 		parent.getChildren().forEach(child -> d.union(child.getPreferredSize()));
@@ -56,6 +57,7 @@ public class DelegatingLayout extends AbstractLayout {
 	 * 
 	 * @param parent the figure whose children should be layed out
 	 */
+	@Override
 	public void layout(IFigure parent) {
 		for (IFigure child : parent.getChildren()) {
 			Locator locator = (Locator) constraints.get(child);

@@ -71,6 +71,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 	private void displayImage() {
 		final Shell shell = new Shell(SWT.DIALOG_TRIM);
 		shell.addPaintListener(new PaintListener() {
+			@Override
 			public void paintControl(PaintEvent e) {
 				e.gc.drawImage(image, 0, 0);
 			}
@@ -79,6 +80,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		shell.open();
 		Display d = shell.getDisplay();
 		d.asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				if (!shell.isDisposed())
 					shell.close();
@@ -151,6 +153,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 				this.color = color;
 			}
 
+			@Override
 			public void run() {
 				g.setAntialias(normal);
 				g.setTextAntialias(text);
@@ -167,6 +170,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		tests[2] = new AntialiasSettings(SWT.DEFAULT, SWT.ON, ColorConstants.black);
 		tests[3] = new AntialiasSettings(SWT.ON, SWT.DEFAULT, ColorConstants.darkGreen);
 		performTestcase(new Runnable() {
+			@Override
 			public void run() {
 				g.drawPolyline(LINE);
 				g.drawString("OWVO", 35, 20);
@@ -186,6 +190,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 				this.aa = aa;
 			}
 
+			@Override
 			public void run() {
 				g.setFillRule(rule);
 				// $TODO
@@ -200,6 +205,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		tests[1] = new FillRules(SWT.FILL_WINDING, SWT.OFF);
 		tests[2] = new FillRules(SWT.FILL_EVEN_ODD, SWT.DEFAULT);
 		performTestcase(new Runnable() {
+			@Override
 			public void run() {
 				g.fillPolygon(POLY);
 			}
@@ -245,6 +251,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 				this.style = style;
 			}
 
+			@Override
 			public void run() {
 				g.setLineCap(cap);
 				g.setLineJoin(join);
@@ -260,6 +267,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 				new LineSettings(SWT.JOIN_ROUND, SWT.CAP_SQUARE, SWT.LINE_SOLID) };
 
 		performTestcase(new Runnable() {
+			@Override
 			public void run() {
 				g.drawPolyline(LINE);
 			}
@@ -281,6 +289,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 				this.attributes = attributes;
 			}
 
+			@Override
 			public void run() {
 				g.setLineAttributes(attributes);
 			}
@@ -301,6 +310,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 						new LineAttributes(9.5f, SWT.CAP_FLAT, SWT.JOIN_ROUND, SWT.LINE_CUSTOM, dash, 5, 10)), };
 
 		performTestcase(new Runnable() {
+			@Override
 			public void run() {
 				g.drawPolyline(LINE);
 			}
@@ -402,6 +412,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 				this.fg = fg;
 			}
 
+			@Override
 			public void run() {
 				g.setBackgroundPattern(bg);
 				g.setForegroundPattern(fg);
@@ -424,6 +435,7 @@ public class AdvancedGraphicsTests extends BaseTestCase {
 		Runnable tests[] = new Runnable[1];
 		tests[0] = new SetPattern(image, gradient);
 		performTestcase(new Runnable() {
+			@Override
 			public void run() {
 				g.fillText("W", 0, 0);
 			}

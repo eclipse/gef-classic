@@ -45,6 +45,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#calculateCursor()
 	 */
+	@Override
 	protected Cursor calculateCursor() {
 		if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG))
 			return getDefaultCursor();
@@ -54,6 +55,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	/**
 	 * @see DragTracker#commitDrag()
 	 */
+	@Override
 	public void commitDrag() {
 		eraseSourceFeedback();
 		performDrag();
@@ -72,6 +74,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	/**
 	 * @see org.eclipse.gef.Tool#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		eraseSourceFeedback();
 		sourceRequest = null;
@@ -109,6 +112,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
+	@Override
 	protected boolean handleButtonDown(int button) {
 		if (button != 1) {
 			setState(STATE_INVALID);
@@ -123,6 +127,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
+	@Override
 	protected boolean handleButtonUp(int button) {
 		if (stateTransition(STATE_DRAG_IN_PROGRESS, STATE_TERMINAL)) {
 			eraseSourceFeedback();
@@ -134,6 +139,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
 	 */
+	@Override
 	protected boolean handleDragInProgress() {
 		if (isInDragInProgress()) {
 			updateSourceRequest();
@@ -148,6 +154,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragStarted()
 	 */
+	@Override
 	protected boolean handleDragStarted() {
 		return stateTransition(STATE_DRAG, STATE_DRAG_IN_PROGRESS);
 	}
@@ -157,6 +164,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 * 
 	 * @return <code>true</code>
 	 */
+	@Override
 	protected boolean handleInvalidInput() {
 		eraseSourceFeedback();
 		setCurrentCommand(UnexecutableCommand.INSTANCE);
@@ -168,6 +176,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyDown(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	protected boolean handleKeyDown(KeyEvent e) {
 		if (acceptArrowKey(e)) {
 			accStepIncrement();
@@ -201,6 +210,7 @@ public abstract class SimpleDragTracker extends AbstractTool implements DragTrac
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#handleKeyUp(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	protected boolean handleKeyUp(KeyEvent e) {
 		if (acceptArrowKey(e)) {
 			accStepReset();

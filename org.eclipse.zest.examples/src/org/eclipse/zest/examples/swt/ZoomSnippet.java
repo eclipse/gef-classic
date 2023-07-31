@@ -126,6 +126,7 @@ public class ZoomSnippet {
 		g.addKeyListener(new KeyListener() {
 			boolean flip = true;
 
+			@Override
 			public void keyPressed(KeyEvent e) {
 
 				if (g.getSelection().size() == 1) {
@@ -142,6 +143,7 @@ public class ZoomSnippet {
 
 			}
 
+			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
 

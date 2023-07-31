@@ -42,6 +42,7 @@ public class CustomLayout {
 			private int totalSteps;
 			private int currentStep;
 
+			@Override
 			protected void applyLayoutInternal(InternalNode[] entitiesToLayout,
 					InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth,
 					double boundsHeight) {
@@ -61,28 +62,34 @@ public class CustomLayout {
 				fireProgressEnded(totalSteps);
 			}
 
+			@Override
 			protected int getCurrentLayoutStep() {
 				return 0;
 			}
 
+			@Override
 			protected int getTotalNumberOfLayoutSteps() {
 				return totalSteps;
 			}
 
+			@Override
 			protected boolean isValidConfiguration(boolean asynchronous, boolean continuous) {
 				return true;
 			}
 
+			@Override
 			protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
 					InternalRelationship[] relationshipsToConsider) {
 				// Do nothing
 			}
 
+			@Override
 			protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout,
 					InternalRelationship[] relationshipsToConsider, double x, double y, double width, double height) {
 				// do nothing
 			}
 
+			@Override
 			public void setLayoutArea(double x, double y, double width, double height) {
 				// do nothing
 			}

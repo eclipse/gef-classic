@@ -40,6 +40,7 @@ public class DisplayIndependentRectangle {
 		this.height = rect.height;
 	}
 
+	@Override
 	public String toString() {
 		return "(" + x + ", " + y + ", " + width + ", " + height + ")";
 	}

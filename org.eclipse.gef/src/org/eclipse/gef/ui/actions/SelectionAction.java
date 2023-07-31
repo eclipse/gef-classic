@@ -54,6 +54,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	/**
 	 * @see org.eclipse.gef.Disposable#dispose()
 	 */
+	@Override
 	public void dispose() {
 		this.selection = StructuredSelection.EMPTY;
 		super.dispose();
@@ -112,6 +113,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	/**
 	 * @see org.eclipse.gef.ui.actions.EditorPartAction#update()
 	 */
+	@Override
 	public void update() {
 		if (provider != null)
 			setSelection(provider.getSelection());

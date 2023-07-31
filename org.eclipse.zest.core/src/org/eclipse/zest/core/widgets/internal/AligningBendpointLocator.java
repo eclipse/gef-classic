@@ -99,6 +99,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 	 * 
 	 * @see org.eclipse.draw2d.ConnectionLocator#getReferencePoint()
 	 */
+	@Override
 	protected Point getReferencePoint() {
 		PointList points = getConnection().getPoints();
 		Point p = points.getMidpoint().getCopy();
@@ -133,6 +134,7 @@ public class AligningBendpointLocator extends AbstractLocator {
 	 * 
 	 * @param target The figure to relocate
 	 */
+	@Override
 	public void relocate(IFigure target) {
 		Dimension prefSize = target.getPreferredSize();
 		Point center = getReferencePoint();

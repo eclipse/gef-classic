@@ -48,6 +48,7 @@ public class PaletteContextMenuProvider extends ContextMenuProvider {
 	 *             can be added.
 	 * @see ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)
 	 */
+	@Override
 	public void buildContextMenu(IMenuManager menu) {
 		GEFActionConstants.addStandardActionGroups(menu);
 

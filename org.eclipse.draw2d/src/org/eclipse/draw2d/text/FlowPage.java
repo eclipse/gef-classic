@@ -34,6 +34,7 @@ public class FlowPage extends BlockFlow {
 	/**
 	 * @see org.eclipse.draw2d.Figure#addNotify()
 	 */
+	@Override
 	public void addNotify() {
 		super.addNotify();
 		setValid(false);
@@ -42,6 +43,7 @@ public class FlowPage extends BlockFlow {
 	/**
 	 * @see org.eclipse.draw2d.text.BlockFlow#createDefaultFlowLayout()
 	 */
+	@Override
 	protected FlowFigureLayout createDefaultFlowLayout() {
 		return new PageFlowLayout(this);
 	}
@@ -49,6 +51,7 @@ public class FlowPage extends BlockFlow {
 	/**
 	 * @see org.eclipse.draw2d.Figure#getMinimumSize(int, int)
 	 */
+	@Override
 	public Dimension getMinimumSize(int w, int h) {
 		return getPreferredSize(w, h);
 	}
@@ -56,6 +59,7 @@ public class FlowPage extends BlockFlow {
 	/**
 	 * @see org.eclipse.draw2d.Figure#invalidate()
 	 */
+	@Override
 	public void invalidate() {
 		pageSizeCacheValues = new Dimension[3];
 		super.invalidate();
@@ -64,6 +68,7 @@ public class FlowPage extends BlockFlow {
 	/**
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
+	@Override
 	public Dimension getPreferredSize(int width, int h) {
 		for (int i = 0; i < 3; i++) {
 			if (pageSizeCacheKeys[i] == width && pageSizeCacheValues[i] != null)
@@ -142,6 +147,7 @@ public class FlowPage extends BlockFlow {
 	/**
 	 * @see org.eclipse.draw2d.Figure#validate()
 	 */
+	@Override
 	public void validate() {
 		if (isValid())
 			return;

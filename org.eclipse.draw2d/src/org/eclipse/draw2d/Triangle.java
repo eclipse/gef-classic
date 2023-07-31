@@ -37,6 +37,7 @@ public final class Triangle extends Shape implements Orientable {
 	/**
 	 * @see Shape#fillShape(Graphics)
 	 */
+	@Override
 	protected void fillShape(Graphics g) {
 		g.fillPolygon(triangle);
 	}
@@ -44,6 +45,7 @@ public final class Triangle extends Shape implements Orientable {
 	/**
 	 * @see Shape#outlineShape(Graphics)
 	 */
+	@Override
 	protected void outlineShape(Graphics g) {
 		g.drawPolygon(triangle);
 	}
@@ -51,6 +53,7 @@ public final class Triangle extends Shape implements Orientable {
 	/**
 	 * @see Figure#primTranslate(int, int)
 	 */
+	@Override
 	public void primTranslate(int dx, int dy) {
 		super.primTranslate(dx, dy);
 		triangle.translate(dx, dy);
@@ -59,6 +62,7 @@ public final class Triangle extends Shape implements Orientable {
 	/**
 	 * @see Orientable#setDirection(int)
 	 */
+	@Override
 	public void setDirection(int value) {
 		if ((value & (NORTH | SOUTH)) != 0)
 			orientation = VERTICAL;
@@ -72,6 +76,7 @@ public final class Triangle extends Shape implements Orientable {
 	/**
 	 * @see Orientable#setOrientation(int)
 	 */
+	@Override
 	public void setOrientation(int value) {
 		if (orientation == VERTICAL && value == HORIZONTAL) {
 			if (direction == NORTH)
@@ -90,6 +95,7 @@ public final class Triangle extends Shape implements Orientable {
 	/**
 	 * @see IFigure#validate()
 	 */
+	@Override
 	public void validate() {
 		super.validate();
 		Rectangle r = new Rectangle();

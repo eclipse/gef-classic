@@ -29,6 +29,7 @@ public class RulerLayout extends XYLayout {
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.draw2d.IFigure,
 	 *      int, int)
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		return new Dimension(1, 1);
 	}
@@ -36,6 +37,7 @@ public class RulerLayout extends XYLayout {
 	/**
 	 * @see org.eclipse.draw2d.AbstractLayout#getConstraint(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public Object getConstraint(IFigure child) {
 		return constraints.get(child);
 	}

@@ -41,6 +41,7 @@ class BufferedGraphicsSource implements GraphicsSource {
 	/**
 	 * @see org.eclipse.draw2d.GraphicsSource#flushGraphics(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	public void flushGraphics(Rectangle region) {
 		if (inUse.isEmpty())
 			return;
@@ -76,6 +77,7 @@ class BufferedGraphicsSource implements GraphicsSource {
 	/**
 	 * @see org.eclipse.draw2d.GraphicsSource#getGraphics(org.eclipse.draw2d.geometry.Rectangle)
 	 */
+	@Override
 	public Graphics getGraphics(Rectangle region) {
 		if (control == null || control.isDisposed())
 			return null;

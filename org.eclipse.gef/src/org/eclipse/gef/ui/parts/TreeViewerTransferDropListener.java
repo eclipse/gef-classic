@@ -108,6 +108,7 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 		return result;
 	}
 
+	@Override
 	public boolean isEnabled(DropTargetEvent event) {
 		if (event.detail != DND.DROP_MOVE)
 			return false;
@@ -125,6 +126,7 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 		return source.getParent() == getTargetEditPart();
 	}
 
+	@Override
 	protected void updateTargetRequest() {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) getTargetRequest();
 		request.setLocation(getDropLocation());

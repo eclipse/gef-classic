@@ -47,6 +47,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	 * @param listener Listener to be added
 	 * @see #removeAnchorListener(AnchorListener)
 	 */
+	@Override
 	public void addAnchorListener(AnchorListener listener) {
 		if (listener == null)
 			return;
@@ -62,6 +63,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	 * @param figure Anchor-owning Figure which has moved
 	 * @see org.eclipse.draw2d.AncestorListener#ancestorMoved(IFigure)
 	 */
+	@Override
 	public void ancestorMoved(IFigure figure) {
 		fireAnchorMoved();
 	}
@@ -69,12 +71,14 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	/**
 	 * @see org.eclipse.draw2d.AncestorListener#ancestorAdded(IFigure)
 	 */
+	@Override
 	public void ancestorAdded(IFigure ancestor) {
 	}
 
 	/**
 	 * @see org.eclipse.draw2d.AncestorListener#ancestorRemoved(IFigure)
 	 */
+	@Override
 	public void ancestorRemoved(IFigure ancestor) {
 	}
 
@@ -85,6 +89,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	 * @return Owner of this anchor
 	 * @see #setOwner(IFigure)
 	 */
+	@Override
 	public IFigure getOwner() {
 		return owner;
 	}
@@ -98,6 +103,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	 * @return The reference point of this anchor
 	 * @see org.eclipse.draw2d.ConnectionAnchor#getReferencePoint()
 	 */
+	@Override
 	public Point getReferencePoint() {
 		if (getOwner() == null)
 			return null;
@@ -116,6 +122,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	 * @param listener Listener to be removed from this anchors listeners list
 	 * @see #addAnchorListener(AnchorListener)
 	 */
+	@Override
 	public void removeAnchorListener(AnchorListener listener) {
 		super.removeAnchorListener(listener);
 		if (listeners.size() == 0)

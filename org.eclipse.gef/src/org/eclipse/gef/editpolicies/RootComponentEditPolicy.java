@@ -26,6 +26,7 @@ public class RootComponentEditPolicy extends ComponentEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.ComponentEditPolicy#createDeleteCommand(GroupRequest)
 	 */
+	@Override
 	protected Command createDeleteCommand(GroupRequest request) {
 		return UnexecutableCommand.INSTANCE;
 	}

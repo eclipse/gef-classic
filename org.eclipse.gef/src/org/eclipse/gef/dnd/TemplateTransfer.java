@@ -48,6 +48,7 @@ public final class TemplateTransfer extends SimpleObjectTransfer {
 	/**
 	 * @see org.eclipse.swt.dnd.Transfer#getTypeIds()
 	 */
+	@Override
 	protected int[] getTypeIds() {
 		return new int[] { TYPEID };
 	}
@@ -55,6 +56,7 @@ public final class TemplateTransfer extends SimpleObjectTransfer {
 	/**
 	 * @see org.eclipse.swt.dnd.Transfer#getTypeNames()
 	 */
+	@Override
 	protected String[] getTypeNames() {
 		return new String[] { TYPE_NAME };
 	}

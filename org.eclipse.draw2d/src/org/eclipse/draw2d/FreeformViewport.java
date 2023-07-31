@@ -20,6 +20,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class FreeformViewport extends Viewport {
 
 	class FreeformViewportLayout extends ViewportLayout {
+		@Override
 		protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 			getContents().validate();
 			wHint = Math.max(0, wHint);
@@ -28,14 +29,17 @@ public class FreeformViewport extends Viewport {
 					.union(wHint - 1, hHint - 1).getSize();
 		}
 
+		@Override
 		protected boolean isSensitiveHorizontally(IFigure parent) {
 			return true;
 		}
 
+		@Override
 		protected boolean isSensitiveVertically(IFigure parent) {
 			return true;
 		}
 
+		@Override
 		public void layout(IFigure figure) {
 			// Do nothing, contents updates itself.
 		}
@@ -58,6 +62,7 @@ public class FreeformViewport extends Viewport {
 	 * 
 	 * @see Viewport#readjustScrollBars()
 	 */
+	@Override
 	protected void readjustScrollBars() {
 		if (getContents() == null)
 			return;
@@ -78,6 +83,7 @@ public class FreeformViewport extends Viewport {
 	 * 
 	 * @see Figure#useLocalCoordinates()
 	 */
+	@Override
 	protected boolean useLocalCoordinates() {
 		return true;
 	}

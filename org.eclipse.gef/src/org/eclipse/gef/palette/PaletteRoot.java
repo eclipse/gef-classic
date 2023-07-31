@@ -30,6 +30,7 @@ public class PaletteRoot extends PaletteContainer {
 	/**
 	 * @see org.eclipse.gef.palette.PaletteContainer#acceptsType(java.lang.Object)
 	 */
+	@Override
 	public boolean acceptsType(Object type) {
 		if (type.equals(ToolEntry.PALETTE_TYPE_TOOL) || type.equals(PaletteStack.PALETTE_TYPE_STACK))
 			return false;
@@ -56,6 +57,7 @@ public class PaletteRoot extends PaletteContainer {
 	/**
 	 * @see Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "Palette Root"; //$NON-NLS-1$
 	}

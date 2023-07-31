@@ -53,6 +53,7 @@ public class BendpointLocator extends ConnectionLocator {
 	 * @return The reference point
 	 * @since 2.0
 	 */
+	@Override
 	protected Point getReferencePoint() {
 		Point p = getConnection().getPoints().getPoint(Point.SINGLETON, getIndex());
 		getConnection().translateToAbsolute(p);

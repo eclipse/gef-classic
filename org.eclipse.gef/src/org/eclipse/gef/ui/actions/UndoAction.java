@@ -47,6 +47,7 @@ public class UndoAction extends StackAction {
 	/**
 	 * @see org.eclipse.gef.ui.actions.WorkbenchPartAction#calculateEnabled()
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		return getCommandStack().canUndo();
 	}
@@ -54,6 +55,7 @@ public class UndoAction extends StackAction {
 	/**
 	 * Initializes this action's text and images.
 	 */
+	@Override
 	protected void init() {
 		super.init();
 		setToolTipText(MessageFormat.format(GEFMessages.UndoAction_Tooltip, new Object[] { "" }).trim()); //$NON-NLS-1$
@@ -69,6 +71,7 @@ public class UndoAction extends StackAction {
 	/**
 	 * Refreshes this action's text to use the last executed command's label.
 	 */
+	@Override
 	protected void refresh() {
 		Command undoCmd = getCommandStack().getUndoCommand();
 		setToolTipText(MessageFormat
@@ -81,6 +84,7 @@ public class UndoAction extends StackAction {
 	/**
 	 * Undoes the last command.
 	 */
+	@Override
 	public void run() {
 		getCommandStack().undo();
 	}

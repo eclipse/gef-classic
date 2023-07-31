@@ -35,6 +35,7 @@ public abstract class LineBox extends CompositeBox {
 	/**
 	 * @see org.eclipse.draw2d.text.CompositeBox#add(org.eclipse.draw2d.text.FlowBox)
 	 */
+	@Override
 	public void add(FlowBox child) {
 		fragments.add(child);
 		width += child.getWidth();
@@ -45,6 +46,7 @@ public abstract class LineBox extends CompositeBox {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowBox#getAscent()
 	 */
+	@Override
 	public int getAscent() {
 		int ascent = 0;
 		for (int i = 0; i < fragments.size(); i++)
@@ -63,6 +65,7 @@ public abstract class LineBox extends CompositeBox {
 		return recommendedWidth - getWidth();
 	}
 
+	@Override
 	int getBottomMargin() {
 		return 0;
 	}
@@ -70,6 +73,7 @@ public abstract class LineBox extends CompositeBox {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowBox#getDescent()
 	 */
+	@Override
 	public int getDescent() {
 		int descent = 0;
 		for (int i = 0; i < fragments.size(); i++)
@@ -84,6 +88,7 @@ public abstract class LineBox extends CompositeBox {
 		return fragments;
 	}
 
+	@Override
 	int getTopMargin() {
 		return 0;
 	}
@@ -98,6 +103,7 @@ public abstract class LineBox extends CompositeBox {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
 	 */
+	@Override
 	public boolean requiresBidi() {
 		for (Iterator iter = getFragments().iterator(); iter.hasNext();) {
 			FlowBox box = (FlowBox) iter.next();

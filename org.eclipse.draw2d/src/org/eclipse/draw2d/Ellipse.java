@@ -33,6 +33,7 @@ public class Ellipse extends Shape {
 	 * @param y the y coordinate
 	 * @return <code>true</code>if the given point is contained
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		if (!super.containsPoint(x, y)) {
 			return false;
@@ -49,6 +50,7 @@ public class Ellipse extends Shape {
 	 * 
 	 * @see org.eclipse.draw2d.Shape#fillShape(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void fillShape(Graphics graphics) {
 		graphics.fillOval(getOptimizedBounds());
 	}
@@ -58,6 +60,7 @@ public class Ellipse extends Shape {
 	 * 
 	 * @see org.eclipse.draw2d.Shape#outlineShape(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void outlineShape(Graphics graphics) {
 		graphics.drawOval(getOptimizedBounds());
 	}

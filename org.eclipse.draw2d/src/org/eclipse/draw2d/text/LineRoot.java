@@ -45,6 +45,7 @@ public class LineRoot extends LineBox {
 	/**
 	 * @see org.eclipse.draw2d.text.CompositeBox#add(org.eclipse.draw2d.text.FlowBox)
 	 */
+	@Override
 	public void add(FlowBox child) {
 		super.add(child);
 		child.setLineRoot(this);
@@ -106,6 +107,7 @@ public class LineRoot extends LineBox {
 	 * 
 	 * @see org.eclipse.draw2d.text.FlowBox#containsPoint(int, int)
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		return false;
 	}
@@ -141,10 +143,12 @@ public class LineRoot extends LineBox {
 	/**
 	 * @see org.eclipse.draw2d.text.FlowBox#getBaseline()
 	 */
+	@Override
 	public int getBaseline() {
 		return baseline;
 	}
 
+	@Override
 	LineRoot getLineRoot() {
 		return this;
 	}
@@ -211,6 +215,7 @@ public class LineRoot extends LineBox {
 	/**
 	 * @see org.eclipse.draw2d.text.CompositeBox#setLineTop(int)
 	 */
+	@Override
 	public void setLineTop(int top) {
 		this.baseline = top + getAscent();
 	}

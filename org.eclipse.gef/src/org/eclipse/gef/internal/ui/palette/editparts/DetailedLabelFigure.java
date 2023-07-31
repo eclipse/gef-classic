@@ -83,6 +83,7 @@ public class DetailedLabelFigure extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#addNotify()
 	 */
+	@Override
 	public void addNotify() {
 		super.addNotify();
 		updateFont(layoutMode);
@@ -105,6 +106,7 @@ public class DetailedLabelFigure extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#handleFocusGained(FocusEvent)
 	 */
+	@Override
 	public void handleFocusGained(FocusEvent event) {
 		super.handleFocusGained(event);
 		updateImage();
@@ -113,6 +115,7 @@ public class DetailedLabelFigure extends Figure {
 	/**
 	 * @see org.eclipse.draw2d.Figure#handleFocusLost(FocusEvent)
 	 */
+	@Override
 	public void handleFocusLost(FocusEvent event) {
 		super.handleFocusLost(event);
 		updateImage();
@@ -267,12 +270,14 @@ public class DetailedLabelFigure extends Figure {
 			}
 		}
 
+		@Override
 		public Image getImage() {
 			if (shadedImage != null)
 				return shadedImage;
 			return super.getImage();
 		}
 
+		@Override
 		public void setImage(Image image) {
 			if (image == super.getImage())
 				return;

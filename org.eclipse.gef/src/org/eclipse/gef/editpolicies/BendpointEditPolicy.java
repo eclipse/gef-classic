@@ -54,6 +54,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#activate()
 	 */
+	@Override
 	public void activate() {
 		super.activate();
 		getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
@@ -112,6 +113,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * 
 	 * @see SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
+	@Override
 	protected List createSelectionHandles() {
 		List list = new ArrayList();
 		if (isAutomaticallyBending())
@@ -127,6 +129,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 		getConnection().removePropertyChangeListener(Connection.PROPERTY_POINTS, this);
 		super.deactivate();
@@ -147,6 +150,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	/**
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request)
 	 */
+	@Override
 	public void eraseSourceFeedback(Request request) {
 		if (REQ_MOVE_BENDPOINT.equals(request.getType()) || REQ_CREATE_BENDPOINT.equals(request.getType()))
 			eraseConnectionFeedback((BendpointRequest) request);
@@ -157,6 +161,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		if (REQ_MOVE_BENDPOINT.equals(request.getType())) {
 			if (isDeleting)
@@ -244,6 +249,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * 
 	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		// $TODO optimize so that handles aren't added constantly.
 		if (getHost().getSelected() != EditPart.SELECTED_NONE)
@@ -382,6 +388,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * @see #showMoveBendpointFeedback(BendpointRequest)
 	 * @param request the Request
 	 */
+	@Override
 	public void showSourceFeedback(Request request) {
 		if (REQ_MOVE_BENDPOINT.equals(request.getType()))
 			showMoveBendpointFeedback((BendpointRequest) request);

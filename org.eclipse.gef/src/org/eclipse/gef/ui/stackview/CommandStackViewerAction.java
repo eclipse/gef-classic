@@ -41,6 +41,7 @@ public class CommandStackViewerAction extends Action {
 	/**
 	 * @see Action#run()
 	 */
+	@Override
 	public void run() {
 		if (viewer == null)
 			return;

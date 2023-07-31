@@ -25,6 +25,7 @@ public class GuidePlaceHolder extends GuideFigure {
 		setBackgroundColor(ColorConstants.lightGray);
 	}
 
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		PointList list = new PointList();
 		if (isHorizontal()) {

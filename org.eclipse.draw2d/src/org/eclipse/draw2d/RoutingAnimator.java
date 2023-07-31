@@ -45,6 +45,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 * 
 	 * @see Animator#playbackStarting(IFigure)
 	 */
+	@Override
 	public void playbackStarting(IFigure connection) {
 		reconcileStates((Connection) connection);
 	}
@@ -56,6 +57,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 * 
 	 * @see Animator#getCurrentState(IFigure)
 	 */
+	@Override
 	protected Object getCurrentState(IFigure connection) {
 		return ((Connection) connection).getPoints().getCopy();
 	}
@@ -75,6 +77,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 * 
 	 * @see RoutingListener#invalidate(Connection)
 	 */
+	@Override
 	public final void invalidate(Connection conn) {
 		if (Animation.isInitialRecording())
 			Animation.hookAnimator(conn, this);
@@ -85,6 +88,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 * 
 	 * @see Animator#playback(IFigure)
 	 */
+	@Override
 	protected boolean playback(IFigure figure) {
 		Connection conn = (Connection) figure;
 
@@ -117,6 +121,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 * 
 	 * @see RoutingListener#postRoute(Connection)
 	 */
+	@Override
 	public final void postRoute(Connection connection) {
 		if (Animation.isFinalRecording())
 			Animation.hookNeedsCapture(connection, this);
@@ -190,6 +195,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 * 
 	 * @see RoutingListener#remove(Connection)
 	 */
+	@Override
 	public final void remove(Connection connection) {
 	}
 
@@ -198,6 +204,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 * 
 	 * @see RoutingListener#route(Connection)
 	 */
+	@Override
 	public final boolean route(Connection conn) {
 		return Animation.isAnimating() && Animation.hookPlayback(conn, this);
 	}
@@ -207,6 +214,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 * 
 	 * @see RoutingListener#setConstraint(Connection, Object)
 	 */
+	@Override
 	public final void setConstraint(Connection connection, Object constraint) {
 	}
 

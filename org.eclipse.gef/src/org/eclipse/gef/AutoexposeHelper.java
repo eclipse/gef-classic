@@ -90,6 +90,7 @@ public interface AutoexposeHelper {
 		private Point where;
 		public AutoexposeHelper result;
 
+		@Override
 		public boolean evaluate(EditPart editpart) {
 			result = editpart.getAdapter(AutoexposeHelper.class);
 			if (result != null && result.detect(where))

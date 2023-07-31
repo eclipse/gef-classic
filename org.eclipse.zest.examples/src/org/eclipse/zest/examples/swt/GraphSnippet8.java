@@ -88,6 +88,7 @@ public class GraphSnippet8 {
 
 		TreeLayoutAlgorithm treeLayoutAlgorithm = new TreeLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING);
 		Filter filter = new Filter() {
+			@Override
 			public boolean isObjectFiltered(LayoutItem item) {
 
 				// Get the "Connection" from the Layout Item

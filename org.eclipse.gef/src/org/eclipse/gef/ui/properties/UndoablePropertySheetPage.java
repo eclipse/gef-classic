@@ -49,6 +49,7 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 		this.commandStack = commandStack;
 		this.commandStackEventListener = new CommandStackEventListener() {
 
+			@Override
 			public void stackChanged(CommandStackEvent event) {
 				if (event.getDetail() == CommandStack.PRE_UNDO || event.getDetail() == CommandStack.PRE_REDO) {
 					// ensure the property sheet entry looses its current edit
@@ -67,6 +68,7 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 	 * 
 	 * @see org.eclipse.ui.views.properties.PropertySheetPage#dispose()
 	 */
+	@Override
 	public void dispose() {
 		if (commandStack != null)
 			commandStack.removeCommandStackEventListener(commandStackEventListener);
@@ -78,6 +80,7 @@ public class UndoablePropertySheetPage extends PropertySheetPage {
 	 * 
 	 * @see org.eclipse.ui.views.properties.PropertySheetPage#setActionBars(org.eclipse.ui.IActionBars)
 	 */
+	@Override
 	public void setActionBars(IActionBars actionBars) {
 		super.setActionBars(actionBars);
 		// register global action handlers for undo and redo

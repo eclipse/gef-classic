@@ -121,6 +121,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	 * 
 	 * @return The sourceEntity.
 	 */
+	@Override
 	public LayoutEntity getSourceInLayout() {
 		return sourceEntity;
 	}
@@ -131,6 +132,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	 * 
 	 * @return The destinationEntity of this SimpleRelation.
 	 */
+	@Override
 	public LayoutEntity getDestinationInLayout() {
 		return destinationEntity;
 	}
@@ -169,6 +171,7 @@ public class SimpleRelationship implements LayoutRelationship {
 		return attributes.get(attribute);
 	}
 
+	@Override
 	public String toString() {
 		String arrow = (isBidirectionalInLayout() ? " <-> " : " -> ");
 		return "(" + sourceEntity + arrow + destinationEntity + ")";
@@ -222,6 +225,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	 * 
 	 * @see ca.uvic.cs.chisel.layouts.LayoutRelationship#getInternalRelationship()
 	 */
+	@Override
 	public Object getLayoutInformation() {
 		return internalRelationship;
 	}
@@ -233,10 +237,12 @@ public class SimpleRelationship implements LayoutRelationship {
 	 * ca.uvic.cs.chisel.layouts.LayoutRelationship#setInternalRelationship(java.
 	 * lang.Object)
 	 */
+	@Override
 	public void setLayoutInformation(Object layoutInformation) {
 		this.internalRelationship = layoutInformation;
 	}
 
+	@Override
 	public void setBendPoints(LayoutBendPoint[] bendPoints) {
 		this.bendPoints = bendPoints;
 	}
@@ -245,6 +251,7 @@ public class SimpleRelationship implements LayoutRelationship {
 		return this.bendPoints;
 	}
 
+	@Override
 	public void clearBendPoints() {
 		this.bendPoints = new BendPoint[0];
 	}
@@ -263,6 +270,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	/**
 	 * Populate the specified layout constraint
 	 */
+	@Override
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
 		if (constraint instanceof LabelLayoutConstraint) {
 			LabelLayoutConstraint labelConstraint = (LabelLayoutConstraint) constraint;
@@ -274,10 +282,12 @@ public class SimpleRelationship implements LayoutRelationship {
 		}
 	}
 
+	@Override
 	public Object getGraphData() {
 		return null;
 	}
 
+	@Override
 	public void setGraphData(Object o) {
 
 	}

@@ -33,6 +33,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#activate()
 	 */
+	@Override
 	public void activate() {
 	}
 
@@ -41,6 +42,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
+	@Override
 	public void deactivate() {
 	}
 
@@ -59,6 +61,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request)
 	 */
+	@Override
 	public void eraseSourceFeedback(Request request) {
 	}
 
@@ -67,6 +70,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
 	 */
+	@Override
 	public void eraseTargetFeedback(Request request) {
 	}
 
@@ -77,6 +81,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		return null;
 	}
@@ -84,6 +89,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getHost()
 	 */
+	@Override
 	public EditPart getHost() {
 		return host;
 	}
@@ -95,6 +101,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		return null;
 	}
@@ -102,6 +109,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	/**
 	 * @see org.eclipse.gef.EditPolicy#setHost(EditPart)
 	 */
+	@Override
 	public void setHost(EditPart host) {
 		this.host = host;
 	}
@@ -111,6 +119,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request)
 	 */
+	@Override
 	public void showSourceFeedback(Request request) {
 	}
 
@@ -119,12 +128,14 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
 	 */
+	@Override
 	public void showTargetFeedback(Request request) {
 	}
 
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		String c = getClass().getName();
 		c = c.substring(c.lastIndexOf('.') + 1);
@@ -140,6 +151,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#understandsRequest(Request)
 	 */
+	@Override
 	public boolean understandsRequest(Request req) {
 		return false;
 	}

@@ -52,6 +52,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 
 	class ConnectionFocus extends Polygon implements PropertyChangeListener {
 		AncestorListener ancestorListener = new AncestorListener.Stub() {
+			@Override
 			public void ancestorMoved(IFigure ancestor) {
 				revalidate();
 			}
@@ -64,27 +65,32 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 			setOutline(true);
 		}
 
+		@Override
 		public void addNotify() {
 			super.addNotify();
 			getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
 			getConnection().addAncestorListener(ancestorListener);
 		}
 
+		@Override
 		protected void outlineShape(Graphics g) {
 			g.setLineDash(new int[] { 1, 1 });
 			super.outlineShape(g);
 		}
 
+		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			revalidate();
 		}
 
+		@Override
 		public void removeNotify() {
 			getConnection().removePropertyChangeListener(Connection.PROPERTY_POINTS, this);
 			getConnection().removeAncestorListener(ancestorListener);
 			super.removeNotify();
 		}
 
+		@Override
 		public void validate() {
 			if (isValid())
 				return;
@@ -99,6 +105,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * @see org.eclipse.gef.editpolicies.SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
+	@Override
 	protected List createSelectionHandles() {
 		List list = new ArrayList();
 		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(), ConnectionLocator.SOURCE));
@@ -126,6 +133,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void eraseSourceFeedback(Request request) {
 		if (REQ_RECONNECT_TARGET.equals(request.getType()) || REQ_RECONNECT_SOURCE.equals(request.getType()))
 			eraseConnectionMoveFeedback((ReconnectRequest) request);
@@ -134,6 +142,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		return null;
 	}
@@ -171,6 +180,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 * @see #showFocus()
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideFocus()
 	 */
+	@Override
 	protected void hideFocus() {
 		if (focus != null) {
 			removeFeedback(focus);
@@ -210,6 +220,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showFocus()
 	 */
+	@Override
 	protected void showFocus() {
 		if (focus == null) {
 			focus = new ConnectionFocus();
@@ -220,6 +231,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
 	 */
+	@Override
 	public void showSourceFeedback(Request request) {
 		if (REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
 			showConnectionMoveFeedback((ReconnectRequest) request);

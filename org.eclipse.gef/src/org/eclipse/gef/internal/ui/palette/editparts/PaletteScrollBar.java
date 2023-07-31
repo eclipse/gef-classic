@@ -83,14 +83,17 @@ public final class PaletteScrollBar extends ScrollBar {
 		super();
 	}
 
+	@Override
 	public boolean containsPoint(int x, int y) {
 		return findDescendantAtExcluding(x, y, IdentitySearch.INSTANCE) != null;
 	}
 
+	@Override
 	protected Clickable createDefaultDownButton() {
 		return createTransparentArrowButton(true);
 	}
 
+	@Override
 	protected Clickable createDefaultUpButton() {
 		return createTransparentArrowButton(false);
 	}
@@ -104,6 +107,7 @@ public final class PaletteScrollBar extends ScrollBar {
 	 */
 	private Toggle createTransparentArrowButton(final boolean down) {
 		Toggle button = new Toggle() {
+			@Override
 			protected void paintFigure(Graphics g) {
 				// paint background
 				if (!getModel().isMouseOver())
@@ -144,6 +148,7 @@ public final class PaletteScrollBar extends ScrollBar {
 		return transposedPoints;
 	}
 
+	@Override
 	public IFigure findFigureAt(int x, int y, TreeSearch search) {
 		IFigure result = super.findFigureAt(x, y, search);
 		if (result != this)
@@ -151,13 +156,16 @@ public final class PaletteScrollBar extends ScrollBar {
 		return null;
 	}
 
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		return new Dimension(wHint, hHint);
 	}
 
+	@Override
 	protected void initialize() {
 		super.initialize();
 		setLayoutManager(new ScrollBarLayout(transposer) {
+			@Override
 			protected Rectangle layoutButtons(ScrollBar scrollBar) {
 				Rectangle bounds = transposer.t(scrollBar.getClientArea());
 				Dimension buttonSize = new Dimension(BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -180,10 +188,12 @@ public final class PaletteScrollBar extends ScrollBar {
 		setOpaque(false);
 	}
 
+	@Override
 	protected void stepDown() {
 		timedStep(false);
 	}
 
+	@Override
 	protected void stepUp() {
 		timedStep(true);
 	}

@@ -32,6 +32,7 @@ public abstract class PaletteContainerFactory extends PaletteEntryFactory {
 	/**
 	 * @see PaletteEntryFactory#determineContainerForNewEntry(PaletteEntry)
 	 */
+	@Override
 	protected PaletteContainer determineContainerForNewEntry(PaletteEntry selected) {
 		if (selected instanceof PaletteRoot)
 			return (PaletteContainer) selected;
@@ -45,6 +46,7 @@ public abstract class PaletteContainerFactory extends PaletteEntryFactory {
 	 * @see PaletteEntryFactory#determineIndexForNewEntry(PaletteContainer,
 	 *      PaletteEntry)
 	 */
+	@Override
 	protected int determineIndexForNewEntry(PaletteContainer parent, PaletteEntry selected) {
 		if (parent == selected) {
 			return 0;
@@ -63,6 +65,7 @@ public abstract class PaletteContainerFactory extends PaletteEntryFactory {
 	 * 
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#canCreate(PaletteEntry)
 	 */
+	@Override
 	public boolean canCreate(PaletteEntry selected) {
 		return true;
 	}

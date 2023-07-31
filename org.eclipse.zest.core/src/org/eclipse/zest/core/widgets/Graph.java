@@ -147,6 +147,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		// @tag CGraph.workaround : this allows me to handle mouse events
 		// outside of the canvas
 		this.getLightweightSystem().setEventDispatcher(new SWTEventDispatcher() {
+			@Override
 			public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
 				super.dispatchMouseMoved(me);
 
@@ -243,6 +244,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * 
 	 * @return List of GraphModelNode objects
 	 */
+	@Override
 	public List<? extends GraphNode> getNodes() {
 		return nodes;
 	}
@@ -386,6 +388,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	 * only if the view is visible. Otherwise it will be deferred until after the
 	 * view is available.
 	 */
+	@Override
 	public void applyLayout() {
 		if (!hasPendingLayoutRequest) {
 			hasPendingLayoutRequest = true;
@@ -407,6 +410,7 @@ public class Graph extends FigureCanvas implements IContainer {
 	/**
 	 * @param algorithm
 	 */
+	@Override
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
 		this.layoutAlgorithm = algorithm;
 		if (applyLayout) {
@@ -426,10 +430,12 @@ public class Graph extends FigureCanvas implements IContainer {
 	public IFigure getFigureAt(int x, int y) {
 		return this.getContents().findFigureAt(x, y, new TreeSearch() {
 
+			@Override
 			public boolean accept(IFigure figure) {
 				return true;
 			}
 
+			@Override
 			public boolean prune(IFigure figure) {
 				IFigure parent = figure.getParent();
 				// @tag TODO Zest : change these to from getParent to
@@ -482,6 +488,7 @@ public class Graph extends FigureCanvas implements IContainer {
 			this.graph = graph;
 		}
 
+		@Override
 		public void mouseDragged(org.eclipse.draw2d.MouseEvent me) {
 			if (!isDragging) {
 				return;
@@ -540,14 +547,17 @@ public class Graph extends FigureCanvas implements IContainer {
 			// oldLocation = mousePoint;
 		}
 
+		@Override
 		public void mouseEntered(org.eclipse.draw2d.MouseEvent me) {
 
 		}
 
+		@Override
 		public void mouseExited(org.eclipse.draw2d.MouseEvent me) {
 
 		}
 
+		@Override
 		public void mouseHover(org.eclipse.draw2d.MouseEvent me) {
 
 		}
@@ -557,6 +567,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		 * fisheye(ing) nodes. This means whenever the mouse moves we check if we need
 		 * to fisheye on a node or not.
 		 */
+		@Override
 		public void mouseMoved(org.eclipse.draw2d.MouseEvent me) {
 			Point mousePoint = new Point(me.x, me.y);
 			getRootLayer().translateToRelative(mousePoint);
@@ -609,10 +620,12 @@ public class Graph extends FigureCanvas implements IContainer {
 			}
 		}
 
+		@Override
 		public void mouseDoubleClicked(org.eclipse.draw2d.MouseEvent me) {
 
 		}
 
+		@Override
 		public void mousePressed(org.eclipse.draw2d.MouseEvent me) {
 			isDragging = true;
 			Point mousePoint = new Point(me.x, me.y);
@@ -709,6 +722,7 @@ public class Graph extends FigureCanvas implements IContainer {
 
 		}
 
+		@Override
 		public void mouseReleased(org.eclipse.draw2d.MouseEvent me) {
 			isDragging = false;
 
@@ -1116,10 +1130,12 @@ public class Graph extends FigureCanvas implements IContainer {
 		MyRunnable myRunnable = new MyRunnable() {
 			boolean isVisible;
 
+			@Override
 			public boolean isVisible() {
 				return this.isVisible;
 			}
 
+			@Override
 			public void run() {
 				isVisible = Graph.this.isVisible();
 			}
@@ -1250,11 +1266,13 @@ public class Graph extends FigureCanvas implements IContainer {
 		this.getRootLayer().getUpdateManager().performUpdate();
 	}
 
+	@Override
 	public Graph getGraph() {
 		// @tag refactor : Is this method really needed
 		return this.getGraphModel();
 	}
 
+	@Override
 	public int getItemType() {
 		return GraphItem.GRAPH;
 	}

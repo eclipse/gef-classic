@@ -140,6 +140,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	private PaletteEntry initialSelection;
 	private PaletteRoot root;
 	private PropertyChangeListener titleUpdater = new PropertyChangeListener() {
+		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			if (title == null) {
 				return;
@@ -149,6 +150,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		}
 	};
 	private ISelectionChangedListener pageFlippingPreventer = new ISelectionChangedListener() {
+		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
 			treeviewer.removePostSelectionChangedListener(this);
 			treeviewer.setSelection(new StructuredSelection(activeEntry));
@@ -177,6 +179,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * 
 	 * @see Dialog#buttonPressed(int)
 	 */
+	@Override
 	protected void buttonPressed(int buttonId) {
 		if (APPLY_ID == buttonId) {
 			handleApplyPressed();
@@ -194,6 +197,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * @see org.eclipse.gef.ui.palette.customize.EntryPageContainer#clearProblem()
 	 * @see #showProblem(String)
 	 */
+	@Override
 	public void clearProblem() {
 		if (errorMessage != null) {
 			titleSwitcher.showPage(titlePage);
@@ -210,6 +214,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * 
 	 * @see org.eclipse.jface.window.Window#close()
 	 */
+	@Override
 	public boolean close() {
 		// Remove listeners
 		if (activeEntry != null) {
@@ -256,6 +261,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	/**
 	 * @see org.eclipse.jface.window.Window#configureShell(Shell)
 	 */
+	@Override
 	protected void configureShell(Shell newShell) {
 		newShell.setText(PaletteMessages.CUSTOMIZE_DIALOG_TITLE);
 		super.configureShell(newShell);
@@ -291,6 +297,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 		button.setData(Integer.valueOf(id));
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent event) {
 				buttonPressed(((Integer) event.widget.getData()).intValue());
 			}
@@ -300,6 +307,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		if (descriptor != null) {
 			button.setImage(new Image(parent.getDisplay(), descriptor.getImageData()));
 			button.addDisposeListener(new DisposeListener() {
+				@Override
 				public void widgetDisposed(DisposeEvent e) {
 					Image img = ((Button) e.getSource()).getImage();
 					if (img != null && !img.isDisposed()) {
@@ -317,6 +325,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(Composite)
 	 */
+	@Override
 	protected void createButtonsForButtonBar(Composite parent) {
 		super.createButtonsForButtonBar(parent);
 		createButton(parent, APPLY_ID, PaletteMessages.APPLY_LABEL, false);
@@ -337,6 +346,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(Composite)
 	 */
+	@Override
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
 		GridLayout gridLayout = (GridLayout) composite.getLayout();
@@ -460,6 +470,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			IAction action = (IAction) iter.next();
 			if (action instanceof IMenuCreator)
 				outlineMenu.add(new ActionContributionItem(action) {
+					@Override
 					public boolean isDynamic() {
 						return true;
 					}
@@ -473,6 +484,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		}
 
 		outlineMenu.addMenuListener(new IMenuListener() {
+			@Override
 			public void menuAboutToShow(IMenuManager manager) {
 				outlineMenu.update(true);
 			}
@@ -493,6 +505,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	protected Control createOutlineToolBar(Composite parent) {
 		// A customized composite for the toolbar
 		final Composite composite = new Composite(parent, SWT.NONE) {
+			@Override
 			public Rectangle getClientArea() {
 				Rectangle area = super.getClientArea();
 				area.x += 2;
@@ -502,6 +515,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 				return area;
 			}
 
+			@Override
 			public Point computeSize(int wHint, int hHint, boolean changed) {
 				Point size = super.computeSize(wHint, hHint, changed);
 				size.x += 4;
@@ -514,6 +528,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 		// A paint listener that draws an etched border around the toolbar
 		composite.addPaintListener(new PaintListener() {
+			@Override
 			public void paintControl(PaintEvent e) {
 				Rectangle area = composite.getBounds();
 				GC gc = e.gc;
@@ -566,6 +581,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		data.heightHint = 200;
 		treeForViewer.setLayoutData(data);
 		TreeViewer viewer = new TreeViewer(treeForViewer) {
+			@Override
 			protected void preservingSelection(Runnable updateCode) {
 				if ((getTree().getStyle() & SWT.SINGLE) != 0)
 					updateCode.run();
@@ -578,6 +594,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		viewer.setLabelProvider(treeViewerLabelProvider);
 		viewer.setInput(getPaletteRoot());
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				handleOutlineSelectionChanged();
 			}
@@ -619,6 +636,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		data.horizontalSpan = 2;
 		propertiesPanelContainer.setLayoutData(data);
 		propertiesPanelContainer.addListener(SWT.Resize, new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				if (activePage != null) {
 					propertiesPanelContainer.layout();
@@ -662,6 +680,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 		layout.verticalSpacing = 0;
 		errorPage.setLayout(layout);
 		Composite intermediary = new Composite(errorPage, SWT.NONE) {
+			@Override
 			public Point computeSize(int wHint, int hHint, boolean changed) {
 				Rectangle bounds = title.getBounds();
 				return new Point(bounds.width, bounds.height);
@@ -703,6 +722,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			titleImage = new Image(composite.getDisplay(),
 					ImageDescriptor.createFromFile(Internal.class, "icons/customizer_dialog_title.gif").getImageData()); //$NON-NLS-1$
 			composite.addDisposeListener(new DisposeListener() {
+				@Override
 				public void widgetDisposed(DisposeEvent e) {
 					titleImage.dispose();
 					titleImage = null;
@@ -728,6 +748,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * 
 	 * @see org.eclipse.jface.dialogs.Dialog#getButton(int)
 	 */
+	@Override
 	protected Button getButton(int id) {
 		Button button = null;
 		Widget widget = getWidget(id);
@@ -964,19 +985,23 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 				noSelectionPage = new EntryPage() {
 					private Text text;
 
+					@Override
 					public void apply() {
 					}
 
+					@Override
 					public void createControl(Composite parent, PaletteEntry entry) {
 						text = new Text(parent, SWT.READ_ONLY);
 						text.setFont(parent.getFont());
 						text.setText(PaletteMessages.NO_SELECTION_MADE);
 					}
 
+					@Override
 					public Control getControl() {
 						return text;
 					}
 
+					@Override
 					public void setPageContainer(EntryPageContainer pageContainer) {
 					}
 				};
@@ -1054,6 +1079,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * 
 	 * @see org.eclipse.gef.ui.palette.customize.EntryPageContainer#showProblem(String)
 	 */
+	@Override
 	public void showProblem(String error) {
 		Assert.isNotNull(error);
 		errorTitle.setText(error);
@@ -1087,10 +1113,12 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			setDisabledImageDescriptor(sharedImages.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 		}
 
+		@Override
 		public void run() {
 			handleDelete();
 		}
 
+		@Override
 		public void update() {
 			boolean enabled = false;
 			PaletteEntry entry = getSelectedPaletteEntry();
@@ -1112,10 +1140,12 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/move_down_disabled.gif"));//$NON-NLS-1$
 		}
 
+		@Override
 		public void run() {
 			handleMoveDown();
 		}
 
+		@Override
 		public void update() {
 			boolean enabled = false;
 			PaletteEntry entry = getSelectedPaletteEntry();
@@ -1137,10 +1167,12 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			setDisabledImageDescriptor(ImageDescriptor.createFromFile(Internal.class, "icons/move_up_disabled.gif")); //$NON-NLS-1$
 		}
 
+		@Override
 		public void run() {
 			handleMoveUp();
 		}
 
+		@Override
 		public void update() {
 			boolean enabled = false;
 			PaletteEntry entry = getSelectedPaletteEntry();
@@ -1176,6 +1208,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			item.fill(parent, -1);
 		}
 
+		@Override
 		public void dispose() {
 			if (menuMgr != null) {
 				menuMgr.dispose();
@@ -1183,6 +1216,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			}
 		}
 
+		@Override
 		public Menu getMenu(Control parent) {
 			// Create the menu manager and add all the NewActions to it
 			if (menuMgr == null) {
@@ -1195,6 +1229,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			return menuMgr.getMenu();
 		}
 
+		@Override
 		public Menu getMenu(Menu parent) {
 			Menu menu = new Menu(parent);
 			for (Iterator iter = factories.iterator(); iter.hasNext();) {
@@ -1207,9 +1242,11 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			return menu;
 		}
 
+		@Override
 		public void run() {
 		}
 
+		@Override
 		public void update() {
 			boolean enabled = false;
 			PaletteEntry entry = getSelectedPaletteEntry();
@@ -1267,6 +1304,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 			return factory.canCreate(entry);
 		}
 
+		@Override
 		public void run() {
 			PaletteEntry selected = getSelectedPaletteEntry();
 			if (selected == null)

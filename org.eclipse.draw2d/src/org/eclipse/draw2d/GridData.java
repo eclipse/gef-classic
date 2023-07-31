@@ -403,6 +403,7 @@ public final class GridData {
 		return string.substring(index + 1, string.length());
 	}
 
+	@Override
 	public String toString() {
 
 		String hAlign = ""; //$NON-NLS-1$

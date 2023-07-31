@@ -226,6 +226,7 @@ public class PaletteContainer extends PaletteEntry {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "Palette Container (" //$NON-NLS-1$
 				+ (getLabel() != null ? getLabel() : "") //$NON-NLS-1$

@@ -32,6 +32,7 @@ public class DragTreeItemsTracker extends SelectEditPartTracker {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getDebugName()
 	 */
+	@Override
 	protected String getDebugName() {
 		return "Tree Tracker: " + getCommandName();//$NON-NLS-1$
 	}
@@ -41,6 +42,7 @@ public class DragTreeItemsTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.SelectEditPartTracker#performSelection()
 	 */
+	@Override
 	protected void performSelection() {
 	}
 

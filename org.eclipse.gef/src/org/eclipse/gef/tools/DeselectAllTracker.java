@@ -31,6 +31,7 @@ public class DeselectAllTracker extends SelectEditPartTracker {
 	 * 
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
+	@Override
 	protected boolean handleButtonDown(int button) {
 		getCurrentViewer().deselectAll();
 		return true;

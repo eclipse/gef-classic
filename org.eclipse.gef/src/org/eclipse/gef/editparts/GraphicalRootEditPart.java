@@ -57,12 +57,14 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 	}
 
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		innerLayers = new LayeredPane();
 		printableLayers = new LayeredPane();
@@ -97,6 +99,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	 * 
 	 * @see org.eclipse.gef.EditPart#getCommand(org.eclipse.gef.Request)
 	 */
+	@Override
 	public Command getCommand(Request req) {
 		return UnexecutableCommand.INSTANCE;
 	}
@@ -104,6 +107,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	/**
 	 * @see org.eclipse.gef.RootEditPart#getContents()
 	 */
+	@Override
 	public EditPart getContents() {
 		return contents;
 	}
@@ -113,6 +117,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	 * 
 	 * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
 	 */
+	@Override
 	public DragTracker getDragTracker(Request req) {
 		// The drawing cannot be dragged.
 		return new MarqueeDragTracker();
@@ -121,6 +126,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	/**
 	 * @see LayerManager#getLayer(java.lang.Object)
 	 */
+	@Override
 	public IFigure getLayer(Object key) {
 		if (innerLayers == null)
 			return null;
@@ -136,6 +142,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	 * 
 	 * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
 	 */
+	@Override
 	public IFigure getContentPane() {
 		return getLayer(PRIMARY_LAYER);
 	}
@@ -143,6 +150,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	/**
 	 * @see org.eclipse.gef.EditPart#getModel()
 	 */
+	@Override
 	public Object getModel() {
 		return LayerManager.ID;
 	}
@@ -152,6 +160,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	 * 
 	 * @see org.eclipse.gef.EditPart#getRoot()
 	 */
+	@Override
 	public RootEditPart getRoot() {
 		return this;
 	}
@@ -159,6 +168,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	/**
 	 * @see org.eclipse.gef.EditPart#getViewer()
 	 */
+	@Override
 	public EditPartViewer getViewer() {
 		return viewer;
 	}
@@ -168,12 +178,14 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	 * 
 	 * @see AbstractEditPart#refreshChildren()
 	 */
+	@Override
 	protected void refreshChildren() {
 	}
 
 	/**
 	 * @see org.eclipse.gef.RootEditPart#setContents(org.eclipse.gef.EditPart)
 	 */
+	@Override
 	public void setContents(EditPart editpart) {
 		if (contents != null)
 			removeChild(contents);
@@ -185,6 +197,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 	/**
 	 * @see org.eclipse.gef.RootEditPart#setViewer(org.eclipse.gef.EditPartViewer)
 	 */
+	@Override
 	public void setViewer(EditPartViewer newViewer) {
 		if (viewer == newViewer)
 			return;

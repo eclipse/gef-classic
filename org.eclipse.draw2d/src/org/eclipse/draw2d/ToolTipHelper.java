@@ -104,8 +104,10 @@ public class ToolTipHelper extends PopUpHelper {
 			currentTipSource = hoverSource;
 			timer = new Timer(true);
 			timer.schedule(new TimerTask() {
+				@Override
 				public void run() {
 					Display.getDefault().asyncExec(new Runnable() {
+						@Override
 						public void run() {
 							hide();
 						}
@@ -120,6 +122,7 @@ public class ToolTipHelper extends PopUpHelper {
 	 * 
 	 * @see PopUpHelper#dispose()
 	 */
+	@Override
 	public void dispose() {
 		if (isShowing()) {
 			hide();
@@ -127,6 +130,7 @@ public class ToolTipHelper extends PopUpHelper {
 		getShell().dispose();
 	}
 
+	@Override
 	protected void hide() {
 		if (timer != null) {
 			timer.cancel();
@@ -137,9 +141,11 @@ public class ToolTipHelper extends PopUpHelper {
 	/**
 	 * @see PopUpHelper#hookShellListeners()
 	 */
+	@Override
 	protected void hookShellListeners() {
 		// Close the tooltip window if the mouse enters the tooltip
 		getShell().addMouseTrackListener(new MouseTrackAdapter() {
+			@Override
 			public void mouseEnter(org.eclipse.swt.events.MouseEvent e) {
 				hide();
 				currentTipSource = null;

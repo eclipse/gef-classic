@@ -116,6 +116,7 @@ public class CaretInfo implements Translatable {
 	/**
 	 * @see Translatable#performScale(double)
 	 */
+	@Override
 	public void performScale(double factor) {
 		x *= factor;
 		baseline *= factor;
@@ -128,6 +129,7 @@ public class CaretInfo implements Translatable {
 	/**
 	 * @see Translatable#performTranslate(int, int)
 	 */
+	@Override
 	public void performTranslate(int dx, int dy) {
 		x += dx;
 		baseline += dy;

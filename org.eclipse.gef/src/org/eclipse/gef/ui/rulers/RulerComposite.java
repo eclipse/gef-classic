@@ -84,6 +84,7 @@ public class RulerComposite extends Composite {
 	private boolean isRulerVisible = true;
 	private boolean needToLayout = false;
 	private Runnable runnable = new Runnable() {
+		@Override
 		public void run() {
 			layout(false);
 		}
@@ -100,6 +101,7 @@ public class RulerComposite extends Composite {
 	public RulerComposite(Composite parent, int style) {
 		super(parent, style);
 		addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				disposeResources();
 			}
@@ -274,6 +276,7 @@ public class RulerComposite extends Composite {
 	/**
 	 * @see org.eclipse.swt.widgets.Composite#layout(boolean)
 	 */
+	@Override
 	public void layout(boolean change) {
 		if (!layingOut && !isDisposed()) {
 			checkWidget();
@@ -315,6 +318,7 @@ public class RulerComposite extends Composite {
 		// RulerComposite
 		// is resized
 		layoutListener = new Listener() {
+			@Override
 			public void handleEvent(Event event) {
 				// @TODO:Pratik If you use Display.asyncExec(runnable) here,
 				// some flashing
@@ -331,6 +335,7 @@ public class RulerComposite extends Composite {
 		editor.getVerticalBar().addListener(SWT.Hide, layoutListener);
 
 		propertyListener = new PropertyChangeListener() {
+			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				String property = evt.getPropertyName();
 				if (RulerProvider.PROPERTY_HORIZONTAL_RULER.equals(property)) {
@@ -425,6 +430,7 @@ public class RulerComposite extends Composite {
 		/**
 		 * @see org.eclipse.draw2d.Border#getInsets(org.eclipse.draw2d.IFigure)
 		 */
+		@Override
 		public Insets getInsets(IFigure figure) {
 			return horizontal ? H_INSETS : V_INSETS;
 		}
@@ -433,6 +439,7 @@ public class RulerComposite extends Composite {
 		 * @see org.eclipse.draw2d.Border#paint(org.eclipse.draw2d.IFigure,
 		 *      org.eclipse.draw2d.Graphics, org.eclipse.draw2d.geometry.Insets)
 		 */
+		@Override
 		public void paint(IFigure figure, Graphics graphics, Insets insets) {
 			graphics.setForegroundColor(ColorConstants.buttonDarker);
 			if (horizontal) {
@@ -463,6 +470,7 @@ public class RulerComposite extends Composite {
 		/**
 		 * @see org.eclipse.gef.EditPartViewer#appendSelection(org.eclipse.gef.EditPart)
 		 */
+		@Override
 		public void appendSelection(EditPart editpart) {
 			if (editpart instanceof RootEditPart)
 				editpart = ((RootEditPart) editpart).getContents();
@@ -479,10 +487,12 @@ public class RulerComposite extends Composite {
 			if (gep == null || !(gep instanceof GuideEditPart))
 				return null;
 			return new Handle() {
+				@Override
 				public DragTracker getDragTracker() {
 					return ((GuideEditPart) gep).getDragTracker(null);
 				}
 
+				@Override
 				public org.eclipse.draw2d.geometry.Point getAccessibleLocation() {
 					return null;
 				}
@@ -504,6 +514,7 @@ public class RulerComposite extends Composite {
 		 * 
 		 * @see org.eclipse.gef.EditPartViewer#reveal(org.eclipse.gef.EditPart)
 		 */
+		@Override
 		public void reveal(EditPart part) {
 			if (part != getContents())
 				super.reveal(part);
@@ -513,6 +524,7 @@ public class RulerComposite extends Composite {
 		 * 
 		 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#handleFocusGained(org.eclipse.swt.events.FocusEvent)
 		 */
+		@Override
 		protected void handleFocusGained(FocusEvent fe) {
 			if (focusPart == null) {
 				setFocus(getContents());
@@ -524,6 +536,7 @@ public class RulerComposite extends Composite {
 		 * 
 		 * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl#handleFocusLost(org.eclipse.swt.events.FocusEvent)
 		 */
+		@Override
 		protected void handleFocusLost(FocusEvent fe) {
 			super.handleFocusLost(fe);
 			if (focusPart == getContents()) {
@@ -550,6 +563,7 @@ public class RulerComposite extends Composite {
 			/**
 			 * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
 			 */
+			@Override
 			public boolean keyPressed(KeyEvent event) {
 				if (event.keyCode == SWT.DEL) {
 					// If a guide has focus, delete it

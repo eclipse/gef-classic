@@ -193,6 +193,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		this(LayoutStyles.NONE);
 	}
 
+	@Override
 	public void setLayoutArea(double x, double y, double width, double height) {
 		bounds = new DisplayIndependentRectangle(x, y, width, height);
 	}
@@ -366,6 +367,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	private long startTime = 0;
 
+	@Override
 	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
 		// TODO: Filter out any non-wanted entities and relationships
@@ -393,6 +395,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		startTime = date.getTime();
 	}
 
+	@Override
 	protected void postLayoutAlgorithm(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider) {
 		reset(entitiesToLayout);
@@ -538,6 +541,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	}
 
+	@Override
 	protected boolean performAnotherNonContinuousIteration() {
 		setSprIterationsBasedOnTime();
 		if (iteration <= sprIterations && largestMovement >= sprMove)
@@ -546,14 +550,17 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 			return false;
 	}
 
+	@Override
 	protected int getCurrentLayoutStep() {
 		return iteration;
 	}
 
+	@Override
 	protected int getTotalNumberOfLayoutSteps() {
 		return sprIterations;
 	}
 
+	@Override
 	protected void computeOneIteration(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
 		if (bounds == null)
@@ -785,6 +792,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 		return doubleWeight;
 	}
 
+	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
 		if (asynchronous && continueous)
 			return true;

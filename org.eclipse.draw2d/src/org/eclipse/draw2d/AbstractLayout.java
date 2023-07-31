@@ -65,6 +65,7 @@ public abstract class AbstractLayout implements LayoutManager {
 	 * @param child The figure
 	 * @return The constraint
 	 */
+	@Override
 	public Object getConstraint(IFigure child) {
 		return null;
 	}
@@ -80,6 +81,7 @@ public abstract class AbstractLayout implements LayoutManager {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(IFigure, int, int)
 	 */
+	@Override
 	public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
 		return getPreferredSize(container, wHint, hHint);
 	}
@@ -94,6 +96,7 @@ public abstract class AbstractLayout implements LayoutManager {
 	 * @param hHint     The height hint
 	 * @return The preferred size
 	 */
+	@Override
 	public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
 		if (preferredSize == null)
 			preferredSize = calculatePreferredSize(container, wHint, hHint);
@@ -111,6 +114,7 @@ public abstract class AbstractLayout implements LayoutManager {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#invalidate()
 	 */
+	@Override
 	public void invalidate() {
 		preferredSize = null;
 	}
@@ -140,6 +144,7 @@ public abstract class AbstractLayout implements LayoutManager {
 	 * 
 	 * @param child The figure to remove
 	 */
+	@Override
 	public void remove(IFigure child) {
 		invalidate();
 	}
@@ -150,6 +155,7 @@ public abstract class AbstractLayout implements LayoutManager {
 	 * @param child      the child
 	 * @param constraint the child's new constraint
 	 */
+	@Override
 	public void setConstraint(IFigure child, Object constraint) {
 		invalidate(child);
 	}

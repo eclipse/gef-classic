@@ -41,6 +41,7 @@ public class ToolbarEditPart extends GroupEditPart {
 	public IFigure createFigure() {
 		IFigure figure = new Figure() {
 
+			@Override
 			protected void paintFigure(Graphics graphics) {
 				super.paintFigure(graphics);
 

@@ -27,6 +27,7 @@ class NodePair {
 		this.n2 = n2;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof NodePair) {
 			NodePair np = (NodePair) obj;
@@ -35,6 +36,7 @@ class NodePair {
 		return false;
 	}
 
+	@Override
 	public int hashCode() {
 		return n1.hashCode() ^ n2.hashCode();
 	}
@@ -42,6 +44,7 @@ class NodePair {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "[" + n1 + ", " + n2 + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}

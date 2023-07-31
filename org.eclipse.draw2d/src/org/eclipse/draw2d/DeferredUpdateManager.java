@@ -40,6 +40,7 @@ public class DeferredUpdateManager extends UpdateManager {
 		/**
 		 * Calls {@link DeferredUpdateManager#performUpdate()}.
 		 */
+		@Override
 		public void run() {
 			performUpdate();
 		}
@@ -99,6 +100,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * @param w      the width of the dirty region
 	 * @param h      the height of the dirty region
 	 */
+	@Override
 	public synchronized void addDirtyRegion(IFigure figure, int x, int y, int w, int h) {
 		if (w == 0 || h == 0 || !figure.isShowing())
 			return;
@@ -119,6 +121,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * 
 	 * @param f the invalid figure
 	 */
+	@Override
 	public synchronized void addInvalidFigure(IFigure f) {
 		if (invalidFigures.contains(f))
 			return;
@@ -141,6 +144,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * @since 3.10
 	 */
+	@Override
 	protected void paint(GC gc) {
 		if (!validating) {
 			SWTGraphics graphics = new SWTGraphics(gc);
@@ -174,6 +178,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * @see #validateFigures()
 	 * @see #repairDamage()
 	 */
+	@Override
 	public synchronized void performUpdate() {
 		if (isDisposed() || updating)
 			return;
@@ -197,6 +202,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * @see UpdateManager#performValidation()
 	 */
+	@Override
 	public synchronized void performValidation() {
 		if (invalidFigures.isEmpty() || validating)
 			return;
@@ -221,6 +227,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * 
 	 * @param exposed the exposed region
 	 */
+	@Override
 	public synchronized void performUpdate(Rectangle exposed) {
 		addDirtyRegion(root, exposed);
 		performUpdate();
@@ -304,6 +311,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * 
 	 * @param runnable the runnable
 	 */
+	@Override
 	public synchronized void runWithUpdate(Runnable runnable) {
 		afterUpdate = new RunnableChain(runnable, afterUpdate);
 		if (!updating)
@@ -315,6 +323,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * 
 	 * @param gs the graphics source
 	 */
+	@Override
 	public void setGraphicsSource(GraphicsSource gs) {
 		graphicsSource = gs;
 	}
@@ -324,6 +333,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * 
 	 * @param figure the root figure
 	 */
+	@Override
 	public void setRoot(IFigure figure) {
 		root = figure;
 	}

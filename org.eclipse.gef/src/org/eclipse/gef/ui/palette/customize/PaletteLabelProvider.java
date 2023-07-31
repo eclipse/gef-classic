@@ -49,6 +49,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	/**
 	 * @see org.eclipse.jface.viewers.IColorProvider#getBackground(Object)
 	 */
+	@Override
 	public Color getBackground(Object element) {
 		return null;
 	}
@@ -65,6 +66,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	/**
 	 * @see org.eclipse.jface.viewers.IColorProvider#getForeground(Object)
 	 */
+	@Override
 	public Color getForeground(Object element) {
 		PaletteEntry entry = (PaletteEntry) element;
 		if (!entry.isVisible() || !entry.getParent().isVisible()) {
@@ -76,6 +78,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	/**
 	 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(Object)
 	 */
+	@Override
 	public Image getImage(Object element) {
 		PaletteEntry entry = (PaletteEntry) element;
 		ImageDescriptor descriptor = entry.getSmallIcon();
@@ -94,6 +97,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	/**
 	 * @see org.eclipse.jface.viewers.ILabelProvider#getText(Object)
 	 */
+	@Override
 	public String getText(Object element) {
 		return ((PaletteEntry) element).getLabel();
 	}
@@ -103,12 +107,14 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(ILabelProviderListener)
 	 */
+	@Override
 	public void addListener(ILabelProviderListener listener) {
 	}
 
 	/**
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
 	 */
+	@Override
 	public void dispose() {
 		Iterator images = imageCache.values().iterator();
 		while (images.hasNext())
@@ -120,6 +126,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(Object,
 	 *      String)
 	 */
+	@Override
 	public boolean isLabelProperty(Object element, String property) {
 		return false;
 	}
@@ -129,6 +136,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 	 * 
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(ILabelProviderListener)
 	 */
+	@Override
 	public void removeListener(ILabelProviderListener listener) {
 	}
 

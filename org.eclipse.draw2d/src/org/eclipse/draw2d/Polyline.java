@@ -39,6 +39,7 @@ public class Polyline extends AbstractPointListShape {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#containsPoint(int, int)
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		int tolerance = (int) Math.max(getLineWidthFloat() / 2.0f, this.tolerance);
 		LINEBOUNDS.setBounds(getBounds());
@@ -48,6 +49,7 @@ public class Polyline extends AbstractPointListShape {
 		return shapeContainsPoint(x, y) || childrenContainsPoint(x, y);
 	}
 
+	@Override
 	protected boolean shapeContainsPoint(int x, int y) {
 		return Geometry.polylineContainsPoint(points, x, y, tolerance);
 	}
@@ -57,12 +59,14 @@ public class Polyline extends AbstractPointListShape {
 	 * 
 	 * @see org.eclipse.draw2d.Shape#fillShape(Graphics)
 	 */
+	@Override
 	protected void fillShape(Graphics g) {
 	}
 
 	/**
 	 * @see org.eclipse.draw2d.IFigure#getBounds()
 	 */
+	@Override
 	public Rectangle getBounds() {
 		if (bounds == null) {
 			int expand = (int) (getLineWidthFloat() / 2.0f);
@@ -74,6 +78,7 @@ public class Polyline extends AbstractPointListShape {
 	/**
 	 * @return <code>false</code> because Polyline's aren't filled
 	 */
+	@Override
 	public boolean isOpaque() {
 		return false;
 	}
@@ -81,6 +86,7 @@ public class Polyline extends AbstractPointListShape {
 	/**
 	 * @see Shape#outlineShape(Graphics)
 	 */
+	@Override
 	protected void outlineShape(Graphics g) {
 		g.drawPolyline(points);
 	}
@@ -88,6 +94,7 @@ public class Polyline extends AbstractPointListShape {
 	/**
 	 * @see Figure#primTranslate(int, int)
 	 */
+	@Override
 	public void primTranslate(int x, int y) {
 	}
 
@@ -96,6 +103,7 @@ public class Polyline extends AbstractPointListShape {
 	 * 
 	 * @since 2.0
 	 */
+	@Override
 	public void removeAllPoints() {
 		super.removeAllPoints();
 		bounds = null;
@@ -104,6 +112,7 @@ public class Polyline extends AbstractPointListShape {
 	/**
 	 * @see org.eclipse.draw2d.Shape#setLineWidth(int)
 	 */
+	@Override
 	public void setLineWidth(int w) {
 		if (getLineWidthFloat() == w) {
 			return;
@@ -124,6 +133,7 @@ public class Polyline extends AbstractPointListShape {
 	 * @param points new set of points
 	 * @since 2.0
 	 */
+	@Override
 	public void setPoints(PointList points) {
 		super.setPoints(points);
 		firePropertyChange(Connection.PROPERTY_POINTS, null, points);
@@ -138,6 +148,7 @@ public class Polyline extends AbstractPointListShape {
 		this.tolerance = tolerance;
 	}
 
+	@Override
 	public void repaint() {
 		bounds = null;
 		super.repaint();

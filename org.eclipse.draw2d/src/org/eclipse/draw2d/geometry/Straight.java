@@ -219,6 +219,7 @@ public class Straight {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(Object other) {
 		if (!(other instanceof Straight)) {
 			return false;
@@ -231,6 +232,7 @@ public class Straight {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return position.hashCode() + direction.hashCode();
 	}
@@ -238,6 +240,7 @@ public class Straight {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return position.toString() + " + s * " + direction.toString(); //$NON-NLS-1$
 	}

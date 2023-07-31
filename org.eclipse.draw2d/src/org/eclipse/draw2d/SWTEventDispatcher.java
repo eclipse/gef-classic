@@ -58,58 +58,72 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 */
 	protected class FigureAccessibilityDispatcher extends AccessibilityDispatcher {
 		/** @see AccessibleControlListener#getChildAtPoint(AccessibleControlEvent) */
+		@Override
 		public void getChildAtPoint(AccessibleControlEvent e) {
 		}
 
 		/** @see AccessibleControlListener#getChildCount(AccessibleControlEvent) */
+		@Override
 		public void getChildCount(AccessibleControlEvent e) {
 		}
 
 		/** @see AccessibleControlListener#getChildren(AccessibleControlEvent) */
+		@Override
 		public void getChildren(AccessibleControlEvent e) {
 		}
 
 		/** @see AccessibleControlListener#getDefaultAction(AccessibleControlEvent) */
+		@Override
 		public void getDefaultAction(AccessibleControlEvent e) {
 		}
 
 		/** @see AccessibleListener#getDescription(AccessibleEvent) */
+		@Override
 		public void getDescription(AccessibleEvent e) {
 		}
 
 		/** @see AccessibleControlListener#getFocus(AccessibleControlEvent) */
+		@Override
 		public void getFocus(AccessibleControlEvent e) {
 		}
 
 		/** @see AccessibleListener#getHelp(AccessibleEvent) */
+		@Override
 		public void getHelp(AccessibleEvent e) {
 		}
 
 		/** @see AccessibleListener#getKeyboardShortcut(AccessibleEvent) */
+		@Override
 		public void getKeyboardShortcut(AccessibleEvent e) {
 		}
 
 		/** @see AccessibleControlListener#getLocation(AccessibleControlEvent) */
+		@Override
 		public void getLocation(AccessibleControlEvent e) {
 		}
 
 		/** @see AccessibleListener#getName(AccessibleEvent) */
+		@Override
 		public void getName(AccessibleEvent e) {
 		}
 
 		/** @see AccessibleControlListener#getRole(AccessibleControlEvent) */
+		@Override
 		public void getRole(AccessibleControlEvent e) {
 		}
 
 		/** @see AccessibleControlListener#getSelection(AccessibleControlEvent) */
+		@Override
 		public void getSelection(AccessibleControlEvent e) {
 		}
 
 		/** @see AccessibleControlListener#getState(AccessibleControlEvent) */
+		@Override
 		public void getState(AccessibleControlEvent e) {
 		}
 
 		/** @see AccessibleControlListener#getValue(AccessibleControlEvent) */
+		@Override
 		public void getValue(AccessibleControlEvent e) {
 		}
 	}
@@ -117,6 +131,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchFocusGained(org.eclipse.swt.events.FocusEvent)
 	 */
+	@Override
 	public void dispatchFocusGained(org.eclipse.swt.events.FocusEvent e) {
 		IFigure currentFocusOwner = getFocusTraverseManager().getCurrentFocusOwner();
 
@@ -132,6 +147,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchFocusLost(org.eclipse.swt.events.FocusEvent)
 	 */
+	@Override
 	public void dispatchFocusLost(org.eclipse.swt.events.FocusEvent e) {
 		setFocus(null);
 	}
@@ -139,6 +155,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchKeyPressed(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) {
 		if (focusOwner != null) {
 			KeyEvent event = new KeyEvent(this, focusOwner, e);
@@ -149,6 +166,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchKeyReleased(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	public void dispatchKeyReleased(org.eclipse.swt.events.KeyEvent e) {
 		if (focusOwner != null) {
 			KeyEvent event = new KeyEvent(this, focusOwner, e);
@@ -159,6 +177,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchKeyTraversed(TraverseEvent)
 	 */
+	@Override
 	public void dispatchKeyTraversed(TraverseEvent e) {
 		if (!figureTraverse)
 			return;
@@ -178,6 +197,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseHover(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me) {
 		receive(me);
 		if (mouseTarget != null)
@@ -199,6 +219,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me) {
 		receive(me);
 		if (mouseTarget != null)
@@ -208,6 +229,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseEntered(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseEntered(org.eclipse.swt.events.MouseEvent me) {
 		receive(me);
 	}
@@ -215,6 +237,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseExited(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 		setHoverSource(null, me);
 		if (mouseTarget != null) {
@@ -228,6 +251,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMousePressed(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me) {
 		receive(me);
 		if (mouseTarget != null) {
@@ -240,6 +264,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseMoved(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
 		receive(me);
 		if (mouseTarget != null) {
@@ -253,6 +278,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseReleased(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me) {
 		receive(me);
 		if (mouseTarget != null) {
@@ -265,6 +291,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#getAccessibilityDispatcher()
 	 */
+	@Override
 	protected AccessibilityDispatcher getAccessibilityDispatcher() {
 		return null;
 	}
@@ -322,6 +349,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 * @see EventDispatcher#getFocusOwner()
 	 * @since 3.6
 	 */
+	@Override
 	public IFigure getFocusOwner() {
 		return focusOwner;
 	}
@@ -349,6 +377,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#isCaptured()
 	 */
+	@Override
 	public boolean isCaptured() {
 		return captured;
 	}
@@ -381,6 +410,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#releaseCapture()
 	 */
+	@Override
 	protected void releaseCapture() {
 		captured = false;
 	}
@@ -388,6 +418,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#requestFocus(IFigure)
 	 */
+	@Override
 	public void requestFocus(IFigure fig) {
 		setFocus(fig);
 	}
@@ -395,6 +426,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#requestRemoveFocus(IFigure)
 	 */
+	@Override
 	public void requestRemoveFocus(IFigure fig) {
 		if (getFocusOwner() == fig)
 			setFocus(null);
@@ -410,6 +442,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#setCapture(IFigure)
 	 */
+	@Override
 	protected void setCapture(IFigure figure) {
 		captured = true;
 		mouseTarget = figure;
@@ -418,6 +451,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#setControl(Control)
 	 */
+	@Override
 	public void setControl(Control c) {
 		if (c == control)
 			return;
@@ -425,6 +459,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 			throw new RuntimeException("Can not set control again once it has been set"); //$NON-NLS-1$
 		if (c != null)
 			c.addDisposeListener(new org.eclipse.swt.events.DisposeListener() {
+				@Override
 				public void widgetDisposed(DisposeEvent e) {
 					if (toolTipHelper != null)
 						toolTipHelper.dispose();
@@ -525,6 +560,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#setRoot(IFigure)
 	 */
+	@Override
 	public void setRoot(IFigure figure) {
 		root = figure;
 	}
@@ -532,6 +568,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * @see EventDispatcher#updateCursor()
 	 */
+	@Override
 	protected void updateCursor() {
 		Cursor newCursor = null;
 		if (cursorTarget != null)

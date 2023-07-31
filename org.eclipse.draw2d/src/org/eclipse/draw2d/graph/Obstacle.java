@@ -121,6 +121,7 @@ class Obstacle extends Rectangle {
 	/**
 	 * @see org.eclipse.draw2d.geometry.Rectangle#toString()
 	 */
+	@Override
 	public String toString() {
 		return "Obstacle(" + x + ", " + y + ", " + //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 				width + ", " + height + ")";//$NON-NLS-2$//$NON-NLS-1$

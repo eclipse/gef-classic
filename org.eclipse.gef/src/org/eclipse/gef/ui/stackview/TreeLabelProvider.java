@@ -49,18 +49,21 @@ public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvid
 	/**
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(ILabelProviderListener)
 	 */
+	@Override
 	public void addListener(ILabelProviderListener l) {
 	}
 
 	/**
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#dispose()
 	 */
+	@Override
 	public void dispose() {
 	}
 
 	/**
 	 * @see org.eclipse.jface.viewers.ILabelProvider#getImage(java.lang.Object)
 	 */
+	@Override
 	public Image getImage(Object o) {
 		if (o instanceof Command) {
 			Command command = (Command) o;
@@ -88,6 +91,7 @@ public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvid
 	/**
 	 * @see ILabelProvider#getText(java.lang.Object)
 	 */
+	@Override
 	public String getText(Object o) {
 		if (o instanceof CommandStack)
 			return "Command Stack";//$NON-NLS-1$
@@ -112,6 +116,7 @@ public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvid
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#isLabelProperty(java.lang.Object,
 	 *      java.lang.String)
 	 */
+	@Override
 	public boolean isLabelProperty(Object element, String property) {
 		return false;
 	}
@@ -119,6 +124,7 @@ public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvid
 	/**
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(org.eclipse.jface.viewers.ILabelProviderListener)
 	 */
+	@Override
 	public void removeListener(ILabelProviderListener l) {
 	}
 

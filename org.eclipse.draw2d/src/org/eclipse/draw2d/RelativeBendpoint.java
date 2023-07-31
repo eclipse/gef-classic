@@ -61,6 +61,7 @@ public class RelativeBendpoint implements Bendpoint {
 	 * @return This Bendpoint's new location
 	 * @since 2.0
 	 */
+	@Override
 	public Point getLocation() {
 		PrecisionPoint a1 = new PrecisionPoint(getConnection().getSourceAnchor().getReferencePoint());
 		PrecisionPoint a2 = new PrecisionPoint(getConnection().getTargetAnchor().getReferencePoint());

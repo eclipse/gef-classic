@@ -30,6 +30,7 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	/**
 	 * @see UpdateManager#addDirtyRegion(IFigure, int, int, int, int)
 	 */
+	@Override
 	public void addDirtyRegion(IFigure f, int x, int y, int w, int h) {
 		if (getSuperior() == null)
 			return;
@@ -39,6 +40,7 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	/**
 	 * @see UpdateManager#addInvalidFigure(IFigure)
 	 */
+	@Override
 	public void addInvalidFigure(IFigure f) {
 		UpdateManager um = getSuperior();
 		if (um == null)
@@ -67,6 +69,7 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	/**
 	 * @see UpdateManager#performUpdate()
 	 */
+	@Override
 	public void performUpdate() {
 		UpdateManager um = getSuperior();
 		if (um == null)
@@ -77,6 +80,7 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	/**
 	 * @see UpdateManager#performUpdate(Rectangle)
 	 */
+	@Override
 	public void performUpdate(Rectangle rect) {
 		UpdateManager um = getSuperior();
 		if (um == null)
@@ -87,6 +91,7 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	/**
 	 * @see UpdateManager#setRoot(IFigure)
 	 */
+	@Override
 	public void setRoot(IFigure f) {
 		root = f;
 	}
@@ -94,6 +99,7 @@ public abstract class SubordinateUpdateManager extends UpdateManager {
 	/**
 	 * @see UpdateManager#setGraphicsSource(GraphicsSource)
 	 */
+	@Override
 	public void setGraphicsSource(GraphicsSource gs) {
 		graphicsSource = gs;
 	}

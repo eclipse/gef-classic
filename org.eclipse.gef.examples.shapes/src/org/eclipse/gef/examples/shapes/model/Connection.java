@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
-�* All rights reserved. This program and the accompanying materials
-�* are made available under the terms of the Eclipse Public License v1.0
-�* which accompanies this distribution, and is available at
-�* http://www.eclipse.org/legal/epl-v10.html
-�*
-�* Contributors:
-�*����Elias Volanakis - initial API and implementation
-�*******************************************************************************/
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
 import org.eclipse.ui.views.properties.ComboBoxPropertyDescriptor;
@@ -94,6 +94,7 @@ public class Connection extends ModelElement {
 	 * 
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyDescriptors()
 	 */
+	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
 		return descriptors;
 	}
@@ -103,6 +104,7 @@ public class Connection extends ModelElement {
 	 * 
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
+	@Override
 	public Object getPropertyValue(Object id) {
 		if (id.equals(LINESTYLE_PROP)) {
 			if (getLineStyle() == Graphics.LINE_DASH)
@@ -188,6 +190,7 @@ public class Connection extends ModelElement {
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object,
 	 *      java.lang.Object)
 	 */
+	@Override
 	public void setPropertyValue(Object id, Object value) {
 		if (id.equals(LINESTYLE_PROP))
 			setLineStyle(Integer.valueOf(1).equals(value) ? Graphics.LINE_DASH : Graphics.LINE_SOLID);

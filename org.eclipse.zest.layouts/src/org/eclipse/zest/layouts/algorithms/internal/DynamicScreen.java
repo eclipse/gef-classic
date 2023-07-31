@@ -36,6 +36,7 @@ public class DynamicScreen {
 	}
 
 	class XComparator implements Comparator {
+		@Override
 		public int compare(Object arg0, Object arg1) {
 			InternalNode n1 = (InternalNode) arg0;
 			InternalNode n2 = (InternalNode) arg1;
@@ -51,6 +52,7 @@ public class DynamicScreen {
 	}
 
 	class YComparator implements Comparator {
+		@Override
 		public int compare(Object arg0, Object arg1) {
 			InternalNode n1 = (InternalNode) arg0;
 			InternalNode n2 = (InternalNode) arg1;

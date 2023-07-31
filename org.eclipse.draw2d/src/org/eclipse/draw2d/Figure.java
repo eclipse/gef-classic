@@ -423,6 +423,7 @@ public class Figure implements IFigure {
 	 * @param y The Y coordinate
 	 * @return The deepest descendant for which isMouseEventTarget() returns true
 	 */
+	@Override
 	public IFigure findMouseEventTargetAt(int x, int y) {
 		if (!containsPoint(x, y))
 			return null;
@@ -1002,6 +1003,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#internalGetEventDispatcher()
 	 */
+	@Override
 	public EventDispatcher internalGetEventDispatcher() {
 		if (getParent() != null)
 			return getParent().internalGetEventDispatcher();
@@ -1011,6 +1013,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#intersects(Rectangle)
 	 */
+	@Override
 	public boolean intersects(Rectangle rect) {
 		return getBounds().intersects(rect);
 	}
@@ -1018,6 +1021,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#invalidate()
 	 */
+	@Override
 	public void invalidate() {
 		if (layoutManager != null)
 			layoutManager.invalidate();
@@ -1027,6 +1031,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#invalidateTree()
 	 */
+	@Override
 	public void invalidateTree() {
 		invalidate();
 		for (Iterator iter = children.iterator(); iter.hasNext();) {
@@ -1038,6 +1043,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#isCoordinateSystem()
 	 */
+	@Override
 	public boolean isCoordinateSystem() {
 		return useLocalCoordinates();
 	}
@@ -1045,6 +1051,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#isEnabled()
 	 */
+	@Override
 	public boolean isEnabled() {
 		return (flags & FLAG_ENABLED) != 0;
 	}
@@ -1052,6 +1059,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#isFocusTraversable()
 	 */
+	@Override
 	public boolean isFocusTraversable() {
 		return (flags & FLAG_FOCUS_TRAVERSABLE) != 0;
 	}
@@ -1072,6 +1080,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see org.eclipse.draw2d.IFigure#isMirrored()
 	 */
+	@Override
 	public boolean isMirrored() {
 		if (getParent() != null)
 			return getParent().isMirrored();
@@ -1081,6 +1090,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#isOpaque()
 	 */
+	@Override
 	public boolean isOpaque() {
 		return (flags & FLAG_OPAQUE) != 0;
 	}
@@ -1088,6 +1098,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#isRequestFocusEnabled()
 	 */
+	@Override
 	public boolean isRequestFocusEnabled() {
 		return (flags & FLAG_FOCUSABLE) != 0;
 	}
@@ -1095,6 +1106,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#isShowing()
 	 */
+	@Override
 	public boolean isShowing() {
 		return isVisible() && (getParent() == null || getParent().isShowing());
 	}
@@ -1124,6 +1136,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#isVisible()
 	 */
+	@Override
 	public boolean isVisible() {
 		return getFlag(FLAG_VISIBLE);
 	}
@@ -1146,6 +1159,7 @@ public class Figure implements IFigure {
 	 * @see #paintClientArea(Graphics)
 	 * @see #paintBorder(Graphics)
 	 */
+	@Override
 	public void paint(Graphics graphics) {
 		if (getLocalBackgroundColor() != null)
 			graphics.setBackgroundColor(getLocalBackgroundColor());
@@ -1295,6 +1309,7 @@ public class Figure implements IFigure {
 	 * 
 	 * @param figure The Figure to remove
 	 */
+	@Override
 	public void remove(IFigure figure) {
 		if ((figure.getParent() != this))
 			throw new IllegalArgumentException("Figure is not a child"); //$NON-NLS-1$
@@ -1325,6 +1340,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#removeAncestorListener(AncestorListener)
 	 */
+	@Override
 	public void removeAncestorListener(AncestorListener listener) {
 		if (ancestorHelper != null) {
 			ancestorHelper.removeAncestorListener(listener);
@@ -1338,6 +1354,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#removeCoordinateListener(CoordinateListener)
 	 */
+	@Override
 	public void removeCoordinateListener(CoordinateListener listener) {
 		eventListeners.removeListener(CoordinateListener.class, listener);
 	}
@@ -1345,6 +1362,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#removeFigureListener(FigureListener)
 	 */
+	@Override
 	public void removeFigureListener(FigureListener listener) {
 		eventListeners.removeListener(FigureListener.class, listener);
 	}
@@ -1352,6 +1370,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#removeFocusListener(FocusListener)
 	 */
+	@Override
 	public void removeFocusListener(FocusListener listener) {
 		eventListeners.removeListener(FocusListener.class, listener);
 	}
@@ -1359,6 +1378,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#removeKeyListener(KeyListener)
 	 */
+	@Override
 	public void removeKeyListener(KeyListener listener) {
 		eventListeners.removeListener(KeyListener.class, listener);
 	}
@@ -1369,6 +1389,7 @@ public class Figure implements IFigure {
 	 * @since 3.1
 	 * @param listener the listener being removed
 	 */
+	@Override
 	public void removeLayoutListener(LayoutListener listener) {
 		if (layoutManager instanceof LayoutNotifier) {
 			LayoutNotifier notifier = (LayoutNotifier) layoutManager;
@@ -1395,6 +1416,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#removeMouseListener(MouseListener)
 	 */
+	@Override
 	public void removeMouseListener(MouseListener listener) {
 		eventListeners.removeListener(MouseListener.class, listener);
 	}
@@ -1402,6 +1424,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#removeMouseMotionListener(MouseMotionListener)
 	 */
+	@Override
 	public void removeMouseMotionListener(MouseMotionListener listener) {
 		eventListeners.removeListener(MouseMotionListener.class, listener);
 	}
@@ -1409,6 +1432,7 @@ public class Figure implements IFigure {
 	/**
 	 * Called prior to this figure's removal from its parent
 	 */
+	@Override
 	public void removeNotify() {
 		children.forEach(IFigure::removeNotify);
 		if (internalGetEventDispatcher() != null)
@@ -1419,6 +1443,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#removePropertyChangeListener(PropertyChangeListener)
 	 */
+	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		if (propertyListeners == null)
 			return;
@@ -1428,6 +1453,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#removePropertyChangeListener(String, PropertyChangeListener)
 	 */
+	@Override
 	public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
 		if (propertyListeners == null)
 			return;
@@ -1437,6 +1463,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#repaint(Rectangle)
 	 */
+	@Override
 	public final void repaint(Rectangle rect) {
 		repaint(rect.x, rect.y, rect.width, rect.height);
 	}
@@ -1444,6 +1471,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#repaint(int, int, int, int)
 	 */
+	@Override
 	public void repaint(int x, int y, int w, int h) {
 		if (isVisible())
 			getUpdateManager().addDirtyRegion(this, x, y, w, h);
@@ -1452,6 +1480,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#repaint()
 	 */
+	@Override
 	public void repaint() {
 		repaint(getBounds());
 	}
@@ -1459,6 +1488,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#requestFocus()
 	 */
+	@Override
 	public final void requestFocus() {
 		if (!isRequestFocusEnabled() || hasFocus())
 			return;
@@ -1471,6 +1501,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#revalidate()
 	 */
+	@Override
 	public void revalidate() {
 		invalidate();
 		if (getParent() == null || isValidationRoot())
@@ -1482,6 +1513,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setBackgroundColor(Color)
 	 */
+	@Override
 	public void setBackgroundColor(Color bg) {
 		// Set background color to bg unless in high contrast mode.
 		// In that case, get the color from system
@@ -1506,6 +1538,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setBorder(Border)
 	 */
+	@Override
 	public void setBorder(Border border) {
 		this.border = border;
 		revalidate();
@@ -1524,6 +1557,7 @@ public class Figure implements IFigure {
 	 * @param rect The new bounds
 	 * @since 2.0
 	 */
+	@Override
 	public void setBounds(Rectangle rect) {
 		int x = bounds.x, y = bounds.y;
 
@@ -1593,6 +1627,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setConstraint(IFigure, Object)
 	 */
+	@Override
 	public void setConstraint(IFigure child, Object constraint) {
 		if (child.getParent() != this)
 			throw new IllegalArgumentException("Figure must be a child"); //$NON-NLS-1$
@@ -1609,6 +1644,7 @@ public class Figure implements IFigure {
 	 * @param clippingStrategy
 	 * @since 3.6
 	 */
+	@Override
 	public void setClippingStrategy(IClippingStrategy clippingStrategy) {
 		this.clippingStrategy = clippingStrategy;
 	}
@@ -1616,6 +1652,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setCursor(Cursor)
 	 */
+	@Override
 	public void setCursor(Cursor cursor) {
 		if (this.cursor == cursor)
 			return;
@@ -1628,6 +1665,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setEnabled(boolean)
 	 */
+	@Override
 	public void setEnabled(boolean value) {
 		if (isEnabled() == value)
 			return;
@@ -1651,6 +1689,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setFocusTraversable(boolean)
 	 */
+	@Override
 	public void setFocusTraversable(boolean focusTraversable) {
 		if (isFocusTraversable() == focusTraversable)
 			return;
@@ -1660,6 +1699,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setFont(Font)
 	 */
+	@Override
 	public void setFont(Font f) {
 		if (font != f) {
 			font = f;
@@ -1671,6 +1711,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setForegroundColor(Color)
 	 */
+	@Override
 	public void setForegroundColor(Color fg) {
 		// Set foreground color to fg unless in high contrast mode.
 		// In that case, get the color from system
@@ -1695,6 +1736,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setLayoutManager(LayoutManager)
 	 */
+	@Override
 	public void setLayoutManager(LayoutManager manager) {
 		if (layoutManager instanceof LayoutNotifier)
 			((LayoutNotifier) layoutManager).realLayout = manager;
@@ -1706,6 +1748,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setLocation(Point)
 	 */
+	@Override
 	public void setLocation(Point p) {
 		if (getLocation().equals(p))
 			return;
@@ -1717,6 +1760,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setMaximumSize(Dimension)
 	 */
+	@Override
 	public void setMaximumSize(Dimension d) {
 		if (maxSize != null && maxSize.equals(d))
 			return;
@@ -1727,6 +1771,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setMinimumSize(Dimension)
 	 */
+	@Override
 	public void setMinimumSize(Dimension d) {
 		if (minSize != null && minSize.equals(d))
 			return;
@@ -1737,6 +1782,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setOpaque(boolean)
 	 */
+	@Override
 	public void setOpaque(boolean opaque) {
 		if (isOpaque() == opaque)
 			return;
@@ -1747,6 +1793,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setParent(IFigure)
 	 */
+	@Override
 	public void setParent(IFigure p) {
 		IFigure oldParent = parent;
 		parent = p;
@@ -1756,6 +1803,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setPreferredSize(Dimension)
 	 */
+	@Override
 	public void setPreferredSize(Dimension size) {
 		if (prefSize != null && prefSize.equals(size))
 			return;
@@ -1778,6 +1826,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setRequestFocusEnabled(boolean)
 	 */
+	@Override
 	public void setRequestFocusEnabled(boolean requestFocusEnabled) {
 		if (isRequestFocusEnabled() == requestFocusEnabled)
 			return;
@@ -1787,6 +1836,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setSize(Dimension)
 	 */
+	@Override
 	public final void setSize(Dimension d) {
 		setSize(d.width, d.height);
 	}
@@ -1794,6 +1844,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setSize(int, int)
 	 */
+	@Override
 	public void setSize(int w, int h) {
 		Rectangle bounds = getBounds();
 		if (bounds.width == w && bounds.height == h)
@@ -1806,6 +1857,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setToolTip(IFigure)
 	 */
+	@Override
 	public void setToolTip(IFigure f) {
 		if (toolTip == f)
 			return;
@@ -1826,6 +1878,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#setVisible(boolean)
 	 */
+	@Override
 	public void setVisible(boolean visible) {
 		boolean currentVisibility = isVisible();
 		if (visible == currentVisibility)
@@ -1841,6 +1894,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#translate(int, int)
 	 */
+	@Override
 	public final void translate(int x, int y) {
 		primTranslate(x, y);
 		fireFigureMoved();
@@ -1849,6 +1903,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#translateFromParent(Translatable)
 	 */
+	@Override
 	public void translateFromParent(Translatable t) {
 		if (useLocalCoordinates())
 			t.performTranslate(-getBounds().x - getInsets().left, -getBounds().y - getInsets().top);
@@ -1857,6 +1912,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#translateToAbsolute(Translatable)
 	 */
+	@Override
 	public final void translateToAbsolute(Translatable t) {
 		if (getParent() != null) {
 			getParent().translateToParent(t);
@@ -1867,6 +1923,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#translateToParent(Translatable)
 	 */
+	@Override
 	public void translateToParent(Translatable t) {
 		if (useLocalCoordinates())
 			t.performTranslate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
@@ -1875,6 +1932,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#translateToRelative(Translatable)
 	 */
+	@Override
 	public final void translateToRelative(Translatable t) {
 		if (getParent() != null) {
 			getParent().translateToRelative(t);
@@ -1896,6 +1954,7 @@ public class Figure implements IFigure {
 	/**
 	 * @see IFigure#validate()
 	 */
+	@Override
 	public void validate() {
 		if (isValid())
 			return;
@@ -1921,6 +1980,7 @@ public class Figure implements IFigure {
 		 * 
 		 * @see TreeSearch#accept(IFigure)
 		 */
+		@Override
 		public boolean accept(IFigure f) {
 			return true;
 		}
@@ -1930,6 +1990,7 @@ public class Figure implements IFigure {
 		 * 
 		 * @see TreeSearch#prune(IFigure)
 		 */
+		@Override
 		public boolean prune(IFigure f) {
 			return false;
 		}
@@ -1945,24 +2006,28 @@ public class Figure implements IFigure {
 			listeners.add(listener);
 		}
 
+		@Override
 		public Object getConstraint(IFigure child) {
 			if (realLayout != null)
 				return realLayout.getConstraint(child);
 			return null;
 		}
 
+		@Override
 		public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
 			if (realLayout != null)
 				return realLayout.getMinimumSize(container, wHint, hHint);
 			return null;
 		}
 
+		@Override
 		public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
 			if (realLayout != null)
 				return realLayout.getPreferredSize(container, wHint, hHint);
 			return null;
 		}
 
+		@Override
 		public void invalidate() {
 			listeners.forEach(listener -> listener.invalidate(Figure.this));
 
@@ -1970,6 +2035,7 @@ public class Figure implements IFigure {
 				realLayout.invalidate();
 		}
 
+		@Override
 		public void layout(IFigure container) {
 			boolean consumed = false;
 			for (LayoutListener listener : listeners) {
@@ -1981,12 +2047,14 @@ public class Figure implements IFigure {
 			listeners.forEach(listener -> listener.postLayout(container));
 		}
 
+		@Override
 		public void remove(IFigure child) {
 			listeners.forEach(listener -> listener.remove(child));
 			if (realLayout != null)
 				realLayout.remove(child);
 		}
 
+		@Override
 		public void setConstraint(IFigure child, Object constraint) {
 			listeners.forEach(listener -> listener.setConstraint(child, constraint));
 			if (realLayout != null)
@@ -2056,21 +2124,27 @@ public class Figure implements IFigure {
 	 * An UpdateManager that does nothing.
 	 */
 	protected static final UpdateManager NO_MANAGER = new UpdateManager() {
+		@Override
 		public void addDirtyRegion(IFigure figure, int x, int y, int w, int h) {
 		}
 
+		@Override
 		public void addInvalidFigure(IFigure f) {
 		}
 
+		@Override
 		public void performUpdate() {
 		}
 
+		@Override
 		public void performUpdate(Rectangle region) {
 		}
 
+		@Override
 		public void setRoot(IFigure root) {
 		}
 
+		@Override
 		public void setGraphicsSource(GraphicsSource gs) {
 		}
 	};

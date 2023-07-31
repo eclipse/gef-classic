@@ -107,6 +107,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * 
 	 * @see DropTargetListener#dragEnter(DropTargetEvent)
 	 */
+	@Override
 	public void dragEnter(DropTargetEvent event) {
 		resetHover();
 		setCurrentEvent(event);
@@ -121,6 +122,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * 
 	 * @see DropTargetListener#dragLeave(DropTargetEvent)
 	 */
+	@Override
 	public void dragLeave(DropTargetEvent event) {
 		setCurrentEvent(event);
 		unload();
@@ -133,6 +135,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * 
 	 * @see DropTargetListener#dragOperationChanged(DropTargetEvent)
 	 */
+	@Override
 	public void dragOperationChanged(DropTargetEvent event) {
 		resetHover();
 		setCurrentEvent(event);
@@ -146,6 +149,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * 
 	 * @see DropTargetListener#dragOver(org.eclipse.swt.dnd.DropTargetEvent)
 	 */
+	@Override
 	public void dragOver(DropTargetEvent event) {
 		setCurrentEvent(event);
 		handleDragOver();
@@ -171,6 +175,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * 
 	 * @see DropTargetListener#drop(DropTargetEvent)
 	 */
+	@Override
 	public void drop(DropTargetEvent event) {
 		setCurrentEvent(event);
 		eraseTargetFeedback();
@@ -184,6 +189,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * 
 	 * @see DropTargetListener#dropAccept(DropTargetEvent)
 	 */
+	@Override
 	public void dropAccept(DropTargetEvent event) {
 		setCurrentEvent(event);
 	}
@@ -268,6 +274,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	/**
 	 * @see TransferDropTargetListener#getTransfer()
 	 */
+	@Override
 	public Transfer getTransfer() {
 		return transfer;
 	}
@@ -379,6 +386,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * @return <code>true</code> if this TransferDropTargetListener is enabled for
 	 *         the given DropTargetEvent
 	 */
+	@Override
 	public boolean isEnabled(DropTargetEvent event) {
 		for (int i = 0; i < event.dataTypes.length; i++) {
 			if (getTransfer().isSupportedType(event.dataTypes[i])) {

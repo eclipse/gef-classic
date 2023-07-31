@@ -42,6 +42,7 @@ public class AbsoluteBendpoint extends Point implements Bendpoint {
 	/**
 	 * @see org.eclipse.draw2d.Bendpoint#getLocation()
 	 */
+	@Override
 	public Point getLocation() {
 		return this;
 	}

@@ -53,6 +53,7 @@ public class PaletteEditPartFactory implements EditPartFactory {
 	/**
 	 * @see org.eclipse.gef.EditPartFactory#createEditPart(EditPart, Object)
 	 */
+	@Override
 	public EditPart createEditPart(EditPart parentEditPart, Object model) {
 		if (model instanceof PaletteRoot)
 			return createMainPaletteEditPart(parentEditPart, model);

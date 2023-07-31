@@ -55,6 +55,7 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#getMinimumSize(IFigure, int, int)
 	 */
+	@Override
 	public Dimension getMinimumSize(IFigure container, int w, int h) {
 		boolean flush = cachedMinimumHint.width != w && isSensitiveHorizontally(container);
 		flush |= cachedMinimumHint.height != h && isSensitiveVertically(container);
@@ -71,6 +72,7 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#getPreferredSize(IFigure, int, int)
 	 */
+	@Override
 	public final Dimension getPreferredSize(IFigure container, int w, int h) {
 		boolean flush = cachedPreferredHint.width != w && isSensitiveHorizontally(container);
 		flush |= cachedPreferredHint.height != h && isSensitiveVertically(container);
@@ -87,6 +89,7 @@ public abstract class AbstractHintLayout extends AbstractLayout {
 	 * 
 	 * @see org.eclipse.draw2d.LayoutManager#invalidate()
 	 */
+	@Override
 	public void invalidate() {
 		minimumSize = null;
 		super.invalidate();

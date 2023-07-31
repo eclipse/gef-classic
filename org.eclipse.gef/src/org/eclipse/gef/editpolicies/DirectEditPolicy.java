@@ -32,6 +32,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request)
 	 */
+	@Override
 	public void eraseSourceFeedback(Request request) {
 		if (RequestConstants.REQ_DIRECT_EDIT == request.getType())
 			eraseDirectEditFeedback((DirectEditRequest) request);
@@ -53,6 +54,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		if (RequestConstants.REQ_DIRECT_EDIT == request.getType())
 			return getDirectEditCommand((DirectEditRequest) request);
@@ -86,6 +88,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request)
 	 */
+	@Override
 	public void showSourceFeedback(Request request) {
 		if (RequestConstants.REQ_DIRECT_EDIT == request.getType())
 			showDirectEditFeedback((DirectEditRequest) request);
@@ -130,6 +133,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#understandsRequest(Request)
 	 */
+	@Override
 	public boolean understandsRequest(Request request) {
 		if (RequestConstants.REQ_DIRECT_EDIT.equals(request.getType()))
 			return true;

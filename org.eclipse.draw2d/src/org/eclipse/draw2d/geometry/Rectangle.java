@@ -217,6 +217,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @return Returns the result of the equality test
 	 * @since 2.0
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
@@ -680,6 +681,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return (x + height + 1) * (y + width + 1) ^ x ^ y;
 	}
@@ -751,6 +753,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * @see Translatable#performScale(double)
 	 */
+	@Override
 	public void performScale(double factor) {
 		scale(factor);
 	}
@@ -758,6 +761,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	/**
 	 * @see Translatable#performTranslate(int, int)
 	 */
+	@Override
 	public void performTranslate(int dx, int dy) {
 		translate(dx, dy);
 	}
@@ -1159,6 +1163,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @return String containing the description
 	 * @since 2.0
 	 */
+	@Override
 	public String toString() {
 		return "Rectangle(" + preciseX() + ", " + preciseY() + ", " + //$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 				preciseWidth() + ", " + preciseHeight() + ")";//$NON-NLS-2$//$NON-NLS-1$

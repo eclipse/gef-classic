@@ -30,12 +30,14 @@ public class Polygon extends Polyline {
 	 * @param y the Y coordinate
 	 * @return whether the point (x,y) is contained in this polygon
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		if (!getBounds().contains(x, y))
 			return false;
 		return shapeContainsPoint(x, y) || childrenContainsPoint(x, y);
 	}
 
+	@Override
 	protected boolean shapeContainsPoint(int x, int y) {
 		return Geometry.polygonContainsPoint(points, x, y);
 	}
@@ -46,6 +48,7 @@ public class Polygon extends Polyline {
 	 * @param g the Graphics object
 	 * @since 2.0
 	 */
+	@Override
 	protected void fillShape(Graphics g) {
 		g.fillPolygon(getPoints());
 	}
@@ -56,6 +59,7 @@ public class Polygon extends Polyline {
 	 * @param g the Graphics object
 	 * @since 2.0
 	 */
+	@Override
 	protected void outlineShape(Graphics g) {
 		g.drawPolygon(getPoints());
 	}

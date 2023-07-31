@@ -117,6 +117,7 @@ public class RelativeLocator implements Locator {
 	 * 
 	 * @see org.eclipse.draw2d.Locator#relocate(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void relocate(IFigure target) {
 		IFigure reference = getReferenceFigure();
 		Rectangle targetBounds = new PrecisionRectangle(getReferenceBox().getResized(-1, -1));

@@ -42,6 +42,7 @@ public interface IFigure {
 			super(0, 0, 0, 0);
 		}
 
+		@Override
 		public boolean isEmpty() {
 			return true;
 		}

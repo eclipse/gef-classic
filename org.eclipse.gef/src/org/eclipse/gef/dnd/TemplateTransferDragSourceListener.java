@@ -55,6 +55,7 @@ public class TemplateTransferDragSourceListener extends AbstractTransferDragSour
 	/**
 	 * @see AbstractTransferDragSourceListener#dragFinished(DragSourceEvent)
 	 */
+	@Override
 	public void dragFinished(DragSourceEvent event) {
 		TemplateTransfer.getInstance().setTemplate(null);
 	}
@@ -65,6 +66,7 @@ public class TemplateTransferDragSourceListener extends AbstractTransferDragSour
 	 * 
 	 * @param event the DragSourceEvent
 	 */
+	@Override
 	public void dragSetData(DragSourceEvent event) {
 		event.data = getTemplate();
 	}
@@ -75,6 +77,7 @@ public class TemplateTransferDragSourceListener extends AbstractTransferDragSour
 	 * 
 	 * @see org.eclipse.swt.dnd.DragSourceListener#dragStart(DragSourceEvent)
 	 */
+	@Override
 	public void dragStart(DragSourceEvent event) {
 		Object template = getTemplate();
 		if (template == null)

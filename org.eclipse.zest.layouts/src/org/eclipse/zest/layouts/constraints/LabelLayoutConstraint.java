@@ -24,6 +24,7 @@ public class LabelLayoutConstraint implements LayoutConstraint {
 	 * 
 	 * @see org.eclipse.zest.layouts.constraints.LayoutConstraint#clear()
 	 */
+	@Override
 	public void clear() {
 		label = null;
 		pointSize = 1;

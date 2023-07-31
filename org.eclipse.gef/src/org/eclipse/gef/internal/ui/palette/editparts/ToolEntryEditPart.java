@@ -55,6 +55,7 @@ public class ToolEntryEditPart extends PaletteEditPart {
 			enabled = false;
 		}
 
+		@Override
 		public void run() {
 			if (enabled) {
 				getButtonModel().setArmed(false);

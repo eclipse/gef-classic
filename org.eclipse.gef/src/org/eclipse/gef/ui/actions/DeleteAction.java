@@ -70,6 +70,7 @@ public class DeleteAction extends SelectionAction {
 	 * 
 	 * @return <code>true</code> if the command should be enabled
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		Command cmd = createDeleteCommand(getSelectedObjects());
 		if (cmd == null)
@@ -106,6 +107,7 @@ public class DeleteAction extends SelectionAction {
 	/**
 	 * Initializes this action's text and images.
 	 */
+	@Override
 	protected void init() {
 		super.init();
 		setText(GEFMessages.DeleteAction_Label);
@@ -120,6 +122,7 @@ public class DeleteAction extends SelectionAction {
 	/**
 	 * Performs the delete action on the selected objects.
 	 */
+	@Override
 	public void run() {
 		execute(createDeleteCommand(getSelectedObjects()));
 	}

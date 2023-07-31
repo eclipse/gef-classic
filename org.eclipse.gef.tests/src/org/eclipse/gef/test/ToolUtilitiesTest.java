@@ -37,6 +37,7 @@ public class ToolUtilitiesTest extends Assert {
 		 * 
 		 * @see org.eclipse.gef.editparts.AbstractEditPart#register()
 		 */
+		@Override
 		protected void register() {
 			// do nothing
 		}
@@ -46,6 +47,7 @@ public class ToolUtilitiesTest extends Assert {
 		 * 
 		 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 		 */
+		@Override
 		protected IFigure createFigure() {
 			// TODO Auto-generated method stub
 			return new Figure();
@@ -56,6 +58,7 @@ public class ToolUtilitiesTest extends Assert {
 		 * 
 		 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 		 */
+		@Override
 		protected void createEditPolicies() {
 			// do nothing
 		}

@@ -50,6 +50,7 @@ public class ToggleRulerVisibilityAction extends Action {
 	/**
 	 * @see org.eclipse.jface.action.IAction#isChecked()
 	 */
+	@Override
 	public boolean isChecked() {
 		Boolean val = ((Boolean) diagramViewer.getProperty(RulerProvider.PROPERTY_RULER_VISIBILITY));
 		if (val != null)
@@ -60,6 +61,7 @@ public class ToggleRulerVisibilityAction extends Action {
 	/**
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
+	@Override
 	public void run() {
 		diagramViewer.setProperty(RulerProvider.PROPERTY_RULER_VISIBILITY, Boolean.valueOf(!isChecked()));
 	}

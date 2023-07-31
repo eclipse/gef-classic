@@ -206,6 +206,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	/**
 	 * @see Border#getInsets(IFigure)
 	 */
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return getScheme().getInsets();
 	}
@@ -226,6 +227,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	 * 
 	 * @see Border#isOpaque()
 	 */
+	@Override
 	public boolean isOpaque() {
 		return true;
 	}
@@ -243,6 +245,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	/**
 	 * @see Border#paint(IFigure, Graphics, Insets)
 	 */
+	@Override
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		Color[] tl = scheme.getHighlight();
 		Color[] br = scheme.getShadow();

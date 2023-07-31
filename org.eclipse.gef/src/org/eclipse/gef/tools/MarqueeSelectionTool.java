@@ -121,6 +121,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 
 			if (schedulePaint) {
 				Display.getCurrent().timerExec(DELAY, new Runnable() {
+					@Override
 					public void run() {
 						offset++;
 						if (offset > 5)
@@ -389,6 +390,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommandName()
 	 */
+	@Override
 	protected String getCommandName() {
 		return REQ_SELECTION;
 	}

@@ -60,6 +60,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	 * 
 	 * @see AbstractEditPart#addChildVisual(EditPart, int)
 	 */
+	@Override
 	protected void addChildVisual(EditPart childEditPart, int index) {
 		Widget widget = getWidget();
 		TreeItem item;
@@ -86,6 +87,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	 * 
 	 * @see AbstractEditPart#createEditPolicies()
 	 */
+	@Override
 	protected void createEditPolicies() {
 	}
 
@@ -98,6 +100,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	/**
 	 * @see EditPart#getDragTracker(Request)
 	 */
+	@Override
 	public DragTracker getDragTracker(Request req) {
 		return null;
 	}
@@ -125,6 +128,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	/**
 	 * @see TreeEditPart#getWidget()
 	 */
+	@Override
 	public Widget getWidget() {
 		return widget;
 	}
@@ -174,6 +178,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	 * 
 	 * @see org.eclipse.gef.TreeEditPart#setWidget(Widget)
 	 */
+	@Override
 	public void setWidget(Widget widget) {
 		if (widget != null) {
 			widget.setData(this);

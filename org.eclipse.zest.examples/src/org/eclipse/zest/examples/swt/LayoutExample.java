@@ -57,6 +57,7 @@ public class LayoutExample {
 
 		ConstraintAdapter constraintAdapters = new ConstraintAdapter() {
 
+			@Override
 			public void populateConstraint(Object object, LayoutConstraint constraint) {
 				if (constraint instanceof BasicEdgeConstraints) {
 					BasicEdgeConstraints basicEdgeConstraints = (BasicEdgeConstraints) constraint;

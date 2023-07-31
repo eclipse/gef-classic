@@ -70,10 +70,12 @@ public class PaintSnippet {
 
 		b.addSelectionListener(new SelectionListener() {
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 
 				Point size = new Point(g.getContents().getSize().width, g.getContents().getSize().height);
@@ -87,6 +89,7 @@ public class PaintSnippet {
 				Shell popup = new Shell(shell);
 				popup.setText("Image");
 				popup.addListener(SWT.Close, new Listener() {
+					@Override
 					public void handleEvent(Event e) {
 						image.dispose();
 					}
@@ -95,6 +98,7 @@ public class PaintSnippet {
 				Canvas canvas = new Canvas(popup, SWT.NONE);
 				canvas.setBounds(10, 10, size.x + 10, size.y + 10);
 				canvas.addPaintListener(new PaintListener() {
+					@Override
 					public void paintControl(PaintEvent e) {
 						e.gc.drawImage(image, 0, 0);
 					}

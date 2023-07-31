@@ -56,6 +56,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 * @return the current state
 	 * @since 3.2
 	 */
+	@Override
 	protected Object getCurrentState(IFigure container) {
 		Map<IFigure, Rectangle> locations = new HashMap<>();
 		container.getChildren().forEach(child -> locations.put(child, child.getBounds().getCopy()));
@@ -77,6 +78,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 * 
 	 * @see LayoutListener#invalidate(IFigure)
 	 */
+	@Override
 	public final void invalidate(IFigure container) {
 		if (Animation.isInitialRecording())
 			Animation.hookAnimator(container, this);
@@ -87,6 +89,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 * 
 	 * @see org.eclipse.draw2d.LayoutListener#layout(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public final boolean layout(IFigure container) {
 		if (Animation.isAnimating())
 			return Animation.hookPlayback(container, this);
@@ -98,6 +101,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 * 
 	 * @see Animator#playback(IFigure)
 	 */
+	@Override
 	protected boolean playback(IFigure container) {
 		Map initial = (Map) Animation.getInitialState(this, container);
 		Map ending = (Map) Animation.getFinalState(this, container);
@@ -129,6 +133,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 * 
 	 * @see LayoutListener#postLayout(IFigure)
 	 */
+	@Override
 	public final void postLayout(IFigure container) {
 		if (Animation.isFinalRecording())
 			Animation.hookNeedsCapture(container, this);
@@ -139,6 +144,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 * 
 	 * @see LayoutListener#remove(IFigure)
 	 */
+	@Override
 	public final void remove(IFigure child) {
 	}
 
@@ -147,6 +153,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	 * 
 	 * @see LayoutListener#setConstraint(IFigure, Object)
 	 */
+	@Override
 	public final void setConstraint(IFigure child, Object constraint) {
 	}
 

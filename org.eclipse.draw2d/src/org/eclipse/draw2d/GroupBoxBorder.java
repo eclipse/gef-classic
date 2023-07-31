@@ -47,6 +47,7 @@ public class GroupBoxBorder extends AbstractLabeledBorder {
 	 * @return the Insets for this GroupBoxBorder.
 	 * @since 2.0
 	 */
+	@Override
 	protected Insets calculateInsets(IFigure figure) {
 		int height = getTextExtents(figure).height;
 		return new Insets(height);
@@ -55,6 +56,7 @@ public class GroupBoxBorder extends AbstractLabeledBorder {
 	/**
 	 * @see org.eclipse.draw2d.Border#getPreferredSize(IFigure)
 	 */
+	@Override
 	public Dimension getPreferredSize(IFigure fig) {
 		Dimension textSize = getTextExtents(fig);
 		return textSize.getCopy().expand(textSize.height * 2, 0);
@@ -63,6 +65,7 @@ public class GroupBoxBorder extends AbstractLabeledBorder {
 	/**
 	 * @see Border#paint(IFigure, Graphics, Insets)
 	 */
+	@Override
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		tempRect.setBounds(getPaintRectangle(figure, insets));
 		Rectangle r = tempRect;

@@ -33,18 +33,22 @@ public class CommandStackInspector extends PageBookView {
 	/**
 	 * @see PageBookView#createDefaultPage(org.eclipse.ui.part.PageBook)
 	 */
+	@Override
 	protected IPage createDefaultPage(PageBook book) {
 		Page page = new Page() {
 			Control control;
 
+			@Override
 			public void createControl(Composite parent) {
 				control = new Canvas(parent, SWT.NONE);
 			}
 
+			@Override
 			public Control getControl() {
 				return control;
 			}
 
+			@Override
 			public void setFocus() {
 			}
 		};
@@ -56,6 +60,7 @@ public class CommandStackInspector extends PageBookView {
 	/**
 	 * @see PageBookView#doCreatePage(org.eclipse.ui.IWorkbenchPart)
 	 */
+	@Override
 	protected PageRec doCreatePage(IWorkbenchPart part) {
 		// Try to get a custom command stack page.
 		Object obj = part.getAdapter(CommandStackInspectorPage.class);
@@ -80,6 +85,7 @@ public class CommandStackInspector extends PageBookView {
 	 * @param part the input part
 	 * @param rec  a page record for the part
 	 */
+	@Override
 	protected void doDestroyPage(IWorkbenchPart part, PageRec rec) {
 		rec.page.dispose();
 	}
@@ -87,6 +93,7 @@ public class CommandStackInspector extends PageBookView {
 	/**
 	 * @see PageBookView#getBootstrapPart()
 	 */
+	@Override
 	protected IWorkbenchPart getBootstrapPart() {
 		IWorkbenchPage persp = getSite().getWorkbenchWindow().getActivePage();
 		if (persp != null)
@@ -98,6 +105,7 @@ public class CommandStackInspector extends PageBookView {
 	/**
 	 * @see PageBookView#isImportant(org.eclipse.ui.IWorkbenchPart)
 	 */
+	@Override
 	protected boolean isImportant(IWorkbenchPart part) {
 		return part instanceof IEditorPart;
 	}

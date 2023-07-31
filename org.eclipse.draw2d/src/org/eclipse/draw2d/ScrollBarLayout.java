@@ -55,6 +55,7 @@ public class ScrollBarLayout extends AbstractLayout {
 	/**
 	 * @see AbstractLayout#setConstraint(IFigure, Object)
 	 */
+	@Override
 	public void setConstraint(IFigure figure, Object constraint) {
 		if (constraint.equals(UP_ARROW))
 			up = figure;
@@ -71,6 +72,7 @@ public class ScrollBarLayout extends AbstractLayout {
 	/**
 	 * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure parent, int w, int h) {
 		Insets insets = transposer.t(parent.getInsets());
 		Dimension d = new Dimension(16, 16 * 4);
@@ -81,6 +83,7 @@ public class ScrollBarLayout extends AbstractLayout {
 	/**
 	 * @see LayoutManager#layout(IFigure)
 	 */
+	@Override
 	public void layout(IFigure parent) {
 		ScrollBar scrollBar = (ScrollBar) parent;
 
@@ -159,6 +162,7 @@ public class ScrollBarLayout extends AbstractLayout {
 	/**
 	 * @see LayoutManager#remove(IFigure)
 	 */
+	@Override
 	public void remove(IFigure child) {
 		if (child == up) {
 			up = null;

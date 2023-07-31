@@ -29,6 +29,7 @@ public class FreeformLayeredPane extends LayeredPane implements FreeformFigure {
 	/**
 	 * @see IFigure#add(IFigure, Object, int)
 	 */
+	@Override
 	public void add(IFigure child, Object constraint, int index) {
 		super.add(child, constraint, index);
 		helper.hookChild(child);
@@ -37,6 +38,7 @@ public class FreeformLayeredPane extends LayeredPane implements FreeformFigure {
 	/**
 	 * @see FreeformFigure#addFreeformListener(FreeformListener)
 	 */
+	@Override
 	public void addFreeformListener(FreeformListener listener) {
 		addListener(FreeformListener.class, listener);
 	}
@@ -44,6 +46,7 @@ public class FreeformLayeredPane extends LayeredPane implements FreeformFigure {
 	/**
 	 * @see FreeformFigure#fireExtentChanged()
 	 */
+	@Override
 	public void fireExtentChanged() {
 		getListenersIterable(FreeformListener.class).forEach(lst -> lst.notifyFreeformExtentChanged());
 	}
@@ -53,6 +56,7 @@ public class FreeformLayeredPane extends LayeredPane implements FreeformFigure {
 	 * 
 	 * @see Figure#fireMoved()
 	 */
+	@Override
 	protected void fireMoved() {
 	}
 
@@ -68,6 +72,7 @@ public class FreeformLayeredPane extends LayeredPane implements FreeformFigure {
 	/**
 	 * @see FreeformFigure#getFreeformExtent()
 	 */
+	@Override
 	public Rectangle getFreeformExtent() {
 		return helper.getFreeformExtent();
 	}
@@ -75,6 +80,7 @@ public class FreeformLayeredPane extends LayeredPane implements FreeformFigure {
 	/**
 	 * @see Figure#primTranslate(int, int)
 	 */
+	@Override
 	protected void primTranslate(int dx, int dy) {
 		bounds.x += dx;
 		bounds.y += dy;
@@ -83,6 +89,7 @@ public class FreeformLayeredPane extends LayeredPane implements FreeformFigure {
 	/**
 	 * @see IFigure#remove(IFigure)
 	 */
+	@Override
 	public void remove(IFigure child) {
 		helper.unhookChild(child);
 		super.remove(child);
@@ -91,6 +98,7 @@ public class FreeformLayeredPane extends LayeredPane implements FreeformFigure {
 	/**
 	 * @see FreeformFigure#removeFreeformListener(FreeformListener)
 	 */
+	@Override
 	public void removeFreeformListener(FreeformListener listener) {
 		removeListener(FreeformListener.class, listener);
 	}
@@ -98,6 +106,7 @@ public class FreeformLayeredPane extends LayeredPane implements FreeformFigure {
 	/**
 	 * @see FreeformFigure#setFreeformBounds(Rectangle)
 	 */
+	@Override
 	public void setFreeformBounds(Rectangle bounds) {
 		helper.setFreeformBounds(bounds);
 	}

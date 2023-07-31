@@ -39,9 +39,11 @@ public class AnimationSnippet {
 		final GraphNode n2 = new GraphNode(g, SWT.NONE, "Rock");
 
 		b.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
 
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				Animation.markBegin();
 				n2.setLocation(0, 0);

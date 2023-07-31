@@ -111,6 +111,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	 * 
 	 * /** Gets the figure for this container.
 	 */
+	@Override
 	public IFigure getNodeFigure() {
 		return this.nodeFigure;
 	}
@@ -517,10 +518,12 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/**
 	 * Gets the graph that this container has been added to.
 	 */
+	@Override
 	public Graph getGraph() {
 		return this.graph.getGraph();
 	}
 
+	@Override
 	public int getItemType() {
 		return CONTAINER;
 	}
@@ -528,6 +531,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/**
 	 * 
 	 */
+	@Override
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm, boolean applyLayout) {
 		this.layoutAlgorithm = algorithm;
 		if (applyLayout) {
@@ -536,6 +540,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 
 	}
 
+	@Override
 	public void applyLayout() {
 		if ((this.getNodes().size() == 0)) {
 			return;
@@ -617,6 +622,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	/***************************************************************************
 	 * NON API MEMBERS
 	 **************************************************************************/
+	@Override
 	protected void initFigure() {
 		setModelFigure(createContainerFigure());
 		if (graph.getHideNodesEnabled()) {
@@ -765,6 +771,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 		return containerFigure;
 	}
 
+	@Override
 	protected void updateFigureForModel(IFigure currentFigure) {
 
 		expandGraphLabel.setTextT(getText());
@@ -861,10 +868,12 @@ public class GraphContainer extends GraphNode implements IContainer {
 		// Containers cannot be added to other containers (yet)
 	}
 
+	@Override
 	public List getNodes() {
 		return this.childNodes;
 	}
 
+	@Override
 	void paint() {
 		Iterator iterator = getNodes().iterator();
 

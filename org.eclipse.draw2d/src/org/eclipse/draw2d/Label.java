@@ -303,6 +303,7 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * @see IFigure#getMinimumSize(int, int)
 	 */
+	@Override
 	public Dimension getMinimumSize(int w, int h) {
 		if (minSize != null)
 			return minSize;
@@ -321,6 +322,7 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * @see IFigure#getPreferredSize(int, int)
 	 */
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		if (prefSize == null) {
 			prefSize = calculateLabelSize(getTextSize());
@@ -461,6 +463,7 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * @see IFigure#invalidate()
 	 */
+	@Override
 	public void invalidate() {
 		prefSize = null;
 		minSize = null;
@@ -485,6 +488,7 @@ public class Label extends Figure implements PositionConstants {
 	/**
 	 * @see Figure#paintFigure(Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		if (isOpaque())
 			super.paintFigure(graphics);

@@ -46,6 +46,7 @@ public class SetActivePaletteToolAction extends Action {
 	/**
 	 * @see org.eclipse.jface.action.IAction#run()
 	 */
+	@Override
 	public void run() {
 		if (viewer != null) {
 			viewer.setActiveTool(entry);

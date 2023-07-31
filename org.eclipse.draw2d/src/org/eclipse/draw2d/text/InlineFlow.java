@@ -62,6 +62,7 @@ public class InlineFlow extends FlowFigure {
 	 * @param x the relative x coordinate
 	 * @param y the relative y coordinate
 	 */
+	@Override
 	public boolean containsPoint(int x, int y) {
 		if (super.containsPoint(x, y)) {
 			List frags = getFragments();
@@ -76,6 +77,7 @@ public class InlineFlow extends FlowFigure {
 	/**
 	 * @see FlowFigure#createDefaultFlowLayout()
 	 */
+	@Override
 	protected FlowFigureLayout createDefaultFlowLayout() {
 		return new InlineFlowLayout(this);
 	}
@@ -97,6 +99,7 @@ public class InlineFlow extends FlowFigure {
 	 * 
 	 * @param graphics the graphics
 	 */
+	@Override
 	protected void paintBorder(Graphics graphics) {
 		if (getBorder() != null) {
 			FlowBorder fb = (FlowBorder) getBorder();
@@ -147,6 +150,7 @@ public class InlineFlow extends FlowFigure {
 	/**
 	 * @see FlowFigure#postValidate()
 	 */
+	@Override
 	public void postValidate() {
 		List list = getFragments();
 		FlowBox box;
@@ -172,6 +176,7 @@ public class InlineFlow extends FlowFigure {
 	 * 
 	 * @param border <code>null</code> or a FlowBorder
 	 */
+	@Override
 	public void setBorder(Border border) {
 		if (border == null || border instanceof FlowBorder)
 			super.setBorder(border);

@@ -47,6 +47,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * 
 	 * @see Figure#addNotify()
 	 */
+	@Override
 	public void addNotify() {
 		super.addNotify();
 		hookSourceAnchor();
@@ -73,6 +74,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * 
 	 * @param anchor the anchor that moved
 	 */
+	@Override
 	public void anchorMoved(ConnectionAnchor anchor) {
 		revalidate();
 	}
@@ -99,6 +101,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * 
 	 * @return this connection's router
 	 */
+	@Override
 	public ConnectionRouter getConnectionRouter() {
 		if (connectionRouter instanceof RoutingNotifier)
 			return ((RoutingNotifier) connectionRouter).realRouter;
@@ -111,6 +114,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * 
 	 * @return the connection's routing constraint
 	 */
+	@Override
 	public Object getRoutingConstraint() {
 		if (getConnectionRouter() != null)
 			return getConnectionRouter().getConstraint(this);
@@ -121,6 +125,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	/**
 	 * @return the anchor at the start of this polyline connection (may be null)
 	 */
+	@Override
 	public ConnectionAnchor getSourceAnchor() {
 		return startAnchor;
 	}
@@ -135,6 +140,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	/**
 	 * @return the anchor at the end of this polyline connection (may be null)
 	 */
+	@Override
 	public ConnectionAnchor getTargetAnchor() {
 		return endAnchor;
 	}
@@ -163,6 +169,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * connection router is used to route this, after which it is laid out. It also
 	 * fires a moved method.
 	 */
+	@Override
 	public void layout() {
 		if (getSourceAnchor() != null && getTargetAnchor() != null)
 			connectionRouter.route(this);
@@ -186,6 +193,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * 
 	 * @since 2.0
 	 */
+	@Override
 	public void removeNotify() {
 		unhookSourceAnchor();
 		unhookTargetAnchor();
@@ -211,6 +219,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	/**
 	 * @see IFigure#revalidate()
 	 */
+	@Override
 	public void revalidate() {
 		super.revalidate();
 		connectionRouter.invalidate(this);
@@ -222,6 +231,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * 
 	 * @param cr the connection router
 	 */
+	@Override
 	public void setConnectionRouter(ConnectionRouter cr) {
 		if (cr == null)
 			cr = ConnectionRouter.NULL;
@@ -242,6 +252,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * 
 	 * @param cons the constraint
 	 */
+	@Override
 	public void setRoutingConstraint(Object cons) {
 		if (connectionRouter != null)
 			connectionRouter.setConstraint(this, cons);
@@ -253,6 +264,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * 
 	 * @param anchor the new source anchor
 	 */
+	@Override
 	public void setSourceAnchor(ConnectionAnchor anchor) {
 		if (anchor == startAnchor)
 			return;
@@ -287,6 +299,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * 
 	 * @param anchor the new target anchor
 	 */
+	@Override
 	public void setTargetAnchor(ConnectionAnchor anchor) {
 		if (anchor == endAnchor)
 			return;
@@ -334,10 +347,12 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 			listeners.add(listener);
 		}
 
+		@Override
 		public Object getConstraint(Connection connection) {
 			return realRouter.getConstraint(connection);
 		}
 
+		@Override
 		public void invalidate(Connection connection) {
 			for (int i = 0; i < listeners.size(); i++)
 				((RoutingListener) listeners.get(i)).invalidate(connection);
@@ -345,6 +360,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 			realRouter.invalidate(connection);
 		}
 
+		@Override
 		public void route(Connection connection) {
 			boolean consumed = false;
 			for (int i = 0; i < listeners.size(); i++)
@@ -357,12 +373,14 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 				((RoutingListener) listeners.get(i)).postRoute(connection);
 		}
 
+		@Override
 		public void remove(Connection connection) {
 			for (int i = 0; i < listeners.size(); i++)
 				((RoutingListener) listeners.get(i)).remove(connection);
 			realRouter.remove(connection);
 		}
 
+		@Override
 		public void setConstraint(Connection connection, Object constraint) {
 			for (int i = 0; i < listeners.size(); i++)
 				((RoutingListener) listeners.get(i)).setConstraint(connection, constraint);

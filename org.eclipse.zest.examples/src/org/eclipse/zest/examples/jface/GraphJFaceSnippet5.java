@@ -35,6 +35,7 @@ public class GraphJFaceSnippet5 {
 
 		Object[] elements = new Object[] { "Rock2Paper", "Paper2Scissors", "Scissors2Rock" };
 
+		@Override
 		public Object getDestination(Object rel) {
 			if ("Rock2Paper".equals(rel)) {
 				return "Rock";
@@ -46,10 +47,12 @@ public class GraphJFaceSnippet5 {
 			return null;
 		}
 
+		@Override
 		public Object[] getElements(Object input) {
 			return elements;
 		}
 
+		@Override
 		public Object getSource(Object rel) {
 			if ("Rock2Paper".equals(rel)) {
 				return "Paper";
@@ -69,9 +72,11 @@ public class GraphJFaceSnippet5 {
 			return 0;
 		}
 
+		@Override
 		public void dispose() {
 		}
 
+		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
 
@@ -84,10 +89,12 @@ public class GraphJFaceSnippet5 {
 
 		}
 
+		@Override
 		public String getText(Object element) {
 			return element.toString();
 		}
 
+		@Override
 		public Image getImage(Object element) {
 			return image;
 		}
@@ -122,6 +129,7 @@ public class GraphJFaceSnippet5 {
 		Button button = new Button(parent, SWT.PUSH);
 		button.setText("Refresh");
 		button.addSelectionListener(new SelectionAdapter() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				contentProvider.setElements(new Object[] { "Rock2Paper", "Scissors2Paper", "Scissors2Rock" });
 				viewer.refresh();

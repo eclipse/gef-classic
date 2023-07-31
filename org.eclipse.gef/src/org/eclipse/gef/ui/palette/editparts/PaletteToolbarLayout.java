@@ -42,6 +42,7 @@ public class PaletteToolbarLayout extends ToolbarLayout {
 	/**
 	 * @see org.eclipse.draw2d.ToolbarLayout#layout(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void layout(IFigure parent) {
 		List<? extends IFigure> children = parent.getChildren();
 		List<IFigure> childrenGrabbingVertical = new ArrayList<>();

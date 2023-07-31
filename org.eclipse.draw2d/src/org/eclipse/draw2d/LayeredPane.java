@@ -39,6 +39,7 @@ public class LayeredPane extends Layer {
 	 * @param index    the index where the layer should be added
 	 * @since 2.0
 	 */
+	@Override
 	public void add(IFigure figure, Object layerKey, int index) {
 		if (index == -1)
 			index = layerKeys.size();

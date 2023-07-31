@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Shell;
 public class GraphJFaceSnippet4 {
 	static class MyContentProvider implements IGraphContentProvider {
 
+		@Override
 		public Object getDestination(Object rel) {
 			if ("Rock2Paper".equals(rel)) {
 				return "Rock";
@@ -40,10 +41,12 @@ public class GraphJFaceSnippet4 {
 			return null;
 		}
 
+		@Override
 		public Object[] getElements(Object input) {
 			return new Object[] { "Rock2Paper", "Paper2Scissors", "Scissors2Rock" };
 		}
 
+		@Override
 		public Object getSource(Object rel) {
 			if ("Rock2Paper".equals(rel)) {
 				return "Paper";
@@ -59,9 +62,11 @@ public class GraphJFaceSnippet4 {
 			return 0;
 		}
 
+		@Override
 		public void dispose() {
 		}
 
+		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
 
@@ -70,6 +75,7 @@ public class GraphJFaceSnippet4 {
 	static class MyLabelProvider extends LabelProvider {
 		final Image image = Display.getDefault().getSystemImage(SWT.ICON_WARNING);
 
+		@Override
 		public Image getImage(Object element) {
 			if (element.equals("Rock") || element.equals("Paper") || element.equals("Scissors")) {
 				return image;
@@ -77,6 +83,7 @@ public class GraphJFaceSnippet4 {
 			return null;
 		}
 
+		@Override
 		public String getText(Object element) {
 			return element.toString();
 		}
@@ -101,6 +108,7 @@ public class GraphJFaceSnippet4 {
 		viewer.setInput(new Object());
 		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 				System.out
 						.println("Selection Changed: " + selectionToString((StructuredSelection) event.getSelection()));

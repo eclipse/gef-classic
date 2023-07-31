@@ -100,11 +100,13 @@ public class LightweightSystem {
 		canvas.addListener(SWT.MouseWheel, handler);
 
 		canvas.addControlListener(new ControlAdapter() {
+			@Override
 			public void controlResized(ControlEvent e) {
 				LightweightSystem.this.controlResized();
 			}
 		});
 		canvas.addListener(SWT.Paint, new Listener() {
+			@Override
 			public void handleEvent(Event e) {
 				LightweightSystem.this.paint(e.gc);
 			}
@@ -286,6 +288,7 @@ public class LightweightSystem {
 	 */
 	protected class RootFigure extends Figure {
 		/** @see IFigure#getBackgroundColor() */
+		@Override
 		public Color getBackgroundColor() {
 			if (bgColor != null)
 				return bgColor;
@@ -295,6 +298,7 @@ public class LightweightSystem {
 		}
 
 		/** @see IFigure#getFont() */
+		@Override
 		public Font getFont() {
 			if (font != null)
 				return font;
@@ -304,6 +308,7 @@ public class LightweightSystem {
 		}
 
 		/** @see IFigure#getForegroundColor() */
+		@Override
 		public Color getForegroundColor() {
 			if (fgColor != null)
 				return fgColor;
@@ -313,11 +318,13 @@ public class LightweightSystem {
 		}
 
 		/** @see IFigure#getUpdateManager() */
+		@Override
 		public UpdateManager getUpdateManager() {
 			return LightweightSystem.this.getUpdateManager();
 		}
 
 		/** @see IFigure#internalGetEventDispatcher() */
+		@Override
 		public EventDispatcher internalGetEventDispatcher() {
 			return getEventDispatcher();
 		}
@@ -325,11 +332,13 @@ public class LightweightSystem {
 		/**
 		 * @see IFigure#isMirrored()
 		 */
+		@Override
 		public boolean isMirrored() {
 			return (LightweightSystem.this.canvas.getStyle() & SWT.MIRRORED) != 0;
 		}
 
 		/** @see Figure#isShowing() */
+		@Override
 		public boolean isShowing() {
 			return true;
 		}
@@ -342,16 +351,19 @@ public class LightweightSystem {
 	protected class EventHandler implements MouseMoveListener, MouseListener, AccessibleControlListener, KeyListener,
 			TraverseListener, FocusListener, AccessibleListener, MouseTrackListener, Listener, DisposeListener {
 		/** @see FocusListener#focusGained(FocusEvent) */
+		@Override
 		public void focusGained(FocusEvent e) {
 			getEventDispatcher().dispatchFocusGained(e);
 		}
 
 		/** @see FocusListener#focusLost(FocusEvent) */
+		@Override
 		public void focusLost(FocusEvent e) {
 			getEventDispatcher().dispatchFocusLost(e);
 		}
 
 		/** @see AccessibleControlListener#getChild(AccessibleControlEvent) */
+		@Override
 		public void getChild(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -360,6 +372,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleControlListener#getChildAtPoint(AccessibleControlEvent) */
+		@Override
 		public void getChildAtPoint(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -368,6 +381,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleControlListener#getChildCount(AccessibleControlEvent) */
+		@Override
 		public void getChildCount(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -376,6 +390,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleControlListener#getChildren(AccessibleControlEvent) */
+		@Override
 		public void getChildren(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -384,6 +399,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleControlListener#getDefaultAction(AccessibleControlEvent) */
+		@Override
 		public void getDefaultAction(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -392,6 +408,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleListener#getDescription(AccessibleEvent) */
+		@Override
 		public void getDescription(AccessibleEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -400,6 +417,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleControlListener#getFocus(AccessibleControlEvent) */
+		@Override
 		public void getFocus(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -408,6 +426,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleListener#getHelp(AccessibleEvent) */
+		@Override
 		public void getHelp(AccessibleEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -416,6 +435,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleListener#getKeyboardShortcut(AccessibleEvent) */
+		@Override
 		public void getKeyboardShortcut(AccessibleEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -424,6 +444,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleControlListener#getLocation(AccessibleControlEvent) */
+		@Override
 		public void getLocation(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -432,6 +453,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleListener#getName(AccessibleEvent) */
+		@Override
 		public void getName(AccessibleEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -440,6 +462,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleControlListener#getRole(AccessibleControlEvent) */
+		@Override
 		public void getRole(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -448,6 +471,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleControlListener#getSelection(AccessibleControlEvent) */
+		@Override
 		public void getSelection(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -456,6 +480,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleControlListener#getState(AccessibleControlEvent) */
+		@Override
 		public void getState(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -464,6 +489,7 @@ public class LightweightSystem {
 		}
 
 		/** @see AccessibleControlListener#getValue(AccessibleControlEvent) */
+		@Override
 		public void getValue(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
@@ -475,6 +501,7 @@ public class LightweightSystem {
 		 * @see Listener#handleEvent(org.eclipse.swt.widgets.Event)
 		 * @since 3.1
 		 */
+		@Override
 		public void handleEvent(Event event) {
 			// Mouse wheel events
 			if (event.type == SWT.MouseWheel)
@@ -482,16 +509,19 @@ public class LightweightSystem {
 		}
 
 		/** @see KeyListener#keyPressed(KeyEvent) */
+		@Override
 		public void keyPressed(KeyEvent e) {
 			getEventDispatcher().dispatchKeyPressed(e);
 		}
 
 		/** @see KeyListener#keyReleased(KeyEvent) */
+		@Override
 		public void keyReleased(KeyEvent e) {
 			getEventDispatcher().dispatchKeyReleased(e);
 		}
 
 		/** @see TraverseListener#keyTraversed(TraverseEvent) */
+		@Override
 		public void keyTraversed(TraverseEvent e) {
 			/*
 			 * Doit is almost always false by default for Canvases with KeyListeners. Set to
@@ -502,41 +532,49 @@ public class LightweightSystem {
 		}
 
 		/** @see MouseListener#mouseDoubleClick(MouseEvent) */
+		@Override
 		public void mouseDoubleClick(MouseEvent e) {
 			getEventDispatcher().dispatchMouseDoubleClicked(e);
 		}
 
 		/** @see MouseListener#mouseDown(MouseEvent) */
+		@Override
 		public void mouseDown(MouseEvent e) {
 			getEventDispatcher().dispatchMousePressed(e);
 		}
 
 		/** @see MouseTrackListener#mouseEnter(MouseEvent) */
+		@Override
 		public void mouseEnter(MouseEvent e) {
 			getEventDispatcher().dispatchMouseEntered(e);
 		}
 
 		/** @see MouseTrackListener#mouseExit(MouseEvent) */
+		@Override
 		public void mouseExit(MouseEvent e) {
 			getEventDispatcher().dispatchMouseExited(e);
 		}
 
 		/** @see MouseTrackListener#mouseHover(MouseEvent) */
+		@Override
 		public void mouseHover(MouseEvent e) {
 			getEventDispatcher().dispatchMouseHover(e);
 		}
 
 		/** @see MouseMoveListener#mouseMove(MouseEvent) */
+		@Override
 		public void mouseMove(MouseEvent e) {
 			getEventDispatcher().dispatchMouseMoved(e);
 		}
 
 		/** @see MouseListener#mouseUp(MouseEvent) */
+		@Override
 		public void mouseUp(MouseEvent e) {
 			getEventDispatcher().dispatchMouseReleased(e);
 		}
 
 		/** @see DisposeListener#widgetDisposed(DisposeEvent) */
+		@Override
 		public void widgetDisposed(DisposeEvent e) {
 			getUpdateManager().dispose();
 		}

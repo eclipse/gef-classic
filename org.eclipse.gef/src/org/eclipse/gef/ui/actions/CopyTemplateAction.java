@@ -51,6 +51,7 @@ public class CopyTemplateAction extends WorkbenchPartAction implements ISelectio
 	 * 
 	 * @return whether the selected EditPart is a TemplateEditPart
 	 */
+	@Override
 	protected boolean calculateEnabled() {
 		return template != null;
 	}
@@ -58,6 +59,7 @@ public class CopyTemplateAction extends WorkbenchPartAction implements ISelectio
 	/**
 	 * @see org.eclipse.gef.ui.actions.EditorPartAction#dispose()
 	 */
+	@Override
 	public void dispose() {
 		template = null;
 	}
@@ -66,6 +68,7 @@ public class CopyTemplateAction extends WorkbenchPartAction implements ISelectio
 	 * Sets the default {@link Clipboard Clipboard's} contents to be the currently
 	 * selected template.
 	 */
+	@Override
 	public void run() {
 		Clipboard.getDefault().setContents(template);
 	}
@@ -75,6 +78,7 @@ public class CopyTemplateAction extends WorkbenchPartAction implements ISelectio
 	 * 
 	 * @see ISelectionChangedListener#selectionChanged(SelectionChangedEvent)
 	 */
+	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		ISelection s = event.getSelection();
 		if (!(s instanceof IStructuredSelection))

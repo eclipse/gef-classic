@@ -54,6 +54,7 @@ public class MidpointLocator extends ConnectionLocator {
 	 * @return the reference point
 	 * @since 2.0
 	 */
+	@Override
 	protected Point getReferencePoint() {
 		Connection conn = getConnection();
 		Point p = Point.SINGLETON;

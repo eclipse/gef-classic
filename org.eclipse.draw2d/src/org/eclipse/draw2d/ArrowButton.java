@@ -62,6 +62,7 @@ public class ArrowButton extends Button implements Orientable {
 	/**
 	 * @see org.eclipse.draw2d.Orientable#setDirection(int)
 	 */
+	@Override
 	public void setDirection(int value) {
 		setChildrenDirection(value);
 	}
@@ -69,6 +70,7 @@ public class ArrowButton extends Button implements Orientable {
 	/**
 	 * @see org.eclipse.draw2d.Orientable#setOrientation(int)
 	 */
+	@Override
 	public void setOrientation(int value) {
 		setChildrenOrientation(value);
 	}

@@ -36,12 +36,14 @@ public interface FocusListener {
 		/**
 		 * @see org.eclipse.draw2d.FocusListener#focusGained(FocusEvent)
 		 */
+		@Override
 		public void focusGained(FocusEvent fe) {
 		}
 
 		/**
 		 * @see org.eclipse.draw2d.FocusListener#focusLost(FocusEvent)
 		 */
+		@Override
 		public void focusLost(FocusEvent fe) {
 		}
 	}

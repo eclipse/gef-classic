@@ -85,6 +85,7 @@ public class BendpointCreationHandle extends BendpointHandle {
 	 * 
 	 * @return the new ConnectionBendpointTracker
 	 */
+	@Override
 	protected DragTracker createDragTracker() {
 		ConnectionBendpointTracker tracker;
 		tracker = new ConnectionBendpointTracker((ConnectionEditPart) getOwner(), getIndex());

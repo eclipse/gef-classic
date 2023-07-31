@@ -53,6 +53,7 @@ public class AnchorNotificationTest extends Assert {
 		/**
 		 * @see org.eclipse.draw2d.PolylineConnection#anchorMoved(org.eclipse.draw2d.ConnectionAnchor)
 		 */
+		@Override
 		public void anchorMoved(ConnectionAnchor anchor) {
 			super.anchorMoved(anchor);
 			count++;
@@ -67,6 +68,7 @@ public class AnchorNotificationTest extends Assert {
 	private LocalCoordinates nestedCoordinates;
 
 	public class LocalCoordinates extends Figure {
+		@Override
 		protected boolean useLocalCoordinates() {
 			return true;
 		}

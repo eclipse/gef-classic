@@ -33,6 +33,7 @@ public abstract class EventDispatcher {
 	 */
 	public abstract static class AccessibilityDispatcher implements AccessibleControlListener, AccessibleListener {
 		/** @see AccessibleControlListener#getChild(AccessibleControlEvent) */
+		@Override
 		public void getChild(AccessibleControlEvent e) {
 		}
 	}

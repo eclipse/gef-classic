@@ -45,6 +45,7 @@ public abstract class FlowFigure extends Figure {
 	 * 
 	 * @see org.eclipse.draw2d.IFigure#add(IFigure, Object, int)
 	 */
+	@Override
 	public void add(IFigure child, Object constraint, int index) {
 		super.add(child, constraint, index);
 		// If this layout manager is a FlowContext, then the child *must* be a
@@ -107,6 +108,7 @@ public abstract class FlowFigure extends Figure {
 	 * 
 	 * @see org.eclipse.draw2d.IFigure#remove(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void remove(IFigure figure) {
 		super.remove(figure);
 		revalidateBidi(this);
@@ -151,6 +153,7 @@ public abstract class FlowFigure extends Figure {
 	 * 
 	 * @see Figure#setBounds(Rectangle)
 	 */
+	@Override
 	public void setBounds(Rectangle r) {
 		if (bounds.equals(r))
 			return;

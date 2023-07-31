@@ -52,6 +52,7 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	 * Adds this as a {@link org.eclipse.draw2d.FigureListener} to the owner's
 	 * {@link org.eclipse.draw2d.Figure}.
 	 */
+	@Override
 	public void addNotify() {
 		super.addNotify();
 		getConnection().addPropertyChangeListener(Connection.PROPERTY_POINTS, this);
@@ -79,6 +80,7 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	/**
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(Connection.PROPERTY_POINTS))
 			revalidate();
@@ -89,6 +91,7 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	 * 
 	 * @see org.eclipse.draw2d.IFigure#removeNotify()
 	 */
+	@Override
 	public void removeNotify() {
 		getConnection().removePropertyChangeListener(Connection.PROPERTY_POINTS, this);
 		super.removeNotify();

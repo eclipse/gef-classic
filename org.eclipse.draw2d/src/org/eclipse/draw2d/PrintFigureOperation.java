@@ -80,6 +80,7 @@ public class PrintFigureOperation extends PrintOperation {
 	 *         otherwise
 	 * @see org.eclipse.draw2d.PrintOperation#getGraphicsOrientation()
 	 */
+	@Override
 	int getGraphicsOrientation() {
 		return getPrintSource().isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.LEFT_TO_RIGHT;
 	}
@@ -106,6 +107,7 @@ public class PrintFigureOperation extends PrintOperation {
 	/**
 	 * @see org.eclipse.draw2d.PrintOperation#preparePrintSource()
 	 */
+	@Override
 	protected void preparePrintSource() {
 		oldBGColor = getPrintSource().getLocalBackgroundColor();
 		getPrintSource().setBackgroundColor(ColorConstants.white);
@@ -116,6 +118,7 @@ public class PrintFigureOperation extends PrintOperation {
 	 * 
 	 * @see org.eclipse.draw2d.PrintOperation#printPages()
 	 */
+	@Override
 	protected void printPages() {
 		Graphics graphics = getFreshPrinterGraphics();
 		IFigure figure = getPrintSource();
@@ -144,6 +147,7 @@ public class PrintFigureOperation extends PrintOperation {
 	/**
 	 * @see org.eclipse.draw2d.PrintOperation#restorePrintSource()
 	 */
+	@Override
 	protected void restorePrintSource() {
 		getPrintSource().setBackgroundColor(oldBGColor);
 		oldBGColor = null;

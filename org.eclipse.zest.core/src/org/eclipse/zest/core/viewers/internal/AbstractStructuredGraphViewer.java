@@ -87,6 +87,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		 * 
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
+		@Override
 		public int compare(Object arg0, Object arg1) {
 			if (arg0 instanceof GraphNode && arg1 instanceof GraphConnection) {
 				return 1;
@@ -340,6 +341,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @see org.eclipse.jface.viewers.StructuredViewer#internalRefresh(java.lang.
 	 * Object)
 	 */
+	@Override
 	protected void internalRefresh(Object element) {
 		if (getInput() == null) {
 			return;
@@ -355,6 +357,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		getGraphControl().getLightweightSystem().getUpdateManager().performUpdate();
 	}
 
+	@Override
 	protected void doUpdateItem(Widget item, Object element, boolean fullMap) {
 		if (item == getGraphControl()) {
 			getFactory().update(getNodesArray(getGraphControl()));
@@ -370,6 +373,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindInputItem(java.lang.
 	 * Object)
 	 */
+	@Override
 	protected Widget doFindInputItem(Object element) {
 
 		if (element == getInput() && element instanceof Widget) {
@@ -383,6 +387,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * 
 	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindItem(java.lang.Object)
 	 */
+	@Override
 	protected Widget doFindItem(Object element) {
 		Widget node = (Widget) nodesMap.get(element);
 		Widget connection = (Widget) connectionsMap.get(element);
@@ -394,6 +399,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * 
 	 * @see org.eclipse.jface.viewers.StructuredViewer#getSelectionFromWidget()
 	 */
+	@Override
 	protected List getSelectionFromWidget() {
 		List internalSelection = getWidgetSelection();
 		LinkedList externalSelection = new LinkedList();
@@ -427,6 +433,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @see org.eclipse.jface.viewers.StructuredViewer#setSelectionToWidget(java.
 	 * util.List, boolean)
 	 */
+	@Override
 	protected void setSelectionToWidget(List l, boolean reveal) {
 		Graph control = (Graph) getControl();
 		List selection = new LinkedList();
@@ -460,6 +467,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @see org.eclipse.jface.viewers.Viewer#inputChanged(java.lang.Object,
 	 * java.lang.Object)
 	 */
+	@Override
 	protected void inputChanged(Object input, Object oldInput) {
 		IStylingGraphModelFactory factory = getFactory();
 		factory.setConnectionStyle(getConnectionStyle());
@@ -586,6 +594,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	 * @see
 	 * org.eclipse.jface.viewers.StructuredViewer#getRawChildren(java.lang.Object )
 	 */
+	@Override
 	protected Object[] getRawChildren(Object parent) {
 		if (parent == getInput()) {
 			// get the children from the model.
@@ -614,6 +623,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * 
 	 */
+	@Override
 	public void reveal(Object element) {
 		Widget[] items = this.findItems(element);
 		for (int i = 0; i < items.length; i++) {

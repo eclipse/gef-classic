@@ -145,6 +145,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 * @return true if both x and y values are equal
 	 * @since 2.0
 	 */
+	@Override
 	public boolean equals(Object o) {
 		if (o instanceof Point) {
 			Point p = (Point) o;
@@ -341,6 +342,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		return (x * y) ^ (x + y);
 	}
@@ -358,11 +360,13 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	}
 
 	/** @see Translatable#performScale(double) */
+	@Override
 	public void performScale(double factor) {
 		scale(factor);
 	}
 
 	/** @see Translatable#performTranslate(int, int) */
+	@Override
 	public void performTranslate(int dx, int dy) {
 		translate(dx, dy);
 	}
@@ -467,6 +471,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 * @return String representation.
 	 * @since 2.0
 	 */
+	@Override
 	public String toString() {
 		return "Point(" + preciseX() + ", " + preciseY() + ")";//$NON-NLS-3$//$NON-NLS-2$//$NON-NLS-1$
 	}

@@ -40,6 +40,7 @@ public class SettingsAction extends Action {
 	 * 
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
+	@Override
 	public void run() {
 		Dialog settings = new PaletteSettingsDialog(paletteViewer.getControl().getShell(),
 				paletteViewer.getPaletteViewerPreferences());

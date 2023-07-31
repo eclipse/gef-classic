@@ -121,12 +121,14 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setSelectionManager(SelectionManager)
 	 */
+	@Override
 	public void setSelectionManager(SelectionManager model) {
 		Assert.isNotNull(model);
 		if (selectionModel != null)
 			selectionModel.internalUninstall();
 		selectionModel = model;
 		model.internalInitialize(this, selection, new Runnable() {
+			@Override
 			public void run() {
 				fireSelectionChanged();
 			}
@@ -138,6 +140,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener)
 	 */
+	@Override
 	public void addDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener) {
 		addDragSourceListener((TransferDragSourceListener) listener);
 	}
@@ -145,6 +148,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#addDragSourceListener(TransferDragSourceListener)
 	 */
+	@Override
 	public void addDragSourceListener(TransferDragSourceListener listener) {
 		getDelegatingDragAdapter().addDragSourceListener(listener);
 		refreshDragSourceAdapter();
@@ -153,6 +157,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener)
 	 */
+	@Override
 	public void addDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener) {
 		addDropTargetListener((TransferDropTargetListener) listener);
 	}
@@ -160,6 +165,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#addDropTargetListener(TransferDropTargetListener)
 	 */
+	@Override
 	public void addDropTargetListener(TransferDropTargetListener listener) {
 		getDelegatingDropAdapter().addDropTargetListener(listener);
 		refreshDropTargetAdapter();
@@ -168,6 +174,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#addPropertyChangeListener(PropertyChangeListener)
 	 */
+	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
 		if (changeSupport == null)
 			changeSupport = new PropertyChangeSupport(this);
@@ -177,6 +184,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see ISelectionProvider#addSelectionChangedListener(ISelectionChangedListener)
 	 */
+	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		selectionListeners.add(listener);
 	}
@@ -184,6 +192,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#appendSelection(EditPart)
 	 */
+	@Override
 	public void appendSelection(EditPart editpart) {
 		selectionModel.appendSelection(editpart);
 	}
@@ -191,11 +200,13 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#createControl(Composite)
 	 */
+	@Override
 	public abstract Control createControl(Composite parent);
 
 	/**
 	 * @see EditPartViewer#deselect(EditPart)
 	 */
+	@Override
 	public void deselect(EditPart editpart) {
 		selectionModel.deselect(editpart);
 	}
@@ -203,6 +214,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#deselectAll()
 	 */
+	@Override
 	public void deselectAll() {
 		selectionModel.deselectAll();
 	}
@@ -222,6 +234,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#findObjectAt(Point)
 	 */
+	@Override
 	public final EditPart findObjectAt(Point pt) {
 		return findObjectAtExcluding(pt, Collections.emptySet());
 	}
@@ -229,6 +242,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#findObjectAtExcluding(Point, Collection)
 	 */
+	@Override
 	public final EditPart findObjectAtExcluding(Point pt, Collection<IFigure> exclude) {
 		return findObjectAtExcluding(pt, exclude, null);
 	}
@@ -246,12 +260,14 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#flush()
 	 */
+	@Override
 	public void flush() {
 	}
 
 	/**
 	 * @see EditPartViewer#getContextMenu()
 	 */
+	@Override
 	public MenuManager getContextMenu() {
 		return contextMenu;
 	}
@@ -259,6 +275,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getContents()
 	 */
+	@Override
 	public EditPart getContents() {
 		return getRootEditPart().getContents();
 	}
@@ -266,6 +283,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getControl()
 	 */
+	@Override
 	public Control getControl() {
 		return control;
 	}
@@ -317,6 +335,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getEditDomain()
 	 */
+	@Override
 	public EditDomain getEditDomain() {
 		return domain;
 	}
@@ -324,6 +343,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getEditPartFactory()
 	 */
+	@Override
 	public EditPartFactory getEditPartFactory() {
 		return factory;
 	}
@@ -331,6 +351,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getEditPartRegistry()
 	 */
+	@Override
 	public Map getEditPartRegistry() {
 		return mapIDToEditPart;
 	}
@@ -338,6 +359,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getFocusEditPart()
 	 */
+	@Override
 	public EditPart getFocusEditPart() {
 		if (focusPart != null)
 			return focusPart;
@@ -354,6 +376,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getKeyHandler()
 	 */
+	@Override
 	public KeyHandler getKeyHandler() {
 		return keyHandler;
 	}
@@ -361,6 +384,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getProperty(String)
 	 */
+	@Override
 	public Object getProperty(String key) {
 		if (properties != null)
 			return properties.get(key);
@@ -370,6 +394,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see org.eclipse.gef.EditPartViewer#getResourceManager()
 	 */
+	@Override
 	public ResourceManager getResourceManager() {
 		if (resources != null)
 			return resources;
@@ -381,6 +406,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getRootEditPart()
 	 */
+	@Override
 	public RootEditPart getRootEditPart() {
 		return rootEditPart;
 	}
@@ -388,6 +414,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getSelectedEditParts()
 	 */
+	@Override
 	public List getSelectedEditParts() {
 		return constantSelection;
 	}
@@ -399,6 +426,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * 
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
+	@Override
 	public ISelection getSelection() {
 		return selectionModel.getSelection();
 	}
@@ -406,6 +434,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getSelectionManager()
 	 */
+	@Override
 	public SelectionManager getSelectionManager() {
 		return selectionModel;
 	}
@@ -413,6 +442,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#getVisualPartMap()
 	 */
+	@Override
 	public Map getVisualPartMap() {
 		return mapVisualToEditPart;
 	}
@@ -427,6 +457,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 		Assert.isTrue(control != null);
 		getSelectionManager().internalHookControl(control);
 		control.addDisposeListener(disposeListener = new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				handleDispose(e);
 			}
@@ -515,6 +546,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#registerAccessibleEditPart(AccessibleEditPart)
 	 */
+	@Override
 	public void registerAccessibleEditPart(AccessibleEditPart acc) {
 	}
 
@@ -522,6 +554,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#removeDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener)
 	 * @deprecated
 	 */
+	@Override
 	public void removeDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener) {
 		removeDragSourceListener((TransferDragSourceListener) listener);
 	}
@@ -529,6 +562,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#removeDragSourceListener(TransferDragSourceListener)
 	 */
+	@Override
 	public void removeDragSourceListener(TransferDragSourceListener listener) {
 		getDelegatingDragAdapter().removeDragSourceListener(listener);
 		if (getDelegatingDragAdapter().isEmpty())
@@ -539,6 +573,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @see EditPartViewer#removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener)
 	 * @deprecated
 	 */
+	@Override
 	public void removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener) {
 		removeDropTargetListener((TransferDropTargetListener) listener);
 	}
@@ -546,6 +581,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#removeDropTargetListener(TransferDropTargetListener)
 	 */
+	@Override
 	public void removeDropTargetListener(TransferDropTargetListener listener) {
 		getDelegatingDropAdapter().removeDropTargetListener(listener);
 		if (getDelegatingDropAdapter().isEmpty())
@@ -555,6 +591,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#removePropertyChangeListener(PropertyChangeListener)
 	 */
+	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
 		if (changeSupport != null) {
 			changeSupport.removePropertyChangeListener(listener);
@@ -566,6 +603,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see ISelectionProvider#removeSelectionChangedListener(ISelectionChangedListener)
 	 */
+	@Override
 	public void removeSelectionChangedListener(ISelectionChangedListener l) {
 		selectionListeners.remove(l);
 	}
@@ -573,12 +611,14 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#reveal(EditPart)
 	 */
+	@Override
 	public void reveal(EditPart part) {
 	}
 
 	/**
 	 * @see EditPartViewer#select(EditPart)
 	 */
+	@Override
 	public void select(EditPart editpart) {
 		// If selection isn't changing, do nothing.
 		if ((getSelectedEditParts().size() == 1) && (getSelectedEditParts().get(0) == editpart))
@@ -590,6 +630,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setContextMenu(MenuManager)
 	 */
+	@Override
 	public void setContextMenu(MenuManager manager) {
 		if (contextMenu != null)
 			contextMenu.dispose();
@@ -601,6 +642,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setContents(EditPart)
 	 */
+	@Override
 	public void setContents(EditPart editpart) {
 		getRootEditPart().setContents(editpart);
 	}
@@ -608,6 +650,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setContents(Object)
 	 */
+	@Override
 	public void setContents(Object contents) {
 		Assert.isTrue(getEditPartFactory() != null, "An EditPartFactory is required to call setContents(Object)");//$NON-NLS-1$
 		setContents(getEditPartFactory().createEditPart(null, contents));
@@ -616,6 +659,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setControl(Control)
 	 */
+	@Override
 	public void setControl(Control control) {
 		if (this.control != null)
 			unhookControl();
@@ -627,6 +671,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setCursor(Cursor)
 	 */
+	@Override
 	public void setCursor(Cursor cursor) {
 		if (getControl() == null || getControl().isDisposed())
 			return;
@@ -662,6 +707,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setEditDomain(EditDomain)
 	 */
+	@Override
 	public void setEditDomain(EditDomain editdomain) {
 		this.domain = editdomain;
 	}
@@ -669,6 +715,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setEditPartFactory(org.eclipse.gef.EditPartFactory)
 	 */
+	@Override
 	public void setEditPartFactory(EditPartFactory factory) {
 		this.factory = factory;
 	}
@@ -676,6 +723,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setFocus(EditPart)
 	 */
+	@Override
 	public void setFocus(EditPart part) {
 		focusPart = part;
 		getSelectionManager().setFocus(part);
@@ -684,6 +732,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setKeyHandler(KeyHandler)
 	 */
+	@Override
 	public void setKeyHandler(KeyHandler handler) {
 		keyHandler = handler;
 	}
@@ -691,6 +740,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setProperty(String, Object)
 	 */
+	@Override
 	public void setProperty(String key, Object value) {
 		if (properties == null)
 			properties = new HashMap();
@@ -707,6 +757,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setRootEditPart(RootEditPart)
 	 */
+	@Override
 	public void setRootEditPart(RootEditPart editpart) {
 		if (rootEditPart != null) {
 			if (rootEditPart.isActive())
@@ -722,6 +773,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * @see EditPartViewer#setRouteEventsToEditDomain(boolean)
 	 */
+	@Override
 	public void setRouteEventsToEditDomain(boolean value) {
 	}
 
@@ -731,6 +783,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * 
 	 * @see ISelectionProvider#setSelection(ISelection)
 	 */
+	@Override
 	public void setSelection(ISelection newSelection) {
 		selectionModel.setSelection(newSelection);
 	}
@@ -758,6 +811,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * 
 	 * @see EditPartViewer#unregisterAccessibleEditPart(AccessibleEditPart)
 	 */
+	@Override
 	public void unregisterAccessibleEditPart(AccessibleEditPart acc) {
 	}
 

@@ -106,6 +106,7 @@ public abstract class SquareHandle extends AbstractHandle {
 	 * 
 	 * @param g The graphics used to paint the figure.
 	 */
+	@Override
 	public void paintFigure(Graphics g) {
 		Rectangle r = getBounds();
 		r.shrink(1, 1);

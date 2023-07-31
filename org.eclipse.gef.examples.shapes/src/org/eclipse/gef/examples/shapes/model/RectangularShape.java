@@ -1,13 +1,13 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *    Elias Volanakis - initial API and implementation
- *******************************************************************************/
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model;
 
 import org.eclipse.swt.graphics.Image;
@@ -23,10 +23,12 @@ public class RectangularShape extends Shape {
 
 	private static final long serialVersionUID = 1;
 
+	@Override
 	public Image getIcon() {
 		return RECTANGLE_ICON;
 	}
 
+	@Override
 	public String toString() {
 		return "Rectangle " + hashCode();
 	}

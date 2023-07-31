@@ -34,6 +34,7 @@ public class PaletteSeparatorFactory extends PaletteEntryFactory {
 	/**
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#createNewEntry(Shell)
 	 */
+	@Override
 	public PaletteEntry createNewEntry(Shell shell) {
 		PaletteSeparator separator = new PaletteSeparator();
 		return separator;
@@ -42,6 +43,7 @@ public class PaletteSeparatorFactory extends PaletteEntryFactory {
 	/**
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#determineTypeForNewEntry(org.eclipse.gef.palette.PaletteEntry)
 	 */
+	@Override
 	protected Object determineTypeForNewEntry(PaletteEntry selected) {
 		return PaletteSeparator.PALETTE_TYPE_SEPARATOR;
 	}

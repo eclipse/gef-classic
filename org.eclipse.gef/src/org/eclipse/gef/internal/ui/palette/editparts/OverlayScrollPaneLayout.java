@@ -27,6 +27,7 @@ public class OverlayScrollPaneLayout extends ScrollPaneLayout {
 	 * 
 	 * @since 2.0
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		ScrollPane scrollpane = (ScrollPane) container;
 		Insets insets = scrollpane.getInsets();
@@ -39,6 +40,7 @@ public class OverlayScrollPaneLayout extends ScrollPaneLayout {
 	}
 
 	/** {@inheritDoc} */
+	@Override
 	public void layout(IFigure parent) {
 		ScrollPane scrollpane = (ScrollPane) parent;
 		Rectangle clientArea = parent.getClientArea();

@@ -22,6 +22,7 @@ public class SimpleFilter implements Filter {
 	/**
 	 * Doesn't filter anything
 	 */
+	@Override
 	public boolean isObjectFiltered(LayoutItem object) {
 		return false;
 	}

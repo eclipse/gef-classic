@@ -40,6 +40,7 @@ public class SimpleGraph implements LayoutGraph {
 	 * 
 	 * @param node The node to add.
 	 */
+	@Override
 	public void addEntity(LayoutEntity node) {
 		if (node instanceof SimpleNode) {
 			objectsToNodes.put(((SimpleNode) node).getRealObject(), node);
@@ -112,6 +113,7 @@ public class SimpleGraph implements LayoutGraph {
 	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.
 	 * layouts.LayoutRelationship)
 	 */
+	@Override
 	public void addRelationship(LayoutRelationship relationship) {
 		relationships.add(relationship);
 	}
@@ -121,6 +123,7 @@ public class SimpleGraph implements LayoutGraph {
 	 * using addNode. Note that any manipulation to this graph was done on the
 	 * SimpleNodes, not the real objects. You must still manipulate them yourself.
 	 */
+	@Override
 	public List getEntities() {
 		return new ArrayList(objectsToNodes.values());
 	}
@@ -129,6 +132,7 @@ public class SimpleGraph implements LayoutGraph {
 	 * Returns a list of SimpleRelationships that represent the objects added to
 	 * this graph using addRelationship.
 	 */
+	@Override
 	public List getRelationships() {
 		return relationships;
 	}
@@ -138,6 +142,7 @@ public class SimpleGraph implements LayoutGraph {
 	 * 
 	 * @return boolean if all edges are bidirectional.
 	 */
+	@Override
 	public boolean isBidirectional() {
 		boolean isBidirectional = true;
 		for (Iterator iter = relationships.iterator(); iter.hasNext();) {

@@ -65,24 +65,28 @@ public interface RulerChangeListener {
 		/**
 		 * @see RulerChangeListener#notifyUnitsChanged(int)
 		 */
+		@Override
 		public void notifyUnitsChanged(int newUnit) {
 		}
 
 		/**
 		 * @see RulerChangeListener#notifyGuideReparented(Object)
 		 */
+		@Override
 		public void notifyGuideReparented(Object guide) {
 		}
 
 		/**
 		 * @see RulerChangeListener#notifyGuideMoved(Object)
 		 */
+		@Override
 		public void notifyGuideMoved(Object guide) {
 		}
 
 		/**
 		 * @see RulerChangeListener#notifyPartAttachmentChanged(Object, Object)
 		 */
+		@Override
 		public void notifyPartAttachmentChanged(Object part, Object guide) {
 		}
 	}

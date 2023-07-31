@@ -104,6 +104,7 @@ public class FlowLayout extends OrderedLayout {
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(IFigure, int,
 	 *      int)
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		// Subtract out the insets from the hints
 		if (wHint > -1)
@@ -187,6 +188,7 @@ public class FlowLayout extends OrderedLayout {
 	 * 
 	 * @see org.eclipse.draw2d.OrderedLayout#getDefaultOrientation()
 	 */
+	@Override
 	protected int getDefaultOrientation() {
 		return PositionConstants.HORIZONTAL;
 	}
@@ -253,6 +255,7 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveHorizontally(IFigure)
 	 */
+	@Override
 	protected boolean isSensitiveHorizontally(IFigure parent) {
 		return isHorizontal();
 	}
@@ -260,6 +263,7 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * @see org.eclipse.draw2d.AbstractHintLayout#isSensitiveVertically(IFigure)
 	 */
+	@Override
 	protected boolean isSensitiveVertically(IFigure parent) {
 		return !isHorizontal();
 	}
@@ -269,6 +273,7 @@ public class FlowLayout extends OrderedLayout {
 	 * 
 	 * @see org.eclipse.draw2d.OrderedLayout#isStretchMinorAxis()
 	 */
+	@Override
 	public boolean isStretchMinorAxis() {
 		return fill;
 	}
@@ -276,6 +281,7 @@ public class FlowLayout extends OrderedLayout {
 	/**
 	 * @see org.eclipse.draw2d.LayoutManager#layout(IFigure)
 	 */
+	@Override
 	public void layout(IFigure parent) {
 		data = new WorkingData();
 		Rectangle relativeArea = parent.getClientArea();
@@ -424,6 +430,7 @@ public class FlowLayout extends OrderedLayout {
 	 * 
 	 * @see org.eclipse.draw2d.OrderedLayout#setStretchMinorAxis(boolean)
 	 */
+	@Override
 	public void setStretchMinorAxis(boolean value) {
 		fill = value;
 	}

@@ -78,6 +78,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleControlListener#getChildAtPoint(AccessibleControlEvent)
 		 */
+		@Override
 		public void getChildAtPoint(AccessibleControlEvent e) {
 			org.eclipse.swt.graphics.Point p = new org.eclipse.swt.graphics.Point(e.x, e.y);
 			p = getViewer().getControl().toControl(p);
@@ -92,6 +93,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleControlListener#getChildCount(AccessibleControlEvent)
 		 */
+		@Override
 		public void getChildCount(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -101,6 +103,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleControlListener#getChildren(AccessibleControlEvent)
 		 */
+		@Override
 		public void getChildren(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -110,6 +113,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleControlListener#getDefaultAction(AccessibleControlEvent)
 		 */
+		@Override
 		public void getDefaultAction(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -119,6 +123,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleListener#getDescription(AccessibleEvent)
 		 */
+		@Override
 		public void getDescription(AccessibleEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -128,6 +133,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleControlListener#getFocus(AccessibleControlEvent)
 		 */
+		@Override
 		public void getFocus(AccessibleControlEvent e) {
 			AccessibleEditPart acc = getViewer().getFocusEditPart().getAdapter(AccessibleEditPart.class);
 			if (acc != null)
@@ -137,6 +143,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleListener#getHelp(AccessibleEvent)
 		 */
+		@Override
 		public void getHelp(AccessibleEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -146,6 +153,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleListener#getKeyboardShortcut(AccessibleEvent)
 		 */
+		@Override
 		public void getKeyboardShortcut(AccessibleEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -155,6 +163,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleControlListener#getLocation(AccessibleControlEvent)
 		 */
+		@Override
 		public void getLocation(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -164,6 +173,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleListener#getName(AccessibleEvent)
 		 */
+		@Override
 		public void getName(AccessibleEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -173,6 +183,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleControlListener#getRole(AccessibleControlEvent)
 		 */
+		@Override
 		public void getRole(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -182,12 +193,14 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleControlListener#getSelection(AccessibleControlEvent)
 		 */
+		@Override
 		public void getSelection(AccessibleControlEvent e) {
 		}
 
 		/**
 		 * @see AccessibleControlListener#getState(AccessibleControlEvent)
 		 */
+		@Override
 		public void getState(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -197,6 +210,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 		/**
 		 * @see AccessibleControlListener#getValue(AccessibleControlEvent)
 		 */
+		@Override
 		public void getValue(AccessibleControlEvent e) {
 			AccessibleEditPart acc = get(e.childID);
 			if (acc != null)
@@ -219,6 +233,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchFocusGained(org.eclipse.swt.events.FocusEvent)
 	 */
+	@Override
 	public void dispatchFocusGained(FocusEvent event) {
 		super.dispatchFocusGained(event);
 		domain.focusGained(event, viewer);
@@ -227,6 +242,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchFocusLost(org.eclipse.swt.events.FocusEvent)
 	 */
+	@Override
 	public void dispatchFocusLost(FocusEvent event) {
 		super.dispatchFocusLost(event);
 		domain.focusLost(event, viewer);
@@ -236,6 +252,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchKeyPressed(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	public void dispatchKeyPressed(org.eclipse.swt.events.KeyEvent e) {
 		if (!editorCaptured) {
 			super.dispatchKeyPressed(e);
@@ -249,6 +266,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see org.eclipse.draw2d.SWTEventDispatcher#dispatchKeyTraversed(org.eclipse.swt.events.TraverseEvent)
 	 */
+	@Override
 	public void dispatchKeyTraversed(TraverseEvent e) {
 		if (!editorCaptured) {
 			super.dispatchKeyTraversed(e);
@@ -262,6 +280,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchKeyReleased(org.eclipse.swt.events.KeyEvent)
 	 */
+	@Override
 	public void dispatchKeyReleased(org.eclipse.swt.events.KeyEvent e) {
 		if (!editorCaptured) {
 			super.dispatchKeyReleased(e);
@@ -275,6 +294,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseDoubleClicked(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseDoubleClicked(me);
@@ -288,6 +308,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseEntered(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseEntered(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseEntered(me);
@@ -302,6 +323,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseExited(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseExited(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseExited(me);
@@ -316,6 +338,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseHover(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseHover(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseHover(me);
@@ -329,6 +352,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMousePressed(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMousePressed(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMousePressed(me);
@@ -346,6 +370,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseMoved(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseMoved(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseMoved(me);
@@ -363,6 +388,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#dispatchMouseReleased(org.eclipse.swt.events.MouseEvent)
 	 */
+	@Override
 	public void dispatchMouseReleased(org.eclipse.swt.events.MouseEvent me) {
 		if (!editorCaptured) {
 			super.dispatchMouseReleased(me);
@@ -404,6 +430,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	 * 
 	 * @see org.eclipse.draw2d.EventDispatcher#dispatchMouseWheelScrolled(org.eclipse.swt.widgets.Event)
 	 */
+	@Override
 	public void dispatchMouseWheelScrolled(Event evt) {
 		if (!editorCaptured)
 			super.dispatchMouseWheelScrolled(evt);
@@ -426,6 +453,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	 * 
 	 * @see org.eclipse.draw2d.EventDispatcher#getAccessibilityDispatcher()
 	 */
+	@Override
 	protected AccessibilityDispatcher getAccessibilityDispatcher() {
 		if (accessibilityDispatcher == null)
 			accessibilityDispatcher = new EditPartAccessibilityDispatcher();
@@ -456,6 +484,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see EventDispatcher#setCapture(IFigure)
 	 */
+	@Override
 	protected void setCapture(IFigure figure) {
 		super.setCapture(figure);
 		if (figure == null) {
@@ -467,6 +496,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 	/**
 	 * @see SWTEventDispatcher#setCursor(Cursor)
 	 */
+	@Override
 	protected void setCursor(Cursor newCursor) {
 		if (overrideCursor == null)
 			super.setCursor(newCursor);

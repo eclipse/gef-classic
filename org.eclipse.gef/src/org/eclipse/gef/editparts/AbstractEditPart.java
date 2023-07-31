@@ -234,6 +234,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * 
 	 * @param listener the listener
 	 */
+	@Override
 	public void addEditPartListener(EditPartListener listener) {
 		eventListeners.addListener(EditPartListener.class, listener);
 	}
@@ -611,6 +612,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * @see EditPart#getTargetEditPart(Request)
 	 * @see EditPolicy#getTargetEditPart(Request)
 	 */
+	@Override
 	public EditPart getTargetEditPart(Request request) {
 		for (EditPolicy ep : getEditPolicyIterable()) {
 			EditPart editPart = ep.getTargetEditPart(request);
@@ -684,6 +686,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	/**
 	 * @return <code>true</code> if this EditPart is active.
 	 */
+	@Override
 	public boolean isActive() {
 		return getFlag(FLAG_ACTIVE);
 	}
@@ -715,6 +718,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * properties. Subclasses should extend this method to handle additional types
 	 * of structural refreshing.
 	 */
+	@Override
 	public void refresh() {
 		refreshVisuals();
 		refreshChildren();
@@ -1096,6 +1100,7 @@ public abstract class AbstractEditPart implements EditPart, RequestConstants, IA
 	 * 
 	 * @return a description
 	 */
+	@Override
 	public String toString() {
 		String c = getClass().getName();
 		c = c.substring(c.lastIndexOf('.') + 1);

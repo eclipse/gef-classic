@@ -87,6 +87,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	private LayeredPane innerLayers;
 	private LayeredPane printableLayers;
 	private PropertyChangeListener gridListener = new PropertyChangeListener() {
+		@Override
 		public void propertyChange(PropertyChangeEvent evt) {
 			String property = evt.getPropertyName();
 			if (property.equals(SnapToGrid.PROPERTY_GRID_ORIGIN) || property.equals(SnapToGrid.PROPERTY_GRID_SPACING)
@@ -98,6 +99,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
+	@Override
 	protected IFigure createFigure() {
 		FreeformViewport viewport = new FreeformViewport();
 		innerLayers = new FreeformLayeredPane();
@@ -160,6 +162,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	 * 
 	 * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
 	 */
+	@Override
 	public IFigure getContentPane() {
 		return getLayer(PRIMARY_LAYER);
 	}
@@ -169,6 +172,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	 * 
 	 * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
 	 */
+	@Override
 	public DragTracker getDragTracker(Request req) {
 		/*
 		 * The root will only be asked for a drag tracker if for some reason the
@@ -182,6 +186,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	 * 
 	 * @see LayerManager#getLayer(Object)
 	 */
+	@Override
 	public IFigure getLayer(Object key) {
 		if (innerLayers == null)
 			return null;
@@ -199,6 +204,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	 * 
 	 * @see org.eclipse.gef.EditPart#getModel()
 	 */
+	@Override
 	public Object getModel() {
 		return LayerManager.ID;
 	}
@@ -239,6 +245,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	/**
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#register()
 	 */
+	@Override
 	protected void register() {
 		super.register();
 		if (getLayer(GRID_LAYER) != null) {
@@ -250,6 +257,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	/**
 	 * @see AbstractEditPart#unregister()
 	 */
+	@Override
 	protected void unregister() {
 		getViewer().removePropertyChangeListener(gridListener);
 		super.unregister();

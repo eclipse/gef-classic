@@ -83,6 +83,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	/**
 	 * @see org.eclipse.draw2d.FigureListener#figureMoved(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void figureMoved(IFigure ancestor) {
 		fireAncestorMoved(ancestor);
 	}
@@ -135,6 +136,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	/**
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getPropertyName().equals("parent")) { //$NON-NLS-1$
 			IFigure oldParent = (IFigure) event.getOldValue();

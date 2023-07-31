@@ -180,6 +180,7 @@ public class GridLayout extends AbstractHintLayout {
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(org.eclipse.
 	 * draw2d.IFigure, int, int)
 	 */
+	@Override
 	protected Dimension calculatePreferredSize(IFigure container, int wHint, int hHint) {
 		// Remove the size of the border from the wHint and hHint in case a size
 		// different to the preferred size is used
@@ -213,6 +214,7 @@ public class GridLayout extends AbstractHintLayout {
 	 * 
 	 * @see org.eclipse.draw2d.LayoutManager#layout(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void layout(IFigure container) {
 		// initChildren( container);
 		Rectangle rect = container.getClientArea();
@@ -731,6 +733,7 @@ public class GridLayout extends AbstractHintLayout {
 	 * @see
 	 * org.eclipse.draw2d.LayoutManager#getConstraint(org.eclipse.draw2d.IFigure )
 	 */
+	@Override
 	public Object getConstraint(IFigure child) {
 		return constraints.get(child);
 	}
@@ -741,6 +744,7 @@ public class GridLayout extends AbstractHintLayout {
 	 * 
 	 * @see LayoutManager#setConstraint(IFigure, Object)
 	 */
+	@Override
 	public void setConstraint(IFigure figure, Object newConstraint) {
 		super.setConstraint(figure, newConstraint);
 		if (newConstraint != null) {

@@ -192,6 +192,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	private Command command;
 
 	private CommandStackEventListener commandStackListener = new CommandStackEventListener() {
+		@Override
 		public void stackChanged(CommandStackEvent event) {
 			if (event.isPreChangeEvent())
 				handleCommandStackChanged();
@@ -254,6 +255,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * 
 	 * @see #deactivate()
 	 */
+	@Override
 	public void activate() {
 		resetFlags();
 		accessibleBegin = -1;
@@ -375,6 +377,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * 
 	 * @see #activate()
 	 */
+	@Override
 	public void deactivate() {
 		setFlag(FLAG_ACTIVE, false);
 		setViewer(null);
@@ -426,6 +429,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param event  The SWT focus event
 	 * @param viewer The viewer that the focus event is over.
 	 */
+	@Override
 	public void focusGained(FocusEvent event, EditPartViewer viewer) {
 		setViewer(viewer);
 		handleFocusGained();
@@ -437,6 +441,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param event  The SWT focus event
 	 * @param viewer The viewer that the focus event is over.
 	 */
+	@Override
 	public void focusLost(FocusEvent event, EditPartViewer viewer) {
 		setViewer(viewer);
 		handleFocusLost();
@@ -967,6 +972,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param evt    the key event
 	 * @param viewer the originating viewer
 	 */
+	@Override
 	public void keyDown(KeyEvent evt, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -982,6 +988,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param event  the traverse event
 	 * @param viewer the originating viewer
 	 */
+	@Override
 	public void keyTraversed(TraverseEvent event, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -997,6 +1004,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param evt    the key event
 	 * @param viewer the originating viewer
 	 */
+	@Override
 	public void keyUp(KeyEvent evt, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -1012,6 +1020,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
+	@Override
 	public void mouseDoubleClick(MouseEvent me, EditPartViewer viewer) {
 		if (me.button > 5 || !isViewerImportant(viewer))
 			return;
@@ -1028,6 +1037,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
+	@Override
 	public void mouseDown(MouseEvent me, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -1049,6 +1059,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
+	@Override
 	public void mouseDrag(MouseEvent me, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -1071,6 +1082,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param viewer the originating viewer
 	 * 
 	 */
+	@Override
 	public void mouseHover(MouseEvent me, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -1086,6 +1098,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
+	@Override
 	public void mouseMove(MouseEvent me, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -1131,6 +1144,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
+	@Override
 	public void mouseUp(MouseEvent me, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -1150,6 +1164,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param viewer the originating viewer
 	 * @see #performViewerMouseWheel(Event, EditPartViewer)
 	 */
+	@Override
 	public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
 		if (isInState(STATE_INITIAL))
 			performViewerMouseWheel(event, viewer);
@@ -1175,6 +1190,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * @see org.eclipse.gef.Tool#nativeDragFinished(DragSourceEvent, EditPartViewer)
 	 */
+	@Override
 	public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -1185,6 +1201,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * @see org.eclipse.gef.Tool#nativeDragStarted(DragSourceEvent, EditPartViewer)
 	 */
+	@Override
 	public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -1352,6 +1369,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param domain the edit domain
 	 * @see #getDomain()
 	 */
+	@Override
 	public void setEditDomain(EditDomain domain) {
 		this.domain = domain;
 	}
@@ -1381,6 +1399,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * 
 	 * @see org.eclipse.gef.Tool#setProperties(java.util.Map)
 	 */
+	@Override
 	public void setProperties(Map properties) {
 		if (properties == null)
 			return;
@@ -1436,6 +1455,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * 
 	 * @param viewer the viewer
 	 */
+	@Override
 	public void setViewer(EditPartViewer viewer) {
 		if (viewer == currentViewer)
 			return;
@@ -1490,6 +1510,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
+	@Override
 	public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
 		if (!isViewerImportant(viewer))
 			return;
@@ -1507,6 +1528,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
+	@Override
 	public void viewerExited(MouseEvent me, EditPartViewer viewer) {
 		/*
 		 * FEATURE in SWT. mouseExited comes after mouseEntered. So only call handle

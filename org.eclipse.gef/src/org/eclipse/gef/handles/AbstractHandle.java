@@ -69,6 +69,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	/**
 	 * Adds this as an {@link AncestorListener} to the owner's {@link Figure}.
 	 */
+	@Override
 	public void addNotify() {
 		super.addNotify();
 		// Listen to the owner figure so the handle moves when the
@@ -79,6 +80,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	/**
 	 * @see org.eclipse.draw2d.AncestorListener#ancestorMoved(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void ancestorMoved(IFigure ancestor) {
 		revalidate();
 	}
@@ -86,12 +88,14 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	/**
 	 * @see org.eclipse.draw2d.AncestorListener#ancestorAdded(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void ancestorAdded(IFigure ancestor) {
 	}
 
 	/**
 	 * @see org.eclipse.draw2d.AncestorListener#ancestorRemoved(org.eclipse.draw2d.IFigure)
 	 */
+	@Override
 	public void ancestorRemoved(IFigure ancestor) {
 	}
 
@@ -107,6 +111,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	 * 
 	 * @see org.eclipse.gef.Handle#getAccessibleLocation()
 	 */
+	@Override
 	public Point getAccessibleLocation() {
 		Point p = getBounds().getCenter();
 		translateToAbsolute(p);
@@ -131,6 +136,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	 * 
 	 * @return the drag tracker
 	 */
+	@Override
 	public DragTracker getDragTracker() {
 		if (dragTracker == null)
 			dragTracker = createDragTracker();
@@ -167,6 +173,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	/**
 	 * @see org.eclipse.draw2d.IFigure#removeNotify()
 	 */
+	@Override
 	public void removeNotify() {
 		getOwnerFigure().removeAncestorListener(this);
 		super.removeNotify();
@@ -215,6 +222,7 @@ public abstract class AbstractHandle extends Figure implements Handle, AncestorL
 	 * 
 	 * @see org.eclipse.draw2d.IFigure#validate()
 	 */
+	@Override
 	public void validate() {
 		if (isValid())
 			return;

@@ -164,6 +164,7 @@ public class GraphConnection extends GraphItem {
 
 	}
 
+	@Override
 	public void dispose() {
 		super.dispose();
 		this.isDisposed = true;
@@ -178,6 +179,7 @@ public class GraphConnection extends GraphItem {
 		}
 	}
 
+	@Override
 	public boolean isDisposed() {
 		return isDisposed;
 	}
@@ -212,6 +214,7 @@ public class GraphConnection extends GraphItem {
 	 * 
 	 * @return String
 	 */
+	@Override
 	public String toString() {
 		String arrow = (isBidirectionalInLayout() ? " <--> " : " --> ");
 		String src = (sourceNode != null ? sourceNode.getText() : "null");
@@ -418,6 +421,7 @@ public class GraphConnection extends GraphItem {
 	/**
 	 * Highlights this node. Uses the default highlight color.
 	 */
+	@Override
 	public void highlight() {
 		if (highlighted) {
 			return;
@@ -430,6 +434,7 @@ public class GraphConnection extends GraphItem {
 	/**
 	 * Unhighlights this node. Uses the default color.
 	 */
+	@Override
 	public void unhighlight() {
 		if (!highlighted) {
 			return;
@@ -453,6 +458,7 @@ public class GraphConnection extends GraphItem {
 	 * 
 	 * @return The graph model that this connection is contained in
 	 */
+	@Override
 	public Graph getGraphModel() {
 		return this.graphModel;
 	}
@@ -488,6 +494,7 @@ public class GraphConnection extends GraphItem {
 	 * 
 	 * @see org.eclipse.mylar.zest.core.widgets.IGraphItem#getItemType()
 	 */
+	@Override
 	public int getItemType() {
 		return CONNECTION;
 	}
@@ -498,6 +505,7 @@ public class GraphConnection extends GraphItem {
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.GraphItem#setVisible(
 	 * boolean)
 	 */
+	@Override
 	public void setVisible(boolean visible) {
 		// graphModel.addRemoveFigure(this, visible);
 		if (getSource().isVisible() && getDestination().isVisible() && visible) {
@@ -527,6 +535,7 @@ public class GraphConnection extends GraphItem {
 	 * 
 	 * @see org.eclipse.mylar.zest.core.widgets.IGraphItem#isVisible()
 	 */
+	@Override
 	public boolean isVisible() {
 		return visible;
 	}
@@ -536,6 +545,7 @@ public class GraphConnection extends GraphItem {
 	 * 
 	 * @see org.eclipse.swt.widgets.Item#setText(java.lang.String)
 	 */
+	@Override
 	public void setText(String string) {
 		super.setText(string);
 
@@ -651,6 +661,7 @@ public class GraphConnection extends GraphItem {
 			sourceAnchor = new LoopAnchor(getSource().getFigure());
 			targetAnchor = new LoopAnchor(getDestination().getFigure());
 			labelLocator = new MidpointLocator(connectionFigure, 0) {
+				@Override
 				protected Point getReferencePoint() {
 					Point p = Point.SINGLETON;
 					p.x = getConnection().getPoints().getPoint(getIndex()).x;
@@ -699,44 +710,54 @@ public class GraphConnection extends GraphItem {
 
 		Object layoutInformation = null;
 
+		@Override
 		public void clearBendPoints() {
 			// @tag TODO : add bendpoints
 		}
 
+		@Override
 		public LayoutEntity getDestinationInLayout() {
 			return getDestination().getLayoutEntity();
 		}
 
+		@Override
 		public Object getLayoutInformation() {
 			return layoutInformation;
 		}
 
+		@Override
 		public LayoutEntity getSourceInLayout() {
 			return getSource().getLayoutEntity();
 		}
 
+		@Override
 		public void populateLayoutConstraint(LayoutConstraint constraint) {
 			graphModel.invokeConstraintAdapters(GraphConnection.this, constraint);
 		}
 
+		@Override
 		public void setBendPoints(LayoutBendPoint[] bendPoints) {
 			// @tag TODO : add bendpoints
 		}
 
+		@Override
 		public void setLayoutInformation(Object layoutInformation) {
 			this.layoutInformation = layoutInformation;
 		}
 
+		@Override
 		public Object getGraphData() {
 			return GraphConnection.this;
 		}
 
+		@Override
 		public void setGraphData(Object o) {
 
 		}
 
 	}
 
+	@Override
 	IFigure getFigure() {
 		return this.getConnectionFigure();
 	}

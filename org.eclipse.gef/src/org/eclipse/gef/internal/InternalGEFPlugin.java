@@ -32,6 +32,7 @@ public class InternalGEFPlugin extends AbstractUIPlugin {
 		singleton = this;
 	}
 
+	@Override
 	public void start(BundleContext bc) throws Exception {
 		super.start(bc);
 		context = bc;
@@ -58,6 +59,7 @@ public class InternalGEFPlugin extends AbstractUIPlugin {
 	/**
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
+	@Override
 	public void stop(BundleContext context) throws Exception {
 		savePluginPreferences();
 		super.stop(context);

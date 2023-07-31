@@ -51,6 +51,7 @@ public abstract class GraphItem extends Item {
 	 * 
 	 * @see org.eclipse.swt.widgets.Widget#dispose()
 	 */
+	@Override
 	public void dispose() {
 		// @tag zest.bug.167132-ListenerDispose : remove all listeners.
 		// pcsDelegate = new PropertyChangeSupport(this);

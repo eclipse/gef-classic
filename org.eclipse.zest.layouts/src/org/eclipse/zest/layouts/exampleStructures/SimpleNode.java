@@ -65,6 +65,7 @@ public class SimpleNode implements LayoutEntity {
 	}
 
 	class UniqueCompare implements Comparator {
+		@Override
 		public int compare(Object o1, Object o2) {
 			// TODO this may not always be a unique comparison
 			return o1.toString().compareTo(o2.toString());
@@ -172,6 +173,7 @@ public class SimpleNode implements LayoutEntity {
 		return height;
 	}
 
+	@Override
 	public void setSizeInLayout(double width, double height) {
 		if (!ignoreInLayout) {
 			this.width = width;
@@ -184,6 +186,7 @@ public class SimpleNode implements LayoutEntity {
 		this.y = y;
 	}
 
+	@Override
 	public void setLocationInLayout(double x, double y) {
 		if (!ignoreInLayout) {
 			this.x = x;
@@ -207,6 +210,7 @@ public class SimpleNode implements LayoutEntity {
 		return attributes.get(attribute);
 	}
 
+	@Override
 	public boolean equals(Object object) {
 		boolean result = false;
 		if (object instanceof SimpleNode) {
@@ -216,15 +220,18 @@ public class SimpleNode implements LayoutEntity {
 		return result;
 	}
 
+	@Override
 	public int hashCode() {
 		return realObject.hashCode();
 	}
 
 	// all objects are equal
+	@Override
 	public int compareTo(Object arg0) {
 		return 0;
 	}
 
+	@Override
 	public String toString() {
 		return realObject.toString();
 	}
@@ -264,6 +271,7 @@ public class SimpleNode implements LayoutEntity {
 	 * 
 	 * @see ca.uvic.cs.chisel.layouts.LayoutEntity#getInternalEntity()
 	 */
+	@Override
 	public Object getLayoutInformation() {
 		return internalNode;
 	}
@@ -274,6 +282,7 @@ public class SimpleNode implements LayoutEntity {
 	 * @see
 	 * ca.uvic.cs.chisel.layouts.LayoutEntity#setInternalEntity(java.lang.Object)
 	 */
+	@Override
 	public void setLayoutInformation(Object internalEntity) {
 		this.internalNode = internalEntity;
 	}
@@ -281,6 +290,7 @@ public class SimpleNode implements LayoutEntity {
 	/**
 	 * Populate the specified layout constraint
 	 */
+	@Override
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
 		if (constraint instanceof LabelLayoutConstraint) {
 			LabelLayoutConstraint labelConstraint = (LabelLayoutConstraint) constraint;
@@ -294,26 +304,32 @@ public class SimpleNode implements LayoutEntity {
 		}
 	}
 
+	@Override
 	public double getHeightInLayout() {
 		return this.height;
 	}
 
+	@Override
 	public double getWidthInLayout() {
 		return this.width;
 	}
 
+	@Override
 	public double getXInLayout() {
 		return this.x;
 	}
 
+	@Override
 	public double getYInLayout() {
 		return this.y;
 	}
 
+	@Override
 	public Object getGraphData() {
 		return null;
 	}
 
+	@Override
 	public void setGraphData(Object o) {
 
 	}

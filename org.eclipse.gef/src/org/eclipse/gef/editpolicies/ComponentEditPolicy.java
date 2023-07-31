@@ -55,6 +55,7 @@ public abstract class ComponentEditPolicy extends AbstractEditPolicy {
 	 * 
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
+	@Override
 	public Command getCommand(Request request) {
 		if (REQ_ORPHAN.equals(request.getType()))
 			return getOrphanCommand();

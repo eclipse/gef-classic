@@ -58,6 +58,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * @see IFigure#getClientArea(Rectangle)
 	 */
+	@Override
 	public Rectangle getClientArea(Rectangle rect) {
 		super.getClientArea(rect);
 		if (useGraphicsTranslate())
@@ -146,6 +147,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * @see Figure#paintClientArea(Graphics)
 	 */
+	@Override
 	protected void paintClientArea(Graphics g) {
 		if (useGraphicsTranslate()) {
 			Point p = getViewLocation();
@@ -164,6 +166,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * @see org.eclipse.draw2d.Figure#isCoordinateSystem()
 	 */
+	@Override
 	public boolean isCoordinateSystem() {
 		return useGraphicsTranslate() || super.isCoordinateSystem();
 	}
@@ -174,6 +177,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 * 
 	 * @param event the event
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getSource() instanceof RangeModel) {
 			if (RangeModel.PROPERTY_VALUE.equals(event.getPropertyName())) {
@@ -325,6 +329,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * @see IFigure#translateFromParent(Translatable)
 	 */
+	@Override
 	public void translateFromParent(Translatable t) {
 		if (useTranslate)
 			t.performTranslate(getHorizontalRangeModel().getValue(), getVerticalRangeModel().getValue());
@@ -334,6 +339,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * @see IFigure#translateToParent(Translatable)
 	 */
+	@Override
 	public void translateToParent(Translatable t) {
 		if (useTranslate)
 			t.performTranslate(-getHorizontalRangeModel().getValue(), -getVerticalRangeModel().getValue());
@@ -352,6 +358,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * @see IFigure#validate()
 	 */
+	@Override
 	public void validate() {
 		super.validate();
 		readjustScrollBars();

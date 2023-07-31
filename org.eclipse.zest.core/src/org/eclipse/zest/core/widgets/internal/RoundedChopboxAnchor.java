@@ -42,6 +42,7 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 	 * 
 	 * @return Point
 	 */
+	@Override
 	public Point getLocation(Point reference) {
 		Point p = super.getLocation(reference);
 		Rectangle bounds = getBox();

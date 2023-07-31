@@ -46,6 +46,7 @@ public class GuideFigure extends Figure {
 	 * 
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
+	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
 		Dimension prefSize;
 		if (isHorizontal()) {
@@ -59,12 +60,14 @@ public class GuideFigure extends Figure {
 		return prefSize;
 	}
 
+	@Override
 	public void handleFocusGained(FocusEvent event) {
 		super.handleFocusGained(event);
 		repaint();
 		getUpdateManager().performUpdate();
 	}
 
+	@Override
 	public void handleFocusLost(FocusEvent event) {
 		super.handleFocusLost(event);
 		repaint();
@@ -80,6 +83,7 @@ public class GuideFigure extends Figure {
 	 * 
 	 * @see org.eclipse.draw2d.Figure#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
+	@Override
 	protected void paintFigure(Graphics graphics) {
 		// Since painting can occur a lot, using a transposer is not good for
 		// performance.

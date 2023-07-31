@@ -29,11 +29,13 @@ public class ScalablePolygonShape extends AbstractPointListShape {
 
 	private PointList scaledPoints;
 
+	@Override
 	protected boolean shapeContainsPoint(int x, int y) {
 		Point location = getLocation();
 		return Geometry.polygonContainsPoint(getScaledPoints(), x - location.x, y - location.y);
 	}
 
+	@Override
 	protected void fillShape(Graphics graphics) {
 		graphics.pushState();
 		graphics.translate(getLocation());
@@ -41,6 +43,7 @@ public class ScalablePolygonShape extends AbstractPointListShape {
 		graphics.popState();
 	}
 
+	@Override
 	protected void outlineShape(Graphics graphics) {
 		graphics.pushState();
 		graphics.translate(getLocation());
@@ -86,51 +89,61 @@ public class ScalablePolygonShape extends AbstractPointListShape {
 		return scaledPoints = new PointList(pointsArray);
 	}
 
+	@Override
 	public void addPoint(Point pt) {
 		scaledPoints = null;
 		super.addPoint(pt);
 	}
 
+	@Override
 	public void insertPoint(Point pt, int index) {
 		scaledPoints = null;
 		super.insertPoint(pt, index);
 	}
 
+	@Override
 	public void removeAllPoints() {
 		scaledPoints = null;
 		super.removeAllPoints();
 	}
 
+	@Override
 	public void removePoint(int index) {
 		scaledPoints = null;
 		super.removePoint(index);
 	}
 
+	@Override
 	public void setStart(Point start) {
 		scaledPoints = null;
 		super.setStart(start);
 	}
 
+	@Override
 	public void setEnd(Point end) {
 		scaledPoints = null;
 		super.setEnd(end);
 	}
 
+	@Override
 	public void setPoint(Point pt, int index) {
 		scaledPoints = null;
 		super.setPoint(pt, index);
 	}
 
+	@Override
 	public void setPoints(PointList points) {
 		scaledPoints = null;
 		super.setPoints(points);
 	}
 
+	@Override
 	public void setBounds(Rectangle rect) {
 		scaledPoints = null;
 		super.setBounds(rect);
 	}
 
+	@Override
 	public void setLineWidth(int w) {
 		scaledPoints = null;
 		super.setLineWidth(w);

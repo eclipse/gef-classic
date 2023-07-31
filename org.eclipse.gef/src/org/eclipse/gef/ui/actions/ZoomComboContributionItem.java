@@ -79,19 +79,24 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 		service = partService;
 		Assert.isNotNull(partService);
 		partService.addPartListener(partListener = new IPartListener() {
+			@Override
 			public void partActivated(IWorkbenchPart part) {
 				setZoomManager(part.getAdapter(ZoomManager.class));
 			}
 
+			@Override
 			public void partBroughtToTop(IWorkbenchPart p) {
 			}
 
+			@Override
 			public void partClosed(IWorkbenchPart p) {
 			}
 
+			@Override
 			public void partDeactivated(IWorkbenchPart p) {
 			}
 
+			@Override
 			public void partOpened(IWorkbenchPart p) {
 			}
 		});
@@ -142,19 +147,23 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	protected Control createControl(Composite parent) {
 		combo = new Combo(parent, SWT.DROP_DOWN);
 		combo.addSelectionListener(new SelectionListener() {
+			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleWidgetSelected(e);
 			}
 
+			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				handleWidgetDefaultSelected(e);
 			}
 		});
 		combo.addFocusListener(new FocusListener() {
+			@Override
 			public void focusGained(FocusEvent e) {
 				// do nothing
 			}
 
+			@Override
 			public void focusLost(FocusEvent e) {
 				refresh(false);
 			}
@@ -170,6 +179,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	/**
 	 * @see org.eclipse.jface.action.ContributionItem#dispose()
 	 */
+	@Override
 	public void dispose() {
 		if (partListener == null)
 			return;
@@ -189,6 +199,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	 * 
 	 * @param parent The parent of the control to fill
 	 */
+	@Override
 	public final void fill(Composite parent) {
 		createControl(parent);
 	}
@@ -200,6 +211,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	 * @param parent The menu
 	 * @param index  Menu index
 	 */
+	@Override
 	public final void fill(Menu parent, int index) {
 		Assert.isTrue(false, "Can't add a control to a menu");//$NON-NLS-1$
 	}
@@ -214,6 +226,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	 * @param parent The ToolBar to add the new control to
 	 * @param index  Index
 	 */
+	@Override
 	public void fill(ToolBar parent, int index) {
 		toolitem = new ToolItem(parent, SWT.SEPARATOR, index);
 		Control control = createControl(parent);
@@ -282,6 +295,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	/**
 	 * @see ZoomListener#zoomChanged(double)
 	 */
+	@Override
 	public void zoomChanged(double zoom) {
 		refresh(false);
 	}

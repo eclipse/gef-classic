@@ -63,10 +63,12 @@ public class PinnablePaletteStackFigure extends Figure {
 		/**
 		 * @return false so that the focus rectangle is not drawn.
 		 */
+		@Override
 		public boolean hasFocus() {
 			return false;
 		}
 
+		@Override
 		public void paintFigure(Graphics graphics) {
 			Rectangle rect = getClientArea();
 
@@ -121,10 +123,12 @@ public class PinnablePaletteStackFigure extends Figure {
 	 */
 	private class HeaderIconLayout extends StackLayout {
 
+		@Override
 		protected boolean isSensitiveVertically(IFigure container) {
 			return false;
 		}
 
+		@Override
 		public void layout(IFigure parent) {
 
 			Rectangle r = parent.getClientArea();
@@ -155,10 +159,12 @@ public class PinnablePaletteStackFigure extends Figure {
 	 */
 	private class HeaderListLayout extends StackLayout {
 
+		@Override
 		protected boolean isSensitiveVertically(IFigure container) {
 			return false;
 		}
 
+		@Override
 		protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 			if (isExpanded()) {
 				Dimension pinSize = pinFigure.getSize();
@@ -170,6 +176,7 @@ public class PinnablePaletteStackFigure extends Figure {
 			}
 		}
 
+		@Override
 		public void layout(IFigure parent) {
 
 			Rectangle r = parent.getClientArea();
@@ -206,10 +213,12 @@ public class PinnablePaletteStackFigure extends Figure {
 	 */
 	private class PaletteStackIconLayout extends AbstractLayout {
 
+		@Override
 		protected Dimension calculatePreferredSize(IFigure parent, int wHint, int hHint) {
 			return parent.getSize();
 		}
 
+		@Override
 		public void layout(IFigure parent) {
 			if (isExpanded()) {
 				headerFigure.setBounds(headerBoundsLayoutHint);
@@ -237,6 +246,7 @@ public class PinnablePaletteStackFigure extends Figure {
 	 */
 	private ChangeListener clickableArrowListener = new ChangeListener() {
 
+		@Override
 		public void handleStateChanged(ChangeEvent event) {
 			Clickable clickable = (Clickable) event.getSource();
 			if (event.getPropertyName() == ButtonModel.MOUSEOVER_PROPERTY
@@ -302,6 +312,7 @@ public class PinnablePaletteStackFigure extends Figure {
 		add(headerFigure);
 	}
 
+	@Override
 	protected void paintFigure(Graphics g) {
 		super.paintFigure(g);
 
@@ -566,6 +577,7 @@ public class PinnablePaletteStackFigure extends Figure {
 		return headerFigure.getPreferredSize(wHint, hHint);
 	}
 
+	@Override
 	public boolean containsPoint(int x, int y) {
 		return headerFigure.containsPoint(x, y) || (isExpanded() && expandablePane.containsPoint(x, y));
 	}

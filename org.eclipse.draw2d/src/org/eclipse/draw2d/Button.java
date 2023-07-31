@@ -65,6 +65,7 @@ public class Button extends Clickable {
 	 * 
 	 * @since 2.0
 	 */
+	@Override
 	protected void init() {
 		super.init();
 		setBackgroundColor(ColorConstants.button);

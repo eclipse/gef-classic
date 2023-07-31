@@ -48,12 +48,15 @@ public interface AncestorListener {
 	 * An empty implementation of AncestorListener for convenience.
 	 */
 	class Stub implements AncestorListener {
+		@Override
 		public void ancestorMoved(IFigure ancestor) {
 		}
 
+		@Override
 		public void ancestorAdded(IFigure ancestor) {
 		}
 
+		@Override
 		public void ancestorRemoved(IFigure ancestor) {
 		}
 	}

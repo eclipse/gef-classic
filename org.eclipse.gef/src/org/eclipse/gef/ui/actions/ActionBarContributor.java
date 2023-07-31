@@ -101,6 +101,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 * 
 	 * @see org.eclipse.ui.part.EditorActionBarContributor#dispose()
 	 */
+	@Override
 	public void dispose() {
 		for (int i = 0; i < retargetActions.size(); i++) {
 			RetargetAction action = (RetargetAction) retargetActions.get(i);
@@ -134,6 +135,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	/**
 	 * @see EditorActionBarContributor#init(IActionBars)
 	 */
+	@Override
 	public void init(IActionBars bars) {
 		buildActions();
 		declareGlobalActionKeys();
@@ -143,6 +145,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	/**
 	 * @see org.eclipse.ui.IEditorActionBarContributor#setActiveEditor(IEditorPart)
 	 */
+	@Override
 	public void setActiveEditor(IEditorPart editor) {
 		ActionRegistry registry = editor.getAdapter(ActionRegistry.class);
 		IActionBars bars = getActionBars();

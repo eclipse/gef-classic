@@ -32,10 +32,12 @@ public class Clipboard {
 		private final String TYPE_NAME = "org.eclipse.gef.clipboard.transfer"; //$NON-NLS-1$
 		private final int TYPE_ID = registerType(TYPE_NAME);
 
+		@Override
 		protected int[] getTypeIds() {
 			return new int[] { TYPE_ID };
 		}
 
+		@Override
 		protected String[] getTypeNames() {
 			return new String[] { TYPE_NAME };
 		}

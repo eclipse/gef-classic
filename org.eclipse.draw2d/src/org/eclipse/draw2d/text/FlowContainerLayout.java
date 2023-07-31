@@ -40,6 +40,7 @@ public abstract class FlowContainerLayout extends FlowFigureLayout implements Fl
 	 * 
 	 * @see org.eclipse.draw2d.text.FlowContext#addToCurrentLine(FlowBox)
 	 */
+	@Override
 	public void addToCurrentLine(FlowBox child) {
 		getCurrentLine().add(child);
 		setContinueOnSameLine(false);
@@ -78,6 +79,7 @@ public abstract class FlowContainerLayout extends FlowFigureLayout implements Fl
 	/**
 	 * @see FlowContext#getRemainingLineWidth()
 	 */
+	@Override
 	public int getRemainingLineWidth() {
 		return getCurrentLine().getAvailableWidth();
 	}
@@ -85,6 +87,7 @@ public abstract class FlowContainerLayout extends FlowFigureLayout implements Fl
 	/**
 	 * @see FlowContext#isCurrentLineOccupied()
 	 */
+	@Override
 	public boolean isCurrentLineOccupied() {
 		return currentLine != null && currentLine.isOccupied();
 	}
@@ -92,6 +95,7 @@ public abstract class FlowContainerLayout extends FlowFigureLayout implements Fl
 	/**
 	 * @see FlowFigureLayout#layout()
 	 */
+	@Override
 	protected void layout() {
 		preLayout();
 		layoutChildren();

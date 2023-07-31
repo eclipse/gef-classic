@@ -26,6 +26,7 @@ public class FocusBorder extends AbstractBorder {
 	/**
 	 * @see org.eclipse.draw2d.Border#getInsets(IFigure)
 	 */
+	@Override
 	public Insets getInsets(IFigure figure) {
 		return new Insets(1);
 	}
@@ -33,6 +34,7 @@ public class FocusBorder extends AbstractBorder {
 	/**
 	 * @see org.eclipse.draw2d.Border#isOpaque()
 	 */
+	@Override
 	public boolean isOpaque() {
 		return true;
 	}
@@ -42,6 +44,7 @@ public class FocusBorder extends AbstractBorder {
 	 * 
 	 * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
 	 */
+	@Override
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		tempRect.setBounds(getPaintRectangle(figure, insets));
 		tempRect.width--;

@@ -69,25 +69,30 @@ class DelayedDirectEditHelper implements Runnable {
 
 	void hookControl(Control control) {
 		control.addFocusListener(focus = new FocusAdapter() {
+			@Override
 			public void focusLost(FocusEvent e) {
 				abort();
 			}
 		});
 		control.addKeyListener(key = new KeyListener() {
+			@Override
 			public void keyPressed(KeyEvent e) {
 				abort();
 			}
 
+			@Override
 			public void keyReleased(KeyEvent e) {
 				abort();
 			}
 		});
 
 		control.addMouseListener(mouse = new MouseAdapter() {
+			@Override
 			public void mouseDoubleClick(MouseEvent e) {
 				abort();
 			}
 
+			@Override
 			public void mouseDown(MouseEvent e) {
 				abort();
 			}
@@ -98,6 +103,7 @@ class DelayedDirectEditHelper implements Runnable {
 	 * If this helper has not been aborted, the target editpart will be sent the
 	 * request.
 	 */
+	@Override
 	public void run() {
 		if (activeHelper == this && part.isActive() && viewer.getControl() != null
 				&& !viewer.getControl().isDisposed()) {

@@ -102,6 +102,7 @@ public abstract class AbstractLocator implements Locator {
 	 * 
 	 * @param target The figure to relocate
 	 */
+	@Override
 	public void relocate(IFigure target) {
 		Dimension prefSize = target.getPreferredSize();
 		Point center = getReferencePoint();

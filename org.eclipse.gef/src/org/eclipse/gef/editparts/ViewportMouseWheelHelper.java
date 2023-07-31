@@ -65,6 +65,7 @@ public class ViewportMouseWheelHelper extends ViewportHelper implements MouseWhe
 	 * 
 	 * @see org.eclipse.gef.MouseWheelHelper#handleMouseWheelScrolled(org.eclipse.swt.widgets.Event)
 	 */
+	@Override
 	public void handleMouseWheelScrolled(Event event) {
 		Viewport viewport = findViewport(owner);
 		if (viewport == null || !viewport.isShowing())

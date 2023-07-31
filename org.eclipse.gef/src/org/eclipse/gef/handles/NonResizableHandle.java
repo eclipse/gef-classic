@@ -54,6 +54,7 @@ public class NonResizableHandle extends MoveHandle {
 	 * Initializes the handle. Sets the {@link org.eclipse.gef.DragTracker} and
 	 * DragCursor.
 	 */
+	@Override
 	protected void initialize() {
 		setOpaque(false);
 		border = new CornerTriangleBorder(false);
@@ -65,6 +66,7 @@ public class NonResizableHandle extends MoveHandle {
 	/**
 	 * Updates the handle's color by setting the border's primary attribute.
 	 */
+	@Override
 	public void validate() {
 		border.setPrimary(getOwner().getSelected() == EditPart.SELECTED_PRIMARY);
 		super.validate();

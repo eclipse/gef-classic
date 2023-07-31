@@ -49,12 +49,14 @@ public class GraphJFaceSnippet3 {
 
 		private StringTokenizer graph;
 
+		@Override
 		public Object getDestination(Object rel) {
 			String string = (String) rel;
 			String[] parts = string.split(" ");
 			return parts[2];
 		}
 
+		@Override
 		public Object[] getElements(Object input) {
 			ArrayList listOfEdges = new ArrayList();
 			while (graph.hasMoreTokens()) {
@@ -63,6 +65,7 @@ public class GraphJFaceSnippet3 {
 			return listOfEdges.toArray();
 		}
 
+		@Override
 		public Object getSource(Object rel) {
 			String string = (String) rel;
 			String[] parts = string.split(" ");
@@ -73,10 +76,12 @@ public class GraphJFaceSnippet3 {
 			return 0;
 		}
 
+		@Override
 		public void dispose() {
 
 		}
 
+		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			if (newInput != null) {
 				graph = new StringTokenizer((String) newInput, "\n");
