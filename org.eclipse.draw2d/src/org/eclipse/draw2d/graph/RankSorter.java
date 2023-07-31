@@ -61,7 +61,7 @@ class RankSorter {
 			change = false;
 			for (int i = 0; i < incoming.size() - 1; i++) {
 				if (incoming.getSourceIndex(i) > incoming.getSourceIndex(i + 1)) {
-					Edge e = incoming.getEdge(i);
+					Edge e = incoming.get(i);
 					incoming.set(i, incoming.get(i + 1));
 					incoming.set(i + 1, e);
 					change = true;
@@ -105,7 +105,7 @@ class RankSorter {
 			change = false;
 			for (int i = 0; i < outgoing.size() - 1; i++) {
 				if (outgoing.getTargetIndex(i) > outgoing.getTargetIndex(i + 1)) {
-					Edge e = outgoing.getEdge(i);
+					Edge e = outgoing.get(i);
 					outgoing.set(i, outgoing.get(i + 1));
 					outgoing.set(i + 1, e);
 					change = true;

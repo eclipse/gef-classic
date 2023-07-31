@@ -24,12 +24,12 @@ class TightSpanningTreeSolver extends SpanningTreeVisitor {
 	protected CandidateList candidates = new CandidateList();
 
 	static final class CandidateList {
-		private Edge edges[] = new Edge[10];
+		private Edge[] edges = new Edge[10];
 		private int size;
 
 		public void add(Edge edge) {
 			if (size == edges.length - 1) {
-				Edge newEdges[] = new Edge[edges.length * 2];
+				Edge[] newEdges = new Edge[edges.length * 2];
 				System.arraycopy(edges, 0, newEdges, 0, edges.length);
 				edges = newEdges;
 			}
@@ -102,10 +102,8 @@ class TightSpanningTreeSolver extends SpanningTreeVisitor {
 
 	void addNode(Node node) {
 		setNodeReachable(node);
-		EdgeList list = node.incoming;
-		Edge e;
-		for (int i = 0; i < list.size(); i++) {
-			e = list.getEdge(i);
+
+		for (Edge e : node.incoming) {
 			if (!isNodeReachable(e.source)) {
 				if (!isCandidate(e)) {
 					setCandidate(e);
@@ -116,9 +114,7 @@ class TightSpanningTreeSolver extends SpanningTreeVisitor {
 			}
 		}
 
-		list = node.outgoing;
-		for (int i = 0; i < list.size(); i++) {
-			e = list.getEdge(i);
+		for (Edge e : node.outgoing) {
 			if (!isNodeReachable(e.target)) {
 				if (!isCandidate(e)) {
 					setCandidate(e);

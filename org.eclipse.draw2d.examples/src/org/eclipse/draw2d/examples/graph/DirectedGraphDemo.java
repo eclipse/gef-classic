@@ -18,7 +18,6 @@ import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.Panel;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.graph.DirectedGraph;
-import org.eclipse.draw2d.graph.Edge;
 
 /**
  * @author hudsonr
@@ -40,11 +39,8 @@ public class DirectedGraphDemo extends AbstractGraphDemo {
 		contents.setLayoutManager(new XYLayout());
 
 		graph.nodes.forEach(n -> buildNodeFigure(contents, n));
+		graph.edges.forEach(e -> buildEdgeFigure(contents, e));
 
-		for (int i = 0; i < graph.edges.size(); i++) {
-			Edge edge = graph.edges.getEdge(i);
-			buildEdgeFigure(contents, edge);
-		}
 		// if (buildPrime)
 		// buildPrimeGraph(graph.gPrime, contents);
 		return contents;
@@ -147,7 +143,7 @@ public class DirectedGraphDemo extends AbstractGraphDemo {
 			graph = (DirectedGraph) (GraphTests.class.getMethod(graphMethod, int.class).invoke(null,
 					Integer.valueOf(graphDirection)));
 		} catch (Exception e) {
-			System.out.println("Could not build graph");
+			System.out.println("Could not build graph"); //$NON-NLS-1$
 			e.printStackTrace();
 		}
 		return buildGraph(graph);

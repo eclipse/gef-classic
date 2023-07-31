@@ -26,23 +26,19 @@ class LocalOptimizer extends GraphVisitor {
 		int crossCount = 0;
 		int invertedCrossCount = 0;
 
-		EdgeList currentEdges = current.incoming;
-		EdgeList nextEdges = next.incoming;
 		int rank = current.rank - 1;
-		int iCurrent, iNext;
 
-		for (int i = 0; i < currentEdges.size(); i++) {
-			Edge currentEdge = currentEdges.getEdge(i);
-			iCurrent = currentEdge.getIndexForRank(rank);
-			for (int j = 0; j < nextEdges.size(); j++) {
-				iNext = nextEdges.getEdge(j).getIndexForRank(rank);
+		for (Edge currentEdge : current.incoming) {
+			int iCurrent = currentEdge.getIndexForRank(rank);
+			for (Edge nextEdge : next.incoming) {
+				int iNext = nextEdge.getIndexForRank(rank);
 				if (iNext < iCurrent) {
 					crossCount++;
 				} else if (iNext > iCurrent) {
 					invertedCrossCount++;
 				} else {
 					// edges go to the same location
-					int offsetDiff = nextEdges.getEdge(j).getSourceOffset() - currentEdge.getSourceOffset();
+					int offsetDiff = nextEdge.getSourceOffset() - currentEdge.getSourceOffset();
 					if (offsetDiff < 0) {
 						crossCount++;
 					} else if (offsetDiff > 0) {
@@ -52,22 +48,19 @@ class LocalOptimizer extends GraphVisitor {
 			}
 		}
 
-		currentEdges = current.outgoing;
-		nextEdges = next.outgoing;
 		rank = current.rank + 1;
 
-		for (int i = 0; i < currentEdges.size(); i++) {
-			Edge currentEdge = currentEdges.getEdge(i);
-			iCurrent = currentEdge.getIndexForRank(rank);
-			for (int j = 0; j < nextEdges.size(); j++) {
-				iNext = nextEdges.getEdge(j).getIndexForRank(rank);
+		for (Edge currentEdge : current.outgoing) {
+			int iCurrent = currentEdge.getIndexForRank(rank);
+			for (Edge nextEdge : next.outgoing) {
+				int iNext = nextEdge.getIndexForRank(rank);
 				if (iNext < iCurrent) {
 					crossCount++;
 				} else if (iNext > iCurrent) {
 					invertedCrossCount++;
 				} else {
 					// edges go to the same location
-					int offsetDiff = nextEdges.getEdge(j).getTargetOffset() - currentEdge.getTargetOffset();
+					int offsetDiff = nextEdge.getTargetOffset() - currentEdge.getTargetOffset();
 					if (offsetDiff < 0) {
 						crossCount++;
 					} else if (offsetDiff > 0) {
@@ -76,10 +69,8 @@ class LocalOptimizer extends GraphVisitor {
 				}
 			}
 		}
-		if (invertedCrossCount < crossCount) {
-			return true;
-		}
-		return false;
+
+		return (invertedCrossCount < crossCount);
 	}
 
 	private static void swapNodes(Node current, Node next, Rank rank) {

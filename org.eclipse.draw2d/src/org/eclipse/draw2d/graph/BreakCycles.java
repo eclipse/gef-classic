@@ -57,8 +57,8 @@ class BreakCycles extends GraphVisitor {
 		while (!noLefts.isEmpty()) {
 			Node node = noLefts.remove(noLefts.size() - 1);
 			node.flag = true;
-			for (int i = 0; i < node.outgoing.size(); i++) {
-				Node right = node.outgoing.getEdge(i).target;
+			for (Edge e : node.outgoing) {
+				Node right = e.target;
 				setIncomingCount(right, getIncomingCount(right) - 1);
 				if (getIncomingCount(right) == 0) {
 					sortedInsert(noLefts, right);
@@ -175,8 +175,7 @@ class BreakCycles extends GraphVisitor {
 	}
 
 	private static void invertEdges(DirectedGraph g) {
-		for (int i = 0; i < g.edges.size(); i++) {
-			Edge e = g.edges.getEdge(i);
+		for (Edge e : g.edges) {
 			if (getOrderIndex(e.source) > getOrderIndex(e.target)) {
 				e.invert();
 				e.isFeedback = true;
@@ -216,8 +215,8 @@ class BreakCycles extends GraphVisitor {
 	 * Called after removal of n. Updates the degree values of n's incoming nodes.
 	 */
 	private static void updateIncoming(Node n) {
-		for (int i = 0; i < n.incoming.size(); i++) {
-			Node in = n.incoming.getEdge(i).source;
+		for (Edge e : n.incoming) {
+			Node in = e.source;
 			if (!in.flag) {
 				setOutDegree(in, getOutDegree(in) - 1);
 				setDegree(in, getOutDegree(in) - getInDegree(in));
@@ -229,8 +228,8 @@ class BreakCycles extends GraphVisitor {
 	 * Called after removal of n. Updates the degree values of n's outgoing nodes.
 	 */
 	private static void updateOutgoing(Node n) {
-		for (int i = 0; i < n.outgoing.size(); i++) {
-			Node out = n.outgoing.getEdge(i).target;
+		for (Edge e : n.outgoing) {
+			Node out = e.target;
 			if (!out.flag) {
 				setInDegree(out, getInDegree(out) - 1);
 				setDegree(out, getOutDegree(out) - getInDegree(out));
@@ -240,12 +239,7 @@ class BreakCycles extends GraphVisitor {
 
 	@Override
 	public void revisit(DirectedGraph g) {
-		for (int i = 0; i < g.edges.size(); i++) {
-			Edge e = g.edges.getEdge(i);
-			if (e.isFeedback()) {
-				e.invert();
-			}
-		}
+		g.edges.stream().filter(Edge::isFeedback).forEach(Edge::invert);
 	}
 
 	/**

@@ -180,10 +180,7 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 	 * @param nPrime its corresponding node in the auxilary graph
 	 */
 	void addEdges(Node n) {
-		for (int i = 0; i < n.incoming.size(); i++) {
-			Edge e = n.incoming.getEdge(i);
-			addEdge(e.source, n, e, 1);
-		}
+		n.incoming.forEach(e -> addEdge(e.source, n, e, 1));
 	}
 
 	void applyGPrime() {
@@ -319,7 +316,7 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 		growCluster(root, cluster);
 
 		for (int i = 0; i < prime.edges.size(); i++) {
-			Edge e = prime.edges.getEdge(i);
+			Edge e = prime.edges.get(i);
 			NodeCluster sourceCluster = clusterMap.get(e.source);
 			NodeCluster targetCluster = clusterMap.get(e.target);
 
@@ -348,9 +345,7 @@ class HorizontalPlacement extends SpanningTreeVisitor {
 	void growCluster(Node root, NodeCluster cluster) {
 		cluster.add(root);
 		clusterMap.put(root, cluster);
-		EdgeList treeChildren = getSpanningTreeChildren(root);
-		for (int i = 0; i < treeChildren.size(); i++) {
-			Edge e = treeChildren.getEdge(i);
+		for (Edge e : getSpanningTreeChildren(root)) {
 			if (e.cut != 0) {
 				growCluster(getTreeTail(e), cluster);
 			} else {

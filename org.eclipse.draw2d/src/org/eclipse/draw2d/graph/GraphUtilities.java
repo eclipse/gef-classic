@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,8 @@ class GraphUtilities {
 
 	static Subgraph getCommonAncestor(Node left, Node right) {
 		Subgraph parent;
-		if (right instanceof Subgraph) {
-			parent = (Subgraph) right;
+		if (right instanceof Subgraph s) {
+			parent = s;
 		} else {
 			parent = right.getParent();
 		}
@@ -59,13 +59,10 @@ class GraphUtilities {
 		int size = nodes.size();
 		// remove all the leaf nodes from the graph
 		for (Node node : nodes) {
-			if (node.outgoing == null || node.outgoing.isEmpty()) { // this is a
-																	// leaf node
+			if (node.outgoing == null || node.outgoing.isEmpty()) {
+				// this is a leaf node
 				nodes.remove(node);
-				for (int j = 0; j < node.incoming.size(); j++) {
-					Edge e = node.incoming.getEdge(j);
-					e.source.outgoing.remove(e);
-				}
+				node.incoming.forEach(e -> e.source.outgoing.remove(e));
 			}
 		}
 		// if no nodes were removed, that means there are no leaf nodes and the
@@ -103,15 +100,11 @@ class GraphUtilities {
 		int crossings = 0;
 		for (int i = 0; i < rank.size() - 1; i++) {
 			Node currentNode = rank.get(i);
-			Node nextNode;
 			for (int j = i + 1; j < rank.size(); j++) {
-				nextNode = rank.get(j);
-				EdgeList currentOutgoing = currentNode.outgoing;
-				EdgeList nextOutgoing = nextNode.outgoing;
-				for (int k = 0; k < currentOutgoing.size(); k++) {
-					Edge currentEdge = currentOutgoing.getEdge(k);
-					for (int l = 0; l < nextOutgoing.size(); l++) {
-						if (nextOutgoing.getEdge(l).getIndexForRank(currentNode.rank + 1) < currentEdge
+				Node nextNode = rank.get(j);
+				for (Edge currentEdge : currentNode.outgoing) {
+					for (Edge nextEdge : nextNode.outgoing) {
+						if (nextEdge.getIndexForRank(currentNode.rank + 1) < currentEdge
 								.getIndexForRank(currentNode.rank + 1)) {
 							crossings++;
 						}
@@ -128,9 +121,7 @@ class GraphUtilities {
 		}
 		node.flag = true;
 		list.add(node);
-		for (int i = 0; i < node.outgoing.size(); i++) {
-			search(node.outgoing.getEdge(i).target, list);
-		}
+		node.outgoing.forEach(e -> search(e.target, list));
 		return list;
 	}
 

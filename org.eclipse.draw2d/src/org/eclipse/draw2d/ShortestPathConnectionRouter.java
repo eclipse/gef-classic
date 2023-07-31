@@ -27,7 +27,7 @@ import org.eclipse.draw2d.graph.ShortestPathRouter;
 
 /**
  * Routes multiple connections around the children of a given container figure.
- * 
+ *
  * @author Whitney Sorenson
  * @author Randy Hudson
  * @since 3.1
@@ -35,38 +35,39 @@ import org.eclipse.draw2d.graph.ShortestPathRouter;
 public final class ShortestPathConnectionRouter extends AbstractRouter {
 
 	private class LayoutTracker extends LayoutListener.Stub {
+		@Override
 		public void postLayout(IFigure container) {
 			processLayout();
 		}
 
+		@Override
 		public void remove(IFigure child) {
 			removeChild(child);
 		}
 
+		@Override
 		public void setConstraint(IFigure child, Object constraint) {
 			addChild(child);
 		}
 	}
 
-	private Map constraintMap = new HashMap();
+	private final Map constraintMap = new HashMap();
 	private Map<IFigure, Rectangle> figuresToBounds;
 	private Map connectionToPaths;
 	private boolean isDirty;
 	private ShortestPathRouter algorithm = new ShortestPathRouter();
-	private IFigure container;
-	private Set staleConnections = new HashSet();
-	private LayoutListener listener = new LayoutTracker();
+	private final IFigure container;
+	private final Set staleConnections = new HashSet();
+	private final LayoutListener listener = new LayoutTracker();
 
-	private FigureListener figureListener = new FigureListener() {
-		public void figureMoved(IFigure source) {
-			Rectangle newBounds = source.getBounds().getCopy();
-			if (algorithm.updateObstacle((Rectangle) figuresToBounds.get(source), newBounds)) {
-				queueSomeRouting();
-				isDirty = true;
-			}
-
-			figuresToBounds.put(source, newBounds);
+	private final FigureListener figureListener = source -> {
+		Rectangle newBounds = source.getBounds().getCopy();
+		if (algorithm.updateObstacle(figuresToBounds.get(source), newBounds)) {
+			queueSomeRouting();
+			isDirty = true;
 		}
+
+		figuresToBounds.put(source, newBounds);
 	};
 	private boolean ignoreInvalidate;
 
@@ -76,7 +77,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	 * connections to avoid. Any time a child of the container moves, one or more
 	 * connections will be revalidated to process the new obstacle locations. The
 	 * connections being routed must not be contained within the container.
-	 * 
+	 *
 	 * @param container the container
 	 */
 	public ShortestPathConnectionRouter(IFigure container) {
@@ -86,10 +87,12 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	}
 
 	void addChild(IFigure child) {
-		if (connectionToPaths == null)
+		if (connectionToPaths == null) {
 			return;
-		if (figuresToBounds.containsKey(child))
+		}
+		if (figuresToBounds.containsKey(child)) {
 			return;
+		}
 		Rectangle bounds = child.getBounds().getCopy();
 		algorithm.addObstacle(bounds);
 		figuresToBounds.put(child, bounds);
@@ -120,10 +123,11 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	/**
 	 * Gets the constraint for the given {@link Connection}. The constraint is the
 	 * paths list of bend points for this connection.
-	 * 
+	 *
 	 * @param connection The connection whose constraint we are retrieving
 	 * @return The constraint
 	 */
+	@Override
 	public Object getConstraint(Connection connection) {
 		return constraintMap.get(connection);
 	}
@@ -131,7 +135,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	/**
 	 * Returns the default spacing maintained on either side of a connection. The
 	 * default value is 4.
-	 * 
+	 *
 	 * @return the connection spacing
 	 * @since 3.2
 	 */
@@ -142,16 +146,19 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	/**
 	 * @see ConnectionRouter#invalidate(Connection)
 	 */
+	@Override
 	public void invalidate(Connection connection) {
-		if (ignoreInvalidate)
+		if (ignoreInvalidate) {
 			return;
+		}
 		staleConnections.add(connection);
 		isDirty = true;
 	}
 
 	private void processLayout() {
-		if (staleConnections.isEmpty())
+		if (staleConnections.isEmpty()) {
 			return;
+		}
 		((Connection) staleConnections.iterator().next()).revalidate();
 	}
 
@@ -173,8 +180,9 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 			}
 
 			List constraint = (List) getConstraint(conn);
-			if (constraint == null)
+			if (constraint == null) {
 				constraint = Collections.EMPTY_LIST;
+			}
 
 			Point start = conn.getSourceAnchor().getReferencePoint().getCopy();
 			Point end = conn.getTargetAnchor().getReferencePoint().getCopy();
@@ -187,13 +195,14 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 
 			if (!constraint.isEmpty()) {
 				PointList bends = new PointList(constraint.size());
-				for (int i = 0; i < constraint.size(); i++) {
-					Bendpoint bp = (Bendpoint) constraint.get(i);
+				for (Object element : constraint) {
+					Bendpoint bp = (Bendpoint) element;
 					bends.addPoint(bp.getLocation());
 				}
 				path.setBendPoints(bends);
-			} else
+			} else {
 				path.setBendPoints(null);
+			}
 
 			isDirty |= path.isDirty;
 		}
@@ -201,8 +210,9 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	}
 
 	void queueSomeRouting() {
-		if (connectionToPaths == null || connectionToPaths.isEmpty())
+		if (connectionToPaths == null || connectionToPaths.isEmpty()) {
 			return;
+		}
 		try {
 			ignoreInvalidate = true;
 			((Connection) connectionToPaths.keySet().iterator().next()).revalidate();
@@ -214,11 +224,13 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	/**
 	 * @see ConnectionRouter#remove(Connection)
 	 */
+	@Override
 	public void remove(Connection connection) {
 		staleConnections.remove(connection);
 		constraintMap.remove(connection);
-		if (connectionToPaths == null)
+		if (connectionToPaths == null) {
 			return;
+		}
 		Path path = (Path) connectionToPaths.remove(connection);
 		algorithm.removePath(path);
 		isDirty = true;
@@ -233,8 +245,9 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	}
 
 	void removeChild(IFigure child) {
-		if (connectionToPaths == null)
+		if (connectionToPaths == null) {
 			return;
+		}
 		Rectangle bounds = child.getBounds().getCopy();
 		boolean change = algorithm.removeObstacle(bounds);
 		figuresToBounds.remove(child);
@@ -248,6 +261,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	/**
 	 * @see ConnectionRouter#route(Connection)
 	 */
+	@Override
 	public void route(Connection conn) {
 		if (isDirty) {
 			ignoreInvalidate = true;
@@ -255,8 +269,8 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 			isDirty = false;
 			List updated = algorithm.solve();
 			Connection current;
-			for (int i = 0; i < updated.size(); i++) {
-				Path path = (Path) updated.get(i);
+			for (Object element : updated) {
+				Path path = (Path) element;
 				current = (Connection) path.data;
 				current.revalidate();
 
@@ -291,8 +305,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 		if (isDirty) {
 			processStaleConnections();
 			isDirty = false;
-			List all = algorithm.solve();
-			return all;
+			return algorithm.solve();
 
 		}
 		return null;
@@ -301,6 +314,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	/**
 	 * @see ConnectionRouter#setConstraint(Connection, Object)
 	 */
+	@Override
 	public void setConstraint(Connection connection, Object constraint) {
 		// Connection.setConstraint() already calls revalidate, so we know that
 		// a
@@ -314,7 +328,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	 * Sets the default space that should be maintained on either side of a
 	 * connection. This causes the connections to be separated from each other and
 	 * from the obstacles. The default value is 4.
-	 * 
+	 *
 	 * @param spacing the connection spacing
 	 * @since 3.2
 	 */
@@ -340,7 +354,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 
 	/**
 	 * Sets the value indicating if connection invalidation should be ignored.
-	 * 
+	 *
 	 * @param b true if invalidation should be skipped, false otherwise
 	 * @since 3.5
 	 */
@@ -350,7 +364,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 
 	/**
 	 * Returns the value indicating if connection invalidation should be ignored.
-	 * 
+	 *
 	 * @return true if invalidation should be skipped, false otherwise
 	 * @since 3.5
 	 */
@@ -361,7 +375,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	/**
 	 * Returns the value indicating if the router is dirty, i.e. if there are any
 	 * outstanding connections that need to be routed
-	 * 
+	 *
 	 * @return true if there are connections to be routed, false otherwise
 	 * @since 3.5
 	 */
@@ -372,7 +386,7 @@ public final class ShortestPathConnectionRouter extends AbstractRouter {
 	/**
 	 * Returns true if the given connection is routed by this router, false
 	 * otherwise
-	 * 
+	 *
 	 * @param conn Connection whose router is questioned
 	 * @return true if this is the router used for conn
 	 * @since 3.5
