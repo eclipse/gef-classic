@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2022 IBM Corporation and others.
+ * Copyright (c) 2005, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,60 +10,55 @@
  *******************************************************************************/
 package swt.transforms;
 
-import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class RegionTransforms {
+import org.eclipse.draw2d.ColorConstants;
 
-	static float angle = 4;
+public class RegionTransforms extends AbstractSWTTransform {
+
+	private Region region;
 
 	public static void main(String[] args) {
-		final Display display = new Display();
-		final Shell shell = new Shell(display);
-		shell.setText("Shell");
-		shell.setFont(new Font(display, "Arial", 12, 0));
+		new RegionTransforms().runTransformTest();
+	}
 
-		final Region region = new Region();
+	@Override
+	protected void performPaint(PaintEvent e) {
+		GC gc = e.gc;
+		Transform t = new Transform(gc.getDevice());
+		t.rotate(-15);
+		gc.setTransform(t);
+		t.dispose();
+
+		Region clipping = new Region();
+		gc.setClipping(region);
+		System.out.println("original " + region.getBounds()); //$NON-NLS-1$
+		gc.getClipping(clipping);
+		System.out.println("transformed " + clipping.getBounds()); //$NON-NLS-1$
+		clipping.dispose();
+
+		t = new Transform(gc.getDevice());
+		gc.setTransform(t);
+		t.dispose();
+		gc.setBackground(ColorConstants.blue);
+		gc.fillRectangle(e.x, e.y, e.width, e.height);
+
+		t.dispose();
+	}
+
+	@Override
+	protected Shell createShell(Display display) {
+		Shell createShell = super.createShell(display);
+		// region created and initialized here as it has to be done after display
+		// creation
+		region = new Region();
 		region.add(10, 10, 100, 150);
-
-		shell.addPaintListener(new PaintListener() {
-			public void paintControl(PaintEvent e) {
-				GC gc = e.gc;
-				Transform t = new Transform(display);
-				t.rotate(-15);
-				gc.setTransform(t);
-				t.dispose();
-
-				Region clipping = new Region();
-				gc.setClipping(region);
-				System.out.println("original " + region.getBounds());
-				gc.getClipping(clipping);
-				System.out.println("transformed " + clipping.getBounds());
-				clipping.dispose();
-
-				gc.setTransform(t = new Transform(display));
-				t.dispose();
-				gc.setBackground(ColorConstants.blue);
-				gc.fillRectangle(e.x, e.y, e.width, e.height);
-
-				t.dispose();
-			}
-		});
-
-		shell.setSize(200, 200);
-		shell.open();
-		while (!shell.isDisposed()) {
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
-		display.dispose();
+		return createShell;
 	}
 
 }
