@@ -13,6 +13,16 @@ package org.eclipse.draw2d.examples.graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.draw2d.AbsoluteBendpoint;
 import org.eclipse.draw2d.BendpointConnectionRouter;
 import org.eclipse.draw2d.ChopboxAnchor;
@@ -30,15 +40,6 @@ import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
 import org.eclipse.draw2d.graph.NodeList;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * @author Daniel Lee
@@ -184,9 +185,7 @@ public abstract class AbstractGraphDemo {
 		return conn;
 	}
 
-	/**
-	 * @see org.eclipse.graph.AbstractExample#createContents()
-	 */
+	@SuppressWarnings("static-method")
 	protected IFigure getContents() {
 		return null;
 	}
@@ -208,9 +207,6 @@ public abstract class AbstractGraphDemo {
 	 */
 	protected abstract String[] getGraphMethods();
 
-	/**
-	 * @see org.eclipse.graph.AbstractExample#hookShell()
-	 */
 	protected void hookShell() {
 		Composite composite = new Composite(shell, 0);
 		composite.setLayoutData(new GridData(GridData.FILL_VERTICAL));

@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.connections;
 
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.ConnectionEndpointLocator;
@@ -129,9 +131,10 @@ public class ConnectionAndAnchorExample extends AbstractExample {
 	}
 
 	/**
-	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell()
+	 * @see org.eclipse.draw2d.examples.AbstractExample#hookShell(Shell shell)
 	 */
-	protected void hookShell() {
+	@Override
+	protected void hookShell(Shell shell) {
 		getFigureCanvas().setSize(820, 440);
 	}
 

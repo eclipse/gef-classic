@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.text;
 
+import org.eclipse.swt.graphics.Font;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.IFigure;
@@ -20,7 +22,6 @@ import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.SimpleTextLayout;
 import org.eclipse.draw2d.text.TextFlow;
-import org.eclipse.swt.graphics.Font;
 
 /**
  * This example shows the basic ways that the draw2d.text figures can be used.
@@ -33,7 +34,8 @@ public class TextFlowExample extends AbstractExample {
 	static protected IFigure createAlignmentParagraph() {
 		BlockFlow block = new BlockFlow();
 		block.setHorizontalAligment(PositionConstants.RIGHT);
-		block.add(new TextFlow("An inline flow figure's aligment is determined by the block flow in which it resides. This block is aligned using ")); //$NON-NLS-1$
+		block.add(new TextFlow(
+				"An inline flow figure's aligment is determined by the block flow in which it resides. This block is aligned using ")); //$NON-NLS-1$
 		TextFlow text = new TextFlow("PositionConstants.RIGHT"); //$NON-NLS-1$
 		text.setFont(COURIER);
 		block.add(text);
@@ -79,12 +81,12 @@ public class TextFlowExample extends AbstractExample {
 		BlockFlow blockFlow = new BlockFlow();
 		TextFlow text;
 		blockFlow.add(new TextFlow(
-				"A paragraph can contain multiple children, including" + " nested structure using InlineFlows. "));
+				"A paragraph can contain multiple children, including" + " nested structure using InlineFlows. ")); //$NON-NLS-1$ //$NON-NLS-2$
 
 		InlineFlow inline = new InlineFlow();
 		inline.setForegroundColor(ColorConstants.darkBlue);
-		inline.add(new TextFlow(
-				"This TextFlow is inside an InlineFlow with a blue " + "foreground color. Children can have "));
+		inline.add(new TextFlow( // $NON-NLS-1$
+				"This TextFlow is inside an InlineFlow with a blue " + "foreground color. Children can have ")); //$NON-NLS-1$ //$NON-NLS-2$
 		text = new TextFlow("Bold "); //$NON-NLS-1$
 		text.setFont(BOLD);
 		inline.add(text);
@@ -110,7 +112,7 @@ public class TextFlowExample extends AbstractExample {
 				The contents of this paragraph were created using a TextFlow figure\s\
 				in its default layout, which breaks at whitespace.\s\
 				a block of text that doesn't wrap can be created by using the\s\
-				SimpleTextLayout on a TextFlow""");
+				SimpleTextLayout on a TextFlow"""); // $NON-NLS-1$ //$NON-NLS-1$
 
 		blockFlow.add(contents);
 		return blockFlow;
@@ -151,7 +153,7 @@ public class TextFlowExample extends AbstractExample {
 	@Override
 	protected void setFigureCanvas(FigureCanvas canvas) {
 		super.setFigureCanvas(canvas);
-		//	canvas.setVerticalScrollBarVisibility(canvas.ALWAYS);
+		// canvas.setVerticalScrollBarVisibility(canvas.ALWAYS);
 		canvas.getViewport().setContentsTracksWidth(true);
 	}
 

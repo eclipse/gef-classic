@@ -55,8 +55,8 @@ public class TreeBranch extends Figure {
 			}
 			bounds.width = rect.width;
 			bounds.height = rect.height;
-			//	if (resize)  Layouts dont depend on size.
-			//		invalidate();
+			// if (resize) Layouts dont depend on size.
+			// invalidate();
 			if (resize || translate) {
 				fireMoved();
 				repaint();
@@ -82,10 +82,10 @@ public class TreeBranch extends Figure {
 	 * by "transparent". If a layer is not used, then overlapping branches will
 	 * cause hit-test problems.
 	 */
-	private AnimatingLayer contents = new AnimatingLayer();
+	private final AnimatingLayer contents = new AnimatingLayer();
 	boolean expanded = true;
 
-	private IFigure node;
+	private final IFigure node;
 	private int style;
 
 	public TreeBranch(IFigure title) {
@@ -257,9 +257,6 @@ public class TreeBranch extends Figure {
 		return style;
 	}
 
-	/**
-	 * @return
-	 */
 	public boolean isExpanded() {
 		return expanded;
 	}
@@ -270,11 +267,10 @@ public class TreeBranch extends Figure {
 	@Override
 	protected void paintFigure(Graphics graphics) {
 		super.paintFigure(graphics);
-		if (isExpanded())
-		{
+		if (isExpanded()) {
 			getBranchLayout().paintLines(graphics);
-			//	if (getDepth() == 2)
-			//		graphics.drawRectangle(getBounds().getResized(-1, -1));
+			// if (getDepth() == 2)
+			// graphics.drawRectangle(getBounds().getResized(-1, -1));
 		}
 	}
 

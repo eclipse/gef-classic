@@ -150,9 +150,9 @@ public class ObstructionExample extends AbstractExample {
 			super.paint(graphics);
 			Rectangle b = getBounds();
 			Point p = b.getCenter().translate(-22, -15);
-			graphics.drawString("y:" + b.y() + "h:" + b.height(), p);
+			graphics.drawString("y:" + b.y() + "h:" + b.height(), p); //$NON-NLS-1$ //$NON-NLS-2$
 			p.setY(p.y() + 12);
-			graphics.drawString("x:" + b.x() + "w:" + b.width(), p);
+			graphics.drawString("x:" + b.x() + "w:" + b.width(), p); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 	}
 
@@ -160,7 +160,6 @@ public class ObstructionExample extends AbstractExample {
 
 		private static final int INITAL_OBSTACLE_COUNT = 5;
 
-		Map obstacleMap = new HashMap();
 		boolean showSegs = false;
 
 		public TestFigure() {

@@ -10,6 +10,12 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.path;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Path;
+import org.eclipse.swt.graphics.TextLayout;
+import org.eclipse.swt.graphics.TextStyle;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.Polyline;
@@ -18,11 +24,6 @@ import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PointList;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Path;
-import org.eclipse.swt.graphics.TextLayout;
-import org.eclipse.swt.graphics.TextStyle;
-import org.eclipse.swt.widgets.Display;
 
 public class PathFigure extends Polyline {
 
@@ -65,7 +66,7 @@ public class PathFigure extends Polyline {
 
 		TextLayout textLayout = new TextLayout(Display.getDefault());
 		textLayout.setFont(g.getFont());
-		textLayout.setText("zoom" + (g instanceof ScaledGraphics ? "[e]" : "[n]"));
+		textLayout.setText("zoom" + (g instanceof ScaledGraphics ? "[e]" : "[n]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		TextStyle textStyle = new TextStyle();
 		textStyle.underline = true;
 		textStyle.underlineColor = ColorConstants.blue;

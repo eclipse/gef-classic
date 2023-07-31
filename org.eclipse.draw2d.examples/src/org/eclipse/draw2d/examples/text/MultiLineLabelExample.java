@@ -10,13 +10,14 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.text;
 
-import org.eclipse.draw2d.widgets.MultiLineLabel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
+import org.eclipse.draw2d.widgets.MultiLineLabel;
 
 /**
  * This example shows the MultiLineLabel widget. MutliLineLabel is a widget for
