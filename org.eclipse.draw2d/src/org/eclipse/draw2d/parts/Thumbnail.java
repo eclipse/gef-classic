@@ -23,7 +23,6 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.SWTGraphics;
-import org.eclipse.draw2d.ScaledGraphics;
 import org.eclipse.draw2d.UpdateListener;
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Rectangle;
@@ -63,8 +62,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 		private Dimension tileImageSize;
 		// GC and Graphics to let the source figure paint on the tile image
 		private GC tileGC;
-		private SWTGraphics tileGCGraphics;
-		private ScaledGraphics tileGraphics;
+		private SWTGraphics tileGraphics;
 		// GC used to copy from the tile image into the thumbnail image
 		private GC thumbnailGC;
 
@@ -301,16 +299,10 @@ public class Thumbnail extends Figure implements UpdateListener {
 			tileGC = new GC(tileImage, sourceFigure.isMirrored() ? SWT.RIGHT_TO_LEFT : SWT.NONE);
 
 			// ...and this means we need a new SWTGraphics instance
-			if (tileGCGraphics != null) {
-				tileGCGraphics.dispose();
-			}
-			tileGCGraphics = new SWTGraphics(tileGC);
-
-			// ...and a new ScaledGraphics instance
 			if (tileGraphics != null) {
 				tileGraphics.dispose();
 			}
-			tileGraphics = new ScaledGraphics(tileGCGraphics);
+			tileGraphics = new SWTGraphics(tileGC);
 
 			Color color = sourceFigure.getForegroundColor();
 			if (color != null) {
@@ -360,10 +352,6 @@ public class Thumbnail extends Figure implements UpdateListener {
 			if (tileGraphics != null) {
 				tileGraphics.dispose();
 				tileGraphics = null;
-			}
-			if (tileGCGraphics != null) {
-				tileGCGraphics.dispose();
-				tileGCGraphics = null;
 			}
 			if (tileGC != null) {
 				tileGC.dispose();
