@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.draw2d.parts;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import org.eclipse.swt.SWT;
@@ -46,17 +45,22 @@ public class ScrollableThumbnail extends Thumbnail {
 	private class ClickScrollerAndDragTransferrer extends MouseMotionListener.Stub implements MouseListener {
 		private boolean dragTransfer;
 
+		@Override
 		public void mouseDoubleClicked(MouseEvent me) {
 		}
 
+		@Override
 		public void mouseDragged(MouseEvent me) {
-			if (dragTransfer)
+			if (dragTransfer) {
 				syncher.mouseDragged(me);
+			}
 		}
 
+		@Override
 		public void mousePressed(MouseEvent me) {
-			if (!(ScrollableThumbnail.this.getClientArea().contains(me.getLocation())))
+			if (!(ScrollableThumbnail.this.getClientArea().contains(me.getLocation()))) {
 				return;
+			}
 			Dimension selectorCenter = selector.getBounds().getSize().scale(0.5f);
 			Point scrollPoint = me.getLocation().getTranslated(getLocation().getNegated())
 					.translate(selectorCenter.negate()).scale(1.0f / getViewportScaleX(), 1.0f / getViewportScaleY())
@@ -67,6 +71,7 @@ public class ScrollableThumbnail extends Thumbnail {
 			dragTransfer = true;
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent me) {
 			syncher.mouseReleased(me);
 			dragTransfer = false;
@@ -77,9 +82,11 @@ public class ScrollableThumbnail extends Thumbnail {
 		private Point startLocation;
 		private Point viewLocation;
 
+		@Override
 		public void mouseDoubleClicked(MouseEvent me) {
 		}
 
+		@Override
 		public void mouseDragged(MouseEvent me) {
 			if (startLocation != null) {
 				Dimension d = me.getLocation().getDifference(startLocation);
@@ -89,21 +96,23 @@ public class ScrollableThumbnail extends Thumbnail {
 			}
 		}
 
+		@Override
 		public void mousePressed(MouseEvent me) {
 			startLocation = me.getLocation();
 			viewLocation = viewport.getViewLocation();
 			me.consume();
 		}
 
+		@Override
 		public void mouseReleased(MouseEvent me) {
 		}
 	}
 
 	private class SelectorFigure extends Figure {
 
-		private Rectangle iBounds;
+		private final Rectangle iBounds;
 
-		private ImageData iData;
+		private final ImageData iData;
 
 		public SelectorFigure() {
 			PaletteData pData = new PaletteData(0xFF, 0xFF00, 0xFF0000);
@@ -115,19 +124,22 @@ public class ScrollableThumbnail extends Thumbnail {
 			iBounds = new Rectangle(0, 0, 1, 1);
 		}
 
+		@Override
 		public void paintFigure(Graphics g) {
 			Rectangle bounds = getBounds().getCopy();
 
 			// Avoid drawing images that are 0 in dimension
-			if (bounds.width < 5 || bounds.height < 5)
+			if (bounds.width < 5 || bounds.height < 5) {
 				return;
+			}
 
 			// Don't paint the selector figure if the entire source is visible.
 			Dimension thumbnailSize = new Dimension(getThumbnailImage());
 			// expand to compensate for rounding errors in calculating bounds
 			Dimension size = getSize().getExpanded(1, 1);
-			if (size.contains(thumbnailSize))
+			if (size.contains(thumbnailSize)) {
 				return;
+			}
 
 			bounds.height--;
 			bounds.width--;
@@ -141,70 +153,90 @@ public class ScrollableThumbnail extends Thumbnail {
 		}
 	}
 
-	private FigureListener figureListener = new FigureListener() {
-		public void figureMoved(IFigure source) {
-			reconfigureSelectorBounds();
-		}
-	};
-	private KeyListener keyListener = new KeyListener.Stub() {
+	private final FigureListener figureListener = source -> reconfigureSelectorBounds();
+	private final KeyListener keyListener = new KeyListener.Stub() {
+		@Override
 		public void keyPressed(KeyEvent ke) {
 			int moveX = viewport.getClientArea().width / 4;
 			int moveY = viewport.getClientArea().height / 4;
-			if (ke.keycode == SWT.HOME || (isMirrored() ? ke.keycode == SWT.ARROW_RIGHT : ke.keycode == SWT.ARROW_LEFT))
+			if (ke.keycode == SWT.HOME
+					|| (isMirrored() ? ke.keycode == SWT.ARROW_RIGHT : ke.keycode == SWT.ARROW_LEFT)) {
 				viewport.setViewLocation(viewport.getViewLocation().translate(-moveX, 0));
-			else if (ke.keycode == SWT.END
-					|| (isMirrored() ? ke.keycode == SWT.ARROW_LEFT : ke.keycode == SWT.ARROW_RIGHT))
+			} else if (ke.keycode == SWT.END
+					|| (isMirrored() ? ke.keycode == SWT.ARROW_LEFT : ke.keycode == SWT.ARROW_RIGHT)) {
 				viewport.setViewLocation(viewport.getViewLocation().translate(moveX, 0));
-			else if (ke.keycode == SWT.ARROW_UP || ke.keycode == SWT.PAGE_UP)
+			} else if (ke.keycode == SWT.ARROW_UP || ke.keycode == SWT.PAGE_UP) {
 				viewport.setViewLocation(viewport.getViewLocation().translate(0, -moveY));
-			else if (ke.keycode == SWT.ARROW_DOWN || ke.keycode == SWT.PAGE_DOWN)
+			} else if (ke.keycode == SWT.ARROW_DOWN || ke.keycode == SWT.PAGE_DOWN) {
 				viewport.setViewLocation(viewport.getViewLocation().translate(0, moveY));
+			}
 		}
 	};
 
-	private PropertyChangeListener propListener = new PropertyChangeListener() {
-		public void propertyChange(PropertyChangeEvent evt) {
-			reconfigureSelectorBounds();
-		}
-	};
+	private final PropertyChangeListener propListener = evt -> reconfigureSelectorBounds();
 
 	private ScrollSynchronizer syncher;
 	private IFigure selector;
 	private Viewport viewport;
 
-	/**
-	 * Creates a new ScrollableThumbnail.
-	 */
+	/** Creates a new ScrollableThumbnail. */
 	public ScrollableThumbnail() {
-		super();
 		initialize();
 	}
 
 	/**
 	 * Creates a new ScrollableThumbnail that synchs with the given Viewport.
-	 * 
+	 *
 	 * @param port The Viewport
 	 */
 	public ScrollableThumbnail(Viewport port) {
-		super();
 		setViewport(port);
 		initialize();
 	}
 
-	/**
-	 * @see Thumbnail#deactivate()
-	 */
+	/** @see Thumbnail#deactivate() */
+	@Override
 	public void deactivate() {
 		unhookViewport();
 		unhookSelector();
 		super.deactivate();
 	}
 
-	private double getViewportScaleX() {
-		return (double) targetSize.width / viewport.getContents().getBounds().width;
+	/**
+	 * Get the viewport used for this ScrollableThumbnail
+	 *
+	 * @return the viewport
+	 * @since 3.14
+	 */
+	public final Viewport getViewport() {
+		return viewport;
 	}
 
-	private double getViewportScaleY() {
+	/**
+	 * Calculate the scale factor in x direction to be used between viewport and
+	 * thumbnail.
+	 *
+	 * Subclasses may override if they only want to show parts of the overall
+	 * viewport.
+	 *
+	 * @return the viewport scale factor for X
+	 * @since 3.14
+	 */
+	protected double getViewportScaleX() {
+		return (double) targetSize.width / viewport.getContents().getBounds().width();
+	}
+
+	/**
+	 * Calculate the scale factor in y direction to be used between viewport and
+	 * thumbnail.
+	 *
+	 * Subclasses may override if they only want to show parts of the overall
+	 * viewport.
+	 *
+	 * @return the viewport scale factor for Y
+	 * @since 3.14
+	 */
+	protected double getViewportScaleY() {
 		return (double) targetSize.height / viewport.getContents().getBounds().height;
 	}
 
@@ -230,6 +262,18 @@ public class ScrollableThumbnail extends Thumbnail {
 	}
 
 	private void reconfigureSelectorBounds() {
+		selector.setBounds(calculateSelectorBounds());
+	}
+
+	/**
+	 * Calculate the size and position of the selector
+	 *
+	 * Subclasses may override if they only want to show parts of the overall
+	 * viewport. Especially the offset calculation may need to be adjusted.
+	 *
+	 * @since 3.14
+	 */
+	protected Rectangle calculateSelectorBounds() {
 		Rectangle rect = new Rectangle();
 		Point offset = viewport.getViewLocation();
 		offset.x -= viewport.getHorizontalRangeModel().getMinimum();
@@ -238,19 +282,21 @@ public class ScrollableThumbnail extends Thumbnail {
 		rect.setSize(viewport.getClientArea().getSize());
 		rect.scale(getViewportScaleX(), getViewportScaleY());
 		rect.translate(getClientArea().getLocation());
-		selector.setBounds(rect);
+		return rect;
 	}
 
 	/**
 	 * Reconfigures the SelectorFigure's bounds if the scales have changed.
-	 * 
+	 *
 	 * @param scaleX The X scale
 	 * @param scaleY The Y scale
 	 * @see org.eclipse.draw2d.parts.Thumbnail#setScales(float, float)
 	 */
+	@Override
 	protected void setScales(float scaleX, float scaleY) {
-		if (scaleX == getScaleX() && scaleY == getScaleY())
+		if (scaleX == getScaleX() && scaleY == getScaleY()) {
 			return;
+		}
 
 		super.setScales(scaleX, scaleY);
 		reconfigureSelectorBounds();
@@ -258,7 +304,7 @@ public class ScrollableThumbnail extends Thumbnail {
 
 	/**
 	 * Sets the Viewport that this ScrollableThumbnail will synch with.
-	 * 
+	 *
 	 * @param port The Viewport
 	 */
 	public void setViewport(Viewport port) {
