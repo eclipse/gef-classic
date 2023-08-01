@@ -13,12 +13,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+
 import org.eclipse.zest.core.widgets.GraphNode;
 
 public class NodeSearchDialog {
-	private Shell parent;
+	private final Shell parent;
 	private Shell dialog;
-	private List<GraphNode> nodes;
+	private final List<? extends GraphNode> nodes;
 
 	private List<GraphNode> searchNodes;
 	private int index = 0;
@@ -30,7 +31,7 @@ public class NodeSearchDialog {
 	private Button caseSensButton;
 	private Button wholeWordButton;
 
-	public NodeSearchDialog(Shell parent, List<GraphNode> nodes) {
+	public NodeSearchDialog(Shell parent, List<? extends GraphNode> nodes) {
 		this.nodes = nodes;
 		this.parent = parent;
 

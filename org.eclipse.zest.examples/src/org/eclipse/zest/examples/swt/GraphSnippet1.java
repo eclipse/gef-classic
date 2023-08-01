@@ -10,12 +10,15 @@
 package org.eclipse.zest.examples.swt;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.zest.core.widgets.Graph;
 import org.eclipse.zest.core.widgets.GraphConnection;
 import org.eclipse.zest.core.widgets.GraphNode;
+import org.eclipse.zest.core.widgets.internal.NodeSearchDialog;
 import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.SpringLayoutAlgorithm;
 
@@ -48,6 +51,17 @@ public class GraphSnippet1 {
 		new GraphConnection(g, SWT.NONE, n2, n3);
 		new GraphConnection(g, SWT.NONE, n3, n);
 		g.setLayoutAlgorithm(new SpringLayoutAlgorithm(LayoutStyles.NO_LAYOUT_NODE_RESIZING), true);
+
+		// example for dialog for searching nodes
+		NodeSearchDialog searchDialog = new NodeSearchDialog(g.getShell(), g.getNodes());
+		g.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.stateMask == SWT.CONTROL && e.keyCode == 'f') {
+					searchDialog.open();
+				}
+			}
+		});
 
 		shell.open();
 		while (!shell.isDisposed()) {

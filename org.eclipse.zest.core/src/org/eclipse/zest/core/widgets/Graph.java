@@ -210,16 +210,6 @@ public class Graph extends FigureCanvas implements IContainer {
 			 */
 		});
 
-		NodeSearchDialog searchDialog = new NodeSearchDialog(getShell(), nodes);
-		this.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.stateMask == SWT.CONTROL && e.keyCode == 'f') {
-					searchDialog.open();
-				}
-			}
-		});
-
 		this.addDisposeListener(event -> release());
 	}
 
