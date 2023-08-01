@@ -66,9 +66,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 		// GC used to copy from the tile image into the thumbnail image
 		private GC thumbnailGC;
 
-		/**
-		 * Stops the updater and disposes of any resources.
-		 */
+		/** Stops the updater and disposes of any resources. */
 		public void deactivate() {
 			setActive(false);
 			stop();
@@ -143,9 +141,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 			currentVTile = 0;
 		}
 
-		/**
-		 * Restarts the updater.
-		 */
+		/** Restarts the updater. */
 		public void restart() {
 			stop();
 			start();
@@ -287,9 +283,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 			Display.getCurrent().asyncExec(this);
 		}
 
-		/**
-		 * Create new GC, SWTGraphics, and ScaledGraphics instances
-		 */
+		/** Create new GC, SWTGraphics, and ScaledGraphics instances */
 		private void createTileGraphics() {
 			// For the Mac fixe we have to create a new GC instance to flush the previous
 			// tile image...
@@ -417,9 +411,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 		return size.expand(borderSize);
 	}
 
-	/**
-	 * Deactivates this Thumbnail.
-	 */
+	/** Deactivates this Thumbnail. */
 	public void deactivate() {
 		sourceFigure.getUpdateManager().removeUpdateListener(this);
 		updater.deactivate();
@@ -522,9 +514,7 @@ public class Thumbnail extends Figure implements UpdateListener {
 		return isDirty;
 	}
 
-	/**
-	 * @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle, Map)
-	 */
+	/** @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle, Map) */
 	@Override
 	public void notifyPainting(Rectangle damage, Map dirtyRegions) {
 		Iterator dirtyFigures = dirtyRegions.keySet().iterator();
@@ -541,18 +531,14 @@ public class Thumbnail extends Figure implements UpdateListener {
 		}
 	}
 
-	/**
-	 * @see org.eclipse.draw2d.UpdateListener#notifyValidating()
-	 */
+	/** @see org.eclipse.draw2d.UpdateListener#notifyValidating() */
 	@Override
 	public void notifyValidating() {
 		// setDirty(true);
 		// revalidate();
 	}
 
-	/**
-	 * @see org.eclipse.draw2d.Figure#paintFigure(Graphics)
-	 */
+	/** @see org.eclipse.draw2d.Figure#paintFigure(Graphics) */
 	@Override
 	protected void paintFigure(Graphics graphics) {
 		Image thumbnail = getThumbnailImage();
@@ -603,6 +589,16 @@ public class Thumbnail extends Figure implements UpdateListener {
 			sourceFigure.getUpdateManager().addUpdateListener(this);
 			repaint();
 		}
+	}
+
+	/**
+	 * Returns the target size of the thumbnail.
+	 *
+	 * @return the target size
+	 * @since 3.14
+	 */
+	protected Dimension getTargetSize() {
+		return targetSize;
 	}
 
 }
