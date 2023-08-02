@@ -29,8 +29,10 @@ public abstract class PrintOperation {
 							// print job
 	private Insets printMargin = new Insets(0, 0, 0, 0);
 	private Printer printer;
-	private PrinterGraphics printerGraphics;
+	private ScaledGraphics printerGraphics;
 	private SWTGraphics g;
+
+	private boolean useScaledGraphics = true;
 
 	/**
 	 * Creates a new PrintOperation
@@ -48,35 +50,56 @@ public abstract class PrintOperation {
 	}
 
 	/**
+	 * Set whether to use a ScaledGraphics instance for rendering
+	 * If true it might lead to clipped fonts
+	 * @param useScaledGraphics
+	 */
+	public void setUseScaledGraphics(boolean useScaledGraphics) {
+		this.useScaledGraphics = useScaledGraphics;
+	}
+
+	/**
 	 * Disposes the PrinterGraphics and GC objects associated with this
 	 * PrintOperation.
 	 */
 	protected void cleanup() {
 		if (g != null) {
-			printerGraphics.dispose();
 			g.dispose();
+		}
+		if(printerGraphics != null) {
+			printerGraphics.dispose();
 		}
 		if (printerGC != null)
 			printerGC.dispose();
 	}
 
 	/**
-	 * Returns a new PrinterGraphics setup for the Printer associated with this
+	 * Returns a new Graphics setup for the Printer associated with this
 	 * PrintOperation.
 	 * 
-	 * @return PrinterGraphics The new PrinterGraphics
+	 * @return Graphics The new Graphics
 	 */
-	protected PrinterGraphics getFreshPrinterGraphics() {
+	protected Graphics getFreshPrinterGraphics() {
 		if (printerGraphics != null) {
 			printerGraphics.dispose();
-			g.dispose();
-			printerGraphics = null;
-			g = null;
 		}
+
+		if (g != null) {
+			g.dispose();
+		}
+		
 		g = new SWTGraphics(printerGC);
-		printerGraphics = new PrinterGraphics(g, printer);
-		setupGraphicsForPage(printerGraphics);
-		return printerGraphics;
+
+		// Scaled graphics
+		if(useScaledGraphics) {
+			printerGraphics = new PrinterGraphics(g, printer);
+			setupGraphicsForPage(printerGraphics);
+			return printerGraphics;
+		}
+
+		// Non-scaled graphics
+		setupGraphicsForPage(g);
+		return g;
 	}
 
 	/**
@@ -114,8 +137,8 @@ public abstract class PrintOperation {
 		Insets userPreferred = new Insets((printMargin.top * printerDPI.x) / 72, (printMargin.left * printerDPI.x) / 72,
 				(printMargin.bottom * printerDPI.x) / 72, (printMargin.right * printerDPI.x) / 72);
 		Rectangle paperBounds = new Rectangle(printer.getBounds());
-		Rectangle printRegion = paperBounds.getCropped(notAvailable);
-		printRegion.intersect(paperBounds.getCropped(userPreferred));
+		Rectangle printRegion = paperBounds.getShrinked(notAvailable);
+		printRegion.intersect(paperBounds.getShrinked(userPreferred));
 		printRegion.translate(trim.x, trim.y);
 		return printRegion;
 	}
@@ -180,12 +203,12 @@ public abstract class PrintOperation {
 	 * Manipulates the PrinterGraphics to position it to paint in the desired region
 	 * of the page. (Default is the top left corner of the page).
 	 * 
-	 * @param pg The PrinterGraphics to setup
+	 * @param g The PrinterGraphics to setup
 	 */
-	protected void setupGraphicsForPage(PrinterGraphics pg) {
+	protected void setupGraphicsForPage(Graphics g) {
 		Rectangle printRegion = getPrintRegion();
-		pg.clipRect(printRegion);
-		pg.translate(printRegion.getTopLeft());
+		g.clipRect(printRegion);
+		g.translate(printRegion.getTopLeft());
 	}
 
 }
