@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -516,10 +516,8 @@ public class Thumbnail extends Figure implements UpdateListener {
 
 	/** @see org.eclipse.draw2d.UpdateListener#notifyPainting(Rectangle, Map) */
 	@Override
-	public void notifyPainting(Rectangle damage, Map dirtyRegions) {
-		Iterator dirtyFigures = dirtyRegions.keySet().iterator();
-		while (dirtyFigures.hasNext()) {
-			IFigure current = (IFigure) dirtyFigures.next();
+	public void notifyPainting(Rectangle damage, Map<IFigure, Rectangle> dirtyRegions) {
+		for (IFigure current : dirtyRegions.keySet()) {
 			while (current != null) {
 				if (current == getSource()) {
 					setDirty(true);

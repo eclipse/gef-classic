@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,7 @@ public interface UpdateListener {
 	 * @param damage       The area being painted
 	 * @param dirtyRegions a Map of figures to their dirty regions
 	 */
-	void notifyPainting(Rectangle damage, Map dirtyRegions);
+	void notifyPainting(Rectangle damage, Map<IFigure, Rectangle> dirtyRegions);
 
 	/**
 	 * Notifies the listener that the listened to object is validating.

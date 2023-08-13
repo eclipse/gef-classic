@@ -233,7 +233,7 @@ public class PaintDamageEraseTest extends BaseTestCase implements UpdateListener
 	}
 
 	@Override
-	public void notifyPainting(Rectangle damage, Map dirtyRegions) {
+	public void notifyPainting(Rectangle damage, Map<IFigure, Rectangle> dirtyRegions) {
 		lastDamaged = damage;
 	}
 
