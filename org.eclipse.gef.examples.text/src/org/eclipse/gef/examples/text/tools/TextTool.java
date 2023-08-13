@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2010 IBM Corporation and others.
+ * Copyright (c) 2004, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.draw2d.Cursors;
+import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.UpdateListener;
 import org.eclipse.draw2d.UpdateManager;
 import org.eclipse.draw2d.geometry.Point;
@@ -81,7 +82,7 @@ public class TextTool extends SelectionTool implements StyleProvider {
 	};
 	private UpdateListener updateListener = new UpdateListener() {
 		@Override
-		public void notifyPainting(Rectangle damage, Map dirtyRegions) {
+		public void notifyPainting(Rectangle damage, Map<IFigure, Rectangle> dirtyRegions) {
 			queueCaretRefresh(false);
 		}
 

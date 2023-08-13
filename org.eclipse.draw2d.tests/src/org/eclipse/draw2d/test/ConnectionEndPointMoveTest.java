@@ -87,7 +87,7 @@ public class ConnectionEndPointMoveTest extends BaseTestCase implements UpdateLi
 	 * .Rectangle, java.util.Map)
 	 */
 	@Override
-	public void notifyPainting(Rectangle damage, Map dirtyRegions) {
+	public void notifyPainting(Rectangle damage, Map<IFigure, Rectangle> dirtyRegions) {
 		lastDamaged = damage;
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	}
 
 	private Rectangle damage;
-	private Map dirtyRegions = new HashMap();
+	private Map<IFigure, Rectangle> dirtyRegions = new HashMap<>();
 
 	private GraphicsSource graphicsSource;
 	private List invalidFigures = new ArrayList();
@@ -103,7 +103,7 @@ public class DeferredUpdateManager extends UpdateManager {
 		if (w == 0 || h == 0 || !figure.isShowing())
 			return;
 
-		Rectangle rect = (Rectangle) dirtyRegions.get(figure);
+		Rectangle rect = dirtyRegions.get(figure);
 		if (rect == null) {
 			rect = new Rectangle(x, y, w, h);
 			dirtyRegions.put(figure, rect);
@@ -266,15 +266,8 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * regions.
 	 */
 	protected void repairDamage() {
-		Iterator keys = dirtyRegions.keySet().iterator();
-		Rectangle contribution;
-		IFigure figure;
-		IFigure walker;
-
-		while (keys.hasNext()) {
-			figure = (IFigure) keys.next();
-			walker = figure.getParent();
-			contribution = (Rectangle) dirtyRegions.get(figure);
+		dirtyRegions.forEach((figure, contribution) -> {
+			IFigure walker = figure.getParent();
 			// A figure can't paint beyond its own bounds
 			contribution.intersect(figure.getBounds());
 			while (!contribution.isEmpty() && walker != null) {
@@ -286,11 +279,11 @@ public class DeferredUpdateManager extends UpdateManager {
 				damage = new Rectangle(contribution);
 			else
 				damage.union(contribution);
-		}
+		});
 
 		if (!dirtyRegions.isEmpty()) {
-			Map oldRegions = dirtyRegions;
-			dirtyRegions = new HashMap();
+			Map<IFigure, Rectangle> oldRegions = dirtyRegions;
+			dirtyRegions = new HashMap<>();
 			firePainting(damage, oldRegions);
 		}
 
