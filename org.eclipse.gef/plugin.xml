@@ -104,7 +104,7 @@
 				label="%colorDefinition.org.eclipse.gef.color.line.foreground.label"
 				categoryId="org.eclipse.gef"
 				id="org.eclipse.gef.color.line.foreground"
-				value="COLOR_LIST_FOREGROUND">
+				value="COLOR_GRAY">
 			<description>%colorDefinition.org.eclipse.gef.color.line.foreground.description</description>
 		</colorDefinition>
 		<colorDefinition
