@@ -61,8 +61,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * @since 3.2
 	 */
 	public void addRoutingListener(RoutingListener listener) {
-		if (connectionRouter instanceof RoutingNotifier) {
-			RoutingNotifier notifier = (RoutingNotifier) connectionRouter;
+		if (connectionRouter instanceof RoutingNotifier notifier) {
 			notifier.listeners.add(listener);
 		} else
 			connectionRouter = new RoutingNotifier(connectionRouter, listener);
@@ -208,8 +207,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * @since 3.2
 	 */
 	public void removeRoutingListener(RoutingListener listener) {
-		if (connectionRouter instanceof RoutingNotifier) {
-			RoutingNotifier notifier = (RoutingNotifier) connectionRouter;
+		if (connectionRouter instanceof RoutingNotifier notifier) {
 			notifier.listeners.remove(listener);
 			if (notifier.listeners.isEmpty())
 				connectionRouter = notifier.realRouter;

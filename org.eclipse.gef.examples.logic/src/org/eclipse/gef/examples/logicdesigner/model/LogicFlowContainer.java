@@ -25,8 +25,7 @@ public class LogicFlowContainer extends LogicDiagram {
 
 		@Override
 		public String getText(Object element) {
-			if (element instanceof Integer) {
-				Integer integer = (Integer) element;
+			if (element instanceof Integer integer) {
 				if (LAYOUT_SINGLE_ROW.intValue() == integer.intValue())
 					return LogicMessages.PropertyDescriptor_LogicFlowContainer_SingleColumnLayout;
 				if (LAYOUT_MULTI_ROW.intValue() == integer.intValue())

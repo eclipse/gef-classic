@@ -29,8 +29,7 @@ class NodePair {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof NodePair) {
-			NodePair np = (NodePair) obj;
+		if (obj instanceof NodePair np) {
 			return np.n1 == n1 && np.n2 == n2;
 		}
 		return false;

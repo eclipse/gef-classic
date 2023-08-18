@@ -85,9 +85,7 @@ public class FixedConnectionAnchor extends AbstractConnectionAnchor {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof FixedConnectionAnchor) {
-			FixedConnectionAnchor fa = (FixedConnectionAnchor) o;
-
+		if (o instanceof FixedConnectionAnchor fa) {
 			if (fa.leftToRight == this.leftToRight && fa.topDown == this.topDown && fa.offsetH == this.offsetH
 					&& fa.offsetV == this.offsetV && fa.getOwner() == this.getOwner()) {
 				return true;

@@ -112,31 +112,24 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 		super.translateFromParent(t);
 		// t.performScale(1/widthScale);
 
-		if (t instanceof PrecisionRectangle) {
-			PrecisionRectangle r = (PrecisionRectangle) t;
+		if (t instanceof PrecisionRectangle r) {
 			r.setPreciseX(r.preciseX() * (1 / widthScale));
 			r.setPreciseY(r.preciseY() * (1 / heigthScale));
 			r.setPreciseWidth(r.preciseWidth() * (1 / widthScale));
 			r.setPreciseHeight(r.preciseHeight() * (1 / heigthScale));
-		} else if (t instanceof Rectangle) {
-			Rectangle r = (Rectangle) t;
+		} else if (t instanceof Rectangle r) {
 			r.scale(1 / widthScale, 1 / heigthScale);
-		} else if (t instanceof CaretInfo) {
-			CaretInfo c = (CaretInfo) t;
+		} else if (t instanceof CaretInfo c) {
 			c.performScale(1 / heigthScale);
-		} else if (t instanceof PrecisionDimension) {
-			PrecisionDimension d = (PrecisionDimension) t;
+		} else if (t instanceof PrecisionDimension d) {
 			d.setPreciseWidth(d.preciseWidth() * (1 / widthScale));
 			d.setPreciseHeight(d.preciseHeight() * (1 / heigthScale));
-		} else if (t instanceof Dimension) {
-			Dimension d = (Dimension) t;
+		} else if (t instanceof Dimension d) {
 			d.scale(1 / widthScale, 1 / heigthScale);
-		} else if (t instanceof PrecisionPoint) {
-			PrecisionPoint p = (PrecisionPoint) t;
+		} else if (t instanceof PrecisionPoint p) {
 			p.setPreciseX(p.preciseX() * (1 / widthScale));
 			p.setPreciseY(p.preciseY() * (1 / heigthScale));
-		} else if (t instanceof Point) {
-			Point p = (Point) t;
+		} else if (t instanceof Point p) {
 			p.scale(1 / widthScale, 1 / heigthScale);
 		} else if (t instanceof PointList) {
 			throw new RuntimeException("PointList not supported in AspectRatioScale");
@@ -151,32 +144,25 @@ public class AspectRatioFreeformLayer extends FreeformLayer implements ScalableF
 	public void translateToParent(Translatable t) {
 		// t.performScale(widthScale);
 
-		if (t instanceof PrecisionRectangle) {
-			PrecisionRectangle r = (PrecisionRectangle) t;
+		if (t instanceof PrecisionRectangle r) {
 			r.setPreciseX(r.preciseX() * widthScale);
 			r.setPreciseY(r.preciseY() * heigthScale);
 			r.setPreciseWidth(r.preciseWidth() * widthScale);
 			r.setPreciseHeight(r.preciseHeight() * heigthScale);
-		} else if (t instanceof Rectangle) {
-			Rectangle r = (Rectangle) t;
+		} else if (t instanceof Rectangle r) {
 			// r.performScale(widthScale);
 			r.scale(widthScale, heigthScale);
-		} else if (t instanceof CaretInfo) {
-			CaretInfo c = (CaretInfo) t;
+		} else if (t instanceof CaretInfo c) {
 			c.performScale(heigthScale);
-		} else if (t instanceof PrecisionDimension) {
-			PrecisionDimension d = (PrecisionDimension) t;
+		} else if (t instanceof PrecisionDimension d) {
 			d.setPreciseWidth(d.preciseWidth() * widthScale);
 			d.setPreciseHeight(d.preciseHeight() * heigthScale);
-		} else if (t instanceof Dimension) {
-			Dimension d = (Dimension) t;
+		} else if (t instanceof Dimension d) {
 			d.scale(widthScale, heigthScale);
-		} else if (t instanceof PrecisionPoint) {
-			PrecisionPoint p = (PrecisionPoint) t;
+		} else if (t instanceof PrecisionPoint p) {
 			p.setPreciseX(p.preciseX() * widthScale);
 			p.setPreciseY(p.preciseY() * heigthScale);
-		} else if (t instanceof Point) {
-			Point p = (Point) t;
+		} else if (t instanceof Point p) {
 			p.scale(widthScale, heigthScale);
 		} else if (t instanceof PointList) {
 			throw new RuntimeException("PointList not supported in AspectRatioScale");

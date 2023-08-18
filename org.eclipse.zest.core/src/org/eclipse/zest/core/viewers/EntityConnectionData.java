@@ -42,10 +42,9 @@ public final class EntityConnectionData {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof EntityConnectionData)) {
+		if (!(obj instanceof EntityConnectionData that)) {
 			return false;
 		}
-		EntityConnectionData that = (EntityConnectionData) obj;
 		return (this.source.equals(that.source) && this.dest.equals(that.dest));
 	}
 

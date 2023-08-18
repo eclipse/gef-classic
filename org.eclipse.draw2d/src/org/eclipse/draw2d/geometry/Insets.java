@@ -95,8 +95,7 @@ public class Insets implements Cloneable, java.io.Serializable {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof Insets) {
-			Insets i = (Insets) o;
+		if (o instanceof Insets i) {
 			return i.top == top && i.bottom == bottom && i.left == left && i.right == right;
 		}
 		return false;

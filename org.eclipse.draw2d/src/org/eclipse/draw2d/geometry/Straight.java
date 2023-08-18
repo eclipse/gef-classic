@@ -221,10 +221,9 @@ public class Straight {
 	 */
 	@Override
 	public boolean equals(Object other) {
-		if (!(other instanceof Straight)) {
+		if (!(other instanceof Straight otherStraight)) {
 			return false;
 		} else {
-			Straight otherStraight = (Straight) other;
 			return contains(otherStraight.position) && isParallelTo(otherStraight);
 		}
 	}

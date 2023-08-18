@@ -239,8 +239,7 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void addLayoutListener(LayoutListener listener) {
-		if (layoutManager instanceof LayoutNotifier) {
-			LayoutNotifier notifier = (LayoutNotifier) layoutManager;
+		if (layoutManager instanceof LayoutNotifier notifier) {
 			notifier.listeners.add(listener);
 		} else
 			layoutManager = new LayoutNotifier(layoutManager, listener);
@@ -1391,8 +1390,7 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void removeLayoutListener(LayoutListener listener) {
-		if (layoutManager instanceof LayoutNotifier) {
-			LayoutNotifier notifier = (LayoutNotifier) layoutManager;
+		if (layoutManager instanceof LayoutNotifier notifier) {
 			notifier.listeners.remove(listener);
 			if (notifier.listeners.isEmpty())
 				layoutManager = notifier.realLayout;

@@ -164,8 +164,7 @@ public class Dimension implements Cloneable, java.io.Serializable, Translatable 
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof Dimension) {
-			Dimension d = (Dimension) o;
+		if (o instanceof Dimension d) {
 			return (d.width() == width && d.height() == height);
 		}
 		return false;

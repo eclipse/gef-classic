@@ -122,8 +122,7 @@ public class PaletteAnimator extends LayoutAnimator {
 	 */
 	@Override
 	public void init(IFigure figure) {
-		if (figure instanceof DrawerFigure) {
-			DrawerFigure drawer = (DrawerFigure) figure;
+		if (figure instanceof DrawerFigure drawer) {
 			if (drawer.isExpanded())
 				autoCollapse(drawer);
 			return;

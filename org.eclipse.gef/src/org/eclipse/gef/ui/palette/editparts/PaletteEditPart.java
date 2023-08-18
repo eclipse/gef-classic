@@ -394,9 +394,8 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	}
 
 	private void traverseChildren(PaletteEntry parent, boolean add) {
-		if (!(parent instanceof PaletteContainer))
+		if (!(parent instanceof PaletteContainer container))
 			return;
-		PaletteContainer container = (PaletteContainer) parent;
 		traverseChildren(container.getChildren(), add);
 	}
 

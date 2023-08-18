@@ -599,8 +599,7 @@ public class GraphConnection extends GraphItem {
 			connectionShape.setLineWidth(getLineWidth());
 		}
 
-		if (connection instanceof PolylineArcConnection) {
-			PolylineArcConnection arcConnection = (PolylineArcConnection) connection;
+		if (connection instanceof PolylineArcConnection arcConnection) {
 			arcConnection.setDepth(curveDepth);
 		}
 		if ((connectionStyle & ZestStyles.CONNECTIONS_DIRECTED) > 0) {

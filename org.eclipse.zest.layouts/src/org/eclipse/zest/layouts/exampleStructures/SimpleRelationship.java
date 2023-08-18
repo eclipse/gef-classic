@@ -272,8 +272,7 @@ public class SimpleRelationship implements LayoutRelationship {
 	 */
 	@Override
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
-		if (constraint instanceof LabelLayoutConstraint) {
-			LabelLayoutConstraint labelConstraint = (LabelLayoutConstraint) constraint;
+		if (constraint instanceof LabelLayoutConstraint labelConstraint) {
 			labelConstraint.label = this.label;
 			labelConstraint.pointSize = 18;
 		} else if (constraint instanceof BasicEdgeConstraints) {

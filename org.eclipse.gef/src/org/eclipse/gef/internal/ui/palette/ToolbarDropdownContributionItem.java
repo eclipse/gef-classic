@@ -528,8 +528,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 			boolean checkChanged = (action.getStyle() == IAction.AS_CHECK_BOX)
 					&& (propertyName == null || propertyName.equals(Action.CHECKED));
 
-			if (widget instanceof ToolItem) {
-				ToolItem ti = (ToolItem) widget;
+			if (widget instanceof ToolItem ti) {
 				if (imageChanged) {
 					updateImages(true);
 				}
@@ -550,8 +549,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 				return;
 			}
 
-			if (widget instanceof MenuItem) {
-				MenuItem mi = (MenuItem) widget;
+			if (widget instanceof MenuItem mi) {
 				boolean isContextMenu = belongsToContextMenu(mi);
 
 				// We only install an accelerator if the menu item doesn't
@@ -610,8 +608,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 				return;
 			}
 
-			if (widget instanceof Button) {
-				Button button = (Button) widget;
+			if (widget instanceof Button button) {
 				if (imageChanged) {
 					if (updateImages(false)) {
 						// don't update text if it has an image
