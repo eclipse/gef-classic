@@ -12,6 +12,7 @@ package org.eclipse.draw2d.graph;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 /**
  * This class takes a DirectedGraph with an optimal rank assignment and a
@@ -44,7 +45,11 @@ class PopulateRanks extends GraphVisitor {
 		for (Node node : g.nodes) {
 			g.ranks.getRank(node.rank).add(node);
 		}
-		for (Node node : g.nodes) {
+		// The constructor of VirtualNodeCreation may add additional nodes to the graph.
+		// If we work on the same list of nodes, this will cause a
+		// ConcurrentModificationException. Work on a copy of the node list so that we
+		// don't create virtual nodes of virtual nodes.
+		for (Node node : List.copyOf(g.nodes)) {
 			for (int j = 0; j < node.outgoing.size();) {
 				Edge e = node.outgoing.get(j);
 				if (e.getLength() > 1) {

@@ -11,6 +11,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
+import org.eclipse.draw2d.graph.test.DirectedGraphLayoutTest;
+
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -52,7 +54,8 @@ import org.junit.runners.Suite;
 	ScalablePolygonShapeTest.class,
 	LayerTest.class,
 	ShapeTest.class,
-	InsetsTest.class
+	InsetsTest.class,
+	DirectedGraphLayoutTest.class
 })
 public class Draw2dTestSuite {
 }
