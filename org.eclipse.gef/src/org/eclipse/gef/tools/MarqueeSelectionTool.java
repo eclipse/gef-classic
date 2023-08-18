@@ -628,11 +628,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 */
 	private boolean isSecondaryMarqueeSelectedEditPart(Collection directlyMarqueeSelectedEditParts, EditPart editPart) {
 		boolean included = false;
-		if (editPart instanceof ConnectionEditPart
+		if (editPart instanceof ConnectionEditPart connection
 				&& (marqueeBehavior == BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS
 						|| marqueeBehavior == BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS)) {
-			// connections are included, if related nodes are included
-			ConnectionEditPart connection = (ConnectionEditPart) editPart;
 			GraphicalEditPart source = (GraphicalEditPart) connection.getSource();
 			GraphicalEditPart target = (GraphicalEditPart) connection.getTarget();
 			boolean sourceIncludedInMarqueeSelection = directlyMarqueeSelectedEditParts.contains(source);

@@ -81,8 +81,7 @@ public class PrecisionDimension extends Dimension {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof PrecisionDimension) {
-			PrecisionDimension d = (PrecisionDimension) o;
+		if (o instanceof PrecisionDimension d) {
 			return d.preciseWidth() == preciseWidth() && d.preciseHeight() == preciseHeight();
 		}
 		return super.equals(o);

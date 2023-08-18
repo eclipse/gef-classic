@@ -36,8 +36,7 @@ public class MultiValueMap {
 			map.put(key, value);
 			return;
 		}
-		if (existingValues instanceof ArrayList) {
-			ArrayList v = (ArrayList) existingValues;
+		if (existingValues instanceof ArrayList v) {
 			if (!v.contains(value))
 				v.add(value);
 			return;
@@ -53,8 +52,7 @@ public class MultiValueMap {
 	public int remove(Object key, Object value) {
 		Object existingValues = map.get(key);
 		if (existingValues != null) {
-			if (existingValues instanceof ArrayList) {
-				ArrayList v = (ArrayList) existingValues;
+			if (existingValues instanceof ArrayList v) {
 				int result = v.indexOf(value);
 				if (result == -1)
 					return -1;

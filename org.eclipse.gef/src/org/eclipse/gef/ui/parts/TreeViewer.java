@@ -221,9 +221,8 @@ public class TreeViewer extends AbstractEditPartViewer {
 	 */
 	@Override
 	public void reveal(EditPart part) {
-		if (!(part instanceof TreeEditPart))
+		if (!(part instanceof TreeEditPart treePart))
 			return;
-		TreeEditPart treePart = (TreeEditPart) part;
 		Tree tree = (Tree) getControl();
 		Widget widget = treePart.getWidget();
 		if (widget instanceof TreeItem)

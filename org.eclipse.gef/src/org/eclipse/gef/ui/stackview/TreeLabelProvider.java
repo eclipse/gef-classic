@@ -65,8 +65,7 @@ public class TreeLabelProvider implements org.eclipse.jface.viewers.ILabelProvid
 	 */
 	@Override
 	public Image getImage(Object o) {
-		if (o instanceof Command) {
-			Command command = (Command) o;
+		if (o instanceof Command command) {
 			// if(((DefaultCommandStack)stack).canUndoCommand(command))
 			// return yesIcon;
 			// if(((DefaultCommandStack)stack).canRedoCommand(command))

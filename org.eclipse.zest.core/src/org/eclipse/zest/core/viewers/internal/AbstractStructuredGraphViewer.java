@@ -628,11 +628,9 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		Widget[] items = this.findItems(element);
 		for (int i = 0; i < items.length; i++) {
 			Widget item = items[i];
-			if (item instanceof GraphNode) {
-				GraphNode graphModelNode = (GraphNode) item;
+			if (item instanceof GraphNode graphModelNode) {
 				graphModelNode.highlight();
-			} else if (item instanceof GraphConnection) {
-				GraphConnection graphModelConnection = (GraphConnection) item;
+			} else if (item instanceof GraphConnection graphModelConnection) {
 				graphModelConnection.highlight();
 			}
 		}
@@ -642,11 +640,9 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		Widget[] items = this.findItems(element);
 		for (int i = 0; i < items.length; i++) {
 			Widget item = items[i];
-			if (item instanceof GraphNode) {
-				GraphNode graphModelNode = (GraphNode) item;
+			if (item instanceof GraphNode graphModelNode) {
 				graphModelNode.unhighlight();
-			} else if (item instanceof GraphConnection) {
-				GraphConnection graphModelConnection = (GraphConnection) item;
+			} else if (item instanceof GraphConnection graphModelConnection) {
 				graphModelConnection.unhighlight();
 			}
 		}

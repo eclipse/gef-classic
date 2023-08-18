@@ -213,8 +213,7 @@ public class SimpleNode implements LayoutEntity {
 	@Override
 	public boolean equals(Object object) {
 		boolean result = false;
-		if (object instanceof SimpleNode) {
-			SimpleNode node = (SimpleNode) object;
+		if (object instanceof SimpleNode node) {
 			result = realObject.equals(node.getRealObject());
 		}
 		return result;
@@ -292,14 +291,12 @@ public class SimpleNode implements LayoutEntity {
 	 */
 	@Override
 	public void populateLayoutConstraint(LayoutConstraint constraint) {
-		if (constraint instanceof LabelLayoutConstraint) {
-			LabelLayoutConstraint labelConstraint = (LabelLayoutConstraint) constraint;
+		if (constraint instanceof LabelLayoutConstraint labelConstraint) {
 			labelConstraint.label = realObject.toString();
 			labelConstraint.pointSize = 18;
 		} else if (constraint instanceof BasicEntityConstraint) {
 			// noop
-		} else if (constraint instanceof EntityPriorityConstraint) {
-			EntityPriorityConstraint priorityConstraint = (EntityPriorityConstraint) constraint;
+		} else if (constraint instanceof EntityPriorityConstraint priorityConstraint) {
 			priorityConstraint.priority = Math.random() * 10 + 1;
 		}
 	}

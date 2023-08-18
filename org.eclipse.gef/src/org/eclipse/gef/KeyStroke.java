@@ -139,8 +139,7 @@ public class KeyStroke {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof KeyStroke) {
-			KeyStroke stroke = (KeyStroke) obj;
+		if (obj instanceof KeyStroke stroke) {
 			return stroke.character == character && stroke.keyCode == keyCode && stroke.onPressed == onPressed
 					&& stroke.stateMask == stateMask;
 		}

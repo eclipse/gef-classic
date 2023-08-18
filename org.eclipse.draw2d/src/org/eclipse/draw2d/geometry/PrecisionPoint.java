@@ -76,8 +76,7 @@ public class PrecisionPoint extends Point {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof PrecisionPoint) {
-			PrecisionPoint p = (PrecisionPoint) o;
+		if (o instanceof PrecisionPoint p) {
 			return p.preciseX() == preciseX() && p.preciseY() == preciseY();
 		}
 		return super.equals(o);

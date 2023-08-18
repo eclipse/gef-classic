@@ -94,8 +94,7 @@ public class GraphSnippet8 {
 				// Get the "Connection" from the Layout Item
 				// and use this connection to get the "Graph Data"
 				Object object = item.getGraphData();
-				if (object instanceof GraphConnection) {
-					GraphConnection connection = (GraphConnection) object;
+				if (object instanceof GraphConnection connection) {
 					if (connection.getData() != null && connection.getData() instanceof Boolean) {
 						// If the data is false, don't filter, otherwise, filter.
 						return ((Boolean) connection.getData()).booleanValue();

@@ -122,8 +122,7 @@ public final class Ray {
 	public boolean equals(Object obj) {
 		if (obj == this)
 			return true;
-		if (obj instanceof Ray) {
-			Ray r = (Ray) obj;
+		if (obj instanceof Ray r) {
 			return x == r.x && y == r.y;
 		}
 		return false;

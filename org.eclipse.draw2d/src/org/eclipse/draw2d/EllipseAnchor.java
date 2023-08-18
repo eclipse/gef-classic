@@ -76,8 +76,7 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof EllipseAnchor) {
-			EllipseAnchor other = (EllipseAnchor) o;
+		if (o instanceof EllipseAnchor other) {
 			return other.getOwner() == getOwner();
 		}
 		return false;

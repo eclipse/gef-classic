@@ -152,8 +152,7 @@ public final class PrecisionRectangle extends Rectangle {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof PrecisionRectangle) {
-			PrecisionRectangle rect = (PrecisionRectangle) o;
+		if (o instanceof PrecisionRectangle rect) {
 			return super.equals(o) && Math.abs(rect.preciseX() - preciseX()) < 0.000000001
 					&& Math.abs(rect.preciseY() - preciseY()) < 0.000000001
 					&& Math.abs(rect.preciseWidth() - preciseWidth()) < 0.000000001

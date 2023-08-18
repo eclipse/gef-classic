@@ -35,8 +35,7 @@ import org.eclipse.zest.core.widgets.ZestStyles;
 public class GraphItemStyler {
 	public static void styleItem(GraphItem item, final IBaseLabelProvider labelProvider) {
 
-		if (item instanceof GraphNode) {
-			GraphNode node = (GraphNode) item;
+		if (item instanceof GraphNode node) {
 			// set defaults.
 			if (node.getGraphModel().getNodeStyle() != ZestStyles.NONE) {
 				node.setNodeStyle(node.getGraphModel().getNodeStyle());
@@ -47,13 +46,11 @@ public class GraphItemStyler {
 			if (labelProvider instanceof IEntityStyleProvider) {
 				styleNode(node, (IEntityStyleProvider) labelProvider);
 			}
-			if (labelProvider instanceof IColorProvider) {
-				IColorProvider colorProvider = (IColorProvider) labelProvider;
+			if (labelProvider instanceof IColorProvider colorProvider) {
 				node.setForegroundColor(colorProvider.getForeground(entity));
 				node.setBackgroundColor(colorProvider.getBackground(entity));
 			}
-			if (labelProvider instanceof IFontProvider) {
-				IFontProvider fontProvider = (IFontProvider) labelProvider;
+			if (labelProvider instanceof IFontProvider fontProvider) {
 				node.setFont(fontProvider.getFont(entity));
 			}
 			if (labelProvider instanceof ILabelProvider) {
@@ -64,9 +61,7 @@ public class GraphItemStyler {
 			if (labelProvider instanceof ISelfStyleProvider) {
 				((ISelfStyleProvider) labelProvider).selfStyleNode(entity, node);
 			}
-		} else if (item instanceof GraphConnection) {
-			GraphConnection conn = (GraphConnection) item;
-
+		} else if (item instanceof GraphConnection conn) {
 			// set defaults
 			if (conn.getGraphModel().getConnectionStyle() != ZestStyles.NONE) {
 				int s = conn.getGraphModel().getConnectionStyle();

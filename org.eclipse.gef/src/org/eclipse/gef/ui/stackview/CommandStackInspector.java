@@ -64,8 +64,7 @@ public class CommandStackInspector extends PageBookView {
 	protected PageRec doCreatePage(IWorkbenchPart part) {
 		// Try to get a custom command stack page.
 		Object obj = part.getAdapter(CommandStackInspectorPage.class);
-		if (obj instanceof IPage) {
-			IPage page = (IPage) obj;
+		if (obj instanceof IPage page) {
 			page.createControl(getPageBook());
 			return new PageRec(part, page);
 		}

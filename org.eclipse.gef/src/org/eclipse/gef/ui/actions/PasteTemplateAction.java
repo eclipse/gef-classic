@@ -67,8 +67,7 @@ public class PasteTemplateAction extends SelectionAction {
 		List selection = getSelectedObjects();
 		if (selection != null && selection.size() == 1) {
 			Object obj = selection.get(0);
-			if (obj instanceof GraphicalEditPart) {
-				GraphicalEditPart gep = (GraphicalEditPart) obj;
+			if (obj instanceof GraphicalEditPart gep) {
 				Object template = getClipboardContents();
 				if (template != null) {
 					CreationFactory factory = getFactory(template);

@@ -803,10 +803,9 @@ public class GraphNode extends GraphItem {
 			return;
 		}
 
-		if (!(currentFigure instanceof GraphLabel)) {
+		if (!(currentFigure instanceof GraphLabel figure)) {
 			return;
 		}
-		GraphLabel figure = (GraphLabel) currentFigure;
 		IFigure toolTip;
 
 		if (!checkStyle(ZestStyles.NODES_HIDE_TEXT)) {
@@ -1001,8 +1000,7 @@ public class GraphNode extends GraphItem {
 		@Override
 		public int compareTo(Object otherNode) {
 			int rv = 0;
-			if (otherNode instanceof GraphNode) {
-				GraphNode node = (GraphNode) otherNode;
+			if (otherNode instanceof GraphNode node) {
 				if (getText() != null) {
 					rv = getText().compareTo(node.getText());
 				}

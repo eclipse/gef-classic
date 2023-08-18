@@ -63,9 +63,8 @@ public class IncrementDecrementAction extends org.eclipse.gef.ui.actions.Selecti
 		List parts = getSelectedObjects();
 		for (int i = 0; i < parts.size(); i++) {
 			Object o = parts.get(i);
-			if (!(o instanceof EditPart))
+			if (!(o instanceof EditPart part))
 				return false;
-			EditPart part = (EditPart) o;
 			if (!(part.getModel() instanceof LED))
 				return false;
 		}

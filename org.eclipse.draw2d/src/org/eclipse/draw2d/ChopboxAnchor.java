@@ -107,8 +107,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof ChopboxAnchor) {
-			ChopboxAnchor other = (ChopboxAnchor) obj;
+		if (obj instanceof ChopboxAnchor other) {
 			return other.getOwner() == getOwner() && other.getBox().equals(getBox());
 		}
 		return false;

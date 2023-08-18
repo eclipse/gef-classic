@@ -221,8 +221,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	public boolean equals(Object o) {
 		if (this == o)
 			return true;
-		if (o instanceof Rectangle) {
-			Rectangle r = (Rectangle) o;
+		if (o instanceof Rectangle r) {
 			return (x == r.x()) && (y == r.y()) && (width == r.width()) && (height == r.height());
 		}
 		return false;

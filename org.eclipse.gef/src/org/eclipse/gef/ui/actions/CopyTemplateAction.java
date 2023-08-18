@@ -81,9 +81,8 @@ public class CopyTemplateAction extends WorkbenchPartAction implements ISelectio
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		ISelection s = event.getSelection();
-		if (!(s instanceof IStructuredSelection))
+		if (!(s instanceof IStructuredSelection selection))
 			return;
-		IStructuredSelection selection = (IStructuredSelection) s;
 		template = null;
 		if (selection != null && selection.size() == 1) {
 			Object obj = selection.getFirstElement();

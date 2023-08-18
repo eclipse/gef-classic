@@ -92,9 +92,8 @@ public class LogicPrintAction extends Action implements IObjectActionDelegate {
 	 */
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
-		if (!(selection instanceof IStructuredSelection))
+		if (!(selection instanceof IStructuredSelection sel))
 			return;
-		IStructuredSelection sel = (IStructuredSelection) selection;
 		if (sel.size() != 1)
 			return;
 		selectedFile = (IFile) sel.getFirstElement();

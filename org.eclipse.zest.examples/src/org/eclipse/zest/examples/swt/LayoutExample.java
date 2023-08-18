@@ -59,8 +59,7 @@ public class LayoutExample {
 
 			@Override
 			public void populateConstraint(Object object, LayoutConstraint constraint) {
-				if (constraint instanceof BasicEdgeConstraints) {
-					BasicEdgeConstraints basicEdgeConstraints = (BasicEdgeConstraints) constraint;
+				if (constraint instanceof BasicEdgeConstraints basicEdgeConstraints) {
 					GraphConnection connection = (GraphConnection) object;
 					if (connection.getSource().getText().equals("Root")) {
 						basicEdgeConstraints.weight = 1;
