@@ -249,7 +249,7 @@ class BreakCycles extends GraphVisitor {
 	public void visit(DirectedGraph g) {
 		// put all nodes in list, initialize index
 		graphNodes.resetFlags();
-		for (Node n : graphNodes) {
+		for (Node n : g.nodes) {
 			setIncomingCount(n, n.incoming.size());
 			graphNodes.add(n);
 		}
