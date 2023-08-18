@@ -12,7 +12,8 @@
 package org.eclipse.draw2d.test;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.DirectedGraphLayout;
@@ -146,10 +147,9 @@ public class LocalOptimizerTest extends Assert {
 			DirectedGraphLayout layout = new DirectedGraphLayout();
 			Field stepsField = DirectedGraphLayout.class.getDeclaredField("steps"); //$NON-NLS-1$
 			stepsField.setAccessible(true);
-			ArrayList steps = (ArrayList) stepsField.get(layout);
-			ArrayList filteredSteps = new ArrayList();
-			for (int i = 0; i < steps.size(); i++) {
-				Object graphVisitor = steps.get(i);
+			Deque<?> steps = (Deque<?>) stepsField.get(layout);
+			Deque<Object> filteredSteps = new ArrayDeque<>();
+			for (Object graphVisitor : steps) {
 				for (String graphVisitorClassName : graphVisitorClassNames) {
 					if (graphVisitorClassName.equals(graphVisitor.getClass().getName())) {
 						filteredSteps.add(graphVisitor);

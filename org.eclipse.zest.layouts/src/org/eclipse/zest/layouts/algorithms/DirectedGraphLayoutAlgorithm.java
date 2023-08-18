@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright 2005, CHISEL Group, University of Victoria, Victoria, BC, Canada.
+ * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC, Canada.
  * All rights reserved. This program and the accompanying materials are made
  * available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
@@ -10,9 +10,9 @@
 package org.eclipse.zest.layouts.algorithms;
 
 import java.lang.reflect.Field;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.graph.DirectedGraph;
@@ -34,20 +34,14 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 				field = DirectedGraphLayout.class.getDeclaredField("steps");
 				field.setAccessible(true);
 				Object object = field.get(this);
-				List steps = (List) object;
+				Deque<?> steps = (Deque<?>) object;
 				steps.remove(10);
 				steps.remove(9);
 				steps.remove(8);
 				steps.remove(2);
 				field.setAccessible(false);
 				super.visit(graph);
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (NoSuchFieldException e) {
-				e.printStackTrace();
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
+			} catch (SecurityException | ReflectiveOperationException | IllegalArgumentException e) {
 				e.printStackTrace();
 			}
 		}

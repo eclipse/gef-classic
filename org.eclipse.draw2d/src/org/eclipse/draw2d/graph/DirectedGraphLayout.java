@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2003, 2010 IBM Corporation and others.
+ * Copyright (c) 2003, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,8 +10,8 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 /**
  * Performs a graph layout of a <code>DirectedGraph</code>. The directed graph
@@ -70,7 +70,7 @@ import java.util.List;
  */
 public class DirectedGraphLayout {
 
-	List steps = new ArrayList();
+	Deque<GraphVisitor> steps = new ArrayDeque<>();
 
 	/**
 	 * @since 3.1
@@ -101,14 +101,8 @@ public class DirectedGraphLayout {
 	public void visit(DirectedGraph graph) {
 		if (graph.nodes.isEmpty())
 			return;
-		for (int i = 0; i < steps.size(); i++) {
-			GraphVisitor visitor = (GraphVisitor) steps.get(i);
-			visitor.visit(graph);
-		}
-		for (int i = steps.size() - 1; i >= 0; i--) {
-			GraphVisitor visitor = (GraphVisitor) steps.get(i);
-			visitor.revisit(graph);
-		}
+		steps.iterator().forEachRemaining(visitor -> visitor.visit(graph));
+		steps.descendingIterator().forEachRemaining(visitor -> visitor.revisit(graph));
 	}
 
 }
