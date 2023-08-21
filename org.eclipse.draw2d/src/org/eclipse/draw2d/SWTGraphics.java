@@ -306,7 +306,7 @@ public class SWTGraphics extends Graphics {
 		LineAttributes lineAttributes = currentState.lineAttributes;
 		if (!appliedState.lineAttributes.equals(lineAttributes)) {
 			if (getAdvanced()) {
-				gc.setLineAttributes(lineAttributes);
+				gc.setLineAttributes(clone(lineAttributes)); // Clone lineAttributes because on Windows hi-dpi the line width may be increased
 			} else {
 				gc.setLineWidth((int) lineAttributes.width);
 				gc.setLineCap(lineAttributes.cap);
