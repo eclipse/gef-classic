@@ -1289,7 +1289,14 @@ public class Graph extends FigureCanvas implements IContainer {
 		return GraphItem.GRAPH;
 	}
 
-	GraphItem getGraphItem(IFigure figure) {
+	/**
+	 * Returns the item for the given figure
+	 * 
+	 * @param figure
+	 * @return GraphItem for the given IFigure
+	 * @since 1.9
+	 */
+	protected GraphItem getGraphItem(IFigure figure) {
 		return figure2ItemMap.get(figure);
 	}
 
