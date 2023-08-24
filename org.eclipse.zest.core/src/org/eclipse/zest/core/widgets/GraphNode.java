@@ -790,6 +790,12 @@ public class GraphNode extends GraphItem {
 		return parent;
 	}
 
+	/**
+	 * returns true if node is highlighted, false otherwise
+	 * 
+	 * @return state of highlight
+	 * @since 1.9
+	 */
 	@Override
 	public boolean isHighlighted() {
 		return highlighted > 0;
