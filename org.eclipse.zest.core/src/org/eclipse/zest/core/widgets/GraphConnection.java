@@ -21,6 +21,9 @@ import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.Shape;
 import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.PointList;
+import org.eclipse.draw2d.geometry.PrecisionPoint;
+
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.widgets.Display;
@@ -713,7 +716,7 @@ public class GraphConnection extends GraphItem {
 
 		@Override
 		public void clearBendPoints() {
-			// @tag TODO : add bendpoints
+			connectionFigure.getPoints().removeAllPoints();
 		}
 
 		@Override
@@ -738,7 +741,24 @@ public class GraphConnection extends GraphItem {
 
 		@Override
 		public void setBendPoints(LayoutBendPoint[] bendPoints) {
-			// @tag TODO : add bendpoints
+			PointList points = new PointList();
+
+			//source
+			points.addPoint(
+					getSource().getLocation().x + getSource().getSize().width / 2,
+					getSource().getLocation().y + getSource().getSize().height / 2);
+			//bend points
+			for (LayoutBendPoint p : bendPoints) {
+				if (p.getIsControlPoint()) {
+					points.addPoint(new PrecisionPoint(p.getX(), p.getY()));
+				}
+			}
+			//destination
+			points.addPoint(
+					getDestination().getLocation().x + getDestination().getSize().width / 2,
+					getDestination().getLocation().y + getDestination().getSize().height / 2);
+
+			connectionFigure.setPoints(points);
 		}
 
 		@Override
