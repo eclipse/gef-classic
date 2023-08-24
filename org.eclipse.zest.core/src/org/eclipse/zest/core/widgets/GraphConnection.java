@@ -447,8 +447,10 @@ public class GraphConnection extends GraphItem {
 	/**
 	 * Returns true if this connection is highlighted, false otherwise
 	 * 
-	 * @return
+	 * @return boolean state of highlight
+	 * @since 1.9
 	 */
+	@Override
 	public boolean isHighlighted() {
 		return highlighted;
 	}
