@@ -104,7 +104,7 @@ public abstract class GraphItem extends Item {
 	 * Get state of highlight of this item
 	 * 
 	 * @return boolean true if item is highlighted
-	 * @since 3.2 (included default impl and not made abstract to not brake downstream)
+	 * @since 1.9 (included default impl and not made abstract to not brake downstream)
 	 */
 	@SuppressWarnings("static-method")
 	public boolean isHighlighted() {
