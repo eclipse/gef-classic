@@ -583,7 +583,10 @@ public class GraphConnection extends GraphItem {
 		connectionShape.setLineStyle(getLineStyle());
 
 		if (this.getText() != null || this.getImage() != null) {
-			// Label l = new Label(this.getText(), this.getImage());
+			// label can be null if createFigure has been overridden
+			if (this.connectionLabel == null) {
+				this.connectionLabel = new Label();
+			}
 			if (this.getImage() != null) {
 				this.connectionLabel.setIcon(this.getImage());
 			}
