@@ -790,7 +790,8 @@ public class GraphNode extends GraphItem {
 		return parent;
 	}
 
-	boolean isHighlighted() {
+	@Override
+	public boolean isHighlighted() {
 		return highlighted > 0;
 	}
 
