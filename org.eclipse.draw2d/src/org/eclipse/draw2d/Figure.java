@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -1515,8 +1516,9 @@ public class Figure implements IFigure {
 	public void setBackgroundColor(Color bg) {
 		// Set background color to bg unless in high contrast mode.
 		// In that case, get the color from system
-		if (bgColor != null && bgColor.equals(bg))
+		if (Objects.equals(bgColor, bg)) {
 			return;
+		}
 		Display display = Display.getCurrent();
 		if (display == null) {
 			display = Display.getDefault();
@@ -1538,9 +1540,11 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setBorder(Border border) {
-		this.border = border;
-		revalidate();
-		repaint();
+		if (this.border != border) {
+			this.border = border;
+			revalidate();
+			repaint();
+		}
 	}
 
 	/**
@@ -1713,8 +1717,9 @@ public class Figure implements IFigure {
 	public void setForegroundColor(Color fg) {
 		// Set foreground color to fg unless in high contrast mode.
 		// In that case, get the color from system
-		if (fgColor != null && fgColor.equals(fg))
+		if (Objects.equals(fgColor, fg)) {
 			return;
+		}
 		Display display = Display.getCurrent();
 		if (display == null) {
 			display = Display.getDefault();

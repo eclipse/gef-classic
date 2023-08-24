@@ -1,0 +1,61 @@
+/*******************************************************************************
+ * Copyright (c) 2011, 2023 Google, Inc.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Google, Inc. - initial API and implementation
+ *******************************************************************************/
+package org.eclipse.draw2d.test.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Assert;
+
+/**
+ * Helper class for logging into test cases.
+ */
+public class TestLogger extends Assert {
+	private final List<String> events = new ArrayList<>();
+
+	/**
+	 * Removes all logged events.
+	 */
+	public void clear() {
+		events.clear();
+	}
+
+	/**
+	 * Asserts that this {@link TestLogger} has no events.
+	 */
+	public void assertEmpty() {
+		assertTrue(events.isEmpty());
+	}
+
+	/**
+	 * Asserts that this {@link TestLogger} contains same events as in expected one.
+	 */
+	public void assertEquals(TestLogger expectedLogger) {
+		assertEquals(expectedLogger, this);
+	}
+
+	/**
+	 * Asserts that two objects are equal. If they are not an AssertionFailedError
+	 * is thrown.
+	 */
+	public static void assertEquals(TestLogger expectedLogger, TestLogger actualLoogger) {
+		assertEquals(expectedLogger.events, actualLoogger.events);
+		expectedLogger.clear();
+		actualLoogger.clear();
+	}
+
+	/**
+	 * Logs new event.
+	 */
+	public void log(String message) {
+		events.add(message);
+	}
+}
