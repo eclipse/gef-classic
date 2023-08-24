@@ -43,6 +43,7 @@ import org.junit.runners.Suite;
 	PrecisionPointTest.class,
 	PrecisionRectangleTest.class,
 	ThumbnailTest.class,
+	FigurePaintingTest.class,
 	FigureUtilitiesTest.class,
 	RectangleTest.class,
 	ColorConstantTest.class,
