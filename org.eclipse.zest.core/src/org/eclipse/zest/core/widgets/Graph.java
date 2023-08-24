@@ -4,7 +4,7 @@
  * available under the terms of the Eclipse Public License v1.0 which
  * accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria, Sebastian Hollersbacher
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
@@ -15,33 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.draw2d.Animation;
-import org.eclipse.draw2d.Button;
-import org.eclipse.draw2d.ColorConstants;
-import org.eclipse.draw2d.FigureCanvas;
-import org.eclipse.draw2d.FreeformLayer;
-import org.eclipse.draw2d.FreeformLayout;
-import org.eclipse.draw2d.FreeformViewport;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.LayoutAnimator;
-import org.eclipse.draw2d.MouseMotionListener;
-import org.eclipse.draw2d.PolylineConnection;
-import org.eclipse.draw2d.SWTEventDispatcher;
-import org.eclipse.draw2d.ScalableFigure;
-import org.eclipse.draw2d.ScalableFreeformLayeredPane;
-import org.eclipse.draw2d.ScrollPane;
-import org.eclipse.draw2d.TreeSearch;
-import org.eclipse.draw2d.geometry.Dimension;
-import org.eclipse.draw2d.geometry.Point;
-import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.swt.SWT;
-
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
@@ -49,8 +23,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Item;
+
 import org.eclipse.zest.core.widgets.internal.ContainerFigure;
-import org.eclipse.zest.core.widgets.internal.NodeSearchDialog;
 import org.eclipse.zest.core.widgets.internal.RevealListener;
 import org.eclipse.zest.core.widgets.internal.ZestRootLayer;
 import org.eclipse.zest.layouts.InvalidLayoutConfiguration;
@@ -61,13 +35,31 @@ import org.eclipse.zest.layouts.LayoutStyles;
 import org.eclipse.zest.layouts.algorithms.TreeLayoutAlgorithm;
 import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
+import org.eclipse.draw2d.Animation;
+import org.eclipse.draw2d.ColorConstants;
+import org.eclipse.draw2d.FigureCanvas;
+import org.eclipse.draw2d.FreeformLayer;
+import org.eclipse.draw2d.FreeformLayout;
+import org.eclipse.draw2d.FreeformViewport;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.LayoutAnimator;
+import org.eclipse.draw2d.PolylineConnection;
+import org.eclipse.draw2d.SWTEventDispatcher;
+import org.eclipse.draw2d.ScalableFigure;
+import org.eclipse.draw2d.ScalableFreeformLayeredPane;
+import org.eclipse.draw2d.ScrollPane;
+import org.eclipse.draw2d.TreeSearch;
+import org.eclipse.draw2d.geometry.Dimension;
+import org.eclipse.draw2d.geometry.Point;
+import org.eclipse.draw2d.geometry.Rectangle;
+
 /**
  * Holds the nodes and connections for the graph.
- * 
+ *
  * @author Chris Callendar
- * 
+ *
  * @author Ian Bull
- * 
+ *
  * @author Sebastian Hollersbacher
  */
 public class Graph extends FigureCanvas implements IContainer {
@@ -465,11 +457,12 @@ public class Graph extends FigureCanvas implements IContainer {
 	public boolean getHideNodesEnabled() {
 		return enableHideNodes;
 	}
-	
+
 	/**
 	 * Creator method for DragSupport
+	 *
 	 * @return class that implemented GraphDragSupport
-	 * @since 3.2
+	 * @since 1.9
 	 */
 	protected GraphDragSupport createGraphDragSupport() {
 		return new DragSupport(this);
@@ -1154,8 +1147,9 @@ public class Graph extends FigureCanvas implements IContainer {
 
 	/**
 	 * Layer creation
+	 *
 	 * @return IFigure the rootlayer
-	 * @since 3.2
+	 * @since 1.9
 	 */
 	protected IFigure createLayers() {
 		rootlayer = new ScalableFreeformLayeredPane();
@@ -1174,11 +1168,12 @@ public class Graph extends FigureCanvas implements IContainer {
 		fishEyeLayer.addLayoutListener(LayoutAnimator.getDefault());
 		return rootlayer;
 	}
-	
+
 	/**
 	 * Creator method for ZestRootLayer
+	 *
 	 * @return new ZestRootLayer instance
-	 * @since 3.2
+	 * @since 1.9
 	 */
 	@SuppressWarnings("static-method")
 	protected ZestRootLayer createZestRootLayer() {
