@@ -169,7 +169,7 @@ public class Graph extends FigureCanvas implements IContainer {
 		});
 
 		this.setContents(createLayers());
-		DragSupport dragSupport = new DragSupport(this);
+		GraphDragSupport dragSupport = createGraphDragSupport();
 		this.getLightweightSystem().getRootFigure().addMouseListener(dragSupport);
 		this.getLightweightSystem().getRootFigure().addMouseMotionListener(dragSupport);
 
@@ -456,11 +456,20 @@ public class Graph extends FigureCanvas implements IContainer {
 	public boolean getHideNodesEnabled() {
 		return enableHideNodes;
 	}
+	
+	/**
+	 * Creator method for DragSupport
+	 * @return class that implemented GraphDragSupport
+	 * @since 3.2
+	 */
+	protected GraphDragSupport createGraphDragSupport() {
+		return new DragSupport(this);
+	}
 
 	// /////////////////////////////////////////////////////////////////////////////////
 	// PRIVATE METHODS. These are NON API
 	// /////////////////////////////////////////////////////////////////////////////////
-	class DragSupport implements MouseMotionListener, org.eclipse.draw2d.MouseListener {
+	class DragSupport implements GraphDragSupport {
 		/**
 		 *
 		 */
@@ -1134,10 +1143,15 @@ public class Graph extends FigureCanvas implements IContainer {
 		}
 	}
 
-	private ScalableFigure createLayers() {
+	/**
+	 * Layer creation
+	 * @return IFigure the rootlayer
+	 * @since 3.2
+	 */
+	protected IFigure createLayers() {
 		rootlayer = new ScalableFreeformLayeredPane();
 		rootlayer.setLayoutManager(new FreeformLayout());
-		zestRootLayer = new ZestRootLayer();
+		zestRootLayer = createZestRootLayer();
 
 		zestRootLayer.setLayoutManager(new FreeformLayout());
 
@@ -1150,6 +1164,16 @@ public class Graph extends FigureCanvas implements IContainer {
 		zestRootLayer.addLayoutListener(LayoutAnimator.getDefault());
 		fishEyeLayer.addLayoutListener(LayoutAnimator.getDefault());
 		return rootlayer;
+	}
+	
+	/**
+	 * Creator method for ZestRootLayer
+	 * @return new ZestRootLayer instance
+	 * @since 3.2
+	 */
+	@SuppressWarnings("static-method")
+	protected ZestRootLayer createZestRootLayer() {
+		return new ZestRootLayer();
 	}
 
 	/**
