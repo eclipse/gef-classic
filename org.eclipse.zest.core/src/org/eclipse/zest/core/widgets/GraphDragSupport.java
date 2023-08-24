@@ -16,9 +16,11 @@ package org.eclipse.zest.core.widgets;
 import org.eclipse.draw2d.MouseListener;
 import org.eclipse.draw2d.MouseMotionListener;
 
-/** Super Interface for drag support for zest graphs @see{Graph}
+/**
+ * Super Interface for drag support for zest graphs @see{Graph}
  *
- * @since 3.2 */
+ * @since 1.9
+ */
 public interface GraphDragSupport extends MouseMotionListener, MouseListener {
 
 }
