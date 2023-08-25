@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -373,6 +373,16 @@ public interface IFigure {
 	 * @return The local foreground Color
 	 */
 	Color getLocalForegroundColor();
+
+	/**
+	 * Returns the top-left corner of this Figure's bounds.
+	 * 
+	 * @return The top-left corner of this Figure's bounds
+	 * @since 3.14
+	 */
+	default Point getLocation() {
+		return getBounds().getLocation();
+	}
 
 	/**
 	 * Returns a hint indicating the largest desireable size for the IFigure.
