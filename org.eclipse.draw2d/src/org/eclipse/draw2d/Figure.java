@@ -768,8 +768,9 @@ public class Figure implements IFigure {
 	 * @return The top-left corner of this Figure's bounds
 	 * @since 2.0
 	 */
+	@Override
 	public final Point getLocation() {
-		return getBounds().getLocation();
+		return IFigure.super.getLocation();
 	}
 
 	/**
