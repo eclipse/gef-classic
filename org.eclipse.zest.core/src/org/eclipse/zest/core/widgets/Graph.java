@@ -663,6 +663,10 @@ public class Graph extends FigureCanvas implements IContainer {
 					node.graph = g;
 					node.setVisible(true); // make sure the nodes are visible
 					node.unhighlight();
+					HideNodeHelper hideNodeHelper = node.getHideNodeHelper();
+					if (hideNodeHelper != null) {
+						hideNodeHelper.resetCounter();
+					}
 
 					if (node instanceof GraphContainer containerNode) {
 						g.registerChildrenOfContainer(containerNode, true); // recursively add childNodes to graph

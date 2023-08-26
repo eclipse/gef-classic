@@ -538,7 +538,7 @@ public class GraphContainer extends GraphNode implements IContainer {
 	}
 
 	/**
-	 * @since 1.8
+	 * @since 1.9
 	 */
 	public LayoutAlgorithm getLayoutAlgorithm() {
 		return this.layoutAlgorithm;
