@@ -7,8 +7,8 @@
 <repository location="http://download.eclipse.org/cbi/updates/license"/>
 </location>
 	<location includeAllPlatforms="false" includeConfigurePhase="false" includeMode="planner" includeSource="true" type="InstallableUnit">
-		<repository location="http://download.eclipse.org/releases/2023-06"/>
-		<unit id="org.eclipse.sdk.feature.group" version="4.28.0.v20230525-0728"/>
+		<repository location="http://download.eclipse.org/releases/2023-09"/>
+		<unit id="org.eclipse.sdk.feature.group" version="4.29.0.v20230903-1000"/>
 	</location>
 </locations>
 </target>
