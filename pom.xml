@@ -223,7 +223,7 @@
 							<includePackedArtifacts>false</includePackedArtifacts>
 							<!-- add target file content to target platform -->
 						    <target>
-								<file>../target-platform/2022-12.target</file>
+								<file>../target-platform/GEF_classic.target</file>
 							  </target>
 							<environments>
 								<environment>
@@ -260,7 +260,7 @@
 						<includePackedArtifacts>false</includePackedArtifacts>
 						<!-- add target file content to target platform -->
 						<target>
-							<file>../target-platform/2022-12.target</file>
+							<file>../target-platform/GEF_classic.target</file>
 						  </target>
 						<environments>
 							<environment>
