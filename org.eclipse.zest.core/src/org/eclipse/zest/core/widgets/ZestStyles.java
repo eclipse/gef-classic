@@ -1,17 +1,20 @@
 /*******************************************************************************
  * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- * Canada. All rights reserved. This program and the accompanying materials are
- * made available under the terms of the Eclipse Public License v1.0 which
- * accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
+ * 						Canada.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
 /**
  * Style constants used in Zest.
- * 
+ *
  * @author Chris Callendar
  */
 public final class ZestStyles {
@@ -31,7 +34,7 @@ public final class ZestStyles {
 	 * Style constant indicating if the selected node's neighbors should be
 	 * highlighted. Note: this is a node-level style. It should not be applied to
 	 * graph views during construction.
-	 * 
+	 *
 	 */
 	// public static final int NODES_HIGHLIGHT_ADJACENT = 1 << 1;
 	/**
@@ -102,7 +105,7 @@ public final class ZestStyles {
 
 	/**
 	 * Bitwise ANDs the styleToCheck integer with the given style.
-	 * 
+	 *
 	 * @param style
 	 * @param styleToCheck
 	 * @return boolean if styleToCheck is part of the style
@@ -114,7 +117,7 @@ public final class ZestStyles {
 	/**
 	 * Validates the given style for connections to see if it is legal. Returns
 	 * false if not.
-	 * 
+	 *
 	 * @param style the style to check.
 	 * @return true iff the given style is legal.
 	 */

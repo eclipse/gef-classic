@@ -1,10 +1,13 @@
 /*******************************************************************************
  * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
- * Canada. All rights reserved. This program and the accompanying materials are
- * made available under the terms of the Eclipse Public License v1.0 which
- * accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
+ * 						Canada.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.widgets;
@@ -18,10 +21,10 @@ import org.eclipse.zest.layouts.LayoutAlgorithm;
  * internal interface and thus should not be used outside of Zest. Implementors
  * of this interface must include the following two methods o addNode(GraphNode)
  * o addNode(GraphContainer)
- * 
+ *
  * These are not actually listed here because Java does not allow protected
  * methods in interfaces.
- * 
+ *
  * @author Ian Bull
  */
 public interface IContainer {
@@ -43,7 +46,7 @@ public interface IContainer {
 
 	/**
 	 * Sets the LayoutAlgorithm for this container and optionally applies it.
-	 * 
+	 *
 	 * @param algorithm   The layout algorithm to set
 	 * @param applyLayout
 	 */
