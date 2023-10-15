@@ -18,7 +18,7 @@
       provider-name="%providerName"
       plugin="org.eclipse.draw2d"
       license-feature="org.eclipse.license"
-      license-feature-version="1.0.1">
+      license-feature-version="0.0.0">
 
    <description>
       %description
