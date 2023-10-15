@@ -18,7 +18,7 @@
       provider-name="%providerName"
       image="eclipse_update_120.jpg"
       license-feature="org.eclipse.license"
-      license-feature-version="1.0.1">
+      license-feature-version="0.0.0">
 
    <description>
       %description
