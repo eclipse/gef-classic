@@ -1,10 +1,12 @@
 /*******************************************************************************
  * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License v1.0 which
- * accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
@@ -12,16 +14,17 @@ package org.eclipse.zest.layouts.algorithms;
 import java.lang.reflect.Field;
 import java.util.Deque;
 import java.util.HashMap;
-import java.util.Iterator;
+
+import org.eclipse.swt.SWT;
+
+import org.eclipse.zest.layouts.dataStructures.InternalNode;
+import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.graph.DirectedGraph;
 import org.eclipse.draw2d.graph.DirectedGraphLayout;
 import org.eclipse.draw2d.graph.Edge;
 import org.eclipse.draw2d.graph.Node;
-import org.eclipse.swt.SWT;
-import org.eclipse.zest.layouts.dataStructures.InternalNode;
-import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
 public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
@@ -57,15 +60,13 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 		HashMap mapping = new HashMap(entitiesToLayout.length);
 		DirectedGraph graph = new DirectedGraph();
-		for (int i = 0; i < entitiesToLayout.length; i++) {
-			InternalNode internalNode = entitiesToLayout[i];
+		for (InternalNode internalNode : entitiesToLayout) {
 			Node node = new Node(internalNode);
 			node.setSize(new Dimension(10, 10));
 			mapping.put(internalNode, node);
 			graph.nodes.add(node);
 		}
-		for (int i = 0; i < relationshipsToConsider.length; i++) {
-			InternalRelationship relationship = relationshipsToConsider[i];
+		for (InternalRelationship relationship : relationshipsToConsider) {
 			Node source = (Node) mapping.get(relationship.getSource());
 			Node dest = (Node) mapping.get(relationship.getDestination());
 			Edge edge = new Edge(relationship, source, dest);
@@ -74,8 +75,8 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 		DirectedGraphLayout directedGraphLayout = new ExtendedDirectedGraphLayout();
 		directedGraphLayout.visit(graph);
 
-		for (Iterator iterator = graph.nodes.iterator(); iterator.hasNext();) {
-			Node node = (Node) iterator.next();
+		for (Object node2 : graph.nodes) {
+			Node node = (Node) node2;
 			InternalNode internalNode = (InternalNode) node.data;
 			// For horizontal layout transpose the x and y coordinates
 			if ((layout_styles & SWT.HORIZONTAL) == SWT.HORIZONTAL) {

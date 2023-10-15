@@ -1,17 +1,18 @@
 /*******************************************************************************
  * Copyright 2006, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License v1.0 which
- * accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
 
 /**
  * This layout shifts overlapping nodes to the right.
- * 
+ *
  * @author Ian Bull
  */
 public class HorizontalShift extends AbstractLayoutAlgorithm {
@@ -38,36 +39,26 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
 
 		ArrayList row = new ArrayList();
-		for (int i = 0; i < entitiesToLayout.length; i++) {
-			addToRowList(entitiesToLayout[i], row);
+		for (InternalNode element : entitiesToLayout) {
+			addToRowList(element, row);
 		}
 
 		int heightSoFar = 0;
 
-		Collections.sort(row, new Comparator() {
-
-			@Override
-			public int compare(Object arg0, Object arg1) {
-				// TODO Auto-generated method stub
-				List a0 = (List) arg0;
-				List a1 = (List) arg1;
-				LayoutEntity node0 = ((InternalNode) a0.get(0)).getLayoutEntity();
-				LayoutEntity node1 = ((InternalNode) a1.get(0)).getLayoutEntity();
-				return (int) (node0.getYInLayout() - (node1.getYInLayout()));
-			}
-
+		Collections.sort(row, (arg0, arg1) -> {
+			// TODO Auto-generated method stub
+			List a0 = (List) arg0;
+			List a1 = (List) arg1;
+			LayoutEntity node0 = ((InternalNode) a0.get(0)).getLayoutEntity();
+			LayoutEntity node1 = ((InternalNode) a1.get(0)).getLayoutEntity();
+			return (int) (node0.getYInLayout() - (node1.getYInLayout()));
 		});
 
 		Iterator iterator = row.iterator();
 		while (iterator.hasNext()) {
 			List currentRow = (List) iterator.next();
-			Collections.sort(currentRow, new Comparator() {
-				@Override
-				public int compare(Object arg0, Object arg1) {
-					return (int) (((InternalNode) arg1).getLayoutEntity().getYInLayout()
-							- ((InternalNode) arg0).getLayoutEntity().getYInLayout());
-				}
-			});
+			Collections.sort(currentRow, (arg0, arg1) -> (int) (((InternalNode) arg1).getLayoutEntity().getYInLayout()
+					- ((InternalNode) arg0).getLayoutEntity().getYInLayout()));
 			Iterator iterator2 = currentRow.iterator();
 			int i = 0;
 			int width = (int) ((boundsWidth / 2) - currentRow.size() * 75);
@@ -76,7 +67,8 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 			while (iterator2.hasNext()) {
 				InternalNode currentNode = (InternalNode) iterator2.next();
 
-				double location = width + 10 * ++i;
+				i++;
+				double location = width + 10 * i;
 				currentNode.setLocation(location, heightSoFar);
 				width += currentNode.getLayoutEntity().getWidthInLayout();
 			}
@@ -86,8 +78,8 @@ public class HorizontalShift extends AbstractLayoutAlgorithm {
 	private void addToRowList(InternalNode node, ArrayList list) {
 		double layoutY = node.getLayoutEntity().getYInLayout();
 
-		for (int i = 0; i < list.size(); i++) {
-			List currentRow = (List) list.get(i);
+		for (Object element : list) {
+			List currentRow = (List) element;
 			InternalNode currentRowNode = (InternalNode) currentRow.get(0);
 			double currentRowY = currentRowNode.getLayoutEntity().getYInLayout();
 			// double currentRowHeight =

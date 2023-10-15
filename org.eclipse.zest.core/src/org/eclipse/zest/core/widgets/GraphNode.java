@@ -1,17 +1,30 @@
 /*******************************************************************************
  * Copyright 2005, 2023, CHISEL Group, University of Victoria, Victoria, BC, Canada.
- * All rights reserved. This program and the accompanying materials are made
- * available under the terms of the Eclipse Public License v1.0 which
- * accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
  * Contributors: The Chisel Group, University of Victoria, Sebastian Hollersbacher
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+
+import org.eclipse.zest.core.widgets.internal.ContainerFigure;
+import org.eclipse.zest.core.widgets.internal.GraphLabel;
+import org.eclipse.zest.layouts.LayoutEntity;
+import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
@@ -21,27 +34,17 @@ import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.FontData;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.zest.core.widgets.internal.ContainerFigure;
-import org.eclipse.zest.core.widgets.internal.GraphLabel;
-import org.eclipse.zest.layouts.LayoutEntity;
-import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * Simple node class which has the following properties: color, size, location,
  * and a label. It also has a list of connections and anchors.
- * 
+ *
  * @author Chris Callendar
- * 
+ *
  * @author Del Myers
- * 
+ *
  * @author Ian Bull
- * 
+ *
  * @author Sebastian Hollersbacher
  */
 public class GraphNode extends GraphItem {
@@ -190,7 +193,7 @@ public class GraphNode extends GraphItem {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.mylar.zest.core.widgets.GraphItem#dispose()
 	 */
 	@Override
@@ -221,7 +224,7 @@ public class GraphNode extends GraphItem {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.swt.widgets.Widget#isDisposed()
 	 */
 	@Override
@@ -232,7 +235,7 @@ public class GraphNode extends GraphItem {
 	/**
 	 * Determines if this node has a fixed size or if it is packed to the size of
 	 * its contents. To set a node to pack, set its size (-1, -1)
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isSizeFixed() {
@@ -241,7 +244,7 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Returns a new list of the source connections (GraphModelConnection objects).
-	 * 
+	 *
 	 * @return List a new list of GraphModelConnect objects
 	 */
 	public List getSourceConnections() {
@@ -250,7 +253,7 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Returns a new list of the target connections (GraphModelConnection objects).
-	 * 
+	 *
 	 * @return List a new list of GraphModelConnect objects
 	 */
 	public List getTargetConnections() {
@@ -260,7 +263,7 @@ public class GraphNode extends GraphItem {
 	/**
 	 * Returns the bounds of this node. It is just the combination of the location
 	 * and the size.
-	 * 
+	 *
 	 * @return Rectangle
 	 */
 	Rectangle getBounds() {
@@ -269,7 +272,7 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Returns a copy of the node's location.
-	 * 
+	 *
 	 * @return Point
 	 */
 	public Point getLocation() {
@@ -278,7 +281,7 @@ public class GraphNode extends GraphItem {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#isSelected ()
 	 */
@@ -297,7 +300,7 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Returns a copy of the node's size.
-	 * 
+	 *
 	 * @return Dimension
 	 */
 	public Dimension getSize() {
@@ -343,7 +346,7 @@ public class GraphNode extends GraphItem {
 	/**
 	 * Permanently sets the background color (unhighlighted). This color has no
 	 * effect if a custom figure has been set.
-	 * 
+	 *
 	 * @param c
 	 */
 	public void setBackgroundColor(Color c) {
@@ -372,7 +375,7 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Sets the border color.
-	 * 
+	 *
 	 * @param c the border color.
 	 */
 	public void setBorderColor(Color c) {
@@ -382,7 +385,7 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Sets the highlighted border color.
-	 * 
+	 *
 	 * @param c the highlighted border color.
 	 */
 	public void setBorderHighlightColor(Color c) {
@@ -507,7 +510,7 @@ public class GraphNode extends GraphItem {
 	 * Highlights this node using the adjacent highlight color. This only does
 	 * something if highlighAdjacentNodes is set to true and if the node isn't
 	 * already highlighted.
-	 * 
+	 *
 	 * @see #setHighlightAdjacentNodes(boolean)
 	 */
 	// @tag ADJACENT : removed highlight adjacent
@@ -522,7 +525,7 @@ public class GraphNode extends GraphItem {
 	/**
 	 * Returns if the nodes adjacent to this node will be highlighted when this node
 	 * is selected.
-	 * 
+	 *
 	 * @return GraphModelNode
 	 */
 	// @tag ADJACENT : Removed highlight adjacent
@@ -534,7 +537,7 @@ public class GraphNode extends GraphItem {
 	/**
 	 * Sets if the adjacent nodes to this one should be highlighted when this node
 	 * is selected.
-	 * 
+	 *
 	 * @param highlightAdjacentNodes The highlightAdjacentNodes to set.
 	 */
 	// @tag ADJACENT : Removed highlight adjacent
@@ -570,7 +573,7 @@ public class GraphNode extends GraphItem {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.swt.widgets.Item#setText(java.lang.String)
 	 */
 	@Override
@@ -587,7 +590,7 @@ public class GraphNode extends GraphItem {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.swt.widgets.Item#setImage(org.eclipse.swt.graphics.Image)
 	 */
 	@Override
@@ -600,7 +603,7 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Gets the graphModel that this node is contained in
-	 * 
+	 *
 	 * @return The graph model that this node is contained in
 	 */
 	@Override
@@ -625,7 +628,7 @@ public class GraphNode extends GraphItem {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#setSize
 	 * (double, double)
 	 */
@@ -639,7 +642,7 @@ public class GraphNode extends GraphItem {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.mylar.zest.core.internal.graphmodel.IGraphModelNode#
 	 * getBorderHighlightColor()
 	 */
@@ -657,7 +660,7 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * Returns the figure of the whole node.
-	 * 
+	 *
 	 * @return nodeFigure
 	 */
 	public IFigure getNodeFigure() {
@@ -671,13 +674,13 @@ public class GraphNode extends GraphItem {
 		this.getNodeFigure().setVisible(visible);
 		List sConnections = (this).getSourceConnections();
 		List tConnections = (this).getTargetConnections();
-		for (Iterator iterator2 = sConnections.iterator(); iterator2.hasNext();) {
-			GraphConnection connection = (GraphConnection) iterator2.next();
+		for (Object sConnection : sConnections) {
+			GraphConnection connection = (GraphConnection) sConnection;
 			connection.setVisible(visible);
 		}
 
-		for (Iterator iterator2 = tConnections.iterator(); iterator2.hasNext();) {
-			GraphConnection connection = (GraphConnection) iterator2.next();
+		for (Object tConnection : tConnections) {
+			GraphConnection connection = (GraphConnection) tConnection;
 			connection.setVisible(visible);
 		}
 	}
@@ -774,16 +777,15 @@ public class GraphNode extends GraphItem {
 			}
 			return fishEyeFigure;
 
-		} else {
-			// Remove the fisheye and dispose the font
-			this.getGraphModel().removeFishEye(fishEyeFigure, nodeFigure, animate);
-			if (fishEyeFont != null) {
-				this.fishEyeFont.dispose();
-				this.fishEyeFont = null;
-			}
-			isFisheyeEnabled = false;
-			return null;
 		}
+		// Remove the fisheye and dispose the font
+		this.getGraphModel().removeFishEye(fishEyeFigure, nodeFigure, animate);
+		if (fishEyeFont != null) {
+			this.fishEyeFont.dispose();
+			this.fishEyeFont = null;
+		}
+		isFisheyeEnabled = false;
+		return null;
 	}
 
 	IContainer getParent() {
@@ -792,7 +794,7 @@ public class GraphNode extends GraphItem {
 
 	/**
 	 * returns true if node is highlighted, false otherwise
-	 * 
+	 *
 	 * @return state of highlight
 	 * @since 1.9
 	 */
@@ -939,7 +941,7 @@ public class GraphNode extends GraphItem {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.mylar.zest.core.widgets.IGraphItem#getItemType()
 	 */
 	@Override
@@ -1031,7 +1033,7 @@ public class GraphNode extends GraphItem {
 	/**
 	 * Returns the figure of the model in the node, initialises it, if it doesn't
 	 * exist yet.
-	 * 
+	 *
 	 * @return modelFigure.
 	 */
 	@Override

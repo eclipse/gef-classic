@@ -1,13 +1,15 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
-* All rights reserved. This program and the accompanying materials
-* are made available under the terms of the Eclipse Public License v1.0
-* which accompanies this distribution, and is available at
-* http://www.eclipse.org/legal/epl-v10.html
-*
-* Contributors:
-*Elias Volanakis - initial API and implementation
-*******************************************************************************/
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0.
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *    Elias Volanakis - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.gef.examples.shapes.model.commands;
 
 import org.eclipse.gef.commands.Command;
@@ -30,7 +32,7 @@ import org.eclipse.gef.examples.shapes.model.Shape;
  * the Command from the ConnectionRequest, call setTarget(...) to set the target
  * endpoint of the connection and return this command instance.</li>
  * </ol>
- * 
+ *
  * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies()
  *      for an example of the above procedure.
  * @see org.eclipse.gef.editpolicies.GraphicalNodeEditPolicy
@@ -49,7 +51,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/**
 	 * Instantiate a command that can create a connection between two shapes.
-	 * 
+	 *
 	 * @param source    the source endpoint (a non-null Shape instance)
 	 * @param lineStyle the desired line style. See Connection#setLineStyle(int) for
 	 *                  details
@@ -67,7 +69,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#canExecute()
 	 */
 	@Override
@@ -82,7 +84,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
 	@Override
@@ -95,7 +97,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
 	@Override
@@ -105,7 +107,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/**
 	 * Set the target endpoint for the connection.
-	 * 
+	 *
 	 * @param target that target endpoint (a non-null Shape instance)
 	 * @throws IllegalArgumentException if target is null
 	 */
@@ -118,7 +120,7 @@ public class ConnectionCreateCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
 	@Override
