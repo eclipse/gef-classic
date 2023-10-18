@@ -11,6 +11,7 @@
 
 package org.eclipse.draw2d.examples.cg;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -213,7 +214,7 @@ public class ObstructionExample extends AbstractExample {
 		}
 
 		private final void createInitialObstacles() {
-			Random r = new Random(0);
+			Random r = new SecureRandom();
 			int rowSize = (int) Math.sqrt(INITAL_OBSTACLE_COUNT);
 			for (int i = 0; i < INITAL_OBSTACLE_COUNT; i++) {
 				DragFigure f = new DragFigure();

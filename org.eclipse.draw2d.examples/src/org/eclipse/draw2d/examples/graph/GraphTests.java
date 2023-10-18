@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d.examples.graph;
 
+import java.security.SecureRandom;
 import java.util.Random;
 
 import org.eclipse.draw2d.graph.DirectedGraph;
@@ -76,7 +77,7 @@ public class GraphTests {
 		return graph;
 	}
 
-	static Random rand = new Random(90);
+	static Random rand = new SecureRandom();
 
 	/**
 	 * @param nodes

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.draw2d.graph;
 
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
@@ -22,7 +23,7 @@ import java.util.Random;
  */
 class RankSorter {
 
-	Random flipflop = new Random(3);
+	Random flipflop = new SecureRandom();
 	Node node;
 	double rankSize, prevRankSize, nextRankSize;
 	int currentRow;
