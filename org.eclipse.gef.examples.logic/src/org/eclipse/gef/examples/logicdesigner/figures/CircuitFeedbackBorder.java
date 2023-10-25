@@ -21,21 +21,20 @@ import org.eclipse.draw2d.geometry.Rectangle;
 public class CircuitFeedbackBorder extends CircuitBorder {
 
 	private static void drawConnectors(Graphics g, Rectangle rec) {
-		int y1 = rec.y, width = rec.width, x1, bottom = y1 + rec.height;
 		for (int i = 0; i < 4; i++) {
-			x1 = rec.x + (2 * i + 1) * width / 8;
+			int x1 = rec.x + (2 * i + 1) * rec.width / 8;
 
 			// Draw the "gap" for the connector
-			g.drawLine(x1 - 2, y1 + 2, x1 + 3, y1 + 2);
+			g.drawLine(x1 - 2, rec.y + 2, x1 + 3, rec.y + 2);
 
 			// Draw the connectors
-			connector.translate(x1, y1);
+			connector.translate(x1, rec.y);
 			g.drawPolygon(connector);
-			connector.translate(-x1, -y1);
-			g.drawLine(x1 - 2, bottom - 3, x1 + 3, bottom - 3);
-			bottomConnector.translate(x1, bottom);
+			connector.translate(-x1, -rec.y);
+			g.drawLine(x1 - 2, rec.bottom() - 3, x1 + 3, rec.bottom() - 3);
+			bottomConnector.translate(x1, rec.bottom());
 			g.drawPolygon(bottomConnector);
-			bottomConnector.translate(-x1, -bottom);
+			bottomConnector.translate(-x1, -rec.bottom());
 		}
 	}
 

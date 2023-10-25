@@ -29,9 +29,9 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	protected Scheme scheme = null;
 
 	/** Arrays of Colors, used for shadow or highlight effects **/
-	protected static final Color DARKEST_DARKER[] = new Color[] { buttonDarkest, buttonDarker },
-			LIGHTER_DARKER[] = new Color[] { buttonLightest, buttonDarker },
-			DARKER_LIGHTER[] = new Color[] { buttonDarker, buttonLightest };
+	protected static final Color[] DARKEST_DARKER = { buttonDarkest, buttonDarker };
+	protected static final Color[] LIGHTER_DARKER = { buttonLightest, buttonDarker };
+	protected static final Color[] DARKER_LIGHTER = { buttonDarker, buttonLightest };
 
 	/**
 	 * Holds a set of information about a border, which can be changed to create a
@@ -42,8 +42,9 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		private Insets insets;
 		private boolean isOpaque = false;
 
-		/** Arrays of Colors, used for highlight and shadow effecsts */
-		protected Color highlight[], shadow[];
+		/** Arrays of Colors, used for highlight and shadow effects */
+		protected Color[] highlight;
+		protected Color[] shadow;
 
 		/**
 		 * Constructs a default border Scheme with no border sides.
@@ -108,14 +109,18 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		 * @since 2.0
 		 */
 		protected boolean calculateOpaque() {
-			Color colors[] = getHighlight();
-			for (int i = 0; i < colors.length; i++)
-				if (colors[i] == null)
+			Color[] colors = getHighlight();
+			for (Color color : colors) {
+				if (color == null) {
 					return false;
+				}
+			}
 			colors = getShadow();
-			for (int i = 0; i < colors.length; i++)
-				if (colors[i] == null)
+			for (Color color : colors) {
+				if (color == null) {
 					return false;
+				}
+			}
 			return true;
 		}
 
@@ -178,13 +183,13 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	public static interface SCHEMES {
 
 		/** Schemes used for shadow and highlight effects **/
-		Scheme BUTTON_CONTRAST = new Scheme(new Color[] { button, buttonLightest }, DARKEST_DARKER),
-				BUTTON_RAISED = new Scheme(new Color[] { buttonLightest }, DARKEST_DARKER),
-				BUTTON_PRESSED = new Scheme(DARKEST_DARKER, new Color[] { buttonLightest }),
-				RAISED = new Scheme(new Color[] { buttonLightest }, new Color[] { buttonDarkest }),
-				LOWERED = new Scheme(new Color[] { buttonDarkest }, new Color[] { buttonLightest }),
-				RIDGED = new Scheme(LIGHTER_DARKER, DARKER_LIGHTER),
-				ETCHED = new Scheme(DARKER_LIGHTER, LIGHTER_DARKER);
+		Scheme BUTTON_CONTRAST = new Scheme(new Color[] { button, buttonLightest }, DARKEST_DARKER);
+		Scheme BUTTON_RAISED = new Scheme(new Color[] { buttonLightest }, DARKEST_DARKER);
+		Scheme BUTTON_PRESSED = new Scheme(DARKEST_DARKER, new Color[] { buttonLightest });
+		Scheme RAISED = new Scheme(new Color[] { buttonLightest }, new Color[] { buttonDarkest });
+		Scheme LOWERED = new Scheme(new Color[] { buttonDarkest }, new Color[] { buttonLightest });
+		Scheme RIDGED = new Scheme(LIGHTER_DARKER, DARKER_LIGHTER);
+		Scheme ETCHED = new Scheme(DARKER_LIGHTER, LIGHTER_DARKER);
 	}
 
 	/**

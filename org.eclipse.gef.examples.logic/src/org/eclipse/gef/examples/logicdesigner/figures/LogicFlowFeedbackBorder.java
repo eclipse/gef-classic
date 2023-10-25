@@ -36,12 +36,6 @@ public class LogicFlowFeedbackBorder extends LogicFlowBorder {
 		Rectangle r = figure.getBounds();
 
 		graphics.drawRectangle(r.x, r.y, r.width - 1, r.height - 1);
-		// graphics.drawLine(r.x, r.y + 1, r.right() - 1, r.y + 1);
-		// graphics.drawLine(r.x, r.bottom() - 1, r.right() - 1, r.bottom() -
-		// 1);
-		// graphics.drawLine(r.x, r.y + 1, r.x, r.bottom() - 1);
-		// graphics.drawLine(r.right() - 1, r.bottom() - 1, r.right() - 1, r.y +
-		// 1);
 
 		tempRect.setBounds(new Rectangle(r.x, r.y, grabBarWidth, r.height));
 

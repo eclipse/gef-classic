@@ -29,6 +29,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  *
  * @deprecated this class is no longer used
  */
+@Deprecated
 public final class CornerTriangleBorder extends AbstractBorder {
 
 	private boolean isPrimary = true;
@@ -39,7 +40,6 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	 * @param isPrimary Determines this border's color.
 	 */
 	public CornerTriangleBorder(boolean isPrimary) {
-		super();
 		this.isPrimary = isPrimary;
 	}
 
@@ -72,7 +72,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	@Override
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
 		// Don't paint the center of the figure.
-		int width = 1, edgeSize;
+		int width = 1;
 		Rectangle rect = tempRect;
 		tempRect.setBounds(getPaintRectangle(figure, insets));
 		rect.width--;
@@ -83,7 +83,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 		// Draw the primary handles one pixel larger than the secondary
 		// handles. Primary which paints as black with white border looks
 		// smaller than secondary which paints as white with black border.
-		edgeSize = isPrimary() ? 7 : 6;
+		int edgeSize = isPrimary() ? 7 : 6;
 
 		// Top left corner
 		PointList pList = new PointList();

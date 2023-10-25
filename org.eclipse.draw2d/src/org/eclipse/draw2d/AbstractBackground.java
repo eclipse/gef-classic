@@ -41,6 +41,7 @@ public class AbstractBackground extends AbstractBorder {
 	 */
 	@Override
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
+		// empty default implementation
 	}
 
 	/**
@@ -55,6 +56,7 @@ public class AbstractBackground extends AbstractBorder {
 	 * @since 3.2
 	 */
 	public void paintBackground(IFigure figure, Graphics graphics, Insets insets) {
+		// empty default implementation
 	}
 
 }

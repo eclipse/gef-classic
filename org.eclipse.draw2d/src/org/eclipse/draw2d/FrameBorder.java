@@ -29,10 +29,6 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 			new Color[] { ColorConstants.button, ColorConstants.buttonLightest, ColorConstants.button },
 			new Color[] { ColorConstants.buttonDarkest, ColorConstants.buttonDarker, ColorConstants.button });
 
-	{
-		createBorders();
-	}
-
 	/**
 	 * Constructs a FrameBorder with its label set to the name of the
 	 * {@link TitleBarBorder} class.
@@ -40,6 +36,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	 * @since 2.0
 	 */
 	public FrameBorder() {
+		createBorders();
 	}
 
 	/**
@@ -49,6 +46,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	 * @since 2.0
 	 */
 	public FrameBorder(String label) {
+		this();
 		setLabel(label);
 	}
 

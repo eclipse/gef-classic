@@ -71,11 +71,12 @@ public class GroupBoxBorder extends AbstractLabeledBorder {
 	public void paint(IFigure figure, Graphics g, Insets insets) {
 		tempRect.setBounds(getPaintRectangle(figure, insets));
 		Rectangle r = tempRect;
-		if (r.isEmpty())
+		if (r.isEmpty()) {
 			return;
+		}
 
 		Rectangle textLoc = new Rectangle(r.getTopLeft(), getTextExtents(figure));
-		r.crop(new Insets(getTextExtents(figure).height / 2));
+		r.shrink(new Insets(getTextExtents(figure).height / 2));
 		FigureUtilities.paintEtchedBorder(g, r);
 
 		textLoc.x += getInsets(figure).left;

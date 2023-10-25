@@ -35,7 +35,7 @@ public class ButtonBorder extends SchemeBorder {
 	 */
 	public static final Border BUTTON = new ButtonBorder(SCHEMES.BUTTON);
 	/**
-	 * Inverted hightlight colors from BUTTON.
+	 * Inverted highlight colors from BUTTON.
 	 *
 	 * @see SCHEMES#BUTTON_CONTRAST
 	 */
@@ -59,7 +59,8 @@ public class ButtonBorder extends SchemeBorder {
 	 * an extra set of borders for the pressed states.
 	 */
 	public static class ButtonScheme extends Scheme {
-		private Color highlightPressed[] = null, shadowPressed[] = null;
+		private Color[] highlightPressed = null;
+		private Color[] shadowPressed = null;
 
 		/**
 		 * Constructs a new button scheme where the input colors are the colors for the
@@ -132,20 +133,27 @@ public class ButtonBorder extends SchemeBorder {
 		 */
 		@Override
 		protected boolean calculateOpaque() {
-			if (!super.calculateOpaque())
+			if (!super.calculateOpaque()) {
 				return false;
-			if (getHighlight().length != getShadowPressed().length)
+			}
+			if (getHighlight().length != getShadowPressed().length) {
 				return false;
-			if (getShadow().length != getHighlightPressed().length)
+			}
+			if (getShadow().length != getHighlightPressed().length) {
 				return false;
+			}
 			Color[] colors = getHighlightPressed();
-			for (int i = 0; i < colors.length; i++)
-				if (colors[i] == null)
+			for (Color color : colors) {
+				if (color == null) {
 					return false;
+				}
+			}
 			colors = getShadowPressed();
-			for (int i = 0; i < colors.length; i++)
-				if (colors[i] == null)
+			for (Color color : colors) {
+				if (color == null) {
 					return false;
+				}
+			}
 			return true;
 		}
 
@@ -228,10 +236,12 @@ public class ButtonBorder extends SchemeBorder {
 		ButtonModel model = clickable.getModel();
 		ButtonScheme colorScheme = (ButtonScheme) getScheme();
 
-		if (clickable.isRolloverEnabled() && !model.isMouseOver() && !model.isSelected())
+		if (clickable.isRolloverEnabled() && !model.isMouseOver() && !model.isSelected()) {
 			return;
+		}
 
-		Color tl[], br[];
+		Color[] tl;
+		Color[] br;
 		if (model.isSelected() || model.isArmed()) {
 			tl = colorScheme.getShadowPressed();
 			br = colorScheme.getHighlightPressed();
