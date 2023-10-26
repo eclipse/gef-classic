@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC,
+ *                      Canada, Johannes Kepler University Linz
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -8,7 +8,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria
+ * Contributors: The Chisel Group, University of Victoria, Alois Zoitl
  *******************************************************************************/
 
 package org.eclipse.zest.layouts.algorithms;
@@ -18,7 +18,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.zest.layouts.Filter;
@@ -54,21 +53,21 @@ import org.eclipse.zest.layouts.progress.ProgressListener;
  */
 public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppable {
 
-	public void removeRelationships(Collection collection) {
+	public void removeRelationships(Collection<? extends LayoutRelationship> collection) {
 
 	}
 
-	public final static int MIN_ENTITY_SIZE = 5;
-	private final static int MIN_TIME_DELAY_BETWEEN_PROGRESS_EVENTS = 1;
+	public static final int MIN_ENTITY_SIZE = 5;
+	private static final int MIN_TIME_DELAY_BETWEEN_PROGRESS_EVENTS = 1;
 
 	private Thread creationThread = null;
 	protected Comparator comparator;
 	protected Filter filter;
-	private List progressListeners;
+	private final List<ProgressListener> progressListeners = new ArrayList<>();
 	private Calendar lastProgressEventFired;
 	private double widthToHeightRatio;
 
-	class InternalComparator implements Comparator {
+	class InternalComparator implements Comparator<InternalNode> {
 		Comparator externalComparator = null;
 
 		public InternalComparator(Comparator externalComparator) {
@@ -76,10 +75,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		}
 
 		@Override
-		public int compare(Object o1, Object o2) {
-			InternalNode internalNode1 = (InternalNode) o1;
-			InternalNode internalNode2 = (InternalNode) o2;
-
+		public int compare(InternalNode internalNode1, InternalNode internalNode2) {
 			return this.externalComparator.compare(internalNode1.getLayoutEntity(), internalNode2.getLayoutEntity());
 		}
 
@@ -103,15 +99,13 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 */
 
 	/** A list of LayoutEntity objects to be removed from the layout. */
-	private List entitiesToRemove;
+	private final List<LayoutEntity> entitiesToRemove = new ArrayList<>();
 	/** A list of LayoutRelationship objects to be removed. */
-	private List relationshipsToRemove;
+	private final List<LayoutRelationship> relationshipsToRemove = new ArrayList<>();
 	/** A list of LayoutEntity objects to be added to the layout. */
-	private List entitiesToAdd;
+	private final List<LayoutEntity> entitiesToAdd = new ArrayList<>();
 	/** A list of LayoutRelationship objects to be added. */
-	private List relationshipsToAdd;
-
-	// protected boolean cancelled = false;
+	private final List<LayoutRelationship> relationshipsToAdd = new ArrayList<>();
 
 	protected boolean layoutStopped = true;
 
@@ -127,14 +121,9 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 */
 	public AbstractLayoutAlgorithm(int styles) {
 		this.creationThread = Thread.currentThread();
-		this.progressListeners = new ArrayList();
 		this.lastProgressEventFired = Calendar.getInstance();
 		this.widthToHeightRatio = 1.0;
 
-		this.entitiesToRemove = new ArrayList();
-		this.relationshipsToRemove = new ArrayList();
-		this.entitiesToAdd = new ArrayList();
-		this.relationshipsToAdd = new ArrayList();
 		this.layout_styles = styles;
 	}
 
@@ -196,7 +185,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * @param relationships
 	 */
 	@Override
-	public void removeRelationships(List relationships) {
+	public void removeRelationships(List<? extends LayoutRelationship> relationships) {
 		// note we don't check if the relationshipsToRemove contains
 		// any of the objects in relationships.
 		relationshipsToRemove.addAll(relationships);
@@ -216,7 +205,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Gets the current layout style
 	 *
-	 * @return
+	 * @return the layout styles for this layout
 	 */
 	@Override
 	public int getStyle() {
@@ -240,16 +229,16 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * @param entitiesToLayout        Apply the algorithm to these entities
 	 * @param relationshipsToConsider Only consider these relationships when
 	 *                                applying the algorithm.
-	 * @param x                       The left side of the bounds in which the
+	 * @param boundsX                 The left side of the bounds in which the
 	 *                                layout can place the entities.
-	 * @param y                       The top side of the bounds in which the layout
+	 * @param boundsY                 The top side of the bounds in which the layout
 	 *                                can place the entities.
-	 * @param width                   The width of the bounds in which the layout
+	 * @param boundsWidth             The width of the bounds in which the layout
 	 *                                can place the entities.
-	 * @param height                  The height of the bounds in which the layout
+	 * @param boundsHeight            The height of the bounds in which the layout
 	 *                                can place the entities.
 	 */
-	abstract protected void applyLayoutInternal(InternalNode[] entitiesToLayout,
+	protected abstract void applyLayoutInternal(InternalNode[] entitiesToLayout,
 			InternalRelationship[] relationshipsToConsider, double boundsX, double boundsY, double boundsWidth,
 			double boundsHeight);
 
@@ -261,22 +250,17 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * @return the updated entities array
 	 */
 	protected InternalNode[] updateEntities(InternalNode[] entities) {
-		if ((entitiesToRemove.size() > 0) || (entitiesToAdd.size() > 0)) {
-			List internalNodesList = new ArrayList(Arrays.asList(entities));
+		if (!entitiesToRemove.isEmpty() || !entitiesToAdd.isEmpty()) {
+			List<InternalNode> internalNodesList = new ArrayList<>(Arrays.asList(entities));
 
 			// remove nodes
-			for (Iterator iter = entitiesToRemove.iterator(); iter.hasNext();) {
-				LayoutEntity entity = (LayoutEntity) iter.next();
-				if (entity.getLayoutInformation() != null) {
-					internalNodesList.remove(entity.getLayoutInformation());
-				}
-			}
+			entitiesToRemove.stream().filter(e -> e.getLayoutInformation() != null)
+					.forEach(e -> internalNodesList.remove(e.getLayoutInformation()));
 
 			// Also remove from _internalNodes
-			ArrayList updatedEntities = new ArrayList(
+			List<InternalNode> updatedEntities = new ArrayList<>(
 					internalNodes.length - entitiesToRemove.size() + entitiesToAdd.size());
-			for (int i = 0; i < internalNodes.length; i++) {
-				InternalNode node = internalNodes[i];
+			for (InternalNode node : internalNodes) {
 				if (entitiesToRemove.contains(node.getLayoutEntity())) {
 					entitiesToRemove.remove(node.getLayoutEntity());
 				} else {
@@ -287,19 +271,19 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 			// Add any new nodes
 			LayoutEntity[] entitiesArray = new LayoutEntity[entitiesToAdd.size()];
-			entitiesArray = (LayoutEntity[]) entitiesToAdd.toArray(entitiesArray);
+			entitiesArray = entitiesToAdd.toArray(entitiesArray);
 			InternalNode[] newNodes = createInternalNodes(entitiesArray);
-			for (int i = 0; i < newNodes.length; i++) {
-				internalNodesList.add(newNodes[i]);
-				updatedEntities.add(newNodes[i]);
+			for (InternalNode newNode : newNodes) {
+				internalNodesList.add(newNode);
+				updatedEntities.add(newNode);
 			}
 			entitiesToAdd.clear();
 
 			entities = new InternalNode[internalNodesList.size()];
-			entities = (InternalNode[]) internalNodesList.toArray(entities);
+			entities = internalNodesList.toArray(entities);
 
 			internalNodes = new InternalNode[updatedEntities.size()];
-			internalNodes = (InternalNode[]) updatedEntities.toArray(internalNodes);
+			internalNodes = updatedEntities.toArray(internalNodes);
 		}
 
 		return entities;
@@ -313,24 +297,17 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * @return the update relationships array
 	 */
 	protected InternalRelationship[] updateRelationships(InternalRelationship[] relationships) {
-		if ((relationshipsToRemove.size() > 0) || (relationshipsToAdd.size() > 0)) {
-			List internalRelsList = new ArrayList(Arrays.asList(relationships));
+		if (!relationshipsToRemove.isEmpty() || !relationshipsToAdd.isEmpty()) {
+			List<InternalRelationship> internalRelsList = new ArrayList<>(Arrays.asList(relationships));
 
 			// remove relationships
-			if (relationshipsToRemove.size() > 0) {
-				for (Iterator iter = relationshipsToRemove.iterator(); iter.hasNext();) {
-					LayoutRelationship relation = (LayoutRelationship) iter.next();
-					if (relation.getLayoutInformation() != null) {
-						internalRelsList.remove(relation.getLayoutInformation());
-					}
-				}
-			}
+			relationshipsToRemove.stream().filter(r -> r.getLayoutInformation() != null)
+					.forEach(r -> internalRelsList.remove(r.getLayoutInformation()));
 
 			// Also remove from _internalRelationships
-			ArrayList updatedRelationships = new ArrayList(
+			List<InternalRelationship> updatedRelationships = new ArrayList<>(
 					internalRelationships.length - relationshipsToRemove.size() + relationshipsToAdd.size());
-			for (int i = 0; i < internalRelationships.length; i++) {
-				InternalRelationship relation = internalRelationships[i];
+			for (InternalRelationship relation : internalRelationships) {
 				if (relationshipsToRemove.contains(relation.getLayoutRelationship())) {
 					relationshipsToRemove.remove(relation.getLayoutRelationship());
 				} else {
@@ -340,40 +317,26 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 			relationshipsToRemove.clear();
 
 			// add relationships
-			if (relationshipsToAdd.size() > 0) {
+			if (!relationshipsToAdd.isEmpty()) {
 				LayoutRelationship[] relsArray = new LayoutRelationship[relationshipsToAdd.size()];
-				relsArray = (LayoutRelationship[]) relationshipsToAdd.toArray(relsArray);
+				relsArray = relationshipsToAdd.toArray(relsArray);
 				InternalRelationship[] newRelationships = createInternalRelationships(relsArray);
-				for (int i = 0; i < newRelationships.length; i++) {
-					internalRelsList.add(newRelationships[i]);
-					updatedRelationships.add(newRelationships[i]);
+				for (InternalRelationship newRelationship : newRelationships) {
+					internalRelsList.add(newRelationship);
+					updatedRelationships.add(newRelationship);
 				}
 			}
 			relationshipsToAdd.clear();
 
 			relationships = new InternalRelationship[internalRelsList.size()];
-			relationships = (InternalRelationship[]) internalRelsList.toArray(relationships);
+			relationships = internalRelsList.toArray(relationships);
 
 			internalRelationships = new InternalRelationship[updatedRelationships.size()];
-			internalRelationships = (InternalRelationship[]) updatedRelationships.toArray(internalRelationships);
+			internalRelationships = updatedRelationships.toArray(internalRelationships);
 		}
 
 		return relationships;
 	}
-
-	/**
-	 * Moves all the entities by the given amount.
-	 *
-	 * @param dx the amount to shift the entities in the x-direction
-	 * @param dy the amount to shift the entities in the y-direction
-	 */
-	/*
-	 * public void moveAllEntities(double dx, double dy) { if ((dx != 0) || (dy !=
-	 * 0)) { synchronized (_internalNodes) { for (int i = 0; i <
-	 * _internalNodes.length; i++) { InternalNode node = _internalNodes[i];
-	 * node.setInternalLocation(node.getInternalX()+dx, node.getInternalY()+dy);
-	 * node.setLocation(node.getX()+dx, node.getY()+dy); } } } }
-	 */
 
 	/**
 	 * Returns true if the layout algorithm is running
@@ -396,28 +359,6 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		fireProgressEnded(getTotalNumberOfLayoutSteps());
 	}
 
-	// /**
-	// * Sleeps while the algorithm is paused.
-	// */
-	// protected void sleepWhilePaused() {
-	// // do nothing while the algorithm is paused
-	// boolean wasPaused = false;
-	// while (isPaused()) {
-	// try {
-	// Thread.sleep(200);
-	// } catch (InterruptedException e) {
-	// }
-	// wasPaused = true;
-	// }
-	// // update the node positions (they might have been moved while paused)
-	// if (wasPaused) {
-	// for (int i = 0; i < internalNodes.length; i++) {
-	// InternalNode node = internalNodes[i];
-	// node.setInternalLocation(node.getPreferredX(), node.getPreferredY());
-	// }
-	// }
-	// }
-
 	private void setupLayout(LayoutEntity[] entitiesToLayout, LayoutRelationship[] relationshipsToConsider, double x,
 			double y, double width, double height) {
 		internalX = x;
@@ -432,27 +373,13 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		if (!verifyInput(entitiesToLayout, relationshipsToConsider)) {
 			layoutStopped = true;
 			throw new RuntimeException(
-					"The relationships in relationshipsToConsider don't contain the entities in entitiesToLayout");
+					"The relationships in relationshipsToConsider don't contain the entities in entitiesToLayout"); //$NON-NLS-1$
 		}
 
 		// Create the internal nodes and relationship
 		internalNodes = createInternalNodes(entitiesToLayout);
 		internalRelationships = createInternalRelationships(relationshipsToConsider);
 	}
-
-	// public synchronized Stoppable getLayoutThread(LayoutEntity[]
-	// entitiesToLayout, LayoutRelationship[] relationshipsToConsider, double x,
-	// double y, double width, double height, boolean continuous) {
-	// //setupLayout( entitiesToLayout, relationshipsToConsider, x, y, width, height
-	// );
-	// this.layoutStopped = false;
-	// this.runContinuously = continuous;
-	// setupLayout(entitiesToLayout, relationshipsToConsider, x, y, width, height);
-	// preLayoutAlgorithm(internalNodes, internalRelationships, internalX,
-	// internalY, internalWidth, internalHeight);
-	// fireProgressStarted(getTotalNumberOfLayoutSteps());
-	// return this;
-	// }
 
 	/**
 	 * Code called before the layout algorithm starts
@@ -473,8 +400,6 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Gets the current layout step
-	 *
-	 * @return
 	 */
 	protected abstract int getCurrentLayoutStep();
 
@@ -501,20 +426,15 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		lastProgressEventFired = Calendar.getInstance();
 		if (asynchronous) {
 
-			Thread thread = new Thread(new Runnable() {
+			Thread thread = new Thread(() -> {
+				setupLayout(entitiesToLayout, relationshipsToConsider, x, y, width, height);
+				preLayoutAlgorithm(internalNodes, internalRelationships, internalX, internalY, internalWidth,
+						internalHeight);
+				fireProgressStarted(getTotalNumberOfLayoutSteps());
 
-				@Override
-				public void run() {
-					setupLayout(entitiesToLayout, relationshipsToConsider, x, y, width, height);
-					preLayoutAlgorithm(internalNodes, internalRelationships, internalX, internalY, internalWidth,
-							internalHeight);
-					fireProgressStarted(getTotalNumberOfLayoutSteps());
-
-					applyLayoutInternal(internalNodes, internalRelationships, internalX, internalY, internalWidth,
-							internalHeight);
-					stop();
-				}
-
+				applyLayoutInternal(internalNodes, internalRelationships, internalX, internalY, internalWidth,
+						internalHeight);
+				stop();
 			});
 			thread.setPriority(Thread.MIN_PRIORITY);
 			thread.start();
@@ -537,9 +457,8 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Clear out all old bend points before doing a layout
 	 */
-	private void clearBendPoints(LayoutRelationship[] relationships) {
-		for (int i = 0; i < relationships.length; i++) {
-			LayoutRelationship rel = relationships[i];
+	private static void clearBendPoints(LayoutRelationship[] relationships) {
+		for (LayoutRelationship rel : relationships) {
 			rel.clearBendPoints();
 		}
 	}
@@ -551,10 +470,9 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * @param relationshipsToConsider
 	 */
 	protected void updateBendPoints(InternalRelationship[] relationshipsToConsider) {
-		for (int i = 0; i < relationshipsToConsider.length; i++) {
-			InternalRelationship relationship = relationshipsToConsider[i];
+		for (InternalRelationship relationship : relationshipsToConsider) {
 			List bendPoints = relationship.getBendPoints();
-			if (bendPoints.size() > 0) {
+			if (!bendPoints.isEmpty()) {
 				// We will assume that source/dest coordinates are for center of node
 				BendPoint[] externalBendPoints = new BendPoint[bendPoints.size() + 2];
 				InternalNode sourceNode = relationship.getSource();
@@ -572,27 +490,12 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		}
 	}
 
-	// public void run() {
-	//
-	// if (started == true) {
-	// throw new RuntimeException("Layout has already run!");
-	// }
-	// started = true;
-	// //layoutStopped = false;
-	// isLayoutPaused = false;
-	// applyLayoutInternal(internalNodes, internalRelationships, internalX,
-	// internalY, internalWidth, internalHeight);
-	// stop();
-	// layoutStopped = true;
-	// isLayoutPaused = false;
-	// }
-
 	/**
 	 * Creates a list of InternalNode objects from the list of LayoutEntity objects
 	 * the user wants layed out. Sets the internal nodes' positions and sizes from
 	 * the external entities.
 	 */
-	private InternalNode[] createInternalNodes(LayoutEntity[] nodes) {
+	private static InternalNode[] createInternalNodes(LayoutEntity[] nodes) {
 		InternalNode[] internalNodes = new InternalNode[nodes.length];
 		BasicEntityConstraint basicEntityConstraint = new BasicEntityConstraint();
 		for (int i = 0; i < nodes.length; i++) {
@@ -613,23 +516,19 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * @param rels
 	 * @return List of internal relationships
 	 */
-	private InternalRelationship[] createInternalRelationships(LayoutRelationship[] rels) {
-		ArrayList listOfInternalRelationships = new ArrayList(rels.length);
-		for (int i = 0; i < rels.length; i++) {
-			LayoutRelationship relation = rels[i];
+	private static InternalRelationship[] createInternalRelationships(LayoutRelationship[] rels) {
+		List<LayoutRelationship> listOfInternalRelationships = new ArrayList<>(rels.length);
+		for (LayoutRelationship relation : rels) {
 			InternalNode src = (InternalNode) relation.getSourceInLayout().getLayoutInformation();
 			InternalNode dest = (InternalNode) relation.getDestinationInLayout().getLayoutInformation();
-			if ((src != null) && (dest != null)) {
-				InternalRelationship internalRelationship = new InternalRelationship(relation, src, dest);
-				listOfInternalRelationships.add(internalRelationship);
-			} else {
-				throw new RuntimeException("Error creating internal relationship, one of the nodes is null: src=" + src
-						+ ", dest=" + dest);
+			if ((src == null) || (dest == null)) {
+				throw new RuntimeException("Error creating internal relationship, one of the nodes is null: src=" + src //$NON-NLS-1$
+						+ ", dest=" + dest); //$NON-NLS-1$
 			}
+			InternalRelationship internalRelationship = new InternalRelationship(relation, src, dest);
+			listOfInternalRelationships.add(internalRelationship);
 		}
-		InternalRelationship[] internalRelationships = new InternalRelationship[listOfInternalRelationships.size()];
-		listOfInternalRelationships.toArray(internalRelationships);
-		return internalRelationships;
+		return listOfInternalRelationships.toArray(new InternalRelationship[listOfInternalRelationships.size()]);
 	}
 
 	/**
@@ -637,10 +536,9 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 */
 	private Object[] filterUnwantedObjects(LayoutItem[] objects) {
 		// first remove any entities or relationships that are filtered.
-		List unfilteredObjsList = new ArrayList();
+		List<LayoutItem> unfilteredObjsList = new ArrayList<>();
 		if (filter != null) {
-			for (int i = 0; i < objects.length; i++) {
-				LayoutItem object = objects[i];
+			for (LayoutItem object : objects) {
 				if (!filter.isObjectFiltered(object)) {
 					unfilteredObjsList.add(object);
 				}
@@ -678,8 +576,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 */
 	public static boolean verifyInput(LayoutEntity[] entitiesToLayout, LayoutRelationship[] relationshipsToConsider) {
 		boolean stillValid = true;
-		for (int i = 0; i < relationshipsToConsider.length; i++) {
-			LayoutRelationship relationship = relationshipsToConsider[i];
+		for (LayoutRelationship relationship : relationshipsToConsider) {
 			LayoutEntity source = relationship.getSourceInLayout();
 			LayoutEntity destination = relationship.getDestinationInLayout();
 			boolean containsSrc = false;
@@ -774,19 +671,18 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 																						// each side
 			return new DisplayIndependentRectangle(realBounds.x + borderWidth / 2.0, realBounds.y + borderWidth / 2.0,
 					realBounds.width - borderWidth, realBounds.height - borderWidth);
-		} else { // retain layout aspect ratio
-			double heightAdjustment = realBounds.height / layoutBounds.height;
-			double widthAdjustment = realBounds.width / layoutBounds.width;
-			double ratio = Math.min(heightAdjustment, widthAdjustment);
-			double adjustedHeight = layoutBounds.height * ratio;
-			double adjustedWidth = layoutBounds.width * ratio;
-			double adjustedX = realBounds.x + (realBounds.width - adjustedWidth) / 2.0;
-			double adjustedY = realBounds.y + (realBounds.height - adjustedHeight) / 2.0;
-			double borderWidth = Math.min(adjustedWidth, adjustedHeight) / 10.0; // use 10% for the border - 5% on each
-																					// side
-			return new DisplayIndependentRectangle(adjustedX + borderWidth / 2.0, adjustedY + borderWidth / 2.0,
-					adjustedWidth - borderWidth, adjustedHeight - borderWidth);
 		}
+		double heightAdjustment = realBounds.height / layoutBounds.height;
+		double widthAdjustment = realBounds.width / layoutBounds.width;
+		double ratio = Math.min(heightAdjustment, widthAdjustment);
+		double adjustedHeight = layoutBounds.height * ratio;
+		double adjustedWidth = layoutBounds.width * ratio;
+		double adjustedX = realBounds.x + (realBounds.width - adjustedWidth) / 2.0;
+		double adjustedY = realBounds.y + (realBounds.height - adjustedHeight) / 2.0;
+		double borderWidth = Math.min(adjustedWidth, adjustedHeight) / 10.0; // use 10% for the border - 5% on each
+																				// side
+		return new DisplayIndependentRectangle(adjustedX + borderWidth / 2.0, adjustedY + borderWidth / 2.0,
+				adjustedWidth - borderWidth, adjustedHeight - borderWidth);
 	}
 
 	/**
@@ -796,14 +692,13 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * @param entitiesToLayout
 	 * @param relationships
 	 */
-	private void resizeAndShiftNodes(InternalNode[] entitiesToLayout) {
-		// get maximum node size as percent of screen dimmensions
+	private static void resizeAndShiftNodes(InternalNode[] entitiesToLayout) {
+		// get maximum node size as percent of screen dimensions
 		double nodeSize = getNodeSize(entitiesToLayout);
 		double halfNodeSize = nodeSize / 2;
 
 		// Resize and shift nodes
-		for (int i = 0; i < entitiesToLayout.length; i++) {
-			InternalNode node = entitiesToLayout[i];
+		for (InternalNode node : entitiesToLayout) {
 			node.setInternalSize(nodeSize, nodeSize);
 			node.setInternalLocation(node.getInternalX() + halfNodeSize, node.getInternalY() + halfNodeSize);
 		}
@@ -815,12 +710,11 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 *
 	 * @param entitiesToLayout
 	 */
-	private void convertPositionsToPercentage(InternalNode[] entitiesToLayout, InternalRelationship[] relationships,
-			DisplayIndependentRectangle layoutBounds, boolean includeNodeSize) {
+	private static void convertPositionsToPercentage(InternalNode[] entitiesToLayout,
+			InternalRelationship[] relationships, DisplayIndependentRectangle layoutBounds, boolean includeNodeSize) {
 
 		// Adjust node positions and sizes
-		for (int i = 0; i < entitiesToLayout.length; i++) {
-			InternalNode node = entitiesToLayout[i];
+		for (InternalNode node : entitiesToLayout) {
 			DisplayIndependentPoint location = node.getInternalLocation().convertToPercent(layoutBounds);
 			node.setInternalLocation(location.x, location.y);
 			if (includeNodeSize) { // adjust node sizes
@@ -831,10 +725,9 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		}
 
 		// Adjust bendpoint positions
-		for (int i = 0; i < relationships.length; i++) {
-			InternalRelationship rel = relationships[i];
-			for (int j = 0; j < rel.getBendPoints().size(); j++) {
-				BendPoint bp = (BendPoint) rel.getBendPoints().get(j);
+		for (InternalRelationship rel : relationships) {
+			for (Object element : rel.getBendPoints()) {
+				BendPoint bp = (BendPoint) element;
 				DisplayIndependentPoint toPercent = bp.convertToPercent(layoutBounds);
 				bp.setX(toPercent.x);
 				bp.setY(toPercent.y);
@@ -855,8 +748,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 			DisplayIndependentRectangle screenBounds) {
 
 		// Adjust node positions and sizes
-		for (int i = 0; i < entitiesToLayout.length; i++) {
-			InternalNode node = entitiesToLayout[i];
+		for (InternalNode node : entitiesToLayout) {
 			double width = node.getInternalWidth() * screenBounds.width;
 			double height = node.getInternalHeight() * screenBounds.height;
 			DisplayIndependentPoint location = node.getInternalLocation().convertFromPercent(screenBounds);
@@ -869,10 +761,9 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		}
 
 		// Adjust bendpoint positions and shift based on source node size
-		for (int i = 0; i < relationships.length; i++) {
-			InternalRelationship rel = relationships[i];
-			for (int j = 0; j < rel.getBendPoints().size(); j++) {
-				BendPoint bp = (BendPoint) rel.getBendPoints().get(j);
+		for (InternalRelationship rel : relationships) {
+			for (Object element : rel.getBendPoints()) {
+				BendPoint bp = (BendPoint) element;
 				DisplayIndependentPoint fromPercent = bp.convertFromPercent(screenBounds);
 				bp.setX(fromPercent.x);
 				bp.setY(fromPercent.y);
@@ -910,10 +801,11 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Returns the maximum possible node size as a percentage of the width or height
-	 * in current coord system.
+	 * in current coordinate system.
 	 */
-	private double getNodeSize(InternalNode[] entitiesToLayout) {
-		double width, height;
+	private static double getNodeSize(InternalNode[] entitiesToLayout) {
+		double width;
+		double height;
 		if (entitiesToLayout.length == 1) {
 			width = 0.8;
 			height = 0.8;
@@ -937,8 +829,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 		double bottomSide = Double.MIN_VALUE;
 		double leftSide = Double.MAX_VALUE;
 		double topSide = Double.MAX_VALUE;
-		for (int i = 0; i < entitiesToLayout.length; i++) {
-			InternalNode entity = entitiesToLayout[i];
+		for (InternalNode entity : entitiesToLayout) {
 			if (entity.hasPreferredLocation()) {
 				continue;
 			}
@@ -973,7 +864,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 *
 	 *
 	 */
-	private DisplayIndependentDimension getMinimumDistance(InternalNode[] entitiesToLayout) {
+	private static DisplayIndependentDimension getMinimumDistance(InternalNode[] entitiesToLayout) {
 		DisplayIndependentDimension horAndVertdistance = new DisplayIndependentDimension(Double.MAX_VALUE,
 				Double.MAX_VALUE);
 		double minDistance = Double.MAX_VALUE; // the minimum distance between all the nodes
@@ -1045,8 +936,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * locations
 	 */
 	protected void updateLayoutLocations(InternalNode[] nodes) {
-		for (int i = 0; i < nodes.length; i++) {
-			InternalNode node = nodes[i];
+		for (InternalNode node : nodes) {
 			if (!node.hasPreferredLocation()) {
 				node.setLocation(node.getInternalX(), node.getInternalY());
 
@@ -1060,20 +950,12 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	protected void fireProgressStarted(int totalNumberOfSteps) {
 		ProgressEvent event = new ProgressEvent(0, totalNumberOfSteps);
-		for (int i = 0; i < progressListeners.size(); i++) {
-			ProgressListener listener = (ProgressListener) progressListeners.get(i);
-
-			listener.progressStarted(event);
-		}
+		progressListeners.forEach(listener -> listener.progressStarted(event));
 	}
 
 	protected void fireProgressEnded(int totalNumberOfSteps) {
 		ProgressEvent event = new ProgressEvent(totalNumberOfSteps, totalNumberOfSteps);
-		for (int i = 0; i < progressListeners.size(); i++) {
-			ProgressListener listener = (ProgressListener) progressListeners.get(i);
-			listener.progressEnded(event);
-		}
-
+		progressListeners.forEach(listener -> listener.progressEnded(event));
 	}
 
 	/**
@@ -1084,22 +966,15 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * @param totalNumberOfSteps The total number of steps in the algorithm.
 	 */
 	protected void fireProgressEvent(int currentStep, int totalNumberOfSteps) {
-
 		// Update the layout locations to the external nodes
 		Calendar now = Calendar.getInstance();
 		now.add(Calendar.MILLISECOND, -MIN_TIME_DELAY_BETWEEN_PROGRESS_EVENTS);
 
 		if (now.after(lastProgressEventFired) || currentStep == totalNumberOfSteps) {
 			ProgressEvent event = new ProgressEvent(currentStep, totalNumberOfSteps);
-
-			for (int i = 0; i < progressListeners.size(); i++) {
-
-				ProgressListener listener = (ProgressListener) progressListeners.get(i);
-				listener.progressUpdated(event);
-			}
+			progressListeners.forEach(listener -> listener.progressUpdated(event));
 			lastProgressEventFired = Calendar.getInstance();
 		}
-
 	}
 
 	protected int getNumberOfProgressListeners() {
@@ -1108,7 +983,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	private void checkThread() {
 		if (this.creationThread != Thread.currentThread()) {
-			throw new RuntimeException("Invalid Thread Access.");
+			throw new RuntimeException("Invalid Thread Access."); //$NON-NLS-1$
 		}
 	}
 

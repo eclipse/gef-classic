@@ -122,6 +122,6 @@ public interface LayoutAlgorithm {
 
 	public void removeRelationship(LayoutRelationship relationship);
 
-	public void removeRelationships(List relationships);
+	public void removeRelationships(List<? extends LayoutRelationship> relationships);
 
 }

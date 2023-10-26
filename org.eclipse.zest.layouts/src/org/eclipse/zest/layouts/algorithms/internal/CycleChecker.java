@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC,
+ *                      Canada, Johannes Kepler University Linz
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -8,21 +8,20 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria
+ * Contributors: The Chisel Group, University of Victoria, Alois Zoitl
  *******************************************************************************/
 
 package org.eclipse.zest.layouts.algorithms.internal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.zest.layouts.LayoutEntity;
 import org.eclipse.zest.layouts.LayoutRelationship;
 import org.eclipse.zest.layouts.algorithms.AbstractLayoutAlgorithm;
-import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
 
 /**
  * Checks for cycles in the given graph.
@@ -42,41 +41,35 @@ public class CycleChecker {
 	 * @return <code>true</code> if there is a directed circle. Otherwise,
 	 *         <code>false</code>.
 	 */
-	public static boolean hasDirectedCircles(LayoutEntity[] entities, LayoutRelationship[] relationships, List cycle) {
+	public static boolean hasDirectedCircles(LayoutEntity[] entities, LayoutRelationship[] relationships,
+			List<LayoutEntity> cycle) {
 		if (!AbstractLayoutAlgorithm.verifyInput(entities, relationships)) {
-			throw new RuntimeException("The endpoints of the relationships aren't contained in the entities list.");
+			throw new RuntimeException("The endpoints of the relationships aren't contained in the entities list."); //$NON-NLS-1$
 		}
-		// Enumeration enum;
-		// Iterator iterator;
 
-		Hashtable endPoints = new Hashtable();
+		Map<LayoutEntity, List<LayoutRelationship>> endPoints = new HashMap<>();
 
 		// Initialize the relation(transitive) vector.
-		for (int i = 0; i < relationships.length; i++) {
-			LayoutRelationship rel = relationships[i];
-
+		for (LayoutRelationship rel : relationships) {
 			// Add the relationship to the source endpoint
-			Object subject = rel.getSourceInLayout();
-			List rels = (List) endPoints.get(subject);
-			if (rels == null) {
-				rels = new ArrayList();
-				endPoints.put(subject, rels);
-			}
-			if (!rels.contains(rel))
+			LayoutEntity subject = rel.getSourceInLayout();
+			List<LayoutRelationship> rels = endPoints.computeIfAbsent(subject, sub -> new ArrayList<>());
+			if (!rels.contains(rel)) {
 				rels.add(rel);
+			}
 		}
-		boolean hasCyle = hasCycle(new ArrayList(Arrays.asList(entities)), endPoints, cycle);
-		return hasCyle;
+		return hasCycle(new ArrayList<>(Arrays.asList(entities)), endPoints, cycle);
 	}
 
 	/**
 	 * Check passed in nodes for a cycle
 	 */
-	private static boolean hasCycle(List nodesToCheck, Hashtable endPoints, List cycle) {
-		while (nodesToCheck.size() > 0) {
-			Object checkNode = nodesToCheck.get(0);
-			List checkedNodes = new ArrayList();
-			if (hasCycle(checkNode, new ArrayList(), null, endPoints, checkedNodes, cycle)) {
+	private static boolean hasCycle(List<LayoutEntity> nodesToCheck,
+			Map<LayoutEntity, List<LayoutRelationship>> endPoints, List<LayoutEntity> cycle) {
+		while (!nodesToCheck.isEmpty()) {
+			LayoutEntity checkNode = nodesToCheck.get(0);
+			List<LayoutEntity> checkedNodes = new ArrayList<>();
+			if (hasCycle(checkNode, new ArrayList<>(), null, endPoints, checkedNodes, cycle)) {
 				return true;
 			}
 			nodesToCheck.removeAll(checkedNodes);
@@ -90,8 +83,9 @@ public class CycleChecker {
 	 *
 	 * @returns true if there is a cycle
 	 */
-	private static boolean hasCycle(Object nodeToCheck, List nodePathSoFar, SimpleRelationship cameFrom,
-			Hashtable endPoints, List nodesChecked, List cycle) {
+	private static boolean hasCycle(LayoutEntity nodeToCheck, List<LayoutEntity> nodePathSoFar,
+			LayoutRelationship cameFrom, Map<LayoutEntity, List<LayoutRelationship>> endPoints,
+			List<LayoutEntity> nodesChecked, List<LayoutEntity> cycle) {
 		if (nodePathSoFar.contains(nodeToCheck)) {
 			cycle.addAll(nodePathSoFar);
 			cycle.add(nodeToCheck);
@@ -100,24 +94,18 @@ public class CycleChecker {
 		nodePathSoFar.add(nodeToCheck);
 		nodesChecked.add(nodeToCheck);
 
-		List relations = (List) endPoints.get(nodeToCheck);
+		List<LayoutRelationship> relations = endPoints.get(nodeToCheck);
 		if (relations != null) {
-			for (Iterator iter = relations.iterator(); iter.hasNext();) {
-				SimpleRelationship rel = (SimpleRelationship) iter.next();
-
+			for (LayoutRelationship rel : relations) {
 				if (cameFrom == null || !rel.equals(cameFrom)) {
-					Object currentNode = null;
-					currentNode = rel.getDestinationInLayout();
+					LayoutEntity currentNode = rel.getDestinationInLayout();
 					if (hasCycle(currentNode, nodePathSoFar, rel, endPoints, nodesChecked, cycle)) {
 						return true;
 					}
 				}
-
 			}
 		}
-
 		nodePathSoFar.remove(nodeToCheck);
-
 		return false;
 	}
 

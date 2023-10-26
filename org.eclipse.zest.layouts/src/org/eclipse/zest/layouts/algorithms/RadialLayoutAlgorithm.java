@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC,
+ *                      Canada, Johannes Kepler University Linz
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -8,11 +8,10 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria
+ * Contributors: The Chisel Group, University of Victoria, Alois Zoitl
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.zest.layouts.LayoutStyles;
@@ -32,7 +31,7 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	private static final double MAX_DEGREES = Math.PI * 2;
 	private double startDegree;
 	private double endDegree;
-	private TreeLayoutAlgorithm treeLayout;
+	private final TreeLayoutAlgorithm treeLayout;
 	private List roots;
 
 	/**
@@ -53,21 +52,12 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 
 	@Override
 	public void setLayoutArea(double x, double y, double width, double height) {
-		throw new RuntimeException("Operation not implemented");
+		throw new RuntimeException("Operation not implemented"); //$NON-NLS-1$
 	}
 
 	@Override
 	protected boolean isValidConfiguration(boolean asynchronous, boolean continueous) {
-		if (asynchronous && continueous)
-			return false;
-		else if (asynchronous && !continueous)
-			return true;
-		else if (!asynchronous && continueous)
-			return false;
-		else if (!asynchronous && !continueous)
-			return true;
-
-		return false;
+		return !continueous;
 	}
 
 	DisplayIndependentRectangle layoutBounds = null;
@@ -75,7 +65,6 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	@Override
 	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double x, double y, double width, double height) {
-		// TODO Auto-generated method stub
 		layoutBounds = new DisplayIndependentRectangle(x, y, width, height);
 		super.preLayoutAlgorithm(entitiesToLayout, relationshipsToConsider, x, y, width, height);
 	}
@@ -106,13 +95,11 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 	 * each entity in terms of its percentage in the tree layout. Then apply that
 	 * percentage to the radius and distance from the center.
 	 */
-	protected void computeRadialPositions(InternalNode[] entities, DisplayIndependentRectangle bounds2) { // TODO TODO
-																											// TODO
+	protected void computeRadialPositions(InternalNode[] entities, DisplayIndependentRectangle bounds2) {
 		DisplayIndependentRectangle bounds = new DisplayIndependentRectangle(getLayoutBounds(entities, true));
 		bounds.height = bounds2.height;
 		bounds.y = bounds2.y;
-		for (int i = 0; i < entities.length; i++) {
-			InternalNode entity = entities[i];
+		for (InternalNode entity : entities) {
 			double percentTheta = (entity.getInternalX() - bounds.x) / bounds.width;
 			double distance = (entity.getInternalY() - bounds.y) / bounds.height;
 			double theta = startDegree + Math.abs(endDegree - startDegree) * percentTheta;
@@ -141,18 +128,17 @@ public class RadialLayoutAlgorithm extends TreeLayoutAlgorithm {
 				Math.abs(centerPoint.x - layoutBounds.x));
 		double maxDistanceY = Math.max(Math.abs(layoutBounds.y + layoutBounds.height - centerPoint.y),
 				Math.abs(centerPoint.y - layoutBounds.y));
-		layoutBounds = new DisplayIndependentRectangle(centerPoint.x - maxDistanceX, centerPoint.y - maxDistanceY,
+		return new DisplayIndependentRectangle(centerPoint.x - maxDistanceX, centerPoint.y - maxDistanceY,
 				maxDistanceX * 2, maxDistanceY * 2);
-		return layoutBounds;
 	}
 
 	/**
 	 * Find the center point between the roots
 	 */
-	private DisplayIndependentPoint determineCenterPoint(List roots) {
-		double totalX = 0, totalY = 0;
-		for (Iterator iterator = roots.iterator(); iterator.hasNext();) {
-			InternalNode entity = (InternalNode) iterator.next();
+	private static DisplayIndependentPoint determineCenterPoint(List<InternalNode> roots) {
+		double totalX = 0;
+		double totalY = 0;
+		for (InternalNode entity : roots) {
 			totalX += entity.getInternalX();
 			totalY += entity.getInternalY();
 		}
