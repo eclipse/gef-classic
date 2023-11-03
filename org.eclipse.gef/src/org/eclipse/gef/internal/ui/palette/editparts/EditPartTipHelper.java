@@ -143,7 +143,8 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 						@Override
 						public void run() {
 							Shell active = Display.getCurrent().getActiveShell();
-							if (getShell() == active || control.getShell() == active || getShell().isDisposed())
+							if (getShell() == active || control.isDisposed() || control.getShell() == active
+									|| getShell().isDisposed())
 								return;
 							if (isShowing())
 								getShell().setCapture(false);
