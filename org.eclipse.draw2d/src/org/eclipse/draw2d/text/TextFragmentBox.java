@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ public class TextFragmentBox extends ContentBox {
 
 	/**
 	 * Creates a new TextFragmentBox for the given text flow.
-	 * 
+	 *
 	 * @param textflow the text flow
 	 */
 	public TextFragmentBox(TextFlow textflow) {
@@ -51,7 +51,7 @@ public class TextFragmentBox extends ContentBox {
 	/**
 	 * Returns the textflow's font's ascent. The ascent is the same for all
 	 * fragments in a given TextFlow.
-	 * 
+	 *
 	 * @return the ascent
 	 */
 	@Override
@@ -67,7 +67,7 @@ public class TextFragmentBox extends ContentBox {
 	/**
 	 * Returns the textflow's font's descent. The descent is the same for all
 	 * fragments in a given TextFlow.
-	 * 
+	 *
 	 * @return the descent
 	 */
 	@Override
@@ -98,7 +98,7 @@ public class TextFragmentBox extends ContentBox {
 	 * Returns <code>true</code> if the bidi level is odd. Right to left fragments
 	 * should be queried and rendered with the RLO control character inserted in
 	 * front.
-	 * 
+	 *
 	 * @return <code>true</code> if right-to-left
 	 * @since 3.1
 	 */
@@ -109,7 +109,7 @@ public class TextFragmentBox extends ContentBox {
 
 	/**
 	 * Returns <code>true</code> if the fragment should be rendered as truncated.
-	 * 
+	 *
 	 * @return <code>true</code> if the fragment is truncated
 	 * @since 3.1
 	 */
@@ -119,7 +119,7 @@ public class TextFragmentBox extends ContentBox {
 
 	/**
 	 * Marks the fragment as having been truncated.
-	 * 
+	 *
 	 * @param value <code>true</code> if the fragment is truncated
 	 * @since 3.1
 	 */

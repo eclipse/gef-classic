@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,7 +17,7 @@ import org.eclipse.gef.examples.flow.model.Activity;
 
 /**
  * Command to rename Activities.
- * 
+ *
  * @author Daniel Lee
  */
 public class RenameActivityCommand extends Command {
@@ -35,7 +35,7 @@ public class RenameActivityCommand extends Command {
 
 	/**
 	 * Sets the new Activity name
-	 * 
+	 *
 	 * @param string the new name
 	 */
 	public void setName(String string) {
@@ -44,7 +44,7 @@ public class RenameActivityCommand extends Command {
 
 	/**
 	 * Sets the old Activity name
-	 * 
+	 *
 	 * @param string the old name
 	 */
 	public void setOldName(String string) {
@@ -53,7 +53,7 @@ public class RenameActivityCommand extends Command {
 
 	/**
 	 * Sets the source Activity
-	 * 
+	 *
 	 * @param activity the source Activity
 	 */
 	public void setSource(Activity activity) {

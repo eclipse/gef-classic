@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * {@link org.eclipse.draw2d.text.FlowFigure}s. This interface should not be
  * implemented by clients. Clients should extend
  * {@link org.eclipse.draw2d.text.AbstractFlowBorder}.
- * 
+ *
  * @since 3.1
  */
 public interface FlowBorder extends Border {
@@ -32,7 +32,7 @@ public interface FlowBorder extends Border {
 	 * to the border and the flow box on which it is rendered. Vertical margins (top
 	 * and bottom) may collapse in some situations, such as adjacent or nested
 	 * blocks.
-	 * 
+	 *
 	 * @return the bottom margin
 	 * @since 3.1
 	 */
@@ -41,7 +41,7 @@ public interface FlowBorder extends Border {
 	/**
 	 * Returns the left margin in pixels. Margin is the space external to the border
 	 * and the flow box on which it is rendered.
-	 * 
+	 *
 	 * @return the left margin
 	 * @since 3.1
 	 */
@@ -50,7 +50,7 @@ public interface FlowBorder extends Border {
 	/**
 	 * Returns the right margin in pixels. Margin is the space external to the
 	 * border and the flow box on which it is rendered.
-	 * 
+	 *
 	 * @return the right margin
 	 * @since 3.1
 	 */
@@ -61,7 +61,7 @@ public interface FlowBorder extends Border {
 	 * the border and the flow box on which it is rendered. Vertical margins (top
 	 * and bottom) may collapse in some situations, such as adjacent or nested
 	 * blocks.
-	 * 
+	 *
 	 * @return the top margin
 	 * @since 3.1
 	 */
@@ -77,7 +77,7 @@ public interface FlowBorder extends Border {
 	 * <LI>{@link org.eclipse.swt.SWT#TRAIL}
 	 * <LI>{@link org.eclipse.swt.SWT#RIGHT_TO_LEFT}
 	 * </UL>
-	 * 
+	 *
 	 * @param figure the flow figure whose border is being painted
 	 * @param g      the graphics
 	 * @param where  the relative location of the box

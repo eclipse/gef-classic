@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ public class BendpointLocator extends ConnectionLocator {
 
 	/**
 	 * Creates a BendpointLocator associated with passed Connection c and index i.
-	 * 
+	 *
 	 * @param c Connection associated with BendpointLocator
 	 * @param i Index of bendpoint, represents the position of the bendpoint on
 	 *          Connection c
@@ -40,7 +40,7 @@ public class BendpointLocator extends ConnectionLocator {
 	/**
 	 * Returns the index of this BendpointLocator. This index is the position of the
 	 * reference point in this BendpointLocator's {@link Connection}.
-	 * 
+	 *
 	 * @return The index
 	 * @since 2.0
 	 */
@@ -51,7 +51,7 @@ public class BendpointLocator extends ConnectionLocator {
 	/**
 	 * Returns reference point associated with the BendpointLocator. This Point is
 	 * taken from the BendpointLocator's connection and is point number 'index'.
-	 * 
+	 *
 	 * @return The reference point
 	 * @since 2.0
 	 */

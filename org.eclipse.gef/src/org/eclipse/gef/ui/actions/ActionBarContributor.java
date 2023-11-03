@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 
 	/**
 	 * Adds the given action to the action registry.
-	 * 
+	 *
 	 * @param action the action to add
 	 */
 	protected void addAction(IAction action) {
@@ -56,7 +56,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 * <code>ActionRegistry</code>, and those actions will be registered with the
 	 * ActionBars for this contributor. The editor's action handler and the global
 	 * action must have the same key.
-	 * 
+	 *
 	 * @param key the key identifying the global action
 	 */
 	protected void addGlobalActionKey(String key) {
@@ -69,7 +69,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 * <code>IPartListener</code> of the contributor's page. Also, the retarget
 	 * action's ID is flagged as a global action key, by calling
 	 * {@link #addGlobalActionKey(String)}.
-	 * 
+	 *
 	 * @param action the retarget action being added
 	 */
 	protected void addRetargetAction(RetargetAction action) {
@@ -88,7 +88,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 * Subclasses must implement to declare additional global actions IDs. Only IDs
 	 * which were not already added directly or indirectly using
 	 * {@link #addGlobalActionKey(String)} need to be added.
-	 * 
+	 *
 	 * @see #addGlobalActionKey(String)
 	 */
 	protected abstract void declareGlobalActionKeys();
@@ -100,7 +100,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 	 * action registry.
 	 * <P>
 	 * Subclasses may extend this method to perform additional cleanup.
-	 * 
+	 *
 	 * @see org.eclipse.ui.part.EditorActionBarContributor#dispose()
 	 */
 	@Override
@@ -117,7 +117,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 
 	/**
 	 * Retrieves an action from the action registry using the given ID.
-	 * 
+	 *
 	 * @param id the ID of the sought action
 	 * @return <code>null</code> or the action if found
 	 */
@@ -127,7 +127,7 @@ public abstract class ActionBarContributor extends EditorActionBarContributor {
 
 	/**
 	 * returns this contributor's ActionRegsitry.
-	 * 
+	 *
 	 * @return the ActionRegistry
 	 */
 	protected ActionRegistry getActionRegistry() {

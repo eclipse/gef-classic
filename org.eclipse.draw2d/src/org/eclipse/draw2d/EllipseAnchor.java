@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,7 +18,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * Similar to a {@link org.eclipse.draw2d.ChopboxAnchor}, except this anchor is
  * located on the ellipse defined by the owners bounding box.
- * 
+ *
  * @author Alex Selkov Created 31.08.2002 23:11:43
  */
 public class EllipseAnchor extends AbstractConnectionAnchor {
@@ -39,7 +39,7 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	/**
 	 * Returns a point on the ellipse (defined by the owner's bounding box) where
 	 * the connection should be anchored.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.ConnectionAnchor#getLocation(Point)
 	 */
 	@Override
@@ -72,7 +72,7 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	/**
 	 * Returns <code>true</code> if the other anchor is an EllipseAnchor with the
 	 * same owner.
-	 * 
+	 *
 	 * @param o the other anchor
 	 * @return <code>true</code> if equal
 	 */
@@ -87,7 +87,7 @@ public class EllipseAnchor extends AbstractConnectionAnchor {
 	/**
 	 * The owning figure's hashcode is used since equality is approximately based on
 	 * the owner.
-	 * 
+	 *
 	 * @return the hash code.
 	 */
 	@Override

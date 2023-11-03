@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,7 +19,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * Default implementation of PaletteContainer
- * 
+ *
  * @author Pratik Shah
  */
 public class PaletteContainer extends PaletteEntry {
@@ -39,7 +39,7 @@ public class PaletteContainer extends PaletteEntry {
 	 * <p>
 	 * Any parameter can be <code>null</code>.
 	 * </p>
-	 * 
+	 *
 	 * @param label The container's name
 	 * @param desc  The container's description
 	 * @param icon  The small icon to represent this container
@@ -51,7 +51,7 @@ public class PaletteContainer extends PaletteEntry {
 
 	/**
 	 * Returns true if this type can be a child of this container.
-	 * 
+	 *
 	 * @param type the type being requested
 	 * @return true if this can be a child of this container
 	 */
@@ -61,7 +61,7 @@ public class PaletteContainer extends PaletteEntry {
 
 	/**
 	 * Adds the given entry to the end of this PaletteContainer
-	 * 
+	 *
 	 * @param entry the PaletteEntry to add
 	 */
 	public void add(PaletteEntry entry) {
@@ -70,7 +70,7 @@ public class PaletteContainer extends PaletteEntry {
 
 	/**
 	 * Adds the given PaletteEntry at position <code>index</code>.
-	 * 
+	 *
 	 * @param index position to add the PaletteEntry
 	 * @param entry the PaletteEntry to add
 	 */
@@ -89,7 +89,7 @@ public class PaletteContainer extends PaletteEntry {
 
 	/**
 	 * Adds the list of {@link PaletteEntry} objects to this PaletteContainer.
-	 * 
+	 *
 	 * @param list a list of PaletteEntry objects to add to this PaletteContainer
 	 */
 	public void addAll(List list) {
@@ -108,7 +108,7 @@ public class PaletteContainer extends PaletteEntry {
 	/**
 	 * Appends the given entry after the entry with the given id, but before the
 	 * next separator.
-	 * 
+	 *
 	 * @param id    the id of the entry to append after
 	 * @param entry the entry to add
 	 */
@@ -173,7 +173,7 @@ public class PaletteContainer extends PaletteEntry {
 	/**
 	 * Moves the given entry down, if possible. This method only handles moving the
 	 * child within this container.
-	 * 
+	 *
 	 * @param entry The entry to be moved
 	 * @return <code>true</code> if the given entry was successfully moved down
 	 */
@@ -184,7 +184,7 @@ public class PaletteContainer extends PaletteEntry {
 	/**
 	 * Moves the given entry up, if possible. This method only handles moving the
 	 * child within this container.
-	 * 
+	 *
 	 * @param entry The entry to be moved
 	 * @return <code>true</code> if the given entry was successfully moved up
 	 */
@@ -194,7 +194,7 @@ public class PaletteContainer extends PaletteEntry {
 
 	/**
 	 * Removes the given PaletteEntry from this PaletteContainer
-	 * 
+	 *
 	 * @param entry the PaletteEntry to remove
 	 */
 	public void remove(PaletteEntry entry) {
@@ -208,7 +208,7 @@ public class PaletteContainer extends PaletteEntry {
 	/**
 	 * Sets the children of this PaletteContainer to the given list of
 	 * {@link PaletteEntry} objects.
-	 * 
+	 *
 	 * @param list the list of children
 	 */
 	public void setChildren(List list) {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
 /**
  * A command to remove a shape from its parent. The command can be undone or
  * redone.
- * 
+ *
  * @author Elias Volanakis
  */
 public class ShapeDeleteCommand extends Command {
@@ -41,7 +41,7 @@ public class ShapeDeleteCommand extends Command {
 
 	/**
 	 * Create a command that will remove the shape from its parent.
-	 * 
+	 *
 	 * @param parent the ShapesDiagram containing the child
 	 * @param child  the Shape to remove
 	 * @throws IllegalArgumentException if any parameter is null
@@ -57,7 +57,7 @@ public class ShapeDeleteCommand extends Command {
 
 	/**
 	 * Reconnects a List of Connections with their previous endpoints.
-	 * 
+	 *
 	 * @param connections a non-null List of connections
 	 */
 	private static void addConnections(List<Connection> connections) {
@@ -66,7 +66,7 @@ public class ShapeDeleteCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#canUndo()
 	 */
 	@Override
@@ -76,7 +76,7 @@ public class ShapeDeleteCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
 	@Override
@@ -89,7 +89,7 @@ public class ShapeDeleteCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#redo()
 	 */
 	@Override
@@ -104,7 +104,7 @@ public class ShapeDeleteCommand extends Command {
 
 	/**
 	 * Disconnects a List of Connections from their endpoints.
-	 * 
+	 *
 	 * @param connections a non-null List of connections
 	 */
 	private static void removeConnections(List<Connection> connections) {
@@ -113,7 +113,7 @@ public class ShapeDeleteCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -35,7 +35,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	/**
 	 * Creates a <code>SelectionAction</code> and associates it with the given
 	 * editor.
-	 * 
+	 *
 	 * @param part  The workbench part associated with this action
 	 * @param style the style for this action
 	 */
@@ -46,7 +46,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	/**
 	 * Creates a <code>SelectionAction</code> and associates it with the given
 	 * workbench part.
-	 * 
+	 *
 	 * @param part the workbench part
 	 */
 	public SelectionAction(IWorkbenchPart part) {
@@ -64,7 +64,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 
 	/**
 	 * Returns a <code>List</code> containing the currently selected objects.
-	 * 
+	 *
 	 * @return A List containing the currently selected objects.
 	 */
 	protected List getSelectedObjects() {
@@ -75,7 +75,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 
 	/**
 	 * Gets the current selection.
-	 * 
+	 *
 	 * @return The current selection.
 	 */
 	protected ISelection getSelection() {
@@ -92,7 +92,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	/**
 	 * Sets the current selection and calls on subclasses to handle the
 	 * selectionChanged event.
-	 * 
+	 *
 	 * @param selection The new selection.
 	 */
 	protected void setSelection(ISelection selection) {
@@ -105,7 +105,7 @@ public abstract class SelectionAction extends WorkbenchPartAction {
 	 * workbench's selection service. Use of this method is optional. The default
 	 * value is <code>null</code>, in which case the selection is obtained using the
 	 * partsite's selection service.
-	 * 
+	 *
 	 * @param provider <code>null</code> or a selection provider
 	 */
 	public void setSelectionProvider(ISelectionProvider provider) {

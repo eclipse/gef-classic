@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * A slight modification to the ChopboxAnchor class to account for the rounded
  * corners.
- * 
+ *
  * @author Chris Callendar
  */
 public class RoundedChopboxAnchor extends ChopboxAnchor {
@@ -42,7 +42,7 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 
 	/**
 	 * Modifies the point slightly for the rounded corners.
-	 * 
+	 *
 	 * @return Point
 	 */
 	@Override
@@ -63,7 +63,7 @@ public class RoundedChopboxAnchor extends ChopboxAnchor {
 	/**
 	 * Calculates the distance from the corner to the Point p. If it is less than
 	 * the minimum then it translates it and returns the new Point.
-	 * 
+	 *
 	 * @param corner The corner Point.
 	 * @param p      The point to translate if close to the corner.
 	 * @param dx     The amount to translate in the x direcion.

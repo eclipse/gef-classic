@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -46,7 +46,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 
 	/**
 	 * Hooks the source and target anchors.
-	 * 
+	 *
 	 * @see Figure#addNotify()
 	 */
 	@Override
@@ -58,7 +58,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 
 	/**
 	 * Appends the given routing listener to the list of listeners.
-	 * 
+	 *
 	 * @param listener the routing listener
 	 * @since 3.2
 	 */
@@ -72,7 +72,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	/**
 	 * Called by the anchors of this connection when they have moved, revalidating
 	 * this polyline connection.
-	 * 
+	 *
 	 * @param anchor the anchor that moved
 	 */
 	@Override
@@ -84,7 +84,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	 * Returns the bounds which holds all the points in this polyline connection.
 	 * Returns any previously existing bounds, else calculates by unioning all the
 	 * children's dimensions.
-	 * 
+	 *
 	 * @return the bounds
 	 */
 	@Override
@@ -99,7 +99,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	/**
 	 * Returns the <code>ConnectionRouter</code> used to layout this connection.
 	 * Will not return <code>null</code>.
-	 * 
+	 *
 	 * @return this connection's router
 	 */
 	@Override
@@ -112,7 +112,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	/**
 	 * Returns this connection's routing constraint from its connection router. May
 	 * return <code>null</code>.
-	 * 
+	 *
 	 * @return the connection's routing constraint
 	 */
 	@Override
@@ -148,7 +148,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 
 	/**
 	 * @return the target decoration (may be null)
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected RotatableDecoration getTargetDecoration() {
@@ -191,7 +191,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	/**
 	 * Called just before the receiver is being removed from its parent. Results in
 	 * removing itself from the connection router.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	@Override
@@ -204,7 +204,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 
 	/**
 	 * Removes the first occurence of the given listener.
-	 * 
+	 *
 	 * @param listener the listener being removed
 	 * @since 3.2
 	 */
@@ -228,7 +228,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	/**
 	 * Sets the connection router which handles the layout of this polyline.
 	 * Generally set by the parent handling the polyline connection.
-	 * 
+	 *
 	 * @param cr the connection router
 	 */
 	@Override
@@ -249,7 +249,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 
 	/**
 	 * Sets the routing constraint for this connection.
-	 * 
+	 *
 	 * @param cons the constraint
 	 */
 	@Override
@@ -261,7 +261,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 
 	/**
 	 * Sets the anchor to be used at the start of this polyline connection.
-	 * 
+	 *
 	 * @param anchor the new source anchor
 	 */
 	@Override
@@ -279,7 +279,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 
 	/**
 	 * Sets the decoration to be used at the start of the {@link Connection}.
-	 * 
+	 *
 	 * @param dec the new source decoration
 	 * @since 2.0
 	 */
@@ -296,7 +296,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 	/**
 	 * Sets the anchor to be used at the end of the polyline connection. Removes
 	 * this listener from the old anchor and adds it to the new anchor.
-	 * 
+	 *
 	 * @param anchor the new target anchor
 	 */
 	@Override
@@ -314,7 +314,7 @@ public class PolylineConnection extends Polyline implements Connection, AnchorLi
 
 	/**
 	 * Sets the decoration to be used at the end of the {@link Connection}.
-	 * 
+	 *
 	 * @param dec the new target decoration
 	 */
 	public void setTargetDecoration(RotatableDecoration dec) {

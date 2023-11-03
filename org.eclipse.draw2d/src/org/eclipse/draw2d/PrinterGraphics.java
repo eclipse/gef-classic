@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * A scalable graphics object used to print to a printer.
- * 
+ *
  * @author danlee
  */
 public class PrinterGraphics extends ScaledGraphics {
@@ -37,7 +37,7 @@ public class PrinterGraphics extends ScaledGraphics {
 
 	/**
 	 * Creates a new PrinterGraphics with Graphics g, using Printer p
-	 * 
+	 *
 	 * @param g Graphics object to draw with
 	 * @param p Printer to print to
 	 */
@@ -109,7 +109,7 @@ public class PrinterGraphics extends ScaledGraphics {
 
 	/**
 	 * Overridden to translate dashes to printer specific values.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.ScaledGraphics#setLineAttributes(org.eclipse.swt.graphics.LineAttributes)
 	 */
 	@Override

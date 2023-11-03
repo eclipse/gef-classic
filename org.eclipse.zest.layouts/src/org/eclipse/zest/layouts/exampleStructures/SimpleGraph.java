@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.exampleStructures;
@@ -24,7 +24,7 @@ import org.eclipse.zest.layouts.LayoutRelationship;
 
 /**
  * Create a very simple graph that can be used in the layout algorithms
- * 
+ *
  * @author Casey Best
  * @author Chris Callendar
  */
@@ -40,7 +40,7 @@ public class SimpleGraph implements LayoutGraph {
 
 	/**
 	 * Adds the node.
-	 * 
+	 *
 	 * @param node The node to add.
 	 */
 	@Override
@@ -89,7 +89,7 @@ public class SimpleGraph implements LayoutGraph {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.
 	 * layouts.LayoutEntity, ca.uvic.cs.chisel.layouts.LayoutEntity)
 	 */
@@ -99,7 +99,7 @@ public class SimpleGraph implements LayoutGraph {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.
 	 * layouts.LayoutEntity, ca.uvic.cs.chisel.layouts.LayoutEntity, boolean, int)
 	 */
@@ -112,7 +112,7 @@ public class SimpleGraph implements LayoutGraph {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ca.uvic.cs.chisel.layouts.LayoutGraph#addRelationship(ca.uvic.cs.chisel.
 	 * layouts.LayoutRelationship)
 	 */
@@ -142,7 +142,7 @@ public class SimpleGraph implements LayoutGraph {
 
 	/**
 	 * Checks the relationships to see if they are all bidirectional.
-	 * 
+	 *
 	 * @return boolean if all edges are bidirectional.
 	 */
 	@Override

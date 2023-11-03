@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,21 +21,21 @@ package org.eclipse.draw2d;
  * {@link IFigure#addLayoutListener(LayoutListener)}. Listeners will be made
  * aware of various steps of the layout mechanism, and even have the opportunity
  * to prevent normal layout from occurring.
- * 
+ *
  * @since 3.1
  */
 public interface LayoutListener {
 
 	/**
 	 * A stub implementation which implements all of the declared methods.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	class Stub implements LayoutListener {
 
 		/**
 		 * Stub which does nothing.
-		 * 
+		 *
 		 * @see LayoutListener#invalidate(IFigure)
 		 */
 		@Override
@@ -44,7 +44,7 @@ public interface LayoutListener {
 
 		/**
 		 * Stub which does nothing.
-		 * 
+		 *
 		 * @see LayoutListener#layout(IFigure)
 		 */
 		@Override
@@ -54,7 +54,7 @@ public interface LayoutListener {
 
 		/**
 		 * Stub which does nothing.
-		 * 
+		 *
 		 * @see LayoutListener#postLayout(IFigure)
 		 */
 		@Override
@@ -63,7 +63,7 @@ public interface LayoutListener {
 
 		/**
 		 * Stub which does nothing.
-		 * 
+		 *
 		 * @see LayoutListener#remove(IFigure)
 		 */
 		@Override
@@ -72,7 +72,7 @@ public interface LayoutListener {
 
 		/**
 		 * Stub which does nothing.
-		 * 
+		 *
 		 * @see LayoutListener#setConstraint(IFigure, java.lang.Object)
 		 */
 		@Override
@@ -83,7 +83,7 @@ public interface LayoutListener {
 
 	/**
 	 * Called when a container has been invalidated.
-	 * 
+	 *
 	 * @param container the invalidated Figure
 	 * @since 3.1
 	 */
@@ -93,7 +93,7 @@ public interface LayoutListener {
 	 * Called prior to layout occurring. A listener may intercept a layout by
 	 * returning <code>true</code>. If the layout is intercepted, the container's
 	 * <code>LayoutManager</code> will not receive a layout call.
-	 * 
+	 *
 	 * @param container the figure incurring a layout
 	 * @return <code>true</code> if the layout has been intercepted by the listener
 	 * @since 3.1
@@ -102,7 +102,7 @@ public interface LayoutListener {
 
 	/**
 	 * Called after layout has occurred.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param container the figure incurring a layout
 	 */
@@ -110,7 +110,7 @@ public interface LayoutListener {
 
 	/**
 	 * Called when a child is about to be removed from its parent.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param child the child being removed
 	 */
@@ -118,7 +118,7 @@ public interface LayoutListener {
 
 	/**
 	 * Called when a child's constraint is initialized or updated.
-	 * 
+	 *
 	 * @param child      the child being updated
 	 * @param constraint the child's new constraint
 	 * @since 3.1

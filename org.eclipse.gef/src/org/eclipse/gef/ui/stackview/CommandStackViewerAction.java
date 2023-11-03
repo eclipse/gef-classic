@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.TreeViewer;
 
 /**
  * An internal class for the command stack inspector tool.
- * 
+ *
  * @deprecated since 3.1
  */
 public class CommandStackViewerAction extends Action {
@@ -28,7 +28,7 @@ public class CommandStackViewerAction extends Action {
 
 	/**
 	 * Creates a new CommandStackViewerAction with the given TreeViewer
-	 * 
+	 *
 	 * @param viewer the TreeViewer
 	 */
 	public CommandStackViewerAction(TreeViewer viewer) {

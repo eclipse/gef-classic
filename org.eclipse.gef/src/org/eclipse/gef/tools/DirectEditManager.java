@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -74,7 +74,7 @@ public abstract class DirectEditManager {
 	 * Constructs a new DirectEditManager for the given source edit part. The cell
 	 * editor will be created by instantiating the type <i>editorType</i>. The cell
 	 * editor will be placed using the given CellEditorLocator.
-	 * 
+	 *
 	 * @param source     the source edit part
 	 * @param editorType the cell editor type
 	 * @param locator    the locator
@@ -89,7 +89,7 @@ public abstract class DirectEditManager {
 	 * Constructs a new DirectEditManager for the given source edit part. The cell
 	 * editor will be created by instantiating the type <i>editorType</i>. The cell
 	 * editor will be placed using the given CellEditorLocator.
-	 * 
+	 *
 	 * @param source     the source edit part
 	 * @param editorType the cell editor type
 	 * @param locator    the locator
@@ -146,7 +146,7 @@ public abstract class DirectEditManager {
 	 * Creates the cell editor on the given composite. The cell editor is created by
 	 * instantiating the cell editor type passed into this DirectEditManager's
 	 * constuctor.
-	 * 
+	 *
 	 * @param composite the composite to create the cell editor on
 	 * @return the newly created cell editor
 	 */
@@ -161,7 +161,7 @@ public abstract class DirectEditManager {
 
 	/**
 	 * Creates and returns the DirectEditRequest.
-	 * 
+	 *
 	 * @return the direct edit request
 	 */
 	protected DirectEditRequest createDirectEditRequest() {
@@ -186,7 +186,7 @@ public abstract class DirectEditManager {
 
 	/**
 	 * Returns the cell editor.
-	 * 
+	 *
 	 * @return the cell editor
 	 */
 	protected CellEditor getCellEditor() {
@@ -195,7 +195,7 @@ public abstract class DirectEditManager {
 
 	/**
 	 * Returns the IFigure, which is used to 'embed' the cell editor control.
-	 * 
+	 *
 	 * @return An {@link IFigure} to be used as frame around the cell editor
 	 *         control.
 	 * @since 3.9
@@ -224,7 +224,7 @@ public abstract class DirectEditManager {
 
 	/**
 	 * Returns the direct edit request, creating it if needed.
-	 * 
+	 *
 	 * @return the direct edit request
 	 */
 	protected DirectEditRequest getDirectEditRequest() {
@@ -235,7 +235,7 @@ public abstract class DirectEditManager {
 
 	/**
 	 * Returns the source edit part.
-	 * 
+	 *
 	 * @return the source edit part
 	 */
 	protected GraphicalEditPart getEditPart() {
@@ -322,7 +322,7 @@ public abstract class DirectEditManager {
 
 	/**
 	 * Returns <code>true</code> if the cell editor's value has been changed.
-	 * 
+	 *
 	 * @return <code>true</code> if the cell editor is dirty
 	 */
 	protected boolean isDirty() {
@@ -345,7 +345,7 @@ public abstract class DirectEditManager {
 
 	/**
 	 * Sets the cell editor to the given editor.
-	 * 
+	 *
 	 * @param editor the cell editor
 	 */
 	protected void setCellEditor(CellEditor editor) {
@@ -357,7 +357,7 @@ public abstract class DirectEditManager {
 
 	/**
 	 * Sets the dirty property.
-	 * 
+	 *
 	 * @param value the dirty property
 	 */
 	protected void setDirty(boolean value) {
@@ -366,7 +366,7 @@ public abstract class DirectEditManager {
 
 	/**
 	 * Sets the source edit part.
-	 * 
+	 *
 	 * @param source the source edit part
 	 */
 	protected void setEditPart(GraphicalEditPart source) {
@@ -377,7 +377,7 @@ public abstract class DirectEditManager {
 	/**
 	 * Sets the CellEditorLocator used to place the cell editor in the correct
 	 * location.
-	 * 
+	 *
 	 * @param locator the locator
 	 */
 	public void setLocator(CellEditorLocator locator) {
@@ -443,7 +443,7 @@ public abstract class DirectEditManager {
 
 	/**
 	 * The border used to 'frame' the cell editor.
-	 * 
+	 *
 	 * @since 3.9
 	 */
 	protected static class DirectEditBorder extends AbstractBorder {

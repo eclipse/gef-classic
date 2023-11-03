@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -98,7 +98,7 @@ import org.eclipse.gef.ui.palette.PaletteMessages;
  * no need to create a new <code>PaletteCustomizerDialog</code> everytime a
  * palette needs to be customized.
  * </p>
- * 
+ *
  * @author Pratik Shah
  * @see org.eclipse.gef.palette.PaletteEntry
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer
@@ -162,7 +162,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 	/**
 	 * Constructs a new customizer dialog.
-	 * 
+	 *
 	 * @param shell      the parent Shell
 	 * @param customizer the customizer
 	 * @param root       the palette root
@@ -178,7 +178,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * This method will be invoked whenever any <code>Button</code> created using
 	 * {@link #createButton(Composite, int, String, int, ImageDescriptor)} or
 	 * {@link Dialog#createButton(Composite, int, String, boolean)} is selected.
-	 * 
+	 *
 	 * @see Dialog#buttonPressed(int)
 	 */
 	@Override
@@ -195,7 +195,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * earlier reported (using {@link #showProblem(String)}) is fixed. This will
 	 * hide the error message, enable the OK and Apply buttons and re-allow changing
 	 * selection in the outline tree.
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.palette.customize.EntryPageContainer#clearProblem()
 	 * @see #showProblem(String)
 	 */
@@ -213,7 +213,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * <p>
 	 * NOTE: This dialog can be re-opened.
 	 * </p>
-	 * 
+	 *
 	 * @see org.eclipse.jface.window.Window#close()
 	 */
 	@Override
@@ -280,7 +280,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * icon. This method will take care of disposing the images that it creates.
 	 * {@link #buttonPressed(int)} will be called when any of the buttons created by
 	 * this method are clicked (selected).
-	 * 
+	 *
 	 * @param parent     The composite in which the button is to be created
 	 * @param id         The button's unique ID
 	 * @param label      The button's text
@@ -324,7 +324,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 	/**
 	 * Creates the OK, Cancel and Apply buttons
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#createButtonsForButtonBar(Composite)
 	 */
 	@Override
@@ -339,13 +339,13 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * <LI>Outline ({@link #createOutline(Composite)})</LI>
 	 * <LI>Properties Panel ({@link #createPropertiesPanel(Composite)})</LI>
 	 * </UL>
-	 * 
+	 *
 	 * <p>
 	 * It is recommended that this method not be overridden. Override one of the
 	 * methods that this method calls in order to customize the appearance of the
 	 * dialog.
 	 * </p>
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(Composite)
 	 */
 	@Override
@@ -397,7 +397,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 	/**
 	 * Creates the outline part of the dialog.
-	 * 
+	 *
 	 * <p>
 	 * The outline creates the following:
 	 * <UL>
@@ -406,7 +406,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * <LI>Context menu ({@link #createOutlineContextMenu()})</LI>
 	 * </UL>
 	 * </p>
-	 * 
+	 *
 	 * @param container The Composite within which the outline has to be created
 	 * @return The newly created Control that has the outline
 	 */
@@ -437,12 +437,12 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	/**
 	 * Creates the actions that manipulate the palette model. These actions will
 	 * populate the toolbar and the outline's context menu.
-	 * 
+	 *
 	 * <p>
 	 * IMPORTANT: All the elements in the returned List MUST be
 	 * <code>PaletteCustomizationAction</code>s.
 	 * </p>
-	 * 
+	 *
 	 * @return A List of {@link PaletteCustomizationAction
 	 *         PaletteCustomizationActions}
 	 */
@@ -459,7 +459,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * Uses a <code>MenuManager</code> to create the context menu for the outline.
 	 * The <code>IActions</code> used to create the context menu are those created
 	 * in {@link #createOutlineActions()}.
-	 * 
+	 *
 	 * @return The newly created Menu
 	 */
 	protected Menu createOutlineContextMenu() {
@@ -500,7 +500,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * Uses a ToolBarManager to create the ToolBar in the outline part of the
 	 * dialog. The Actions used in the ToolBarManager are those that are created in
 	 * {@link #createOutlineActions()}.
-	 * 
+	 *
 	 * @param parent The Composite to which the ToolBar is to be added
 	 * @return The newly created ToolBar
 	 */
@@ -568,7 +568,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 	/**
 	 * Creates the TreeViewer that is the outline of the model.
-	 * 
+	 *
 	 * @param composite The Composite to which the ToolBar is to be added
 	 * @return The newly created TreeViewer
 	 */
@@ -608,7 +608,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	/**
 	 * Creates the part of the dialog where the properties of the element selected
 	 * in the outline will be displayed.
-	 * 
+	 *
 	 * <p>
 	 * The properties panel contains the following:
 	 * <UL>
@@ -616,7 +616,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * </UL>
 	 * The rest of the panel is constructed in this method.
 	 * </p>
-	 * 
+	 *
 	 * @param container The Composite to which this part is to be added
 	 * @return The properties panel
 	 */
@@ -653,7 +653,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * Creates the title for the properties panel. It is a PageBook that can switch
 	 * between showing the regular title (the selected entry's label and icon) and
 	 * an error message if an error has occured.
-	 * 
+	 *
 	 * @param parent The parent composite
 	 * @return The newly created PageBook title
 	 */
@@ -705,7 +705,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	/**
 	 * A convenient method to create CLabel titles (like the ones used in the
 	 * Preferences dialog in the Eclipse workbench) throughout the dialog.
-	 * 
+	 *
 	 * @param composite The composite in which the title is to be created (it must
 	 *                  have a GridLayout with two columns).
 	 * @param text      The title to be displayed
@@ -747,7 +747,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 	/**
 	 * Returns the Button with the given id; or <code>null</code> if none was found.
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#getButton(int)
 	 */
 	@Override
@@ -775,7 +775,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * entry is <code>null</code>, <code>null</code> will be returned. If the
 	 * customizer returns <code>null</code> for the valid entry, a default page will
 	 * be created and returned.
-	 * 
+	 *
 	 * @param entry The PaletteEntry whose properties need to be displayed
 	 * @return The EntryPage with the properties of the given PaletteEntry
 	 */
@@ -802,7 +802,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	/**
 	 * Provides access to the actions that are used to manipulate the model. The
 	 * actions will be created, if they haven't been yet.
-	 * 
+	 *
 	 * @return the list of <code>PaletteCustomizationAction</code>s
 	 * @see #createOutlineActions()
 	 */
@@ -815,7 +815,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 
 	/**
 	 * Provides sub-classes with access to the PaletteRoot
-	 * 
+	 *
 	 * @return the palette root
 	 */
 	protected PaletteRoot getPaletteRoot() {
@@ -850,7 +850,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	/**
 	 * The <code>Widget</code>s that were created with a unique ID and added to this
 	 * class' internal map can be retrieved through this method.
-	 * 
+	 *
 	 * @param id The unique ID of the Widget that you wish to retrieve
 	 * @return The Widget, if one with the given id exists; <code>null</code>
 	 *         otherwise
@@ -958,7 +958,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * appropriately enable or disable the ToolBar items, will change the CLabel
 	 * heading of the propreties panel, and will show the properties of the selected
 	 * item in the properties panel.
-	 * 
+	 *
 	 * @param entry The new active entry, i.e., the new selected entry (it can be
 	 *              <code>null</code>)
 	 */
@@ -1017,7 +1017,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * Sets the given EntryPage as the top page in the PageBook that shows the
 	 * properties of the item selected in the Outline. If the given EntryPage is
 	 * null, nothing will be shown.
-	 * 
+	 *
 	 * @param page The EntryPage to be shown
 	 */
 	protected void setActiveEntryPage(EntryPage page) {
@@ -1065,7 +1065,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	/**
 	 * Sets the given PaletteEntry as the one to be selected when the dialog opens.
 	 * It is discarded when the dialog is closed.
-	 * 
+	 *
 	 * @param entry The PaletteEntry that should be selected when the dialog is
 	 *              opened
 	 */
@@ -1078,7 +1078,7 @@ public class PaletteCustomizerDialog extends Dialog implements EntryPageContaine
 	 * show the given error in the title of the properties panel. OK and Apply
 	 * buttons will be disabled. Selecting some other entry in the outline tree will
 	 * not be allowed until the error is fixed.
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.palette.customize.EntryPageContainer#showProblem(String)
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	/**
 	 * Constructs a FrameBorder with its label set to the name of the
 	 * {@link TitleBarBorder} class.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public FrameBorder() {
@@ -44,7 +44,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 
 	/**
 	 * Constructs a FrameBorder with the title set to the passed String.
-	 * 
+	 *
 	 * @param label label or title of the frame.
 	 * @since 2.0
 	 */
@@ -55,7 +55,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	/**
 	 * Creates the necessary borders for this FrameBorder. The inner border is a
 	 * {@link TitleBarBorder}. The outer border is a {@link SchemeBorder}.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void createBorders() {
@@ -66,7 +66,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 	/**
 	 * Returns the inner border of this FrameBorder, which contains the label for
 	 * the FrameBorder.
-	 * 
+	 *
 	 * @return the border holding the label.
 	 * @since 2.0
 	 */
@@ -84,7 +84,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 
 	/**
 	 * Sets the label for this border.
-	 * 
+	 *
 	 * @param label the label
 	 */
 	@Override
@@ -94,7 +94,7 @@ public class FrameBorder extends CompoundBorder implements LabeledBorder {
 
 	/**
 	 * Sets the font for this border's label.
-	 * 
+	 *
 	 * @param font the font
 	 */
 	@Override

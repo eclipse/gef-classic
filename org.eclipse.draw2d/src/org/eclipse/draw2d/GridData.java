@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,23 +26,23 @@ import org.eclipse.draw2d.geometry.Dimension;
  * <p>
  * There are two ways to create a <code>GridData</code> object with certain
  * fields set. The first is to set the fields directly, like this:
- * 
+ *
  * <pre>
  * GridData gridData = new GridData();
  * gridData.horizontalAlignment = GridData.FILL;
  * gridData.grabExcessHorizontalSpace = true;
- * 
+ *
  * // associate the figure to the GridData object
  * myGridlayout.setConstraint(myFigure, gridData);
  * </pre>
- * 
+ *
  * The second is to take advantage of convenience style bits defined by
  * <code>GridData</code>:
- * 
+ *
  * <pre>
  * GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL);
  * </pre>
- * 
+ *
  * </p>
  * <p>
  * NOTE: Do not reuse <code>GridData</code> objects. Every child in the parent
@@ -51,18 +51,18 @@ import org.eclipse.draw2d.geometry.Dimension;
  * in a <code>GridLayout</code> is null at layout time, a unique
  * <code>GridData</code> object is created for it.
  * </p>
- * 
+ *
  * @see GridLayout
  */
 public final class GridData {
 	/**
 	 * verticalAlignment specifies how figures will be positioned vertically within
 	 * a cell.
-	 * 
+	 *
 	 * The default value is CENTER.
-	 * 
+	 *
 	 * Possible values are:
-	 * 
+	 *
 	 * SWT.BEGINNING (or SWT.TOP): Position the figure at the top of the cell
 	 * SWT.CENTER: Position the figure in the vertical center of the cell SWT.END
 	 * (or SWT.BOTTOM): Position the figure at the bottom of the cell SWT.FILL:
@@ -73,11 +73,11 @@ public final class GridData {
 	/**
 	 * horizontalAlignment specifies how figures will be positioned horizontally
 	 * within a cell.
-	 * 
+	 *
 	 * The default value is BEGINNING.
-	 * 
+	 *
 	 * Possible values are:
-	 * 
+	 *
 	 * SWT.BEGINNING (or SWT.LEFT): Position the figure at the left of the cell
 	 * SWT.CENTER: Position the figure in the horizontal center of the cell SWT.END
 	 * (or SWT.RIGHT): Position the figure at the right of the cell SWT.FILL: Resize
@@ -88,7 +88,7 @@ public final class GridData {
 	/**
 	 * widthHint specifies a minimum width for the column. A value of SWT.DEFAULT
 	 * indicates that no minimum width is specified.
-	 * 
+	 *
 	 * The default value is SWT.DEFAULT.
 	 */
 	public int widthHint = SWT.DEFAULT;
@@ -96,7 +96,7 @@ public final class GridData {
 	/**
 	 * heightHint specifies a minimum height for the row. A value of SWT.DEFAULT
 	 * indicates that no minimum height is specified.
-	 * 
+	 *
 	 * The default value is SWT.DEFAULT.
 	 */
 	public int heightHint = SWT.DEFAULT;
@@ -104,7 +104,7 @@ public final class GridData {
 	/**
 	 * horizontalIndent specifies the number of pixels of indentation that will be
 	 * placed along the left side of the cell.
-	 * 
+	 *
 	 * The default value is 0.
 	 */
 	public int horizontalIndent = 0;
@@ -112,14 +112,14 @@ public final class GridData {
 	/**
 	 * horizontalSpan specifies the number of column cells that the figure will take
 	 * up.
-	 * 
+	 *
 	 * The default value is 1.
 	 */
 	public int horizontalSpan = 1;
 
 	/**
 	 * verticalSpan specifies the number of row cells that the figure will take up.
-	 * 
+	 *
 	 * The default value is 1.
 	 */
 	public int verticalSpan = 1;
@@ -127,7 +127,7 @@ public final class GridData {
 	/**
 	 * grabExcessHorizontalSpace specifies whether the cell will be made wide enough
 	 * to fit the remaining horizontal space.
-	 * 
+	 *
 	 * The default value is false.
 	 */
 	public boolean grabExcessHorizontalSpace = false;
@@ -135,7 +135,7 @@ public final class GridData {
 	/**
 	 * grabExcessVerticalSpace specifies whether the cell will be made tall enough
 	 * to fit the remaining vertical space.
-	 * 
+	 *
 	 * The default value is false.
 	 */
 	public boolean grabExcessVerticalSpace = false;
@@ -275,7 +275,7 @@ public final class GridData {
 	/**
 	 * Constructs a new instance based on the GridData style. This constructor is
 	 * not recommended.
-	 * 
+	 *
 	 * @param style the GridData style
 	 */
 	public GridData(int style) {
@@ -302,7 +302,7 @@ public final class GridData {
 
 	/**
 	 * Constructs a new instance of GridData according to the parameters.
-	 * 
+	 *
 	 * @param horizontalAlignment       how figure will be positioned horizontally
 	 *                                  within a cell
 	 * @param verticalAlignment         how figure will be positioned vertically
@@ -311,7 +311,7 @@ public final class GridData {
 	 *                                  the remaining horizontal space
 	 * @param grabExcessVerticalSpace   whether cell will be made high enough to fit
 	 *                                  the remaining vertical space
-	 * 
+	 *
 	 */
 	public GridData(int horizontalAlignment, int verticalAlignment, boolean grabExcessHorizontalSpace,
 			boolean grabExcessVerticalSpace) {
@@ -320,7 +320,7 @@ public final class GridData {
 
 	/**
 	 * Constructs a new instance of GridData according to the parameters.
-	 * 
+	 *
 	 * @param horizontalAlignment       how figure will be positioned horizontally
 	 *                                  within a cell
 	 * @param verticalAlignment         how figure will be positioned vertically
@@ -333,7 +333,7 @@ public final class GridData {
 	 *                                  will take up
 	 * @param verticalSpan              the number of row cells that the figure will
 	 *                                  take up
-	 * 
+	 *
 	 */
 	public GridData(int horizontalAlignment, int verticalAlignment, boolean grabExcessHorizontalSpace,
 			boolean grabExcessVerticalSpace, int horizontalSpan, int verticalSpan) {
@@ -350,10 +350,10 @@ public final class GridData {
 	 * Constructs a new instance of GridData according to the parameters. A value of
 	 * SWT.DEFAULT indicates that no minimum width or no minumum height is
 	 * specified.
-	 * 
+	 *
 	 * @param width  a minimum width for the column
 	 * @param height a minimum height for the row
-	 * 
+	 *
 	 */
 	public GridData(int width, int height) {
 		super();

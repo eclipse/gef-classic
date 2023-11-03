@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * A customized Label for SimpleActivities. Primary selection is denoted by
  * highlight and focus rectangle. Normal selection is denoted by highlight only.
- * 
+ *
  * @author Daniel Lee
  */
 public class SimpleActivityLabel extends Label {
@@ -62,7 +62,7 @@ public class SimpleActivityLabel extends Label {
 
 	/**
 	 * Sets the selection state of this SimpleActivityLabel
-	 * 
+	 *
 	 * @param b true will cause the label to appear selected
 	 */
 	public void setSelected(boolean b) {
@@ -72,7 +72,7 @@ public class SimpleActivityLabel extends Label {
 
 	/**
 	 * Sets the focus state of this SimpleActivityLabel
-	 * 
+	 *
 	 * @param b true will cause a focus rectangle to be drawn around the text of the
 	 *          Label
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,7 +18,7 @@ import org.eclipse.gef.examples.flow.model.Transition;
 
 /**
  * Command that handles the reconnection of target Activities.
- * 
+ *
  * @author Daniel Lee
  */
 public class ReconnectTargetCommand extends Command {
@@ -58,7 +58,7 @@ public class ReconnectTargetCommand extends Command {
 
 	/**
 	 * Returns the source Activity associated with this command
-	 * 
+	 *
 	 * @return the source Activity
 	 */
 	public Activity getSource() {
@@ -67,7 +67,7 @@ public class ReconnectTargetCommand extends Command {
 
 	/**
 	 * Returns the target Activity associated with this command
-	 * 
+	 *
 	 * @return the target Activity
 	 */
 	public Activity getTarget() {
@@ -76,7 +76,7 @@ public class ReconnectTargetCommand extends Command {
 
 	/**
 	 * Returns the Transition associated with this command
-	 * 
+	 *
 	 * @return the Transition
 	 */
 	public Transition getTransition() {
@@ -85,7 +85,7 @@ public class ReconnectTargetCommand extends Command {
 
 	/**
 	 * Sets the source Activity associated with this command
-	 * 
+	 *
 	 * @param activity the source Activity
 	 */
 	public void setSource(Activity activity) {
@@ -94,7 +94,7 @@ public class ReconnectTargetCommand extends Command {
 
 	/**
 	 * Sets the target Activity assoicated with this command
-	 * 
+	 *
 	 * @param activity the target Activity
 	 */
 	public void setTarget(Activity activity) {
@@ -103,7 +103,7 @@ public class ReconnectTargetCommand extends Command {
 
 	/**
 	 * Sets the transition associated with this
-	 * 
+	 *
 	 * @param trans the transition
 	 */
 	public void setTransition(Transition trans) {

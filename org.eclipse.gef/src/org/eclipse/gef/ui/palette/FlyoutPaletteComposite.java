@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -102,7 +102,7 @@ import org.eclipse.gef.ui.views.palette.PaletteView;
  * control. The flyout palette auto-hides (thus maximizing space) when not in
  * use, but can also be pinned open if so desired. It will only be visible when
  * the PaletteView is not.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -175,7 +175,7 @@ public class FlyoutPaletteComposite extends Composite {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param parent      The parent Composite
 	 * @param style       The style of the widget to construct; only SWT.BORDER is
 	 *                    allowed
@@ -266,7 +266,7 @@ public class FlyoutPaletteComposite extends Composite {
 	 * {@link Preferences Preferences}. It's upto the owner plugin to
 	 * {@link Plugin#savePluginPreferences() save} the changes before it
 	 * {@link Plugin#stop(org.osgi.framework.BundleContext) stops}.
-	 * 
+	 *
 	 * @param prefs {@link Plugin#getPluginPreferences() a plugin's Preferences}
 	 * @return a default implementation of FlyoutPreferences that stores the
 	 *         settings in the given Preferences
@@ -456,7 +456,7 @@ public class FlyoutPaletteComposite extends Composite {
 	 * {@link PaletteViewer#saveState(IMemento)} -- active tool, drawer expansion
 	 * state, drawer pin state, etc.) will be maintained when switching between the
 	 * two viewers. Providing an external viewer, although recommended, is optional.
-	 * 
+	 *
 	 * @param viewer The palette viewer used in the PaletteView
 	 */
 	public void setExternalViewer(PaletteViewer viewer) {
@@ -493,7 +493,7 @@ public class FlyoutPaletteComposite extends Composite {
 	 * Sets the control along the side of which the palette is to be displayed. The
 	 * given Control should be a child of this Composite. This method should only be
 	 * invoked once.
-	 * 
+	 *
 	 * @param graphicalViewer the control of the graphical viewer; cannot be
 	 *                        <code>null</code>
 	 */
@@ -529,7 +529,7 @@ public class FlyoutPaletteComposite extends Composite {
 	 * viewer's control. If the auto-hide feature of the palette is to work properly
 	 * when dragging, this method should be called before any other drop target
 	 * listeners are added to the primary viewer.
-	 * 
+	 *
 	 * @param viewer the primary viewer
 	 */
 	public void hookDropTargetListener(GraphicalViewer viewer) {
@@ -646,7 +646,7 @@ public class FlyoutPaletteComposite extends Composite {
 	/**
 	 * FlyoutPreferences is used to save/load the preferences for the flyout
 	 * palette.
-	 * 
+	 *
 	 * @author Pratik Shah
 	 * @since 3.0
 	 */
@@ -655,7 +655,7 @@ public class FlyoutPaletteComposite extends Composite {
 		 * Should return {@link PositionConstants#EAST} or
 		 * {@link PositionConstants#WEST}. Any other int will be ignored and the default
 		 * dock location (EAST) will be used instead.
-		 * 
+		 *
 		 * @return the saved dock location of the Palette
 		 */
 		int getDockLocation();
@@ -665,7 +665,7 @@ public class FlyoutPaletteComposite extends Composite {
 		 * (which will result in the palette using the default state -- collapsed), or
 		 * {@link FlyoutPaletteComposite#STATE_COLLAPSED}, or
 		 * {@link FlyoutPaletteComposite#STATE_PINNED_OPEN}
-		 * 
+		 *
 		 * @return the saved state of the palette
 		 */
 		int getPaletteState();
@@ -675,7 +675,7 @@ public class FlyoutPaletteComposite extends Composite {
 		 * non-positive int). Returning a non-positive int will cause the palette to be
 		 * sized to the default size, whereas returning a postive int will find the
 		 * closest match in the valid range (>= minimum and <= maximum)
-		 * 
+		 *
 		 * @return the saved width of the flyout palette
 		 */
 		int getPaletteWidth();
@@ -684,7 +684,7 @@ public class FlyoutPaletteComposite extends Composite {
 		 * This method is invoked when the flyout palette's dock location is changed.
 		 * The provided dock location should be persisted and returned in
 		 * {@link #getDockLocation()}.
-		 * 
+		 *
 		 * @param location {@link PositionConstants#EAST} or
 		 *                 {@link PositionConstants#WEST}
 		 */
@@ -694,7 +694,7 @@ public class FlyoutPaletteComposite extends Composite {
 		 * This method is invoked when the flyout palette's state is changed (the new
 		 * state becomes the default). The provided state should be persisted and
 		 * returned in {@link #getPaletteState()}.
-		 * 
+		 *
 		 * @param state {@link FlyoutPaletteComposite#STATE_COLLAPSED} or
 		 *              {@link FlyoutPaletteComposite#STATE_PINNED_OPEN}
 		 */
@@ -703,7 +703,7 @@ public class FlyoutPaletteComposite extends Composite {
 		/**
 		 * This method is invoked when the flyout palette is resized. The provided width
 		 * should be persisted and returned in {@link #getPaletteWidth()}.
-		 * 
+		 *
 		 * @param width the new size of the flyout palette
 		 */
 		void setPaletteWidth(int width);
@@ -1239,7 +1239,7 @@ public class FlyoutPaletteComposite extends Composite {
 
 			/**
 			 * Creates a new instance
-			 * 
+			 *
 			 * @param direction the direction the arrow should face (PositionConstants.RIGHT
 			 *                  or PositionConstants.LEFT)
 			 */
@@ -1402,7 +1402,7 @@ public class FlyoutPaletteComposite extends Composite {
 
 		/**
 		 * Constructor
-		 * 
+		 *
 		 * @param text     this action's text
 		 * @param position the dock side that this action represents:
 		 *                 PositionConstants.EAST or PositionConstants.WEST
@@ -1415,7 +1415,7 @@ public class FlyoutPaletteComposite extends Composite {
 		/**
 		 * This Action is checked when the palette is docked on the side this action
 		 * represents
-		 * 
+		 *
 		 * @see org.eclipse.jface.action.IAction#isChecked()
 		 */
 		@Override
@@ -1425,7 +1425,7 @@ public class FlyoutPaletteComposite extends Composite {
 
 		/**
 		 * Changes the palette's dock location to the side this action represents
-		 * 
+		 *
 		 * @see org.eclipse.jface.action.IAction#run()
 		 */
 		@Override
@@ -1494,7 +1494,7 @@ public class FlyoutPaletteComposite extends Composite {
 	/**
 	 * Default implementation of FlyoutPreferences that stores the flyout palette
 	 * settings in the given Preferences.
-	 * 
+	 *
 	 * @author Pratik Shah
 	 * @since 3.2
 	 */
@@ -1559,7 +1559,7 @@ public class FlyoutPaletteComposite extends Composite {
 		 * Note that since these three cursors are static, they will only be created
 		 * once for the lifetime of the eclipse session and shared (i.e this is not an
 		 * image leak).
-		 * 
+		 *
 		 * @param code the code
 		 * @return the cursor
 		 */

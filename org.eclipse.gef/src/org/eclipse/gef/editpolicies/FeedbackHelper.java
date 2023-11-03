@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Point;
 /**
  * Helps display connection feedback during drags of the connection ends. This
  * class is used internally by the provided EditPolicy implementation.
- * 
+ *
  * @author hudsonr
  */
 public class FeedbackHelper {
@@ -38,7 +38,7 @@ public class FeedbackHelper {
 
 	/**
 	 * Returns the connection being used to show feedback.
-	 * 
+	 *
 	 * @return the connection
 	 */
 	protected Connection getConnection() {
@@ -47,7 +47,7 @@ public class FeedbackHelper {
 
 	/**
 	 * Returns true is the feedback is moving the source anchor
-	 * 
+	 *
 	 * @return <code>true</code> if moving start
 	 */
 	protected boolean isMovingStartAnchor() {
@@ -56,7 +56,7 @@ public class FeedbackHelper {
 
 	/**
 	 * Sets the connection.
-	 * 
+	 *
 	 * @param c connection
 	 */
 	public void setConnection(Connection c) {
@@ -65,7 +65,7 @@ public class FeedbackHelper {
 
 	/**
 	 * Sets if moving start of connection.
-	 * 
+	 *
 	 * @param value <code>true</code> if the starts is being moved
 	 */
 	public void setMovingStartAnchor(boolean value) {
@@ -74,7 +74,7 @@ public class FeedbackHelper {
 
 	/**
 	 * Sets the anchor for the end being moved.
-	 * 
+	 *
 	 * @param anchor the new anchor
 	 */
 	protected void setAnchor(ConnectionAnchor anchor) {
@@ -87,7 +87,7 @@ public class FeedbackHelper {
 	/**
 	 * Updates the feedback based on the given anchor or point. The anchor is used
 	 * unless <code>null</code>. The point is used when there is no anchor.
-	 * 
+	 *
 	 * @param anchor <code>null</code> or an anchor
 	 * @param p      the point to use when there is no anchor
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -38,7 +38,7 @@ import org.eclipse.gef.internal.GEFMessages;
  * {@link #setDirectEditRequest(Request)}. The
  * {@link org.eclipse.gef.requests.DirectEditRequest} class allows the client to
  * specify the <i>feature</i> that should be edited when invoked.
- * 
+ *
  * @author hudsonr
  */
 public class DirectEditAction extends SelectionAction {
@@ -50,7 +50,7 @@ public class DirectEditAction extends SelectionAction {
 
 	/**
 	 * Same as {@link #DirectEditAction(IWorkbenchPart)}.
-	 * 
+	 *
 	 * @param editor the editor
 	 */
 	public DirectEditAction(IEditorPart editor) {
@@ -59,7 +59,7 @@ public class DirectEditAction extends SelectionAction {
 
 	/**
 	 * Constructs a DirectEditAction using the specified part.
-	 * 
+	 *
 	 * @param part the workbench part
 	 */
 	public DirectEditAction(IWorkbenchPart part) {
@@ -69,7 +69,7 @@ public class DirectEditAction extends SelectionAction {
 	/**
 	 * returns <code>true</code> if there is exactly 1 EditPart selected that
 	 * understand a request of type: {@link RequestConstants#REQ_DIRECT_EDIT}.
-	 * 
+	 *
 	 * @return <code>true</code> if enabled
 	 */
 	@Override
@@ -83,7 +83,7 @@ public class DirectEditAction extends SelectionAction {
 
 	/**
 	 * Returns the <code>Request</code> being used.
-	 * 
+	 *
 	 * @return the request
 	 */
 	protected Request getDirectEditRequest() {
@@ -107,7 +107,7 @@ public class DirectEditAction extends SelectionAction {
 
 	/**
 	 * Clients may override the request that is used to perform the direct edit.
-	 * 
+	 *
 	 * @param req the new request to be used
 	 */
 	public void setDirectEditRequest(Request req) {

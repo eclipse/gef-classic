@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -47,7 +47,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 		/**
 		 * Constructs a default border Scheme with no border sides.
-		 * 
+		 *
 		 * @since 2.0
 		 */
 		protected Scheme() {
@@ -59,7 +59,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		 * parameter. Hightlight colors are used in the top and left sides of the
 		 * border, and Shadow colors are used in the bottom and right sides of the
 		 * border.
-		 * 
+		 *
 		 * @param highlight the hightlight colors
 		 * @param shadow    the shadow colors
 		 * @since 2.0
@@ -76,7 +76,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		 * colors passed in as input. Hightlight colors are used in the top and left
 		 * sides of the border, and Shadow colors are used in the bottom and right sides
 		 * of the border.
-		 * 
+		 *
 		 * @param colors the colors to be used for the border
 		 * @since 2.0
 		 */
@@ -88,7 +88,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		/**
 		 * Calculates and returns the Insets for this border Scheme. The calculations
 		 * depend on the number of colors passed in as input.
-		 * 
+		 *
 		 * @return the Insets used by this border
 		 * @since 2.0
 		 */
@@ -103,7 +103,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 		 * <code>false</code> if any of the border colors are <code>null</code>. This is
 		 * done to prevent the appearance of underlying pixels since the border color is
 		 * <code>null</code>.
-		 * 
+		 *
 		 * @return <code>true</code> if this border is opaque
 		 * @since 2.0
 		 */
@@ -121,7 +121,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 		/**
 		 * Returns the highlight colors of this border scheme as an array of Colors.
-		 * 
+		 *
 		 * @return the highlight colors
 		 * @since 2.0
 		 */
@@ -131,7 +131,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 		/**
 		 * Returns the Insets required by this Scheme.
-		 * 
+		 *
 		 * @return the Insets
 		 * @since 2.0
 		 */
@@ -141,7 +141,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 		/**
 		 * Returns the shadow colors of this border scheme as an array of Colors.
-		 * 
+		 *
 		 * @return the shadow colors
 		 * @since 2.0
 		 */
@@ -151,7 +151,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 		/**
 		 * Calculates and initializes the properties of this border scheme.
-		 * 
+		 *
 		 * @since 2.0
 		 */
 		protected void init() {
@@ -161,7 +161,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 		/**
 		 * Returns whether this border should be opaque or not.
-		 * 
+		 *
 		 * @return <code>true</code> if this border is opaque
 		 * @since 2.0
 		 */
@@ -189,7 +189,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 	/**
 	 * Constructs a default SchemeBorder with no scheme defined.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected SchemeBorder() {
@@ -197,7 +197,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 	/**
 	 * Constructs a SchemeBorder with the Scheme given as input.
-	 * 
+	 *
 	 * @param scheme the Scheme to be used by this border
 	 * @since 2.0
 	 */
@@ -215,7 +215,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 	/**
 	 * Returns the scheme used by this border.
-	 * 
+	 *
 	 * @return the Scheme used by this border
 	 * @since 2.0
 	 */
@@ -226,7 +226,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	/**
 	 * Returns the opaque state of this border. Returns <code>true</code> indicating
 	 * that this will fill in the area enclosed by the border.
-	 * 
+	 *
 	 * @see Border#isOpaque()
 	 */
 	@Override
@@ -236,7 +236,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 
 	/**
 	 * Sets the Scheme for this border to the Scheme given as input.
-	 * 
+	 *
 	 * @param scheme the Scheme for this border
 	 * @since 2.0
 	 */
@@ -259,7 +259,7 @@ public class SchemeBorder extends AbstractBorder implements ColorConstants {
 	 * Paints the border using the information in the set Scheme and the inputs
 	 * given. Side widths are determined by the number of colors in the Scheme for
 	 * each side.
-	 * 
+	 *
 	 * @param graphics the graphics object
 	 * @param fig      the figure this border belongs to
 	 * @param insets   the insets

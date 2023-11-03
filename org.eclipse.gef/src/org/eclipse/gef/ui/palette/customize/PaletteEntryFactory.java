@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ import org.eclipse.gef.palette.PaletteRoot;
 /**
  * A PaletteEntryFactory creates certain type of
  * {@link org.eclipse.gef.palette.PaletteEntry PaletteEntries}.
- * 
+ *
  * <p>
  * This class only creates {@link org.eclipse.gef.palette.PaletteEntry
  * PaletteEntries} in {@link org.eclipse.gef.palette.PaletteContainer
@@ -31,7 +31,7 @@ import org.eclipse.gef.palette.PaletteRoot;
  * {@link org.eclipse.gef.palette.PaletteRoot root}. It is recommended that
  * sub-classes not do that either.
  * </p>
- * 
+ *
  * <p>
  * To keep palette customization consistent across different types of editors,
  * it is recommended that a new entry be created after the currently selected
@@ -44,7 +44,7 @@ import org.eclipse.gef.palette.PaletteRoot;
  * {@link org.eclipse.gef.ui.palette.customize.PaletteContainerFactory} to see
  * what the general guidelines are for creating containers and leaf entries.
  * </p>
- * 
+ *
  * @author Pratik Shah
  * @see org.eclipse.gef.ui.palette.PaletteCustomizer
  * @see org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog
@@ -57,7 +57,7 @@ public abstract class PaletteEntryFactory {
 	/**
 	 * This method is called when a new palette entry of the type supported by this
 	 * <code>PaletteEntryFactory</code> is to be created.
-	 * 
+	 *
 	 * @param shell    The <code>Shell</code> of the
 	 *                 <code>PaletteCustomizerDialog</code>
 	 * @param selected The <code>PaletteEntry</code> that was selected in the
@@ -75,7 +75,7 @@ public abstract class PaletteEntryFactory {
 
 	/**
 	 * Create the PaletteEntry
-	 * 
+	 *
 	 * @param shell The <code>Shell</code> of the
 	 *              <code>PaletteCustomizerDialog</code>; it can be used to create
 	 *              another warning or information dialog.
@@ -91,7 +91,7 @@ public abstract class PaletteEntryFactory {
 	 * This default implementation allows the creation of a new entry only in
 	 * <code>PaletteContainer</code>s with the following user permission:
 	 * <code>PERMISSION_FULL_MODIFICATION</code>
-	 * 
+	 *
 	 * @param selected The selected <code>PaletteEntry</code> (Will never be
 	 *                 <code>null</code>)
 	 * @return <code>true</code> if, given the current selection, this
@@ -115,11 +115,11 @@ public abstract class PaletteEntryFactory {
 	/**
 	 * Given the current selection, this method determines the parent for the new
 	 * entry to be created.
-	 * 
+	 *
 	 * <p>
 	 * Sub-classes may override this method.
 	 * </p>
-	 * 
+	 *
 	 * @param selected The selected entry
 	 * @return The parent of the new entry to be created
 	 */
@@ -132,11 +132,11 @@ public abstract class PaletteEntryFactory {
 	/**
 	 * Given the current selection, this method determines the type of the new entry
 	 * to be created.
-	 * 
+	 *
 	 * <p>
 	 * Sub-classes may override this method.
 	 * </p>
-	 * 
+	 *
 	 * @param selected The selected entry
 	 * @return The type of the new entry to be created
 	 */
@@ -147,11 +147,11 @@ public abstract class PaletteEntryFactory {
 	/**
 	 * Calculates the index at which the new entry is to be created, given the
 	 * current selection.
-	 * 
+	 *
 	 * <p>
 	 * Sub-classes may override this method.
 	 * </p>
-	 * 
+	 *
 	 * @param c        The parent container
 	 * @param selected The selected entry
 	 * @return the index at which the new entry should be added in the given
@@ -179,7 +179,7 @@ public abstract class PaletteEntryFactory {
 	/**
 	 * Sets the <code>ImageDescriptor</code> used to create the image to represent
 	 * this factory
-	 * 
+	 *
 	 * @param imgDesc The new ImageDescriptor
 	 */
 	public void setImageDescriptor(ImageDescriptor imgDesc) {
@@ -189,7 +189,7 @@ public abstract class PaletteEntryFactory {
 	/**
 	 * Sets this factory's name. It will be used to list this factory in the
 	 * toolbar, context menu, etc.
-	 * 
+	 *
 	 * @param newLabel The new name for this factory
 	 */
 	public void setLabel(String newLabel) {

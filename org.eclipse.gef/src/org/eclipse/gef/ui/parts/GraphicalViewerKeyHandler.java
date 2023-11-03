@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -48,7 +48,7 @@ import org.eclipse.gef.KeyHandler;
  * <P>
  * All processed key events will do nothing other than change the selection
  * and/or focus editpart for the viewer.
- * 
+ *
  * @author hudsonr
  */
 public class GraphicalViewerKeyHandler extends KeyHandler {
@@ -64,7 +64,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 
 	/**
 	 * Constructs a key handler for the given viewer.
-	 * 
+	 *
 	 * @param viewer the viewer
 	 */
 	public GraphicalViewerKeyHandler(GraphicalViewer viewer) {
@@ -127,7 +127,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	/**
 	 * Given a connection on a node, this method finds the next (or the previous)
 	 * connection of that node.
-	 * 
+	 *
 	 * @param node    The EditPart whose connections are being traversed
 	 * @param current The connection relative to which the next connection has to be
 	 *                found
@@ -165,13 +165,13 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * Given an absolute point (pStart) and a list of EditParts, this method finds
 	 * the closest EditPart (except for the one to be excluded) in the given
 	 * direction.
-	 * 
+	 *
 	 * @param siblings  List of sibling EditParts
 	 * @param pStart    The starting point (must be in absolute coordinates) from
 	 *                  which the next sibling is to be found.
 	 * @param direction PositionConstants
 	 * @param exclude   The EditPart to be excluded from the search
-	 * 
+	 *
 	 */
 	GraphicalEditPart findSibling(List siblings, Point pStart, int direction, EditPart exclude) {
 		GraphicalEditPart epCurrent;
@@ -203,7 +203,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	/**
 	 * Figures' navigation points are used to determine their direction compared to
 	 * one another, and the distance between them.
-	 * 
+	 *
 	 * @return the center of the given figure
 	 */
 	Point getNavigationPoint(IFigure figure) {
@@ -234,7 +234,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	 * <p>
 	 * This implementation returns a list that contains the EditPart that has focus.
 	 * </p>
-	 * 
+	 *
 	 * @return a list of navigation editparts
 	 * @since 3.4
 	 */
@@ -249,7 +249,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 
 	/**
 	 * Returns the viewer on which this key handler was created.
-	 * 
+	 *
 	 * @return the viewer
 	 */
 	protected GraphicalViewer getViewer() {
@@ -266,7 +266,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 
 	/**
 	 * Extended to process key events described above.
-	 * 
+	 *
 	 * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
 	 */
 	@Override
@@ -399,7 +399,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 
 	/**
 	 * Traverses to the next sibling in the given direction.
-	 * 
+	 *
 	 * @param event     the KeyEvent for the keys that were pressed to trigger this
 	 *                  traversal
 	 * @param direction PositionConstants.* indicating the direction in which to
@@ -412,7 +412,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	/**
 	 * Traverses to the closest EditPart in the given list that is also in the given
 	 * direction.
-	 * 
+	 *
 	 * @param event     the KeyEvent for the keys that were pressed to trigger this
 	 *                  traversal
 	 * @param direction PositionConstants.* indicating the direction in which to
@@ -462,7 +462,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 
 	/**
 	 * Navigates to the given EditPart
-	 * 
+	 *
 	 * @param part  the EditPart to navigate to
 	 * @param event the KeyEvent that triggered this traversal
 	 */
@@ -482,7 +482,7 @@ public class GraphicalViewerKeyHandler extends KeyHandler {
 	/**
 	 * This method is invoked when the user presses the space bar. It toggles the
 	 * selection of the EditPart that currently has focus.
-	 * 
+	 *
 	 * @param event the key event received
 	 */
 	protected void processSelect(KeyEvent event) {

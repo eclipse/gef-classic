@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ import org.eclipse.draw2d.text.TextFlow;
  * A widget for displaying a multi-line string. The label will have a vertical
  * or horizontal scrollbar when needed. Unlike the platform Label, this label is
  * focusable and accessible to screen-readers.
- * 
+ *
  * @author hudsonr
  */
 public final class MultiLineLabel extends FigureCanvas {
@@ -80,7 +80,7 @@ public final class MultiLineLabel extends FigureCanvas {
 
 	/**
 	 * Constructs a new MultiLineLabel with the given parent.
-	 * 
+	 *
 	 * @param parent the parent
 	 */
 	public MultiLineLabel(Composite parent) {
@@ -163,7 +163,7 @@ public final class MultiLineLabel extends FigureCanvas {
 
 	/**
 	 * Returns the text in this label.
-	 * 
+	 *
 	 * @return the text
 	 */
 	public String getText() {
@@ -193,7 +193,7 @@ public final class MultiLineLabel extends FigureCanvas {
 
 	/**
 	 * Sets the text for this label.
-	 * 
+	 *
 	 * @param text the new text
 	 */
 	public void setText(String text) {

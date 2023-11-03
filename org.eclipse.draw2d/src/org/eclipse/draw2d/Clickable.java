@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ public class Clickable extends Figure {
 	 * Style constant that defines a push button. The button will be pressed when
 	 * the mouse is pressed on top of it. The button will be released when the mouse
 	 * is released or is move off of the button.
-	 * 
+	 *
 	 */
 	public static final int STYLE_BUTTON = STYLE_BUTTON_FLAG;
 
@@ -59,7 +59,7 @@ public class Clickable extends Figure {
 
 	/**
 	 * Observes the model for action and state changes.
-	 * 
+	 *
 	 * @see ActionListener
 	 * @see ChangeListener
 	 */
@@ -87,7 +87,7 @@ public class Clickable extends Figure {
 	/**
 	 * Constructs a Clickable whose contents are provided as input. The content
 	 * figure occupies the entire region of the Clickable.
-	 * 
+	 *
 	 * @param contents The content figure
 	 */
 	public Clickable(IFigure contents) {
@@ -98,7 +98,7 @@ public class Clickable extends Figure {
 	 * Constructs a Clickable whose contents are provided as input. The content
 	 * figure occupies the entire region of the Clickable. Sets the style to the
 	 * given <i>style</i> (either {@link #STYLE_BUTTON} or {@link #STYLE_TOGGLE} ).
-	 * 
+	 *
 	 * @param contents The content figure
 	 * @param style    The button style
 	 */
@@ -110,7 +110,7 @@ public class Clickable extends Figure {
 	/**
 	 * Adds the given listener to the list of action listeners of this Figure.
 	 * Listener is called whenever an action is performed.
-	 * 
+	 *
 	 * @param listener The ActionListener to be added
 	 * @since 2.0
 	 */
@@ -122,7 +122,7 @@ public class Clickable extends Figure {
 	 * Adds the given listener to the list of state change listeners of this figure.
 	 * A ChangeListener is informed if there is any state change in the model
 	 * requiring action by the listener.
-	 * 
+	 *
 	 * @param listener The ChangeListener to be added
 	 * @since 2.0
 	 */
@@ -133,7 +133,7 @@ public class Clickable extends Figure {
 	/**
 	 * Returns a newly created ButtonModel as the default model to be used by this
 	 * Clickable based on the button style.
-	 * 
+	 *
 	 * @return The model to be used by default
 	 * @since 2.0
 	 */
@@ -146,7 +146,7 @@ public class Clickable extends Figure {
 
 	/**
 	 * Returns a newly created event handler for this Clickable and its model.
-	 * 
+	 *
 	 * @return The event handler
 	 * @since 2.0
 	 */
@@ -158,7 +158,7 @@ public class Clickable extends Figure {
 	 * Returns a newly created model observer which listens to the model, and fires
 	 * any action or state changes. A ModelObserver holds both an action listener
 	 * and a state change listener.
-	 * 
+	 *
 	 * @return The newly created model observer
 	 * @since 2.0
 	 */
@@ -178,7 +178,7 @@ public class Clickable extends Figure {
 
 	/**
 	 * Fires an action performed event.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public void doClick() {
@@ -189,7 +189,7 @@ public class Clickable extends Figure {
 	 * Called when there has been an action performed by this Clickable, which is
 	 * determined by the model. Notifies all ActionListener type listeners of an
 	 * action performed.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void fireActionPerformed() {
@@ -200,7 +200,7 @@ public class Clickable extends Figure {
 	/**
 	 * Called when there has been a change of state in the model of this clickable.
 	 * Notifies all ChangeListener type listeners of the state change.
-	 * 
+	 *
 	 * @param modelChange The ChangeEvent
 	 * @since 2.0
 	 */
@@ -211,7 +211,7 @@ public class Clickable extends Figure {
 
 	/**
 	 * Returns the behavior model used by this Clickable.
-	 * 
+	 *
 	 * @return The model used by this Clickable
 	 * @since 2.0
 	 */
@@ -223,7 +223,7 @@ public class Clickable extends Figure {
 	 * Adds the given ClickableEventHandler to this clickable. A
 	 * ClickableEventHandler should be a MouseListener, MouseMotionListener,
 	 * ChangeListener, KeyListener, and FocusListener.
-	 * 
+	 *
 	 * @param handler The new event handler
 	 * @since 2.0
 	 */
@@ -240,7 +240,7 @@ public class Clickable extends Figure {
 	/**
 	 * Initializes this Clickable by setting a default model and adding a clickable
 	 * event handler for that model.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void init() {
@@ -250,7 +250,7 @@ public class Clickable extends Figure {
 
 	/**
 	 * Returns <code>true</code> if rollover feedback is enabled.
-	 * 
+	 *
 	 * @return <code>true</code> rollover feedback is enabled
 	 * @since 2.0
 	 */
@@ -261,7 +261,7 @@ public class Clickable extends Figure {
 	/**
 	 * Returns <code>true</code> if this Clickable is in a selected state. The model
 	 * is the one which holds all this state based information.
-	 * 
+	 *
 	 * @return <code>true</code> if this Clickable is in a selected state
 	 * @since 2.0
 	 */
@@ -272,7 +272,7 @@ public class Clickable extends Figure {
 	/**
 	 * Returns <code>true</code> if this Clickable's style is the same as the passed
 	 * style.
-	 * 
+	 *
 	 * @param style The style to be checked
 	 * @return <code>true</code> if this Clickable's style is the same as the passed
 	 *         style
@@ -284,7 +284,7 @@ public class Clickable extends Figure {
 
 	/**
 	 * If this Clickable has focus, this method paints a focus rectangle.
-	 * 
+	 *
 	 * @param graphics Graphics handle for painting
 	 */
 	@Override
@@ -306,7 +306,7 @@ public class Clickable extends Figure {
 	 * Paints the area of this figure excluded by the borders. Induces a (1,1) pixel
 	 * shift in the painting if the mouse is armed, giving it the pressed
 	 * appearance.
-	 * 
+	 *
 	 * @param graphics Graphics handle for painting
 	 * @since 2.0
 	 */
@@ -325,7 +325,7 @@ public class Clickable extends Figure {
 	/**
 	 * Removes the given listener from the list of ActionListener's of this
 	 * Clickable.
-	 * 
+	 *
 	 * @param listener Listener to be removed from this figure
 	 * @since 2.0
 	 */
@@ -336,7 +336,7 @@ public class Clickable extends Figure {
 	/**
 	 * Removes the given listener from the list of ChangeListener's of this
 	 * clickable.
-	 * 
+	 *
 	 * @param listener Listener to be removed from this figure
 	 * @since 2.0
 	 */
@@ -347,7 +347,7 @@ public class Clickable extends Figure {
 	/**
 	 * Sets the Figure which is the contents of this Clickable. This Figure occupies
 	 * the entire clickable region.
-	 * 
+	 *
 	 * @param contents Contents of the clickable
 	 * @since 2.0
 	 */
@@ -373,7 +373,7 @@ public class Clickable extends Figure {
 	/**
 	 * Sets the event handler which interacts with the model to determine the
 	 * behavior of this Clickable.
-	 * 
+	 *
 	 * @param h Event handler for this clickable
 	 * @since 2.0
 	 */
@@ -392,7 +392,7 @@ public class Clickable extends Figure {
 	 * {@link #REPEAT_FIRING}), firing starts as soon as it is pressed on this
 	 * clickable, and keeps firing at prefixed intervals until the mouse is
 	 * released.
-	 * 
+	 *
 	 * @param type Type of firing
 	 * @since 2.0
 	 */
@@ -404,7 +404,7 @@ public class Clickable extends Figure {
 	 * Sets the model to be used by this clickable for its state and behavior
 	 * determination. This clickable removes any observers from the previous model
 	 * before adding new ones to the new model.
-	 * 
+	 *
 	 * @param model The new model of this Clickable
 	 * @since 2.0
 	 */
@@ -425,7 +425,7 @@ public class Clickable extends Figure {
 	/**
 	 * Enables or disables rollover feedback of this figure. Generally used in
 	 * conjunction with the model to determine if feedback is to be shown.
-	 * 
+	 *
 	 * @param value The rollover state to be set
 	 * @since 2.0
 	 */
@@ -441,7 +441,7 @@ public class Clickable extends Figure {
 	 * all state based information, it is informed of the state change. Extending
 	 * classes can choose selection information, if they do not represent any
 	 * selection.
-	 * 
+	 *
 	 * @param value New selected state of this clickable.
 	 * @see #isSelected()
 	 * @since 2.0
@@ -453,7 +453,7 @@ public class Clickable extends Figure {
 	/**
 	 * Sets this Clickable's style to the passed value, either {@link #STYLE_BUTTON}
 	 * or {@link #STYLE_TOGGLE}.
-	 * 
+	 *
 	 * @param style The button style
 	 * @since 2.0
 	 */
@@ -477,7 +477,7 @@ public class Clickable extends Figure {
 	/**
 	 * Removes the given ClickableEventHandler containing listeners from this
 	 * Clickable.
-	 * 
+	 *
 	 * @param handler The event handler to be removed
 	 * @since 2.0
 	 */

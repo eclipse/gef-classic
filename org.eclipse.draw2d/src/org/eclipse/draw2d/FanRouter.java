@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ public class FanRouter extends AutomaticRouter {
 
 	/**
 	 * Returns the separation in pixels between fanned connections.
-	 * 
+	 *
 	 * @return the separation
 	 * @since 2.0
 	 */
@@ -38,7 +38,7 @@ public class FanRouter extends AutomaticRouter {
 	 * Modifies a given PointList that collides with some other PointList. The given
 	 * <i>index</i> indicates that this it the i<sup>th</sup> PointList in a group
 	 * of colliding points.
-	 * 
+	 *
 	 * @param points the colliding points
 	 * @param index  the index
 	 */
@@ -77,7 +77,7 @@ public class FanRouter extends AutomaticRouter {
 
 	/**
 	 * Sets the colliding {@link Connection Connection's} separation in pixels.
-	 * 
+	 *
 	 * @param value the separation
 	 * @since 2.0
 	 */

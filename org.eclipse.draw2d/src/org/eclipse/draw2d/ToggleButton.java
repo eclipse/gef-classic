@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -34,7 +34,7 @@ public class ToggleButton extends Toggle {
 
 	/**
 	 * Constructs a ToggleButton with the passed IFigure as its contents.
-	 * 
+	 *
 	 * @param contents the contents of the toggle button
 	 * @since 2.0
 	 */
@@ -44,7 +44,7 @@ public class ToggleButton extends Toggle {
 
 	/**
 	 * Constructs a ToggleButton with the passed string as its text.
-	 * 
+	 *
 	 * @param text the text to be displayed on the button
 	 * @since 2.0
 	 */
@@ -54,7 +54,7 @@ public class ToggleButton extends Toggle {
 
 	/**
 	 * Constructs a ToggleButton with a Label containing the passed text and icon.
-	 * 
+	 *
 	 * @param text       the text
 	 * @param normalIcon the icon
 	 * @since 2.0
@@ -78,7 +78,7 @@ public class ToggleButton extends Toggle {
 	/**
 	 * Draws a checkered pattern to emulate a toggle button that is in the selected
 	 * state.
-	 * 
+	 *
 	 * @param graphics The Graphics object used to paint
 	 */
 	protected void fillCheckeredRectangle(Graphics graphics) {

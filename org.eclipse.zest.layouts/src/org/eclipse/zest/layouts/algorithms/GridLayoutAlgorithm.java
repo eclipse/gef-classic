@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
@@ -41,7 +41,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Initializes the grid layout.
-	 * 
+	 *
 	 * @param styles
 	 * @see LayoutStyles
 	 */
@@ -68,7 +68,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	protected void preLayoutAlgorithm(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
@@ -113,7 +113,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	 * Use this algorithm to layout the given entities, using the given
 	 * relationships and bounds. The entities will be placed in the same order as
 	 * they are passed in, unless a comparator is supplied.
-	 * 
+	 *
 	 * @param entitiesToLayout        Apply the algorithm to these entities
 	 * @param relationshipsToConsider Only consider these relationships when
 	 *                                applying the algorithm.
@@ -234,7 +234,7 @@ public class GridLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Increases the padding between rows in the grid
-	 * 
+	 *
 	 * @param rowPadding Value will not be set if less than 0.
 	 */
 	public void setRowPadding(int rowPadding) {

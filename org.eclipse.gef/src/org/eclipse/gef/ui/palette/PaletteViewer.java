@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -48,7 +48,7 @@ import org.eclipse.gef.ui.parts.ScrollingGraphicalViewer;
 
 /**
  * Graphical viewer for the GEF palette.
- * 
+ *
  * @author Randy Hudson
  * @author Pratik Shah
  */
@@ -105,7 +105,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * Adds the given PaletteListener as the one to be notified when the active tool
 	 * on the palette changes.
-	 * 
+	 *
 	 * @param paletteListener The listener that needs to be notified of active tool
 	 *                        changes on the palette
 	 */
@@ -140,7 +140,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 * {@link ScrollingGraphicalViewer#createControl(org.eclipse.swt.widgets.Composite)}
 	 * . After the control is created, changing this setting will have no effect.
 	 * </p>
-	 * 
+	 *
 	 * @param value <code>true</code> if a vertical scrollbar should be displayed
 	 */
 	public void enableVerticalScrollbar(boolean value) {
@@ -180,7 +180,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 * NOTE: A PaletteCustomizer must be set for this viewer using the
 	 * {@link #setCustomizer(PaletteCustomizer)} method before this method is
 	 * invoked.
-	 * 
+	 *
 	 * @return The dialog that can be used to customize entries on the palette
 	 */
 	public PaletteCustomizerDialog getCustomizerDialog() {
@@ -199,7 +199,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 
 	/**
 	 * Returns the palette's root model.
-	 * 
+	 *
 	 * @return the palette root
 	 */
 	public PaletteRoot getPaletteRoot() {
@@ -267,7 +267,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 
 	/**
 	 * Returns true if the given PaletteDrawer is expanded
-	 * 
+	 *
 	 * @param drawer the PaletteDrawer
 	 * @return true if expanded
 	 */
@@ -280,7 +280,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 
 	/**
 	 * Returns true if the given PaletteDrawer is pinned
-	 * 
+	 *
 	 * @param drawer the PaletteDrawer
 	 * @return true if pinned
 	 */
@@ -294,7 +294,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * The given PaletteListener will not be notified of active tool changes in the
 	 * palette.
-	 * 
+	 *
 	 * @param paletteListener the PaletteListener which doesn't want to be notified
 	 *                        of active tool changes in the palette anymore
 	 */
@@ -306,7 +306,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 * Tries to apply the state of the given IMemento to the contents of this
 	 * viewer. It fails silently, i.e. no exceptions are thrown if the given state
 	 * could not be applied.
-	 * 
+	 *
 	 * @param memento The memento that has the state to be applied to the contents
 	 *                of this viewer
 	 * @return a boolean indicating whether or not the given memento was
@@ -347,7 +347,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 
 	/**
 	 * Captures the state of the contents of this viewer in the given memento
-	 * 
+	 *
 	 * @param memento the IMemento in which the state is to be saved
 	 * @since 3.0
 	 */
@@ -360,7 +360,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 
 	/**
 	 * Sets the customizer.
-	 * 
+	 *
 	 * @param customizer the customizer to be set
 	 */
 	public void setCustomizer(PaletteCustomizer customizer) {
@@ -370,7 +370,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	/**
 	 * Sets the active entry for this palette. The Editpart for the given entry will
 	 * be activated (selected).
-	 * 
+	 *
 	 * @param newMode the ToolEntry whose EditPart has to be set as the active tool
 	 *                in this palette
 	 */
@@ -391,7 +391,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 
 	/**
 	 * Sets the root for this palette.
-	 * 
+	 *
 	 * @param root the PaletteRoot for this palette
 	 */
 	public void setPaletteRoot(PaletteRoot root) {
@@ -413,7 +413,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 * this method after that could lead to problems where some preferences would
 	 * still be stored in the old preference store.
 	 * </p>
-	 * 
+	 *
 	 * @param prefs the PaletteViewerPreferences that is to be used to store all the
 	 *              preferences for this palette
 	 */

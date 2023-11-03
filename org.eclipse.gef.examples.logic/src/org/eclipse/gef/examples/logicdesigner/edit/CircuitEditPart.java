@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -55,7 +55,7 @@ public class CircuitEditPart extends LogicContainerEditPart implements IScrollab
 
 	/**
 	 * Creates a new Circuit Figure and returns it.
-	 * 
+	 *
 	 * @return Figure representing the circuit.
 	 */
 	@Override
@@ -97,7 +97,7 @@ public class CircuitEditPart extends LogicContainerEditPart implements IScrollab
 
 	/**
 	 * Returns the Figure of this as a CircuitFigure.
-	 * 
+	 *
 	 * @return CircuitFigure of this.
 	 */
 	protected CircuitFigure getCircuitBoardFigure() {

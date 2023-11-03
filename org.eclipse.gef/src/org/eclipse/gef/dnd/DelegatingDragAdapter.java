@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -44,7 +44,7 @@ public class DelegatingDragAdapter extends org.eclipse.jface.util.DelegatingDrag
 	/**
 	 * Adds the given TransferDragSourceListener. The set of Transfer types is
 	 * updated to reflect the change.
-	 * 
+	 *
 	 * @param listener the new listener
 	 * @deprecated
 	 */
@@ -54,7 +54,7 @@ public class DelegatingDragAdapter extends org.eclipse.jface.util.DelegatingDrag
 
 	/**
 	 * Combines the <code>Transfer</code>s from every TransferDragSourceListener.
-	 * 
+	 *
 	 * @return the combined <code>Transfer</code>s
 	 * @deprecated call getTransfers() instead.
 	 */
@@ -65,7 +65,7 @@ public class DelegatingDragAdapter extends org.eclipse.jface.util.DelegatingDrag
 	/**
 	 * Adds the given TransferDragSourceListener. The set of Transfer types is
 	 * updated to reflect the change.
-	 * 
+	 *
 	 * @param listener the listener being removed
 	 * @deprecated
 	 */

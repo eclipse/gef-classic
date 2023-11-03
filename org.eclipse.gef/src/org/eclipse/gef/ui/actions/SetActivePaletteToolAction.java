@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -30,7 +30,7 @@ public class SetActivePaletteToolAction extends Action {
 	/**
 	 * Creates a new SetActivePaletteToolAction with the given entry to set, as well
 	 * as a label, icon, and isChecked to be used in a menu.
-	 * 
+	 *
 	 * @param viewer    the PaletteViewer
 	 * @param label     the label to show in the menu for this entry.
 	 * @param icon      the icon to show in the menu for this entry.

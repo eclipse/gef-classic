@@ -4,7 +4,7 @@
  * made available under the terms of the Eclipse Public License v2.0 which
  * accompanies this distribution, and is available at
  * https://www.eclipse.org/legal/epl-v20.html
- * 
+ *
  * Contributors: Sebastian Hollersbacher
  ******************************************************************************/
 
@@ -23,7 +23,7 @@ import org.eclipse.zest.core.widgets.internal.GraphLabel;
 /**
  * A ContainerFigure that container buttons and labels for hiding and revealing
  * nodes. This class also provides helper methods for hiding/revealing nodes.
- * 
+ *
  * @author Sebastian Hollersbacher
  * @since 1.8
  */
@@ -42,7 +42,7 @@ public class HideNodeHelper extends ContainerFigure {
 
 	/**
 	 * Create a HideNodeHelper and add it to the node's nodeFigure
-	 * 
+	 *
 	 * @param node
 	 */
 	public HideNodeHelper(GraphNode node) {
@@ -92,7 +92,7 @@ public class HideNodeHelper extends ContainerFigure {
 
 	/**
 	 * Show button for hiding a node
-	 * 
+	 *
 	 * @param visible
 	 */
 	public void setHideButtonVisible(boolean visible) {
@@ -102,7 +102,7 @@ public class HideNodeHelper extends ContainerFigure {
 
 	/**
 	 * Show button for revealing a node
-	 * 
+	 *
 	 * @param visible
 	 */
 	public void setRevealButtonVisible(boolean visible) {
@@ -138,7 +138,7 @@ public class HideNodeHelper extends ContainerFigure {
 
 	/**
 	 * Updates bounds of the node and its modelFigure
-	 * 
+	 *
 	 * @param bounds of the whole node including the margin for the buttons
 	 */
 	public void updateNodeBounds(Rectangle bounds) {
@@ -151,7 +151,7 @@ public class HideNodeHelper extends ContainerFigure {
 
 	/**
 	 * Add listener to be notified when the node gets hidden/revealed
-	 * 
+	 *
 	 * @param listener of connected node
 	 */
 	public void addHideNodeListener(HideNodeListener listener) {
@@ -163,7 +163,7 @@ public class HideNodeHelper extends ContainerFigure {
 
 	/**
 	 * Remove listener that gets notified when the node gets hidden/revealed
-	 * 
+	 *
 	 * @param listener of connected node
 	 */
 	public void removeHideNodeListener(HideNodeListener listener) {
@@ -172,7 +172,7 @@ public class HideNodeHelper extends ContainerFigure {
 
 	/**
 	 * Get HideNodeListener corresponding to the node of this HideNodeHelper
-	 * 
+	 *
 	 * @return HideNodeListener
 	 */
 	public HideNodeListener getHideNodesListener() {

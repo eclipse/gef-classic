@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -47,7 +47,7 @@ public abstract class LogicContainerEditPart extends LogicEditPart {
 
 	/**
 	 * Returns the model of this as a LogicDiagram.
-	 * 
+	 *
 	 * @return LogicDiagram of this.
 	 */
 	protected LogicDiagram getLogicDiagram() {
@@ -56,7 +56,7 @@ public abstract class LogicContainerEditPart extends LogicEditPart {
 
 	/**
 	 * Returns the children of this through the model.
-	 * 
+	 *
 	 * @return Children of this as a List.
 	 */
 	@Override

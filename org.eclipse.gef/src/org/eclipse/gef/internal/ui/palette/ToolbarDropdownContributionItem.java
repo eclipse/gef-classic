@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -154,7 +154,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	/**
 	 * Creates a new contribution item from the given action. The id of the action
 	 * is used as the id of the item.
-	 * 
+	 *
 	 * @param action the action
 	 */
 	public ToolbarDropdownContributionItem(IAction action) {
@@ -326,7 +326,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 	/**
 	 * Returns the action associated with this contribution item.
-	 * 
+	 *
 	 * @return the action
 	 */
 	public IAction getAction() {
@@ -491,7 +491,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 	/**
 	 * Returns <code>true</code> if this item is allowed to enable,
 	 * <code>false</code> otherwise.
-	 * 
+	 *
 	 * @return if this item is allowed to be enabled
 	 * @since 2.0
 	 */
@@ -513,7 +513,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 	/**
 	 * Synchronizes the UI with the given property.
-	 * 
+	 *
 	 * @param propertyName the name of the property, or <code>null</code> meaning
 	 *                     all applicable properties
 	 */
@@ -643,7 +643,7 @@ public class ToolbarDropdownContributionItem extends ContributionItem {
 
 	/**
 	 * Updates the images for this action.
-	 * 
+	 *
 	 * @param forceImage <code>true</code> if some form of image is compulsory, and
 	 *                   <code>false</code> if it is acceptable for this item to
 	 *                   have no image

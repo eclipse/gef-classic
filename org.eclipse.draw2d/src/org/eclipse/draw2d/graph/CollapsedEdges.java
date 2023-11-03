@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,7 +17,7 @@ package org.eclipse.draw2d.graph;
  * other cluster. An edge with minimal slack as chosen to maintain the link
  * between clusters. The weight and any slack more than the minimal edge's slack
  * is tracked for all other edges.
- * 
+ *
  * @since 3.1
  */
 class CollapsedEdges {
@@ -55,7 +55,7 @@ class CollapsedEdges {
 	 * tighter than the current, the current tightest is returned. Otherwise, the
 	 * edge itself is returned. The returned edge would be the one to remove from
 	 * the graph.
-	 * 
+	 *
 	 * @param candidate another edge
 	 * @return the edge which is not the tightest edge
 	 * @since 3.1

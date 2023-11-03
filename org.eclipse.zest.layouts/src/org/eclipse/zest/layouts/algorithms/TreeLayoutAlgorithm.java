@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
@@ -31,7 +31,7 @@ import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
 /**
  * The TreeLayoutAlgorithm class implements a simple algorithm to arrange graph
  * nodes in a layered vertical tree-like layout.
- * 
+ *
  * This is by no means an efficiently coded algorithm.
  *
  * @version 2.0
@@ -104,7 +104,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	 * Executes this TreeLayoutAlgorithm layout algorithm by referencing the data
 	 * stored in the repository system. Once done, the result will be saved to the
 	 * data repository.
-	 * 
+	 *
 	 * @param entitiesToLayout        Apply the algorithm to these entities
 	 * @param relationshipsToConsider Only consider these relationships when
 	 *                                applying the algorithm.
@@ -182,7 +182,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	/**
 	 * Finds all the relationships in which the node <code>obj<code>
 	 * plays the specified <code>role</code>.
-	 * 
+	 *
 	 * @param entity The node that concerns the relations to be found.
 	 * @param role   The role played by the <code>obj</code>. Its type must be of
 	 *               <code>ACTOR_ROLE</code> or <code>ACTEE_ROLE</code>.
@@ -206,7 +206,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	 * Finds the relation that has the lowest index in the relation repository in
 	 * which the node <code>obj<code> plays the specified
 	 * <code>role</code>.
-	 * 
+	 *
 	 * @param obj  The node that concerns the relations to be found.
 	 * @param role The role played by the <code>obj</code>. Its type must be of
 	 *             <code>ACTOR_ROLE</code> or <code>ACTEE_ROLE</code>.
@@ -578,7 +578,7 @@ public class TreeLayoutAlgorithm extends AbstractLayoutAlgorithm {
 
 	/**
 	 * Note: Use this as little as possible! TODO limit the use of this method
-	 * 
+	 *
 	 * @param nodes
 	 * @param nodeToFind
 	 * @return

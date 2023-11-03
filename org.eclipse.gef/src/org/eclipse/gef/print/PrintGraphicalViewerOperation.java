@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 
 	/**
 	 * Constructor for PrintGraphicalViewerOperation
-	 * 
+	 *
 	 * @param p The Printer to print to
 	 * @param g The viewer containing what is to be printed NOTE: The
 	 *          GraphicalViewer to be printed must have a
@@ -53,7 +53,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 
 	/**
 	 * Returns the viewer.
-	 * 
+	 *
 	 * @return GraphicalViewer
 	 */
 	public GraphicalViewer getViewer() {
@@ -81,7 +81,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 
 	/**
 	 * Sets the viewer.
-	 * 
+	 *
 	 * @param viewer The viewer to set
 	 */
 	public void setViewer(GraphicalViewer viewer) {

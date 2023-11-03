@@ -27,9 +27,9 @@ import org.junit.Test;
 
 /**
  * Selection-related tests for the {@link Graph} class.
- * 
+ *
  * @author Fabian Steeg (fsteeg)
- * 
+ *
  */
 public class GraphSelectionTests extends Assert {
 

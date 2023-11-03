@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ public interface AppendableCommand {
 	 * which can be executed. If this method return <code>true</code>,
 	 * {@link #executePending()} may be called later. Otherwise,
 	 * {@link #flushPending()} should be called to free up any
-	 * 
+	 *
 	 * @since 3.1
 	 * @return <code>true</code> if pending execution can continue
 	 */
@@ -32,7 +32,7 @@ public interface AppendableCommand {
 	/**
 	 * Executes any pending changes for this command. Immediately after calling this
 	 * method, {@link #canExecutePending()} should return <code>false</code>.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	void executePending();
@@ -44,7 +44,7 @@ public interface AppendableCommand {
 	 * method resets any pending changes so that pending changes coming afterwards
 	 * may be applied. This method may be called regardless of the return value for
 	 * {@link #canExecutePending()}.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	void flushPending();

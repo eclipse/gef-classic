@@ -1,14 +1,14 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
  *
  * Contributors:
- *     IBM Corporation - initial API and implementation 
+ *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d;
 
@@ -22,7 +22,7 @@ public class AbsoluteBendpoint extends Point implements Bendpoint {
 
 	/**
 	 * Creates a new AbsoluteBendpoint at the Point p.
-	 * 
+	 *
 	 * @param p The absolute location of the bendpoint
 	 * @since 2.0
 	 */
@@ -32,7 +32,7 @@ public class AbsoluteBendpoint extends Point implements Bendpoint {
 
 	/**
 	 * Creates a new AbsoluteBendpoint at the Point (x,y).
-	 * 
+	 *
 	 * @param x The X coordinate
 	 * @param y The Y coordinate
 	 * @since 2.0

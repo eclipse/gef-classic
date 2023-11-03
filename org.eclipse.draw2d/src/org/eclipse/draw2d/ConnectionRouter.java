@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,7 +27,7 @@ public interface ConnectionRouter {
 
 	/**
 	 * Returns the constraint for the Connection.
-	 * 
+	 *
 	 * @param connection The connection
 	 * @return The constraint
 	 */
@@ -35,28 +35,28 @@ public interface ConnectionRouter {
 
 	/**
 	 * Invalidates the given Connection.
-	 * 
+	 *
 	 * @param connection The connection to be invalidated
 	 */
 	void invalidate(Connection connection);
 
 	/**
 	 * Routes the Connection.
-	 * 
+	 *
 	 * @param connection The Connection to route
 	 */
 	void route(Connection connection);
 
 	/**
 	 * Removes the Connection from this router.
-	 * 
+	 *
 	 * @param connection The Connection to remove
 	 */
 	void remove(Connection connection);
 
 	/**
 	 * Maps the given constraint to the given Connection.
-	 * 
+	 *
 	 * @param connection The Connection
 	 * @param constraint The constraint
 	 */
@@ -76,7 +76,7 @@ public interface ConnectionRouter {
 
 		/**
 		 * Routes the given Connection directly between the source and target anchors.
-		 * 
+		 *
 		 * @param conn the connection to be routed
 		 */
 		@Override

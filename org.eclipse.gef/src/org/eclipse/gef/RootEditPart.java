@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,14 +24,14 @@ public interface RootEditPart extends EditPart {
 	/**
 	 * Returns the <i>contents</i> EditPart. A RootEditPart only has a single child,
 	 * called its <i>contents</i>.
-	 * 
+	 *
 	 * @return the contents.
 	 */
 	EditPart getContents();
 
 	/**
 	 * Returns the root's EditPartViewer.
-	 * 
+	 *
 	 * @return The <code>EditPartViewer</code>
 	 */
 	@Override
@@ -40,14 +40,14 @@ public interface RootEditPart extends EditPart {
 	/**
 	 * Sets the <i>contents</i> EditPart. A RootEditPart only has a single child,
 	 * called its <i>contents</i>.
-	 * 
+	 *
 	 * @param editpart the contents
 	 */
 	void setContents(EditPart editpart);
 
 	/**
 	 * Sets the root's EditPartViewer.
-	 * 
+	 *
 	 * @param viewer the EditPartViewer
 	 */
 	void setViewer(EditPartViewer viewer);

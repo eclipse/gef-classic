@@ -2,12 +2,12 @@
  * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.viewers;
@@ -32,13 +32,13 @@ import org.eclipse.zest.core.viewers.internal.ZoomManager;
 /**
  * A contribution item that adds a combo to a toolbar or coolbar, or a list of
  * zooms to a menu. Can only be used for one toolbar, coolbar, or menu.
- * 
+ *
  * In order to use this item, let your workbench part implement
  * IZoomableWorkbenchPart. If the workbench part then supplies a viewer that is
  * zoomable, the combo or menu created by this item will be enabled.
- * 
+ *
  * @author Del Myers
- * 
+ *
  */
 //@tag zest.bug.156286-Zooming.fix : create a contribution item that can set zooming on Zest views.
 public class ZoomContributionViewItem extends ContributionItem implements ZoomListener {
@@ -71,7 +71,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 	 * service.initialZooms will be used to populate the combo or the menu. Valid
 	 * values for initialZooms are percentage numbers (e.g., "100%"), or FIT_WIDTH,
 	 * FIT_HEIGHT, FIT_ALL.
-	 * 
+	 *
 	 * @param partService service used to see whether the view is zoomable.
 	 */
 	public ZoomContributionViewItem(IZoomableWorkbenchPart part) {
@@ -80,7 +80,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.Menu,
 	 * int)
@@ -99,7 +99,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.
 	 * CoolBar, int)
 	 */
@@ -112,7 +112,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.action.ContributionItem#fill(org.eclipse.swt.widgets.
 	 * ToolBar, int)
 	 */
@@ -133,7 +133,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 		this.combo.addSelectionListener(new SelectionAdapter() {
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * org.eclipse.swt.events.SelectionAdapter#widgetSelected(org.eclipse.swt.events
 			 * .SelectionEvent)
@@ -231,7 +231,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.ZoomListener#zoomChanged(double)
 	 */
 	@Override
@@ -241,7 +241,7 @@ public class ZoomContributionViewItem extends ContributionItem implements ZoomLi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.action.ContributionItem#dispose()
 	 */
 

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -43,7 +43,7 @@ import org.eclipse.gef.EditPartViewer;
  * <p>
  * IMPORTANT: This class is <EM>not</EM> intended to be used or subclassed by
  * clients.
- * 
+ *
  * @author hudsonr
  */
 public class DomainEventDispatcher extends SWTEventDispatcher {
@@ -63,7 +63,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 
 	/**
 	 * Extended accessibility support for editpart.
-	 * 
+	 *
 	 * @author hudsonr
 	 */
 	protected class EditPartAccessibilityDispatcher extends AccessibilityDispatcher {
@@ -222,7 +222,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 
 	/**
 	 * Constructs the dispatcher for the given domain and viewer.
-	 * 
+	 *
 	 * @param d the domain
 	 * @param v the viewer
 	 */
@@ -406,7 +406,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 
 	/**
 	 * Dispatches a drag finished event.
-	 * 
+	 *
 	 * @param event  the event
 	 * @param viewer the viewer on which the event occured.
 	 */
@@ -417,7 +417,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 
 	/**
 	 * Dispatches a drag started event.
-	 * 
+	 *
 	 * @param event  the event
 	 * @param viewer the viewer
 	 */
@@ -429,7 +429,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 
 	/**
 	 * Forwards the event to the EditDomain.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.EventDispatcher#dispatchMouseWheelScrolled(org.eclipse.swt.widgets.Event)
 	 */
 	@Override
@@ -452,7 +452,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 
 	/**
 	 * Lazily creates and returns the accessibility dispatcher.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.EventDispatcher#getAccessibilityDispatcher()
 	 */
 	@Override
@@ -464,7 +464,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 
 	/**
 	 * Returns the viewer on which this dispatcher was created
-	 * 
+	 *
 	 * @return the viewer for this dispatcher
 	 */
 	protected final EditPartViewer getViewer() {
@@ -508,7 +508,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 
 	/**
 	 * Sets whether events should go directly to the edit domain.
-	 * 
+	 *
 	 * @param value <code>true</code> if all events should go directly to the edit
 	 *              domain
 	 */
@@ -518,7 +518,7 @@ public class DomainEventDispatcher extends SWTEventDispatcher {
 
 	/**
 	 * Sets the override cursor.
-	 * 
+	 *
 	 * @param newCursor the cursor
 	 */
 	public void setOverrideCursor(Cursor newCursor) {

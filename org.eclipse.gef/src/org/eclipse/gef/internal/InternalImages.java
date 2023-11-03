@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -147,7 +147,7 @@ public class InternalImages {
 	/**
 	 * Creates the image descriptor from the filename given and caches it in the
 	 * plugin's image registry.
-	 * 
+	 *
 	 * @param imageName the full filename of the image
 	 * @return the new image descriptor
 	 */
@@ -162,7 +162,7 @@ public class InternalImages {
 	 * that is handled in the image registry. The image descriptor must have
 	 * previously been cached in the image registry. The cached images for the
 	 * public image names defined in this file can be retrieved using this method.
-	 * 
+	 *
 	 * @param imageName the full filename of the image
 	 * @return the image or null if it has not been cached in the registry
 	 */

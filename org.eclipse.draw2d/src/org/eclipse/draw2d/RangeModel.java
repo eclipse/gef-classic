@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -38,42 +38,42 @@ public interface RangeModel {
 	 * will be notified of changes to {@link #PROPERTY_VALUE value},
 	 * {@link #PROPERTY_EXTENT extent}, {@link #PROPERTY_MINIMUM minimum} and
 	 * {@link #PROPERTY_MAXIMUM maximum} properties.
-	 * 
+	 *
 	 * @param listener The listener to add
 	 */
 	void addPropertyChangeListener(PropertyChangeListener listener);
 
 	/**
 	 * Returns the extent.
-	 * 
+	 *
 	 * @return The extent
 	 */
 	int getExtent();
 
 	/**
 	 * Returns the maximum value in the range.
-	 * 
+	 *
 	 * @return The maximum value
 	 */
 	int getMaximum();
 
 	/**
 	 * Returns the minimum value in the range.
-	 * 
+	 *
 	 * @return The minimum value
 	 */
 	int getMinimum();
 
 	/**
 	 * Returns the current value.
-	 * 
+	 *
 	 * @return The current value
 	 */
 	int getValue();
 
 	/**
 	 * Returns <code>true</code> if this RangeModel is enabled.
-	 * 
+	 *
 	 * @return <code>true</code> if this Rangel Model is enabled
 	 */
 	boolean isEnabled();
@@ -81,14 +81,14 @@ public interface RangeModel {
 	/**
 	 * Removes the given listener from this RangeModel's list of
 	 * PropertyChangeListeners.
-	 * 
+	 *
 	 * @param listener The listener to remove
 	 */
 	void removePropertyChangeListener(PropertyChangeListener listener);
 
 	/**
 	 * Sets min, extent, and max all at once.
-	 * 
+	 *
 	 * @param min    the new mininum
 	 * @param extent the new extent
 	 * @param max    the new maximum
@@ -97,28 +97,28 @@ public interface RangeModel {
 
 	/**
 	 * Sets the extent.
-	 * 
+	 *
 	 * @param extent The extent
 	 */
 	void setExtent(int extent);
 
 	/**
 	 * Sets the maximum value of the range.
-	 * 
+	 *
 	 * @param max The maximum value
 	 */
 	void setMaximum(int max);
 
 	/**
 	 * Sets the minimum value of the range.
-	 * 
+	 *
 	 * @param min The minimum value
 	 */
 	void setMinimum(int min);
 
 	/**
 	 * Sets the current value.
-	 * 
+	 *
 	 * @param value The current value
 	 */
 	void setValue(int value);

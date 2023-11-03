@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ public interface RotatableDecoration extends IFigure {
 
 	/**
 	 * Sets the location of this figure.
-	 * 
+	 *
 	 * @param p The location
 	 */
 	@Override
@@ -29,7 +29,7 @@ public interface RotatableDecoration extends IFigure {
 
 	/**
 	 * Sets the reference point used to determine the rotation angle.
-	 * 
+	 *
 	 * @param p The reference point
 	 */
 	void setReferencePoint(Point p);

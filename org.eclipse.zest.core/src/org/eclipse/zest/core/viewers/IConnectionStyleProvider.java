@@ -2,12 +2,12 @@
  * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.viewers;
@@ -19,7 +19,7 @@ import org.eclipse.ui.services.IDisposable;
 /**
  * An extension to label providers, to supply styles for connections based upon
  * relationships, rather than on connected nodes.
- * 
+ *
  * @author Del Myers
  * @see #IGraphContentProvider
  * @see #IEntityStyleProvider
@@ -31,7 +31,7 @@ public interface IConnectionStyleProvider extends IDisposable {
 	 * Returns the style flags for this connection. Valid flags are those that begin
 	 * with CONNECTION in @see org.eclipse.zest.core.ZestStyles. Check ZestStyles
 	 * for legal combinations.
-	 * 
+	 *
 	 * @param rel the relationship represented by this connection.
 	 * @return the style flags for this connection.
 	 * @see org.eclipse.zest.core.widgets.ZestStyles
@@ -41,7 +41,7 @@ public interface IConnectionStyleProvider extends IDisposable {
 	/**
 	 * Returns the color for the connection. Null for default. Any resources created
 	 * by this class must be disposed by this class.
-	 * 
+	 *
 	 * @param rel the relationship represented by this connection.
 	 * @return the color.
 	 * @see #dispose()
@@ -51,7 +51,7 @@ public interface IConnectionStyleProvider extends IDisposable {
 	/**
 	 * Returns the highlighted color for this connection. Null for default. Any
 	 * resources created by this class must be disposed by this class.
-	 * 
+	 *
 	 * @param rel the relationship represented by this connection.
 	 * @return the highlighted color. Null for default.
 	 * @see #dispose()
@@ -60,7 +60,7 @@ public interface IConnectionStyleProvider extends IDisposable {
 
 	/**
 	 * Returns the line width of the connection. -1 for default.
-	 * 
+	 *
 	 * @param rel the relationship represented by this connection.
 	 * @return the line width for the connection. -1 for default.
 	 */
@@ -69,7 +69,7 @@ public interface IConnectionStyleProvider extends IDisposable {
 	/**
 	 * Returns the tooltop for this node. If null is returned Zest will simply use
 	 * the default tooltip.
-	 * 
+	 *
 	 * @param entity
 	 * @return
 	 */

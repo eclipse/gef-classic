@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -116,7 +116,7 @@ public final class GEFActionConstants implements IWorkbenchActionConstants {
 
 	/**
 	 * Value: <code>"org.eclipse.gef.match.size"</code>
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public static final String MATCH_SIZE = "org.eclipse.gef.match.size"; //$NON-NLS-1$
@@ -166,7 +166,7 @@ public final class GEFActionConstants implements IWorkbenchActionConstants {
 
 	/**
 	 * Adds standard group separators to the given MenuManager.
-	 * 
+	 *
 	 * @param menu the MenuManager
 	 */
 	public static void addStandardActionGroups(IMenuManager menu) {

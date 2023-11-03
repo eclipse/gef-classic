@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -46,7 +46,7 @@ import org.eclipse.gef.editparts.RootTreeEditPart;
 /**
  * An EditPartViewer implementation based on a
  * {@link org.eclipse.swt.widgets.Tree}.
- * 
+ *
  * @author hudsonr
  */
 public class TreeViewer extends AbstractEditPartViewer {
@@ -131,7 +131,7 @@ public class TreeViewer extends AbstractEditPartViewer {
 	/**
 	 * Creates the default tree and sets it as the control. The default styles will
 	 * show scrollbars as needed, and allows for multiple selection.
-	 * 
+	 *
 	 * @param parent The parent for the Tree
 	 * @return the control
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  * this EditPolicy must perform the inverse mapping. Given a mouse location from
  * the User, the policy must determine the index at which the child[ren] should
  * be added/created.
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -42,7 +42,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * Returns the <code>Command</code> to add the specified child after a reference
 	 * <code>EditPart</code>. If the reference is <code>null</code>, the child
 	 * should be added as the first child.
-	 * 
+	 *
 	 * @param child the child being added
 	 * @param after <code>null</code> or a reference EditPart
 	 * @return a Command to add the child
@@ -53,7 +53,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * Since Ordered layouts generally don't use constraints, a
 	 * {@link NonResizableEditPolicy} is used by default for children. Subclasses
 	 * may override this method to supply a different EditPolicy.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#createChildEditPolicy(EditPart)
 	 */
 	@Override
@@ -68,7 +68,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * <P>
 	 * A move is a change in the order of the children, which indirectly causes a
 	 * change in location on the screen.
-	 * 
+	 *
 	 * @param child the child being moved
 	 * @param after <code>null</code> or the EditPart that should be after (or to
 	 *              the right of) the child being moved
@@ -85,7 +85,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * <P>
 	 * Subclasses must override {@link #createAddCommand(EditPart, EditPart)}, and
 	 * should not override this method.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.LayoutEditPolicy#getAddCommand(Request)
 	 */
 	@Override
@@ -106,7 +106,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * <em>after</em> that EditPart. <code>null</code> is used to indicate the index
 	 * that comes after <em>no</em> EditPart, that is, it indicates the very last
 	 * index.
-	 * 
+	 *
 	 * @param request the Request
 	 * @return <code>null</code> or a reference EditPart
 	 */
@@ -117,7 +117,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	 * obtains the proper index, and then calls
 	 * {@link #createMoveChildCommand(EditPart, EditPart)}, which subclasses must
 	 * implement. Subclasses should not override this method.
-	 * 
+	 *
 	 * @see LayoutEditPolicy#getMoveChildrenCommand(Request)
 	 */
 	@Override
@@ -136,7 +136,7 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	/**
 	 * Returns whether the layout container's layout manager has a horizontal
 	 * orientation or not.
-	 * 
+	 *
 	 * @return <code>true</code> if the layout container's layout manager has a
 	 *         horizontal orientation, <code>false</code> otherwise
 	 * @since 3.7

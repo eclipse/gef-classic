@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,7 +17,7 @@ import org.eclipse.gef.internal.GEFMessages;
 /**
  * This class contains UI strings (translated, if available) that clients can
  * use.
- * 
+ *
  * @author Eric Bordeau
  */
 public class SharedMessages {

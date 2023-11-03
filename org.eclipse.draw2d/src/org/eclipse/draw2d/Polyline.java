@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -58,7 +58,7 @@ public class Polyline extends AbstractPointListShape {
 
 	/**
 	 * Null implementation for a line.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Shape#fillShape(Graphics)
 	 */
 	@Override
@@ -102,7 +102,7 @@ public class Polyline extends AbstractPointListShape {
 
 	/**
 	 * Erases the Polyline and removes all of its {@link Point Points}.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	@Override
@@ -131,7 +131,7 @@ public class Polyline extends AbstractPointListShape {
 	 * Sets the list of points to be used by this polyline connection. Removes any
 	 * previously existing points. The polyline will hold onto the given list by
 	 * reference.
-	 * 
+	 *
 	 * @param points new set of points
 	 * @since 2.0
 	 */
@@ -143,7 +143,7 @@ public class Polyline extends AbstractPointListShape {
 
 	/**
 	 * Sets the tolerance
-	 * 
+	 *
 	 * @param tolerance the new tolerance value of the Polyline
 	 */
 	public void setTolerance(int tolerance) {

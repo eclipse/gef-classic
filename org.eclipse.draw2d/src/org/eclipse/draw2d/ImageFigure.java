@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * <P>
  * Note that it is the client's responsibility to dispose the given image. There
  * is no "free" resource management in draw2d.
- * 
+ *
  * @author Pratik Shah
  */
 public class ImageFigure extends AbstractImageFigure {
@@ -45,7 +45,7 @@ public class ImageFigure extends AbstractImageFigure {
 	/**
 	 * Constructor<br>
 	 * The default alignment is <code>PositionConstants.CENTER</code>.
-	 * 
+	 *
 	 * @param image The Image to be displayed
 	 */
 	public ImageFigure(Image image) {
@@ -54,10 +54,10 @@ public class ImageFigure extends AbstractImageFigure {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param image     The Image to be displayed
 	 * @param alignment A PositionConstant indicating the alignment
-	 * 
+	 *
 	 * @see ImageFigure#setImage(Image)
 	 * @see ImageFigure#setAlignment(int)
 	 */
@@ -77,7 +77,7 @@ public class ImageFigure extends AbstractImageFigure {
 	/**
 	 * Calculates the necessary size to display the Image within the figure's client
 	 * area.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
 	@Override
@@ -129,7 +129,7 @@ public class ImageFigure extends AbstractImageFigure {
 	 * Sets the alignment of the Image within this Figure. The alignment comes into
 	 * play when the ImageFigure is larger than the Image. The alignment could be
 	 * any valid combination of the following:
-	 * 
+	 *
 	 * <UL>
 	 * <LI>PositionConstants.NORTH</LI>
 	 * <LI>PositionConstants.SOUTH</LI>
@@ -137,7 +137,7 @@ public class ImageFigure extends AbstractImageFigure {
 	 * <LI>PositionConstants.WEST</LI>
 	 * <LI>PositionConstants.CENTER or PositionConstants.NONE</LI>
 	 * </UL>
-	 * 
+	 *
 	 * @param flag A constant indicating the alignment
 	 */
 	public void setAlignment(int flag) {
@@ -149,7 +149,7 @@ public class ImageFigure extends AbstractImageFigure {
 	 * <p>
 	 * IMPORTANT: Note that it is the client's responsibility to dispose the given
 	 * image.
-	 * 
+	 *
 	 * @param image The Image to be displayed. It can be <code>null</code>.
 	 */
 	public void setImage(Image image) {

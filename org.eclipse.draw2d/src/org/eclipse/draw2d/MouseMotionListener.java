@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,35 +20,35 @@ public interface MouseMotionListener {
 	/**
 	 * Called when the mouse has moved over the listened to object while a button
 	 * was pressed.
-	 * 
+	 *
 	 * @param me The MouseEvent object
 	 */
 	void mouseDragged(MouseEvent me);
 
 	/**
 	 * Called when the mouse has entered the listened to object.
-	 * 
+	 *
 	 * @param me The MouseEvent object
 	 */
 	void mouseEntered(MouseEvent me);
 
 	/**
 	 * Called when the mouse has exited the listened to object.
-	 * 
+	 *
 	 * @param me The MouseEvent object
 	 */
 	void mouseExited(MouseEvent me);
 
 	/**
 	 * Called when the mouse hovers over the listened to object.
-	 * 
+	 *
 	 * @param me The MouseEvent object
 	 */
 	void mouseHover(MouseEvent me);
 
 	/**
 	 * Called when the mouse has moved over the listened to object.
-	 * 
+	 *
 	 * @param me The MouseEvent object
 	 */
 	void mouseMoved(MouseEvent me);

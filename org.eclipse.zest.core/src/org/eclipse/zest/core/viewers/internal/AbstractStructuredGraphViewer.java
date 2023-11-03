@@ -2,12 +2,12 @@
  * Copyright 2005, 2011 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.viewers.internal;
@@ -42,7 +42,7 @@ import org.eclipse.zest.layouts.LayoutAlgorithm;
  * Abstraction of graph viewers to implement functionality used by all of them.
  * Not intended to be implemented by clients. Use one of the provided children
  * instead.
- * 
+ *
  * @author Del Myers
  */
 public abstract class AbstractStructuredGraphViewer extends AbstractZoomableViewer {
@@ -79,7 +79,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		TreeSet storedStrings;
 
 		/**
-		 * 
+		 *
 		 */
 		public SimpleGraphComparator() {
 			this.storedStrings = new TreeSet();
@@ -87,7 +87,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
 		@Override
@@ -122,7 +122,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * Sets the default style for nodes in this graph. Note: if an input is set on
 	 * the viewer, a ZestException will be thrown.
-	 * 
+	 *
 	 * @param nodeStyle the style for the nodes.
 	 * @see #ZestStyles
 	 */
@@ -136,7 +136,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * Sets the default style for connections in this graph. Note: if an input is
 	 * set on the viewer, a ZestException will be thrown.
-	 * 
+	 *
 	 * @param connectionStyle the style for the connections.
 	 * @see #ZestStyles
 	 */
@@ -152,7 +152,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/**
 	 * Returns the style set for the graph
-	 * 
+	 *
 	 * @return The style set of the graph
 	 */
 	public int getGraphStyle() {
@@ -161,7 +161,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/**
 	 * Returns the style set for the nodes.
-	 * 
+	 *
 	 * @return the style set for the nodes.
 	 */
 	public int getNodeStyle() {
@@ -181,7 +181,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/**
 	 * Adds a new constraint adapter to the list of constraints
-	 * 
+	 *
 	 * @param constraintAdapter
 	 */
 	public void addConstraintAdapter(ConstraintAdapter constraintAdapter) {
@@ -190,7 +190,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/**
 	 * Gets all the constraint adapters currently on the viewer
-	 * 
+	 *
 	 * @return
 	 */
 	public List getConstraintAdapters() {
@@ -200,7 +200,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * Sets the layout algorithm for this viewer. Subclasses may place restrictions
 	 * on the algorithms that it accepts.
-	 * 
+	 *
 	 * @param algorithm the layout algorithm
 	 * @param run       true if the layout algorithm should be run immediately. This
 	 *                  is a hint.
@@ -209,14 +209,14 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/**
 	 * Gets the current layout algorithm.
-	 * 
+	 *
 	 * @return the current layout algorithm.
 	 */
 	protected abstract LayoutAlgorithm getLayoutAlgorithm();
 
 	/**
 	 * Equivalent to setLayoutAlgorithm(algorithm, false).
-	 * 
+	 *
 	 * @param algorithm
 	 */
 	public void setLayoutAlgorithm(LayoutAlgorithm algorithm) {
@@ -234,7 +234,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	HashMap getNodesMap() {
 		return this.nodesMap;
 	}
-	
+
 	GraphNode addGraphModelContainer(Object element) {
 		GraphNode node = this.getGraphModelNode(element);
 		if (node == null) {
@@ -254,15 +254,15 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 		}
 		return node;
 	}
-	
+
 	/**
 	 * Implement and return the new node object, enables to define custom graph nodes
-	 * 
+	 *
 	 * @param graphModel where the created nodes gets added to
 	 * @param figure of the created node object
 	 * @return instance of a {@link GraphNode}
-	 * 
-	 * @since 1.7 
+	 *
+	 * @since 1.7
 	 */
 	protected GraphNode createNodeObject(final Graph graphModel, IFigure figure) {
 		return new CGraphNode(graphModel, SWT.NONE, figure);
@@ -270,15 +270,15 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/**
 	 * Implement and return the new connection object, enables to define custom graph connections
-	 * 
+	 *
 	 * @param graphModel where the created nodes gets added to
 	 * @param source {@link GraphNode}
 	 * @param destination {@link GraphNode}
 	 * @return instance of a {@link GraphConnection}
-	 * 
-	 * @since 1.7 
+	 *
+	 * @since 1.7
 	 */
-	protected GraphConnection createConnectionObject(final Graph graphModel, final GraphNode source, 
+	protected GraphConnection createConnectionObject(final Graph graphModel, final GraphNode source,
 			final GraphNode destination) {
 		return new GraphConnection(graphModel, SWT.NONE, source, destination);
 	}
@@ -340,7 +340,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.StructuredViewer#internalRefresh(java.lang.
 	 * Object)
 	 */
@@ -372,7 +372,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindInputItem(java.lang.
 	 * Object)
 	 */
@@ -387,7 +387,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.StructuredViewer#doFindItem(java.lang.Object)
 	 */
 	@Override
@@ -399,7 +399,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.StructuredViewer#getSelectionFromWidget()
 	 */
 	@Override
@@ -432,7 +432,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.StructuredViewer#setSelectionToWidget(java.
 	 * util.List, boolean)
 	 */
@@ -456,7 +456,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/**
 	 * Gets the internal model elements that are selected.
-	 * 
+	 *
 	 * @return
 	 */
 	protected List getWidgetSelection() {
@@ -466,7 +466,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.Viewer#inputChanged(java.lang.Object,
 	 * java.lang.Object)
 	 */
@@ -526,7 +526,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * Returns the factory used to create the model. This must not be called before
 	 * the content provider is set.
-	 * 
+	 *
 	 * @return
 	 */
 	protected abstract IStylingGraphModelFactory getFactory();
@@ -593,7 +593,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.jface.viewers.StructuredViewer#getRawChildren(java.lang.Object )
 	 */
@@ -624,7 +624,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void reveal(Object element) {
@@ -653,13 +653,13 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/**
 	 * Applies the viewers layouts.
-	 * 
+	 *
 	 */
 	public abstract void applyLayout();
 
 	/**
 	 * Removes the given connection object from the layout algorithm and the model.
-	 * 
+	 *
 	 * @param connection
 	 */
 	public void removeRelationship(Object connection) {
@@ -678,7 +678,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * Creates a new node and adds it to the graph. If it already exists nothing
 	 * happens.
-	 * 
+	 *
 	 * @param newNode
 	 */
 	public void addNode(Object element) {
@@ -691,7 +691,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/**
 	 * Removes the given element from the layout algorithm and the model.
-	 * 
+	 *
 	 * @param element The node element to remove.
 	 */
 	public void removeNode(Object element) {
@@ -712,7 +712,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * Creates a new relationship between the source node and the destination node.
 	 * If either node doesn't exist then it will be created.
-	 * 
+	 *
 	 * @param connection The connection data object.
 	 * @param srcNode    The source node data object.
 	 * @param destNode   The destination node data object.
@@ -727,7 +727,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * Adds a new relationship given the connection. It will use the content
 	 * provider to determine the source and destination nodes.
-	 * 
+	 *
 	 * @param connection The connection data object.
 	 */
 	public void addRelationship(Object connection) {
@@ -748,7 +748,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 	/**
 	 * Converts the list of GraphModelConnection objects into an array and returns
 	 * it.
-	 * 
+	 *
 	 * @return GraphModelConnection[]
 	 */
 	protected GraphConnection[] getConnectionsArray(Graph graph) {
@@ -759,7 +759,7 @@ public abstract class AbstractStructuredGraphViewer extends AbstractZoomableView
 
 	/**
 	 * Converts the list of GraphModelNode objects into an array an returns it.
-	 * 
+	 *
 	 * @return GraphModelNode[]
 	 */
 	protected GraphNode[] getNodesArray(Graph graph) {

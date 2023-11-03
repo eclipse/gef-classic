@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * segments in each path's final solution.
  * <P>
  * This class is not intended to be subclassed.
- * 
+ *
  * @author Whitney Sorenson
  * @author Randy Hudson
  * @since 3.0
@@ -90,7 +90,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Adds an obstacle with the given bounds to the obstacles.
-	 * 
+	 *
 	 * @param rect the bounds of this obstacle
 	 * @return <code>true</code> if the added obstacle has dirtied one or more paths
 	 */
@@ -100,7 +100,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Adds a path to the routing.
-	 * 
+	 *
 	 * @param path the path to add.
 	 */
 	public void addPath(Path path) {
@@ -136,7 +136,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Checks a vertex to see if its offset should shrink
-	 * 
+	 *
 	 * @param vertex the vertex to check
 	 */
 	private void checkVertexForIntersections(Vertex vertex) {
@@ -228,7 +228,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Dirties the paths that are on the given vertex
-	 * 
+	 *
 	 * @param vertex the vertex that has the paths
 	 */
 	private boolean dirtyPathsOn(Vertex vertex) {
@@ -244,18 +244,18 @@ public class ShortestPathRouter {
 	/**
 	 * Resyncs the parent paths with any new child paths that are necessary because
 	 * bendpoints have been added to the parent path.
-	 * 
+	 *
 	 * private void generateChildPaths() { for (int i = 0; i < userPaths.size();
 	 * i++) { Path path = (Path)userPaths.get(i); PointList bendPoints =
 	 * path.bendpoints; if (bendPoints != null && bendPoints.size() != 0) { List
 	 * childPaths = new ArrayList(bendPoints.size() + 1); Path child = null; Vertex
 	 * prevVertex = path.start; Vertex currVertex = null;
-	 * 
+	 *
 	 * for (int b = 0; b < bendPoints.size(); b++) { Point bp =
 	 * (Point)bendPoints.getPoint(b); currVertex = new Vertex(bp, null); child = new
 	 * Path(prevVertex, currVertex); childPaths.add(child); workingPaths.add(child);
 	 * prevVertex = currVertex; }
-	 * 
+	 *
 	 * child = new Path(prevVertex, path.end); childPaths.add(child);
 	 * workingPaths.add(child); pathsToChildPaths.put(path, childPaths); } else
 	 * workingPaths.add(path); } //End FOR }
@@ -263,7 +263,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Returns the closest vertex to the given segment.
-	 * 
+	 *
 	 * @param v1      the first vertex
 	 * @param v2      the second vertex
 	 * @param segment the segment
@@ -279,7 +279,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Returns the spacing maintained between paths.
-	 * 
+	 *
 	 * @return the default path spacing
 	 * @see #setSpacing(int)
 	 * @since 3.2
@@ -290,7 +290,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Returns the subpath for a split on the given path at the given segment.
-	 * 
+	 *
 	 * @param path    the path
 	 * @param segment the segment
 	 * @return the new subpath
@@ -351,7 +351,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Adds an obstacle to the routing
-	 * 
+	 *
 	 * @param obs the obstacle
 	 */
 	private boolean internalAddObstacle(Obstacle obs) {
@@ -361,7 +361,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Removes an obstacle from the routing.
-	 * 
+	 *
 	 * @param rect the bounds of the obstacle
 	 * @return the obstacle removed
 	 */
@@ -398,7 +398,7 @@ public class ShortestPathRouter {
 	/**
 	 * Labels the given path's vertices as innies, or outies, as well as determining
 	 * if this path is inverted.
-	 * 
+	 *
 	 * @param path the path
 	 */
 	private void labelPath(Path path) {
@@ -473,7 +473,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Labels the vertex at the end of the semgent based on the cross product.
-	 * 
+	 *
 	 * @param segment      the segment to this vertex
 	 * @param crossProduct the cross product of this segment and a segment to the
 	 *                     obstacles center
@@ -499,7 +499,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Orders the path by comparing its angle at shared vertices with other paths.
-	 * 
+	 *
 	 * @param path the path
 	 */
 	private void orderPath(Path path) {
@@ -588,7 +588,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Removes the obstacle with the rectangle's bounds from the routing.
-	 * 
+	 *
 	 * @param rect the bounds of the obstacle to remove
 	 * @return <code>true</code> if the removal has dirtied one or more paths
 	 */
@@ -598,7 +598,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Removes the given path from the routing.
-	 * 
+	 *
 	 * @param path the path to remove.
 	 * @return <code>true</code> if the removal may have affected one of the
 	 *         remaining paths
@@ -641,7 +641,7 @@ public class ShortestPathRouter {
 	 * that path should be offset from other paths or obstacles. The default value
 	 * is 4. When this value can not be satisfied, paths will be squeezed together
 	 * uniformly.
-	 * 
+	 *
 	 * @param spacing the path spacing
 	 * @since 3.2
 	 */
@@ -652,7 +652,7 @@ public class ShortestPathRouter {
 	/**
 	 * Updates the points in the paths in order to represent the current solution
 	 * with the given paths and obstacles.
-	 * 
+	 *
 	 * @return returns the list of paths which were updated.
 	 */
 	public List solve() {
@@ -684,7 +684,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Solves paths that are dirty.
-	 * 
+	 *
 	 * @return number of dirty paths
 	 */
 	private int solveDirtyPaths() {
@@ -803,7 +803,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Tests a segment that has been offset for new intersections
-	 * 
+	 *
 	 * @param segment the segment
 	 * @param index   the index of the segment along the path
 	 * @param path    the path
@@ -880,7 +880,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Tests all paths against the given obstacle
-	 * 
+	 *
 	 * @param obs the obstacle
 	 */
 	private boolean testAndDirtyPaths(Obstacle obs) {
@@ -894,7 +894,7 @@ public class ShortestPathRouter {
 
 	/**
 	 * Updates the position of an existing obstacle.
-	 * 
+	 *
 	 * @param oldBounds the old bounds(used to find the obstacle)
 	 * @param newBounds the new bounds
 	 * @return <code>true</code> if the change the current results to become stale

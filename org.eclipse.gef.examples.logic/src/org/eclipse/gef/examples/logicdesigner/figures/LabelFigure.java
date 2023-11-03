@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ public class LabelFigure extends BentCornerFigure {
 	/**
 	 * Creates a new LabelFigure with a MarginBorder that is the given size and a
 	 * FlowPage containing a TextFlow with the style WORD_WRAP_SOFT.
-	 * 
+	 *
 	 * @param borderSize the size of the MarginBorder
 	 */
 	public LabelFigure(int borderSize) {
@@ -58,7 +58,7 @@ public class LabelFigure extends BentCornerFigure {
 
 	/**
 	 * Returns the text inside the TextFlow.
-	 * 
+	 *
 	 * @return the text flow inside the text.
 	 */
 	public String getText() {
@@ -67,7 +67,7 @@ public class LabelFigure extends BentCornerFigure {
 
 	/**
 	 * Sets the text of the TextFlow to the given value.
-	 * 
+	 *
 	 * @param newText the new text value.
 	 */
 	public void setText(String newText) {

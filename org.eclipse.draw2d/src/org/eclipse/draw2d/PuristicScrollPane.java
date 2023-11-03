@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,17 +18,17 @@ import java.beans.PropertyChangeListener;
 
 /**
  * A {@link ScrollPane} with transparent {@link ScrollBar}s.
- * 
+ *
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
- * 
+ *
  * @since 3.6
  */
 public class PuristicScrollPane extends ScrollPane {
 
 	/**
 	 * A {@link ScrollBar} with no thumb and non-opaque buttons.
-	 * 
+	 *
 	 * @author Alexander Nyssen
 	 * @author Philip Ritzkopf
 	 */
@@ -36,7 +36,7 @@ public class PuristicScrollPane extends ScrollPane {
 
 		/**
 		 * Instantiates a new transparent scroll bar.
-		 * 
+		 *
 		 * @param isHorizontal whether this scroll bar is used as a horizontal one.
 		 */
 		public PuristicScrollBar(boolean isHorizontal) {

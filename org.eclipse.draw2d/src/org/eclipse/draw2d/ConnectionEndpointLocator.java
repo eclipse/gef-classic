@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -42,7 +42,7 @@ public class ConnectionEndpointLocator implements Locator {
 	 * If <i>isEnd</i> is <code>true</code>, the location is relative to the
 	 * Connection's end (or target) point. If <i>isEnd</i> is <code>false</code> ,
 	 * the location is relative to the Connection's start (or source) point.
-	 * 
+	 *
 	 * @param c     The Connection
 	 * @param isEnd <code>true</code> is location is relative to end point
 	 * @since 2.0
@@ -58,7 +58,7 @@ public class ConnectionEndpointLocator implements Locator {
 	/*
 	 * Returns an integer representing the side of the passed Rectangle that a point
 	 * lies on. 1 == Top 2 == Right 3 == Bottom 4 == Left
-	 * 
+	 *
 	 * @param loc The point that is to be located
 	 */
 	private int calculateConnectionLocation(Point loc, Point topLeft, Point center) {
@@ -92,11 +92,11 @@ public class ConnectionEndpointLocator implements Locator {
 	/*
 	 * This method is used to calculate the "quadrant" value of a connection that
 	 * does not have an owner on its starting point.
-	 * 
+	 *
 	 * 1 == Top 2 == Right 3 == Bottom 4 == Left
-	 * 
+	 *
 	 * @param startPoint The starting point of the connection.
-	 * 
+	 *
 	 * @param endPoint The end point of the connection.
 	 */
 	private int calculateConnectionLocation(Point startPoint, Point endPoint) {
@@ -117,11 +117,11 @@ public class ConnectionEndpointLocator implements Locator {
 	 * Calculates 'tan' which is used as a factor for y adjustment when placing the
 	 * connection label. 'tan' is capped at 1.0 in the positive direction and -1.0
 	 * in the negative direction.
-	 * 
+	 *
 	 * @param startPoint The starting point of the connection.
-	 * 
+	 *
 	 * @param endPoint The end point of the connection.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	private double calculateTan(Point startPoint, Point endPoint) {
@@ -163,7 +163,7 @@ public class ConnectionEndpointLocator implements Locator {
 
 	/**
 	 * Returns the distance in pixels from the anchor's owner.
-	 * 
+	 *
 	 * @return the offset distance from the endpoint figure
 	 */
 	public int getUDistance() {
@@ -172,7 +172,7 @@ public class ConnectionEndpointLocator implements Locator {
 
 	/**
 	 * Returns the distance in pixels from the connection
-	 * 
+	 *
 	 * @return the offset from the connection itself
 	 */
 	public int getVDistance() {
@@ -187,7 +187,7 @@ public class ConnectionEndpointLocator implements Locator {
 	 * Relocates the given IFigure at either the source or target end of the
 	 * Connection, based on the <code>boolean</code> given in the constructor
 	 * {@link #ConnectionEndpointLocator(Connection, boolean)}.
-	 * 
+	 *
 	 * @param figure The figure to relocate
 	 */
 	@Override
@@ -251,7 +251,7 @@ public class ConnectionEndpointLocator implements Locator {
 
 	/**
 	 * Sets the distance in pixels from the Connection's owner.
-	 * 
+	 *
 	 * @param distance Number of pixels to place the ConnectionEndpointLocator from
 	 *                 its owner.
 	 * @since 2.0
@@ -262,7 +262,7 @@ public class ConnectionEndpointLocator implements Locator {
 
 	/**
 	 * Sets the distance in pixels from the Connection.
-	 * 
+	 *
 	 * @param distance Number of pixels to place the ConnectionEndpointLocator from
 	 *                 its Connection.
 	 * @since 2.0

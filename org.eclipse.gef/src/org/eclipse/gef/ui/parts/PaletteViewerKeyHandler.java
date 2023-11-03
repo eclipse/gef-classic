@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -42,7 +42,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 
 	/**
 	 * Constructs a key handler for the specified palette viewer.
-	 * 
+	 *
 	 * @param viewer the palette viewer
 	 */
 	public PaletteViewerKeyHandler(PaletteViewer viewer) {
@@ -128,7 +128,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 	/**
 	 * Figures' navigation points are used to determine their direction compared to
 	 * one another, and the distance between them.
-	 * 
+	 *
 	 * @param figure the figure whose navigation point is to be returned
 	 * @return the top-left of the given figure
 	 */
@@ -197,7 +197,7 @@ public class PaletteViewerKeyHandler extends GraphicalViewerKeyHandler {
 
 	/**
 	 * Extends keyPressed to look for palette navigation keys.
-	 * 
+	 *
 	 * @see org.eclipse.gef.KeyHandler#keyPressed(org.eclipse.swt.events.KeyEvent)
 	 */
 	@Override

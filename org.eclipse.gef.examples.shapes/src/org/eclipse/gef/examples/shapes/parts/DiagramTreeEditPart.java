@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,14 +32,14 @@ import org.eclipse.gef.examples.shapes.model.ShapesDiagram;
  * This edit part must implement the PropertyChangeListener interface, so it can
  * be notified of property changes in the corresponding model element.
  * </p>
- * 
+ *
  * @author Elias Volanakis
  */
 class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChangeListener {
 
 	/**
 	 * Create a new instance of this edit part using the given model element.
-	 * 
+	 *
 	 * @param model a non-null ShapesDiagram instance
 	 */
 	DiagramTreeEditPart(ShapesDiagram model) {
@@ -59,7 +59,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.gef.examples.shapes.parts.ShapeTreeEditPart#createEditPolicies ()
 	 */
@@ -91,7 +91,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 
 	/**
 	 * Convenience method that returns the EditPart corresponding to a given child.
-	 * 
+	 *
 	 * @param child a model element instance
 	 * @return the corresponding EditPart or null
 	 */
@@ -101,7 +101,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
 	@Override
@@ -111,7 +111,7 @@ class DiagramTreeEditPart extends AbstractTreeEditPart implements PropertyChange
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
 	 * PropertyChangeEvent)
 	 */

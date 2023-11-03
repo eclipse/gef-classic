@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -33,7 +33,7 @@ public abstract class ToolEntry extends PaletteEntry {
 
 	/**
 	 * Creates a new ToolEntry. Any parameter can be <code>null</code>.
-	 * 
+	 *
 	 * @param label     the entry's name
 	 * @param shortDesc the entry's description
 	 * @param iconSmall the entry's small icon
@@ -46,7 +46,7 @@ public abstract class ToolEntry extends PaletteEntry {
 	/**
 	 * Constructor to create a new ToolEntry. Any parameter can be
 	 * <code>null</code>.
-	 * 
+	 *
 	 * @param label       the entry's name
 	 * @param description the entry's description
 	 * @param iconSmall   the entry's small icon
@@ -65,7 +65,7 @@ public abstract class ToolEntry extends PaletteEntry {
 	 * this ToolEntry. The tool is also configured with the properties set in
 	 * {@link #setToolProperty(Object, Object)}. Sub-classes overriding this method
 	 * should ensure that their tools are also configured with those properties.
-	 * 
+	 *
 	 * @return the tool for this entry
 	 */
 	public Tool createTool() {
@@ -93,7 +93,7 @@ public abstract class ToolEntry extends PaletteEntry {
 
 	/**
 	 * Returns the property value for the specified property key.
-	 * 
+	 *
 	 * @param key the property key
 	 * @return the value for the requested property
 	 * @since 3.1
@@ -109,7 +109,7 @@ public abstract class ToolEntry extends PaletteEntry {
 	 * specifying a different type of tool to be created without having to
 	 * sub-class. The provided class should have a default constructor for this to
 	 * work successfully.
-	 * 
+	 *
 	 * @param toolClass the type of tool to be created by this entry
 	 * @since 3.1
 	 */
@@ -122,7 +122,7 @@ public abstract class ToolEntry extends PaletteEntry {
 	/**
 	 * Clients can use this method to configure the associated tool without having
 	 * to sub-class.
-	 * 
+	 *
 	 * @param key   the property name
 	 * @param value a value of type associated with the given property
 	 * @since 3.1

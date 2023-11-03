@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ import org.eclipse.gef.palette.PaletteRoot;
  * This is the {@link org.eclipse.jface.viewers.IContentProvider} for the
  * {@link org.eclipse.jface.viewers.TreeViewer} used in
  * {@link org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog}.
- * 
+ *
  * @author Pratik Shah
  * @see org.eclipse.jface.viewer.TreeViewer
  * @see org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog
@@ -47,7 +47,7 @@ class PaletteTreeProvider implements ITreeContentProvider {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param treeviewer The TreeViewer whose ContentProvider this
 	 *                   PaletteTreeProvider is
 	 */
@@ -57,7 +57,7 @@ class PaletteTreeProvider implements ITreeContentProvider {
 
 	/**
 	 * Stops listening to the model
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.IContentProvider#dispose()
 	 */
 	@Override
@@ -69,7 +69,7 @@ class PaletteTreeProvider implements ITreeContentProvider {
 	 * If the given element does not have any children, this method should return
 	 * <code>null</code>. This fixes the problem where a "+" sign is incorrectly
 	 * placed next to an empty container in the tree.
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.ITreeContentProvider#getChildren(Object)
 	 */
 	@Override
@@ -93,7 +93,7 @@ class PaletteTreeProvider implements ITreeContentProvider {
 
 	/**
 	 * This method should not return <code>null</code>.
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.IStructuredContentProvider#getElements(Object)
 	 */
 	@Override
@@ -117,7 +117,7 @@ class PaletteTreeProvider implements ITreeContentProvider {
 	 * This method is invoked whenever there is any change in the model. It updates
 	 * the viewer with the changes that were made to the model. Sub-classes may
 	 * override this method to change or extend its functionality.
-	 * 
+	 *
 	 * @param evt The {@link PropertyChangeEvent} that was fired from the model
 	 */
 	protected void handlePropertyChanged(PropertyChangeEvent evt) {

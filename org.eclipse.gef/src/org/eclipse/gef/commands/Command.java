@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -14,7 +14,7 @@ package org.eclipse.gef.commands;
 
 /**
  * An Abstract implementation of {@link Command}.
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -32,7 +32,7 @@ public abstract class Command {
 
 	/**
 	 * Constructs a Command with the specified label.
-	 * 
+	 *
 	 * @param label the Command's label
 	 */
 	public Command(String label) {
@@ -69,7 +69,7 @@ public abstract class Command {
 	 * Command. The Command being chained will <code>execute()</code> after this
 	 * command has executed, and it will <code>undo()</code> before this Command is
 	 * undone.
-	 * 
+	 *
 	 * @param command <code>null</code> or the Command being chained
 	 * @return a Command representing the union
 	 */
@@ -130,7 +130,7 @@ public abstract class Command {
 
 	/**
 	 * Sets the debug label for this command
-	 * 
+	 *
 	 * @param label a description used for debugging only
 	 */
 	public void setDebugLabel(String label) {
@@ -139,7 +139,7 @@ public abstract class Command {
 
 	/**
 	 * Sets the label used to describe this command to the User.
-	 * 
+	 *
 	 * @param label the label
 	 */
 	public void setLabel(String label) {
@@ -150,7 +150,7 @@ public abstract class Command {
 	 * Undoes the changes performed during <code>execute()</code>. This method
 	 * should only be called after <code>execute</code> has been called, and only
 	 * when <code>canUndo()</code> returns <code>true</code>.
-	 * 
+	 *
 	 * @see #canUndo()
 	 */
 	public void undo() {

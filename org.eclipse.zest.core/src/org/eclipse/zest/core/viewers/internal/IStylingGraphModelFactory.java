@@ -2,12 +2,12 @@
  * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.core.viewers.internal;
@@ -32,21 +32,21 @@ import org.eclipse.zest.core.widgets.GraphNode;
  * documented, clients should expect that the implementation of
  * IStylingGraphModelFactory adheres to the general defaults found in
  * {@link IZestGraphDefaults}.
- * 
+ *
  * @author Del Myers
  */
 
 public interface IStylingGraphModelFactory {
 	/**
 	 * Returns the label provider used in this factory.
-	 * 
+	 *
 	 * @return the label provider used in this factory.
 	 */
 	public IBaseLabelProvider getLabelProvider();
 
 	/**
 	 * Returns the content provider used in this factory.
-	 * 
+	 *
 	 * @return the content provider used in this factory.
 	 */
 	public IStructuredContentProvider getContentProvider();
@@ -55,7 +55,7 @@ public interface IStylingGraphModelFactory {
 	 * Creates and returns the graph model from this factory based on the label
 	 * provider and the label provider returned in getContentProvider() and
 	 * getLabelProvider().
-	 * 
+	 *
 	 * @return the created graph model.
 	 */
 	public Graph createGraphModel(Graph model);
@@ -66,7 +66,7 @@ public interface IStylingGraphModelFactory {
 	 * node will also be styled according to the information given by the label
 	 * provider. If the node already exists in the graph, it is restyled and
 	 * returned; no new node is created.
-	 * 
+	 *
 	 * @param graph   the graph to create or retrieve the node on.
 	 * @param element the user model data to use in the node.
 	 * @return the node created or retrieved for the given graph.
@@ -81,7 +81,7 @@ public interface IStylingGraphModelFactory {
 	 * user data, but with different source or destinations, it is disconnected and
 	 * reconnected to the given source and destination. It is always styled
 	 * according to the label provider provided by getLabelProvider().
-	 * 
+	 *
 	 * @param graph   the graph to create or retrieve the connection on.
 	 * @param element the user model data to use in this connection.
 	 * @param source  the user model data used for the source node.
@@ -93,7 +93,7 @@ public interface IStylingGraphModelFactory {
 	/**
 	 * Restyles the given graph items according to the label provider supplied by
 	 * getLabelProvider().
-	 * 
+	 *
 	 * @param items the items to update.
 	 */
 	public void update(GraphItem[] items);
@@ -101,7 +101,7 @@ public interface IStylingGraphModelFactory {
 	/**
 	 * Restyles the given graph item according to the label provider supplied by
 	 * getLabelProvider().
-	 * 
+	 *
 	 * @param item the item to update.
 	 */
 	public void update(GraphItem item);
@@ -110,7 +110,7 @@ public interface IStylingGraphModelFactory {
 	 * Structurally refreshes the graph model nodes and connections associated with
 	 * the given user model element. Does nothing if the element does not currently
 	 * exist in the view. No restyling is done by default.
-	 * 
+	 *
 	 * @param graph
 	 * @param element the element to restructure.
 	 */
@@ -121,7 +121,7 @@ public interface IStylingGraphModelFactory {
 	 * the given user model element. If updateLabels is true, then the labels are
 	 * updated as well. Does nothing if the element does not currently exist in the
 	 * view.
-	 * 
+	 *
 	 * @param graph        the graph to find the element on.
 	 * @param element      the user model element.
 	 * @param updateLabels true if the labels should be updated as well.
@@ -130,14 +130,14 @@ public interface IStylingGraphModelFactory {
 
 	/**
 	 * Structurally refreshes the entire graph.
-	 * 
+	 *
 	 * @param graph the graph to refresh;
 	 */
 	public void refreshGraph(Graph graph);
 
 	/**
 	 * Returns the viewer that this factory is building the model for.
-	 * 
+	 *
 	 * @return the viewer that this factory is building the model for.
 	 */
 	public StructuredViewer getViewer();

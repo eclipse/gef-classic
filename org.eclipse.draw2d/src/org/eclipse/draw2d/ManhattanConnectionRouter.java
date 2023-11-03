@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -90,7 +90,7 @@ public final class ManhattanConnectionRouter extends AbstractRouter {
 	 * Returns the direction the point <i>p</i> is in relation to the given
 	 * rectangle. Possible values are LEFT (-1,0), RIGHT (1,0), UP (0,-1) and DOWN
 	 * (0,1).
-	 * 
+	 *
 	 * @param r the rectangle
 	 * @param p the point
 	 * @return the direction from <i>r</i> to <i>p</i>

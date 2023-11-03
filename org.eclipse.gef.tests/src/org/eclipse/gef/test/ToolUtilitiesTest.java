@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,7 +27,7 @@ public class ToolUtilitiesTest extends Assert {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#activate()
 		 */
 		public void addChild(EditPart ep) {
@@ -36,7 +36,7 @@ public class ToolUtilitiesTest extends Assert {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.gef.editparts.AbstractEditPart#register()
 		 */
 		@Override
@@ -46,7 +46,7 @@ public class ToolUtilitiesTest extends Assert {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 		 */
 		@Override
@@ -57,7 +57,7 @@ public class ToolUtilitiesTest extends Assert {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 		 */
 		@Override

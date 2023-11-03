@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ import org.eclipse.gef.GraphicalEditPart;
  * for as long as the location continues to meet these criteria. The autoscroll
  * direction is approximated to the nearest orthogonal or diagonal direction
  * (north, northeast, east, etc.).
- * 
+ *
  * @author hudsonr
  */
 public class ViewportAutoexposeHelper extends ViewportHelper implements AutoexposeHelper {
@@ -49,7 +49,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 	 * Constructs a new helper on the given GraphicalEditPart. The editpart must
 	 * have a <code>Viewport</code> somewhere between its <i>contentsPane</i> and
 	 * its <i>figure</i> inclusively.
-	 * 
+	 *
 	 * @param owner the GraphicalEditPart that owns the Viewport
 	 */
 	public ViewportAutoexposeHelper(GraphicalEditPart owner) {
@@ -61,7 +61,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 	 * Constructs a new helper on the given GraphicalEditPart. The editpart must
 	 * have a <code>Viewport</code> somewhere between its <i>contentsPane</i> and
 	 * its <i>figure</i> inclusively.
-	 * 
+	 *
 	 * @param owner     the GraphicalEditPart that owns the Viewport
 	 * @param threshold the Expose Threshold to use when determing whether or not a
 	 *                  scroll should occur.
@@ -74,7 +74,7 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 	/**
 	 * Returns <code>true</code> if the given point is inside the viewport, but near
 	 * its edge.
-	 * 
+	 *
 	 * @see org.eclipse.gef.AutoexposeHelper#detect(org.eclipse.draw2d.geometry.Point)
 	 */
 	@Override
@@ -92,10 +92,10 @@ public class ViewportAutoexposeHelper extends ViewportHelper implements Autoexpo
 	 * Returns <code>true</code> if the given point is outside the viewport or near
 	 * its edge. Scrolls the viewport by a calculated (time based) amount in the
 	 * current direction.
-	 * 
+	 *
 	 * todo: investigate if we should allow auto expose when the pointer is outside
 	 * the viewport
-	 * 
+	 *
 	 * @see org.eclipse.gef.AutoexposeHelper#step(org.eclipse.draw2d.geometry.Point)
 	 */
 	@Override

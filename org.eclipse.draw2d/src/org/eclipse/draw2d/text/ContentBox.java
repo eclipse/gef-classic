@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -14,7 +14,7 @@ package org.eclipse.draw2d.text;
 
 /**
  * FlowBoxes that are leaf nodes.
- * 
+ *
  * @author Pratik Shah
  * @since 3.1
  */
@@ -50,7 +50,7 @@ public abstract class ContentBox extends FlowBox {
 	/**
 	 * Returns <code>true</code> if the bidi level for this box is specified, and is
 	 * not the default level (0).
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.text.FlowBox#requiresBidi()
 	 */
 	@Override
@@ -62,7 +62,7 @@ public abstract class ContentBox extends FlowBox {
 	 * Sets the Bidi level of this fragment. It is used to rearrange fragments as
 	 * defined by the Unicode Bi-directional algorithm. Valid values are -1 (meaning
 	 * no Bidi level), or any non-negative integer less than 62.
-	 * 
+	 *
 	 * @param newLevel the new BidiLevel
 	 * @see #getBidiLevel()
 	 */

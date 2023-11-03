@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms;
@@ -34,7 +34,7 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * 4. Execute {@link #compute compute()}; <br>
  * 5. Execute {@link #fitWithinBounds fitWithinBounds(...)}; <br>
  * 6. Query the computed results(node size and node position).
- * 
+ *
  * @version 2.0
  * @author Ian Bull
  * @author Casey Best (version 1.0 by Jingwei Wu/Rob Lintern)
@@ -203,7 +203,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the spring layout move-control.
-	 * 
+	 *
 	 * @param move The move-control value.
 	 */
 	public void setSpringMove(double move) {
@@ -213,7 +213,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Returns the move-control value of this SpringLayoutAlgorithm in double
 	 * presion.
-	 * 
+	 *
 	 * @return The move-control value.
 	 */
 	public double getSpringMove() {
@@ -222,7 +222,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the spring layout strain-control.
-	 * 
+	 *
 	 * @param strain The strain-control value.
 	 */
 	public void setSpringStrain(double strain) {
@@ -232,7 +232,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Returns the strain-control value of this SpringLayoutAlgorithm in double
 	 * presion.
-	 * 
+	 *
 	 * @return The strain-control value.
 	 */
 	public double getSpringStrain() {
@@ -241,7 +241,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the spring layout length-control.
-	 * 
+	 *
 	 * @param length The length-control value.
 	 */
 	public void setSpringLength(double length) {
@@ -250,7 +250,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Gets the max time this algorithm will run for
-	 * 
+	 *
 	 * @return
 	 */
 	public long getSpringTimeout() {
@@ -259,7 +259,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the spring timeout
-	 * 
+	 *
 	 * @param timeout
 	 */
 	public void setSpringTimeout(long timeout) {
@@ -269,7 +269,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Returns the length-control value of this SpringLayoutAlgorithm in double
 	 * presion.
-	 * 
+	 *
 	 * @return The length-control value.
 	 */
 	public double getSpringLength() {
@@ -278,7 +278,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the spring layout gravitation-control.
-	 * 
+	 *
 	 * @param gravitation The gravitation-control value.
 	 */
 	public void setSpringGravitation(double gravitation) {
@@ -288,7 +288,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Returns the gravitation-control value of this SpringLayoutAlgorithm in double
 	 * presion.
-	 * 
+	 *
 	 * @return The gravitation-control value.
 	 */
 	public double getSpringGravitation() {
@@ -297,7 +297,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Sets the number of iterations to be used.
-	 * 
+	 *
 	 * @param gravitation The number of iterations.
 	 */
 	public void setIterations(int iterations) {
@@ -306,7 +306,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Returns the number of iterations to be used.
-	 * 
+	 *
 	 * @return The number of iterations.
 	 */
 	public int getIterations() {
@@ -316,7 +316,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	/**
 	 * Sets whether or not this SpringLayoutAlgorithm will layout the nodes randomly
 	 * before beginning iterations.
-	 * 
+	 *
 	 * @param random The random placement value.
 	 */
 	public void setRandom(boolean random) {
@@ -353,7 +353,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Clean up after done
-	 * 
+	 *
 	 * @param entitiesToLayout
 	 */
 	private void reset(InternalNode[] entitiesToLayout) {
@@ -406,7 +406,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Adds a simple relation between two nodes to the relation repository.
-	 * 
+	 *
 	 * @param layoutRelationship The simple relation to be added
 	 * @throws java.lang.NullPointerExcetption If <code>sr</code> is null
 	 * @see SimpleRelation
@@ -769,7 +769,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 	 * Examines the number of specified relation between the <code>src</code> and
 	 * the <code>dest</code> that exist in this SpringLayoutAlgorithm's relation
 	 * repository.
-	 * 
+	 *
 	 * @param src  The source part of the relaton to be examined.
 	 * @param dest The destination part of the relation to be examined.
 	 * @return The number of relations between src and dest.
@@ -783,7 +783,7 @@ public class SpringLayoutAlgorithm extends ContinuousLayoutAlgorithm {
 
 	/**
 	 * Returns the average weight between a src and dest object.
-	 * 
+	 *
 	 * @param src
 	 * @param dest
 	 * @return The average weight between the given src and dest nodes

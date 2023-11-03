@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,9 +21,9 @@ import org.eclipse.gef.examples.logicdesigner.LogicPlugin;
 
 /**
  * Creation tool that ensures size constraints for size-on-drop
- * 
+ *
  * @author anyssen
- * 
+ *
  */
 public class LogicCreationTool extends CreationTool {
 

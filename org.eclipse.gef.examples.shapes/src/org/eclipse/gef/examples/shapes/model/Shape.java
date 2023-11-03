@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -33,7 +33,7 @@ import org.eclipse.gef.examples.shapes.ShapesPlugin;
  * Abstract prototype of a shape. Has a size (width and height), a location (x
  * and y position) and a list of incoming and outgoing connections. Use
  * subclasses to instantiate a specific shape.
- * 
+ *
  * @see org.eclipse.gef.examples.shapes.model.RectangularShape
  * @see org.eclipse.gef.examples.shapes.model.EllipticalShape
  * @author Elias Volanakis
@@ -43,7 +43,7 @@ public abstract class Shape extends ModelElement {
 	/**
 	 * A static array of property descriptors. There is one IPropertyDescriptor
 	 * entry per editable property.
-	 * 
+	 *
 	 * @see #getPropertyDescriptors()
 	 * @see #getPropertyValue(Object)
 	 * @see #setPropertyValue(Object, Object)
@@ -82,11 +82,11 @@ public abstract class Shape extends ModelElement {
 
 	/*
 	 * Initializes the property descriptors array.
-	 * 
+	 *
 	 * @see #getPropertyDescriptors()
-	 * 
+	 *
 	 * @see #getPropertyValue(Object)
-	 * 
+	 *
 	 * @see #setPropertyValue(Object, Object)
 	 */
 	static {
@@ -132,7 +132,7 @@ public abstract class Shape extends ModelElement {
 
 	/**
 	 * Add an incoming or outgoing connection to this shape.
-	 * 
+	 *
 	 * @param conn a non-null connection instance
 	 * @throws IllegalArgumentException if the connection is null or has not
 	 *                                  distinct endpoints
@@ -153,14 +153,14 @@ public abstract class Shape extends ModelElement {
 	/**
 	 * Return a pictogram (small icon) describing this model element. Children
 	 * should override this method and return an appropriate Image.
-	 * 
+	 *
 	 * @return a 16x16 Image or null
 	 */
 	public abstract Image getIcon();
 
 	/**
 	 * Return the Location of this shape.
-	 * 
+	 *
 	 * @return a non-null location instance
 	 */
 	public Point getLocation() {
@@ -173,7 +173,7 @@ public abstract class Shape extends ModelElement {
 	 * The returned array is used to fill the property view, when the edit-part
 	 * corresponding to this model element is selected.
 	 * </p>
-	 * 
+	 *
 	 * @see #descriptors
 	 * @see #getPropertyValue(Object)
 	 * @see #setPropertyValue(Object, Object)
@@ -189,7 +189,7 @@ public abstract class Shape extends ModelElement {
 	 * The property view uses the IDs from the IPropertyDescriptors array to obtain
 	 * the value of the corresponding properties.
 	 * </p>
-	 * 
+	 *
 	 * @see #descriptors
 	 * @see #getPropertyDescriptors()
 	 */
@@ -212,7 +212,7 @@ public abstract class Shape extends ModelElement {
 
 	/**
 	 * Return the Size of this shape.
-	 * 
+	 *
 	 * @return a non-null Dimension instance
 	 */
 	public Dimension getSize() {
@@ -235,7 +235,7 @@ public abstract class Shape extends ModelElement {
 
 	/**
 	 * Remove an incoming or outgoing connection from this shape.
-	 * 
+	 *
 	 * @param conn a non-null connection instance
 	 * @throws IllegalArgumentException if the parameter is null
 	 */
@@ -254,7 +254,7 @@ public abstract class Shape extends ModelElement {
 
 	/**
 	 * Set the Location of this shape.
-	 * 
+	 *
 	 * @param newLocation a non-null Point instance
 	 * @throws IllegalArgumentException if the parameter is null
 	 */
@@ -273,7 +273,7 @@ public abstract class Shape extends ModelElement {
 	 * The property view uses the IDs from the IPropertyDescriptors array to set the
 	 * values of the corresponding properties.
 	 * </p>
-	 * 
+	 *
 	 * @see #descriptors
 	 * @see #getPropertyDescriptors()
 	 */
@@ -298,7 +298,7 @@ public abstract class Shape extends ModelElement {
 
 	/**
 	 * Set the Size of this shape. Will not modify the size if newSize is null.
-	 * 
+	 *
 	 * @param newSize a non-null Dimension instance or null
 	 */
 	public void setSize(Dimension newSize) {

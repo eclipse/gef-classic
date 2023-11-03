@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,7 +27,7 @@ public final class GEFPlugin extends AbstractUIPlugin {
 
 	/**
 	 * This method will be deleted.
-	 * 
+	 *
 	 * @deprecated use org.eclipse.gef.ui.properties.UndoablePropertySheetEntry
 	 * @param stack a command stack
 	 * @return the implementation for the entry
@@ -38,7 +38,7 @@ public final class GEFPlugin extends AbstractUIPlugin {
 
 	/**
 	 * Gets the plugin singleton.
-	 * 
+	 *
 	 * @return the default GEFPlugin singleton
 	 */
 	public static GEFPlugin getDefault() {

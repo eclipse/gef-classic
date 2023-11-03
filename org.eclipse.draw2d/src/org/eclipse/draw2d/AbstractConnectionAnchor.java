@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -16,7 +16,7 @@ import org.eclipse.draw2d.geometry.Point;
 
 /**
  * Provides support for anchors which depend on a figure for thier location.
- * 
+ *
  * @author hudsonr
  */
 public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase implements AncestorListener {
@@ -25,7 +25,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 
 	/**
 	 * Constructs an AbstractConnectionAnchor with no owner.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public AbstractConnectionAnchor() {
@@ -33,7 +33,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 
 	/**
 	 * Constructs an AbstractConnectionAnchor with the owner supplied as input.
-	 * 
+	 *
 	 * @since 2.0
 	 * @param owner Owner of this anchor
 	 */
@@ -44,7 +44,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	/**
 	 * Adds the given listener to the listeners to be notified of anchor location
 	 * changes.
-	 * 
+	 *
 	 * @since 2.0
 	 * @param listener Listener to be added
 	 * @see #removeAnchorListener(AnchorListener)
@@ -60,7 +60,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 
 	/**
 	 * Notifies all the listeners of this anchor's location change.
-	 * 
+	 *
 	 * @since 2.0
 	 * @param figure Anchor-owning Figure which has moved
 	 * @see org.eclipse.draw2d.AncestorListener#ancestorMoved(IFigure)
@@ -86,7 +86,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 
 	/**
 	 * Returns the owner Figure on which this anchor's location is dependent.
-	 * 
+	 *
 	 * @since 2.0
 	 * @return Owner of this anchor
 	 * @see #setOwner(IFigure)
@@ -100,7 +100,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	 * Returns the point which is used as the reference by this
 	 * AbstractConnectionAnchor. It is generally dependent on the Figure which is
 	 * the owner of this AbstractConnectionAnchor.
-	 * 
+	 *
 	 * @since 2.0
 	 * @return The reference point of this anchor
 	 * @see org.eclipse.draw2d.ConnectionAnchor#getReferencePoint()
@@ -119,7 +119,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 	/**
 	 * Removes the given listener from this anchor. If all the listeners are
 	 * removed, then this anchor removes itself from its owner.
-	 * 
+	 *
 	 * @since 2.0
 	 * @param listener Listener to be removed from this anchors listeners list
 	 * @see #addAnchorListener(AnchorListener)
@@ -133,7 +133,7 @@ public abstract class AbstractConnectionAnchor extends ConnectionAnchorBase impl
 
 	/**
 	 * Sets the owner of this anchor, on whom this anchors location is dependent.
-	 * 
+	 *
 	 * @since 2.0
 	 * @param owner Owner of this anchor
 	 */

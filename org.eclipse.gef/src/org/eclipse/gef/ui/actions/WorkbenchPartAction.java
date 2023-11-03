@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 
 	/**
 	 * Constructs a WorkbenchPartAction for the given part.
-	 * 
+	 *
 	 * @param part the workbench part
 	 */
 	public WorkbenchPartAction(IWorkbenchPart part) {
@@ -42,7 +42,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 
 	/**
 	 * Constructs a WorkbenchPartAction for the given part and style.
-	 * 
+	 *
 	 * @param part  the workbench part
 	 * @param style one of <code>AS_PUSH_BUTTON</code>, <code>AS_CHECK_BOX</code>,
 	 *              <code>AS_DROP_DOWN_MENU</code>, <code>AS_RADIO_BUTTON</code>,
@@ -56,7 +56,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 
 	/**
 	 * Calculates and returns the enabled state of this action.
-	 * 
+	 *
 	 * @return <code>true</code> if the action is enabled
 	 */
 	protected abstract boolean calculateEnabled();
@@ -72,7 +72,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 	 * Executes the given {@link Command} using the command stack. The stack is
 	 * obtained by calling {@link #getCommandStack()}, which uses
 	 * <code>IAdapatable</code> to retrieve the stack from the workbench part.
-	 * 
+	 *
 	 * @param command the command to execute
 	 */
 	protected void execute(Command command) {
@@ -85,7 +85,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 	 * Returns the editor's command stack. This is done by asking the workbench part
 	 * for its CommandStack via
 	 * {@link org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)}.
-	 * 
+	 *
 	 * @return the command stack
 	 */
 	protected CommandStack getCommandStack() {
@@ -94,7 +94,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 
 	/**
 	 * Returns the workbench part given in the constructor
-	 * 
+	 *
 	 * @return the workbench part
 	 */
 	protected IWorkbenchPart getWorkbenchPart() {
@@ -112,7 +112,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 	 * enablemenu lazily, then {@link #calculateEnabled()} is always called.
 	 * Otherwise, the enablement state set using {@link Action#setEnabled(boolean)}
 	 * is returned.
-	 * 
+	 *
 	 * @see #setLazyEnablementCalculation(boolean)
 	 * @return <code>true</code> if the action is enabled
 	 */
@@ -147,7 +147,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 	 * asked for, or <i>lazily</i>.
 	 * <P>
 	 * The default value for this setting is <code>true</code>.
-	 * 
+	 *
 	 * @param value <code>true</code> if the enablement should be lazy
 	 */
 	public void setLazyEnablementCalculation(boolean value) {
@@ -156,7 +156,7 @@ public abstract class WorkbenchPartAction extends Action implements Disposable, 
 
 	/**
 	 * Sets the workbench part.
-	 * 
+	 *
 	 * @param part the workbench part
 	 */
 	protected void setWorkbenchPart(IWorkbenchPart part) {

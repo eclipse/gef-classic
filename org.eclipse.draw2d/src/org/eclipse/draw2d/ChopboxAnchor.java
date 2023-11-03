@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 
 	/**
 	 * Constructs a ChopboxAnchor with the given <i>owner</i> figure.
-	 * 
+	 *
 	 * @param owner The owner figure
 	 * @since 2.0
 	 */
@@ -43,7 +43,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	 * Gets a Rectangle from {@link #getBox()} and returns the Point where a line
 	 * from the center of the Rectangle to the Point <i>reference</i> intersects the
 	 * Rectangle.
-	 * 
+	 *
 	 * @param reference The reference point
 	 * @return The anchor location
 	 */
@@ -80,7 +80,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	 * Returns the bounds of this ChopboxAnchor's owner. Subclasses can override
 	 * this method to adjust the box the anchor can be placed on. For instance, the
 	 * owner figure may have a drop shadow that should not be included in the box.
-	 * 
+	 *
 	 * @return The bounds of this ChopboxAnchor's owner
 	 * @since 2.0
 	 */
@@ -91,7 +91,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	/**
 	 * Returns the anchor's reference point. In the case of the ChopboxAnchor, this
 	 * is the center of the anchor's owner.
-	 * 
+	 *
 	 * @return The reference point
 	 */
 	@Override
@@ -103,7 +103,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 
 	/**
 	 * Returns <code>true</code> if the other anchor has the same owner and box.
-	 * 
+	 *
 	 * @param obj the other anchor
 	 * @return <code>true</code> if equal
 	 */
@@ -118,7 +118,7 @@ public class ChopboxAnchor extends AbstractConnectionAnchor {
 	/**
 	 * The owning figure's hashcode is used since equality is approximately based on
 	 * the owner.
-	 * 
+	 *
 	 * @return the hash code.
 	 */
 	@Override

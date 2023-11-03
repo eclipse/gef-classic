@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ import org.eclipse.gef.requests.BendpointRequest;
  * to move an existing bendpoint, or a request to create a new bendpoint.
  * <P>
  * A ConnectionBendpointTracker operates on a single connection editpart.
- * 
+ *
  * @author hudsonr
  */
 public class ConnectionBendpointTracker extends SimpleDragTracker {
@@ -48,7 +48,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 
 	/**
 	 * Constructs a tracker for the given connection and index.
-	 * 
+	 *
 	 * @param editpart the connection
 	 * @param i        the index of the bendpoint
 	 */
@@ -69,7 +69,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 
 	/**
 	 * Creates a BendpointRequest.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.SimpleDragTracker#createSourceRequest()
 	 */
 	@Override
@@ -83,7 +83,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 
 	/**
 	 * Obtains a new command from the connection.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#getCommand()
 	 */
 	@Override
@@ -101,7 +101,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 
 	/**
 	 * Convenience method to obtain the connection editpart's connection figure.
-	 * 
+	 *
 	 * @return the connection figure
 	 */
 	protected Connection getConnection() {
@@ -110,7 +110,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 
 	/**
 	 * Returns the connection editpart on which the tracker operates.
-	 * 
+	 *
 	 * @return the connection editpart
 	 */
 	protected ConnectionEditPart getConnectionEditPart() {
@@ -127,7 +127,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 
 	/**
 	 * Returns the index of the bendpoint being dragged or created.
-	 * 
+	 *
 	 * @return the index
 	 */
 	protected int getIndex() {
@@ -137,7 +137,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 	/**
 	 * The type of tracker, either {@link RequestConstants#REQ_CREATE_BENDPOINT} or
 	 * {@link RequestConstants#REQ_MOVE_BENDPOINT}.
-	 * 
+	 *
 	 * @return the type of operation being performed (move or create bendpoint)
 	 */
 	protected Object getType() {
@@ -146,7 +146,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 
 	/**
 	 * Sets the connection editpart being operated on.
-	 * 
+	 *
 	 * @param cep the connection
 	 */
 	public void setConnectionEditPart(ConnectionEditPart cep) {
@@ -155,7 +155,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 
 	/**
 	 * Sets the index of the operation.
-	 * 
+	 *
 	 * @param i the index
 	 */
 	public void setIndex(int i) {
@@ -164,7 +164,7 @@ public class ConnectionBendpointTracker extends SimpleDragTracker {
 
 	/**
 	 * Sets the type of bendpoint drag being performed.
-	 * 
+	 *
 	 * @see #getType()
 	 * @param type the drag type
 	 */

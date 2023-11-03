@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * The Graphics class allows you to draw to a surface. The drawXxx() methods
  * that pertain to shapes draw an outline of the shape, whereas the fillXxx()
  * methods fill in the shape. Also provides for drawing text, lines and images.
- * 
+ *
  * @noextend This class is not intended to be subclassed by clients.
  */
 public abstract class Graphics {
@@ -69,7 +69,7 @@ public abstract class Graphics {
 	/**
 	 * Sets the clip region to the given rectangle. Anything outside this rectangle
 	 * will not be drawn.
-	 * 
+	 *
 	 * @param r the clip rectangle
 	 */
 	public abstract void clipRect(Rectangle r);
@@ -78,9 +78,9 @@ public abstract class Graphics {
 	 * Sets the clip region to the given rectangle. Anything outside this rectangle
 	 * will not be drawn. Takes into account current clipping area set on the
 	 * graphics.
-	 * 
+	 *
 	 * @param path the clip path
-	 * 
+	 *
 	 * @since 3.6
 	 */
 	public void clipPath(Path path) {
@@ -96,7 +96,7 @@ public abstract class Graphics {
 	 * Draws the outline of an arc located at (x,y) with width <i>w</i> and height
 	 * <i>h</i>. The starting angle of the arc (specified in degrees) is
 	 * <i>offset</i> and <i>length</i> is the arc's angle (specified in degrees).
-	 * 
+	 *
 	 * @param x      the x coordinate
 	 * @param y      the y coordinate
 	 * @param w      the width
@@ -115,7 +115,7 @@ public abstract class Graphics {
 
 	/**
 	 * Draws a focus rectangle.
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @param w the width
@@ -132,7 +132,7 @@ public abstract class Graphics {
 
 	/**
 	 * Draws the given Image at the location (x,y).
-	 * 
+	 *
 	 * @param srcImage the Image
 	 * @param x        the x coordinate
 	 * @param y        the y coordinate
@@ -144,7 +144,7 @@ public abstract class Graphics {
 	 * reagion on the canvas. The section of the image bounded by the rectangle
 	 * (x1,y1,w1,h1) is copied to the section of the canvas bounded by the rectangle
 	 * (x2,y2,w2,h2). If these two sizes are different, scaling will occur.
-	 * 
+	 *
 	 * @param srcImage the image
 	 * @param x1       the x coordinate of the source
 	 * @param y1       the y coordinate of the source
@@ -159,7 +159,7 @@ public abstract class Graphics {
 
 	/**
 	 * Draws the given image at a point.
-	 * 
+	 *
 	 * @param image the image to draw
 	 * @param p     where to draw the image
 	 * @see #drawImage(Image, int, int)
@@ -178,7 +178,7 @@ public abstract class Graphics {
 	/**
 	 * Draws a line between the points <code>(x1,y1)</code> and <code>(x2,y2)</code>
 	 * using the foreground color.
-	 * 
+	 *
 	 * @param x1 the x coordinate for the first point
 	 * @param y1 the y coordinate for the first point
 	 * @param x2 the x coordinate for the second point
@@ -196,7 +196,7 @@ public abstract class Graphics {
 	/**
 	 * Draws the outline of an ellipse that fits inside the rectangle with the given
 	 * properties using the foreground color.
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @param w the width
@@ -206,7 +206,7 @@ public abstract class Graphics {
 
 	/**
 	 * Draws an oval inside the given rectangle using the current foreground color.
-	 * 
+	 *
 	 * @param r the rectangle circumscribing the oval to be drawn
 	 * @see #drawOval(int, int, int, int)
 	 */
@@ -216,7 +216,7 @@ public abstract class Graphics {
 
 	/**
 	 * Draws the given path.
-	 * 
+	 *
 	 * @param path the path to draw
 	 * @since 3.1
 	 */
@@ -230,10 +230,10 @@ public abstract class Graphics {
 	 * <p>
 	 * Note that the current line attributes do not affect this operation.
 	 * </p>
-	 * 
+	 *
 	 * @param x the point's x coordinate
 	 * @param y the point's y coordinate
-	 * 
+	 *
 	 */
 	public void drawPoint(int x, int y) {
 		drawLine(x, y, x, y);
@@ -243,7 +243,7 @@ public abstract class Graphics {
 	 * Draws a closed polygon defined by the given Integer array containing the
 	 * vertices in x,y order. The first and last points in the list will be
 	 * connected.
-	 * 
+	 *
 	 * @param points the vertices
 	 */
 	public void drawPolygon(int[] points) {
@@ -253,7 +253,7 @@ public abstract class Graphics {
 	/**
 	 * Draws a closed polygon defined by the given <code>PointList</code> containing
 	 * the vertices. The first and last points in the list will be connected.
-	 * 
+	 *
 	 * @param points the vertices
 	 */
 	public abstract void drawPolygon(PointList points);
@@ -262,7 +262,7 @@ public abstract class Graphics {
 	 * Draws a polyline defined by the given Integer array containing the vertices
 	 * in x,y order. The first and last points in the list will <b>not</b> be
 	 * connected.
-	 * 
+	 *
 	 * @param points the vertices
 	 */
 	public void drawPolyline(int[] points) {
@@ -272,7 +272,7 @@ public abstract class Graphics {
 	/**
 	 * Draws a polyline defined by the given <code>PointList</code> containing the
 	 * vertices. The first and last points in the list will <b>not</b> be connected.
-	 * 
+	 *
 	 * @param points the vertices
 	 */
 	public abstract void drawPolyline(PointList points);
@@ -280,7 +280,7 @@ public abstract class Graphics {
 	/**
 	 * Draws a rectangle whose top-left corner is located at the point (x,y) with
 	 * the given width and height.
-	 * 
+	 *
 	 * @param x      the x coordinate
 	 * @param y      the y coordinate
 	 * @param width  the width
@@ -290,7 +290,7 @@ public abstract class Graphics {
 
 	/**
 	 * Draws the given rectangle using the current foreground color.
-	 * 
+	 *
 	 * @param r the rectangle to draw
 	 * @see #drawRectangle(int, int, int, int)
 	 */
@@ -302,7 +302,7 @@ public abstract class Graphics {
 	 * Draws a rectangle with rounded corners using the foreground color.
 	 * <i>arcWidth</i> and <i>arcHeight</i> represent the horizontal and vertical
 	 * diameter of the corners.
-	 * 
+	 *
 	 * @param r         the rectangle
 	 * @param arcWidth  the arc width
 	 * @param arcHeight the arc height
@@ -313,7 +313,7 @@ public abstract class Graphics {
 	 * Draws the given string using the current font and foreground color. No tab
 	 * expansion or carriage return processing will be performed. The background of
 	 * the string will be transparent.
-	 * 
+	 *
 	 * @param s the string
 	 * @param x the x coordinate
 	 * @param y the y coordinate
@@ -331,7 +331,7 @@ public abstract class Graphics {
 	 * Draws the given string using the current font and foreground color. Tab
 	 * expansion and carriage return processing are performed. The background of the
 	 * text will be transparent.
-	 * 
+	 *
 	 * @param s the text
 	 * @param x the x coordinate
 	 * @param y the y coordinate
@@ -341,7 +341,7 @@ public abstract class Graphics {
 	/**
 	 * Draws a string using the specified styles. The styles are defined by
 	 * {@link GC#drawText(String, int, int, int)}.
-	 * 
+	 *
 	 * @param s     the String to draw
 	 * @param x     the x location
 	 * @param y     the y location
@@ -362,7 +362,7 @@ public abstract class Graphics {
 	/**
 	 * Draws a string using the specified styles. The styles are defined by
 	 * {@link GC#drawText(String, int, int, int)}.
-	 * 
+	 *
 	 * @param s     the String to draw
 	 * @param p     the point at which to draw the string
 	 * @param style the styles used to render the string
@@ -374,7 +374,7 @@ public abstract class Graphics {
 
 	/**
 	 * Renders the specified TextLayout to this Graphics.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param layout the TextLayout
 	 * @param x      the x coordinate
@@ -404,7 +404,7 @@ public abstract class Graphics {
 	 * <i>w</i> and height <i>h</i>. The starting angle of the arc (specified in
 	 * degrees) is <i>offset</i> and <i>length</i> is the arc's angle (specified in
 	 * degrees).
-	 * 
+	 *
 	 * @param x      the x coordinate
 	 * @param y      the y coordinate
 	 * @param w      the width
@@ -426,7 +426,7 @@ public abstract class Graphics {
 	 * the background color. If <i>vertical</i> is <code>true</code>, the gradient
 	 * will go from top to bottom. Otherwise, it will go from left to right.
 	 * background color.
-	 * 
+	 *
 	 * @param x        the x coordinate
 	 * @param y        the y coordinate
 	 * @param w        the width
@@ -445,7 +445,7 @@ public abstract class Graphics {
 	/**
 	 * Fills an ellipse that fits inside the rectangle with the given properties
 	 * using the background color.
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @param w the width
@@ -462,7 +462,7 @@ public abstract class Graphics {
 
 	/**
 	 * Fills the given path.
-	 * 
+	 *
 	 * @param path the path to fill
 	 * @since 3.1
 	 */
@@ -474,7 +474,7 @@ public abstract class Graphics {
 	 * Fills a closed polygon defined by the given Integer array containing the
 	 * vertices in x,y order. The first and last points in the list will be
 	 * connected.
-	 * 
+	 *
 	 * @param points the vertices
 	 */
 	public void fillPolygon(int[] points) {
@@ -484,7 +484,7 @@ public abstract class Graphics {
 	/**
 	 * Fills a closed polygon defined by the given <code>PointList</code> containing
 	 * the vertices. The first and last points in the list will be connected.
-	 * 
+	 *
 	 * @param points the vertices
 	 */
 	public abstract void fillPolygon(PointList points);
@@ -492,7 +492,7 @@ public abstract class Graphics {
 	/**
 	 * Fills a rectangle whose top-left corner is located at the point (x,y) with
 	 * the given width and height.
-	 * 
+	 *
 	 * @param x      the x coordinate
 	 * @param y      the y coordinate
 	 * @param width  the width
@@ -502,7 +502,7 @@ public abstract class Graphics {
 
 	/**
 	 * Fills the given rectangle using the current background color.
-	 * 
+	 *
 	 * @param r the rectangle to fill
 	 * @see #fillRectangle(int, int, int, int)
 	 */
@@ -514,7 +514,7 @@ public abstract class Graphics {
 	 * Fills a rectangle with rounded corners using the background color.
 	 * <i>arcWidth</i> and <i>arcHeight</i> represent the horizontal and vertical
 	 * diameter of the corners.
-	 * 
+	 *
 	 * @param r         the rectangle
 	 * @param arcWidth  the arc width
 	 * @param arcHeight the arc height
@@ -525,7 +525,7 @@ public abstract class Graphics {
 	 * Draws the given string using the current font and foreground color. No tab
 	 * expansion or carriage return processing will be performed. The background of
 	 * the string will be filled with the current background color.
-	 * 
+	 *
 	 * @param s the string
 	 * @param x the x coordinate
 	 * @param y the y coordinate
@@ -543,7 +543,7 @@ public abstract class Graphics {
 	 * Draws the given string using the current font and foreground color. Tab
 	 * expansion and carriage return processing are performed. The background of the
 	 * text will be filled with the current background color.
-	 * 
+	 *
 	 * @param s the text
 	 * @param x the x coordinate
 	 * @param y the y coordinate
@@ -560,7 +560,7 @@ public abstract class Graphics {
 	/**
 	 * Returns the current absolute scaling which will be applied to the underlying
 	 * Device when painting to this Graphics. The default value is 1.0.
-	 * 
+	 *
 	 * @since 3.0
 	 * @return the effective absolute scaling factor
 	 */
@@ -580,7 +580,7 @@ public abstract class Graphics {
 
 	/**
 	 * Returns the current alpha value of the graphics.
-	 * 
+	 *
 	 * @return the alpha value
 	 * @since 3.1
 	 */
@@ -594,7 +594,7 @@ public abstract class Graphics {
 	 * <code>SWT.DEFAULT</code>, <code>SWT.OFF</code> or <code>SWT.ON</code>. Note
 	 * that this controls anti-aliasing for all <em>non-text</em> drawing
 	 * operations.
-	 * 
+	 *
 	 * @see #getTextAntialias()
 	 * @return the anti-alias setting
 	 * @since 3.1
@@ -606,7 +606,7 @@ public abstract class Graphics {
 
 	/**
 	 * Returns the background color used for filling.
-	 * 
+	 *
 	 * @return the background color
 	 */
 	public abstract Color getBackgroundColor();
@@ -614,7 +614,7 @@ public abstract class Graphics {
 	/**
 	 * Modifies the given rectangle to match the clip region and returns that
 	 * rectangle.
-	 * 
+	 *
 	 * @param rect the rectangle to hold the clip region
 	 * @return the clip rectangle
 	 */
@@ -623,7 +623,7 @@ public abstract class Graphics {
 	/**
 	 * Returns the fill rule, which will be one of <code>SWT.FILL_EVEN_ODD</code> or
 	 * <code>SWT.FILL_WINDING</code>.
-	 * 
+	 *
 	 * @return the fill rule
 	 * @since 3.1
 	 */
@@ -634,28 +634,28 @@ public abstract class Graphics {
 
 	/**
 	 * Returns the font used to draw and fill text.
-	 * 
+	 *
 	 * @return the font
 	 */
 	public abstract Font getFont();
 
 	/**
 	 * Returns the font metrics for the current font.
-	 * 
+	 *
 	 * @return the font metrics
 	 */
 	public abstract FontMetrics getFontMetrics();
 
 	/**
 	 * Returns the foreground color used to draw lines and text.
-	 * 
+	 *
 	 * @return the foreground color
 	 */
 	public abstract Color getForegroundColor();
 
 	/**
 	 * Returns the interpolation setting.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.GC#getInterpolation()
 	 * @return the interpolation setting
 	 * @since 3.1
@@ -667,7 +667,7 @@ public abstract class Graphics {
 
 	/**
 	 * Returns the current collection of line attributes.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes
 	 * @return all attributes used for line drawing
 	 * @since 3.5
@@ -679,7 +679,7 @@ public abstract class Graphics {
 
 	/**
 	 * Returns the current line cap style.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#cap
 	 * @return the cap style used for drawing lines
 	 * @since 3.1
@@ -691,7 +691,7 @@ public abstract class Graphics {
 
 	/**
 	 * Returns the line join style.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#join
 	 * @since 3.1
 	 * @return the join style used for drawing lines
@@ -703,7 +703,7 @@ public abstract class Graphics {
 
 	/**
 	 * Returns the line miter limit.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#miterLimit
 	 * @return miter limit
 	 * @since 3.5
@@ -715,7 +715,7 @@ public abstract class Graphics {
 
 	/**
 	 * Returns the line style.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#style
 	 * @return the line style
 	 */
@@ -723,14 +723,14 @@ public abstract class Graphics {
 
 	/**
 	 * Returns the current line width.
-	 * 
+	 *
 	 * @return the line width
 	 */
 	public abstract int getLineWidth();
 
 	/**
 	 * Returns the current line width.
-	 * 
+	 *
 	 * @see org.eclipse.swt.graphics.LineAttributes#width
 	 * @return the line width
 	 * @since 3.5
@@ -739,7 +739,7 @@ public abstract class Graphics {
 
 	/**
 	 * Returns a pointlist containing all the points from the integer array.
-	 * 
+	 *
 	 * @param points an integer array of x,y points
 	 * @return the corresponding pointlist
 	 */
@@ -754,7 +754,7 @@ public abstract class Graphics {
 	 * Returns the textual anti-aliasing setting value, which will be one of
 	 * <code>SWT.DEFAULT</code>, <code>SWT.OFF</code> or <code>SWT.ON</code>. Note
 	 * that this controls anti-aliasing <em>only</em> for text drawing operations.
-	 * 
+	 *
 	 * @see #getAntialias()
 	 * @return the anti-aliasing setting
 	 * @since 3.1
@@ -767,7 +767,7 @@ public abstract class Graphics {
 	/**
 	 * Returns <code>true</code> if this graphics object should use XOR mode with
 	 * painting.
-	 * 
+	 *
 	 * @return whether XOR mode is turned on
 	 */
 	public abstract boolean getXORMode();
@@ -795,7 +795,7 @@ public abstract class Graphics {
 	 * illegal when a rotated coordinates system is in use. To restore access to
 	 * those functions, it is necessary to call restore or pop to return to a non
 	 * rotated state.
-	 * 
+	 *
 	 * @param degrees the degrees to rotate
 	 * @since 3.1
 	 */
@@ -805,14 +805,14 @@ public abstract class Graphics {
 
 	/**
 	 * Scales this graphics object by the given amount.
-	 * 
+	 *
 	 * @param amount the scale factor
 	 */
 	public abstract void scale(double amount);
 
 	/**
 	 * Scales the graphics by the given horizontal and vertical components.
-	 * 
+	 *
 	 * @param horizontal the horizontal scaling factor
 	 * @param vertical   the vertical scaling factor
 	 * @since 3.1
@@ -824,7 +824,7 @@ public abstract class Graphics {
 	/**
 	 * Sets the alpha to the given value. Values may range from 0 to 255. A value of
 	 * 0 is completely transparent.
-	 * 
+	 *
 	 * @param alpha an alpha value (0-255)
 	 * @since 3.1
 	 */
@@ -834,7 +834,7 @@ public abstract class Graphics {
 
 	/**
 	 * Turns advanced graphics mode on or off.
-	 * 
+	 *
 	 * @param advanced
 	 * @since 3.5
 	 */
@@ -847,7 +847,7 @@ public abstract class Graphics {
 	 * <code>SWT.DEFAULT</code>, <code>SWT.OFF</code> or <code>SWT.ON</code>. Note
 	 * that this controls anti-aliasing for all <em>non-text drawing</em>
 	 * operations.
-	 * 
+	 *
 	 * @param value the anti-alias value
 	 */
 	public void setAntialias(int value) {
@@ -856,7 +856,7 @@ public abstract class Graphics {
 
 	/**
 	 * Sets the background color.
-	 * 
+	 *
 	 * @param rgb the new background color
 	 */
 	public abstract void setBackgroundColor(Color rgb);
@@ -864,7 +864,7 @@ public abstract class Graphics {
 	/**
 	 * Sets the pattern used for fill-type graphics operations. The pattern must not
 	 * be disposed while it is being used by the graphics.
-	 * 
+	 *
 	 * @param pattern the background pattern
 	 * @since 3.1
 	 */
@@ -875,7 +875,7 @@ public abstract class Graphics {
 	/**
 	 * Sets the area which can be affected by drawing operations to the specified
 	 * <code>Path</code>.
-	 * 
+	 *
 	 * @param path the clipping path
 	 * @since 3.1
 	 */
@@ -885,7 +885,7 @@ public abstract class Graphics {
 
 	/**
 	 * Sets the clip rectangle. Painting will <b>not</b> occur outside this area.
-	 * 
+	 *
 	 * @param r the new clip rectangle
 	 */
 	public abstract void setClip(Rectangle r);
@@ -893,7 +893,7 @@ public abstract class Graphics {
 	/**
 	 * Sets the fill rule to the given value, which must be one of
 	 * <code>SWT.FILL_EVEN_ODD</code> or <code>SWT.FILL_WINDING</code>.
-	 * 
+	 *
 	 * @param rule the fill rule
 	 * @since 3.1
 	 */
@@ -903,14 +903,14 @@ public abstract class Graphics {
 
 	/**
 	 * Sets the font.
-	 * 
+	 *
 	 * @param f the new font
 	 */
 	public abstract void setFont(Font f);
 
 	/**
 	 * Sets the foreground color.
-	 * 
+	 *
 	 * @param rgb the new foreground color
 	 */
 	public abstract void setForegroundColor(Color rgb);
@@ -918,7 +918,7 @@ public abstract class Graphics {
 	/**
 	 * Sets the foreground pattern for draw and text operations. The pattern must
 	 * not be disposed while it is being referenced by the graphics.
-	 * 
+	 *
 	 * @param pattern the foreground pattern
 	 * @since 3.1
 	 */
@@ -930,7 +930,7 @@ public abstract class Graphics {
 	 * Sets the interpolation setting to the given value, which must be one of
 	 * <code>SWT.DEFAULT</code>, <code>SWT.NONE</code>, <code>SWT.LOW</code> or
 	 * <code>SWT.HIGH</code>. This setting is relevant when working with Images.
-	 * 
+	 *
 	 * @param interpolation the interpolation
 	 * @since 3.1
 	 */
@@ -940,7 +940,7 @@ public abstract class Graphics {
 
 	/**
 	 * Sets all line attributes together
-	 * 
+	 *
 	 * @param attributes the line attributes
 	 * @since 3.5
 	 */
@@ -952,7 +952,7 @@ public abstract class Graphics {
 	 * Sets the line cap style to the argument, which must be one of the constants
 	 * <code>SWT.CAP_FLAT</code>, <code>SWT.CAP_ROUND</code>, or
 	 * <code>SWT.CAP_SQUARE</code>.
-	 * 
+	 *
 	 * @param cap the line cap
 	 * @since 3.1
 	 */
@@ -964,7 +964,7 @@ public abstract class Graphics {
 	 * Sets the dash pattern when the custom line style is in use. Because this
 	 * feature is rarely used, the dash pattern may not be preserved when calling
 	 * {@link #pushState()} and {@link #popState()}.
-	 * 
+	 *
 	 * @param dash the pixel pattern
 	 * @since 3.1
 	 */
@@ -974,7 +974,7 @@ public abstract class Graphics {
 
 	/**
 	 * Sets the dash pattern when the custom line style is in use.
-	 * 
+	 *
 	 * @param value the pixel pattern.
 	 * @since 3.5
 	 */
@@ -984,7 +984,7 @@ public abstract class Graphics {
 
 	/**
 	 * Sets the line dash offset.
-	 * 
+	 *
 	 * @param value
 	 * @since 3.8
 	 */
@@ -996,7 +996,7 @@ public abstract class Graphics {
 	 * Sets the line join style to the argument, which must be one of the constants
 	 * <code>SWT.JOIN_MITER</code>, <code>SWT.JOIN_ROUND</code>, or
 	 * <code>SWT.JOIN_BEVEL</code>.
-	 * 
+	 *
 	 * @param join the join type
 	 * @since 3.1
 	 */
@@ -1009,21 +1009,21 @@ public abstract class Graphics {
 	 * <code>SWT.LINE_SOLID</code>, <code>SWT.LINE_DASH</code>,
 	 * <code>SWT.LINE_DOT</code>, <code>SWT.LINE_DASHDOT</code> or
 	 * <code>SWT.LINE_DASHDOTDOT</code>.
-	 * 
+	 *
 	 * @param style the new style
 	 */
 	public abstract void setLineStyle(int style);
 
 	/**
 	 * Sets the line width.
-	 * 
+	 *
 	 * @param width the new width
 	 */
 	public abstract void setLineWidth(int width);
 
 	/**
 	 * Sets the line width.
-	 * 
+	 *
 	 * @param width the new width
 	 * @since 3.5
 	 */
@@ -1040,7 +1040,7 @@ public abstract class Graphics {
 	 * <code>SWT.DEFAULT</code>, <code>SWT.OFF</code> or <code>SWT.ON</code>. Note
 	 * that this controls anti-aliasing only for all <em>text drawing</em>
 	 * operations.
-	 * 
+	 *
 	 * @param value the textual anti-alias setting
 	 * @since 3.1
 	 */
@@ -1052,7 +1052,7 @@ public abstract class Graphics {
 	 * Modifies the current transformation by shearing the graphics in the specified
 	 * horizontal and vertical amounts. Shearing can be used to produce effects like
 	 * Italic fonts.
-	 * 
+	 *
 	 * @param horz the horizontal shearing amount
 	 * @param vert the vertical shearing amount
 	 * @since 3.1
@@ -1063,7 +1063,7 @@ public abstract class Graphics {
 
 	/**
 	 * Sets the XOR mode.
-	 * 
+	 *
 	 * @param b the new XOR mode
 	 */
 	public abstract void setXORMode(boolean b);
@@ -1071,7 +1071,7 @@ public abstract class Graphics {
 	/**
 	 * Throws a runtime exception to indicate a subclass has chosen not to implement
 	 * the method.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	private void throwNotImplemented() {
@@ -1085,7 +1085,7 @@ public abstract class Graphics {
 	 * Integer translation used by itself does not require or start the use of the
 	 * advanced graphics system in SWT. It is emulated until advanced graphics are
 	 * triggered.
-	 * 
+	 *
 	 * @param dx the horizontal offset
 	 * @param dy the vertical offset
 	 */
@@ -1094,7 +1094,7 @@ public abstract class Graphics {
 	/**
 	 * Modifies the current transform by translating the given x and y amounts. All
 	 * subsequent painting will be performed in the resulting coordinate system.
-	 * 
+	 *
 	 * @param dx the horizontal offset
 	 * @param dy the vertical offset
 	 */

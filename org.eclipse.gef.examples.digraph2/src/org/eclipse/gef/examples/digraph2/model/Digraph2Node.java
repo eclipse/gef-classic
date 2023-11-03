@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ import org.eclipse.gef.examples.digraph1.model.Digraph1Node;
 
 /**
  * The node model object which describes a node in the directed graph.
- * 
+ *
  * @author Anthony Hunter
  */
 public class Digraph2Node extends Digraph1Node {
@@ -37,7 +37,7 @@ public class Digraph2Node extends Digraph1Node {
 
 	/**
 	 * Constructor for a Digraph2Node.
-	 * 
+	 *
 	 * @param aNumber the node number.
 	 */
 	public Digraph2Node(int aNumber) {
@@ -48,7 +48,7 @@ public class Digraph2Node extends Digraph1Node {
 
 	/**
 	 * Add the edge to the list of source edges.
-	 * 
+	 *
 	 * @param sourceEdge the edge to add.
 	 */
 	public void addSourceEdge(Digraph2Edge sourceEdge) {
@@ -57,7 +57,7 @@ public class Digraph2Node extends Digraph1Node {
 
 	/**
 	 * Add the edge to the list of target edges.
-	 * 
+	 *
 	 * @param targetEdge the edge to add.
 	 */
 	public void addTargetEdge(Digraph2Edge targetEdge) {
@@ -66,7 +66,7 @@ public class Digraph2Node extends Digraph1Node {
 
 	/**
 	 * Get the list of edges that have this node as the source.
-	 * 
+	 *
 	 * @return the list of edges that have this node as the source.
 	 */
 	public List<Digraph2Edge> getSourceEdges() {
@@ -75,7 +75,7 @@ public class Digraph2Node extends Digraph1Node {
 
 	/**
 	 * Get the list of edges that have this node as the target.
-	 * 
+	 *
 	 * @return the list of edges that have this node as the target.
 	 */
 	public List<Digraph2Edge> getTargetEdges() {
@@ -84,7 +84,7 @@ public class Digraph2Node extends Digraph1Node {
 
 	/**
 	 * Remove the edge to the list of source edges.
-	 * 
+	 *
 	 * @param sourceEdge the edge to remove.
 	 */
 	public void removeSourceEdge(Digraph2Edge sourceEdge) {
@@ -93,7 +93,7 @@ public class Digraph2Node extends Digraph1Node {
 
 	/**
 	 * Remove the edge to the list of target edges.
-	 * 
+	 *
 	 * @param targetEdge the edge to remove.
 	 */
 	public void removeTargetEdge(Digraph2Edge targetEdge) {

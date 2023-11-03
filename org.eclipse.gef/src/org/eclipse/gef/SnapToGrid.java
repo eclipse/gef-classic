@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -28,7 +28,7 @@ import org.eclipse.draw2d.geometry.PrecisionRectangle;
  * properties. Clients should instantiate a new helper each time one is
  * requested and not hold on to instances of the helper, if the grid properties
  * specified on the viewer are subject to change.
- * 
+ *
  * @author Randy Hudson
  * @author Pratik Shah
  * @since 3.0
@@ -60,7 +60,7 @@ public class SnapToGrid extends SnapToHelper {
 
 	/**
 	 * The default grid size if the viewer does not specify a size.
-	 * 
+	 *
 	 * @see #PROPERTY_GRID_SPACING
 	 */
 	public static final int DEFAULT_GRID_SIZE = 12;
@@ -94,7 +94,7 @@ public class SnapToGrid extends SnapToHelper {
 	 * Constructs a gridded snap helper on the given editpart. The editpart should
 	 * be the graphical editpart whose contentspane figure is used as the reference
 	 * for the grid.
-	 * 
+	 *
 	 * @param container the editpart which the grid is on
 	 */
 	public SnapToGrid(GraphicalEditPart container) {

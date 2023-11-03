@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,9 +17,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A clipping strategy used to specify the clipping region for child figures.
- * 
+ *
  * @author Alexander Nyssen
- * 
+ *
  * @since 3.6
  */
 public interface IClippingStrategy {
@@ -29,7 +29,7 @@ public interface IClippingStrategy {
 	 * of the figure, which are not covered by one of the returned rectangles are
 	 * masked out and will not get painted. Each returned rectangle is considered to
 	 * be specified in coordinates relative to the given child figure's bounds.
-	 * 
+	 *
 	 * @param childFigure The child figure, which clipping region has to be
 	 *                    returned.
 	 * @return An array of rectangles to specify the clipping region of the figure,

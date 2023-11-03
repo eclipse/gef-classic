@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2007, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.draw2d.geometry.Insets;
  * <P>
  * WARNING: Experimental for 3.3. Clients should help validate the use cases of
  * this new function.
- * 
+ *
  * @since 3.3
  */
 public class AbstractBackground extends AbstractBorder {
@@ -48,7 +48,7 @@ public class AbstractBackground extends AbstractBorder {
 	 * inside another border or background, the insets indicate how far inside the
 	 * target figure the background should be painted. In most cases, the insets
 	 * will be all zero.
-	 * 
+	 *
 	 * @param figure   The figure on which the background is being painted
 	 * @param graphics The graphics
 	 * @param insets   Amount to inset from the figure's bounds

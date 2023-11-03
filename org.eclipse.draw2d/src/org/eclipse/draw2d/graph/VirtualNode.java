@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -33,7 +33,7 @@ public class VirtualNode extends Node {
 
 	/**
 	 * Constructs a virtual node.
-	 * 
+	 *
 	 * @deprecated This class is for internal use only.
 	 * @param e the edge
 	 * @param i the row
@@ -50,7 +50,7 @@ public class VirtualNode extends Node {
 
 	/**
 	 * Constructor.
-	 * 
+	 *
 	 * @param o      object
 	 * @param parent subgraph
 	 */
@@ -60,7 +60,7 @@ public class VirtualNode extends Node {
 
 	/**
 	 * Returns the index of {@link #prev}.
-	 * 
+	 *
 	 * @return median
 	 */
 	public double medianIncoming() {
@@ -69,7 +69,7 @@ public class VirtualNode extends Node {
 
 	/**
 	 * Returns the index of {@link #next}.
-	 * 
+	 *
 	 * @return outgoing
 	 */
 	public double medianOutgoing() {
@@ -79,7 +79,7 @@ public class VirtualNode extends Node {
 	/**
 	 * For internal use only. Returns the original edge weight multiplied by the
 	 * omega value for the this node and the node on the previous rank.
-	 * 
+	 *
 	 * @return the weighted weight, or omega
 	 */
 	public int omega() {

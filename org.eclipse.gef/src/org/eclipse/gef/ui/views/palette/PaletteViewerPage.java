@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ import org.eclipse.gef.ui.palette.PaletteViewerProvider;
 /**
  * The default page for the PaletteView that works in conjunction with a
  * PaletteViewerProvider.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -46,7 +46,7 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param pvProvider the provider used to create the palette viewer
 	 */
 	public PaletteViewerPage(PaletteViewerProvider pvProvider) {
@@ -56,7 +56,7 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 
 	/**
 	 * Creates the palette viewer and its control.
-	 * 
+	 *
 	 * @see Page#createControl(org.eclipse.swt.widgets.Composite)
 	 */
 	@Override
@@ -66,7 +66,7 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 
 	/**
 	 * Releases the palette viewer from the edit domain
-	 * 
+	 *
 	 * @see Page#dispose()
 	 */
 	@Override
@@ -103,7 +103,7 @@ public class PaletteViewerPage extends Page implements PalettePage, IAdaptable {
 
 	/**
 	 * Sets focus on the palette's control
-	 * 
+	 *
 	 * @see Page#setFocus()
 	 */
 	@Override

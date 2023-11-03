@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -30,7 +30,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Creates a new Point representing the MAX of two provided Points.
-	 * 
+	 *
 	 * @param p1 first point
 	 * @param p2 second point
 	 * @return A new Point representing the Max()
@@ -41,7 +41,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Creates a new Point representing the MIN of two provided Points.
-	 * 
+	 *
 	 * @param p1 first point
 	 * @param p2 second point
 	 * @return A new Point representing the Min()
@@ -62,7 +62,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Constructs a Point at location (0,0).
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public Point() {
@@ -70,7 +70,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Constructs a Point at the specified x and y locations.
-	 * 
+	 *
 	 * @param x x value
 	 * @param y y value
 	 * @since 2.0
@@ -83,7 +83,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Constructs a Point at the specified x and y locations.
-	 * 
+	 *
 	 * @param x x value
 	 * @param y y value
 	 * @since 2.0
@@ -95,7 +95,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Constructs a Point at the same location as the given SWT Point.
-	 * 
+	 *
 	 * @param p Point from which the initial values are taken.
 	 * @since 2.0
 	 */
@@ -106,7 +106,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Constructs a Point at the same location as the given Point.
-	 * 
+	 *
 	 * @param p Point from which the initial values are taken.
 	 * @since 2.0
 	 */
@@ -118,7 +118,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * Constructs a {@link Point} which is at the same location as the specified
 	 * {@link Dimension}.
-	 * 
+	 *
 	 * @param copy Dimension from which the initial values are taken.
 	 * @since 3.13
 	 */
@@ -130,7 +130,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * Returns <code>true</code> if this Points x and y are equal to the given x and
 	 * y.
-	 * 
+	 *
 	 * @param x the x value
 	 * @param y the y value
 	 * @return <code>true</code> if this point's x and y are equal to those given.
@@ -142,7 +142,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Test for equality.
-	 * 
+	 *
 	 * @param o Object being tested for equality
 	 * @return true if both x and y values are equal
 	 * @since 2.0
@@ -165,7 +165,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Calculates the difference in between this Point and the one specified.
-	 * 
+	 *
 	 * @param p The Point being subtracted from this Point
 	 * @return A new Dimension representing the difference
 	 * @since 2.0
@@ -176,7 +176,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Calculates the distance from this Point to the one specified.
-	 * 
+	 *
 	 * @param p The Point being compared to this
 	 * @return The distance
 	 * @since 2.0
@@ -191,7 +191,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	 * Calculates the distance squared between this Point and the one specified. If
 	 * the distance squared is larger than the maximum integer value, then
 	 * <code>Integer.MAX_VALUE</code> will be returned.
-	 * 
+	 *
 	 * @param p The reference Point
 	 * @return distance<sup>2</sup>
 	 * @since 2.0
@@ -209,7 +209,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * Calculates the orthogonal distance to the specified point. The orthogonal
 	 * distance is the sum of the horizontal and vertical differences.
-	 * 
+	 *
 	 * @param p The reference Point
 	 * @return the orthogonal distance
 	 * @deprecated May not be guaranteed by precision subclasses and should thus not
@@ -221,7 +221,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Creates a Point with negated x and y values.
-	 * 
+	 *
 	 * @return A new Point
 	 * @since 2.0
 	 */
@@ -231,7 +231,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Calculates the relative position of the specified Point to this Point.
-	 * 
+	 *
 	 * @param p The reference Point
 	 * @return NORTH, SOUTH, EAST, or WEST, as defined in {@link PositionConstants}
 	 */
@@ -250,7 +250,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Creates a new Point from this Point by scaling by the specified amount.
-	 * 
+	 *
 	 * @param factor scale factor
 	 * @return A new Point
 	 * @since 2.0
@@ -262,7 +262,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * Creates a new Point from this Point by scaling by the specified x and y
 	 * factors.
-	 * 
+	 *
 	 * @param xFactor x scale factor
 	 * @param yFactor y scale factor
 	 * @return A new Point
@@ -275,7 +275,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * Creates a new SWT {@link org.eclipse.swt.graphics.Point Point} from this
 	 * Point.
-	 * 
+	 *
 	 * @return A new SWT Point
 	 * @since 2.0
 	 */
@@ -285,7 +285,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Creates a new Point which is translated by the values of the input Dimension.
-	 * 
+	 *
 	 * @param d Dimension which provides the translation amounts.
 	 * @return A new Point
 	 * @since 2.0
@@ -296,7 +296,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Creates a new Point which is translated by the specified x and y values
-	 * 
+	 *
 	 * @param x horizontal component
 	 * @param y vertical component
 	 * @return A new Point
@@ -308,7 +308,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Creates a new Point which is translated by the specified x and y values
-	 * 
+	 *
 	 * @param x horizontal component
 	 * @param y vertical component
 	 * @return A new Point
@@ -320,7 +320,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Creates a new Point which is translated by the values of the provided Point.
-	 * 
+	 *
 	 * @param p Point which provides the translation amounts.
 	 * @return A new Point
 	 * @since 2.0
@@ -332,7 +332,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * Creates a new Point with the transposed values of this Point. Can be useful
 	 * in orientation change calculations.
-	 * 
+	 *
 	 * @return A new Point
 	 * @since 2.0
 	 */
@@ -350,7 +350,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Negates the x and y values of this Point.
-	 * 
+	 *
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
@@ -374,7 +374,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Returns <code>double</code> x coordinate
-	 * 
+	 *
 	 * @return <code>double</code> x coordinate
 	 * @since 3.4
 	 */
@@ -384,7 +384,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Returns <code>double</code> y coordinate
-	 * 
+	 *
 	 * @return <code>double</code> y coordinate
 	 * @since 3.4
 	 */
@@ -394,7 +394,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Scales this Point by the specified amount.
-	 * 
+	 *
 	 * @return <code>this</code> for convenience
 	 * @param factor scale factor
 	 * @since 2.0
@@ -405,7 +405,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Scales this Point by the specified values.
-	 * 
+	 *
 	 * @param xFactor horizontal scale factor
 	 * @param yFactor vertical scale factor
 	 * @return <code>this</code> for convenience
@@ -419,7 +419,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Sets the location of this Point to the provided x and y locations.
-	 * 
+	 *
 	 * @return <code>this</code> for convenience
 	 * @param x the x location
 	 * @param y the y location
@@ -433,7 +433,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Sets the location of this Point to the specified Point.
-	 * 
+	 *
 	 * @return <code>this</code> for convenience
 	 * @param p the Location
 	 * @since 2.0
@@ -446,7 +446,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Sets the x value of this Point to the given value.
-	 * 
+	 *
 	 * @param x The new x value
 	 * @return this for convenience
 	 * @since 3.7
@@ -458,7 +458,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Sets the y value of this Point to the given value;
-	 * 
+	 *
 	 * @param y The new y value
 	 * @return this for convenience
 	 * @since 3.7
@@ -480,7 +480,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * Shifts this Point by the values of the Dimension along each axis, and returns
 	 * this for convenience.
-	 * 
+	 *
 	 * @param d Dimension by which the origin is being shifted.
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
@@ -492,7 +492,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * Shifts this Point by the values supplied along each axes, and returns this
 	 * for convenience.
-	 * 
+	 *
 	 * @param x Amount by which point is shifted along X axis.
 	 * @param y Amount by which point is shifted along Y axis.
 	 * @return <code>this</code> for convenience
@@ -505,7 +505,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * Shifts this Point by the values supplied along each axes, and returns this
 	 * for convenience.
-	 * 
+	 *
 	 * @param dx Amount by which point is shifted along X axis.
 	 * @param dy Amount by which point is shifted along Y axis.
 	 * @return <code>this</code> for convenience
@@ -520,7 +520,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 	/**
 	 * Shifts the location of this Point by the location of the input Point along
 	 * each of the axes, and returns this for convenience.
-	 * 
+	 *
 	 * @param p Point to which the origin is being shifted.
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
@@ -531,7 +531,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Transposes this object. X and Y values are exchanged.
-	 * 
+	 *
 	 * @return <code>this</code> for convenience
 	 * @since 2.0
 	 */
@@ -544,7 +544,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Returns the x value of this Point.
-	 * 
+	 *
 	 * @return The current x value
 	 * @since 3.7
 	 */
@@ -554,7 +554,7 @@ public class Point implements Cloneable, java.io.Serializable, Translatable {
 
 	/**
 	 * Returns the y value of this Point.
-	 * 
+	 *
 	 * @return The current y value
 	 * @since 3.7
 	 */

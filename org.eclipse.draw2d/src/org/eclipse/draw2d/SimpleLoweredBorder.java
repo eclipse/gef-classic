@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ public final class SimpleLoweredBorder extends SchemeBorder {
 	/**
 	 * Constructs a SimpleLoweredBorder with the predefined button-pressed Scheme
 	 * set as default.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public SimpleLoweredBorder() {
@@ -38,7 +38,7 @@ public final class SimpleLoweredBorder extends SchemeBorder {
 	 * input. If width == 2, this SimpleLoweredBorder will use the local DOUBLE
 	 * Scheme, otherwise it will use the {@link SchemeBorder.SCHEMES#BUTTON_PRESSED}
 	 * Scheme.
-	 * 
+	 *
 	 * @param width the width of all the sides of the border
 	 * @since 2.0
 	 */

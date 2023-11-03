@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Point;
  * This class is similar to {@link PolylineShape}, except the
  * {@link org.eclipse.draw2d.geometry.PointList} is closed and can be filled in
  * as a solid shape.
- * 
+ *
  * @see PolylineShape
  * @since 3.5
  */

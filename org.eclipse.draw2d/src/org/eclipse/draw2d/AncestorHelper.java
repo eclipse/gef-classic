@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,7 +17,7 @@ import java.beans.PropertyChangeListener;
 
 /**
  * A helper object which tracks the parent chain hierarchy.
- * 
+ *
  * @since 2.1
  */
 class AncestorHelper implements PropertyChangeListener, FigureListener {
@@ -35,7 +35,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 	 * Constructs a new helper on the given base figure and starts listening to
 	 * figure and property changes on the base figure's parent chain. When no longer
 	 * needed, the helper should be disposed.
-	 * 
+	 *
 	 * @since 2.1
 	 * @param baseFigure
 	 */
@@ -46,7 +46,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 
 	/**
 	 * Appends a new listener to the list of listeners.
-	 * 
+	 *
 	 * @param listener the listener
 	 */
 	public void addAncestorListener(AncestorListener listener) {
@@ -64,7 +64,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 
 	/**
 	 * Hooks up internal listeners used for maintaining the proper figure listeners.
-	 * 
+	 *
 	 * @param rootFigure the root figure
 	 */
 	protected void addAncestors(IFigure rootFigure) {
@@ -92,7 +92,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 
 	/**
 	 * Fires notification to the listener list
-	 * 
+	 *
 	 * @param ancestor the figure which moved
 	 */
 	protected void fireAncestorMoved(IFigure ancestor) {
@@ -104,7 +104,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 
 	/**
 	 * Fires notification to the listener list
-	 * 
+	 *
 	 * @param ancestor the figure which moved
 	 */
 	protected void fireAncestorAdded(IFigure ancestor) {
@@ -116,7 +116,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 
 	/**
 	 * Fires notification to the listener list
-	 * 
+	 *
 	 * @param ancestor the figure which moved
 	 */
 	protected void fireAncestorRemoved(IFigure ancestor) {
@@ -128,7 +128,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 
 	/**
 	 * Returns the total number of listeners.
-	 * 
+	 *
 	 * @return the number of listeners
 	 */
 	public boolean isEmpty() {
@@ -156,7 +156,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 
 	/**
 	 * Removes the first occurence of the given listener
-	 * 
+	 *
 	 * @param listener the listener to remove
 	 */
 	public void removeAncestorListener(AncestorListener listener) {
@@ -178,7 +178,7 @@ class AncestorHelper implements PropertyChangeListener, FigureListener {
 
 	/**
 	 * Unhooks listeners starting at the given figure
-	 * 
+	 *
 	 * @param rootFigure
 	 */
 	protected void removeAncestors(IFigure rootFigure) {

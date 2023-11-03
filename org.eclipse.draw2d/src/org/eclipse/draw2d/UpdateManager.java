@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * The second phase is to repaint all damaged areas. The update manager will
  * typically batch, clip, and union, all rectangles and perform a single paint
  * of the overall damaged area.
- * 
+ *
  */
 public abstract class UpdateManager {
 
@@ -50,7 +50,7 @@ public abstract class UpdateManager {
 	 * Adds the dirty region defined by the coordinates on the IFigure
 	 * <b>figure</b>. The update manager should repaint the dirty region in a timely
 	 * fashion.
-	 * 
+	 *
 	 * @param figure the dirty figure
 	 * @param x      the x coordinate of the dirty region
 	 * @param y      the y coordinate of the dirty region
@@ -69,7 +69,7 @@ public abstract class UpdateManager {
 	/**
 	 * Causes an update to occur at some time, and the given runnable to be executed
 	 * following the update.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param run the runnable
 	 */
@@ -79,7 +79,7 @@ public abstract class UpdateManager {
 	/**
 	 * The receiver should call validate() on the IFigure <i>figure</i> in a timely
 	 * fashion.
-	 * 
+	 *
 	 * @param figure the invalid figure
 	 */
 	public abstract void addInvalidFigure(IFigure figure);
@@ -87,7 +87,7 @@ public abstract class UpdateManager {
 	/**
 	 * Adds the given listener to the list of listeners to be notified of painting
 	 * and validation.
-	 * 
+	 *
 	 * @param listener the listener to add
 	 */
 	public void addUpdateListener(UpdateListener listener) {
@@ -115,7 +115,7 @@ public abstract class UpdateManager {
 	/**
 	 * Notifies listeners that painting is about to occur, passing them the damaged
 	 * rectangle and the map of dirty regions.
-	 * 
+	 *
 	 * @param damage       the damaged rectangle
 	 * @param dirtyRegions map of dirty regions to figures
 	 */
@@ -154,7 +154,7 @@ public abstract class UpdateManager {
 	 * contents. Delegates to {@link #performUpdate(Rectangle)} with the passed in
 	 * gc's clipping region ({@link GC#getClipping()}) by default. Subclasses may
 	 * override if they need to access the {@link GC} for updating.
-	 * 
+	 *
 	 * @param gc The {@link GC} to be used for updating
 	 * @since 3.10
 	 */
@@ -164,14 +164,14 @@ public abstract class UpdateManager {
 
 	/**
 	 * Performs an update on the given exposed rectangle.
-	 * 
+	 *
 	 * @param exposed the exposed rectangle
 	 */
 	public abstract void performUpdate(Rectangle exposed);
 
 	/**
 	 * Removes one occurrence of the given UpdateListener by identity.
-	 * 
+	 *
 	 * @param listener the listener to remove
 	 */
 	public void removeUpdateListener(UpdateListener listener) {
@@ -195,14 +195,14 @@ public abstract class UpdateManager {
 
 	/**
 	 * Sets the GraphicsSource for this update manager.
-	 * 
+	 *
 	 * @param gs the new GraphicsSource
 	 */
 	public abstract void setGraphicsSource(GraphicsSource gs);
 
 	/**
 	 * Sets the root figure.
-	 * 
+	 *
 	 * @param figure the new root figure
 	 */
 	public abstract void setRoot(IFigure figure);
@@ -212,7 +212,7 @@ public abstract class UpdateManager {
 	 * to listeners that validation has been performed. By default this method calls
 	 * {@link #performUpdate()}. Subclasses should override this method to support
 	 * validation without repainting.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	public void performValidation() {

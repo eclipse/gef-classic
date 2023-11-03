@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.gef.examples.flow.model.Transition;
 
 /**
  * Handles the deletion of Activities.
- * 
+ *
  * @author Daniel Lee
  */
 public class DeleteCommand extends Command {
@@ -90,7 +90,7 @@ public class DeleteCommand extends Command {
 
 	/**
 	 * Sets the child to the passed Activity
-	 * 
+	 *
 	 * @param a the child
 	 */
 	public void setChild(Activity a) {
@@ -99,7 +99,7 @@ public class DeleteCommand extends Command {
 
 	/**
 	 * Sets the parent to the passed StructuredActivity
-	 * 
+	 *
 	 * @param sa the parent
 	 */
 	public void setParent(StructuredActivity sa) {

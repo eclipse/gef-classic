@@ -34,9 +34,9 @@ import org.junit.Test;
 
 /**
  * Tests for the {@link GraphViewer} class.
- * 
+ *
  * @author Fabian Steeg (fsteeg)
- * 
+ *
  */
 public class GraphViewerTests extends Assert {
 

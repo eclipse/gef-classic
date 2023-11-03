@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -15,7 +15,7 @@ package org.eclipse.gef.ui.palette.customize;
 /**
  * An <code>EntryPageContainer</code> allows an <code>EntryPage</code> to report
  * errors to it.
- * 
+ *
  * @author Pratik Shah
  */
 public interface EntryPageContainer {
@@ -27,7 +27,7 @@ public interface EntryPageContainer {
 
 	/**
 	 * Shows the error to the user.
-	 * 
+	 *
 	 * @param description A description of the problem. Should be as brief as
 	 *                    possible.
 	 */

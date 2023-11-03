@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,14 +20,14 @@ public interface MouseListener {
 	/**
 	 * Called when a mouse button has been pressed while over the listened to
 	 * object.
-	 * 
+	 *
 	 * @param me The MouseEvent object
 	 */
 	void mousePressed(MouseEvent me);
 
 	/**
 	 * Called when a pressed mouse button has been released.
-	 * 
+	 *
 	 * @param me The MouseEvent object
 	 */
 	void mouseReleased(MouseEvent me);
@@ -35,7 +35,7 @@ public interface MouseListener {
 	/**
 	 * Called when a mouse button has been double clicked over the listened to
 	 * object.
-	 * 
+	 *
 	 * @param me The MouseEvent object
 	 */
 	void mouseDoubleClicked(MouseEvent me);

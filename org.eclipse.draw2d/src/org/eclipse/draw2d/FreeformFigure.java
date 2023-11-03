@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ public interface FreeformFigure extends IFigure {
 
 	/**
 	 * Adds a FreeformListener to this FreeformFigure.
-	 * 
+	 *
 	 * @param listener the listener
 	 */
 	void addFreeformListener(FreeformListener listener);
@@ -39,21 +39,21 @@ public interface FreeformFigure extends IFigure {
 	/**
 	 * Returns the freeform extent, essentially the bounds of the FreeformFigure.
 	 * This is based on the extent of its children.
-	 * 
+	 *
 	 * @return the freeform extent
 	 */
 	Rectangle getFreeformExtent();
 
 	/**
 	 * Removes the given listener from this FreeformFigure.
-	 * 
+	 *
 	 * @param listener the listener
 	 */
 	void removeFreeformListener(FreeformListener listener);
 
 	/**
 	 * Sets the freeform bounds of this FreeformFigure.
-	 * 
+	 *
 	 * @param bounds the new freeform bounds
 	 */
 	void setFreeformBounds(Rectangle bounds);

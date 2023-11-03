@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,7 +17,7 @@ import java.util.Collection;
 /**
  * A <code>TreeSearch</code> that excludes figures contained in a
  * {@link java.util.Collection}.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -27,7 +27,7 @@ public class ExclusionSearch implements TreeSearch {
 
 	/**
 	 * Constructs an Exclusion search using the given collection.
-	 * 
+	 *
 	 * @param collection the exclusion set
 	 */
 	public ExclusionSearch(Collection<IFigure> collection) {
@@ -46,7 +46,7 @@ public class ExclusionSearch implements TreeSearch {
 
 	/**
 	 * Returns <code>true</code> if the figure is a member of the Collection.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.TreeSearch#prune(IFigure)
 	 */
 	@Override

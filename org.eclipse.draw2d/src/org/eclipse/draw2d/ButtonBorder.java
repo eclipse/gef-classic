@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.draw2d.geometry.Insets;
  * states the model of the figure could be. This border uses an extended
  * {@link SchemeBorder.Scheme Scheme} called {@link ButtonScheme} which provides
  * more information required by border to handle the the states of the model.
- * 
+ *
  * @see SchemeBorder.Scheme
  * @see ButtonScheme
  */
@@ -30,25 +30,25 @@ public class ButtonBorder extends SchemeBorder {
 
 	/**
 	 * Default button border.
-	 * 
+	 *
 	 * @see SCHEMES#BUTTON
 	 */
 	public static final Border BUTTON = new ButtonBorder(SCHEMES.BUTTON);
 	/**
 	 * Inverted hightlight colors from BUTTON.
-	 * 
+	 *
 	 * @see SCHEMES#BUTTON_CONTRAST
 	 */
 	public static final Border BUTTON_CONTRAST = new ButtonBorder(SCHEMES.BUTTON_CONTRAST);
 	/**
 	 * Used for scrollbar buttons.
-	 * 
+	 *
 	 * @see SCHEMES#BUTTON_SCROLLBAR
 	 */
 	public static final Border BUTTON_SCROLLBAR = new ButtonBorder(SCHEMES.BUTTON_SCROLLBAR);
 	/**
 	 * Used for toolbar buttons.
-	 * 
+	 *
 	 * @see SCHEMES#TOOLBAR
 	 */
 	public static final Border TOOLBAR = new ButtonBorder(SCHEMES.TOOLBAR);
@@ -66,7 +66,7 @@ public class ButtonBorder extends SchemeBorder {
 		 * top-left and bottom-right sides of the border. These colors serve as the
 		 * colors when the border is in a pressed state too. The width of each side is
 		 * determined by the number of colors passed in as input.
-		 * 
+		 *
 		 * @param highlight Colors for the top-left sides of the border
 		 * @param shadow    Colors for the bottom-right sides of the border
 		 * @since 2.0
@@ -82,7 +82,7 @@ public class ButtonBorder extends SchemeBorder {
 		 * top-left and bottom-right sides of the border, for the normal and pressed
 		 * states. The width of each side is determined by the number of colors passed
 		 * in as input.
-		 * 
+		 *
 		 * @param hl  Colors for the top-left sides of the border
 		 * @param sh  Colors for the bottom-right sides of the border
 		 * @param hlp Colors for the top-left sides of the border when figure is pressed
@@ -101,7 +101,7 @@ public class ButtonBorder extends SchemeBorder {
 		/**
 		 * Calculates and returns the Insets for this border. The calculations are based
 		 * on the number of normal and pressed, highlight and shadow colors.
-		 * 
+		 *
 		 * @return The insets for this border
 		 * @since 2.0
 		 */
@@ -126,7 +126,7 @@ public class ButtonBorder extends SchemeBorder {
 		 * <code>null</code>
 		 * </ul>
 		 * This is done so that the entire region under the figure is properly covered.
-		 * 
+		 *
 		 * @return The opaque state of this border
 		 * @since 2.0
 		 */
@@ -151,7 +151,7 @@ public class ButtonBorder extends SchemeBorder {
 
 		/**
 		 * Returns the pressed highlight colors of this border.
-		 * 
+		 *
 		 * @return Colors as an array of Colors
 		 * @since 2.0
 		 */
@@ -161,7 +161,7 @@ public class ButtonBorder extends SchemeBorder {
 
 		/**
 		 * Returns the pressed shadow colors of this border.
-		 * 
+		 *
 		 * @return Colors as an array of Colors
 		 * @since 2.0
 		 */
@@ -196,7 +196,7 @@ public class ButtonBorder extends SchemeBorder {
 
 	/**
 	 * Constructs a ButtonBorder with a predefined button scheme set as its default.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public ButtonBorder() {
@@ -205,7 +205,7 @@ public class ButtonBorder extends SchemeBorder {
 
 	/**
 	 * Constructs a ButtonBorder with the input ButtonScheme set as its Scheme.
-	 * 
+	 *
 	 * @param scheme ButtonScheme for this ButtonBorder.
 	 * @since 2.0
 	 */
@@ -217,7 +217,7 @@ public class ButtonBorder extends SchemeBorder {
 	 * Paints this border with the help of the set scheme, the model of the
 	 * clickable figure, and other inputs. The scheme is used in conjunction with
 	 * the state of the model to get the appropriate colors for the border.
-	 * 
+	 *
 	 * @param figure   The Clickable that this border belongs to
 	 * @param graphics The graphics used for painting
 	 * @param insets   The insets

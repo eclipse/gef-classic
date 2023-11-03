@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,7 +18,7 @@ import org.eclipse.gef.examples.flow.model.Transition;
 
 /**
  * Handles the deletion of connections between Activities.
- * 
+ *
  * @author Daniel Lee
  */
 public class DeleteConnectionCommand extends Command {
@@ -40,7 +40,7 @@ public class DeleteConnectionCommand extends Command {
 
 	/**
 	 * Sets the source activity
-	 * 
+	 *
 	 * @param activity the source
 	 */
 	public void setSource(Activity activity) {
@@ -49,7 +49,7 @@ public class DeleteConnectionCommand extends Command {
 
 	/**
 	 * Sets the target activity
-	 * 
+	 *
 	 * @param activity the target
 	 */
 	public void setTarget(Activity activity) {
@@ -58,7 +58,7 @@ public class DeleteConnectionCommand extends Command {
 
 	/**
 	 * Sets the transition
-	 * 
+	 *
 	 * @param transition the transition
 	 */
 	public void setTransition(Transition transition) {

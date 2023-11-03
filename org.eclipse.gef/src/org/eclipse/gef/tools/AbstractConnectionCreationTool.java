@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ import org.eclipse.gef.requests.CreationFactory;
  * creating the first half of the connection. This command is then passed to the
  * target editpart, which is reponsible for creating the final Command that is
  * executed.
- * 
+ *
  * @author hudsonr
  */
 public class AbstractConnectionCreationTool extends TargetingTool {
@@ -80,7 +80,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 
 	/**
 	 * Constructs a new abstract creation tool with the given creation factory.
-	 * 
+	 *
 	 * @param factory the creation factory
 	 */
 	public AbstractConnectionCreationTool(CreationFactory factory) {
@@ -112,7 +112,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 
 	/**
 	 * Erases feedback and sets fields to <code>null</code>.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#deactivate()
 	 */
 	@Override
@@ -168,7 +168,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	/**
 	 * Returns the creation factory that will be used with the create connection
 	 * request.
-	 * 
+	 *
 	 * @return the creation factory
 	 */
 	protected CreationFactory getFactory() {
@@ -180,7 +180,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 * same request that is used with the target node. The only difference is that
 	 * at that time the request will be typed as
 	 * {@link RequestConstants#REQ_CONNECTION_START}.
-	 * 
+	 *
 	 * @return the request used with the source node editpart
 	 */
 	protected Request getSourceRequest() {
@@ -191,7 +191,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 * When the button is first pressed, the source node and its command
 	 * contribution are determined and locked in. After that time, the tool will be
 	 * looking for the target node to complete the connection
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 * @param button which button is pressed
 	 * @return <code>true</code> if the button down was processed
@@ -220,7 +220,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 
 	/**
 	 * Unloads or resets the tool if the state is in the terminal or invalid state.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
 	@Override
@@ -252,7 +252,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 	 * creation setup, such as prompting the user to choose an option about the
 	 * connection being created. Returns <code>true</code> to indicate that the
 	 * connection creation succeeded.
-	 * 
+	 *
 	 * @return <code>true</code> if the connection creation was performed
 	 */
 	protected boolean handleCreateConnection() {
@@ -348,7 +348,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 
 	/**
 	 * Returns <code>true</code> if feedback is being shown.
-	 * 
+	 *
 	 * @return <code>true</code> if showing source feedback
 	 */
 	protected boolean isShowingSourceFeedback() {
@@ -357,7 +357,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 
 	/**
 	 * Sets the source editpart for the creation
-	 * 
+	 *
 	 * @param source the source editpart node
 	 */
 	protected void setConnectionSource(EditPart source) {
@@ -370,7 +370,7 @@ public class AbstractConnectionCreationTool extends TargetingTool {
 
 	/**
 	 * Sets the creation factory used in the request.
-	 * 
+	 *
 	 * @param factory the factory
 	 */
 	public void setFactory(CreationFactory factory) {

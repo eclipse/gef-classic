@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ public class Toggle extends Clickable {
 
 	/**
 	 * Constructs a Toggle with no text or icon.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public Toggle() {
@@ -33,7 +33,7 @@ public class Toggle extends Clickable {
 
 	/**
 	 * Constructs a Toggle with passed text and icon
-	 * 
+	 *
 	 * @param text the text
 	 * @param icon the icon
 	 * @since 2.0
@@ -44,7 +44,7 @@ public class Toggle extends Clickable {
 
 	/**
 	 * Constructs a Toggle with passed IFigure as its contents.
-	 * 
+	 *
 	 * @param contents the contents
 	 * @since 2.0
 	 */
@@ -55,7 +55,7 @@ public class Toggle extends Clickable {
 	/**
 	 * Constructs a Toggle with the passed figure as its contents and the given
 	 * style.
-	 * 
+	 *
 	 * @param contents the contents
 	 * @param style    the style
 	 */

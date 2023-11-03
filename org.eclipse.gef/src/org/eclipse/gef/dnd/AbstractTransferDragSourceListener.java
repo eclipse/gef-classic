@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ public abstract class AbstractTransferDragSourceListener implements TransferDrag
 	/**
 	 * Constructs an AbstractTransferDragSourceListener for the given
 	 * EditPartViewer.
-	 * 
+	 *
 	 * @param viewer the EditPartViewer
 	 */
 	public AbstractTransferDragSourceListener(EditPartViewer viewer) {
@@ -39,7 +39,7 @@ public abstract class AbstractTransferDragSourceListener implements TransferDrag
 	/**
 	 * Constructs an AbstractTransferDragSourceListener with the specified
 	 * EditPartViewer and Transfer.
-	 * 
+	 *
 	 * @param viewer the EditPartViewer
 	 * @param xfer   the Transfer
 	 */
@@ -72,7 +72,7 @@ public abstract class AbstractTransferDragSourceListener implements TransferDrag
 
 	/**
 	 * Returns the <code>EditPartViewer</code>.
-	 * 
+	 *
 	 * @return the EditPartViewer
 	 */
 	protected EditPartViewer getViewer() {
@@ -81,7 +81,7 @@ public abstract class AbstractTransferDragSourceListener implements TransferDrag
 
 	/**
 	 * Sets the <code>Transfer</code> for this listener.
-	 * 
+	 *
 	 * @param xfer the Transfer
 	 */
 	protected void setTransfer(Transfer xfer) {
@@ -90,7 +90,7 @@ public abstract class AbstractTransferDragSourceListener implements TransferDrag
 
 	/**
 	 * Sets the EditPartViewer for this listener.
-	 * 
+	 *
 	 * @param viewer the EditPartViewer
 	 */
 	protected void setViewer(EditPartViewer viewer) {

@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 
@@ -26,14 +26,14 @@ import org.eclipse.zest.layouts.exampleStructures.SimpleRelationship;
 
 /**
  * Checks for cycles in the given graph.
- * 
+ *
  * @author Casey Best
  */
 public class CycleChecker {
 	/**
 	 * Tests if there is a directed cirlce in the graph formed by the given entities
 	 * and relationships.
-	 * 
+	 *
 	 * @param entities      The entities in the graph to check
 	 * @param relationships The relationships in the graph to check
 	 * @param cycle         Populated with the cycle encountered, if there is one.

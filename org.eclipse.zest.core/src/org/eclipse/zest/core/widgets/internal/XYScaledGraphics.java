@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Display;
  * This was adapted from the ScaledGraphics class to allow X and Y to scale
  * independently. It won't require this level of coupling if some of these
  * private methods were made protected. I will open a bug report on this.
- * 
+ *
  * @author irbull
  */
 public class XYScaledGraphics extends ScaledGraphics {
@@ -99,7 +99,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 		/**
 		 * Constructs a new State object and initializes the properties based on the
 		 * given values.
-		 * 
+		 *
 		 * @param zoom      the zoom factor
 		 * @param x         the x offset
 		 * @param y         the y offset
@@ -117,7 +117,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 
 		/**
 		 * Sets all the properties of the state object.
-		 * 
+		 *
 		 * @param zoom      the zoom factor
 		 * @param x         the x offset
 		 * @param y         the y offset
@@ -163,7 +163,7 @@ public class XYScaledGraphics extends ScaledGraphics {
 
 	/**
 	 * Constructs a new ScaledGraphics based on the given Graphics object.
-	 * 
+	 *
 	 * @param g the base graphics object
 	 */
 	public XYScaledGraphics(Graphics g) {

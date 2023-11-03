@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -30,7 +30,7 @@ public class RelativeBendpoint implements Bendpoint {
 
 	/**
 	 * Constructs a new RelativeBendpoint.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public RelativeBendpoint() {
@@ -39,7 +39,7 @@ public class RelativeBendpoint implements Bendpoint {
 	/**
 	 * Constructs a new RelativeBendpoint and associates it with the given
 	 * Connection.
-	 * 
+	 *
 	 * @param conn The Connection this Bendpoint is associated with
 	 * @since 2.0
 	 */
@@ -49,7 +49,7 @@ public class RelativeBendpoint implements Bendpoint {
 
 	/**
 	 * Returns the Connection this Bendpoint is associated with.
-	 * 
+	 *
 	 * @return The Connection this Bendpoint is associated with
 	 * @since 2.0
 	 */
@@ -59,7 +59,7 @@ public class RelativeBendpoint implements Bendpoint {
 
 	/**
 	 * Calculates and returns this Bendpoint's new location.
-	 * 
+	 *
 	 * @return This Bendpoint's new location
 	 * @since 2.0
 	 */
@@ -78,7 +78,7 @@ public class RelativeBendpoint implements Bendpoint {
 
 	/**
 	 * Sets the Connection this bendpoint should be associated with.
-	 * 
+	 *
 	 * @param conn The Connection this bendpoint should be associated with
 	 * @since 2.0
 	 */
@@ -90,7 +90,7 @@ public class RelativeBendpoint implements Bendpoint {
 	 * Sets the Dimensions representing the X and Y distances this Bendpoint is from
 	 * the start and end points of the Connection. These Dimensions are generally
 	 * set once and are used in calculating the Bendpoint's location.
-	 * 
+	 *
 	 * @param dim1 The X and Y distances this Bendpoint is from the start of the
 	 *             Connection
 	 * @param dim2 The X and Y distances this Bendpoint is from the end of the
@@ -109,7 +109,7 @@ public class RelativeBendpoint implements Bendpoint {
 	 * Bendpoint to follow the end point. A weight of 0.5 (the default) will cause
 	 * the Bendpoint to maintain its original aspect ratio between the start and end
 	 * points.
-	 * 
+	 *
 	 * @param w The weight
 	 * @since 2.0
 	 */

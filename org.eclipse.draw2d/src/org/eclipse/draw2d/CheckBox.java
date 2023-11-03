@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -41,7 +41,7 @@ public final class CheckBox extends Toggle {
 
 	/**
 	 * Constructs a CheckBox with no text.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public CheckBox() {
@@ -50,7 +50,7 @@ public final class CheckBox extends Toggle {
 
 	/**
 	 * Constructs a CheckBox with the passed text in its label.
-	 * 
+	 *
 	 * @param text The label text
 	 * @since 2.0
 	 */
@@ -60,7 +60,7 @@ public final class CheckBox extends Toggle {
 
 	/**
 	 * Adjusts CheckBox's icon depending on selection status.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void handleSelectionChanged() {
@@ -74,7 +74,7 @@ public final class CheckBox extends Toggle {
 	 * Initializes this Clickable by setting a default model and adding a clickable
 	 * event handler for that model. Also adds a ChangeListener to update icon when
 	 * selection status changes.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	@Override

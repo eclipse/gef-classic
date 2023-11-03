@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,17 +23,17 @@ import org.eclipse.gef.editpolicies.ScrollableSelectionFeedbackEditPolicy;
  * {@link ScrollableSelectionFeedbackEditPolicy} is to be registered, as it
  * grants the edit policy type-safe access to the edit part's
  * {@link IScrollableFigure}.
- * 
+ *
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
- * 
+ *
  * @since 3.6
  */
 public interface IScrollableEditPart extends GraphicalEditPart {
 
 	/**
 	 * Offers type-safe access to the GraphicalEditPart's figure.
-	 * 
+	 *
 	 * @return The figure of this edit part, which has to be an IScrollableFigure
 	 */
 	IScrollableFigure getScrollableFigure();

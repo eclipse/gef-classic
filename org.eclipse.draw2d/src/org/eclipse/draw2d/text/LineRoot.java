@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * on a line, which is required to display selection and such. All
  * {@link org.eclipse.draw2d.text.ContentBox fragments} know of the LineRoot
  * they belong to.
- * 
+ *
  * @author Randy Hudson
  * @author Pratik Shah
  * @since 3.1
@@ -36,7 +36,7 @@ public class LineRoot extends LineBox {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param isMirrored <code>true</code> if the line is to be displayed in a
 	 *                   mirrored control
 	 */
@@ -106,7 +106,7 @@ public class LineRoot extends LineBox {
 
 	/**
 	 * A LineRoot cannot be targetted.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.text.FlowBox#containsPoint(int, int)
 	 */
 	@Override
@@ -207,7 +207,7 @@ public class LineRoot extends LineBox {
 
 	/**
 	 * Positions the line vertically by settings its baseline.
-	 * 
+	 *
 	 * @param baseline the baseline
 	 */
 	public void setBaseline(int baseline) {

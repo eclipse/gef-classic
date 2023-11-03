@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ public class RoundedRectangle extends Shape {
 
 	/**
 	 * The width and height radii applied to each corner.
-	 * 
+	 *
 	 * @deprecated Use {@link #getCornerDimensions()} instead.
 	 */
 	protected Dimension corner = new Dimension(8, 8);
@@ -64,7 +64,7 @@ public class RoundedRectangle extends Shape {
 	/**
 	 * Sets the dimensions of each corner. This will form the radii of the arcs
 	 * which form the corners.
-	 * 
+	 *
 	 * @param d the dimensions of the corner
 	 * @since 2.0
 	 */
@@ -75,7 +75,7 @@ public class RoundedRectangle extends Shape {
 
 	/**
 	 * Returns the dimensions used for each corner.
-	 * 
+	 *
 	 * @return the dimensions of the corner.
 	 * @since 3.7
 	 */

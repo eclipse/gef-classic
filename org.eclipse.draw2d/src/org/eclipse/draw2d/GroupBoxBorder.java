@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ public class GroupBoxBorder extends AbstractLabeledBorder {
 
 	/**
 	 * Constructs a GroupBoxBorder with the name of this class as its label.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public GroupBoxBorder() {
@@ -32,7 +32,7 @@ public class GroupBoxBorder extends AbstractLabeledBorder {
 
 	/**
 	 * Constructs a GroupBoxBorder with label s.
-	 * 
+	 *
 	 * @param s the label
 	 * @since 2.0
 	 */
@@ -42,7 +42,7 @@ public class GroupBoxBorder extends AbstractLabeledBorder {
 
 	/**
 	 * Calculates and returns the Insets for this GroupBoxBorder.
-	 * 
+	 *
 	 * @param figure IFigure on which the calculations should be made. Generally
 	 *               this is the IFigure of which this GroupBoxBorder is
 	 *               surrounding.

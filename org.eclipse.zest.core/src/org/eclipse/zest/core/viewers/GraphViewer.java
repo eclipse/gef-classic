@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.viewers;
@@ -43,7 +43,7 @@ import org.eclipse.zest.layouts.LayoutAlgorithm;
 /**
  * This view is used to represent a static graph. Static graphs can be layed
  * out, but do not continually update their layout locations.
- * 
+ *
  * @author Ian Bull
  * @author Chris Callendar
  */
@@ -56,7 +56,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/**
 	 * Initializes the viewer.
-	 * 
+	 *
 	 * @param composite The parent composite.
 	 * @param style     The style for the viewer and the related Graph.
 	 * @see SWT#V_SCROLL
@@ -119,7 +119,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/**
 	 * Gets the styles for this structuredViewer
-	 * 
+	 *
 	 * @return
 	 */
 	public int getStyle() {
@@ -128,7 +128,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.viewer.internal.AbstractStructuredGraphViewer#
 	 * getGraphControl()
 	 */
@@ -139,7 +139,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/**
 	 * Sets the layout algorithm to use for this viewer.
-	 * 
+	 *
 	 * @param algorithm the algorithm to layout the nodes
 	 * @param runLayout if the layout should be run
 	 */
@@ -150,7 +150,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.viewer.internal.AbstractStructuredGraphViewer#
 	 * setLayoutAlgorithm(org.eclipse.zest.layouts.LayoutAlgorithm)
 	 */
@@ -161,7 +161,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#setNodeStyle
 	 * (int)
 	 */
@@ -190,13 +190,13 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/**
 	 * Finds the graph widget item for a given user model item.
-	 * 
+	 *
 	 * Note: This method returns an internal interface (GraphItem). You should be
 	 * able to cast this to either a IGraphModelNode or IGraphModelConnection (which
 	 * are also internal). These are internal because this API is not stable. If use
 	 * this method (to access internal nodes and edges), your code may not compile
 	 * between versions.
-	 * 
+	 *
 	 * @param The user model node.
 	 * @return An IGraphItem. This should be either a IGraphModelNode or
 	 *         IGraphModelConnection
@@ -237,7 +237,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.zest.core.viewer.internal.AbstractStructuredGraphViewer#reveal
 	 * (java.lang.Object)
@@ -249,7 +249,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.viewer.internal.AbstractStructuredGraphViewer#
 	 * setConnectionStyle(int)
 	 */
@@ -260,7 +260,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.zest.core.viewer.internal.AbstractStructuredGraphViewer#unReveal
 	 * (java.lang.Object)
@@ -296,7 +296,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#getFactory()
 	 */
 	@Override
@@ -315,7 +315,7 @@ public class GraphViewer extends AbstractStructuredGraphViewer implements ISelec
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.viewers.AbstractStructuredGraphViewer#
 	 * getLayoutAlgorithm()
 	 */

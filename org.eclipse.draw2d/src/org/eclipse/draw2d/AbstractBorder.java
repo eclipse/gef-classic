@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,7 +18,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Provides generic support for borders.
- * 
+ *
  * @author hudsonr
  */
 public abstract class AbstractBorder implements Border {
@@ -33,7 +33,7 @@ public abstract class AbstractBorder implements Border {
 	 * specified insets. This method exists for convenience and performance; the
 	 * method does not new any Objects and returns a rectangle which the caller can
 	 * manipulate.
-	 * 
+	 *
 	 * @since 2.0
 	 * @param figure Figure for which the paintable rectangle is needed
 	 * @param insets The insets

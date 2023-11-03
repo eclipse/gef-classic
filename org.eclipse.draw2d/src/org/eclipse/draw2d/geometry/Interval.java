@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2011, 2023 Google, Inc.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ public record Interval(int begin, int length) implements Serializable {
 
 	/**
 	 * Creates a new Interval with zero length and starting at the origin.
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	public Interval() {
@@ -38,7 +38,7 @@ public record Interval(int begin, int length) implements Serializable {
 
 	/**
 	 * Creates a new Interval exact same parameters as the given Interval.
-	 * 
+	 *
 	 * @param interval The interval to copy
 	 * @since 3.13
 	 */
@@ -49,7 +49,7 @@ public record Interval(int begin, int length) implements Serializable {
 	/**
 	 * Returns the center of this Interval. The center is the middle of the begin
 	 * and the end.
-	 * 
+	 *
 	 * @return the center of this {@link Interval}.
 	 * @since 3.13
 	 */
@@ -59,7 +59,7 @@ public record Interval(int begin, int length) implements Serializable {
 
 	/**
 	 * Returns whether the given value is within [begin, begin + length).
-	 * 
+	 *
 	 * @param value A position somewhere within 1-dimensional space.
 	 * @return <code>true</code> if the value is contained by this interval.
 	 * @since 3.13
@@ -98,7 +98,7 @@ public record Interval(int begin, int length) implements Serializable {
 	/**
 	 * Returns the end of this Interval. The end is the sum of the begin and the
 	 * length of this Interval.
-	 * 
+	 *
 	 * @return end of this Interval
 	 * @since 3.13
 	 */
@@ -108,7 +108,7 @@ public record Interval(int begin, int length) implements Serializable {
 
 	/**
 	 * Returns a new Interval which has the exact same parameters as this Interval.
-	 * 
+	 *
 	 * @return copy of this Interval
 	 * @since 3.13
 	 */
@@ -120,7 +120,7 @@ public record Interval(int begin, int length) implements Serializable {
 	 * Calculates the intersection of the input {@link Interval} and this
 	 * {@link Interval}. I.e. the interval that is shared by both Intervals. If both
 	 * Intervals are disjoint, an empty Interval is returned.
-	 * 
+	 *
 	 * @param interval The Interval to intersect with.
 	 * @return The intersection of the input Interval and this Interval.
 	 * @since 3.13
@@ -161,7 +161,7 @@ public record Interval(int begin, int length) implements Serializable {
 
 	/**
 	 * Checks whether the Interval has zero length.
-	 * 
+	 *
 	 * @return <code>true</code> if this {@link Interval} is empty.
 	 * @since 3.13
 	 */
@@ -171,7 +171,7 @@ public record Interval(int begin, int length) implements Serializable {
 
 	/**
 	 * Returns whether the input {@link Interval} intersects this {@link Interval}.
-	 * 
+	 *
 	 * @param interval The Interval to intersect with.
 	 * @return <code>true</code> if the input {@link Interval} intersects this
 	 *         {@link Interval}.
@@ -184,7 +184,7 @@ public record Interval(int begin, int length) implements Serializable {
 	/**
 	 * Checks whether the input {@link Interval} starts <b>before</b> this
 	 * {@link Interval}.
-	 * 
+	 *
 	 * @param interval The Interval to compare with.
 	 * @return <code>true</code> if this interval leads the given
 	 *         <code>interval</code>, i.e. for horizontal interval
@@ -199,7 +199,7 @@ public record Interval(int begin, int length) implements Serializable {
 	/**
 	 * Checks whether the input {@link Interval} starts <b>after</b> this
 	 * {@link Interval}.
-	 * 
+	 *
 	 * @param interval The Interval to compare with.
 	 * @return <code>true</code> if this interval trails the given
 	 *         <code>interval</code>, i.e. for horizontal interval
@@ -213,7 +213,7 @@ public record Interval(int begin, int length) implements Serializable {
 
 	/**
 	 * We can use this method for example for span support.
-	 * 
+	 *
 	 * @param intervals sorted, disjoint array of intervals
 	 * @return index of rightmost interval that contains given value in its right
 	 *         half or <code>-1</code> if there is not such interval.

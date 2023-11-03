@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,13 +27,13 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * A <code>FlowFigure</code> represented by multiple <code>LineBox</code>
  * fragments. An <code>InlineFlow</code>'s parent must be either a
  * {@link BlockFlow} or another InlineFlow.
- * 
+ *
  * <P>
  * An InlineFlow may contain other InlineFlow figures.
- * 
+ *
  * <P>
  * WARNING: This class is not intended to be subclassed by clients.
- * 
+ *
  * @author Randy Hudson
  * @since 2.0
  */
@@ -44,7 +44,7 @@ public class InlineFlow extends FlowFigure {
 	/**
 	 * Iterates over the children to find the width before a line-break is
 	 * encountered.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.text.FlowFigure#addLeadingWordRequirements(int[])
 	 */
 	@Override
@@ -59,7 +59,7 @@ public class InlineFlow extends FlowFigure {
 	/**
 	 * Extended to return false if the point is not also contained by at least one
 	 * fragment.
-	 * 
+	 *
 	 * @return <code>true</code> if a fragment contains the given point
 	 * @param x the relative x coordinate
 	 * @param y the relative y coordinate
@@ -87,7 +87,7 @@ public class InlineFlow extends FlowFigure {
 	/**
 	 * Returns the <code>FlowBox</code> fragments contained in this InlineFlow. The
 	 * returned list should not be modified.
-	 * 
+	 *
 	 * @return The fragments
 	 */
 	public List getFragments() {
@@ -98,7 +98,7 @@ public class InlineFlow extends FlowFigure {
 	 * Overridden to paint a {@link FlowBorder} if present, and draw selection. The
 	 * border is painted first, followed by selection which is generally done in
 	 * XOR, which still allows the border to be seen.
-	 * 
+	 *
 	 * @param graphics the graphics
 	 */
 	@Override
@@ -131,7 +131,7 @@ public class InlineFlow extends FlowFigure {
 
 	/**
 	 * Renders the XOR selection rectangles to the graphics.
-	 * 
+	 *
 	 * @param graphics the graphics to paint on
 	 * @since 3.1
 	 */
@@ -175,7 +175,7 @@ public class InlineFlow extends FlowFigure {
 	/**
 	 * Overridden to assert that only {@link FlowBorder} is used. <code>null</code>
 	 * is still a valid value as well.
-	 * 
+	 *
 	 * @param border <code>null</code> or a FlowBorder
 	 */
 	@Override

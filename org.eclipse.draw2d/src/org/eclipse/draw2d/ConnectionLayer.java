@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ public class ConnectionLayer extends FreeformLayer {
 	/**
 	 * Adds the given figure with the given contraint at the given index. If the
 	 * figure is a {@link Connection}, its {@link ConnectionRouter} is set.
-	 * 
+	 *
 	 * @param figure     Figure being added
 	 * @param constraint Constraint of the figure being added
 	 * @param index      Index where the figure is to be added
@@ -50,7 +50,7 @@ public class ConnectionLayer extends FreeformLayer {
 
 	/**
 	 * Returns the ConnectionRouter being used by this layer.
-	 * 
+	 *
 	 * @return ConnectionRouter being used by this layer
 	 * @since 2.0
 	 */
@@ -71,7 +71,7 @@ public class ConnectionLayer extends FreeformLayer {
 	/**
 	 * Removes the figure from this Layer. If the figure is a {@link Connection} ,
 	 * that Connection's {@link ConnectionRouter} is set to <code>null</code>.
-	 * 
+	 *
 	 * @param figure The figure to remove
 	 */
 	@Override
@@ -84,7 +84,7 @@ public class ConnectionLayer extends FreeformLayer {
 	/**
 	 * Sets the ConnectionRouter for this layer. This router is set as the
 	 * ConnectionRouter for all the child connections of this Layer.
-	 * 
+	 *
 	 * @param router The ConnectionRouter to set for this Layer
 	 * @since 2.0
 	 */
@@ -101,7 +101,7 @@ public class ConnectionLayer extends FreeformLayer {
 	 * value is set to something other than {@link SWT#DEFAULT},
 	 * {@link Graphics#setAntialias(int)} will be called with the given value when
 	 * painting this layer.
-	 * 
+	 *
 	 * @param antialias the antialias setting
 	 * @since 3.1
 	 */

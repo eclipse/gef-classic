@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ import org.eclipse.gef.tools.ToolUtilities;
 
 /**
  * An action to align the selected parts.
- * 
+ *
  * @author hudsonr
  */
 public final class AlignmentAction extends SelectionAction {
@@ -94,7 +94,7 @@ public final class AlignmentAction extends SelectionAction {
 	 * <LI>GEFActionConstants.ALIGN_BOTTOM
 	 * <LI>GEFActionConstants.ALIGN_MIDDLE
 	 * </UL>
-	 * 
+	 *
 	 * @param part  the workbench part used to obtain context
 	 * @param align the aligment ID.
 	 */
@@ -107,7 +107,7 @@ public final class AlignmentAction extends SelectionAction {
 	/**
 	 * Returns the alignment rectangle to which all selected parts should be
 	 * aligned.
-	 * 
+	 *
 	 * @param request the alignment Request
 	 * @return the alignment rectangle
 	 */
@@ -161,7 +161,7 @@ public final class AlignmentAction extends SelectionAction {
 
 	/**
 	 * Returns the list of editparts which will participate in alignment.
-	 * 
+	 *
 	 * @param request the alignment request
 	 * @return the list of parts which will be aligned
 	 */

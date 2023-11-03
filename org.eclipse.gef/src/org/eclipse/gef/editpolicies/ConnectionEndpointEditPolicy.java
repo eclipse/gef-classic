@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -43,7 +43,7 @@ import org.eclipse.gef.requests.ReconnectRequest;
  * <P>
  * A connection can receive focus but not selection by pressing
  * <code>Control+/</code> on the keyboard.
- * 
+ *
  * @since 2.0
  */
 public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
@@ -118,7 +118,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Erases connection move feedback. This method is called when a
 	 * ReconnectRequest is received.
-	 * 
+	 *
 	 * @param request the reconnect request.
 	 */
 	protected void eraseConnectionMoveFeedback(ReconnectRequest request) {
@@ -151,7 +151,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Convenience method for obtaining the host's <code>Connection</code> figure.
-	 * 
+	 *
 	 * @return the Connection figure
 	 */
 	protected Connection getConnection() {
@@ -162,7 +162,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 * Lazily creates and returns the feedback helper for the given request. The
 	 * helper will be configured as either moving the source or target end of the
 	 * connection.
-	 * 
+	 *
 	 * @param request the reconnect request
 	 * @return the feedback helper
 	 */
@@ -178,7 +178,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Hides the focus indicator. The focus indicator is a dotted outline around the
 	 * connection.
-	 * 
+	 *
 	 * @see #showFocus()
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideFocus()
 	 */
@@ -193,7 +193,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Shows or updates connection move feedback. Called whenever a show feedback
 	 * request is received for reconnection.
-	 * 
+	 *
 	 * @param request the reconnect request
 	 */
 	protected void showConnectionMoveFeedback(ReconnectRequest request) {
@@ -219,7 +219,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Shows focus around the connection.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showFocus()
 	 */
 	@Override

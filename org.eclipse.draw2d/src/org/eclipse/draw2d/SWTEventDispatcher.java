@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
 	 * Used to tell if any button is pressed without regard to the specific button.
-	 * 
+	 *
 	 * @deprecated Use {@link SWT#BUTTON_MASK} instead.
 	 */
 	protected static final int ANY_BUTTON = SWT.BUTTON_MASK;
@@ -300,7 +300,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
 	 * Returns the current mouse event.
-	 * 
+	 *
 	 * @return the current mouse event; can be <code>null</code>
 	 */
 	protected MouseEvent getCurrentEvent() {
@@ -316,7 +316,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
 	 * Returns the figure that the cursor is over.
-	 * 
+	 *
 	 * @return the cursor target
 	 */
 	protected IFigure getCursorTarget() {
@@ -325,7 +325,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
 	 * Returns the ToolTipHelper used to display tooltips on hover events.
-	 * 
+	 *
 	 * @return the ToolTipHelper
 	 */
 	protected ToolTipHelper getToolTipHelper() {
@@ -337,7 +337,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * Returns the FocusTraverseManager which is used to determine which figure will
 	 * get focus when a TAB or ALT+TAB key sequence occurs.
-	 * 
+	 *
 	 * @return the FocusTraverseManager
 	 */
 	protected final FocusTraverseManager getFocusTraverseManager() {
@@ -360,7 +360,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 * Returns the figure that is the target of mouse events. This may not be the
 	 * figure beneath the cursor because another figure may have captured the mouse
 	 * and will continue to get mouse events until capture is released.
-	 * 
+	 *
 	 * @return the mouse target
 	 */
 	protected IFigure getMouseTarget() {
@@ -369,7 +369,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
 	 * Returns the root figure for this dispatcher.
-	 * 
+	 *
 	 * @return the root figure
 	 */
 	protected IFigure getRoot() {
@@ -472,7 +472,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
 	 * Sets the mouse cursor.
-	 * 
+	 *
 	 * @param c the new cursor
 	 */
 	protected void setCursor(Cursor c) {
@@ -488,7 +488,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * Enables key traversal via TAB and ALT+TAB if <i>traverse</i> is
 	 * <code>true</code>. Disables it otherwise.
-	 * 
+	 *
 	 * @param traverse whether key traversal should be enabled
 	 */
 	public void setEnableKeyTraversal(boolean traverse) {
@@ -497,7 +497,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
 	 * Sets the figure under the mouse cursor.
-	 * 
+	 *
 	 * @param f the new figure under the cursor
 	 */
 	protected void setFigureUnderCursor(IFigure f) {
@@ -513,7 +513,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 * the current focused figure. If the new focus figure is not <code>null</code>,
 	 * this will call {@link IFigure#handleFocusGained(FocusEvent)} on the new
 	 * focused figure.
-	 * 
+	 *
 	 * @param fig the new focus figure
 	 */
 	protected void setFocus(IFigure fig) {
@@ -532,7 +532,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
 	 * Sets the figure that the mouse cursor is hovering over.
-	 * 
+	 *
 	 * @param figure the new hover source
 	 * @param me     the mouse event
 	 */
@@ -552,7 +552,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 
 	/**
 	 * Sets the given figure to be the target of future mouse events.
-	 * 
+	 *
 	 * @param figure the new mouse target
 	 */
 	protected void setMouseTarget(IFigure figure) {
@@ -581,7 +581,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	/**
 	 * Updates the figure under the cursor, unless the mouse is captured, in which
 	 * case all mouse events will be routed to the figure that captured the mouse.
-	 * 
+	 *
 	 * @param me the mouse event
 	 */
 	protected void updateFigureUnderCursor(org.eclipse.swt.events.MouseEvent me) {
@@ -598,7 +598,7 @@ public class SWTEventDispatcher extends EventDispatcher {
 	 * a tooltip. If the figure under the mouse doesn't have a tooltip set, this
 	 * method will walk up the ancestor hierarchy until either a figure with a
 	 * tooltip is found or it gets to the root figure.
-	 * 
+	 *
 	 * @param me the mouse event
 	 */
 	protected void updateHoverSource(org.eclipse.swt.events.MouseEvent me) {

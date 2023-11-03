@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -43,7 +43,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 
 	/**
 	 * Constructs a new EditPart with the specified model.
-	 * 
+	 *
 	 * @param model the model
 	 */
 	public AbstractTreeEditPart(Object model) {
@@ -59,7 +59,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	/**
 	 * Implemented to assign the child its {@link TreeEditPart#setWidget(Widget)
 	 * widget}. Subclasses should not call or override this method.
-	 * 
+	 *
 	 * @see AbstractEditPart#addChildVisual(EditPart, int)
 	 */
 	@Override
@@ -76,7 +76,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	/**
 	 * Convenience method that returns <code>true</code> if the widget is a TreeItem
 	 * and is safe to use.
-	 * 
+	 *
 	 * @return <code>true</code> if the widget is a <code>TreeItem</code> and is not
 	 *         disposed
 	 */
@@ -86,7 +86,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 
 	/**
 	 * Override this method to install the EditPolicies for your EditPart.
-	 * 
+	 *
 	 * @see AbstractEditPart#createEditPolicies()
 	 */
 	@Override
@@ -110,7 +110,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	/**
 	 * Override this method to return the <code>Image</code> for this EditPart's
 	 * {@link #widget}. This method is called from {@link #refreshVisuals()}.
-	 * 
+	 *
 	 * @return the Image to be displayed in the TreeItem
 	 */
 	protected Image getImage() {
@@ -120,7 +120,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	/**
 	 * Override this method to return the String to be used in this EditPart's
 	 * {@link #widget}. This method is called from {@link #refreshVisuals()}.
-	 * 
+	 *
 	 * @return the String to be displayed by the TreeItem
 	 */
 	protected String getText() {
@@ -143,7 +143,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	 * <P>
 	 * Subclasses might extend this method if they also want to change the
 	 * TreeItem's foreground or background color.
-	 * 
+	 *
 	 * @see AbstractEditPart#refreshVisuals()
 	 */
 	@Override
@@ -154,7 +154,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 
 	/**
 	 * Disposes the child's <code>widget</code> and sets it to <code>null</code> .
-	 * 
+	 *
 	 * @see AbstractEditPart#removeChildVisual(EditPart)
 	 */
 	@Override
@@ -177,7 +177,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 
 	/**
 	 * Sets the {@link #widget}.
-	 * 
+	 *
 	 * @see org.eclipse.gef.TreeEditPart#setWidget(Widget)
 	 */
 	@Override
@@ -207,7 +207,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	/**
 	 * Sets a specified <code>Image</code> into the widget iff it is a
 	 * <code>TreeItem</code>.
-	 * 
+	 *
 	 * @param image the Image
 	 */
 	protected final void setWidgetImage(Image image) {
@@ -218,7 +218,7 @@ public abstract class AbstractTreeEditPart extends AbstractEditPart implements T
 	/**
 	 * Sets a specified <code>String</code> into the widget iff it is a
 	 * <code>TreeItem</code>.
-	 * 
+	 *
 	 * @param text the String
 	 */
 	protected final void setWidgetText(String text) {

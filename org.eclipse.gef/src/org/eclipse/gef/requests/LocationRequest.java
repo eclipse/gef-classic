@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ public class LocationRequest extends org.eclipse.gef.Request {
 
 	/**
 	 * Constructs a LocationRequest with the given type.
-	 * 
+	 *
 	 * @param type the type
 	 */
 	public LocationRequest(Object type) {
@@ -38,7 +38,7 @@ public class LocationRequest extends org.eclipse.gef.Request {
 
 	/**
 	 * Returns the current location.
-	 * 
+	 *
 	 * @return The current location
 	 */
 	public Point getLocation() {
@@ -47,7 +47,7 @@ public class LocationRequest extends org.eclipse.gef.Request {
 
 	/**
 	 * Sets the current location.
-	 * 
+	 *
 	 * @param p The current location.
 	 */
 	public void setLocation(Point p) {

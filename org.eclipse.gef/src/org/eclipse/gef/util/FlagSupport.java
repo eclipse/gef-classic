@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -15,7 +15,7 @@ package org.eclipse.gef.util;
 /**
  * A structure for storing multiple flags compactly using a 32-bit
  * <code>int</code>.
- * 
+ *
  * @author hudsonr
  */
 public class FlagSupport {
@@ -25,7 +25,7 @@ public class FlagSupport {
 	/**
 	 * Returns <code>true</code> the flag (or one of the flags) indicated by the
 	 * given bitmask is set to true.
-	 * 
+	 *
 	 * @param flag the bitmask of a flag or flags
 	 * @return <code>true</code> if one of the flags is true
 	 */
@@ -36,7 +36,7 @@ public class FlagSupport {
 	/**
 	 * Sets the flag (or all of the flags) indicated by the given bitmask to the
 	 * given value.
-	 * 
+	 *
 	 * @param flag  the bitmask of the flag or flags
 	 * @param value the new value
 	 */

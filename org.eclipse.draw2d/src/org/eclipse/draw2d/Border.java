@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,7 +27,7 @@ public interface Border {
 
 	/**
 	 * Returns the Insets for this Border for the given Figure.
-	 * 
+	 *
 	 * @param figure The figure this border belongs to
 	 * @return The insets
 	 */
@@ -36,7 +36,7 @@ public interface Border {
 	/**
 	 * Returns the preferred width and height that this border would like to display
 	 * itself properly.
-	 * 
+	 *
 	 * @param figure The figure
 	 * @return The preferred size
 	 */
@@ -45,7 +45,7 @@ public interface Border {
 	/**
 	 * Returns <code>true</code> if the Border completely fills the region defined
 	 * in {@link #paint(IFigure, Graphics, Insets)}.
-	 * 
+	 *
 	 * @return <code>true</code> if this border is opaque
 	 */
 	boolean isOpaque();
@@ -58,7 +58,7 @@ public interface Border {
 	 * figure.getBounds().getCropped(insets) and outside of the rectangle:
 	 * figure.getBounds().getCropped(insets).getCropped(getInsets()) where
 	 * <i>inside</i> is defined as {@link Rectangle#contains(int, int)}.
-	 * 
+	 *
 	 * @param figure   The figure this border belongs to
 	 * @param graphics The graphics object used for painting
 	 * @param insets   The insets

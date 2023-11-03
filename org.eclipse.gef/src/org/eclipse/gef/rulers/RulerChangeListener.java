@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,9 +17,9 @@ package org.eclipse.gef.rulers;
  * to receive notification about changes in the ruler/guide properties. This
  * interface provides a mechanism for the (client-side) ruler/guide model to
  * communicate changes to GEF's ruler/guide feature.
- * 
+ *
  * @see org.eclipse.gef.rulers.RulerProvider
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -27,7 +27,7 @@ public interface RulerChangeListener {
 
 	/**
 	 * Invoked when the ruler's unit of measurement is changed.
-	 * 
+	 *
 	 * @param newUnit The new unit of measurement (RulerProvider.UNIT_INCES,
 	 *                UNIT_CENTIMETERS, or UNIT_PIXELS)
 	 */
@@ -35,21 +35,21 @@ public interface RulerChangeListener {
 
 	/**
 	 * Invoked when a guide is added to or removed from a ruler.
-	 * 
+	 *
 	 * @param guide The guide that was added or removed
 	 */
 	void notifyGuideReparented(Object guide);
 
 	/**
 	 * Invoked when a guide is moved.
-	 * 
+	 *
 	 * @param guide The guide that was moved
 	 */
 	void notifyGuideMoved(Object guide);
 
 	/**
 	 * Invoked when a graphical component is attached to a guide.
-	 * 
+	 *
 	 * @param part  The model representation of the graphical compoment that was
 	 *              attached
 	 * @param guide The guide that the part was attached to
@@ -59,7 +59,7 @@ public interface RulerChangeListener {
 	/**
 	 * Stub for the RulerChangeListener interface. Clients not intending to
 	 * implement all the methods in that interface can extend this class.
-	 * 
+	 *
 	 * @author Pratik Shah
 	 * @since 3.0
 	 */

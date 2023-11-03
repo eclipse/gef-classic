@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -62,7 +62,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * Constructs a ScrollBar. ScrollBar orientation is vertical by default. Call
 	 * {@link #setHorizontal(boolean)} with <code>true</code> to set horizontal
 	 * orientation.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public ScrollBar() {
@@ -71,7 +71,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Creates the default 'Up' ArrowButton for the ScrollBar.
-	 * 
+	 *
 	 * @return the up button
 	 * @since 2.0
 	 */
@@ -83,7 +83,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Creates the default 'Down' ArrowButton for the ScrollBar.
-	 * 
+	 *
 	 * @return the down button
 	 * @since 2.0
 	 */
@@ -95,7 +95,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Creates the pagedown Figure for the Scrollbar.
-	 * 
+	 *
 	 * @return the page down figure
 	 * @since 2.0
 	 */
@@ -105,7 +105,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Creates the pageup Figure for the Scrollbar.
-	 * 
+	 *
 	 * @return the page up figure
 	 * @since 2.0
 	 */
@@ -130,7 +130,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * Creates the Scrollbar's "thumb", the draggable Figure that indicates the
 	 * Scrollbar's position.
-	 * 
+	 *
 	 * @return the thumb figure
 	 * @since 2.0
 	 */
@@ -145,7 +145,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the figure used as the up button.
-	 * 
+	 *
 	 * @return the up button
 	 */
 	protected IFigure getButtonUp() {
@@ -158,7 +158,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the figure used as the down button.
-	 * 
+	 *
 	 * @return the down button
 	 */
 	protected IFigure getButtonDown() {
@@ -171,7 +171,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the extent.
-	 * 
+	 *
 	 * @return the extent
 	 * @see RangeModel#getExtent()
 	 */
@@ -181,7 +181,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the minumum value.
-	 * 
+	 *
 	 * @return the minimum
 	 * @see RangeModel#getMinimum()
 	 */
@@ -191,7 +191,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the maximum value.
-	 * 
+	 *
 	 * @return the maximum
 	 * @see RangeModel#getMaximum()
 	 */
@@ -201,7 +201,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the figure used for page down.
-	 * 
+	 *
 	 * @return the page down figure
 	 */
 	protected IFigure getPageDown() {
@@ -215,7 +215,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * Returns the the amound the scrollbar will move when the page up or page down
 	 * areas are pressed.
-	 * 
+	 *
 	 * @return the page increment
 	 */
 	public int getPageIncrement() {
@@ -224,7 +224,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the figure used for page up.
-	 * 
+	 *
 	 * @return the page up figure
 	 */
 	protected IFigure getPageUp() {
@@ -237,7 +237,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the range model for this scrollbar.
-	 * 
+	 *
 	 * @return the range model
 	 */
 	public RangeModel getRangeModel() {
@@ -247,7 +247,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * Returns the amount the scrollbar will move when the up or down arrow buttons
 	 * are pressed.
-	 * 
+	 *
 	 * @return the step increment
 	 */
 	public int getStepIncrement() {
@@ -256,7 +256,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the figure used as the scrollbar's thumb.
-	 * 
+	 *
 	 * @return the thumb figure
 	 */
 	protected IFigure getThumb() {
@@ -265,7 +265,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the current scroll position of the scrollbar.
-	 * 
+	 *
 	 * @return the current value
 	 * @see RangeModel#getValue()
 	 */
@@ -275,7 +275,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Returns the size of the range of allowable values.
-	 * 
+	 *
 	 * @return the value range
 	 */
 	protected int getValueRange() {
@@ -286,7 +286,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * Initilization of the ScrollBar. Sets the Scrollbar to have a ScrollBarLayout
 	 * with vertical orientation. Creates the Figures that make up the components of
 	 * the ScrollBar.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void initialize() {
@@ -301,7 +301,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * Returns <code>true</code> if this scrollbar is orientated horizontally,
 	 * <code>false</code> otherwise.
-	 * 
+	 *
 	 * @return whether this scrollbar is horizontal
 	 */
 	public boolean isHorizontal() {
@@ -360,7 +360,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Does nothing because this doesn't make sense for a scrollbar.
-	 * 
+	 *
 	 * @see Orientable#setDirection(int)
 	 */
 	@Override
@@ -371,7 +371,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * Sets the Clickable that represents the down arrow of the Scrollbar to
 	 * <i>down</i>.
-	 * 
+	 *
 	 * @param down the down button
 	 * @since 2.0
 	 */
@@ -397,7 +397,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * Sets the Clickable that represents the up arrow of the Scrollbar to
 	 * <i>up</i>.
-	 * 
+	 *
 	 * @param up the up button
 	 * @since 2.0
 	 */
@@ -437,7 +437,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Sets the extent of the Scrollbar to <i>ext</i>
-	 * 
+	 *
 	 * @param ext the extent
 	 * @since 2.0
 	 */
@@ -451,7 +451,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * Sets the orientation of the ScrollBar. If <code>true</code>, the Scrollbar
 	 * will have a horizontal orientation. If <code>false</code>, the scrollBar will
 	 * have a vertical orientation.
-	 * 
+	 *
 	 * @param value <code>true</code> if the scrollbar should be horizontal
 	 * @since 2.0
 	 */
@@ -461,7 +461,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Sets the maximum position to <i>max</i>.
-	 * 
+	 *
 	 * @param max the maximum position
 	 * @since 2.0
 	 */
@@ -473,7 +473,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Sets the minimum position to <i>min</i>.
-	 * 
+	 *
 	 * @param min the minumum position
 	 * @since 2.0
 	 */
@@ -502,7 +502,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * pagedown buttons are pressed. (Note that the pageup and pagedown buttons are
 	 * <b>NOT</b> the arrow buttons, they are the figures between the arrow buttons
 	 * and the ScrollBar's thumb figure).
-	 * 
+	 *
 	 * @param increment the new page increment
 	 * @since 2.0
 	 */
@@ -513,7 +513,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * Sets the pagedown button to the passed Clickable. The pagedown button is the
 	 * figure between the down arrow button and the ScrollBar's thumb figure.
-	 * 
+	 *
 	 * @param down the page down figure
 	 * @since 2.0
 	 */
@@ -537,7 +537,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * Sets the pageup button to the passed Clickable. The pageup button is the
 	 * rectangular figure between the down arrow button and the ScrollBar's thumb
 	 * figure.
-	 * 
+	 *
 	 * @param up the page up figure
 	 * @since 2.0
 	 */
@@ -559,7 +559,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Sets the ScrollBar's RangeModel to the passed value.
-	 * 
+	 *
 	 * @param rangeModel the new range model
 	 * @since 2.0
 	 */
@@ -574,7 +574,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	 * Sets the ScrollBar's step increment to the passed value. The step increment
 	 * indicates how many pixels the ScrollBar will scroll when its up or down arrow
 	 * button is pressed.
-	 * 
+	 *
 	 * @param increment the new step increment
 	 * @since 2.0
 	 */
@@ -585,7 +585,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * Sets the ScrollBar's thumb to the passed Figure. The thumb is the draggable
 	 * component of the ScrollBar that indicates the ScrollBar's position.
-	 * 
+	 *
 	 * @param figure the thumb figure
 	 * @since 2.0
 	 */
@@ -605,7 +605,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 
 	/**
 	 * Sets the value of the Scrollbar to <i>v</i>
-	 * 
+	 *
 	 * @param v the new value
 	 * @since 2.0
 	 */
@@ -616,7 +616,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * Causes the ScrollBar to scroll down (or right) by the value of its step
 	 * increment.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void stepDown() {
@@ -626,7 +626,7 @@ public class ScrollBar extends Figure implements Orientable, PropertyChangeListe
 	/**
 	 * Causes the ScrollBar to scroll up (or left) by the value of its step
 	 * increment.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void stepUp() {

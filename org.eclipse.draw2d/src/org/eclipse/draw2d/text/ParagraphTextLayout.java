@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,7 +18,7 @@ import org.eclipse.swt.graphics.Font;
 
 /**
  * The layout for {@link TextFlow}.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -46,7 +46,7 @@ public class ParagraphTextLayout extends TextLayout {
 
 	/**
 	 * Constructs a new ParagraphTextLayout on the specified TextFlow.
-	 * 
+	 *
 	 * @param flow the TextFlow
 	 */
 	public ParagraphTextLayout(TextFlow flow) {
@@ -61,7 +61,7 @@ public class ParagraphTextLayout extends TextLayout {
 	 * <LI>{@link #WORD_WRAP_SOFT}</LI>
 	 * <LI>{@link #WORD_WRAP_TRUNCATE}</LI>
 	 * </UL>
-	 * 
+	 *
 	 * @param flow  the textflow
 	 * @param style the style of wrapping
 	 */
@@ -73,7 +73,7 @@ public class ParagraphTextLayout extends TextLayout {
 	/**
 	 * Given the Bidi levels of the given text, this method breaks the given text up
 	 * by its level runs.
-	 * 
+	 *
 	 * @param text      the String that needs to be broken up into its level runs
 	 * @param levelInfo the Bidi levels
 	 * @return the requested segment

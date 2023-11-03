@@ -2,12 +2,12 @@
  * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
@@ -28,15 +28,15 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * A cached label to improve performance of text drawing under linux
- * 
+ *
  * @author Ian Bull
- * 
+ *
  */
 public abstract class CachedLabel extends Label {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
 	Image cachedImage = null;
@@ -45,7 +45,7 @@ public abstract class CachedLabel extends Label {
 
 	/**
 	 * CachedLabel constructor.
-	 * 
+	 *
 	 * @param cacheLabel Should the label be cached, or should the text be
 	 *                   re-layedout each time
 	 */
@@ -55,7 +55,7 @@ public abstract class CachedLabel extends Label {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Label#setIcon(org.eclipse.swt.graphics.Image)
 	 */
 	@Override
@@ -66,7 +66,7 @@ public abstract class CachedLabel extends Label {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.draw2d.Figure#setForegroundColor(org.eclipse.swt.graphics.Color)
 	 */
@@ -78,7 +78,7 @@ public abstract class CachedLabel extends Label {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.draw2d.Figure#setBackgroundColor(org.eclipse.swt.graphics.Color)
 	 */
@@ -90,7 +90,7 @@ public abstract class CachedLabel extends Label {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Figure#setFont(org.eclipse.swt.graphics.Font)
 	 */
 	@Override
@@ -101,7 +101,7 @@ public abstract class CachedLabel extends Label {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Label#setText(java.lang.String)
 	 */
 	@Override
@@ -112,7 +112,7 @@ public abstract class CachedLabel extends Label {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Figure#setSize(int, int)
 	 */
 	@Override
@@ -127,7 +127,7 @@ public abstract class CachedLabel extends Label {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.draw2d.Figure#setBounds(org.eclipse.draw2d.geometry.Rectangle)
 	 */
@@ -149,14 +149,14 @@ public abstract class CachedLabel extends Label {
 	 * Override this method to return the background colour for the text Note: Text
 	 * must have a background color since it is being stored in an image (You can
 	 * set it to white if you want)
-	 * 
+	 *
 	 * @return
 	 */
 	protected abstract Color getBackgroundTextColor();
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
 	static Rectangle tempRect = new Rectangle();
@@ -231,7 +231,7 @@ public abstract class CachedLabel extends Label {
 
 	/**
 	 * Determine if the image should be remade or not
-	 * 
+	 *
 	 * @return
 	 */
 	private boolean shouldInvalidateCache() {

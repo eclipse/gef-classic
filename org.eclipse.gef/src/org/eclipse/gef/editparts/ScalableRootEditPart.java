@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -97,7 +97,7 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  * <td colspan="2">&nbsp;Grid Layer</td>
  * </tr>
  * </table>
- * 
+ *
  * @author Eric Bordeau
  * @since 2.1.1
  */
@@ -143,7 +143,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	/**
 	 * Constructor which allows to configure if scaled graphics should be used.
-	 * 
+	 *
 	 * @since 3.14
 	 */
 	public ScalableRootEditPart(boolean useScaledGraphics) {
@@ -154,7 +154,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	/**
 	 * Responsible of creating a {@link ZoomManager} to be used by this
 	 * {@link ScalableRootEditPart}.
-	 * 
+	 *
 	 * @return A new {@link ZoomManager} bound to the given {@link ScalableFigure}
 	 *         and {@link Viewport}.
 	 * @since 3.10
@@ -185,7 +185,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	 * layer (i.e., beneath the primary layer) if it is not to cover up parts on the
 	 * primary layer. In that case, the primary layer should be transparent so that
 	 * the grid is visible.
-	 * 
+	 *
 	 * @return the newly created GridLayer
 	 */
 	@SuppressWarnings("static-method") // alow children to provide their own gridlayer implementation or configuration
@@ -195,7 +195,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	/**
 	 * Creates the top-most set of layers on the given layered pane
-	 * 
+	 *
 	 * @param layeredPane the parent for the created layers
 	 */
 	protected void createLayers(LayeredPane layeredPane) {
@@ -212,7 +212,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	/**
 	 * Creates a layered pane and the layers that should be printed.
-	 * 
+	 *
 	 * @see org.eclipse.gef.print.PrintGraphicalViewerOperation
 	 * @return a new LayeredPane containing the printable layers
 	 */
@@ -233,7 +233,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	/**
 	 * Creates a scalable layered pane and the layers that should be scaled.
-	 * 
+	 *
 	 * @return a new <code>ScalableLayeredPane</code> containing the scalable layers
 	 */
 	protected ScalableLayeredPane createScaledLayers() {
@@ -246,7 +246,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	/**
 	 * Constructs the viewport that will be used to contain all of the layers.
-	 * 
+	 *
 	 * @return a new Viewport
 	 */
 	@SuppressWarnings("static-method") // allow chidren to override
@@ -266,7 +266,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	/**
 	 * The contents' Figure will be added to the PRIMARY_LAYER.
-	 * 
+	 *
 	 * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
 	 */
 	@Override
@@ -276,7 +276,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	/**
 	 * Should not be called, but returns a MarqeeDragTracker for good measure.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
 	 */
 	@Override
@@ -290,7 +290,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	/**
 	 * Returns the layer indicated by the key. Searches all layered panes.
-	 * 
+	 *
 	 * @see LayerManager#getLayer(Object)
 	 */
 	@Override
@@ -309,7 +309,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	/**
 	 * The root editpart does not have a real model. The LayerManager ID is returned
 	 * so that this editpart gets registered using that key.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getModel()
 	 */
 	@Override
@@ -320,7 +320,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 	/**
 	 * Returns the LayeredPane that should be used during printing. This layer will
 	 * be identified using {@link LayerConstants#PRINTABLE_LAYERS}.
-	 * 
+	 *
 	 * @return the layered pane containing all printable content
 	 */
 	protected LayeredPane getPrintableLayers() {
@@ -331,7 +331,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	/**
 	 * Returns the scalable layers of this EditPart
-	 * 
+	 *
 	 * @return LayeredPane
 	 */
 	protected LayeredPane getScaledLayers() {
@@ -342,7 +342,7 @@ public class ScalableRootEditPart extends SimpleRootEditPart implements LayerCon
 
 	/**
 	 * Returns the zoomManager.
-	 * 
+	 *
 	 * @return ZoomManager
 	 */
 	public ZoomManager getZoomManager() {

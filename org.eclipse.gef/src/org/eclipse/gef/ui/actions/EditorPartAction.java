@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ public abstract class EditorPartAction extends WorkbenchPartAction {
 
 	/**
 	 * Constructs a new EditorPartAction with the given editor and style.
-	 * 
+	 *
 	 * @param editor The editor to be associated with this action.
 	 * @param style  the Action's style as defined in Action
 	 */
@@ -32,7 +32,7 @@ public abstract class EditorPartAction extends WorkbenchPartAction {
 
 	/**
 	 * Constructs a new EditorPartAction with the given editor.
-	 * 
+	 *
 	 * @param editor The editor to be associated with this action.
 	 */
 	public EditorPartAction(IEditorPart editor) {
@@ -41,7 +41,7 @@ public abstract class EditorPartAction extends WorkbenchPartAction {
 
 	/**
 	 * Used internally to avoid deprecation warnings in GEF subclasses.
-	 * 
+	 *
 	 * @param part the part
 	 */
 	EditorPartAction(IWorkbenchPart part) {
@@ -50,7 +50,7 @@ public abstract class EditorPartAction extends WorkbenchPartAction {
 
 	/**
 	 * Returns the editor associated with this action.
-	 * 
+	 *
 	 * @return the Editor part
 	 */
 	protected IEditorPart getEditorPart() {
@@ -59,7 +59,7 @@ public abstract class EditorPartAction extends WorkbenchPartAction {
 
 	/**
 	 * Sets the editor.
-	 * 
+	 *
 	 * @param part the editorpart
 	 */
 	protected void setEditorPart(IEditorPart part) {

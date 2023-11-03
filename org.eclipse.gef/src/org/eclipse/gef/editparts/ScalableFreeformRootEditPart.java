@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -76,7 +76,7 @@ import org.eclipse.draw2d.Viewport;
  * <td colspan="2">&nbsp;Grid Layer</td>
  * </tr>
  * </table>
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -96,7 +96,7 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 
 	/**
 	 * Constructor which allows to configure if scaled graphics should be used.
-	 * 
+	 *
 	 * @since 3.14
 	 */
 	public ScalableFreeformRootEditPart(boolean useScaledGraphics) {
@@ -107,7 +107,7 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 	/**
 	 * Responsible of creating a {@link ZoomManager} to be used by this
 	 * {@link ScalableRootEditPart}.
-	 * 
+	 *
 	 * @return A new {@link ZoomManager} bound to the given {@link ScalableFigure}
 	 *         and {@link Viewport}.
 	 * @since 3.10
@@ -131,7 +131,7 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 
 	/**
 	 * Creates a layered pane and the layers that should be scaled.
-	 * 
+	 *
 	 * @return a new freeform layered pane containing the scalable layers
 	 */
 	protected ScalableFreeformLayeredPane createScaledLayers() {
@@ -155,7 +155,7 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 
 	/**
 	 * Returns the scalable layers of this EditPart
-	 * 
+	 *
 	 * @return LayeredPane
 	 */
 	protected LayeredPane getScaledLayers() {
@@ -166,7 +166,7 @@ public class ScalableFreeformRootEditPart extends FreeformGraphicalRootEditPart 
 
 	/**
 	 * Returns the zoomManager.
-	 * 
+	 *
 	 * @return ZoomManager
 	 */
 	public ZoomManager getZoomManager() {

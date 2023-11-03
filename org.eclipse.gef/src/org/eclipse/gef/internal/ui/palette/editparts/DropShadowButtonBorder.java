@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -35,7 +35,7 @@ class DropShadowButtonBorder extends AbstractBorder {
 	/**
 	 * Returns the space used by the border for the figure provided as input. In
 	 * this border all sides always have equal width.
-	 * 
+	 *
 	 * @param figure Figure for which this is the border.
 	 * @return Insets for this border.
 	 */

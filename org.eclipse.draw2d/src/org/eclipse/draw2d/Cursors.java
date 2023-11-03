@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,7 +27,7 @@ public class Cursors {
 	 * which want to run properly when running in a mirrored environment. The
 	 * behavior is the same as calling {@link #getDirectionalCursor(int, boolean)
 	 * getDirectionalCursor(direction, false)}.
-	 * 
+	 *
 	 * @param direction the relative direction of the desired cursor
 	 * @return The appropriate directional cursor
 	 */
@@ -51,7 +51,7 @@ public class Cursors {
 	 * <P>
 	 * The behavior is undefined for other values. If <code>isMirrored</code> is set
 	 * to <code>true</code>, EAST and WEST will be inverted.
-	 * 
+	 *
 	 * @param direction  the relative direction of the desired cursor
 	 * @param isMirrored <code>true</code> if EAST and WEST should be inverted
 	 * @return The appropriate directional cursor

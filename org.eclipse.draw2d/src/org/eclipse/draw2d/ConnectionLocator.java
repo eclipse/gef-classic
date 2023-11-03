@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -47,7 +47,7 @@ public class ConnectionLocator extends AbstractLocator {
 	/**
 	 * Constructs a ConnectionLocator with the passed connection and {@link #MIDDLE}
 	 * alignment.
-	 * 
+	 *
 	 * @param connection The Connection
 	 * @since 2.0
 	 */
@@ -59,10 +59,10 @@ public class ConnectionLocator extends AbstractLocator {
 	 * Constructs a ConnectionLocator with the passed Connection and alignment.
 	 * Valid values for the alignment are integer constants {@link #SOURCE},
 	 * {@link #MIDDLE}, and {@link #TARGET}.
-	 * 
+	 *
 	 * @param connection The Connection
 	 * @param align      The alignment
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public ConnectionLocator(Connection connection, int align) {
@@ -72,7 +72,7 @@ public class ConnectionLocator extends AbstractLocator {
 
 	/**
 	 * Returns the alignment of ConnectionLocator.
-	 * 
+	 *
 	 * @return The alignment
 	 * @since 2.0
 	 */
@@ -82,7 +82,7 @@ public class ConnectionLocator extends AbstractLocator {
 
 	/**
 	 * Returns connection associated with ConnectionLocator.
-	 * 
+	 *
 	 * @return The Connection
 	 * @since 2.0
 	 */
@@ -92,7 +92,7 @@ public class ConnectionLocator extends AbstractLocator {
 
 	/**
 	 * Returns ConnectionLocator's reference point in absolute coordinates.
-	 * 
+	 *
 	 * @return The reference point
 	 * @since 2.0
 	 */
@@ -109,7 +109,7 @@ public class ConnectionLocator extends AbstractLocator {
 	 * <i>points</i>. If {@link #TARGET}, it returns the last point in
 	 * <i>points</i>. If {@link #MIDDLE}, it returns the middle of line represented
 	 * by <i>points</i>.
-	 * 
+	 *
 	 * @param points The points in the Connection
 	 * @return The location
 	 * @since 2.0
@@ -139,7 +139,7 @@ public class ConnectionLocator extends AbstractLocator {
 	/**
 	 * Sets the alignment. Possible values are {@link #SOURCE}, {@link #MIDDLE}, and
 	 * {@link #TARGET}.
-	 * 
+	 *
 	 * @param align The alignment
 	 * @since 2.0
 	 */
@@ -149,7 +149,7 @@ public class ConnectionLocator extends AbstractLocator {
 
 	/**
 	 * Sets the Connection to be associated with this ConnectionLocator.
-	 * 
+	 *
 	 * @param connection The Connection
 	 * @since 2.0
 	 */

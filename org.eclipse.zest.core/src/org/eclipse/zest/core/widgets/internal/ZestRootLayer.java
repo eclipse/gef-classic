@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,9 +21,9 @@ import org.eclipse.draw2d.IFigure;
  * The root figure for Zest. The figure is broken up into four segments, 1. The
  * Connections 2. The Nodes 3. The Highlighted Connections 4. The Highlighted
  * Nodes
- * 
+ *
  * @author Ian Bull
- * 
+ *
  */
 public class ZestRootLayer extends FreeformLayer {
 
@@ -35,7 +35,7 @@ public class ZestRootLayer extends FreeformLayer {
 
 	/**
 	 * Adds a node to the ZestRootLayer
-	 * 
+	 *
 	 * @param nodeFigure The figure representing the node
 	 */
 	public void addNode(IFigure nodeFigure) {
@@ -46,7 +46,7 @@ public class ZestRootLayer extends FreeformLayer {
 
 	/**
 	 * Removes a node from the layer
-	 * 
+	 *
 	 * @param nodeFigure
 	 */
 	public void removeNode(IFigure nodeFigure) {

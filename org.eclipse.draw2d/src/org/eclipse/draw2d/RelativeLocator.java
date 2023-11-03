@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ public class RelativeLocator implements Locator {
 	/**
 	 * Null constructor. The reference figure must be set before use. The relative
 	 * locations will default to (0.0, 0.0).
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public RelativeLocator() {
@@ -48,7 +48,7 @@ public class RelativeLocator implements Locator {
 	 * Constructs a RelativeLocator with the given reference figure and relative
 	 * location. The location is a constant from {@link PositionConstants} used as a
 	 * convenient and readable way to set both the relativeX and relativeY values.
-	 * 
+	 *
 	 * @param reference the reference figure
 	 * @param location  one of NORTH, NORTH_EAST, etc.
 	 * @since 2.0
@@ -81,7 +81,7 @@ public class RelativeLocator implements Locator {
 	/**
 	 * Constructs a RelativeLocator with the given reference Figure and offset
 	 * ratios.
-	 * 
+	 *
 	 * @param reference the reference figure
 	 * @param relativeX the relative X offset
 	 * @param relativeY the relative Y offset
@@ -96,7 +96,7 @@ public class RelativeLocator implements Locator {
 	/**
 	 * Returns the Reference Box in the Reference Figure's coordinate system. The
 	 * returned Rectangle may be by reference, and should <b>not</b> be modified.
-	 * 
+	 *
 	 * @return the reference box
 	 * @since 2.0
 	 */
@@ -106,7 +106,7 @@ public class RelativeLocator implements Locator {
 
 	/**
 	 * Returns the Figure this locator is relative to.
-	 * 
+	 *
 	 * @return the reference figure
 	 * @since 2.0
 	 */
@@ -116,7 +116,7 @@ public class RelativeLocator implements Locator {
 
 	/**
 	 * Relocates the target using the relative offset locations.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Locator#relocate(org.eclipse.draw2d.IFigure)
 	 */
 	@Override
@@ -137,7 +137,7 @@ public class RelativeLocator implements Locator {
 
 	/**
 	 * Sets the reference figure this locator uses to place the target figure.
-	 * 
+	 *
 	 * @param reference the reference figure
 	 * @since 2.0
 	 */

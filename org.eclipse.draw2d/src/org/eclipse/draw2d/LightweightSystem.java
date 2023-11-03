@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -64,7 +64,7 @@ public class LightweightSystem {
 
 	/**
 	 * Constructs a LightweightSystem on Canvas <i>c</i>.
-	 * 
+	 *
 	 * @param c the canvas
 	 * @since 2.0
 	 */
@@ -85,7 +85,7 @@ public class LightweightSystem {
 	 * events to be dispatched and handled by its {@link EventDispatcher}.
 	 * <P>
 	 * <EM>WARNING:</EM> This method should not be overridden.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void addListeners() {
@@ -130,7 +130,7 @@ public class LightweightSystem {
 
 	/**
 	 * Returns this LightwightSystem's EventDispatcher.
-	 * 
+	 *
 	 * @return the event dispatcher
 	 * @since 2.0
 	 */
@@ -142,7 +142,7 @@ public class LightweightSystem {
 
 	/**
 	 * Returns this LightweightSystem's root figure.
-	 * 
+	 *
 	 * @return the root figure
 	 * @since 2.0
 	 */
@@ -152,7 +152,7 @@ public class LightweightSystem {
 
 	/**
 	 * Returns a new instance of this LightweightSystem's EventHandler.
-	 * 
+	 *
 	 * @return the newly created event handler
 	 * @since 2.0
 	 */
@@ -162,7 +162,7 @@ public class LightweightSystem {
 
 	/**
 	 * Creates and returns the root figure.
-	 * 
+	 *
 	 * @return the newly created root figure
 	 */
 	protected RootFigure createRootFigure() {
@@ -175,7 +175,7 @@ public class LightweightSystem {
 
 	/**
 	 * Returns this LightweightSystem's UpdateManager.
-	 * 
+	 *
 	 * @return the update manager
 	 * @since 2.0
 	 */
@@ -197,7 +197,7 @@ public class LightweightSystem {
 	/**
 	 * Invokes this LightweightSystem's {@link UpdateManager} to paint this
 	 * LightweightSystem's Canvas and contents.
-	 * 
+	 *
 	 * @param gc the GC used for painting
 	 * @since 2.0
 	 */
@@ -208,7 +208,7 @@ public class LightweightSystem {
 	/**
 	 * Sets the contents of the LightweightSystem to the passed figure. This figure
 	 * should be the top-level Figure in a Draw2d application.
-	 * 
+	 *
 	 * @param figure the new root figure
 	 * @since 2.0
 	 */
@@ -221,7 +221,7 @@ public class LightweightSystem {
 
 	/**
 	 * Sets the LightweightSystem's control to the passed Canvas.
-	 * 
+	 *
 	 * @param c the canvas
 	 * @since 2.0
 	 */
@@ -245,7 +245,7 @@ public class LightweightSystem {
 
 	/**
 	 * Sets this LightweightSystem's EventDispatcher.
-	 * 
+	 *
 	 * @param dispatcher the new event dispatcher
 	 * @since 2.0
 	 */
@@ -264,7 +264,7 @@ public class LightweightSystem {
 
 	/**
 	 * Sets this LightweightSystem's root figure.
-	 * 
+	 *
 	 * @param root the new root figure
 	 */
 	protected void setRootPaneFigure(RootFigure root) {
@@ -274,7 +274,7 @@ public class LightweightSystem {
 
 	/**
 	 * Sets this LightweightSystem's UpdateManager.
-	 * 
+	 *
 	 * @param um the new update manager
 	 * @since 2.0
 	 */

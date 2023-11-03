@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ import org.eclipse.gef.examples.shapes.model.RectangularShape;
 
 /**
  * Utility class that can create a GEF Palette.
- * 
+ *
  * @see #createPalette()
  * @author Elias Volanakis
  */
@@ -60,7 +60,7 @@ final class ShapesEditorPaletteFactory {
 	/**
 	 * Creates the PaletteRoot and adds all palette elements. Use this factory
 	 * method to create a new palette for your graphical editor.
-	 * 
+	 *
 	 * @return a new PaletteRoot
 	 */
 	static PaletteRoot createPalette() {

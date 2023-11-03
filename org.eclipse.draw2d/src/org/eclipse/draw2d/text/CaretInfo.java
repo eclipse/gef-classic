@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,7 +19,7 @@ import org.eclipse.draw2d.geometry.Translatable;
  * Stores positional information about where a caret should be placed. This
  * structure currently only offers integer precision. Scaling operations will
  * result in rounding.
- * 
+ *
  * @since 3.1
  */
 public class CaretInfo implements Translatable {
@@ -32,7 +32,7 @@ public class CaretInfo implements Translatable {
 	 * <P>
 	 * <EM>WARNING:</EM> This constructor should not be called by clients. It is for
 	 * use by {@link TextFlow}, and may change in future releases.
-	 * 
+	 *
 	 * @param x           the x location
 	 * @param y           the y location of the top of the caret
 	 * @param ascent      the ascent
@@ -51,7 +51,7 @@ public class CaretInfo implements Translatable {
 
 	/**
 	 * Constructs a CaretInfo object by copying the values from another instance.
-	 * 
+	 *
 	 * @param info the reference
 	 * @since 3.2
 	 */
@@ -66,7 +66,7 @@ public class CaretInfo implements Translatable {
 
 	/**
 	 * Returns the y location of the baseline.
-	 * 
+	 *
 	 * @return the y coordinate of the baseline
 	 */
 	public int getBaseline() {
@@ -76,7 +76,7 @@ public class CaretInfo implements Translatable {
 	/**
 	 * Returns the total height of the caret. The height is the sum of the ascent
 	 * and descent.
-	 * 
+	 *
 	 * @return the height
 	 */
 	public int getHeight() {
@@ -99,7 +99,7 @@ public class CaretInfo implements Translatable {
 
 	/**
 	 * Returns the x location of the caret.
-	 * 
+	 *
 	 * @return the x coordinate
 	 */
 	public int getX() {
@@ -108,7 +108,7 @@ public class CaretInfo implements Translatable {
 
 	/**
 	 * Returns the y location of the caret.
-	 * 
+	 *
 	 * @return the y coordinate
 	 */
 	public int getY() {

@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.layouts.exampleUses;
@@ -536,7 +536,7 @@ public class SimpleSWTExample {
 	static int lastUpdateCall = 0;
 
 	/**
-	 * 
+	 *
 	 * @param maxLevels   Max number of levels wanted in tree
 	 * @param maxChildren Max number of children for each node in the tree
 	 * @param random      Whether or not to pick random number of levels (from 1 to
@@ -596,7 +596,7 @@ public class SimpleSWTExample {
 	/**
 	 * Gets the next name from the names list. Once all the names have been used up
 	 * the names are repeated with a '1' after the name.
-	 * 
+	 *
 	 * @return String name
 	 */
 	private String getNextID() {
@@ -624,7 +624,7 @@ public class SimpleSWTExample {
 
 	/**
 	 * Creates a SimpleNode
-	 * 
+	 *
 	 * @param name
 	 * @return SimpleNode
 	 */
@@ -760,7 +760,7 @@ public class SimpleSWTExample {
 
 		/**
 		 * Draw an edge
-		 * 
+		 *
 		 * @param gcBuffer
 		 * @param srcX
 		 * @param srcY
@@ -778,7 +778,7 @@ public class SimpleSWTExample {
 		/**
 		 * Draws a set of lines between bendpoints TODO - This does not always draw
 		 * outside the node.
-		 * 
+		 *
 		 * @param relationship
 		 * @param bendNodes
 		 * @param bendEdges

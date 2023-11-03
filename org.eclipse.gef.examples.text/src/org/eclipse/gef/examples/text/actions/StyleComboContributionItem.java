@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -90,7 +90,7 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	/**
 	 * Creates and returns the combo for this contribution item under the given
 	 * parent composite.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 * @return the new control
 	 */
@@ -128,7 +128,7 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 
 	/**
 	 * Removes the listeners from the StyleService and the IPartService.
-	 * 
+	 *
 	 * @see org.eclipse.jface.action.IContributionItem#dispose()
 	 */
 	@Override
@@ -142,7 +142,7 @@ public abstract class StyleComboContributionItem extends ContributionItem {
 	 * The control item implementation of this <code>IContributionItem</code> method
 	 * calls the <code>createControl</code> framework method to create a control
 	 * under the given parent, and then creates a new tool item to hold it.
-	 * 
+	 *
 	 * @param parent The ToolBar to add the new control to
 	 * @param index  Index
 	 */

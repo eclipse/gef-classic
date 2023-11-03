@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -15,7 +15,7 @@ package org.eclipse.zest.core.viewers.internal;
 /**
  * This class contains UI strings (translated, if available) that clients can
  * use.
- * 
+ *
  * @author Eric Bordeau
  */
 public class SharedMessages {
