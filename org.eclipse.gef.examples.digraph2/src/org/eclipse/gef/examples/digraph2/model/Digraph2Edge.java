@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -15,7 +15,7 @@ package org.eclipse.gef.examples.digraph2.model;
 
 /**
  * The edge model object which describes an edge in the directed graph.
- * 
+ *
  * @author Anthony Hunter
  */
 public class Digraph2Edge {
@@ -32,7 +32,7 @@ public class Digraph2Edge {
 
 	/**
 	 * Get the source node for this edge.
-	 * 
+	 *
 	 * @return the source node for this edge.
 	 */
 	public Digraph2Node getSource() {
@@ -41,7 +41,7 @@ public class Digraph2Edge {
 
 	/**
 	 * Get the target node for this edge.
-	 * 
+	 *
 	 * @return the target node for this edge.
 	 */
 	public Digraph2Node getTarget() {
@@ -50,7 +50,7 @@ public class Digraph2Edge {
 
 	/**
 	 * Set the source node for this edge.
-	 * 
+	 *
 	 * @param newSource the source node.
 	 */
 	public void setSource(Digraph2Node newSource) {
@@ -65,7 +65,7 @@ public class Digraph2Edge {
 
 	/**
 	 * Set the target node for this edge.
-	 * 
+	 *
 	 * @param newTarget the target node.
 	 */
 	public void setTarget(Digraph2Node newTarget) {

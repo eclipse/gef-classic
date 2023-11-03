@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ package org.eclipse.draw2d.graph;
  * directed graph <EM>CG</EM> is said to be connected iff Union(<EM>G</EM>,
  * <EM>T</EM>) is connected, where G represents the given nodes (including
  * subgraphs) and edges.
- * 
+ *
  * <LI>This algorithm will remove any compound cycles found in the input graph
  * <em>G</em> by inverting edges according to a heuristic until no more cycles
  * are found. A compound cycle is defined as: a cycle comprised of edges from
@@ -35,7 +35,7 @@ package org.eclipse.draw2d.graph;
  * <em>T<SUP>-1</SUP></em> is the backwards graph of <EM>T</EM>, c element of T,
  * e element of G, and p element of T<SUP>-1</SUP>.
  * </UL>
- * 
+ *
  * @author Randy Hudson
  * @since 2.1.2
  */

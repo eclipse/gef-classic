@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -89,7 +89,7 @@ public class ButtonModel {
 
 	/**
 	 * Registers the given listener as an ActionListener.
-	 * 
+	 *
 	 * @param listener The ActionListener to add
 	 * @since 2.0
 	 */
@@ -101,7 +101,7 @@ public class ButtonModel {
 
 	/**
 	 * Registers the given listener as a ChangeListener.
-	 * 
+	 *
 	 * @param listener The ChangeListener to add
 	 * @since 2.0
 	 */
@@ -113,7 +113,7 @@ public class ButtonModel {
 
 	/**
 	 * Registers the given listener as a ButtonStateTransitionListener.
-	 * 
+	 *
 	 * @param listener The ButtonStateTransitionListener to add
 	 * @since 2.0
 	 */
@@ -126,7 +126,7 @@ public class ButtonModel {
 	/**
 	 * Notifies any ActionListeners on this ButtonModel that an action has been
 	 * performed.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void fireActionPerformed() {
@@ -137,7 +137,7 @@ public class ButtonModel {
 	/**
 	 * Notifies any listening ButtonStateTransitionListener that the pressed state
 	 * of this button has been cancelled.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void fireCanceled() {
@@ -148,7 +148,7 @@ public class ButtonModel {
 	/**
 	 * Notifies any listening ButtonStateTransitionListener that this button has
 	 * been pressed.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void firePressed() {
@@ -159,7 +159,7 @@ public class ButtonModel {
 	/**
 	 * Notifies any listening ButtonStateTransitionListener that this button has
 	 * been released.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void fireReleased() {
@@ -170,7 +170,7 @@ public class ButtonModel {
 	/**
 	 * Notifies any listening ButtonStateTransitionListeners that this button has
 	 * resumed activity.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void fireResume() {
@@ -180,7 +180,7 @@ public class ButtonModel {
 
 	/**
 	 * Notifies any listening ChangeListeners that this button's state has changed.
-	 * 
+	 *
 	 * @param property The name of the property that changed
 	 * @since 2.0
 	 */
@@ -192,7 +192,7 @@ public class ButtonModel {
 	/**
 	 * Notifies any listening ButtonStateTransitionListeners that this button has
 	 * suspended activity.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void fireSuspend() {
@@ -206,7 +206,7 @@ public class ButtonModel {
 
 	/**
 	 * Returns the group to which this model belongs.
-	 * 
+	 *
 	 * @return The ButtonGroup to which this model belongs
 	 * @since 2.0
 	 */
@@ -216,7 +216,7 @@ public class ButtonModel {
 
 	/**
 	 * Returns an object representing user data.
-	 * 
+	 *
 	 * @return User data
 	 * @since 2.0
 	 */
@@ -226,7 +226,7 @@ public class ButtonModel {
 
 	/**
 	 * Sets the firing behavior for this button.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void installFiringBehavior() {
@@ -236,7 +236,7 @@ public class ButtonModel {
 	/**
 	 * Returns <code>true</code> if this button is armed. If a button is armed, it
 	 * will fire an ActionPerformed when released.
-	 * 
+	 *
 	 * @return <code>true</code> if this button is armed
 	 * @since 2.0
 	 */
@@ -246,7 +246,7 @@ public class ButtonModel {
 
 	/**
 	 * Returns <code>true</code> if this button is enabled.
-	 * 
+	 *
 	 * @return <code>true</code> if this button is enabled
 	 * @since 2.0
 	 */
@@ -256,7 +256,7 @@ public class ButtonModel {
 
 	/**
 	 * Returns <code>true</code> if the mouse is over this button.
-	 * 
+	 *
 	 * @return <code>true</code> if the mouse is over this button
 	 * @since 2.0
 	 */
@@ -266,7 +266,7 @@ public class ButtonModel {
 
 	/**
 	 * Returns <code>true</code> if this button is pressed.
-	 * 
+	 *
 	 * @return <code>true</code> if this button is pressed
 	 * @since 2.0
 	 */
@@ -277,7 +277,7 @@ public class ButtonModel {
 	/**
 	 * Returns the selection state of this model. If this model belongs to any
 	 * group, the group is queried for selection state, else the flags are used.
-	 * 
+	 *
 	 * @return <code>true</code> if this button is selected
 	 * @since 2.0
 	 */
@@ -291,7 +291,7 @@ public class ButtonModel {
 
 	/**
 	 * Removes the given ActionListener.
-	 * 
+	 *
 	 * @param listener The ActionListener to remove
 	 * @since 2.0
 	 */
@@ -301,7 +301,7 @@ public class ButtonModel {
 
 	/**
 	 * Removes the given ChangeListener.
-	 * 
+	 *
 	 * @param listener The ChangeListener to remove
 	 * @since 2.0
 	 */
@@ -311,7 +311,7 @@ public class ButtonModel {
 
 	/**
 	 * Removes the given ButtonStateTransitionListener.
-	 * 
+	 *
 	 * @param listener The ButtonStateTransitionListener to remove
 	 * @since 2.0
 	 */
@@ -322,7 +322,7 @@ public class ButtonModel {
 	/**
 	 * Sets this button to be armed. If a button is armed, it will fire an
 	 * ActionPerformed when released.
-	 * 
+	 *
 	 * @param value The armed state
 	 * @since 2.0
 	 */
@@ -337,7 +337,7 @@ public class ButtonModel {
 
 	/**
 	 * Sets this button to be enabled.
-	 * 
+	 *
 	 * @param value The enabled state
 	 * @since 2.0
 	 */
@@ -358,10 +358,10 @@ public class ButtonModel {
 	 * the default behavior, where action performed events are not fired until the
 	 * mouse button is released. {@link #REPEAT_FIRING_BEHAVIOR} causes action
 	 * performed events to fire repeatedly until the mouse button is released.
-	 * 
+	 *
 	 * @param type The firing behavior type
 	 * @since 2.0
-	 * 
+	 *
 	 */
 	public void setFiringBehavior(int type) {
 		if (firingBehavior != null)
@@ -386,7 +386,7 @@ public class ButtonModel {
 	/**
 	 * Sets the ButtonGroup to which this model belongs to. Adds this model as a
 	 * listener to the group.
-	 * 
+	 *
 	 * @param bg The group to which this model belongs.
 	 * @since 2.0
 	 */
@@ -402,7 +402,7 @@ public class ButtonModel {
 
 	/**
 	 * Sets the mouseover property of this button.
-	 * 
+	 *
 	 * @param value The value the mouseover property will be set to
 	 * @since 2.0
 	 */
@@ -420,7 +420,7 @@ public class ButtonModel {
 
 	/**
 	 * Sets the pressed property of this button.
-	 * 
+	 *
 	 * @param value The value the pressed property will be set to
 	 * @since 2.0
 	 */
@@ -441,7 +441,7 @@ public class ButtonModel {
 
 	/**
 	 * Sets this button to be selected.
-	 * 
+	 *
 	 * @param value The value the selected property will be set to
 	 * @since 2.0
 	 */
@@ -460,7 +460,7 @@ public class ButtonModel {
 
 	/**
 	 * Sets user data.
-	 * 
+	 *
 	 * @param data The user data
 	 * @since 2.0
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ public class MarginBorder extends AbstractBorder {
 
 	/**
 	 * Constructs a MarginBorder with dimensions specified by <i>insets</i>.
-	 * 
+	 *
 	 * @param insets The Insets for the border
 	 * @since 2.0
 	 */
@@ -36,7 +36,7 @@ public class MarginBorder extends AbstractBorder {
 
 	/**
 	 * Constructs a MarginBorder with padding specified by the passed values.
-	 * 
+	 *
 	 * @param t Top padding
 	 * @param l Left padding
 	 * @param b Bottom padding
@@ -49,7 +49,7 @@ public class MarginBorder extends AbstractBorder {
 
 	/**
 	 * Constructs a MarginBorder with equal padding on all sides.
-	 * 
+	 *
 	 * @param allsides Padding size for all sides of the border.
 	 * @since 2.0
 	 */
@@ -67,7 +67,7 @@ public class MarginBorder extends AbstractBorder {
 
 	/**
 	 * This method does nothing, since this border is just for spacing.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Border#paint(IFigure, Graphics, Insets)
 	 */
 	@Override

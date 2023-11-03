@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ public final class EventListenerList {
 
 	/**
 	 * Adds a listener of type <i>c</i> to the list.
-	 * 
+	 *
 	 * @param c        the class
 	 * @param listener the listener
 	 */
@@ -44,7 +44,7 @@ public final class EventListenerList {
 	/**
 	 * Returns <code>true</code> if this list of listeners contains a listener of
 	 * type <i>c</i>.
-	 * 
+	 *
 	 * @param c the type
 	 * @return whether this list contains a listener of type <i>c</i>
 	 */
@@ -92,7 +92,7 @@ public final class EventListenerList {
 
 	/**
 	 * Returns an Iterator of all the listeners of type <i>c</i>.
-	 * 
+	 *
 	 * @param listenerType the type
 	 * @return an Iterator of all the listeners of type <i>c</i>
 	 */
@@ -102,7 +102,7 @@ public final class EventListenerList {
 
 	/**
 	 * Returns a typed Iterable of all listeners of a of type <i>c</i>.
-	 * 
+	 *
 	 * @param listenerType the type
 	 * @return an Iterable of all the listeners of type <i>c</i>
 	 * @since 3.13
@@ -113,7 +113,7 @@ public final class EventListenerList {
 
 	/**
 	 * Removes the first <i>listener</i> of the specified type by identity.
-	 * 
+	 *
 	 * @param c        the type
 	 * @param listener the listener
 	 */

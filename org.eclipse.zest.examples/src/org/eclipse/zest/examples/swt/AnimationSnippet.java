@@ -16,7 +16,7 @@ import org.eclipse.zest.core.widgets.GraphNode;
  * The following snippet shows how to setup animation in Zest. By using the
  * Draw2D animation, you can simply start the animation, set the node locations,
  * and then run the animation (with a set time).
- * 
+ *
  * @author irbull
  *
  */

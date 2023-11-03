@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.gef.EditPart;
  * looking for a layer use the Viewer's
  * {@link org.eclipse.gef.EditPartViewer#getEditPartRegistry() editPartRegsitry}
  * to find the <code>LayerManager</code>.
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -38,7 +38,7 @@ public interface LayerManager {
 
 	/**
 	 * Returns a specified layer.
-	 * 
+	 *
 	 * @param key a key identifying the layer
 	 * @return the specified layer
 	 */
@@ -46,13 +46,13 @@ public interface LayerManager {
 
 	/**
 	 * A static helper
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	class Helper {
 		/**
 		 * Finds the LayerManager given any EditPart in the Viewer.
-		 * 
+		 *
 		 * @param part any EditPart in a GraphicalViewer
 		 * @return the <code>LayerManager</code>
 		 */

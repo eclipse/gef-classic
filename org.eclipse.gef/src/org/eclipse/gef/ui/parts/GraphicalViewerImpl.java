@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -59,7 +59,7 @@ import org.eclipse.gef.editparts.ScalableRootEditPart;
 /**
  * An EditPartViewer implementation based on {@link org.eclipse.draw2d.IFigure
  * Figures}.
- * 
+ *
  * @author hudsonr
  */
 public class GraphicalViewerImpl extends AbstractEditPartViewer implements GraphicalViewer {
@@ -96,7 +96,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * Creates the lightweight system used to host figures. Subclasses should not
 	 * need to override this method.
-	 * 
+	 *
 	 * @return the lightweight system
 	 */
 	protected LightweightSystem createLightweightSystem() {
@@ -115,7 +115,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * This method is invoked when this viewer's control gains focus. It gives focus
 	 * to the {@link AbstractEditPartViewer#focusPart focusPart}, if there is one.
-	 * 
+	 *
 	 * @param fe the focusEvent received by this viewer's control
 	 */
 	protected void handleFocusGained(FocusEvent fe) {
@@ -127,7 +127,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * This method is invoked when this viewer's control loses focus. It removes
 	 * focus from the {@link AbstractEditPartViewer#focusPart focusPart}, if there
 	 * is one.
-	 * 
+	 *
 	 * @param fe the focusEvent received by this viewer's control
 	 */
 	protected void handleFocusLost(FocusEvent fe) {
@@ -188,7 +188,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 	/**
 	 * Flushes and pending layouts and paints in the lightweight system.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPartViewer#flush()
 	 */
 	@Override
@@ -198,7 +198,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 	/**
 	 * Returns the event dispatcher
-	 * 
+	 *
 	 * @deprecated This method should not be called by subclasses
 	 * @return the event dispatcher
 	 */
@@ -208,7 +208,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 	/**
 	 * Convenience method for finding the layer manager.
-	 * 
+	 *
 	 * @return the LayerManager
 	 */
 	protected LayerManager getLayerManager() {
@@ -217,7 +217,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 	/**
 	 * Returns the lightweight system.
-	 * 
+	 *
 	 * @return the system
 	 */
 	protected LightweightSystem getLightweightSystem() {
@@ -226,7 +226,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 	/**
 	 * Returns the root figure
-	 * 
+	 *
 	 * @deprecated There is no reason to call this method $TODO delete this method
 	 * @return the root figure
 	 */
@@ -236,7 +236,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 	/**
 	 * Extended to flush paints during drop callbacks.
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#hookDropTarget()
 	 */
 	@Override
@@ -265,9 +265,9 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	}
 
 	/**
-	 * 
+	 *
 	 * Extended to tell the lightweight system what its control is.
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#hookControl()
 	 */
 	@Override
@@ -289,7 +289,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 	/**
 	 * Registers the accessible editpart with the event dispatcher.
-	 * 
+	 *
 	 * @param acc the accessible
 	 */
 	@Override
@@ -305,7 +305,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	 * Reveals the specified editpart by using {@link ExposeHelper}s. A bottom-up
 	 * scan through the parent-chain is performed, looking for expose helpers along
 	 * the way, and asking them to expose the given editpart.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPartViewer#reveal(EditPart)
 	 */
 	@Override
@@ -326,7 +326,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 	/**
 	 * Extended implementation to flush the viewer as the context menu is shown.
-	 * 
+	 *
 	 * @see EditPartViewer#setContextMenu(org.eclipse.jface.action.MenuManager)
 	 */
 	@Override
@@ -353,7 +353,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 	/**
 	 * Extends the drag source to handle figures which handle MouseDown events,
 	 * thereby aborting any DragDetect callbacks.
-	 * 
+	 *
 	 * @see AbstractEditPartViewer#setDragSource(org.eclipse.swt.dnd.DragSource)
 	 */
 	@Override
@@ -417,7 +417,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 	/**
 	 * Sets the lightweight system's root figure.
-	 * 
+	 *
 	 * @param figure the root figure
 	 * @deprecated This method should no longer be used.
 	 */
@@ -428,7 +428,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 	/**
 	 * Hook the root figure into this viewer's {@link LightweightSystem}.
-	 * 
+	 *
 	 * @since 3.8
 	 */
 	protected void hookRootFigure() {
@@ -475,7 +475,7 @@ public class GraphicalViewerImpl extends AbstractEditPartViewer implements Graph
 
 		/**
 		 * Delegates handling to the selected editpart's MouseWheelHelper.
-		 * 
+		 *
 		 * @see org.eclipse.gef.MouseWheelHandler#handleMouseWheel(org.eclipse.swt.widgets.Event,
 		 *      org.eclipse.gef.EditPartViewer)
 		 */

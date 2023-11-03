@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -193,7 +193,7 @@ public class LookAheadTest extends BaseTestCase {
 		assertTrue("test36 failed", simpleText.addLeadingWordRequirements(width)); //$NON-NLS-1$
 		assertEquals("test37 failed", width[0], getWidth("ab")); //$NON-NLS-1$ //$NON-NLS-2$
 
-// FIXME: the following test does not reliably run on all platforms		
+// FIXME: the following test does not reliably run on all platforms
 //		simpleText.setText("hey, man."); //$NON-NLS-1$
 //		width[0] = 0;
 //		assertTrue("test38 failed", simpleText.addLeadingWordRequirements(width)); //$NON-NLS-1$

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -42,7 +42,7 @@ public class RemoveRange extends MiniEdit {
 	 * range in the model may result in the merging of 2 or more pieces of the
 	 * model. After this edit is applied, the resulting location in the merged model
 	 * may be obtained. This location should be used for subsequent insertions.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	public RemoveRange(TextRun begin, int so, TextRun end, int eo) {

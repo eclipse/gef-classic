@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	/**
 	 * Creates a new handle with the given fixed setting. If the handle is fixed, it
 	 * cannot be dragged.
-	 * 
+	 *
 	 * @param fixed <code>true</code> if the handle cannot be dragged.
 	 */
 	public ConnectionHandle(boolean fixed) {
@@ -63,7 +63,7 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 	/**
 	 * Convenience method to return the owner's figure typed as
 	 * <code>Connection</code>.
-	 * 
+	 *
 	 * @return the owner's connection
 	 */
 	public Connection getConnection() {
@@ -72,7 +72,7 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 
 	/**
 	 * Returns true if the handle cannot be dragged.
-	 * 
+	 *
 	 * @return <code>true</code> if the handle cannot be dragged
 	 */
 	protected boolean isFixed() {
@@ -90,7 +90,7 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 
 	/**
 	 * Extended to remove a listener.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.IFigure#removeNotify()
 	 */
 	@Override
@@ -101,7 +101,7 @@ public abstract class ConnectionHandle extends SquareHandle implements PropertyC
 
 	/**
 	 * Sets whether the handle is fixed and cannot be moved
-	 * 
+	 *
 	 * @param fixed <code>true</code> if the handle should be unmovable
 	 */
 	public void setFixed(boolean fixed) {

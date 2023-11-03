@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -131,7 +131,7 @@ public interface EditPolicy {
 	 * <P>
 	 * Activate is called after the <i>host</i> has been set, and that host has been
 	 * activated.
-	 * 
+	 *
 	 * @see EditPart#activate()
 	 * @see #deactivate()
 	 * @see EditPart#installEditPolicy(Object, EditPolicy)
@@ -143,7 +143,7 @@ public interface EditPolicy {
 	 * called when the <i>host</i> is deactivated, or when the EditPolicy is
 	 * uninstalled from an active host. Deactivate unhooks any listeners, and
 	 * removes all feedback.
-	 * 
+	 *
 	 * @see EditPart#deactivate()
 	 * @see #activate()
 	 * @see EditPart#removeEditPolicy(Object)
@@ -157,7 +157,7 @@ public interface EditPolicy {
 	 * This method is declared on {@link EditPart#eraseSourceFeedback(Request)
 	 * EditPart}, and is redeclared here so that EditPart can delegate its
 	 * implementation to each of its EditPolicies.
-	 * 
+	 *
 	 * @param request the Request
 	 */
 	void eraseSourceFeedback(Request request);
@@ -169,7 +169,7 @@ public interface EditPolicy {
 	 * This method is declared on {@link EditPart#eraseTargetFeedback(Request)
 	 * EditPart}, and is redeclared here so that EditPart can delegate its
 	 * implementation to each of its EditPolicies.
-	 * 
+	 *
 	 * @param request the Request
 	 */
 	void eraseTargetFeedback(Request request);
@@ -185,7 +185,7 @@ public interface EditPolicy {
 	 * is redeclared here so that EditPart can delegate its implementation to each
 	 * of its EditPolicies. The EditPart will combine each EditPolicy's contribution
 	 * into a {@link org.eclipse.gef.commands.CompoundCommand}.
-	 * 
+	 *
 	 * @param request the Request
 	 * @return <code>null</code> or a Command contribution
 	 */
@@ -206,7 +206,7 @@ public interface EditPolicy {
 	 * EditPart}, and is redeclared here so that EditPart can delegate its
 	 * implementation to each of its EditPolicies. The first non- <code>null</code>
 	 * result returned by an EditPolicy is returned by the EditPart.
-	 * 
+	 *
 	 * @param request the Request
 	 * @return <code>null</code> or the appropriate target <code>EditPart</code>
 	 */
@@ -214,7 +214,7 @@ public interface EditPolicy {
 
 	/**
 	 * Sets the host in which this EditPolicy is installed.
-	 * 
+	 *
 	 * @param editpart the host EditPart
 	 */
 	void setHost(EditPart editpart);
@@ -229,7 +229,7 @@ public interface EditPolicy {
 	 * This method is declared on {@link EditPart#showSourceFeedback(Request)
 	 * EditPart}, and is redeclared here so that EditPart can delegate its
 	 * implementation to each of its EditPolicies.
-	 * 
+	 *
 	 * @param request the Request
 	 */
 	void showSourceFeedback(Request request);
@@ -244,7 +244,7 @@ public interface EditPolicy {
 	 * This method is declared on {@link EditPart#showTargetFeedback(Request)
 	 * EditPart}, and is redeclared here so that EditPart can delegate its
 	 * implementation to each of its EditPolicies.
-	 * 
+	 *
 	 * @param request the Request
 	 */
 	void showTargetFeedback(Request request);
@@ -258,7 +258,7 @@ public interface EditPolicy {
 	 * implementation to each of its EditPolicies. <code>EditPart</code> returns
 	 * <code>true</code> if any of its EditPolicies returns <code>true</code>. In
 	 * other words, it performs a logical OR.
-	 * 
+	 *
 	 * @param request the Request
 	 * @return boolean <code>true</code> if the EditPolicy understands the specified
 	 *         request

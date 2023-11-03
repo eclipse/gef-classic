@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ public class Button extends Clickable {
 
 	/**
 	 * Constructs a default Button with no icon or text.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public Button() {
@@ -32,7 +32,7 @@ public class Button extends Clickable {
 
 	/**
 	 * Contructs a Button containing the icon <i>image</i>.
-	 * 
+	 *
 	 * @param image Image to be used by the Button as its icon.
 	 * @since 2.0
 	 */
@@ -42,7 +42,7 @@ public class Button extends Clickable {
 
 	/**
 	 * Constructs a Button containing the given text.
-	 * 
+	 *
 	 * @param text Text for the button.
 	 * @since 2.0
 	 */
@@ -52,7 +52,7 @@ public class Button extends Clickable {
 
 	/**
 	 * Constructs a Button with the given image and text.
-	 * 
+	 *
 	 * @param text  Text for the button.
 	 * @param image Image for the button.
 	 * @since 2.0
@@ -64,7 +64,7 @@ public class Button extends Clickable {
 	/**
 	 * Initializes this button by setting its default border and setting its
 	 * background color to {@link ColorConstants#button}.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	@Override

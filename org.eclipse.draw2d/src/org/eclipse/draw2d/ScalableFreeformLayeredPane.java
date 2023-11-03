@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 
 	/**
 	 * Constructor which allows to configure if scaled graphics should be used.
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	public ScalableFreeformLayeredPane(boolean useScaledGraphics) {
@@ -46,7 +46,7 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 
 	/**
 	 * Returns the current zoom scale level.
-	 * 
+	 *
 	 * @return the scale
 	 */
 	@Override
@@ -79,7 +79,7 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 
 	/**
 	 * Make this method publicly accessible for IScaleablePane.
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	@Override
@@ -89,7 +89,7 @@ public class ScalableFreeformLayeredPane extends FreeformLayeredPane implements 
 
 	/**
 	 * Sets the zoom level
-	 * 
+	 *
 	 * @param newZoom The new zoom level
 	 */
 	@Override

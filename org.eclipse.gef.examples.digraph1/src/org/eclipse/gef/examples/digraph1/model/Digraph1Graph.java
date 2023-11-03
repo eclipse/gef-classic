@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * The graph model object which describes the list of nodes in the directed
  * graph.
- * 
+ *
  * @author Anthony Hunter
  */
 public class Digraph1Graph {
@@ -53,7 +53,7 @@ public class Digraph1Graph {
 
 	/**
 	 * Get the list of nodes.
-	 * 
+	 *
 	 * @return the list of nodes.
 	 */
 	public List<Digraph1Node> getNodes() {

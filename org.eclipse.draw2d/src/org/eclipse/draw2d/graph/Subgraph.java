@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -34,7 +34,7 @@ import org.eclipse.draw2d.geometry.Insets;
  * just inside the subgraph's border. This is the minimum space between the
  * border, and the children node's contained inside the subgraph.
  * </UL>
- * 
+ *
  * @author hudsonr
  * @since 2.1.2
  */
@@ -67,7 +67,7 @@ public class Subgraph extends Node {
 
 	/**
 	 * Constructs a new subgraph with the given data object.
-	 * 
+	 *
 	 * @see Node#Node(Object)
 	 * @param data an arbitrary data object
 	 */
@@ -77,7 +77,7 @@ public class Subgraph extends Node {
 
 	/**
 	 * Constructs a new subgraph with the given data object and parent subgraph.
-	 * 
+	 *
 	 * @see Node#Node(Object, Subgraph)
 	 * @param data   an arbitrary data object
 	 * @param parent the parent
@@ -88,7 +88,7 @@ public class Subgraph extends Node {
 
 	/**
 	 * Adds the given node to this subgraph.
-	 * 
+	 *
 	 * @param n the node to add
 	 */
 	public void addMember(Node n) {
@@ -98,7 +98,7 @@ public class Subgraph extends Node {
 	/**
 	 * Returns <code>true</code> if the given node is contained inside the branch
 	 * represented by this subgraph.
-	 * 
+	 *
 	 * @param n the node in question
 	 * @return <code>true</code> if nested
 	 */

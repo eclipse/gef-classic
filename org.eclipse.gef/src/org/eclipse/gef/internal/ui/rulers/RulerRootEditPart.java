@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ import org.eclipse.gef.editparts.ViewportAutoexposeHelper;
 
 /**
  * RootEditPart for a ruler.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -44,7 +44,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param isHorzontal whether or not the corresponding model ruler is horizontal
 	 */
 	public RulerRootEditPart(boolean isHorzontal) {
@@ -85,7 +85,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 
 	/**
 	 * Convenience method to get to the viewport
-	 * 
+	 *
 	 * @return the figure cast as a viewport
 	 */
 	protected Viewport getViewport() {
@@ -104,7 +104,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 	 * A RulerViewport shares a RangeModel with that of the primary GraphicalViewer.
 	 * The shared RangeModel is set on this viewport externally by a client (in this
 	 * case, RulerComposite).
-	 * 
+	 *
 	 * @author Pratik Shah
 	 * @since 3.0
 	 */
@@ -133,7 +133,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		 * This is the method that does the actual layout. We don't want a layout to
 		 * occur when layout() is invoked, rather when something changes in the shared
 		 * RangeModel.
-		 * 
+		 *
 		 * @param force if <code>true</code>, the contents will be resized and
 		 *              revalidated; otherwise, just a repaint will occur.
 		 */
@@ -190,7 +190,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 		/**
 		 * Since the RangeModel is shared with that of the editor's, a RulerViewport
 		 * should not adjust it.
-		 * 
+		 *
 		 * @see org.eclipse.draw2d.Viewport#readjustScrollBars()
 		 */
 		@Override
@@ -243,7 +243,7 @@ public class RulerRootEditPart extends SimpleRootEditPart {
 
 		/**
 		 * RulerViewport uses local coordinates.
-		 * 
+		 *
 		 * @see org.eclipse.draw2d.Figure#useLocalCoordinates()
 		 */
 		@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ public interface Translatable {
 	/**
 	 * Translates this object horizontally by <code>point.x</code> and vertically by
 	 * <code>point.y</code>.
-	 * 
+	 *
 	 * @param point Point which provides translation information
 	 * @since 3.13
 	 */
@@ -31,7 +31,7 @@ public interface Translatable {
 	/**
 	 * Translates this object horizontally by <code>dimension.width</code> and
 	 * vertically by <code>dimension.height</code>.
-	 * 
+	 *
 	 * @param dimension Dimension which provides translation information
 	 * @since 3.13
 	 */
@@ -42,7 +42,7 @@ public interface Translatable {
 	/**
 	 * Translates this object horizontally by <code>insets.left</code> and
 	 * vertically by <code>insets.top</code>.
-	 * 
+	 *
 	 * @param insets Insets which provides translation information
 	 * @since 3.13
 	 */
@@ -53,7 +53,7 @@ public interface Translatable {
 	/**
 	 * Translates this object horizontally by <code>dx</code> and vertically by
 	 * <code>dy</code>.
-	 * 
+	 *
 	 * @param dx The amount to translate horizontally
 	 * @param dy The amount to translate vertically
 	 * @since 2.0
@@ -62,7 +62,7 @@ public interface Translatable {
 
 	/**
 	 * Scales this object by the scale factor.
-	 * 
+	 *
 	 * @param factor The scale factor
 	 * @since 2.0
 	 */

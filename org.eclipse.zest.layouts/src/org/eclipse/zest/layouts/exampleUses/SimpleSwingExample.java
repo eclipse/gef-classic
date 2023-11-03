@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.exampleUses;
@@ -422,7 +422,7 @@ public class SimpleSwingExample {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param maxLevels         Max number of levels wanted in tree
 	 * @param maxChildren       Max number of children for each node in the tree
 	 * @param randomNumChildren Whether or not to pick random number of levels (from
@@ -499,7 +499,7 @@ public class SimpleSwingExample {
 
 	/**
 	 * Creates a SimpleNode
-	 * 
+	 *
 	 * @param name
 	 * @return
 	 */
@@ -658,7 +658,7 @@ public class SimpleSwingExample {
 
 		/**
 		 * Get the length of a line ensuring it is not too small to render
-		 * 
+		 *
 		 * @param start
 		 * @param end
 		 * @return
@@ -693,7 +693,7 @@ public class SimpleSwingExample {
 		 * Draws a set of lines between bendpoints, returning the last bendpoint drawn.
 		 * Note that this assumes the first and last bendpoints are actually the source
 		 * node and destination node centre points.
-		 * 
+		 *
 		 * @param relationship
 		 * @param bendNodes
 		 * @param bendEdges

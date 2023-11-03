@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,12 +22,12 @@ import org.eclipse.gef.internal.GEFMessages;
 
 /**
  * A command used to set or reset the value of a property.
- * 
+ *
  * @author pshah
  * @author anyssen
- * 
+ *
  * @since 3.7
- * 
+ *
  */
 public class SetPropertyValueCommand extends Command {
 
@@ -48,7 +48,7 @@ public class SetPropertyValueCommand extends Command {
 
 	/**
 	 * Constructs a new {@link SetPropertyValueCommand}.
-	 * 
+	 *
 	 * @param propertyLabel  A label to identify the property whose value is set by
 	 *                       this command.
 	 * @param propertySource The property source which provides the property, whose
@@ -129,7 +129,7 @@ public class SetPropertyValueCommand extends Command {
 
 	/**
 	 * Returns the new value to be set for the property when executing or redoing.
-	 * 
+	 *
 	 * @return the new value or {@link #DEFAULT_VALUE} to indicate that the default
 	 *         value should be set as the new value.
 	 * @since 3.7
@@ -142,7 +142,7 @@ public class SetPropertyValueCommand extends Command {
 	 * After the command has been executed or redone, returns the old value of the
 	 * property or {@link #DEFAULT_VALUE} if the property did not have a value
 	 * before.
-	 * 
+	 *
 	 * @return the old value of the property or {@link #DEFAULT_VALUE}.
 	 * @since 3.7
 	 */
@@ -152,7 +152,7 @@ public class SetPropertyValueCommand extends Command {
 
 	/**
 	 * Returns the id by which to identify the property whose value is to be set.
-	 * 
+	 *
 	 * @return the id of the property whose value is to be set.
 	 * @since 3.7
 	 */
@@ -163,7 +163,7 @@ public class SetPropertyValueCommand extends Command {
 	/**
 	 * Returns the {@link IPropertySource} which provides the property, whose value
 	 * is to be set.
-	 * 
+	 *
 	 * @return the {@link IPropertySource} which provides the property.
 	 * @since 3.7
 	 */

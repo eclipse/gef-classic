@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -49,7 +49,7 @@ import org.eclipse.gef.util.EditPartUtilities;
  * a Graphical Viewer. Selection behavior can be configured by selecting (via
  * {@link #setMarqueeBehavior(int)}) one of six supported marquee behaviors,
  * which are:
- * 
+ *
  * <ul>
  * <li>{@link #BEHAVIOR_NODES_CONTAINED}</li>
  * <li>{@link #BEHAVIOR_NODES_TOUCHED}</li>
@@ -58,18 +58,18 @@ import org.eclipse.gef.util.EditPartUtilities;
  * <li>{@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS}</li>
  * <li>{@link #BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS}</li>
  * </ul>
- * 
+ *
  * By default, only edit parts whose figure's are on the primary layer that are
  * fully enclosed in the marquee selection rectangle will be considered (
  * {@link #BEHAVIOR_NODES_CONTAINED}).
- * 
+ *
  * Besides different marquee behaviors, the tool supports different modes, which
  * the user can influence by pressing modifier keys at the beginning of the drag
  * operation. I.e. if the SHIFT key is pressed at the beginning of the drag, the
  * enclosed items will be appended to the current viewer selection. If the MOD1
  * key is pressed at the beginning of the drag, the enclosed items will have
  * their selection state inverted.
- * 
+ *
  * @author ebordeau
  * @author dlee
  * @author rhudson
@@ -141,14 +141,14 @@ public class MarqueeSelectionTool extends AbstractTool {
 
 	/**
 	 * This behavior selects connections that intersect the marquee rectangle.
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public static final int BEHAVIOR_CONNECTIONS_CONTAINED = 6;
 
 	/**
 	 * This behavior selects connections that intersect the marquee rectangle.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	public static final int BEHAVIOR_CONNECTIONS_TOUCHED = 2;
@@ -156,7 +156,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * This behavior selects nodes completely encompassed by the marquee rectangle.
 	 * This is the default behavior for this tool.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	public static final int BEHAVIOR_NODES_CONTAINED = 1;
@@ -164,21 +164,21 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * This behavior selects nodes completely encompassed by the marquee rectangle,
 	 * and all connections between those nodes.
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public static final int BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS = 3;
 
 	/**
 	 * This behavior selects nodes that intersect the marquee rectangle.
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public static final int BEHAVIOR_NODES_TOUCHED = 4;
 
 	/**
 	 * This behavior selects nodes that intersect the marquee rectangle.
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public static final int BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS = 5;
@@ -186,7 +186,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * This behavior selects nodes completely encompassed by the marquee rectangle,
 	 * and all connections between those nodes.
-	 * 
+	 *
 	 * @since 3.1
 	 * @deprecated use {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS}
 	 *             instead.
@@ -207,7 +207,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 
 	/**
 	 * Constant defining the default marquee selection behavior.
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public static final int DEFAULT_MARQUEE_BEHAVIOR = BEHAVIOR_NODES_CONTAINED;
@@ -251,7 +251,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * the current viewer's new selection (which is calculated and set in
 	 * {@link #performMarqueeSelect()}), while in toggle mode their selection state
 	 * will be inverted.
-	 * 
+	 *
 	 * Calculation is delegated to
 	 * {@link #calculatePrimaryMarqueeSelectedEditParts()} and
 	 * {@link #calculateSecondaryMarqueeSelectedEditParts(Collection)} to compute
@@ -260,10 +260,10 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * affected (related connections in case of
 	 * {@link #BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS}, or
 	 * {@link #BEHAVIOR_NODES_CONTAINED_AND_RELATED_CONNECTIONS}) afterwards.
-	 * 
+	 *
 	 * Clients may overwrite to customize the calculation of marquee selected edit
 	 * parts.
-	 * 
+	 *
 	 * @return A collection containing all edit parts that should be regarded as
 	 *         being included in the current marquee selection, i.e. which should
 	 *         get selected in default or append mode, and whose selection state
@@ -285,7 +285,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * {@link #isMarqueeSelectable(GraphicalEditPart)} and
 	 * {@link #isPrimaryMarqueeSelectedEditPart(GraphicalEditPart)} to decide
 	 * whether the candidate is to be included in the marquee selection.
-	 * 
+	 *
 	 * @return A {@link Collection} containing all {@link EditPart}s that should be
 	 *         regarded as being directly affected by the current marquee selection.
 	 * @since 3.7
@@ -324,7 +324,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * {@link #isMarqueeSelectable(GraphicalEditPart)} and
 	 * {@link #isSecondaryMarqueeSelectedEditPart(Collection, EditPart)} to decide
 	 * whether the candidate is to be included in the marquee selection.
-	 * 
+	 *
 	 * @param directlyMarqueeSelectedEditParts A collection containing those
 	 *                                         {@link EditPart}s that were already
 	 *                                         identified as being directly affected
@@ -399,7 +399,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 
 	/**
 	 * Returns the current marquee selection rectangle.
-	 * 
+	 *
 	 * @return A {@link Rectangle} representing the current marquee selection.
 	 * @since 3.7
 	 */
@@ -409,7 +409,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 
 	/**
 	 * Returns the current selection mode, i.e. default, append, or toggle
-	 * 
+	 *
 	 * @return on of {@link #DEFAULT_MODE}, {@link #APPEND_MODE}, or
 	 *         {@link #TOGGLE_MODE}
 	 * @since 3.7
@@ -436,9 +436,9 @@ public class MarqueeSelectionTool extends AbstractTool {
 
 	/**
 	 * create a new marquee rectangle feedback figure
-	 * 
+	 *
 	 * Sub classes my provide their own feedback rectangle
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	protected IFigure createMarqueeRectangleFigure() {
@@ -516,7 +516,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * This method is called when mouse or keyboard input is invalid and erases the
 	 * feedback.
-	 * 
+	 *
 	 * @return <code>true</code>
 	 */
 	@Override
@@ -530,7 +530,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * Handles high-level processing of a key down event. KeyEvents are forwarded to
 	 * the current viewer's {@link KeyHandler}, via
 	 * {@link KeyHandler#keyPressed(KeyEvent)}.
-	 * 
+	 *
 	 * @see AbstractTool#handleKeyDown(KeyEvent)
 	 */
 	@Override
@@ -545,7 +545,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * Decides whether the given edit part may potentially be included in the
 	 * current marquee selection.
-	 * 
+	 *
 	 * @param editPart the {@link EditPart} of interest
 	 * @return <code>true</code> if the given edit part may be included into the
 	 *         marquee selection, <code>false</code> otherwise
@@ -566,7 +566,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * selection rectangle ( {@link #getCurrentMarqueeSelectionRectangle()}), taking
 	 * into consideration the current marquee behavior (contained vs. touched) that
 	 * was provided ( {@link #setMarqueeBehavior(int)} ).
-	 * 
+	 *
 	 * @param editPart the {@link EditPart} whose state is to be determined
 	 * @return <code>true</code> if the {@link EditPart} should be regarded as being
 	 *         included in the current marquee selection, <code>false</code>
@@ -617,7 +617,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * {@link #BEHAVIOR_NODES_TOUCHED_AND_RELATED_CONNECTIONS} marquee behavior,
 	 * this method will be used to calculate the related connections after all
 	 * respective nodes have been identified as primary selected edit parts.
-	 * 
+	 *
 	 * @param directlyMarqueeSelectedEditParts A collection of {@link EditPart}s
 	 *                                         which are regarded to be directly
 	 *                                         included in the current marquee
@@ -676,7 +676,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 
 	/**
 	 * MarqueeSelectionTool is only interested in GraphicalViewers, not TreeViewers.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#isViewerImportant(org.eclipse.gef.EditPartViewer)
 	 */
 	@Override
@@ -691,7 +691,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * Calculates and sets a new viewer selection based on the current marquee
 	 * selection.
-	 * 
+	 *
 	 * By default, this method delegates to
 	 * {@link #calculateMarqueeSelectedEditParts()} to obtain the set of edit parts,
 	 * which should be regarded as being affected by the current marquee selection.
@@ -699,7 +699,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	 * state of all affected edit parts and the current selection mode of the tool (
 	 * {@link #getCurrentSelectionMode()}), as well as the current selection of the
 	 * viewer (in case of APPEND mode), which is then passed to the current viewer.
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	protected void performMarqueeSelect() {
@@ -731,7 +731,7 @@ public class MarqueeSelectionTool extends AbstractTool {
 	/**
 	 * Sets the type of parts that this tool will select. This method should only be
 	 * invoked once: when the tool is being initialized.
-	 * 
+	 *
 	 * @param type {@link #BEHAVIOR_CONNECTIONS_TOUCHED} or
 	 *             {@link #BEHAVIOR_CONNECTIONS_CONTAINED}
 	 *             {@link #BEHAVIOR_NODES_TOUCHED} or

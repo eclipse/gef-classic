@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -84,7 +84,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Constructs a new DererredUpdateManager with the given GraphicsSource.
-	 * 
+	 *
 	 * @param gs the graphics source
 	 */
 	public DeferredUpdateManager(GraphicsSource gs) {
@@ -95,7 +95,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * Adds a dirty region (defined by the rectangle <i>x, y, w, h</i>) to the
 	 * update queue. If the figure isn't visible or either the width or height are
 	 * 0, the method returns without queueing the dirty region.
-	 * 
+	 *
 	 * @param figure the figure that contains the dirty region
 	 * @param x      the x coordinate of the dirty region
 	 * @param y      the y coordinate of the dirty region
@@ -120,7 +120,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Adds the given figure to the update queue. Invalid figures will be validated
 	 * before the damaged regions are repainted.
-	 * 
+	 *
 	 * @param f the invalid figure
 	 */
 	@Override
@@ -133,7 +133,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Returns a Graphics object for the given region.
-	 * 
+	 *
 	 * @param region the region to be repainted
 	 * @return the Graphics object
 	 */
@@ -176,7 +176,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Performs the update. Validates the invalid figures and then repaints the
 	 * dirty regions.
-	 * 
+	 *
 	 * @see #validateFigures()
 	 * @see #repairDamage()
 	 */
@@ -226,7 +226,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Adds the given exposed region to the update queue and then performs the
 	 * update.
-	 * 
+	 *
 	 * @param exposed the exposed region
 	 */
 	@Override
@@ -248,7 +248,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Fires the <code>UpdateRequest</code> to the current display asynchronously.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	protected void sendUpdateRequest() {
@@ -261,7 +261,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Releases the graphics object, which causes the GraphicsSource to flush.
-	 * 
+	 *
 	 * @param graphics the graphics object
 	 */
 	protected void releaseGraphics(Graphics graphics) {
@@ -310,7 +310,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	/**
 	 * Adds the given runnable and queues an update if an update is not under
 	 * progress.
-	 * 
+	 *
 	 * @param runnable the runnable
 	 */
 	@Override
@@ -322,7 +322,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Sets the graphics source.
-	 * 
+	 *
 	 * @param gs the graphics source
 	 */
 	@Override
@@ -332,7 +332,7 @@ public class DeferredUpdateManager extends UpdateManager {
 
 	/**
 	 * Sets the root figure.
-	 * 
+	 *
 	 * @param figure the root figure
 	 */
 	@Override

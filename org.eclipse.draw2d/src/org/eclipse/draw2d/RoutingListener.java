@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,14 +19,14 @@ package org.eclipse.draw2d;
  * <P>
  * Instances can be hooked to a {@link PolylineConnection} by calling
  * {@link PolylineConnection#addRoutingListener(RoutingListener)}.
- * 
+ *
  * @since 3.2
  */
 public interface RoutingListener {
 
 	/**
 	 * Called when the connection has been invalidated.
-	 * 
+	 *
 	 * @param connection the connection
 	 * @since 3.2
 	 */
@@ -34,7 +34,7 @@ public interface RoutingListener {
 
 	/**
 	 * Called after normal routing has completed.
-	 * 
+	 *
 	 * @param connection the routed connection
 	 * @since 3.2
 	 */
@@ -42,7 +42,7 @@ public interface RoutingListener {
 
 	/**
 	 * Called when a connection has been removed from its router.
-	 * 
+	 *
 	 * @param connection the connection
 	 * @since 3.2
 	 */
@@ -52,7 +52,7 @@ public interface RoutingListener {
 	 * Called prior to routing occurring. A listener may intercept routing by
 	 * returning <code>true</code>. If intercepted, the connection's
 	 * <code>ConnectionRouter</code> will not perform routing.
-	 * 
+	 *
 	 * @param connection the connection being routed
 	 * @return <code>true</code> if routing has been performed by the listener
 	 * @since 3.2
@@ -61,7 +61,7 @@ public interface RoutingListener {
 
 	/**
 	 * Called when the connection's routing constraint has been set or initialized.
-	 * 
+	 *
 	 * @param connection the connection
 	 * @param constraint the new constraint
 	 * @since 3.2
@@ -70,7 +70,7 @@ public interface RoutingListener {
 
 	/**
 	 * A stub implementation which implements all required methods.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	class Stub implements RoutingListener {

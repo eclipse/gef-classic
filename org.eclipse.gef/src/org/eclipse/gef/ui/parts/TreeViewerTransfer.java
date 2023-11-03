@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ final class TreeViewerTransfer extends SimpleObjectTransfer {
 
 	/**
 	 * Returns the singleton instance.
-	 * 
+	 *
 	 * @return The singleton instance
 	 */
 	public static TreeViewerTransfer getInstance() {
@@ -57,7 +57,7 @@ final class TreeViewerTransfer extends SimpleObjectTransfer {
 
 	/**
 	 * Returns the viewer where the drag started.
-	 * 
+	 *
 	 * @return The viewer where the drag started
 	 */
 	public EditPartViewer getViewer() {
@@ -66,7 +66,7 @@ final class TreeViewerTransfer extends SimpleObjectTransfer {
 
 	/**
 	 * Sets the viewer where the drag started.
-	 * 
+	 *
 	 * @param epv The viewer
 	 */
 	public void setViewer(EditPartViewer epv) {

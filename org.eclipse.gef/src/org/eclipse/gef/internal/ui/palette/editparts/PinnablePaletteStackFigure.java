@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -39,7 +39,7 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
  * A pinnable palette stack figure.
- * 
+ *
  * @author crevells
  * @since 3.4
  */
@@ -442,7 +442,7 @@ public class PinnablePaletteStackFigure extends Figure {
 	/**
 	 * Pins or unpins the stack. The stack can be pinned open only when it is
 	 * expanded. Attempts to pin it when it is collapsed will do nothing.
-	 * 
+	 *
 	 * @param pinned <code>true</code> if the stack is to be pinned
 	 */
 	public void setPinned(boolean pinned) {
@@ -541,7 +541,7 @@ public class PinnablePaletteStackFigure extends Figure {
 	 * Gets the preferred size of the expandable pane figure. Used by
 	 * <code>PaletteContainerFlowLayout</code> when the layout is icons or columns
 	 * mode.
-	 * 
+	 *
 	 * @param wHint width hint
 	 * @param hHint height hint
 	 * @return the preferred size of the expandable pane figure or (0,0) if the pane
@@ -559,7 +559,7 @@ public class PinnablePaletteStackFigure extends Figure {
 	 * Sets the header bounds layout hint. Set by
 	 * <code>PaletteContainerFlowLayout</code> when the layout is icons or columns
 	 * mode and used by <code>PaletteStackIconLayout</code>.
-	 * 
+	 *
 	 * @param rect the new value
 	 */
 	public void setHeaderBoundsLayoutHint(Rectangle rect) {
@@ -570,7 +570,7 @@ public class PinnablePaletteStackFigure extends Figure {
 	 * Gets the preferred size of the header figure. Used by
 	 * <code>PaletteContainerFlowLayout</code> and <code>ColumnsLayout</code> when
 	 * the layout is icons or columns mode.
-	 * 
+	 *
 	 * @param wHint width hint
 	 * @param hHint height hint
 	 * @return the preferred size of the header figure

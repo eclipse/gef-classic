@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -35,7 +35,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * Only {@link FlowFigure}s can be added to a BlockFlow.
  * <P>
  * WARNING: This class is not intended to be subclassed by clients.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -58,7 +58,7 @@ public class BlockFlow extends FlowFigure {
 	 * the text on either side of this block from affecting each other. Since each
 	 * block is like a different paragraph, it does not contribute any actual text
 	 * to its containing block.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.text.FlowFigure#contributeBidi(org.eclipse.draw2d.text.BidiProcessor)
 	 */
 	@Override
@@ -80,7 +80,7 @@ public class BlockFlow extends FlowFigure {
 
 	/**
 	 * Returns the BlockBox associated with this.
-	 * 
+	 *
 	 * @return This BlockFlow's BlockBox
 	 */
 	protected BlockBox getBlockBox() {
@@ -106,7 +106,7 @@ public class BlockFlow extends FlowFigure {
 	 * {@link PositionConstants#NONE}. If the value is none, it will return the
 	 * inherited alignment. If no alignment was inherited, it will return the
 	 * default alignment ({@link PositionConstants#LEFT}).
-	 * 
+	 *
 	 * @return the effective alignment
 	 */
 	public int getHorizontalAligment() {
@@ -128,7 +128,7 @@ public class BlockFlow extends FlowFigure {
 
 	/**
 	 * Returns the orientation set on this block.
-	 * 
+	 *
 	 * @return LTR, RTL or NONE
 	 * @see #setOrientation(int)
 	 * @since 3.1
@@ -139,7 +139,7 @@ public class BlockFlow extends FlowFigure {
 
 	/**
 	 * Returns the horizontal alignment set on this block.
-	 * 
+	 *
 	 * @return LEFT, RIGHT, ALWAYS_LEFT, ALWAYS_RIGHT, NONE
 	 * @see #setHorizontalAligment(int)
 	 * @since 3.1
@@ -153,7 +153,7 @@ public class BlockFlow extends FlowFigure {
 	 * inherit the one from its containing block. If there is no containing block,
 	 * it will return the default orientation (SWT.RIGHT_TO_LEFT if mirrored;
 	 * SWT.LEFT_TO_RIGHT otherwise).
-	 * 
+	 *
 	 * @return SWT.RIGHT_TO_LEFT or SWT.LEFT_TO_RIGHT
 	 * @see #setOrientation(int)
 	 * @since 3.1
@@ -230,7 +230,7 @@ public class BlockFlow extends FlowFigure {
 	/**
 	 * A Block will invalidate the Bidi state of all its children, so that it is
 	 * re-evaluated when this block is next validated.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.text.FlowFigure#revalidateBidi(org.eclipse.draw2d.IFigure)
 	 */
 	@Override
@@ -254,7 +254,7 @@ public class BlockFlow extends FlowFigure {
 	 * <LI>{@link PositionConstants#ALWAYS_RIGHT} - Right, irrespective of
 	 * orientation</LI>
 	 * </UL>
-	 * 
+	 *
 	 * @param value the aligment
 	 * @see #getHorizontalAligment()
 	 */
@@ -276,7 +276,7 @@ public class BlockFlow extends FlowFigure {
 	 * </UL>
 	 * <code>NONE</code> is used to indicate that orientation should be inherited
 	 * from the encompassing block.
-	 * 
+	 *
 	 * @param orientation LTR, RTL or NONE
 	 * @see #getOrientation()
 	 * @since 3.1
@@ -299,7 +299,7 @@ public class BlockFlow extends FlowFigure {
 
 	/**
 	 * Re-evaluate the Bidi state of all the fragments if it has been invalidated.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.IFigure#validate()
 	 */
 	@Override

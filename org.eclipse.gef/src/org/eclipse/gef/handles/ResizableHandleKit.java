@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,14 +25,14 @@ import org.eclipse.gef.Handle;
 /**
  * A set of utility methods to create Handles for the common locations on a
  * figure's bounds.
- * 
+ *
  * @see Handle
  */
 public class ResizableHandleKit {
 
 	/**
 	 * Adds a single handle in the given direction to the given List.
-	 * 
+	 *
 	 * @param part      the owner GraphicalEditPart of the handle
 	 * @param handles   the List to add the handle to
 	 * @param direction the integer constant from PositionConstants that refers to
@@ -45,7 +45,7 @@ public class ResizableHandleKit {
 	/**
 	 * Adds a single handle in the given direction to the given List with the given
 	 * DragTracker
-	 * 
+	 *
 	 * @param tracker   the DragTracker to assign to this handle
 	 * @param part      the owner GraphicalEditPart of the handle
 	 * @param handles   the List to add the handle to
@@ -61,7 +61,7 @@ public class ResizableHandleKit {
 	/**
 	 * Fills the given List with handles at each corner and the north, south, east,
 	 * and west of the GraphicalEditPart.
-	 * 
+	 *
 	 * @param part    the owner GraphicalEditPart of the handles
 	 * @param handles the List to add the handles to
 	 * @deprecated
@@ -73,7 +73,7 @@ public class ResizableHandleKit {
 
 	/**
 	 * Fills the given List with handles at each corner and side of a figure.
-	 * 
+	 *
 	 * @param part    the handles' GraphicalEditPart
 	 * @param handles the List to add the four corner handles to
 	 * @since 3.7
@@ -91,7 +91,7 @@ public class ResizableHandleKit {
 
 	/**
 	 * Fills the given List with handles at each corner and side of a figure.
-	 * 
+	 *
 	 * @param part    the handles' GraphicalEditPart
 	 * @param handles the List to add the four corner handles to
 	 * @param tracker the handles' DragTracker
@@ -112,7 +112,7 @@ public class ResizableHandleKit {
 
 	/**
 	 * Fills the given List with move borders at each side of a figure.
-	 * 
+	 *
 	 * @param f       the GraphicalEditPart that is the owner of the handles
 	 * @param handles the List to add the handles to
 	 */
@@ -123,7 +123,7 @@ public class ResizableHandleKit {
 	/**
 	 * Fills the given List with move borders with the given DragTracker at each
 	 * side of a figure.
-	 * 
+	 *
 	 * @param tracker the DragTracker to assign to this handle
 	 * @param f       the GraphicalEditPart thatis the owner of the handles
 	 * @param handles the List to add the handles to
@@ -146,7 +146,7 @@ public class ResizableHandleKit {
 
 	/**
 	 * Returns a new {@link MoveHandle} with the given owner.
-	 * 
+	 *
 	 * @param owner the GraphicalEditPart that is the owner of the new MoveHandle
 	 * @return the new MoveHandle
 	 */
@@ -156,7 +156,7 @@ public class ResizableHandleKit {
 
 	/**
 	 * Returns a new {@link MoveHandle} with the given owner and DragTracker.
-	 * 
+	 *
 	 * @param tracker the DragTracker to assign to this handle
 	 * @param owner   the GraphicalEditPart that is the owner of the new MoveHandle
 	 * @return the new MoveHandle

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -28,7 +28,7 @@ import java.util.Stack;
  * the last executed or redone command is different than the command that was at
  * the top of the undo stack when {@link #markSaveLocation()} was last called.
  * Initially, the undo stack is empty, and not dirty.
- * 
+ *
  * @author hudsonr
  */
 public class CommandStack {
@@ -48,7 +48,7 @@ public class CommandStack {
 
 	/**
 	 * Constant indicating notification after flushing the stack.
-	 * 
+	 *
 	 * @since 3.11
 	 */
 	public static final int POST_FLUSH = 256;
@@ -56,7 +56,7 @@ public class CommandStack {
 	/**
 	 * Constant indicating notification after marking the save location of the
 	 * stack.
-	 * 
+	 *
 	 * @since 3.11
 	 */
 	public static final int POST_MARK_SAVE = 512;
@@ -67,7 +67,7 @@ public class CommandStack {
 	 * after it has been flushed or the save location has been marked.
 	 * <P>
 	 * Usage<BR/>
-	 * 
+	 *
 	 * <PRE>
 	 * if ((commandStackEvent.getDetail() &amp; CommandStack.POST_MASK) != 0) {
 	 * 	// Do something, like:
@@ -94,7 +94,7 @@ public class CommandStack {
 
 	/**
 	 * Constant indicating notification prior to flushing the stack.
-	 * 
+	 *
 	 * @since 3.11
 	 */
 	public static final int PRE_FLUSH = 64;
@@ -102,7 +102,7 @@ public class CommandStack {
 	/**
 	 * Constant indicating notification prior to marking the save location of the
 	 * stack.
-	 * 
+	 *
 	 * @since 3.11
 	 */
 	public static final int PRE_MARK_SAVE = 128;
@@ -113,14 +113,14 @@ public class CommandStack {
 	 * the stack is being flushed or the save location is marked.
 	 * <P>
 	 * Usage<BR/>
-	 * 
+	 *
 	 * <PRE>
 	 * if ((commandStackEvent.getDetail() &amp; CommandStack.PRE_MASK) != 0) {
 	 * 	// Do something, like:
 	 * 	startBatchingChanges();
 	 * }
 	 * </PRE>
-	 * 
+	 *
 	 * @since 3.7 Had package visibility before.
 	 */
 	public static final int PRE_MASK = PRE_EXECUTE | PRE_UNDO | PRE_REDO | PRE_FLUSH | PRE_MARK_SAVE;
@@ -129,7 +129,7 @@ public class CommandStack {
 
 	/**
 	 * The list of {@link CommandStackListener}s.
-	 * 
+	 *
 	 * @deprecated This field should not be referenced, use
 	 *             {@link #notifyListeners()}
 	 */
@@ -153,7 +153,7 @@ public class CommandStack {
 	/**
 	 * Appends the listener to the list of command stack listeners. Multiple adds
 	 * result in multiple notifications.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param listener the event listener
 	 */
@@ -164,7 +164,7 @@ public class CommandStack {
 	/**
 	 * Appends the listener to the list of command stack listeners. Multiple adds
 	 * will result in multiple notifications.
-	 * 
+	 *
 	 * @param listener the listener
 	 * @deprecated Use
 	 *             {@link #addCommandStackEventListener(CommandStackEventListener)}
@@ -211,7 +211,7 @@ public class CommandStack {
 	 * notification.
 	 * <P>
 	 * If the command is <code>null</code> or cannot be executed, nothing happens.
-	 * 
+	 *
 	 * @param command the Command to execute
 	 * @see CommandStackEventListener
 	 */
@@ -277,7 +277,7 @@ public class CommandStack {
 	 * Peeks at the top of the <i>redo</i> stack. This is useful for describing to
 	 * the User what will be redone. The returned <code>Command</code> has a label
 	 * describing it.
-	 * 
+	 *
 	 * @return the top of the <i>redo</i> stack, which may be <code>null</code>
 	 */
 	public Command getRedoCommand() {
@@ -288,7 +288,7 @@ public class CommandStack {
 	 * Peeks at the top of the <i>undo</i> stack. This is useful for describing to
 	 * the User what will be undone. The returned <code>Command</code> has a label
 	 * describing it.
-	 * 
+	 *
 	 * @return the top of the <i>undo</i> stack, which may be <code>null</code>
 	 */
 	public Command getUndoCommand() {
@@ -299,7 +299,7 @@ public class CommandStack {
 	 * Returns the undo limit. The undo limit is the maximum number of atomic
 	 * operations that the User can undo. <code>-1</code> is used to indicate no
 	 * limit.
-	 * 
+	 *
 	 * @return the undo limit
 	 */
 	public int getUndoLimit() {
@@ -310,7 +310,7 @@ public class CommandStack {
 	 * Returns true if the stack is dirty. The stack is dirty whenever the last
 	 * executed or redone command is different than the command that was at the top
 	 * of the undo stack when {@link #markSaveLocation()} was last called.
-	 * 
+	 *
 	 * @return <code>true</code> if the stack is dirty
 	 */
 	public boolean isDirty() {
@@ -331,7 +331,7 @@ public class CommandStack {
 
 	/**
 	 * Sends notification to all {@link CommandStackListener}s.
-	 * 
+	 *
 	 * @deprecated Use {@link #notifyListeners(Command, int)} instead.
 	 */
 	protected void notifyListeners() {
@@ -343,7 +343,7 @@ public class CommandStack {
 	/**
 	 * Notifies command stack event listeners that the command stack has changed to
 	 * the specified state.
-	 * 
+	 *
 	 * @param command the command
 	 * @param state   the current stack state
 	 * @since 3.2
@@ -376,7 +376,7 @@ public class CommandStack {
 
 	/**
 	 * Removes the first occurrence of the specified listener.
-	 * 
+	 *
 	 * @param listener the listener
 	 */
 	public void removeCommandStackEventListener(CommandStackEventListener listener) {
@@ -385,7 +385,7 @@ public class CommandStack {
 
 	/**
 	 * Removes the first occurrence of the specified listener.
-	 * 
+	 *
 	 * @param listener the listener
 	 * @deprecated Use {@link CommandStackEventListener} instead.
 	 */
@@ -397,7 +397,7 @@ public class CommandStack {
 	 * Sets the undo limit. The undo limit is the maximum number of atomic
 	 * operations that the User can undo. <code>-1</code> is used to indicate no
 	 * limit.
-	 * 
+	 *
 	 * @param undoLimit the undo limit
 	 */
 	public void setUndoLimit(int undoLimit) {

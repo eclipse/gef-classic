@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -46,7 +46,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 * Provides accessibility support for when connections are also themselves
 	 * nodes. If a connection is the source or target of another connection, then
 	 * its midpoint is used as the accessible anchor location.
-	 * 
+	 *
 	 * @author hudsonr
 	 * @since 2.0
 	 */
@@ -85,7 +85,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	/**
 	 * Activates the Figure representing this, by setting up the start and end
 	 * connections, and adding the figure to the Connection Layer.
-	 * 
+	 *
 	 * @see #deactivate()
 	 */
 	protected void activateFigure() {
@@ -103,7 +103,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 
 	/**
 	 * Returns a newly created Figure to represent these type of EditParts.
-	 * 
+	 *
 	 * @return The created Figure.
 	 */
 	@Override
@@ -126,7 +126,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 * {@link AccessibleAnchorProvider} adapter returned by the superclass. When
 	 * treating a connection as a node for other connections, it makes sense to
 	 * target its midpoint, and not the edge of its bounds.
-	 * 
+	 *
 	 * @see AbstractConnectionEditPart.DefaultAccessibleAnchorProvider
 	 * @see AbstractGraphicalEditPart#getAdapter(Class)
 	 * @param adapter the adapter Class
@@ -142,7 +142,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	/**
 	 * Convenience method for casting this GraphicalEditPart's Figure to a
 	 * {@link Connection}
-	 * 
+	 *
 	 * @return the Figure as a Connection
 	 */
 	public Connection getConnectionFigure() {
@@ -181,7 +181,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 * overridden to return the correct ConnectionAnchor. Failure to do this will
 	 * cause a default anchor to be used so that the connection figure will be made
 	 * visible to the developer.
-	 * 
+	 *
 	 * @return ConnectionAnchor for the source end of the Connection
 	 */
 	protected ConnectionAnchor getSourceConnectionAnchor() {
@@ -204,7 +204,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	 * overridden to return the correct ConnectionAnchor. Failure to do this will
 	 * cause a default anchor to be used so that the connection figure will be made
 	 * visible to the developer.
-	 * 
+	 *
 	 * @return ConnectionAnchor for the target end of the Connection
 	 */
 	protected ConnectionAnchor getTargetConnectionAnchor() {
@@ -221,7 +221,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 
 	/**
 	 * Extended here to also refresh the ConnectionAnchors.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#refresh()
 	 */
 	@Override
@@ -250,7 +250,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 	/**
 	 * Extended here to remove the ConnectionEditPart's connection figure from the
 	 * connection layer.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#removeNotify()
 	 */
 	@Override
@@ -261,7 +261,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 
 	/**
 	 * Extended to implement automatic addNotify and removeNotify handling.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#setParent(EditPart)
 	 */
 	@Override
@@ -277,7 +277,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 
 	/**
 	 * Sets the source EditPart of this connection.
-	 * 
+	 *
 	 * @param editPart EditPart which is the source.
 	 */
 	@Override
@@ -295,7 +295,7 @@ public abstract class AbstractConnectionEditPart extends AbstractGraphicalEditPa
 
 	/**
 	 * Sets the target EditPart of this connection.
-	 * 
+	 *
 	 * @param editPart EditPart which is the target.
 	 */
 	@Override

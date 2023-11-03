@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -57,7 +57,7 @@ import org.eclipse.gef.SelectionManager;
 
 /**
  * The base implementation for EditPartViewer.
- * 
+ *
  * @author hudsonr
  */
 public abstract class AbstractEditPartViewer implements EditPartViewer {
@@ -78,7 +78,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * The list of selection listeners.
-	 * 
+	 *
 	 * @deprecated
 	 */
 	protected List selectionListeners = new ArrayList(1);
@@ -88,7 +88,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * <code>null</code>, the focus editpart is still implied to be the part with
 	 * primary selection. Subclasses should call the accessor:
 	 * {@link #getFocusEditPart()} whenever possible.
-	 * 
+	 *
 	 * @deprecated
 	 */
 	protected EditPart focusPart;
@@ -224,7 +224,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * Called if and when the <code>Control</code> is disposed. Subclasses may
 	 * extend this method to perform additional cleanup.
-	 * 
+	 *
 	 * @param e the disposeevent
 	 */
 	protected void handleDispose(DisposeEvent e) {
@@ -294,7 +294,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Returns <code>null</code> or the DelegatingDragAdapater. The adapter is
 	 * created automatically when
 	 * {@link #addDragSourceListener(TransferDragSourceListener)} is called.
-	 * 
+	 *
 	 * @return <code>null</code> or the adapter
 	 */
 	protected org.eclipse.gef.dnd.DelegatingDragAdapter getDelegatingDragAdapter() {
@@ -305,7 +305,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Returns <code>null</code> or the DelegatingDropAdapater. The adapter is
 	 * created automatically when
 	 * {@link #addDropTargetListener(TransferDropTargetListener)} is called.
-	 * 
+	 *
 	 * @return <code>null</code> or the adapter
 	 */
 	protected org.eclipse.gef.dnd.DelegatingDropAdapter getDelegatingDropAdapter() {
@@ -316,7 +316,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Returns <code>null</code> or the DragSource. The drag source is created
 	 * automatically when {@link #addDragSourceListener(TransferDragSourceListener)}
 	 * is called.
-	 * 
+	 *
 	 * @return <code>null</code> or the drag source
 	 */
 	protected DragSource getDragSource() {
@@ -327,7 +327,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Returns <code>null</code> or the DropTarget. The drop target is created
 	 * automatically when {@link #addDropTargetListener(TransferDropTargetListener)}
 	 * is called.
-	 * 
+	 *
 	 * @return <code>null</code> or the drop target
 	 */
 	protected DropTarget getDropTarget() {
@@ -425,7 +425,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Returns an ISelection containing a list of one or more EditPart. Whenever
 	 * {@link #getSelectedEditParts()} returns an empty list, the <i>contents</i>
 	 * editpart ({@link #getContents()}) is returned as the current selection.
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.ISelectionProvider#getSelection()
 	 */
 	@Override
@@ -451,7 +451,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * Called once the control has been set.
-	 * 
+	 *
 	 * @see #unhookControl()
 	 */
 	protected void hookControl() {
@@ -506,7 +506,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * Returns the modifiable List of selected EditParts.
-	 * 
+	 *
 	 * @return the internal list of selected editparts
 	 */
 	protected List primGetSelectedEditParts() {
@@ -682,7 +682,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * Sets the drag source. Called from {@link #refreshDragSourceAdapter()}.
-	 * 
+	 *
 	 * @param source <code>null</code> or a drag source
 	 */
 	protected void setDragSource(DragSource source) {
@@ -695,7 +695,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 
 	/**
 	 * Sets the drop target. Called from {@link #refreshDropTargetAdapter()}.
-	 * 
+	 *
 	 * @param target dropTarget <code>null</code> or a drop target
 	 */
 	protected void setDropTarget(DropTarget target) {
@@ -782,7 +782,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * Sets the selection to the given selection and fires selection changed. The
 	 * ISelection should be an {@link IStructuredSelection} or it will be ignored.
-	 * 
+	 *
 	 * @see ISelectionProvider#setSelection(ISelection)
 	 */
 	@Override
@@ -810,7 +810,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	/**
 	 * Does nothing by default. Subclasses needing to add accessibility support
 	 * should override this method.
-	 * 
+	 *
 	 * @see EditPartViewer#unregisterAccessibleEditPart(AccessibleEditPart)
 	 */
 	@Override

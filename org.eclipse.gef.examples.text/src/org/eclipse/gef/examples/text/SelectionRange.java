@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -37,7 +37,7 @@ public class SelectionRange {
 	/**
 	 * Constructs a selection range which starts and ends at the given location. The
 	 * direction of the range is forward.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param location
 	 */
@@ -48,7 +48,7 @@ public class SelectionRange {
 	/**
 	 * Constructs a selection range which starts and ends at the given locations.
 	 * The direction of the range is forward.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param begin
 	 * @param end
@@ -61,7 +61,7 @@ public class SelectionRange {
 	 * Constructs a selection range which starts and ends at the given locations
 	 * with the given direction. If a range is forward, the caret will be placed at
 	 * the end of the range. Otherwise, it is placed at the beginning.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param begin
 	 * @param end

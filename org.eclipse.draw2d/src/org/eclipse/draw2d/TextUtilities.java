@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2007, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ import org.eclipse.draw2d.geometry.Dimension;
 /**
  * Provides miscellaneous text operations. Clients may subclass this class if
  * necessary.
- * 
+ *
  * @author crevells
  * @since 3.4
  */
@@ -34,7 +34,7 @@ public class TextUtilities {
 
 	/**
 	 * Returns the Dimensions of <i>s</i> in Font <i>f</i>.
-	 * 
+	 *
 	 * @param s the string
 	 * @param f the font
 	 * @return the dimensions of the given string
@@ -46,7 +46,7 @@ public class TextUtilities {
 	/**
 	 * Returns the Dimensions of the given text, converting newlines and tabs
 	 * appropriately.
-	 * 
+	 *
 	 * @param s the text
 	 * @param f the font
 	 * @return the dimensions of the given text
@@ -57,7 +57,7 @@ public class TextUtilities {
 
 	/**
 	 * Gets the font's ascent.
-	 * 
+	 *
 	 * @param font
 	 * @return the font's ascent
 	 */
@@ -68,7 +68,7 @@ public class TextUtilities {
 
 	/**
 	 * Gets the font's descent.
-	 * 
+	 *
 	 * @param font
 	 * @return the font's descent
 	 */
@@ -79,7 +79,7 @@ public class TextUtilities {
 	/**
 	 * Returns the largest substring of <i>s</i> in Font <i>f</i> that can be
 	 * confined to the number of pixels in <i>availableWidth<i>.
-	 * 
+	 *
 	 * @param s              the original string
 	 * @param f              the font
 	 * @param availableWidth the available width

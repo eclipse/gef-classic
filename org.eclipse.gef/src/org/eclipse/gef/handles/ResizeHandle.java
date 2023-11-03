@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -34,7 +34,7 @@ public class ResizeHandle extends SquareHandle {
 	 * figure. For example, <code>SOUTH_EAST</code> would place the handle in the
 	 * lower-right corner of its owner figure. These direction constants can be
 	 * found in {@link org.eclipse.draw2d.PositionConstants}.
-	 * 
+	 *
 	 * @param owner     owner of the ResizeHandle
 	 * @param direction relative direction from the center of the owner figure
 	 */
@@ -47,7 +47,7 @@ public class ResizeHandle extends SquareHandle {
 
 	/**
 	 * Creates a new ResizeHandle for the given GraphicalEditPart.
-	 * 
+	 *
 	 * @see SquareHandle#SquareHandle(GraphicalEditPart, Locator, Cursor)
 	 */
 	public ResizeHandle(GraphicalEditPart owner, Locator loc, Cursor c) {
@@ -56,7 +56,7 @@ public class ResizeHandle extends SquareHandle {
 
 	/**
 	 * Returns <code>null</code> for the DragTracker.
-	 * 
+	 *
 	 * @return returns <code>null</code>
 	 */
 	@Override

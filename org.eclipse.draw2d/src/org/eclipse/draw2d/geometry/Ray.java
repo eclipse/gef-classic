@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -13,7 +13,7 @@ package org.eclipse.draw2d.geometry;
 /**
  * Represents a 2-dimensional directional Vector, or Ray.
  * {@link java.util.Vector} is commonly imported, so the name Ray was chosen.
- * 
+ *
  * @deprecated Use {@link Vector} instead, which offers double precision instead
  *             of integer precision.
  */
@@ -26,7 +26,7 @@ public final class Ray {
 
 	/**
 	 * Constructs a Ray &lt;0, 0&gt; with no direction and magnitude.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public Ray() {
@@ -34,7 +34,7 @@ public final class Ray {
 
 	/**
 	 * Constructs a Ray pointed in the specified direction.
-	 * 
+	 *
 	 * @param x X value.
 	 * @param y Y value.
 	 * @since 2.0
@@ -46,7 +46,7 @@ public final class Ray {
 
 	/**
 	 * Constructs a Ray pointed in the direction specified by a Point.
-	 * 
+	 *
 	 * @param p the Point
 	 * @since 2.0
 	 */
@@ -58,7 +58,7 @@ public final class Ray {
 	/**
 	 * Constructs a Ray representing the direction and magnitude between to provided
 	 * Points.
-	 * 
+	 *
 	 * @param start Strarting Point
 	 * @param end   End Point
 	 * @since 2.0
@@ -70,7 +70,7 @@ public final class Ray {
 
 	/**
 	 * Constructs a Ray representing the difference between two provided Rays.
-	 * 
+	 *
 	 * @param start The start Ray
 	 * @param end   The end Ray
 	 * @since 2.0
@@ -84,7 +84,7 @@ public final class Ray {
 	 * Calculates the magnitude of the cross product of this Ray with another.
 	 * Represents the amount by which two Rays are directionally different. Parallel
 	 * Rays return a value of 0.
-	 * 
+	 *
 	 * @param r Ray being compared
 	 * @return The assimilarity
 	 * @see #similarity(Ray)
@@ -96,7 +96,7 @@ public final class Ray {
 
 	/**
 	 * Calculates the dot product of this Ray with another.
-	 * 
+	 *
 	 * @param r the Ray used to perform the dot product
 	 * @return The dot product
 	 * @since 2.0
@@ -107,7 +107,7 @@ public final class Ray {
 
 	/**
 	 * Calculates the dot product of this Ray with another.
-	 * 
+	 *
 	 * @param r the Ray used to perform the dot product
 	 * @return The dot product as <code>long</code> to avoid possible integer
 	 *         overflow
@@ -132,7 +132,7 @@ public final class Ray {
 
 	/**
 	 * Creates a new Ray which is the sum of this Ray with another.
-	 * 
+	 *
 	 * @param r Ray to be added with this Ray
 	 * @return a new Ray
 	 * @since 2.0
@@ -143,7 +143,7 @@ public final class Ray {
 
 	/**
 	 * Creates a new Ray which represents the average of this Ray with another.
-	 * 
+	 *
 	 * @param r Ray to calculate the average.
 	 * @return a new Ray
 	 * @since 2.0
@@ -154,7 +154,7 @@ public final class Ray {
 
 	/**
 	 * Creates a new Ray which represents this Ray scaled by the amount provided.
-	 * 
+	 *
 	 * @param s Value providing the amount to scale.
 	 * @return a new Ray
 	 * @since 2.0
@@ -173,7 +173,7 @@ public final class Ray {
 
 	/**
 	 * Returns true if this Ray has a non-zero horizontal comonent.
-	 * 
+	 *
 	 * @return true if this Ray has a non-zero horizontal comonent
 	 * @since 2.0
 	 */
@@ -183,7 +183,7 @@ public final class Ray {
 
 	/**
 	 * Returns the length of this Ray.
-	 * 
+	 *
 	 * @return Length of this Ray
 	 * @since 2.0
 	 */
@@ -194,7 +194,7 @@ public final class Ray {
 	/**
 	 * Calculates the similarity of this Ray with another. Similarity is defined as
 	 * the absolute value of the dotProduct()
-	 * 
+	 *
 	 * @param r Ray being tested for similarity
 	 * @return the Similarity
 	 * @see #assimilarity(Ray)

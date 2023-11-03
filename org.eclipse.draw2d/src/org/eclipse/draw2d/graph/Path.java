@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,9 +27,9 @@ import org.eclipse.draw2d.geometry.PointList;
  * A Path representation for the ShortestPathRouting. A Path has a start and end
  * point and may have bendpoints. The output of a path is accessed via the
  * method <code>getPoints()</code>.
- * 
+ *
  * This class is for internal use only.
- * 
+ *
  * @author Whitney Sorenson
  * @since 3.0
  */
@@ -96,7 +96,7 @@ public class Path {
 
 	/**
 	 * Constructs a new path.
-	 * 
+	 *
 	 * @since 3.0
 	 */
 	public Path() {
@@ -111,7 +111,7 @@ public class Path {
 
 	/**
 	 * Constructs a new path with the given data.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param data an arbitrary data field
 	 */
@@ -122,7 +122,7 @@ public class Path {
 
 	/**
 	 * Constructs a new path with the given data, start and end point.
-	 * 
+	 *
 	 * @param start the start point for this path
 	 * @param end   the end point for this path
 	 */
@@ -132,7 +132,7 @@ public class Path {
 
 	/**
 	 * Creates a path between the given vertices.
-	 * 
+	 *
 	 * @param start start vertex
 	 * @param end   end vertex
 	 */
@@ -145,7 +145,7 @@ public class Path {
 	/**
 	 * Attempts to add all segments between the given obstacles to the visibility
 	 * graph.
-	 * 
+	 *
 	 * @param source the source obstacle
 	 * @param target the target obstacle
 	 */
@@ -178,7 +178,7 @@ public class Path {
 	 * graph. This method is specifically written for the case where the two
 	 * obstacles intersect and contains a boolean as to whether to check the
 	 * diagonal that includes the top right point of the other obstacle.
-	 * 
+	 *
 	 * @param segment        the segment to check
 	 * @param o1             the first obstacle
 	 * @param o2             the second obstacle
@@ -210,7 +210,7 @@ public class Path {
 
 	/**
 	 * Adds an obstacle to the visibility graph and generates new segments
-	 * 
+	 *
 	 * @param newObs the new obstacle, should not be in the graph already
 	 */
 	private void addObstacle(Obstacle newObs) {
@@ -229,7 +229,7 @@ public class Path {
 	/**
 	 * Adds the segments along the perimiter of an obstacle to the visiblity graph
 	 * queue.
-	 * 
+	 *
 	 * @param obs the obstacle
 	 */
 	private void addPerimiterSegments(Obstacle obs) {
@@ -255,7 +255,7 @@ public class Path {
 	 * Attempts to add a segment to the visibility graph. First checks to see if the
 	 * segment is outside the threshold oval. Then it compares the segment against
 	 * all obstacles. If it is clean, the segment is finally added to the graph.
-	 * 
+	 *
 	 * @param segment      the segment
 	 * @param exclude1     an obstacle to exclude from the search
 	 * @param exclude2     another obstacle to exclude from the search
@@ -286,7 +286,7 @@ public class Path {
 
 	/**
 	 * Adds the segments between the given obstacles.
-	 * 
+	 *
 	 * @param source source obstacle
 	 * @param target target obstacle
 	 */
@@ -305,7 +305,7 @@ public class Path {
 
 	/**
 	 * Adds the segments between the given obstacles.
-	 * 
+	 *
 	 * @param source source obstacle
 	 * @param target target obstacle
 	 */
@@ -464,7 +464,7 @@ public class Path {
 	}
 
 	/**
-	* 
+	*
 	*/
 	void cleanup() {
 		// segments.clear();
@@ -473,7 +473,7 @@ public class Path {
 
 	/**
 	 * Begins the creation of the visibility graph with the first segment
-	 * 
+	 *
 	 * @param allObstacles list of all obstacles
 	 */
 	private void createVisibilityGraph(List allObstacles) {
@@ -488,7 +488,7 @@ public class Path {
 	/**
 	 * Once the visibility graph is constructed, this is called to label the graph
 	 * and determine the shortest path. Returns false if no path can be found.
-	 * 
+	 *
 	 * @return true if a path can be found.
 	 */
 	private boolean determineShortestPath() {
@@ -529,7 +529,7 @@ public class Path {
 	/**
 	 * Creates the visibility graph and returns whether or not a shortest path could
 	 * be determined.
-	 * 
+	 *
 	 * @param allObstacles the list of all obstacles
 	 * @return true if a shortest path was found
 	 */
@@ -545,7 +545,7 @@ public class Path {
 	/**
 	 * Returns the list of constrained points through which this path must pass or
 	 * <code>null</code>.
-	 * 
+	 *
 	 * @see #setBendPoints(PointList)
 	 * @return list of bend points
 	 */
@@ -555,7 +555,7 @@ public class Path {
 
 	/**
 	 * Returns the end point for this path
-	 * 
+	 *
 	 * @return end point for this path
 	 */
 	public Point getEndPoint() {
@@ -564,7 +564,7 @@ public class Path {
 
 	/**
 	 * Returns the solution to this path.
-	 * 
+	 *
 	 * @return the points for this path.
 	 */
 	public PointList getPoints() {
@@ -573,7 +573,7 @@ public class Path {
 
 	/**
 	 * Returns the start point for this path
-	 * 
+	 *
 	 * @return start point for this path
 	 */
 	public Point getStartPoint() {
@@ -582,7 +582,7 @@ public class Path {
 
 	/**
 	 * Returns a subpath for this path at the given segment
-	 * 
+	 *
 	 * @param currentSegment the segment at which the subpath should be created
 	 * @return the new path
 	 */
@@ -604,7 +604,7 @@ public class Path {
 	 * Resets the vertices that this path has traveled prior to this segment. This
 	 * is called when the path has become inverted and needs to rectify any labeling
 	 * mistakes it made before it knew it was inverted.
-	 * 
+	 *
 	 * @param currentSegment the segment at which the path found it was inverted
 	 */
 	void invertPriorVertices(Segment currentSegment) {
@@ -620,7 +620,7 @@ public class Path {
 
 	/**
 	 * Returns true if this obstacle is in the visibility graph
-	 * 
+	 *
 	 * @param obs the obstacle
 	 * @return true if obstacle is in the visibility graph
 	 */
@@ -630,7 +630,7 @@ public class Path {
 
 	/**
 	 * Labels the visibility graph to assist in finding the shortest path
-	 * 
+	 *
 	 * @return false if there was a gap in the visibility graph
 	 */
 	private boolean labelGraph() {
@@ -678,7 +678,7 @@ public class Path {
 
 	/**
 	 * Links two vertices together in the visibility graph
-	 * 
+	 *
 	 * @param segment the segment to add
 	 */
 	private void linkVertices(Segment segment) {
@@ -724,7 +724,7 @@ public class Path {
 	/**
 	 * Refreshes the exclude field on the obstacles in the list. Excludes all
 	 * obstacles that contain the start or end point for this path.
-	 * 
+	 *
 	 * @param allObstacles list of all obstacles
 	 */
 	void refreshExcludedObstacles(List allObstacles) {
@@ -741,7 +741,7 @@ public class Path {
 					/*
 					 * $TODO Check for corners. If the path begins exactly at the corner of an
 					 * obstacle, the exclude should also be true.
-					 * 
+					 *
 					 * Or, change segment intersection so that two segments that share an endpoint
 					 * do not intersect.
 					 */
@@ -776,7 +776,7 @@ public class Path {
 
 	/**
 	 * Sets the list of bend points to the given list and dirties the path.
-	 * 
+	 *
 	 * @param bendPoints the list of bend points
 	 */
 	public void setBendPoints(PointList bendPoints) {
@@ -786,7 +786,7 @@ public class Path {
 
 	/**
 	 * Sets the end point for this path to the given point.
-	 * 
+	 *
 	 * @param end the new end point for this path
 	 */
 	public void setEndPoint(Point end) {
@@ -798,7 +798,7 @@ public class Path {
 
 	/**
 	 * Sets the start point for this path to the given point.
-	 * 
+	 *
 	 * @param start the new start point for this path
 	 */
 	public void setStartPoint(Point start) {
@@ -811,7 +811,7 @@ public class Path {
 	/**
 	 * Returns <code>true</code> if the path is clean and intersects the given
 	 * obstacle. Also dirties the path in the process.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param obs the obstacle
 	 * @return <code>true</code> if a clean path touches the obstacle

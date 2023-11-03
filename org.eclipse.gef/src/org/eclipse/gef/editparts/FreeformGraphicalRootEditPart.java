@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -82,7 +82,7 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  * <td>&#9492; Primary Layer</td>
  * </tr>
  * </table>
- * 
+ *
  */
 public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements LayerConstants, LayerManager {
 
@@ -116,7 +116,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	 * layer (i.e., beneath the primary layer) if it is not to cover up parts on the
 	 * primary layer. In that case, the primary layer should be transparent so that
 	 * the grid is visible.
-	 * 
+	 *
 	 * @return the newly created GridLayer
 	 */
 	protected GridLayer createGridLayer() {
@@ -125,7 +125,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 
 	/**
 	 * Creates the top-most set of layers on the given layered pane.
-	 * 
+	 *
 	 * @param layeredPane the parent for the created layers
 	 */
 	protected void createLayers(LayeredPane layeredPane) {
@@ -138,7 +138,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 
 	/**
 	 * Creates a layered pane and the layers that should be printed.
-	 * 
+	 *
 	 * @see org.eclipse.gef.print.PrintGraphicalViewerOperation
 	 * @return a new LayeredPane containing the printable layers
 	 */
@@ -161,7 +161,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 
 	/**
 	 * The contents' Figure will be added to the PRIMARY_LAYER.
-	 * 
+	 *
 	 * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
 	 */
 	@Override
@@ -171,7 +171,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 
 	/**
 	 * Should not be called, but returns a MarqeeDragTracker for good measure.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
 	 */
 	@Override
@@ -185,7 +185,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 
 	/**
 	 * Returns the layer indicated by the key. Searches all layered panes.
-	 * 
+	 *
 	 * @see LayerManager#getLayer(Object)
 	 */
 	@Override
@@ -203,7 +203,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	/**
 	 * The root editpart does not have a real model. The LayerManager ID is returned
 	 * so that this editpart gets registered using that key.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getModel()
 	 */
 	@Override
@@ -214,7 +214,7 @@ public class FreeformGraphicalRootEditPart extends SimpleRootEditPart implements
 	/**
 	 * Returns the LayeredPane that should be used during printing. This layer will
 	 * be identified using {@link LayerConstants#PRINTABLE_LAYERS}.
-	 * 
+	 *
 	 * @return the layered pane containing all printable content
 	 */
 	protected LayeredPane getPrintableLayers() {

@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.dataStructures;
@@ -15,7 +15,7 @@ package org.eclipse.zest.layouts.dataStructures;
 /**
  * This is a point that isn't dependent on awt, swt, or any other library,
  * except layout.
- * 
+ *
  * @author Casey Best
  */
 public class DisplayIndependentPoint {
@@ -47,7 +47,7 @@ public class DisplayIndependentPoint {
 
 	/**
 	 * Create a new point based on the current point but in a new coordinate system
-	 * 
+	 *
 	 * @param currentBounds
 	 * @param targetBounds
 	 * @return
@@ -65,7 +65,7 @@ public class DisplayIndependentPoint {
 	/**
 	 * Converts this point based on the current x, y values to a percentage of the
 	 * specified coordinate system
-	 * 
+	 *
 	 * @param bounds
 	 * @return
 	 */
@@ -78,7 +78,7 @@ public class DisplayIndependentPoint {
 	/**
 	 * Converts this point based on the current x, y values from a percentage of the
 	 * specified coordinate system
-	 * 
+	 *
 	 * @param bounds
 	 * @return
 	 */

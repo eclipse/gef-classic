@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -30,7 +30,7 @@ public abstract class SimpleObjectTransfer extends ByteArrayTransfer {
 
 	/**
 	 * Returns the Object.
-	 * 
+	 *
 	 * @return The Object
 	 */
 	public Object getObject() {
@@ -41,7 +41,7 @@ public abstract class SimpleObjectTransfer extends ByteArrayTransfer {
 	 * The data object is not converted to bytes. It is held onto in a field.
 	 * Instead, a checksum is written out to prevent unwanted drags across mulitple
 	 * running copies of Eclipse.
-	 * 
+	 *
 	 * @see org.eclipse.swt.dnd.Transfer#javaToNative(Object, TransferData)
 	 */
 	@Override
@@ -56,7 +56,7 @@ public abstract class SimpleObjectTransfer extends ByteArrayTransfer {
 	 * The data object is not converted to bytes. It is held onto in a field.
 	 * Instead, a checksum is written out to prevent unwanted drags across mulitple
 	 * running. copies of Eclipse.
-	 * 
+	 *
 	 * @see org.eclipse.swt.dnd.Transfer#nativeToJava(TransferData)
 	 */
 	@Override
@@ -71,7 +71,7 @@ public abstract class SimpleObjectTransfer extends ByteArrayTransfer {
 
 	/**
 	 * Sets the Object.
-	 * 
+	 *
 	 * @param obj The Object
 	 */
 	public void setObject(Object obj) {

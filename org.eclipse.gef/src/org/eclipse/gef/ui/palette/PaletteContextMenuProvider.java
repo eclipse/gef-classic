@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,14 +21,14 @@ import org.eclipse.gef.ui.palette.editparts.IPinnableEditPart;
 
 /**
  * Provides the context menu for a palette.
- * 
+ *
  * @author Pratik Shah
  */
 public class PaletteContextMenuProvider extends ContextMenuProvider {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param palette the palette viewer for which the context menu has to be
 	 *                created
 	 */
@@ -45,7 +45,7 @@ public class PaletteContextMenuProvider extends ContextMenuProvider {
 
 	/**
 	 * This is the method that builds the context menu.
-	 * 
+	 *
 	 * @param menu The IMenuManager to which actions for the palette's context menu
 	 *             can be added.
 	 * @see ContextMenuProvider#buildContextMenu(org.eclipse.jface.action.IMenuManager)

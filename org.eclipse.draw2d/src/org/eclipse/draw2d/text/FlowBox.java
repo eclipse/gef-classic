@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ package org.eclipse.draw2d.text;
  * <P>
  * This class should not be treated as a <code>Rectangle</code> by clients. It
  * is important to use getters when available for lazy calculation of values.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -36,7 +36,7 @@ public abstract class FlowBox {
 	/**
 	 * This method must be called on a block that is completely positioned and
 	 * committed.
-	 * 
+	 *
 	 * @param x X
 	 * @param y Y
 	 * @return <code>true</code> if the FlowBox contains the point
@@ -47,14 +47,14 @@ public abstract class FlowBox {
 	 * Returns the amount of line content in pixels which is above the baseline.
 	 * Ascent and descent are used to space consecutive lines apart. Certain types
 	 * of line content, such as borders, extend beyond the ascent and descent.
-	 * 
+	 *
 	 * @return the <i>descent</i> in pixels below the baseline
 	 */
 	public abstract int getAscent();
 
 	/**
 	 * Returns y coordinate for the box's baseline.
-	 * 
+	 *
 	 * @return the baseline location
 	 * @since 3.1
 	 */
@@ -62,7 +62,7 @@ public abstract class FlowBox {
 
 	/**
 	 * Returns the amount of line content in pixels which is below the baseline.
-	 * 
+	 *
 	 * @return the <i>descent</i> in pixels
 	 * @see #getAscent()
 	 */
@@ -72,7 +72,7 @@ public abstract class FlowBox {
 	 * Returns the root LineBox in which this box is placed. The root line is
 	 * interesting when painting selection or hit testing. All boxes in a line
 	 * should render selection at the same top and bottom location.
-	 * 
+	 *
 	 * @return the line root.
 	 * @since 3.1
 	 */
@@ -108,7 +108,7 @@ public abstract class FlowBox {
 
 	/**
 	 * Returns the width of the box.
-	 * 
+	 *
 	 * @return the box's width
 	 */
 	public int getWidth() {
@@ -117,7 +117,7 @@ public abstract class FlowBox {
 
 	/**
 	 * Returns the X coordinate of the box.
-	 * 
+	 *
 	 * @return the x coordinate
 	 * @since 3.1
 	 */
@@ -128,7 +128,7 @@ public abstract class FlowBox {
 	/**
 	 * Returns <code>true</code> if any of the children are bi-directional. Default
 	 * implementation returns false.
-	 * 
+	 *
 	 * @return <code>true</code> if the box is bi-directional
 	 * @since 3.1
 	 */
@@ -138,7 +138,7 @@ public abstract class FlowBox {
 
 	/**
 	 * Sets the line root.
-	 * 
+	 *
 	 * @param root the line root
 	 * @since 3.1
 	 */
@@ -147,7 +147,7 @@ public abstract class FlowBox {
 
 	/**
 	 * Sets the width of the box.
-	 * 
+	 *
 	 * @param width the new width
 	 * @since 3.1
 	 */
@@ -157,7 +157,7 @@ public abstract class FlowBox {
 
 	/**
 	 * Sets the x coordinate for this box.
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @since 3.1
 	 */

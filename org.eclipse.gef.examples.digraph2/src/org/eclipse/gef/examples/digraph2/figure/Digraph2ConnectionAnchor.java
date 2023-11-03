@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2007 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,14 +21,14 @@ import org.eclipse.draw2d.geometry.Point;
  * An anchor for a connection to a node in the directed graph. The source
  * connection is anchored to the bottom center of the node and the target
  * connection is anchored to the top center of the node.
- * 
+ *
  * @author Anthony Hunter
  */
 public class Digraph2ConnectionAnchor extends AbstractConnectionAnchor {
 
 	/**
 	 * Constructor for a Digraph2ConnectionAnchor.
-	 * 
+	 *
 	 * @param owner the figure that owns this anchor.
 	 */
 	public Digraph2ConnectionAnchor(IFigure owner) {

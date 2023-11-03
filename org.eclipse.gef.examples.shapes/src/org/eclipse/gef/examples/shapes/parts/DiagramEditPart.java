@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -55,7 +55,7 @@ import org.eclipse.gef.examples.shapes.model.commands.ShapeSetConstraintCommand;
  * This edit part must implement the PropertyChangeListener interface, so it can
  * be notified of property changes in the corresponding model element.
  * </p>
- * 
+ *
  * @author Elias Volanakis
  */
 class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChangeListener {
@@ -73,7 +73,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
 	@Override
@@ -88,7 +88,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
 	@Override
@@ -122,7 +122,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#getModelChildren()
 	 */
 	@Override
@@ -132,7 +132,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
 	 */
 	@Override
@@ -149,14 +149,14 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 	/**
 	 * EditPolicy for the Figure used by this edit part. Children of
 	 * XYLayoutEditPolicy can be used in Figures with XYLayout.
-	 * 
+	 *
 	 * @author Elias Volanakis
 	 */
 	private static class ShapesXYLayoutEditPolicy extends XYLayoutEditPolicy {
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see ConstrainedLayoutEditPolicy#createChangeConstraintCommand(
 		 * ChangeBoundsRequest, EditPart, Object)
 		 */
@@ -172,7 +172,7 @@ class DiagramEditPart extends AbstractGraphicalEditPart implements PropertyChang
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see LayoutEditPolicy#getCreateCommand(CreateRequest)
 		 */
 		@Override

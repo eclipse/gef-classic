@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import com.ibm.icu.text.BreakIterator;
 
 /**
  * Utility class for FlowFigures.
- * 
+ *
  * @author hudsonr
  * @since 3.4
  */
@@ -71,7 +71,7 @@ public class FlowUtilities {
 
 	/**
 	 * Gets the average character width.
-	 * 
+	 *
 	 * @param fragment the supplied TextFragmentBox to use for calculation. if the
 	 *                 length is 0 or if the width is or below 0, the average
 	 *                 character width is taken from standard font metrics.
@@ -121,7 +121,7 @@ public class FlowUtilities {
 	 * Provides a TextLayout that can be used by the Draw2d text package for Bidi.
 	 * This TextLayout should not be disposed by clients. The provided TextLayout's
 	 * orientation will be LTR.
-	 * 
+	 *
 	 * @return an SWT TextLayout that can be used for Bidi
 	 * @since 3.1
 	 */
@@ -159,7 +159,7 @@ public class FlowUtilities {
 
 	/**
 	 * Sets up the fragment width based using the font and string passed in.
-	 * 
+	 *
 	 * @param fragment the text fragment whose width will be set
 	 * @param font     the font to be used in the calculation
 	 * @param string   the string to be used in the calculation
@@ -184,7 +184,7 @@ public class FlowUtilities {
 	 * given String. An average character width can be provided as a hint for faster
 	 * calculation. If a fragment's bidi level is set, a TextLayout will be used to
 	 * calculate the width.
-	 * 
+	 *
 	 * @param frag     the TextFragmentBox
 	 * @param string   the String
 	 * @param font     the Font used for measuring
@@ -361,7 +361,7 @@ public class FlowUtilities {
 	/**
 	 * Returns an instance of a <code>TextUtililities</code> class on which text
 	 * calculations can be performed. Clients may override to customize.
-	 * 
+	 *
 	 * @return the <code>TextUtililities</code> instance
 	 * @since 3.4
 	 */
@@ -371,7 +371,7 @@ public class FlowUtilities {
 
 	/**
 	 * Gets the ellipsis width.
-	 * 
+	 *
 	 * @param font the font to be used in the calculation
 	 * @return the width of the ellipsis
 	 * @since 3.4

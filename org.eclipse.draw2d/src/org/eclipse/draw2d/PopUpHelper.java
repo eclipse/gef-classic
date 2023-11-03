@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -38,14 +38,14 @@ public abstract class PopUpHelper {
 
 	/**
 	 * These style bits should be used when creating the Shell.
-	 * 
+	 *
 	 * @see #createShell()
 	 */
 	protected final int shellStyle;
 
 	/**
 	 * Constructs a PopUpHelper to assist with popups on Control c.
-	 * 
+	 *
 	 * @param c the Control
 	 * @since 2.0
 	 */
@@ -55,7 +55,7 @@ public abstract class PopUpHelper {
 
 	/**
 	 * Constructs a PopUpHelper to display the given shell style popup.
-	 * 
+	 *
 	 * @param c          the control on which the popup is active.
 	 * @param shellStyle the SWT style bits for the shell
 	 * @since 3.1
@@ -68,7 +68,7 @@ public abstract class PopUpHelper {
 	/**
 	 * Creates and returns the LightweightSystem object used by PopUpHelper to draw
 	 * upon.
-	 * 
+	 *
 	 * @return the newly created LightweightSystem
 	 * @since 2.0
 	 */
@@ -78,7 +78,7 @@ public abstract class PopUpHelper {
 
 	/**
 	 * Creates a new Shell object with the style specified for this helper.
-	 * 
+	 *
 	 * @return the newly created Shell
 	 * @since 2.0
 	 */
@@ -88,7 +88,7 @@ public abstract class PopUpHelper {
 
 	/**
 	 * Dispose of this PopUpHelper object.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public void dispose() {
@@ -101,7 +101,7 @@ public abstract class PopUpHelper {
 	/**
 	 * Returns this PopUpHelper's shell. If no shell exists for this PopUpHelper, a
 	 * new shell is created and hookShellListeners() is called.
-	 * 
+	 *
 	 * @return the Shell
 	 * @since 2.0
 	 */
@@ -116,7 +116,7 @@ public abstract class PopUpHelper {
 	/**
 	 * Returns the size needed to display the shell's trim. This method should not
 	 * be called until the shell has been created.
-	 * 
+	 *
 	 * @return the size of the shells trim.
 	 * @since 3.1
 	 */
@@ -129,7 +129,7 @@ public abstract class PopUpHelper {
 	 * Returns this PopUpHelper's LightweightSystem. If no LightweightSystem exists
 	 * for this PopUpHelper, a new LightweightSystem is created with this
 	 * PopUpHelper's Shell as its Control.
-	 * 
+	 *
 	 * @return the LightweightSystem
 	 * @since 2.0
 	 */
@@ -143,7 +143,7 @@ public abstract class PopUpHelper {
 
 	/**
 	 * Hides this PopUpHelper's Shell.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void hide() {
@@ -156,7 +156,7 @@ public abstract class PopUpHelper {
 	 * Desired popup helper behavior is achieved by writing listeners that
 	 * manipulate the behavior of the PopUpHelper's Shell. Override this method and
 	 * add these listeners here.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected abstract void hookShellListeners();
@@ -164,7 +164,7 @@ public abstract class PopUpHelper {
 	/**
 	 * Returns <code>true</code> if this PopUpHelper's Shell is visible,
 	 * <code>false</code> otherwise.
-	 * 
+	 *
 	 * @return <code>true</code> if this PopUpHelper's Shell is visible
 	 * @since 2.0
 	 */
@@ -174,7 +174,7 @@ public abstract class PopUpHelper {
 
 	/**
 	 * Sets the background color of this PopUpHelper's Shell.
-	 * 
+	 *
 	 * @param c the new background color
 	 * @since 2.0
 	 */
@@ -184,7 +184,7 @@ public abstract class PopUpHelper {
 
 	/**
 	 * Sets the foreground color of this PopUpHelper's Shell.
-	 * 
+	 *
 	 * @param c the new foreground color
 	 * @since 2.0
 	 */
@@ -194,7 +194,7 @@ public abstract class PopUpHelper {
 
 	/**
 	 * Sets the bounds on this PopUpHelper's Shell.
-	 * 
+	 *
 	 * @param x      the x coordinate
 	 * @param y      the y coordinate
 	 * @param width  the width
@@ -207,7 +207,7 @@ public abstract class PopUpHelper {
 
 	/**
 	 * Displays this PopUpHelper's Shell.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void show() {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,21 +19,21 @@ import org.eclipse.draw2d.Graphics;
 
 /**
  * A connection between two distinct shapes.
- * 
+ *
  * @author Elias Volanakis
  */
 public class Connection extends ModelElement {
 	/**
 	 * Used for indicating that a Connection with solid line style should be
 	 * created.
-	 * 
+	 *
 	 * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies()
 	 */
 	public static final Integer SOLID_CONNECTION = Integer.valueOf(Graphics.LINE_SOLID);
 	/**
 	 * Used for indicating that a Connection with dashed line style should be
 	 * created.
-	 * 
+	 *
 	 * @see org.eclipse.gef.examples.shapes.parts.ShapeEditPart#createEditPolicies()
 	 */
 	public static final Integer DASHED_CONNECTION = Integer.valueOf(Graphics.LINE_DASH);
@@ -60,7 +60,7 @@ public class Connection extends ModelElement {
 
 	/**
 	 * Create a (solid) connection between two distinct shapes.
-	 * 
+	 *
 	 * @param source a source endpoint for this connection (non null)
 	 * @param target a target endpoint for this connection (non null)
 	 * @throws IllegalArgumentException if any of the parameters are null or source
@@ -84,7 +84,7 @@ public class Connection extends ModelElement {
 
 	/**
 	 * Returns the line drawing style of this connection.
-	 * 
+	 *
 	 * @return an int value (Graphics.LINE_DASH or Graphics.LINE_SOLID)
 	 */
 	public int getLineStyle() {
@@ -93,7 +93,7 @@ public class Connection extends ModelElement {
 
 	/**
 	 * Returns the descriptor for the lineStyle property
-	 * 
+	 *
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyDescriptors()
 	 */
 	@Override
@@ -103,7 +103,7 @@ public class Connection extends ModelElement {
 
 	/**
 	 * Returns the lineStyle as String for the Property Sheet
-	 * 
+	 *
 	 * @see org.eclipse.ui.views.properties.IPropertySource#getPropertyValue(java.lang.Object)
 	 */
 	@Override
@@ -120,7 +120,7 @@ public class Connection extends ModelElement {
 
 	/**
 	 * Returns the source endpoint of this connection.
-	 * 
+	 *
 	 * @return a non-null Shape instance
 	 */
 	public Shape getSource() {
@@ -129,7 +129,7 @@ public class Connection extends ModelElement {
 
 	/**
 	 * Returns the target endpoint of this connection.
-	 * 
+	 *
 	 * @return a non-null Shape instance
 	 */
 	public Shape getTarget() {
@@ -152,7 +152,7 @@ public class Connection extends ModelElement {
 	 * Reconnect to a different source and/or target shape. The connection will
 	 * disconnect from its current attachments and reconnect to the new source and
 	 * target.
-	 * 
+	 *
 	 * @param newSource a new source endpoint for this connection (non null)
 	 * @param newTarget a new target endpoint for this connection (non null)
 	 * @throws IllegalArgumentException if any of the paramers are null or newSource
@@ -170,7 +170,7 @@ public class Connection extends ModelElement {
 
 	/**
 	 * Set the line drawing style of this connection.
-	 * 
+	 *
 	 * @param lineStyle one of following values: Graphics.LINE_DASH or
 	 *                  Graphics.LINE_SOLID
 	 * @see Graphics#LINE_DASH
@@ -188,7 +188,7 @@ public class Connection extends ModelElement {
 
 	/**
 	 * Sets the lineStyle based on the String provided by the PropertySheet
-	 * 
+	 *
 	 * @see org.eclipse.ui.views.properties.IPropertySource#setPropertyValue(java.lang.Object,
 	 *      java.lang.Object)
 	 */

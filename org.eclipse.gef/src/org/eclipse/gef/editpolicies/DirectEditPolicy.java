@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ import org.eclipse.gef.requests.DirectEditRequest;
  * directly (as opposed to in the Properties View) in the Viewer using a
  * {@link org.eclipse.jface.viewers.CellEditor}. This EditPolicy is typically
  * installed using {@link org.eclipse.gef.EditPolicy#DIRECT_EDIT_ROLE}.
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -43,7 +43,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	/**
 	 * If feedback is being shown, this method calls
 	 * {@link #revertOldEditValue(DirectEditRequest)}.
-	 * 
+	 *
 	 * @param request the DirectEditRequest
 	 */
 	protected void eraseDirectEditFeedback(DirectEditRequest request) {
@@ -65,7 +65,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Returns the <code>Command</code> to perform the direct edit.
-	 * 
+	 *
 	 * @param request the DirectEditRequest
 	 * @return the command to perform the direct edit
 	 */
@@ -77,9 +77,9 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 * made. By default, the host is sent
 	 * {@link org.eclipse.gef.EditPart#refresh()}, which should cause it to refresh
 	 * all properties.
-	 * 
+	 *
 	 * Subclasses can override this method to perform a more specific revert.
-	 * 
+	 *
 	 * @see #storeOldEditValue(DirectEditRequest)
 	 * @param request the DirectEditRequest
 	 */
@@ -98,7 +98,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 
 	/**
 	 * Pushes the original edit value if necessary, and shows feedback.
-	 * 
+	 *
 	 * @param request the DirectEditRequest
 	 */
 	protected void showDirectEditFeedback(DirectEditRequest request) {
@@ -113,7 +113,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 * Override to show the current direct edit value in the host's Figure. Although
 	 * the CellEditor will probably cover the figure's display of this value,
 	 * updating the figure will cause its preferred size to reflect the new value.
-	 * 
+	 *
 	 * @param request the DirectEditRequest
 	 */
 	protected abstract void showCurrentEditValue(DirectEditRequest request);
@@ -122,7 +122,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 * Called to remember the old value before direct edit feedback begins. After
 	 * feedback is over, {@link #revertOldEditValue(DirectEditRequest)} is called to
 	 * undo the changes done by feedback. By default, this method nothing.
-	 * 
+	 *
 	 * @param request the DirectEditRequest
 	 */
 	protected void storeOldEditValue(DirectEditRequest request) {
@@ -132,7 +132,7 @@ public abstract class DirectEditPolicy extends GraphicalEditPolicy {
 	 * Returns <code>true</code> for {@link RequestConstants#REQ_DIRECT_EDIT}.
 	 * {@link org.eclipse.gef.ui.actions.DirectEditAction} will determine enablement
 	 * based on whether the selected EditPart understands "direct edit".
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#understandsRequest(Request)
 	 */
 	@Override

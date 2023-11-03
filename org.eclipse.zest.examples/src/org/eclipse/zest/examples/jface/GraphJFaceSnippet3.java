@@ -2,12 +2,12 @@
  * Copyright 2005-2007, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.examples.jface;
@@ -34,13 +34,13 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * This snippet uses a very simple file format to read a graph. Edges are listed
  * on a new line in a file as such: a calls b b calls c c calld d
- * 
+ *
  * The content provider creates an edge for each line in the file and names the
  * sources and destination from the line.
- * 
- * 
+ *
+ *
  * @author Ian Bull
- * 
+ *
  */
 public class GraphJFaceSnippet3 {
 

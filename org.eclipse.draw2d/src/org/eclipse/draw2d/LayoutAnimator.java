@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -34,7 +34,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * Animator must be used in conjunction with layouts. If figures are placed
  * manually using <code>setBounds()</code>, the animator may not be able to
  * track and playback the changes that occur.
- * 
+ *
  * @since 3.2
  */
 public class LayoutAnimator extends Animator implements LayoutListener {
@@ -44,7 +44,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	/**
 	 * Constructs a new Animator. The default instance ({@link #getDefault()}) can
 	 * be used on all figures being animated.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	protected LayoutAnimator() {
@@ -53,7 +53,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 	/**
 	 * Returns an object encapsulating the placement of children in a container.
 	 * This method is called to capture both the initial and final states.
-	 * 
+	 *
 	 * @param container the container figure
 	 * @return the current state
 	 * @since 3.2
@@ -67,7 +67,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 
 	/**
 	 * Returns the default instance.
-	 * 
+	 *
 	 * @return the default instance
 	 * @since 3.2
 	 */
@@ -77,7 +77,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 
 	/**
 	 * Hooks invalidation in case animation is in progress.
-	 * 
+	 *
 	 * @see LayoutListener#invalidate(IFigure)
 	 */
 	@Override
@@ -88,7 +88,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 
 	/**
 	 * Hooks layout in case animation is in progress.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.LayoutListener#layout(org.eclipse.draw2d.IFigure)
 	 */
 	@Override
@@ -100,7 +100,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 
 	/**
 	 * Plays back the animated layout.
-	 * 
+	 *
 	 * @see Animator#playback(IFigure)
 	 */
 	@Override
@@ -132,7 +132,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 
 	/**
 	 * Hooks post layout in case animation is in progress.
-	 * 
+	 *
 	 * @see LayoutListener#postLayout(IFigure)
 	 */
 	@Override
@@ -143,7 +143,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 
 	/**
 	 * This callback is unused. Reserved for possible future use.
-	 * 
+	 *
 	 * @see LayoutListener#remove(IFigure)
 	 */
 	@Override
@@ -152,7 +152,7 @@ public class LayoutAnimator extends Animator implements LayoutListener {
 
 	/**
 	 * This callback is unused. Reserved for possible future use.
-	 * 
+	 *
 	 * @see LayoutListener#setConstraint(IFigure, Object)
 	 */
 	@Override

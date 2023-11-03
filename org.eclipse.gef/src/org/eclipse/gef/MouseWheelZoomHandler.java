@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,10 +20,10 @@ import org.eclipse.gef.editparts.ZoomManager;
  * A MouseWheelHandler that zooms the given viewer. Typically, this handler
  * should be registered on a viewer that supports zoom as follows: <br>
  * <code>
- * graphicalViewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1), 
+ * graphicalViewer.setProperty(MouseWheelHandler.KeyGenerator.getKey(SWT.MOD1),
  *         MouseWheelZoomHandler.SINGLETON);
  * </code>
- * 
+ *
  * @author Pratik Shah
  * @since 3.1
  */
@@ -39,7 +39,7 @@ public final class MouseWheelZoomHandler implements MouseWheelHandler {
 
 	/**
 	 * Zooms the given viewer.
-	 * 
+	 *
 	 * @see MouseWheelHandler#handleMouseWheel(Event, EditPartViewer)
 	 */
 	@Override

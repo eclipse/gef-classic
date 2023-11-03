@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,10 +23,10 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * Clipping strategy for connection layer, which takes into account nested view
  * ports and truncates those parts of connections which reach outside and are
  * thus not visible.
- * 
+ *
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
- * 
+ *
  * @since 3.6
  */
 public class ViewportAwareConnectionLayerClippingStrategy implements IClippingStrategy {

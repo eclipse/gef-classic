@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -47,7 +47,7 @@ public abstract class ConnectionAnchorBase implements ConnectionAnchor {
 	 * Notifies all the listeners in the list of a change in position of this
 	 * anchor. This is called from one of the implementing anchors when its location
 	 * is changed.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void fireAnchorMoved() {

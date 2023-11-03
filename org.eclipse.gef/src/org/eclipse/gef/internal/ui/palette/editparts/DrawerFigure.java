@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -142,7 +142,7 @@ public class DrawerFigure extends Figure {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param control The Control of the LWS to which this Figure belongs (it is
 	 *                used to display the drawer header with an EditPartTipHelper,
 	 *                if the header is not completely visible). It can be
@@ -180,7 +180,7 @@ public class DrawerFigure extends Figure {
 
 		/*
 		 * @TODO:Pratik
-		 * 
+		 *
 		 * There is a bug here. Right-click on the name pop-up for the header of a
 		 * drawer figure in the palette. This will hide the pop-up. Right-click again,
 		 * this time on the collapse toggle, to bring up the drawer's context menu. Now,
@@ -207,7 +207,7 @@ public class DrawerFigure extends Figure {
 
 	/**
 	 * Paints the background gradient on the drawer toggle figure.
-	 * 
+	 *
 	 * @param g    the graphics object
 	 * @param rect the rectangle which the background gradient should cover
 	 */
@@ -370,7 +370,7 @@ public class DrawerFigure extends Figure {
 
 	/**
 	 * Returns the ScrollPane associated with this DrawerFigure
-	 * 
+	 *
 	 * @return the ScrollPane
 	 */
 	public ScrollPane getScrollpane() {
@@ -470,7 +470,7 @@ public class DrawerFigure extends Figure {
 	/**
 	 * Pins or unpins the drawer. The drawer can be pinned open only when it is
 	 * expanded. Attempts to pin it when it is collapsed will do nothing.
-	 * 
+	 *
 	 * @param pinned <code>true</code> if the drawer is to be pinned
 	 */
 	public void setPinned(boolean pinned) {
@@ -483,7 +483,7 @@ public class DrawerFigure extends Figure {
 
 	/**
 	 * Displays the given text in the drawer's header as its title.
-	 * 
+	 *
 	 * @param s The title of the drawer
 	 */
 	public void setTitle(String s) {
@@ -492,7 +492,7 @@ public class DrawerFigure extends Figure {
 
 	/**
 	 * Displays the given image in the header as the drawer's icon.
-	 * 
+	 *
 	 * @param icon The icon for this drawer.
 	 */
 	public void setTitleIcon(Image icon) {

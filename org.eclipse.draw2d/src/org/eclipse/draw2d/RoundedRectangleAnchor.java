@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2010  itemis AG (http://www.itemis.de)
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     itemis AG - initial API and implementation
  *******************************************************************************/
@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 /**
  * Anchor for rounded rectangles which is always on a line between the center
  * and the reference point.
- * 
+ *
  * @author Benjamin Schwertfeger (benjamin.schwertfeger@itemis.de)
  * @since 3.8
  */
@@ -64,7 +64,7 @@ public class RoundedRectangleAnchor extends ChopboxAnchor {
 	 * should be at a corner, the rectangle for the ellipse is determined and
 	 * ellipseAnchorGetLocation returns the two intersection points between the line
 	 * from calculated anchor point and the center of the rounded rectangle.
-	 * 
+	 *
 	 * @return The anchor location
 	 */
 	@Override
@@ -131,7 +131,7 @@ public class RoundedRectangleAnchor extends ChopboxAnchor {
 	/**
 	 * Calculation of intersections points of one ellipse, represented by r, and the
 	 * line between ref and c.
-	 * 
+	 *
 	 * @param reference reference point for line end (end of the line)
 	 * @param r         the rectangle of the ellipse, where the intersection points
 	 *                  are wanted for

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,11 +20,11 @@ import org.eclipse.gef.tools.MarqueeSelectionTool;
 
 /**
  * A palette ToolEntry for a {@link org.eclipse.gef.tools.MarqueeSelectionTool}.
- * 
+ *
  * @author rhudson
  * @author pshah
  * @author anyssen
- * 
+ *
  * @since 2.1
  */
 public class MarqueeToolEntry extends ToolEntry {
@@ -38,7 +38,7 @@ public class MarqueeToolEntry extends ToolEntry {
 
 	/**
 	 * Constructor for MarqueeToolEntry.
-	 * 
+	 *
 	 * @param label the label
 	 */
 	public MarqueeToolEntry(String label) {
@@ -47,7 +47,7 @@ public class MarqueeToolEntry extends ToolEntry {
 
 	/**
 	 * Constructor for MarqueeToolEntry.
-	 * 
+	 *
 	 * @param label       the label; can be <code>null</code>
 	 * @param description the description (can be <code>null</code>)
 	 */

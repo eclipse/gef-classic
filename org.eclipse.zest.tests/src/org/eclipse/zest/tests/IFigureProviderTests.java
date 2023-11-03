@@ -27,9 +27,9 @@ import org.junit.Test;
 
 /**
  * Tests for the {@link IFigureProvider} class.
- * 
+ *
  * @author Fabian Steeg (fsteeg)
- * 
+ *
  */
 public class IFigureProviderTests extends Assert {
 

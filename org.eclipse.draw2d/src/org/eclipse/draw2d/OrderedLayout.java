@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2011 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,7 +18,7 @@ import org.eclipse.draw2d.geometry.Transposer;
 /**
  * Abstract superclass for layout managers that arrange their children in
  * columns/rows.
- * 
+ *
  * @since 3.7
  */
 public abstract class OrderedLayout extends AbstractHintLayout {
@@ -32,14 +32,14 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 
 	/**
 	 * Constant to specify components should be layed out horizontally
-	 * 
+	 *
 	 * @deprecated Pulled up from derived layout manager and deprecated here because
 	 *             unused.
 	 */
 	public static final boolean HORIZONTAL = true;
 	/**
 	 * Constant to specify components should be layed out vertically
-	 * 
+	 *
 	 * @deprecated Pulled up from derived layout manager and deprecated here because
 	 *             unused.
 	 */
@@ -47,7 +47,7 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 
 	/**
 	 * The horizontal property.
-	 * 
+	 *
 	 * @deprecated Use {@link #setHorizontal(boolean)} and {@link #isHorizontal()}
 	 *             instead.
 	 */
@@ -55,7 +55,7 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 
 	/**
 	 * The alignment along the minor axis.
-	 * 
+	 *
 	 * @deprecated Use {@link #getMinorAlignment()} and
 	 *             {@link #setMinorAlignment(int)} instead.
 	 */
@@ -65,7 +65,7 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	 * Transposer object that may be used in layout calculations. Will be
 	 * automatically enabled/disabled dependent on the default and the actual
 	 * orientation.
-	 * 
+	 *
 	 * @noreference This field is not intended to be referenced by clients.
 	 */
 	protected Transposer transposer = new Transposer();
@@ -81,7 +81,7 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 
 	/**
 	 * Returns the default orientation of this layout.
-	 * 
+	 *
 	 * @return one of {@link PositionConstants#HORIZONTAL} or
 	 *         {@link PositionConstants#VERTICAL}
 	 */
@@ -90,7 +90,7 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	/**
 	 * Returns the minor alignment of the layout. Minor minor axis is the axis
 	 * perpendicular to the overall orientation set in the constructor.
-	 * 
+	 *
 	 * @return the minor alignment
 	 */
 	public int getMinorAlignment() {
@@ -99,7 +99,7 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 
 	/**
 	 * Returns <code>true</code> if the orientation of the layout is horizontal.
-	 * 
+	 *
 	 * @return <code>true</code> if the orientation of the layout is horizontal
 	 */
 	public boolean isHorizontal() {
@@ -109,9 +109,9 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	/**
 	 * Returns whether figures should obtain the same height/width in the minor
 	 * axis.
-	 * 
+	 *
 	 * @return whether children are to be stretched in the minor axis.
-	 * 
+	 *
 	 * @TODO: Made abstract here, so that derived layout managers can guarantee
 	 *        backwards compatibility for their exposed fields. Can be made concrete
 	 *        in the next major release, removing implementations in the derived
@@ -121,7 +121,7 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 
 	/**
 	 * Sets the orientation of the layout.
-	 * 
+	 *
 	 * @param flag <code>true</code> if this layout should be horizontal,
 	 *             <code>false</code> otherwise.
 	 */
@@ -137,7 +137,7 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	 * Sets the alignment of the children contained in the layout. Possible values
 	 * are {@link #ALIGN_CENTER}, {@link #ALIGN_BOTTOMRIGHT} and
 	 * {@link #ALIGN_TOPLEFT}.
-	 * 
+	 *
 	 * @param align the minor alignment
 	 */
 	public void setMinorAlignment(int align) {
@@ -150,7 +150,7 @@ public abstract class OrderedLayout extends AbstractHintLayout {
 	 * orientation. That is, in horizontal orientation, all figures will have the
 	 * same height. If in vertical orientation, all figures will have the same
 	 * width.
-	 * 
+	 *
 	 * @param value whether children should be stretched in the minor axis.
 	 * @TODO: Made abstract here, so that derived layout managers can guarantee
 	 *        backwards compatibility for their exposed fields. Can be made concrete

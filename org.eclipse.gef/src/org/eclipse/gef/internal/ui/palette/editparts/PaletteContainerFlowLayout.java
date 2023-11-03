@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * Extends <code>FlowLayout</code> to allow the pane of a pinnable stack in icon
  * mode to occupy the row following the row in which the icon of the palette
  * stack header appears.
- * 
+ *
  * @author crevells
  * @since 3.4
  */
@@ -36,7 +36,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	/**
 	 * Constructs a PaletteContainerFlowLayout whose orientation is given in the
 	 * input.
-	 * 
+	 *
 	 * @param isHorizontal <code>true</code> if the layout should be horizontal
 	 */
 	public PaletteContainerFlowLayout(boolean isHorizontal) {
@@ -46,7 +46,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	/**
 	 * Overridden to include the size of the expanded pane of an expanded pinnable
 	 * palette stack.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.AbstractLayout#calculatePreferredSize(IFigure, int,
 	 *      int)
 	 */
@@ -94,7 +94,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 
 	/**
 	 * Overridden to handle <code>PinnablePaletteStackFigure</code>.
-	 * 
+	 *
 	 * @see FlowLayout#getChildSize(IFigure, int, int)
 	 */
 	@Override
@@ -109,7 +109,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 	/**
 	 * Overridden to include the size of the expanded pane of an expanded pinnable
 	 * palette stack during the layout.
-	 * 
+	 *
 	 * @see FlowLayout#layoutRow(IFigure)
 	 */
 	@Override
@@ -176,7 +176,7 @@ public class PaletteContainerFlowLayout extends FlowLayout {
 
 	/**
 	 * Overridden to set the bounds for <code>PinnablePaletteStackFigures</code> .
-	 * 
+	 *
 	 * @see FlowLayout#setBoundsOfChild(IFigure, IFigure, Rectangle)
 	 */
 	@Override

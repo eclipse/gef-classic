@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ public class ArrowLocator extends ConnectionLocator {
 	 * Constructs an ArrowLocator associated with passed connection and tip location
 	 * (either {@link ConnectionLocator#SOURCE} or
 	 * {@link ConnectionLocator#TARGET}).
-	 * 
+	 *
 	 * @param connection The connection associated with the locator
 	 * @param location   Location of the arrow decoration
 	 * @since 2.0
@@ -38,7 +38,7 @@ public class ArrowLocator extends ConnectionLocator {
 	/**
 	 * Relocates the passed in figure (which must be a {@link RotatableDecoration})
 	 * at either the start or end of the connection.
-	 * 
+	 *
 	 * @param target The RotatableDecoration to relocate
 	 */
 	@Override

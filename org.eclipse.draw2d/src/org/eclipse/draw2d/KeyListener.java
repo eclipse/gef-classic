@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,14 +20,14 @@ public interface KeyListener {
 
 	/**
 	 * Called when a key is pressed.
-	 * 
+	 *
 	 * @param ke The KeyEvent object
 	 */
 	void keyPressed(KeyEvent ke);
 
 	/**
 	 * Called when a key is released.
-	 * 
+	 *
 	 * @param ke The KeyEvent object
 	 */
 	void keyReleased(KeyEvent ke);

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -53,7 +53,7 @@ import org.eclipse.gef.tools.SelectEditPartTracker;
  * <P>
  * During feedback, a rectangle filled using XOR and outlined with dashes is
  * drawn. Subclasses can tailor the feedback.
- * 
+ *
  * @author hudsonr
  */
 public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
@@ -64,7 +64,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Creates the figure used for feedback.
-	 * 
+	 *
 	 * @return the new feedback figure
 	 */
 	protected IFigure createDragSourceFeedbackFigure() {
@@ -97,7 +97,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * Creates a 'resize'/'drag' handle, which uses a {@link DragEditPartsTracker}
 	 * in case {@link #isDragAllowed()} returns true, and a
 	 * {@link SelectEditPartTracker} otherwise.
-	 * 
+	 *
 	 * @param handles   The list of handles to add the resize handle to
 	 * @param direction A position constant indicating the direction to create the
 	 *                  handle for
@@ -118,7 +118,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Returns a selection tracker to use by a selection handle.
-	 * 
+	 *
 	 * @return a new {@link ResizeTracker}
 	 * @since 3.7
 	 */
@@ -128,7 +128,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Returns a drag tracker to use by a resize handle.
-	 * 
+	 *
 	 * @return a new {@link ResizeTracker}
 	 * @since 3.7
 	 */
@@ -140,7 +140,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * Creates a 'move' handle, which uses a {@link DragEditPartsTracker} in case
 	 * {@link #isDragAllowed()} returns true, and a {@link SelectEditPartTracker}
 	 * otherwise.
-	 * 
+	 *
 	 * @param handles The list of handles to add the move handle to.
 	 * @since 3.7
 	 */
@@ -171,7 +171,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Erases drag feedback. This method called whenever an erase feedback request
 	 * is received of the appropriate type.
-	 * 
+	 *
 	 * @param request the request
 	 */
 	protected void eraseChangeBoundsFeedback(ChangeBoundsRequest request) {
@@ -210,7 +210,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Lazily creates and returns the feedback figure used during drags.
-	 * 
+	 *
 	 * @return the feedback figure
 	 */
 	protected IFigure getDragSourceFeedbackFigure() {
@@ -221,7 +221,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Returns the command contribution to an alignment request
-	 * 
+	 *
 	 * @param request the alignment request
 	 * @return the contribution to the alignment
 	 */
@@ -237,7 +237,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * Returns the bounds of the host's figure by reference to be used to calculate
 	 * the initial location of the feedback. The returned Rectangle should not be
 	 * modified. Uses handle bounds if available.
-	 * 
+	 *
 	 * @return the host figure's bounding Rectangle
 	 */
 	protected Rectangle getInitialFeedbackBounds() {
@@ -251,7 +251,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * implementation actually redispatches the request to the host's parent
 	 * editpart as a {@link RequestConstants#REQ_MOVE_CHILDREN} request. The
 	 * parent's contribution is returned.
-	 * 
+	 *
 	 * @param request the change bounds request
 	 * @return the command contribution to the request
 	 */
@@ -272,7 +272,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * are not forwarded to the host's parent here. That is done in
 	 * {@link ComponentEditPolicy}. So, if the host has a component editpolicy, then
 	 * the parent will already have a chance to contribute.
-	 * 
+	 *
 	 * @param req the orphan request
 	 * @return <code>null</code> by default
 	 */
@@ -282,7 +282,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Hides the focus rectangle displayed in <code>showFocus()</code>.
-	 * 
+	 *
 	 * @see #showFocus()
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideFocus()
 	 */
@@ -295,7 +295,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Returns true if this EditPolicy allows its EditPart to be dragged.
-	 * 
+	 *
 	 * @return true if the EditPart can be dragged.
 	 */
 	public boolean isDragAllowed() {
@@ -305,7 +305,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Sets the dragability of the EditPolicy to the given value. If the value is
 	 * false, the EditPolicy should not allow its EditPart to be dragged.
-	 * 
+	 *
 	 * @param isDragAllowed whether or not the EditPolicy can be dragged.
 	 */
 	public void setDragAllowed(boolean isDragAllowed) {
@@ -316,7 +316,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Shows or updates feedback for a change bounds request.
-	 * 
+	 *
 	 * @param request the request
 	 */
 	protected void showChangeBoundsFeedback(ChangeBoundsRequest request) {
@@ -335,7 +335,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	/**
 	 * Shows a focus rectangle around the host's figure. The focus rectangle is
 	 * expanded by 5 pixels from the figure's bounds.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showFocus()
 	 */
 	@Override
@@ -368,7 +368,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 
 	/**
 	 * Calls other methods as appropriate.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(org.eclipse.gef.Request)
 	 */
 	@Override
@@ -382,7 +382,7 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * Returns <code>true</code> for move, align, add, and orphan request types.
 	 * This method is never called for some of these types, but they are included
 	 * for possible future use.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#understandsRequest(org.eclipse.gef.Request)
 	 */
 	@Override

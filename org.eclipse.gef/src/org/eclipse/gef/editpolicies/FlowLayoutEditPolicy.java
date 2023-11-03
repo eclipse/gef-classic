@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -30,7 +30,7 @@ import org.eclipse.gef.requests.DropRequest;
  * EditPolicy knows how to map an <x,y> coordinate on the layout container to
  * the appropriate index for the operation being performed. It also shows target
  * feedback consisting of an insertion line at the appropriate location.
- * 
+ *
  * @since 2.0
  */
 public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
@@ -142,7 +142,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	/**
 	 * Lazily creates and returns a <code>Polyline</code> Figure for use as
 	 * feedback.
-	 * 
+	 *
 	 * @return a Polyline figure
 	 */
 	protected Polyline getLineFeedback() {
@@ -171,7 +171,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 
 	/**
 	 * Shows an insertion line if there is one or more current children.
-	 * 
+	 *
 	 * @see LayoutEditPolicy#showLayoutTargetFeedback(Request)
 	 */
 	@Override

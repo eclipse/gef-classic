@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
@@ -46,14 +46,14 @@ public class SWTGraphics extends Graphics {
 
 	/**
 	 * An internal type used to represent and update the GC's clipping.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	interface Clipping {
 		/**
 		 * Sets the clip's bounding rectangle into the provided argument and returns it
 		 * for convenince.
-		 * 
+		 *
 		 * @param rect the rect
 		 * @return the given rect
 		 * @since 3.1
@@ -74,7 +74,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * Any state stored in this class is only applied when it is needed by a
 	 * specific graphics call.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	static class LazyState {
@@ -183,7 +183,7 @@ public class SWTGraphics extends Graphics {
 
 		/**
 		 * Copies all state information from the given State to this State
-		 * 
+		 *
 		 * @param state The State to copy from
 		 */
 		public void copyFrom(State state) {
@@ -259,7 +259,7 @@ public class SWTGraphics extends Graphics {
 
 	/**
 	 * Constructs a new SWTGraphics that draws to the Canvas using the given GC.
-	 * 
+	 *
 	 * @param gc the GC
 	 */
 	public SWTGraphics(GC gc) {
@@ -442,7 +442,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#drawPath(Path)
 	 */
 	@Override
@@ -585,7 +585,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#fillPath(Path)
 	 */
 	@Override
@@ -939,7 +939,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * Sets all State information to that of the given State, called by
 	 * restoreState()
-	 * 
+	 *
 	 * @param s the State
 	 */
 	protected void restoreState(State s) {
@@ -982,7 +982,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#rotate(float)
 	 */
 	@Override
@@ -1010,7 +1010,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Graphics#scale(float, float)
 	 */
 	@Override
@@ -1046,7 +1046,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#setAlpha(int)
 	 */
 	@Override
@@ -1060,7 +1060,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#setAntialias(int)
 	 */
 	@Override
@@ -1112,7 +1112,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#setClip(Path)
 	 */
 	@Override
@@ -1134,7 +1134,7 @@ public class SWTGraphics extends Graphics {
 	 * clipping rectangle for now (not region)
 	 * <li>Note that this method wipes out the clipping rectangle area, hence if
 	 * clients need to reset it call {@link #restoreState()}
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Graphics#clipPath(org.eclipse.swt.graphics.Path)
 	 */
 	@Override
@@ -1225,7 +1225,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#setInterpolation(int)
 	 */
 	@Override
@@ -1332,7 +1332,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#setTextAntialias(int)
 	 */
 	@Override
@@ -1356,7 +1356,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#shear(float, float)
 	 */
 	@Override
@@ -1380,7 +1380,7 @@ public class SWTGraphics extends Graphics {
 	 * this case, a check should be made to ensure advanced graphics is supported in
 	 * the user's environment before calling this method. See
 	 * {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#translate(int, int)
 	 */
 	@Override
@@ -1406,7 +1406,7 @@ public class SWTGraphics extends Graphics {
 	 * This method requires advanced graphics support. A check should be made to
 	 * ensure advanced graphics is supported in the user's environment before
 	 * calling this method. See {@link GC#getAdvanced()}.
-	 * 
+	 *
 	 * @see Graphics#translate(float, float)
 	 */
 	@Override
@@ -1433,7 +1433,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * Countermeasure against LineAttributes class not having its own clone()
 	 * method.
-	 * 
+	 *
 	 * @since 3.6
 	 */
 	public static LineAttributes clone(LineAttributes src) {
@@ -1448,7 +1448,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * Countermeasure against LineAttributes class not having a copy by value
 	 * function.
-	 * 
+	 *
 	 * @since 3.6
 	 */
 	public static void copyLineAttributes(LineAttributes dest, LineAttributes src) {
@@ -1474,7 +1474,7 @@ public class SWTGraphics extends Graphics {
 	/**
 	 * Utility method for use with countermeasure against passing line attributes to
 	 * SWT forcing advanced graphics.
-	 * 
+	 *
 	 * @return
 	 * @since 3.2
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -17,7 +17,7 @@ import org.eclipse.draw2d.geometry.Point;
 /**
  * Specializes {@link EditPartViewer} adding the ability to hit-test
  * {@link Handle Handles}.
- * 
+ *
  * @see org.eclipse.gef.ui.parts.GraphicalViewerImpl
  */
 public interface GraphicalViewer extends EditPartViewer {
@@ -28,7 +28,7 @@ public interface GraphicalViewer extends EditPartViewer {
 	 * should be relative to the
 	 * {@link org.eclipse.swt.widgets.Scrollable#getClientArea() client area} for
 	 * this Viewer's <code>Control</code>.
-	 * 
+	 *
 	 * @param p the location relative to the Control's client area
 	 * @return Handle <code>null</code> or a Handle
 	 */

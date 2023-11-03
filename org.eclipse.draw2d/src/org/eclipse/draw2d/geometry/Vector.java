@@ -1,12 +1,12 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *     Alexander Nyßen (Research Group Software Construction, RWTH Aachen University) - Contribution for Bugzilla 245182
@@ -16,7 +16,7 @@ package org.eclipse.draw2d.geometry;
 
 /**
  * Represents a vector within 2-dimensional Euclidean space.
- * 
+ *
  * @since 3.6
  */
 public class Vector {
@@ -31,7 +31,7 @@ public class Vector {
 
 	/**
 	 * Constructs a Vector pointed in the specified direction.
-	 * 
+	 *
 	 * @param x X value.
 	 * @param y Y value.
 	 */
@@ -42,7 +42,7 @@ public class Vector {
 
 	/**
 	 * Constructs a Vector pointed in the direction specified by a Point.
-	 * 
+	 *
 	 * @param p the point
 	 */
 	public Vector(PrecisionPoint p) {
@@ -53,7 +53,7 @@ public class Vector {
 	/**
 	 * Constructs a Vector representing the direction and magnitude between to
 	 * provided Points.
-	 * 
+	 *
 	 * @param start starting point
 	 * @param end   End Point
 	 */
@@ -64,7 +64,7 @@ public class Vector {
 
 	/**
 	 * Constructs a Vector representing the difference between two provided Vectors.
-	 * 
+	 *
 	 * @param start The start Ray
 	 * @param end   The end Ray
 	 */
@@ -77,7 +77,7 @@ public class Vector {
 	 * Calculates the magnitude of the cross product of this Vector with another.
 	 * Represents the amount by which two Vectors are directionally different.
 	 * Parallel Vectors return a value of 0.
-	 * 
+	 *
 	 * @param other Vector being compared
 	 * @return The dissimilarity
 	 */
@@ -88,7 +88,7 @@ public class Vector {
 	/**
 	 * Calculates whether this Vector and the provided one are parallel to each
 	 * other.
-	 * 
+	 *
 	 * @param other The Vector to test for parallelism
 	 * @return true if this Vector and the provided one are parallel, false
 	 *         otherwise.
@@ -99,7 +99,7 @@ public class Vector {
 
 	/**
 	 * Calculates the dot product of this Vector with another.
-	 * 
+	 *
 	 * @param other the Vector used to calculate the dot product
 	 * @return The dot product
 	 */
@@ -110,7 +110,7 @@ public class Vector {
 
 	/**
 	 * Calculates the cross product of this Vector with another.
-	 * 
+	 *
 	 * @param other the Vector used to calculate the cross product
 	 * @return The cross product.
 	 */
@@ -121,7 +121,7 @@ public class Vector {
 
 	/**
 	 * Creates a new Vector which is the sum of this Vector with another.
-	 * 
+	 *
 	 * @param other Vector to be added to this Vector
 	 * @return a new Vector representing the sum
 	 */
@@ -132,7 +132,7 @@ public class Vector {
 	/**
 	 * Creates a new Vector which is the difference of this Vector with the provided
 	 * Vector.
-	 * 
+	 *
 	 * @param other Vector to be subtracted from this Vector
 	 * @return a new Vector representing the difference.
 	 */
@@ -142,7 +142,7 @@ public class Vector {
 
 	/**
 	 * Returns the angle (in degrees) between this Vector and the provided Vector.
-	 * 
+	 *
 	 * @param other Vector to calculate the angle.
 	 * @return the angle between the two Vectors in degrees.
 	 */
@@ -161,7 +161,7 @@ public class Vector {
 	/**
 	 * Creates a new Vector which represents the average of this Vector with
 	 * another.
-	 * 
+	 *
 	 * @param other Vector to calculate the average.
 	 * @return a new Vector
 	 */
@@ -173,7 +173,7 @@ public class Vector {
 	/**
 	 * Creates a new Vector which represents this Vector multiplied by the provided
 	 * scalar factor.
-	 * 
+	 *
 	 * @param factor Value providing the amount to scale.
 	 * @return a new Vector
 	 */
@@ -184,7 +184,7 @@ public class Vector {
 	/**
 	 * Creates a new Vector which represents this Vector divided by the provided
 	 * scalar factor.
-	 * 
+	 *
 	 * @param factor Value providing the amount to scale.
 	 * @return a new Vector
 	 */
@@ -195,7 +195,7 @@ public class Vector {
 	/**
 	 * Returns the orthogonal complement of this Vector, which is defined to be (-y,
 	 * x).
-	 * 
+	 *
 	 * @return the orthogonal complement of this Vector
 	 */
 	public Vector getOrthogonalComplement() {
@@ -204,7 +204,7 @@ public class Vector {
 
 	/**
 	 * Returns the length of this Vector.
-	 * 
+	 *
 	 * @return Length of this Vector
 	 */
 	public double getLength() {
@@ -215,7 +215,7 @@ public class Vector {
 	 * Calculates the similarity of this Vector with another. Similarity is defined
 	 * as the absolute value of the dotProduct(). Orthogonal vectors return a value
 	 * of 0.
-	 * 
+	 *
 	 * @param other Vector being tested for similarity
 	 * @return the Similarity
 	 * @see #getDissimilarity(Vector)
@@ -227,7 +227,7 @@ public class Vector {
 	/**
 	 * Calculates whether this Vector and the provided one are orthogonal to each
 	 * other.
-	 * 
+	 *
 	 * @param other Vector being tested for orthogonality
 	 * @return true, if this Vector and the provide one are orthogonal, false
 	 *         otherwise
@@ -238,7 +238,7 @@ public class Vector {
 
 	/**
 	 * Checks whether this vector has a horizontal component.
-	 * 
+	 *
 	 * @return true if x != 0, false otherwise.
 	 */
 	public boolean isHorizontal() {
@@ -247,7 +247,7 @@ public class Vector {
 
 	/**
 	 * Checks whether this vector has a vertical component.
-	 * 
+	 *
 	 * @return true if y != 0, false otherwise.
 	 */
 	public boolean isVertical() {
@@ -256,7 +256,7 @@ public class Vector {
 
 	/**
 	 * Checks whether this vector equals (0,0);
-	 * 
+	 *
 	 * @return true if x == 0 and y == 0.
 	 */
 	public boolean isNull() {
@@ -265,7 +265,7 @@ public class Vector {
 
 	/**
 	 * Returns a point representation of this Vector.
-	 * 
+	 *
 	 * @return a PrecisionPoint representation
 	 */
 	public PrecisionPoint toPoint() {

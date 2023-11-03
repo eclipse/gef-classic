@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,10 +23,10 @@ import org.eclipse.draw2d.geometry.Insets;
 
 /**
  * The layout for {@link BlockFlow} figures.
- * 
+ *
  * <P>
  * WARNING: This class is not intended to be subclassed by clients.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -39,7 +39,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 
 	/**
 	 * Creates a new BlockFlowLayout with the given BlockFlow.
-	 * 
+	 *
 	 * @param blockFlow the BlockFlow
 	 */
 	public BlockFlowLayout(BlockFlow blockFlow) {
@@ -103,7 +103,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 	/**
 	 * Marks the blocks contents as changed. This means that children will be
 	 * invalidated during validation.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	public void blockContentsChanged() {
@@ -174,7 +174,7 @@ public class BlockFlowLayout extends FlowContainerLayout {
 
 	/**
 	 * Returns the BlockFlow associated with this BlockFlowLayout
-	 * 
+	 *
 	 * @return the BlockFlow
 	 */
 	protected final BlockFlow getBlockFlow() {

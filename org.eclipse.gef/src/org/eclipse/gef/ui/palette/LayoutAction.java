@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -30,7 +30,7 @@ import org.eclipse.gef.internal.Internal;
 /**
  * This action allows to switch between the various supported layout modes for
  * the given palette.
- * 
+ *
  * @author Pratik Shah
  */
 public class LayoutAction extends Action implements IMenuCreator {
@@ -40,7 +40,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param prefs PaletteViewerPreferences object where the settings can be saved
 	 */
 	public LayoutAction(PaletteViewerPreferences prefs) {
@@ -49,7 +49,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param hasIcon True if this action should associate an icon with itself
 	 * @param prefs   PaletteViewerPreferences object where the settings can be
 	 *                saved
@@ -69,7 +69,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 	/**
 	 * Helper method that wraps the given action in an ActionContributionItem and
 	 * then adds it to the given menu.
-	 * 
+	 *
 	 * @param parent The menu to which the given action is to be added
 	 * @param action The action that is to be added to the given menu
 	 */
@@ -116,7 +116,7 @@ public class LayoutAction extends Action implements IMenuCreator {
 
 	/**
 	 * Empty method
-	 * 
+	 *
 	 * @see org.eclipse.jface.action.IMenuCreator#dispose()
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
  * The model object for a PaletteStack - A stack of tools. A stack should
  * contain only tools and should have permissions that are less than or equal to
  * its parent.
- * 
+ *
  * @author Whitney Sorenson
  * @since 3.0
  */
@@ -57,7 +57,7 @@ public class PaletteStack extends PaletteContainer {
 	 * Creates a new PaletteStack with the given name, description, and icon. These
 	 * will be shown only in the customize menu. Any of the given parameter can be
 	 * <code>null</code>.
-	 * 
+	 *
 	 * @param name the stack's name
 	 * @param desc the stack's description
 	 * @param icon an ImageDescriptor for the stack's small icon
@@ -72,7 +72,7 @@ public class PaletteStack extends PaletteContainer {
 	/**
 	 * Returns true if this type can be a child of this container Only accepts
 	 * ToolEntry's.
-	 * 
+	 *
 	 * @param type the type being requested
 	 * @return true if this can be a child of this container
 	 */
@@ -129,7 +129,7 @@ public class PaletteStack extends PaletteContainer {
 	/**
 	 * Returns the PaletteEntry referring to the active entry that should be shown
 	 * in the palette.
-	 * 
+	 *
 	 * @return active entry to be shown in the palette.
 	 */
 	public PaletteEntry getActiveEntry() {
@@ -150,7 +150,7 @@ public class PaletteStack extends PaletteContainer {
 	/**
 	 * Sets the "active" child entry to the given PaletteEntry. This entry will be
 	 * shown on the palette and will be checked in the menu.
-	 * 
+	 *
 	 * @param entry the entry to show on the palette.
 	 */
 	public void setActiveEntry(PaletteEntry entry) {
@@ -178,7 +178,7 @@ public class PaletteStack extends PaletteContainer {
 	/**
 	 * Either adds or remove the <code>childListener</code> to each palette entry in
 	 * the collection.
-	 * 
+	 *
 	 * @param entries a collection of <code>PaletteEntries</code>
 	 * @param add     true if the lister should be added; false if it should be
 	 *                removed

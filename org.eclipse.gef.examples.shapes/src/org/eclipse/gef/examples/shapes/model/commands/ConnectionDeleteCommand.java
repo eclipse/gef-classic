@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,7 +19,7 @@ import org.eclipse.gef.examples.shapes.model.Connection;
 /**
  * A command to disconnect (remove) a connection from its endpoints. The command
  * can be undone or redone.
- * 
+ *
  * @author Elias Volanakis
  */
 public class ConnectionDeleteCommand extends Command {
@@ -29,7 +29,7 @@ public class ConnectionDeleteCommand extends Command {
 
 	/**
 	 * Create a command that will disconnect a connection from its endpoints.
-	 * 
+	 *
 	 * @param conn the connection instance to disconnect (non-null)
 	 * @throws IllegalArgumentException if conn is null
 	 */
@@ -43,7 +43,7 @@ public class ConnectionDeleteCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#execute()
 	 */
 	@Override
@@ -53,7 +53,7 @@ public class ConnectionDeleteCommand extends Command {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.commands.Command#undo()
 	 */
 	@Override

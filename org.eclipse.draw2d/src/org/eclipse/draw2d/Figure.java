@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -127,7 +127,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Calls {@link #add(IFigure, Object, int)} with -1 as the index.
-	 * 
+	 *
 	 * @see IFigure#add(IFigure, Object)
 	 */
 	@Override
@@ -173,7 +173,7 @@ public class Figure implements IFigure {
 	/**
 	 * Calls {@link #add(IFigure, Object, int)} with <code>null</code> as the
 	 * constraint and -1 as the index.
-	 * 
+	 *
 	 * @see IFigure#add(IFigure)
 	 */
 	@Override
@@ -184,7 +184,7 @@ public class Figure implements IFigure {
 	/**
 	 * Calls {@link #add(IFigure, Object, int)} with <code>null</code> as the
 	 * constraint.
-	 * 
+	 *
 	 * @see IFigure#add(IFigure, int)
 	 */
 	@Override
@@ -236,7 +236,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Appends the given layout listener to the list of layout listeners.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param listener the listener being added
 	 */
@@ -251,7 +251,7 @@ public class Figure implements IFigure {
 	/**
 	 * Adds a listener of type <i>clazz</i> to this Figure's list of event
 	 * listeners.
-	 * 
+	 *
 	 * @param clazz    The listener type
 	 * @param listener The listener
 	 */
@@ -278,7 +278,7 @@ public class Figure implements IFigure {
 	/**
 	 * Called after the receiver's parent has been set and it has been added to its
 	 * parent.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	@Override
@@ -311,7 +311,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * This method is final. Override {@link #containsPoint(int, int)} if needed.
-	 * 
+	 *
 	 * @see IFigure#containsPoint(Point)
 	 * @since 2.0
 	 */
@@ -345,7 +345,7 @@ public class Figure implements IFigure {
 	 * Returns a descendant of this Figure such that the Figure returned contains
 	 * the point (x, y), and is accepted by the given TreeSearch. Returns
 	 * <code>null</code> if none found.
-	 * 
+	 *
 	 * @param x      The X coordinate
 	 * @param y      The Y coordinate
 	 * @param search the TreeSearch
@@ -420,7 +420,7 @@ public class Figure implements IFigure {
 	 * {@link #paintChildren(Graphics)} (thus causing the children to appear
 	 * transformed to the user) should be applied inversely to the points <i>x</i>
 	 * and <i>y</i> when called on the children.
-	 * 
+	 *
 	 * @param x The X coordinate
 	 * @param y The Y coordinate
 	 * @return The deepest descendant for which isMouseEventTarget() returns true
@@ -441,7 +441,7 @@ public class Figure implements IFigure {
 	 * Searches this Figure's children for the deepest descendant for which
 	 * {@link #isMouseEventTarget()} returns <code>true</code> and returns that
 	 * descendant or <code>null</code> if none found.
-	 * 
+	 *
 	 * @see #findMouseEventTargetAt(int, int)
 	 * @param x The X coordinate
 	 * @param y The Y coordinate
@@ -469,7 +469,7 @@ public class Figure implements IFigure {
 	 * Notifies to all {@link CoordinateListener}s that this figure's local
 	 * coordinate system has changed in a way which affects the absolute bounds of
 	 * figures contained within.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	protected void fireCoordinateSystemChanged() {
@@ -481,7 +481,7 @@ public class Figure implements IFigure {
 	/**
 	 * Notifies to all {@link FigureListener}s that this figure has moved. Moved
 	 * means that the bounds have changed in some way, location and/or size.
-	 * 
+	 *
 	 * @since 3.1
 	 */
 	protected void fireFigureMoved() {
@@ -496,7 +496,7 @@ public class Figure implements IFigure {
 	 * for coordinates changed. So to be sure that those new listeners are notified,
 	 * any client code which used called this method will also result in
 	 * notification of coordinate changes.
-	 * 
+	 *
 	 * @since 2.0
 	 * @deprecated call fireFigureMoved() or fireCoordinateSystemChanged() as
 	 *             appropriate
@@ -509,7 +509,7 @@ public class Figure implements IFigure {
 	/**
 	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners} listening
 	 * to this Figure that the boolean property with id <i>property</i> has changed.
-	 * 
+	 *
 	 * @param property The id of the property that changed
 	 * @param old      The old value of the changed property
 	 * @param current  The current value of the changed property
@@ -524,7 +524,7 @@ public class Figure implements IFigure {
 	/**
 	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners} listening
 	 * to this figure that the Object property with id <i>property</i> has changed.
-	 * 
+	 *
 	 * @param property The id of the property that changed
 	 * @param old      The old value of the changed property
 	 * @param current  The current value of the changed property
@@ -540,7 +540,7 @@ public class Figure implements IFigure {
 	 * Notifies any {@link PropertyChangeListener PropertyChangeListeners} listening
 	 * to this figure that the integer property with id <code>property</code> has
 	 * changed.
-	 * 
+	 *
 	 * @param property The id of the property that changed
 	 * @param old      The old value of the changed property
 	 * @param current  The current value of the changed property
@@ -556,7 +556,7 @@ public class Figure implements IFigure {
 	 * Returns this Figure's background color. If this Figure's background color is
 	 * <code>null</code> and its parent is not <code>null</code>, the background
 	 * color is inherited from the parent.
-	 * 
+	 *
 	 * @see IFigure#getBackgroundColor()
 	 */
 	@Override
@@ -578,7 +578,7 @@ public class Figure implements IFigure {
 	 * Returns the smallest rectangle completely enclosing the figure. Implementors
 	 * may return the Rectangle by reference. For this reason, callers of this
 	 * method must not modify the returned Rectangle.
-	 * 
+	 *
 	 * @return The bounds of this Figure
 	 */
 	@Override
@@ -597,7 +597,7 @@ public class Figure implements IFigure {
 	/**
 	 * Provide an iterable that will iterate in reverse over all children of this
 	 * figure.
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	public Iterable<IFigure> getChildrenRevIterable() {
@@ -626,7 +626,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Returns the IClippingStrategy used by this figure to clip its children
-	 * 
+	 *
 	 * @return the IClipppingStrategy used to clip this figure's children.
 	 * @since 3.6
 	 */
@@ -647,7 +647,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Returns the value of the given flag.
-	 * 
+	 *
 	 * @param flag The flag to get
 	 * @return The value of the given flag
 	 */
@@ -681,7 +681,7 @@ public class Figure implements IFigure {
 	 * Returns the border's Insets if the border is set. Otherwise returns
 	 * NO_INSETS, an instance of Insets with all 0s. Returns Insets by reference. DO
 	 * NOT Modify returned value. Cannot return null.
-	 * 
+	 *
 	 * @return This Figure's Insets
 	 */
 	@Override
@@ -705,7 +705,7 @@ public class Figure implements IFigure {
 	 * Returns an Iterator over the listeners of type <i>clazz</i> that are
 	 * listening to this Figure. If there are no listeners of type <i>clazz</i>, an
 	 * empty iterator is returned.
-	 * 
+	 *
 	 * @param clazz The type of listeners to get
 	 * @return An Iterator over the requested listeners
 	 * @since 2.0
@@ -720,7 +720,7 @@ public class Figure implements IFigure {
 	 * * Returns an Iterator over the listeners of type <i>listenerType</i> that are
 	 * listening to this Figure. If there are no listeners of type
 	 * <i>listenerType</i>, an empty iterator is returned.
-	 * 
+	 *
 	 * @param listenerType The type of listeners to get
 	 * @return an Iterable over the requested listeners <i>c</i>
 	 * @since 3.13
@@ -734,7 +734,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>null</code> or the local background Color of this Figure. Does
 	 * not inherit this Color from the parent.
-	 * 
+	 *
 	 * @return bgColor <code>null</code> or the local background Color
 	 */
 	@Override
@@ -745,7 +745,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>null</code> or the local font setting for this figure. Does not
 	 * return values inherited from the parent figure.
-	 * 
+	 *
 	 * @return <code>null</code> or the local font
 	 * @since 3.1
 	 */
@@ -756,7 +756,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>null</code> or the local foreground Color of this Figure. Does
 	 * not inherit this Color from the parent.
-	 * 
+	 *
 	 * @return fgColor <code>null</code> or the local foreground Color
 	 */
 	@Override
@@ -766,7 +766,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Returns the top-left corner of this Figure's bounds.
-	 * 
+	 *
 	 * @return The top-left corner of this Figure's bounds
 	 * @since 2.0
 	 */
@@ -1070,7 +1070,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>true</code> if this Figure can receive {@link MouseEvent
 	 * MouseEvents}.
-	 * 
+	 *
 	 * @return <code>true</code> if this Figure can receive {@link MouseEvent
 	 *         MouseEvents}
 	 * @since 2.0
@@ -1116,7 +1116,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Returns <code>true</code> if this Figure is valid.
-	 * 
+	 *
 	 * @return <code>true</code> if this Figure is valid
 	 * @since 2.0
 	 */
@@ -1127,7 +1127,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>true</code> if revalidating this Figure does not require
 	 * revalidating its parent.
-	 * 
+	 *
 	 * @return <code>true</code> if revalidating this Figure doesn't require
 	 *         revalidating its parent.
 	 * @since 2.0
@@ -1146,7 +1146,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Lays out this Figure using its {@link LayoutManager}.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void layout() {
@@ -1156,7 +1156,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Paints this Figure and its children.
-	 * 
+	 *
 	 * @param graphics The Graphics object used for painting
 	 * @see #paintFigure(Graphics)
 	 * @see #paintClientArea(Graphics)
@@ -1184,7 +1184,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Paints the border associated with this Figure, if one exists.
-	 * 
+	 *
 	 * @param graphics The Graphics used to paint
 	 * @see Border#paint(IFigure, Graphics, Insets)
 	 * @since 2.0
@@ -1201,7 +1201,7 @@ public class Figure implements IFigure {
 	 * state when the method was entered.
 	 * <P>
 	 * This method must leave the Graphics in its original state upon return.
-	 * 
+	 *
 	 * @param graphics the graphics used to paint
 	 * @since 2.0
 	 */
@@ -1233,7 +1233,7 @@ public class Figure implements IFigure {
 	 * anything inside the Figure's {@link Border} or {@link Insets}, and by default
 	 * includes the children of this Figure. On return, this method must leave the
 	 * given Graphics in its initial state.
-	 * 
+	 *
 	 * @param graphics The Graphics used to paint
 	 * @since 2.0
 	 */
@@ -1276,7 +1276,7 @@ public class Figure implements IFigure {
 	 * {@link #paintBorder(Graphics)}. Furthermore, it is safe to call
 	 * <code>graphics.restoreState()</code> within this method, and doing so will
 	 * restore the graphics to its original state upon entry.
-	 * 
+	 *
 	 * @param graphics The Graphics used to paint
 	 * @since 2.0
 	 */
@@ -1289,7 +1289,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Translates this Figure's bounds, without firing a move.
-	 * 
+	 *
 	 * @param dx The amount to translate horizontally
 	 * @param dy The amount to translate vertically
 	 * @see #translate(int, int)
@@ -1309,7 +1309,7 @@ public class Figure implements IFigure {
 	 * Removes the given child Figure from this Figure's hierarchy and revalidates
 	 * this Figure. The child Figure's {@link #removeNotify()} method is also
 	 * called.
-	 * 
+	 *
 	 * @param figure The Figure to remove
 	 */
 	@Override
@@ -1331,7 +1331,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Removes all children from this Figure.
-	 * 
+	 *
 	 * @see #remove(IFigure)
 	 * @since 2.0
 	 */
@@ -1388,7 +1388,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Removes the first occurence of the given listener.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param listener the listener being removed
 	 */
@@ -1404,7 +1404,7 @@ public class Figure implements IFigure {
 	/**
 	 * Removes <i>listener</i> of type <i>clazz</i> from this Figure's list of
 	 * listeners.
-	 * 
+	 *
 	 * @param clazz    The type of listener
 	 * @param listener The listener to remove
 	 * @since 2.0
@@ -1558,7 +1558,7 @@ public class Figure implements IFigure {
 	 * safe to modify that Rectangle and then call setBounds() after making
 	 * modifications. The figure would assume that the bounds are unchanged, and no
 	 * layout or paint would occur. For proper behavior, always use a copy.
-	 * 
+	 *
 	 * @param rect The new bounds
 	 * @since 2.0
 	 */
@@ -1591,7 +1591,7 @@ public class Figure implements IFigure {
 	/**
 	 * Sets the direction of any {@link Orientable} children. Allowable values for
 	 * <code>dir</code> are found in {@link PositionConstants}.
-	 * 
+	 *
 	 * @param direction The direction
 	 * @see Orientable#setDirection(int)
 	 * @since 2.0
@@ -1605,7 +1605,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Sets all childrens' enabled property to <i>value</i>.
-	 * 
+	 *
 	 * @param value The enable value
 	 * @see #setEnabled(boolean)
 	 * @since 2.0
@@ -1617,7 +1617,7 @@ public class Figure implements IFigure {
 	/**
 	 * Sets the orientation of any {@link Orientable} children. Allowable values for
 	 * <i>orientation</i> are found in {@link PositionConstants}.
-	 * 
+	 *
 	 * @param orientation The Orientation
 	 * @see Orientable#setOrientation(int)
 	 * @since 2.0
@@ -1645,7 +1645,7 @@ public class Figure implements IFigure {
 	/**
 	 * Registers a clipping strategy to specify how clipping is performed for child
 	 * figures.
-	 * 
+	 *
 	 * @param clippingStrategy
 	 * @since 3.6
 	 */
@@ -1679,7 +1679,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Sets the given flag to the given value.
-	 * 
+	 *
 	 * @param flag  The flag to set
 	 * @param value The value
 	 * @since 2.0
@@ -1819,7 +1819,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Sets the preferred size of this figure.
-	 * 
+	 *
 	 * @param w The new preferred width
 	 * @param h The new preferred height
 	 * @see #setPreferredSize(Dimension)
@@ -1873,7 +1873,7 @@ public class Figure implements IFigure {
 	/**
 	 * Sets this figure to be valid if <i>value</i> is <code>true</code> and invalid
 	 * otherwise.
-	 * 
+	 *
 	 * @param value The valid value
 	 * @since 2.0
 	 */
@@ -1949,7 +1949,7 @@ public class Figure implements IFigure {
 	/**
 	 * Returns <code>true</code> if this Figure uses local coordinates. This means
 	 * its children are placed relative to this Figure's top-left corner.
-	 * 
+	 *
 	 * @return <code>true</code> if this Figure uses local coordinates
 	 * @since 2.0
 	 */
@@ -1983,7 +1983,7 @@ public class Figure implements IFigure {
 
 		/**
 		 * Always returns <code>true</code>.
-		 * 
+		 *
 		 * @see TreeSearch#accept(IFigure)
 		 */
 		@Override
@@ -1993,7 +1993,7 @@ public class Figure implements IFigure {
 
 		/**
 		 * Always returns <code>false</code>.
-		 * 
+		 *
 		 * @see TreeSearch#prune(IFigure)
 		 */
 		@Override
@@ -2070,7 +2070,7 @@ public class Figure implements IFigure {
 
 	/**
 	 * Iterates over a Figure's children in reverse order.
-	 * 
+	 *
 	 * @deprecated use ReverseFigureChildrenIterator instead
 	 */
 	public static class FigureIterator {
@@ -2079,7 +2079,7 @@ public class Figure implements IFigure {
 
 		/**
 		 * Constructs a new FigureIterator for the given Figure.
-		 * 
+		 *
 		 * @param figure The Figure whose children to iterate over
 		 */
 		public FigureIterator(IFigure figure) {
@@ -2089,7 +2089,7 @@ public class Figure implements IFigure {
 
 		/**
 		 * Returns the next Figure.
-		 * 
+		 *
 		 * @return The next Figure
 		 */
 		public IFigure nextFigure() {
@@ -2098,7 +2098,7 @@ public class Figure implements IFigure {
 
 		/**
 		 * Returns <code>true</code> if there's another Figure to iterate over.
-		 * 
+		 *
 		 * @return <code>true</code> if there's another Figure to iterate over
 		 */
 		public boolean hasNext() {
@@ -2110,7 +2110,7 @@ public class Figure implements IFigure {
 	/**
 	 * Figure children iterator which implements the java iterator interface for
 	 * more convenient figure iteration.
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	public static final class ReverseFigureChildrenIterator extends FigureIterator implements Iterator<IFigure> {

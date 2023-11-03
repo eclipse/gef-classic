@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ import org.eclipse.draw2d.geometry.Translatable;
 
 /**
  * A non-freeform, scalable layered pane.
- * 
+ *
  * @author Eric Bordeau
  * @since 2.1.1
  */
@@ -36,7 +36,7 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 
 	/**
 	 * Constructor which allows to configure if scaled graphics should be used.
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	public ScalableLayeredPane(boolean useScaledGraphics) {
@@ -71,7 +71,7 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 
 	/**
 	 * Returns the scale level, default is 1.0.
-	 * 
+	 *
 	 * @return the scale level
 	 */
 	@Override
@@ -96,7 +96,7 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 
 	/**
 	 * Make this method publicly accessible for IScaleablePane.
-	 * 
+	 *
 	 * @since 3.13
 	 */
 	@Override
@@ -106,7 +106,7 @@ public class ScalableLayeredPane extends LayeredPane implements IScalablePane {
 
 	/**
 	 * Sets the zoom level
-	 * 
+	 *
 	 * @param newZoom The new zoom level
 	 */
 	@Override

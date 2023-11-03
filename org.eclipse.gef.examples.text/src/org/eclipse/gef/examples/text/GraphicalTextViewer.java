@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -41,7 +41,7 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	/**
 	 * Returns the viewers selection range by <em>reference</em>. The range should
 	 * not be modified directly.
-	 * 
+	 *
 	 * @since 3.1
 	 * @return the current selection by reference
 	 * @deprecated in 3.2. @TODO:Pratik remove this method and all references to it.
@@ -82,7 +82,7 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	 * Sets the selection range to the given value. Updates any editparts which had
 	 * or will have textual selection. Fires selection changed. Place the caret in
 	 * the appropriate location.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param newRange the new selection range
 	 * @deprecated in 3.2. @TODO:Pratik remove this method and all references to it.
@@ -206,7 +206,7 @@ public class GraphicalTextViewer extends ScrollingGraphicalViewer {
 	/**
 	 * The method returns the same list as getSelectedEditParts(). The list is
 	 * unmodifiable.
-	 * 
+	 *
 	 * @deprecated
 	 * @see org.eclipse.gef.ui.parts.AbstractEditPartViewer#primGetSelectedEditParts()
 	 */

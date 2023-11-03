@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -18,7 +18,7 @@ import org.eclipse.gef.internal.Internal;
 
 /**
  * A class containing shared Images and ImageDescriptors for use by clients.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -46,28 +46,28 @@ public class SharedImages {
 
 	/**
 	 * A 16x16 icon representing the Marquee Tool (nodes only)
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public static final ImageDescriptor DESC_MARQUEE_TOOL_NODES_16;
 
 	/**
 	 * A 24x24 icon representing the Marquee Tool (nodes only).
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public static final ImageDescriptor DESC_MARQUEE_TOOL_NODES_24;
 
 	/**
 	 * A 16x16 icon representing the Marquee Tool (connections only)
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public static final ImageDescriptor DESC_MARQUEE_TOOL_CONNECTIONS_16;
 
 	/**
 	 * A 24x24 icon representing the Marquee Tool (connections only).
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	public static final ImageDescriptor DESC_MARQUEE_TOOL_CONNECTIONS_24;

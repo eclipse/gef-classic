@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -48,7 +48,7 @@ public abstract class SquareHandle extends AbstractHandle {
 	/**
 	 * Creates a SquareHandle for the given <code>GraphicalEditPart</code> with the
 	 * given <code>Locator</code>.
-	 * 
+	 *
 	 * @param owner the owner
 	 * @param loc   the locator
 	 */
@@ -59,7 +59,7 @@ public abstract class SquareHandle extends AbstractHandle {
 	/**
 	 * Creates a SquareHandle for the given <code>GraphicalEditPart</code> with the
 	 * given <code>Cursor</code> using the given <code>Locator</code>.
-	 * 
+	 *
 	 * @param owner The editpart which provided this handle
 	 * @param loc   The locator to position the handle
 	 * @param c     The cursor to display when the mouse is over the handle
@@ -70,7 +70,7 @@ public abstract class SquareHandle extends AbstractHandle {
 
 	/**
 	 * Returns the color for the outside of the handle.
-	 * 
+	 *
 	 * @return the color for the border
 	 */
 	protected Color getBorderColor() {
@@ -79,7 +79,7 @@ public abstract class SquareHandle extends AbstractHandle {
 
 	/**
 	 * Returns the color for the inside of the handle.
-	 * 
+	 *
 	 * @return the color of the handle
 	 */
 	protected Color getFillColor() {
@@ -95,7 +95,7 @@ public abstract class SquareHandle extends AbstractHandle {
 
 	/**
 	 * Returns <code>true</code> if the handle's owner is the primary selection.
-	 * 
+	 *
 	 * @return <code>true</code> if the handles owner has primary selection.
 	 */
 	protected boolean isPrimary() {
@@ -105,7 +105,7 @@ public abstract class SquareHandle extends AbstractHandle {
 	/**
 	 * Draws the handle with fill color and outline color dependent on the primary
 	 * selection status of the owner editpart.
-	 * 
+	 *
 	 * @param g The graphics used to paint the figure.
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ public class LabeledContainer extends Figure {
 
 	/**
 	 * Constructs a default container with a {@link GroupBoxBorder}.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public LabeledContainer() {
@@ -31,7 +31,7 @@ public class LabeledContainer extends Figure {
 
 	/**
 	 * Constructs a labeled container with the border given as input.
-	 * 
+	 *
 	 * @param border the border
 	 * @since 2.0
 	 */
@@ -54,7 +54,7 @@ public class LabeledContainer extends Figure {
 
 	/**
 	 * Returns the text of the LabeledContainer's label.
-	 * 
+	 *
 	 * @return the label text
 	 * @since 2.0
 	 */
@@ -64,7 +64,7 @@ public class LabeledContainer extends Figure {
 
 	/**
 	 * Returns the LabeledBorder of this container.
-	 * 
+	 *
 	 * @return the border
 	 * @since 2.0
 	 */
@@ -74,7 +74,7 @@ public class LabeledContainer extends Figure {
 
 	/**
 	 * Sets the title of the container.
-	 * 
+	 *
 	 * @param s the new title text
 	 * @since 2.0
 	 */
@@ -86,7 +86,7 @@ public class LabeledContainer extends Figure {
 
 	/**
 	 * Sets the font to be used for the container title.
-	 * 
+	 *
 	 * @param f the new font
 	 * @since 2.0
 	 */

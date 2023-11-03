@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ public interface TextualEditPart extends GraphicalEditPart {
 
 	/**
 	 * Returns the placement for the caret in absolute coordinates.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param offset the location of the caret within the receiver
 	 * @return the absolute caret location
@@ -41,7 +41,7 @@ public interface TextualEditPart extends GraphicalEditPart {
 
 	/**
 	 * Returns the length in characters of this part
-	 * 
+	 *
 	 * @since 3.1
 	 * @return value
 	 */
@@ -57,7 +57,7 @@ public interface TextualEditPart extends GraphicalEditPart {
 	 * caret positions ranging from 0..N. The begin index should always be less than
 	 * the end index. No selection is indicated by setting both values to
 	 * <code>-1</code>.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param begin the beginning offset or -1
 	 * @param end   the end offset or -1

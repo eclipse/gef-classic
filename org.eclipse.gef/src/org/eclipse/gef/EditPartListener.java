@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -65,7 +65,7 @@ public interface EditPartListener {
 
 	/**
 	 * Called after a child EditPart has been added to its parent.
-	 * 
+	 *
 	 * @param child the Child
 	 * @param index the index at which the child was added
 	 */
@@ -73,21 +73,21 @@ public interface EditPartListener {
 
 	/**
 	 * Called when the editpart has been activated.
-	 * 
+	 *
 	 * @param editpart the EditPart
 	 */
 	void partActivated(EditPart editpart);
 
 	/**
 	 * Called when the editpart has been deactivated.
-	 * 
+	 *
 	 * @param editpart the EditPart
 	 */
 	void partDeactivated(EditPart editpart);
 
 	/**
 	 * Called before a child EditPart is removed from its parent.
-	 * 
+	 *
 	 * @param child the Child being removed
 	 * @param index the child's current location
 	 */
@@ -96,7 +96,7 @@ public interface EditPartListener {
 	/**
 	 * Called when the selected state of an EditPart has changed. Focus changes also
 	 * result in this method being called.
-	 * 
+	 *
 	 * @param editpart the part whose selection was changed
 	 * @see EditPart#getSelected()
 	 */

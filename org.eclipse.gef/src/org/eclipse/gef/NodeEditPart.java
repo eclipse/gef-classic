@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -44,7 +44,7 @@ public interface NodeEditPart extends GraphicalEditPart {
 	 * <P>
 	 * The anchor may be a function of the connection's model, the node's model, a
 	 * combination of both, or it may not depend on anything all.
-	 * 
+	 *
 	 * @param connection the ConnectionEditPart
 	 * @return the ConnectionAnchor for the given ConnectionEditPart
 	 */
@@ -57,7 +57,7 @@ public interface NodeEditPart extends GraphicalEditPart {
 	 * <P>
 	 * The anchor may be a function of the connection's model, the node's model, a
 	 * combination of both, or it may not depend on anything all.
-	 * 
+	 *
 	 * @param connection the ConnectionEditPart
 	 * @return the ConnectionAnchor for the given ConnectionEditPart
 	 */
@@ -69,7 +69,7 @@ public interface NodeEditPart extends GraphicalEditPart {
 	 * <i>feedback</i>. The Request is usually a
 	 * {@link org.eclipse.gef.requests.LocationRequest}, which provides the current
 	 * mouse location.
-	 * 
+	 *
 	 * @param request a Request describing the current interaction
 	 * @return the ConnectionAnchor to use during feedback
 	 */
@@ -81,7 +81,7 @@ public interface NodeEditPart extends GraphicalEditPart {
 	 * <i>feedback</i>. The Request is usually a
 	 * {@link org.eclipse.gef.requests.LocationRequest}, which provides the current
 	 * mouse location.
-	 * 
+	 *
 	 * @param request a Request describing the current interaction
 	 * @return the ConnectionAnchor to use during feedback
 	 */

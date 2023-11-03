@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -104,10 +104,10 @@ public class PaletteCustomizerTest extends Assert {
 	}
 
 	/**
-	 * 
+	 *
 	 * 1-Root 2-Drawer A 3-Tool 4-Stack A 5-Tool 6-Selection (Limited Permissions)
 	 * 8-Stack B (Full Permissions) 9-Tool 10-Drawer B
-	 * 
+	 *
 	 */
 	@Test
 	public void testBottomSelection() {
@@ -223,9 +223,9 @@ public class PaletteCustomizerTest extends Assert {
 	}
 
 	/**
-	 * 
+	 *
 	 * 1-Root 2-Drawer A 3-Tool 4-Selection 5-Tool 6-Drawer B
-	 * 
+	 *
 	 */
 	@Test
 	public void testMiddleSelection() {
@@ -283,7 +283,7 @@ public class PaletteCustomizerTest extends Assert {
 	}
 
 	/**
-	 * 
+	 *
 	 * 1-Root 2-Drawer A 3-Tool 4-Tool 5-Drawer B 6-Stack (Full Permissions)
 	 * (Selection) 7-Tool 8-Tool 9-Drawer C
 	 */

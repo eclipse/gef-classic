@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -33,7 +33,7 @@ public abstract class GraphicalEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Adds the specified <code>Figure</code> to the
 	 * {@link LayerConstants#FEEDBACK_LAYER}.
-	 * 
+	 *
 	 * @param figure the feedback to add
 	 */
 	protected void addFeedback(IFigure figure) {
@@ -42,7 +42,7 @@ public abstract class GraphicalEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Returns the layer used for displaying feedback.
-	 * 
+	 *
 	 * @return the feedback layer
 	 */
 	protected IFigure getFeedbackLayer() {
@@ -51,7 +51,7 @@ public abstract class GraphicalEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Convenience method to return the host's Figure.
-	 * 
+	 *
 	 * @return The host GraphicalEditPart's Figure
 	 */
 	protected IFigure getHostFigure() {
@@ -60,7 +60,7 @@ public abstract class GraphicalEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Obtains the specified layer.
-	 * 
+	 *
 	 * @param layer the key identifying the layer
 	 * @return the requested layer
 	 */
@@ -71,7 +71,7 @@ public abstract class GraphicalEditPolicy extends AbstractEditPolicy {
 	/**
 	 * Removes the specified <code>Figure</code> from the
 	 * {@link LayerConstants#FEEDBACK_LAYER}.
-	 * 
+	 *
 	 * @param figure the feedback to remove
 	 */
 	protected void removeFeedback(IFigure figure) {

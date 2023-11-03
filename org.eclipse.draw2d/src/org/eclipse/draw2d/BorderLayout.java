@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -250,7 +250,7 @@ public class BorderLayout extends AbstractHintLayout {
 	 * <LI>{@link #RIGHT}</LI>
 	 * <LI><code>null</code> (to remove a child's constraint)</LI>
 	 * </UL>
-	 * 
+	 *
 	 * <p>
 	 * Ensure that the given Figure is indeed a child of the Figure on which this
 	 * layout has been set. Proper behaviour cannot be guaranteed if that is not the
@@ -265,7 +265,7 @@ public class BorderLayout extends AbstractHintLayout {
 	 * constraint, it will be over-ridden so that the given child now has that
 	 * constraint.
 	 * </p>
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.AbstractLayout#setConstraint(IFigure, Object)
 	 */
 	@Override
@@ -299,7 +299,7 @@ public class BorderLayout extends AbstractHintLayout {
 
 	/**
 	 * Sets the horizontal spacing to be used between the children. Default is 0.
-	 * 
+	 *
 	 * @param gap The horizonal spacing
 	 */
 	public void setHorizontalSpacing(int gap) {
@@ -308,7 +308,7 @@ public class BorderLayout extends AbstractHintLayout {
 
 	/**
 	 * Sets the vertical spacing ot be used between the children. Default is 0.
-	 * 
+	 *
 	 * @param gap The vertical spacing
 	 */
 	public void setVerticalSpacing(int gap) {

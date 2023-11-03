@@ -2,12 +2,12 @@
  * Copyright 2005-2006, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.widgets.internal;
@@ -71,7 +71,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 	/**
 	 * Sets the expander state (the little triangle) to ExpanderGraphLabel.OPEN or
 	 * ExpanderGraphLabel.CLOSED
-	 * 
+	 *
 	 * @param state
 	 */
 	public void setExpandedState(int state) {
@@ -85,7 +85,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.ActionListener#actionPerformed(org.eclipse.draw2d.
 	 * ActionEvent)
 	 */
@@ -121,7 +121,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 
 			/*
 			 * This method is overwritten so that the text is not truncated. (non-Javadoc)
-			 * 
+			 *
 			 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 			 */
 			@Override
@@ -190,7 +190,7 @@ public class ExpandGraphLabel extends Figure implements ActionListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Label#paintFigure(org.eclipse.draw2d.Graphics)
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -87,7 +87,7 @@ public interface EditPart extends IAdaptable {
 	/**
 	 * Adds a listener to the EditPart. Duplicate calls result in duplicate
 	 * notification.
-	 * 
+	 *
 	 * @param listener the Listener
 	 */
 	void addEditPartListener(EditPartListener listener);
@@ -124,7 +124,7 @@ public interface EditPart extends IAdaptable {
 	 * used to describe the type of source feedback that should be erased. This
 	 * method should only be called once to erase feedback. It should only be called
 	 * in conjunction with a prior call to {@link #showSourceFeedback(Request)}.
-	 * 
+	 *
 	 * @param request the type of feedback that is being erased
 	 */
 	void eraseSourceFeedback(Request request);
@@ -134,7 +134,7 @@ public interface EditPart extends IAdaptable {
 	 * used to describe the type of target feedback that should be erased. This
 	 * method should only be called once to erase feedback. It should only be called
 	 * in conjunction with a prior call to {@link #showTargetFeedback(Request)}.
-	 * 
+	 *
 	 * @param request the type of feedback that is being erased
 	 */
 	void eraseTargetFeedback(Request request);
@@ -144,7 +144,7 @@ public interface EditPart extends IAdaptable {
 	 * rarely be called, and is only made public so that helper objects of this
 	 * EditPart, such as EditPolicies, can obtain the children. The returned List
 	 * may be by reference, and should never be modified.
-	 * 
+	 *
 	 * @return a <code>List</code> of children
 	 */
 	List<? extends EditPart> getChildren();
@@ -152,7 +152,7 @@ public interface EditPart extends IAdaptable {
 	/**
 	 * Returns the {@link Command} to perform the specified Request or
 	 * <code>null</code>.
-	 * 
+	 *
 	 * @param request describes the Command being requested
 	 * @return <code>null</code> or a Command
 	 */
@@ -164,7 +164,7 @@ public interface EditPart extends IAdaptable {
 	 * default that calls this method. The SelectionTool will use a
 	 * {@link org.eclipse.gef.requests.SelectionRequest} to provide information such
 	 * as which mouse button is down, and what modifier keys are pressed.
-	 * 
+	 *
 	 * @param request a <code>Request</code> indicating the context of the drag
 	 * @return <code>null</code> or a DragTracker
 	 */
@@ -182,7 +182,7 @@ public interface EditPart extends IAdaptable {
 	 * practice, the Object returned is used by other EditParts to identify this
 	 * EditPart. In addition, EditPolicies probably rely on this method to build
 	 * Commands that operate on the model.
-	 * 
+	 *
 	 * @return <code>null</code> or the primary model object
 	 */
 	Object getModel();
@@ -190,7 +190,7 @@ public interface EditPart extends IAdaptable {
 	/**
 	 * Returns the parent <code>EditPart</code>. This method should only be called
 	 * internally or by helpers such as EditPolicies.
-	 * 
+	 *
 	 * @return <code>null</code> or the parent {@link EditPart}
 	 */
 	EditPart getParent();
@@ -199,7 +199,7 @@ public interface EditPart extends IAdaptable {
 	 * Returns the {@link RootEditPart}. This method should only be called
 	 * internally or by helpers such as edit policies. The root can be used to get
 	 * the viewer.
-	 * 
+	 *
 	 * @return <code>null</code> or the {@link RootEditPart}
 	 */
 	RootEditPart getRoot();
@@ -207,7 +207,7 @@ public interface EditPart extends IAdaptable {
 	/**
 	 * Returns the selected state of this EditPart. This method should only be
 	 * called internally or by helpers such as EditPolicies.
-	 * 
+	 *
 	 * @return one of:
 	 *         <UL>
 	 *         <LI>{@link #SELECTED}
@@ -223,7 +223,7 @@ public interface EditPart extends IAdaptable {
 	 * with the mouse location so that the receiver can implement drop targeting.
 	 * Typically, if this EditPart is not the requested target (for example, this
 	 * EditPart is not a composite), it will forward the call to its parent.
-	 * 
+	 *
 	 * @param request the type of target being requested
 	 * @return <code>null</code> or the target
 	 */
@@ -232,7 +232,7 @@ public interface EditPart extends IAdaptable {
 	/**
 	 * Convenience method for returning the <code>EditPartViewer</code> for this
 	 * part.
-	 * 
+	 *
 	 * @return the {@link EditPartViewer} or <code>null</code>
 	 */
 	EditPartViewer getViewer();
@@ -241,7 +241,7 @@ public interface EditPart extends IAdaptable {
 	 * Returns true if this EditPart has <i>focus</i>. The focus EditPart is a
 	 * property of the EditPartViewer. The Viewer keeps this property in sync with
 	 * its focus.
-	 * 
+	 *
 	 * @see EditPartViewer#getFocusEditPart()
 	 * @return true if the EditPart has focus
 	 */
@@ -252,7 +252,7 @@ public interface EditPart extends IAdaptable {
 	 * simply an Object used to identify the EditPolicy. An example of a role is
 	 * layout. {@link EditPolicy#LAYOUT_ROLE} is generally used as the key for this
 	 * EditPolicy. <code>null</code> is a valid value for reserving a location.
-	 * 
+	 *
 	 * @param role       an identifier used to key the EditPolicy
 	 * @param editPolicy the EditPolicy
 	 */
@@ -262,7 +262,7 @@ public interface EditPart extends IAdaptable {
 	 * returns <code>true</code> if the EditPart is active. Editparts are active
 	 * after {@link #activate()} is called, and until {@link #deactivate()} is
 	 * called.
-	 * 
+	 *
 	 * @return <code>true</code> when active
 	 */
 	boolean isActive();
@@ -272,7 +272,7 @@ public interface EditPart extends IAdaptable {
 	 * EditPart may be selected as a result of the
 	 * {@link org.eclipse.gef.tools.SelectionTool} receiving a mouse down, or as a
 	 * result of the User pressing a key to change selection.
-	 * 
+	 *
 	 * @return <code>true</code> if the receiver can be selected
 	 */
 	boolean isSelectable();
@@ -283,7 +283,7 @@ public interface EditPart extends IAdaptable {
 	 * a change in the model, it should still use <code>Commands</code> and the
 	 * <code>CommandStack</code> so that the change is undoable. The CommandStack is
 	 * available from the <code>EditDomain</code>.
-	 * 
+	 *
 	 * @param request the request to be performed
 	 */
 	void performRequest(Request request);
@@ -297,7 +297,7 @@ public interface EditPart extends IAdaptable {
 	/**
 	 * Removes the first occurance of the specified listener from the list of
 	 * listeners. Does nothing if the listener was not present.
-	 * 
+	 *
 	 * @param listener the listener being removed
 	 */
 	void removeEditPartListener(EditPartListener listener);
@@ -306,7 +306,7 @@ public interface EditPart extends IAdaptable {
 	 * Removes the EditPolicy for the given <i>role</i>. The EditPolicy is
 	 * deactivated if it is active. The position for that role is maintained with
 	 * <code>null</code> in the place of the old EditPolicy.
-	 * 
+	 *
 	 * @param role the key identifying the EditPolicy to be removed
 	 * @see #installEditPolicy(Object, EditPolicy)
 	 */
@@ -330,7 +330,7 @@ public interface EditPart extends IAdaptable {
 	 * value will fire {@link EditPartListener#selectedStateChanged(EditPart)}.
 	 * <P>
 	 * IMPORTANT: This method should only be called by the EditPartViewer.
-	 * 
+	 *
 	 * @param hasFocus boolean indicating if this part has focus
 	 */
 	void setFocus(boolean hasFocus);
@@ -338,10 +338,10 @@ public interface EditPart extends IAdaptable {
 	/**
 	 * <img src="doc-files/dblack.gif"/>Sets the model. This method is made public
 	 * to facilitate the use of {@link EditPartFactory EditPartFactories} .
-	 * 
+	 *
 	 * <P>
 	 * IMPORTANT: This method should only be called once.
-	 * 
+	 *
 	 * @param model the Model
 	 */
 	void setModel(Object model);
@@ -349,7 +349,7 @@ public interface EditPart extends IAdaptable {
 	/**
 	 * <img src="doc-files/dblack.gif"/>Sets the parent. This should only be called
 	 * by the parent EditPart.
-	 * 
+	 *
 	 * @param parent the parent EditPart
 	 */
 	void setParent(EditPart parent);
@@ -360,7 +360,7 @@ public interface EditPart extends IAdaptable {
 	 * any EditPartListeners. Selection is maintained by the EditPartViewer.
 	 * <P>
 	 * IMPORTANT: This method should only be called by the EditPartViewer.
-	 * 
+	 *
 	 * @param value an enum indicating the selected state
 	 * @see #getSelected()
 	 */
@@ -370,7 +370,7 @@ public interface EditPart extends IAdaptable {
 	 * Shows or updates source feedback for the given request. This method may be
 	 * called multiple times so that the feedback can be updated for changes in the
 	 * request, such as the mouse location changing.
-	 * 
+	 *
 	 * @param request request describing the type of feedback
 	 */
 	void showSourceFeedback(Request request);
@@ -379,7 +379,7 @@ public interface EditPart extends IAdaptable {
 	 * Shows or updates target feedback for the given request. This method can be
 	 * called multiple times so that the feedback can be updated for changes in the
 	 * request, such as the mouse location changing.
-	 * 
+	 *
 	 * @param request request describing the type of feedback
 	 */
 	void showTargetFeedback(Request request);
@@ -390,7 +390,7 @@ public interface EditPart extends IAdaptable {
 	 * culled to remove EditParts that do not participate in the operation. For
 	 * example, when aligning the left edges of GraphicalEditParts, it makes sense
 	 * to ignore any selected ConnectionEditParts, as they cannot be aligned.
-	 * 
+	 *
 	 * @param request a <code>Request</code> describing an operation of some type
 	 * @return <code>true</code> if Request is understood
 	 */

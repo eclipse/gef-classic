@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 
 	/**
 	 * Does nothing by default.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#activate()
 	 */
 	@Override
@@ -41,7 +41,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 
 	/**
 	 * Does nothing by default.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
 	@Override
@@ -51,7 +51,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	/**
 	 * This method will log the message to GEF's trace/debug system if the
 	 * corrseponding flag for FEEDBACK is set to true.
-	 * 
+	 *
 	 * @param message the String to log
 	 * @deprecated in 3.1 This method will be removed in future releases.
 	 */
@@ -60,7 +60,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 
 	/**
 	 * Does nothing by default.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#eraseSourceFeedback(Request)
 	 */
 	@Override
@@ -69,7 +69,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 
 	/**
 	 * Does nothing by default.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#eraseTargetFeedback(Request)
 	 */
 	@Override
@@ -80,7 +80,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * Returns <code>null</code> by default. <code>null</code> is used to indicate
 	 * that the EditPolicy does not contribute to the specified
 	 * <code>Request</code>.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
 	@Override
@@ -100,7 +100,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 	 * Returns <code>null</code> by default. <code>null</code> indicates that this
 	 * policy is unable to determine the target for the specified
 	 * <code>Request</code>.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#getTargetEditPart(Request)
 	 */
 	@Override
@@ -118,7 +118,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 
 	/**
 	 * Does nothing by default.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#showSourceFeedback(Request)
 	 */
 	@Override
@@ -127,7 +127,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 
 	/**
 	 * Does nothing by default.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#showTargetFeedback(Request)
 	 */
 	@Override
@@ -150,7 +150,7 @@ public abstract class AbstractEditPolicy implements EditPolicy, RequestConstants
 
 	/**
 	 * Returns <code>false</code> by default.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#understandsRequest(Request)
 	 */
 	@Override

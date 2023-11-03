@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.draw2d.geometry.PointList;
  * whose points are to be animated, by calling
  * {@link PolylineConnection#addRoutingListener(RoutingListener)}. An animator
  * is active only when the Animation utility is activated.
- * 
+ *
  * @since 3.2
  */
 public class RoutingAnimator extends Animator implements RoutingListener {
@@ -36,7 +36,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 * Constructs a routing animator for use with one or more connections. The
 	 * default instance ({@link #getDefault()} can be used on any number of
 	 * connections.
-	 * 
+	 *
 	 * @since 3.2
 	 */
 	protected RoutingAnimator() {
@@ -44,7 +44,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 
 	/**
 	 * Overridden to sync initial and final states.
-	 * 
+	 *
 	 * @see Animator#playbackStarting(IFigure)
 	 */
 	@Override
@@ -56,7 +56,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 	 * Returns the current state of the connection. Currently, this is a copy of the
 	 * list of points. However this Object could change in future releases and
 	 * should not be considered API.
-	 * 
+	 *
 	 * @see Animator#getCurrentState(IFigure)
 	 */
 	@Override
@@ -66,7 +66,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 
 	/**
 	 * Returns the default instance.
-	 * 
+	 *
 	 * @return the default instance
 	 * @since 3.2
 	 */
@@ -76,7 +76,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 
 	/**
 	 * Hooks invalidate for animation purposes.
-	 * 
+	 *
 	 * @see RoutingListener#invalidate(Connection)
 	 */
 	@Override
@@ -87,7 +87,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 
 	/**
 	 * Plays back the interpolated state.
-	 * 
+	 *
 	 * @see Animator#playback(IFigure)
 	 */
 	@Override
@@ -120,7 +120,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 
 	/**
 	 * Hooks post routing for animation purposes.
-	 * 
+	 *
 	 * @see RoutingListener#postRoute(Connection)
 	 */
 	@Override
@@ -194,7 +194,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 
 	/**
 	 * This callback is unused. Reserved for possible future use.
-	 * 
+	 *
 	 * @see RoutingListener#remove(Connection)
 	 */
 	@Override
@@ -203,7 +203,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 
 	/**
 	 * Hooks route to intercept routing during animation playback.
-	 * 
+	 *
 	 * @see RoutingListener#route(Connection)
 	 */
 	@Override
@@ -213,7 +213,7 @@ public class RoutingAnimator extends Animator implements RoutingListener {
 
 	/**
 	 * This callback is unused. Reserved for possible future use.
-	 * 
+	 *
 	 * @see RoutingListener#setConstraint(Connection, Object)
 	 */
 	@Override

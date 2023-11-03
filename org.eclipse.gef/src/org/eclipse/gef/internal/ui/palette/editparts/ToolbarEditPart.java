@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ import org.eclipse.gef.ui.palette.PaletteViewerPreferences;
 
 /**
  * An editpart for the <code>PaletteToolbar</code>.
- * 
+ *
  * @author crevells
  * @since 3.4
  */
@@ -32,7 +32,7 @@ public class ToolbarEditPart extends GroupEditPart {
 
 	/**
 	 * Creates a new instance.
-	 * 
+	 *
 	 * @param model the <code>PaletteToolbar</code>
 	 */
 	public ToolbarEditPart(PaletteToolbar model) {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ import org.eclipse.gef.EditPartViewer;
  * performed by matching the models of the selected EditParts from one viewer to
  * the EditParts with the same models in another. It can be customized by
  * overriding the {@link #convert(EditPartViewer, EditPart)} method.
- * 
+ *
  * @author hudsonr
  */
 public class SelectionSynchronizer implements ISelectionChangedListener {
@@ -44,7 +44,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 
 	/**
 	 * Adds a viewer to the set of synchronized viewers
-	 * 
+	 *
 	 * @param viewer the viewer
 	 */
 	public void addViewer(EditPartViewer viewer) {
@@ -56,7 +56,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 * Maps the given editpart from one viewer to an editpart in another viewer. It
 	 * returns <code>null</code> if there is no corresponding part. This method can
 	 * be overridden to provide custom mapping.
-	 * 
+	 *
 	 * @param viewer the viewer being mapped to
 	 * @param part   a part from another viewer
 	 * @return <code>null</code> or a corresponding editpart
@@ -72,7 +72,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 
 	/**
 	 * Removes the viewer from the set of synchronized viewers
-	 * 
+	 *
 	 * @param viewer the viewer to remove
 	 */
 	public void removeViewer(EditPartViewer viewer) {
@@ -85,7 +85,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	/**
 	 * Receives notification from one viewer, and maps selection to all other
 	 * members.
-	 * 
+	 *
 	 * @param event the selection event
 	 */
 	@Override
@@ -105,7 +105,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 * Synchronizes the given selection to all registered viewers except the one
 	 * serving as selectionSource, by delegating to
 	 * {@link #applySelection(EditPartViewer, ISelection)}.
-	 * 
+	 *
 	 * @param selectionSource The viewer from which the selection originated.
 	 * @param selection       The selection to apply to the other viewers.
 	 * @since 3.10
@@ -123,7 +123,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 
 	/**
 	 * Enables or disabled synchronization between viewers.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param value <code>true</code> if synchronization should occur
 	 */
@@ -143,7 +143,7 @@ public class SelectionSynchronizer implements ISelectionChangedListener {
 	 * {@link EditPart}s in the given selection (via
 	 * {@link #convert(EditPartViewer, EditPart)}), apply this new selection to the
 	 * given viewer, and reveal the last part in the new selection.
-	 * 
+	 *
 	 * @param viewer    The viewer to apply the given selection to.
 	 * @param selection The selection to apply, which has to be an
 	 *                  {@link IStructuredSelection} of {@link EditPart}s of another

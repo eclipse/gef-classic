@@ -25,9 +25,9 @@ import org.junit.Test;
 
 /**
  * General tests for the {@link Graph} class.
- * 
+ *
  * @author Fabian Steeg (fsteeg)
- * 
+ *
  */
 public class GraphTests extends Assert {
 
@@ -71,7 +71,7 @@ public class GraphTests extends Assert {
 
 	/**
 	 * Avoid infinite loop by disposed nodes during graph disposal.
-	 * 
+	 *
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361541
 	 */
 	@Test
@@ -85,7 +85,7 @@ public class GraphTests extends Assert {
 
 	/**
 	 * Avoid infinite loop by disposed connections during graph disposal.
-	 * 
+	 *
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361541
 	 */
 	@Test
@@ -100,7 +100,7 @@ public class GraphTests extends Assert {
 	/**
 	 * Avoid issues when un-highlighting non-existent nodes on
 	 * {@link #ZestRootLayer}.
-	 * 
+	 *
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361525
 	 */
 	@Test
@@ -111,7 +111,7 @@ public class GraphTests extends Assert {
 	/**
 	 * Avoid issues when un-highlighting non-existent connections on
 	 * {@link #ZestRootLayer}.
-	 * 
+	 *
 	 * @See https://bugs.eclipse.org/bugs/show_bug.cgi?id=361525
 	 */
 	@Test

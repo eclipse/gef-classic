@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ import org.eclipse.gef.examples.shapes.model.commands.ConnectionDeleteCommand;
  * This edit part must implement the PropertyChangeListener interface, so it can
  * be notified of property changes in the corresponding model element.
  * </p>
- * 
+ *
  * @author Elias Volanakis
  */
 class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyChangeListener {
@@ -54,7 +54,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractEditPart#createEditPolicies()
 	 */
 	@Override
@@ -73,7 +73,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#createFigure()
 	 */
 	@Override
@@ -107,7 +107,7 @@ class ConnectionEditPart extends AbstractConnectionEditPart implements PropertyC
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
 	 * PropertyChangeEvent)
 	 */

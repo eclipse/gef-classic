@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -53,7 +53,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	/**
 	 * <code>activate()</code> is extended to add a listener to the
 	 * <code>Connection</code> figure.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#activate()
 	 */
 	@Override
@@ -112,7 +112,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * implicit bendpoints (such as those created by the {@link AutomaticRouter})
 	 * are used, one {@link BendpointCreationHandle} is placed in the middle of the
 	 * Connection.
-	 * 
+	 *
 	 * @see SelectionHandlesEditPolicy#createSelectionHandles()
 	 */
 	@Override
@@ -128,7 +128,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	/**
 	 * <code>deactivate()</code> is extended to remove the property change listener
 	 * on the <code>Connection</code> figure.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
 	@Override
@@ -141,7 +141,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * Erases all bendpoint feedback. Since the original <code>Connection</code>
 	 * figure is used for feedback, we just restore the original constraint that was
 	 * saved before feedback started to show.
-	 * 
+	 *
 	 * @param request the BendpointRequest
 	 */
 	protected void eraseConnectionFeedback(BendpointRequest request) {
@@ -160,7 +160,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 
 	/**
 	 * Factors the Request into either a MOVE, a DELETE, or a CREATE of a bendpoint.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#getCommand(Request)
 	 */
 	@Override
@@ -177,7 +177,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 
 	/**
 	 * Convenience method for obtaining the host's <code>Connection</code> figure.
-	 * 
+	 *
 	 * @return the Connection figure
 	 */
 	protected Connection getConnection() {
@@ -186,7 +186,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 
 	/**
 	 * Implement this method to return a Command that will create a bendpoint.
-	 * 
+	 *
 	 * @param request the BendpointRequest
 	 * @return a Command to create a bendpoint
 	 */
@@ -194,7 +194,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 
 	/**
 	 * Implement this method to return a Command that will delete a bendpoint.
-	 * 
+	 *
 	 * @param request the BendpointRequest
 	 * @return a Command to delete a bendpoint
 	 */
@@ -202,7 +202,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 
 	/**
 	 * Implement this method to return a Command that will move a bendpoint.
-	 * 
+	 *
 	 * @param request the BendpointRequest
 	 * @return a Command to move a bendpoint
 	 */
@@ -248,7 +248,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 
 	/**
 	 * If the number of bendpoints changes, handles are updated.
-	 * 
+	 *
 	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
 	 */
 	@Override
@@ -311,7 +311,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * Shows feedback when a bendpoint is being created. The original figure is used
 	 * for feedback and the original constraint is saved, so that it can be restored
 	 * when feedback is erased.
-	 * 
+	 *
 	 * @param request the BendpointRequest
 	 */
 	protected void showCreateBendpointFeedback(BendpointRequest request) {
@@ -335,7 +335,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * once when the bendpoint is first deleted, not every mouse move. The original
 	 * figure is used for feedback and the original constraint is saved, so that it
 	 * can be restored when feedback is erased.
-	 * 
+	 *
 	 * @param request the BendpointRequest
 	 */
 	protected void showDeleteBendpointFeedback(BendpointRequest request) {
@@ -353,7 +353,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	 * {@link #showDeleteBendpointFeedback(BendpointRequest)} if needed. The
 	 * original figure is used for feedback and the original constraint is saved, so
 	 * that it can be restored when feedback is erased.
-	 * 
+	 *
 	 * @param request the BendpointRequest
 	 */
 	protected void showMoveBendpointFeedback(BendpointRequest request) {
@@ -385,7 +385,7 @@ public abstract class BendpointEditPolicy extends SelectionHandlesEditPolicy imp
 	/**
 	 * Shows feedback when appropriate. Calls a different method depending on the
 	 * request type.
-	 * 
+	 *
 	 * @see #showCreateBendpointFeedback(BendpointRequest)
 	 * @see #showMoveBendpointFeedback(BendpointRequest)
 	 * @param request the Request

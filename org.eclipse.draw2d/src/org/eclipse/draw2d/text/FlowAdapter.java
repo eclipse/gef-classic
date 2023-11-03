@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -24,7 +24,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * size.
  * <p>
  * WARNING: This class is not intended to be subclassed by clients.
- * 
+ *
  * @author Pratik Shah
  * @since 3.1
  */
@@ -35,7 +35,7 @@ public class FlowAdapter extends FlowFigure {
 
 	/**
 	 * This FlowFigure contributes an Object Replacement Character.
-	 * 
+	 *
 	 * @see FlowFigure#contributeBidi(BidiProcessor)
 	 */
 	@Override
@@ -57,7 +57,7 @@ public class FlowAdapter extends FlowFigure {
 	/**
 	 * Sizes the content box to be big enough to display all figures. Wraps to the
 	 * next line if there is not enough room on the current one.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Figure#layout()
 	 */
 	@Override
@@ -77,7 +77,7 @@ public class FlowAdapter extends FlowFigure {
 	/**
 	 * Updates the bounds of this figure to match that of its content box, and lays
 	 * out this figure's children.
-	 * 
+	 *
 	 * @see FlowFigure#postValidate()
 	 */
 	@Override
@@ -89,7 +89,7 @@ public class FlowAdapter extends FlowFigure {
 
 	/**
 	 * Sets the bidi level of the content box associated with this Figure
-	 * 
+	 *
 	 * @see FlowFigure#setBidiInfo(BidiInfo)
 	 */
 	@Override
@@ -134,7 +134,7 @@ public class FlowAdapter extends FlowFigure {
 
 	/**
 	 * Do not validate children.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.IFigure#validate()
 	 */
 	@Override

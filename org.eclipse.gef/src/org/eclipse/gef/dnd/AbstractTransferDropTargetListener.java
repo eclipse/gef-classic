@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -63,7 +63,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * Constructs a new AbstractTransferDropTargetListener and sets the
 	 * EditPartViewer. If you use this constructor, you must set the Transfer
 	 * yourself using {@link #setTransfer(Transfer)}.
-	 * 
+	 *
 	 * @param viewer the EditPartViewer
 	 */
 	public AbstractTransferDropTargetListener(EditPartViewer viewer) {
@@ -73,7 +73,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	/**
 	 * Constructs a new AbstractTransferDropTargetListener and sets the
 	 * EditPartViewer and Transfer. The Viewer's Control should be the Drop target.
-	 * 
+	 *
 	 * @param viewer the EditPartViewer
 	 * @param xfer   the Transfer
 	 */
@@ -95,7 +95,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	/**
 	 * Creates and returns the <code>Request</code> that will be sent to the
 	 * targeted EditPart. Subclasses can override to create specialized requests.
-	 * 
+	 *
 	 * @return the <code>Request</code> to be used with the <i>target</i> EditPart
 	 */
 	protected Request createTargetRequest() {
@@ -106,7 +106,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * Stores the information about the current DropTargetEvent. This method may not
 	 * be called on the listener, because the listener may not be made active until
 	 * after the mouse has entered the drop target.
-	 * 
+	 *
 	 * @see DropTargetListener#dragEnter(DropTargetEvent)
 	 */
 	@Override
@@ -121,7 +121,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * perform actions for this event. For some reason, SWT also calls
 	 * <code>dragLeave()</code> when the actual drop is performed, even though the
 	 * mouse has not left the drop target.
-	 * 
+	 *
 	 * @see DropTargetListener#dragLeave(DropTargetEvent)
 	 */
 	@Override
@@ -134,7 +134,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * Stores the information about the current DropTargetEvent and then calls
 	 * <code>handleDragOperationChanged()</code>. Subclasses should override
 	 * {@link #handleDragOperationChanged()} to perform actions for this event.
-	 * 
+	 *
 	 * @see DropTargetListener#dragOperationChanged(DropTargetEvent)
 	 */
 	@Override
@@ -148,7 +148,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * Stores the information about the current DropTargetEvent and then calls
 	 * <code>handleDragOver()</code>. Subclasses should override
 	 * {@link #handleDragOver()} to perform actions for this event.
-	 * 
+	 *
 	 * @see DropTargetListener#dragOver(org.eclipse.swt.dnd.DropTargetEvent)
 	 */
 	@Override
@@ -174,7 +174,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * Stores the information about the current DropTargetEvent and then calls
 	 * {@link #handleDrop()}, followed by {@link #unload()}. Subclasses should
 	 * override these methods to perform actions for this event.
-	 * 
+	 *
 	 * @see DropTargetListener#drop(DropTargetEvent)
 	 */
 	@Override
@@ -188,7 +188,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	/**
 	 * Stores the current <code>DropTargetEvent</code> and does nothing. By default,
 	 * the drop is accepted.
-	 * 
+	 *
 	 * @see DropTargetListener#dropAccept(DropTargetEvent)
 	 */
 	@Override
@@ -210,7 +210,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 
 	/**
 	 * Returns the current command from the target EditPart.
-	 * 
+	 *
 	 * @return The current command from the target EditPart
 	 */
 	protected Command getCommand() {
@@ -219,7 +219,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 
 	/**
 	 * Returns the current <code>DropTargetEvent</code>.
-	 * 
+	 *
 	 * @return the current event
 	 */
 	public DropTargetEvent getCurrentEvent() {
@@ -229,7 +229,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	/**
 	 * Returns the current mouse location, as a {@link Point}. The location is
 	 * relative to the control's client area.
-	 * 
+	 *
 	 * @return the drop location
 	 */
 	protected Point getDropLocation() {
@@ -243,7 +243,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	/**
 	 * Returns a Collection of {@link EditPart EditParts} that are to be excluded
 	 * when searching for the target EditPart.
-	 * 
+	 *
 	 * @return A Collection of EditParts to be excluded
 	 */
 	@SuppressWarnings("static-method") // allow children to override this method
@@ -253,7 +253,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 
 	/**
 	 * Returns the current <i>target</i> <code>EditPart</code>.
-	 * 
+	 *
 	 * @return the target EditPart
 	 */
 	protected EditPart getTargetEditPart() {
@@ -264,7 +264,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * Returns the target <code>Request</code>. If the target Request is
 	 * <code>null</code>, {@link #createTargetRequest()} is called and the newly
 	 * created Request is returned.
-	 * 
+	 *
 	 * @return the target Request
 	 */
 	protected Request getTargetRequest() {
@@ -283,7 +283,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 
 	/**
 	 * Returns the <code>EditPartViewer</code> that is the target of the drop.
-	 * 
+	 *
 	 * @return the EditPartViewer
 	 */
 	protected EditPartViewer getViewer() {
@@ -383,7 +383,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * current drop location. If a target <code>EditPart</code> is found,
 	 * <code>true</code> is returned, and the DropTargetEvent's
 	 * {@link DropTargetEvent#currentDataType} is set to the dataType that matched.
-	 * 
+	 *
 	 * @param event the DropTargetEvent
 	 * @return <code>true</code> if this TransferDropTargetListener is enabled for
 	 *         the given DropTargetEvent
@@ -416,7 +416,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	/**
 	 * Returns <code>true</code> if {@link #isEnabled(DropTargetEvent)} is
 	 * determined by asking the potential target for a Command.
-	 * 
+	 *
 	 * @return <code>true</code> if the target will be queried for a
 	 *         <code>Command</code>
 	 * @since 3.1
@@ -436,7 +436,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 
 	/**
 	 * Sets the current autoexpose helper.
-	 * 
+	 *
 	 * @param helper the autoexpose helper
 	 */
 	protected void setAutoexposeHelper(AutoexposeHelper helper) {
@@ -448,7 +448,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * {@link #isEnabled(DropTargetEvent)}. For most DND operations, the data is not
 	 * available, thus asking for a command would not make sense. The default value
 	 * is <code>false</code>.
-	 * 
+	 *
 	 * @param value <code>true</code> if a
 	 * @since 3.1
 	 */
@@ -458,7 +458,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 
 	/**
 	 * Sets the current DropTargetEvent.
-	 * 
+	 *
 	 * @param currentEvent the DropTargetEvent
 	 */
 	public void setCurrentEvent(DropTargetEvent currentEvent) {
@@ -469,7 +469,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * Sets the <i>target</i> <code>EditPart</code>. If the target is changing,
 	 * {@link #handleExitingEditPart()} is called before the target changes, and
 	 * {@link #handleEnteredEditPart()} is called afterwards.
-	 * 
+	 *
 	 * @param ep the new target EditPart
 	 */
 	protected void setTargetEditPart(EditPart ep) {
@@ -484,7 +484,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 
 	/**
 	 * Sets the Tranfer type that this listener can handle.
-	 * 
+	 *
 	 * @param xfer the Transfer
 	 */
 	protected void setTransfer(Transfer xfer) {
@@ -493,7 +493,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 
 	/**
 	 * Sets the EditPartViewer.
-	 * 
+	 *
 	 * @param viewer the EditPartViewer
 	 */
 	protected void setViewer(EditPartViewer viewer) {
@@ -503,7 +503,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	/**
 	 * Asks the target <code>EditPart</code> to show target feedback if it is not
 	 * <code>null</code>.
-	 * 
+	 *
 	 * @see EditPart#showTargetFeedback(Request)
 	 */
 	protected void showTargetFeedback() {
@@ -517,7 +517,7 @@ public abstract class AbstractTransferDropTargetListener implements TransferDrop
 	 * Tests whether the given event's location is different than the previous
 	 * event's location, and sets the remembered location to the current event's
 	 * location.
-	 * 
+	 *
 	 * @param event
 	 * @return boolean
 	 */

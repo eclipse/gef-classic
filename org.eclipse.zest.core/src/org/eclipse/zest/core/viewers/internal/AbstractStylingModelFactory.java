@@ -2,12 +2,12 @@
  * Copyright 2005, 2009, CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.viewers.internal;
@@ -36,7 +36,7 @@ import org.eclipse.zest.core.widgets.IContainer;
 /**
  * Base class that can be used for model factories. Offers facilities to style
  * the items that have been created by the factory.
- * 
+ *
  * @author Del Myers
  */
 // @tag zest.bug.160367-Refreshing.fix : update the factory to use the
@@ -48,7 +48,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	private List /* ConstraintAdapater */ constraintAdapters = new ArrayList();
 
 	/**
-	 * 
+	 *
 	 */
 	public AbstractStylingModelFactory(AbstractStructuredGraphViewer viewer) {
 		this.viewer = viewer;
@@ -86,7 +86,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/**
 	 * Takes a list of IGraphModelConnections and adjusts the curve depths and the
 	 * bezier curves based on the number of curves in the list.
-	 * 
+	 *
 	 * @param connections
 	 * @param size        + * total number of arcs - may be bigger then
 	 *                    connections.size
@@ -139,7 +139,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
 	 * getLabelProvider()
 	 */
@@ -150,7 +150,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
 	 * getContentProvider()
 	 */
@@ -161,7 +161,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
 	 * createConnection(org.eclipse.zest.core.internal.graphmodel.GraphModel,
 	 * java.lang.Object, java.lang.Object, java.lang.Object)
@@ -215,7 +215,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
 	 * createNode(org.eclipse.zest.core.internal.graphmodel.GraphModel,
 	 * java.lang.Object)
@@ -306,7 +306,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
 	 * refreshGraph(org.eclipse.zest.core.internal.graphmodel.GraphModel)
 	 */
@@ -354,7 +354,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/**
 	 * Convenience method for clearing all the elements in the graph.
-	 * 
+	 *
 	 * @param graph
 	 */
 	public void clearGraph(Graph graph) {
@@ -372,7 +372,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 	/**
 	 * Builds the graph model from the viewer's content provider. There is no
 	 * guarantee that the model will be cleared before this method is called.
-	 * 
+	 *
 	 * @param graph
 	 */
 	protected void doBuildGraph(Graph model) {
@@ -384,7 +384,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/**
 	 * Determines if this element should be filtered or not.
-	 * 
+	 *
 	 * @param parent
 	 * @param element
 	 * @return
@@ -402,7 +402,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#
 	 * isFiltered(java.lang.Object)
 	 */
@@ -417,7 +417,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * org.eclipse.zest.core.internal.graphmodel.IStylingGraphModelFactory#refresh
 	 * (org.eclipse.zest.core.internal.graphmodel.GraphModel, java.lang.Object)
@@ -429,7 +429,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/**
 	 * Converts the list of GraphNode objects into an array and return it.
-	 * 
+	 *
 	 * @return GraphModelNode[]
 	 */
 	protected GraphNode[] getNodesArray(Graph graph) {
@@ -440,7 +440,7 @@ public abstract class AbstractStylingModelFactory implements IStylingGraphModelF
 
 	/**
 	 * Converts the list of GraphConnections objects into an array and return it.
-	 * 
+	 *
 	 * @param graph
 	 * @return
 	 */

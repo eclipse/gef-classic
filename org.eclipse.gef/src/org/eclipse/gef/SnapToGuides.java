@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -35,7 +35,7 @@ import org.eclipse.gef.rulers.RulerProvider;
  * This helper does not keep up with changes in guides. Clients should
  * instantiate a new helper each time one is requested and not hold on to
  * instances of the helper.
- * 
+ *
  * @since 3.0
  * @author Randy Hudson
  * @author Pratik Shah
@@ -111,7 +111,7 @@ public class SnapToGuides extends SnapToHelper {
 	/**
 	 * Constructs a new snap-to-guides helper using the given container as the
 	 * basis.
-	 * 
+	 *
 	 * @param container the container editpart
 	 */
 	public SnapToGuides(GraphicalEditPart container) {
@@ -121,7 +121,7 @@ public class SnapToGuides extends SnapToHelper {
 	/**
 	 * Get the sensitivity of the snapping. Corrections greater than this value will
 	 * not occur.
-	 * 
+	 *
 	 * @return the snapping threshold
 	 * @since 3.4
 	 */
@@ -131,7 +131,7 @@ public class SnapToGuides extends SnapToHelper {
 
 	/**
 	 * Set the sensitivity of the snapping.
-	 * 
+	 *
 	 * @see #getThreshold()
 	 * @param newThreshold the new snapping threshold
 	 * @since 3.4
@@ -146,7 +146,7 @@ public class SnapToGuides extends SnapToHelper {
 	 * the top or left side of a rectangle being snapped. Similar for far. If
 	 * snapping occurs, the extendedData will have the guide and attachment point
 	 * set.
-	 * 
+	 *
 	 * @param guides       the location of the guides
 	 * @param near         the top or left location
 	 * @param far          the bottom or right location
@@ -177,7 +177,7 @@ public class SnapToGuides extends SnapToHelper {
 	 * <code>side</code> parameter.
 	 * <P>
 	 * The correction's magnitude will be less than getThreshold().
-	 * 
+	 *
 	 * @param guides       the location of the guides
 	 * @param value        the location being tested
 	 * @param extendedData the map for storing snap details
@@ -208,7 +208,7 @@ public class SnapToGuides extends SnapToHelper {
 	/**
 	 * Returns the horizontal guides in the coordinates of the container's contents
 	 * pane.
-	 * 
+	 *
 	 * @return the horizontal guides
 	 */
 	protected int[] getHorizontalGuides() {
@@ -226,7 +226,7 @@ public class SnapToGuides extends SnapToHelper {
 	/**
 	 * Returns the vertical guides in the coordinates of the container's contents
 	 * pane.
-	 * 
+	 *
 	 * @return the vertical guides
 	 */
 	protected int[] getVerticalGuides() {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -42,7 +42,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	/**
 	 * Constructs a new SelectEditPartTracker with the given edit part as the
 	 * source.
-	 * 
+	 *
 	 * @param owner the source edit part
 	 */
 	public SelectEditPartTracker(EditPart owner) {
@@ -77,7 +77,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 
 	/**
 	 * Returns the source edit part.
-	 * 
+	 *
 	 * @return the source edit part
 	 */
 	protected EditPart getSourceEditPart() {
@@ -88,7 +88,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 * Performs a conditional selection if needed (if right or left mouse button
 	 * have been pressed) and goes into the drag state. If any other button has been
 	 * pressed, the tool goes into the invalid state.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
 	@Override
@@ -112,7 +112,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 * part is newly selected and not completely visible,
 	 * {@link EditPartViewer#reveal(EditPart)} is called to show the selected edit
 	 * part.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
 	@Override
@@ -131,7 +131,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 
 	/**
 	 * Calls {@link #performOpen()} if the double click was with mouse button 1.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDoubleClick(int)
 	 */
 	@Override
@@ -155,7 +155,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 
 	/**
 	 * Returns <code>true</code> if selection has already occured.
-	 * 
+	 *
 	 * @return <code>true</code> if selection has occured
 	 */
 	protected boolean hasSelectionOccurred() {
@@ -239,7 +239,7 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 
 	/**
 	 * Sets the source edit part.
-	 * 
+	 *
 	 * @param part the source edit part
 	 */
 	protected void setSourceEditPart(EditPart part) {

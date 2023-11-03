@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 package org.eclipse.zest.layouts.exampleStructures;
@@ -27,7 +27,7 @@ import org.eclipse.zest.layouts.constraints.LayoutConstraint;
 
 /**
  * Rerpresents a simple node that can be used in the layout algorithms.
- * 
+ *
  * @author Ian Bull
  * @author Casey Best (Version 1 by Rob Lintern)
  * @version 2
@@ -133,7 +133,7 @@ public class SimpleNode implements LayoutEntity {
 
 	/**
 	 * Ignores this entity in the layout
-	 * 
+	 *
 	 * @param ignore Should this entity be ignored
 	 */
 	public void ignoreInLayout(boolean ignore) {
@@ -270,7 +270,7 @@ public class SimpleNode implements LayoutEntity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see ca.uvic.cs.chisel.layouts.LayoutEntity#getInternalEntity()
 	 */
 	@Override
@@ -280,7 +280,7 @@ public class SimpleNode implements LayoutEntity {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * ca.uvic.cs.chisel.layouts.LayoutEntity#setInternalEntity(java.lang.Object)
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2010, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,12 +21,12 @@ import org.eclipse.gef.GraphicalEditPart;
 
 /**
  * Utility class comprising functions related to {@link EditPart}s
- * 
+ *
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
- * 
+ *
  * @since 3.6
- * 
+ *
  */
 public final class EditPartUtilities {
 
@@ -38,10 +38,10 @@ public final class EditPartUtilities {
 	/**
 	 * Returns the transitive child edit part set of the given parent
 	 * <code>GraphicalEditPart</code>.
-	 * 
+	 *
 	 * @param parentEditPart the parent graphical edit part for which to retrieve
 	 *                       the transitive child edit part set.
-	 * 
+	 *
 	 * @return the transitive child edit part set
 	 */
 	public static LinkedHashSet<? extends GraphicalEditPart> getAllChildren(GraphicalEditPart parentEditPart) {
@@ -52,9 +52,9 @@ public final class EditPartUtilities {
 
 	/**
 	 * Returns the transitive nested connection edit parts.
-	 * 
+	 *
 	 * @param graphicalEditPart the graphical edit part
-	 * 
+	 *
 	 * @return the transitive nested connection edit parts
 	 */
 	public static HashSet getAllNestedConnectionEditParts(GraphicalEditPart graphicalEditPart) {
@@ -69,9 +69,9 @@ public final class EditPartUtilities {
 	/**
 	 * Returns the set of <code>ConnectionEditPart</code>s that are linked to the
 	 * child edit parts of the given <code>GraphicalEditPart</code>.
-	 * 
+	 *
 	 * @param graphicalEditPart the graphical edit part
-	 * 
+	 *
 	 * @return the set of child <code>ConnectionEditPart</code>s for the given
 	 *         <code>GraphicalEditPart</code>
 	 */

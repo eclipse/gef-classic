@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -37,7 +37,7 @@ import org.eclipse.gef.editparts.ZoomManager;
 /**
  * A ControlContribution that uses a {@link org.eclipse.swt.widgets.Combo} as
  * its control
- * 
+ *
  * @author Eric Bordeau
  */
 public class ZoomComboContributionItem extends ContributionItem implements ZoomListener {
@@ -52,7 +52,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 
 	/**
 	 * Constructor for ComboToolItem.
-	 * 
+	 *
 	 * @param partService used to add a PartListener
 	 */
 	public ZoomComboContributionItem(IPartService partService) {
@@ -61,7 +61,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 
 	/**
 	 * Constructor for ComboToolItem.
-	 * 
+	 *
 	 * @param partService used to add a PartListener
 	 * @param initString  the initial string displayed in the combo
 	 */
@@ -71,7 +71,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 
 	/**
 	 * Constructor for ComboToolItem.
-	 * 
+	 *
 	 * @param partService used to add a PartListener
 	 * @param initStrings the initial string displayed in the combo
 	 */
@@ -131,7 +131,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 
 	/**
 	 * Computes the width required by control
-	 * 
+	 *
 	 * @param control The control to compute width
 	 * @return int The width required
 	 */
@@ -142,7 +142,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	/**
 	 * Creates and returns the control for this contribution item under the given
 	 * parent composite.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 * @return the new control
 	 */
@@ -198,7 +198,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	 * The control item implementation of this <code>IContributionItem</code> method
 	 * calls the <code>createControl</code> framework method. Subclasses must
 	 * implement <code>createControl</code> rather than overriding this method.
-	 * 
+	 *
 	 * @param parent The parent of the control to fill
 	 */
 	@Override
@@ -209,7 +209,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	/**
 	 * The control item implementation of this <code>IContributionItem</code> method
 	 * throws an exception since controls cannot be added to menus.
-	 * 
+	 *
 	 * @param parent The menu
 	 * @param index  Menu index
 	 */
@@ -224,7 +224,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 	 * under the given parent, and then creates a new tool item to hold it.
 	 * Subclasses must implement <code>createControl</code> rather than overriding
 	 * this method.
-	 * 
+	 *
 	 * @param parent The ToolBar to add the new control to
 	 * @param index  Index
 	 */
@@ -237,7 +237,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 
 	/**
 	 * Returns the zoomManager.
-	 * 
+	 *
 	 * @return ZoomManager
 	 */
 	public ZoomManager getZoomManager() {
@@ -246,7 +246,7 @@ public class ZoomComboContributionItem extends ContributionItem implements ZoomL
 
 	/**
 	 * Sets the ZoomManager
-	 * 
+	 *
 	 * @param zm The ZoomManager
 	 */
 	public void setZoomManager(ZoomManager zm) {

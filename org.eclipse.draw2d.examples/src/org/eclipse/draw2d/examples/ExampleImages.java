@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2005 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -16,7 +16,7 @@ import org.eclipse.swt.graphics.Image;
 
 /**
  * Created on :Sep 26, 2002
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */

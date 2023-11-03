@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ public interface TextStyleManager {
 	 * does not have a consistent value for that style, then
 	 * {@link org.eclipse.gef.examples.text.actions.StyleService#UNDEFINED} is
 	 * returned.
-	 * 
+	 *
 	 * @param styleID
 	 * @param range
 	 * @return
@@ -35,7 +35,7 @@ public interface TextStyleManager {
 
 	/**
 	 * Returns the effective state for the requested style and range.
-	 * 
+	 *
 	 * @param styleID
 	 * @param range
 	 * @return

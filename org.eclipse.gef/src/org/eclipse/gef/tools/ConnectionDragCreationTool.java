@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 
 	/**
 	 * Constructs a new ConnectionDragCreationTool with the given factory.
-	 * 
+	 *
 	 * @param factory the creation factory
 	 */
 	public ConnectionDragCreationTool(CreationFactory factory) {
@@ -40,7 +40,7 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 
 	/**
 	 * Calls super and sets the current state to {@link AbstractTool#STATE_DRAG} .
-	 * 
+	 *
 	 * @see AbstractConnectionCreationTool#handleButtonDown(int)
 	 */
 	@Override
@@ -53,7 +53,7 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 	/**
 	 * If the connection has started, the button up event attempts to complete the
 	 * connection.
-	 * 
+	 *
 	 * @param button the button that was released
 	 * @return <code>true</code> if this button up event was processed
 	 */
@@ -68,7 +68,7 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 
 	/**
 	 * When the threshold is passed, transition to CONNECTION_STARTED.
-	 * 
+	 *
 	 * @return <code>true</code> if the state transition completed successfully
 	 */
 	@Override
@@ -79,7 +79,7 @@ public class ConnectionDragCreationTool extends AbstractConnectionCreationTool i
 	/**
 	 * Overridden so that nothing happens when this tool is used as a tracker. If it
 	 * is the primary tool, then this method behaves normally.
-	 * 
+	 *
 	 * @see AbstractTool#handleFinished()
 	 */
 	@Override

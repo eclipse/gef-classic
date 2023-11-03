@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ import org.eclipse.gef.ui.palette.PaletteViewer;
  * This class serves as a quick starting point for clients who are new to GEF.
  * It will create an Editor containing a Split composite, with one side
  * contianing a PaletteViewer, and the other a GraphicalViewer.
- * 
+ *
  * @author hudsonr
  */
 public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
@@ -43,7 +43,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 
 	/**
 	 * Creates the palette on the given composite.
-	 * 
+	 *
 	 * @param parent the composite
 	 */
 	protected void createPaletteViewer(Composite parent) {
@@ -75,7 +75,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 
 	/**
 	 * Returns the PaletteRoot for the palette viewer.
-	 * 
+	 *
 	 * @return the palette root
 	 */
 	protected abstract PaletteRoot getPaletteRoot();
@@ -83,7 +83,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 	/**
 	 * Returns the initial palette size in pixels. Subclasses may override this
 	 * method to return a persisted value.
-	 * 
+	 *
 	 * @see #handlePaletteResized(int)
 	 * @return the initial size of the palette in pixels.
 	 */
@@ -93,7 +93,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 
 	/**
 	 * Returns the PaletteViewer.
-	 * 
+	 *
 	 * @return the palette viewer
 	 */
 	protected PaletteViewer getPaletteViewer() {
@@ -102,7 +102,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 
 	/**
 	 * Called whenever the user resizes the palette.
-	 * 
+	 *
 	 * @param newSize the new size in pixels
 	 */
 	protected void handlePaletteResized(int newSize) {
@@ -124,7 +124,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 
 	/**
 	 * Sets the palette viewer
-	 * 
+	 *
 	 * @param paletteViewer the palette viewer
 	 */
 	protected void setPaletteViewer(PaletteViewer paletteViewer) {
@@ -133,7 +133,7 @@ public abstract class GraphicalEditorWithPalette extends GraphicalEditor {
 
 	/**
 	 * Sets the {@link #getPaletteRoot() palette root} of the edit domain
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.parts.GraphicalEditor#setEditDomain(org.eclipse.gef.DefaultEditDomain)
 	 */
 	@Override

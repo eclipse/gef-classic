@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ public interface UpdateListener {
 	 * {@link org.eclipse.draw2d.parts.Thumbnail}, notification still needs to
 	 * occur. The map of dirty regions is passed to allow the listener to determine
 	 * if it needs to update, for instance when a particular figure is painting.
-	 * 
+	 *
 	 * @param damage       The area being painted
 	 * @param dirtyRegions a Map of figures to their dirty regions
 	 */

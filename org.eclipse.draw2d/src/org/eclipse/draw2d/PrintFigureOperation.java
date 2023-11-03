@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * Class responsible for printing Figures.
- * 
+ *
  * @author Dan Lee
  * @author Eric Bordeau
  * @author Sven Müller
@@ -59,7 +59,7 @@ public class PrintFigureOperation extends PrintOperation {
 	 * <p>
 	 * Note: Descendants must call setPrintSource(IFigure) to set the IFigure that
 	 * is to be printed.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.PrintOperation#PrintOperation(Printer)
 	 */
 	protected PrintFigureOperation(Printer p) {
@@ -68,7 +68,7 @@ public class PrintFigureOperation extends PrintOperation {
 
 	/**
 	 * Constructor for PrintFigureOperation.
-	 * 
+	 *
 	 * @param p         Printer to print on
 	 * @param srcFigure Figure to print
 	 */
@@ -90,7 +90,7 @@ public class PrintFigureOperation extends PrintOperation {
 	/**
 	 * Returns the current print mode. The print mode is one of:
 	 * {@link #FIT_HEIGHT}, {@link #FIT_PAGE}, or {@link #FIT_WIDTH}.
-	 * 
+	 *
 	 * @return the print mode
 	 */
 	protected int getPrintMode() {
@@ -99,7 +99,7 @@ public class PrintFigureOperation extends PrintOperation {
 
 	/**
 	 * Returns the printSource.
-	 * 
+	 *
 	 * @return IFigure The source IFigure
 	 */
 	protected IFigure getPrintSource() {
@@ -117,7 +117,7 @@ public class PrintFigureOperation extends PrintOperation {
 
 	/**
 	 * Prints the pages based on the current print mode.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.PrintOperation#printPages()
 	 */
 	@Override
@@ -158,7 +158,7 @@ public class PrintFigureOperation extends PrintOperation {
 	/**
 	 * Sets the print mode. Possible values are {@link #TILE}, {@link #FIT_HEIGHT},
 	 * {@link #FIT_WIDTH} and {@link #FIT_PAGE}.
-	 * 
+	 *
 	 * @param mode the print mode
 	 */
 	public void setPrintMode(int mode) {
@@ -167,7 +167,7 @@ public class PrintFigureOperation extends PrintOperation {
 
 	/**
 	 * Sets the printSource.
-	 * 
+	 *
 	 * @param printSource The printSource to set
 	 */
 	protected void setPrintSource(IFigure printSource) {
@@ -176,7 +176,7 @@ public class PrintFigureOperation extends PrintOperation {
 
 	/**
 	 * Sets up Graphics object for the given IFigure.
-	 * 
+	 *
 	 * @param graphics The Graphics to setup
 	 * @param figure   The IFigure used to setup graphics
 	 */

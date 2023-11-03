@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -42,7 +42,7 @@ import org.eclipse.gef.requests.GroupRequest;
  * This helper does not keep up with changes made to the container editpart.
  * Clients should instantiate a new helper each time one is requested and not
  * hold on to instances of the helper.
- * 
+ *
  * @since 3.0
  * @author Randy Hudson
  * @author Pratik Shah
@@ -53,7 +53,7 @@ public class SnapToGeometry extends SnapToHelper {
 	 * A property indicating whether this helper should be used. The value should be
 	 * an instance of Boolean. Currently, this class does not check to see if the
 	 * viewer property is set to <code>true</code>.
-	 * 
+	 *
 	 * @see EditPartViewer#setProperty(String, Object)
 	 */
 	public static final String PROPERTY_SNAP_ENABLED = "SnapToGeometry.isEnabled"; //$NON-NLS-1$
@@ -95,7 +95,7 @@ public class SnapToGeometry extends SnapToHelper {
 
 		/**
 		 * Constructs a new entry of the given type and location.
-		 * 
+		 *
 		 * @param type     an integer between -1 and 1 inclusively
 		 * @param location the location
 		 */
@@ -108,7 +108,7 @@ public class SnapToGeometry extends SnapToHelper {
 
 		/**
 		 * Returns the location of the snap entry.
-		 * 
+		 *
 		 * @return the location
 		 * @since 3.2
 		 */
@@ -123,7 +123,7 @@ public class SnapToGeometry extends SnapToHelper {
 		 * <LI>0 indicates middle/center
 		 * <LI>1 indicates right/bottom
 		 * </UL>
-		 * 
+		 *
 		 * @return the snap type
 		 * @since 3.2
 		 */
@@ -162,7 +162,7 @@ public class SnapToGeometry extends SnapToHelper {
 	 * Constructs a helper that will use the given part as its basis for snapping.
 	 * The part's contents pane will provide the coordinate system and its children
 	 * determine the existing elements.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param container the container editpart
 	 */
@@ -173,7 +173,7 @@ public class SnapToGeometry extends SnapToHelper {
 	/**
 	 * Get the sensitivity of the snapping. Corrections greater than this value will
 	 * not occur.
-	 * 
+	 *
 	 * @return the snapping threshold
 	 * @since 3.4
 	 */
@@ -183,7 +183,7 @@ public class SnapToGeometry extends SnapToHelper {
 
 	/**
 	 * Set the sensitivity of the snapping.
-	 * 
+	 *
 	 * @see #getThreshold()
 	 * @param newThreshold the new snapping threshold
 	 * @since 3.4
@@ -196,7 +196,7 @@ public class SnapToGeometry extends SnapToHelper {
 	 * Generates a list of parts which should be snapped to. The list is the
 	 * original children, minus the given exclusions, minus and children whose
 	 * figures are not visible.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param exclusions the children to exclude
 	 * @return a list of parts which should be snapped to
@@ -213,7 +213,7 @@ public class SnapToGeometry extends SnapToHelper {
 	/**
 	 * Returns the correction value for the given entries and sides. During a move,
 	 * the left, right, or center is free to snap to a location.
-	 * 
+	 *
 	 * @param entries      the entries
 	 * @param extendedData the requests extended data
 	 * @param vert         <code>true</code> if the correction is vertical
@@ -242,7 +242,7 @@ public class SnapToGeometry extends SnapToHelper {
 	/**
 	 * Returns the correction value between +/- {@link #getThreshold()}, or the
 	 * #getThreshold () if no corrections were found.
-	 * 
+	 *
 	 * @param entries      the entries
 	 * @param extendedData the map for setting values
 	 * @param vert         <code>true</code> if vertical
@@ -293,7 +293,7 @@ public class SnapToGeometry extends SnapToHelper {
 	/**
 	 * Returns the rectangular contribution for the given editpart. This is the
 	 * rectangle with which snapping is performed.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param part the child
 	 * @return the rectangular guide for that part
@@ -305,7 +305,7 @@ public class SnapToGeometry extends SnapToHelper {
 
 	/**
 	 * Updates the cached row and column Entries using the provided parts.
-	 * 
+	 *
 	 * @since 3.0
 	 * @param parts a List of EditParts
 	 */

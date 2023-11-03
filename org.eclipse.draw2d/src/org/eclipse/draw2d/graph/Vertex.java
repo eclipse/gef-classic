@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,9 +25,9 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * A vertex representation for the ShortestPathRouting. Vertices are either one
  * of four corners on an <code>Obstacle</code>(Rectangle), or one of the two end
  * points of a <code>Path</code>.
- * 
+ *
  * This class is not intended to be subclassed.
- * 
+ *
  * @author Whitney Sorenson
  * @since 3.0
  */
@@ -60,7 +60,7 @@ class Vertex extends Point {
 
 	/**
 	 * Creates a new Vertex with the given x, y position and on the given obstacle.
-	 * 
+	 *
 	 * @param x   x point
 	 * @param y   y point
 	 * @param obs obstacle - can be null
@@ -74,7 +74,7 @@ class Vertex extends Point {
 
 	/**
 	 * Creates a new Vertex with the given point position and on the given obstacle.
-	 * 
+	 *
 	 * @param p   the point
 	 * @param obs obstacle - can be null
 	 */
@@ -85,7 +85,7 @@ class Vertex extends Point {
 	/**
 	 * Adds a path to this vertex, calculates angle between two segments and caches
 	 * it.
-	 * 
+	 *
 	 * @param path  the path
 	 * @param start the segment to this vertex
 	 * @param end   the segment away from this vertex
@@ -103,7 +103,7 @@ class Vertex extends Point {
 	/**
 	 * Creates a point that represents this vertex offset by the given amount times
 	 * the offset.
-	 * 
+	 *
 	 * @param modifier the offset
 	 * @return a Point that has been bent around this vertex
 	 */
@@ -144,7 +144,7 @@ class Vertex extends Point {
 	/**
 	 * Returns a Rectangle that represents the region around this vertex that paths
 	 * will be traveling in.
-	 * 
+	 *
 	 * @param extraOffset a buffer to add to the region.
 	 * @return the rectangle
 	 */

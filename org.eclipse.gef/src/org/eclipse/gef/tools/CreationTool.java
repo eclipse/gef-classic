@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -58,7 +58,7 @@ public class CreationTool extends TargetingTool {
 
 	/**
 	 * Constructs a new CreationTool with the given factory.
-	 * 
+	 *
 	 * @param aFactory the creation factory
 	 */
 	public CreationTool(CreationFactory aFactory) {
@@ -99,7 +99,7 @@ public class CreationTool extends TargetingTool {
 
 	/**
 	 * Creates a {@link CreateRequest} and sets this tool's factory on the request.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.TargetingTool#createTargetRequest()
 	 */
 	@Override
@@ -128,7 +128,7 @@ public class CreationTool extends TargetingTool {
 
 	/**
 	 * Cast the target request to a CreateRequest and returns it.
-	 * 
+	 *
 	 * @return the target request as a CreateRequest
 	 * @see TargetingTool#getTargetRequest()
 	 */
@@ -146,7 +146,7 @@ public class CreationTool extends TargetingTool {
 
 	/**
 	 * Returns the creation factory used to create the new EditParts.
-	 * 
+	 *
 	 * @return the creation factory
 	 */
 	protected CreationFactory getFactory() {
@@ -160,7 +160,7 @@ public class CreationTool extends TargetingTool {
 	 * the request's location and calls
 	 * {@link TargetingTool#lockTargetEditPart(EditPart)} with the edit part that
 	 * was just clicked on.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonDown(int)
 	 */
 	@Override
@@ -184,7 +184,7 @@ public class CreationTool extends TargetingTool {
 	 * If the tool is currently in a drag or drag-in-progress state, it goes into
 	 * the terminal state, performs some cleanup (erasing feedback, unlocking target
 	 * edit part), and then calls {@link #performCreation(int)} .
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleButtonUp(int)
 	 */
 	@Override
@@ -203,7 +203,7 @@ public class CreationTool extends TargetingTool {
 
 	/**
 	 * Updates the request, sets the current command, and asks to show feedback.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleDragInProgress()
 	 */
 	@Override
@@ -227,7 +227,7 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * If the user is in the middle of creating a new edit part, the tool erases
 	 * feedback and goes into the invalid state when focus is lost.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleFocusLost()
 	 */
 	@Override
@@ -254,7 +254,7 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * Updates the request and mouse target, gets the current command and asks to
 	 * show feedback.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#handleMove()
 	 */
 	@Override
@@ -271,7 +271,7 @@ public class CreationTool extends TargetingTool {
 	 * that was released to cause this creation is passed in, but since
 	 * {@link #handleButtonDown(int)} goes into the invalid state if the button
 	 * pressed is not button 1, this will always be button 1.
-	 * 
+	 *
 	 * @param button the button that was pressed
 	 */
 	protected void performCreation(int button) {
@@ -297,7 +297,7 @@ public class CreationTool extends TargetingTool {
 
 	/**
 	 * Sets the creation factory used to create the new edit parts.
-	 * 
+	 *
 	 * @param factory the factory
 	 */
 	public void setFactory(CreationFactory factory) {
@@ -307,7 +307,7 @@ public class CreationTool extends TargetingTool {
 	/**
 	 * Sets the location (and size if the user is performing size-on-drop) of the
 	 * request.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.TargetingTool#updateTargetRequest()
 	 */
 	@Override
@@ -340,7 +340,7 @@ public class CreationTool extends TargetingTool {
 	 * Ensures size constraints (by default minimum and maximum) are respected by
 	 * the given request. May be overwritten by clients to enforce additional
 	 * constraints.
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	protected void enforceConstraintsForSizeOnDropCreate(CreateRequest request) {
@@ -362,7 +362,7 @@ public class CreationTool extends TargetingTool {
 	 * Determines the <em>maximum</em> size for CreateRequest's size on drop. It is
 	 * called from {@link #enforceConstraintsForSizeOnDropCreate(CreateRequest)}
 	 * during creation. By default, a large <code>Dimension</code> is returned.
-	 * 
+	 *
 	 * @param request the request.
 	 * @return the minimum size
 	 * @since 3.7
@@ -375,7 +375,7 @@ public class CreationTool extends TargetingTool {
 	 * Determines the <em>minimum</em> size for CreateRequest's size on drop. It is
 	 * called from {@link #enforceConstraintsForSizeOnDropCreate(CreateRequest)}
 	 * during creation. By default, a small <code>Dimension</code> is returned.
-	 * 
+	 *
 	 * @param request the request.
 	 * @return the minimum size
 	 * @since 3.7

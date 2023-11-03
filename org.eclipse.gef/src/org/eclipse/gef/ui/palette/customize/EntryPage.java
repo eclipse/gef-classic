@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,7 +20,7 @@ import org.eclipse.gef.palette.PaletteEntry;
 /**
  * An <code>EntryPage</code> displays properties of a <code>PaletteEntry</code>.
  * Listeners can be added to a page
- * 
+ *
  * @author Pratik Shah
  */
 public interface EntryPage {
@@ -28,7 +28,7 @@ public interface EntryPage {
 	/**
 	 * Sets the page container for this page. This page will report its errors to
 	 * the given page container.
-	 * 
+	 *
 	 * @param pageContainer The <code>EntryPageContainer</code> to which this page
 	 *                      can report errors
 	 */
@@ -45,7 +45,7 @@ public interface EntryPage {
 	 * method will only be called once. The parent Composite's Font is set to the
 	 * Workbench Dialog Font. The page's Controls should use the Workbench Dialog
 	 * Font where appropriate.
-	 * 
+	 *
 	 * @param parent The Composite in which the Control has to be created
 	 * @param entry  The entry whose properties have to be displayed
 	 */
@@ -55,7 +55,7 @@ public interface EntryPage {
 	 * Returns the Panel (Control) that displays the properties of the entry. This
 	 * is the same Control that was created in
 	 * {@link #createControl(Composite,PaletteEntry)}.
-	 * 
+	 *
 	 * @return the Control that displays the properties of the entry
 	 * @see #createControl(Composite, PaletteEntry)
 	 */

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ public class ToolUtilities {
 	/**
 	 * Returns a list containing the top level selected edit parts based on the
 	 * viewer's selection.
-	 * 
+	 *
 	 * @param viewer the viewer
 	 * @return the selection excluding dependants
 	 */
@@ -47,7 +47,7 @@ public class ToolUtilities {
 	/**
 	 * Returns a list containing the top level selected edit parts based on the
 	 * passed in list of selection.
-	 * 
+	 *
 	 * @param selectedParts the complete selection
 	 * @return the selection excluding dependants
 	 */
@@ -66,7 +66,7 @@ public class ToolUtilities {
 	 * EditParts that understand the given request (i.e. return <code>true</code>
 	 * from {@link EditPart#understandsRequest(Request)} when passed the given
 	 * request).
-	 * 
+	 *
 	 * @param list    the list of edit parts to filter
 	 * @param request the request
 	 */
@@ -81,7 +81,7 @@ public class ToolUtilities {
 
 	/**
 	 * Checks if collection contains any ancestor of editpart <code>ep</code>
-	 * 
+	 *
 	 * @param c  - collection of editparts
 	 * @param ep - the editparts to check ancestors for
 	 * @return <code>true</code> if collection contains any ancestor(s) of the
@@ -102,7 +102,7 @@ public class ToolUtilities {
 	 * Returns the common parent editpart for given pair of EditParts. If the two
 	 * parts are identical, the result is that part. If the two parts do not have a
 	 * common ancestor, some form of RuntimeException will be thrown.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param ll the first editpart
 	 * @param rr the second editpart

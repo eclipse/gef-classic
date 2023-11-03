@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.eclipse.draw2d.test;
 
@@ -13,7 +13,7 @@ import org.junit.Test;
 
 /**
  * @author nyssen
- * 
+ *
  */
 public class ShapeTest extends Assert {
 

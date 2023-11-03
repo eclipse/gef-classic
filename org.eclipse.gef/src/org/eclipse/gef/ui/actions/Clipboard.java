@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ import org.eclipse.gef.dnd.SimpleObjectTransfer;
  * (but will work between multiple windows belonging to a single instance of the
  * workbench). Setting the contents of the clipboard will erase the previous
  * contents of the clipboard.
- * 
+ *
  * @author Eric Bordeau
  * @author Pratik Shah
  */
@@ -47,7 +47,7 @@ public class Clipboard {
 
 	/**
 	 * Returns the default clipboard.
-	 * 
+	 *
 	 * @return the default clipboard
 	 */
 	public static Clipboard getDefault() {
@@ -56,7 +56,7 @@ public class Clipboard {
 
 	/**
 	 * Constructs a new Clipboard object.
-	 * 
+	 *
 	 * @deprecated As of 3.1, the GEF Clipboard synchronizes with the system
 	 *             clipboard. Multiple instances of this class should not be
 	 *             created. Use {@link #getDefault()}. This method will be removed
@@ -67,7 +67,7 @@ public class Clipboard {
 
 	/**
 	 * Returns the current contents of the clipboard.
-	 * 
+	 *
 	 * @return contents of the clipboard
 	 */
 	public Object getContents() {
@@ -81,7 +81,7 @@ public class Clipboard {
 	 * Sets the contents of the clipboard. This will erase the previous contents of
 	 * this as well as the system clipboard. The provided contents will not be
 	 * garbage-collected until some other contents are set using this method.
-	 * 
+	 *
 	 * @param contents the new contents
 	 */
 	public void setContents(Object contents) {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * be parented by a <code>FlowFigure</code>.
  * <p>
  * WARNING: This class is not intended to be subclassed by clients.
- * 
+ *
  * @author hudsonr
  * @author Pratik Shah
  * @since 2.1
@@ -45,7 +45,7 @@ public class TextFlow extends InlineFlow {
 
 	/**
 	 * Constructs a new TextFlow with the empty String.
-	 * 
+	 *
 	 * @see java.lang.Object#Object()
 	 */
 	public TextFlow() {
@@ -54,7 +54,7 @@ public class TextFlow extends InlineFlow {
 
 	/**
 	 * Constructs a new TextFlow with the specified String.
-	 * 
+	 *
 	 * @param s the string
 	 */
 	public TextFlow(String s) {
@@ -63,7 +63,7 @@ public class TextFlow extends InlineFlow {
 
 	/**
 	 * Returns the width of the text until the first line-break.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.text.FlowFigure#addLeadingWordRequirements(int[])
 	 */
 	@Override
@@ -74,7 +74,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * Calculates the width taken up by the given text before a line-break is
 	 * encountered.
-	 * 
+	 *
 	 * @param text  the text in which the break is to be found
 	 * @param width the width before the next line-break (if one's found; the width
 	 *              of all the given text, otherwise) will be added on to the first
@@ -116,7 +116,7 @@ public class TextFlow extends InlineFlow {
 
 	/**
 	 * A TextFlow contributes its text.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.text.FlowFigure#contributeBidi(org.eclipse.draw2d.text.BidiProcessor)
 	 */
 	@Override
@@ -190,7 +190,7 @@ public class TextFlow extends InlineFlow {
 
 	/**
 	 * Returns the BidiInfo for this figure or <code>null</code>.
-	 * 
+	 *
 	 * @return <code>null</code> or the info
 	 * @since 3.1
 	 */
@@ -229,7 +229,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * Returns the CaretInfo in absolute coordinates. The offset must be between 0
 	 * and the length of the String being displayed.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param offset   the location in this figure's text
 	 * @param trailing true if the caret is being placed after the offset
@@ -300,7 +300,7 @@ public class TextFlow extends InlineFlow {
 	 * y-coordinate. The y location should be relative to this figure. The return
 	 * value will be between 0 and N-1. If no fragment is located on the baseline,
 	 * <code>-1</code> is returned.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param baseline the relative baseline coordinate
 	 * @return -1 or the lowest offset for the line
@@ -320,7 +320,7 @@ public class TextFlow extends InlineFlow {
 	 * Returns the <code>TextFragmentBox</code> fragments contained in this
 	 * TextFlow, not including the border fragments. The returned list should not be
 	 * modified.
-	 * 
+	 *
 	 * @return list of fragments without the border fragments
 	 * @since 3.4
 	 */
@@ -336,7 +336,7 @@ public class TextFlow extends InlineFlow {
 	 * y-coordinate. The y location should be relative to this figure. The return
 	 * value will be between 0 and N-1. If no fragment is located on the baseline,
 	 * <code>-1</code> is returned.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param baseline the relative baseline coordinate
 	 * @return -1 or the highest offset at the given baseline
@@ -357,7 +357,7 @@ public class TextFlow extends InlineFlow {
 	 * offset is found, -1 is returned. <code>trailing[0]</code> will be set to 1 if
 	 * the reference point is closer to the trailing edge of the offset than it is
 	 * to the leading edge.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param p        a reference point
 	 * @param down     <code>true</code> if the search is down
@@ -374,7 +374,7 @@ public class TextFlow extends InlineFlow {
 	 * preceding it is displayed, which implies that a caret can be positioned at
 	 * such an offset. This is useful for advancing a caret past characters which
 	 * resulted in a line wrap.
-	 * 
+	 *
 	 * @param offset the reference offset
 	 * @return the next offset which is visible
 	 * @since 3.1
@@ -415,8 +415,8 @@ public class TextFlow extends InlineFlow {
 	 * proximity not exceeding the given limit. If an offset that is within the
 	 * proximity is found, then the given <code>Dimension</code> will be updated to
 	 * reflect the new proximity.
-	 * 
-	 * 
+	 *
+	 *
 	 * @since 3.1
 	 * @param p         the point relative to this figure
 	 * @param trailing  the trailing buffer
@@ -455,7 +455,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * Returns the previous offset which is visible in at least one fragment or -1
 	 * if there is not one. See {@link #getNextVisibleOffset(int)} for more.
-	 * 
+	 *
 	 * @param offset a reference offset
 	 * @return -1 or the previous offset which is visible
 	 * @since 3.1
@@ -507,7 +507,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * Returns <code>true</code> if a portion if the text is truncated using
 	 * ellipses ("...").
-	 * 
+	 *
 	 * @return <code>true</code> if the text is truncated with ellipses
 	 */
 	public boolean isTextTruncated() {
@@ -623,7 +623,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * Sets the extent of selection. The selection range is inclusive. For example,
 	 * the range [0, 0] indicates that the first character is selected.
-	 * 
+	 *
 	 * @param start the start offset
 	 * @param end   the end offset
 	 * @since 3.1
@@ -647,7 +647,7 @@ public class TextFlow extends InlineFlow {
 
 	/**
 	 * Sets the text being displayed. The string may not be <code>null</code>.
-	 * 
+	 *
 	 * @param s The new text
 	 */
 	public void setText(String s) {
@@ -676,7 +676,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * Gets the <code>FlowUtilities</code> instance to be used in measurement
 	 * calculations.
-	 * 
+	 *
 	 * @return a <code>FlowUtilities</code> instance
 	 * @since 3.4
 	 */
@@ -687,7 +687,7 @@ public class TextFlow extends InlineFlow {
 	/**
 	 * Gets the <code>TextUtilities</code> instance to be used in measurement
 	 * calculations.
-	 * 
+	 *
 	 * @return a <code>TextUtilities</code> instance
 	 * @since 3.4
 	 */

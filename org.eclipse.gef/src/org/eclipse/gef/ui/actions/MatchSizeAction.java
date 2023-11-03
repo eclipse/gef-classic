@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
 /**
  * An action that matches the size of all selected EditPart's Figures to the
  * size of the Primary Selection EditPart's Figure.
- * 
+ *
  * @since 3.7
  */
 public class MatchSizeAction extends SelectionAction {
@@ -39,7 +39,7 @@ public class MatchSizeAction extends SelectionAction {
 	/**
 	 * Constructs a <code>MatchSizeAction</code> and associates it with the given
 	 * part.
-	 * 
+	 *
 	 * @param part The workbench part associated with this MatchSizeAction
 	 */
 	public MatchSizeAction(IWorkbenchPart part) {
@@ -64,7 +64,7 @@ public class MatchSizeAction extends SelectionAction {
 
 	/**
 	 * Create a command to resize the selected objects.
-	 * 
+	 *
 	 * @param objects The objects to be resized.
 	 * @return The command to resize the selected objects.
 	 */
@@ -116,7 +116,7 @@ public class MatchSizeAction extends SelectionAction {
 	/**
 	 * Returns the height delta between the two bounds. Separated into a method so
 	 * that it can be overwritten to return 0 in the case of a width-only action.
-	 * 
+	 *
 	 * @param precisePartBounds    the precise bounds of the EditPart's Figure to be
 	 *                             matched
 	 * @param precisePrimaryBounds the precise bounds of the Primary Selection
@@ -141,7 +141,7 @@ public class MatchSizeAction extends SelectionAction {
 	/**
 	 * Returns the width delta between the two bounds. Separated into a method so
 	 * that it can be overriden to return 0 in the case of a height-only action.
-	 * 
+	 *
 	 * @param precisePartBounds    the precise bounds of the EditPart's Figure to be
 	 *                             matched
 	 * @param precisePrimaryBounds the precise bounds of the Primary Selection

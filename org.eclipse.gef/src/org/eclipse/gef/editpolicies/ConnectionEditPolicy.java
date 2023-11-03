@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ import org.eclipse.gef.requests.GroupRequest;
  * This EditPolicy is not a
  * {@link org.eclipse.gef.editpolicies.GraphicalEditPolicy}, and should not be
  * used to show feedback or interact with the host's visuals in any way.
- * 
+ *
  * @since 2.0
  */
 public abstract class ConnectionEditPolicy extends AbstractEditPolicy {
@@ -42,7 +42,7 @@ public abstract class ConnectionEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Subclasses should implement to return the Command to delete the connection.
-	 * 
+	 *
 	 * @param request the DeleteRequest
 	 * @return the Command to delete the connection
 	 */

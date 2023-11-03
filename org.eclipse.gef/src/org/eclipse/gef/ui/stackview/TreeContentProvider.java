@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.gef.commands.CompoundCommand;
 
 /**
  * Internal class used for a stack inspector.
- * 
+ *
  * @deprecated this class will be deleted
  */
 public class TreeContentProvider implements org.eclipse.jface.viewers.ITreeContentProvider, CommandStackListener {
@@ -31,7 +31,7 @@ public class TreeContentProvider implements org.eclipse.jface.viewers.ITreeConte
 
 	/**
 	 * Creates a new TreeContentProvider with the given CommandStack
-	 * 
+	 *
 	 * @param stack The CommandStack
 	 */
 	public TreeContentProvider(CommandStack stack) {

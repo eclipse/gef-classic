@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  * guide, LogicGuide also maintains information about the edge along which those
  * parts are attached. This information is useful during resize operations to
  * determine the attachment status of a part.
- * 
+ *
  * @author Pratik Shah
  */
 public class LogicGuide implements Serializable {
@@ -60,7 +60,7 @@ public class LogicGuide implements Serializable {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param isHorizontal <code>true</code> if the guide is horizontal (i.e.,
 	 *                     placed on a vertical ruler)
 	 */
@@ -81,7 +81,7 @@ public class LogicGuide implements Serializable {
 	/**
 	 * Attaches the given part along the given edge to this guide. The LogicSubpart
 	 * is also updated to reflect this attachment.
-	 * 
+	 *
 	 * @param part      The part that is to be attached to this guide; if the part
 	 *                  is already attached, its alignment is updated
 	 * @param alignment -1 is left or top; 0, center; 1, right or bottom
@@ -107,7 +107,7 @@ public class LogicGuide implements Serializable {
 	/**
 	 * Detaches the given part from this guide. The LogicSubpart is also updated to
 	 * reflect this change.
-	 * 
+	 *
 	 * @param part the part that is to be detached from this guide
 	 */
 	public void detachPart(LogicSubpart part) {
@@ -128,7 +128,7 @@ public class LogicGuide implements Serializable {
 	 * {@link org.eclipse.gef.examples.logicdesigner.edit.LogicXYLayoutEditPolicy
 	 * LogicXYLayoutEditPolicy} to determine whether to attach or detach a part from
 	 * a guide during resize operations.
-	 * 
+	 *
 	 * @param part The part whose alignment has to be found
 	 * @return an int representing the edge along which the given part is attached
 	 *         to this guide; 1 is bottom or right; 0, center; -1, top or left; -2
@@ -185,7 +185,7 @@ public class LogicGuide implements Serializable {
 
 	/**
 	 * Sets the orientation of the guide
-	 * 
+	 *
 	 * @param isHorizontal <code>true</code> if this guide is to be placed on a
 	 *                     vertical ruler
 	 */
@@ -195,7 +195,7 @@ public class LogicGuide implements Serializable {
 
 	/**
 	 * Sets the location of the guide
-	 * 
+	 *
 	 * @param offset The location of the guide (in pixels)
 	 */
 	public void setPosition(int offset) {

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ public interface GraphicalEditPart extends EditPart {
 	/**
 	 * Adds a NodeListener to the EditPart. Duplicate calls result in duplicate
 	 * notification.
-	 * 
+	 *
 	 * @param listener the Listener
 	 */
 	void addNodeListener(NodeListener listener);
@@ -40,7 +40,7 @@ public interface GraphicalEditPart extends EditPart {
 	 * Returns the primary Figure representing this GraphicalEditPart. The parent
 	 * will add this Figure to its <i>content pane</i>. The Figure may be a
 	 * composition of several Figures.
-	 * 
+	 *
 	 * @return this EditPart's Figure
 	 */
 	IFigure getFigure();
@@ -49,7 +49,7 @@ public interface GraphicalEditPart extends EditPart {
 	 * Returns the <i>source</i> connections for this GraphicalEditPart. This method
 	 * should only be called by the EditPart itself, and its helpers such as
 	 * EditPolicies.
-	 * 
+	 *
 	 * @return the source connections
 	 */
 	List getSourceConnections();
@@ -58,7 +58,7 @@ public interface GraphicalEditPart extends EditPart {
 	 * Returns the <i>target</i> connections for this GraphicalEditPart. This method
 	 * should only be called by the EditPart itself, and its helpers such as
 	 * EditPolicies.
-	 * 
+	 *
 	 * @return the target connections
 	 */
 	List getTargetConnections();
@@ -66,7 +66,7 @@ public interface GraphicalEditPart extends EditPart {
 	/**
 	 * The children of GraphicalEditparts have to be GraphicalEditParts. Therefore
 	 * the GraphicalEditPart refines this method from its parent interface.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getChildren()
 	 */
 	@Override
@@ -77,7 +77,7 @@ public interface GraphicalEditPart extends EditPart {
 	 * Figure as {@link #getFigure()}. The GraphicalEditPart's {@link #getFigure()
 	 * primary Figure} may be composed of multiple figures. This is the figure in
 	 * that composition that will contain children's figures.
-	 * 
+	 *
 	 * @return the <i>content pane</i> Figure
 	 */
 	IFigure getContentPane();
@@ -85,7 +85,7 @@ public interface GraphicalEditPart extends EditPart {
 	/**
 	 * Removes the first occurance of the specified listener from the list of
 	 * listeners. Does nothing if the listener was not present.
-	 * 
+	 *
 	 * @param listener the listener being removed
 	 */
 	void removeNodeListener(NodeListener listener);
@@ -96,7 +96,7 @@ public interface GraphicalEditPart extends EditPart {
 	 * constraint will be applied to the content pane's
 	 * {@link org.eclipse.draw2d.LayoutManager}. <code>revalidate()</code> is called
 	 * on the content pane, which will cause it to layout during the next update.
-	 * 
+	 *
 	 * @param child      the <i>child</i> GraphicalEditPart whose constraint is
 	 *                   being set
 	 * @param figure     the Figure whose constraint is being set

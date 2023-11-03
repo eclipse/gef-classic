@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  ******************************************************************************/
 package org.eclipse.zest.core.widgets;
@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Widget;
 /**
  * Provides support for property changes. All model elements extend this class.
  * Also extends the Item (Widget) class to be used inside a StructuredViewer.
- * 
+ *
  * @author Chris Callendar
  */
 public abstract class GraphItem extends Item {
@@ -51,7 +51,7 @@ public abstract class GraphItem extends Item {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.swt.widgets.Widget#dispose()
 	 */
 	@Override
@@ -63,21 +63,21 @@ public abstract class GraphItem extends Item {
 
 	/**
 	 * Gets the graph item type. The item type is one of: GRAPH, NODE or CONNECTION
-	 * 
+	 *
 	 * @return
 	 */
 	public abstract int getItemType();
 
 	/**
 	 * Set the visibility of this item.
-	 * 
+	 *
 	 * @param visible whether or not this item is visible.
 	 */
 	public abstract void setVisible(boolean visible);
 
 	/**
 	 * Get the visibility of this item.
-	 * 
+	 *
 	 * @return the visibility of this item.
 	 */
 	public abstract boolean isVisible();
@@ -85,7 +85,7 @@ public abstract class GraphItem extends Item {
 	/**
 	 * Gets the graph that this item is rooted on. If this item is itself a graph,
 	 * then this is returned.
-	 * 
+	 *
 	 * @return the parent graph.
 	 */
 	public abstract Graph getGraphModel();
@@ -102,10 +102,10 @@ public abstract class GraphItem extends Item {
 	 * to the unhighlight figure or color.
 	 */
 	public abstract void unhighlight();
-	
+
 	/**
 	 * Get state of highlight of this item
-	 * 
+	 *
 	 * @return boolean true if item is highlighted
 	 * @since 1.9 (included default impl and not made abstract to not brake downstream)
 	 */
@@ -118,7 +118,7 @@ public abstract class GraphItem extends Item {
 
 	/**
 	 * Checks a style to see if it is set on the given graph item
-	 * 
+	 *
 	 * @param styleToCheck The style to check
 	 * @return
 	 */

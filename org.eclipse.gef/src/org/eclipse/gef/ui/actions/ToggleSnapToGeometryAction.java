@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -23,7 +23,7 @@ import org.eclipse.gef.internal.GEFMessages;
  * {@link org.eclipse.gef.SnapToGeometry#PROPERTY_SNAP_ENABLED snap to geometry}
  * property on the given viewer. This action can handle the case where that
  * property is not set on the viewer initially.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -33,7 +33,7 @@ public class ToggleSnapToGeometryAction extends Action {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param diagramViewer the GraphicalViewer whose snap to geometry property is
 	 *                      to be toggled
 	 */

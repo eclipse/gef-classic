@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -33,7 +33,7 @@ import java.util.Map;
  * This class is the ILabelProvider for the
  * {@link org.eclipse.jface.viewers.TreeViewer} used in
  * {@link org.eclipse.gef.ui.palette.customize.PaletteCustomizerDialog}.
- * 
+ *
  * @author Pratik Shah
  */
 class PaletteLabelProvider implements ILabelProvider, IColorProvider {
@@ -42,7 +42,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param viewer The TreeViewer for which this instance is a LabelProvider
 	 */
 	public PaletteLabelProvider(TreeViewer viewer) {
@@ -106,7 +106,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 
 	/**
 	 * Not implemented
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#addListener(ILabelProviderListener)
 	 */
 	@Override
@@ -135,7 +135,7 @@ class PaletteLabelProvider implements ILabelProvider, IColorProvider {
 
 	/**
 	 * Not implemented
-	 * 
+	 *
 	 * @see org.eclipse.jface.viewers.IBaseLabelProvider#removeListener(ILabelProviderListener)
 	 */
 	@Override

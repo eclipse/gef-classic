@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -69,7 +69,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Constructor for the PaletteEditPart.
-	 * 
+	 *
 	 * @param model The model element for this edit part.
 	 */
 	public PaletteEditPart(PaletteEntry model) {
@@ -90,7 +90,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	/**
 	 * returns the AccessibleEditPart for this EditPart. This method is called
 	 * lazily from {@link #getAccessibleEditPart()}.
-	 * 
+	 *
 	 * @return the AccessibleEditPart.
 	 */
 	@SuppressWarnings("static-method") // allow subclasses to create their AccesibleEditPart
@@ -107,7 +107,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Create the tool tip for this palette edit part.
-	 * 
+	 *
 	 * @return the tool tip figure.
 	 */
 	protected IFigure createToolTip() {
@@ -199,7 +199,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	 * edit parts. This has the disadvantage that once an image is allocated, it is
 	 * never freed until the display is disposed. However, it has the advantage that
 	 * the same image in different palettes is only ever created once.
-	 * 
+	 *
 	 * @return the image cache.
 	 */
 	protected static ImageCache getImageCache() {
@@ -255,7 +255,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Get the casted model element for this palette edit part.
-	 * 
+	 *
 	 * @return the model element.
 	 * @since 3.15
 	 */
@@ -266,7 +266,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Get the model element for this palette edit part.
-	 * 
+	 *
 	 * @return the model element.
 	 * @deprecated use getModel() instead
 	 */
@@ -276,7 +276,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Get the palette viewer for this palette edit part.
-	 * 
+	 *
 	 * @return the palette viewer.
 	 */
 	protected PaletteViewer getPaletteViewer() {
@@ -285,7 +285,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Get the palette viewer preferences for this palette edit part.
-	 * 
+	 *
 	 * @return the palette viewer preferences.
 	 */
 	protected PaletteViewerPreferences getPreferenceSource() {
@@ -294,7 +294,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Get the tool tip figure for this palette edit part.
-	 * 
+	 *
 	 * @return the tool tip figure.
 	 */
 	protected IFigure getToolTipFigure() {
@@ -303,7 +303,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Get the tool tip text for this palette edit part.
-	 * 
+	 *
 	 * @return the tool tip text.
 	 */
 	protected String getToolTipText() {
@@ -328,7 +328,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Determine if the name is needed in the tool tip.
-	 * 
+	 *
 	 * @return <code>true</code> if the name is needed in the tool tip.
 	 * @since 3.2
 	 */
@@ -354,7 +354,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Restore the state of the palette entry.
-	 * 
+	 *
 	 * @param memento the saved state of the palette entry.
 	 */
 	public void restoreState(IMemento memento) {
@@ -368,7 +368,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Save the state of the palette entry.
-	 * 
+	 *
 	 * @param memento the saved state of the palette entry.
 	 */
 	public void saveState(IMemento memento) {
@@ -377,7 +377,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Set the image for this palette edit part.
-	 * 
+	 *
 	 * @param desc the image descriptor.
 	 */
 	protected void setImageDescriptor(ImageDescriptor desc) {
@@ -389,7 +389,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Set the image to be used in the figure for this edit edit.
-	 * 
+	 *
 	 * @param image the image
 	 */
 	protected void setImageInFigure(Image image) {
@@ -438,7 +438,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Returns the current layout setting.
-	 * 
+	 *
 	 * @return the current layout setting.
 	 * @see PaletteViewerPreferences#getLayoutSetting()
 	 * @since 3.4
@@ -453,7 +453,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 	/**
 	 * Overwritten to ensure palette entries are always selectable, even if their
 	 * figure is not showing).
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractGraphicalEditPart#isSelectable()
 	 */
 	@Override
@@ -464,7 +464,7 @@ public abstract class PaletteEditPart extends AbstractGraphicalEditPart implemen
 
 	/**
 	 * Returns true if this item is on the palette toolbar.
-	 * 
+	 *
 	 * @return true if this item is on the palette toolbar; false otherwise
 	 * @since 3.4
 	 */

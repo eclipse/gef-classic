@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2005 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,14 +31,14 @@ import org.eclipse.gef.examples.shapes.model.Shape;
  * This edit part must implement the PropertyChangeListener interface, so it can
  * be notified of property changes in the corresponding model element.
  * </p>
- * 
+ *
  * @author Elias Volanakis
  */
 class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeListener {
 
 	/**
 	 * Create a new instance of this edit part using the given model element.
-	 * 
+	 *
 	 * @param model a non-null Shapes instance
 	 */
 	ShapeTreeEditPart(Shape model) {
@@ -58,7 +58,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractTreeEditPart#createEditPolicies()
 	 */
 	@Override
@@ -85,7 +85,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractTreeEditPart#getImage()
 	 */
 	@Override
@@ -95,7 +95,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editparts.AbstractTreeEditPart#getText()
 	 */
 	@Override
@@ -105,7 +105,7 @@ class ShapeTreeEditPart extends AbstractTreeEditPart implements PropertyChangeLi
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.beans.PropertyChangeListener#propertyChange(java.beans.
 	 * PropertyChangeEvent)
 	 */

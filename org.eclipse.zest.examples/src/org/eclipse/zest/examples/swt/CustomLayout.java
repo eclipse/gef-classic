@@ -16,7 +16,7 @@ import org.eclipse.zest.layouts.dataStructures.InternalRelationship;
  * This snippet shows how to create a custom layout. This layout simply lays the
  * nodes out vertically on the same Y-Axis as they currently have. All the work
  * is done in the applyLayoutInternal Method.
- * 
+ *
  * @author irbull
  *
  */

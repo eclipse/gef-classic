@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ import org.eclipse.gef.GraphicalEditPart;
  * does, that viewport will be set as the FigureCanvas' viewport. FigureCanvas
  * has certain requirements on the viewport figure, see
  * {@link FigureCanvas#setViewport(Viewport)}.
- * 
+ *
  * @author hudsonr
  */
 public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
@@ -60,7 +60,7 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 	/**
 	 * Convenience method which types the control as a <code>FigureCanvas</code> .
 	 * This method returns <code>null</code> whenever the control is null.
-	 * 
+	 *
 	 * @return <code>null</code> or the Control as a FigureCanvas
 	 */
 	protected FigureCanvas getFigureCanvas() {
@@ -70,7 +70,7 @@ public class ScrollingGraphicalViewer extends GraphicalViewerImpl {
 	/**
 	 * Extends the superclass implementation to scroll the native Canvas control
 	 * after the super's implementation has completed.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPartViewer#reveal(org.eclipse.gef.EditPart)
 	 */
 	@Override

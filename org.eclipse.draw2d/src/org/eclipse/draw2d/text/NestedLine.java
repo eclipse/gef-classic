@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -71,7 +71,7 @@ public class NestedLine extends LineBox {
 	 * the baseline including the border size and margin. This is used when adding
 	 * content into a LineBox. The linebox's own border must be drawn around the
 	 * children.
-	 * 
+	 *
 	 * @return the outer ascent of this box
 	 */
 	@Override
@@ -84,7 +84,7 @@ public class NestedLine extends LineBox {
 	 * the baseline including the border size and margin. This is used when adding
 	 * content into a LineBox. The linebox's own border must be drawn around the
 	 * children.
-	 * 
+	 *
 	 * @return the outer descent of this box
 	 */
 	@Override

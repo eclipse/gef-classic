@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ public class ActionEvent extends java.util.EventObject {
 
 	/**
 	 * Constructs a new ActionEvent with <i>source</i> as the source of the event.
-	 * 
+	 *
 	 * @param source The source of the event
 	 */
 	public ActionEvent(Object source) {
@@ -31,7 +31,7 @@ public class ActionEvent extends java.util.EventObject {
 	/**
 	 * Constructs a new ActionEvent with <i>source</i> as the source of the event
 	 * and <i>name</i> as the name of the action that was performed.
-	 * 
+	 *
 	 * @param source The source of the event
 	 * @param name   The name of the action
 	 */
@@ -42,7 +42,7 @@ public class ActionEvent extends java.util.EventObject {
 
 	/**
 	 * Returns the name of the action that was performed.
-	 * 
+	 *
 	 * @return String The name of the action
 	 */
 	public String getActionName() {

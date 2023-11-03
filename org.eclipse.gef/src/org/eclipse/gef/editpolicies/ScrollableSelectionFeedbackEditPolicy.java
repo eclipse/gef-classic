@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2010, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -45,10 +45,10 @@ import org.eclipse.gef.util.EditPartUtilities;
  * {@link IScrollableEditPart} to provide primary selection feedback by
  * rendering the hidden contents of the host figure's {@link ScrollPane}'s
  * nested {@link Viewport} by means of {@link GhostImageFigure}s.
- * 
+ *
  * @author Alexander Nyssen
  * @author Philip Ritzkopf
- * 
+ *
  * @since 3.6
  */
 public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
@@ -112,7 +112,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Adds a given feedback figure to the feedback layer (using the provided bounds
 	 * to layout it) and registers it in the local {@link #feedbackFigures} list.
-	 * 
+	 *
 	 * @param feedbackFigure               the feedback figure to add to the
 	 *                                     feedback layer
 	 * @param feedbackFigureAbsoluteBounds the absolute bounds used to layout the
@@ -130,7 +130,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Creates a ghost image feedback figure for the given
 	 * {@link ConnectionEditPart}'s figure and adds it to the feedback layer.
-	 * 
+	 *
 	 * @param connectionEditPart
 	 */
 	protected void createConnectionFeedbackFigure(ConnectionEditPart connectionEditPart) {
@@ -159,7 +159,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Creates a ghost image feedback figure for the given
 	 * {@link GraphicalEditPart}'s figure and adds it to the feedback layer.
-	 * 
+	 *
 	 * @param childEditPart
 	 */
 	protected void createNodeFeedbackFigure(GraphicalEditPart childEditPart) {
@@ -200,7 +200,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Used to obtain the alpha value used for all feedback figures. The valid range
 	 * is the one documented for {@link Graphics#setAlpha(int)}.
-	 * 
+	 *
 	 * @return the alpha
 	 */
 	protected int getAlpha() {
@@ -217,7 +217,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 
 	/**
 	 * Provides access to the host figure's {@link Viewport}.
-	 * 
+	 *
 	 * @return the nested {@link Viewport} of the host figure's {@link ScrollPane}
 	 */
 	protected Viewport getHostFigureViewport() {
@@ -250,7 +250,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	/**
 	 * Used to specify the alpha value used for all feedback figures. The valid
 	 * range is the one documented for {@link Graphics#setAlpha(int)}.
-	 * 
+	 *
 	 * @param alpha
 	 */
 	public void setAlpha(int alpha) {

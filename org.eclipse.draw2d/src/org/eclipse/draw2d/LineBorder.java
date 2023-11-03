@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -28,7 +28,7 @@ public class LineBorder extends AbstractBorder {
 	/**
 	 * Constructs a LineBorder with the specified color and of the specified width
 	 * and style.
-	 * 
+	 *
 	 * @param color The color of the border.
 	 * @param width The width of the border in pixels.
 	 * @param style The style of the border. For the list of valid values, see
@@ -43,7 +43,7 @@ public class LineBorder extends AbstractBorder {
 
 	/**
 	 * Constructs a LineBorder with the specified color and of the specified width.
-	 * 
+	 *
 	 * @param color The color of the border.
 	 * @param width The width of the border in pixels.
 	 * @since 2.0
@@ -54,7 +54,7 @@ public class LineBorder extends AbstractBorder {
 
 	/**
 	 * Constructs a LineBorder with the specified color and a width of 1 pixel.
-	 * 
+	 *
 	 * @param color The color of the border.
 	 * @since 2.0
 	 */
@@ -64,7 +64,7 @@ public class LineBorder extends AbstractBorder {
 
 	/**
 	 * Constructs a black LineBorder with the specified width.
-	 * 
+	 *
 	 * @param width The width of the border in pixels.
 	 * @since 2.0
 	 */
@@ -74,7 +74,7 @@ public class LineBorder extends AbstractBorder {
 
 	/**
 	 * Constructs a default black LineBorder with a width of one pixel.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public LineBorder() {
@@ -82,7 +82,7 @@ public class LineBorder extends AbstractBorder {
 
 	/**
 	 * Returns the line color of this border.
-	 * 
+	 *
 	 * @return The line color of this border
 	 */
 	public Color getColor() {
@@ -92,7 +92,7 @@ public class LineBorder extends AbstractBorder {
 	/**
 	 * Returns the space used by the border for the figure provided as input. In
 	 * this border all sides always have equal width.
-	 * 
+	 *
 	 * @param figure The figure this border belongs to
 	 * @return This border's insets
 	 */
@@ -103,7 +103,7 @@ public class LineBorder extends AbstractBorder {
 
 	/**
 	 * Returns the line width of this border.
-	 * 
+	 *
 	 * @return The line width of this border
 	 */
 	public int getWidth() {
@@ -113,7 +113,7 @@ public class LineBorder extends AbstractBorder {
 	/**
 	 * Returns <code>true</code> since this border is opaque. Being opaque it is
 	 * responsible to fill in the area within its boundaries.
-	 * 
+	 *
 	 * @return <code>true</code> since this border is opaque
 	 */
 	@Override
@@ -141,7 +141,7 @@ public class LineBorder extends AbstractBorder {
 
 	/**
 	 * Sets the line color for this border.
-	 * 
+	 *
 	 * @param color The line color
 	 */
 	public void setColor(Color color) {
@@ -150,7 +150,7 @@ public class LineBorder extends AbstractBorder {
 
 	/**
 	 * Sets the line width for this border.
-	 * 
+	 *
 	 * @param width The line width
 	 */
 	public void setWidth(int width) {
@@ -161,7 +161,7 @@ public class LineBorder extends AbstractBorder {
 
 	/**
 	 * Returns the line style for this border.
-	 * 
+	 *
 	 * @return The line style for this border
 	 * @since 3.5
 	 */
@@ -171,7 +171,7 @@ public class LineBorder extends AbstractBorder {
 
 	/**
 	 * Sets the line type of this border.
-	 * 
+	 *
 	 * @param style For the list of valid values, see
 	 *              {@link org.eclipse.draw2d.Graphics}
 	 * @since 3.5

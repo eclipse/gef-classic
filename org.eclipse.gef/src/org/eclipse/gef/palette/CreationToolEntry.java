@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,7 +19,7 @@ import org.eclipse.gef.tools.CreationTool;
 
 /**
  * A palette ToolEntry for a {@link CreationTool}.
- * 
+ *
  * @author hudsonr
  * @since 2.1
  */
@@ -27,7 +27,7 @@ public class CreationToolEntry extends ToolEntry {
 
 	/**
 	 * The creation factory used with the returned creation tool.
-	 * 
+	 *
 	 * @deprecated in 3.1. This field will be removed in future releases. The
 	 *             factory is being provided to the tool via the
 	 *             {@link ToolEntry#setToolProperty(Object, Object)} method.
@@ -36,7 +36,7 @@ public class CreationToolEntry extends ToolEntry {
 
 	/**
 	 * Constructor for CreationToolEntry.
-	 * 
+	 *
 	 * @param label     the label
 	 * @param shortDesc the description
 	 * @param factory   the CreationFactory

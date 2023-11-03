@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -34,7 +34,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * Handles the creation of the palette for the Flow Editor.
- * 
+ *
  * @author Daniel Lee
  */
 public final class FlowEditorPaletteFactory {
@@ -100,7 +100,7 @@ public final class FlowEditorPaletteFactory {
 
 	/**
 	 * Creates the PaletteRoot and adds all Palette elements.
-	 * 
+	 *
 	 * @return the root
 	 */
 	public static PaletteRoot createPalette() {

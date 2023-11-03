@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -31,7 +31,7 @@ public class BendpointHandle extends ConnectionHandle implements PropertyChangeL
 
 	/**
 	 * By default, <code>null</code> is returned for the DragTracker.
-	 * 
+	 *
 	 * @return returns null by default
 	 */
 	@Override
@@ -47,7 +47,7 @@ public class BendpointHandle extends ConnectionHandle implements PropertyChangeL
 	 * these two types of handles are indexed separately. For example, if you have
 	 * one bendpoint, you will have 2 creation handles, indexed as 0 and 1, and 1
 	 * move handle, indexed as 0.
-	 * 
+	 *
 	 * @return the index
 	 */
 	public int getIndex() {
@@ -56,7 +56,7 @@ public class BendpointHandle extends ConnectionHandle implements PropertyChangeL
 
 	/**
 	 * Revalidates this handle when the connection's points change.
-	 * 
+	 *
 	 * @param event the event that caused the points change
 	 */
 	@Override
@@ -66,7 +66,7 @@ public class BendpointHandle extends ConnectionHandle implements PropertyChangeL
 
 	/**
 	 * Sets the index.
-	 * 
+	 *
 	 * @param i the new index
 	 * @see #getIndex()
 	 */

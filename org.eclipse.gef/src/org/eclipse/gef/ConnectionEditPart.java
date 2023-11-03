@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -70,14 +70,14 @@ public interface ConnectionEditPart extends GraphicalEditPart {
 
 	/**
 	 * Sets the <i>source</i> of this connection.
-	 * 
+	 *
 	 * @param source the source of this connection
 	 */
 	void setSource(EditPart source);
 
 	/**
 	 * Sets the<i>target</i> of this connection.
-	 * 
+	 *
 	 * @param target the target of this connection
 	 */
 	void setTarget(EditPart target);

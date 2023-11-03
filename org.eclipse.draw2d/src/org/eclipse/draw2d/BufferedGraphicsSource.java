@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -32,7 +32,7 @@ class BufferedGraphicsSource implements GraphicsSource {
 
 	/**
 	 * Constructs a new buffered graphics source using the given control.
-	 * 
+	 *
 	 * @since 2.1
 	 * @param c the control
 	 */
@@ -124,7 +124,7 @@ class BufferedGraphicsSource implements GraphicsSource {
 
 	/**
 	 * Returns the current image buffer or <code>null</code>.
-	 * 
+	 *
 	 * @since 2.1
 	 * @return the current image buffer
 	 */
@@ -134,7 +134,7 @@ class BufferedGraphicsSource implements GraphicsSource {
 
 	/**
 	 * Returns the current GC used on the buffer or <code>null</code>.
-	 * 
+	 *
 	 * @since 2.1
 	 * @return the GC for the image buffer
 	 */

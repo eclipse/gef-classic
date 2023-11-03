@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -16,7 +16,7 @@ package org.eclipse.gef.ui.palette.editparts;
 /**
  * This interface is used to identify and work with a pinnable palette editpart
  * (e.g. drawers, stacks).
- * 
+ *
  * @author crevells
  * @since 3.4
  */
@@ -24,7 +24,7 @@ public interface IPinnableEditPart {
 
 	/**
 	 * Returns <code>true</code> if the palette editpart is pinned open.
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public boolean isPinnedOpen();
@@ -36,7 +36,7 @@ public interface IPinnableEditPart {
 
 	/**
 	 * Sets the palette editpart's pinned state to the specified value.
-	 * 
+	 *
 	 * @param pinned <code>true</code> if the palette editpart should be pinned when
 	 *               opened
 	 */
@@ -44,7 +44,7 @@ public interface IPinnableEditPart {
 
 	/**
 	 * Returns the expansion state of the palette editpart
-	 * 
+	 *
 	 * @return <code>true</code> if the palette editpart is expanded; false
 	 *         otherwise
 	 */

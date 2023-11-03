@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -46,7 +46,7 @@ public class ScrollBarLayout extends AbstractLayout {
 	 * Constructs a ScrollBarLayout. If the given Transposer is enabled, the
 	 * Scrollbar will be horizontally oriented. Otherwise, the ScrollBar will be
 	 * vertically oriented.
-	 * 
+	 *
 	 * @param t the Transposer
 	 * @since 2.0
 	 */
@@ -138,7 +138,7 @@ public class ScrollBarLayout extends AbstractLayout {
 	 * Rectangle returned should be transposed correctly, that is, it should be
 	 * vertically oriented. Users of the rectangle will re-transpose it for
 	 * horizontal use.
-	 * 
+	 *
 	 * @param scrollBar the scrollbar whose buttons are being layed out
 	 * @return the Rectangle into which the track should be placed
 	 * @since 2.0

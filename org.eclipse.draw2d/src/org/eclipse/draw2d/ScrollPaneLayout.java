@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -46,7 +46,7 @@ public class ScrollPaneLayout extends AbstractHintLayout {
 	 * scroll bar visibility is not {@link ScrollPane#NEVER}, then space for those
 	 * bars is always deducted from the hints (whether or not we actually need the
 	 * scroll bars).
-	 * 
+	 *
 	 * @param container the ScrollPane whose preferred size needs to be calculated
 	 * @param wHint     the width hint
 	 * @param hHint     the height hint

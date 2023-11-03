@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -80,7 +80,7 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 
 	/**
 	 * Returns the model associated with this as a LogicSubPart.
-	 * 
+	 *
 	 * @return The model of this as a LogicSubPart.
 	 */
 	protected LogicSubpart getLogicSubpart() {
@@ -89,7 +89,7 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 
 	/**
 	 * Returns a list of connections for which this is the source.
-	 * 
+	 *
 	 * @return List of connections.
 	 */
 	@Override
@@ -99,7 +99,7 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 
 	/**
 	 * Returns a list of connections for which this is the target.
-	 * 
+	 *
 	 * @return List of connections.
 	 */
 	@Override
@@ -109,7 +109,7 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 
 	/**
 	 * Returns the Figure of this, as a node type figure.
-	 * 
+	 *
 	 * @return Figure as a NodeFigure.
 	 */
 	protected NodeFigure getNodeFigure() {
@@ -118,7 +118,7 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 
 	/**
 	 * Returns the connection anchor for the given ConnectionEditPart's source.
-	 * 
+	 *
 	 * @return ConnectionAnchor.
 	 */
 	@Override
@@ -130,7 +130,7 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	/**
 	 * Returns the connection anchor of a source connection which is at the given
 	 * point.
-	 * 
+	 *
 	 * @return ConnectionAnchor.
 	 */
 	@Override
@@ -141,7 +141,7 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 
 	/**
 	 * Returns the connection anchor for the given ConnectionEditPart's target.
-	 * 
+	 *
 	 * @return ConnectionAnchor.
 	 */
 	@Override
@@ -153,7 +153,7 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	/**
 	 * Returns the connection anchor of a terget connection which is at the given
 	 * point.
-	 * 
+	 *
 	 * @return ConnectionAnchor.
 	 */
 	@Override
@@ -164,7 +164,7 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 
 	/**
 	 * Returns the name of the given connection anchor.
-	 * 
+	 *
 	 * @return The name of the ConnectionAnchor as a String.
 	 */
 	protected final String mapConnectionAnchorToTerminal(ConnectionAnchor c) {
@@ -175,7 +175,7 @@ public abstract class LogicEditPart extends org.eclipse.gef.editparts.AbstractGr
 	 * Handles changes in properties of this. It is activated through the
 	 * PropertyChangeListener. It updates children, source and target connections,
 	 * and the visuals of this based on the property changed.
-	 * 
+	 *
 	 * @param evt Event which details the property change.
 	 */
 	@Override

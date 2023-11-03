@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2023 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -19,7 +19,7 @@ import org.eclipse.gef.examples.flow.model.Transition;
 
 /**
  * SplitTransitionCommand
- * 
+ *
  * @author Daniel Lee
  */
 public class SplitTransitionCommand extends Command {
@@ -62,7 +62,7 @@ public class SplitTransitionCommand extends Command {
 	/**
 	 * Sets the parent Activity. The new Activity will be added as a child to the
 	 * parent.
-	 * 
+	 *
 	 * @param activity the parent
 	 */
 	public void setParent(StructuredActivity activity) {
@@ -71,7 +71,7 @@ public class SplitTransitionCommand extends Command {
 
 	/**
 	 * Sets the transition to be "split".
-	 * 
+	 *
 	 * @param transition the transition to be "split".
 	 */
 	public void setTransition(Transition transition) {
@@ -82,7 +82,7 @@ public class SplitTransitionCommand extends Command {
 
 	/**
 	 * Sets the Activity to be added.
-	 * 
+	 *
 	 * @param activity the new activity
 	 */
 	public void setNewActivity(Activity activity) {

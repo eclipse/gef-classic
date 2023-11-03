@@ -2,12 +2,12 @@
  * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
  *                      Canada.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
  * SPDX-License-Identifier: EPL-2.0
- * 
+ *
  * Contributors: The Chisel Group, University of Victoria
  *******************************************************************************/
 
@@ -42,9 +42,9 @@ import org.eclipse.zest.layouts.progress.ProgressListener;
 /**
  * Handles common elements in all layout algorithms [irbull] Refactored into a
  * template pattern. ApplyLayout now delegates the task to ApplyLayoutInternal
- * 
+ *
  * [irbull] Included asynchronous layouts
- * 
+ *
  * @version 1.0
  * @author Casey Best
  * @author Ian Bull
@@ -122,7 +122,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Initializes the abstract layout algorithm.
-	 * 
+	 *
 	 * @see LayoutStyles
 	 */
 	public AbstractLayoutAlgorithm(int styles) {
@@ -141,7 +141,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Queues up the given entity (if it isn't in the list) to be added to the
 	 * algorithm.
-	 * 
+	 *
 	 * @param entity
 	 */
 	@Override
@@ -154,7 +154,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Queues up the given relationshp (if it isn't in the list) to be added to the
 	 * algorithm.
-	 * 
+	 *
 	 * @param relationship
 	 */
 	@Override
@@ -167,7 +167,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Queues up the given entity to be removed from the algorithm next time it
 	 * runs.
-	 * 
+	 *
 	 * @param entity The entity to remove
 	 */
 	@Override
@@ -180,7 +180,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Queues up the given relationship to be removed from the algorithm next time
 	 * it runs.
-	 * 
+	 *
 	 * @param relationship The relationship to remove.
 	 */
 	@Override
@@ -192,7 +192,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Queues up all the relationships in the list to be removed.
-	 * 
+	 *
 	 * @param relationships
 	 */
 	@Override
@@ -205,7 +205,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Sets the current layout style. This overwrites all other layout styles. Use
 	 * getStyle to get the current style.
-	 * 
+	 *
 	 * @param style
 	 */
 	@Override
@@ -215,7 +215,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Gets the current layout style
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
@@ -227,7 +227,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Determines if the configuration is valid for this layout
-	 * 
+	 *
 	 * @param asynchronous
 	 * @param continuous
 	 */
@@ -236,7 +236,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Apply the layout to the given entities. The entities will be moved and
 	 * resized based on the algorithm.
-	 * 
+	 *
 	 * @param entitiesToLayout        Apply the algorithm to these entities
 	 * @param relationshipsToConsider Only consider these relationships when
 	 *                                applying the algorithm.
@@ -256,7 +256,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Updates the given array of entities checking if any need to be removed or
 	 * added.
-	 * 
+	 *
 	 * @param entities the current entities
 	 * @return the updated entities array
 	 */
@@ -308,7 +308,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Updates the given array of relationships checking if any need to be removed
 	 * or added. Also updates the original array of relationships.
-	 * 
+	 *
 	 * @param relationships the current relationships
 	 * @return the update relationships array
 	 */
@@ -363,7 +363,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Moves all the entities by the given amount.
-	 * 
+	 *
 	 * @param dx the amount to shift the entities in the x-direction
 	 * @param dy the amount to shift the entities in the y-direction
 	 */
@@ -377,7 +377,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Returns true if the layout algorithm is running
-	 * 
+	 *
 	 * @return boolean if the layout algorithm is running
 	 */
 	@Override
@@ -473,7 +473,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Gets the current layout step
-	 * 
+	 *
 	 * @return
 	 */
 	protected abstract int getCurrentLayoutStep();
@@ -547,7 +547,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Update external bend points from the internal bendpoints list. Save the
 	 * source and destination points for later use in scaling and translating
-	 * 
+	 *
 	 * @param relationshipsToConsider
 	 */
 	protected void updateBendPoints(InternalRelationship[] relationshipsToConsider) {
@@ -609,7 +609,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Creates a list of InternalRelationship objects from the given list of
 	 * LayoutRelationship objects.
-	 * 
+	 *
 	 * @param rels
 	 * @return List of internal relationships
 	 */
@@ -701,7 +701,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Gets the location in the layout bounds for this node
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @return
@@ -763,7 +763,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 
 	/**
 	 * Calculate the screen bounds, maintaining the
-	 * 
+	 *
 	 * @param realBounds
 	 * @return
 	 */
@@ -792,7 +792,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Find and set the node size - shift the nodes to the right and down to make
 	 * room for the width and height.
-	 * 
+	 *
 	 * @param entitiesToLayout
 	 * @param relationships
 	 */
@@ -812,7 +812,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Convert all node positions into a percentage of the screen. If
 	 * includeNodeSize is true then this also updates the node's internal size.
-	 * 
+	 *
 	 * @param entitiesToLayout
 	 */
 	private void convertPositionsToPercentage(InternalNode[] entitiesToLayout, InternalRelationship[] relationships,
@@ -846,7 +846,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * Convert the positions from a percentage of bounds area to fixed coordinates.
 	 * NOTE: ALL OF THE POSITIONS OF NODES UNTIL NOW WERE FOR THE CENTER OF THE NODE
 	 * - Convert it to the left top corner.
-	 * 
+	 *
 	 * @param entitiesToLayout
 	 * @param relationships
 	 * @param realBounds
@@ -883,7 +883,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Adjust node size to take advantage of space. Reset position to top left
 	 * corner of node.
-	 * 
+	 *
 	 * @param node
 	 * @param height
 	 * @param width
@@ -963,15 +963,15 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	 * become the center points for the two closest nodes, which we wish to make
 	 * them as big as possible without overlapping. This will be the maximum of
 	 * minDistanceX and minDistanceY minus a bit, lets say 20%
-	 * 
+	 *
 	 * We make the recommended node size a square for convenience.
-	 * 
-	 * 
+	 *
+	 *
 	 * _______ | | | | | + | | |\ | |___|_\_|_____ | | \ | | | \ | +-|---+ | | |
 	 * |_______|
-	 * 
-	 * 
-	 * 
+	 *
+	 *
+	 *
 	 */
 	private DisplayIndependentDimension getMinimumDistance(InternalNode[] entitiesToLayout) {
 		DisplayIndependentDimension horAndVertdistance = new DisplayIndependentDimension(Double.MAX_VALUE,
@@ -1079,7 +1079,7 @@ public abstract class AbstractLayoutAlgorithm implements LayoutAlgorithm, Stoppa
 	/**
 	 * Fires an event to notify all of the registered ProgressListeners that another
 	 * step has been completed in the algorithm.
-	 * 
+	 *
 	 * @param currentStep        The current step completed.
 	 * @param totalNumberOfSteps The total number of steps in the algorithm.
 	 */

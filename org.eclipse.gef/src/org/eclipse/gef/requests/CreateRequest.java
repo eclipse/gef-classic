@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -40,7 +40,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Creates a CreateRequest with the given type.
-	 * 
+	 *
 	 * @param type The type of request.
 	 */
 	public CreateRequest(Object type) {
@@ -49,7 +49,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Returns the CreationFactory for this request.
-	 * 
+	 *
 	 * @return the CreationFactory
 	 */
 	protected CreationFactory getFactory() {
@@ -58,7 +58,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Returns the location of the object to be created.
-	 * 
+	 *
 	 * @return the location
 	 */
 	@Override
@@ -68,7 +68,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Gets the new object from the factory and returns that object.
-	 * 
+	 *
 	 * @return the new object
 	 */
 	public Object getNewObject() {
@@ -83,7 +83,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Returns the type of the new object.
-	 * 
+	 *
 	 * @return the type of the new object
 	 */
 	public Object getNewObjectType() {
@@ -95,7 +95,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Returns the size of the object to be created.
-	 * 
+	 *
 	 * @return the size
 	 */
 	public Dimension getSize() {
@@ -104,7 +104,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Returns <code>true</code> if snap-to is enabled
-	 * 
+	 *
 	 * @since 3.7
 	 * @return <code>true</code> if the request is for a creation with snap-to
 	 *         enabled
@@ -115,7 +115,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Sets the factory to be used when creating the new object.
-	 * 
+	 *
 	 * @param factory the factory
 	 */
 	public void setFactory(CreationFactory factory) {
@@ -124,7 +124,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Sets the location where the new object will be placed.
-	 * 
+	 *
 	 * @param location the location
 	 */
 	public void setLocation(Point location) {
@@ -133,7 +133,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Sets the size of the new object.
-	 * 
+	 *
 	 * @param size the size
 	 */
 	public void setSize(Dimension size) {
@@ -142,7 +142,7 @@ public class CreateRequest extends org.eclipse.gef.Request implements DropReques
 
 	/**
 	 * Used to set whether snap-to is being performed.
-	 * 
+	 *
 	 * @since 3.7
 	 * @param value <code>true</code> if the request is for a creation with snap-to
 	 *              enabled

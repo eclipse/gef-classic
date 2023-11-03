@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -49,7 +49,7 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 	 * displays the tip at the coordianates specified by tipPosX and tipPosY. The
 	 * given coordinates will be adjusted if the tip cannot be completely visible on
 	 * the screen.
-	 * 
+	 *
 	 * @param tip     The tool tip to be displayed.
 	 * @param tipPosX X coordiante of tooltip to be displayed
 	 * @param tipPosY Y coordinate of tooltip to be displayed

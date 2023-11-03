@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ import org.eclipse.gef.requests.SimpleFactory;
  * This class is <code>abstract</code>. Subclasses are responsible for providing
  * the appropriate <code>Factory</code> object based on the template that is
  * being dragged.
- * 
+ *
  * @since 2.1
  * @author Eric Bordeau
  */
@@ -37,7 +37,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 
 	/**
 	 * Constructs a listener on the specified viewer.
-	 * 
+	 *
 	 * @param viewer the EditPartViewer
 	 */
 	public TemplateTransferDropTargetListener(EditPartViewer viewer) {
@@ -58,7 +58,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 
 	/**
 	 * A helper method that casts the target Request to a CreateRequest.
-	 * 
+	 *
 	 * @return CreateRequest
 	 */
 	protected final CreateRequest getCreateRequest() {
@@ -69,7 +69,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 	 * Returns the appropriate Factory object to be used for the specified template.
 	 * This Factory is used on the CreateRequest that is sent to the target
 	 * EditPart.
-	 * 
+	 *
 	 * @param template the template Object
 	 * @return a Factory
 	 */
@@ -85,7 +85,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 	/**
 	 * The purpose of a template is to be copied. Therefore, the drop operation
 	 * can't be anything but <code>DND.DROP_COPY</code>.
-	 * 
+	 *
 	 * @see AbstractTransferDropTargetListener#handleDragOperationChanged()
 	 */
 	@Override
@@ -97,7 +97,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 	/**
 	 * The purpose of a template is to be copied. Therefore, the Drop operation is
 	 * set to <code>DND.DROP_COPY</code> by default.
-	 * 
+	 *
 	 * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#handleDragOver()
 	 */
 	@Override
@@ -109,7 +109,7 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 
 	/**
 	 * Overridden to select the created object.
-	 * 
+	 *
 	 * @see org.eclipse.gef.dnd.AbstractTransferDropTargetListener#handleDrop()
 	 */
 	@Override

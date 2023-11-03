@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -75,7 +75,7 @@ public class LEDEditPart extends LogicEditPart {
 
 	/**
 	 * Returns a newly created Figure to represent this.
-	 * 
+	 *
 	 * @return Figure of this.
 	 */
 	@Override
@@ -122,7 +122,7 @@ public class LEDEditPart extends LogicEditPart {
 
 	/**
 	 * Returns the Figure of this as a LEDFigure.
-	 * 
+	 *
 	 * @return LEDFigure of this.
 	 */
 	public LEDFigure getLEDFigure() {
@@ -131,7 +131,7 @@ public class LEDEditPart extends LogicEditPart {
 
 	/**
 	 * Returns the model of this as a LED.
-	 * 
+	 *
 	 * @return Model of this as an LED.
 	 */
 	protected LED getLEDModel() {

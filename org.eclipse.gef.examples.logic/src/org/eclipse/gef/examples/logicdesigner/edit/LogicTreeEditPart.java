@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -36,7 +36,7 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 
 	/**
 	 * Constructor initializes this with the given model.
-	 * 
+	 *
 	 * @param model Model for this.
 	 */
 	public LogicTreeEditPart(Object model) {
@@ -71,7 +71,7 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 
 	/**
 	 * Returns the model of this as a LogicSubPart.
-	 * 
+	 *
 	 * @return Model of this.
 	 */
 	protected LogicSubpart getLogicSubpart() {
@@ -80,7 +80,7 @@ public class LogicTreeEditPart extends org.eclipse.gef.editparts.AbstractTreeEdi
 
 	/**
 	 * Returns <code>null</code> as a Tree EditPart holds no children under it.
-	 * 
+	 *
 	 * @return <code>null</code>
 	 */
 	@Override

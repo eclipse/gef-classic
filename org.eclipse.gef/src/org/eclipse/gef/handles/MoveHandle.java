@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -29,7 +29,7 @@ public class MoveHandle extends AbstractHandle {
 
 	/**
 	 * The hit-threshold for {@link #containsPoint(int, int)}.
-	 * 
+	 *
 	 * @deprecated subclasses should not reference this field.
 	 */
 	protected static final int INNER_PAD = 2;
@@ -37,7 +37,7 @@ public class MoveHandle extends AbstractHandle {
 	/**
 	 * Creates a MoveHandle for the given <code>GraphicalEditPart</code> using a
 	 * default {@link Locator}.
-	 * 
+	 *
 	 * @param owner The GraphicalEditPart to be moved by this handle.
 	 */
 	public MoveHandle(GraphicalEditPart owner) {
@@ -47,7 +47,7 @@ public class MoveHandle extends AbstractHandle {
 	/**
 	 * Creates a MoveHandle for the given <code>GraphicalEditPart</code> using the
 	 * given <code>Locator</code>.
-	 * 
+	 *
 	 * @param owner The GraphicalEditPart to be moved by this handle.
 	 * @param loc   The Locator used to place the handle.
 	 */
@@ -58,7 +58,7 @@ public class MoveHandle extends AbstractHandle {
 
 	/**
 	 * Overridden to create a {@link DragEditPartsTracker}.
-	 * 
+	 *
 	 * @see org.eclipse.gef.handles.AbstractHandle#createDragTracker()
 	 */
 	@Override
@@ -70,7 +70,7 @@ public class MoveHandle extends AbstractHandle {
 
 	/**
 	 * Returns <code>true</code> if the point (x,y) is contained within this handle.
-	 * 
+	 *
 	 * @param x The x coordinate.
 	 * @param y The y coordinate.
 	 * @return <code>true</code> if the point (x,y) is contained within this handle.
@@ -84,7 +84,7 @@ public class MoveHandle extends AbstractHandle {
 
 	/**
 	 * Returns a point along the right edge of the handle.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Handle#getAccessibleLocation()
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -107,25 +107,25 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * constant used for mouse button 1.
-	 * 
+	 *
 	 * @deprecated Use {@link SWT#BUTTON1} instead.
 	 */
 	protected static final int MOUSE_BUTTON1 = SWT.BUTTON1;
 	/**
 	 * constant used for mouse button 2.
-	 * 
+	 *
 	 * @deprecated Use {@link SWT#BUTTON2} instead.
 	 */
 	protected static final int MOUSE_BUTTON2 = SWT.BUTTON2;
 	/**
 	 * constant used for mouse button 3.
-	 * 
+	 *
 	 * @deprecated Use {@link SWT#BUTTON3} instead.
 	 */
 	protected static final int MOUSE_BUTTON3 = SWT.BUTTON3;
 	/**
 	 * constant used to indicate any of the mouse buttons.
-	 * 
+	 *
 	 * @deprecated Use {@link SWT#BUTTON_MASK} instead.
 	 */
 	protected static final int MOUSE_BUTTON_ANY = SWT.BUTTON_MASK;
@@ -215,7 +215,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Returns true if the event corresponds to an arrow key with the appropriate
 	 * modifiers and if the system is in a state where the arrow key should be
 	 * accepted.
-	 * 
+	 *
 	 * @param e the key event
 	 * @return true if the arrow key should be accepted by this tool
 	 * @since 3.4
@@ -254,7 +254,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Activates the tool. Any initialization should be performed here. This method
 	 * is called when a tool is selected.
-	 * 
+	 *
 	 * @see #deactivate()
 	 */
 	@Override
@@ -269,7 +269,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Convenience method to add the given figure to the feedback layer.
-	 * 
+	 *
 	 * @param figure the feedback being added
 	 */
 	protected void addFeedback(IFigure figure) {
@@ -287,7 +287,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * AbstractTool uses introspection to match any keys with properties. For
 	 * instance, the key "defaultCursor" would lead to the invocation of
 	 * {@link #setDefaultCursor(Cursor)} with the provided value.
-	 * 
+	 *
 	 * @param key   the key; may be <code>null</code>
 	 * @param value the new value
 	 * @since 3.1
@@ -333,7 +333,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * <P>
 	 * Subclasses may override or extend this method to calculate the appropriate
 	 * cursor based on other conditions.
-	 * 
+	 *
 	 * @see #getDefaultCursor()
 	 * @see #getDisabledCursor()
 	 * @see #getCurrentCommand()
@@ -364,7 +364,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * By default, the operations set is the current viewer's entire selection.
 	 * Subclasses may override this method to filter or alter the operation set as
 	 * necessary.
-	 * 
+	 *
 	 * @return a list of editparts being operated on
 	 */
 	protected List createOperationSet() {
@@ -376,7 +376,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * another tool. Use this method to do some clean-up when the tool is switched.
 	 * The abstract tool allows cursors for viewers to be changed. When the tool is
 	 * deactivated it must revert to normal the cursor of the last tool it changed.
-	 * 
+	 *
 	 * @see #activate()
 	 */
 	@Override
@@ -393,7 +393,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Prints a string in the GEF Debug console if the Tools debug option is
 	 * selected.
-	 * 
+	 *
 	 * @param message a message for the debug trace tool
 	 * @deprecated
 	 */
@@ -402,7 +402,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Executes the given command on the command stack.
-	 * 
+	 *
 	 * @since 3.1
 	 * @param command the command to execute
 	 */
@@ -427,7 +427,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Called when a viewer that the editor controls gains focus.
-	 * 
+	 *
 	 * @param event  The SWT focus event
 	 * @param viewer The viewer that the focus event is over.
 	 */
@@ -439,7 +439,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Called when a viewer that the editor controls loses focus.
-	 * 
+	 *
 	 * @param event  The SWT focus event
 	 * @param viewer The viewer that the focus event is over.
 	 */
@@ -454,7 +454,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * default implementation returns an unexecutable command. Some tools do not
 	 * work commands and the model, but simply change the viewer's state in some
 	 * way.
-	 * 
+	 *
 	 * @return a newly obtained command
 	 */
 	protected Command getCommand() {
@@ -464,14 +464,14 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Returns the identifier of the command that is being sought. This name is also
 	 * the named that will be logged in the debug view.
-	 * 
+	 *
 	 * @return the identifier for the command
 	 */
 	protected abstract String getCommandName();
 
 	/**
 	 * Returns the currently cached command.
-	 * 
+	 *
 	 * @return the current command
 	 * @see #setCurrentCommand(Command)
 	 */
@@ -481,7 +481,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Returns the input object encapsulating the current mouse and keyboard state.
-	 * 
+	 *
 	 * @return the current input
 	 */
 	protected Input getCurrentInput() {
@@ -495,7 +495,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * <code>null</code>. The last viewer to dispatch an event is defined as the
 	 * current viewer. Current viewer is automatically updated as events are
 	 * received, and is set to <code>null</code> on <code>deactivate()</code>.
-	 * 
+	 *
 	 * @return the current viewer
 	 */
 	protected EditPartViewer getCurrentViewer() {
@@ -504,7 +504,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Returns the debug name for this tool.
-	 * 
+	 *
 	 * @return the debug name
 	 */
 	protected String getDebugName() {
@@ -513,7 +513,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Returns a String representation of the given state for debug purposes.
-	 * 
+	 *
 	 * @param state the state
 	 * @return the string for the given state
 	 */
@@ -539,7 +539,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Returns the cursor used under normal conditions.
-	 * 
+	 *
 	 * @see #setDefaultCursor(Cursor)
 	 * @return the default cursor
 	 */
@@ -549,7 +549,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Returns the cursor used under abnormal conditions.
-	 * 
+	 *
 	 * @see #calculateCursor()
 	 * @see #setDisabledCursor(Cursor)
 	 * @return the disabled cursor
@@ -564,7 +564,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Returns the EditDomain. A tool is told its EditDomain when it becomes active.
 	 * A tool may need to know its edit domain prior to receiving any events from
 	 * any of that domain's viewers.
-	 * 
+	 *
 	 * @return the editdomain
 	 */
 	protected EditDomain getDomain() {
@@ -575,7 +575,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Return the number of pixels that the mouse has been moved since that drag was
 	 * started. The drag start is determined by where the mouse button was first
 	 * pressed.
-	 * 
+	 *
 	 * @see #getStartLocation()
 	 * @return the drag delta
 	 */
@@ -585,7 +585,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Returns the current x, y position of the mouse cursor.
-	 * 
+	 *
 	 * @return the mouse location
 	 */
 	protected Point getLocation() {
@@ -597,7 +597,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * The list is initially <code>null</code>, in which case
 	 * {@link #createOperationSet()} is called, and its results cached until the
 	 * tool is deactivated.
-	 * 
+	 *
 	 * @return the operation set.
 	 */
 	protected List getOperationSet() {
@@ -610,7 +610,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Returns the starting mouse location for the current tool operation. This is
 	 * typically the mouse location where the user first pressed a mouse button.
 	 * This is important for tools that interpret mouse drags.
-	 * 
+	 *
 	 * @return the start location
 	 */
 	protected Point getStartLocation() {
@@ -619,7 +619,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Returns the tool's current state.
-	 * 
+	 *
 	 * @return the current state
 	 */
 	protected int getState() {
@@ -631,7 +631,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * and <code>false</code> is returned. Subclasses may override this method to
 	 * interpret the meaning of a mouse down. Returning <code>true</code> indicates
 	 * that the button down was handled in some way.
-	 * 
+	 *
 	 * @param button which button went down
 	 * @return <code>true</code> if the buttonDown was handled
 	 */
@@ -644,7 +644,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * and <code>false</code> is returned. Subclasses may override this method to
 	 * interpret the mouse up. Returning <code>true</code> indicates that the mouse
 	 * up was handled in some way.
-	 * 
+	 *
 	 * @see #mouseUp(MouseEvent, EditPartViewer)
 	 * @param button the button being released
 	 * @return <code>true</code> if the button up was handled
@@ -660,7 +660,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * override this method to change what happens when the command stack changes.
 	 * Returning <code>true</code> indicates that the change was handled in some
 	 * way.
-	 * 
+	 *
 	 * @return <code>true</code> if the change was handled in some way
 	 */
 	protected boolean handleCommandStackChanged() {
@@ -677,7 +677,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * <code>false</code> is returned. Subclasses may override this method to
 	 * interpret double-clicks. Returning <code>true</code> indicates that the event
 	 * was handled in some way.
-	 * 
+	 *
 	 * @param button which button was double-clicked
 	 * @return <code>true</code> if the event was handled
 	 * @see #mouseDoubleClick(MouseEvent, EditPartViewer)
@@ -692,7 +692,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * default, nothing happens, and <code>false</code> is returned. Subclasses may
 	 * override this method to interpret a drag. Returning <code>true</code>
 	 * indicates that the drag was handled in some way.
-	 * 
+	 *
 	 * @return <code>true</code> if the drag is handled
 	 * @see #mouseDrag(MouseEvent, EditPartViewer)
 	 */
@@ -708,7 +708,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * <code>false</code> is returned. Subclasses may override this method to
 	 * interpret the drag. Returning <code>true</code> indicates that the drag was
 	 * handled.
-	 * 
+	 *
 	 * @see #movedPastThreshold()
 	 * @see #mouseDrag(MouseEvent, EditPartViewer)
 	 * @return <code>true</code> if the drag was handled
@@ -722,7 +722,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * By default, nothing happens and <code>false</code> is returned. Subclasses
 	 * may override to interpret the drag starting. Returning <code>true</code>
 	 * indicates that the event was handled.
-	 * 
+	 *
 	 * @see #movedPastThreshold()
 	 * @see #mouseDrag(MouseEvent, EditPartViewer)
 	 * @return true if the drag starting was handled
@@ -739,7 +739,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * <P>
 	 * Subclasses should extend this method to first do whatever it is that the tool
 	 * does, and then call <code>super</code>.
-	 * 
+	 *
 	 * @see #unloadWhenFinished()
 	 */
 	protected void handleFinished() {
@@ -754,7 +754,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * happens and <code>false</code> is returned. Subclasses may override this
 	 * method to interpret the focus gained event. Return <code>true</code> to
 	 * indicate that the event was processed.
-	 * 
+	 *
 	 * @see #focusGained(FocusEvent, EditPartViewer)
 	 * @return <code>true</code> if the event was handled
 	 */
@@ -767,7 +767,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * happens and <code>false</code> is returned. Subclasses may override this
 	 * method to interpret the focus lost event. Return <code>true</code> to
 	 * indicate that the event was processed.
-	 * 
+	 *
 	 * @see #focusLost(FocusEvent, EditPartViewer)
 	 * @return <code>true</code> if the event was handled
 	 */
@@ -780,7 +780,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * happens and <code>false</code> is returned. Subclasses may override this
 	 * method to interpret the hover. Return <code>true</code> to indicate that the
 	 * hover was handled.
-	 * 
+	 *
 	 * @see #mouseHover(MouseEvent, EditPartViewer)
 	 * @return <code>true</code> if the hover was handled
 	 */
@@ -791,7 +791,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Called when invalid input is encountered. The state does not change, so the
 	 * caller must set the state to {@link AbstractTool#STATE_INVALID}.
-	 * 
+	 *
 	 * @return <code>true</code>
 	 */
 	protected boolean handleInvalidInput() {
@@ -804,7 +804,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * is reloaded, and <code>true</code> is returned. Subclasses may extend this
 	 * method to interpret additional key down events. Returns <code>true</code> if
 	 * the given key down was handled.
-	 * 
+	 *
 	 * @see #keyDown(KeyEvent, EditPartViewer)
 	 * @param e the key event
 	 * @return <code>true</code> if the key down was handled.
@@ -821,7 +821,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Override to process a traverse event. If the event's {@link KeyEvent#doit
 	 * doit} field is set to <code>false</code>, the traversal will be prevented
 	 * from occurring. Otherwise, a traverse will occur.
-	 * 
+	 *
 	 * @param event the SWT traverse event
 	 * @since 3.1
 	 */
@@ -832,7 +832,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Handles high-level processing of a key up event. By default, does nothing and
 	 * returns <code>false</code>. Subclasses may extend this method to process key
 	 * up events. Returns <code>true</code> if the key up was processed in some way.
-	 * 
+	 *
 	 * @see #keyUp(KeyEvent, EditPartViewer)
 	 * @param e the key event
 	 * @return <code>true</code> if the event was handled
@@ -845,7 +845,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Handles high-level processing of a mouse move. By default, does nothing and
 	 * returns <code>false</code>. Subclasses may extend this method to process
 	 * mouse moves. Returns <code>true</code> if the mouse move was processed.
-	 * 
+	 *
 	 * @see #mouseMove(MouseEvent, EditPartViewer)
 	 * @return <code>true</code> if the mouse move was handled
 	 */
@@ -857,7 +857,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Handles when a native drag has ended. By default, does nothing and returns
 	 * <code>false</code>. Subclasses may extend this method to process native drags
 	 * ending.
-	 * 
+	 *
 	 * @param event the drag event
 	 * @return <code>true</code> if the native drag finished was handled
 	 */
@@ -873,7 +873,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * When a native drag starts, all subsequent mouse events will not be received,
 	 * including the mouseUp event. The only event that will be received is the drag
 	 * finished event.
-	 * 
+	 *
 	 * @param event the drag event
 	 * @return <code>true</code> if the native drag start was handled
 	 */
@@ -886,7 +886,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * returns <code>false</code>. Subclasses may extend this method to process the
 	 * viewer enter. Returns <code>true</code> to indicate if the viewer entered was
 	 * process in some way.
-	 * 
+	 *
 	 * @return <code>true</code> if the viewer entered was handled
 	 */
 	protected boolean handleViewerEntered() {
@@ -898,7 +898,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * returns <code>false</code>. Subclasses may extend this method to process
 	 * viewer exits. Returns <code>true</code> to indicate if the viewer exited was
 	 * process in some way.
-	 * 
+	 *
 	 * @return <code>true</code> if the viewer exited was handled
 	 */
 	protected boolean handleViewerExited() {
@@ -907,7 +907,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Returns <code>true</code> if the tool is active.
-	 * 
+	 *
 	 * @return <code>true</code> if active
 	 */
 	protected boolean isActive() {
@@ -920,7 +920,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Returns <code>true</code> if the tool is hovering.
-	 * 
+	 *
 	 * @return <code>true</code> if hovering
 	 */
 	protected boolean isHoverActive() {
@@ -946,7 +946,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Returns <code>true</code> if the tool is in the given state.
-	 * 
+	 *
 	 * @param state the state being queried
 	 * @return <code>true</code> if the tool is in the given state
 	 */
@@ -957,7 +957,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Default implementation always returns <code>true</code>. Sub-classes may
 	 * override.
-	 * 
+	 *
 	 * @param viewer the viewer where the event occured
 	 * @return <code>true</code> if this tool is interested in events occuring in
 	 *         the given viewer; <code>false</code> otherwise
@@ -970,7 +970,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Receives a KeyDown event for the given viewer. Subclasses wanting to handle
 	 * this event should override {@link #handleKeyDown(KeyEvent)}.
-	 * 
+	 *
 	 * @param evt    the key event
 	 * @param viewer the originating viewer
 	 */
@@ -986,7 +986,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Receives a traversal event for the given viewer. Subclasses wanting to handle
 	 * this event should override {@link #handleKeyTraversed(TraverseEvent)}.
-	 * 
+	 *
 	 * @param event  the traverse event
 	 * @param viewer the originating viewer
 	 */
@@ -1002,7 +1002,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Receives a KeyUp event for the given viewer. Subclasses wanting to handle
 	 * this event should override {@link #handleKeyUp(KeyEvent)}.
-	 * 
+	 *
 	 * @param evt    the key event
 	 * @param viewer the originating viewer
 	 */
@@ -1018,7 +1018,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Handles mouse double click events within a viewer. Subclasses wanting to
 	 * handle this event should override {@link #handleDoubleClick(int)}.
-	 * 
+	 *
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
@@ -1035,7 +1035,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Handles mouse down events within a viewer. Subclasses wanting to handle this
 	 * event should override {@link #handleButtonDown(int)}.
-	 * 
+	 *
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
@@ -1057,7 +1057,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Handles mouse drag events within a viewer. Subclasses wanting to handle this
 	 * event should override {@link #handleDrag()} and/or
 	 * {@link #handleDragInProgress()}.
-	 * 
+	 *
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
@@ -1079,10 +1079,10 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Handles mouse hover event. within a viewer. Subclasses wanting to handle this
 	 * event should override {@link #handleHover()}.
-	 * 
+	 *
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
-	 * 
+	 *
 	 */
 	@Override
 	public void mouseHover(MouseEvent me, EditPartViewer viewer) {
@@ -1096,7 +1096,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Handles mouse moves (if the mouse button is up) within a viewer. Subclasses
 	 * wanting to handle this event should override {@link #handleMove()}.
-	 * 
+	 *
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
@@ -1142,7 +1142,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Handles mouse up within a viewer. Subclasses wanting to handle this event
 	 * should override {@link #handleButtonUp(int)}.
-	 * 
+	 *
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
@@ -1161,7 +1161,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * needed. The default implementation delegates to
 	 * {@link #performViewerMouseWheel(Event, EditPartViewer)} IFF the tool is in
 	 * the initial state. Mouse-wheel events generated at other times are ignored.
-	 * 
+	 *
 	 * @param event  the SWT scroll event
 	 * @param viewer the originating viewer
 	 * @see #performViewerMouseWheel(Event, EditPartViewer)
@@ -1175,7 +1175,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Returns <code>true</code> if the threshold has been exceeded during a mouse
 	 * drag.
-	 * 
+	 *
 	 * @return <code>true</code> if the threshold has been exceeded
 	 */
 	protected boolean movedPastThreshold() {
@@ -1215,7 +1215,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Delegates mouse-wheel event handling to registered {@link MouseWheelHandler
 	 * MouseWheelHandlers} based on the given Event's statemask. Does nothing if
 	 * there are no matching handlers found.
-	 * 
+	 *
 	 * @param event  the SWT scroll event
 	 * @param viewer the originating viewer
 	 * @since 3.1
@@ -1231,7 +1231,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Places the mouse in the viewer based on the point given. If the point given
 	 * is outside the viewer, then the mouse is placed in the location nearest the
 	 * given point but within the viewer.
-	 * 
+	 *
 	 * @param p the point
 	 * @since 3.4
 	 */
@@ -1290,7 +1290,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Releases tool capture.
-	 * 
+	 *
 	 * @see #setToolCapture()
 	 */
 	protected void releaseToolCapture() {
@@ -1299,7 +1299,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Convenience method to removes a figure from the feedback layer.
-	 * 
+	 *
 	 * @param figure the figure being removed
 	 */
 	protected void removeFeedback(IFigure figure) {
@@ -1320,7 +1320,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Used to cache a command obtained from {@link #getCommand()}.
-	 * 
+	 *
 	 * @param c the command
 	 * @see #getCurrentCommand()
 	 */
@@ -1331,7 +1331,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Shows the given cursor on the current viewer.
-	 * 
+	 *
 	 * @param cursor the cursor to display
 	 */
 	protected void setCursor(Cursor cursor) {
@@ -1341,7 +1341,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Sets the default cursor.
-	 * 
+	 *
 	 * @param cursor the cursor
 	 * @see #getDefaultCursor()
 	 */
@@ -1354,7 +1354,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Sets the disabled cursor.
-	 * 
+	 *
 	 * @param cursor the cursor
 	 * @see #getDisabledCursor()
 	 */
@@ -1367,7 +1367,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Sets the EditDomain.
-	 * 
+	 *
 	 * @param domain the edit domain
 	 * @see #getDomain()
 	 */
@@ -1380,7 +1380,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Sets whether the hover flag is true or false. Subclasses which do something
 	 * on hover can use this flag to track whether they have received a hover or
 	 * not.
-	 * 
+	 *
 	 * @param value whether hover is active
 	 */
 	protected void setHoverActive(boolean value) {
@@ -1398,7 +1398,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * uses introspection to set properties that are not explicitly specified. For
 	 * instance, the key "defaultCursor" will cause
 	 * {@link #setDefaultCursor(Cursor)} to be invoked with the given value.
-	 * 
+	 *
 	 * @see org.eclipse.gef.Tool#setProperties(java.util.Map)
 	 */
 	@Override
@@ -1414,7 +1414,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Sets the start mouse location, typically for a drag operation.
-	 * 
+	 *
 	 * @param p the start location
 	 */
 	protected void setStartLocation(Point p) {
@@ -1424,7 +1424,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	/**
 	 * Sets the tools state.
-	 * 
+	 *
 	 * @param state the new state
 	 */
 	protected void setState(int state) {
@@ -1444,7 +1444,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Setting this to <code>true</code> will cause the tool to be unloaded after
 	 * one operation has completed. The default value is <code>true</code> . The
 	 * tool is unloaded, and the edit domains default tool will be activated.
-	 * 
+	 *
 	 * @param value whether the tool should be unloaded on completion
 	 */
 	public void setUnloadWhenFinished(boolean value) {
@@ -1454,7 +1454,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Sets the active EditPartViewer. The active viewer is the viewer from which
 	 * the last event was received.
-	 * 
+	 *
 	 * @param viewer the viewer
 	 */
 	@Override
@@ -1477,7 +1477,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * "test and set" operation, where the tool is tested to be in the specified
 	 * start state, and if so, is set to the given end state. The method returns the
 	 * result of the first test.
-	 * 
+	 *
 	 * @param start the start state being tested
 	 * @param end   the end state
 	 * @return <code>true</code> if the state transition is successful
@@ -1493,7 +1493,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Returns <code>true</code> if the tool is set to unload when its current
 	 * operation is complete.
-	 * 
+	 *
 	 * @return <code>true</code> if the tool should be unloaded when finished
 	 */
 	protected final boolean unloadWhenFinished() {
@@ -1508,7 +1508,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * Therefore, if the current viewer is not <code>null</code>, it means the exit
 	 * has not been sent yet by SWT. To maintain proper ordering, GEF fakes the exit
 	 * and calls {@link #handleViewerExited()}. The real exit will then be ignored.
-	 * 
+	 *
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
@@ -1526,7 +1526,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	/**
 	 * Handles the mouse exited event. Subclasses wanting to handle this event
 	 * should override {@link #handleViewerExited()}.
-	 * 
+	 *
 	 * @param me     the mouse event
 	 * @param viewer the originating viewer
 	 */
@@ -1555,7 +1555,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 		 * Returns the event modifiers. Modifiers are defined in
 		 * {@link MouseEvent#stateMask}, and include things like the mouse buttons and
 		 * keyboard modifier keys.
-		 * 
+		 *
 		 * @return the event modifiers
 		 */
 		protected int getModifiers() {
@@ -1564,7 +1564,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 		/**
 		 * Returns the current location of the mouse.
-		 * 
+		 *
 		 * @return the mouse location
 		 */
 		public Point getMouseLocation() {
@@ -1573,7 +1573,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 		/**
 		 * Returns <code>true</code> if the ALT key is pressed.
-		 * 
+		 *
 		 * @return <code>true</code> if the ALT key is pressed
 		 */
 		public boolean isAltKeyDown() {
@@ -1582,7 +1582,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 		/**
 		 * Returns <code>true</code> if any of the mouse buttons are pressed.
-		 * 
+		 *
 		 * @return <code>true</code> if any of the mouse buttons are pressed
 		 */
 		public boolean isAnyButtonDown() {
@@ -1591,7 +1591,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 		/**
 		 * Returns <code>true</code> if the CTRL key is pressed.
-		 * 
+		 *
 		 * @return <code>true</code> of CTRL pressed
 		 */
 		public boolean isControlKeyDown() {
@@ -1600,7 +1600,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 		/**
 		 * Returns <code>true</code> if any of the given mod keys are pressed.
-		 * 
+		 *
 		 * @param mod SWT.MOD1, SWT.MOD2, SWT.MOD3, SWT.MOD4 or any combination thereof
 		 * @return <code>true</code> if the given mod key is pressed
 		 * @since 3.1
@@ -1611,7 +1611,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 		/**
 		 * Returns <code>true</code> if the specified button is down.
-		 * 
+		 *
 		 * @param which which button
 		 * @return <code>true</code> if the button is down
 		 */
@@ -1621,7 +1621,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 		/**
 		 * Returns <code>true</code> if the SHIFT key is pressed.
-		 * 
+		 *
 		 * @return <code>true</code> if SHIFT pressed
 		 */
 		public boolean isShiftKeyDown() {
@@ -1630,7 +1630,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 		/**
 		 * Sets the keyboard input based on the KeyEvent.
-		 * 
+		 *
 		 * @param ke the key event providing the input
 		 */
 		public void setInput(KeyEvent ke) {
@@ -1639,7 +1639,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 		/**
 		 * Sets the mouse and keyboard input based on the MouseEvent.
-		 * 
+		 *
 		 * @param me the mouse event providing the input
 		 */
 		public void setInput(MouseEvent me) {
@@ -1658,7 +1658,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 		/**
 		 * Sets mouse button # <code>which</code> to be pressed if <code>state</code> is
 		 * true.
-		 * 
+		 *
 		 * @param which which button
 		 * @param state <code>true</code> if button down
 		 */
@@ -1668,7 +1668,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 		/**
 		 * Sets the current location of the mouse
-		 * 
+		 *
 		 * @param x x location
 		 * @param y y location
 		 * @since 3.4

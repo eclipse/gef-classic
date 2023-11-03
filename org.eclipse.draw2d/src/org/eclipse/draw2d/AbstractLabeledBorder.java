@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -33,7 +33,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	/**
 	 * Constructs a default AbstractLabeledBorder with the name of this class set as
 	 * its label.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public AbstractLabeledBorder() {
@@ -43,7 +43,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 
 	/**
 	 * Constructs a border with the label set to the String passed in as input.
-	 * 
+	 *
 	 * @param s Label to be set on the border
 	 * @since 2.0
 	 */
@@ -54,7 +54,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	/**
 	 * Calculates insets based on the current font and other attributes. This value
 	 * will be cached until {@link #invalidate()} is called.
-	 * 
+	 *
 	 * @param figure The figure to which the border is being applied
 	 * @return The Insets
 	 */
@@ -63,7 +63,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	/**
 	 * Returns the font that this border will use. If no Font has been specified,
 	 * the font associated with the input Figure will be used.
-	 * 
+	 *
 	 * @param f Figure used to get a default font
 	 * @return The font for this border
 	 */
@@ -77,7 +77,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	 * Returns the insets, or space associated for this border. Returns any
 	 * previously set value if present, else calculates it from the Figure provided
 	 * in as input.
-	 * 
+	 *
 	 * @param fig Figure used to calculate insets
 	 * @return The insets
 	 */
@@ -106,7 +106,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 
 	/**
 	 * Returns the text Color of this AbstractLabeledBorder's label.
-	 * 
+	 *
 	 * @return The text color
 	 * @since 2.0
 	 */
@@ -116,7 +116,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 
 	/**
 	 * Calculates and returns the size required by this border's label.
-	 * 
+	 *
 	 * @param f IFigure on which the calculations are to be made
 	 * @return Dimensions required by the text of this border's label
 	 * @since 2.0
@@ -140,7 +140,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 	/**
 	 * Sets the Font of this border to the input value, and invalidates the border
 	 * forcing an update of internal parameters of insets and text extents.
-	 * 
+	 *
 	 * @param font The font
 	 */
 	@Override
@@ -160,7 +160,7 @@ public abstract class AbstractLabeledBorder extends AbstractBorder implements La
 
 	/**
 	 * Sets the color for this border's text.
-	 * 
+	 *
 	 * @param color Color to be set for this border's text
 	 * @since 2.0
 	 */

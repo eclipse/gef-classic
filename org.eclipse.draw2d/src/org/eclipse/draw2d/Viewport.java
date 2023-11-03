@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -50,7 +50,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * Constructs a new Viewport. If <i>setting</i> is <code>true</code>, the
 	 * viewport will use graphics translation to paint.
-	 * 
+	 *
 	 * @param setting whether to use graphics translation
 	 */
 	public Viewport(boolean setting) {
@@ -71,7 +71,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * Returns the view, which is the contents of the {@link ScrollPane} associated
 	 * with this Viewport.
-	 * 
+	 *
 	 * @return the contents
 	 * @since 2.0
 	 */
@@ -81,9 +81,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Returns the RangeModel associated with the horizontal motion of this Viewport
-	 * 
+	 *
 	 * @return the RangeModel
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public RangeModel getHorizontalRangeModel() {
@@ -96,7 +96,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 * otherwise. This option is turned off by default, and can be activated by
 	 * calling {@link #setContentsTracksHeight(boolean)} and passing in
 	 * <code>true</code>.
-	 * 
+	 *
 	 * @return whether the contents tracks height
 	 * @since 2.0
 	 */
@@ -109,7 +109,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 * direction when the available width of its view is decreased, false otherwise.
 	 * This option is turned off by default, and can be activated by calling
 	 * {@link #setContentsTracksWidth(boolean)} and passing in <code>true</code>.
-	 * 
+	 *
 	 * @return whether the contents tracks width
 	 * @since 2.0
 	 */
@@ -119,9 +119,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Returns the range model associated with the vertical motion of the Viewport.
-	 * 
+	 *
 	 * @return the RangeModel
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public RangeModel getVerticalRangeModel() {
@@ -130,9 +130,9 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Returns the current location of this Viewport.
-	 * 
+	 *
 	 * @return the current location of this Viewport
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	public Point getViewLocation() {
@@ -176,7 +176,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * Listens for either of the {@link RangeModel RangeModels} to fire a property
 	 * change event and updates the view accordingly.
-	 * 
+	 *
 	 * @param event the event
 	 */
 	@Override
@@ -199,7 +199,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 * Sets extents of {@link RangeModel RangeModels} to the client area of this
 	 * Viewport. Sets RangeModel minimums to zero. Sets RangeModel maximums to this
 	 * Viewport's height/width.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected void readjustScrollBars() {
@@ -211,7 +211,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Sets this Viewport to be associated with the passed Figure.
-	 * 
+	 *
 	 * @param figure the new contents
 	 * @since 2.0
 	 */
@@ -228,7 +228,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * Toggles the Viewport's ability to resize itself automatically when its view
 	 * is decreased in size in the vertical direction. This is disabled by default.
-	 * 
+	 *
 	 * @param track whether this viewport should track its height
 	 * @since 2.0
 	 */
@@ -240,7 +240,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	 * Toggles the Viewport's ability to resize itself automatically when its view
 	 * is decreased in size in the horizontal direction. This is disabled by
 	 * default.
-	 * 
+	 *
 	 * @param track whether this viewport should track its width
 	 * @since 2.0
 	 */
@@ -250,7 +250,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Sets the horizontal location of the Viewport's view to the passed value.
-	 * 
+	 *
 	 * @param value the new horizontal location
 	 * @since 2.0
 	 */
@@ -260,7 +260,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Sets the horizontal range model to the passed RangeModel.
-	 * 
+	 *
 	 * @param rangeModel the new horizontal range model
 	 * @since 2.0
 	 */
@@ -274,7 +274,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 	/**
 	 * If <i>value</i> is <code>true</code>, this viewport will ignore any scrolling
 	 * that occurs until this method is called again with <code>false</code>.
-	 * 
+	 *
 	 * @param value whether this viewport should ignore future scrolls
 	 */
 	public void setIgnoreScroll(boolean value) {
@@ -283,7 +283,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Sets the vertical location of the Viewport's view to the passed value.
-	 * 
+	 *
 	 * @param value the new vertical location
 	 * @since 2.0
 	 */
@@ -293,7 +293,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Sets the vertical range model to the passed RangeModel.
-	 * 
+	 *
 	 * @param rangeModel the new vertical RangeModel
 	 * @since 2.0
 	 */
@@ -306,7 +306,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Sets the location of the Viewport's view to the passed values.
-	 * 
+	 *
 	 * @param x The new x coordinate of the Viewport's view.
 	 * @param y The new y coordinate of the Viewport's view.
 	 * @since 2.0
@@ -320,7 +320,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Sets the location of the Viewport's view to the passed Point.
-	 * 
+	 *
 	 * @param p The new location of the Viewport's view.
 	 * @since 2.0
 	 */
@@ -350,7 +350,7 @@ public class Viewport extends Figure implements PropertyChangeListener {
 
 	/**
 	 * Returns <code>true</code> if this viewport uses graphics translation.
-	 * 
+	 *
 	 * @return whether this viewport uses graphics translation
 	 */
 	public boolean useGraphicsTranslate() {

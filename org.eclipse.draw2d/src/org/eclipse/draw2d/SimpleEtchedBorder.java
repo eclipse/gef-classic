@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -28,7 +28,7 @@ public final class SimpleEtchedBorder extends SchemeBorder {
 
 	/**
 	 * Constructs a default border having a two pixel wide border.
-	 * 
+	 *
 	 * @since 2.0
 	 */
 	protected SimpleEtchedBorder() {
@@ -37,7 +37,7 @@ public final class SimpleEtchedBorder extends SchemeBorder {
 	/**
 	 * Returns the Insets used by this border. This is a constant value of two
 	 * pixels in each direction.
-	 * 
+	 *
 	 * @see Border#getInsets(IFigure)
 	 */
 	@Override
@@ -48,7 +48,7 @@ public final class SimpleEtchedBorder extends SchemeBorder {
 	/**
 	 * Returns the opaque state of this border. This border is opaque and takes
 	 * responsibility to fill the region it encloses.
-	 * 
+	 *
 	 * @see Border#isOpaque()
 	 */
 	@Override

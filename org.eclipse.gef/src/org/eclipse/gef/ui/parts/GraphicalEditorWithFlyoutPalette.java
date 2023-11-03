@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -34,7 +34,7 @@ import org.eclipse.gef.ui.views.palette.PaletteViewerPage;
  * <EM>IMPORTANT</EM>This class should only be used as a reference for creating
  * your own EditorPart implementation. This class will not suit everyone's
  * needs, and may change in the future. Clients may copy the implementation.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -55,7 +55,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	/**
 	 * Creates a PaletteViewerProvider that will be used to create palettes for the
 	 * view and the flyout.
-	 * 
+	 *
 	 * @return the palette provider
 	 */
 	protected PaletteViewerProvider createPaletteViewerProvider() {
@@ -86,7 +86,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	/**
 	 * Creates a new {@link FlyoutPaletteComposite} to be used by this
 	 * {@link GraphicalEditorWithFlyoutPalette}
-	 * 
+	 *
 	 * @param parent The {@link Composite}, which should serve as the container for
 	 *               the to be created {@link FlyoutPaletteComposite}.
 	 * @return The {@link FlyoutPaletteComposite} used by this
@@ -123,7 +123,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	/**
 	 * By default, this method returns a FlyoutPreferences object that stores the
 	 * flyout settings in the GEF plugin. Sub-classes may override.
-	 * 
+	 *
 	 * @return the FlyoutPreferences object used to save the flyout palette's
 	 *         preferences
 	 */
@@ -133,7 +133,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 
 	/**
 	 * Returns the PaletteRoot for the palette viewer.
-	 * 
+	 *
 	 * @return the palette root
 	 */
 	protected abstract PaletteRoot getPaletteRoot();
@@ -141,7 +141,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	/**
 	 * Returns the palette viewer provider that is used to create palettes for the
 	 * view and the flyout. Creates one if it doesn't already exist.
-	 * 
+	 *
 	 * @return the PaletteViewerProvider that can be used to create PaletteViewers
 	 *         for this editor
 	 * @see #createPaletteViewerProvider()
@@ -154,7 +154,7 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 
 	/**
 	 * Sets the edit domain for this editor.
-	 * 
+	 *
 	 * @param ed The new EditDomain
 	 */
 	@Override
@@ -168,14 +168,14 @@ public abstract class GraphicalEditorWithFlyoutPalette extends GraphicalEditor {
 	 * PaletteViewers (one displayed in the editor and the other displayed in the
 	 * PaletteView) in sync when switching from one to the other (i.e., it helps
 	 * maintain state across the two viewers).
-	 * 
+	 *
 	 * @author Pratik Shah
 	 * @since 3.0
 	 */
 	protected class CustomPalettePage extends PaletteViewerPage {
 		/**
 		 * Constructor
-		 * 
+		 *
 		 * @param provider the provider used to create a PaletteViewer
 		 */
 		public CustomPalettePage(PaletteViewerProvider provider) {

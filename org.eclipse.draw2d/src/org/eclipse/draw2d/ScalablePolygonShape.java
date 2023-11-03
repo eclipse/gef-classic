@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2008, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  * scaled in accordance with bounds to fill whole figure. This class is similar
  * to {@link PolygonShape}, except the polygon should be scaled
  * expanded/compressed to fit in current bounds.
- * 
+ *
  * @since 3.5
  */
 public class ScalablePolygonShape extends AbstractPointListShape {

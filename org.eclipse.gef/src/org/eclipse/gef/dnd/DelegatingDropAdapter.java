@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -37,7 +37,7 @@ public class DelegatingDropAdapter extends org.eclipse.jface.util.DelegatingDrop
 
 	/**
 	 * Adds the given TransferDropTargetListener.
-	 * 
+	 *
 	 * @param listener the listener
 	 * @deprecated
 	 */
@@ -47,7 +47,7 @@ public class DelegatingDropAdapter extends org.eclipse.jface.util.DelegatingDrop
 
 	/**
 	 * Adds the Transfer from each listener to an array and returns that array.
-	 * 
+	 *
 	 * @return the merged Transfers from all listeners
 	 * @deprecated use getTransfers() instead
 	 */
@@ -57,7 +57,7 @@ public class DelegatingDropAdapter extends org.eclipse.jface.util.DelegatingDrop
 
 	/**
 	 * Removes the given <code>TransferDropTargetListener</code>.
-	 * 
+	 *
 	 * @param listener the listener
 	 */
 	public void removeDropTargetListener(TransferDropTargetListener listener) {

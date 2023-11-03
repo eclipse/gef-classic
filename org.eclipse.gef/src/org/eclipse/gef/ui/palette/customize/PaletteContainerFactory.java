@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -20,13 +20,13 @@ import org.eclipse.gef.palette.PaletteRoot;
 
 /**
  * Abstract factory for <code>PaletteContainer</code>s
- * 
+ *
  * <p>
  * This class does not create <code>PaletteContainer</code>s within other
  * </code>PaletteContainer</code>s. The necessary methods may be overridden
  * should such functionality be desired.
  * </p>
- * 
+ *
  * @author Pratik Shah
  */
 public abstract class PaletteContainerFactory extends PaletteEntryFactory {
@@ -64,7 +64,7 @@ public abstract class PaletteContainerFactory extends PaletteEntryFactory {
 
 	/**
 	 * You can always create a new container. So, this method always returns true.
-	 * 
+	 *
 	 * @see org.eclipse.gef.ui.palette.customize.PaletteEntryFactory#canCreate(PaletteEntry)
 	 */
 	@Override

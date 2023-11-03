@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
 
 /**
  * A {@link Border} with a triangle in each corner.
- * 
+ *
  * @deprecated this class is no longer used
  */
 public final class CornerTriangleBorder extends AbstractBorder {
@@ -35,7 +35,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 
 	/**
 	 * Creates a new <code>CornerTriangleBorder</code>.
-	 * 
+	 *
 	 * @param isPrimary Determines this border's color.
 	 */
 	public CornerTriangleBorder(boolean isPrimary) {
@@ -45,7 +45,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 
 	/**
 	 * Returns <code>true</code>.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Border#isOpaque()
 	 */
 	@Override
@@ -64,7 +64,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	/**
 	 * Paints the border. If this is a border for the primary selection, it's
 	 * painted black. Otherwise, it's painted white.
-	 * 
+	 *
 	 * @param figure   The <code>IFigure</code> this border will be painted on
 	 * @param graphics The <code>Graphics</code>.
 	 * @param insets   The <code>Insets</code>.
@@ -132,7 +132,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 
 	/**
 	 * Returns the outline color based on what is returned by {@link #isPrimary()}.
-	 * 
+	 *
 	 * @return The outline color.
 	 */
 	protected Color getBorderColor() {
@@ -141,7 +141,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 
 	/**
 	 * Returns the fill color based on what is returned by {@link #isPrimary()}.
-	 * 
+	 *
 	 * @return The fill color.
 	 */
 	protected Color getFillColor() {
@@ -151,7 +151,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 	/**
 	 * Returns <code>true</code> if this border is for the primary object in the
 	 * selection. Otherwise, returns <code>false</code>.
-	 * 
+	 *
 	 * @return Whether or not this is a primary border.
 	 */
 	public boolean isPrimary() {
@@ -160,7 +160,7 @@ public final class CornerTriangleBorder extends AbstractBorder {
 
 	/**
 	 * Sets this border as primary if <code>isPrimary</code> is <code>true</code>.
-	 * 
+	 *
 	 * @param isPrimary True if this border is for the primary object in the
 	 *                  selection.
 	 */

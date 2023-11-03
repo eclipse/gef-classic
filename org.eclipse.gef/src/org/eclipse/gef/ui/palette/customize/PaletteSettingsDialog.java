@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -94,7 +94,7 @@ public class PaletteSettingsDialog extends Dialog {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param parentShell The parent shell, or <code>null</code> to create a top -
 	 *                    level shell
 	 * @param prefs       The PaletteViewerPreferences object that can provide
@@ -111,7 +111,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * This method will be invoked whenever any <code>Button</code> created using
 	 * {@link #createButton(Composite, int, String, int, ImageDescriptor)} or
 	 * {@link Dialog#createButton(Composite, int, String, boolean)} is selected.
-	 * 
+	 *
 	 * @see Dialog#buttonPressed(int)
 	 */
 	@Override
@@ -152,7 +152,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * This method saves the various settings in this dialog, so that they can be
 	 * restored later on if "Cancel" is pressed.
-	 * 
+	 *
 	 * @see #restoreSettings()
 	 */
 	protected void cacheSettings() {
@@ -206,7 +206,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * method will take care of disposing the images that it creates.
 	 * {@link #buttonPressed(int)} will be called when any of the buttons created by
 	 * this method are clicked (selected).
-	 * 
+	 *
 	 * @param parent     The composite in which the button is to be created
 	 * @param id         The button's unique ID
 	 * @param label      The button's text
@@ -252,7 +252,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * Creates and initializes (i.e., loads the current value from the
 	 * PaletteViewerPreferences) the part of the dialog where the options to close
 	 * drawers will be displayed.
-	 * 
+	 *
 	 * @param container The parent composite
 	 * @return The newly created Control which has the drawer collapse options
 	 */
@@ -298,7 +298,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * Creates and initializes (i.e. loads the current settings from
 	 * PaletteViewerPreferences) the options for details layout.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
@@ -361,7 +361,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * Creates and initializes (i.e. loads the current settings from
 	 * PaletteViewerPreferences) the options for columns layout.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
@@ -418,7 +418,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * Creates and initializes (i.e. loads the current settings from
 	 * PaletteViewerPreferences) the part of the dialog that displays the font
 	 * settings.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
@@ -445,7 +445,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * Creates and initializes (i.e. loads the current settings from
 	 * PaletteViewerPreferences) the options for icons layout.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
@@ -459,7 +459,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * Creates the part of the dialog that displays the various options for the
 	 * selected layout.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
@@ -529,7 +529,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * Creates the part of the dialog that displays the lists the available layout
 	 * modes.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
@@ -562,7 +562,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * Creates and initializes (i.e. loads the current settings from
 	 * PaletteViewerPreferences) the options for list layout.
-	 * 
+	 *
 	 * @param parent the parent composite
 	 * @return the newly created Control
 	 */
@@ -577,7 +577,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * displaying the given title and creates a "Use Large Icons" checkbox with the
 	 * given buttonId in it. This method is used to create the options for the
 	 * different layout modes.
-	 * 
+	 *
 	 * @param parent   the parent composite
 	 * @param title    The title for the group to be created.
 	 * @param buttonId The ID for the "Use Large Icons" checkbox to be created in
@@ -601,7 +601,7 @@ public class PaletteSettingsDialog extends Dialog {
 
 	/**
 	 * Returns the Button with the given id; or <code>null</code> if none was found.
-	 * 
+	 *
 	 * @see org.eclipse.jface.dialogs.Dialog#getButton(int)
 	 */
 	@Override
@@ -618,7 +618,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * The <code>Widget</code>s that were created with a unique ID and added to this
 	 * class' internal map can be retrieved through this method.
-	 * 
+	 *
 	 * @param id The unique ID of the Widget that you wish to retrieve
 	 * @return The Widget, if one with the given id exists. <code>null</code>
 	 *         otherwise.
@@ -636,7 +636,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * Called when any one of the "Auto - Collapse" radio buttons is clicked. It
 	 * changes the setting in the
 	 * {@link org.eclipse.gef.ui.palette.PaletteViewerPreferences} object.
-	 * 
+	 *
 	 * @param newSetting The flag for the new setting
 	 */
 	protected void handleAutoCollapseSettingChanged(int newSetting) {
@@ -679,7 +679,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * This method is invoked when the "Use Large Icons" checkbox is
 	 * selected/deselected for the currently active layout mode.
-	 * 
+	 *
 	 * @param selection indicates whether large icons are to be used or not.
 	 */
 	protected void handleIconSizeChanged(boolean selection) {
@@ -690,7 +690,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * This method is called when any one of the "Layout" radio buttons is clicked.
 	 * It changes the setting in the
 	 * {@link org.eclipse.gef.ui.palette.PaletteViewerPreferences} object.
-	 * 
+	 *
 	 * @param newSetting The flag for the new setting
 	 */
 	protected void handleLayoutSettingChanged(int newSetting) {
@@ -716,7 +716,7 @@ public class PaletteSettingsDialog extends Dialog {
 	/**
 	 * Restores the cached settings, thus undoing any changes made since the last
 	 * caching of settings.
-	 * 
+	 *
 	 * @see #cacheSettings()
 	 */
 	protected void restoreSettings() {
@@ -737,7 +737,7 @@ public class PaletteSettingsDialog extends Dialog {
 	 * This helper method is mainly a result of code-factoring. It shows the given
 	 * page (which should be one of the controls showing the layout options) in the
 	 * PageBook and grows the dialog if necessary.
-	 * 
+	 *
 	 * @param page One of the controls showing the layout options that already
 	 *             belongs to the PageBook book.
 	 */

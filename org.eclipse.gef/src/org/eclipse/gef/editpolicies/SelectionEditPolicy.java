@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ import org.eclipse.gef.RequestConstants;
  * This EditPolicy adds itself as an {@link EditPartListener} so that it can
  * observe selection. When selection or focus changes, the EditPolicy will
  * update itself and call the appropriate methods.
- * 
+ *
  * @author hudsonr
  * @since 2.0
  */
@@ -39,7 +39,7 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	/**
 	 * Extends activate to hook the appropriate listener and to initialize the
 	 * visual changes for representing selection/focus.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#activate()
 	 */
 	@Override
@@ -67,7 +67,7 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	/**
 	 * Extends deactivate to unhook the seleciton listener and to remove the visual
 	 * changes for representing selection/focus.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#deactivate()
 	 */
 	@Override
@@ -90,7 +90,7 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 
 	/**
 	 * Override to hide focus
-	 * 
+	 *
 	 * @see #showFocus()
 	 */
 	protected void hideFocus() {
@@ -112,7 +112,7 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	 * Sets the internal focus value. This method is called automatically by the
 	 * listener. If the focus value is changed, either {@link #showFocus()} or
 	 * {@link #hideFocus()} will be called.
-	 * 
+	 *
 	 * @param value <code>true</code> if the EditPolicy should show focus
 	 */
 	protected void setFocus(boolean value) {
@@ -129,7 +129,7 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 	 * Sets the internal selection value. This method is called automatically by the
 	 * listener. If the selection value is changed, the appropriate method is called
 	 * to show the specified selection type.
-	 * 
+	 *
 	 * @param type the type of selection the EditPolicy should display
 	 */
 	protected void setSelectedState(int type) {
@@ -146,7 +146,7 @@ public abstract class SelectionEditPolicy extends org.eclipse.gef.editpolicies.G
 
 	/**
 	 * Override to show focus.
-	 * 
+	 *
 	 * @see #hideFocus()
 	 */
 	protected void showFocus() {

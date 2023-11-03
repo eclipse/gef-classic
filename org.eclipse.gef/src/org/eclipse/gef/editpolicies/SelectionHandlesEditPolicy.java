@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -34,7 +34,7 @@ import org.eclipse.gef.LayerConstants;
  * {@link org.eclipse.core.runtime.IAdaptable} for accessibility support. If any
  * of the managed Handles provide accesible locations, then a
  * {@link org.eclipse.gef.AccessibleHandleProvider} is automatically created.
- * 
+ *
  * @since 2.0
  */
 public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy implements IAdaptable {
@@ -57,7 +57,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 
 	/**
 	 * Subclasses must implement to provide the list of handles.
-	 * 
+	 *
 	 * @return List of handles; cannot be <code>null</code>
 	 */
 	protected abstract List createSelectionHandles();
@@ -87,7 +87,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 
 	/**
 	 * Implemented to remove the handles.
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#hideSelection()
 	 */
 	@Override
@@ -109,7 +109,7 @@ public abstract class SelectionHandlesEditPolicy extends SelectionEditPolicy imp
 
 	/**
 	 * Implemented to add the selection handles
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.SelectionEditPolicy#showSelection()
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -42,7 +42,7 @@ import org.eclipse.gef.requests.ChangeBoundsRequest;
  * the selected editparts in the viewer which understand a RESIZE request. A
  * {@link ChangeBoundsRequest} is sent to each member of the operation set. The
  * tracker allows for the resize direction to be specified in the constructor.
- * 
+ *
  * @author hudsonr
  */
 public class ResizeTracker extends SimpleDragTracker {
@@ -82,7 +82,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * Constructs a resize tracker that resizes in the specified direction. The
 	 * direction is specified using {@link PositionConstants#NORTH},
 	 * {@link PositionConstants#NORTH_EAST}, etc.
-	 * 
+	 *
 	 * @deprecated use ResizeTracker(GraphicalEditPart, int) instead
 	 * @param direction the direction
 	 */
@@ -94,7 +94,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * Constructs a resize tracker that resizes in the specified direction. The
 	 * direction is specified using {@link PositionConstants#NORTH},
 	 * {@link PositionConstants#NORTH_EAST}, etc.
-	 * 
+	 *
 	 * @param owner     of the resize handle which returned this tracker
 	 * @param direction the direction
 	 */
@@ -134,7 +134,7 @@ public class ResizeTracker extends SimpleDragTracker {
 
 	/**
 	 * Returns all selected parts which understand resizing.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.AbstractTool#createOperationSet()
 	 */
 	@Override
@@ -222,7 +222,7 @@ public class ResizeTracker extends SimpleDragTracker {
 
 	/**
 	 * Returns the owner of this resize tracker.
-	 * 
+	 *
 	 * @since 3.7
 	 */
 	protected GraphicalEditPart getOwner() {
@@ -232,7 +232,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	/**
 	 * Returns the direction of the resize (NORTH, EAST, NORTH_EAST, etc.). These
 	 * constants are from {@link PositionConstants}.
-	 * 
+	 *
 	 * @return the resize direction.
 	 */
 	protected int getResizeDirection() {
@@ -241,7 +241,7 @@ public class ResizeTracker extends SimpleDragTracker {
 
 	/**
 	 * The TargetEditPart is the parent of the EditPart being resized.
-	 * 
+	 *
 	 * @return The target EditPart; may be <code>null</code> in 2.1 applications
 	 *         that use the now deprecated {@link ResizeTracker#ResizeTracker(int)
 	 *         constructor}.
@@ -254,7 +254,7 @@ public class ResizeTracker extends SimpleDragTracker {
 
 	/**
 	 * If dragging is in progress, cleans up feedback and calls performDrag().
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.SimpleDragTracker#handleButtonUp(int)
 	 */
 	@Override
@@ -269,7 +269,7 @@ public class ResizeTracker extends SimpleDragTracker {
 
 	/**
 	 * Updates the command and the source request, and shows feedback.
-	 * 
+	 *
 	 * @see org.eclipse.gef.tools.SimpleDragTracker#handleDragInProgress()
 	 */
 	@Override
@@ -418,7 +418,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * Ensures size constraints (by default minimum and maximum) are respected by
 	 * the given request. May be overwritten by clients to enforce additional
 	 * constraints.
-	 * 
+	 *
 	 * @param changeBoundsRequest The request to validate
 	 * @since 3.7
 	 */
@@ -452,7 +452,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * respected by the given request. It ensure that on resize the bottom right
 	 * corner is fixed when resized from any top/left direction. May be overwritten
 	 * by clients to enforce additional constraints.
-	 * 
+	 *
 	 * @param changeBoundsRequest The request to validate
 	 * @since 3.13
 	 */
@@ -482,7 +482,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * given request. By default, a default value is returned. The value is
 	 * interpreted to be a dimension in the host figure's coordinate system (i.e.
 	 * relative to its bounds), so it is not affected by zooming affects.
-	 * 
+	 *
 	 * @param request the ChangeBoundsRequest
 	 * @return the minimum size
 	 * @since 3.7
@@ -496,7 +496,7 @@ public class ResizeTracker extends SimpleDragTracker {
 	 * to.By default, a default value is returned. The value is interpreted to be a
 	 * dimension in the host figure's coordinate system (i.e. relative to its
 	 * bounds), so it is not affected by zooming effects.
-	 * 
+	 *
 	 * @param request the ChangeBoundsRequest
 	 * @return the minimum size
 	 * @since 3.7

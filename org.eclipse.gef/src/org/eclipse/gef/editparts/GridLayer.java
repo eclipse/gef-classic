@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2022 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ import org.eclipse.gef.SnapToGrid;
  * This is a layer that displays the grid. The default grid color is
  * {@link org.eclipse.draw2d.ColorConstants#lightGray light gray}. To change the
  * grid color, set the foreground color for this layer.
- * 
+ *
  * @author Pratik Shah
  * @since 3.0
  */
@@ -53,7 +53,7 @@ public class GridLayer extends FreeformLayer {
 	/**
 	 * Overridden to indicate no preferred size. The grid layer should not affect
 	 * the size of the layered pane in which it is placed.
-	 * 
+	 *
 	 * @see org.eclipse.draw2d.Figure#getPreferredSize(int, int)
 	 */
 	@Override
@@ -75,7 +75,7 @@ public class GridLayer extends FreeformLayer {
 	 * this layer is being used with SnapToGrid, this method will only be invoked
 	 * when the {@link SnapToGrid#PROPERTY_GRID_VISIBLE visibility} property is set
 	 * to true.
-	 * 
+	 *
 	 * @param g The Graphics object to be used to do the painting
 	 * @see FigureUtilities#paintGrid(Graphics, IFigure, Point, int, int)
 	 */
@@ -86,7 +86,7 @@ public class GridLayer extends FreeformLayer {
 	/**
 	 * Sets the origin of the grid. The origin is used only to determine the offset
 	 * from 0,0.
-	 * 
+	 *
 	 * @param p the origin
 	 */
 	public void setOrigin(Point p) {
@@ -103,7 +103,7 @@ public class GridLayer extends FreeformLayer {
 	 * will be replaced with the {@link SnapToGrid#DEFAULT_GRID_SIZE default}
 	 * spacing. A negative spacing will cause no grid lines to be drawn for that
 	 * dimension.
-	 * 
+	 *
 	 * @param spacing A Dimension representing the horizontal (width) and vertical
 	 *                (height) gaps
 	 */

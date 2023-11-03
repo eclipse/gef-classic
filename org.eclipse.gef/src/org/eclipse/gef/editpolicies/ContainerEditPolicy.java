@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,14 +21,14 @@ import org.eclipse.gef.requests.GroupRequest;
 /**
  * An EditPolicy for use with container editparts. This policy can be used to
  * contribute commands to add, create, and orphan requests.
- * 
+ *
  * @author hudsonr
  */
 public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Override to contribute to add requests.
-	 * 
+	 *
 	 * @param request the add request
 	 * @return the command contribution to the add
 	 */
@@ -38,7 +38,7 @@ public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Override to contribute to clone requests.
-	 * 
+	 *
 	 * @param request the clone request
 	 * @return the command contribution to the clone
 	 */
@@ -48,7 +48,7 @@ public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Overridden to check for add, create, and orphan.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPolicy#getCommand(org.eclipse.gef.Request)
 	 */
 	@Override
@@ -66,7 +66,7 @@ public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Clients must implement to contribute to create requests.
-	 * 
+	 *
 	 * @param request the create request
 	 * @return <code>null</code> or a command contribution
 	 */
@@ -74,7 +74,7 @@ public abstract class ContainerEditPolicy extends AbstractEditPolicy {
 
 	/**
 	 * Override to contribute to orphan requests.
-	 * 
+	 *
 	 * @param request the orphan request
 	 * @return a command contribution for the orphan
 	 */

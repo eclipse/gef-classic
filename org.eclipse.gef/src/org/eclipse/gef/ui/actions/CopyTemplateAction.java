@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,7 +27,7 @@ import org.eclipse.gef.palette.PaletteTemplateEntry;
 /**
  * Copies the currently selected template in the palatte to the system
  * clipboard.
- * 
+ *
  * @author Eric Bordeau
  */
 public class CopyTemplateAction extends WorkbenchPartAction implements ISelectionChangedListener {
@@ -38,7 +38,7 @@ public class CopyTemplateAction extends WorkbenchPartAction implements ISelectio
 	 * Constructs a new CopyTemplateAction. You must manually add this action to the
 	 * palette viewer's list of selection listeners. Otherwise, this action's
 	 * enabled state won't be updated properly.
-	 * 
+	 *
 	 * @param editor the workbench part
 	 * @see org.eclipse.gef.ui.actions.EditorPartAction#EditorPartAction(IEditorPart)
 	 */
@@ -50,7 +50,7 @@ public class CopyTemplateAction extends WorkbenchPartAction implements ISelectio
 
 	/**
 	 * Returns whether the selected EditPart is a TemplateEditPart.
-	 * 
+	 *
 	 * @return whether the selected EditPart is a TemplateEditPart
 	 */
 	@Override
@@ -77,7 +77,7 @@ public class CopyTemplateAction extends WorkbenchPartAction implements ISelectio
 
 	/**
 	 * Sets the selected EditPart and refreshes the enabled state of this action.
-	 * 
+	 *
 	 * @see ISelectionChangedListener#selectionChanged(SelectionChangedEvent)
 	 */
 	@Override

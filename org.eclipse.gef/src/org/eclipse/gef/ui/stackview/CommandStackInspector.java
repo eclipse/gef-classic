@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -27,7 +27,7 @@ import org.eclipse.ui.part.PageBookView;
 
 /**
  * Internal class used for a debug view.
- * 
+ *
  * @deprecated this class will be deleted
  */
 public class CommandStackInspector extends PageBookView {
@@ -82,7 +82,7 @@ public class CommandStackInspector extends PageBookView {
 	 * pages in the view. This method should be implemented by the subclass to
 	 * destroy a page for the given part.
 	 * </p>
-	 * 
+	 *
 	 * @param part the input part
 	 * @param rec  a page record for the part
 	 */

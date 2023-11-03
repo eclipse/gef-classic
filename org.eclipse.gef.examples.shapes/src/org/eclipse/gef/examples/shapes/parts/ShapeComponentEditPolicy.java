@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2004, 2023 Elias Volanakis and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -22,7 +22,7 @@ import org.eclipse.gef.examples.shapes.model.commands.ShapeDeleteCommand;
 
 /**
  * This edit policy enables the removal of a Shapes instance from its container.
- * 
+ *
  * @see ShapeEditPart#createEditPolicies()
  * @see ShapeTreeEditPart#createEditPolicies()
  * @author Elias Volanakis
@@ -31,7 +31,7 @@ class ShapeComponentEditPolicy extends ComponentEditPolicy {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.eclipse.gef.editpolicies.ComponentEditPolicy#createDeleteCommand(
 	 * org.eclipse.gef.requests.GroupRequest)
 	 */

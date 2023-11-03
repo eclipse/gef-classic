@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -25,7 +25,7 @@ public class StackLayout extends AbstractHintLayout {
 	/**
 	 * Returns the minimum size required by the input container. This is the size of
 	 * the largest child of the container, as all other children fit into this size.
-	 * 
+	 *
 	 * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int)
 	 */
 	@Override
@@ -50,7 +50,7 @@ public class StackLayout extends AbstractHintLayout {
 	 * Calculates and returns the preferred size of the given figure. This is the
 	 * union of the preferred sizes of the widest and the tallest of all its
 	 * children.
-	 * 
+	 *
 	 * @see AbstractLayout#calculatePreferredSize(IFigure, int, int)
 	 */
 	@Override

@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -37,7 +37,7 @@ import org.eclipse.jface.action.IAction;
  * Actions} using the {@link #put(KeyStroke, IAction)} and
  * {@link #remove(KeyStroke)} API. The other is to subclass KeyHandler, and
  * override various methods. A combination of the two is also useful.
- * 
+ *
  * @since 2.0
  */
 public class KeyHandler {
@@ -48,7 +48,7 @@ public class KeyHandler {
 	/**
 	 * Processes a <i>key pressed</i> event. This method is called by the Tool
 	 * whenever a key is pressed, and the Tool is in the proper state.
-	 * 
+	 *
 	 * @param event the KeyEvent
 	 * @return <code>true</code> if KeyEvent was handled in some way
 	 */
@@ -63,7 +63,7 @@ public class KeyHandler {
 	/**
 	 * Processes a <i>key released</i> event. This method is called by the Tool
 	 * whenever a key is released, and the Tool is in the proper state.
-	 * 
+	 *
 	 * @param event the KeyEvent
 	 * @return <code>true</code> if KeyEvent was handled in some way
 	 */
@@ -88,7 +88,7 @@ public class KeyHandler {
 	 * Maps a specified <code>KeyStroke</code> to an <code>IAction</code>. When a
 	 * KeyEvent occurs matching the given KeyStroke, the Action will be
 	 * <code>run()</code> iff it is enabled.
-	 * 
+	 *
 	 * @param keystroke the KeyStroke
 	 * @param action    the Action to run
 	 */
@@ -101,7 +101,7 @@ public class KeyHandler {
 	/**
 	 * Removed a mapped <code>IAction</code> for the specified
 	 * <code>KeyStroke</code>.
-	 * 
+	 *
 	 * @param keystroke the KeyStroke to be unmapped
 	 */
 	public void remove(KeyStroke keystroke) {
@@ -114,7 +114,7 @@ public class KeyHandler {
 	 * forward un-consumed KeyEvents. This KeyHandler will first attempt to handle
 	 * KeyEvents. If it does not recognize a given KeyEvent, that event is passed to
 	 * its <i>parent</i>
-	 * 
+	 *
 	 * @param parent the <i>parent</i> KeyHandler
 	 * @return <code>this</code> for convenience
 	 */

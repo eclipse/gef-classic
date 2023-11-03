@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -38,7 +38,7 @@ import org.eclipse.gef.tools.MarqueeDragTracker;
  * Figures. (2) Connection - Used to hold the connections between EditParts. (3)
  * Handle - Takes care of holding handles for EditParts. (4) Feedback - Shows
  * feedback information for the EditParts.
- * 
+ *
  * @deprecated this class will be deleted, use ScrollingGraphicalViewer with
  *             ScalableRootEditPart instead
  */
@@ -98,7 +98,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 
 	/**
 	 * Returns the unexecutable command.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getCommand(org.eclipse.gef.Request)
 	 */
 	@Override
@@ -116,7 +116,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 
 	/**
 	 * Should never be called.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getDragTracker(org.eclipse.gef.Request)
 	 */
 	@Override
@@ -141,7 +141,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 
 	/**
 	 * Returns the primary layer, which will parent the contents editpart.
-	 * 
+	 *
 	 * @see org.eclipse.gef.GraphicalEditPart#getContentPane()
 	 */
 	@Override
@@ -159,7 +159,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 
 	/**
 	 * Returns <code>this</code>.
-	 * 
+	 *
 	 * @see org.eclipse.gef.EditPart#getRoot()
 	 */
 	@Override
@@ -177,7 +177,7 @@ public class GraphicalRootEditPart extends AbstractGraphicalEditPart
 
 	/**
 	 * Overridden to do nothing since the child is explicitly set.
-	 * 
+	 *
 	 * @see AbstractEditPart#refreshChildren()
 	 */
 	@Override

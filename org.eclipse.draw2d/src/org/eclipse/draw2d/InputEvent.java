@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -58,18 +58,18 @@ public abstract class InputEvent extends java.util.EventObject {
 	/**
 	 * A bitwise OR'ing of {@link #BUTTON1}, {@link #BUTTON2}, {@link #BUTTON3},
 	 * {@link #BUTTON4} and {@link #BUTTON5}
-	 * 
+	 *
 	 * @deprecated Use {@link SWT#BUTTON_MASK} instead.
 	 */
 	public static final int ANY_BUTTON = SWT.BUTTON_MASK;
 
 	/**
 	 * Constructs a new InputEvent.
-	 * 
+	 *
 	 * @param dispatcher the event dispatcher
 	 * @param source     the source of the event
 	 * @param state      the state of the keyboard modifier and mouse button mask.
-	 * 
+	 *
 	 * @see org.eclipse.swt.SWT#MODIFIER_MASK
 	 * @see org.eclipse.swt.SWT#BUTTON_MASK
 	 */
@@ -89,10 +89,10 @@ public abstract class InputEvent extends java.util.EventObject {
 	/**
 	 * Returns the event state mask, which is a bitwise OR'ing of the keyboard
 	 * modifier and the mouse button mask.
-	 * 
+	 *
 	 * @see org.eclipse.swt.SWT#MODIFIER_MASK
 	 * @see org.eclipse.swt.SWT#BUTTON_MASK
-	 * 
+	 *
 	 * @return the state
 	 */
 	public int getState() {

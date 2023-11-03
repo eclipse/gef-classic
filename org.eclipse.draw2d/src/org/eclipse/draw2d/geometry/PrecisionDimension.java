@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2003, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -21,7 +21,7 @@ public class PrecisionDimension extends Dimension {
 
 	/**
 	 * The height in double precision.
-	 * 
+	 *
 	 * @noreference
 	 * @deprecated Use {@link #setPreciseHeight(double)} and
 	 *             {@link #preciseHeight()} instead. This field will become private
@@ -30,7 +30,7 @@ public class PrecisionDimension extends Dimension {
 	public double preciseHeight;
 	/**
 	 * The width in double precision.
-	 * 
+	 *
 	 * @noreference
 	 * @deprecated Use {@link #setPreciseWidth(double)} and {@link #preciseWidth()}
 	 *             instead. This field will become private in the future.
@@ -45,7 +45,7 @@ public class PrecisionDimension extends Dimension {
 
 	/**
 	 * Constructs a precision representation of the given dimension.
-	 * 
+	 *
 	 * @param d the reference dimension
 	 */
 	public PrecisionDimension(Dimension d) {
@@ -54,7 +54,7 @@ public class PrecisionDimension extends Dimension {
 
 	/**
 	 * Constructs a new precision dimension with the given values.
-	 * 
+	 *
 	 * @param w the width
 	 * @param h the height
 	 */
@@ -116,7 +116,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * Expands the size of this PrecisionDimension by the specified width and
 	 * height.
-	 * 
+	 *
 	 * @param w Value by which the width should be increased
 	 * @param h Value by which the height should be increased
 	 * @return <code>this</code> for convenience
@@ -138,7 +138,7 @@ public class PrecisionDimension extends Dimension {
 
 	/**
 	 * Returns a precise copy of this.
-	 * 
+	 *
 	 * @return a precise copy
 	 * @since 3.7
 	 */
@@ -206,7 +206,7 @@ public class PrecisionDimension extends Dimension {
 
 	/**
 	 * Sets the height.
-	 * 
+	 *
 	 * @param h the new height
 	 * @return this for convenience
 	 * @since 3.7
@@ -219,7 +219,7 @@ public class PrecisionDimension extends Dimension {
 
 	/**
 	 * Sets the size of this PrecisionDimension to the given width and height.
-	 * 
+	 *
 	 * @param w The new width
 	 * @param h The new height
 	 * @return this for convenience
@@ -233,7 +233,7 @@ public class PrecisionDimension extends Dimension {
 
 	/**
 	 * Sets the size of this Dimension to the width and height of the given one.
-	 * 
+	 *
 	 * @param d The PrecisionDimension specifying the new width and height values.
 	 * @return This for convenience
 	 * @since 3.7
@@ -244,7 +244,7 @@ public class PrecisionDimension extends Dimension {
 
 	/**
 	 * Sets the width.
-	 * 
+	 *
 	 * @param w the new width
 	 * @return this for convenience
 	 * @since 3.7
@@ -306,7 +306,7 @@ public class PrecisionDimension extends Dimension {
 	/**
 	 * Reduces the width of this Dimension by <i>w</i>, and reduces the height of
 	 * this Dimension by <i>h</i>. Returns this for convenience.
-	 * 
+	 *
 	 * @param w the value by which the width is to be reduced
 	 * @param h the value by which the height is to be reduced
 	 * @return <code>this</code> for convenience
@@ -348,7 +348,7 @@ public class PrecisionDimension extends Dimension {
 
 	/**
 	 * Updates the integer fields using the precise versions.
-	 * 
+	 *
 	 * @deprecated This method should not be accessed by clients any more (it will
 	 *             be made private in future releases). The update of integer and
 	 *             precision fields is performed automatically if

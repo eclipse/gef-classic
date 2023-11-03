@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ public class ViewportLayout extends AbstractHintLayout {
 	 * Returns the minimum size required by the input viewport figure. Since
 	 * viewport is flexible, the minimum size required would be the just the size of
 	 * the borders.
-	 * 
+	 *
 	 * @see AbstractHintLayout#calculateMinimumSize(IFigure, int, int)
 	 */
 	@Override
@@ -41,7 +41,7 @@ public class ViewportLayout extends AbstractHintLayout {
 	 * Calculates and returns the preferred size of the figure based on the given
 	 * hints. The given wHint is ignored unless the viewport (parent) is tracking
 	 * width. The same is true for the height hint.
-	 * 
+	 *
 	 * @param parent the Viewport whose preferred size is to be calculated
 	 * @param wHint  the width hint
 	 * @param hHint  the height hint

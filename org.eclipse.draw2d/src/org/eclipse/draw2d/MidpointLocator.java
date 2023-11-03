@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -26,7 +26,7 @@ public class MidpointLocator extends ConnectionLocator {
 	 * Constructs a MidpointLocator with associated Connection <i>c</i> and index
 	 * <i>i</i>. The points at index i and i+1 on the connection are used to
 	 * calculate the midpoint of the line segment.
-	 * 
+	 *
 	 * @param c the connection associated with the locator
 	 * @param i the point from where the connection's midpoint will be calculated.
 	 * @since 2.0
@@ -40,7 +40,7 @@ public class MidpointLocator extends ConnectionLocator {
 	 * Returns this MidpointLocator's index. This integer represents the position of
 	 * the start point in this MidpointLocator's associated {@link Connection} from
 	 * where midpoint calculation will be made.
-	 * 
+	 *
 	 * @return the locator's index
 	 * @since 2.0
 	 */
@@ -52,7 +52,7 @@ public class MidpointLocator extends ConnectionLocator {
 	/**
 	 * Returns the point of reference associated with this locator. This point will
 	 * be midway between points at 'index' and 'index' + 1.
-	 * 
+	 *
 	 * @return the reference point
 	 * @since 2.0
 	 */
