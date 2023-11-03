@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -18,17 +18,18 @@ package org.eclipse.gef.requests;
  *
  * @author hudsonr
  * @since 2.1
+ * @param <T> the type of object that is created by this factory.
  */
-public class SimpleFactory implements CreationFactory {
+public class SimpleFactory<T> implements CreationFactory {
 
-	private Class type;
+	private final Class<T> type;
 
 	/**
 	 * Creates a SimpleFactory.
 	 *
 	 * @param aClass The class to be instantiated using this factory.
 	 */
-	public SimpleFactory(Class aClass) {
+	public SimpleFactory(Class<T> aClass) {
 		type = aClass;
 	}
 
@@ -38,9 +39,9 @@ public class SimpleFactory implements CreationFactory {
 	 * @return The newly created object.
 	 */
 	@Override
-	public Object getNewObject() {
+	public T getNewObject() {
 		try {
-			return type.newInstance();
+			return type.getDeclaredConstructor().newInstance();
 		} catch (Exception exc) {
 			return null;
 		}
