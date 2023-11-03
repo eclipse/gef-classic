@@ -1,7 +1,7 @@
 /*******************************************************************************
  * Copyright (c) 2000, 2010 IBM Corporation and others.
  *
- * This program and the accompanying materials are made available under the 
+ * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
  * http://www.eclipse.org/legal/epl-2.0.
  *
@@ -14,10 +14,7 @@ package org.eclipse.gef.internal.ui.palette.editparts;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
@@ -35,8 +32,9 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 	private ShellListener shellListener;
 
 	private static void setHelper(EditPartTipHelper helper) {
-		if (currentHelper != null && currentHelper != helper && currentHelper.isShowing())
+		if (currentHelper != null && currentHelper != helper && currentHelper.isShowing()) {
 			currentHelper.hide();
+		}
 		currentHelper = helper;
 	}
 
@@ -49,7 +47,7 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 	 * displays the tip at the coordianates specified by tipPosX and tipPosY. The
 	 * given coordinates will be adjusted if the tip cannot be completely visible on
 	 * the screen.
-	 * 
+	 *
 	 * @param tip     The tool tip to be displayed.
 	 * @param tipPosX X coordiante of tooltip to be displayed
 	 * @param tipPosY Y coordinate of tooltip to be displayed
@@ -121,15 +119,13 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 		 * cursor is no longer in the tooltip. This occurs in the rare case that a
 		 * mouseEnter is not received on the tooltip when it appears.
 		 */
-		getShell().addMouseMoveListener(new MouseMoveListener() {
-			@Override
-			public void mouseMove(MouseEvent e) {
-				Point eventPoint = getShell().toDisplay(new Point(e.x, e.y));
-				if (!getShell().getBounds().contains(eventPoint)) {
-					if (isShowing())
-						getShell().setCapture(false);
-					dispose();
+		getShell().addMouseMoveListener(e -> {
+			Point eventPoint = getShell().toDisplay(new Point(e.x, e.y));
+			if (!getShell().getBounds().contains(eventPoint)) {
+				if (isShowing()) {
+					getShell().setCapture(false);
 				}
+				dispose();
 			}
 		});
 
@@ -139,17 +135,16 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 			shellListener = new ShellAdapter() {
 				@Override
 				public void shellDeactivated(ShellEvent event) {
-					Display.getCurrent().asyncExec(new Runnable() {
-						@Override
-						public void run() {
-							Shell active = Display.getCurrent().getActiveShell();
-							if (getShell() == active || control.isDisposed() || control.getShell() == active
-									|| getShell().isDisposed())
-								return;
-							if (isShowing())
-								getShell().setCapture(false);
-							dispose();
+					Display.getCurrent().asyncExec(() -> {
+						Shell active = Display.getCurrent().getActiveShell();
+						if (getShell() == active || control.isDisposed() || control.getShell() == active
+								|| getShell().isDisposed()) {
+							return;
 						}
+						if (isShowing()) {
+							getShell().setCapture(false);
+						}
+						dispose();
 					});
 				}
 			};
@@ -163,22 +158,17 @@ class EditPartTipHelper extends org.eclipse.draw2d.PopUpHelper {
 		 * dispose of the shell.
 		 */
 		if (SWT.getPlatform().equals("gtk")) { //$NON-NLS-1$
-			getShell().addPaintListener(new PaintListener() {
-				@Override
-				public void paintControl(PaintEvent event) {
-					Point cursorLoc = Display.getCurrent().getCursorLocation();
-					if (!getShell().getBounds().contains(cursorLoc)) {
-						// This must be run asynchronously. If not, other paint
-						// listeners may attempt to paint on a disposed control.
-						Display.getCurrent().asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								if (isShowing())
-									getShell().setCapture(false);
-								dispose();
-							}
-						});
-					}
+			getShell().addPaintListener(event -> {
+				Point cursorLoc = Display.getCurrent().getCursorLocation();
+				if (!getShell().getBounds().contains(cursorLoc)) {
+					// This must be run asynchronously. If not, other paint
+					// listeners may attempt to paint on a disposed control.
+					Display.getCurrent().asyncExec(() -> {
+						if (isShowing()) {
+							getShell().setCapture(false);
+						}
+						dispose();
+					});
 				}
 			});
 		}
