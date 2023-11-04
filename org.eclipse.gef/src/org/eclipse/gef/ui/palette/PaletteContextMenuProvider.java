@@ -54,7 +54,7 @@ public class PaletteContextMenuProvider extends ContextMenuProvider {
 	public void buildContextMenu(IMenuManager menu) {
 		GEFActionConstants.addStandardActionGroups(menu);
 
-		EditPart selectedPart = (EditPart) getPaletteViewer().getSelectedEditParts().get(0);
+		EditPart selectedPart = getPaletteViewer().getSelectedEditParts().get(0);
 		IPinnableEditPart pinnablePart = selectedPart.getAdapter(IPinnableEditPart.class);
 		if (pinnablePart != null && pinnablePart.canBePinned()) {
 			menu.appendToGroup(GEFActionConstants.MB_ADDITIONS, new PinDrawerAction(pinnablePart));

@@ -22,6 +22,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PrintFigureOperation;
 
+import org.eclipse.gef.EditPart;
 import org.eclipse.gef.GraphicalViewer;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.editparts.LayerManager;
@@ -32,7 +33,7 @@ import org.eclipse.gef.editparts.LayerManager;
 public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 
 	private GraphicalViewer viewer;
-	private List selectedEditParts;
+	private List<EditPart> selectedEditParts;
 
 	/**
 	 * Constructor for PrintGraphicalViewerOperation
@@ -66,7 +67,7 @@ public class PrintGraphicalViewerOperation extends PrintFigureOperation {
 	@Override
 	protected void preparePrintSource() {
 		super.preparePrintSource();
-		selectedEditParts = new ArrayList(viewer.getSelectedEditParts());
+		selectedEditParts = new ArrayList<>(viewer.getSelectedEditParts());
 		viewer.deselectAll();
 	}
 

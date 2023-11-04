@@ -60,8 +60,9 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	 */
 	protected int getFeedbackIndexFor(Request request) {
 		List<? extends EditPart> children = getHost().getChildren();
-		if (children.isEmpty())
+		if (children.isEmpty()) {
 			return -1;
+		}
 
 		Transposer transposer = new Transposer();
 		transposer.setEnabled(!isLayoutHorizontal());
@@ -82,12 +83,13 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 				 * row, so this Figure (which is at the start of a new row) is the candidate.
 				 */
 				if (p.y <= rowBottom) {
-					if (candidate == -1)
+					if (candidate == -1) {
 						candidate = i;
+					}
 					break;
-				} else
-					candidate = -1; // Mouse's Y is outside the row, so reset
-									// the candidate
+				}
+				candidate = -1; // Mouse's Y is outside the row, so reset
+								// the candidate
 			}
 			rowBottom = Math.max(rowBottom, rect.bottom());
 			if (candidate == -1) {
@@ -95,8 +97,9 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 				 * See if we have a possible candidate. It is a candidate if the cursor is left
 				 * of the center of this candidate.
 				 */
-				if (p.x <= rect.x + (rect.width / 2))
+				if (p.x <= rect.x + (rect.width / 2)) {
 					candidate = i;
+				}
 			}
 			if (candidate != -1) {
 				// We have a candidate, see if the rowBottom has grown to
@@ -122,18 +125,20 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 
 		if (request.getType().equals(RequestConstants.REQ_CREATE)) {
 			int i = getFeedbackIndexFor(request);
-			if (i == -1)
+			if (i == -1) {
 				return null;
+			}
 			return children.get(i);
 		}
 
 		int index = getFeedbackIndexFor(request);
 		if (index != -1) {
-			List selection = getHost().getViewer().getSelectedEditParts();
+			List<? extends EditPart> selection = getHost().getViewer().getSelectedEditParts();
 			do {
 				EditPart editpart = children.get(index);
-				if (!selection.contains(editpart))
+				if (!selection.contains(editpart)) {
 					return editpart;
+				}
 			} while (++index < children.size());
 		}
 		return null; // Not found, add at the end.
@@ -165,6 +170,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	 *         orientation
 	 * @deprecated Use {@link #isLayoutHorizontal()} instead.
 	 */
+	@Deprecated
 	protected boolean isHorizontal() {
 		return isLayoutHorizontal();
 	}
@@ -176,8 +182,9 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 	 */
 	@Override
 	protected void showLayoutTargetFeedback(Request request) {
-		if (getHost().getChildren().isEmpty())
+		if (getHost().getChildren().isEmpty()) {
 			return;
+		}
 		Polyline fb = getLineFeedback();
 		Transposer transposer = new Transposer();
 		transposer.setEnabled(!isLayoutHorizontal());
@@ -194,9 +201,9 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 			EditPart editPart = getHost().getChildren().get(epIndex);
 			r = transposer.t(getAbsoluteBounds((GraphicalEditPart) editPart));
 			Point p = transposer.t(getLocationFromRequest(request));
-			if (p.x <= r.x + (r.width / 2))
+			if (p.x <= r.x + (r.width / 2)) {
 				before = true;
-			else {
+			} else {
 				/*
 				 * We are not to the left of this Figure, so the emphasis line needs to be to
 				 * the right of the previous Figure, which must be on the previous row.
@@ -231,8 +238,9 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 				// It is a line break.
 				Rectangle parentBox = transposer.t(getAbsoluteBounds((GraphicalEditPart) getHost()));
 				x = r.x - 5;
-				if (x < parentBox.x)
+				if (x < parentBox.x) {
 					x = parentBox.x + (r.x - parentBox.x) / 2;
+				}
 			}
 		} else {
 			/*
@@ -244,8 +252,9 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 			int rRight = r.x + r.width;
 			int pRight = parentBox.x + parentBox.width;
 			x = rRight + 5;
-			if (x > pRight)
+			if (x > pRight) {
 				x = rRight + (pRight - rRight) / 2;
+			}
 		}
 		Point p1 = new Point(x, r.y - 4);
 		p1 = transposer.t(p1);

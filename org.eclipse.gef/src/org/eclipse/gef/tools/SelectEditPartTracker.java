@@ -54,8 +54,9 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 */
 	@Override
 	protected Cursor calculateCursor() {
-		if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG))
+		if (isInState(STATE_INITIAL | STATE_DRAG | STATE_ACCESSIBLE_DRAG)) {
 			return getDefaultCursor();
+		}
 		return super.calculateCursor();
 	}
 
@@ -93,16 +94,19 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 */
 	@Override
 	protected boolean handleButtonDown(int button) {
-		if ((button == 3 || button == 1) && isInState(STATE_INITIAL))
+		if ((button == 3 || button == 1) && isInState(STATE_INITIAL)) {
 			performConditionalSelection();
+		}
 
 		if (button != 1) {
 			setState(STATE_INVALID);
-			if (button == 3)
+			if (button == 3) {
 				setState(STATE_TERMINAL);
+			}
 			handleInvalidInput();
-		} else
+		} else {
 			stateTransition(STATE_INITIAL, STATE_DRAG);
+		}
 		return true;
 	}
 
@@ -119,10 +123,12 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	protected boolean handleButtonUp(int button) {
 		if (isInState(STATE_DRAG)) {
 			performSelection();
-			if (getFlag(FLAG_ENABLE_DIRECT_EDIT))
+			if (getFlag(FLAG_ENABLE_DIRECT_EDIT)) {
 				performDirectEdit();
-			if (button == 1 && getSourceEditPart().getSelected() != EditPart.SELECTED_NONE)
+			}
+			if (button == 1 && getSourceEditPart().getSelected() != EditPart.SELECTED_NONE) {
 				getCurrentViewer().reveal(getSourceEditPart());
+			}
 			setState(STATE_TERMINAL);
 			return true;
 		}
@@ -170,10 +176,11 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 * performed.
 	 */
 	protected void performConditionalSelection() {
-		if (getSourceEditPart().getSelected() == EditPart.SELECTED_NONE)
+		if (getSourceEditPart().getSelected() == EditPart.SELECTED_NONE) {
 			performSelection();
-		else if (getCurrentInput().getModifiers() == 0)
+		} else if (getCurrentInput().getModifiers() == 0) {
 			setFlag(FLAG_ENABLE_DIRECT_EDIT, true);
+		}
 	}
 
 	/**
@@ -210,21 +217,24 @@ public class SelectEditPartTracker extends TargetingTool implements DragTracker 
 	 * the selection.
 	 */
 	protected void performSelection() {
-		if (hasSelectionOccurred())
+		if (hasSelectionOccurred()) {
 			return;
+		}
 		setFlag(FLAG_SELECTION_PERFORMED, true);
 		EditPartViewer viewer = getCurrentViewer();
-		List selectedObjects = viewer.getSelectedEditParts();
+		List<? extends EditPart> selectedObjects = viewer.getSelectedEditParts();
 
 		if (getCurrentInput().isModKeyDown(SWT.MOD1)) {
-			if (selectedObjects.contains(getSourceEditPart()))
+			if (selectedObjects.contains(getSourceEditPart())) {
 				viewer.deselect(getSourceEditPart());
-			else
+			} else {
 				viewer.appendSelection(getSourceEditPart());
-		} else if (getCurrentInput().isShiftKeyDown())
+			}
+		} else if (getCurrentInput().isShiftKeyDown()) {
 			viewer.appendSelection(getSourceEditPart());
-		else
+		} else {
 			viewer.select(getSourceEditPart());
+		}
 	}
 
 	/**

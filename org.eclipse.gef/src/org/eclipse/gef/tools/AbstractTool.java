@@ -51,7 +51,6 @@ import org.eclipse.gef.MouseWheelHandler;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.Tool;
 import org.eclipse.gef.commands.Command;
-import org.eclipse.gef.commands.CommandStackEvent;
 import org.eclipse.gef.commands.CommandStackEventListener;
 import org.eclipse.gef.editparts.LayerManager;
 
@@ -110,24 +109,28 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 *
 	 * @deprecated Use {@link SWT#BUTTON1} instead.
 	 */
+	@Deprecated
 	protected static final int MOUSE_BUTTON1 = SWT.BUTTON1;
 	/**
 	 * constant used for mouse button 2.
 	 *
 	 * @deprecated Use {@link SWT#BUTTON2} instead.
 	 */
+	@Deprecated
 	protected static final int MOUSE_BUTTON2 = SWT.BUTTON2;
 	/**
 	 * constant used for mouse button 3.
 	 *
 	 * @deprecated Use {@link SWT#BUTTON3} instead.
 	 */
+	@Deprecated
 	protected static final int MOUSE_BUTTON3 = SWT.BUTTON3;
 	/**
 	 * constant used to indicate any of the mouse buttons.
 	 *
 	 * @deprecated Use {@link SWT#BUTTON_MASK} instead.
 	 */
+	@Deprecated
 	protected static final int MOUSE_BUTTON_ANY = SWT.BUTTON_MASK;
 
 	/**
@@ -193,11 +196,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	private int accessibleStep;
 	private Command command;
 
-	private CommandStackEventListener commandStackListener = new CommandStackEventListener() {
-		@Override
-		public void stackChanged(CommandStackEvent event) {
-			if (event.isPreChangeEvent())
-				handleCommandStackChanged();
+	private final CommandStackEventListener commandStackListener = event -> {
+		if (event.isPreChangeEvent()) {
+			handleCommandStackChanged();
 		}
 	};
 	private Input current;
@@ -222,8 +223,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	protected boolean acceptArrowKey(KeyEvent e) {
 		int key = e.keyCode;
-		if (!(isInState(STATE_INITIAL | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS)))
+		if (!(isInState(STATE_INITIAL | STATE_ACCESSIBLE_DRAG | STATE_ACCESSIBLE_DRAG_IN_PROGRESS))) {
 			return false;
+		}
 		return (key == SWT.ARROW_UP) || (key == SWT.ARROW_RIGHT) || (key == SWT.ARROW_DOWN) || (key == SWT.ARROW_LEFT);
 	}
 
@@ -242,8 +244,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 		} else {
 			accessibleStep = 4;
 			long elapsed = new Date().getTime() - accessibleBegin;
-			if (elapsed > 1000)
+			if (elapsed > 1000) {
 				accessibleStep = Math.min(16, (int) (elapsed / 150));
+			}
 		}
 	}
 
@@ -274,8 +277,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	protected void addFeedback(IFigure figure) {
 		LayerManager lm = (LayerManager) getCurrentViewer().getEditPartRegistry().get(LayerManager.ID);
-		if (lm == null)
+		if (lm == null) {
 			return;
+		}
 		lm.getLayer(LayerConstants.FEEDBACK_LAYER).add(figure);
 	}
 
@@ -295,28 +299,30 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	protected void applyProperty(Object key, Object value) {
 		if (PROPERTY_UNLOAD_WHEN_FINISHED.equals(key)) {
-			if (value instanceof Boolean)
+			if (value instanceof Boolean) {
 				setUnloadWhenFinished(((Boolean) value).booleanValue());
+			}
 			return;
 		}
 
-		if (!(key instanceof String))
+		if (!(key instanceof String)) {
 			return;
+		}
 
 		try {
 			PropertyDescriptor[] descriptors = Introspector.getBeanInfo(getClass(), Introspector.IGNORE_ALL_BEANINFO)
 					.getPropertyDescriptors();
 			PropertyDescriptor property = null;
-			for (int i = 0; i < descriptors.length; i++) {
-				if (descriptors[i].getName().equals(key)) {
-					property = descriptors[i];
+			for (PropertyDescriptor descriptor : descriptors) {
+				if (descriptor.getName().equals(key)) {
+					property = descriptor;
 					break;
 				}
 			}
 			if (property != null) {
 				Method setter = property.getWriteMethod();
 				// setter.setAccessible(true);
-				setter.invoke(this, new Object[] { value });
+				setter.invoke(this, value);
 			}
 		} catch (IntrospectionException ie) {
 		} catch (IllegalAccessException iae) {
@@ -340,11 +346,13 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @return <code>null</code> or a cursor to be displayed.
 	 */
 	protected Cursor calculateCursor() {
-		if (isInState(STATE_TERMINAL))
+		if (isInState(STATE_TERMINAL)) {
 			return null;
+		}
 		Command command = getCurrentCommand();
-		if (command == null || !command.canExecute())
+		if (command == null || !command.canExecute()) {
 			return getDisabledCursor();
+		}
 		return getDefaultCursor();
 	}
 
@@ -368,7 +376,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @return a list of editparts being operated on
 	 */
 	protected List createOperationSet() {
-		return new ArrayList(getCurrentViewer().getSelectedEditParts());
+		return new ArrayList<>(getCurrentViewer().getSelectedEditParts());
 	}
 
 	/**
@@ -397,6 +405,7 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param message a message for the debug trace tool
 	 * @deprecated
 	 */
+	@Deprecated
 	protected void debug(String message) {
 	}
 
@@ -420,8 +429,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	protected void executeCurrentCommand() {
 		Command curCommand = getCurrentCommand();
-		if (curCommand != null && curCommand.canExecute())
+		if (curCommand != null && curCommand.canExecute()) {
 			executeCommand(curCommand);
+		}
 		setCurrentCommand(null);
 	}
 
@@ -485,8 +495,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @return the current input
 	 */
 	protected Input getCurrentInput() {
-		if (current == null)
+		if (current == null) {
 			current = new Input();
+		}
 		return current;
 	}
 
@@ -555,8 +566,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @return the disabled cursor
 	 */
 	protected Cursor getDisabledCursor() {
-		if (disabledCursor != null)
+		if (disabledCursor != null) {
 			return disabledCursor;
+		}
 		return getDefaultCursor();
 	}
 
@@ -601,8 +613,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @return the operation set.
 	 */
 	protected List getOperationSet() {
-		if (operationSet == null)
+		if (operationSet == null) {
 			operationSet = createOperationSet();
+		}
 		return operationSet;
 	}
 
@@ -743,10 +756,11 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @see #unloadWhenFinished()
 	 */
 	protected void handleFinished() {
-		if (unloadWhenFinished())
+		if (unloadWhenFinished()) {
 			getDomain().loadDefaultTool();
-		else
+		} else {
 			reactivate();
+		}
 	}
 
 	/**
@@ -976,8 +990,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void keyDown(KeyEvent evt, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 		getCurrentInput().setInput(evt);
 		handleKeyDown(evt);
@@ -992,8 +1007,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void keyTraversed(TraverseEvent event, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 		getCurrentInput().setInput(event);
 		handleKeyTraversed(event);
@@ -1008,8 +1024,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void keyUp(KeyEvent evt, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 		getCurrentInput().setInput(evt);
 		handleKeyUp(evt);
@@ -1024,8 +1041,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void mouseDoubleClick(MouseEvent me, EditPartViewer viewer) {
-		if (me.button > 5 || !isViewerImportant(viewer))
+		if (me.button > 5 || !isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 		getCurrentInput().setInput(me);
 
@@ -1041,8 +1059,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void mouseDown(MouseEvent me, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 
 		getCurrentInput().setInput(me);
@@ -1063,15 +1082,17 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void mouseDrag(MouseEvent me, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 		boolean wasDragging = movedPastThreshold();
 		getCurrentInput().setInput(me);
 		handleDrag();
 		if (movedPastThreshold()) {
-			if (!wasDragging)
+			if (!wasDragging) {
 				handleDragStarted();
+			}
 			handleDragInProgress();
 		}
 	}
@@ -1086,8 +1107,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void mouseHover(MouseEvent me, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 		getCurrentInput().setInput(me);
 		handleHover();
@@ -1102,8 +1124,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void mouseMove(MouseEvent me, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 		if (!isInputSynched(me)) {
 			boolean b1 = getCurrentInput().isMouseButtonDown(1);
@@ -1113,30 +1136,38 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 			boolean b5 = getCurrentInput().isMouseButtonDown(5);
 			getCurrentInput().verifyMouseButtons = true;
 			getCurrentInput().setInput(me);
-			if (b1)
+			if (b1) {
 				handleButtonUp(1);
-			if (b2)
+			}
+			if (b2) {
 				handleButtonUp(2);
-			if (b3)
+			}
+			if (b3) {
 				handleButtonUp(3);
-			if (b4)
+			}
+			if (b4) {
 				handleButtonUp(4);
-			if (b5)
+			}
+			if (b5) {
 				handleButtonUp(5);
-			if (getDomain().getActiveTool() != this)
+			}
+			if (getDomain().getActiveTool() != this) {
 				return;
+			}
 			/*
 			 * processing one of the buttonUps may have caused the tool to reactivate
 			 * itself, which causes the viewer to get nulled-out. If we are going to call
 			 * another handleXxx method below, we must set the viewer again to be paranoid.
 			 */
 			setViewer(viewer);
-		} else
+		} else {
 			getCurrentInput().setInput(me);
-		if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS))
+		}
+		if (isInState(STATE_ACCESSIBLE_DRAG_IN_PROGRESS)) {
 			handleDragInProgress();
-		else
+		} else {
 			handleMove();
+		}
 	}
 
 	/**
@@ -1148,8 +1179,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void mouseUp(MouseEvent me, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 		getCurrentInput().setInput(me);
 		getCurrentInput().setMouseButton(me.button, false);
@@ -1168,8 +1200,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void mouseWheelScrolled(Event event, EditPartViewer viewer) {
-		if (isInState(STATE_INITIAL))
+		if (isInState(STATE_INITIAL)) {
 			performViewerMouseWheel(event, viewer);
+		}
 	}
 
 	/**
@@ -1179,8 +1212,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @return <code>true</code> if the threshold has been exceeded
 	 */
 	protected boolean movedPastThreshold() {
-		if (getFlag(FLAG_PAST_THRESHOLD))
+		if (getFlag(FLAG_PAST_THRESHOLD)) {
 			return true;
+		}
 		Point start = getStartLocation(), end = getLocation();
 		if (Math.abs(start.x - end.x) > DRAG_THRESHOLD || Math.abs(start.y - end.y) > DRAG_THRESHOLD) {
 			setFlag(FLAG_PAST_THRESHOLD, true);
@@ -1194,8 +1228,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void nativeDragFinished(DragSourceEvent event, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 		handleNativeDragFinished(event);
 	}
@@ -1205,8 +1240,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void nativeDragStarted(DragSourceEvent event, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		setViewer(viewer);
 		handleNativeDragStarted(event);
 	}
@@ -1223,8 +1259,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	protected void performViewerMouseWheel(Event event, EditPartViewer viewer) {
 		MouseWheelHandler handler = (MouseWheelHandler) viewer
 				.getProperty(MouseWheelHandler.KeyGenerator.getKey(event.stateMask));
-		if (handler != null)
+		if (handler != null) {
 			handler.handleMouseWheel(event, viewer);
+		}
 	}
 
 	/**
@@ -1236,22 +1273,26 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @since 3.4
 	 */
 	protected void placeMouseInViewer(Point p) {
-		if (getCurrentViewer() == null)
+		if (getCurrentViewer() == null) {
 			return;
+		}
 		Control c = getCurrentViewer().getControl();
 		Rectangle rect;
-		if (c instanceof Scrollable)
+		if (c instanceof Scrollable) {
 			rect = ((Scrollable) c).getClientArea();
-		else
+		} else {
 			rect = c.getBounds();
-		if (p.x > rect.x + rect.width - 1)
+		}
+		if (p.x > rect.x + rect.width - 1) {
 			p.x = rect.x + rect.width - 1;
-		else if (p.x < rect.x)
+		} else if (p.x < rect.x) {
 			p.x = rect.x;
-		if (p.y > rect.y + rect.height - 1)
+		}
+		if (p.y > rect.y + rect.height - 1) {
 			p.y = rect.y + rect.height - 1;
-		else if (p.y < rect.y)
+		} else if (p.y < rect.y) {
 			p.y = rect.y;
+		}
 
 		// place the mouse cursor at the calculated position within the viewer
 		org.eclipse.swt.graphics.Point cursorLocation = new org.eclipse.swt.graphics.Point(p.x, p.y);
@@ -1273,8 +1314,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 		activate();
 		if (viewer != null) {
 			Control c = viewer.getControl();
-			if (c != null && !c.isDisposed() && c.isFocusControl())
+			if (c != null && !c.isDisposed() && c.isFocusControl()) {
 				setViewer(viewer);
+			}
 		}
 	}
 
@@ -1284,8 +1326,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * {@link #calculateCursor()}.
 	 */
 	protected void refreshCursor() {
-		if (isActive())
+		if (isActive()) {
 			setCursor(calculateCursor());
+		}
 	}
 
 	/**
@@ -1304,8 +1347,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	protected void removeFeedback(IFigure figure) {
 		LayerManager lm = (LayerManager) getCurrentViewer().getEditPartRegistry().get(LayerManager.ID);
-		if (lm == null)
+		if (lm == null) {
 			return;
+		}
 		lm.getLayer(LayerConstants.FEEDBACK_LAYER).remove(figure);
 	}
 
@@ -1335,8 +1379,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @param cursor the cursor to display
 	 */
 	protected void setCursor(Cursor cursor) {
-		if (getCurrentViewer() != null)
+		if (getCurrentViewer() != null) {
 			getCurrentViewer().setCursor(cursor);
+		}
 	}
 
 	/**
@@ -1346,8 +1391,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @see #getDefaultCursor()
 	 */
 	public void setDefaultCursor(Cursor cursor) {
-		if (defaultCursor == cursor)
+		if (defaultCursor == cursor) {
 			return;
+		}
 		defaultCursor = cursor;
 		refreshCursor();
 	}
@@ -1359,8 +1405,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 * @see #getDisabledCursor()
 	 */
 	public void setDisabledCursor(Cursor cursor) {
-		if (disabledCursor == cursor)
+		if (disabledCursor == cursor) {
 			return;
+		}
 		disabledCursor = cursor;
 		refreshCursor();
 	}
@@ -1389,8 +1436,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 
 	void setMouseCapture(boolean value) {
 		if (getCurrentViewer() != null && getCurrentViewer().getControl() != null
-				&& !getCurrentViewer().getControl().isDisposed())
+				&& !getCurrentViewer().getControl().isDisposed()) {
 			getCurrentViewer().getControl().setCapture(value);
+		}
 	}
 
 	/**
@@ -1403,8 +1451,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void setProperties(Map properties) {
-		if (properties == null)
+		if (properties == null) {
 			return;
+		}
 		Iterator entries = properties.entrySet().iterator();
 		while (entries.hasNext()) {
 			Entry entry = (Entry) entries.next();
@@ -1459,8 +1508,9 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void setViewer(EditPartViewer viewer) {
-		if (viewer == currentViewer)
+		if (viewer == currentViewer) {
 			return;
+		}
 
 		setCursor(null);
 		currentViewer = viewer;
@@ -1486,8 +1536,8 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 		if ((getState() & start) != 0) {
 			setState(end);
 			return true;
-		} else
-			return false;
+		}
+		return false;
 	}
 
 	/**
@@ -1514,11 +1564,13 @@ public abstract class AbstractTool extends org.eclipse.gef.util.FlagSupport impl
 	 */
 	@Override
 	public void viewerEntered(MouseEvent me, EditPartViewer viewer) {
-		if (!isViewerImportant(viewer))
+		if (!isViewerImportant(viewer)) {
 			return;
+		}
 		getCurrentInput().setInput(me);
-		if (getCurrentViewer() != null && getCurrentViewer() != viewer)
+		if (getCurrentViewer() != null && getCurrentViewer() != viewer) {
 			handleViewerExited();
+		}
 		setViewer(viewer);
 		handleViewerEntered();
 	}
