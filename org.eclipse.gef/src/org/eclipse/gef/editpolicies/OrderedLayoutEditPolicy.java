@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import java.util.List;
-
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.OrderedLayout;
 
@@ -91,12 +89,8 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	@Override
 	protected Command getAddCommand(Request req) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) req;
-		List editParts = request.getEditParts();
 		CompoundCommand command = new CompoundCommand();
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart child = (EditPart) editParts.get(i);
-			command.add(createAddCommand(child, getInsertionReference(request)));
-		}
+		request.getEditParts().forEach(child -> command.add(createAddCommand(child, getInsertionReference(request))));
 		return command.unwrap();
 	}
 
@@ -123,13 +117,9 @@ public abstract class OrderedLayoutEditPolicy extends LayoutEditPolicy {
 	@Override
 	protected Command getMoveChildrenCommand(Request request) {
 		CompoundCommand command = new CompoundCommand();
-		List editParts = ((ChangeBoundsRequest) request).getEditParts();
-
 		EditPart insertionReference = getInsertionReference(request);
-		for (int i = 0; i < editParts.size(); i++) {
-			EditPart child = (EditPart) editParts.get(i);
-			command.add(createMoveChildCommand(child, insertionReference));
-		}
+		((ChangeBoundsRequest) request).getEditParts()
+				.forEach(child -> command.add(createMoveChildCommand(child, insertionReference)));
 		return command.unwrap();
 	}
 

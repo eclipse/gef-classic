@@ -100,8 +100,9 @@ public class SnapToGeometry extends SnapToHelper {
 		 * @param location the location
 		 */
 		protected Entry(int type, int location) {
-			if (type < -1 || type > 1)
+			if (type < -1 || type > 1) {
 				throw new IllegalArgumentException("Unrecognized snap type"); //$NON-NLS-1$
+			}
 			this.type = type;
 			this.location = location;
 		}
@@ -201,7 +202,7 @@ public class SnapToGeometry extends SnapToHelper {
 	 * @param exclusions the children to exclude
 	 * @return a list of parts which should be snapped to
 	 */
-	protected List generateSnapPartsList(List exclusions) {
+	protected List<? extends GraphicalEditPart> generateSnapPartsList(List<? extends EditPart> exclusions) {
 		// Don't snap to any figure that is being dragged
 		List<? extends GraphicalEditPart> children = new ArrayList<>(container.getChildren());
 		children.removeAll(exclusions);
@@ -229,13 +230,16 @@ public class SnapToGeometry extends SnapToHelper {
 		// far) there is no middle pixel so favor the left-most/top-most pixel
 		// (which is what
 		// populateRowsAndCols() does by using int precision).
-		if ((int) (near - far) % 2 != 0)
+		if ((int) (near - far) % 2 != 0) {
 			total -= 1.0;
+		}
 		double result = getCorrectionFor(entries, extendedData, vert, total / 2, 0);
-		if (result == getThreshold())
+		if (result == getThreshold()) {
 			result = getCorrectionFor(entries, extendedData, vert, near, -1);
-		if (result == getThreshold())
+		}
+		if (result == getThreshold()) {
 			result = getCorrectionFor(entries, extendedData, vert, far, 1);
+		}
 		return result;
 	}
 
@@ -255,13 +259,13 @@ public class SnapToGeometry extends SnapToHelper {
 		double result = getThreshold();
 
 		String property;
-		if (side == -1)
+		if (side == -1) {
 			property = vert ? KEY_WEST_ANCHOR : KEY_NORTH_ANCHOR;
-		else
+		} else {
 			property = vert ? KEY_EAST_ANCHOR : KEY_SOUTH_ANCHOR;
+		}
 
-		for (int i = 0; i < entries.length; i++) {
-			Entry entry = entries[i];
+		for (Entry entry : entries) {
 			double magnitude;
 
 			if (entry.type == -1 && side != 0) {
@@ -309,11 +313,11 @@ public class SnapToGeometry extends SnapToHelper {
 	 * @since 3.0
 	 * @param parts a List of EditParts
 	 */
-	protected void populateRowsAndCols(List parts) {
+	protected void populateRowsAndCols(List<? extends GraphicalEditPart> parts) {
 		rows = new Entry[parts.size() * 3];
 		cols = new Entry[parts.size() * 3];
 		for (int i = 0; i < parts.size(); i++) {
-			GraphicalEditPart child = (GraphicalEditPart) parts.get(i);
+			GraphicalEditPart child = parts.get(i);
 			Rectangle bounds = getFigureBounds(child);
 			cols[i * 3] = new Entry(-1, bounds.x);
 			rows[i * 3] = new Entry(-1, bounds.y);
@@ -341,15 +345,15 @@ public class SnapToGeometry extends SnapToHelper {
 		boolean isClone = request.getType().equals(RequestConstants.REQ_CLONE);
 		if (rows == null || cols == null || isClone != cachedCloneBool) {
 			cachedCloneBool = isClone;
-			List exclusionSet = Collections.EMPTY_LIST;
-			if (!isClone && request instanceof GroupRequest)
-				exclusionSet = ((GroupRequest) request).getEditParts();
+			List<? extends EditPart> exclusionSet = Collections.emptyList();
+			if (!isClone && request instanceof GroupRequest groupRequest) {
+				exclusionSet = groupRequest.getEditParts();
+			}
 			populateRowsAndCols(generateSnapPartsList(exclusionSet));
 		}
 
 		if ((snapOrientation & HORIZONTAL) != 0) {
-			double xcorrect = getThreshold();
-			xcorrect = getCorrectionFor(cols, request.getExtendedData(), true, baseRect.preciseX(),
+			double xcorrect = getCorrectionFor(cols, request.getExtendedData(), true, baseRect.preciseX(),
 					baseRect.preciseRight());
 			if (xcorrect != getThreshold()) {
 				snapOrientation &= ~HORIZONTAL;
@@ -358,8 +362,7 @@ public class SnapToGeometry extends SnapToHelper {
 		}
 
 		if ((snapOrientation & VERTICAL) != 0) {
-			double ycorrect = getThreshold();
-			ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, baseRect.preciseY(),
+			double ycorrect = getCorrectionFor(rows, request.getExtendedData(), false, baseRect.preciseY(),
 					baseRect.preciseBottom());
 			if (ycorrect != getThreshold()) {
 				snapOrientation &= ~VERTICAL;

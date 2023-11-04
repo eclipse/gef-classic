@@ -45,8 +45,9 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 		cmd.setParent((LogicDiagram) getHost().getModel());
 		cmd.setChild(child);
 		cmd.setLabel(label);
-		if (index >= 0)
+		if (index >= 0) {
 			cmd.setIndex(index);
+		}
 		return cmd;
 	}
 
@@ -54,14 +55,12 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 	protected Command getAddCommand(ChangeBoundsRequest request) {
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Add in LogicTreeContainerEditPolicy");//$NON-NLS-1$
-		List editparts = request.getEditParts();
 		int index = findIndexOfTreeItemAt(request.getLocation());
 
-		for (int i = 0; i < editparts.size(); i++) {
-			EditPart child = (EditPart) editparts.get(i);
-			if (isAncestor(child, getHost()))
+		for (EditPart child : request.getEditParts()) {
+			if (isAncestor(child, getHost())) {
 				command.add(UnexecutableCommand.INSTANCE);
-			else {
+			} else {
 				LogicSubpart childModel = (LogicSubpart) child.getModel();
 				command.add(createCreateCommand(childModel,
 						new Rectangle(new org.eclipse.draw2d.geometry.Point(), childModel.getSize()), index,
@@ -81,18 +80,17 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 	@Override
 	protected Command getMoveChildrenCommand(ChangeBoundsRequest request) {
 		CompoundCommand command = new CompoundCommand();
-		List editparts = request.getEditParts();
 		List<? extends EditPart> children = getHost().getChildren();
 		int newIndex = findIndexOfTreeItemAt(request.getLocation());
 
-		for (int i = 0; i < editparts.size(); i++) {
-			EditPart child = (EditPart) editparts.get(i);
+		for (EditPart child : request.getEditParts()) {
 			int tempIndex = newIndex;
 			int oldIndex = children.indexOf(child);
 			if (oldIndex == tempIndex || oldIndex + 1 == tempIndex) {
 				command.add(UnexecutableCommand.INSTANCE);
 				return command;
-			} else if (oldIndex <= tempIndex) {
+			}
+			if (oldIndex <= tempIndex) {
 				tempIndex--;
 			}
 			command.add(new ReorderPartCommand((LogicSubpart) child.getModel(), (LogicDiagram) getHost().getModel(),
@@ -102,10 +100,12 @@ public class LogicTreeContainerEditPolicy extends TreeContainerEditPolicy {
 	}
 
 	protected boolean isAncestor(EditPart source, EditPart target) {
-		if (source == target)
+		if (source == target) {
 			return true;
-		if (target.getParent() != null)
+		}
+		if (target.getParent() != null) {
 			return isAncestor(source, target.getParent());
+		}
 		return false;
 	}
 

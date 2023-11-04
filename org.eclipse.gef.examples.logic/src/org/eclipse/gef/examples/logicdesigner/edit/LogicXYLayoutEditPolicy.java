@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
-import java.util.Iterator;
-
 import org.eclipse.draw2d.ColorConstants;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.PositionConstants;
@@ -201,9 +199,8 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 		}
 		if (LogicLabel.class.equals(modelClass)) {
 			return PositionConstants.EAST | PositionConstants.WEST;
-		} else {
-			return PositionConstants.NSEW;
 		}
+		return PositionConstants.NSEW;
 	}
 
 	/*
@@ -255,11 +252,8 @@ public class LogicXYLayoutEditPolicy extends org.eclipse.gef.editpolicies.XYLayo
 
 		clone.setParent((LogicDiagram) getHost().getModel());
 
-		Iterator i = request.getEditParts().iterator();
-		GraphicalEditPart currPart = null;
-
-		while (i.hasNext()) {
-			currPart = (GraphicalEditPart) i.next();
+		for (EditPart ep : request.getEditParts()) {
+			GraphicalEditPart currPart = (GraphicalEditPart) ep;
 			clone.addPart((LogicSubpart) currPart.getModel(), (Rectangle) getConstraintFor(request, currPart));
 		}
 

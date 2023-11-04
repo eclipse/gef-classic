@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
-import java.util.List;
-
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.commands.CompoundCommand;
@@ -35,11 +33,10 @@ public class LogicContainerEditPolicy extends ContainerEditPolicy {
 
 	@Override
 	public Command getOrphanChildrenCommand(GroupRequest request) {
-		List parts = request.getEditParts();
 		CompoundCommand result = new CompoundCommand(LogicMessages.LogicContainerEditPolicy_OrphanCommandLabelText);
-		for (int i = 0; i < parts.size(); i++) {
+		for (EditPart child : request.getEditParts()) {
 			OrphanChildCommand orphan = new OrphanChildCommand();
-			orphan.setChild((LogicSubpart) ((EditPart) parts.get(i)).getModel());
+			orphan.setChild((LogicSubpart) child.getModel());
 			orphan.setParent((LogicDiagram) getHost().getModel());
 			orphan.setLabel(LogicMessages.LogicElementEditPolicy_OrphanCommandLabelText);
 			result.add(orphan);
