@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.editpolicies;
 
-import java.util.List;
-
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
@@ -89,6 +87,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 *              {@link #createAddCommand(ChangeBoundsRequest, EditPart, Object)}
 	 *              instead.
 	 */
+	@Deprecated
 	protected Command createAddCommand(EditPart child, Object constraint) {
 		return null;
 	}
@@ -135,6 +134,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 *              {@link #createChangeConstraintCommand(ChangeBoundsRequest, EditPart, Object)}
 	 *              instead.
 	 */
+	@Deprecated
 	protected Command createChangeConstraintCommand(EditPart child, Object constraint) {
 		return null;
 	}
@@ -161,13 +161,11 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	@Override
 	protected Command getAddCommand(Request generic) {
 		ChangeBoundsRequest request = (ChangeBoundsRequest) generic;
-		List editParts = request.getEditParts();
 		CompoundCommand command = new CompoundCommand();
 		command.setDebugLabel("Add in ConstrainedLayoutEditPolicy");//$NON-NLS-1$
-		GraphicalEditPart child;
 
-		for (int i = 0; i < editParts.size(); i++) {
-			child = (GraphicalEditPart) editParts.get(i);
+		for (EditPart ep : request.getEditParts()) {
+			GraphicalEditPart child = (GraphicalEditPart) ep;
 			command.add(createAddCommand(request, child, translateToModelConstraint(getConstraintFor(request, child))));
 		}
 		return command.unwrap();
@@ -192,10 +190,12 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 */
 	@Override
 	public Command getCommand(Request request) {
-		if (REQ_RESIZE_CHILDREN.equals(request.getType()))
+		if (REQ_RESIZE_CHILDREN.equals(request.getType())) {
 			return getResizeChildrenCommand((ChangeBoundsRequest) request);
-		if (REQ_ALIGN_CHILDREN.equals(request.getType()))
+		}
+		if (REQ_ALIGN_CHILDREN.equals(request.getType())) {
 			return getAlignChildrenCommand((AlignmentRequest) request);
+		}
 
 		return super.getCommand(request);
 	}
@@ -314,6 +314,7 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 *             clients.
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
+	@Deprecated
 	protected Object getConstraintForClone(GraphicalEditPart part, ChangeBoundsRequest request) {
 		// anyssen: The code executed herein was functionally the same
 		// as that in getConstraintFor(ChangeBoundsRequest, GraphicalEditPart),
@@ -355,15 +356,11 @@ public abstract class ConstrainedLayoutEditPolicy extends LayoutEditPolicy {
 	 */
 	protected Command getChangeConstraintCommand(ChangeBoundsRequest request) {
 		CompoundCommand resize = new CompoundCommand();
-		Command c;
-		GraphicalEditPart child;
-		List children = request.getEditParts();
 
-		for (int i = 0; i < children.size(); i++) {
-			child = (GraphicalEditPart) children.get(i);
-			c = createChangeConstraintCommand(request, child,
-					translateToModelConstraint(getConstraintFor(request, child)));
-			resize.add(c);
+		for (EditPart ep : request.getEditParts()) {
+			GraphicalEditPart child = (GraphicalEditPart) ep;
+			resize.add(createChangeConstraintCommand(request, child,
+					translateToModelConstraint(getConstraintFor(request, child))));
 		}
 		return resize.unwrap();
 	}

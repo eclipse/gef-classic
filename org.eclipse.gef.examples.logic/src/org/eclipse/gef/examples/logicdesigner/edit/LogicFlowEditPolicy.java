@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.logicdesigner.edit;
 
-import java.util.Iterator;
-
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPolicy;
 import org.eclipse.gef.GraphicalEditPart;
@@ -48,12 +46,10 @@ public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayout
 		EditPart after = getInsertionReference(request);
 		int index = getHost().getChildren().indexOf(after);
 
-		Iterator i = request.getEditParts().iterator();
-		GraphicalEditPart currPart = null;
-
-		while (i.hasNext()) {
-			currPart = (GraphicalEditPart) i.next();
-			clone.addPart((LogicSubpart) currPart.getModel(), index++);
+		for (EditPart ep : request.getEditParts()) {
+			GraphicalEditPart currPart = (GraphicalEditPart) ep;
+			clone.addPart((LogicSubpart) currPart.getModel(), index);
+			index++;
 		}
 
 		return clone;
@@ -85,8 +81,9 @@ public class LogicFlowEditPolicy extends org.eclipse.gef.editpolicies.FlowLayout
 		LogicDiagram parentModel = (LogicDiagram) getHost().getModel();
 		int oldIndex = getHost().getChildren().indexOf(child);
 		int newIndex = getHost().getChildren().indexOf(after);
-		if (newIndex > oldIndex)
+		if (newIndex > oldIndex) {
 			newIndex--;
+		}
 		return new ReorderPartCommand(childModel, parentModel, newIndex);
 	}
 
