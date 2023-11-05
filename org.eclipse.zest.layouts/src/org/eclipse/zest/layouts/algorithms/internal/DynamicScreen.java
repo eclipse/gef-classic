@@ -1,6 +1,6 @@
 /*******************************************************************************
- * Copyright 2005 CHISEL Group, University of Victoria, Victoria, BC,
- *                      Canada.
+ * Copyright 2005, 2023 CHISEL Group, University of Victoria, Victoria, BC,
+ *                      Canada, Johannes Kepler University Linz
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -8,7 +8,7 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  *
- * Contributors: The Chisel Group, University of Victoria
+ * Contributors: The Chisel Group, University of Victoria, Alois Zoitl
  *******************************************************************************/
 package org.eclipse.zest.layouts.algorithms.internal;
 
@@ -21,8 +21,8 @@ import org.eclipse.zest.layouts.dataStructures.InternalNode;
 
 public class DynamicScreen {
 
-	private TreeSet XCoords = null;
-	private TreeSet YCoords = null;
+	private final TreeSet<InternalNode> xCoords = new TreeSet<>(new XComparator());
+	private final TreeSet<InternalNode> yCoords = new TreeSet<>(new YComparator());
 
 	private DisplayIndependentRectangle screenBounds = null;
 
@@ -38,53 +38,45 @@ public class DynamicScreen {
 		maxY = 0.0;
 	}
 
-	class XComparator implements Comparator {
+	class XComparator implements Comparator<InternalNode> {
 		@Override
-		public int compare(Object arg0, Object arg1) {
-			InternalNode n1 = (InternalNode) arg0;
-			InternalNode n2 = (InternalNode) arg1;
-			if (n1.getInternalX() > n2.getInternalX())
+		public int compare(InternalNode n1, InternalNode n2) {
+			if (n1.getInternalX() > n2.getInternalX()) {
 				return +1;
-			else if (n1.getInternalX() < n2.getInternalX())
-				return -1;
-			else {
-				return n1.toString().compareTo(n2.toString());
 			}
-
+			if (n1.getInternalX() < n2.getInternalX()) {
+				return -1;
+			}
+			return n1.toString().compareTo(n2.toString());
 		}
 	}
 
-	class YComparator implements Comparator {
+	class YComparator implements Comparator<InternalNode> {
 		@Override
-		public int compare(Object arg0, Object arg1) {
-			InternalNode n1 = (InternalNode) arg0;
-			InternalNode n2 = (InternalNode) arg1;
-			if (n1.getInternalY() > n2.getInternalY())
+		public int compare(InternalNode n1, InternalNode n2) {
+			if (n1.getInternalY() > n2.getInternalY()) {
 				return +1;
-			else if (n1.getInternalY() < n2.getInternalY())
-				return -1;
-			else {
-				return n1.toString().compareTo(n2.toString());
 			}
+			if (n1.getInternalY() < n2.getInternalY()) {
+				return -1;
+			}
+			return n1.toString().compareTo(n2.toString());
 
 		}
 	}
 
 	public DynamicScreen(int x, int y, int width, int height) {
-		XCoords = new TreeSet(new XComparator());
-		YCoords = new TreeSet(new YComparator());
-
 		this.screenBounds = new DisplayIndependentRectangle(x, y, width, height);
 	}
 
 	public void removeNode(InternalNode node) {
-		XCoords.remove(node);
-		YCoords.remove(node);
+		xCoords.remove(node);
+		yCoords.remove(node);
 	}
 
 	public void addNode(InternalNode node) {
-		XCoords.add(node);
-		YCoords.add(node);
+		xCoords.add(node);
+		yCoords.add(node);
 	}
 
 	public DisplayIndependentPoint getScreenLocation(InternalNode node) {
@@ -111,10 +103,10 @@ public class DynamicScreen {
 	}
 
 	private DisplayIndependentRectangle calculateBounds() {
-		InternalNode n1 = (InternalNode) XCoords.first();
-		InternalNode n2 = (InternalNode) XCoords.last();
-		InternalNode n3 = (InternalNode) YCoords.first();
-		InternalNode n4 = (InternalNode) YCoords.last();
+		InternalNode n1 = xCoords.first();
+		InternalNode n2 = xCoords.last();
+		InternalNode n3 = yCoords.first();
+		InternalNode n4 = yCoords.last();
 		double x = n1.getInternalX();
 		double width = n2.getInternalX();
 		double y = n3.getInternalY();

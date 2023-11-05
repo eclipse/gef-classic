@@ -14,6 +14,7 @@ package org.eclipse.zest.layouts.algorithms;
 import java.lang.reflect.Field;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 
@@ -58,7 +59,7 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 	@Override
 	protected void applyLayoutInternal(InternalNode[] entitiesToLayout, InternalRelationship[] relationshipsToConsider,
 			double boundsX, double boundsY, double boundsWidth, double boundsHeight) {
-		HashMap mapping = new HashMap(entitiesToLayout.length);
+		Map<InternalNode, Node> mapping = new HashMap<>(entitiesToLayout.length);
 		DirectedGraph graph = new DirectedGraph();
 		for (InternalNode internalNode : entitiesToLayout) {
 			Node node = new Node(internalNode);
@@ -67,8 +68,8 @@ public class DirectedGraphLayoutAlgorithm extends AbstractLayoutAlgorithm {
 			graph.nodes.add(node);
 		}
 		for (InternalRelationship relationship : relationshipsToConsider) {
-			Node source = (Node) mapping.get(relationship.getSource());
-			Node dest = (Node) mapping.get(relationship.getDestination());
+			Node source = mapping.get(relationship.getSource());
+			Node dest = mapping.get(relationship.getDestination());
 			Edge edge = new Edge(relationship, source, dest);
 			graph.edges.add(edge);
 		}
