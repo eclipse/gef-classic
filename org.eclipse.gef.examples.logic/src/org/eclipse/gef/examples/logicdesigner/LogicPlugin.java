@@ -58,16 +58,20 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 
 	private static LogicPlugin singleton;
 
-	public static Dimension getMaximumSizeFor(Class modelClass) {
+	public static <T> Dimension getMaximumSizeFor(Class<T> modelClass) {
 		if (LED.class.equals(modelClass)) {
 			return LEDFigure.SIZE;
-		} else if (AndGate.class.equals(modelClass)) {
+		}
+		if (AndGate.class.equals(modelClass)) {
 			return AndGateFigure.SIZE;
-		} else if (OrGate.class.equals(modelClass)) {
+		}
+		if (OrGate.class.equals(modelClass)) {
 			return OrGateFigure.SIZE;
-		} else if (XORGate.class.equals(modelClass)) {
+		}
+		if (XORGate.class.equals(modelClass)) {
 			return XOrGateFigure.SIZE;
-		} else if (GroundOutput.class.isAssignableFrom(modelClass)) {
+		}
+		if (GroundOutput.class.isAssignableFrom(modelClass)) {
 			return GroundFigure.SIZE;
 		} else if (LiveOutput.class.equals(modelClass)) {
 			return LiveOutputFigure.SIZE;
@@ -75,16 +79,20 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		return IFigure.MAX_DIMENSION;
 	}
 
-	public static Dimension getMinimumSizeFor(Class modelClass) {
+	public static <T> Dimension getMinimumSizeFor(Class<T> modelClass) {
 		if (LogicLabel.class.equals(modelClass)) {
 			return new Dimension(IFigure.MIN_DIMENSION.width, 30);
-		} else if (Circuit.class.equals(modelClass)) {
+		}
+		if (Circuit.class.equals(modelClass)) {
 			return new Dimension(25, 20);
-		} else if (LED.class.equals(modelClass)) {
+		}
+		if (LED.class.equals(modelClass)) {
 			return LEDFigure.SIZE;
-		} else if (AndGate.class.equals(modelClass)) {
+		}
+		if (AndGate.class.equals(modelClass)) {
 			return AndGateFigure.SIZE;
-		} else if (OrGate.class.equals(modelClass)) {
+		}
+		if (OrGate.class.equals(modelClass)) {
 			return OrGateFigure.SIZE;
 		} else if (XORGate.class.equals(modelClass)) {
 			return XOrGateFigure.SIZE;
@@ -145,7 +153,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		CombinedTemplateCreationEntry combined = new CombinedTemplateCreationEntry(
 				LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Label,
 				LogicMessages.LogicPlugin_Tool_CreationTool_FlowContainer_Description,
-				new SimpleFactory(LogicFlowContainer.class),
+				new SimpleFactory<>(LogicFlowContainer.class),
 				ImageDescriptor.createFromFile(Circuit.class, "icons/logicflow16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(Circuit.class, "icons/logicflow24.gif")//$NON-NLS-1$
 		);
@@ -153,7 +161,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Label,
-				LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Description, new SimpleFactory(Circuit.class),
+				LogicMessages.LogicPlugin_Tool_CreationTool_Circuit_Description, new SimpleFactory<>(Circuit.class),
 				ImageDescriptor.createFromFile(Circuit.class, "icons/circuit16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(Circuit.class, "icons/circuit24.gif")//$NON-NLS-1$
 		);
@@ -163,7 +171,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		entries.add(new PaletteSeparator());
 
 		combined = new CombinedTemplateCreationEntry(LogicMessages.LogicPlugin_Tool_CreationTool_Label_Label,
-				LogicMessages.LogicPlugin_Tool_CreationTool_Label_Description, new SimpleFactory(LogicLabel.class),
+				LogicMessages.LogicPlugin_Tool_CreationTool_Label_Description, new SimpleFactory<>(LogicLabel.class),
 				ImageDescriptor.createFromFile(Circuit.class, "icons/label16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(Circuit.class, "icons/label24.gif")//$NON-NLS-1$
 		);
@@ -171,7 +179,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(LogicMessages.LogicPlugin_Tool_CreationTool_LED_Label,
-				LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description, new SimpleFactory(LED.class),
+				LogicMessages.LogicPlugin_Tool_CreationTool_LED_Description, new SimpleFactory<>(LED.class),
 				ImageDescriptor.createFromFile(Circuit.class, "icons/ledicon16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(Circuit.class, "icons/ledicon24.gif")//$NON-NLS-1$
 		);
@@ -179,7 +187,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Label,
-				LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Description, new SimpleFactory(OrGate.class),
+				LogicMessages.LogicPlugin_Tool_CreationTool_ORGate_Description, new SimpleFactory<>(OrGate.class),
 				ImageDescriptor.createFromFile(Circuit.class, "icons/or16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(Circuit.class, "icons/or24.gif")//$NON-NLS-1$
 		);
@@ -187,7 +195,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Label,
-				LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Description, new SimpleFactory(XORGate.class),
+				LogicMessages.LogicPlugin_Tool_CreationTool_XORGate_Description, new SimpleFactory<>(XORGate.class),
 				ImageDescriptor.createFromFile(Circuit.class, "icons/xor16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(Circuit.class, "icons/xor24.gif")//$NON-NLS-1$
 		);
@@ -195,7 +203,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Label,
-				LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description, new SimpleFactory(AndGate.class),
+				LogicMessages.LogicPlugin_Tool_CreationTool_ANDGate_Description, new SimpleFactory<>(AndGate.class),
 				ImageDescriptor.createFromFile(Circuit.class, "icons/and16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(Circuit.class, "icons/and24.gif")//$NON-NLS-1$
 		);
@@ -207,7 +215,8 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 				LogicMessages.LogicPlugin_Tool_CreationTool_LiveGroundStack_Description, null);
 
 		combined = new CombinedTemplateCreationEntry(LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Label,
-				LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description, new SimpleFactory(LiveOutput.class),
+				LogicMessages.LogicPlugin_Tool_CreationTool_LiveOutput_Description,
+				new SimpleFactory<>(LiveOutput.class),
 				ImageDescriptor.createFromFile(Circuit.class, "icons/live16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(Circuit.class, "icons/live24.gif")//$NON-NLS-1$
 		);
@@ -215,7 +224,7 @@ public class LogicPlugin extends org.eclipse.ui.plugin.AbstractUIPlugin {
 		liveGroundStack.add(combined);
 
 		combined = new CombinedTemplateCreationEntry(LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Label,
-				LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description, new SimpleFactory(GroundOutput.class),
+				LogicMessages.LogicPlugin_Tool_CreationTool_Ground_Description, new SimpleFactory<>(GroundOutput.class),
 				ImageDescriptor.createFromFile(Circuit.class, "icons/ground16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(Circuit.class, "icons/ground24.gif")//$NON-NLS-1$
 		);

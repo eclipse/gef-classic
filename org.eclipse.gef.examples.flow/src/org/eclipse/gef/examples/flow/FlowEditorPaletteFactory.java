@@ -15,9 +15,8 @@ package org.eclipse.gef.examples.flow;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.gef.examples.flow.model.Activity;
-import org.eclipse.gef.examples.flow.model.ParallelActivity;
-import org.eclipse.gef.examples.flow.model.SequentialActivity;
+import org.eclipse.jface.resource.ImageDescriptor;
+
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.ConnectionCreationToolEntry;
 import org.eclipse.gef.palette.MarqueeToolEntry;
@@ -30,7 +29,10 @@ import org.eclipse.gef.palette.PaletteSeparator;
 import org.eclipse.gef.palette.SelectionToolEntry;
 import org.eclipse.gef.palette.ToolEntry;
 import org.eclipse.gef.requests.SimpleFactory;
-import org.eclipse.jface.resource.ImageDescriptor;
+
+import org.eclipse.gef.examples.flow.model.Activity;
+import org.eclipse.gef.examples.flow.model.ParallelActivity;
+import org.eclipse.gef.examples.flow.model.SequentialActivity;
 
 /**
  * Handles the creation of the palette for the Flow Editor.
@@ -53,19 +55,19 @@ public final class FlowEditorPaletteFactory {
 		List<PaletteEntry> entries = new ArrayList<>();
 
 		CombinedTemplateCreationEntry combined = new CombinedTemplateCreationEntry("Activity", //$NON-NLS-1$
-				"Create a new Activity Node", Activity.class, new SimpleFactory(Activity.class), //$NON-NLS-1$
+				"Create a new Activity Node", Activity.class, new SimpleFactory<>(Activity.class), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(FlowPlugin.class, "images/gear16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(Activity.class, "images/gear16.gif")); //$NON-NLS-1$
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry("Sequential Activity", "Create a Sequential Activity", //$NON-NLS-1$ //$NON-NLS-2$
-				SequentialActivity.class, new SimpleFactory(SequentialActivity.class),
+				SequentialActivity.class, new SimpleFactory<>(SequentialActivity.class),
 				ImageDescriptor.createFromFile(FlowPlugin.class, "images/sequence16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(FlowPlugin.class, "images/sequence16.gif")); //$NON-NLS-1$
 		entries.add(combined);
 
 		combined = new CombinedTemplateCreationEntry("Parallel Activity", "Create a  Parallel Activity", //$NON-NLS-1$ //$NON-NLS-2$
-				ParallelActivity.class, new SimpleFactory(ParallelActivity.class),
+				ParallelActivity.class, new SimpleFactory<>(ParallelActivity.class),
 				ImageDescriptor.createFromFile(FlowPlugin.class, "images/parallel16.gif"), //$NON-NLS-1$
 				ImageDescriptor.createFromFile(FlowPlugin.class, "images/parallel16.gif")); //$NON-NLS-1$
 		entries.add(combined);

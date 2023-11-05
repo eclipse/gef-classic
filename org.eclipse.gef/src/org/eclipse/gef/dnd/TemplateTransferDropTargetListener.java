@@ -73,13 +73,15 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 	 * @param template the template Object
 	 * @return a Factory
 	 */
+	@SuppressWarnings("static-method") // allow children to override this method
 	protected CreationFactory getFactory(Object template) {
-		if (template instanceof CreationFactory) {
-			return ((CreationFactory) template);
-		} else if (template instanceof Class) {
-			return new SimpleFactory((Class) template);
-		} else
-			return null;
+		if (template instanceof CreationFactory creationFactory) {
+			return creationFactory;
+		}
+		if (template instanceof Class<?> clazz) {
+			return new SimpleFactory<>(clazz);
+		}
+		return null;
 	}
 
 	/**
@@ -120,15 +122,16 @@ public class TemplateTransferDropTargetListener extends AbstractTransferDropTarg
 
 	private void selectAddedObject() {
 		Object model = getCreateRequest().getNewObject();
-		if (model == null)
+		if (model == null) {
 			return;
+		}
 		EditPartViewer viewer = getViewer();
 		viewer.getControl().forceFocus();
 		Object editpart = viewer.getEditPartRegistry().get(model);
-		if (editpart instanceof EditPart) {
+		if (editpart instanceof EditPart ep) {
 			// Force a layout first.
 			getViewer().flush();
-			viewer.select((EditPart) editpart);
+			viewer.select(ep);
 		}
 	}
 

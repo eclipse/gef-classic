@@ -163,7 +163,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 		return new TemplateTransferDropTargetListener(getGraphicalViewer()) {
 			@Override
 			protected CreationFactory getFactory(Object template) {
-				return new SimpleFactory((Class) template);
+				return new SimpleFactory<>((Class<?>) template);
 			}
 		};
 	}
@@ -254,8 +254,9 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 
 	@Override
 	public <T> T getAdapter(final Class<T> type) {
-		if (type == IContentOutlinePage.class)
+		if (type == IContentOutlinePage.class) {
 			return type.cast(new ShapesOutlinePage(new TreeViewer()));
+		}
 		return super.getAdapter(type);
 	}
 
@@ -271,8 +272,9 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 */
 	@Override
 	protected PaletteRoot getPaletteRoot() {
-		if (PALETTE_MODEL == null)
+		if (PALETTE_MODEL == null) {
 			PALETTE_MODEL = ShapesEditorPaletteFactory.createPalette();
+		}
 		return PALETTE_MODEL;
 	}
 
@@ -332,6 +334,8 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 	 * Creates an outline pagebook for this editor.
 	 */
 	public class ShapesOutlinePage extends ContentOutlinePage {
+		private static final String SHAPES_OUTLINE_CONTEXTMENU = "org.eclipse.gef.examples.shapes.outline.contextmenu"; //$NON-NLS-1$
+
 		/**
 		 * Create a new outline page for the shapes editor.
 		 *
@@ -358,8 +362,7 @@ public class ShapesEditor extends GraphicalEditorWithFlyoutPalette {
 			// configure & add context menu to viewer
 			ContextMenuProvider cmProvider = new ShapesEditorContextMenuProvider(getViewer(), getActionRegistry());
 			getViewer().setContextMenu(cmProvider);
-			getSite().registerContextMenu("org.eclipse.gef.examples.shapes.outline.contextmenu", cmProvider,
-					getSite().getSelectionProvider());
+			getSite().registerContextMenu(SHAPES_OUTLINE_CONTEXTMENU, cmProvider, getSite().getSelectionProvider());
 			// hook outline viewer
 			getSelectionSynchronizer().addViewer(getViewer());
 			// initialize outline viewer with model

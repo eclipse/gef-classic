@@ -43,13 +43,13 @@ final class ShapesEditorPaletteFactory {
 		PaletteDrawer componentsDrawer = new PaletteDrawer("Shapes");
 
 		CombinedTemplateCreationEntry component = new CombinedTemplateCreationEntry("Ellipse",
-				"Create an elliptical shape", EllipticalShape.class, new SimpleFactory(EllipticalShape.class),
+				"Create an elliptical shape", EllipticalShape.class, new SimpleFactory<>(EllipticalShape.class),
 				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/ellipse16.gif"),
 				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/ellipse24.gif"));
 		componentsDrawer.add(component);
 
 		component = new CombinedTemplateCreationEntry("Rectangle", "Create a rectangular shape", RectangularShape.class,
-				new SimpleFactory(RectangularShape.class),
+				new SimpleFactory<>(RectangularShape.class),
 				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/rectangle16.gif"),
 				ImageDescriptor.createFromFile(ShapesPlugin.class, "icons/rectangle24.gif"));
 		componentsDrawer.add(component);
