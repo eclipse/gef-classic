@@ -72,6 +72,7 @@ public class MarginBorder extends AbstractBorder {
 	 */
 	@Override
 	public void paint(IFigure figure, Graphics graphics, Insets insets) {
+		// empty default implementation
 	}
 
 }

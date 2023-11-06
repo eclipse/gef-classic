@@ -24,8 +24,10 @@ import org.eclipse.draw2d.text.TextFragmentBox;
  */
 public class AbstractTextTest extends BaseTestCase {
 
+	private static final String FRAGMENT_LOCATION_ERROR = "Fragment location error"; //$NON-NLS-1$
+
 	static class TestBorder extends AbstractFlowBorder {
-		private Insets insets;
+		private final Insets insets;
 
 		TestBorder(Insets insets) {
 			this.insets = insets;
@@ -40,10 +42,10 @@ public class AbstractTextTest extends BaseTestCase {
 	public Rectangle expected = new Rectangle();
 
 	protected void assertFragmentLocation(TextFragmentBox box) {
-		assertEquals("Fragment location error", box.getX(), expected.x);
-		assertEquals("Fragment location error", box.getBaseline() - box.getAscent(), expected.y);
-		assertEquals("Fragment location error", box.getBaseline() + box.getDescent(), expected.bottom());
-		assertEquals("Fragment location error", box.getWidth() + box.getX(), expected.right());
+		assertEquals(FRAGMENT_LOCATION_ERROR, box.getX(), expected.x);
+		assertEquals(FRAGMENT_LOCATION_ERROR, box.getBaseline() - box.getAscent(), expected.y);
+		assertEquals(FRAGMENT_LOCATION_ERROR, box.getBaseline() + box.getDescent(), expected.bottom());
+		assertEquals(FRAGMENT_LOCATION_ERROR, box.getWidth() + box.getX(), expected.right());
 	}
 
 }

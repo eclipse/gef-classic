@@ -68,10 +68,11 @@ public class CompoundBorder extends AbstractBorder {
 	@Override
 	public Insets getInsets(IFigure figure) {
 		Insets insets = null;
-		if (inner != null)
+		if (inner != null) {
 			insets = inner.getInsets(figure);
-		else
+		} else {
 			insets = new Insets();
+		}
 		if (outer != null) {
 			Insets moreInsets = outer.getInsets(figure);
 			insets = insets.getAdded(moreInsets);
@@ -111,7 +112,7 @@ public class CompoundBorder extends AbstractBorder {
 	 */
 	@Override
 	public boolean isOpaque() {
-		return ((inner != null) ? inner.isOpaque() : false) && ((outer != null) ? outer.isOpaque() : false);
+		return (inner != null && inner.isOpaque()) && (outer != null && outer.isOpaque());
 	}
 
 	/**
@@ -126,8 +127,9 @@ public class CompoundBorder extends AbstractBorder {
 
 			insets = insets.getAdded(outer.getInsets(figure));
 		}
-		if (inner != null)
+		if (inner != null) {
 			inner.paint(figure, g, insets);
+		}
 	}
 
 }

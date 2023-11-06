@@ -13,6 +13,11 @@
 
 package org.eclipse.draw2d.examples.uml;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
+
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
@@ -22,10 +27,6 @@ import org.eclipse.draw2d.MarginBorder;
 import org.eclipse.draw2d.ToolbarLayout;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
 
 public class UMLClassFigure extends Figure {
 
@@ -53,15 +54,16 @@ public class UMLClassFigure extends Figure {
 		header.setBorder(new MarginBorder(3, 5, 3, 5));
 
 		Figure attributes = new Figure();
-		ToolbarLayout layout;
-		attributes.setLayoutManager(layout = new ToolbarLayout());
+		ToolbarLayout layout = new ToolbarLayout();
+		attributes.setLayoutManager(layout);
 		layout.setStretchMinorAxis(false);
 		attributes.add(new Label("name : String")); //$NON-NLS-1$
 		attributes.add(new Label("ID : String")); //$NON-NLS-1$
 		attributes.setBorder(new SeparatorBorder());
 
 		Figure methods = new Figure();
-		methods.setLayoutManager(layout = new ToolbarLayout());
+		layout = new ToolbarLayout();
+		methods.setLayoutManager(layout);
 		layout.setStretchMinorAxis(false);
 		methods.add(new Label("foo() : int")); //$NON-NLS-1$
 		methods.add(new Label("bar() : char")); //$NON-NLS-1$

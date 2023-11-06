@@ -25,7 +25,7 @@ import org.eclipse.draw2d.geometry.Rectangle;
  */
 public class BulletBorder extends ListItemBorder {
 
-	private static final String BULLET = " \u25cf ";
+	private static final String BULLET = " \u25cf "; //$NON-NLS-1$
 
 	@Override
 	public Insets getInsets(IFigure figure) {

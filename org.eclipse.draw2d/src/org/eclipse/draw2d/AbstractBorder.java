@@ -41,7 +41,7 @@ public abstract class AbstractBorder implements Border {
 	 */
 	protected static final Rectangle getPaintRectangle(IFigure figure, Insets insets) {
 		tempRect.setBounds(figure.getBounds());
-		return tempRect.crop(insets);
+		return tempRect.shrink(insets);
 	}
 
 	/**

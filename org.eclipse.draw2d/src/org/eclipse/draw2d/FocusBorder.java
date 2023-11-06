@@ -20,12 +20,6 @@ import org.eclipse.draw2d.geometry.Insets;
 public class FocusBorder extends AbstractBorder {
 
 	/**
-	 * Constructs a new FocusBorder.
-	 */
-	public FocusBorder() {
-	}
-
-	/**
 	 * @see org.eclipse.draw2d.Border#getInsets(IFigure)
 	 */
 	@Override
