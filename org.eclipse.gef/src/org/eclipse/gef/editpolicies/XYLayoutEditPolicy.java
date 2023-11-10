@@ -51,9 +51,8 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 */
 	@Override
 	protected Object getConstraintFor(Request request, GraphicalEditPart child, Rectangle rect) {
-		if (request instanceof ChangeBoundsRequest) {
-			if (((ChangeBoundsRequest) request).getSizeDelta().width == 0
-					&& ((ChangeBoundsRequest) request).getSizeDelta().height == 0) {
+		if (request instanceof ChangeBoundsRequest cbRequest) {
+			if (cbRequest.getSizeDelta().width == 0 && cbRequest.getSizeDelta().height == 0) {
 				if (getCurrentConstraintFor(child) != null) {
 					// Bug 86473 allows for unintended use of this method
 					rect.setSize(getCurrentConstraintFor(child).getSize());
@@ -157,6 +156,7 @@ public abstract class XYLayoutEditPolicy extends ConstrainedLayoutEditPolicy {
 	 *             tracker, constructed by the 'satellite' primary drag edit policy
 	 *             should be parameterized with max and min size constraints.
 	 */
+	@Deprecated
 	protected Dimension getMinimumSizeFor(GraphicalEditPart child) {
 		return new Dimension(8, 8);
 	}

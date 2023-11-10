@@ -16,7 +16,6 @@ import org.eclipse.draw2d.Connection;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.IFigure;
 
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.LayerConstants;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
@@ -43,8 +42,9 @@ public class LogicNodeEditPolicy extends org.eclipse.gef.editpolicies.GraphicalN
 		ConnectionCommand command = (ConnectionCommand) request.getStartCommand();
 		command.setTarget(getLogicSubpart());
 		ConnectionAnchor ctor = getLogicEditPart().getTargetConnectionAnchor(request);
-		if (ctor == null)
+		if (ctor == null) {
 			return null;
+		}
 		command.setTargetTerminal(getLogicEditPart().mapConnectionAnchorToTerminal(ctor));
 		return command;
 	}
@@ -83,8 +83,9 @@ public class LogicNodeEditPolicy extends org.eclipse.gef.editpolicies.GraphicalN
 
 	@Override
 	protected Command getReconnectTargetCommand(ReconnectRequest request) {
-		if (getLogicSubpart() instanceof LiveOutput || getLogicSubpart() instanceof GroundOutput)
+		if (getLogicSubpart() instanceof LiveOutput || getLogicSubpart() instanceof GroundOutput) {
 			return null;
+		}
 
 		ConnectionCommand cmd = new ConnectionCommand();
 		cmd.setWire((Wire) request.getConnectionEditPart().getModel());
@@ -107,7 +108,7 @@ public class LogicNodeEditPolicy extends org.eclipse.gef.editpolicies.GraphicalN
 	}
 
 	protected NodeFigure getNodeFigure() {
-		return (NodeFigure) ((GraphicalEditPart) getHost()).getFigure();
+		return (NodeFigure) getHost().getFigure();
 	}
 
 }

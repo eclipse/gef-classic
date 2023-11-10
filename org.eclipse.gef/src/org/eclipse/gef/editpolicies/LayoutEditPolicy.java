@@ -167,11 +167,13 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	public void eraseTargetFeedback(Request request) {
 		if (REQ_ADD.equals(request.getType()) || REQ_MOVE.equals(request.getType())
 				|| REQ_RESIZE_CHILDREN.equals(request.getType()) || REQ_CREATE.equals(request.getType())
-				|| REQ_CLONE.equals(request.getType()))
+				|| REQ_CLONE.equals(request.getType())) {
 			eraseLayoutTargetFeedback(request);
+		}
 
-		if (REQ_CREATE.equals(request.getType()))
+		if (REQ_CREATE.equals(request.getType())) {
 			eraseSizeOnDropFeedback(request);
+		}
 	}
 
 	/**
@@ -203,23 +205,29 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 */
 	@Override
 	public Command getCommand(Request request) {
-		if (REQ_DELETE_DEPENDANT.equals(request.getType()))
+		if (REQ_DELETE_DEPENDANT.equals(request.getType())) {
 			return getDeleteDependantCommand(request);
+		}
 
-		if (REQ_ADD.equals(request.getType()))
+		if (REQ_ADD.equals(request.getType())) {
 			return getAddCommand(request);
+		}
 
-		if (REQ_ORPHAN_CHILDREN.equals(request.getType()))
+		if (REQ_ORPHAN_CHILDREN.equals(request.getType())) {
 			return getOrphanChildrenCommand(request);
+		}
 
-		if (REQ_MOVE_CHILDREN.equals(request.getType()))
+		if (REQ_MOVE_CHILDREN.equals(request.getType())) {
 			return getMoveChildrenCommand(request);
+		}
 
-		if (REQ_CLONE.equals(request.getType()))
+		if (REQ_CLONE.equals(request.getType())) {
 			return getCloneCommand((ChangeBoundsRequest) request);
+		}
 
-		if (REQ_CREATE.equals(request.getType()))
+		if (REQ_CREATE.equals(request.getType())) {
 			return getCreateCommand((CreateRequest) request);
+		}
 
 		return null;
 	}
@@ -263,7 +271,7 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * @return the Figure that owns the corresponding <code>LayoutManager</code>
 	 */
 	protected IFigure getLayoutContainer() {
-		return ((GraphicalEditPart) getHost()).getContentPane();
+		return getHost().getContentPane();
 	}
 
 	/**
@@ -297,8 +305,9 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * @return the size-on-drop feedback figure
 	 */
 	protected IFigure getSizeOnDropFeedback(CreateRequest createRequest) {
-		if (sizeOnDropFeedback == null)
+		if (sizeOnDropFeedback == null) {
 			sizeOnDropFeedback = createSizeOnDropFeedback(createRequest);
+		}
 
 		return getSizeOnDropFeedback();
 	}
@@ -327,8 +336,9 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	@Override
 	public EditPart getTargetEditPart(Request request) {
 		if (REQ_ADD.equals(request.getType()) || REQ_MOVE.equals(request.getType())
-				|| REQ_CREATE.equals(request.getType()) || REQ_CLONE.equals(request.getType()))
+				|| REQ_CREATE.equals(request.getType()) || REQ_CLONE.equals(request.getType())) {
 			return getHost();
+		}
 		return null;
 	}
 
@@ -343,11 +353,13 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	 * @param listener <code>null</code> or the listener.
 	 */
 	protected void setListener(EditPartListener listener) {
-		if (this.listener != null)
+		if (this.listener != null) {
 			getHost().removeEditPartListener(this.listener);
+		}
 		this.listener = listener;
-		if (this.listener != null)
+		if (this.listener != null) {
 			getHost().addEditPartListener(this.listener);
+		}
 	}
 
 	/**
@@ -381,8 +393,9 @@ public abstract class LayoutEditPolicy extends GraphicalEditPolicy {
 	public void showTargetFeedback(Request request) {
 		if (REQ_ADD.equals(request.getType()) || REQ_CLONE.equals(request.getType())
 				|| REQ_MOVE.equals(request.getType()) || REQ_RESIZE_CHILDREN.equals(request.getType())
-				|| REQ_CREATE.equals(request.getType()))
+				|| REQ_CREATE.equals(request.getType())) {
 			showLayoutTargetFeedback(request);
+		}
 
 		if (REQ_CREATE.equals(request.getType())) {
 			CreateRequest createReq = (CreateRequest) request;

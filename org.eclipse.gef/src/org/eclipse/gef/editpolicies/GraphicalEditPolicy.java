@@ -50,12 +50,25 @@ public abstract class GraphicalEditPolicy extends AbstractEditPolicy {
 	}
 
 	/**
+	 * Cast the parent getHost to GraphicalEditPart
+	 *
+	 * This reduces the necessary cast operations in this and all child classes as
+	 * well as in any users of a GraphicalEditPolicy.
+	 *
+	 * @since 3.16
+	 */
+	@Override
+	public GraphicalEditPart getHost() {
+		return (GraphicalEditPart) super.getHost();
+	}
+
+	/**
 	 * Convenience method to return the host's Figure.
 	 *
 	 * @return The host GraphicalEditPart's Figure
 	 */
 	protected IFigure getHostFigure() {
-		return ((GraphicalEditPart) getHost()).getFigure();
+		return getHost().getFigure();
 	}
 
 	/**
