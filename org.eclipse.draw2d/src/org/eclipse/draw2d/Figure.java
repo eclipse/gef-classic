@@ -79,7 +79,7 @@ public class Figure implements IFigure {
 	private Cursor cursor;
 
 	private PropertyChangeSupport propertyListeners;
-	private EventListenerList eventListeners = new EventListenerList();
+	private final EventListenerList eventListeners = new EventListenerList();
 
 	private List<IFigure> children = Collections.emptyList();
 
@@ -101,26 +101,31 @@ public class Figure implements IFigure {
 	/**
 	 * @deprecated access using {@link #getLocalFont()}
 	 */
+	@Deprecated
 	protected Font font;
 
 	/**
 	 * @deprecated access using {@link #getLocalBackgroundColor()}.
 	 */
+	@Deprecated
 	protected Color bgColor;
 
 	/**
 	 * @deprecated access using {@link #getLocalForegroundColor()}.
 	 */
+	@Deprecated
 	protected Color fgColor;
 
 	/**
 	 * @deprecated access using {@link #getBorder()}
 	 */
+	@Deprecated
 	protected Border border;
 
 	/**
 	 * @deprecated access using {@link #getToolTip()}
 	 */
+	@Deprecated
 	protected IFigure toolTip;
 
 	private AncestorHelper ancestorHelper;
@@ -140,33 +145,41 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void add(IFigure figure, Object constraint, int index) {
-		if (children.equals(Collections.emptyList()))
+		if (children.equals(Collections.emptyList())) {
 			children = new ArrayList<>(2);
-		if (index < -1 || index > children.size())
+		}
+		if (index < -1 || index > children.size()) {
 			throw new IndexOutOfBoundsException("Index does not exist"); //$NON-NLS-1$
+		}
 
 		// Check for Cycle in hierarchy
-		for (IFigure f = this; f != null; f = f.getParent())
-			if (figure == f)
+		for (IFigure f = this; f != null; f = f.getParent()) {
+			if (figure == f) {
 				throw new IllegalArgumentException("Figure being added introduces cycle"); //$NON-NLS-1$
+			}
+		}
 
 		// Detach the child from previous parent
-		if (figure.getParent() != null)
+		if (figure.getParent() != null) {
 			figure.getParent().remove(figure);
+		}
 
-		if (index == -1)
+		if (index == -1) {
 			children.add(figure);
-		else
+		} else {
 			children.add(index, figure);
+		}
 		figure.setParent(this);
 
-		if (layoutManager != null)
+		if (layoutManager != null) {
 			layoutManager.setConstraint(figure, constraint);
+		}
 
 		revalidate();
 
-		if (getFlag(FLAG_REALIZED))
+		if (getFlag(FLAG_REALIZED)) {
 			figure.addNotify();
+		}
 		figure.repaint();
 	}
 
@@ -197,8 +210,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void addAncestorListener(AncestorListener ancestorListener) {
-		if (ancestorHelper == null)
+		if (ancestorHelper == null) {
 			ancestorHelper = new AncestorHelper(this);
+		}
 		ancestorHelper.addAncestorListener(ancestorListener);
 	}
 
@@ -244,8 +258,9 @@ public class Figure implements IFigure {
 	public void addLayoutListener(LayoutListener listener) {
 		if (layoutManager instanceof LayoutNotifier notifier) {
 			notifier.listeners.add(listener);
-		} else
+		} else {
 			layoutManager = new LayoutNotifier(layoutManager, listener);
+		}
 	}
 
 	/**
@@ -283,8 +298,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void addNotify() {
-		if (getFlag(FLAG_REALIZED))
+		if (getFlag(FLAG_REALIZED)) {
 			throw new RuntimeException("addNotify() should not be called multiple times"); //$NON-NLS-1$
+		}
 		setFlag(FLAG_REALIZED, true);
 		children.forEach(IFigure::addNotify);
 	}
@@ -294,8 +310,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void addPropertyChangeListener(String property, PropertyChangeListener listener) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			propertyListeners = new PropertyChangeSupport(this);
+		}
 		propertyListeners.addPropertyChangeListener(property, listener);
 	}
 
@@ -304,8 +321,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void addPropertyChangeListener(PropertyChangeListener listener) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			propertyListeners = new PropertyChangeSupport(this);
+		}
 		propertyListeners.addPropertyChangeListener(listener);
 	}
 
@@ -333,8 +351,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void erase() {
-		if (getParent() == null || !isVisible())
+		if (getParent() == null || !isVisible()) {
 			return;
+		}
 
 		Rectangle r = new Rectangle(getBounds());
 		getParent().translateToParent(r);
@@ -354,8 +373,9 @@ public class Figure implements IFigure {
 	protected IFigure findDescendantAtExcluding(int x, int y, TreeSearch search) {
 		PRIVATE_POINT.setLocation(x, y);
 		translateFromParent(PRIVATE_POINT);
-		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
+		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT)) {
 			return null;
+		}
 
 		x = PRIVATE_POINT.x;
 		y = PRIVATE_POINT.y;
@@ -363,8 +383,9 @@ public class Figure implements IFigure {
 		for (IFigure fig : getChildrenRevIterable()) {
 			if (fig.isVisible()) {
 				fig = fig.findFigureAt(x, y, search);
-				if (fig != null)
+				if (fig != null) {
 					return fig;
+				}
 			}
 		}
 		// No descendants were found
@@ -392,15 +413,19 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public IFigure findFigureAt(int x, int y, TreeSearch search) {
-		if (!containsPoint(x, y))
+		if (!containsPoint(x, y)) {
 			return null;
-		if (search.prune(this))
+		}
+		if (search.prune(this)) {
 			return null;
+		}
 		IFigure child = findDescendantAtExcluding(x, y, search);
-		if (child != null)
+		if (child != null) {
 			return child;
-		if (search.accept(this))
+		}
+		if (search.accept(this)) {
 			return this;
+		}
 		return null;
 	}
 
@@ -427,13 +452,16 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public IFigure findMouseEventTargetAt(int x, int y) {
-		if (!containsPoint(x, y))
+		if (!containsPoint(x, y)) {
 			return null;
+		}
 		IFigure f = findMouseEventTargetInDescendantsAt(x, y);
-		if (f != null)
+		if (f != null) {
 			return f;
-		if (isMouseEventTarget())
+		}
+		if (isMouseEventTarget()) {
 			return this;
+		}
 		return null;
 	}
 
@@ -451,8 +479,9 @@ public class Figure implements IFigure {
 		PRIVATE_POINT.setLocation(x, y);
 		translateFromParent(PRIVATE_POINT);
 
-		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT))
+		if (!getClientArea(Rectangle.SINGLETON).contains(PRIVATE_POINT)) {
 			return null;
+		}
 
 		for (IFigure fig : getChildrenRevIterable()) {
 			if (fig.isVisible() && fig.isEnabled() && fig.containsPoint(PRIVATE_POINT.x, PRIVATE_POINT.y)) {
@@ -473,8 +502,9 @@ public class Figure implements IFigure {
 	 * @since 3.1
 	 */
 	protected void fireCoordinateSystemChanged() {
-		if (!eventListeners.containsListener(CoordinateListener.class))
+		if (!eventListeners.containsListener(CoordinateListener.class)) {
 			return;
+		}
 		eventListeners.getListenersIterable(CoordinateListener.class).forEach(lst -> lst.coordinateSystemChanged(this));
 	}
 
@@ -485,8 +515,9 @@ public class Figure implements IFigure {
 	 * @since 3.1
 	 */
 	protected void fireFigureMoved() {
-		if (!eventListeners.containsListener(FigureListener.class))
+		if (!eventListeners.containsListener(FigureListener.class)) {
 			return;
+		}
 		eventListeners.getListenersIterable(FigureListener.class).forEach(lst -> lst.figureMoved(this));
 	}
 
@@ -501,6 +532,7 @@ public class Figure implements IFigure {
 	 * @deprecated call fireFigureMoved() or fireCoordinateSystemChanged() as
 	 *             appropriate
 	 */
+	@Deprecated
 	protected void fireMoved() {
 		fireFigureMoved();
 		fireCoordinateSystemChanged();
@@ -516,8 +548,9 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void firePropertyChange(String property, boolean old, boolean current) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 		propertyListeners.firePropertyChange(property, old, current);
 	}
 
@@ -531,8 +564,9 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void firePropertyChange(String property, Object old, Object current) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 		propertyListeners.firePropertyChange(property, old, current);
 	}
 
@@ -547,8 +581,9 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void firePropertyChange(String property, int old, int current) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 		propertyListeners.firePropertyChange(property, old, current);
 	}
 
@@ -561,8 +596,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Color getBackgroundColor() {
-		if (bgColor == null && getParent() != null)
+		if (bgColor == null && getParent() != null) {
 			return getParent().getBackgroundColor();
+		}
 		return bgColor;
 	}
 
@@ -611,8 +647,9 @@ public class Figure implements IFigure {
 	public Rectangle getClientArea(Rectangle rect) {
 		rect.setBounds(getBounds());
 		rect.crop(getInsets());
-		if (useLocalCoordinates())
+		if (useLocalCoordinates()) {
 			rect.setLocation(0, 0);
+		}
 		return rect;
 	}
 
@@ -640,8 +677,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Cursor getCursor() {
-		if (cursor == null && getParent() != null)
+		if (cursor == null && getParent() != null) {
 			return getParent().getCursor();
+		}
 		return cursor;
 	}
 
@@ -660,10 +698,12 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Font getFont() {
-		if (font != null)
+		if (font != null) {
 			return font;
-		if (getParent() != null)
+		}
+		if (getParent() != null) {
 			return getParent().getFont();
+		}
 		return null;
 	}
 
@@ -672,8 +712,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Color getForegroundColor() {
-		if (fgColor == null && getParent() != null)
+		if (fgColor == null && getParent() != null) {
 			return getParent().getForegroundColor();
+		}
 		return fgColor;
 	}
 
@@ -686,8 +727,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Insets getInsets() {
-		if (getBorder() != null)
+		if (getBorder() != null) {
 			return getBorder().getInsets(this);
+		}
 		return NO_INSETS;
 	}
 
@@ -696,8 +738,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public LayoutManager getLayoutManager() {
-		if (layoutManager instanceof LayoutNotifier)
+		if (layoutManager instanceof LayoutNotifier) {
 			return ((LayoutNotifier) layoutManager).realLayout;
+		}
 		return layoutManager;
 	}
 
@@ -711,8 +754,9 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected <T> Iterator<T> getListeners(Class<T> clazz) {
-		if (eventListeners == null)
+		if (eventListeners == null) {
 			return Collections.emptyIterator();
+		}
 		return eventListeners.getListeners(clazz);
 	}
 
@@ -726,8 +770,9 @@ public class Figure implements IFigure {
 	 * @since 3.13
 	 */
 	protected <T> Iterable<T> getListenersIterable(final Class<T> listenerType) {
-		if (eventListeners == null)
+		if (eventListeners == null) {
 			return Collections.emptyList();
+		}
 		return eventListeners.getListenersIterable(listenerType);
 	}
 
@@ -780,8 +825,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Dimension getMaximumSize() {
-		if (maxSize != null)
+		if (maxSize != null) {
 			return maxSize;
+		}
 		return MAX_DIMENSION;
 	}
 
@@ -798,12 +844,14 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Dimension getMinimumSize(int wHint, int hHint) {
-		if (minSize != null)
+		if (minSize != null) {
 			return minSize;
+		}
 		if (getLayoutManager() != null) {
 			Dimension d = getLayoutManager().getMinimumSize(this, wHint, hHint);
-			if (d != null)
+			if (d != null) {
 				return d;
+			}
 		}
 		return getPreferredSize(wHint, hHint);
 	}
@@ -829,12 +877,14 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public Dimension getPreferredSize(int wHint, int hHint) {
-		if (prefSize != null)
+		if (prefSize != null) {
 			return prefSize;
+		}
 		if (getLayoutManager() != null) {
 			Dimension d = getLayoutManager().getPreferredSize(this, wHint, hHint);
-			if (d != null)
+			if (d != null) {
 				return d;
+			}
 		}
 		return getSize();
 	}
@@ -860,8 +910,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public UpdateManager getUpdateManager() {
-		if (getParent() != null)
+		if (getParent() != null) {
 			return getParent().getUpdateManager();
+		}
 		// Only happens when the figure has not been realized
 		return NO_MANAGER;
 	}
@@ -998,8 +1049,9 @@ public class Figure implements IFigure {
 	@Override
 	public boolean hasFocus() {
 		EventDispatcher dispatcher = internalGetEventDispatcher();
-		if (dispatcher == null)
+		if (dispatcher == null) {
 			return false;
+		}
 		return dispatcher.getFocusOwner() == this;
 	}
 
@@ -1008,8 +1060,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public EventDispatcher internalGetEventDispatcher() {
-		if (getParent() != null)
+		if (getParent() != null) {
 			return getParent().internalGetEventDispatcher();
+		}
 		return null;
 	}
 
@@ -1026,8 +1079,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void invalidate() {
-		if (layoutManager != null)
+		if (layoutManager != null) {
 			layoutManager.invalidate();
+		}
 		setValid(false);
 	}
 
@@ -1037,10 +1091,7 @@ public class Figure implements IFigure {
 	@Override
 	public void invalidateTree() {
 		invalidate();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
-			IFigure child = (IFigure) iter.next();
-			child.invalidateTree();
-		}
+		children.forEach(IFigure::invalidateTree);
 	}
 
 	/**
@@ -1085,8 +1136,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public boolean isMirrored() {
-		if (getParent() != null)
+		if (getParent() != null) {
 			return getParent().isMirrored();
+		}
 		return false;
 	}
 
@@ -1150,8 +1202,9 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void layout() {
-		if (layoutManager != null)
+		if (layoutManager != null) {
 			layoutManager.layout(this);
+		}
 	}
 
 	/**
@@ -1164,12 +1217,15 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void paint(Graphics graphics) {
-		if (getLocalBackgroundColor() != null)
+		if (getLocalBackgroundColor() != null) {
 			graphics.setBackgroundColor(getLocalBackgroundColor());
-		if (getLocalForegroundColor() != null)
+		}
+		if (getLocalForegroundColor() != null) {
 			graphics.setForegroundColor(getLocalForegroundColor());
-		if (font != null)
+		}
+		if (font != null) {
 			graphics.setFont(font);
+		}
 
 		graphics.pushState();
 		try {
@@ -1190,8 +1246,9 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void paintBorder(Graphics graphics) {
-		if (getBorder() != null)
+		if (getBorder() != null) {
 			getBorder().paint(this, graphics, NO_INSETS);
+		}
 	}
 
 	/**
@@ -1217,9 +1274,9 @@ public class Figure implements IFigure {
 					clipping = new Rectangle[] { child.getBounds() };
 				}
 				// child may now paint inside the clipping areas
-				for (int j = 0; j < clipping.length; j++) {
-					if (clipping[j].intersects(graphics.getClip(Rectangle.SINGLETON))) {
-						graphics.clipRect(clipping[j]);
+				for (Rectangle element : clipping) {
+					if (element.intersects(graphics.getClip(Rectangle.SINGLETON))) {
+						graphics.clipRect(element);
 						child.paint(graphics);
 						graphics.restoreState();
 					}
@@ -1238,21 +1295,23 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void paintClientArea(Graphics graphics) {
-		if (children.isEmpty())
+		if (children.isEmpty()) {
 			return;
+		}
 
 		if (useLocalCoordinates()) {
 			graphics.translate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
-			if (!optimizeClip())
+			if (!optimizeClip()) {
 				graphics.clipRect(getClientArea(PRIVATE_RECT));
+			}
 			graphics.pushState();
 			paintChildren(graphics);
 			graphics.popState();
 			graphics.restoreState();
 		} else {
-			if (optimizeClip())
+			if (optimizeClip()) {
 				paintChildren(graphics);
-			else {
+			} else {
 				graphics.clipRect(getClientArea(PRIVATE_RECT));
 				graphics.pushState();
 				paintChildren(graphics);
@@ -1281,10 +1340,12 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void paintFigure(Graphics graphics) {
-		if (isOpaque())
+		if (isOpaque()) {
 			graphics.fillRectangle(getBounds());
-		if (getBorder() instanceof AbstractBackground)
-			((AbstractBackground) getBorder()).paintBackground(this, graphics, NO_INSETS);
+		}
+		if (getBorder() instanceof AbstractBackground abstractBackground) {
+			abstractBackground.paintBackground(this, graphics, NO_INSETS);
+		}
 	}
 
 	/**
@@ -1314,12 +1375,15 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void remove(IFigure figure) {
-		if ((figure.getParent() != this))
+		if ((figure.getParent() != this)) {
 			throw new IllegalArgumentException("Figure is not a child"); //$NON-NLS-1$
-		if (getFlag(FLAG_REALIZED))
+		}
+		if (getFlag(FLAG_REALIZED)) {
 			figure.removeNotify();
-		if (layoutManager != null)
+		}
+		if (layoutManager != null) {
 			layoutManager.remove(figure);
+		}
 		// The updates in the UpdateManager *have* to be
 		// done asynchronously, else will result in
 		// incorrect dirty region corrections.
@@ -1396,8 +1460,9 @@ public class Figure implements IFigure {
 	public void removeLayoutListener(LayoutListener listener) {
 		if (layoutManager instanceof LayoutNotifier notifier) {
 			notifier.listeners.remove(listener);
-			if (notifier.listeners.isEmpty())
+			if (notifier.listeners.isEmpty()) {
 				layoutManager = notifier.realLayout;
+			}
 		}
 	}
 
@@ -1410,8 +1475,6 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected void removeListener(Class clazz, Object listener) {
-		if (eventListeners == null)
-			return;
 		eventListeners.removeListener(clazz, listener);
 	}
 
@@ -1437,8 +1500,9 @@ public class Figure implements IFigure {
 	@Override
 	public void removeNotify() {
 		children.forEach(IFigure::removeNotify);
-		if (internalGetEventDispatcher() != null)
+		if (internalGetEventDispatcher() != null) {
 			internalGetEventDispatcher().requestRemoveFocus(this);
+		}
 		setFlag(FLAG_REALIZED, false);
 	}
 
@@ -1447,8 +1511,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void removePropertyChangeListener(PropertyChangeListener listener) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 		propertyListeners.removePropertyChangeListener(listener);
 	}
 
@@ -1457,8 +1522,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void removePropertyChangeListener(String property, PropertyChangeListener listener) {
-		if (propertyListeners == null)
+		if (propertyListeners == null) {
 			return;
+		}
 		propertyListeners.removePropertyChangeListener(property, listener);
 	}
 
@@ -1475,8 +1541,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void repaint(int x, int y, int w, int h) {
-		if (isVisible())
+		if (isVisible()) {
 			getUpdateManager().addDirtyRegion(this, x, y, w, h);
+		}
 	}
 
 	/**
@@ -1492,11 +1559,13 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public final void requestFocus() {
-		if (!isRequestFocusEnabled() || hasFocus())
+		if (!isRequestFocusEnabled() || hasFocus()) {
 			return;
+		}
 		EventDispatcher dispatcher = internalGetEventDispatcher();
-		if (dispatcher == null)
+		if (dispatcher == null) {
 			return;
+		}
 		dispatcher.requestFocus(this);
 	}
 
@@ -1506,10 +1575,11 @@ public class Figure implements IFigure {
 	@Override
 	public void revalidate() {
 		invalidate();
-		if (getParent() == null || isValidationRoot())
+		if (getParent() == null || isValidationRoot()) {
 			getUpdateManager().addInvalidFigure(this);
-		else
+		} else {
 			getParent().revalidate();
+		}
 	}
 
 	/**
@@ -1569,8 +1639,9 @@ public class Figure implements IFigure {
 		boolean resize = (rect.width != bounds.width) || (rect.height != bounds.height),
 				translate = (rect.x != x) || (rect.y != y);
 
-		if ((resize || translate) && isVisible())
+		if ((resize || translate) && isVisible()) {
 			erase();
+		}
 		if (translate) {
 			int dx = rect.x - x;
 			int dy = rect.y - y;
@@ -1581,8 +1652,9 @@ public class Figure implements IFigure {
 		bounds.height = rect.height;
 
 		if (translate || resize) {
-			if (resize)
+			if (resize) {
 				invalidate();
+			}
 			fireFigureMoved();
 			repaint();
 		}
@@ -1598,8 +1670,9 @@ public class Figure implements IFigure {
 	 */
 	protected void setChildrenDirection(int direction) {
 		getChildrenRevIterable().forEach(child -> {
-			if (child instanceof Orientable)
-				((Orientable) child).setDirection(direction);
+			if (child instanceof Orientable orientable) {
+				orientable.setDirection(direction);
+			}
 		});
 	}
 
@@ -1624,8 +1697,9 @@ public class Figure implements IFigure {
 	 */
 	protected void setChildrenOrientation(int orientation) {
 		getChildrenRevIterable().forEach(child -> {
-			if (child instanceof Orientable)
-				((Orientable) child).setOrientation(orientation);
+			if (child instanceof Orientable orientable) {
+				orientable.setOrientation(orientation);
+			}
 		});
 	}
 
@@ -1634,11 +1708,13 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setConstraint(IFigure child, Object constraint) {
-		if (child.getParent() != this)
+		if (child.getParent() != this) {
 			throw new IllegalArgumentException("Figure must be a child"); //$NON-NLS-1$
+		}
 
-		if (layoutManager != null)
+		if (layoutManager != null) {
 			layoutManager.setConstraint(child, constraint);
+		}
 		revalidate();
 	}
 
@@ -1659,12 +1735,14 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setCursor(Cursor cursor) {
-		if (this.cursor == cursor)
+		if (this.cursor == cursor) {
 			return;
+		}
 		this.cursor = cursor;
 		EventDispatcher dispatcher = internalGetEventDispatcher();
-		if (dispatcher != null)
+		if (dispatcher != null) {
 			dispatcher.updateCursor();
+		}
 	}
 
 	/**
@@ -1672,8 +1750,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setEnabled(boolean value) {
-		if (isEnabled() == value)
+		if (isEnabled() == value) {
 			return;
+		}
 		setFlag(FLAG_ENABLED, value);
 	}
 
@@ -1685,10 +1764,11 @@ public class Figure implements IFigure {
 	 * @since 2.0
 	 */
 	protected final void setFlag(int flag, boolean value) {
-		if (value)
+		if (value) {
 			flags |= flag;
-		else
+		} else {
 			flags &= ~flag;
+		}
 	}
 
 	/**
@@ -1696,8 +1776,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setFocusTraversable(boolean focusTraversable) {
-		if (isFocusTraversable() == focusTraversable)
+		if (isFocusTraversable() == focusTraversable) {
 			return;
+		}
 		setFlag(FLAG_FOCUS_TRAVERSABLE, focusTraversable);
 	}
 
@@ -1744,10 +1825,11 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setLayoutManager(LayoutManager manager) {
-		if (layoutManager instanceof LayoutNotifier)
-			((LayoutNotifier) layoutManager).realLayout = manager;
-		else
+		if (layoutManager instanceof LayoutNotifier layoutNotifier) {
+			layoutNotifier.realLayout = manager;
+		} else {
 			layoutManager = manager;
+		}
 		revalidate();
 	}
 
@@ -1756,8 +1838,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setLocation(Point p) {
-		if (getLocation().equals(p))
+		if (getLocation().equals(p)) {
 			return;
+		}
 		Rectangle r = new Rectangle(getBounds());
 		r.setLocation(p);
 		setBounds(r);
@@ -1768,8 +1851,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setMaximumSize(Dimension d) {
-		if (maxSize != null && maxSize.equals(d))
+		if (maxSize != null && maxSize.equals(d)) {
 			return;
+		}
 		maxSize = d;
 		revalidate();
 	}
@@ -1779,8 +1863,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setMinimumSize(Dimension d) {
-		if (minSize != null && minSize.equals(d))
+		if (minSize != null && minSize.equals(d)) {
 			return;
+		}
 		minSize = d;
 		revalidate();
 	}
@@ -1790,8 +1875,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setOpaque(boolean opaque) {
-		if (isOpaque() == opaque)
+		if (isOpaque() == opaque) {
 			return;
+		}
 		setFlag(FLAG_OPAQUE, opaque);
 		repaint();
 	}
@@ -1811,8 +1897,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setPreferredSize(Dimension size) {
-		if (prefSize != null && prefSize.equals(size))
+		if (prefSize != null && prefSize.equals(size)) {
 			return;
+		}
 		prefSize = size;
 		revalidate();
 	}
@@ -1834,8 +1921,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setRequestFocusEnabled(boolean requestFocusEnabled) {
-		if (isRequestFocusEnabled() == requestFocusEnabled)
+		if (isRequestFocusEnabled() == requestFocusEnabled) {
 			return;
+		}
 		setFlag(FLAG_FOCUSABLE, requestFocusEnabled);
 	}
 
@@ -1853,8 +1941,9 @@ public class Figure implements IFigure {
 	@Override
 	public void setSize(int w, int h) {
 		Rectangle bounds = getBounds();
-		if (bounds.width == w && bounds.height == h)
+		if (bounds.width == w && bounds.height == h) {
 			return;
+		}
 		Rectangle r = new Rectangle(getBounds());
 		r.setSize(w, h);
 		setBounds(r);
@@ -1865,8 +1954,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void setToolTip(IFigure f) {
-		if (toolTip == f)
+		if (toolTip == f) {
 			return;
+		}
 		toolTip = f;
 	}
 
@@ -1887,13 +1977,16 @@ public class Figure implements IFigure {
 	@Override
 	public void setVisible(boolean visible) {
 		boolean currentVisibility = isVisible();
-		if (visible == currentVisibility)
+		if (visible == currentVisibility) {
 			return;
-		if (currentVisibility)
+		}
+		if (currentVisibility) {
 			erase();
+		}
 		setFlag(FLAG_VISIBLE, visible);
-		if (visible)
+		if (visible) {
 			repaint();
+		}
 		revalidate();
 	}
 
@@ -1911,8 +2004,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void translateFromParent(Translatable t) {
-		if (useLocalCoordinates())
+		if (useLocalCoordinates()) {
 			t.performTranslate(-getBounds().x - getInsets().left, -getBounds().y - getInsets().top);
+		}
 	}
 
 	/**
@@ -1931,8 +2025,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void translateToParent(Translatable t) {
-		if (useLocalCoordinates())
+		if (useLocalCoordinates()) {
 			t.performTranslate(getBounds().x + getInsets().left, getBounds().y + getInsets().top);
+		}
 	}
 
 	/**
@@ -1962,8 +2057,9 @@ public class Figure implements IFigure {
 	 */
 	@Override
 	public void validate() {
-		if (isValid())
+		if (isValid()) {
 			return;
+		}
 		setValid(true);
 		layout();
 		children.forEach(IFigure::validate);
@@ -2014,22 +2110,25 @@ public class Figure implements IFigure {
 
 		@Override
 		public Object getConstraint(IFigure child) {
-			if (realLayout != null)
+			if (realLayout != null) {
 				return realLayout.getConstraint(child);
+			}
 			return null;
 		}
 
 		@Override
 		public Dimension getMinimumSize(IFigure container, int wHint, int hHint) {
-			if (realLayout != null)
+			if (realLayout != null) {
 				return realLayout.getMinimumSize(container, wHint, hHint);
+			}
 			return null;
 		}
 
 		@Override
 		public Dimension getPreferredSize(IFigure container, int wHint, int hHint) {
-			if (realLayout != null)
+			if (realLayout != null) {
 				return realLayout.getPreferredSize(container, wHint, hHint);
+			}
 			return null;
 		}
 
@@ -2037,8 +2136,9 @@ public class Figure implements IFigure {
 		public void invalidate() {
 			listeners.forEach(listener -> listener.invalidate(Figure.this));
 
-			if (realLayout != null)
+			if (realLayout != null) {
 				realLayout.invalidate();
+			}
 		}
 
 		@Override
@@ -2048,23 +2148,26 @@ public class Figure implements IFigure {
 				consumed |= listener.layout(container);
 			}
 
-			if (realLayout != null && !consumed)
+			if (realLayout != null && !consumed) {
 				realLayout.layout(container);
+			}
 			listeners.forEach(listener -> listener.postLayout(container));
 		}
 
 		@Override
 		public void remove(IFigure child) {
 			listeners.forEach(listener -> listener.remove(child));
-			if (realLayout != null)
+			if (realLayout != null) {
 				realLayout.remove(child);
+			}
 		}
 
 		@Override
 		public void setConstraint(IFigure child, Object constraint) {
 			listeners.forEach(listener -> listener.setConstraint(child, constraint));
-			if (realLayout != null)
+			if (realLayout != null) {
 				realLayout.setConstraint(child, constraint);
+			}
 		}
 	}
 
@@ -2073,8 +2176,9 @@ public class Figure implements IFigure {
 	 *
 	 * @deprecated use ReverseFigureChildrenIterator instead
 	 */
+	@Deprecated
 	public static class FigureIterator {
-		private List<? extends IFigure> list;
+		private final List<? extends IFigure> list;
 		private int index;
 
 		/**
