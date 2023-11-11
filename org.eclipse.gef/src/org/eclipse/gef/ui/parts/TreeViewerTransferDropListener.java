@@ -61,23 +61,25 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 		// If reparenting, add all editparts to target editpart.
 		if (!isMove()) {
 			request.setType(RequestConstants.REQ_ADD);
-			if (getTargetEditPart() == null)
+			if (getTargetEditPart() == null) {
 				command.add(UnexecutableCommand.INSTANCE);
-			else
+			} else {
 				command.add(getTargetEditPart().getCommand(getTargetRequest()));
+			}
 		}
 		return command;
 	}
 
 	protected String getCommandName() {
-		if (isMove())
+		if (isMove()) {
 			return RequestConstants.REQ_MOVE;
+		}
 		return RequestConstants.REQ_ADD;
 	}
 
 	@Override
 	protected Collection<EditPart> getExclusionSet() {
-		List selection = getViewer().getSelectedEditParts();
+		List<? extends EditPart> selection = getViewer().getSelectedEditParts();
 		List<EditPart> exclude = new ArrayList<>(selection);
 		exclude.addAll(includeChildren(selection));
 		return exclude;
@@ -95,15 +97,16 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 
 	protected EditPart getSourceEditPart() {
 		List selection = (List) TreeViewerTransfer.getInstance().getObject();
-		if (selection == null || selection.isEmpty() || !(selection.get(0) instanceof EditPart))
+		if (selection == null || selection.isEmpty() || !(selection.get(0) instanceof EditPart)) {
 			return null;
+		}
 		return (EditPart) selection.get(0);
 	}
 
 	protected List includeChildren(List list) {
 		List<EditPart> result = new ArrayList<>();
-		for (int i = 0; i < list.size(); i++) {
-			List<? extends EditPart> children = ((EditPart) list.get(i)).getChildren();
+		for (Object element : list) {
+			List<? extends EditPart> children = ((EditPart) element).getChildren();
 			result.addAll(children);
 			result.addAll(includeChildren(children));
 		}
@@ -112,18 +115,20 @@ class TreeViewerTransferDropListener extends AbstractTransferDropTargetListener 
 
 	@Override
 	public boolean isEnabled(DropTargetEvent event) {
-		if (event.detail != DND.DROP_MOVE)
+		if (event.detail != DND.DROP_MOVE) {
 			return false;
+		}
 		return super.isEnabled(event);
 	}
 
 	protected boolean isMove() {
 		EditPart source = getSourceEditPart();
 		List selection = (List) TreeViewerTransfer.getInstance().getObject();
-		for (int i = 0; i < selection.size(); i++) {
-			EditPart ep = (EditPart) selection.get(i);
-			if (ep.getParent() != source.getParent())
+		for (Object element : selection) {
+			EditPart ep = (EditPart) element;
+			if (ep.getParent() != source.getParent()) {
 				return false;
+			}
 		}
 		return source.getParent() == getTargetEditPart();
 	}

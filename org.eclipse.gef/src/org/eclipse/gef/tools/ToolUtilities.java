@@ -34,14 +34,7 @@ public class ToolUtilities {
 	 * @return the selection excluding dependants
 	 */
 	public static List getSelectionWithoutDependants(EditPartViewer viewer) {
-		List selectedParts = viewer.getSelectedEditParts();
-		List result = new ArrayList();
-		for (int i = 0; i < selectedParts.size(); i++) {
-			EditPart editpart = (EditPart) selectedParts.get(i);
-			if (!isAncestorContainedIn(selectedParts, editpart))
-				result.add(editpart);
-		}
-		return result;
+		return getSelectionWithoutDependants(viewer.getSelectedEditParts());
 	}
 
 	/**
@@ -51,14 +44,8 @@ public class ToolUtilities {
 	 * @param selectedParts the complete selection
 	 * @return the selection excluding dependants
 	 */
-	public static List getSelectionWithoutDependants(List selectedParts) {
-		List result = new ArrayList();
-		for (int i = 0; i < selectedParts.size(); i++) {
-			EditPart editpart = (EditPart) selectedParts.get(i);
-			if (!isAncestorContainedIn(selectedParts, editpart))
-				result.add(editpart);
-		}
-		return result;
+	public static List getSelectionWithoutDependants(List<? extends EditPart> selectedParts) {
+		return new ArrayList<>(selectedParts.stream().filter(ep -> !isAncestorContainedIn(selectedParts, ep)).toList());
 	}
 
 	/**
@@ -74,8 +61,9 @@ public class ToolUtilities {
 		Iterator iter = list.iterator();
 		while (iter.hasNext()) {
 			EditPart ep = (EditPart) iter.next();
-			if (!ep.understandsRequest(request))
+			if (!ep.understandsRequest(request)) {
 				iter.remove();
+			}
 		}
 	}
 
@@ -88,11 +76,12 @@ public class ToolUtilities {
 	 *         editpart <code>ep</code>
 	 * @since 3.6
 	 */
-	public static boolean isAncestorContainedIn(Collection c, EditPart ep) {
+	public static boolean isAncestorContainedIn(Collection<? extends EditPart> c, EditPart ep) {
 		ep = ep.getParent();
 		while (ep != null) {
-			if (c.contains(ep))
+			if (c.contains(ep)) {
 				return true;
+			}
 			ep = ep.getParent();
 		}
 		return false;
@@ -109,8 +98,9 @@ public class ToolUtilities {
 	 * @return the editpart which is the common ancestor.
 	 */
 	public static EditPart findCommonAncestor(EditPart ll, EditPart rr) {
-		if (ll == rr)
+		if (ll == rr) {
 			return ll;
+		}
 		ArrayList leftAncestors = new ArrayList();
 		ArrayList rightAncestors = new ArrayList();
 		EditPart l = ll;
@@ -127,8 +117,9 @@ public class ToolUtilities {
 		int il = leftAncestors.size() - 1;
 		int ir = rightAncestors.size() - 1;
 		do {
-			if (leftAncestors.get(il) != rightAncestors.get(ir))
+			if (leftAncestors.get(il) != rightAncestors.get(ir)) {
 				break;
+			}
 			il--;
 			ir--;
 		} while (il >= 0 && ir >= 0);

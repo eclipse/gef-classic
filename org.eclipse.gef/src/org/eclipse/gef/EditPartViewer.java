@@ -365,7 +365,7 @@ public interface EditPartViewer extends org.eclipse.jface.viewers.ISelectionProv
 	 *
 	 * @return a list containing zero or more editparts
 	 */
-	List getSelectedEditParts();
+	List<? extends EditPart> getSelectedEditParts();
 
 	/**
 	 * This method is inherited from
@@ -394,7 +394,7 @@ public interface EditPartViewer extends org.eclipse.jface.viewers.ISelectionProv
 	 * Returns the {@link Map} for associating <i>visual parts</i> with their
 	 * <code>EditParts</code>. This map is used for hit-testing. Hit testing is
 	 * performed by first determining which visual part is hit, and then mapping
-	 * that part to an <code>EditPart</code>. What consistutes a <i>visual part</i>
+	 * that part to an <code>EditPart</code>. What constitutes a <i>visual part</i>
 	 * is viewer-specific. Examples include <code>Figures</code> and
 	 * <code>TreeItems</code>.
 	 *
@@ -417,6 +417,7 @@ public interface EditPartViewer extends org.eclipse.jface.viewers.ISelectionProv
 	 * @param listener the listener
 	 * @deprecated
 	 */
+	@Deprecated
 	void removeDragSourceListener(org.eclipse.gef.dnd.TransferDragSourceListener listener);
 
 	/**
@@ -436,6 +437,7 @@ public interface EditPartViewer extends org.eclipse.jface.viewers.ISelectionProv
 	 * @param listener
 	 * @deprecated
 	 */
+	@Deprecated
 	void removeDropTargetListener(org.eclipse.gef.dnd.TransferDropTargetListener listener);
 
 	/**

@@ -37,6 +37,7 @@ public class TemplateTransferDragSourceListener extends AbstractTransferDragSour
 	 * @param viewer viewer
 	 * @param xfer   xfer
 	 */
+	@Deprecated
 	public TemplateTransferDragSourceListener(EditPartViewer viewer, Transfer xfer) {
 		super(viewer, xfer);
 	}
@@ -82,8 +83,9 @@ public class TemplateTransferDragSourceListener extends AbstractTransferDragSour
 	@Override
 	public void dragStart(DragSourceEvent event) {
 		Object template = getTemplate();
-		if (template == null)
+		if (template == null) {
 			event.doit = false;
+		}
 		TemplateTransfer.getInstance().setTemplate(template);
 	}
 
@@ -94,14 +96,16 @@ public class TemplateTransferDragSourceListener extends AbstractTransferDragSour
 	 * @return the template
 	 */
 	protected Object getTemplate() {
-		List selection = getViewer().getSelectedEditParts();
+		List<? extends EditPart> selection = getViewer().getSelectedEditParts();
 		if (selection.size() == 1) {
-			EditPart editpart = (EditPart) getViewer().getSelectedEditParts().get(0);
+			EditPart editpart = selection.get(0);
 			Object model = editpart.getModel();
-			if (model instanceof PaletteTemplateEntry)
-				return ((PaletteTemplateEntry) model).getTemplate();
-			if (model instanceof CombinedTemplateCreationEntry)
-				return ((CombinedTemplateCreationEntry) model).getTemplate();
+			if (model instanceof PaletteTemplateEntry paletteTempEntry) {
+				return paletteTempEntry.getTemplate();
+			}
+			if (model instanceof CombinedTemplateCreationEntry combinedTempEntry) {
+				return combinedTempEntry.getTemplate();
+			}
 		}
 		return null;
 	}
