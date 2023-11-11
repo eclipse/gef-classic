@@ -51,6 +51,7 @@ import org.eclipse.gef.EditDomain;
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.EditPartFactory;
 import org.eclipse.gef.EditPartViewer;
+import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.KeyHandler;
 import org.eclipse.gef.RootEditPart;
 import org.eclipse.gef.SelectionManager;
@@ -82,7 +83,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * @deprecated
 	 */
 	@Deprecated
-	protected List selectionListeners = new ArrayList(1);
+	protected List<ISelectionChangedListener> selectionListeners = new ArrayList<>(1);
 
 	/**
 	 * The editpart specifically set to have focus. Note that if this value is
@@ -96,9 +97,9 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	protected EditPart focusPart;
 
 	private EditPartFactory factory;
-	private final Map mapIDToEditPart = new HashMap();
-	private final Map mapVisualToEditPart = new HashMap();
-	private Map properties;
+	private final Map<Object, EditPart> mapIDToEditPart = new HashMap<>();
+	private final Map<IFigure, GraphicalEditPart> mapVisualToEditPart = new HashMap<>();
+	private Map<String, Object> properties;
 	private Control control;
 	private ResourceManager resources;
 	private EditDomain domain;
@@ -254,11 +255,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 * Fires selection changed to the registered listeners at the time called.
 	 */
 	protected void fireSelectionChanged() {
-		Object listeners[] = selectionListeners.toArray();
 		SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
-		for (Object listener : listeners) {
-			((ISelectionChangedListener) listener).selectionChanged(event);
-		}
+		selectionListeners.forEach(lst -> lst.selectionChanged(event));
 	}
 
 	/**
@@ -497,12 +495,8 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	}
 
 	private void primDeselectAll() {
-		EditPart part;
-		List list = primGetSelectedEditParts();
-		for (Object element : list) {
-			part = (EditPart) element;
-			part.setSelected(EditPart.SELECTED_NONE);
-		}
+		List<? extends EditPart> list = primGetSelectedEditParts();
+		list.forEach(part -> part.setSelected(EditPart.SELECTED_NONE));
 		list.clear();
 	}
 
@@ -511,7 +505,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	 *
 	 * @return the internal list of selected editparts
 	 */
-	protected List primGetSelectedEditParts() {
+	protected List<? extends EditPart> primGetSelectedEditParts() {
 		return selection;
 	}
 
@@ -766,7 +760,7 @@ public abstract class AbstractEditPartViewer implements EditPartViewer {
 	@Override
 	public void setProperty(String key, Object value) {
 		if (properties == null) {
-			properties = new HashMap();
+			properties = new HashMap<>();
 		}
 		Object old;
 		if (value == null) {
