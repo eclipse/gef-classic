@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2010 IBM Corporation and others.
+ * Copyright (c) 2000, 2023 IBM Corporation and others.
  *
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License 2.0 which is available at
@@ -14,11 +14,43 @@ package org.eclipse.draw2d;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * A collection of cursors.
  */
 public class Cursors {
+
+	/**
+	 * This utility class is used to create a system {@link Cursor} using any of the
+	 * supported {@link SWT} constants. The {@link Cursor} is created using the
+	 * {@link Display} bound to the current thread.
+	 *
+	 * @since 3.14
+	 */
+	private static class SystemCursorFactory {
+		/**
+		 * Returns the matching standard platform {@link Cursor} for the given constant,
+		 * which should be one of the {@link Cursor} constants specified in class
+		 * {@link SWT}. This {@link Cursor} should not be free'd because it was
+		 * allocated by the system, not the application. A value of {@code null} will be
+		 * returned if the supplied constant is not an {@link SWT} cursor constant.
+		 * Note: This method should be invoked from within the UI thread if possible, as
+		 * it will attempt to create a new Display instance, if not!
+		 *
+		 * @since 3.14
+		 * @param which the {@link SWT} {@link Cursor} constant
+		 * @return the corresponding {@link Cursor} or {@code null}
+		 */
+		public static Cursor getCursor(final int which) {
+			Display display = Display.getCurrent();
+			if (display != null) {
+				return display.getSystemCursor(which);
+			}
+			display = Display.getDefault();
+			return display.syncCall(() -> Display.getCurrent().getSystemCursor(which));
+		}
+	}
 
 	/**
 	 * Returns the cursor corresponding to the given direction, defined in
@@ -172,28 +204,28 @@ public class Cursors {
 	public static final Cursor WAIT;
 
 	static {
-		ARROW = new Cursor(null, SWT.CURSOR_ARROW);
-		SIZEN = new Cursor(null, SWT.CURSOR_SIZEN);
-		SIZENE = new Cursor(null, SWT.CURSOR_SIZENE);
-		SIZEE = new Cursor(null, SWT.CURSOR_SIZEE);
-		SIZESE = new Cursor(null, SWT.CURSOR_SIZESE);
-		SIZES = new Cursor(null, SWT.CURSOR_SIZES);
-		SIZESW = new Cursor(null, SWT.CURSOR_SIZESW);
-		SIZEW = new Cursor(null, SWT.CURSOR_SIZEW);
-		SIZENW = new Cursor(null, SWT.CURSOR_SIZENW);
-		SIZENS = new Cursor(null, SWT.CURSOR_SIZENS);
-		SIZEWE = new Cursor(null, SWT.CURSOR_SIZEWE);
-		APPSTARTING = new Cursor(null, SWT.CURSOR_APPSTARTING);
-		CROSS = new Cursor(null, SWT.CURSOR_CROSS);
-		HAND = new Cursor(null, SWT.CURSOR_HAND);
-		HELP = new Cursor(null, SWT.CURSOR_HELP);
-		IBEAM = new Cursor(null, SWT.CURSOR_IBEAM);
-		NO = new Cursor(null, SWT.CURSOR_NO);
-		SIZEALL = new Cursor(null, SWT.CURSOR_SIZEALL);
-		SIZENESW = new Cursor(null, SWT.CURSOR_SIZENESW);
-		SIZENWSE = new Cursor(null, SWT.CURSOR_SIZENWSE);
-		UPARROW = new Cursor(null, SWT.CURSOR_UPARROW);
-		WAIT = new Cursor(null, SWT.CURSOR_WAIT);
+		ARROW = SystemCursorFactory.getCursor(SWT.CURSOR_ARROW);
+		SIZEN = SystemCursorFactory.getCursor(SWT.CURSOR_SIZEN);
+		SIZENE = SystemCursorFactory.getCursor(SWT.CURSOR_SIZENE);
+		SIZEE = SystemCursorFactory.getCursor(SWT.CURSOR_SIZEE);
+		SIZESE = SystemCursorFactory.getCursor(SWT.CURSOR_SIZESE);
+		SIZES = SystemCursorFactory.getCursor(SWT.CURSOR_SIZES);
+		SIZESW = SystemCursorFactory.getCursor(SWT.CURSOR_SIZESW);
+		SIZEW = SystemCursorFactory.getCursor(SWT.CURSOR_SIZEW);
+		SIZENW = SystemCursorFactory.getCursor(SWT.CURSOR_SIZENW);
+		SIZENS = SystemCursorFactory.getCursor(SWT.CURSOR_SIZENS);
+		SIZEWE = SystemCursorFactory.getCursor(SWT.CURSOR_SIZEWE);
+		APPSTARTING = SystemCursorFactory.getCursor(SWT.CURSOR_APPSTARTING);
+		CROSS = SystemCursorFactory.getCursor(SWT.CURSOR_CROSS);
+		HAND = SystemCursorFactory.getCursor(SWT.CURSOR_HAND);
+		HELP = SystemCursorFactory.getCursor(SWT.CURSOR_HELP);
+		IBEAM = SystemCursorFactory.getCursor(SWT.CURSOR_IBEAM);
+		NO = SystemCursorFactory.getCursor(SWT.CURSOR_NO);
+		SIZEALL = SystemCursorFactory.getCursor(SWT.CURSOR_SIZEALL);
+		SIZENESW = SystemCursorFactory.getCursor(SWT.CURSOR_SIZENESW);
+		SIZENWSE = SystemCursorFactory.getCursor(SWT.CURSOR_SIZENWSE);
+		UPARROW = SystemCursorFactory.getCursor(SWT.CURSOR_UPARROW);
+		WAIT = SystemCursorFactory.getCursor(SWT.CURSOR_WAIT);
 	}
 
 }
