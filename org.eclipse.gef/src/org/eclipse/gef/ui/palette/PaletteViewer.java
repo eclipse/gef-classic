@@ -84,9 +84,9 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	private PaletteCustomizer customizer = null;
 	private PaletteCustomizerDialog customizerDialog = null;
 	private boolean globalScrollbar = false;
-	private List paletteListeners = new ArrayList();
+	private final List<PaletteListener> paletteListeners = new ArrayList<>();
 	private PaletteRoot paletteRoot = null;
-	private PreferenceListener prefListener = new PreferenceListener();
+	private final PreferenceListener prefListener = new PreferenceListener();
 	private PaletteViewerPreferences prefs = PREFERENCE_STORE;
 	private Font font = null;
 
@@ -110,8 +110,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 *                        changes on the palette
 	 */
 	public void addPaletteListener(PaletteListener paletteListener) {
-		if (paletteListeners != null)
-			paletteListeners.add(paletteListener);
+		paletteListeners.add(paletteListener);
 	}
 
 	/**
@@ -152,10 +151,12 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 *         drawer; null, if part is not in a drawer
 	 */
 	private DrawerEditPart findContainingDrawer(EditPart part) {
-		if (part == null)
+		if (part == null) {
 			return null;
-		if (part instanceof DrawerEditPart)
-			return (DrawerEditPart) part;
+		}
+		if (part instanceof DrawerEditPart dEP) {
+			return dEP;
+		}
 		return findContainingDrawer(part.getParent());
 	}
 
@@ -163,10 +164,7 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 * Notifies registered listeners of change in the active tool on the palette
 	 */
 	protected void fireModeChanged() {
-		if (paletteListeners == null)
-			return;
-		for (int listener = 0; listener < paletteListeners.size(); listener++)
-			((PaletteListener) paletteListeners.get(listener)).activeToolChanged(this, activeEntry);
+		paletteListeners.forEach(pl -> pl.activeToolChanged(this, activeEntry));
 	}
 
 	/**
@@ -260,8 +258,9 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 		canvas.getViewport().setContentsTracksHeight(!globalScrollbar);
 		canvas.setHorizontalScrollBarVisibility(FigureCanvas.NEVER);
 		canvas.setVerticalScrollBarVisibility(globalScrollbar ? FigureCanvas.ALWAYS : FigureCanvas.AUTOMATIC);
-		if (prefs != null)
+		if (prefs != null) {
 			prefs.addPropertyChangeListener(prefListener);
+		}
 		updateFont();
 	}
 
@@ -273,8 +272,9 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 */
 	public boolean isExpanded(PaletteDrawer drawer) {
 		EditPart ep = (EditPart) getEditPartRegistry().get(drawer);
-		if (ep instanceof DrawerEditPart)
-			return ((DrawerEditPart) ep).isExpanded();
+		if (ep instanceof DrawerEditPart dep) {
+			return dep.isExpanded();
+		}
 		return false;
 	}
 
@@ -286,8 +286,9 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 */
 	public boolean isPinned(PaletteDrawer drawer) {
 		EditPart ep = (EditPart) getEditPartRegistry().get(drawer);
-		if (ep instanceof DrawerEditPart)
-			return ((DrawerEditPart) ep).isPinnedOpen();
+		if (ep instanceof DrawerEditPart dep) {
+			return dep.isPinnedOpen();
+		}
 		return false;
 	}
 
@@ -316,8 +317,9 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	public boolean restoreState(IMemento memento) {
 		try {
 			PaletteEditPart part = (PaletteEditPart) getEditPartRegistry().get(getPaletteRoot());
-			if (part != null)
+			if (part != null) {
 				part.restoreState(memento);
+			}
 		} catch (RuntimeException re) {
 			/*
 			 * @TODO:Pratik Perhaps you should log this exception. Or not catch it at all.
@@ -336,12 +338,14 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 		// when invoking
 		// findContainingDrawer(), we use part.getParent()
 		DrawerEditPart drawer = findContainingDrawer(part.getParent());
-		if (drawer != null && !drawer.isExpanded())
+		if (drawer != null && !drawer.isExpanded()) {
 			drawer.setExpanded(true);
+		}
 		// if the part is inside a stack, set it to be the top level item of the
 		// stack.
-		if (part.getParent() instanceof PaletteStackEditPart)
+		if (part.getParent() instanceof PaletteStackEditPart) {
 			((PaletteStack) part.getParent().getModel()).setActiveEntry((PaletteEntry) part.getModel());
+		}
 		super.reveal(part);
 	}
 
@@ -354,8 +358,9 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	public void saveState(IMemento memento) {
 		// Bug# 69026 - The PaletteRoot can be null initially for VEP
 		PaletteEditPart base = (PaletteEditPart) getEditPartRegistry().get(getPaletteRoot());
-		if (base != null)
+		if (base != null) {
 			base.saveState(memento);
+		}
 	}
 
 	/**
@@ -375,10 +380,12 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 *                in this palette
 	 */
 	public void setActiveTool(ToolEntry newMode) {
-		if (newMode == null)
+		if (newMode == null) {
 			newMode = getPaletteRoot().getDefaultEntry();
-		if (activeEntry != null)
+		}
+		if (activeEntry != null) {
 			getToolEntryEditPart(activeEntry).setToolSelected(false);
+		}
 		activeEntry = newMode;
 		if (activeEntry != null) {
 			ToolEntryEditPart editpart = getToolEntryEditPart(activeEntry);
@@ -395,8 +402,9 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 * @param root the PaletteRoot for this palette
 	 */
 	public void setPaletteRoot(PaletteRoot root) {
-		if (root == paletteRoot)
+		if (root == paletteRoot) {
 			return;
+		}
 		paletteRoot = root;
 		if (paletteRoot != null) {
 			EditPart palette = getEditPartFactory().createEditPart(getRootEditPart(), root);
@@ -418,11 +426,13 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	 *              preferences for this palette
 	 */
 	public void setPaletteViewerPreferences(PaletteViewerPreferences prefs) {
-		if (this.prefs != null)
+		if (this.prefs != null) {
 			this.prefs.removePropertyChangeListener(prefListener);
+		}
 		this.prefs = prefs;
-		if (getControl() != null && !getControl().isDisposed())
+		if (getControl() != null && !getControl().isDisposed()) {
 			this.prefs.addPropertyChangeListener(prefListener);
+		}
 	}
 
 	/**
@@ -432,15 +442,17 @@ public class PaletteViewer extends ScrollingGraphicalViewer {
 	protected void unhookControl() {
 		super.unhookControl();
 		disposeFont();
-		if (prefs != null)
+		if (prefs != null) {
 			prefs.removePropertyChangeListener(prefListener);
+		}
 	}
 
 	private void updateFont() {
 		disposeFont();
 
-		if (getControl() == null || getControl().isDisposed())
+		if (getControl() == null || getControl().isDisposed()) {
 			return;
+		}
 
 		font = new Font(Display.getCurrent(), getPaletteViewerPreferences().getFontData());
 		getControl().setFont(font);
