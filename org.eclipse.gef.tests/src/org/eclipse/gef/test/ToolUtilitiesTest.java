@@ -12,8 +12,10 @@
  *******************************************************************************/
 
 package org.eclipse.gef.test;
+
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.IFigure;
+
 import org.eclipse.gef.EditPart;
 import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
 import org.eclipse.gef.tools.ToolUtilities;
@@ -51,7 +53,6 @@ public class ToolUtilitiesTest extends Assert {
 		 */
 		@Override
 		protected IFigure createFigure() {
-			// TODO Auto-generated method stub
 			return new Figure();
 		}
 
@@ -66,8 +67,9 @@ public class ToolUtilitiesTest extends Assert {
 		}
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_findCommonAncestor_happypath() {
+	public void testFindCommonAncestorHappypath() {
 		TestGraphicalEditPart editpartParent = new TestGraphicalEditPart();
 		TestGraphicalEditPart editpartChild1 = new TestGraphicalEditPart();
 		TestGraphicalEditPart editpartChild2 = new TestGraphicalEditPart();
@@ -81,8 +83,9 @@ public class ToolUtilitiesTest extends Assert {
 		assertTrue(editpartParent == result);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_findCommonAncestor_bugzilla130042() {
+	public void testFindCommonAncestorBugzilla130042() {
 		TestGraphicalEditPart editpartParent = new TestGraphicalEditPart();
 		EditPart editpartChild = new TestGraphicalEditPart();
 		editpartParent.addChild(editpartChild);

@@ -11,6 +11,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.gef.test;
+
 import org.eclipse.gef.palette.CombinedTemplateCreationEntry;
 import org.eclipse.gef.palette.PaletteDrawer;
 import org.eclipse.gef.palette.PaletteEntry;
@@ -36,7 +37,7 @@ public class PaletteCustomizerTest extends Assert {
 		}
 	}
 
-	private TestCustomizer customizer = new TestCustomizer();
+	private final TestCustomizer customizer = new TestCustomizer();
 	private PaletteDrawer drawerA;
 	private PaletteDrawer drawerB;
 	private PaletteDrawer drawerC;
@@ -45,35 +46,35 @@ public class PaletteCustomizerTest extends Assert {
 	private PaletteStack stackA;
 	private PaletteStack stackB;
 
-	private PaletteDrawerFactory getDrawerFactory() {
+	private static PaletteDrawerFactory getDrawerFactory() {
 		return new PaletteDrawerFactory();
 	}
 
-	private PaletteSeparatorFactory getSeparatorFactory() {
+	private static PaletteSeparatorFactory getSeparatorFactory() {
 		return new PaletteSeparatorFactory();
 	}
 
-	private PaletteStackFactory getStackFactory() {
+	private static PaletteStackFactory getStackFactory() {
 		return new PaletteStackFactory();
 	}
 
 	private void reset() {
 		root = new PaletteRoot();
-		drawerA = new PaletteDrawer("A", null);
-		drawerB = new PaletteDrawer("B", null);
-		drawerC = new PaletteDrawer("C", null);
+		drawerA = new PaletteDrawer("A", null); //$NON-NLS-1$
+		drawerB = new PaletteDrawer("B", null); //$NON-NLS-1$
+		drawerC = new PaletteDrawer("C", null); //$NON-NLS-1$
 	}
 
 	private void resetBottom() {
 		reset();
-		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null, null, null));
-		stackA = new PaletteStack("Stack", null, null);
-		stackA.add(new CombinedTemplateCreationEntry("STA", null, null, null, null, null));
-		stackA.add(selection = new CombinedTemplateCreationEntry("Selection", null, null, null, null, null));
+		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null, null, null)); //$NON-NLS-1$
+		stackA = new PaletteStack("Stack", null, null); //$NON-NLS-1$
+		stackA.add(new CombinedTemplateCreationEntry("STA", null, null, null, null, null)); //$NON-NLS-1$
+		stackA.add(selection = new CombinedTemplateCreationEntry("Selection", null, null, null, null, null)); //$NON-NLS-1$
 		selection.setUserModificationPermission(PaletteEntry.PERMISSION_LIMITED_MODIFICATION);
-		stackB = new PaletteStack("Stack2", null, null);
+		stackB = new PaletteStack("Stack2", null, null); //$NON-NLS-1$
 		stackB.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
-		stackB.add(new CombinedTemplateCreationEntry("STB", null, null, null, null, null));
+		stackB.add(new CombinedTemplateCreationEntry("STB", null, null, null, null, null)); //$NON-NLS-1$
 		drawerA.add(stackA);
 		drawerA.add(stackB);
 		root.add(drawerA);
@@ -82,22 +83,22 @@ public class PaletteCustomizerTest extends Assert {
 
 	private void resetMiddle() {
 		reset();
-		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null, null, null));
-		drawerA.add(selection = new CombinedTemplateCreationEntry("Selection", null, null, null, null, null));
-		drawerA.add(new CombinedTemplateCreationEntry("TB", null, null, null, null, null));
+		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null, null, null)); //$NON-NLS-1$
+		drawerA.add(selection = new CombinedTemplateCreationEntry("Selection", null, null, null, null, null)); //$NON-NLS-1$
+		drawerA.add(new CombinedTemplateCreationEntry("TB", null, null, null, null, null)); //$NON-NLS-1$
 		root.add(drawerA);
 		root.add(drawerB);
 	}
 
 	private void resetTop() {
 		reset();
-		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null, null, null));
-		drawerA.add(new CombinedTemplateCreationEntry("TB", null, null, null, null, null));
-		selection = new PaletteStack("Stack", null, null);
-		((PaletteStack) selection).add(new CombinedTemplateCreationEntry("STA", null, null, null, null, null));
+		drawerA.add(new CombinedTemplateCreationEntry("TA", null, null, null, null, null)); //$NON-NLS-1$
+		drawerA.add(new CombinedTemplateCreationEntry("TB", null, null, null, null, null)); //$NON-NLS-1$
+		selection = new PaletteStack("Stack", null, null); //$NON-NLS-1$
+		((PaletteStack) selection).add(new CombinedTemplateCreationEntry("STA", null, null, null, null, null)); //$NON-NLS-1$
 		selection.setUserModificationPermission(PaletteEntry.PERMISSION_FULL_MODIFICATION);
 		drawerB.add(selection);
-		drawerB.add(new CombinedTemplateCreationEntry("BTB", null, null, null, null, null));
+		drawerB.add(new CombinedTemplateCreationEntry("BTB", null, null, null, null, null)); //$NON-NLS-1$
 		root.add(drawerA);
 		root.add(drawerB);
 		root.add(drawerC);

@@ -15,20 +15,23 @@ package org.eclipse.gef.test;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.draw2d.Figure;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.gef.DefaultEditDomain;
-import org.eclipse.gef.EditPart;
-import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
-import org.eclipse.gef.tools.DragEditPartsTracker;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbenchPartSite;
 import org.eclipse.ui.PartInitException;
+
+import org.eclipse.draw2d.Figure;
+import org.eclipse.draw2d.IFigure;
+
+import org.eclipse.gef.DefaultEditDomain;
+import org.eclipse.gef.EditPart;
+import org.eclipse.gef.editparts.AbstractGraphicalEditPart;
+import org.eclipse.gef.tools.DragEditPartsTracker;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -169,18 +172,18 @@ public class DragEditPartsTrackerTest extends Assert {
 		}
 
 		@Override
-		public List createOperationSet() {
+		public List<? extends EditPart> createOperationSet() {
 			return super.createOperationSet();
 		}
-	};
+	}
 
 	@Test
-	public void test_createOperationSet() {
+	public void testCreateOperationSet() {
 		TestDragEditPartsTracker dept = new TestDragEditPartsTracker(new TestGraphicalEditPart());
 
 		dept.setEditDomain(new DefaultEditDomain(new DummyEditorPart()));
 		dept.activate();
-		List operationSet = dept.createOperationSet();
+		List<? extends EditPart> operationSet = dept.createOperationSet();
 		assertTrue(operationSet != null);
 		dept.deactivate();
 	}
