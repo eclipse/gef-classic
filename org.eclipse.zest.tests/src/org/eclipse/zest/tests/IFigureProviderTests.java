@@ -8,18 +8,21 @@
  *******************************************************************************/
 package org.eclipse.zest.tests;
 
-import org.eclipse.draw2d.BorderLayout;
-import org.eclipse.draw2d.Ellipse;
-import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Label;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
+
+import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.zest.core.viewers.GraphViewer;
 import org.eclipse.zest.core.viewers.IFigureProvider;
 import org.eclipse.zest.core.viewers.IGraphContentProvider;
 import org.eclipse.zest.core.widgets.CGraphNode;
+import org.eclipse.zest.core.widgets.GraphNode;
+
+import org.eclipse.draw2d.BorderLayout;
+import org.eclipse.draw2d.Ellipse;
+import org.eclipse.draw2d.IFigure;
+import org.eclipse.draw2d.Label;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -73,15 +76,15 @@ public class IFigureProviderTests extends Assert {
 		viewer.setContentProvider(contentProvider);
 		viewer.setLabelProvider(new CustomLabelProvider());
 		viewer.setInput(new Object());
-		StringBuffer buffer = new StringBuffer();
-		for (int i = 0; i < viewer.getGraphControl().getNodes().size(); i++) {
-			CGraphNode n = (CGraphNode) viewer.getGraphControl().getNodes().get(i);
+		StringBuilder buffer = new StringBuilder();
+		for (GraphNode element : viewer.getGraphControl().getNodes()) {
+			CGraphNode n = (CGraphNode) element;
 			buffer.append(((Label) n.getNodeFigure().getChildren().get(0)).getText());
 		}
 		String string = buffer.toString();
-		assertTrue("Label 1 should be in figure labels", string.indexOf("1") >= 0);
-		assertTrue("Label 2 should be in figure labels", string.indexOf("2") >= 0);
-		assertTrue("Label 3 should be in figure labels", string.indexOf("3") >= 0);
+		assertTrue("Label 1 should be in figure labels", string.indexOf("1") >= 0); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue("Label 2 should be in figure labels", string.indexOf("2") >= 0); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue("Label 3 should be in figure labels", string.indexOf("3") >= 0); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	private class DestinationContentProvider implements IGraphContentProvider {
@@ -96,18 +99,21 @@ public class IFigureProviderTests extends Assert {
 
 		@Override
 		public Object getDestination(Object r) {
-			if (r.equals("1to2"))
-				return "2";
-			if (r.equals("2to3"))
-				return "3";
-			if (r.equals("3to1"))
-				return "1";
+			if (r.equals("1to2")) { //$NON-NLS-1$
+				return "2"; //$NON-NLS-1$
+			}
+			if (r.equals("2to3")) { //$NON-NLS-1$
+				return "3"; //$NON-NLS-1$
+			}
+			if (r.equals("3to1")) { //$NON-NLS-1$
+				return "1"; //$NON-NLS-1$
+			}
 			return null;
 		}
 
 		@Override
 		public Object[] getElements(Object arg0) {
-			return new String[] { "1to2", "2to3", "3to1" };
+			return new String[] { "1to2", "2to3", "3to1" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 		@Override
@@ -134,17 +140,20 @@ public class IFigureProviderTests extends Assert {
 
 		@Override
 		public Object[] getElements(Object arg0) {
-			return new String[] { "1to2", "2to3", "3to1" };
+			return new String[] { "1to2", "2to3", "3to1" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 		@Override
 		public Object getSource(Object r) {
-			if (r.equals("1to2"))
-				return "1";
-			if (r.equals("2to3"))
-				return "2";
-			if (r.equals("3to1"))
-				return "3";
+			if (r.equals("1to2")) { //$NON-NLS-1$
+				return "1"; //$NON-NLS-1$
+			}
+			if (r.equals("2to3")) { //$NON-NLS-1$
+				return "2"; //$NON-NLS-1$
+			}
+			if (r.equals("3to1")) { //$NON-NLS-1$
+				return "3"; //$NON-NLS-1$
+			}
 			return null;
 		}
 
@@ -162,28 +171,34 @@ public class IFigureProviderTests extends Assert {
 
 		@Override
 		public Object getDestination(Object r) {
-			if (r.equals("1to2"))
-				return "2";
-			if (r.equals("2to3"))
-				return "3";
-			if (r.equals("3to1"))
-				return "1";
+			if (r.equals("1to2")) { //$NON-NLS-1$
+				return "2"; //$NON-NLS-1$
+			}
+			if (r.equals("2to3")) { //$NON-NLS-1$
+				return "3"; //$NON-NLS-1$
+			}
+			if (r.equals("3to1")) { //$NON-NLS-1$
+				return "1"; //$NON-NLS-1$
+			}
 			return null;
 		}
 
 		@Override
 		public Object[] getElements(Object arg0) {
-			return new String[] { "1to2", "2to3", "3to1" };
+			return new String[] { "1to2", "2to3", "3to1" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 		@Override
 		public Object getSource(Object r) {
-			if (r.equals("1to2"))
-				return "1";
-			if (r.equals("2to3"))
-				return "2";
-			if (r.equals("3to1"))
-				return "3";
+			if (r.equals("1to2")) { //$NON-NLS-1$
+				return "1"; //$NON-NLS-1$
+			}
+			if (r.equals("2to3")) { //$NON-NLS-1$
+				return "2"; //$NON-NLS-1$
+			}
+			if (r.equals("3to1")) { //$NON-NLS-1$
+				return "3"; //$NON-NLS-1$
+			}
 			return null;
 		}
 
