@@ -13,13 +13,14 @@
 
 package org.eclipse.draw2d.test;
 
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.TextFlow;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.widgets.Display;
 
 import org.junit.Before;
 
@@ -28,7 +29,7 @@ import org.junit.Before;
  */
 public class SimpleTextTest extends AbstractTextTest {
 
-	public static final String PHRASE = "The quick brown fox jumped over the lazy dog. ";
+	public static final String PHRASE = "The quick brown fox jumped over the lazy dog. "; //$NON-NLS-1$
 	public FlowPage flowpage = new FlowPage();
 	public TextFlow sentence = new TextFlow(PHRASE);
 	public InlineFlow inline = new InlineFlow();

@@ -23,14 +23,14 @@ public class TestImages {
 	static final Image depth_24;
 
 	static {
-		InputStream is = TestImages.class.getResourceAsStream("icons/bits8.gif");
+		InputStream is = TestImages.class.getResourceAsStream("icons/bits8.gif"); //$NON-NLS-1$
 		depth_8 = new Image(null, is);
 		try {
 			is.close();
 		} catch (Exception e) {
 		}
 
-		is = TestImages.class.getResourceAsStream("icons/bits24.jpg");
+		is = TestImages.class.getResourceAsStream("icons/bits24.jpg"); //$NON-NLS-1$
 		depth_24 = new Image(null, is);
 		try {
 			is.close();

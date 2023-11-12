@@ -11,6 +11,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 package org.eclipse.draw2d.test;
+
 import org.eclipse.draw2d.geometry.Ray;
 
 import org.junit.Assert;
@@ -30,6 +31,7 @@ public class RayTest extends Assert {
 		testLengthValues(0, Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void test_getScalarProduct() {
 		Ray a = new Ray(3, 2);
@@ -37,6 +39,7 @@ public class RayTest extends Assert {
 		assertTrue(a.dotProduct(b) == 2);
 	}
 
+	@SuppressWarnings("static-method")
 	private void testLengthValues(int x, int y, double expectedLength) {
 		Ray ray = new Ray(x, y);
 		assertEquals(expectedLength, ray.length(), 0);

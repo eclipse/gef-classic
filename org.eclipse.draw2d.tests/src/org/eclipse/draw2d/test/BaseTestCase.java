@@ -12,18 +12,17 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
+
+import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Insets;
 import org.eclipse.draw2d.geometry.Interval;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Shell;
 
 import org.junit.Assert;
 
@@ -34,23 +33,8 @@ public abstract class BaseTestCase extends Assert {
 
 	protected static final Font TAHOMA = new Font(null, "Tahoma", 8, 0);//$NON-NLS-1$
 
-	protected boolean callBooleanMethod(Object receiver, String method) {
-		try {
-			Method m = receiver.getClass().getMethod(method, null);
-			Boolean result = (Boolean) m.invoke(receiver, null);
-			return result.booleanValue();
-		} catch (NoSuchMethodException exc) {
-			fail(exc.getMessage());
-		} catch (IllegalAccessException exc) {
-			fail(exc.getMessage());
-		} catch (InvocationTargetException exc) {
-			fail(exc.getMessage());
-		}
-		return false;
-	}
-
 	public void assertEquals(Image expected, Image actual) {
-		assertTrue("The given images did not match",
+		assertTrue("The given images did not match", //$NON-NLS-1$
 				Arrays.equals(expected.getImageData().data, actual.getImageData().data));
 	}
 

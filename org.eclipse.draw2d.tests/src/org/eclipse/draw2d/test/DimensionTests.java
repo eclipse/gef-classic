@@ -46,6 +46,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(17, 18, template1);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetShrinked() {
 		Dimension d = new Dimension(6, 7);
@@ -55,7 +56,7 @@ public class DimensionTests extends BaseTestCase {
 
 	@Test
 	public void testConstructors() throws Exception {
-		Image image = new Image(null, getClass().getResourceAsStream("icons/recorder.gif"));
+		Image image = new Image(null, getClass().getResourceAsStream("icons/recorder.gif")); //$NON-NLS-1$
 
 		assertEquals(0, 0, new Dimension());
 		//
@@ -70,6 +71,7 @@ public class DimensionTests extends BaseTestCase {
 		image.dispose();
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testEqualsObject() throws Exception {
 		Dimension testDimension = new Dimension(-7, 8);
@@ -80,12 +82,14 @@ public class DimensionTests extends BaseTestCase {
 		assertFalse(testDimension.equals(new Dimension()));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testToString() throws Exception {
 		assertNotNull(new Dimension().toString());
 		assertNotNull(new Dimension(1, 2).toString());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testContains() throws Exception {
 		Dimension template = new Dimension(-7, 8);
@@ -97,6 +101,7 @@ public class DimensionTests extends BaseTestCase {
 		assertFalse(template.contains(new Dimension(10, 10)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testContainsProper() throws Exception {
 		Dimension template = new Dimension(-7, 8);
@@ -104,11 +109,13 @@ public class DimensionTests extends BaseTestCase {
 		assertTrue(template.containsProper(new Dimension(-8, -8)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetArea() throws Exception {
 		assertEquals(6, new Dimension(2, 3).getArea());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testEqualsIntInt() throws Exception {
 		assertTrue(new Dimension().equals(0, 0));
@@ -116,6 +123,7 @@ public class DimensionTests extends BaseTestCase {
 		assertFalse(new Dimension(1, -2).equals(7, -7));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testIsEmpty() throws Exception {
 		assertTrue(new Dimension().isEmpty());
@@ -123,6 +131,7 @@ public class DimensionTests extends BaseTestCase {
 		assertFalse(new Dimension(3, 3).isEmpty());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testSetSize() throws Exception {
 		Dimension template = new Dimension(-7, 8);
@@ -211,6 +220,7 @@ public class DimensionTests extends BaseTestCase {
 		assertEquals(5, 8, testDimension);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetCopy() throws Exception {
 		Dimension template = new Dimension(-7, 8);

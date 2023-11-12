@@ -28,6 +28,7 @@ public class PrecisionDimensionTest extends Assert {
 	/**
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=227977
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testEquals() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
@@ -38,12 +39,14 @@ public class PrecisionDimensionTest extends Assert {
 	/**
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=124904
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetCopy() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
 		assertTrue(p1.equals(p1.getCopy()));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testExpand() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
@@ -52,6 +55,7 @@ public class PrecisionDimensionTest extends Assert {
 		assertTrue(p2.equals(p1.getExpanded(p1)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testShrink() {
 		PrecisionDimension p1 = new PrecisionDimension(0.1, 0.1);
