@@ -26,6 +26,7 @@ import org.junit.Test;
  */
 public class TransposerTest extends BaseTestCase {
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testState() throws Exception {
 		Transposer transposer = new Transposer();

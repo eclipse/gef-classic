@@ -26,6 +26,7 @@ import org.junit.Test;
  */
 public class PrecisionRectangleTest extends Assert {
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testShrink() {
 		Insets insets = new Insets(2, 2, 2, 2);
@@ -61,6 +62,7 @@ public class PrecisionRectangleTest extends Assert {
 		assertEquals(25.92755905511811, r.preciseHeight(), 0);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testExpand() {
 		PrecisionRectangle r = new PrecisionRectangle(new Rectangle(100, 100, 250, 250));
@@ -71,6 +73,7 @@ public class PrecisionRectangleTest extends Assert {
 		r.shrink(0.1, 0.1);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testUnion() {
 		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236,
@@ -80,6 +83,7 @@ public class PrecisionRectangleTest extends Assert {
 				100.5 + 34.431496062992125), r);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testResize() {
 		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236,
@@ -89,6 +93,7 @@ public class PrecisionRectangleTest extends Assert {
 				25.92755905511811 + 100.1), r);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testContains() {
 		PrecisionRectangle r = new PrecisionRectangle(-9.486614173228347, -34.431496062992125, 41.99055118110236,

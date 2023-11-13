@@ -14,11 +14,12 @@ package org.eclipse.draw2d.test;
 
 import java.util.List;
 
+import org.eclipse.swt.graphics.Font;
+
 import org.eclipse.draw2d.text.FlowPage;
 import org.eclipse.draw2d.text.InlineFlow;
 import org.eclipse.draw2d.text.TextFlow;
 import org.eclipse.draw2d.text.TextFragmentBox;
-import org.eclipse.swt.graphics.Font;
 
 import org.junit.Test;
 
@@ -28,6 +29,7 @@ import org.junit.Test;
  */
 public class TextualTests extends BaseTestCase {
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testLineRootBidiCommit() {
 		FlowPage block = new FlowPage();
@@ -43,9 +45,9 @@ public class TextualTests extends BaseTestCase {
 		italics.add(italicText);
 		bold.add(boldTextEnd);
 
-		boldTextStart.setText("abc ");
-		italicText.setText("xyz \u0634\u0637\u0635");
-		boldTextEnd.setText(" \u0639\u0633\u0640 hum");
+		boldTextStart.setText("abc "); //$NON-NLS-1$
+		italicText.setText("xyz \u0634\u0637\u0635"); //$NON-NLS-1$
+		boldTextEnd.setText(" \u0639\u0633\u0640 hum"); //$NON-NLS-1$
 
 		block.setSize(-1, -1);
 		block.setFont(TAHOMA);
@@ -59,12 +61,13 @@ public class TextualTests extends BaseTestCase {
 	}
 
 	// test for bug 113700
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetFirstAndLastOffsetForLine() {
-		Font xlFont = new Font(null, "Tahoma", 28, 0);
+		Font xlFont = new Font(null, "Tahoma", 28, 0); //$NON-NLS-1$
 		FlowPage block = new FlowPage();
-		TextFlow smallText = new TextFlow("wwww");
-		TextFlow largeText = new TextFlow("ABCD");
+		TextFlow smallText = new TextFlow("wwww"); //$NON-NLS-1$
+		TextFlow largeText = new TextFlow("ABCD"); //$NON-NLS-1$
 
 		block.setFont(TAHOMA);
 		largeText.setFont(xlFont);

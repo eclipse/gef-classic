@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 package org.eclipse.draw2d.test;
+
 import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.IFigure;
@@ -21,8 +22,9 @@ import org.junit.Test;
 
 public class FigureUtilitiesTest extends Assert {
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_findCommonAncestor_happypath() {
+	public void testFindCommonAncestorHappypath() {
 		IFigure figureParent = new Figure();
 		IFigure figureChild1 = new Figure();
 		IFigure figureChild2 = new Figure();
@@ -36,8 +38,9 @@ public class FigureUtilitiesTest extends Assert {
 		assertTrue(figureParent == result);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_findCommonAncestor_bugzilla130042() {
+	public void testFindCommonAncestorBugzilla130042() {
 		IFigure figureParent = new Figure();
 		IFigure figureChild = new Figure();
 		figureParent.add(figureChild);
@@ -46,8 +49,9 @@ public class FigureUtilitiesTest extends Assert {
 		assertTrue(figureParent == result);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_findCommonAncestor_check_finds_nearest_ancestor() {
+	public void testFindCommonAncestorCheckFindsNearestAncestor() {
 		IFigure figureGrandParent = new Figure();
 		IFigure figureParent = new Figure();
 		IFigure figureChild1 = new Figure();
@@ -60,8 +64,9 @@ public class FigureUtilitiesTest extends Assert {
 		assertTrue(figureParent == result);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_findCommonAncestor_parent_is_common_ancestor() {
+	public void testFindCommonAncestorParentIsCommonAncestor() {
 		IFigure figureParent = new Figure();
 		IFigure figureChild1 = new Figure();
 		IFigure figureChild2 = new Figure();
@@ -72,8 +77,9 @@ public class FigureUtilitiesTest extends Assert {
 		assertTrue(figureParent == result);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_findCommonAncestor_orphaned_child() {
+	public void testFindCommonAncestorOrphanedChild() {
 		IFigure orphanFigure = new Figure();
 		IFigure figureParent = new Figure();
 		IFigure figureChild = new Figure();

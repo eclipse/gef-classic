@@ -12,6 +12,7 @@
  *******************************************************************************/
 
 package org.eclipse.draw2d.test;
+
 import org.eclipse.draw2d.ChopboxAnchor;
 import org.eclipse.draw2d.ConnectionAnchor;
 import org.eclipse.draw2d.Figure;
@@ -122,7 +123,7 @@ public class AnchorNotificationTest extends Assert {
 	public void testMoveTargetParent() {
 		count = 0;
 		nestedCoordinates.translate(10, 10);
-		assertTrue("Count != 1 :" + count, count == 1);
+		assertTrue("Count != 1 :" + count, count == 1); //$NON-NLS-1$
 	}
 
 	@Test

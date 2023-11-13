@@ -23,6 +23,7 @@ import org.junit.Test;
 
 public class PointListTests extends BaseTestCase {
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testIntersects() {
 		PointList points = new PointList();
@@ -141,6 +142,7 @@ public class PointListTests extends BaseTestCase {
 		assertThrows(IndexOutOfBoundsException.class, () -> list.removePoint(0));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testRemoveAllPoints() throws Exception {
 		PointList list = new PointList();
@@ -208,6 +210,7 @@ public class PointListTests extends BaseTestCase {
 		}
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetCopy() throws Exception {
 		PointList list = new PointList();

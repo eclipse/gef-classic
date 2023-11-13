@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.draw2d.test;
 
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Display;
+
 import org.eclipse.draw2d.Ellipse;
 import org.eclipse.draw2d.IFigure;
 import org.eclipse.draw2d.geometry.Rectangle;
 import org.eclipse.draw2d.parts.Thumbnail;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.widgets.Display;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class ThumbnailTest extends Assert {
 	}
 
 	@Test
-	public void test_Thumbnail() {
+	public void testThumbnail() {
 		TestThumbnail thumb = new TestThumbnail();
 		IFigure fig = new Ellipse();
 		fig.setBounds(new Rectangle(0, 0, 100, 100));
@@ -44,7 +45,7 @@ public class ThumbnailTest extends Assert {
 	}
 
 	@Test
-	public void test_EmptyThumbnail() {
+	public void testEmptyThumbnail() {
 		TestThumbnail thumb = new TestThumbnail();
 		IFigure fig = new Ellipse();
 		fig.setBounds(new Rectangle(0, 0, 100, 100));

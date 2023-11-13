@@ -26,8 +26,9 @@ import org.junit.Test;
  */
 public class StraightTest extends Assert {
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_getIntersection() {
+	public void testGetIntersection() {
 		// test integer precision
 		Vector p = new Vector(1, 1);
 		Vector a = new Vector(2, 1);
@@ -81,8 +82,9 @@ public class StraightTest extends Assert {
 		assertTrue(s2.contains(intersection));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_isParallelTo() {
+	public void testIsParallelTo() {
 		Straight s1 = new Straight(new Vector(0, 0), new Vector(3, 3));
 		Straight s2 = new Straight(new Vector(0, 4), new Vector(2, 2));
 		assertTrue(s1.isParallelTo(s2));
@@ -92,8 +94,9 @@ public class StraightTest extends Assert {
 		assertFalse(s1.isParallelTo(s2));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_getAngle() {
+	public void testGetAngle() {
 		Straight s1 = new Straight(new Vector(0, 0), new Vector(3, 3));
 		Straight s2 = new Straight(new Vector(0, 4), new Vector(2, 2));
 		assertTrue(s1.getAngle(s2) == 0.0);
@@ -103,8 +106,9 @@ public class StraightTest extends Assert {
 		assertTrue((float) s1.getAngle(s2) == 45.0); // rounding effects
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
-	public void test_equals() {
+	public void testEquals() {
 		Straight s1 = new Straight(new Vector(0, 0), new Vector(3, 3));
 		Straight s2 = new Straight(new Vector(4, 4), new Vector(2, 2));
 		assertTrue(s1.equals(s2));

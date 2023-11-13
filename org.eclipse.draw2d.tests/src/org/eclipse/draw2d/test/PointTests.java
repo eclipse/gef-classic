@@ -7,6 +7,7 @@ import org.junit.Test;
 
 public class PointTests extends BaseTestCase {
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testMin() {
 		assertTrue(Point.min(new Point(1, 3), new Point(2, 6)).equals(new Point(1, 3)));
@@ -15,6 +16,7 @@ public class PointTests extends BaseTestCase {
 		assertTrue(Point.min(new Point(4, 12), new Point(6, 10)).equals(new Point(4, 10)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testMax() {
 		assertTrue(Point.max(new Point(1, 3), new Point(2, 6)).equals(new Point(2, 6)));
@@ -23,6 +25,7 @@ public class PointTests extends BaseTestCase {
 		assertTrue(Point.max(new Point(4, 12), new Point(6, 10)).equals(new Point(6, 12)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testEquals() {
 		assertTrue(new Point(4, 7).equals(4, 7));
@@ -30,6 +33,7 @@ public class PointTests extends BaseTestCase {
 		assertFalse(new Point(3, 6).equals(4, 6));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testDifference() {
 		Point p1 = new Point(4, 7);
@@ -41,6 +45,7 @@ public class PointTests extends BaseTestCase {
 		assertTrue(p2.equals(2, 4));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testTranslate() {
 		Point p1 = new Point(3, 6);
@@ -51,16 +56,19 @@ public class PointTests extends BaseTestCase {
 		assertTrue(p1.equals(4714, 573));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testSetX() {
 		assertTrue(new Point(4711, 678).setX(3).equals(3, 678));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testSetY() {
 		assertTrue(new Point(4711, 678).setY(3).equals(4711, 3));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testSetLocation() {
 		assertTrue(new Point().setLocation(4711, 678).equals(4711, 678));
@@ -105,6 +113,7 @@ public class PointTests extends BaseTestCase {
 		assertEquals(100, 200, dimension);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testEqualsObject() throws Exception {
 		Point testPoint = new Point(-1, 2);
@@ -115,6 +124,7 @@ public class PointTests extends BaseTestCase {
 		assertFalse(testPoint.equals(new Point()));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testHashCodeToString() throws Exception {
 		assertEquals(0, new Point().hashCode());
@@ -124,6 +134,7 @@ public class PointTests extends BaseTestCase {
 		assertNotNull(new Point(1, 2).toString());
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetCopy() throws Exception {
 		Point template = new Point(-1, 2);
@@ -133,6 +144,7 @@ public class PointTests extends BaseTestCase {
 		assertEquals(template, testPoint);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetSwtPoint() throws Exception {
 		org.eclipse.swt.graphics.Point testPoint = new Point(-1, 2).getSWTPoint();
@@ -148,6 +160,7 @@ public class PointTests extends BaseTestCase {
 		assertEquals(-1, 2, testPoint);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testSetLocationPoint() throws Exception {
 		Point template = new Point(-1, 2);
@@ -156,6 +169,7 @@ public class PointTests extends BaseTestCase {
 		assertEquals(template, testPoint);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetDifferencePoint() throws Exception {
 		Dimension dimension = new Point(5, -5).getDifference(new Point(4, -4));
@@ -163,18 +177,21 @@ public class PointTests extends BaseTestCase {
 		assertEquals(-1, dimension.height);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetDistance2Point() throws Exception {
 		assertEquals(25, new Point(4, 7).getDistance2(new Point(1, 3)));
 		assertEquals(25, new Point(-1, -2).getDistance2(new Point(-5, 1)));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetDistancePoint() throws Exception {
 		assertEquals(5, new Point(4, 7).getDistance(new Point(1, 3)), 0);
 		assertEquals(5, new Point(-1, -2).getDistance(new Point(-5, 1)), 0);
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testGetDistanceOrthogonal() throws Exception {
 		assertEquals(53, new Point(10, 20).getDistanceOrthogonal(new Point(51, 32)));

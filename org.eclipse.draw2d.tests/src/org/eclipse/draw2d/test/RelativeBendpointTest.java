@@ -15,6 +15,8 @@ package org.eclipse.draw2d.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Shell;
+
 import org.eclipse.draw2d.AbstractConnectionAnchor;
 import org.eclipse.draw2d.BendpointConnectionRouter;
 import org.eclipse.draw2d.ColorConstants;
@@ -29,7 +31,6 @@ import org.eclipse.draw2d.geometry.Dimension;
 import org.eclipse.draw2d.geometry.Point;
 import org.eclipse.draw2d.geometry.PrecisionPoint;
 import org.eclipse.draw2d.geometry.Rectangle;
-import org.eclipse.swt.widgets.Shell;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -43,7 +44,6 @@ public class RelativeBendpointTest extends Assert {
 
 	private static class DiagramFigure extends FreeformLayeredPane {
 		public DiagramFigure() {
-			super();
 			setLayoutManager(new FreeformLayout());
 			setBackgroundColor(ColorConstants.white);
 			setOpaque(true);
@@ -52,7 +52,6 @@ public class RelativeBendpointTest extends Assert {
 
 	private static class NodeFigure extends RectangleFigure {
 		public NodeFigure() {
-			super();
 			setFill(true);
 			setBackgroundColor(ColorConstants.darkGray);
 		}
@@ -96,7 +95,7 @@ public class RelativeBendpointTest extends Assert {
 		shell = new Shell();
 		shell.setSize(300, 350);
 		shell.open();
-		shell.setText("RelativeBendpoint Test 4 Bug 237802");
+		shell.setText("RelativeBendpoint Test 4 Bug 237802"); //$NON-NLS-1$
 		// the diagram
 		LightweightSystem lws = new LightweightSystem(shell);
 		diagram = new DiagramFigure();
@@ -119,10 +118,9 @@ public class RelativeBendpointTest extends Assert {
 		target.setBounds(new Rectangle(150, 200, 50, 50));
 		diagram.add(target);
 		// anchors
-		FixedAnchor sourceAnchor, targetAnchor;
-		sourceAnchor = new FixedAnchor(source);
+		FixedAnchor sourceAnchor = new FixedAnchor(source);
 		sourceAnchor.place = new PrecisionPoint(.5, 1.);
-		targetAnchor = new FixedAnchor(target);
+		FixedAnchor targetAnchor = new FixedAnchor(target);
 		targetAnchor.place = new PrecisionPoint(.5, 0.);
 		// first connection
 		ConnectionFigure connection = new ConnectionFigure();
@@ -136,7 +134,7 @@ public class RelativeBendpointTest extends Assert {
 		bendpoint1.setWeight(1f / 3f);
 		bendpoint2.setRelativeDimensions(new Dimension(100, 50), new Dimension(0, -50));
 		bendpoint2.setWeight(2f / 3f);
-		List bendpoints = new ArrayList(2);
+		List<RelativeBendpoint> bendpoints = new ArrayList<>(2);
 		bendpoints.add(bendpoint1);
 		bendpoints.add(bendpoint2);
 		connection.setRoutingConstraint(bendpoints);

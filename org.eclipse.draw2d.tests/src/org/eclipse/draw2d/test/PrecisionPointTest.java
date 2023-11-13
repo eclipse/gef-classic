@@ -28,6 +28,7 @@ public class PrecisionPointTest extends Assert {
 	/**
 	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=227977
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testEquals() {
 		PrecisionPoint p1 = new PrecisionPoint(0.1, 0.1);
@@ -35,6 +36,7 @@ public class PrecisionPointTest extends Assert {
 		assertFalse(p1.equals(p2));
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testTranslate() {
 		PrecisionPoint p1 = new PrecisionPoint(0.1, 0.1);
