@@ -16,7 +16,7 @@ pipeline {
 		stage('Build') {
 			steps {
 				withCredentials([file(credentialsId: 'SonarCloud token for gef', variable: 'SONARCLOUD_TOKEN')]) {
-					withSonarQubeEnv('sonar server', envOnly:false){
+					withSonarQubeEnv(installationName: 'sonar server', envOnly:false){
 						wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
 							sh '''
 							export GDK_BACKEND=x11
