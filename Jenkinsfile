@@ -15,7 +15,7 @@ pipeline {
 		
 		stage('Build') {
 			steps {
-				withCredentials([file(credentialsId: 'SonarCloud token for gef', variable: 'SONARCLOUD_TOKEN')]) {
+				withCredentials([file(credentialsId: 'SonarCloud-token-for-gef', variable: 'SONARCLOUD_TOKEN')]) {
 					withSonarQubeEnv(installationName: 'sonar server', envOnly:false){
 						wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
 							sh '''
