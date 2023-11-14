@@ -15,20 +15,15 @@ pipeline {
 		
 		stage('Build') {
 			steps {
-				withCredentials([file(credentialsId: 'SonarCloud-token-for-gef', variable: 'SONARCLOUD_TOKEN')]) {
-					withSonarQubeEnv(installationName: 'sonar server', envOnly:false){
-						wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
-							sh '''
-							export GDK_BACKEND=x11
-							mvn clean verify -Dmaven.repo.local=$WORKSPACE/.m2/repository \
-								-DapiBaselineTargetDirectory=${WORKSPACE} \
-								-Dgpg.passphrase="${KEYRING_PASSPHRASE}" \
-								-Dproject.build.sourceEncoding=UTF-8 \
-								-Peclipse-sign \
-								-B sonar:sonar -Dsonar.projectKey=gef-classic -Dsonar.organization=eclipse -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONARCLOUD_TOKEN}
-							'''
-						}
-					}
+				wrap([$class: 'Xvnc', takeScreenshot: false, useXauthority: true]) {
+					sh '''
+					export GDK_BACKEND=x11
+					mvn clean verify -Dmaven.repo.local=$WORKSPACE/.m2/repository \
+						-DapiBaselineTargetDirectory=${WORKSPACE} \
+						-Dgpg.passphrase="${KEYRING_PASSPHRASE}" \
+						-Dproject.build.sourceEncoding=UTF-8 \
+						-Peclipse-sign
+					'''
 				}
 			}
 			post {
