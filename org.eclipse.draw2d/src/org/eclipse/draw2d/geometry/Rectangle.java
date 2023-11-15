@@ -739,7 +739,12 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public boolean intersects(Rectangle rect) {
-		return !getIntersection(rect).isEmpty();
+		int x1 = Math.max(x, rect.x());
+		int x2 = Math.min(x + width, rect.x() + rect.width());
+		int y1 = Math.max(y, rect.y());
+		int y2 = Math.min(y + height, rect.y() + rect.height());
+
+		return (((x2 - x1) > 0) && ((y2 - y1) > 0));
 	}
 
 	/**
