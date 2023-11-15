@@ -190,6 +190,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 * @deprecated Use {@link #shrink(Insets)} instead.
 	 */
+	@Deprecated
 	public Rectangle crop(Insets insets) {
 		return shrink(insets);
 	}
@@ -221,8 +222,9 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o)
+		if (this == o) {
 			return true;
+		}
 		if (o instanceof Rectangle r) {
 			return (x == r.x()) && (y == r.y()) && (width == r.width()) && (height == r.height());
 		}
@@ -281,7 +283,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Point getBottom() {
-		return new Point(x + width / 2, bottom());
+		return new Point(getHorCenter(), bottom());
 	}
 
 	/**
@@ -310,7 +312,15 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @return Point at the center of the rectangle
 	 */
 	public Point getCenter() {
-		return new Point(x + width / 2, y + height / 2);
+		return new Point(getHorCenter(), getVerCenter());
+	}
+
+	private int getVerCenter() {
+		return y + height / 2;
+	}
+
+	private int getHorCenter() {
+		return x + width / 2;
 	}
 
 	/**
@@ -328,12 +338,11 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 		if (getClass() == Rectangle.class) {
 			/* avoid clone() call cost see bug #260740 */
 			return new Rectangle(this);
-		} else {
-			try {
-				return (Rectangle) clone();
-			} catch (CloneNotSupportedException exc) {
-				return new Rectangle(this);
-			}
+		}
+		try {
+			return (Rectangle) clone();
+		} catch (CloneNotSupportedException exc) {
+			return new Rectangle(this);
 		}
 	}
 
@@ -344,6 +353,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @return Cropped new Rectangle
 	 * @deprecated Use {@link #getShrinked(Insets)} instead.
 	 */
+	@Deprecated
 	public Rectangle getCropped(Insets insets) {
 		return getShrinked(insets);
 	}
@@ -430,7 +440,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @return Point at the left of the Rectangle
 	 */
 	public Point getLeft() {
-		return new Point(x, y + height / 2);
+		return new Point(x, getVerCenter());
 	}
 
 	/**
@@ -461,18 +471,21 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	public int getPosition(Point p) {
 		int result = PositionConstants.NONE;
 
-		if (contains(p))
+		if (contains(p)) {
 			return result;
+		}
 
-		if (p.x() < x)
+		if (p.x() < x) {
 			result = PositionConstants.WEST;
-		else if (p.x() >= (x + width))
+		} else if (p.x() >= (x + width)) {
 			result = PositionConstants.EAST;
+		}
 
-		if (p.y() < y)
+		if (p.y() < y) {
 			result = result | PositionConstants.NORTH;
-		else if (p.y() >= (y + height))
+		} else if (p.y() >= (y + height)) {
 			result = result | PositionConstants.SOUTH;
+		}
 
 		return result;
 	}
@@ -522,7 +535,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Point getRight() {
-		return new Point(right(), y + height / 2);
+		return new Point(right(), getVerCenter());
 	}
 
 	/**
@@ -580,7 +593,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Point getTop() {
-		return new Point(x + width / 2, y);
+		return new Point(getHorCenter(), y);
 	}
 
 	/**
@@ -712,11 +725,10 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 		int x2 = Math.min(x + width, rect.x() + rect.width());
 		int y1 = Math.max(y, rect.y());
 		int y2 = Math.min(y + height, rect.y() + rect.height());
-		if (((x2 - x1) < 0) || ((y2 - y1) < 0))
+		if (((x2 - x1) < 0) || ((y2 - y1) < 0)) {
 			return setBounds(0, 0, 0, 0); // no intersection
-		else {
-			return setBounds(x1, y1, x2 - x1, y2 - y1);
 		}
+		return setBounds(x1, y1, x2 - x1, y2 - y1);
 	}
 
 	/**
@@ -1088,8 +1100,9 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 3.7
 	 */
 	public Rectangle shrink(Insets insets) {
-		if (insets == null)
+		if (insets == null) {
 			return this;
+		}
 		shrinkLeft(insets.left);
 		shrinkTop(insets.top);
 		width = Math.max(0, width - insets.right);
@@ -1110,10 +1123,9 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Rectangle shrink(int h, int v) {
-		Point center = getCenter();
-		x = Math.min(center.x, x + h);
+		x = Math.min(getHorCenter(), x + h);
 		width = Math.max(0, width - 2 * h);
-		y = Math.min(center.y, y + v);
+		y = Math.min(getVerCenter(), y + v);
 		height = Math.max(0, height - 2 * v);
 		return this;
 	}
@@ -1252,6 +1264,7 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 *             and {@link #setSize(Dimension)} to implement the desired behavior
 	 *             instead.
 	 */
+	@Deprecated
 	public Rectangle union(Dimension d) {
 		width = Math.max(width, d.width);
 		height = Math.max(height, d.height);
@@ -1365,8 +1378,9 @@ public class Rectangle implements Cloneable, java.io.Serializable, Translatable 
 	 * @since 2.0
 	 */
 	public Rectangle union(Rectangle rect) {
-		if (rect == null || rect.isEmpty())
+		if (rect == null || rect.isEmpty()) {
 			return this;
+		}
 		return union(rect.x, rect.y, rect.width, rect.height);
 	}
 
