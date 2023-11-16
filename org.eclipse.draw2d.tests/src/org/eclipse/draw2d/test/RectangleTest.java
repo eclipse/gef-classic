@@ -260,6 +260,14 @@ public class RectangleTest extends BaseTestCase {
 		assertFalse(rectangle1.intersects(new Rectangle(-100, -100, 10, 10)));
 		//
 		assertFalse(rectangle1.intersects(new Rectangle(0, 0, 5, 10)));
+		//
+		assertFalse(rectangle1.intersects(new Rectangle(15, 20, 0, 10)));
+		assertFalse(rectangle1.intersects(new Rectangle(15, 20, 10, 0)));
+		//
+		Rectangle rectangle3 = new Rectangle(0, 30, 0, 40);
+		assertFalse(rectangle3.intersects(rectangle3));
+		//
+		assertFalse(rectangle3.intersects(new Rectangle(0, 30, 100, 10)));
 	}
 
 	@SuppressWarnings("static-method")
