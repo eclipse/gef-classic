@@ -14,7 +14,6 @@ package org.eclipse.draw2d;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +35,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	protected class UpdateRequest implements Runnable {
 
 		public UpdateRequest() {
-			super();
+			// this constructor is here for the visibility of the constructor of this class
 		}
 
 		/**
@@ -52,7 +51,7 @@ public class DeferredUpdateManager extends UpdateManager {
 	private Map<IFigure, Rectangle> dirtyRegions = new HashMap<>();
 
 	private GraphicsSource graphicsSource;
-	private List invalidFigures = new ArrayList();
+	private final List<IFigure> invalidFigures = new ArrayList<>();
 	private IFigure root;
 	private boolean updateQueued;
 
@@ -70,8 +69,9 @@ public class DeferredUpdateManager extends UpdateManager {
 		}
 
 		void run() {
-			if (next != null)
+			if (next != null) {
 				next.run();
+			}
 			run.run();
 		}
 	}
@@ -104,15 +104,17 @@ public class DeferredUpdateManager extends UpdateManager {
 	 */
 	@Override
 	public synchronized void addDirtyRegion(IFigure figure, int x, int y, int w, int h) {
-		if (w == 0 || h == 0 || !figure.isShowing())
+		if (w == 0 || h == 0 || !figure.isShowing()) {
 			return;
+		}
 
 		Rectangle rect = dirtyRegions.get(figure);
 		if (rect == null) {
 			rect = new Rectangle(x, y, w, h);
 			dirtyRegions.put(figure, rect);
-		} else
+		} else {
 			rect.union(x, y, w, h);
+		}
 
 		queueWork();
 	}
@@ -125,8 +127,9 @@ public class DeferredUpdateManager extends UpdateManager {
 	 */
 	@Override
 	public synchronized void addInvalidFigure(IFigure f) {
-		if (invalidFigures.contains(f))
+		if (invalidFigures.contains(f)) {
 			return;
+		}
 		queueWork();
 		invalidFigures.add(f);
 	}
@@ -138,8 +141,9 @@ public class DeferredUpdateManager extends UpdateManager {
 	 * @return the Graphics object
 	 */
 	protected Graphics getGraphics(Rectangle region) {
-		if (graphicsSource == null)
+		if (graphicsSource == null) {
 			return null;
+		}
 		return graphicsSource.getGraphics(region);
 	}
 
@@ -156,7 +160,7 @@ public class DeferredUpdateManager extends UpdateManager {
 				 * is being painted. Otherwise, notification already occurs in repairDamage().
 				 */
 				Rectangle rect = graphics.getClip(new Rectangle());
-				HashMap map = new HashMap();
+				HashMap<IFigure, Rectangle> map = new HashMap<>();
 				map.put(root, rect);
 				firePainting(rect, map);
 			}
@@ -182,8 +186,9 @@ public class DeferredUpdateManager extends UpdateManager {
 	 */
 	@Override
 	public synchronized void performUpdate() {
-		if (isDisposed() || updating)
+		if (isDisposed() || updating) {
 			return;
+		}
 		updating = true;
 		try {
 			performValidation();
@@ -193,8 +198,9 @@ public class DeferredUpdateManager extends UpdateManager {
 				RunnableChain chain = afterUpdate;
 				afterUpdate = null;
 				chain.run(); // chain may queue additional Runnable.
-				if (afterUpdate != null)
+				if (afterUpdate != null) {
 					queueWork();
+				}
 			}
 		} finally {
 			updating = false;
@@ -206,14 +212,15 @@ public class DeferredUpdateManager extends UpdateManager {
 	 */
 	@Override
 	public synchronized void performValidation() {
-		if (invalidFigures.isEmpty() || validating)
+		if (invalidFigures.isEmpty() || validating) {
 			return;
+		}
 		try {
 			IFigure fig;
 			validating = true;
 			fireValidating();
 			for (int i = 0; i < invalidFigures.size(); i++) {
-				fig = (IFigure) invalidFigures.get(i);
+				fig = invalidFigures.get(i);
 				invalidFigures.set(i, null);
 				fig.validate();
 			}
@@ -284,10 +291,11 @@ public class DeferredUpdateManager extends UpdateManager {
 				contribution.intersect(walker.getBounds());
 				walker = walker.getParent();
 			}
-			if (damage == null)
+			if (damage == null) {
 				damage = new Rectangle(contribution);
-			else
+			} else {
 				damage.union(contribution);
+			}
 		});
 
 		if (!dirtyRegions.isEmpty()) {
@@ -297,7 +305,6 @@ public class DeferredUpdateManager extends UpdateManager {
 		}
 
 		if (damage != null && !damage.isEmpty()) {
-			// ystem.out.println(damage);
 			Graphics graphics = getGraphics(damage);
 			if (graphics != null) {
 				root.paint(graphics);
@@ -316,8 +323,9 @@ public class DeferredUpdateManager extends UpdateManager {
 	@Override
 	public synchronized void runWithUpdate(Runnable runnable) {
 		afterUpdate = new RunnableChain(runnable, afterUpdate);
-		if (!updating)
+		if (!updating) {
 			queueWork();
+		}
 	}
 
 	/**

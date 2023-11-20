@@ -107,20 +107,16 @@ public class LightweightSystem {
 				LightweightSystem.this.controlResized();
 			}
 		});
-		canvas.addListener(SWT.Paint, new Listener() {
-			@Override
-			public void handleEvent(Event e) {
-				LightweightSystem.this.paint(e.gc);
-			}
-		});
+		canvas.addListener(SWT.Paint, e -> paint(e.gc));
 	}
 
 	/**
 	 * Resizes and revalidates the root figure when the control is resized.
 	 */
 	protected void controlResized() {
-		if (ignoreResize > 0)
+		if (ignoreResize > 0) {
 			return;
+		}
 		Rectangle r = new Rectangle(canvas.getClientArea());
 		r.setLocation(0, 0);
 		root.setBounds(r);
@@ -135,8 +131,9 @@ public class LightweightSystem {
 	 * @since 2.0
 	 */
 	protected EventDispatcher getEventDispatcher() {
-		if (dispatcher == null)
+		if (dispatcher == null) {
 			setEventDispatcher(new SWTEventDispatcher());
+		}
 		return dispatcher;
 	}
 
@@ -213,8 +210,9 @@ public class LightweightSystem {
 	 * @since 2.0
 	 */
 	public void setContents(IFigure figure) {
-		if (contents != null)
+		if (contents != null) {
 			root.remove(contents);
+		}
 		contents = figure;
 		root.add(contents);
 	}
@@ -226,13 +224,15 @@ public class LightweightSystem {
 	 * @since 2.0
 	 */
 	public void setControl(Canvas c) {
-		if (canvas == c)
+		if (canvas == c) {
 			return;
+		}
 		canvas = c;
-		if ((c.getStyle() & SWT.DOUBLE_BUFFERED) != 0)
+		if ((c.getStyle() & SWT.DOUBLE_BUFFERED) != 0) {
 			getUpdateManager().setGraphicsSource(new NativeGraphicsSource(canvas));
-		else
+		} else {
 			getUpdateManager().setGraphicsSource(new BufferedGraphicsSource(canvas));
+		}
 		getEventDispatcher().setControl(c);
 		addListeners();
 
@@ -256,10 +256,11 @@ public class LightweightSystem {
 	}
 
 	void setIgnoreResize(boolean value) {
-		if (value)
+		if (value) {
 			ignoreResize++;
-		else
+		} else {
 			ignoreResize--;
+		}
 	}
 
 	/**
@@ -292,30 +293,36 @@ public class LightweightSystem {
 		/** @see IFigure#getBackgroundColor() */
 		@Override
 		public Color getBackgroundColor() {
-			if (bgColor != null)
+			if (bgColor != null) {
 				return bgColor;
-			if (canvas != null)
+			}
+			if (canvas != null) {
 				return canvas.getBackground();
+			}
 			return null;
 		}
 
 		/** @see IFigure#getFont() */
 		@Override
 		public Font getFont() {
-			if (font != null)
+			if (font != null) {
 				return font;
-			if (canvas != null)
+			}
+			if (canvas != null) {
 				return canvas.getFont();
+			}
 			return null;
 		}
 
 		/** @see IFigure#getForegroundColor() */
 		@Override
 		public Color getForegroundColor() {
-			if (fgColor != null)
+			if (fgColor != null) {
 				return fgColor;
-			if (canvas != null)
+			}
+			if (canvas != null) {
 				return canvas.getForeground();
+			}
 			return null;
 		}
 
@@ -369,8 +376,9 @@ public class LightweightSystem {
 		public void getChild(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getChild(e);
+			}
 		}
 
 		/** @see AccessibleControlListener#getChildAtPoint(AccessibleControlEvent) */
@@ -378,8 +386,9 @@ public class LightweightSystem {
 		public void getChildAtPoint(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getChildAtPoint(e);
+			}
 		}
 
 		/** @see AccessibleControlListener#getChildCount(AccessibleControlEvent) */
@@ -387,8 +396,9 @@ public class LightweightSystem {
 		public void getChildCount(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getChildCount(e);
+			}
 		}
 
 		/** @see AccessibleControlListener#getChildren(AccessibleControlEvent) */
@@ -396,8 +406,9 @@ public class LightweightSystem {
 		public void getChildren(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getChildren(e);
+			}
 		}
 
 		/** @see AccessibleControlListener#getDefaultAction(AccessibleControlEvent) */
@@ -405,8 +416,9 @@ public class LightweightSystem {
 		public void getDefaultAction(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getDefaultAction(e);
+			}
 		}
 
 		/** @see AccessibleListener#getDescription(AccessibleEvent) */
@@ -414,8 +426,9 @@ public class LightweightSystem {
 		public void getDescription(AccessibleEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getDescription(e);
+			}
 		}
 
 		/** @see AccessibleControlListener#getFocus(AccessibleControlEvent) */
@@ -423,8 +436,9 @@ public class LightweightSystem {
 		public void getFocus(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getFocus(e);
+			}
 		}
 
 		/** @see AccessibleListener#getHelp(AccessibleEvent) */
@@ -432,8 +446,9 @@ public class LightweightSystem {
 		public void getHelp(AccessibleEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getHelp(e);
+			}
 		}
 
 		/** @see AccessibleListener#getKeyboardShortcut(AccessibleEvent) */
@@ -441,8 +456,9 @@ public class LightweightSystem {
 		public void getKeyboardShortcut(AccessibleEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getKeyboardShortcut(e);
+			}
 		}
 
 		/** @see AccessibleControlListener#getLocation(AccessibleControlEvent) */
@@ -450,8 +466,9 @@ public class LightweightSystem {
 		public void getLocation(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getLocation(e);
+			}
 		}
 
 		/** @see AccessibleListener#getName(AccessibleEvent) */
@@ -459,8 +476,9 @@ public class LightweightSystem {
 		public void getName(AccessibleEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getName(e);
+			}
 		}
 
 		/** @see AccessibleControlListener#getRole(AccessibleControlEvent) */
@@ -468,8 +486,9 @@ public class LightweightSystem {
 		public void getRole(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getRole(e);
+			}
 		}
 
 		/** @see AccessibleControlListener#getSelection(AccessibleControlEvent) */
@@ -477,8 +496,9 @@ public class LightweightSystem {
 		public void getSelection(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getSelection(e);
+			}
 		}
 
 		/** @see AccessibleControlListener#getState(AccessibleControlEvent) */
@@ -486,8 +506,9 @@ public class LightweightSystem {
 		public void getState(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getState(e);
+			}
 		}
 
 		/** @see AccessibleControlListener#getValue(AccessibleControlEvent) */
@@ -495,8 +516,9 @@ public class LightweightSystem {
 		public void getValue(AccessibleControlEvent e) {
 			EventDispatcher.AccessibilityDispatcher ad;
 			ad = getEventDispatcher().getAccessibilityDispatcher();
-			if (ad != null)
+			if (ad != null) {
 				ad.getValue(e);
+			}
 		}
 
 		/**
@@ -506,8 +528,9 @@ public class LightweightSystem {
 		@Override
 		public void handleEvent(Event event) {
 			// Mouse wheel events
-			if (event.type == SWT.MouseWheel)
+			if (event.type == SWT.MouseWheel) {
 				getEventDispatcher().dispatchMouseWheelScrolled(event);
+			}
 		}
 
 		/** @see KeyListener#keyPressed(KeyEvent) */
