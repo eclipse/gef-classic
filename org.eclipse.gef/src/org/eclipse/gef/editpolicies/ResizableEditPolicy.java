@@ -18,7 +18,6 @@ import java.util.List;
 import org.eclipse.draw2d.Cursors;
 import org.eclipse.draw2d.PositionConstants;
 
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
 import org.eclipse.gef.handles.ResizableHandleKit;
@@ -89,7 +88,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 */
 	protected void createResizeHandle(List handles, int direction) {
 		if ((resizeDirections & direction) == direction) {
-			ResizableHandleKit.addHandle((GraphicalEditPart) getHost(), handles, direction, getResizeTracker(direction),
+			ResizableHandleKit.addHandle(getHost(), handles, direction, getResizeTracker(direction),
 					Cursors.getDirectionalCursor(direction, getHostFigure().isMirrored()));
 		} else {
 			// display 'resize' handle to allow dragging or indicate selection
@@ -107,7 +106,7 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 * @since 3.7
 	 */
 	protected ResizeTracker getResizeTracker(int direction) {
-		return new ResizeTracker((GraphicalEditPart) getHost(), direction);
+		return new ResizeTracker(getHost(), direction);
 	}
 
 	/**
@@ -117,10 +116,11 @@ public class ResizableEditPolicy extends NonResizableEditPolicy {
 	 */
 	@Override
 	public void eraseSourceFeedback(Request request) {
-		if (REQ_RESIZE.equals(request.getType()))
+		if (REQ_RESIZE.equals(request.getType())) {
 			eraseChangeBoundsFeedback((ChangeBoundsRequest) request);
-		else
+		} else {
 			super.eraseSourceFeedback(request);
+		}
 	}
 
 	/**

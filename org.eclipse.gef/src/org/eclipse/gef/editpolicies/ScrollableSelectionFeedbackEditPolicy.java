@@ -55,7 +55,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 
 	private int feedbackAlpha = 100;
 
-	private final List feedbackFigures = new ArrayList();
+	private final List<IFigure> feedbackFigures = new ArrayList<>();
 
 	private final FigureListener figureListener = source -> {
 		// react on host figure move
@@ -96,15 +96,12 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	@Override
 	public void activate() {
 		super.activate();
-		// register listeners to all viewports in the host figure's path;
-		// listeners
-		// to the host figure itself will be registered within showFeedback()
-		// and
-		// unregistered within hideFeedback()
-		for (Iterator iterator = ViewportUtilities
-				.getViewportsPath(getHostFigureViewport(), ViewportUtilities.getRootViewport(getHostFigure()))
-				.iterator(); iterator.hasNext();) {
-			Viewport viewport = (Viewport) iterator.next();
+		// register listeners to all viewports in the host figure's path:
+		// listeners the host figure itself will be registered within showFeedback()
+		// and unregistered within hideFeedback()
+		for (Object element : ViewportUtilities.getViewportsPath(getHostFigureViewport(),
+				ViewportUtilities.getRootViewport(getHostFigure()))) {
+			Viewport viewport = (Viewport) element;
 			viewport.addPropertyChangeListener(viewportViewLocationChangeListener);
 		}
 	}
@@ -144,11 +141,9 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * Creates the connection layer feedback figures.
 	 */
 	protected void createConnectionFeedbackFigures() {
-		HashSet transitiveNestedConnections = EditPartUtilities
-				.getAllNestedConnectionEditParts((GraphicalEditPart) getHost());
+		HashSet transitiveNestedConnections = EditPartUtilities.getAllNestedConnectionEditParts(getHost());
 
-		for (Iterator iterator = transitiveNestedConnections.iterator(); iterator.hasNext();) {
-			Object connection = iterator.next();
+		for (Object connection : transitiveNestedConnections) {
 			if (connection instanceof ConnectionEditPart) {
 				createConnectionFeedbackFigure((ConnectionEditPart) connection);
 			}
@@ -172,11 +167,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 */
 	protected void createNodeFeedbackFigures() {
 		// create ghost feedback for node children
-		getHost().getChildren().forEach(child -> {
-			if (child instanceof GraphicalEditPart gEP) {
-				createNodeFeedbackFigure(gEP);
-			}
-		});
+		getHost().getChildren().forEach(this::createNodeFeedbackFigure);
 	}
 
 	/**
@@ -187,10 +178,9 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 		// remove viewport listeners; listener to host figure, which were
 		// registered during showSelection() will be unregistered during
 		// hideSelection(), so they do not have to be unregistered here
-		for (Iterator iterator = ViewportUtilities
-				.getViewportsPath(getHostFigureViewport(), ViewportUtilities.getRootViewport(getHostFigure()))
-				.iterator(); iterator.hasNext();) {
-			Viewport viewport = (Viewport) iterator.next();
+		for (Object element : ViewportUtilities.getViewportsPath(getHostFigureViewport(),
+				ViewportUtilities.getRootViewport(getHostFigure()))) {
+			Viewport viewport = (Viewport) element;
 			viewport.removePropertyChangeListener(viewportViewLocationChangeListener);
 
 		}
@@ -229,9 +219,7 @@ public class ScrollableSelectionFeedbackEditPolicy extends SelectionEditPolicy {
 	 * {@link #feedbackFigures} list.
 	 */
 	protected void hideFeedback() {
-		for (Iterator iterator = feedbackFigures.iterator(); iterator.hasNext();) {
-			removeFeedback((IFigure) iterator.next());
-		}
+		feedbackFigures.forEach(this::removeFeedback);
 		feedbackFigures.clear();
 	}
 

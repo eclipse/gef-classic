@@ -21,14 +21,12 @@ import org.eclipse.draw2d.FigureUtilities;
 import org.eclipse.draw2d.FocusBorder;
 import org.eclipse.draw2d.Graphics;
 import org.eclipse.draw2d.IFigure;
-import org.eclipse.draw2d.Locator;
 import org.eclipse.draw2d.PositionConstants;
 import org.eclipse.draw2d.RectangleFigure;
 import org.eclipse.draw2d.geometry.PrecisionRectangle;
 import org.eclipse.draw2d.geometry.Rectangle;
 
 import org.eclipse.gef.DragTracker;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.SharedCursors;
@@ -106,13 +104,11 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	protected void createDragHandle(List handles, int direction) {
 		if (isDragAllowed()) {
 			// display 'resize' handles to allow dragging (drag tracker)
-			NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(), handles, direction, getDragTracker(),
-					SharedCursors.SIZEALL);
+			NonResizableHandleKit.addHandle(getHost(), handles, direction, getDragTracker(), SharedCursors.SIZEALL);
 		} else {
 			// display 'resize' handles to indicate selection only (selection
 			// tracker)
-			NonResizableHandleKit.addHandle((GraphicalEditPart) getHost(), handles, direction, getSelectTracker(),
-					SharedCursors.ARROW);
+			NonResizableHandleKit.addHandle(getHost(), handles, direction, getSelectTracker(), SharedCursors.ARROW);
 		}
 	}
 
@@ -147,11 +143,10 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	protected void createMoveHandle(List handles) {
 		if (isDragAllowed()) {
 			// display 'move' handle to allow dragging
-			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(), handles, getDragTracker(), Cursors.SIZEALL);
+			ResizableHandleKit.addMoveHandle(getHost(), handles, getDragTracker(), Cursors.SIZEALL);
 		} else {
 			// display 'move' handle only to indicate selection
-			ResizableHandleKit.addMoveHandle((GraphicalEditPart) getHost(), handles, getSelectTracker(),
-					SharedCursors.ARROW);
+			ResizableHandleKit.addMoveHandle(getHost(), handles, getSelectTracker(), SharedCursors.ARROW);
 		}
 	}
 
@@ -187,8 +182,9 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	@Override
 	public void eraseSourceFeedback(Request request) {
 		if ((REQ_MOVE.equals(request.getType()) && isDragAllowed()) || REQ_CLONE.equals(request.getType())
-				|| REQ_ADD.equals(request.getType()))
+				|| REQ_ADD.equals(request.getType())) {
 			eraseChangeBoundsFeedback((ChangeBoundsRequest) request);
+		}
 	}
 
 	/**
@@ -198,12 +194,15 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	public Command getCommand(Request request) {
 		Object type = request.getType();
 
-		if (REQ_MOVE.equals(type) && isDragAllowed())
+		if (REQ_MOVE.equals(type) && isDragAllowed()) {
 			return getMoveCommand((ChangeBoundsRequest) request);
-		if (REQ_ORPHAN.equals(type))
+		}
+		if (REQ_ORPHAN.equals(type)) {
 			return getOrphanCommand(request);
-		if (REQ_ALIGN.equals(type))
+		}
+		if (REQ_ALIGN.equals(type)) {
 			return getAlignCommand((AlignmentRequest) request);
+		}
 
 		return null;
 	}
@@ -214,8 +213,9 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * @return the feedback figure
 	 */
 	protected IFigure getDragSourceFeedbackFigure() {
-		if (feedback == null)
+		if (feedback == null) {
 			feedback = createDragSourceFeedbackFigure();
+		}
 		return feedback;
 	}
 
@@ -241,9 +241,10 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * @return the host figure's bounding Rectangle
 	 */
 	protected Rectangle getInitialFeedbackBounds() {
-		if (((GraphicalEditPart) getHost()).getFigure() instanceof HandleBounds)
-			return ((HandleBounds) ((GraphicalEditPart) getHost()).getFigure()).getHandleBounds();
-		return ((GraphicalEditPart) getHost()).getFigure().getBounds();
+		if (getHost().getFigure() instanceof HandleBounds handleBounds) {
+			return handleBounds.getHandleBounds();
+		}
+		return getHost().getFigure().getBounds();
 	}
 
 	/**
@@ -288,8 +289,9 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	@Override
 	protected void hideFocus() {
-		if (focusRect != null)
+		if (focusRect != null) {
 			removeFeedback(focusRect);
+		}
 		focusRect = null;
 	}
 
@@ -309,8 +311,9 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 * @param isDragAllowed whether or not the EditPolicy can be dragged.
 	 */
 	public void setDragAllowed(boolean isDragAllowed) {
-		if (isDragAllowed == this.isDragAllowed)
+		if (isDragAllowed == this.isDragAllowed) {
 			return;
+		}
 		this.isDragAllowed = isDragAllowed;
 	}
 
@@ -340,19 +343,17 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	@Override
 	protected void showFocus() {
-		focusRect = new AbstractHandle((GraphicalEditPart) getHost(), new Locator() {
-			@Override
-			public void relocate(IFigure target) {
-				IFigure figure = getHostFigure();
-				Rectangle r;
-				if (figure instanceof HandleBounds)
-					r = ((HandleBounds) figure).getHandleBounds().getCopy();
-				else
-					r = getHostFigure().getBounds().getResized(-1, -1);
-				getHostFigure().translateToAbsolute(r);
-				target.translateToRelative(r);
-				target.setBounds(r.expand(5, 5).resize(1, 1));
+		focusRect = new AbstractHandle(getHost(), target -> {
+			IFigure figure = getHostFigure();
+			Rectangle r;
+			if (figure instanceof HandleBounds handleBounds) {
+				r = handleBounds.getHandleBounds().getCopy();
+			} else {
+				r = getHostFigure().getBounds().getResized(-1, -1);
 			}
+			getHostFigure().translateToAbsolute(r);
+			target.translateToRelative(r);
+			target.setBounds(r.expand(5, 5).resize(1, 1));
 		}) {
 			{
 				setBorder(new FocusBorder());
@@ -374,8 +375,9 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	@Override
 	public void showSourceFeedback(Request request) {
 		if ((REQ_MOVE.equals(request.getType()) && isDragAllowed()) || REQ_ADD.equals(request.getType())
-				|| REQ_CLONE.equals(request.getType()))
+				|| REQ_CLONE.equals(request.getType())) {
 			showChangeBoundsFeedback((ChangeBoundsRequest) request);
+		}
 	}
 
 	/**
@@ -387,11 +389,13 @@ public class NonResizableEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	@Override
 	public boolean understandsRequest(Request request) {
-		if (REQ_MOVE.equals(request.getType()))
+		if (REQ_MOVE.equals(request.getType())) {
 			return isDragAllowed();
-		else if (REQ_CLONE.equals(request.getType()) || REQ_ADD.equals(request.getType())
-				|| REQ_ORPHAN.equals(request.getType()) || REQ_ALIGN.equals(request.getType()))
+		}
+		if (REQ_CLONE.equals(request.getType()) || REQ_ADD.equals(request.getType())
+				|| REQ_ORPHAN.equals(request.getType()) || REQ_ALIGN.equals(request.getType())) {
 			return true;
+		}
 		return super.understandsRequest(request);
 	}
 

@@ -17,7 +17,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.draw2d.IFigure;
 
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 
@@ -42,7 +41,7 @@ public class ContainerHighlightEditPolicy extends org.eclipse.gef.editpolicies.G
 	}
 
 	private IFigure getContainerFigure() {
-		return ((GraphicalEditPart) getHost()).getFigure();
+		return getHost().getFigure();
 	}
 
 	@Override
@@ -67,8 +66,9 @@ public class ContainerHighlightEditPolicy extends org.eclipse.gef.editpolicies.G
 				|| request.getType().equals(RequestConstants.REQ_CLONE)
 				|| request.getType().equals(RequestConstants.REQ_CONNECTION_START)
 				|| request.getType().equals(RequestConstants.REQ_CONNECTION_END)
-				|| request.getType().equals(RequestConstants.REQ_CREATE))
+				|| request.getType().equals(RequestConstants.REQ_CREATE)) {
 			showHighlight();
+		}
 	}
 
 }

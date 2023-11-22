@@ -14,8 +14,6 @@ package org.eclipse.gef.examples.logicdesigner.edit;
 
 import org.eclipse.draw2d.PolylineConnection;
 
-import org.eclipse.gef.GraphicalEditPart;
-
 public class WireEndpointEditPolicy extends org.eclipse.gef.editpolicies.ConnectionEndpointEditPolicy {
 
 	@Override
@@ -25,7 +23,7 @@ public class WireEndpointEditPolicy extends org.eclipse.gef.editpolicies.Connect
 	}
 
 	protected PolylineConnection getConnectionFigure() {
-		return (PolylineConnection) ((GraphicalEditPart) getHost()).getFigure();
+		return (PolylineConnection) getHost().getFigure();
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 		}
 	}
 
-	private Rectangle getAbsoluteBounds(GraphicalEditPart ep) {
+	private static Rectangle getAbsoluteBounds(GraphicalEditPart ep) {
 		Rectangle bounds = ep.getFigure().getBounds().getCopy();
 		ep.getFigure().translateToAbsolute(bounds);
 		return bounds;
@@ -224,8 +224,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 			 */
 			if (epIndex > 0) {
 				// Need to determine if a line break.
-				Rectangle boxPrev = transposer
-						.t(getAbsoluteBounds((GraphicalEditPart) getHost().getChildren().get(epIndex - 1)));
+				Rectangle boxPrev = transposer.t(getAbsoluteBounds(getHost().getChildren().get(epIndex - 1)));
 				int prevRight = boxPrev.right();
 				if (prevRight < r.x) {
 					// Not a line break
@@ -236,7 +235,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 			}
 			if (x == Integer.MIN_VALUE) {
 				// It is a line break.
-				Rectangle parentBox = transposer.t(getAbsoluteBounds((GraphicalEditPart) getHost()));
+				Rectangle parentBox = transposer.t(getAbsoluteBounds(getHost()));
 				x = r.x - 5;
 				if (x < parentBox.x) {
 					x = parentBox.x + (r.x - parentBox.x) / 2;
@@ -248,7 +247,7 @@ public abstract class FlowLayoutEditPolicy extends OrderedLayoutEditPolicy {
 			 * between the right edge and the right edge of the parent, but no more than 5
 			 * pixels.
 			 */
-			Rectangle parentBox = transposer.t(getAbsoluteBounds((GraphicalEditPart) getHost()));
+			Rectangle parentBox = transposer.t(getAbsoluteBounds(getHost()));
 			int rRight = r.x + r.width;
 			int pRight = parentBox.x + parentBox.width;
 			x = rRight + 5;

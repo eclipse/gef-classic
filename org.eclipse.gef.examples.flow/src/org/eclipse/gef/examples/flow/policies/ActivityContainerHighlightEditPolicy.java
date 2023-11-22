@@ -12,13 +12,14 @@
  *******************************************************************************/
 package org.eclipse.gef.examples.flow.policies;
 
+import org.eclipse.swt.graphics.Color;
+
 import org.eclipse.draw2d.IFigure;
+
 import org.eclipse.gef.EditPart;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.RequestConstants;
 import org.eclipse.gef.editpolicies.GraphicalEditPolicy;
-import org.eclipse.swt.graphics.Color;
 
 /**
  * @author Daniel Lee
@@ -44,7 +45,7 @@ public class ActivityContainerHighlightEditPolicy extends GraphicalEditPolicy {
 	}
 
 	private IFigure getContainerFigure() {
-		return ((GraphicalEditPart) getHost()).getFigure();
+		return getHost().getFigure();
 	}
 
 	/**
@@ -74,8 +75,10 @@ public class ActivityContainerHighlightEditPolicy extends GraphicalEditPolicy {
 	 */
 	@Override
 	public void showTargetFeedback(Request request) {
-		if (request.getType().equals(RequestConstants.REQ_CREATE) || request.getType().equals(RequestConstants.REQ_ADD))
+		if (request.getType().equals(RequestConstants.REQ_CREATE)
+				|| request.getType().equals(RequestConstants.REQ_ADD)) {
 			showHighlight();
+		}
 	}
 
 }

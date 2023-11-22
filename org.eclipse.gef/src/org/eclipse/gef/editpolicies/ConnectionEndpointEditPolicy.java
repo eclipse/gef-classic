@@ -28,7 +28,6 @@ import org.eclipse.draw2d.Polygon;
 import org.eclipse.draw2d.geometry.PointList;
 
 import org.eclipse.gef.ConnectionEditPart;
-import org.eclipse.gef.GraphicalEditPart;
 import org.eclipse.gef.NodeEditPart;
 import org.eclipse.gef.Request;
 import org.eclipse.gef.commands.Command;
@@ -94,8 +93,9 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 
 		@Override
 		public void validate() {
-			if (isValid())
+			if (isValid()) {
 				return;
+			}
 			PointList points = getConnection().getPoints().getCopy();
 			getConnection().translateToAbsolute(points);
 			points = StrokePointList.strokeList(points, 5);
@@ -109,7 +109,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	@Override
 	protected List createSelectionHandles() {
-		List list = new ArrayList();
+		List<ConnectionEndpointHandle> list = new ArrayList<>();
 		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(), ConnectionLocator.SOURCE));
 		list.add(new ConnectionEndpointHandle((ConnectionEditPart) getHost(), ConnectionLocator.TARGET));
 		return list;
@@ -122,12 +122,14 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 * @param request the reconnect request.
 	 */
 	protected void eraseConnectionMoveFeedback(ReconnectRequest request) {
-		if (originalAnchor == null)
+		if (originalAnchor == null) {
 			return;
-		if (request.isMovingStartAnchor())
+		}
+		if (request.isMovingStartAnchor()) {
 			getConnection().setSourceAnchor(originalAnchor);
-		else
+		} else {
 			getConnection().setTargetAnchor(originalAnchor);
+		}
 		originalAnchor = null;
 		feedbackHelper = null;
 	}
@@ -137,8 +139,9 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	@Override
 	public void eraseSourceFeedback(Request request) {
-		if (REQ_RECONNECT_TARGET.equals(request.getType()) || REQ_RECONNECT_SOURCE.equals(request.getType()))
+		if (REQ_RECONNECT_TARGET.equals(request.getType()) || REQ_RECONNECT_SOURCE.equals(request.getType())) {
 			eraseConnectionMoveFeedback((ReconnectRequest) request);
+		}
 	}
 
 	/**
@@ -155,7 +158,7 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 * @return the Connection figure
 	 */
 	protected Connection getConnection() {
-		return (Connection) ((GraphicalEditPart) getHost()).getFigure();
+		return (Connection) getHost().getFigure();
 	}
 
 	/**
@@ -198,20 +201,23 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	protected void showConnectionMoveFeedback(ReconnectRequest request) {
 		NodeEditPart node = null;
-		if (request.getTarget() instanceof NodeEditPart)
-			node = (NodeEditPart) request.getTarget();
+		if (request.getTarget() instanceof NodeEditPart nodeEP) {
+			node = nodeEP;
+		}
 		if (originalAnchor == null) {
-			if (request.isMovingStartAnchor())
+			if (request.isMovingStartAnchor()) {
 				originalAnchor = getConnection().getSourceAnchor();
-			else
+			} else {
 				originalAnchor = getConnection().getTargetAnchor();
+			}
 		}
 		ConnectionAnchor anchor = null;
 		if (node != null) {
-			if (request.isMovingStartAnchor())
+			if (request.isMovingStartAnchor()) {
 				anchor = node.getSourceConnectionAnchor(request);
-			else
+			} else {
 				anchor = node.getTargetConnectionAnchor(request);
+			}
 		}
 		FeedbackHelper helper = getFeedbackHelper(request);
 		helper.update(anchor, request.getLocation());
@@ -235,8 +241,9 @@ public class ConnectionEndpointEditPolicy extends SelectionHandlesEditPolicy {
 	 */
 	@Override
 	public void showSourceFeedback(Request request) {
-		if (REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType()))
+		if (REQ_RECONNECT_SOURCE.equals(request.getType()) || REQ_RECONNECT_TARGET.equals(request.getType())) {
 			showConnectionMoveFeedback((ReconnectRequest) request);
+		}
 	}
 
 }

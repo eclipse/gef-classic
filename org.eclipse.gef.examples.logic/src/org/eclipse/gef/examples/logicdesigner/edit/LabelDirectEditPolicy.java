@@ -29,8 +29,7 @@ public class LabelDirectEditPolicy extends DirectEditPolicy {
 	protected Command getDirectEditCommand(DirectEditRequest edit) {
 		String labelText = (String) edit.getCellEditor().getValue();
 		LogicLabelEditPart label = (LogicLabelEditPart) getHost();
-		LogicLabelCommand command = new LogicLabelCommand((LogicLabel) label.getModel(), labelText);
-		return command;
+		return new LogicLabelCommand((LogicLabel) label.getModel(), labelText);
 	}
 
 	/**
